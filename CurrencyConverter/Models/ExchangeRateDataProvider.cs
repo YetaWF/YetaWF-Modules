@@ -85,7 +85,7 @@ namespace YetaWF.Modules.CurrencyConverter.DataProvider {
 
             ConfigData config = ConfigDataProvider.GetConfig();
             if (string.IsNullOrWhiteSpace(config.AppID))
-                throw new InternalError("The App ID has not been specified in the Currency Converter module properties - openexchangerates.org requires an app id to be able to retrieve currency exchange rates");
+                throw new InternalError("The App ID has not been specified in the Currency Converter Settings (see Amdin > Configuration > Currency Converter Settings) - openexchangerates.org requires an app id to be able to retrieve currency exchange rates");
 
             ExchangeRateData data = new ExchangeRateData();
             data.Key = KEY;
