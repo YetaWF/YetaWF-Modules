@@ -1,0 +1,19 @@
+﻿/* Image Selection */
+/* Copyright © 2016 Softel vdm, Inc. - http://yetawf.com/Documentation/YetaWF/ImageRepository#License */
+
+.yt_imagerepository_imageselection .t_list {
+    float: left;
+    margin-right:2ch;
+}
+.yt_imagerepository_imageselection .t_list select {
+    width: 30ch;
+}
+.yt_imagerepository_imageselection .t_haveimage,
+.yt_imagerepository_imageselection .t_uploadarea {
+    padding-top: .5em;
+    clear:both;
+}
+.yt_imagerepository_imageselection .t_haveimage .yt_moduleaction,
+.yt_imagerepository_flashselection .t_haveflash .yt_moduleaction {
+    display:inline;
+}

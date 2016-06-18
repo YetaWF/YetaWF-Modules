@@ -1,0 +1,13 @@
+﻿/* Copyright © 2016 Softel vdm, Inc. - http://yetawf.com/Documentation/YetaWF/Sites#License */
+
+.yModule.YetaWF_Sites_SiteSelector .t_labels {
+    width: 11ch;
+    padding-top: 0.1em;
+    padding-right:1ch;
+}
+.yModule.YetaWF_Sites_SiteSelector .yt_propertylist .t_row {/* no padding on last (and only row) */
+    padding-bottom:0;
+}
+.yModule.YetaWF_Sites_SiteSelector .t_vals {
+    float: right;
+}

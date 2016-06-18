@@ -1,0 +1,8 @@
+@*Copyright © 2016 Softel vdm, Inc. - http://yetawf.com/Documentation/YetaWF/Identity#License*@
+@inherits YetaWF.Core.Views.RazorView<YetaWF.Modules.Identity.Modules.RolesDisplayModule, YetaWF.Modules.Identity.Controllers.RolesDisplayModuleController.DisplayModel>
+@using (Form("RolesDisplay")) {
+    @Html.DisplayFor(m => Model, "PropertyList")
+    @FormButtons(new FormButton[] {
+        new FormButton() { ButtonType= ButtonTypeEnum.Cancel, Text=this.__ResStr("btnCancel", "Return") },
+    });
+}

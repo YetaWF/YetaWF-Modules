@@ -1,0 +1,5 @@
+@*Copyright © 2016 Softel vdm, Inc. - http://yetawf.com/Documentation/YetaWF/TinyLanguage#License*@
+@inherits YetaWF.Core.Views.RazorView<YetaWF.Modules.TinyLanguage.Modules.TinyLanguageModule, YetaWF.Modules.TinyLanguage.Controllers.TinyLanguageModuleController.EditModel>
+@using (Form("TinyLanguage_Partial", SaveReturnUrl: true, HtmlAttributes: new { Id = DivId } )) {
+    @PartialForm()
+}

@@ -1,0 +1,6 @@
+@*Copyright © 2016 Softel vdm, Inc. - http://yetawf.com/Documentation/YetaWF/Sites#License*@
+@inherits YetaWF.Core.Views.RazorView<YetaWF.Modules.Sites.Modules.SitesBrowseModule, YetaWF.Modules.Sites.Controllers.SitesBrowseModuleController.BrowseModel>
+@using (Form("SitesBrowse_Partial")) {
+    @PartialForm()
+    @Html.DisplayFor(m => Model.GridDef)
+}

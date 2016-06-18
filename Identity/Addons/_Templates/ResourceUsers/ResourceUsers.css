@@ -1,0 +1,15 @@
+﻿/* Copyright © 2016 Softel vdm, Inc. - http://yetawf.com/Documentation/YetaWF/Identity#License */
+
+.yt_yetawf_identity_resourceusers .k-grid 
+{
+    width:80ch;
+}
+.yt_yetawf_identity_resourceusers .t_newvalue
+{
+    margin-top: .5em;
+}
+.yt_yetawf_identity_resourceusers .t_newvalue label,
+.yt_yetawf_identity_resourceusers .t_newvalue input
+{
+    margin-right: 1ch;
+}

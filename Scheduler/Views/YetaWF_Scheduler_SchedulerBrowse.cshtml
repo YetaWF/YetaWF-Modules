@@ -1,0 +1,16 @@
+﻿@*Copyright © 2016 Softel vdm, Inc. - http://yetawf.com/Documentation/YetaWF/Scheduler#License*@
+@inherits YetaWF.Core.Views.RazorView<YetaWF.Modules.Scheduler.Modules.SchedulerBrowseModule, YetaWF.Modules.Scheduler.Controllers.SchedulerBrowseModuleController.SchedulerBrowseModel>
+@using YetaWF.Core.Addons
+@if (YetaWF.Core.Scheduler.SchedulerSupport.Enabled) {
+<div class="@YetaWF.Core.Globals.CssDivWarning">
+    @__ResStr("enabled", "The Scheduler is enabled.")
+</div>
+} else {
+<div class="@YetaWF.Core.Globals.CssDivAlert">
+    @__ResStr("disabled", "The Scheduler is disabled.")
+</div>
+}
+@using (Form("SchedulerBrowse_Partial")) {
+    @PartialForm()
+    @Html.DisplayFor(m => Model.GridDef)
+}

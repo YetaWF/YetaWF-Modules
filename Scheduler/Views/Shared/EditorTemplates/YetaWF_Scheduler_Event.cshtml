@@ -1,0 +1,37 @@
+﻿@*Copyright © 2016 Softel vdm, Inc. - http://yetawf.com/Documentation/YetaWF/Scheduler#License*@
+@inherits YetaWF.Modules.Scheduler.Views.Shared.SchedulerEvent<YetaWF.Core.Scheduler.SchedulerEvent>
+@using YetaWF.Modules.Scheduler.Views.Shared
+<div class='yt_yetawf_scheduler_event t_edit'>
+    <div class="t_event">
+        @Html.RenderSchedulerEvent("DropDown", Model.Name)
+        @Html.HiddenFor(m => Model.Name)
+        @Html.HiddenFor(m => Model.ImplementingAssembly)
+        @Html.HiddenFor(m => Model.ImplementingType)
+    </div>
+    <div class="t_info">
+        <div class="t_row t_implementingassembly">
+            <div class="t_labels">
+                @Html.ExtLabelFor(m => Model.ImplementingAssembly)
+            </div>
+            <div class="t_vals">
+                <span class="t_implasm">@Model.ImplementingAssembly</span>
+            </div>
+        </div>
+        <div class="t_row t_implementingtype">
+            <div class="t_labels">
+                @Html.ExtLabelFor(m => Model.ImplementingType)
+            </div>
+            <div class="t_vals">
+                <span class="t_impltype">@Model.ImplementingType</span>
+            </div>
+        </div>
+        <div class="t_row t_eventbuiltindescription">
+            <div class="t_labels">
+                @Html.ExtLabelFor(m => Model.EventBuiltinDescription)
+            </div>
+            <div class="t_vals">
+                <span class="t_description">description</span>
+            </div>
+        </div>
+    </div>
+</div>

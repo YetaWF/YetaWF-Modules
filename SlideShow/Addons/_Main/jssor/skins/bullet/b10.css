@@ -1,0 +1,18 @@
+﻿/* jssor slider bullet navigator skin 10 css */
+/*
+.jssorb10 div           (normal)
+.jssorb10 div:hover     (normal mouseover)
+.jssorb10 .av           (active)
+.jssorb10 .av:hover     (active mouseover)
+.jssorb10 .dn           (mousedown)
+*/
+.jssorb10 div, .jssorb10 div:hover, .jssorb10 .av
+{
+    background: url(../../img/b10.png) no-repeat;
+    overflow:hidden;
+    cursor: pointer;
+}
+.jssorb10 div { background-position: -10px -10px; }
+.jssorb10 div:hover, .jssorb10 .av:hover { background-position: -40px -10px; }
+.jssorb10 .av { background-position: -70px -10px; }
+.jssorb10 .dn, .jssorb10 .dn:hover { background-position: -100px -10px; }

@@ -1,0 +1,39 @@
+﻿@*Copyright © 2016 Softel vdm, Inc. - http://yetawf.com/Documentation/YetaWF/SlideShow#License*@
+@inherits YetaWF.Modules.SlideShow.Views.Shared.SlideShowHelper<YetaWF.Modules.SlideShow.Models.SlideShowInfo>
+@using YetaWF.Core.Views
+@using YetaWF.Modules.SlideShow.Views.Shared
+@{
+    int tabEntry = 0;
+    string slideId = ControlId;
+}
+<div id="@slideId" class="yt_slideshow_slideshow t_edit">
+    @Html.RenderPropertyListTabbed("", Model)
+    <div class="t_slides" id="@DivId">
+        @Html.RenderTabStripStart(DivId)
+        @for (int i = 0 ; i <= Model.Slides.Count-1 ; ++i ) {
+            @Html.RenderTabEntry(DivId, __ResStr("tab", "Image {0}", i+1), null, i)
+        }
+        @Html.RenderTabStripEnd(DivId)
+
+        @foreach (var slide in Model.Slides) {
+            @Html.RenderTabPaneStart(DivId, tabEntry, "t_slide")
+            @Html.RenderHidden("Index", tabEntry)
+            @Html.EditorFor(m => slide, "PropertyList", string.Format("Slides[{0}]", tabEntry))
+            <div class="t_buttons">
+                <input type="button" class="t_up" value="@__ResStr("btnUp", "<<")" title="@__ResStr("txtUp", "Click to save and move the current image")" />
+                <input type="button" class="t_down" value="@__ResStr("btnDown", ">>")" title="@__ResStr("txtDown", "Click to save and move the current image")" />
+                <input type="button" class="t_ins" value="@__ResStr("btnIns", "Insert")" title="@__ResStr("txtIns", "Click to insert a new image before the current image")" />
+                <input type="button" class="t_add" value="@__ResStr("btnAdd", "Add")" title="@__ResStr("txtAdd", "Click to add a new image after the current image")" />
+                <input type="button" class="t_delete" value="@__ResStr("btnDelete", "Remove")" title="@__ResStr("txtDelete", "Click to remove the current image")" />
+            </div>
+            @Html.RenderTabPaneEnd(DivId, tabEntry)
+            ++tabEntry;
+        }
+        @Html.RenderTabInit(DivId)
+    </div>
+</div>
+<script>
+@using (DocumentReady()) {
+    @: YetaWF_SlideShow.init('@slideId');
+}
+</script>

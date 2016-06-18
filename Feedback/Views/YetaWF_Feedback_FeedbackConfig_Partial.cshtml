@@ -1,0 +1,6 @@
+﻿@*Copyright © 2016 Softel vdm, Inc. - http://yetawf.com/Documentation/YetaWF/Feedback#License*@
+@inherits YetaWF.Core.Views.RazorView<YetaWF.Modules.Feedback.Modules.FeedbackConfigModule, YetaWF.Modules.Feedback.Controllers.FeedbackConfigModuleController.Model>
+@Html.ValidationSummary()
+<div>
+    @Html.EditorFor(m => Model, "PropertyList")
+</div>

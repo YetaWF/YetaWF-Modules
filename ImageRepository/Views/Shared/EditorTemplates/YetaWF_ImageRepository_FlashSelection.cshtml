@@ -1,0 +1,41 @@
+﻿@*Copyright © 2016 Softel vdm, Inc. - http://yetawf.com/Documentation/YetaWF/ImageRepository#License*@
+@inherits YetaWF.Modules.ImageRepository.Views.Shared.FlashSelectionHelper<string>
+@using YetaWF.Core.Views
+@using YetaWF.Modules.ImageRepository.Support
+@using YetaWF.Core.Extensions;
+@using YetaWF.Modules.ImageRepository.Views.Shared
+@{ Manager.AddOnManager.AddTemplate("Flash"); }
+@{ FlashSelectionInfo info = Html.GetParentModelSupportProperty<FlashSelectionInfo>("", "Info"); }
+<div id="@ControlId" class="yt_imagerepository_flashselection">
+    @Html.HiddenFor(m => Model)
+    <div class="t_imgarea">
+        <div class="t_list">
+            <select name="List" size="@info.Count">
+                @foreach (var f in info.Files) {
+                    string name = f.RemoveStartingAt(YetaWF.Core.Image.ImageSupport.ImageSeparator);
+                    <option title="@name" value="@f">@name</option>
+                }
+            </select>
+        </div>
+        <div class="t_preview">
+            <object width="@info.PreviewWidth" height="@info.PreviewHeight" classid="clsid:d27cdb6e-ae6d-11cf-96b8-444553540000" codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=6,0,40,0">
+                <param name="quality" value="high">
+                <param name="wmode" value="transparent">
+                <param name="movie" value="@Manager.GetCDNUrl(info.MakeFlashUrl(Model, ForceHttpHandler: true))">
+                <embed width="@info.PreviewWidth" height="@info.PreviewHeight" pluginspage="http://www.macromedia.com/go/getflashplayer" src="@Manager.GetCDNUrl(info.MakeFlashUrl(Model))" type="application/x-shockwave-flash" wmode="transparent" quality="high">
+            </object>
+        </div>
+    </div>
+    <div class="t_haveflash" @Html.Raw(string.IsNullOrWhiteSpace(Model) ? "style='display:none'" : "")>
+        @Html.DisplayFor(m=>info.ClearFlashButton, "ModuleAction")
+        @Html.DisplayFor(m=>info.RemoveFlashButton, "ModuleAction")
+    </div>
+    <div class="t_uploadarea">
+        @Html.RenderUploadControl("", info)
+    </div>
+</div>
+<script>
+    @using (DocumentReady()) {
+        @: YetaWF_FlashImageRepository.initSelection('@ControlId');
+    }
+</script>

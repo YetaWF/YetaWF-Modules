@@ -1,0 +1,9 @@
+@*Copyright © 2016 Softel vdm, Inc. - http://yetawf.com/Documentation/YetaWF/Sites#License*@
+@inherits YetaWF.Core.Views.RazorView<YetaWF.Modules.Sites.Modules.SiteAddModule, YetaWF.Modules.Sites.Controllers.SiteAddModuleController.AddModel>
+@using (Form("SiteAdd_Partial")) {
+    @PartialForm()
+    @FormButtons(new FormButton[] {
+        new FormButton() { ButtonType= ButtonTypeEnum.Submit, Text=this.__ResStr("btnSave", "Create") },
+        new FormButton() { ButtonType= ButtonTypeEnum.Cancel, },
+    });
+}

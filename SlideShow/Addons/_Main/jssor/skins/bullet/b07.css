@@ -1,0 +1,17 @@
+﻿/*
+.jssorb07 div           (normal)
+.jssorb07 div:hover     (normal mouseover)
+.jssorb07 .av           (active)
+.jssorb07 .av:hover     (active mouseover)
+.jssorb07 .dn           (mousedown)
+*/
+.jssorb07 div, .jssorb07 div:hover, .jssorb07 .av
+{
+    background: url(../../img/b07.png) no-repeat;
+    overflow:hidden;
+    cursor: pointer;
+}
+.jssorb07 div { background-position: -5px -5px; }
+.jssorb07 div:hover, .jssorb07 .av:hover { background-position: -35px -5px; }
+.jssorb07 .av { background-position: -65px -5px; }
+.jssorb07 .dn, .jssorb07 .dn:hover { background-position: -95px -5px; }

@@ -1,0 +1,9 @@
+@*Copyright © 2016 Softel vdm, Inc. - http://yetawf.com/Documentation/YetaWF/Packages#License*@
+@inherits YetaWF.Core.Views.RazorView<YetaWF.Modules.Packages.Modules.SiteTemplateUndoModule, YetaWF.Modules.Packages.Controllers.SiteTemplateUndoModuleController.EditModel>
+@using (Form("SiteTemplateUndo_Partial")) {
+    @PartialForm()
+    @FormButtons(new FormButton[] {
+        new FormButton() { ButtonType= ButtonTypeEnum.Apply, Text=this.__ResStr("btnSave", "Undo") },
+        new FormButton() { ButtonType= ButtonTypeEnum.Cancel, },
+    });
+}

@@ -1,0 +1,156 @@
+﻿@*Copyright © 2016 Softel vdm, Inc. - http://yetawf.com/Documentation/YetaWF/SlideShow#License*@
+@inherits YetaWF.Modules.SlideShow.Views.Shared.SlideShowHelper<YetaWF.Modules.SlideShow.Models.SlideShowInfo>
+@using YetaWF.Core.Support
+@using YetaWF.Core.Views
+@using YetaWF.Modules.SlideShow.Views.Shared
+@using YetaWF.Modules.SlideShow.Support
+@using YetaWF.Modules.SlideShow.Models
+@{
+    YetaWF.Core.Packages.Package package = YetaWF.Modules.SlideShow.Controllers.AreaRegistration.CurrentPackage;
+    string rootUrl = YetaWF.Core.Addons.VersionManager.GetAddOnModuleUrl(package.Domain, package.Product);
+    string widthPix = Model.Width.ToString();
+    string heightPix = Model.Height.ToString();
+    int slideIndex = 0;
+    string captions = "var _capTrans = [];";
+}
+<div id="@ControlId" class="yt_slideshow_slideshow t_display" style="position: relative; top: 0px; left: 0px; width: @(widthPix)px; height: @(heightPix)px;">
+    <div data-u="slides" style="cursor: move; position: absolute; overflow: hidden; left: 0px; top: 0px; width: @(widthPix)px; height: @(heightPix)px;">
+        @foreach (var slide in Model.Slides) {
+            <div>
+                @if (string.IsNullOrWhiteSpace(slide.Url)) {
+                    <img data-u="image" src="@(Manager.GetCDNUrl(ImageHelper.FormatUrl(ImageSupport.ImageType, null, slide.Image)))" alt="">
+                } else {
+                    <a data-u="image" href="@(slide.Url)"><img src="@Html.Raw(Manager.GetCDNUrl(ImageHelper.FormatUrl(ImageSupport.ImageType, null, slide.Image)))" alt=""></a>
+                }
+                @if (Model.Style == SlideShowInfo.SlideShowType.Thumbnails && !string.IsNullOrWhiteSpace(slide.ThumbnailImage)) {
+                    <img data-u="thumb" src="@Html.Raw(Manager.GetCDNUrl(ImageHelper.FormatUrl(ImageSupport.ImageType, null, slide.ThumbnailImage)))">
+                }
+                @if (Model.Captions && !string.IsNullOrWhiteSpace(slide.Caption)) {
+                    string playIn = slide.CaptionTransitionIn;
+                    if (playIn == CaptionTransitionHelper.CaptionTransition.DEFAULT || string.IsNullOrWhiteSpace(playIn)) {
+                        playIn = Model.DefaultCaptionTransitionIn;
+                    }
+                    if (playIn == CaptionTransitionHelper.CaptionTransition.NONE || string.IsNullOrWhiteSpace(playIn)) {
+                        playIn = "";
+                    } else {
+                        captions += string.Format("_capTrans[\"cpin{0}\"] = {1};", slideIndex, YetaWFManager.JserEncode(playIn));
+                        playIn = string.Format(" data-t=\"cpin{0}\"", slideIndex);
+                    }
+                    string playOut = slide.CaptionTransitionOut;
+                    if (playOut == CaptionTransitionHelper.CaptionTransition.DEFAULT || string.IsNullOrWhiteSpace(playOut)) {
+                        playOut = Model.DefaultCaptionTransitionOut;
+                    }
+                    if (playOut == CaptionTransitionHelper.CaptionTransition.NONE || string.IsNullOrWhiteSpace(playOut)) {
+                        playOut = "";
+                    } else {
+                        captions += string.Format("_capTrans[\"cpout{0}\"] = {1};", slideIndex, YetaWFManager.JserEncode(playOut));
+                        playOut = string.Format(" data-t2=\"cpout{0}\"", slideIndex);
+                    }
+                    <div data-u="caption"@Html.Raw(playIn)@Html.Raw(playOut) style="position: absolute; top: @(slide.CaptionTop)px; left: @(slide.CaptionLeft)px; width: @(slide.CaptionWidth)px;height: @(slide.CaptionHeight)px;">
+                        @slide.Caption
+                    </div>
+                }
+            </div>
+            slideIndex++;
+        }
+    </div>
+    @if (Model.Style == SlideShowInfo.SlideShowType.Bullets) {
+        //Manager.CssManager.AddFile(false, rootUrl + string.Format("jssor/skins/bullet/{0}.css", Model.BulletStyle));
+        @Manager.AddOnManager.GetFile(rootUrl + string.Format("jssor/skins/bullet/{0}.html", Model.BulletStyle), new { WidthPix = widthPix });
+    } else if (Model.Style == SlideShowInfo.SlideShowType.Thumbnails) {
+        //Manager.CssManager.AddFile(false, rootUrl + string.Format("jssor/skins/thumb/{0}.css", Model.ThumbStyle));
+        @Manager.AddOnManager.GetFile(rootUrl + string.Format("jssor/skins/thumb/{0}.html", Model.ThumbnailStyle), new { WidthPix = widthPix });
+    }
+    @if (Model.ShowArrows) {
+        //Manager.CssManager.AddFile(false, rootUrl + string.Format("jssor/skins/arrow/{0}.css", Model.ArrowStyle));
+        @Manager.AddOnManager.GetFile(rootUrl + string.Format("jssor/skins/arrow/{0}.html", Model.ArrowStyle), new { WidthPix = widthPix });
+    }
+</div>
+<script>
+@using (DocumentReady()) {
+    int transOrder = 0;
+    if (Model.SlideShow) {
+        @: var _SlideshowTransitions = [
+        if (Model.DefaultTransition == TransitionHelper.Transition.RANDOM) {
+            transOrder = 0;// random
+            foreach (var t in TransitionHelper.Transitions) {
+                if (t.Effect == TransitionHelper.Transition.DEFAULT || !string.IsNullOrWhiteSpace(t.Effect)) {
+                    @: @Html.Raw(t.Effect),
+                }
+            }
+        } else {
+            transOrder = 1;// sequence
+            foreach (var slide in Model.Slides) {
+                string t = slide.ImageTransition;
+                if (t == TransitionHelper.Transition.DEFAULT || string.IsNullOrWhiteSpace(t)) {
+                    t = Model.DefaultTransition;
+                }
+                if (t == TransitionHelper.Transition.DEFAULT || string.IsNullOrWhiteSpace(t)) {
+                    t = "{ $Duration: 1200, $Opacity: 2 }";// fallback
+                }
+                @: @Html.Raw(t),
+            }
+        }
+        @:];
+    }
+    if (Model.Captions) {
+        @Html.Raw(captions);
+    }
+    @: var options = {
+        @: $AutoPlay: @(Model.SlideShow ? "true" : "false"),
+        @: $FillMode: @((int)Model.FillMode),
+        @: $StartIndex: 0,
+        @: $Loop: @(Model.Loop ? "1" : "0"),
+        @: $AutoPlayInterval: @Model.AutoPlayInterval,
+        @: $PauseOnHover: @((int)Model.Hover),
+        @: $ArrowKeyNavigation: true,
+        @: $PlayOrientation: @((int)Model.Orientation),
+        if (Model.Style == SlideShowInfo.SlideShowType.Bullets) {
+            @: $BulletNavigatorOptions: {
+            @:   $Class: $JssorBulletNavigator$,
+            @:   $ChanceToShow: @(Model.BulletsAlwaysShown ? "2" : "1"),
+            @:   $AutoCenter: @((int)Model.BulletLocation),
+            @:   $Orientation: @((int) Model.Orientation),
+            @:   $SpacingX: @(Model.BulletSpacingX),
+            @:   $SpacingY: @(Model.BulletSpacingY),
+            @: },
+        } else if (Model.Style == SlideShowInfo.SlideShowType.Thumbnails) {
+            @: $ThumbnailNavigatorOptions: {
+            @:   $Class: $JssorThumbnailNavigator$,
+            @:   $ChanceToShow:  @(Model.ThumbsAlwaysShown ? "2" : "1"),
+            @:   $ActionMode: 1,//act by click
+            @:   $DisplayPieces: @(Model.ThumbnailCount),
+            @:   $AutoCenter: @((int)Model.ThumbnailLocation),
+            @:   $Orientation: @((int) Model.ThumbnailOrientation),
+            @:   $DisableDrag: false,
+            @:   $SpacingX: @(Model.ThumbnailSpacingX),
+            @:   $SpacingY: @(Model.ThumbnailSpacingY)
+            @: },
+        }
+        if (Model.ShowArrows) {
+            @: $ArrowNavigatorOptions: {
+            @:   $Class: $JssorArrowNavigator$,
+            @:   $ChanceToShow:  @(Model.ArrowsAlwaysShown ? "2" : "1"),
+            @:   $AutoCenter: @((int)Model.ArrowLocation)
+            @: },
+        }
+        if (Model.SlideShow) {
+            @: $SlideshowOptions: {
+            @:   $Class: $JssorSlideshowRunner$,
+            @:   $Transitions: _SlideshowTransitions,
+            @:   $TransitionsOrder: @transOrder,
+            @:   $ShowLink: true
+            @: },
+        }
+        if (Model.Captions) {
+            @: $CaptionSliderOptions: {
+            @:   $Class: $JssorCaptionSlider$,
+            @:   $CaptionTransitions: _capTrans,
+            @:   $PlayInMode: @(Model.DefaultCaptionTransitionIn == CaptionTransitionHelper.CaptionTransition.NONE ? 0 : 1),
+            @:   $PlayOutMode: @(Model.DefaultCaptionTransitionOut == CaptionTransitionHelper.CaptionTransition.NONE ? 0 : 1)
+            @: },
+        }
+    @: };
+    @: var slider1 = new $JssorSlider$('@ControlId', options);
+}
+</script>

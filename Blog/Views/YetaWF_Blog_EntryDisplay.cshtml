@@ -1,0 +1,8 @@
+@*Copyright © 2016 Softel vdm, Inc. - http://yetawf.com/Documentation/YetaWF/Blog#License*@
+@inherits YetaWF.Core.Views.RazorView<YetaWF.Modules.Blog.Modules.EntryDisplayModule, YetaWF.Modules.Blog.Controllers.EntryDisplayModuleController.DisplayModel>
+@using (Form("EntryDisplay")) {
+    @Html.DisplayFor(m => Model, "PropertyList")
+    @FormButtons(new FormButton[] {
+        new FormButton() { ButtonType= ButtonTypeEnum.Cancel, Text=this.__ResStr("btnCancel", "Return") },
+    });
+}

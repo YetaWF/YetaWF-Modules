@@ -1,0 +1,6 @@
+﻿@*Copyright © 2016 Softel vdm, Inc. - http://yetawf.com/Documentation/YetaWF/PageEdit#License*@
+@inherits YetaWF.Core.Views.RazorView<YetaWF.Modules.PageEdit.Modules.PageControlModule, YetaWF.Modules.PageEdit.Controllers.PageControlModuleController.AddExistingModel>
+@Html.ValidationSummary()
+<div>
+    @Html.EditorFor(m => Model, "PropertyList")
+</div>

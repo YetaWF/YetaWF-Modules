@@ -1,0 +1,9 @@
+@*Copyright © 2016 Softel vdm, Inc. - http://yetawf.com/Documentation/YetaWF/Search#License*@
+@inherits YetaWF.Core.Views.RazorView<YetaWF.Modules.Search.Modules.SearchEditModule, YetaWF.Modules.Search.Controllers.SearchEditModuleController.EditModel>
+@using (Form("SearchEdit_Partial")) {
+    @PartialForm()
+    @FormButtons(new FormButton[] {
+        new FormButton() { ButtonType= ButtonTypeEnum.Submit, },
+        new FormButton() { ButtonType= ButtonTypeEnum.Cancel, },
+    });
+}

@@ -1,0 +1,10 @@
+﻿Commands            icons 3
+Name                sort filter 25 defaultSort asc
+Title               sort filter 25
+Description         sort filter 40
+UseCount            10
+CssClass            sort filter 20
+SameAsPage          sort filter center [Globals.ChBoolean]
+WantSearch          sort filter center [Globals.ChBoolean]
+WantFocus           sort filter center [Globals.ChBoolean]
+ModuleGuid          sort filter [Globals.ChGuid]

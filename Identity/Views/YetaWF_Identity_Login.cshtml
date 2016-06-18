@@ -1,0 +1,32 @@
+﻿@*Copyright © 2016 Softel vdm, Inc. - http://yetawf.com/Documentation/YetaWF/Identity#License*@
+@inherits YetaWF.Core.Views.RazorView<YetaWF.Modules.Identity.Modules.LoginModule, YetaWF.Modules.Identity.Controllers.LoginModuleController.LoginModel>
+@using Microsoft.Owin.Security
+@using Microsoft.Owin.Host
+@using (Form("Login_Partial")) {
+    @PartialForm()
+    @FormButtons(new FormButton[] {
+        new FormButton() { ButtonType= ButtonTypeEnum.Submit, Text=this.__ResStr("btnSave", "Log In") },
+        new FormButton() { ButtonType= ButtonTypeEnum.Cancel, },
+    });
+}
+@{
+    var loginProviders = Context.GetOwinContext().Authentication.GetExternalAuthenticationTypes();
+    if (loginProviders.Count() > 0) {
+        if (Manager.IsLocalHost) {
+            <div class="@YetaWF.Core.Globals.CssDivAlert">
+                @__ResStr("localOnly", "External login providers may not work when your site uses Localhost.")
+            </div>
+        }
+        <div class="t_external">
+            @using (Html.BeginForm("ExternalLogin", "LoginExternal"))
+            {
+                @Html.AntiForgeryToken()
+                List<FormButton> buttons = new List<FormButton>();
+                foreach (AuthenticationDescription provider in loginProviders) {
+                    buttons.Add(new FormButton() { ButtonType = ButtonTypeEnum.Submit, Id=provider.AuthenticationType, Name="provider", Text = provider.AuthenticationType, Title=__ResStr("logAccountTitle", "Log in using your {0} account", provider.Caption) });
+                }
+                @FormButtons(buttons)
+            }
+        </div>
+    }
+}

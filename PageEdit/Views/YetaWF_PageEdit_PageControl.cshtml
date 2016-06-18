@@ -1,0 +1,63 @@
+﻿@*Copyright © 2016 Softel vdm, Inc. - http://yetawf.com/Documentation/YetaWF/PageEdit#License*@
+@inherits YetaWF.Core.Views.RazorView<YetaWF.Modules.PageEdit.Modules.PageControlModule, YetaWF.Modules.PageEdit.Controllers.PageControlModuleController.PageControlModel>
+@using YetaWF.Core.Modules
+@using YetaWF.Core.Menus
+<div id="@DivId">
+    @Html.RenderTabStripStart(DivId)
+    @{ int tabEntry = 0; }
+    @Html.RenderTabEntry(DivId, __ResStr("tabNewPage", "Add New Page"), __ResStr("tabNewPageTT", "Add a new page to the site"), tabEntry)
+    @{ ++tabEntry; }
+    @if (!Manager.CurrentPage.Temporary) {
+        @Html.RenderTabEntry(DivId, __ResStr("tabNew", "Add New Module"), __ResStr("tabNewTT", "Add a new module to this page (creates a new module)"), tabEntry)
+        ++tabEntry;
+        if (ModuleSelectionHelper.ExistingModulesExist()) {
+            @Html.RenderTabEntry(DivId, __ResStr("tabOld", "Add Existing Module"), __ResStr("tabOldTT", "Add an existing module to this page (this does not copy the module)"), tabEntry)
+            ++tabEntry;
+        }
+        @Html.RenderTabEntry(DivId, __ResStr("tabImport", "Import Module"), __ResStr("tabImportTT", "Import module data into this page (creates a new module)"), tabEntry)
+        ++tabEntry;
+    }
+    @Html.RenderTabStripEnd(DivId)
+
+    @{ int panel = 0; }
+    @Html.RenderTabPaneStart(DivId, panel, "t_addNewPage")
+    @using (Form("AddNewPage_Partial", Model: Model.AddNewPageModel)) {
+        @PartialForm()
+        <div>
+            <input type="submit" value="@__ResStr("addNewPage", "Add")" />
+        </div>
+    }
+    @Html.RenderTabPaneEnd(DivId, panel)
+    @{ ++panel; }
+    @if (!Manager.CurrentPage.Temporary) {
+        @Html.RenderTabPaneStart(DivId, panel, "t_addNewMod")
+        using (Form("AddNewModule_Partial", Model: Model.AddNewModel)) {
+            @PartialForm()
+            <div>
+                <input type="submit" value="@__ResStr("addNewModule", "Add")" />
+            </div>
+        }
+        @Html.RenderTabPaneEnd(DivId, panel)
+        ++panel;
+
+        if (ModuleSelectionHelper.ExistingModulesExist()) {
+            @Html.RenderTabPaneStart(DivId, panel, "t_addExistingMod")
+            using (Form("AddExistingModule_Partial", Model: Model.AddExistingModel)) {
+                @PartialForm()
+                <div>
+                    <input type="submit" value="@__ResStr("addOldModule", "Add")" />
+                </div>
+            }
+            @Html.RenderTabPaneEnd(DivId, panel)
+            ++panel;
+        }
+
+        @Html.RenderTabPaneStart(DivId, panel, "t_importMod")
+        using (Form("ImportModule_Partial", Model: Model.ImportModel)) {
+            @PartialForm()
+        }
+        @Html.RenderTabPaneEnd(DivId, panel)
+        ++panel;
+    }
+</div>
+@Html.RenderTabInit(DivId)

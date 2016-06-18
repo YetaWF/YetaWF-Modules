@@ -1,0 +1,9 @@
+@*Copyright © 2016 Softel vdm, Inc. - http://yetawf.com/Documentation/YetaWF/Identity#License*@
+@inherits YetaWF.Core.Views.RazorView<YetaWF.Modules.Identity.Modules.RolesEditModule, YetaWF.Modules.Identity.Controllers.RolesEditModuleController.EditModel>
+@using (Form("RolesEdit_Partial")) {
+    @PartialForm()
+    @FormButtons(new FormButton[] {
+        new FormButton() { ButtonType= ButtonTypeEnum.Submit, },
+        new FormButton() { ButtonType= ButtonTypeEnum.Cancel, },
+    });
+}

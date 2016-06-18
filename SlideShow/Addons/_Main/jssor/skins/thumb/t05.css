@@ -1,0 +1,49 @@
+﻿/* jssor slider thumbnail navigator skin 05 css */
+/*
+.jssort05 .p           (normal)
+.jssort05 .p:hover     (normal mouseover)
+.jssort05 .pav           (active)
+.jssort05 .pav:hover     (active mouseover)
+.jssort05 .pdn           (mousedown)
+*/
+.jssort05 .f
+{
+    clip: rect(8px 63px 63px 8px);
+}
+.jssort05 .i
+{
+    position: absolute;
+    background: #000;
+    filter: alpha(opacity=30);
+    opacity: .3;
+    width: 72px;
+    height: 72px;
+    top: 0;
+    left: 0;
+                    
+    transition: background-color .6s;
+    -moz-transition: background-color .6s;
+    -webkit-transition: background-color .6s;
+    -o-transition: background-color .6s;
+}
+.jssort05 .pav .i
+{
+    background: #fff;
+    filter: alpha(opacity=80);
+    opacity: .8;
+}
+.jssort05 .pdn .i { background: none; }
+                
+.jssort05 .p:hover .i, .jssort05 .pav:hover .i
+{
+    background: #fff;
+    filter: alpha(opacity=30);
+    opacity: .3;
+}
+.jssort05 .p:hover .i
+{
+    transition: none;
+    -moz-transition: none;
+    -webkit-transition: none;
+    -o-transition: none;
+}

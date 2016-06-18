@@ -1,0 +1,5 @@
+@*Copyright © 2016 Softel vdm, Inc. - http://yetawf.com/Documentation/YetaWF/Sites#License*@
+@inherits YetaWF.Core.Views.RazorView<YetaWF.Modules.Sites.Modules.SiteSelectorModule, YetaWF.Modules.Sites.Controllers.SiteSelectorModuleController.EditModel>
+@using (Form("SiteSelector_Partial", HtmlAttributes: new { Id = DivId })) {
+    @PartialForm()
+}

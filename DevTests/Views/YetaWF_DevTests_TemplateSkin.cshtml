@@ -1,0 +1,8 @@
+@inherits YetaWF.Core.Views.RazorView<YetaWF.Modules.DevTests.Modules.TemplateSkinModule, YetaWF.Modules.DevTests.Controllers.TemplateSkinModuleController.Model>
+@using (Form("TemplateSkin_Partial")) {
+    @PartialForm()
+    @FormButtons(new FormButton[] {
+        new FormButton() { ButtonType= ButtonTypeEnum.Submit, },
+        new FormButton() { ButtonType= ButtonTypeEnum.Cancel, },
+    });
+}

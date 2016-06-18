@@ -1,0 +1,6 @@
+@*Copyright © 2016 Softel vdm, Inc. - http://yetawf.com/Documentation/YetaWF/Search#License*@
+@inherits YetaWF.Core.Views.RazorView<YetaWF.Modules.Search.Modules.SearchBrowseModule, YetaWF.Modules.Search.Controllers.SearchBrowseModuleController.BrowseModel>
+@using (Form("SearchBrowse_Partial")) {
+    @PartialForm()
+    @Html.DisplayFor(m => Model.GridDef)
+}

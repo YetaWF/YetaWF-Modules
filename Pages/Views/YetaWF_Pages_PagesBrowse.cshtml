@@ -1,0 +1,7 @@
+﻿@*Copyright © 2016 Softel vdm, Inc. - http://yetawf.com/Documentation/YetaWF/Pages#License*@
+@inherits YetaWF.Core.Views.RazorView<YetaWF.Modules.Pages.Modules.PagesBrowseModule, YetaWF.Modules.Pages.Controllers.PagesBrowseModuleController.PagesBrowseModel>
+@using YetaWF.Core.Addons
+@using (Form("PagesBrowse_Partial")) {
+    @PartialForm()
+    @Html.DisplayFor(m => Model.GridDef)
+}

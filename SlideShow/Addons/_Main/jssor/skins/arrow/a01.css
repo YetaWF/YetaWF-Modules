@@ -1,0 +1,23 @@
+﻿/* jssor slider arrow navigator skin 01 css */
+/*
+.jssora01l              (normal)
+.jssora01r              (normal)
+.jssora01l:hover        (normal mouseover)
+.jssora01r:hover        (normal mouseover)
+.jssora01ldn            (mousedown)
+.jssora01rdn            (mousedown)
+*/
+.jssora01l, .jssora01r, .jssora01ldn, .jssora01rdn
+{
+    position: absolute;
+    cursor: pointer;
+    display: block;
+    background: url(../../img/a01.png) no-repeat;
+    overflow:hidden;
+}
+.jssora01l { background-position: -8px -38px; }
+.jssora01r { background-position: -68px -38px; }
+.jssora01l:hover { background-position: -128px -38px; }
+.jssora01r:hover { background-position: -188px -38px; }
+.jssora01ldn { background-position: -8px -38px; }
+.jssora01rdn { background-position: -68px -38px; }

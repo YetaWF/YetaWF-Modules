@@ -1,0 +1,6 @@
+﻿Commands            icons 2
+Created             sort filter 20 defaultSort desc
+Email               sort filter 25
+Subject             sort filter 20
+IPAddress           sort filter 15
+Message             sort filter 40

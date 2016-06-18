@@ -1,0 +1,6 @@
+﻿@*Copyright © 2016 Softel vdm, Inc. - http://yetawf.com/Documentation/YetaWF/DevTests#License*@
+@inherits YetaWF.Core.Views.RazorView<YetaWF.Modules.DevTests.Modules.TemplateTimeZoneModule, YetaWF.Modules.DevTests.Controllers.TemplateTimeZoneModuleController.Model>
+@Html.ValidationSummary()
+<div>
+    @Html.EditorFor(m => Model, "PropertyList")
+</div>

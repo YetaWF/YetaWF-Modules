@@ -1,0 +1,7 @@
+﻿@*Copyright © 2016 Softel vdm, Inc. - http://yetawf.com/Documentation/YetaWF/Blog#License*@
+@inherits YetaWF.Core.Views.RazorView<YetaWF.Modules.Blog.Modules.CategoryAddModule, YetaWF.Modules.Blog.Controllers.CategoryAddModuleController.AddModel>
+@Html.ValidationSummary()
+<div>
+    @Html.EditorFor(m => Model, "PropertyList")
+</div>
+

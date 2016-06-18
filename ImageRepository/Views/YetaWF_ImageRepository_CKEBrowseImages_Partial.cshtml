@@ -1,0 +1,6 @@
+﻿@*Copyright © 2016 Softel vdm, Inc. - http://yetawf.com/Documentation/YetaWF/ImageRepository#License*@
+@inherits YetaWF.Core.Views.RazorView<YetaWF.Modules.ImageRepository.Modules.CKEBrowseImagesModule, YetaWF.Modules.ImageRepository.Controllers.CKEBrowseImagesModuleController.Model>
+@Html.ValidationSummary()
+<div>
+    @Html.EditorFor(m => Model, "PropertyList")
+</div>

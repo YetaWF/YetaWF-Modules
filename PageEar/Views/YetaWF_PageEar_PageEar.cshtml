@@ -1,0 +1,24 @@
+@*Copyright © 2016 Softel vdm, Inc. - http://yetawf.com/Documentation/YetaWF/PageEar#License*@
+@inherits YetaWF.Core.Views.RazorView<YetaWF.Modules.PageEar.Modules.PageEarModule, YetaWF.Modules.PageEar.Controllers.PageEarModuleController.Model>
+@if (Manager.EditMode) {
+    <div class="@YetaWF.Core.Globals.CssDivWarning">
+        @__ResStr("changeMod", "Change \"Module Settings\" to configure the page ear displayed")
+    </div>
+}
+@if (Module.AdImage_Data.Length > 0 && Module.CoverImage_Data.Length > 0 && !string.IsNullOrWhiteSpace(Module.ClickUrl)) {
+    <script>
+        $(document).ready(function () {
+            $('body').peelback({
+                adImage: '@Html.Raw(Manager.GetCDNUrl(ImageHelper.FormatUrl(YetaWF.Core.Modules.ModuleImageSupport.ImageType, null, Module.AdImage, ForceHttpHandler: true)))',
+                peelImage: '@Html.Raw(Manager.GetCDNUrl(ImageHelper.FormatUrl(YetaWF.Core.Modules.ModuleImageSupport.ImageType, null, Module.CoverImage, ForceHttpHandler: true)))',
+                clickURL: '@Module.ClickUrl',
+                smallSize: @Module.SmallSize,
+                bigSize: @Module.LargeSize,
+                autoAnimate: @(Module.Animate ? "true" : "false"),
+                //gaTrack: true, //RFFU
+                //gaLabel: '#1 Stegosaurus',
+                debug: false
+            });
+        });
+    </script>
+}

@@ -1,0 +1,9 @@
+﻿@*Copyright © 2016 Softel vdm, Inc. - http://yetawf.com/Documentation/YetaWF/Identity#License*@
+@inherits YetaWF.Core.Views.RazorView<YetaWF.Modules.Identity.Modules.RegisterModule, YetaWF.Modules.Identity.Controllers.RegisterModuleController.RegisterModel>
+@using (Form("Register_Partial")) {
+    @PartialForm()
+    @FormButtons(new FormButton[] {
+        new FormButton() { ButtonType= ButtonTypeEnum.Submit, Text=this.__ResStr("btnSave", "Register") },
+        new FormButton() { ButtonType= ButtonTypeEnum.Cancel, },
+    });
+}

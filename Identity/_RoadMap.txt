@@ -1,0 +1,3 @@
+﻿
+- Support turning off local accounts
+- General OAuth support

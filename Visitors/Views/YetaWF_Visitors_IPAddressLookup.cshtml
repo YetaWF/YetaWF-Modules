@@ -1,0 +1,8 @@
+@*Copyright © 2016 Softel vdm, Inc. - http://yetawf.com/Documentation/YetaWF/Visitors#License*@
+@inherits YetaWF.Core.Views.RazorView<YetaWF.Modules.Visitors.Modules.IPAddressLookupModule, YetaWF.Modules.Visitors.Controllers.IPAddressLookupModuleController.Model>
+@using (Form("IPAddressLookup")) {
+    @Html.DisplayFor(m => Model, "PropertyList")
+    @FormButtons(new FormButton[] {
+        new FormButton() { ButtonType= ButtonTypeEnum.Cancel, Text=this.__ResStr("btnCancel", "Return") },
+    });
+}

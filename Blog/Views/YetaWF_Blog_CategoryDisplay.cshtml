@@ -1,0 +1,8 @@
+@*Copyright © 2016 Softel vdm, Inc. - http://yetawf.com/Documentation/YetaWF/Blog#License*@
+@inherits YetaWF.Core.Views.RazorView<YetaWF.Modules.Blog.Modules.CategoryDisplayModule, YetaWF.Modules.Blog.Controllers.CategoryDisplayModuleController.DisplayModel>
+@using (Form("CategoryDisplay")) {
+    @Html.DisplayFor(m => Model, "PropertyList")
+    @FormButtons(new FormButton[] {
+        new FormButton() { ButtonType= ButtonTypeEnum.Cancel, Text=this.__ResStr("btnCancel", "Return") },
+    });
+}

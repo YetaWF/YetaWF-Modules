@@ -1,0 +1,10 @@
+﻿@*Copyright © 2016 Softel vdm, Inc. - http://yetawf.com/Documentation/YetaWF/PageEdit#License*@
+@inherits YetaWF.Core.Views.RazorView<YetaWF.Modules.PageEdit.Modules.PageEditModule, YetaWF.Modules.PageEdit.Controllers.PageEditModuleController.EditModel>
+@using (Form("PageEdit_Partial")) {
+    @Html.HiddenFor(m => Model.PageGuid)
+    @PartialForm()
+    @FormButtons(new FormButton[] { 
+        new FormButton() { ButtonType= ButtonTypeEnum.Submit, },
+        new FormButton() { ButtonType= ButtonTypeEnum.Cancel, },
+    });
+}

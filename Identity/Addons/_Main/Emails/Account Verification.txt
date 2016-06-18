@@ -1,0 +1,23 @@
+*************************************************************************************
+Account Verification
+*************************************************************************************
+ 
+Hi! Thank you for registering at [Site,SiteDomain].
+
+To complete the verification process, please copy/paste the following link into
+your web browser's address bar:
+
+[Var,LoginUrl]?Name=[Var,+User.UserName]&V=[Var,+User.VerificationCode]
+
+You can instead also log into our site and enter your user name and password along
+with the following verification code at:
+
+[Var,LoginUrl]
+
+Verification Code: [Var,User.VerificationCode]
+ 
+*************************************************************************************
+[Site,SiteName] - [Site,SiteDomain]
+
+Registration requested from IP Address [Var,User.RegistrationIP]
+*************************************************************************************

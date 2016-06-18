@@ -1,0 +1,52 @@
+﻿/* Copyright © 2016 Softel vdm, Inc. - http://yetawf.com/Documentation/YetaWF/PageEdit#License */
+
+/* PAGE CONTROL MODULE */
+
+/* PANE TAG */
+.yPaneTag {
+    position: absolute;
+    top: -10px;
+    left: -10px;
+    color:black;
+    background-color: silver;
+    font-size:9px;
+    z-index:1;
+}
+
+#yPageControlDiv {
+    position:absolute;
+    z-index:1500;
+    right: 1ch;
+    top: 260px;
+}
+#yPageControlMod {
+    display:none;
+    position:absolute;
+    right:20px;
+    background-color: #e4e3e3;
+    padding:5px 5px 5px 5px;
+    border-radius:6px;
+    width:760px;
+    z-index:1500;
+}
+#yPageControlMod h1 {
+    font-size:19px;
+    margin-top:.5em;
+    margin-bottom:.2em;
+    padding:0px 6px 6px 6px;
+    line-height:12px;
+}
+#yEditControlDiv {
+    position:absolute;
+    z-index:1500;
+    right:1ch;
+    top: 220px;
+}
+.yModule-current {
+    background-color: silver;
+}
+.yModuleMenuEditIcon {
+    position: absolute;
+    z-index:1500;
+}
+

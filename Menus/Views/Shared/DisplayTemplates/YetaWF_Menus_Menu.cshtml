@@ -1,0 +1,32 @@
+﻿@*Copyright © 2016 Softel vdm, Inc. - http://yetawf.com/Documentation/YetaWF/Menus#License*@
+@inherits YetaWF.Modules.Menus.Views.Shared.Menu<YetaWF.Modules.Menus.Views.Shared.MenuHelper.MenuData>
+@using YetaWF.Modules.Menus.Views.Shared
+@{
+    System.Web.Mvc.MvcHtmlString menu = Model.MenuList.Render(DivId, Model.CssClass);
+    if (menu != System.Web.Mvc.MvcHtmlString.Empty) {
+        Manager.ScriptManager.AddKendoUICoreJsFile("kendo.popup.min.js");
+        Manager.ScriptManager.AddKendoUICoreJsFile("kendo.menu.min.js");
+        <div class='yt_yetawf_menus_menu t_display' role="navigation">
+            @menu
+        </div>
+        <script>
+            $("#@DivId").kendoMenu({
+                direction: '@Model.GetDirection()',
+                orientation: '@Model.GetOrientation()',
+                popupCollision: 'fit flip',
+                @*@if (Module.UseAnimation) {
+                    @:  animation: {
+                    @:      open: { effects: '@Module.GetOpenEffects()', duration: @Module.OpenDuration },
+                    @:      close: { effects: '@Module.GetCloseEffects()', duration: @Module.CloseDuration }
+                    @:  },
+                }*@
+                hoverDelay: @Model.HoverDelay.ToString()
+            });
+            @if (Model.ShowPath) {
+                using (DocumentReady()) {
+                    @: YetaWF_Menu.init('@DivId')
+                }
+            }
+        </script>
+    }
+}

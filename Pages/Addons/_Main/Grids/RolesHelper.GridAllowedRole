@@ -1,0 +1,5 @@
+﻿RoleName            20
+View                [Globals.ChBoolean] center
+Edit                [Globals.ChBoolean] center
+Remove              [Globals.ChBoolean] center
+

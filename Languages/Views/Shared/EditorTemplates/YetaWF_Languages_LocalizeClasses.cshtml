@@ -1,0 +1,62 @@
+﻿@*Copyright © 2016 Softel vdm, Inc. - http://yetawf.com/Documentation/YetaWF/Languages#License*@
+@inherits  YetaWF.Modules.Languages.Views.Shared.LocalizeStringsHelper<YetaWF.Core.Serializers.SerializableList<YetaWF.Core.Localize.LocalizationData.ClassData>>
+@using YetaWF.Core.Localize
+@using YetaWF.Modules.Languages.Views.Shared
+<div class='yt_yetawf_languages_localizeclasses t_edit'>
+    @{
+        string linkClass = UniqueId();
+        int countClasses = Model.Count;
+    }
+    @if (countClasses > 1) {
+        <div class='t_links'>
+            @for (int i = 0 ; i < countClasses ; ++i) {
+                <div class='@(string.Format("t_link_{0}", i))'>
+                    <a href="#@(string.Format("{0}_{1}", linkClass, i))">@(Model[i].Name)</a>
+                </div>
+            }
+        </div>
+    }
+
+    @{ int classIndex = 0; }
+    @foreach (LocalizationData.ClassData classData in Model) {
+        <div class='t_class'>
+            @Html.ExtHiddenFor(m => classData.Name, string.Format("[{0}].Name", classIndex))
+            @Html.ExtHiddenFor(m => classData.BaseTypeName, string.Format("[{0}].BaseTypeName", classIndex))
+            @if (countClasses > 1) {
+                <div class='t_classname'>
+                    <a class='t_target' id="@(string.Format("{0}_{1}", linkClass, classIndex))">@(classData.Name)</a>
+                </div>
+            }
+            <div class='t_classinfo'>
+                <div class='t_labels'>@Html.ExtLabelFor(m => classData.Header, string.Format("[{0}].Header", classIndex), Caption: __ResStr("header", "Class Header"), HtmlAttributes: new { Title = __ResStr("headerTT", "Text found in [HeaderAttribute(...)]") })</div>
+                <div class='t_header'>@Html.EditorFor(m => classData.Header, "Text80", string.Format("[{0}].Header", classIndex))</div>
+                <div class="y_cleardiv"></div>
+                <div class='t_labels'>@Html.ExtLabelFor(m => classData.Footer, string.Format("[{0}].Footer", classIndex), Caption: __ResStr("footer", "Class Footer"), HtmlAttributes: new { Title = __ResStr("footerTT", "Text found in [FooterAttribute(...)]") })</div>
+                <div class='t_footer'>@Html.EditorFor(m => classData.Footer, "Text80", string.Format("[{0}].Footer", classIndex))</div>
+                <div class="y_cleardiv"></div>
+                <div class='t_labels'>@Html.ExtLabelFor(m => classData.Legend, string.Format("[{0}].Legend", classIndex), Caption: __ResStr("legend", "Class Legend"), HtmlAttributes: new { Title = __ResStr("legendTT", "Text found in [LegendAttribute(...)]") })</div>
+                <div class='t_legend'>@Html.EditorFor(m => classData.Legend, "Text80", string.Format("[{0}].Legend", classIndex))</div>
+                <div class="y_cleardiv"></div>
+            </div>
+            <div class='t_propentries'>
+                @{ int entryIndex = 0; }
+                @foreach (LocalizationData.PropertyData prop in classData.Properties) {
+                    <div class='t_propentry'>
+                        <div class='t_name'>@Html.ExtHiddenFor(m => prop.Name, string.Format("[{0}].Properties[{1}].Name", classIndex, entryIndex))</div>
+                        <div class='t_name'>@Html.ExtLabelFor(m => prop.Name, string.Format("[{0}].Properties[{1}].Name", classIndex, entryIndex), Caption: prop.Name, HtmlAttributes: new { Title = __ResStr("propTT", "Text found in attributes for property {0}", prop.Name) })</div>
+                        <div class='t_propvars'>
+                            <div class='t_caption'>@Html.EditorFor(m => prop.Caption, "Text40", string.Format("[{0}].Properties[{1}].Caption", classIndex, entryIndex)) (Caption)</div>
+                            <div class='t_desc'>@Html.EditorFor(m => prop.Description, "Text80", string.Format("[{0}].Properties[{1}].Description", classIndex, entryIndex)) (Description)</div>
+                            <div class='t_helplink'>@Html.EditorFor(m => prop.HelpLink, "Text80", string.Format("[{0}].Properties[{1}].HelpLink", classIndex, entryIndex)) (HelpLink)</div>
+                            <div class='t_textabove'>@Html.EditorFor(m => prop.TextAbove, "Text80", string.Format("[{0}].Properties[{1}].TextAbove", classIndex, entryIndex)) (TextAbove)</div>
+                            <div class='t_textbelow'>@Html.EditorFor(m => prop.TextBelow, "Text80", string.Format("[{0}].Properties[{1}].TextBelow", classIndex, entryIndex)) (TextBelow)</div>
+                        </div>
+                    </div>
+                    <div class="y_cleardiv"></div>
+                    ++entryIndex;
+                }
+            </div>
+        </div>
+        ++classIndex;
+    }
+</div>

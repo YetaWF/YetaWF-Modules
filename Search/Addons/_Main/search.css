@@ -1,0 +1,30 @@
+﻿/* Copyright © 2016 Softel vdm, Inc. - http://yetawf.com/Documentation/YetaWF/Search#License */
+
+/* highlighted search terms */
+.highlight { background-color: yellow }
+
+/* The search control module */
+.yModule.YetaWF_Search_SearchControl  {
+    position: fixed;
+    right: 0px;
+    top: 12em;
+}
+.YetaWF_Search_SearchResults  .t_list {
+    margin-top:1em;
+}
+.YetaWF_Search_SearchResults  .t_entry {
+    margin-bottom:.5em;
+}
+.YetaWF_Search_SearchResults  .t_created {
+    display:inline;
+}
+.YetaWF_Search_SearchResults  .t_updated {
+    display:inline;
+}
+
+/* Hide on smaller devices */
+@media screen and (max-width: 1400px ) {
+    .YetaWF_Search_SearchControl {
+        display: none;
+    }
+}

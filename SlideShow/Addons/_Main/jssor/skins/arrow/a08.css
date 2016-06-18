@@ -1,0 +1,24 @@
+﻿/* jssor slider arrow navigator skin 08 css */
+/*
+.jssorb08l              (normal)
+.jssorb08r              (normal)
+.jssorb08l:hover        (normal mouseover)
+.jssorb08r:hover        (normal mouseover)
+.jssorb08ldn            (mousedown)
+.jssorb08rdn            (mousedown)
+*/
+.jssorb08l, .jssorb08r, .jssorb08ldn, .jssorb08rdn
+{
+    position: absolute;
+    cursor: pointer;
+    display: block;
+    background: url(../../img/a08.png) no-repeat;
+    overflow:hidden;
+    opacity: .4; filter:alpha(opacity=40);
+}
+.jssorb08l { background-position: -5px -35px; }
+.jssorb08r { background-position: -65px -35px; }
+.jssorb08l:hover { background-position: -5px -35px; opacity: .8; filter:alpha(opacity=80); }
+.jssorb08r:hover { background-position: -65px -35px; opacity: .8; filter:alpha(opacity=80); }
+.jssorb08ldn { background-position: -5px -35px; opacity: .3; filter:alpha(opacity=30); }
+.jssorb08rdn { background-position: -65px -35px; opacity: .3; filter:alpha(opacity=30); }

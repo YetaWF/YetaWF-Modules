@@ -1,0 +1,9 @@
+﻿/* Copyright © 2016 Softel vdm, Inc. - http://yetawf.com/Documentation/YetaWF/Languages#License */
+
+.yt_yetawf_languages_localizestrings div.t_name,
+.yt_yetawf_languages_localizestrings div.t_text {
+    display: inline-block;
+}
+.yt_yetawf_languages_localizestrings div.t_name  {
+    width: 30ch;
+}

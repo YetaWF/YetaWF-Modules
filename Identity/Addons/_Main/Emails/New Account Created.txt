@@ -1,0 +1,20 @@
+*************************************************************************************
+New Account for [Var,User.UserName] - [Site,SiteDomain]
+*************************************************************************************
+ 
+A new user account has been created for user [Var,User.UserName] at [Site,SiteDomain].
+
+User Name: [Var,User.UserName]
+Email: [Var,User.Email]
+Password: [Var,User.PasswordPlainText]
+VerificationCode: [Var,User.VerificationCode]
+IP Address: [Var,User.RegistrationIP]
+
+This account has been automatically approved.
+
+Click this link to reject (you must be logged in using your admin account):
+[Var,RejectUrl]
+ 
+*************************************************************************************
+[Site,SiteName] - [Site,SiteDomain]
+*************************************************************************************

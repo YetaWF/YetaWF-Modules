@@ -1,0 +1,5 @@
+@*Copyright © 2016 Softel vdm, Inc. - http://yetawf.com/Documentation/YetaWF/AddThis#License*@
+@inherits YetaWF.Core.Views.RazorView<YetaWF.Modules.AddThis.Modules.SharingSidebarModule, YetaWF.Modules.AddThis.Controllers.SharingSidebarModuleController.DisplayModel>
+@if (!Manager.EditMode && !string.IsNullOrWhiteSpace(Model.Code)) {
+    @Html.Raw(Model.Code)    
+}

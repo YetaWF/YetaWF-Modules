@@ -1,0 +1,6 @@
+@*Copyright © 2016 Softel vdm, Inc. - http://yetawf.com/Documentation/YetaWF/Identity#License*@
+@inherits YetaWF.Core.Views.RazorView<YetaWF.Modules.Identity.Modules.UsersBrowseModule, YetaWF.Modules.Identity.Controllers.UsersBrowseModuleController.BrowseModel>
+@using (Form("UsersBrowse_Partial")) {
+    @PartialForm()
+    @Html.DisplayFor(m => Model.GridDef)
+}

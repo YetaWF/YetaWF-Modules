@@ -1,0 +1,16 @@
+﻿@*Copyright © 2016 Softel vdm, Inc. - http://yetawf.com/Documentation/YetaWF/ModuleEdit#License*@
+@inherits YetaWF.Modules.ModuleEdit.Views.Shared.Users<YetaWF.Core.Serializers.SerializableList<YetaWF.Core.Modules.ModuleDefinition.AllowedUser>>
+@using YetaWF.Modules.ModuleEdit.Views.Shared
+@using YetaWF.Core.Support
+<div class='yt_yetawf_moduleedit_allowedusers yt_grid_addordelete t_edit'
+        data-dupmsg="@__ResStr("dupmsg", "User {0} has already been added")" 
+        data-notfoundmsg="@__ResStr("notfoundmsg", "Can't find user {0}")" 
+        data-addedmsg="@__ResStr("addedmsg", "User {0} has been added")" 
+        data-remmsg="@__ResStr("remmsg", "{0} has been removed")">
+    @Html.RenderAllowedUsers("", Model)
+    <div class="t_newvalue">
+        @Html.RenderExtLabel(__ResStr("newUser", "New User"), ToolTip: __ResStr("newUserTT", "Enter a new user name and click Add.")) 
+        <input name="txtNewValue" type="text" class="yt_text40 t_edit"/>
+        <input name="btnAdd" type="button" value="Add" data-ajaxurl="@YetaWFManager.UrlFor(typeof(YetaWF.Modules.ModuleEdit.Controllers.SharedSupportController), "AddUserToModule")" />
+    </div>
+</div>

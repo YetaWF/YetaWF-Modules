@@ -1,0 +1,7 @@
+﻿@*Copyright © 2016 Softel vdm, Inc. - http://yetawf.com/Documentation/YetaWF/SiteProperties#License*@
+@inherits YetaWF.Core.Views.RazorView<YetaWF.Modules.SiteProperties.Modules.SitePropertiesModule, YetaWF.Modules.SiteProperties.Controllers.SitePropertiesModuleController.SitePropertiesModel>
+@Html.ValidationSummary()
+<div>
+    @Html.HiddenFor(m => Model.SiteHost)
+    @Html.EditorFor(m => Model.Site)
+</div>

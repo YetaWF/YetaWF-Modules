@@ -1,0 +1,9 @@
+@*Copyright © 2016 Softel vdm, Inc. - http://yetawf.com/Documentation/YetaWF/Blog#License*@
+@inherits YetaWF.Core.Views.RazorView<YetaWF.Modules.Blog.Modules.BlogConfigModule, YetaWF.Modules.Blog.Controllers.BlogConfigModuleController.Model>
+@using (Form("BlogConfig_Partial")) {
+    @PartialForm()
+    @FormButtons(new FormButton[] {
+        new FormButton() { ButtonType= ButtonTypeEnum.Submit, },
+        new FormButton() { ButtonType= ButtonTypeEnum.Cancel, },
+    });
+}

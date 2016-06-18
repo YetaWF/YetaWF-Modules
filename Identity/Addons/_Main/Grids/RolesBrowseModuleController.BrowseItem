@@ -1,0 +1,4 @@
+﻿Commands            icons 3
+Name                sort filter 20 defaultSort asc
+Description         filter 100
+RoleId              right filter sort 10

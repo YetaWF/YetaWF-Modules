@@ -1,0 +1,6 @@
+﻿/* Copyright © 2016 Softel vdm, Inc. - http://yetawf.com/Documentation/YetaWF/SlideShow#License */
+
+/* little extra space between tab controls */
+.yt_slideshow_slideshow.t_edit .t_slides {
+    margin-top:1em;
+}

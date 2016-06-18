@@ -1,0 +1,8 @@
+﻿@*Copyright © 2016 Softel vdm, Inc. - http://yetawf.com/Documentation/YetaWF/Scheduler#License*@
+@inherits YetaWF.Core.Views.RazorView<YetaWF.Modules.Scheduler.Modules.SchedulerDisplayModule, YetaWF.Modules.Scheduler.Controllers.SchedulerDisplayModuleController.SchedulerDisplayModel>
+@using (Form("SchedulerDisplay")) {
+    @Html.DisplayFor(m => Model, "PropertyList")
+    @FormButtons(new FormButton[] { 
+        new FormButton() { ButtonType= ButtonTypeEnum.Cancel, Text=this.__ResStr("btnCancel", "Return") },
+    });
+}

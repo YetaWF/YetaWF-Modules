@@ -1,0 +1,9 @@
+@*Copyright © 2016 Softel vdm, Inc. - http://yetawf.com/Documentation/YetaWF/Feedback#License*@
+@inherits YetaWF.Core.Views.RazorView<YetaWF.Modules.Feedback.Modules.FeedbackConfigModule, YetaWF.Modules.Feedback.Controllers.FeedbackConfigModuleController.Model>
+@using (Form("FeedbackConfig_Partial")) {
+    @PartialForm()
+    @FormButtons(new FormButton[] {
+        new FormButton() { ButtonType= ButtonTypeEnum.Submit, },
+        new FormButton() { ButtonType= ButtonTypeEnum.Cancel, },
+    });
+}

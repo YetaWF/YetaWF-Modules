@@ -1,0 +1,2 @@
+﻿search.js
+highlight.js

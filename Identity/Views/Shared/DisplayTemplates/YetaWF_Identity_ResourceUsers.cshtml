@@ -1,0 +1,6 @@
+﻿@*Copyright © 2016 Softel vdm, Inc. - http://yetawf.com/Documentation/YetaWF/Identity#License*@
+@inherits YetaWF.Modules.Identity.Views.Shared.Users<YetaWF.Core.Serializers.SerializableList<YetaWF.Core.Identity.User>>
+@using YetaWF.Modules.Identity.Views.Shared
+<div class='yt_yetawf_identity_resourceusers t_display'>
+    @Html.RenderResourceAllowedUsersDisplay("", Model)
+</div>

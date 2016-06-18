@@ -1,0 +1,6 @@
+@*Copyright © 2016 Softel vdm, Inc. - http://yetawf.com/Documentation/YetaWF/Languages#License*@
+@inherits YetaWF.Core.Views.RazorView<YetaWF.Modules.Languages.Modules.LanguagesBrowseModule, YetaWF.Modules.Languages.Controllers.LanguagesBrowseModuleController.BrowseModel>
+@using (Form("LanguagesBrowse_Partial")) {
+    @PartialForm()
+    @Html.DisplayFor(m => Model.GridDef)
+}

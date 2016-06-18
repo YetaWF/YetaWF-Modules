@@ -1,0 +1,5 @@
+﻿Commands            icons 4
+SiteDomain          sort filter 40 defaultSort asc
+IsDefaultSite       [Globals.ChBoolean] center
+SiteName            sort filter 80
+Identity            sort filter [Globals.ChID] right

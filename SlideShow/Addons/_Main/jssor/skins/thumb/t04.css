@@ -1,0 +1,45 @@
+﻿/* jssor slider thumbnail navigator skin 04 css */
+/*
+.jssort04 .p            (normal)
+.jssort04 .p:hover      (normal mouseover)
+.jssort04 .pav          (active)
+.jssort04 .pav:hover    (active mouseover)
+.jssort04 .pdn          (mousedown)
+*/
+.jssort04 .w, .jssort04 .pav:hover .w
+{
+    position: absolute;
+    width: 60px;
+    height: 30px;
+    border: #0099FF 1px solid;
+}
+* html .jssort04 .w
+{
+    width /**/: 62px;
+    height /**/: 32px;
+}
+.jssort04 .pdn .w, .jssort04 .pav .w { border-style: solid; }
+.jssort04 .c
+{
+    width: 62px;
+    height: 32px;
+    filter:  alpha(opacity=45);
+    opacity: .45;
+                	
+    transition: opacity .6s;
+    -moz-transition: opacity .6s;
+    -webkit-transition: opacity .6s;
+    -o-transition: opacity .6s;
+}
+.jssort04 .p:hover .c, .jssort04 .pav .c
+{
+    filter:  alpha(opacity=0);
+    opacity: 0;
+}
+.jssort04 .p:hover .c
+{
+    transition: none;
+    -moz-transition: none;
+    -webkit-transition: none;
+    -o-transition: none;
+}

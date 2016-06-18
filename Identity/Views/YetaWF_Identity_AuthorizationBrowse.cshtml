@@ -1,0 +1,7 @@
+@*Copyright © 2016 Softel vdm, Inc. - http://yetawf.com/Documentation/YetaWF/Identity#License*@
+@inherits YetaWF.Core.Views.RazorView<YetaWF.Modules.Identity.Modules.AuthorizationBrowseModule, YetaWF.Modules.Identity.Controllers.AuthorizationBrowseModuleController.BrowseModel>
+@Html.Raw(__ResStr("explain", "<p>Resources are predefined by modules and packages. If a resource is deleted that is defined by an existing package, it is restored to its default state.</p>"))
+@using (Form("AuthorizationBrowse_Partial")) {
+    @PartialForm()
+    @Html.DisplayFor(m => Model.GridDef)
+}

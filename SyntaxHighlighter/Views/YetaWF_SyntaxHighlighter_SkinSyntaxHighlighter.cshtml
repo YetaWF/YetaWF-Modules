@@ -1,0 +1,20 @@
+@*Copyright © 2016 Softel vdm, Inc. - http://yetawf.com/Documentation/YetaWF/SyntaxHighlighter#License*@
+@inherits YetaWF.Core.Views.RazorView<YetaWF.Modules.SyntaxHighlighter.Modules.SkinSyntaxHighlighterModule, YetaWF.Modules.SyntaxHighlighter.Controllers.SkinSyntaxHighlighterModuleController.Model>
+@using YetaWF.Core.Addons
+@if (Manager.IsPostRequest) {
+    // during ajax calls (partial views) we need to highlight any new sections
+    Manager.ScriptManager.AddLast("AlexGorbatchevCom_SyntaxHighlighter", "AlexGorbatchevCom_SyntaxHighlighter.InitPartial();");
+} else {
+    // initial initialization
+    YetaWF.Core.Skins.SkinAccess skinAccess = new YetaWF.Core.Skins.SkinAccess();
+    string skin = Manager.CurrentPage.SyntaxHighlighterSkin;
+    if (string.IsNullOrWhiteSpace(skin)) {
+        skin = Manager.CurrentSite.SyntaxHighlighterSkin;
+    }
+    string internalTheme = skinAccess.FindSyntaxHighlighterSkin(skin);
+
+    Manager.AddOnManager.AddTemplate("TextArea");
+    Manager.AddOnManager.AddAddOnGlobal("AlexGorbatchev.com", "SyntaxHighlighter", internalTheme);
+    string url = AddOnManager.GetAddOnGlobalUrl("AlexGorbatchev.com", "SyntaxHighlighter", YetaWF.Core.Addons.AddOnManager.UrlType.Js);
+    Manager.ScriptManager.AddLast("AlexGorbatchevCom_SyntaxHighlighter", "AlexGorbatchevCom_SyntaxHighlighter.Init('" + url + "');");
+}

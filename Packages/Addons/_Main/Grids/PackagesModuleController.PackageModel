@@ -1,0 +1,9 @@
+﻿Commands            icons 3
+Name                sort filter 25 defaultSort asc
+Product             sort filter 25
+Version             sort filter 10
+Description         sort filter 30
+CompanyDisplayName  sort filter 30
+Domain              sort filter 20
+PackageType         sort filter 10
+AreaName            sort filter 30

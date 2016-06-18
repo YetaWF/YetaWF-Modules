@@ -1,0 +1,9 @@
+﻿/* Copyright © 2016 Softel vdm, Inc. - http://yetawf.com/Documentation/YetaWF/ModuleEdit#License */
+
+.yt_yetawf_moduleedit_allowedusers .t_newvalue {
+    margin-top: .5em;
+}
+.yt_yetawf_moduleedit_allowedusers .t_newvalue label,
+.yt_yetawf_moduleedit_allowedusers .t_newvalue input {
+    margin-right: 1ch;
+}

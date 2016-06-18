@@ -1,0 +1,14 @@
+﻿/* Copyright © 2016 Softel vdm, Inc. - http://yetawf.com/Documentation/YetaWF/Languages#License */
+
+.yt_yetawf_languages_localizeenums .t_enumtype {
+    padding-top :1em;
+    padding-bottom :1em;
+    font-weight:bold;
+}
+.yt_yetawf_languages_localizeenums div.t_name,
+.yt_yetawf_languages_localizeenums div.t_enumvars {
+    float: left;
+}
+.yt_yetawf_languages_localizeenums div.t_name  {
+    width: 30ch;
+}

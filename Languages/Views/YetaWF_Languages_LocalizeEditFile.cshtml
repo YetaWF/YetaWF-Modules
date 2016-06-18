@@ -1,0 +1,31 @@
+@*Copyright © 2016 Softel vdm, Inc. - http://yetawf.com/Documentation/YetaWF/Languages#License*@
+@inherits YetaWF.Core.Views.RazorView<YetaWF.Modules.Languages.Modules.LocalizeEditFileModule, YetaWF.Modules.Languages.Controllers.LocalizeEditFileModuleController.EditModel>
+@using YetaWF.Core.Localize
+@{ string btnReset = UniqueId(); }
+@if (!LocalizationSupport.UseLocalizationResources) {
+    <div class="@YetaWF.Core.Globals.CssDivWarning">
+        @__ResStr("disabled1", "Localization support is currently disabled - Use Localization Settings to enable.")
+    </div>
+} else if (!Manager.CurrentSite.Localization) {
+    <div class="@YetaWF.Core.Globals.CssDivWarning">
+        @__ResStr("disabled2", "Localization support is currently disabled - Use Site Settings to enable.")
+    </div>
+}
+@using (Form("LocalizeEditFile_Partial")) {
+    @PartialForm()
+    @FormButtons(new FormButton[] {
+        new FormButton() { ButtonType= ButtonTypeEnum.Apply, Text=this.__ResStr("btnApply", "Apply") },
+        new FormButton() { ButtonType= ButtonTypeEnum.Button, Text=this.__ResStr("btnReset", "Restore Defaults"), Id = btnReset },
+        new FormButton() { ButtonType= ButtonTypeEnum.Cancel, },
+    });
+}
+<script>
+@using (DocumentReady()) {
+    @: $('form').on('click', '#{0}'.format('@btnReset'), function (e) {
+    @:     var $form = YetaWF_Forms.getForm(this);
+    @:     Y_AlertYesNo('@__ResStr("confirmResetText","Are you sure you want to restore the default settings?")', null, function () {
+    @:          YetaWF_Forms.submit($form, true, "RestoreDefaults=true");
+    @:     });
+    @: });
+}
+</script>

@@ -1,0 +1,5 @@
+@*Copyright © 2016 Softel vdm, Inc. - http://yetawf.com/Documentation/YetaWF/Blog#License*@
+@inherits YetaWF.Core.Views.RazorView<YetaWF.Modules.Blog.Modules.CategoriesListModule, YetaWF.Modules.Blog.Controllers.CategoriesListModuleController.Model>
+@using (Form("CategoriesList_Partial", HtmlAttributes: new { Id = DivId } )) {
+    @PartialForm()
+}

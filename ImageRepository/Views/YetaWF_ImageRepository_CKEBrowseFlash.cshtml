@@ -1,0 +1,9 @@
+@*Copyright © 2016 Softel vdm, Inc. - http://yetawf.com/Documentation/YetaWF/ImageRepository#License*@
+@inherits YetaWF.Core.Views.RazorView<YetaWF.Modules.ImageRepository.Modules.CKEBrowseFlashModule, YetaWF.Modules.ImageRepository.Controllers.CKEBrowseFlashModuleController.Model>
+@using (Form("CKEBrowseFlash_Partial")) {
+    @PartialForm()
+    @FormButtons(new FormButton[] {
+        new FormButton() { ButtonType= ButtonTypeEnum.Submit, },
+        new FormButton() { ButtonType= ButtonTypeEnum.Cancel, },
+    });
+}

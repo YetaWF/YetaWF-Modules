@@ -1,0 +1,20 @@
+@*Copyright © 2016 Softel vdm, Inc. - http://yetawf.com/Documentation/YetaWF/Logging#License*@
+@inherits YetaWF.Core.Views.RazorView<YetaWF.Modules.Logging.Modules.BrowseLogModule, YetaWF.Modules.Logging.Controllers.BrowseLogModuleController.BrowseModel>
+@using YetaWF.Core
+
+@if (!Model.LogAvailable) {
+    <div class="@Globals.CssDivAlert t_browselog t_file">
+        @__ResStr("fileNA", "The site log is not available. Logging has not been started.")
+        @__ResStr("fileNA2", "This may be caused by a missing log folder (\\Data\\...\\YetaWF_Logging) or due to permissions issues writing to the folder.")
+    </div>
+} else if (Model.BrowsingSupported) {
+    using (Form("BrowseLog_Partial")) {
+        @PartialForm()
+        @Html.DisplayFor(m => Model.GridDef)
+    }
+} else {
+    <div class="@Globals.CssDivWarning t_browselog t_file">
+        @__ResStr("file", "The site log is a flat file. Online browsing is not available.")
+        @__ResStr("flush", "All cached log records have now been written to the log file.")
+    </div>
+}

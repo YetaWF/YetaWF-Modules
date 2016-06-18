@@ -1,0 +1,21 @@
+*************************************************************************************
+Account Approval for [Var,User.UserName] - [Site,SiteDomain]
+*************************************************************************************
+ 
+User [Var,User.UserName] has requested approval for a new user account at [Site,SiteDomain].
+
+User Name: [Var,User.UserName]
+Email: [Var,User.Email]
+Password: [Var,User.PasswordPlainText]
+VerificationCode: [Var,User.VerificationCode]
+IP Address: [Var,User.RegistrationIP]
+
+Click this link to approve (you must be logged in using your admin account):
+[Var,ApprovalUrl]
+
+Click this link to reject (you must be logged in using your admin account):
+[Var,RejectUrl]
+
+*************************************************************************************
+[Site,SiteName] - [Site,SiteDomain]
+*************************************************************************************

@@ -1,0 +1,6 @@
+﻿__editable          hidden onlysubmitwhenchecked
+RoleName            sort 20 defaultSort asc
+View                sort 12 center
+Edit                sort 12 center
+Remove              sort 12 center
+RoleId              hidden

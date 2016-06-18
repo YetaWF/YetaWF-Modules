@@ -1,0 +1,4 @@
+﻿Commands            icons 3
+Id                  sort filter 8
+ShortName           sort filter 40 defaultSort asc
+Description         sort filter 80

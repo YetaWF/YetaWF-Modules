@@ -1,0 +1,25 @@
+﻿/* Copyright © 2016 Softel vdm, Inc. - http://yetawf.com/Documentation/YetaWF/Search#License */
+
+using System.Reflection;
+using System.Runtime.InteropServices;
+using YetaWF.PackageAttributes;
+using YetaWF.Core.Packages;
+
+[assembly: AssemblyTitle("Search")]
+[assembly: AssemblyDescription("keyword search, search management and scheduling")]
+[assembly: AssemblyConfiguration("")]
+[assembly: AssemblyCompany("Softel vdm, Inc.")]
+[assembly: AssemblyProduct("Search")]
+[assembly: AssemblyCopyright("Copyright © 2016 - Softel vdm, Inc.")]
+[assembly: AssemblyTrademark("")]
+[assembly: AssemblyCulture("")]
+[assembly: ComVisible(false)]
+
+[assembly: AssemblyVersion("1.0.0.0")]
+
+[assembly: Package(PackageTypeEnum.Module, "YetaWF")]
+[assembly: PackageInfo("http://YetaWF.com/UpdateServer",
+    "http://yetawf.com/Documentation/YetaWF/Search",
+    "http://YetaWF.com/Documentation/YetaWF/Support",
+    "http://yetawf.com/Documentation/YetaWF/Search#Release%20Notice",
+    "http://yetawf.com/Documentation/YetaWF/Search#License")]

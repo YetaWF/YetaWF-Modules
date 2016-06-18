@@ -1,0 +1,9 @@
+﻿@*Copyright © 2016 Softel vdm, Inc. - http://yetawf.com/Documentation/YetaWF/Scheduler#License*@
+@inherits YetaWF.Core.Views.RazorView<YetaWF.Modules.Scheduler.Modules.SchedulerAddModule, YetaWF.Modules.Scheduler.Controllers.SchedulerAddModuleController.SchedulerAddModel>
+@using (Form("SchedulerAdd_Partial")) {
+    @PartialForm()
+    @FormButtons(new FormButton[] { 
+        new FormButton() { ButtonType= ButtonTypeEnum.Submit, },
+        new FormButton() { ButtonType= ButtonTypeEnum.Cancel, },
+    });
+}

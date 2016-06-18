@@ -1,0 +1,7 @@
+﻿@*Copyright © 2016 Softel vdm, Inc. - http://yetawf.com/Documentation/YetaWF/Backups#License*@
+@inherits YetaWF.Core.Views.RazorView<YetaWF.Modules.Backups.Modules.BackupConfigModule, YetaWF.Modules.Backups.Controllers.BackupConfigModuleController.Model>
+@using System.Web.Mvc.Html
+@Html.ValidationSummary()
+<div>
+    @Html.EditorFor(m => Model, "PropertyList")
+</div>

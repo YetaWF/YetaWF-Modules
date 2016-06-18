@@ -1,0 +1,9 @@
+@*Copyright © 2016 Softel vdm, Inc. - http://yetawf.com/Documentation/YetaWF/DevTests#License*@
+@inherits YetaWF.Core.Views.RazorView<YetaWF.Modules.DevTests.Modules.TemplateTimeZoneModule, YetaWF.Modules.DevTests.Controllers.TemplateTimeZoneModuleController.Model>
+@using (Form("TemplateTimeZone_Partial")) {
+    @PartialForm()
+    @FormButtons(new FormButton[] {
+        new FormButton() { ButtonType= ButtonTypeEnum.Submit, },
+        new FormButton() { ButtonType= ButtonTypeEnum.Cancel, },
+    });
+}

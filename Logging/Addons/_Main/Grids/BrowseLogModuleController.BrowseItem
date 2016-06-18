@@ -1,0 +1,13 @@
+﻿Commands            icons 1
+TimeStamp           sort filter 20 defaultSort desc
+Level               sort filter 10
+Info                sort filter 30
+SiteIdentity        right filter sort 10
+IPAddress           sort filter [Globals.ChIPAddress]
+RequestedUrl        sort filter [Globals.ChUrl]
+ReferrerUrl         sort filter [Globals.ChUrl]
+UserId              sort filter [Globals.ChUserName]
+ModuleName          sort filter 20
+Class               sort filter 20
+Method              sort filter 20
+Namespace           sort filter 20
