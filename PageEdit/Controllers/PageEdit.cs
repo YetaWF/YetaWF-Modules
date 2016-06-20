@@ -59,7 +59,7 @@ namespace YetaWF.Modules.PageEdit.Controllers {
             public PageDefinition.PageSecurityType PageSecurity { get; set; }
 
             [Category("Page"), Caption("Page Language"), Description("Defines the page's language - Specify a specific language if this page is not available in multiple languages")]
-            [UIHint("LanguageId"), StringLength(LanguageData.MaxId), Required, Trim]
+            [UIHint("LanguageId"), StringLength(LanguageData.MaxId), Trim]
             public string LanguageId { get; set; }
 
             [Category("Page"), Caption("FavIcon"), Description("The icon representing this site (a 32x32 pixel PNG image) shown by the web browser used to display the page")]
