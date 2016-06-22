@@ -203,13 +203,17 @@ namespace YetaWF.Modules.Visitors.DataProvider {
             DataProvider.RemoveSiteData();
         }
         public bool ExportChunk(int chunk, SerializableList<SerializableFile> fileList, out object obj) {
+            // we don't export visitor data
             obj = null;
-            if (!Usable) return false;
-            return DataProvider.ExportChunk(chunk, fileList, out obj);
+            return false;
+            //if (!Usable) return false;
+            //return DataProvider.ExportChunk(chunk, fileList, out obj);
         }
         public void ImportChunk(int chunk, SerializableList<SerializableFile> fileList, object obj) {
-            if (!Usable) return;
-            DataProvider.ImportChunk(chunk, fileList, obj);
+            // we don't import visitor data
+            return;
+            //if (!Usable) return;
+            //DataProvider.ImportChunk(chunk, fileList, obj);
         }
     }
 }
