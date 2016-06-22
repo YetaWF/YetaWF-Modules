@@ -345,16 +345,18 @@ namespace YetaWF.Modules.Logging.DataProvider {
             DataProvider.RemoveSiteData();
         }
         public bool ExportChunk(int chunk, SerializableList<SerializableFile> fileList, out object obj) {
-            if (CanImportOrExport)
-                return DataProvider.ExportChunk(chunk, fileList, out obj);
-            else {
-                obj = null;
-                return false;
-            }
+            // we're not exporting any data
+            //if (CanImportOrExport)
+            //    return DataProvider.ExportChunk(chunk, fileList, out obj);
+            //else {
+            obj = null;
+            return false;
+            //}
         }
         public void ImportChunk(int chunk, SerializableList<SerializableFile> fileList, object obj) {
-            if (CanImportOrExport)
-                DataProvider.ImportChunk(chunk, fileList, obj);
+            // we're not importing any data
+            //if (CanImportOrExport)
+            //    DataProvider.ImportChunk(chunk, fileList, obj);
         }
     }
 }
