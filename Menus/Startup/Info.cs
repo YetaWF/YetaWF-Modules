@@ -8,11 +8,6 @@ using YetaWF.Modules.Menus.Controllers;
 
 namespace YetaWF.Modules.Menus.Addons {
 
-    // In order to have this registered during application startup when the site starts, add the file
-    // "support.txt" in folder "~/Addons/YetaWF/_Modules/Menus/1.0.0/" 
-    // with this content:
-    // YetaWF.Menus, YetaWF.Modules.Menus.Addons.Info
-
     public class Info : IAddOnSupport {
 
         public void AddSupport(YetaWFManager manager) {
@@ -25,8 +20,7 @@ namespace YetaWF.Modules.Menus.Addons {
             scripts.AddLocalization(areaName, "NoMenuEntry", this.__ResStr("NoMenuEntry", "No menu entry selected"));
             scripts.AddLocalization(areaName, "NoResetMenu", this.__ResStr("NoResetMenu", "You can't reset the entire menu"));
             scripts.AddLocalization(areaName, "NoRemoveMenu", this.__ResStr("NoRemoveMenu", "You can't remove the entire menu"));
-            
-            
+
         }
     }
 }
