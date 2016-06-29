@@ -28,6 +28,8 @@ namespace YetaWF.Modules.Identity.DataProvider {
         public bool ApproveNewUsers { get; set; }
         public bool NotifyAdminNewUsers { get; set; }
         public bool BccVerification { get; set; }
+        [Data_NewValue("(0)")]
+        public bool BccForgottenPassword { get; set; }
         public bool PersistentLogin { get; set; }
         [StringLength(Globals.MaxUrl)]
         public string RegisterUrl { get; set; }
@@ -109,6 +111,7 @@ namespace YetaWF.Modules.Identity.DataProvider {
                             ApproveNewUsers = false,
                             NotifyAdminNewUsers = false,
                             BccVerification = false,
+                            BccForgottenPassword = false,
                             PersistentLogin = true,
                         };
                         AddConfig(config);

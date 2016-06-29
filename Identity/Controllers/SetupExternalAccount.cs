@@ -144,11 +144,11 @@ namespace YetaWF.Modules.Identity.Controllers {
                 return PartialView(model);
             }
 
-            // send appropriate email based on account satus
+            // send appropriate email based on account status
             Emails emails = new Emails();
             if (user.UserStatus == UserStatusEnum.NeedValidation) {
                 emails.SendVerification(user, config.BccVerification ? Manager.CurrentSite.AdminEmail : null);
-                string nextPage = string.IsNullOrWhiteSpace(config.VerificationPendingUrl) ? Manager.CurrentSite.HomePageUrl : config.VerificationPendingUrl; 
+                string nextPage = string.IsNullOrWhiteSpace(config.VerificationPendingUrl) ? Manager.CurrentSite.HomePageUrl : config.VerificationPendingUrl;
                 return FormProcessed(model, this.__ResStr("okAwaitRegistration", "An email has just been sent to your email address \"{0}\" to complete the registration. Allow a few minutes for delivery. Once received, please use the information in the email to complete the registration.", model.Email),
                     this.__ResStr("okRegTitle", "Welcome!"),
                     NextPage: nextPage);

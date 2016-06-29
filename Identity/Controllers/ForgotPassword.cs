@@ -59,7 +59,7 @@ namespace YetaWF.Modules.Identity.Controllers {
                 switch (userDef.UserStatus) {
                     case UserStatusEnum.Approved:
                         Emails emails = new Emails();
-                        emails.SendForgottenEmail(userDef, config.BccVerification ? Manager.CurrentSite.AdminEmail : null);
+                        emails.SendForgottenEmail(userDef, config.BccForgottenPassword ? Manager.CurrentSite.AdminEmail : null);
                         return FormProcessed(model, this.__ResStr("okSaved", "We just sent an email to your email address with your password information - Please allow a few minutes for delivery and make sure your spam filters allow emails from {0}", Manager.CurrentSite.SMTP.Server), OnPopupClose: OnPopupCloseEnum.ReloadModule);
                     case UserStatusEnum.NeedApproval:
                         ModelState.AddModelError("Email", this.__ResStr("needApproval", "This account has not yet been approved and is awaiting approval by the site administrator"));

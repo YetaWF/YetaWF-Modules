@@ -3,6 +3,7 @@
 using System.Web.Mvc;
 using YetaWF.Core;
 using YetaWF.Core.Controllers;
+using YetaWF.Core.DataProvider.Attributes;
 using YetaWF.Core.Localize;
 using YetaWF.Core.Models;
 using YetaWF.Core.Models.Attributes;
@@ -52,9 +53,13 @@ namespace YetaWF.Modules.Identity.Controllers {
             [UIHint("Boolean")]
             public bool NotifyAdminNewUsers { get; set; }
 
-            [Category("General"), Caption("Copy Verification Emails"), Description("Defines whether the site administrator receives a copy of the verification email sent to new users")]
+            [Category("General"), Caption("Notify Admin - Verification Emails"), Description("Defines whether the site administrator receives a copy of the verification email sent to new users")]
             [UIHint("Boolean")]
             public bool BccVerification { get; set; }
+
+            [Category("General"), Caption("Notify Admin - Forgot Password"), Description("Defines whether the site administrator receives a copy of the forgotten password email sent to users")]
+            [UIHint("Boolean")]
+            public bool BccForgottenPassword { get; set; }
 
             [Category("General"), Caption("Persistent Login"), Description("Defines whether a user login is persistent (saved using cookies)")]
             [UIHint("Boolean")]
