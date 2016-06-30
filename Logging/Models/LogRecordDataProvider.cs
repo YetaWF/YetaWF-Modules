@@ -232,6 +232,11 @@ namespace YetaWF.Modules.Logging.DataProvider {
             if (Callbacks == null) Callbacks = new List<Action<string>>();
             Callbacks.Add(callback);
         }
+        public void UnregisterCallback(Action<string> callback) {
+            if (Callbacks == null) return;
+            if (Callbacks.Contains(callback))
+                Callbacks.Remove(callback);
+        }
         public LogRecord GetItem(int key) {
             Flush();
             if (IOMode == WebConfigHelper.IOModeEnum.File) throw new InternalError("Not supported for File I/O");
