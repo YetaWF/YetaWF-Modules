@@ -42,7 +42,7 @@ namespace YetaWF.Modules.Dashboard.Controllers {
             Package corePackage = Package.GetPackageFromPackageName("YetaWF.Core");
             if (corePackage != null)
                 model.CoreVersion = corePackage.Version;
-            if (!Manager.DebugBuild)
+            if (Manager.Deployed)
                 model.LastDeploy = Directory.GetCreationTimeUtc(Path.Combine(YetaWFManager.RootFolder, "bin"));
 #if DEBUG
             model.Build = "Debug";

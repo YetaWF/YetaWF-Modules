@@ -192,7 +192,7 @@ namespace YetaWF.Modules.Packages.Modules {
             };
         }
         public ModuleAction GetAction_LocalizePackage(Package package) {
-            if (!Manager.DebugBuild) return null; // can't do this on a deployed site
+            if (Manager.Deployed) return null; // can't do this on a deployed site
             if (!package.IsModulePackage && !package.IsCorePackage && !package.IsSkinPackage) return null;
             if (!IsAuthorized("Localize")) return null;
             return new ModuleAction(this) {
@@ -209,7 +209,7 @@ namespace YetaWF.Modules.Packages.Modules {
             };
         }
         public ModuleAction GetAction_LocalizeAllPackages() {
-            if (!Manager.DebugBuild) return null; // can't do this on a deployed site
+            if (Manager.Deployed) return null; // can't do this on a deployed site
             if (!IsAuthorized("Localize")) return null;
             return new ModuleAction(this) {
                 Style = ModuleAction.ActionStyleEnum.Post,

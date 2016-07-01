@@ -164,7 +164,7 @@ namespace YetaWF.Modules.Packages.Controllers {
 
         [Permission("Localize")]
         public ActionResult LocalizePackage(string packageName) {
-            if (!Manager.DebugBuild)
+            if (Manager.Deployed)
                 throw new InternalError("Can't localize packages on a deployed site");
             Package package = Package.GetPackageFromPackageName(packageName);
             List<string> errorList = new List<string>();
@@ -178,7 +178,7 @@ namespace YetaWF.Modules.Packages.Controllers {
         }
         [Permission("Localize")]
         public ActionResult LocalizeAllPackages() {
-            if (!Manager.DebugBuild)
+            if (Manager.Deployed)
                 throw new InternalError("Can't localize packages on a deployed site");
             List<string> errorList = new List<string>();
             foreach (Package package in Package.GetAvailablePackages()) {

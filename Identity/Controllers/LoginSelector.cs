@@ -37,7 +37,7 @@ namespace YetaWF.Modules.Identity.Controllers {
 
         [HttpGet]
         public ActionResult LoginSelector() {
-            if (!Manager.DebugBuild && !Manager.HasSuperUserRole) return new EmptyResult();
+            if (Manager.Deployed && !Manager.HasSuperUserRole) return new EmptyResult();
 
             EditModel model = new EditModel { UserId = Manager.UserId, };
 

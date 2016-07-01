@@ -111,7 +111,7 @@ namespace YetaWF.Modules.Backups.Controllers {
         [HttpPost]
         [Permission("Backups")]
         public ActionResult MakeSiteTemplateData() {
-            if (!Manager.DebugBuild)
+            if (Manager.Deployed)
                 throw new InternalError("Can't make site template data on a deployed site");
             SiteTemplateData siteTemplateData = new SiteTemplateData();
             siteTemplateData.MakeSiteTemplateData();

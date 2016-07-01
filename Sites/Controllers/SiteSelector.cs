@@ -38,7 +38,7 @@ namespace YetaWF.Modules.Sites.Controllers {
 
         [HttpGet]
         public ActionResult SiteSelector(string siteDomain) {
-            if (!Manager.DebugBuild && !Manager.HasSuperUserRole) return new EmptyResult();
+            if (Manager.Deployed && !Manager.HasSuperUserRole) return new EmptyResult();
             EditModel model = new EditModel { SiteDomain = Manager.CurrentSite.SiteDomain };
             model.UpdateData();
             return View(model);
