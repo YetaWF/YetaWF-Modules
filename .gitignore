@@ -6,6 +6,11 @@
 *.scss.css
 *.xml
 
+**/obj/
+**/bin/**/*.xml
+**/bin/**/*.config
+**/bin/**/*.manifest
+
 **/Addons/_Addons/**/*.min.js
 **/Addons/_Addons/**/*.min.css
 **/Addons/_Addons/**/*.min.scss
@@ -22,10 +27,6 @@
 **/Addons/YetaWF/**/*.min.js
 **/Addons/YetaWF/**/*.min.css
 **/Addons/YetaWF/**/*.min.scss
-**/obj/
-**/bin/**/*.xml
-**/bin/**/*.config
-**/bin/**/*.manifest
 
 Modules/YetaWF/CurrencyConverter/Addons/_Main/ExchangeRates.js
 SearchEF/
