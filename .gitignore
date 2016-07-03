@@ -28,5 +28,4 @@
 **/Addons/YetaWF/**/*.min.css
 **/Addons/YetaWF/**/*.min.scss
 
-Modules/YetaWF/CurrencyConverter/Addons/_Main/ExchangeRates.js
-SearchEF/
+CurrencyConverter/Addons/_Main/ExchangeRates.js
