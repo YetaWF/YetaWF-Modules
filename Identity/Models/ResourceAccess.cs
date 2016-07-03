@@ -41,7 +41,7 @@ namespace YetaWF.Modules.Identity.DataProvider {
         }
         private bool? backDoor = null;
 
-        public bool IsResourceAutorized(string resourceName) {
+        public bool IsResourceAuthorized(string resourceName) {
             // we need to check if this resource is protected
 
             if (string.IsNullOrEmpty(resourceName))

@@ -61,7 +61,7 @@ namespace YetaWF.Modules.Identity.Modules {
         }
 
         public ModuleAction GetAction_LoginAs(int userId, string userName) {
-            if (!Resource.ResourceAccess.IsResourceAutorized(Info.Resource_AllowUserLogon))
+            if (!Resource.ResourceAccess.IsResourceAuthorized(Info.Resource_AllowUserLogon))
                 return null;
             return new ModuleAction(this) {
                 Url = YetaWFManager.UrlFor(typeof(LoginDirectController), "LoginAs"),

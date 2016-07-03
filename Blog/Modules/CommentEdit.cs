@@ -30,7 +30,7 @@ namespace YetaWF.Modules.Blog.Modules {
         public override SerializableList<AllowedRole> DefaultAllowedRoles { get { return AdministratorLevel_DefaultAllowedRoles; } }
 
         public ModuleAction GetAction_Edit(string url, int blogEntry, int comment) {
-            if (!Resource.ResourceAccess.IsResourceAutorized(Info.Resource_AllowManageComments)) return null;
+            if (!Resource.ResourceAccess.IsResourceAuthorized(Info.Resource_AllowManageComments)) return null;
             return new ModuleAction(this) {
                 Url = string.IsNullOrWhiteSpace(url) ? ModulePermanentUrl : url,
                 QueryArgs = new { BlogEntry = blogEntry, Comment = comment },

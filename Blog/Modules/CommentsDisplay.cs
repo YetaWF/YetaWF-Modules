@@ -38,7 +38,7 @@ namespace YetaWF.Modules.Blog.Modules {
         public override SerializableList<AllowedRole> DefaultAllowedRoles { get { return AnonymousLevel_DefaultAllowedRoles; } }
 
         public ModuleAction GetAction_Approve(int blogEntry, int comment) {
-            if (!Resource.ResourceAccess.IsResourceAutorized(Info.Resource_AllowManageComments)) return null;
+            if (!Resource.ResourceAccess.IsResourceAuthorized(Info.Resource_AllowManageComments)) return null;
             return new ModuleAction(this) {
                 Url = YetaWFManager.UrlFor(typeof(CommentsDisplayModuleController), "Approve"),
                 NeedsModuleContext = true,
@@ -56,7 +56,7 @@ namespace YetaWF.Modules.Blog.Modules {
             };
         }
         public ModuleAction GetAction_Remove(int blogEntry, int comment) {
-            if (!Resource.ResourceAccess.IsResourceAutorized(Info.Resource_AllowManageComments)) return null;
+            if (!Resource.ResourceAccess.IsResourceAuthorized(Info.Resource_AllowManageComments)) return null;
             return new ModuleAction(this) {
                 Url = YetaWFManager.UrlFor(typeof(CommentsDisplayModuleController), "Remove"),
                 NeedsModuleContext = true,

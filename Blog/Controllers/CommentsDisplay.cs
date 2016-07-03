@@ -86,8 +86,8 @@ namespace YetaWF.Modules.Blog.Controllers {
                     return new EmptyResult();
 
                 model.ShowGravatars = config.ShowGravatar;
-                model.CanApprove = Resource.ResourceAccess.IsResourceAutorized(Info.Resource_AllowManageComments);
-                model.CanRemove = Resource.ResourceAccess.IsResourceAutorized(Info.Resource_AllowManageComments);
+                model.CanApprove = Resource.ResourceAccess.IsResourceAuthorized(Info.Resource_AllowManageComments);
+                model.CanRemove = Resource.ResourceAccess.IsResourceAuthorized(Info.Resource_AllowManageComments);
 
                 if (model.CanApprove || model.CanRemove) {
                     model.Comments = (from d in data select new CommentData(d, Module, editMod)).ToList();
