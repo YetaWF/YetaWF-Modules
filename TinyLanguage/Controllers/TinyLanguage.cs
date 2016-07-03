@@ -14,7 +14,7 @@ namespace YetaWF.Modules.TinyLanguage.Controllers {
         [Trim]
         public class EditModel {
 
-            [Caption("Language"), Description("Select the language to be used for the entire site, then hit the Return/Enter key")]
+            [Caption("Language"), Description("Select the language to be used for the entire site")]
             [UIHint("LanguageId"), StringLength(LanguageData.MaxId), SubmitFormOnChange]
             public string LanguageId { get; set; }
 

@@ -10,6 +10,12 @@ namespace YetaWF.Modules.Menus.Views.Shared {
 
     public static class MenuHelper {
 
+        public enum MenuStyleEnum {
+            Automatic = 0,
+            Bootstrap = 1,
+            Kendo = 2,
+        }
+
         public enum DirectionEnum {
             [EnumDescription("Opens towards the bottom")]
             Bottom = 0,
@@ -92,7 +98,7 @@ namespace YetaWF.Modules.Menus.Views.Shared {
 
         //    [DontSave, GridAttribute(Hidden = true, OnlySubmitWhenChecked = true)]
         //    public bool __editable { get; set; }
-            
+
         //    [Caption("Apply"), Description("Select to apply the role to the user")]
         //    [GridAttribute(OnlySubmitWhenChecked = true)]
         //    [UIHint("Boolean")]
@@ -101,7 +107,7 @@ namespace YetaWF.Modules.Menus.Views.Shared {
         //    [Caption("Role"), Description("Role Description")]
         //    [UIHint("YetaWF_Identity_RoleId"), ReadOnly]
         //    public int RoleDescription { get; private set; }
-            
+
         //    [UIHint("Hidden")]
         //    public int RoleId {
         //        get {

@@ -1,6 +1,8 @@
 ﻿/* Copyright © 2016 Softel vdm, Inc. - http://yetawf.com/Documentation/YetaWF/Menus#License */
 
 using System;
+using System.Web.Mvc;
+using YetaWF.Core;
 using YetaWF.Core.DataProvider.Attributes;
 using YetaWF.Core.IO;
 using YetaWF.Core.Localize;
@@ -8,6 +10,7 @@ using YetaWF.Core.Menus;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Modules;
 using YetaWF.Core.Serializers;
+using YetaWF.Core.Views.Shared;
 using YetaWF.DataProvider;
 using YetaWF.Modules.Menus.Views.Shared;
 
@@ -43,15 +46,19 @@ namespace YetaWF.Modules.Menus.Modules {
         [Data_Binary, CopyAttribute]
         public MenuList Menu { get; set; }
 
-        [Category("General"), Caption("Opening Direction"), Description("The direction in which submenus open")]
+        [Category("General"), Caption("Edit Url"), Description("The Url used to edit this menu - If omitted, a default page is generated")]
+        [UIHint("Url"), AdditionalMetadata("UrlType", UrlHelperEx.UrlTypeEnum.Local), UrlValidation(UrlValidationAttribute.SchemaEnum.Any, UrlHelperEx.UrlTypeEnum.Local), StringLength(Globals.MaxUrl), Trim]
+        public string EditUrl { get; set; }
+
+        [Category("General"), Caption("Opening Direction"), Description("The direction in which submenus open - Ignored for Bootstrap menus")]
         [UIHint("Enum")]
         public MenuHelper.DirectionEnum Direction { get; set; }
 
-        [Category("General"), Caption("Orientation"), Description("The basic orientation of the menu")]
+        [Category("General"), Caption("Orientation"), Description("The basic orientation of the menu - Ignored for Bootstrap menus")]
         [UIHint("Enum")]
         public MenuHelper.OrientationEnum Orientation { get; set; }
 
-        [Category("General"), Caption("Hover Delay"), Description("Specifies the delay (in milliseconds) before the menu is opened/closed - used to avoid accidental closure on leaving")]
+        [Category("General"), Caption("Hover Delay"), Description("Specifies the delay (in milliseconds) before the menu is opened/closed - Used to avoid accidental closure on leaving - Ignored for Bootstrap menus")]
         [UIHint("IntValue4"), Required, Range(0, 10000)]
         public int HoverDelay { get; set; }
 
@@ -84,7 +91,7 @@ namespace YetaWF.Modules.Menus.Modules {
         public override MenuList GetModuleMenuList(ModuleAction.RenderModeEnum renderMode, ModuleAction.ActionLocationEnum location) {
             MenuList menuList = base.GetModuleMenuList(renderMode, location);
             MenuEditModule mod = new MenuEditModule();
-            menuList.New(mod.GetAction_Edit(null, ModuleGuid), location);
+            menuList.New(mod.GetAction_Edit(EditUrl, ModuleGuid), location);
             return menuList;
         }
     }

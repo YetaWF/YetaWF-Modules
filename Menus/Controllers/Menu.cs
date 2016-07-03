@@ -7,15 +7,20 @@ using YetaWF.Core.Menus;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Support;
 using YetaWF.Modules.Menus.Views.Shared;
+using static YetaWF.Modules.Menus.Views.Shared.MenuHelper;
 
 namespace YetaWF.Modules.Menus.Controllers {
 
     public class MainMenuModuleController : MenuModuleController {
+
         [HttpGet]
         public ActionResult MainMenu() {
+            // add some bootstrap specific classes
+            if (Manager.UsingBootstrap)
+                Module.CssClass = YetaWFManager.CombineCss(Module.CssClass, "navbar-collapse collapse");
             MenuModel model = new MenuModel {
                 Menu = new MenuHelper.MenuData {
-                    MenuList = GetEditMenu(Manager, Module.Menu, Module.ModuleGuid),
+                    MenuList = GetEditMenu(Module.Menu, Module.ModuleGuid),
                     Direction = Module.Direction,
                     Orientation = Module.Orientation,
                     HoverDelay = Module.HoverDelay,
@@ -30,7 +35,7 @@ namespace YetaWF.Modules.Menus.Controllers {
     public class MenuModuleController : ControllerImpl<YetaWF.Modules.Menus.Modules.MenuModule> {
 
         public class MenuModel {
-            [UIHint("YetaWF_Menus_Menu")]
+            [UIHint("YetaWF_Menus_Menu"), AdditionalMetadata("Style", MenuStyleEnum.Automatic)]
             public MenuHelper.MenuData Menu { get; set; }
         }
 
@@ -38,7 +43,7 @@ namespace YetaWF.Modules.Menus.Controllers {
         public ActionResult Menu() {
             MenuModel model = new MenuModel {
                 Menu = new MenuHelper.MenuData {
-                    MenuList = GetEditMenu(Manager, Module.Menu, Module.ModuleGuid),
+                    MenuList = GetEditMenu(Module.Menu, Module.ModuleGuid),
                     Direction = Module.Direction,
                     Orientation = Module.Orientation,
                     HoverDelay = Module.HoverDelay,
@@ -49,16 +54,22 @@ namespace YetaWF.Modules.Menus.Controllers {
             return View(model);
         }
 
-        public static MenuList GetEditMenu(YetaWFManager manager, MenuList menu, Guid moduleGuid) {
-            // get the fully evaluated menu for the current user
-            // we cache the menu in session settings because it is a costly operation to determine 
-            // which entries are authorized
-            // when we switch between edit/view mode or when the user logs on/off or when the menu has been changed by an admin we'll re-evaluate
+        /// <summary>
+        /// Builds the menu for the current user based on all available authorizations.
+        /// </summary>
+        /// <param name="menu">The entire menu (includes entries that will be removed if they're not available/permitted for the current user.</param>
+        /// <param name="moduleGuid">The module that owns the menu. Used as cache key.</param>
+        /// <returns>A copy of the menu reduced to just the entries that are available/permitted for the current user.</returns>
+        /// <remarks>
+        /// The menu is cached in session settings because it is a costly operation to determine permissions for all entries.
+        /// The full menu is only evaluated when switching between edit/view mode, when the user logs on/off or when the menu contents have changed.
+        /// </remarks>
+        protected MenuList GetEditMenu(MenuList menu, Guid moduleGuid) {
             MenuList.SavedCacheInfo info = MenuList.GetCache(moduleGuid);
-            if (info == null || info.EditMode != manager.EditMode || info.UserId != manager.UserId || info.Menu.Version != menu.Version) {
+            if (info == null || info.EditMode != Manager.EditMode || info.UserId != Manager.UserId || info.Menu.Version != menu.Version) {
                 info = new MenuList.SavedCacheInfo {
-                    EditMode = manager.EditMode,
-                    UserId = manager.UserId,
+                    EditMode = Manager.EditMode,
+                    UserId = Manager.UserId,
                     Menu = menu.GetUserMenu()
                 };
                 MenuList.SetCache(moduleGuid, info);
