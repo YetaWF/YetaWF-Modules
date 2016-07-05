@@ -71,10 +71,10 @@ namespace YetaWF.Modules.Search.DataProvider {
                         search = search.Remove(0, i);
                     }
                     if (list != null) {
-                        if (string.Compare(token, "OR", true) == 0) { //TODO: need to localize
+                        if (string.Compare(token, GetKeyWordOr(), true) == 0) {
                             List<SearchData> rhsList = BuildNodes(searchDP, ref search, languageId, haveUser, extraFilters);
                             list = list.Union(rhsList, new SearchDataComparer()).ToList();
-                        } else if (string.Compare(token, "AND", true) == 0) {
+                        } else if (string.Compare(token, GetKeyWordAnd(), true) == 0) {
                             List<SearchData> rhsList = BuildNodes(searchDP, ref search, languageId, haveUser, extraFilters);
                             list = list.Intersect(rhsList, new SearchDataComparer()).ToList();
                         } else {

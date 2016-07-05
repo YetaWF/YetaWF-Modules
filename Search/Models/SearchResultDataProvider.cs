@@ -3,6 +3,7 @@
 using System;
 using System.Collections.Generic;
 using YetaWF.Core.DataProvider;
+using YetaWF.Core.Localize;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Packages;
 using YetaWF.Core.Support;
@@ -58,6 +59,12 @@ namespace YetaWF.Modules.Search.DataProvider {
         // API
         // API
 
+        public string GetKeyWordOr() {
+            return this.__ResStr("keyWordOR", "OR");
+        }
+        public string GetKeyWordAnd() {
+            return this.__ResStr("keyWordAnd", "AND");
+        }
         public List<SearchResult> GetSearchResults(string searchTerms, int maxResults, string languageId, bool haveUser, out bool haveMore, List<DataProviderFilterInfo> Filters = null) {
             haveMore = false;
             List<SearchResult> results = Parse(searchTerms, maxResults, languageId, haveUser, out haveMore, Filters);

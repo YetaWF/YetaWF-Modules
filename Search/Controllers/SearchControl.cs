@@ -8,6 +8,7 @@ using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Modules;
 using YetaWF.Core.Support;
 using YetaWF.Modules.Search.Addons;
+using YetaWF.Modules.Search.DataProvider;
 
 namespace YetaWF.Modules.Search.Controllers {
 
@@ -37,8 +38,12 @@ namespace YetaWF.Modules.Search.Controllers {
             if (searchTerms == null)
                 return new EmptyResult();
             List<string> kwds = searchTerms.Split(new char[] { ' ', ',' }).ToList();
-            kwds.RemoveAll(m => { return m == "OR"; });//TODO: Localize
-            kwds.RemoveAll(m => { return m == "AND"; });
+            using (SearchResultDataProvider searchResDP = new SearchResultDataProvider()) {
+                string searchKwdOr = searchResDP.GetKeyWordOr();
+                string searchKwdAnd = searchResDP.GetKeyWordAnd();
+                kwds.RemoveAll(m => { return m == searchKwdOr; });
+                kwds.RemoveAll(m => { return m == searchKwdAnd; });
+            }
             kwds = (from k in kwds select k.Trim(new char[] { '(', ')', '*' })).ToList();
             if (kwds.Count == 0)
                 return new EmptyResult();
