@@ -45,6 +45,7 @@ namespace YetaWF.Modules.Sites.Modules {
                 Category = ModuleAction.ActionCategoryEnum.Delete,
                 Mode = ModuleAction.ActionModeEnum.Any,
                 Location = ModuleAction.ActionLocationEnum.NoAuto,
+                SaveReturnUrl = true,
             };
         }
     }

@@ -40,7 +40,7 @@ namespace YetaWF.Modules.Packages.DataProvider {
 
         private void RestartSite(NameValueCollection qs) {
             Manager.RestartSite();
-            Manager.CurrentResponse.Redirect(Manager.CurrentSite.MakeUrl(RealDomain: Manager.CurrentSite.SiteDomain));
+            Manager.CurrentResponse.Redirect(Manager.CurrentSite.MakeUrl());
         }
 
         /// <summary>
@@ -64,7 +64,7 @@ namespace YetaWF.Modules.Packages.DataProvider {
 
             // Cache is now invalid so we'll just restart
             Manager.RestartSite();
-            Manager.CurrentResponse.Redirect(Manager.CurrentSite.MakeUrl(RealDomain: Manager.CurrentSite.SiteDomain));
+            Manager.CurrentResponse.Redirect(Manager.CurrentSite.MakeUrl());
         }
 
         /// <summary>
@@ -81,7 +81,7 @@ namespace YetaWF.Modules.Packages.DataProvider {
             }
             // Cache is now invalid so we'll just restart
             Manager.RestartSite();
-            Manager.CurrentResponse.Redirect(Manager.CurrentSite.MakeUrl(RealDomain: Manager.CurrentSite.SiteDomain));
+            Manager.CurrentResponse.Redirect(Manager.CurrentSite.MakeUrl(ForceDomain: Manager.CurrentSite.SiteDomain));
         }
 
         private void InstallPackages() {
@@ -89,14 +89,14 @@ namespace YetaWF.Modules.Packages.DataProvider {
             // get all packages that are available
             List<Package> neededPackages = Package.GetAvailablePackages();
             // order all available packages by service level
-            neededPackages = (from p in neededPackages orderby (int) p.ServiceLevel select p).ToList();
+            neededPackages = (from p in neededPackages orderby (int)p.ServiceLevel select p).ToList();
 
             // keep track of installed packages
             List<Package> installedPackages = new List<Package>();
             List<Package> remainingPackages = (from p in neededPackages select p).ToList();
 
             // check each package and install it if all dependencies are available
-            for ( ; neededPackages.Count() > installedPackages.Count() ; ) {
+            for (; neededPackages.Count() > installedPackages.Count() ;) {
                 int count = 0;
 
                 foreach (Package package in neededPackages) {
