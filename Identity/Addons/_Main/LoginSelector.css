@@ -8,3 +8,6 @@
 .yModule.YetaWF_Identity_LoginSelector .yt_propertylist .t_row.t_userid .t_vals select {/* Firefox needs this for select */
     width:100%;
 }
+.yModule.YetaWF_Identity_LoginSelector .t_vals {
+    float: left;
+}
