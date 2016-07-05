@@ -26,7 +26,7 @@ namespace YetaWF.Modules.Feed.Modules {
             Title = this.__ResStr("modTitle", "News Feed");
             Name = this.__ResStr("modName", "News Feed");
             Description = this.__ResStr("modSummary", "Displays a news feed");
-            FeedUrl = "http://YetaWF.com/NewsFeed"; // TODO: need to actually implement this news feed
+            FeedUrl = "http://YetaWF.com/NewsFeed";
             Interval = 5;
             NumEntries = 10;
             WantSearch = false;
