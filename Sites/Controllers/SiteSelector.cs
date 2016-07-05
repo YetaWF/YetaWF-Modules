@@ -7,7 +7,6 @@ using YetaWF.Core.Controllers;
 using YetaWF.Core.Localize;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Site;
-using YetaWF.Core.Support;
 using YetaWF.Core.Views.Shared;
 
 namespace YetaWF.Modules.Sites.Controllers {
