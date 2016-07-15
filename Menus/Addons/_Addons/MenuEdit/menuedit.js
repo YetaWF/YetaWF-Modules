@@ -165,7 +165,7 @@ YetaWF_MenuEdit.LoadTree = function (treeId, treeStyle, detailsId, data, newEntr
                     throw "Invalid entry type {0}".format(entry);/*DEBUG*/
                 case MenuEntryType_Entry:
                     YetaWF_Url.Enable($("div[data-name='ModAction.Url']", $details), true);
-                    $("select[name='ModAction.SubModule']", $details).removeAttr('disabled');
+                    YetaWF_ModuleSelection.Enable($("div[data-name='ModAction.SubModule']", $details), true);
                     YetaWF_MultiString.Enable($("div[data-name='ModAction.MenuText']", $details), true);
                     YetaWF_MultiString.Enable($("div[data-name='ModAction.LinkText']", $details), true);
                     $("input[name='ModAction.ImageUrlFinal']", $details).removeAttr('disabled');
@@ -186,7 +186,7 @@ YetaWF_MenuEdit.LoadTree = function (treeId, treeStyle, detailsId, data, newEntr
                     break;
                 case MenuEntryType_Parent:
                     YetaWF_Url.Enable($("div[data-name='ModAction.Url']", $details), false);
-                    $("select[name='ModAction.SubModule']", $details).attr('disabled', 'disabled');
+                    YetaWF_ModuleSelection.Enable($("div[data-name='ModAction.SubModule']", $details), false);
                     YetaWF_MultiString.Enable($("div[data-name='ModAction.MenuText']", $details), true);
                     YetaWF_MultiString.Enable($("div[data-name='ModAction.LinkText']", $details), true);
                     $("input[name='ModAction.ImageUrlFinal']", $details).removeAttr('disabled');
@@ -207,7 +207,7 @@ YetaWF_MenuEdit.LoadTree = function (treeId, treeStyle, detailsId, data, newEntr
                     break;
                 case MenuEntryType_Separator:
                     YetaWF_Url.Enable($("div[data-name='ModAction.Url']", $details), false);
-                    $("select[name='ModAction.SubModule']", $details).attr('disabled', 'disabled');
+                    YetaWF_ModuleSelection.Enable($("div[data-name='ModAction.SubModule']", $details), false);
                     YetaWF_MultiString.Enable($("div[data-name='ModAction.MenuText']", $details), false);
                     YetaWF_MultiString.Enable($("div[data-name='ModAction.LinkText']", $details), false);
                     $("input[name='ModAction.ImageUrlFinal']", $details).attr('disabled', 'disabled');
@@ -230,7 +230,7 @@ YetaWF_MenuEdit.LoadTree = function (treeId, treeStyle, detailsId, data, newEntr
         } else {
             $("select[name='ModAction.EntryType']", $details).attr('disabled', 'disabled');
             YetaWF_Url.Enable($("div[data-name='ModAction.Url']", $details), false);
-            $("select[name='ModAction.SubModule']", $details).attr('disabled', 'disabled');
+            YetaWF_ModuleSelection.Enable($("div[data-name='ModAction.SubModule']", $details), false);
             YetaWF_MultiString.Enable($("div[data-name='ModAction.MenuText']", $details), false);
             YetaWF_MultiString.Enable($("div[data-name='ModAction.LinkText']", $details), false);
             $("input[name='ModAction.ImageUrlFinal']", $details).attr('disabled', 'disabled');
@@ -254,7 +254,7 @@ YetaWF_MenuEdit.LoadTree = function (treeId, treeStyle, detailsId, data, newEntr
         $("select[name='ModAction.EntryType']", $details).val(dataItem.EntryType);
         $("input[name='ModAction._Text']", $details).val(dataItem._Text);
         YetaWF_Url.Update($("div[data-name='ModAction.Url']", $details), dataItem.Url, true);
-        $("select[name='ModAction.SubModule']", $details).val(dataItem.SubModule);
+        YetaWF_ModuleSelection.Update($("div[data-name='ModAction.SubModule']", $details), dataItem.SubModule);
         YetaWF_MultiString.Update($("div[data-name='ModAction.MenuText']", $details), dataItem.MenuText);
         YetaWF_MultiString.Update($("div[data-name='ModAction.LinkText']", $details), dataItem.LinkText);
         $("input[name='ModAction.ImageUrlFinal']", $details).val(dataItem.ImageUrlFinal);
@@ -280,7 +280,7 @@ YetaWF_MenuEdit.LoadTree = function (treeId, treeStyle, detailsId, data, newEntr
         $("select[name='ModAction.EntryType']", $details).val(MenuEntryType_Entry);
         $("input[name='ModAction._Text']", $details).val('');
         YetaWF_Url.Clear($("div[data-name='ModAction.Url']", $details));
-        $("select[name='ModAction.SubModule']", $details).prop('selectedIndex', 0);
+        YetaWF_ModuleSelection.Update($("div[data-name='ModAction.SubModule']", $details), undefined);
         YetaWF_MultiString.Clear($("div[data-name='ModAction.MenuText']", $details));
         YetaWF_MultiString.Clear($("div[data-name='ModAction.LinkText']", $details));
         $("input[name='ModAction.ImageUrlFinal']", $details).val('');
@@ -307,8 +307,7 @@ YetaWF_MenuEdit.LoadTree = function (treeId, treeStyle, detailsId, data, newEntr
         if (dataItem.EntryType != entry) return true;
 
         if (YetaWF_Url.HasChanged($("div[data-name='ModAction.Url']", $details), dataItem.Url)) return true;
-        val = $("select[name='ModAction.SubModule']", $details).val();
-        if (dataItem.SubModule != val) return true;
+        if (YetaWF_ModuleSelection.HasChanged($("div[data-name='ModAction.SubModule']", $details), dataItem.SubModule)) return true;
         if (YetaWF_MultiString.HasChanged($("div[data-name='ModAction.MenuText']", $details), dataItem.MenuText)) return true;
         if (YetaWF_MultiString.HasChanged($("div[data-name='ModAction.LinkText']", $details), dataItem.LinkText)) return true;
         val = $("input[name='ModAction.ImageUrlFinal']", $details).val();
@@ -354,7 +353,7 @@ YetaWF_MenuEdit.LoadTree = function (treeId, treeStyle, detailsId, data, newEntr
             case MenuEntryType_Parent:
                 dataItem.Separator = false;
                 YetaWF_Url.Clear($("div[data-name='ModAction.Url']", $details));
-                $("select[name='ModAction.SubModule']", $details).prop('selectedIndex', 0);
+                YetaWF_ModuleSelection.Clear($("div[data-name='ModAction.SubModule']", $details));
                 $("select[name='ModAction.Style']", $details).prop('selectedIndex', 0);
                 $("select[name='ModAction.Mode']", $details).prop('selectedIndex', 0);
                 $("select[name='ModAction.Category']", $details).prop('selectedIndex', 0);
@@ -367,7 +366,7 @@ YetaWF_MenuEdit.LoadTree = function (treeId, treeStyle, detailsId, data, newEntr
             case MenuEntryType_Separator:
                 dataItem.Separator = true;
                 YetaWF_Url.Clear($("div[data-name='ModAction.Url']", $details));
-                $("select[name='ModAction.SubModule']", $details).prop('selectedIndex', 0);
+                YetaWF_ModuleSelection.Clear($("div[data-name='ModAction.SubModule']", $details));
                 YetaWF_MultiString.Clear($("div[data-name='ModAction.MenuText']", $details));
                 YetaWF_MultiString.Clear($("div[data-name='ModAction.LinkText']", $details));
                 $("input[name='ModAction.ImageUrlFinal']", $details).val('');
@@ -390,7 +389,7 @@ YetaWF_MenuEdit.LoadTree = function (treeId, treeStyle, detailsId, data, newEntr
 
         // Save fields in tree when they change
         dataItem.Url = YetaWF_Url.Retrieve($("div[data-name='ModAction.Url']", $details));
-        dataItem.SubModule = $("select[name='ModAction.SubModule']", $details).val();
+        dataItem.SubModule = YetaWF_ModuleSelection.Retrieve($("div[data-name='ModAction.SubModule']", $details));
         YetaWF_MultiString.Retrieve($("div[data-name='ModAction.MenuText']", $details), dataItem.MenuText);
         YetaWF_MultiString.Retrieve($("div[data-name='ModAction.LinkText']", $details), dataItem.LinkText);
         dataItem.ImageUrlFinal = $("input[name='ModAction.ImageUrlFinal']", $details).val();
