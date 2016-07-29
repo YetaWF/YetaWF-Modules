@@ -62,7 +62,11 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controllers\AddonDisplay.cs" />
+    <Compile Include="Controllers\AddonsBrowse.cs" />
     <Compile Include="Controllers\Status.cs" />
+    <Compile Include="Modules\AddonDisplay.cs" />
+    <Compile Include="Modules\AddonsBrowse.cs" />
     <Compile Include="Modules\Status.cs" />
     <Compile Include="Startup\Info.cs" />
     <Compile Include="Startup\AreaRegistration.cs" />
@@ -76,7 +80,11 @@
     <None Include="Addons\_Main\filelistJS.txt" />
     <None Include="Addons\_Main\filelistCSS.txt" />
     <None Include="Addons\_Main\Dashboard.js" />
-    <None Include="Addons\_Main\Dashboard.css" />
+    <None Include="Addons\_Main\Dashboard.scss" />
+    <None Include="Addons\_Main\Grids\AddonsBrowseModuleController.BrowseItem" />
+    <None Include="Views\YetaWF_Dashboard_AddonDisplay.cshtml" />
+    <None Include="Views\YetaWF_Dashboard_AddonsBrowse.cshtml" />
+    <None Include="Views\YetaWF_Dashboard_AddonsBrowse_Partial.cshtml" />
     <None Include="Views\YetaWF_Dashboard_Status.cshtml" />
   </ItemGroup>
   <ItemGroup>

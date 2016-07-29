@@ -1,0 +1,7 @@
+Commands            icons 1
+Type                sort 20
+Domain              sort filter 25 defaultSort asc
+Product             sort filter 20
+Version             sort filter 8
+Name                sort filter 20
+Url                 sort filter 100
