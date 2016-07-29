@@ -19,7 +19,7 @@ using YetaWF.PackageAttributes;
 
 [assembly: Package(PackageTypeEnum.Module, "YetaWF")]
 [assembly: PackageInfo("http://YetaWF.com/UpdateServer",
-    "http://yetawf.com/Documentation/YetaWF/Backup",
+    "http://yetawf.com/Documentation/YetaWF/Backups",
     "http://YetaWF.com/Documentation/YetaWF/Support",
     "http://yetawf.com/Documentation/YetaWF/Backups#Release%20Notice",
     "http://yetawf.com/Documentation/YetaWF/Backups#License")]
