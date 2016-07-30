@@ -219,8 +219,8 @@ namespace YetaWF.Modules.Packages.DataProvider {
                 if (menu != "-") {
                     if (build) {
                         ModuleAction action = AddMenu(menu);
-                        if (string.IsNullOrWhiteSpace(action.Url))
-                            action.Url = url;
+                        //if (string.IsNullOrWhiteSpace(action.Url)) // I don't remember why this was here
+                        action.Url = url;
                     } else {
                         RemoveMenu(menu);
                     }
