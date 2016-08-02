@@ -26,13 +26,14 @@ namespace YetaWF.Modules.Identity {
                 bool slidingExpiration = WebConfigHelper.GetValue<bool>(area, "OWin:SlidingExpiration"); // true
 
                 // Enable the application to use a cookie to store information for the signed in user
+                // the cookie name is YetaWF instance specific (this allows domains with different subdomains to be used in different IIS sites)
                 app.UseCookieAuthentication(new CookieAuthenticationOptions {
                     AuthenticationType = authType,
                     ExpireTimeSpan = expireTimeSpan,
                     ReturnUrlParameter = "ReturnUrl",
                     SlidingExpiration = slidingExpiration,
                     CookieSecure = CookieSecureOption.Never,
-                    CookieName = ".YetaWF.Cookies",
+                    CookieName = string.Format(".YetaWF.Cookies.{0}", YetaWFManager.DefaultSiteName),
                 });
                 // Use a cookie to temporarily store information about a user logging in with a third party login provider
                 app.UseExternalSignInCookie(DefaultAuthenticationTypes.ExternalCookie);
