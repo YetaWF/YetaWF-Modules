@@ -66,6 +66,7 @@ namespace YetaWF.Modules.Blog.Controllers {
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [ExcludeDemoMode]
         public ActionResult CategoryAdd_Partial(AddModel model) {
             if (!ModelState.IsValid)
                 return PartialView(model);

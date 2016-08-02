@@ -80,6 +80,7 @@ namespace YetaWF.Modules.Blog.Controllers {
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [ExcludeDemoMode]
         public ActionResult CategoryEdit_Partial(EditModel model) {
             int originalCategory = model.Identity;
 

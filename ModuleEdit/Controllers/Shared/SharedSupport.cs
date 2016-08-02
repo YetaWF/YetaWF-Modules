@@ -6,6 +6,7 @@ using YetaWF.Core.Controllers;
 using YetaWF.Core.Identity;
 using YetaWF.Core.Localize;
 using YetaWF.Core.Models;
+using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Modules;
 using YetaWF.Core.Support;
 
@@ -17,6 +18,7 @@ namespace YetaWF.Modules.ModuleEdit.Controllers {
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [ExcludeDemoMode]
         public ActionResult AddUserToModule(string prefix, int newRecNumber, string newValue, Guid editGuid) {
 
             if (string.IsNullOrWhiteSpace(newValue))
@@ -28,7 +30,7 @@ namespace YetaWF.Modules.ModuleEdit.Controllers {
             if (userId == 0)
                 throw new Error(this.__ResStr("noUser", "User {0} doesn't exist", newValue));
 
-            // get the type of the grid record from the module being edited by checking its 
+            // get the type of the grid record from the module being edited by checking its
             // AllowedUsers property [AdditionalMetadata("GridEntry", typeof(GridAllowedUserEntry))]
             ModuleDefinition editMod = ModuleDefinition.Load(editGuid);
             PropertyData propData = ObjectSupport.GetPropertyData(editMod.GetType(), "AllowedUsers");

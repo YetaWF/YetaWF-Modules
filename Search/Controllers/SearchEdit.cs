@@ -78,6 +78,7 @@ namespace YetaWF.Modules.Search.Controllers {
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [ExcludeDemoMode]
         public ActionResult SearchEdit_Partial(EditModel model) {
             using (SearchDataProvider dataProvider = new SearchDataProvider()) {
                 SearchData data = dataProvider.GetItemWithUrl(model.SearchDataId);

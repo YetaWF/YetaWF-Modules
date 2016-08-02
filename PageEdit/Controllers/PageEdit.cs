@@ -219,6 +219,7 @@ namespace YetaWF.Modules.PageEdit.Controllers {
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [ExcludeDemoMode]
         public ActionResult PageEdit_Partial(EditModel model) {
             PageDefinition page = PageDefinition.Load(model.PageGuid);
             if (page == null)
@@ -243,6 +244,7 @@ namespace YetaWF.Modules.PageEdit.Controllers {
         }
 
         [HttpPost]
+        [ExcludeDemoMode]
         public ActionResult RemovePage(Guid pageGuid) {
             PageDefinition page = page = PageDefinition.Load(pageGuid);
             if (page == null)

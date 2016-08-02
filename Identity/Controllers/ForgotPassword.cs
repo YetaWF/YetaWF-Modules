@@ -44,6 +44,7 @@ namespace YetaWF.Modules.Identity.Controllers {
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [ExcludeDemoMode]
         public ActionResult ForgotPassword_Partial(EditModel model) {
 
             LoginConfigData config = LoginConfigDataProvider.GetConfig();

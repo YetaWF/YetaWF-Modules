@@ -10,7 +10,6 @@ using System.Web.Mvc;
 using YetaWF.Core;
 using YetaWF.Core.Controllers;
 using YetaWF.Core.DataProvider;
-using YetaWF.Core.Identity;
 using YetaWF.Core.Localize;
 using YetaWF.Core.Models;
 using YetaWF.Core.Models.Attributes;
@@ -95,6 +94,7 @@ namespace YetaWF.Modules.Identity.Controllers {
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [ExcludeDemoMode]
         public async Task<ActionResult> UserAccount_Partial(EditModel model) {
             // make sure this user exists
             UserManager<UserDefinition> userManager = Managers.GetUserManager();

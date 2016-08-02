@@ -107,6 +107,7 @@ namespace YetaWF.Modules.Blog.Controllers {
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [ExcludeDemoMode]
         public ActionResult EntryEdit_Partial(EditModel model) {
             if (!ModelState.IsValid)
                 return PartialView(model);

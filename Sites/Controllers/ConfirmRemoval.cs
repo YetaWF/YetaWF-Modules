@@ -33,6 +33,7 @@ namespace YetaWF.Modules.Sites.Controllers {
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [ExcludeDemoMode]
         public ActionResult ConfirmRemoval_Partial(EditModel model) {
             if (!ModelState.IsValid)
                 return PartialView(model);

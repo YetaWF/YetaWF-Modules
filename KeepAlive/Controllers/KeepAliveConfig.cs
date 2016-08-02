@@ -53,6 +53,7 @@ namespace YetaWF.Modules.KeepAlive.Controllers {
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [ExcludeDemoMode]
         public ActionResult KeepAliveConfig_Partial(Model model) {
             using (KeepAliveConfigDataProvider dataProvider = new KeepAliveConfigDataProvider()) {
                 KeepAliveConfigData data = dataProvider.GetItem();// get the original item

@@ -58,6 +58,7 @@ namespace YetaWF.Modules.CurrencyConverter.Controllers {
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [ExcludeDemoMode]
         public ActionResult Config_Partial(Model model) {
             using (ConfigDataProvider dataProvider = new ConfigDataProvider()) {
                 ConfigData data = dataProvider.GetItem();// get the original item

@@ -68,6 +68,7 @@ namespace YetaWF.Modules.Identity.Controllers {
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [ExcludeDemoMode]
         public ActionResult UserPassword_Partial(EditModel model) {
             // get current user we're changing
             IAuthenticationManager authManager = Manager.CurrentRequest.GetOwinContext().Authentication;

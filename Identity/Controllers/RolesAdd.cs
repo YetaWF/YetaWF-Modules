@@ -42,6 +42,7 @@ namespace YetaWF.Modules.Identity.Controllers {
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [ExcludeDemoMode]
         public ActionResult RolesAdd_Partial(AddModel model) {
             if (!ModelState.IsValid)
                 return PartialView(model);

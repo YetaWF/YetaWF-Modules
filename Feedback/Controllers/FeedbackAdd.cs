@@ -69,6 +69,7 @@ namespace YetaWF.Modules.Feedback.Controllers {
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [ExcludeDemoMode]
         public ActionResult FeedbackAdd_Partial(AddModel model) {
             if (!ModelState.IsValid)
                 return PartialView(model);

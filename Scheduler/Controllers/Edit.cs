@@ -87,6 +87,7 @@ namespace YetaWF.Modules.Scheduler.Controllers {
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [ExcludeDemoMode]
         public ActionResult SchedulerEdit_Partial(SchedulerEditModel model) {
             if (!ModelState.IsValid)
                 return PartialView(model);

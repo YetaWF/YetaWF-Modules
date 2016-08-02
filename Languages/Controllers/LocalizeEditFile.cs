@@ -66,6 +66,7 @@ namespace YetaWF.Modules.Languages.Controllers {
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [ExcludeDemoMode]
         public ActionResult LocalizeEditFile_Partial(EditModel model, bool RestoreDefaults = false) {
             Package package = Package.GetPackageFromPackageName(model.PackageName);
             LocalizationData data = null;
@@ -76,7 +77,7 @@ namespace YetaWF.Modules.Languages.Controllers {
                 model.SetData(data); // and all the data back into model for final display
                 LocalizationSupport.Save(package, model.TypeName, LocalizationSupport.Location.CustomResources, null);// delete it
                 return FormProcessed(model, this.__ResStr("okReset", "Localization resource default restored - The custom addon file has been removed. If you click Save or Apply, a new custom addon file will be created. To keep the defaults only, simply close this form."), OnClose: OnCloseEnum.UpdateInPlace, OnPopupClose: OnPopupCloseEnum.UpdateInPlace);
-            } else { 
+            } else {
                 if (!ModelState.IsValid)
                     return PartialView(model);
                 data = LocalizationSupport.Load(package, model.TypeName, LocalizationSupport.Location.CustomResources);

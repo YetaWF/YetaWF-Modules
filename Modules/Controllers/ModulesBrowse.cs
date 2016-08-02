@@ -131,6 +131,7 @@ namespace YetaWF.Modules.Modules.Controllers {
 
         [HttpPost]
         [Permission("RemoveItems")]
+        [ExcludeDemoMode]
         public ActionResult Remove(Guid moduleGuid) {
             if (!ModuleDefinition.RemoveModuleDefinition(moduleGuid))
                 throw new Error(this.__ResStr("errRemove", "The module could not be removed - It may already have been deleted"));

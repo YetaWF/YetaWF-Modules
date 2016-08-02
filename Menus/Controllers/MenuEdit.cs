@@ -57,6 +57,7 @@ namespace YetaWF.Modules.Menus.Controllers {
         }
 
         [HttpPost]
+        [ExcludeDemoMode]
         public ActionResult MenuEdit_Partial([Bind(Include = "MenuGuid,ModAction,MenuVersion,ActiveEntry,NewAfter")]MenuEditModel model, bool ValidateCurrent) {
             MenuModule modMenu = (MenuModule) ModuleDefinition.Load(model.MenuGuid);
             if (modMenu == null)
@@ -80,6 +81,7 @@ namespace YetaWF.Modules.Menus.Controllers {
         }
 
         [HttpPost]
+        [ExcludeDemoMode]
         public ActionResult EntireMenu(string entireMenu, Guid menuGuid, Guid menuVersion) {
             MenuModule modMenu = (MenuModule) ModuleDefinition.Load(menuGuid);
             if (modMenu == null)

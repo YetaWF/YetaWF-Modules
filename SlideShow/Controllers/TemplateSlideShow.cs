@@ -38,6 +38,7 @@ namespace YetaWF.Modules.SlideShow.Controllers {
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [ExcludeDemoMode]
         public ActionResult TemplateSlideShow_Partial(Model model) {
             if (!ModelState.IsValid)
                 return PartialView(model);

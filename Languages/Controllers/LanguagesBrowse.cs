@@ -93,6 +93,7 @@ namespace YetaWF.Modules.Languages.Controllers {
 
         [HttpPost]
         [Permission("RemoveLanguages")]
+        [ExcludeDemoMode]
         public ActionResult RemoveLanguage(string id) {
             if (string.IsNullOrWhiteSpace(id))
                 throw new Error(this.__ResStr("noItem", "No language id specified."));

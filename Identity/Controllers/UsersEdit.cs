@@ -85,7 +85,7 @@ namespace YetaWF.Modules.Identity.Controllers {
 
             [UIHint("Hidden")]
             public RegistrationTypeEnum RegistrationType { get; set; }
-            
+
             public UserDefinition GetData(UserDefinition user) {
                 ObjectSupport.CopyData(this, user);
                 return user;
@@ -115,6 +115,7 @@ namespace YetaWF.Modules.Identity.Controllers {
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [ExcludeDemoMode]
         public ActionResult UsersEdit_Partial(EditModel model) {
             using (UserDefinitionDataProvider dataProvider = new UserDefinitionDataProvider()) {
                 string originalUserName = model.OriginalUserName;

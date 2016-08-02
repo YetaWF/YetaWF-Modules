@@ -5,6 +5,7 @@ using YetaWF.Core.Controllers;
 using YetaWF.Core.Identity;
 using YetaWF.Core.Localize;
 using YetaWF.Core.Models;
+using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Support;
 using YetaWF.Modules.Identity.Views.Shared;
 
@@ -16,6 +17,7 @@ namespace YetaWF.Modules.Identity.Controllers {
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [ExcludeDemoMode]
         public ActionResult AddUserToResource(string prefix, int newRecNumber, string newValue) {
 
             if (string.IsNullOrWhiteSpace(newValue))

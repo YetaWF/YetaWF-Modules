@@ -145,6 +145,7 @@ namespace YetaWF.Modules.Logging.Controllers {
 
         [HttpPost]
         [Permission("RemoveLog")]
+        [ExcludeDemoMode]
         public ActionResult RemoveAll() {
             FlushLog();
             using (LogRecordDataProvider dataProvider = new LogRecordDataProvider()) {

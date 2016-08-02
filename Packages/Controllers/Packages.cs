@@ -123,6 +123,7 @@ namespace YetaWF.Modules.Packages.Controllers {
         }
 
         [Permission("Imports")]
+        [ExcludeDemoMode]
         public ActionResult ExportPackageWithSource(string packageName, long cookieToReturn) {
             Package package = Package.GetPackageFromPackageName(packageName/*, Utilities: true*/);
             YetaWFZipFile zipFile = package.ExportPackage(SourceCode: true);
@@ -137,6 +138,7 @@ namespace YetaWF.Modules.Packages.Controllers {
         }
 
         [Permission("Installs")]
+        [ExcludeDemoMode]
         public ActionResult InstallPackageModels(string packageName) {
             Package package = Package.GetPackageFromPackageName(packageName);
             List<string> errorList = new List<string>();
@@ -150,6 +152,7 @@ namespace YetaWF.Modules.Packages.Controllers {
         }
 
         [Permission("Installs")]
+        [ExcludeDemoMode]
         public ActionResult UninstallPackageModels(string packageName) {
             Package package = Package.GetPackageFromPackageName(packageName);
             List<string> errorList = new List<string>();
@@ -163,6 +166,7 @@ namespace YetaWF.Modules.Packages.Controllers {
         }
 
         [Permission("Localize")]
+        [ExcludeDemoMode]
         public ActionResult LocalizePackage(string packageName) {
             if (Manager.Deployed)
                 throw new InternalError("Can't localize packages on a deployed site");
@@ -177,6 +181,7 @@ namespace YetaWF.Modules.Packages.Controllers {
             return FormProcessed(null, popupText: this.__ResStr("generated", "Package localization data successfully generated"), OnClose: OnCloseEnum.Nothing);
         }
         [Permission("Localize")]
+        [ExcludeDemoMode]
         public ActionResult LocalizeAllPackages() {
             if (Manager.Deployed)
                 throw new InternalError("Can't localize packages on a deployed site");
@@ -195,6 +200,7 @@ namespace YetaWF.Modules.Packages.Controllers {
         }
 
         [Permission("Installs")]
+        [ExcludeDemoMode]
         public ActionResult RemovePackage(string packageName) {
             Package package = Package.GetPackageFromPackageName(packageName);
             List<string> errorList = new List<string>();

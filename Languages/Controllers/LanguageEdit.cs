@@ -30,7 +30,7 @@ namespace YetaWF.Modules.Languages.Controllers {
             [Caption("Description"), Description("The description for the language - this is used for informational purposes only")]
             [UIHint("Text80"), StringLength(LanguageData.MaxDescription), Required, Trim]
             public string Description { get; set; }
-            
+
             [UIHint("Hidden")]
             public string Id { get; set; }
 
@@ -60,6 +60,7 @@ namespace YetaWF.Modules.Languages.Controllers {
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [ExcludeDemoMode]
         public ActionResult LanguageEdit_Partial(EditModel model) {
             string originalId = model.Id;
 

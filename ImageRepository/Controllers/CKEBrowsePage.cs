@@ -21,7 +21,7 @@ namespace YetaWF.Modules.ImageRepository.Controllers {
             [UIHint("Url"), AdditionalMetadata("UrlType", UrlHelperEx.UrlTypeEnum.Local), UrlValidation(UrlValidationAttribute.SchemaEnum.Any, UrlHelperEx.UrlTypeEnum.Local)]
             [StringLength(Globals.MaxUrl), Required, Trim]
             public string PageUrl { get; set; }
-            
+
             [UIHint("Hidden")]
             public string CKEditor { get; set; }
             [UIHint("Hidden")]
@@ -37,7 +37,7 @@ namespace YetaWF.Modules.ImageRepository.Controllers {
         [HttpGet]
         public ActionResult CKEBrowsePage(string CKEditor, int CKEditorFuncNum, string langCode) {
             Model model = new Model {
-                CKEditor = CKEditor, 
+                CKEditor = CKEditor,
                 CKEditorFuncNum = CKEditorFuncNum,
                 LangCode = langCode,
             };
@@ -47,6 +47,7 @@ namespace YetaWF.Modules.ImageRepository.Controllers {
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [ExcludeDemoMode]
         public ActionResult CKEBrowsePage_Partial(Model model) {
             model.Update(Module);
             if (!ModelState.IsValid)

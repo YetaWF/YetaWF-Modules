@@ -134,6 +134,7 @@ namespace YetaWF.Modules.Scheduler.Controllers {
 
         [HttpPost]
         [Permission("RemoveItems")]
+        [ExcludeDemoMode]
         public ActionResult RemoveItem(string name) {
             if (string.IsNullOrWhiteSpace(name))
                 throw new Error(this.__ResStr("noEvent", "No scheduler item name specified"));
@@ -145,6 +146,7 @@ namespace YetaWF.Modules.Scheduler.Controllers {
 
         [HttpPost]
         [Permission("RunItems")]
+        [ExcludeDemoMode]
         public ActionResult RunItem(string name) {
             if (string.IsNullOrWhiteSpace(name))
                 throw new Error(this.__ResStr("noEvent", "No scheduler item name specified"));
@@ -153,6 +155,7 @@ namespace YetaWF.Modules.Scheduler.Controllers {
         }
 
         [HttpPost]
+        [ExcludeDemoMode]
         public ActionResult SchedulerToggle(bool start) {
             using (SchedulerDataProvider dataProvider = new SchedulerDataProvider()) {
                 dataProvider.SetRunning(start);

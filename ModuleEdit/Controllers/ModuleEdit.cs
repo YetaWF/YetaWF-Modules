@@ -41,6 +41,7 @@ namespace YetaWF.Modules.ModuleEdit.Controllers {
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [ExcludeDemoMode]
         public ActionResult ModuleEdit_Partial(ModuleEditModel model) {
             if (model.ModuleGuid == Guid.Empty)
                 throw new InternalError("No moduleGuid provided");
@@ -61,7 +62,7 @@ namespace YetaWF.Modules.ModuleEdit.Controllers {
 
             // copy/save
             ObjectSupport.CopyDataFromOriginal(origModule, model.Module);
-            model.Module.Temporary = false; 
+            model.Module.Temporary = false;
             model.Module.Save();
             return FormProcessed(model, this.__ResStr("okSaved", "Module settings saved"), NextPage: Manager.NormalizeUrl(Manager.ReturnToUrl));
         }

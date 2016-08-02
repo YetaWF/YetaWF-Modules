@@ -49,6 +49,7 @@ namespace YetaWF.Modules.Backups.Controllers {
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [ExcludeDemoMode]
         public ActionResult BackupConfig_Partial(Model model) {
             using (ConfigDataProvider dataProvider = new ConfigDataProvider()) {
                 ConfigData data = dataProvider.GetItem();// get the original item

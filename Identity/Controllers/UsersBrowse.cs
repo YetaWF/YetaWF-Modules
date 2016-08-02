@@ -142,6 +142,7 @@ namespace YetaWF.Modules.Identity.Controllers {
 
         [HttpPost]
         [Permission("RemoveUsers")]
+        [ExcludeDemoMode]
         public ActionResult Remove(string userName) {
             using (UserDefinitionDataProvider dataProvider = new UserDefinitionDataProvider()) {
                 UserDefinition user = GetUser(userName, dataProvider);
@@ -152,6 +153,7 @@ namespace YetaWF.Modules.Identity.Controllers {
 
         [HttpPost]
         [Permission("SendEmails")]
+        [ExcludeDemoMode]
         public ActionResult SendVerificationEmail(string userName) {
             using (UserDefinitionDataProvider dataProvider = new UserDefinitionDataProvider()) {
                 UserDefinition user = GetUser(userName, dataProvider);
@@ -163,6 +165,7 @@ namespace YetaWF.Modules.Identity.Controllers {
 
         [HttpPost]
         [Permission("SendEmails")]
+        [ExcludeDemoMode]
         public ActionResult SendApprovedEmail(string userName) {
             using (UserDefinitionDataProvider dataProvider = new UserDefinitionDataProvider()) {
                 UserDefinition user = GetUser(userName, dataProvider);
@@ -173,6 +176,7 @@ namespace YetaWF.Modules.Identity.Controllers {
         }
 
         [HttpPost]
+        [ExcludeDemoMode]
         public ActionResult RehashAllPasswords() {
             using (UserDefinitionDataProvider userDP = new UserDefinitionDataProvider()) {
                 userDP.RehashAllPasswords();

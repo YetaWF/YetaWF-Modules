@@ -36,6 +36,7 @@ namespace YetaWF.Modules.Text.Controllers {
 
         [HttpPost]
         [Permission("Edit")]
+        [ExcludeDemoMode]
         public ActionResult Text_Partial(TextModel model) {
             Module.Contents = model.Contents;
             Module.Save();

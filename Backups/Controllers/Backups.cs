@@ -96,6 +96,7 @@ namespace YetaWF.Modules.Backups.Controllers {
 
         [HttpPost]
         [Permission("Backups")]
+        [ExcludeDemoMode]
         public ActionResult PerformSiteBackup() {
             List<string> errorList = new List<string>();
             SiteBackup siteBackup = new SiteBackup();
@@ -110,6 +111,7 @@ namespace YetaWF.Modules.Backups.Controllers {
 
         [HttpPost]
         [Permission("Backups")]
+        [ExcludeDemoMode]
         public ActionResult MakeSiteTemplateData() {
             if (Manager.Deployed)
                 throw new InternalError("Can't make site template data on a deployed site");
@@ -139,6 +141,7 @@ namespace YetaWF.Modules.Backups.Controllers {
 
         [HttpPost]
         [Permission("Backups")]
+        [ExcludeDemoMode]
         public ActionResult Remove(string filename) {
             if (string.IsNullOrWhiteSpace(filename))
                 throw new Error("No backup specified");

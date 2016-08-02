@@ -34,6 +34,7 @@ namespace YetaWF.Modules.Packages.Controllers {
 
         [HttpPost]
         [Permission("Imports")]
+        [ExcludeDemoMode]
         public ActionResult ImportPackage(HttpPostedFileBase __filename) {
             FileUpload upload = new FileUpload();
             string tempName = upload.StoreTempPackageFile(__filename);
@@ -65,6 +66,7 @@ namespace YetaWF.Modules.Packages.Controllers {
         }
         [HttpPost]
         [Permission("Imports")]
+        [ExcludeDemoMode]
         public ActionResult RemovePackage(string filename) {
             // there is nothing to remove because we already imported the file
             return new EmptyResult();

@@ -2,7 +2,6 @@
 
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using System.Web;
 using System.Web.Mvc;
 using YetaWF.Core;
 using YetaWF.Core.Controllers;
@@ -77,6 +76,7 @@ namespace YetaWF.Modules.Identity.Controllers {
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [ExcludeDemoMode]
         public async Task<ActionResult> Register_Partial(RegisterModel model) {
             LoginConfigData config = LoginConfigDataProvider.GetConfig();
             if (!config.AllowUserRegistration)
@@ -168,6 +168,7 @@ namespace YetaWF.Modules.Identity.Controllers {
 
         [HttpGet]
         [Permission("ChangeAccounts")]
+        [ExcludeDemoMode]
         public ActionResult Approve(string userName) {
             using (UserDefinitionDataProvider dataProvider = new UserDefinitionDataProvider()) {
                 UserDefinition user = GetUser(userName, dataProvider);
@@ -194,6 +195,7 @@ namespace YetaWF.Modules.Identity.Controllers {
 
         [HttpGet]
         [Permission("ChangeAccounts")]
+        [ExcludeDemoMode]
         public ActionResult Reject(string userName) {
             using (UserDefinitionDataProvider dataProvider = new UserDefinitionDataProvider()) {
                 UserDefinition user = GetUser(userName, dataProvider);
@@ -219,6 +221,7 @@ namespace YetaWF.Modules.Identity.Controllers {
 
         [HttpGet]
         [Permission("ChangeAccounts")]
+        [ExcludeDemoMode]
         public ActionResult Suspend(string userName) {
             using (UserDefinitionDataProvider dataProvider = new UserDefinitionDataProvider()) {
                 UserDefinition user = GetUser(userName, dataProvider);

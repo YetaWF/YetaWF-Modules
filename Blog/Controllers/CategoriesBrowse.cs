@@ -115,6 +115,7 @@ namespace YetaWF.Modules.Blog.Controllers {
 
         [HttpPost]
         [Permission("RemoveItems")]
+        [ExcludeDemoMode]
         public ActionResult Remove(int blogCategory) {
             using (BlogCategoryDataProvider dataProvider = new BlogCategoryDataProvider()) {
                 dataProvider.RemoveItem(blogCategory);

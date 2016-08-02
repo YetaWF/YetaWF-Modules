@@ -42,6 +42,7 @@ namespace YetaWF.Modules.Languages.Controllers {
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [ExcludeDemoMode]
         public ActionResult LocalizeConfig_Partial(Model model) {
             if (!ModelState.IsValid)
                 return PartialView(model);

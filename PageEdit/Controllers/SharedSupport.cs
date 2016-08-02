@@ -5,6 +5,7 @@ using YetaWF.Core.Controllers;
 using YetaWF.Core.Identity;
 using YetaWF.Core.Localize;
 using YetaWF.Core.Models;
+using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Support;
 using YetaWF.Modules.PageEdit.Views.Shared;
 
@@ -16,6 +17,7 @@ namespace YetaWF.Modules.PageEdit.Controllers {
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [ExcludeDemoMode]
         public ActionResult AddUserToPage(string prefix, int newRecNumber, string newValue) {
 
             if (string.IsNullOrWhiteSpace(newValue))

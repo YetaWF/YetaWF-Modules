@@ -94,6 +94,7 @@ namespace YetaWF.Modules.Identity.Controllers {
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [ExcludeDemoMode]
         public ActionResult OwinEdit_Partial(EditModel model) {
             if (!ModelState.IsValid)
                 return PartialView(model);
@@ -113,7 +114,7 @@ namespace YetaWF.Modules.Identity.Controllers {
             WebConfigHelper.SetValue<string>(Module.AreaName, "FacebookAccount:Private", model.FacebookPrivate);
             WebConfigHelper.SetValue<string>(Module.AreaName, "TwitterAccount:Public", model.TwitterPublic);
             WebConfigHelper.SetValue<string>(Module.AreaName, "TwitterAccount:Private", model.TwitterPrivate);
-            
+
             return FormProcessed(model, this.__ResStr("okSaved", "Web.config has been updated - Web application is now restarting."), NextPage: Manager.CurrentSite.HomePageUrl);
         }
     }

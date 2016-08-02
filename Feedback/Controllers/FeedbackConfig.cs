@@ -58,6 +58,7 @@ namespace YetaWF.Modules.Feedback.Controllers {
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [ExcludeDemoMode]
         public ActionResult FeedbackConfig_Partial(Model model) {
             using (FeedbackConfigDataProvider dataProvider = new FeedbackConfigDataProvider()) {
                 FeedbackConfigData data = dataProvider.GetItem();// get the original item

@@ -123,10 +123,11 @@ namespace YetaWF.Modules.Blog.Controllers {
         }
         [HttpPost]
         [ResourceAuthorize(Info.Resource_AllowManageComments)]
+        [ExcludeDemoMode]
         public ActionResult Approve(int blogEntry, int comment) {
             using (BlogCommentDataProvider dataProvider = new BlogCommentDataProvider(blogEntry)) {
                 BlogComment cmt = dataProvider.GetItem(comment);
-                if (cmt == null) 
+                if (cmt == null)
                     throw new InternalError("Can't find comment entry {0}", comment);
                 cmt.Approved = true;
                 UpdateStatusEnum status = dataProvider.UpdateItem(cmt);
@@ -137,6 +138,7 @@ namespace YetaWF.Modules.Blog.Controllers {
         }
         [HttpPost]
         [ResourceAuthorize(Info.Resource_AllowManageComments)]
+        [ExcludeDemoMode]
         public ActionResult Remove(int blogEntry, int comment) {
             using (BlogCommentDataProvider dataProvider = new BlogCommentDataProvider(blogEntry)) {
                 BlogComment cmt = dataProvider.GetItem(comment);

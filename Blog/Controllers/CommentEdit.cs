@@ -101,6 +101,7 @@ namespace YetaWF.Modules.Blog.Controllers {
         [HttpPost]
         [ValidateAntiForgeryToken]
         [ResourceAuthorize(Info.Resource_AllowManageComments)]
+        [ExcludeDemoMode]
         public ActionResult CommentEdit_Partial(EditModel model) {
             model.UpdateData();
             using (BlogCommentDataProvider dataProvider = new BlogCommentDataProvider(model.EntryIdentity)) {

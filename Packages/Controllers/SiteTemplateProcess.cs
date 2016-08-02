@@ -6,7 +6,6 @@ using System.Web.Mvc;
 using YetaWF.Core.Controllers;
 using YetaWF.Core.IO;
 using YetaWF.Core.Models.Attributes;
-using YetaWF.Core.Support;
 using YetaWF.Core.Views.Shared;
 using YetaWF.Modules.Packages.DataProvider;
 
@@ -46,6 +45,7 @@ namespace YetaWF.Modules.Packages.Controllers {
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [ExcludeDemoMode]
         public ActionResult SiteTemplateProcess_Partial(EditModel model) {
             model.UpdateData();
             if (!ModelState.IsValid)

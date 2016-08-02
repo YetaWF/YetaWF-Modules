@@ -99,6 +99,7 @@ namespace YetaWF.Modules.Feedback.Controllers {
         }
         [HttpPost]
         [Permission("RemoveFeedback")]
+        [ExcludeDemoMode]
         public ActionResult RemoveFeedback(int key) {
             using (FeedbackDataDataProvider dataProvider = new FeedbackDataDataProvider()) {
                 dataProvider.RemoveItem(key);

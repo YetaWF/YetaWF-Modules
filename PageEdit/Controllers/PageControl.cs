@@ -195,6 +195,7 @@ namespace YetaWF.Modules.PageEdit.Controllers {
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [ExcludeDemoMode]
         public ActionResult AddNewPage_Partial(AddNewPageModel model) {
             if (!ModelState.IsValid)
                 return PartialView(model);
@@ -218,6 +219,7 @@ namespace YetaWF.Modules.PageEdit.Controllers {
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [ExcludeDemoMode]
         public ActionResult AddNewModule_Partial(AddNewModuleModel model) {
             PageDefinition page = PageDefinition.Load(model.CurrentPageGuid);
             if (page == null)
@@ -238,6 +240,7 @@ namespace YetaWF.Modules.PageEdit.Controllers {
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [ExcludeDemoMode]
         public ActionResult AddExistingModule_Partial(AddExistingModel model) {
             PageDefinition page = PageDefinition.Load(model.CurrentPageGuid);
             if (page == null)
@@ -256,6 +259,7 @@ namespace YetaWF.Modules.PageEdit.Controllers {
         }
 
         [HttpPost]
+        [ExcludeDemoMode]
         public ActionResult ImportPackage(HttpPostedFileBase __filename, ImportModel model) {
             FileUpload upload = new FileUpload();
             string tempName = upload.StoreTempPackageFile(__filename);
@@ -285,6 +289,7 @@ namespace YetaWF.Modules.PageEdit.Controllers {
             }
         }
         [HttpPost]
+        [ExcludeDemoMode]
         public ActionResult RemovePackage(string filename) {
             // there is nothing to remove because we already imported the file
             return new EmptyResult();

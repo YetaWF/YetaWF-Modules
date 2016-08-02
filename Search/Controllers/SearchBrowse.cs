@@ -119,6 +119,7 @@ namespace YetaWF.Modules.Search.Controllers {
 
         [HttpPost]
         [Permission("RemoveItems")]
+        [ExcludeDemoMode]
         public ActionResult Remove(int searchDataId) {
             using (SearchDataProvider searchDP = new SearchDataProvider()) {
                 searchDP.RemoveItem(searchDataId);
@@ -128,6 +129,7 @@ namespace YetaWF.Modules.Search.Controllers {
 
         [HttpPost]
         [Permission("RemoveItems")]
+        [ExcludeDemoMode]
         public ActionResult RemoveAll() {
             using (SearchDataProvider searchDP = new SearchDataProvider()) {
                 searchDP.RemoveItems(null);/* ALL */
@@ -137,6 +139,7 @@ namespace YetaWF.Modules.Search.Controllers {
 
         [HttpPost]
         [Permission("CollectKeywords")]
+        [ExcludeDemoMode]
         public ActionResult CollectKeywords() {
             Scheduler.Search search = new Scheduler.Search();
             search.SearchSite(false);

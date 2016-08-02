@@ -131,6 +131,7 @@ namespace YetaWF.Modules.Identity.Controllers {
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [ExcludeDemoMode]
         public ActionResult LoginConfig_Partial(Model model) {
             using (LoginConfigDataProvider dataProvider = new LoginConfigDataProvider()) {
                 LoginConfigData data = dataProvider.GetItem();// get the original item

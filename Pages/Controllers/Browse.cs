@@ -140,6 +140,7 @@ namespace YetaWF.Modules.Pages.Controllers {
 
         [HttpPost]
         [Permission("RemovePages")]
+        [ExcludeDemoMode]
         public ActionResult Remove(string pageName) {
             if (string.IsNullOrWhiteSpace(pageName))
                 throw new Error(this.__ResStr("noPageName", "No page name specified"));

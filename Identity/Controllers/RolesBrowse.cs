@@ -93,6 +93,7 @@ namespace YetaWF.Modules.Identity.Controllers {
 
         [HttpPost]
         [Permission("RemoveRoles")]
+        [ExcludeDemoMode]
         public ActionResult Remove(string name) {
             if (string.IsNullOrWhiteSpace(name))
                 throw new Error(this.__ResStr("noItem", "No role name specified"));

@@ -63,7 +63,7 @@ namespace YetaWF.Modules.Blog.Controllers {
             [Caption("Published"), Description("Defines whether this entry has been published and is viewable by everyone")]
             [UIHint("Boolean"), ReadOnly]
             public bool Published { get; set; }
-            
+
             [Caption("Date Published"), Description("The date this entry has been published")]
             [UIHint("Date"), ReadOnly]
             public DateTime DatePublished { get; set; }
@@ -128,6 +128,7 @@ namespace YetaWF.Modules.Blog.Controllers {
 
         [HttpPost]
         [Permission("RemoveItems")]
+        [ExcludeDemoMode]
         public ActionResult Remove(int blogEntry) {
             using (BlogEntryDataProvider dataProvider = new BlogEntryDataProvider()) {
                 dataProvider.RemoveItem(blogEntry);

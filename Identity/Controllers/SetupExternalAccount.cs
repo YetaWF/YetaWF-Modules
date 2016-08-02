@@ -74,6 +74,7 @@ namespace YetaWF.Modules.Identity.Controllers {
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [ExcludeDemoMode]
         public async Task<ActionResult> SetupExternalAccount_Partial(SetupExternalAccountModel model) {
             if (!ModelState.IsValid)
                 return PartialView(model);

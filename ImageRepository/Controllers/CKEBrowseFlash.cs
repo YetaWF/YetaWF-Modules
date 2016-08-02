@@ -60,6 +60,7 @@ namespace YetaWF.Modules.ImageRepository.Controllers {
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [ExcludeDemoMode]
         public ActionResult CKEBrowseFlash_Partial(Model model) {
             model.Update(Manager, Module);
             if (!ModelState.IsValid)

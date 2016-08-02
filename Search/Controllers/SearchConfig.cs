@@ -60,6 +60,7 @@ namespace YetaWF.Modules.Search.Controllers {
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [ExcludeDemoMode]
         public ActionResult SearchConfig_Partial(Model model) {
             using (SearchConfigDataProvider dataProvider = new SearchConfigDataProvider()) {
                 SearchConfigData data = dataProvider.GetItem();// get the original item

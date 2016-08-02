@@ -90,6 +90,7 @@ namespace YetaWF.Modules.Identity.Controllers {
 
         [HttpPost]
         [Permission("RemoveResources")]
+        [ExcludeDemoMode]
         public ActionResult Remove(string resourceName) {
             using (AuthorizationDataProvider authDP = new AuthorizationDataProvider()) {
                 if (authDP.GetItem(resourceName) == null)
