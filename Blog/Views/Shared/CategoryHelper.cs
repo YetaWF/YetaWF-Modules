@@ -25,25 +25,32 @@ namespace YetaWF.Modules.Blog.Views.Shared {
                     Value = c.Identity
                 }).ToList();
 
-                bool showSelect = false;
-                bool showAll = false;
-                htmlHelper.TryGetControlInfo<bool>("", "ShowAll", out showAll);
-                if (model == 0 && !showAll)
-                    htmlHelper.TryGetControlInfo<bool>("", "ShowSelectIfNone", out showSelect);
-                if (!showAll && !showSelect)
-                    htmlHelper.TryGetControlInfo<bool>("", "ShowSelect", out showSelect);
-                if (showAll) {
+                if (list.Count == 0) {
                     list.Insert(0, new SelectionItem<int> {
-                        Text = __ResStr("all", "(All)"),
-                        Tooltip = __ResStr("allTT", "Displays blogs from all available blog categories"),
+                        Text = __ResStr("none", "(None Available)"),
+                        Tooltip = __ResStr("noneTT", "There are no blog categories"),
                         Value = 0,
                     });
-                } else if (showSelect) {
-                    list.Insert(0, new SelectionItem<int> {
-                        Text = __ResStr("select", "(Select)"),
-                        Tooltip = __ResStr("selectTT", "Please select one of the available blog categories"),
-                        Value = 0,
-                    });
+                } else {
+                    bool showSelect = false;
+                    bool showAll = htmlHelper.GetControlInfo<bool>("", "ShowAll", false);
+                    if (model == 0 && !showAll)
+                        showSelect = htmlHelper.GetControlInfo<bool>("", "ShowSelectIfNone", false);
+                    if (!showAll && !showSelect)
+                        showSelect = htmlHelper.GetControlInfo<bool>("", "ShowSelect", false);
+                    if (showAll) {
+                        list.Insert(0, new SelectionItem<int> {
+                            Text = __ResStr("all", "(All)"),
+                            Tooltip = __ResStr("allTT", "Displays blogs from all available blog categories"),
+                            Value = 0,
+                        });
+                    } else if (showSelect) {
+                        list.Insert(0, new SelectionItem<int> {
+                            Text = __ResStr("select", "(Select)"),
+                            Tooltip = __ResStr("selectTT", "Please select one of the available blog categories"),
+                            Value = 0,
+                        });
+                    }
                 }
                 return htmlHelper.RenderDropDownSelectionList(name, model, list);
             }

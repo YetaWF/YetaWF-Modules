@@ -17,7 +17,7 @@ namespace YetaWF.Modules.Blog.Controllers {
         public class AddModel {
 
             [Caption("Category"), Description("The category for this blog entry")]
-            [UIHint("YetaWF_Blog_Category"), Required]
+            [UIHint("YetaWF_Blog_Category"), AdditionalMetadata("ShowSelect", true), Required]
             public int CategoryIdentity { get; set; }
 
             [Caption("Title"), Description("The title for this blog entry")]
