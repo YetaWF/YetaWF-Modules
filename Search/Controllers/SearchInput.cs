@@ -25,6 +25,9 @@ namespace YetaWF.Modules.Search.Controllers {
 
         [HttpGet]
         public ActionResult SearchInput(string searchTerms) {
+            SearchConfigData config = SearchConfigDataProvider.GetConfig();
+            if (!Manager.EditMode && string.IsNullOrWhiteSpace(config.ResultsUrl)) // if no search result url is available, don't show the module
+                return new EmptyResult();
             Model model = new Model { SearchTerms = searchTerms };
             return View(model);
         }
