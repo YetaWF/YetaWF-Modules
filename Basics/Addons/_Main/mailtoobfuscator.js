@@ -8,9 +8,10 @@ function YGenMailTo(name, domain, subject, linkText) {
     if (linkText === undefined)
         linkText = "{0}@{1}".format(name, domain);
     $a.text(linkText);
-    if (subject !== undefined)
+    if (subject !== undefined) {
+        subject = subject.replace(' ', '+');
         subject = $('<div/>').html(subject + '').text()
-    else
+    } else
         subject = ""
     $a.attr('href', 'mailto:{0}@{1}?subject={2}'.format(name, domain, subject))
     document.write($a[0].outerHTML)
