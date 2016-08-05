@@ -50,13 +50,13 @@ YetaWF_ImageRepository.initSelection = function (divId) {
         });
     }
     // handle the clear button
-    $('body').on('click', '#' + divId + ' a[name="Clear"]', function (e) {
+    $('body').on('click', '#' + divId + ' a[data-name="Clear"]', function (e) {
         e.preventDefault();
         clearFileName();
         return false;
     });
     // handle the remove button
-    $('body').on('click', '#' + divId + ' a[name="Remove"]', function (e) {
+    $('body').on('click', '#' + divId + ' a[data-name="Remove"]', function (e) {
         e.preventDefault();
         var $this = $(this);
 

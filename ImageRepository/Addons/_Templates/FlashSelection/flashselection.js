@@ -15,7 +15,7 @@ YetaWF_FlashImageRepository.initSelection = function (divId) {
 
     var $buttons = $('.t_haveflash', $buttons);
     if ($buttons.length != 1) throw "button area not found";/*DEBUG*/
-    
+
     // set the preview flash image
     function setPreview(name) {
         $buttons.toggle(name != null && name.length > 0);
@@ -64,13 +64,13 @@ YetaWF_FlashImageRepository.initSelection = function (divId) {
         });
     }
     // handle the clear button
-    $('body').on('click', '#' + divId + ' a[name="Clear"]', function (e) {
+    $('body').on('click', '#' + divId + ' a[data-name="Clear"]', function (e) {
         e.preventDefault();
         clearFileName();
         return false;
     });
     // handle the remove button
-    $('body').on('click', '#' + divId + ' a[name="Remove"]', function (e) {
+    $('body').on('click', '#' + divId + ' a[data-name="Remove"]', function (e) {
         e.preventDefault();
         var $this = $(this);
 

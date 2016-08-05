@@ -11,17 +11,17 @@ $(document).ready(function () {
         var kwds = eval(kwdsString);
         $('.yPane .yModule').highlight(kwds);
     }
-    $("body").on("click", ".YetaWF_Search_SearchControl a[name='On']", function () {
-        $(".YetaWF_Search_SearchControl a[name='On']").toggle(false);
-        $(".YetaWF_Search_SearchControl a[name='Off']").toggle(true);
+    $("body").on("click", ".YetaWF_Search_SearchControl a[data-name='On']", function () {
+        $(".YetaWF_Search_SearchControl a[data-name='On']").toggle(false);
+        $(".YetaWF_Search_SearchControl a[data-name='Off']").toggle(true);
         highlightSearch();
     });
-    $("body").on("click", ".YetaWF_Search_SearchControl a[name='Off']", function () {
-        $(".YetaWF_Search_SearchControl a[name='Off']").toggle(false);
-        $(".YetaWF_Search_SearchControl a[name='On']").toggle(true);
+    $("body").on("click", ".YetaWF_Search_SearchControl a[data-name='Off']", function () {
+        $(".YetaWF_Search_SearchControl a[data-name='Off']").toggle(false);
+        $(".YetaWF_Search_SearchControl a[data-name='On']").toggle(true);
         $('.yModule').removeHighlight();
     });
-    if ($(".YetaWF_Search_SearchControl a[name='Off']:visible").length > 0) {
+    if ($(".YetaWF_Search_SearchControl a[data-name='Off']:visible").length > 0) {
         highlightSearch();
     }
     if (typeof YetaWF_Forms !== 'undefined' && YetaWF_Forms != undefined) {
