@@ -3,7 +3,6 @@
 using System.Web.Mvc;
 using YetaWF.Core.Controllers;
 using YetaWF.Core.Models.Attributes;
-using YetaWF.Core.Support;
 
 namespace YetaWF.Modules.TinyLogin.Controllers {
 
@@ -37,9 +36,6 @@ namespace YetaWF.Modules.TinyLogin.Controllers {
                 UserUrl = string.IsNullOrWhiteSpace(Module.UserUrl) ? Manager.CurrentSite.HomePageUrl : Module.UserUrl,
                 UserTooltip = Module.UserTooltip,
             };
-            // don't show this on the Url used for login/logoff/register
-            string url = Manager.CurrentPage.CompleteUrl;
-            if (url == model.LogonUrl || url == model.RegisterUrl) return new EmptyResult();
             return View(model);
         }
     }
