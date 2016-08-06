@@ -5,7 +5,11 @@
 @using YetaWF.Core.Extensions;
 @using YetaWF.Modules.ImageRepository.Views.Shared
 @{ Manager.AddOnManager.AddTemplate("Flash"); }
-@{ FlashSelectionInfo info = Html.GetParentModelSupportProperty<FlashSelectionInfo>("", "Info"); }
+@{
+    Manager.AddOnManager.AddAddOnGlobal("google.com.swfobject", "swfobject");
+    FlashSelectionInfo info = Html.GetParentModelSupportProperty<FlashSelectionInfo>("", "Info");
+    string objId = UniqueId();
+}
 <div id="@ControlId" class="yt_imagerepository_flashselection">
     @Html.HiddenFor(m => Model)
     <div class="t_imgarea">
@@ -18,12 +22,13 @@
             </select>
         </div>
         <div class="t_preview">
-            <object width="@info.PreviewWidth" height="@info.PreviewHeight" classid="clsid:d27cdb6e-ae6d-11cf-96b8-444553540000" codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=6,0,40,0">
-                <param name="quality" value="high">
-                <param name="wmode" value="transparent">
-                <param name="movie" value="@Manager.GetCDNUrl(info.MakeFlashUrl(Model, ForceHttpHandler: true))">
-                <embed width="@info.PreviewWidth" height="@info.PreviewHeight" pluginspage="http://www.macromedia.com/go/getflashplayer" src="@Manager.GetCDNUrl(info.MakeFlashUrl(Model))" type="application/x-shockwave-flash" wmode="transparent" quality="high">
-            </object>
+            <div id="@objId">
+                <p>Flash Not Installed</p>
+            </div>
+            <script type="text/javascript">
+                swfobject.embedSWF("@Html.Raw(Manager.GetCDNUrl(info.MakeFlashUrl(Model, ForceHttpHandler: true)))", "@objId", "@info.PreviewWidth", "@info.PreviewHeight", "9.0.0", false,
+                    null, { wmode: "transparent", allowScriptAccess: "true", quality:"high" } );
+            </script>
         </div>
     </div>
     <div class="t_haveflash" @Html.Raw(string.IsNullOrWhiteSpace(Model) ? "style='display:none'" : "")>
