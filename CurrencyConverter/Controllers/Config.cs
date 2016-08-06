@@ -19,6 +19,7 @@ namespace YetaWF.Modules.CurrencyConverter.Controllers {
 
             [Caption("App ID"), Description("App ID used by openexchangerates.org to identify your account - an account is needed to retrieve currency exchange rates - This account is used for all sites within this YetaWF instance")]
             [UIHint("Text40"), StringLength(ConfigData.MaxAppID), Required, Trim]
+            [ExcludeDemoMode]
             public string AppID { get; set; }
 
             [Caption("Use Https"), Description("Use https to access openexchangerates.org (requires a paid account) - This setting is used for all sites within this YetaWF instance")]
