@@ -4,6 +4,6 @@
     @if (string.IsNullOrWhiteSpace(Model.VisitorsUrl)) {
         <img src="@Manager.GetCDNUrl(Model.ImageUrl)" data-tooltip="@Model.Tooltip" />
     } else {
-        <a href="@Model.VisitorsUrl"><img src="@Manager.GetCDNUrl(Model.ImageUrl)" data-tooltip="@Model.Tooltip" /></a>
+        <a href="@Model.VisitorsUrl"><img src="@Manager.GetCDNUrl(Model.ImageUrl)" data-tooltip="@Model.Tooltip" alt="Visitors" /></a>
     }
 </div>
