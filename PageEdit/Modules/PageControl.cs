@@ -10,6 +10,7 @@ using YetaWF.Core.Serializers;
 using YetaWF.Core.Support;
 using YetaWF.DataProvider;
 using YetaWF.Modules.PageEdit.Controllers;
+using YetaWF.Modules.PageEdit.DataProvider;
 
 namespace YetaWF.Modules.PageEdit.Modules {
 
@@ -38,8 +39,9 @@ namespace YetaWF.Modules.PageEdit.Modules {
         public override SerializableList<AllowedRole> DefaultAllowedRoles { get { return AdministratorLevel_DefaultAllowedRoles; } }
 
         public override MenuList GetModuleMenuList(ModuleAction.RenderModeEnum renderMode, ModuleAction.ActionLocationEnum location) {
-            MenuList menuList = base.GetModuleMenuList(renderMode, location);
+            MenuList baseMenuList = base.GetModuleMenuList(renderMode, location);
 
+            MenuList menuList = new MenuList();
             menuList.New(this.GetAction_SwitchToView(), location);
             menuList.New(this.GetAction_SwitchToEdit(), location);
 
@@ -47,6 +49,9 @@ namespace YetaWF.Modules.PageEdit.Modules {
             menuList.New(modEdit.GetAction_Edit(null), location);
             menuList.New(modEdit.GetAction_Remove(null), location);
 
+            menuList.New(this.GetAction_W3CValidation(), location);
+
+            menuList.AddRange(baseMenuList);
             return menuList;
         }
 
@@ -83,6 +88,25 @@ namespace YetaWF.Modules.PageEdit.Modules {
                 Location = ModuleAction.ActionLocationEnum.NoAuto |
                             ModuleAction.ActionLocationEnum.MainMenu | ModuleAction.ActionLocationEnum.ModuleLinks | ModuleAction.ActionLocationEnum.ModuleMenu,
                 SaveReturnUrl = true
+            };
+        }
+        public ModuleAction GetAction_W3CValidation() {
+            if (Manager.CurrentPage == null) return null;
+            ControlPanelConfigData config = ControlPanelConfigDataProvider.GetConfig();
+            if (string.IsNullOrWhiteSpace(config.W3CUrl)) return null;
+            if (!config.W3CUrl.Contains("{0}")) return null;
+            return new ModuleAction(this) {
+                Url = string.Format(config.W3CUrl, Manager.CurrentPage.GetCanonicalUrl()),
+                Image = "W3CValidator.png",
+                LinkText = this.__ResStr("modW3CValLink", "W3C Validation"),
+                MenuText = this.__ResStr("modW3CValText", "W3C Validation"),
+                Tooltip = this.__ResStr("modW3CValTooltip", "Use W3C Validation service to validate the current page - The page must be accessible to the remote service as an anonymous user"),
+                Legend = this.__ResStr("modW3CValLegend", "Uses the defined W3C Validation service to validate a page - The page must be accessible to the remote service as an anonymous user"),
+                Category = ModuleAction.ActionCategoryEnum.Read,
+                Mode = ModuleAction.ActionModeEnum.Any,
+                Location = ModuleAction.ActionLocationEnum.NoAuto |
+                            ModuleAction.ActionLocationEnum.MainMenu | ModuleAction.ActionLocationEnum.ModuleLinks | ModuleAction.ActionLocationEnum.ModuleMenu,
+                Style = ModuleAction.ActionStyleEnum.NewWindow,
             };
         }
     }
