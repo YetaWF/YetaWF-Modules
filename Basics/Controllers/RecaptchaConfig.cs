@@ -18,7 +18,7 @@ namespace YetaWF.Modules.Basics.Controllers {
         public class EditModel {
 
             public EditModel() {
-                GoogleUrl = "https://www.google.com/recaptcha/admin#createsite";
+                GoogleUrl = "https://www.google.com/recaptcha";
             }
 
             [Caption("Public Key"), Description("The public key used to communicate with the Google/Recaptcha site")]
