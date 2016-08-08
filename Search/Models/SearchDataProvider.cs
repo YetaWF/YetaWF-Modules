@@ -69,19 +69,31 @@ namespace YetaWF.Modules.Search.DataProvider {
                     switch (GetIOMode(package.AreaName + "_Data")) {
                         default:
                         case WebConfigHelper.IOModeEnum.File:
-                            throw new InternalError("File I/O is not supported");
+                            // accept so we can run without failure. However, it's only usable with Sql
+                            Usable = false;
+                            break;
                         case WebConfigHelper.IOModeEnum.Sql:
                             _dataProvider = new YetaWF.DataProvider.SQLIdentityObjectDataProvider<int, object, int, SearchData>(AreaName, SQLDbo, SQLConn,
                                 CurrentSiteIdentity: SiteIdentity,
                                 Cacheable: true);
+                            Usable = true;
                             break;
                     }
                 }
                 return _dataProvider;
             }
         }
-
         private IDataProviderIdentity<int, object, int, SearchData> _dataProvider { get; set; }
+
+        private bool Usable { get; set; }
+
+        public static bool IsUsable {
+            get {
+                using (SearchDataProvider searchDP = new SearchDataProvider()) {
+                    return searchDP.Usable;
+                }
+            }
+        }
 
         // LOAD/SAVE
         // LOAD/SAVE
@@ -97,6 +109,7 @@ namespace YetaWF.Modules.Search.DataProvider {
             return GetTableName();
         }
         internal SearchData GetItemWithUrl(int searchDataId) {
+            if (!IsUsable) return null;
             using (SearchDataUrlDataProvider searchUrlDP = new SearchDataUrlDataProvider()) {
                 List<DataProviderFilterInfo> filters = null;
                 filters = DataProviderFilterInfo.Join(filters, new DataProviderFilterInfo { Field = "SearchDataId", Operator = "==", Value = searchDataId });
@@ -108,9 +121,11 @@ namespace YetaWF.Modules.Search.DataProvider {
         }
 
         public bool AddItem(SearchData data) {
+            if (!IsUsable) return false;
             return DataProvider.Add(data);
         }
         public bool AddItems(List<SearchData> list, string pageUrl, string pageDescription, DateTime pageCreated, DateTime? pageUpdated, DateTime searchStarted) {
+            if (!IsUsable) return false;
             bool status = false;
             DoAction(() => {
                 if (pageUpdated != null && (DateTime)pageUpdated < pageCreated)
@@ -145,12 +160,18 @@ namespace YetaWF.Modules.Search.DataProvider {
             return status;
         }
         public UpdateStatusEnum UpdateItem(SearchData data) {
+            if (!IsUsable) return UpdateStatusEnum.RecordDeleted;
             return DataProvider.Update(data.SearchDataId, null, data.SearchDataId, null, data);
         }
         public bool RemoveItem(int id) {
+            if (!IsUsable) return false;
             return DataProvider.RemoveByIdentity(id);
         }
         public List<SearchData> GetItemsWithUrl(int skip, int take, List<DataProviderSortInfo> sort, List<DataProviderFilterInfo> filters, out int total) {
+            if (!IsUsable) {
+                total = 0;
+                return new List<SearchData>();
+            }
             using (SearchDataUrlDataProvider searchUrlDP = new SearchDataUrlDataProvider()) {
                 List<JoinData> joins = new List<JoinData> {
                     new JoinData {MainDP = this, JoinDP= searchUrlDP, MainColumn = "SearchDataUrlId", JoinColumn = "SearchDataUrlId" },
@@ -159,6 +180,7 @@ namespace YetaWF.Modules.Search.DataProvider {
             }
         }
         public int RemoveItems(List<DataProviderFilterInfo> filters) {
+            if (!IsUsable) return 0;
             int count = 0;
             DoAction(() => {
                 count = DataProvider.RemoveRecords(filters);
@@ -174,6 +196,7 @@ namespace YetaWF.Modules.Search.DataProvider {
         }
 
         public void RemoveOldItems(DateTime searchStarted) {
+            if (!IsUsable) return;
             DoAction(() => {
                 List<DataProviderFilterInfo> filters = null;
                 filters = DataProviderFilterInfo.Join(filters, new DataProviderFilterInfo { Field = "DateAdded", Operator = "<", Value = searchStarted });
@@ -234,22 +257,33 @@ namespace YetaWF.Modules.Search.DataProvider {
             return DataProvider.IsInstalled();
         }
         public bool InstallModel(List<string> errorList) {
+            if (!IsUsable) return true;
             return DataProvider.InstallModel(errorList);
         }
         public bool UninstallModel(List<string> errorList) {
+            if (!IsUsable) return true;
             return DataProvider.UninstallModel(errorList);
         }
         public void AddSiteData() {
+            if (!IsUsable) return;
             DataProvider.AddSiteData();
         }
         public void RemoveSiteData() {
+            if (!IsUsable) return;
             DataProvider.RemoveSiteData();
         }
         public bool ExportChunk(int chunk, SerializableList<SerializableFile> fileList, out object obj) {
-            return DataProvider.ExportChunk(chunk, fileList, out obj);
+            // we don't export search data
+            obj = null;
+            return false;
+            //if (!IsUsable) return false;
+            //return DataProvider.ExportChunk(chunk, fileList, out obj);
         }
         public void ImportChunk(int chunk, SerializableList<SerializableFile> fileList, object obj) {
-            DataProvider.ImportChunk(chunk, fileList, obj);
+            // we don't import search data
+            return;
+            //if (!IsUsable) return;
+            //DataProvider.ImportChunk(chunk, fileList, obj);
         }
     }
 }

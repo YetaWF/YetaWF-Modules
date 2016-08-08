@@ -13,6 +13,7 @@ using YetaWF.Core.Support;
 using YetaWF.Core.Views.Shared;
 using YetaWF.DataProvider;
 using YetaWF.Modules.Search.Controllers;
+using YetaWF.Modules.Search.DataProvider;
 
 namespace YetaWF.Modules.Search.Modules {
 
@@ -88,6 +89,7 @@ namespace YetaWF.Modules.Search.Modules {
         }
         public ModuleAction GetAction_RemoveAll() {
             if (!IsAuthorized("RemoveItems")) return null;
+            if (!SearchDataProvider.IsUsable) return null;
             return new ModuleAction(this) {
                 Url = YetaWFManager.UrlFor(typeof(SearchBrowseModuleController), "RemoveAll"),
                 NeedsModuleContext = true,
@@ -106,6 +108,7 @@ namespace YetaWF.Modules.Search.Modules {
         }
         public ModuleAction GetAction_CollectKeywords() {
             if (!IsAuthorized("CollectKeywords")) return null;
+            if (!SearchDataProvider.IsUsable) return null;
             return new ModuleAction(this) {
                 Url = YetaWFManager.UrlFor(typeof(SearchBrowseModuleController), "CollectKeywords"),
                 NeedsModuleContext = true,

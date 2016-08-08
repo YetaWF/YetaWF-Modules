@@ -5,7 +5,6 @@ using System.Web.Mvc;
 using YetaWF.Core.Controllers;
 using YetaWF.Core.Models;
 using YetaWF.Core.Models.Attributes;
-using YetaWF.Core.Support;
 using YetaWF.Modules.Search.DataProvider;
 
 namespace YetaWF.Modules.Search.Controllers {
@@ -27,6 +26,9 @@ namespace YetaWF.Modules.Search.Controllers {
         [HttpGet]
         public ActionResult SearchResults(string searchTerms) {
             if (string.IsNullOrWhiteSpace(searchTerms)) return new EmptyResult();
+
+            if (!SearchDataProvider.IsUsable)
+                return View("SearchUnavailable_Results");
 
             SearchConfigData config = SearchConfigDataProvider.GetConfig();
             using (SearchResultDataProvider searchResDP = new SearchResultDataProvider()) {

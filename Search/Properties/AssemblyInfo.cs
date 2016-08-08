@@ -23,3 +23,7 @@ using YetaWF.Core.Packages;
     "http://YetaWF.com/Documentation/YetaWF/Support",
     "http://yetawf.com/Documentation/YetaWF/Search#Release%20Notice",
     "http://yetawf.com/Documentation/YetaWF/Search#License")]
+
+// Required creation order so SearchDataProvider is installed first (in case File I/O is used)
+[assembly: InstallOrder(typeof(YetaWF.Modules.Search.DataProvider.SearchDataProvider))]
+[assembly: InstallOrder(typeof(YetaWF.Modules.Search.DataProvider.SearchDataUrlDataProvider))]

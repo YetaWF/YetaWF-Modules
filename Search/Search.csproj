@@ -114,6 +114,10 @@
     <None Include="Views\YetaWF_Search_SearchInput.cshtml" />
     <None Include="Views\YetaWF_Search_SearchInput_Partial.cshtml" />
     <None Include="Views\YetaWF_Search_SearchResults.cshtml" />
+    <None Include="Views\YetaWF_Search_SearchUnavailable_Browse.cshtml" />
+    <None Include="Views\YetaWF_Search_SearchUnavailable_Results.cshtml" />
+    <None Include="Views\YetaWF_Search_SearchUnavailable_Edit.cshtml" />
+    <None Include="Views\YetaWF_Search_SearchUnavailable_Input.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\CoreComponents\Core\Core.csproj">

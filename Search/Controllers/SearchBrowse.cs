@@ -93,6 +93,8 @@ namespace YetaWF.Modules.Search.Controllers {
 
         [HttpGet]
         public ActionResult SearchBrowse() {
+            if (!SearchDataProvider.IsUsable)
+                return View("SearchUnavailable_Browse");
             BrowseModel model = new BrowseModel { };
             model.GridDef = new GridDefinition {
                 AjaxUrl = GetActionUrl("SearchBrowse_GridData"),

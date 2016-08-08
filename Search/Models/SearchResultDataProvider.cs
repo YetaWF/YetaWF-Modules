@@ -41,11 +41,14 @@ namespace YetaWF.Modules.Search.DataProvider {
                     switch (GetIOMode(package.AreaName + "_Urls")) {
                         default:
                         case WebConfigHelper.IOModeEnum.File:
-                            throw new InternalError("File I/O is not supported");
+                            if (SearchDataProvider.IsUsable)
+                                throw new InternalError("File I/O is not supported");
+                            break;
                         case WebConfigHelper.IOModeEnum.Sql:
-                            _dataProvider = new YetaWF.DataProvider.SQLIdentityObjectDataProvider<int, object, int, SearchResult>(AreaName, SQLDbo, SQLConn,
-                                CurrentSiteIdentity: SiteIdentity,
-                                Cacheable: true);
+                            if (SearchDataProvider.IsUsable)
+                                _dataProvider = new YetaWF.DataProvider.SQLIdentityObjectDataProvider<int, object, int, SearchResult>(AreaName, SQLDbo, SQLConn,
+                                        CurrentSiteIdentity: SiteIdentity,
+                                        Cacheable: true);
                             break;
                     }
                 }
@@ -67,6 +70,7 @@ namespace YetaWF.Modules.Search.DataProvider {
         }
         public List<SearchResult> GetSearchResults(string searchTerms, int maxResults, string languageId, bool haveUser, out bool haveMore, List<DataProviderFilterInfo> Filters = null) {
             haveMore = false;
+            if (!SearchDataProvider.IsUsable) return new List<SearchResult>();
             List<SearchResult> results = Parse(searchTerms, maxResults, languageId, haveUser, out haveMore, Filters);
             return results;
         }

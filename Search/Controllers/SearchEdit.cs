@@ -66,6 +66,7 @@ namespace YetaWF.Modules.Search.Controllers {
 
         [HttpGet]
         public ActionResult SearchEdit(int searchDataId) {
+            if (!SearchDataProvider.IsUsable) return View("SearchUnavailable_Edit");
             using (SearchDataProvider dataProvider = new SearchDataProvider()) {
                 EditModel model = new EditModel { };
                 SearchData data = dataProvider.GetItemWithUrl(searchDataId);

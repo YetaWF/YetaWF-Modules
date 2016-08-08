@@ -25,6 +25,8 @@ namespace YetaWF.Modules.Search.Controllers {
 
         [HttpGet]
         public ActionResult SearchInput(string searchTerms) {
+            if (!SearchDataProvider.IsUsable)
+                return View("SearchUnavailable_Input");
             SearchConfigData config = SearchConfigDataProvider.GetConfig();
             if (!Manager.EditMode && string.IsNullOrWhiteSpace(config.ResultsUrl)) // if no search result url is available, don't show the module
                 return new EmptyResult();

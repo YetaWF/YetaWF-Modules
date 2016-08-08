@@ -34,6 +34,8 @@ namespace YetaWF.Modules.Search.Controllers {
         public ActionResult SearchControl() {
             if (Manager.EditMode)
                 return new EmptyResult();
+            if (!SearchDataProvider.IsUsable)
+                return new EmptyResult();
             string searchTerms = HttpContext.Request[Info.UrlArg];
             if (searchTerms == null)
                 return new EmptyResult();
