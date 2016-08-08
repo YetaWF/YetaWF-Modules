@@ -13,6 +13,7 @@ using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Modules;
 using YetaWF.Core.Pages;
 using YetaWF.Core.Serializers;
+using YetaWF.Core.Site;
 using YetaWF.Core.Skins;
 using YetaWF.Core.Support;
 using YetaWF.Core.Views.Shared;
@@ -24,7 +25,7 @@ namespace YetaWF.Modules.PageEdit.Controllers {
         [Trim]
         public class EditablePage {
 
-            public virtual List<string> CategoryOrder { get { return new List<string> { "Page", "Authorization", "Urls", "Skin", "References", "Variables" }; } }
+            public virtual List<string> CategoryOrder { get { return new List<string> { "Page", "Authorization", "Urls", "Skin", "References", "Addons", "Meta", "Variables" }; } }
 
             [Category("Page"), Caption("Url"), Description("The Url used to identify this page - local Urls start with / and do not include http:// or https://")]
             [UIHint("Text80"), StringLength(Globals.MaxUrl), UrlValidation(urlType: UrlHelperEx.UrlTypeEnum.New), Required, Trim]
@@ -139,6 +140,16 @@ namespace YetaWF.Modules.PageEdit.Controllers {
             [Category("Skin"), Caption("CSS Class"), Description("The optional CSS classes to be added to the page's <body> tag for further customization through stylesheets")]
             [UIHint("Text40"), StringLength(PageDefinition.MaxCssClass), CssClassesValidationAttribute, Trim]
             public string CssClass { get; set; }
+
+            [Category("Addons"), Caption("Google Analytics"), Description("The Universal Analytics tracking code used by Google Analytics - You can obtain the tracking code from Google Analytics - Make sure to copy the ENTIRE tracking code (including all javascript and markup) - If omitted, the site defined tracking code is used (Site Settings)")]
+            [TextAbove("Google Analytics is only available in deployed production sites and is ignored in debug builds (not marked deployed).")]
+            [UIHint("TextArea"), AdditionalMetadata("SourceOnly", true), AllowHtml, StringLength(SiteDefinition.MaxGoogleAnalytics), Trim]
+            [HelpLink("https://analytics.google.com/")]
+            public string GoogleAnalytics { get; set; }
+
+            [Category("Meta"), Caption("Meta Tags"), Description("Defines <meta> tags that are added to the page - If specified, this replaces the site meta tags defined using the PageMetaTags property (Site Settings)")]
+            [UIHint("TextArea"), AdditionalMetadata("SourceOnly", true), AllowHtml, StringLength(SiteDefinition.MaxMeta), Trim]
+            public string PageMetaTags { get; set; }
 
             [Category("Variables"), Caption("Page Guid Name"), Description("The page name encoded using its unique id")]
             [UIHint("String"), ReadOnly]
