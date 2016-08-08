@@ -19,6 +19,8 @@ namespace YetaWF.Modules.IFrame.Modules {
     [UniqueModule(UniqueModuleStyle.NonUnique)]
     public class IFrameDisplayModule : ModuleDefinition {
 
+        public override IModuleDefinitionIO GetDataProvider() { return new IFrameDisplayModuleDataProvider(); }
+
         public IFrameDisplayModule() {
             Title = this.__ResStr("modTitle", "IFrame");
             Name = this.__ResStr("modName", "IFrame (Display Url)");
@@ -42,8 +44,22 @@ namespace YetaWF.Modules.IFrame.Modules {
         [UIHint("Text20"), StringLength(20), Trim]
         public string Height { get; set; }
 
-        public override IModuleDefinitionIO GetDataProvider() { return new IFrameDisplayModuleDataProvider(); }
-
         public override SerializableList<AllowedRole> DefaultAllowedRoles { get { return AnonymousLevel_DefaultAllowedRoles; } }
+
+        public ModuleAction GetAction_Display(string url) {
+            return new ModuleAction(this) {
+                Url = string.IsNullOrWhiteSpace(url) ? ModulePermanentUrl : url,
+                Image = "#Display",
+                LinkText = this.__ResStr("IFrameLink", "IFrame"),
+                MenuText = this.__ResStr("IFrameText", "IFrame"),
+                Tooltip = this.__ResStr("IFrameTooltip", "Display a page in an iframe"),
+                Legend = this.__ResStr("IFrameLegend", "Displays a page in an iframe"),
+                Style = ModuleAction.ActionStyleEnum.Normal,
+                Category = ModuleAction.ActionCategoryEnum.Read,
+                Mode = ModuleAction.ActionModeEnum.Any,
+                Location = ModuleAction.ActionLocationEnum.NoAuto,
+                SaveReturnUrl = true,
+            };
+        }
     }
 }
