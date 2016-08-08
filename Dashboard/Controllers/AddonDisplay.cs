@@ -56,7 +56,6 @@ namespace YetaWF.Modules.Dashboard.Controllers {
             [UIHint("ListOfStrings"), AdditionalMetadata("Delimiter", "<br/>"), ReadOnly]
             public List<string> SupportTypesStrings { get; set; }
 
-            //$$ public SkinCollectionInfo SkinInfo { get; set; }
             [Caption("Skin Definition Path"), Description("The location where the Skin.txt file is located defining the Skin attributes - only used for Skin AddOns")]
             [UIHint("String"), ReadOnly]
             public string SkinFilePath { get; set; }
