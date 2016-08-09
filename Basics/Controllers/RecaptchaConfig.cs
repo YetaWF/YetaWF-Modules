@@ -22,12 +22,12 @@ namespace YetaWF.Modules.Basics.Controllers {
             }
 
             [Caption("Public Key"), Description("The public key used to communicate with the Google/Recaptcha site")]
-            [UIHint("Text80"), StringLength(YetaWF.Core.Views.Shared.RecaptchaConfig.MaxPublicKey), Required, Trim]
+            [UIHint("Text80"), StringLength(YetaWF.Core.Views.Shared.RecaptchaConfig.MaxPublicKey), Trim]
             [ExcludeDemoMode]
             public string PublicKey { get; set; }
 
             [Caption("Private Key"), Description("The private key used to communicate with the Google/Recaptcha site")]
-            [UIHint("Text80"), StringLength(YetaWF.Core.Views.Shared.RecaptchaConfig.MaxPrivateKey), Required, Trim]
+            [UIHint("Text80"), StringLength(YetaWF.Core.Views.Shared.RecaptchaConfig.MaxPrivateKey), Trim]
             [ExcludeDemoMode]
             public string PrivateKey { get; set; }
 
