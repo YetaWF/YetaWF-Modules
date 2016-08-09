@@ -53,9 +53,9 @@ namespace YetaWF.Modules.Blog.Controllers {
             [AllowHtml]
             public string Comment { get; set; }
 
-            [Caption("Captcha"), Description("Please enter the code shown so we can verify you're a human and not a spam bot")]
-            [UIHint("Recaptcha"), Recaptcha("Please correct the code entered"), SuppressIfEqual("ShowCaptcha", false), Required, Trim]
-            public RecaptchaData Captcha { get; set; }
+            [Caption("Captcha"), Description("Please verify that you're a human and not a spam bot")]
+            [UIHint("RecaptchaV2"), RecaptchaV2("Please verify that you're a human and not a spam bot"), SuppressIfEqual("ShowCaptcha", false)]
+            public RecaptchaV2Data Captcha { get; set; }
 
             [UIHint("Hidden")]
             public bool ShowCaptcha { get; set; }
@@ -64,7 +64,7 @@ namespace YetaWF.Modules.Blog.Controllers {
 
             public AddModel() {
                 ObjectSupport.CopyData(new BlogComment(), this);
-                Captcha = new RecaptchaData() { };
+                Captcha = new RecaptchaV2Data() { };
             }
 
             public BlogComment GetData() {
@@ -108,7 +108,7 @@ namespace YetaWF.Modules.Blog.Controllers {
             AddModel model = new AddModel {
                 CategoryIdentity = blogCategory,
                 EntryIdentity = blogEntry,
-                Captcha = new RecaptchaData() { VerifyPresence = true },
+                Captcha = new RecaptchaV2Data(),
             };
             model.UpdateData();
 

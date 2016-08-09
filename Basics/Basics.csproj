@@ -64,7 +64,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controllers\MailtoObfuscatorSkin.cs" />
+    <Compile Include="Controllers\RecaptchaV2Config.cs" />
+    <Compile Include="Models\RecaptchaV2ConfigDataProvider.cs" />
     <Compile Include="Modules\MailtoObfuscatorSkin.cs" />
+    <Compile Include="Modules\RecaptchaV2Config.cs" />
     <Compile Include="Startup\Info.cs" />
     <Compile Include="Startup\AreaRegistration.cs" />
     <Compile Include="Controllers\ModuleSkinInfo.cs" />
@@ -79,6 +82,8 @@
   <ItemGroup>
     <None Include="Addons\_Main\filelistJS.txt" />
     <Content Include="Addons\_Main\Icons\ModuleSkinInfo.png" />
+    <Content Include="Views\YetaWF_Basics_RecaptchaV2Config.cshtml" />
+    <Content Include="Views\YetaWF_Basics_RecaptchaV2Config_Partial.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Addons\_Main\mailtoobfuscator.js" />

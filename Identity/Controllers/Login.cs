@@ -33,7 +33,7 @@ namespace YetaWF.Modules.Identity.Controllers {
         public class LoginModel {
 
             public LoginModel() {
-                Captcha = new RecaptchaData();
+                Captcha = new RecaptchaV2Data();
             }
 
             [Caption("Name"), Description("Enter your user name - this is the name you used when you registered on this site")]
@@ -52,9 +52,9 @@ namespace YetaWF.Modules.Identity.Controllers {
             [UIHint("Text40"), StringLength(UserDefinition.MaxVerificationCode), Trim, SuppressIfEqual("ShowVerification", false)]
             public string VerificationCode{ get; set; }
 
-            [Caption("Captcha"), Description("Please enter the code shown so we can verify you're a human and not a spam bot")]
-            [UIHint("Recaptcha"), Trim, Recaptcha("Please correct the code entered"), SuppressIfEqual("ShowCaptcha", false)]
-            public RecaptchaData Captcha { get; set; }
+            [Caption("Captcha"), Description("Please verify that you're a human and not a spam bot")]
+            [UIHint("RecaptchaV2"), RecaptchaV2("Please verify that you're a human and not a spam bot"), SuppressIfEqual("ShowCaptcha", false)]
+            public RecaptchaV2Data Captcha { get; set; }
 
             [UIHint("Hidden")]
             public bool ShowVerification { get; set; }
@@ -75,7 +75,7 @@ namespace YetaWF.Modules.Identity.Controllers {
                 UserName = name,
                 Password = pswd,
                 VerificationCode = v,
-                Captcha = new RecaptchaData() { VerifyPresence = true },
+                Captcha = new RecaptchaV2Data(),
                 RememberMe = isPersistent,
                 ReturnUrl = Manager.ReturnToUrl,
             };
@@ -91,7 +91,8 @@ namespace YetaWF.Modules.Identity.Controllers {
             LoginConfigData config = LoginConfigDataProvider.GetConfig();
 
             if (model.ShowCaptcha != (config.Captcha && !model.ShowVerification))
-                throw new InternalError("Hidden field tampering detected - model.ShowCaptcha != (Module.Captcha && !model.ShowVerification)");
+                throw new InternalError("Hidden field tampering detected");
+
             if (!ModelState.IsValid)
                 return PartialView(model);
 

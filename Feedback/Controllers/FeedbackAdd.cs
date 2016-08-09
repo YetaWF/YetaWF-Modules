@@ -33,9 +33,9 @@ namespace YetaWF.Modules.Feedback.Controllers {
             [UIHint("TextArea"), AdditionalMetadata("SourceOnly", true), StringLength(FeedbackData.MaxMessage), Required, AllowHtml]
             public string Message { get; set; }
 
-            [Caption("Captcha"), Description("Please enter the code shown so we can verify you're a human and not a spam bot")]
-            [UIHint("Recaptcha"), Recaptcha("Please correct the code entered"), SuppressIfEqual("ShowCaptcha", false), Required, Trim]
-            public RecaptchaData Captcha { get; set; }
+            [Caption("Captcha"), Description("Please verify that you're a human and not a spam bot")]
+            [UIHint("RecaptchaV2"), RecaptchaV2("Please verify that you're a human and not a spam bot"), SuppressIfEqual("ShowCaptcha", false)]
+            public RecaptchaV2Data Captcha { get; set; }
 
             [UIHint("Hidden")]
             public bool RequireEmail { get; set; }
@@ -44,7 +44,7 @@ namespace YetaWF.Modules.Feedback.Controllers {
 
             public AddModel() {
                 FeedbackConfigData config = FeedbackConfigDataProvider.GetConfig();
-                Captcha = new RecaptchaData() { };
+                Captcha = new RecaptchaV2Data() { };
                 RequireEmail = config.RequireEmail;
                 ShowCaptcha = config.Captcha;
             }
@@ -59,7 +59,7 @@ namespace YetaWF.Modules.Feedback.Controllers {
         [HttpGet]
         public ActionResult FeedbackAdd() {
             AddModel model = new AddModel {
-                Captcha = new RecaptchaData() { VerifyPresence = true },
+                Captcha = new RecaptchaV2Data(),
                 Subject = Module.DefaultSubject,
                 Message = Module.DefaultMessage,
             };

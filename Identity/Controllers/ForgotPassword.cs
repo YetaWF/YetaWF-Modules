@@ -5,6 +5,7 @@ using YetaWF.Core.Controllers;
 using YetaWF.Core.Localize;
 using YetaWF.Core.Models;
 using YetaWF.Core.Models.Attributes;
+using YetaWF.Core.Support;
 using YetaWF.Core.Views.Shared;
 using YetaWF.Modules.Identity.DataProvider;
 using YetaWF.Modules.Identity.Support;
@@ -23,9 +24,9 @@ namespace YetaWF.Modules.Identity.Controllers {
             [UIHint("Email"), Required]
             public string  Email { get; set; }
 
-            [Caption("Captcha"), Description("Please enter the code shown so we can verify you're a human and not a spam bot")]
-            [UIHint("Recaptcha"), Trim, Recaptcha("Please correct the code entered"), SuppressIfEqual("ShowCaptcha", false)]
-            public RecaptchaData Captcha { get; set; }
+            [Caption("Captcha"), Description("Please verify that you're a human and not a spam bot")]
+            [UIHint("RecaptchaV2"), RecaptchaV2("Please verify that you're a human and not a spam bot"), SuppressIfEqual("ShowCaptcha", false)]
+            public RecaptchaV2Data Captcha { get; set; }
             [UIHint("Hidden")]
             public bool ShowCaptcha { get; set; }
 
@@ -37,7 +38,7 @@ namespace YetaWF.Modules.Identity.Controllers {
             LoginConfigData config = LoginConfigDataProvider.GetConfig();
             EditModel model = new EditModel {
                 ShowCaptcha = config.CaptchaForgotPassword,
-                Captcha = new RecaptchaData() { VerifyPresence = true },
+                Captcha = new RecaptchaV2Data(),
             };
             return View(model);
         }
@@ -48,6 +49,9 @@ namespace YetaWF.Modules.Identity.Controllers {
         public ActionResult ForgotPassword_Partial(EditModel model) {
 
             LoginConfigData config = LoginConfigDataProvider.GetConfig();
+            if (model.ShowCaptcha != config.CaptchaForgotPassword)
+                throw new InternalError("Hidden field tampering detected");
+
             model.ShowCaptcha = config.CaptchaForgotPassword;
             if (!ModelState.IsValid)
                 return PartialView(model);

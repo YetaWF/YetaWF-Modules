@@ -26,7 +26,7 @@ namespace YetaWF.Modules.Identity.Controllers {
         public class RegisterModel {
 
             public RegisterModel() {
-                Captcha = new RecaptchaData();
+                Captcha = new RecaptchaV2Data();
             }
 
             [Caption("User Name"), Description("Enter your user name to register")]
@@ -45,9 +45,9 @@ namespace YetaWF.Modules.Identity.Controllers {
             [UIHint("Password20"), Required, SameAs("Password", "The password confirmation doesn't match the password entered")]
             public string ConfirmPassword { get; set; }
 
-            [Caption("Captcha"), Description("Please enter the code shown so we can verify you're a human and not a spam bot")]
-            [UIHint("Recaptcha"), Recaptcha("Please correct the code entered"), SuppressIfEqual("ShowCaptcha", false), Trim]
-            public RecaptchaData Captcha { get; set; }
+            [Caption("Captcha"), Description("Please verify that you're a human and not a spam bot")]
+            [UIHint("RecaptchaV2"), RecaptchaV2("Please verify that you're a human and not a spam bot"), SuppressIfEqual("ShowCaptcha", false)]
+            public RecaptchaV2Data Captcha { get; set; }
 
             [UIHint("Hidden")]
             public RegistrationTypeEnum RegistrationType { get; set; }
@@ -68,7 +68,7 @@ namespace YetaWF.Modules.Identity.Controllers {
             RegisterModel model = new RegisterModel {
                 RegistrationType = config.RegistrationType,
                 ShowCaptcha = config.Captcha,
-                Captcha = new RecaptchaData() { VerifyPresence = true },
+                Captcha = new RecaptchaV2Data(),
                 ReturnUrl = Manager.ReturnToUrl,
             };
             return View(model);
@@ -83,7 +83,7 @@ namespace YetaWF.Modules.Identity.Controllers {
                 throw new Error(this.__ResStr("cantRegister", "This site does not allow new user registration"));
 
             if (model.ShowCaptcha != config.Captcha)
-                throw new InternalError("Hidden field tampering detected - model.ShowCaptcha != Module.Captcha");
+                throw new InternalError("Hidden field tampering detected");
 
             model.RegistrationType = config.RegistrationType;// don't trust what we get from user
 

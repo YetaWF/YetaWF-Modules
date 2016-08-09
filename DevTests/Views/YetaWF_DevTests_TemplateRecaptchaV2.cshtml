@@ -1,0 +1,8 @@
+@inherits YetaWF.Core.Views.RazorView<YetaWF.Modules.DevTests.Modules.TemplateRecaptchaV2Module, YetaWF.Modules.DevTests.Controllers.TemplateRecaptchaV2ModuleController.Model>
+@using (Form("TemplateRecaptchaV2_Partial")) {
+    @PartialForm()
+    @FormButtons(new FormButton[] {
+        new FormButton() { ButtonType= ButtonTypeEnum.Submit, },
+        new FormButton() { ButtonType= ButtonTypeEnum.Cancel, },
+    });
+}
