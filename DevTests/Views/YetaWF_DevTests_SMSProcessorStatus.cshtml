@@ -1,0 +1,22 @@
+@*Copyright © 2016 Softel vdm, Inc. - http://yetawf.com/Documentation/YetaWF/DevTests#License*@
+@inherits YetaWF.Core.Views.RazorView<YetaWF.Modules.DevTests.Modules.SMSProcessorStatusModule, YetaWF.Modules.DevTests.Controllers.SMSProcessorStatusModuleController.DisplayModel>
+@if (Model.Available > 0) {
+    if (Model.Available > 1) {
+        <div class="@YetaWF.Core.Globals.CssDivAlert">
+            @__ResStr("multiMode", "There are multiple active SMS processors - there should only be one.")
+        </div>
+    }
+    if (Model.TestMode) {
+        <div class="@YetaWF.Core.Globals.CssDivAlert">
+            @__ResStr("testMode", "The {0} SMS processor is in TEST/Sandbox mode - messages are simulated.", Model.ProcessorName)
+        </div>
+    } else {
+        <div class="@YetaWF.Core.Globals.CssDivWarning">
+            @__ResStr("prodMode", "The {0} SMS processor is in PRODUCTION mode.", Model.ProcessorName)
+        </div>
+    }
+} else {
+    <div class="@YetaWF.Core.Globals.CssDivAlert">
+        @__ResStr("noMode", "There is no active SMS processor - It is still possible to send a message to an email address, instead of a phone number.")
+    </div>
+}

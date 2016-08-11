@@ -63,14 +63,18 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controllers\SMSProcessorStatus.cs" />
     <Compile Include="Controllers\TemplateDateTime.cs" />
     <Compile Include="Controllers\TemplateRecaptchaV2.cs" />
     <Compile Include="Controllers\TemplateSkin.cs" />
     <Compile Include="Controllers\TemplateTimeZone.cs" />
+    <Compile Include="Controllers\SMSTest.cs" />
+    <Compile Include="Modules\SMSProcessorStatus.cs" />
     <Compile Include="Modules\TemplateDateTimeModule.cs" />
     <Compile Include="Modules\TemplateRecaptchaV2Module.cs" />
     <Compile Include="Modules\TemplateSkinModule.cs" />
     <Compile Include="Modules\TemplateTimeZoneModule.cs" />
+    <Compile Include="Modules\SMSTestModule.cs" />
     <Compile Include="Startup\Info.cs" />
     <Compile Include="Startup\AreaRegistration.cs" />
     <Compile Include="Controllers\TemplateEmail.cs" />
@@ -86,6 +90,9 @@
   <ItemGroup>
     <None Include="app.config" />
     <None Include="packages.config" />
+    <None Include="Views\YetaWF_DevTests_SMSProcessorStatus.cshtml" />
+    <None Include="Views\YetaWF_DevTests_SMSTest.cshtml" />
+    <None Include="Views\YetaWF_DevTests_SMSTest_Partial.cshtml" />
     <None Include="Views\YetaWF_DevTests_TemplateDateTime.cshtml" />
     <None Include="Views\YetaWF_DevTests_TemplateDateTime_Partial.cshtml" />
     <None Include="Views\YetaWF_DevTests_TemplateEmail.cshtml" />
