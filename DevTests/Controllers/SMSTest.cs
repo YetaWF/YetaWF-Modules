@@ -37,6 +37,7 @@ namespace YetaWF.Modules.DevTests.Controllers {
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [ExcludeDemoMode]
         public ActionResult SMSTest_Partial(Model model) {
             if (!ModelState.IsValid)
                 return PartialView(model);
