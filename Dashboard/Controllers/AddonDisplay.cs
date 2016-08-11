@@ -10,7 +10,6 @@ using YetaWF.Core.Localize;
 using YetaWF.Core.Models;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Support;
-using static YetaWF.Core.Addons.VersionManager;
 
 namespace YetaWF.Modules.Dashboard.Controllers {
 
@@ -22,7 +21,7 @@ namespace YetaWF.Modules.Dashboard.Controllers {
 
             [Caption("Type"), Description("The AddOn type")]
             [UIHint("Enum"), ReadOnly]
-            public AddOnType Type { get; set; }
+            public VersionManager.AddOnType Type { get; set; }
             [Caption("Domain"), Description("The domain owning this AddOn")]
             [UIHint("String"), ReadOnly]
             public string Domain { get; set; }
@@ -60,7 +59,7 @@ namespace YetaWF.Modules.Dashboard.Controllers {
             [UIHint("String"), ReadOnly]
             public string SkinFilePath { get; set; }
 
-            public void SetData(AddOnProduct data) {
+            public void SetData(VersionManager.AddOnProduct data) {
                 ObjectSupport.CopyData(data, this);
                 JsPathUrl = YetaWFManager.PhysicalToUrl(data.JsPath);
                 CssPathUrl = YetaWFManager.PhysicalToUrl(data.CssPath);
@@ -75,8 +74,8 @@ namespace YetaWF.Modules.Dashboard.Controllers {
 
         [HttpGet]
         public ActionResult AddonDisplay(string key) {
-            List<AddOnProduct> list = VersionManager.GetAvailableAddOns();
-            AddOnProduct data = (from l in list where l.AddonKey == key select l).FirstOrDefault();
+            List<VersionManager.AddOnProduct> list = VersionManager.GetAvailableAddOns();
+            VersionManager.AddOnProduct data = (from l in list where l.AddonKey == key select l).FirstOrDefault();
             if (data == null)
                 throw new Error(this.__ResStr("notFound", "AddOn Info for key \"{0}\" not found"), key);
             DisplayModel model = new DisplayModel();

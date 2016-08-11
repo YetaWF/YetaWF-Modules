@@ -19,7 +19,6 @@ using YetaWF.Core.Support;
 using YetaWF.Core.Views.Shared;
 using YetaWF.Modules.Logging.DataProvider;
 using YetaWF.Modules.Logging.Modules;
-using static YetaWF.Core.Log.Logging;
 
 namespace YetaWF.Modules.Logging.Controllers {
 
@@ -48,7 +47,7 @@ namespace YetaWF.Modules.Logging.Controllers {
 
             [Caption("Level"), Description("The error level of this log record")]
             [UIHint("Enum"), ReadOnly]
-            public LevelEnum Level { get; set; }
+            public YetaWF.Core.Log.Logging.LevelEnum Level { get; set; }
 
             [Caption("Info"), Description("The information logged in this record")]
             [UIHint("String"), ReadOnly]

@@ -11,7 +11,6 @@ using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Modules;
 using YetaWF.Core.Views.Shared;
 using YetaWF.Modules.Dashboard.Modules;
-using static YetaWF.Core.Addons.VersionManager;
 
 namespace YetaWF.Modules.Dashboard.Controllers {
 
@@ -36,7 +35,7 @@ namespace YetaWF.Modules.Dashboard.Controllers {
 
             [Caption("Type"), Description("The AddOn type")]
             [UIHint("Enum"), ReadOnly]
-            public AddOnType Type { get; set; }
+            public VersionManager.AddOnType Type { get; set; }
             [Caption("Domain"), Description("The domain owning this AddOn")]
             [UIHint("String"), ReadOnly]
             public string Domain { get; set; }
@@ -55,7 +54,7 @@ namespace YetaWF.Modules.Dashboard.Controllers {
 
             private AddonsBrowseModule Module { get; set; }
 
-            public BrowseItem(AddonsBrowseModule module, AddOnProduct data) {
+            public BrowseItem(AddonsBrowseModule module, VersionManager.AddOnProduct data) {
                 Module = module;
                 ObjectSupport.CopyData(data, this);
             }
@@ -83,7 +82,7 @@ namespace YetaWF.Modules.Dashboard.Controllers {
         [HttpGet]
         public ActionResult AddonsBrowse() {
 
-            List<AddOnProduct> list = VersionManager.GetAvailableAddOns();
+            List<VersionManager.AddOnProduct> list = VersionManager.GetAvailableAddOns();
             DataSourceResult data = new DataSourceResult {
                 Data = (from l in list select new BrowseItem(Module, l)).ToList<object>(),
                 Total = list.Count,

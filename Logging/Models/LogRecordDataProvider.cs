@@ -18,7 +18,6 @@ using YetaWF.Core.Modules;
 using YetaWF.Core.Packages;
 using YetaWF.Core.Serializers;
 using YetaWF.Core.Support;
-using static YetaWF.Core.Log.Logging;
 
 // The logging data provider uses a simple sequential (flat) file for logging so the entire file implementation is in this code (not FileDataProvider)
 // For SQL we're using the regular SQL data provider
@@ -34,7 +33,7 @@ namespace YetaWF.Modules.Logging.DataProvider {
 
         [Data_Index]
         public DateTime TimeStamp { get; set; }
-        public LevelEnum Level { get; set; }
+        public Core.Log.Logging.LevelEnum Level { get; set; }
         [StringLength(ModuleDefinition.MaxName)]
         public string ModuleName { get; set; }
         [StringLength(ModuleDefinition.MaxCssClass)]
@@ -135,12 +134,12 @@ namespace YetaWF.Modules.Logging.DataProvider {
 
         static bool WriteInProgess = false;
 
-        public void WriteToLogFile(LevelEnum level, int relStack, string text) {
+        public void WriteToLogFile(Core.Log.Logging.LevelEnum level, int relStack, string text) {
 
             if (WriteInProgess) return;
             WriteInProgess = true;
 
-            if (level != LevelEnum.Info)
+            if (level != Core.Log.Logging.LevelEnum.Info)
                 text += "\n" + GetCallStack(relStack + 1);
             text = text.Truncate(2000); // limit max text
 

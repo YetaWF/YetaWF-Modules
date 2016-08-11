@@ -7,7 +7,6 @@ using YetaWF.Core.Menus;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Support;
 using YetaWF.Modules.Menus.Views.Shared;
-using static YetaWF.Modules.Menus.Views.Shared.MenuHelper;
 
 namespace YetaWF.Modules.Menus.Controllers {
 
@@ -35,7 +34,7 @@ namespace YetaWF.Modules.Menus.Controllers {
     public class MenuModuleController : ControllerImpl<YetaWF.Modules.Menus.Modules.MenuModule> {
 
         public class MenuModel {
-            [UIHint("YetaWF_Menus_Menu"), AdditionalMetadata("Style", MenuStyleEnum.Automatic)]
+            [UIHint("YetaWF_Menus_Menu"), AdditionalMetadata("Style", MenuHelper.MenuStyleEnum.Automatic)]
             public MenuHelper.MenuData Menu { get; set; }
         }
 
