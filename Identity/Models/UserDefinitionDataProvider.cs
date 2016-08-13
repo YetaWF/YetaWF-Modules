@@ -37,6 +37,7 @@ namespace YetaWF.Modules.Identity.DataProvider {
 
         public const int MaxVerificationCode = 100;
         public const int MaxComment = 1000;
+        public const int MaxTwoStepCode = 4;
 
         [Data_PrimaryKey, StringLength(Globals.MaxUser)]
         public string UserName { get; set; }
@@ -54,6 +55,14 @@ namespace YetaWF.Modules.Identity.DataProvider {
 
         [Data_Index, StringLength(Globals.MaxEmail)]
         public string Email { get; set; }
+
+        // TODO: Fix subtable update
+        //[Data_NewValue("(0)")]
+        //public bool TwoStepAuthentication { get; set; }
+        //[StringLength(Globals.MaxEmail)]
+        //public string TwoStepPhoneEmail { get; set; }
+        //[StringLength(MaxTwoStepCode)]
+        //public string TwoStepLastCode { get; set; }
 
         [StringLength(MaxComment)]
         public string Comment { get; set; }
