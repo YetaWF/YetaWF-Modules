@@ -162,6 +162,7 @@
     <None Include="Views\YetaWF_Blog_EntriesBrowse_Partial.cshtml" />
     <None Include="Views\YetaWF_Blog_EntryAdd.cshtml" />
     <None Include="Views\YetaWF_Blog_EntryAdd_Partial.cshtml" />
+    <Content Include="Addons\_SiteTemplates\YetaWF_Blog.txt" />
     <Content Include="Views\Shared\EditorTemplates\YetaWF_Blog_Category.cshtml" />
     <None Include="Views\YetaWF_Blog_EntryDisplay.cshtml" />
     <None Include="Views\YetaWF_Blog_EntryEdit.cshtml" />

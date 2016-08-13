@@ -1,0 +1,16 @@
+﻿### Copyright © 2016 Softel vdm, Inc. - http://yetawf.com/Documentation/YetaWF/Licensing
+###
+### Adds sample pages for the YetaWF.Visitors package
+###
+
+::PAGE-SECTION::
+
+Administrator /Admin/Visitors
+    Title=Visitor Activity
+    Admin > {YetaWF.Visitors, YetaWF.Modules.Visitors.Modules.VisitorsModule}.GetAction_Items("/Admin/Visitors")
+    -
+    YetaWF.Visitors, YetaWF.Modules.Visitors.Modules.VisitorsModule
+
+
+::UNIQUE-MODULE-SECTION::
+

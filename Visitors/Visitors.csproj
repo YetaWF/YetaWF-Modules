@@ -70,6 +70,7 @@
     <Content Include="Addons\_Main\Icons\People.png" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Addons\_SiteTemplates\YetaWF_Visitor.txt" />
     <Content Include="packages.config" />
   </ItemGroup>
   <ItemGroup>

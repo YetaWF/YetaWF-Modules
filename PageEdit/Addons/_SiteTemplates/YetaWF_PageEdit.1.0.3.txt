@@ -1,0 +1,13 @@
+﻿### Copyright © 2016 Softel vdm, Inc. - http://yetawf.com/Documentation/YetaWF/Licensing
+###
+### PageEdit Package Upgrade
+###
+
+::PAGE-SECTION::
+
+Administrator /Admin/Config/Control Panel
+    Title=Control Panel Settings
+	Admin > Configuration > {YetaWF.PageEdit, YetaWF.Modules.PageEdit.Modules.ControlPanelConfigModule}.GetAction_Edit("/Admin/Config/Control Panel")
+    -
+    YetaWF.PageEdit, YetaWF.Modules.PageEdit.Modules.ControlPanelConfigModule
+

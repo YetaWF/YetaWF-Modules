@@ -1,0 +1,18 @@
+﻿### Copyright © 2016 Softel vdm, Inc. - http://yetawf.com/Documentation/YetaWF/Licensing
+###
+### RecaptchaV2 YetaWF.Blog package
+###
+
+::PAGE-SECTION::
+
+Administrator /Admin/Config/RecaptchaV2
+    Title=RecaptchaV2 Settings
+    Admin > Configuration > {YetaWF.Basics, YetaWF.Modules.Basics.Modules.RecaptchaV2ConfigModule}.GetAction_Edit("/Admin/Config/RecaptchaV2")
+    -
+    YetaWF.Basics, YetaWF.Modules.Basics.Modules.RecaptchaV2ConfigModule
+
+Administrator /Tests/Template RecaptchaV2
+    Tests > Templates > {YetaWF.DevTests, YetaWF.Modules.DevTests.Modules.TemplateRecaptchaV2Module}.GetAction_Display("/Tests/Template RecaptchaV2")
+    -
+    YetaWF.DevTests, YetaWF.Modules.DevTests.Modules.TemplateRecaptchaV2Module
+

@@ -1,0 +1,36 @@
+﻿### Copyright © 2016 Softel vdm, Inc. - http://yetawf.com/Documentation/YetaWF/Licensing
+###
+### Adds sample pages for the YetaWF.Search package
+###
+
+::PAGE-SECTION::
+
+Administrator /Admin/Config/Search
+    Title=Search Settings
+    Admin > Configuration > {YetaWF.Search, YetaWF.Modules.Search.Modules.SearchConfigModule}.GetAction_Edit("/Admin/Config/Search")
+    -
+    YetaWF.Search, YetaWF.Modules.Search.Modules.SearchConfigModule
+       UpdateConfigProperty("ResultsUrl", "/SearchResults")
+
+Administrator /Admin/Search
+    Title=Search Keywords
+    Admin > {YetaWF.Search, YetaWF.Modules.Search.Modules.SearchBrowseModule}.GetAction_Items("/Admin/Search")
+    -
+    YetaWF.Search, YetaWF.Modules.Search.Modules.SearchBrowseModule
+
+Anonymous+User /SearchResults
+    Title=Search Results
+    -
+    -
+    YetaWF.Search, YetaWF.Modules.Search.Modules.SearchInputModule
+    YetaWF.Search, YetaWF.Modules.Search.Modules.SearchResultsModule
+        ShowTitle = false
+
+
+::UNIQUE-MODULE-SECTION::
+
+YetaWF.Search, YetaWF.Modules.Search.Modules.SearchConfigModule
+    UpdateConfigProperty("SmallestMixedToken", 3)
+    UpdateConfigProperty("SmallestUpperCaseToken", 2)
+    UpdateConfigProperty("MaxResults", 20)
+

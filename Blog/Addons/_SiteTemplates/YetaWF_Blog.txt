@@ -1,0 +1,54 @@
+﻿### Copyright © 2016 Softel vdm, Inc. - http://yetawf.com/Documentation/YetaWF/Licensing
+###
+### Adds sample pages for the YetaWF.Blog package
+###
+
+::PAGE-SECTION::
+
+Anonymous+User /Blog
+    Title=Blog
+    Blog
+    -
+    YetaWF.Blog, YetaWF.Modules.Blog.Modules.CategoriesListModule
+    YetaWF.Blog, YetaWF.Modules.Blog.Modules.CategoryHeaderModule
+        ShowFormButtons = false
+    YetaWF.Blog, YetaWF.Modules.Blog.Modules.BlogModule
+
+Administrator /Admin/Config/Blog
+    Title=Blog Settings
+    Admin > Configuration > {YetaWF.Blog, YetaWF.Modules.Blog.Modules.BlogConfigModule}.GetAction_Edit("/Admin/Config/Blog")
+    -
+    YetaWF.Blog, YetaWF.Modules.Blog.Modules.BlogConfigModule
+
+Administrator /Admin/Blog/Categories
+    Title=Blog Categories
+    Admin > Blog > {YetaWF.Blog, YetaWF.Modules.Blog.Modules.CategoriesBrowseModule}.GetAction_Categories("/Admin/Blog/Categories")
+    -
+    YetaWF.Blog, YetaWF.Modules.Blog.Modules.CategoriesBrowseModule
+        BrowseEntriesUrl = "/Admin/Blog/Entries"
+        WantSearch = false
+
+Administrator /Admin/Blog/Entries
+    Title=Blog Entries
+    Admin > Blog > {YetaWF.Blog, YetaWF.Modules.Blog.Modules.EntriesBrowseModule}.GetAction_BrowseEntries("/Admin/Blog/Entries", 0)
+    -
+    YetaWF.Blog, YetaWF.Modules.Blog.Modules.EntriesBrowseModule
+        WantSearch = false
+
+Anonymous+User /BlogEntry
+    Title=Blog Entry
+    -
+    -
+    YetaWF.Blog, YetaWF.Modules.Blog.Modules.CategoryHeaderModule
+        ShowFormButtons = false
+    YetaWF.Blog, YetaWF.Modules.Blog.Modules.EntryDisplayModule
+        ShowFormButtons = false
+    YetaWF.Blog, YetaWF.Modules.Blog.Modules.CommentsDisplayModule
+        ShowFormButtons = false
+    YetaWF.Blog, YetaWF.Modules.Blog.Modules.CommentAddModule
+
+::UNIQUE-MODULE-SECTION::
+
+YetaWF.Blog, YetaWF.Modules.Blog.Modules.BlogConfigModule
+    UpdateConfigProperty("BlogUrl", "/Blog")
+    UpdateConfigProperty("BlogEntryUrl", "/BlogEntry")

@@ -1,6 +1,7 @@
 /* Copyright © 2016 Softel vdm, Inc. - http://yetawf.com/Documentation/YetaWF/Packages#License */
 
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Web.Mvc;
 using YetaWF.Core.Controllers;
@@ -27,10 +28,9 @@ namespace YetaWF.Modules.Packages.Controllers {
 
             public void UpdateData() {
                 PackagesDataProvider packagesDP = new PackagesDataProvider();
-                FileData fd = new FileData { BaseFolder = packagesDP.TemplateFolder };
-                SiteTemplate_List = (from f in fd.GetNames() orderby f select new SelectionItem<string>() {
-                    Text = f,
-                    Value = f,
+                SiteTemplate_List = (from f in Directory.GetFiles(packagesDP.TemplateFolder, "*.txt") orderby f select new SelectionItem<string>() {
+                    Text = Path.GetFileName(f),
+                    Value = Path.GetFileName(f),
                 }).ToList();
             }
             public EditModel() { }

@@ -94,6 +94,7 @@
     <Content Include="Addons\_Main\Icons\W3CValidator.png" />
     <Content Include="Addons\_Main\pagecontrol.css" />
     <Content Include="Addons\_Main\pagecontrol.js" />
+    <Content Include="Addons\_SiteTemplates\YetaWF_PageEdit.1.0.3.txt" />
     <Content Include="Addons\_Templates\AllowedUsers\allowedusers.css" />
     <Content Include="Addons\_Templates\AllowedUsers\filelistCSS.txt" />
     <Content Include="Addons\_Templates\AllowedRoles\filelistCSS.txt" />

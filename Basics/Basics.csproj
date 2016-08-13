@@ -82,6 +82,7 @@
   <ItemGroup>
     <None Include="Addons\_Main\filelistJS.txt" />
     <Content Include="Addons\_Main\Icons\ModuleSkinInfo.png" />
+    <Content Include="Addons\_SiteTemplates\YetaWF_Basics.1.0.3.txt" />
     <Content Include="Views\YetaWF_Basics_RecaptchaV2Config.cshtml" />
     <Content Include="Views\YetaWF_Basics_RecaptchaV2Config_Partial.cshtml" />
   </ItemGroup>

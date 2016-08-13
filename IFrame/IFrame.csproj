@@ -46,6 +46,7 @@
     <None Include="Views\YetaWF_IFrame_IFrameDisplay.cshtml" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Addons\_SiteTemplates\YetaWF_IFrame.txt" />
     <Content Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
