@@ -101,7 +101,7 @@ namespace YetaWF.Modules.Identity.Controllers {
             user = await Managers.GetUserManager().FindByNameAsync(model.UserName);
             if (user == null) {
                 Logging.AddErrorLog("User login failed: {0} - no such user", model.UserName);
-                ModelState.AddModelError("", this.__ResStr("invLogin", "Invalid username or password"));
+                ModelState.AddModelError("", this.__ResStr("invLogin", "Invalid user name or password"));
                 return PartialView(model);
             }
             if (user.PasswordHash != null || !string.IsNullOrWhiteSpace(user.PasswordPlainText) || !string.IsNullOrWhiteSpace(model.Password)) {
@@ -111,7 +111,7 @@ namespace YetaWF.Modules.Identity.Controllers {
             }
             if (user == null) {
                 Logging.AddErrorLog("User login failed: {0}, {1}, {2}", model.UserName, model.Password, model.VerificationCode);
-                ModelState.AddModelError("", this.__ResStr("invLogin", "Invalid username or password"));
+                ModelState.AddModelError("", this.__ResStr("invLogin", "Invalid user name or password"));
                 return PartialView(model);
             }
 
