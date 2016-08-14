@@ -135,14 +135,14 @@ namespace YetaWF.Modules.Logging.DataProvider {
 
         static bool WriteInProgess = false;
 
-        public void WriteToLogFile(Core.Log.Logging.LevelEnum level, int relStack, string text) {
+        public void WriteToLogFile(Core.Log.Logging.LevelEnum level, int relStack, string message) {
 
             if (WriteInProgess) return;
             WriteInProgess = true;
 
             if (level != Core.Log.Logging.LevelEnum.Info)
-                text += "\n" + GetCallStack(relStack + 1);
-            text = text.Truncate(2000); // limit max text
+                message += "\n" + GetCallStack(relStack + 1);
+            message = message.Truncate(2000); // limit max text
 
             string moduleName;
             int siteIdentity = 0;
@@ -185,13 +185,13 @@ namespace YetaWF.Modules.Logging.DataProvider {
                     default:
                         throw new InternalError("IOMode undetermined - this means we don't have a valid data provider");
                     case WebConfigHelper.IOModeEnum.File:
-                        text = string.Format("{0}-{1}-{2}-{3}-{4}({5})-{6}: {7},{8},{9},{10} - {11}:{12}",
+                        string text = string.Format("{0}-{1}-{2}-{3}-{4}({5})-{6}: {7},{8},{9},{10} - {11}:{12}",
                             DateTime.Now/*Local Time*/, siteIdentity, ipAddress, requestedUrl, userName, userId, referrer,
                                 moduleName,
                                 (methBase.DeclaringType != null) ? methBase.DeclaringType.Name : "",
                                 methBase.Name,
                                 (methBase.DeclaringType != null) ? methBase.DeclaringType.Namespace : "",
-                                level, text);
+                                level, message);
                         text = text.Replace("\n", "\r\n");
                         lock (lockObject) {
                             LogCache.Add(text);
@@ -202,7 +202,7 @@ namespace YetaWF.Modules.Logging.DataProvider {
                     case WebConfigHelper.IOModeEnum.Sql:
                         LogRecord record = new LogRecord {
                             Level = level,
-                            Info = text,
+                            Info = message,
                             TimeStamp = DateTime.UtcNow,
                             ModuleName = moduleName,
                             Class = (methBase.DeclaringType != null) ? methBase.DeclaringType.Name : "",
@@ -219,6 +219,7 @@ namespace YetaWF.Modules.Logging.DataProvider {
                         break;
                 }
                 if (Callbacks != null) {
+                    string text = string.Format("{0} - {1}", DateTime.Now/*Local Time*/, message);
                     foreach (Action<string> callback in Callbacks) {
                         callback(text);
                     }
