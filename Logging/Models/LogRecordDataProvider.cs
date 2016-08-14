@@ -72,7 +72,8 @@ namespace YetaWF.Modules.Logging.DataProvider {
         private const int MAXRECORDS = 1000;// cache # of records
 
         List<string> LogCache { get; set; }
-        List<Action<string>> Callbacks { get; set; }
+        // Callbacks survive TerminateLogging/SetupLogging, mainly so we can use logging while upgrading the Logging package
+        static List<Action<string>> Callbacks { get; set; }
 
         public LogRecordDataProvider() : base(0) { SetDataProvider(DataProvider); }
 
