@@ -136,11 +136,11 @@ namespace YetaWF.Modules.PageEdit.Controllers {
             public string Url { get; set; }
 
             [Caption("Title"), Description("The title of the new page - the page title is displayed by the web browser in its header")]
-            [UIHint("MultiString"), StringLength(PageDefinition.MaxTitle), Required, Trim]
+            [UIHint("MultiString"), StringLength(PageDefinition.MaxTitle), RequiredIf("CopyPage", false), Trim]
             public MultiString Title { get; set; }
 
             [Caption("Description"), Description("The page description - this description is used to document the purpose of the page")]
-            [UIHint("MultiString"), StringLength(PageDefinition.MaxDescription), Required, Trim]
+            [UIHint("MultiString"), StringLength(PageDefinition.MaxDescription), RequiredIf("CopyPage", false), Trim]
             public MultiString Description { get; set; }
 
             [Caption("Copy All Modules"), Description("If selected, copies all modules from the current page and adds them to the new page - Modules on the template page portion of the current page are never copied")]
