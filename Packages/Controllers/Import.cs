@@ -52,7 +52,7 @@ namespace YetaWF.Modules.Packages.Controllers {
             if (success) {
                 // Upload control considers Json result a success
                 sb.Append("{{ \"result\": \"Y_Confirm(\\\"{0}\\\", null, function() {{ window.location.reload(); }} ); \" }}",
-                    YetaWFManager.JserEncode(YetaWFManager.JserEncode(this.__ResStr("imported", "\"{0}\" successfully imported - YOU MUST RESTART THE SITE FOR PROPER OPERATION(+nl)", __filename.FileName) + errs))
+                    YetaWFManager.JserEncode(YetaWFManager.JserEncode(errs + this.__ResStr("imported", "(+nl)\"{0}\" successfully imported - YOU MUST RESTART THE SITE FOR PROPER OPERATION", __filename.FileName)))
                 );
                 //System.Web.HttpRuntime.UnloadAppDomain();
                 //System.Web.HttpContext.Current.Response.Redirect("/");
