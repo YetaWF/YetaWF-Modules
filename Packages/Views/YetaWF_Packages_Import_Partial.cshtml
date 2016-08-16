@@ -1,6 +1,6 @@
 ﻿@*Copyright © 2016 Softel vdm, Inc. - http://yetawf.com/Documentation/YetaWF/Packages#License*@
 @inherits YetaWF.Core.Views.RazorView<YetaWF.Modules.Packages.Modules.ImportModule, YetaWF.Modules.Packages.Controllers.ImportModuleController.ImportModel>
-@using (Form("Import_Partial")) {
-    @PartialForm()
-}
-
+@Html.ValidationSummary()
+<div>
+    @Html.EditorFor(m => Model, "PropertyListTabbed")
+</div>

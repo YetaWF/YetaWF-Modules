@@ -128,6 +128,7 @@
     <Content Include="Views\YetaWF_Packages_Import.cshtml" />
     <None Include="app.config" />
     <None Include="packages.config" />
+    <None Include="Views\YetaWF_Packages_Import_Partial.cshtml" />
     <None Include="Views\YetaWF_Packages_SiteTemplateUndo.cshtml" />
     <None Include="Views\YetaWF_Packages_SiteTemplateUndo_Partial.cshtml" />
     <None Include="Views\YetaWF_Packages_SiteTemplateProcess.cshtml" />
