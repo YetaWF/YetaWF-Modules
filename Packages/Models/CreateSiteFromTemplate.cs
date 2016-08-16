@@ -33,6 +33,7 @@ namespace YetaWF.Modules.Packages.DataProvider {
         private int _LineCounter;
         private string _Template;
         private MenuList _SiteMenu;
+        private PageDefinition _CurrentPage;
 
         /// <summary>
         /// Builds the current site from the template file
@@ -201,6 +202,7 @@ namespace YetaWF.Modules.Packages.DataProvider {
                         PageDefinition.RemovePageDefinition(page.PageGuid);
                     page = new PageDefinition();
                 }
+                _CurrentPage = page;
 
                 while (TryPageTitle(page, lines) || TryPageDescription(page, lines))
                     ;
@@ -332,6 +334,7 @@ namespace YetaWF.Modules.Packages.DataProvider {
                 }
                 if (build)
                     page.Save();
+                _CurrentPage = null;
             }
         }
 
@@ -739,6 +742,8 @@ namespace YetaWF.Modules.Packages.DataProvider {
                         parmList.Add(false);
                     else if (p == "{SITEMENU}") // the entire site menu
                         parmList.Add(_SiteMenu);
+                    else if (p == "{CURRENTPAGE}") // the current page
+                        parmList.Add(_CurrentPage);
                     else if (p.StartsWith("\"")) // translate \r\n to newline
                         parmList.Add(TrimQuotes(p.Replace("\\r\\n", Environment.NewLine)));
                     else if (p.StartsWith("Guid(") && p.EndsWith(")"))  // Guid(nnnnn)
