@@ -501,17 +501,17 @@ namespace YetaWF.Modules.Packages.DataProvider {
                     throw TemplateError("Url must start with / or http and can't be indented");
                 url = url.Trim();
 
-                if (build) {
-                    // Get the Menu Text
-                    if (lines.Count < 1)
-                        throw TemplateError("menu missing");
-                    string menu = lines.First(); ++_LineCounter; lines.RemoveAt(0);
-                    if (string.IsNullOrWhiteSpace(menu))
-                        throw TemplateError("Menu missing");
-                    if (!char.IsWhiteSpace(menu[0]))
-                        throw TemplateError("Menu line must be indented");
-                    menu = menu.Trim();
+                // Get the Menu Text
+                if (lines.Count < 1)
+                    throw TemplateError("menu missing");
+                string menu = lines.First(); ++_LineCounter; lines.RemoveAt(0);
+                if (string.IsNullOrWhiteSpace(menu))
+                    throw TemplateError("Menu missing");
+                if (!char.IsWhiteSpace(menu[0]))
+                    throw TemplateError("Menu line must be indented");
+                menu = menu.Trim();
 
+                if (build) {
                     ModuleAction action = AddMenu(menu);
                     action.Url = url;
                 }
