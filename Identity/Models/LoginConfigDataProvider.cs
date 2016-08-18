@@ -29,6 +29,8 @@ namespace YetaWF.Modules.Identity.DataProvider {
         public bool NotifyAdminNewUsers { get; set; }
         public bool BccVerification { get; set; }
         [Data_NewValue("(0)")]
+        public int MaxLoginFailures { get; set; }
+        [Data_NewValue("(0)")]
         public bool BccForgottenPassword { get; set; }
         public bool PersistentLogin { get; set; }
         [StringLength(Globals.MaxUrl)]

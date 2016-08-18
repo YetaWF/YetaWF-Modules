@@ -2,14 +2,15 @@
 
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using YetaWF.Core.DataProvider;
 using YetaWF.Core.Identity;
 using YetaWF.Core.Localize;
 using YetaWF.Core.Log;
+using YetaWF.Core.Modules;
 using YetaWF.Core.Serializers;
 using YetaWF.Core.Support;
 using YetaWF.Modules.Identity.Controllers;
+using YetaWF.Modules.Identity.Modules;
 
 namespace YetaWF.Modules.Identity.DataProvider {
 
@@ -252,7 +253,7 @@ namespace YetaWF.Modules.Identity.DataProvider {
                     user.RolesList.Add(role);
                     UpdateStatusEnum status = userDP.UpdateItem(user);
                     if (status != UpdateStatusEnum.OK)
-                        throw new InternalError("Unexpected status {0} updating the user account in AddRoleToUser", status);
+                        throw new InternalError("Unexpected status {0} updating user account in AddRoleToUser", status);
                 }
             }
         }
@@ -274,11 +275,93 @@ namespace YetaWF.Modules.Identity.DataProvider {
                         user.RolesList.Remove(role);
                         UpdateStatusEnum status = userDP.UpdateItem(user);
                         if (status != UpdateStatusEnum.OK)
-                            throw new InternalError("Unexpected status {0} updating the user account in RemoveRoleFromUser", status);
+                            throw new InternalError("Unexpected status {0} updating user account in RemoveRoleFromUser", status);
                     }
                 }
             }
         }
+        public ModuleAction GetSelectTwoStepAction(int userId, string userName, string userEmail) {
+            SelectTwoStepAuthModule mod = new SelectTwoStepAuthModule();
+            return mod.GetAction_SelectTwoStepAuth(null, userId, userName, userEmail);
+        }
+        public List<string> GetEnabledTwoStepAuthentications(int userId) {
+            using (UserDefinitionDataProvider userDP = new UserDefinitionDataProvider()) {
+                UserDefinition user = userDP.GetItemByUserId(userId);
+                if (user == null) throw new InternalError("Unexpected error in GetEnabledTwoStepAuthentications - no user found");
+                return (from e in user.EnabledTwoStepAuthentications select e.Name).ToList();
+            }
+        }
+        public void SetEnabledTwoStepAuthentications(int userId, List<string> auths) {
+            using (UserDefinitionDataProvider userDP = new UserDefinitionDataProvider()) {
+                UserDefinition user = userDP.GetItemByUserId(userId);
+                if (user == null) throw new InternalError("Unexpected error in SetEnabledTwoStepAuthentications - no user found");
+                user.EnabledTwoStepAuthentications = new SerializableList<TwoStepDefinition>(from a in auths select new TwoStepDefinition { Name = a });
+                UpdateStatusEnum status = userDP.UpdateItem(user);
+                if (status != UpdateStatusEnum.OK)
+                    throw new InternalError("Unexpected status {0} updating user account in SetEnabledTwoStepAuthentications", status);
+            }
+        }
+        public void AddEnabledTwoStepAuthentication(int userId, string auth) {
+            using (UserDefinitionDataProvider userDP = new UserDefinitionDataProvider()) {
+                UserDefinition user = userDP.GetItemByUserId(userId);
+                if (user == null) throw new InternalError("Unexpected error in AddEnabledTwoStepAuthentication - no user found");
+                TwoStepDefinition authDef = new DataProvider.TwoStepDefinition { Name = auth };
+                if (!user.EnabledTwoStepAuthentications.Contains(authDef, new TwoStepDefinitionComparer())) {
+                    user.EnabledTwoStepAuthentications.Add(authDef);
+                    UpdateStatusEnum status = userDP.UpdateItem(user);
+                    if (status != UpdateStatusEnum.OK)
+                        throw new InternalError("Unexpected status {0} updating user account in AddEnabledTwoStepAuthentication", status);
+                }
+            }
+        }
+        public bool HasEnabledTwoStepAuthentication(int userId, string auth) {
+            using (UserDefinitionDataProvider userDP = new UserDefinitionDataProvider()) {
+                UserDefinition user = userDP.GetItemByUserId(userId);
+                if (user == null) return false;
+                TwoStepDefinition authDef = new DataProvider.TwoStepDefinition { Name = auth };
+                return user.EnabledTwoStepAuthentications.Contains(authDef, new TwoStepDefinitionComparer());
+            }
+        }
+        public void RemoveEnabledTwoStepAuthentication(int userId, string auth) {
+            using (UserDefinitionDataProvider userDP = new UserDefinitionDataProvider()) {
+                UserDefinition user = userDP.GetItemByUserId(userId);
+                if (user == null) throw new InternalError("Unexpected error in RemoveEnabledTwoStepAuthentication - no user found");
+                TwoStepDefinition authDef = user.EnabledTwoStepAuthentications.Find(m => m.Name == auth);
+                if (authDef != null) {
+                    user.EnabledTwoStepAuthentications.Remove(authDef);
+                    UpdateStatusEnum status = userDP.UpdateItem(user);
+                    if (status != UpdateStatusEnum.OK)
+                        throw new InternalError("Unexpected status {0} updating user account in RemoveEnabledTwoStepAuthentication", status);
+                }
+            }
+        }
+        public void AddTwoStepLoginFailure() {
+            int userId = Manager.SessionSettings.SiteSettings.GetValue<int>(LoginTwoStepController.IDENTITY_TWOSTEP_USERID);
+            if (userId == 0)
+                throw new InternalError("No user id available in AddTwoStepLoginFailure");
+            using (UserDefinitionDataProvider userDP = new UserDefinitionDataProvider()) {
+                UserDefinition user = userDP.GetItemByUserId(userId);
+                if (user == null) throw new InternalError("Unexpected error in AddTwoStepLoginFailure - no user found");
+                user.LoginFailures = user.LoginFailures + 1;
+                if (user.UserStatus != UserStatusEnum.Suspended)
+                    user.UserStatus = UserStatusEnum.Suspended;
+                UpdateStatusEnum status = userDP.UpdateItem(user);
+                if (status != UpdateStatusEnum.OK)
+                    throw new InternalError("Unexpected status {0} updating user account in AddTwoStepLoginFailure", status);
+            }
+        }
+        public bool GetTwoStepLoginFailuresExceeded() {
+            int userId = Manager.SessionSettings.SiteSettings.GetValue<int>(LoginTwoStepController.IDENTITY_TWOSTEP_USERID);
+            if (userId == 0)
+                throw new InternalError("No user id available in GetTwoStepLoginFailures");
+            using (UserDefinitionDataProvider userDP = new UserDefinitionDataProvider()) {
+                UserDefinition user = userDP.GetItemByUserId(userId);
+                if (user == null) throw new InternalError("Unexpected error in GetTwoStepLoginFailures - no user found");
+                LoginConfigData config = LoginConfigDataProvider.GetConfig();
+                return config.MaxLoginFailures != 0 && user.LoginFailures >= config.MaxLoginFailures;
+            }
+        }
+
         public void Logoff() {
             LoginModuleController.UserLogoff();
         }

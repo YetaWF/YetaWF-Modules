@@ -101,8 +101,9 @@ namespace YetaWF.Modules.Identity.DataProvider {
             if (originalName == SuperUserName) {
                 if (data.UserName != originalName)
                     throw new Error(this.__ResStr("cantRenameSuper", "The user \"{0}\" can't be renamed. It is defined in the site's web.config", data.UserName));
-                if (data.UserStatus != UserStatusEnum.Approved)
-                    throw new Error(this.__ResStr("cantChangeStatusSuper", "The user \"{0}\" must remain an approved user. That's the only one that can bail you out when the entire site is broken.", data.UserName));
+                // we allow status change even for a superuser (mainly to support login failures with automatic suspension)
+                //if (data.UserStatus != UserStatusEnum.Approved)
+                //    throw new Error(this.__ResStr("cantChangeStatusSuper", "The user \"{0}\" must remain an approved user. That's the only one that can bail you out when the entire site is broken.", data.UserName));
             }
             if (data.UserId != SuperuserDefinitionDataProvider.SuperUserId || data.UserName != SuperUserName)
                 throw new Error(this.__ResStr("cantUpdateSuper", "Wrong user id or user name - Can't update as superuser"));

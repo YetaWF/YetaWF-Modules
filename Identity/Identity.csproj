@@ -125,7 +125,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controllers\ForgotPassword.cs" />
+    <Compile Include="Controllers\LoginTwoStep.cs" />
+    <Compile Include="Controllers\SelectTwoStepSetup.cs" />
+    <Compile Include="Controllers\SelectTwoStepAuth.cs" />
     <Compile Include="Modules\ForgotPassword.cs" />
+    <Compile Include="Modules\SelectTwoStepSetup.cs" />
+    <Compile Include="Modules\SelectTwoStepAuth.cs" />
     <Compile Include="Startup\AreaRegistration.cs" />
     <Compile Include="Startup\Info.cs" />
     <Compile Include="Startup\Startup.Auth.cs">
@@ -208,10 +213,14 @@
     <None Include="app.config">
       <SubType>Designer</SubType>
     </None>
+    <None Include="Addons\_Main\SelectTwoStepSetup.scss" />
+    <Content Include="Addons\_SiteTemplates\YetaWF_Identity.1.0.6.txt" />
     <Content Include="Views\Shared\DisplayTemplates\YetaWF_Identity_Email.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\YetaWF_Identity_RoleId.cshtml" />
     <None Include="Views\YetaWF_Identity_ForgotPassword.cshtml" />
     <None Include="Views\YetaWF_Identity_ForgotPassword_Partial.cshtml" />
+    <None Include="Views\YetaWF_Identity_SelectTwoStepSetup.cshtml" />
+    <None Include="Views\YetaWF_Identity_SelectTwoStepAuth.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\CoreComponents\Core\Core.csproj">

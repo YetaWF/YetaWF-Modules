@@ -3,6 +3,7 @@
 using Microsoft.AspNet.Identity;
 using Microsoft.Owin.Security;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
@@ -14,7 +15,9 @@ using YetaWF.Core.Localize;
 using YetaWF.Core.Log;
 using YetaWF.Core.Models;
 using YetaWF.Core.Models.Attributes;
+using YetaWF.Core.Modules;
 using YetaWF.Core.Support;
+using YetaWF.Core.Support.TwoStepAuthorization;
 using YetaWF.Core.Views.Shared;
 using YetaWF.Modules.Identity.DataProvider;
 using YetaWF.Modules.Identity.Models;
@@ -88,6 +91,11 @@ namespace YetaWF.Modules.Identity.Controllers {
         [ValidateAntiForgeryToken]
         [ExcludeDemoMode]
         public async Task<ActionResult> Login_Partial(LoginModel model) {
+
+            Manager.SessionSettings.SiteSettings.ClearValue(LoginTwoStepController.IDENTITY_TWOSTEP_USERID);
+            Manager.SessionSettings.SiteSettings.ClearValue(LoginTwoStepController.IDENTITY_TWOSTEP_NEXTURL);
+            Manager.SessionSettings.SiteSettings.Save();
+
             LoginConfigData config = LoginConfigDataProvider.GetConfig();
 
             if (model.ShowCaptcha != (config.Captcha && !model.ShowVerification))
@@ -104,10 +112,27 @@ namespace YetaWF.Modules.Identity.Controllers {
                 ModelState.AddModelError("", this.__ResStr("invLogin", "Invalid user name or password"));
                 return PartialView(model);
             }
+            TwoStepAuth twoStep = new TwoStepAuth();// clear any two-step info we may have
+            twoStep.ClearTwoStepAuthetication(user.UserId);
+
+            if (config.MaxLoginFailures != 0 && user.LoginFailures >= config.MaxLoginFailures) {
+                ModelState.AddModelError("", this.__ResStr("maxAttemps", "The maximum number of login attempts has been exceeded - Your account has been suspended"));
+                if (user.UserStatus != UserStatusEnum.Suspended) {
+                    user.UserStatus = UserStatusEnum.Suspended;
+                    Managers.GetUserManager().Update(user);
+                }
+                return PartialView(model);
+            }
+
             if (user.PasswordHash != null || !string.IsNullOrWhiteSpace(user.PasswordPlainText) || !string.IsNullOrWhiteSpace(model.Password)) {
+                UserDefinition foundUser = user;
                 user = null;
                 if (!string.IsNullOrWhiteSpace(model.Password))
                     user = await Managers.GetUserManager().FindAsync(model.UserName, model.Password);
+                if (user == null) {
+                    foundUser.LoginFailures = foundUser.LoginFailures + 1;
+                    Managers.GetUserManager().Update(foundUser);
+                }
             }
             if (user == null) {
                 Logging.AddErrorLog("User login failed: {0}, {1}, {2}", model.UserName, model.Password, model.VerificationCode);
@@ -142,6 +167,8 @@ namespace YetaWF.Modules.Identity.Controllers {
                 if (model.ShowVerification) {
                     Logging.AddErrorLog("User {0} - invalid verification code({1})", model.UserName, model.VerificationCode);
                     ModelState.AddModelError("VerificationCode", this.__ResStr("invVerification", "The verification code is invalid. Please make sure to copy/paste it from the email to avoid any typos."));
+                    user.LoginFailures = user.LoginFailures + 1;
+                    Managers.GetUserManager().Update(user);
                 } else
                     ModelState.AddModelError("VerificationCode", this.__ResStr("notValidated", "Your account has not yet been validated. You will receive an email with validation information. Please copy and enter the verification code here."));
                 model.ShowVerification = true;
@@ -163,14 +190,33 @@ namespace YetaWF.Modules.Identity.Controllers {
                 Logging.AddErrorLog("User {0} - suspended user", model.UserName);
                 string nextPage = string.IsNullOrWhiteSpace(config.SuspendedUrl) ? Manager.CurrentSite.HomePageUrl : config.SuspendedUrl;
                 return FormProcessed(model,
-                    this.__ResStr("accountSuspended", "Your account has been suspended by the site administrator."),
+                    this.__ResStr("accountSuspended", "Your account has been suspended."),
                     NextPage: nextPage);
             } else if (user.UserStatus == UserStatusEnum.Approved) {
+                ActionResult actionResult = TwoStepAuthetication(user);
+                if (actionResult != null) {
+                    Manager.SessionSettings.SiteSettings.SetValue<int>(LoginTwoStepController.IDENTITY_TWOSTEP_USERID, user.UserId);// marker that user has entered correct name/password
+                    Manager.SessionSettings.SiteSettings.SetValue<string>(LoginTwoStepController.IDENTITY_TWOSTEP_NEXTURL, model.ReturnUrl);// marker that user has entered correct name/password
+                    Manager.SessionSettings.SiteSettings.Save();
+                    return actionResult;
+                }
                 await LoginModuleController.UserLoginAsync(user, model.RememberMe);
                 Logging.AddLog("User {0} - logged on", model.UserName);
                 return FormProcessed(model, NextPage: model.ReturnUrl);
             } else
                 throw new InternalError("badUserStatus", "Unexpected account status {0}", user.UserStatus);
+        }
+
+        /// <summary>
+        /// Returns an action result to start the two-step authentication process (if any).
+        /// </summary>
+        private ActionResult TwoStepAuthetication(UserDefinition user) {
+            TwoStepAuth twoStep = new TwoStepAuth();
+            List<string> enabledTwoStepAuthentications = (from e in user.EnabledTwoStepAuthentications select e.Name).ToList();
+            ModuleAction action = twoStep.GetLoginAction(enabledTwoStepAuthentications, user.UserId, user.UserName, user.Email);
+            if (action == null)
+                return null;
+            return Redirect(action.GetCompleteUrl(), ForcePopup: action.Style == ModuleAction.ActionStyleEnum.Popup || action.Style == ModuleAction.ActionStyleEnum.ForcePopup);
         }
 
         // User logoff
@@ -206,6 +252,7 @@ namespace YetaWF.Modules.Identity.Controllers {
             user.LastLoginIP = Manager.UserHostAddress;
             user.LastActivityDate = DateTime.UtcNow;
             user.LastActivityIP = Manager.UserHostAddress;
+            user.LoginFailures = 0;
             Managers.GetUserManager().Update(user);
         }
     }

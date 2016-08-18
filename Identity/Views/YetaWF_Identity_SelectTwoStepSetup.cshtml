@@ -1,0 +1,22 @@
+@*Copyright © 2016 Softel vdm, Inc. - http://yetawf.com/Documentation/YetaWF/Identity#License*@
+@inherits YetaWF.Core.Views.RazorView<YetaWF.Modules.Identity.Modules.SelectTwoStepSetupModule, YetaWF.Modules.Identity.Controllers.SelectTwoStepSetupModuleController.EditModel>
+@using YetaWF.Core.Modules
+@using YetaWF.Modules.Identity.Controllers
+@Html.EditorFor(m => Model, "PropertyList")
+@if (Model.AuthMethods.Count == 0) {
+    <div class="yDivWarning">@__ResStr("noAuthInstalled", "There are no two-step authentication methods available.")</div>
+} else {
+    foreach (SelectTwoStepSetupModuleController.EditModel.AuthMethod meth in Model.AuthMethods) {
+        <div class="t_auth_info">
+            <div class="t_auth">
+                @meth.Action.RenderAsLink()
+            </div>
+            <div class="t_stat">
+                @meth.Status
+            </div>
+            <div class="t_desc">
+                @meth.Description
+            </div>
+        </div>
+    }
+}

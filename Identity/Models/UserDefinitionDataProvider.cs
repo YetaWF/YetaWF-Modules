@@ -37,7 +37,6 @@ namespace YetaWF.Modules.Identity.DataProvider {
 
         public const int MaxVerificationCode = 100;
         public const int MaxComment = 1000;
-        public const int MaxTwoStepCode = 4;
 
         [Data_PrimaryKey, StringLength(Globals.MaxUser)]
         public string UserName { get; set; }
@@ -55,14 +54,6 @@ namespace YetaWF.Modules.Identity.DataProvider {
 
         [Data_Index, StringLength(Globals.MaxEmail)]
         public string Email { get; set; }
-
-        // TODO: Fix subtable update
-        //[Data_NewValue("(0)")]
-        //public bool TwoStepAuthentication { get; set; }
-        //[StringLength(Globals.MaxEmail)]
-        //public string TwoStepPhoneEmail { get; set; }
-        //[StringLength(MaxTwoStepCode)]
-        //public string TwoStepLastCode { get; set; }
 
         [StringLength(MaxComment)]
         public string Comment { get; set; }
@@ -84,8 +75,12 @@ namespace YetaWF.Modules.Identity.DataProvider {
         [StringLength(Globals.MaxIP)]
         public string LastActivityIP { get; set; }
 
+        [Data_NewValue("(0)")]
+        public int LoginFailures { get; set; }
+
         public SerializableList<LoginInfo> LoginInfoList { get; set; } // external login providers
         public SerializableList<Role> RolesList { get; set; } // role ids for this user
+        public SerializableList<TwoStepDefinition> EnabledTwoStepAuthentications { get; set; }
 
         public UserDefinition() {
             RolesList = new SerializableList<Role>();
@@ -93,6 +88,7 @@ namespace YetaWF.Modules.Identity.DataProvider {
             Created = DateTime.UtcNow;
             UserStatus = UserStatusEnum.NeedValidation;
             VerificationCode = Guid.NewGuid().ToString();
+            EnabledTwoStepAuthentications = new SerializableList<TwoStepDefinition>();
         }
     }
 
@@ -113,6 +109,20 @@ namespace YetaWF.Modules.Identity.DataProvider {
         }
         public int GetHashCode(LoginInfo x) {
             return x.ProviderKey.GetHashCode() + x.LoginProvider.GetHashCode();
+        }
+    }
+    public class TwoStepDefinition {
+        public const int MaxName = 80;
+        public TwoStepDefinition() { }
+        [StringLength(MaxName)]
+        public string Name { get; set; }
+    }
+    public class TwoStepDefinitionComparer : IEqualityComparer<TwoStepDefinition> {
+        public bool Equals(TwoStepDefinition x, TwoStepDefinition y) {
+            return x.Name == y.Name && x.Name == y.Name;
+        }
+        public int GetHashCode(TwoStepDefinition x) {
+            return x.Name.GetHashCode() + x.Name.GetHashCode();
         }
     }
 

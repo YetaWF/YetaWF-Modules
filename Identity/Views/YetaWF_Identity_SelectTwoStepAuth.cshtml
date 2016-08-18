@@ -1,0 +1,7 @@
+@*Copyright © 2016 Softel vdm, Inc. - http://yetawf.com/Documentation/YetaWF/Identity#License*@
+@inherits YetaWF.Core.Views.RazorView<YetaWF.Modules.Identity.Modules.SelectTwoStepAuthModule, YetaWF.Modules.Identity.Controllers.SelectTwoStepAuthModuleController.EditModel>
+@using YetaWF.Core.Modules
+@Html.EditorFor(m => Model, "PropertyList")
+@foreach (ModuleAction action in Model.Actions) {
+    @action.RenderAsLink();
+}
