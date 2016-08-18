@@ -18,7 +18,7 @@ namespace YetaWF.Modules.Feedback.Controllers {
         [Trim]
         public class Model {
 
-            [Caption("Use Captcha"), Description("The user has to pass a \"human\" test by entering a code shown")]
+            [Caption("Use Captcha"), Description("The user has to pass a \"human\" test")]
             [UIHint("Boolean")]
             public bool Captcha { get; set; }
 
