@@ -342,9 +342,12 @@ namespace YetaWF.Modules.Identity.DataProvider {
             using (UserDefinitionDataProvider userDP = new UserDefinitionDataProvider()) {
                 UserDefinition user = userDP.GetItemByUserId(userId);
                 if (user == null) throw new InternalError("Unexpected error in AddTwoStepLoginFailure - no user found");
+                LoginConfigData config = LoginConfigDataProvider.GetConfig();
                 user.LoginFailures = user.LoginFailures + 1;
-                if (user.UserStatus != UserStatusEnum.Suspended)
-                    user.UserStatus = UserStatusEnum.Suspended;
+                if (config.MaxLoginFailures != 0 && user.LoginFailures >= config.MaxLoginFailures) {
+                    if (user.UserStatus != UserStatusEnum.Suspended)
+                        user.UserStatus = UserStatusEnum.Suspended;
+                }
                 UpdateStatusEnum status = userDP.UpdateItem(user);
                 if (status != UpdateStatusEnum.OK)
                     throw new InternalError("Unexpected status {0} updating user account in AddTwoStepLoginFailure", status);
