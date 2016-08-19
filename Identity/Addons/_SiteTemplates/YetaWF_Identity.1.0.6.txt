@@ -18,4 +18,4 @@ YetaWF.Identity, YetaWF.Modules.Identity.Modules.SelectTwoStepSetupModule
     SelectedPopupSkin.FileName = "PopupMedium.cshtml"
 
 YetaWF.Identity, YetaWF.Modules.Identity.Modules.SelectTwoStepAuthModule
-    SelectedPopupSkin.FileName = "PopupMedium.cshtml"
+    SelectedPopupSkin.FileName = "PopupSmall.cshtml"

@@ -3,5 +3,7 @@
 @using YetaWF.Core.Modules
 @Html.EditorFor(m => Model, "PropertyList")
 @foreach (ModuleAction action in Model.Actions) {
-    @action.RenderAsLink();
+    <div class="t_auth">
+        @action.RenderAsLink()
+    </div>
 }

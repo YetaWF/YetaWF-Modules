@@ -61,6 +61,7 @@ namespace YetaWF.Modules.Identity.Controllers {
                         }
                     }
                 }
+                model.AuthMethods = (from a in model.AuthMethods orderby a.Action.LinkText select a).ToList();
             }
             return View(model);
         }
