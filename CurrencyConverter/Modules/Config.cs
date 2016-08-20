@@ -23,7 +23,6 @@ namespace YetaWF.Modules.CurrencyConverter.Modules {
             Title = this.__ResStr("modTitle", "Currency Converter Settings");
             Name = this.__ResStr("modName", "Currency Converter Settings");
             Description = this.__ResStr("modSummary", "Edits the currency converter settings");
-            SameAsPage = false;
             ShowHelp = true;
         }
 

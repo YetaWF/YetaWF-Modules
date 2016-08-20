@@ -22,7 +22,6 @@ namespace YetaWF.Modules.PageEdit.Modules {
             Title = this.__ResStr("modTitle", "Control Panel Settings");
             Name = this.__ResStr("modName", "Control Panel Settings");
             Description = this.__ResStr("modSummary", "Edits a site's Control Panel settings");
-            SameAsPage = false;
             ShowHelp = true;
         }
 

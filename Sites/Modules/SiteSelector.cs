@@ -23,7 +23,6 @@ namespace YetaWF.Modules.Sites.Modules {
             ShowTitle = false;
             WantFocus = false;
             WantSearch = false;
-            SameAsPage = false;
             Print = false;
         }
 

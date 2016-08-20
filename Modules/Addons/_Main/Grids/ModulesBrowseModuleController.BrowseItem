@@ -2,9 +2,10 @@
 Name                sort filter 25 defaultSort asc
 Title               sort filter 25
 Description         sort filter 40
-UseCount            10
+UseCount            10 right
+Anonymous           center [Globals.ChBoolean]
+Users               center [Globals.ChBoolean]
 CssClass            sort filter 20
-SameAsPage          sort filter center [Globals.ChBoolean]
 WantSearch          sort filter center [Globals.ChBoolean]
 WantFocus           sort filter center [Globals.ChBoolean]
 ModuleGuid          sort filter [Globals.ChGuid]

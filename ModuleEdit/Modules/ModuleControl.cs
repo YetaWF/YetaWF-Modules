@@ -26,7 +26,6 @@ namespace YetaWF.Modules.ModuleEdit.Modules {
             Name = this.__ResStr("modName", "Module Control");
             Title = this.__ResStr("modTitle", "Module Control");
             Description = this.__ResStr("modSummary", "Module editing services");
-            SameAsPage = false;
             Print = false;
         }
 

@@ -31,6 +31,10 @@ namespace YetaWF.Modules.UserSettings.DataProvider {
         [StringLength(LanguageData.MaxId)]
         public string LanguageId { get; set; }
         public bool ShowGridSearchToolbar { get; set; }
+        [Data_NewValue("(0)")]
+        public bool ShowModuleOwnership { get; set; }
+        [Data_NewValue("(0)")]
+        public bool ShowPageOwnership { get; set; }
         public bool ShowEnumValue { get; set; }
         public bool ShowVariables { get; set; }
         public bool ShowInternals { get; set; }
@@ -43,6 +47,8 @@ namespace YetaWF.Modules.UserSettings.DataProvider {
             LanguageId = MultiString.DefaultLanguage;
             TimeZone = TimeZoneInfo.Local.Id;
             ShowGridSearchToolbar = false;
+            ShowModuleOwnership = false;
+            ShowPageOwnership = false;
             ShowEnumValue = false;
             ShowVariables = false;
             ShowInternals = false;

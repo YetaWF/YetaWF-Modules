@@ -23,7 +23,6 @@ namespace YetaWF.Modules.Blog.Modules {
             Title = this.__ResStr("modTitle", "Blog Settings");
             Name = this.__ResStr("modName", "Blog Settings");
             Description = this.__ResStr("modSummary", "Edits a site's blog settings");
-            SameAsPage = false;
             ShowHelp = true;
         }
 

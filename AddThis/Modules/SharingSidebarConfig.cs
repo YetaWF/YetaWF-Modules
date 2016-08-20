@@ -22,7 +22,6 @@ namespace YetaWF.Modules.AddThis.Modules {
             Title = this.__ResStr("modTitle", "Sharing Sidebar Settings");
             Name = this.__ResStr("modName", "Sharing Sidebar Settings");
             Description = this.__ResStr("modSummary", "Edits a site's AddThis Sharing Sidebar configuration settings");
-            SameAsPage = false;
             ShowHelp = true;
         }
 

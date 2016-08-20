@@ -23,7 +23,6 @@ namespace YetaWF.Modules.Backups.Modules {
             Title = this.__ResStr("modTitle", "Backup Settings");
             Name = this.__ResStr("modName", "Backup Settings");
             Description = this.__ResStr("modSummary", "Edits a site's backup settings");
-            SameAsPage = false;
             ShowHelp = true;
         }
 

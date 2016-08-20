@@ -23,7 +23,6 @@ namespace YetaWF.Modules.Identity.Modules {
             Title = this.__ResStr("modTitle", "User Login Settings");
             Name = this.__ResStr("modName", "User Login Settings");
             Description = this.__ResStr("modSummary", "Manages the site's user login settings");
-            SameAsPage = false;
             ShowHelp = true;
         }
 

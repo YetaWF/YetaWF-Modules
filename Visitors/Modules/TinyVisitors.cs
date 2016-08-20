@@ -26,7 +26,6 @@ namespace YetaWF.Modules.Visitors.Modules {
             WantFocus = false;
             WantSearch = false;
             ShowTitle = false;
-            SameAsPage = false;
         }
 
         public override IModuleDefinitionIO GetDataProvider() { return new TinyVisitorsModuleDataProvider(); }

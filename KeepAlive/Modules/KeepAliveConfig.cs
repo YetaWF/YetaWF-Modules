@@ -24,7 +24,6 @@ namespace YetaWF.Modules.KeepAlive.Modules {
             Title = this.__ResStr("modTitle", "Keep Alive Settings");
             Name = this.__ResStr("modName", "Keep Alive Settings");
             Description = this.__ResStr("modSummary", "Edits a YetaWF instance's keep alive settings");
-            SameAsPage = false;
             ShowHelp = true;
         }
 

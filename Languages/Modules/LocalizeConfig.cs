@@ -20,7 +20,6 @@ namespace YetaWF.Modules.Languages.Modules {
             Title = this.__ResStr("modTitle", "Localization Settings");
             Name = this.__ResStr("modName", "Localization Settings");
             Description = this.__ResStr("modSummary", "Edits site and system wide localization settings");
-            SameAsPage = false;
             ShowHelp = true;
         }
 

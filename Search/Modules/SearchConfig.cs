@@ -22,7 +22,6 @@ namespace YetaWF.Modules.Search.Modules {
             Title = this.__ResStr("modTitle", "Search Settings");
             Name = this.__ResStr("modName", "Search Settings");
             Description = this.__ResStr("modSummary", "Edits a site's search settings");
-            SameAsPage = false;
             ShowHelp = true;
         }
 

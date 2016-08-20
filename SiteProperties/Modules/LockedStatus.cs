@@ -20,7 +20,6 @@ namespace YetaWF.Modules.SiteProperties.Modules {
             Title = this.__ResStr("modTitle", "Site Locked Status");
             Name = this.__ResStr("modName", "Site Locked Status");
             Description = this.__ResStr("modSummary", "Displays the site's locked status");
-            SameAsPage = false;
             ShowTitle = false;
             WantFocus = false;
             WantSearch = false;

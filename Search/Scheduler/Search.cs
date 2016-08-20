@@ -159,8 +159,8 @@ namespace YetaWF.Modules.Search.Scheduler {
 
         private List<SearchData> SearchModule(List<SearchData> searchData, PageDefinition page, ModuleDefinition mod, bool allowAnonymous, bool allowAnyUser) {
             if (mod.WantSearch) {
-                CurrentAllowAnonymous = mod.IsAuthorized_View_Anonymous(allowAnonymous) && allowAnonymous;
-                CurrentAllowAnyUser = mod.IsAuthorized_View_AnyUser(allowAnyUser) && allowAnyUser;
+                CurrentAllowAnonymous = mod.IsAuthorized_View_Anonymous() && allowAnonymous;
+                CurrentAllowAnyUser = mod.IsAuthorized_View_AnyUser() && allowAnyUser;
                 if (!CurrentAllowAnonymous && !CurrentAllowAnyUser)
                     return null;
                 AddSearchTerms(searchData, mod.Title, CurrentAllowAnonymous, CurrentAllowAnyUser);

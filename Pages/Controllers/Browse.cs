@@ -56,6 +56,14 @@ namespace YetaWF.Modules.Pages.Controllers {
             [UIHint("MultiString"), ReadOnly]
             public MultiString Description { get; set; }
 
+            [Caption("Anonymous"), Description("Anonymous users can view this page")]
+            [UIHint("Boolean"), ReadOnly]
+            public bool Anonymous { get; set; }
+
+            [Caption("Users"), Description("Logged on users can view this page")]
+            [UIHint("Boolean"), ReadOnly]
+            public bool Users { get; set; }
+
             [Caption("Date Created"), Description("The date the page was created")]
             [UIHint("DateTime"), ReadOnly]
             public DateTime Created { get; set; }
@@ -105,6 +113,8 @@ namespace YetaWF.Modules.Pages.Controllers {
                 PageEditModule = pageSettings;
 
                 ObjectSupport.CopyData(page, this);
+                Anonymous = page.IsAuthorized_View_Anonymous();
+                Users = page.IsAuthorized_View_AnyUser();
             }
         }
 

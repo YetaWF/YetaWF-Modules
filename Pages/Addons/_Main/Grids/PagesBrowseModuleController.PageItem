@@ -2,6 +2,8 @@
 Url                 sort filter 30 defaultSort asc
 Title               sort filter 20
 Description         sort filter 30
+Anonymous           center [Globals.ChBoolean]
+Users               center [Globals.ChBoolean]
 Created             sort filter [Globals.ChDateTime]
 Updated             sort filter [Globals.ChDateTime]
 CanonicalUrl        sort filter 30

@@ -57,13 +57,17 @@ namespace YetaWF.Modules.Modules.Controllers {
             [UIHint("IntValue"), ReadOnly]
             public int UseCount { get; set; }
 
+            [Caption("Anonymous"), Description("Anonymous users can view this module")]
+            [UIHint("Boolean"), ReadOnly]
+            public bool Anonymous { get; set; }
+
+            [Caption("Users"), Description("Logged on users can view this module")]
+            [UIHint("Boolean"), ReadOnly]
+            public bool Users { get; set; }
+
             [Caption("CSS Class"), Description("The optional CSS classes to be added to the module's <div> tag for further customization through stylesheets")]
             [UIHint("String"), ReadOnly]
             public string CssClass { get; set; }
-
-            [Caption("Same As Page"), Description("Defines whether the module inherits the containing page's authorization (View, Edit, Remove)")]
-            [UIHint("Boolean"), ReadOnly]
-            public bool SameAsPage { get; set; }
 
             [Caption("Search Keywords"), Description("Defines whether this module's contents should be added to the site's search keywords")]
             [UIHint("Boolean"), ReadOnly]
@@ -87,6 +91,8 @@ namespace YetaWF.Modules.Modules.Controllers {
                 ModuleGuid = mod.ModuleGuid;
                 Description = mod.Description;
                 UseCount = mod.Pages.Count;
+                Anonymous = mod.IsAuthorized_View_Anonymous();
+                Users = mod.IsAuthorized_View_AnyUser();
             }
         }
 

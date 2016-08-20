@@ -23,7 +23,6 @@ namespace YetaWF.Modules.Feedback.Modules {
             Title = this.__ResStr("modTitle", "Feedback Settings");
             Name = this.__ResStr("modName", "Feedback Settings");
             Description = this.__ResStr("modSummary", "Edits a site's feedback settings");
-            SameAsPage = false;
             ShowHelp = true;
         }
 

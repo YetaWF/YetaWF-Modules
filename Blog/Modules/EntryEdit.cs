@@ -20,7 +20,6 @@ namespace YetaWF.Modules.Blog.Modules {
             Title = this.__ResStr("modTitle", "Blog Entry");
             Name = this.__ResStr("modName", "Edit Blog Entry");
             Description = this.__ResStr("modSummary", "Edits an existing blog entry");
-            SameAsPage = false;
         }
 
         public override IModuleDefinitionIO GetDataProvider() { return new EntryEditModuleDataProvider(); }

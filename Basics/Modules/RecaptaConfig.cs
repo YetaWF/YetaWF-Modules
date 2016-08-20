@@ -23,7 +23,6 @@ namespace YetaWF.Modules.Basics.Modules {
             Title = this.__ResStr("modTitle", "Recaptcha Settings");
             Name = this.__ResStr("modName", "Recaptcha Settings");
             Description = this.__ResStr("modSummary", "Edits the Recaptcha settings");
-            SameAsPage = false;
             ShowHelp = true;
         }
 

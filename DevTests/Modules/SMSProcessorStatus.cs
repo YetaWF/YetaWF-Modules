@@ -19,7 +19,6 @@ namespace YetaWF.Modules.DevTests.Modules {
         public SMSProcessorStatusModule() {
             Title = this.__ResStr("modTitle", "SMS Processor Status");
             Name = this.__ResStr("modName", "SMS Processor Status");
-            SameAsPage = false;
             Description = this.__ResStr("modSummary", "Displays the status of the SMS processor");
         }
 

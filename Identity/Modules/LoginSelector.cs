@@ -25,7 +25,6 @@ namespace YetaWF.Modules.Identity.Modules {
             ShowTitle = false;
             WantFocus = false;
             WantSearch = false;
-            SameAsPage = false;
             Print = false;
             Users = new SerializableList<User>();
             Description = this.__ResStr("modSummary", "User login selector (used during development)");

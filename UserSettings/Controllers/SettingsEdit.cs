@@ -40,6 +40,14 @@ namespace YetaWF.Modules.UserSettings.Controllers {
             [UIHint("Boolean")]
             public bool ShowGridSearchToolbar { get; set; }
 
+            [Caption("Show Page Ownership"), Description("Defines whether pages that can't be seen by anonymous users or regular users are shown with special background colors - Requires a skin that supports ownership display")]
+            [UIHint("Boolean"), SuppressIfEqual("ShowDevInfo", false)]
+            public bool ShowPageOwnership { get; set; }
+
+            [Caption("Show Module Ownership"), Description("Defines whether modules that can't be seen by anonymous users or regular users are shown with special background colors - Requires a skin that supports ownership display")]
+            [UIHint("Boolean"), SuppressIfEqual("ShowDevInfo", false)]
+            public bool ShowModuleOwnership { get; set; }
+
             [Caption("Show Enum Values"), Description("Defines whether enumerated values (in dropdown lists) show their numeric value. Numeric values are typically only useful for programming purposes")]
             [UIHint("Boolean"), SuppressIfEqual("ShowDevInfo", false)]
             public bool ShowEnumValue { get; set; }
