@@ -216,7 +216,7 @@ namespace YetaWF.Modules.Identity.Controllers {
             ModuleAction action = twoStep.GetLoginAction(enabledTwoStepAuthentications, user.UserId, user.UserName, user.Email);
             if (action == null)
                 return null;
-            return Redirect(action.GetCompleteUrl(), ForcePopup: action.Style == ModuleAction.ActionStyleEnum.Popup || action.Style == ModuleAction.ActionStyleEnum.ForcePopup);
+            return Redirect(action);
         }
 
         // User logoff
