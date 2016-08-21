@@ -105,7 +105,7 @@ namespace YetaWF.Modules.Pages.Modules {
                 Mode = ModuleAction.ActionModeEnum.Any,
                 Location = ModuleAction.ActionLocationEnum.ModuleLinks,
                 ConfirmationText = this.__ResStr("restAuthConfirm", "DEVELOPMENT FEATURE - Are you sure you want to add permission to all pages for the Administrator to have full control and the Editor can View & Edit?"),
-                PleaseWaitText = this.__ResStr("restAuthPlsWait", "Updating all pages so the Administrator to has full control and the Editor can View & Edit..."),
+                PleaseWaitText = this.__ResStr("restAuthPlsWait", "Updating all pages so the Administrator has full control and the Editor can View & Edit..."),
             };
         }
     }
