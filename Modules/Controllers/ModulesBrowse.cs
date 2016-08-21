@@ -6,11 +6,13 @@ using System.Linq;
 using System.Web.Mvc;
 using YetaWF.Core.Controllers;
 using YetaWF.Core.DataProvider;
+using YetaWF.Core.Identity;
 using YetaWF.Core.Localize;
 using YetaWF.Core.Menus;
 using YetaWF.Core.Models;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Modules;
+using YetaWF.Core.Serializers;
 using YetaWF.Core.Support;
 using YetaWF.Core.Views.Shared;
 using YetaWF.Modules.Modules.Modules;
@@ -152,8 +154,28 @@ namespace YetaWF.Modules.Modules.Controllers {
             foreach (ModuleDefinition genericMod in info.Modules) {
                 ModuleDefinition mod = ModuleDefinition.Load(genericMod.ModuleGuid, AllowNone: true);
                 if (mod != null) {
+#if MERGE // enable this to preserve anon and user settings
+                    int anonRoleId = Resource.ResourceAccess.GetAnonymousRoleId();
+                    int userRoleId = Resource.ResourceAccess.GetUserRoleId();
+                    ModuleDefinition.AllowedRole anonRole = ModuleDefinition.AllowedRole.Find(mod.DefaultAllowedRoles, anonRoleId);
+                    ModuleDefinition.AllowedRole userRole = ModuleDefinition.AllowedRole.Find(mod.DefaultAllowedRoles, userRoleId);
+                    if (anonRole == null && userRole == null) {
+                        // merge default roles into allowed roles to preserve current anon & user settings
+                        anonRole = ModuleDefinition.AllowedRole.Find(mod.AllowedRoles, anonRoleId);
+                        userRole = ModuleDefinition.AllowedRole.Find(mod.AllowedRoles, userRoleId);
+                        mod.AllowedRoles = new SerializableList<ModuleDefinition.AllowedRole>(mod.DefaultAllowedRoles);
+                        if (anonRole != null)
+                            mod.AllowedRoles.Add(anonRole);
+                        if (userRole != null)
+                            mod.AllowedRoles.Add(userRole);
+                    } else {
+                        mod.AllowedRoles = mod.DefaultAllowedRoles;
+                    }
+#else
                     mod.AllowedRoles = mod.DefaultAllowedRoles;
+#endif
                     //mod.AllowedUsers = // we're not touching this
+
                     mod.Save();
                 }
             }
