@@ -31,7 +31,6 @@ namespace YetaWF.Modules.ModuleEdit.Views.Shared {
         private static List<ModuleDefinition.GridAllowedRole> GetGridAllowedRoleFromAllowedRoleList(SerializableList<ModuleDefinition.AllowedRole> allowedRoles, Type gridEntryType) {
 
             List<RoleInfo> list = Resource.ResourceAccess.GetDefaultRoleList();
-
             List<ModuleDefinition.GridAllowedRole> roles = new List<ModuleDefinition.GridAllowedRole>();
 
             foreach (RoleInfo r in list) {
@@ -41,6 +40,7 @@ namespace YetaWF.Modules.ModuleEdit.Views.Shared {
                 gridRole.RoleName = new StringTT { Text = r.Name, Tooltip = r.Description };
                 roles.Add(gridRole);
             }
+            roles = (from r in roles orderby r.RoleName.Text select r).ToList();
             if (allowedRoles != null) {
                 foreach (ModuleDefinition.AllowedRole allowedRole in allowedRoles) {
                     ModuleDefinition.GridAllowedRole role = (from r in roles where r.RoleId == allowedRole.RoleId select r).FirstOrDefault();

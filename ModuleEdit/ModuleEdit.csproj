@@ -97,6 +97,7 @@
     <Content Include="Views\Shared\EditorTemplates\YetaWF_ModuleEdit_AllowedUsers.cshtml" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Addons\_Main\Grids\" />
     <Folder Include="Models\" />
     <Folder Include="Views\Shared\DisplayTemplates\" />
   </ItemGroup>
@@ -113,8 +114,6 @@
   <ItemGroup>
     <Content Include="Views\YetaWF_ModuleEdit_ModuleEdit.cshtml" />
     <Content Include="Views\YetaWF_ModuleEdit_ModuleEdit_Partial.cshtml" />
-    <None Include="Addons\_Main\Grids\RolesHelper.GridAllowedRole" />
-    <None Include="Addons\_Main\Grids\UsersHelper.GridAllowedUser" />
     <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>

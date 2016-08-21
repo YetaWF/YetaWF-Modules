@@ -51,7 +51,7 @@ namespace YetaWF.Modules.PageEdit.Views.Shared {
 
         private static List<GridAllowedRole> GetGridAllowedRoleFromAllowedRoleList(SerializableList<PageDefinition.AllowedRole> allowedRoles) {
             List<RoleInfo> list = Resource.ResourceAccess.GetDefaultRoleList();
-            List<GridAllowedRole> roles = (from r in list select new GridAllowedRole { RoleId = r.RoleId, RoleName = new StringTT { Text = r.Name, Tooltip = r.Description } }).ToList();
+            List<GridAllowedRole> roles = (from r in list orderby r.Name select new GridAllowedRole { RoleId = r.RoleId, RoleName = new StringTT { Text = r.Name, Tooltip = r.Description } }).ToList();
             if (allowedRoles != null) {
                 foreach (PageDefinition.AllowedRole allowedRole in allowedRoles) {
                     GridAllowedRole role = (from r in roles where r.RoleId == allowedRole.RoleId select r).FirstOrDefault();

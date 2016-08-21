@@ -1,7 +1,7 @@
 ﻿DeleteMe            icons 1
-DisplayUserId       sort [Globals.ChEmail] defaultSort asc
-View                sort 12 center
-Edit                sort 12 center
-Remove              sort 12 center
+DisplayUserId       [Globals.ChEmail]
+View                12 center
+Edit                12 center
+Remove              12 center
 UserId              hidden
 UserName            hidden
