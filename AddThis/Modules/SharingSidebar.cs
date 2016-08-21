@@ -29,6 +29,6 @@ namespace YetaWF.Modules.AddThis.Modules {
 
         public override IModuleDefinitionIO GetDataProvider() { return new SharingSidebarModuleDataProvider(); }
 
-        public override SerializableList<AllowedRole> DefaultAllowedRoles { get { return AdministratorLevel_DefaultAllowedRoles; } }
+        public override SerializableList<AllowedRole> DefaultAllowedRoles { get { return AnonymousLevel_DefaultAllowedRoles; } }
     }
 }

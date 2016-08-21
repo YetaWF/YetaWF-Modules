@@ -36,7 +36,7 @@ namespace YetaWF.Modules.Search.Modules {
         public override bool ShowModuleMenu { get { return false; } }
         public override bool ModuleHasSettings { get { return false; } }
 
-        public override SerializableList<AllowedRole> DefaultAllowedRoles { get { return AnonymousLevel_DefaultAllowedRoles; } }
+        public override SerializableList<AllowedRole> DefaultAllowedRoles { get { return AdministratorLevel_DefaultAllowedRoles; } }
 
         public ModuleAction GetAction_On(bool shown) {
             return new ModuleAction(this) {

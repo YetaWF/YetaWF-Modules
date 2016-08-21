@@ -26,7 +26,7 @@ namespace YetaWF.Modules.Search.Modules {
 
         public override IModuleDefinitionIO GetDataProvider() { return new SearchResultsModuleDataProvider(); }
 
-        public override SerializableList<AllowedRole> DefaultAllowedRoles { get { return AnonymousLevel_DefaultAllowedRoles; } }
+        public override SerializableList<AllowedRole> DefaultAllowedRoles { get { return AdministratorLevel_DefaultAllowedRoles; } }
 
         public ModuleAction GetAction_GetResults(string url, string searchTerms) {
             return new ModuleAction(this) {

@@ -40,7 +40,7 @@ namespace YetaWF.Modules.CurrencyConverter.Modules {
         [UIHint("Currency"), Required, Range(0.0, 99999.99)]
         public decimal DefaultAmount { get; set; }
 
-        public override SerializableList<AllowedRole> DefaultAllowedRoles { get { return AnonymousLevel_DefaultAllowedRoles; } }
+        public override SerializableList<AllowedRole> DefaultAllowedRoles { get { return AdministratorLevel_DefaultAllowedRoles; } }
 
         public ModuleAction GetAction_CurrencyConverter(string url, decimal amount = 0.0M) {
             if (amount == 0.0M) amount = DefaultAmount;

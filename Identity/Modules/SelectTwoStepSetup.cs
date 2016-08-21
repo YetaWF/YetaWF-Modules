@@ -25,7 +25,7 @@ namespace YetaWF.Modules.Identity.Modules {
 
         public override IModuleDefinitionIO GetDataProvider() { return new SelectTwoStepSetupModuleDataProvider(); }
 
-        public override SerializableList<AllowedRole> DefaultAllowedRoles { get { return UserLevel_DefaultAllowedRoles; } }
+        public override SerializableList<AllowedRole> DefaultAllowedRoles { get { return AdministratorLevel_DefaultAllowedRoles; } }
 
         public ModuleAction GetAction_SelectTwoStepSetup(string url) {
             return new ModuleAction(this) {

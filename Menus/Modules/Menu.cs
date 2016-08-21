@@ -86,7 +86,7 @@ namespace YetaWF.Modules.Menus.Modules {
         //[UIHint("IntValue4"), Required, Range(0, 1000)]
         //public int CloseDuration { get; set; }
 
-        public override SerializableList<AllowedRole> DefaultAllowedRoles { get { return AnonymousLevel_DefaultAllowedRoles; } }
+        public override SerializableList<AllowedRole> DefaultAllowedRoles { get { return AdministratorLevel_DefaultAllowedRoles; } }
 
         public override MenuList GetModuleMenuList(ModuleAction.RenderModeEnum renderMode, ModuleAction.ActionLocationEnum location) {
             MenuList menuList = base.GetModuleMenuList(renderMode, location);

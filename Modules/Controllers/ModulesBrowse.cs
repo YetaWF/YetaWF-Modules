@@ -143,5 +143,21 @@ namespace YetaWF.Modules.Modules.Controllers {
                 throw new Error(this.__ResStr("errRemove", "The module could not be removed - It may already have been deleted"));
             return Reload(null, Reload: ReloadEnum.ModuleParts);
         }
+        [HttpPost]
+        [Permission("RestoreAuthorization")]
+        [ExcludeDemoMode]
+        public ActionResult RestoreAuthorization() {
+            ModuleDefinition.ModuleBrowseInfo info = new ModuleDefinition.ModuleBrowseInfo();
+            ModuleDefinition.GetModules(info);
+            foreach (ModuleDefinition genericMod in info.Modules) {
+                ModuleDefinition mod = ModuleDefinition.Load(genericMod.ModuleGuid, AllowNone: true);
+                if (mod != null) {
+                    mod.AllowedRoles = mod.DefaultAllowedRoles;
+                    //mod.AllowedUsers = // we're not touching this
+                    mod.Save();
+                }
+            }
+            return Reload(null, Reload: ReloadEnum.ModuleParts);
+        }
     }
 }

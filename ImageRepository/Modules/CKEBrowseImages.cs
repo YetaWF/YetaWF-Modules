@@ -25,6 +25,6 @@ namespace YetaWF.Modules.ImageRepository.Modules {
 
         public override IModuleDefinitionIO GetDataProvider() { return new CKEBrowseImagesModuleDataProvider(); }
 
-        public override SerializableList<AllowedRole> DefaultAllowedRoles { get { return AnonymousLevel_DefaultAllowedRoles; } }
+        public override SerializableList<AllowedRole> DefaultAllowedRoles { get { return AdministratorLevel_DefaultAllowedRoles; } }
     }
 }

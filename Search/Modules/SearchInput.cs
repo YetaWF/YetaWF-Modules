@@ -38,7 +38,7 @@ namespace YetaWF.Modules.Search.Modules {
         [UIHint("MultiString80"), StringLength(500)]
         public MultiString SearchButtonTT { get; set; }
 
-        public override SerializableList<AllowedRole> DefaultAllowedRoles { get { return AnonymousLevel_DefaultAllowedRoles; } }
+        public override SerializableList<AllowedRole> DefaultAllowedRoles { get { return AdministratorLevel_DefaultAllowedRoles; } }
 
         public ModuleAction GetAction_Search(string url, string searchTerms) {
             return new ModuleAction(this) {

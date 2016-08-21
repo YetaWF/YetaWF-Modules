@@ -44,7 +44,7 @@ namespace YetaWF.Modules.IFrame.Modules {
         [UIHint("Text20"), StringLength(20), Trim]
         public string Height { get; set; }
 
-        public override SerializableList<AllowedRole> DefaultAllowedRoles { get { return AnonymousLevel_DefaultAllowedRoles; } }
+        public override SerializableList<AllowedRole> DefaultAllowedRoles { get { return EditorLevel_DefaultAllowedRoles; } }
 
         public ModuleAction GetAction_Display(string url) {
             return new ModuleAction(this) {

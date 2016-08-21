@@ -34,7 +34,7 @@ namespace YetaWF.Modules.Feedback.Modules {
         [UIHint("TextArea"), AdditionalMetadata("SourceOnly", true), StringLength(FeedbackData.MaxMessage), Trim]
         public string DefaultMessage { get; set; }
 
-        public override SerializableList<AllowedRole> DefaultAllowedRoles { get { return AnonymousLevel_DefaultAllowedRoles; } }
+        public override SerializableList<AllowedRole> DefaultAllowedRoles { get { return AdministratorLevel_DefaultAllowedRoles; } }
 
         public ModuleAction GetAction_Add(string url) {
             return new ModuleAction(this) {

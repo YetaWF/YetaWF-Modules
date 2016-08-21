@@ -35,7 +35,7 @@ namespace YetaWF.Modules.Blog.Modules {
         [UIHint("Url"), AdditionalMetadata("UrlType", UrlHelperEx.UrlTypeEnum.Local), UrlValidation(UrlValidationAttribute.SchemaEnum.Any, UrlHelperEx.UrlTypeEnum.Local), StringLength(Globals.MaxUrl), Trim]
         public string EditUrl { get; set; }
         
-        public override SerializableList<AllowedRole> DefaultAllowedRoles { get { return AnonymousLevel_DefaultAllowedRoles; } }
+        public override SerializableList<AllowedRole> DefaultAllowedRoles { get { return AdministratorLevel_DefaultAllowedRoles; } }
 
         public ModuleAction GetAction_Approve(int blogEntry, int comment) {
             if (!Resource.ResourceAccess.IsResourceAuthorized(Info.Resource_AllowManageComments)) return null;

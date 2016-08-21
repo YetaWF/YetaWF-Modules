@@ -25,6 +25,6 @@ namespace YetaWF.Modules.Blog.Modules {
 
         public override IModuleDefinitionIO GetDataProvider() { return new ArchiveModuleDataProvider(); }
 
-        public override SerializableList<AllowedRole> DefaultAllowedRoles { get { return AnonymousLevel_DefaultAllowedRoles; } }
+        public override SerializableList<AllowedRole> DefaultAllowedRoles { get { return AdministratorLevel_DefaultAllowedRoles; } }
     }
 }

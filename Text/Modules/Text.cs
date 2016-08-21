@@ -110,7 +110,7 @@ namespace YetaWF.Modules.Text.Modules {
             }
         }
 
-        public override SerializableList<AllowedRole> DefaultAllowedRoles { get { return UserLevel_DefaultAllowedRoles; } }
+        public override SerializableList<AllowedRole> DefaultAllowedRoles { get { return EditorLevel_DefaultAllowedRoles; } }
 
         public override List<ModuleAction> ModuleActions {
             get {

@@ -6,6 +6,7 @@ using System.Linq;
 using System.Web.Mvc;
 using YetaWF.Core.Controllers;
 using YetaWF.Core.DataProvider;
+using YetaWF.Core.Identity;
 using YetaWF.Core.Localize;
 using YetaWF.Core.Menus;
 using YetaWF.Core.Models;
@@ -159,6 +160,32 @@ namespace YetaWF.Modules.Pages.Controllers {
                 throw new Error(this.__ResStr("noPage", "Page \"{0}\" not found", pageName));
 
             PageDefinition.RemovePageDefinition(page.PageGuid);
+            return Reload(null, Reload: ReloadEnum.ModuleParts);
+        }
+
+        [HttpPost]
+        [Permission("SetAuthorization")]
+        [ExcludeDemoMode]
+        public ActionResult UpdateAdminAndEditorAuthorization() {
+            using (PageDefinitionDataProvider dataProvider = new PageDefinitionDataProvider()) {
+                int adminRole = Resource.ResourceAccess.GetAdministratorRoleId();
+                int editorRole = Resource.ResourceAccess.GetEditorRoleId();
+                int total;
+                List<PageDefinition> pages = dataProvider.GetItems(0, 0, null, null, out total);
+                foreach (PageDefinition genericPage in pages) {
+                    PageDefinition page = PageDefinition.Load(genericPage.PageGuid);
+                    if (page != null) {
+                        PageDefinition.AllowedRole role;
+                        while ((role = PageDefinition.AllowedRole.Find(page.AllowedRoles, adminRole)) != null)
+                            page.AllowedRoles.Remove(role);
+                        page.AllowedRoles.Add(new PageDefinition.AllowedRole { RoleId = adminRole, View = PageDefinition.AllowedEnum.Yes, Edit = PageDefinition.AllowedEnum.Yes, Remove = PageDefinition.AllowedEnum.Yes, });
+                        while ((role = PageDefinition.AllowedRole.Find(page.AllowedRoles, editorRole)) != null )
+                            page.AllowedRoles.Remove(role);
+                        page.AllowedRoles.Add(new PageDefinition.AllowedRole { RoleId = editorRole, View = PageDefinition.AllowedEnum.Yes, Edit = PageDefinition.AllowedEnum.Yes, });
+                        page.Save();
+                    }
+                }
+            }
             return Reload(null, Reload: ReloadEnum.ModuleParts);
         }
     }

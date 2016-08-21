@@ -30,8 +30,13 @@ namespace YetaWF.Modules.Modules.Modules {
         public override SerializableList<AllowedRole> DefaultAllowedRoles { get { return AdministratorLevel_DefaultAllowedRoles; } }
         public override List<RoleDefinition> ExtraRoles {
             get {
-                return new List<RoleDefinition>() { 
-                    new RoleDefinition("RemoveItems", this.__ResStr("roleRemItemsC", "Remove Modules"), this.__ResStr("roleRemItems", "The role has permission to remove individual modules"), this.__ResStr("userRemItemsC", "Remove Modules"), this.__ResStr("userRemItems", "The user has permission to remove individual modules")),
+                return new List<RoleDefinition>() {
+                    new RoleDefinition("RemoveItems",
+                        this.__ResStr("roleRemItemsC", "Remove Modules"), this.__ResStr("roleRemItems", "The role has permission to remove individual modules"),
+                        this.__ResStr("userRemItemsC", "Remove Modules"), this.__ResStr("userRemItems", "The user has permission to remove individual modules")),
+                    new RoleDefinition("RestoreAuthorization",
+                        this.__ResStr("roleRestAuthC", "Restore Default Authorization"), this.__ResStr("roleRestAuth", "The role has permission to restore the default authorizations for ALL modules"),
+                        this.__ResStr("userRestAuthC", "Restore Default Authorization"), this.__ResStr("userRestAuth", "The user has permission to restore the default authorizations for ALL modules")),
                 };
             }
         }
@@ -81,6 +86,25 @@ namespace YetaWF.Modules.Modules.Modules {
                 Mode = ModuleAction.ActionModeEnum.Any,
                 Location = ModuleAction.ActionLocationEnum.NoAuto,
                 ConfirmationText = this.__ResStr("removeConfirm", "Are you sure you want to remove this module?"),
+            };
+        }
+        public ModuleAction GetAction_RestoreAllDefaultAuthorization() {
+            if (!IsAuthorized("RestoreAuthorization")) return null;
+            return new ModuleAction(this) {
+                Url = YetaWFManager.UrlFor(typeof(ModulesBrowseModuleController), "RestoreAuthorization"),
+                NeedsModuleContext = true,
+                QueryArgs = new { },
+                Image = "",
+                Style = ModuleAction.ActionStyleEnum.Post,
+                LinkText = this.__ResStr("restAuthLink", "Restore Default Authorization"),
+                MenuText = this.__ResStr("restAuthMenu", "Restore Default Authorization"),
+                Tooltip = this.__ResStr("restAuthTT", "DEVELOPMENT FEATURE - Restore the default authorization for all modules"),
+                Legend = this.__ResStr("restAuthLegend", "DEVELOPMENT FEATURE - Restores the default authorization for all modules"),
+                Category = ModuleAction.ActionCategoryEnum.Significant,
+                Mode = ModuleAction.ActionModeEnum.Any,
+                Location = ModuleAction.ActionLocationEnum.ModuleLinks,
+                ConfirmationText = this.__ResStr("restAuthConfirm", "DEVELOPMENT FEATURE - Are you sure you want to restore the default authorizations for ALL modules - This will reset all modules to their \"factory\" authorization?"),
+                PleaseWaitText = this.__ResStr("restAuthPlsWait", "Restoring default authorization for all modules..."),
             };
         }
     }

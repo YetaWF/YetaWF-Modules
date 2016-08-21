@@ -28,7 +28,7 @@ namespace YetaWF.Modules.Basics.Modules {
         public override IModuleDefinitionIO GetDataProvider() { return new RecaptchaV2ConfigModuleDataProvider(); }
         public override DataProviderImpl GetConfigDataProvider() { return new RecaptchaV2ConfigDataProvider(); }
 
-        public override SerializableList<AllowedRole> DefaultAllowedRoles { get { return SuperuserLevel_DefaultAllowedRoles; } }
+        public override SerializableList<AllowedRole> DefaultAllowedRoles { get { return AdministratorLevel_DefaultAllowedRoles; } }
 
         public ModuleAction GetAction_Edit(string url) {
             return new ModuleAction(this) {

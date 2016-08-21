@@ -27,13 +27,16 @@ namespace YetaWF.Modules.Pages.Modules {
 
         public override IModuleDefinitionIO GetDataProvider() { return new PagesBrowseModuleDataProvider(); }
 
-        public override SerializableList<AllowedRole> DefaultAllowedRoles { get { return EditorLevel_DefaultAllowedRoles; } }
+        public override SerializableList<AllowedRole> DefaultAllowedRoles { get { return AdministratorLevel_DefaultAllowedRoles; } }
         public override List<RoleDefinition> ExtraRoles {
             get {
                 return new List<RoleDefinition>() {
                     new RoleDefinition("RemovePages",
                         this.__ResStr("roleRemItemsC", "Remove Pages"), this.__ResStr("roleRemItems", "The role has permission to remove pages"),
                         this.__ResStr("userRemItemsC", "Remove Pages"), this.__ResStr("userRemItems", "The user has permission to remove pages")),
+                    new RoleDefinition("SetAuthorization",
+                        this.__ResStr("roleSetAuthC", "Set Global Authorization"), this.__ResStr("roleSetAuth", "The role has permission to set global authorization for all pages"),
+                        this.__ResStr("userSetAuthC", "Set Global Authorization"), this.__ResStr("userSetAuth", "The user has permission to set global authorization for all pages")),
                 };
             }
         }
@@ -84,6 +87,25 @@ namespace YetaWF.Modules.Pages.Modules {
                 Location = ModuleAction.ActionLocationEnum.NoAuto,
                 ConfirmationText = this.__ResStr("removeConfirm", "Are you sure you want to remove page \"{0}\"?", pageName),
                 SaveReturnUrl = true,
+            };
+        }
+        public ModuleAction GetAction_UpdateAdminAndEditorAuthorization() {
+            if (!IsAuthorized("SetAuthorization")) return null;
+            return new ModuleAction(this) {
+                Url = YetaWFManager.UrlFor(typeof(PagesBrowseModuleController), "UpdateAdminAndEditorAuthorization"),
+                NeedsModuleContext = true,
+                QueryArgs = new { },
+                Image = "",
+                Style = ModuleAction.ActionStyleEnum.Post,
+                LinkText = this.__ResStr("restAuthLink", "Admin & Editor Authorization"),
+                MenuText = this.__ResStr("restAuthMenu", "Admin & Editor Authorization"),
+                Tooltip = this.__ResStr("restAuthTT", "DEVELOPMENT FEATURE - Add permission to all pages for the Administrator to have full control and the Editor can View & Edit"),
+                Legend = this.__ResStr("restAuthLegend", "DEVELOPMENT FEATURE - Add permission to all pages for the Administrator to have full control and the Editor can View & Edit"),
+                Category = ModuleAction.ActionCategoryEnum.Significant,
+                Mode = ModuleAction.ActionModeEnum.Any,
+                Location = ModuleAction.ActionLocationEnum.ModuleLinks,
+                ConfirmationText = this.__ResStr("restAuthConfirm", "DEVELOPMENT FEATURE - Are you sure you want to add permission to all pages for the Administrator to have full control and the Editor can View & Edit?"),
+                PleaseWaitText = this.__ResStr("restAuthPlsWait", "Updating all pages so the Administrator to has full control and the Editor can View & Edit..."),
             };
         }
     }
