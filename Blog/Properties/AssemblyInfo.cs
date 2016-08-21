@@ -26,6 +26,8 @@ using YetaWF.PackageAttributes;
     "http://yetawf.com/Documentation/YetaWF/Blog#Release%20Notice",
     "http://yetawf.com/Documentation/YetaWF/Blog#License")]
 
+[assembly: PublicPartialViews]
+
 [assembly: RequiresPackage("YetaWF.ImageRepository")]
 
 [assembly: Resource(Info.Resource_AllowManageComments, "Manage comments (edit, approve, etc.)", Administrator = true, Superuser = true)]
