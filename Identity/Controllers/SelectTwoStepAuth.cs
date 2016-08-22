@@ -55,7 +55,7 @@ namespace YetaWF.Modules.Identity.Controllers {
                     }
                 }
                 if (model.Actions.Count == 0)
-                    throw new InternalError("There are no two-step authentication methods available");
+                    throw new InternalError("There are no two-step authentication providers installed");
             }
             return View(model);
         }

@@ -4,7 +4,7 @@
 @using YetaWF.Modules.Identity.Controllers
 @Html.EditorFor(m => Model, "PropertyList")
 @if (Model.AuthMethods.Count == 0) {
-    <div class="yDivWarning">@__ResStr("noAuthInstalled", "There are no two-step authentication methods available.")</div>
+    <div class="yDivWarning">@__ResStr("noAuthInstalled", "There are no two-step authentication providers installed.")</div>
 } else {
     foreach (SelectTwoStepSetupModuleController.EditModel.AuthMethod meth in Model.AuthMethods) {
         <div class="t_auth_info">
