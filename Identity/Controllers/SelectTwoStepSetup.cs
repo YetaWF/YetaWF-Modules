@@ -52,7 +52,7 @@ namespace YetaWF.Modules.Identity.Controllers {
                             if (enabledTwoStepAuths.Contains(auth.Name))
                                 status = this.__ResStr("enabled", "(Enabled)");
                             else
-                                status = this.__ResStr("enabled", "(Not Enabled)");
+                                status = this.__ResStr("notEnabled", "(Not Enabled)");
                             model.AuthMethods.Add(new Controllers.SelectTwoStepSetupModuleController.EditModel.AuthMethod {
                                 Action = action,
                                 Status = status,
