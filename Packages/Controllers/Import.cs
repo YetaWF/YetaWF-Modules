@@ -85,13 +85,14 @@ namespace YetaWF.Modules.Packages.Controllers {
             if (errorList.Count > 0) {
                 ScriptBuilder sbErr = new ScriptBuilder();
                 sbErr.Append(errorList, LeadingNL: false);
+                sbErr.Append("(+nl)(+nl)");
                 errs = sbErr.ToString();
             }
             if (success) {
-                return errs + this.__ResStr("imported", "(+nl)(+nl)\"{0}\" successfully imported - YOU MUST RESTART THE SITE FOR PROPER OPERATION", fileName);
+                return errs + this.__ResStr("imported", "\"{0}\" successfully imported - YOU MUST RESTART THE SITE FOR PROPER OPERATION", fileName);
             } else {
                 // Anything else is a failure
-                return errs + this.__ResStr("cantImport", "Can't import {0}:(+nl)(+nl){1}", fileName, errs);
+                return errs + this.__ResStr("cantImport", "Can't import {0}:{1}", fileName, errs);
             }
         }
 
