@@ -116,6 +116,7 @@ namespace YetaWF.Modules.Packages.Controllers {
         }
 
         [Permission("Imports")]
+        [ExcludeDemoMode]
         public ActionResult ExportPackage(string packageName, long cookieToReturn) {
             Package package = Package.GetPackageFromPackageName(packageName);
             YetaWFZipFile zipFile = package.ExportPackage();
