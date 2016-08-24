@@ -110,6 +110,9 @@ namespace YetaWF.Modules.Packages.Modules {
             };
         }
         public ModuleAction GetAction_ExportPackage(Package package) {
+#if DEBUG
+            return null;
+#else
             if (!IsAuthorized("Imports")) return null;
             if (!package.HasSource) return null;
             if (!package.IsCorePackage && !package.IsCoreAssemblyPackage && !package.IsDataProviderPackage && !package.IsModulePackage && !package.IsSkinPackage) return null;
@@ -125,8 +128,12 @@ namespace YetaWF.Modules.Packages.Modules {
                 CookieAsDoneSignal = true,
                 Style = ModuleAction.ActionStyleEnum.Normal,
             };
+#endif
         }
         public ModuleAction GetAction_ExportPackageWithSource(Package package) {
+#if DEBUG
+            return null;
+#else
             if (!IsAuthorized("Imports")) return null;
             if (!package.HasSource) return null;
             if (!package.IsCorePackage && !package.IsCoreAssemblyPackage && !package.IsDataProviderPackage && !package.IsModulePackage && !package.IsSkinPackage /*&& !package.IsTemplatePackage && !package.IsUtilityPackage*/) return null;
@@ -142,6 +149,7 @@ namespace YetaWF.Modules.Packages.Modules {
                 CookieAsDoneSignal = true,
                 Style = ModuleAction.ActionStyleEnum.Normal,
             };
+#endif
         }
         public ModuleAction GetAction_ExportPackageData(Package package) {
             if (!package.IsModulePackage) return null;
