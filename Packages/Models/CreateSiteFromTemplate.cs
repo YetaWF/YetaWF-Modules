@@ -34,6 +34,7 @@ namespace YetaWF.Modules.Packages.DataProvider {
         private string _Template;
         private MenuList _SiteMenu;
         private PageDefinition _CurrentPage;
+        private string _CurrentUrl;
 
         /// <summary>
         /// Builds the current site from the template file
@@ -203,6 +204,7 @@ namespace YetaWF.Modules.Packages.DataProvider {
                     page = new PageDefinition();
                 }
                 _CurrentPage = page;
+                _CurrentUrl = url;
 
                 while (TryPageTitle(page, lines) || TryPageDescription(page, lines))
                     ;
@@ -335,6 +337,7 @@ namespace YetaWF.Modules.Packages.DataProvider {
                 if (build)
                     page.Save();
                 _CurrentPage = null;
+                _CurrentUrl = null;
             }
         }
 
@@ -744,6 +747,8 @@ namespace YetaWF.Modules.Packages.DataProvider {
                         parmList.Add(_SiteMenu);
                     else if (p == "{CURRENTPAGE}") // the current page
                         parmList.Add(_CurrentPage);
+                    else if (p == "{CURRENTURL}") // the Url of the current page
+                        parmList.Add(_CurrentUrl);
                     else if (p.StartsWith("\"")) // translate \r\n to newline
                         parmList.Add(TrimQuotes(p.Replace("\\r\\n", Environment.NewLine)));
                     else if (p.StartsWith("Guid(") && p.EndsWith(")"))  // Guid(nnnnn)
