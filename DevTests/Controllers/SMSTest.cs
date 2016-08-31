@@ -13,7 +13,7 @@ namespace YetaWF.Modules.DevTests.Controllers {
         public SMSTestModuleController() { }
 
         [Trim]
-        [Header("SMS requires an SMS provider. These are not included with YetaWF and are available separately from Softel vdm, Inc. (at no charge) - Check the YetaWF web site store for additional information. Please note that SMS providers don't issue an error when the SMS message is sent - Inspect the log file to find errors in SMS processing.")]
+        [Header("SMS requires an SMS provider. These are not included with YetaWF and are available separately from Softel vdm, Inc. Check the YetaWF web site store for additional information. Please note that SMS providers don't issue an error when the SMS message is sent - Inspect the log file to find errors in SMS processing.")]
         public class Model {
 
             [Caption("Phone Number"), Description("The phone number which will receive the SMS message")]
