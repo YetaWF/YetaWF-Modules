@@ -18,8 +18,8 @@ using YetaWF.PackageAttributes;
 [assembly: AssemblyVersion("1.0.5.0")]
 
 [assembly: Package(PackageTypeEnum.Module, "YetaWF")]
-[assembly: PackageInfo("http://softelvdm.com/UpdateServer",
-    "http://softelvdm.com/Documentation/YetaWF/IFrame",
-    "http://softelvdm.com/Documentation/YetaWF/Support",
-    "http://softelvdm.com/Documentation/YetaWF/IFrame#Release%20Notice",
-    "http://softelvdm.com/Documentation/YetaWF/IFrame#License")]
+[assembly: PackageInfo("http://YetaWF.com/UpdateServer",
+    "http://yetawf.com/Documentation/YetaWF/IFrame",
+    "http://YetaWF.com/Documentation/YetaWF/Support",
+    "http://yetawf.com/Documentation/YetaWF/IFrame#Release%20Notice",
+    "http://yetawf.com/Documentation/YetaWF/IFrame#License")]
