@@ -127,9 +127,13 @@ namespace YetaWF.Modules.PageEdit.Controllers {
             [UIHint("Hidden")]
             public Guid CurrentPageGuid { get; set; }
 
-            [Caption("Copy Current Page"), Description("Use the current page as a template for the new page, using the same modules and page settings - Leave Title and Description blank to copy those settings from the current page")]
+            [Caption("Copy Current Page"), Description("Use the current page settings for the new page - Leave Title and Description blank to copy those settings from the current page")]
             [UIHint("Boolean")]
             public bool CopyPage { get; set; }
+
+            [Caption("Copy All Modules"), Description("If selected, copies all modules from the current page and adds them to the new page - Modules are copied by reference, meaning any modules on the new page are the same modules used on the original page and share the same contents - Modules on the template page portion of the current page are never copied")]
+            [UIHint("Boolean")]
+            public bool CopyModules { get; set; }
 
             [Caption("Url"), Description("The Url of the new page - local Urls start with / and do not include http:// or https://")]
             [UIHint("Text40"), StringLength(Globals.MaxUrl), UrlValidation(urlType: UrlHelperEx.UrlTypeEnum.New), Required, Trim]
@@ -142,10 +146,6 @@ namespace YetaWF.Modules.PageEdit.Controllers {
             [Caption("Description"), Description("The page description - this description is used to document the purpose of the page")]
             [UIHint("MultiString"), StringLength(PageDefinition.MaxDescription), RequiredIf("CopyPage", false), Trim]
             public MultiString Description { get; set; }
-
-            [Caption("Copy All Modules"), Description("If selected, copies all modules from the current page and adds them to the new page - Modules on the template page portion of the current page are never copied")]
-            [UIHint("Boolean")]
-            public bool CopyModules { get; set; }
 
             public AddNewPageModel() {
                 Title = new MultiString();
