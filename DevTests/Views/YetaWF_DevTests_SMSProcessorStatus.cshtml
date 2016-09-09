@@ -10,10 +10,6 @@
         <div class="@YetaWF.Core.Globals.CssDivAlert">
             @__ResStr("testMode", "The {0} SMS processor is in TEST/Sandbox mode - messages are simulated.", Model.ProcessorName)
         </div>
-    } else {
-        <div class="@YetaWF.Core.Globals.CssDivWarning">
-            @__ResStr("prodMode", "The {0} SMS processor is in PRODUCTION mode.", Model.ProcessorName)
-        </div>
     }
 } else {
     <div class="@YetaWF.Core.Globals.CssDivAlert">

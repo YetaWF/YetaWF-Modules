@@ -27,6 +27,8 @@ namespace YetaWF.Modules.DevTests.Controllers {
                 TestMode = processor != null ? processor.IsTestMode() : false,
                 ProcessorName = processor != null ? processor.Name : null,
             };
+            if (model.Available == 1 && !model.TestMode)
+                return new EmptyResult();
             return View(model);
         }
     }
