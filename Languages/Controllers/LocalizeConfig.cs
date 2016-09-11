@@ -3,7 +3,10 @@
 using System.Web.Mvc;
 using YetaWF.Core.Controllers;
 using YetaWF.Core.Localize;
+using YetaWF.Core.Models;
 using YetaWF.Core.Models.Attributes;
+using YetaWF.Core.Support;
+using YetaWF.Modules.Languages.DataProvider;
 
 namespace YetaWF.Modules.Languages.Controllers {
 
@@ -26,7 +29,23 @@ namespace YetaWF.Modules.Languages.Controllers {
             [UIHint("Boolean")]
             public bool AbortOnFailure { get; set; }
 
-            public void SetData() {
+            [ExcludeDemoMode]
+            [Caption("Google Translate API Key"), Description("Defines the Google Cloud Platform / Google Translate API key, which is used when translating localization resources into other languages - You can obtain an API key from the Google Cloud Platform service - This is not a free service")]
+            [HelpLink("https://cloud.google.com/translate/docs/")]
+            [UIHint("Text80"), StringLength(LocalizeConfigData.MaxGoogleTranslateAPIKey), Trim]
+            public string GoogleTranslateAPIKey { get; set; }
+
+            [Caption("Google Translate App Name"), Description("Defines the name of your application performing translations")]
+            [HelpLink("https://cloud.google.com/translate/docs/")]
+            [UIHint("Text80"), StringLength(LocalizeConfigData.MaxGoogleTranslateAppName), RequiredIfSupplied("GoogleTranslateAPIKey"), Trim]
+            public string GoogleTranslateAppName { get; set; }
+
+            public LocalizeConfigData GetData(LocalizeConfigData data) {
+                ObjectSupport.CopyData(this, data);
+                return data;
+            }
+            public void SetData(LocalizeConfigData data) {
+                ObjectSupport.CopyData(data, this);
                 UseLocalizationResources = LocalizationSupport.UseLocalizationResources;
                 AbortOnFailure = LocalizationSupport.AbortOnFailure;
             }
@@ -35,20 +54,32 @@ namespace YetaWF.Modules.Languages.Controllers {
 
         [HttpGet]
         public ActionResult LocalizeConfig() {
-            Model model = new Model { };
-            model.SetData();
-            return View(model);
+            using (LocalizeConfigDataProvider dataProvider = new LocalizeConfigDataProvider()) {
+                Model model = new Model { };
+                LocalizeConfigData data = dataProvider.GetItem();
+                if (data == null)
+                    throw new Error(this.__ResStr("notFound", "The localization settings could not be found"));
+                model.SetData(data);
+                return View(model);
+            }
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
         [ExcludeDemoMode]
         public ActionResult LocalizeConfig_Partial(Model model) {
-            if (!ModelState.IsValid)
-                return PartialView(model);
-            LocalizationSupport locSupport = new LocalizationSupport();
-            locSupport.SetUseLocalizationResources(model.UseLocalizationResources);
-            locSupport.SetAbortOnFailure(model.AbortOnFailure);
+            using (LocalizeConfigDataProvider dataProvider = new LocalizeConfigDataProvider()) {
+                LocalizeConfigData data = dataProvider.GetItem();// get the original item
+                if (!ModelState.IsValid)
+                    return PartialView(model);
+                data = model.GetData(data); // merge new data into original
+                model.SetData(data); // and all the data back into model for final display
+
+                LocalizationSupport locSupport = new LocalizationSupport();
+                locSupport.SetUseLocalizationResources(model.UseLocalizationResources);
+                locSupport.SetAbortOnFailure(model.AbortOnFailure);
+                dataProvider.UpdateConfig(data);
+            }
             return FormProcessed(model, this.__ResStr("okSaved", "Localization settings saved - The site is now restarting"));
         }
     }

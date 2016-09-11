@@ -1,9 +1,13 @@
 /* Copyright © 2016 Softel vdm, Inc. - http://yetawf.com/Documentation/YetaWF/Languages#License */
 
+using Google.Apis.Services;
+using Google.Apis.Translate.v2;
+using Google.Apis.Translate.v2.Data;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text;
 using System.Web.Mvc;
 using YetaWF.Core.Controllers;
 using YetaWF.Core.DataProvider;
@@ -13,7 +17,9 @@ using YetaWF.Core.Models;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Modules;
 using YetaWF.Core.Packages;
+using YetaWF.Core.Support;
 using YetaWF.Core.Views.Shared;
+using YetaWF.Modules.Languages.DataProvider;
 using YetaWF.Modules.Languages.Modules;
 
 namespace YetaWF.Modules.Languages.Controllers {
@@ -89,6 +95,136 @@ namespace YetaWF.Modules.Languages.Controllers {
                 Data = (from s in files select new BrowseItem(Module, packageName, s.FileName)).ToList<object>(),
                 Total = total
             });
+        }
+
+        [HttpPost]
+        [Permission("Localize")]
+        [ExcludeDemoMode]
+        public ActionResult CreateCustomLocalization(string packageName, string language) {
+            if (Manager.Deployed)
+                throw new InternalError("Can't localize packages on a deployed site");
+            TranslatePackage(packageName, language, LocalizationSupport.Location.CustomResources);
+            return FormProcessed(null, popupText: this.__ResStr("custGenerated", "Custom localization resources successfully generated"), OnClose: OnCloseEnum.Nothing);
+        }
+
+        [HttpPost]
+        [Permission("Localize")]
+        [ExcludeDemoMode]
+        public ActionResult CreateInstalledLocalization(string packageName, string language) {
+            if (Manager.Deployed)
+                throw new InternalError("Can't localize packages on a deployed site");
+            TranslatePackage(packageName, language, LocalizationSupport.Location.InstalledResources);
+            return FormProcessed(null, popupText: this.__ResStr("instGenerated", "Installed localization resources successfully generated"), OnClose: OnCloseEnum.Nothing);
+        }
+
+        private void TranslatePackage(string packageName, string language, LocalizationSupport.Location resourceType) {
+            Package package = Package.GetPackageFromPackageName(packageName);
+            if (resourceType == LocalizationSupport.Location.InstalledResources && language == MultiString.DefaultLanguage)
+                throw new InternalError("Can't save installed resources using the default language {0}", MultiString.DefaultLanguage);
+            List<LocalizeFile> files = (from s in LocalizationSupport.GetFiles(package) select new LocalizeFile { FileName = Path.GetFileName(s) }).ToList();
+
+            // Extract all strings into a list
+            List<string> strings = new List<string>();
+            List<LocalizationData> allData = new List<LocalizationData>();
+            foreach (LocalizeFile file in files) {
+                LocalizationData data = LocalizationSupport.Load(package, file.FileName, LocalizationSupport.Location.DefaultResources);
+                allData.Add(data);
+                foreach (LocalizationData.ClassData cd in data.Classes) {
+                    if (!string.IsNullOrWhiteSpace(cd.Header))
+                        strings.Add(cd.Header);
+                    if (!string.IsNullOrWhiteSpace(cd.Footer))
+                        strings.Add(cd.Footer);
+                    if (!string.IsNullOrWhiteSpace(cd.Legend))
+                        strings.Add(cd.Legend);
+                    foreach (LocalizationData.PropertyData pd in cd.Properties) {
+                        if (!string.IsNullOrWhiteSpace(pd.Caption))
+                            strings.Add(pd.Caption);
+                        if (!string.IsNullOrWhiteSpace(pd.Description))
+                            strings.Add(pd.Description);
+                        if (!string.IsNullOrWhiteSpace(pd.TextAbove))
+                            strings.Add(pd.TextAbove);
+                        if (!string.IsNullOrWhiteSpace(pd.TextBelow))
+                            strings.Add(pd.TextBelow);
+                    }
+                }
+                foreach (LocalizationData.StringData sd in data.Strings) {
+                    if (!string.IsNullOrWhiteSpace(sd.Text))
+                        strings.Add(sd.Text);
+                }
+                foreach (LocalizationData.EnumData ed in data.Enums) {
+                    foreach (LocalizationData.EnumDataEntry ede in ed.Entries) {
+                        if (!string.IsNullOrWhiteSpace(ede.Caption))
+                            strings.Add(ede.Caption);
+                        if (!string.IsNullOrWhiteSpace(ede.Description))
+                            strings.Add(ede.Description);
+                    }
+                }
+            }
+            // Translate all strings
+            strings = TranslateStrings(language, strings);
+            // put new strings into localization resource
+            int stringIndex = 0, index = 0;
+            foreach (LocalizationData locData in allData) {
+                LocalizationData data = allData[index];
+                foreach (LocalizationData.ClassData cd in data.Classes) {
+                    if (!string.IsNullOrWhiteSpace(cd.Header))
+                        cd.Header = strings[stringIndex++];
+                    if (!string.IsNullOrWhiteSpace(cd.Footer))
+                        cd.Footer = strings[stringIndex++];
+                    if (!string.IsNullOrWhiteSpace(cd.Legend))
+                        cd.Legend = strings[stringIndex++];
+                    foreach (LocalizationData.PropertyData pd in cd.Properties) {
+                        if (!string.IsNullOrWhiteSpace(pd.Caption))
+                            pd.Caption = strings[stringIndex++];
+                        if (!string.IsNullOrWhiteSpace(pd.Description))
+                            pd.Description = strings[stringIndex++];
+                        if (!string.IsNullOrWhiteSpace(pd.TextAbove))
+                            pd.TextAbove = strings[stringIndex++];
+                        if (!string.IsNullOrWhiteSpace(pd.TextBelow))
+                            pd.TextBelow = strings[stringIndex++];
+                    }
+                }
+                foreach (LocalizationData.StringData sd in data.Strings) {
+                    if (!string.IsNullOrWhiteSpace(sd.Text))
+                        sd.Text = strings[stringIndex++];
+                }
+                foreach (LocalizationData.EnumData ed in data.Enums) {
+                    foreach (LocalizationData.EnumDataEntry ede in ed.Entries) {
+                        if (!string.IsNullOrWhiteSpace(ede.Caption))
+                            ede.Caption = strings[stringIndex++];
+                        if (!string.IsNullOrWhiteSpace(ede.Description))
+                            ede.Description = strings[stringIndex++];
+                    }
+                }
+                LocalizationSupport.Save(package, files[index].FileName, resourceType, locData);
+
+                ++index;
+            }
+        }
+        private List<string> TranslateStrings(string language, List<string> strings) {
+            LocalizeConfigData config = LocalizeConfigDataProvider.GetConfig();
+            if (!string.IsNullOrWhiteSpace(config.GoogleTranslateAPIKey) && !string.IsNullOrWhiteSpace(config.GoogleTranslateAppName))
+                return TranslateStringsUsingGoogle(language, config.GoogleTranslateAPIKey, config.GoogleTranslateAppName, strings);
+            throw new InternalError("No translation API available - Define a translation API using Localization Settings");
+        }
+        private List<string> TranslateStringsUsingGoogle(string language, string apiKey, string appName, List<string> strings) {
+            string from = MultiString.GetPrimaryLanguage(MultiString.DefaultLanguage);
+            string to = MultiString.GetPrimaryLanguage(language);
+            List<string> newStrings = new List<string>();
+            int total = strings.Count();
+            int skip = 0;
+            while (total > 0) {
+                TranslateService service = new TranslateService(new BaseClientService.Initializer() {
+                    ApiKey = apiKey,
+                    ApplicationName = appName,
+                });
+                TranslationsListResponse resp = service.Translations.List(strings.Skip(skip).Take(40).ToList(), to).Execute();
+                List<string> returnedStrings = (from r in resp.Translations select r.TranslatedText).ToList();
+                newStrings.AddRange(returnedStrings);
+                skip += returnedStrings.Count();
+                total -= returnedStrings.Count();
+            }
+            return newStrings;
         }
     }
 }

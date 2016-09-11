@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using YetaWF.Core.IO;
 using YetaWF.Core.Localize;
+using YetaWF.Core.Models;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Modules;
 using YetaWF.Core.Packages;
@@ -39,8 +40,8 @@ namespace YetaWF.Modules.Packages.Modules {
                         this.__ResStr("roleInstallsC", "Install/Uninstall Packages"), this.__ResStr("roleInstalls", "The role has permission to install/uninstall packages"),
                         this.__ResStr("userInstallsC", "Install/Uninstall Packages"), this.__ResStr("userInstalls", "The user has permission to install/uninstall packages")),
                     new RoleDefinition("Localize",
-                        this.__ResStr("roleLocalizeC", "Install/Uninstall Packages"), this.__ResStr("roleLocalize", "The role has permission to generate localization data for packages"),
-                        this.__ResStr("userLocalizeC", "Install/Uninstall Packages"), this.__ResStr("userLocalize", "The user has permission to generate localization data for packages")),
+                        this.__ResStr("roleLocalizeC", "Install/Uninstall Packages"), this.__ResStr("roleLocalize", "The role has permission to generate localization resources for packages"),
+                        this.__ResStr("userLocalizeC", "Install/Uninstall Packages"), this.__ResStr("userLocalize", "The user has permission to generate localization resources for packages")),
                 };
             }
         }
@@ -211,8 +212,8 @@ namespace YetaWF.Modules.Packages.Modules {
                 Image = "LocalizePackage.png",
                 LinkText = this.__ResStr("localizeLink", "Localize Package"),
                 MenuText = this.__ResStr("localizeMenu", "Localize Package"),
-                Tooltip = this.__ResStr("localizeTT", "Generate all localization data used by this package"),
-                Legend = this.__ResStr("localizeLegend", "Generates all localization data used by this package"),
+                Tooltip = this.__ResStr("localizeTT", "Generate all default localization resources ({0}) used by this package", MultiString.DefaultLanguage),
+                Legend = this.__ResStr("localizeLegend", "Generates all default localization resources ({0}) used by this package", MultiString.DefaultLanguage),
                 Category = ModuleAction.ActionCategoryEnum.Update,
             };
         }
@@ -224,14 +225,14 @@ namespace YetaWF.Modules.Packages.Modules {
                 Url = YetaWFManager.UrlFor(typeof(PackagesModuleController), "LocalizeAllPackages"),
                 NeedsModuleContext = true,
                 Image = "LocalizeAllPackages.png",
-                LinkText = this.__ResStr("localizeAllLink", "Localize All Packages"),
-                MenuText = this.__ResStr("localizeAllMenu", "Localize All Packages"),
-                Tooltip = this.__ResStr("localizeAllTT", "Generate all localization data used by all packages"),
-                Legend = this.__ResStr("localizeAllLegend", "Generates all localization data used by all packages"),
-                ConfirmationText = this.__ResStr("localizeAllConfirm", "Are you sure you want to generate the localization data for all packages?"),
+                LinkText = this.__ResStr("localizeAllLink", "Localize All Packages ({0})", MultiString.DefaultLanguage),
+                MenuText = this.__ResStr("localizeAllMenu", "Localize All Packages ({0})", MultiString.DefaultLanguage),
+                Tooltip = this.__ResStr("localizeAllTT", "Generate all default localization resources ({0}) used by all packages", MultiString.DefaultLanguage),
+                Legend = this.__ResStr("localizeAllLegend", "Generates all default localization resources ({0}) used by all packages", MultiString.DefaultLanguage),
+                ConfirmationText = this.__ResStr("localizeAllConfirm", "Are you sure you want to generate the localization resources for all packages?"),
                 Location = ModuleAction.ActionLocationEnum.ModuleLinks,
                 Category = ModuleAction.ActionCategoryEnum.Update,
-                PleaseWaitText = this.__ResStr("localizePlsWait", "Localization Resources are being updated..."),
+                PleaseWaitText = this.__ResStr("localizePlsWait", "Updating default localization resources ({0})...", MultiString.DefaultLanguage),
             };
         }
         public ModuleAction GetAction_RemovePackage(Package package) {

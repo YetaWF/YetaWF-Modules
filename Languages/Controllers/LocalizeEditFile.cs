@@ -17,10 +17,9 @@ namespace YetaWF.Modules.Languages.Controllers {
         /*DO NOT [Trim]*/
         public class EditModel {
 
-            [UIHint("Hidden")]
-            public string PackageName { get; set; }
-            [UIHint("Hidden")]
-            public string TypeName { get; set; }
+            [Caption("Current Language"), Description("Displays the current language used - Use User Settings to change the current language")]
+            [UIHint("String"), ReadOnly]
+            public string CurrentLanguage { get; set; }
 
             [Caption("Classes"), Description("Shows all the localizable string fragments found in class properties and the class's Header, Footer and Legend attributes")]
             [UIHint("YetaWF_Languages_LocalizeClasses"), SuppressIfEqual("ClassCount", 0)]
@@ -32,9 +31,27 @@ namespace YetaWF.Modules.Languages.Controllers {
             [UIHint("YetaWF_Languages_LocalizeStrings"), SuppressIfEqual("StringCount", 0)]
             public SerializableList<LocalizationData.StringData> Strings { get; set; }
 
+            [Caption("Custom"), Description("Defines whether localization strings are saved as customizations (in ./AddonsCustom) or as package installed resources (./Addons) - Only non US-English resources can be saved as package installed resources")]
+            [UIHint("Boolean"), SuppressIfEqual("ForceCustom", true)]
+            public bool Custom { get; set; }
+
+            [Caption("Custom"), Description("Defines whether localization strings are saved as customizations (in ./AddonsCustom) or as package installed resources (./Addons) - Only non US-English resources can be saved as package installed resources")]
+            [UIHint("Boolean"), SuppressIfEqual("ForceCustom", false), ReadOnly]
+            public bool CustomRO { get; set; }
+
             public int ClassCount { get { return Classes.Count; } }
             public int EnumCount { get { return Enums.Count; } }
             public int StringCount { get { return Strings.Count; } }
+
+            [UIHint("Hidden")]
+            public string PackageName { get; set; }
+            [UIHint("Hidden")]
+            public string TypeName { get; set; }
+
+            [UIHint("Hidden")]
+            public bool ForceCustom { get; set; }
+            [UIHint("Hidden")]
+            public string HiddenCurrentLanguage { get; set; }
 
             public LocalizationData GetData(LocalizationData data) {
                 ObjectSupport.CopyData(this, data);
@@ -53,12 +70,31 @@ namespace YetaWF.Modules.Languages.Controllers {
         [HttpGet]
         public ActionResult LocalizeEditFile(string packageName, string typeName) {
             Package package = Package.GetPackageFromPackageName(packageName);
+            bool custom = true;
+            bool forceCustom = false;
             LocalizationData data = LocalizationSupport.Load(package, typeName, LocalizationSupport.Location.CustomResources);
-            if (data == null)
+            if (data == null) {
                 data = LocalizationSupport.Load(package, typeName, LocalizationSupport.Location.InstalledResources);
-            if (data == null)
+                custom = false;
+            }
+            if (data == null) {
                 data = LocalizationSupport.Load(package, typeName, LocalizationSupport.Location.DefaultResources);
-            EditModel model = new EditModel { PackageName = packageName, TypeName = typeName };
+                custom = false;
+            }
+            if (MultiString.ActiveLanguage == MultiString.DefaultLanguage)
+                custom = true;
+#if !DEBUG
+            forceCustom = true;
+#endif
+            EditModel model = new EditModel {
+            PackageName = packageName,
+                TypeName = typeName,
+                Custom = forceCustom || custom,
+                CustomRO = forceCustom || custom,
+                CurrentLanguage = MultiString.ActiveLanguage,
+                HiddenCurrentLanguage = MultiString.ActiveLanguage,
+                ForceCustom = forceCustom || MultiString.ActiveLanguage == MultiString.DefaultLanguage,
+            };
             model.SetData(data);
             Module.Title = this.__ResStr("modTitle", "Localization Resource \"{0}\"", typeName);
             return View(model);
@@ -72,11 +108,18 @@ namespace YetaWF.Modules.Languages.Controllers {
             LocalizationData data = null;
             if (RestoreDefaults) {
                 ModelState.Clear();
-                model = new EditModel { PackageName = model.PackageName, TypeName = model.TypeName };
+                model = new EditModel {
+                    PackageName = model.PackageName,
+                    TypeName = model.TypeName,
+                    Custom = model.ForceCustom || model.Custom,
+                    CustomRO = model.ForceCustom || model.Custom,
+                    CurrentLanguage = model.HiddenCurrentLanguage,
+                };
                 data = LocalizationSupport.Load(package, model.TypeName, LocalizationSupport.Location.DefaultResources);
                 model.SetData(data); // and all the data back into model for final display
+                LocalizationSupport.Save(package, model.TypeName, LocalizationSupport.Location.InstalledResources, null);// delete it
                 LocalizationSupport.Save(package, model.TypeName, LocalizationSupport.Location.CustomResources, null);// delete it
-                return FormProcessed(model, this.__ResStr("okReset", "Localization resource default restored - The custom addon file has been removed. If you click Save or Apply, a new custom addon file will be created. To keep the defaults only, simply close this form."), OnClose: OnCloseEnum.UpdateInPlace, OnPopupClose: OnPopupCloseEnum.UpdateInPlace);
+                return FormProcessed(model, this.__ResStr("okReset", "Localization resource default restored - The localization file has been removed - If you click Save or Apply, a new custom/installed addon file will be created. To keep the defaults only, simply close this form"), OnClose: OnCloseEnum.UpdateInPlace, OnPopupClose: OnPopupCloseEnum.UpdateInPlace);
             } else {
                 if (!ModelState.IsValid)
                     return PartialView(model);
@@ -87,7 +130,16 @@ namespace YetaWF.Modules.Languages.Controllers {
                     data = LocalizationSupport.Load(package, model.TypeName, LocalizationSupport.Location.DefaultResources);
                 data = model.GetData(data); // merge new data into original
                 model.SetData(data); // and all the data back into model for final display
-                LocalizationSupport.Save(package, model.TypeName, LocalizationSupport.Location.CustomResources, data);
+
+                model.Custom = model.ForceCustom || model.Custom;
+                model.CustomRO = model.ForceCustom || model.Custom;
+                model.CurrentLanguage = model.HiddenCurrentLanguage;
+
+                if (model.Custom)
+                    LocalizationSupport.Save(package, model.TypeName, LocalizationSupport.Location.CustomResources, data);
+                else
+                    LocalizationSupport.Save(package, model.TypeName, LocalizationSupport.Location.InstalledResources, data);
+
                 return FormProcessed(model, this.__ResStr("okSaved", "Localization resource saved"), OnPopupClose: OnPopupCloseEnum.ReloadNothing);
             }
         }

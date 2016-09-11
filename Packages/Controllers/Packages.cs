@@ -179,7 +179,7 @@ namespace YetaWF.Modules.Packages.Controllers {
                 sb.Append(errorList, LeadingNL: true);
                 throw new Error(sb.ToString());
             }
-            return FormProcessed(null, popupText: this.__ResStr("generated", "Package localization data successfully generated"), OnClose: OnCloseEnum.Nothing);
+            return FormProcessed(null, popupText: this.__ResStr("generated", "Package localization resources successfully generated"), OnClose: OnCloseEnum.Nothing);
         }
         [Permission("Localize")]
         [ExcludeDemoMode]
@@ -188,7 +188,7 @@ namespace YetaWF.Modules.Packages.Controllers {
                 throw new InternalError("Can't localize packages on a deployed site");
             List<string> errorList = new List<string>();
             foreach (Package package in Package.GetAvailablePackages()) {
-                if (package.IsCorePackage || package.IsModulePackage) {
+                if (package.IsCorePackage || package.IsModulePackage || package.IsSkinPackage) {
                     if (!package.Localize(errorList)) {
                         ScriptBuilder sb = new ScriptBuilder();
                         sb.Append(this.__ResStr("cantLocalize", "Can't localize package {0}:(+nl)"), package.Name);
@@ -197,7 +197,7 @@ namespace YetaWF.Modules.Packages.Controllers {
                     }
                 }
             }
-            return FormProcessed(null, popupText: this.__ResStr("generatedAll", "Localization data for all packages has been successfully generated"), OnClose: OnCloseEnum.Nothing);
+            return FormProcessed(null, popupText: this.__ResStr("generatedAll", "Localization resources for all packages have been successfully generated"), OnClose: OnCloseEnum.Nothing);
         }
 
         [Permission("Installs")]

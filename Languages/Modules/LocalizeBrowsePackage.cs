@@ -1,16 +1,20 @@
 ﻿/* Copyright © 2016 Softel vdm, Inc. - http://yetawf.com/Documentation/YetaWF/Languages#License */
 
 using System;
+using System.Collections.Generic;
 using System.Web.Mvc;
 using YetaWF.Core;
 using YetaWF.Core.IO;
 using YetaWF.Core.Localize;
+using YetaWF.Core.Models;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Modules;
 using YetaWF.Core.Packages;
 using YetaWF.Core.Serializers;
+using YetaWF.Core.Support;
 using YetaWF.Core.Views.Shared;
 using YetaWF.DataProvider;
+using YetaWF.Modules.Languages.Controllers;
 
 namespace YetaWF.Modules.Languages.Modules {
 
@@ -33,9 +37,18 @@ namespace YetaWF.Modules.Languages.Modules {
         public string EditUrl { get; set; }
 
         public override SerializableList<AllowedRole> DefaultAllowedRoles { get { return AdministratorLevel_DefaultAllowedRoles; } }
+        public override List<RoleDefinition> ExtraRoles {
+            get {
+                return new List<RoleDefinition>() {
+                    new RoleDefinition("Localize",
+                        this.__ResStr("roleLocalizeC", "Install/Uninstall Packages"), this.__ResStr("roleLocalize", "The role has permission to generate localization resources for packages"),
+                        this.__ResStr("userLocalizeC", "Install/Uninstall Packages"), this.__ResStr("userLocalize", "The user has permission to generate localization resources for packages")),
+                };
+            }
+        }
 
         public ModuleAction GetAction_Browse(string url, Package package) {
-            if (!package.IsCorePackage && !package.IsCoreAssemblyPackage && !package.IsModulePackage) return null;
+            if (!package.IsCorePackage && !package.IsCoreAssemblyPackage && !package.IsModulePackage && !package.IsSkinPackage) return null;
             return new ModuleAction(this) {
                 Url = string.IsNullOrWhiteSpace(url) ? ModulePermanentUrl : url,
                 QueryArgs = new { PackageName = package.Name },
@@ -45,9 +58,57 @@ namespace YetaWF.Modules.Languages.Modules {
                 Tooltip = this.__ResStr("browseTooltip", "Display and manage localization resources for package {0}", package.Name),
                 Legend = this.__ResStr("browseLegend", "Displays and manages localization resources for package {0}", package.Name),
                 Style = ModuleAction.ActionStyleEnum.Normal,
-                Location = ModuleAction.ActionLocationEnum.ModuleLinks | ModuleAction.ActionLocationEnum.ModuleMenu,
+                Location = ModuleAction.ActionLocationEnum.NoAuto,
                 Category = ModuleAction.ActionCategoryEnum.Read,
                 Mode = ModuleAction.ActionModeEnum.Any,
+            };
+        }
+        public ModuleAction GetAction_CreateCustomLocalization() {
+            if (Manager.Deployed) return null; // can't do this on a deployed site
+            if (!IsAuthorized("Localize")) return null;
+            string packageName = Manager.GetUrlArg<string>("PackageName");
+            if (string.IsNullOrWhiteSpace(packageName)) return null;
+            Package package = Package.GetPackageFromPackageName(packageName);
+            if (!package.IsCorePackage && !package.IsCoreAssemblyPackage && !package.IsModulePackage && !package.IsSkinPackage) return null;
+            if (MultiString.ActiveLanguage == MultiString.DefaultLanguage) return null;
+            return new ModuleAction(this) {
+                Url = YetaWFManager.UrlFor(typeof(LocalizeBrowsePackageModuleController), "CreateCustomLocalization"),
+                QueryArgs = new { PackageName = packageName, Language = MultiString.ActiveLanguage },
+                Image = "LocalizePackage.png",
+                LinkText = this.__ResStr("creCustLink", "Create Localization Resources (Custom - {0})", MultiString.ActiveLanguage),
+                MenuText = this.__ResStr("creCustText", "Create Localization Resources (Custom - {0})", MultiString.ActiveLanguage),
+                Tooltip = this.__ResStr("creCustTooltip", "Create a custom localization resources for package {0} using language {1} - Saved in folder ./AddonsCustom/...", package.Name, MultiString.ActiveLanguage),
+                Legend = this.__ResStr("creCustLegend", "Creates a custom localization resources for package {0} using language {1} - Saved in folder ./AddonsCustom/...", package.Name, MultiString.ActiveLanguage),
+                Style = ModuleAction.ActionStyleEnum.Post,
+                Location = ModuleAction.ActionLocationEnum.ModuleLinks,
+                Category = ModuleAction.ActionCategoryEnum.Read,
+                Mode = ModuleAction.ActionModeEnum.Any,
+                ConfirmationText = this.__ResStr("removeConfirm", "Are you sure you want to create custom localization resources for package {0} using language {1} - Custom localization resources are saved in ./AddonsCustom/...?", package.Name, MultiString.ActiveLanguage),
+                NeedsModuleContext = true,
+            };
+        }
+        public ModuleAction GetAction_CreateInstalledLocalization() {
+            if (Manager.Deployed) return null; // can't do this on a deployed site
+            if (!IsAuthorized("Localize")) return null;
+            string packageName = Manager.GetUrlArg<string>("PackageName");
+            if (string.IsNullOrWhiteSpace(packageName)) return null;
+            Package package = Package.GetPackageFromPackageName(packageName);
+            if (!package.IsCorePackage && !package.IsCoreAssemblyPackage && !package.IsModulePackage && !package.IsSkinPackage) return null;
+            if (MultiString.ActiveLanguage == MultiString.DefaultLanguage) return null;
+            return new ModuleAction(this) {
+                Url = YetaWFManager.UrlFor(typeof(LocalizeBrowsePackageModuleController), "CreateInstalledLocalization"),
+                QueryArgs = new { PackageName = packageName, Language = MultiString.ActiveLanguage },
+                Image = "LocalizePackage.png",
+                LinkText = this.__ResStr("creInstLink", "Create Localization Resources (Installed - {0})", MultiString.ActiveLanguage),
+                MenuText = this.__ResStr("creInstText", "Create Localization Resources (Installed - {0})", MultiString.ActiveLanguage),
+                Tooltip = this.__ResStr("creInstTooltip", "Create an installed localization resources for package {0} using language {1} - Saved in folder ./Addons/...", package.Name, MultiString.ActiveLanguage),
+                Legend = this.__ResStr("creInstLegend", "Creates an installed localization resources for package {0} using language {1} - Saved in folder ./Addons/...", package.Name, MultiString.ActiveLanguage),
+                Style = ModuleAction.ActionStyleEnum.Post,
+                Location = ModuleAction.ActionLocationEnum.ModuleLinks,
+                Category = ModuleAction.ActionCategoryEnum.Read,
+                Mode = ModuleAction.ActionModeEnum.Any,
+                ConfirmationText = this.__ResStr("removeConfirm", "Are you sure you want to create custom localization resources for package {0} using language {1} - Custom localization resources are saved in ./AddonsCustom/...?", package.Name, MultiString.ActiveLanguage),
+                NeedsModuleContext = true,
             };
         }
     }

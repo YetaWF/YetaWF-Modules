@@ -15,7 +15,8 @@
     @PartialForm()
     @FormButtons(new FormButton[] {
         new FormButton() { ButtonType= ButtonTypeEnum.Apply, Text=this.__ResStr("btnApply", "Apply") },
-        new FormButton() { ButtonType= ButtonTypeEnum.Button, Text=this.__ResStr("btnReset", "Restore Defaults"), Id = btnReset },
+        new FormButton() { ButtonType= ButtonTypeEnum.Submit },
+        new FormButton() { ButtonType= ButtonTypeEnum.Button, Text=this.__ResStr("btnReset", "Restore Defaults"), Title = this.__ResStr("btnResetTT", "Removes custom and installed localization resources for the current language (US-English default resources are never removed)"), Id = btnReset },
         new FormButton() { ButtonType= ButtonTypeEnum.Cancel, },
     });
 }

@@ -1,12 +1,14 @@
 ﻿/* Copyright © 2016 Softel vdm, Inc. - http://yetawf.com/Documentation/YetaWF/Languages#License */
 
 using System;
+using YetaWF.Core.DataProvider;
 using YetaWF.Core.IO;
 using YetaWF.Core.Localize;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Modules;
 using YetaWF.Core.Serializers;
 using YetaWF.DataProvider;
+using YetaWF.Modules.Languages.DataProvider;
 
 namespace YetaWF.Modules.Languages.Modules {
 
@@ -24,6 +26,7 @@ namespace YetaWF.Modules.Languages.Modules {
         }
 
         public override IModuleDefinitionIO GetDataProvider() { return new LocalizeConfigModuleDataProvider(); }
+        public override DataProviderImpl GetConfigDataProvider() { return new LocalizeConfigDataProvider(); }
 
         public override SerializableList<AllowedRole> DefaultAllowedRoles { get { return AdministratorLevel_DefaultAllowedRoles; } }
 
