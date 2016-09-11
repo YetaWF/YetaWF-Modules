@@ -1,0 +1,306 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!--YetaWF.Core.Localize.LocalizationData-->
+<Object Type="YetaWF.Core.Localize.LocalizationData" Assembly="YetaWF.Core" AssemblyFull="YetaWF.Core, Version=1.0.5.0, Culture=neutral, PublicKeyToken=null">
+  <Properties>
+    <MergeWithDefault Value="False" />
+    <Classes>
+      <Object Type="YetaWF.Core.Serializers.SerializableList`1[[YetaWF.Core.Localize.LocalizationData+ClassData, YetaWF.Core, Version=1.0.5.0, Culture=neutral, PublicKeyToken=null]]" Assembly="YetaWF.Core" AssemblyFull="YetaWF.Core, Version=1.0.5.0, Culture=neutral, PublicKeyToken=null">
+        <Properties />
+        <List />
+      </Object>
+    </Classes>
+    <Enums>
+      <Object Type="YetaWF.Core.Serializers.SerializableList`1[[YetaWF.Core.Localize.LocalizationData+EnumData, YetaWF.Core, Version=1.0.5.0, Culture=neutral, PublicKeyToken=null]]" Assembly="YetaWF.Core" AssemblyFull="YetaWF.Core, Version=1.0.5.0, Culture=neutral, PublicKeyToken=null">
+        <Properties />
+        <List />
+      </Object>
+    </Enums>
+    <Strings>
+      <Object Type="YetaWF.Core.Serializers.SerializableList`1[[YetaWF.Core.Localize.LocalizationData+StringData, YetaWF.Core, Version=1.0.5.0, Culture=neutral, PublicKeyToken=null]]" Assembly="YetaWF.Core" AssemblyFull="YetaWF.Core, Version=1.0.5.0, Culture=neutral, PublicKeyToken=null">
+        <Properties />
+        <List>
+          <Value>
+            <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core" AssemblyFull="YetaWF.Core, Version=1.0.5.0, Culture=neutral, PublicKeyToken=null">
+              <Properties>
+                <Name Value="browseLegend" />
+                <Text Value="Manages site backups" />
+              </Properties>
+            </Object>
+          </Value>
+          <Value>
+            <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core" AssemblyFull="YetaWF.Core, Version=1.0.5.0, Culture=neutral, PublicKeyToken=null">
+              <Properties>
+                <Name Value="browseLink" />
+                <Text Value="Backups" />
+              </Properties>
+            </Object>
+          </Value>
+          <Value>
+            <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core" AssemblyFull="YetaWF.Core, Version=1.0.5.0, Culture=neutral, PublicKeyToken=null">
+              <Properties>
+                <Name Value="browseText" />
+                <Text Value="Backups" />
+              </Properties>
+            </Object>
+          </Value>
+          <Value>
+            <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core" AssemblyFull="YetaWF.Core, Version=1.0.5.0, Culture=neutral, PublicKeyToken=null">
+              <Properties>
+                <Name Value="browseTooltip" />
+                <Text Value="Manage site backups" />
+              </Properties>
+            </Object>
+          </Value>
+          <Value>
+            <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core" AssemblyFull="YetaWF.Core, Version=1.0.5.0, Culture=neutral, PublicKeyToken=null">
+              <Properties>
+                <Name Value="dnldLegend" />
+                <Text Value="Downloads the site backup (zip file)" />
+              </Properties>
+            </Object>
+          </Value>
+          <Value>
+            <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core" AssemblyFull="YetaWF.Core, Version=1.0.5.0, Culture=neutral, PublicKeyToken=null">
+              <Properties>
+                <Name Value="dnldLink" />
+                <Text Value="Download Backup" />
+              </Properties>
+            </Object>
+          </Value>
+          <Value>
+            <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core" AssemblyFull="YetaWF.Core, Version=1.0.5.0, Culture=neutral, PublicKeyToken=null">
+              <Properties>
+                <Name Value="dnldMenu" />
+                <Text Value="Download Backup" />
+              </Properties>
+            </Object>
+          </Value>
+          <Value>
+            <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core" AssemblyFull="YetaWF.Core, Version=1.0.5.0, Culture=neutral, PublicKeyToken=null">
+              <Properties>
+                <Name Value="dnldTT" />
+                <Text Value="Download the site backup (zip file)" />
+              </Properties>
+            </Object>
+          </Value>
+          <Value>
+            <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core" AssemblyFull="YetaWF.Core, Version=1.0.5.0, Culture=neutral, PublicKeyToken=null">
+              <Properties>
+                <Name Value="makeTemplateConfirm" />
+                <Text Value="Are you sure you want to make site template data?" />
+              </Properties>
+            </Object>
+          </Value>
+          <Value>
+            <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core" AssemblyFull="YetaWF.Core, Version=1.0.5.0, Culture=neutral, PublicKeyToken=null">
+              <Properties>
+                <Name Value="makeTemplateLegend" />
+                <Text Value="Creates a site template for installation of a new YetaWF site using the current site" />
+              </Properties>
+            </Object>
+          </Value>
+          <Value>
+            <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core" AssemblyFull="YetaWF.Core, Version=1.0.5.0, Culture=neutral, PublicKeyToken=null">
+              <Properties>
+                <Name Value="makeTemplateLink" />
+                <Text Value="Make Site Template Data" />
+              </Properties>
+            </Object>
+          </Value>
+          <Value>
+            <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core" AssemblyFull="YetaWF.Core, Version=1.0.5.0, Culture=neutral, PublicKeyToken=null">
+              <Properties>
+                <Name Value="makeTemplateMenu" />
+                <Text Value="Make Site Template Data" />
+              </Properties>
+            </Object>
+          </Value>
+          <Value>
+            <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core" AssemblyFull="YetaWF.Core, Version=1.0.5.0, Culture=neutral, PublicKeyToken=null">
+              <Properties>
+                <Name Value="makeTemplateTT" />
+                <Text Value="Create a site template for installation of a new YetaWF site using the current site" />
+              </Properties>
+            </Object>
+          </Value>
+          <Value>
+            <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core" AssemblyFull="YetaWF.Core, Version=1.0.5.0, Culture=neutral, PublicKeyToken=null">
+              <Properties>
+                <Name Value="modName" />
+                <Text Value="Backups" />
+              </Properties>
+            </Object>
+          </Value>
+          <Value>
+            <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core" AssemblyFull="YetaWF.Core, Version=1.0.5.0, Culture=neutral, PublicKeyToken=null">
+              <Properties>
+                <Name Value="modSummary" />
+                <Text Value="Manages site backups" />
+              </Properties>
+            </Object>
+          </Value>
+          <Value>
+            <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core" AssemblyFull="YetaWF.Core, Version=1.0.5.0, Culture=neutral, PublicKeyToken=null">
+              <Properties>
+                <Name Value="modTitle" />
+                <Text Value="Site Backups" />
+              </Properties>
+            </Object>
+          </Value>
+          <Value>
+            <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core" AssemblyFull="YetaWF.Core, Version=1.0.5.0, Culture=neutral, PublicKeyToken=null">
+              <Properties>
+                <Name Value="removeConfirm" />
+                <Text Value="Are you sure you want to remove &quot;{0}&quot;?" />
+              </Properties>
+            </Object>
+          </Value>
+          <Value>
+            <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core" AssemblyFull="YetaWF.Core, Version=1.0.5.0, Culture=neutral, PublicKeyToken=null">
+              <Properties>
+                <Name Value="removeLegend" />
+                <Text Value="Removes the site backup (zip file)" />
+              </Properties>
+            </Object>
+          </Value>
+          <Value>
+            <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core" AssemblyFull="YetaWF.Core, Version=1.0.5.0, Culture=neutral, PublicKeyToken=null">
+              <Properties>
+                <Name Value="removeLink" />
+                <Text Value="Remove Backup" />
+              </Properties>
+            </Object>
+          </Value>
+          <Value>
+            <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core" AssemblyFull="YetaWF.Core, Version=1.0.5.0, Culture=neutral, PublicKeyToken=null">
+              <Properties>
+                <Name Value="removeMenu" />
+                <Text Value="Remove Backup" />
+              </Properties>
+            </Object>
+          </Value>
+          <Value>
+            <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core" AssemblyFull="YetaWF.Core, Version=1.0.5.0, Culture=neutral, PublicKeyToken=null">
+              <Properties>
+                <Name Value="removeTT" />
+                <Text Value="Remove the site backup (zip file)" />
+              </Properties>
+            </Object>
+          </Value>
+          <Value>
+            <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core" AssemblyFull="YetaWF.Core, Version=1.0.5.0, Culture=neutral, PublicKeyToken=null">
+              <Properties>
+                <Name Value="roleBackups" />
+                <Text Value="The role has permission to create and remove backups" />
+              </Properties>
+            </Object>
+          </Value>
+          <Value>
+            <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core" AssemblyFull="YetaWF.Core, Version=1.0.5.0, Culture=neutral, PublicKeyToken=null">
+              <Properties>
+                <Name Value="roleBackupsC" />
+                <Text Value="Manage Backups" />
+              </Properties>
+            </Object>
+          </Value>
+          <Value>
+            <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core" AssemblyFull="YetaWF.Core, Version=1.0.5.0, Culture=neutral, PublicKeyToken=null">
+              <Properties>
+                <Name Value="roleDownloads" />
+                <Text Value="The role has permission to download backups" />
+              </Properties>
+            </Object>
+          </Value>
+          <Value>
+            <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core" AssemblyFull="YetaWF.Core, Version=1.0.5.0, Culture=neutral, PublicKeyToken=null">
+              <Properties>
+                <Name Value="roleDownloadsC" />
+                <Text Value="Manage Backups" />
+              </Properties>
+            </Object>
+          </Value>
+          <Value>
+            <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core" AssemblyFull="YetaWF.Core, Version=1.0.5.0, Culture=neutral, PublicKeyToken=null">
+              <Properties>
+                <Name Value="sbackupConfirm" />
+                <Text Value="Are you sure you want to create a site backup?" />
+              </Properties>
+            </Object>
+          </Value>
+          <Value>
+            <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core" AssemblyFull="YetaWF.Core, Version=1.0.5.0, Culture=neutral, PublicKeyToken=null">
+              <Properties>
+                <Name Value="sbackupLegend" />
+                <Text Value="Creates a site backup in the backup folder" />
+              </Properties>
+            </Object>
+          </Value>
+          <Value>
+            <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core" AssemblyFull="YetaWF.Core, Version=1.0.5.0, Culture=neutral, PublicKeyToken=null">
+              <Properties>
+                <Name Value="sbackupLink" />
+                <Text Value="Site Backup" />
+              </Properties>
+            </Object>
+          </Value>
+          <Value>
+            <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core" AssemblyFull="YetaWF.Core, Version=1.0.5.0, Culture=neutral, PublicKeyToken=null">
+              <Properties>
+                <Name Value="sbackupMenu" />
+                <Text Value="Site Backup" />
+              </Properties>
+            </Object>
+          </Value>
+          <Value>
+            <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core" AssemblyFull="YetaWF.Core, Version=1.0.5.0, Culture=neutral, PublicKeyToken=null">
+              <Properties>
+                <Name Value="sbackupPleaseWait" />
+                <Text Value="Your site backup is in progress..." />
+              </Properties>
+            </Object>
+          </Value>
+          <Value>
+            <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core" AssemblyFull="YetaWF.Core, Version=1.0.5.0, Culture=neutral, PublicKeyToken=null">
+              <Properties>
+                <Name Value="sbackupTT" />
+                <Text Value="Create a site backup in the backup folder" />
+              </Properties>
+            </Object>
+          </Value>
+          <Value>
+            <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core" AssemblyFull="YetaWF.Core, Version=1.0.5.0, Culture=neutral, PublicKeyToken=null">
+              <Properties>
+                <Name Value="userBackups" />
+                <Text Value="The user has permission to create and remove backups" />
+              </Properties>
+            </Object>
+          </Value>
+          <Value>
+            <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core" AssemblyFull="YetaWF.Core, Version=1.0.5.0, Culture=neutral, PublicKeyToken=null">
+              <Properties>
+                <Name Value="userBackupsC" />
+                <Text Value="Manage Backups" />
+              </Properties>
+            </Object>
+          </Value>
+          <Value>
+            <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core" AssemblyFull="YetaWF.Core, Version=1.0.5.0, Culture=neutral, PublicKeyToken=null">
+              <Properties>
+                <Name Value="userDownloads" />
+                <Text Value="The user has permission to download backups" />
+              </Properties>
+            </Object>
+          </Value>
+          <Value>
+            <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core" AssemblyFull="YetaWF.Core, Version=1.0.5.0, Culture=neutral, PublicKeyToken=null">
+              <Properties>
+                <Name Value="userDownloadsC" />
+                <Text Value="Manage Backups" />
+              </Properties>
+            </Object>
+          </Value>
+        </List>
+      </Object>
+    </Strings>
+  </Properties>
+</Object>

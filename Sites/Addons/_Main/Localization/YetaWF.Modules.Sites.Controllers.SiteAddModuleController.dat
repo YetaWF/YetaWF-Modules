@@ -1,0 +1,77 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!--YetaWF.Core.Localize.LocalizationData-->
+<Object Type="YetaWF.Core.Localize.LocalizationData" Assembly="YetaWF.Core" AssemblyFull="YetaWF.Core, Version=1.0.5.0, Culture=neutral, PublicKeyToken=null">
+  <Properties>
+    <MergeWithDefault Value="False" />
+    <Classes>
+      <Object Type="YetaWF.Core.Serializers.SerializableList`1[[YetaWF.Core.Localize.LocalizationData+ClassData, YetaWF.Core, Version=1.0.5.0, Culture=neutral, PublicKeyToken=null]]" Assembly="YetaWF.Core" AssemblyFull="YetaWF.Core, Version=1.0.5.0, Culture=neutral, PublicKeyToken=null">
+        <Properties />
+        <List>
+          <Value>
+            <Object Type="YetaWF.Core.Localize.LocalizationData+ClassData" Assembly="YetaWF.Core" AssemblyFull="YetaWF.Core, Version=1.0.5.0, Culture=neutral, PublicKeyToken=null">
+              <Properties>
+                <Name Value="YetaWF.Modules.Sites.Controllers.SiteAddModuleController+AddModel" />
+                <BaseTypeName />
+                <Header />
+                <Footer />
+                <Legend />
+                <Properties>
+                  <Object Type="YetaWF.Core.Serializers.SerializableList`1[[YetaWF.Core.Localize.LocalizationData+PropertyData, YetaWF.Core, Version=1.0.5.0, Culture=neutral, PublicKeyToken=null]]" Assembly="YetaWF.Core" AssemblyFull="YetaWF.Core, Version=1.0.5.0, Culture=neutral, PublicKeyToken=null">
+                    <Properties />
+                    <List>
+                      <Value>
+                        <Object Type="YetaWF.Core.Localize.LocalizationData+PropertyData" Assembly="YetaWF.Core" AssemblyFull="YetaWF.Core, Version=1.0.5.0, Culture=neutral, PublicKeyToken=null">
+                          <Properties>
+                            <Name Value="SiteDomain" />
+                            <Caption Value="Site Domain" />
+                            <Description Value="The domain name of the site" />
+                            <HelpLink />
+                            <TextAbove />
+                            <TextBelow />
+                          </Properties>
+                        </Object>
+                      </Value>
+                      <Value>
+                        <Object Type="YetaWF.Core.Localize.LocalizationData+PropertyData" Assembly="YetaWF.Core" AssemblyFull="YetaWF.Core, Version=1.0.5.0, Culture=neutral, PublicKeyToken=null">
+                          <Properties>
+                            <Name Value="SiteName" />
+                            <Caption Value="Site Name" />
+                            <Description Value="The name associated with your site, usually your company name or your name" />
+                            <HelpLink />
+                            <TextAbove />
+                            <TextBelow />
+                          </Properties>
+                        </Object>
+                      </Value>
+                    </List>
+                  </Object>
+                </Properties>
+              </Properties>
+            </Object>
+          </Value>
+        </List>
+      </Object>
+    </Classes>
+    <Enums>
+      <Object Type="YetaWF.Core.Serializers.SerializableList`1[[YetaWF.Core.Localize.LocalizationData+EnumData, YetaWF.Core, Version=1.0.5.0, Culture=neutral, PublicKeyToken=null]]" Assembly="YetaWF.Core" AssemblyFull="YetaWF.Core, Version=1.0.5.0, Culture=neutral, PublicKeyToken=null">
+        <Properties />
+        <List />
+      </Object>
+    </Enums>
+    <Strings>
+      <Object Type="YetaWF.Core.Serializers.SerializableList`1[[YetaWF.Core.Localize.LocalizationData+StringData, YetaWF.Core, Version=1.0.5.0, Culture=neutral, PublicKeyToken=null]]" Assembly="YetaWF.Core" AssemblyFull="YetaWF.Core, Version=1.0.5.0, Culture=neutral, PublicKeyToken=null">
+        <Properties />
+        <List>
+          <Value>
+            <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core" AssemblyFull="YetaWF.Core, Version=1.0.5.0, Culture=neutral, PublicKeyToken=null">
+              <Properties>
+                <Name Value="okSaved" />
+                <Text Value="New site &quot;{0}&quot; created - Click OK to populate the new site with the current site template.(+nl)(+nl)IMPORTANT: This site is not accessible by its Url until the domain &quot;{0}&quot; is defined in IIS and in the hosts file." />
+              </Properties>
+            </Object>
+          </Value>
+        </List>
+      </Object>
+    </Strings>
+  </Properties>
+</Object>

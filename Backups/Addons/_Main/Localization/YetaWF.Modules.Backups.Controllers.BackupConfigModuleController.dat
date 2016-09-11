@@ -1,0 +1,85 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!--YetaWF.Core.Localize.LocalizationData-->
+<Object Type="YetaWF.Core.Localize.LocalizationData" Assembly="YetaWF.Core" AssemblyFull="YetaWF.Core, Version=1.0.5.0, Culture=neutral, PublicKeyToken=null">
+  <Properties>
+    <MergeWithDefault Value="False" />
+    <Classes>
+      <Object Type="YetaWF.Core.Serializers.SerializableList`1[[YetaWF.Core.Localize.LocalizationData+ClassData, YetaWF.Core, Version=1.0.5.0, Culture=neutral, PublicKeyToken=null]]" Assembly="YetaWF.Core" AssemblyFull="YetaWF.Core, Version=1.0.5.0, Culture=neutral, PublicKeyToken=null">
+        <Properties />
+        <List>
+          <Value>
+            <Object Type="YetaWF.Core.Localize.LocalizationData+ClassData" Assembly="YetaWF.Core" AssemblyFull="YetaWF.Core, Version=1.0.5.0, Culture=neutral, PublicKeyToken=null">
+              <Properties>
+                <Name Value="YetaWF.Modules.Backups.Controllers.BackupConfigModuleController+Model" />
+                <BaseTypeName />
+                <Header />
+                <Footer />
+                <Legend />
+                <Properties>
+                  <Object Type="YetaWF.Core.Serializers.SerializableList`1[[YetaWF.Core.Localize.LocalizationData+PropertyData, YetaWF.Core, Version=1.0.5.0, Culture=neutral, PublicKeyToken=null]]" Assembly="YetaWF.Core" AssemblyFull="YetaWF.Core, Version=1.0.5.0, Culture=neutral, PublicKeyToken=null">
+                    <Properties />
+                    <List>
+                      <Value>
+                        <Object Type="YetaWF.Core.Localize.LocalizationData+PropertyData" Assembly="YetaWF.Core" AssemblyFull="YetaWF.Core, Version=1.0.5.0, Culture=neutral, PublicKeyToken=null">
+                          <Properties>
+                            <Name Value="DataOnly" />
+                            <Caption Value="Data Only" />
+                            <Description Value="Defines whether only data is backed up (scheduled backups) - Otherwise all source and binaries (complete packages) are backed up - For production sites it is generally sufficient to back up the data" />
+                            <HelpLink />
+                            <TextAbove />
+                            <TextBelow />
+                          </Properties>
+                        </Object>
+                      </Value>
+                      <Value>
+                        <Object Type="YetaWF.Core.Localize.LocalizationData+PropertyData" Assembly="YetaWF.Core" AssemblyFull="YetaWF.Core, Version=1.0.5.0, Culture=neutral, PublicKeyToken=null">
+                          <Properties>
+                            <Name Value="Days" />
+                            <Caption Value="Days" />
+                            <Description Value="The number of days a backup is saved - once a backup has been saved for the specified number of days, it is deleted" />
+                            <HelpLink />
+                            <TextAbove />
+                            <TextBelow />
+                          </Properties>
+                        </Object>
+                      </Value>
+                    </List>
+                  </Object>
+                </Properties>
+              </Properties>
+            </Object>
+          </Value>
+        </List>
+      </Object>
+    </Classes>
+    <Enums>
+      <Object Type="YetaWF.Core.Serializers.SerializableList`1[[YetaWF.Core.Localize.LocalizationData+EnumData, YetaWF.Core, Version=1.0.5.0, Culture=neutral, PublicKeyToken=null]]" Assembly="YetaWF.Core" AssemblyFull="YetaWF.Core, Version=1.0.5.0, Culture=neutral, PublicKeyToken=null">
+        <Properties />
+        <List />
+      </Object>
+    </Enums>
+    <Strings>
+      <Object Type="YetaWF.Core.Serializers.SerializableList`1[[YetaWF.Core.Localize.LocalizationData+StringData, YetaWF.Core, Version=1.0.5.0, Culture=neutral, PublicKeyToken=null]]" Assembly="YetaWF.Core" AssemblyFull="YetaWF.Core, Version=1.0.5.0, Culture=neutral, PublicKeyToken=null">
+        <Properties />
+        <List>
+          <Value>
+            <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core" AssemblyFull="YetaWF.Core, Version=1.0.5.0, Culture=neutral, PublicKeyToken=null">
+              <Properties>
+                <Name Value="notFound" />
+                <Text Value="The backup settings could not be found" />
+              </Properties>
+            </Object>
+          </Value>
+          <Value>
+            <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core" AssemblyFull="YetaWF.Core, Version=1.0.5.0, Culture=neutral, PublicKeyToken=null">
+              <Properties>
+                <Name Value="okSaved" />
+                <Text Value="Backup settings saved" />
+              </Properties>
+            </Object>
+          </Value>
+        </List>
+      </Object>
+    </Strings>
+  </Properties>
+</Object>

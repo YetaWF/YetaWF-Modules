@@ -1,0 +1,289 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!--YetaWF.Core.Localize.LocalizationData-->
+<Object Type="YetaWF.Core.Localize.LocalizationData" Assembly="YetaWF.Core" AssemblyFull="YetaWF.Core, Version=1.0.5.0, Culture=neutral, PublicKeyToken=null">
+  <Properties>
+    <MergeWithDefault Value="False" />
+    <Classes>
+      <Object Type="YetaWF.Core.Serializers.SerializableList`1[[YetaWF.Core.Localize.LocalizationData+ClassData, YetaWF.Core, Version=1.0.5.0, Culture=neutral, PublicKeyToken=null]]" Assembly="YetaWF.Core" AssemblyFull="YetaWF.Core, Version=1.0.5.0, Culture=neutral, PublicKeyToken=null">
+        <Properties />
+        <List>
+          <Value>
+            <Object Type="YetaWF.Core.Localize.LocalizationData+ClassData" Assembly="YetaWF.Core" AssemblyFull="YetaWF.Core, Version=1.0.5.0, Culture=neutral, PublicKeyToken=null">
+              <Properties>
+                <Name Value="YetaWF.Modules.PageEdit.Modules.PageControlModule" />
+                <BaseTypeName Value="YetaWF.Core.Modules.ModuleDefinition" />
+                <Header />
+                <Footer />
+                <Legend />
+                <Properties>
+                  <Object Type="YetaWF.Core.Serializers.SerializableList`1[[YetaWF.Core.Localize.LocalizationData+PropertyData, YetaWF.Core, Version=1.0.5.0, Culture=neutral, PublicKeyToken=null]]" Assembly="YetaWF.Core" AssemblyFull="YetaWF.Core, Version=1.0.5.0, Culture=neutral, PublicKeyToken=null">
+                    <Properties />
+                    <List>
+                      <Value>
+                        <Object Type="YetaWF.Core.Localize.LocalizationData+PropertyData" Assembly="YetaWF.Core" AssemblyFull="YetaWF.Core, Version=1.0.5.0, Culture=neutral, PublicKeyToken=null">
+                          <Properties>
+                            <Name Value="ModuleHasSettings" />
+                            <Caption Value="Has Settings" />
+                            <Description Value="Defines whether the module has settings that can be edited and saved" />
+                            <HelpLink />
+                            <TextAbove />
+                            <TextBelow />
+                          </Properties>
+                        </Object>
+                      </Value>
+                      <Value>
+                        <Object Type="YetaWF.Core.Localize.LocalizationData+PropertyData" Assembly="YetaWF.Core" AssemblyFull="YetaWF.Core, Version=1.0.5.0, Culture=neutral, PublicKeyToken=null">
+                          <Properties>
+                            <Name Value="ModuleHtmlId" />
+                            <Caption Value="ModuleHtmlId" />
+                            <Description Value="The HTML id used by this module - this id doesn't change for this module and can be used for skinning purposes" />
+                            <HelpLink />
+                            <TextAbove />
+                            <TextBelow />
+                          </Properties>
+                        </Object>
+                      </Value>
+                      <Value>
+                        <Object Type="YetaWF.Core.Localize.LocalizationData+PropertyData" Assembly="YetaWF.Core" AssemblyFull="YetaWF.Core, Version=1.0.5.0, Culture=neutral, PublicKeyToken=null">
+                          <Properties>
+                            <Name Value="ShowModuleMenu" />
+                            <Caption Value="Show Module Menu" />
+                            <Description Value="Displays whether the module menu is shown for this module" />
+                            <HelpLink />
+                            <TextAbove />
+                            <TextBelow />
+                          </Properties>
+                        </Object>
+                      </Value>
+                    </List>
+                  </Object>
+                </Properties>
+              </Properties>
+            </Object>
+          </Value>
+        </List>
+      </Object>
+    </Classes>
+    <Enums>
+      <Object Type="YetaWF.Core.Serializers.SerializableList`1[[YetaWF.Core.Localize.LocalizationData+EnumData, YetaWF.Core, Version=1.0.5.0, Culture=neutral, PublicKeyToken=null]]" Assembly="YetaWF.Core" AssemblyFull="YetaWF.Core, Version=1.0.5.0, Culture=neutral, PublicKeyToken=null">
+        <Properties />
+        <List />
+      </Object>
+    </Enums>
+    <Strings>
+      <Object Type="YetaWF.Core.Serializers.SerializableList`1[[YetaWF.Core.Localize.LocalizationData+StringData, YetaWF.Core, Version=1.0.5.0, Culture=neutral, PublicKeyToken=null]]" Assembly="YetaWF.Core" AssemblyFull="YetaWF.Core, Version=1.0.5.0, Culture=neutral, PublicKeyToken=null">
+        <Properties />
+        <List>
+          <Value>
+            <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core" AssemblyFull="YetaWF.Core, Version=1.0.5.0, Culture=neutral, PublicKeyToken=null">
+              <Properties>
+                <Name Value="addNewModule" />
+                <Text Value="Add" />
+              </Properties>
+            </Object>
+          </Value>
+          <Value>
+            <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core" AssemblyFull="YetaWF.Core, Version=1.0.5.0, Culture=neutral, PublicKeyToken=null">
+              <Properties>
+                <Name Value="addNewPage" />
+                <Text Value="Add" />
+              </Properties>
+            </Object>
+          </Value>
+          <Value>
+            <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core" AssemblyFull="YetaWF.Core, Version=1.0.5.0, Culture=neutral, PublicKeyToken=null">
+              <Properties>
+                <Name Value="addOldModule" />
+                <Text Value="Add" />
+              </Properties>
+            </Object>
+          </Value>
+          <Value>
+            <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core" AssemblyFull="YetaWF.Core, Version=1.0.5.0, Culture=neutral, PublicKeyToken=null">
+              <Properties>
+                <Name Value="modName" />
+                <Text Value="Control Panel" />
+              </Properties>
+            </Object>
+          </Value>
+          <Value>
+            <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core" AssemblyFull="YetaWF.Core, Version=1.0.5.0, Culture=neutral, PublicKeyToken=null">
+              <Properties>
+                <Name Value="modSummary" />
+                <Text Value="Control Panel with support for adding modules, new pages, importing modules and editing page settings" />
+              </Properties>
+            </Object>
+          </Value>
+          <Value>
+            <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core" AssemblyFull="YetaWF.Core, Version=1.0.5.0, Culture=neutral, PublicKeyToken=null">
+              <Properties>
+                <Name Value="modSwitchToEditLegend" />
+                <Text Value="Switches to Site Edit Mode" />
+              </Properties>
+            </Object>
+          </Value>
+          <Value>
+            <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core" AssemblyFull="YetaWF.Core, Version=1.0.5.0, Culture=neutral, PublicKeyToken=null">
+              <Properties>
+                <Name Value="modSwitchToEditLink" />
+                <Text Value="Switch To Site Edit Mode" />
+              </Properties>
+            </Object>
+          </Value>
+          <Value>
+            <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core" AssemblyFull="YetaWF.Core, Version=1.0.5.0, Culture=neutral, PublicKeyToken=null">
+              <Properties>
+                <Name Value="modSwitchToEditText" />
+                <Text Value="Switch To Site Edit Mode" />
+              </Properties>
+            </Object>
+          </Value>
+          <Value>
+            <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core" AssemblyFull="YetaWF.Core, Version=1.0.5.0, Culture=neutral, PublicKeyToken=null">
+              <Properties>
+                <Name Value="modSwitchToEditTooltip" />
+                <Text Value="Switch to Site Edit Mode" />
+              </Properties>
+            </Object>
+          </Value>
+          <Value>
+            <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core" AssemblyFull="YetaWF.Core, Version=1.0.5.0, Culture=neutral, PublicKeyToken=null">
+              <Properties>
+                <Name Value="modSwitchToViewLegend" />
+                <Text Value="Switches to Site View Mode" />
+              </Properties>
+            </Object>
+          </Value>
+          <Value>
+            <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core" AssemblyFull="YetaWF.Core, Version=1.0.5.0, Culture=neutral, PublicKeyToken=null">
+              <Properties>
+                <Name Value="modSwitchToViewLink" />
+                <Text Value="Switch To Site View Mode" />
+              </Properties>
+            </Object>
+          </Value>
+          <Value>
+            <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core" AssemblyFull="YetaWF.Core, Version=1.0.5.0, Culture=neutral, PublicKeyToken=null">
+              <Properties>
+                <Name Value="modSwitchToViewText" />
+                <Text Value="Switch To Site View Mode" />
+              </Properties>
+            </Object>
+          </Value>
+          <Value>
+            <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core" AssemblyFull="YetaWF.Core, Version=1.0.5.0, Culture=neutral, PublicKeyToken=null">
+              <Properties>
+                <Name Value="modSwitchToViewTooltip" />
+                <Text Value="Switch to Site View Mode" />
+              </Properties>
+            </Object>
+          </Value>
+          <Value>
+            <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core" AssemblyFull="YetaWF.Core, Version=1.0.5.0, Culture=neutral, PublicKeyToken=null">
+              <Properties>
+                <Name Value="modTitle" />
+                <Text Value="Control Panel" />
+              </Properties>
+            </Object>
+          </Value>
+          <Value>
+            <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core" AssemblyFull="YetaWF.Core, Version=1.0.5.0, Culture=neutral, PublicKeyToken=null">
+              <Properties>
+                <Name Value="modW3CValLegend" />
+                <Text Value="Uses the defined W3C Validation service to validate a page - The page must be accessible to the remote service as an anonymous user" />
+              </Properties>
+            </Object>
+          </Value>
+          <Value>
+            <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core" AssemblyFull="YetaWF.Core, Version=1.0.5.0, Culture=neutral, PublicKeyToken=null">
+              <Properties>
+                <Name Value="modW3CValLink" />
+                <Text Value="W3C Validation" />
+              </Properties>
+            </Object>
+          </Value>
+          <Value>
+            <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core" AssemblyFull="YetaWF.Core, Version=1.0.5.0, Culture=neutral, PublicKeyToken=null">
+              <Properties>
+                <Name Value="modW3CValText" />
+                <Text Value="W3C Validation" />
+              </Properties>
+            </Object>
+          </Value>
+          <Value>
+            <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core" AssemblyFull="YetaWF.Core, Version=1.0.5.0, Culture=neutral, PublicKeyToken=null">
+              <Properties>
+                <Name Value="modW3CValTooltip" />
+                <Text Value="Use W3C Validation service to validate the current page - The page must be accessible to the remote service as an anonymous user" />
+              </Properties>
+            </Object>
+          </Value>
+          <Value>
+            <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core" AssemblyFull="YetaWF.Core, Version=1.0.5.0, Culture=neutral, PublicKeyToken=null">
+              <Properties>
+                <Name Value="tabImport" />
+                <Text Value="Import Module" />
+              </Properties>
+            </Object>
+          </Value>
+          <Value>
+            <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core" AssemblyFull="YetaWF.Core, Version=1.0.5.0, Culture=neutral, PublicKeyToken=null">
+              <Properties>
+                <Name Value="tabImportTT" />
+                <Text Value="Import module data into this page (creates a new module)" />
+              </Properties>
+            </Object>
+          </Value>
+          <Value>
+            <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core" AssemblyFull="YetaWF.Core, Version=1.0.5.0, Culture=neutral, PublicKeyToken=null">
+              <Properties>
+                <Name Value="tabNew" />
+                <Text Value="Add New Module" />
+              </Properties>
+            </Object>
+          </Value>
+          <Value>
+            <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core" AssemblyFull="YetaWF.Core, Version=1.0.5.0, Culture=neutral, PublicKeyToken=null">
+              <Properties>
+                <Name Value="tabNewPage" />
+                <Text Value="Add New Page" />
+              </Properties>
+            </Object>
+          </Value>
+          <Value>
+            <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core" AssemblyFull="YetaWF.Core, Version=1.0.5.0, Culture=neutral, PublicKeyToken=null">
+              <Properties>
+                <Name Value="tabNewPageTT" />
+                <Text Value="Add a new page to the site" />
+              </Properties>
+            </Object>
+          </Value>
+          <Value>
+            <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core" AssemblyFull="YetaWF.Core, Version=1.0.5.0, Culture=neutral, PublicKeyToken=null">
+              <Properties>
+                <Name Value="tabNewTT" />
+                <Text Value="Add a new module to this page (creates a new module)" />
+              </Properties>
+            </Object>
+          </Value>
+          <Value>
+            <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core" AssemblyFull="YetaWF.Core, Version=1.0.5.0, Culture=neutral, PublicKeyToken=null">
+              <Properties>
+                <Name Value="tabOld" />
+                <Text Value="Add Existing Module" />
+              </Properties>
+            </Object>
+          </Value>
+          <Value>
+            <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core" AssemblyFull="YetaWF.Core, Version=1.0.5.0, Culture=neutral, PublicKeyToken=null">
+              <Properties>
+                <Name Value="tabOldTT" />
+                <Text Value="Add an existing module to this page (this does not copy the module)" />
+              </Properties>
+            </Object>
+          </Value>
+        </List>
+      </Object>
+    </Strings>
+  </Properties>
+</Object>
