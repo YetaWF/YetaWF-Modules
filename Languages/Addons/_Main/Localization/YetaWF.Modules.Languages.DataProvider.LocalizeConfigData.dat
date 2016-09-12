@@ -16,7 +16,7 @@
           <Value>
             <Object Type="YetaWF.Core.Localize.LocalizationData+EnumData" Assembly="YetaWF.Core" AssemblyFull="YetaWF.Core, Version=1.0.5.0, Culture=neutral, PublicKeyToken=null">
               <Properties>
-                <Name Value="YetaWF.Modules.Identity.DataProvider.UserStatusEnum" />
+                <Name Value="YetaWF.Modules.Languages.DataProvider.LocalizeConfigData+TranslationServiceEnum" />
                 <Entries>
                   <Object Type="YetaWF.Core.Serializers.SerializableList`1[[YetaWF.Core.Localize.LocalizationData+EnumDataEntry, YetaWF.Core, Version=1.0.5.0, Culture=neutral, PublicKeyToken=null]]" Assembly="YetaWF.Core" AssemblyFull="YetaWF.Core, Version=1.0.5.0, Culture=neutral, PublicKeyToken=null">
                     <Properties />
@@ -24,50 +24,30 @@
                       <Value>
                         <Object Type="YetaWF.Core.Localize.LocalizationData+EnumDataEntry" Assembly="YetaWF.Core" AssemblyFull="YetaWF.Core, Version=1.0.5.0, Culture=neutral, PublicKeyToken=null">
                           <Properties>
-                            <Name Value="NeedValidation" />
-                            <Value Value="NeedValidation" />
-                            <Caption Value="Needs Validation" />
-                            <Description Value="A new user account that has not yet been validated or approved" />
+                            <Name Value="None" />
+                            <Value Value="None" />
+                            <Caption Value="none" />
+                            <Description Value="None" />
                           </Properties>
                         </Object>
                       </Value>
                       <Value>
                         <Object Type="YetaWF.Core.Localize.LocalizationData+EnumDataEntry" Assembly="YetaWF.Core" AssemblyFull="YetaWF.Core, Version=1.0.5.0, Culture=neutral, PublicKeyToken=null">
                           <Properties>
-                            <Name Value="NeedApproval" />
-                            <Value Value="NeedApproval" />
-                            <Caption Value="Needs Approval" />
-                            <Description Value="A user account whose email address has been validated but still needs approval" />
+                            <Name Value="GoogleTranslate" />
+                            <Value Value="GoogleTranslate" />
+                            <Caption Value="Google Translate" />
+                            <Description />
                           </Properties>
                         </Object>
                       </Value>
                       <Value>
                         <Object Type="YetaWF.Core.Localize.LocalizationData+EnumDataEntry" Assembly="YetaWF.Core" AssemblyFull="YetaWF.Core, Version=1.0.5.0, Culture=neutral, PublicKeyToken=null">
                           <Properties>
-                            <Name Value="Approved" />
-                            <Value Value="Approved" />
-                            <Caption Value="Approved User" />
-                            <Description Value="A user account that has been approved" />
-                          </Properties>
-                        </Object>
-                      </Value>
-                      <Value>
-                        <Object Type="YetaWF.Core.Localize.LocalizationData+EnumDataEntry" Assembly="YetaWF.Core" AssemblyFull="YetaWF.Core, Version=1.0.5.0, Culture=neutral, PublicKeyToken=null">
-                          <Properties>
-                            <Name Value="Rejected" />
-                            <Value Value="Rejected" />
-                            <Caption Value="Rejected User" />
-                            <Description Value="A user account that has been rejected" />
-                          </Properties>
-                        </Object>
-                      </Value>
-                      <Value>
-                        <Object Type="YetaWF.Core.Localize.LocalizationData+EnumDataEntry" Assembly="YetaWF.Core" AssemblyFull="YetaWF.Core, Version=1.0.5.0, Culture=neutral, PublicKeyToken=null">
-                          <Properties>
-                            <Name Value="Suspended" />
-                            <Value Value="Suspended" />
-                            <Caption Value="Suspended User" />
-                            <Description Value="A user account that has been suspended" />
+                            <Name Value="MicrosoftTranslator" />
+                            <Value Value="MicrosoftTranslator" />
+                            <Caption Value="Microsoft Translator" />
+                            <Description />
                           </Properties>
                         </Object>
                       </Value>

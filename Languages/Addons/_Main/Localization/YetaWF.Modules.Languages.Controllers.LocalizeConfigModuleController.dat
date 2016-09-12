@@ -2,7 +2,7 @@
 <!--YetaWF.Core.Localize.LocalizationData-->
 <Object Type="YetaWF.Core.Localize.LocalizationData" Assembly="YetaWF.Core" AssemblyFull="YetaWF.Core, Version=1.0.5.0, Culture=neutral, PublicKeyToken=null">
   <Properties>
-    <MergeWithDefault Value="False" />
+    <Comment />
     <Classes>
       <Object Type="YetaWF.Core.Serializers.SerializableList`1[[YetaWF.Core.Localize.LocalizationData+ClassData, YetaWF.Core, Version=1.0.5.0, Culture=neutral, PublicKeyToken=null]]" Assembly="YetaWF.Core" AssemblyFull="YetaWF.Core, Version=1.0.5.0, Culture=neutral, PublicKeyToken=null">
         <Properties />
@@ -15,6 +15,12 @@
                 <Header />
                 <Footer Value="Individual web sites can enable/disable localization support (Site Settings). But localization is only available for individiual sites run by this instance of YetaWF if 'Use Localization Resources' is enabled, which applies to all sites." />
                 <Legend />
+                <Categories>
+                  <Object Type="YetaWF.Core.Serializers.SerializableDictionary`2[[System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089],[System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]" Assembly="YetaWF.Core" AssemblyFull="YetaWF.Core, Version=1.0.5.0, Culture=neutral, PublicKeyToken=null">
+                    <Properties />
+                    <Dictionary />
+                  </Object>
+                </Categories>
                 <Properties>
                   <Object Type="YetaWF.Core.Serializers.SerializableList`1[[YetaWF.Core.Localize.LocalizationData+PropertyData, YetaWF.Core, Version=1.0.5.0, Culture=neutral, PublicKeyToken=null]]" Assembly="YetaWF.Core" AssemblyFull="YetaWF.Core, Version=1.0.5.0, Culture=neutral, PublicKeyToken=null">
                     <Properties />
@@ -35,7 +41,7 @@
                         <Object Type="YetaWF.Core.Localize.LocalizationData+PropertyData" Assembly="YetaWF.Core" AssemblyFull="YetaWF.Core, Version=1.0.5.0, Culture=neutral, PublicKeyToken=null">
                           <Properties>
                             <Name Value="GoogleTranslateAPIKey" />
-                            <Caption Value="Google Translate API Key" />
+                            <Caption Value="Translate API Key" />
                             <Description Value="Defines the Google Cloud Platform / Google Translate API key, which is used when translating localization resources into other languages - You can obtain an API key from the Google Cloud Platform service - This is not a free service" />
                             <HelpLink Value="https://cloud.google.com/translate/docs/" />
                             <TextAbove />
@@ -47,9 +53,45 @@
                         <Object Type="YetaWF.Core.Localize.LocalizationData+PropertyData" Assembly="YetaWF.Core" AssemblyFull="YetaWF.Core, Version=1.0.5.0, Culture=neutral, PublicKeyToken=null">
                           <Properties>
                             <Name Value="GoogleTranslateAppName" />
-                            <Caption Value="Google Translate App Name" />
-                            <Description Value="Defines the name of your application performing translations" />
+                            <Caption Value="Translate App Name" />
+                            <Description Value="Defines the name of your application performing translations - This is not a free service" />
                             <HelpLink Value="https://cloud.google.com/translate/docs/" />
+                            <TextAbove />
+                            <TextBelow />
+                          </Properties>
+                        </Object>
+                      </Value>
+                      <Value>
+                        <Object Type="YetaWF.Core.Localize.LocalizationData+PropertyData" Assembly="YetaWF.Core" AssemblyFull="YetaWF.Core, Version=1.0.5.0, Culture=neutral, PublicKeyToken=null">
+                          <Properties>
+                            <Name Value="MSClientId" />
+                            <Caption Value="Client ID" />
+                            <Description Value="Defines the Client Id of your application performing translations - Provided by Microsoft when registering your application - This is not a free service" />
+                            <HelpLink Value="https://datamarket.azure.com/dataset/bing/microsofttranslator" />
+                            <TextAbove />
+                            <TextBelow />
+                          </Properties>
+                        </Object>
+                      </Value>
+                      <Value>
+                        <Object Type="YetaWF.Core.Localize.LocalizationData+PropertyData" Assembly="YetaWF.Core" AssemblyFull="YetaWF.Core, Version=1.0.5.0, Culture=neutral, PublicKeyToken=null">
+                          <Properties>
+                            <Name Value="MSClientSecret" />
+                            <Caption Value="Client Secret" />
+                            <Description Value="Defines the Client Secret provided by Microsoft when registering your application - This is not a free service" />
+                            <HelpLink Value="https://datamarket.azure.com/dataset/bing/microsofttranslator" />
+                            <TextAbove />
+                            <TextBelow />
+                          </Properties>
+                        </Object>
+                      </Value>
+                      <Value>
+                        <Object Type="YetaWF.Core.Localize.LocalizationData+PropertyData" Assembly="YetaWF.Core" AssemblyFull="YetaWF.Core, Version=1.0.5.0, Culture=neutral, PublicKeyToken=null">
+                          <Properties>
+                            <Name Value="TranslationService" />
+                            <Caption Value="Translation Service" />
+                            <Description Value="Defines the translation service used to translate localization resources" />
+                            <HelpLink />
                             <TextAbove />
                             <TextBelow />
                           </Properties>
