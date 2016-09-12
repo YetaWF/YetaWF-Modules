@@ -7,7 +7,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
 using System.Web.Mvc;
 using YetaWF.Core.Controllers;
 using YetaWF.Core.DataProvider;
@@ -17,8 +16,10 @@ using YetaWF.Core.Models;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Modules;
 using YetaWF.Core.Packages;
+using YetaWF.Core.Serializers;
 using YetaWF.Core.Support;
 using YetaWF.Core.Views.Shared;
+using YetaWF.Modules.Languages.Controllers.Support;
 using YetaWF.Modules.Languages.DataProvider;
 using YetaWF.Modules.Languages.Modules;
 
@@ -136,6 +137,8 @@ namespace YetaWF.Modules.Languages.Controllers {
                         strings.Add(cd.Footer);
                     if (!string.IsNullOrWhiteSpace(cd.Legend))
                         strings.Add(cd.Legend);
+                    foreach (var entry in cd.Categories)
+                        strings.Add(entry.Value);
                     foreach (LocalizationData.PropertyData pd in cd.Properties) {
                         if (!string.IsNullOrWhiteSpace(pd.Caption))
                             strings.Add(pd.Caption);
@@ -166,6 +169,7 @@ namespace YetaWF.Modules.Languages.Controllers {
             int stringIndex = 0, index = 0;
             foreach (LocalizationData locData in allData) {
                 LocalizationData data = allData[index];
+                data.Comment = "***WARNING*** Automated Translation - Not Usable In Its Present Form - Must Be Corrected";
                 foreach (LocalizationData.ClassData cd in data.Classes) {
                     if (!string.IsNullOrWhiteSpace(cd.Header))
                         cd.Header = strings[stringIndex++];
@@ -173,6 +177,10 @@ namespace YetaWF.Modules.Languages.Controllers {
                         cd.Footer = strings[stringIndex++];
                     if (!string.IsNullOrWhiteSpace(cd.Legend))
                         cd.Legend = strings[stringIndex++];
+                    SerializableDictionary<string, string> newCats = new SerializableDictionary<string, string>();
+                    foreach (var entry in cd.Categories)
+                        newCats.Add(entry.Key, strings[stringIndex++]);
+                    cd.Categories = newCats;
                     foreach (LocalizationData.PropertyData pd in cd.Properties) {
                         if (!string.IsNullOrWhiteSpace(pd.Caption))
                             pd.Caption = strings[stringIndex++];
@@ -203,8 +211,13 @@ namespace YetaWF.Modules.Languages.Controllers {
         }
         private List<string> TranslateStrings(string language, List<string> strings) {
             LocalizeConfigData config = LocalizeConfigDataProvider.GetConfig();
-            if (!string.IsNullOrWhiteSpace(config.GoogleTranslateAPIKey) && !string.IsNullOrWhiteSpace(config.GoogleTranslateAppName))
-                return TranslateStringsUsingGoogle(language, config.GoogleTranslateAPIKey, config.GoogleTranslateAppName, strings);
+            if (config.TranslationService == LocalizeConfigData.TranslationServiceEnum.GoogleTranslate) {
+                if (!string.IsNullOrWhiteSpace(config.GoogleTranslateAPIKey) && !string.IsNullOrWhiteSpace(config.GoogleTranslateAppName))
+                    return TranslateStringsUsingGoogle(language, config.GoogleTranslateAPIKey, config.GoogleTranslateAppName, strings);
+            } else if (config.TranslationService == LocalizeConfigData.TranslationServiceEnum.MicrosoftTranslator) {
+                if (!string.IsNullOrWhiteSpace(config.MSClientId) && !string.IsNullOrWhiteSpace(config.MSClientSecret))
+                    return TranslateStringsUsingMicrosoft(language, config.MSClientId, config.MSClientSecret, strings);
+            }
             throw new InternalError("No translation API available - Define a translation API using Localization Settings");
         }
         private List<string> TranslateStringsUsingGoogle(string language, string apiKey, string appName, List<string> strings) {
@@ -220,6 +233,24 @@ namespace YetaWF.Modules.Languages.Controllers {
                 });
                 TranslationsListResponse resp = service.Translations.List(strings.Skip(skip).Take(40).ToList(), to).Execute();
                 List<string> returnedStrings = (from r in resp.Translations select r.TranslatedText).ToList();
+                returnedStrings = (from r in returnedStrings select YetaWFManager.HtmlDecode(r)).ToList();
+                newStrings.AddRange(returnedStrings);
+                skip += returnedStrings.Count();
+                total -= returnedStrings.Count();
+            }
+            return newStrings;
+        }
+        private List<string> TranslateStringsUsingMicrosoft(string language, string clientId, string clientSecret, List<string> strings) {
+            string from = MultiString.GetPrimaryLanguage(MultiString.DefaultLanguage);
+            string to = MultiString.GetPrimaryLanguage(language);
+
+            MSTranslate msTrans = new Support.MSTranslate(clientId, clientSecret);
+
+            int total = strings.Count();
+            int skip = 0;
+            List<string> newStrings = new List<string>();
+            while (total > 0) {
+                List<string> returnedStrings = msTrans.Translate(from, to, strings.Skip(skip).Take(40).ToList());
                 newStrings.AddRange(returnedStrings);
                 skip += returnedStrings.Count();
                 total -= returnedStrings.Count();

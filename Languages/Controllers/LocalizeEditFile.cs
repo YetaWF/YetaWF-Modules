@@ -21,6 +21,10 @@ namespace YetaWF.Modules.Languages.Controllers {
             [UIHint("String"), ReadOnly]
             public string CurrentLanguage { get; set; }
 
+            [Caption("Comment"), Description("An optional comment")]
+            [UIHint("TextArea"), AdditionalMetadata("SourceOnly", true), AllowHtml, StringLength(LocalizationData.MaxComment), Trim]
+            public string Comment { get; set; }
+
             [Caption("Classes"), Description("Shows all the localizable string fragments found in class properties and the class's Header, Footer and Legend attributes")]
             [UIHint("YetaWF_Languages_LocalizeClasses"), SuppressIfEqual("ClassCount", 0)]
             public SerializableList<LocalizationData.ClassData> Classes { get; set; }

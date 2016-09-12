@@ -6,7 +6,6 @@ using YetaWF.Core.Localize;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Modules;
 using YetaWF.Core.Serializers;
-using YetaWF.Core.Support;
 using YetaWF.DataProvider;
 
 namespace YetaWF.Modules.Languages.Modules {
@@ -36,7 +35,7 @@ namespace YetaWF.Modules.Languages.Modules {
                 MenuText = this.__ResStr("editText", "Edit"),
                 Tooltip = this.__ResStr("editTooltip", "Edit localization resource"),
                 Legend = this.__ResStr("editLegend", "Edits an existing localization resource"),
-                Style = ModuleAction.ActionStyleEnum.Popup,
+                Style = ModuleAction.ActionStyleEnum.Normal,
                 Category = ModuleAction.ActionCategoryEnum.Update,
                 Mode = ModuleAction.ActionModeEnum.Any,
                 Location = ModuleAction.ActionLocationEnum.NoAuto,

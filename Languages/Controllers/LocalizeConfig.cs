@@ -14,7 +14,6 @@ namespace YetaWF.Modules.Languages.Controllers {
 
         public LocalizeConfigModuleController() { }
 
-
         [Trim]
         [Footer("Individual web sites can enable/disable localization support (Site Settings). But localization is only available for individiual sites run by this instance of YetaWF if 'Use Localization Resources' is enabled, which applies to all sites.")]
         public class Model {
@@ -29,15 +28,34 @@ namespace YetaWF.Modules.Languages.Controllers {
             [UIHint("Boolean")]
             public bool AbortOnFailure { get; set; }
 
+            [Caption("Translation Service"), Description("Defines the translation service used to translate localization resources")]
+            [UIHint("Enum")]
+            public LocalizeConfigData.TranslationServiceEnum TranslationService { get; set; }
+
             [ExcludeDemoMode]
-            [Caption("Google Translate API Key"), Description("Defines the Google Cloud Platform / Google Translate API key, which is used when translating localization resources into other languages - You can obtain an API key from the Google Cloud Platform service - This is not a free service")]
+            [Caption("Client ID"), Description("Defines the Client Id of your application performing translations - Provided by Microsoft when registering your application - This is not a free service")]
+            [HelpLink("https://datamarket.azure.com/dataset/bing/microsofttranslator")]
+            [UIHint("Text80"), StringLength(LocalizeConfigData.MaxMSClientId), Required, Trim]
+            [ProcessIf("TranslationService", LocalizeConfigData.TranslationServiceEnum.MicrosoftTranslator)]
+            public string MSClientId { get; set; }
+
+            [Caption("Client Secret"), Description("Defines the Client Secret provided by Microsoft when registering your application - This is not a free service")]
+            [HelpLink("https://datamarket.azure.com/dataset/bing/microsofttranslator")]
+            [UIHint("Text80"), StringLength(LocalizeConfigData.MaxMSClientSecret), Required, Trim]
+            [ProcessIf("TranslationService", LocalizeConfigData.TranslationServiceEnum.MicrosoftTranslator)]
+            public string MSClientSecret { get; set; }
+
+            [ExcludeDemoMode]
+            [Caption("Translate API Key"), Description("Defines the Google Cloud Platform / Google Translate API key, which is used when translating localization resources into other languages - You can obtain an API key from the Google Cloud Platform service - This is not a free service")]
             [HelpLink("https://cloud.google.com/translate/docs/")]
-            [UIHint("Text80"), StringLength(LocalizeConfigData.MaxGoogleTranslateAPIKey), Trim]
+            [UIHint("Text80"), StringLength(LocalizeConfigData.MaxGoogleTranslateAPIKey), Required, Trim]
+            [ProcessIf("TranslationService", LocalizeConfigData.TranslationServiceEnum.GoogleTranslate)]
             public string GoogleTranslateAPIKey { get; set; }
 
-            [Caption("Google Translate App Name"), Description("Defines the name of your application performing translations")]
+            [Caption("Translate App Name"), Description("Defines the name of your application performing translations - This is not a free service")]
             [HelpLink("https://cloud.google.com/translate/docs/")]
-            [UIHint("Text80"), StringLength(LocalizeConfigData.MaxGoogleTranslateAppName), RequiredIfSupplied("GoogleTranslateAPIKey"), Trim]
+            [UIHint("Text80"), StringLength(LocalizeConfigData.MaxGoogleTranslateAppName), Required, Trim]
+            [ProcessIf("TranslationService", LocalizeConfigData.TranslationServiceEnum.GoogleTranslate)]
             public string GoogleTranslateAppName { get; set; }
 
             public LocalizeConfigData GetData(LocalizeConfigData data) {
