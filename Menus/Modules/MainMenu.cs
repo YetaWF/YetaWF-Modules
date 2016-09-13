@@ -19,7 +19,7 @@ namespace YetaWF.Modules.Menus.Modules {
             Name = this.__ResStr("modName", "Main Menu");
             Title = this.__ResStr("modTitle", "Main Menu");
             Description = this.__ResStr("modSummary", "Main page menu");
-            CssClass = "urlpreview-follow yPageMenu";// make sure all links are followed by default in the main menu for Url Previews
+            CssClass = "yPageMenu";
         }
 
         public override IModuleDefinitionIO GetDataProvider() { return new MainMenuModuleDataProvider(); }
