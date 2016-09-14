@@ -62,10 +62,12 @@ namespace YetaWF.Modules.Languages.Controllers {
                 ObjectSupport.CopyData(this, data);
                 return data;
             }
-            public void SetData(LocalizeConfigData data) {
-                ObjectSupport.CopyData(data, this);
+            public void UpdateData(LocalizeConfigData data) {
                 UseLocalizationResources = LocalizationSupport.UseLocalizationResources;
                 AbortOnFailure = LocalizationSupport.AbortOnFailure;
+            }
+            public void SetData(LocalizeConfigData data) {
+                ObjectSupport.CopyData(data, this);
             }
             public Model() { }
         }
@@ -78,6 +80,7 @@ namespace YetaWF.Modules.Languages.Controllers {
                 if (data == null)
                     throw new Error(this.__ResStr("notFound", "The localization settings could not be found"));
                 model.SetData(data);
+                model.UpdateData(data);
                 return View(model);
             }
         }
