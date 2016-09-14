@@ -19,22 +19,22 @@
                   <Object Type="YetaWF.Core.Serializers.SerializableDictionary`2[[System.String, mscorlib, Culture=neutral, PublicKeyToken=b77a5c561934e089],[System.String, mscorlib, Culture=neutral, PublicKeyToken=b77a5c561934e089]]" Assembly="YetaWF.Core">
                     <Properties />
                     <Dictionary>
-                      <Key Value="Page" />
-                      <Value Value="Page" />
-                      <Key Value="Variables" />
-                      <Value Value="Variables" />
+                      <Key Value="Addons" />
+                      <Value Value="Addons" />
                       <Key Value="Authorization" />
                       <Value Value="Authorization" />
-                      <Key Value="Urls" />
-                      <Value Value="Urls" />
+                      <Key Value="Meta" />
+                      <Value Value="Meta" />
+                      <Key Value="Page" />
+                      <Value Value="Page" />
                       <Key Value="References" />
                       <Value Value="References" />
                       <Key Value="Skin" />
                       <Value Value="Skin" />
-                      <Key Value="Addons" />
-                      <Value Value="Addons" />
-                      <Key Value="Meta" />
-                      <Value Value="Meta" />
+                      <Key Value="Urls" />
+                      <Value Value="Urls" />
+                      <Key Value="Variables" />
+                      <Value Value="Variables" />
                     </Dictionary>
                   </Object>
                 </Categories>

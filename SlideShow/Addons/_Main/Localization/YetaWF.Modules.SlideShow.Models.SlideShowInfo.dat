@@ -19,16 +19,16 @@
                   <Object Type="YetaWF.Core.Serializers.SerializableDictionary`2[[System.String, mscorlib, Culture=neutral, PublicKeyToken=b77a5c561934e089],[System.String, mscorlib, Culture=neutral, PublicKeyToken=b77a5c561934e089]]" Assembly="YetaWF.Core">
                     <Properties />
                     <Dictionary>
-                      <Key Value="Slide Show" />
-                      <Value Value="Slide Show" />
-                      <Key Value="Bullets" />
-                      <Value Value="Bullets" />
-                      <Key Value="Thumbnails" />
-                      <Value Value="Thumbnails" />
                       <Key Value="Arrows" />
                       <Value Value="Arrows" />
+                      <Key Value="Bullets" />
+                      <Value Value="Bullets" />
                       <Key Value="Captions" />
                       <Value Value="Captions" />
+                      <Key Value="Slide Show" />
+                      <Value Value="Slide Show" />
+                      <Key Value="Thumbnails" />
+                      <Value Value="Thumbnails" />
                     </Dictionary>
                   </Object>
                 </Categories>

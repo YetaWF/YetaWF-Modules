@@ -19,10 +19,10 @@
                   <Object Type="YetaWF.Core.Serializers.SerializableDictionary`2[[System.String, mscorlib, Culture=neutral, PublicKeyToken=b77a5c561934e089],[System.String, mscorlib, Culture=neutral, PublicKeyToken=b77a5c561934e089]]" Assembly="YetaWF.Core">
                     <Properties />
                     <Dictionary>
-                      <Key Value="Remote ZIP File" />
-                      <Value Value="Remote ZIP File" />
                       <Key Value="Local ZIP File" />
                       <Value Value="Local ZIP File" />
+                      <Key Value="Remote ZIP File" />
+                      <Value Value="Remote ZIP File" />
                     </Dictionary>
                   </Object>
                 </Categories>

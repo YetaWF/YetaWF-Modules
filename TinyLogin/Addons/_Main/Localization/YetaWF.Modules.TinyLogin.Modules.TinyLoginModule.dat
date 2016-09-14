@@ -19,10 +19,10 @@
                   <Object Type="YetaWF.Core.Serializers.SerializableDictionary`2[[System.String, mscorlib, Culture=neutral, PublicKeyToken=b77a5c561934e089],[System.String, mscorlib, Culture=neutral, PublicKeyToken=b77a5c561934e089]]" Assembly="YetaWF.Core">
                     <Properties />
                     <Dictionary>
-                      <Key Value="Variables" />
-                      <Value Value="Variables" />
                       <Key Value="General" />
                       <Value Value="General" />
+                      <Key Value="Variables" />
+                      <Value Value="Variables" />
                     </Dictionary>
                   </Object>
                 </Categories>

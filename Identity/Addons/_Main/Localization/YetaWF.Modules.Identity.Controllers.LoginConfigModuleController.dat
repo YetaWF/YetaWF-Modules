@@ -21,10 +21,10 @@
                     <Dictionary>
                       <Key Value="Accounts" />
                       <Value Value="Accounts" />
-                      <Key Value="Notifications" />
-                      <Value Value="Notifications" />
                       <Key Value="Captcha" />
                       <Value Value="Captcha" />
+                      <Key Value="Notifications" />
+                      <Value Value="Notifications" />
                       <Key Value="Urls" />
                       <Value Value="Urls" />
                     </Dictionary>
