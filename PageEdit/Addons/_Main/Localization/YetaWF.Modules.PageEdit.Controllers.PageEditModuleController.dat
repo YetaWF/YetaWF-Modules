@@ -21,6 +21,8 @@
                     <Dictionary>
                       <Key Value="Page" />
                       <Value Value="Page" />
+                      <Key Value="Variables" />
+                      <Value Value="Variables" />
                       <Key Value="Authorization" />
                       <Value Value="Authorization" />
                       <Key Value="Urls" />
@@ -33,8 +35,6 @@
                       <Value Value="Addons" />
                       <Key Value="Meta" />
                       <Value Value="Meta" />
-                      <Key Value="Variables" />
-                      <Value Value="Variables" />
                     </Dictionary>
                   </Object>
                 </Categories>
@@ -396,6 +396,18 @@
                             <Name Value="TemplateGuid" />
                             <Caption Value="Template" />
                             <Description Value="The local designed page used as a template for this page - All modules from the template are copied and rendered on this page in their defined pane - Modules in panes that are not available are not shown - Any page can be used as a template" />
+                            <HelpLink />
+                            <TextAbove />
+                            <TextBelow />
+                          </Properties>
+                        </Object>
+                      </Value>
+                      <Value>
+                        <Object Type="YetaWF.Core.Localize.LocalizationData+PropertyData" Assembly="YetaWF.Core">
+                          <Properties>
+                            <Name Value="Temporary" />
+                            <Caption Value="Temporary" />
+                            <Description Value="Defines whether the current page is a temporary (generated) page" />
                             <HelpLink />
                             <TextAbove />
                             <TextBelow />
