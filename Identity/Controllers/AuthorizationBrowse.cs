@@ -42,7 +42,7 @@ namespace YetaWF.Modules.Identity.Controllers {
             public string ResourceName { get; set; }
 
             [Caption("Resource Description"), Description("The permissions granted if a user or role has access to this resource")]
-            [UIHint("TextArea"), AdditionalMetadata("SourceOnly", true), ReadOnly]
+            [UIHint("TextArea"), ReadOnly]
             public string ResourceDescription { get; set; }
 
             public bool CanDelete { get; set; }

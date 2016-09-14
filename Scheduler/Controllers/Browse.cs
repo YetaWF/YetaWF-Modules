@@ -51,7 +51,7 @@ namespace YetaWF.Modules.Scheduler.Controllers {
             public string Name { get; set; }
 
             [Caption("Description"), Description("The description of this scheduler item")]
-            [UIHint("TextArea"), AdditionalMetadata("SourceOnly", true), ReadOnly]
+            [UIHint("TextArea"), ReadOnly]
             public string Description { get; set; }
 
             [Caption("Enabled"), Description("The status of the scheduler item")]

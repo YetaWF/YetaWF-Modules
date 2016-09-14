@@ -35,7 +35,6 @@ namespace YetaWF.Modules.Feedback.Controllers {
 
             [Caption("Message"), Description("The feedback message")]
             [UIHint("TextArea"), ReadOnly]
-            [AdditionalMetadata("SourceOnly", true)]
             public string Message { get; set; }
 
             public void SetData(FeedbackData data) {

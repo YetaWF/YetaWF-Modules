@@ -41,7 +41,7 @@ namespace YetaWF.Modules.Identity.Controllers {
             public SerializableList<Role> RolesList { get; set; }
 
             [Caption("Comment"), Description("Comments")]
-            [UIHint("TextArea"), AdditionalMetadata("SourceOnly", true), ReadOnly]
+            [UIHint("TextArea"), ReadOnly]
             public string Comment { get; set; }
 
             [Caption("Verification Code"), Description("The verification code to verify the user")]

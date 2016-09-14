@@ -42,7 +42,7 @@ namespace YetaWF.Modules.Blog.Controllers {
             public List<ModuleAction> Actions { get; set; }
 
             [Caption("Summary"), Description("The summary for this blog entry")]
-            [UIHint("TextArea"), ReadOnly]
+            [UIHint("TextArea"), AdditionalMetadata("Encode", false), ReadOnly]
             public string Summary { get; set; }
 
             [Caption("View"), Description("View the complete blog entry")]

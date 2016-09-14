@@ -16,20 +16,23 @@ namespace YetaWF.Modules.Text.Controllers {
             [AllowHtml]
             public string Contents { get; set; }
         }
+        public class TextModelDisplay {
+            [UIHint("TextArea"), AdditionalMetadata("Encode", false)]
+            public string Contents { get; set; }
+        }
 
         [HttpGet]
         public ActionResult Text() {
-            TextModel model = new TextModel {
-                Contents = Module.Contents
-            };
             if (Module.Feed) {
                 string rssUrl = string.IsNullOrWhiteSpace(Module.FeedMainUrl) ? Manager.CurrentSite.HomePageUrl : Module.FeedMainUrl;
                 Manager.LinkAltManager.AddLinkAltTag(AreaRegistration.CurrentPackage.AreaName, "application/rss+xml", Module.FeedTitle, rssUrl);
             }
 
             if (Manager.EditMode && Module.EditOnPage && Module.IsAuthorized(ModuleDefinition.RoleDefinition.Edit)) {
+                TextModel model = new TextModel { Contents = Module.Contents };
                 return View(model);
             } else {
+                TextModelDisplay model = new TextModelDisplay { Contents = Module.Contents };
                 return View("TextDisplay", model);
             }
         }

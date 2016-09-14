@@ -24,7 +24,7 @@ namespace YetaWF.Modules.Scheduler.Controllers {
             public string Name { get; set; }
 
             [Caption("Description"), Description("The description of this scheduler item")]
-            [UIHint("TextArea"), AdditionalMetadata("SourceOnly", true), StringLength(SchedulerItemData.MaxDescription), ReadOnly]
+            [UIHint("TextArea"), ReadOnly]
             [AllowHtml]
             public string Description { get; set; }
 
@@ -65,7 +65,7 @@ namespace YetaWF.Modules.Scheduler.Controllers {
             public TimeSpan RunTime { get; set; }
 
             [Caption("Errors"), Description("The errors that occurred during the scheduler item's last run")]
-            [UIHint("TextArea"), AdditionalMetadata("SourceOnly", true), ReadOnly]
+            [UIHint("TextArea"), ReadOnly]
             public string Errors { get; set; }
 
             [Caption("Event"), Description("The event running at the scheduled time")]

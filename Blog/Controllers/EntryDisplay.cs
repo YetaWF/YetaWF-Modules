@@ -46,7 +46,7 @@ namespace YetaWF.Modules.Blog.Controllers {
             public List<ModuleAction> Actions { get; set; }
 
             [Caption("Blog Text"), Description("The complete text for this blog entry")]
-            [UIHint("TextArea"), ReadOnly]
+            [UIHint("TextArea"), AdditionalMetadata("Encode", false), ReadOnly]
             public string Text { get; set; }
 
             public void SetData(BlogEntry data) {

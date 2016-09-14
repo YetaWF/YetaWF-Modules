@@ -55,7 +55,7 @@ namespace YetaWF.Modules.Basics.Controllers {
             public string SiteSyntaxHighlighterSkin { get; set; }
 
             [Caption("Letters"), Description("The letters used to calculate the average character width and height")]
-            [UIHint("TextArea")]
+            [UIHint("TextArea"), AdditionalMetadata("Encode", false), ReadOnly]
             public string Characters { get; set; }
 
             [Caption("Average Char. Width"), Description("The average character width, calculated using the current skin")]
