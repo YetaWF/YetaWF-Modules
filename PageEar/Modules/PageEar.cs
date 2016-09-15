@@ -45,7 +45,7 @@ namespace YetaWF.Modules.PageEar.Modules {
         [UIHint("Image"), AdditionalMetadata("ImageType", ModuleImageSupport.ImageType)]
         [AdditionalMetadata("Width", 200), AdditionalMetadata("Height", 200)]
         [DontSave]
-        public string AdImage { 
+        public string AdImage {
             get {
                 if (_adImage == null) {
                     if (AdImage_Data != null && AdImage_Data.Length > 0)
@@ -84,7 +84,7 @@ namespace YetaWF.Modules.PageEar.Modules {
         public byte[] CoverImage_Data { get; set; }
 
         [Category("General"), Caption("Small Size"), Description("The width and height (square) of the image when the page ear is collapsed")]
-        [UIHint("IntValue"), Range(10, 200)]
+        [UIHint("IntValue4"), Range(10, 200)]
         public int SmallSize { get; set; }
 
         public int LargeSize { get; set; }

@@ -24,7 +24,7 @@ namespace YetaWF.Modules.Search.DataProvider {
         public int SmallestUpperCaseToken { get; set; }
         [StringLength(Globals.MaxUrl)]
         public string ResultsUrl { get; set; }
-        [UIHint("IntValue4"), Range(1, 1000)]
+        [Range(1, 1000)]
         public int MaxResults { get; set; }
 
         public SearchConfigData() {
