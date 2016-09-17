@@ -6,6 +6,7 @@ using YetaWF.Core.Controllers;
 using YetaWF.Core.Localize;
 using YetaWF.Core.Models;
 using YetaWF.Core.Models.Attributes;
+using YetaWF.Modules.DevTests.Modules;
 
 namespace YetaWF.Modules.DevTests.Controllers {
 
@@ -34,20 +35,25 @@ namespace YetaWF.Modules.DevTests.Controllers {
             [ReadOnly]
             public Guid ROModuleNew { get; set; }
 
+            public void Update (TemplateModuleSelectionModule mod) {
+                ROModule = mod.PermanentGuid;// use this module as displayed module
+                ROModuleNew = mod.PermanentGuid;
+            }
+
             public EditModel() { }
         }
 
         [HttpGet]
         public ActionResult TemplateModuleSelection() {
             EditModel model = new EditModel { };
-            model.ROModule = Module.PermanentGuid;// use this module as displayed module
-            model.ROModuleNew = Module.PermanentGuid;
+            model.Update(Module);
             return View(model);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult TemplateModuleSelection_Partial(EditModel model) {
+            model.Update(Module);
             if (!ModelState.IsValid)
                 return PartialView(model);
             return FormProcessed(model, this.__ResStr("ok", "OK"));
