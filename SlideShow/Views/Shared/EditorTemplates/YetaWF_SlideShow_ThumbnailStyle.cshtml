@@ -1,6 +1,4 @@
 ﻿@*Copyright © 2016 Softel vdm, Inc. - http://yetawf.com/Documentation/YetaWF/SlideShow#License*@
 @inherits YetaWF.Modules.SlideShow.Views.Shared.ThumbnailStyle<string>
 @using YetaWF.Modules.SlideShow.Views.Shared
-<div class='yt_yetawf_slideshow_thumbnailstyle t_edit'>
-    @Html.RenderThumbnailStyle("", Model)@Html.ValidationMessageFor(m => Model)
-</div>
+@Html.RenderThumbnailStyle("", Model, HtmlAttributes: new { @class = "yt_yetawf_slideshow_thumbnailstyle t_edit" })

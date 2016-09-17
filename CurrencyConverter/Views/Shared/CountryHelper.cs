@@ -18,7 +18,7 @@ namespace YetaWF.Modules.CurrencyConverter.Views.Shared {
             using (ExchangeRateDataProvider dp = new ExchangeRateDataProvider()) {
                 ExchangeRateData data = dp.GetItem();
                 List<SelectionItem<string>> list = (from r in data.Rates orderby r.CurrencyName select new SelectionItem<string> { Text = r.CurrencyName, Value = r.Code }).ToList();
-                return htmlHelper.RenderDropDownSelectionList(name, model, list);
+                return htmlHelper.RenderDropDownSelectionList(name, model, list, HtmlAttributes: HtmlAttributes);
             }
         }
     }
