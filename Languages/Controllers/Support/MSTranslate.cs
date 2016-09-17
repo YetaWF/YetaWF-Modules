@@ -66,6 +66,7 @@ namespace YetaWF.Modules.Languages.Controllers.Support {
             _admToken = admAuth.GetAccessToken();
         }
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2202:Do not dispose objects multiple times", Justification = "Don't care")]
         public List<string> Translate(string from, string to, List<string> strings) {
 
             string headerValue = "Bearer " + _admToken.access_token;
