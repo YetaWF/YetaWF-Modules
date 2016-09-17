@@ -405,6 +405,18 @@
                       <Value>
                         <Object Type="YetaWF.Core.Localize.LocalizationData+PropertyData" Assembly="YetaWF.Core">
                           <Properties>
+                            <Name Value="Temporary" />
+                            <Caption Value="Temporary" />
+                            <Description Value="Defines whether the current page is a temporary (generated) page" />
+                            <HelpLink />
+                            <TextAbove />
+                            <TextBelow />
+                          </Properties>
+                        </Object>
+                      </Value>
+                      <Value>
+                        <Object Type="YetaWF.Core.Localize.LocalizationData+PropertyData" Assembly="YetaWF.Core">
+                          <Properties>
                             <Name Value="Title" />
                             <Caption Value="Title" />
                             <Description Value="The page title which will appear as title in the browser window" />
