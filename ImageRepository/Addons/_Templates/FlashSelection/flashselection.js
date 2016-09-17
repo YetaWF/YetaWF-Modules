@@ -25,34 +25,35 @@ YetaWF_FlashImageRepository.initSelection = function (divId) {
         var $embed = $('.t_preview embed', $control);
 
         var $obj = $('.t_preview object', $control);
-        if ($obj.length != 1) throw "preview flash object not found";/*DEBUG*/
+        if ($obj.length == 1) {
 
-        // change object data= (if present)
-        if ($obj.attr('data') != undefined) {
-            var val = $obj.attr('data');
-            var currUri = new URI(val);
-            currUri.removeSearch("Name");
-            currUri.addSearch("Name", name);
-            $obj.attr('data', currUri.toString());
+            // change object data= (if present)
+            if ($obj.attr('data') != undefined) {
+                var val = $obj.attr('data');
+                var currUri = new URI(val);
+                currUri.removeSearch("Name");
+                currUri.addSearch("Name", name);
+                $obj.attr('data', currUri.toString());
+            }
+            // change param movie (if present)
+            if ($param.length > 0) {
+                var val = $param.attr('value');
+                var currUri = new URI(val);
+                currUri.removeSearch("Name");
+                currUri.addSearch("Name", name);
+                $param.attr('value', currUri.toString());
+            }
+            // change embed (if present)
+            if ($embed.length > 0) {
+                var src = $embed.attr('src');
+                currUri = new URI(src);
+                currUri.removeSearch("Name");
+                currUri.addSearch("Name", name);
+                $embed.attr('src', currUri.toString());
+            }
+            var s = $obj[0].outerHTML;
+            $obj.replaceWith(s);// replace entire object to make flash recognize the image change
         }
-        // change param movie (if present)
-        if ($param.length > 0) {
-            var val = $param.attr('value');
-            var currUri = new URI(val);
-            currUri.removeSearch("Name");
-            currUri.addSearch("Name", name);
-            $param.attr('value', currUri.toString());
-        }
-        // change embed (if present)
-        if ($embed.length > 0) {
-            var src = $embed.attr('src');
-            currUri = new URI(src);
-            currUri.removeSearch("Name");
-            currUri.addSearch("Name", name);
-            $embed.attr('src', currUri.toString());
-        }
-        var s = $obj[0].outerHTML;
-        $obj.replaceWith(s);// replace entire object to make flash recognize the image change
     }
     function clearFileName() {
         $hidden.val('');
