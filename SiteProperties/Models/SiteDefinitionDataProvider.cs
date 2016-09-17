@@ -98,7 +98,6 @@ namespace YetaWF.Modules.SiteProperties.Models {
                 if (site == null)
                     return null;
                 site.OriginalSiteDomain = site.SiteDomain;
-                site.OriginalTreeStyle = site.TreeStyle;
                 site.OriginalFileUploadStyle = site.FileUploadStyle;
                 site.OriginalUseCDN = site.UseCDN;
                 site.OriginalCDNUrl = site.CDNUrl;
@@ -138,7 +137,7 @@ namespace YetaWF.Modules.SiteProperties.Models {
                 site.OriginalSiteDomain = site.SiteDomain;
             }
             // restart required for uihint changes because uihints are cached or CDN changes
-            if (site.OriginalFileUploadStyle != site.FileUploadStyle || site.OriginalTreeStyle != site.TreeStyle)
+            if (site.OriginalFileUploadStyle != site.FileUploadStyle)
                 restartRequired = true;
             else if (site.OriginalUseCDN != site.UseCDN || site.OriginalCDNUrl != site.CDNUrl || site.OriginalCDNUrlSecure != site.CDNUrlSecure ||
                     site.OriginalCDNSiteFiles != site.CDNSiteFiles || site.OriginalCDNVault != site.CDNVault || site.OriginalCDNContent != site.CDNContent ||

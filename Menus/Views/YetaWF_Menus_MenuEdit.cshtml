@@ -5,14 +5,7 @@
     YetaWF.Core.Packages.Package currentPackage = YetaWF.Modules.Menus.Controllers.AreaRegistration.CurrentPackage;
     Manager.AddOnManager.AddAddOn(currentPackage.Domain, currentPackage.Product, "MenuEdit");
 
-    YetaWF.Core.Site.TreeStyleEnum treeStyle = Manager.CurrentSite.TreeStyle;
-    if (treeStyle == YetaWF.Core.Site.TreeStyleEnum.Kendo && YetaWF.Core.Addons.VersionManager.KendoAddonType != YetaWF.Core.Addons.VersionManager.KendoAddonTypeEnum.Pro) {
-        treeStyle = YetaWF.Core.Site.TreeStyleEnum.jsTree;
-    }
-
-    if (treeStyle == YetaWF.Core.Site.TreeStyleEnum.jsTree) {
-        Manager.AddOnManager.AddAddOnGlobal("jsTree.com", "jsTree");
-    }
+    Manager.AddOnManager.AddAddOnGlobal("jsTree.com", "jsTree");
 
     string treeId = DivId;
     string detailsId = UniqueId();
@@ -37,6 +30,6 @@
         <div class="y_cleardiv"></div>
     </div>
     <script>
-        YetaWF_MenuEdit.LoadTree('@treeId', '@treeStyle', '@detailsId', @Html.Raw(Model.MenuJSON), @Html.Raw(Model.NewEntryJSON));
+        YetaWF_MenuEdit.LoadTree('@treeId', '@detailsId', @Html.Raw(Model.MenuJSON), @Html.Raw(Model.NewEntryJSON));
     </script>
 }

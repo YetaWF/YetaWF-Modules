@@ -2,15 +2,13 @@
 
 var YetaWF_MenuEdit = {};
 
-YetaWF_MenuEdit.LoadTree = function (treeId, treeStyle, detailsId, data, newEntry) {
+YetaWF_MenuEdit.LoadTree = function (treeId, detailsId, data, newEntry) {
     'use strict';
 
     var JSTREE = 'jsTree';
-    var KENDOTREE = 'Kendo';
 
     var $tree = $('#' + treeId + ' > .t_treeview');
     if ($tree.length != 1) throw 'Tree control not found';/*DEBUG*/
-    if (treeStyle != JSTREE && treeStyle != KENDOTREE) throw 'Invalid tree style';
     var $details = $('#' + detailsId);
     if ($details.length != 1) throw 'Details control not found';/*DEBUG*/
 
@@ -22,143 +20,82 @@ YetaWF_MenuEdit.LoadTree = function (treeId, treeStyle, detailsId, data, newEntr
     var currentNodeChanged = false;
 
     var treefuncs = {};
-    if (treeStyle == JSTREE) {
-
-        treefuncs.GetData = function (tree) {
-            function CvtjsTreeDataEntry(jsentry, entry) {
-                entry.items = CvtjsTreeData(jsentry.children, []);
-            }
-            function CvtjsTreeData(jsdata, data) {
-                if (jsdata == undefined) return undefined;
-                jsdata.forEach(function (jsentry) {
-                    var d = tree.jstree('get_node', jsentry.id);
-                    data.push(d.original);
-                    CvtjsTreeDataEntry(jsentry, d.original);
-                });
-                return data;
-            }
-            var jsdata = tree.jstree('get_json');
-            var data = [];
-            data = CvtjsTreeData(jsdata, data);
+    treefuncs.GetData = function (tree) {
+        function CvtjsTreeDataEntry(jsentry, entry) {
+            entry.items = CvtjsTreeData(jsentry.children, []);
+        }
+        function CvtjsTreeData(jsdata, data) {
+            if (jsdata == undefined) return undefined;
+            jsdata.forEach(function (jsentry) {
+                var d = tree.jstree('get_node', jsentry.id);
+                data.push(d.original);
+                CvtjsTreeDataEntry(jsentry, d.original);
+            });
             return data;
-        };
-        treefuncs.GetSelectedNode = function (tree) {
-            var $node = tree.jstree('get_selected', true);
-            if ($node.length == 1) return $node[0];
-            return null;
-        };
-        treefuncs.SetSelectedNode = function (tree, node) {
-            tree.jstree('deselect_all', true); // don't trigger change event
-            tree.jstree('select_node', node.id, false, false);// don't trigger change event
-        };
-        treefuncs.SelectRootNode = function (tree) {
-            tree.jstree('deselect_all', true); // don't trigger change event
-            tree.jstree('select_node', 'ul li:first', false, false);// trigger event change
-        };
-        treefuncs.GetDataItem = function (tree, node) {
-            return node.original;
-        };
-        treefuncs.IsRootNode = function (tree, node) {
-            if (node == null) return true;
-            return node.id == "#" || node.parent == "#";
-        };
-        treefuncs.ExpandAll = function (tree) {
-            tree.jstree('open_all');
-        };
-        treefuncs.CollapseAll = function (tree) {
-            tree.jstree('close_all');
-        };
-        treefuncs.HaveMoreThanRootNode = function (tree) {
-            var root = tree.jstree('get_node', '#');
-            if (root == undefined) return false;
-            return !tree.jstree('is_leaf', root);
-        };
-        treefuncs.AddNode = function (tree, node) {
-            var node = tree.jstree('create_node', node, newEntry, 'first', function () { }, true);
-            return tree.jstree('get_node', node);
-        };
-        treefuncs.ValidNode = function (tree, node) {
-            return (node != null);
-        };
-        treefuncs.GetNextNode = function (tree, node) {
-            var node = tree.jstree('get_next_dom', node, false);
+        }
+        var jsdata = tree.jstree('get_json');
+        var data = [];
+        data = CvtjsTreeData(jsdata, data);
+        return data;
+    };
+    treefuncs.GetSelectedNode = function (tree) {
+        var $node = tree.jstree('get_selected', true);
+        if ($node.length == 1) return $node[0];
+        return null;
+    };
+    treefuncs.SetSelectedNode = function (tree, node) {
+        tree.jstree('deselect_all', true); // don't trigger change event
+        tree.jstree('select_node', node.id, false, false);// don't trigger change event
+    };
+    treefuncs.SelectRootNode = function (tree) {
+        tree.jstree('deselect_all', true); // don't trigger change event
+        tree.jstree('select_node', 'ul li:first', false, false);// trigger event change
+    };
+    treefuncs.GetDataItem = function (tree, node) {
+        return node.original;
+    };
+    treefuncs.IsRootNode = function (tree, node) {
+        if (node == null) return true;
+        return node.id == "#" || node.parent == "#";
+    };
+    treefuncs.ExpandAll = function (tree) {
+        tree.jstree('open_all');
+    };
+    treefuncs.CollapseAll = function (tree) {
+        tree.jstree('close_all');
+    };
+    treefuncs.HaveMoreThanRootNode = function (tree) {
+        var root = tree.jstree('get_node', '#');
+        if (root == undefined) return false;
+        return !tree.jstree('is_leaf', root);
+    };
+    treefuncs.AddNode = function (tree, node) {
+        var node = tree.jstree('create_node', node, newEntry, 'first', function () { }, true);
+        return tree.jstree('get_node', node);
+    };
+    treefuncs.ValidNode = function (tree, node) {
+        return (node != null);
+    };
+    treefuncs.GetNextNode = function (tree, node) {
+        var node = tree.jstree('get_next_dom', node, false);
+        node = tree.jstree('get_node', node)
+        if (node == false) {
+            node = tree.jstree('get_prev_dom', node, false);
             node = tree.jstree('get_node', node)
-            if (node == false) {
-                node = tree.jstree('get_prev_dom', node, false);
-                node = tree.jstree('get_node', node)
-            }
-            return node ? node : null;
-        };
-        treefuncs.DeleteNode = function (tree, node) {
-            tree.jstree('delete_node', node);
-        };
-        treefuncs.UpdateText = function (tree, node, text) {
-            tree.jstree('rename_node', node, text);
         }
-    } else if (treeStyle == KENDOTREE) {
-        treefuncs.GetData = function (tree) {
-            return tree.dataSource.data();
-        };
-        treefuncs.GetSelectedNode = function (tree) {
-            return tree.select();
-        };
-        treefuncs.SetSelectedNode = function (tree, node) {
-            tree.select(node);
-        };
-        treefuncs.SelectRootNode = function (tree) {
-            tree.select('.k-item:first');// doesn't trigger event
-            var node = tree.select();
-            CondEnable(tree, node);
-            UpdateCurrentEntryByNode(tree, node);
-            currentNode = node;
-            currentNodeChanged = false;
-        };
-        treefuncs.GetDataItem = function (tree, node) {
-            return tree.dataItem(node);
-        };
-        treefuncs.IsRootNode = function (tree, node) {
-            if (node == null) return true;
-            var parents = node.parentsUntil(".k-treeview", ".k-item").length;
-            if (!node.hasClass('k-item')) --parents;// this is something inside the node, so we have to subtract the current node
-            return parents <= 0;
-        };
-        treefuncs.ExpandAll = function (tree) {
-            tree.expand(".k-item");
-        };
-        treefuncs.CollapseAll = function (tree) {
-            tree.collapse(".k-item");
-            tree.select(".k-item:first");
-        };
-        treefuncs.HaveMoreThanRootNode = function (tree) {
-            return ($('li', $tree).length > 1);
-        }
-        treefuncs.AddNode = function (tree, node) {
-            return tree.append(newEntry, node);
-        };
-        treefuncs.ValidNode = function (tree, node) {
-            return (node != null && node.length > 0);
-        };
-        treefuncs.GetNextNode = function (tree, node) {
-            var nextNode = node.next();
-            if (nextNode.length == 0)
-                nextNode = node.parent().closest('li.k-item');
-            return nextNode;
-        };
-        treefuncs.DeleteNode = function (tree, node) {
-            tree.remove(node);
-        };
-        treefuncs.UpdateText = function (tree, node, text) {
-            $('.k-in:first', node).text(text);
-        }
+        return node ? node : null;
+    };
+    treefuncs.DeleteNode = function (tree, node) {
+        tree.jstree('delete_node', node);
+    };
+    treefuncs.UpdateText = function (tree, node, text) {
+        tree.jstree('rename_node', node, text);
     }
-    else/*DEBUG*/
-        throw 'Invalid tree style';/*DEBUG*/
-
 
     // field handling
     function EnableFields(enable) {
         if (enable) {
-            $("select[name='ModAction.EntryType']", $details).removeAttr('disabled');
+            YetaWF_TemplateDropDownList.Enable($("select[name='ModAction.EntryType']", $details), true);
             var entry = $("select[name='ModAction.EntryType']", $details).val();
             switch (entry) {
                 default:
@@ -173,10 +110,10 @@ YetaWF_MenuEdit.LoadTree = function (treeId, treeStyle, detailsId, data, newEntr
                     YetaWF_MultiString.Enable($("div[data-name='ModAction.Legend']", $details), true);
                     $("input:checkbox[name='ModAction.Enabled']", $details).removeAttr('disabled');
                     $("input[name='ModAction.CssClass']", $details).removeAttr('disabled');
-                    $("select[name='ModAction.Style']", $details).removeAttr('disabled');
-                    $("select[name='ModAction.Mode']", $details).removeAttr('disabled');
-                    $("select[name='ModAction.Category']", $details).removeAttr('disabled');
-                    $("select[name='ModAction.LimitToRole']", $details).removeAttr('disabled');
+                    YetaWF_TemplateDropDownList.Enable($("select[name='ModAction.Style']", $details), true);
+                    YetaWF_TemplateDropDownList.Enable($("select[name='ModAction.Mode']", $details), true);
+                    YetaWF_TemplateDropDownList.Enable($("select[name='ModAction.Category']", $details), true);
+                    YetaWF_TemplateDropDownList.Enable($("select[name='ModAction.LimitToRole']", $details), true);
                     $("input:checkbox[name='ModAction.AuthorizationIgnore']", $details).removeAttr('disabled');
                     YetaWF_MultiString.Enable($("div[data-name='ModAction.ConfirmationText']", $details), true);
                     YetaWF_MultiString.Enable($("div[data-name='ModAction.PleaseWaitText']", $details), true);
@@ -194,10 +131,10 @@ YetaWF_MenuEdit.LoadTree = function (treeId, treeStyle, detailsId, data, newEntr
                     YetaWF_MultiString.Enable($("div[data-name='ModAction.Legend']", $details), true);
                     $("input:checkbox[name='ModAction.Enabled']", $details).removeAttr('disabled');
                     $("input[name='ModAction.CssClass']", $details).removeAttr('disabled');
-                    $("select[name='ModAction.Style']", $details).attr('disabled', 'disabled');
-                    $("select[name='ModAction.Mode']", $details).attr('disabled', 'disabled');
-                    $("select[name='ModAction.Category']", $details).attr('disabled', 'disabled');
-                    $("select[name='ModAction.LimitToRole']", $details).removeAttr('disabled');
+                    YetaWF_TemplateDropDownList.Enable($("select[name='ModAction.Style']", $details), true);
+                    YetaWF_TemplateDropDownList.Enable($("select[name='ModAction.Mode']", $details), true);
+                    YetaWF_TemplateDropDownList.Enable($("select[name='ModAction.Category']", $details), true);
+                    YetaWF_TemplateDropDownList.Enable($("select[name='ModAction.LimitToRole']", $details), true);
                     $("input:checkbox[name='ModAction.AuthorizationIgnore']", $details).attr('disabled', 'disabled');
                     YetaWF_MultiString.Enable($("div[data-name='ModAction.ConfirmationText']", $details), false);
                     YetaWF_MultiString.Enable($("div[data-name='ModAction.PleaseWaitText']", $details), false);
@@ -215,10 +152,10 @@ YetaWF_MenuEdit.LoadTree = function (treeId, treeStyle, detailsId, data, newEntr
                     YetaWF_MultiString.Enable($("div[data-name='ModAction.Legend']", $details), false);
                     $("input:checkbox[name='ModAction.Enabled']", $details).attr('disabled', 'disabled');
                     $("input[name='ModAction.CssClass']", $details).attr('disabled', 'disabled');
-                    $("select[name='ModAction.Style']", $details).attr('disabled', 'disabled');
-                    $("select[name='ModAction.Mode']", $details).attr('disabled', 'disabled');
-                    $("select[name='ModAction.Category']", $details).attr('disabled', 'disabled');
-                    $("select[name='ModAction.LimitToRole']", $details).attr('disabled', 'disabled');
+                    YetaWF_TemplateDropDownList.Enable($("select[name='ModAction.Style']", $details), false);
+                    YetaWF_TemplateDropDownList.Enable($("select[name='ModAction.Mode']", $details), false);
+                    YetaWF_TemplateDropDownList.Enable($("select[name='ModAction.Category']", $details), false);
+                    YetaWF_TemplateDropDownList.Enable($("select[name='ModAction.LimitToRole']", $details), false);
                     $("input:checkbox[name='ModAction.AuthorizationIgnore']", $details).attr('disabled', 'disabled');
                     YetaWF_MultiString.Enable($("div[data-name='ModAction.ConfirmationText']", $details), false);
                     YetaWF_MultiString.Enable($("div[data-name='ModAction.PleaseWaitText']", $details), false);
@@ -228,7 +165,7 @@ YetaWF_MenuEdit.LoadTree = function (treeId, treeStyle, detailsId, data, newEntr
                     break;
             }
         } else {
-            $("select[name='ModAction.EntryType']", $details).attr('disabled', 'disabled');
+            YetaWF_TemplateDropDownList.Enable($("select[name='ModAction.EntryType']", $details), false);
             YetaWF_Url.Enable($("div[data-name='ModAction.Url']", $details), false);
             YetaWF_ModuleSelection.Enable($("div[data-name='ModAction.SubModule']", $details), false);
             YetaWF_MultiString.Enable($("div[data-name='ModAction.MenuText']", $details), false);
@@ -238,10 +175,10 @@ YetaWF_MenuEdit.LoadTree = function (treeId, treeStyle, detailsId, data, newEntr
             YetaWF_MultiString.Enable($("div[data-name='ModAction.Legend']", $details), false);
             $("input:checkbox[name='ModAction.Enabled']", $details).attr('disabled', 'disabled');
             $("input[name='ModAction.CssClass']", $details).attr('disabled', 'disabled');
-            $("select[name='ModAction.Style']", $details).attr('disabled', 'disabled');
-            $("select[name='ModAction.Mode']", $details).attr('disabled', 'disabled');
-            $("select[name='ModAction.Category']", $details).attr('disabled', 'disabled');
-            $("select[name='ModAction.LimitToRole']", $details).attr('disabled', 'disabled');
+            YetaWF_TemplateDropDownList.Enable($("select[name='ModAction.Style']", $details), false);
+            YetaWF_TemplateDropDownList.Enable($("select[name='ModAction.Mode']", $details), false);
+            YetaWF_TemplateDropDownList.Enable($("select[name='ModAction.Category']", $details), false);
+            YetaWF_TemplateDropDownList.Enable($("select[name='ModAction.LimitToRole']", $details), false);
             $("input:checkbox[name='ModAction.AuthorizationIgnore']", $details).attr('disabled', 'disabled');
             YetaWF_MultiString.Enable($("div[data-name='ModAction.ConfirmationText']", $details), false);
             YetaWF_MultiString.Enable($("div[data-name='ModAction.PleaseWaitText']", $details), false);
@@ -251,7 +188,7 @@ YetaWF_MenuEdit.LoadTree = function (treeId, treeStyle, detailsId, data, newEntr
         }
     }
     function UpdateFields(dataItem) {
-        $("select[name='ModAction.EntryType']", $details).val(dataItem.EntryType);
+        YetaWF_TemplateDropDownList.Update($("select[name='ModAction.EntryType']", $details).val(dataItem.EntryType));
         $("input[name='ModAction._Text']", $details).val(dataItem._Text);
         YetaWF_Url.Update($("div[data-name='ModAction.Url']", $details), dataItem.Url, true);
         YetaWF_ModuleSelection.Update($("div[data-name='ModAction.SubModule']", $details), dataItem.SubModule);
@@ -262,10 +199,10 @@ YetaWF_MenuEdit.LoadTree = function (treeId, treeStyle, detailsId, data, newEntr
         YetaWF_MultiString.Update($("div[data-name='ModAction.Legend']", $details), dataItem.Legend);
         $("input:checkbox[name='ModAction.Enabled']", $details).prop('checked', dataItem.Enabled);
         $("input[name='ModAction.CssClass']", $details).val(dataItem.CssClass);
-        $("select[name='ModAction.Style']", $details).val(dataItem.Style);
-        $("select[name='ModAction.Mode']", $details).val(dataItem.Mode);
-        $("select[name='ModAction.Category']", $details).val(dataItem.Category);
-        $("select[name='ModAction.LimitToRole']", $details).val(dataItem.LimitToRole);
+        YetaWF_TemplateDropDownList.Update($("select[name='ModAction.Style']", $details).val(dataItem.Style));
+        YetaWF_TemplateDropDownList.Update($("select[name='ModAction.Mode']", $details).val(dataItem.Mode));
+        YetaWF_TemplateDropDownList.Update($("select[name='ModAction.Category']", $details).val(dataItem.Category));
+        YetaWF_TemplateDropDownList.Update($("select[name='ModAction.LimitToRole']", $details).val(dataItem.LimitToRole));
         $("input:checkbox[name='ModAction.AuthorizationIgnore']", $details).prop('checked', dataItem.AuthorizationIgnore);
         YetaWF_MultiString.Update($("div[data-name='ModAction.ConfirmationText']", $details), dataItem.ConfirmationText);
         YetaWF_MultiString.Update($("div[data-name='ModAction.PleaseWaitText']", $details), dataItem.PleaseWaitText);
@@ -277,7 +214,7 @@ YetaWF_MenuEdit.LoadTree = function (treeId, treeStyle, detailsId, data, newEntr
         $("input[name='ActiveEntry']", $details).val(0);
         $("input[name='NewAfter']", $details).val(0);
 
-        $("select[name='ModAction.EntryType']", $details).val(MenuEntryType_Entry);
+        YetaWF_TemplateDropDownList.Update($("select[name='ModAction.EntryType']", $details), MenuEntryType_Entry);
         $("input[name='ModAction._Text']", $details).val('');
         YetaWF_Url.Clear($("div[data-name='ModAction.Url']", $details));
         YetaWF_ModuleSelection.Update($("div[data-name='ModAction.SubModule']", $details), undefined);
@@ -288,10 +225,10 @@ YetaWF_MenuEdit.LoadTree = function (treeId, treeStyle, detailsId, data, newEntr
         YetaWF_MultiString.Clear($("div[data-name='ModAction.Legend']", $details));
         $("input:checkbox[name='ModAction.Enabled']", $details).prop('checked', false);
         $("input[name='ModAction.CssClass']", $details).val('');
-        $("select[name='ModAction.Style']", $details).prop('selectedIndex', 0);
-        $("select[name='ModAction.Mode']", $details).prop('selectedIndex', 0);
-        $("select[name='ModAction.Category']", $details).prop('selectedIndex', 0);
-        $("select[name='ModAction.LimitToRole']", $details).prop('selectedIndex', 0);
+        YetaWF_TemplateDropDownList.Clear($("select[name='ModAction.Style']", $details));
+        YetaWF_TemplateDropDownList.Clear($("select[name='ModAction.Mode']", $details));
+        YetaWF_TemplateDropDownList.Clear($("select[name='ModAction.Category']", $details));
+        YetaWF_TemplateDropDownList.Clear($("select[name='ModAction.LimitToRole']", $details));
         $("input:checkbox[name='ModAction.AuthorizationIgnore']", $details).prop('checked', false);
         YetaWF_MultiString.Clear($("div[data-name='ModAction.ConfirmationText']", $details));
         YetaWF_MultiString.Clear($("div[data-name='ModAction.PleaseWaitText']", $details));
@@ -563,7 +500,7 @@ YetaWF_MenuEdit.LoadTree = function (treeId, treeStyle, detailsId, data, newEntr
             });
     }
 
-    var tree; // the tree object (jsTree or KendoTree)
+    var tree; // the tree object
 
     function MakejsTreeDataEntry(entry) {
         entry.text = entry._Text;
@@ -583,121 +520,65 @@ YetaWF_MenuEdit.LoadTree = function (treeId, treeStyle, detailsId, data, newEntr
     }
 
     // Initialize the tree
-    if (treeStyle == KENDOTREE) {
+    data = MakejsTreeData(data);
+    MakejsTreeDataEntry(newEntry);
 
-        $tree.kendoTreeView({
-            dragAndDrop: true,
-            loadOnDemand: false,
-            //template ?
-            dataTextField: '_Text',
-            dataSource: {
-                'data': data
-            },
-            drag: function (e) {
-                console.log('isRoot {0} e.statusClass {1}'.format(treefuncs.IsRootNode(tree, $(e.dropTarget)), e.statusClass));
-                if (treefuncs.IsRootNode(tree, $(e.dropTarget)) && e.statusClass.indexOf("insert") >= 0)
-                    e.setStatusClass('k-denied');
-            },
-            dragstart: function (e) {
-                // don't drag the root node
-                if (treefuncs.IsRootNode(tree, $(e.sourceNode)))
-                    e.preventDefault();
-            },
-            drop: function (e) { },
-            dragend: function (e) {
-                if (treefuncs.IsRootNode(tree, $(e.destinationNode))) {
-                    e.preventDefault();// don't drop on the root node
-                } else {
-                    UpdateButtons(tree, treefuncs.GetSelectedNode(tree));
-                    SendEntireMenu(tree);
-                }
-            },
-            // selection change
-            select: function (e) {
-                var node = $(e.node);
-                if (PrepareNewEntry(tree, e, function () {
-                        CondEnable(tree, node);
-                        UpdateCurrentEntryByNode(tree, node);
-                        currentNode = node;
-                        currentNodeChanged = false;
-                    })) {
-                    return;
-                } else {
-                    treefuncs.SetSelectedNode(tree, currentNode);
-                }
-            }
-        });
-
-        // after loading, expand root level and select it
-        tree = $tree.data("kendoTreeView");
-        tree.expand(".k-item");// expands all if loadOnDemand is false
-        tree.select(".k-first");
-
-    } else if (treeStyle == JSTREE) {
-
-        data = MakejsTreeData(data);
-        MakejsTreeDataEntry(newEntry);
-
-        $tree.jstree({
-            multiple: false,
-            plugins: ['dnd'],
-            dnd: {
-                copy: false,
-                is_draggable: function (nodes, e) {
-                    if (treefuncs.IsRootNode(tree, nodes[0])) return false;
-                    return true;
-                },
-                drag_selection: false,
-            },
-            core: {
-                'data': data,
-                themes: {
-                    icons: false,
-                    dots: false,
-                },
-                check_callback: function (operation, node, node_parent, node_position, more) {
-                    console.log(operation + ' ' + node_parent.id + ' ' + node.id + ' ' + node_position);
-                    if (operation == 'move_node') {
-                        if (node_parent.id == "#")
-                            return false;
-                    }
-                    return true;
-                },
-            },
-        });
-        tree = $tree;
-        $tree.css('overflow', 'auto');
-
-        // selection change
-        $tree.on('changed.jstree', function (e, data) {
-            var node = data.node;
-            if (currentNode != null && node == currentNode) return true;
-            if (PrepareNewEntry(tree, e, function () {
-                        CondEnable(tree, node);
-                        UpdateCurrentEntryByNode(tree, node);
-                        currentNode = node;
-                        currentNodeChanged = false;
-                })) {
+    $tree.jstree({
+        multiple: false,
+        plugins: ['dnd'],
+        dnd: {
+            copy: false,
+            is_draggable: function (nodes, e) {
+                if (treefuncs.IsRootNode(tree, nodes[0])) return false;
                 return true;
-            } else {
-                treefuncs.SetSelectedNode(tree, currentNode);
-            }
-        });
-        //d&d drop
-        $tree.on('move_node.jstree', function (e, data) {
-            var node = data.node;
-            CondEnable(tree, node);
-            UpdateCurrentEntryByNode(tree, node);
-            currentNode = node;
-            SendEntireMenu(tree);
-        });
+            },
+            drag_selection: false,
+        },
+        core: {
+            'data': data,
+            themes: {
+                icons: false,
+                dots: false,
+            },
+            check_callback: function (operation, node, node_parent, node_position, more) {
+                console.log(operation + ' ' + node_parent.id + ' ' + node.id + ' ' + node_position);
+                if (operation == 'move_node') {
+                    if (node_parent.id == "#")
+                        return false;
+                }
+                return true;
+            },
+        },
+    });
+    tree = $tree;
+    $tree.css('overflow', 'auto');
 
-        currentNode = null;
-        currentNodeChanged = false;
+    // selection change
+    $tree.on('changed.jstree', function (e, data) {
+        var node = data.node;
+        if (currentNode != null && node == currentNode) return true;
+        if (PrepareNewEntry(tree, e, function () {
+                    CondEnable(tree, node);
+                    UpdateCurrentEntryByNode(tree, node);
+                    currentNode = node;
+                    currentNodeChanged = false;
+            })) {
+            return true;
+        } else {
+            treefuncs.SetSelectedNode(tree, currentNode);
+        }
+    });
+    //d&d drop
+    $tree.on('move_node.jstree', function (e, data) {
+        var node = data.node;
+        CondEnable(tree, node);
+        UpdateCurrentEntryByNode(tree, node);
+        currentNode = node;
+        SendEntireMenu(tree);
+    });
 
-    }
-    else/*DEBUG*/
-        throw 'Invalid tree style';/*DEBUG*/
+    currentNode = null;
+    currentNodeChanged = false;
 
     $(document).ready(function () {
 

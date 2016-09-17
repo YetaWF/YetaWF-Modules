@@ -16,12 +16,13 @@ $(document).ready(function () {
             YVolatile.Basics.PageControlVisible = false;
         } else {
             $mod.fadeIn(fadeTime);
+            $('body').trigger('YetaWF_PropertyList_Visible', $mod);
             YVolatile.Basics.PageControlVisible = true;
         }
     });
-
-    if (YVolatile.Basics.PageControlVisible)
+    if (YVolatile.Basics.PageControlVisible) {
         $mod.show();
-
+        $('body').trigger('YetaWF_PropertyList_Visible', $mod);
+    }
 });
 
