@@ -1,0 +1,6 @@
+﻿/* Copyright © 2016 Softel vdm, Inc. - http://yetawf.com/Documentation/YetaWF/Identity#License */
+
+.yt_propertylist .yt_yetawf_identity_roleid,
+.yt_propertylisttabbed .yt_yetawf_identity_roleid {
+    max-width:100%;
+}

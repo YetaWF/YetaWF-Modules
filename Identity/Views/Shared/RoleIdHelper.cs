@@ -31,7 +31,7 @@ namespace YetaWF.Modules.Identity.Views.Shared {
             }
         }
 
-        public static MvcHtmlString RenderRoleId(this HtmlHelper htmlHelper, string name, int model) {
+        public static MvcHtmlString RenderRoleId(this HtmlHelper htmlHelper, string name, int model, object HtmlAttributes = null) {
 
             List<SelectionItem<int>> list;
             list = (
@@ -48,7 +48,7 @@ namespace YetaWF.Modules.Identity.Views.Shared {
             if (model == 0 || showDefault)
                 list.Insert(0, new SelectionItem<int> { Text = __ResStr("select", "(none)"), Value = 0 });
 
-            return htmlHelper.RenderDropDownSelectionList<int>(name, model, list);
+            return htmlHelper.RenderDropDownSelectionList<int>(name, model, list, HtmlAttributes: HtmlAttributes);
         }
     }
 }
