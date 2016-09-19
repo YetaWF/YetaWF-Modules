@@ -50,11 +50,21 @@ namespace YetaWF.Modules.PageEdit.Controllers {
             [Category("Page"), Caption("Search Keywords"), Description("Defines whether this page's contents should be added to the site's search keywords")]
             [UIHint("Boolean")]
             public bool WantSearch { get; set; }
-#if DEBUG
+
             [Category("Variables"), Caption("Temporary"), Description("Defines whether the current page is a temporary (generated) page")]
-            [UIHint("Boolean"), ReadOnly]
+            [UIHint("Boolean"), ReadOnly, SuppressIfEqual("Debug", false)]
             public bool Temporary { get; set; }
+
+            public bool Debug {
+                get {
+#if DEBUG
+                    return true;
+#else
+                    return false;
 #endif
+                }
+            }
+
             [Category("Page"), Caption("Secure Page"), Description("Defines whether the page is accessed using a secure connection (using SSL) - The use of secure connections requires that Secure Connections in the Site Properties is also enabled, otherwise the page property defined here is ignored")]
             [UIHint("Enum")]
             public PageDefinition.PageSecurityType PageSecurity { get; set; }
