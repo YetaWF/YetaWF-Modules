@@ -1,12 +1,13 @@
 ﻿/* Copyright © 2016 Softel vdm, Inc. - http://yetawf.com/Documentation/YetaWF/Identity#License */
 
 .yModule.YetaWF_Identity_LoginSelector .t_labels {
-    width: 11ch;
+    width: 12ch;
     padding-top: 0.1em;
     padding-right:1ch;
 }
-.yModule.YetaWF_Identity_LoginSelector .yt_propertylist .t_row.t_userid .t_vals select {/* Firefox needs this for select */
+.yModule.YetaWF_Identity_LoginSelector .yt_propertylist .t_row.t_userid .t_vals select {
     width:100%;
+    min-width:20ch;
 }
 .yModule.YetaWF_Identity_LoginSelector .t_vals {
     float: left;
