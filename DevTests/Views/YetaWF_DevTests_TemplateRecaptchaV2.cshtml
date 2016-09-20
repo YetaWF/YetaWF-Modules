@@ -2,6 +2,7 @@
 @using (Form("TemplateRecaptchaV2_Partial")) {
     @PartialForm()
     @FormButtons(new FormButton[] {
+        new FormButton() { ButtonType= ButtonTypeEnum.Apply, },
         new FormButton() { ButtonType= ButtonTypeEnum.Submit, },
         new FormButton() { ButtonType= ButtonTypeEnum.Cancel, },
     });
