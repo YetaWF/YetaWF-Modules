@@ -60,11 +60,11 @@ namespace YetaWF.Modules.Identity.Controllers {
             [UIHint("Boolean")]
             public bool BccForgottenPassword { get; set; }
 
-            [Category("Captcha"), Caption("Use Captcha"), Description("Defines whether the user has to pass a \"human\" test when logging in or registering an new account (Yes). Otherwise, no test is performed (No)")]
+            [Category("Captcha"), Caption("Use Captcha"), Description("Defines whether the user has to pass a \"human\" test when logging in or registering a new account (Yes). Otherwise, no test is performed (No)")]
             [UIHint("Boolean")]
             public bool Captcha { get; set; }
 
-            [Category("Captcha"), Caption("Use Captcha (Forgot Pswd)"), Description("For fogotton passwords, defines whether the user has to pass a \"human\" test (Yes). Otherwise, no test is performed (No)")]
+            [Category("Captcha"), Caption("Use Captcha (Forgot Pswd)"), Description("For forgotten passwords, defines whether the user has to pass a \"human\" test (Yes). Otherwise, no test is performed (No)")]
             [UIHint("Boolean")]
             public bool CaptchaForgotPassword { get; set; }
 
