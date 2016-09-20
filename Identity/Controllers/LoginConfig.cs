@@ -32,11 +32,11 @@ namespace YetaWF.Modules.Identity.Controllers {
             [UIHint("Boolean")]
             public bool SavePlainTextPassword { get; set; }
 
-            [Category("Accounts"), Caption("Verification Required"), Description("Defines whether new users need to be verified before they have access to the site. Verification is performed by sending an email to the new user with a verification code, which must be entered when logging in the first time")]
+            [Category("Accounts"), Caption("Verification Required"), Description("Defines whether new users need to be verified before they have access to the site - Verification is performed by sending an email to the new user with a verification code, which must be entered when logging in the first time")]
             [UIHint("Boolean")]
             public bool VerifyNewUsers { get; set; }
 
-            [Category("Accounts"), Caption("Approval Required"), Description("Defines whether new users need to be approved before they have access to the site. Approval is typically given by the site administrator")]
+            [Category("Accounts"), Caption("Approval Required"), Description("Defines whether new users need to be approved before they have access to the site - Approval is typically given by the site administrator")]
             [UIHint("Boolean")]
             public bool ApproveNewUsers { get; set; }
 
@@ -60,11 +60,11 @@ namespace YetaWF.Modules.Identity.Controllers {
             [UIHint("Boolean")]
             public bool BccForgottenPassword { get; set; }
 
-            [Category("Captcha"), Caption("Use Captcha"), Description("Defines whether the user has to pass a \"human\" test when logging in or registering a new account (Yes). Otherwise, no test is performed (No)")]
+            [Category("Captcha"), Caption("Use Captcha"), Description("Defines whether the user has to pass a \"human\" test when logging in or registering a new account (Yes), otherwise no test is performed (No)")]
             [UIHint("Boolean")]
             public bool Captcha { get; set; }
 
-            [Category("Captcha"), Caption("Use Captcha (Forgot Pswd)"), Description("For forgotten passwords, defines whether the user has to pass a \"human\" test (Yes). Otherwise, no test is performed (No)")]
+            [Category("Captcha"), Caption("Use Captcha (Forgot Pswd)"), Description("For forgotten passwords, defines whether the user has to pass a \"human\" test (Yes), otherwise no test is performed (No)")]
             [UIHint("Boolean")]
             public bool CaptchaForgotPassword { get; set; }
 
