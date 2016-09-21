@@ -13,9 +13,10 @@ namespace YetaWF.Modules.SiteProperties.Controllers {
 
         [HttpGet]
         public ActionResult LockedStatus() {
-            if (Manager.CurrentSite.IsLocked)
+            if (Manager.CurrentSite.IsLockedAny) {
+                Manager.AddOnManager.AddAddOn(AreaRegistration.CurrentPackage.Domain, AreaRegistration.CurrentPackage.Product, "LockedStatus");
                 return View(new Model());
-            else
+            } else
                 return new EmptyResult();
         }
     }

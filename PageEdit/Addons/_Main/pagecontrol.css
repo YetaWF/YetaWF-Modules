@@ -15,7 +15,7 @@
 
 #yPageControlDiv {
     position:absolute;
-    z-index:1500;
+    z-index:1510;
     right: 1ch;
     top: 260px;
 }
@@ -38,7 +38,7 @@
 }
 #yEditControlDiv {
     position:absolute;
-    z-index:1500;
+    z-index:1510;
     right:1ch;
     top: 220px;
 }

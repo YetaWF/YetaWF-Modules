@@ -75,6 +75,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Addons\_Addons\LockedStatus\filelistCSS.txt" />
+    <Content Include="Addons\_Addons\LockedStatus\filelistJS.txt" />
+    <Content Include="Addons\_Addons\LockedStatus\LockedStatus.js" />
+    <None Include="Addons\_Addons\LockedStatus\LockedStatus.scss" />
     <Content Include="Views\YetaWF_SiteProperties_SiteProperties.cshtml" />
   </ItemGroup>
   <ItemGroup>
