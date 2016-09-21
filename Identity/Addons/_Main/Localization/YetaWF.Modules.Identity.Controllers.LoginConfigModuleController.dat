@@ -63,7 +63,7 @@
                           <Properties>
                             <Name Value="ApproveNewUsers" />
                             <Caption Value="Approval Required" />
-                            <Description Value="Defines whether new users need to be approved before they have access to the site. Approval is typically given by the site administrator" />
+                            <Description Value="Defines whether new users need to be approved before they have access to the site - Approval is typically given by the site administrator" />
                             <HelpLink />
                             <TextAbove />
                             <TextBelow />
@@ -99,7 +99,7 @@
                           <Properties>
                             <Name Value="Captcha" />
                             <Caption Value="Use Captcha" />
-                            <Description Value="Defines whether the user has to pass a &quot;human&quot; test when logging in or registering an new account (Yes). Otherwise, no test is performed (No)" />
+                            <Description Value="Defines whether the user has to pass a &quot;human&quot; test when logging in or registering a new account (Yes), otherwise no test is performed (No)" />
                             <HelpLink />
                             <TextAbove />
                             <TextBelow />
@@ -111,7 +111,7 @@
                           <Properties>
                             <Name Value="CaptchaForgotPassword" />
                             <Caption Value="Use Captcha (Forgot Pswd)" />
-                            <Description Value="For fogotton passwords, defines whether the user has to pass a &quot;human&quot; test (Yes). Otherwise, no test is performed (No)" />
+                            <Description Value="For forgotten passwords, defines whether the user has to pass a &quot;human&quot; test (Yes), otherwise no test is performed (No)" />
                             <HelpLink />
                             <TextAbove />
                             <TextBelow />
@@ -255,7 +255,7 @@
                           <Properties>
                             <Name Value="VerifyNewUsers" />
                             <Caption Value="Verification Required" />
-                            <Description Value="Defines whether new users need to be verified before they have access to the site. Verification is performed by sending an email to the new user with a verification code, which must be entered when logging in the first time" />
+                            <Description Value="Defines whether new users need to be verified before they have access to the site - Verification is performed by sending an email to the new user with a verification code, which must be entered when logging in the first time" />
                             <HelpLink />
                             <TextAbove />
                             <TextBelow />
