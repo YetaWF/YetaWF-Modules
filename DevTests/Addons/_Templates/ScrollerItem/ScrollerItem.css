@@ -1,0 +1,36 @@
+﻿/* Copyright © 2016 Softel vdm, Inc. - http://yetawf.com/Documentation/YetaWF/DevTests#License */
+
+.yt_yetawf_devtests_scrolleritem {
+    width:200px;/* All items must be the exact same width so offset calculations are correct */
+    height:320px;
+    text-align:left;
+    padding-left:20px;
+    padding-right:20px;
+}
+
+.yt_yetawf_devtests_scrolleritem {
+    border-right: 1px solid #DDD;
+}
+.yt_yetawf_devtests_scrolleritem .yt_image img {
+    border: 0;
+    padding: 0;
+}
+
+.yt_yetawf_devtests_scrolleritem .t_image {
+    padding-top: 10px;
+    padding-bottom: 30px;
+}
+
+.yt_yetawf_devtests_scrolleritem .t_title {
+    font-size: 15px;
+    font-weight: bold;
+    color: #333;
+    padding-bottom: 30px;
+}
+.yt_yetawf_devtests_scrolleritem .t_summary {
+    font-size: 10px;
+    font-weight: normal;
+    color: #333;
+    max-height:200px;
+    overflow:auto;
+}

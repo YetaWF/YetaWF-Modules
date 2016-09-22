@@ -1,4 +1,4 @@
-﻿### Copyright © 2016 Softel vdm, Inc.
+﻿### Copyright © 2016 Softel vdm, Inc. - http://yetawf.com/Documentation/YetaWF/DevTests#License
 ###
 ### DevTests Package Upgrade
 ###
@@ -6,7 +6,7 @@
 ::PAGE-SECTION::
 
 Administrator /Tests/SMS
-    Tests > {YetaWF.DevTests, YetaWF.Modules.DevTests.Modules.SMSTestModule}.GetAction_Display("/Tests/SMS")
+    Tests > {YetaWF.DevTests, YetaWF.Modules.DevTests.Modules.SMSTestModule}.GetAction_Display({CURRENTURL})
     -
     YetaWF.DevTests, YetaWF.Modules.DevTests.Modules.SMSProcessorStatusModule
     YetaWF.DevTests, YetaWF.Modules.DevTests.Modules.SMSTestModule
