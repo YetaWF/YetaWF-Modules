@@ -17,7 +17,7 @@ using YetaWF.PackageAttributes;
 [assembly: AssemblyCulture("")]
 [assembly: ComVisible(false)]
 
-[assembly: AssemblyVersion("1.0.6.0")]
+[assembly: AssemblyVersion("1.0.7.0")]
 
 [assembly: Package(PackageTypeEnum.Module, "YetaWF")]
 [assembly: PackageInfo("http://YetaWF.com/UpdateServer",
