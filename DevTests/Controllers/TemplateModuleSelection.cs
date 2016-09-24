@@ -17,43 +17,41 @@ namespace YetaWF.Modules.DevTests.Controllers {
         [Trim]
         public class EditModel {
 
-            [Caption("Module Selection"), Description("Existing Module")]
+            [Caption("Module Selection"), Description("Existing module")]
             [UIHint("ModuleSelection"), Required, Trim]
             public Guid Module { get; set; }
 
-            [Caption("Module Selection (New)"), Description("New Module")]
+            [Caption("Module Selection (New)"), Description("New module")]
             [UIHint("ModuleSelection"), AdditionalMetadata("New", true), Required, Trim]
             public Guid ModuleNew { get; set; }
 
-            [Caption("Module Selection (r/o)"), Description("Existing Module")]
+            [Caption("Module Selection (R/O)"), Description("Existing module, read/only")]
             [UIHint("ModuleSelection")]
             [ReadOnly]
             public Guid ROModule { get; set; }
 
-            [Caption("Module Selection (r/o)"), Description("Existing Module")]
+            [Caption("Module Selection (New, R/O)"), Description("New module, read/only")]
             [UIHint("ModuleSelection"), AdditionalMetadata("New", true)]
             [ReadOnly]
             public Guid ROModuleNew { get; set; }
-
-            public void Update (TemplateModuleSelectionModule mod) {
-                ROModule = mod.PermanentGuid;// use this module as displayed module
-                ROModuleNew = mod.PermanentGuid;
-            }
 
             public EditModel() { }
         }
 
         [HttpGet]
         public ActionResult TemplateModuleSelection() {
-            EditModel model = new EditModel { };
-            model.Update(Module);
+            EditModel model = new EditModel {
+                ROModule = Module.PermanentGuid,// use this module as displayed module
+                ROModuleNew = Module.PermanentGuid,
+            };
             return View(model);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult TemplateModuleSelection_Partial(EditModel model) {
-            model.Update(Module);
+            model.ROModule = model.Module;
+            model.ROModuleNew = model.ModuleNew;
             if (!ModelState.IsValid)
                 return PartialView(model);
             return FormProcessed(model, this.__ResStr("ok", "OK"));
