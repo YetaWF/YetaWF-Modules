@@ -30,7 +30,7 @@
                           <Properties>
                             <Name Value="Module" />
                             <Caption Value="Module Selection" />
-                            <Description Value="Existing Module" />
+                            <Description Value="Existing module" />
                             <HelpLink />
                             <TextAbove />
                             <TextBelow />
@@ -42,7 +42,7 @@
                           <Properties>
                             <Name Value="ModuleNew" />
                             <Caption Value="Module Selection (New)" />
-                            <Description Value="New Module" />
+                            <Description Value="New module" />
                             <HelpLink />
                             <TextAbove />
                             <TextBelow />
@@ -53,8 +53,8 @@
                         <Object Type="YetaWF.Core.Localize.LocalizationData+PropertyData" Assembly="YetaWF.Core">
                           <Properties>
                             <Name Value="ROModule" />
-                            <Caption Value="Module Selection (r/o)" />
-                            <Description Value="Existing Module" />
+                            <Caption Value="Module Selection (R/O)" />
+                            <Description Value="Existing module, read/only" />
                             <HelpLink />
                             <TextAbove />
                             <TextBelow />
@@ -65,8 +65,8 @@
                         <Object Type="YetaWF.Core.Localize.LocalizationData+PropertyData" Assembly="YetaWF.Core">
                           <Properties>
                             <Name Value="ROModuleNew" />
-                            <Caption Value="Module Selection (r/o)" />
-                            <Description Value="Existing Module" />
+                            <Caption Value="Module Selection (New, R/O)" />
+                            <Description Value="New module, read/only" />
                             <HelpLink />
                             <TextAbove />
                             <TextBelow />
