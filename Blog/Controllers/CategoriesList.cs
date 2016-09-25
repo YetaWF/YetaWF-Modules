@@ -29,7 +29,7 @@ namespace YetaWF.Modules.Blog.Controllers {
                 BlogCategory = blogCategory,
             };
 
-            Manager.CurrentPage.SetCanonicalUrl(BlogConfigData.GetCategoryCanonicalName(blogCategory));
+            Manager.CurrentPage.EvaluatedCanonicalUrl = BlogConfigData.GetCategoryCanonicalName(blogCategory);
             return View(model);
         }
 

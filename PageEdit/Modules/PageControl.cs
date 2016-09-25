@@ -96,7 +96,7 @@ namespace YetaWF.Modules.PageEdit.Modules {
             if (string.IsNullOrWhiteSpace(config.W3CUrl)) return null;
             if (!config.W3CUrl.Contains("{0}")) return null;
             return new ModuleAction(this) {
-                Url = string.Format(config.W3CUrl, Manager.CurrentPage.GetCanonicalUrl()),
+                Url = string.Format(config.W3CUrl, Manager.CurrentPage.EvaluatedCanonicalUrl),
                 Image = "W3CValidator.png",
                 LinkText = this.__ResStr("modW3CValLink", "W3C Validation"),
                 MenuText = this.__ResStr("modW3CValText", "W3C Validation"),

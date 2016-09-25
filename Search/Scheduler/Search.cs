@@ -109,7 +109,7 @@ namespace YetaWF.Modules.Search.Scheduler {
                     if (page != null) {
                         List<SearchData> searchData = SearchPage(searchDP, page, searchStarted);
                         if (searchData != null && searchData.Count > 0)
-                            searchDP.AddItems(searchData, page.CompleteUrl, page.Description, page.Created, page.Updated, searchStarted);
+                            searchDP.AddItems(searchData, page.EvaluatedCanonicalUrl, page.Description, page.Created, page.Updated, searchStarted);
                         if (slow)
                             Thread.Sleep(500);// delay a bit (slow can only be used by schedule items)
                     }
@@ -129,12 +129,12 @@ namespace YetaWF.Modules.Search.Scheduler {
             bool allowAnyUser = page.IsAuthorized_View_AnyUser();
             if (!allowAnonymous && !allowAnyUser)
                 return null;
-            if (!searchDP.PageUpdated(page.CompleteUrl, page.Created, page.Updated)) {
-                Logging.AddLog("Skipping search keywords for page {0} - page not modified", page.CompleteUrl);
+            if (!searchDP.PageUpdated(page.EvaluatedCanonicalUrl, page.Created, page.Updated)) {
+                Logging.AddLog("Skipping search keywords for page {0} - page not modified", page.EvaluatedCanonicalUrl);
                 return null;
             }
 
-            Logging.AddLog("Adding search keywords for page {0}", page.CompleteUrl);
+            Logging.AddLog("Adding search keywords for page {0}", page.EvaluatedCanonicalUrl);
 
             AddSearchTerms(searchData, page.Title, allowAnonymous, allowAnyUser);
             AddSearchTerms(searchData, page.Description, allowAnonymous, allowAnyUser);

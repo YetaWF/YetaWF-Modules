@@ -260,7 +260,7 @@ namespace YetaWF.Modules.PageEdit.Controllers {
             OnPopupCloseEnum popupClose = OnPopupCloseEnum.ReloadModule;
             if (PageDefinition.IsSamePage(Manager.QueryReturnToUrl.Url, model.Page.Url))
                 popupClose = OnPopupCloseEnum.ReloadParentPage;
-            return FormProcessed(model, this.__ResStr("okSaved", "Page settings saved"), OnPopupClose: popupClose, OnClose: OnCloseEnum.GotoNewPage, NextPage: Manager.NormalizeUrl(page.CompleteUrl));
+            return FormProcessed(model, this.__ResStr("okSaved", "Page settings saved"), OnPopupClose: popupClose, OnClose: OnCloseEnum.GotoNewPage, NextPage: Manager.NormalizeUrl(page.EvaluatedCanonicalUrl));
         }
 
         [HttpPost]

@@ -214,7 +214,7 @@ namespace YetaWF.Modules.PageEdit.Controllers {
                 return NotAuthorized();
 
             page.Save();
-            return FormProcessed(model, this.__ResStr("okNewPage", "New page created"), NextPage: page.CompleteUrl);
+            return FormProcessed(model, this.__ResStr("okNewPage", "New page created"), NextPage: page.EvaluatedCanonicalUrl);
         }
 
         [HttpPost]

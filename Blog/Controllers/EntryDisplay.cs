@@ -65,7 +65,7 @@ namespace YetaWF.Modules.Blog.Controllers {
                 if (data == null)
                     throw new Error(this.__ResStr("notFound", "Blog entry id {0} not found."), blogEntry);
 
-                Manager.CurrentPage.SetCanonicalUrl(BlogConfigData.GetEntryCanonicalName(blogEntry));
+                Manager.CurrentPage.EvaluatedCanonicalUrl = BlogConfigData.GetEntryCanonicalName(blogEntry);
 
                 DisplayModel model = new DisplayModel();
                 model.SetData(data);
