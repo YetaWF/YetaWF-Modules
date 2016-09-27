@@ -31,7 +31,7 @@ namespace YetaWF.Modules.Text.Modules {
         public TextModule() : base() {
             Title = this.__ResStr("modTitle", "Edit");
             Name = this.__ResStr("modName", "Text");
-            Description = this.__ResStr("modSummary", "Display user editable text contents");
+            Description = this.__ResStr("modSummary", "Displays user editable text contents");
             CompleteContents = this.__ResStr("newContents", "(new)");
             EditOnPage = true;
             FeedImage_Data = new byte[0];
