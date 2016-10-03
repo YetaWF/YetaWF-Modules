@@ -1,0 +1,10 @@
+@*Copyright © 2016 Softel vdm, Inc. - http://yetawf.com/Documentation/YetaWF/BootstrapCarousel#License*@
+@inherits YetaWF.Core.Views.RazorView<YetaWF.Modules.BootstrapCarousel.Modules.CarouselEditModule, YetaWF.Modules.BootstrapCarousel.Controllers.CarouselEditModuleController.EditModel>
+@using (Form("CarouselEdit_Partial")) {
+    @PartialForm()
+    @FormButtons(new FormButton[] {
+        new FormButton() { ButtonType= ButtonTypeEnum.Apply, },
+        new FormButton() { ButtonType= ButtonTypeEnum.Submit, },
+        new FormButton() { ButtonType= ButtonTypeEnum.Cancel, },
+    });
+}

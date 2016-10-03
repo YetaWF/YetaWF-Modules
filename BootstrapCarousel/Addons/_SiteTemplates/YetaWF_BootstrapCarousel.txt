@@ -1,0 +1,12 @@
+﻿### Copyright © 2016 Softel vdm, Inc. - http://yetawf.com/Documentation/YetaWF/BootstrapCarousel#License
+###
+### BootstrapCarousel Package
+###
+
+::PAGE-SECTION::
+
+Administrator /Tests/Bootstrap Carousel
+    Tests > {YetaWF.BootstrapCarousel, YetaWF.Modules.BootstrapCarousel.Modules.CarouselDisplayModule}.GetAction_Display({CURRENTURL})
+    -
+    YetaWF.BootstrapCarousel, YetaWF.Modules.BootstrapCarousel.Modules.CarouselDisplayModule
+

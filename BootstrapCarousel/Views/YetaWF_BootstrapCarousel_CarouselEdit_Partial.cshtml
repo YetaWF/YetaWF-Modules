@@ -1,0 +1,16 @@
+﻿@*Copyright © 2016 Softel vdm, Inc. - http://yetawf.com/Documentation/YetaWF/BootstrapCarousel#License*@
+@inherits YetaWF.Core.Views.RazorView<YetaWF.Modules.BootstrapCarousel.Modules.CarouselEditModule, YetaWF.Modules.BootstrapCarousel.Controllers.CarouselEditModuleController.EditModel>
+@Html.ValidationSummary()
+@Html.DisplayFor(m => Model.CarouselGuid, "Hidden")
+<div class="t_props">
+    @Html.EditorFor(m => Model.SlideShow, "YetaWF_BootstrapCarousel_SlideShow")
+</div>
+@*The preview was removed - the preview would require javascript control of the carousel (we use data-) because it's updated via ajax
+A preview is better done in a separate tab/window, i.e. the actual page where it's used.
+The preview below/above the settings is also quite large and causes a lot of up/down scrolling.*@
+@*
+<div class="t_preview">
+    <h2>@__ResStr("preview", "Preview")</h2>
+    @Html.DisplayFor(m => Model.SlideShowPreview, "YetaWF_BootstrapCarousel_SlideShow")
+</div>
+*@
