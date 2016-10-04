@@ -5,4 +5,6 @@
 .yt_bootstrapcarousel_slideshow.t_display img {
     max-width:100%;
     height:auto;
+    border:0;
+    padding:0;
 }
