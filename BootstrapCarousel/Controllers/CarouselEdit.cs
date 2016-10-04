@@ -45,6 +45,7 @@ namespace YetaWF.Modules.BootstrapCarousel.Controllers {
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [ExcludeDemoMode]
         public ActionResult CarouselEdit_Partial(EditModel model) {
             CarouselDisplayModule carouselDispMod = (CarouselDisplayModule)ModuleDefinition.Load(model.CarouselGuid, AllowNone: true);
             if (carouselDispMod == null)
