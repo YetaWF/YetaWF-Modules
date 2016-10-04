@@ -188,7 +188,7 @@ YetaWF_MenuEdit.LoadTree = function (treeId, detailsId, data, newEntry) {
         }
     }
     function UpdateFields(dataItem) {
-        YetaWF_TemplateDropDownList.Update($("select[name='ModAction.EntryType']", $details).val(dataItem.EntryType));
+        YetaWF_TemplateDropDownList.Update($("select[name='ModAction.EntryType']", $details), dataItem.EntryType);
         $("input[name='ModAction._Text']", $details).val(dataItem._Text);
         YetaWF_Url.Update($("div[data-name='ModAction.Url']", $details), dataItem.Url, true);
         YetaWF_ModuleSelection.UpdateComplete($("div[data-name='ModAction.SubModule']", $details), dataItem.SubModule);
@@ -199,10 +199,10 @@ YetaWF_MenuEdit.LoadTree = function (treeId, detailsId, data, newEntry) {
         YetaWF_MultiString.Update($("div[data-name='ModAction.Legend']", $details), dataItem.Legend);
         $("input:checkbox[name='ModAction.Enabled']", $details).prop('checked', dataItem.Enabled);
         $("input[name='ModAction.CssClass']", $details).val(dataItem.CssClass);
-        YetaWF_TemplateDropDownList.Update($("select[name='ModAction.Style']", $details).val(dataItem.Style));
-        YetaWF_TemplateDropDownList.Update($("select[name='ModAction.Mode']", $details).val(dataItem.Mode));
-        YetaWF_TemplateDropDownList.Update($("select[name='ModAction.Category']", $details).val(dataItem.Category));
-        YetaWF_TemplateDropDownList.Update($("select[name='ModAction.LimitToRole']", $details).val(dataItem.LimitToRole));
+        YetaWF_TemplateDropDownList.Update($("select[name='ModAction.Style']", $details), dataItem.Style);
+        YetaWF_TemplateDropDownList.Update($("select[name='ModAction.Mode']", $details), dataItem.Mode);
+        YetaWF_TemplateDropDownList.Update($("select[name='ModAction.Category']", $details), dataItem.Category);
+        YetaWF_TemplateDropDownList.Update($("select[name='ModAction.LimitToRole']", $details), dataItem.LimitToRole);
         $("input:checkbox[name='ModAction.AuthorizationIgnore']", $details).prop('checked', dataItem.AuthorizationIgnore);
         YetaWF_MultiString.Update($("div[data-name='ModAction.ConfirmationText']", $details), dataItem.ConfirmationText);
         YetaWF_MultiString.Update($("div[data-name='ModAction.PleaseWaitText']", $details), dataItem.PleaseWaitText);
