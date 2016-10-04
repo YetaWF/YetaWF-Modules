@@ -1,3 +1,8 @@
 ﻿/* Copyright © 2016 Softel vdm, Inc. - http://yetawf.com/Documentation/YetaWF/BootstrapCarousel#License */
 
 /* BootstrapCarousel */
+
+.yt_bootstrapcarousel_slideshow.t_display img {
+    max-width:100%;
+    height:auto;
+}
