@@ -60,7 +60,7 @@ namespace YetaWF.Modules.BootstrapCarousel.Controllers {
             carouselDispMod.Save();
             model.SlideShowPreview = carouselDispMod.SlideShow;
 
-            return FormProcessed(model, this.__ResStr("okSaved", "Bootstrap Carousel saved"), OnPopupClose: OnPopupCloseEnum.ReloadParentPage, OnClose: OnCloseEnum.ReloadPage);
+            return FormProcessed(model, this.__ResStr("okSaved", "Bootstrap Carousel saved"), OnPopupClose: OnPopupCloseEnum.ReloadParentPage);
         }
     }
 }
