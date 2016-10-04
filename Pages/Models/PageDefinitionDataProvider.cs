@@ -135,11 +135,11 @@ namespace YetaWF.Modules.Pages.DataProvider
         private PageDefinition CreatePageDefinition(PageDefinition page) {
             lock (_lockObject) {
                 DesignedPage desPage = new DesignedPage() { PageGuid = page.PageGuid, Url = page.Url, };
-                if (DesignedPagesByUrl.ContainsKey(desPage.Url))
+                if (DesignedPagesByUrl.ContainsKey(desPage.Url.ToLower()))
                     throw new Error(this.__ResStr("pageUrlErr", "A page with Url {0} already exists.", desPage.Url));
                 if (!DataProvider.Add(page))
                     throw new Error(this.__ResStr("pageGuidErr", "A page with Guid {0} already exists.", desPage.PageGuid));
-                DesignedPagesByUrl.Add(page.Url, desPage);
+                DesignedPagesByUrl.Add(page.Url.ToLower(), desPage);
                 return page;
             }
         }
@@ -197,10 +197,10 @@ namespace YetaWF.Modules.Pages.DataProvider
                 }
 
                 if (newPage == Guid.Empty) {
-                    DesignedPagesByUrl.Remove(oldPage.Url);
+                    DesignedPagesByUrl.Remove(oldPage.Url.ToLower());
 
                     DesignedPage desPage = new DesignedPage() { PageGuid = page.PageGuid, Url = page.Url, };
-                    DesignedPagesByUrl.Add(page.Url, desPage);
+                    DesignedPagesByUrl.Add(page.Url.ToLower(), desPage);
                 }
             }
         }
@@ -220,7 +220,7 @@ namespace YetaWF.Modules.Pages.DataProvider
                 if (page == null)
                     return false;
                 DataProvider.Remove(pageGuid);
-                DesignedPagesByUrl.Remove(page.Url);
+                DesignedPagesByUrl.Remove(page.Url.ToLower());
                 return true;
             }
         }
@@ -306,7 +306,7 @@ namespace YetaWF.Modules.Pages.DataProvider
 
             DesignedPagesDictionaryByUrl byUrl = new DesignedPagesDictionaryByUrl();
             foreach (DesignedPage page in pages) {
-                byUrl.Add(page.Url, page);
+                byUrl.Add(page.Url.ToLower(), page);
             }
             designedPagesByUrl = byUrl;
         }
@@ -319,7 +319,7 @@ namespace YetaWF.Modules.Pages.DataProvider
                 if (page == null)
                     throw new InternalError("No PageDefinition for guid {0}", pageGuid);
                 DesignedPage desPage = new DesignedPage() { Url = page.Url, PageGuid = page.PageGuid };
-                byUrl.Add(page.Url, desPage);
+                byUrl.Add(page.Url.ToLower(), desPage);
             }
             designedPagesByUrl = byUrl;
         }
@@ -330,7 +330,7 @@ namespace YetaWF.Modules.Pages.DataProvider
         /// </summary>
         protected Guid FindPage(string url) {
             DesignedPage designedPage;
-            if (DesignedPagesByUrl.TryGetValue(url, out designedPage))
+            if (DesignedPagesByUrl.TryGetValue(url.ToLower(), out designedPage))
                 return designedPage.PageGuid;
             return Guid.Empty;
         }
