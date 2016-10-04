@@ -44,7 +44,7 @@ namespace YetaWF.Modules.SlideShow.Controllers {
                 return PartialView(model);
             Module.SlideShow = model.SlideShowEdit;
             Module.Save();
-            model.SlideShow = model.SlideShowEdit = Module.SlideShow;
+            model.SlideShowEdit = model.SlideShow = Module.SlideShow;
             return FormProcessed(model);
         }
     }

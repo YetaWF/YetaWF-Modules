@@ -13,7 +13,7 @@ using YetaWF.Modules.SlideShow.Support;
 using YetaWF.Modules.SlideShow.Views.Shared;
 
 namespace YetaWF.Modules.SlideShow.Models {
-    
+
     [TemplateAction(TemplateName)]
     public class SlideShowInfo : ITemplateAction {
 
@@ -199,6 +199,8 @@ namespace YetaWF.Modules.SlideShow.Models {
             int index = 0;
             foreach (var s in Slides) {
                 DataProviderImpl.SaveImages(moduleGuid, s);
+                s.Image = string.Format("{0},{1},{2}", moduleGuid, "Image", s.Image_Guid);
+                s.ThumbnailImage = string.Format("{0},{1},{2}", moduleGuid, "ThumbnailImage", s.ThumbnailImage_Guid);
                 ++index;
             }
         }
