@@ -24,10 +24,10 @@ namespace YetaWF.Modules.Visitors.Controllers {
             public string HostName { get; set; }
 
             [Caption("Latitude"), Description("The latitude where the IP address is located")]
-            [UIHint("floatValue"), AdditionalMetadata("EmptyIf0", true), SuppressEmpty, ReadOnly]
+            [UIHint("FloatValue"), AdditionalMetadata("EmptyIf0", true), SuppressEmpty, ReadOnly]
             public float Latitude { get; set; }
             [Caption("Longitude"), Description("The longitude where the IP address is located")]
-            [UIHint("floatValue"), AdditionalMetadata("EmptyIf0", true), SuppressEmpty, ReadOnly]
+            [UIHint("FloatValue"), AdditionalMetadata("EmptyIf0", true), SuppressEmpty, ReadOnly]
             public float Longitude { get; set; }
             [Caption("Region"), Description("The region where the IP address is located")]
             [UIHint("String"), SuppressEmpty, ReadOnly]
