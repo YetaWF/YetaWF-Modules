@@ -15,7 +15,7 @@ using YetaWF.Modules.Blog.Controllers;
 using YetaWF.Modules.Blog.DataProvider;
 
 namespace YetaWF.Modules.Blog.Modules {
-    
+
     public class BlogModuleDataProvider : ModuleDefinitionDataProvider<Guid, BlogModule>, IInstallableModel { }
 
     [ModuleGuid("{e1954fdc-0ccb-40bd-b018-c40dc792e894}")]

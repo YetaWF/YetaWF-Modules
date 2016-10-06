@@ -21,7 +21,7 @@ namespace YetaWF.Modules.Blog.DataProvider {
     public class BlogConfigData : IInitializeApplicationStartup {
 
         private string __ResStr(string name, string defaultValue, params object[] parms) {
-            return ResourceAccess.GetResourceString(typeof(BlogConfigDataProvider), name, defaultValue, parms); 
+            return ResourceAccess.GetResourceString(typeof(BlogConfigDataProvider), name, defaultValue, parms);
         }
 
         // IInitializeApplicationStartup

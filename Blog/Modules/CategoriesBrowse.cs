@@ -47,9 +47,9 @@ namespace YetaWF.Modules.Blog.Modules {
         public override SerializableList<AllowedRole> DefaultAllowedRoles { get { return AdministratorLevel_DefaultAllowedRoles; } }
         public override List<RoleDefinition> ExtraRoles {
             get {
-                return new List<RoleDefinition>() { 
-                    new RoleDefinition("RemoveItems", 
-                        this.__ResStr("roleRemItemsC", "Remove Blog Categories"), this.__ResStr("roleRemItems", "The role has permission to remove individual blog categories"), 
+                return new List<RoleDefinition>() {
+                    new RoleDefinition("RemoveItems",
+                        this.__ResStr("roleRemItemsC", "Remove Blog Categories"), this.__ResStr("roleRemItems", "The role has permission to remove individual blog categories"),
                         this.__ResStr("userRemItemsC", "Remove Blog Categories"), this.__ResStr("userRemItems", "The user has permission to remove individual blog categories")),
                 };
             }

@@ -34,7 +34,7 @@ namespace YetaWF.Modules.Blog.Modules {
         [Category("General"), Caption("Edit URL"), Description("The URL to edit a blog comment - if omitted, a default page is generated")]
         [UIHint("Url"), AdditionalMetadata("UrlType", UrlHelperEx.UrlTypeEnum.Local), UrlValidation(UrlValidationAttribute.SchemaEnum.Any, UrlHelperEx.UrlTypeEnum.Local), StringLength(Globals.MaxUrl), Trim]
         public string EditUrl { get; set; }
-        
+
         public override SerializableList<AllowedRole> DefaultAllowedRoles { get { return AdministratorLevel_DefaultAllowedRoles; } }
 
         public ModuleAction GetAction_Approve(int blogEntry, int comment) {

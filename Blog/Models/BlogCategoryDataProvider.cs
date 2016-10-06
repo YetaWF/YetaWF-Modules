@@ -12,7 +12,6 @@ using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Packages;
 using YetaWF.Core.Serializers;
 using YetaWF.Core.Support;
-using YetaWF.DataProvider;
 
 namespace YetaWF.Modules.Blog.DataProvider {
     public class BlogCategory {
@@ -32,7 +31,7 @@ namespace YetaWF.Modules.Blog.DataProvider {
 
         [Data_PrimaryKey, Data_Identity]
         public int Identity { get; set; }
-        
+
         [Data_Index, StringLength(MaxCategory)]
         public MultiString Category { get; set; }
         [StringLength(MaxDescription)]
