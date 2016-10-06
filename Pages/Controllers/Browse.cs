@@ -31,7 +31,7 @@ namespace YetaWF.Modules.Pages.Controllers {
                 get {
                     MenuList actions = new MenuList() { RenderMode = ModuleAction.RenderModeEnum.IconsOnly };
 
-                    actions.New(Module.GetAction_ShowPage(CompleteUrl), ModuleAction.ActionLocationEnum.GridLinks);
+                    actions.New(Module.GetAction_ShowPage(EvaluatedCanonicalUrl), ModuleAction.ActionLocationEnum.GridLinks);
 
                     actions.New(PageEditModule.GetModuleAction("Edit", null, PageGuid), ModuleAction.ActionLocationEnum.GridLinks);
 
@@ -100,7 +100,7 @@ namespace YetaWF.Modules.Pages.Controllers {
             [UIHint("Url"), ReadOnly]
             public string RedirectToPageUrl { get; set; }
 
-            public string CompleteUrl { get; set; }
+            public string EvaluatedCanonicalUrl { get; set; }
             public Guid PageGuid { get; set; }
             private PagesBrowseModule Module { get; set; }
             public ModuleDefinition PageEditModule { get; set; }
