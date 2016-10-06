@@ -64,6 +64,13 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controllers\Disqus.cs" />
+    <Compile Include="Controllers\DisqusConfig.cs" />
+    <Compile Include="Controllers\DisqusLinks.cs" />
+    <Compile Include="Models\DisqusConfigDataProvider.cs" />
+    <Compile Include="Modules\Disqus.cs" />
+    <Compile Include="Modules\DisqusConfig.cs" />
+    <Compile Include="Modules\DisqusLinks.cs" />
     <Compile Include="Startup\Info.cs" />
     <Compile Include="Startup\AreaRegistration.cs" />
     <Compile Include="Controllers\Archive.cs" />
@@ -124,6 +131,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Support\Validation.cs" />
     <Compile Include="Views\Shared\GravatarHelper.cs" />
     <Compile Include="Views\Shared\CategoryHelper.cs" />
   </ItemGroup>
@@ -158,10 +166,15 @@
     <None Include="Views\YetaWF_Blog_CommentEdit.cshtml" />
     <None Include="Views\YetaWF_Blog_CommentEdit_Partial.cshtml" />
     <None Include="Views\YetaWF_Blog_CommentsDisplay.cshtml" />
+    <None Include="Views\YetaWF_Blog_Disqus.cshtml" />
+    <None Include="Views\YetaWF_Blog_DisqusConfig.cshtml" />
+    <None Include="Views\YetaWF_Blog_DisqusConfig_Partial.cshtml" />
+    <None Include="Views\YetaWF_Blog_DisqusLinks.cshtml" />
     <None Include="Views\YetaWF_Blog_EntriesBrowse.cshtml" />
     <None Include="Views\YetaWF_Blog_EntriesBrowse_Partial.cshtml" />
     <None Include="Views\YetaWF_Blog_EntryAdd.cshtml" />
     <None Include="Views\YetaWF_Blog_EntryAdd_Partial.cshtml" />
+    <Content Include="Addons\_SiteTemplates\YetaWF_Blog.1.0.8.txt" />
     <Content Include="Addons\_SiteTemplates\YetaWF_Blog.txt" />
     <None Include="Addons\_Templates\Category\filelistCSS.txt" />
     <None Include="Addons\_Templates\Category\Category.css" />

@@ -1,0 +1,19 @@
+﻿### Copyright © 2016 Softel vdm, Inc. - http://yetawf.com/Documentation/YetaWF/Licensing
+###
+### YetaWF.Blog Package Update
+###
+
+::PAGE-SECTION::
+
+Administrator /Admin/Config/Disqus
+    Title=Disqus Settings
+    Admin > Configuration > {YetaWF.Blog, YetaWF.Modules.Blog.Modules.DisqusConfigModule}.GetAction_Edit({CURRENTURL})
+    -
+    YetaWF.Blog, YetaWF.Modules.Blog.Modules.DisqusConfigModule
+
+Administrator /Tests/Disqus
+    Title=Disqus Test Page
+    Tests > Disqus
+    -
+    YetaWF.Blog, YetaWF.Modules.Blog.Modules.DisqusModule
+

@@ -1,0 +1,19 @@
+@*Copyright © 2016 Softel vdm, Inc. - http://yetawf.com/Documentation/YetaWF/Blog#License*@
+@inherits YetaWF.Core.Views.RazorView<YetaWF.Modules.Blog.Modules.DisqusModule, YetaWF.Modules.Blog.Controllers.DisqusModuleController.DisplayModel>
+@using YetaWF.Core.Support
+@using YetaWF.Core.Models
+<div id="disqus_thread"></div>
+<script>
+    var disqus_config = function () {
+        this.page.url = '@YetaWFManager.JserEncode(Manager.CurrentPage.EvaluatedCanonicalUrl)';
+        this.page.identifier = '@YetaWFManager.JserEncode(Manager.CurrentPage.PageGuid.ToString())';
+        this.page.title = '@YetaWFManager.JserEncode(Manager.CurrentPage.Title)';
+        this.page.language = '@MultiString.ActiveLanguage.Substring(0,2)';
+    };
+    (function () {
+        var d = document, s = d.createElement('script');
+        s.src = '//@(Model.ShortName).disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
