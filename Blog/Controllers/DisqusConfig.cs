@@ -46,6 +46,7 @@ namespace YetaWF.Modules.Blog.Controllers {
         }
 
         [HttpPost]
+        [ExcludeDemoMode]
         [ValidateAntiForgeryToken]
         public ActionResult DisqusConfig_Partial(Model model) {
             using (DisqusConfigDataProvider dataProvider = new DisqusConfigDataProvider()) {
