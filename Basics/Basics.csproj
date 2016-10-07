@@ -85,7 +85,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Addons\_Main\filelistJS.txt" />
+    <None Include="Addons\_Addons\MailToObfuscator\filelistJS.txt" />
     <None Include="Addons\_Addons\AlertDisplay\filelistCSS.txt" />
     <Content Include="Addons\_Addons\AlertDisplay\AlertDisplay.js" />
     <Content Include="Addons\_Addons\AlertDisplay\AlertDisplay.css" />
@@ -98,7 +98,7 @@
     <Content Include="Views\YetaWF_Basics_RecaptchaV2Config_Partial.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Addons\_Main\mailtoobfuscator.js" />
+    <Content Include="Addons\_Addons\MailToObfuscator\MailToObfuscator.js" />
     <Content Include="Views\YetaWF_Basics_RecaptchaConfig.cshtml" />
     <Content Include="Views\YetaWF_Basics_RecaptchaConfig_Partial.cshtml" />
     <None Include="app.config" />
