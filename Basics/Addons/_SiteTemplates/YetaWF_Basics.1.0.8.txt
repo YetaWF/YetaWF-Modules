@@ -1,0 +1,13 @@
+﻿### Copyright © 2016 Softel vdm, Inc. - http://yetawf.com/Documentation/YetaWF/Licensing
+###
+### YetaWF.Basics Package Upgrade
+###
+
+::PAGE-SECTION::
+
+Administrator /Admin/Config/Alert
+    Title=Alert Settings
+    Admin > Configuration > {YetaWF.Basics, YetaWF.Modules.Basics.Modules.AlertConfigModule}.GetAction_Edit({CURRENTURL})
+    -
+    YetaWF.Basics, YetaWF.Modules.Basics.Modules.AlertConfigModule
+

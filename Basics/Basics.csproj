@@ -63,9 +63,14 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controllers\AlertConfig.cs" />
+    <Compile Include="Controllers\AlertDisplay.cs" />
     <Compile Include="Controllers\MailtoObfuscatorSkin.cs" />
     <Compile Include="Controllers\RecaptchaV2Config.cs" />
+    <Compile Include="Models\AlertConfigDataProvider.cs" />
     <Compile Include="Models\RecaptchaV2ConfigDataProvider.cs" />
+    <Compile Include="Modules\AlertConfig.cs" />
+    <Compile Include="Modules\AlertDisplay.cs" />
     <Compile Include="Modules\MailtoObfuscatorSkin.cs" />
     <Compile Include="Modules\RecaptchaV2Config.cs" />
     <Compile Include="Startup\Info.cs" />
@@ -81,7 +86,13 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Addons\_Main\filelistJS.txt" />
+    <None Include="Addons\_Addons\AlertDisplay\filelistCSS.txt" />
+    <Content Include="Addons\_Addons\AlertDisplay\AlertDisplay.js" />
+    <Content Include="Addons\_Addons\AlertDisplay\AlertDisplay.css" />
+    <None Include="Addons\_Addons\AlertDisplay\filelistJS.txt" />
+    <Content Include="Addons\_Main\Icons\Close.png" />
     <Content Include="Addons\_Main\Icons\ModuleSkinInfo.png" />
+    <Content Include="Addons\_SiteTemplates\YetaWF_Basics.1.0.8.txt" />
     <Content Include="Addons\_SiteTemplates\YetaWF_Basics.1.0.3.txt" />
     <Content Include="Views\YetaWF_Basics_RecaptchaV2Config.cshtml" />
     <Content Include="Views\YetaWF_Basics_RecaptchaV2Config_Partial.cshtml" />
@@ -92,6 +103,9 @@
     <Content Include="Views\YetaWF_Basics_RecaptchaConfig_Partial.cshtml" />
     <None Include="app.config" />
     <None Include="packages.config" />
+    <None Include="Views\YetaWF_Basics_AlertConfig.cshtml" />
+    <None Include="Views\YetaWF_Basics_AlertConfig_Partial.cshtml" />
+    <None Include="Views\YetaWF_Basics_AlertDisplay.cshtml" />
     <None Include="Views\YetaWF_Basics_ModuleSkinInfo.cshtml" />
   </ItemGroup>
   <ItemGroup>
@@ -112,7 +126,9 @@
       <Name>SQL</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Addons\_Main\Grids\" />
+  </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />

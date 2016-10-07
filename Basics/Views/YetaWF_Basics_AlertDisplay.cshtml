@@ -1,0 +1,18 @@
+@*Copyright © 2016 Softel vdm, Inc. - http://yetawf.com/Documentation/YetaWF/Basics#License*@
+@inherits YetaWF.Core.Views.RazorView<YetaWF.Modules.Basics.Modules.AlertDisplayModule, YetaWF.Modules.Basics.Controllers.AlertDisplayModuleController.DisplayModel>
+@using YetaWF.Core.Support
+@{
+    YetaWF.Core.Packages.Package package = YetaWF.Modules.Basics.Controllers.AreaRegistration.CurrentPackage;
+    Manager.AddOnManager.AddAddOn(package.Domain, package.Product, "AlertDisplay");
+    string rootUrl = YetaWF.Core.Addons.VersionManager.GetAddOnModuleUrl(package.Domain, package.Product);
+    string closeUrl = Manager.GetCDNUrl(Path.Combine(rootUrl, "Icons", "Close.png"));
+}
+@if (Model.MessageHandling == YetaWF.Modules.Basics.DataProvider.AlertConfig.MessageHandlingEnum.DisplayUntilOff) {
+    <div class="t_close" data-ajaxurl="@YetaWFManager.UrlFor(typeof(YetaWF.Modules.Basics.Controllers.AlertDisplayModuleController), "Off", new { __ModuleGuid = Module.ModuleGuid })">
+        <img src="@YetaWFManager.HtmlAttributeEncode(closeUrl)" alt="@__ResStr("clsButtonAlt", "Close Button")" title="@__ResStr("clsButtonTT", "Click to close alert")" />
+    </div>
+}
+<div class="t_message">
+    @Html.Raw(Model.Message)
+</div>
+
