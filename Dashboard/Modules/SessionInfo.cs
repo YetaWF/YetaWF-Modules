@@ -42,5 +42,21 @@ namespace YetaWF.Modules.Dashboard.Modules {
                 SaveReturnUrl = true,
             };
         }
+        public ModuleAction GetAction_ClearAll() {
+            return new ModuleAction(this) {
+                Url = YetaWFManager.UrlFor(typeof(YetaWF.Modules.Dashboard.Controllers.SessionInfoModuleController), "ClearAll"),
+                QueryArgs = new { __ModuleGuid = ModuleGuid },
+                Image = "#Remove",
+                LinkText = this.__ResStr("removeLink", "Remove Session Settings"),
+                MenuText = this.__ResStr("removeText", "Remove Session Settings"),
+                Tooltip = this.__ResStr("removeTooltip", "Remove all SessionState information"),
+                Legend = this.__ResStr("removeLegend", "Removes all SessionState information"),
+                Style = ModuleAction.ActionStyleEnum.Post,
+                Category = ModuleAction.ActionCategoryEnum.Delete,
+                Mode = ModuleAction.ActionModeEnum.Any,
+                ConfirmationText = this.__ResStr("removeConfirm", "Are you sure you want to remove all session settings for all users?"),
+                Location = ModuleAction.ActionLocationEnum.ModuleLinks | ModuleAction.ActionLocationEnum.InPopup,
+            };
+        }
     }
 }

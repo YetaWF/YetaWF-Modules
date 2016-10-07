@@ -6,6 +6,7 @@ using System.Linq;
 using System.Web.Mvc;
 using YetaWF.Core.Controllers;
 using YetaWF.Core.DataProvider;
+using YetaWF.Core.Localize;
 using YetaWF.Core.Models;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Views.Shared;
@@ -91,6 +92,13 @@ namespace YetaWF.Modules.Dashboard.Controllers {
                 }
             }
             return items;
+        }
+
+        [HttpPost]
+        [ExcludeDemoMode]
+        public ActionResult ClearAll() {
+            Manager.SessionSettings.ClearAll(true);
+            return Reload(null, PopupText: this.__ResStr("cleared", this.__ResStr("clearDone", "Sessions settings have been cleared")));
         }
     }
 }
