@@ -55,15 +55,18 @@ namespace YetaWF.Modules.Identity.Modules {
         public override MenuList GetModuleMenuList(ModuleAction.RenderModeEnum renderMode, ModuleAction.ActionLocationEnum location) {
             MenuList menuList = base.GetModuleMenuList(renderMode, location);
             LoginModule loginMod = (LoginModule)ModuleDefinition.CreateUniqueModule(typeof(LoginModule));
-            menuList.New(loginMod.GetAction_Login(Manager.CurrentSite.LoginUrl, Force: true), location);
+            bool closeOnLogin;
+            Manager.TryGetUrlArg<bool>("CloseOnLogin", out closeOnLogin, false);
+            menuList.New(loginMod.GetAction_Login(Manager.CurrentSite.LoginUrl, Force: true, CloseOnLogin: closeOnLogin), location);
             return menuList;
         }
-        public ModuleAction GetAction_Register(string url, bool Force = false) {
+        public ModuleAction GetAction_Register(string url, bool Force = false, bool CloseOnLogin = false) {
             LoginConfigData config = LoginConfigDataProvider.GetConfig();
             if (!config.AllowUserRegistration) return null;
             if (!Force && Manager.HaveUser) return null;
             return new ModuleAction(this) {
                 Url = string.IsNullOrWhiteSpace(url) ? ModulePermanentUrl : url,
+                QueryArgs = CloseOnLogin ? new { CloseOnLogin = CloseOnLogin } : null,
                 Image = "Register.png",
                 AddToOriginList = false,
                 SaveReturnUrl = true,
@@ -78,7 +81,6 @@ namespace YetaWF.Modules.Identity.Modules {
             };
         }
         public ModuleAction GetAction_Approve(string userName) {
-            if (!IsAuthorized("ChangeAccounts")) return null;
             return new ModuleAction(this) {
                 Url = YetaWFManager.UrlFor(typeof(RegisterModuleController), "Approve"),
                 Image = "Approve.png",
@@ -95,7 +97,6 @@ namespace YetaWF.Modules.Identity.Modules {
             };
         }
         public ModuleAction GetAction_Reject(string userName) {
-            if (!IsAuthorized("ChangeAccounts")) return null;
             return new ModuleAction(this) {
                 Url = YetaWFManager.UrlFor(typeof(RegisterModuleController), "Reject"),
                 Image = "Reject.png",

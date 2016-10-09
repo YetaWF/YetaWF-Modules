@@ -66,10 +66,12 @@ namespace YetaWF.Modules.Identity.Controllers {
 
             [UIHint("Hidden")]
             public string ReturnUrl { get; set; }
+            [UIHint("Hidden")]
+            public bool CloseOnLogin { get; set; }
         }
 
         [HttpGet]
-        public ActionResult Login(string name, string pswd, string v) {
+        public ActionResult Login(string name, string pswd, string v, bool closeOnLogin = false) {
 
             LoginConfigData config = LoginConfigDataProvider.GetConfig();
             bool isPersistent = config.PersistentLogin;
@@ -81,6 +83,7 @@ namespace YetaWF.Modules.Identity.Controllers {
                 Captcha = new RecaptchaV2Data(),
                 RememberMe = isPersistent,
                 ReturnUrl = Manager.ReturnToUrl,
+                CloseOnLogin = closeOnLogin,
             };
             model.ShowVerification = !string.IsNullOrWhiteSpace(model.VerificationCode);
             model.ShowCaptcha = config.Captcha && !model.ShowVerification;
@@ -94,6 +97,7 @@ namespace YetaWF.Modules.Identity.Controllers {
 
             Manager.SessionSettings.SiteSettings.ClearValue(LoginTwoStepController.IDENTITY_TWOSTEP_USERID);
             Manager.SessionSettings.SiteSettings.ClearValue(LoginTwoStepController.IDENTITY_TWOSTEP_NEXTURL);
+            Manager.SessionSettings.SiteSettings.ClearValue(LoginTwoStepController.IDENTITY_TWOSTEP_CLOSEONLOGIN);
             Manager.SessionSettings.SiteSettings.Save();
 
             LoginConfigData config = LoginConfigDataProvider.GetConfig();
@@ -197,12 +201,16 @@ namespace YetaWF.Modules.Identity.Controllers {
                 if (actionResult != null) {
                     Manager.SessionSettings.SiteSettings.SetValue<int>(LoginTwoStepController.IDENTITY_TWOSTEP_USERID, user.UserId);// marker that user has entered correct name/password
                     Manager.SessionSettings.SiteSettings.SetValue<string>(LoginTwoStepController.IDENTITY_TWOSTEP_NEXTURL, model.ReturnUrl);// marker that user has entered correct name/password
+                    Manager.SessionSettings.SiteSettings.SetValue<bool>(LoginTwoStepController.IDENTITY_TWOSTEP_CLOSEONLOGIN, model.CloseOnLogin);
                     Manager.SessionSettings.SiteSettings.Save();
                     return actionResult;
                 }
                 await LoginModuleController.UserLoginAsync(user, model.RememberMe);
                 Logging.AddLog("User {0} - logged on", model.UserName);
-                return FormProcessed(model, NextPage: model.ReturnUrl);
+                if (model.CloseOnLogin)
+                    return FormProcessed(model, OnClose: OnCloseEnum.CloseWindow, OnPopupClose: OnPopupCloseEnum.GotoNewPage, NextPage: model.ReturnUrl);
+                else
+                    return FormProcessed(model, NextPage: model.ReturnUrl);
             } else
                 throw new InternalError("badUserStatus", "Unexpected account status {0}", user.UserStatus);
         }

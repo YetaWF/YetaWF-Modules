@@ -56,10 +56,12 @@ namespace YetaWF.Modules.Identity.Controllers {
 
             [UIHint("Hidden")]
             public string ReturnUrl { get; set; }
+            [UIHint("Hidden")]
+            public bool CloseOnLogin { get; set; }
         }
 
         [HttpGet]
-        public ActionResult Register() {
+        public ActionResult Register(bool closeOnLogin = false) {
 
             LoginConfigData config = LoginConfigDataProvider.GetConfig();
             if (!config.AllowUserRegistration)
@@ -70,6 +72,7 @@ namespace YetaWF.Modules.Identity.Controllers {
                 ShowCaptcha = config.Captcha,
                 Captcha = new RecaptchaV2Data(),
                 ReturnUrl = Manager.ReturnToUrl,
+                CloseOnLogin = closeOnLogin,
             };
             return View(model);
         }
@@ -160,8 +163,12 @@ namespace YetaWF.Modules.Identity.Controllers {
                 if (config.NotifyAdminNewUsers)
                     emails.SendNewUserCreated(user);
                 await LoginModuleController.UserLoginAsync(user, config.PersistentLogin);
-                return FormProcessed(model, this.__ResStr("okRegText", "Your new account has been successfully registered."), this.__ResStr("okRegTitle", "Welcome!"),
-                    NextPage: model.ReturnUrl);
+                if (model.CloseOnLogin)
+                    return FormProcessed(model, this.__ResStr("okRegText", "Your new account has been successfully registered."), this.__ResStr("okRegTitle", "Welcome!"),
+                        OnClose: OnCloseEnum.CloseWindow, OnPopupClose: OnPopupCloseEnum.GotoNewPage, NextPage: model.ReturnUrl);
+                else
+                    return FormProcessed(model, this.__ResStr("okRegText", "Your new account has been successfully registered."), this.__ResStr("okRegTitle", "Welcome!"),
+                        NextPage: model.ReturnUrl);
             } else
                 throw new InternalError("badUserStatus", "Unexpected account status {0}", user.UserStatus);
         }

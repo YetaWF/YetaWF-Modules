@@ -221,6 +221,7 @@
     <Content Include="Views\Shared\EditorTemplates\YetaWF_Identity_RoleId.cshtml" />
     <None Include="Views\YetaWF_Identity_ForgotPassword.cshtml" />
     <None Include="Views\YetaWF_Identity_ForgotPassword_Partial.cshtml" />
+    <Content Include="Views\YetaWF_Identity_TwoStepDone.cshtml" />
     <None Include="Views\YetaWF_Identity_SelectTwoStepSetup.cshtml" />
     <None Include="Views\YetaWF_Identity_SelectTwoStepAuth.cshtml" />
   </ItemGroup>

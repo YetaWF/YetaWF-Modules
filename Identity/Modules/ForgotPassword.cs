@@ -33,16 +33,19 @@ namespace YetaWF.Modules.Identity.Modules {
             LoginConfigData config = LoginConfigDataProvider.GetConfig();
             RegisterModule regMod = (RegisterModule)ModuleDefinition.CreateUniqueModule(typeof(RegisterModule));
             LoginModule loginMod = (LoginModule)ModuleDefinition.CreateUniqueModule(typeof(LoginModule));
-            menuList.New(loginMod.GetAction_Login(Manager.CurrentSite.LoginUrl, Force: true), location);
-            menuList.New(regMod.GetAction_Register(config.RegisterUrl, Force: true), location);
+            bool closeOnLogin;
+            Manager.TryGetUrlArg<bool>("CloseOnLogin", out closeOnLogin, false);
+            menuList.New(loginMod.GetAction_Login(Manager.CurrentSite.LoginUrl, Force: true, CloseOnLogin: closeOnLogin), location);
+            menuList.New(regMod.GetAction_Register(config.RegisterUrl, Force: true, CloseOnLogin: closeOnLogin), location);
             return menuList;
         }
 
-        public ModuleAction GetAction_ForgotPassword(string url) {
+        public ModuleAction GetAction_ForgotPassword(string url, bool CloseOnLogin = false) {
             LoginConfigData config = LoginConfigDataProvider.GetConfig();
             if (!config.SavePlainTextPassword) return null;
             return new ModuleAction(this) {
                 Url = string.IsNullOrWhiteSpace(url) ? ModulePermanentUrl : url,
+                QueryArgs = CloseOnLogin ? new { CloseOnLogin = CloseOnLogin } : null,
                 Image = "#Help",
                 AddToOriginList = false,
                 SaveReturnUrl = true,
