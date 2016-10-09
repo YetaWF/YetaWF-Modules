@@ -19,6 +19,7 @@ namespace YetaWF.Modules.Blog.Support {
             ErrorMessage = __ResStr("valShortName", "A shortname must consist of letters, numbers, underscores or dashes, without spaces.");
         }
         protected override ValidationResult IsValid(object value, ValidationContext validationContext) {
+            if (value == null) return ValidationResult.Success;
             string shortName = ((string) value).Trim();
             return base.IsValid(shortName, validationContext);
         }
