@@ -15,13 +15,20 @@ namespace YetaWF.Modules.Blog.Views.Shared {
         private static string __ResStr(string name, string defaultValue, params object[] parms) { return ResourceAccess.GetResourceString(typeof(GravatarHelper), name, defaultValue, parms); }
 
         public static MvcHtmlString RenderGravatarDisplay<TModel>(this HtmlHelper<TModel> htmlHelper, string name, string model, object HtmlAttributes = null) {
-
+            TagBuilder tagLink = new TagBuilder("a");
+            TagBuilder tagImg = new TagBuilder("img");
             BlogConfigData config = BlogConfigDataProvider.GetConfig();
+            string url = GravatarUrl(model, config.GravatarSize, config.GravatarRating, config.GravatarDefault);
+            tagImg.Attributes.Add("src", url);
+            tagImg.Attributes.Add("alt", __ResStr("altGravatar", "Gravatar image - {0}", model));
+            return MvcHtmlString.Create(tagImg.ToString(TagRenderMode.StartTag));
+        }
 
+        public static string GravatarUrl(string email, int gravatarSize, Gravatar.GravatarRatingEnum gravatarRating, Gravatar.GravatarEnum gravatarDefault) {
             MD5Crypto md5 = new MD5Crypto();
-            string email = md5.StringMD5(model);
+            email = md5.StringMD5(email);
             string rating;
-            switch (config.GravatarRating) {
+            switch (gravatarRating) {
                 default:
                 case Core.Support.Gravatar.GravatarRatingEnum.G:
                     rating = "g";
@@ -37,7 +44,7 @@ namespace YetaWF.Modules.Blog.Views.Shared {
                     break;
             }
             string defaultImage;
-            switch (config.GravatarDefault) {
+            switch (gravatarDefault) {
                 case Core.Support.Gravatar.GravatarEnum.None:
                     defaultImage = "404"; break;
                 case Core.Support.Gravatar.GravatarEnum.mm:
@@ -54,14 +61,7 @@ namespace YetaWF.Modules.Blog.Views.Shared {
                 case Core.Support.Gravatar.GravatarEnum.blank:
                     defaultImage = "blank"; break;
             }
-            TagBuilder tagLink = new TagBuilder("a");
-
-            TagBuilder tagImg = new TagBuilder("img");
-            string src = string.Format("//www.gravatar.com/avatar/{0}?s={1}&r={2}&d={3}", email, config.GravatarSize, rating, defaultImage);
-            tagImg.Attributes.Add("src", src);
-            tagImg.Attributes.Add("alt", __ResStr("altGravatar", "Gravatar image"));
-
-            return MvcHtmlString.Create(tagImg.ToString(TagRenderMode.StartTag));
+            return string.Format("//www.gravatar.com/avatar/{0}?s={1}&r={2}&d={3}", email, gravatarSize, rating, defaultImage);
         }
     }
 }
