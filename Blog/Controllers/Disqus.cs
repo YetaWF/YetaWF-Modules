@@ -4,7 +4,12 @@ using System.Web.Mvc;
 using YetaWF.Core.Controllers;
 using YetaWF.Core.Localize;
 using YetaWF.Core.Support;
+using YetaWF.Modules.Blog.Controllers.Support;
 using YetaWF.Modules.Blog.DataProvider;
+
+// Documentation:
+// https://disqus.com/api/docs/
+// https://help.disqus.com/customer/en/portal/articles/236206-integrating-single-sign-on
 
 namespace YetaWF.Modules.Blog.Controllers {
 
@@ -14,6 +19,13 @@ namespace YetaWF.Modules.Blog.Controllers {
 
         public class DisplayModel {
             public string ShortName { get; set; }
+            public bool UseSSO { get; set; }
+            public string AuthPayload { get; set; }
+            public string PublicKey { get; set; }
+            public string LoginUrl { get; set; }
+            public string LogoffUrl { get; set; }
+            public int Width { get; set; }
+            public int Height { get; set; }
         }
 
         [HttpGet]
@@ -27,6 +39,24 @@ namespace YetaWF.Modules.Blog.Controllers {
                 DisplayModel model = new DisplayModel {
                     ShortName = config.ShortName,
                 };
+                if (config.UseSSO &&
+                        !string.IsNullOrWhiteSpace(config.PrivateKey) && !string.IsNullOrWhiteSpace(config.PublicKey) &&
+                        !string.IsNullOrWhiteSpace(config.LoginUrl)) {
+                    model.UseSSO = true;
+                    if (Manager.HaveUser) {
+                        model.PublicKey = config.PublicKey;
+                        SSO sso = new Support.SSO(config.PrivateKey);
+                        model.AuthPayload = sso.GetPayload(Manager.UserId.ToString(), Manager.UserName, Manager.UserEmail);
+                    } else {
+                        model.LoginUrl = Manager.CurrentSite.MakeUrl(config.LoginUrl);
+                        model.Width = config.Width;
+                        model.Height = config.Height;
+                    }
+                    string logoffUrl = WebConfigHelper.GetValue<string>("MvcApplication", "LogoffUrl", null);
+                    if (string.IsNullOrWhiteSpace(logoffUrl))
+                        throw new InternalError("MvcApplication LogoffUrl not defined in web.cofig - This is required to log off the current user");
+                    model.LogoffUrl = Manager.CurrentSite.MakeUrl(logoffUrl + Manager.CurrentPage.EvaluatedCanonicalUrl);
+                }
                 return View(model);
             }
         }

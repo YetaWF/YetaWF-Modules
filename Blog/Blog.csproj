@@ -67,6 +67,7 @@
     <Compile Include="Controllers\Disqus.cs" />
     <Compile Include="Controllers\DisqusConfig.cs" />
     <Compile Include="Controllers\DisqusLinks.cs" />
+    <Compile Include="Controllers\Support\DisqusSSO.cs" />
     <Compile Include="Models\DisqusConfigDataProvider.cs" />
     <Compile Include="Modules\Disqus.cs" />
     <Compile Include="Modules\DisqusConfig.cs" />

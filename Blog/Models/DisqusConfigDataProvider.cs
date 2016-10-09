@@ -2,6 +2,7 @@
 
 using System.Collections.Generic;
 using System.IO;
+using YetaWF.Core;
 using YetaWF.Core.DataProvider;
 using YetaWF.Core.DataProvider.Attributes;
 using YetaWF.Core.IO;
@@ -15,6 +16,8 @@ namespace YetaWF.Modules.Blog.DataProvider {
     public class DisqusConfigData {
 
         public const int MaxShortName = 40;
+        public const int MaxPublicKey = 200;
+        public const int MaxPrivateKey = 200;
 
         [Data_PrimaryKey]
         public int Id { get; set; }
@@ -22,7 +25,24 @@ namespace YetaWF.Modules.Blog.DataProvider {
         [StringLength(MaxShortName)]
         public string ShortName { get; set; }
 
-        public DisqusConfigData() { }
+        public bool UseSSO { get; set; }
+
+        [StringLength(MaxPublicKey)]
+        public string PublicKey { get; set; }
+        [StringLength(MaxPrivateKey)]
+        public string PrivateKey { get; set; }
+
+        [StringLength(Globals.MaxUrl)]
+        public string LoginUrl { get; set; }
+
+        public int Width { get; set; }
+        public int Height { get; set; }
+
+        public DisqusConfigData() {
+            LoginUrl = "/User/Login/Simple";
+            Width = 800;
+            Height = 400;
+        }
     }
 
     public class DisqusConfigDataProvider : DataProviderImpl, IInstallableModel {

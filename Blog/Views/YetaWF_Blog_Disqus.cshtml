@@ -9,6 +9,21 @@
         this.page.identifier = '@YetaWFManager.JserEncode(Manager.CurrentPage.PageGuid.ToString())';
         this.page.title = '@YetaWFManager.JserEncode(Manager.CurrentPage.Title)';
         this.page.language = '@MultiString.ActiveLanguage.Substring(0,2)';
+        @if (Model.UseSSO && !string.IsNullOrWhiteSpace(Model.AuthPayload)) {
+            @: this.page.remote_auth_s3 = '@YetaWFManager.JserEncode(Model.AuthPayload)';
+            @: this.page.api_key = '@YetaWFManager.JserEncode(Model.PublicKey)';
+        }
+        @if (Model.UseSSO) {
+            @: this.sso = {
+            @:     name: "@YetaWFManager.JserEncode(Manager.CurrentSite.SiteDomain)",
+            @:     //button: "http://yetawf.com/images/samplenews.gif",
+            @:     //icon: "http://yetawf.com/favicon.png",
+            @:     url: "@YetaWFManager.JserEncode(Model.LoginUrl)",
+            @:     logout: "@YetaWFManager.JserEncode(Model.LogoffUrl)",
+            @:     width: @Model.Width,
+            @:     height: @Model.Height,
+            @: };
+        }
     };
     (function () {
         var d = document, s = d.createElement('script');
