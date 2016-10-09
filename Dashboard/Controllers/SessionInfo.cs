@@ -95,7 +95,6 @@ namespace YetaWF.Modules.Dashboard.Controllers {
         }
 
         [HttpPost]
-        [ExcludeDemoMode]
         public ActionResult ClearAll() {
             Manager.SessionSettings.ClearAll(true);
             return Reload(null, PopupText: this.__ResStr("cleared", this.__ResStr("clearDone", "Sessions settings have been cleared")));
