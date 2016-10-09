@@ -20,8 +20,8 @@ namespace YetaWF.Modules.Blog.Controllers {
         [Trim]
         public class Model {
 
-            [Caption("Shortname"), Description("The Shortname you assigned to your site (at Disqus)")]
-            [UIHint("Text40"), StringLength(DisqusConfigData.MaxShortName), ShortNameValidation, Required, Trim]
+            [Caption("Shortname"), Description("The Shortname you assigned to your site (at Disqus) - If omitted, Disqus comments are not available")]
+            [UIHint("Text40"), StringLength(DisqusConfigData.MaxShortName), ShortNameValidation, Trim]
             [HelpLink("https://yetawf.disqus.com/admin/settings/general/")]
             public string ShortName { get; set; }
 
@@ -36,7 +36,7 @@ namespace YetaWF.Modules.Blog.Controllers {
             [UIHint("Text80"), StringLength(DisqusConfigData.MaxPrivateKey), RequiredIf("UseSSO", true), Trim]
             public string PublicKey { get; set; }
 
-            [Caption("Login Url"), Description("Defines the Url used when the user wants to log into the site to leave a comment")]
+            [Caption("Login Url"), Description("Defines the Url used when the user wants to log into the site to leave a comment (using SSO)")]
             [UIHint("Url"), AdditionalMetadata("UrlType", UrlHelperEx.UrlTypeEnum.Local | UrlHelperEx.UrlTypeEnum.Remote), UrlValidation(UrlValidationAttribute.SchemaEnum.Any, UrlHelperEx.UrlTypeEnum.Local), StringLength(Globals.MaxUrl), Trim]
             [RequiredIf("UseSSO", true)]
             public string LoginUrl { get; set; }
@@ -47,6 +47,25 @@ namespace YetaWF.Modules.Blog.Controllers {
             [Caption("Login Popup Height"), Description("Defines the height of the popup window created by Disqus to log the user into the site (using SSO)")]
             [UIHint("IntValue4"), Range(20, 9999), RequiredIf("UseSSO", true)]
             public int Height { get; set; }
+
+            [Caption("Avatar Type"), Description("Defines the source for user avatars (using SSO)")]
+            [UIHint("Enum")]
+            public DisqusConfigData.AvatarTypeEnum AvatarType { get; set; }
+
+            [Caption("Gravatar Default"), Description("Defines the default Gravatar image for visitors leaving comments (used when users have not defined an image at http://www.gravatar.com)")]
+            [UIHint("Enum"), RequiredIf("GravatarDefault", true)]
+            [ProcessIf("AvatarType", DisqusConfigData.AvatarTypeEnum.Gravatar)]
+            public Gravatar.GravatarEnum GravatarDefault { get; set; }
+
+            [Caption("Allowed Gravatar Rating"), Description("Defines the acceptable Gravatar rating for displayed Gravatar images")]
+            [UIHint("Enum")]
+            [ProcessIf("AvatarType", DisqusConfigData.AvatarTypeEnum.Gravatar)]
+            public Gravatar.GravatarRatingEnum GravatarRating { get; set; }
+
+            [Caption("Gravatar Size"), Description("The width and height of the displayed Gravatar images (in pixels)")]
+            [UIHint("IntValue4"), Range(16, 100)]
+            [ProcessIf("AvatarType", DisqusConfigData.AvatarTypeEnum.Gravatar)]
+            public int GravatarSize { get; set; }
 
             public DisqusConfigData GetData(DisqusConfigData data) {
                 ObjectSupport.CopyData(this, data);

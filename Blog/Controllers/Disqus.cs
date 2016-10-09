@@ -6,6 +6,7 @@ using YetaWF.Core.Localize;
 using YetaWF.Core.Support;
 using YetaWF.Modules.Blog.Controllers.Support;
 using YetaWF.Modules.Blog.DataProvider;
+using YetaWF.Modules.Blog.Views.Shared;
 
 // Documentation:
 // https://disqus.com/api/docs/
@@ -45,8 +46,11 @@ namespace YetaWF.Modules.Blog.Controllers {
                     model.UseSSO = true;
                     if (Manager.HaveUser) {
                         model.PublicKey = config.PublicKey;
+                        string avatarUrl = "";
+                        if (config.AvatarType == DisqusConfigData.AvatarTypeEnum.Gravatar)
+                            avatarUrl = "https:" + GravatarHelper.GravatarUrl(Manager.UserEmail, config.GravatarSize, config.GravatarRating, config.GravatarDefault);
                         SSO sso = new Support.SSO(config.PrivateKey);
-                        model.AuthPayload = sso.GetPayload(Manager.UserId.ToString(), Manager.UserName, Manager.UserEmail);
+                        model.AuthPayload = sso.GetPayload(Manager.UserId.ToString(), Manager.UserName, Manager.UserEmail, avatarUrl);
                     } else {
                         model.LoginUrl = Manager.CurrentSite.MakeUrl(config.LoginUrl);
                         model.Width = config.Width;

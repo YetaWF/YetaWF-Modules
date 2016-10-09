@@ -15,6 +15,13 @@ namespace YetaWF.Modules.Blog.DataProvider {
 
     public class DisqusConfigData {
 
+        public enum AvatarTypeEnum {
+            [EnumDescription("Default", "Avatar as provided by Disqus")]
+            Default = 0,
+            [EnumDescription("Gravatar", "Avatar as provided by Gravatar, based on email address")]
+            Gravatar = 1,
+        }
+
         public const int MaxShortName = 40;
         public const int MaxPublicKey = 200;
         public const int MaxPrivateKey = 200;
@@ -38,10 +45,19 @@ namespace YetaWF.Modules.Blog.DataProvider {
         public int Width { get; set; }
         public int Height { get; set; }
 
+        public AvatarTypeEnum AvatarType { get; set; }
+        public Gravatar.GravatarEnum GravatarDefault { get; set; }
+        public Gravatar.GravatarRatingEnum GravatarRating { get; set; }
+        public int GravatarSize { get; set; }
+
         public DisqusConfigData() {
-            LoginUrl = "/User/Login/Simple";
-            Width = 800;
-            Height = 400;
+            LoginUrl = "/User/Login?CloseOnLogin=true";
+            Width = 1200;
+            Height = 800;
+            AvatarType = AvatarTypeEnum.Default;
+            GravatarDefault = Gravatar.GravatarEnum.wavatar;
+            GravatarRating = Gravatar.GravatarRatingEnum.G;
+            GravatarSize = 48;
         }
     }
 
