@@ -23,8 +23,15 @@
 .YetaWF_Basics_AlertDisplay .t_close img:hover {
     background-color: #cccccc;
 }
-.YetaWF_Basics_AlertDisplay .t_close,
-.YetaWF_Basics_AlertDisplay .t_message {
+.YetaWF_Basics_AlertDisplay .t_close {
     display:inline-block;
     vertical-align:top;
+}
+.YetaWF_Basics_AlertDisplay .t_message {
+    width:90%;
+    display:inline-block;
+    vertical-align:top;
+}
+.YetaWF_Basics_AlertDisplay .t_message a {
+    color:white;
 }
