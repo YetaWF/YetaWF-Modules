@@ -31,9 +31,11 @@ namespace YetaWF.Modules.Blog.Controllers {
 
             [Caption("Secret Key"), Description("Defines the Secret Key used for SSO (Single Sign On) - The Secret Key is created on the Disqus site when defining the SSO application")]
             [UIHint("Text80"), StringLength(DisqusConfigData.MaxPublicKey), RequiredIf("UseSSO", true), Trim]
+            [ExcludeDemoMode]
             public string PrivateKey { get; set; }
             [Caption("Public Key"), Description("Defines the Public Key used for SSO (Single Sign On) - The Public Key is created on the Disqus site when defining the SSO application")]
             [UIHint("Text80"), StringLength(DisqusConfigData.MaxPrivateKey), RequiredIf("UseSSO", true), Trim]
+            [ExcludeDemoMode]
             public string PublicKey { get; set; }
 
             [Caption("Login Url"), Description("Defines the Url used when the user wants to log into the site to leave a comment (using SSO)")]
