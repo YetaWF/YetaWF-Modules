@@ -22,8 +22,24 @@
           <Value>
             <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
               <Properties>
-                <Name Value="altGravatar" />
-                <Text Value="Gravatar image - {0}" />
+                <Name Value="modName" />
+                <Text Value="Disqus Comments" />
+              </Properties>
+            </Object>
+          </Value>
+          <Value>
+            <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
+              <Properties>
+                <Name Value="modSummary" />
+                <Text Value="Comments using the Disqus service" />
+              </Properties>
+            </Object>
+          </Value>
+          <Value>
+            <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
+              <Properties>
+                <Name Value="modTitle" />
+                <Text Value="Comments" />
               </Properties>
             </Object>
           </Value>

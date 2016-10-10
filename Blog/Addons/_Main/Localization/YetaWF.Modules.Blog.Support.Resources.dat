@@ -22,8 +22,8 @@
           <Value>
             <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
               <Properties>
-                <Name Value="altGravatar" />
-                <Text Value="Gravatar image - {0}" />
+                <Name Value="valShortName" />
+                <Text Value="A shortname must consist of letters, numbers, underscores or dashes, without spaces." />
               </Properties>
             </Object>
           </Value>

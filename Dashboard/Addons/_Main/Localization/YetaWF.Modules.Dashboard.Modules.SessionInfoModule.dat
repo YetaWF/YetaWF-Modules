@@ -83,6 +83,46 @@
               </Properties>
             </Object>
           </Value>
+          <Value>
+            <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
+              <Properties>
+                <Name Value="removeConfirm" />
+                <Text Value="Are you sure you want to remove all session settings for all users?" />
+              </Properties>
+            </Object>
+          </Value>
+          <Value>
+            <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
+              <Properties>
+                <Name Value="removeLegend" />
+                <Text Value="Removes all SessionState information" />
+              </Properties>
+            </Object>
+          </Value>
+          <Value>
+            <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
+              <Properties>
+                <Name Value="removeLink" />
+                <Text Value="Remove Session Settings" />
+              </Properties>
+            </Object>
+          </Value>
+          <Value>
+            <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
+              <Properties>
+                <Name Value="removeText" />
+                <Text Value="Remove Session Settings" />
+              </Properties>
+            </Object>
+          </Value>
+          <Value>
+            <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
+              <Properties>
+                <Name Value="removeTooltip" />
+                <Text Value="Remove all SessionState information" />
+              </Properties>
+            </Object>
+          </Value>
         </List>
       </Object>
     </Strings>

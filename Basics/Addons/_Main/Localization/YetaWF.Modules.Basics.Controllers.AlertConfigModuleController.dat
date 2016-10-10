@@ -10,7 +10,7 @@
           <Value>
             <Object Type="YetaWF.Core.Localize.LocalizationData+ClassData" Assembly="YetaWF.Core">
               <Properties>
-                <Name Value="YetaWF.Modules.Dashboard.Controllers.SessionInfoModuleController+BrowseItem" />
+                <Name Value="YetaWF.Modules.Basics.Controllers.AlertConfigModuleController+Model" />
                 <BaseTypeName />
                 <Header />
                 <Footer />
@@ -28,9 +28,9 @@
                       <Value>
                         <Object Type="YetaWF.Core.Localize.LocalizationData+PropertyData" Assembly="YetaWF.Core">
                           <Properties>
-                            <Name Value="Key" />
-                            <Caption Value="Key" />
-                            <Description Value="The SessionState key" />
+                            <Name Value="Enabled" />
+                            <Caption Value="Enabled" />
+                            <Description Value="Defines whether message display is enabled" />
                             <HelpLink />
                             <TextAbove />
                             <TextBelow />
@@ -40,9 +40,9 @@
                       <Value>
                         <Object Type="YetaWF.Core.Localize.LocalizationData+PropertyData" Assembly="YetaWF.Core">
                           <Properties>
-                            <Name Value="Size" />
-                            <Caption Value="Size" />
-                            <Description Value="The size of the value (if available)" />
+                            <Name Value="Message" />
+                            <Caption Value="Message" />
+                            <Description Value="Defines the message to display" />
                             <HelpLink />
                             <TextAbove />
                             <TextBelow />
@@ -52,57 +52,9 @@
                       <Value>
                         <Object Type="YetaWF.Core.Localize.LocalizationData+PropertyData" Assembly="YetaWF.Core">
                           <Properties>
-                            <Name Value="Value" />
-                            <Caption Value="Value" />
-                            <Description Value="The first 100 bytes of the SessionState value" />
-                            <HelpLink />
-                            <TextAbove />
-                            <TextBelow />
-                          </Properties>
-                        </Object>
-                      </Value>
-                    </List>
-                  </Object>
-                </Properties>
-              </Properties>
-            </Object>
-          </Value>
-          <Value>
-            <Object Type="YetaWF.Core.Localize.LocalizationData+ClassData" Assembly="YetaWF.Core">
-              <Properties>
-                <Name Value="YetaWF.Modules.Dashboard.Controllers.SessionInfoModuleController+DisplayModel" />
-                <BaseTypeName />
-                <Header />
-                <Footer />
-                <Legend />
-                <Categories>
-                  <Object Type="YetaWF.Core.Serializers.SerializableDictionary`2[[System.String, mscorlib, Culture=neutral, PublicKeyToken=b77a5c561934e089],[System.String, mscorlib, Culture=neutral, PublicKeyToken=b77a5c561934e089]]" Assembly="YetaWF.Core">
-                    <Properties />
-                    <Dictionary />
-                  </Object>
-                </Categories>
-                <Properties>
-                  <Object Type="YetaWF.Core.Serializers.SerializableList`1[[YetaWF.Core.Localize.LocalizationData+PropertyData, YetaWF.Core, Culture=neutral, PublicKeyToken=null]]" Assembly="YetaWF.Core">
-                    <Properties />
-                    <List>
-                      <Value>
-                        <Object Type="YetaWF.Core.Localize.LocalizationData+PropertyData" Assembly="YetaWF.Core">
-                          <Properties>
-                            <Name Value="GridDef" />
-                            <Caption Value="SessionState Items" />
-                            <Description Value="The SessionState keys and the values (either the data type or the first 100 bytes of data are shown)" />
-                            <HelpLink />
-                            <TextAbove />
-                            <TextBelow />
-                          </Properties>
-                        </Object>
-                      </Value>
-                      <Value>
-                        <Object Type="YetaWF.Core.Localize.LocalizationData+PropertyData" Assembly="YetaWF.Core">
-                          <Properties>
-                            <Name Value="TotalSize" />
-                            <Caption Value="Total Size" />
-                            <Description Value="The approximate size of all SessionState items" />
+                            <Name Value="MessageHandling" />
+                            <Caption Value="Message Handling" />
+                            <Description Value="Defines how long the message is displayed" />
                             <HelpLink />
                             <TextAbove />
                             <TextBelow />
@@ -131,8 +83,16 @@
           <Value>
             <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
               <Properties>
-                <Name Value="clearDone" />
-                <Text Value="Sessions settings have been cleared" />
+                <Name Value="notFound" />
+                <Text Value="The Alert settings could not be found" />
+              </Properties>
+            </Object>
+          </Value>
+          <Value>
+            <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
+              <Properties>
+                <Name Value="okSaved" />
+                <Text Value="Alert settings saved" />
               </Properties>
             </Object>
           </Value>
