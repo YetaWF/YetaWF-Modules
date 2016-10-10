@@ -74,6 +74,7 @@ namespace YetaWF.Modules.Basics.DataProvider {
                         case WebConfigHelper.IOModeEnum.File:
                             _dataProvider = new YetaWF.DataProvider.FileDataProvider<int, AlertConfig>(
                                 Path.Combine(YetaWFManager.DataFolder, AreaName + "_AlertConfig", SiteIdentity.ToString()),
+                                CurrentSiteIdentity: SiteIdentity,
                                 Cacheable: true);
                             break;
                         case WebConfigHelper.IOModeEnum.Sql:
