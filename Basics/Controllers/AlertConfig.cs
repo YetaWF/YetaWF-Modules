@@ -54,6 +54,7 @@ namespace YetaWF.Modules.Basics.Controllers {
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [ExcludeDemoMode]
         public ActionResult AlertConfig_Partial(Model model) {
             using (AlertConfigDataProvider dataProvider = new AlertConfigDataProvider()) {
                 AlertConfig data = dataProvider.GetItem();// get the original item
