@@ -64,9 +64,11 @@
   <ItemGroup>
     <Compile Include="Controllers\AddonDisplay.cs" />
     <Compile Include="Controllers\AddonsBrowse.cs" />
+    <Compile Include="Controllers\HttpModulesBrowse.cs" />
     <Compile Include="Controllers\Status.cs" />
     <Compile Include="Modules\AddonDisplay.cs" />
     <Compile Include="Modules\AddonsBrowse.cs" />
+    <Compile Include="Modules\HttpModulesBrowse.cs" />
     <Compile Include="Modules\Status.cs" />
     <Compile Include="Startup\Info.cs" />
     <Compile Include="Startup\AreaRegistration.cs" />
@@ -82,12 +84,16 @@
     <None Include="Addons\_Main\Dashboard.js" />
     <None Include="Addons\_Main\Dashboard.scss" />
     <None Include="Addons\_Main\Grids\AddonsBrowseModuleController.BrowseItem" />
+    <None Include="Addons\_Main\Grids\HttpModulesBrowseModuleController.BrowseItem" />
     <None Include="Views\YetaWF_Dashboard_AddonDisplay.cshtml" />
     <None Include="Views\YetaWF_Dashboard_AddonsBrowse.cshtml" />
     <None Include="Views\YetaWF_Dashboard_AddonsBrowse_Partial.cshtml" />
+    <None Include="Views\YetaWF_Dashboard_HttpModulesBrowse.cshtml" />
+    <None Include="Views\YetaWF_Dashboard_HttpModulesBrowse_Partial.cshtml" />
     <None Include="Views\YetaWF_Dashboard_Status.cshtml" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Addons\_SiteTemplates\YetaWF_Dashboard.1.0.9.txt" />
     <Content Include="Addons\_SiteTemplates\YetaWF_Dashboard.1.0.3.txt" />
     <Content Include="packages.config" />
   </ItemGroup>

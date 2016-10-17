@@ -1,0 +1,13 @@
+﻿### Copyright © 2016 Softel vdm, Inc. - http://yetawf.com/Documentation/YetaWF/Licensing
+###
+### Dashboard Package Upgrade
+###
+
+::PAGE-SECTION::
+
+Administrator /Admin/Dashboard/HttpModules
+    Title=Http Modules
+    Admin > Dashboard > {YetaWF.Dashboard, YetaWF.Modules.Dashboard.Modules.HttpModulesBrowseModule}.GetAction_Items({CURRENTURL})
+    -
+    YetaWF.Dashboard, YetaWF.Modules.Dashboard.Modules.HttpModulesBrowseModule
+
