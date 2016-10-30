@@ -40,6 +40,10 @@ namespace YetaWF.Modules.Identity.Controllers {
                 UserDefinition user = userDP.GetItemByUserId(Manager.UserId);
                 if (user == null)
                     throw new InternalError("User with id {0} not found", Manager.UserId);
+                using (UserLoginInfoDataProvider logInfoDP = new UserLoginInfoDataProvider()) {
+                    if (logInfoDP.IsExternalUser(Manager.UserId))
+                        return View("ExternalLoginOnly", (object)null);
+                }
                 TwoStepAuth twoStep = new TwoStepAuth();
                 List<string> procs = (from p in twoStep.GetTwoStepAuthProcessors() where p.IsAvailable() select p.Name).ToList();
                 List<string> enabledTwoStepAuths = (from e in user.EnabledTwoStepAuthentications select e.Name).ToList();

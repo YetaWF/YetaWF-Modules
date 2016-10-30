@@ -14,12 +14,13 @@ namespace YetaWF.Modules.Identity.Controllers {
         public OwinEditModuleController() { }
 
         [Trim]
+        [Header("External login provider settings apply to all sites within this YetaWF instance.")]
         public class EditModel {
 
             public const int MaxKey = 200;
 
             public EditModel() {
-                MicrosoftUrl = "https://account.live.com/developers/applications/create";
+                MicrosoftUrl = "https://account.live.com/developers/applications/";
                 GoogleUrl = "https://console.developers.google.com/";
                 FacebookUrl = "https://developers.facebook.com/apps";
                 TwitterUrl = "https://dev.twitter.com/apps";
@@ -38,39 +39,47 @@ namespace YetaWF.Modules.Identity.Controllers {
             public string MicrosoftUrl { get; set; }
             [Caption("Microsoft Public Key"), Description("The public key for authentication using Microsoft")]
             [UIHint("Text80"), StringLength(MaxKey), Trim]
+            [ExcludeDemoMode]
             public string MicrosoftPublic { get; set; }
             [Caption("Microsoft Private Key"), Description("The private key for authentication using Microsoft")]
             [UIHint("Text80"), RequiredIfSupplied("MicrosoftPublic"), StringLength(MaxKey), Trim]
+            [ExcludeDemoMode]
             public string MicrosoftPrivate { get; set; }
 
             [Caption("Google"), Description("Provides a link to Google to set up authentication for your sites")]
             [UIHint("Url"), ReadOnly]
             public string GoogleUrl { get; set; }
-            [Caption("Google Public Key"), Description("The public key for authentication using Google")]
+            [Caption("Google Client ID"), Description("The Client ID for authentication using Google (defined using Google)")]
             [UIHint("Text80"), StringLength(MaxKey), Trim]
+            [ExcludeDemoMode]
             public string GooglePublic { get; set; }
-            [Caption("Google Private Key"), Description("The private key for authentication using Google")]
+            [Caption("Google Client Secret"), Description("The Client Secret for authentication using Google (defined using Google)")]
             [UIHint("Text80"), RequiredIfSupplied("GooglePublic"), StringLength(MaxKey), Trim]
+            [ExcludeDemoMode]
             public string GooglePrivate { get; set; }
 
             [Caption("Facebook"), Description("Provides a link to Facebook to set up authentication for your sites")]
             [UIHint("Url"), ReadOnly]
             public string FacebookUrl { get; set; }
-            [Caption("Facebook Public Key"), Description("The public key for authentication using Facebook")]
+            [Caption("Facebook App ID"), Description("The App ID for authentication using Facebook (defined in Facebook)")]
             [UIHint("Text80"), StringLength(MaxKey), Trim]
+            [ExcludeDemoMode]
             public string FacebookPublic { get; set; }
-            [Caption("Facebook Private Key"), Description("The private key for authentication using Facebook")]
+            [Caption("Facebook App Secret"), Description("The App Secret for authentication using Facebook (defined in Facebook)")]
             [UIHint("Text80"), RequiredIfSupplied("FacebookPublic"), StringLength(MaxKey), Trim]
+            [ExcludeDemoMode]
             public string FacebookPrivate { get; set; }
 
             [Caption("Twitter"), Description("Provides a link to Twitter to set up authentication for your sites")]
             [UIHint("Url"), ReadOnly]
             public string TwitterUrl { get; set; }
-            [Caption("Twitter Public Key"), Description("The public key for authentication using Twitter")]
+            [Caption("Twitter Consumer Key"), Description("The Consumer Key (API Key) for authentication using Twitter (defined using Twitter)")]
             [UIHint("Text80"), StringLength(MaxKey), Trim]
+            [ExcludeDemoMode]
             public string TwitterPublic { get; set; }
-            [Caption("Twitter Private Key"), Description("The private key for authentication using Twitter")]
+            [Caption("Twitter Consumer Secret"), Description("The Consumer Secret (API Secret) for authentication using Twitter (defined using Twitter)")]
             [UIHint("Text80"), RequiredIfSupplied("TwitterPublic"), StringLength(MaxKey), Trim]
+            [ExcludeDemoMode]
             public string TwitterPrivate { get; set; }
         }
 

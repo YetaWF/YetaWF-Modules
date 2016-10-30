@@ -1,9 +1,12 @@
 /* Copyright © 2016 Softel vdm, Inc. - http://yetawf.com/Documentation/YetaWF/Identity#License */
 
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Web.Mvc;
 using YetaWF.Core;
 using YetaWF.Core.Controllers;
+using YetaWF.Core.DataProvider;
 using YetaWF.Core.Identity;
 using YetaWF.Core.Localize;
 using YetaWF.Core.Models;
@@ -56,6 +59,10 @@ namespace YetaWF.Modules.Identity.Controllers {
             [UIHint("DateTime"), ReadOnly]
             public DateTime Created { get; set; }
 
+            [Caption("Login Provider"), Description("The external login provider(s) defining this account")]
+            [UIHint("ListOfStrings"), ReadOnly]
+            public List<string> LoginProviders { get; set; }
+
             [Caption("Last Login"), Description("The last time the user logged into his/her account")]
             [UIHint("DateTime"), ReadOnly]
             public DateTime? LastLoginDate { get; set; }
@@ -83,11 +90,18 @@ namespace YetaWF.Modules.Identity.Controllers {
         [HttpGet]
         public ActionResult UsersDisplay(string userName) {
             using (UserDefinitionDataProvider dataProvider = new UserDefinitionDataProvider()) {
-                UserDefinition data = dataProvider.GetItem(userName);
-                if (data == null)
+                UserDefinition user = dataProvider.GetItem(userName);
+                if (user == null)
                     throw new Error(this.__ResStr("notFound", "User \"{0}\" not found."), userName);
                 DisplayModel model = new DisplayModel();
-                model.SetData(data);
+                model.SetData(user);
+                using (UserLoginInfoDataProvider userLogInfoDP = new UserLoginInfoDataProvider()) {
+                    List<DataProviderFilterInfo> filters = null;
+                    filters = DataProviderFilterInfo.Join(filters, new DataProviderFilterInfo { Field = "UserId", Operator = "==", Value = user.UserId });
+                    int total;
+                    List<LoginInfo> list = userLogInfoDP.GetItems(0, 0, null, filters, out total);
+                    model.LoginProviders = (from LoginInfo l in list select l.LoginProvider).ToList();
+                }
                 Module.Title = this.__ResStr("modDisplayTitle", "User {0}", userName);
                 return View(model);
             }

@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 using YetaWF.Core;
+using YetaWF.Core.Addons;
 using YetaWF.Core.Controllers;
 using YetaWF.Core.Identity;
 using YetaWF.Core.Localize;
@@ -37,6 +38,8 @@ namespace YetaWF.Modules.Identity.Controllers {
 
             public LoginModel() {
                 Captcha = new RecaptchaV2Data();
+                ExternalProviders = new List<FormButton>();
+                Images = new List<string>();
             }
 
             [Caption("Name"), Description("Enter your user name - this is the name you used when you registered on this site")]
@@ -68,6 +71,9 @@ namespace YetaWF.Modules.Identity.Controllers {
             public string ReturnUrl { get; set; }
             [UIHint("Hidden")]
             public bool CloseOnLogin { get; set; }
+
+            public List<string> Images { get; set; }
+            public List<FormButton> ExternalProviders { get; set; }
         }
 
         [HttpGet]
@@ -87,6 +93,25 @@ namespace YetaWF.Modules.Identity.Controllers {
             };
             model.ShowVerification = !string.IsNullOrWhiteSpace(model.VerificationCode);
             model.ShowCaptcha = config.Captcha && !model.ShowVerification;
+
+            using (LoginConfigDataProvider logConfigDP = new LoginConfigDataProvider()) {
+                List<AuthenticationDescription> loginProviders = logConfigDP.GetActiveExternalLoginProviders();
+                if (loginProviders.Count > 0 && Manager.IsInPopup)
+                    throw new InternalError("When using external login providers, the Login module cannot be used in a popup window");
+                foreach (AuthenticationDescription provider in loginProviders) {
+                    model.ExternalProviders.Add(new FormButton() {
+                        ButtonType = ButtonTypeEnum.Submit,
+                        Name = "provider",
+                        Text = provider.AuthenticationType,
+                        Title = this.__ResStr("logAccountTitle", "Log in using your {0} account", provider.Caption),
+                        CssClass = "t_" + provider.AuthenticationType.ToLower(),
+                    });
+                    YetaWF.Core.Packages.Package package = AreaRegistration.CurrentPackage;
+                    string url = VersionManager.GetAddOnModuleUrl(package.Domain, package.Product);
+                    model.Images.Add(Manager.GetCDNUrl(string.Format("{0}Icons/LoginProviders/{1}.png", url, provider.AuthenticationType)));
+                }
+            }
+
             return View(model);
         }
 
@@ -116,6 +141,11 @@ namespace YetaWF.Modules.Identity.Controllers {
                 ModelState.AddModelError("", this.__ResStr("invLogin", "Invalid user name or password"));
                 return PartialView(model);
             }
+            using (UserLoginInfoDataProvider logInfoDP = new UserLoginInfoDataProvider()) {
+                if (logInfoDP.IsExternalUser(user.UserId))
+                    throw new Error(this.__ResStr("extUser", "This account can only be accessed using an external login provider"));
+            }
+
             TwoStepAuth twoStep = new TwoStepAuth();// clear any two-step info we may have
             twoStep.ClearTwoStepAuthetication(user.UserId);
 

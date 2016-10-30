@@ -1,7 +1,10 @@
 ﻿/* Copyright © 2016 Softel vdm, Inc. - http://yetawf.com/Documentation/YetaWF/Identity#License */
 
+using Microsoft.Owin.Security;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
+using System.Web;
 using YetaWF.Core;
 using YetaWF.Core.DataProvider;
 using YetaWF.Core.DataProvider.Attributes;
@@ -10,6 +13,7 @@ using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Packages;
 using YetaWF.Core.Serializers;
 using YetaWF.Core.Support;
+using YetaWF.Modules.Identity.Controllers;
 using YetaWF.Modules.Identity.Modules;
 
 namespace YetaWF.Modules.Identity.DataProvider {
@@ -47,6 +51,40 @@ namespace YetaWF.Modules.Identity.DataProvider {
         public string SuspendedUrl { get; set; }
         [StringLength(Globals.MaxUrl)]
         public string LoggedOffUrl { get; set; }
+
+        [Data_NewValue("(0)")]
+        public bool UseFacebook { get; set; }
+        [Data_NewValue("(0)")]
+        public bool UseGoogle { get; set; }
+        [Data_NewValue("(0)")]
+        public bool UseMicrosoft { get; set; }
+        [Data_NewValue("(0)")]
+        public bool UseTwitter { get; set; }
+
+        public bool DefinedFacebook {
+            get {
+                return !string.IsNullOrWhiteSpace(WebConfigHelper.GetValue<string>(AreaRegistration.CurrentPackage.AreaName, "FacebookAccount:Public")) &&
+                        !string.IsNullOrWhiteSpace(WebConfigHelper.GetValue<string>(AreaRegistration.CurrentPackage.AreaName, "FacebookAccount:Private"));
+            }
+        }
+        public bool DefinedGoogle {
+            get {
+                return !string.IsNullOrWhiteSpace(WebConfigHelper.GetValue<string>(AreaRegistration.CurrentPackage.AreaName, "GoogleAccount:Public")) &&
+                        !string.IsNullOrWhiteSpace(WebConfigHelper.GetValue<string>(AreaRegistration.CurrentPackage.AreaName, "GoogleAccount:Private"));
+            }
+        }
+        public bool DefinedMicrosoft {
+            get {
+                return !string.IsNullOrWhiteSpace(WebConfigHelper.GetValue<string>(AreaRegistration.CurrentPackage.AreaName, "MicrosoftAccount:Public")) &&
+                        !string.IsNullOrWhiteSpace(WebConfigHelper.GetValue<string>(AreaRegistration.CurrentPackage.AreaName, "MicrosoftAccount:Private"));
+            }
+        }
+        public bool DefinedTwitter {
+            get {
+                return !string.IsNullOrWhiteSpace(WebConfigHelper.GetValue<string>(AreaRegistration.CurrentPackage.AreaName, "TwitterAccount:Public")) &&
+                        !string.IsNullOrWhiteSpace(WebConfigHelper.GetValue<string>(AreaRegistration.CurrentPackage.AreaName, "TwitterAccount:Private"));
+            }
+        }
 
         public LoginConfigData() { }
     }
@@ -132,6 +170,24 @@ namespace YetaWF.Modules.Identity.DataProvider {
             UpdateStatusEnum status = DataProvider.Update(data.Id, data.Id, data);
             if (status != UpdateStatusEnum.OK)
                 throw new InternalError("Unexpected error saving configuration {0}", status);
+        }
+
+        public List<AuthenticationDescription> GetActiveExternalLoginProviders() {
+            LoginConfigData configData = GetConfig();
+            List <AuthenticationDescription> list = new List<AuthenticationDescription>();
+            List<AuthenticationDescription> loginProviders = Manager.CurrentContext.GetOwinContext().Authentication.GetExternalAuthenticationTypes().ToList();
+            foreach (AuthenticationDescription provider in loginProviders) {
+                string name = provider.AuthenticationType;
+                if (name == "Facebook" && configData.UseFacebook && configData.DefinedFacebook)
+                    list.Add(provider);
+                else if (name == "Google" && configData.UseGoogle && configData.DefinedGoogle)
+                    list.Add(provider);
+                else if (name == "Microsoft" && configData.UseMicrosoft && configData.DefinedMicrosoft)
+                    list.Add(provider);
+                else if (name == "Twitter" && configData.UseTwitter && configData.DefinedTwitter)
+                    list.Add(provider);
+            }
+            return list;
         }
 
         // IINSTALLABLEMODEL

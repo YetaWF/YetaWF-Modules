@@ -78,13 +78,11 @@ namespace YetaWF.Modules.Identity.DataProvider {
         [Data_NewValue("(0)")]
         public int LoginFailures { get; set; }
 
-        public SerializableList<LoginInfo> LoginInfoList { get; set; } // external login providers
         public SerializableList<Role> RolesList { get; set; } // role ids for this user
         public SerializableList<TwoStepDefinition> EnabledTwoStepAuthentications { get; set; }
 
         public UserDefinition() {
             RolesList = new SerializableList<Role>();
-            LoginInfoList = new SerializableList<LoginInfo>();
             Created = DateTime.UtcNow;
             UserStatus = UserStatusEnum.NeedValidation;
             VerificationCode = Guid.NewGuid().ToString();
@@ -92,25 +90,6 @@ namespace YetaWF.Modules.Identity.DataProvider {
         }
     }
 
-    public class LoginInfo {
-
-        public const int MaxLoginProvider = 100;
-        public const int MaxProviderKey = 100;
-
-        public LoginInfo() { }
-        [StringLength(MaxLoginProvider)]
-        public string LoginProvider { get; set; }
-        [StringLength(MaxProviderKey)]
-        public string ProviderKey { get; set; }
-    }
-    public class LoginInfoComparer : IEqualityComparer<LoginInfo> {
-        public bool Equals(LoginInfo x, LoginInfo y) {
-            return x.LoginProvider == y.LoginProvider && x.ProviderKey == y.ProviderKey;
-        }
-        public int GetHashCode(LoginInfo x) {
-            return x.ProviderKey.GetHashCode() + x.LoginProvider.GetHashCode();
-        }
-    }
     public class TwoStepDefinition {
         public const int MaxName = 80;
         public TwoStepDefinition() { }
@@ -231,12 +210,19 @@ namespace YetaWF.Modules.Identity.DataProvider {
             return DataProvider.Update(originalName, data.UserName, data);
         }
         public bool RemoveItem(string userName) {
+            UserDefinition user = GetItem(userName);
+            if (user == null)
+                return false;
+            using (UserLoginInfoDataProvider logInfoDP = new UserLoginInfoDataProvider(SiteIdentity)) {
+                logInfoDP.RemoveItem(user.UserId);
+            }
             if (userName == SuperuserDefinitionDataProvider.SuperUserName) {
                 using (SuperuserDefinitionDataProvider superDP = new SuperuserDefinitionDataProvider()) {
                     return superDP.RemoveItem(userName);
                 }
+            } else {
+                return DataProvider.Remove(userName);
             }
-            return DataProvider.Remove(userName);
         }
         public List<UserDefinition> GetItems(List<DataProviderFilterInfo> filters) {
             int total;
@@ -253,9 +239,6 @@ namespace YetaWF.Modules.Identity.DataProvider {
             }
             return users;
         }
-        public int RemoveItems(List<DataProviderFilterInfo> filters) {
-            return DataProvider.RemoveRecords(filters);
-        }
         public void RehashAllPasswords() {
             LoginConfigData config = LoginConfigDataProvider.GetConfig();
             if (!config.SavePlainTextPassword)
@@ -268,10 +251,12 @@ namespace YetaWF.Modules.Identity.DataProvider {
                 if (list.Count == 0)
                     break;
                 foreach (UserDefinition user in list) {
-                    user.PasswordHash = userManager.PasswordHasher.HashPassword(user.PasswordPlainText);
-                    UpdateStatusEnum status = UpdateItem(user);
-                    if (status != UpdateStatusEnum.OK)
-                        throw new InternalError("Update failed - status {0} user id {1}", status, user.Id);
+                    if (!string.IsNullOrWhiteSpace(user.PasswordPlainText)) {
+                        user.PasswordHash = userManager.PasswordHasher.HashPassword(user.PasswordPlainText);
+                        UpdateStatusEnum status = UpdateItem(user);
+                        if (status != UpdateStatusEnum.OK)
+                            throw new InternalError("Update failed - status {0} user id {1}", status, user.Id);
+                    }
                 }
             }
         }

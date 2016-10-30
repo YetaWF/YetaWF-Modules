@@ -1,2 +1,3 @@
-﻿LoginSelector.css
+﻿Login.css
+LoginSelector.css
 SelectTwoStepSetup.scss

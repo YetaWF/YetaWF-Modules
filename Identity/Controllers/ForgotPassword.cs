@@ -61,6 +61,12 @@ namespace YetaWF.Modules.Identity.Controllers {
                     ModelState.AddModelError("Email", this.__ResStr("badEmail", "According to our records there is no account associated with this email address"));
                     return PartialView(model);
                 }
+                using (UserLoginInfoDataProvider logInfoDP = new UserLoginInfoDataProvider()) {
+                    if (logInfoDP.IsExternalUser(Manager.UserId)) {
+                        ModelState.AddModelError("Email", this.__ResStr("extUser", "This account can only be accessed using an external login provider"));
+                        return PartialView(model);
+                    }
+                }
                 switch (userDef.UserStatus) {
                     case UserStatusEnum.Approved:
                         Emails emails = new Emails();

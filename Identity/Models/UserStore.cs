@@ -17,7 +17,7 @@ namespace YetaWF.Modules.Identity.Models {
     /// There is one UserStore per site, stored using PermanentManager
     /// </summary>
 
-    public class UserStore : 
+    public class UserStore :
             IUserStore<UserDefinition>,
             IUserLoginStore<UserDefinition>,
             IUserPasswordStore<UserDefinition>,
@@ -26,14 +26,14 @@ namespace YetaWF.Modules.Identity.Models {
 
         static object _lockObject = new object();
 
-        public UserStore(int siteIdentity, float f) { /* THIS float IS TO REMIND ME SO I DON'T ACCIDENTALLY ALLOCATE A NEW ONE */ 
+        public UserStore(int siteIdentity, float f) { /* THIS float IS TO REMIND ME SO I DON'T ACCIDENTALLY ALLOCATE A NEW ONE */
             CurrentSiteIdentity = siteIdentity;
         }
         public int CurrentSiteIdentity { get; private set; }
 
         public void Dispose() { Dispose(true); }
         protected virtual void Dispose(bool disposing) { }
-        //~UserStore() { Dispose(false); }         
+        //~UserStore() { Dispose(false); }
 
         // IUserStore
         // IUserStore
@@ -93,10 +93,9 @@ namespace YetaWF.Modules.Identity.Models {
 
         public System.Threading.Tasks.Task AddLoginAsync(UserDefinition user, UserLoginInfo login) {
 
-            if (user.LoginInfoList == null)
-                user.LoginInfoList = new SerializableList<LoginInfo>();
-            LoginInfo loginInfo = new LoginInfo { LoginProvider = login.LoginProvider, ProviderKey = login.ProviderKey };
-            user.LoginInfoList.Add(loginInfo);
+            using (UserLoginInfoDataProvider logInfoDP = new DataProvider.UserLoginInfoDataProvider()) {
+                logInfoDP.AddItem(user.UserId, login.LoginProvider, login.ProviderKey);
+            }
 
             using (UserDefinitionDataProvider dataProvider = new UserDefinitionDataProvider(this.CurrentSiteIdentity)) {
                 UpdateStatusEnum status = dataProvider.UpdateItem(user);
@@ -114,22 +113,8 @@ namespace YetaWF.Modules.Identity.Models {
         }
 
         public System.Threading.Tasks.Task<UserDefinition> FindAsync(UserLoginInfo login) {
-            using (UserDefinitionDataProvider dataProvider = new UserDefinitionDataProvider(this.CurrentSiteIdentity)) {
-                // LoginProvider == login.LoginProvider && ProviderKey == login.ProviderKey
-                List<DataProviderFilterInfo> filters = new List<DataProviderFilterInfo> {
-                    new DataProviderFilterInfo {
-                        Logic = "&&",
-                        Filters = new List<DataProviderFilterInfo> {
-                            new DataProviderFilterInfo {
-                                Field = "LoginProvider", Operator = "==", Value = login.LoginProvider
-                            },
-                            new DataProviderFilterInfo {
-                                Field = "ProviderKey", Operator = "==", Value =  login.ProviderKey
-                            }
-                        },
-                    },
-                };
-                UserDefinition user = dataProvider.GetItem(filters);
+            using (UserLoginInfoDataProvider logInfoDP = new DataProvider.UserLoginInfoDataProvider(CurrentSiteIdentity)) {
+                UserDefinition user = logInfoDP.GetItem(login.LoginProvider, login.ProviderKey);
                 return System.Threading.Tasks.Task.FromResult(user);
             }
         }
@@ -139,22 +124,8 @@ namespace YetaWF.Modules.Identity.Models {
         }
 
         public System.Threading.Tasks.Task RemoveLoginAsync(UserDefinition user, UserLoginInfo login) {
-            using (UserDefinitionDataProvider dataProvider = new UserDefinitionDataProvider(this.CurrentSiteIdentity)) {
-                // LoginProvider == login.LoginProvider && ProviderKey == login.ProviderKey
-                List<DataProviderFilterInfo> filter = new List<DataProviderFilterInfo> {
-                    new DataProviderFilterInfo {
-                        Logic = "&&",
-                        Filters = new List<DataProviderFilterInfo> {
-                            new DataProviderFilterInfo {
-                                Field = "LoginProvider", Operator = "==", Value = login.LoginProvider,
-                            },
-                            new DataProviderFilterInfo {
-                                Field = "ProviderKey", Operator = "==", Value = login.ProviderKey,
-                            },
-                        },
-                    }
-                };
-                dataProvider.RemoveItems(filter);
+            using (UserLoginInfoDataProvider logInfoDP = new DataProvider.UserLoginInfoDataProvider(CurrentSiteIdentity)) {
+                logInfoDP.RemoveItem(login.LoginProvider, login.ProviderKey);
                 return System.Threading.Tasks.Task.FromResult(0);
             }
         }

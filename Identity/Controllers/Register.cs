@@ -1,9 +1,12 @@
 ﻿/* Copyright © 2016 Softel vdm, Inc. - http://yetawf.com/Documentation/YetaWF/Identity#License */
 
+using Microsoft.Owin.Security;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using System.Web;
 using System.Web.Mvc;
 using YetaWF.Core;
+using YetaWF.Core.Addons;
 using YetaWF.Core.Controllers;
 using YetaWF.Core.DataProvider;
 using YetaWF.Core.Localize;
@@ -27,6 +30,8 @@ namespace YetaWF.Modules.Identity.Controllers {
 
             public RegisterModel() {
                 Captcha = new RecaptchaV2Data();
+                ExternalProviders = new List<FormButton>();
+                Images = new List<string>();
             }
 
             [Caption("User Name"), Description("Enter your user name to register")]
@@ -58,6 +63,9 @@ namespace YetaWF.Modules.Identity.Controllers {
             public string ReturnUrl { get; set; }
             [UIHint("Hidden")]
             public bool CloseOnLogin { get; set; }
+
+            public List<string> Images { get; set; }
+            public List<FormButton> ExternalProviders { get; set; }
         }
 
         [HttpGet]
@@ -74,6 +82,25 @@ namespace YetaWF.Modules.Identity.Controllers {
                 ReturnUrl = Manager.ReturnToUrl,
                 CloseOnLogin = closeOnLogin,
             };
+
+            using (LoginConfigDataProvider logConfigDP = new LoginConfigDataProvider()) {
+                List<AuthenticationDescription> loginProviders = logConfigDP.GetActiveExternalLoginProviders();
+                if (loginProviders.Count > 0 && Manager.IsInPopup)
+                    throw new InternalError("When using external login providers, the Register module cannot be used in a popup window");
+                foreach (AuthenticationDescription provider in loginProviders) {
+                    model.ExternalProviders.Add(new FormButton() {
+                        ButtonType = ButtonTypeEnum.Submit,
+                        Name = "provider",
+                        Text = provider.AuthenticationType,
+                        Title = this.__ResStr("logAccountTitle", "Log in using your {0} account", provider.Caption),
+                        CssClass = "t_" + provider.AuthenticationType.ToLower(),
+                    });
+                    YetaWF.Core.Packages.Package package = AreaRegistration.CurrentPackage;
+                    string url = VersionManager.GetAddOnModuleUrl(package.Domain, package.Product);
+                    model.Images.Add(Manager.GetCDNUrl(string.Format("{0}Icons/LoginProviders/{1}.png", url, provider.AuthenticationType)));
+                }
+            }
+
             return View(model);
         }
 
@@ -156,7 +183,7 @@ namespace YetaWF.Modules.Identity.Controllers {
             } else if (user.UserStatus == UserStatusEnum.NeedApproval) {
                 emails.SendApprovalNeeded(user);
                 string nextPage = string.IsNullOrWhiteSpace(config.ApprovalPendingUrl) ? Manager.CurrentSite.HomePageUrl : config.ApprovalPendingUrl;
-                return FormProcessed(model, this.__ResStr("okAwaitApproval", "An email has just been sent to the site adminstrator for approval of your new account. Once processed and approved, you will receive an email confirming your approval."),
+                return FormProcessed(model, this.__ResStr("okAwaitApproval", "An email has just been sent to the site administrator for approval of your new account. Once processed and approved, you will receive an email confirming your approval."),
                     this.__ResStr("okRegTitle", "Welcome!"),
                     NextPage: nextPage);
             } else if (user.UserStatus == UserStatusEnum.Approved) {

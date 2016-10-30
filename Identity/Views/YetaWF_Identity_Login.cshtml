@@ -1,5 +1,6 @@
 ﻿@*Copyright © 2016 Softel vdm, Inc. - http://yetawf.com/Documentation/YetaWF/Identity#License*@
 @inherits YetaWF.Core.Views.RazorView<YetaWF.Modules.Identity.Modules.LoginModule, YetaWF.Modules.Identity.Controllers.LoginModuleController.LoginModel>
+@using YetaWF.Core.Support
 @using Microsoft.Owin.Security
 @using Microsoft.Owin.Host
 @using (Form("Login_Partial")) {
@@ -10,22 +11,29 @@
     });
 }
 @{
-    var loginProviders = Context.GetOwinContext().Authentication.GetExternalAuthenticationTypes();
-    if (loginProviders.Count() > 0) {
-        if (Manager.IsLocalHost) {
-            <div class="@YetaWF.Core.Globals.CssDivAlert">
-                @__ResStr("localOnly", "External login providers may not work when your site uses Localhost.")
-            </div>
-        }
+    if (Model.ExternalProviders.Count > 0) {
         <div class="t_external">
-            @using (Html.BeginForm("ExternalLogin", "LoginExternal"))
-            {
+            <h2>@__ResStr("extProviders","External Login Providers")</h2>
+            @if (Manager.IsLocalHost) {
+                <div class="@YetaWF.Core.Globals.CssDivWarning">
+                    @__ResStr("localOnly", "External login providers may not work when your site uses Localhost.")
+                </div>
+            }
+            @if (Model.ExternalProviders.Count > 1) {
+                <p>@__ResStr("accts", "Log in using one these accounts:")</p>
+            } else {
+                <p>@__ResStr("acct1", "Log in using this account:")</p>
+            }
+            @using (Html.BeginForm("ExternalLogin", "LoginExternal")) {
+                int index = 0;
                 @Html.AntiForgeryToken()
-                List<FormButton> buttons = new List<FormButton>();
-                foreach (AuthenticationDescription provider in loginProviders) {
-                    buttons.Add(new FormButton() { ButtonType = ButtonTypeEnum.Submit, Id=provider.AuthenticationType, Name="provider", Text = provider.AuthenticationType, Title=__ResStr("logAccountTitle", "Log in using your {0} account", provider.Caption) });
+                foreach (YetaWF.Core.Views.Shared.FormButton formButton in Model.ExternalProviders) {
+                    <div class='t_ext1'>
+                        <img src="@YetaWFManager.HtmlAttributeEncode(Model.Images[index])" alt="@YetaWFManager.HtmlAttributeEncode(formButton.Title)" title="@YetaWFManager.HtmlAttributeEncode(formButton.Title)" />
+                        @formButton.Render()
+                        @{ ++index; }
+                    </div>
                 }
-                @FormButtons(buttons)
             }
         </div>
     }

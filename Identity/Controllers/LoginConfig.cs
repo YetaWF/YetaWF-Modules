@@ -68,6 +68,40 @@ namespace YetaWF.Modules.Identity.Controllers {
             [UIHint("Boolean")]
             public bool CaptchaForgotPassword { get; set; }
 
+            [Category("External")]
+            [Caption("Settings"), Description("External Login Provider Settings have not been defined")]
+            [UIHint("String"), SuppressIfEqual("HaveSettings", true), ReadOnly]
+            public string NoExternalSettings { get; set; }
+            public bool HaveSettings {
+                get {
+                    return FacebookDefined || GoogleDefined || MicrosoftDefined || TwitterDefined;
+                }
+            }
+
+            [Category("External")]
+            [Caption("Facebook"), Description("Allow login using a user's Facebook account")]
+            [UIHint("Boolean"), SuppressIfEqual("FacebookDefined", false)]
+            public bool UseFacebook { get; set; }
+            public bool FacebookDefined { get { return ConfigData.DefinedFacebook; } }
+
+            [Category("External")]
+            [Caption("Google"), Description("Allow login using a user's Google account")]
+            [UIHint("Boolean"), SuppressIfEqual("GoogleDefined", false)]
+            public bool UseGoogle { get; set; }
+            public bool GoogleDefined { get { return ConfigData.DefinedGoogle; } }
+
+            [Category("External")]
+            [Caption("Microsoft"), Description("Allow login using a user's Microsoft account")]
+            [UIHint("Boolean"), SuppressIfEqual("MicrosoftDefined", false)]
+            public bool UseMicrosoft { get; set; }
+            public bool MicrosoftDefined { get { return ConfigData.DefinedMicrosoft; } }
+
+            [Category("External")]
+            [Caption("Twitter"), Description("Allow login using a user's Twitter account")]
+            [UIHint("Boolean"), SuppressIfEqual("TwitterDefined", false)]
+            public bool UseTwitter { get; set; }
+            public bool TwitterDefined { get { return ConfigData.DefinedTwitter; } }
+
             [Category("Urls")]
             [Caption("Register Url"), Description("The Url where the user can register a new user account")]
             [UIHint("Url"), AdditionalMetadata("UrlType", UrlHelperEx.UrlTypeEnum.Local | UrlHelperEx.UrlTypeEnum.Remote), UrlValidation(UrlValidationAttribute.SchemaEnum.Any, UrlHelperEx.UrlTypeEnum.Local | UrlHelperEx.UrlTypeEnum.Remote)]
@@ -110,6 +144,8 @@ namespace YetaWF.Modules.Identity.Controllers {
             [StringLength(Globals.MaxUrl), Trim]
             public string LoggedOffUrl { get; set; }
 
+            public LoginConfigData ConfigData { get; set; }
+
             public LoginConfigData GetData(LoginConfigData data) {
                 ObjectSupport.CopyData(this, data);
                 return data;
@@ -117,7 +153,10 @@ namespace YetaWF.Modules.Identity.Controllers {
             public void SetData(LoginConfigData data) {
                 ObjectSupport.CopyData(data, this);
             }
-            public Model() { }
+            public Model() {
+                ConfigData = LoginConfigDataProvider.GetConfig();
+                NoExternalSettings = this.__ResStr("noExt", "No External Login Providers available");
+            }
         }
 
         [HttpGet]

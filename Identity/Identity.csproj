@@ -128,6 +128,7 @@
     <Compile Include="Controllers\LoginTwoStep.cs" />
     <Compile Include="Controllers\SelectTwoStepSetup.cs" />
     <Compile Include="Controllers\SelectTwoStepAuth.cs" />
+    <Compile Include="Models\UserLoginInfoDataProvider.cs" />
     <Compile Include="Modules\ForgotPassword.cs" />
     <Compile Include="Modules\SelectTwoStepSetup.cs" />
     <Compile Include="Modules\SelectTwoStepAuth.cs" />
@@ -214,6 +215,11 @@
       <SubType>Designer</SubType>
     </None>
     <None Include="Addons\_Main\SelectTwoStepSetup.scss" />
+    <Content Include="Addons\_Main\Icons\LoginProviders\Facebook.png" />
+    <Content Include="Addons\_Main\Icons\LoginProviders\Google.png" />
+    <Content Include="Addons\_Main\Icons\LoginProviders\Microsoft.png" />
+    <Content Include="Addons\_Main\Icons\LoginProviders\Twitter.png" />
+    <Content Include="Addons\_Main\Login.css" />
     <Content Include="Addons\_SiteTemplates\YetaWF_Identity.1.0.5.txt" />
     <Content Include="Addons\_Templates\RoleId\filelistCSS.txt" />
     <Content Include="Addons\_Templates\RoleId\RoleId.css" />
@@ -224,6 +230,7 @@
     <Content Include="Views\YetaWF_Identity_TwoStepDone.cshtml" />
     <None Include="Views\YetaWF_Identity_SelectTwoStepSetup.cshtml" />
     <None Include="Views\YetaWF_Identity_SelectTwoStepAuth.cshtml" />
+    <Content Include="Views\YetaWF_Identity_ExternalLoginOnly.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\CoreComponents\Core\Core.csproj">

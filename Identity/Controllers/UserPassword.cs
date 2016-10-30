@@ -3,11 +3,9 @@
 using Microsoft.AspNet.Identity;
 using Microsoft.Owin.Security;
 using System;
-using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using YetaWF.Core.Controllers;
-using YetaWF.Core.Identity;
 using YetaWF.Core.Localize;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Support;
@@ -36,15 +34,10 @@ namespace YetaWF.Modules.Identity.Controllers {
             public string ConfirmPassword { get; set; }
 
             public string UserName { get; set; }
-            public string LoginProvider { get; set; }
-            public bool HavePassword { get; set; }
 
             public void SetData(UserDefinition user) {
                 UserName = user.UserName;
-                LoginProvider = (from l in user.LoginInfoList select l.LoginProvider).FirstOrDefault();
-                HavePassword = user.PasswordHash != null;
             }
-
         }
 
         [HttpGet]
@@ -55,6 +48,10 @@ namespace YetaWF.Modules.Identity.Controllers {
                 throw new Error(this.__ResStr("noUser", "There is no logged on user"));
             string userName = User.Identity.Name;
 
+            using (UserLoginInfoDataProvider logInfoDP = new UserLoginInfoDataProvider()) {
+                if (logInfoDP.IsExternalUser(Manager.UserId))
+                    return View("ExternalLoginOnly", (object)null);
+            }
             UserManager<UserDefinition> userManager = Managers.GetUserManager();
             UserDefinition user = userManager.FindByName(userName);
             if (user == null)
@@ -76,6 +73,11 @@ namespace YetaWF.Modules.Identity.Controllers {
                 throw new Error(this.__ResStr("noUser", "There is no logged on user"));
             string userName = User.Identity.Name;
 
+            using (UserLoginInfoDataProvider logInfoDP = new UserLoginInfoDataProvider()) {
+                if (logInfoDP.IsExternalUser(Manager.UserId))
+                    throw new Error(this.__ResStr("extUser", "This account can only be accessed using an external login provider"));
+            }
+
             UserManager<UserDefinition> userManager = Managers.GetUserManager();
             UserDefinition user = userManager.FindByName(userName);
             if (user == null)
@@ -92,18 +94,13 @@ namespace YetaWF.Modules.Identity.Controllers {
                     ModelState.AddModelError("NewPassword", err);
                 return PartialView(model);
             }
-            if (model.LoginProvider != null && !model.HavePassword) {
-                // first time setting the password after logging in using an external login provider
-                user.PasswordHash = userManager.PasswordHasher.HashPassword(model.NewPassword);
-            } else {
-                result = userManager.ChangePassword(user.Id, model.OldPassword??"", model.NewPassword);
-                if (!result.Succeeded) {
-                    foreach (string err in result.Errors)
-                        ModelState.AddModelError("OldPassword", err);
-                    return PartialView(model);
-                }
-                user.PasswordHash = userManager.PasswordHasher.HashPassword(model.NewPassword);
+            result = userManager.ChangePassword(user.Id, model.OldPassword??"", model.NewPassword);
+            if (!result.Succeeded) {
+                foreach (string err in result.Errors)
+                    ModelState.AddModelError("OldPassword", err);
+                return PartialView(model);
             }
+            user.PasswordHash = userManager.PasswordHasher.HashPassword(model.NewPassword);
 
             // update user info
             LoginConfigData config = LoginConfigDataProvider.GetConfig();

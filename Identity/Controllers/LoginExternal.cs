@@ -2,7 +2,9 @@
 
 using Microsoft.Owin.Security;
 using System;
+using System.Collections.Generic;
 using System.Collections.Specialized;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
@@ -34,7 +36,7 @@ namespace YetaWF.Modules.Identity.Controllers {
             // Request a redirect to the external login provider
             if (provider == null)
                 throw new InternalError("No provider");
-            return new ChallengeResult(provider, Url.Action("ExternalLoginCallback", "LoginExternal", new { }));
+            return new ChallengeResult(provider, Url.Action("ExternalLoginCallback", "LoginExternal", new { }, "https"));
         }
 
         [HttpGet]
@@ -44,6 +46,13 @@ namespace YetaWF.Modules.Identity.Controllers {
             if (loginInfo == null) {
                 Logging.AddErrorLog("AuthenticationManager.GetExternalLoginInfoAsync() returned null");
                 return Redirect(Helper.GetSafeReturnUrl(Manager.CurrentSite.LoginUrl));
+            }
+            using (LoginConfigDataProvider logConfigDP = new LoginConfigDataProvider()) {
+                List<AuthenticationDescription> loginProviders = logConfigDP.GetActiveExternalLoginProviders();
+                if ((from l in loginProviders where l.AuthenticationType == loginInfo.Login.LoginProvider select l).FirstOrDefault() == null) {
+                    Logging.AddErrorLog("Callback from external login provider {0} which is not active", loginInfo.Login.LoginProvider);
+                    return Redirect(Helper.GetSafeReturnUrl(Manager.CurrentSite.LoginUrl));
+                }
             }
 
             // get our registration defaults
