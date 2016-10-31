@@ -28,7 +28,7 @@ namespace YetaWF.Modules.Identity.Controllers {
             [UIHint("Enum")]
             public RegistrationTypeEnum RegistrationType { get; set; }
 
-            [Category("Accounts"), Caption("Save Password"), Description("Defines whether the user's password is saved so it can be recovered (and emailed to the user if necessary)")]
+            [Category("Accounts"), Caption("Save Password"), Description("Defines whether the user's password is saved so it can be recovered (and emailed to the user if necessary) - Not used for external login providers")]
             [UIHint("Boolean")]
             public bool SavePlainTextPassword { get; set; }
 

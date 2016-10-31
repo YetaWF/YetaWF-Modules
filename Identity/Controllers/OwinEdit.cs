@@ -34,17 +34,17 @@ namespace YetaWF.Modules.Identity.Controllers {
             [UIHint("TimeSpan"), Required]
             public TimeSpan ExpireTimeSpan { get; set; }
 
-            [Caption("Microsoft"), Description("Provides a link to Microsoft to set up authentication for your sites")]
+            [Caption("Facebook"), Description("Provides a link to Facebook to set up authentication for your sites")]
             [UIHint("Url"), ReadOnly]
-            public string MicrosoftUrl { get; set; }
-            [Caption("Microsoft Public Key"), Description("The public key for authentication using Microsoft")]
+            public string FacebookUrl { get; set; }
+            [Caption("Facebook App ID"), Description("The App ID for authentication using Facebook (defined in Facebook)")]
             [UIHint("Text80"), StringLength(MaxKey), Trim]
             [ExcludeDemoMode]
-            public string MicrosoftPublic { get; set; }
-            [Caption("Microsoft Private Key"), Description("The private key for authentication using Microsoft")]
-            [UIHint("Text80"), RequiredIfSupplied("MicrosoftPublic"), StringLength(MaxKey), Trim]
+            public string FacebookPublic { get; set; }
+            [Caption("Facebook App Secret"), Description("The App Secret for authentication using Facebook (defined in Facebook)")]
+            [UIHint("Text80"), RequiredIfSupplied("FacebookPublic"), StringLength(MaxKey), Trim]
             [ExcludeDemoMode]
-            public string MicrosoftPrivate { get; set; }
+            public string FacebookPrivate { get; set; }
 
             [Caption("Google"), Description("Provides a link to Google to set up authentication for your sites")]
             [UIHint("Url"), ReadOnly]
@@ -58,17 +58,17 @@ namespace YetaWF.Modules.Identity.Controllers {
             [ExcludeDemoMode]
             public string GooglePrivate { get; set; }
 
-            [Caption("Facebook"), Description("Provides a link to Facebook to set up authentication for your sites")]
+            [Caption("Microsoft"), Description("Provides a link to Microsoft to set up authentication for your sites")]
             [UIHint("Url"), ReadOnly]
-            public string FacebookUrl { get; set; }
-            [Caption("Facebook App ID"), Description("The App ID for authentication using Facebook (defined in Facebook)")]
+            public string MicrosoftUrl { get; set; }
+            [Caption("Microsoft Public Key"), Description("The public key for authentication using Microsoft")]
             [UIHint("Text80"), StringLength(MaxKey), Trim]
             [ExcludeDemoMode]
-            public string FacebookPublic { get; set; }
-            [Caption("Facebook App Secret"), Description("The App Secret for authentication using Facebook (defined in Facebook)")]
-            [UIHint("Text80"), RequiredIfSupplied("FacebookPublic"), StringLength(MaxKey), Trim]
+            public string MicrosoftPublic { get; set; }
+            [Caption("Microsoft Private Key"), Description("The private key for authentication using Microsoft")]
+            [UIHint("Text80"), RequiredIfSupplied("MicrosoftPublic"), StringLength(MaxKey), Trim]
             [ExcludeDemoMode]
-            public string FacebookPrivate { get; set; }
+            public string MicrosoftPrivate { get; set; }
 
             [Caption("Twitter"), Description("Provides a link to Twitter to set up authentication for your sites")]
             [UIHint("Url"), ReadOnly]
