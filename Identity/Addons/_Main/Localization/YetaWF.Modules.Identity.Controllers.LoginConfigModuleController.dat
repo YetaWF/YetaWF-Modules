@@ -23,6 +23,8 @@
                       <Value Value="Accounts" />
                       <Key Value="Captcha" />
                       <Value Value="Captcha" />
+                      <Key Value="External" />
+                      <Value Value="External" />
                       <Key Value="Notifications" />
                       <Value Value="Notifications" />
                       <Key Value="Urls" />
@@ -157,6 +159,18 @@
                       <Value>
                         <Object Type="YetaWF.Core.Localize.LocalizationData+PropertyData" Assembly="YetaWF.Core">
                           <Properties>
+                            <Name Value="NoExternalSettings" />
+                            <Caption Value="Settings" />
+                            <Description Value="External Login Provider Settings have not been defined" />
+                            <HelpLink />
+                            <TextAbove />
+                            <TextBelow />
+                          </Properties>
+                        </Object>
+                      </Value>
+                      <Value>
+                        <Object Type="YetaWF.Core.Localize.LocalizationData+PropertyData" Assembly="YetaWF.Core">
+                          <Properties>
                             <Name Value="NotifyAdminNewUsers" />
                             <Caption Value="Notify Admin - New User" />
                             <Description Value="Defines whether the administrator receives email notification when a new user account is created by a new user" />
@@ -219,7 +233,7 @@
                           <Properties>
                             <Name Value="SavePlainTextPassword" />
                             <Caption Value="Save Password" />
-                            <Description Value="Defines whether the user's password is saved so it can be recovered (and emailed to the user if necessary)" />
+                            <Description Value="Defines whether the user's password is saved so it can be recovered (and emailed to the user if necessary) - Not used for external login providers" />
                             <HelpLink />
                             <TextAbove />
                             <TextBelow />
@@ -232,6 +246,54 @@
                             <Name Value="SuspendedUrl" />
                             <Caption Value="Suspended Url" />
                             <Description Value="The Url where the user is redirected when his/her account has been suspended" />
+                            <HelpLink />
+                            <TextAbove />
+                            <TextBelow />
+                          </Properties>
+                        </Object>
+                      </Value>
+                      <Value>
+                        <Object Type="YetaWF.Core.Localize.LocalizationData+PropertyData" Assembly="YetaWF.Core">
+                          <Properties>
+                            <Name Value="UseFacebook" />
+                            <Caption Value="Facebook" />
+                            <Description Value="Allow login using a user's Facebook account" />
+                            <HelpLink />
+                            <TextAbove />
+                            <TextBelow />
+                          </Properties>
+                        </Object>
+                      </Value>
+                      <Value>
+                        <Object Type="YetaWF.Core.Localize.LocalizationData+PropertyData" Assembly="YetaWF.Core">
+                          <Properties>
+                            <Name Value="UseGoogle" />
+                            <Caption Value="Google" />
+                            <Description Value="Allow login using a user's Google account" />
+                            <HelpLink />
+                            <TextAbove />
+                            <TextBelow />
+                          </Properties>
+                        </Object>
+                      </Value>
+                      <Value>
+                        <Object Type="YetaWF.Core.Localize.LocalizationData+PropertyData" Assembly="YetaWF.Core">
+                          <Properties>
+                            <Name Value="UseMicrosoft" />
+                            <Caption Value="Microsoft" />
+                            <Description Value="Allow login using a user's Microsoft account" />
+                            <HelpLink />
+                            <TextAbove />
+                            <TextBelow />
+                          </Properties>
+                        </Object>
+                      </Value>
+                      <Value>
+                        <Object Type="YetaWF.Core.Localize.LocalizationData+PropertyData" Assembly="YetaWF.Core">
+                          <Properties>
+                            <Name Value="UseTwitter" />
+                            <Caption Value="Twitter" />
+                            <Description Value="Allow login using a user's Twitter account" />
                             <HelpLink />
                             <TextAbove />
                             <TextBelow />
@@ -281,6 +343,14 @@
       <Object Type="YetaWF.Core.Serializers.SerializableList`1[[YetaWF.Core.Localize.LocalizationData+StringData, YetaWF.Core, Culture=neutral, PublicKeyToken=null]]" Assembly="YetaWF.Core">
         <Properties />
         <List>
+          <Value>
+            <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
+              <Properties>
+                <Name Value="noExt" />
+                <Text Value="No External Login Providers available" />
+              </Properties>
+            </Object>
+          </Value>
           <Value>
             <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
               <Properties>

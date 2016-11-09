@@ -124,6 +124,18 @@
                       <Value>
                         <Object Type="YetaWF.Core.Localize.LocalizationData+PropertyData" Assembly="YetaWF.Core">
                           <Properties>
+                            <Name Value="LoginProviders" />
+                            <Caption Value="Login Provider" />
+                            <Description Value="The external login provider(s) defining this account" />
+                            <HelpLink />
+                            <TextAbove />
+                            <TextBelow />
+                          </Properties>
+                        </Object>
+                      </Value>
+                      <Value>
+                        <Object Type="YetaWF.Core.Localize.LocalizationData+PropertyData" Assembly="YetaWF.Core">
+                          <Properties>
                             <Name Value="PasswordChangeIP" />
                             <Caption Value="Password Change IP" />
                             <Description Value="The IP address from which the user last changed the password on this site" />

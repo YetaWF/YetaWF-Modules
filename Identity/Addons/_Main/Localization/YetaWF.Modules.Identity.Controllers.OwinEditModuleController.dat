@@ -12,7 +12,7 @@
               <Properties>
                 <Name Value="YetaWF.Modules.Identity.Controllers.OwinEditModuleController+EditModel" />
                 <BaseTypeName />
-                <Header />
+                <Header Value="External login provider settings apply to all sites within this YetaWF instance." />
                 <Footer />
                 <Legend />
                 <Categories>
@@ -41,8 +41,8 @@
                         <Object Type="YetaWF.Core.Localize.LocalizationData+PropertyData" Assembly="YetaWF.Core">
                           <Properties>
                             <Name Value="FacebookPrivate" />
-                            <Caption Value="Facebook Private Key" />
-                            <Description Value="The private key for authentication using Facebook" />
+                            <Caption Value="Facebook App Secret" />
+                            <Description Value="The App Secret for authentication using Facebook (defined in Facebook)" />
                             <HelpLink />
                             <TextAbove />
                             <TextBelow />
@@ -53,8 +53,8 @@
                         <Object Type="YetaWF.Core.Localize.LocalizationData+PropertyData" Assembly="YetaWF.Core">
                           <Properties>
                             <Name Value="FacebookPublic" />
-                            <Caption Value="Facebook Public Key" />
-                            <Description Value="The public key for authentication using Facebook" />
+                            <Caption Value="Facebook App ID" />
+                            <Description Value="The App ID for authentication using Facebook (defined in Facebook)" />
                             <HelpLink />
                             <TextAbove />
                             <TextBelow />
@@ -77,8 +77,8 @@
                         <Object Type="YetaWF.Core.Localize.LocalizationData+PropertyData" Assembly="YetaWF.Core">
                           <Properties>
                             <Name Value="GooglePrivate" />
-                            <Caption Value="Google Private Key" />
-                            <Description Value="The private key for authentication using Google" />
+                            <Caption Value="Google Client Secret" />
+                            <Description Value="The Client Secret for authentication using Google (defined using Google)" />
                             <HelpLink />
                             <TextAbove />
                             <TextBelow />
@@ -89,8 +89,8 @@
                         <Object Type="YetaWF.Core.Localize.LocalizationData+PropertyData" Assembly="YetaWF.Core">
                           <Properties>
                             <Name Value="GooglePublic" />
-                            <Caption Value="Google Public Key" />
-                            <Description Value="The public key for authentication using Google" />
+                            <Caption Value="Google Client ID" />
+                            <Description Value="The Client ID for authentication using Google (defined using Google)" />
                             <HelpLink />
                             <TextAbove />
                             <TextBelow />
@@ -161,8 +161,8 @@
                         <Object Type="YetaWF.Core.Localize.LocalizationData+PropertyData" Assembly="YetaWF.Core">
                           <Properties>
                             <Name Value="TwitterPrivate" />
-                            <Caption Value="Twitter Private Key" />
-                            <Description Value="The private key for authentication using Twitter" />
+                            <Caption Value="Twitter Consumer Secret" />
+                            <Description Value="The Consumer Secret (API Secret) for authentication using Twitter (defined using Twitter)" />
                             <HelpLink />
                             <TextAbove />
                             <TextBelow />
@@ -173,8 +173,8 @@
                         <Object Type="YetaWF.Core.Localize.LocalizationData+PropertyData" Assembly="YetaWF.Core">
                           <Properties>
                             <Name Value="TwitterPublic" />
-                            <Caption Value="Twitter Public Key" />
-                            <Description Value="The public key for authentication using Twitter" />
+                            <Caption Value="Twitter Consumer Key" />
+                            <Description Value="The Consumer Key (API Key) for authentication using Twitter (defined using Twitter)" />
                             <HelpLink />
                             <TextAbove />
                             <TextBelow />

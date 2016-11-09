@@ -131,6 +131,14 @@
           <Value>
             <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
               <Properties>
+                <Name Value="logAccountTitle" />
+                <Text Value="Log in using your {0} account" />
+              </Properties>
+            </Object>
+          </Value>
+          <Value>
+            <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
+              <Properties>
                 <Name Value="noItem" />
                 <Text Value="No user name specified" />
               </Properties>
@@ -156,7 +164,7 @@
             <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
               <Properties>
                 <Name Value="okAwaitApproval" />
-                <Text Value="An email has just been sent to the site adminstrator for approval of your new account. Once processed and approved, you will receive an email confirming your approval." />
+                <Text Value="An email has just been sent to the site administrator for approval of your new account. Once processed and approved, you will receive an email confirming your approval." />
               </Properties>
             </Object>
           </Value>
