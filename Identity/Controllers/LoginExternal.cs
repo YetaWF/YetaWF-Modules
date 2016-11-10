@@ -10,7 +10,6 @@ using System.Web;
 using System.Web.Mvc;
 using YetaWF.Core.Localize;
 using YetaWF.Core.Log;
-using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Modules;
 using YetaWF.Core.Support;
 using YetaWF.Modules.Identity.DataProvider;
@@ -31,9 +30,11 @@ namespace YetaWF.Modules.Identity.Controllers {
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [ExcludeDemoMode]
+        //[ExcludeDemoMode]
         public ActionResult ExternalLogin(string provider) {
             // Request a redirect to the external login provider
+            if (Manager.IsDemo)
+                throw new Error("This action is not available in Demo mode.");
             if (provider == null)
                 throw new InternalError("No provider");
             return new ChallengeResult(provider, Url.Action("ExternalLoginCallback", "LoginExternal", new { }, "https"));
