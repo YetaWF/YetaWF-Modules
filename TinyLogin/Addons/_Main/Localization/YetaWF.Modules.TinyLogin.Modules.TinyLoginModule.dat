@@ -93,6 +93,18 @@
                       <Value>
                         <Object Type="YetaWF.Core.Localize.LocalizationData+PropertyData" Assembly="YetaWF.Core">
                           <Properties>
+                            <Name Value="UsePopup" />
+                            <Caption Value="Use Popup Windows" />
+                            <Description Value="Use popup windows to Login and Register" />
+                            <HelpLink />
+                            <TextAbove />
+                            <TextBelow />
+                          </Properties>
+                        </Object>
+                      </Value>
+                      <Value>
+                        <Object Type="YetaWF.Core.Localize.LocalizationData+PropertyData" Assembly="YetaWF.Core">
+                          <Properties>
                             <Name Value="UserTooltip" />
                             <Caption Value="User Tooltip" />
                             <Description Value="The tooltip shown for the user name link" />

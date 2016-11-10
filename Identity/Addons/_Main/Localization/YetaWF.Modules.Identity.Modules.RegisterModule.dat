@@ -31,7 +31,7 @@
             <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
               <Properties>
                 <Name Value="accts" />
-                <Text Value="Log in using one these accounts:" />
+                <Text Value="Log in using one of these accounts:" />
               </Properties>
             </Object>
           </Value>
