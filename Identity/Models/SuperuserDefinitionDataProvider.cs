@@ -133,71 +133,11 @@ namespace YetaWF.Modules.Identity.DataProvider {
         public bool InstallModel(List<string> errorList) {
             if (!DataProvider.InstallModel(errorList))
                 return false;
-            string packageName = AreaRegistration.CurrentPackage.AreaName;
-            // web.config
-            WebConfigHelper.SetValue("owin:AutomaticAppStartup", "true");
-            // <add key="P:YetaWF_Identity:SuperUserName" value="Superuser" />
-            WebConfigHelper.SetValue<string>(packageName, "SuperUserName", SuperUserName);
-            // <add key="P:YetaWF_Identity:OWin:AuthenticationType" value="ApplicationCookie" />
-            WebConfigHelper.SetValue<string>(packageName, "OWin:AuthenticationType", "ApplicationCookie");
-            // <add key="P:YetaWF_Identity:OWin:ExpireTimeSpan" value="..." />
-            WebConfigHelper.SetValue<string>(packageName, "OWin:ExpireTimeSpan", new TimeSpan(365,0,0).Ticks.ToString());
-            // <add key="P:YetaWF_Identity:OWin:SlidingExpiration" value="1" />
-            WebConfigHelper.SetValue<string>(packageName, "OWin:SlidingExpiration", "1");
-            // <add key="P:YetaWF_Identity:MicrosoftAccount:Public" value="" />
-            // <add key="P:YetaWF_Identity:MicrosoftAccount:Private" value="" />
-            WebConfigHelper.SetValue<string>(packageName, "MicrosoftAccount:Public", "");
-            WebConfigHelper.SetValue<string>(packageName, "MicrosoftAccount:Private", "");
-            // <add key="P:YetaWF_Identity:Twitter:Public" value="" />
-            // <add key="P:YetaWF_Identity:Twitter:Private" value="" />
-            WebConfigHelper.SetValue<string>(packageName, "TwitterAccount:Public", "");
-            WebConfigHelper.SetValue<string>(packageName, "TwitterAccount:Private", "");
-            // <add key="P:YetaWF_Identity:Facebook:Public" value="" />
-            // <add key="P:YetaWF_Identity:Facebook:Private" value="" />
-            WebConfigHelper.SetValue<string>(packageName, "FacebookAccount:Public", "");
-            WebConfigHelper.SetValue<string>(packageName, "FacebookAccount:Private", "");
-            // <add key="P:YetaWF_Identity:Google:Public" value="" />
-            // <add key="P:YetaWF_Identity:Google:Private" value="" />
-            WebConfigHelper.SetValue<string>(packageName, "GoogleAccount:Public", "");
-            WebConfigHelper.SetValue<string>(packageName, "GoogleAccount:Private", "");
-
             // add the one and only superuser
             DataProvider.Add(GetSuperuserUser());
-
             return true;
         }
         public bool UninstallModel(List<string> errorList) {
-            // web.config
-
-            string packageName = AreaRegistration.CurrentPackage.AreaName;
-            WebConfigHelper.RemoveValue(packageName, "SuperUserName");
-
-            WebConfigHelper.RemoveValue("owin:AutomaticAppStartup");
-            // <add key="P:YetaWF_Identity:SuperUserName" value="Superuser" />
-            WebConfigHelper.RemoveValue(packageName, "SuperUserName");
-            // <add key="P:YetaWF_Identity:OWin:AuthenticationType" value="ApplicationCookie" />
-            WebConfigHelper.RemoveValue(packageName, "OWin:AuthenticationType");
-            // <add key="P:YetaWF_Identity:OWin:ExpireTimeSpan" value="..." />
-            WebConfigHelper.RemoveValue(packageName, "OWin:ExpireTimeSpan");
-            // <add key="P:YetaWF_Identity:OWin:SlidingExpiration" value="1" />
-            WebConfigHelper.RemoveValue(packageName, "OWin:SlidingExpiration");
-            // <add key="P:YetaWF_Identity:MicrosoftAccount:Public" value="" />
-            // <add key="P:YetaWF_Identity:MicrosoftAccount:Private" value="" />
-            WebConfigHelper.RemoveValue(packageName, "MicrosoftAccount:Public");
-            WebConfigHelper.RemoveValue(packageName, "MicrosoftAccount:Private");
-            // <add key="P:YetaWF_Identity:Twitter:Public" value="" />
-            // <add key="P:YetaWF_Identity:Twitter:Private" value="" />
-            WebConfigHelper.RemoveValue(packageName, "TwitterAccount:Public");
-            WebConfigHelper.RemoveValue(packageName, "TwitterAccount:Private");
-            // <add key="P:YetaWF_Identity:Facebook:Public" value="" />
-            // <add key="P:YetaWF_Identity:Facebook:Private" value="" />
-            WebConfigHelper.RemoveValue(packageName, "FacebookAccount:Public");
-            WebConfigHelper.RemoveValue(packageName, "FacebookAccount:Private");
-            // <add key="P:YetaWF_Identity:Google:Public" value="" />
-            // <add key="P:YetaWF_Identity:Google:Private" value="" />
-            WebConfigHelper.RemoveValue(packageName, "GoogleAccount:Public");
-            WebConfigHelper.RemoveValue(packageName, "GoogleAccount:Private");
-
             return DataProvider.UninstallModel(errorList);
         }
         public void AddSiteData() { }
