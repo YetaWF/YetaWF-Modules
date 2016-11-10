@@ -3,6 +3,7 @@
 using System;
 using System.Web.Mvc;
 using YetaWF.Core;
+using YetaWF.Core.DataProvider.Attributes;
 using YetaWF.Core.IO;
 using YetaWF.Core.Localize;
 using YetaWF.Core.Models;
@@ -38,6 +39,13 @@ namespace YetaWF.Modules.TinyLogin.Modules {
 
         public override IModuleDefinitionIO GetDataProvider() { return new TinyLoginModuleDataProvider(); }
         public override bool ShowActionMenu { get { return false; } }
+
+        [Category("General"), Caption("Use Popup Windows"), Description("Use popup windows to Login and Register")]
+        [UIHint("Boolean")]
+        [Data_DontSave]
+        public bool UsePopup { get { return !UseFullPage; } set { UseFullPage = !value; } }
+        [Data_NewValue("(0)")]
+        public bool UseFullPage { get; set; }
 
         [Category("General"), Caption("Allow New Users"), Description("Allow registration of new users")]
         [UIHint("Boolean")]
@@ -82,7 +90,7 @@ namespace YetaWF.Modules.TinyLogin.Modules {
                 Image = "Login.png",
                 Tooltip = this.__ResStr("loginTooltip", "Click to log into this site using your existing account"),
                 Legend = this.__ResStr("loginLegend", "Logs into this site using your existing account"),
-                Style = ModuleAction.ActionStyleEnum.Popup,
+                Style = UseFullPage ? ModuleAction.ActionStyleEnum.Normal : ModuleAction.ActionStyleEnum.Popup,
                 Category = ModuleAction.ActionCategoryEnum.Update,
                 Mode = ModuleAction.ActionModeEnum.Any,
                 Location = ModuleAction.ActionLocationEnum.NoAuto,
@@ -98,7 +106,7 @@ namespace YetaWF.Modules.TinyLogin.Modules {
                 Image = "Register.png",
                 Tooltip = this.__ResStr("registerTooltip", "Click to register a new account for access to this site"),
                 Legend = this.__ResStr("registerLegend", "register to access this site with a new account"),
-                Style = ModuleAction.ActionStyleEnum.Popup,
+                Style = UseFullPage ? ModuleAction.ActionStyleEnum.Normal : ModuleAction.ActionStyleEnum.Popup,
                 Category = ModuleAction.ActionCategoryEnum.Update,
                 Mode = ModuleAction.ActionModeEnum.Any,
                 Location = ModuleAction.ActionLocationEnum.NoAuto,
