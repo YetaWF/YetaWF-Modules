@@ -27,7 +27,6 @@ namespace YetaWF.Modules.SiteProperties.Models {
             SiteDefinition.SaveSiteDefinition = SaveSiteDefinition;
             SiteDefinition.RemoveSiteDefinition = RemoveSiteDefinition;
             SiteDefinition.GetSites = GetItems;
-            SiteCache = new Dictionary<string, SiteDefinition>();
         }
 
         // IMPLEMENTATION
@@ -36,6 +35,9 @@ namespace YetaWF.Modules.SiteProperties.Models {
 
         public const string LOCKEDURL = "/Maintenance/Offline For Maintenance.html";
 
+        static SiteDefinitionDataProvider() {
+            SiteCache = new Dictionary<string, SiteDefinition>();
+        }
         public SiteDefinitionDataProvider() : base(0) { SetDataProvider(DataProvider); }
 
         // SQL, File
@@ -87,7 +89,7 @@ namespace YetaWF.Modules.SiteProperties.Models {
         /// Load the site definition for the current site
         /// </summary>
         /// <returns></returns>
-        internal SiteDefinition LoadSiteDefinition(string siteDomain) {
+        public SiteDefinition LoadSiteDefinition(string siteDomain) {
             if (DataProvider.IsInstalled()) {
                 SiteDefinition site;
                 if (siteDomain == null || string.Compare(siteDomain, "Localhost", true) == 0)
@@ -145,7 +147,7 @@ namespace YetaWF.Modules.SiteProperties.Models {
         }
 
         private void AddLockedStatus(SiteDefinition siteDef) {
-            string lockedForIP = WebConfigHelper.GetValue<string>(YetaWF.Core.Controllers.AreaRegistration.CurrentPackage.AreaName, "LOCKED-FOR-IP");
+            string lockedForIP = WebConfigHelper.GetValue<string>("YetaWF_Core", "LOCKED-FOR-IP");
             if (!string.IsNullOrWhiteSpace(lockedForIP)) {
                 // web config
                 siteDef.LockedExternal = true;// locked by web config
