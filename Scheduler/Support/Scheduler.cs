@@ -335,7 +335,7 @@ namespace YetaWF.Modules.Scheduler.Support {
 
                 TimeSpan diff = DateTime.UtcNow - now;
                 item.RunTime = diff;
-                errors.AppendLine(Logging.AddErrorLog("Schedule item '{0}' took {1} milliseconds.", item.Name, diff));
+                errors.AppendLine(Logging.AddErrorLog("Elapsed time for schedule item '{0}' was {1} (hh:mm:ss.ms).", item.Name, diff));
 
             } catch (Exception exc) {
                 errors.AppendLine(Logging.AddErrorLog("Scheduler item {0} failed.", item.Name, exc));
