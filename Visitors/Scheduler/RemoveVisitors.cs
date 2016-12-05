@@ -40,7 +40,7 @@ namespace YetaWF.Modules.Visitors.Scheduler {
 
         public void Remove(List<string> errorList)
         {
-            DateTime oldest = DateTime.UtcNow.AddMonths(-1); // once we have all new keywords, delete all data that was added before this date/time
+            DateTime oldest = DateTime.UtcNow.AddMonths(-1);
             using (VisitorEntryDataProvider visitorEntryDP = new VisitorEntryDataProvider()) {
                 List<DataProviderFilterInfo> filters = DataProviderFilterInfo.Join(null, new DataProviderFilterInfo { Field="AccessDateTime", Operator="<", Value = oldest});
                 int removed = visitorEntryDP.RemoveItems(filters);
