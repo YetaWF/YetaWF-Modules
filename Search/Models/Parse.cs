@@ -14,15 +14,21 @@ namespace YetaWF.Modules.Search.DataProvider {
             using (SearchDataProvider searchDP = new SearchDataProvider()) {
                 haveMore = false;
 
+                extraFilters = DataProviderFilterInfo.Join(extraFilters, new DataProviderFilterInfo { Field = "Language", Operator = "==", Value = languageId });
+                if (haveUser)
+                    extraFilters = DataProviderFilterInfo.Join(extraFilters, new DataProviderFilterInfo { Field = "AllowAnyUser", Operator = "==", Value = true });
+                else
+                    extraFilters = DataProviderFilterInfo.Join(extraFilters, new DataProviderFilterInfo { Field = "AllowAnonymous", Operator = "==", Value = true });
+
                 string s = searchTerms;
                 List<SearchData> urls = BuildNodes(searchDP, ref s, languageId, haveUser, extraFilters);
 
                 List<DataProvider.SearchResult> results = (from u in urls group u by u.SearchDataUrlId into g select new SearchResult {
-                    Count = g.Count(),
+                    Count = g.Sum(x => x.Count),
                     PageUrl = g.Select(m => m.PageUrl).FirstOrDefault(),
                     DateCreated = g.Select(m => m.DatePageCreated).FirstOrDefault(),
                     DateUpdated = g.Select(m => m.DatePageUpdated).FirstOrDefault(),
-                     Description = g.Select(m => m.PageDescription).FirstOrDefault(),
+                    Description = g.Select(m => m.PageDescription).FirstOrDefault(),
                 }).OrderByDescending(m => m.Count).Take(maxResults + 1).ToList();
 
                 haveMore = (results.Count >= maxResults);
@@ -78,31 +84,23 @@ namespace YetaWF.Modules.Search.DataProvider {
                             List<SearchData> rhsList = BuildNodes(searchDP, ref search, languageId, haveUser, extraFilters);
                             list = list.Intersect(rhsList, new SearchDataComparer()).ToList();
                         } else {
-                            List<DataProviderFilterInfo> filters = extraFilters;
+                            List<DataProviderFilterInfo> filters = DataProviderFilterInfo.Copy(extraFilters);
                             if (token.EndsWith("*")) {
                                 token = token.TrimEnd(new char[] { '*' });
                                 filters = DataProviderFilterInfo.Join(filters, new DataProviderFilterInfo { Field = "SearchTerm", Operator = "StartsWith", Value = token });
                             } else
                                 filters = DataProviderFilterInfo.Join(filters, new DataProviderFilterInfo { Field = "SearchTerm", Operator = "==", Value = token });
-                            filters = DataProviderFilterInfo.Join(filters, new DataProviderFilterInfo { Field = "Language", Operator = "==", Value = languageId });
-                            if (haveUser)
-                                filters = DataProviderFilterInfo.Join(filters, new DataProviderFilterInfo { Field = "AllowAnyUser", Operator = "==", Value = true });
-                            else
-                                filters = DataProviderFilterInfo.Join(filters, new DataProviderFilterInfo { Field = "AllowAnonymous", Operator = "==", Value = true });
                             int total;
                             List<SearchData> rhsList = searchDP.GetItemsWithUrl(0, 0, null, filters, out total);
                             list = list.Intersect(rhsList, new SearchDataComparer()).ToList();
                         }
                     } else {
-                        List<DataProviderFilterInfo> filters = extraFilters;
+                        List<DataProviderFilterInfo> filters = DataProviderFilterInfo.Copy(extraFilters);
                         if (token.EndsWith("*")) {
                             token = token.TrimEnd(new char[] { '*' });
                             filters = DataProviderFilterInfo.Join(filters, new DataProviderFilterInfo { Field = "SearchTerm", Operator = "StartsWith", Value = token });
                         } else
                             filters = DataProviderFilterInfo.Join(filters, new DataProviderFilterInfo { Field = "SearchTerm", Operator = "==", Value = token });
-                        filters = DataProviderFilterInfo.Join(filters, new DataProviderFilterInfo { Field = "Language", Operator = "==", Value = languageId });
-                        if (!haveUser)
-                            filters = DataProviderFilterInfo.Join(filters, new DataProviderFilterInfo { Field = "AllowAnonymous", Operator = "==", Value = true });
                         int total;
                         list = searchDP.GetItemsWithUrl(0, 0, null, filters, out total);
                     }
