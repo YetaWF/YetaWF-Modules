@@ -138,7 +138,7 @@ namespace YetaWF.Modules.Identity.DataProvider {
         /// <returns></returns>
         public bool RemoveItem(int userId) {
             List<DataProviderFilterInfo> filters = null;
-            filters = DataProviderFilterInfo.Join(filters, new DataProviderFilterInfo { Field = "UserId", Logic = "==", Value = userId });
+            filters = DataProviderFilterInfo.Join(filters, new DataProviderFilterInfo { Field = "UserId", Operator = "==", Value = userId });
             return RemoveItems(filters) > 0;
         }
         /// <summary>
