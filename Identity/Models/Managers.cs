@@ -24,6 +24,7 @@ namespace YetaWF.Modules.Identity.Models {
                 PermanentManager.AddObject<UserStore>(userStore);
 
                 userManager = new UserManager<UserDefinition>(userStore);
+                userManager.UserValidator = new UserValidator<UserDefinition>(userManager) { AllowOnlyAlphanumericUserNames = false };
                 PermanentManager.AddObject<UserManager<UserDefinition>>(userManager);
                 return userManager;
             }
