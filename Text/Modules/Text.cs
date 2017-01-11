@@ -1,4 +1,4 @@
-﻿/* Copyright © 2016 Softel vdm, Inc. - http://yetawf.com/Documentation/YetaWF/Text#License */
+﻿/* Copyright © 2017 Softel vdm, Inc. - http://yetawf.com/Documentation/YetaWF/Text#License */
 
 using System;
 using System.Collections.Generic;

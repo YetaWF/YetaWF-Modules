@@ -1,4 +1,4 @@
-/* Copyright © 2016 Softel vdm, Inc. - http://yetawf.com/Documentation/YetaWF/IFrame#License */
+/* Copyright © 2017 Softel vdm, Inc. - http://yetawf.com/Documentation/YetaWF/IFrame#License */
 
 using System.Web.Mvc;
 using YetaWF.Core.Controllers;

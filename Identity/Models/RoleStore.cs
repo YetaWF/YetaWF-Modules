@@ -1,4 +1,4 @@
-﻿/* Copyright © 2016 Softel vdm, Inc. - http://yetawf.com/Documentation/YetaWF/Identity#License */
+﻿/* Copyright © 2017 Softel vdm, Inc. - http://yetawf.com/Documentation/YetaWF/Identity#License */
 
 using Microsoft.AspNet.Identity;
 using YetaWF.Core.DataProvider;

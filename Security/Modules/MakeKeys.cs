@@ -1,4 +1,4 @@
-﻿/* Copyright © 2016 Softel vdm, Inc. - http://yetawf.com/Documentation/YetaWF/Security#License */
+﻿/* Copyright © 2017 Softel vdm, Inc. - http://yetawf.com/Documentation/YetaWF/Security#License */
 
 using System;
 using YetaWF.Core.IO;

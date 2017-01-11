@@ -1,4 +1,4 @@
-﻿/* Copyright © 2016 Softel vdm, Inc. - http://yetawf.com/Documentation/YetaWF/SlideShow#License */
+﻿/* Copyright © 2017 Softel vdm, Inc. - http://yetawf.com/Documentation/YetaWF/SlideShow#License */
 
 using System.Reflection;
 using System.Runtime.InteropServices;
@@ -10,7 +10,7 @@ using YetaWF.PackageAttributes;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Softel vdm, Inc.")]
 [assembly: AssemblyProduct("SlideShow")]
-[assembly: AssemblyCopyright("Copyright © 2016 - Softel vdm, Inc.")]
+[assembly: AssemblyCopyright("Copyright © 2017 - Softel vdm, Inc.")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 [assembly: ComVisible(false)]

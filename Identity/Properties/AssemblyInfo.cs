@@ -1,4 +1,4 @@
-﻿/* Copyright © 2016 Softel vdm, Inc. - http://yetawf.com/Documentation/YetaWF/Identity#License */
+﻿/* Copyright © 2017 Softel vdm, Inc. - http://yetawf.com/Documentation/YetaWF/Identity#License */
 
 using System.Reflection;
 using System.Runtime.InteropServices;
@@ -12,7 +12,7 @@ using YetaWF.Core.Packages;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Softel vdm, Inc.")]
 [assembly: AssemblyProduct("Identity")]
-[assembly: AssemblyCopyright("Copyright © 2016 - Softel vdm, Inc.")]
+[assembly: AssemblyCopyright("Copyright © 2017 - Softel vdm, Inc.")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 [assembly: ComVisible(false)]

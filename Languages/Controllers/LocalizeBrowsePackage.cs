@@ -1,4 +1,4 @@
-/* Copyright © 2016 Softel vdm, Inc. - http://yetawf.com/Documentation/YetaWF/Languages#License */
+/* Copyright © 2017 Softel vdm, Inc. - http://yetawf.com/Documentation/YetaWF/Languages#License */
 
 using Google.Apis.Services;
 using Google.Apis.Translate.v2;

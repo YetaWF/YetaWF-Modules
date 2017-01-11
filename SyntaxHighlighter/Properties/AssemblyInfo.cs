@@ -1,4 +1,4 @@
-﻿/* Copyright © 2016 Softel vdm, Inc. - http://yetawf.com/Documentation/YetaWF/SyntaxHighlighter#License */
+﻿/* Copyright © 2017 Softel vdm, Inc. - http://yetawf.com/Documentation/YetaWF/SyntaxHighlighter#License */
 
 using System.Reflection;
 using System.Runtime.InteropServices;
@@ -10,7 +10,7 @@ using YetaWF.Core.Packages;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Softel vdm, Inc.")]
 [assembly: AssemblyProduct("SyntaxHighlighter")]
-[assembly: AssemblyCopyright("Copyright © 2016 - Softel vdm, Inc.")]
+[assembly: AssemblyCopyright("Copyright © 2017 - Softel vdm, Inc.")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 [assembly: ComVisible(false)]
