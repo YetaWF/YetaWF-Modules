@@ -23,6 +23,7 @@ namespace YetaWF.Modules.SiteProperties.Models {
         // STARTUP
 
         public void InitializeApplicationStartup() {
+            // The SiteDefinitionDataProvider has two permanent disposable objects
             SiteDefinition.LoadSiteDefinition = LoadSiteDefinition;
             SiteDefinition.SaveSiteDefinition = SaveSiteDefinition;
             SiteDefinition.RemoveSiteDefinition = RemoveSiteDefinition;

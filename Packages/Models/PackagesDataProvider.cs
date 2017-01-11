@@ -148,8 +148,9 @@ namespace YetaWF.Modules.Packages.DataProvider {
             string sqlDboDefault, connDefault;
             DataProviderImpl.GetSQLInfo(out sqlDboDefault, out connDefault);
             if (!string.IsNullOrWhiteSpace(sqlDboDefault) && !string.IsNullOrWhiteSpace(connDefault)) {
-                SQLDataProviderImpl sql = new SQLDataProviderImpl(sqlDboDefault, connDefault, null, NoLanguages: true);
-                sql.DropAllTables();
+                using (SQLDataProviderImpl sql = new SQLDataProviderImpl(sqlDboDefault, connDefault, null, NoLanguages: true)) {
+                    sql.DropAllTables();
+                }
             }
 
             // File - Remove all folders (not files - those could be the sql db)

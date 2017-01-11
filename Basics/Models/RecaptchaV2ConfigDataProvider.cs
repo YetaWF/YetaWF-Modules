@@ -11,20 +11,23 @@ using YetaWF.Core.Views.Shared;
 
 namespace YetaWF.Modules.Basics.DataProvider {
 
-    public class RecaptchaV2ConfigDataProvider : DataProviderImpl, IInstallableModel, IInitializeApplicationStartup {
-
-        public static readonly int KEY = 1;
-
-        private static object _lockObject = new object();
+    public class RecaptchaV2ConfigDataProviderInit : IInitializeApplicationStartup {
 
         // STARTUP
         // STARTUP
         // STARTUP
 
         public void InitializeApplicationStartup() {
-            RecaptchaV2Config.LoadRecaptchaV2Config = LoadRecaptchaV2Config;
-            RecaptchaV2Config.SaveRecaptchaV2Config = SaveRecaptchaV2Config;
+            RecaptchaV2Config.LoadRecaptchaV2Config = RecaptchaV2ConfigDataProvider.LoadRecaptchaV2Config;
+            RecaptchaV2Config.SaveRecaptchaV2Config = RecaptchaV2ConfigDataProvider.SaveRecaptchaV2Config;
         }
+    }
+
+    public class RecaptchaV2ConfigDataProvider : DataProviderImpl, IInstallableModel {
+
+        public static readonly int KEY = 1;
+
+        private static object _lockObject = new object();
 
         // IMPLEMENTATION
         // IMPLEMENTATION

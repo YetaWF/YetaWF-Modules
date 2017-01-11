@@ -19,6 +19,7 @@ namespace YetaWF.Modules.Languages.DataProvider {
         // STARTUP
 
         public void InitializeApplicationStartup() {
+            // The SiteDefinitionDataProvider has two permanent disposable objects
             LanguageInfo.LanguagesAccess = (ILanguages) this;
         }
 

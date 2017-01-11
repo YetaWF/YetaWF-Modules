@@ -300,15 +300,17 @@ namespace YetaWF.Modules.Pages.DataProvider
         }
 
         private void GetDesignedPages_Sql(out DesignedPagesDictionaryByUrl designedPagesByUrl) {
-            IDataProvider<Guid, DesignedPage> dataProvider = new SQLSimpleObjectDataProvider<Guid, DesignedPage>(AreaName, SQLDbo, SQLConn, CurrentSiteIdentity: SiteIdentity);
-            int total;
-            List<DesignedPage> pages = dataProvider.GetRecords(0, 0, null, null, out total);
+            using (SQLSimpleObjectDataProvider<Guid, DesignedPage> dp = new SQLSimpleObjectDataProvider<Guid, DesignedPage>(AreaName, SQLDbo, SQLConn, CurrentSiteIdentity: SiteIdentity)) {
+                IDataProvider<Guid, DesignedPage> dataProvider = dp;
+                int total;
+                List<DesignedPage> pages = dataProvider.GetRecords(0, 0, null, null, out total);
 
-            DesignedPagesDictionaryByUrl byUrl = new DesignedPagesDictionaryByUrl();
-            foreach (DesignedPage page in pages) {
-                byUrl.Add(page.Url.ToLower(), page);
+                DesignedPagesDictionaryByUrl byUrl = new DesignedPagesDictionaryByUrl();
+                foreach (DesignedPage page in pages) {
+                    byUrl.Add(page.Url.ToLower(), page);
+                }
+                designedPagesByUrl = byUrl;
             }
-            designedPagesByUrl = byUrl;
         }
 
         private void GetDesignedPages_File(out DesignedPagesDictionaryByUrl designedPagesByUrl) {

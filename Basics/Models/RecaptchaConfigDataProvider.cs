@@ -11,20 +11,24 @@ using YetaWF.Core.Views.Shared;
 
 namespace YetaWF.Modules.Basics.DataProvider {
 
-    public class RecaptchaConfigDataProvider : DataProviderImpl, IInstallableModel, IInitializeApplicationStartup {
-
-        public static readonly int KEY = 1;
-
-        private static object _lockObject = new object();
+    public class RecaptchaConfigDataProviderInit : IInitializeApplicationStartup {
 
         // STARTUP
         // STARTUP
         // STARTUP
 
         public void InitializeApplicationStartup() {
-            RecaptchaConfig.LoadRecaptchaConfig = LoadRecaptchaConfig;
-            RecaptchaConfig.SaveRecaptchaConfig = SaveRecaptchaConfig;
+            RecaptchaConfig.LoadRecaptchaConfig = RecaptchaConfigDataProvider.LoadRecaptchaConfig;
+            RecaptchaConfig.SaveRecaptchaConfig = RecaptchaConfigDataProvider.SaveRecaptchaConfig;
         }
+
+    }
+
+    public class RecaptchaConfigDataProvider : DataProviderImpl, IInstallableModel {
+
+        public static readonly int KEY = 1;
+
+        private static object _lockObject = new object();
 
         // IMPLEMENTATION
         // IMPLEMENTATION
@@ -88,12 +92,16 @@ namespace YetaWF.Modules.Basics.DataProvider {
                 throw new InternalError("Can't save captcha configuration {0}", status);
         }
 
-        internal RecaptchaConfig LoadRecaptchaConfig() {
-            return GetItem();
+        internal static RecaptchaConfig LoadRecaptchaConfig() {
+            using (RecaptchaConfigDataProvider recaptchaDP = new RecaptchaConfigDataProvider()) {
+                return recaptchaDP.GetItem();
+            }
         }
 
-        internal void SaveRecaptchaConfig(RecaptchaConfig config) {
-            UpdateConfig(config);
+        internal static void SaveRecaptchaConfig(RecaptchaConfig config) {
+            using (RecaptchaConfigDataProvider recaptchaDP = new RecaptchaConfigDataProvider()) {
+                recaptchaDP.UpdateConfig(config);
+            }
         }
 
 

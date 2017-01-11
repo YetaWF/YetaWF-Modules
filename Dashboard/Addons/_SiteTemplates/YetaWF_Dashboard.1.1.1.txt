@@ -1,0 +1,13 @@
+﻿### Copyright © 2016 Softel vdm, Inc. - http://yetawf.com/Documentation/YetaWF/Licensing
+###
+### Dashboard Package Upgrade
+###
+
+::PAGE-SECTION::
+
+Administrator /Admin/Dashboard/DisposableTracker
+    Title=Disposable Objects Tracker
+    Admin > Dashboard > {YetaWF.Dashboard, YetaWF.Modules.Dashboard.Modules.DisposableTrackerBrowseModule}.GetAction_Items({CURRENTURL})
+    -
+    YetaWF.Dashboard, YetaWF.Modules.Dashboard.Modules.DisposableTrackerBrowseModule
+
