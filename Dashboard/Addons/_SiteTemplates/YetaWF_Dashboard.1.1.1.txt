@@ -11,3 +11,9 @@ Administrator /Admin/Dashboard/DisposableTracker
     -
     YetaWF.Dashboard, YetaWF.Modules.Dashboard.Modules.DisposableTrackerBrowseModule
 
+Administrator /Admin/Dashboard/Static Pages
+    Title=Loaded Static Pages
+    Admin > Dashboard > {YetaWF.Dashboard, YetaWF.Modules.Dashboard.Modules.StaticPagesBrowseModule}.GetAction_Items({CURRENTURL})
+    -
+    YetaWF.Dashboard, YetaWF.Modules.Dashboard.Modules.StaticPagesBrowseModule
+

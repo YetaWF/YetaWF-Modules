@@ -66,11 +66,13 @@
     <Compile Include="Controllers\AddonsBrowse.cs" />
     <Compile Include="Controllers\DisposableTrackerBrowse.cs" />
     <Compile Include="Controllers\HttpModulesBrowse.cs" />
+    <Compile Include="Controllers\StaticPagesBrowse.cs" />
     <Compile Include="Controllers\Status.cs" />
     <Compile Include="Modules\AddonDisplay.cs" />
     <Compile Include="Modules\AddonsBrowse.cs" />
     <Compile Include="Modules\DisposableTrackerBrowse.cs" />
     <Compile Include="Modules\HttpModulesBrowse.cs" />
+    <Compile Include="Modules\StaticPagesBrowse.cs" />
     <Compile Include="Modules\Status.cs" />
     <Compile Include="Startup\Info.cs" />
     <Compile Include="Startup\AreaRegistration.cs" />
@@ -88,6 +90,7 @@
     <None Include="Addons\_Main\Grids\AddonsBrowseModuleController.BrowseItem" />
     <None Include="Addons\_Main\Grids\HttpModulesBrowseModuleController.BrowseItem" />
     <None Include="Addons\_Main\Grids\DisposableTrackerBrowseModuleController.BrowseItem" />
+    <None Include="Addons\_Main\Grids\StaticPagesBrowseModuleController.BrowseItem" />
     <None Include="Views\YetaWF_Dashboard_AddonDisplay.cshtml" />
     <None Include="Views\YetaWF_Dashboard_AddonsBrowse.cshtml" />
     <None Include="Views\YetaWF_Dashboard_AddonsBrowse_Partial.cshtml" />
@@ -95,6 +98,8 @@
     <None Include="Views\YetaWF_Dashboard_DisposableTrackerBrowse_Partial.cshtml" />
     <None Include="Views\YetaWF_Dashboard_HttpModulesBrowse.cshtml" />
     <None Include="Views\YetaWF_Dashboard_HttpModulesBrowse_Partial.cshtml" />
+    <None Include="Views\YetaWF_Dashboard_StaticPagesBrowse.cshtml" />
+    <None Include="Views\YetaWF_Dashboard_StaticPagesBrowse_Partial.cshtml" />
     <None Include="Views\YetaWF_Dashboard_Status.cshtml" />
   </ItemGroup>
   <ItemGroup>
