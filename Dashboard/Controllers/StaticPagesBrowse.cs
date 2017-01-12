@@ -36,15 +36,21 @@ namespace YetaWF.Modules.Dashboard.Controllers {
             [Caption("Type"), Description("The type of storage used for the static page")]
             [UIHint("Enum"), ReadOnly]
             public StaticPageManager.PageEntryEnum StorageType { get; set; }
-            [Caption("Local File"), Description("The local file containing the contents of the static page")]
-            [UIHint("String"), ReadOnly]
-            public string FileName { get; set; }
+            [Caption("Local Files"), Description("The local file(s) containing the contents of the static page")]
+            [UIHint("ListOfStrings"), AdditionalMetadata("Delimiter", "<br/>"), ReadOnly]
+            public List<string> FileNames { get; set; }
 
             private StaticPagesBrowseModule Module { get; set; }
 
             public BrowseItem(StaticPagesBrowseModule module, StaticPageManager.PageEntry data) {
                 Module = module;
                 ObjectSupport.CopyData(data, this);
+                FileNames = new List<string> {
+                    data.FileName ?? "-",
+                    data.FileNameHttps ?? "-",
+                    data.FileNamePopup ?? "-",
+                    data.FileNamePopupHttps ?? "-",
+                };
             }
         }
 
