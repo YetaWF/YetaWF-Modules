@@ -92,7 +92,7 @@ namespace YetaWF.Modules.BootstrapCarousel.Models {
         [Data_Binary]
         public SerializableList<CarouselItem> Slides { get; set; }
 
-        [Category("Slide Show"), Caption("Interval"), Description("Interval before the next slide is displayed when images are automatically changing - 0 to turn off")]
+        [Category("Slide Show"), Caption("Interval"), Description("Interval (in milliseconds) before the next slide is displayed when images are automatically changing - 0 to turn off")]
         [UIHint("IntValue6"), Range(0, 20000)]
         public int Interval { get; set; }
 
