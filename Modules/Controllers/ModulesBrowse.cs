@@ -116,7 +116,7 @@ namespace YetaWF.Modules.Modules.Controllers {
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
+        [ConditionalAntiForgeryToken]
         public ActionResult ModulesBrowse_GridData(int skip, int take, List<DataProviderSortInfo> sort, List<DataProviderFilterInfo> filters, Guid settingsModuleGuid) {
             // module settings services
             ModuleDefinition modSettings = ModuleDefinition.Load(Manager.CurrentSite.ModuleEditingServices, AllowNone: true);

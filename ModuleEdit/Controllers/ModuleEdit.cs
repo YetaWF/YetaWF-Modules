@@ -40,7 +40,7 @@ namespace YetaWF.Modules.ModuleEdit.Controllers {
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
+        [ConditionalAntiForgeryToken]
         [ExcludeDemoMode]
         public ActionResult ModuleEdit_Partial(ModuleEditModel model) {
             if (model.ModuleGuid == Guid.Empty)

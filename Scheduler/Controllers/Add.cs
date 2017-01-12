@@ -73,7 +73,7 @@ namespace YetaWF.Modules.Scheduler.Controllers {
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
+        [ConditionalAntiForgeryToken]
         [ExcludeDemoMode]
         public ActionResult SchedulerAdd_Partial(SchedulerAddModel model) {
             if (!ModelState.IsValid)

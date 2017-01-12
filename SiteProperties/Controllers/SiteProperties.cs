@@ -37,7 +37,7 @@ namespace YetaWF.Modules.SiteProperties.Controllers {
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
+        [ConditionalAntiForgeryToken]
         [ExcludeDemoMode]
         public ActionResult SiteProperties_Partial(SitePropertiesModel model) {
             SiteDefinition site;

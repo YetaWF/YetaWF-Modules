@@ -48,7 +48,7 @@ namespace YetaWF.Modules.Backups.Controllers {
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
+        [ConditionalAntiForgeryToken]
         [ExcludeDemoMode]
         public ActionResult BackupConfig_Partial(Model model) {
             using (ConfigDataProvider dataProvider = new ConfigDataProvider()) {

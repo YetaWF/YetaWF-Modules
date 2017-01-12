@@ -116,7 +116,7 @@ namespace YetaWF.Modules.Identity.Controllers {
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
+        [ConditionalAntiForgeryToken]
         [ExcludeDemoMode]
         public async Task<ActionResult> Login_Partial(LoginModel model) {
 

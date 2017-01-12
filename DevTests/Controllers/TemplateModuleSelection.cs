@@ -48,7 +48,7 @@ namespace YetaWF.Modules.DevTests.Controllers {
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
+        [ConditionalAntiForgeryToken]
         public ActionResult TemplateModuleSelection_Partial(EditModel model) {
             model.ROModule = model.Module;
             model.ROModuleNew = model.ModuleNew;

@@ -44,7 +44,7 @@ namespace YetaWF.Modules.Packages.Controllers {
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
+        [ConditionalAntiForgeryToken]
         [ExcludeDemoMode]
         public ActionResult SiteTemplateProcess_Partial(EditModel model) {
             model.UpdateData();

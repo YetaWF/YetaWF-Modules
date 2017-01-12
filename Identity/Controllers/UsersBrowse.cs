@@ -127,7 +127,7 @@ namespace YetaWF.Modules.Identity.Controllers {
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
+        [ConditionalAntiForgeryToken]
         public ActionResult UsersBrowse_GridData(int skip, int take, List<DataProviderSortInfo> sort, List<DataProviderFilterInfo> filters, Guid settingsModuleGuid) {
             using (UserDefinitionDataProvider dataProvider = new UserDefinitionDataProvider()) {
                 int total;

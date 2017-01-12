@@ -99,7 +99,7 @@ namespace YetaWF.Modules.Blog.Controllers {
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
+        [ConditionalAntiForgeryToken]
         [ResourceAuthorize(Info.Resource_AllowManageComments)]
         [ExcludeDemoMode]
         public ActionResult CommentEdit_Partial(EditModel model) {

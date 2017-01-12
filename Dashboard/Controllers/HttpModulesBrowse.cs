@@ -58,7 +58,7 @@ namespace YetaWF.Modules.Dashboard.Controllers {
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
+        [ConditionalAntiForgeryToken]
         public ActionResult HttpModulesBrowse_GridData(int skip, int take, List<DataProviderSortInfo> sort, List<DataProviderFilterInfo> filters, Guid settingsModuleGuid) {
             HttpApplication httpApps = HttpContext.ApplicationInstance;
             HttpModuleCollection httpModuleCollections = httpApps.Modules;

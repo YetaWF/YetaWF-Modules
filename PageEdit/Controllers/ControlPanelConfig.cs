@@ -47,7 +47,7 @@ namespace YetaWF.Modules.PageEdit.Controllers {
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
+        [ConditionalAntiForgeryToken]
         [ExcludeDemoMode]
         public ActionResult ControlPanelConfig_Partial(Model model) {
             using (ControlPanelConfigDataProvider dataProvider = new ControlPanelConfigDataProvider()) {

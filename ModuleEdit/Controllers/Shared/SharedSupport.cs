@@ -17,7 +17,7 @@ namespace YetaWF.Modules.ModuleEdit.Controllers {
         public SharedSupportController() { }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
+        [ConditionalAntiForgeryToken]
         [ExcludeDemoMode]
         public ActionResult AddUserToModule(string prefix, int newRecNumber, string newValue, Guid editGuid) {
 

@@ -40,7 +40,7 @@ namespace YetaWF.Modules.Sites.Controllers {
 
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
+        [ConditionalAntiForgeryToken]
         [ExcludeDemoMode]
         public ActionResult SiteAdd_Partial(AddModel model) {
             if (!ModelState.IsValid)

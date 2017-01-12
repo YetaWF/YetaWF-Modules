@@ -32,7 +32,7 @@ namespace YetaWF.Modules.Sites.Controllers {
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
+        [ConditionalAntiForgeryToken]
         [ExcludeDemoMode]
         public ActionResult ConfirmRemoval_Partial(EditModel model) {
             if (!ModelState.IsValid)

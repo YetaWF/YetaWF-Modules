@@ -55,7 +55,7 @@ namespace YetaWF.Modules.Identity.Controllers {
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
+        [ConditionalAntiForgeryToken]
         [ExcludeDemoMode]
         public ActionResult RolesEdit_Partial(EditModel model) {
             using (RoleDefinitionDataProvider dataProvider = new RoleDefinitionDataProvider()) {

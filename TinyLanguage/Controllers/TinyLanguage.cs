@@ -28,7 +28,7 @@ namespace YetaWF.Modules.TinyLanguage.Controllers {
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
+        [ConditionalAntiForgeryToken]
         public ActionResult TinyLanguage_Partial(EditModel model) {
             if (!ModelState.IsValid)
                 return PartialView(model);

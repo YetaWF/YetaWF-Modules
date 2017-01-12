@@ -105,7 +105,7 @@ namespace YetaWF.Modules.Languages.Controllers {
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
+        [ConditionalAntiForgeryToken]
         [ExcludeDemoMode]
         public ActionResult LocalizeEditFile_Partial(EditModel model, bool RestoreDefaults = false) {
             Package package = Package.GetPackageFromPackageName(model.PackageName);

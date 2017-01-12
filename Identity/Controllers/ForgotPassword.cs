@@ -44,7 +44,7 @@ namespace YetaWF.Modules.Identity.Controllers {
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
+        [ConditionalAntiForgeryToken]
         [ExcludeDemoMode]
         public ActionResult ForgotPassword_Partial(EditModel model) {
 

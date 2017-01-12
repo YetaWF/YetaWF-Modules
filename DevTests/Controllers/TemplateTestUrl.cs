@@ -61,7 +61,7 @@ namespace YetaWF.Modules.DevTests.Controllers {
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
+        [ConditionalAntiForgeryToken]
         public ActionResult TemplateTestUrl_Partial(EditModel model) {
             if (!ModelState.IsValid)
                 return PartialView(model);

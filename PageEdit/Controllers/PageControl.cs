@@ -194,7 +194,7 @@ namespace YetaWF.Modules.PageEdit.Controllers {
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
+        [ConditionalAntiForgeryToken]
         [ExcludeDemoMode]
         public ActionResult AddNewPage_Partial(AddNewPageModel model) {
             if (!ModelState.IsValid)
@@ -218,7 +218,7 @@ namespace YetaWF.Modules.PageEdit.Controllers {
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
+        [ConditionalAntiForgeryToken]
         [ExcludeDemoMode]
         public ActionResult AddNewModule_Partial(AddNewModuleModel model) {
             PageDefinition page = PageDefinition.Load(model.CurrentPageGuid);
@@ -239,7 +239,7 @@ namespace YetaWF.Modules.PageEdit.Controllers {
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
+        [ConditionalAntiForgeryToken]
         [ExcludeDemoMode]
         public ActionResult AddExistingModule_Partial(AddExistingModel model) {
             PageDefinition page = PageDefinition.Load(model.CurrentPageGuid);

@@ -105,7 +105,7 @@ namespace YetaWF.Modules.Identity.Controllers {
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
+        [ConditionalAntiForgeryToken]
         [ExcludeDemoMode]
         public async Task<ActionResult> Register_Partial(RegisterModel model) {
             LoginConfigData config = LoginConfigDataProvider.GetConfig();

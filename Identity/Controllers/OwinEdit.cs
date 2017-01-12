@@ -102,7 +102,7 @@ namespace YetaWF.Modules.Identity.Controllers {
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
+        [ConditionalAntiForgeryToken]
         [ExcludeDemoMode]
         public ActionResult OwinEdit_Partial(EditModel model) {
             if (!ModelState.IsValid)

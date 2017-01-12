@@ -172,7 +172,7 @@ namespace YetaWF.Modules.Identity.Controllers {
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
+        [ConditionalAntiForgeryToken]
         [ExcludeDemoMode]
         public ActionResult LoginConfig_Partial(Model model) {
             using (LoginConfigDataProvider dataProvider = new LoginConfigDataProvider()) {

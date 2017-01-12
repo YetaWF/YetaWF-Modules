@@ -85,7 +85,7 @@ namespace YetaWF.Modules.Feedback.Controllers {
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
+        [ConditionalAntiForgeryToken]
         public ActionResult FeedbackBrowse_GridData(int skip, int take, List<DataProviderSortInfo> sort, List<DataProviderFilterInfo> filters, Guid settingsModuleGuid) {
             using (FeedbackDataDataProvider dataProvider = new FeedbackDataDataProvider()) {
                 int total;

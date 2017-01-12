@@ -44,7 +44,7 @@ namespace YetaWF.Modules.Sites.Controllers {
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
+        [ConditionalAntiForgeryToken]
         public ActionResult SiteSelector_Partial(EditModel model) {
             model.UpdateData();
             if (!ModelState.IsValid)

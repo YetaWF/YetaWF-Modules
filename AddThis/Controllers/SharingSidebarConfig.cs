@@ -46,7 +46,7 @@ namespace YetaWF.Modules.AddThis.Controllers {
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
+        [ConditionalAntiForgeryToken]
         [ExcludeDemoMode]
         public ActionResult SharingSidebarConfig_Partial(Model model) {
             using (ConfigDataDataProvider dataProvider = new ConfigDataDataProvider()) {

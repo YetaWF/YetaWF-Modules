@@ -34,7 +34,7 @@ namespace YetaWF.Modules.Blog.Controllers {
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
+        [ConditionalAntiForgeryToken]
         public ActionResult CategoriesList_Partial(Model model) {
             if (!ModelState.IsValid)
                 return PartialView(model);

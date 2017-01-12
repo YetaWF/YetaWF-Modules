@@ -78,7 +78,7 @@ namespace YetaWF.Modules.Languages.Controllers {
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
+        [ConditionalAntiForgeryToken]
         public ActionResult LanguagesBrowse_GridData(int skip, int take, List<DataProviderSortInfo> sort, List<DataProviderFilterInfo> filters, Guid settingsModuleGuid) {
             using (LanguageDataProvider dataProvider = new LanguageDataProvider()) {
                 int total;

@@ -86,7 +86,7 @@ namespace YetaWF.Modules.Languages.Controllers {
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
+        [ConditionalAntiForgeryToken]
         [ExcludeDemoMode]
         public ActionResult LocalizeConfig_Partial(Model model) {
             using (LocalizeConfigDataProvider dataProvider = new LocalizeConfigDataProvider()) {

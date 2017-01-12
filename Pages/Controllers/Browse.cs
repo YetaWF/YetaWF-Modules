@@ -57,6 +57,10 @@ namespace YetaWF.Modules.Pages.Controllers {
             [UIHint("MultiString"), ReadOnly]
             public MultiString Description { get; set; }
 
+            [Caption("Static Page"), Description("Defines whether the page is rendered as a static page (for anonymous users only) - A page whose content doesn't changed can be marked as a static page, which results in faster page load for the end-user - Site Settings can be used to enable/disable the use of static pages globally using the StaticPages property")]
+            [UIHint("Enum"), ReadOnly]
+            public PageDefinition.StaticPageEnum StaticPage { get; set; }
+
             [Caption("Anonymous"), Description("Anonymous users can view this page")]
             [UIHint("Boolean"), ReadOnly]
             public bool Anonymous { get; set; }

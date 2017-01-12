@@ -116,7 +116,7 @@ namespace YetaWF.Modules.Blog.Controllers {
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
+        [ConditionalAntiForgeryToken]
         [ExcludeDemoMode]
         public ActionResult CommentAdd_Partial(AddModel model) {
             model.UpdateData();

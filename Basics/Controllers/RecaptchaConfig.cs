@@ -61,7 +61,7 @@ namespace YetaWF.Modules.Basics.Controllers {
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
+        [ConditionalAntiForgeryToken]
         [ExcludeDemoMode]
         public ActionResult RecaptchaConfig_Partial(EditModel model) {
             using (RecaptchaConfigDataProvider dataProvider = new RecaptchaConfigDataProvider()) {

@@ -104,7 +104,7 @@ namespace YetaWF.Modules.Blog.Controllers {
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
+        [ConditionalAntiForgeryToken]
         [ExcludeDemoMode]
         public ActionResult BlogConfig_Partial(Model model) {
             using (BlogConfigDataProvider dataProvider = new BlogConfigDataProvider()) {

@@ -57,7 +57,7 @@ namespace YetaWF.Modules.Feedback.Controllers {
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
+        [ConditionalAntiForgeryToken]
         [ExcludeDemoMode]
         public ActionResult FeedbackConfig_Partial(Model model) {
             using (FeedbackConfigDataProvider dataProvider = new FeedbackConfigDataProvider()) {

@@ -59,7 +59,7 @@ namespace YetaWF.Modules.Languages.Controllers {
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
+        [ConditionalAntiForgeryToken]
         [ExcludeDemoMode]
         public ActionResult LanguageEdit_Partial(EditModel model) {
             string originalId = model.Id;

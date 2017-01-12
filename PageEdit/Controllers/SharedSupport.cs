@@ -16,7 +16,7 @@ namespace YetaWF.Modules.PageEdit.Controllers {
         public SharedSupportController() { }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
+        [ConditionalAntiForgeryToken]
         [ExcludeDemoMode]
         public ActionResult AddUserToPage(string prefix, int newRecNumber, string newValue) {
 

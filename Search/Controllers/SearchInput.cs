@@ -35,7 +35,7 @@ namespace YetaWF.Modules.Search.Controllers {
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
+        [ConditionalAntiForgeryToken]
         public ActionResult SearchInput_Partial(Model model) {
             if (!ModelState.IsValid)
                 return PartialView(model);

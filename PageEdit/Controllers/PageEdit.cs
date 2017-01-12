@@ -73,6 +73,10 @@ namespace YetaWF.Modules.PageEdit.Controllers {
             [UIHint("LanguageId"), StringLength(LanguageData.MaxId), Trim]
             public string LanguageId { get; set; }
 
+            [Category("Page"), Caption("Static Page"), Description("Defines whether the page is rendered as a static page (for anonymous users only) - A page whose content doesn't changed can be marked as a static page, which results in faster page load for the end-user - Site Settings can be used to enable/disable the use of static pages globally using the StaticPages property")]
+            [UIHint("Enum")]
+            public PageDefinition.StaticPageEnum StaticPage { get; set; }
+
             [Category("Page"), Caption("FavIcon"), Description("The icon representing this site (a 32x32 pixel PNG image) shown by the web browser used to display the page")]
             [UIHint("Image"), AdditionalMetadata("ImageType", PageDefinition.ImageType)]
             [AdditionalMetadata("Width", 40), AdditionalMetadata("Height", 40)]
@@ -238,7 +242,7 @@ namespace YetaWF.Modules.PageEdit.Controllers {
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
+        [ConditionalAntiForgeryToken]
         [ExcludeDemoMode]
         public ActionResult PageEdit_Partial(EditModel model) {
             PageDefinition page = PageDefinition.Load(model.PageGuid);

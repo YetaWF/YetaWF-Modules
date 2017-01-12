@@ -46,7 +46,7 @@ namespace YetaWF.Modules.ImageRepository.Controllers {
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
+        [ConditionalAntiForgeryToken]
         [ExcludeDemoMode]
         public ActionResult CKEBrowsePage_Partial(Model model) {
             model.Update(Module);

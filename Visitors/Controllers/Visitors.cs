@@ -108,7 +108,7 @@ namespace YetaWF.Modules.Visitors.Controllers {
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
+        [ConditionalAntiForgeryToken]
         public ActionResult Visitors_GridData(int skip, int take, List<DataProviderSortInfo> sort, List<DataProviderFilterInfo> filters, Guid settingsModuleGuid) {
             using (VisitorEntryDataProvider dataProvider = new VisitorEntryDataProvider()) {
                 int total;

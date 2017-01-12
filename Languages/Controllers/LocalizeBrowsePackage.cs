@@ -85,7 +85,7 @@ namespace YetaWF.Modules.Languages.Controllers {
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
+        [ConditionalAntiForgeryToken]
         public ActionResult LocalizeBrowsePackage_GridData(int skip, int take, List<DataProviderSortInfo> sort, List<DataProviderFilterInfo> filters, Guid settingsModuleGuid, string packageName) {
             Package package = Package.GetPackageFromPackageName(packageName);
             int total;

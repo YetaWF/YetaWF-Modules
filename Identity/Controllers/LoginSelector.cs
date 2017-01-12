@@ -54,7 +54,7 @@ namespace YetaWF.Modules.Identity.Controllers {
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
+        [ConditionalAntiForgeryToken]
         public ActionResult LoginSelector_Partial(EditModel model) {
             model.UpdateData(Module);
             if (!ModelState.IsValid)

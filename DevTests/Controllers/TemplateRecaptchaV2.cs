@@ -29,7 +29,7 @@ namespace YetaWF.Modules.DevTests.Controllers {
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
+        [ConditionalAntiForgeryToken]
         public ActionResult TemplateRecaptchaV2_Partial(Model model) {
             if (!ModelState.IsValid)
                 return PartialView(model);

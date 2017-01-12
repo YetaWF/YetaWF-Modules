@@ -114,7 +114,7 @@ namespace YetaWF.Modules.Identity.Controllers {
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
+        [ConditionalAntiForgeryToken]
         [ExcludeDemoMode]
         public ActionResult UsersEdit_Partial(EditModel model) {
             using (UserDefinitionDataProvider dataProvider = new UserDefinitionDataProvider()) {

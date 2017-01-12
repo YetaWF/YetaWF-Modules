@@ -16,7 +16,7 @@ namespace YetaWF.Modules.Identity.Controllers {
         public SharedSupportController() { }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
+        [ConditionalAntiForgeryToken]
         [ExcludeDemoMode]
         public ActionResult AddUserToResource(string prefix, int newRecNumber, string newValue) {
 

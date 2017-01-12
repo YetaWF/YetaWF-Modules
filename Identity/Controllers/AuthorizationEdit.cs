@@ -67,7 +67,7 @@ namespace YetaWF.Modules.Identity.Controllers {
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
+        [ConditionalAntiForgeryToken]
         [ExcludeDemoMode]
         public ActionResult AuthorizationEdit_Partial(EditModel model) {
             string originalName = model.OriginalName;

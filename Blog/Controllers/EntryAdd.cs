@@ -74,7 +74,7 @@ namespace YetaWF.Modules.Blog.Controllers {
 
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
+        [ConditionalAntiForgeryToken]
         [ExcludeDemoMode]
         public ActionResult EntryAdd_Partial(AddModel model) {
             if (!ModelState.IsValid)

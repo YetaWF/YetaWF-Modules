@@ -93,7 +93,7 @@ namespace YetaWF.Modules.Blog.Controllers {
 
         [HttpPost]
         [ExcludeDemoMode]
-        [ValidateAntiForgeryToken]
+        [ConditionalAntiForgeryToken]
         public ActionResult DisqusConfig_Partial(Model model) {
             using (DisqusConfigDataProvider dataProvider = new DisqusConfigDataProvider()) {
                 DisqusConfigData data = dataProvider.GetItem();// get the original item

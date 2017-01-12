@@ -14,6 +14,7 @@ using YetaWF.Core.Packages;
 using YetaWF.Core.Pages;
 using YetaWF.Core.Serializers;
 using YetaWF.Core.Support;
+using YetaWF.Core.Support.StaticPages;
 using YetaWF.DataProvider;
 
 namespace YetaWF.Modules.Pages.DataProvider
@@ -196,6 +197,8 @@ namespace YetaWF.Modules.Pages.DataProvider
                         throw new InternalError("Unexpected UpdateStatusEnum.RecordDeleted in SavePageDefinition");
                 }
 
+                Manager.StaticPageManager.RemovePage(page.Url);
+
                 if (newPage == Guid.Empty) {
                     DesignedPagesByUrl.Remove(oldPage.Url.ToLower());
 
@@ -219,6 +222,7 @@ namespace YetaWF.Modules.Pages.DataProvider
                 PageDefinition page = LoadPageDefinition(pageGuid);
                 if (page == null)
                     return false;
+                Manager.StaticPageManager.RemovePage(page.Url);
                 DataProvider.Remove(pageGuid);
                 DesignedPagesByUrl.Remove(page.Url.ToLower());
                 return true;

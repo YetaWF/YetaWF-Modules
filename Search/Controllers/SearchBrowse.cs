@@ -106,7 +106,7 @@ namespace YetaWF.Modules.Search.Controllers {
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
+        [ConditionalAntiForgeryToken]
         public ActionResult SearchBrowse_GridData(int skip, int take, List<DataProviderSortInfo> sort, List<DataProviderFilterInfo> filters, Guid settingsModuleGuid) {
             using (SearchDataProvider searchDP = new SearchDataProvider()) {
                 int total;

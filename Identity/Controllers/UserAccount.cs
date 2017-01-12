@@ -93,7 +93,7 @@ namespace YetaWF.Modules.Identity.Controllers {
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
+        [ConditionalAntiForgeryToken]
         [ExcludeDemoMode]
         public async Task<ActionResult> UserAccount_Partial(EditModel model) {
             // make sure this user exists

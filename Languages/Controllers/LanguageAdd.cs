@@ -44,7 +44,7 @@ namespace YetaWF.Modules.Languages.Controllers {
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
+        [ConditionalAntiForgeryToken]
         [ExcludeDemoMode]
         public ActionResult LanguageAdd_Partial(AddModel model) {
             if (!ModelState.IsValid)

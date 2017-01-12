@@ -93,7 +93,7 @@ namespace YetaWF.Modules.UserSettings.Controllers {
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
+        [ConditionalAntiForgeryToken]
         public ActionResult SettingsEdit_Partial(EditModel model) {
             using (UserDataProvider dataProvider = new UserDataProvider()) {
                 UserData data = dataProvider.GetItem();
