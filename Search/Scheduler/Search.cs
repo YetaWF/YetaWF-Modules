@@ -86,7 +86,7 @@ namespace YetaWF.Modules.Search.Scheduler {
                 foreach (DesignedModule desMod in desMods) {
                     try {
                         ModuleDefinition mod = ModuleDefinition.Load(desMod.ModuleGuid, AllowNone: true);
-                        if (mod != null && types.Contains(mod.GetType())) {
+                        if (mod != null && types.Contains(mod.GetType()) && mod.WantSearch) {
                             ISearchDynamicUrls iSearch = (ISearchDynamicUrls)mod;
                             if (iSearch != null) {
                                 CurrentSearchDP = searchDP;
@@ -106,7 +106,7 @@ namespace YetaWF.Modules.Search.Scheduler {
                 List<Guid> pages = PageDefinition.GetDesignedGuids();
                 foreach (Guid pageGuid in pages) {
                     PageDefinition page = PageDefinition.Load(pageGuid);
-                    if (page != null) {
+                    if (page != null && page.WantSearch) {
                         List<SearchData> searchData = SearchPage(searchDP, page, searchStarted);
                         if (searchData != null && searchData.Count > 0)
                             searchDP.AddItems(searchData, page.EvaluatedCanonicalUrl, page.Description, page.Created, page.Updated, searchStarted);

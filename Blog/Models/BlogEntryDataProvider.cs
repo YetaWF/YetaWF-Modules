@@ -249,6 +249,7 @@ namespace YetaWF.Modules.Blog.DataProvider {
 
                 PageDefinition page = PageDefinition.LoadFromUrl(url);
                 if (page == null) return; // there is no such root page
+                if (!page.WantSearch) return;
 
                 ObjectSupport.AddStringProperties(entry, addTermsForPage, page, url, entry.Title.ToString(), entry.DateCreated, entry.DateUpdated);
                 using (BlogCommentDataProvider commentDP = new BlogCommentDataProvider(entry.Identity)) {
