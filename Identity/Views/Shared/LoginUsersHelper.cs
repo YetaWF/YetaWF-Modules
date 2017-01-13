@@ -22,8 +22,10 @@ namespace YetaWF.Modules.Identity.Views.Shared {
         public static MvcHtmlString RenderLoginUsers(this HtmlHelper htmlHelper, string name, int model, object HtmlAttributes = null) {
 
             SerializableList<User> users = htmlHelper.GetParentModelSupportProperty<SerializableList<User>>(name, "List");
-
-            users = new SerializableList<User>(from u in users select u);// copy list
+            if (users != null)
+                users = new SerializableList<User>(from u in users select u);// copy list
+            else
+                users = new SerializableList<User>();
             // add the user id that's current (i.e. the model) if it hasn't already been added
             if ((from u in users where u.UserId == model select u).FirstOrDefault() == null)
                 users.Add(new User { UserId = model });
