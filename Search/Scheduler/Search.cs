@@ -19,6 +19,11 @@ namespace YetaWF.Modules.Search.Scheduler {
 
     public class Search : IScheduling {
 
+        public const int TITLE_WEIGHT = 200;
+        public const int DESCRIPTION_WEIGHT = 200;
+        public const int KEYWORDS_WEIGHT = 200;
+        public const int CONTENT_WEIGHT = 1;
+
         public int SmallestMixedToken { get; set; }
         public int SmallestUpperCaseToken { get; set; }
 
@@ -136,9 +141,9 @@ namespace YetaWF.Modules.Search.Scheduler {
 
             Logging.AddLog("Adding search keywords for page {0}", page.EvaluatedCanonicalUrl);
 
-            AddSearchTerms(searchData, page.Title, allowAnonymous, allowAnyUser);
-            AddSearchTerms(searchData, page.Description, allowAnonymous, allowAnyUser);
-            AddSearchTerms(searchData, page.Keywords, allowAnonymous, allowAnyUser);
+            AddSearchTerms(searchData, page.Title, allowAnonymous, allowAnyUser, TITLE_WEIGHT);
+            AddSearchTerms(searchData, page.Description, allowAnonymous, allowAnyUser, DESCRIPTION_WEIGHT);
+            AddSearchTerms(searchData, page.Keywords, allowAnonymous, allowAnyUser, KEYWORDS_WEIGHT);
             foreach (var m in page.ModuleDefinitions) {
                 Guid modGuid = m.ModuleGuid;
                 ModuleDefinition mod = null;
@@ -163,8 +168,8 @@ namespace YetaWF.Modules.Search.Scheduler {
                 CurrentAllowAnyUser = mod.IsAuthorized_View_AnyUser() && allowAnyUser;
                 if (!CurrentAllowAnonymous && !CurrentAllowAnyUser)
                     return null;
-                AddSearchTerms(searchData, mod.Title, CurrentAllowAnonymous, CurrentAllowAnyUser);
-                AddSearchTerms(searchData, mod.Description, CurrentAllowAnonymous, CurrentAllowAnyUser);
+                AddSearchTerms(searchData, mod.Title, CurrentAllowAnonymous, CurrentAllowAnyUser, TITLE_WEIGHT);
+                AddSearchTerms(searchData, mod.Description, CurrentAllowAnonymous, CurrentAllowAnyUser, DESCRIPTION_WEIGHT);
                 CurrentData = searchData;
                 mod.CustomSearch(page, AddTerms);
                 CurrentData = null;
@@ -173,15 +178,15 @@ namespace YetaWF.Modules.Search.Scheduler {
         }
 
         private void AddTerms(MultiString ms) {
-            AddSearchTerms(CurrentData, ms, CurrentAllowAnonymous, CurrentAllowAnyUser);
+            AddSearchTerms(CurrentData, ms, CurrentAllowAnonymous, CurrentAllowAnyUser, CONTENT_WEIGHT);
         }
-        private void AddSearchTerms(List<SearchData> searchData, Core.Models.MultiString ms, bool allowAnonymous, bool allowAnyUser) {
+        private void AddSearchTerms(List<SearchData> searchData, Core.Models.MultiString ms, bool allowAnonymous, bool allowAnyUser, int weight) {
             if (ms == null) return;
             foreach (var lang in MultiString.Languages) {
                 string culture = lang.Id;
                 string val = ms[culture];
                 if (!string.IsNullOrEmpty(val))
-                    AddSearchTerms(searchData, culture, val, allowAnonymous, allowAnyUser);
+                    AddSearchTerms(searchData, culture, val, allowAnonymous, allowAnyUser, weight);
             }
         }
 
@@ -191,7 +196,7 @@ namespace YetaWF.Modules.Search.Scheduler {
         private readonly Regex reChars = new Regex(@"&#(?'num'[0-9]+?);", RegexOptions.Compiled | RegexOptions.Singleline);
         private readonly Regex reHex = new Regex(@"&#x(?'num'[0-9]+?);", RegexOptions.Compiled | RegexOptions.Singleline);
 
-        private void AddSearchTerms(List<SearchData> searchData, string culture, string value, bool allowAnonymous, bool allowAnyUser) {
+        private void AddSearchTerms(List<SearchData> searchData, string culture, string value, bool allowAnonymous, bool allowAnyUser, int weight) {
 
             YetaWFManager manager = YetaWFManager.Manager;
             int siteIdentity = manager.CurrentSite.Identity;
@@ -230,7 +235,7 @@ namespace YetaWF.Modules.Search.Scheduler {
                         };
                         searchData.Add(data);
                     }
-                    data.Count = data.Count + 1;
+                    data.Count = data.Count + weight;
                 }
                 m = m.NextMatch();
             }
@@ -260,7 +265,8 @@ namespace YetaWF.Modules.Search.Scheduler {
 
             if (CurrentSearchDP.PageUpdated(url, dateCreated, dateUpdated)) {
                 Logging.AddLog("Adding search keywords for page {0}", url);
-                AddSearchTerms(searchData, ms, allowAnonymous, allowAnyUser);
+                AddSearchTerms(searchData, ms, allowAnonymous, allowAnyUser, CONTENT_WEIGHT);
+                AddSearchTerms(searchData, title, allowAnonymous, allowAnyUser, TITLE_WEIGHT);
                 if (searchData != null && searchData.Count > 0)
                     CurrentSearchDP.AddItems(searchData, url, title, dateCreated, dateUpdated, CurrentSearchStarted);
             } else
