@@ -67,7 +67,7 @@ namespace YetaWF.Modules.Dashboard.Controllers {
         [HttpPost]
         [ConditionalAntiForgeryToken]
         public ActionResult DisposableTrackerBrowse_GridData(int skip, int take, List<DataProviderSortInfo> sort, List<DataProviderFilterInfo> filters, Guid settingsModuleGuid) {
-            List<BrowseItem> items = (from k in DisposableTracker.GetDisposableObjects() select new BrowseItem(Module, k.Value)).ToList();
+            List<BrowseItem> items = (from k in DisposableTracker.GetDisposableObjects() select new BrowseItem(Module, k)).ToList();
             int total = items.Count;
             items = DataProviderImpl<BrowseItem>.GetRecords(items, skip, take, sort, filters, out total);
             GridHelper.SaveSettings(skip, take, sort, filters, settingsModuleGuid);
