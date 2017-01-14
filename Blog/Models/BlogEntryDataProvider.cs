@@ -97,7 +97,7 @@ namespace YetaWF.Modules.Blog.DataProvider {
         public static Guid FolderGuid { get { return ModuleDefinition.GetPermanentGuid(typeof(EntryDisplayModule)); } }
     }
 
-    public class BlogEntryDataProvider : DataProviderImpl, IInstallableModel, ISearchDynamicUrls {
+    public class BlogEntryDataProvider : DataProviderImpl, IInstallableModel {
 
         // IMPLEMENTATION
         // IMPLEMENTATION
@@ -234,34 +234,6 @@ namespace YetaWF.Modules.Blog.DataProvider {
             return true;
         }
 
-        // ISEARCHDYNAMICURLS
-        // ISEARCHDYNAMICURLS
-        // ISEARCHDYNAMICURLS
-
-        public void KeywordsForDynamicUrls(Action<YetaWF.Core.Models.MultiString, PageDefinition, string, string, DateTime, DateTime?> addTermsForPage) {
-            BlogConfigData config = BlogConfigDataProvider.GetConfig();
-
-            int total;
-            List<DataProviderFilterInfo> filters = DataProviderFilterInfo.Join(null, new DataProviderFilterInfo { Field = "Published", Operator = "==", Value = true });
-            List<BlogEntry> entries = GetItems(0, 0, null, filters, out total);
-            foreach (BlogEntry entry in entries) {
-                string url = BlogConfigData.GetEntryCanonicalName(entry.Identity);
-
-                PageDefinition page = PageDefinition.LoadFromUrl(url);
-                if (page == null) return; // there is no such root page
-                if (!page.WantSearch) return;
-
-                ObjectSupport.AddStringProperties(entry, addTermsForPage, page, url, entry.Title.ToString(), entry.DateCreated, entry.DateUpdated);
-                using (BlogCommentDataProvider commentDP = new BlogCommentDataProvider(entry.Identity)) {
-                    int totalComments;
-                    List<BlogComment> comments = commentDP.GetItems(0, 0, null, null, out totalComments);
-                    foreach (BlogComment comment in comments) {
-                        ObjectSupport.AddStringProperties(comment, addTermsForPage, page, url, entry.Title.ToString(), entry.DateCreated, entry.DateUpdated);
-                    }
-                }
-            }
-        }
-
         // IINSTALLABLEMODEL
         // IINSTALLABLEMODEL
         // IINSTALLABLEMODEL
@@ -286,6 +258,39 @@ namespace YetaWF.Modules.Blog.DataProvider {
         }
         public void ImportChunk(int chunk, SerializableList<SerializableFile> fileList, object obj) {
             DataProvider.ImportChunk(chunk, fileList, obj);
+        }
+    }
+
+    public class BlogEntryDataProviderSearch : BlogEntryDataProvider, ISearchDynamicUrls {
+
+        // ISEARCHDYNAMICURLS
+        // ISEARCHDYNAMICURLS
+        // ISEARCHDYNAMICURLS
+
+        public void KeywordsForDynamicUrls(Action<YetaWF.Core.Models.MultiString, PageDefinition, string, string, DateTime, DateTime?> addTermsForPage) {
+
+            using (this) {
+                BlogConfigData config = BlogConfigDataProvider.GetConfig();
+                int total;
+                List<DataProviderFilterInfo> filters = DataProviderFilterInfo.Join(null, new DataProviderFilterInfo { Field = "Published", Operator = "==", Value = true });
+                List<BlogEntry> entries = GetItems(0, 0, null, filters, out total);
+                foreach (BlogEntry entry in entries) {
+                    string url = BlogConfigData.GetEntryCanonicalName(entry.Identity);
+
+                    PageDefinition page = PageDefinition.LoadFromUrl(url);
+                    if (page == null) return; // there is no such root page
+                    if (!page.WantSearch) return;
+
+                    ObjectSupport.AddStringProperties(entry, addTermsForPage, page, url, entry.Title.ToString(), entry.DateCreated, entry.DateUpdated);
+                    using (BlogCommentDataProvider commentDP = new BlogCommentDataProvider(entry.Identity)) {
+                        int totalComments;
+                        List<BlogComment> comments = commentDP.GetItems(0, 0, null, null, out totalComments);
+                        foreach (BlogComment comment in comments) {
+                            ObjectSupport.AddStringProperties(comment, addTermsForPage, page, url, entry.Title.ToString(), entry.DateCreated, entry.DateUpdated);
+                        }
+                    }
+                }
+            }
         }
     }
 }
