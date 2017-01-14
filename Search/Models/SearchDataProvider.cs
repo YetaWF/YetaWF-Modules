@@ -147,7 +147,7 @@ namespace YetaWF.Modules.Search.DataProvider {
                         searchUrl.DatePageUpdated = pageUpdated ?? pageCreated;
                         UpdateStatusEnum updStatus = searchUrlDP.UpdateItem(searchUrl);
                         if (updStatus != UpdateStatusEnum.OK)
-                            throw new InternalError("Unexpected error updateing SearchDataUrl for url {0} - {1}", pageUrl, updStatus);
+                            throw new InternalError("Unexpected error updating SearchDataUrl for url {0} - {1}", pageUrl, updStatus);
                     }
                     foreach (SearchData data in list) {
                         data.SearchDataUrlId = searchUrl.SearchDataUrlId;
