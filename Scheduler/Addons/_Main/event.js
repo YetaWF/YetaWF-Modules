@@ -19,11 +19,12 @@ $(document).ready(function () {
         $div = _YetaWF_Scheduler_Event.getDiv($t);
         var args = $t.val().split(",");
         $("input[name$='.Name']", $div).val(args[0]);
-        $("input[name$='.ImplementingType']", $div).val(args[1]);
         $("input[name$='.ImplementingAssembly']", $div).val(args[2]);
-        $(".t_implasm", $div).text(args[1]);
-        $(".t_impltype", $div).text(args[2]);
-        $(".t_description", $div).text(this.options[this.selectedIndex].title);
+        $("input[name$='.ImplementingType']", $div).val(args[1]);
+        $(".t_implasm", $div).text(args[2]);
+        $(".t_impltype", $div).text(args[1]);
+        var tip = YetaWF_TemplateDropDownList.getTitle($t, this.selectedIndex);
+        $(".t_description", $div).text(tip);
     });
     $(".yt_yetawf_scheduler_event.t_edit select[name$='.DropDown']").trigger("change");// to update all displayed info
 });
