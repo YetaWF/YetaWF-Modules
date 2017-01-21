@@ -6,6 +6,7 @@ using YetaWF.Core.Controllers;
 using YetaWF.Core.Menus;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Support;
+using YetaWF.Modules.Menus.Modules;
 using YetaWF.Modules.Menus.Views.Shared;
 
 namespace YetaWF.Modules.Menus.Controllers {
@@ -19,7 +20,7 @@ namespace YetaWF.Modules.Menus.Controllers {
                 Module.CssClass = YetaWFManager.CombineCss(Module.CssClass, "navbar-collapse collapse");
             MenuModel model = new MenuModel {
                 Menu = new MenuHelper.MenuData {
-                    MenuList = GetEditMenu(Module.Menu, Module.ModuleGuid),
+                    MenuList = GetEditMenu(Module),
                     Direction = Module.Direction,
                     Orientation = Module.Orientation,
                     HoverDelay = Module.HoverDelay,
@@ -42,7 +43,7 @@ namespace YetaWF.Modules.Menus.Controllers {
         public ActionResult Menu() {
             MenuModel model = new MenuModel {
                 Menu = new MenuHelper.MenuData {
-                    MenuList = GetEditMenu(Module.Menu, Module.ModuleGuid),
+                    MenuList = GetEditMenu(Module),
                     Direction = Module.Direction,
                     Orientation = Module.Orientation,
                     HoverDelay = Module.HoverDelay,
@@ -63,15 +64,15 @@ namespace YetaWF.Modules.Menus.Controllers {
         /// The menu is cached in session settings because it is a costly operation to determine permissions for all entries.
         /// The full menu is only evaluated when switching between edit/view mode, when the user logs on/off or when the menu contents have changed.
         /// </remarks>
-        protected MenuList GetEditMenu(MenuList menu, Guid moduleGuid) {
-            MenuList.SavedCacheInfo info = MenuList.GetCache(moduleGuid);
-            if (info == null || info.EditMode != Manager.EditMode || info.UserId != Manager.UserId || info.Menu.Version != menu.Version) {
+        protected MenuList GetEditMenu(MenuModule module) {
+            MenuList.SavedCacheInfo info = MenuList.GetCache(module.ModuleGuid);
+            if (info == null || info.EditMode != Manager.EditMode || info.UserId != Manager.UserId || info.Menu.Version != Module.GetMenuVersion()) {
                 info = new MenuList.SavedCacheInfo {
                     EditMode = Manager.EditMode,
                     UserId = Manager.UserId,
-                    Menu = menu.GetUserMenu()
+                    Menu = Module.GetMenu().GetUserMenu()
                 };
-                MenuList.SetCache(moduleGuid, info);
+                MenuList.SetCache(module.ModuleGuid, info);
             }
             return info.Menu;
         }

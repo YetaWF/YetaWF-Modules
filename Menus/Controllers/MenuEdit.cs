@@ -37,10 +37,12 @@ namespace YetaWF.Modules.Menus.Controllers {
             if (modMenu == null)
                 throw new InternalError("Can't find menu module {0}", menuGuid);
 
+            MenuList origMenu = modMenu.GetMenu();
+
             MenuList newMenu = new MenuList {
                 new ModuleAction(Module) {
                      MenuText = this.__ResStr("menuRoot", "Menu"),
-                     SubMenu =  modMenu.Menu,
+                     SubMenu =  origMenu,
                 }
             };
             MenuEditModel model = new MenuEditModel {
@@ -49,7 +51,7 @@ namespace YetaWF.Modules.Menus.Controllers {
 
                 MenuGuid = menuGuid,
                 ModAction = new ModuleAction(Module),
-                MenuVersion = modMenu.Menu.Version,
+                MenuVersion = origMenu.Version,
                 ActiveEntry = 0,
                 NewAfter = 0,
             };
@@ -63,7 +65,9 @@ namespace YetaWF.Modules.Menus.Controllers {
             if (modMenu == null)
                 throw new InternalError("Can't find menu module {0}", model.MenuGuid);
 
-            if (model.MenuVersion != modMenu.Menu.Version)
+            MenuList origMenu = modMenu.GetMenu();
+
+            if (model.MenuVersion != origMenu.Version)
                 throw new Error(this.__ResStr("menuChanged", "The menu has been changed by someone else - Your changes can't be saved"));
 
             if (!ValidateCurrent)
@@ -71,10 +75,10 @@ namespace YetaWF.Modules.Menus.Controllers {
             if (!ModelState.IsValid)
                 return PartialView(model);
 
-            MenuList menu = modMenu.Menu;
+            MenuList menu = origMenu;
             menu.MergeNewAction(model.ActiveEntry, model.NewAfter, model.ModAction);
             model.MenuVersion = Guid.NewGuid();// force a new version
-            modMenu.Menu.Version = model.MenuVersion;
+            origMenu.Version = model.MenuVersion;
             modMenu.Save();
 
             return PartialView(model);
@@ -86,16 +90,16 @@ namespace YetaWF.Modules.Menus.Controllers {
             MenuModule modMenu = (MenuModule) ModuleDefinition.Load(menuGuid);
             if (modMenu == null)
                 throw new InternalError("Can't find menu module {0}", menuGuid);
-
-            if (menuVersion != modMenu.Menu.Version)
+            MenuList origMenu = modMenu.GetMenu();
+            if (menuVersion != origMenu.Version)
                 throw new Error(this.__ResStr("menuChanged", "The menu has been changed by someone else - Your changes can't be saved"));
 
-            MenuList menu = MenuList.DeserializeFromJSON(entireMenu, Original: modMenu.Menu);
-            modMenu.Menu = new MenuList(menu[0].SubMenu);
-            modMenu.Menu.NewVersion();
-            modMenu.Save();
+            MenuList menu = MenuList.DeserializeFromJSON(entireMenu, Original: origMenu);
+            MenuList newMenu = new MenuList(menu[0].SubMenu);
+            newMenu.NewVersion();
+            modMenu.SaveMenu(newMenu);
 
-            return new JsonResult() { Data = modMenu.Menu.Version };
+            return new JsonResult() { Data = newMenu.Version };
         }
     }
 }

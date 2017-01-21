@@ -10,8 +10,10 @@ using YetaWF.Core.Menus;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Modules;
 using YetaWF.Core.Serializers;
+using YetaWF.Core.Support;
 using YetaWF.Core.Views.Shared;
 using YetaWF.DataProvider;
+using YetaWF.Modules.Menus.DataProvider;
 using YetaWF.Modules.Menus.Views.Shared;
 
 namespace YetaWF.Modules.Menus.Modules {
@@ -25,7 +27,9 @@ namespace YetaWF.Modules.Menus.Modules {
         public MenuModule() {
             Name = this.__ResStr("modName", "Menu");
             Description = this.__ResStr("modSummary", "Simple and main page menus");
-            Menu = new MenuList { };
+#pragma warning disable CS0618 // Type or member is obsolete
+            Menu = null;
+#pragma warning restore CS0618 // Type or member is obsolete
             Direction = MenuHelper.DirectionEnum.Bottom;
             Orientation = MenuHelper.OrientationEnum.Horizontal;
             HoverDelay = 500;
@@ -44,7 +48,55 @@ namespace YetaWF.Modules.Menus.Modules {
         public override IModuleDefinitionIO GetDataProvider() { return new MenuModuleDataProvider(); }
 
         [Data_Binary, CopyAttribute]
+        [Obsolete("Do not use directly - use GetMenu()/SaveMenu() instead - preserved for data conversion (pre 1.1.1)")]
         public MenuList Menu { get; set; }
+
+        public MenuList GetMenu() {
+            using (MenuInfoDataProvider menuInfoDP = new MenuInfoDataProvider()) {
+#pragma warning disable CS0618 // Type or member is obsolete
+                MenuList menu = Menu;
+#pragma warning restore CS0618 // Type or member is obsolete
+                if (menu != null) {
+                    SaveMenu(menu); // the menu is saved as part of module definition, move it to MenuInfoDataProvider
+                } else {
+                    MenuInfo menuInfo = menuInfoDP.GetItem(ModuleGuid);
+                    if (menuInfo != null)
+                        menu = menuInfo.Menu;
+                }
+                return menu;
+            }
+        }
+        public Guid GetMenuVersion() {
+            using (MenuInfoQuickDataProvider menuInfoDP = new MenuInfoQuickDataProvider()) {
+                MenuInfoQuick menuInfo = menuInfoDP.GetItem(ModuleGuid);
+                if (menuInfo != null)
+                    return menuInfo.Version;
+                return Guid.Empty;
+            }
+        }
+        public void SaveMenu(MenuList newMenu) {
+            using (MenuInfoDataProvider menuInfoDP = new MenuInfoDataProvider()) {
+#pragma warning disable CS0618 // Type or member is obsolete
+                MenuList menu = Menu;
+#pragma warning restore CS0618 // Type or member is obsolete
+                menuInfoDP.ReplaceItem(new MenuInfo {
+                    ModuleGuid = ModuleGuid,
+                    Version = newMenu.Version,
+                    Menu = newMenu,
+                });
+                if (menu != null) {
+                    // the menu was saved as part of module definition, move it to MenuInfoDataProvider
+                    // get a fresh copy of the module definitions
+                    MenuModule menuMod = (MenuModule)ModuleDefinition.Load(ModuleGuid);
+                    if (menuMod == null)
+                        throw new InternalError("Menu module {0} was deleted", ModuleGuid);
+#pragma warning disable CS0618 // Type or member is obsolete
+                    this.Menu = menuMod.Menu = null;// clear menu saved as part of module definition
+#pragma warning restore CS0618 // Type or member is obsolete
+                    menuMod.Save();// save module definition (without menu)
+                }
+            }
+        }
 
         [Category("General"), Caption("Edit Url"), Description("The Url used to edit this menu - If omitted, a default page is generated")]
         [UIHint("Url"), AdditionalMetadata("UrlType", UrlHelperEx.UrlTypeEnum.Local), UrlValidation(UrlValidationAttribute.SchemaEnum.Any, UrlHelperEx.UrlTypeEnum.Local), StringLength(Globals.MaxUrl), Trim]

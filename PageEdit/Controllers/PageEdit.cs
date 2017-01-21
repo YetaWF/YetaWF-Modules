@@ -259,8 +259,8 @@ namespace YetaWF.Modules.PageEdit.Controllers {
             model.SetData(page); // and all the data back into model for final display
 
             page.Save();// this handles changing the Url automatically
-            MenuList.ClearCachedMenus();// page changes may affect the menu so clear the menu cache
-            // if we're in a popup and the parent page is the page we're editing, the force a reload
+            MenuList.ClearCachedMenus();// page changes may affect all menus so clear the menu cache (this only clears current session)
+            // if we're in a popup and the parent page is the page we're editing, then force a reload
             OnPopupCloseEnum popupClose = OnPopupCloseEnum.ReloadModule;
             if (PageDefinition.IsSamePage(Manager.QueryReturnToUrl.Url, model.Page.Url))
                 popupClose = OnPopupCloseEnum.ReloadParentPage;

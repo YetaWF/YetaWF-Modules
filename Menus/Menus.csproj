@@ -67,6 +67,7 @@
     <Reference Include="System.Web.Extensions" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Models\MenuInfoDataProvider.cs" />
     <Compile Include="Startup\Info.cs" />
     <Compile Include="Startup\AreaRegistration.cs" />
     <Compile Include="Controllers\Menu.cs" />
@@ -89,17 +90,25 @@
     <Content Include="Addons\_Addons\MenuEdit\menuedit.js" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Addons\_Main\Grids\" />
     <Folder Include="Addons\_Main\Icons\" />
-    <Folder Include="Models\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\CoreComponents\Core\Core.csproj">
       <Project>{71acc7ac-2622-4127-b925-d058c01a39e5}</Project>
       <Name>Core</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\..\DataProvider\File\File.csproj">
+      <Project>{F0DF6C3B-2B71-4526-8FD0-AC2B731B2C3B}</Project>
+      <Name>File</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\..\DataProvider\ModuleDefinition\ModuleDefinition.csproj">
       <Project>{348f2a6b-57f5-47a3-8a46-3f44529acd83}</Project>
       <Name>ModuleDefinition</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\DataProvider\SQL\SQL.csproj">
+      <Project>{22F3EC05-EC47-42B9-87CC-FF4D5494F8A4}</Project>
+      <Name>SQL</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
