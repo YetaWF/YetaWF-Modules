@@ -77,9 +77,9 @@ namespace YetaWF.Modules.Menus.Controllers {
 
             MenuList menu = origMenu;
             menu.MergeNewAction(model.ActiveEntry, model.NewAfter, model.ModAction);
-            model.MenuVersion = Guid.NewGuid();// force a new version
-            origMenu.Version = model.MenuVersion;
-            modMenu.Save();
+            menu.NewVersion();// force a new version
+            model.MenuVersion = menu.Version;
+            modMenu.SaveMenu(menu);
 
             return PartialView(model);
         }
