@@ -22,7 +22,7 @@ namespace YetaWF.Modules.Menus.Modules {
 
     [ModuleGuid("{51E5EB91-56CF-4ad6-A0D9-5C084FFD5D3F}")]
     [UniqueModule(UniqueModuleStyle.NonUnique)]
-    public class MenuModule : ModuleDefinition {
+    public class MenuModule : ModuleDefinition, IModuleMenu {
 
         public MenuModule() {
             Name = this.__ResStr("modName", "Menu");
@@ -30,6 +30,7 @@ namespace YetaWF.Modules.Menus.Modules {
 #pragma warning disable 0618 // Type or member is obsolete
             Menu = null;
 #pragma warning restore 0618 // Type or member is obsolete
+            MenuVersion = 0;
             Direction = MenuHelper.DirectionEnum.Bottom;
             Orientation = MenuHelper.OrientationEnum.Horizontal;
             HoverDelay = 500;
@@ -51,27 +52,26 @@ namespace YetaWF.Modules.Menus.Modules {
         [Obsolete("Do not use directly - use GetMenu()/SaveMenu() instead - preserved for data conversion (pre 1.1.1)")]
         public MenuList Menu { get; set; }
 
+        [Data_NewValue("(0)")]
+        public long MenuVersion { get; set; }
+
+        public void NewMenuVersion() { MenuVersion = MenuVersion+1; }
+
         public MenuList GetMenu() {
             using (MenuInfoDataProvider menuInfoDP = new MenuInfoDataProvider()) {
 #pragma warning disable 0618 // Type or member is obsolete
                 MenuList menu = Menu;
 #pragma warning restore 0618 // Type or member is obsolete
                 if (menu != null) {
-                    SaveMenu(menu); // the menu is saved as part of module definition, move it to MenuInfoDataProvider
+                    SaveMenu(menu); // Legacy: the menu was saved as part of module definition, move it to MenuInfoDataProvider
                 } else {
                     MenuInfo menuInfo = menuInfoDP.GetItem(ModuleGuid);
                     if (menuInfo != null)
                         menu = menuInfo.Menu;
+                    else
+                        menu = new MenuList();
                 }
                 return menu;
-            }
-        }
-        public Guid GetMenuVersion() {
-            using (MenuInfoQuickDataProvider menuInfoDP = new MenuInfoQuickDataProvider()) {
-                MenuInfoQuick menuInfo = menuInfoDP.GetItem(ModuleGuid);
-                if (menuInfo != null)
-                    return menuInfo.Version;
-                return Guid.Empty;
             }
         }
         public void SaveMenu(MenuList newMenu) {
@@ -81,20 +81,19 @@ namespace YetaWF.Modules.Menus.Modules {
 #pragma warning restore 0618 // Type or member is obsolete
                 menuInfoDP.ReplaceItem(new MenuInfo {
                     ModuleGuid = ModuleGuid,
-                    Version = newMenu.Version,
                     Menu = newMenu,
                 });
-                if (menu != null) {
-                    // the menu was saved as part of module definition, move it to MenuInfoDataProvider
-                    // get a fresh copy of the module definitions
-                    MenuModule menuMod = (MenuModule)ModuleDefinition.Load(ModuleGuid);
-                    if (menuMod == null)
-                        throw new InternalError("Menu module {0} was deleted", ModuleGuid);
+                // get a fresh copy of the module definitions
+                MenuModule menuMod = (MenuModule)ModuleDefinition.Load(ModuleGuid);
+                if (menuMod == null)
+                    throw new InternalError("Menu module {0} was deleted", ModuleGuid);
+                menuMod.NewMenuVersion();
+                this.MenuVersion = menuMod.MenuVersion;
 #pragma warning disable 0618 // Type or member is obsolete
-                    this.Menu = menuMod.Menu = null;// clear menu saved as part of module definition
+                // the menu was saved as part of module definition, move it to MenuInfoDataProvider
+                this.Menu = menuMod.Menu = null;// Legacy: clear menu saved as part of module definition
 #pragma warning restore 0618 // Type or member is obsolete
-                    menuMod.Save();// save module definition (without menu)
-                }
+                menuMod.Save();// save module definition (without menu)
             }
         }
 

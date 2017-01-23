@@ -45,17 +45,17 @@ namespace YetaWF.Modules.Packages.DataProvider {
             ModuleDefinition menuServices = ModuleDefinition.Load(Manager.CurrentSite.MenuServices, AllowNone: true);
             if (menuServices == null)
                 throw TemplateError("No menu services available - no module has been defined in Site Settings");
-            PropertyData menuProperty = ObjectSupport.GetPropertyData(menuServices.GetType(), "Menu");
-            _SiteMenu = (MenuList) menuProperty.PropInfo.GetValue(menuServices);
+            IModuleMenu iModMenu = (IModuleMenu)menuServices;
+            if (iModMenu == null)
+                throw TemplateError("Menu services module doesn't implement IModuleMenu interface");
 
+            _SiteMenu = iModMenu.GetMenu();
             Manager.SiteCreationTemplateActive = true;
             BuildSite(template, build);
             Manager.SiteCreationTemplateActive = false;
 
             // Save the new site menu
-            _SiteMenu.NewVersion();
-            menuProperty.PropInfo.SetValue(menuServices, _SiteMenu);
-            menuServices.Save();
+            iModMenu.SaveMenu(_SiteMenu);
         }
 
         /// <summary>

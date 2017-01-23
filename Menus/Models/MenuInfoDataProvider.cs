@@ -18,23 +18,10 @@ namespace YetaWF.Modules.Menus.DataProvider {
         [Data_PrimaryKey]
         public Guid ModuleGuid { get; set; }
 
-        [Data_Index]
-        public Guid Version { get; set; }
-
         [Data_Binary, CopyAttribute]
         public MenuList Menu { get; set; }
 
         public MenuInfo() { }
-    }
-    public class MenuInfoQuick {
-
-        [Data_PrimaryKey]
-        public Guid ModuleGuid { get; set; }
-
-        [Data_Index]
-        public Guid Version { get; set; }
-
-        public MenuInfoQuick() { }
     }
 
     public class MenuInfoDataProvider : DataProviderImpl, IInstallableModel {
@@ -124,46 +111,6 @@ namespace YetaWF.Modules.Menus.DataProvider {
         }
         public void ImportChunk(int chunk, SerializableList<SerializableFile> fileList, object obj) {
             DataProvider.ImportChunk(chunk, fileList, obj);
-        }
-    }
-    public class MenuInfoQuickDataProvider : DataProviderImpl {
-
-        // IMPLEMENTATION
-        // IMPLEMENTATION
-        // IMPLEMENTATION
-
-        public MenuInfoQuickDataProvider() : base(YetaWFManager.Manager.CurrentSite.Identity) { SetDataProvider(DataProvider); }
-        public MenuInfoQuickDataProvider(int siteIdentity) : base(siteIdentity) { SetDataProvider(DataProvider); }
-
-        private IDataProvider<Guid, MenuInfoQuick> DataProvider {
-            get {
-                if (_dataProvider == null) {
-                    Package package = Package.GetPackageFromAssembly(GetType().Assembly);
-                    switch (GetIOMode(package.AreaName + "_MenuInfo")) {
-                        default:
-                        case WebConfigHelper.IOModeEnum.File:
-                            _dataProvider = new YetaWF.DataProvider.FileDataProvider<Guid, MenuInfoQuick>(
-                                Path.Combine(YetaWFManager.DataFolder, AreaName, SiteIdentity.ToString()),
-                                Cacheable: true);
-                            break;
-                        case WebConfigHelper.IOModeEnum.Sql:
-                            _dataProvider = new YetaWF.DataProvider.SQLSimpleObjectDataProvider<Guid, MenuInfoQuick>(AreaName, SQLDbo, SQLConn,
-                                CurrentSiteIdentity: SiteIdentity,
-                                Cacheable: true);
-                            break;
-                    }
-                }
-                return _dataProvider;
-            }
-        }
-        private IDataProvider<Guid, MenuInfoQuick> _dataProvider { get; set; }
-
-        // LOAD/SAVE
-        // LOAD/SAVE
-        // LOAD/SAVE
-
-        public MenuInfoQuick GetItem(Guid moduleGuid) {
-            return DataProvider.Get(moduleGuid);
         }
     }
 }

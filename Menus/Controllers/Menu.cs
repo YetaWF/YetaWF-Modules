@@ -66,11 +66,12 @@ namespace YetaWF.Modules.Menus.Controllers {
         /// </remarks>
         protected MenuList GetEditMenu(MenuModule module) {
             MenuList.SavedCacheInfo info = MenuList.GetCache(module.ModuleGuid);
-            if (info == null || info.EditMode != Manager.EditMode || info.UserId != Manager.UserId || info.Menu.Version != Module.GetMenuVersion()) {
+            if (info == null || info.EditMode != Manager.EditMode || info.UserId != Manager.UserId || info.MenuVersion != Module.MenuVersion) {
                 info = new MenuList.SavedCacheInfo {
                     EditMode = Manager.EditMode,
                     UserId = Manager.UserId,
-                    Menu = Module.GetMenu().GetUserMenu()
+                    Menu = Module.GetMenu().GetUserMenu(),
+                    MenuVersion = Module.MenuVersion,
                 };
                 MenuList.SetCache(module.ModuleGuid, info);
             }
