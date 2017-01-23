@@ -27,9 +27,9 @@ namespace YetaWF.Modules.Menus.Modules {
         public MenuModule() {
             Name = this.__ResStr("modName", "Menu");
             Description = this.__ResStr("modSummary", "Simple and main page menus");
-#pragma warning disable CS0618 // Type or member is obsolete
+#pragma warning disable 0618 // Type or member is obsolete
             Menu = null;
-#pragma warning restore CS0618 // Type or member is obsolete
+#pragma warning restore 0618 // Type or member is obsolete
             Direction = MenuHelper.DirectionEnum.Bottom;
             Orientation = MenuHelper.OrientationEnum.Horizontal;
             HoverDelay = 500;
@@ -53,9 +53,9 @@ namespace YetaWF.Modules.Menus.Modules {
 
         public MenuList GetMenu() {
             using (MenuInfoDataProvider menuInfoDP = new MenuInfoDataProvider()) {
-#pragma warning disable CS0618 // Type or member is obsolete
+#pragma warning disable 0618 // Type or member is obsolete
                 MenuList menu = Menu;
-#pragma warning restore CS0618 // Type or member is obsolete
+#pragma warning restore 0618 // Type or member is obsolete
                 if (menu != null) {
                     SaveMenu(menu); // the menu is saved as part of module definition, move it to MenuInfoDataProvider
                 } else {
@@ -76,9 +76,9 @@ namespace YetaWF.Modules.Menus.Modules {
         }
         public void SaveMenu(MenuList newMenu) {
             using (MenuInfoDataProvider menuInfoDP = new MenuInfoDataProvider()) {
-#pragma warning disable CS0618 // Type or member is obsolete
+#pragma warning disable 0618 // Type or member is obsolete
                 MenuList menu = Menu;
-#pragma warning restore CS0618 // Type or member is obsolete
+#pragma warning restore 0618 // Type or member is obsolete
                 menuInfoDP.ReplaceItem(new MenuInfo {
                     ModuleGuid = ModuleGuid,
                     Version = newMenu.Version,
@@ -90,9 +90,9 @@ namespace YetaWF.Modules.Menus.Modules {
                     MenuModule menuMod = (MenuModule)ModuleDefinition.Load(ModuleGuid);
                     if (menuMod == null)
                         throw new InternalError("Menu module {0} was deleted", ModuleGuid);
-#pragma warning disable CS0618 // Type or member is obsolete
+#pragma warning disable 0618 // Type or member is obsolete
                     this.Menu = menuMod.Menu = null;// clear menu saved as part of module definition
-#pragma warning restore CS0618 // Type or member is obsolete
+#pragma warning restore 0618 // Type or member is obsolete
                     menuMod.Save();// save module definition (without menu)
                 }
             }
