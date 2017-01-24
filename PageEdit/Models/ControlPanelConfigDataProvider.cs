@@ -48,6 +48,7 @@ namespace YetaWF.Modules.PageEdit.DataProvider {
                         case WebConfigHelper.IOModeEnum.File:
                             _dataProvider = new YetaWF.DataProvider.FileDataProvider<int, ControlPanelConfigData>(
                                 Path.Combine(YetaWFManager.DataFolder, AreaName + "_ControlPanel_Config", SiteIdentity.ToString()),
+                                CurrentSiteIdentity: SiteIdentity,
                                 Cacheable: true);
                             break;
                         case WebConfigHelper.IOModeEnum.Sql:

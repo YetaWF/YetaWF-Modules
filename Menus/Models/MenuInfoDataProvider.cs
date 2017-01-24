@@ -42,6 +42,7 @@ namespace YetaWF.Modules.Menus.DataProvider {
                         case WebConfigHelper.IOModeEnum.File:
                             _dataProvider = new YetaWF.DataProvider.FileDataProvider<Guid, MenuInfo>(
                                 Path.Combine(YetaWFManager.DataFolder, AreaName, SiteIdentity.ToString()),
+                                CurrentSiteIdentity: SiteIdentity,
                                 Cacheable: true);
                             break;
                         case WebConfigHelper.IOModeEnum.Sql:

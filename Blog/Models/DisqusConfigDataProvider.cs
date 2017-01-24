@@ -83,6 +83,7 @@ namespace YetaWF.Modules.Blog.DataProvider {
                         case WebConfigHelper.IOModeEnum.File:
                             _dataProvider = new YetaWF.DataProvider.FileDataProvider<int, DisqusConfigData>(
                                 Path.Combine(YetaWFManager.DataFolder, AreaName + "_DisqusConfig", SiteIdentity.ToString()),
+                                CurrentSiteIdentity: SiteIdentity,
                                 Cacheable: true);
                             break;
                         case WebConfigHelper.IOModeEnum.Sql:
