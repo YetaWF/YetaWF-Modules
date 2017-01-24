@@ -1,15 +1,16 @@
 ﻿/* Copyright © 2017 Softel vdm, Inc. - http://yetawf.com/Documentation/YetaWF/Identity#License */
 
+using System;
 using System.Collections.Generic;
 using System.IO;
 using YetaWF.Core;
 using YetaWF.Core.DataProvider;
 using YetaWF.Core.DataProvider.Attributes;
-using YetaWF.Core.Extensions;
 using YetaWF.Core.IO;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Packages;
 using YetaWF.Core.Serializers;
+using YetaWF.Core.Site;
 using YetaWF.Core.Support;
 using YetaWF.Modules.Identity.Controllers;
 
@@ -23,25 +24,46 @@ namespace YetaWF.Modules.Identity.DataProvider {
         [Data_Index, StringLength(Globals.MaxUser)]
         public int UserId { get; set; }
 
-        [Data_PrimaryKey, StringLength(MaxLoginProvider + MaxProviderKey)]
+        [Data_PrimaryKey, StringLength(MaxLoginProvider + 1 + MaxProviderKey)]
         public string Key { get; set; }
 
         [Data_DontSave]
-        public string LoginProvider { get { return Key.Substring(0, MaxLoginProvider).Trim(); } set { Key = MakeKey(value, ProviderKey); } }
+        public string LoginProvider {
+            get {
+                string[] s = Key.Split(new char[] { '\x1' }, 2);
+                if (s.Length == 0) return "";
+                return s[0];
+            }
+            set {
+                Key = MakeKey(value, ProviderKey);
+            }
+        }
         [Data_DontSave]
         public string ProviderKey {
             get {
-                return Key.Length <= MaxLoginProvider ? "" : Key.Substring(MaxLoginProvider).Trim();
+                string[] s = Key.Split(new char[] { '\x1' }, 2);
+                if (s.Length < 2) return "";
+                return s[1];
             }
             set {
                 Key = MakeKey(LoginProvider, value);
             }
         }
 
-        public static string MakeKey(string loginProvider, string providerKey) {
-            return loginProvider.Truncate(MaxLoginProvider).PadRight(MaxLoginProvider) + providerKey.Truncate(MaxProviderKey).PadRight(MaxProviderKey);
+        [Obsolete("Discontinued as of package version 1.1.1")]
+        [Data_DontSave]
+        public string OldLoginProvider { get { return Key.Substring(0, MaxLoginProvider).Trim(); } }
+        [Data_DontSave]
+        [Obsolete("Discontinued as of package version 1.1.1")]
+        public string OldProviderKey {
+            get {
+                return Key.Length <= MaxLoginProvider ? "" : Key.Substring(MaxLoginProvider).Trim();
+            }
         }
 
+        public static string MakeKey(string loginProvider, string providerKey) {
+            return loginProvider.Trim() + "\x1" + providerKey.Trim();
+        }
         public LoginInfo() {
             Key = "";
         }
@@ -53,7 +75,7 @@ namespace YetaWF.Modules.Identity.DataProvider {
     /// File - A small set of users is expected - all users are preloaded so less than 20 is recommended
     /// SQL - No limit
     /// </summary>
-    public class UserLoginInfoDataProvider : DataProviderImpl, IInstallableModel {
+    public class UserLoginInfoDataProvider : DataProviderImpl, IInstallableModel, IInstallableModel2 {
 
         static UserLoginInfoDataProvider() { }
 
@@ -198,6 +220,38 @@ namespace YetaWF.Modules.Identity.DataProvider {
         }
         public void ImportChunk(int chunk, SerializableList<SerializableFile> fileList, object obj) {
             DataProvider.ImportChunk(chunk, fileList, obj);
+        }
+
+        // IINSTALLABLEMODEL2
+        // IINSTALLABLEMODEL2
+        // IINSTALLABLEMODEL2
+
+        public bool UpgradeModel(List<string> errorList, string lastSeenVersion) {
+
+            // Convert pre 1.1.1 data to new format (for all sites)
+            if (Package.CompareVersion(lastSeenVersion, AreaRegistration.CurrentPackage.Version) < 0) {
+
+                SiteDefinition.SitesInfo info = SiteDefinition.GetSites(0,0,null,null);
+                foreach (SiteDefinition site in info.Sites) {
+                    using (UserLoginInfoDataProvider userLoginInfoDP = new UserLoginInfoDataProvider(site.Identity)) {
+                        const int chunk = 100;
+                        int skip = 0;
+                        for ( ; ; skip += chunk) {
+                            int total;
+                            List<LoginInfo> list = userLoginInfoDP.GetItems(skip, chunk, null, null, out total);
+                            if (list.Count <= 0)
+                                break;
+                            foreach (LoginInfo l in list) {
+                                RemoveItem(l.UserId);
+#pragma warning disable 0618 // Type or member is obsolete
+                                AddItem(l.UserId, l.OldLoginProvider, l.OldProviderKey);
+#pragma warning restore 0618 // Type or member is obsolete
+                            }
+                        }
+                    }
+                }
+            }
+            return true;
         }
     }
 }
