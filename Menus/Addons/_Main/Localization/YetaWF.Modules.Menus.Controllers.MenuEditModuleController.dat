@@ -23,7 +23,7 @@
             <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
               <Properties>
                 <Name Value="menuChanged" />
-                <Text Value="The menu has been changed by someone else - Your changes can't be saved" />
+                <Text Value="The menu has been changed by someone else - Your changes can't be saved - Please refresh the current page before proceeding" />
               </Properties>
             </Object>
           </Value>
