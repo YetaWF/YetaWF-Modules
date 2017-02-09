@@ -1,13 +1,6 @@
 ﻿/* Blog */
 /* Copyright © 2017 Softel vdm, Inc. - http://yetawf.com/Documentation/YetaWF/Blog#License */
 
-.YetaWF_Blog_Blog .t_title .t_labels {
-    display:none;   
-}
-.YetaWF_Blog_Blog .t_title .t_vals {
-    font-size:larger;
-    font-weight:bold;
-}
 .YetaWF_Blog_Blog div.t_author,
 .YetaWF_Blog_Blog div.t_datepublished {
     clear:none;
@@ -90,6 +83,7 @@
     display:none;
 }
 .YetaWF_Blog_EntryDisplay div.t_text {
+    padding-top:1em;
     border-top: 1px solid gray;
 }
 .YetaWF_Blog_EntryDisplay .t_text .t_labels {
@@ -123,8 +117,8 @@
     margin-bottom: .5em;
 }
 .YetaWF_Blog_CommentsDisplay .t_cmtby,
-.YetaWF_Blog_CommentsDisplay .t_cmtauthor, 
-.YetaWF_Blog_CommentsDisplay .t_cmton, 
+.YetaWF_Blog_CommentsDisplay .t_cmtauthor,
+.YetaWF_Blog_CommentsDisplay .t_cmton,
 .YetaWF_Blog_CommentsDisplay .t_cmtdate {
     display: inline;
 }

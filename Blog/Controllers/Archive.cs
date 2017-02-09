@@ -57,7 +57,7 @@ namespace YetaWF.Modules.Blog.Controllers {
                     foreach (BlogEntry entry in data) {
                         if (entry.DatePublished.Month != month || entry.DatePublished.Year != year) {
                             if (count > 0) {
-                                DateTime d = new DateTime(year, month, 1);
+                                DateTime d = new DateTime(year, month, 1).AddMonths(1).AddDays(-1);// calculate last day of the month
                                 model.Actions.New(blogMod.GetAction_Blog(null, category, StartDate: d, Count: count));
                                 count = 0;
                             }
@@ -68,7 +68,7 @@ namespace YetaWF.Modules.Blog.Controllers {
                     }
                     start += incr;
                     if (count > 0) {
-                        DateTime d = new DateTime(year, month, 1);
+                        DateTime d = new DateTime(year, month, 1).AddMonths(1).AddDays(-1);// calculate last day of the month
                         model.Actions.New(blogMod.GetAction_Blog(null, category, StartDate: d, Count: count));
                     }
                     break;

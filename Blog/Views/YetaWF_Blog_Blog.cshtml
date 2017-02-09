@@ -5,6 +5,7 @@
 }
 @foreach (YetaWF.Modules.Blog.Controllers.BlogModuleController.Entry blogEntry in Model.BlogEntries) {
     ++count;
+    <h2>@blogEntry.Title.ToString()</h2>
     <div class="t_entry @("t_entry" + count.ToString())">
         @Html.DisplayFor(m => blogEntry, "PropertyList")
     </div>
