@@ -42,7 +42,6 @@ namespace YetaWF.Modules.Blog.Modules {
 
         public ModuleAction GetAction_Blog(string url, int blogCategory = 0, DateTime? StartDate = null, int Count = 0) {
             BlogConfigData config = BlogConfigDataProvider.GetConfig();
-            if (!config.Feed) return null;
             RouteValueDictionary rvd = new RouteValueDictionary();
             if (string.IsNullOrWhiteSpace(url))
                 url = BlogConfigData.GetCategoryCanonicalName(blogCategory);
