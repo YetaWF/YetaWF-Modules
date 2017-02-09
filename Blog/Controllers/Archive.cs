@@ -67,13 +67,11 @@ namespace YetaWF.Modules.Blog.Controllers {
                         ++count;
                     }
                     start += incr;
-                    if (start >= totalRecs) {
-                        if (count > 0) {
-                            DateTime d = new DateTime(year, month, 1);
-                            model.Actions.New(blogMod.GetAction_Blog(null, category, StartDate: d, Count: count));
-                        }
-                        break;
+                    if (count > 0) {
+                        DateTime d = new DateTime(year, month, 1);
+                        model.Actions.New(blogMod.GetAction_Blog(null, category, StartDate: d, Count: count));
                     }
+                    break;
                 }
                 return View(model);
             }
