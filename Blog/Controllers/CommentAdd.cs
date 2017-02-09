@@ -129,7 +129,23 @@ namespace YetaWF.Modules.Blog.Controllers {
                     ModelState.AddModelError("Name", this.__ResStr("alreadyExists", "An error occurred adding this new comment"));
                     return PartialView(model);
                 }
-                return FormProcessed(model, this.__ResStr("okSaved", "New comment saved"), OnClose: OnCloseEnum.ReloadPage, OnPopupClose: OnPopupCloseEnum.ReloadParentPage);
+                using (BlogCategoryDataProvider categoryDP = new BlogCategoryDataProvider()) {
+                    BlogCategory cat = categoryDP.GetItem(model.CategoryIdentity);
+                    if (cat == null) throw new InternalError("Category with id {0} not found", model.CategoryIdentity);
+                    bool approved = false;
+                    if (cat.CommentApproval == BlogCategory.ApprovalType.None)
+                        approved = true;
+                    else if (cat.CommentApproval == BlogCategory.ApprovalType.AnonymousUsers) {
+                        if (Manager.HaveUser)
+                            approved = true;
+                    }
+                    string msg;
+                    if (approved)
+                        msg = this.__ResStr("okSaved", "Your comment has been added.");
+                    else
+                        msg = this.__ResStr("okSavedWait", "Your comment has been saved and will be published once it's approved by the site administrator.");
+                    return FormProcessed(model, msg, OnClose: OnCloseEnum.ReloadPage, OnPopupClose: OnPopupCloseEnum.ReloadParentPage);
+                }
             }
         }
     }
