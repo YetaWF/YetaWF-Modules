@@ -1,4 +1,6 @@
-﻿using System;
+﻿/* Copyright © 2017 Softel vdm, Inc. - http://yetawf.com/Documentation/YetaWF/Pages#License */
+
+using System;
 using System.Collections.Generic;
 using YetaWF.Core.DataProvider;
 using YetaWF.Core.Packages;
