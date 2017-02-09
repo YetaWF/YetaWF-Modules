@@ -24,10 +24,6 @@ namespace YetaWF.Modules.Blog.Controllers {
             [StringLength(Globals.MaxUrl), Required, Trim]
             public string BlogUrl { get; set; }
 
-            [Category("Blog"), Caption("Default Blog Category"), Description("The default blog category displayed when no blog category is selected")]
-            [UIHint("YetaWF_Blog_Category"), AdditionalMetadata("ShowAll", true), Required]
-            public int DefaultCategory { get; set; }
-
             [Category("Blog"), Caption("Total Entries"), Description("The maximum number of blog entries shown on the main blog page when no category is selected")]
             [UIHint("IntValue4"), Range(3, 9999), Required]
             public int Entries { get; set; }

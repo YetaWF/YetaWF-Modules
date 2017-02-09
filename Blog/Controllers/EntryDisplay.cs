@@ -70,6 +70,7 @@ namespace YetaWF.Modules.Blog.Controllers {
                 DisplayModel model = new DisplayModel();
                 model.SetData(data);
                 Module.Title = data.Title;
+                Manager.CurrentPage.Keywords = Manager.CurrentPage.Description = Manager.PageTitle = this.__ResStr("title", "{1} - {0}", data.Category, data.Title.ToString());
                 return View(model);
             }
         }

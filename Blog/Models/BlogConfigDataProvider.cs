@@ -48,7 +48,6 @@ namespace YetaWF.Modules.Blog.DataProvider {
 
         [StringLength(Globals.MaxUrl)]
         public string BlogUrl { get; set; }
-        public int DefaultCategory { get; set; }
         public int Entries { get; set; }
         [StringLength(Globals.MaxUrl)]
         public string BlogEntryUrl { get; set; }

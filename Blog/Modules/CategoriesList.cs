@@ -33,10 +33,6 @@ namespace YetaWF.Modules.Blog.Modules {
 
         public override SerializableList<AllowedRole> DefaultAllowedRoles { get { return AdministratorLevel_DefaultAllowedRoles; } }
 
-        [Category("General"), Caption("Default Category"), Description("The default category")]
-        [UIHint("YetaWF_Blog_Category"), AdditionalMetadata("ShowAll", true)]
-        public int DefaultCategory { get; set; }
-
         [Category("General"), Caption("Style"), Description("Defines how the blog categories are displayed")]
         [UIHint("Enum"), Required]
         public StyleEnum Style { get; set; }

@@ -26,24 +26,27 @@ namespace YetaWF.Modules.Blog.Controllers {
         }
 
         [HttpGet]
-        public ActionResult CategoryHeader(int? blogEntry) {
-            int category;
-            Manager.TryGetUrlArg<int>("BlogCategory", out category);
+        public ActionResult CategoryHeader(int? blogEntry, int blogCategory = 0) {
             int entry = (int) (blogEntry ?? 0);
             if (entry != 0) {
                 using (BlogEntryDataProvider entryDP = new BlogEntryDataProvider()) {
                     BlogEntry data = entryDP.GetItem(entry);
                     if (data != null)
-                        category = data.CategoryIdentity;
+                        blogCategory = data.CategoryIdentity;
                 }
             }
-            if (category != 0) {
+            if (blogCategory != 0) {
                 using (BlogCategoryDataProvider dataProvider = new BlogCategoryDataProvider()) {
-                    BlogCategory data = dataProvider.GetItem(category);
+                    BlogCategory data = dataProvider.GetItem(blogCategory);
                     if (data != null) {
                         DisplayModel model = new DisplayModel();
                         model.SetData(data);
                         Module.Title = data.Category.ToString();
+                        Manager.PageTitle = data.Category.ToString();
+                        if (string.IsNullOrWhiteSpace(Manager.CurrentPage.Description))
+                            Manager.CurrentPage.Description = data.Category.ToString();
+                        if (string.IsNullOrWhiteSpace(Manager.CurrentPage.Keywords))
+                            Manager.CurrentPage.Keywords = data.Category.ToString();
                         return View(model);
                     }
                 }
