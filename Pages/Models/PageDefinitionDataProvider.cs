@@ -14,7 +14,6 @@ using YetaWF.Core.Packages;
 using YetaWF.Core.Pages;
 using YetaWF.Core.Serializers;
 using YetaWF.Core.Support;
-using YetaWF.Core.Support.StaticPages;
 using YetaWF.DataProvider;
 
 namespace YetaWF.Modules.Pages.DataProvider
