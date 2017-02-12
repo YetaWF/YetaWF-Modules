@@ -5,7 +5,7 @@
     YetaWF.Core.Packages.Package package = YetaWF.Modules.Basics.Controllers.AreaRegistration.CurrentPackage;
     Manager.AddOnManager.AddAddOn(package.Domain, package.Product, "AlertDisplay");
     string rootUrl = YetaWF.Core.Addons.VersionManager.GetAddOnModuleUrl(package.Domain, package.Product);
-    string closeUrl = Manager.GetCDNUrl(Path.Combine(rootUrl, "Icons", "Close.png"));
+    string closeUrl = Manager.GetCDNUrl(System.IO.Path.Combine(rootUrl, "Icons", "Close.png"));
 }
 @if (Model.MessageHandling == YetaWF.Modules.Basics.DataProvider.AlertConfig.MessageHandlingEnum.DisplayUntilOff) {
     <div class="t_close" data-ajaxurl="@YetaWFManager.UrlFor(typeof(YetaWF.Modules.Basics.Controllers.AlertDisplayModuleController), "Off", new { __ModuleGuid = Module.ModuleGuid })">
