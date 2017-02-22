@@ -76,7 +76,6 @@ namespace YetaWF.Modules.Identity.Controllers {
                 };
 
                 // make sure this user exists
-                IAuthenticationManager authManager = Manager.CurrentRequest.GetOwinContext().Authentication;
                 if (!Manager.CurrentRequest.IsAuthenticated)
                     throw new Error(this.__ResStr("noUser", "There is no logged on user."));
                 string userName = User.Identity.Name;
@@ -149,7 +148,7 @@ namespace YetaWF.Modules.Identity.Controllers {
                     }
                 }
                 // log the user off and back on so new name takes effect
-                IAuthenticationManager authManager = HttpContext.GetOwinContext().Authentication;
+                //IAuthenticationManager authManager = HttpContext.GetOwinContext().Authentication;
                 //deleted, done in UserLogff authManager.SignOut(DefaultAuthenticationTypes.ExternalCookie, DefaultAuthenticationTypes.ApplicationCookie, DefaultAuthenticationTypes.ExternalBearer);
                 LoginModuleController.UserLogoff();
                 await LoginModuleController.UserLoginAsync(user);

@@ -1,6 +1,7 @@
 ﻿/* Copyright © 2017 Softel vdm, Inc. - http://yetawf.com/Documentation/YetaWF/Sites#License */
 
 using System;
+using System.Web.Routing;
 using YetaWF.Core;
 using YetaWF.Core.IO;
 using YetaWF.Core.Localize;
@@ -8,7 +9,6 @@ using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Modules;
 using YetaWF.Core.Serializers;
 using YetaWF.Core.Site;
-using YetaWF.Core.Support;
 using YetaWF.DataProvider;
 
 namespace YetaWF.Modules.Sites.Modules {
@@ -34,7 +34,7 @@ namespace YetaWF.Modules.Sites.Modules {
             string siteName = site.SiteDomain;
             return new ModuleAction(this) {
                 Url = string.IsNullOrWhiteSpace(url) ? ModulePermanentUrl : url,
-                QueryArgsRvd = new System.Web.Routing.RouteValueDictionary() { { Globals.Link_ForceSite, site.SiteDomain } },
+                QueryArgsRvd = new RouteValueDictionary() { { Globals.Link_ForceSite, site.SiteDomain } },
                 Image = "#Remove",
                 NeedsModuleContext = true,
                 Style = ModuleAction.ActionStyleEnum.Normal,

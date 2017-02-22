@@ -4,9 +4,7 @@ using System;
 using System.Web.Mvc;
 using YetaWF.Core.Controllers;
 using YetaWF.Core.Localize;
-using YetaWF.Core.Models;
 using YetaWF.Core.Models.Attributes;
-using YetaWF.Modules.DevTests.Modules;
 
 namespace YetaWF.Modules.DevTests.Controllers {
 

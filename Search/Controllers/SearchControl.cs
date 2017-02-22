@@ -36,7 +36,7 @@ namespace YetaWF.Modules.Search.Controllers {
                 return new EmptyResult();
             if (!SearchDataProvider.IsUsable)
                 return new EmptyResult();
-            string searchTerms = HttpContext.Request[Info.UrlArg];
+            string searchTerms = Manager.CurrentRequest[Info.UrlArg];
             if (searchTerms == null)
                 return new EmptyResult();
             List<string> kwds = searchTerms.Split(new char[] { ' ', ',' }).ToList();

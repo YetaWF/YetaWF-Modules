@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Web.Routing;
 using YetaWF.Core.Addons;
 using YetaWF.Core.IO;
 using YetaWF.Core.Localize;
@@ -55,7 +56,7 @@ namespace YetaWF.Modules.ModuleEdit.Modules {
             return new ModuleAction(this) {
                 Url = YetaWFManager.UrlFor(typeof(ModuleControlModuleController), "ExportModuleData"),
                 QueryArgs = new { ModuleGuid = mod.ModuleGuid },
-                QueryArgsRvd = new System.Web.Routing.RouteValueDictionary{
+                QueryArgsRvd = new RouteValueDictionary{
                     { Basics.ModuleGuid, this.ModuleGuid }, // the module authorizing this
                 },
                 Image = "ExportModule.png",

@@ -13,7 +13,7 @@ namespace YetaWF.Modules.Identity.Support {
 
         [CombinedResources]
         private static string __ResStr(string name, string defaultValue, params object[] parms) { return ResourceAccess.GetResourceString(typeof(Resources), name, defaultValue, parms); }
-        
+
         public RoleNameValidationAttribute()
             : base("[A-Za-z0-9_][A-Za-z0-9_\\.]*") {
             ErrorMessage = __ResStr("valRoleName", "The role name must consist of one word containing letters and numbers, underscores and periods, without spaces.");
@@ -29,7 +29,7 @@ namespace YetaWF.Modules.Identity.Support {
 
         [CombinedResources]
         private static string __ResStr(string name, string defaultValue, params object[] parms) { return ResourceAccess.GetResourceString(typeof(Resources), name, defaultValue, parms); }
-        
+
         public ResourceNameValidationAttribute()
             : base(@"[A-Za-z][A-Za-z0-9]*_[A-Za-z][A-Za-z0-9]*\-.*") {
                 ErrorMessage = __ResStr("valResourceName", "The resource name must follow this naming convention: AreaName-ResourceName. An example of a valid resource name is \"YetaWF_Identity-Authorization Admin (Display)\".");
