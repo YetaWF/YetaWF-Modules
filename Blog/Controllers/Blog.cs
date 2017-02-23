@@ -11,6 +11,7 @@ using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Modules;
 using YetaWF.Modules.Blog.DataProvider;
 using YetaWF.Modules.Blog.Modules;
+using YetaWF.Core.Localize;
 #if MVC6
 using Microsoft.AspNetCore.Mvc;
 using YetaWF.Core.Support;
@@ -21,6 +22,8 @@ using System.Web.Mvc;
 namespace YetaWF.Modules.Blog.Controllers {
 
     public class BlogModuleController : ControllerImpl<YetaWF.Modules.Blog.Modules.BlogModule> {
+
+        private const int SummaryLength = 1000;
 
         public BlogModuleController() { }
 
@@ -55,8 +58,11 @@ namespace YetaWF.Modules.Blog.Controllers {
 
             public Entry(BlogEntry data, EntryEditModule editMod, EntryDisplayModule dispMod) {
                 ObjectSupport.CopyData(data, this);
-                if (string.IsNullOrWhiteSpace(data.Summary))
-                    Summary = data.Text.Truncate(1000);
+                if (string.IsNullOrWhiteSpace(Summary)) {
+                    Summary = data.Text;
+                    if (Summary.Length > SummaryLength)
+                        Summary = Summary.Truncate(SummaryLength).Trim() + this.__ResStr("more", " ...");
+                }
                 ViewAction = dispMod.GetAction_Display(data.Identity, ReadMore: Summary != data.Text);
                 Actions = new List<ModuleAction>();
                 Actions.New(editMod.GetAction_Edit(null, data.Identity));
