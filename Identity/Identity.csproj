@@ -203,12 +203,12 @@
     <Compile Include="Modules\Register.cs" />
     <Compile Include="Modules\Login.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ViewsCode\LoginUsersHelper.cs" />
-    <Compile Include="ViewsCode\EmailHelper.cs" />
-    <Compile Include="ViewsCode\UserIdHelper.cs" />
-    <Compile Include="ViewsCode\RoleIdHelper.cs" />
-    <Compile Include="ViewsCode\UsersHelper.cs" />
-    <Compile Include="ViewsCode\RolesHelper.cs" />
+    <Compile Include="ViewsCode\Shared\EmailHelper.cs" />
+    <Compile Include="ViewsCode\Shared\LoginUsersHelper.cs" />
+    <Compile Include="ViewsCode\Shared\RoleIdHelper.cs" />
+    <Compile Include="ViewsCode\Shared\RolesHelper.cs" />
+    <Compile Include="ViewsCode\Shared\UserIdHelper.cs" />
+    <Compile Include="ViewsCode\Shared\UsersHelper.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config">
