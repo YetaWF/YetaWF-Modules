@@ -22,7 +22,7 @@ YetaWF_MenuEdit.LoadTree = function (treeId, detailsId, data, newEntry) {
     var treefuncs = {};
     treefuncs.GetData = function (tree) {
         function CvtjsTreeDataEntry(jsentry, entry) {
-            entry.items = CvtjsTreeData(jsentry.children, []);
+            entry.SubMenu = CvtjsTreeData(jsentry.children, []);
         }
         function CvtjsTreeData(jsdata, data) {
             if (jsdata == undefined) return undefined;
@@ -506,8 +506,8 @@ YetaWF_MenuEdit.LoadTree = function (treeId, detailsId, data, newEntry) {
         entry.text = entry._Text;
         entry.icon = false;
         entry.state = { opened: true, disabled: false, selected: false };
-        entry.children = MakejsTreeData(entry.items);
-        entry.items = null;
+        entry.children = MakejsTreeData(entry.SubMenu);
+        entry.SubMenu = null;
         if (entry.SubModule == null)
             entry.SubModule = "00000000-0000-0000-0000-000000000000";
     }

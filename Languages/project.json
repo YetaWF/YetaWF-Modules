@@ -1,0 +1,23 @@
+{
+  "version": "2.0.0",
+
+  "dependencies": {
+    "Core": "2.0.0",
+    "File": "2.0.0",
+    "ModuleDefinition": "2.0.0",
+    "SQL": "2.0.0",
+    "Google.Apis.Translate.v2": "1.21.0.543",
+    "System.Runtime.Serialization.Json": "4.0.0",
+    "System.Private.DataContractSerialization": "4.3.0"
+  },
+  "frameworks": {
+    "net462": {
+      "frameworkAssemblies": {
+      }
+    }
+  },
+  "buildOptions": {
+    "outputName": "YetaWF.Languages",
+    "define": [ "MVC6" ]
+  }
+}

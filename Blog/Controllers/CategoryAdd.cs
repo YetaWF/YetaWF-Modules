@@ -1,12 +1,16 @@
 /* Copyright © 2017 Softel vdm, Inc. - http://yetawf.com/Documentation/YetaWF/Blog#License */
 
-using System.Web.Mvc;
 using YetaWF.Core;
 using YetaWF.Core.Controllers;
 using YetaWF.Core.Localize;
 using YetaWF.Core.Models;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Modules.Blog.DataProvider;
+#if MVC6
+using Microsoft.AspNetCore.Mvc;
+#else
+using System.Web.Mvc;
+#endif
 
 namespace YetaWF.Modules.Blog.Controllers {
     public class CategoryAddModuleController : ControllerImpl<YetaWF.Modules.Blog.Modules.CategoryAddModule> {

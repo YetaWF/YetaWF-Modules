@@ -75,12 +75,8 @@
     <Compile Include="Modules\ModuleEdit.cs" />
     <Compile Include="Modules\ModuleControl.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Views\Shared\RolesHelper.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Views\Shared\UsersHelper.cs">
-      <SubType>Code</SubType>
-    </Compile>
+    <Compile Include="ViewsCode\Shared\RolesHelper.cs" />
+    <Compile Include="ViewsCode\Shared\UsersHelper.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Addons\_Main\Icons\ExportModule.png" />

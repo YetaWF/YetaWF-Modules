@@ -3,7 +3,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web.Mvc;
 using YetaWF.Core.Controllers;
 using YetaWF.Core.DataProvider;
 using YetaWF.Core.Localize;
@@ -14,6 +13,11 @@ using YetaWF.Core.Modules;
 using YetaWF.Core.Views.Shared;
 using YetaWF.Modules.Feedback.DataProvider;
 using YetaWF.Modules.Feedback.Modules;
+#if MVC6
+using Microsoft.AspNetCore.Mvc;
+#else
+using System.Web.Mvc;
+#endif
 
 namespace YetaWF.Modules.Feedback.Controllers {
 

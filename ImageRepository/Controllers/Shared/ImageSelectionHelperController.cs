@@ -2,8 +2,6 @@
 
 using System;
 using System.IO;
-using System.Web;
-using System.Web.Mvc;
 using YetaWF.Core.Addons;
 using YetaWF.Core.Controllers;
 using YetaWF.Core.Extensions;
@@ -13,13 +11,25 @@ using YetaWF.Core.Localize;
 using YetaWF.Core.Support;
 using YetaWF.Core.Upload;
 using YetaWF.Modules.ImageRepository.Views.Shared;
+#if MVC6
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+#else
+using System.Web;
+using System.Web.Mvc;
+#endif
 
 namespace YetaWF.Modules.ImageRepository.Controllers.Shared {
     public class ImageSelectionHelperController : YetaWFController {
 
         [HttpPost]
         [ResourceAuthorize(CoreInfo.Resource_UploadImages)]
-        public ActionResult SaveImage(HttpPostedFileBase __filename, string folderGuid, string subFolder, string fileType) {
+#if MVC6
+        public ActionResult SaveImage(IFormFile __filename, string folderGuid, string subFolder, string fileType)
+#else
+        public ActionResult SaveImage(HttpPostedFileBase __filename, string folderGuid, string subFolder, string fileType)
+#endif
+        {
             FileUpload upload = new FileUpload();
             string storagePath = ImageSelectionInfo.StoragePath(new Guid(folderGuid), subFolder, fileType);
             string name = upload.StoreFile(__filename, storagePath, m => m.ImageUse, uf => {
@@ -32,7 +42,7 @@ namespace YetaWF.Modules.ImageRepository.Controllers.Shared {
             // Upload control considers Json result a success. result has a function to execute, newName has the file name
             sb.Append("{\n");
             sb.Append("  \"result\":");
-            sb.Append("      \"Y_Confirm(\\\"{0}\\\");\",", this.__ResStr("saveImageOK", "Image \\\\\\\"{0}\\\\\\\" successfully uploaded", YetaWFManager.JserEncode(__filename.FileName)));
+            sb.Append("      \"Y_Confirm(\\\"{0}\\\");\",", this.__ResStr("saveImageOK", "Image \\\\\\\"{0}\\\\\\\" successfully uploaded", YetaWFManager.JserEncode(name)));
             sb.Append("  \"filename\": \"{0}\",\n", YetaWFManager.JserEncode(name));
             sb.Append("  \"realFilename\": \"{0}\",\n", YetaWFManager.JserEncode(__filename.FileName));
             sb.Append("  \"attributes\": \"{0}\",\n", this.__ResStr("imgAttr", "{0} x {1} (w x h)", size.Width, size.Height));
@@ -41,7 +51,7 @@ namespace YetaWF.Modules.ImageRepository.Controllers.Shared {
                 sb.Append("<option title=\\\"{0}\\\">{0}</option>", YetaWFManager.JserEncode(f.RemoveStartingAt(ImageSupport.ImageSeparator)));
             sb.Append("\"\n");
             sb.Append("}");
-            return new JsonResult { Data = sb.ToString() };
+            return new YJsonResult { Data = sb.ToString() };
         }
 
         [HttpPost]
@@ -64,7 +74,7 @@ namespace YetaWF.Modules.ImageRepository.Controllers.Shared {
                 sb.Append("<option title=\\\"{0}\\\">{0}</option>", YetaWFManager.JserEncode(f.RemoveStartingAt(ImageSupport.ImageSeparator)));
             sb.Append("\"\n");
             sb.Append("}");
-            return new JsonResult { Data = sb.ToString() };
+            return new YJsonResult { Data = sb.ToString() };
         }
     }
 }

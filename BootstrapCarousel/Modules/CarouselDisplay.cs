@@ -1,7 +1,6 @@
 ﻿/* Copyright © 2017 Softel vdm, Inc. - http://yetawf.com/Documentation/YetaWF/BootstrapCarousel#License */
 
 using System;
-using System.Web.Mvc;
 using YetaWF.Core;
 using YetaWF.Core.IO;
 using YetaWF.Core.Localize;
@@ -12,6 +11,11 @@ using YetaWF.Core.Serializers;
 using YetaWF.Core.Views.Shared;
 using YetaWF.DataProvider;
 using YetaWF.Modules.BootstrapCarousel.Models;
+#if MVC6
+using YetaWF.Core.Support;
+#else
+using System.Web.Mvc;
+#endif
 
 namespace YetaWF.Modules.BootstrapCarousel.Modules {
 

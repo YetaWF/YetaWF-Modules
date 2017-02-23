@@ -74,9 +74,9 @@
     <Compile Include="Controllers\MenuEdit.cs" />
     <Compile Include="Modules\Menu.cs" />
     <Compile Include="Modules\MainMenu.cs" />
-    <Compile Include="Startup\MenuEdit.cs" />
+    <Compile Include="Modules\MenuEdit.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Views\Shared\MenuHelper.cs" />
+    <Compile Include="ViewsCode\Shared\MenuHelper.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Addons\_Addons\MenuEdit\filelistJS.txt" />

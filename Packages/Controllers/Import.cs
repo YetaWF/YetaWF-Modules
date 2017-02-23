@@ -1,8 +1,6 @@
 ﻿/* Copyright © 2017 Softel vdm, Inc. - http://yetawf.com/Documentation/YetaWF/Packages#License */
 
 using System.Collections.Generic;
-using System.Web;
-using System.Web.Mvc;
 using YetaWF.Core;
 using YetaWF.Core.Controllers;
 using YetaWF.Core.Localize;
@@ -12,6 +10,13 @@ using YetaWF.Core.Support;
 using YetaWF.Core.Upload;
 using YetaWF.Core.Views.Shared;
 using YetaWF.Modules.Packages.Modules;
+#if MVC6
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+#else
+using System.Web;
+using System.Web.Mvc;
+#endif
 
 namespace YetaWF.Modules.Packages.Controllers {
 
@@ -99,7 +104,12 @@ namespace YetaWF.Modules.Packages.Controllers {
         [HttpPost]
         [Permission("Imports")]
         [ExcludeDemoMode]
-        public ActionResult ImportPackage(HttpPostedFileBase __filename) {
+#if MVC6
+        public ActionResult ImportPackage(IFormFile __filename)
+#else
+        public ActionResult ImportPackage(HttpPostedFileBase __filename)
+#endif
+        {
             // Save the uploaded file as a temp file
             FileUpload upload = new FileUpload();
             string tempName = upload.StoreTempPackageFile(__filename);
@@ -119,7 +129,7 @@ namespace YetaWF.Modules.Packages.Controllers {
                 );
                 //System.Web.HttpRuntime.UnloadAppDomain();
                 //System.Web.HttpContext.Current.Response.Redirect("/");
-                return new JsonResult { Data = sb.ToString() };
+                return new YJsonResult { Data = sb.ToString() };
             } else {
                 // Anything else is a failure
                 throw new Error(msg);

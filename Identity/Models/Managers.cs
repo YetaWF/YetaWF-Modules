@@ -1,8 +1,12 @@
 ﻿/* Copyright © 2017 Softel vdm, Inc. - http://yetawf.com/Documentation/YetaWF/Identity#License */
 
-using Microsoft.AspNet.Identity;
 using YetaWF.Core.Support;
 using YetaWF.Modules.Identity.DataProvider;
+#if MVC6
+using Microsoft.AspNetCore.Identity;
+#else
+using Microsoft.AspNet.Identity;
+#endif
 
 namespace YetaWF.Modules.Identity.Models {
     public static class Managers {
@@ -13,49 +17,28 @@ namespace YetaWF.Modules.Identity.Models {
 
         // Gets the site specific UserManager instance (permanent)
         public static UserManager<UserDefinition> GetUserManager() {
+            // See if we already have it
+            UserManager<UserDefinition> userManager;
+            if (PermanentManager.TryGetObject<UserManager<UserDefinition>>(out userManager))
+                return userManager;
+
             lock (_lockObject) {
-                // See if we already have it
-                UserManager<UserDefinition> userManager;
+
                 if (PermanentManager.TryGetObject<UserManager<UserDefinition>>(out userManager))
                     return userManager;
 
                 // create a new instance
+#if MVC6
+                userManager = (UserManager<UserDefinition>)YetaWFManager.ServiceProvider.GetService(typeof(UserManager<UserDefinition>));
+#else
                 UserStore userStore = new UserStore(Manager.CurrentSite.Identity, 1.0f);
                 PermanentManager.AddObject<UserStore>(userStore);
-
                 userManager = new UserManager<UserDefinition>(userStore);
                 userManager.UserValidator = new UserValidator<UserDefinition>(userManager) { AllowOnlyAlphanumericUserNames = false };
+#endif
                 PermanentManager.AddObject<UserManager<UserDefinition>>(userManager);
                 return userManager;
             }
         }
-
-        // Gets the site specific UserStore instance (permanent)
-        public static UserStore GetUserStore() {
-            return PermanentManager.GetObject<UserStore>();
-        }
-
-        //// Gets the site specific RoleManager instance (permanent)
-        //public static RoleManager<RoleDefinition> GetRoleManager() {
-        //    lock (_lockObject) {
-        //        // See if we already have it
-        //        RoleManager<RoleDefinition> roleManager;
-        //        if (PermanentManager.TryGetObject<RoleManager<RoleDefinition>>(out roleManager))
-        //            return roleManager;
-
-        //        // create a new instance
-        //        RoleStore roleStore = new RoleStore(1.0f);
-        //        PermanentManager.AddObject<RoleStore>(roleStore);
-
-        //        // get a role manager
-        //        roleManager = new RoleManager<RoleDefinition>(roleStore);
-        //        PermanentManager.AddObject<RoleManager<RoleDefinition>>(roleManager);
-        //        return roleManager;
-        //    }
-        //}
-        //// Gets the site specific RoleStore instance (permanent)
-        //public static RoleStore GetRoleStore() {
-        //    return PermanentManager.GetObject<RoleStore>();
-        //}
     }
 }

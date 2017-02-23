@@ -2,7 +2,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Web.Mvc;
 using YetaWF.Core;
 using YetaWF.Core.Controllers;
 using YetaWF.Core.Language;
@@ -17,6 +16,11 @@ using YetaWF.Core.Site;
 using YetaWF.Core.Skins;
 using YetaWF.Core.Support;
 using YetaWF.Core.Views.Shared;
+#if MVC6
+using Microsoft.AspNetCore.Mvc;
+#else
+using System.Web.Mvc;
+#endif
 
 namespace YetaWF.Modules.PageEdit.Controllers {
 

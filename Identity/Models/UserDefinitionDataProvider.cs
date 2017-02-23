@@ -1,6 +1,5 @@
 ﻿/* Copyright © 2017 Softel vdm, Inc. - http://yetawf.com/Documentation/YetaWF/Identity#License */
 
-using Microsoft.AspNet.Identity;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -17,6 +16,11 @@ using YetaWF.Core.Serializers;
 using YetaWF.Core.Support;
 using YetaWF.Modules.Identity.Controllers;
 using YetaWF.Modules.Identity.Models;
+#if MVC6
+using Microsoft.AspNetCore.Identity;
+#else
+using Microsoft.AspNet.Identity;
+#endif
 
 namespace YetaWF.Modules.Identity.DataProvider {
 
@@ -33,7 +37,12 @@ namespace YetaWF.Modules.Identity.DataProvider {
         Suspended = 21,
     }
 
-    public class UserDefinition : IUser {
+#if MVC6
+    public class UserDefinition
+#else
+    public class UserDefinition : IUser
+#endif
+    {
 
         public const int MaxVerificationCode = 100;
         public const int MaxComment = 1000;
@@ -157,7 +166,7 @@ namespace YetaWF.Modules.Identity.DataProvider {
             return GetItem(filters);
         }
         public UserDefinition GetItem(string userName) {
-            if (userName == SuperuserDefinitionDataProvider.SuperUserName) {
+            if (string.Compare(userName, SuperuserDefinitionDataProvider.SuperUserName, true) == 0 ) {
                 using (SuperuserDefinitionDataProvider superDP = new SuperuserDefinitionDataProvider()) {
                     return superDP.GetSuperuser();
                 }
@@ -180,7 +189,7 @@ namespace YetaWF.Modules.Identity.DataProvider {
 
         public bool AddItem(UserDefinition data) {
             CleanupRoles(data);
-            if (data.UserId == SuperuserDefinitionDataProvider.SuperUserId || data.UserName == SuperuserDefinitionDataProvider.SuperUserName) {
+            if (data.UserId == SuperuserDefinitionDataProvider.SuperUserId || string.Compare(data.UserName, SuperuserDefinitionDataProvider.SuperUserName, true) == 0) {
                 using (SuperuserDefinitionDataProvider superDP = new SuperuserDefinitionDataProvider()) {
                     return superDP.AddItem(data);
                 }
@@ -189,7 +198,7 @@ namespace YetaWF.Modules.Identity.DataProvider {
         }
         public UpdateStatusEnum UpdateItem(UserDefinition data) {
             CleanupRoles(data);
-            if (data.UserId == SuperuserDefinitionDataProvider.SuperUserId || data.UserName == SuperuserDefinitionDataProvider.SuperUserName) {
+            if (data.UserId == SuperuserDefinitionDataProvider.SuperUserId || string.Compare(data.UserName, SuperuserDefinitionDataProvider.SuperUserName, true) == 0) {
                 using (SuperuserDefinitionDataProvider superDP = new SuperuserDefinitionDataProvider()) {
                     return superDP.UpdateItem(data);
                 }
@@ -198,11 +207,12 @@ namespace YetaWF.Modules.Identity.DataProvider {
         }
         public UpdateStatusEnum UpdateItem(string originalName, UserDefinition data) {
             CleanupRoles(data);
-            if (data.UserName == SuperuserDefinitionDataProvider.SuperUserName && originalName != SuperuserDefinitionDataProvider.SuperUserName)
+            if (string.Compare(data.UserName, SuperuserDefinitionDataProvider.SuperUserName, true) == 0 &&
+                    string.Compare(originalName, SuperuserDefinitionDataProvider.SuperUserName, true) != 0)
                 return UpdateStatusEnum.NewKeyExists;
-            if (originalName == SuperuserDefinitionDataProvider.SuperUserName) {
+            if (string.Compare(originalName, SuperuserDefinitionDataProvider.SuperUserName, true) == 0) {
                 if (data.UserName != originalName)
-                    throw new Error(this.__ResStr("cantRenameSuper", "The user \"{0}\" can't be renamed. It is defined in the site's web.config", originalName));
+                    throw new Error(this.__ResStr("cantRenameSuper", "The user \"{0}\" can't be renamed. It is defined in the site's web.config/appsettings.json", originalName));
                 using (SuperuserDefinitionDataProvider superDP = new SuperuserDefinitionDataProvider()) {
                     return superDP.UpdateItem(data);
                 }
@@ -216,7 +226,7 @@ namespace YetaWF.Modules.Identity.DataProvider {
             using (UserLoginInfoDataProvider logInfoDP = new UserLoginInfoDataProvider(SiteIdentity)) {
                 logInfoDP.RemoveItem(user.UserId);
             }
-            if (userName == SuperuserDefinitionDataProvider.SuperUserName) {
+            if (string.Compare(userName, SuperuserDefinitionDataProvider.SuperUserName, true) == 0) {
                 using (SuperuserDefinitionDataProvider superDP = new SuperuserDefinitionDataProvider()) {
                     return superDP.RemoveItem(userName);
                 }
@@ -252,7 +262,12 @@ namespace YetaWF.Modules.Identity.DataProvider {
                     break;
                 foreach (UserDefinition user in list) {
                     if (!string.IsNullOrWhiteSpace(user.PasswordPlainText)) {
+#if MVC6
+                        IPasswordHasher<UserDefinition> passwordHasher = (IPasswordHasher<UserDefinition>) YetaWFManager.ServiceProvider.GetService(typeof(IPasswordHasher<UserDefinition>));
+                        user.PasswordHash = passwordHasher.HashPassword(user, user.PasswordPlainText);
+#else
                         user.PasswordHash = userManager.PasswordHasher.HashPassword(user.PasswordPlainText);
+#endif
                         UpdateStatusEnum status = UpdateItem(user);
                         if (status != UpdateStatusEnum.OK)
                             throw new InternalError("Update failed - status {0} user id {1}", status, user.Id);

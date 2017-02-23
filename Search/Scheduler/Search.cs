@@ -70,7 +70,6 @@ namespace YetaWF.Modules.Search.Scheduler {
 #if DEBUG
 //                  if (type.Name != "FileDocumentDisplayModule") continue;//used for debugging
 #endif
-
                     ISearchDynamicUrls iSearch = (ISearchDynamicUrls)Activator.CreateInstance(type);
                     if (iSearch != null) {
                         try {

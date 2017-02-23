@@ -1,11 +1,15 @@
 /* Copyright © 2017 Softel vdm, Inc. - http://yetawf.com/Documentation/YetaWF/Identity#License */
 
 using System;
-using System.Web.Mvc;
 using YetaWF.Core.Controllers;
 using YetaWF.Core.Localize;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Support;
+#if MVC6
+using Microsoft.AspNetCore.Mvc;
+#else
+using System.Web.Mvc;
+#endif
 
 namespace YetaWF.Modules.Identity.Controllers {
 
@@ -87,17 +91,18 @@ namespace YetaWF.Modules.Identity.Controllers {
         public ActionResult OwinEdit() {
             EditModel model = new EditModel { };
 
-            model.SlidingExpiration = WebConfigHelper.GetValue<bool>(Module.AreaName, "OWin:SlidingExpiration");
-            model.ExpireTimeSpan = WebConfigHelper.GetValue<TimeSpan>(Module.AreaName, "OWin:ExpireTimeSpan");
+            model.SlidingExpiration = WebConfigHelper.GetValue<bool>(Module.Area, "OWin:SlidingExpiration");
+            long ticks = WebConfigHelper.GetValue<long>(Module.Area, "OWin:ExpireTimeSpan");
+            model.ExpireTimeSpan = new TimeSpan(ticks);
 
-            model.MicrosoftPublic = WebConfigHelper.GetValue<string>(Module.AreaName, "MicrosoftAccount:Public");
-            model.MicrosoftPrivate = WebConfigHelper.GetValue<string>(Module.AreaName, "MicrosoftAccount:Private");
-            model.GooglePublic = WebConfigHelper.GetValue<string>(Module.AreaName, "GoogleAccount:Public");
-            model.GooglePrivate = WebConfigHelper.GetValue<string>(Module.AreaName, "GoogleAccount:Private");
-            model.FacebookPublic = WebConfigHelper.GetValue<string>(Module.AreaName, "FacebookAccount:Public");
-            model.FacebookPrivate = WebConfigHelper.GetValue<string>(Module.AreaName, "FacebookAccount:Private");
-            model.TwitterPublic = WebConfigHelper.GetValue<string>(Module.AreaName, "TwitterAccount:Public");
-            model.TwitterPrivate = WebConfigHelper.GetValue<string>(Module.AreaName, "TwitterAccount:Private");
+            model.MicrosoftPublic = WebConfigHelper.GetValue<string>(Module.Area, "MicrosoftAccount:Public");
+            model.MicrosoftPrivate = WebConfigHelper.GetValue<string>(Module.Area, "MicrosoftAccount:Private");
+            model.GooglePublic = WebConfigHelper.GetValue<string>(Module.Area, "GoogleAccount:Public");
+            model.GooglePrivate = WebConfigHelper.GetValue<string>(Module.Area, "GoogleAccount:Private");
+            model.FacebookPublic = WebConfigHelper.GetValue<string>(Module.Area, "FacebookAccount:Public");
+            model.FacebookPrivate = WebConfigHelper.GetValue<string>(Module.Area, "FacebookAccount:Private");
+            model.TwitterPublic = WebConfigHelper.GetValue<string>(Module.Area, "TwitterAccount:Public");
+            model.TwitterPrivate = WebConfigHelper.GetValue<string>(Module.Area, "TwitterAccount:Private");
             return View(model);
         }
 
@@ -112,19 +117,22 @@ namespace YetaWF.Modules.Identity.Controllers {
                 return PartialView(model);
             }
 
-            WebConfigHelper.SetValue<bool>(Module.AreaName, "OWin:SlidingExpiration", model.SlidingExpiration);
-            WebConfigHelper.SetValue<TimeSpan>(Module.AreaName, "OWin:ExpireTimeSpan", model.ExpireTimeSpan);
+            WebConfigHelper.SetValue<bool>(Module.Area, "OWin:SlidingExpiration", model.SlidingExpiration);
+            WebConfigHelper.SetValue<long>(Module.Area, "OWin:ExpireTimeSpan", model.ExpireTimeSpan.Ticks);
 
-            WebConfigHelper.SetValue<string>(Module.AreaName, "MicrosoftAccount:Public", model.MicrosoftPublic);
-            WebConfigHelper.SetValue<string>(Module.AreaName, "MicrosoftAccount:Private", model.MicrosoftPrivate);
-            WebConfigHelper.SetValue<string>(Module.AreaName, "GoogleAccount:Public", model.GooglePublic);
-            WebConfigHelper.SetValue<string>(Module.AreaName, "GoogleAccount:Private", model.GooglePrivate);
-            WebConfigHelper.SetValue<string>(Module.AreaName, "FacebookAccount:Public", model.FacebookPublic);
-            WebConfigHelper.SetValue<string>(Module.AreaName, "FacebookAccount:Private", model.FacebookPrivate);
-            WebConfigHelper.SetValue<string>(Module.AreaName, "TwitterAccount:Public", model.TwitterPublic);
-            WebConfigHelper.SetValue<string>(Module.AreaName, "TwitterAccount:Private", model.TwitterPrivate);
+            WebConfigHelper.SetValue<string>(Module.Area, "MicrosoftAccount:Public", model.MicrosoftPublic);
+            WebConfigHelper.SetValue<string>(Module.Area, "MicrosoftAccount:Private", model.MicrosoftPrivate);
+            WebConfigHelper.SetValue<string>(Module.Area, "GoogleAccount:Public", model.GooglePublic);
+            WebConfigHelper.SetValue<string>(Module.Area, "GoogleAccount:Private", model.GooglePrivate);
+            WebConfigHelper.SetValue<string>(Module.Area, "FacebookAccount:Public", model.FacebookPublic);
+            WebConfigHelper.SetValue<string>(Module.Area, "FacebookAccount:Private", model.FacebookPrivate);
+            WebConfigHelper.SetValue<string>(Module.Area, "TwitterAccount:Public", model.TwitterPublic);
+            WebConfigHelper.SetValue<string>(Module.Area, "TwitterAccount:Private", model.TwitterPrivate);
+            WebConfigHelper.Save();
 
-            return FormProcessed(model, this.__ResStr("okSaved", "Web.config has been updated - Web application is now restarting."), NextPage: Manager.CurrentSite.HomePageUrl);
+            Manager.RestartSite();
+
+            return FormProcessed(model, this.__ResStr("okSaved", "Web.config/appsettings.json has been updated - Web application is now restarting."), NextPage: Manager.CurrentSite.HomePageUrl);
         }
     }
 }

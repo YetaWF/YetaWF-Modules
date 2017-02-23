@@ -4,8 +4,6 @@ using Ionic.Zip;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
-using System.Web.Mvc;
 using YetaWF.Core.Addons;
 using YetaWF.Core.Controllers;
 using YetaWF.Core.DataProvider;
@@ -19,6 +17,12 @@ using YetaWF.Core.Support;
 using YetaWF.Core.Views.Shared;
 using YetaWF.Modules.Logging.DataProvider;
 using YetaWF.Modules.Logging.Modules;
+#if MVC6
+using Microsoft.AspNetCore.Mvc;
+#else
+using System.Web;
+using System.Web.Mvc;
+#endif
 
 namespace YetaWF.Modules.Logging.Controllers {
 
@@ -160,15 +164,23 @@ namespace YetaWF.Modules.Logging.Controllers {
                 string filename = dataProvider.GetLogFileName();
                 if (!System.IO.File.Exists(filename))
                     throw new Error(this.__ResStr("logNotFound", "The log file '{0}' cannot be located", filename));
-
+#if MVC6
+                Response.Headers.Remove("Cookie");
+                Response.Headers.Add("Cookie", Basics.CookieDone + "=" + cookieToReturn.ToString());
+#else
                 HttpCookie cookie = new HttpCookie(Basics.CookieDone, cookieToReturn.ToString());
                 Response.Cookies.Remove(Basics.CookieDone);
                 Response.SetCookie(cookie);
+#endif
 
                 string contentType = "application/octet-stream";
+#if MVC6
+                return new PhysicalFileResult(filename, contentType) { FileDownloadName = "Logfile.txt" };
+#else
                 FilePathResult result = new FilePathResult(filename, contentType);
                 result.FileDownloadName = "Logfile.txt";
                 return result;
+#endif
             }
         }
 
@@ -179,11 +191,12 @@ namespace YetaWF.Modules.Logging.Controllers {
                 string filename = dataProvider.GetLogFileName();
                 if (!System.IO.File.Exists(filename))
                     throw new Error(this.__ResStr("logNotFound", "The log file '{0}' cannot be located", filename));
-
+#if MVC6
+#else
                 HttpCookie cookie = new HttpCookie(Basics.CookieDone, cookieToReturn.ToString());
                 Response.Cookies.Remove(Basics.CookieDone);
                 Response.SetCookie(cookie);
-
+#endif
                 string zipName = "Logfile.zip";
                 YetaWFZipFile zipFile = new YetaWFZipFile {
                     FileName = zipName,

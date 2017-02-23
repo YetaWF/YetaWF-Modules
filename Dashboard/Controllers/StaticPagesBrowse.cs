@@ -3,7 +3,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web.Mvc;
 using YetaWF.Core.Controllers;
 using YetaWF.Core.DataProvider;
 using YetaWF.Core.Menus;
@@ -13,6 +12,12 @@ using YetaWF.Core.Modules;
 using YetaWF.Core.Support.StaticPages;
 using YetaWF.Core.Views.Shared;
 using YetaWF.Modules.Dashboard.Modules;
+using YetaWF.Core.Support;
+#if MVC6
+using Microsoft.AspNetCore.Mvc;
+#else
+using System.Web.Mvc;
+#endif
 
 namespace YetaWF.Modules.Dashboard.Controllers {
 

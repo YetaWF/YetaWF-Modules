@@ -1,16 +1,20 @@
 /* Copyright © 2017 Softel vdm, Inc. - http://yetawf.com/Documentation/YetaWF/Identity#License */
 
-using Microsoft.AspNet.Identity;
-using Microsoft.Owin.Security;
 using System;
-using System.Web;
-using System.Web.Mvc;
 using YetaWF.Core.Controllers;
 using YetaWF.Core.Localize;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Support;
 using YetaWF.Modules.Identity.DataProvider;
 using YetaWF.Modules.Identity.Models;
+#if MVC6
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
+using System.Threading.Tasks;
+#else
+using Microsoft.AspNet.Identity;
+using System.Web.Mvc;
+#endif
 
 namespace YetaWF.Modules.Identity.Controllers {
 
@@ -41,11 +45,20 @@ namespace YetaWF.Modules.Identity.Controllers {
         }
 
         [HttpGet]
-        public ActionResult UserPassword() {
-
-            IAuthenticationManager authManager = Manager.CurrentRequest.GetOwinContext().Authentication;
+#if MVC6
+        public async Task<ActionResult> UserPassword()
+#else
+        public ActionResult UserPassword()
+#endif
+        {
+#if MVC6
+            if (!Manager.CurrentContext.User.Identity.IsAuthenticated)
+#else
             if (!Manager.CurrentRequest.IsAuthenticated)
+#endif
+            {
                 throw new Error(this.__ResStr("noUser", "There is no logged on user"));
+            }
             string userName = User.Identity.Name;
 
             using (UserLoginInfoDataProvider logInfoDP = new UserLoginInfoDataProvider()) {
@@ -53,7 +66,12 @@ namespace YetaWF.Modules.Identity.Controllers {
                     return View("ExternalLoginOnly", (object)null);
             }
             UserManager<UserDefinition> userManager = Managers.GetUserManager();
-            UserDefinition user = userManager.FindByName(userName);
+            UserDefinition user;
+#if MVC6
+            user = await userManager.FindByNameAsync(userName);
+#else
+            user = userManager.FindByName(userName);
+#endif
             if (user == null)
                 throw new Error(this.__ResStr("notFound", "User \"{0}\" not found."), userName);
 
@@ -66,11 +84,21 @@ namespace YetaWF.Modules.Identity.Controllers {
         [HttpPost]
         [ConditionalAntiForgeryToken]
         [ExcludeDemoMode]
-        public ActionResult UserPassword_Partial(EditModel model) {
+#if MVC6
+        public async Task<ActionResult> UserPassword_Partial(EditModel model)
+#else
+        public ActionResult UserPassword_Partial(EditModel model)
+#endif
+        {
             // get current user we're changing
-            IAuthenticationManager authManager = Manager.CurrentRequest.GetOwinContext().Authentication;
+#if MVC6
+            if (!Manager.CurrentContext.User.Identity.IsAuthenticated)
+#else
             if (!Manager.CurrentRequest.IsAuthenticated)
+#endif
+            {
                 throw new Error(this.__ResStr("noUser", "There is no logged on user"));
+            }
             string userName = User.Identity.Name;
 
             using (UserLoginInfoDataProvider logInfoDP = new UserLoginInfoDataProvider()) {
@@ -79,28 +107,57 @@ namespace YetaWF.Modules.Identity.Controllers {
             }
 
             UserManager<UserDefinition> userManager = Managers.GetUserManager();
-            UserDefinition user = userManager.FindByName(userName);
+            UserDefinition user;
+#if MVC6
+            user = await userManager.FindByNameAsync(userName);
+#else
+            user = userManager.FindByName(userName);
+#endif
             if (user == null)
                 throw new Error(this.__ResStr("notFound", "User \"{0}\" not found."), userName);
 
             model.SetData(user);
             if (!ModelState.IsValid)
                 return PartialView(model);
-
             // change the password
-            IdentityResult result = userManager.PasswordValidator.ValidateAsync(model.NewPassword).Result;
+            IdentityResult result;
+#if MVC6
+            IPasswordValidator<UserDefinition> passVal = (IPasswordValidator<UserDefinition>)YetaWFManager.ServiceProvider.GetService(typeof(IPasswordValidator<UserDefinition>));
+            result = await passVal.ValidateAsync(userManager, user, model.NewPassword);
+#else
+            result = userManager.PasswordValidator.ValidateAsync(model.NewPassword).Result;
+#endif
             if (!result.Succeeded) {
-                foreach (string err in result.Errors)
+                foreach (var err in result.Errors) {
+#if MVC6
+                    ModelState.AddModelError("NewPassword", err.Description);
+#else
                     ModelState.AddModelError("NewPassword", err);
+#endif
+                }
                 return PartialView(model);
             }
-            result = userManager.ChangePassword(user.Id, model.OldPassword??"", model.NewPassword);
+#if MVC6
+            result = await userManager.ChangePasswordAsync(user, model.OldPassword ?? "", model.NewPassword);
+#else
+            result = userManager.ChangePassword(user.Id, model.OldPassword ?? "", model.NewPassword);
+#endif
             if (!result.Succeeded) {
-                foreach (string err in result.Errors)
+                foreach (var err in result.Errors) {
+#if MVC6
+                    ModelState.AddModelError("OldPassword", err.Description);
+#else
                     ModelState.AddModelError("OldPassword", err);
+#endif
+                }
                 return PartialView(model);
             }
+#if MVC6
+            IPasswordHasher<UserDefinition> passwordHasher = (IPasswordHasher<UserDefinition>) YetaWFManager.ServiceProvider.GetService(typeof(IPasswordHasher<UserDefinition>));
+            user.PasswordHash = passwordHasher.HashPassword(user, model.NewPassword);
+#else
             user.PasswordHash = userManager.PasswordHasher.HashPassword(model.NewPassword);
+#endif
 
             // update user info
             LoginConfigData config = LoginConfigDataProvider.GetConfig();
@@ -110,10 +167,19 @@ namespace YetaWF.Modules.Identity.Controllers {
                 user.PasswordPlainText = model.NewPassword;
 
             // finally update the user definition
+#if MVC6
+            result = await userManager.UpdateAsync(user);
+#else
             result = userManager.Update(user);
+#endif
             if (!result.Succeeded) {
-                foreach (string err in result.Errors)
+                foreach (var err in result.Errors) {
+#if MVC6
+                    ModelState.AddModelError("", err.Description);
+#else
                     ModelState.AddModelError("", err);
+#endif
+                }
                 return PartialView(model);
             }
             return FormProcessed(model, this.__ResStr("okSaved", "Your new password has been saved"));

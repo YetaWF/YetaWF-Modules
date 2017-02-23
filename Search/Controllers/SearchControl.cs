@@ -2,13 +2,17 @@
 
 using System.Collections.Generic;
 using System.Linq;
-using System.Web.Mvc;
 using YetaWF.Core.Controllers;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Modules;
 using YetaWF.Core.Support;
 using YetaWF.Modules.Search.Addons;
 using YetaWF.Modules.Search.DataProvider;
+#if MVC6
+using Microsoft.AspNetCore.Mvc;
+#else
+using System.Web.Mvc;
+#endif
 
 namespace YetaWF.Modules.Search.Controllers {
 
@@ -36,7 +40,12 @@ namespace YetaWF.Modules.Search.Controllers {
                 return new EmptyResult();
             if (!SearchDataProvider.IsUsable)
                 return new EmptyResult();
-            string searchTerms = Manager.CurrentRequest[Info.UrlArg];
+            string searchTerms;
+#if MVC6
+            searchTerms = Manager.CurrentRequest.Query[Info.UrlArg];
+#else
+            searchTerms = Manager.CurrentRequest[Info.UrlArg];
+#endif
             if (searchTerms == null)
                 return new EmptyResult();
             List<string> kwds = searchTerms.Split(new char[] { ' ', ',' }).ToList();

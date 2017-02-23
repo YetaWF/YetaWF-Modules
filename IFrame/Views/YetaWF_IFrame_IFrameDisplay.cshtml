@@ -1,7 +1,7 @@
 @*Copyright © 2017 Softel vdm, Inc. - http://yetawf.com/Documentation/YetaWF/IFrame#License*@
 @inherits YetaWF.Core.Views.RazorView<YetaWF.Modules.IFrame.Modules.IFrameDisplayModule, YetaWF.Modules.IFrame.Controllers.IFrameDisplayModuleController.DisplayModel>
 @if (Manager.EditMode) {
-    <p class="yDivWarning">@__ResStr("editMode", "Url contents ("+Module.Url+") not shown in Site Edit Mode")</p>
+    <p class="yDivWarning">@__ResStr("editMode", "Url contents ({0}) not shown in Site Edit Mode", Module.Url)</p>
 } else {
     <iframe src="@Module.Url" style="border:none;@Model.Style"></iframe>
 }

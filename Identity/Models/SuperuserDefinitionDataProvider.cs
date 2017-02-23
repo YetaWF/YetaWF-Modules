@@ -86,29 +86,29 @@ namespace YetaWF.Modules.Identity.DataProvider {
             return user;
         }
         public bool AddItem(UserDefinition user) {
-            if (user.UserId != SuperuserDefinitionDataProvider.SuperUserId || user.UserName != SuperUserName)
+            if (user.UserId != SuperuserDefinitionDataProvider.SuperUserId || string.Compare(user.UserName, SuperUserName, true) != 0)
                 throw new Error(this.__ResStr("cantAddSuper", "Wrong user id or user name - Can't add as superuser"));
             user.RolesList = new SerializableList<Role> { new Role { RoleId = Resource.ResourceAccess.GetSuperuserRoleId() } };
             return DataProvider.Add(user);
         }
         public UpdateStatusEnum UpdateItem(UserDefinition user) {
-            if (user.UserId != SuperuserDefinitionDataProvider.SuperUserId || user.UserName != SuperUserName)
+            if (user.UserId != SuperuserDefinitionDataProvider.SuperUserId || string.Compare(user.UserName, SuperUserName, true) != 0)
                 throw new Error(this.__ResStr("cantUpdateSuper", "Wrong user id or user name - Can't update as superuser"));
             user.RolesList = new SerializableList<Role> { new Role { RoleId = Resource.ResourceAccess.GetSuperuserRoleId() } };
             return UpdateItem(user.UserName, user);
         }
         public UpdateStatusEnum UpdateItem(string originalName, UserDefinition data) {
-            if (originalName == SuperUserName) {
+            if (string.Compare(originalName, SuperUserName, true) == 0) {
                 if (data.UserName != originalName)
-                    throw new Error(this.__ResStr("cantRenameSuper", "The user \"{0}\" can't be renamed. It is defined in the site's web.config", data.UserName));
+                    throw new Error(this.__ResStr("cantRenameSuper", "The user \"{0}\" can't be renamed. It is defined in the site's web.config/appsettings.json", data.UserName));
                 // we allow status change even for a superuser (mainly to support login failures with automatic suspension)
                 //if (data.UserStatus != UserStatusEnum.Approved)
                 //    throw new Error(this.__ResStr("cantChangeStatusSuper", "The user \"{0}\" must remain an approved user. That's the only one that can bail you out when the entire site is broken.", data.UserName));
             }
-            if (data.UserId != SuperuserDefinitionDataProvider.SuperUserId || data.UserName != SuperUserName)
+            if (data.UserId != SuperuserDefinitionDataProvider.SuperUserId || string.Compare(data.UserName, SuperUserName, true) != 0)
                 throw new Error(this.__ResStr("cantUpdateSuper", "Wrong user id or user name - Can't update as superuser"));
             lock (_lockObject) {
-                UserDefinition superUser;// need to get current superuser because user may have changed the name through web.config
+                UserDefinition superUser;// need to get current superuser because user may have changed the name through web.config/appsettings.json
                 List<DataProviderFilterInfo> filters = DataProviderFilterInfo.Join(null, new DataProviderFilterInfo { Field = "UserId", Operator = "==", Value = SuperuserDefinitionDataProvider.SuperUserId });
                 superUser = DataProvider.GetOneRecord(filters);
                 superUser.RolesList = new SerializableList<Role> { new Role { RoleId = Resource.ResourceAccess.GetSuperuserRoleId() } };

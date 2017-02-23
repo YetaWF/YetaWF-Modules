@@ -80,12 +80,8 @@
     <Compile Include="Modules\PageEdit.cs" />
     <Compile Include="Modules\PageControl.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Views\Shared\RolesHelper.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Views\Shared\UsersHelper.cs">
-      <SubType>Code</SubType>
-    </Compile>
+    <Compile Include="ViewsCode\Shared\RolesHelper.cs" />
+    <Compile Include="ViewsCode\Shared\UsersHelper.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Addons\_Main\filelistCSS.txt" />

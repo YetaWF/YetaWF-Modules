@@ -1,10 +1,15 @@
 /* Copyright © 2017 Softel vdm, Inc. - http://yetawf.com/Documentation/YetaWF/DevTests#License */
 
 using System;
-using System.Web.Mvc;
 using YetaWF.Core.Controllers;
 using YetaWF.Core.Localize;
 using YetaWF.Core.Models.Attributes;
+#if MVC6
+using Microsoft.AspNetCore.Mvc;
+using YetaWF.Core.Support;
+#else
+using System.Web.Mvc;
+#endif
 
 namespace YetaWF.Modules.DevTests.Controllers {
 
@@ -48,8 +53,8 @@ namespace YetaWF.Modules.DevTests.Controllers {
         [HttpPost]
         [ConditionalAntiForgeryToken]
         public ActionResult TemplateModuleSelection_Partial(EditModel model) {
-            model.ROModule = model.Module;
-            model.ROModuleNew = model.ModuleNew;
+            model.ROModule = Module.PermanentGuid;
+            model.ROModuleNew = Module.PermanentGuid;
             if (!ModelState.IsValid)
                 return PartialView(model);
             return FormProcessed(model, this.__ResStr("ok", "OK"));

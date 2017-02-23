@@ -1,10 +1,17 @@
 /* Copyright © 2017 Softel vdm, Inc. - http://yetawf.com/Documentation/YetaWF/Search#License */
 
-using System.Collections.Specialized;
-using System.Web.Mvc;
 using YetaWF.Core.Controllers;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Modules.Search.DataProvider;
+using YetaWF.Core.Support;
+#if MVC6
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.WebUtilities;
+using System.Collections.Generic;
+#else
+using System.Collections.Specialized;
+using System.Web.Mvc;
+#endif
 
 namespace YetaWF.Modules.Search.Controllers {
 
@@ -40,9 +47,9 @@ namespace YetaWF.Modules.Search.Controllers {
             if (!ModelState.IsValid)
                 return PartialView(model);
             SearchConfigData config = SearchConfigDataProvider.GetConfig();
-            NameValueCollection qs = System.Web.HttpUtility.ParseQueryString(string.Empty);
-            qs["SearchTerms"] = model.SearchTerms;
-            string url = config.ResultsUrl + "?" + qs.ToString();
+            QueryHelper query = new QueryHelper();
+            query["SearchTerms"] = model.SearchTerms;
+            string url = query.ToUrl(config.ResultsUrl);
             return FormProcessed(model, NextPage: url);
         }
     }

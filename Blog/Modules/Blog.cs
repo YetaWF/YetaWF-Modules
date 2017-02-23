@@ -2,7 +2,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Web.Routing;
 using YetaWF.Core.Extensions;
 using YetaWF.Core.IO;
 using YetaWF.Core.Localize;
@@ -13,6 +12,11 @@ using YetaWF.Core.Support;
 using YetaWF.DataProvider;
 using YetaWF.Modules.Blog.Controllers;
 using YetaWF.Modules.Blog.DataProvider;
+#if MVC6
+using Microsoft.AspNetCore.Routing;
+#else
+using System.Web.Routing;
+#endif
 
 namespace YetaWF.Modules.Blog.Modules {
 
@@ -42,28 +46,29 @@ namespace YetaWF.Modules.Blog.Modules {
 
         public ModuleAction GetAction_Blog(string url, int blogCategory = 0, DateTime? StartDate = null, int Count = 0) {
             BlogConfigData config = BlogConfigDataProvider.GetConfig();
-            RouteValueDictionary rvd = new RouteValueDictionary();
+            if (!config.Feed) return null;
+            QueryHelper query = new QueryHelper();
             if (string.IsNullOrWhiteSpace(url))
                 url = BlogConfigData.GetCategoryCanonicalName(blogCategory);
             else {
                 url = ModulePermanentUrl;
-                rvd.Add("BlogCategory", blogCategory);
+                query.Add("BlogCategory", blogCategory.ToString());
             }
             string date = null;
             if (StartDate != null) {
-                rvd.Add("StartDate", StartDate);
+                query.Add("StartDate", StartDate.ToString());
                 date = Formatting.Date_Month_YYYY((DateTime) StartDate);
             } else {
                 Count = 0;// must have a date for Count to be displayed
             }
             return new ModuleAction(this) {
                 Url = string.IsNullOrWhiteSpace(url) ? ModulePermanentUrl : url,
-                QueryArgsRvd = rvd,
+                QueryArgsDict = query,
                 Image = "#Display",
                 LinkText = Count != 0 ? this.__ResStr("countLink", "{0} ({1})", date, Count) : this.__ResStr("displayLink", "Blog"),
                 MenuText = Count != 0 ? this.__ResStr("countMenu", "{0} ({1})", date, Count) : this.__ResStr("displayText", "Blog"),
-                Tooltip = Count != 0 ? this.__ResStr("countTooltip", "Display blog entries starting {0} (and older entries)", date, Count) : this.__ResStr("displayTooltip", "Display the blog"),
-                Legend = Count != 0 ? this.__ResStr("countLegend", "Displays the blog entries starting {0} (and older entries)", date, Count) : this.__ResStr("displayLegend", "Displays the blog"),
+                Tooltip = Count != 0 ? this.__ResStr("countTooltip", "Display blog entries starting {0}", date, Count) : this.__ResStr("displayTooltip", "Display the blog"),
+                Legend = Count != 0 ? this.__ResStr("countLegend", "Displays the blog entries starting {0}", date, Count) : this.__ResStr("displayLegend", "Displays the blog"),
                 Style = ModuleAction.ActionStyleEnum.Normal,
                 Category = ModuleAction.ActionCategoryEnum.Read,
                 Mode = ModuleAction.ActionModeEnum.Any,

@@ -1,12 +1,8 @@
 ﻿/* Copyright © 2017 Softel vdm, Inc. - http://yetawf.com/Documentation/YetaWF/Identity#License */
 
-using Microsoft.AspNet.Identity;
-using Microsoft.Owin.Security;
 using System.Collections.Generic;
 using System.Security.Claims;
 using System.Threading.Tasks;
-using System.Web;
-using System.Web.Mvc;
 using YetaWF.Core;
 using YetaWF.Core.Controllers;
 using YetaWF.Core.DataProvider;
@@ -19,6 +15,16 @@ using YetaWF.Modules.Identity.DataProvider;
 using YetaWF.Modules.Identity.Models;
 using YetaWF.Modules.Identity.Modules;
 using YetaWF.Modules.Identity.Support;
+#if MVC6
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
+#else
+using System.Web;
+using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.Owin;
+using Microsoft.Owin.Security;
+using System.Web.Mvc;
+#endif
 
 namespace YetaWF.Modules.Identity.Controllers {
 
@@ -45,27 +51,42 @@ namespace YetaWF.Modules.Identity.Controllers {
 
         [HttpGet]
         public async Task<ActionResult> SetupExternalAccount() {
-
+            ExternalLoginInfo loginInfo;
+#if MVC6
+            SignInManager<UserDefinition> _signinManager = (SignInManager<UserDefinition>)YetaWFManager.ServiceProvider.GetService(typeof(SignInManager<UserDefinition>));
+            loginInfo = await _signinManager.GetExternalLoginInfoAsync();
+#else
             IAuthenticationManager authManager = HttpContext.GetOwinContext().Authentication;
-            var loginInfo = await authManager.GetExternalLoginInfoAsync();
+            loginInfo = await authManager.GetExternalLoginInfoAsync();
+#endif
             if (loginInfo == null) {
                 Logging.AddErrorLog("AuthenticationManager.GetExternalLoginInfoAsync() returned null");
                 throw new Error(this.__ResStr("noExtLogin", "No external login has been processed"));
             }
-
+            string email;
+            string name;
+            string loginProvider;
+#if MVC6
+            email = loginInfo.Principal.FindFirstValue(ClaimTypes.Email);
+            name = loginInfo.Principal.FindFirstValue(ClaimTypes.Name);
+            loginProvider = loginInfo.LoginProvider;
+#else
             AuthenticateResult authResult = await authManager.AuthenticateAsync(DefaultAuthenticationTypes.ExternalCookie);
             ClaimsIdentity externalIdentity = authResult.Identity;
             if (!externalIdentity.IsAuthenticated)
                 throw new InternalError("!IsAuthenticated");
-            string name = externalIdentity.FindFirstValue(ClaimTypes.Name);
-            string email = externalIdentity.FindFirstValue(ClaimTypes.Email);
-
+            name = externalIdentity.FindFirstValue(ClaimTypes.Name);
+            email = externalIdentity.FindFirstValue(ClaimTypes.Email);
+            loginProvider = loginInfo.Login.LoginProvider;
+#endif
             // get the registration module for some defaults
             LoginConfigData config = LoginConfigDataProvider.GetConfig();
 
-            SetupExternalAccountModel model = new SetupExternalAccountModel {
-                UserName = loginInfo.DefaultUserName,
-                LoginProvider = loginInfo.Login.LoginProvider,
+            SetupExternalAccountModel model;
+
+            model = new SetupExternalAccountModel {
+                UserName = name,
+                LoginProvider = loginProvider,
                 RegistrationType = config.RegistrationType,
                 Email = email,
             };
@@ -79,8 +100,14 @@ namespace YetaWF.Modules.Identity.Controllers {
             if (!ModelState.IsValid)
                 return PartialView(model);
 
+            ExternalLoginInfo loginInfo;
+#if MVC6
+            SignInManager<UserDefinition> _signinManager = (SignInManager<UserDefinition>)YetaWFManager.ServiceProvider.GetService(typeof(SignInManager<UserDefinition>));
+            loginInfo = await _signinManager.GetExternalLoginInfoAsync();
+#else
             IAuthenticationManager authManager = HttpContext.GetOwinContext().Authentication;
-            var loginInfo = await authManager.GetExternalLoginInfoAsync();
+            loginInfo = await authManager.GetExternalLoginInfoAsync();
+#endif
             if (loginInfo == null) {
                 Logging.AddErrorLog("AuthenticationManager.GetExternalLoginInfoAsync() returned null");
                 return Redirect(Manager.CurrentSite.LoginUrl);
@@ -110,7 +137,7 @@ namespace YetaWF.Modules.Identity.Controllers {
                 user.UserStatus = UserStatusEnum.NeedApproval;
             else
                 user.UserStatus = UserStatusEnum.Approved;
-            user.RegistrationIP = HttpContext.Request.UserHostAddress;
+            user.RegistrationIP = Manager.UserHostAddress;
 
             if (config.RegistrationType == RegistrationTypeEnum.NameAndEmail) {
                 using (UserDefinitionDataProvider dataProvider = new UserDefinitionDataProvider()) {
@@ -132,15 +159,27 @@ namespace YetaWF.Modules.Identity.Controllers {
             var result = await Managers.GetUserManager().CreateAsync(user);
             if (!result.Succeeded) {
                 foreach (var error in result.Errors) {
+#if MVC6
+                    ModelState.AddModelError("", error.Description);
+#else
                     ModelState.AddModelError("", error);
+#endif
                 }
                 return PartialView(model);
             }
             // add login provider info
+#if MVC6
+            result = await Managers.GetUserManager().AddLoginAsync(user, loginInfo);
+#else
             result = await Managers.GetUserManager().AddLoginAsync(user.Id, loginInfo.Login);
+#endif
             if (!result.Succeeded) {
                 foreach (var error in result.Errors) {
+#if MVC6
+                    ModelState.AddModelError("", error.Description);
+#else
                     ModelState.AddModelError("", error);
+#endif
                 }
                 return PartialView(model);
             }

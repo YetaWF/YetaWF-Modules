@@ -1,12 +1,16 @@
 /* Copyright © 2017 Softel vdm, Inc. - http://yetawf.com/Documentation/YetaWF/UserSettings#License */
 
-using System.Web.Mvc;
 using YetaWF.Core.Controllers;
 using YetaWF.Core.Language;
 using YetaWF.Core.Localize;
 using YetaWF.Core.Models;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Modules.UserSettings.DataProvider;
+#if MVC6
+using Microsoft.AspNetCore.Mvc;
+#else
+using System.Web.Mvc;
+#endif
 
 namespace YetaWF.Modules.UserSettings.Controllers {
 

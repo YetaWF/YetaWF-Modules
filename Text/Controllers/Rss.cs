@@ -3,7 +3,6 @@
 using System;
 using System.Collections.Generic;
 using System.ServiceModel.Syndication;
-using System.Web.Mvc;
 using YetaWF.Core.Controllers;
 using YetaWF.Core.Localize;
 using YetaWF.Core.Modules;
@@ -11,6 +10,11 @@ using YetaWF.Core.Support;
 using YetaWF.Core.Support.Rss;
 using YetaWF.Core.Views.Shared;
 using YetaWF.Modules.Text.Modules;
+#if MVC6
+using Microsoft.AspNetCore.Mvc;
+#else
+using System.Web.Mvc;
+#endif
 
 namespace YetaWF.Modules.Text.Controllers {
 
@@ -26,8 +30,8 @@ namespace YetaWF.Modules.Text.Controllers {
 
             SyndicationFeed feed;
             List<SyndicationItem> items = new List<SyndicationItem>();
-            feed = new SyndicationFeed(mod.FeedTitle, mod.FeedSummary, 
-                string.IsNullOrWhiteSpace(mod.FeedMainUrl) ? new Uri(url) : new Uri(Manager.CurrentSite.MakeUrl(mod.FeedMainUrl)), 
+            feed = new SyndicationFeed(mod.FeedTitle, mod.FeedSummary,
+                string.IsNullOrWhiteSpace(mod.FeedMainUrl) ? new Uri(url) : new Uri(Manager.CurrentSite.MakeUrl(mod.FeedMainUrl)),
                 items);
 
             action = mod.GetAction_RssDetail(mod.FeedDetailUrl, mod.ModuleGuid, mod.AnchorId);

@@ -1,13 +1,17 @@
 /* Copyright © 2017 Softel vdm, Inc. - http://yetawf.com/Documentation/YetaWF/Identity#License */
 
 using System.Collections.Generic;
-using System.Web.Mvc;
 using YetaWF.Core.Controllers;
 using YetaWF.Core.Identity;
 using YetaWF.Core.Models;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Serializers;
 using YetaWF.Modules.Identity.Modules;
+#if MVC6
+using Microsoft.AspNetCore.Mvc;
+#else
+using System.Web.Mvc;
+#endif
 
 namespace YetaWF.Modules.Identity.Controllers {
 
@@ -37,7 +41,9 @@ namespace YetaWF.Modules.Identity.Controllers {
 
         [HttpGet]
         public ActionResult LoginSelector() {
+#if !DEBUG
             if (Manager.Deployed && !Manager.HasSuperUserRole) return new EmptyResult();
+#endif
             if (Manager.RenderStaticPage) return new EmptyResult();
 
             EditModel model = new EditModel { UserId = Manager.UserId, };

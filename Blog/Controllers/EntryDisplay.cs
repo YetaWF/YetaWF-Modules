@@ -2,7 +2,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Web.Mvc;
 using YetaWF.Core.Controllers;
 using YetaWF.Core.Localize;
 using YetaWF.Core.Models;
@@ -11,6 +10,11 @@ using YetaWF.Core.Modules;
 using YetaWF.Core.Support;
 using YetaWF.Modules.Blog.DataProvider;
 using YetaWF.Modules.Blog.Modules;
+#if MVC6
+using Microsoft.AspNetCore.Mvc;
+#else
+using System.Web.Mvc;
+#endif
 
 namespace YetaWF.Modules.Blog.Controllers {
 
@@ -70,7 +74,6 @@ namespace YetaWF.Modules.Blog.Controllers {
                 DisplayModel model = new DisplayModel();
                 model.SetData(data);
                 Module.Title = data.Title;
-                Manager.CurrentPage.Keywords = Manager.CurrentPage.Description = Manager.PageTitle = this.__ResStr("title", "{1} - {0}", data.Category, data.Title.ToString());
                 return View(model);
             }
         }

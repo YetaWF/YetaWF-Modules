@@ -1,13 +1,9 @@
 ﻿/* Copyright © 2017 Softel vdm, Inc. - http://yetawf.com/Documentation/YetaWF/Identity#License */
 
-using Microsoft.Owin.Security;
 using System;
 using System.Collections.Generic;
-using System.Collections.Specialized;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Web;
-using System.Web.Mvc;
 using YetaWF.Core.Localize;
 using YetaWF.Core.Log;
 using YetaWF.Core.Models.Attributes;
@@ -15,6 +11,15 @@ using YetaWF.Core.Modules;
 using YetaWF.Core.Support;
 using YetaWF.Modules.Identity.DataProvider;
 using YetaWF.Modules.Identity.Models;
+#if MVC6
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
+#else
+using Microsoft.AspNet.Identity.Owin;
+using Microsoft.Owin.Security;
+using System.Web;
+using System.Web.Mvc;
+#endif
 
 namespace YetaWF.Modules.Identity.Controllers {
 
@@ -38,30 +43,63 @@ namespace YetaWF.Modules.Identity.Controllers {
                 throw new Error("This action is not available in Demo mode.");
             if (provider == null)
                 throw new InternalError("No provider");
+#if MVC6
+            SignInManager<UserDefinition> _signinManager = (SignInManager<UserDefinition>)YetaWFManager.ServiceProvider.GetService(typeof(SignInManager<UserDefinition>));
+            var redirectUrl = Url.Action("ExternalLoginCallback", "LoginExternal", new { }, "https");
+            var properties = _signinManager.ConfigureExternalAuthenticationProperties(provider, redirectUrl);
+            return Challenge(properties, provider);
+#else
             return new ChallengeResult(provider, Url.Action("ExternalLoginCallback", "LoginExternal", new { }, "https"));
+#endif
         }
 
         [HttpGet]
-        public async Task<ActionResult> ExternalLoginCallback() {
+#if MVC6
+        public async Task<IActionResult> ExternalLoginCallback(string returnUrl = null, string remoteError = null)
+#else
+        public async Task<ActionResult> ExternalLoginCallback()
+#endif
+        {
+            ExternalLoginInfo loginInfo;
+#if MVC6
+            if (remoteError != null)
+                throw new Error(this.__ResStr("extErr", "The external login provider reported this error: {0}", remoteError));
+
+            SignInManager<UserDefinition> _signinManager = (SignInManager<UserDefinition>)YetaWFManager.ServiceProvider.GetService(typeof(SignInManager<UserDefinition>));
+            loginInfo = await _signinManager.GetExternalLoginInfoAsync();
+#else
             IAuthenticationManager authManager = HttpContext.GetOwinContext().Authentication;
-            var loginInfo = await authManager.GetExternalLoginInfoAsync();
+            loginInfo = await authManager.GetExternalLoginInfoAsync();
+#endif
             if (loginInfo == null) {
                 Logging.AddErrorLog("AuthenticationManager.GetExternalLoginInfoAsync() returned null");
                 return Redirect(Helper.GetSafeReturnUrl(Manager.CurrentSite.LoginUrl));
             }
             using (LoginConfigDataProvider logConfigDP = new LoginConfigDataProvider()) {
-                List<AuthenticationDescription> loginProviders = logConfigDP.GetActiveExternalLoginProviders();
-                if ((from l in loginProviders where l.AuthenticationType == loginInfo.Login.LoginProvider select l).FirstOrDefault() == null) {
+                List<LoginConfigDataProvider.LoginProviderDescription> loginProviders = logConfigDP.GetActiveExternalLoginProviders();
+#if MVC6
+                if ((from l in loginProviders where l.InternalName == loginInfo.LoginProvider select l).FirstOrDefault() == null) {
+                    Logging.AddErrorLog("Callback from external login provider {0} which is not active", loginInfo.LoginProvider);
+                    return Redirect(Helper.GetSafeReturnUrl(Manager.CurrentSite.LoginUrl));
+                }
+#else
+                if ((from l in loginProviders where l.InternalName == loginInfo.Login.LoginProvider select l).FirstOrDefault() == null) {
                     Logging.AddErrorLog("Callback from external login provider {0} which is not active", loginInfo.Login.LoginProvider);
                     return Redirect(Helper.GetSafeReturnUrl(Manager.CurrentSite.LoginUrl));
                 }
+#endif
             }
 
             // get our registration defaults
             LoginConfigData config = LoginConfigDataProvider.GetConfig();
 
             // Sign in the user with this external login provider if the user already has a login
-            UserDefinition user = await Managers.GetUserManager().FindAsync(loginInfo.Login);
+            UserDefinition user;
+#if MVC6
+            user = await Managers.GetUserManager().FindByLoginAsync(loginInfo.LoginProvider, loginInfo.ProviderKey);
+#else
+            user = await Managers.GetUserManager().FindAsync(loginInfo.Login);
+#endif
             if (user == null) {
                 // If the user does not have an account, then prompt the user to create an account
                 // we will go to a page where the user can set up a local account
@@ -102,6 +140,7 @@ namespace YetaWF.Modules.Identity.Controllers {
                 throw new InternalError("badUserStatus", "Unexpected account status {0}", user.UserStatus);
             }
         }
+
         /// <summary>
         /// Redirect with a message - THIS ONLY WORKS FOR A GET REQUEST
         /// </summary>
@@ -112,14 +151,21 @@ namespace YetaWF.Modules.Identity.Controllers {
             // we're in a get request, possibly without module, so all we can do is redirect and show the message in the ShowMessage module
             // the ShowMessage module is in the Basics package and we reference it by permanent Guid
             string url = YetaWFManager.Manager.CurrentSite.MakeUrl(ModuleDefinition.GetModulePermanentUrl(new Guid("{b486cdfc-3726-4549-889e-1f833eb49865}")));
-            UriBuilder uri = new UriBuilder(url);
-            NameValueCollection qs = System.Web.HttpUtility.ParseQueryString(uri.Query);
-            qs["Message"] = popupText;
-            qs["Title"] = popupTitle;
-            uri.Query = qs.ToString();
-            return uri.ToString();
+            QueryHelper query = QueryHelper.FromUrl(url, out url);
+            query["Message"] = popupText;
+            query["Title"] = popupTitle;
+            return query.ToUrl(url);
         }
 
+        internal static class Helper {
+            public static string GetSafeReturnUrl(string url) {
+                if (string.IsNullOrWhiteSpace(url))
+                    url = YetaWFManager.Manager.CurrentSite.HomePageUrl;
+                return url;
+            }
+        }
+#if MVC6
+#else
         private class ChallengeResult : HttpUnauthorizedResult {
             public ChallengeResult(string provider, string redirectUri)
                 : this(provider, redirectUri, null) {
@@ -140,12 +186,6 @@ namespace YetaWF.Modules.Identity.Controllers {
                 context.HttpContext.GetOwinContext().Authentication.Challenge(properties, LoginProvider);
             }
         }
-        internal static class Helper {
-            public static string GetSafeReturnUrl(string url) {
-                if (string.IsNullOrWhiteSpace(url))
-                    url = YetaWFManager.Manager.CurrentSite.HomePageUrl;
-                return url;
-            }
-        }
+#endif
     }
 }

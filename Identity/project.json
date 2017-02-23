@@ -1,0 +1,25 @@
+{
+  "version": "2.0.0",
+
+  "dependencies": {
+    "Microsoft.AspNetCore.Authentication.Facebook": "1.1.0",
+    "Microsoft.AspNetCore.Authentication.Google": "1.1.0",
+    "Microsoft.AspNetCore.Authentication.Twitter": "1.1.0",
+    "Microsoft.AspNetCore.Authentication.MicrosoftAccount": "1.1.0",
+    "Microsoft.AspNetCore.Identity": "1.1.0",
+    "Core": "2.0.0",
+    "File": "2.0.0",
+    "ModuleDefinition": "2.0.0",
+    "SQL": "2.0.0"
+  },
+  "frameworks": {
+    "net462": {
+      "frameworkAssemblies": {
+      }
+    }
+  },
+  "buildOptions": {
+    "outputName": "YetaWF.Identity",
+    "define": [ "MVC6" ]
+  }
+}

@@ -81,8 +81,8 @@
     <Compile Include="Modules\SchedulerBrowse.cs" />
     <Compile Include="Support\Scheduler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Views\Shared\SchedulerEventHelper.cs" />
-    <Compile Include="Views\Shared\SchedulerFrequencyHelper.cs" />
+    <Compile Include="ViewsCode\Shared\SchedulerEventHelper.cs" />
+    <Compile Include="ViewsCode\Shared\SchedulerFrequencyHelper.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Addons\_Main\event.js" />

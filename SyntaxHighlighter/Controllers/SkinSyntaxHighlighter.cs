@@ -1,7 +1,11 @@
 /* Copyright © 2017 Softel vdm, Inc. - http://yetawf.com/Documentation/YetaWF/SyntaxHighlighter#License */
 
-using System.Web.Mvc;
 using YetaWF.Core.Controllers;
+#if MVC6
+using Microsoft.AspNetCore.Mvc;
+#else
+using System.Web.Mvc;
+#endif
 
 namespace YetaWF.Modules.SyntaxHighlighter.Controllers {
 

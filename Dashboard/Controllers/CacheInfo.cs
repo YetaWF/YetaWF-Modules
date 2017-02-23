@@ -1,15 +1,19 @@
 /* Copyright © 2017 Softel vdm, Inc. - http://yetawf.com/Documentation/YetaWF/Dashboard#License */
 
+using YetaWF.Core.Controllers;
+using YetaWF.Core.Models;
+using YetaWF.Core.Models.Attributes;
+#if MVC6
+using Microsoft.AspNetCore.Mvc;
+#else
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
-using YetaWF.Core.Controllers;
 using YetaWF.Core.DataProvider;
-using YetaWF.Core.Models;
-using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Views.Shared;
+#endif
 
 namespace YetaWF.Modules.Dashboard.Controllers {
 
@@ -46,15 +50,19 @@ namespace YetaWF.Modules.Dashboard.Controllers {
             [Caption("Cached Items"), Description("The cache keys and the values (either the data type or the first 100 bytes of data are shown)")]
             [UIHint("Grid"), ReadOnly]
             public GridDefinition GridDef { get; set; }
-
+#if MVC6
+#else
             public void SetData(System.Web.Caching.Cache data) {
                 ObjectSupport.CopyData(data, this);
             }
+#endif
         }
 
         [HttpGet]
         public ActionResult CacheInfo() {
             DisplayModel model = new DisplayModel();
+#if MVC6
+#else
             model.SetData(Manager.CurrentContext.Cache);
             model.GridDef = new GridDefinition {
                 AjaxUrl = GetActionUrl("CacheInfo_GridData"),
@@ -65,9 +73,13 @@ namespace YetaWF.Modules.Dashboard.Controllers {
             };
             List<BrowseItem> items = GetAllItems();
             model.TotalSize = items.Sum(m => m.Size);
+#endif
             return View(model);
         }
 
+
+#if MVC6
+#else
         [HttpPost]
         [ConditionalAntiForgeryToken]
         public ActionResult CacheInfo_GridData(int skip, int take, List<DataProviderSortInfo> sort, List<DataProviderFilterInfo> filters, Guid settingsModuleGuid) {
@@ -101,5 +113,6 @@ namespace YetaWF.Modules.Dashboard.Controllers {
             }
             return items;
         }
+#endif
     }
 }

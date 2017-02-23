@@ -3,7 +3,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web.Mvc;
 using YetaWF.Core.Controllers;
 using YetaWF.Core.DataProvider;
 using YetaWF.Core.Localize;
@@ -14,6 +13,11 @@ using YetaWF.Core.Modules;
 using YetaWF.Core.Support;
 using YetaWF.Core.Views.Shared;
 using YetaWF.Modules.Modules.Modules;
+#if MVC6
+using Microsoft.AspNetCore.Mvc;
+#else
+using System.Web.Mvc;
+#endif
 
 namespace YetaWF.Modules.Modules.Controllers {
 
@@ -31,9 +35,11 @@ namespace YetaWF.Modules.Modules.Controllers {
                     try {
                         actions.New(Module.GetAction_ShowModule(guid), ModuleAction.ActionLocationEnum.GridLinks);
                     } catch (Exception) { }
-                    try {
-                        actions.New(ModSettings.GetModuleAction("Settings", guid), ModuleAction.ActionLocationEnum.GridLinks);
-                    } catch (Exception) { }
+                    if (ModSettings != null) {
+                        try {
+                            actions.New(ModSettings.GetModuleAction("Settings", guid), ModuleAction.ActionLocationEnum.GridLinks);
+                        } catch (Exception) { }
+                    }
                     try {
                         actions.New(Module.GetAction_Remove(guid), ModuleAction.ActionLocationEnum.GridLinks);
                     } catch (Exception) { }
@@ -118,8 +124,8 @@ namespace YetaWF.Modules.Modules.Controllers {
         public ActionResult ModulesBrowse_GridData(int skip, int take, List<DataProviderSortInfo> sort, List<DataProviderFilterInfo> filters, Guid settingsModuleGuid) {
             // module settings services
             ModuleDefinition modSettings = ModuleDefinition.Load(Manager.CurrentSite.ModuleEditingServices, AllowNone: true);
-            if (modSettings == null)
-                throw new InternalError("No module edit settings services available - no module has been defined");
+            //if (modSettings == null)
+            //    throw new InternalError("No module edit settings services available - no module has been defined");
 
             ModuleDefinition.ModuleBrowseInfo info = new ModuleDefinition.ModuleBrowseInfo() {
                 Skip = skip,

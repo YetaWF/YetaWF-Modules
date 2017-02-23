@@ -179,7 +179,7 @@
     <Compile Include="Modules\LocalizeConfig.cs" />
     <Compile Include="Modules\LocalizeEditFile.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Views\Shared\LocalizeStringsHelper.cs" />
+    <Compile Include="ViewsCode\Shared\LocalizeStringsHelper.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Addons\_Main\Icons\LocalizeAllPackages.png" />

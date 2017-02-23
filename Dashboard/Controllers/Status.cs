@@ -2,11 +2,16 @@
 
 using System;
 using System.IO;
-using System.Web.Mvc;
 using YetaWF.Core.Controllers;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Packages;
 using YetaWF.Core.Support;
+using YetaWF.Core;
+#if MVC6
+using Microsoft.AspNetCore.Mvc;
+#else
+using System.Web.Mvc;
+#endif
 
 namespace YetaWF.Modules.Dashboard.Controllers {
 
@@ -43,7 +48,7 @@ namespace YetaWF.Modules.Dashboard.Controllers {
             if (corePackage != null)
                 model.CoreVersion = corePackage.Version;
             if (Manager.Deployed)
-                model.LastDeploy = Directory.GetCreationTimeUtc(Path.Combine(YetaWFManager.RootFolder, "bin"));
+                model.LastDeploy = Directory.GetCreationTimeUtc(Path.Combine(YetaWFManager.RootFolder, Globals.NugetScriptsFolder));
 #if DEBUG
             model.Build = "Debug";
 #else

@@ -20,7 +20,15 @@ namespace YetaWF.Modules.Packages.DataProvider {
     // not a real data provider - used to clear/create all package data and initial web pages
     public partial class PackagesDataProvider {
 
-        public string TemplateFolder { get { return Path.Combine(YetaWFManager.RootFolder, Globals.SiteTemplates); }  }
+        public string TemplateFolder { get {
+            string rootFolder;
+#if MVC6
+            rootFolder = YetaWFManager.RootFolderSolution;
+#else
+            rootFolder = YetaWFManager.RootFolder;
+#endif
+            return Path.Combine(rootFolder, Globals.SiteTemplates); }
+        }
         public string DataFolderName { get { return "Data"; } }
 
         private InternalError TemplateError(string message, params object[] parms) {
@@ -639,7 +647,7 @@ namespace YetaWF.Modules.Packages.DataProvider {
                 action.Url = action.GetCompleteUrl();
                 action.QueryArgs = null;
                 action.QueryArgsHR = null;
-                action.QueryArgsRvd = null;
+                action.QueryArgsDict = null;
                 return action;
             } else
                 throw TemplateError("Unknown menu action {0}", menuString);
@@ -781,7 +789,7 @@ namespace YetaWF.Modules.Packages.DataProvider {
         private void ExtractSQLSection(List<string> lines, bool build) {
 
             string sqlConn = WebConfigHelper.GetValue<string>(DataProviderImpl.DefaultString, DataProviderImpl.SQLConnectString);
-            if (string.IsNullOrWhiteSpace(sqlConn)) throw TemplateError("No Sql connection string found in web.config (P:Default:SQLConnect)");
+            if (string.IsNullOrWhiteSpace(sqlConn)) throw TemplateError("No Sql connection string found in web.config/appsettings.json (P:Default:SQLConnect)");
 
             for ( ; lines.Count > 0 ; ) {
 

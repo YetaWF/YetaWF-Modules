@@ -1,8 +1,6 @@
 ﻿/* Copyright © 2017 Softel vdm, Inc. - http://yetawf.com/Documentation/YetaWF/ImageRepository#License */
 
 using System;
-using System.Web;
-using System.Web.Mvc;
 using YetaWF.Core.Addons;
 using YetaWF.Core.Controllers;
 using YetaWF.Core.Extensions;
@@ -12,13 +10,25 @@ using YetaWF.Core.Localize;
 using YetaWF.Core.Support;
 using YetaWF.Core.Upload;
 using YetaWF.Modules.ImageRepository.Views.Shared;
+#if MVC6
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+#else
+using System.Web;
+using System.Web.Mvc;
+#endif
 
 namespace YetaWF.Modules.ImageRepository.Controllers.Shared {
     public class FlashSelectionHelperController : YetaWFController {
 
         [HttpPost]
         [ResourceAuthorize(CoreInfo.Resource_UploadImages)]
-        public ActionResult SaveFlashImage(HttpPostedFileBase __filename, string folderGuid, string subFolder, string fileType) {
+#if MVC6
+        public ActionResult SaveFlashImage(IFormFile __filename, string folderGuid, string subFolder, string fileType)
+#else
+        public ActionResult SaveFlashImage(HttpPostedFileBase __filename, string folderGuid, string subFolder, string fileType)
+#endif
+        {
             FileUpload upload = new FileUpload();
             string storagePath = FlashSelectionInfo.StoragePath(new Guid(folderGuid), subFolder, fileType);
             string name = upload.StoreFile(__filename, storagePath, m => m.FlashUse, uf => uf.FileName);
@@ -35,7 +45,7 @@ namespace YetaWF.Modules.ImageRepository.Controllers.Shared {
                 sb.Append("<option title=\\\"{0}\\\">{0}</option>", YetaWFManager.JserEncode(f.RemoveStartingAt(ImageSupport.ImageSeparator)));
             sb.Append("\"\n");
             sb.Append("}");
-            return new JsonResult { Data = sb.ToString() };
+            return new YJsonResult { Data = sb.ToString() };
         }
 
         [HttpPost]
@@ -58,7 +68,7 @@ namespace YetaWF.Modules.ImageRepository.Controllers.Shared {
                 sb.Append("<option title=\\\"{0}\\\">{0}</option>", YetaWFManager.JserEncode(f.RemoveStartingAt(ImageSupport.ImageSeparator)));
             sb.Append("\"\n");
             sb.Append("}");
-            return new JsonResult { Data = sb.ToString() };
+            return new YJsonResult { Data = sb.ToString() };
         }
     }
 }

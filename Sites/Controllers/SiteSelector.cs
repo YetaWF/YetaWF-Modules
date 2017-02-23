@@ -2,12 +2,16 @@
 
 using System.Collections.Generic;
 using System.Linq;
-using System.Web.Mvc;
 using YetaWF.Core.Controllers;
 using YetaWF.Core.Localize;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Site;
 using YetaWF.Core.Views.Shared;
+#if MVC6
+using Microsoft.AspNetCore.Mvc;
+#else
+using System.Web.Mvc;
+#endif
 
 namespace YetaWF.Modules.Sites.Controllers {
 
@@ -37,7 +41,9 @@ namespace YetaWF.Modules.Sites.Controllers {
 
         [HttpGet]
         public ActionResult SiteSelector(string siteDomain) {
+#if !DEBUG
             if (Manager.Deployed && !Manager.HasSuperUserRole) return new EmptyResult();
+#endif
             if (Manager.RenderStaticPage) return new EmptyResult();
 
             EditModel model = new EditModel { SiteDomain = Manager.CurrentSite.SiteDomain };

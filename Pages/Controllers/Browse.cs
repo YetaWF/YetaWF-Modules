@@ -3,7 +3,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web.Mvc;
 using YetaWF.Core.Controllers;
 using YetaWF.Core.DataProvider;
 using YetaWF.Core.Identity;
@@ -18,6 +17,11 @@ using YetaWF.Core.Support;
 using YetaWF.Core.Views.Shared;
 using YetaWF.Modules.Pages.DataProvider;
 using YetaWF.Modules.Pages.Modules;
+#if MVC6
+using Microsoft.AspNetCore.Mvc;
+#else
+using System.Web.Mvc;
+#endif
 
 namespace YetaWF.Modules.Pages.Controllers {
 
@@ -33,7 +37,8 @@ namespace YetaWF.Modules.Pages.Controllers {
 
                     actions.New(Module.GetAction_ShowPage(EvaluatedCanonicalUrl), ModuleAction.ActionLocationEnum.GridLinks);
 
-                    actions.New(PageEditModule.GetModuleAction("Edit", null, PageGuid), ModuleAction.ActionLocationEnum.GridLinks);
+                    if (PageEditModule != null)
+                        actions.New(PageEditModule.GetModuleAction("Edit", null, PageGuid), ModuleAction.ActionLocationEnum.GridLinks);
 
                     actions.New(Module.GetAction_RemoveLink(Url), ModuleAction.ActionLocationEnum.GridLinks);
 
@@ -113,8 +118,8 @@ namespace YetaWF.Modules.Pages.Controllers {
                 Module = module;
                 // page editing services
                 ModuleDefinition pageSettings = ModuleDefinition.Load(manager.CurrentSite.PageEditingServices, AllowNone: true);
-                if (pageSettings == null)
-                    throw new InternalError("No page edit services available - no module has been defined in Site Properties");
+                //if (pageSettings == null)
+                //    throw new InternalError("No page edit services available - no module has been defined in Site Properties");
                 PageEditModule = pageSettings;
 
                 ObjectSupport.CopyData(page, this);

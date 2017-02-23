@@ -1,13 +1,17 @@
 ﻿/* Copyright © 2017 Softel vdm, Inc. - http://yetawf.com/Documentation/YetaWF/Blog#License */
 
 using System;
-using System.Web.Mvc;
 using YetaWF.Core.IO;
 using YetaWF.Core.Localize;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Modules;
 using YetaWF.Core.Serializers;
 using YetaWF.DataProvider;
+#if MVC6
+using YetaWF.Core.Support;
+#else
+using System.Web.Mvc;
+#endif
 
 namespace YetaWF.Modules.Blog.Modules {
 
@@ -32,6 +36,10 @@ namespace YetaWF.Modules.Blog.Modules {
         public override IModuleDefinitionIO GetDataProvider() { return new CategoriesListModuleDataProvider(); }
 
         public override SerializableList<AllowedRole> DefaultAllowedRoles { get { return AdministratorLevel_DefaultAllowedRoles; } }
+
+        [Category("General"), Caption("Default Category"), Description("The default category")]
+        [UIHint("YetaWF_Blog_Category"), AdditionalMetadata("ShowAll", true)]
+        public int DefaultCategory { get; set; }
 
         [Category("General"), Caption("Style"), Description("Defines how the blog categories are displayed")]
         [UIHint("Enum"), Required]

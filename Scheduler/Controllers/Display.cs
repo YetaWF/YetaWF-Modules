@@ -1,7 +1,6 @@
 ﻿/* Copyright © 2017 Softel vdm, Inc. - http://yetawf.com/Documentation/YetaWF/Scheduler#License */
 
 using System;
-using System.Web.Mvc;
 using YetaWF.Core.Controllers;
 using YetaWF.Core.Localize;
 using YetaWF.Core.Models;
@@ -9,6 +8,11 @@ using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Scheduler;
 using YetaWF.Core.Support;
 using YetaWF.Modules.Scheduler.DataProvider;
+#if MVC6
+using Microsoft.AspNetCore.Mvc;
+#else
+using System.Web.Mvc;
+#endif
 
 namespace YetaWF.Modules.Scheduler.Controllers {
 

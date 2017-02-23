@@ -2,7 +2,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Web.Mvc;
 using YetaWF.Core;
 using YetaWF.Core.DataProvider.Attributes;
 using YetaWF.Core.Extensions;
@@ -17,6 +16,11 @@ using YetaWF.Core.Support;
 using YetaWF.Core.Views.Shared;
 using YetaWF.DataProvider;
 using YetaWF.Modules.Text.Controllers;
+#if MVC6
+using Microsoft.AspNetCore.Mvc.ModelBinding;
+#else
+using System.Web.Mvc;
+#endif
 
 namespace YetaWF.Modules.Text.Modules {
 

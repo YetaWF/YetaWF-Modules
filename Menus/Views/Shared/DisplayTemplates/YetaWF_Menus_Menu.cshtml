@@ -1,8 +1,9 @@
 ﻿@*Copyright © 2017 Softel vdm, Inc. - http://yetawf.com/Documentation/YetaWF/Menus#License*@
 @inherits YetaWF.Modules.Menus.Views.Shared.Menu<YetaWF.Modules.Menus.Views.Shared.MenuHelper.MenuData>
+@using YetaWF.Core.Extensions
 @using YetaWF.Core.Views
-@using YetaWF.Modules.Menus.Views.Shared
 @using YetaWF.Core.Views.Shared
+@using YetaWF.Modules.Menus.Views.Shared
 @{
     MenuHelper.MenuStyleEnum style = Html.GetControlInfo<MenuHelper.MenuStyleEnum>("", "Style", MenuHelper.MenuStyleEnum.Automatic);
     if (style == MenuHelper.MenuStyleEnum.Automatic) {
@@ -10,14 +11,14 @@
     }
 
     if (style == MenuHelper.MenuStyleEnum.Bootstrap) {
-        System.Web.Mvc.MvcHtmlString menu = Html.Render(Model.MenuList, DivId, null, YetaWF.Core.Modules.ModuleAction.RenderEngineEnum.BootstrapSmartMenu);
-        if (menu != System.Web.Mvc.MvcHtmlString.Empty) {
+        HtmlString menu = Html.Render(Model.MenuList, DivId, null, YetaWF.Core.Modules.ModuleAction.RenderEngineEnum.BootstrapSmartMenu);
+        if (!menu.IsEmpty()) {
             Manager.AddOnManager.AddAddOnGlobal("github.com.vadikom", "smartmenus"); // multilevel navbar
             @menu;
         }
     } else {
-        System.Web.Mvc.MvcHtmlString menu = Html.Render(Model.MenuList, DivId, Model.CssClass, YetaWF.Core.Modules.ModuleAction.RenderEngineEnum.JqueryMenu);
-        if (menu != System.Web.Mvc.MvcHtmlString.Empty) {
+        HtmlString menu = Html.Render(Model.MenuList, DivId, Model.CssClass, YetaWF.Core.Modules.ModuleAction.RenderEngineEnum.JqueryMenu);
+        if (!menu.IsEmpty()) {
             Manager.ScriptManager.AddKendoUICoreJsFile("kendo.popup.min.js");
             Manager.ScriptManager.AddKendoUICoreJsFile("kendo.menu.min.js");
             <div class='yt_yetawf_menus_menu t_display' role="navigation">

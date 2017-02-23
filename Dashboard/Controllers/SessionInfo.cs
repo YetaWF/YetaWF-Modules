@@ -3,13 +3,18 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web.Mvc;
 using YetaWF.Core.Controllers;
 using YetaWF.Core.DataProvider;
 using YetaWF.Core.Localize;
 using YetaWF.Core.Models;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Views.Shared;
+using YetaWF.Core.Support;
+#if MVC6
+using Microsoft.AspNetCore.Mvc;
+#else
+using System.Web.Mvc;
+#endif
 
 namespace YetaWF.Modules.Dashboard.Controllers {
 
@@ -39,9 +44,7 @@ namespace YetaWF.Modules.Dashboard.Controllers {
             [UIHint("Grid"), ReadOnly]
             public GridDefinition GridDef { get; set; }
 
-            public void SetData(System.Web.SessionState.HttpSessionState session) {
-                ObjectSupport.CopyData(session, this);
-            }
+            public void SetData(SessionState session) { }
         }
 
         [HttpGet]
@@ -66,7 +69,7 @@ namespace YetaWF.Modules.Dashboard.Controllers {
             int total;
             List<BrowseItem> items = DataProviderImpl<BrowseItem>.GetRecords(GetAllItems(), skip, take, sort, filters, out total);
             foreach (BrowseItem item in items)
-                item.Value  = item.Value.PadRight(100, ' ').Substring(0, 100).TrimEnd();
+                item.Value = item.Value.PadRight(100, ' ').Substring(0, 100).TrimEnd();
 
             GridHelper.SaveSettings(skip, take, sort, filters, settingsModuleGuid);
             return GridPartialView(new DataSourceResult {
@@ -76,7 +79,7 @@ namespace YetaWF.Modules.Dashboard.Controllers {
         }
 
         private List<BrowseItem> GetAllItems() {
-            System.Web.SessionState.HttpSessionState session = Manager.CurrentSession;
+            SessionState session = Manager.CurrentSession;
             List<BrowseItem> items = (from string item in session.Keys select new BrowseItem { Key = item, Value = (session[item] ?? "").ToString(), Size = -1 }).ToList();
             foreach (BrowseItem item in items) {
                 object o = null;

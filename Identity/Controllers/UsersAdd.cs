@@ -1,8 +1,6 @@
 /* Copyright © 2017 Softel vdm, Inc. - http://yetawf.com/Documentation/YetaWF/Identity#License */
 
-using Microsoft.AspNet.Identity;
 using System.Collections.Generic;
-using System.Web.Mvc;
 using YetaWF.Core;
 using YetaWF.Core.Controllers;
 using YetaWF.Core.DataProvider;
@@ -16,6 +14,13 @@ using YetaWF.Modules.Identity.DataProvider;
 using YetaWF.Modules.Identity.Models;
 using YetaWF.Modules.Identity.Modules;
 using YetaWF.Modules.Identity.Support;
+#if MVC6
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
+#else
+using Microsoft.AspNet.Identity;
+using System.Web.Mvc;
+#endif
 
 namespace YetaWF.Modules.Identity.Controllers {
     public class UsersAddModuleController : ControllerImpl<YetaWF.Modules.Identity.Modules.UsersAddModule> {
@@ -101,8 +106,14 @@ namespace YetaWF.Modules.Identity.Controllers {
 
                 UserDefinition user = model.GetData();
 
+                string hashedNewPassword;
+#if MVC6
+                IPasswordHasher<UserDefinition> passwordHasher = (IPasswordHasher<UserDefinition>) YetaWFManager.ServiceProvider.GetService(typeof(IPasswordHasher<UserDefinition>));
+                hashedNewPassword = passwordHasher.HashPassword(user, model.Password);
+#else
                 UserManager<UserDefinition> userManager = Managers.GetUserManager();
-                string hashedNewPassword = userManager.PasswordHasher.HashPassword(model.Password);
+                hashedNewPassword = userManager.PasswordHasher.HashPassword(model.Password);
+#endif
                 if (config.SavePlainTextPassword)
                     user.PasswordPlainText = model.Password;
                 user.PasswordHash = hashedNewPassword;

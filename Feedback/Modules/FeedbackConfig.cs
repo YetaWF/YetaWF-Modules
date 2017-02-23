@@ -9,6 +9,10 @@ using YetaWF.Core.Modules;
 using YetaWF.Core.Serializers;
 using YetaWF.DataProvider;
 using YetaWF.Modules.Feedback.DataProvider;
+#if MVC6
+#else
+using System.Web.Mvc;
+#endif
 
 namespace YetaWF.Modules.Feedback.Modules {
 

@@ -1,10 +1,7 @@
 ﻿/* Copyright © 2017 Softel vdm, Inc. - http://yetawf.com/Documentation/YetaWF/Identity#License */
 
-using Microsoft.Owin.Security;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using System.Web;
-using System.Web.Mvc;
 using YetaWF.Core;
 using YetaWF.Core.Addons;
 using YetaWF.Core.Controllers;
@@ -18,6 +15,13 @@ using YetaWF.Modules.Identity.DataProvider;
 using YetaWF.Modules.Identity.Models;
 using YetaWF.Modules.Identity.Modules;
 using YetaWF.Modules.Identity.Support;
+#if MVC6
+using Microsoft.AspNetCore.Mvc;
+#else
+using Microsoft.Owin.Security;
+using System.Web;
+using System.Web.Mvc;
+#endif
 
 namespace YetaWF.Modules.Identity.Controllers {
 
@@ -84,20 +88,20 @@ namespace YetaWF.Modules.Identity.Controllers {
             };
 
             using (LoginConfigDataProvider logConfigDP = new LoginConfigDataProvider()) {
-                List<AuthenticationDescription> loginProviders = logConfigDP.GetActiveExternalLoginProviders();
+                List<LoginConfigDataProvider.LoginProviderDescription> loginProviders = logConfigDP.GetActiveExternalLoginProviders();
                 if (loginProviders.Count > 0 && Manager.IsInPopup)
                     throw new InternalError("When using external login providers, the Register module cannot be used in a popup window");
-                foreach (AuthenticationDescription provider in loginProviders) {
+                foreach (LoginConfigDataProvider.LoginProviderDescription provider in loginProviders) {
                     model.ExternalProviders.Add(new FormButton() {
                         ButtonType = ButtonTypeEnum.Submit,
                         Name = "provider",
-                        Text = provider.AuthenticationType,
-                        Title = this.__ResStr("logAccountTitle", "Log in using your {0} account", provider.Caption),
-                        CssClass = "t_" + provider.AuthenticationType.ToLower(),
+                        Text = provider.InternalName,
+                        Title = this.__ResStr("logAccountTitle", "Log in using your {0} account", provider.DisplayName),
+                        CssClass = "t_" + provider.InternalName.ToLower(),
                     });
                     YetaWF.Core.Packages.Package package = AreaRegistration.CurrentPackage;
                     string url = VersionManager.GetAddOnModuleUrl(package.Domain, package.Product);
-                    model.Images.Add(Manager.GetCDNUrl(string.Format("{0}Icons/LoginProviders/{1}.png", url, provider.AuthenticationType)));
+                    model.Images.Add(Manager.GetCDNUrl(string.Format("{0}Icons/LoginProviders/{1}.png", url, provider.InternalName)));
                 }
             }
 
@@ -167,8 +171,13 @@ namespace YetaWF.Modules.Identity.Controllers {
             // create user
             var result = await Managers.GetUserManager().CreateAsync(user, model.Password);
             if (!result.Succeeded) {
-                foreach (var error in result.Errors)
+                foreach (var error in result.Errors) {
+#if MVC6
+                    ModelState.AddModelError("UserName", error.Description);
+#else
                     ModelState.AddModelError("UserName", error);
+#endif
+                }
                 return PartialView(model);
             }
 

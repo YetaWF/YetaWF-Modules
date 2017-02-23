@@ -1,9 +1,7 @@
 ﻿/* Copyright © 2017 Softel vdm, Inc. - http://yetawf.com/Documentation/YetaWF/Identity#License */
 
-using Microsoft.AspNet.Identity;
 using System;
 using System.Collections.Generic;
-using System.Web.Mvc;
 using YetaWF.Core;
 using YetaWF.Core.DataProvider;
 using YetaWF.Core.IO;
@@ -18,6 +16,12 @@ using YetaWF.DataProvider;
 using YetaWF.Modules.Identity.Controllers;
 using YetaWF.Modules.Identity.DataProvider;
 using YetaWF.Modules.Identity.Models;
+#if MVC6
+using Microsoft.AspNetCore.Identity;
+#else
+using Microsoft.AspNet.Identity;
+using System.Web.Mvc;
+#endif
 
 namespace YetaWF.Modules.Identity.Modules {
 
@@ -235,8 +239,13 @@ namespace YetaWF.Modules.Identity.Modules {
                     throw new Error(this.__ResStr("notFound", "User {0} not found", userName));
 
                 UserManager<UserDefinition> userManager = Managers.GetUserManager();
-                string hashedNewPassword = userManager.PasswordHasher.HashPassword(newPassword);
-
+                string hashedNewPassword;
+#if MVC6
+                IPasswordHasher<UserDefinition> passwordHasher = (IPasswordHasher<UserDefinition>) YetaWFManager.ServiceProvider.GetService(typeof(IPasswordHasher<UserDefinition>));
+                hashedNewPassword = passwordHasher.HashPassword(user, newPassword);
+#else
+                hashedNewPassword = userManager.PasswordHasher.HashPassword(newPassword);
+#endif
                 //ModuleDefinition.GetPermanentGuid(typeof(RegisterModule))
                 LoginConfigData config = LoginConfigDataProvider.GetConfig();
                 if (config.SavePlainTextPassword)

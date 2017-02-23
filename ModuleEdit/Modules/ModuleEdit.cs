@@ -6,7 +6,12 @@ using YetaWF.Core.IO;
 using YetaWF.Core.Localize;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Modules;
+using YetaWF.Core.Support;
 using YetaWF.DataProvider;
+#if MVC6
+#else
+using System.Web.Routing;
+#endif
 
 namespace YetaWF.Modules.ModuleEdit.Modules {
 
@@ -35,9 +40,9 @@ namespace YetaWF.Modules.ModuleEdit.Modules {
             return new ModuleAction(this) {
                 Url = ModulePermanentUrl,
                 QueryArgs = new { ModuleGuid = editGuid },
-                QueryArgsRvd = new System.Web.Routing.RouteValueDictionary{
+                QueryArgsDict = new QueryHelper(new QueryDictionary {
                     { Globals.Link_TempNoEditMode, "y" },
-                },
+                }),
                 NeedsModuleContext = true,
                 Image = "#Edit",
                 LinkText = this.__ResStr("editLink", "Module Settings"),

@@ -1,18 +1,22 @@
 /* Copyright © 2017 Softel vdm, Inc. - http://yetawf.com/Documentation/YetaWF/Dashboard#License */
 
+using YetaWF.Core.Controllers;
+using YetaWF.Core.Menus;
+using YetaWF.Core.Models;
+using YetaWF.Core.Models.Attributes;
+using YetaWF.Core.Modules;
+using YetaWF.Modules.Dashboard.Modules;
+#if MVC6
+using Microsoft.AspNetCore.Mvc;
+#else
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
-using YetaWF.Core.Controllers;
 using YetaWF.Core.DataProvider;
-using YetaWF.Core.Menus;
-using YetaWF.Core.Models;
-using YetaWF.Core.Models.Attributes;
-using YetaWF.Core.Modules;
 using YetaWF.Core.Views.Shared;
-using YetaWF.Modules.Dashboard.Modules;
+#endif
 
 namespace YetaWF.Modules.Dashboard.Controllers {
 
@@ -44,19 +48,23 @@ namespace YetaWF.Modules.Dashboard.Controllers {
             [UIHint("Grid")]
             public GridDefinition GridDef { get; set; }
         }
-
         [HttpGet]
         public ActionResult HttpModulesBrowse() {
             BrowseModel model = new BrowseModel { };
+#if MVC6
+#else
             model.GridDef = new GridDefinition {
                 AjaxUrl = GetActionUrl("HttpModulesBrowse_GridData"),
                 ModuleGuid = Module.ModuleGuid,
                 RecordType = typeof(BrowseItem),
                 SettingsModuleGuid = Module.PermanentGuid,
             };
+#endif
             return View(model);
         }
 
+#if MVC6
+#else
         [HttpPost]
         [ConditionalAntiForgeryToken]
         public ActionResult HttpModulesBrowse_GridData(int skip, int take, List<DataProviderSortInfo> sort, List<DataProviderFilterInfo> filters, Guid settingsModuleGuid) {
@@ -71,5 +79,6 @@ namespace YetaWF.Modules.Dashboard.Controllers {
                 Total = total
             });
         }
+#endif
     }
 }

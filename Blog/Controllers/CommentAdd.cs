@@ -1,6 +1,5 @@
 /* Copyright © 2017 Softel vdm, Inc. - http://yetawf.com/Documentation/YetaWF/Blog#License */
 
-using System.Web.Mvc;
 using YetaWF.Core;
 using YetaWF.Core.Controllers;
 using YetaWF.Core.Localize;
@@ -9,6 +8,11 @@ using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Support;
 using YetaWF.Core.Views.Shared;
 using YetaWF.Modules.Blog.DataProvider;
+#if MVC6
+using Microsoft.AspNetCore.Mvc;
+#else
+using System.Web.Mvc;
+#endif
 
 namespace YetaWF.Modules.Blog.Controllers {
     public class CommentAddModuleController : ControllerImpl<YetaWF.Modules.Blog.Modules.CommentAddModule> {
@@ -129,23 +133,7 @@ namespace YetaWF.Modules.Blog.Controllers {
                     ModelState.AddModelError("Name", this.__ResStr("alreadyExists", "An error occurred adding this new comment"));
                     return PartialView(model);
                 }
-                using (BlogCategoryDataProvider categoryDP = new BlogCategoryDataProvider()) {
-                    BlogCategory cat = categoryDP.GetItem(model.CategoryIdentity);
-                    if (cat == null) throw new InternalError("Category with id {0} not found", model.CategoryIdentity);
-                    bool approved = false;
-                    if (cat.CommentApproval == BlogCategory.ApprovalType.None)
-                        approved = true;
-                    else if (cat.CommentApproval == BlogCategory.ApprovalType.AnonymousUsers) {
-                        if (Manager.HaveUser)
-                            approved = true;
-                    }
-                    string msg;
-                    if (approved)
-                        msg = this.__ResStr("okSaved", "Your comment has been added.");
-                    else
-                        msg = this.__ResStr("okSavedWait", "Your comment has been saved and will be published once it's approved by the site administrator.");
-                    return FormProcessed(model, msg, OnClose: OnCloseEnum.ReloadPage, OnPopupClose: OnPopupCloseEnum.ReloadParentPage);
-                }
+                return FormProcessed(model, this.__ResStr("okSaved", "New comment saved"), OnClose: OnCloseEnum.ReloadPage, OnPopupClose: OnPopupCloseEnum.ReloadParentPage);
             }
         }
     }

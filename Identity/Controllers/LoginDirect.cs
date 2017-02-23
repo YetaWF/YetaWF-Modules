@@ -1,11 +1,15 @@
 ﻿/* Copyright © 2017 Softel vdm, Inc. - http://yetawf.com/Documentation/YetaWF/Identity#License */
 
-using System.Web.Mvc;
 using YetaWF.Core.Controllers;
 using YetaWF.Core.Identity;
 using YetaWF.Core.Support;
 using YetaWF.Modules.Identity.Addons;
 using YetaWF.Modules.Identity.DataProvider;
+#if MVC6
+using Microsoft.AspNetCore.Mvc;
+#else
+using System.Web.Mvc;
+#endif
 
 namespace YetaWF.Modules.Identity.Controllers {
 
@@ -31,9 +35,9 @@ namespace YetaWF.Modules.Identity.Controllers {
             if (resetForcedDomain)
                 YetaWFManager.SetRequestedDomain(null);
             string url = nextUrl;
-            if (string.IsNullOrWhiteSpace(url)) 
+            if (string.IsNullOrWhiteSpace(url))
                 url = config.LoggedOffUrl;
-            if (string.IsNullOrWhiteSpace(url)) 
+            if (string.IsNullOrWhiteSpace(url))
                 url = Manager.CurrentSite.HomePageUrl;
             return Redirect(url);
         }

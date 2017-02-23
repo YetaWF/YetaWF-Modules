@@ -37,7 +37,8 @@ namespace YetaWF.Modules.Identity.DataProvider {
             return (bool) backDoor;
         }
         public void ShutTheBackDoor() {
-            WebConfigHelper.RemoveValue(AreaRegistration.CurrentPackage.AreaName, "BACKDOOR-IS-WIDE-OPEN");
+            WebConfigHelper.SetValue<string>(AreaRegistration.CurrentPackage.AreaName, "BACKDOOR-IS-WIDE-OPEN", "0");
+            WebConfigHelper.Save();
             backDoor = false;
         }
         private bool? backDoor = null;
@@ -109,9 +110,14 @@ namespace YetaWF.Modules.Identity.DataProvider {
                 throw new InternalError("No httpRequest");
 
             // check whether we have a logged on user
+#if MVC6
+            if (!Manager.CurrentContext.User.Identity.IsAuthenticated)
+#else
             if (!Manager.CurrentRequest.IsAuthenticated)
+#endif
+            {
                 return;// no user logged in
-
+            }
             // get user info and save in Manager
             string userName = Manager.CurrentContext.User.Identity.Name;
             using (UserDefinitionDataProvider userDP = new UserDefinitionDataProvider()) {

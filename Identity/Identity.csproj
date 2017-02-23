@@ -133,10 +133,8 @@
     <Compile Include="Modules\SelectTwoStepSetup.cs" />
     <Compile Include="Modules\SelectTwoStepAuth.cs" />
     <Compile Include="Startup\AreaRegistration.cs" />
+    <Compile Include="Startup\AttributeAuthorizationHandler.cs" />
     <Compile Include="Startup\Info.cs" />
-    <Compile Include="Startup\Startup.Auth.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Controllers\AuthorizationBrowse.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -197,6 +195,8 @@
     <Compile Include="Modules\UsersDisplay.cs" />
     <Compile Include="Modules\OwinEdit.cs" />
     <Compile Include="Modules\UsersEdit.cs" />
+    <Compile Include="Startup\Startup.cs" />
+    <Compile Include="Startup\StartupOwin.cs" />
     <Compile Include="Support\Emails.cs" />
     <Compile Include="Support\Validation.cs" />
     <Compile Include="Models\UserStore.cs" />

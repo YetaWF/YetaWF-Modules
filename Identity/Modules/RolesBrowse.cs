@@ -2,7 +2,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Web.Mvc;
 using YetaWF.Core;
 using YetaWF.Core.IO;
 using YetaWF.Core.Localize;
@@ -15,6 +14,10 @@ using YetaWF.Core.Views.Shared;
 using YetaWF.DataProvider;
 using YetaWF.Modules.Identity.Controllers;
 using YetaWF.Modules.Identity.DataProvider;
+#if MVC6
+#else
+using System.Web.Mvc;
+#endif
 
 namespace YetaWF.Modules.Identity.Modules {
 
@@ -45,9 +48,9 @@ namespace YetaWF.Modules.Identity.Modules {
         public override SerializableList<AllowedRole> DefaultAllowedRoles { get { return AdministratorLevel_DefaultAllowedRoles; } }
         public override List<RoleDefinition> ExtraRoles {
             get {
-                return new List<RoleDefinition>() { 
-                    new RoleDefinition("RemoveRoles", 
-                        this.__ResStr("roleRemItemsC", "Remove Roles"), this.__ResStr("roleRemItems", "The role has permission to remove individual roles"), 
+                return new List<RoleDefinition>() {
+                    new RoleDefinition("RemoveRoles",
+                        this.__ResStr("roleRemItemsC", "Remove Roles"), this.__ResStr("roleRemItems", "The role has permission to remove individual roles"),
                         this.__ResStr("userRemItemsC", "Remove Roles"), this.__ResStr("userRemItems", "The user has permission to remove individual roles")),
                 };
             }

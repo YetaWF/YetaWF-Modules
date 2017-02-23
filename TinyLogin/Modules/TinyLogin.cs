@@ -1,7 +1,6 @@
 ﻿/* Copyright © 2017 Softel vdm, Inc. - http://yetawf.com/Documentation/YetaWF/TinyLogin#License */
 
 using System;
-using System.Web.Mvc;
 using YetaWF.Core;
 using YetaWF.Core.DataProvider.Attributes;
 using YetaWF.Core.IO;
@@ -13,6 +12,11 @@ using YetaWF.Core.Serializers;
 using YetaWF.Core.Views.Shared;
 using YetaWF.DataProvider;
 using YetaWF.Modules.TinyLogin.Support;
+#if MVC6
+using YetaWF.Core.Support;
+#else
+using System.Web.Mvc;
+#endif
 
 namespace YetaWF.Modules.TinyLogin.Modules {
 

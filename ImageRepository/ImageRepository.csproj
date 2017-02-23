@@ -81,10 +81,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Support\FlashSupport.cs" />
     <Compile Include="Support\ImageSupport.cs" />
-    <Compile Include="Views\Shared\FlashSelectionInfo.cs" />
-    <Compile Include="Views\Shared\FlashSelectionHelper.cs" />
-    <Compile Include="Views\Shared\ImageSelectionInfo.cs" />
-    <Compile Include="Views\Shared\ImageSelectionHelper.cs" />
+    <Compile Include="ViewsCode\Shared\FlashSelectionHelper.cs" />
+    <Compile Include="ViewsCode\Shared\FlashSelectionInfo.cs" />
+    <Compile Include="ViewsCode\Shared\ImageSelectionHelper.cs" />
+    <Compile Include="ViewsCode\Shared\ImageSelectionInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Addons\_Main\Icons\ClearImage.png" />

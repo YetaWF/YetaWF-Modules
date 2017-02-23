@@ -176,11 +176,13 @@ namespace YetaWF.Modules.Scheduler.DataProvider {
             return newFilters;
         }
 
-        // WEB.CONFIG
+        // WEB.CONFIG/APPSETTINGS.JSON
 
         public void SetRunning(bool running) {
-            if (running != GetRunning())
+            if (running != GetRunning()) {
                 WebConfigHelper.SetValue<bool>(AreaRegistration.CurrentPackage.AreaName, "Running", running);
+                WebConfigHelper.Save();
+            }
         }
         public bool GetRunning() {
             return WebConfigHelper.GetValue<bool>(AreaRegistration.CurrentPackage.AreaName, "Running");

@@ -1,8 +1,6 @@
 ﻿/* Copyright © 2017 Softel vdm, Inc. - http://yetawf.com/Documentation/YetaWF/Packages#License */
 
 using System.Collections.Generic;
-using System.Web;
-using System.Web.Mvc;
 using YetaWF.Core.Controllers;
 using YetaWF.Core.Localize;
 using YetaWF.Core.Models.Attributes;
@@ -10,6 +8,13 @@ using YetaWF.Core.Packages;
 using YetaWF.Core.Support;
 using YetaWF.Core.Upload;
 using YetaWF.Core.Views.Shared;
+#if MVC6
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+#else
+using System.Web;
+using System.Web.Mvc;
+#endif
 
 namespace YetaWF.Modules.Packages.Controllers {
 
@@ -35,7 +40,12 @@ namespace YetaWF.Modules.Packages.Controllers {
         [HttpPost]
         [Permission("Imports")]
         [ExcludeDemoMode]
-        public ActionResult ImportPackageData(HttpPostedFileBase __filename) {
+#if MVC6
+        public ActionResult ImportPackageData(IFormFile __filename)
+#else
+        public ActionResult ImportPackageData(HttpPostedFileBase __filename)
+#endif
+        {
             FileUpload upload = new FileUpload();
             string tempName = upload.StoreTempPackageFile(__filename);
             List<string> errorList = new List<string>();
@@ -54,7 +64,7 @@ namespace YetaWF.Modules.Packages.Controllers {
                 sb.Append("{{ \"result\": \"Y_Confirm(\\\"{0}\\\", null, function() {{ window.location.reload(); }} ); \" }}",
                     YetaWFManager.JserEncode(YetaWFManager.JserEncode(this.__ResStr("importedData", "\"{0}\" successfully imported - The site is now restarting...(+nl)", __filename.FileName) + errs))
                 );
-                return new JsonResult { Data = sb.ToString() };
+                return new YJsonResult { Data = sb.ToString() };
             } else {
                 // Anything else is a failure
                 sb.Append(this.__ResStr("cantImportData", "Can't import {0}:(+nl)"), __filename.FileName);

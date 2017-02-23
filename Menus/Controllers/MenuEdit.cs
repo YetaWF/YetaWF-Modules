@@ -1,7 +1,6 @@
 ﻿/* Copyright © 2017 Softel vdm, Inc. - http://yetawf.com/Documentation/YetaWF/Menus#License */
 
 using System;
-using System.Web.Mvc;
 using YetaWF.Core.Controllers;
 using YetaWF.Core.Localize;
 using YetaWF.Core.Menus;
@@ -9,6 +8,11 @@ using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Modules;
 using YetaWF.Core.Support;
 using YetaWF.Modules.Menus.Modules;
+#if MVC6
+using Microsoft.AspNetCore.Mvc;
+#else
+using System.Web.Mvc;
+#endif
 
 namespace YetaWF.Modules.Menus.Controllers {
 
@@ -60,7 +64,7 @@ namespace YetaWF.Modules.Menus.Controllers {
 
         [HttpPost]
         [ExcludeDemoMode]
-        public ActionResult MenuEdit_Partial([Bind(Include = "MenuGuid,ModAction,MenuVersion,ActiveEntry,NewAfter")] MenuEditModel model, bool ValidateCurrent) {
+        public ActionResult MenuEdit_Partial(MenuEditModel model, bool ValidateCurrent) {
             MenuModule modMenu = (MenuModule) ModuleDefinition.Load(model.MenuGuid);
             if (modMenu == null)
                 throw new InternalError("Can't find menu module {0}", model.MenuGuid);
@@ -98,7 +102,7 @@ namespace YetaWF.Modules.Menus.Controllers {
             MenuList newMenu = new MenuList(menu[0].SubMenu);
             modMenu.SaveMenu(newMenu);
 
-            return new JsonResult() { Data = modMenu.MenuVersion };
+            return new YJsonResult() { Data = modMenu.MenuVersion };
         }
     }
 }

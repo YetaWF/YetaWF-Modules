@@ -1,7 +1,6 @@
 ﻿/* Copyright © 2017 Softel vdm, Inc. - http://yetawf.com/Documentation/YetaWF/SlideShow#License */
 
 using System;
-using System.Web.Mvc;
 using YetaWF.Core;
 using YetaWF.Core.DataProvider;
 using YetaWF.Core.DataProvider.Attributes;
@@ -11,6 +10,10 @@ using YetaWF.Core.Support;
 using YetaWF.Core.Views.Shared;
 using YetaWF.Modules.SlideShow.Support;
 using YetaWF.Modules.SlideShow.Views.Shared;
+#if MVC6
+#else
+using System.Web.Mvc;
+#endif
 
 namespace YetaWF.Modules.SlideShow.Models {
 

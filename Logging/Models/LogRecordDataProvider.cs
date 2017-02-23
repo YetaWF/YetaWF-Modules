@@ -6,7 +6,6 @@ using System.Diagnostics;
 using System.IO;
 using System.Reflection;
 using System.Text;
-using System.Web;
 using YetaWF.Core;
 using YetaWF.Core.DataProvider;
 using YetaWF.Core.DataProvider.Attributes;
@@ -18,6 +17,13 @@ using YetaWF.Core.Modules;
 using YetaWF.Core.Packages;
 using YetaWF.Core.Serializers;
 using YetaWF.Core.Support;
+#if MVC6
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.Extensions;
+using Microsoft.AspNetCore.Http.Features;
+#else
+using System.Web;
+#endif
 
 // The logging data provider uses a simple sequential (flat) file for logging so the entire file implementation is in this code (not FileDataProvider)
 // For SQL we're using the regular SQL data provider
@@ -160,25 +166,36 @@ namespace YetaWF.Modules.Logging.DataProvider {
                     userId = Manager.UserId;
                     userName = Manager.UserName ?? "";
                     userName = userName.Truncate(Globals.MaxUser);
-                    if (Manager.HaveCurrentRequest) {
-                        requestedUrl = Manager.CurrentRequest.Url != null ? Manager.CurrentRequest.Url.ToString() : "";
+                }
+                HttpContext httpContext;
+#if MVC6
+                httpContext = YetaWFManager.HttpContextAccessor.HttpContext;
+#else
+                httpContext = HttpContext.Current;
+#endif
+                if (httpContext != null) {
+                    // We don't have a Manager for certain log records (particularly during startup)
+                    HttpRequest req = httpContext.Request;
+                    if (req != null) {
+#if MVC6
+                        requestedUrl = req.GetDisplayUrl();
+                        IHttpConnectionFeature connectionFeature = httpContext.Features.Get<IHttpConnectionFeature>();
+                        if (connectionFeature != null)
+                            ipAddress = connectionFeature.RemoteIpAddress.ToString();
+                        referrer = req.Headers["Referer"].ToString();
+#else
+                        requestedUrl = req.Url != null ? req.Url.ToString() : null;
+                        ipAddress = req.UserHostAddress;
+                        referrer = req.UrlReferrer != null ? req.UrlReferrer.ToString() : null;
+#endif
+                        requestedUrl = requestedUrl ?? "";
                         requestedUrl = requestedUrl.Truncate(Globals.MaxUrl);
-                        referrer = Manager.CurrentRequest.UrlReferrer != null ? Manager.CurrentRequest.UrlReferrer.ToString() : "";
+                        referrer = referrer ?? "";
                         referrer = referrer.Truncate(Globals.MaxUrl);
-                        ipAddress = Manager.UserHostAddress ?? "";
+                        ipAddress = ipAddress ?? "";
                         ipAddress = ipAddress.Truncate(Globals.MaxIP);
                     }
-                } else if (HttpContext.Current.Request != null) {
-                    // We don't have a Manager for certain log records (particularly during startup)
-                    HttpRequest req = HttpContext.Current.Request;
-                    requestedUrl = req.Url != null ? req.Url.ToString() : "";
-                    requestedUrl = requestedUrl.Truncate(Globals.MaxUrl);
-                    referrer = req.UrlReferrer != null ? req.UrlReferrer.ToString() : "";
-                    referrer = referrer.Truncate(Globals.MaxUrl);
-                    ipAddress = req.UserHostAddress ?? "";
-                    ipAddress = ipAddress.Truncate(Globals.MaxIP);
                 }
-
                 MethodBase methBase = GetCallInfo(relStack + 1, out moduleName);
 
                 switch (IOMode) {

@@ -31,3 +31,4 @@ CurrencyConverter/Addons/_Main/ExchangeRates.js
 
 SearchEF/
 *.lastcodeanalysissucceeded
+**/project.lock.json

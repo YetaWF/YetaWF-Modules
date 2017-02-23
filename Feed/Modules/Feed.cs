@@ -1,7 +1,6 @@
 ﻿/* Copyright © 2017 Softel vdm, Inc. - http://yetawf.com/Documentation/YetaWF/Feed#License */
 
 using System;
-using System.Web.Mvc;
 using YetaWF.Core;
 using YetaWF.Core.IO;
 using YetaWF.Core.Localize;
@@ -11,7 +10,10 @@ using YetaWF.Core.Serializers;
 using YetaWF.Core.Support;
 using YetaWF.Core.Views.Shared;
 using YetaWF.DataProvider;
-
+#if MVC6
+#else
+using System.Web.Mvc;
+#endif
 namespace YetaWF.Modules.Feed.Modules {
 
     // For documentation about Google Feed please see https://developers.google.com/feed/

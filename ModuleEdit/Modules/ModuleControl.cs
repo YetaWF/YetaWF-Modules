@@ -2,7 +2,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Web.Routing;
 using YetaWF.Core.Addons;
 using YetaWF.Core.IO;
 using YetaWF.Core.Localize;
@@ -14,6 +13,11 @@ using YetaWF.Core.Serializers;
 using YetaWF.Core.Support;
 using YetaWF.DataProvider;
 using YetaWF.Modules.ModuleEdit.Controllers;
+#if MVC6
+using Microsoft.AspNetCore.Routing;
+#else
+using System.Web.Routing;
+#endif
 
 namespace YetaWF.Modules.ModuleEdit.Modules {
 
@@ -56,9 +60,9 @@ namespace YetaWF.Modules.ModuleEdit.Modules {
             return new ModuleAction(this) {
                 Url = YetaWFManager.UrlFor(typeof(ModuleControlModuleController), "ExportModuleData"),
                 QueryArgs = new { ModuleGuid = mod.ModuleGuid },
-                QueryArgsRvd = new RouteValueDictionary{
+                QueryArgsDict = new QueryHelper(new QueryDictionary {
                     { Basics.ModuleGuid, this.ModuleGuid }, // the module authorizing this
-                },
+                }),
                 Image = "ExportModule.png",
                 LinkText = this.__ResStr("modExportLink", "Export"),
                 MenuText = this.__ResStr("modExportMenu", "Export Module"),
@@ -94,9 +98,9 @@ namespace YetaWF.Modules.ModuleEdit.Modules {
             return new ModuleAction(this) {
                 Url = YetaWFManager.UrlFor(typeof(ModuleControlModuleController), "MoveToPane"),
                 QueryArgs = new { PageGuid = page.PageGuid, ModuleGuid = mod.ModuleGuid, OldPane = oldPane, NewPane = newPane },
-                QueryArgsRvd = new System.Web.Routing.RouteValueDictionary{
+                QueryArgsDict = new QueryHelper(new QueryDictionary {
                     { Basics.ModuleGuid, this.ModuleGuid }, // the module authorizing this
-                },
+                }),
                 Image = "MoveToPane.png",
                 LinkText = string.Format(this.__ResStr("modMoveToLink", "Move To {0}"), newPane),
                 Style = ModuleAction.ActionStyleEnum.Post,
@@ -118,9 +122,9 @@ namespace YetaWF.Modules.ModuleEdit.Modules {
             return new ModuleAction(this) {
                 Url = YetaWFManager.UrlFor(typeof(ModuleControlModuleController), "MoveUp"),
                 QueryArgs = new { PageGuid = page.PageGuid, ModuleGuid = mod.ModuleGuid, Pane = pane, ModuleIndex = modIndex },
-                QueryArgsRvd = new System.Web.Routing.RouteValueDictionary{
+                QueryArgsDict = new QueryHelper(new QueryDictionary {
                     { Basics.ModuleGuid, this.ModuleGuid }, // the module authorizing this
-                },
+                }),
                 Image = "MoveUp.png",
                 Style = ModuleAction.ActionStyleEnum.Post,
                 LinkText = this.__ResStr("modMoveUpLink", "Move Up"),
@@ -142,9 +146,9 @@ namespace YetaWF.Modules.ModuleEdit.Modules {
             return new ModuleAction(this) {
                 Url = YetaWFManager.UrlFor(typeof(ModuleControlModuleController), "MoveDown"),
                 QueryArgs = new { PageGuid = page.PageGuid, ModuleGuid = mod.ModuleGuid, Pane = pane, ModuleIndex = modIndex },
-                QueryArgsRvd = new System.Web.Routing.RouteValueDictionary{
+                QueryArgsDict = new QueryHelper(new QueryDictionary {
                     { Basics.ModuleGuid, this.ModuleGuid }, // the module authorizing this
-                },
+                }),
                 Image = "MoveDown.png",
                 Style = ModuleAction.ActionStyleEnum.Post,
                 LinkText = this.__ResStr("modMoveDownLink", "Move Down"),
@@ -167,9 +171,9 @@ namespace YetaWF.Modules.ModuleEdit.Modules {
             return new ModuleAction(this) {
                 Url = YetaWFManager.UrlFor(typeof(ModuleControlModuleController), "MoveTop"),
                 QueryArgs = new { PageGuid = page.PageGuid, ModuleGuid = mod.ModuleGuid, Pane = pane, ModuleIndex = modIndex },
-                QueryArgsRvd = new System.Web.Routing.RouteValueDictionary{
+                QueryArgsDict = new QueryHelper(new QueryDictionary {
                     { Basics.ModuleGuid, this.ModuleGuid }, // the module authorizing this
-                },
+                }),
                 Image = "MoveTop.png",
                 Style = ModuleAction.ActionStyleEnum.Post,
                 LinkText = this.__ResStr("modMoveTopLink", "Move To Top"),
@@ -192,9 +196,9 @@ namespace YetaWF.Modules.ModuleEdit.Modules {
             return new ModuleAction(this) {
                 Url = YetaWFManager.UrlFor(typeof(ModuleControlModuleController), "MoveBottom"),
                 QueryArgs = new { PageGuid = page.PageGuid, ModuleGuid = mod.ModuleGuid, Pane = pane, ModuleIndex = modIndex },
-                QueryArgsRvd = new System.Web.Routing.RouteValueDictionary{
+                QueryArgsDict = new QueryHelper(new QueryDictionary {
                     { Basics.ModuleGuid, this.ModuleGuid }, // the module authorizing this
-                },
+                }),
                 Image = "MoveBottom.png",
                 Style = ModuleAction.ActionStyleEnum.Post,
                 LinkText = this.__ResStr("modMoveBottomLink", "Move To Bottom"),
@@ -221,9 +225,9 @@ namespace YetaWF.Modules.ModuleEdit.Modules {
             return new ModuleAction(this) {
                 Url = YetaWFManager.UrlFor(typeof(ModuleControlModuleController), "Remove"),
                 QueryArgs = new { PageGuid = page.PageGuid, ModuleGuid = moduleGuid, Pane = pane, ModuleIndex = modIndex },
-                QueryArgsRvd = new System.Web.Routing.RouteValueDictionary{
+                QueryArgsDict = new QueryHelper(new QueryDictionary {
                     { Basics.ModuleGuid, this.ModuleGuid }, // the module authorizing this
-                },
+                }),
                 Image = "#Remove",
                 Style = ModuleAction.ActionStyleEnum.Post,
                 LinkText = this.__ResStr("modRemoveLink", "Remove Module"),

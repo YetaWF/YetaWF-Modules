@@ -2,13 +2,18 @@
 
 using System;
 using System.Collections.Generic;
-using System.Web.Mvc;
 using YetaWF.Core.Controllers;
 using YetaWF.Core.DataProvider;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Modules;
 using YetaWF.Modules.Blog.DataProvider;
 using YetaWF.Modules.Blog.Modules;
+#if MVC6
+using Microsoft.AspNetCore.Mvc;
+using YetaWF.Core.Support;
+#else
+using System.Web.Mvc;
+#endif
 
 namespace YetaWF.Modules.Blog.Controllers {
 
@@ -57,7 +62,7 @@ namespace YetaWF.Modules.Blog.Controllers {
                     foreach (BlogEntry entry in data) {
                         if (entry.DatePublished.Month != month || entry.DatePublished.Year != year) {
                             if (count > 0) {
-                                DateTime d = new DateTime(year, month, 1).AddMonths(1).AddDays(-1);// calculate last day of the month
+                                DateTime d = new DateTime(year, month, 1);
                                 model.Actions.New(blogMod.GetAction_Blog(null, category, StartDate: d, Count: count));
                                 count = 0;
                             }
@@ -67,11 +72,13 @@ namespace YetaWF.Modules.Blog.Controllers {
                         ++count;
                     }
                     start += incr;
-                    if (count > 0) {
-                        DateTime d = new DateTime(year, month, 1).AddMonths(1).AddDays(-1);// calculate last day of the month
-                        model.Actions.New(blogMod.GetAction_Blog(null, category, StartDate: d, Count: count));
+                    if (start >= totalRecs) {
+                        if (count > 0) {
+                            DateTime d = new DateTime(year, month, 1);
+                            model.Actions.New(blogMod.GetAction_Blog(null, category, StartDate: d, Count: count));
+                        }
+                        break;
                     }
-                    break;
                 }
                 return View(model);
             }

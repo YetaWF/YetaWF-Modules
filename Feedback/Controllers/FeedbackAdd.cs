@@ -1,6 +1,5 @@
 /* Copyright © 2017 Softel vdm, Inc. - http://yetawf.com/Documentation/YetaWF/Feedback#License */
 
-using System.Web.Mvc;
 using YetaWF.Core;
 using YetaWF.Core.Controllers;
 using YetaWF.Core.Localize;
@@ -10,6 +9,11 @@ using YetaWF.Core.Support;
 using YetaWF.Core.Views.Shared;
 using YetaWF.Modules.Feedback.DataProvider;
 using YetaWF.Modules.Feedback.Support;
+#if MVC6
+using Microsoft.AspNetCore.Mvc;
+#else
+using System.Web.Mvc;
+#endif
 
 namespace YetaWF.Modules.Feedback.Controllers {
     public class FeedbackAddModuleController : ControllerImpl<YetaWF.Modules.Feedback.Modules.FeedbackAddModule> {

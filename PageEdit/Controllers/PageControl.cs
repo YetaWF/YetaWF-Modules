@@ -2,8 +2,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Web;
-using System.Web.Mvc;
 using YetaWF.Core;
 using YetaWF.Core.Controllers;
 using YetaWF.Core.Localize;
@@ -15,6 +13,13 @@ using YetaWF.Core.Support;
 using YetaWF.Core.Upload;
 using YetaWF.Core.Views.Shared;
 using YetaWF.Modules.PageEdit.Modules;
+#if MVC6
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Http;
+#else
+using System.Web;
+using System.Web.Mvc;
+#endif
 
 namespace YetaWF.Modules.PageEdit.Controllers {
 
@@ -260,7 +265,12 @@ namespace YetaWF.Modules.PageEdit.Controllers {
 
         [HttpPost]
         [ExcludeDemoMode]
-        public ActionResult ImportPackage(HttpPostedFileBase __filename, ImportModel model) {
+#if MVC6
+        public ActionResult ImportPackage(IFormFile __filename, ImportModel model)
+#else
+        public ActionResult ImportPackage(HttpPostedFileBase __filename, ImportModel model)
+#endif
+        {
             FileUpload upload = new FileUpload();
             string tempName = upload.StoreTempPackageFile(__filename);
 
@@ -280,7 +290,7 @@ namespace YetaWF.Modules.PageEdit.Controllers {
                 sb.Append("{{ \"result\": \"Y_Confirm(\\\"{0}\\\", null, function() {{ window.location.reload(); }} ); \" }}",
                     YetaWFManager.JserEncode(YetaWFManager.JserEncode(this.__ResStr("imported", "\"{0}\" successfully imported(+nl)", __filename.FileName) + errs))
                 );
-                return new JsonResult { Data = sb.ToString() };
+                return new YJsonResult { Data = sb.ToString() };
             } else {
                 // Anything else is a failure
                 sb.Append(this.__ResStr("cantImport", "Can't import {0}:(+nl)"), __filename.FileName);

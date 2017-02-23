@@ -1,7 +1,6 @@
 ﻿/* Copyright © 2017 Softel vdm, Inc. - http://yetawf.com/Documentation/YetaWF/Menus#License */
 
 using System;
-using System.Web.Mvc;
 using YetaWF.Core;
 using YetaWF.Core.DataProvider.Attributes;
 using YetaWF.Core.IO;
@@ -15,6 +14,10 @@ using YetaWF.Core.Views.Shared;
 using YetaWF.DataProvider;
 using YetaWF.Modules.Menus.DataProvider;
 using YetaWF.Modules.Menus.Views.Shared;
+#if MVC6
+#else
+using System.Web.Mvc;
+#endif
 
 namespace YetaWF.Modules.Menus.Modules {
 

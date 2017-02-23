@@ -71,12 +71,12 @@
     <Compile Include="Modules\TemplateSlideShow.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Support\ImageSupport.cs" />
-    <Compile Include="Views\Shared\SlideShowHelper.cs" />
-    <Compile Include="Views\Shared\ThumbnailStyleHelper.cs" />
-    <Compile Include="Views\Shared\ArrowStyleHelper.cs" />
-    <Compile Include="Views\Shared\BulletStyleHelper.cs" />
-    <Compile Include="Views\Shared\CaptionTransitionHelper.cs" />
-    <Compile Include="Views\Shared\TransitionHelper.cs" />
+    <Compile Include="ViewsCode\Shared\ArrowStyleHelper.cs" />
+    <Compile Include="ViewsCode\Shared\BulletStyleHelper.cs" />
+    <Compile Include="ViewsCode\Shared\CaptionTransitionHelper.cs" />
+    <Compile Include="ViewsCode\Shared\SlideShowHelper.cs" />
+    <Compile Include="ViewsCode\Shared\ThumbnailStyleHelper.cs" />
+    <Compile Include="ViewsCode\Shared\TransitionHelper.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Addons\_Main\filelistJS.txt" />

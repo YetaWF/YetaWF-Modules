@@ -1,12 +1,8 @@
 /* Copyright © 2017 Softel vdm, Inc. - http://yetawf.com/Documentation/YetaWF/Identity#License */
 
-using Microsoft.AspNet.Identity;
-using Microsoft.Owin.Security;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using System.Web;
-using System.Web.Mvc;
 using YetaWF.Core;
 using YetaWF.Core.Controllers;
 using YetaWF.Core.DataProvider;
@@ -18,6 +14,15 @@ using YetaWF.Modules.Identity.DataProvider;
 using YetaWF.Modules.Identity.Models;
 using YetaWF.Modules.Identity.Modules;
 using YetaWF.Modules.Identity.Support;
+#if MVC6
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
+#else
+using Microsoft.AspNet.Identity;
+using Microsoft.Owin.Security;
+using System.Web;
+using System.Web.Mvc;
+#endif
 
 namespace YetaWF.Modules.Identity.Controllers {
 
@@ -68,7 +73,12 @@ namespace YetaWF.Modules.Identity.Controllers {
         }
 
         [HttpGet]
-        public ActionResult UserAccount() {
+#if MVC6
+        public async Task<ActionResult> UserAccount()
+#else
+        public ActionResult UserAccount()
+#endif
+        {
             using (UserDefinitionDataProvider dataProvider = new UserDefinitionDataProvider()) {
                 LoginConfigData config = LoginConfigDataProvider.GetConfig();
                 EditModel model = new EditModel {
@@ -76,11 +86,22 @@ namespace YetaWF.Modules.Identity.Controllers {
                 };
 
                 // make sure this user exists
+#if MVC6
+                if (!Manager.CurrentContext.User.Identity.IsAuthenticated)
+#else
                 if (!Manager.CurrentRequest.IsAuthenticated)
+#endif
+                {
                     throw new Error(this.__ResStr("noUser", "There is no logged on user."));
+                }
                 string userName = User.Identity.Name;
                 UserManager<UserDefinition> userManager = Managers.GetUserManager();
-                UserDefinition user = userManager.FindByName(userName);
+                UserDefinition user;
+#if MVC6
+                user = await userManager.FindByNameAsync(userName);
+#else
+                user = userManager.FindByName(userName);
+#endif
                 if (user == null)
                     throw new Error(this.__ResStr("notFound", "User \"{0}\" not found."), userName);
                 model.SetData(user);
@@ -97,7 +118,12 @@ namespace YetaWF.Modules.Identity.Controllers {
         public async Task<ActionResult> UserAccount_Partial(EditModel model) {
             // make sure this user exists
             UserManager<UserDefinition> userManager = Managers.GetUserManager();
-            UserDefinition user = userManager.FindByName(model.OriginalUserName);
+            UserDefinition user;
+#if MVC6
+            user = await userManager.FindByNameAsync(model.OriginalUserName);
+#else
+            user = userManager.FindByName(model.OriginalUserName);
+#endif
             if (user == null)
                 ModelState.AddModelError("Key", this.__ResStr("alreadyDeleted", "The user named \"{0}\" has been removed and can no longer be updated.", model.OriginalUserName));
             if (!ModelState.IsValid)
@@ -153,14 +179,23 @@ namespace YetaWF.Modules.Identity.Controllers {
                 LoginModuleController.UserLogoff();
                 await LoginModuleController.UserLoginAsync(user);
             } else {
-                IdentityResult result = userManager.Update(user);
+                IdentityResult result;
+#if MVC6
+                result = await userManager.UpdateAsync(user);
+#else
+                result = userManager.Update(user);
+#endif
                 if (!result.Succeeded) {
-                    foreach (string err in result.Errors)
+                    foreach (var err in result.Errors) {
+#if MVC6
+                        ModelState.AddModelError("OldPassword", err.Description);
+#else
                         ModelState.AddModelError("OldPassword", err);
+#endif
+                    }
                     return PartialView(model);
                 }
             }
-
             return FormProcessed(model, this.__ResStr("okSaved", "Your account information has been saved"));
         }
     }

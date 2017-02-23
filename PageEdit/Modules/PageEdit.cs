@@ -10,6 +10,11 @@ using YetaWF.Core.Pages;
 using YetaWF.Core.Support;
 using YetaWF.DataProvider;
 using YetaWF.Modules.PageEdit.Controllers;
+#if MVC6
+using Microsoft.AspNetCore.Routing;
+#else
+using System.Web.Routing;
+#endif
 
 namespace YetaWF.Modules.PageEdit.Modules {
 
@@ -41,9 +46,9 @@ namespace YetaWF.Modules.PageEdit.Modules {
             return new ModuleAction(this) {
                 Url = string.IsNullOrWhiteSpace(url) ? ModulePermanentUrl : url,
                 QueryArgs = new { PageGuid = guid },
-                QueryArgsRvd = new System.Web.Routing.RouteValueDictionary{
+                QueryArgsDict = new QueryHelper(new QueryDictionary {
                     { Globals.Link_TempNoEditMode, "y" },
-                },
+                }),
                 Image = "#Edit",
                 LinkText = this.__ResStr("editLink", "Page Settings"),
                 MenuText = this.__ResStr("editText", "Page Settings"),

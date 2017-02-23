@@ -1,12 +1,18 @@
 /* Copyright © 2017 Softel vdm, Inc. - http://yetawf.com/Documentation/YetaWF/Visitors#License */
 
 using System;
-using System.Web.Mvc;
 using YetaWF.Core;
 using YetaWF.Core.Controllers;
 using YetaWF.Core.Extensions;
 using YetaWF.Core.Support;
 using YetaWF.Modules.Visitors.DataProvider;
+#if MVC6
+using Microsoft.AspNetCore.Http.Extensions;
+using Microsoft.AspNetCore.Http.Features;
+using Microsoft.AspNetCore.Mvc;
+#else
+using System.Web.Mvc;
+#endif
 
 namespace YetaWF.Modules.Visitors.Controllers {
 
@@ -48,24 +54,39 @@ namespace YetaWF.Modules.Visitors.Controllers {
             if (manager == null || !manager.HaveCurrentContext) return;
             string sessionKey = AreaRegistration.CurrentPackage.Name + "_Visitor";
             long sessionKeyVal;
-            if (manager.CurrentSession[sessionKey] != null)
-                sessionKeyVal = Convert.ToInt64(manager.CurrentSession[sessionKey]);
+            string val = manager.CurrentSession.GetString(sessionKey);
+            if (!string.IsNullOrWhiteSpace(val))
+                sessionKeyVal = Convert.ToInt64(val);
             else {
                 sessionKeyVal = DateTime.Now.Ticks;/*local time*/
-                manager.CurrentSession[sessionKey] = sessionKeyVal.ToString();
+                manager.CurrentSession.SetString(sessionKey, sessionKeyVal.ToString());
             }
 
             GeoLocation geoLocation = new GeoLocation(manager);
             GeoLocation.UserInfo userInfo = geoLocation.GetCurrentUserInfo();
+
+            string url;
+            string referrer;
+            string userAgent;
+#if MVC6
+            url = Manager.CurrentRequest.GetDisplayUrl();
+            referrer = Manager.CurrentRequest.Headers["Referer"].ToString();
+            userAgent = Manager.CurrentRequest.Headers["User-Agent"].ToString();
+#else
+            url = Manager.CurrentRequest.Url.ToString();
+            referrer = Manager.CurrentRequest.UrlReferrer != null ? Manager.CurrentRequest.UrlReferrer.ToString() : null;
+            userAgent = Manager.CurrentRequest.UserAgent;
+#endif
+
 
             VisitorEntry visitorEntry = new VisitorEntry {
                 SessionKey = sessionKeyVal,
                 AccessDateTime = DateTime.UtcNow,
                 UserId = manager.UserId,
                 IPAddress = userInfo.IPAddress.Truncate(Globals.MaxIP),
-                Url = Manager.CurrentRequest.Url.ToString().Truncate(Globals.MaxUrl),
-                Referrer = Manager.CurrentRequest.UrlReferrer != null ? Manager.CurrentRequest.UrlReferrer.ToString().Truncate(Globals.MaxUrl) : "",
-                UserAgent = Manager.CurrentRequest.UserAgent.Truncate(VisitorEntry.MaxUserAgent),
+                Url = url != null ? url.Truncate(Globals.MaxUrl) : "",
+                Referrer = referrer != null ? referrer.Truncate(Globals.MaxUrl) : "",
+                UserAgent = userAgent != null ? userAgent.Truncate(VisitorEntry.MaxUserAgent) : "",
                 Longitude = userInfo.Longitude,
                 Latitude = userInfo.Latitude,
                 ContinentCode = userInfo.ContinentCode.Truncate(VisitorEntry.MaxContinentCode),

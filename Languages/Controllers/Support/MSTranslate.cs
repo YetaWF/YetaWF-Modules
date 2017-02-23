@@ -4,9 +4,12 @@ using System.Net;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Json;
 using System.Text;
-using System.Web.Security.AntiXss;
 using System.Xml.Linq;
 using YetaWF.Core.Support;
+#if MVC6
+#else
+using System.Web.Security.AntiXss;
+#endif
 
 namespace YetaWF.Modules.Languages.Controllers.Support {
 
@@ -84,8 +87,15 @@ namespace YetaWF.Modules.Languages.Controllers.Support {
                                  "<User xmlns=\"http://schemas.datacontract.org/2004/07/Microsoft.MT.Web.Service.V2\" />" +
                              "</Options>" +
                              "<Texts>", from);
-            foreach (string s in strings)
-                hb.Append("<string xmlns=\"http://schemas.microsoft.com/2003/10/Serialization/Arrays\">{0}</string>", AntiXssEncoder.XmlEncode(s));
+            foreach (string s in strings) {
+                string encoded;
+#if MVC6
+                encoded = System.Net.WebUtility.HtmlEncode(s);
+#else
+                encoded = AntiXssEncoder.XmlEncode(s);
+#endif
+                hb.Append("<string xmlns=\"http://schemas.microsoft.com/2003/10/Serialization/Arrays\">{0}</string>", encoded);
+            }
             hb.Append("</Texts>" +
                     "<To>{0}</To>" +
                     "</TranslateArrayRequest>", to);

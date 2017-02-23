@@ -1,6 +1,5 @@
 /* Copyright © 2017 Softel vdm, Inc. - http://yetawf.com/Documentation/YetaWF/Blog#License */
 
-using System.Web.Mvc;
 using YetaWF.Core;
 using YetaWF.Core.Controllers;
 using YetaWF.Core.Localize;
@@ -9,6 +8,11 @@ using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Support;
 using YetaWF.Core.Views.Shared;
 using YetaWF.Modules.Blog.DataProvider;
+#if MVC6
+using Microsoft.AspNetCore.Mvc;
+#else
+using System.Web.Mvc;
+#endif
 
 namespace YetaWF.Modules.Blog.Controllers {
 
@@ -23,6 +27,10 @@ namespace YetaWF.Modules.Blog.Controllers {
             [UIHint("Url"), AdditionalMetadata("UrlType", UrlHelperEx.UrlTypeEnum.Local), UrlValidation(UrlValidationAttribute.SchemaEnum.Any, UrlHelperEx.UrlTypeEnum.Local)]
             [StringLength(Globals.MaxUrl), Required, Trim]
             public string BlogUrl { get; set; }
+
+            [Category("Blog"), Caption("Default Blog Category"), Description("The default blog category displayed when no blog category is selected")]
+            [UIHint("YetaWF_Blog_Category"), AdditionalMetadata("ShowAll", true), Required]
+            public int DefaultCategory { get; set; }
 
             [Category("Blog"), Caption("Total Entries"), Description("The maximum number of blog entries shown on the main blog page when no category is selected")]
             [UIHint("IntValue4"), Range(3, 9999), Required]

@@ -1,10 +1,8 @@
 ﻿/* Copyright © 2017 Softel vdm, Inc. - http://yetawf.com/Documentation/YetaWF/Identity#License */
 
-using Microsoft.Owin.Security;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Web;
 using YetaWF.Core;
 using YetaWF.Core.DataProvider;
 using YetaWF.Core.DataProvider.Attributes;
@@ -15,6 +13,13 @@ using YetaWF.Core.Serializers;
 using YetaWF.Core.Support;
 using YetaWF.Modules.Identity.Controllers;
 using YetaWF.Modules.Identity.Modules;
+#if MVC6
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Http.Authentication;
+#else
+using Microsoft.Owin.Security;
+using System.Web;
+#endif
 
 namespace YetaWF.Modules.Identity.DataProvider {
 
@@ -172,21 +177,42 @@ namespace YetaWF.Modules.Identity.DataProvider {
                 throw new InternalError("Unexpected error saving configuration {0}", status);
         }
 
-        public List<AuthenticationDescription> GetActiveExternalLoginProviders() {
+        public class LoginProviderDescription {
+            public string InternalName { get; set; }
+            public string DisplayName { get; set; }
+        }
+
+        public List<LoginProviderDescription> GetActiveExternalLoginProviders() {
             LoginConfigData configData = GetConfig();
-            List <AuthenticationDescription> list = new List<AuthenticationDescription>();
+            List <LoginProviderDescription> list = new List<LoginProviderDescription>();
+#if MVC6
+            SignInManager<UserDefinition> _signinManager = (SignInManager<UserDefinition>)YetaWFManager.ServiceProvider.GetService(typeof(SignInManager<UserDefinition>));
+            List<AuthenticationDescription> loginProviders = _signinManager.GetExternalAuthenticationSchemes().ToList();
+            foreach (AuthenticationDescription provider in loginProviders) {
+                string name = provider.AuthenticationScheme;
+                if (name == "Facebook" && configData.UseFacebook && configData.DefinedFacebook)
+                    list.Add(new LoginProviderDescription { InternalName = name, DisplayName = provider.DisplayName });
+                else if (name == "Google" && configData.UseGoogle && configData.DefinedGoogle)
+                    list.Add(new LoginProviderDescription { InternalName = name, DisplayName = provider.DisplayName });
+                else if (name == "Microsoft" && configData.UseMicrosoft && configData.DefinedMicrosoft)
+                    list.Add(new LoginProviderDescription { InternalName = name, DisplayName = provider.DisplayName });
+                else if (name == "Twitter" && configData.UseTwitter && configData.DefinedTwitter)
+                    list.Add(new LoginProviderDescription { InternalName = name, DisplayName = provider.DisplayName });
+            }
+#else
             List<AuthenticationDescription> loginProviders = Manager.CurrentContext.GetOwinContext().Authentication.GetExternalAuthenticationTypes().ToList();
             foreach (AuthenticationDescription provider in loginProviders) {
                 string name = provider.AuthenticationType;
                 if (name == "Facebook" && configData.UseFacebook && configData.DefinedFacebook)
-                    list.Add(provider);
+                    list.Add(new LoginProviderDescription { InternalName = name, DisplayName = provider.Caption });
                 else if (name == "Google" && configData.UseGoogle && configData.DefinedGoogle)
-                    list.Add(provider);
+                    list.Add(new LoginProviderDescription { InternalName = name, DisplayName = provider.Caption });
                 else if (name == "Microsoft" && configData.UseMicrosoft && configData.DefinedMicrosoft)
-                    list.Add(provider);
+                    list.Add(new LoginProviderDescription { InternalName = name, DisplayName = provider.Caption });
                 else if (name == "Twitter" && configData.UseTwitter && configData.DefinedTwitter)
-                    list.Add(provider);
+                    list.Add(new LoginProviderDescription { InternalName = name, DisplayName = provider.Caption });
             }
+#endif
             return list;
         }
 

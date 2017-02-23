@@ -38,7 +38,7 @@ namespace YetaWF.Modules.Packages.DataProvider {
         // INITALL
         // INITALL
 
-        private void RestartSite(NameValueCollection qs) {
+        private void RestartSite(QueryHelper qs) {
             Manager.RestartSite();
             Manager.CurrentResponse.Redirect(Manager.CurrentSite.MakeUrl());
         }
@@ -49,7 +49,7 @@ namespace YetaWF.Modules.Packages.DataProvider {
         /// <remarks>
         /// This removes all data for all sites
         /// </remarks>
-        public void InitAll(NameValueCollection qs) {
+        public void InitAll(QueryHelper qs) {
             ClearAll();
             InstallPackages();
             if (qs["From"] == "Data") {
@@ -71,7 +71,7 @@ namespace YetaWF.Modules.Packages.DataProvider {
         /// Builds the current site (an additional site) using the new site template
         /// </summary>
         /// <param name="template"></param>
-        public void InitNew(NameValueCollection qs) {
+        public void InitNew(QueryHelper qs) {
             if (qs["From"] == "Data") {
                 BuildSiteUsingData(false);
                 BuildSiteUsingTemplate(Path.Combine(DataFolderName, "Add Site.txt"));
@@ -164,7 +164,7 @@ namespace YetaWF.Modules.Packages.DataProvider {
         /// <summary>
         /// Installs all models for the specified package
         /// </summary>
-        public void InitPackage(NameValueCollection qs) {
+        public void InitPackage(QueryHelper qs) {
             string packageName = qs["Package"];
             if (string.IsNullOrWhiteSpace(packageName))
                 throw new InternalError("Package name missing");
@@ -180,7 +180,7 @@ namespace YetaWF.Modules.Packages.DataProvider {
         /// <summary>
         /// Imports all package data from a zip file (created using Export Data) or from templates
         /// </summary>
-        public void ImportData(NameValueCollection qs) {
+        public void ImportData(QueryHelper qs) {
             string zipFileName = qs["ZipFile"];
             if (string.IsNullOrWhiteSpace(zipFileName))
                 throw new InternalError("Zip filename missing");
@@ -195,7 +195,7 @@ namespace YetaWF.Modules.Packages.DataProvider {
         /// <summary>
         /// Apply a template (creates pages)
         /// </summary>
-        public void ProcessTemplate(NameValueCollection qs) {
+        public void ProcessTemplate(QueryHelper qs) {
             string templateName = qs["Template"];
             if (string.IsNullOrWhiteSpace(templateName))
                 throw new InternalError("Template name missing");
@@ -205,7 +205,7 @@ namespace YetaWF.Modules.Packages.DataProvider {
         /// <summary>
         /// Remove a template (removes pages)
         /// </summary>
-        public void UndoTemplate(NameValueCollection qs) {
+        public void UndoTemplate(QueryHelper qs) {
             string templateName = qs["Template"];
             if (string.IsNullOrWhiteSpace(templateName))
                 throw new InternalError("Template name missing");

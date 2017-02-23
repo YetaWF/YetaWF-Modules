@@ -1,6 +1,5 @@
 ﻿/* Copyright © 2017 Softel vdm, Inc. - http://yetawf.com/Documentation/YetaWF/Identity#License */
 
-using Microsoft.AspNet.Identity;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -15,10 +14,19 @@ using YetaWF.Core.Packages;
 using YetaWF.Core.Serializers;
 using YetaWF.Core.Support;
 using YetaWF.DataProvider;
+#if MVC6
+#else
+using Microsoft.AspNet.Identity;
+#endif
 
 namespace YetaWF.Modules.Identity.DataProvider {
 
-    public class RoleDefinition : IRole {
+#if MVC6
+    public class RoleDefinition
+#else
+    public class RoleDefinition : IRole
+#endif
+    {
 
         public const int MaxName = 100;
         public const int MaxDescription = 200;

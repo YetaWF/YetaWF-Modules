@@ -4,11 +4,15 @@ using System;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.ServiceModel.Syndication;
-using System.Web.Mvc;
 using System.Xml;
 using YetaWF.Core.Controllers;
 using YetaWF.Core.IO;
 using YetaWF.Core.Serializers;
+#if MVC6
+using Microsoft.AspNetCore.Mvc;
+#else
+using System.Web.Mvc;
+#endif
 
 namespace YetaWF.Modules.Feed.Controllers {
 

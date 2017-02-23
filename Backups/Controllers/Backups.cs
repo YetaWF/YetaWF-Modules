@@ -4,8 +4,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Web;
-using System.Web.Mvc;
 using YetaWF.Core.Addons;
 using YetaWF.Core.Controllers;
 using YetaWF.Core.DataProvider;
@@ -19,6 +17,12 @@ using YetaWF.Core.Support;
 using YetaWF.Core.Views.Shared;
 using YetaWF.Modules.Backups.DataProvider;
 using YetaWF.Modules.Backups.Modules;
+#if MVC6
+using Microsoft.AspNetCore.Mvc;
+#else
+using System.Web;
+using System.Web.Mvc;
+#endif
 
 namespace YetaWF.Modules.Backups.Controllers {
 
@@ -128,15 +132,22 @@ namespace YetaWF.Modules.Backups.Controllers {
             string path = Path.Combine(Manager.SiteFolder, SiteBackup.BackupFolder, filename);
             if (!System.IO.File.Exists(path))
                 throw new Error(this.__ResStr("backupNotFound", "The backup '{0}' cannot be located.", filename));
-
+#if MVC6
+            Response.Headers.Remove("Cookie");
+            Response.Headers.Add("Cookie", Basics.CookieDone + "=" + cookieToReturn.ToString());
+#else
             HttpCookie cookie = new HttpCookie(Basics.CookieDone, cookieToReturn.ToString());
             Response.Cookies.Remove(Basics.CookieDone);
             Response.SetCookie(cookie);
-
+#endif
             string contentType = "application/octet-stream";
+#if MVC6
+            return new PhysicalFileResult(path, contentType) { FileDownloadName = filename };
+#else
             FilePathResult result = new FilePathResult(path, contentType);
             result.FileDownloadName = filename;
             return result;
+#endif
         }
 
         [HttpPost]

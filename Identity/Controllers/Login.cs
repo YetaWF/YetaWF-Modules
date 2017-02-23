@@ -1,13 +1,9 @@
 ﻿/* Copyright © 2017 Softel vdm, Inc. - http://yetawf.com/Documentation/YetaWF/Identity#License */
 
-using Microsoft.AspNet.Identity;
-using Microsoft.Owin.Security;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Web;
-using System.Web.Mvc;
 using YetaWF.Core;
 using YetaWF.Core.Addons;
 using YetaWF.Core.Controllers;
@@ -23,12 +19,19 @@ using YetaWF.Core.Views.Shared;
 using YetaWF.Modules.Identity.DataProvider;
 using YetaWF.Modules.Identity.Models;
 using YetaWF.Modules.Identity.Support;
+#if MVC6
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
+#else
+using Microsoft.AspNet.Identity;
+using Microsoft.Owin.Security;
+using System.Web;
+using System.Web.Mvc;
+#endif
 
 namespace YetaWF.Modules.Identity.Controllers {
 
     public class LoginModuleController : ControllerImpl<YetaWF.Modules.Identity.Modules.LoginModule> {
-
-        public LoginModuleController() { }
 
         [Trim]
         [Header("-<p>You are entering an area of our web site, for which you need to register using your name/email address and password.</p>" +
@@ -95,20 +98,20 @@ namespace YetaWF.Modules.Identity.Controllers {
             model.ShowCaptcha = config.Captcha && !model.ShowVerification;
 
             using (LoginConfigDataProvider logConfigDP = new LoginConfigDataProvider()) {
-                List<AuthenticationDescription> loginProviders = logConfigDP.GetActiveExternalLoginProviders();
+                List<LoginConfigDataProvider.LoginProviderDescription> loginProviders = logConfigDP.GetActiveExternalLoginProviders();
                 if (loginProviders.Count > 0 && Manager.IsInPopup)
                     throw new InternalError("When using external login providers, the Login module cannot be used in a popup window");
-                foreach (AuthenticationDescription provider in loginProviders) {
+                foreach (LoginConfigDataProvider.LoginProviderDescription provider in loginProviders) {
                     model.ExternalProviders.Add(new FormButton() {
                         ButtonType = ButtonTypeEnum.Submit,
                         Name = "provider",
-                        Text = provider.AuthenticationType,
-                        Title = this.__ResStr("logAccountTitle", "Log in using your {0} account", provider.Caption),
-                        CssClass = "t_" + provider.AuthenticationType.ToLower(),
+                        Text = provider.InternalName,
+                        Title = this.__ResStr("logAccountTitle", "Log in using your {0} account", provider.DisplayName),
+                        CssClass = "t_" + provider.InternalName.ToLower(),
                     });
                     YetaWF.Core.Packages.Package package = AreaRegistration.CurrentPackage;
                     string url = VersionManager.GetAddOnModuleUrl(package.Domain, package.Product);
-                    model.Images.Add(Manager.GetCDNUrl(string.Format("{0}Icons/LoginProviders/{1}.png", url, provider.AuthenticationType)));
+                    model.Images.Add(Manager.GetCDNUrl(string.Format("{0}Icons/LoginProviders/{1}.png", url, provider.InternalName)));
                 }
             }
 
@@ -153,7 +156,11 @@ namespace YetaWF.Modules.Identity.Controllers {
                 ModelState.AddModelError("", this.__ResStr("maxAttemps", "The maximum number of login attempts has been exceeded - Your account has been suspended"));
                 if (user.UserStatus != UserStatusEnum.Suspended) {
                     user.UserStatus = UserStatusEnum.Suspended;
+#if MVC6
+                    await Managers.GetUserManager().UpdateAsync(user);
+#else
                     Managers.GetUserManager().Update(user);
+#endif
                 }
                 return PartialView(model);
             }
@@ -161,11 +168,19 @@ namespace YetaWF.Modules.Identity.Controllers {
             if (user.PasswordHash != null || !string.IsNullOrWhiteSpace(user.PasswordPlainText) || !string.IsNullOrWhiteSpace(model.Password)) {
                 UserDefinition foundUser = user;
                 user = null;
+#if MVC6
+                user = await Managers.GetUserManager().FindByNameAsync(model.UserName);
+#else
                 if (!string.IsNullOrWhiteSpace(model.Password))
                     user = await Managers.GetUserManager().FindAsync(model.UserName, model.Password);
+#endif
                 if (user == null) {
                     foundUser.LoginFailures = foundUser.LoginFailures + 1;
+#if MVC6
+                    await Managers.GetUserManager().UpdateAsync(foundUser);
+#else
                     Managers.GetUserManager().Update(foundUser);
+#endif
                 }
             }
             if (user == null) {
@@ -182,7 +197,11 @@ namespace YetaWF.Modules.Identity.Controllers {
                     user.UserStatus = UserStatusEnum.NeedApproval;
                     user.LastActivityDate = DateTime.UtcNow;
                     user.LastActivityIP = Manager.UserHostAddress;
+#if MVC6
+                    await Managers.GetUserManager().UpdateAsync(user);
+#else
                     Managers.GetUserManager().Update(user);
+#endif
 
                     Emails emails = new Emails();
                     emails.SendApprovalNeeded(user);
@@ -202,7 +221,11 @@ namespace YetaWF.Modules.Identity.Controllers {
                     Logging.AddErrorLog("User {0} - invalid verification code({1})", model.UserName, model.VerificationCode);
                     ModelState.AddModelError("VerificationCode", this.__ResStr("invVerification", "The verification code is invalid. Please make sure to copy/paste it from the email to avoid any typos."));
                     user.LoginFailures = user.LoginFailures + 1;
+#if MVC6
+                    await Managers.GetUserManager().UpdateAsync(user);
+#else
                     Managers.GetUserManager().Update(user);
+#endif
                 } else
                     ModelState.AddModelError("VerificationCode", this.__ResStr("notValidated", "Your account has not yet been validated. You will receive an email with validation information. Please copy and enter the verification code here."));
                 model.ShowVerification = true;
@@ -258,10 +281,20 @@ namespace YetaWF.Modules.Identity.Controllers {
         }
 
         // User logoff
-        internal static void UserLogoff() {
+#if MVC6
+        internal static async void UserLogoff()
+#else
+        internal static void UserLogoff()
+#endif
+        {
             Manager.EditMode = false;
+#if MVC6
+            SignInManager<UserDefinition> _signinManager = (SignInManager<UserDefinition>)YetaWFManager.ServiceProvider.GetService(typeof(SignInManager<UserDefinition>));
+            await _signinManager.SignOutAsync();
+#else
             IAuthenticationManager authManager = Manager.CurrentRequest.GetOwinContext().Authentication;
             authManager.SignOut(DefaultAuthenticationTypes.ExternalCookie, DefaultAuthenticationTypes.ApplicationCookie, DefaultAuthenticationTypes.ExternalBearer, DefaultAuthenticationTypes.TwoFactorCookie, DefaultAuthenticationTypes.TwoFactorRememberBrowserCookie);
+#endif
             Manager.SessionSettings.ClearAll();
         }
 
@@ -277,10 +310,14 @@ namespace YetaWF.Modules.Identity.Controllers {
             } else {
                 isPersistent = (bool) rememberme;
             }
-
+#if MVC6
+            SignInManager<UserDefinition> _signinManager = (SignInManager<UserDefinition>)YetaWFManager.ServiceProvider.GetService(typeof(SignInManager<UserDefinition>));
+            await _signinManager.SignInAsync(user, isPersistent);
+#else
             IAuthenticationManager authManager = Manager.CurrentRequest.GetOwinContext().Authentication;
             var identity = await Managers.GetUserManager().CreateIdentityAsync(user, DefaultAuthenticationTypes.ApplicationCookie);
             authManager.SignIn(new AuthenticationProperties() { IsPersistent = isPersistent }, identity);
+#endif
 
             int superuserRole = Resource.ResourceAccess.GetSuperuserRoleId();
             if (user.RolesList != null && user.RolesList.Contains(new Role { RoleId = superuserRole }, new RoleComparer()))
@@ -291,7 +328,11 @@ namespace YetaWF.Modules.Identity.Controllers {
             user.LastActivityDate = DateTime.UtcNow;
             user.LastActivityIP = Manager.UserHostAddress;
             user.LoginFailures = 0;
+#if MVC6
+            await Managers.GetUserManager().UpdateAsync(user);
+#else
             Managers.GetUserManager().Update(user);
+#endif
         }
     }
 }
