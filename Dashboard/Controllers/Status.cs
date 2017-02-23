@@ -25,6 +25,10 @@ namespace YetaWF.Modules.Dashboard.Controllers {
             [UIHint("String"), ReadOnly]
             public string CoreVersion{ get; set; }
 
+            [Caption("ASP.NET/MVC Version"), Description("The ASP.NET/MVC version used")]
+            [UIHint("String"), ReadOnly]
+            public string AspNetMvc { get; set; }
+
             [Caption("Last Restart"), Description("The date and time the site was last restarted")]
             [UIHint("DateTime"), ReadOnly]
             public DateTime LastRestart { get; set; }
@@ -54,6 +58,7 @@ namespace YetaWF.Modules.Dashboard.Controllers {
 #else
             model.Build = "Release";
 #endif
+            model.AspNetMvc = YetaWFManager.GetAspNetMvcName(YetaWFManager.AspNetMvc);
 
             return View(model);
         }
