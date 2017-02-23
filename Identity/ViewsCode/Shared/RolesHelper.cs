@@ -104,7 +104,11 @@ namespace YetaWF.Modules.Identity.Views.Shared {
                     ReadOnly = ReadOnly,
                 }
             };
+#if MVC6
             return MvcHtmlString.Create(htmlHelper.DisplayFor(m => rolesModel.GridDef));
+#else
+            return htmlHelper.DisplayFor(m => rolesModel.GridDef);
+#endif
         }
 #if MVC6
         public static MvcHtmlString RenderUserAllowedRolesDisplay<TModel>(this IHtmlHelper<TModel> htmlHelper, string name, SerializableList<Role> model)
@@ -149,7 +153,11 @@ namespace YetaWF.Modules.Identity.Views.Shared {
                     ReadOnly = ReadOnly,
                 }
             };
+#if MVC6
             return MvcHtmlString.Create(htmlHelper.DisplayFor(m => rolesModel.GridDef));
+#else
+            return htmlHelper.DisplayFor(m => rolesModel.GridDef);
+#endif
         }
     }
 }

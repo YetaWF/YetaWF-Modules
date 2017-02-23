@@ -81,7 +81,11 @@ namespace YetaWF.Modules.Identity.Views.Shared {
                     DisplayProperty = "UserName"
                 }
             };
+#if MVC6
             return MvcHtmlString.Create(htmlHelper.DisplayFor(m => usersModel.GridDef));
+#else
+            return htmlHelper.DisplayFor(m => usersModel.GridDef);
+#endif
         }
 
         public class GridAllowedUserDisplay {
@@ -124,8 +128,11 @@ namespace YetaWF.Modules.Identity.Views.Shared {
                     ReadOnly = true,
                 }
             };
+#if MVC6
             return MvcHtmlString.Create(htmlHelper.DisplayFor(m => usersModel.GridDef));
+#else
+            return htmlHelper.DisplayFor(m => usersModel.GridDef);
+#endif
         }
-
     }
 }
