@@ -2,10 +2,10 @@
   "version": "2.0.0",
 
   "dependencies": {
-    "Core": "2.0.0",
-    "File": "2.0.0",
-    "ModuleDefinition": "2.0.0",
-    "SQL": "2.0.0",
+    "Core": {"target": "project" },
+    "File": {"target": "project" },
+    "ModuleDefinition": {"target": "project" },
+    "SQL": {"target": "project" },
     "Google.Apis.Translate.v2": "1.21.0.543",
     "System.Runtime.Serialization.Json": "4.0.0",
     "System.Private.DataContractSerialization": "4.3.0"

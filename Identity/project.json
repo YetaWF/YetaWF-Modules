@@ -7,10 +7,10 @@
     "Microsoft.AspNetCore.Authentication.Twitter": "1.1.0",
     "Microsoft.AspNetCore.Authentication.MicrosoftAccount": "1.1.0",
     "Microsoft.AspNetCore.Identity": "1.1.0",
-    "Core": "2.0.0",
-    "File": "2.0.0",
-    "ModuleDefinition": "2.0.0",
-    "SQL": "2.0.0"
+    "Core": {"target": "project" },
+    "File": {"target": "project" },
+    "ModuleDefinition": {"target": "project" },
+    "SQL": {"target": "project" }
   },
   "frameworks": {
     "net462": {
