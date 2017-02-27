@@ -42,7 +42,7 @@ namespace YetaWF.Modules.Identity {
                     long ticks = WebConfigHelper.GetValue<long>(AREA, "OWin:ExpireTimeSpan");
                     options.Cookies.ApplicationCookie.ExpireTimeSpan = new TimeSpan(ticks);
                     options.Cookies.ApplicationCookie.SlidingExpiration = WebConfigHelper.GetValue<bool>(AREA, "OWin:SlidingExpiration");
-                    options.Cookies.ApplicationCookie.CookieSecure = Microsoft.AspNetCore.Http.CookieSecurePolicy.SameAsRequest;
+                    options.Cookies.ApplicationCookie.CookieSecure = Microsoft.AspNetCore.Http.CookieSecurePolicy.None;
                 }
 
                 // User settings
