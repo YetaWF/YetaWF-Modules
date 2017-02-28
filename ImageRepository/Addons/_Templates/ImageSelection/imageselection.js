@@ -101,6 +101,7 @@ YetaWF_ImageRepository.initSelection = function (divId) {
         $hidden.val(name);
     });
     // show initial selection (if any)
-    $('#' + divId + ' select[name="List"]').trigger('change');
+    $list.val($hidden.val());
+    $list.trigger('change');
 };
 
