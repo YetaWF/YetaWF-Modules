@@ -50,13 +50,13 @@ YetaWF_ImageRepository.initSelection = function (divId) {
         });
     }
     // handle the clear button
-    $('body').on('click', '#' + divId + ' a[data-name="Clear"]', function (e) {
+    $('#' + divId + ' a[data-name="Clear"]').click(function (e) {
         e.preventDefault();
         clearFileName();
         return false;
     });
     // handle the remove button
-    $('body').on('click', '#' + divId + ' a[data-name="Remove"]', function (e) {
+    $('#' + divId + ' a[data-name="Remove"]').click(function (e) {
         e.preventDefault();
         var $this = $(this);
 
@@ -94,7 +94,7 @@ YetaWF_ImageRepository.initSelection = function (divId) {
     });
 
     // user changed the selected image
-    $('body').on('change', '#' + divId + ' select[name="List"]', function () {
+    $('#' + divId + ' select[name="List"]').click(function () {
         var $this = $(this);
         var name = $this.val();
         setPreview(name);
