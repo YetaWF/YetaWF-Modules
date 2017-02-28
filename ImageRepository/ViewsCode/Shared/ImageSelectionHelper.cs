@@ -5,6 +5,7 @@ using YetaWF.Core.Pages;
 using YetaWF.Core.Support;
 using YetaWF.Core.Views.Shared;
 #if MVC6
+using Microsoft.AspNetCore.Html;
 using Microsoft.AspNetCore.Mvc.Rendering;
 #else
 using System.Web.Mvc;
@@ -17,9 +18,9 @@ namespace YetaWF.Modules.ImageRepository.Views.Shared {
 
     public static class ImageSelectionHelper {
 #if MVC6
-        public static MvcHtmlString RenderUploadControl(this IHtmlHelper<string> htmlHelper, string name, ImageSelectionInfo info)
+        public static HtmlString RenderUploadControl(this IHtmlHelper<string> htmlHelper, string name, ImageSelectionInfo info)
 #else
-        public static MvcHtmlString RenderUploadControl(this HtmlHelper<object> htmlHelper, string name, ImageSelectionInfo info)
+        public static HtmlString RenderUploadControl(this HtmlHelper<object> htmlHelper, string name, ImageSelectionInfo info)
 #endif
         {
             // the upload control
@@ -28,7 +29,7 @@ namespace YetaWF.Modules.ImageRepository.Views.Shared {
                     new { FolderGuid = info.FolderGuid, SubFolder = info.SubFolder, FileType = info.FileType }),
             };
 #if MVC6
-            return MvcHtmlString.Create(htmlHelper.EditorFor(x => upload, UIHintAttribute.TranslateHint("FileUpload1")));
+            return new HtmlString(htmlHelper.EditorFor(x => upload, UIHintAttribute.TranslateHint("FileUpload1")).AsString());
 #else
             return htmlHelper.EditorFor(x => upload, UIHintAttribute.TranslateHint("FileUpload1"));
 #endif

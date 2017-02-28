@@ -6,6 +6,7 @@ using YetaWF.Core.Pages;
 using YetaWF.Core.Views;
 using YetaWF.Modules.Identity.DataProvider;
 #if MVC6
+using Microsoft.AspNetCore.Html;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using YetaWF.Core.Support;
 #else
@@ -19,9 +20,9 @@ namespace YetaWF.Modules.Identity.Views.Shared {
     public static class EmailHelper {
         public static string __ResStr(string name, string defaultValue, params object[] parms) { return ResourceAccess.GetResourceString(typeof(EmailHelper), name, defaultValue, parms); }
 #if MVC6
-        public static MvcHtmlString RenderEmailDisplay<TModel>(this IHtmlHelper<TModel> htmlHelper, string name, string model, object HtmlAttributes = null)
+        public static HtmlString RenderEmailDisplay<TModel>(this IHtmlHelper<TModel> htmlHelper, string name, string model, object HtmlAttributes = null)
 #else
-        public static MvcHtmlString RenderEmailDisplay<TModel>(this HtmlHelper<TModel> htmlHelper, string name, string model, object HtmlAttributes = null)
+        public static HtmlString RenderEmailDisplay<TModel>(this HtmlHelper<TModel> htmlHelper, string name, string model, object HtmlAttributes = null)
 #endif
         {
             TagBuilder tag = new TagBuilder("span");
@@ -52,7 +53,7 @@ namespace YetaWF.Modules.Identity.Views.Shared {
                 html += actionDisplay.Render(ModuleAction.RenderModeEnum.IconsOnly);
             if (actionLoginAs != null)
                 html += actionLoginAs.Render(ModuleAction.RenderModeEnum.IconsOnly);
-            return MvcHtmlString.Create(html);
+            return new HtmlString(html);
         }
     }
 }

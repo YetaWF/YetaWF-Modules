@@ -10,6 +10,7 @@ using YetaWF.Core.Views;
 using YetaWF.Core.Views.Shared;
 using YetaWF.Modules.Identity.DataProvider;
 #if MVC6
+using Microsoft.AspNetCore.Html;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using YetaWF.Core.Support;
 #else
@@ -24,9 +25,9 @@ namespace YetaWF.Modules.Identity.Views.Shared {
 
         public static string __ResStr(string name, string defaultValue, params object[] parms) { return ResourceAccess.GetResourceString(typeof(LoginUsersHelper), name, defaultValue, parms); }
 #if MVC6
-        public static MvcHtmlString RenderLoginUsers(this IHtmlHelper htmlHelper, string name, int model, object HtmlAttributes = null)
+        public static HtmlString RenderLoginUsers(this IHtmlHelper htmlHelper, string name, int model, object HtmlAttributes = null)
 #else
-        public static MvcHtmlString RenderLoginUsers(this HtmlHelper htmlHelper, string name, int model, object HtmlAttributes = null)
+        public static HtmlString RenderLoginUsers(this HtmlHelper htmlHelper, string name, int model, object HtmlAttributes = null)
 #endif
         {
 

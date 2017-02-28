@@ -10,6 +10,7 @@ using YetaWF.Core.Views;
 using YetaWF.Core.Views.Shared;
 using YetaWF.Modules.Identity.DataProvider;
 #if MVC6
+using Microsoft.AspNetCore.Html;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using YetaWF.Core.Support;
 #else
@@ -24,9 +25,9 @@ namespace YetaWF.Modules.Identity.Views.Shared {
 
         public static string __ResStr(string name, string defaultValue, params object[] parms) { return ResourceAccess.GetResourceString(typeof(RoleIdHelper), name, defaultValue, parms); }
 #if MVC6
-        public static MvcHtmlString RenderRoleIdDisplay(this IHtmlHelper htmlHelper, string name, int model, object HtmlAttributes = null)
+        public static HtmlString RenderRoleIdDisplay(this IHtmlHelper htmlHelper, string name, int model, object HtmlAttributes = null)
 #else
-        public static MvcHtmlString RenderRoleIdDisplay(this HtmlHelper htmlHelper, string name, int model, object HtmlAttributes = null)
+        public static HtmlString RenderRoleIdDisplay(this HtmlHelper htmlHelper, string name, int model, object HtmlAttributes = null)
 #endif
         {
             TagBuilder tag = new TagBuilder("span");
@@ -36,13 +37,13 @@ namespace YetaWF.Modules.Identity.Views.Shared {
                 RoleDefinition role = dataProvider.GetRoleById(model);
                 tag.SetInnerText(role.Name);
                 tag.Attributes.Add(Basics.CssTooltipSpan, role.Description);
-                return MvcHtmlString.Create(tag.ToString(TagRenderMode.Normal));
+                return tag.ToHtmlString(TagRenderMode.Normal);
             }
         }
 #if MVC6
-        public static MvcHtmlString RenderRoleId(this IHtmlHelper htmlHelper, string name, int model, object HtmlAttributes = null)
+        public static HtmlString RenderRoleId(this IHtmlHelper htmlHelper, string name, int model, object HtmlAttributes = null)
 #else
-        public static MvcHtmlString RenderRoleId(this HtmlHelper htmlHelper, string name, int model, object HtmlAttributes = null)
+        public static HtmlString RenderRoleId(this HtmlHelper htmlHelper, string name, int model, object HtmlAttributes = null)
 #endif
         {
             List<SelectionItem<int>> list;

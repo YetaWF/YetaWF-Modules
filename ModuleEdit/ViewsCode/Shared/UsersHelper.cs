@@ -12,6 +12,7 @@ using YetaWF.Core.Support;
 using YetaWF.Core.Views;
 using YetaWF.Core.Views.Shared;
 #if MVC6
+using Microsoft.AspNetCore.Html;
 using Microsoft.AspNetCore.Mvc.Rendering;
 #else
 using System.Web.Mvc;
@@ -31,9 +32,9 @@ namespace YetaWF.Modules.ModuleEdit.Views.Shared {
             public GridDefinition GridDef { get; set; }
         }
 #if MVC6
-        public static MvcHtmlString RenderAllowedUsers<TModel>(this IHtmlHelper<TModel> htmlHelper, string name, SerializableList<ModuleDefinition.AllowedUser> model)
+        public static HtmlString RenderAllowedUsers<TModel>(this IHtmlHelper<TModel> htmlHelper, string name, SerializableList<ModuleDefinition.AllowedUser> model)
 #else
-        public static MvcHtmlString RenderAllowedUsers<TModel>(this HtmlHelper<TModel> htmlHelper, string name, SerializableList<ModuleDefinition.AllowedUser> model)
+        public static HtmlString RenderAllowedUsers<TModel>(this HtmlHelper<TModel> htmlHelper, string name, SerializableList<ModuleDefinition.AllowedUser> model)
 #endif
         {
             Type gridEntryType;
@@ -73,7 +74,7 @@ namespace YetaWF.Modules.ModuleEdit.Views.Shared {
                 }
             };
 #if MVC6
-            return MvcHtmlString.Create(htmlHelper.DisplayFor(m => UsersModel.GridDef));
+            return new HtmlString(htmlHelper.DisplayFor(m => UsersModel.GridDef).AsString());
 #else
             return htmlHelper.DisplayFor(m => UsersModel.GridDef);
 #endif

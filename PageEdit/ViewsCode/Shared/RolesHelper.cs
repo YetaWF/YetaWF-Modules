@@ -9,9 +9,10 @@ using YetaWF.Core.Pages;
 using YetaWF.Core.Serializers;
 using YetaWF.Core.Views;
 using YetaWF.Core.Views.Shared;
-#if MVC6
-using Microsoft.AspNetCore.Mvc.Rendering;
 using YetaWF.Core.Support;
+#if MVC6
+using Microsoft.AspNetCore.Html;
+using Microsoft.AspNetCore.Mvc.Rendering;
 #else
 using System.Web.Mvc;
 using System.Web.Mvc.Html;
@@ -72,9 +73,9 @@ namespace YetaWF.Modules.PageEdit.Views.Shared {
             return roles;
         }
 #if MVC6
-        public static MvcHtmlString RenderAllowedRoles<TModel>(this IHtmlHelper<TModel> htmlHelper, string name, SerializableList<PageDefinition.AllowedRole> model)
+        public static HtmlString RenderAllowedRoles<TModel>(this IHtmlHelper<TModel> htmlHelper, string name, SerializableList<PageDefinition.AllowedRole> model)
 #else
-        public static MvcHtmlString RenderAllowedRoles<TModel>(this HtmlHelper<TModel> htmlHelper, string name, SerializableList<PageDefinition.AllowedRole> model)
+        public static HtmlString RenderAllowedRoles<TModel>(this HtmlHelper<TModel> htmlHelper, string name, SerializableList<PageDefinition.AllowedRole> model)
 #endif
         {
 
@@ -99,7 +100,7 @@ namespace YetaWF.Modules.PageEdit.Views.Shared {
                 }
             };
 #if MVC6
-            return MvcHtmlString.Create(htmlHelper.DisplayFor(m => rolesModel.GridDef));
+            return new HtmlString(htmlHelper.DisplayFor(m => rolesModel.GridDef).AsString());
 #else
             return htmlHelper.DisplayFor(m => rolesModel.GridDef);
 #endif

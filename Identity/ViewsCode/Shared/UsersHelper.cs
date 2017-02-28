@@ -9,9 +9,10 @@ using YetaWF.Core.Pages;
 using YetaWF.Core.Serializers;
 using YetaWF.Core.Views;
 using YetaWF.Core.Views.Shared;
-#if MVC6
-using Microsoft.AspNetCore.Mvc.Rendering;
 using YetaWF.Core.Support;
+#if MVC6
+using Microsoft.AspNetCore.Html;
+using Microsoft.AspNetCore.Mvc.Rendering;
 #else
 using System.Web.Mvc;
 using System.Web.Mvc.Html;
@@ -49,9 +50,9 @@ namespace YetaWF.Modules.Identity.Views.Shared {
             }
         }
 #if MVC6
-        public static MvcHtmlString RenderResourceAllowedUsers<TModel>(this IHtmlHelper<TModel> htmlHelper, string name, SerializableList<User> model)
+        public static HtmlString RenderResourceAllowedUsers<TModel>(this IHtmlHelper<TModel> htmlHelper, string name, SerializableList<User> model)
 #else
-        public static MvcHtmlString RenderResourceAllowedUsers<TModel>(this HtmlHelper<TModel> htmlHelper, string name, SerializableList<User> model)
+        public static HtmlString RenderResourceAllowedUsers<TModel>(this HtmlHelper<TModel> htmlHelper, string name, SerializableList<User> model)
 #endif
         {
             List<GridAllowedUser> users;
@@ -82,7 +83,7 @@ namespace YetaWF.Modules.Identity.Views.Shared {
                 }
             };
 #if MVC6
-            return MvcHtmlString.Create(htmlHelper.DisplayFor(m => usersModel.GridDef));
+            return new HtmlString(htmlHelper.DisplayFor(m => usersModel.GridDef).AsString());
 #else
             return htmlHelper.DisplayFor(m => usersModel.GridDef);
 #endif
@@ -99,9 +100,9 @@ namespace YetaWF.Modules.Identity.Views.Shared {
             }
         }
 #if MVC6
-        public static MvcHtmlString RenderResourceAllowedUsersDisplay<TModel>(this IHtmlHelper<TModel> htmlHelper, string name, SerializableList<User> model)
+        public static HtmlString RenderResourceAllowedUsersDisplay<TModel>(this IHtmlHelper<TModel> htmlHelper, string name, SerializableList<User> model)
 #else
-        public static MvcHtmlString RenderResourceAllowedUsersDisplay<TModel>(this HtmlHelper<TModel> htmlHelper, string name, SerializableList<User> model)
+        public static HtmlString RenderResourceAllowedUsersDisplay<TModel>(this HtmlHelper<TModel> htmlHelper, string name, SerializableList<User> model)
 #endif
         {
             List<GridAllowedUserDisplay> users;
@@ -129,7 +130,7 @@ namespace YetaWF.Modules.Identity.Views.Shared {
                 }
             };
 #if MVC6
-            return MvcHtmlString.Create(htmlHelper.DisplayFor(m => usersModel.GridDef));
+            return new HtmlString(htmlHelper.DisplayFor(m => usersModel.GridDef).AsString());
 #else
             return htmlHelper.DisplayFor(m => usersModel.GridDef);
 #endif

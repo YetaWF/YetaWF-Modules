@@ -122,10 +122,10 @@ namespace YetaWF.Modules.Menus.Views.Shared {
         //    public GridAllowedRole() { __editable = true; }
         //}
 
-        //public static MvcHtmlString RenderResourceAllowedRolesDisplay<TModel>(this HtmlHelper<TModel> htmlHelper, string name, SerializableList<Role> model) {
+        //public static HtmlString RenderResourceAllowedRolesDisplay<TModel>(this HtmlHelper<TModel> htmlHelper, string name, SerializableList<Role> model) {
         //    return htmlHelper.RenderResourceAllowedRoles<TModel>(name, model, ReadOnly: true);
         //}
-        //public static MvcHtmlString RenderResourceAllowedRoles<TModel>(this HtmlHelper<TModel> htmlHelper, string name, SerializableList<Role> model, bool ReadOnly = false) {
+        //public static HtmlString RenderResourceAllowedRoles<TModel>(this HtmlHelper<TModel> htmlHelper, string name, SerializableList<Role> model, bool ReadOnly = false) {
 
         //    List<RoleInfo> allRoles = Resource.ResourceAccess.GetDefaultRoleList();
         //    int superuserRole = Resource.ResourceAccess.GetSuperuserRoleId();
@@ -157,10 +157,10 @@ namespace YetaWF.Modules.Menus.Views.Shared {
         //    return htmlHelper.DisplayFor(m => rolesModel.GridDef);
         //}
 
-        //public static MvcHtmlString RenderUserAllowedRolesDisplay<TModel>(this HtmlHelper<TModel> htmlHelper, string name, SerializableList<Role> model) {
+        //public static HtmlString RenderUserAllowedRolesDisplay<TModel>(this HtmlHelper<TModel> htmlHelper, string name, SerializableList<Role> model) {
         //    return htmlHelper.RenderUserAllowedRoles<TModel>(name, model, ReadOnly: true);
         //}
-        //public static MvcHtmlString RenderUserAllowedRoles<TModel>(this HtmlHelper<TModel> htmlHelper, string name, SerializableList<Role> model, bool ReadOnly = false) {
+        //public static HtmlString RenderUserAllowedRoles<TModel>(this HtmlHelper<TModel> htmlHelper, string name, SerializableList<Role> model, bool ReadOnly = false) {
 
         //    List<RoleInfo> allRoles = Resource.ResourceAccess.GetDefaultRoleList();
         //    int userRole = Resource.ResourceAccess.GetUserRoleId();

@@ -8,6 +8,7 @@ using YetaWF.Core.Views;
 using YetaWF.Core.Views.Shared;
 using YetaWF.Modules.Identity.DataProvider;
 #if MVC6
+using Microsoft.AspNetCore.Html;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using YetaWF.Core.Support;
 #else
@@ -20,9 +21,9 @@ namespace YetaWF.Modules.Identity.Views.Shared {
 
     public static class UserIdHelper {
 #if MVC6
-        public static MvcHtmlString RenderUserIdDisplay<TModel>(this IHtmlHelper<TModel> htmlHelper, string name, int model, object HtmlAttributes = null)
+        public static HtmlString RenderUserIdDisplay<TModel>(this IHtmlHelper<TModel> htmlHelper, string name, int model, object HtmlAttributes = null)
 #else
-        public static MvcHtmlString RenderUserIdDisplay<TModel>(this HtmlHelper<TModel> htmlHelper, string name, int model, object HtmlAttributes = null)
+        public static HtmlString RenderUserIdDisplay<TModel>(this HtmlHelper<TModel> htmlHelper, string name, int model, object HtmlAttributes = null)
 #endif
         {
             TagBuilder tag = new TagBuilder("span");
@@ -50,14 +51,14 @@ namespace YetaWF.Modules.Identity.Views.Shared {
                 html += actionDisplay.Render(ModuleAction.RenderModeEnum.IconsOnly);
             if (actionLoginAs != null)
                 html += actionLoginAs.Render(ModuleAction.RenderModeEnum.IconsOnly);
-            return MvcHtmlString.Create(html);
+            return new HtmlString(html);
         }
 
         // RESEARCH: Expand this to support huge number of user accounts (using a grid)
 #if MVC6
-        public static MvcHtmlString RenderUserId<TModel>(this IHtmlHelper<TModel> htmlHelper, string name, int model, object HtmlAttributes = null)
+        public static HtmlString RenderUserId<TModel>(this IHtmlHelper<TModel> htmlHelper, string name, int model, object HtmlAttributes = null)
 #else
-        public static MvcHtmlString RenderUserId<TModel>(this HtmlHelper<TModel> htmlHelper, string name, int model, object HtmlAttributes = null)
+        public static HtmlString RenderUserId<TModel>(this HtmlHelper<TModel> htmlHelper, string name, int model, object HtmlAttributes = null)
 #endif
         {
             using (UserDefinitionDataProvider userDP = new UserDefinitionDataProvider()) {

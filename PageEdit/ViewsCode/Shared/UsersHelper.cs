@@ -9,9 +9,10 @@ using YetaWF.Core.Pages;
 using YetaWF.Core.Serializers;
 using YetaWF.Core.Views;
 using YetaWF.Core.Views.Shared;
-#if MVC6
-using Microsoft.AspNetCore.Mvc.Rendering;
 using YetaWF.Core.Support;
+#if MVC6
+using Microsoft.AspNetCore.Html;
+using Microsoft.AspNetCore.Mvc.Rendering;
 #else
 using System.Web.Mvc;
 using System.Web.Mvc.Html;
@@ -67,9 +68,9 @@ namespace YetaWF.Modules.PageEdit.Views.Shared {
             }
         }
 #if MVC6
-        public static MvcHtmlString RenderAllowedUsers<TModel>(this IHtmlHelper<TModel> htmlHelper, string name, SerializableList<PageDefinition.AllowedUser> model)
+        public static HtmlString RenderAllowedUsers<TModel>(this IHtmlHelper<TModel> htmlHelper, string name, SerializableList<PageDefinition.AllowedUser> model)
 #else
-        public static MvcHtmlString RenderAllowedUsers<TModel>(this HtmlHelper<TModel> htmlHelper, string name, SerializableList<PageDefinition.AllowedUser> model)
+        public static HtmlString RenderAllowedUsers<TModel>(this HtmlHelper<TModel> htmlHelper, string name, SerializableList<PageDefinition.AllowedUser> model)
 #endif
         {
             List<GridAllowedUser> list;
@@ -101,7 +102,7 @@ namespace YetaWF.Modules.PageEdit.Views.Shared {
             };
 
 #if MVC6
-            return MvcHtmlString.Create(htmlHelper.DisplayFor(m => UsersModel.GridDef));
+            return new HtmlString(htmlHelper.DisplayFor(m => UsersModel.GridDef).AsString());
 #else
             return htmlHelper.DisplayFor(m => UsersModel.GridDef);
 #endif

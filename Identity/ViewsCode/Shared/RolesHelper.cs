@@ -9,9 +9,10 @@ using YetaWF.Core.Pages;
 using YetaWF.Core.Serializers;
 using YetaWF.Core.Views;
 using YetaWF.Core.Views.Shared;
-#if MVC6
-using Microsoft.AspNetCore.Mvc.Rendering;
 using YetaWF.Core.Support;
+#if MVC6
+using Microsoft.AspNetCore.Html;
+using Microsoft.AspNetCore.Mvc.Rendering;
 #else
 using System.Web.Mvc;
 using System.Web.Mvc.Html;
@@ -62,17 +63,17 @@ namespace YetaWF.Modules.Identity.Views.Shared {
             public GridAllowedRole() { __editable = true; }
         }
 #if MVC6
-        public static MvcHtmlString RenderResourceAllowedRolesDisplay<TModel>(this IHtmlHelper<TModel> htmlHelper, string name, SerializableList<Role> model)
+        public static HtmlString RenderResourceAllowedRolesDisplay<TModel>(this IHtmlHelper<TModel> htmlHelper, string name, SerializableList<Role> model)
 #else
-        public static MvcHtmlString RenderResourceAllowedRolesDisplay<TModel>(this HtmlHelper<TModel> htmlHelper, string name, SerializableList<Role> model)
+        public static HtmlString RenderResourceAllowedRolesDisplay<TModel>(this HtmlHelper<TModel> htmlHelper, string name, SerializableList<Role> model)
 #endif
         {
             return htmlHelper.RenderResourceAllowedRoles<TModel>(name, model, ReadOnly: true);
         }
 #if MVC6
-        public static MvcHtmlString RenderResourceAllowedRoles<TModel>(this IHtmlHelper<TModel> htmlHelper, string name, SerializableList<Role> model, bool ReadOnly = false)
+        public static HtmlString RenderResourceAllowedRoles<TModel>(this IHtmlHelper<TModel> htmlHelper, string name, SerializableList<Role> model, bool ReadOnly = false)
 #else
-        public static MvcHtmlString RenderResourceAllowedRoles<TModel>(this HtmlHelper<TModel> htmlHelper, string name, SerializableList<Role> model, bool ReadOnly = false)
+        public static HtmlString RenderResourceAllowedRoles<TModel>(this HtmlHelper<TModel> htmlHelper, string name, SerializableList<Role> model, bool ReadOnly = false)
 #endif
         {
             List<RoleInfo> allRoles = Resource.ResourceAccess.GetDefaultRoleList();
@@ -105,23 +106,23 @@ namespace YetaWF.Modules.Identity.Views.Shared {
                 }
             };
 #if MVC6
-            return MvcHtmlString.Create(htmlHelper.DisplayFor(m => rolesModel.GridDef));
+            return new HtmlString(htmlHelper.DisplayFor(m => rolesModel.GridDef).AsString());
 #else
             return htmlHelper.DisplayFor(m => rolesModel.GridDef);
 #endif
         }
 #if MVC6
-        public static MvcHtmlString RenderUserAllowedRolesDisplay<TModel>(this IHtmlHelper<TModel> htmlHelper, string name, SerializableList<Role> model)
+        public static HtmlString RenderUserAllowedRolesDisplay<TModel>(this IHtmlHelper<TModel> htmlHelper, string name, SerializableList<Role> model)
 #else
-        public static MvcHtmlString RenderUserAllowedRolesDisplay<TModel>(this HtmlHelper<TModel> htmlHelper, string name, SerializableList<Role> model)
+        public static HtmlString RenderUserAllowedRolesDisplay<TModel>(this HtmlHelper<TModel> htmlHelper, string name, SerializableList<Role> model)
 #endif
         {
             return htmlHelper.RenderUserAllowedRoles<TModel>(name, model, ReadOnly: true);
         }
 #if MVC6
-        public static MvcHtmlString RenderUserAllowedRoles<TModel>(this IHtmlHelper<TModel> htmlHelper, string name, SerializableList<Role> model, bool ReadOnly = false)
+        public static HtmlString RenderUserAllowedRoles<TModel>(this IHtmlHelper<TModel> htmlHelper, string name, SerializableList<Role> model, bool ReadOnly = false)
 #else
-        public static MvcHtmlString RenderUserAllowedRoles<TModel>(this HtmlHelper<TModel> htmlHelper, string name, SerializableList<Role> model, bool ReadOnly = false)
+        public static HtmlString RenderUserAllowedRoles<TModel>(this HtmlHelper<TModel> htmlHelper, string name, SerializableList<Role> model, bool ReadOnly = false)
 #endif
         {
             List<RoleInfo> allRoles = Resource.ResourceAccess.GetDefaultRoleList();
@@ -154,7 +155,7 @@ namespace YetaWF.Modules.Identity.Views.Shared {
                 }
             };
 #if MVC6
-            return MvcHtmlString.Create(htmlHelper.DisplayFor(m => rolesModel.GridDef));
+            return new HtmlString(htmlHelper.DisplayFor(m => rolesModel.GridDef).AsString());
 #else
             return htmlHelper.DisplayFor(m => rolesModel.GridDef);
 #endif

@@ -5,6 +5,7 @@ using YetaWF.Core.Security;
 using YetaWF.Core.Support;
 using YetaWF.Modules.Blog.DataProvider;
 #if MVC6
+using Microsoft.AspNetCore.Html;
 using Microsoft.AspNetCore.Mvc.Rendering;
 #else
 using System.Web.Mvc;
@@ -18,9 +19,9 @@ namespace YetaWF.Modules.Blog.Views.Shared {
 
         private static string __ResStr(string name, string defaultValue, params object[] parms) { return ResourceAccess.GetResourceString(typeof(GravatarHelper), name, defaultValue, parms); }
 #if MVC6
-        public static MvcHtmlString RenderGravatarDisplay<TModel>(this IHtmlHelper<TModel> htmlHelper, string name, string model, object HtmlAttributes = null)
+        public static HtmlString RenderGravatarDisplay<TModel>(this IHtmlHelper<TModel> htmlHelper, string name, string model, object HtmlAttributes = null)
 #else
-        public static MvcHtmlString RenderGravatarDisplay<TModel>(this HtmlHelper<TModel> htmlHelper, string name, string model, object HtmlAttributes = null)
+        public static HtmlString RenderGravatarDisplay<TModel>(this HtmlHelper<TModel> htmlHelper, string name, string model, object HtmlAttributes = null)
 #endif
         {
             TagBuilder tagLink = new TagBuilder("a");
@@ -29,7 +30,7 @@ namespace YetaWF.Modules.Blog.Views.Shared {
             string url = GravatarUrl(model, config.GravatarSize, config.GravatarRating, config.GravatarDefault);
             tagImg.Attributes.Add("src", url);
             tagImg.Attributes.Add("alt", __ResStr("altGravatar", "Gravatar image - {0}", model));
-            return MvcHtmlString.Create(tagImg.ToString(TagRenderMode.StartTag));
+            return tagImg.ToHtmlString(TagRenderMode.StartTag);
         }
 
         public static string GravatarUrl(string email, int gravatarSize, Gravatar.GravatarRatingEnum gravatarRating, Gravatar.GravatarEnum gravatarDefault) {

@@ -13,6 +13,7 @@ using YetaWF.Core.Support;
 using YetaWF.Core.Views;
 using YetaWF.Core.Views.Shared;
 #if MVC6
+using Microsoft.AspNetCore.Html;
 using Microsoft.AspNetCore.Mvc.Rendering;
 #else
 using System.Web.Mvc;
@@ -64,9 +65,9 @@ namespace YetaWF.Modules.ModuleEdit.Views.Shared {
         }
 
 #if MVC6
-        public static MvcHtmlString RenderAllowedRoles<TModel>(this IHtmlHelper<TModel> htmlHelper, string name, SerializableList<ModuleDefinition.AllowedRole> model)
+        public static HtmlString RenderAllowedRoles<TModel>(this IHtmlHelper<TModel> htmlHelper, string name, SerializableList<ModuleDefinition.AllowedRole> model)
 #else
-        public static MvcHtmlString RenderAllowedRoles<TModel>(this HtmlHelper<TModel> htmlHelper, string name, SerializableList<ModuleDefinition.AllowedRole> model)
+        public static HtmlString RenderAllowedRoles<TModel>(this HtmlHelper<TModel> htmlHelper, string name, SerializableList<ModuleDefinition.AllowedRole> model)
 #endif
         {
             Type gridEntryType;
@@ -95,7 +96,7 @@ namespace YetaWF.Modules.ModuleEdit.Views.Shared {
                 }
             };
 #if MVC6
-            return MvcHtmlString.Create(htmlHelper.DisplayFor(m => rolesModel.GridDef));
+            return new HtmlString(htmlHelper.DisplayFor(m => rolesModel.GridDef).AsString());
 #else
             return htmlHelper.DisplayFor(m => rolesModel.GridDef);
 #endif

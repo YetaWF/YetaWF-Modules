@@ -10,6 +10,7 @@ using YetaWF.Core.Pages;
 using YetaWF.Core.Support;
 using YetaWF.Core.Views.Shared;
 #if MVC6
+using Microsoft.AspNetCore.Html;
 using Microsoft.AspNetCore.Mvc.Rendering;
 #else
 using System.Web.Mvc;
@@ -23,9 +24,9 @@ namespace YetaWF.Modules.SlideShow.Views.Shared {
 
         private static string __ResStr(string name, string defaultValue, params object[] parms) { return ResourceAccess.GetResourceString(typeof(ArrowStyleHelper), name, defaultValue, parms); }
 #if MVC6
-        public static MvcHtmlString RenderArrowStyle(this IHtmlHelper htmlHelper, string name, string selection, object HtmlAttributes = null)
+        public static HtmlString RenderArrowStyle(this IHtmlHelper htmlHelper, string name, string selection, object HtmlAttributes = null)
 #else
-        public static MvcHtmlString RenderArrowStyle(this HtmlHelper htmlHelper, string name, string selection, object HtmlAttributes = null)
+        public static HtmlString RenderArrowStyle(this HtmlHelper htmlHelper, string name, string selection, object HtmlAttributes = null)
 #endif
         {
             List<SelectionItem<string>> list = (from a in Arrows select new SelectionItem<string>() {

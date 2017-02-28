@@ -7,8 +7,8 @@ using YetaWF.Core.Pages;
 using YetaWF.Core.Views;
 using YetaWF.Core.Views.Shared;
 #if MVC6
+using Microsoft.AspNetCore.Html;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using YetaWF.Core.Support;
 #else
 using System.Web.Mvc;
 #endif
@@ -30,9 +30,9 @@ namespace YetaWF.Modules.SlideShow.Views.Shared {
             public string Name { get; set; }
         };
 #if MVC6
-        public static MvcHtmlString RenderCaptionTransition(this IHtmlHelper htmlHelper, string name, string selection, object HtmlAttributes = null)
+        public static HtmlString RenderCaptionTransition(this IHtmlHelper htmlHelper, string name, string selection, object HtmlAttributes = null)
 #else
-        public static MvcHtmlString RenderCaptionTransition(this HtmlHelper htmlHelper, string name, string selection, object HtmlAttributes = null)
+        public static HtmlString RenderCaptionTransition(this HtmlHelper htmlHelper, string name, string selection, object HtmlAttributes = null)
 #endif
         {
 

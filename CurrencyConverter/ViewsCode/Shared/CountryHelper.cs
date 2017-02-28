@@ -7,6 +7,7 @@ using YetaWF.Core.Support;
 using YetaWF.Core.Views.Shared;
 using YetaWF.Modules.CurrencyConverter.DataProvider;
 #if MVC6
+using Microsoft.AspNetCore.Html;
 using Microsoft.AspNetCore.Mvc.Rendering;
 #else
 using System.Web.Mvc;
@@ -21,9 +22,9 @@ namespace YetaWF.Modules.CurrencyConverter.Views.Shared {
         private static YetaWFManager Manager { get { return YetaWFManager.Manager; } }
 
 #if MVC6
-        public static MvcHtmlString RenderCountry<TModel>(this IHtmlHelper<TModel> htmlHelper, string name, string model, object HtmlAttributes = null)
+        public static HtmlString RenderCountry<TModel>(this IHtmlHelper<TModel> htmlHelper, string name, string model, object HtmlAttributes = null)
 #else
-        public static MvcHtmlString RenderCountry<TModel>(this HtmlHelper<TModel> htmlHelper, string name, string model, object HtmlAttributes = null)
+        public static HtmlString RenderCountry<TModel>(this HtmlHelper<TModel> htmlHelper, string name, string model, object HtmlAttributes = null)
 #endif
         {
 
