@@ -94,7 +94,7 @@ YetaWF_ImageRepository.initSelection = function (divId) {
     });
 
     // user changed the selected image
-    $('#' + divId + ' select[name="List"]').click(function () {
+    $('#' + divId + ' select[name="List"]').change(function () {
         var $this = $(this);
         var name = $this.val();
         setPreview(name);
