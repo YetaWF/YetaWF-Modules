@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Html;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using YetaWF.Core.Support;
 #else
+using System.Web;
 using System.Web.Mvc;
 #endif
 
