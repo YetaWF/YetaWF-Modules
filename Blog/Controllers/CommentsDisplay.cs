@@ -84,7 +84,7 @@ namespace YetaWF.Modules.Blog.Controllers {
             }
             using (BlogCommentDataProvider commentDP = new BlogCommentDataProvider(blogEntry)) {
                 int total;
-                List<BlogComment> data = commentDP.GetItems(0, 0, null, null, out total);
+                List<BlogComment> comments = commentDP.GetItems(0, 0, null, null, out total);
 
                 if (!model.OpenForComments && total == 0)
                     return new EmptyResult();
@@ -93,29 +93,29 @@ namespace YetaWF.Modules.Blog.Controllers {
                 model.CanApprove = Resource.ResourceAccess.IsResourceAuthorized(Info.Resource_AllowManageComments);
                 model.CanRemove = Resource.ResourceAccess.IsResourceAuthorized(Info.Resource_AllowManageComments);
 
-                if (model.CanApprove || model.CanRemove) {
-                    model.Comments = (from d in data select new CommentData(d, Module, editMod)).ToList();
-                } else
-                    model.Comments = (from d in data where !d.Deleted && d.Approved select new CommentData(d, Module, editMod)).ToList();
+                if (model.CanApprove || model.CanRemove)
+                    model.Comments = (from d in comments select new CommentData(d, Module, editMod)).ToList();
+                else
+                    model.Comments = (from d in comments where !d.Deleted && d.Approved select new CommentData(d, Module, editMod)).ToList();
 
-                int pending = (from d in model.Comments where !d.Deleted && !d.Approved select d).Count();
+                int pending = (from d in comments where !d.Deleted && !d.Approved select d).Count();
                 model.PendingApproval = pending;
-                int comments = (from c in model.Comments where !c.Deleted select c).Count();
+                int commentsTotal = (from c in comments where !c.Deleted select c).Count();
 
                 // set a module title
                 string title;
-                if (model.CanApprove && comments > 0 && pending > 0) {
-                    if (comments > 1) {
+                if (commentsTotal > 0 && pending > 0) {
+                    if (commentsTotal > 1) {
                         if (pending > 1)
-                            title = this.__ResStr("commentsPs", "{0} Comments - {1} Comments Require Approval", comments, pending);
+                            title = this.__ResStr("commentsPs", "{0} Comments - {1} Comments Pending Approval", commentsTotal, pending);
                         else
-                            title = this.__ResStr("commentsP", "{0} Comments - 1 Comment Requires Approval", comments);
+                            title = this.__ResStr("commentsP", "{0} Comments - 1 Comment Pending Approval", commentsTotal);
                     } else
-                        title = this.__ResStr("commentP", "1 Comment Requires Approval");
+                        title = this.__ResStr("commentP", "1 Comment Pending Approval");
                 } else {
-                    if (comments > 1)
-                        title = this.__ResStr("comments", "{0} Comments", comments);
-                    else if (comments == 1)
+                    if (commentsTotal > 1)
+                        title = this.__ResStr("comments", "{0} Comments", commentsTotal);
+                    else if (commentsTotal == 1)
                         title = this.__ResStr("comment1", "1 Comment");
                     else
                         title = this.__ResStr("comment0", "No Comments");

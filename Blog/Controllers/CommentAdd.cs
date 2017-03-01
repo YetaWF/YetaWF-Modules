@@ -128,12 +128,16 @@ namespace YetaWF.Modules.Blog.Controllers {
                 throw new InternalError("Can't add comments to this blog entry");
             if (!ModelState.IsValid)
                 return PartialView(model);
-            using (BlogCommentDataProvider dataProvider = new BlogCommentDataProvider(model.EntryIdentity)) {
-                if (!dataProvider.AddItem(model.GetData())) {
+            using (BlogCommentDataProvider blogCommentDP = new BlogCommentDataProvider(model.EntryIdentity)) {
+                BlogComment blogComment = model.GetData();
+                if (!blogCommentDP.AddItem(blogComment)) {
                     ModelState.AddModelError("Name", this.__ResStr("alreadyExists", "An error occurred adding this new comment"));
                     return PartialView(model);
                 }
-                return FormProcessed(model, this.__ResStr("okSaved", "New comment saved"), OnClose: OnCloseEnum.ReloadPage, OnPopupClose: OnPopupCloseEnum.ReloadParentPage);
+                if (!blogComment.Approved)
+                    return FormProcessed(model, this.__ResStr("okSaved", "New comment saved - It will be reviewed before becoming publicly viewable"), OnClose: OnCloseEnum.ReloadPage, OnPopupClose: OnPopupCloseEnum.ReloadParentPage);
+                else
+                    return FormProcessed(model, this.__ResStr("okSaved", "New comment added"), OnClose: OnCloseEnum.ReloadPage, OnPopupClose: OnPopupCloseEnum.ReloadParentPage);
             }
         }
     }
