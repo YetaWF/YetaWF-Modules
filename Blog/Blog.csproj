@@ -1,217 +1,39 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{CB2DE6AC-AD35-4CF1-B77C-72B4AAF4E9A6}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>YetaWF.Modules.Blog</RootNamespace>
+    <VersionPrefix>2.0.0</VersionPrefix>
+    <TargetFramework>net462</TargetFramework>
+    <DefineConstants>$(DefineConstants);MVC6</DefineConstants>
     <AssemblyName>YetaWF.Blog</AssemblyName>
-    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
-    <MvcBuildViews>false</MvcBuildViews>
-    <TargetFrameworkProfile />
-    <NuGetPackageImportStamp>e33a5d9c</NuGetPackageImportStamp>
+    <PackageId>Blog</PackageId>
+    <GenerateAssemblyTitleAttribute>false</GenerateAssemblyTitleAttribute>
+    <GenerateAssemblyDescriptionAttribute>false</GenerateAssemblyDescriptionAttribute>
+    <GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
+    <GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
+    <GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
+    <GenerateAssemblyCopyrightAttribute>false</GenerateAssemblyCopyrightAttribute>
+    <GenerateAssemblyVersionAttribute>false</GenerateAssemblyVersionAttribute>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
+
   <ItemGroup>
+    <None Include="App.config" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\CoreComponents\Core\Core.csproj" />
+    <ProjectReference Include="..\..\..\DataProvider\File\File.csproj" />
+    <ProjectReference Include="..\..\..\DataProvider\ModuleDefinition\ModuleDefinition.csproj" />
+    <ProjectReference Include="..\..\..\DataProvider\SQL\SQL.csproj" />
+  </ItemGroup>
+
+  <ItemGroup Condition=" '$(TargetFramework)' == 'net462' ">
     <Reference Include="System" />
-    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="Microsoft.CSharp" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Reference Include="System.ServiceModel" />
-    <Reference Include="System.Web" />
     <Reference Include="System.Web.Extensions" />
-    <Reference Include="System.Web.Helpers, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\..\..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.Helpers.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="System.Web.Mvc, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\..\..\packages\Microsoft.AspNet.Mvc.5.2.3\lib\net45\System.Web.Mvc.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="System.Web.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\..\..\packages\Microsoft.AspNet.Razor.3.2.3\lib\net45\System.Web.Razor.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="System.Web.WebPages, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\..\..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.WebPages.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="System.Web.WebPages.Deployment, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\..\..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.WebPages.Deployment.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="System.Web.WebPages.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\..\..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.WebPages.Razor.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
   </ItemGroup>
-  <ItemGroup>
-    <Compile Include="Controllers\Disqus.cs" />
-    <Compile Include="Controllers\DisqusConfig.cs" />
-    <Compile Include="Controllers\DisqusLinks.cs" />
-    <Compile Include="Controllers\Support\DisqusSSO.cs" />
-    <Compile Include="Models\DisqusConfigDataProvider.cs" />
-    <Compile Include="Modules\Disqus.cs" />
-    <Compile Include="Modules\DisqusConfig.cs" />
-    <Compile Include="Modules\DisqusLinks.cs" />
-    <Compile Include="Startup\Info.cs" />
-    <Compile Include="Startup\AreaRegistration.cs" />
-    <Compile Include="Controllers\Archive.cs" />
-    <Compile Include="Controllers\Blog.cs" />
-    <Compile Include="Controllers\BlogConfig.cs" />
-    <Compile Include="Controllers\CategoriesBrowse.cs" />
-    <Compile Include="Controllers\CategoriesList.cs" />
-    <Compile Include="Controllers\CategoryAdd.cs" />
-    <Compile Include="Controllers\CategoryDisplay.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Controllers\CategoryEdit.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Controllers\CategoryHeader.cs" />
-    <Compile Include="Controllers\CommentAdd.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Controllers\CommentEdit.cs" />
-    <Compile Include="Controllers\CommentsDisplay.cs" />
-    <Compile Include="Controllers\EntriesBrowse.cs" />
-    <Compile Include="Controllers\EntryAdd.cs" />
-    <Compile Include="Controllers\EntryDisplay.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Controllers\EntryEdit.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Controllers\Rss.cs" />
-    <Compile Include="Models\BlogCategoryDataProvider.cs" />
-    <Compile Include="Models\BlogConfigDataProvider.cs" />
-    <Compile Include="Models\BlogEntryDataProvider.cs" />
-    <Compile Include="Models\BlogCommentDataProvider.cs" />
-    <Compile Include="Modules\Archive.cs" />
-    <Compile Include="Modules\Blog.cs" />
-    <Compile Include="Modules\BlogConfig.cs" />
-    <Compile Include="Modules\CategoriesBrowse.cs" />
-    <Compile Include="Modules\CategoriesList.cs" />
-    <Compile Include="Modules\CategoryAdd.cs" />
-    <Compile Include="Modules\CategoryDisplay.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Modules\CategoryEdit.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Modules\CategoryHeader.cs" />
-    <Compile Include="Modules\CommentAdd.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Modules\CommentEdit.cs" />
-    <Compile Include="Modules\CommentsDisplay.cs" />
-    <Compile Include="Modules\EntriesBrowse.cs" />
-    <Compile Include="Modules\EntryAdd.cs" />
-    <Compile Include="Modules\EntryDisplay.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Modules\EntryEdit.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Support\Validation.cs" />
-    <Compile Include="ViewsCode\Shared\CategoryHelper.cs" />
-    <Compile Include="ViewsCode\Shared\GravatarHelper.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Addons\_Main\filelistCSS.txt" />
-    <None Include="Addons\_Main\Blog.css" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Addons\_Main\Icons\RssFeed.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Addons\_Main\Grids\CategoriesBrowseModuleController.BrowseItem" />
-    <None Include="Addons\_Main\Grids\EntriesBrowseModuleController.BrowseItem" />
-    <None Include="app.config" />
-    <None Include="packages.config" />
-    <None Include="Views\YetaWF_Blog_Archive.cshtml" />
-    <None Include="Views\YetaWF_Blog_BlogConfig.cshtml" />
-    <None Include="Views\YetaWF_Blog_BlogConfig_Partial.cshtml" />
-    <None Include="Views\YetaWF_Blog_Blog.cshtml" />
-    <None Include="Views\YetaWF_Blog_CategoriesBrowse.cshtml" />
-    <None Include="Views\YetaWF_Blog_CategoriesBrowse_Partial.cshtml" />
-    <None Include="Views\YetaWF_Blog_CategoriesList.cshtml" />
-    <None Include="Views\YetaWF_Blog_CategoriesList_Partial.cshtml" />
-    <None Include="Views\YetaWF_Blog_CategoryAdd.cshtml" />
-    <None Include="Views\YetaWF_Blog_CategoryAdd_Partial.cshtml" />
-    <None Include="Views\YetaWF_Blog_CategoryDisplay.cshtml" />
-    <None Include="Views\YetaWF_Blog_CategoryEdit.cshtml" />
-    <None Include="Views\YetaWF_Blog_CategoryEdit_Partial.cshtml" />
-    <None Include="Views\YetaWF_Blog_CategoryHeader.cshtml" />
-    <None Include="Views\YetaWF_Blog_CommentAdd.cshtml" />
-    <None Include="Views\YetaWF_Blog_CommentAdd_Partial.cshtml" />
-    <None Include="Views\YetaWF_Blog_CommentEdit.cshtml" />
-    <None Include="Views\YetaWF_Blog_CommentEdit_Partial.cshtml" />
-    <None Include="Views\YetaWF_Blog_CommentsDisplay.cshtml" />
-    <None Include="Views\YetaWF_Blog_Disqus.cshtml" />
-    <None Include="Views\YetaWF_Blog_DisqusConfig.cshtml" />
-    <None Include="Views\YetaWF_Blog_DisqusConfig_Partial.cshtml" />
-    <None Include="Views\YetaWF_Blog_DisqusLinks.cshtml" />
-    <None Include="Views\YetaWF_Blog_EntriesBrowse.cshtml" />
-    <None Include="Views\YetaWF_Blog_EntriesBrowse_Partial.cshtml" />
-    <None Include="Views\YetaWF_Blog_EntryAdd.cshtml" />
-    <None Include="Views\YetaWF_Blog_EntryAdd_Partial.cshtml" />
-    <Content Include="Addons\_SiteTemplates\YetaWF_Blog.1.0.8.txt" />
-    <Content Include="Addons\_SiteTemplates\YetaWF_Blog.txt" />
-    <None Include="Addons\_Templates\Category\filelistCSS.txt" />
-    <None Include="Addons\_Templates\Category\Category.css" />
-    <Content Include="Views\Shared\EditorTemplates\YetaWF_Blog_Category.cshtml" />
-    <None Include="Views\YetaWF_Blog_EntryDisplay.cshtml" />
-    <None Include="Views\YetaWF_Blog_EntryEdit.cshtml" />
-    <None Include="Views\YetaWF_Blog_EntryEdit_Partial.cshtml" />
-    <Content Include="Views\Shared\DisplayTemplates\YetaWF_Blog_Gravatar.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\..\CoreComponents\Core\Core.csproj">
-      <Project>{71acc7ac-2622-4127-b925-d058c01a39e5}</Project>
-      <Name>Core</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\DataProvider\File\File.csproj">
-      <Project>{F0DF6C3B-2B71-4526-8FD0-AC2B731B2C3B}</Project>
-      <Name>File</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\DataProvider\ModuleDefinition\ModuleDefinition.csproj">
-      <Project>{348F2A6B-57F5-47A3-8A46-3F44529ACD83}</Project>
-      <Name>ModuleDefinition</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\DataProvider\SQL\SQL.csproj">
-      <Project>{22F3EC05-EC47-42B9-87CC-FF4D5494F8A4}</Project>
-      <Name>SQL</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup />
-  <PropertyGroup>
-    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
-    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
-  </PropertyGroup>
-  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
-  <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
-  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
-  <Target Name="MvcBuildViews" AfterTargets="AfterBuild" Condition="'$(MvcBuildViews)'=='true'">
-    <AspNetCompiler VirtualPath="temp" PhysicalPath="$(WebProjectOutputDir)" />
-  </Target>
+
 </Project>
