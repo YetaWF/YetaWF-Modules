@@ -1,17 +1,17 @@
 ﻿/* Copyright © 2017 Softel vdm, Inc. - http://yetawf.com/Documentation/YetaWF/Identity#License */
 
 #if MVC6
+
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using System;
-using YetaWF.Modules.Identity.DataProvider;
-using Microsoft.AspNetCore.Identity;
-using YetaWF.Modules.Identity.Models;
-using YetaWF.Core.Support;
-using YetaWF.Modules.Identity.Controllers;
 using YetaWF.Core.Identity;
+using YetaWF.Core.Support;
+using YetaWF.Modules.Identity.DataProvider;
+using YetaWF.Modules.Identity.Models;
 
-namespace YetaWF.Modules.Identity {
+namespace YetaWF.Modules.Identity
+{
 
     public class Startup : IIdentity {
 
@@ -43,7 +43,9 @@ namespace YetaWF.Modules.Identity {
                     options.Cookies.ApplicationCookie.ExpireTimeSpan = new TimeSpan(ticks);
                     options.Cookies.ApplicationCookie.SlidingExpiration = WebConfigHelper.GetValue<bool>(AREA, "OWin:SlidingExpiration");
                     options.Cookies.ApplicationCookie.CookieSecure = Microsoft.AspNetCore.Http.CookieSecurePolicy.None;
+                    options.Cookies.ApplicationCookie.CookieName = string.Format(".YetaWF.Cookies.{0}", YetaWFManager.DefaultSiteName);
                 }
+                options.Cookies.ExternalCookie.CookieName = string.Format(".YetaWF.Cookies.Ext.{0}", YetaWFManager.DefaultSiteName);
 
                 // User settings
                 // the default is acceptable: options.User.AllowedUserNameCharacters
