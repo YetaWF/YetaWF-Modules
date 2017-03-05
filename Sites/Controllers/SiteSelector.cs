@@ -58,7 +58,7 @@ namespace YetaWF.Modules.Sites.Controllers {
             if (!ModelState.IsValid)
                 return PartialView(model);
 
-            string nextPage = Manager.CurrentSite.MakeUrl(RealDomain: model.SiteDomain, PagePageSecurity: Core.Pages.PageDefinition.PageSecurityType.httpOnly);
+            string nextPage = Manager.CurrentSite.MakeFullUrl(RealDomain: model.SiteDomain, SecurityType: Core.Pages.PageDefinition.PageSecurityType.httpOnly);
             return Redirect(nextPage);
         }
     }
