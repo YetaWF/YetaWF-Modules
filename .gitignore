@@ -5,6 +5,9 @@
 *.plg
 *.scss.css
 *.xml
+*.csproj
+packages.config
+app.config
 
 **/obj/
 **/bin/**/*.xml
@@ -29,7 +32,5 @@
 
 CurrencyConverter/Addons/_Main/ExchangeRates.js
 
-SearchEF/
 *.lastcodeanalysissucceeded
-**/project.lock.json
-*.csproj
+
