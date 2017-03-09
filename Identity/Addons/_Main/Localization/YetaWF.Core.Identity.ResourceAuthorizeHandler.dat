@@ -22,32 +22,8 @@
           <Value>
             <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
               <Properties>
-                <Name Value="admin" />
-                <Text Value="A sample administrator" />
-              </Properties>
-            </Object>
-          </Value>
-          <Value>
-            <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
-              <Properties>
-                <Name Value="cantRenameSuper" />
-                <Text Value="The user &quot;{0}&quot; can't be renamed. It is defined in the site's web.config/appsettings.json" />
-              </Properties>
-            </Object>
-          </Value>
-          <Value>
-            <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
-              <Properties>
-                <Name Value="editor" />
-                <Text Value="A sample site editor" />
-              </Properties>
-            </Object>
-          </Value>
-          <Value>
-            <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
-              <Properties>
-                <Name Value="user" />
-                <Text Value="A sample user" />
+                <Name Value="notAuth" />
+                <Text Value="Not Authorized" />
               </Properties>
             </Object>
           </Value>

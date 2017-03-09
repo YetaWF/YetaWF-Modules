@@ -28,6 +28,18 @@
                       <Value>
                         <Object Type="YetaWF.Core.Localize.LocalizationData+PropertyData" Assembly="YetaWF.Core">
                           <Properties>
+                            <Name Value="AspNetMvc" />
+                            <Caption Value="ASP.NET/MVC Version" />
+                            <Description Value="The ASP.NET/MVC version used" />
+                            <HelpLink />
+                            <TextAbove />
+                            <TextBelow />
+                          </Properties>
+                        </Object>
+                      </Value>
+                      <Value>
+                        <Object Type="YetaWF.Core.Localize.LocalizationData+PropertyData" Assembly="YetaWF.Core">
+                          <Properties>
                             <Name Value="Build" />
                             <Caption Value="Build" />
                             <Description Value="The type of build that is currently running" />

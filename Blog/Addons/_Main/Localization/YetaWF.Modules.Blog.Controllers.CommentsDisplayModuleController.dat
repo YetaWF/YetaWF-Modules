@@ -39,7 +39,7 @@
             <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
               <Properties>
                 <Name Value="commentP" />
-                <Text Value="1 Comment Requires Approval" />
+                <Text Value="1 Comment Pending Approval" />
               </Properties>
             </Object>
           </Value>
@@ -55,7 +55,7 @@
             <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
               <Properties>
                 <Name Value="commentsP" />
-                <Text Value="{0} Comments - 1 Comment Requires Approval" />
+                <Text Value="{0} Comments - 1 Comment Pending Approval" />
               </Properties>
             </Object>
           </Value>
@@ -63,7 +63,7 @@
             <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
               <Properties>
                 <Name Value="commentsPs" />
-                <Text Value="{0} Comments - {1} Comments Require Approval" />
+                <Text Value="{0} Comments - {1} Comments Pending Approval" />
               </Properties>
             </Object>
           </Value>

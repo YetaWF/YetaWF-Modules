@@ -148,7 +148,15 @@
             <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
               <Properties>
                 <Name Value="okSaved" />
-                <Text Value="New comment saved" />
+                <Text Value="New comment added" />
+              </Properties>
+            </Object>
+          </Value>
+          <Value>
+            <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
+              <Properties>
+                <Name Value="okSavedReview" />
+                <Text Value="New comment saved - It will be reviewed before becoming publicly viewable" />
               </Properties>
             </Object>
           </Value>

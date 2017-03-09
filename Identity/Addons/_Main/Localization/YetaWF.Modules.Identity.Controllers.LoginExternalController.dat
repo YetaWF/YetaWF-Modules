@@ -22,6 +22,14 @@
           <Value>
             <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
               <Properties>
+                <Name Value="extErr" />
+                <Text Value="The external login provider reported this error: {0}" />
+              </Properties>
+            </Object>
+          </Value>
+          <Value>
+            <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
+              <Properties>
                 <Name Value="notApproved" />
                 <Text Value="Your account has not yet been approved by the site administrator. You will receive an email confirmation as soon as your account is active." />
               </Properties>

@@ -75,6 +75,14 @@
               </Properties>
             </Object>
           </Value>
+          <Value>
+            <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
+              <Properties>
+                <Name Value="notAvail" />
+                <Text Value="Information not available on ASP.NET Core MVC" />
+              </Properties>
+            </Object>
+          </Value>
         </List>
       </Object>
     </Strings>

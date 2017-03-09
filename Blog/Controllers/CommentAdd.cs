@@ -135,7 +135,7 @@ namespace YetaWF.Modules.Blog.Controllers {
                     return PartialView(model);
                 }
                 if (!blogComment.Approved)
-                    return FormProcessed(model, this.__ResStr("okSaved", "New comment saved - It will be reviewed before becoming publicly viewable"), OnClose: OnCloseEnum.ReloadPage, OnPopupClose: OnPopupCloseEnum.ReloadParentPage);
+                    return FormProcessed(model, this.__ResStr("okSavedReview", "New comment saved - It will be reviewed before becoming publicly viewable"), OnClose: OnCloseEnum.ReloadPage, OnPopupClose: OnPopupCloseEnum.ReloadParentPage);
                 else
                     return FormProcessed(model, this.__ResStr("okSaved", "New comment added"), OnClose: OnCloseEnum.ReloadPage, OnPopupClose: OnPopupCloseEnum.ReloadParentPage);
             }
