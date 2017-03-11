@@ -229,7 +229,8 @@ namespace YetaWF.Modules.Identity.DataProvider {
         public bool UpgradeModel(List<string> errorList, string lastSeenVersion) {
 
             // Convert pre 1.1.1 data to new format (for all sites)
-            if (Package.CompareVersion(lastSeenVersion, AreaRegistration.CurrentPackage.Version) < 0) {
+            if (Package.CompareVersion(lastSeenVersion, AreaRegistration.CurrentPackage.Version) < 0 &&
+                    Package.CompareVersion(lastSeenVersion, "1.1.1") < 0) {
 
                 SiteDefinition.SitesInfo info = SiteDefinition.GetSites(0,0,null,null);
                 foreach (SiteDefinition site in info.Sites) {
