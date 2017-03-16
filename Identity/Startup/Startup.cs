@@ -44,6 +44,7 @@ namespace YetaWF.Modules.Identity
                     options.Cookies.ApplicationCookie.SlidingExpiration = WebConfigHelper.GetValue<bool>(AREA, "OWin:SlidingExpiration");
                     options.Cookies.ApplicationCookie.CookieSecure = Microsoft.AspNetCore.Http.CookieSecurePolicy.None;
                     options.Cookies.ApplicationCookie.CookieName = string.Format(".YetaWF.Cookies.{0}", YetaWFManager.DefaultSiteName);
+                    options.Cookies.ApplicationCookie.AutomaticAuthenticate = true;
                 }
                 options.Cookies.ExternalCookie.CookieName = string.Format(".YetaWF.Cookies.Ext.{0}", YetaWFManager.DefaultSiteName);
 
