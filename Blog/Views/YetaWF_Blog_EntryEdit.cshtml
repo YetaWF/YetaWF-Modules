@@ -3,8 +3,8 @@
 @using (Form("EntryEdit_Partial")) {
     @PartialForm()
     @FormButtons(new FormButton[] {
-        new FormButton() { ButtonType= ButtonTypeEnum.Apply, },
-        new FormButton() { ButtonType= ButtonTypeEnum.Submit, },
+        new FormButton() { ButtonType= ButtonTypeEnum.Apply, Text=this.__ResStr("btnApply", "Save") },
+        new FormButton() { ButtonType= ButtonTypeEnum.Submit, Text=this.__ResStr("btnSubmit", "Save & Display") },
         new FormButton() { ButtonType= ButtonTypeEnum.Cancel, },
     });
 }

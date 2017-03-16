@@ -3,9 +3,12 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Text.RegularExpressions;
 using YetaWF.Core.DataProvider;
 using YetaWF.Core.DataProvider.Attributes;
+using YetaWF.Core.Extensions;
 using YetaWF.Core.IO;
+using YetaWF.Core.Localize;
 using YetaWF.Core.Models;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Modules;
@@ -64,6 +67,72 @@ namespace YetaWF.Modules.Blog.DataProvider {
             set {
                 CompleteText[MultiString.ActiveLanguage] = value;
             }
+        }
+        [DontSave]
+        public string DisplayableSummary {
+            get {
+                if (!string.IsNullOrWhiteSpace(Summary.ToString())) return Summary.ToString();
+                string summary = Text.ToString();
+                if (summary.Length > MaxSummary)
+                    summary = summary.Truncate(MaxSummary).Trim() + this.__ResStr("more", " ...");
+                // remove all <tags> as they may not be properly ended because we truncated the summary
+                // This may result in formatting loss, in which case an explicit summary should be provided
+                return RemoveHtmlExceptP(summary);
+            }
+        }
+        private string RemoveHtmlExceptP(string summary) {
+            Regex re1 = new Regex(@"<\s*(?'tag'[a-zA-Z0-9_]+)[^>]*(?'end'>){0,1}"); 
+            Regex re2 = new Regex(@"</\s*(?'tag'[a-zA-Z0-9_]+)\s*(?'end'>){0,1}");
+            pTags = 0;
+            summary = re1.Replace(summary, MatchEval);
+            int openTags = pTags;
+            pTags = 0;
+            summary = re2.Replace(summary, MatchEval);
+            int closeTags = pTags;
+            // we only preserve <p> but we have to make sure that open/closing <p> tags match
+            while (openTags > closeTags) {
+                summary += ("</p>");
+                ++closeTags;
+            }
+            return summary;
+        }
+        private int pTags;
+        private string MatchEval(Match m) {
+            string tag = m.Groups["tag"].Value.Trim();
+            string end = m.Groups["end"].Value.Trim();
+            if (string.IsNullOrWhiteSpace(end)) return "";// partial, clipped tag
+            if (tag == "p") {
+                ++pTags;
+                return m.Value;
+            } else if (tag == "br")
+                return m.Value;
+            else
+                return "";
+        }
+        [DontSave]
+        public string DisplayableSummaryText {
+            get {
+                string summary;
+                if (!string.IsNullOrWhiteSpace(Summary.ToString()))
+                    summary = Summary.ToString();
+                else {
+                    summary = Text.ToString();
+                    if (summary.Length > MaxSummary)
+                        summary = summary.Truncate(MaxSummary).Trim() + this.__ResStr("more", " ...");
+                }
+                // remove all <tags> as they may not be properly ended because we truncated the summary
+                // This may result in formatting loss, in which case an explicit summary should be provided
+                summary = RemoveHtml(summary);
+                summary = YetaWFManager.HtmlDecode(summary);
+                return summary;
+            }
+        }
+        private string RemoveHtml(string summary) {
+            Regex re1 = new Regex(@"<[^>]*>");
+            Regex re2 = new Regex(@"<[^>]*(?'end'>){0,1}");// partial, clipped tags
+            summary = re1.Replace(summary, "");
+            summary = re2.Replace(summary, "");
+            return summary;
         }
 
         /// <summary>

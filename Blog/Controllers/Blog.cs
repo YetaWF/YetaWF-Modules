@@ -5,13 +5,11 @@ using System.Collections.Generic;
 using System.Linq;
 using YetaWF.Core.Controllers;
 using YetaWF.Core.DataProvider;
-using YetaWF.Core.Extensions;
 using YetaWF.Core.Models;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Modules;
 using YetaWF.Modules.Blog.DataProvider;
 using YetaWF.Modules.Blog.Modules;
-using YetaWF.Core.Localize;
 #if MVC6
 using Microsoft.AspNetCore.Mvc;
 using YetaWF.Core.Support;
@@ -22,8 +20,6 @@ using System.Web.Mvc;
 namespace YetaWF.Modules.Blog.Controllers {
 
     public class BlogModuleController : ControllerImpl<YetaWF.Modules.Blog.Modules.BlogModule> {
-
-        private const int SummaryLength = 1000;
 
         public BlogModuleController() { }
 
@@ -50,7 +46,7 @@ namespace YetaWF.Modules.Blog.Controllers {
 
             [Caption("Summary"), Description("The summary for this blog entry")]
             [UIHint("TextArea"), AdditionalMetadata("Encode", false), ReadOnly]
-            public string Summary { get; set; }
+            public string DisplayableSummary { get; set; }
 
             [Caption("View"), Description("View the complete blog entry")]
             [UIHint("ModuleAction"), AdditionalMetadata("RenderAs", ModuleAction.RenderModeEnum.NormalLinks), ReadOnly]
@@ -58,12 +54,7 @@ namespace YetaWF.Modules.Blog.Controllers {
 
             public Entry(BlogEntry data, EntryEditModule editMod, EntryDisplayModule dispMod) {
                 ObjectSupport.CopyData(data, this);
-                if (string.IsNullOrWhiteSpace(Summary)) {
-                    Summary = data.Text;
-                    if (Summary.Length > SummaryLength)
-                        Summary = Summary.Truncate(SummaryLength).Trim() + this.__ResStr("more", " ...");
-                }
-                ViewAction = dispMod.GetAction_Display(data.Identity, ReadMore: Summary != data.Text);
+                ViewAction = dispMod.GetAction_Display(data.Identity, ReadMore: data.Summary.ToString() != data.Text.ToString());
                 Actions = new List<ModuleAction>();
                 Actions.New(editMod.GetAction_Edit(null, data.Identity));
             }

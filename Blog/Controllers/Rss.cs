@@ -76,8 +76,8 @@ namespace YetaWF.Modules.Blog.Controllers {
                     if (!string.IsNullOrEmpty(category.SyndicationCopyright.ToString()))
                         sItem.Copyright = new TextSyndicationContent(category.SyndicationCopyright.ToString());
                     sItem.PublishDate = blogEntry.DatePublished;
-                    if (!string.IsNullOrEmpty(blogEntry.Summary.ToString()))
-                        sItem.Summary = new TextSyndicationContent(blogEntry.Summary);
+                    if (!string.IsNullOrEmpty(blogEntry.DisplayableSummary))
+                        sItem.Summary = new TextSyndicationContent(blogEntry.DisplayableSummary);
                     lastUpdated = updDate > lastUpdated ? updDate : lastUpdated;
 
                     items.Add(sItem);

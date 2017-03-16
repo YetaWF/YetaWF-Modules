@@ -28,10 +28,10 @@
     margin-left:10ch;
     font-weight:bold;
 }
-.YetaWF_Blog_Blog div.t_summary {
+.YetaWF_Blog_Blog div.t_displayablesummary {
     border-top: 1px solid gray;
 }
-.YetaWF_Blog_Blog .t_summary .t_labels {
+.YetaWF_Blog_Blog .t_displayablesummary .t_labels {
     display: none;
 }
 .YetaWF_Blog_Blog .t_viewaction .t_labels {
