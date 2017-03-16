@@ -86,6 +86,14 @@
           <Value>
             <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
               <Properties>
+                <Name Value="latest" />
+                <Text Value="{0} - Latest" />
+              </Properties>
+            </Object>
+          </Value>
+          <Value>
+            <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
+              <Properties>
                 <Name Value="modName" />
                 <Text Value="Blog" />
               </Properties>
@@ -136,6 +144,14 @@
               <Properties>
                 <Name Value="rssTT" />
                 <Text Value="Display the blog's RSS Feed" />
+              </Properties>
+            </Object>
+          </Value>
+          <Value>
+            <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
+              <Properties>
+                <Name Value="startDate" />
+                <Text Value="Showing blog entries published on or before {0}." />
               </Properties>
             </Object>
           </Value>

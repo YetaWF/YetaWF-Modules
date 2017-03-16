@@ -64,7 +64,7 @@
                       <Value>
                         <Object Type="YetaWF.Core.Localize.LocalizationData+PropertyData" Assembly="YetaWF.Core">
                           <Properties>
-                            <Name Value="Summary" />
+                            <Name Value="DisplayableSummary" />
                             <Caption Value="Summary" />
                             <Description Value="The summary for this blog entry" />
                             <HelpLink />
@@ -115,16 +115,7 @@
     <Strings>
       <Object Type="YetaWF.Core.Serializers.SerializableList`1[[YetaWF.Core.Localize.LocalizationData+StringData, YetaWF.Core, Culture=neutral, PublicKeyToken=null]]" Assembly="YetaWF.Core">
         <Properties />
-        <List>
-          <Value>
-            <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
-              <Properties>
-                <Name Value="more" />
-                <Text Value=" ..." />
-              </Properties>
-            </Object>
-          </Value>
-        </List>
+        <List />
       </Object>
     </Strings>
   </Properties>
