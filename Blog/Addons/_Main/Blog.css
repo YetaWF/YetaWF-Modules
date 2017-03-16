@@ -40,6 +40,9 @@
 .YetaWF_Blog_Blog .t_entry {
     margin-bottom: 1em;
 }
+.YetaWF_Blog_Blog .t_startdate {
+    font-weight:bold;
+}
 
 /* Blog Archive */
 /* Blog Archive */

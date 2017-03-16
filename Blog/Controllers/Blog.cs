@@ -63,6 +63,7 @@ namespace YetaWF.Modules.Blog.Controllers {
         public class DisplayModel {
             public int CategoryIdentity { get; set; }
             public List<Entry> BlogEntries { get; set; }
+            public DateTime? StartDate { get; set; }
         }
 
         [HttpGet]
@@ -79,8 +80,14 @@ namespace YetaWF.Modules.Blog.Controllers {
                 };
                 if (category != 0)
                     filters = DataProviderFilterInfo.Join(filters, new DataProviderFilterInfo { Field = "CategoryIdentity", Operator = "==", Value = category });
-                if (StartDate != null)
-                    filters = DataProviderFilterInfo.Join(filters, new DataProviderFilterInfo { Field = "DatePublished", Operator = ">=", Value = StartDate });
+                DateTime sdShown = DateTime.MaxValue;
+                if (StartDate != null) {
+                    sdShown = ((DateTime)StartDate).Date;
+                    if (sdShown < DateTime.UtcNow)
+                        filters = DataProviderFilterInfo.Join(filters, new DataProviderFilterInfo { Field = "DatePublished", Operator = "<=", Value = sdShown });
+                    else
+                        sdShown = DateTime.MaxValue;
+                }
                 int total;
                 List<BlogEntry> data = dataProvider.GetItems(0, config.Entries, sort, filters, out total);
                 if (data.Count == 0)
@@ -94,6 +101,7 @@ namespace YetaWF.Modules.Blog.Controllers {
                 DisplayModel model = new DisplayModel() {
                     BlogEntries = (from d in data select new Entry(d, editMod, dispMod)).ToList(),
                     CategoryIdentity = category,
+                    StartDate = sdShown == DateTime.MaxValue ? null : (DateTime?) sdShown,
                 };
                 return View(model);
             }

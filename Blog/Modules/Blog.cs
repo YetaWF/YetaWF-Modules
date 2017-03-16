@@ -57,6 +57,8 @@ namespace YetaWF.Modules.Blog.Modules {
             if (StartDate != null) {
                 query.Add("StartDate", StartDate.ToString());
                 date = Formatting.Date_Month_YYYY((DateTime) StartDate);
+                if (StartDate >= DateTime.UtcNow)
+                    date = this.__ResStr("latest", "{0} - Latest", date);
             } else {
                 Count = 0;// must have a date for Count to be displayed
             }
