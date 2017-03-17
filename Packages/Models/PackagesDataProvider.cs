@@ -39,8 +39,7 @@ namespace YetaWF.Modules.Packages.DataProvider {
         // INITALL
 
         private void RestartSite(QueryHelper qs) {
-            Manager.RestartSite();
-            Manager.CurrentResponse.Redirect(Manager.CurrentSite.MakeUrl());
+            Manager.RestartSite(Manager.CurrentSite.MakeUrl());
         }
 
         /// <summary>
@@ -63,8 +62,7 @@ namespace YetaWF.Modules.Packages.DataProvider {
             SiteDefinition.RemoveInitialInstall();
 
             // Cache is now invalid so we'll just restart
-            Manager.RestartSite();
-            Manager.CurrentResponse.Redirect(Manager.CurrentSite.MakeUrl());
+            Manager.RestartSite(Manager.CurrentSite.MakeUrl());
         }
 
         /// <summary>
@@ -80,8 +78,7 @@ namespace YetaWF.Modules.Packages.DataProvider {
                 //BuildSiteUsingTemplate("Custom Site (Additional Sites).txt");
             }
             // Cache is now invalid so we'll just restart
-            Manager.RestartSite();
-            Manager.CurrentResponse.Redirect(Manager.CurrentSite.MakeUrl(ForceDomain: Manager.CurrentSite.SiteDomain));
+            Manager.RestartSite(Manager.CurrentSite.MakeUrl(ForceDomain: Manager.CurrentSite.SiteDomain));
         }
 
         private void InstallPackages() {
