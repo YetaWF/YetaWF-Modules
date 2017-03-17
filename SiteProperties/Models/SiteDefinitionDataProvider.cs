@@ -43,8 +43,7 @@ namespace YetaWF.Modules.SiteProperties.Models {
 
         // SQL, File
 
-        private IDataProvider<String, SiteDefinition> DataProvider
-        {
+        private IDataProvider<String, SiteDefinition> DataProvider {
             get {
                 if (_dataProvider == null) {
                     Package package = Package.GetPackageFromAssembly(GetType().Assembly);
@@ -141,7 +140,7 @@ namespace YetaWF.Modules.SiteProperties.Models {
             // restart required for uihint changes because uihints are cached or CDN changes
             if (site.OriginalUseCDN != site.UseCDN || site.OriginalCDNUrl != site.CDNUrl || site.OriginalCDNUrlSecure != site.CDNUrlSecure ||
                     site.OriginalCDNSiteFiles != site.CDNSiteFiles || site.OriginalCDNVault != site.CDNVault || site.OriginalCDNContent != site.CDNContent ||
-                    site.OriginalCDNScripts != site.CDNScripts || site.OriginalCDNAddons != site.CDNAddons || site.OriginalCDNAddonsCustom != site.CDNAddonsCustom ||  site.OriginalCDNAddonsBundles != site.CDNAddonsBundles ||
+                    site.OriginalCDNScripts != site.CDNScripts || site.OriginalCDNAddons != site.CDNAddons || site.OriginalCDNAddonsCustom != site.CDNAddonsCustom || site.OriginalCDNAddonsBundles != site.CDNAddonsBundles ||
                     site.OriginalCDNFileImage != site.CDNFileImage)
                 restartRequired = true;
             return restartRequired;
@@ -224,8 +223,7 @@ namespace YetaWF.Modules.SiteProperties.Models {
             try {
                 SiteDefinition siteDef = new SiteDefinition();
                 if (SiteDefinition.INITIAL_INSTALL) {
-                    if (!Manager.IsLocalHost)
-                        siteDef.SiteDomain = Manager.HostUsed;
+                    siteDef.SiteDomain = YetaWFManager.DefaultSiteName;
                     if (!DataProvider.Add(siteDef))
                         throw new InternalError("Couldn't add default site");
                     Manager.CurrentSite = siteDef;
