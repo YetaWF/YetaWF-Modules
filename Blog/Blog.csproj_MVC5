@@ -64,11 +64,11 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Models\Controllers\Disqus.cs" />
-    <Compile Include="Models\Controllers\DisqusConfig.cs" />
-    <Compile Include="Models\Controllers\DisqusLinks.cs" />
-    <Compile Include="Models\Controllers\Summary.cs" />
-    <Compile Include="Models\Controllers\Support\DisqusSSO.cs" />
+    <Compile Include="Controllers\Disqus.cs" />
+    <Compile Include="Controllers\DisqusConfig.cs" />
+    <Compile Include="Controllers\DisqusLinks.cs" />
+    <Compile Include="Controllers\Summary.cs" />
+    <Compile Include="Controllers\Support\DisqusSSO.cs" />
     <Compile Include="Models\DisqusConfigDataProvider.cs" />
     <Compile Include="Modules\Disqus.cs" />
     <Compile Include="Modules\DisqusConfig.cs" />
@@ -76,33 +76,33 @@
     <Compile Include="Modules\Summary.cs" />
     <Compile Include="Startup\Info.cs" />
     <Compile Include="Startup\AreaRegistration.cs" />
-    <Compile Include="Models\Controllers\Archive.cs" />
-    <Compile Include="Models\Controllers\Blog.cs" />
-    <Compile Include="Models\Controllers\BlogConfig.cs" />
-    <Compile Include="Models\Controllers\CategoriesBrowse.cs" />
-    <Compile Include="Models\Controllers\CategoriesList.cs" />
-    <Compile Include="Models\Controllers\CategoryAdd.cs" />
-    <Compile Include="Models\Controllers\CategoryDisplay.cs">
+    <Compile Include="Controllers\Archive.cs" />
+    <Compile Include="Controllers\Blog.cs" />
+    <Compile Include="Controllers\BlogConfig.cs" />
+    <Compile Include="Controllers\CategoriesBrowse.cs" />
+    <Compile Include="Controllers\CategoriesList.cs" />
+    <Compile Include="Controllers\CategoryAdd.cs" />
+    <Compile Include="Controllers\CategoryDisplay.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Models\Controllers\CategoryEdit.cs">
+    <Compile Include="Controllers\CategoryEdit.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Models\Controllers\CategoryHeader.cs" />
-    <Compile Include="Models\Controllers\CommentAdd.cs">
+    <Compile Include="Controllers\CategoryHeader.cs" />
+    <Compile Include="Controllers\CommentAdd.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Models\Controllers\CommentEdit.cs" />
-    <Compile Include="Models\Controllers\CommentsDisplay.cs" />
-    <Compile Include="Models\Controllers\EntriesBrowse.cs" />
-    <Compile Include="Models\Controllers\EntryAdd.cs" />
-    <Compile Include="Models\Controllers\EntryDisplay.cs">
+    <Compile Include="Controllers\CommentEdit.cs" />
+    <Compile Include="Controllers\CommentsDisplay.cs" />
+    <Compile Include="Controllers\EntriesBrowse.cs" />
+    <Compile Include="Controllers\EntryAdd.cs" />
+    <Compile Include="Controllers\EntryDisplay.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Models\Controllers\EntryEdit.cs">
+    <Compile Include="Controllers\EntryEdit.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Models\Controllers\Rss.cs" />
+    <Compile Include="Controllers\Rss.cs" />
     <Compile Include="Models\BlogCategoryDataProvider.cs" />
     <Compile Include="Models\BlogConfigDataProvider.cs" />
     <Compile Include="Models\BlogEntryDataProvider.cs" />
