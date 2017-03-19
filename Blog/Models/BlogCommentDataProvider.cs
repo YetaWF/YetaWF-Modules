@@ -139,12 +139,7 @@ namespace YetaWF.Modules.Blog.DataProvider {
         public bool RemoveAllComments() {
             IDataProvider<int, BlogComment> dp = DataProvider;// evaluate IOMode
             if (IOMode == WebConfigHelper.IOModeEnum.File) {
-                try {
-                    Directory.Delete(GetCommentFolder(EntryIdentity), true);
-                } catch (Exception exc) {
-                    if (!(exc is DirectoryNotFoundException))
-                        throw;
-                }
+                DirectoryIO.DeleteFolder(GetCommentFolder(EntryIdentity));
             } else {
                 List<DataProviderFilterInfo> filters = DataProviderFilterInfo.Join(null, new DataProviderFilterInfo { Field = "EntryIdentity", Operator = "==", Value = EntryIdentity });
                 DataProvider.RemoveRecords(filters);

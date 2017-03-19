@@ -1,11 +1,11 @@
 ﻿/* Copyright © 2017 Softel vdm, Inc. - http://yetawf.com/Documentation/YetaWF/Packages#License */
 
 using System.Collections.Generic;
-using System.Collections.Specialized;
 using System.IO;
 using System.Linq;
 using YetaWF.Core.Addons;
 using YetaWF.Core.DataProvider;
+using YetaWF.Core.IO;
 using YetaWF.Core.Localize;
 using YetaWF.Core.Packages;
 using YetaWF.Core.Site;
@@ -154,7 +154,7 @@ namespace YetaWF.Modules.Packages.DataProvider {
             if (Directory.Exists(YetaWFManager.DataFolder)) {
                 string[] dirs = Directory.GetDirectories(YetaWFManager.DataFolder);
                 foreach (string dir in dirs) {
-                    Directory.Delete(dir, true);
+                    DirectoryIO.DeleteFolder(dir);
                 }
             }
         }
