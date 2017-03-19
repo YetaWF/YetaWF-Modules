@@ -23,7 +23,7 @@ namespace YetaWF.Modules.Packages.DataProvider {
         public string TemplateFolder { get {
             string rootFolder;
 #if MVC6
-            rootFolder = YetaWFManager.RootFolderSolution;
+            rootFolder = YetaWFManager.RootFolderWebProject;
 #else
             rootFolder = YetaWFManager.RootFolder;
 #endif
