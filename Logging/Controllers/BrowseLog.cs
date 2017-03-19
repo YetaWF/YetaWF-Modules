@@ -166,7 +166,7 @@ namespace YetaWF.Modules.Logging.Controllers {
                     throw new Error(this.__ResStr("logNotFound", "The log file '{0}' cannot be located", filename));
 #if MVC6
                 Response.Headers.Remove("Cookie");
-                Response.Headers.Add("Cookie", Basics.CookieDone + "=" + cookieToReturn.ToString());
+                Response.Cookies.Append(Basics.CookieDone, cookieToReturn.ToString(), new Microsoft.AspNetCore.Http.CookieOptions { HttpOnly = false, Path = "/" });
 #else
                 HttpCookie cookie = new HttpCookie(Basics.CookieDone, cookieToReturn.ToString());
                 Response.Cookies.Remove(Basics.CookieDone);
