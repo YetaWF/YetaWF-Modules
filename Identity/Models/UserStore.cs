@@ -133,7 +133,10 @@ namespace YetaWF.Modules.Identity.Models {
 #endif
         {
             using (UserDefinitionDataProvider dataProvider = new UserDefinitionDataProvider(this.CurrentSiteIdentity)) {
-                UserDefinition user = dataProvider.GetItemByUserId(Convert.ToInt32(userId));
+                UserDefinition user = null;
+                try {
+                    user = dataProvider.GetItemByUserId(Convert.ToInt32(userId));
+                } catch (Exception) { }
                 return Task.FromResult(user);
             }
         }
