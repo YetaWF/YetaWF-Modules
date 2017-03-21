@@ -19,6 +19,7 @@ using YetaWF.Core.Support;
 using YetaWF.Modules.Blog.Modules;
 
 namespace YetaWF.Modules.Blog.DataProvider {
+
     public class BlogEntry {
 
         public const int MaxTitle = 100;
@@ -74,14 +75,14 @@ namespace YetaWF.Modules.Blog.DataProvider {
                 if (!string.IsNullOrWhiteSpace(Summary.ToString())) return Summary.ToString();
                 string summary = Text.ToString();
                 if (summary.Length > MaxSummary)
-                    summary = summary.Truncate(MaxSummary).Trim() + this.__ResStr("more", " ...");
+                    summary = summary.Truncate(MaxSummary).Trim() + " ...";
                 // remove all <tags> as they may not be properly ended because we truncated the summary
                 // This may result in formatting loss, in which case an explicit summary should be provided
                 return RemoveHtmlExceptP(summary);
             }
         }
         private string RemoveHtmlExceptP(string summary) {
-            Regex re1 = new Regex(@"<\s*(?'tag'[a-zA-Z0-9_]+)[^>]*(?'end'>){0,1}"); 
+            Regex re1 = new Regex(@"<\s*(?'tag'[a-zA-Z0-9_]+)[^>]*(?'end'>){0,1}");
             Regex re2 = new Regex(@"</\s*(?'tag'[a-zA-Z0-9_]+)\s*(?'end'>){0,1}");
             pTags = 0;
             summary = re1.Replace(summary, MatchEval);
@@ -118,7 +119,7 @@ namespace YetaWF.Modules.Blog.DataProvider {
                 else {
                     summary = Text.ToString();
                     if (summary.Length > MaxSummary)
-                        summary = summary.Truncate(MaxSummary).Trim() + this.__ResStr("more", " ...");
+                        summary = summary.Truncate(MaxSummary).Trim() + " ...";
                 }
                 // remove all <tags> as they may not be properly ended because we truncated the summary
                 // This may result in formatting loss, in which case an explicit summary should be provided
