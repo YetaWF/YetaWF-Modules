@@ -78,8 +78,6 @@ namespace YetaWF.Modules.Logging.DataProvider {
         private const int MAXRECORDS = 1000;// cache # of records
 
         List<string> LogCache { get; set; }
-        // Callbacks survive TerminateLogging/SetupLogging, mainly so we can use logging while upgrading the Logging package
-        static List<Action<string>> Callbacks { get; set; }
 
         public LogRecordDataProvider() : base(0) { SetDataProvider(DataProvider); }
 
@@ -127,6 +125,10 @@ namespace YetaWF.Modules.Logging.DataProvider {
                     // nothing
                     break;
             }
+        }
+
+        public YetaWF.Core.Log.Logging.LevelEnum GetLevel() {
+            return WebConfigHelper.GetValue<YetaWF.Core.Log.Logging.LevelEnum>("Logging", "MinLevel", YetaWF.Core.Log.Logging.LevelEnum.Info);
         }
 
         public void Flush() {
@@ -235,26 +237,11 @@ namespace YetaWF.Modules.Logging.DataProvider {
                         DataProvider.Add(record);
                         break;
                 }
-                if (Callbacks != null) {
-                    string text = string.Format("{0} - {1}", DateTime.Now/*Local Time*/, message);
-                    foreach (Action<string> callback in Callbacks) {
-                        callback(text);
-                    }
-                }
             } catch (Exception) { }
 
             WriteInProgess = false;
         }
 
-        public void RegisterCallback(Action<string> callback) {
-            if (Callbacks == null) Callbacks = new List<Action<string>>();
-            Callbacks.Add(callback);
-        }
-        public void UnregisterCallback(Action<string> callback) {
-            if (Callbacks == null) return;
-            if (Callbacks.Contains(callback))
-                Callbacks.Remove(callback);
-        }
         public LogRecord GetItem(int key) {
             Flush();
             if (IOMode == WebConfigHelper.IOModeEnum.File) throw new InternalError("Not supported for File I/O");

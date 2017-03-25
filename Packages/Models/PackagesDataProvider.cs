@@ -1,12 +1,15 @@
 ﻿/* Copyright © 2017 Softel vdm, Inc. - http://yetawf.com/Documentation/YetaWF/Packages#License */
 
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading;
 using YetaWF.Core.Addons;
 using YetaWF.Core.DataProvider;
 using YetaWF.Core.IO;
 using YetaWF.Core.Localize;
+using YetaWF.Core.Log;
 using YetaWF.Core.Packages;
 using YetaWF.Core.Site;
 using YetaWF.Core.Support;
@@ -49,6 +52,18 @@ namespace YetaWF.Modules.Packages.DataProvider {
         /// This removes all data for all sites
         /// </remarks>
         public void InitAll(QueryHelper qs) {
+
+            if (InitialPackagesDataProvider != null)
+                throw new InternalError("InitialPackagesDataProvider already active");
+
+            if (qs["Sleep"] != null)
+                Thread.Sleep(5000); // wait a bit so the page gets shown first
+
+            InitialPackagesDataProvider = this;
+            InitialInstallLog = new List<string>();
+            InitialSiteLogging log = new InitialSiteLogging(InitialInstallLog);
+            Logging.RegisterLogging(log);
+
             ClearAll();
             InstallPackages();
             if (qs["From"] == "Data") {
@@ -59,10 +74,55 @@ namespace YetaWF.Modules.Packages.DataProvider {
                 BuildSiteUsingTemplate("InitialSite.txt");
                 //BuildSiteUsingTemplate("Custom Site (Initial Site).txt");
             }
+
             SiteDefinition.RemoveInitialInstall();
+            Logging.UnregisterLogging(log);
+
+            Logging.AddLog("Site initialization done");
+
+            if (qs["Sleep"] != null)
+                Thread.Sleep(10000); // wait so we can show the last msgs
+
+
+            InitialInstallLog = null;
+            InitialPackagesDataProvider = null;
 
             // Cache is now invalid so we'll just restart
+#if MVC6
+            //Manager.RestartSite(); // don't restart or redirect (can't)
+            // tell user in browser what to do
+#else
+            // Cache is now invalid so we'll just restart
             Manager.RestartSite(Manager.CurrentSite.MakeUrl());
+#endif
+        }
+        public class InitialSiteLogging : ILogging {
+            private List<string> InitialInstallLog;
+            public InitialSiteLogging(List<string> initialInstallLog) { InitialInstallLog = initialInstallLog; }
+            public Logging.LevelEnum GetLevel() { return Logging.LevelEnum.Info; }
+            public void Clear() { }
+            public void Flush() { }
+            public bool IsInstalled() { return true; }
+            public void WriteToLogFile(Logging.LevelEnum level, int relStack, string text) {
+                lock (_lockObject) {
+                    InitialInstallLog.Add(text);
+                }
+            }
+        }
+
+        private static object _lockObject = new object();
+        private List<string> InitialInstallLog;
+        private static PackagesDataProvider InitialPackagesDataProvider = null;
+
+        public static List<string> RetrieveInitialInstallLog(out bool ended) {
+            ended = false;
+            if (!SiteDefinition.INITIAL_INSTALL)
+                ended = true;
+            if (InitialPackagesDataProvider == null)
+                return new List<string>();
+            lock (_lockObject) {
+                return (from l in InitialPackagesDataProvider.InitialInstallLog select l).ToList();
+            }
         }
 
         /// <summary>
@@ -83,6 +143,8 @@ namespace YetaWF.Modules.Packages.DataProvider {
 
         private void InstallPackages() {
 
+            Logging.AddLog("Installing packages");
+
             // get all packages that are available
             List<Package> neededPackages = Package.GetAvailablePackages();
             // order all available packages by service level
@@ -93,11 +155,12 @@ namespace YetaWF.Modules.Packages.DataProvider {
             List<Package> remainingPackages = (from p in neededPackages select p).ToList();
 
             // check each package and install it if all dependencies are available
-            for (; neededPackages.Count() > installedPackages.Count() ;) {
+            for (; neededPackages.Count() > installedPackages.Count();) {
                 int count = 0;
 
                 foreach (Package package in neededPackages) {
                     List<string> errorList = new List<string>();
+                    Logging.AddLog("Installing package {0}", package.Name);
                     if (!installedPackages.Contains(package) && ArePackageDependenciesInstalled(package, installedPackages)) {
                         if (!package.InstallModels(errorList)) {
                             ScriptBuilder sb = new ScriptBuilder();
@@ -133,7 +196,12 @@ namespace YetaWF.Modules.Packages.DataProvider {
 
         private void ClearAll() {
 
-            YetaWFManager.SetRequestedDomain(null);
+            try {
+                // this can fail if there is no session (during initial install)
+                YetaWFManager.SetRequestedDomain(null);
+            } catch (Exception) { }
+
+            Logging.AddLog("Removing all known tables");
 
             LocalizationSupport localizationSupport = new LocalizationSupport();
             localizationSupport.SetUseLocalizationResources(false);// turn off use of localization resources - things are about to be removed
@@ -154,6 +222,7 @@ namespace YetaWF.Modules.Packages.DataProvider {
             if (Directory.Exists(YetaWFManager.DataFolder)) {
                 string[] dirs = Directory.GetDirectories(YetaWFManager.DataFolder);
                 foreach (string dir in dirs) {
+                    Logging.AddLog("Removing folder {0}", dir);
                     DirectoryIO.DeleteFolder(dir);
                 }
             }

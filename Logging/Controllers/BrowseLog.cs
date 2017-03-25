@@ -127,8 +127,7 @@ namespace YetaWF.Modules.Logging.Controllers {
         }
 
         private static void FlushLog() {
-            if (YetaWF.Core.Log.Logging.ForceFlush != null)
-                YetaWF.Core.Log.Logging.ForceFlush();
+            YetaWF.Core.Log.Logging.ForceFlush();
         }
 
         [HttpPost]

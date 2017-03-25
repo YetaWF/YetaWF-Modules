@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using YetaWF.Core.Identity;
+using YetaWF.Core.Log;
 using YetaWF.Core.Packages;
 using YetaWF.Core.Support;
 
@@ -19,6 +20,7 @@ namespace YetaWF.Modules.Packages.DataProvider {
             string[] files = Directory.GetFiles(Path.Combine(TemplateFolder, DataFolderName), "*.zip");
             foreach (string file in files) {
                 List<string> errorList = new List<string>();
+                Logging.AddLog("Restoring {0}", file);
                 if (!Package.ImportData(file, errorList)) {
                     throw new Error(errorList.First());
                 }
