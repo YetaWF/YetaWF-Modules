@@ -63,7 +63,7 @@ namespace YetaWF.Modules.Dashboard.Controllers {
             DisplayModel model = new DisplayModel();
 #if MVC6
 #else
-            model.SetData(Manager.CurrentContext.Cache);
+            model.SetData(System.Web.HttpRuntime.Cache);
             model.GridDef = new GridDefinition {
                 AjaxUrl = GetActionUrl("CacheInfo_GridData"),
                 ModuleGuid = Module.ModuleGuid,
@@ -96,7 +96,7 @@ namespace YetaWF.Modules.Dashboard.Controllers {
         }
 
         private List<BrowseItem> GetAllItems() {
-            System.Web.Caching.Cache cache = Manager.CurrentContext.Cache;
+            System.Web.Caching.Cache cache = System.Web.HttpRuntime.Cache;
             List<BrowseItem> items = (from DictionaryEntry item in cache select new BrowseItem { Key = item.Key.ToString(), Value = (item.Value ?? "").ToString(), Size = -1 }).ToList();
             foreach (BrowseItem item in items) {
                 object o = null;
