@@ -99,7 +99,9 @@ namespace YetaWF.Modules.Packages.DataProvider {
                 LogFile = logFile;
                 this._lockObject = _lockObject;
                 lock (_lockObject) {
-                    File.Delete(LogFile);
+                    if (File.Exists(LogFile))
+                        File.Delete(LogFile);
+                    Directory.CreateDirectory(Path.GetDirectoryName(LogFile));
                 }
             }
             public Logging.LevelEnum GetLevel() { return Logging.LevelEnum.Info; }

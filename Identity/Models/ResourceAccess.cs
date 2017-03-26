@@ -8,6 +8,7 @@ using YetaWF.Core.Localize;
 using YetaWF.Core.Log;
 using YetaWF.Core.Modules;
 using YetaWF.Core.Serializers;
+using YetaWF.Core.Site;
 using YetaWF.Core.Support;
 using YetaWF.Modules.Identity.Controllers;
 using YetaWF.Modules.Identity.Modules;
@@ -111,9 +112,9 @@ namespace YetaWF.Modules.Identity.DataProvider {
 
             // check whether we have a logged on user
 #if MVC6
-            if (!Manager.CurrentContext.User.Identity.IsAuthenticated)
+            if (SiteDefinition.INITIAL_INSTALL || !Manager.CurrentContext.User.Identity.IsAuthenticated)
 #else
-            if (!Manager.CurrentRequest.IsAuthenticated)
+            if (SiteDefinition.INITIAL_INSTALL || !Manager.CurrentRequest.IsAuthenticated)
 #endif
             {
                 return;// no user logged in
