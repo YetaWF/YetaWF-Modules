@@ -37,13 +37,22 @@ namespace YetaWF.Modules.Packages.DataProvider {
             BuiltinCommands.Add("/$undotemplate", CoreInfo.Resource_BuiltinCommands, UndoTemplate);
         }
 
-        // INITALL
-        // INITALL
-        // INITALL
+        // RESTART
+        // RESTART
+        // RESTART
 
         private void RestartSite(QueryHelper qs) {
             Manager.RestartSite(Manager.CurrentSite.MakeUrl());
         }
+
+        // INITALL
+        // INITALL
+        // INITALL
+
+        public static string LogFile {
+            get { return Path.Combine(YetaWFManager.DataFolder, "InitialInstall.txt"); }
+        }
+        private static object _lockObject = new object();
 
         /// <summary>
         /// Installs all packages and builds the initial site from the import data (zip files) or from templates
@@ -53,16 +62,10 @@ namespace YetaWF.Modules.Packages.DataProvider {
         /// </remarks>
         public void InitAll(QueryHelper qs) {
 
-            if (InitialPackagesDataProvider != null)
-                throw new InternalError("InitialPackagesDataProvider already active");
-
-            if (qs["Sleep"] != null)
-                Thread.Sleep(5000); // wait a bit so the page gets shown first
-
-            InitialPackagesDataProvider = this;
-            InitialInstallLog = new List<string>();
-            InitialSiteLogging log = new InitialSiteLogging(InitialInstallLog);
+            InitialSiteLogging log = new InitialSiteLogging(LogFile, _lockObject);
             Logging.RegisterLogging(log);
+
+            Logging.AddLog("Site initialization starting");
 
             ClearAll();
             InstallPackages();
@@ -80,49 +83,62 @@ namespace YetaWF.Modules.Packages.DataProvider {
 
             Logging.AddLog("Site initialization done");
 
-            if (qs["Sleep"] != null)
-                Thread.Sleep(10000); // wait so we can show the last msgs
-
-
-            InitialInstallLog = null;
-            InitialPackagesDataProvider = null;
-
             // Cache is now invalid so we'll just restart
 #if MVC6
             //Manager.RestartSite(); // don't restart or redirect (can't)
             // tell user in browser what to do
 #else
             // Cache is now invalid so we'll just restart
-            Manager.RestartSite(Manager.CurrentSite.MakeUrl());
+            Manager.RestartSite();
 #endif
         }
         public class InitialSiteLogging : ILogging {
-            private List<string> InitialInstallLog;
-            public InitialSiteLogging(List<string> initialInstallLog) { InitialInstallLog = initialInstallLog; }
+            private string LogFile;
+            private object _lockObject;
+            public InitialSiteLogging(string logFile, object _lockObject) {
+                LogFile = logFile;
+                this._lockObject = _lockObject;
+                lock (_lockObject) {
+                    File.Delete(LogFile);
+                }
+            }
             public Logging.LevelEnum GetLevel() { return Logging.LevelEnum.Info; }
             public void Clear() { }
             public void Flush() { }
             public bool IsInstalled() { return true; }
             public void WriteToLogFile(Logging.LevelEnum level, int relStack, string text) {
                 lock (_lockObject) {
-                    InitialInstallLog.Add(text);
+                    File.AppendAllText(LogFile, text + "\r\n");
                 }
             }
         }
-
-        private static object _lockObject = new object();
-        private List<string> InitialInstallLog;
-        private static PackagesDataProvider InitialPackagesDataProvider = null;
 
         public static List<string> RetrieveInitialInstallLog(out bool ended) {
             ended = false;
             if (!SiteDefinition.INITIAL_INSTALL)
                 ended = true;
-            if (InitialPackagesDataProvider == null)
-                return new List<string>();
-            lock (_lockObject) {
-                return (from l in InitialPackagesDataProvider.InitialInstallLog select l).ToList();
+            List<string> lines = new List<string>();
+            bool success = false;
+            while (!success) {
+                try {
+                    // This is horrible, polling until the file is no longer in use.
+                    // The problem is we can't use statics or some form of caching as this is called by multiple separate requests
+                    // and the Package package itself is replaced while we're logging, so we just use a file to hold all data.
+                    // unfortunately even the _lockObject is lost when the Package package is replaced. Since this is only used
+                    // during an initial install, it's not critical enough to make it perfect...
+                    lock (_lockObject) {
+                        if (!File.Exists(LogFile))
+                            return lines;
+                        lines = File.ReadAllLines(LogFile).ToList();
+                        success = true;
+                    }
+                } catch (Exception) { Thread.Sleep(100); }
             }
+            if (lines.Count == 0)
+                return lines;
+            if (lines.Last() == "+++DONE")
+                ended = true;
+            return lines;
         }
 
         /// <summary>
@@ -201,7 +217,7 @@ namespace YetaWF.Modules.Packages.DataProvider {
                 YetaWFManager.SetRequestedDomain(null);
             } catch (Exception) { }
 
-            Logging.AddLog("Removing all known tables");
+            Logging.AddLog("Removing all known tables (if any)");
 
             LocalizationSupport localizationSupport = new LocalizationSupport();
             localizationSupport.SetUseLocalizationResources(false);// turn off use of localization resources - things are about to be removed

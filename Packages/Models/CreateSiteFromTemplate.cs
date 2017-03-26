@@ -9,6 +9,7 @@ using System.Reflection;
 using YetaWF.Core;
 using YetaWF.Core.DataProvider;
 using YetaWF.Core.Identity;
+using YetaWF.Core.Log;
 using YetaWF.Core.Menus;
 using YetaWF.Core.Models;
 using YetaWF.Core.Modules;
@@ -20,14 +21,16 @@ namespace YetaWF.Modules.Packages.DataProvider {
     // not a real data provider - used to clear/create all package data and initial web pages
     public partial class PackagesDataProvider {
 
-        public string TemplateFolder { get {
-            string rootFolder;
+        public string TemplateFolder {
+            get {
+                string rootFolder;
 #if MVC6
-            rootFolder = YetaWFManager.RootFolderWebProject;
+                rootFolder = YetaWFManager.RootFolderWebProject;
 #else
-            rootFolder = YetaWFManager.RootFolder;
+                rootFolder = YetaWFManager.RootFolder;
 #endif
-            return Path.Combine(rootFolder, Globals.SiteTemplates); }
+                return Path.Combine(rootFolder, Globals.SiteTemplates);
+            }
         }
         public string DataFolderName { get { return "Data"; } }
 
@@ -49,6 +52,7 @@ namespace YetaWF.Modules.Packages.DataProvider {
         /// </summary>
         /// <returns></returns>
         public void BuildSiteUsingTemplate(string template, bool build = true) {
+            Logging.AddLog("Running site template {0}", template);
             // Get the current site menu
             ModuleDefinition menuServices = ModuleDefinition.Load(Manager.CurrentSite.MenuServices, AllowNone: true);
             if (menuServices == null)
@@ -101,7 +105,7 @@ namespace YetaWF.Modules.Packages.DataProvider {
             if (lines.Count() > 0) {
                 lines = RemoveComments(lines);
                 // process all lines
-                for ( ; lines.Count > 0 ; ) {
+                for (; lines.Count > 0;) {
                     string section = lines.First().Trim(); ++_LineCounter; lines.RemoveAt(0);
                     if (section == "")
                         continue;
@@ -182,7 +186,7 @@ namespace YetaWF.Modules.Packages.DataProvider {
 
         private void ExtractPageSection(List<string> lines, bool build) {
 
-            for ( ; lines.Count > 0 ; ) {
+            for (; lines.Count > 0;) {
                 // get the menu path (site url)
                 string urlLine = lines.First();
                 if (urlLine.StartsWith("::"))
@@ -249,7 +253,7 @@ namespace YetaWF.Modules.Packages.DataProvider {
                 skin = skin.Trim();
                 if (skin == "-")
                     skin = ",,,";
-                string[] skinparts = skin.Split(new char[] {','});
+                string[] skinparts = skin.Split(new char[] { ',' });
                 if (skinparts.Length != 4)
                     throw TemplateError("Invalid skin format");
 
@@ -289,7 +293,7 @@ namespace YetaWF.Modules.Packages.DataProvider {
                 page.AllowedRoles = roles;
 
                 // Get zero, one or more modules (add to Main section)
-                for ( ; lines.Count > 0 ; ) {
+                for (; lines.Count > 0;) {
 
                     string modsLine = lines.First();
                     if (string.IsNullOrWhiteSpace(modsLine)) {
@@ -317,7 +321,7 @@ namespace YetaWF.Modules.Packages.DataProvider {
                     ModuleDefinition mod = EvaluateModuleAsmTypeExpression(modDef);
                     page.AddModule(pane, mod);
 
-                    for ( ; lines.Count > 0 ; ) {
+                    for (; lines.Count > 0;) {
                         // add variable customizations (if any)
                         string varLine = lines.First();
                         if (string.IsNullOrWhiteSpace(varLine)) {
@@ -377,7 +381,7 @@ namespace YetaWF.Modules.Packages.DataProvider {
 
         private void ExtractUniqueModuleSection(List<string> lines, bool build, bool Unique = true) {
 
-            for ( ; lines.Count > 0 ; ) {
+            for (; lines.Count > 0;) {
                 // get the module definition
                 string modsLine = lines.First();
                 if (modsLine.StartsWith("::"))
@@ -397,7 +401,7 @@ namespace YetaWF.Modules.Packages.DataProvider {
                 }
                 mod.Temporary = false;
 
-                for ( ; lines.Count > 0 ; ) {
+                for (; lines.Count > 0;) {
                     // add variable customizations (if any)
                     string varLine = lines.First();
                     if (string.IsNullOrWhiteSpace(varLine)) {
@@ -425,7 +429,7 @@ namespace YetaWF.Modules.Packages.DataProvider {
         private ModuleDefinition EvaluateModuleAsmTypeExpression(string modsText, bool UniqueMod = false) {
             object obj = EvaluateObjectAsmTypeExpression(modsText, UniqueMod: UniqueMod);
             if (obj is ModuleDefinition)
-                return (ModuleDefinition) obj;
+                return (ModuleDefinition)obj;
             throw new InternalError("Object doesn't evaluate to a module definition");
         }
         private object EvaluateObjectAsmTypeExpression(string objText, bool UniqueMod = false) {
@@ -458,7 +462,7 @@ namespace YetaWF.Modules.Packages.DataProvider {
             PropertyInfo pi = ObjectSupport.GetProperty(obj.GetType(), varName);
             if (vars.Length > 1) {
                 obj = pi.GetValue(obj);
-                AssignVariable(obj, string.Join(".", vars, 1, vars.Length-1), value);
+                AssignVariable(obj, string.Join(".", vars, 1, vars.Length - 1), value);
             } else {
                 Type propType = pi.PropertyType;
                 if (propType == typeof(string)) {
@@ -499,7 +503,7 @@ namespace YetaWF.Modules.Packages.DataProvider {
 
         private void ExtractLinkSection(List<string> lines, bool build) {
 
-            for ( ; lines.Count > 0 ; ) {
+            for (; lines.Count > 0;) {
                 // get the url
                 string url = lines.First();
                 if (url.StartsWith("::"))
@@ -531,7 +535,7 @@ namespace YetaWF.Modules.Packages.DataProvider {
 
         private void ExtractWebconfigSection(List<string> lines, bool build) {
 
-            for ( ; lines.Count > 0 ; ) {
+            for (; lines.Count > 0;) {
                 // get the web config line
                 string webcf = lines.First();
                 if (webcf.StartsWith("::"))
@@ -561,7 +565,7 @@ namespace YetaWF.Modules.Packages.DataProvider {
         }
 
         private void ExtractCommandSection(List<string> lines, bool build) {
-            for ( ; lines.Count > 0 ; ) {
+            for (; lines.Count > 0;) {
                 // get the command line
                 string cmd = lines.First();
                 if (cmd.StartsWith("::"))
@@ -661,16 +665,16 @@ namespace YetaWF.Modules.Packages.DataProvider {
         private void RemoveMenu(string menuText) {
             string[] menuStrings = menuText.Split(new char[] { '>' });
             SerializableList<ModuleAction> menu = _SiteMenu;
-            for (int si = 0, maxSi = menuStrings.Count(); si < maxSi ; ++si) {
+            for (int si = 0, maxSi = menuStrings.Count(); si < maxSi; ++si) {
                 string menuString = menuStrings[si].Trim();
                 object obj = EvaluateVariable(menuString);
                 if (obj is ModuleAction) {
-                    ModuleAction action = (ModuleAction) obj;
+                    ModuleAction action = (ModuleAction)obj;
                     menuString = action.MenuText.ToString();
                 } else
-                    menuString = (string) obj;
+                    menuString = (string)obj;
                 bool found = false;
-                for (int mi = 0 ; mi < menu.Count() ; ++mi) {
+                for (int mi = 0; mi < menu.Count(); ++mi) {
                     ModuleAction action = menu[mi];
                     if (action.MenuText.ToString() == menuString) {
                         if (si >= maxSi - 1) {
@@ -694,7 +698,7 @@ namespace YetaWF.Modules.Packages.DataProvider {
         private object EvaluateVariable(string expr) {
             // "string"     -> string
             // {asm,type}.method_call(parms)   ->  invoke method on object. All parms must be constants.
-            expr  = expr.Trim();
+            expr = expr.Trim();
             string origExpr = expr;
             if (expr.StartsWith("{")) {
                 // extract the asm,type to get the module
@@ -702,7 +706,7 @@ namespace YetaWF.Modules.Packages.DataProvider {
                 int i = expr.IndexOf('}');// find ending }
                 if (i < 0) throw TemplateError("Missing }} in expression \"{0}\"", origExpr);
                 string asmtype = expr.Substring(0, i);
-                expr = expr.Substring(i+1).Trim();
+                expr = expr.Substring(i + 1).Trim();
                 if (string.IsNullOrWhiteSpace(asmtype)) throw TemplateError("Missing assembly,type in expression \"{0}\"", origExpr);
 
                 object obj;
@@ -760,7 +764,7 @@ namespace YetaWF.Modules.Packages.DataProvider {
                     else if (p.StartsWith("\"")) // translate \r\n to newline
                         parmList.Add(TrimQuotes(p.Replace("\\r\\n", Environment.NewLine)));
                     else if (p.StartsWith("Guid(") && p.EndsWith(")"))  // Guid(nnnnn)
-                        parmList.Add(new Guid(p.Substring(5,p.Length-6)));
+                        parmList.Add(new Guid(p.Substring(5, p.Length - 6)));
                     else {
                         int val;
                         float flt;
@@ -791,7 +795,7 @@ namespace YetaWF.Modules.Packages.DataProvider {
             string sqlConn = WebConfigHelper.GetValue<string>(DataProviderImpl.DefaultString, DataProviderImpl.SQLConnectString);
             if (string.IsNullOrWhiteSpace(sqlConn)) throw TemplateError("No Sql connection string found in web.config/appsettings.json (P:Default:SQLConnect)");
 
-            for ( ; lines.Count > 0 ; ) {
+            for (; lines.Count > 0;) {
 
                 // get the command line
                 string sqlLine = lines.First();
@@ -805,7 +809,7 @@ namespace YetaWF.Modules.Packages.DataProvider {
                     throw TemplateError("Sql start (<<SQL) missing");
                 string sqlLines = "";
 
-                for ( ; lines.Count > 0 ; ) {
+                for (; lines.Count > 0;) {
                     sqlLine = lines.First();
                     ++_LineCounter; lines.RemoveAt(0);
                     if (sqlLine.Trim() == ">>SQL") {
