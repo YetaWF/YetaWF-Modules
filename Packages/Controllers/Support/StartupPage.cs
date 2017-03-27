@@ -22,7 +22,7 @@ namespace YetaWF.Modules.Packages.Controllers {
         [HttpGet]
         public ActionResult Show() {
 
-            if (!SiteDefinition.INITIAL_INSTALL)
+            if (SiteDefinition.INITIAL_INSTALL_ENDED)
                 return File("/Maintenance/StartupDone.html", "text/html");
 #if MVC6
             return File("/Maintenance/StartupPage6.html", "text/html");
@@ -34,7 +34,7 @@ namespace YetaWF.Modules.Packages.Controllers {
         [HttpPost]
         public ActionResult Run() {
 
-            if (!SiteDefinition.INITIAL_INSTALL)
+            if (!SiteDefinition.INITIAL_INSTALL || SiteDefinition.INITIAL_INSTALL_ENDED)
                 return NotAuthorized();
 
             PackagesDataProvider packagesDP = new PackagesDataProvider();

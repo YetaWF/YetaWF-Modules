@@ -128,7 +128,7 @@ namespace YetaWF.Modules.Logging.DataProvider {
         }
 
         public YetaWF.Core.Log.Logging.LevelEnum GetLevel() {
-            return WebConfigHelper.GetValue<YetaWF.Core.Log.Logging.LevelEnum>("Logging", "MinLevel", YetaWF.Core.Log.Logging.LevelEnum.Info);
+            return WebConfigHelper.GetValue<YetaWF.Core.Log.Logging.LevelEnum>("Logging", "MinLevel", YetaWF.Core.Log.Logging.LevelEnum.Trace);
         }
 
         public void Flush() {
@@ -148,7 +148,7 @@ namespace YetaWF.Modules.Logging.DataProvider {
             if (WriteInProgess) return;
             WriteInProgess = true;
 
-            if (level != Core.Log.Logging.LevelEnum.Info)
+            if (level == Core.Log.Logging.LevelEnum.Error)
                 message += "\n" + GetCallStack(relStack + 1);
             message = message.Truncate(2000); // limit max text
 

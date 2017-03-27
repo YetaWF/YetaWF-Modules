@@ -117,7 +117,7 @@ namespace YetaWF.Modules.Packages.DataProvider {
 
         public static List<string> RetrieveInitialInstallLog(out bool ended) {
             ended = false;
-            if (!SiteDefinition.INITIAL_INSTALL)
+            if (!SiteDefinition.INITIAL_INSTALL || SiteDefinition.INITIAL_INSTALL_ENDED)
                 ended = true;
             List<string> lines = new List<string>();
             bool success = false;
