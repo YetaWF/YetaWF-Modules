@@ -68,6 +68,8 @@
     <Reference Include="System.Web.Extensions" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controllers\Support\InitialLogFile.cs" />
+    <Compile Include="Controllers\Support\StartupPage.cs" />
     <Compile Include="Startup\Info.cs" />
     <Compile Include="Startup\AreaRegistration.cs" />
     <Compile Include="Controllers\Import.cs" />
