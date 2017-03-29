@@ -1,5 +1,6 @@
 ﻿/* Copyright © 2017 Softel vdm, Inc. - http://yetawf.com/Documentation/YetaWF/Identity#License */
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using YetaWF.Core.DataProvider;
@@ -74,8 +75,7 @@ namespace YetaWF.Modules.Identity.DataProvider {
                 RoleComparer roleComp = new RoleComparer();
                 using (RoleDefinitionDataProvider roleDP = new RoleDefinitionDataProvider())
                 {
-                    if (Manager.IsAnonymousUser)
-                    {
+                    if (!Manager.HaveUser) {
                         // check if anonymous user allowed
                         if (auth.AllowedRoles.Contains(new Role { RoleId = roleDP.GetAnonymousRoleId() }, roleComp))
                             return true;
@@ -88,7 +88,7 @@ namespace YetaWF.Modules.Identity.DataProvider {
                 }
 
                 string userName = Manager.UserName;
-                UserDefinition user = (UserDefinition)Manager.UserObject;// get the saved user (from global.asax.cs)
+                UserDefinition user = (UserDefinition)Manager.UserObject;// get the saved user
                 if (user == null)
                     throw new InternalError("UserObject missing for authenticated user");
 
@@ -136,6 +136,29 @@ namespace YetaWF.Modules.Identity.DataProvider {
                     return;
 #endif
                 }
+                // Check whether user needs to set up two-step authentication
+                // External login providers don't require local two-step authentication (should be offered by external login provider)
+                // If any of the user's roles require two-step authentication and the user has not enabled two-step authentication providers,
+                // set marker so we can redirect the user
+                if (Manager.Need2FAState == null) {
+                    Manager.Need2FAState = false;
+                    using (UserLoginInfoDataProvider logInfoDP = new UserLoginInfoDataProvider()) {
+                        if (!logInfoDP.IsExternalUser(user.UserId)) {
+                            // not an external login, so check if we need two-step auth
+                            LoginConfigData config = LoginConfigDataProvider.GetConfig();
+                            if (config.TwoStepAuth != null && user.RolesList != null) {
+                                foreach (Role role in config.TwoStepAuth) {
+                                    if (role.RoleId == Resource.ResourceAccess.GetUserRoleId() || user.RolesList.Contains(new Role { RoleId = role.RoleId }, new RoleComparer())) {
+                                        if (user.EnabledAndAvailableTwoStepAuthentications.Count == 0)
+                                            Manager.Need2FAState = true;
+                                        break;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                // user good to go
                 Manager.UserName = user.UserName;
                 Manager.UserEmail = user.Email;
                 Manager.UserId = user.UserId;
@@ -149,12 +172,17 @@ namespace YetaWF.Modules.Identity.DataProvider {
             }
         }
 
-        public List<RoleInfo> GetDefaultRoleList() {
+        public List<RoleInfo> GetDefaultRoleList(bool Exclude2FA = false) {
             using(RoleDefinitionDataProvider roleDP = new RoleDefinitionDataProvider()) {
                 List<RoleDefinition> allRoles = roleDP.GetAllRoles();
-                List<RoleInfo> roles = new List<RoleInfo>((from r in allRoles
-                    select new RoleInfo { RoleId = r.RoleId, Name = r.Name, Description = r.Description }
-                ).ToList());
+                List<RoleInfo> roles;
+                if (Exclude2FA) {
+                    roles = (from r in allRoles
+                             where r.RoleId != roleDP.GetUser2FARoleId()
+                             select new RoleInfo { RoleId = r.RoleId, Name = r.Name, Description = r.Description }).ToList();
+                } else {
+                    roles = (from r in allRoles select new RoleInfo { RoleId = r.RoleId, Name = r.Name, Description = r.Description }).ToList();
+                }
                 return roles;
             }
         }
@@ -168,9 +196,13 @@ namespace YetaWF.Modules.Identity.DataProvider {
         }
 
         public int GetUserRoleId() {
-            using (RoleDefinitionDataProvider roleDP = new RoleDefinitionDataProvider())
-            {
+            using (RoleDefinitionDataProvider roleDP = new RoleDefinitionDataProvider()) {
                 return roleDP.GetUserRoleId();
+            }
+        }
+        public int GetUser2FARoleId() {
+            using (RoleDefinitionDataProvider roleDP = new RoleDefinitionDataProvider()) {
+                return roleDP.GetUser2FARoleId();
             }
         }
 
@@ -287,10 +319,23 @@ namespace YetaWF.Modules.Identity.DataProvider {
                 }
             }
         }
+
         public ModuleAction GetSelectTwoStepAction(int userId, string userName, string userEmail) {
             SelectTwoStepAuthModule mod = new SelectTwoStepAuthModule();
             return mod.GetAction_SelectTwoStepAuth(null, userId, userName, userEmail);
         }
+        public ModuleAction GetForceTwoStepActionSetup(string url, string nextUrl) {
+            SelectTwoStepSetupModule mod = new SelectTwoStepSetupModule();
+            return mod.GetAction_ForceTwoStepSetup(url, nextUrl);
+        }
+        public void ShowNeed2FA() {
+            Manager.AddOnManager.AddExplicitlyInvokedModules(
+                new SerializableList<ModuleDefinition.ReferencedModule> {
+                    new ModuleDefinition.ReferencedModule { ModuleGuid = ModuleDefinition.GetPermanentGuid(typeof(Need2FADisplayModule)) }
+                }
+            );
+        }
+
         public List<string> GetEnabledTwoStepAuthentications(int userId) {
             using (UserDefinitionDataProvider userDP = new UserDefinitionDataProvider()) {
                 UserDefinition user = userDP.GetItemByUserId(userId);
@@ -318,6 +363,7 @@ namespace YetaWF.Modules.Identity.DataProvider {
                     UpdateStatusEnum status = userDP.UpdateItem(user);
                     if (status != UpdateStatusEnum.OK)
                         throw new InternalError("Unexpected status {0} updating user account in AddEnabledTwoStepAuthentication", status);
+                    Manager.Need2FAState = null;//reevaluate now that user has enabled a two-step authentication
                 }
             }
         }
@@ -339,6 +385,7 @@ namespace YetaWF.Modules.Identity.DataProvider {
                     UpdateStatusEnum status = userDP.UpdateItem(user);
                     if (status != UpdateStatusEnum.OK)
                         throw new InternalError("Unexpected status {0} updating user account in RemoveEnabledTwoStepAuthentication", status);
+                    Manager.Need2FAState = null;//reevaluate now that user has removed a two-step authentication
                 }
             }
         }

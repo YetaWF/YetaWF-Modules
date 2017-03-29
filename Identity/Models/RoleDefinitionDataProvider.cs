@@ -55,6 +55,7 @@ namespace YetaWF.Modules.Identity.DataProvider {
 
         private static object _lockObject = new object();
 
+        private static int User2FAIdentity = SQLDataProviderImpl.IDENTITY_SEED - 4;
         public static int SuperUserId = SQLDataProviderImpl.IDENTITY_SEED - 3;
         private static int UserIdentity = SQLDataProviderImpl.IDENTITY_SEED - 2;
         private static int AnonymousIdentity = SQLDataProviderImpl.IDENTITY_SEED - 1;
@@ -162,6 +163,7 @@ namespace YetaWF.Modules.Identity.DataProvider {
         public int GetAdministratorRoleId() { return GetRoleId(Globals.Role_Administrator); }
         public int GetEditorRoleId() { return GetRoleId(Globals.Role_Editor); }
         public int GetUserRoleId() { return UserIdentity; }
+        public int GetUser2FARoleId() { return User2FAIdentity; }
         public int GetAnonymousRoleId() { return AnonymousIdentity; }
         public int GetRoleId(string roleName) {
             if (roleName == Globals.Role_Superuser)
@@ -171,7 +173,7 @@ namespace YetaWF.Modules.Identity.DataProvider {
             return role.RoleId;
         }
         public bool IsPredefinedRole(string role) {
-            return (role == Globals.Role_Superuser || role == Globals.Role_User || role == Globals.Role_Editor || role == Globals.Role_Anonymous || role == Globals.Role_Administrator);
+            return (role == Globals.Role_Superuser || role == Globals.Role_User || role == Globals.Role_User2FA || role == Globals.Role_Editor || role == Globals.Role_Anonymous || role == Globals.Role_Administrator);
         }
 
         // all user roles, plus User and Anonymous
@@ -179,6 +181,7 @@ namespace YetaWF.Modules.Identity.DataProvider {
             List<RoleDefinition> roles = GetAllUserRoles(force);
             roles = (from r in roles select r).ToList();
             roles.Add(MakeUserRole());
+            roles.Add(MakeUser2FARole());
             roles.Add(MakeAnonymousRole());
             return roles;
         }
@@ -216,6 +219,9 @@ namespace YetaWF.Modules.Identity.DataProvider {
         }
         private RoleDefinition MakeUserRole() {
             return new RoleDefinition() { RoleId = UserIdentity, Name = Globals.Role_User, Description = this.__ResStr("userRole", "The {0} role describes every authenticated user (i.e., not an anonymous user)", Globals.Role_User) };
+        }
+        private RoleDefinition MakeUser2FARole() {
+            return new RoleDefinition() { RoleId = User2FAIdentity, Name = Globals.Role_User2FA, Description = this.__ResStr("userRole", "The {0} role describes every authenticated user that must set up two-step authentication (i.e., not an anonymous user)", Globals.Role_User2FA) };
         }
         private RoleDefinition MakeAnonymousRole() {
             return new RoleDefinition() { RoleId = AnonymousIdentity, Name = Globals.Role_Anonymous, Description = this.__ResStr("anonymousRole", "The {0} role describes every user that is not logged in (i.e., not an authenticated user)", Globals.Role_Anonymous) };

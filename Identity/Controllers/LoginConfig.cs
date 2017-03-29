@@ -2,9 +2,11 @@
 
 using YetaWF.Core;
 using YetaWF.Core.Controllers;
+using YetaWF.Core.Identity;
 using YetaWF.Core.Localize;
 using YetaWF.Core.Models;
 using YetaWF.Core.Models.Attributes;
+using YetaWF.Core.Serializers;
 using YetaWF.Core.Support;
 using YetaWF.Core.Views.Shared;
 using YetaWF.Modules.Identity.DataProvider;
@@ -64,6 +66,11 @@ namespace YetaWF.Modules.Identity.Controllers {
             [UIHint("Boolean")]
             public bool BccForgottenPassword { get; set; }
 
+            [TextAbove("Please select which roles require mandatory two-step authentication. The site Superuser can always access the site even if two-step authentication is required but has not yet be set up. Other users must set up two-step authentication before full access to the site is granted.")]
+            [Category("Two-Step Auth"), Caption("Two-Step Authentication"), Description("Defines which roles require mandatory two-step authentication")]
+            [UIHint("YetaWF_Identity_RolesSelector"), Required]
+            public SerializableList<Role> TwoStepAuth { get; set; }
+
             [Category("Captcha"), Caption("Use Captcha"), Description("Defines whether the user has to pass a \"human\" test when logging in or registering a new account (Yes), otherwise no test is performed (No)")]
             [UIHint("Boolean")]
             public bool Captcha { get; set; }
@@ -113,6 +120,12 @@ namespace YetaWF.Modules.Identity.Controllers {
             public string RegisterUrl { get; set; }
 
             [Category("Urls")]
+            [Caption("Two-Step Authentication Url"), Description("The Url where the user is redirected if two-step authentication hasn't been set up yet")]
+            [UIHint("Url"), AdditionalMetadata("UrlType", UrlHelperEx.UrlTypeEnum.Local | UrlHelperEx.UrlTypeEnum.Remote), UrlValidation(UrlValidationAttribute.SchemaEnum.Any, UrlHelperEx.UrlTypeEnum.Local | UrlHelperEx.UrlTypeEnum.Remote)]
+            [StringLength(Globals.MaxUrl), Trim]
+            public string TwoStepAuthUrl { get; set; }
+
+            [Category("Urls")]
             [Caption("Forgotten Password Url"), Description("The Url where the user can retrieve a forgotten password for an existing account")]
             [UIHint("Url"), AdditionalMetadata("UrlType", UrlHelperEx.UrlTypeEnum.Local | UrlHelperEx.UrlTypeEnum.Remote), UrlValidation(UrlValidationAttribute.SchemaEnum.Any, UrlHelperEx.UrlTypeEnum.Local | UrlHelperEx.UrlTypeEnum.Remote)]
             [StringLength(Globals.MaxUrl), Trim]
@@ -160,6 +173,7 @@ namespace YetaWF.Modules.Identity.Controllers {
             public Model() {
                 ConfigData = LoginConfigDataProvider.GetConfig();
                 NoExternalSettings = this.__ResStr("noExt", "No External Login Providers available");
+                TwoStepAuth = new SerializableList<Role>();
             }
         }
 

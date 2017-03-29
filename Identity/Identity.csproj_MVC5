@@ -126,12 +126,16 @@
   <ItemGroup>
     <Compile Include="Controllers\ForgotPassword.cs" />
     <Compile Include="Controllers\LoginTwoStep.cs" />
+    <Compile Include="Controllers\Need2FADisplay.cs" />
     <Compile Include="Controllers\SelectTwoStepSetup.cs" />
     <Compile Include="Controllers\SelectTwoStepAuth.cs" />
+    <Compile Include="Controllers\TemplateRolesSelector.cs" />
     <Compile Include="Models\UserLoginInfoDataProvider.cs" />
     <Compile Include="Modules\ForgotPassword.cs" />
+    <Compile Include="Modules\Need2FADisplay.cs" />
     <Compile Include="Modules\SelectTwoStepSetup.cs" />
     <Compile Include="Modules\SelectTwoStepAuth.cs" />
+    <Compile Include="Modules\TemplateRolesSelectorModule.cs" />
     <Compile Include="Startup\AreaRegistration.cs" />
     <Compile Include="Startup\AttributeAuthorizationHandler.cs" />
     <Compile Include="Startup\Info.cs" />
@@ -206,31 +210,44 @@
     <Compile Include="ViewsCode\Shared\EmailHelper.cs" />
     <Compile Include="ViewsCode\Shared\LoginUsersHelper.cs" />
     <Compile Include="ViewsCode\Shared\RoleIdHelper.cs" />
+    <Compile Include="ViewsCode\Shared\RolesSelectorHelper.cs" />
     <Compile Include="ViewsCode\Shared\RolesHelper.cs" />
     <Compile Include="ViewsCode\Shared\UserIdHelper.cs" />
     <Compile Include="ViewsCode\Shared\UsersHelper.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Addons\_Main\Grids\RolesSelectorHelper.GridDisplay" />
+    <None Include="Addons\_Main\Grids\RolesSelectorHelper.GridEdit" />
     <None Include="app.config">
       <SubType>Designer</SubType>
     </None>
     <None Include="Addons\_Main\SelectTwoStepSetup.scss" />
+    <None Include="Addons\_Addons\Need2FADisplay\Need2FADisplay.scss" />
+    <Content Include="Addons\_Addons\Need2FADisplay\Need2FADisplay.js" />
+    <None Include="Addons\_Addons\Need2FADisplay\filelistCSS.txt" />
+    <None Include="Addons\_Addons\Need2FADisplay\filelistJS.txt" />
     <Content Include="Addons\_Main\Icons\LoginProviders\Facebook.png" />
     <Content Include="Addons\_Main\Icons\LoginProviders\Google.png" />
     <Content Include="Addons\_Main\Icons\LoginProviders\Microsoft.png" />
     <Content Include="Addons\_Main\Icons\LoginProviders\Twitter.png" />
     <Content Include="Addons\_Main\Login.css" />
+    <Content Include="Addons\_SiteTemplates\YetaWF_Identity.2.0.1.txt" />
     <Content Include="Addons\_SiteTemplates\YetaWF_Identity.1.0.5.txt" />
     <Content Include="Addons\_Templates\RoleId\filelistCSS.txt" />
     <Content Include="Addons\_Templates\RoleId\RoleId.css" />
     <Content Include="Views\Shared\DisplayTemplates\YetaWF_Identity_Email.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\YetaWF_Identity_RoleId.cshtml" />
+    <Content Include="Views\Shared\EditorTemplates\YetaWF_Identity_RolesSelector.cshtml" />
+    <Content Include="Views\Shared\DisplayTemplates\YetaWF_Identity_RolesSelector.cshtml" />
     <None Include="Views\YetaWF_Identity_ForgotPassword.cshtml" />
     <None Include="Views\YetaWF_Identity_ForgotPassword_Partial.cshtml" />
     <Content Include="Views\YetaWF_Identity_TwoStepDone.cshtml" />
+    <None Include="Views\YetaWF_Identity_Need2FADisplay.cshtml" />
     <None Include="Views\YetaWF_Identity_SelectTwoStepSetup.cshtml" />
     <None Include="Views\YetaWF_Identity_SelectTwoStepAuth.cshtml" />
     <Content Include="Views\YetaWF_Identity_ExternalLoginOnly.cshtml" />
+    <None Include="Views\YetaWF_Identity_TemplateRolesSelector.cshtml" />
+    <None Include="Views\YetaWF_Identity_TemplateRolesSelector_Partial.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\CoreComponents\Core\Core.csproj">

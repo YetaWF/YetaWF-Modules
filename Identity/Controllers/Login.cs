@@ -319,10 +319,12 @@ namespace YetaWF.Modules.Identity.Controllers {
             authManager.SignIn(new AuthenticationProperties() { IsPersistent = isPersistent }, identity);
 #endif
 
+            // superuser
             int superuserRole = Resource.ResourceAccess.GetSuperuserRoleId();
             if (user.RolesList != null && user.RolesList.Contains(new Role { RoleId = superuserRole }, new RoleComparer()))
                 Manager.SetSuperUserRole(true);
 
+            // accept user
             user.LastLoginDate = DateTime.UtcNow;
             user.LastLoginIP = Manager.UserHostAddress;
             user.LastActivityDate = DateTime.UtcNow;

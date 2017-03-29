@@ -13,6 +13,7 @@ using YetaWF.Core.Serializers;
 using YetaWF.Core.Support;
 using YetaWF.Modules.Identity.Controllers;
 using YetaWF.Modules.Identity.Modules;
+using YetaWF.Core.Identity;
 #if MVC6
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Http.Authentication;
@@ -45,6 +46,8 @@ namespace YetaWF.Modules.Identity.DataProvider {
         [StringLength(Globals.MaxUrl)]
         public string RegisterUrl { get; set; }
         [StringLength(Globals.MaxUrl)]
+        public string TwoStepAuthUrl { get; set; }
+        [StringLength(Globals.MaxUrl)]
         public string ForgotPasswordUrl { get; set; }
         [StringLength(Globals.MaxUrl)]
         public string VerificationPendingUrl { get; set; }
@@ -56,6 +59,8 @@ namespace YetaWF.Modules.Identity.DataProvider {
         public string SuspendedUrl { get; set; }
         [StringLength(Globals.MaxUrl)]
         public string LoggedOffUrl { get; set; }
+        [Data_Binary]
+        public SerializableList<Role> TwoStepAuth { get; set; }
 
         [Data_NewValue("(0)")]
         public bool UseFacebook { get; set; }

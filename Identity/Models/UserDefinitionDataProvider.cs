@@ -14,6 +14,7 @@ using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Packages;
 using YetaWF.Core.Serializers;
 using YetaWF.Core.Support;
+using YetaWF.Core.Support.TwoStepAuthorization;
 using YetaWF.Modules.Identity.Controllers;
 using YetaWF.Modules.Identity.Models;
 #if MVC6
@@ -89,6 +90,16 @@ namespace YetaWF.Modules.Identity.DataProvider {
 
         public SerializableList<Role> RolesList { get; set; } // role ids for this user
         public SerializableList<TwoStepDefinition> EnabledTwoStepAuthentications { get; set; }
+
+        public List<string> EnabledAndAvailableTwoStepAuthentications {
+            get {
+                TwoStepAuth twoStep = new TwoStepAuth();
+                List<string> procs = (from p in twoStep.GetTwoStepAuthProcessors() where p.IsAvailable() select p.Name).ToList();
+                List<string> enabledTwoStepAuths = (from e in EnabledTwoStepAuthentications select e.Name).ToList();
+                procs = procs.Intersect(enabledTwoStepAuths).ToList();
+                return procs;
+            }
+        }
 
         public UserDefinition() {
             RolesList = new SerializableList<Role>();

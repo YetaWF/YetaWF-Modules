@@ -7,6 +7,7 @@ using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Modules;
 using YetaWF.Core.Serializers;
 using YetaWF.DataProvider;
+using YetaWF.Modules.Identity.DataProvider;
 
 namespace YetaWF.Modules.Identity.Modules {
 
@@ -28,8 +29,16 @@ namespace YetaWF.Modules.Identity.Modules {
         public override SerializableList<AllowedRole> DefaultAllowedRoles { get { return AdministratorLevel_DefaultAllowedRoles; } }
 
         public ModuleAction GetAction_SelectTwoStepSetup(string url) {
+            return GetAction_ForceTwoStepSetup(url, null);
+        }
+        public ModuleAction GetAction_ForceTwoStepSetup(string url, string nextUrl) {
+            if (string.IsNullOrWhiteSpace(url)) {
+                LoginConfigData config = LoginConfigDataProvider.GetConfig();
+                url = config.TwoStepAuthUrl;
+            }
             return new ModuleAction(this) {
                 Url = string.IsNullOrWhiteSpace(url) ? ModulePermanentUrl : url,
+                QueryArgs = new { NextUrl = nextUrl },
                 Image = "#Edit",
                 LinkText = this.__ResStr("setupLink", "Two-Step Authentication Setup"),
                 MenuText = this.__ResStr("setupText", "Two-Step Authentication Setup"),
@@ -39,6 +48,8 @@ namespace YetaWF.Modules.Identity.Modules {
                 Category = ModuleAction.ActionCategoryEnum.Update,
                 Mode = ModuleAction.ActionModeEnum.Any,
                 Location = ModuleAction.ActionLocationEnum.NoAuto,
+                SaveReturnUrl = true,
+                AddToOriginList = true,
             };
         }
     }
