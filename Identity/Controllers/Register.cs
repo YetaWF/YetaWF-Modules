@@ -64,8 +64,6 @@ namespace YetaWF.Modules.Identity.Controllers {
             public bool ShowCaptcha { get; set; }
 
             [UIHint("Hidden")]
-            public string ReturnUrl { get; set; }
-            [UIHint("Hidden")]
             public bool CloseOnLogin { get; set; }
 
             public List<string> Images { get; set; }
@@ -83,7 +81,6 @@ namespace YetaWF.Modules.Identity.Controllers {
                 RegistrationType = config.RegistrationType,
                 ShowCaptcha = config.Captcha,
                 Captcha = new RecaptchaV2Data(),
-                ReturnUrl = Manager.ReturnToUrl,
                 CloseOnLogin = closeOnLogin,
             };
 
@@ -201,10 +198,10 @@ namespace YetaWF.Modules.Identity.Controllers {
                 await LoginModuleController.UserLoginAsync(user, config.PersistentLogin);
                 if (model.CloseOnLogin)
                     return FormProcessed(model, this.__ResStr("okRegText", "Your new account has been successfully registered."), this.__ResStr("okRegTitle", "Welcome!"),
-                        OnClose: OnCloseEnum.CloseWindow, OnPopupClose: OnPopupCloseEnum.GotoNewPage, NextPage: model.ReturnUrl);
+                        OnClose: OnCloseEnum.CloseWindow, OnPopupClose: OnPopupCloseEnum.GotoNewPage, NextPage: Manager.ReturnToUrl);
                 else
                     return FormProcessed(model, this.__ResStr("okRegText", "Your new account has been successfully registered."), this.__ResStr("okRegTitle", "Welcome!"),
-                        NextPage: model.ReturnUrl);
+                        NextPage: Manager.ReturnToUrl);
             } else
                 throw new InternalError("badUserStatus", "Unexpected account status {0}", user.UserStatus);
         }

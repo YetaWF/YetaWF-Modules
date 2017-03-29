@@ -71,8 +71,6 @@ namespace YetaWF.Modules.Identity.Controllers {
             public bool ShowCaptcha { get; set; }
 
             [UIHint("Hidden")]
-            public string ReturnUrl { get; set; }
-            [UIHint("Hidden")]
             public bool CloseOnLogin { get; set; }
 
             public List<string> Images { get; set; }
@@ -91,7 +89,6 @@ namespace YetaWF.Modules.Identity.Controllers {
                 VerificationCode = v,
                 Captcha = new RecaptchaV2Data(),
                 RememberMe = isPersistent,
-                ReturnUrl = Manager.ReturnToUrl,
                 CloseOnLogin = closeOnLogin,
             };
             model.ShowVerification = !string.IsNullOrWhiteSpace(model.VerificationCode);
@@ -253,7 +250,7 @@ namespace YetaWF.Modules.Identity.Controllers {
                 ActionResult actionResult = TwoStepAuthetication(user);
                 if (actionResult != null) {
                     Manager.SessionSettings.SiteSettings.SetValue<int>(LoginTwoStepController.IDENTITY_TWOSTEP_USERID, user.UserId);// marker that user has entered correct name/password
-                    Manager.SessionSettings.SiteSettings.SetValue<string>(LoginTwoStepController.IDENTITY_TWOSTEP_NEXTURL, model.ReturnUrl);// marker that user has entered correct name/password
+                    Manager.SessionSettings.SiteSettings.SetValue<string>(LoginTwoStepController.IDENTITY_TWOSTEP_NEXTURL, Manager.ReturnToUrl);// marker that user has entered correct name/password
                     Manager.SessionSettings.SiteSettings.SetValue<bool>(LoginTwoStepController.IDENTITY_TWOSTEP_CLOSEONLOGIN, model.CloseOnLogin);
                     Manager.SessionSettings.SiteSettings.Save();
                     return actionResult;
@@ -261,9 +258,9 @@ namespace YetaWF.Modules.Identity.Controllers {
                 await LoginModuleController.UserLoginAsync(user, model.RememberMe);
                 Logging.AddLog("User {0} - logged on", model.UserName);
                 if (model.CloseOnLogin)
-                    return FormProcessed(model, OnClose: OnCloseEnum.CloseWindow, OnPopupClose: OnPopupCloseEnum.GotoNewPage, NextPage: model.ReturnUrl);
+                    return FormProcessed(model, OnClose: OnCloseEnum.CloseWindow, OnPopupClose: OnPopupCloseEnum.GotoNewPage, NextPage: Manager.ReturnToUrl);
                 else
-                    return FormProcessed(model, NextPage: model.ReturnUrl);
+                    return FormProcessed(model);
             } else
                 throw new InternalError("badUserStatus", "Unexpected account status {0}", user.UserStatus);
         }

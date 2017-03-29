@@ -29,16 +29,15 @@ namespace YetaWF.Modules.Identity.Modules {
         public override SerializableList<AllowedRole> DefaultAllowedRoles { get { return AdministratorLevel_DefaultAllowedRoles; } }
 
         public ModuleAction GetAction_SelectTwoStepSetup(string url) {
-            return GetAction_ForceTwoStepSetup(url, null);
+            return GetAction_ForceTwoStepSetup(url);
         }
-        public ModuleAction GetAction_ForceTwoStepSetup(string url, string nextUrl) {
+        public ModuleAction GetAction_ForceTwoStepSetup(string url) {
             if (string.IsNullOrWhiteSpace(url)) {
                 LoginConfigData config = LoginConfigDataProvider.GetConfig();
                 url = config.TwoStepAuthUrl;
             }
             return new ModuleAction(this) {
                 Url = string.IsNullOrWhiteSpace(url) ? ModulePermanentUrl : url,
-                QueryArgs = new { NextUrl = nextUrl },
                 Image = "#Edit",
                 LinkText = this.__ResStr("setupLink", "Two-Step Authentication Setup"),
                 MenuText = this.__ResStr("setupText", "Two-Step Authentication Setup"),

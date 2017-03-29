@@ -68,7 +68,7 @@ namespace YetaWF.Modules.Identity.Controllers {
 
             [TextAbove("Please select which roles require mandatory two-step authentication. The site Superuser can always access the site even if two-step authentication is required but has not yet be set up. Other users must set up two-step authentication before full access to the site is granted.")]
             [Category("Two-Step Auth"), Caption("Two-Step Authentication"), Description("Defines which roles require mandatory two-step authentication")]
-            [UIHint("YetaWF_Identity_RolesSelector"), Required]
+            [UIHint("YetaWF_Identity_RolesSelector"), AdditionalMetadata("ExcludeUser2FA", true), Required]
             public SerializableList<Role> TwoStepAuth { get; set; }
 
             [Category("Captcha"), Caption("Use Captcha"), Description("Defines whether the user has to pass a \"human\" test when logging in or registering a new account (Yes), otherwise no test is performed (No)")]
@@ -200,6 +200,7 @@ namespace YetaWF.Modules.Identity.Controllers {
                 data = model.GetData(data); // merge new data into original
                 model.SetData(data); // and all the data back into model for final display
                 dataProvider.UpdateConfig(data);
+                Manager.Need2FAState = null;// we may have changed two-step auth settings, so re-evaluate
                 return FormProcessed(model, this.__ResStr("okSaved", "Configuration settings saved"));
             }
         }

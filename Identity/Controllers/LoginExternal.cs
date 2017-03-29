@@ -9,6 +9,7 @@ using YetaWF.Core.Log;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Modules;
 using YetaWF.Core.Support;
+using YetaWF.Core.Support.UrlHistory;
 using YetaWF.Modules.Identity.DataProvider;
 using YetaWF.Modules.Identity.Models;
 #if MVC6
@@ -37,7 +38,7 @@ namespace YetaWF.Modules.Identity.Controllers {
         [HttpPost]
         [ConditionalAntiForgeryToken]
         //[ExcludeDemoMode]
-        public ActionResult ExternalLogin(string provider) {
+        public ActionResult ExternalLogin(string provider, string returnUrl) {
             // Request a redirect to the external login provider
             if (Manager.IsDemo)
                 throw new Error("This action is not available in Demo mode.");
@@ -45,11 +46,11 @@ namespace YetaWF.Modules.Identity.Controllers {
                 throw new InternalError("No provider");
 #if MVC6
             SignInManager<UserDefinition> _signinManager = (SignInManager<UserDefinition>)YetaWFManager.ServiceProvider.GetService(typeof(SignInManager<UserDefinition>));
-            var redirectUrl = Url.Action("ExternalLoginCallback", "LoginExternal", new { }, "https");
+            var redirectUrl = Url.Action("ExternalLoginCallback", "LoginExternal", new { ReturnUrl = returnUrl }, "https");
             var properties = _signinManager.ConfigureExternalAuthenticationProperties(provider, redirectUrl);
             return Challenge(properties, provider);
 #else
-            return new ChallengeResult(provider, Url.Action("ExternalLoginCallback", "LoginExternal", new { }, "https"));
+            return new ChallengeResult(provider, Url.Action("ExternalLoginCallback", "LoginExternal", new { ReturnUrl = returnUrl }, "https"));
 #endif
         }
 
@@ -57,7 +58,7 @@ namespace YetaWF.Modules.Identity.Controllers {
 #if MVC6
         public async Task<IActionResult> ExternalLoginCallback(string returnUrl = null, string remoteError = null)
 #else
-        public async Task<ActionResult> ExternalLoginCallback()
+        public async Task<ActionResult> ExternalLoginCallback(string returnUrl = null)
 #endif
         {
             ExternalLoginInfo loginInfo;
@@ -103,14 +104,17 @@ namespace YetaWF.Modules.Identity.Controllers {
             if (user == null) {
                 // If the user does not have an account, then prompt the user to create an account
                 // we will go to a page where the user can set up a local account
-                return Redirect(Helper.GetSafeReturnUrl(Manager.CurrentSite.ExternalAccountSetupUrl));
+                Manager.OriginList = new List<Origin>();
+                Manager.OriginList.Add(new Origin() { Url = returnUrl });// where to go after setup
+                Manager.OriginList.Add(new Origin() { Url = Helper.GetSafeReturnUrl(Manager.CurrentSite.ExternalAccountSetupUrl) }); // setup
+                return Redirect(Manager.ReturnToUrl);
             }
 
             // determine what to do based on account status
             if (user.UserStatus == UserStatusEnum.Approved) {
                 await LoginModuleController.UserLoginAsync(user);
                 Logging.AddLog("User {0} - logged on", user.UserName);
-                return Redirect(Manager.ReturnToUrl);
+                return Redirect(returnUrl);
             } else if (user.UserStatus == UserStatusEnum.Rejected) {
                 LoginModuleController.UserLogoff();
                 Logging.AddErrorLog("User {0} - rejected user", user.UserName);

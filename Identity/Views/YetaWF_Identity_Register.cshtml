@@ -22,7 +22,7 @@
             } else {
                 <p>@__ResStr("acct1", "Log in using this account:")</p>
             }
-            @using (Html.BeginForm("ExternalLogin", "LoginExternal")) {
+            @using (Html.BeginForm("ExternalLogin", "LoginExternal", new { ReturnUrl = Manager.ReturnToUrl })) {
                 int index = 0;
                 @Html.AntiForgeryToken()
                 foreach (YetaWF.Core.Views.Shared.FormButton formButton in Model.ExternalProviders) {

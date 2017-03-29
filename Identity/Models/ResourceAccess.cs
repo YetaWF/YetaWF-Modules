@@ -324,9 +324,9 @@ namespace YetaWF.Modules.Identity.DataProvider {
             SelectTwoStepAuthModule mod = new SelectTwoStepAuthModule();
             return mod.GetAction_SelectTwoStepAuth(null, userId, userName, userEmail);
         }
-        public ModuleAction GetForceTwoStepActionSetup(string url, string nextUrl) {
+        public ModuleAction GetForceTwoStepActionSetup(string url) {
             SelectTwoStepSetupModule mod = new SelectTwoStepSetupModule();
-            return mod.GetAction_ForceTwoStepSetup(url, nextUrl);
+            return mod.GetAction_ForceTwoStepSetup(url);
         }
         public void ShowNeed2FA() {
             Manager.AddOnManager.AddExplicitlyInvokedModules(

@@ -57,7 +57,9 @@ namespace YetaWF.Modules.Identity.Modules {
             LoginModule loginMod = (LoginModule)ModuleDefinition.CreateUniqueModule(typeof(LoginModule));
             bool closeOnLogin;
             Manager.TryGetUrlArg<bool>("CloseOnLogin", out closeOnLogin, false);
-            menuList.New(loginMod.GetAction_Login(Manager.CurrentSite.LoginUrl, Force: true, CloseOnLogin: closeOnLogin), location);
+            ModuleAction logAction = loginMod.GetAction_Login(Manager.CurrentSite.LoginUrl, Force: true, CloseOnLogin: closeOnLogin);
+            logAction.AddToOriginList = false;
+            menuList.New(logAction, location);
             return menuList;
         }
         public ModuleAction GetAction_Register(string url, bool Force = false, bool CloseOnLogin = false) {
@@ -68,8 +70,6 @@ namespace YetaWF.Modules.Identity.Modules {
                 Url = string.IsNullOrWhiteSpace(url) ? ModulePermanentUrl : url,
                 QueryArgs = CloseOnLogin ? new { CloseOnLogin = CloseOnLogin } : null,
                 Image = "Register.png",
-                AddToOriginList = false,
-                SaveReturnUrl = true,
                 LinkText = this.__ResStr("regLink", "Register a new user account"),
                 MenuText = this.__ResStr("regText", "Register"),
                 Tooltip = this.__ResStr("regTooltip", "If you don't have an account on this site, click to register"),
@@ -78,6 +78,8 @@ namespace YetaWF.Modules.Identity.Modules {
                 Location = ModuleAction.ActionLocationEnum.NoAuto | ModuleAction.ActionLocationEnum.InPopup | ModuleAction.ActionLocationEnum.ModuleLinks,
                 Category = ModuleAction.ActionCategoryEnum.Update,
                 Mode = ModuleAction.ActionModeEnum.Any,
+                SaveReturnUrl = true,
+                AddToOriginList = true,
             };
         }
         public ModuleAction GetAction_Approve(string userName) {

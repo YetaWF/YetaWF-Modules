@@ -39,8 +39,12 @@ namespace YetaWF.Modules.Identity.Modules {
             LoginConfigData config = LoginConfigDataProvider.GetConfig();
             bool closeOnLogin;
             Manager.TryGetUrlArg<bool>("CloseOnLogin", out closeOnLogin, false);
-            menuList.New(pswdMod.GetAction_ForgotPassword(config.ForgotPasswordUrl, CloseOnLogin: closeOnLogin), location);
-            menuList.New(regMod.GetAction_Register(config.RegisterUrl, Force: true, CloseOnLogin: closeOnLogin), location);
+            ModuleAction pswdAction = pswdMod.GetAction_ForgotPassword(config.ForgotPasswordUrl, CloseOnLogin: closeOnLogin);
+            pswdAction.AddToOriginList = false;
+            menuList.New(pswdAction, location);
+            ModuleAction registerAction = regMod.GetAction_Register(config.RegisterUrl, Force: true, CloseOnLogin: closeOnLogin);
+            registerAction.AddToOriginList = false;
+            menuList.New(registerAction, location);
             return menuList;
         }
 
@@ -50,8 +54,6 @@ namespace YetaWF.Modules.Identity.Modules {
                 Url = string.IsNullOrWhiteSpace(url) ? ModulePermanentUrl : url,
                 QueryArgs = CloseOnLogin ? new { CloseOnLogin = CloseOnLogin } : null,
                 Image="Login.png",
-                AddToOriginList = false,
-                SaveReturnUrl = true,
                 LinkText = this.__ResStr("loginLink", "Login using your existing account"),
                 MenuText = this.__ResStr("loginText", "Login"),
                 Tooltip = this.__ResStr("loginTooltip", "If you have an account on this site, click to log in"),
@@ -60,6 +62,8 @@ namespace YetaWF.Modules.Identity.Modules {
                 Location = ModuleAction.ActionLocationEnum.NoAuto | ModuleAction.ActionLocationEnum.InPopup | ModuleAction.ActionLocationEnum.ModuleLinks,
                 Category = ModuleAction.ActionCategoryEnum.Update,
                 Mode = ModuleAction.ActionModeEnum.Any,
+                SaveReturnUrl = true,
+                AddToOriginList = true,
             };
         }
 
@@ -69,7 +73,6 @@ namespace YetaWF.Modules.Identity.Modules {
             return new ModuleAction(this) {
                 Url = YetaWFManager.UrlFor(typeof(LoginDirectController), "LoginAs"),
                 QueryArgs = new { UserId = userId },
-                AddToOriginList = false,
                 Image = "LoginAs.png",
                 LinkText = this.__ResStr("loginAsLink", "Login a user {0}", userName),
                 MenuText = this.__ResStr("loginAsText", "not used"),

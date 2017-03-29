@@ -35,8 +35,13 @@ namespace YetaWF.Modules.Identity.Modules {
             LoginModule loginMod = (LoginModule)ModuleDefinition.CreateUniqueModule(typeof(LoginModule));
             bool closeOnLogin;
             Manager.TryGetUrlArg<bool>("CloseOnLogin", out closeOnLogin, false);
-            menuList.New(loginMod.GetAction_Login(Manager.CurrentSite.LoginUrl, Force: true, CloseOnLogin: closeOnLogin), location);
-            menuList.New(regMod.GetAction_Register(config.RegisterUrl, Force: true, CloseOnLogin: closeOnLogin), location);
+
+            ModuleAction logAction = loginMod.GetAction_Login(Manager.CurrentSite.LoginUrl, Force: true, CloseOnLogin: closeOnLogin);
+            logAction.AddToOriginList = false;
+            menuList.New(logAction, location);
+            ModuleAction regAction = regMod.GetAction_Register(config.RegisterUrl, Force: true, CloseOnLogin: closeOnLogin);
+            regAction.AddToOriginList = false;
+            menuList.New(regAction, location);
             return menuList;
         }
 
@@ -47,8 +52,6 @@ namespace YetaWF.Modules.Identity.Modules {
                 Url = string.IsNullOrWhiteSpace(url) ? ModulePermanentUrl : url,
                 QueryArgs = CloseOnLogin ? new { CloseOnLogin = CloseOnLogin } : null,
                 Image = "#Help",
-                AddToOriginList = false,
-                SaveReturnUrl = true,
                 LinkText = this.__ResStr("regLink", "Forgot your password?"),
                 MenuText = this.__ResStr("regText", "Forgot your password?"),
                 Tooltip = this.__ResStr("regTooltip", "If you have an account and forgot your password, click to have an email sent to you with your password"),
@@ -57,6 +60,8 @@ namespace YetaWF.Modules.Identity.Modules {
                 Location = ModuleAction.ActionLocationEnum.NoAuto | ModuleAction.ActionLocationEnum.InPopup | ModuleAction.ActionLocationEnum.ModuleLinks,
                 Category = ModuleAction.ActionCategoryEnum.Update,
                 Mode = ModuleAction.ActionModeEnum.Any,
+                SaveReturnUrl = true,
+                AddToOriginList = false,
             };
         }
     }
