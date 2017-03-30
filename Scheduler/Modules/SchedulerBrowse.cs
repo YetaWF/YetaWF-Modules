@@ -68,7 +68,7 @@ namespace YetaWF.Modules.Scheduler.Modules {
             SchedulerAddModule mod = new SchedulerAddModule();
             menuList.New(mod.GetAction_Add(AddUrl), location);
             LogBrowseModule logMod = new LogBrowseModule();
-            menuList.New(logMod.GetAction_Items(LogUrl), ModuleAction.ActionLocationEnum.Explicit);
+            menuList.NewIf(logMod.GetAction_Items(LogUrl), ModuleAction.ActionLocationEnum.ModuleLinks, location);
             return menuList;
         }
 
