@@ -35,15 +35,19 @@ namespace YetaWF.Modules.Scheduler.Modules {
 
         public override IModuleDefinitionIO GetDataProvider() { return new SchedulerBrowseModuleDataProvider(); }
 
-        [Category("General"), Caption("Add URL"), Description("The URL to add a new scheduler item - if omitted, a default page is generated")]
+        [Category("General"), Caption("Add Url"), Description("The Url to add a new scheduler item - if omitted, a default page is generated")]
         [UIHint("Url"), AdditionalMetadata("UrlType", UrlHelperEx.UrlTypeEnum.Local), UrlValidation(UrlValidationAttribute.SchemaEnum.Any, UrlHelperEx.UrlTypeEnum.Local), StringLength(Globals.MaxUrl), Trim]
         public string AddUrl { get; set; }
-        [Category("General"), Caption("Display URL"), Description("The URL to display a scheduler item - if omitted, a default page is generated")]
+        [Category("General"), Caption("Display Url"), Description("The Url to display a scheduler item - if omitted, a default page is generated")]
         [UIHint("Url"), AdditionalMetadata("UrlType", UrlHelperEx.UrlTypeEnum.Local), UrlValidation(UrlValidationAttribute.SchemaEnum.Any, UrlHelperEx.UrlTypeEnum.Local), StringLength(Globals.MaxUrl), Trim]
         public string DisplayUrl { get; set; }
-        [Category("General"), Caption("Edit URL"), Description("The URL to edit a scheduler item - if omitted, a default page is generated")]
+        [Category("General"), Caption("Edit Url"), Description("The Url to edit a scheduler item - if omitted, a default page is generated")]
         [UIHint("Url"), AdditionalMetadata("UrlType", UrlHelperEx.UrlTypeEnum.Local), UrlValidation(UrlValidationAttribute.SchemaEnum.Any, UrlHelperEx.UrlTypeEnum.Local), StringLength(Globals.MaxUrl), Trim]
         public string EditUrl { get; set; }
+
+        [Category("General"), Caption("Log Url"), Description("The Url to display the scheduler log - if omitted, a default page is generated")]
+        [UIHint("Url"), AdditionalMetadata("UrlType", UrlHelperEx.UrlTypeEnum.Local), UrlValidation(UrlValidationAttribute.SchemaEnum.Any, UrlHelperEx.UrlTypeEnum.Local), StringLength(Globals.MaxUrl), Trim]
+        public string LogUrl { get; set; }
 
         public override SerializableList<AllowedRole> DefaultAllowedRoles { get { return AdministratorLevel_DefaultAllowedRoles; } }
         public override List<RoleDefinition> ExtraRoles {
@@ -63,6 +67,8 @@ namespace YetaWF.Modules.Scheduler.Modules {
             MenuList menuList = base.GetModuleMenuList(renderMode, location);
             SchedulerAddModule mod = new SchedulerAddModule();
             menuList.New(mod.GetAction_Add(AddUrl), location);
+            LogBrowseModule logMod = new LogBrowseModule();
+            menuList.New(logMod.GetAction_Items(LogUrl), ModuleAction.ActionLocationEnum.Explicit);
             return menuList;
         }
 

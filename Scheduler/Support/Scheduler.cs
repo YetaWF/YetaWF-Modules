@@ -120,19 +120,25 @@ namespace YetaWF.Modules.Scheduler.Support {
 
         private Thread schedulingThread;
 #if DEBUG
-        private TimeSpan defaultTimeSpan = new TimeSpan(0, 0, 60); // 60 seconds (quicker in debug, for better debuggability)
+        private TimeSpan defaultTimeSpan = new TimeSpan(0, 0, 10/*$$*/); // 60 seconds (quicker in debug, for better debuggability)
         private TimeSpan defaultStartupTimeSpan = new TimeSpan(0, 0, 30); // 30 seconds
 #else
         private TimeSpan defaultTimeSpan = new TimeSpan(0, 2, 0); // 2 minutes
         private TimeSpan defaultStartupTimeSpan = new TimeSpan(0, 0, 30); // 30 seconds
 #endif
+        private SchedulerLogging SchedulerLog;
 
         private void Execute() {
 
             // get a manager for the scheduler
             YetaWFManager.MakeInitialThreadInstance(null);
 
-            Logging.AddLog("Scheduler task started");
+            SchedulerLog = new SchedulerLogging();
+            SchedulerLog.Init();
+            SchedulerLog.LimitTo(YetaWFManager.Manager);
+            Logging.RegisterLogging(SchedulerLog);
+
+            Logging.AddTraceLog("Scheduler task started");
 
             // Because initialization is called during application startup, we'll wait before we
             // check for any schedule items that may be due (just so app start isn't all too slow).
@@ -167,11 +173,15 @@ namespace YetaWF.Modules.Scheduler.Support {
                     // thread was interrupted because there is work to be done
                 } catch (ThreadAbortException) { }
             }
+
+            // This never really ends so we don't need to unregister logging
+            //log.Shutdown();
+            //Logging.UnregisterLogging(log);
         }
 
         private void RunStartupItems() {
 
-            Logging.AddLog("Scheduler event - checking startup scheduler items");
+            Logging.AddTraceLog("Scheduler event - checking startup scheduler items");
 
             using (SchedulerDataProvider dataProvider = new SchedulerDataProvider()) {
                 if (!dataProvider.IsInstalled()) return;
@@ -242,7 +252,7 @@ namespace YetaWF.Modules.Scheduler.Support {
 
         private TimeSpan RunItems() {
 
-            Logging.AddLog("Scheduler event - checking scheduler items");
+            Logging.AddTraceLog("Scheduler event - checking scheduler items");
 
             using (SchedulerDataProvider dataProvider = new SchedulerDataProvider()) {
 
@@ -278,6 +288,9 @@ namespace YetaWF.Modules.Scheduler.Support {
         }
 
         private void RunItem(SchedulerDataProvider dataProvider, SchedulerItemData item) {
+
+            long logId = DateTime.UtcNow.Ticks;
+            SchedulerLog.SetCurrent(logId, 0, item.Name);
 
             item.IsRunning = true;
             item.RunTime = new TimeSpan();
@@ -317,17 +330,23 @@ namespace YetaWF.Modules.Scheduler.Support {
                         SiteDefinition.SitesInfo info = SiteDefinition.GetSites(0, 0, null, null);
                         foreach (SiteDefinition site in info.Sites) {
                             YetaWFManager.MakeThreadInstance(site);// set up a manager for the site
+                            SchedulerLog.LimitTo(YetaWFManager.Manager);
+                            SchedulerLog.SetCurrent(logId, site.Identity, item.Name);
+
                             SchedulerItemBase itemBase = new SchedulerItemBase { Name = item.Name, Description = item.Description, EventName = item.Event.Name, Enabled = true, Frequency = item.Frequency, Startup = item.Startup, SiteSpecific = true };
                             schedEvt.RunItem(itemBase);
                             foreach (var s in itemBase.Log)
-                                errors.AppendLine(Logging.AddErrorLog("{0}: {1}", site.Identity, s));
+                                errors.AppendLine(Logging.AddLog("{0}: {1}", site.Identity, s));
+
+                            YetaWFManager.MakeThreadInstance(null);// restore scheduler's manager
+                            SchedulerLog.LimitTo(YetaWFManager.Manager);
+                            SchedulerLog.SetCurrent(logId, 0, item.Name);
                         }
-                        YetaWFManager.MakeThreadInstance(null);// restore scheduler's manager
                     } else {
                         SchedulerItemBase itemBase = new SchedulerItemBase { Name = item.Name, Description = item.Description, EventName = item.Event.Name, Enabled = true, Frequency = item.Frequency, Startup = item.Startup, SiteSpecific = false };
                         schedEvt.RunItem(itemBase);
                         foreach (var s in itemBase.Log)
-                            errors.AppendLine(Logging.AddErrorLog(s));
+                            errors.AppendLine(Logging.AddLog(s));
                     }
                 } catch (Exception exc) {
                     throw new InternalError("An error occurred in scheduler item '{0}' - {1}", item.Name, exc.Message);
@@ -335,7 +354,7 @@ namespace YetaWF.Modules.Scheduler.Support {
 
                 TimeSpan diff = DateTime.UtcNow - now;
                 item.RunTime = diff;
-                errors.AppendLine(Logging.AddErrorLog("Elapsed time for schedule item '{0}' was {1} (hh:mm:ss.ms).", item.Name, diff));
+                errors.AppendLine(Logging.AddLog("Elapsed time for schedule item '{0}' was {1} (hh:mm:ss.ms).", item.Name, diff));
 
             } catch (Exception exc) {
                 errors.AppendLine(Logging.AddErrorLog("Scheduler item {0} failed.", item.Name, exc));
@@ -353,6 +372,8 @@ namespace YetaWF.Modules.Scheduler.Support {
             } catch (Exception exc) {
                 Logging.AddErrorLog("Updating scheduler item {0} failed.", item.Name, exc);
             }
+
+            SchedulerLog.SetCurrent();
         }
     }
 }

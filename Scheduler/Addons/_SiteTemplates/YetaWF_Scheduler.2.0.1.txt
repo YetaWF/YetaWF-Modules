@@ -1,0 +1,13 @@
+﻿### Copyright © 2017 Softel vdm, Inc. - http://yetawf.com/Documentation/YetaWF/Licensing
+###
+### Scheduler Package Upgrade
+###
+
+::PAGE-SECTION::
+
+Administrator /Admin/Scheduler/Log
+    Title=Scheduler Log
+    Admin > Scheduler > {YetaWF.Scheduler, YetaWF.Modules.Scheduler.Modules.LogBrowseModule}.GetAction_Items({CURRENTURL})
+    -
+    YetaWF.Scheduler, YetaWF.Modules.Scheduler.Modules.LogBrowseModule
+
