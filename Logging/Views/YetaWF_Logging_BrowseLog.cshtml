@@ -5,7 +5,7 @@
 @if (!Model.LogAvailable) {
     <div class="@Globals.CssDivAlert t_browselog t_file">
         @__ResStr("fileNA", "The site log is not available. Logging has not been started.")
-        @__ResStr("fileNA2", "This may be caused by a missing log folder (\\Data\\...\\YetaWF_Logging) or due to permissions issues writing to the folder.")
+        @__ResStr("fileNA2", "This may be caused by a missing log folder (\\Data\\DataFolder\\YetaWF_Logging) or due to permissions issues writing to the folder.")
     </div>
 } else if (Model.BrowsingSupported) {
     using (Form("BrowseLog_Partial")) {

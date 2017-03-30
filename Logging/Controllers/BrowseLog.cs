@@ -120,7 +120,7 @@ namespace YetaWF.Modules.Logging.Controllers {
                         SettingsModuleGuid = Module.PermanentGuid,
                         PageSizes = new List<int>() { 5, 10, 20, 50 },
 
-                };
+                    };
                 }
                 return View(model);
             }
