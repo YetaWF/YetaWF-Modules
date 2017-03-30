@@ -27,5 +27,3 @@ using YetaWF.PackageAttributes;
 [assembly: ServiceLevel(ServiceLevelEnum.SchedulerProvider)]
 
 // RESEARCH: http://haacked.com/archive/2011/10/16/the-dangers-of-implementing-recurring-background-tasks-in-asp-net.aspx/
-
-// TODO: Need better logging, status display for running and failed scheduler items, history
