@@ -58,7 +58,7 @@ namespace YetaWF.Modules.Identity.Views.Shared {
             public GridEdit() {  }
         }
 #if MVC6
-        public static HtmlString RenderRenderRolesSelector<TModel>(this IHtmlHelper<TModel> htmlHelper, string name, SerializableList<Role> model)
+        public static HtmlString RenderRolesSelector<TModel>(this IHtmlHelper<TModel> htmlHelper, string name, SerializableList<Role> model)
 #else
         public static HtmlString RenderRolesSelector<TModel>(this HtmlHelper<TModel> htmlHelper, string name, SerializableList<Role> model)
 #endif
