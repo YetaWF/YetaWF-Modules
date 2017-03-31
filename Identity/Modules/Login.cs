@@ -40,10 +40,12 @@ namespace YetaWF.Modules.Identity.Modules {
             bool closeOnLogin;
             Manager.TryGetUrlArg<bool>("CloseOnLogin", out closeOnLogin, false);
             ModuleAction pswdAction = pswdMod.GetAction_ForgotPassword(config.ForgotPasswordUrl, CloseOnLogin: closeOnLogin);
-            pswdAction.AddToOriginList = false;
+            if (pswdAction != null)
+                pswdAction.AddToOriginList = false;
             menuList.New(pswdAction, location);
             ModuleAction registerAction = regMod.GetAction_Register(config.RegisterUrl, Force: true, CloseOnLogin: closeOnLogin);
-            registerAction.AddToOriginList = false;
+            if (registerAction != null)
+                registerAction.AddToOriginList = false;
             menuList.New(registerAction, location);
             return menuList;
         }

@@ -37,10 +37,12 @@ namespace YetaWF.Modules.Identity.Modules {
             Manager.TryGetUrlArg<bool>("CloseOnLogin", out closeOnLogin, false);
 
             ModuleAction logAction = loginMod.GetAction_Login(Manager.CurrentSite.LoginUrl, Force: true, CloseOnLogin: closeOnLogin);
-            logAction.AddToOriginList = false;
+            if (logAction != null)
+                logAction.AddToOriginList = false;
             menuList.New(logAction, location);
             ModuleAction regAction = regMod.GetAction_Register(config.RegisterUrl, Force: true, CloseOnLogin: closeOnLogin);
-            regAction.AddToOriginList = false;
+            if (regAction != null)
+                regAction.AddToOriginList = false;
             menuList.New(regAction, location);
             return menuList;
         }
