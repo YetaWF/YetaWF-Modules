@@ -55,6 +55,10 @@ namespace YetaWF.Modules.Blog.Controllers {
             [UIHint("String"), ReadOnly]
             public string Author { get; set; }
 
+            [Caption("Allow Comments"), Description("Defines whether comments can be entered for this blog entry")]
+            [UIHint("Boolean"), ReadOnly]
+            public bool OpenForComments { get; set; }
+
             [Caption("Comments To Approve"), Description("The number of comments that need approval")]
             [UIHint("IntValue"), ReadOnly]
             public int CommentsUnapproved { get; set; }
