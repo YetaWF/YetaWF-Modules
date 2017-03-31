@@ -120,7 +120,7 @@ namespace YetaWF.Modules.Scheduler.Support {
 
         private Thread schedulingThread;
 #if DEBUG
-        private TimeSpan defaultTimeSpan = new TimeSpan(0, 0, 10/*$$*/); // 60 seconds (quicker in debug, for better debuggability)
+        private TimeSpan defaultTimeSpan = new TimeSpan(0, 0, 60); // 60 seconds (quicker in debug, for better debuggability)
         private TimeSpan defaultStartupTimeSpan = new TimeSpan(0, 0, 30); // 30 seconds
 #else
         private TimeSpan defaultTimeSpan = new TimeSpan(0, 2, 0); // 2 minutes
