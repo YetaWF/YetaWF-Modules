@@ -59,7 +59,7 @@ namespace YetaWF.Modules.Scheduler.Support {
         public bool IsInstalled() { return true; }
 
         public void WriteToLogFile(Logging.LevelEnum level, int relStack, string text) {
-            if (YetaWFManager.Manager != LimitToManager) return; // this log entry is for another thread
+            if (YetaWFManager.HaveManager && YetaWFManager.Manager != LimitToManager) return; // this log entry is for another thread
             logDP.AddItem(new DataProvider.LogData {
                 TimeStamp = DateTime.UtcNow,
                 RunId = CurrentId,
