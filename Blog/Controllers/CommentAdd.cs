@@ -108,8 +108,10 @@ namespace YetaWF.Modules.Blog.Controllers {
                 if (data == null)
                     throw new Error(this.__ResStr("notFound", "Blog entry with id {0} not found."), blogEntry);
                 blogCategory = data.CategoryIdentity;
-                if (!data.OpenForComments)
-                    return new EmptyResult();
+                if (!data.OpenForComments) {
+                    if (data.Comments == 0)
+                        return new EmptyResult();
+                }
             }
             AddModel model = new AddModel {
                 CategoryIdentity = blogCategory,
