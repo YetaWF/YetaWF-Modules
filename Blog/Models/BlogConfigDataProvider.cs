@@ -58,6 +58,12 @@ namespace YetaWF.Modules.Blog.DataProvider {
         public Gravatar.GravatarRatingEnum GravatarRating { get; set; }
         public int GravatarSize { get; set; }
 
+        [StringLength(Globals.MaxEmail)]
+        public string NotifyEmail { get; set; }
+
+        [Data_NewValue("(0)")]
+        public bool NotifyNewComment { get; set; }
+
         public bool Feed { get; set; }
         [StringLength(MaxFeedTitle)]
         public string FeedTitle { get; set; }

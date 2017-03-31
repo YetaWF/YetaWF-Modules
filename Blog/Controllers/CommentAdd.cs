@@ -8,6 +8,8 @@ using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Support;
 using YetaWF.Core.Views.Shared;
 using YetaWF.Modules.Blog.DataProvider;
+using YetaWF.Core.SendEmail;
+using YetaWF.Core.Packages;
 #if MVC6
 using Microsoft.AspNetCore.Mvc;
 #else
@@ -124,20 +126,44 @@ namespace YetaWF.Modules.Blog.Controllers {
         [ExcludeDemoMode]
         public ActionResult CommentAdd_Partial(AddModel model) {
             model.UpdateData();
-            if (!model.OpenForComments)
-                throw new InternalError("Can't add comments to this blog entry");
-            if (!ModelState.IsValid)
-                return PartialView(model);
-            using (BlogCommentDataProvider blogCommentDP = new BlogCommentDataProvider(model.EntryIdentity)) {
-                BlogComment blogComment = model.GetData();
-                if (!blogCommentDP.AddItem(blogComment)) {
-                    ModelState.AddModelError("Name", this.__ResStr("alreadyExists", "An error occurred adding this new comment"));
+            using (BlogEntryDataProvider entryDP = new BlogEntryDataProvider()) {
+                BlogEntry blogEntry = entryDP.GetItem(model.EntryIdentity);
+                if (blogEntry == null)
+                    throw new Error(this.__ResStr("notFound", "Blog entry with id {0} not found."), model.EntryIdentity);
+                if (!blogEntry.OpenForComments)
+                    throw new InternalError("Can't add comments to this blog entry");
+                if (!ModelState.IsValid)
                     return PartialView(model);
+                using (BlogCommentDataProvider blogCommentDP = new BlogCommentDataProvider(model.EntryIdentity)) {
+                    BlogComment blogComment = model.GetData();
+                    if (!blogCommentDP.AddItem(blogComment)) {
+                        ModelState.AddModelError("Name", this.__ResStr("alreadyExists", "An error occurred adding this new comment"));
+                        return PartialView(model);
+                    }
+                    // send notification email
+                    BlogConfigData config = BlogConfigDataProvider.GetConfig();
+                    if (config.NotifyNewComment) {
+                        SendEmail sendEmail = new SendEmail();
+                        object parms = new {
+                            Description = !blogComment.Approved ? this.__ResStr("needApproval", "This comment requires your approval.") : this.__ResStr("needApproval", "This comment has been automatically approved."),
+                            Category = blogEntry.Category,
+                            Title = blogEntry.Title.ToString(),
+                            Url = Manager.CurrentSite.MakeUrl(BlogConfigData.GetEntryCanonicalName(blogEntry.Identity)),
+                            Comment = YetaWFManager.HtmlDecode(model.Comment),
+                            UserName = model.Name,
+                            UserEmail = model.Email,
+                            UserWebsite = model.Website,
+                        };
+                        string subject = this.__ResStr("newComment", "New Blog Comment ({0} - {1})", blogEntry.Title.ToString(), Manager.CurrentSite.SiteDomain);
+                        sendEmail.PrepareEmailMessage(config.NotifyEmail, subject, sendEmail.GetEmailFile(Package.GetCurrentPackage(this), "New Comment.txt"), parameters: parms);
+                        sendEmail.Send(true);
+                    }
+
+                    if (!blogComment.Approved)
+                        return FormProcessed(model, this.__ResStr("okSavedReview", "New comment saved - It will be reviewed before becoming publicly viewable"), OnClose: OnCloseEnum.ReloadPage, OnPopupClose: OnPopupCloseEnum.ReloadParentPage);
+                    else
+                        return FormProcessed(model, this.__ResStr("okSaved", "New comment added"), OnClose: OnCloseEnum.ReloadPage, OnPopupClose: OnPopupCloseEnum.ReloadParentPage);
                 }
-                if (!blogComment.Approved)
-                    return FormProcessed(model, this.__ResStr("okSavedReview", "New comment saved - It will be reviewed before becoming publicly viewable"), OnClose: OnCloseEnum.ReloadPage, OnPopupClose: OnPopupCloseEnum.ReloadParentPage);
-                else
-                    return FormProcessed(model, this.__ResStr("okSaved", "New comment added"), OnClose: OnCloseEnum.ReloadPage, OnPopupClose: OnPopupCloseEnum.ReloadParentPage);
             }
         }
     }

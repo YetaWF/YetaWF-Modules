@@ -58,6 +58,14 @@ namespace YetaWF.Modules.Blog.Controllers {
             [UIHint("IntValue4"), RequiredIf("ShowGravatar", true), Range(16, 100)]
             public int GravatarSize { get; set; }
 
+            [Category("Notifications"), Caption("Email Address"), Description("The email address where all notifications for blog events are sent")]
+            [UIHint("Email"), StringLength(Globals.MaxEmail), EmailValidation, Trim]
+            public string NotifyEmail { get; set; }
+
+            [Category("Notifications"), Caption("Notify - New Comment"), Description("Defines whether the administrator receives email notification when a new comment has been added to a blog entry")]
+            [UIHint("Boolean")]
+            public bool NotifyNewComment { get; set; }
+
             [Category("Rss"), Caption("Feed"), Description("Publish this blog's contents as an Rss feed")]
             [UIHint("Boolean")]
             public bool Feed { get; set; }

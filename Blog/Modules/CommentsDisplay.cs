@@ -30,6 +30,7 @@ namespace YetaWF.Modules.Blog.Modules {
             Title = this.__ResStr("modTitle", "Comment Entries");
             Name = this.__ResStr("modName", "Comment Entries");
             Description = this.__ResStr("modSummary", "Displays all comment entries for a blog entry");
+            AnchorId = "Comments";
         }
 
         public override IModuleDefinitionIO GetDataProvider() { return new CommentsDisplayModuleDataProvider(); }

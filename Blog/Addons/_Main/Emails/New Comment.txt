@@ -1,0 +1,23 @@
+*************************************************************************************
+New Comment - [Var,-Title] - [Site,-SiteDomain]
+*************************************************************************************
+
+Category: [Var,-Category]
+Title:    [Var,-Title]
+Url:      [Var,-Url]#Comments
+
+[Var,-Description]
+
+A new blog comment has been added with the following information:
+
+Name:     [Var,-UserName]
+Email:    [Var,-UserEmail]
+Website:  [Var,-UserWebsite]
+
+Comment:     
+
+[Var,-Comment]
+
+*************************************************************************************
+[Site,-SiteDomain]
+*************************************************************************************
