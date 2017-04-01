@@ -292,6 +292,14 @@
           <Value>
             <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
               <Properties>
+                <Name Value="sitemapNotFound" />
+                <Text Value="Site map not found - File '{0}' cannot be located" />
+              </Properties>
+            </Object>
+          </Value>
+          <Value>
+            <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
+              <Properties>
                 <Name Value="sremDone" />
                 <Text Value="The site map has been removed" />
               </Properties>

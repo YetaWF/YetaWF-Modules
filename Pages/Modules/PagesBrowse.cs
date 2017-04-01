@@ -10,6 +10,7 @@ using YetaWF.Core.Serializers;
 using YetaWF.Core.Support;
 using YetaWF.DataProvider;
 using YetaWF.Modules.Pages.Controllers;
+using YetaWF.Modules.Pages.Scheduler;
 
 namespace YetaWF.Modules.Pages.Modules {
 
@@ -146,6 +147,27 @@ namespace YetaWF.Modules.Pages.Modules {
                 Mode = ModuleAction.ActionModeEnum.Any,
                 Location = ModuleAction.ActionLocationEnum.ModuleLinks,
                 ConfirmationText = this.__ResStr("sremAuthConfirm", "Are you sure you want to remove the current site map?"),
+            };
+        }
+        public ModuleAction GetAction_DownloaSiteMap() {
+            if (!IsAuthorized("SiteMaps")) return null;
+            SiteMaps sm = new SiteMaps();
+            string filename = sm.GetSiteMapFileName();
+            if (!System.IO.File.Exists(filename))
+                return null;
+            return new ModuleAction(this) {
+                Url = YetaWFManager.UrlFor(typeof(PagesBrowseModuleController), "DownloadSiteMap"),
+                NeedsModuleContext = true,
+                CookieAsDoneSignal = true,
+                Image = "Download.png",
+                LinkText = this.__ResStr("downloadLink", "Download Site Map"),
+                MenuText = this.__ResStr("downloadMenu", "Download Site Map"),
+                Tooltip = this.__ResStr("downloadTT", "Download the site map file"),
+                Legend = this.__ResStr("downloadLegend", "Downloads the site map file"),
+                Style = ModuleAction.ActionStyleEnum.Normal,
+                Category = ModuleAction.ActionCategoryEnum.Read,
+                Mode = ModuleAction.ActionModeEnum.Any,
+                Location = ModuleAction.ActionLocationEnum.ModuleLinks,
             };
         }
     }

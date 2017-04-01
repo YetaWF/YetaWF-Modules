@@ -169,6 +169,14 @@ namespace YetaWF.Modules.Pages.Scheduler {
             File.Delete(file);
         }
 
+        /// <summary>
+        /// Returns the site map file name
+        /// </summary>
+        /// <returns></returns>
+        public string GetSiteMapFileName() {
+            return GetFile();
+        }
+
         private string GetTempFile() {
             return Path.Combine(YetaWFManager.RootFolder, string.Format(SITEMAPTEMPFMT, Manager.CurrentSite.SiteDomain.ToLower()));
         }

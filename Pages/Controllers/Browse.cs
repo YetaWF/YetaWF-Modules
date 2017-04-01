@@ -2,7 +2,9 @@
 
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using YetaWF.Core.Addons;
 using YetaWF.Core.Controllers;
 using YetaWF.Core.DataProvider;
 using YetaWF.Core.Identity;
@@ -21,6 +23,7 @@ using YetaWF.Modules.Pages.Scheduler;
 #if MVC6
 using Microsoft.AspNetCore.Mvc;
 #else
+using System.Web;
 using System.Web.Mvc;
 #endif
 
@@ -219,6 +222,32 @@ namespace YetaWF.Modules.Pages.Controllers {
             SiteMaps sm = new SiteMaps();
             sm.Remove();
             return Reload(null, Reload: ReloadEnum.ModuleParts, PopupText: this.__ResStr("sremDone", "The site map has been removed"));
+        }
+
+        [Permission("SiteMaps")]
+        public ActionResult DownloadSiteMap(long cookieToReturn) {
+            SiteMaps sm = new SiteMaps();
+            string filename = sm.GetSiteMapFileName();
+            if (!System.IO.File.Exists(filename))
+                throw new Error(this.__ResStr("sitemapNotFound", "Site map not found - File '{0}' cannot be located", filename));
+#if MVC6
+            Response.Headers.Remove("Cookie");
+            Response.Cookies.Append(Basics.CookieDone, cookieToReturn.ToString(), new Microsoft.AspNetCore.Http.CookieOptions { HttpOnly = false, Path = "/" });
+#else
+            HttpCookie cookie = new HttpCookie(Basics.CookieDone, cookieToReturn.ToString());
+            Response.Cookies.Remove(Basics.CookieDone);
+            Response.SetCookie(cookie);
+#endif
+
+            string contentType = "application/octet-stream";
+#if MVC6
+        return new PhysicalFileResult(filename, contentType) { FileDownloadName = Path.GetFileName(filename) };
+#else
+            FilePathResult result = new FilePathResult(filename, contentType);
+            result.FileDownloadName = Path.GetFileName(filename);
+            return result;
+#endif
+
         }
     }
 }
