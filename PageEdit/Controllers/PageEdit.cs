@@ -168,6 +168,13 @@ namespace YetaWF.Modules.PageEdit.Controllers {
             [UIHint("TextArea"), AdditionalMetadata("SourceOnly", true), AllowHtml, StringLength(SiteDefinition.MaxMeta), Trim]
             public string PageMetaTags { get; set; }
 
+            [Category("Meta"), Caption("SiteMap Priority"), Description("Defines the page priority used for the site map")]
+            [UIHint("Enum")]
+            public PageDefinition.SiteMapPriorityEnum SiteMapPriority { get; set; }
+            [Category("Meta"), Caption("Change Frequency"), Description("Defines the page's change frequency used for the site map")]
+            [UIHint("Enum")]
+            public PageDefinition.ChangeFrequencyEnum ChangeFrequency { get; set; }
+
             [Category("Variables"), Caption("Page Guid Name"), Description("The page name encoded using its unique id")]
             [UIHint("String"), ReadOnly]
             public string PageGuidName { get; set; }

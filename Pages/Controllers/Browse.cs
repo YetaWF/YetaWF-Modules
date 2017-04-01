@@ -17,6 +17,7 @@ using YetaWF.Core.Support;
 using YetaWF.Core.Views.Shared;
 using YetaWF.Modules.Pages.DataProvider;
 using YetaWF.Modules.Pages.Modules;
+using YetaWF.Modules.Pages.Controllers.Support;
 #if MVC6
 using Microsoft.AspNetCore.Mvc;
 #else
@@ -73,6 +74,10 @@ namespace YetaWF.Modules.Pages.Controllers {
             [Caption("Users"), Description("Logged on users can view this page")]
             [UIHint("Boolean"), ReadOnly]
             public bool Users { get; set; }
+
+            [Caption("SiteMap Priority"), Description("Defines the page priority used for the site map")]
+            [UIHint("Enum"), ReadOnly]
+            public PageDefinition.SiteMapPriorityEnum SiteMapPriority { get; set; }
 
             [Caption("Date Created"), Description("The date the page was created")]
             [UIHint("DateTime"), ReadOnly]
@@ -196,6 +201,24 @@ namespace YetaWF.Modules.Pages.Controllers {
                 }
             }
             return Reload(null, Reload: ReloadEnum.ModuleParts);
+        }
+
+        [HttpPost]
+        [Permission("SiteMaps")]
+        [ExcludeDemoMode]
+        public ActionResult CreateSiteMap() {
+            SiteMaps sm = new SiteMaps();
+            sm.Create();
+            return Reload(null, Reload: ReloadEnum.ModuleParts, PopupText: this.__ResStr("screDone", "The site map has been successfully created"));
+        }
+
+        [HttpPost]
+        [Permission("SiteMaps")]
+        [ExcludeDemoMode]
+        public ActionResult RemoveSiteMap() {
+            SiteMaps sm = new SiteMaps();
+            sm.Remove();
+            return Reload(null, Reload: ReloadEnum.ModuleParts, PopupText: this.__ResStr("sremDone", "The site map has been removed"));
         }
     }
 }

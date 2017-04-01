@@ -331,7 +331,7 @@ namespace YetaWF.Modules.Blog.DataProvider {
         }
     }
 
-    public class BlogEntryDataProviderSearch : BlogEntryDataProvider, ISearchDynamicUrls {
+    public class BlogEntryDataProviderSearch : BlogEntryDataProvider, ISearchDynamicUrls, ISiteMapDynamicUrls {
 
         // ISEARCHDYNAMICURLS
         // ISEARCHDYNAMICURLS
@@ -359,6 +359,25 @@ namespace YetaWF.Modules.Blog.DataProvider {
                             ObjectSupport.AddStringProperties(comment, addTermsForPage, page, url, entry.Title.ToString(), entry.DateCreated, entry.DateUpdated);
                         }
                     }
+                }
+            }
+        }
+
+        // ISITEMAPDYNAMICURLS
+        // ISITEMAPDYNAMICURLS
+        // ISITEMAPDYNAMICURLS
+
+        public void FindDynamicUrls(Action<PageDefinition, string, DateTime?, PageDefinition.SiteMapPriorityEnum, PageDefinition.ChangeFrequencyEnum> addDynamicUrl, Func<PageDefinition, bool> validForSiteMap) {
+            using (this) {
+                BlogConfigData config = BlogConfigDataProvider.GetConfig();
+                int total;
+                List<DataProviderFilterInfo> filters = DataProviderFilterInfo.Join(null, new DataProviderFilterInfo { Field = "Published", Operator = "==", Value = true });
+                List<BlogEntry> entries = GetItems(0, 0, null, filters, out total);
+                foreach (BlogEntry entry in entries) {
+                    string url = BlogConfigData.GetEntryCanonicalName(entry.Identity);
+                    PageDefinition page = PageDefinition.LoadFromUrl(url);
+                    if (page == null) return; // there is no such root page
+                        addDynamicUrl(page, url, entry.DateUpdated, page.SiteMapPriority, page.ChangeFrequency);
                 }
             }
         }

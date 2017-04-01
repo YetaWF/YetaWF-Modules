@@ -37,6 +37,9 @@ namespace YetaWF.Modules.Pages.Modules {
                     new RoleDefinition("SetAuthorization",
                         this.__ResStr("roleSetAuthC", "Set Global Authorization"), this.__ResStr("roleSetAuth", "The role has permission to set global authorization for all pages"),
                         this.__ResStr("userSetAuthC", "Set Global Authorization"), this.__ResStr("userSetAuth", "The user has permission to set global authorization for all pages")),
+                    new RoleDefinition("SiteMaps",
+                        this.__ResStr("roleSiteMapsC", "Manage Site Maps"), this.__ResStr("roleSiteMaps", "The role has permission to manage site maps"),
+                        this.__ResStr("userSiteMapsC", "Manage Site Maps"), this.__ResStr("userSiteMaps", "The user has permission to manage site maps")),
                 };
             }
         }
@@ -106,6 +109,43 @@ namespace YetaWF.Modules.Pages.Modules {
                 Location = ModuleAction.ActionLocationEnum.ModuleLinks,
                 ConfirmationText = this.__ResStr("restAuthConfirm", "DEVELOPMENT FEATURE - Are you sure you want to add permission to all pages for the Administrator to have full control and the Editor can View & Edit?"),
                 PleaseWaitText = this.__ResStr("restAuthPlsWait", "Updating all pages so the Administrator has full control and the Editor can View & Edit..."),
+            };
+        }
+        public ModuleAction GetAction_CreateSiteMap() {
+            if (!IsAuthorized("SiteMaps")) return null;
+            return new ModuleAction(this) {
+                Url = YetaWFManager.UrlFor(typeof(PagesBrowseModuleController), "CreateSiteMap"),
+                NeedsModuleContext = true,
+                QueryArgs = new { },
+                Image = "#Add",
+                Style = ModuleAction.ActionStyleEnum.Post,
+                LinkText = this.__ResStr("screAuthLink", "Create Site Map"),
+                MenuText = this.__ResStr("screAuthMenu", "Create Site Map"),
+                Tooltip = this.__ResStr("screAuthTT", "Create a site map"),
+                Legend = this.__ResStr("screAuthLegend", "Creates a site map"),
+                Category = ModuleAction.ActionCategoryEnum.Significant,
+                Mode = ModuleAction.ActionModeEnum.Any,
+                Location = ModuleAction.ActionLocationEnum.ModuleLinks,
+                ConfirmationText = this.__ResStr("screAuthConfirm", "Are you sure you want to create a new site map?"),
+                PleaseWaitText = this.__ResStr("screAuthPlsWait", "Creating site map..."),
+            };
+        }
+        public ModuleAction GetAction_RemoveSiteMap() {
+            if (!IsAuthorized("SiteMaps")) return null;
+            return new ModuleAction(this) {
+                Url = YetaWFManager.UrlFor(typeof(PagesBrowseModuleController), "RemoveSiteMap"),
+                NeedsModuleContext = true,
+                QueryArgs = new { },
+                Image = "#Remove",
+                Style = ModuleAction.ActionStyleEnum.Post,
+                LinkText = this.__ResStr("sremAuthLink", "Remove Site Map"),
+                MenuText = this.__ResStr("sremAuthMenu", "Remove Site Map"),
+                Tooltip = this.__ResStr("sremAuthTT", "Remove current site map"),
+                Legend = this.__ResStr("sremAuthLegend", "Removes the current site map"),
+                Category = ModuleAction.ActionCategoryEnum.Significant,
+                Mode = ModuleAction.ActionModeEnum.Any,
+                Location = ModuleAction.ActionLocationEnum.ModuleLinks,
+                ConfirmationText = this.__ResStr("sremAuthConfirm", "Are you sure you want to remove the current site map?"),
             };
         }
     }
