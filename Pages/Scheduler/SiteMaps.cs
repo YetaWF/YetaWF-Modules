@@ -3,13 +3,17 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Web.Security.AntiXss;
 using System.Xml;
 using YetaWF.Core.Localize;
 using YetaWF.Core.Modules;
 using YetaWF.Core.Pages;
 using YetaWF.Core.Scheduler;
 using YetaWF.Core.Support;
+#if MVC6 
+using System.Net;
+#else
+using System.Web.Security.AntiXss;
+#endif
 
 namespace YetaWF.Modules.Pages.Scheduler {
 
@@ -124,13 +128,18 @@ namespace YetaWF.Modules.Pages.Scheduler {
             string cf = GetChangeFrequencyText(changeFrequency);
             float prio = GetPriority(siteMapPriority);
             var w3clastMod = lastMod != null ? string.Format("    <lastmod>{0}</lastmod>\r\n", XmlConvert.ToString((DateTime)lastMod, XmlDateTimeSerializationMode.Utc)) : "";
+#if MVC6
+            canonicalUrl = WebUtility.HtmlEncode(canonicalUrl);
+#else
+            canonicalUrl = AntiXssEncoder.XmlEncode(canonicalUrl)
+#endif
             File.AppendAllText(file, string.Format(
                 "  <url>\r\n" +
                 "    <loc>{0}</loc>\r\n" +
                 "{1}" +
                 "    <changefreq>{2}</changefreq>\r\n" +
                 "    <priority>{3}</priority>\r\n" +
-                "  </url>\r\n", AntiXssEncoder.XmlEncode(canonicalUrl), w3clastMod, cf, prio)
+                "  </url>\r\n", canonicalUrl, w3clastMod, cf, prio)
             );
         }
 
