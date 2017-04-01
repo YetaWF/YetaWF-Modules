@@ -17,7 +17,7 @@ using YetaWF.Core.Support;
 using YetaWF.Core.Views.Shared;
 using YetaWF.Modules.Pages.DataProvider;
 using YetaWF.Modules.Pages.Modules;
-using YetaWF.Modules.Pages.Controllers.Support;
+using YetaWF.Modules.Pages.Scheduler;
 #if MVC6
 using Microsoft.AspNetCore.Mvc;
 #else

@@ -5,28 +5,53 @@ using System.Collections.Generic;
 using System.IO;
 using System.Web.Security.AntiXss;
 using System.Xml;
+using YetaWF.Core.Localize;
 using YetaWF.Core.Modules;
 using YetaWF.Core.Pages;
+using YetaWF.Core.Scheduler;
 using YetaWF.Core.Support;
 
-namespace YetaWF.Modules.Pages.Controllers.Support {
+namespace YetaWF.Modules.Pages.Scheduler {
 
-    /// <summary>
-    /// Handles site maps.
-    /// </summary>
-    public class SiteMaps {
+    public class SiteMaps : IScheduling {
 
         private static YetaWFManager Manager { get { return YetaWFManager.Manager; } }
+
+        public const string EventSiteMaps = "YetaWF.Pages: Build Site Map";
 
         private const string SITEMAPFMT = "sitemap-{0}.xml";
         private const string SITEMAPTEMPFMT = "sitemap-{0}.temp.xml";
 
         private List<Guid> PagesFound = new List<Guid>();
 
+        public void RunItem(SchedulerItemBase evnt) {
+            if (evnt.EventName != EventSiteMaps)
+                throw new Error(this.__ResStr("eventNameErr", "Unknown scheduler event {0}."), evnt.EventName);
+            Create(slow: true);
+        }
+
+        public SchedulerItemBase[] GetItems() {
+            return new SchedulerItemBase[]{
+                new SchedulerItemBase {
+                    Name=this.__ResStr("eventName", "Build Site Map"),
+                    Description = this.__ResStr("eventDesc", "Builds site maps"),
+                    EventName = EventSiteMaps,
+                    Enabled = true,
+                    EnableOnStartup = true,
+                    RunOnce = false,
+                    Startup = false,
+                    SiteSpecific = true,
+                    Frequency = new SchedulerFrequency { TimeUnits = SchedulerFrequency.TimeUnitEnum.Weeks, Value=1 },
+                },
+            };
+        }
+
+        public SiteMaps() { }
+
         /// <summary>
         /// Create a site map for the current site.
         /// </summary>
-        public void Create() {
+        public void Create(bool slow = false) {
             string file = GetTempFile();
             File.Delete(file);
 
@@ -117,14 +142,14 @@ namespace YetaWF.Modules.Pages.Controllers.Support {
             }
             int value = (int)siteMapPriority;
             float prio = ((float)value) / 100;
-            prio = (float) Math.Max(0, Math.Min(1.0, prio));
+            prio = (float)Math.Max(0, Math.Min(1.0, prio));
             return prio;
         }
 
         private string GetChangeFrequencyText(PageDefinition.ChangeFrequencyEnum changeFrequency) {
             if (changeFrequency == PageDefinition.ChangeFrequencyEnum.Default)
                 changeFrequency = (PageDefinition.ChangeFrequencyEnum)Manager.CurrentSite.DefaultChangeFrequency;
-            switch(changeFrequency) {
+            switch (changeFrequency) {
                 case PageDefinition.ChangeFrequencyEnum.Always: return "always";
                 case PageDefinition.ChangeFrequencyEnum.Daily: return "daily";
                 case PageDefinition.ChangeFrequencyEnum.Hourly: return "hourly";

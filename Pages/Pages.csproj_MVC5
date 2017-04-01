@@ -68,8 +68,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Controllers\Support\SiteMaps.cs" />
     <Compile Include="Models\PageDefinitionWithModulesDataProvider.cs" />
+    <Compile Include="Scheduler\SiteMaps.cs" />
     <Compile Include="Startup\Info.cs" />
     <Compile Include="Startup\AreaRegistration.cs" />
     <Compile Include="Controllers\Browse.cs" />
