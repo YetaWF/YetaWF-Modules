@@ -23,6 +23,8 @@
                       <Value Value="Blog" />
                       <Key Value="Comments" />
                       <Value Value="Comments" />
+                      <Key Value="Notifications" />
+                      <Value Value="Notifications" />
                       <Key Value="Rss" />
                       <Value Value="Rss" />
                     </Dictionary>
@@ -182,6 +184,30 @@
                             <Name Value="GravatarSize" />
                             <Caption Value="Gravatar Size" />
                             <Description Value="The width and height of the displayed Gravatar images (in pixels)" />
+                            <HelpLink />
+                            <TextAbove />
+                            <TextBelow />
+                          </Properties>
+                        </Object>
+                      </Value>
+                      <Value>
+                        <Object Type="YetaWF.Core.Localize.LocalizationData+PropertyData" Assembly="YetaWF.Core">
+                          <Properties>
+                            <Name Value="NotifyEmail" />
+                            <Caption Value="Email Address" />
+                            <Description Value="The email address where all notifications for blog events are sent" />
+                            <HelpLink />
+                            <TextAbove />
+                            <TextBelow />
+                          </Properties>
+                        </Object>
+                      </Value>
+                      <Value>
+                        <Object Type="YetaWF.Core.Localize.LocalizationData+PropertyData" Assembly="YetaWF.Core">
+                          <Properties>
+                            <Name Value="NotifyNewComment" />
+                            <Caption Value="Notify - New Comment" />
+                            <Description Value="Defines whether the administrator receives email notification when a new comment has been added to a blog entry" />
                             <HelpLink />
                             <TextAbove />
                             <TextBelow />

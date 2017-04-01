@@ -27,6 +27,8 @@
                       <Value Value="External" />
                       <Key Value="Notifications" />
                       <Value Value="Notifications" />
+                      <Key Value="Two-Step Auth" />
+                      <Value Value="Two-Step Auth" />
                       <Key Value="Urls" />
                       <Value Value="Urls" />
                     </Dictionary>
@@ -246,6 +248,30 @@
                             <Name Value="SuspendedUrl" />
                             <Caption Value="Suspended Url" />
                             <Description Value="The Url where the user is redirected when his/her account has been suspended" />
+                            <HelpLink />
+                            <TextAbove />
+                            <TextBelow />
+                          </Properties>
+                        </Object>
+                      </Value>
+                      <Value>
+                        <Object Type="YetaWF.Core.Localize.LocalizationData+PropertyData" Assembly="YetaWF.Core">
+                          <Properties>
+                            <Name Value="TwoStepAuth" />
+                            <Caption Value="Two-Step Authentication" />
+                            <Description Value="Defines which roles require mandatory two-step authentication" />
+                            <HelpLink />
+                            <TextAbove Value="Please select which roles require mandatory two-step authentication. The site Superuser can always access the site even if two-step authentication is required but has not yet be set up. Other users must set up two-step authentication before full access to the site is granted." />
+                            <TextBelow />
+                          </Properties>
+                        </Object>
+                      </Value>
+                      <Value>
+                        <Object Type="YetaWF.Core.Localize.LocalizationData+PropertyData" Assembly="YetaWF.Core">
+                          <Properties>
+                            <Name Value="TwoStepAuthUrl" />
+                            <Caption Value="Two-Step Authentication Url" />
+                            <Description Value="The Url where the user is redirected if two-step authentication hasn't been set up yet" />
                             <HelpLink />
                             <TextAbove />
                             <TextBelow />

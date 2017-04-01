@@ -105,6 +105,18 @@
                       <Value>
                         <Object Type="YetaWF.Core.Localize.LocalizationData+PropertyData" Assembly="YetaWF.Core">
                           <Properties>
+                            <Name Value="ChangeFrequency" />
+                            <Caption Value="Change Frequency" />
+                            <Description Value="Defines the page's change frequency used for the site map" />
+                            <HelpLink />
+                            <TextAbove />
+                            <TextBelow />
+                          </Properties>
+                        </Object>
+                      </Value>
+                      <Value>
+                        <Object Type="YetaWF.Core.Localize.LocalizationData+PropertyData" Assembly="YetaWF.Core">
+                          <Properties>
                             <Name Value="Copyright" />
                             <Caption Value="Copyright" />
                             <Description Value="Defines an optional copyright notice displayed on the page, if supported by the skin used - If not defined, a default copyright notice may be defined in Site Properties" />
@@ -384,6 +396,18 @@
                             <Name Value="SelectedSkin" />
                             <Caption Value="Page Skin" />
                             <Description Value="The skin used to display the page" />
+                            <HelpLink />
+                            <TextAbove />
+                            <TextBelow />
+                          </Properties>
+                        </Object>
+                      </Value>
+                      <Value>
+                        <Object Type="YetaWF.Core.Localize.LocalizationData+PropertyData" Assembly="YetaWF.Core">
+                          <Properties>
+                            <Name Value="SiteMapPriority" />
+                            <Caption Value="SiteMap Priority" />
+                            <Description Value="Defines the page priority used for the site map" />
                             <HelpLink />
                             <TextAbove />
                             <TextBelow />

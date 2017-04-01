@@ -10,7 +10,7 @@
           <Value>
             <Object Type="YetaWF.Core.Localize.LocalizationData+ClassData" Assembly="YetaWF.Core">
               <Properties>
-                <Name Value="YetaWF.Modules.Scheduler.Modules.SchedulerBrowseModule" />
+                <Name Value="YetaWF.Modules.Scheduler.Modules.LogBrowseModule" />
                 <BaseTypeName Value="YetaWF.Core.Modules.ModuleDefinition" />
                 <Header />
                 <Footer />
@@ -31,45 +31,9 @@
                       <Value>
                         <Object Type="YetaWF.Core.Localize.LocalizationData+PropertyData" Assembly="YetaWF.Core">
                           <Properties>
-                            <Name Value="AddUrl" />
-                            <Caption Value="Add Url" />
-                            <Description Value="The Url to add a new scheduler item - if omitted, a default page is generated" />
-                            <HelpLink />
-                            <TextAbove />
-                            <TextBelow />
-                          </Properties>
-                        </Object>
-                      </Value>
-                      <Value>
-                        <Object Type="YetaWF.Core.Localize.LocalizationData+PropertyData" Assembly="YetaWF.Core">
-                          <Properties>
                             <Name Value="DisplayUrl" />
                             <Caption Value="Display Url" />
-                            <Description Value="The Url to display a scheduler item - if omitted, a default page is generated" />
-                            <HelpLink />
-                            <TextAbove />
-                            <TextBelow />
-                          </Properties>
-                        </Object>
-                      </Value>
-                      <Value>
-                        <Object Type="YetaWF.Core.Localize.LocalizationData+PropertyData" Assembly="YetaWF.Core">
-                          <Properties>
-                            <Name Value="EditUrl" />
-                            <Caption Value="Edit Url" />
-                            <Description Value="The Url to edit a scheduler item - if omitted, a default page is generated" />
-                            <HelpLink />
-                            <TextAbove />
-                            <TextBelow />
-                          </Properties>
-                        </Object>
-                      </Value>
-                      <Value>
-                        <Object Type="YetaWF.Core.Localize.LocalizationData+PropertyData" Assembly="YetaWF.Core">
-                          <Properties>
-                            <Name Value="LogUrl" />
-                            <Caption Value="Log Url" />
-                            <Description Value="The Url to display the scheduler log - if omitted, a default page is generated" />
+                            <Description Value="The Url to display a log entry - if omitted, a default page is generated" />
                             <HelpLink />
                             <TextAbove />
                             <TextBelow />
@@ -99,7 +63,7 @@
             <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
               <Properties>
                 <Name Value="browseLegend" />
-                <Text Value="Displays and manages scheduler items" />
+                <Text Value="Displays and manages the scheduler log" />
               </Properties>
             </Object>
           </Value>
@@ -107,7 +71,7 @@
             <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
               <Properties>
                 <Name Value="browseLink" />
-                <Text Value="Scheduler" />
+                <Text Value="Log" />
               </Properties>
             </Object>
           </Value>
@@ -115,7 +79,7 @@
             <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
               <Properties>
                 <Name Value="browseText" />
-                <Text Value="Scheduler" />
+                <Text Value="Log" />
               </Properties>
             </Object>
           </Value>
@@ -123,7 +87,7 @@
             <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
               <Properties>
                 <Name Value="browseTooltip" />
-                <Text Value="Display and manage scheduler items" />
+                <Text Value="Display and manage the scheduler log" />
               </Properties>
             </Object>
           </Value>
@@ -138,6 +102,70 @@
           <Value>
             <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
               <Properties>
+                <Name Value="dlZipLegend" />
+                <Text Value="Downloads the scheduler log file as a ZIP file" />
+              </Properties>
+            </Object>
+          </Value>
+          <Value>
+            <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
+              <Properties>
+                <Name Value="dlZipLink" />
+                <Text Value="Download Log (Zipped)" />
+              </Properties>
+            </Object>
+          </Value>
+          <Value>
+            <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
+              <Properties>
+                <Name Value="dlZipMenu" />
+                <Text Value="Download Log (Zipped)" />
+              </Properties>
+            </Object>
+          </Value>
+          <Value>
+            <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
+              <Properties>
+                <Name Value="dlZipTT" />
+                <Text Value="Download the scheduler log file as a ZIP file" />
+              </Properties>
+            </Object>
+          </Value>
+          <Value>
+            <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
+              <Properties>
+                <Name Value="downloadLegend" />
+                <Text Value="Downloads the scheduler log file" />
+              </Properties>
+            </Object>
+          </Value>
+          <Value>
+            <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
+              <Properties>
+                <Name Value="downloadLink" />
+                <Text Value="Download Log" />
+              </Properties>
+            </Object>
+          </Value>
+          <Value>
+            <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
+              <Properties>
+                <Name Value="downloadMenu" />
+                <Text Value="Download Log" />
+              </Properties>
+            </Object>
+          </Value>
+          <Value>
+            <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
+              <Properties>
+                <Name Value="downloadTT" />
+                <Text Value="Download the scheduler log file" />
+              </Properties>
+            </Object>
+          </Value>
+          <Value>
+            <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
+              <Properties>
                 <Name Value="enabled" />
                 <Text Value="The Scheduler is enabled." />
               </Properties>
@@ -146,8 +174,32 @@
           <Value>
             <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
               <Properties>
+                <Name Value="file" />
+                <Text Value="The scheduler log is a flat file. Online browsing is not available." />
+              </Properties>
+            </Object>
+          </Value>
+          <Value>
+            <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
+              <Properties>
+                <Name Value="fileNA" />
+                <Text Value="The scheduler log is not available. Scheduler logging has not been started." />
+              </Properties>
+            </Object>
+          </Value>
+          <Value>
+            <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
+              <Properties>
+                <Name Value="fileNA2" />
+                <Text Value="This may be caused by a missing log folder (\Data\DataFolder\YetaWF_Scheduler) or due to permissions issues writing to the folder." />
+              </Properties>
+            </Object>
+          </Value>
+          <Value>
+            <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
+              <Properties>
                 <Name Value="modName" />
-                <Text Value="Scheduler" />
+                <Text Value="Scheduler Log" />
               </Properties>
             </Object>
           </Value>
@@ -155,7 +207,7 @@
             <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
               <Properties>
                 <Name Value="modSummary" />
-                <Text Value="Displays and manages scheduler items" />
+                <Text Value="Displays and manages the scheduler log" />
               </Properties>
             </Object>
           </Value>
@@ -163,7 +215,39 @@
             <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
               <Properties>
                 <Name Value="modTitle" />
-                <Text Value="Scheduler" />
+                <Text Value="Scheduler Log" />
+              </Properties>
+            </Object>
+          </Value>
+          <Value>
+            <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
+              <Properties>
+                <Name Value="removeAllLegend" />
+                <Text Value="Remove all scheduler log records" />
+              </Properties>
+            </Object>
+          </Value>
+          <Value>
+            <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
+              <Properties>
+                <Name Value="removeAllLink" />
+                <Text Value="Remove All" />
+              </Properties>
+            </Object>
+          </Value>
+          <Value>
+            <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
+              <Properties>
+                <Name Value="removeAllMenu" />
+                <Text Value="Remove All" />
+              </Properties>
+            </Object>
+          </Value>
+          <Value>
+            <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
+              <Properties>
+                <Name Value="removeAllTT" />
+                <Text Value="Removes all scheduler log records" />
               </Properties>
             </Object>
           </Value>
@@ -171,223 +255,71 @@
             <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
               <Properties>
                 <Name Value="removeConfirm" />
-                <Text Value="Are you sure you want to remove scheduler item &quot;{0}&quot;?" />
+                <Text Value="Are you sure you want to remove ALL scheduler log records?" />
               </Properties>
             </Object>
           </Value>
           <Value>
             <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
               <Properties>
-                <Name Value="removeLegend" />
-                <Text Value="Remove the scheduler item" />
+                <Name Value="roleDownload" />
+                <Text Value="The role has permission to download the scheduler log file" />
               </Properties>
             </Object>
           </Value>
           <Value>
             <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
               <Properties>
-                <Name Value="removeLink" />
-                <Text Value="Remove Item" />
+                <Name Value="roleDownloadC" />
+                <Text Value="Download Log" />
               </Properties>
             </Object>
           </Value>
           <Value>
             <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
               <Properties>
-                <Name Value="removeMenu" />
-                <Text Value="Remove Item" />
+                <Name Value="roleRemLog" />
+                <Text Value="The role has permission to clear the scheduler log" />
               </Properties>
             </Object>
           </Value>
           <Value>
             <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
               <Properties>
-                <Name Value="removeTT" />
-                <Text Value="Remove the scheduler item" />
+                <Name Value="roleRemLogC" />
+                <Text Value="Remove Log" />
               </Properties>
             </Object>
           </Value>
           <Value>
             <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
               <Properties>
-                <Name Value="roleRemItems" />
-                <Text Value="The role has permission to remove individual scheduler items" />
+                <Name Value="userDownload" />
+                <Text Value="The user has permission to download the scheduler log file" />
               </Properties>
             </Object>
           </Value>
           <Value>
             <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
               <Properties>
-                <Name Value="roleRemItemsC" />
-                <Text Value="Remove Scheduler Items" />
+                <Name Value="userDownloadC" />
+                <Text Value="Download Log" />
               </Properties>
             </Object>
           </Value>
           <Value>
             <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
               <Properties>
-                <Name Value="roleRunItems" />
-                <Text Value="The role has permission to run individual scheduler items" />
+                <Name Value="userRemLog" />
+                <Text Value="The user has permission to clear the scheduler log" />
               </Properties>
             </Object>
           </Value>
           <Value>
             <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
               <Properties>
-                <Name Value="roleRunItemsC" />
-                <Text Value="Run Scheduler Items" />
-              </Properties>
-            </Object>
-          </Value>
-          <Value>
-            <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
-              <Properties>
-                <Name Value="runConfirm" />
-                <Text Value="Are you sure you want to run scheduler item &quot;{0}&quot;?" />
-              </Properties>
-            </Object>
-          </Value>
-          <Value>
-            <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
-              <Properties>
-                <Name Value="runLegend" />
-                <Text Value="Run the scheduler item" />
-              </Properties>
-            </Object>
-          </Value>
-          <Value>
-            <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
-              <Properties>
-                <Name Value="runLink" />
-                <Text Value="Run Item" />
-              </Properties>
-            </Object>
-          </Value>
-          <Value>
-            <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
-              <Properties>
-                <Name Value="runMenu" />
-                <Text Value="Run Item" />
-              </Properties>
-            </Object>
-          </Value>
-          <Value>
-            <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
-              <Properties>
-                <Name Value="runTT" />
-                <Text Value="Run the scheduler item" />
-              </Properties>
-            </Object>
-          </Value>
-          <Value>
-            <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
-              <Properties>
-                <Name Value="startLegend" />
-                <Text Value="Starts the scheduler" />
-              </Properties>
-            </Object>
-          </Value>
-          <Value>
-            <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
-              <Properties>
-                <Name Value="startLink" />
-                <Text Value="Start Scheduler" />
-              </Properties>
-            </Object>
-          </Value>
-          <Value>
-            <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
-              <Properties>
-                <Name Value="startMenu" />
-                <Text Value="Start Scheduler" />
-              </Properties>
-            </Object>
-          </Value>
-          <Value>
-            <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
-              <Properties>
-                <Name Value="startTT" />
-                <Text Value="Start the scheduler" />
-              </Properties>
-            </Object>
-          </Value>
-          <Value>
-            <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
-              <Properties>
-                <Name Value="stopLegend" />
-                <Text Value="Stops the scheduler" />
-              </Properties>
-            </Object>
-          </Value>
-          <Value>
-            <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
-              <Properties>
-                <Name Value="stopLink" />
-                <Text Value="Stop Scheduler" />
-              </Properties>
-            </Object>
-          </Value>
-          <Value>
-            <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
-              <Properties>
-                <Name Value="stopMenu" />
-                <Text Value="Stop Scheduler" />
-              </Properties>
-            </Object>
-          </Value>
-          <Value>
-            <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
-              <Properties>
-                <Name Value="stopTT" />
-                <Text Value="Stop the scheduler" />
-              </Properties>
-            </Object>
-          </Value>
-          <Value>
-            <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
-              <Properties>
-                <Name Value="toggleConfirmStart" />
-                <Text Value="Are you sure you want to stop the scheduler?" />
-              </Properties>
-            </Object>
-          </Value>
-          <Value>
-            <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
-              <Properties>
-                <Name Value="toggleConfirmStop" />
-                <Text Value="Are you sure you want to start the scheduler?" />
-              </Properties>
-            </Object>
-          </Value>
-          <Value>
-            <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
-              <Properties>
-                <Name Value="userRemItems" />
-                <Text Value="The user has permission to remove individual scheduler items" />
-              </Properties>
-            </Object>
-          </Value>
-          <Value>
-            <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
-              <Properties>
-                <Name Value="userRemItemsC" />
-                <Text Value="Remove Scheduler Items" />
-              </Properties>
-            </Object>
-          </Value>
-          <Value>
-            <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
-              <Properties>
-                <Name Value="userRunItems" />
-                <Text Value="The user has permission to run individual scheduler items" />
-              </Properties>
-            </Object>
-          </Value>
-          <Value>
-            <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
-              <Properties>
-                <Name Value="userRunItemsC" />
-                <Text Value="Run Scheduler Items" />
+                <Name Value="userRemLogC" />
+                <Text Value="Remove Log" />
               </Properties>
             </Object>
           </Value>

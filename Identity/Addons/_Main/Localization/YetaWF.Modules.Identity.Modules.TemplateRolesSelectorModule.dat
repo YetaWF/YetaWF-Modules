@@ -22,64 +22,56 @@
           <Value>
             <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
               <Properties>
-                <Name Value="adminRole" />
-                <Text Value="An administrator can do EVERYTHING on ONE site (the site where the user has the {0} role)" />
+                <Name Value="displayLegend" />
+                <Text Value="Displays the RolesSelector test template" />
               </Properties>
             </Object>
           </Value>
           <Value>
             <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
               <Properties>
-                <Name Value="anonymousRole" />
-                <Text Value="The {0} role describes every user that is not logged in (i.e., not an authenticated user)" />
+                <Name Value="displayLink" />
+                <Text Value="RolesSelector" />
               </Properties>
             </Object>
           </Value>
           <Value>
             <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
               <Properties>
-                <Name Value="cantRemoveUser" />
-                <Text Value="The {0} role can't be removed" />
+                <Name Value="displayText" />
+                <Text Value="RolesSelector" />
               </Properties>
             </Object>
           </Value>
           <Value>
             <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
               <Properties>
-                <Name Value="cantUpdateUser" />
-                <Text Value="The {0} role can't be updated" />
+                <Name Value="displayTooltip" />
+                <Text Value="Display the RolesSelector test template" />
               </Properties>
             </Object>
           </Value>
           <Value>
             <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
               <Properties>
-                <Name Value="editorRole" />
-                <Text Value="An editor is a user who can perform editing actions on the site" />
+                <Name Value="modName" />
+                <Text Value="Template Test - RolesSelector" />
               </Properties>
             </Object>
           </Value>
           <Value>
             <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
               <Properties>
-                <Name Value="superuserRole" />
-                <Text Value="The {0} role can do EVERYTHING on all sites - no restrictions" />
+                <Name Value="modSummary" />
+                <Text Value="RolesSelector test template" />
               </Properties>
             </Object>
           </Value>
           <Value>
             <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
               <Properties>
-                <Name Value="user2faRole" />
-                <Text Value="The {0} role describes every authenticated user that must set up two-step authentication (i.e., not an anonymous user)" />
-              </Properties>
-            </Object>
-          </Value>
-          <Value>
-            <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
-              <Properties>
-                <Name Value="userRole" />
-                <Text Value="The {0} role describes every authenticated user (i.e., not an anonymous user)" />
+                <Name Value="modTitle" />
+                <Text Value="RolesSelector Test Template" />
               </Properties>
             </Object>
           </Value>

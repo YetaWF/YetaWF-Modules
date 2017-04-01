@@ -10,9 +10,9 @@
           <Value>
             <Object Type="YetaWF.Core.Localize.LocalizationData+ClassData" Assembly="YetaWF.Core">
               <Properties>
-                <Name Value="YetaWF.Modules.Blog.Controllers.CommentAddModuleController+AddModel" />
+                <Name Value="YetaWF.Modules.Scheduler.Controllers.LogDisplayModuleController+DisplayModel" />
                 <BaseTypeName />
-                <Header Value="Complete this simple form to add a comment to this blog entry." />
+                <Header />
                 <Footer />
                 <Legend />
                 <Categories>
@@ -28,9 +28,9 @@
                       <Value>
                         <Object Type="YetaWF.Core.Localize.LocalizationData+PropertyData" Assembly="YetaWF.Core">
                           <Properties>
-                            <Name Value="Captcha" />
-                            <Caption Value="Captcha" />
-                            <Description Value="Please verify that you're a human and not a spam bot" />
+                            <Name Value="Info" />
+                            <Caption Value="Message" />
+                            <Description Value="The message" />
                             <HelpLink />
                             <TextAbove />
                             <TextBelow />
@@ -40,21 +40,9 @@
                       <Value>
                         <Object Type="YetaWF.Core.Localize.LocalizationData+PropertyData" Assembly="YetaWF.Core">
                           <Properties>
-                            <Name Value="Comment" />
-                            <Caption Value="Comment" />
-                            <Description Value="Enter your comment about this blog entry for others to view" />
-                            <HelpLink />
-                            <TextAbove />
-                            <TextBelow />
-                          </Properties>
-                        </Object>
-                      </Value>
-                      <Value>
-                        <Object Type="YetaWF.Core.Localize.LocalizationData+PropertyData" Assembly="YetaWF.Core">
-                          <Properties>
-                            <Name Value="Email" />
-                            <Caption Value="Your Email Address" />
-                            <Description Value="Enter your email address - Once your comment is published, your email address will not be shown, it is not publicly viewable" />
+                            <Name Value="Level" />
+                            <Caption Value="Level" />
+                            <Description Value="The message level" />
                             <HelpLink />
                             <TextAbove />
                             <TextBelow />
@@ -65,8 +53,8 @@
                         <Object Type="YetaWF.Core.Localize.LocalizationData+PropertyData" Assembly="YetaWF.Core">
                           <Properties>
                             <Name Value="Name" />
-                            <Caption Value="Your Name" />
-                            <Description Value="Enter your name - Once your comment is published, your name will appear as part of your comment" />
+                            <Caption Value="Name" />
+                            <Description Value="The name of the running scheduler item" />
                             <HelpLink />
                             <TextAbove />
                             <TextBelow />
@@ -76,21 +64,9 @@
                       <Value>
                         <Object Type="YetaWF.Core.Localize.LocalizationData+PropertyData" Assembly="YetaWF.Core">
                           <Properties>
-                            <Name Value="ShowGravatar" />
-                            <Caption Value="Show Gravatar" />
-                            <Description Value="Defines whether your optional Gravatar is shown, which is a publicly viewable image, that you can define using the free service at http://gravatar.com so all your comments will appear with your image" />
-                            <HelpLink Value="http://www.gravatar.com" />
-                            <TextAbove />
-                            <TextBelow />
-                          </Properties>
-                        </Object>
-                      </Value>
-                      <Value>
-                        <Object Type="YetaWF.Core.Localize.LocalizationData+PropertyData" Assembly="YetaWF.Core">
-                          <Properties>
-                            <Name Value="Title" />
-                            <Caption Value="Title" />
-                            <Description Value="Enter a title for your comment - Once your comment is published, the title will appear as part of your comment" />
+                            <Name Value="RunId" />
+                            <Caption Value="Id" />
+                            <Description Value="The id of the scheduler item run" />
                             <HelpLink />
                             <TextAbove />
                             <TextBelow />
@@ -100,9 +76,21 @@
                       <Value>
                         <Object Type="YetaWF.Core.Localize.LocalizationData+PropertyData" Assembly="YetaWF.Core">
                           <Properties>
-                            <Name Value="Website" />
-                            <Caption Value="Your Website" />
-                            <Description Value="Enter your optional website, so readers of your comment may visit your website. Your website is completely optional - Once your comment is published, your website address will appear as part of your comment" />
+                            <Name Value="SiteIdentity" />
+                            <Caption Value="Site Id" />
+                            <Description Value="The site which was affected by the scheduler item" />
+                            <HelpLink />
+                            <TextAbove />
+                            <TextBelow />
+                          </Properties>
+                        </Object>
+                      </Value>
+                      <Value>
+                        <Object Type="YetaWF.Core.Localize.LocalizationData+PropertyData" Assembly="YetaWF.Core">
+                          <Properties>
+                            <Name Value="TimeStamp" />
+                            <Caption Value="Created" />
+                            <Description Value="The date/time this log record was created" />
                             <HelpLink />
                             <TextAbove />
                             <TextBelow />
@@ -131,56 +119,8 @@
           <Value>
             <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
               <Properties>
-                <Name Value="alreadyExists" />
-                <Text Value="An error occurred adding this new comment" />
-              </Properties>
-            </Object>
-          </Value>
-          <Value>
-            <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
-              <Properties>
-                <Name Value="autoApproval" />
-                <Text Value="This comment has been automatically approved." />
-              </Properties>
-            </Object>
-          </Value>
-          <Value>
-            <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
-              <Properties>
-                <Name Value="needApproval" />
-                <Text Value="This comment requires your approval." />
-              </Properties>
-            </Object>
-          </Value>
-          <Value>
-            <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
-              <Properties>
-                <Name Value="newComment" />
-                <Text Value="New Blog Comment ({0} - {1})" />
-              </Properties>
-            </Object>
-          </Value>
-          <Value>
-            <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
-              <Properties>
                 <Name Value="notFound" />
-                <Text Value="Blog entry with id {0} not found." />
-              </Properties>
-            </Object>
-          </Value>
-          <Value>
-            <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
-              <Properties>
-                <Name Value="okSaved" />
-                <Text Value="New comment added" />
-              </Properties>
-            </Object>
-          </Value>
-          <Value>
-            <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
-              <Properties>
-                <Name Value="okSavedReview" />
-                <Text Value="New comment saved - It will be reviewed before becoming publicly viewable" />
+                <Text Value="Scheduler log entry with id {0} not found" />
               </Properties>
             </Object>
           </Value>

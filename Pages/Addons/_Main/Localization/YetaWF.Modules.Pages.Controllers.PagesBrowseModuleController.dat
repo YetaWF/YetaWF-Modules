@@ -177,6 +177,18 @@
                       <Value>
                         <Object Type="YetaWF.Core.Localize.LocalizationData+PropertyData" Assembly="YetaWF.Core">
                           <Properties>
+                            <Name Value="SiteMapPriority" />
+                            <Caption Value="SiteMap Priority" />
+                            <Description Value="Defines the page priority used for the site map" />
+                            <HelpLink />
+                            <TextAbove />
+                            <TextBelow />
+                          </Properties>
+                        </Object>
+                      </Value>
+                      <Value>
+                        <Object Type="YetaWF.Core.Localize.LocalizationData+PropertyData" Assembly="YetaWF.Core">
+                          <Properties>
                             <Name Value="StaticPage" />
                             <Caption Value="Static Page" />
                             <Description Value="Defines whether the page is rendered as a static page (for anonymous users only) - A page whose content doesn't changed can be marked as a static page, which results in faster page load for the end-user - Site Settings can be used to enable/disable the use of static pages globally using the StaticPages property - Static pages are only used with deployed sites" />
@@ -266,6 +278,22 @@
               <Properties>
                 <Name Value="noPageName" />
                 <Text Value="No page name specified" />
+              </Properties>
+            </Object>
+          </Value>
+          <Value>
+            <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
+              <Properties>
+                <Name Value="screDone" />
+                <Text Value="The site map has been successfully created" />
+              </Properties>
+            </Object>
+          </Value>
+          <Value>
+            <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
+              <Properties>
+                <Name Value="sremDone" />
+                <Text Value="The site map has been removed" />
               </Properties>
             </Object>
           </Value>

@@ -22,64 +22,64 @@
           <Value>
             <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
               <Properties>
-                <Name Value="adminRole" />
-                <Text Value="An administrator can do EVERYTHING on ONE site (the site where the user has the {0} role)" />
+                <Name Value="btnCancel" />
+                <Text Value="Return" />
               </Properties>
             </Object>
           </Value>
           <Value>
             <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
               <Properties>
-                <Name Value="anonymousRole" />
-                <Text Value="The {0} role describes every user that is not logged in (i.e., not an authenticated user)" />
+                <Name Value="displayLegend" />
+                <Text Value="Displays an existing scheduler log entry" />
               </Properties>
             </Object>
           </Value>
           <Value>
             <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
               <Properties>
-                <Name Value="cantRemoveUser" />
-                <Text Value="The {0} role can't be removed" />
+                <Name Value="displayLink" />
+                <Text Value="Display" />
               </Properties>
             </Object>
           </Value>
           <Value>
             <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
               <Properties>
-                <Name Value="cantUpdateUser" />
-                <Text Value="The {0} role can't be updated" />
+                <Name Value="displayText" />
+                <Text Value="Display" />
               </Properties>
             </Object>
           </Value>
           <Value>
             <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
               <Properties>
-                <Name Value="editorRole" />
-                <Text Value="An editor is a user who can perform editing actions on the site" />
+                <Name Value="displayTooltip" />
+                <Text Value="Display the scheduler log entry" />
               </Properties>
             </Object>
           </Value>
           <Value>
             <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
               <Properties>
-                <Name Value="superuserRole" />
-                <Text Value="The {0} role can do EVERYTHING on all sites - no restrictions" />
+                <Name Value="modName" />
+                <Text Value="Scheduler Log Entry" />
               </Properties>
             </Object>
           </Value>
           <Value>
             <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
               <Properties>
-                <Name Value="user2faRole" />
-                <Text Value="The {0} role describes every authenticated user that must set up two-step authentication (i.e., not an anonymous user)" />
+                <Name Value="modSummary" />
+                <Text Value="Displays an existing scheduler log entry" />
               </Properties>
             </Object>
           </Value>
           <Value>
             <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
               <Properties>
-                <Name Value="userRole" />
-                <Text Value="The {0} role describes every authenticated user (i.e., not an anonymous user)" />
+                <Name Value="modTitle" />
+                <Text Value="Scheduler Log Entry" />
               </Properties>
             </Object>
           </Value>

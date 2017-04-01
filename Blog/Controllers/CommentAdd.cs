@@ -147,7 +147,7 @@ namespace YetaWF.Modules.Blog.Controllers {
                     if (config.NotifyNewComment) {
                         SendEmail sendEmail = new SendEmail();
                         object parms = new {
-                            Description = !blogComment.Approved ? this.__ResStr("needApproval", "This comment requires your approval.") : this.__ResStr("needApproval", "This comment has been automatically approved."),
+                            Description = !blogComment.Approved ? this.__ResStr("needApproval", "This comment requires your approval.") : this.__ResStr("autoApproval", "This comment has been automatically approved."),
                             Category = blogEntry.Category,
                             Title = blogEntry.Title.ToString(),
                             Url = Manager.CurrentSite.MakeUrl(BlogConfigData.GetEntryCanonicalName(blogEntry.Identity)),

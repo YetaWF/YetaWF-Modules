@@ -157,7 +157,7 @@ namespace YetaWF.Modules.Scheduler.Controllers {
             using (LogDataProvider dataProvider = new LogDataProvider()) {
                 string filename = dataProvider.GetLogFileName();
                 if (!System.IO.File.Exists(filename))
-                    throw new Error(this.__ResStr("logNotFound", "The log file '{0}' cannot be located", filename));
+                    throw new Error(this.__ResStr("logNotFound", "The scheduler log file '{0}' cannot be located", filename));
 #if MVC6
 #else
                 HttpCookie cookie = new HttpCookie(Basics.CookieDone, cookieToReturn.ToString());

@@ -10,7 +10,7 @@
           <Value>
             <Object Type="YetaWF.Core.Localize.LocalizationData+ClassData" Assembly="YetaWF.Core">
               <Properties>
-                <Name Value="YetaWF.Modules.Blog.Controllers.EntriesBrowseModuleController+BrowseItem" />
+                <Name Value="YetaWF.Modules.Scheduler.Controllers.LogBrowseModuleController+BrowseItem" />
                 <BaseTypeName />
                 <Header />
                 <Footer />
@@ -28,30 +28,6 @@
                       <Value>
                         <Object Type="YetaWF.Core.Localize.LocalizationData+PropertyData" Assembly="YetaWF.Core">
                           <Properties>
-                            <Name Value="Author" />
-                            <Caption Value="Author" />
-                            <Description Value="The name of the blog author" />
-                            <HelpLink />
-                            <TextAbove />
-                            <TextBelow />
-                          </Properties>
-                        </Object>
-                      </Value>
-                      <Value>
-                        <Object Type="YetaWF.Core.Localize.LocalizationData+PropertyData" Assembly="YetaWF.Core">
-                          <Properties>
-                            <Name Value="Category" />
-                            <Caption Value="Category" />
-                            <Description Value="The name of the blog category" />
-                            <HelpLink />
-                            <TextAbove />
-                            <TextBelow />
-                          </Properties>
-                        </Object>
-                      </Value>
-                      <Value>
-                        <Object Type="YetaWF.Core.Localize.LocalizationData+PropertyData" Assembly="YetaWF.Core">
-                          <Properties>
                             <Name Value="Commands" />
                             <Caption Value="Actions" />
                             <Description Value="The available actions" />
@@ -64,9 +40,9 @@
                       <Value>
                         <Object Type="YetaWF.Core.Localize.LocalizationData+PropertyData" Assembly="YetaWF.Core">
                           <Properties>
-                            <Name Value="Comments" />
-                            <Caption Value="Comments" />
-                            <Description Value="The number of comments" />
+                            <Name Value="Info" />
+                            <Caption Value="Message" />
+                            <Description Value="The message" />
                             <HelpLink />
                             <TextAbove />
                             <TextBelow />
@@ -76,9 +52,9 @@
                       <Value>
                         <Object Type="YetaWF.Core.Localize.LocalizationData+PropertyData" Assembly="YetaWF.Core">
                           <Properties>
-                            <Name Value="CommentsUnapproved" />
-                            <Caption Value="Comments To Approve" />
-                            <Description Value="The number of comments that need approval" />
+                            <Name Value="Level" />
+                            <Caption Value="Level" />
+                            <Description Value="The message level" />
                             <HelpLink />
                             <TextAbove />
                             <TextBelow />
@@ -88,9 +64,9 @@
                       <Value>
                         <Object Type="YetaWF.Core.Localize.LocalizationData+PropertyData" Assembly="YetaWF.Core">
                           <Properties>
-                            <Name Value="DateCreated" />
-                            <Caption Value="Date Created" />
-                            <Description Value="The date this entry was created" />
+                            <Name Value="Name" />
+                            <Caption Value="Name" />
+                            <Description Value="The name of the running scheduler item" />
                             <HelpLink />
                             <TextAbove />
                             <TextBelow />
@@ -100,33 +76,9 @@
                       <Value>
                         <Object Type="YetaWF.Core.Localize.LocalizationData+PropertyData" Assembly="YetaWF.Core">
                           <Properties>
-                            <Name Value="DatePublished" />
-                            <Caption Value="Date Published" />
-                            <Description Value="The date this entry has been published" />
-                            <HelpLink />
-                            <TextAbove />
-                            <TextBelow />
-                          </Properties>
-                        </Object>
-                      </Value>
-                      <Value>
-                        <Object Type="YetaWF.Core.Localize.LocalizationData+PropertyData" Assembly="YetaWF.Core">
-                          <Properties>
-                            <Name Value="DateUpdated" />
-                            <Caption Value="Date Updated" />
-                            <Description Value="The date this entry was updated" />
-                            <HelpLink />
-                            <TextAbove />
-                            <TextBelow />
-                          </Properties>
-                        </Object>
-                      </Value>
-                      <Value>
-                        <Object Type="YetaWF.Core.Localize.LocalizationData+PropertyData" Assembly="YetaWF.Core">
-                          <Properties>
-                            <Name Value="Identity" />
+                            <Name Value="RunId" />
                             <Caption Value="Id" />
-                            <Description Value="The id of this blog entry - used to uniquely identify this blog entry internally" />
+                            <Description Value="The id of the scheduler item run" />
                             <HelpLink />
                             <TextAbove />
                             <TextBelow />
@@ -136,9 +88,9 @@
                       <Value>
                         <Object Type="YetaWF.Core.Localize.LocalizationData+PropertyData" Assembly="YetaWF.Core">
                           <Properties>
-                            <Name Value="OpenForComments" />
-                            <Caption Value="Allow Comments" />
-                            <Description Value="Defines whether comments can be entered for this blog entry" />
+                            <Name Value="SiteIdentity" />
+                            <Caption Value="Site Id" />
+                            <Description Value="The site which was affected by the scheduler item" />
                             <HelpLink />
                             <TextAbove />
                             <TextBelow />
@@ -148,21 +100,9 @@
                       <Value>
                         <Object Type="YetaWF.Core.Localize.LocalizationData+PropertyData" Assembly="YetaWF.Core">
                           <Properties>
-                            <Name Value="Published" />
-                            <Caption Value="Published" />
-                            <Description Value="Defines whether this entry has been published and is viewable by everyone" />
-                            <HelpLink />
-                            <TextAbove />
-                            <TextBelow />
-                          </Properties>
-                        </Object>
-                      </Value>
-                      <Value>
-                        <Object Type="YetaWF.Core.Localize.LocalizationData+PropertyData" Assembly="YetaWF.Core">
-                          <Properties>
-                            <Name Value="Title" />
-                            <Caption Value="Title" />
-                            <Description Value="The title for this blog entry" />
+                            <Name Value="TimeStamp" />
+                            <Caption Value="Created" />
+                            <Description Value="The date/time this log record was created" />
                             <HelpLink />
                             <TextAbove />
                             <TextBelow />
@@ -187,7 +127,16 @@
     <Strings>
       <Object Type="YetaWF.Core.Serializers.SerializableList`1[[YetaWF.Core.Localize.LocalizationData+StringData, YetaWF.Core, Culture=neutral, PublicKeyToken=null]]" Assembly="YetaWF.Core">
         <Properties />
-        <List />
+        <List>
+          <Value>
+            <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
+              <Properties>
+                <Name Value="logNotFound" />
+                <Text Value="The scheduler log file '{0}' cannot be located" />
+              </Properties>
+            </Object>
+          </Value>
+        </List>
       </Object>
     </Strings>
   </Properties>
