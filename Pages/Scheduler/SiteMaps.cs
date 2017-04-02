@@ -9,7 +9,7 @@ using YetaWF.Core.Modules;
 using YetaWF.Core.Pages;
 using YetaWF.Core.Scheduler;
 using YetaWF.Core.Support;
-#if MVC6 
+#if MVC6
 using System.Net;
 #else
 using System.Web.Security.AntiXss;
@@ -131,7 +131,7 @@ namespace YetaWF.Modules.Pages.Scheduler {
 #if MVC6
             canonicalUrl = WebUtility.HtmlEncode(canonicalUrl);
 #else
-            canonicalUrl = AntiXssEncoder.XmlEncode(canonicalUrl)
+            canonicalUrl = AntiXssEncoder.XmlEncode(canonicalUrl);
 #endif
             File.AppendAllText(file, string.Format(
                 "  <url>\r\n" +
