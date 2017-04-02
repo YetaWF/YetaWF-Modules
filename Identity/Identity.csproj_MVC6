@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net462</TargetFramework>
+    <TargetFramework>net46</TargetFramework>
     <DefineConstants>$(DefineConstants);MVC6</DefineConstants>
     <AssemblyName>YetaWF.Identity</AssemblyName>
     <PackageId>Identity</PackageId>
@@ -30,7 +30,7 @@
     <PackageReference Include="Microsoft.AspNetCore.Identity" Version="1.1.1" />
   </ItemGroup>
 
-  <ItemGroup Condition=" '$(TargetFramework)' == 'net462' ">
+  <ItemGroup Condition=" '$(TargetFramework)' == 'net46' ">
     <Reference Include="System" />
     <Reference Include="Microsoft.CSharp" />
   </ItemGroup>

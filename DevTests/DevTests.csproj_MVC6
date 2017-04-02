@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net462</TargetFramework>
+    <TargetFramework>net46</TargetFramework>
     <DefineConstants>$(DefineConstants);MVC6</DefineConstants>
     <AssemblyName>YetaWF.DevTests</AssemblyName>
     <PackageId>DevTests</PackageId>
@@ -22,7 +22,7 @@
     <ProjectReference Include="..\..\..\DataProvider\SQL\SQL.csproj" />
   </ItemGroup>
 
-  <ItemGroup Condition=" '$(TargetFramework)' == 'net462' ">
+  <ItemGroup Condition=" '$(TargetFramework)' == 'net46' ">
     <Reference Include="System" />
     <Reference Include="Microsoft.CSharp" />
   </ItemGroup>
