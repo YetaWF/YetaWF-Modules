@@ -12,7 +12,7 @@ namespace YetaWF.Modules.Visitors.Modules {
 
     public class SkinVisitorModuleDataProvider : ModuleDefinitionDataProvider<Guid, SkinVisitorModule>, IInstallableModel { }
 
-    [ModuleGuid("{7e432be4-1dbf-438a-9286-9c88ab225f5b}")]
+    [ModuleGuid("{7e432be4-1dbf-438a-9286-9c88ab225f5b}")] // Published Guid
     [UniqueModule(UniqueModuleStyle.UniqueOnly)]
     public class SkinVisitorModule : ModuleDefinition {
 
@@ -22,6 +22,9 @@ namespace YetaWF.Modules.Visitors.Modules {
             Description = this.__ResStr("modSummary", "Records visitor activity");
             Invokable = true;
             InvokeInPopup = true;
+            WantFocus = false;
+            WantSearch = false;
+            Print = false;
         }
 
         public override IModuleDefinitionIO GetDataProvider() { return new SkinVisitorModuleDataProvider(); }

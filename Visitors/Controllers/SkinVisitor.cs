@@ -4,6 +4,7 @@ using System;
 using YetaWF.Core;
 using YetaWF.Core.Controllers;
 using YetaWF.Core.Extensions;
+using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Support;
 using YetaWF.Modules.Visitors.DataProvider;
 #if MVC6
@@ -20,29 +21,55 @@ namespace YetaWF.Modules.Visitors.Controllers {
 
         public SkinVisitorModuleController() { }
 
+        public class DisplayModel {
+            public string TrackClickUrl { get; set; }
+        }
+
         [HttpGet]
         public ActionResult SkinVisitor() {
+            Module.ShowTitle = Manager.EditMode;// always show title in edit mode and never show in display mode
             using (VisitorEntryDataProvider visitorDP = new VisitorEntryDataProvider()) {
                 if (visitorDP.Usable) {
                     if (CallbackRegistered == null) {
                         ErrorHandling.RegisterCallback(AddVisitEntryError);
                         CallbackRegistered = true;
                     }
-                    AddVisitEntry(Manager, visitorDP);
+                    AddVisitEntry(null, Manager, visitorDP);
                 }
             }
-            return new EmptyResult();
+            // We render a form so we get antiforgery fields used for TrackClick
+            DisplayModel model = new DisplayModel {
+                TrackClickUrl = YetaWFManager.UrlFor(GetType(), nameof(TrackClick))
+            };
+            return View(model);
         }
 
         public static bool? CallbackRegistered = null;
         public static bool InCallback = false;
+
+        [HttpPost]
+        // Don't use ConditionalAntiForgeryToken here - We have to prevent malicious cross-site attacks as this could be
+        // exploited to flood click tracking and fill up DBs, etc.
+        // This means you cannot use tracking on STATIC pages.
+        [ValidateAntiForgeryToken]
+        public ActionResult TrackClick(string url) {
+            string origin = Manager.CurrentRequest.Headers["Origin"];
+            if (!string.IsNullOrWhiteSpace(origin))
+                return new EmptyResult();
+            using (VisitorEntryDataProvider visitorDP = new VisitorEntryDataProvider()) {
+                if (visitorDP.Usable) {
+                    AddVisitEntry(url, Manager, visitorDP);
+                }
+            }
+            return new EmptyResult();
+        }
 
         public static void AddVisitEntryError(string error) {
             if (!InCallback) {
                 InCallback = true;
                 using (VisitorEntryDataProvider visitorDP = new VisitorEntryDataProvider()) {
                     try {
-                        AddVisitEntry(Manager, visitorDP, error);
+                        AddVisitEntry(null, Manager, visitorDP, error);
                     } catch (Exception) { }
                 }
                 InCallback = false;
@@ -50,7 +77,7 @@ namespace YetaWF.Modules.Visitors.Controllers {
         }
 
         // because the callback is registered globally (for all sites) errors are always logged for all sites, visitors are only logged if the page has a skinvisitor module reference
-        private static void AddVisitEntry(YetaWFManager manager, VisitorEntryDataProvider visitorDP, string error = null) {
+        private static void AddVisitEntry(string url, YetaWFManager manager, VisitorEntryDataProvider visitorDP, string error = null) {
             if (manager == null || !manager.HaveCurrentContext) return;
             string sessionKey = AreaRegistration.CurrentPackage.Name + "_Visitor";
             long sessionKeyVal;
@@ -65,15 +92,16 @@ namespace YetaWF.Modules.Visitors.Controllers {
             GeoLocation geoLocation = new GeoLocation(manager);
             GeoLocation.UserInfo userInfo = geoLocation.GetCurrentUserInfo();
 
-            string url;
             string referrer;
             string userAgent;
 #if MVC6
-            url = Manager.CurrentRequest.GetDisplayUrl();
+            if (url == null)
+                url = Manager.CurrentRequest.GetDisplayUrl();
             referrer = Manager.CurrentRequest.Headers["Referer"].ToString();
             userAgent = Manager.CurrentRequest.Headers["User-Agent"].ToString();
 #else
-            url = Manager.CurrentRequest.Url.ToString();
+            if (url == null)
+                url = Manager.CurrentRequest.Url.ToString();
             referrer = Manager.CurrentRequest.UrlReferrer != null ? Manager.CurrentRequest.UrlReferrer.ToString() : null;
             userAgent = Manager.CurrentRequest.UserAgent;
 #endif
