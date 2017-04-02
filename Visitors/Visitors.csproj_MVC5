@@ -78,8 +78,10 @@
     <None Include="Views\YetaWF_Visitors_IPAddressLookup.cshtml" />
     <None Include="Views\YetaWF_Visitors_TinyVisitors.cshtml" />
     <None Include="Views\YetaWF_Visitors_VisitorDisplay.cshtml" />
+    <None Include="Views\YetaWF_Visitors_SkinVisitor.cshtml" />
     <None Include="Views\YetaWF_Visitors_VisitorsUnavailable.cshtml" />
     <None Include="Views\YetaWF_Visitors_Visitors.cshtml" />
+    <None Include="Views\YetaWF_Visitors_SkinVisitor_Partial.cshtml" />
     <None Include="Views\YetaWF_Visitors_Visitors_Partial.cshtml" />
   </ItemGroup>
   <ItemGroup>
