@@ -63,7 +63,7 @@ namespace YetaWF.Modules.Visitors.Controllers {
             [UIHint("String"), ReadOnly]
             public string CountryCode { get; set; }
             [Caption("Region"), Description("The region where the visitor is located, based on IP address (if available)")]
-            [UIHint("Region"), ReadOnly]
+            [UIHint("String"), ReadOnly]
             public string RegionCode { get; set; }
             [Caption("City"), Description("The city where the visitor is located, based on IP address (if available)")]
             [UIHint("String"), ReadOnly]
