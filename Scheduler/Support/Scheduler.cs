@@ -318,13 +318,6 @@ namespace YetaWF.Modules.Scheduler.Support {
                     throw new InternalError("Scheduler item '{0}' could not be loaded (Type={1}, Assembly={2}) - {3}", item.Name, item.Event.ImplementingType, item.Event.ImplementingAssembly, exc.Message);
                 }
 
-                IScheduling schedEvt = null;
-                try {
-                    schedEvt = (IScheduling) Activator.CreateInstance(tp);
-                } catch (Exception exc) {
-                    throw new InternalError("Scheduler item '{0}' could not be instantiated (Type={1}, Assembly={2}) - {3}", item.Name, item.Event.ImplementingType, item.Event.ImplementingAssembly, exc.Message);
-                }
-
                 try {
                     if (item.SiteSpecific) {
                         SiteDefinition.SitesInfo info = SiteDefinition.GetSites(0, 0, null, null);
@@ -332,6 +325,13 @@ namespace YetaWF.Modules.Scheduler.Support {
                             YetaWFManager.MakeThreadInstance(site);// set up a manager for the site
                             SchedulerLog.LimitTo(YetaWFManager.Manager);
                             SchedulerLog.SetCurrent(logId, site.Identity, item.Name);
+
+                            IScheduling schedEvt = null;
+                            try {
+                                schedEvt = (IScheduling)Activator.CreateInstance(tp);
+                            } catch (Exception exc) {
+                                throw new InternalError("Scheduler item '{0}' could not be instantiated (Type={1}, Assembly={2}) - {3}", item.Name, item.Event.ImplementingType, item.Event.ImplementingAssembly, exc.Message);
+                            }
 
                             SchedulerItemBase itemBase = new SchedulerItemBase { Name = item.Name, Description = item.Description, EventName = item.Event.Name, Enabled = true, Frequency = item.Frequency, Startup = item.Startup, SiteSpecific = true };
                             schedEvt.RunItem(itemBase);
@@ -343,6 +343,14 @@ namespace YetaWF.Modules.Scheduler.Support {
                             SchedulerLog.SetCurrent(logId, 0, item.Name);
                         }
                     } else {
+
+                        IScheduling schedEvt = null;
+                        try {
+                            schedEvt = (IScheduling)Activator.CreateInstance(tp);
+                        } catch (Exception exc) {
+                            throw new InternalError("Scheduler item '{0}' could not be instantiated (Type={1}, Assembly={2}) - {3}", item.Name, item.Event.ImplementingType, item.Event.ImplementingAssembly, exc.Message);
+                        }
+
                         SchedulerItemBase itemBase = new SchedulerItemBase { Name = item.Name, Description = item.Description, EventName = item.Event.Name, Enabled = true, Frequency = item.Frequency, Startup = item.Startup, SiteSpecific = false };
                         schedEvt.RunItem(itemBase);
                         foreach (var s in itemBase.Log)
