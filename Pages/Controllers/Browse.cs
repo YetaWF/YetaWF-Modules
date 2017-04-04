@@ -247,7 +247,6 @@ namespace YetaWF.Modules.Pages.Controllers {
             result.FileDownloadName = Path.GetFileName(filename);
             return result;
 #endif
-
         }
     }
 }
