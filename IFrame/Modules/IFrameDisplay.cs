@@ -29,7 +29,7 @@ namespace YetaWF.Modules.IFrame.Modules {
             Title = this.__ResStr("modTitle", "IFrame");
             Name = this.__ResStr("modName", "IFrame (Display Url)");
             Description = this.__ResStr("modSummary", "Includes another page (Url) and displays the page");
-            Url = "http://LinksWithPics.com";
+            Url = "https://LinksWithPics.com";
             Width = "100%";
             Height = "800px";
             WantSearch = false;
