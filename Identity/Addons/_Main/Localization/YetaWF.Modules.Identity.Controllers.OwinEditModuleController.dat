@@ -12,7 +12,7 @@
               <Properties>
                 <Name Value="YetaWF.Modules.Identity.Controllers.OwinEditModuleController+EditModel" />
                 <BaseTypeName />
-                <Header Value="External login provider settings apply to all sites within this YetaWF instance." />
+                <Header Value="Login provider settings apply to all sites within this YetaWF instance." />
                 <Footer />
                 <Legend />
                 <Categories>
@@ -148,6 +148,18 @@
                       <Value>
                         <Object Type="YetaWF.Core.Localize.LocalizationData+PropertyData" Assembly="YetaWF.Core">
                           <Properties>
+                            <Name Value="SecurityStampValidationInterval" />
+                            <Caption Value="Security Interval" />
+                            <Description Value="The time after which a logged on user is re-validated (in case the password changed) to insure the authenticated user is still valid" />
+                            <HelpLink />
+                            <TextAbove />
+                            <TextBelow />
+                          </Properties>
+                        </Object>
+                      </Value>
+                      <Value>
+                        <Object Type="YetaWF.Core.Localize.LocalizationData+PropertyData" Assembly="YetaWF.Core">
+                          <Properties>
                             <Name Value="SlidingExpiration" />
                             <Caption Value="Sliding Expiration" />
                             <Description Value="Cookies are reissued with a new expiration time anytime a request is processed whose cookie is more than halfway through the expiration window" />
@@ -217,6 +229,14 @@
               <Properties>
                 <Name Value="okSaved" />
                 <Text Value="Web.config/appsettings.json has been updated - Web application is now restarting." />
+              </Properties>
+            </Object>
+          </Value>
+          <Value>
+            <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
+              <Properties>
+                <Name Value="securityInterval" />
+                <Text Value="The minimum validation interval should be at least 1 minute" />
               </Properties>
             </Object>
           </Value>

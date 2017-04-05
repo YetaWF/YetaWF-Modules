@@ -23,7 +23,7 @@
             <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
               <Properties>
                 <Name Value="editLegend" />
-                <Text Value="Edits external login providers" />
+                <Text Value="Edits login provider settings" />
               </Properties>
             </Object>
           </Value>
@@ -47,7 +47,7 @@
             <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
               <Properties>
                 <Name Value="editTooltip" />
-                <Text Value="Edit external login providers" />
+                <Text Value="Edit login provider settings" />
               </Properties>
             </Object>
           </Value>
@@ -55,7 +55,7 @@
             <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
               <Properties>
                 <Name Value="modName" />
-                <Text Value="External Login Provider Settings" />
+                <Text Value="Login Provider Settings" />
               </Properties>
             </Object>
           </Value>
@@ -63,7 +63,7 @@
             <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
               <Properties>
                 <Name Value="modSummary" />
-                <Text Value="Edits external login providers like Google, Facebook, etc." />
+                <Text Value="Edits local and external login providers like Google, Facebook, etc." />
               </Properties>
             </Object>
           </Value>
@@ -71,7 +71,7 @@
             <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
               <Properties>
                 <Name Value="modTitle" />
-                <Text Value="External Login Provider Settings" />
+                <Text Value="Login Provider Settings" />
               </Properties>
             </Object>
           </Value>
