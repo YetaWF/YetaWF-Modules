@@ -88,6 +88,9 @@ namespace YetaWF.Modules.Identity.DataProvider {
         [Data_NewValue("(0)")]
         public int LoginFailures { get; set; }
 
+        [StringLength(60)] // max length is really a guid, leave some extra 
+        public string SecurityStamp { get; set; }
+
         public SerializableList<Role> RolesList { get; set; } // role ids for this user
         public SerializableList<TwoStepDefinition> EnabledTwoStepAuthentications { get; set; }
 

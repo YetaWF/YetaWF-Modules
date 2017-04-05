@@ -3,16 +3,18 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 using YetaWF.Core.DataProvider;
 using YetaWF.Core.Identity;
 using YetaWF.Core.Localize;
-using YetaWF.Core.Serializers;
 using YetaWF.Core.Support;
 using YetaWF.Modules.Identity.DataProvider;
-using System.Threading;
-using System.Threading.Tasks;
 #if MVC6
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Options;
 #else
 using Microsoft.AspNet.Identity;
 #endif
@@ -23,12 +25,20 @@ namespace YetaWF.Modules.Identity.Models {
     /// There is one UserStore per site, stored using PermanentManager
     /// </summary>
 
+#if MVC6
+    public class YetaWFSecurityStampValidator : SecurityStampValidator<UserDefinition> {
+        public YetaWFSecurityStampValidator(IOptions<IdentityOptions> options, SignInManager<UserDefinition> signInManager) : base(options, signInManager) { }
+    }
+#endif
+
     public class UserStore :
             IUserStore<UserDefinition>,
             IUserLoginStore<UserDefinition>,
             IUserPasswordStore<UserDefinition>,
 #if MVC6
+            IUserSecurityStampStore<UserDefinition>,
             IUserEmailStore<UserDefinition>,
+            ISecurityStampValidator,
 #else
 #endif
             IUserRoleStore<UserDefinition>
@@ -37,7 +47,7 @@ namespace YetaWF.Modules.Identity.Models {
         static object _lockObject = new object();
 
 #if MVC6
-        public UserStore() {
+        public UserStore(){
             CurrentSiteIdentity = YetaWFManager.Manager.CurrentSite.Identity;
         }
 #else
@@ -354,6 +364,28 @@ namespace YetaWF.Modules.Identity.Models {
             if (string.Compare(user.Email, normalizedEmail, true) != 0)
                 user.Email = normalizedEmail;
             return Task.FromResult(0);
+        }
+
+        // ISecurityStampValidator
+        // ISecurityStampValidator
+        // ISecurityStampValidator
+
+        public Task ValidateAsync(CookieValidatePrincipalContext context) {
+            return SecurityStampValidator.ValidatePrincipalAsync(context);
+        }
+
+        // IUserSecurityStampStore
+        // IUserSecurityStampStore
+        // IUserSecurityStampStore
+
+        public Task SetSecurityStampAsync(UserDefinition user, string stamp, CancellationToken cancellationToken) {
+            user.SecurityStamp = stamp;
+            return Task.CompletedTask;
+        }
+
+        public Task<string> GetSecurityStampAsync(UserDefinition user, CancellationToken cancellationToken) {
+            // we may not have a security stamp if the user definition was created on mvc5 or before we started using security stamps
+            return Task.FromResult<string>(user.SecurityStamp??"not previously initialized");
         }
 #else
 #endif
