@@ -38,6 +38,10 @@ namespace YetaWF.Modules.Identity.Controllers {
             [UIHint("TimeSpan"), Required]
             public TimeSpan ExpireTimeSpan { get; set; }
 
+            [Caption("Security Interval"), Description("The time after which a logged on user is re-validated (in case the password changed) to insure the authenticated user is still valid")]
+            [UIHint("TimeSpan"), Required]
+            public TimeSpan SecurityStampValidationInterval { get; set; }
+
             [Caption("Facebook"), Description("Provides a link to Facebook to set up authentication for your sites")]
             [UIHint("Url"), ReadOnly]
             public string FacebookUrl { get; set; }
@@ -92,8 +96,10 @@ namespace YetaWF.Modules.Identity.Controllers {
             EditModel model = new EditModel { };
 
             model.SlidingExpiration = WebConfigHelper.GetValue<bool>(Module.Area, "OWin:SlidingExpiration");
-            long ticks = WebConfigHelper.GetValue<long>(Module.Area, "OWin:ExpireTimeSpan");
+            long ticks = WebConfigHelper.GetValue<long>(Module.Area, "OWin:ExpireTimeSpan", new TimeSpan(10, 0, 0, 0).Ticks); // 10 days
             model.ExpireTimeSpan = new TimeSpan(ticks);
+            ticks = WebConfigHelper.GetValue<long>(Module.Area, "OWin:SecurityStampValidationInterval", new TimeSpan(0, 30, 0).Ticks); // 30 minutes
+            model.SecurityStampValidationInterval = new TimeSpan(ticks);
 
             model.MicrosoftPublic = WebConfigHelper.GetValue<string>(Module.Area, "MicrosoftAccount:Public");
             model.MicrosoftPrivate = WebConfigHelper.GetValue<string>(Module.Area, "MicrosoftAccount:Private");
@@ -116,9 +122,14 @@ namespace YetaWF.Modules.Identity.Controllers {
                 ModelState.AddModelError("ExpireTimeSpan", this.__ResStr("timeSpan", "The minimum expiration timespan should be at least 10 minutes"));
                 return PartialView(model);
             }
+            if (model.SecurityStampValidationInterval < new TimeSpan(0, 1, 0)) {
+                ModelState.AddModelError("SecurityStampValidationInterval", this.__ResStr("securityInterval", "The minimum validation interval should be at least 1 minute"));
+                return PartialView(model);
+            }
 
             WebConfigHelper.SetValue<bool>(Module.Area, "OWin:SlidingExpiration", model.SlidingExpiration);
             WebConfigHelper.SetValue<long>(Module.Area, "OWin:ExpireTimeSpan", model.ExpireTimeSpan.Ticks);
+            WebConfigHelper.SetValue<long>(Module.Area, "OWin:SecurityStampValidationInterval", model.SecurityStampValidationInterval.Ticks);
 
             WebConfigHelper.SetValue<string>(Module.Area, "MicrosoftAccount:Public", model.MicrosoftPublic);
             WebConfigHelper.SetValue<string>(Module.Area, "MicrosoftAccount:Private", model.MicrosoftPrivate);

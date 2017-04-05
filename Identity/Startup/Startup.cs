@@ -32,6 +32,9 @@ namespace YetaWF.Modules.Identity
                 options.Password.RequireUppercase = WebConfigHelper.GetValue<bool>(AREA, "Password:RequireUppercase");
                 options.Password.RequireLowercase = WebConfigHelper.GetValue<bool>(AREA, "Password:RequireLowercase");
 
+                long secIntvl = WebConfigHelper.GetValue<long>(AREA, "OWin:SecurityStampValidationInterval", new TimeSpan(0, 30, 0).Ticks); // 30 minutes
+                options.SecurityStampValidationInterval = new TimeSpan(secIntvl);
+
                 // We handle lockouts
                 options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(0);
                 options.Lockout.MaxFailedAccessAttempts = 0;
@@ -39,9 +42,9 @@ namespace YetaWF.Modules.Identity
                 // Cookie settings
                 string scheme = options.Cookies.ApplicationCookie.AuthenticationScheme = WebConfigHelper.GetValue<string>(AREA, "OWin:AuthenticationType");
                 if (scheme == "ApplicationCookie") {
-                    long ticks = WebConfigHelper.GetValue<long>(AREA, "OWin:ExpireTimeSpan");
+                    long ticks = WebConfigHelper.GetValue<long>(AREA, "OWin:ExpireTimeSpan", new TimeSpan(10, 0, 0, 0).Ticks);
                     options.Cookies.ApplicationCookie.ExpireTimeSpan = new TimeSpan(ticks);
-                    options.Cookies.ApplicationCookie.SlidingExpiration = WebConfigHelper.GetValue<bool>(AREA, "OWin:SlidingExpiration");
+                    options.Cookies.ApplicationCookie.SlidingExpiration = WebConfigHelper.GetValue<bool>(AREA, "OWin:SlidingExpiration", true);
                     options.Cookies.ApplicationCookie.CookieSecure = Microsoft.AspNetCore.Http.CookieSecurePolicy.None;
                     options.Cookies.ApplicationCookie.CookieName = string.Format(".YetaWF.Cookies.{0}", YetaWFManager.DefaultSiteName);
                     options.Cookies.ApplicationCookie.AutomaticAuthenticate = true;
@@ -56,6 +59,7 @@ namespace YetaWF.Modules.Identity
         }
 
         public void SetupLoginProviders(IApplicationBuilder app) {
+
             string pub = WebConfigHelper.GetValue<string>(AREA, "FacebookAccount:Public");
             string priv = WebConfigHelper.GetValue<string>(AREA, "FacebookAccount:Private");
             if (!string.IsNullOrWhiteSpace(pub) && !string.IsNullOrWhiteSpace(priv)) {

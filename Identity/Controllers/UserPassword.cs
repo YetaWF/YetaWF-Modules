@@ -87,7 +87,7 @@ namespace YetaWF.Modules.Identity.Controllers {
 #if MVC6
         public async Task<ActionResult> UserPassword_Partial(EditModel model)
 #else
-        public ActionResult UserPassword_Partial(EditModel model)
+        public async Task<ActionResult> UserPassword_Partial(EditModel model)
 #endif
         {
             // get current user we're changing
@@ -182,6 +182,10 @@ namespace YetaWF.Modules.Identity.Controllers {
                 }
                 return PartialView(model);
             }
+
+            // logoff/logon for any side effects in identity (like SecurityStamp update/cookies)
+            await LoginModuleController.UserLoginAsync(user);
+
             return FormProcessed(model, this.__ResStr("okSaved", "Your new password has been saved"));
         }
     }
