@@ -77,9 +77,7 @@
     <Compile Include="Modules\PagesBrowse.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Addons\_Main\Icons\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <ProjectReference Include="..\..\..\CoreComponents\Core\Core.csproj">
       <Project>{71acc7ac-2622-4127-b925-d058c01a39e5}</Project>
@@ -99,6 +97,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Addons\_Main\Icons\Download.png" />
     <Content Include="Views\YetaWF_Pages_PagesBrowse.cshtml" />
     <Content Include="Views\YetaWF_Pages_PagesBrowse_Partial.cshtml" />
     <Content Include="Addons\_Main\Grids\PagesBrowseModuleController.PageItem" />
