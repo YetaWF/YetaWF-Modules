@@ -1,4 +1,4 @@
-﻿Commands            icons 4
+﻿Commands            icons 3
 SiteDomain          sort filter 40 defaultSort asc
 IsDefaultSite       [Globals.ChBoolean] center
 SiteName            sort filter 80
