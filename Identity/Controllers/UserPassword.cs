@@ -7,10 +7,10 @@ using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Support;
 using YetaWF.Modules.Identity.DataProvider;
 using YetaWF.Modules.Identity.Models;
+using System.Threading.Tasks;
 #if MVC6
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using System.Threading.Tasks;
 #else
 using Microsoft.AspNet.Identity;
 using System.Web.Mvc;
