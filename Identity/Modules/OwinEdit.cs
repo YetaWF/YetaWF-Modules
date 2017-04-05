@@ -18,9 +18,9 @@ namespace YetaWF.Modules.Identity.Modules {
     public class OwinEditModule : ModuleDefinition {
 
         public OwinEditModule() : base() {
-            Title = this.__ResStr("modTitle", "External Login Provider Settings");
-            Name = this.__ResStr("modName", "External Login Provider Settings");
-            Description = this.__ResStr("modSummary", "Edits external login providers like Google, Facebook, etc.");
+            Title = this.__ResStr("modTitle", "Login Provider Settings");
+            Name = this.__ResStr("modName", "Login Provider Settings");
+            Description = this.__ResStr("modSummary", "Edits local and external login providers like Google, Facebook, etc.");
         }
 
         public override IModuleDefinitionIO GetDataProvider() { return new OwinEditModuleDataProvider(); }
@@ -33,8 +33,8 @@ namespace YetaWF.Modules.Identity.Modules {
                 Image = "#Edit",
                 LinkText = this.__ResStr("editLink", "Login Providers"),
                 MenuText = this.__ResStr("editText", "Login Providers"),
-                Tooltip = this.__ResStr("editTooltip", "Edit external login providers"),
-                Legend = this.__ResStr("editLegend", "Edits external login providers"),
+                Tooltip = this.__ResStr("editTooltip", "Edit login provider settings"),
+                Legend = this.__ResStr("editLegend", "Edits login provider settings"),
                 Style = ModuleAction.ActionStyleEnum.Popup,
                 Category = ModuleAction.ActionCategoryEnum.Update,
                 Mode = ModuleAction.ActionModeEnum.Any,
