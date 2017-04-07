@@ -99,6 +99,7 @@
     <Content Include="Addons\_Main\search.js" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Addons\_SiteTemplates\YetaWF_Search.2.0.2.txt" />
     <Content Include="Addons\_SiteTemplates\YetaWF_Search.txt" />
     <Content Include="packages.config" />
   </ItemGroup>
