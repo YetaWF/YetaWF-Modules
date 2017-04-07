@@ -24,7 +24,8 @@ namespace YetaWF.Modules.Search.Controllers {
             public bool MoreResults { get; set; }
             public int MaxResults { get; set; }
             public List<SearchResult> SearchResults { get; set; }
-
+            public bool ShowUrl { get; set; }
+            public bool ShowSummary { get; set; }
         }
 
         [HttpGet]
@@ -44,6 +45,8 @@ namespace YetaWF.Modules.Search.Controllers {
                     SearchResults = list,
                     MoreResults = haveMore,
                     MaxResults = config.MaxResults,
+                    ShowUrl = config.ShowUrl,
+                    ShowSummary = config.ShowSummary,
                 };
                 return View(model);
             }

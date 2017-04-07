@@ -21,6 +21,8 @@ namespace YetaWF.Modules.Search.DataProvider {
         public DateTime DateCreated { get; set; }
         [UIHint("DateTime")]
         public DateTime? DateUpdated { get; set; }
+        [UIHint("String")]
+        public string PageSummary { get; set; }
 
         public SearchResult() { }
     }

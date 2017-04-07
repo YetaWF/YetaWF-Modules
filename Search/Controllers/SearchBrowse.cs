@@ -47,9 +47,13 @@ namespace YetaWF.Modules.Search.Controllers {
             [UIHint("Url"), ReadOnly]
             public string PageUrl { get; set; }
 
-            [Caption("Description"), Description("The page description")]
+            [Caption("Title"), Description("The page title")]
             [UIHint("String"), ReadOnly]
-            public string PageDescription { get; set; }
+            public string PageTitle { get; set; }
+
+            [Caption("Summary"), Description("The page summary")]
+            [UIHint("String"), ReadOnly]
+            public string PageSummary { get; set; }
 
             [Caption("Created"), Description("The date/time the page was created")]
             [UIHint("DateTime"), ReadOnly]

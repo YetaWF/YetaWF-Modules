@@ -9,16 +9,20 @@
     right: 0px;
     top: 12em;
 }
-.YetaWF_Search_SearchResults  .t_list {
+.YetaWF_Search_SearchResults .t_summary {
     margin-top:1em;
 }
-.YetaWF_Search_SearchResults  .t_entry {
+.YetaWF_Search_SearchResults .t_list {
+    margin-top:1em;
+}
+.YetaWF_Search_SearchResults .t_entry {
     margin-bottom:.5em;
 }
-.YetaWF_Search_SearchResults  .t_created {
-    display:inline;
+.YetaWF_Search_SearchResults .t_url {
+    font-size:smaller;
 }
-.YetaWF_Search_SearchResults  .t_updated {
+.YetaWF_Search_SearchResults .t_updated {
+    font-size:smaller;
     display:inline;
 }
 

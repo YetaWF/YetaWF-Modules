@@ -12,20 +12,13 @@ using YetaWF.Core.Models;
 using YetaWF.Core.Modules;
 using YetaWF.Core.Pages;
 using YetaWF.Core.Scheduler;
+using YetaWF.Core.Search;
 using YetaWF.Core.Support;
 using YetaWF.Modules.Search.DataProvider;
 
 namespace YetaWF.Modules.Search.Scheduler {
 
     public class Search : IScheduling {
-
-        public const int TITLE_WEIGHT = 200;
-        public const int DESCRIPTION_WEIGHT = 200;
-        public const int KEYWORDS_WEIGHT = 200;
-        public const int CONTENT_WEIGHT = 1;
-
-        public int SmallestMixedToken { get; set; }
-        public int SmallestUpperCaseToken { get; set; }
 
         public const string EventSearchPages = "YetaWF.Search: Extract Search Keywords From Pages";
 
@@ -53,12 +46,7 @@ namespace YetaWF.Modules.Search.Scheduler {
 
         public Search() { }
 
-        public void SearchSite(bool slow)
-        {
-            SearchConfigData searchConfig = SearchConfigDataProvider.GetConfig();
-            SmallestMixedToken = searchConfig.SmallestMixedToken;
-            SmallestUpperCaseToken = searchConfig.SmallestUpperCaseToken;
-
+        public void SearchSite(bool slow) {
             DateTime searchStarted = DateTime.UtcNow; // once we have all new keywords, delete all keywords that were added before this date/time
             using (SearchDataProvider searchDP = new SearchDataProvider()) {
 
@@ -68,15 +56,13 @@ namespace YetaWF.Modules.Search.Scheduler {
                 // search types that generate dynamic urls
                 foreach (Type type in types) {
 #if DEBUG
-//                  if (type.Name != "FileDocumentDisplayModule") continue;//used for debugging
+                    //                  if (type.Name != "FileDocumentDisplayModule") continue;//used for debugging
 #endif
-                    ISearchDynamicUrls iSearch = (ISearchDynamicUrls)Activator.CreateInstance(type);
+                    ISearchDynamicUrls iSearch = Activator.CreateInstance(type) as ISearchDynamicUrls;
                     if (iSearch != null) {
                         try {
-                            CurrentSearchDP = searchDP;
-                            CurrentSearchStarted = searchStarted;
-                            iSearch.KeywordsForDynamicUrls(AddSearchTermsForPage);
-                            CurrentSearchDP = null;
+                            SearchWords searchWords = new SearchWords(searchDP, searchStarted);
+                            iSearch.KeywordsForDynamicUrls(searchWords);
                             if (slow)
                                 Thread.Sleep(500);// delay a bit (slow can only be used by schedule items)
                         } catch (Exception exc) {
@@ -91,12 +77,10 @@ namespace YetaWF.Modules.Search.Scheduler {
                     try {
                         ModuleDefinition mod = ModuleDefinition.Load(desMod.ModuleGuid, AllowNone: true);
                         if (mod != null && types.Contains(mod.GetType()) && mod.WantSearch) {
-                            ISearchDynamicUrls iSearch = (ISearchDynamicUrls)mod;
+                            ISearchDynamicUrls iSearch = mod as ISearchDynamicUrls;
                             if (iSearch != null) {
-                                CurrentSearchDP = searchDP;
-                                CurrentSearchStarted = searchStarted;
-                                iSearch.KeywordsForDynamicUrls(AddSearchTermsForPage);
-                                CurrentSearchDP = null;
+                                SearchWords searchWords = new SearchWords(searchDP, searchStarted);
+                                iSearch.KeywordsForDynamicUrls(searchWords);
                                 if (slow)
                                     Thread.Sleep(500);// delay a bit (slow can only be used by schedule items)
                             }
@@ -110,10 +94,9 @@ namespace YetaWF.Modules.Search.Scheduler {
                 List<Guid> pages = PageDefinition.GetDesignedGuids();
                 foreach (Guid pageGuid in pages) {
                     PageDefinition page = PageDefinition.Load(pageGuid);
-                    if (page != null && page.WantSearch) {
-                        List<SearchData> searchData = SearchPage(searchDP, page, searchStarted);
-                        if (searchData != null && searchData.Count > 0)
-                            searchDP.AddItems(searchData, page.EvaluatedCanonicalUrl, page.Description, page.Created, page.Updated, searchStarted);
+                    if (page != null) {
+                        SearchWords searchWords = new SearchWords(searchDP, searchStarted);
+                        SearchPage(searchWords, page);
                         if (slow)
                             Thread.Sleep(500);// delay a bit (slow can only be used by schedule items)
                     }
@@ -123,153 +106,242 @@ namespace YetaWF.Modules.Search.Scheduler {
                 searchDP.RemoveOldItems(searchStarted);
             }
         }
-        private List<SearchData> SearchPage(SearchDataProvider searchDP, PageDefinition page, DateTime searchStarted) {
-            List<SearchData> searchData = new List<SearchData>();
-            if (!string.IsNullOrWhiteSpace(page.RedirectToPageUrl)) // only search pages that aren't redirected
-                return null;
-            if (!page.WantSearch)
-                return null;
-            bool allowAnonymous = page.IsAuthorized_View_Anonymous();
-            bool allowAnyUser = page.IsAuthorized_View_AnyUser();
-            if (!allowAnonymous && !allowAnyUser)
-                return null;
-            if (!searchDP.PageUpdated(page.EvaluatedCanonicalUrl, page.Created, page.Updated)) {
-                Logging.AddLog("Skipping search keywords for page {0} - page not modified", page.EvaluatedCanonicalUrl);
-                return null;
-            }
 
-            Logging.AddLog("Adding search keywords for page {0}", page.EvaluatedCanonicalUrl);
-
-            AddSearchTerms(searchData, page.Title, allowAnonymous, allowAnyUser, TITLE_WEIGHT);
-            AddSearchTerms(searchData, page.Description, allowAnonymous, allowAnyUser, DESCRIPTION_WEIGHT);
-            AddSearchTerms(searchData, page.Keywords, allowAnonymous, allowAnyUser, KEYWORDS_WEIGHT);
-            foreach (var m in page.ModuleDefinitions) {
-                Guid modGuid = m.ModuleGuid;
-                ModuleDefinition mod = null;
-                try {
-                    mod = ModuleDefinition.Load(m.ModuleGuid);
-                } catch(Exception ex) {
-                    Logging.AddErrorLog("An error occurred retrieving module {0} in page {1}", m.ModuleGuid, page.Url, ex);
-                }
-                if (mod != null)
-                    SearchModule(searchData, page, mod, allowAnonymous, allowAnyUser);
-            }
-            return searchData;
-        }
-
-        List<SearchData> CurrentData;
-        bool CurrentAllowAnonymous;
-        bool CurrentAllowAnyUser;
-
-        private List<SearchData> SearchModule(List<SearchData> searchData, PageDefinition page, ModuleDefinition mod, bool allowAnonymous, bool allowAnyUser) {
-            if (mod.WantSearch) {
-                CurrentAllowAnonymous = mod.IsAuthorized_View_Anonymous() && allowAnonymous;
-                CurrentAllowAnyUser = mod.IsAuthorized_View_AnyUser() && allowAnyUser;
-                if (!CurrentAllowAnonymous && !CurrentAllowAnyUser)
-                    return null;
-                AddSearchTerms(searchData, mod.Title, CurrentAllowAnonymous, CurrentAllowAnyUser, TITLE_WEIGHT);
-                AddSearchTerms(searchData, mod.Description, CurrentAllowAnonymous, CurrentAllowAnyUser, DESCRIPTION_WEIGHT);
-                CurrentData = searchData;
-                mod.CustomSearch(page, AddTerms);
-                CurrentData = null;
-            }
-            return searchData;
-        }
-
-        private void AddTerms(MultiString ms) {
-            AddSearchTerms(CurrentData, ms, CurrentAllowAnonymous, CurrentAllowAnyUser, CONTENT_WEIGHT);
-        }
-        private void AddSearchTerms(List<SearchData> searchData, Core.Models.MultiString ms, bool allowAnonymous, bool allowAnyUser, int weight) {
-            if (ms == null) return;
-            foreach (var lang in MultiString.Languages) {
-                string culture = lang.Id;
-                string val = ms[culture];
-                if (!string.IsNullOrEmpty(val))
-                    AddSearchTerms(searchData, culture, val, allowAnonymous, allowAnyUser, weight);
-            }
-        }
-
-        private readonly Regex reTags = new Regex(@"<[^>]*?>", RegexOptions.Compiled | RegexOptions.Singleline);
-        private readonly Regex reWords = new Regex(@"&[a-zA-Z]+?;", RegexOptions.Compiled | RegexOptions.Singleline);
-        private readonly Regex preRe = new Regex(@"\S+", RegexOptions.Compiled | RegexOptions.Singleline);
-        private readonly Regex reChars = new Regex(@"&#(?'num'[0-9]+?);", RegexOptions.Compiled | RegexOptions.Singleline);
-        private readonly Regex reHex = new Regex(@"&#x(?'num'[0-9]+?);", RegexOptions.Compiled | RegexOptions.Singleline);
-
-        private void AddSearchTerms(List<SearchData> searchData, string culture, string value, bool allowAnonymous, bool allowAnyUser, int weight) {
-
-            YetaWFManager manager = YetaWFManager.Manager;
-            int siteIdentity = manager.CurrentSite.Identity;
-
-            // remove html tags
-            value = reTags.Replace(value, " ");
-            value = reWords.Replace(value, " ");
-            value = reChars.Replace(value, new MatchEvaluator(substDecimal));
-            value = reHex.Replace(value, new MatchEvaluator(substHexadecimal));
-
-            Match m = preRe.Match(value);
-            while (m.Success) {
-                string token = m.Value.Trim().ToLower();
-                // remove non-word characters from start and end of token
-                for (int len = token.Length ; len > 0 ; --len) {
-                    char c = token[0];
-                    if (char.IsLetterOrDigit(c))
-                        break;
-                    token = token.Substring(1);
-                }
-                for (int len = token.Length ; len > 0 ; --len) {
-                    char c = token[len - 1];
-                    if (char.IsLetterOrDigit(c))
-                        break;
-                    token = token.Truncate(len - 1);
-                }
-                if (token.Length > 0 && token.Length < SearchData.MaxSearchTerm && (token.Length >= SmallestMixedToken || (token.Length >= SmallestUpperCaseToken && token.ToUpper() == token))) {
-                    SearchData data = (from cd in searchData where cd.SearchTerm == token &&
-                                        cd.Language == culture && cd.AllowAnyUser == allowAnyUser && cd.AllowAnonymous == allowAnonymous select cd).FirstOrDefault();
-                    if (data == null) {
-                        data = new SearchData() {
-                            Language = culture,
-                            SearchTerm = token,
-                            AllowAnyUser = allowAnyUser,
-                            AllowAnonymous = allowAnonymous,
-                        };
-                        searchData.Add(data);
+        private void SearchPage(SearchWords searchWords, PageDefinition page) {
+            if (!searchWords.WantPage(page)) return;
+            if (searchWords.SetUrl(page.EvaluatedCanonicalUrl, page.Title, page.Description, page.Created, page.Updated, page.IsAuthorized_View_Anonymous(), page.IsAuthorized_View_AnyUser())) {
+                searchWords.AddKeywords(page.Keywords);
+                foreach (var m in page.ModuleDefinitions) {
+                    Guid modGuid = m.ModuleGuid;
+                    ModuleDefinition mod = null;
+                    try {
+                        mod = ModuleDefinition.Load(m.ModuleGuid);
+                    } catch (Exception ex) {
+                        Logging.AddErrorLog("An error occurred retrieving module {0} in page {1}", m.ModuleGuid, page.Url, ex);
                     }
-                    data.Count = data.Count + weight;
+                    if (mod != null)
+                        SearchModule(searchWords, mod);
                 }
-                m = m.NextMatch();
+                searchWords.Save();
             }
         }
-        private string substDecimal(Match m) {
-            try {
-                return Convert.ToChar(Convert.ToInt64(m.Groups["num"].Value)).ToString();
-            } catch (Exception) { }
-            return " ";
+        private void SearchModule(SearchWords searchWords, ModuleDefinition mod) {
+            if (mod.WantSearch) {
+                if (searchWords.SetModule(mod.IsAuthorized_View_Anonymous(), mod.IsAuthorized_View_AnyUser())) {
+                    if (mod.ShowTitle)
+                        searchWords.AddTitle(mod.Title);
+                    searchWords.AddContent(mod.Description);
+                    mod.CustomSearch(searchWords);
+                    searchWords.ClearModule();
+                }
+            }
         }
-        private string substHexadecimal(Match m) {
-            try {
-                return Convert.ToChar(Convert.ToInt64(m.Groups["num"].Value, 16)).ToString();
-            } catch (Exception) { }
-            return " ";
-        }
 
-        private SearchDataProvider CurrentSearchDP;
-        private DateTime CurrentSearchStarted;
+        // ISearchWords
+        // ISearchWords
+        // ISearchWords
 
-        public void AddSearchTermsForPage(Core.Models.MultiString ms, PageDefinition page, string url, string title, DateTime dateCreated, DateTime? dateUpdated) {
-            List<SearchData> searchData = new List<SearchData>();
-            bool allowAnonymous = page.IsAuthorized_View_Anonymous();
-            bool allowAnyUser = page.IsAuthorized_View_AnyUser();
-            if (!allowAnonymous && !allowAnyUser)
-                return;
+        public class SearchWords : ISearchWords {
 
-            if (CurrentSearchDP.PageUpdated(url, dateCreated, dateUpdated)) {
-                Logging.AddLog("Adding search keywords for page {0}", url);
-                AddSearchTerms(searchData, ms, allowAnonymous, allowAnyUser, CONTENT_WEIGHT);
-                AddSearchTerms(searchData, title, allowAnonymous, allowAnyUser, TITLE_WEIGHT);
-                if (searchData != null && searchData.Count > 0)
-                    CurrentSearchDP.AddItems(searchData, url, title, dateCreated, dateUpdated, CurrentSearchStarted);
-            } else
-                Logging.AddLog("Not adding search keywords for page {0} - no change", url);
+            private const int TITLE_WEIGHT = 200;
+            private const int DESCRIPTION_WEIGHT = 200;
+            private const int KEYWORDS_WEIGHT = 200;
+            private const int CONTENT_WEIGHT = 1;
+
+            int SmallestMixedToken;
+            int SmallestUpperCaseToken;
+
+            SearchDataProvider CurrentSearchDP;
+            DateTime CurrentSearchStarted;
+            string CurrentUrl;
+            bool CurrentAllowAnonymous;
+            bool CurrentAllowAnyUser;
+            bool SavedCurrentAllowAnonymous, SavedCurrentAllowAnyUser;
+            MultiString CurrentTitle;
+            MultiString CurrentSummary;
+            DateTime CurrentDateCreated;
+            DateTime? CurrentDateUpdated;
+            List<SearchData> CurrentSearchData;
+
+            public SearchWords(SearchDataProvider searchDP, DateTime searchStarted) {
+                CurrentSearchDP = searchDP;
+                CurrentSearchStarted = searchStarted;
+
+                SearchConfigData searchConfig = SearchConfigDataProvider.GetConfig();
+                SmallestMixedToken = searchConfig.SmallestMixedToken;
+                SmallestUpperCaseToken = searchConfig.SmallestUpperCaseToken;
+            }
+
+            public void AddContent(MultiString content) { AddItems(content, CONTENT_WEIGHT); }
+            public void AddTitle(MultiString content) { AddItems(content, TITLE_WEIGHT); }
+            public void AddKeywords(MultiString content) { AddItems(content, KEYWORDS_WEIGHT); }
+            public bool WantPage(PageDefinition page) {
+                if (!page.WantSearch) {
+                    Logging.AddLog("No search keywords wanted for page {0}", page.Url);
+                    return false;
+                }
+                if (!string.IsNullOrWhiteSpace(page.RedirectToPageUrl)) { // only search pages that aren't redirected
+                    Logging.AddLog("No search keywords for page {0} as it is redirected", page.Url);
+                    return false;
+                }
+                if (!page.IsAuthorized_View_Anonymous() && !page.IsAuthorized_View_AnyUser()) {
+                    Logging.AddLog("No search keywords for page {0} - neither Anonymous nor User role has access to the page", page.Url);
+                    return false;
+                }
+                return true;
+            }
+            public bool SetUrl(string url, MultiString title, MultiString summary, DateTime dateCreated, DateTime? dateUpdated, bool allowAnonymous, bool allowUser) {
+                YetaWFManager manager = YetaWFManager.Manager;
+                if (CurrentUrl != null) throw new InternalError("Already have an active Url - {0} {1} called", nameof(SetUrl), url);
+                url = manager.CurrentSite.MakeFullUrl(url);
+                CurrentAllowAnonymous = allowAnonymous;
+                CurrentAllowAnyUser = allowUser;
+                CurrentTitle = title;
+                CurrentSummary = summary;
+                CurrentDateCreated = dateCreated;
+                CurrentDateUpdated = dateUpdated;
+                CurrentSearchData = new List<SearchData>();
+                if (!CurrentAllowAnonymous && !CurrentAllowAnyUser) {
+                    Logging.AddLog("No search keywords for Url {0} - neither Anonymous nor User role has access to the page", url);
+                    return false;
+                }
+                if (!CurrentSearchDP.PageUpdated(url, CurrentDateCreated, CurrentDateUpdated)) {
+                    Logging.AddLog("Page {0} not evaluated as it has not changed", url);
+                    return false;
+                }
+                CurrentUrl = url;
+                Logging.AddLog("Adding search keywords for page {0}", CurrentUrl);
+                AddTitle(CurrentTitle);
+                AddContent(CurrentSummary);
+                return true;
+            }
+            /// <summary>
+            /// Add all string properties of an object as search terms.
+            /// </summary>
+            public void AddObjectContents(object searchObject) {
+                Type tp = searchObject.GetType();
+                foreach (var propData in ObjectSupport.GetPropertyData(tp)) {
+                    if (propData.PropInfo.CanRead && propData.PropInfo.CanWrite) {
+                        if (propData.PropInfo.PropertyType == typeof(string)) {
+                            string s = (string)propData.PropInfo.GetValue(searchObject, null);
+                            AddContent(s);
+                        } else if (propData.PropInfo.PropertyType == typeof(MultiString)) {
+                            MultiString ms = (MultiString)propData.PropInfo.GetValue(searchObject, null);
+                            AddContent(ms);
+                        }
+                    }
+                }
+            }
+            public void Save() {
+                VerifyPage();
+                CurrentSearchDP.AddItems(CurrentSearchData, CurrentUrl, CurrentTitle, CurrentSummary, CurrentDateCreated, CurrentDateUpdated, CurrentSearchStarted);
+                Reset(CurrentSearchDP, CurrentSearchStarted);
+            }
+            internal bool SetModule(bool allowAnonymous, bool allowUser) {
+                if (!(CurrentAllowAnonymous && allowAnonymous) && !(CurrentAllowAnyUser && allowUser))
+                    return false;
+                SavedCurrentAllowAnonymous = CurrentAllowAnonymous;
+                SavedCurrentAllowAnyUser = CurrentAllowAnyUser;
+                CurrentAllowAnonymous = allowAnonymous;
+                CurrentAllowAnyUser = allowUser;
+                return true;
+            }
+            internal void ClearModule() {
+                CurrentAllowAnonymous = SavedCurrentAllowAnonymous;
+                CurrentAllowAnyUser = SavedCurrentAllowAnyUser;
+            }
+
+            private void Reset(SearchDataProvider currentSearchDP, DateTime currentSearchStarted) {
+                CurrentSearchDP = currentSearchDP;
+                CurrentSearchStarted = currentSearchStarted;
+                CurrentUrl = null;
+                CurrentAllowAnonymous = false;
+                CurrentAllowAnyUser = false;
+                CurrentDateCreated = DateTime.MinValue;
+                CurrentDateUpdated = null;
+                CurrentSearchData = new List<SearchData>();
+            }
+            private void AddItems(MultiString content, int weight) {
+                VerifyPage();
+                AddSearchTerms(content, CurrentAllowAnonymous, CurrentAllowAnyUser, weight);
+            }
+            private void VerifyPage() {
+                if (CurrentUrl == null) throw new InternalError("No active page");
+            }
+            private void AddSearchTerms(MultiString ms, bool allowAnonymous, bool allowAnyUser, int weight) {
+                if (ms == null) return;
+                foreach (var lang in MultiString.Languages) {
+                    string culture = lang.Id;
+                    string val = ms[culture];
+                    if (!string.IsNullOrEmpty(val))
+                        AddSearchTerms(culture, val, allowAnonymous, allowAnyUser, weight);
+                }
+            }
+
+            private readonly Regex reTags = new Regex(@"<[^>]*?>", RegexOptions.Compiled | RegexOptions.Singleline);
+            private readonly Regex reWords = new Regex(@"&[a-zA-Z]+?;", RegexOptions.Compiled | RegexOptions.Singleline);
+            private readonly Regex preRe = new Regex(@"\S+", RegexOptions.Compiled | RegexOptions.Singleline);
+            private readonly Regex reChars = new Regex(@"&#(?'num'[0-9]+?);", RegexOptions.Compiled | RegexOptions.Singleline);
+            private readonly Regex reHex = new Regex(@"&#x(?'num'[0-9]+?);", RegexOptions.Compiled | RegexOptions.Singleline);
+
+            private void AddSearchTerms(string culture, string value, bool allowAnonymous, bool allowAnyUser, int weight) {
+
+                YetaWFManager manager = YetaWFManager.Manager;
+                int siteIdentity = manager.CurrentSite.Identity;
+
+                // remove html tags
+                value = reTags.Replace(value, " ");
+                value = reWords.Replace(value, " ");
+                value = reChars.Replace(value, new MatchEvaluator(substDecimal));
+                value = reHex.Replace(value, new MatchEvaluator(substHexadecimal));
+
+                Match m = preRe.Match(value);
+                while (m.Success) {
+                    string token = m.Value.Trim().ToLower();
+                    // remove non-word characters from start and end of token
+                    for (int len = token.Length; len > 0; --len) {
+                        char c = token[0];
+                        if (char.IsLetterOrDigit(c))
+                            break;
+                        token = token.Substring(1);
+                    }
+                    for (int len = token.Length; len > 0; --len) {
+                        char c = token[len - 1];
+                        if (char.IsLetterOrDigit(c))
+                            break;
+                        token = token.Truncate(len - 1);
+                    }
+                    if (token.Length > 0 && token.Length < SearchData.MaxSearchTerm && (token.Length >= SmallestMixedToken || (token.Length >= SmallestUpperCaseToken && token.ToUpper() == token))) {
+                        SearchData data = (from cd in CurrentSearchData
+                                           where cd.SearchTerm == token &&
+                                               cd.Language == culture && cd.AllowAnyUser == allowAnyUser && cd.AllowAnonymous == allowAnonymous
+                                           select cd).FirstOrDefault();
+                        if (data == null) {
+                            data = new SearchData() {
+                                Language = culture,
+                                SearchTerm = token,
+                                AllowAnyUser = allowAnyUser,
+                                AllowAnonymous = allowAnonymous,
+                            };
+                            CurrentSearchData.Add(data);
+                        }
+                        data.Count = data.Count + weight;
+                    }
+                    m = m.NextMatch();
+                }
+            }
+            private string substDecimal(Match m) {
+                try {
+                    return Convert.ToChar(Convert.ToInt64(m.Groups["num"].Value)).ToString();
+                } catch (Exception) { }
+                return " ";
+            }
+            private string substHexadecimal(Match m) {
+                try {
+                    return Convert.ToChar(Convert.ToInt64(m.Groups["num"].Value, 16)).ToString();
+                } catch (Exception) { }
+                return " ";
+            }
         }
     }
 }

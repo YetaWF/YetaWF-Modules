@@ -124,9 +124,21 @@
                       <Value>
                         <Object Type="YetaWF.Core.Localize.LocalizationData+PropertyData" Assembly="YetaWF.Core">
                           <Properties>
-                            <Name Value="PageDescription" />
-                            <Caption Value="Description" />
-                            <Description Value="The page description" />
+                            <Name Value="PageSummary" />
+                            <Caption Value="Summary" />
+                            <Description Value="The page summary" />
+                            <HelpLink />
+                            <TextAbove />
+                            <TextBelow />
+                          </Properties>
+                        </Object>
+                      </Value>
+                      <Value>
+                        <Object Type="YetaWF.Core.Localize.LocalizationData+PropertyData" Assembly="YetaWF.Core">
+                          <Properties>
+                            <Name Value="PageTitle" />
+                            <Caption Value="Title" />
+                            <Description Value="The page title" />
                             <HelpLink />
                             <TextAbove />
                             <TextBelow />

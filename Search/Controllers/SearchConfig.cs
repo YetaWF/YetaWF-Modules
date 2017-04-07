@@ -40,6 +40,14 @@ namespace YetaWF.Modules.Search.Controllers {
             [UIHint("IntValue4"), Range(10, 1000)]
             public int MaxResults { get; set; }
 
+            [Caption("Show Url"), Description("Defines whether the Url is shown in search results")]
+            [UIHint("Boolean")]
+            public bool ShowUrl { get; set; }
+
+            [Caption("Show Summary"), Description("Defines whether a page summary is shown in search results")]
+            [UIHint("Boolean")]
+            public bool ShowSummary { get; set; }
+
             public SearchConfigData GetData(SearchConfigData data) {
                 ObjectSupport.CopyData(this, data);
                 return data;

@@ -52,6 +52,30 @@
                       <Value>
                         <Object Type="YetaWF.Core.Localize.LocalizationData+PropertyData" Assembly="YetaWF.Core">
                           <Properties>
+                            <Name Value="ShowSummary" />
+                            <Caption Value="Show Summary" />
+                            <Description Value="Defines whether a page summary is shown in search results" />
+                            <HelpLink />
+                            <TextAbove />
+                            <TextBelow />
+                          </Properties>
+                        </Object>
+                      </Value>
+                      <Value>
+                        <Object Type="YetaWF.Core.Localize.LocalizationData+PropertyData" Assembly="YetaWF.Core">
+                          <Properties>
+                            <Name Value="ShowUrl" />
+                            <Caption Value="Show Url" />
+                            <Description Value="Defines whether the Url is shown in search results" />
+                            <HelpLink />
+                            <TextAbove />
+                            <TextBelow />
+                          </Properties>
+                        </Object>
+                      </Value>
+                      <Value>
+                        <Object Type="YetaWF.Core.Localize.LocalizationData+PropertyData" Assembly="YetaWF.Core">
+                          <Properties>
                             <Name Value="SmallestMixedToken" />
                             <Caption Value="Smallest Keyword (Mixed Case)" />
                             <Description Value="The smallest mixed case keyword" />

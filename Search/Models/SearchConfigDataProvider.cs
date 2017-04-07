@@ -26,11 +26,17 @@ namespace YetaWF.Modules.Search.DataProvider {
         public string ResultsUrl { get; set; }
         [Range(1, 1000)]
         public int MaxResults { get; set; }
+        [Data_NewValue("(0)")]
+        public bool ShowUrl { get; set; }
+        [Data_NewValue("(0)")]
+        public bool ShowSummary { get; set; }
 
         public SearchConfigData() {
             SmallestMixedToken = 3;
             SmallestUpperCaseToken = 2;
             MaxResults = 20;
+            ShowUrl = true;
+            ShowSummary = true;
         }
     }
 

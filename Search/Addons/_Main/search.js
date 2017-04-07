@@ -47,7 +47,7 @@ $(document).ready(function () {
         // each search results module (there really should only be one)
         var $mod = $(this);
         var kwds = $('input[name="SearchTerms"]').val();
-        $('.t_url a', $mod).each(function () {
+        $('.t_desc a', $mod).each(function () {
             // update each url with the keywords
             var $this = $(this);
             var uri = $this.uri();

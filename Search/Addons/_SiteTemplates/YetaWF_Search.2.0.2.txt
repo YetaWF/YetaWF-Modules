@@ -1,0 +1,14 @@
+﻿### Copyright © 2017 Softel vdm, Inc. - http://yetawf.com/Documentation/YetaWF/Licensing
+###
+### YetaWF.Search package upgrade
+###
+
+::PAGE-SECTION::
+
+::UNIQUE-MODULE-SECTION::
+
+YetaWF.Search, YetaWF.Modules.Search.Modules.SearchConfigModule
+    UpdateConfigProperty("ShowUrl", true)
+    UpdateConfigProperty("ShowSummary", true)
+
+

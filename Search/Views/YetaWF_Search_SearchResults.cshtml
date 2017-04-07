@@ -27,21 +27,27 @@
         @foreach (YetaWF.Modules.Search.DataProvider.SearchResult data in Model.SearchResults) {
             string row = string.Format("t_r{0}", count);
             <div class="t_entry @row">
-                <div class='t_url @row'>
-                    @Html.DisplayFor(m => data.PageUrl)
-                </div>
                 <div class='t_desc @row'>
-                    @data.Description
+                    <a href="@data.PageUrl" target="_blank">@data.Description</a>
                 </div>
-                @if (data.DateCreated != DateTime.MinValue) {
-                    <div class='t_created @row'>
-                        @__ResStr("created", "Created {0}", Formatting.FormatDateTime(data.DateCreated))
+                @if (Model.ShowSummary) {
+                    <div class='t_symmary @row'>
+                        @data.PageSummary
                     </div>
                 }
-                @if (data.DateUpdated != DateTime.MinValue && data.DateCreated != data.DateUpdated) {
-                    <div class='t_updated @row'>
-                        @__ResStr("lastUpd", "- Last Updated {0}", Formatting.FormatDateTime(data.DateUpdated))
+                @if (Model.ShowUrl) {
+                    <div class='t_url @row'>
+                        @data.PageUrl
                     </div>
+                }
+                @{
+                    DateTime modified = data.DateCreated;
+                    if (data.DateUpdated != null) { modified = (DateTime)data.DateUpdated; }
+                    if (modified != DateTime.MinValue) {
+                        <div class='t_updated @row'>
+                            @__ResStr("lastUpd", "Updated {0}", Formatting.FormatDateTime(modified))
+                        </div>
+                    }
                 }
             </div>
             ++count;

@@ -8,12 +8,12 @@ using YetaWF.Core.DataProvider;
 using YetaWF.Core.DataProvider.Attributes;
 using YetaWF.Core.Extensions;
 using YetaWF.Core.IO;
-using YetaWF.Core.Localize;
 using YetaWF.Core.Models;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Modules;
 using YetaWF.Core.Packages;
 using YetaWF.Core.Pages;
+using YetaWF.Core.Search;
 using YetaWF.Core.Serializers;
 using YetaWF.Core.Support;
 using YetaWF.Modules.Blog.Modules;
@@ -337,7 +337,7 @@ namespace YetaWF.Modules.Blog.DataProvider {
         // ISEARCHDYNAMICURLS
         // ISEARCHDYNAMICURLS
 
-        public void KeywordsForDynamicUrls(Action<YetaWF.Core.Models.MultiString, PageDefinition, string, string, DateTime, DateTime?> addTermsForPage) {
+        public void KeywordsForDynamicUrls(ISearchWords searchWords) {
 
             using (this) {
                 BlogConfigData config = BlogConfigDataProvider.GetConfig();
@@ -345,19 +345,23 @@ namespace YetaWF.Modules.Blog.DataProvider {
                 List<DataProviderFilterInfo> filters = DataProviderFilterInfo.Join(null, new DataProviderFilterInfo { Field = "Published", Operator = "==", Value = true });
                 List<BlogEntry> entries = GetItems(0, 0, null, filters, out total);
                 foreach (BlogEntry entry in entries) {
+
                     string url = BlogConfigData.GetEntryCanonicalName(entry.Identity);
 
                     PageDefinition page = PageDefinition.LoadFromUrl(url);
                     if (page == null) return; // there is no such root page
-                    if (!page.WantSearch) return;
+                    if (!searchWords.WantPage(page)) return;
 
-                    ObjectSupport.AddStringProperties(entry, addTermsForPage, page, url, entry.Title.ToString(), entry.DateCreated, entry.DateUpdated);
-                    using (BlogCommentDataProvider commentDP = new BlogCommentDataProvider(entry.Identity)) {
-                        int totalComments;
-                        List<BlogComment> comments = commentDP.GetItems(0, 0, null, null, out totalComments);
-                        foreach (BlogComment comment in comments) {
-                            ObjectSupport.AddStringProperties(comment, addTermsForPage, page, url, entry.Title.ToString(), entry.DateCreated, entry.DateUpdated);
+                    if (searchWords.SetUrl(url, entry.Title, entry.DisplayableSummaryText, entry.DateCreated, entry.DateUpdated, page.IsAuthorized_View_Anonymous(), page.IsAuthorized_View_AnyUser())) {
+                        searchWords.AddObjectContents(entry);
+                        using (BlogCommentDataProvider commentDP = new BlogCommentDataProvider(entry.Identity)) {
+                            int totalComments;
+                            List<BlogComment> comments = commentDP.GetItems(0, 0, null, null, out totalComments);
+                            foreach (BlogComment comment in comments) {
+                                searchWords.AddObjectContents(comment);
+                            }
                         }
+                        searchWords.Save();
                     }
                 }
             }

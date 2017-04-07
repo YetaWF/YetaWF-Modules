@@ -1,7 +1,8 @@
 ﻿Commands            icons 2
 SearchTerm          sort filter 20 defaultSort asc
 PageUrl             sort filter 40
-PageDescription     sort filter 50
+PageTitle           sort filter 40
+PageSummary         sort filter 50
 DatePageCreated     sort filter [Globals.ChDateTime]
 DatePageUpdated     sort filter [Globals.ChDateTime]
 DateAdded           sort filter [Globals.ChDateTime]

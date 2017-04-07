@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using YetaWF.Core.DataProvider;
 using YetaWF.Core.DataProvider.Attributes;
+using YetaWF.Core.Extensions;
 using YetaWF.Core.IO;
 using YetaWF.Core.Models;
 using YetaWF.Core.Models.Attributes;
@@ -36,11 +37,13 @@ namespace YetaWF.Modules.Search.DataProvider {
         [Data_DontSave]
         public string PageUrl { get; set; }
         [Data_DontSave]
-        public string PageDescription { get; set; }
+        public string PageTitle { get; set; }
         [Data_DontSave]
         public DateTime DatePageCreated { get; set; }
         [Data_DontSave]
         public DateTime DatePageUpdated { get; set; }
+        [Data_DontSave]
+        public string PageSummary { get; set; }
 
         public SearchData() { }
     }
@@ -124,7 +127,7 @@ namespace YetaWF.Modules.Search.DataProvider {
             if (!IsUsable) return false;
             return DataProvider.Add(data);
         }
-        public bool AddItems(List<SearchData> list, string pageUrl, string pageDescription, DateTime pageCreated, DateTime? pageUpdated, DateTime searchStarted) {
+        public bool AddItems(List<SearchData> list, string pageUrl, string pageDescription, string pageSummary, DateTime pageCreated, DateTime? pageUpdated, DateTime searchStarted) {
             if (!IsUsable) return false;
             bool status = false;
             DoAction(() => {
@@ -136,13 +139,15 @@ namespace YetaWF.Modules.Search.DataProvider {
                         searchUrl = new SearchDataUrl {
                             DatePageCreated = pageCreated,
                             DatePageUpdated = pageUpdated,
-                            PageDescription = pageDescription,
+                            PageTitle = pageDescription.Truncate(SearchDataUrl.MaxTitle),
                             PageUrl = pageUrl,
+                            PageSummary = pageSummary.Truncate(SearchDataUrl.MaxSummary),
                         };
                         if (!searchUrlDP.AddItem(searchUrl))
                             throw new InternalError("Unexpected error adding SearchDataUrl for url {0}", pageUrl);
                     } else {
-                        searchUrl.PageDescription = pageDescription;
+                        searchUrl.PageTitle = pageDescription.Truncate(SearchDataUrl.MaxTitle);
+                        searchUrl.PageSummary = pageSummary.Truncate(SearchDataUrl.MaxSummary);
                         searchUrl.DatePageCreated = pageCreated;
                         searchUrl.DatePageUpdated = pageUpdated ?? pageCreated;
                         UpdateStatusEnum updStatus = searchUrlDP.UpdateItem(searchUrl);
@@ -224,7 +229,7 @@ namespace YetaWF.Modules.Search.DataProvider {
         /// Check whether the specified url contents have changed since last time we collected keywords
         /// </summary>
         public bool PageUpdated(string pageUrl, DateTime dateCreated, DateTime? dateUpdated) {
-            if (dateCreated == DateTime.MinValue && dateUpdated == DateTime.MinValue)// if no one supplied a date, we don't know
+            if (dateCreated == DateTime.MinValue && (dateUpdated == null || dateUpdated == DateTime.MinValue))// if no one supplied a date, we don't know
                 return true;
             using (SearchDataUrlDataProvider searchUrlDP = new SearchDataUrlDataProvider()) {
                 SearchDataUrl searchUrl = searchUrlDP.GetItemByUrl(pageUrl);
@@ -238,7 +243,7 @@ namespace YetaWF.Modules.Search.DataProvider {
                     newAge = (DateTime)dateUpdated;
                 if (dataAge.AddSeconds(1) < newAge) // all for slight difference in timestamps
                     return true;
-                // update the dateadded datetimes for all search keywords on this page to reflect that we didn't search and just accept them again
+                // update the dateadded datetimes for all search terms on this page to reflect that we didn't search and just accept them again
                 DoAction(() => {
                     SQLSimpleObjectDataProvider<int, SearchData> sqlDP = (SQLSimpleObjectDataProvider<int, SearchData>)DataProvider;
                     string sql = @"UPDATE {TableName} Set DateAdded = GETUTCDATE() WHERE {__Site} AND [SearchDataUrlId] = {UrlId}";

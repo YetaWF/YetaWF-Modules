@@ -16,6 +16,7 @@ using YetaWF.Core.Support;
 using YetaWF.Core.Views.Shared;
 using YetaWF.DataProvider;
 using YetaWF.Modules.Text.Controllers;
+using YetaWF.Core.Search;
 #if MVC6
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 #else
@@ -169,8 +170,8 @@ namespace YetaWF.Modules.Text.Modules {
         // SEARCH
         // SEARCH
 
-        public override void CustomSearch(PageDefinition page, Action<MultiString> addTerms) {
-            addTerms(CompleteContents);
+        public override void CustomSearch(ISearchWords searchWords) {
+            searchWords.AddContent(CompleteContents);
         }
 
         // VALIDATION

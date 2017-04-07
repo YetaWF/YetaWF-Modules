@@ -22,16 +22,8 @@
           <Value>
             <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
               <Properties>
-                <Name Value="created" />
-                <Text Value="Created {0}" />
-              </Properties>
-            </Object>
-          </Value>
-          <Value>
-            <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
-              <Properties>
                 <Name Value="lastUpd" />
-                <Text Value="- Last Updated {0}" />
+                <Text Value="Updated {0}" />
               </Properties>
             </Object>
           </Value>
