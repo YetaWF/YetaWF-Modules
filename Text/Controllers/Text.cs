@@ -20,6 +20,8 @@ namespace YetaWF.Modules.Text.Controllers {
             [AdditionalMetadata("TextAreaSave", true), AdditionalMetadata("ImageBrowse", true), AdditionalMetadata("FlashBrowse", true), AdditionalMetadata("PageBrowse", true)]
             [AllowHtml]
             public string Contents { get; set; }
+            [UIHint("Hidden")]
+            public string Url { get; set; }
         }
         public class TextModelDisplay {
             [UIHint("TextArea"), AdditionalMetadata("Encode", false)]
@@ -34,7 +36,10 @@ namespace YetaWF.Modules.Text.Controllers {
             }
 
             if (Manager.EditMode && Module.EditOnPage && Module.IsAuthorized(ModuleDefinition.RoleDefinition.Edit)) {
-                TextModel model = new TextModel { Contents = Module.Contents };
+                TextModel model = new TextModel {
+                    Contents = Module.Contents,
+                    Url = Manager.CurrentRequestUrl,
+                };
                 return View(model);
             } else {
                 TextModelDisplay model = new TextModelDisplay { Contents = Module.Contents };
@@ -51,8 +56,9 @@ namespace YetaWF.Modules.Text.Controllers {
             if (Manager.RequestForm[Globals.Link_SubmitIsApply] != null) {
                 return FormProcessed(model, "Contents saved", OnClose: OnCloseEnum.Nothing, OnPopupClose: OnPopupCloseEnum.ReloadModule, OnApply: OnApplyEnum.ReloadModule);
             } else {
+                if (Manager.IsInPopup) throw new InternalError("Save & Display not available in a popup window");
                 Manager.EditMode = false;
-                return FormProcessed(model, OnClose: OnCloseEnum.ReloadPage, OnPopupClose: OnPopupCloseEnum.ReloadParentPage);
+                return Redirect(model.Url, SetCurrentEditMode: true);
             }
         }
     }

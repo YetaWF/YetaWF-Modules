@@ -92,20 +92,17 @@ namespace YetaWF.Modules.Visitors.Controllers {
             GeoLocation geoLocation = new GeoLocation(manager);
             GeoLocation.UserInfo userInfo = geoLocation.GetCurrentUserInfo();
 
-            string referrer;
             string userAgent;
 #if MVC6
             if (url == null)
                 url = Manager.CurrentRequest.GetDisplayUrl();
-            referrer = Manager.CurrentRequest.Headers["Referer"].ToString();
             userAgent = Manager.CurrentRequest.Headers["User-Agent"].ToString();
 #else
             if (url == null)
                 url = Manager.CurrentRequest.Url.ToString();
-            referrer = Manager.CurrentRequest.UrlReferrer != null ? Manager.CurrentRequest.UrlReferrer.ToString() : null;
             userAgent = Manager.CurrentRequest.UserAgent;
 #endif
-
+            string referrer = Manager.ReferrerUrl;
 
             VisitorEntry visitorEntry = new VisitorEntry {
                 SessionKey = sessionKeyVal,

@@ -40,9 +40,7 @@ namespace YetaWF.Modules.ModuleEdit.Modules {
             return new ModuleAction(this) {
                 Url = ModulePermanentUrl,
                 QueryArgs = new { ModuleGuid = editGuid },
-                QueryArgsDict = new QueryHelper(new QueryDictionary {
-                    { Globals.Link_TempNoEditMode, "y" },
-                }),
+                QueryArgsDict = new QueryHelper(new QueryDictionary { { Globals.Link_NoEditMode, "y" }, { Globals.Link_NoPageControl, "y" } }),
                 NeedsModuleContext = true,
                 Image = "#Edit",
                 LinkText = this.__ResStr("editLink", "Module Settings"),

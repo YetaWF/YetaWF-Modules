@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using YetaWF.Core;
 using YetaWF.Core.Addons;
 using YetaWF.Core.IO;
 using YetaWF.Core.Localize;
@@ -79,6 +80,7 @@ namespace YetaWF.Modules.ModuleEdit.Modules {
             Package package = Package.GetCurrentPackage(mod);
             return new ModuleAction(this) {
                 Url = package.InfoLink,
+                QueryArgsDict = new QueryHelper(new QueryDictionary { { Globals.Link_NoEditMode, "y" }, { Globals.Link_NoPageControl, "y" } }),
                 Image = "Help.png",
                 LinkText = this.__ResStr("modHelpLink", "Help"),
                 MenuText = this.__ResStr("modHelpMenu", "Help"),

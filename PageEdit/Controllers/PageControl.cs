@@ -308,12 +308,12 @@ namespace YetaWF.Modules.PageEdit.Controllers {
         // if you have permission to view the pagecontrol module, you can switch modes
         public ActionResult SwitchToEdit() {
             Manager.EditMode = true;
-            return Redirect(Manager.NormalizeUrl(Manager.ReturnToUrl));
+            return Redirect(Manager.ReturnToUrl, SetCurrentEditMode: true);
         }
 
         public ActionResult SwitchToView() {
             Manager.EditMode = false;
-            return Redirect(Manager.NormalizeUrl(Manager.ReturnToUrl));
+            return Redirect(Manager.ReturnToUrl, SetCurrentEditMode: true);
         }
     }
 }

@@ -68,7 +68,7 @@ namespace YetaWF.Modules.ModuleEdit.Controllers {
             ObjectSupport.CopyDataFromOriginal(origModule, model.Module);
             model.Module.Temporary = false;
             model.Module.Save();
-            return FormProcessed(model, this.__ResStr("okSaved", "Module settings saved"), NextPage: Manager.NormalizeUrl(Manager.ReturnToUrl));
+            return FormProcessed(model, this.__ResStr("okSaved", "Module settings saved"));
         }
     }
 }
