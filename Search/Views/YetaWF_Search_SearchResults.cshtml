@@ -26,9 +26,10 @@
         @{ int count = 0; }
         @foreach (YetaWF.Modules.Search.DataProvider.SearchResult data in Model.SearchResults) {
             string row = string.Format("t_r{0}", count);
+            string url = Manager.CurrentSite.MakeUrl(data.PageUrl, data.PageSecurity);
             <div class="t_entry @row">
                 <div class='t_desc @row'>
-                    <a href="@data.PageUrl" target="_blank">@data.Description</a>
+                    <a href="@url" target="_blank">@data.Description</a>
                 </div>
                 @if (Model.ShowSummary) {
                     <div class='t_symmary @row'>
@@ -37,7 +38,7 @@
                 }
                 @if (Model.ShowUrl) {
                     <div class='t_url @row'>
-                        @data.PageUrl
+                        @url
                     </div>
                 }
                 @{

@@ -30,6 +30,7 @@ namespace YetaWF.Modules.Search.DataProvider {
                     DateUpdated = g.Select(m => m.DatePageUpdated).FirstOrDefault(),
                     Description = g.Select(m => m.PageTitle).FirstOrDefault(),
                     PageSummary = g.Select(m => m.PageSummary).FirstOrDefault(),
+                    PageSecurity = g.Select(m => m.PageSecurity).FirstOrDefault(),
                 }).OrderByDescending(m => m.Count).Take(maxResults + 1).ToList();
 
                 haveMore = (results.Count >= maxResults);

@@ -109,7 +109,7 @@ namespace YetaWF.Modules.Search.Scheduler {
 
         private void SearchPage(SearchWords searchWords, PageDefinition page) {
             if (!searchWords.WantPage(page)) return;
-            if (searchWords.SetUrl(page.EvaluatedCanonicalUrl, page.Title, page.Description, page.Created, page.Updated, page.IsAuthorized_View_Anonymous(), page.IsAuthorized_View_AnyUser())) {
+            if (searchWords.SetUrl(page.Url, page.PageSecurity, page.Title, page.Description, page.Created, page.Updated, page.IsAuthorized_View_Anonymous(), page.IsAuthorized_View_AnyUser())) {
                 searchWords.AddKeywords(page.Keywords);
                 foreach (var m in page.ModuleDefinitions) {
                     Guid modGuid = m.ModuleGuid;
@@ -154,6 +154,7 @@ namespace YetaWF.Modules.Search.Scheduler {
             SearchDataProvider CurrentSearchDP;
             DateTime CurrentSearchStarted;
             string CurrentUrl;
+            PageDefinition.PageSecurityType CurrentPageSecurity;
             bool CurrentAllowAnonymous;
             bool CurrentAllowAnyUser;
             bool SavedCurrentAllowAnonymous, SavedCurrentAllowAnyUser;
@@ -190,10 +191,12 @@ namespace YetaWF.Modules.Search.Scheduler {
                 }
                 return true;
             }
-            public bool SetUrl(string url, MultiString title, MultiString summary, DateTime dateCreated, DateTime? dateUpdated, bool allowAnonymous, bool allowUser) {
+            public bool SetUrl(string url, PageDefinition.PageSecurityType pageSecurity, MultiString title, MultiString summary, DateTime dateCreated, DateTime? dateUpdated, bool allowAnonymous, bool allowUser) {
                 YetaWFManager manager = YetaWFManager.Manager;
                 if (CurrentUrl != null) throw new InternalError("Already have an active Url - {0} {1} called", nameof(SetUrl), url);
-                url = manager.CurrentSite.MakeFullUrl(url);
+                if (!url.StartsWith("/"))
+                    throw new InternalError("Urls for search terms must be local and start with \"/\"");
+                CurrentPageSecurity = pageSecurity;
                 CurrentAllowAnonymous = allowAnonymous;
                 CurrentAllowAnyUser = allowUser;
                 CurrentTitle = title;
@@ -234,7 +237,7 @@ namespace YetaWF.Modules.Search.Scheduler {
             }
             public void Save() {
                 VerifyPage();
-                CurrentSearchDP.AddItems(CurrentSearchData, CurrentUrl, CurrentTitle, CurrentSummary, CurrentDateCreated, CurrentDateUpdated, CurrentSearchStarted);
+                CurrentSearchDP.AddItems(CurrentSearchData, CurrentUrl, CurrentPageSecurity, CurrentTitle, CurrentSummary, CurrentDateCreated, CurrentDateUpdated, CurrentSearchStarted);
                 Reset(CurrentSearchDP, CurrentSearchStarted);
             }
             internal bool SetModule(bool allowAnonymous, bool allowUser) {
@@ -255,6 +258,7 @@ namespace YetaWF.Modules.Search.Scheduler {
                 CurrentSearchDP = currentSearchDP;
                 CurrentSearchStarted = currentSearchStarted;
                 CurrentUrl = null;
+                CurrentPageSecurity = PageDefinition.PageSecurityType.Any;
                 CurrentAllowAnonymous = false;
                 CurrentAllowAnyUser = false;
                 CurrentDateCreated = DateTime.MinValue;

@@ -10,6 +10,7 @@ using YetaWF.Core.IO;
 using YetaWF.Core.Models;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Packages;
+using YetaWF.Core.Pages;
 using YetaWF.Core.Serializers;
 using YetaWF.Core.Support;
 using YetaWF.DataProvider;
@@ -34,6 +35,8 @@ namespace YetaWF.Modules.Search.DataProvider {
         public int SearchDataUrlId { get; set; }
 
         /* Obtained from SearchUrlData Join */
+        [Data_DontSave]
+        public PageDefinition.PageSecurityType PageSecurity { get; set; }
         [Data_DontSave]
         public string PageUrl { get; set; }
         [Data_DontSave]
@@ -127,7 +130,7 @@ namespace YetaWF.Modules.Search.DataProvider {
             if (!IsUsable) return false;
             return DataProvider.Add(data);
         }
-        public bool AddItems(List<SearchData> list, string pageUrl, string pageDescription, string pageSummary, DateTime pageCreated, DateTime? pageUpdated, DateTime searchStarted) {
+        public bool AddItems(List<SearchData> list, string pageUrl, PageDefinition.PageSecurityType pageSecurity, string pageDescription, string pageSummary, DateTime pageCreated, DateTime? pageUpdated, DateTime searchStarted) {
             if (!IsUsable) return false;
             bool status = false;
             DoAction(() => {
@@ -141,6 +144,7 @@ namespace YetaWF.Modules.Search.DataProvider {
                             DatePageUpdated = pageUpdated,
                             PageTitle = pageDescription.Truncate(SearchDataUrl.MaxTitle),
                             PageUrl = pageUrl,
+                            PageSecurity = pageSecurity,
                             PageSummary = pageSummary.Truncate(SearchDataUrl.MaxSummary),
                         };
                         if (!searchUrlDP.AddItem(searchUrl))
@@ -150,6 +154,7 @@ namespace YetaWF.Modules.Search.DataProvider {
                         searchUrl.PageSummary = pageSummary.Truncate(SearchDataUrl.MaxSummary);
                         searchUrl.DatePageCreated = pageCreated;
                         searchUrl.DatePageUpdated = pageUpdated ?? pageCreated;
+                        searchUrl.PageSecurity = pageSecurity;
                         UpdateStatusEnum updStatus = searchUrlDP.UpdateItem(searchUrl);
                         if (updStatus != UpdateStatusEnum.OK)
                             throw new InternalError("Unexpected error updating SearchDataUrl for url {0} - {1}", pageUrl, updStatus);

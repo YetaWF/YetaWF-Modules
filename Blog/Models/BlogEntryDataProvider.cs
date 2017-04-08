@@ -352,7 +352,7 @@ namespace YetaWF.Modules.Blog.DataProvider {
                     if (page == null) return; // there is no such root page
                     if (!searchWords.WantPage(page)) return;
 
-                    if (searchWords.SetUrl(url, entry.Title, entry.DisplayableSummaryText, entry.DateCreated, entry.DateUpdated, page.IsAuthorized_View_Anonymous(), page.IsAuthorized_View_AnyUser())) {
+                    if (searchWords.SetUrl(url, page.PageSecurity, entry.Title, entry.DisplayableSummaryText, entry.DateCreated, entry.DateUpdated, page.IsAuthorized_View_Anonymous(), page.IsAuthorized_View_AnyUser())) {
                         searchWords.AddObjectContents(entry);
                         using (BlogCommentDataProvider commentDP = new BlogCommentDataProvider(entry.Identity)) {
                             int totalComments;

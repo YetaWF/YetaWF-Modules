@@ -6,6 +6,7 @@ using YetaWF.Core.DataProvider;
 using YetaWF.Core.Localize;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Packages;
+using YetaWF.Core.Pages;
 using YetaWF.Core.Support;
 
 namespace YetaWF.Modules.Search.DataProvider {
@@ -23,6 +24,7 @@ namespace YetaWF.Modules.Search.DataProvider {
         public DateTime? DateUpdated { get; set; }
         [UIHint("String")]
         public string PageSummary { get; set; }
+        public PageDefinition.PageSecurityType PageSecurity { get; set; }
 
         public SearchResult() { }
     }

@@ -8,6 +8,7 @@ using YetaWF.Core.DataProvider.Attributes;
 using YetaWF.Core.IO;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Packages;
+using YetaWF.Core.Pages;
 using YetaWF.Core.Serializers;
 using YetaWF.Core.Support;
 
@@ -23,6 +24,8 @@ namespace YetaWF.Modules.Search.DataProvider {
 
         [Data_PrimaryKey, StringLength(Globals.MaxUrl)]
         public string PageUrl { get; set; }
+        [Data_NewValue("(0)")]
+        public PageDefinition.PageSecurityType PageSecurity { get; set; }
 
         [StringLength(MaxTitle)]
         public string PageTitle { get; set; }
