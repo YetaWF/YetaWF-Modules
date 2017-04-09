@@ -157,7 +157,7 @@ namespace YetaWF.Modules.Visitors.DataProvider {
                     " AND {__Site}"
             );
             info.TodaysUsers = sqlDP.Direct_ScalarInt(
-                "SELECT Count(DISTINCT SessionKey) FROM {TableName} Where " +
+                "SELECT Count(DISTINCT UserId) FROM {TableName} Where " +
                     string.Format("AccessDateTime >= '{0}' AND AccessDateTime < '{1}'", startDate, endDate) +
                     " AND [UserId] <> 0" +
                     " AND {__Site}"
@@ -171,7 +171,7 @@ namespace YetaWF.Modules.Visitors.DataProvider {
                     " AND {__Site}"
             );
             info.YesterdaysUsers = sqlDP.Direct_ScalarInt(
-                "SELECT Count(DISTINCT SessionKey) FROM {TableName} Where " +
+                "SELECT Count(DISTINCT UserId) FROM {TableName} Where " +
                     string.Format("AccessDateTime >= '{0}' AND AccessDateTime < '{1}'", startDate, endDate) +
                     " AND [UserId] <> 0" +
                     " AND {__Site}"
