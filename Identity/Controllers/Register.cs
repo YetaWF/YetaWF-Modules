@@ -47,11 +47,11 @@ namespace YetaWF.Modules.Identity.Controllers {
             public string Email { get; set; }
 
             [Caption("Password"), Description("Enter your desired password")]
-            [UIHint("Password20"), Required]
+            [UIHint("Password20"), StringLength(Globals.MaxPswd), Required]
             public string Password { get; set; }
 
             [Caption("Password Confirmation"), Description("Enter your password again to confirm")]
-            [UIHint("Password20"), Required, SameAs("Password", "The password confirmation doesn't match the password entered")]
+            [UIHint("Password20"), Required, StringLength(Globals.MaxPswd), SameAs("Password", "The password confirmation doesn't match the password entered")]
             public string ConfirmPassword { get; set; }
 
             [Caption("Captcha"), Description("Please verify that you're a human and not a spam bot")]
