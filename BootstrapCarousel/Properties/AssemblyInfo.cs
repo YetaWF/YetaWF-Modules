@@ -6,7 +6,7 @@ using YetaWF.Core.Packages;
 using YetaWF.PackageAttributes;
 
 [assembly: AssemblyTitle("BootstrapCarousel")]
-[assembly: AssemblyDescription("BootstrapCarousel description")]
+[assembly: AssemblyDescription("Bootstrap Carousel")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Softel vdm, Inc.")]
 [assembly: AssemblyProduct("BootstrapCarousel")]
