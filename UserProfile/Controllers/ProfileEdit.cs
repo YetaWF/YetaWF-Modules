@@ -101,7 +101,7 @@ namespace YetaWF.Modules.UserProfile.Controllers {
         }
 
         [HttpGet]
-        public ActionResult ProfileEdit(int key) {
+        public ActionResult ProfileEdit() {
             Manager.NeedUser();
             using (UserInfoDataProvider userInfoDP = new UserInfoDataProvider()) {
                 EditModel model = new EditModel { };
