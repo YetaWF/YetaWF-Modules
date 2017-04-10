@@ -1,0 +1,8 @@
+@inherits YetaWF.Core.Views.RazorView<YetaWF.Modules.UserProfile.Modules.ProfileEditModule, YetaWF.Modules.UserProfile.Controllers.ProfileEditModuleController.EditModel>
+@using (Form("ProfileEdit_Partial")) {
+    @PartialForm()
+    @FormButtons(new FormButton[] {
+        new FormButton() { ButtonType= ButtonTypeEnum.Submit, },
+        new FormButton() { ButtonType= ButtonTypeEnum.Cancel, },
+    });
+}

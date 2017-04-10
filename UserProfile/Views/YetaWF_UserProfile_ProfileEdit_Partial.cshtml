@@ -1,0 +1,5 @@
+@inherits YetaWF.Core.Views.RazorView<YetaWF.Modules.UserProfile.Modules.ProfileEditModule, YetaWF.Modules.UserProfile.Controllers.ProfileEditModuleController.EditModel>
+@Html.ValidationSummary()
+<div>
+    @Html.EditorFor(m => Model, "PropertyList")
+</div>
