@@ -46,6 +46,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controllers\VisitorSummary.cs" />
+    <Compile Include="Modules\VisitorSummary.cs" />
     <Compile Include="Startup\Info.cs" />
     <Compile Include="Startup\AreaRegistration.cs" />
     <Compile Include="Controllers\IPAddressLookup.cs" />
@@ -63,9 +65,11 @@
     <Compile Include="Scheduler\RemoveVisitors.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Addons\_Addons\VisitorSummary\Visitors.scss" />
     <None Include="Addons\_Main\Grids\VisitorsModuleController.BrowseItem" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Addons\_Addons\VisitorSummary\filelistCSS.txt" />
     <Content Include="Addons\_Main\Icons\GeoData.png" />
     <Content Include="Addons\_Main\Icons\People.png" />
   </ItemGroup>
@@ -79,6 +83,7 @@
     <None Include="Views\YetaWF_Visitors_TinyVisitors.cshtml" />
     <None Include="Views\YetaWF_Visitors_VisitorDisplay.cshtml" />
     <None Include="Views\YetaWF_Visitors_SkinVisitor.cshtml" />
+    <None Include="Views\YetaWF_Visitors_VisitorSummary.cshtml" />
     <None Include="Views\YetaWF_Visitors_VisitorsUnavailable.cshtml" />
     <None Include="Views\YetaWF_Visitors_Visitors.cshtml" />
     <None Include="Views\YetaWF_Visitors_SkinVisitor_Partial.cshtml" />
