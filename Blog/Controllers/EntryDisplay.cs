@@ -63,9 +63,12 @@ namespace YetaWF.Modules.Blog.Controllers {
         }
 
         [HttpGet]
-        public ActionResult EntryDisplay(int blogEntry) {
+        public ActionResult EntryDisplay(int? blogEntry) {
+            int entryNum = blogEntry ?? 0;
             using (BlogEntryDataProvider dataProvider = new BlogEntryDataProvider()) {
-                BlogEntry data = dataProvider.GetItem(blogEntry);
+                BlogEntry data = null;
+                if (entryNum != 0)
+                    data = dataProvider.GetItem(entryNum);
                 if (data == null) {
 #if MVC6
                     Logging.AddErrorLog("404 Not Found");
@@ -76,7 +79,7 @@ namespace YetaWF.Modules.Blog.Controllers {
                     return View("NotFound");
                 }
 
-                Manager.CurrentPage.EvaluatedCanonicalUrl = BlogConfigData.GetEntryCanonicalName(blogEntry);
+                Manager.CurrentPage.EvaluatedCanonicalUrl = BlogConfigData.GetEntryCanonicalName(entryNum);
 
                 DisplayModel model = new DisplayModel();
                 model.SetData(data);

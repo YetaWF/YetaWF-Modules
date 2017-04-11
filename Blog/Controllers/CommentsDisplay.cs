@@ -69,20 +69,23 @@ namespace YetaWF.Modules.Blog.Controllers {
         }
 
         [HttpGet]
-        public ActionResult CommentsDisplay(int blogEntry) {
+        public ActionResult CommentsDisplay(int? blogEntry) {
 
+            int entryNum = blogEntry ?? 0;
             BlogConfigData config = BlogConfigDataProvider.GetConfig();
 
             DisplayModel model = new DisplayModel() { };
 
             CommentEditModule editMod = new CommentEditModule();
             using (BlogEntryDataProvider entryDP = new BlogEntryDataProvider()) {
-                BlogEntry entry = entryDP.GetItem(blogEntry);
+                BlogEntry entry = null;
+                if (entryNum != 0)
+                    entry = entryDP.GetItem(entryNum);
                 if (entry == null)
                     return new EmptyResult();
                 model.OpenForComments = entry.OpenForComments;
             }
-            using (BlogCommentDataProvider commentDP = new BlogCommentDataProvider(blogEntry)) {
+            using (BlogCommentDataProvider commentDP = new BlogCommentDataProvider(entryNum)) {
                 int total;
                 List<BlogComment> comments = commentDP.GetItems(0, 0, null, null, out total);
 

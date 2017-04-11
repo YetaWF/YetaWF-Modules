@@ -101,10 +101,13 @@ namespace YetaWF.Modules.Blog.Controllers {
         }
 
         [HttpGet]
-        public ActionResult CommentAdd(int blogEntry) {
+        public ActionResult CommentAdd(int? blogEntry) {
+            int entryNum = blogEntry ?? 0;
             int blogCategory;
             using (BlogEntryDataProvider entryDP = new BlogEntryDataProvider()) {
-                BlogEntry data = entryDP.GetItem(blogEntry);
+                BlogEntry data = null;
+                if (entryNum != 0)
+                    data = entryDP.GetItem(entryNum);
                 if (data == null)
                     return new EmptyResult();
                 blogCategory = data.CategoryIdentity;
@@ -115,7 +118,7 @@ namespace YetaWF.Modules.Blog.Controllers {
             }
             AddModel model = new AddModel {
                 CategoryIdentity = blogCategory,
-                EntryIdentity = blogEntry,
+                EntryIdentity = entryNum,
                 Captcha = new RecaptchaV2Data(),
             };
             model.UpdateData();
