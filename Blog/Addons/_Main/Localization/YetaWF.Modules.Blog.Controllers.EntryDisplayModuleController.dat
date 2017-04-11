@@ -91,16 +91,7 @@
     <Strings>
       <Object Type="YetaWF.Core.Serializers.SerializableList`1[[YetaWF.Core.Localize.LocalizationData+StringData, YetaWF.Core, Culture=neutral, PublicKeyToken=null]]" Assembly="YetaWF.Core">
         <Properties />
-        <List>
-          <Value>
-            <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
-              <Properties>
-                <Name Value="notFound" />
-                <Text Value="Blog entry id {0} not found." />
-              </Properties>
-            </Object>
-          </Value>
-        </List>
+        <List />
       </Object>
     </Strings>
   </Properties>

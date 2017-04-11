@@ -76,7 +76,7 @@
                       <Value>
                         <Object Type="YetaWF.Core.Localize.LocalizationData+PropertyData" Assembly="YetaWF.Core">
                           <Properties>
-                            <Name Value="SessionKey" />
+                            <Name Value="SessionId" />
                             <Caption Value="Session Id" />
                             <Description Value="The session id used to identify the visitor" />
                             <HelpLink />

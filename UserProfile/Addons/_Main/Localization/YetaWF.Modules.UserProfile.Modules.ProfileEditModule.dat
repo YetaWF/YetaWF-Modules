@@ -23,7 +23,7 @@
             <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
               <Properties>
                 <Name Value="editLegend" />
-                <Text Value="Edits an existing user profile" />
+                <Text Value="Edits your user profile" />
               </Properties>
             </Object>
           </Value>
@@ -31,7 +31,7 @@
             <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
               <Properties>
                 <Name Value="editLink" />
-                <Text Value="Edit" />
+                <Text Value="Profile" />
               </Properties>
             </Object>
           </Value>
@@ -39,7 +39,7 @@
             <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
               <Properties>
                 <Name Value="editText" />
-                <Text Value="Edit" />
+                <Text Value="Profile" />
               </Properties>
             </Object>
           </Value>
@@ -47,7 +47,7 @@
             <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
               <Properties>
                 <Name Value="editTooltip" />
-                <Text Value="Edit user profile" />
+                <Text Value="Edit your user profile" />
               </Properties>
             </Object>
           </Value>
