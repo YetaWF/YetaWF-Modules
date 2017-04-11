@@ -3,7 +3,7 @@
 using System;
 using System.Collections.Generic;
 using YetaWF.Core.Controllers;
-using YetaWF.Core.Localize;
+using YetaWF.Core.Log;
 using YetaWF.Core.Models;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Modules;
@@ -66,8 +66,15 @@ namespace YetaWF.Modules.Blog.Controllers {
         public ActionResult EntryDisplay(int blogEntry) {
             using (BlogEntryDataProvider dataProvider = new BlogEntryDataProvider()) {
                 BlogEntry data = dataProvider.GetItem(blogEntry);
-                if (data == null)
-                    throw new Error(this.__ResStr("notFound", "Blog entry id {0} not found."), blogEntry);
+                if (data == null) {
+#if MVC6
+                    Logging.AddErrorLog("404 Not Found");
+                    Manager.CurrentResponse.StatusCode = 404;
+#else
+                    Manager.CurrentResponse.Status = Logging.AddErrorLog("404 Not Found");
+#endif
+                    return View("NotFound");
+                }
 
                 Manager.CurrentPage.EvaluatedCanonicalUrl = BlogConfigData.GetEntryCanonicalName(blogEntry);
 

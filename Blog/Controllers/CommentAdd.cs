@@ -106,7 +106,7 @@ namespace YetaWF.Modules.Blog.Controllers {
             using (BlogEntryDataProvider entryDP = new BlogEntryDataProvider()) {
                 BlogEntry data = entryDP.GetItem(blogEntry);
                 if (data == null)
-                    throw new Error(this.__ResStr("notFound", "Blog entry with id {0} not found."), blogEntry);
+                    return new EmptyResult();
                 blogCategory = data.CategoryIdentity;
                 if (!data.OpenForComments) {
                     if (data.Comments == 0)

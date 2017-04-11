@@ -79,7 +79,7 @@ namespace YetaWF.Modules.Blog.Controllers {
             using (BlogEntryDataProvider entryDP = new BlogEntryDataProvider()) {
                 BlogEntry entry = entryDP.GetItem(blogEntry);
                 if (entry == null)
-                    throw new InternalError("Blog entry with id {0} not found", blogEntry);
+                    return new EmptyResult();
                 model.OpenForComments = entry.OpenForComments;
             }
             using (BlogCommentDataProvider commentDP = new BlogCommentDataProvider(blogEntry)) {
