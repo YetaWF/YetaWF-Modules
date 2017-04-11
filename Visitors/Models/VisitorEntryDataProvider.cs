@@ -16,6 +16,7 @@ using YetaWF.DataProvider;
 namespace YetaWF.Modules.Visitors.DataProvider {
     public class VisitorEntry {
 
+        public const int MaxSessionId = 50;
         public const int MaxError = 200;
         public const int MaxUserAgent = 400;
         public const int MaxCity = 30;
@@ -26,8 +27,8 @@ namespace YetaWF.Modules.Visitors.DataProvider {
         [Data_PrimaryKey, Data_Identity]
         public int Key { get; set; }
 
-        [Data_Index]
-        public long SessionKey { get; set; }
+        [Data_Index, StringLength(MaxSessionId)]
+        public string SessionId { get; set; }
         [Data_Index]
         public DateTime AccessDateTime { get; set; }
         [Data_Index]
@@ -119,7 +120,7 @@ namespace YetaWF.Modules.Visitors.DataProvider {
             return UpdateItem(data.Key, data);
         }
         public UpdateStatusEnum UpdateItem(int originalKey, VisitorEntry data) {
-            if (!Usable) return  UpdateStatusEnum.RecordDeleted;
+            if (!Usable) return UpdateStatusEnum.RecordDeleted;
             return DataProvider.Update(originalKey, data.Key, data);
         }
         public bool RemoveItem(int key) {
@@ -147,11 +148,11 @@ namespace YetaWF.Modules.Visitors.DataProvider {
             Info info = new Info();
             if (!Usable) return info;
             SQLSimpleObjectDataProvider<int, VisitorEntry> sqlDP = (SQLSimpleObjectDataProvider<int, VisitorEntry>)DataProvider;
-            DateTime now = DateTime.UtcNow;
-            string startDate = string.Format("{0:yyyyMMdd}", now);
-            string endDate = string.Format("{0:yyyyMMdd}", now.AddDays(1));
+            DateTime now = DateTime.Now.Date.ToUniversalTime();
+            string startDate = string.Format("{0}", now);
+            string endDate = string.Format("{0}", now.AddDays(1));
             info.TodaysAnonymous = sqlDP.Direct_ScalarInt(
-                "SELECT Count(DISTINCT SessionKey) FROM {TableName} Where " +
+                "SELECT Count(DISTINCT SessionId) FROM {TableName} Where " +
                     string.Format("AccessDateTime >= '{0}' AND AccessDateTime < '{1}'", startDate, endDate) +
                     " AND [UserId] = 0" +
                     " AND {__Site}"
@@ -162,10 +163,10 @@ namespace YetaWF.Modules.Visitors.DataProvider {
                     " AND [UserId] <> 0" +
                     " AND {__Site}"
             );
-            startDate = string.Format("{0:yyyyMMdd}", now.AddDays(-1));
-            endDate = string.Format("{0:yyyyMMdd}", now);
+            startDate = string.Format("{0}", now.AddDays(-1));
+            endDate = string.Format("{0}", now);
             info.YesterdaysAnonymous = sqlDP.Direct_ScalarInt(
-                "SELECT Count(DISTINCT SessionKey) FROM {TableName} Where " +
+                "SELECT Count(DISTINCT SessionId) FROM {TableName} Where " +
                     string.Format("AccessDateTime >= '{0}' AND AccessDateTime < '{1}'", startDate, endDate) +
                     " AND [UserId] = 0" +
                     " AND {__Site}"

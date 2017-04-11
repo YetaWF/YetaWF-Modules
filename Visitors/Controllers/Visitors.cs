@@ -41,8 +41,8 @@ namespace YetaWF.Modules.Visitors.Controllers {
             public int Key { get; set; }
 
             [Caption("Session Id"), Description("The session id used to identify the visitor")]
-            [UIHint("LongValue"), ReadOnly]
-            public long SessionKey { get; set; }
+            [UIHint("String"), ReadOnly]
+            public string SessionId { get; set; }
 
             [Caption("Accessed"), Description("The date and time the visitor visited the site")]
             [UIHint("DateTime"), ReadOnly]

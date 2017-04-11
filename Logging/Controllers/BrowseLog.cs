@@ -49,6 +49,10 @@ namespace YetaWF.Modules.Logging.Controllers {
             [UIHint("DateTime"), ReadOnly]
             public DateTime TimeStamp { get; set; }
 
+            [Caption("Session Id"), Description("The session id used to identify the visitor")]
+            [UIHint("String"), ReadOnly]
+            public string SessionId { get; set; }
+
             [Caption("Level"), Description("The error level of this log record")]
             [UIHint("Enum"), ReadOnly]
             public YetaWF.Core.Log.Logging.LevelEnum Level { get; set; }

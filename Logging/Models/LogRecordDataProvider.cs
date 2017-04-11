@@ -31,6 +31,7 @@ using System.Web;
 namespace YetaWF.Modules.Logging.DataProvider {
     public class LogRecord {
 
+        public const int MaxSessionId = 50;
         public const int MaxMethod = 100;
         public const int MaxNamespace = 100;
 
@@ -39,6 +40,8 @@ namespace YetaWF.Modules.Logging.DataProvider {
 
         [Data_Index]
         public DateTime TimeStamp { get; set; }
+        [Data_Index, StringLength(MaxSessionId)]
+        public string SessionId { get; set; }
         public Core.Log.Logging.LevelEnum Level { get; set; }
         [StringLength(ModuleDefinition.MaxName)]
         public string ModuleName { get; set; }
@@ -162,6 +165,7 @@ namespace YetaWF.Modules.Logging.DataProvider {
                 string ipAddress = "";
                 string referrer = "";
                 string requestedUrl = "";
+                string sessionId = null;
                 if (HaveManager) {
                     if (Manager.HaveCurrentSite)
                         siteIdentity = Manager.CurrentSite.Identity;
@@ -185,10 +189,14 @@ namespace YetaWF.Modules.Logging.DataProvider {
                         if (connectionFeature != null)
                             ipAddress = connectionFeature.RemoteIpAddress.ToString();
                         referrer = req.Headers["Referer"].ToString();
+                        if (httpContext.Session != null)
+                            sessionId = httpContext.Session.Id;
 #else
                         requestedUrl = req.Url != null ? req.Url.ToString() : null;
                         ipAddress = req.UserHostAddress;
                         referrer = req.UrlReferrer != null ? req.UrlReferrer.ToString() : null;
+                        if (httpContext.Session != null)
+                            sessionId = httpContext.Session.SessionID;
 #endif
                         requestedUrl = requestedUrl ?? "";
                         requestedUrl = requestedUrl.Truncate(Globals.MaxUrl);
@@ -204,8 +212,8 @@ namespace YetaWF.Modules.Logging.DataProvider {
                     default:
                         throw new InternalError("IOMode undetermined - this means we don't have a valid data provider");
                     case WebConfigHelper.IOModeEnum.File:
-                        string text = string.Format("{0}-{1}-{2}-{3}-{4}({5})-{6}: {7},{8},{9},{10} - {11}:{12}",
-                            DateTime.Now/*Local Time*/, siteIdentity, ipAddress, requestedUrl, userName, userId, referrer,
+                        string text = string.Format("{0}-{1}-{2}-{3}-{4}-{5}({6})-{7}: {8},{9},{10},{11} - {12}:{13}",
+                            DateTime.Now/*Local Time*/, sessionId, siteIdentity, ipAddress, requestedUrl, userName, userId, referrer,
                                 moduleName,
                                 (methBase.DeclaringType != null) ? methBase.DeclaringType.Name : "",
                                 methBase.Name,
@@ -223,6 +231,7 @@ namespace YetaWF.Modules.Logging.DataProvider {
                             Level = level,
                             Info = message,
                             TimeStamp = DateTime.UtcNow,
+                            SessionId = sessionId,
                             ModuleName = moduleName,
                             Class = (methBase.DeclaringType != null) ? methBase.DeclaringType.Name : "",
                             Method = methBase.Name,

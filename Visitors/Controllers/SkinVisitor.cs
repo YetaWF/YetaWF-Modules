@@ -4,12 +4,10 @@ using System;
 using YetaWF.Core;
 using YetaWF.Core.Controllers;
 using YetaWF.Core.Extensions;
-using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Support;
 using YetaWF.Modules.Visitors.DataProvider;
 #if MVC6
 using Microsoft.AspNetCore.Http.Extensions;
-using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.Mvc;
 #else
 using System.Web.Mvc;
@@ -79,33 +77,29 @@ namespace YetaWF.Modules.Visitors.Controllers {
         // because the callback is registered globally (for all sites) errors are always logged for all sites, visitors are only logged if the page has a skinvisitor module reference
         private static void AddVisitEntry(string url, YetaWFManager manager, VisitorEntryDataProvider visitorDP, string error = null) {
             if (manager == null || !manager.HaveCurrentContext) return;
-            string sessionKey = AreaRegistration.CurrentPackage.Name + "_Visitor";
-            long sessionKeyVal;
-            string val = manager.CurrentSession.GetString(sessionKey);
-            if (!string.IsNullOrWhiteSpace(val))
-                sessionKeyVal = Convert.ToInt64(val);
-            else {
-                sessionKeyVal = DateTime.Now.Ticks;/*local time*/
-                manager.CurrentSession.SetString(sessionKey, sessionKeyVal.ToString());
-            }
 
             GeoLocation geoLocation = new GeoLocation(manager);
             GeoLocation.UserInfo userInfo = geoLocation.GetCurrentUserInfo();
 
             string userAgent;
+            string sessionId = null;
 #if MVC6
             if (url == null)
                 url = Manager.CurrentRequest.GetDisplayUrl();
             userAgent = Manager.CurrentRequest.Headers["User-Agent"].ToString();
+            if (Manager.HaveCurrentSession)
+                sessionId = Manager.CurrentContext.Session.Id;
 #else
             if (url == null)
                 url = Manager.CurrentRequest.Url.ToString();
             userAgent = Manager.CurrentRequest.UserAgent;
+            if (Manager.HaveCurrentSession)
+                sessionId = Manager.CurrentContext.Session.SessionID;
 #endif
             string referrer = Manager.ReferrerUrl;
 
             VisitorEntry visitorEntry = new VisitorEntry {
-                SessionKey = sessionKeyVal,
+                SessionId = sessionId,
                 AccessDateTime = DateTime.UtcNow,
                 UserId = manager.UserId,
                 IPAddress = userInfo.IPAddress.Truncate(Globals.MaxIP),

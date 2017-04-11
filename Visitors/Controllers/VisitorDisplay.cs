@@ -24,13 +24,13 @@ namespace YetaWF.Modules.Visitors.Controllers {
             [UIHint("Hidden")]
             public int Key { get; set; }
 
-            [Caption("Session Id"), Description("The session id used to identify the visitor")]
-            [UIHint("LongValue"), ReadOnly]
-            public long SessionKey { get; set; }
-
             [Caption("Accessed"), Description("The date and time the visitor visited the site")]
             [UIHint("DateTime"), ReadOnly]
             public DateTime AccessDateTime { get; set; }
+
+            [Caption("Session Id"), Description("The session id used to identify the visitor")]
+            [UIHint("String"), ReadOnly]
+            public string SessionId { get; set; }
 
             [Caption("User Id"), Description("The user's email address (if available)")]
             [UIHint("YetaWF_Identity_UserId"), ReadOnly]
