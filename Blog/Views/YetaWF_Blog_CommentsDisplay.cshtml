@@ -8,8 +8,8 @@
         </div>
     }
     <div class='t_comments'>
-        @{ 
-            int count = 0; 
+        @{
+            int count = 0;
             foreach (YetaWF.Modules.Blog.Controllers.CommentsDisplayModuleController.CommentData comment in Model.Comments) {
                 string commentClass = "t_comment" + count.ToString();
                 if (Model.CanApprove || Model.CanRemove) {
@@ -49,7 +49,7 @@
                             @if (string.IsNullOrEmpty(comment.Website)) {
                                 @comment.Name
                             } else {
-                                @Html.Raw(string.Format("<a href='{0}' class='linkpreview-show' target='_blank'>{1}</a>", YetaWFManager.HtmlEncode(comment.Website), YetaWFManager.HtmlEncode(comment.Name)));
+                                @Html.Raw(string.Format("<a href='{0}' class='linkpreview-show' target='_blank' rel='nofollow'>{1}</a>", YetaWFManager.HtmlEncode(comment.Website), YetaWFManager.HtmlEncode(comment.Name)));
                             }
                         </div>
                         <div class='t_cmton'>On:</div>

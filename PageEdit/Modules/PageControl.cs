@@ -69,7 +69,8 @@ namespace YetaWF.Modules.PageEdit.Modules {
                 Mode = ModuleAction.ActionModeEnum.View,
                 Location = ModuleAction.ActionLocationEnum.NoAuto |
                         ModuleAction.ActionLocationEnum.MainMenu | ModuleAction.ActionLocationEnum.ModuleLinks | ModuleAction.ActionLocationEnum.ModuleMenu,
-                SaveReturnUrl = true
+                SaveReturnUrl = true,
+                DontFollow = true,
             };
 
         }
@@ -87,7 +88,8 @@ namespace YetaWF.Modules.PageEdit.Modules {
                 Mode = ModuleAction.ActionModeEnum.Edit,
                 Location = ModuleAction.ActionLocationEnum.NoAuto |
                             ModuleAction.ActionLocationEnum.MainMenu | ModuleAction.ActionLocationEnum.ModuleLinks | ModuleAction.ActionLocationEnum.ModuleMenu,
-                SaveReturnUrl = true
+                SaveReturnUrl = true,
+                DontFollow = true,
             };
         }
         public ModuleAction GetAction_W3CValidation() {
@@ -107,6 +109,7 @@ namespace YetaWF.Modules.PageEdit.Modules {
                 Location = ModuleAction.ActionLocationEnum.NoAuto |
                             ModuleAction.ActionLocationEnum.MainMenu | ModuleAction.ActionLocationEnum.ModuleLinks | ModuleAction.ActionLocationEnum.ModuleMenu,
                 Style = ModuleAction.ActionStyleEnum.NewWindow,
+                DontFollow = true,
             };
         }
     }
