@@ -120,6 +120,7 @@ YetaWF_MenuEdit.LoadTree = function (treeId, detailsId, data, newEntry) {
                     $("input:checkbox[name='ModAction.SaveReturnUrl']", $details).removeAttr('disabled');
                     $("input:checkbox[name='ModAction.AddToOriginList']", $details).removeAttr('disabled');
                     $("input:checkbox[name='ModAction.NeedsModuleContext']", $details).removeAttr('disabled');
+                    $("input:checkbox[name='ModAction.DontFollow']", $details).removeAttr('disabled');
                     break;
                 case MenuEntryType_Parent:
                     YetaWF_Url.Enable($("div[data-name='ModAction.Url']", $details), false);
@@ -141,6 +142,7 @@ YetaWF_MenuEdit.LoadTree = function (treeId, detailsId, data, newEntry) {
                     $("input:checkbox[name='ModAction.SaveReturnUrl']", $details).attr('disabled', 'disabled');
                     $("input:checkbox[name='ModAction.AddToOriginList']", $details).attr('disabled', 'disabled');
                     $("input:checkbox[name='ModAction.NeedsModuleContext']", $details).attr('disabled', 'disabled');
+                    $("input:checkbox[name='ModAction.DontFollow']", $details).attr('disabled', 'disabled');
                     break;
                 case MenuEntryType_Separator:
                     YetaWF_Url.Enable($("div[data-name='ModAction.Url']", $details), false);
@@ -162,6 +164,7 @@ YetaWF_MenuEdit.LoadTree = function (treeId, detailsId, data, newEntry) {
                     $("input:checkbox[name='ModAction.SaveReturnUrl']", $details).attr('disabled', 'disabled');
                     $("input:checkbox[name='ModAction.AddToOriginList']", $details).attr('disabled', 'disabled');
                     $("input:checkbox[name='ModAction.NeedsModuleContext']", $details).attr('disabled', 'disabled');
+                    $("input:checkbox[name='ModAction.DontFollow']", $details).attr('disabled', 'disabled');
                     break;
             }
         } else {
@@ -185,6 +188,7 @@ YetaWF_MenuEdit.LoadTree = function (treeId, detailsId, data, newEntry) {
             $("input:checkbox[name='ModAction.SaveReturnUrl']", $details).attr('disabled', 'disabled');
             $("input:checkbox[name='ModAction.AddToOriginList']", $details).attr('disabled', 'disabled');
             $("input:checkbox[name='ModAction.NeedsModuleContext']", $details).attr('disabled', 'disabled');
+            $("input:checkbox[name='ModAction.DontFollow']", $details).attr('disabled', 'disabled');
         }
     }
     function UpdateFields(dataItem) {
@@ -209,6 +213,7 @@ YetaWF_MenuEdit.LoadTree = function (treeId, detailsId, data, newEntry) {
         $("input:checkbox[name='ModAction.SaveReturnUrl']", $details).prop('checked', dataItem.SaveReturnUrl);
         $("input:checkbox[name='ModAction.AddToOriginList']", $details).prop('checked', dataItem.AddToOriginList);
         $("input:checkbox[name='ModAction.NeedsModuleContext']", $details).prop('checked', dataItem.NeedsModuleContext);
+        $("input:checkbox[name='ModAction.DontFollow']", $details).prop('checked', dataItem.DontFollow);
     }
     function ClearFields(dataItem) {
         $("input[name='ActiveEntry']", $details).val(0);
@@ -235,6 +240,7 @@ YetaWF_MenuEdit.LoadTree = function (treeId, detailsId, data, newEntry) {
         $("input:checkbox[name='ModAction.SaveReturnUrl']", $details).prop('checked', false);
         $("input:checkbox[name='ModAction.AddToOriginList']", $details).prop('checked', false);
         $("input:checkbox[name='ModAction.NeedsModuleContext']", $details).prop('checked', false);
+        $("input:checkbox[name='ModAction.DontFollow']", $details).prop('checked', false);
     }
     function HasChanged(dataItem) {
 
@@ -273,6 +279,8 @@ YetaWF_MenuEdit.LoadTree = function (treeId, detailsId, data, newEntry) {
         if (dataItem.AddToOriginList != val) return true;
         val = $("input:checkbox[name='ModAction.NeedsModuleContext']", $details).prop('checked');
         if (dataItem.NeedsModuleContext != val) return true;
+        val = $("input:checkbox[name='ModAction.DontFollow']", $details).prop('checked');
+        if (dataItem.DontFollow != val) return true;
 
         return false;
     }
@@ -299,6 +307,7 @@ YetaWF_MenuEdit.LoadTree = function (treeId, detailsId, data, newEntry) {
                 $("input:checkbox[name='ModAction.SaveReturnUrl']", $details).prop('checked', false);
                 $("input:checkbox[name='ModAction.AddToOriginList']", $details).prop('checked', false);
                 $("input:checkbox[name='ModAction.NeedsModuleContext']", $details).prop('checked', false);
+                $("input:checkbox[name='ModAction.DontFollow']", $details).prop('checked', false);
                 break;
             case MenuEntryType_Separator:
                 dataItem.Separator = true;
@@ -321,6 +330,7 @@ YetaWF_MenuEdit.LoadTree = function (treeId, detailsId, data, newEntry) {
                 $("input:checkbox[name='ModAction.SaveReturnUrl']", $details).prop('checked', false);
                 $("input:checkbox[name='ModAction.AddToOriginList']", $details).prop('checked', false);
                 $("input:checkbox[name='ModAction.NeedsModuleContext']", $details).prop('checked', false);
+                $("input:checkbox[name='ModAction.DontFollow']", $details).prop('checked', false);
                 break;
         }
 
@@ -344,6 +354,7 @@ YetaWF_MenuEdit.LoadTree = function (treeId, detailsId, data, newEntry) {
         dataItem.SaveReturnUrl = $("input:checkbox[name='ModAction.SaveReturnUrl']", $details).prop('checked');
         dataItem.AddToOriginList = $("input:checkbox[name='ModAction.AddToOriginList']", $details).prop('checked');
         dataItem.NeedsModuleContext = $("input:checkbox[name='ModAction.NeedsModuleContext']", $details).prop('checked');
+        dataItem.DontFollow = $("input:checkbox[name='ModAction.DontFollow']", $details).prop('checked');
 
         // update tree control
         switch (entry) {
