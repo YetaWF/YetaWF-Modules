@@ -129,6 +129,7 @@ namespace YetaWF.Modules.TinyLogin.Modules {
                 Category = ModuleAction.ActionCategoryEnum.Update,
                 Mode = ModuleAction.ActionModeEnum.Any,
                 Location = ModuleAction.ActionLocationEnum.NoAuto,
+                DontFollow = true,
             };
         }
         public ModuleAction GetAction_UserName(string url, string userName, string tooltip) {
