@@ -45,6 +45,7 @@ namespace YetaWF.Modules.Visitors.Modules {
                 Mode = ModuleAction.ActionModeEnum.Any,
                 Location = ModuleAction.ActionLocationEnum.NoAuto,
                 SaveReturnUrl = true,
+                DontFollow = true,
             };
         }
     }

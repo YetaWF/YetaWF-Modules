@@ -41,6 +41,7 @@ namespace YetaWF.Modules.Logging.Modules {
                 Mode = ModuleAction.ActionModeEnum.Any,
                 Location = ModuleAction.ActionLocationEnum.ModuleLinks | ModuleAction.ActionLocationEnum.ModuleMenu,
                 SaveReturnUrl = true,
+                DontFollow = true,
             };
         }
     }
