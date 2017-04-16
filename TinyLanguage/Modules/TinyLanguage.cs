@@ -1,4 +1,4 @@
-﻿/* Copyright © 2017 Softel vdm, Inc. - http://yetawf.com/Documentation/YetaWF/TinyLanguage#License */
+﻿/* Copyright © 2017 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/TinyLanguage#License */
 
 using System;
 using YetaWF.Core.IO;

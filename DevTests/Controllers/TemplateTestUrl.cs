@@ -1,4 +1,4 @@
-/* Copyright © 2017 Softel vdm, Inc. - http://yetawf.com/Documentation/YetaWF/DevTests#License */
+/* Copyright © 2017 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/DevTests#License */
 
 using YetaWF.Core;
 using YetaWF.Core.Controllers;
@@ -55,7 +55,7 @@ namespace YetaWF.Modules.DevTests.Controllers {
             public EditModel() {
                 ROUrl = "/Tests/Text";
                 ROLocalUrl = "/Tests/Text";
-                RORemoteUrl = "http://www.softelvdm.com";
+                RORemoteUrl = "https://softelvdm.com";
             }
         }
 

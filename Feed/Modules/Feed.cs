@@ -1,4 +1,4 @@
-﻿/* Copyright © 2017 Softel vdm, Inc. - http://yetawf.com/Documentation/YetaWF/Feed#License */
+﻿/* Copyright © 2017 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Feed#License */
 
 using System;
 using YetaWF.Core;
@@ -28,7 +28,7 @@ namespace YetaWF.Modules.Feed.Modules {
             Title = this.__ResStr("modTitle", "News Feed");
             Name = this.__ResStr("modName", "News Feed");
             Description = this.__ResStr("modSummary", "Displays a news feed");
-            FeedUrl = "http://YetaWF.com/NewsFeed";
+            FeedUrl = "https://YetaWF.com/NewsFeed";
             Interval = 5;
             NumEntries = 10;
             WantSearch = false;

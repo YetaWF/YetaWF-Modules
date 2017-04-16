@@ -1,4 +1,4 @@
-﻿/* Copyright © 2017 Softel vdm, Inc. - http://yetawf.com/Documentation/YetaWF/Search#License */
+﻿/* Copyright © 2017 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Search#License */
 
 using System.Reflection;
 using System.Runtime.InteropServices;
@@ -18,11 +18,11 @@ using YetaWF.Core.Packages;
 [assembly: AssemblyVersion("2.0.1.0")]
 
 [assembly: Package(PackageTypeEnum.Module, "YetaWF")]
-[assembly: PackageInfo("http://YetaWF.com/UpdateServer",
-    "http://yetawf.com/Documentation/YetaWF/Search",
-    "http://YetaWF.com/Documentation/YetaWF/Support",
-    "http://yetawf.com/Documentation/YetaWF/Search#Release%20Notice",
-    "http://yetawf.com/Documentation/YetaWF/Search#License")]
+[assembly: PackageInfo("https://YetaWF.com/UpdateServer",
+    "https://yetawf.com/Documentation/YetaWF/Search",
+    "https://YetaWF.com/Documentation/YetaWF/Support",
+    "https://yetawf.com/Documentation/YetaWF/Search#Release%20Notice",
+    "https://yetawf.com/Documentation/YetaWF/Search#License")]
 
 // Required creation order so SearchDataProvider is installed first (in case File I/O is used)
 [assembly: InstallOrder(typeof(YetaWF.Modules.Search.DataProvider.SearchDataProvider))]

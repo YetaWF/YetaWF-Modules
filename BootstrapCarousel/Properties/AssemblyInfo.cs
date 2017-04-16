@@ -1,4 +1,4 @@
-﻿/* Copyright © 2017 Softel vdm, Inc. - http://yetawf.com/Documentation/YetaWF/BootstrapCarousel#License */
+﻿/* Copyright © 2017 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/BootstrapCarousel#License */
 
 using System.Reflection;
 using System.Runtime.InteropServices;
@@ -18,10 +18,10 @@ using YetaWF.PackageAttributes;
 [assembly: AssemblyVersion("2.0.1.0")]
 
 [assembly: Package(PackageTypeEnum.Module, "YetaWF")]
-[assembly: PackageInfo("http://YetaWF.com/UpdateServer",
-    "http://YetaWF.com/Documentation/YetaWF/BootstrapCarousel",
-    "http://YetaWF.com/Documentation/YetaWF/Support",
-    "http://YetaWF.com/Documentation/YetaWF/BootstrapCarousel#Release%20Notice",
-    "http://YetaWF.com/Documentation/YetaWF/BootstrapCarousel#License")]
+[assembly: PackageInfo("https://YetaWF.com/UpdateServer",
+    "https://YetaWF.com/Documentation/YetaWF/BootstrapCarousel",
+    "https://YetaWF.com/Documentation/YetaWF/Support",
+    "https://YetaWF.com/Documentation/YetaWF/BootstrapCarousel#Release%20Notice",
+    "https://YetaWF.com/Documentation/YetaWF/BootstrapCarousel#License")]
 
 [assembly: PublicPartialViews]

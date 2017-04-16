@@ -1,4 +1,4 @@
-/* Copyright © 2017 Softel vdm, Inc. - http://yetawf.com/Documentation/YetaWF/Identity#License */
+/* Copyright © 2017 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Identity#License */
 
 using YetaWF.Core.Controllers;
 using YetaWF.Core.Localize;

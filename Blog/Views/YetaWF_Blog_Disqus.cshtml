@@ -1,4 +1,4 @@
-@*Copyright © 2017 Softel vdm, Inc. - http://yetawf.com/Documentation/YetaWF/Blog#License*@
+@*Copyright © 2017 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Blog#License*@
 @inherits YetaWF.Core.Views.RazorView<YetaWF.Modules.Blog.Modules.DisqusModule, YetaWF.Modules.Blog.Controllers.DisqusModuleController.DisplayModel>
 @using YetaWF.Core.Support
 @using YetaWF.Core.Models
@@ -16,8 +16,8 @@
         @if (Model.UseSSO) {
             @: this.sso = {
             @:     name: "@YetaWFManager.JserEncode(Manager.CurrentSite.SiteDomain)",
-            @:     //button: "http://yetawf.com/images/samplenews.gif",
-            @:     //icon: "http://yetawf.com/favicon.png",
+            @:     //button: "https://yetawf.com/images/samplenews.gif",
+            @:     //icon: "https://yetawf.com/favicon.png",
             @:     url: "@YetaWFManager.JserEncode(Model.LoginUrl)",
             @:     logout: "@YetaWFManager.JserEncode(Model.LogoffUrl)",
             @:     width: @Model.Width,
