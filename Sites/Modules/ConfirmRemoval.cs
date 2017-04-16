@@ -51,6 +51,7 @@ namespace YetaWF.Modules.Sites.Modules {
                 Mode = ModuleAction.ActionModeEnum.Any,
                 Location = ModuleAction.ActionLocationEnum.NoAuto,
                 SaveReturnUrl = true,
+                DontFollow = true,
             };
         }
     }
