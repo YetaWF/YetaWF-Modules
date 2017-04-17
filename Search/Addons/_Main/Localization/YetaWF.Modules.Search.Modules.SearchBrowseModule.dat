@@ -311,7 +311,7 @@
             <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
               <Properties>
                 <Name Value="unavailable" />
-                <Text Value="Search data is not available - See &lt;a href='http://yetawf.com/Documentation/YetaWF/Search' target='_blank'&gt;http://yetawf.com/Documentation/YetaWF/Search&lt;/a&gt; for additional information." />
+                <Text Value="Search data is not available - See &lt;a href='https://yetawf.com/Documentation/YetaWF/Search' target='_blank'&gt;https://yetawf.com/Documentation/YetaWF/Search&lt;/a&gt; for additional information." />
               </Properties>
             </Object>
           </Value>
