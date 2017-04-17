@@ -1,6 +1,7 @@
 /* Copyright © 2017 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/DevTests#License */
 
 using System;
+using YetaWF.Core;
 using YetaWF.Core.Controllers;
 using YetaWF.Core.Localize;
 using YetaWF.Core.Models.Attributes;
@@ -21,15 +22,15 @@ namespace YetaWF.Modules.DevTests.Controllers {
         public class Model {
 
             [Caption("TimeZone (Required)"), Description("TimeZone (Required)")]
-            [UIHint("TimeZone"), Required, Trim]
+            [UIHint("TimeZone"), StringLength(Globals.MaxTimeZone), Required, Trim]
             public string TimeZoneReq { get; set; }
 
             [Caption("TimeZone (Required w/Select)"), Description("TimeZone (Required, with (select))")]
-            [UIHint("TimeZone"), AdditionalMetadata("ShowDefault", false), Required, Trim]
+            [UIHint("TimeZone"), AdditionalMetadata("ShowDefault", false), StringLength(Globals.MaxTimeZone), Required, Trim]
             public string TimeZoneReqSel { get; set; }
 
             [Caption("TimeZone"), Description("TimeZone (optional)")]
-            [UIHint("TimeZone"), AdditionalMetadata("ShowDefault", false), Trim]
+            [UIHint("TimeZone"), AdditionalMetadata("ShowDefault", false), StringLength(Globals.MaxTimeZone), Trim]
             public string TimeZone { get; set; }
 
             [Caption("TimeZone (Read/Only)"), Description("TimeZone (read/only)")]

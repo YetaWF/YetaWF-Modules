@@ -23,7 +23,7 @@ namespace YetaWF.Modules.DevTests.Controllers {
 
             [Caption("Phone Number"), Description("The phone number which will receive the SMS message")]
             [TextBelow("The phone number is not validated - It is possible to specify an email address instead to test the email fallback if no SMS provider is available.")]
-            [UIHint("Text20"), Required, Trim]
+            [UIHint("Text20"), StringLength(30), Required, Trim]
             public string PhoneNumber { get; set; }
 
             [Caption("Text"), Description("The text message to send")]

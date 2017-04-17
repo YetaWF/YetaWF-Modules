@@ -1,5 +1,6 @@
 /* Copyright © 2017 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/DevTests#License */
 
+using YetaWF.Core;
 using YetaWF.Core.Controllers;
 using YetaWF.Core.Localize;
 using YetaWF.Core.Models.Attributes;
@@ -19,11 +20,11 @@ namespace YetaWF.Modules.DevTests.Controllers {
         public class Model {
 
             [Caption("Email (Required)"), Description("Email (Required)")]
-            [UIHint("Email"), Required, EmailValidation, Trim]
+            [UIHint("Email"), StringLength(Globals.MaxEmail), Required, EmailValidation, Trim]
             public string EmailReq { get; set; }
 
             [Caption("Email"), Description("Email")]
-            [UIHint("Email"), EmailValidation, Trim]
+            [UIHint("Email"), StringLength(Globals.MaxEmail), EmailValidation, Trim]
             public string Email { get; set; }
 
             [Caption("Email (Read/Only)"), Description("Email (read/only)")]
