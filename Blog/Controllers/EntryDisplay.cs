@@ -3,11 +3,9 @@
 using System;
 using System.Collections.Generic;
 using YetaWF.Core.Controllers;
-using YetaWF.Core.Log;
 using YetaWF.Core.Models;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Modules;
-using YetaWF.Core.Support;
 using YetaWF.Modules.Blog.DataProvider;
 using YetaWF.Modules.Blog.Modules;
 #if MVC6
@@ -70,12 +68,7 @@ namespace YetaWF.Modules.Blog.Controllers {
                 if (entryNum != 0)
                     data = dataProvider.GetItem(entryNum);
                 if (data == null) {
-#if MVC6
-                    Logging.AddErrorLog("404 Not Found");
-                    Manager.CurrentResponse.StatusCode = 404;
-#else
-                    Manager.CurrentResponse.Status = Logging.AddErrorLog("404 Not Found");
-#endif
+                    MarkNotFound();
                     return View("NotFound");
                 }
 
