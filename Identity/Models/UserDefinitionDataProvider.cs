@@ -88,7 +88,7 @@ namespace YetaWF.Modules.Identity.DataProvider {
         [Data_NewValue("(0)")]
         public int LoginFailures { get; set; }
 
-        [StringLength(60)] // max length is really a guid, leave some extra 
+        [StringLength(60)] // max length is really a guid, leave some extra
         public string SecurityStamp { get; set; }
 
         public SerializableList<Role> RolesList { get; set; } // role ids for this user
@@ -248,18 +248,30 @@ namespace YetaWF.Modules.Identity.DataProvider {
                 return DataProvider.Remove(userName);
             }
         }
-        public List<UserDefinition> GetItems(List<DataProviderFilterInfo> filters) {
-            int total;
-            return GetItems(0, 0, null, filters, out total);
-        }
         public List<UserDefinition> GetItems(int skip, int take, List<DataProviderSortInfo> sort, List<DataProviderFilterInfo> filters, out int total) {
-            List<UserDefinition> users = DataProvider.GetRecords(skip, take, sort, filters, out total);
-            using (SuperuserDefinitionDataProvider superDP = new SuperuserDefinitionDataProvider()) {
-                UserDefinition superuser = superDP.GetItem(filters);
-                if (superuser != null) {
-                    users.Insert(0, superuser);
-                    ++total;
+            UserDefinition superuser = null;
+            bool done = false;
+            List<UserDefinition> users;
+            if (skip == 0) {
+                using (SuperuserDefinitionDataProvider superDP = new SuperuserDefinitionDataProvider()) {
+                    superuser = superDP.GetItem(filters);
+                    if (superuser != null) {
+                        if (take == 1) {
+                            total = 1;
+                            done = true;
+                        } else if (take > 1)
+                            take--;
+                    }
                 }
+            }
+            if (done) {
+                users = new List<UserDefinition>();
+                total = 0;
+            } else
+                users = DataProvider.GetRecords(skip, take, sort, filters, out total);
+            if (superuser != null) {
+                users.Insert(0, superuser);
+                ++total;
             }
             return users;
         }
