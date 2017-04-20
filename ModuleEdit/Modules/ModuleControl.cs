@@ -104,7 +104,7 @@ namespace YetaWF.Modules.ModuleEdit.Modules {
                     { Basics.ModuleGuid, this.ModuleGuid }, // the module authorizing this
                 }),
                 Image = "MoveToPane.png",
-                LinkText = string.Format(this.__ResStr("modMoveToLink", "Move To {0}"), newPane),
+                LinkText = this.__ResStr("modMoveToLink", "Move To {0}", newPane),
                 Style = ModuleAction.ActionStyleEnum.Post,
                 MenuText = newPane,
                 Tooltip = this.__ResStr("ttMoveToPane", "Move the module to the {0} pane", newPane),
