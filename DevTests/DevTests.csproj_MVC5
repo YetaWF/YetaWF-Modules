@@ -65,6 +65,7 @@
   <ItemGroup>
     <Compile Include="Controllers\SMSProcessorStatus.cs" />
     <Compile Include="Controllers\TemplateDateTime.cs" />
+    <Compile Include="Controllers\TemplateListOfEmailsAddresses.cs" />
     <Compile Include="Controllers\TemplateRecaptchaV2.cs" />
     <Compile Include="Controllers\TemplateScroller.cs" />
     <Compile Include="Controllers\TemplateSkin.cs" />
@@ -72,6 +73,7 @@
     <Compile Include="Controllers\SMSTest.cs" />
     <Compile Include="Modules\SMSProcessorStatus.cs" />
     <Compile Include="Modules\TemplateDateTimeModule.cs" />
+    <Compile Include="Modules\TemplateListOfEmailsAddressesModule.cs" />
     <Compile Include="Modules\TemplateRecaptchaV2Module.cs" />
     <Compile Include="Modules\TemplateScrollerModule.cs" />
     <Compile Include="Modules\TemplateSkinModule.cs" />
@@ -88,11 +90,16 @@
     <Compile Include="Modules\TemplateReferencedModulesModule.cs" />
     <Compile Include="Modules\TemplateTestUrl.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ViewsCode\Shared\ListOfEmailAddressesHelper.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Addons\_Main\Grids\ListOfEmailAddressesHelper.GridEntryDisplay" />
+    <None Include="Addons\_Main\Grids\ListOfEmailAddressesHelper.GridEntryEdit" />
     <None Include="app.config" />
     <None Include="packages.config" />
+    <Content Include="Views\Shared\DisplayTemplates\YetaWF_DevTests_ListOfEmailAddresses.cshtml" />
     <None Include="Views\Shared\DisplayTemplates\YetaWF_DevTests_ScrollerItem.cshtml" />
+    <Content Include="Views\Shared\EditorTemplates\YetaWF_DevTests_ListOfEmailAddresses.cshtml" />
     <None Include="Views\YetaWF_DevTests_SMSProcessorStatus.cshtml" />
     <None Include="Views\YetaWF_DevTests_SMSTest.cshtml" />
     <None Include="Views\YetaWF_DevTests_SMSTest_Partial.cshtml" />
@@ -100,6 +107,8 @@
     <None Include="Views\YetaWF_DevTests_TemplateDateTime_Partial.cshtml" />
     <None Include="Views\YetaWF_DevTests_TemplateEmail.cshtml" />
     <None Include="Views\YetaWF_DevTests_TemplateEmail_Partial.cshtml" />
+    <None Include="Views\YetaWF_DevTests_TemplateListOfEmailAddresses.cshtml" />
+    <None Include="Views\YetaWF_DevTests_TemplateListOfEmailAddresses_Partial.cshtml" />
     <None Include="Views\YetaWF_DevTests_TemplateModuleSelection.cshtml" />
     <None Include="Views\YetaWF_DevTests_TemplateModuleSelection_Partial.cshtml" />
     <None Include="Views\YetaWF_DevTests_TemplateRecaptchaV2.cshtml" />
@@ -132,7 +141,9 @@
       <Name>SQL</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Models\Attributes\" />
+  </ItemGroup>
   <ItemGroup>
     <Content Include="Addons\_Main\Images\image1.png" />
     <Content Include="Addons\_Main\Images\image10.png" />
@@ -146,6 +157,7 @@
     <Content Include="Addons\_Main\Images\image7.png" />
     <Content Include="Addons\_Main\Images\image8.png" />
     <Content Include="Addons\_Main\Images\image9.png" />
+    <Content Include="Addons\_SiteTemplates\YetaWF_DevTests.2.0.2.txt" />
     <Content Include="Addons\_SiteTemplates\YetaWF_DevTests.1.0.7.txt" />
     <Content Include="Addons\_SiteTemplates\YetaWF_DevTests.1.0.3.txt" />
     <Content Include="Addons\_Templates\ScrollerItem\filelistCSS.txt" />
