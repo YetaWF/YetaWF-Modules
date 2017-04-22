@@ -22,8 +22,24 @@
           <Value>
             <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
               <Properties>
-                <Name Value="valArea2" />
-                <Text Value="The specified ZIP code is invalid ({0}) - Use ZIP code format 00000 or 00000-0000" />
+                <Name Value="valZipCode" />
+                <Text Value="The specified ZIP code is invalid - Use ZIP code format 00000 or 00000-0000" />
+              </Properties>
+            </Object>
+          </Value>
+          <Value>
+            <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
+              <Properties>
+                <Name Value="valZipCode2" />
+                <Text Value="The specified ZIP code is invalid ('{0}' property) - Use ZIP code format 00000 or 00000-0000" />
+              </Properties>
+            </Object>
+          </Value>
+          <Value>
+            <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
+              <Properties>
+                <Name Value="valZipCode3" />
+                <Text Value="The ZIP code '{0}' is invalid - Use ZIP code format 00000 or 00000-0000" />
               </Properties>
             </Object>
           </Value>

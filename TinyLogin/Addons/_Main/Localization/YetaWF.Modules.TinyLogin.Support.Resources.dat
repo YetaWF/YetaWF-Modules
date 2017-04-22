@@ -22,8 +22,24 @@
           <Value>
             <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
               <Properties>
-                <Name Value="err" />
-                <Text Value="The field '{0}' must start with a / character (a direct Url on this site)" />
+                <Name Value="valLogoff" />
+                <Text Value="The logoff Url is invalid - It must start with a / character (a direct Url on this site)" />
+              </Properties>
+            </Object>
+          </Value>
+          <Value>
+            <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
+              <Properties>
+                <Name Value="valLogoff2" />
+                <Text Value="The logoff Url is invalid ('{0}' property) - It must start with a / character (a direct Url on this site)" />
+              </Properties>
+            </Object>
+          </Value>
+          <Value>
+            <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
+              <Properties>
+                <Name Value="valLogoff3" />
+                <Text Value="The logoff Url '{0}' is invalid - It must start with a / character (a direct Url on this site)" />
               </Properties>
             </Object>
           </Value>

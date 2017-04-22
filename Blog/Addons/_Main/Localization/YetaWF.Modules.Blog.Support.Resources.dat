@@ -23,7 +23,23 @@
             <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
               <Properties>
                 <Name Value="valShortName" />
-                <Text Value="A shortname must consist of letters, numbers, underscores or dashes, without spaces." />
+                <Text Value="A shortname must consist of letters, numbers, underscores or dashes, without spaces" />
+              </Properties>
+            </Object>
+          </Value>
+          <Value>
+            <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
+              <Properties>
+                <Name Value="valShortName2" />
+                <Text Value="The shortname is invalid ('{0}' property) - it must consist of letters, numbers, underscores or dashes, without spaces" />
+              </Properties>
+            </Object>
+          </Value>
+          <Value>
+            <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
+              <Properties>
+                <Name Value="valShortName3" />
+                <Text Value="The shortname '{0}' is invalid - it must consist of letters, numbers, underscores or dashes, without spaces" />
               </Properties>
             </Object>
           </Value>
