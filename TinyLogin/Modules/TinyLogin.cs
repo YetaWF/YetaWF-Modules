@@ -63,7 +63,7 @@ namespace YetaWF.Modules.TinyLogin.Modules {
 
         [Category("General")]
         [Caption("Log Off Url"), Description("The Url where the user is redirected when the logoff link is clicked")]
-        [UIHint("Text80"), LogoffRegularExpressionAttribute]
+        [UIHint("Text80"), LogoffUrlValidationAttribute]
         [StringLength(Globals.MaxUrl), Trim]
         public string LogoffUrl { get; set; }
 

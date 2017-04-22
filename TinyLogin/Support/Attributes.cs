@@ -1,25 +1,21 @@
-﻿/* Copyright © 2017 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/TinyLogin#License */
+﻿/* Copyright © 2017 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Licensing */
 
 using System;
 using YetaWF.Core.Localize;
-using YetaWF.Core.Models;
 using YetaWF.Core.Models.Attributes;
 
 namespace YetaWF.Modules.TinyLogin.Support {
 
     [AttributeUsage(AttributeTargets.Property, AllowMultiple = false, Inherited = true)]
-    public class LogoffRegularExpressionAttribute : RegularExpressionAttribute {
+    public class LogoffUrlValidationAttribute : RegexValidationBaseAttribute {
         [CombinedResources]
-        private static string __ResStr(string name, string defaultValue, params object[] parms) { return ResourceAccess.GetResourceString(typeof(LogoffRegularExpressionAttribute), name, defaultValue, parms); }
 
-        public LogoffRegularExpressionAttribute() : base(@"\/.*") { }
+        private static string __ResStr(string name, string defaultValue, params object[] parms) { return ResourceAccess.GetResourceString(typeof(LogoffUrlValidationAttribute), name, defaultValue, parms); }
 
-        protected override System.ComponentModel.DataAnnotations.ValidationResult IsValid(object value, System.ComponentModel.DataAnnotations.ValidationContext validationContext) {
-            System.ComponentModel.DataAnnotations.ValidationResult result = base.IsValid(value, validationContext);
-            if (result == System.ComponentModel.DataAnnotations.ValidationResult.Success)
-                return System.ComponentModel.DataAnnotations.ValidationResult.Success;
-            string errorMessage = __ResStr("err", "The field '{0}' must start with a / character (a direct Url on this site)", AttributeHelper.GetPropertyCaption(validationContext));
-            return new System.ComponentModel.DataAnnotations.ValidationResult(errorMessage);
-        }
+        public LogoffUrlValidationAttribute() : base(@"\/.*",
+            __ResStr("valLogoff", "The logoff Url is invalid - It must start with a / character (a direct Url on this site)"),
+            __ResStr("valLogoff2", "The logoff Url is invalid ('{0}' property) - It must start with a / character (a direct Url on this site)"),
+            __ResStr("valLogoff3", "The logoff Url '{0}' is invalid - It must start with a / character (a direct Url on this site)")
+            ) { }
     }
 }
