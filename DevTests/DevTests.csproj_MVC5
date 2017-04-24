@@ -63,6 +63,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controllers\BasicTemplates.cs" />
     <Compile Include="Controllers\SMSProcessorStatus.cs" />
     <Compile Include="Controllers\TemplateDateTime.cs" />
     <Compile Include="Controllers\TemplateListOfEmailsAddresses.cs" />
@@ -71,6 +72,7 @@
     <Compile Include="Controllers\TemplateSkin.cs" />
     <Compile Include="Controllers\TemplateTimeZone.cs" />
     <Compile Include="Controllers\SMSTest.cs" />
+    <Compile Include="Modules\BasicTemplates.cs" />
     <Compile Include="Modules\SMSProcessorStatus.cs" />
     <Compile Include="Modules\TemplateDateTimeModule.cs" />
     <Compile Include="Modules\TemplateListOfEmailsAddressesModule.cs" />
@@ -100,6 +102,8 @@
     <Content Include="Views\Shared\DisplayTemplates\YetaWF_DevTests_ListOfEmailAddresses.cshtml" />
     <None Include="Views\Shared\DisplayTemplates\YetaWF_DevTests_ScrollerItem.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\YetaWF_DevTests_ListOfEmailAddresses.cshtml" />
+    <None Include="Views\YetaWF_DevTests_BasicTemplates.cshtml" />
+    <None Include="Views\YetaWF_DevTests_BasicTemplates_Partial.cshtml" />
     <None Include="Views\YetaWF_DevTests_SMSProcessorStatus.cshtml" />
     <None Include="Views\YetaWF_DevTests_SMSTest.cshtml" />
     <None Include="Views\YetaWF_DevTests_SMSTest_Partial.cshtml" />

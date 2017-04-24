@@ -35,11 +35,11 @@ namespace YetaWF.Modules.DevTests.Controllers {
             [UIHint("Date"), Required]
             public DateTime DateReq { get; set; }
 
-            [Caption("Date/Time"), Description("Date/Time")]
+            [Caption("Date"), Description("Date/Time")]
             [UIHint("Date")]
             public DateTime? DateOpt { get; set; }
 
-            [Caption("Date/Time (Read/Only)"), Description("Date/Time (Read/only)")]
+            [Caption("Date (Read/Only)"), Description("Date/Time (Read/only)")]
             [UIHint("Date"), ReadOnly]
             public DateTime DateRO { get; set; }
 
