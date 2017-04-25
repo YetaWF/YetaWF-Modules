@@ -12,6 +12,7 @@ using YetaWF.Modules.DevTests.Modules;
 using YetaWF.Core.Models;
 using YetaWF.Core.SendEmail;
 #if MVC6
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 #else
 using System.Web;
