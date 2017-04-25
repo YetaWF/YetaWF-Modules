@@ -29,7 +29,7 @@
                         <Object Type="YetaWF.Core.Localize.LocalizationData+PropertyData" Assembly="YetaWF.Core">
                           <Properties>
                             <Name Value="DateOpt" />
-                            <Caption Value="Date/Time" />
+                            <Caption Value="Date" />
                             <Description Value="Date/Time" />
                             <HelpLink />
                             <TextAbove />
@@ -53,7 +53,7 @@
                         <Object Type="YetaWF.Core.Localize.LocalizationData+PropertyData" Assembly="YetaWF.Core">
                           <Properties>
                             <Name Value="DateRO" />
-                            <Caption Value="Date/Time (Read/Only)" />
+                            <Caption Value="Date (Read/Only)" />
                             <Description Value="Date/Time (Read/only)" />
                             <HelpLink />
                             <TextAbove />
