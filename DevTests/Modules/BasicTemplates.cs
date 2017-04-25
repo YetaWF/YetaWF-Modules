@@ -29,9 +29,9 @@ namespace YetaWF.Modules.DevTests.Modules {
         public ModuleAction GetAction_Edit(string url) {
             return new ModuleAction(this) {
                 Url = string.IsNullOrWhiteSpace(url) ? ModulePermanentUrl : url,
-                Image = "#Edit",
-                LinkText = this.__ResStr("editLink", "Basic Templates Test"),
-                MenuText = this.__ResStr("editText", "Basic Templates Test"),
+                Image = "#Display",
+                LinkText = this.__ResStr("editLink", "Basic Templates"),
+                MenuText = this.__ResStr("editText", "Basic Templates"),
                 Tooltip = this.__ResStr("editTooltip", "Used to test all generally available templates"),
                 Legend = this.__ResStr("editLegend", "Used to test all generally available templates"),
                 Style = ModuleAction.ActionStyleEnum.Normal,
