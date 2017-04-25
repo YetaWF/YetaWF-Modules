@@ -12,7 +12,7 @@
               <Properties>
                 <Name Value="YetaWF.Modules.DevTests.Controllers.BasicTemplatesModuleController+EditModel" />
                 <BaseTypeName />
-                <Header Value="YetaWF templates test - All fields are required, but some have default values which are acceptable so no warning will be shown. Some templates have their own test page (see (Tests &gt; Templates) so they are not included on this page." />
+                <Header Value="YetaWF templates test - All fields are required, but some have default values which are acceptable so no warning will be shown. Some templates have their own test page (see Tests &gt; Templates) so they are not included on this page." />
                 <Footer />
                 <Legend />
                 <Categories>

@@ -23,7 +23,7 @@
             <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
               <Properties>
                 <Name Value="ChangedEntry" />
-                <Text Value="You have modified the current menu entry. Please save it before selecting another menu entry" />
+                <Text Value="You have modified the current menu entry - Please save it before selecting another menu entry" />
               </Properties>
             </Object>
           </Value>
