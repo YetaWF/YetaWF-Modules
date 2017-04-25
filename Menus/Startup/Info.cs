@@ -16,7 +16,7 @@ namespace YetaWF.Modules.Menus.Addons {
             string areaName = AreaRegistration.CurrentPackage.AreaName;
 
             scripts.AddLocalization(areaName, "Separator", this.__ResStr("Separator", "(Separator)"));
-            scripts.AddLocalization(areaName, "ChangedEntry", this.__ResStr("ChangedEntry", "You have modified the current menu entry. Please save it before selecting another menu entry"));
+            scripts.AddLocalization(areaName, "ChangedEntry", this.__ResStr("ChangedEntry", "You have modified the current menu entry - Please save it before selecting another menu entry"));
             scripts.AddLocalization(areaName, "NoMenuEntry", this.__ResStr("NoMenuEntry", "No menu entry selected"));
             scripts.AddLocalization(areaName, "NoResetMenu", this.__ResStr("NoResetMenu", "You can't reset the entire menu"));
             scripts.AddLocalization(areaName, "NoRemoveMenu", this.__ResStr("NoRemoveMenu", "You can't remove the entire menu"));
