@@ -47,9 +47,8 @@ namespace YetaWF.Modules.Identity.Controllers {
 #if MVC6
             SignInManager<UserDefinition> _signinManager = (SignInManager<UserDefinition>)YetaWFManager.ServiceProvider.GetService(typeof(SignInManager<UserDefinition>));
             var redirectUrl = Url.Action("ExternalLoginCallback", "LoginExternal", new { ReturnUrl = returnUrl }, "https");
-            throw new InternalError("Not yet available until ASP.NET Core MVC 2.0 is released");
-            //$$var properties = _signinManager.ConfigureExternalAuthenticationProperties(provider, redirectUrl);
-            //$$return Challenge(properties, provider);
+            var properties = _signinManager.ConfigureExternalAuthenticationProperties(provider, redirectUrl);
+            return Challenge(properties, provider);
 #else
             return new ChallengeResult(provider, Url.Action("ExternalLoginCallback", "LoginExternal", new { ReturnUrl = returnUrl }, "https"));
 #endif

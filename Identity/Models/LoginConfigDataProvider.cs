@@ -16,7 +16,7 @@ using YetaWF.Modules.Identity.Modules;
 using YetaWF.Core.Identity;
 #if MVC6
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Http.Authentication;
+using Microsoft.AspNetCore.Authentication;
 #else
 using Microsoft.Owin.Security;
 using System.Web;
@@ -192,9 +192,10 @@ namespace YetaWF.Modules.Identity.DataProvider {
             List <LoginProviderDescription> list = new List<LoginProviderDescription>();
 #if MVC6
             SignInManager<UserDefinition> _signinManager = (SignInManager<UserDefinition>)YetaWFManager.ServiceProvider.GetService(typeof(SignInManager<UserDefinition>));
-            List<AuthenticationDescription> loginProviders = _signinManager.GetExternalAuthenticationSchemes().ToList();
-            foreach (AuthenticationDescription provider in loginProviders) {
-                string name = provider.AuthenticationScheme;
+
+            List<AuthenticationScheme> loginProviders = _signinManager.GetExternalAuthenticationSchemesAsync().Result.ToList();
+            foreach (AuthenticationScheme provider in loginProviders) {
+                string name = provider.Name;
                 if (name == "Facebook" && configData.UseFacebook && configData.DefinedFacebook)
                     list.Add(new LoginProviderDescription { InternalName = name, DisplayName = provider.DisplayName });
                 else if (name == "Google" && configData.UseGoogle && configData.DefinedGoogle)

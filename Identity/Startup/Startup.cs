@@ -3,6 +3,7 @@
 #if MVC6
 
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using YetaWF.Core.Identity;
@@ -40,57 +41,71 @@ namespace YetaWF.Modules.Identity
                 options.Lockout.MaxFailedAccessAttempts = 0;
 
                 // Cookie settings
-                string scheme = options.Cookies.ApplicationCookie.AuthenticationScheme = WebConfigHelper.GetValue<string>(AREA, "OWin:AuthenticationType");
-                if (scheme == "ApplicationCookie") {
-                    long ticks = WebConfigHelper.GetValue<long>(AREA, "OWin:ExpireTimeSpan", new TimeSpan(10, 0, 0, 0).Ticks);
-                    options.Cookies.ApplicationCookie.ExpireTimeSpan = new TimeSpan(ticks);
-                    options.Cookies.ApplicationCookie.SlidingExpiration = WebConfigHelper.GetValue<bool>(AREA, "OWin:SlidingExpiration", true);
-                    options.Cookies.ApplicationCookie.CookieSecure = Microsoft.AspNetCore.Http.CookieSecurePolicy.None;
-                    options.Cookies.ApplicationCookie.CookieName = string.Format(".YetaWF.Cookies.{0}", YetaWFManager.DefaultSiteName);
-                    options.Cookies.ApplicationCookie.AutomaticAuthenticate = true;
-                }
-                options.Cookies.ExternalCookie.CookieName = string.Format(".YetaWF.Cookies.Ext.{0}", YetaWFManager.DefaultSiteName);
-
+                options.Cookies.ApplicationCookieAuthenticationScheme = IdentityCookieOptions.ApplicationScheme;
+                options.Cookies.ExternalCookieAuthenticationScheme = IdentityCookieOptions.ExternalScheme;
+                
                 // User settings
                 // the default is acceptable: options.User.AllowedUserNameCharacters
                 // We handle email/name ourselves
                 options.User.RequireUniqueEmail = false;
             });
+
+            services.ConfigureApplicationCookie(c => {
+                c.CookieName = string.Format(".YetaWF.Cookies.{0}", YetaWFManager.DefaultSiteName);
+                long ticks = WebConfigHelper.GetValue<long>(AREA, "OWin:ExpireTimeSpan", new TimeSpan(10, 0, 0, 0).Ticks);
+                c.ExpireTimeSpan = new TimeSpan(ticks);
+                c.CookieSecure = Microsoft.AspNetCore.Http.CookieSecurePolicy.None;
+                c.SlidingExpiration = WebConfigHelper.GetValue<bool>(AREA, "OWin:SlidingExpiration", true);
+            });
+            services.ConfigureExternalCookie(c => {
+                c.CookieName = string.Format(".YetaWF.Cookies.Ext.{0}", YetaWFManager.DefaultSiteName);
+                long ticks = WebConfigHelper.GetValue<long>(AREA, "OWin:ExpireTimeSpan", new TimeSpan(10, 0, 0, 0).Ticks);
+                c.ExpireTimeSpan = new TimeSpan(ticks);
+                c.CookieSecure = Microsoft.AspNetCore.Http.CookieSecurePolicy.None;
+                c.SlidingExpiration = WebConfigHelper.GetValue<bool>(AREA, "OWin:SlidingExpiration", true);
+            });
         }
 
-        public void SetupLoginProviders(IApplicationBuilder app) {
-
-            string pub = WebConfigHelper.GetValue<string>(AREA, "FacebookAccount:Public");
-            string priv = WebConfigHelper.GetValue<string>(AREA, "FacebookAccount:Private");
-            if (!string.IsNullOrWhiteSpace(pub) && !string.IsNullOrWhiteSpace(priv)) {
-                app.UseFacebookAuthentication(new FacebookOptions() {
-                    AppId = pub,
-                    AppSecret = priv,
-                });
+        public void SetupLoginProviders(IServiceCollection services) {
+            {
+                string pub = WebConfigHelper.GetValue<string>(AREA, "FacebookAccount:Public");
+                string priv = WebConfigHelper.GetValue<string>(AREA, "FacebookAccount:Private");
+                if (!string.IsNullOrWhiteSpace(pub) && !string.IsNullOrWhiteSpace(priv)) {
+                    services.AddFacebookAuthentication("Facebook", o => {
+                        o.AppId = pub;
+                        o.AppSecret = priv;
+                    });
+                }
             }
-            pub = WebConfigHelper.GetValue<string>(AREA, "GoogleAccount:Public");
-            priv = WebConfigHelper.GetValue<string>(AREA, "GoogleAccount:Private");
-            if (!string.IsNullOrWhiteSpace(pub) && !string.IsNullOrWhiteSpace(priv)) {
-                app.UseGoogleAuthentication(new GoogleOptions() {
-                    ClientId = pub,
-                    ClientSecret = priv,
-                });
+            { 
+                string pub = WebConfigHelper.GetValue<string>(AREA, "GoogleAccount:Public");
+                string priv = WebConfigHelper.GetValue<string>(AREA, "GoogleAccount:Private");
+                if (!string.IsNullOrWhiteSpace(pub) && !string.IsNullOrWhiteSpace(priv)) {
+                    services.AddGoogleAuthentication("Google", o => {
+                        o.ClientId = pub;
+                        o.ClientSecret = priv;
+                    });
+                }
             }
-            pub = WebConfigHelper.GetValue<string>(AREA, "TwitterAccount:Public");
-            priv = WebConfigHelper.GetValue<string>(AREA, "TwitterAccount:Private");
-            if (!string.IsNullOrWhiteSpace(pub) && !string.IsNullOrWhiteSpace(priv)) {
-                app.UseTwitterAuthentication(new TwitterOptions() {
-                    ConsumerKey = pub,
-                    ConsumerSecret = priv
-                });
+            {
+                string pub = WebConfigHelper.GetValue<string>(AREA, "TwitterAccount:Public");
+                string priv = WebConfigHelper.GetValue<string>(AREA, "TwitterAccount:Private");
+                if (!string.IsNullOrWhiteSpace(pub) && !string.IsNullOrWhiteSpace(priv)) {
+                    services.AddTwitterAuthentication("Twitter", o => {
+                        o.ConsumerKey = pub;
+                        o.ConsumerSecret = priv;
+                    });
+                }
             }
-            if (!string.IsNullOrWhiteSpace(pub) && !string.IsNullOrWhiteSpace(priv)) {
-                pub = WebConfigHelper.GetValue<string>(AREA, "MicrosoftAccount:Public");
-                priv = WebConfigHelper.GetValue<string>(AREA, "MicrosoftAccount:Private");
-                app.UseMicrosoftAccountAuthentication(new MicrosoftAccountOptions() {
-                    ClientId = pub,
-                    ClientSecret = priv
-                });
+            {
+                string pub = WebConfigHelper.GetValue<string>(AREA, "MicrosoftAccount:Public");
+                string priv = WebConfigHelper.GetValue<string>(AREA, "MicrosoftAccount:Private");
+                if (!string.IsNullOrWhiteSpace(pub) && !string.IsNullOrWhiteSpace(priv)) {
+                    services.AddMicrosoftAccountAuthentication("Microsoft", o => {
+                        o.ClientId = pub;
+                        o.ClientSecret = priv;
+                    });
+                }
             }
         }
     }

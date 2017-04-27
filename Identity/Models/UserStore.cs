@@ -10,6 +10,7 @@ using YetaWF.Core.Identity;
 using YetaWF.Core.Localize;
 using YetaWF.Core.Support;
 using YetaWF.Modules.Identity.DataProvider;
+using Microsoft.AspNetCore.Authentication;
 #if MVC6
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
@@ -27,7 +28,7 @@ namespace YetaWF.Modules.Identity.Models {
 
 #if MVC6
     public class YetaWFSecurityStampValidator : SecurityStampValidator<UserDefinition> {
-        public YetaWFSecurityStampValidator(IOptions<IdentityOptions> options, SignInManager<UserDefinition> signInManager) : base(options, signInManager) { }
+        public YetaWFSecurityStampValidator(IOptions<IdentityOptions> options, SignInManager<UserDefinition> signInManager, ISystemClock clock) : base(options, signInManager, clock) { }
     }
 #endif
 
