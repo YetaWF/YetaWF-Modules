@@ -9,4 +9,4 @@ Published           sort filter [Globals.ChBoolean] center
 DatePublished       sort filter [Globals.ChDateTime]
 DateCreated         sort filter [Globals.ChDateTime]
 DateUpdated         sort filter [Globals.ChDateTime]
-Category            sort filter 25
+Category            25

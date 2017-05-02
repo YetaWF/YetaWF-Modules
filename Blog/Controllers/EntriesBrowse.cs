@@ -84,8 +84,8 @@ namespace YetaWF.Modules.Blog.Controllers {
             public DateTime DateUpdated { get; set; }
 
             [Caption("Category"), Description("The name of the blog category")]
-            [UIHint("String"), ReadOnly]
-            public string Category { get; set; }
+            [UIHint("MultiString"), ReadOnly]
+            public MultiString Category { get; set; }
 
             private EntriesBrowseModule Module { get; set; }
 
