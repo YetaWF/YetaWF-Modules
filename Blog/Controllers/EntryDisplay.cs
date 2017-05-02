@@ -74,6 +74,12 @@ namespace YetaWF.Modules.Blog.Controllers {
                 }
 
                 Manager.CurrentPage.EvaluatedCanonicalUrl = BlogConfigData.GetEntryCanonicalName(entryNum);
+                if (!string.IsNullOrWhiteSpace(data.Keywords)) {
+                    Manager.CurrentPage.Keywords = data.Keywords;
+                    Manager.MetatagsManager.AddMetatag("news_keywords", data.Keywords.ToString());
+                }
+                Manager.CurrentPage.Description = data.Title;
+                Manager.PageTitle = data.Title;
 
                 DisplayModel model = new DisplayModel();
                 model.SetData(data);

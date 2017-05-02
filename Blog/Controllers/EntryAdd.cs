@@ -29,6 +29,10 @@ namespace YetaWF.Modules.Blog.Controllers {
             [UIHint("MultiString"), StringLength(BlogEntry.MaxTitle), Required, Trim]
             public MultiString Title { get; set; }
 
+            [Caption("Keywords"), Description("The keywords for this blog entry")]
+            [UIHint("MultiString"), StringLength(BlogEntry.MaxKwds), Trim]
+            public MultiString Keywords { get; set; }
+
             [Caption("Author"), Description("The name of the blog author")]
             [UIHint("Text40"), StringLength(BlogEntry.MaxAuthor), Required, Trim]
             public string Author { get; set; }
@@ -59,6 +63,7 @@ namespace YetaWF.Modules.Blog.Controllers {
 
             public AddModel() {
                 Title = new MultiString();
+                Keywords = new MultiString();
                 DatePublished = DateTime.UtcNow;
             }
 

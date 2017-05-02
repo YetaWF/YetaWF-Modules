@@ -2,20 +2,26 @@
 
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using YetaWF.Core.Addons;
 using YetaWF.Core.Controllers;
 using YetaWF.Core.DataProvider;
+using YetaWF.Core.Localize;
 using YetaWF.Core.Menus;
 using YetaWF.Core.Models;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Modules;
+using YetaWF.Core.Support;
 using YetaWF.Core.Views.Shared;
 using YetaWF.Modules.Blog.DataProvider;
 using YetaWF.Modules.Blog.Modules;
+using YetaWF.Modules.Blog.Scheduler;
 #if MVC6
 using Microsoft.AspNetCore.Mvc;
 using YetaWF.Core.Support;
 #else
+using System.Web;
 using System.Web.Mvc;
 #endif
 
@@ -125,6 +131,48 @@ namespace YetaWF.Modules.Blog.Controllers {
                 dataProvider.RemoveItem(blogCategory);
                 return Reload(null, Reload: ReloadEnum.ModuleParts);
             }
+        }
+        [HttpPost]
+        [Permission("NewsSiteMap")]
+        [ExcludeDemoMode]
+        public ActionResult CreateNewsSiteMap() {
+            NewsSiteMap sm = new NewsSiteMap();
+            sm.Create();
+            return Reload(null, Reload: ReloadEnum.ModuleParts, PopupText: this.__ResStr("screDone", "The news site map has been successfully created"));
+        }
+
+        [HttpPost]
+        [Permission("NewsSiteMap")]
+        [ExcludeDemoMode]
+        public ActionResult RemoveNewsSiteMap() {
+            NewsSiteMap sm = new NewsSiteMap();
+            sm.Remove();
+            return Reload(null, Reload: ReloadEnum.ModuleParts, PopupText: this.__ResStr("sremDone", "The news site map has been removed"));
+        }
+
+        [Permission("NewsSiteMap")]
+        public ActionResult DownloadNewsSiteMap(long cookieToReturn) {
+            NewsSiteMap sm = new NewsSiteMap();
+            string filename = sm.GetNewsSiteMapFileName();
+            if (!System.IO.File.Exists(filename))
+                throw new Error(this.__ResStr("sitemapNotFound", "News site map not found - File '{0}' cannot be located", filename));
+#if MVC6
+            Response.Headers.Remove("Cookie");
+            Response.Cookies.Append(Basics.CookieDone, cookieToReturn.ToString(), new Microsoft.AspNetCore.Http.CookieOptions { HttpOnly = false, Path = "/" });
+#else
+            HttpCookie cookie = new HttpCookie(Basics.CookieDone, cookieToReturn.ToString());
+            Response.Cookies.Remove(Basics.CookieDone);
+            Response.SetCookie(cookie);
+#endif
+
+            string contentType = "application/octet-stream";
+#if MVC6
+            return new PhysicalFileResult(filename, contentType) { FileDownloadName = Path.GetFileName(filename) };
+#else
+            FilePathResult result = new FilePathResult(filename, contentType);
+            result.FileDownloadName = Path.GetFileName(filename);
+            return result;
+#endif
         }
     }
 }

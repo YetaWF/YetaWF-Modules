@@ -25,18 +25,19 @@ namespace YetaWF.Modules.Blog.DataProvider {
         public const int MaxTitle = 100;
         public const int MaxAuthor = 100;
         public const int MaxSummary = 500;
+        public const int MaxKwds = 100;
         public const int MaxText = 1024*1024;
 
         [Data_PrimaryKey, Data_Identity]
         public int Identity { get; set; }
-        [Data_CalculatedProperty]
-        public string Category { get; set; }
         [Data_Index]
         public int CategoryIdentity { get; set; }
         [StringLength(MaxTitle)]
         public MultiString Title { get; set; }
         [StringLength(MaxAuthor)]
         public string Author { get; set; }
+        [StringLength(MaxKwds)]
+        public MultiString Keywords { get; set; }
 
         public Guid UniqueId { get; set; } // a unique Id that never changes - used for image storage
 
@@ -154,8 +155,20 @@ namespace YetaWF.Modules.Blog.DataProvider {
         [Data_CalculatedProperty]
         public int Comments { get; set; }
 
+        public MultiString Category {
+            get {
+                using (BlogCategoryDataProvider categoryDP = new BlogCategoryDataProvider()) {
+                    BlogCategory blogCategory = categoryDP.GetItem(CategoryIdentity);
+                    if (blogCategory != null)
+                        return blogCategory.Category;
+                    return new MultiString();
+                }
+            }
+        }
+
         public BlogEntry() {
             Title = new MultiString();
+            Keywords = new MultiString();
             UniqueId = Guid.NewGuid();
             DatePublished = DateTime.UtcNow;
             DateCreated = DateTime.UtcNow;
@@ -222,13 +235,6 @@ namespace YetaWF.Modules.Blog.DataProvider {
                     entry.Comments = comments;
                     return obj;
                 }
-            } else if (name == "Category") {
-                using (BlogCategoryDataProvider categoryDP = new BlogCategoryDataProvider()) {
-                    BlogCategory blogCategory = categoryDP.GetItem(entry.CategoryIdentity);
-                    if (blogCategory != null)
-                        entry.Category = blogCategory.Category.ToString();
-                    return obj;
-                }
             } else throw new InternalError("Unexpected property {0}", name);
         }
 
@@ -245,14 +251,6 @@ namespace YetaWF.Modules.Blog.DataProvider {
                 using (BlogCommentDataProvider commentDP = new BlogCommentDataProvider(-1)) {// we don't know the entry, but it's not needed
                     sql = "SELECT COUNT(*) FROM $BlogComments$ WHERE ($BlogComments$.EntryIdentity = $ThisTable$.[Identity]) AND ($ThisTable$.Published = 1)";
                     sql = commentDP.ReplaceWithTableName(sql, "$BlogComments$");
-                    sql = ReplaceWithTableName(sql, "$ThisTable$");
-                    return sql;
-                }
-            } else if (name == "Category") {
-                using (BlogCategoryDataProvider categoryDP = new BlogCategoryDataProvider()) {
-                    sql = "SELECT Category$Language$ FROM $BlogCategory$ WHERE ($BlogCategory$.[Identity] = $ThisTable$.CategoryIdentity)";
-                    sql = categoryDP.ReplaceWithTableName(sql, "$BlogCategory$");
-                    sql = categoryDP.ReplaceWithLanguage(sql, "$Language$");
                     sql = ReplaceWithTableName(sql, "$ThisTable$");
                     return sql;
                 }
@@ -371,9 +369,8 @@ namespace YetaWF.Modules.Blog.DataProvider {
         // ISITEMAPDYNAMICURLS
         // ISITEMAPDYNAMICURLS
 
-        public void FindDynamicUrls(Action<PageDefinition, string, DateTime?, PageDefinition.SiteMapPriorityEnum, PageDefinition.ChangeFrequencyEnum> addDynamicUrl, Func<PageDefinition, bool> validForSiteMap) {
+        public void FindDynamicUrls(Action<PageDefinition, string, DateTime?, PageDefinition.SiteMapPriorityEnum, PageDefinition.ChangeFrequencyEnum, object> addDynamicUrl, Func<PageDefinition, bool> validForSiteMap) {
             using (this) {
-                BlogConfigData config = BlogConfigDataProvider.GetConfig();
                 int total;
                 List<DataProviderFilterInfo> filters = DataProviderFilterInfo.Join(null, new DataProviderFilterInfo { Field = "Published", Operator = "==", Value = true });
                 List<BlogEntry> entries = GetItems(0, 0, null, filters, out total);
@@ -381,7 +378,7 @@ namespace YetaWF.Modules.Blog.DataProvider {
                     string url = BlogConfigData.GetEntryCanonicalName(entry.Identity);
                     PageDefinition page = PageDefinition.LoadFromUrl(url);
                     if (page == null) return; // there is no such root page
-                        addDynamicUrl(page, url, entry.DateUpdated, page.SiteMapPriority, page.ChangeFrequency);
+                    addDynamicUrl(page, url, entry.DateUpdated, page.SiteMapPriority, page.ChangeFrequency, entry);
                 }
             }
         }

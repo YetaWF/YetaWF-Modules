@@ -107,7 +107,7 @@ namespace YetaWF.Modules.Pages.Scheduler {
             File.Move(file, finalFile);
         }
 
-        private void AddSiteMapPage(PageDefinition page, string url, DateTime? dateUpdated, PageDefinition.SiteMapPriorityEnum priority, PageDefinition.ChangeFrequencyEnum changeFrequency) {
+        private void AddSiteMapPage(PageDefinition page, string url, DateTime? dateUpdated, PageDefinition.SiteMapPriorityEnum priority, PageDefinition.ChangeFrequencyEnum changeFrequency, object obj) {
             AddUrl(GetTempFile(), page, url, dateUpdated, priority, changeFrequency);
         }
         private bool ValidForSiteMap(PageDefinition page) {

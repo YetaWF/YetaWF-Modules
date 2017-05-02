@@ -13,6 +13,7 @@ using YetaWF.Core.Support;
 using YetaWF.Core.Views.Shared;
 using YetaWF.DataProvider;
 using YetaWF.Modules.Blog.Controllers;
+using YetaWF.Modules.Blog.Scheduler;
 #if MVC6
 #else
 using System.Web.Mvc;
@@ -54,6 +55,9 @@ namespace YetaWF.Modules.Blog.Modules {
                     new RoleDefinition("RemoveItems",
                         this.__ResStr("roleRemItemsC", "Remove Blog Categories"), this.__ResStr("roleRemItems", "The role has permission to remove individual blog categories"),
                         this.__ResStr("userRemItemsC", "Remove Blog Categories"), this.__ResStr("userRemItems", "The user has permission to remove individual blog categories")),
+                    new RoleDefinition("NewsSiteMap",
+                        this.__ResStr("roleNewsSiteMapC", "Manage News Site Map"), this.__ResStr("roleNewsSiteMaps", "The role has permission to manage news site map"),
+                        this.__ResStr("userNewsSiteMapC", "Manage News Site Map"), this.__ResStr("userNewsSiteMaps", "The user has permission to manage news site map")),
                 };
             }
         }
@@ -95,6 +99,64 @@ namespace YetaWF.Modules.Blog.Modules {
                 Mode = ModuleAction.ActionModeEnum.Any,
                 Location = ModuleAction.ActionLocationEnum.NoAuto,
                 ConfirmationText = this.__ResStr("removeConfirm", "Are you sure you want to remove this blog category?"),
+            };
+        }
+        public ModuleAction GetAction_CreateNewsSiteMap() {
+            if (!IsAuthorized("NewsSiteMap")) return null;
+            return new ModuleAction(this) {
+                Url = YetaWFManager.UrlFor(typeof(CategoriesBrowseModuleController), "CreateNewsSiteMap"),
+                NeedsModuleContext = true,
+                QueryArgs = new { },
+                Image = "#Add",
+                Style = ModuleAction.ActionStyleEnum.Post,
+                LinkText = this.__ResStr("screAuthLink", "Create News Site Map"),
+                MenuText = this.__ResStr("screAuthMenu", "Create News Site Map"),
+                Tooltip = this.__ResStr("screAuthTT", "Create a news site map"),
+                Legend = this.__ResStr("screAuthLegend", "Creates a news site map"),
+                Category = ModuleAction.ActionCategoryEnum.Significant,
+                Mode = ModuleAction.ActionModeEnum.Any,
+                Location = ModuleAction.ActionLocationEnum.ModuleLinks,
+                ConfirmationText = this.__ResStr("screAuthConfirm", "Are you sure you want to create a new news site map?"),
+                PleaseWaitText = this.__ResStr("screAuthPlsWait", "Creating news site map..."),
+            };
+        }
+        public ModuleAction GetAction_RemoveNewsSiteMap() {
+            if (!IsAuthorized("NewsSiteMap")) return null;
+            return new ModuleAction(this) {
+                Url = YetaWFManager.UrlFor(typeof(CategoriesBrowseModuleController), "RemoveNewsSiteMap"),
+                NeedsModuleContext = true,
+                QueryArgs = new { },
+                Image = "#Remove",
+                Style = ModuleAction.ActionStyleEnum.Post,
+                LinkText = this.__ResStr("sremAuthLink", "Remove News Site Map"),
+                MenuText = this.__ResStr("sremAuthMenu", "Remove News Site Map"),
+                Tooltip = this.__ResStr("sremAuthTT", "Remove current news site map"),
+                Legend = this.__ResStr("sremAuthLegend", "Removes the current news site map"),
+                Category = ModuleAction.ActionCategoryEnum.Significant,
+                Mode = ModuleAction.ActionModeEnum.Any,
+                Location = ModuleAction.ActionLocationEnum.ModuleLinks,
+                ConfirmationText = this.__ResStr("sremAuthConfirm", "Are you sure you want to remove the current news site map?"),
+            };
+        }
+        public ModuleAction GetAction_DownloadNewsSiteMap() {
+            if (!IsAuthorized("NewsSiteMap")) return null;
+            NewsSiteMap sm = new NewsSiteMap();
+            string filename = sm.GetNewsSiteMapFileName();
+            if (!System.IO.File.Exists(filename))
+                return null;
+            return new ModuleAction(this) {
+                Url = YetaWFManager.UrlFor(typeof(CategoriesBrowseModuleController), "DownloadNewsSiteMap"),
+                NeedsModuleContext = true,
+                CookieAsDoneSignal = true,
+                Image = "Download.png",
+                LinkText = this.__ResStr("downloadLink", "Download News Site Map"),
+                MenuText = this.__ResStr("downloadMenu", "Download News Site Map"),
+                Tooltip = this.__ResStr("downloadTT", "Download the news site map file"),
+                Legend = this.__ResStr("downloadLegend", "Downloads the news site map file"),
+                Style = ModuleAction.ActionStyleEnum.Normal,
+                Category = ModuleAction.ActionCategoryEnum.Read,
+                Mode = ModuleAction.ActionModeEnum.Any,
+                Location = ModuleAction.ActionLocationEnum.ModuleLinks,
             };
         }
     }
