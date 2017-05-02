@@ -241,7 +241,7 @@ namespace YetaWF.Modules.Pages.Controllers {
 
             string contentType = "application/octet-stream";
 #if MVC6
-        return new PhysicalFileResult(filename, contentType) { FileDownloadName = Path.GetFileName(filename) };
+            return new PhysicalFileResult(filename, contentType) { FileDownloadName = Path.GetFileName(filename) };
 #else
             FilePathResult result = new FilePathResult(filename, contentType);
             result.FileDownloadName = Path.GetFileName(filename);
