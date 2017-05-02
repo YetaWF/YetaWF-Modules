@@ -62,7 +62,7 @@ namespace YetaWF.Modules.Blog.Scheduler {
             // header
             File.AppendAllText(file,
                 "<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\r\n" +
-                "<urlset xsi:schemaLocation=\"http://www.sitemaps.org/schemas/sitemap/0.9\" xmlns:news=\"http://www.google.com/schemas/sitemap-news/0.9\">\r\n"
+                "<urlset xsi:schemaLocation=\"http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns =\"http://www.sitemaps.org/schemas/sitemap/0.9\" xmlns:news=\"http://www.google.com/schemas/sitemap-news/0.9\" >\r\n"
             );
 
             // Dynamic Urls in types
