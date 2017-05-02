@@ -130,6 +130,38 @@
           <Value>
             <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
               <Properties>
+                <Name Value="downloadLegend" />
+                <Text Value="Downloads the news site map file" />
+              </Properties>
+            </Object>
+          </Value>
+          <Value>
+            <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
+              <Properties>
+                <Name Value="downloadLink" />
+                <Text Value="Download News Site Map" />
+              </Properties>
+            </Object>
+          </Value>
+          <Value>
+            <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
+              <Properties>
+                <Name Value="downloadMenu" />
+                <Text Value="Download News Site Map" />
+              </Properties>
+            </Object>
+          </Value>
+          <Value>
+            <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
+              <Properties>
+                <Name Value="downloadTT" />
+                <Text Value="Download the news site map file" />
+              </Properties>
+            </Object>
+          </Value>
+          <Value>
+            <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
+              <Properties>
                 <Name Value="modName" />
                 <Text Value="Blog Categories" />
               </Properties>
@@ -194,6 +226,22 @@
           <Value>
             <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
               <Properties>
+                <Name Value="roleNewsSiteMapC" />
+                <Text Value="Manage News Site Map" />
+              </Properties>
+            </Object>
+          </Value>
+          <Value>
+            <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
+              <Properties>
+                <Name Value="roleNewsSiteMaps" />
+                <Text Value="The role has permission to manage news site map" />
+              </Properties>
+            </Object>
+          </Value>
+          <Value>
+            <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
+              <Properties>
                 <Name Value="roleRemItems" />
                 <Text Value="The role has permission to remove individual blog categories" />
               </Properties>
@@ -204,6 +252,110 @@
               <Properties>
                 <Name Value="roleRemItemsC" />
                 <Text Value="Remove Blog Categories" />
+              </Properties>
+            </Object>
+          </Value>
+          <Value>
+            <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
+              <Properties>
+                <Name Value="screAuthConfirm" />
+                <Text Value="Are you sure you want to create a new news site map?" />
+              </Properties>
+            </Object>
+          </Value>
+          <Value>
+            <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
+              <Properties>
+                <Name Value="screAuthLegend" />
+                <Text Value="Creates a news site map" />
+              </Properties>
+            </Object>
+          </Value>
+          <Value>
+            <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
+              <Properties>
+                <Name Value="screAuthLink" />
+                <Text Value="Create News Site Map" />
+              </Properties>
+            </Object>
+          </Value>
+          <Value>
+            <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
+              <Properties>
+                <Name Value="screAuthMenu" />
+                <Text Value="Create News Site Map" />
+              </Properties>
+            </Object>
+          </Value>
+          <Value>
+            <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
+              <Properties>
+                <Name Value="screAuthPlsWait" />
+                <Text Value="Creating news site map..." />
+              </Properties>
+            </Object>
+          </Value>
+          <Value>
+            <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
+              <Properties>
+                <Name Value="screAuthTT" />
+                <Text Value="Create a news site map" />
+              </Properties>
+            </Object>
+          </Value>
+          <Value>
+            <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
+              <Properties>
+                <Name Value="sremAuthConfirm" />
+                <Text Value="Are you sure you want to remove the current news site map?" />
+              </Properties>
+            </Object>
+          </Value>
+          <Value>
+            <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
+              <Properties>
+                <Name Value="sremAuthLegend" />
+                <Text Value="Removes the current news site map" />
+              </Properties>
+            </Object>
+          </Value>
+          <Value>
+            <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
+              <Properties>
+                <Name Value="sremAuthLink" />
+                <Text Value="Remove News Site Map" />
+              </Properties>
+            </Object>
+          </Value>
+          <Value>
+            <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
+              <Properties>
+                <Name Value="sremAuthMenu" />
+                <Text Value="Remove News Site Map" />
+              </Properties>
+            </Object>
+          </Value>
+          <Value>
+            <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
+              <Properties>
+                <Name Value="sremAuthTT" />
+                <Text Value="Remove current news site map" />
+              </Properties>
+            </Object>
+          </Value>
+          <Value>
+            <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
+              <Properties>
+                <Name Value="userNewsSiteMapC" />
+                <Text Value="Manage News Site Map" />
+              </Properties>
+            </Object>
+          </Value>
+          <Value>
+            <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
+              <Properties>
+                <Name Value="userNewsSiteMaps" />
+                <Text Value="The user has permission to manage news site map" />
               </Properties>
             </Object>
           </Value>

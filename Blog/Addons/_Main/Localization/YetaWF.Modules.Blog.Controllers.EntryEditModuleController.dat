@@ -100,6 +100,18 @@
                       <Value>
                         <Object Type="YetaWF.Core.Localize.LocalizationData+PropertyData" Assembly="YetaWF.Core">
                           <Properties>
+                            <Name Value="Keywords" />
+                            <Caption Value="Keywords" />
+                            <Description Value="The keywords for this blog entry" />
+                            <HelpLink />
+                            <TextAbove />
+                            <TextBelow />
+                          </Properties>
+                        </Object>
+                      </Value>
+                      <Value>
+                        <Object Type="YetaWF.Core.Localize.LocalizationData+PropertyData" Assembly="YetaWF.Core">
+                          <Properties>
                             <Name Value="OpenForComments" />
                             <Caption Value="Allow Comments" />
                             <Description Value="Defines whether comments can be entered for this blog entry" />

@@ -163,7 +163,32 @@
     <Strings>
       <Object Type="YetaWF.Core.Serializers.SerializableList`1[[YetaWF.Core.Localize.LocalizationData+StringData, YetaWF.Core, Culture=neutral, PublicKeyToken=null]]" Assembly="YetaWF.Core">
         <Properties />
-        <List />
+        <List>
+          <Value>
+            <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
+              <Properties>
+                <Name Value="screDone" />
+                <Text Value="The news site map has been successfully created" />
+              </Properties>
+            </Object>
+          </Value>
+          <Value>
+            <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
+              <Properties>
+                <Name Value="sitemapNotFound" />
+                <Text Value="News site map not found - File '{0}' cannot be located" />
+              </Properties>
+            </Object>
+          </Value>
+          <Value>
+            <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
+              <Properties>
+                <Name Value="sremDone" />
+                <Text Value="The news site map has been removed" />
+              </Properties>
+            </Object>
+          </Value>
+        </List>
       </Object>
     </Strings>
   </Properties>
