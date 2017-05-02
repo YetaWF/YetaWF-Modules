@@ -14,7 +14,9 @@ namespace YetaWF.Modules.Basics.Controllers {
         public ShowMessageModuleController() { }
 
         [HttpGet]
-        public ActionResult ShowMessage(string message) {
+        public ActionResult ShowMessage(string message, int? code = 0) {
+            if (code != null)
+                Manager.CurrentResponse.StatusCode = (int)code;
             return View("ShowMessage", (object) message, UseAreaViewName: false);
         }
     }
