@@ -124,7 +124,7 @@ namespace YetaWF.Modules.Blog.DataProvider {
                 return canon;
             }
         }
-        internal static string GetEntryCanonicalName(int blogEntry) {
+        public static string GetEntryCanonicalName(int blogEntry) {
             BlogConfigData config = BlogConfigDataProvider.GetConfig();
             string canon = string.Format("{0}/?BlogEntry={1}", config.BlogEntryUrl, blogEntry);
             using (BlogEntryDataProvider dataProvider = new BlogEntryDataProvider()) {

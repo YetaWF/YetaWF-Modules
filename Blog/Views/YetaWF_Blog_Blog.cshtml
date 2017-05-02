@@ -1,5 +1,6 @@
 @*Copyright © 2017 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Blog#License*@
 @inherits YetaWF.Core.Views.RazorView<YetaWF.Modules.Blog.Modules.BlogModule, YetaWF.Modules.Blog.Controllers.BlogModuleController.DisplayModel>
+@using YetaWF.Modules.Blog.DataProvider
 @using YetaWF.Core.Localize
 @{
     int count = 0;
@@ -11,7 +12,7 @@
 }
 @foreach (YetaWF.Modules.Blog.Controllers.BlogModuleController.Entry blogEntry in Model.BlogEntries) {
     ++count;
-    <h2>@blogEntry.Title.ToString()</h2>
+    <h2><a href="@BlogConfigData.GetEntryCanonicalName(blogEntry.Identity)">@blogEntry.Title.ToString()</a></h2>
     <div class="t_entry @("t_entry" + count.ToString())">
         @Html.DisplayFor(m => blogEntry, "PropertyList")
     </div>
