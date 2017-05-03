@@ -104,7 +104,6 @@ namespace YetaWF.Modules.Text.Modules {
 
         [Category("General"), Caption("Contents"), Description("The text contents")]
         [UIHint("TextArea"), AdditionalMetadata("ImageBrowse", true), AdditionalMetadata("FlashBrowse", true), StringLength(MaxContents), AdditionalMetadata("PageBrowse", true)]
-        [AllowHtml]
         [DontSave]
         public string Contents {
             get {

@@ -18,7 +18,6 @@ namespace YetaWF.Modules.Text.Controllers {
         public class TextModel {
             [UIHint("TextArea"), AdditionalMetadata("EmHeight", 25)]
             [AdditionalMetadata("TextAreaSave", true), AdditionalMetadata("ImageBrowse", true), AdditionalMetadata("FlashBrowse", true), AdditionalMetadata("PageBrowse", true)]
-            [AllowHtml]
             public string Contents { get; set; }
             [UIHint("Hidden")]
             public string Url { get; set; }

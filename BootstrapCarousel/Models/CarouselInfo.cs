@@ -55,7 +55,7 @@ namespace YetaWF.Modules.BootstrapCarousel.Models {
             public MultiString CompleteCaption { get; set; }
 
             [Caption("Caption"), Description("The optional caption for this image")]
-            [UIHint("TextArea"), AllowHtml, Trim]
+            [UIHint("TextArea"), Trim]
             [DontSave]
             public string Caption {
                 get {

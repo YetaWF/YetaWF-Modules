@@ -28,7 +28,6 @@ namespace YetaWF.Modules.DevTests.Controllers {
 
             [Caption("Text"), Description("The text message to send")]
             [UIHint("TextArea"), AdditionalMetadata("SourceOnly", true), StringLength(SendSMS.MaxMessageLength), Required]
-            [AllowHtml]
             public string Text { get; set; }
 
             public Model() { }

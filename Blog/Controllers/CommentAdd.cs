@@ -56,7 +56,6 @@ namespace YetaWF.Modules.Blog.Controllers {
             [Caption("Comment"), Description("Enter your comment about this blog entry for others to view")]
             [UIHint("TextArea"), AdditionalMetadata("EmHeight", 10), StringLength(BlogComment.MaxComment)]
             [AdditionalMetadata("TextAreaSave", false), AdditionalMetadata("RestrictedHtml", true)]
-            [AllowHtml]
             public string Comment { get; set; }
 
             [Caption("Captcha"), Description("Please verify that you're a human and not a spam bot")]

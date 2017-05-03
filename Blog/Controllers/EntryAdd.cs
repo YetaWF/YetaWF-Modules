@@ -51,13 +51,11 @@ namespace YetaWF.Modules.Blog.Controllers {
             [Caption("Summary"), Description("The summary for this blog entry - If no summary is entered, the entire blog text is shown instead of the summary")]
             [UIHint("TextArea"), AdditionalMetadata("EmHeight", 10), StringLength(BlogEntry.MaxSummary)]
             [AdditionalMetadata("TextAreaSave", false)]
-            [AllowHtml]
             public string Summary { get; set; }
 
             [Caption("Blog Text"), Description("The complete text for this blog entry")]
             [UIHint("TextArea"), AdditionalMetadata("EmHeight", 20), StringLength(BlogEntry.MaxText)]
             [AdditionalMetadata("TextAreaSave", false)]
-            [AllowHtml]
             [RequiredIf("Published", true)]
             public string Text { get; set; }
 

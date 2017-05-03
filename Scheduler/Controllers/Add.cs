@@ -32,7 +32,6 @@ namespace YetaWF.Modules.Scheduler.Controllers {
 
             [Caption("Description"), Description("The description of this scheduler item")]
             [UIHint("TextArea"), AdditionalMetadata("SourceOnly", true), StringLength(SchedulerItemData.MaxDescription), Required]
-            [AllowHtml]
             public string Description { get; set; }
 
             [Caption("Enabled"), Description("The status of the scheduler item")]

@@ -34,7 +34,7 @@ namespace YetaWF.Modules.Feedback.Controllers {
             public string Email { get; set; }
 
             [Caption("Message"), Description("Please enter the message")]
-            [UIHint("TextArea"), AdditionalMetadata("SourceOnly", true), StringLength(FeedbackData.MaxMessage), Required, AllowHtml]
+            [UIHint("TextArea"), AdditionalMetadata("SourceOnly", true), StringLength(FeedbackData.MaxMessage), Required]
             public string Message { get; set; }
 
             [Caption("Captcha"), Description("Please verify that you're a human and not a spam bot")]

@@ -31,7 +31,7 @@ namespace YetaWF.Modules.Basics.Controllers {
 
             [Caption("Message"), Description("Defines the message to display")]
             [UIHint("TextArea"), AdditionalMetadata("EmHeight", 5), StringLength(DataProvider.AlertConfig.MaxMessage), Trim]
-            [RequiredIf("Enabled", true), AllowHtml]
+            [RequiredIf("Enabled", true)]
             public string Message { get; set; }
 
             public AlertConfig GetData(AlertConfig data) {
