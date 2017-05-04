@@ -19,7 +19,6 @@ using YetaWF.Modules.Blog.Modules;
 using YetaWF.Modules.Blog.Scheduler;
 #if MVC6
 using Microsoft.AspNetCore.Mvc;
-using YetaWF.Core.Support;
 #else
 using System.Web;
 using System.Web.Mvc;
