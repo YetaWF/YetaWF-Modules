@@ -1,5 +1,6 @@
 /* Copyright © 2017 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Identity#License */
 
+using YetaWF.Core;
 using YetaWF.Core.Controllers;
 using YetaWF.Core.Localize;
 using YetaWF.Core.Models;
@@ -25,8 +26,8 @@ namespace YetaWF.Modules.Identity.Controllers {
 
             [TextAbove("You can request your password by providing your email address. The password will be sent to your email address and should arrive in your inbox within a few minutes. Please make sure to update your spam filters to avoid rejecting this email.")]
             [Caption("Email Address"), Description("Enter the email address associated with your account")]
-            [UIHint("Email"), Required]
-            public string  Email { get; set; }
+            [UIHint("Email"), StringLength(Globals.MaxEmail), Required]
+            public string Email { get; set; }
 
             [Caption("Captcha"), Description("Please verify that you're a human and not a spam bot")]
             [UIHint("RecaptchaV2"), RecaptchaV2("Please verify that you're a human and not a spam bot"), SuppressIfEqual("ShowCaptcha", false)]
