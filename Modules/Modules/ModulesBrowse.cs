@@ -68,6 +68,7 @@ namespace YetaWF.Modules.Modules.Modules {
                 Mode = ModuleAction.ActionModeEnum.Any,
                 Location = ModuleAction.ActionLocationEnum.NoAuto,
                 SaveReturnUrl = true,
+                DontFollow = true,
             };
         }
         public ModuleAction GetAction_Remove(Guid moduleGuid) {

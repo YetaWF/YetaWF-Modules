@@ -72,6 +72,7 @@ namespace YetaWF.Modules.Pages.Modules {
                 Mode = ModuleAction.ActionModeEnum.Any,
                 Location = ModuleAction.ActionLocationEnum.NoAuto,
                 SaveReturnUrl = true,
+                DontFollow = true,
             };
         }
         public ModuleAction GetAction_RemoveLink(string pageName) {
