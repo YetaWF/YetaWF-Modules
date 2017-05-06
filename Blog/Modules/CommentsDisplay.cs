@@ -26,6 +26,7 @@ namespace YetaWF.Modules.Blog.Modules {
     [UniqueModule(UniqueModuleStyle.NonUnique)]
     public class CommentsDisplayModule : ModuleDefinition {
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors", Justification = "Uhm yeah?")]
         public CommentsDisplayModule() {
             Title = this.__ResStr("modTitle", "Comment Entries");
             Name = this.__ResStr("modName", "Comment Entries");

@@ -10,6 +10,7 @@ namespace YetaWF.Modules.Scheduler.Support {
     /// <summary>
     /// Logger for scheduling activity.
     /// </summary>
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1001:TypesThatOwnDisposableFieldsShouldBeDisposable",Justification = "Explicit Init/Shutdown methods must be called")]
     public class SchedulerLogging : ILogging {
 
         internal SchedulerLogging() { }
