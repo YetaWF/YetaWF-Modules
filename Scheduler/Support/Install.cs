@@ -22,23 +22,9 @@ namespace YetaWF.Modules.Scheduler.Support {
         /// Install all events for the given package. This is typically used to install scheduler items while installing packages.
         /// </summary>
         public void InstallItems(Package package) {
-            Type[] typesInAsm;
-            try {
-                typesInAsm = package.PackageAssembly.GetTypes();
-            } catch (ReflectionTypeLoadException ex) {
-                typesInAsm = ex.Types;
-            }
-            List<Type> types = typesInAsm.Where(type => IsSchedulerEventType(type)).ToList<Type>();
+            List<Type> types = Package.GetClassesInPackages<IScheduling>();
             foreach (var type in types)
                 InstallItems(type);
-        }
-        private bool IsSchedulerEventType(Type type) {
-            if (!TypeIsPublicClass(type))
-                return false;
-            return typeof(IScheduling).IsAssignableFrom(type);
-        }
-        private bool TypeIsPublicClass(Type type) {
-            return (type != null && type.IsPublic && type.IsClass && !type.IsAbstract);
         }
 
         /// <summary>
@@ -74,13 +60,7 @@ namespace YetaWF.Modules.Scheduler.Support {
         /// Uninstall all events for the given package. This is typically used to uninstall scheduler items while uninstalling packages.
         /// </summary>
         public void UninstallItems(Package package) {
-            Type[] typesInAsm;
-            try {
-                typesInAsm = package.PackageAssembly.GetTypes();
-            } catch (ReflectionTypeLoadException ex) {
-                typesInAsm = ex.Types;
-            }
-            List<Type> types = typesInAsm.Where(type => IsSchedulerEventType(type)).ToList<Type>();
+            List<Type> types = Package.GetClassesInPackages<IScheduling>();
             foreach (var type in types)
                 UninstallItems(type);
         }

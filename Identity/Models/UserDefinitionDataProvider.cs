@@ -242,11 +242,16 @@ namespace YetaWF.Modules.Identity.DataProvider {
             }
             if (string.Compare(userName, SuperuserDefinitionDataProvider.SuperUserName, true) == 0) {
                 using (SuperuserDefinitionDataProvider superDP = new SuperuserDefinitionDataProvider()) {
-                    return superDP.RemoveItem(userName);
+                    if (!superDP.RemoveItem(userName))
+                        return false;
                 }
             } else {
-                return DataProvider.Remove(userName);
+                if (!DataProvider.Remove(userName))
+                    return false;
             }
+            // remove any data stored for this user from packages (if it fails, whatevz)
+            User.RemoveDependentPackages(user.UserId);
+            return true;
         }
         public List<UserDefinition> GetItems(int skip, int take, List<DataProviderSortInfo> sort, List<DataProviderFilterInfo> filters, out int total) {
             UserDefinition superuser = null;

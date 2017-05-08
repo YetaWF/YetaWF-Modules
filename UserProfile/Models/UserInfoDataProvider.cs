@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.IO;
 using YetaWF.Core.DataProvider;
 using YetaWF.Core.DataProvider.Attributes;
+using YetaWF.Core.Identity;
 using YetaWF.Core.IO;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Packages;
@@ -68,7 +69,7 @@ namespace YetaWF.Modules.UserProfile.DataProvider {
         public string Email { get; set; }
     }
 
-    public class UserInfoDataProvider : DataProviderImpl, IInstallableModel {
+    public class UserInfoDataProvider : DataProviderImpl, IInstallableModel, IRemoveUser {
 
         // IMPLEMENTATION
         // IMPLEMENTATION
@@ -131,6 +132,16 @@ namespace YetaWF.Modules.UserProfile.DataProvider {
         }
         public int RemoveItems(List<DataProviderFilterInfo> filters) {
             return DataProvider.RemoveRecords(filters);
+        }
+
+        // IREMOVEUSER
+        // IREMOVEUSER
+        // IREMOVEUSER
+
+        public void Remove(int userId) {
+            List<DataProviderFilterInfo> filters = null;
+            filters = DataProviderFilterInfo.Join(filters, new DataProviderFilterInfo { Field = "UserId", Operator = "==", Value = userId });
+            RemoveItems(filters);
         }
 
         // IINSTALLABLEMODEL

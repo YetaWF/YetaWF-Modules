@@ -53,30 +53,12 @@ namespace YetaWF.Modules.Scheduler.Support {
         /// </summary>
         public List<Type> SchedulerEvents {
             get {
-                if (_schedulerEvents == null) {
-                    IEnumerable<Type> evtTypes = FilterTypes();
-                    _schedulerEvents = evtTypes.ToList<Type>();
-                }
+                if (_schedulerEvents == null)
+                    _schedulerEvents = Package.GetClassesInPackages<IScheduling>();
                 return _schedulerEvents;
             }
         }
         private static List<Type> _schedulerEvents;
-
-        private IEnumerable<Type> FilterTypes() {
-            IEnumerable<Type> typesSoFar = Type.EmptyTypes;
-
-            foreach (Package package in Package.GetAvailablePackages()) {
-                Assembly assembly = package.PackageAssembly;
-                Type[] typesInAsm;
-                try {
-                    typesInAsm = assembly.GetTypes();
-                } catch (ReflectionTypeLoadException ex) {
-                    typesInAsm = ex.Types;
-                }
-                typesSoFar = typesSoFar.Concat(typesInAsm);
-            }
-            return typesSoFar.Where(type => IsSchedulerEventType(type));
-        }
 
         // SCHEDULER
         // SCHEDULER

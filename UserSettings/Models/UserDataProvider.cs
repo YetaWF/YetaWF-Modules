@@ -6,6 +6,7 @@ using System.IO;
 using System.Reflection;
 using YetaWF.Core.DataProvider;
 using YetaWF.Core.DataProvider.Attributes;
+using YetaWF.Core.Identity;
 using YetaWF.Core.IO;
 using YetaWF.Core.Language;
 using YetaWF.Core.Localize;
@@ -107,7 +108,7 @@ namespace YetaWF.Modules.UserSettings.DataProvider {
         }
     }
 
-    public class UserDataProvider : DataProviderImpl, IInstallableModel {
+    public class UserDataProvider : DataProviderImpl, IInstallableModel, IRemoveUser {
 
         // IMPLEMENTATION
         // IMPLEMENTATION
@@ -186,6 +187,16 @@ namespace YetaWF.Modules.UserSettings.DataProvider {
         }
         public int RemoveItems(List<DataProviderFilterInfo> filters) {
             return DataProvider.RemoveRecords(filters);
+        }
+
+        // IREMOVEUSER
+        // IREMOVEUSER
+        // IREMOVEUSER
+
+        public void Remove(int userId) {
+            List<DataProviderFilterInfo> filters = null;
+            filters = DataProviderFilterInfo.Join(filters, new DataProviderFilterInfo { Field = "Key", Operator = "==", Value = userId });
+            RemoveItems(filters);
         }
 
         // IINSTALLABLEMODEL
