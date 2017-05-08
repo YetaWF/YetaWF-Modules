@@ -194,9 +194,7 @@ namespace YetaWF.Modules.UserSettings.DataProvider {
         // IREMOVEUSER
 
         public void Remove(int userId) {
-            List<DataProviderFilterInfo> filters = null;
-            filters = DataProviderFilterInfo.Join(filters, new DataProviderFilterInfo { Field = "Key", Operator = "==", Value = userId });
-            RemoveItems(filters);
+            DataProvider.Remove(userId);
         }
 
         // IINSTALLABLEMODEL

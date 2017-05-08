@@ -139,9 +139,7 @@ namespace YetaWF.Modules.UserProfile.DataProvider {
         // IREMOVEUSER
 
         public void Remove(int userId) {
-            List<DataProviderFilterInfo> filters = null;
-            filters = DataProviderFilterInfo.Join(filters, new DataProviderFilterInfo { Field = "UserId", Operator = "==", Value = userId });
-            RemoveItems(filters);
+            RemoveItem(userId);
         }
 
         // IINSTALLABLEMODEL
