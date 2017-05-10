@@ -22,7 +22,7 @@ namespace YetaWF.Modules.Scheduler.Support {
         /// Install all events for the given package. This is typically used to install scheduler items while installing packages.
         /// </summary>
         public void InstallItems(Package package) {
-            List<Type> types = Package.GetClassesInPackages<IScheduling>();
+            List<Type> types = package.GetClassesInPackage<IScheduling>();
             foreach (var type in types)
                 InstallItems(type);
         }
