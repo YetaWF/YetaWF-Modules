@@ -60,11 +60,13 @@
 /* Blog Entry Display */
 
 .YetaWF_Blog_EntryDisplay div.t_author,
+.YetaWF_Blog_EntryDisplay div.t_authorurl,
 .YetaWF_Blog_EntryDisplay div.t_datepublished {
     clear:none;
     float:left;
 }
 .YetaWF_Blog_EntryDisplay div.t_author div.t_vals,
+.YetaWF_Blog_EntryDisplay div.t_authorurl div.t_vals,
 .YetaWF_Blog_EntryDisplay div.t_datepublished div.t_vals,
 .YetaWF_Blog_EntryDisplay div.t_actions div.t_vals {
     float:right;
@@ -73,8 +75,9 @@
     clear:none;
     float:right;
 }
-.YetaWF_Blog_EntryDisplay .t_author .t_labels {
-    width:10ch;
+.YetaWF_Blog_EntryDisplay .t_author .t_labels,
+.YetaWF_Blog_EntryDisplay .t_authorurl .t_labels {
+    width:12ch;
     font-weight:bold;
 }
 .YetaWF_Blog_EntryDisplay .t_datepublished .t_labels {

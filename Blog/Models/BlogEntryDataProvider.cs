@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text.RegularExpressions;
+using YetaWF.Core;
 using YetaWF.Core.DataProvider;
 using YetaWF.Core.DataProvider.Attributes;
 using YetaWF.Core.Extensions;
@@ -36,6 +37,8 @@ namespace YetaWF.Modules.Blog.DataProvider {
         public MultiString Title { get; set; }
         [StringLength(MaxAuthor)]
         public string Author { get; set; }
+        [StringLength(Globals.MaxUrl)]
+        public string AuthorUrl { get; set; }
         [StringLength(MaxKwds)]
         public MultiString Keywords { get; set; }
 

@@ -8,6 +8,7 @@ using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Modules;
 using YetaWF.Modules.Blog.DataProvider;
 using YetaWF.Modules.Blog.Modules;
+using YetaWF.Core;
 #if MVC6
 using Microsoft.AspNetCore.Mvc;
 using YetaWF.Core.Support;
@@ -27,8 +28,13 @@ namespace YetaWF.Modules.Blog.Controllers {
             public int CategoryIdentity { get; set; }
 
             [Caption("Author"), Description("The name of the blog author")]
-            [UIHint("String"), ReadOnly]
+            [UIHint("String"), ReadOnly, SuppressIfNotEqual("AuthorUrl", null)]
             public string Author { get; set; }
+
+            [Caption("Author"), Description("The optional Url linking to the author's information")]
+            [UIHint("Url"), ReadOnly, SuppressEmpty]
+            public string AuthorUrl { get; set; }
+            public string AuthorUrl_Text { get { return Author; } }
 
             public bool Published { get; set; }
 

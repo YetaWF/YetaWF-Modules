@@ -1,12 +1,14 @@
 /* Copyright © 2017 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Blog#License */
 
 using System;
+using YetaWF.Core;
 using YetaWF.Core.Controllers;
 using YetaWF.Core.DataProvider;
 using YetaWF.Core.Localize;
 using YetaWF.Core.Models;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Support;
+using YetaWF.Core.Views.Shared;
 using YetaWF.Modules.Blog.DataProvider;
 #if MVC6
 using Microsoft.AspNetCore.Mvc;
@@ -49,6 +51,11 @@ namespace YetaWF.Modules.Blog.Controllers {
             [Caption("Author"), Description("The name of the blog author")]
             [UIHint("Text40"), StringLength(BlogEntry.MaxAuthor), Required, Trim]
             public string Author { get; set; }
+
+            [Caption("Author's Url"), Description("The optional Url linking to the author's information")]
+            [UIHint("Url"), StringLength(Globals.MaxUrl), Trim]
+            [AdditionalMetadata("UrlType", UrlHelperEx.UrlTypeEnum.Local | UrlHelperEx.UrlTypeEnum.Remote), UrlValidation(UrlValidationAttribute.SchemaEnum.Any, UrlHelperEx.UrlTypeEnum.Local | UrlHelperEx.UrlTypeEnum.Remote)]
+            public string AuthorUrl { get; set; }
 
             [Caption("Allow Comments"), Description("Defines whether comments can be entered for this blog entry")]
             [UIHint("Boolean")]
