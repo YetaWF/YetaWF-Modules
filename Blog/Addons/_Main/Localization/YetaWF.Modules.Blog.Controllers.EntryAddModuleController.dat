@@ -40,6 +40,18 @@
                       <Value>
                         <Object Type="YetaWF.Core.Localize.LocalizationData+PropertyData" Assembly="YetaWF.Core">
                           <Properties>
+                            <Name Value="AuthorUrl" />
+                            <Caption Value="Author's Url" />
+                            <Description Value="The optional Url linking to the author's information" />
+                            <HelpLink />
+                            <TextAbove />
+                            <TextBelow />
+                          </Properties>
+                        </Object>
+                      </Value>
+                      <Value>
+                        <Object Type="YetaWF.Core.Localize.LocalizationData+PropertyData" Assembly="YetaWF.Core">
+                          <Properties>
                             <Name Value="CategoryIdentity" />
                             <Caption Value="Category" />
                             <Description Value="The category for this blog entry" />
