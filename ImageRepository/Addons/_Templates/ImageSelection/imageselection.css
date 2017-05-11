@@ -16,4 +16,5 @@
 .yt_imagerepository_imageselection .t_haveimage .yt_moduleaction,
 .yt_imagerepository_flashselection .t_haveflash .yt_moduleaction {
     display:inline;
+    padding-right:1ch;
 }
