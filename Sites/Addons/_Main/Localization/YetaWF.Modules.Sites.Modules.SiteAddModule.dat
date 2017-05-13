@@ -54,14 +54,6 @@
           <Value>
             <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
               <Properties>
-                <Name Value="btnSave" />
-                <Text Value="Create" />
-              </Properties>
-            </Object>
-          </Value>
-          <Value>
-            <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
-              <Properties>
                 <Name Value="modName" />
                 <Text Value="Add New Site" />
               </Properties>

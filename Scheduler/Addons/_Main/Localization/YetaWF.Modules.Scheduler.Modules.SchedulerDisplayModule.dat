@@ -22,14 +22,6 @@
           <Value>
             <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
               <Properties>
-                <Name Value="btnCancel" />
-                <Text Value="Return" />
-              </Properties>
-            </Object>
-          </Value>
-          <Value>
-            <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
-              <Properties>
                 <Name Value="displayLegend" />
                 <Text Value="Displays an existing scheduler item" />
               </Properties>
