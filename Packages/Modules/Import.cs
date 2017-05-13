@@ -22,6 +22,7 @@ namespace YetaWF.Modules.Packages.Modules {
             Title = this.__ResStr("modTitle", "Import Package (Binary or Source Code Package)");
             Description = this.__ResStr("modSummary", "Imports binary or source code packages");
             Print = false;
+            DefaultViewName = StandardViews.PropertyListEdit;
         }
 
         public override IModuleDefinitionIO GetDataProvider() { return new ImportModuleDataProvider(); }
@@ -29,9 +30,9 @@ namespace YetaWF.Modules.Packages.Modules {
         public override SerializableList<AllowedRole> DefaultAllowedRoles { get { return AdministratorLevel_DefaultAllowedRoles; } }
         public override List<RoleDefinition> ExtraRoles {
             get {
-                return new List<RoleDefinition>() { 
-                    new RoleDefinition("Imports", 
-                        this.__ResStr("roleImportsC", "Import Packages"), this.__ResStr("roleImports", "The role has permission to import binary and source code packages"), 
+                return new List<RoleDefinition>() {
+                    new RoleDefinition("Imports",
+                        this.__ResStr("roleImportsC", "Import Packages"), this.__ResStr("roleImports", "The role has permission to import binary and source code packages"),
                         this.__ResStr("userImportsC", "Import Packages"), this.__ResStr("userImports", "The user has permission to import binary and source code packages")),
                 };
             }

@@ -57,8 +57,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
-    <None Include="Views\YetaWF_UserProfile_ProfileEdit.cshtml" />
-    <None Include="Views\YetaWF_UserProfile_ProfileEdit_Partial.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\CoreComponents\Core\Core.csproj">

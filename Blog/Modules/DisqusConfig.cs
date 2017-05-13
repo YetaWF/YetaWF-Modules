@@ -23,6 +23,7 @@ namespace YetaWF.Modules.Blog.Modules {
             Name = this.__ResStr("modName", "Disqus Settings");
             Description = this.__ResStr("modSummary", "Edits a site's Disqus settings");
             ShowHelp = true;
+            DefaultViewName = StandardViews.Config;
         }
 
         public override IModuleDefinitionIO GetDataProvider() { return new DisqusConfigModuleDataProvider(); }

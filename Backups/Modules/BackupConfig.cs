@@ -23,6 +23,7 @@ namespace YetaWF.Modules.Backups.Modules {
             Name = this.__ResStr("modName", "Backup Settings");
             Description = this.__ResStr("modSummary", "Edits a site's backup settings");
             ShowHelp = true;
+            DefaultViewName = StandardViews.Config;
         }
 
         public override IModuleDefinitionIO GetDataProvider() { return new BackupConfigModuleDataProvider(); }

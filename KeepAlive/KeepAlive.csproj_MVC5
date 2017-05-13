@@ -75,8 +75,6 @@
   <ItemGroup>
     <None Include="app.config" />
     <None Include="packages.config" />
-    <None Include="Views\YetaWF_KeepAlive_KeepAliveConfig.cshtml" />
-    <None Include="Views\YetaWF_KeepAlive_KeepAliveConfig_Partial.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\CoreComponents\Core\Core.csproj">

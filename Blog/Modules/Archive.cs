@@ -21,6 +21,7 @@ namespace YetaWF.Modules.Blog.Modules {
             Name = this.__ResStr("modName", "Archive");
             Description = this.__ResStr("modSummary", "Displays a list of links to blog entries, grouped by month");
             Print = false;
+            DefaultViewName = StandardViews.PropertyListEdit;
         }
 
         public override IModuleDefinitionIO GetDataProvider() { return new ArchiveModuleDataProvider(); }

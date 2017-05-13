@@ -20,6 +20,7 @@ namespace YetaWF.Modules.Visitors.Modules {
             Title = this.__ResStr("modTitle", "IP Address Lookup");
             Name = this.__ResStr("modName", "IP Address Lookup");
             Description = this.__ResStr("modSummary", "Displays information for an IP address");
+            DefaultViewName = StandardViews.Display;
         }
 
         public override IModuleDefinitionIO GetDataProvider() { return new IPAddressLookupModuleDataProvider(); }

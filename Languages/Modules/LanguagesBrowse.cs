@@ -30,6 +30,7 @@ namespace YetaWF.Modules.Languages.Modules {
             Title = this.__ResStr("modTitle", "Languages");
             Name = this.__ResStr("modName", "Languages");
             Description = this.__ResStr("modSummary", "Displays and manages languages");
+            DefaultViewName = StandardViews.Browse;
         }
 
         public override IModuleDefinitionIO GetDataProvider() { return new LanguagesBrowseModuleDataProvider(); }
@@ -47,9 +48,9 @@ namespace YetaWF.Modules.Languages.Modules {
         public override SerializableList<AllowedRole> DefaultAllowedRoles { get { return SuperuserLevel_DefaultAllowedRoles; } }
         public override List<RoleDefinition> ExtraRoles {
             get {
-                return new List<RoleDefinition>() { 
-                    new RoleDefinition("RemoveLanguages", 
-                        this.__ResStr("roleRemItemsC", "Remove Languages"), this.__ResStr("roleRemItems", "The role has permission to remove individual languages"), 
+                return new List<RoleDefinition>() {
+                    new RoleDefinition("RemoveLanguages",
+                        this.__ResStr("roleRemItemsC", "Remove Languages"), this.__ResStr("roleRemItems", "The role has permission to remove individual languages"),
                         this.__ResStr("userRemItemsC", "Remove Languages"), this.__ResStr("userRemItems", "The user has permission to remove individual languages")),
                 };
             }

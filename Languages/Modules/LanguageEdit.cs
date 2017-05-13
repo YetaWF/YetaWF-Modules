@@ -21,6 +21,7 @@ namespace YetaWF.Modules.Languages.Modules {
             Title = this.__ResStr("modTitle", "Language");
             Name = this.__ResStr("modName", "Edit Language");
             Description = this.__ResStr("modSummary", "Edits an existing language");
+            DefaultViewName = StandardViews.Edit;
         }
 
         public override IModuleDefinitionIO GetDataProvider() { return new LanguageEditModuleDataProvider(); }

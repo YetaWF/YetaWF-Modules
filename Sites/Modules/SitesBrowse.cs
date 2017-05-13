@@ -29,6 +29,7 @@ namespace YetaWF.Modules.Sites.Modules {
             Title = this.__ResStr("modTitle", "Sites");
             Name = this.__ResStr("modName", "Sites");
             Description = this.__ResStr("modSummary", "Displays and manages sites");
+            DefaultViewName = StandardViews.Browse;
         }
 
         public override IModuleDefinitionIO GetDataProvider() { return new SitesBrowseModuleDataProvider(); }

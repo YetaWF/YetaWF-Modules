@@ -93,16 +93,6 @@
     <None Include="Addons\_Main\Grids\SitesBrowseModuleController.BrowseItem" />
     <None Include="app.config" />
     <None Include="packages.config" />
-    <None Include="Views\YetaWF_Sites_ConfirmRemoval.cshtml" />
-    <None Include="Views\YetaWF_Sites_ConfirmRemoval_Partial.cshtml" />
-    <None Include="Views\YetaWF_Sites_SiteAdd.cshtml">
-      <SubType>Code</SubType>
-    </None>
-    <None Include="Views\YetaWF_Sites_SiteAdd_Partial.cshtml" />
-    <None Include="Views\YetaWF_Sites_SitesBrowse.cshtml" />
-    <None Include="Views\YetaWF_Sites_SitesBrowse_Partial.cshtml" />
-    <None Include="Views\YetaWF_Sites_SiteSelector.cshtml" />
-    <None Include="Views\YetaWF_Sites_SiteSelector_Partial.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\CoreComponents\Core\Core.csproj">

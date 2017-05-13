@@ -20,6 +20,7 @@ namespace YetaWF.Modules.Dashboard.Modules {
             Title = this.__ResStr("modTitle", "Status Information");
             Name = this.__ResStr("modName", "Status Information");
             Description = this.__ResStr("modSummary", "Displays status information for YetaWF");
+            DefaultViewName = StandardViews.Display;
         }
 
         public override IModuleDefinitionIO GetDataProvider() { return new StatusModuleDataProvider(); }

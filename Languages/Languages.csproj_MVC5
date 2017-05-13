@@ -196,17 +196,8 @@
     <None Include="Addons\_Main\Grids\LocalizeBrowsePackageModuleController.BrowseItem" />
     <None Include="app.config" />
     <None Include="packages.config" />
-    <None Include="Views\YetaWF_Languages_LanguageAdd.cshtml" />
-    <None Include="Views\YetaWF_Languages_LanguageAdd_Partial.cshtml" />
-    <None Include="Views\YetaWF_Languages_LanguageDisplay.cshtml" />
-    <None Include="Views\YetaWF_Languages_LanguageEdit.cshtml" />
-    <None Include="Views\YetaWF_Languages_LanguageEdit_Partial.cshtml" />
-    <None Include="Views\YetaWF_Languages_LanguagesBrowse.cshtml" />
-    <None Include="Views\YetaWF_Languages_LanguagesBrowse_Partial.cshtml" />
     <None Include="Views\YetaWF_Languages_LocalizeBrowsePackage.cshtml" />
     <None Include="Views\YetaWF_Languages_LocalizeBrowsePackage_Partial.cshtml" />
-    <None Include="Views\YetaWF_Languages_LocalizeConfig.cshtml" />
-    <None Include="Views\YetaWF_Languages_LocalizeConfig_Partial.cshtml" />
     <None Include="Views\YetaWF_Languages_LocalizeEditFile.cshtml" />
     <None Include="Views\YetaWF_Languages_LocalizeEditFile_Partial.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\YetaWF_Languages_LocalizeClasses.cshtml" />

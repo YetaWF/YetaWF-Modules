@@ -246,8 +246,6 @@
     <None Include="Views\YetaWF_Identity_SelectTwoStepSetup.cshtml" />
     <None Include="Views\YetaWF_Identity_SelectTwoStepAuth.cshtml" />
     <Content Include="Views\YetaWF_Identity_ExternalLoginOnly.cshtml" />
-    <None Include="Views\YetaWF_Identity_TemplateRolesSelector.cshtml" />
-    <None Include="Views\YetaWF_Identity_TemplateRolesSelector_Partial.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\CoreComponents\Core\Core.csproj">
@@ -295,8 +293,6 @@
     <Content Include="Addons\_Templates\UserRoles\Roles.css" />
     <Content Include="Views\YetaWF_Identity_AuthorizationBrowse.cshtml" />
     <Content Include="Views\YetaWF_Identity_AuthorizationBrowse_Partial.cshtml" />
-    <Content Include="Views\YetaWF_Identity_AuthorizationEdit.cshtml" />
-    <Content Include="Views\YetaWF_Identity_AuthorizationEdit_Partial.cshtml" />
     <Content Include="Views\YetaWF_Identity_LoginSelector.cshtml">
       <SubType>Code</SubType>
     </Content>
@@ -309,24 +305,6 @@
     <Content Include="Views\YetaWF_Identity_Register_Partial.cshtml" />
     <Content Include="Views\YetaWF_Identity_SetupExternalAccount.cshtml" />
     <Content Include="Views\YetaWF_Identity_SetupExternalAccount_Partial.cshtml" />
-    <Content Include="Views\YetaWF_Identity_RolesAdd.cshtml" />
-    <Content Include="Views\YetaWF_Identity_RolesAdd_Partial.cshtml" />
-    <Content Include="Views\YetaWF_Identity_RolesBrowse.cshtml" />
-    <Content Include="Views\YetaWF_Identity_RolesBrowse_Partial.cshtml" />
-    <Content Include="Views\YetaWF_Identity_RolesDisplay.cshtml" />
-    <Content Include="Views\YetaWF_Identity_RolesEdit.cshtml" />
-    <Content Include="Views\YetaWF_Identity_RolesEdit_Partial.cshtml" />
-    <Content Include="Views\YetaWF_Identity_UsersAdd.cshtml" />
-    <Content Include="Views\YetaWF_Identity_UsersAdd_Partial.cshtml" />
-    <Content Include="Views\YetaWF_Identity_UsersBrowse.cshtml" />
-    <Content Include="Views\YetaWF_Identity_UsersBrowse_Partial.cshtml" />
-    <Content Include="Views\YetaWF_Identity_UsersDisplay.cshtml" />
-    <Content Include="Views\YetaWF_Identity_UsersEdit.cshtml" />
-    <Content Include="Views\YetaWF_Identity_UsersEdit_Partial.cshtml" />
-    <Content Include="Views\YetaWF_Identity_UserAccount.cshtml" />
-    <Content Include="Views\YetaWF_Identity_UserAccount_Partial.cshtml" />
-    <Content Include="Views\YetaWF_Identity_UserPassword.cshtml" />
-    <Content Include="Views\YetaWF_Identity_UserPassword_Partial.cshtml" />
     <Content Include="Views\Shared\DisplayTemplates\YetaWF_Identity_RoleId.cshtml" />
     <Content Include="Views\YetaWF_Identity_OwinEdit.cshtml" />
     <Content Include="Views\YetaWF_Identity_OwinEdit_Partial.cshtml" />
@@ -342,8 +320,6 @@
     <Content Include="Views\Shared\EditorTemplates\YetaWF_Identity_UserId.cshtml" />
     <Content Include="Views\YetaWF_Identity_LoginSelector_Partial.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\YetaWF_Identity_LoginUsers.cshtml" />
-    <Content Include="Views\YetaWF_Identity_LoginConfig.cshtml" />
-    <Content Include="Views\YetaWF_Identity_LoginConfig_Partial.cshtml" />
     <Content Include="packages.config">
       <SubType>Designer</SubType>
     </Content>

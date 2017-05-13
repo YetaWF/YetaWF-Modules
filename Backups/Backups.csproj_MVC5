@@ -100,13 +100,9 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\YetaWF_Backups_Backups.cshtml" />
-    <Content Include="Views\YetaWF_Backups_Backups_Partial.cshtml" />
     <Content Include="Addons\_Main\Grids\BackupsModuleController.BackupModel" />
     <None Include="app.config" />
     <None Include="packages.config" />
-    <None Include="Views\YetaWF_Backups_BackupConfig.cshtml" />
-    <None Include="Views\YetaWF_Backups_BackupConfig_Partial.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

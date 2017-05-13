@@ -95,11 +95,6 @@
     <None Include="packages.config" />
     <None Include="Views\YetaWF_Feedback_FeedbackAdd.cshtml" />
     <None Include="Views\YetaWF_Feedback_FeedbackAdd_Partial.cshtml" />
-    <None Include="Views\YetaWF_Feedback_FeedbackBrowse.cshtml" />
-    <None Include="Views\YetaWF_Feedback_FeedbackBrowse_Partial.cshtml" />
-    <None Include="Views\YetaWF_Feedback_FeedbackConfig.cshtml" />
-    <None Include="Views\YetaWF_Feedback_FeedbackConfig_Partial.cshtml" />
-    <None Include="Views\YetaWF_Feedback_FeedbackDisplay.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\CoreComponents\Core\Core.csproj">

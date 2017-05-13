@@ -29,6 +29,7 @@ namespace YetaWF.Modules.Blog.Modules {
             Title = this.__ResStr("modTitle", "Blog Entry");
             Name = this.__ResStr("modName", "Display Blog Entry");
             Description = this.__ResStr("modSummary", "Displays an existing blog entry");
+            DefaultViewName = StandardViews.Display;
         }
 
         public override IModuleDefinitionIO GetDataProvider() { return new EntryDisplayModuleDataProvider(); }

@@ -23,6 +23,7 @@ namespace YetaWF.Modules.Basics.Modules {
             Name = this.__ResStr("modName", "Alert Settings");
             Description = this.__ResStr("modSummary", "Edits a site's Alert settings");
             ShowHelp = true;
+            DefaultViewName = StandardViews.Config;
         }
 
         public override IModuleDefinitionIO GetDataProvider() { return new AlertConfigModuleDataProvider(); }

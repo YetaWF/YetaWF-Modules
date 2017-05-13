@@ -25,6 +25,7 @@ namespace YetaWF.Modules.KeepAlive.Modules {
             Name = this.__ResStr("modName", "Keep Alive Settings");
             Description = this.__ResStr("modSummary", "Edits a YetaWF instance's keep alive settings");
             ShowHelp = true;
+            DefaultViewName = StandardViews.Config;
         }
 
         public override IModuleDefinitionIO GetDataProvider() { return new KeepAliveConfigModuleDataProvider(); }

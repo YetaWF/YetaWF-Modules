@@ -20,6 +20,7 @@ namespace YetaWF.Modules.Identity.Modules {
             Title = this.__ResStr("modTitle", "Edit Resource");
             Name = this.__ResStr("modName", "Edit Resource");
             Description = this.__ResStr("modSummary", "Edits an existing resource");
+            DefaultViewName = StandardViews.Edit;
         }
 
         public override IModuleDefinitionIO GetDataProvider() { return new AuthorizationEditModuleDataProvider(); }

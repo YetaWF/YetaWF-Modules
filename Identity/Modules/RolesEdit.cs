@@ -21,6 +21,7 @@ namespace YetaWF.Modules.Identity.Modules {
             Title = this.__ResStr("modTitle", "Edit a Role");
             Name = this.__ResStr("modName", "Edit Role");
             Description = this.__ResStr("modSummary", "Edits an existing role");
+            DefaultViewName = StandardViews.Edit;
         }
 
         public override IModuleDefinitionIO GetDataProvider() { return new RolesEditModuleDataProvider(); }

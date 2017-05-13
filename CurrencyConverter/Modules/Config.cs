@@ -24,6 +24,7 @@ namespace YetaWF.Modules.CurrencyConverter.Modules {
             Name = this.__ResStr("modName", "Currency Converter Settings");
             Description = this.__ResStr("modSummary", "Edits the currency converter settings");
             ShowHelp = true;
+            DefaultViewName = StandardViews.Config;
         }
 
         public override IModuleDefinitionIO GetDataProvider() { return new ConfigModuleDataProvider(); }

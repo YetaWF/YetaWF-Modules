@@ -29,6 +29,7 @@ namespace YetaWF.Modules.Feedback.Modules {
             Title = this.__ResStr("modTitle", "Feedback");
             Name = this.__ResStr("modName", "Browse Feedback");
             Description = this.__ResStr("modSummary", "Displays and manages user feedback");
+            DefaultViewName = StandardViews.Browse;
         }
 
         public override IModuleDefinitionIO GetDataProvider() { return new FeedbackBrowseModuleDataProvider(); }
@@ -43,9 +44,9 @@ namespace YetaWF.Modules.Feedback.Modules {
         public override SerializableList<AllowedRole> DefaultAllowedRoles { get { return AdministratorLevel_DefaultAllowedRoles; } }
         public override List<RoleDefinition> ExtraRoles {
             get {
-                return new List<RoleDefinition>() { 
-                    new RoleDefinition("RemoveFeedback", 
-                        this.__ResStr("roleRemItemsC", "Remove Feedback"), this.__ResStr("roleRemItems", "The role has permission to remove feedback messages"), 
+                return new List<RoleDefinition>() {
+                    new RoleDefinition("RemoveFeedback",
+                        this.__ResStr("roleRemItemsC", "Remove Feedback"), this.__ResStr("roleRemItems", "The role has permission to remove feedback messages"),
                         this.__ResStr("userRemItemsC", "Remove Feedback"), this.__ResStr("userRemItems", "The user has permission to remove feedback messages")),
                 };
             }

@@ -25,6 +25,7 @@ namespace YetaWF.Modules.Packages.Modules {
             Title = this.__ResStr("modTitle", "Packages");
             Name = this.__ResStr("modName", "Packages");
             Description = this.__ResStr("modSummary", "Displays and manages installed packages");
+            DefaultViewName = StandardViews.Browse;
         }
 
         public override IModuleDefinitionIO GetDataProvider() { return new PackagesModuleDataProvider(); }

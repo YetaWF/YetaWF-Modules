@@ -24,6 +24,7 @@ namespace YetaWF.Modules.Pages.Modules {
             Title = this.__ResStr("modTitle", "Pages");
             Name = this.__ResStr("modName", "Pages");
             Description = this.__ResStr("modSummary", "Displays and manages pages");
+            DefaultViewName = StandardViews.Browse;
         }
 
         public override IModuleDefinitionIO GetDataProvider() { return new PagesBrowseModuleDataProvider(); }

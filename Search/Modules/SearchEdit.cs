@@ -20,6 +20,7 @@ namespace YetaWF.Modules.Search.Modules {
             Title = this.__ResStr("modTitle", "Search Item");
             Name = this.__ResStr("modName", "Edit Search Item");
             Description = this.__ResStr("modSummary", "Edits an existing search item");
+            DefaultViewName = StandardViews.Edit;
         }
 
         public override IModuleDefinitionIO GetDataProvider() { return new SearchEditModuleDataProvider(); }

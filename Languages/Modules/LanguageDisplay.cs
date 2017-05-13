@@ -21,6 +21,7 @@ namespace YetaWF.Modules.Languages.Modules {
             Title = this.__ResStr("modTitle", "Language");
             Name = this.__ResStr("modName", "Display Language");
             Description = this.__ResStr("modSummary", "Displays information about an existing language");
+            DefaultViewName = StandardViews.Display;
         }
 
         public override IModuleDefinitionIO GetDataProvider() { return new LanguageDisplayModuleDataProvider(); }

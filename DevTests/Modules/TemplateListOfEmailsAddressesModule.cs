@@ -20,6 +20,7 @@ namespace YetaWF.Modules.DevTests.Modules {
             Title = this.__ResStr("modTitle", "ListOfEmailAddresses Test Template");
             Name = this.__ResStr("modName", "Template Test - ListOfEmailAddresses");
             Description = this.__ResStr("modSummary", "ListOfEmailAddresses test template");
+            DefaultViewName = StandardViews.EditApply;
         }
 
         public override IModuleDefinitionIO GetDataProvider() { return new TemplateListOfEmailAddressesModuleDataProvider(); }

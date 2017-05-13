@@ -19,6 +19,7 @@ namespace YetaWF.Modules.Sites.Modules {
             Title = this.__ResStr("modTitle", "Add New Site");
             Name = this.__ResStr("modName", "Add New Site");
             Description = this.__ResStr("modSummary", "Creates a new web site");
+            DefaultViewName = StandardViews.Add;
         }
 
         public override IModuleDefinitionIO GetDataProvider() { return new SiteAddModuleDataProvider(); }

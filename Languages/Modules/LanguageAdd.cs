@@ -19,6 +19,7 @@ namespace YetaWF.Modules.Languages.Modules {
             Title = this.__ResStr("modTitle", "Add New Language");
             Name = this.__ResStr("modName", "Add Language");
             Description = this.__ResStr("modSummary", "Adds a new language");
+            DefaultViewName = StandardViews.Add;
         }
 
         public override IModuleDefinitionIO GetDataProvider() { return new LanguageAddModuleDataProvider(); }

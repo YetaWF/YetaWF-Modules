@@ -21,6 +21,7 @@ namespace YetaWF.Modules.Dashboard.Modules {
             Title = this.__ResStr("modTitle", "SessionState Information (HttpContext.Current.Session)");
             Name = this.__ResStr("modName", "SessionState Information (HttpContext.Current.Session)");
             Description = this.__ResStr("modSummary", "Displays SessionState information (HttpContext.Current.Session)");
+            DefaultViewName = StandardViews.Display;
         }
 
         public override IModuleDefinitionIO GetDataProvider() { return new SessionInfoModuleDataProvider(); }

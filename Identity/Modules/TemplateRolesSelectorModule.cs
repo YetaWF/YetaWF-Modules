@@ -20,6 +20,7 @@ namespace YetaWF.Modules.Identity.Modules {
             Title = this.__ResStr("modTitle", "RolesSelector Test Template");
             Name = this.__ResStr("modName", "Template Test - RolesSelector");
             Description = this.__ResStr("modSummary", "RolesSelector test template");
+            DefaultViewName = StandardViews.EditApply;
         }
 
         public override IModuleDefinitionIO GetDataProvider() { return new TemplateRolesSelectorModuleDataProvider(); }

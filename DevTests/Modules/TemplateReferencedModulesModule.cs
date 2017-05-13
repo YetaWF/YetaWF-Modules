@@ -20,6 +20,7 @@ namespace YetaWF.Modules.DevTests.Modules {
             Title = this.__ResStr("modTitle", "ReferencedModules Test Template");
             Name = this.__ResStr("modName", "Template Test - ReferencedModules");
             Description = this.__ResStr("modSummary", "ReferencedModules test template");
+            DefaultViewName = StandardViews.EditApply;
         }
 
         public override IModuleDefinitionIO GetDataProvider() { return new TemplateReferencedModulesModuleDataProvider(); }

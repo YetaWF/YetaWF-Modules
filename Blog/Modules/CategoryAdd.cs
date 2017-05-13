@@ -19,6 +19,7 @@ namespace YetaWF.Modules.Blog.Modules {
             Title = this.__ResStr("modTitle", "Add New Blog Category");
             Name = this.__ResStr("modName", "Add Blog Category");
             Description = this.__ResStr("modSummary", "Creates a new blog category");
+            DefaultViewName = StandardViews.Add;
         }
 
         public override IModuleDefinitionIO GetDataProvider() { return new CategoryAddModuleDataProvider(); }

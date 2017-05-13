@@ -20,6 +20,7 @@ namespace YetaWF.Modules.DevTests.Modules {
             Title = this.__ResStr("modTitle", "Skin Selection Test Template");
             Name = this.__ResStr("modName", "Template Test - Skin Selection");
             Description = this.__ResStr("modSummary", "Skin selection test template");
+            DefaultViewName = StandardViews.EditApply;
         }
 
         public override IModuleDefinitionIO GetDataProvider() { return new TemplateSkinModuleDataProvider(); }

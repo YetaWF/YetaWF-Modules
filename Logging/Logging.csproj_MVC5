@@ -90,7 +90,6 @@
     <None Include="app.config" />
     <None Include="Views\YetaWF_Logging_BrowseLog.cshtml" />
     <None Include="Views\YetaWF_Logging_BrowseLog_Partial.cshtml" />
-    <None Include="Views\YetaWF_Logging_DisplayLog.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\CoreComponents\Core\Core.csproj">

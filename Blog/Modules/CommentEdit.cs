@@ -22,6 +22,7 @@ namespace YetaWF.Modules.Blog.Modules {
             Title = this.__ResStr("modTitle", "Comment");
             Name = this.__ResStr("modName", "Edit Comment");
             Description = this.__ResStr("modSummary", "Edits an existing comment entry");
+            DefaultViewName = StandardViews.Edit;
         }
 
         public override IModuleDefinitionIO GetDataProvider() { return new CommentEditModuleDataProvider(); }

@@ -124,11 +124,6 @@
     <Content Include="Addons\_SiteTemplates\YetaWF_Scheduler.2.0.1.txt" />
     <Content Include="Views\YetaWF_Scheduler_SchedulerBrowse.cshtml" />
     <Content Include="Views\YetaWF_Scheduler_SchedulerBrowse_Partial.cshtml" />
-    <Content Include="Views\YetaWF_Scheduler_SchedulerAdd.cshtml" />
-    <Content Include="Views\YetaWF_Scheduler_SchedulerAdd_Partial.cshtml" />
-    <Content Include="Views\YetaWF_Scheduler_SchedulerEdit.cshtml" />
-    <Content Include="Views\YetaWF_Scheduler_SchedulerEdit_Partial.cshtml" />
-    <Content Include="Views\YetaWF_Scheduler_SchedulerDisplay.cshtml" />
     <Content Include="Views\Shared\DisplayTemplates\YetaWF_Scheduler_Frequency.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\YetaWF_Scheduler_Frequency.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\YetaWF_Scheduler_Event.cshtml" />
@@ -139,7 +134,6 @@
     <None Include="packages.config" />
     <None Include="Views\YetaWF_Scheduler_LogBrowse.cshtml" />
     <None Include="Views\YetaWF_Scheduler_LogBrowse_Partial.cshtml" />
-    <None Include="Views\YetaWF_Scheduler_LogDisplay.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

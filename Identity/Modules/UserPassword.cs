@@ -21,6 +21,7 @@ namespace YetaWF.Modules.Identity.Modules {
             Title = this.__ResStr("modTitle", "Change Password");
             Name = this.__ResStr("modName", "Change Password");
             Description = this.__ResStr("modSummary", "Changes a user's password");
+            DefaultViewName = StandardViews.Edit;
         }
 
         public override IModuleDefinitionIO GetDataProvider() { return new UserPasswordModuleDataProvider(); }

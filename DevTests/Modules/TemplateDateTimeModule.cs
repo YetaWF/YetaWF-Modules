@@ -20,6 +20,7 @@ namespace YetaWF.Modules.DevTests.Modules {
             Title = this.__ResStr("modTitle", "DateTime Test Template");
             Name = this.__ResStr("modName", "Template Test - DateTime");
             Description = this.__ResStr("modSummary", "DateTime test template");
+            DefaultViewName = StandardViews.EditApply;
         }
 
         public override IModuleDefinitionIO GetDataProvider() { return new TemplateDateTimeModuleDataProvider(); }

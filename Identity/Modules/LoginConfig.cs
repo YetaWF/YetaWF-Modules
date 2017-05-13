@@ -24,6 +24,7 @@ namespace YetaWF.Modules.Identity.Modules {
             Name = this.__ResStr("modName", "User Login Settings");
             Description = this.__ResStr("modSummary", "Manages the site's user login settings");
             ShowHelp = true;
+            DefaultViewName = StandardViews.Config;
         }
 
         public override IModuleDefinitionIO GetDataProvider() { return new LoginConfigModuleDataProvider(); }

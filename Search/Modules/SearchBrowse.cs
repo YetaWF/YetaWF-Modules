@@ -30,6 +30,7 @@ namespace YetaWF.Modules.Search.Modules {
             Title = this.__ResStr("modTitle", "Search Keywords");
             Name = this.__ResStr("modName", "Search Keywords");
             Description = this.__ResStr("modSummary", "Displays and manages search keywords");
+            DefaultViewName = StandardViews.Browse;
         }
 
         public override IModuleDefinitionIO GetDataProvider() { return new SearchBrowseModuleDataProvider(); }

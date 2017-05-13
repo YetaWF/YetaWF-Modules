@@ -23,6 +23,7 @@ namespace YetaWF.Modules.AddThis.Modules {
             Name = this.__ResStr("modName", "Sharing Sidebar Settings");
             Description = this.__ResStr("modSummary", "Edits a site's AddThis Sharing Sidebar configuration settings");
             ShowHelp = true;
+            DefaultViewName = StandardViews.Config;
         }
 
         public override IModuleDefinitionIO GetDataProvider() { return new SharingSidebarConfigModuleDataProvider(); }

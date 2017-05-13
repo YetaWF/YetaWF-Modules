@@ -19,6 +19,7 @@ namespace YetaWF.Modules.Identity.Modules {
             Title = this.__ResStr("modTitle", "New User");
             Name = this.__ResStr("modName", "New User");
             Description = this.__ResStr("modSummary", "Creates a new user");
+            DefaultViewName = StandardViews.Add;
         }
 
         public override IModuleDefinitionIO GetDataProvider() { return new UsersAddModuleDataProvider(); }

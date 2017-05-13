@@ -23,6 +23,7 @@ namespace YetaWF.Modules.Basics.Modules {
             Name = this.__ResStr("modName", "RecaptchaV2 Settings");
             Description = this.__ResStr("modSummary", "Edits the RecaptchaV2 settings");
             ShowHelp = true;
+            DefaultViewName = StandardViews.Config;
         }
 
         public override IModuleDefinitionIO GetDataProvider() { return new RecaptchaV2ConfigModuleDataProvider(); }

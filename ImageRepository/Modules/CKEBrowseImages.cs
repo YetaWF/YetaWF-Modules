@@ -21,6 +21,7 @@ namespace YetaWF.Modules.ImageRepository.Modules {
             Name = this.__ResStr("modName", "Select Image (CKEditor)");
             Description = this.__ResStr("modSummary", "CKEditor interface to select or upload an image");
             WantSearch = false;
+            DefaultViewName = StandardViews.Edit;
         }
 
         public override IModuleDefinitionIO GetDataProvider() { return new CKEBrowseImagesModuleDataProvider(); }

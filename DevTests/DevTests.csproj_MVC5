@@ -102,30 +102,8 @@
     <Content Include="Views\Shared\DisplayTemplates\YetaWF_DevTests_ListOfEmailAddresses.cshtml" />
     <None Include="Views\Shared\DisplayTemplates\YetaWF_DevTests_ScrollerItem.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\YetaWF_DevTests_ListOfEmailAddresses.cshtml" />
-    <None Include="Views\YetaWF_DevTests_BasicTemplates.cshtml" />
-    <None Include="Views\YetaWF_DevTests_BasicTemplates_Partial.cshtml" />
     <None Include="Views\YetaWF_DevTests_SMSProcessorStatus.cshtml" />
-    <None Include="Views\YetaWF_DevTests_SMSTest.cshtml" />
-    <None Include="Views\YetaWF_DevTests_SMSTest_Partial.cshtml" />
-    <None Include="Views\YetaWF_DevTests_TemplateDateTime.cshtml" />
-    <None Include="Views\YetaWF_DevTests_TemplateDateTime_Partial.cshtml" />
-    <None Include="Views\YetaWF_DevTests_TemplateEmail.cshtml" />
-    <None Include="Views\YetaWF_DevTests_TemplateEmail_Partial.cshtml" />
-    <None Include="Views\YetaWF_DevTests_TemplateListOfEmailAddresses.cshtml" />
-    <None Include="Views\YetaWF_DevTests_TemplateListOfEmailAddresses_Partial.cshtml" />
-    <None Include="Views\YetaWF_DevTests_TemplateModuleSelection.cshtml" />
-    <None Include="Views\YetaWF_DevTests_TemplateModuleSelection_Partial.cshtml" />
-    <None Include="Views\YetaWF_DevTests_TemplateRecaptchaV2.cshtml" />
-    <None Include="Views\YetaWF_DevTests_TemplateRecaptchaV2_Partial.cshtml" />
-    <None Include="Views\YetaWF_DevTests_TemplateReferencedModules.cshtml" />
-    <None Include="Views\YetaWF_DevTests_TemplateReferencedModules_Partial.cshtml" />
     <None Include="Views\YetaWF_DevTests_TemplateScroller.cshtml" />
-    <None Include="Views\YetaWF_DevTests_TemplateSkin.cshtml" />
-    <None Include="Views\YetaWF_DevTests_TemplateSkin_Partial.cshtml" />
-    <None Include="Views\YetaWF_DevTests_TemplateTimeZone.cshtml" />
-    <None Include="Views\YetaWF_DevTests_TemplateTimeZone_Partial.cshtml" />
-    <None Include="Views\YetaWF_DevTests_TemplateTestUrl.cshtml" />
-    <None Include="Views\YetaWF_DevTests_TemplateTestUrl_Partial.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\CoreComponents\Core\Core.csproj">

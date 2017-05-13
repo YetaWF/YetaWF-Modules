@@ -20,6 +20,7 @@ namespace YetaWF.Modules.Scheduler.Modules {
             Title = this.__ResStr("modTitle", "New Scheduler Item");
             Name = this.__ResStr("modName", "New Scheduler Item");
             Description = this.__ResStr("modSummary", "Creates a new scheduler item");
+            DefaultViewName = StandardViews.Add;
         }
 
         public override IModuleDefinitionIO GetDataProvider() { return new SchedulerAddModuleDataProvider(); }

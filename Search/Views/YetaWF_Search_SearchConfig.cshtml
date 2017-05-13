@@ -1,9 +1,0 @@
-@*Copyright © 2017 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Search#License*@
-@inherits YetaWF.Core.Views.RazorView<YetaWF.Modules.Search.Modules.SearchConfigModule, YetaWF.Modules.Search.Controllers.SearchConfigModuleController.Model>
-@using (Form("SearchConfig_Partial")) {
-    @PartialForm()
-    @FormButtons(new FormButton[] {
-        new FormButton() { ButtonType= ButtonTypeEnum.Submit, },
-        new FormButton() { ButtonType= ButtonTypeEnum.Cancel, },
-    });
-}

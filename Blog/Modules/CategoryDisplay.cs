@@ -20,6 +20,7 @@ namespace YetaWF.Modules.Blog.Modules {
             Title = this.__ResStr("modTitle", "Blog Category");
             Name = this.__ResStr("modName", "Display Blog Category");
             Description = this.__ResStr("modSummary", "Displays an existing blog category");
+            DefaultViewName = StandardViews.Display;
         }
 
         public override IModuleDefinitionIO GetDataProvider() { return new CategoryDisplayModuleDataProvider(); }

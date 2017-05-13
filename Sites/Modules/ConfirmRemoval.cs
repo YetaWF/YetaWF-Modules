@@ -28,6 +28,7 @@ namespace YetaWF.Modules.Sites.Modules {
             Title = this.__ResStr("modTitle", "Remove Site");
             Name = this.__ResStr("modName", "Remove Site Definition - Confirmation");
             Description = this.__ResStr("modSummary", "Requests confirmation to remove an existing site");
+            DefaultViewName = StandardViews.Edit;
         }
 
         public override IModuleDefinitionIO GetDataProvider() { return new ConfirmRemovalModuleDataProvider(); }

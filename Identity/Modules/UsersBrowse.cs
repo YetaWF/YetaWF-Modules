@@ -35,6 +35,7 @@ namespace YetaWF.Modules.Identity.Modules {
             Title = this.__ResStr("modTitle", "Users");
             Name = this.__ResStr("modName", "Users");
             Description = this.__ResStr("modSummary", "Displays and manages users");
+            DefaultViewName = StandardViews.Browse;
         }
 
         public override IModuleDefinitionIO GetDataProvider() { return new UsersBrowseModuleDataProvider(); }

@@ -31,6 +31,7 @@ namespace YetaWF.Modules.Blog.Modules {
             Title = this.__ResStr("modTitle", "Blog Categories");
             Name = this.__ResStr("modName", "Blog Categories");
             Description = this.__ResStr("modSummary", "Displays and manages blog categories");
+            DefaultViewName = StandardViews.Browse;
         }
 
         public override IModuleDefinitionIO GetDataProvider() { return new CategoriesBrowseModuleDataProvider(); }

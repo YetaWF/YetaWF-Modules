@@ -91,16 +91,12 @@
     <None Include="Addons\_Main\Grids\HttpModulesBrowseModuleController.BrowseItem" />
     <None Include="Addons\_Main\Grids\DisposableTrackerBrowseModuleController.BrowseItem" />
     <None Include="Addons\_Main\Grids\StaticPagesBrowseModuleController.BrowseItem" />
-    <None Include="Views\YetaWF_Dashboard_AddonDisplay.cshtml" />
-    <None Include="Views\YetaWF_Dashboard_AddonsBrowse.cshtml" />
-    <None Include="Views\YetaWF_Dashboard_AddonsBrowse_Partial.cshtml" />
     <None Include="Views\YetaWF_Dashboard_DisposableTrackerBrowse.cshtml" />
     <None Include="Views\YetaWF_Dashboard_DisposableTrackerBrowse_Partial.cshtml" />
     <None Include="Views\YetaWF_Dashboard_HttpModulesBrowse.cshtml" />
     <None Include="Views\YetaWF_Dashboard_HttpModulesBrowse_Partial.cshtml" />
     <None Include="Views\YetaWF_Dashboard_StaticPagesBrowse.cshtml" />
     <None Include="Views\YetaWF_Dashboard_StaticPagesBrowse_Partial.cshtml" />
-    <None Include="Views\YetaWF_Dashboard_Status.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Addons\_SiteTemplates\YetaWF_Dashboard.1.1.1.txt" />
@@ -113,8 +109,6 @@
     <None Include="Addons\_Main\Grids\CacheInfoModuleController.BrowseItem" />
     <None Include="app.config" />
     <None Include="Views\YetaWF_Dashboard_CacheInfo_Partial.cshtml" />
-    <None Include="Views\YetaWF_Dashboard_SessionInfo_Partial.cshtml" />
-    <None Include="Views\YetaWF_Dashboard_SessionInfo.cshtml" />
     <None Include="Views\YetaWF_Dashboard_CacheInfo.cshtml" />
   </ItemGroup>
   <ItemGroup>

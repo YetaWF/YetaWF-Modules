@@ -21,6 +21,7 @@ namespace YetaWF.Modules.Logging.Modules {
             Title = this.__ResStr("modTitle", "Log Record");
             Name = this.__ResStr("modName", "Display Log Record");
             Description = this.__ResStr("modSummary", "A module used to display a log record.");
+            DefaultViewName = StandardViews.Display;
         }
 
         public override IModuleDefinitionIO GetDataProvider() { return new DisplayLogModuleDataProvider(); }

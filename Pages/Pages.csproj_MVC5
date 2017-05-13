@@ -98,8 +98,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Addons\_Main\Icons\Download.png" />
-    <Content Include="Views\YetaWF_Pages_PagesBrowse.cshtml" />
-    <Content Include="Views\YetaWF_Pages_PagesBrowse_Partial.cshtml" />
     <Content Include="Addons\_Main\Grids\PagesBrowseModuleController.PageItem" />
     <Content Include="Addons\_Main\Grids\RolesHelper.GridAllowedRole" />
     <Content Include="Addons\_Main\Grids\UsersHelper.GridAllowedRole" />

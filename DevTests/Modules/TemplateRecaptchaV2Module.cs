@@ -18,6 +18,7 @@ namespace YetaWF.Modules.DevTests.Modules {
             Title = this.__ResStr("modTitle", "RecaptchaV2 Test Template");
             Name = this.__ResStr("modName", "Template Test - RecaptchaV2");
             Description = this.__ResStr("modSummary", "RecaptchaV2 test template");
+            DefaultViewName = StandardViews.EditApply;
         }
 
         public override IModuleDefinitionIO GetDataProvider() { return new TemplateRecaptchaV2ModuleDataProvider(); }

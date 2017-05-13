@@ -85,8 +85,6 @@
   <ItemGroup>
     <None Include="app.config" />
     <None Include="packages.config" />
-    <None Include="Views\YetaWF_CurrencyConverter_Config.cshtml" />
-    <None Include="Views\YetaWF_CurrencyConverter_Config_Partial.cshtml" />
     <None Include="Views\YetaWF_CurrencyConverter_CurrencyConverter.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\YetaWF_CurrencyConverter_Country.cshtml" />
   </ItemGroup>

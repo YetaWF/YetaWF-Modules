@@ -20,6 +20,7 @@ namespace YetaWF.Modules.UserProfile.Modules {
             Title = this.__ResStr("modTitle", "User Profile");
             Name = this.__ResStr("modName", "Edit User Profile");
             Description = this.__ResStr("modSummary", "Edits an existing user profile");
+            DefaultViewName = StandardViews.Edit;
         }
 
         public override IModuleDefinitionIO GetDataProvider() { return new ProfileEditModuleDataProvider(); }

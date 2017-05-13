@@ -101,15 +101,7 @@
     <Content Include="Views\Shared\EditorTemplates\YetaWF_ImageRepository_ImageSelection.cshtml" />
     <None Include="app.config" />
     <None Include="packages.config" />
-    <None Include="Views\YetaWF_ImageRepository_CKEBrowsePage.cshtml" />
-    <None Include="Views\YetaWF_ImageRepository_CKEBrowsePage_Partial.cshtml" />
-    <None Include="Views\YetaWF_ImageRepository_CKEBrowseFlash.cshtml" />
-    <None Include="Views\YetaWF_ImageRepository_CKEBrowseImages.cshtml" />
-    <None Include="Views\YetaWF_ImageRepository_CKEBrowseFlash_Partial.cshtml" />
-    <None Include="Views\YetaWF_ImageRepository_CKEBrowseImages_Partial.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\YetaWF_ImageRepository_FlashSelection.cshtml" />
-    <None Include="Views\YetaWF_ImageRepository_TemplateTest.cshtml" />
-    <None Include="Views\YetaWF_ImageRepository_TemplateTest_Partial.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\CoreComponents\Core\Core.csproj">

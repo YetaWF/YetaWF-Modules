@@ -124,17 +124,13 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\YetaWF_Packages_Packages.cshtml" />
-    <Content Include="Views\YetaWF_Packages_Packages_Partial.cshtml" />
     <Content Include="Addons\_Main\Grids\PackagesModuleController.PackageModel" />
-    <Content Include="Views\YetaWF_Packages_Import.cshtml" />
     <None Include="app.config" />
     <None Include="packages.config" />
-    <None Include="Views\YetaWF_Packages_Import_Partial.cshtml" />
-    <None Include="Views\YetaWF_Packages_SiteTemplateUndo.cshtml" />
-    <None Include="Views\YetaWF_Packages_SiteTemplateUndo_Partial.cshtml" />
     <None Include="Views\YetaWF_Packages_SiteTemplateProcess.cshtml" />
     <None Include="Views\YetaWF_Packages_SiteTemplateProcess_Partial.cshtml" />
+    <None Include="Views\YetaWF_Packages_SiteTemplateUndo.cshtml" />
+    <None Include="Views\YetaWF_Packages_SiteTemplateUndo_Partial.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

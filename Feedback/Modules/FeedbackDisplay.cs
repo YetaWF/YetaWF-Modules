@@ -20,6 +20,7 @@ namespace YetaWF.Modules.Feedback.Modules {
             Title = this.__ResStr("modTitle", "Feedback Message");
             Name = this.__ResStr("modName", "Feedback Message");
             Description = this.__ResStr("modSummary", "Displays a feedback message");
+            DefaultViewName = StandardViews.Display;
         }
 
         public override IModuleDefinitionIO GetDataProvider() { return new FeedbackDisplayModuleDataProvider(); }

@@ -31,6 +31,7 @@ namespace YetaWF.Modules.Blog.Modules {
             WantFocus = false;
             WantSearch = false;
             Print = false;
+            DefaultViewName = StandardViews.PropertyListEdit;
         }
 
         public override IModuleDefinitionIO GetDataProvider() { return new CategoriesListModuleDataProvider(); }

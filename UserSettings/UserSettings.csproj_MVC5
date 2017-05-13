@@ -57,8 +57,6 @@
   <ItemGroup>
     <None Include="app.config" />
     <None Include="packages.config" />
-    <None Include="Views\YetaWF_UserSettings_SettingsEdit.cshtml" />
-    <None Include="Views\YetaWF_UserSettings_SettingsEdit_Partial.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\CoreComponents\Core\Core.csproj">

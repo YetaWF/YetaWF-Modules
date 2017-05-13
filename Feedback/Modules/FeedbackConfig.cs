@@ -27,6 +27,7 @@ namespace YetaWF.Modules.Feedback.Modules {
             Name = this.__ResStr("modName", "Feedback Settings");
             Description = this.__ResStr("modSummary", "Edits a site's feedback settings");
             ShowHelp = true;
+            DefaultViewName = StandardViews.Config;
         }
 
         public override IModuleDefinitionIO GetDataProvider() { return new FeedbackConfigModuleDataProvider(); }

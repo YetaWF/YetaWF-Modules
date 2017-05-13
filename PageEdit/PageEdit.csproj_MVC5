@@ -119,10 +119,8 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\YetaWF_PageEdit_AddNewModule_Partial.cshtml" />
     <Content Include="Views\YetaWF_PageEdit_PageEdit.cshtml" />
     <Content Include="Views\YetaWF_PageEdit_PageEdit_Partial.cshtml" />
-    <Content Include="Views\YetaWF_PageEdit_AddExistingModule_Partial.cshtml" />
     <Content Include="Views\YetaWF_PageEdit_AddNewPage_Partial.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\YetaWF_PageEdit_AllowedUsers.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\YetaWF_PageEdit_AllowedRoles.cshtml" />

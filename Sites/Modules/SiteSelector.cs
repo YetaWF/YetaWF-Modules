@@ -24,6 +24,7 @@ namespace YetaWF.Modules.Sites.Modules {
             WantFocus = false;
             WantSearch = false;
             Print = false;
+            DefaultViewName = StandardViews.PropertyListEdit;
         }
 
         public override IModuleDefinitionIO GetDataProvider() { return new SiteSelectorModuleDataProvider(); }

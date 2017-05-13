@@ -20,6 +20,7 @@ namespace YetaWF.Modules.DevTests.Modules {
             Title = this.__ResStr("modTitle", "SMS Test");
             Name = this.__ResStr("modName", "Test - SMS");
             Description = this.__ResStr("modSummary", "SMS test");
+            DefaultViewName = StandardViews.EditApply;
         }
 
         public override IModuleDefinitionIO GetDataProvider() { return new SMSTestModuleDataProvider(); }

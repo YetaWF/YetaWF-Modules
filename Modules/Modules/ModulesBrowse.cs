@@ -23,6 +23,7 @@ namespace YetaWF.Modules.Modules.Modules {
             Title = this.__ResStr("modTitle", "Modules");
             Name = this.__ResStr("modName", "Modules");
             Description = this.__ResStr("modSummary", "Displays and manages modules");
+            DefaultViewName = StandardViews.Browse;
         }
 
         public override IModuleDefinitionIO GetDataProvider() { return new ModulesBrowseModuleDataProvider(); }

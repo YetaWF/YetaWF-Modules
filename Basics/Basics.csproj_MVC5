@@ -94,8 +94,6 @@
     <Content Include="Addons\_Main\Icons\ModuleSkinInfo.png" />
     <Content Include="Addons\_SiteTemplates\YetaWF_Basics.1.0.8.txt" />
     <Content Include="Addons\_SiteTemplates\YetaWF_Basics.1.0.3.txt" />
-    <Content Include="Views\YetaWF_Basics_RecaptchaV2Config.cshtml" />
-    <Content Include="Views\YetaWF_Basics_RecaptchaV2Config_Partial.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Addons\_Addons\MailToObfuscator\MailToObfuscator.js" />
@@ -103,8 +101,6 @@
     <Content Include="Views\YetaWF_Basics_RecaptchaConfig_Partial.cshtml" />
     <None Include="app.config" />
     <None Include="packages.config" />
-    <None Include="Views\YetaWF_Basics_AlertConfig.cshtml" />
-    <None Include="Views\YetaWF_Basics_AlertConfig_Partial.cshtml" />
     <None Include="Views\YetaWF_Basics_AlertDisplay.cshtml" />
     <None Include="Views\YetaWF_Basics_ModuleSkinInfo.cshtml" />
   </ItemGroup>

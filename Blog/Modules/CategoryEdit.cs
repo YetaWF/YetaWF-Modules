@@ -20,6 +20,7 @@ namespace YetaWF.Modules.Blog.Modules {
             Title = this.__ResStr("modTitle", "Blog Category");
             Name = this.__ResStr("modName", "Edit Blog Category");
             Description = this.__ResStr("modSummary", "Edits an existing blog category");
+            DefaultViewName = StandardViews.Edit;
         }
 
         public override IModuleDefinitionIO GetDataProvider() { return new CategoryEditModuleDataProvider(); }

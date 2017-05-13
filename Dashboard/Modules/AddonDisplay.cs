@@ -20,6 +20,7 @@ namespace YetaWF.Modules.Dashboard.Modules {
             Title = this.__ResStr("modTitle", "AddOn Info");
             Name = this.__ResStr("modName", "AddOn Info");
             Description = this.__ResStr("modSummary", "Displays information for an AddOn");
+            DefaultViewName = StandardViews.Display;
         }
 
         public override IModuleDefinitionIO GetDataProvider() { return new AddonDisplayModuleDataProvider(); }

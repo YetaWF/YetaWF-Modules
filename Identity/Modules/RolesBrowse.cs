@@ -31,6 +31,7 @@ namespace YetaWF.Modules.Identity.Modules {
             Title = this.__ResStr("modTitle", "Roles");
             Name = this.__ResStr("modName", "Roles");
             Description = this.__ResStr("modSummary", "Displays and manages roles");
+            DefaultViewName = StandardViews.Browse;
         }
 
         public override IModuleDefinitionIO GetDataProvider() { return new RolesBrowseModuleDataProvider(); }

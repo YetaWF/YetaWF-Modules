@@ -23,6 +23,7 @@ namespace YetaWF.Modules.Blog.Modules {
             Name = this.__ResStr("modName", "Blog Settings");
             Description = this.__ResStr("modSummary", "Edits a site's blog settings");
             ShowHelp = true;
+            DefaultViewName = StandardViews.Config;
         }
 
         public override IModuleDefinitionIO GetDataProvider() { return new BlogConfigModuleDataProvider(); }

@@ -23,6 +23,7 @@ namespace YetaWF.Modules.Search.Modules {
             Name = this.__ResStr("modName", "Search Settings");
             Description = this.__ResStr("modSummary", "Edits a site's search settings");
             ShowHelp = true;
+            DefaultViewName = StandardViews.Config;
         }
 
         public override IModuleDefinitionIO GetDataProvider() { return new SearchConfigModuleDataProvider(); }

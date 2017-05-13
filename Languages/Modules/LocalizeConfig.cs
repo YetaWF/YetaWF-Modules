@@ -23,6 +23,7 @@ namespace YetaWF.Modules.Languages.Modules {
             Name = this.__ResStr("modName", "Localization Settings");
             Description = this.__ResStr("modSummary", "Edits site and system wide localization settings");
             ShowHelp = true;
+            DefaultViewName = StandardViews.Config;
         }
 
         public override IModuleDefinitionIO GetDataProvider() { return new LocalizeConfigModuleDataProvider(); }
