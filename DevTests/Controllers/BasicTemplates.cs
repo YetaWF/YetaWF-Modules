@@ -77,11 +77,11 @@ namespace YetaWF.Modules.DevTests.Controllers {
             [UIHint("IntValue2"), Required]
             public int IntValue2 { get; set; }
 
-            [Category("Core"), Caption("IntValue2"), Description("IntValue4 (Required)")]
+            [Category("Core"), Caption("IntValue4"), Description("IntValue4 (Required)")]
             [UIHint("IntValue4"), Required]
             public int IntValue4 { get; set; }
 
-            [Category("Core"), Caption("IntValue2"), Description("IntValue6 (Required)")]
+            [Category("Core"), Caption("IntValue6"), Description("IntValue6 (Required)")]
             [UIHint("IntValue6"), Required]
             public int IntValue6 { get; set; }
 
