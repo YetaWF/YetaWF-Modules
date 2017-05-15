@@ -62,7 +62,7 @@ namespace YetaWF.Modules.Search.Controllers {
             bool shown = Manager.SessionSettings.SiteSettings.GetValue<bool>("YetaWF_SearchControl_Highlight", true);
             Model model = new Model() {
                 HighlightSearch = shown,
-                SearchTerms = YetaWFManager.Jser.Serialize(kwds),
+                SearchTerms = YetaWFManager.JsonSerialize(kwds),
                 On = Module.GetAction_On(!shown),
                 Off = Module.GetAction_Off(shown),
             };

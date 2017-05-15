@@ -4,7 +4,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Net;
-using System.Web.Script.Serialization;
 using YetaWF.Core.Addons;
 using YetaWF.Core.DataProvider;
 using YetaWF.Core.DataProvider.Attributes;
@@ -99,14 +98,13 @@ namespace YetaWF.Modules.CurrencyConverter.DataProvider {
             string jsonCurrencies = GetJSONResponse(url);
             CheckForErrors(jsonCurrencies);
 
-            JavaScriptSerializer serializer = new JavaScriptSerializer();
             // get all currencies
-            Dictionary<string, object> currencies = serializer.Deserialize<Dictionary<string, object>>(jsonCurrencies);
+            Dictionary<string, object> currencies = YetaWFManager.JsonDeserialize<Dictionary<string, object>>(jsonCurrencies);
             // add all rates
-            var jsonObject = serializer.Deserialize<dynamic>(json);
-            var rates = jsonObject["rates"];
+            dynamic jsonObject = YetaWFManager.JsonDeserialize(json);
+            var rates = jsonObject.rates;
             foreach (var rate in rates) {
-                string code = rate.Key;
+                string code = rate.Name;
                 object currency;
                 if (!currencies.TryGetValue(code, out currency))// replace 3 digit codes by actual name
                     currency = code;
@@ -131,7 +129,7 @@ namespace YetaWF.Modules.CurrencyConverter.DataProvider {
             ScriptBuilder sb = new ScriptBuilder();
             sb.Append("// Generated file (see ExchangeRateDataProvider) - Do not modify\n");
             sb.Append("YetaWF_CurrencyConverter_Rates = \n");
-            sb.Append(YetaWFManager.Jser.Serialize(data.Rates));
+            sb.Append(YetaWFManager.JsonSerialize(data.Rates));
             sb.Append(";\n");
             File.WriteAllText(file, sb.ToString());
         }
@@ -144,9 +142,8 @@ namespace YetaWF.Modules.CurrencyConverter.DataProvider {
         }
 
         private void CheckForErrors(string json) {
-            JavaScriptSerializer serializer = new JavaScriptSerializer();
-            var jsonObject = serializer.Deserialize<dynamic>(json);
-            if (jsonObject.ContainsKey("error"))
+            dynamic jsonObject = YetaWFManager.JsonDeserialize(json);
+            if (!string.IsNullOrWhiteSpace(jsonObject.error))
                 throw new InternalError("An error occurred retrieving exchange rates from openexchangerates.org - {0}: {1}", jsonObject["message"], jsonObject["description"]);
         }
         private string GetJSONResponse(string url) {

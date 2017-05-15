@@ -1,7 +1,7 @@
 ﻿using System;
-using System.Web.Script.Serialization;
 using System.Security.Cryptography;
 using System.Text;
+using YetaWF.Core.Support;
 
 // Original sample located at
 // https://raw.githubusercontent.com/disqus/DISQUS-API-Recipes/master/sso/cs/DisqusSSO.cs
@@ -59,7 +59,7 @@ namespace YetaWF.Modules.Blog.Controllers.Support {
                 url = website_url
             };
 
-            string serializedUserData = new JavaScriptSerializer().Serialize(userdata);
+            string serializedUserData = YetaWFManager.JsonSerialize(userdata);
             return GeneratePayload(serializedUserData);
         }
 
@@ -69,7 +69,7 @@ namespace YetaWF.Modules.Blog.Controllers.Support {
         /// <returns>A signed, empty payload string</returns>
         public string LogoutUser() {
             var userdata = new { };
-            string serializedUserData = new JavaScriptSerializer().Serialize(userdata);
+            string serializedUserData = YetaWFManager.JsonSerialize(userdata);
             return GeneratePayload(serializedUserData);
         }
 
