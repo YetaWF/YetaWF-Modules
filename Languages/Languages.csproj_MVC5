@@ -163,17 +163,12 @@
     <Compile Include="Models\LocalizeConfigDataProvider.cs" />
     <Compile Include="Startup\Info.cs" />
     <Compile Include="Startup\AreaRegistration.cs" />
-    <Compile Include="Controllers\LanguageAdd.cs" />
     <Compile Include="Controllers\LanguageDisplay.cs" />
-    <Compile Include="Controllers\LanguageEdit.cs" />
     <Compile Include="Controllers\LanguagesBrowse.cs" />
     <Compile Include="Controllers\LocalizeBrowsePackage.cs" />
     <Compile Include="Controllers\LocalizeConfig.cs" />
     <Compile Include="Controllers\LocalizeEditFile.cs" />
-    <Compile Include="Models\LanguageDataProvider.cs" />
-    <Compile Include="Modules\LanguageAdd.cs" />
     <Compile Include="Modules\LanguageDisplay.cs" />
-    <Compile Include="Modules\LanguageEdit.cs" />
     <Compile Include="Modules\LanguagesBrowse.cs" />
     <Compile Include="Modules\LocalizeBrowsePackage.cs" />
     <Compile Include="Modules\LocalizeConfig.cs" />

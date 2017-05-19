@@ -1,12 +1,12 @@
 /* Copyright © 2017 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Languages#License */
 
+using System.Linq;
 using YetaWF.Core.Controllers;
 using YetaWF.Core.Language;
 using YetaWF.Core.Localize;
 using YetaWF.Core.Models;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Support;
-using YetaWF.Modules.Languages.DataProvider;
 #if MVC6
 using Microsoft.AspNetCore.Mvc;
 #else
@@ -33,22 +33,20 @@ namespace YetaWF.Modules.Languages.Controllers {
             [UIHint("String"), ReadOnly]
             public string Description { get; set; }
 
-            public void SetData(LanguageData data) {
+            public void SetData(LanguageEntryElement data) {
                 ObjectSupport.CopyData(data, this);
             }
         }
 
         [HttpGet]
         public ActionResult LanguageDisplay(string id) {
-            using (LanguageDataProvider dataProvider = new LanguageDataProvider()) {
-                LanguageData data = dataProvider.GetItem(id);
-                if (data == null)
-                    throw new Error(this.__ResStr("notFound", "Language \"{0}\" not found."), id);
-                DisplayModel model = new DisplayModel();
-                model.SetData(data);
-                Module.Title = this.__ResStr("modTitle", "Language \"{0}\"", data.ShortName);
-                return View(model);
-            }
+            LanguageEntryElement language = (from l in LanguageSection.Languages where id == l.Id select l).FirstOrDefault();
+            if (language == null)
+                throw new Error(this.__ResStr("notFound", "Language \"{0}\" not found"), id);
+            DisplayModel model = new DisplayModel();
+            model.SetData(language);
+            Module.Title = this.__ResStr("modTitle", "Language \"{0}\"", language.ShortName);
+            return View(model);
         }
     }
 }

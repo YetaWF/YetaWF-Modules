@@ -6,14 +6,11 @@ using System.Linq;
 using YetaWF.Core.Controllers;
 using YetaWF.Core.DataProvider;
 using YetaWF.Core.Language;
-using YetaWF.Core.Localize;
 using YetaWF.Core.Menus;
 using YetaWF.Core.Models;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Modules;
-using YetaWF.Core.Support;
 using YetaWF.Core.Views.Shared;
-using YetaWF.Modules.Languages.DataProvider;
 using YetaWF.Modules.Languages.Modules;
 #if MVC6
 using Microsoft.AspNetCore.Mvc;
@@ -36,10 +33,6 @@ namespace YetaWF.Modules.Languages.Controllers {
                     LanguageDisplayModule dispMod = new LanguageDisplayModule();
                     actions.New(dispMod.GetAction_Display(Module.DisplayUrl, Id), ModuleAction.ActionLocationEnum.GridLinks);
 
-                    LanguageEditModule editMod = new LanguageEditModule();
-                    actions.New(editMod.GetAction_Edit(Module.EditUrl, Id), ModuleAction.ActionLocationEnum.GridLinks);
-
-                    actions.New(Module.GetAction_RemoveLanguage(Id), ModuleAction.ActionLocationEnum.GridLinks);
                     return actions;
                 }
             }
@@ -58,12 +51,13 @@ namespace YetaWF.Modules.Languages.Controllers {
 
             private LanguagesBrowseModule Module { get; set; }
 
-            public BrowseItem(LanguagesBrowseModule module, LanguageData data) {
+            public BrowseItem(LanguagesBrowseModule module, LanguageEntryElement data) {
                 Module = module;
                 ObjectSupport.CopyData(data, this);
             }
         }
 
+        [Header("Languages are defined in the LanguageSettings.json file in the Data folder.")]
         public class BrowseModel {
             [UIHint("Grid")]
             public GridDefinition GridDef { get; set; }
@@ -84,27 +78,13 @@ namespace YetaWF.Modules.Languages.Controllers {
         [HttpPost]
         [ConditionalAntiForgeryToken]
         public ActionResult LanguagesBrowse_GridData(int skip, int take, List<DataProviderSortInfo> sort, List<DataProviderFilterInfo> filters, Guid settingsModuleGuid) {
-            using (LanguageDataProvider dataProvider = new LanguageDataProvider()) {
-                int total;
-                List<LanguageData> browseItems = dataProvider.GetItems(skip, take, sort, filters, out total);
-                GridHelper.SaveSettings(skip, take, sort, filters, settingsModuleGuid);
-                return GridPartialView(new DataSourceResult {
-                    Data = (from s in browseItems select new BrowseItem(Module, s)).ToList<object>(),
-                    Total = total
-                });
-            }
-        }
-
-        [HttpPost]
-        [Permission("RemoveLanguages")]
-        [ExcludeDemoMode]
-        public ActionResult RemoveLanguage(string id) {
-            if (string.IsNullOrWhiteSpace(id))
-                throw new Error(this.__ResStr("noItem", "No language id specified."));
-            using (LanguageDataProvider dataProvider = new LanguageDataProvider()) {
-                dataProvider.RemoveItem(id);
-                return Reload(null, Reload: ReloadEnum.ModuleParts);
-            }
+            int total;
+            List<LanguageEntryElement> browseItems = DataProviderImpl<LanguageEntryElement>.GetRecords(LanguageSection.Languages, skip, take, sort, filters, out total);
+            GridHelper.SaveSettings(skip, take, sort, filters, settingsModuleGuid);
+            return GridPartialView(new DataSourceResult {
+                Data = (from s in browseItems select new BrowseItem(Module, s)).ToList<object>(),
+                Total = total
+            });
         }
     }
 }
