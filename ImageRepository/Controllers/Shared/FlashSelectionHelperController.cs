@@ -31,7 +31,7 @@ namespace YetaWF.Modules.ImageRepository.Controllers.Shared {
         {
             FileUpload upload = new FileUpload();
             string storagePath = FlashSelectionInfo.StoragePath(new Guid(folderGuid), subFolder, fileType);
-            string name = upload.StoreFile(__filename, storagePath, m => m.FlashUse, uf => uf.FileName);
+            string name = upload.StoreFile(__filename, storagePath, MimeSection.FlashUse, uf => uf.FileName);
 
             ScriptBuilder sb = new ScriptBuilder();
             // Upload control considers Json result a success. result has a function to execute, newName has the file name

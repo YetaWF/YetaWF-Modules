@@ -32,7 +32,7 @@ namespace YetaWF.Modules.ImageRepository.Controllers.Shared {
         {
             FileUpload upload = new FileUpload();
             string storagePath = ImageSelectionInfo.StoragePath(new Guid(folderGuid), subFolder, fileType);
-            string name = upload.StoreFile(__filename, storagePath, m => m.ImageUse, uf => {
+            string name = upload.StoreFile(__filename, storagePath, MimeSection.ImageUse, uf => {
                 return Path.GetFileName(uf.FileName);
             });
 
