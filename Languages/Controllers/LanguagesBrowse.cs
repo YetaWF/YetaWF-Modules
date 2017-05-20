@@ -59,7 +59,8 @@ namespace YetaWF.Modules.Languages.Controllers {
 
         [Header("Languages are defined in the LanguageSettings.json file in the Data folder.")]
         public class BrowseModel {
-            [UIHint("Grid")]
+            [Caption(""), Description("")]
+            [UIHint("Grid"), ReadOnly]
             public GridDefinition GridDef { get; set; }
         }
 

@@ -1,18 +1,14 @@
 ﻿/* Copyright © 2017 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Languages#License */
 
 using System;
-using System.Collections.Generic;
 using YetaWF.Core;
 using YetaWF.Core.IO;
 using YetaWF.Core.Localize;
-using YetaWF.Core.Menus;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Modules;
 using YetaWF.Core.Serializers;
-using YetaWF.Core.Support;
 using YetaWF.Core.Views.Shared;
 using YetaWF.DataProvider;
-using YetaWF.Modules.Languages.Controllers;
 #if MVC6
 #else
 using System.Web.Mvc;
@@ -30,7 +26,7 @@ namespace YetaWF.Modules.Languages.Modules {
             Title = this.__ResStr("modTitle", "Languages");
             Name = this.__ResStr("modName", "Languages");
             Description = this.__ResStr("modSummary", "Displays and manages languages");
-            DefaultViewName = StandardViews.Browse;
+            DefaultViewName = StandardViews.PropertyListEdit;
         }
 
         public override IModuleDefinitionIO GetDataProvider() { return new LanguagesBrowseModuleDataProvider(); }
