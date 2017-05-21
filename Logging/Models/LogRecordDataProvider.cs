@@ -97,7 +97,7 @@ namespace YetaWF.Modules.Logging.DataProvider {
                             break;
                         case WebConfigHelper.IOModeEnum.Sql:
                             _dataProvider = new YetaWF.DataProvider.SQLSimpleObjectDataProvider<int, LogRecord>(AreaName, SQLDbo, SQLConn,
-                                Logging: false);
+                                Logging: false, NoLanguages: true);
                             break;
                     }
                 }
