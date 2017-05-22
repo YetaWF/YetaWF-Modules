@@ -92,7 +92,7 @@
             <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
               <Properties>
                 <Name Value="notFound" />
-                <Text Value="Language &quot;{0}&quot; not found." />
+                <Text Value="Language &quot;{0}&quot; not found" />
               </Properties>
             </Object>
           </Value>
