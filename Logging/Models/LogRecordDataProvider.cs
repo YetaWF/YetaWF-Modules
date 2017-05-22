@@ -40,7 +40,7 @@ namespace YetaWF.Modules.Logging.DataProvider {
 
         [Data_Index]
         public DateTime TimeStamp { get; set; }
-        [Data_Index, StringLength(MaxSessionId)]
+        [StringLength(MaxSessionId)]
         public string SessionId { get; set; }
         public Core.Log.Logging.LevelEnum Level { get; set; }
         [StringLength(ModuleDefinition.MaxName)]

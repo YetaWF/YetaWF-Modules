@@ -27,13 +27,11 @@ namespace YetaWF.Modules.Visitors.DataProvider {
         [Data_PrimaryKey, Data_Identity]
         public int Key { get; set; }
 
-        [Data_Index, StringLength(MaxSessionId)]
+        [StringLength(MaxSessionId)]
         public string SessionId { get; set; }
         [Data_Index]
         public DateTime AccessDateTime { get; set; }
-        [Data_Index]
         public int UserId { get; set; }
-        [Data_Index]
         [StringLength(Globals.MaxIP)]
         public string IPAddress { get; set; }
         [StringLength(Globals.MaxUrl)]
