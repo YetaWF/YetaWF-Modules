@@ -1,12 +1,10 @@
 ﻿/* Copyright © 2017 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Pages#License */
 
 using System;
-using System.Collections.Generic;
 using YetaWF.Core.DataProvider;
 using YetaWF.Core.Packages;
 using YetaWF.Core.Pages;
 using YetaWF.Core.Support;
-using YetaWF.Modules.Pages.DataProvider;
 
 namespace YetaWF.Modules.Pages.DataProvider {
 
