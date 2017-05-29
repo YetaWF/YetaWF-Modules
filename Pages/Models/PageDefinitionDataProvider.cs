@@ -229,7 +229,10 @@ namespace YetaWF.Modules.Pages.DataProvider
         }
 
         public List<PageDefinition> GetItems(int skip, int take, List<DataProviderSortInfo> sort, List<DataProviderFilterInfo> filters, out int total) {
-            return DataProvider.GetRecords(skip, take, sort, filters, out total);
+            List<PageDefinition> list = DataProvider.GetRecords(skip, take, sort, filters, out total);
+            foreach (PageDefinition page in list)
+                page.Temporary = false;
+            return list;
         }
 
         // DESIGNED PAGES
