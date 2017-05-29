@@ -68,12 +68,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controllers\SkinScrollToTop.cs" />
     <Compile Include="Controllers\TemplateListOfPageDefinitions.cs" />
     <Compile Include="Controllers\UnifiedSetAdd.cs" />
     <Compile Include="Controllers\UnifiedSetEdit.cs" />
     <Compile Include="Controllers\UnifiedSetsBrowse.cs" />
     <Compile Include="Models\PageDefinitionWithModulesDataProvider.cs" />
     <Compile Include="Models\UnifiedSetDataProvider.cs" />
+    <Compile Include="Modules\SkinScrollToTop.cs" />
     <Compile Include="Modules\TemplateListOfPageDefinitionsModule.cs" />
     <Compile Include="Modules\UnifiedSetAdd.cs" />
     <Compile Include="Modules\UnifiedSetEdit.cs" />
@@ -107,15 +109,20 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Addons\_Addons\SkinScrollToTop\img\top.png" />
     <Content Include="Addons\_Main\Icons\Download.png" />
     <Content Include="Addons\_Main\Grids\PagesBrowseModuleController.PageItem" />
     <Content Include="Addons\_Main\Grids\RolesHelper.GridAllowedRole" />
     <Content Include="Addons\_Main\Grids\UsersHelper.GridAllowedRole" />
+    <Content Include="Addons\_Addons\SkinScrollToTop\filelistCSS.txt" />
+    <Content Include="Addons\_Addons\SkinScrollToTop\filelistJS.txt" />
+    <Content Include="Addons\_Addons\SkinScrollToTop\markgoodyear.com ScrollUp\jquery.scrollUp.js" />
     <Content Include="Addons\_SiteTemplates\YetaWF_Pages.2.0.3.txt" />
     <None Include="Addons\_Main\Grids\ListOfLocalPagesHelper.GridAllEntry" />
     <None Include="Addons\_Main\Grids\ListOfLocalPagesHelper.GridEntryDisplay" />
     <None Include="Addons\_Main\Grids\ListOfLocalPagesHelper.GridEntryEdit" />
     <None Include="Addons\_Main\Grids\UnifiedSetsBrowseModuleController.BrowseItem" />
+    <Content Include="Addons\_Addons\SkinScrollToTop\SkinScrollToTop.css" />
     <None Include="app.config" />
     <None Include="packages.config" />
     <Content Include="Addons\_Templates\ListOfLocalPages\filelistCSS.txt" />
@@ -124,6 +131,7 @@
     <Content Include="Addons\_Templates\ListOfLocalPages\ListOfLocalPages.js" />
     <Content Include="Views\Shared\EditorTemplates\YetaWF_Pages_ListOfLocalPages.cshtml" />
     <Content Include="Views\Shared\DisplayTemplates\YetaWF_Pages_ListOfLocalPages.cshtml" />
+    <None Include="Views\YetaWF_Pages_SkinScrollToTop.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
