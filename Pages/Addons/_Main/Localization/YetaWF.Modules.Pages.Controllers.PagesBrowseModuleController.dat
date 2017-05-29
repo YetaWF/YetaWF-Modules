@@ -18,12 +18,7 @@
                 <Categories>
                   <Object Type="YetaWF.Core.Serializers.SerializableDictionary`2[[System.String, mscorlib, Culture=neutral, PublicKeyToken=b77a5c561934e089],[System.String, mscorlib, Culture=neutral, PublicKeyToken=b77a5c561934e089]]" Assembly="YetaWF.Core">
                     <Properties />
-                    <Dictionary>
-                      <Key Value="Skin" />
-                      <Value Value="Skin" />
-                      <Key Value="Urls" />
-                      <Value Value="Urls" />
-                    </Dictionary>
+                    <Dictionary />
                   </Object>
                 </Categories>
                 <Properties>
@@ -82,7 +77,7 @@
                         <Object Type="YetaWF.Core.Localize.LocalizationData+PropertyData" Assembly="YetaWF.Core">
                           <Properties>
                             <Name Value="CssClass" />
-                            <Caption Value="CSS Class" />
+                            <Caption />
                             <Description Value="The optional CSS classes to be added to the page's &lt;body&gt; tag for further customization through stylesheets" />
                             <HelpLink />
                             <TextAbove />
@@ -132,6 +127,18 @@
                             <Name Value="MobilePageUrl" />
                             <Caption Value="Mobile Page Url" />
                             <Description Value="If this page is accessed by a mobile device, it is redirected to the Url defined here as mobile page Url - Redirection is not active in Site Edit Mode" />
+                            <HelpLink />
+                            <TextAbove />
+                            <TextBelow />
+                          </Properties>
+                        </Object>
+                      </Value>
+                      <Value>
+                        <Object Type="YetaWF.Core.Localize.LocalizationData+PropertyData" Assembly="YetaWF.Core">
+                          <Properties>
+                            <Name Value="PageGuid" />
+                            <Caption Value="Guid" />
+                            <Description Value="The id uniquely identifying this page" />
                             <HelpLink />
                             <TextAbove />
                             <TextBelow />
