@@ -16,7 +16,7 @@ YetaWF_ImageRepository.initSelection = function (divId) {
     var $img = $('.t_preview img', $control);
     if ($img.length != 1) throw "preview image not found";/*DEBUG*/
 
-    var $buttons = $('.t_haveimage', $buttons);
+    var $buttons = $('.t_haveimage', $control);
     if ($buttons.length != 1) throw "button area not found";/*DEBUG*/
 
     // set the preview image
