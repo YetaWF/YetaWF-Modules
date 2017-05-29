@@ -89,36 +89,39 @@ namespace YetaWF.Modules.Pages.Controllers {
             [UIHint("DateTime"), ReadOnly]
             public DateTime Updated { get; set; }
 
-            [Category("Skin"), Caption("Page Skin"), Description("The skin used to display the page")]
+            [Caption("Page Skin"), Description("The skin used to display the page")]
             [UIHint("PageSkin"), ReadOnly]
             public SkinDefinition SelectedSkin { get; set; }
 
-            [Category("Skin"), Caption("Popup Skin"), Description("The skin used when the page is displayed in a popup window")]
+            [Caption("Popup Skin"), Description("The skin used when the page is displayed in a popup window")]
             [UIHint("PopupSkin"), ReadOnly]
             public SkinDefinition SelectedPopupSkin { get; set; }
 
-            [Category("Skin"), Caption("jquery UI Skin"), Description("The skin for jQuery-UI elements (buttons, modal dialogs, etc.) used on this page")]
+            [Caption("jquery UI Skin"), Description("The skin for jQuery-UI elements (buttons, modal dialogs, etc.) used on this page")]
             [UIHint("jQueryUISkin"), ReadOnly]
             public string jQueryUISkin { get; set; }
 
-            [Category("Skin"), Caption("Kendo UI Skin"), Description("The skin for Kendo UI elements (buttons, modal dialogs, etc.) used on this page")]
+            [Caption("Kendo UI Skin"), Description("The skin for Kendo UI elements (buttons, modal dialogs, etc.) used on this page")]
             [UIHint("KendoUISkin"), ReadOnly]
             public string KendoUISkin { get; set; }
 
-            [Category("Skin"), Caption("CSS Class"), Description("The optional CSS classes to be added to the page's <body> tag for further customization through stylesheets")]
+            [Description("The optional CSS classes to be added to the page's <body> tag for further customization through stylesheets")]
             [UIHint("String"), ReadOnly]
             public string CssClass { get; set; }
 
-            [Category("Urls"), Caption("Mobile Page Url"), Description("If this page is accessed by a mobile device, it is redirected to the Url defined here as mobile page Url - Redirection is not active in Site Edit Mode")]
+            [Caption("Mobile Page Url"), Description("If this page is accessed by a mobile device, it is redirected to the Url defined here as mobile page Url - Redirection is not active in Site Edit Mode")]
             [UIHint("Url"), ReadOnly]
             public string MobilePageUrl { get; set; }
 
-            [Category("Urls"), Caption("Redirect To Page"), Description("If this page is accessed, it is redirected to the Url defined here - Redirection is not active in Site Edit Mode")]
+            [Caption("Redirect To Page"), Description("If this page is accessed, it is redirected to the Url defined here - Redirection is not active in Site Edit Mode")]
             [UIHint("Url"), ReadOnly]
             public string RedirectToPageUrl { get; set; }
 
-            public string EvaluatedCanonicalUrl { get; set; }
+            [Caption("Guid"), Description("The id uniquely identifying this page")]
+            [UIHint("Guid"), ReadOnly]
             public Guid PageGuid { get; set; }
+
+            public string EvaluatedCanonicalUrl { get; set; }
             private PagesBrowseModule Module { get; set; }
             public ModuleDefinition PageEditModule { get; set; }
 
