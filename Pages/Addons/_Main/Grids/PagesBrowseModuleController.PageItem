@@ -16,3 +16,4 @@ KendoUISkin         sort filter 25
 CssClass            sort filter 40
 MobilePageUrl       sort filter [Globals.ChUrl]
 RedirectToPageUrl   sort filter [Globals.ChUrl]
+PageGuid			sort filter [Globals.ChGuid]
