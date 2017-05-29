@@ -68,7 +68,16 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controllers\TemplateListOfPageDefinitions.cs" />
+    <Compile Include="Controllers\UnifiedSetAdd.cs" />
+    <Compile Include="Controllers\UnifiedSetEdit.cs" />
+    <Compile Include="Controllers\UnifiedSetsBrowse.cs" />
     <Compile Include="Models\PageDefinitionWithModulesDataProvider.cs" />
+    <Compile Include="Models\UnifiedSetDataProvider.cs" />
+    <Compile Include="Modules\TemplateListOfPageDefinitionsModule.cs" />
+    <Compile Include="Modules\UnifiedSetAdd.cs" />
+    <Compile Include="Modules\UnifiedSetEdit.cs" />
+    <Compile Include="Modules\UnifiedSetsBrowse.cs" />
     <Compile Include="Scheduler\SiteMaps.cs" />
     <Compile Include="Startup\Info.cs" />
     <Compile Include="Startup\AreaRegistration.cs" />
@@ -76,6 +85,7 @@
     <Compile Include="Models\PageDefinitionDataProvider.cs" />
     <Compile Include="Modules\PagesBrowse.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ViewsCode\Shared\ListOfLocalPagesHelper.cs" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
@@ -101,8 +111,19 @@
     <Content Include="Addons\_Main\Grids\PagesBrowseModuleController.PageItem" />
     <Content Include="Addons\_Main\Grids\RolesHelper.GridAllowedRole" />
     <Content Include="Addons\_Main\Grids\UsersHelper.GridAllowedRole" />
+    <Content Include="Addons\_SiteTemplates\YetaWF_Pages.2.0.3.txt" />
+    <None Include="Addons\_Main\Grids\ListOfLocalPagesHelper.GridAllEntry" />
+    <None Include="Addons\_Main\Grids\ListOfLocalPagesHelper.GridEntryDisplay" />
+    <None Include="Addons\_Main\Grids\ListOfLocalPagesHelper.GridEntryEdit" />
+    <None Include="Addons\_Main\Grids\UnifiedSetsBrowseModuleController.BrowseItem" />
     <None Include="app.config" />
     <None Include="packages.config" />
+    <Content Include="Addons\_Templates\ListOfLocalPages\filelistCSS.txt" />
+    <Content Include="Addons\_Templates\ListOfLocalPages\filelistJS.txt" />
+    <None Include="Addons\_Templates\ListOfLocalPages\ListOfLocalPages.scss" />
+    <Content Include="Addons\_Templates\ListOfLocalPages\ListOfLocalPages.js" />
+    <Content Include="Views\Shared\EditorTemplates\YetaWF_Pages_ListOfLocalPages.cshtml" />
+    <Content Include="Views\Shared\DisplayTemplates\YetaWF_Pages_ListOfLocalPages.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

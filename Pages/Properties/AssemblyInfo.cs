@@ -23,3 +23,5 @@ using YetaWF.PackageAttributes;
     "https://YetaWF.com/Documentation/YetaWF/Support",
     "https://yetawf.com/Documentation/YetaWF/Pages#Release%20Notice",
     "https://yetawf.com/Documentation/YetaWF/Pages#License")]
+
+[assembly:PublicPartialViews]

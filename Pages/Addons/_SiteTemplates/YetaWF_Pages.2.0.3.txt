@@ -1,0 +1,21 @@
+### Copyright © 2017 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Pages#License
+###
+### Pages Package Update
+###
+
+::PAGE-SECTION::
+
+Administrator /Admin/Unified Pages
+    Title=Unified Page Sets
+    Description=Unified Page Sets
+    Admin > {YetaWF.Pages, YetaWF.Modules.Pages.Modules.UnifiedSetsBrowseModule}.GetAction_Items({CURRENTURL})
+    -
+    YetaWF.Pages, YetaWF.Modules.Pages.Modules.UnifiedSetsBrowseModule
+
+Administrator /Tests/Template ListOfLocalPages
+    Title=ListOfLocalPages Test Template
+    Description=ListOfLocalPages Test Template
+    Tests > Templates > {YetaWF.Pages, YetaWF.Modules.Pages.Modules.TemplateListOfLocalPagesModule}.GetAction_Display({CURRENTURL})
+    -
+    YetaWF.Pages, YetaWF.Modules.Pages.Modules.TemplateListOfLocalPagesModule
+

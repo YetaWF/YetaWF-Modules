@@ -1,0 +1,6 @@
+Commands            icons 2
+Name                sort filter 25 defaultSort asc
+Description         sort filter 80
+Created             sort filter [Globals.ChDateTime]
+Updated             sort filter [Globals.ChDateTime]
+UnifiedSetGuid      sort filter [Globals.ChGuid] internal
