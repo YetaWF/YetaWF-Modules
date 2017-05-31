@@ -17,9 +17,9 @@ namespace YetaWF.Modules.Dashboard.Modules {
     public class AddonDisplayModule : ModuleDefinition {
 
         public AddonDisplayModule() {
-            Title = this.__ResStr("modTitle", "AddOn Info");
-            Name = this.__ResStr("modName", "AddOn Info");
-            Description = this.__ResStr("modSummary", "Displays information for an AddOn");
+            Title = this.__ResStr("modTitle", "AddOn Details");
+            Name = this.__ResStr("modName", "AddOn Details");
+            Description = this.__ResStr("modSummary", "Displays detail information for an AddOn");
             DefaultViewName = StandardViews.Display;
         }
 

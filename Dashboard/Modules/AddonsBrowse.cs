@@ -26,7 +26,7 @@ namespace YetaWF.Modules.Dashboard.Modules {
         public AddonsBrowseModule() {
             Title = this.__ResStr("modTitle", "AddOn Info");
             Name = this.__ResStr("modName", "AddOn Info");
-            Description = this.__ResStr("modSummary", "Displays AddOn Info");
+            Description = this.__ResStr("modSummary", "Displays information about all Javascript AddOns, Css AddOns that are installed in the current YetaWF instance");
             DefaultViewName = StandardViews.PropertyListDisplay;
         }
 
@@ -44,8 +44,8 @@ namespace YetaWF.Modules.Dashboard.Modules {
                 Image = "#Browse",
                 LinkText = this.__ResStr("browseLink", "AddOn Info"),
                 MenuText = this.__ResStr("browseText", "AddOn Info"),
-                Tooltip = this.__ResStr("browseTooltip", "Display AddOn information"),
-                Legend = this.__ResStr("browseLegend", "Displays AddOn information"),
+                Tooltip = this.__ResStr("browseTooltip", "Display information about all Javascript AddOns, Css AddOns that are installed in the current YetaWF instance"),
+                Legend = this.__ResStr("browseLegend", "Displays information about all Javascript AddOns, Css AddOns that are installed in the current YetaWF instance"),
                 Style = ModuleAction.ActionStyleEnum.Normal,
                 Location = ModuleAction.ActionLocationEnum.NoAuto,
                 Category = ModuleAction.ActionCategoryEnum.Read,
