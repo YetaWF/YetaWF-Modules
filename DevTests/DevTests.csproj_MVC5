@@ -66,7 +66,7 @@
     <Compile Include="Controllers\BasicTemplates.cs" />
     <Compile Include="Controllers\SMSProcessorStatus.cs" />
     <Compile Include="Controllers\TemplateDateTime.cs" />
-    <Compile Include="Controllers\TemplateListOfEmailsAddresses.cs" />
+    <Compile Include="Controllers\TemplateListOfEmailAddresses.cs" />
     <Compile Include="Controllers\TemplateRecaptchaV2.cs" />
     <Compile Include="Controllers\TemplateScroller.cs" />
     <Compile Include="Controllers\TemplateSkin.cs" />
@@ -75,7 +75,7 @@
     <Compile Include="Modules\BasicTemplates.cs" />
     <Compile Include="Modules\SMSProcessorStatus.cs" />
     <Compile Include="Modules\TemplateDateTimeModule.cs" />
-    <Compile Include="Modules\TemplateListOfEmailsAddressesModule.cs" />
+    <Compile Include="Modules\TemplateListOfEmailAddressesModule.cs" />
     <Compile Include="Modules\TemplateRecaptchaV2Module.cs" />
     <Compile Include="Modules\TemplateScrollerModule.cs" />
     <Compile Include="Modules\TemplateSkinModule.cs" />
