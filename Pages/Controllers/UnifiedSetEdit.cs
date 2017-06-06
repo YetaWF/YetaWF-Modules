@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using YetaWF.Core;
 using YetaWF.Core.Controllers;
 using YetaWF.Core.DataProvider;
 using YetaWF.Core.Localize;
@@ -12,6 +13,7 @@ using YetaWF.Core.Support;
 using YetaWF.Core.Views.Shared;
 using YetaWF.Modules.Pages.DataProvider;
 using YetaWF.Modules.Pages.Views.Shared;
+using YetaWF.Core.Skins;
 #if MVC6
 using Microsoft.AspNetCore.Mvc;
 #else
@@ -43,9 +45,18 @@ namespace YetaWF.Modules.Pages.Controllers {
             [UIHint("DateTime"), ReadOnly]
             public DateTime Updated { get; set; }
 
+            [Caption("Master Page"), Description("Defines the master page for the Unified page Set that defines the skin, referenced modules, authorization and all other page attributes")]
+            [UIHint("PageSelection")]
+            public Guid MasterPageGuid { get; set; }
+
             [Caption("Mode"), Description("Defines how page content is combined")]
             [UIHint("Enum")]
             public PageDefinition.UnifiedModeEnum UnifiedMode { get; set; }
+
+            [Caption("Page Skin"), Description("All pages using this skin are combined into this Unified Page Set and use the Master Page for all its attributes - Pages that are explicitly included in another Unified Page Set are not part of this set even if the skin matches")]
+            [UIHint("PageSkin"), Required]
+            [ProcessIf("UnifiedMode", PageDefinition.UnifiedModeEnum.SkinDynamicContent)]
+            public SkinDefinition PageSkin { get; set; }
 
             [Caption("Animation Duration"), Description("Defines the duration of the animation to scroll to the content (used only if Mode is set to Show All Content)")]
             [UIHint("IntValue6"), Range(0, 999999), ProcessIf("UnifiedMode", PageDefinition.UnifiedModeEnum.ShowDivs), Required]
@@ -56,6 +67,7 @@ namespace YetaWF.Modules.Pages.Controllers {
                 "Pages in the unified page set can be reordered by dragging and dropping them within the list of pages.")]
             [Caption("Pages"), Description("Defines all pages that are part of this unified page set - All modules (in designated panes) from all pages in the set are combined into one page - Whenever a user accesses any page by Url in the unified page set, the same combined page is shown, activating or scrolling to the requested content - When moving between different pages within the unified page set, no server access is required")]
             [UIHint("YetaWF_Pages_ListOfLocalPages")]
+            [ProcessIf("UnifiedMode", PageDefinition.UnifiedModeEnum.DynamicContent, PageDefinition.UnifiedModeEnum.HideDivs, PageDefinition.UnifiedModeEnum.ShowDivs, PageDefinition.UnifiedModeEnum.None)]
             public List<string> PageList { get; set; }
             public string PageList_AjaxUrl { get { return YetaWFManager.UrlFor(typeof(UnifiedSetEditModuleController), nameof(AddPage)); } }
 
@@ -71,6 +83,7 @@ namespace YetaWF.Modules.Pages.Controllers {
             }
             public EditModel() {
                 PageList = new List<string>();
+                PageSkin = new Core.Skins.SkinDefinition();
             }
         }
 

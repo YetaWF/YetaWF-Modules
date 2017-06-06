@@ -1,11 +1,14 @@
 /* Copyright © 2017 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Search#License */
 
+var YetaWF_Search = {};
+
 // SEARCH CONTROL - ENABLE DISABLE HIGHLIGHTING
 // SEARCH CONTROL - ENABLE DISABLE HIGHLIGHTING
 // SEARCH CONTROL - ENABLE DISABLE HIGHLIGHTING
 
 $(document).ready(function () {
     function highlightSearch() {
+        $('.yModule').removeHighlight();
         if (YVolatile.Basics.EditModeActive) return; // never in edit mode
         var kwdsString = $(".YetaWF_Search_SearchControl input[name='SearchTerms']").val();
         var kwds = eval(kwdsString);
@@ -28,7 +31,6 @@ $(document).ready(function () {
         YetaWF_Forms.addPostSubmitHandler(0/*!InPartialView*/, {
             form: null,
             callback: function (entry) {
-                $('.yModule').removeHighlight();
                 highlightSearch();
             },
             userdata: null,
@@ -40,13 +42,12 @@ $(document).ready(function () {
 // SEARCH RESULTS
 // SEARCH RESULTS
 
-$(document).ready(function () {
-
+YetaWF_Search.initResults = function($tag) {
     // Add search terms to each url so we can highlight them when the page is displayed
-    $('.YetaWF_Search_SearchResults').each(function () {
+    $('.YetaWF_Search_SearchResults', $tag).each(function () {
         // each search results module (there really should only be one)
         var $mod = $(this);
-        var kwds = $('input[name="SearchTerms"]').val();
+        var kwds = $('.YetaWF_Search_SearchControl input[name="SearchTerms"]').val();
         $('.t_desc a', $mod).each(function () {
             // update each url with the keywords
             var $this = $(this);
@@ -55,4 +56,8 @@ $(document).ready(function () {
             uri.addSearch(YConfigs.YetaWF_Search.UrlArg, kwds);
         });
     });
+};
+
+YetaWF_Basics.whenReady.push({
+    callback: YetaWF_Search.initResults
 });

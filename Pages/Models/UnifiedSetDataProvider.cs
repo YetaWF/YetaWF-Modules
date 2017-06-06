@@ -11,6 +11,7 @@ using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Packages;
 using YetaWF.Core.Pages;
 using YetaWF.Core.Serializers;
+using YetaWF.Core.Skins;
 using YetaWF.Core.Support;
 
 namespace YetaWF.Modules.Pages.DataProvider {
@@ -38,6 +39,16 @@ namespace YetaWF.Modules.Pages.DataProvider {
         /// </summary>
         [StringLength(MaxDescription)]
         public string Description { get; set; }
+
+        /// <summary>
+        /// Defines the master page for the unified page set. All referenced modules, skin and other attributes for all pages are defined by this page.
+        /// </summary>
+        public Guid MasterPageGuid { get; set; }
+
+        /// <summary>
+        /// Defines the skin that combines all pages into this unified page set (used with UnifiedModeEnum.SkinDynamicContent only).
+        /// </summary>
+        public SkinDefinition PageSkin { get; set; }
 
         /// <summary>
         /// Defines how combined content is rendered.
@@ -78,6 +89,7 @@ namespace YetaWF.Modules.Pages.DataProvider {
             UnifiedAnimation = 1000;
             PageList = new List<string>();
             PageGuids = new SerializableList<Guid>();
+            PageSkin = new SkinDefinition();
         }
     }
 
@@ -88,7 +100,7 @@ namespace YetaWF.Modules.Pages.DataProvider {
         // IINITIALIZEAPPLICATIONSTARTUP
 
         public void InitializeApplicationStartup() {
-            PageDefinition.GetUnifiedPagesFromPageGuid = GetUnifiedPagesFromPageGuid;
+            PageDefinition.GetUnifiedPageInfo = GetUnifiedPageInfo;
         }
 
         // IMPLEMENTATION
@@ -142,13 +154,25 @@ namespace YetaWF.Modules.Pages.DataProvider {
         public bool AddItem(UnifiedSetData unifiedSet) {
             unifiedSet.UnifiedSetGuid = Guid.NewGuid();
             unifiedSet.Created = DateTime.UtcNow;
-            unifiedSet.PageGuids = UpdatePageGuids(unifiedSet.UnifiedSetGuid, unifiedSet.PageList);
+            if (unifiedSet.UnifiedMode == PageDefinition.UnifiedModeEnum.SkinDynamicContent) {
+                unifiedSet.PageList = new List<string>();
+                unifiedSet.PageGuids = new SerializableList<Guid>();
+            } else {
+                unifiedSet.PageSkin = new SkinDefinition();
+                unifiedSet.PageGuids = UpdatePageGuids(unifiedSet.UnifiedSetGuid, unifiedSet.PageList);
+            }
             if (!DataProvider.Add(unifiedSet)) return false;
             return true;
         }
         public UpdateStatusEnum UpdateItem(UnifiedSetData unifiedSet) {
             unifiedSet.Updated = DateTime.UtcNow;
-            unifiedSet.PageGuids = UpdatePageGuids(unifiedSet.UnifiedSetGuid, unifiedSet.PageList);
+            if (unifiedSet.UnifiedMode == PageDefinition.UnifiedModeEnum.SkinDynamicContent) {
+                unifiedSet.PageList = new List<string>();
+                unifiedSet.PageGuids = new SerializableList<Guid>();
+            } else {
+                unifiedSet.PageSkin = new SkinDefinition();
+                unifiedSet.PageGuids = UpdatePageGuids(unifiedSet.UnifiedSetGuid, unifiedSet.PageList);
+            }
             UpdateStatusEnum status = DataProvider.Update(unifiedSet.UnifiedSetGuid, unifiedSet.UnifiedSetGuid, unifiedSet);
             if (status != UpdateStatusEnum.OK) return status;
             return status;
@@ -166,14 +190,42 @@ namespace YetaWF.Modules.Pages.DataProvider {
         // PageList
         // PageList
 
-        private PageDefinition.UnifiedInfo GetUnifiedPagesFromPageGuid(Guid unifiedSetGuid) {
-            UnifiedSetData unifiedSet = GetItem(unifiedSetGuid);
-            if (unifiedSet == null) return null;
-            return new PageDefinition.UnifiedInfo {
-                PageGuids = unifiedSet.PageGuids,
-                Animation = unifiedSet.UnifiedAnimation,
-                Mode = unifiedSet.UnifiedMode,
-            };
+        private PageDefinition.UnifiedInfo GetUnifiedPageInfo(Guid? unifiedSetGuid, string collectionName, string skinName) {
+            UnifiedSetData unifiedSet;
+            if (unifiedSetGuid != null) {
+                unifiedSet = GetItem((Guid)unifiedSetGuid);
+                if (unifiedSet != null) {
+                    return new PageDefinition.UnifiedInfo {
+                        UnifiedSetGuid = (Guid)unifiedSetGuid,
+                        MasterPageGuid = unifiedSet.MasterPageGuid,
+                        PageGuids = unifiedSet.PageGuids,
+                        Animation = unifiedSet.UnifiedAnimation,
+                        Mode = unifiedSet.UnifiedMode,
+                    };
+                }
+            }
+            // some pages (created with earlier versions of YetaWF) have a null skin name, which defaults to SkinAccess.FallbackPageFileName
+            if (string.IsNullOrWhiteSpace(skinName))
+                skinName = SkinAccess.FallbackPageFileName;
+            // find a unified page set that uses the matching skin
+            int total;
+            List<DataProviderFilterInfo> filters = null;
+            filters = DataProviderFilterInfo.Join(filters, new DataProviderFilterInfo { Field = "PageSkin_Collection", Operator = "==", Value = collectionName });
+            filters = DataProviderFilterInfo.Join(filters, new DataProviderFilterInfo { Field = "PageSkin_FileName", Operator = "==", Value = skinName });
+            filters = DataProviderFilterInfo.Join(filters, new DataProviderFilterInfo { Field = "UnifiedMode", Operator = "==", Value = PageDefinition.UnifiedModeEnum.SkinDynamicContent });
+            unifiedSet = GetItems(0, 1, null, filters, out total).FirstOrDefault();
+            if (unifiedSet != null) {
+                return new PageDefinition.UnifiedInfo {
+                    UnifiedSetGuid = unifiedSet.UnifiedSetGuid,
+                    MasterPageGuid = unifiedSet.MasterPageGuid,
+                    PageGuids = new List<Guid>(),
+                    Animation = 0,
+                    Mode = unifiedSet.UnifiedMode,
+                    PageSkinCollectionName = collectionName,
+                    PageSkinFileName = skinName,
+                };
+            }
+            return null;
         }
         private List<string> GetPageListFromGuids(SerializableList<Guid> pageGuids) {
             List<string> pages = new List<string>();

@@ -26,6 +26,10 @@ $(document).ready(function () {
         var tip = YetaWF_TemplateDropDownList.getTitle($t, this.selectedIndex);
         $(".t_description", $div).text(tip);
     });
-    $(".yt_yetawf_scheduler_event.t_edit select[name$='.DropDown']").trigger("change");// to update all displayed info
 });
 
+YetaWF_Basics.whenReady.push({
+    callback: function ($tag) {
+        $(".yt_yetawf_scheduler_event.t_edit select[name$='.DropDown']", $tag).trigger("change");// to update all displayed info
+    }
+});
