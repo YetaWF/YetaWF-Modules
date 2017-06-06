@@ -35,5 +35,4 @@ $(document).ready(function () {
             throw "Country code " + code + " is not available";/*DEBUG*/
         }
     });
-
 });
