@@ -159,7 +159,7 @@ namespace YetaWF.Modules.DevTests.Controllers {
             public string Text40 { get; set; }
 
             [Category("Core"), Caption("Text80"), Description("Text80 (Required)")]
-            [UIHint("Text80"), StringLength(80), Required]
+            [UIHint("Text80"), StringLength(80), AdditionalMetadata("Copy", true), Required]
             public string Text80 { get; set; }
 
             [Category("Core"), Caption("TextArea"), Description("TextArea (Required)")]
@@ -201,7 +201,7 @@ namespace YetaWF.Modules.DevTests.Controllers {
                     RemoveURL = YetaWFManager.UrlFor(typeof(BasicTemplatesModuleController), "RemoveSomething", new { __ModuleGuid = module.ModuleGuid }),
                 };
                 // PaneSelection
-                PaneSelection_List = Manager.CurrentPage.Panes;
+                PaneSelection_List = new List<string> { "Pane 1", "Pane 2", "Pane 3" };
             }
         }
 
