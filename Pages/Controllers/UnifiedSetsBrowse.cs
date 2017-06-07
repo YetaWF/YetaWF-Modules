@@ -10,6 +10,7 @@ using YetaWF.Core.Menus;
 using YetaWF.Core.Models;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Modules;
+using YetaWF.Core.Pages;
 using YetaWF.Core.Support;
 using YetaWF.Core.Views.Shared;
 using YetaWF.Modules.Pages.DataProvider;
@@ -43,6 +44,10 @@ namespace YetaWF.Modules.Pages.Controllers {
             [Caption("Name"), Description("The name of this Unified Page Set")]
             [UIHint("String"), ReadOnly]
             public string Name { get; set; }
+
+            [Caption("Mode"), Description("Defines how page content is combined")]
+            [UIHint("Enum"), ReadOnly]
+            public PageDefinition.UnifiedModeEnum UnifiedMode { get; set; }
 
             [Caption("Description"), Description("The description for this Unified Page Set")]
             [UIHint("String"), ReadOnly]
