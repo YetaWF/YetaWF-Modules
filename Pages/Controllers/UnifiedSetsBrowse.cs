@@ -35,16 +35,16 @@ namespace YetaWF.Modules.Pages.Controllers {
                     UnifiedSetEditModule editMod = new UnifiedSetEditModule();
                     actions.New(editMod.GetAction_Edit(Module.EditUrl, UnifiedSetGuid), ModuleAction.ActionLocationEnum.GridLinks);
 
-                    actions.New(Module.GetAction_Remove(UnifiedSetGuid), ModuleAction.ActionLocationEnum.GridLinks);
+                    actions.New(Module.GetAction_Remove(UnifiedSetGuid, Name), ModuleAction.ActionLocationEnum.GridLinks);
                     return actions;
                 }
             }
 
-            [Caption("Name"), Description("The name of this unified page set")]
+            [Caption("Name"), Description("The name of this Unified Page Set")]
             [UIHint("String"), ReadOnly]
             public string Name { get; set; }
 
-            [Caption("Description"), Description("The description for this unified page set")]
+            [Caption("Description"), Description("The description for this Unified Page Set")]
             [UIHint("String"), ReadOnly]
             public string Description { get; set; }
 
@@ -55,11 +55,11 @@ namespace YetaWF.Modules.Pages.Controllers {
             [UIHint("DateTime"), ReadOnly]
             public DateTime Updated { get; set; }
 
-            [Caption("Master Page"), Description("Defines the master page for the Unified page Set that defines the skin, referenced modules, authorization and all other page attributes")]
+            [Caption("Master Page"), Description("Defines the master page for the Unified Page Set that defines the skin, referenced modules, authorization and all other page attributes")]
             [UIHint("PageSelection"), ReadOnly]
             public Guid MasterPageGuid { get; set; }
 
-            [Caption("Id"), Description("The internal id used to identify this unified page set")]
+            [Caption("Id"), Description("The internal id used to identify this Unified Page Set")]
             [UIHint("Guid"), ReadOnly]
             public Guid UnifiedSetGuid { get; set; }
 
@@ -71,7 +71,7 @@ namespace YetaWF.Modules.Pages.Controllers {
             }
         }
 
-        [Header("A unified page set combines multiple, separately designed pages into one page. " +
+        [Header("A Unified Page Set combines multiple, separately designed pages into one page. " +
             "When the user navigates between the pages in the set, only the required modules are replaced. Depending on the mode selected, no server access is required as all required portions of the pages have been preloaded. " +
             "Only modules within designated panes are exchanged, minimizing data transfer.")]
         public class BrowseModel {

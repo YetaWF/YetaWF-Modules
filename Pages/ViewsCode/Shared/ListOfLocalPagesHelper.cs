@@ -32,7 +32,7 @@ namespace YetaWF.Modules.Pages.Views.Shared {
         }
 
         public class NewModel {
-            [Caption("Page"), Description("Please select a page and click Add to add it to the unified page set")]
+            [Caption("Page"), Description("Please select a page and click Add to add it to the Unified Page Set")]
             [UIHint("Url"), StringLength(Globals.MaxUrl), AdditionalMetadata("UrlType", UrlHelperEx.UrlTypeEnum.Local), Trim]
             public string NewValue { get; set; }
         }
@@ -46,7 +46,7 @@ namespace YetaWF.Modules.Pages.Views.Shared {
             [UIHint("GridDeleteEntry")]
             public int DeleteMe { get; set; }
 
-            [Caption("Page"), Description("Shows all pages part of this unified page set")]
+            [Caption("Page"), Description("Shows all pages part of this Unified Page Set")]
             [UIHint("Url"), ReadOnly]
             public string Url { get { return __Value; } set { __Value = value; } }
 
@@ -188,7 +188,7 @@ namespace YetaWF.Modules.Pages.Views.Shared {
 
         public class GridEntryDisplay {
 
-            [Caption("Page"), Description("Shows all page Urls that are part of the unified page set")]
+            [Caption("Page"), Description("Shows all page Urls that are part of the Unified Page Set")]
             [UIHint("String"), ReadOnly]
             public string Url { get; set; }
 

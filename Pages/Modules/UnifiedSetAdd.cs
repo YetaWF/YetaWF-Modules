@@ -19,7 +19,7 @@ namespace YetaWF.Modules.Pages.Modules {
         public UnifiedSetAddModule() {
             Title = this.__ResStr("modTitle", "Add New Unified Page Set");
             Name = this.__ResStr("modName", "Add New Unified Page Set");
-            Description = this.__ResStr("modSummary", "Creates a new unified page set");
+            Description = this.__ResStr("modSummary", "Creates a new Unified Page Set");
             DefaultViewName = StandardViews.Add;
         }
 
@@ -33,8 +33,8 @@ namespace YetaWF.Modules.Pages.Modules {
                 Image = "#Add",
                 LinkText = this.__ResStr("addLink", "Add"),
                 MenuText = this.__ResStr("addText", "Add"),
-                Tooltip = this.__ResStr("addTooltip", "Create a new unified page set"),
-                Legend = this.__ResStr("addLegend", "Creates a new unified page set"),
+                Tooltip = this.__ResStr("addTooltip", "Create a new Unified Page Set"),
+                Legend = this.__ResStr("addLegend", "Creates a new Unified Page Set"),
                 Style = ModuleAction.ActionStyleEnum.Normal,
                 Category = ModuleAction.ActionCategoryEnum.Update,
                 Mode = ModuleAction.ActionModeEnum.Any,

@@ -19,7 +19,7 @@ namespace YetaWF.Modules.Pages.Modules {
         public UnifiedSetEditModule() {
             Title = this.__ResStr("modTitle", "Unified Page Set");
             Name = this.__ResStr("modName", "Edit Unified Page Set");
-            Description = this.__ResStr("modSummary", "Edits an existing unified page set");
+            Description = this.__ResStr("modSummary", "Edits an existing Unified Page Set");
             DefaultViewName = StandardViews.Edit;
         }
 
@@ -34,8 +34,8 @@ namespace YetaWF.Modules.Pages.Modules {
                 Image = "#Edit",
                 LinkText = this.__ResStr("editLink", "Edit"),
                 MenuText = this.__ResStr("editText", "Edit"),
-                Tooltip = this.__ResStr("editTooltip", "Edit unified page set"),
-                Legend = this.__ResStr("editLegend", "Edits an existing unified page set"),
+                Tooltip = this.__ResStr("editTooltip", "Edit Unified Page Set"),
+                Legend = this.__ResStr("editLegend", "Edits an existing Unified Page Set"),
                 Style = ModuleAction.ActionStyleEnum.Normal,
                 Category = ModuleAction.ActionCategoryEnum.Update,
                 Mode = ModuleAction.ActionModeEnum.Any,

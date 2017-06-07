@@ -46,7 +46,7 @@ namespace YetaWF.Modules.Pages.DataProvider {
         public Guid MasterPageGuid { get; set; }
 
         /// <summary>
-        /// Defines the skin that combines all pages into this unified page set (used with UnifiedModeEnum.SkinDynamicContent only).
+        /// Defines the skin that combines all pages into this Unified Page Set (used with UnifiedModeEnum.SkinDynamicContent only).
         /// </summary>
         public SkinDefinition PageSkin { get; set; }
 
@@ -72,13 +72,13 @@ namespace YetaWF.Modules.Pages.DataProvider {
         public DateTime Updated { get; set; }
 
         /// <summary>
-        /// The list of pages (by Url) which are part of this unified page set.
+        /// The list of pages (by Url) which are part of this Unified Page Set.
         /// </summary>
         /// <remarks>They are in the order that content is rendered within a unified page.</remarks>
         [Data_DontSave]
         public List<string> PageList { get; set; }
         /// <summary>
-        /// The list of pages (by Guid) which are part of this unified page set.
+        /// The list of pages (by Guid) which are part of this Unified Page Set.
         /// </summary>
         /// <remarks>They are in the order that content is rendered within a unified page.</remarks>
         [Data_Binary]

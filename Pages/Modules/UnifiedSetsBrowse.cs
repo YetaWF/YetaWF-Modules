@@ -30,7 +30,7 @@ namespace YetaWF.Modules.Pages.Modules {
         public UnifiedSetsBrowseModule() {
             Title = this.__ResStr("modTitle", "Unified Page Sets");
             Name = this.__ResStr("modName", "Unified Page Sets");
-            Description = this.__ResStr("modSummary", "Displays and manages unified page sets");
+            Description = this.__ResStr("modSummary", "Displays and manages Unified Page Sets");
             DefaultViewName = StandardViews.PropertyListEdit;
             ShowHelp = true;
             WantSearch = false;
@@ -38,10 +38,10 @@ namespace YetaWF.Modules.Pages.Modules {
 
         public override IModuleDefinitionIO GetDataProvider() { return new UnifiedSetsBrowseModuleDataProvider(); }
 
-        [Category("General"), Caption("Add Url"), Description("The Url to add a new unified page set - if omitted, a default page is generated")]
+        [Category("General"), Caption("Add Url"), Description("The Url to add a new Unified Page Set - if omitted, a default page is generated")]
         [UIHint("Url"), AdditionalMetadata("UrlType", UrlHelperEx.UrlTypeEnum.Local), UrlValidation(UrlValidationAttribute.SchemaEnum.Any, UrlHelperEx.UrlTypeEnum.Local), StringLength(Globals.MaxUrl), Trim]
         public string AddUrl { get; set; }
-        [Category("General"), Caption("Edit Url"), Description("The Url to edit a unified page set - if omitted, a default page is generated")]
+        [Category("General"), Caption("Edit Url"), Description("The Url to edit a Unified Page Set - if omitted, a default page is generated")]
         [UIHint("Url"), AdditionalMetadata("UrlType", UrlHelperEx.UrlTypeEnum.Local), UrlValidation(UrlValidationAttribute.SchemaEnum.Any, UrlHelperEx.UrlTypeEnum.Local), StringLength(Globals.MaxUrl), Trim]
         public string EditUrl { get; set; }
 
@@ -50,8 +50,8 @@ namespace YetaWF.Modules.Pages.Modules {
             get {
                 return new List<RoleDefinition>() {
                     new RoleDefinition("RemoveItems",
-                        this.__ResStr("roleRemItemsC", "Remove Unified Page Sets"), this.__ResStr("roleRemItems", "The role has permission to remove individual unified page sets"),
-                        this.__ResStr("userRemItemsC", "Remove Unified Page Sets"), this.__ResStr("userRemItems", "The user has permission to remove individual unified page sets")),
+                        this.__ResStr("roleRemItemsC", "Remove Unified Page Sets"), this.__ResStr("roleRemItems", "The role has permission to remove individual Unified Page Sets"),
+                        this.__ResStr("userRemItemsC", "Remove Unified Page Sets"), this.__ResStr("userRemItems", "The user has permission to remove individual Unified Page Sets")),
                 };
             }
         }
@@ -69,15 +69,15 @@ namespace YetaWF.Modules.Pages.Modules {
                 Image = "#Browse",
                 LinkText = this.__ResStr("browseLink", "Unified Page Sets"),
                 MenuText = this.__ResStr("browseText", "Unified Page Sets"),
-                Tooltip = this.__ResStr("browseTooltip", "Display and manage unified page sets"),
-                Legend = this.__ResStr("browseLegend", "Displays and manages unified page sets"),
+                Tooltip = this.__ResStr("browseTooltip", "Display and manage Unified Page Sets"),
+                Legend = this.__ResStr("browseLegend", "Displays and manages Unified Page Sets"),
                 Style = ModuleAction.ActionStyleEnum.Normal,
                 Location = ModuleAction.ActionLocationEnum.NoAuto,
                 Category = ModuleAction.ActionCategoryEnum.Read,
                 Mode = ModuleAction.ActionModeEnum.Any,
             };
         }
-        public ModuleAction GetAction_Remove(Guid unifiedSetGuid) {
+        public ModuleAction GetAction_Remove(Guid unifiedSetGuid, string name) {
             if (!IsAuthorized("RemoveItems")) return null;
             return new ModuleAction(this) {
                 Url = YetaWFManager.UrlFor(typeof(UnifiedSetsBrowseModuleController), "Remove"),
@@ -87,12 +87,12 @@ namespace YetaWF.Modules.Pages.Modules {
                 Style = ModuleAction.ActionStyleEnum.Post,
                 LinkText = this.__ResStr("removeLink", "Remove Unified Page Set"),
                 MenuText = this.__ResStr("removeMenu", "Remove Unified Page Set"),
-                Tooltip = this.__ResStr("removeTT", "Remove the unified page set"),
-                Legend = this.__ResStr("removeLegend", "Removes the unified page set"),
+                Tooltip = this.__ResStr("removeTT", "Remove the Unified Page Set"),
+                Legend = this.__ResStr("removeLegend", "Removes the Unified Page Set"),
                 Category = ModuleAction.ActionCategoryEnum.Delete,
                 Mode = ModuleAction.ActionModeEnum.Any,
                 Location = ModuleAction.ActionLocationEnum.NoAuto,
-                ConfirmationText = this.__ResStr("removeConfirm", "Are you sure you want to remove unified page set \"{0}\"?", unifiedSetGuid),
+                ConfirmationText = this.__ResStr("removeConfirm", "Are you sure you want to remove Unified Page Set \"{0}\"?", name),
             };
         }
     }
