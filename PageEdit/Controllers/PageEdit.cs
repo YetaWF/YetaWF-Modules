@@ -159,10 +159,13 @@ namespace YetaWF.Modules.PageEdit.Controllers {
             [UIHint("Text40"), StringLength(PageDefinition.MaxCssClass), CssClassesValidationAttribute, Trim]
             public string CssClass { get; set; }
 
-            [Category("Addons"), Caption("Analytics"), Description("Add analytics code (for example, the Universal Analytics tracking code used by Google Analytics or the code used by Clicky) - Any code that should be added at the end of the HTML page can be added here - If omitted, the site defined analytics code is used (Site Settings)")]
+            [Category("Addons"), Caption("Analytics"), Description("Add analytics Javascript code (for example, the Universal Analytics tracking code used by Google Analytics or the code used by Clicky) - Any code that should be added at the end of the HTML page can be added here - If omitted, the site defined analytics code is used (Site Settings)")]
             [TextAbove("Analytics code is only available in deployed production sites and is ignored in debug builds (not marked deployed).")]
             [UIHint("TextArea"), AdditionalMetadata("SourceOnly", true), StringLength(SiteDefinition.MaxAnalytics), Trim]
             public string Analytics { get; set; }
+            [TextAbove("Analytics (Content) is only available in deployed production sites and is ignored in debug builds (not marked deployed).")]
+            [UIHint("TextArea"), AdditionalMetadata("SourceOnly", true), StringLength(SiteDefinition.MaxAnalytics), Trim]
+            public string AnalyticsContent { get; set; }
 
             [Category("Meta"), Caption("Meta Tags"), Description("Defines <meta> tags that are added to the page - If specified, this replaces the site meta tags defined using the PageMetaTags property (Site Settings)")]
             [UIHint("TextArea"), AdditionalMetadata("SourceOnly", true), StringLength(SiteDefinition.MaxMeta), Trim]
