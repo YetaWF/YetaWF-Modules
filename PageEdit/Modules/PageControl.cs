@@ -100,6 +100,7 @@ namespace YetaWF.Modules.PageEdit.Modules {
             return new ModuleAction(this) {
                 Url = string.Format(config.W3CUrl, Manager.CurrentPage.EvaluatedCanonicalUrl),
                 Image = "W3CValidator.png",
+                Name="W3CValidate",
                 LinkText = this.__ResStr("modW3CValLink", "W3C Validation"),
                 MenuText = this.__ResStr("modW3CValText", "W3C Validation"),
                 Tooltip = this.__ResStr("modW3CValTooltip", "Use W3C Validation service to validate the current page - The page must be accessible to the remote service as an anonymous user"),

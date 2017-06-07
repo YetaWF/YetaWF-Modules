@@ -4,6 +4,7 @@ using YetaWF.Core.Addons;
 using YetaWF.Core.Pages;
 using YetaWF.Core.Support;
 using YetaWF.Modules.PageEdit.Controllers;
+using YetaWF.Modules.PageEdit.DataProvider;
 
 namespace YetaWF.Modules.PageEdit.Addons {
 
@@ -15,8 +16,10 @@ namespace YetaWF.Modules.PageEdit.Addons {
 
             ScriptManager scripts = manager.ScriptManager;
             string areaName = AreaRegistration.CurrentPackage.AreaName;
+            ControlPanelConfigData config = ControlPanelConfigDataProvider.GetConfig();
 
             scripts.AddConfigOption(areaName, "PageControlMod", PageControlMod);
+            scripts.AddConfigOption(areaName, "W3CUrl", config.W3CUrl);
         }
     }
 }

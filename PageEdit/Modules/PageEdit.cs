@@ -48,6 +48,7 @@ namespace YetaWF.Modules.PageEdit.Modules {
                 QueryArgs = new { PageGuid = guid },
                 QueryArgsDict = new QueryHelper(new QueryDictionary { { Globals.Link_NoEditMode, "y" }, { Globals.Link_NoPageControl, "y" } }),
                 Image = "#Edit",
+                Name = "PageSettings",
                 LinkText = this.__ResStr("editLink", "Page Settings"),
                 MenuText = this.__ResStr("editText", "Page Settings"),
                 Tooltip = this.__ResStr("editTooltip", "Edit page settings"),
@@ -78,6 +79,7 @@ namespace YetaWF.Modules.PageEdit.Modules {
                 Url = YetaWFManager.UrlFor(typeof(PageEditModuleController), "RemovePage"),
                 QueryArgs = new { PageGuid = guid },
                 Image = "#Remove",
+                Name = "RemovePage",
                 LinkText = this.__ResStr("delLink", "Remove Current Page"),
                 MenuText = this.__ResStr("delText", "Remove Current Page"),
                 Tooltip = this.__ResStr("delTooltip", "Remove the current page"),
@@ -86,7 +88,7 @@ namespace YetaWF.Modules.PageEdit.Modules {
                 Category = ModuleAction.ActionCategoryEnum.Delete,
                 Location = ModuleAction.ActionLocationEnum.ModuleLinks | ModuleAction.ActionLocationEnum.ModuleMenu,
                 Mode = ModuleAction.ActionModeEnum.Any,
-                ConfirmationText = this.__ResStr("delConfirm", "Are you ABSOLUTELY sure you want to remove the currently displayed page \"{0}\"? This action cannot be undone.", page.Url),
+                ConfirmationText = this.__ResStr("delConfirm", "Are you ABSOLUTELY sure you want to remove the currently displayed page? This action cannot be undone."),
                 NeedsModuleContext = true,
             };
         }
