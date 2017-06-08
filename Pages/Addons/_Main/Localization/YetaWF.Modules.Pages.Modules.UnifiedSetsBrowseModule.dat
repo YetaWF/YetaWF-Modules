@@ -33,7 +33,7 @@
                           <Properties>
                             <Name Value="AddUrl" />
                             <Caption Value="Add Url" />
-                            <Description Value="The Url to add a new unified page set - if omitted, a default page is generated" />
+                            <Description Value="The Url to add a new Unified Page Set - if omitted, a default page is generated" />
                             <HelpLink />
                             <TextAbove />
                             <TextBelow />
@@ -45,7 +45,7 @@
                           <Properties>
                             <Name Value="EditUrl" />
                             <Caption Value="Edit Url" />
-                            <Description Value="The Url to edit a unified page set - if omitted, a default page is generated" />
+                            <Description Value="The Url to edit a Unified Page Set - if omitted, a default page is generated" />
                             <HelpLink />
                             <TextAbove />
                             <TextBelow />
@@ -75,7 +75,7 @@
             <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
               <Properties>
                 <Name Value="browseLegend" />
-                <Text Value="Displays and manages unified page sets" />
+                <Text Value="Displays and manages Unified Page Sets" />
               </Properties>
             </Object>
           </Value>
@@ -99,7 +99,7 @@
             <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
               <Properties>
                 <Name Value="browseTooltip" />
-                <Text Value="Display and manage unified page sets" />
+                <Text Value="Display and manage Unified Page Sets" />
               </Properties>
             </Object>
           </Value>
@@ -115,7 +115,7 @@
             <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
               <Properties>
                 <Name Value="modSummary" />
-                <Text Value="Displays and manages unified page sets" />
+                <Text Value="Displays and manages Unified Page Sets" />
               </Properties>
             </Object>
           </Value>
@@ -131,7 +131,7 @@
             <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
               <Properties>
                 <Name Value="removeConfirm" />
-                <Text Value="Are you sure you want to remove unified page set &quot;{0}&quot;?" />
+                <Text Value="Are you sure you want to remove Unified Page Set &quot;{0}&quot;?" />
               </Properties>
             </Object>
           </Value>
@@ -139,7 +139,7 @@
             <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
               <Properties>
                 <Name Value="removeLegend" />
-                <Text Value="Removes the unified page set" />
+                <Text Value="Removes the Unified Page Set" />
               </Properties>
             </Object>
           </Value>
@@ -163,7 +163,7 @@
             <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
               <Properties>
                 <Name Value="removeTT" />
-                <Text Value="Remove the unified page set" />
+                <Text Value="Remove the Unified Page Set" />
               </Properties>
             </Object>
           </Value>
@@ -171,7 +171,7 @@
             <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
               <Properties>
                 <Name Value="roleRemItems" />
-                <Text Value="The role has permission to remove individual unified page sets" />
+                <Text Value="The role has permission to remove individual Unified Page Sets" />
               </Properties>
             </Object>
           </Value>
@@ -187,7 +187,7 @@
             <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
               <Properties>
                 <Name Value="userRemItems" />
-                <Text Value="The user has permission to remove individual unified page sets" />
+                <Text Value="The user has permission to remove individual Unified Page Sets" />
               </Properties>
             </Object>
           </Value>

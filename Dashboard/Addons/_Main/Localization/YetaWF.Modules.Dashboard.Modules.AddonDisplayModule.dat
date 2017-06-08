@@ -55,7 +55,7 @@
             <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
               <Properties>
                 <Name Value="modName" />
-                <Text Value="AddOn Info" />
+                <Text Value="AddOn Details" />
               </Properties>
             </Object>
           </Value>
@@ -63,7 +63,7 @@
             <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
               <Properties>
                 <Name Value="modSummary" />
-                <Text Value="Displays information for an AddOn" />
+                <Text Value="Displays detail information for an AddOn" />
               </Properties>
             </Object>
           </Value>
@@ -71,7 +71,7 @@
             <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
               <Properties>
                 <Name Value="modTitle" />
-                <Text Value="AddOn Info" />
+                <Text Value="AddOn Details" />
               </Properties>
             </Object>
           </Value>

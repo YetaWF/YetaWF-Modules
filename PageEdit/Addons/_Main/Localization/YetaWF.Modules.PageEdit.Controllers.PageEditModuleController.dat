@@ -71,9 +71,21 @@
                           <Properties>
                             <Name Value="Analytics" />
                             <Caption Value="Analytics" />
-                            <Description Value="Add analytics code (for example, the Universal Analytics tracking code used by Google Analytics or the code used by Clicky) - Any code that should be added at the end of the HTML page can be added here - If omitted, the site defined analytics code is used (Site Settings)" />
+                            <Description Value="Add analytics Javascript code (for example, the Universal Analytics tracking code used by Google Analytics or the code used by Clicky) - Any code that should be added at the end of the HTML page can be added here - If omitted, the site defined analytics code is used (Site Settings)" />
                             <HelpLink />
                             <TextAbove Value="Analytics code is only available in deployed production sites and is ignored in debug builds (not marked deployed)." />
+                            <TextBelow />
+                          </Properties>
+                        </Object>
+                      </Value>
+                      <Value>
+                        <Object Type="YetaWF.Core.Localize.LocalizationData+PropertyData" Assembly="YetaWF.Core">
+                          <Properties>
+                            <Name Value="AnalyticsContent" />
+                            <Caption />
+                            <Description />
+                            <HelpLink />
+                            <TextAbove Value="Analytics (Content) is only available in deployed production sites and is ignored in debug builds (not marked deployed)." />
                             <TextBelow />
                           </Properties>
                         </Object>

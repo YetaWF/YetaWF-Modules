@@ -42,7 +42,19 @@
                           <Properties>
                             <Name Value="Description" />
                             <Caption Value="Description" />
-                            <Description Value="The description for this unified page set" />
+                            <Description Value="The description for this Unified Page Set" />
+                            <HelpLink />
+                            <TextAbove />
+                            <TextBelow />
+                          </Properties>
+                        </Object>
+                      </Value>
+                      <Value>
+                        <Object Type="YetaWF.Core.Localize.LocalizationData+PropertyData" Assembly="YetaWF.Core">
+                          <Properties>
+                            <Name Value="MasterPageGuid" />
+                            <Caption Value="Master Page" />
+                            <Description Value="Defines the master page for the Unified Page Set that defines the skin, referenced modules, authorization and all other page attributes" />
                             <HelpLink />
                             <TextAbove />
                             <TextBelow />
@@ -54,7 +66,7 @@
                           <Properties>
                             <Name Value="Name" />
                             <Caption Value="Name" />
-                            <Description Value="The name of this unified page set" />
+                            <Description Value="The name of this Unified Page Set" />
                             <HelpLink />
                             <TextAbove />
                             <TextBelow />
@@ -66,9 +78,21 @@
                           <Properties>
                             <Name Value="PageList" />
                             <Caption Value="Pages" />
-                            <Description Value="Defines all pages that are part of this unified page set - All modules (in designated panes) from all pages in the set are combined into one page - Whenever a user accesses any page by Url in the unified page set, the same combined page is shown, activating or scrolling to the requested content - When moving between different pages within the unified page set, no server access is required" />
+                            <Description Value="Defines all pages that are part of this Unified Page Set - All modules (in designated panes) from all pages in the set are combined into one page - Whenever a user accesses any page by Url in the Unified Page Set, the same combined page is shown, activating or scrolling to the requested content - When moving between different pages within the Unified Page Set, no server access is required" />
                             <HelpLink />
-                            <TextAbove Value="Add pages to the unified page set by selecting them in the dropdown list below. When selecting a page in the &quot;All Pages&quot; grid, the dropdown list is updated to match, so the page can be added. Pages in the unified page set can be reordered by dragging and dropping them within the list of pages." />
+                            <TextAbove Value="Add pages to the Unified Page Set by selecting them in the dropdown list below. When selecting a page in the &quot;All Pages&quot; grid, the dropdown list is updated to match, so the page can be added. Pages in the Unified Page Set can be reordered by dragging and dropping them within the list of pages." />
+                            <TextBelow />
+                          </Properties>
+                        </Object>
+                      </Value>
+                      <Value>
+                        <Object Type="YetaWF.Core.Localize.LocalizationData+PropertyData" Assembly="YetaWF.Core">
+                          <Properties>
+                            <Name Value="PageSkin" />
+                            <Caption Value="Page Skin" />
+                            <Description Value="All pages using this skin are combined into this Unified Page Set and use the Master Page for all its attributes - Pages that are explicitly included in another Unified Page Set are not part of this set even if the skin matches" />
+                            <HelpLink />
+                            <TextAbove />
                             <TextBelow />
                           </Properties>
                         </Object>

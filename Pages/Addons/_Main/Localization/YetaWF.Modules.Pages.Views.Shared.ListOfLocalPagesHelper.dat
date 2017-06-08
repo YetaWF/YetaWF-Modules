@@ -90,7 +90,7 @@
                           <Properties>
                             <Name Value="Url" />
                             <Caption Value="Page" />
-                            <Description Value="Shows all page Urls that are part of the unified page set" />
+                            <Description Value="Shows all page Urls that are part of the Unified Page Set" />
                             <HelpLink />
                             <TextAbove />
                             <TextBelow />
@@ -138,7 +138,7 @@
                           <Properties>
                             <Name Value="Url" />
                             <Caption Value="Page" />
-                            <Description Value="Shows all pages part of this unified page set" />
+                            <Description Value="Shows all pages part of this Unified Page Set" />
                             <HelpLink />
                             <TextAbove />
                             <TextBelow />
@@ -174,7 +174,7 @@
                           <Properties>
                             <Name Value="NewValue" />
                             <Caption Value="Page" />
-                            <Description Value="Please select a page and click Add to add it to the unified page set" />
+                            <Description Value="Please select a page and click Add to add it to the Unified Page Set" />
                             <HelpLink />
                             <TextAbove />
                             <TextBelow />
@@ -236,7 +236,7 @@
             <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
               <Properties>
                 <Name Value="ttAllPages" />
-                <Text Value="Shows all designed pages available in the site - Select a page to update the dropdown list above, so the page can be added to the unified page set" />
+                <Text Value="Shows all designed pages available in the site - Select a page to update the dropdown list above, so the page can be added to the Unified Page Set" />
               </Properties>
             </Object>
           </Value>

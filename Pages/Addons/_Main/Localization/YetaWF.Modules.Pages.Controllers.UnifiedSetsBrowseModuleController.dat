@@ -54,7 +54,19 @@
                           <Properties>
                             <Name Value="Description" />
                             <Caption Value="Description" />
-                            <Description Value="The description for this unified page set" />
+                            <Description Value="The description for this Unified Page Set" />
+                            <HelpLink />
+                            <TextAbove />
+                            <TextBelow />
+                          </Properties>
+                        </Object>
+                      </Value>
+                      <Value>
+                        <Object Type="YetaWF.Core.Localize.LocalizationData+PropertyData" Assembly="YetaWF.Core">
+                          <Properties>
+                            <Name Value="MasterPageGuid" />
+                            <Caption Value="Master Page" />
+                            <Description Value="Defines the master page for the Unified Page Set that defines the skin, referenced modules, authorization and all other page attributes" />
                             <HelpLink />
                             <TextAbove />
                             <TextBelow />
@@ -66,7 +78,19 @@
                           <Properties>
                             <Name Value="Name" />
                             <Caption Value="Name" />
-                            <Description Value="The name of this unified page set" />
+                            <Description Value="The name of this Unified Page Set" />
+                            <HelpLink />
+                            <TextAbove />
+                            <TextBelow />
+                          </Properties>
+                        </Object>
+                      </Value>
+                      <Value>
+                        <Object Type="YetaWF.Core.Localize.LocalizationData+PropertyData" Assembly="YetaWF.Core">
+                          <Properties>
+                            <Name Value="UnifiedMode" />
+                            <Caption Value="Mode" />
+                            <Description Value="Defines how page content is combined" />
                             <HelpLink />
                             <TextAbove />
                             <TextBelow />
@@ -78,7 +102,7 @@
                           <Properties>
                             <Name Value="UnifiedSetGuid" />
                             <Caption Value="Id" />
-                            <Description Value="The internal id used to identify this unified page set" />
+                            <Description Value="The internal id used to identify this Unified Page Set" />
                             <HelpLink />
                             <TextAbove />
                             <TextBelow />
@@ -108,7 +132,7 @@
               <Properties>
                 <Name Value="YetaWF.Modules.Pages.Controllers.UnifiedSetsBrowseModuleController+BrowseModel" />
                 <BaseTypeName />
-                <Header Value="A unified page set combines multiple, separately designed pages into one page. Whenever one of the pages included in the set is accessed by Url, the combined pages will be rendered. When the user navigates between the pages in the set, no server access is required as all required portions of the pages have been preloaded. Only modules within designated panes are combined into the resulting page, minimizing data transfer." />
+                <Header Value="A Unified Page Set combines multiple, separately designed pages into one page. When the user navigates between the pages in the set, only the required modules are replaced. Depending on the mode selected, no server access is required as all required portions of the pages have been preloaded. Only modules within designated panes are exchanged, minimizing data transfer." />
                 <Footer />
                 <Legend />
                 <Categories>

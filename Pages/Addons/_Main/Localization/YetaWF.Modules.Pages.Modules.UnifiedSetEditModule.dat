@@ -23,7 +23,7 @@
             <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
               <Properties>
                 <Name Value="editLegend" />
-                <Text Value="Edits an existing unified page set" />
+                <Text Value="Edits an existing Unified Page Set" />
               </Properties>
             </Object>
           </Value>
@@ -47,7 +47,7 @@
             <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
               <Properties>
                 <Name Value="editTooltip" />
-                <Text Value="Edit unified page set" />
+                <Text Value="Edit Unified Page Set" />
               </Properties>
             </Object>
           </Value>
@@ -63,7 +63,7 @@
             <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
               <Properties>
                 <Name Value="modSummary" />
-                <Text Value="Edits an existing unified page set" />
+                <Text Value="Edits an existing Unified Page Set" />
               </Properties>
             </Object>
           </Value>

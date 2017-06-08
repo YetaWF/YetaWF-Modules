@@ -107,7 +107,7 @@
             <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
               <Properties>
                 <Name Value="modName" />
-                <Text Value="Search" />
+                <Text Value="Search Input" />
               </Properties>
             </Object>
           </Value>

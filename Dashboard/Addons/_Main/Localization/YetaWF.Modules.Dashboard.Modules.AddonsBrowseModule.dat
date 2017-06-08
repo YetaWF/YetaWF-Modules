@@ -63,7 +63,7 @@
             <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
               <Properties>
                 <Name Value="browseLegend" />
-                <Text Value="Displays AddOn information" />
+                <Text Value="Displays information about all Javascript AddOns, Css AddOns that are installed in the current YetaWF instance" />
               </Properties>
             </Object>
           </Value>
@@ -87,7 +87,7 @@
             <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
               <Properties>
                 <Name Value="browseTooltip" />
-                <Text Value="Display AddOn information" />
+                <Text Value="Display information about all Javascript AddOns, Css AddOns that are installed in the current YetaWF instance" />
               </Properties>
             </Object>
           </Value>
@@ -103,7 +103,7 @@
             <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
               <Properties>
                 <Name Value="modSummary" />
-                <Text Value="Displays AddOn Info" />
+                <Text Value="Displays information about all Javascript AddOns, Css AddOns that are installed in the current YetaWF instance" />
               </Properties>
             </Object>
           </Value>
