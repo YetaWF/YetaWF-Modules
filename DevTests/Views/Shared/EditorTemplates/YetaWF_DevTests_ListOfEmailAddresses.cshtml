@@ -12,7 +12,7 @@
     @Html.RenderListOfEmailAddressesAddNew("", Model)
 </div>
 <script>
-@using (DocumentReady()) {
-    @: YetaWF_Grid.setAddButtonStatus($('#@DivId'));
-}
+    @using (DocumentReady(DivId)) {
+        @: YetaWF_Grid.setAddButtonStatus($('#@DivId'));
+    }
 </script>

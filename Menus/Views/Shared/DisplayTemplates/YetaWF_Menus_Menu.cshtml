@@ -38,8 +38,8 @@
                     hoverDelay: @Model.HoverDelay.ToString()
                 });
                 @if (Model.ShowPath) {
-                    using (DocumentReady()) {
-                        @: YetaWF_Menu.init('@DivId')
+                    using (DocumentReady(DivId)) {
+                        @: YetaWF_Menu.init('@DivId');
                     }
                 }
             </script>

@@ -21,12 +21,10 @@
     });
 }
 <script>
-@using (DocumentReady()) {
-    @: $('#@btnReset').on('click', function (e) {
-    @:     var $form = YetaWF_Forms.getForm(this);
-    @:     Y_AlertYesNo('@__ResStr("confirmResetText","Are you sure you want to restore the default settings?")', null, function () {
-    @:          YetaWF_Forms.submit($form, true, "RestoreDefaults=true");
-    @:     });
-    @: });
-}
+    $('#@btnReset').on('click', function (e) {
+        var $form = YetaWF_Forms.getForm(this);
+        Y_AlertYesNo('@__ResStr("confirmResetText","Are you sure you want to restore the default settings?")', null, function () {
+             YetaWF_Forms.submit($form, true, "RestoreDefaults=true");
+        });
+    });
 </script>

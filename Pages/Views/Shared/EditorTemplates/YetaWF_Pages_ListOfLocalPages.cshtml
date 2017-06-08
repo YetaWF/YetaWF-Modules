@@ -15,8 +15,8 @@
     @Html.RenderAllPages("", DivId + "_listall")
 </div>
 <script>
-@using (DocumentReady()) {
-    @: $('#@(DivId)_list').jqGrid('sortableRows', { connectWith: '#@(DivId)_list' });
-    @: YetaWF_Pages_ListOfLocalPages.init($('#@DivId'), $("#@(DivId)_list"), $("#@(DivId)_listall"), $("#@DivId .yt_url.t_edit[data-name$='.NewValue']"));
-}
+    @using (DocumentReady(DivId)) {
+        @: $('#@(DivId)_list').jqGrid('sortableRows', { connectWith: '#@(DivId)_list' });
+        @: YetaWF_Pages_ListOfLocalPages.init($('#@DivId'), $("#@(DivId)_list"), $("#@(DivId)_listall"), $("#@DivId .yt_url.t_edit[data-name$='.NewValue']"));
+    }
 </script>
