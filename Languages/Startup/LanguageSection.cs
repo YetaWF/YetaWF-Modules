@@ -1,5 +1,7 @@
 ﻿/* Copyright © 2017 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Languages#License */
 
+#if MVC5
+
 using System.IO;
 using YetaWF.Core;
 using YetaWF.Core.Support;
@@ -25,3 +27,6 @@ namespace YetaWF.Modules.Languages.Startup {
         public const string LanguageSettingsFile = "LanguageSettings.json";
     }
 }
+
+#else
+#endif

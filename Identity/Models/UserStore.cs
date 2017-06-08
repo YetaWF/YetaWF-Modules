@@ -28,7 +28,7 @@ namespace YetaWF.Modules.Identity.Models {
 
 #if MVC6
     public class YetaWFSecurityStampValidator : SecurityStampValidator<UserDefinition> {
-        public YetaWFSecurityStampValidator(IOptions<IdentityOptions> options, SignInManager<UserDefinition> signInManager, ISystemClock clock) : base(options, signInManager, clock) { }
+        public YetaWFSecurityStampValidator(IOptions<SecurityStampValidatorOptions> options, SignInManager<UserDefinition> signInManager, ISystemClock clock) : base(options, signInManager, clock) { }
     }
 #endif
 

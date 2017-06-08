@@ -10,6 +10,7 @@ using YetaWF.Core.Serializers;
 using YetaWF.Core.Views.Shared;
 using YetaWF.DataProvider;
 #if MVC6
+using YetaWF.Core.Support;
 #else
 using System.Web.Mvc;
 #endif

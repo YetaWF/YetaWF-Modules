@@ -62,7 +62,7 @@ namespace YetaWF.Modules.Pages.Views.Shared {
             }
         }
 #if MVC6
-        public static HtmlString RenderListOfLocalPages<TModel>(this IHtmlHelper<TModel> htmlHelper, string name, List<string> model)
+        public static HtmlString RenderListOfLocalPages<TModel>(this IHtmlHelper<TModel> htmlHelper, string name, string id, List<string> model)
 #else
         public static HtmlString RenderListOfLocalPages<TModel>(this HtmlHelper<TModel> htmlHelper, string name, string id, List<string> model)
 #endif
@@ -149,7 +149,7 @@ namespace YetaWF.Modules.Pages.Views.Shared {
             }
         }
 #if MVC6
-        public static HtmlString RenderAllPages<TModel>(this IHtmlHelper<TModel> htmlHelper, string name)
+        public static HtmlString RenderAllPages<TModel>(this IHtmlHelper<TModel> htmlHelper, string name, string id)
 #else
         public static HtmlString RenderAllPages<TModel>(this HtmlHelper<TModel> htmlHelper, string name, string id)
 #endif

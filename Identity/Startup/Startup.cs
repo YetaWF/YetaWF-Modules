@@ -34,15 +34,15 @@ namespace YetaWF.Modules.Identity
                 options.Password.RequireLowercase = WebConfigHelper.GetValue<bool>(AREA, "Password:RequireLowercase");
 
                 long secIntvl = WebConfigHelper.GetValue<long>(AREA, "OWin:SecurityStampValidationInterval", new TimeSpan(0, 30, 0).Ticks); // 30 minutes
-                options.SecurityStampValidationInterval = new TimeSpan(secIntvl);
+                //$$ options.SecurityStampValidationInterval = new TimeSpan(secIntvl);
 
                 // We handle lockouts
                 options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(0);
                 options.Lockout.MaxFailedAccessAttempts = 0;
 
                 // Cookie settings
-                options.Cookies.ApplicationCookieAuthenticationScheme = IdentityCookieOptions.ApplicationScheme;
-                options.Cookies.ExternalCookieAuthenticationScheme = IdentityCookieOptions.ExternalScheme;
+                //$$ options.Cookies.ApplicationCookieAuthenticationScheme = IdentityCookieOptions.ApplicationScheme;
+                //$$ options.Cookies.ExternalCookieAuthenticationScheme = IdentityCookieOptions.ExternalScheme;
                 
                 // User settings
                 // the default is acceptable: options.User.AllowedUserNameCharacters
