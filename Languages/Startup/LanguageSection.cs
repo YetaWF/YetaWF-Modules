@@ -1,6 +1,7 @@
 ﻿/* Copyright © 2017 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Languages#License */
 
-#if MVC5
+#if MVC6
+#else
 
 using System.IO;
 using YetaWF.Core;
@@ -28,5 +29,4 @@ namespace YetaWF.Modules.Languages.Startup {
     }
 }
 
-#else
 #endif
