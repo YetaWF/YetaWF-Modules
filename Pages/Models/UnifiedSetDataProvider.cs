@@ -93,15 +93,23 @@ namespace YetaWF.Modules.Pages.DataProvider {
         }
     }
 
-    public class UnifiedSetDataProvider : DataProviderImpl, IInstallableModel, IInitializeApplicationStartup {
+    public class UnifiedSetDataProviderStartup : IInitializeApplicationStartup {
 
         // IINITIALIZEAPPLICATIONSTARTUP
         // IINITIALIZEAPPLICATIONSTARTUP
         // IINITIALIZEAPPLICATIONSTARTUP
 
         public void InitializeApplicationStartup() {
-            PageDefinition.GetUnifiedPageInfo = GetUnifiedPageInfo;
+            PageDefinition.GetUnifiedPageInfo = UnifiedSetDataProvider.GetUnifiedPageInfo;
         }
+    }
+
+    public class UnifiedSetDataProvider : DataProviderImpl, IInstallableModel {
+
+        // IINITIALIZEAPPLICATIONSTARTUP
+        // IINITIALIZEAPPLICATIONSTARTUP
+        // IINITIALIZEAPPLICATIONSTARTUP
+
 
         // IMPLEMENTATION
         // IMPLEMENTATION
@@ -190,40 +198,42 @@ namespace YetaWF.Modules.Pages.DataProvider {
         // PageList
         // PageList
 
-        private PageDefinition.UnifiedInfo GetUnifiedPageInfo(Guid? unifiedSetGuid, string collectionName, string skinName) {
-            UnifiedSetData unifiedSet;
-            if (unifiedSetGuid != null) {
-                unifiedSet = GetItem((Guid)unifiedSetGuid);
+        static internal PageDefinition.UnifiedInfo GetUnifiedPageInfo(Guid? unifiedSetGuid, string collectionName, string skinName) {
+            using (UnifiedSetDataProvider unifiedSetDP = new UnifiedSetDataProvider()) {
+                UnifiedSetData unifiedSet;
+                if (unifiedSetGuid != null) {
+                    unifiedSet = unifiedSetDP.GetItem((Guid)unifiedSetGuid);
+                    if (unifiedSet != null) {
+                        return new PageDefinition.UnifiedInfo {
+                            UnifiedSetGuid = (Guid)unifiedSetGuid,
+                            MasterPageGuid = unifiedSet.MasterPageGuid,
+                            PageGuids = unifiedSet.PageGuids,
+                            Animation = unifiedSet.UnifiedAnimation,
+                            Mode = unifiedSet.UnifiedMode,
+                        };
+                    }
+                }
+                // some pages (created with earlier versions of YetaWF) have a null skin name, which defaults to SkinAccess.FallbackPageFileName
+                if (string.IsNullOrWhiteSpace(skinName))
+                    skinName = SkinAccess.FallbackPageFileName;
+                // find a unified page set that uses the matching skin
+                int total;
+                List<DataProviderFilterInfo> filters = null;
+                filters = DataProviderFilterInfo.Join(filters, new DataProviderFilterInfo { Field = "PageSkin_Collection", Operator = "==", Value = collectionName });
+                filters = DataProviderFilterInfo.Join(filters, new DataProviderFilterInfo { Field = "PageSkin_FileName", Operator = "==", Value = skinName });
+                filters = DataProviderFilterInfo.Join(filters, new DataProviderFilterInfo { Field = "UnifiedMode", Operator = "==", Value = PageDefinition.UnifiedModeEnum.SkinDynamicContent });
+                unifiedSet = unifiedSetDP.GetItems(0, 1, null, filters, out total).FirstOrDefault();
                 if (unifiedSet != null) {
                     return new PageDefinition.UnifiedInfo {
-                        UnifiedSetGuid = (Guid)unifiedSetGuid,
+                        UnifiedSetGuid = unifiedSet.UnifiedSetGuid,
                         MasterPageGuid = unifiedSet.MasterPageGuid,
-                        PageGuids = unifiedSet.PageGuids,
-                        Animation = unifiedSet.UnifiedAnimation,
+                        PageGuids = new List<Guid>(),
+                        Animation = 0,
                         Mode = unifiedSet.UnifiedMode,
+                        PageSkinCollectionName = collectionName,
+                        PageSkinFileName = skinName,
                     };
                 }
-            }
-            // some pages (created with earlier versions of YetaWF) have a null skin name, which defaults to SkinAccess.FallbackPageFileName
-            if (string.IsNullOrWhiteSpace(skinName))
-                skinName = SkinAccess.FallbackPageFileName;
-            // find a unified page set that uses the matching skin
-            int total;
-            List<DataProviderFilterInfo> filters = null;
-            filters = DataProviderFilterInfo.Join(filters, new DataProviderFilterInfo { Field = "PageSkin_Collection", Operator = "==", Value = collectionName });
-            filters = DataProviderFilterInfo.Join(filters, new DataProviderFilterInfo { Field = "PageSkin_FileName", Operator = "==", Value = skinName });
-            filters = DataProviderFilterInfo.Join(filters, new DataProviderFilterInfo { Field = "UnifiedMode", Operator = "==", Value = PageDefinition.UnifiedModeEnum.SkinDynamicContent });
-            unifiedSet = GetItems(0, 1, null, filters, out total).FirstOrDefault();
-            if (unifiedSet != null) {
-                return new PageDefinition.UnifiedInfo {
-                    UnifiedSetGuid = unifiedSet.UnifiedSetGuid,
-                    MasterPageGuid = unifiedSet.MasterPageGuid,
-                    PageGuids = new List<Guid>(),
-                    Animation = 0,
-                    Mode = unifiedSet.UnifiedMode,
-                    PageSkinCollectionName = collectionName,
-                    PageSkinFileName = skinName,
-                };
             }
             return null;
         }
