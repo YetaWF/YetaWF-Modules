@@ -1,10 +1,7 @@
 @*Copyright © 2017 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/SyntaxHighlighter#License*@
 @inherits YetaWF.Core.Views.RazorView<YetaWF.Modules.SyntaxHighlighter.Modules.SkinSyntaxHighlighterModule, YetaWF.Modules.SyntaxHighlighter.Controllers.SkinSyntaxHighlighterModuleController.Model>
 @using YetaWF.Core.Addons
-@if (Manager.IsPostRequest) {
-    // during ajax calls (partial views) we need to highlight any new sections
-    Manager.ScriptManager.AddLast("AlexGorbatchevCom_SyntaxHighlighter", "AlexGorbatchevCom_SyntaxHighlighter.InitPartial();");
-} else {
+@{
     // initial initialization
     YetaWF.Core.Skins.SkinAccess skinAccess = new YetaWF.Core.Skins.SkinAccess();
     string skin = Manager.CurrentPage.SyntaxHighlighterSkin;

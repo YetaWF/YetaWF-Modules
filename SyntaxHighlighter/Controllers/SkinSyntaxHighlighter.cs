@@ -15,7 +15,7 @@ namespace YetaWF.Modules.SyntaxHighlighter.Controllers {
 
         public class Model { }
 
-        //[HttpGet, HttpPost] used during views and partial views
+        [HttpGet]
         public ActionResult SkinSyntaxHighlighter() {
             Model model = new Model();
             return View(model);
