@@ -110,6 +110,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Addons\_Addons\SkinScrollToTop\img\top.png" />
+    <Content Include="Addons\_Addons\SkinScrollToTop\SkinScrollToTop.js" />
     <Content Include="Addons\_Main\Icons\Download.png" />
     <Content Include="Addons\_Main\Grids\PagesBrowseModuleController.PageItem" />
     <Content Include="Addons\_Main\Grids\RolesHelper.GridAllowedRole" />
