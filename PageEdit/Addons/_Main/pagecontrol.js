@@ -31,6 +31,7 @@ $(document).ready(function () {
 // handle Page Settings, Remove Current Page, W3C Validation - this is needed in case we're in a unified page set
 // in which case the original pageguid and url in the module actions have changed
 // when a new page becomes active, update the module actions reflecting the new page/url
+// also update all hidden fields with the new current page guid
 YetaWF_Basics.whenReady.push({
     callback: function ($tag) {
         // disregards $tag as this callback is used when a page or page content has been rendered
@@ -56,6 +57,9 @@ YetaWF_Basics.whenReady.push({
         var $w3c = $('.YetaWF_PageEdit_PageControl a[data-name="W3CValidate"]');
         if ($w3c.length > 0)
             $w3c[0].href = YConfigs.YetaWF_PageEdit.W3CUrl.format(window.location);
+
+        // all hidden fields
+        $('.YetaWF_PageEdit_PageControl input[name="CurrentPageGuid"][type="hidden"]').val(YVolatile.Basics.PageGuid);
     }
 });
 
