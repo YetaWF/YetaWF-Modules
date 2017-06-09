@@ -148,6 +148,7 @@
         $('#' + $.fn.scrollUp.settings.scrollName + '-active').remove();
 
         // If 1.7 or above use the new .off()
+        //$$$$$$$$$$$$$$$$ DUBIOUS WAY THAT ALSO DOESN"T WORK
         if ($.fn.jquery.split('.')[1] >= 7) {
             $(window).off('scroll', scrollEvent);
 

@@ -24,7 +24,7 @@ namespace YetaWF.Modules.Pages.Modules {
             ShowTitle = false;
             WantSearch = false;
             Invokable = true;
-            InvokeInPopup = true;
+            InvokeInPopup = false;
             InvokeInAjax = true;
         }
 

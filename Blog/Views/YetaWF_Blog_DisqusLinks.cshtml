@@ -1,3 +1,21 @@
 @*Copyright © 2017 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Blog#License*@
 @inherits YetaWF.Core.Views.RazorView<YetaWF.Modules.Blog.Modules.DisqusLinksModule, YetaWF.Modules.Blog.Controllers.DisqusLinksModuleController.DisplayModel>
 <script id="dsq-count-scr" src="//@(Model.ShortName).disqus.com/count.js" async></script>
+<script>
+    var _YetaWF_Blog_Disqus = {};
+    _YetaWF_Blog_Disqus.on = true;
+
+    // Handles events turning the addon on/off (used for dynamic content)
+    $(document).on('YetaWF_Basics_Addon', function (event, addonGuid, on) {
+        if (addonGuid == '776adfcd-da5f-4926-b29d-4c06353266c0') {
+            _YetaWF_Blog_Disqus.on = on;
+        }
+    });
+    YetaWF_Basics.whenReady.push({
+        callback: function ($tag) {
+            if (_YetaWF_Blog_Disqus.on);
+                DISQUSWIDGETS.getCount({ reset: true });
+        }
+    });
+</script>
+

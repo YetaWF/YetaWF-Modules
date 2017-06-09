@@ -17,7 +17,6 @@ namespace YetaWF.Modules.Pages.Controllers {
 
         //[HttpGet, HttpPost]
         public ActionResult SkinScrollToTop() {
-            if (Manager.IsInPopup) return new EmptyResult();
             DisplayModel model = new DisplayModel();
             return View(model);
         }
