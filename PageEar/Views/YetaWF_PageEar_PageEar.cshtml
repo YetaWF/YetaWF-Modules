@@ -20,5 +20,11 @@
                 debug: false
             });
         });
+
+        // Listen for events that the page is changing
+        $(document).on('YetaWF_Basics_PageChange', function (event) {
+            // when the page is removed, we need to clean up
+            $('#peelback').remove();
+        });
     </script>
 }
