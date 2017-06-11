@@ -14,7 +14,7 @@ YetaWF_Feed.init = function (divId, interval) {
 
         // get the header entry
         var $headerentry = $('.t_headerentry', $div);
-        if ($headerentry.length == 0) throw "Couldn't find header entry";/*DEBUG*/
+        if ($headerentry.length == 0) return;
 
         // get entry number to display
         var num = $('.t_header', $div).attr('data-entry');
@@ -44,5 +44,14 @@ YetaWF_Feed.init = function (divId, interval) {
     changeEntry();
     if (interval > 0)
         entryTimer = setInterval(changeEntry, interval);
+
+    // Listen for events that the page is changing
+    $(document).on('YetaWF_Basics_PageChange', function (event) {
+        // when the page is removed, we need to clean up
+        if (entryTimer !== undefined) {
+            clearInterval(entryTimer);
+            entryTimer = undefined;
+        }
+    });
 };
 
