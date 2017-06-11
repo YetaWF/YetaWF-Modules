@@ -67,7 +67,7 @@ namespace YetaWF.Modules.Blog.Controllers {
             }
         }
 
-        [HttpGet]
+        [AllowGet]
         public ActionResult EntryDisplay(int? blogEntry) {
             int entryNum = blogEntry ?? 0;
             using (BlogEntryDataProvider dataProvider = new BlogEntryDataProvider()) {

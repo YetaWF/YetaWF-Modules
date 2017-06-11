@@ -21,7 +21,7 @@ using System.Web.Mvc;
 namespace YetaWF.Modules.ImageRepository.Controllers.Shared {
     public class FlashSelectionHelperController : YetaWFController {
 
-        [HttpPost]
+        [AllowPost]
         [ResourceAuthorize(CoreInfo.Resource_UploadImages)]
 #if MVC6
         public ActionResult SaveFlashImage(IFormFile __filename, string folderGuid, string subFolder, string fileType)
@@ -48,7 +48,7 @@ namespace YetaWF.Modules.ImageRepository.Controllers.Shared {
             return new YJsonResult { Data = sb.ToString() };
         }
 
-        [HttpPost]
+        [AllowPost]
         [ResourceAuthorize(CoreInfo.Resource_RemoveImages)]
         public ActionResult RemoveSelectedFlashImage(string name, string folderGuid, string subFolder, string fileType) {
 

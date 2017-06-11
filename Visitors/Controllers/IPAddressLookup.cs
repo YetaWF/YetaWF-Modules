@@ -47,7 +47,7 @@ namespace YetaWF.Modules.Visitors.Controllers {
             public string ContinentCode { get; set; }
         }
 
-        [HttpGet]
+        [AllowGet]
         public ActionResult IPAddressLookup(string ipAddress, bool geoData) {
             if (string.IsNullOrWhiteSpace(ipAddress)) throw new InternalError("IP address not specified");
             Model model = new Model();

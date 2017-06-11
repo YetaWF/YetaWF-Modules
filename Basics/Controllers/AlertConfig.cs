@@ -44,7 +44,7 @@ namespace YetaWF.Modules.Basics.Controllers {
             public Model() { }
         }
 
-        [HttpGet]
+        [AllowGet]
         public ActionResult AlertConfig() {
             using (AlertConfigDataProvider dataProvider = new AlertConfigDataProvider()) {
                 Model model = new Model { };
@@ -56,7 +56,7 @@ namespace YetaWF.Modules.Basics.Controllers {
             }
         }
 
-        [HttpPost]
+        [AllowPost]
         [ConditionalAntiForgeryToken]
         [ExcludeDemoMode]
         public ActionResult AlertConfig_Partial(Model model) {

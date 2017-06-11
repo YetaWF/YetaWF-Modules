@@ -25,13 +25,13 @@ namespace YetaWF.Modules.TinyLanguage.Controllers {
             public EditModel() { }
         }
 
-        [HttpGet]
+        [AllowGet]
         public ActionResult TinyLanguage() {
             EditModel model = new EditModel { LanguageId = Manager.UserLanguage };
             return View(model);
         }
 
-        [HttpPost]
+        [AllowPost]
         [ConditionalAntiForgeryToken]
         public ActionResult TinyLanguage_Partial(EditModel model) {
             if (!ModelState.IsValid)

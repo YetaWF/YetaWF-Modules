@@ -34,7 +34,7 @@ namespace YetaWF.Modules.BootstrapCarousel.Controllers {
             public EditModel() { }
         }
 
-        [HttpGet]
+        [AllowGet]
         public ActionResult CarouselEdit(Guid carousel) {
             CarouselDisplayModule carouselDispMod = (CarouselDisplayModule)ModuleDefinition.Load(carousel, AllowNone: true);
             if (carouselDispMod == null)
@@ -47,7 +47,7 @@ namespace YetaWF.Modules.BootstrapCarousel.Controllers {
             return View(model);
         }
 
-        [HttpPost]
+        [AllowPost]
         [ConditionalAntiForgeryToken]
         [ExcludeDemoMode]
         public ActionResult CarouselEdit_Partial(EditModel model) {

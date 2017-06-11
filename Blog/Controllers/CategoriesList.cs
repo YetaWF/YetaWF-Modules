@@ -24,7 +24,7 @@ namespace YetaWF.Modules.Blog.Controllers {
 
         }
 
-        [HttpGet]
+        [AllowGet]
         public ActionResult CategoriesList() {
 
             int blogCategory = Module.DefaultCategory;
@@ -38,7 +38,7 @@ namespace YetaWF.Modules.Blog.Controllers {
             return View(model);
         }
 
-        [HttpPost]
+        [AllowPost]
         [ConditionalAntiForgeryToken]
         public ActionResult CategoriesList_Partial(Model model) {
             if (!ModelState.IsValid)

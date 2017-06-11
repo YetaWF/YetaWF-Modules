@@ -64,7 +64,7 @@ namespace YetaWF.Modules.Languages.Controllers {
             public GridDefinition GridDef { get; set; }
         }
 
-        [HttpGet]
+        [AllowGet]
         public ActionResult LanguagesBrowse() {
             BrowseModel model = new BrowseModel { };
             model.GridDef = new GridDefinition {
@@ -76,7 +76,7 @@ namespace YetaWF.Modules.Languages.Controllers {
             return View(model);
         }
 
-        [HttpPost]
+        [AllowPost]
         [ConditionalAntiForgeryToken]
         public ActionResult LanguagesBrowse_GridData(int skip, int take, List<DataProviderSortInfo> sort, List<DataProviderFilterInfo> filters, Guid settingsModuleGuid) {
             int total;

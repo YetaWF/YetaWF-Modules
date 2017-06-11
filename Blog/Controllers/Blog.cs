@@ -66,7 +66,7 @@ namespace YetaWF.Modules.Blog.Controllers {
             public DateTime? StartDate { get; set; }
         }
 
-        [HttpGet]
+        [AllowGet]
         public ActionResult Blog(DateTime? StartDate = null) {
             int category;
             Manager.TryGetUrlArg<int>("BlogCategory", out category);

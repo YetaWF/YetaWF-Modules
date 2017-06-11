@@ -39,7 +39,7 @@ namespace YetaWF.Modules.Backups.Controllers {
             public Model() { }
         }
 
-        [HttpGet]
+        [AllowGet]
         public ActionResult BackupConfig() {
             using (ConfigDataProvider dataProvider = new ConfigDataProvider()) {
                 Model model = new Model { };
@@ -51,7 +51,7 @@ namespace YetaWF.Modules.Backups.Controllers {
             }
         }
 
-        [HttpPost]
+        [AllowPost]
         [ConditionalAntiForgeryToken]
         [ExcludeDemoMode]
         public ActionResult BackupConfig_Partial(Model model) {

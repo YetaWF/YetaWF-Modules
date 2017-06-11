@@ -44,14 +44,14 @@ namespace YetaWF.Modules.ImageRepository.Controllers {
             }
         }
 
-        [HttpGet]
+        [AllowGet]
         public ActionResult TemplateTest(string imageName) {
             Model model = new Model { };
             model.Update(Manager, Module);
             return View(model);
         }
 
-        [HttpPost]
+        [AllowPost]
         [ConditionalAntiForgeryToken]
         public ActionResult TemplateTest_Partial(Model model) {
             model.Update(Manager, Module);

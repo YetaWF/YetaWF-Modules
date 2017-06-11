@@ -24,7 +24,7 @@ namespace YetaWF.Modules.SiteProperties.Controllers {
             public string SiteHost { get; set; }
         }
 
-        [HttpGet]
+        [AllowGet]
         public ActionResult SiteProperties(string domain) {
             SiteDefinition site;
             if (domain == null)
@@ -40,7 +40,7 @@ namespace YetaWF.Modules.SiteProperties.Controllers {
             return View(model);
         }
 
-        [HttpPost]
+        [AllowPost]
         [ConditionalAntiForgeryToken]
         [ExcludeDemoMode]
         public ActionResult SiteProperties_Partial(SitePropertiesModel model) {

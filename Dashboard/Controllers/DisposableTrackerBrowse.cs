@@ -56,7 +56,7 @@ namespace YetaWF.Modules.Dashboard.Controllers {
             public GridDefinition GridDef { get; set; }
         }
 
-        [HttpGet]
+        [AllowGet]
         public ActionResult DisposableTrackerBrowse() {
             BrowseModel model = new BrowseModel { };
             model.GridDef = new GridDefinition {
@@ -68,7 +68,7 @@ namespace YetaWF.Modules.Dashboard.Controllers {
             return View(model);
         }
 
-        [HttpPost]
+        [AllowPost]
         [ConditionalAntiForgeryToken]
         public ActionResult DisposableTrackerBrowse_GridData(int skip, int take, List<DataProviderSortInfo> sort, List<DataProviderFilterInfo> filters, Guid settingsModuleGuid) {
             List<BrowseItem> items = (from k in DisposableTracker.GetDisposableObjects() select new BrowseItem(Module, k)).ToList();

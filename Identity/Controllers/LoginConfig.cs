@@ -177,7 +177,7 @@ namespace YetaWF.Modules.Identity.Controllers {
             }
         }
 
-        [HttpGet]
+        [AllowGet]
         public ActionResult LoginConfig() {
             using (LoginConfigDataProvider dataProvider = new LoginConfigDataProvider()) {
                 Model model = new Model { };
@@ -189,7 +189,7 @@ namespace YetaWF.Modules.Identity.Controllers {
             }
         }
 
-        [HttpPost]
+        [AllowPost]
         [ConditionalAntiForgeryToken]
         [ExcludeDemoMode]
         public ActionResult LoginConfig_Partial(Model model) {

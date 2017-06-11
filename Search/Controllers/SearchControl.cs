@@ -34,7 +34,7 @@ namespace YetaWF.Modules.Search.Controllers {
             public ModuleAction Off { get; set; }
         }
 
-        [HttpGet]
+        [AllowGet]
         public ActionResult SearchControl() {
             if (Manager.EditMode)
                 return new EmptyResult();
@@ -69,7 +69,7 @@ namespace YetaWF.Modules.Search.Controllers {
             return View(model);
         }
 
-        [HttpPost]
+        [AllowPost]
         public ActionResult Switch(bool value) {
             Manager.SessionSettings.SiteSettings.SetValue<bool>("YetaWF_SearchControl_Highlight", value);
             Manager.SessionSettings.SiteSettings.Save();

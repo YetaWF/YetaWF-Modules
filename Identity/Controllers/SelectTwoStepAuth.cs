@@ -37,7 +37,7 @@ namespace YetaWF.Modules.Identity.Controllers {
             }
         }
 
-        [HttpGet]
+        [AllowGet]
         public ActionResult SelectTwoStepAuth(int userId, string userName, string userEmail) {
             EditModel model = new EditModel {
                 UserId = userId,

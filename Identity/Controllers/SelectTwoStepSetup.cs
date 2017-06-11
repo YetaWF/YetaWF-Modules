@@ -36,7 +36,7 @@ namespace YetaWF.Modules.Identity.Controllers {
             }
         }
 
-        [HttpGet]
+        [AllowGet]
         public ActionResult SelectTwoStepSetup() {
             EditModel model = new EditModel();
             Manager.NeedUser();

@@ -43,13 +43,13 @@ namespace YetaWF.Modules.Identity.Controllers {
             }
         }
 
-        [HttpGet]
+        [AllowGet]
         public ActionResult TemplateRolesSelector() {
             Model model = new Model { };
             return View(model);
         }
 
-        [HttpPost]
+        [AllowPost]
         [ConditionalAntiForgeryToken]
         public ActionResult TemplateRolesSelector_Partial(Model model) {
             if (!ModelState.IsValid)

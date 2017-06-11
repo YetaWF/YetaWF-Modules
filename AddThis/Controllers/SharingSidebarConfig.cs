@@ -36,7 +36,7 @@ namespace YetaWF.Modules.AddThis.Controllers {
             public Model() { }
         }
 
-        [HttpGet]
+        [AllowGet]
         public ActionResult SharingSidebarConfig() {
             using (ConfigDataDataProvider dataProvider = new ConfigDataDataProvider()) {
                 Model model = new Model { };
@@ -48,7 +48,7 @@ namespace YetaWF.Modules.AddThis.Controllers {
             }
         }
 
-        [HttpPost]
+        [AllowPost]
         [ConditionalAntiForgeryToken]
         [ExcludeDemoMode]
         public ActionResult SharingSidebarConfig_Partial(Model model) {

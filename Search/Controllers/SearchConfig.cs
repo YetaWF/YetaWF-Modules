@@ -58,7 +58,7 @@ namespace YetaWF.Modules.Search.Controllers {
             public Model() { }
         }
 
-        [HttpGet]
+        [AllowGet]
         public ActionResult SearchConfig() {
             using (SearchConfigDataProvider dataProvider = new SearchConfigDataProvider()) {
                 Model model = new Model { };
@@ -70,7 +70,7 @@ namespace YetaWF.Modules.Search.Controllers {
             }
         }
 
-        [HttpPost]
+        [AllowPost]
         [ConditionalAntiForgeryToken]
         [ExcludeDemoMode]
         public ActionResult SearchConfig_Partial(Model model) {

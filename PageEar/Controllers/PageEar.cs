@@ -15,7 +15,7 @@ namespace YetaWF.Modules.PageEar.Controllers {
 
         public class Model { }
 
-        [HttpGet]
+        [AllowGet]
         public ActionResult PageEar() {
             if (!Manager.EditMode && (Module.AdImage_Data.Length == 0 || Module.CoverImage_Data.Length == 0 || string.IsNullOrWhiteSpace(Module.ClickUrl)))
                 return new EmptyResult();

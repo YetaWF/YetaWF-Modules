@@ -33,13 +33,13 @@ namespace YetaWF.Modules.DevTests.Controllers {
             public Model() { }
         }
 
-        [HttpGet]
+        [AllowGet]
         public ActionResult SMSTest() {
             Model model = new Model { };
             return View(model);
         }
 
-        [HttpPost]
+        [AllowPost]
         [ConditionalAntiForgeryToken]
         [ExcludeDemoMode]
         public ActionResult SMSTest_Partial(Model model) {

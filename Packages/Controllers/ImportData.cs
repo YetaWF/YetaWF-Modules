@@ -25,7 +25,7 @@ namespace YetaWF.Modules.Packages.Controllers {
             public FileUpload1 UploadFile { get; set; }
         }
 
-        [HttpGet]
+        [AllowGet]
         [Permission("Imports")]
         public ActionResult ImportData() {
             ImportDataModel model = new ImportDataModel  { };
@@ -37,7 +37,7 @@ namespace YetaWF.Modules.Packages.Controllers {
             return View(model);
         }
 
-        [HttpPost]
+        [AllowPost]
         [Permission("Imports")]
         [ExcludeDemoMode]
 #if MVC6
@@ -72,7 +72,7 @@ namespace YetaWF.Modules.Packages.Controllers {
                 throw new Error(sb.ToString());
             }
         }
-        [HttpPost]
+        [AllowPost]
         [Permission("Imports")]
         [ExcludeDemoMode]
         public ActionResult RemovePackageData(string filename) {

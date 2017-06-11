@@ -103,7 +103,7 @@ namespace YetaWF.Modules.Blog.Controllers {
             public Model() { }
         }
 
-        [HttpGet]
+        [AllowGet]
         public ActionResult BlogConfig() {
             using (BlogConfigDataProvider dataProvider = new BlogConfigDataProvider()) {
                 Model model = new Model { };
@@ -115,7 +115,7 @@ namespace YetaWF.Modules.Blog.Controllers {
             }
         }
 
-        [HttpPost]
+        [AllowPost]
         [ConditionalAntiForgeryToken]
         [ExcludeDemoMode]
         public ActionResult BlogConfig_Partial(Model model) {

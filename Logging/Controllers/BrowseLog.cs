@@ -108,7 +108,7 @@ namespace YetaWF.Modules.Logging.Controllers {
             public bool BrowsingSupported { get; set; }
         }
 
-        [HttpGet]
+        [AllowGet]
         public ActionResult BrowseLog() {
             FlushLog();
             using (LogRecordDataProvider dataProvider = new LogRecordDataProvider()) {
@@ -134,7 +134,7 @@ namespace YetaWF.Modules.Logging.Controllers {
             YetaWF.Core.Log.Logging.ForceFlush();
         }
 
-        [HttpPost]
+        [AllowPost]
         public ActionResult BrowseLog_GridData(int skip, int take, List<DataProviderSortInfo> sort, List<DataProviderFilterInfo> filters, Guid settingsModuleGuid) {
             FlushLog();
             GridHelper.UpdateAlternateSortColumn(sort, filters, "UserId", "UserName");
@@ -149,7 +149,7 @@ namespace YetaWF.Modules.Logging.Controllers {
             }
         }
 
-        [HttpPost]
+        [AllowPost]
         [Permission("RemoveLog")]
         [ExcludeDemoMode]
         public ActionResult RemoveAll() {

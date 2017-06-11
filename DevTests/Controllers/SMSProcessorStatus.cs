@@ -20,7 +20,7 @@ namespace YetaWF.Modules.DevTests.Controllers {
             public bool TestMode { get; set; }
         }
 
-        [HttpGet]
+        [AllowGet]
         public ActionResult SMSProcessorStatus() {
             if (!Manager.HasSuperUserRole)
                 return new EmptyResult();

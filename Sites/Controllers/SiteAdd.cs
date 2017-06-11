@@ -36,14 +36,14 @@ namespace YetaWF.Modules.Sites.Controllers {
             }
         }
 
-        [HttpGet]
+        [AllowGet]
         public ActionResult SiteAdd() {
             AddModel model = new AddModel { };
             return View(model);
         }
 
 
-        [HttpPost]
+        [AllowPost]
         [ConditionalAntiForgeryToken]
         [ExcludeDemoMode]
         public ActionResult SiteAdd_Partial(AddModel model) {

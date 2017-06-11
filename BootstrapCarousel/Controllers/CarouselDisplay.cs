@@ -18,7 +18,7 @@ namespace YetaWF.Modules.BootstrapCarousel.Controllers {
             public CarouselInfo SlideShow { get; set; }
         }
 
-        [HttpGet]
+        [AllowGet]
         public ActionResult CarouselDisplay() {
             if (Module.SlideShow.Slides.Count == 0) return new EmptyResult();
             DisplayModel model = new DisplayModel {

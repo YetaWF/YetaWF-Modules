@@ -76,7 +76,7 @@ namespace YetaWF.Modules.Languages.Controllers {
             public Model() { }
         }
 
-        [HttpGet]
+        [AllowGet]
         public ActionResult LocalizeConfig() {
             using (LocalizeConfigDataProvider dataProvider = new LocalizeConfigDataProvider()) {
                 Model model = new Model { };
@@ -89,7 +89,7 @@ namespace YetaWF.Modules.Languages.Controllers {
             }
         }
 
-        [HttpPost]
+        [AllowPost]
         [ConditionalAntiForgeryToken]
         [ExcludeDemoMode]
         public ActionResult LocalizeConfig_Partial(Model model) {

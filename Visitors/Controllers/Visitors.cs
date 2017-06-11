@@ -95,7 +95,7 @@ namespace YetaWF.Modules.Visitors.Controllers {
             public GridDefinition GridDef { get; set; }
         }
 
-        [HttpGet]
+        [AllowGet]
         public ActionResult Visitors() {
             using (VisitorEntryDataProvider visitorDP = new VisitorEntryDataProvider()) {
                 if (!visitorDP.Usable) return View("VisitorsUnavailable");
@@ -110,7 +110,7 @@ namespace YetaWF.Modules.Visitors.Controllers {
             return View(model);
         }
 
-        [HttpPost]
+        [AllowPost]
         [ConditionalAntiForgeryToken]
         public ActionResult Visitors_GridData(int skip, int take, List<DataProviderSortInfo> sort, List<DataProviderFilterInfo> filters, Guid settingsModuleGuid) {
             using (VisitorEntryDataProvider dataProvider = new VisitorEntryDataProvider()) {

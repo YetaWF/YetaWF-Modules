@@ -39,7 +39,7 @@ namespace YetaWF.Modules.Sites.Controllers {
             public EditModel() { }
         }
 
-        [HttpGet]
+        [AllowGet]
         public ActionResult SiteSelector(string siteDomain) {
 #if !DEBUG
             if (Manager.Deployed && !Manager.HasSuperUserRole) return new EmptyResult();
@@ -51,7 +51,7 @@ namespace YetaWF.Modules.Sites.Controllers {
             return View(model);
         }
 
-        [HttpPost]
+        [AllowPost]
         [ConditionalAntiForgeryToken]
         public ActionResult SiteSelector_Partial(EditModel model) {
             model.UpdateData();

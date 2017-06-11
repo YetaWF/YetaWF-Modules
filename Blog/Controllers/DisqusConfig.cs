@@ -83,7 +83,7 @@ namespace YetaWF.Modules.Blog.Controllers {
             public Model() { }
         }
 
-        [HttpGet]
+        [AllowGet]
         public ActionResult DisqusConfig() {
             using (DisqusConfigDataProvider dataProvider = new DisqusConfigDataProvider()) {
                 Model model = new Model { };
@@ -95,7 +95,7 @@ namespace YetaWF.Modules.Blog.Controllers {
             }
         }
 
-        [HttpPost]
+        [AllowPost]
         [ExcludeDemoMode]
         [ConditionalAntiForgeryToken]
         public ActionResult DisqusConfig_Partial(Model model) {

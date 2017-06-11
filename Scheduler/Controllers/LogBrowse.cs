@@ -83,7 +83,7 @@ namespace YetaWF.Modules.Scheduler.Controllers {
             public bool BrowsingSupported { get; set; }
         }
 
-        [HttpGet]
+        [AllowGet]
         public ActionResult LogBrowse() {
             using (LogDataProvider logDP = new LogDataProvider()) {
                 BrowseModel model = new BrowseModel {
@@ -103,7 +103,7 @@ namespace YetaWF.Modules.Scheduler.Controllers {
             }
         }
 
-        [HttpPost]
+        [AllowPost]
         [ConditionalAntiForgeryToken]
         public ActionResult LogBrowse_GridData(int skip, int take, List<DataProviderSortInfo> sort, List<DataProviderFilterInfo> filters, Guid settingsModuleGuid) {
             using (LogDataProvider logDP = new LogDataProvider()) {
@@ -117,7 +117,7 @@ namespace YetaWF.Modules.Scheduler.Controllers {
             }
         }
 
-        [HttpPost]
+        [AllowPost]
         [Permission("RemoveLog")]
         public ActionResult RemoveAll() {
             using (LogDataProvider logDP = new LogDataProvider()) {

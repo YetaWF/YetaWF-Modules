@@ -69,7 +69,7 @@ namespace YetaWF.Modules.Languages.Controllers {
             }
         }
 
-        [HttpGet]
+        [AllowGet]
         public ActionResult LocalizeBrowsePackage(string packageName) {
             Package package = Package.GetPackageFromPackageName(packageName);
             BrowseModel model = new BrowseModel { };
@@ -88,7 +88,7 @@ namespace YetaWF.Modules.Languages.Controllers {
             public string FileName { get; set; }
         }
 
-        [HttpPost]
+        [AllowPost]
         [ConditionalAntiForgeryToken]
         public ActionResult LocalizeBrowsePackage_GridData(int skip, int take, List<DataProviderSortInfo> sort, List<DataProviderFilterInfo> filters, Guid settingsModuleGuid, string packageName) {
             Package package = Package.GetPackageFromPackageName(packageName);
@@ -102,7 +102,7 @@ namespace YetaWF.Modules.Languages.Controllers {
             });
         }
 
-        [HttpPost]
+        [AllowPost]
         [Permission("Localize")]
         [ExcludeDemoMode]
         public ActionResult CreateCustomLocalization(string packageName, string language) {
@@ -112,7 +112,7 @@ namespace YetaWF.Modules.Languages.Controllers {
             return FormProcessed(null, popupText: this.__ResStr("custGenerated", "Custom localization resources successfully generated"), OnClose: OnCloseEnum.Nothing);
         }
 
-        [HttpPost]
+        [AllowPost]
         [Permission("Localize")]
         [ExcludeDemoMode]
         public ActionResult CreateInstalledLocalization(string packageName, string language) {

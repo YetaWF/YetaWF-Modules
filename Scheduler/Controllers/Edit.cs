@@ -75,7 +75,7 @@ namespace YetaWF.Modules.Scheduler.Controllers {
             }
         }
 
-        [HttpGet]
+        [AllowGet]
         public ActionResult SchedulerEdit(string eventName) {
             using (SchedulerDataProvider dataProvider = new SchedulerDataProvider()) {
                 SchedulerEditModel model = new SchedulerEditModel {};
@@ -88,7 +88,7 @@ namespace YetaWF.Modules.Scheduler.Controllers {
             }
         }
 
-        [HttpPost]
+        [AllowPost]
         [ConditionalAntiForgeryToken]
         [ExcludeDemoMode]
         public ActionResult SchedulerEdit_Partial(SchedulerEditModel model) {

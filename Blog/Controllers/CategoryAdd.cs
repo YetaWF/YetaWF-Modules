@@ -61,14 +61,14 @@ namespace YetaWF.Modules.Blog.Controllers {
             }
         }
 
-        [HttpGet]
+        [AllowGet]
         public ActionResult CategoryAdd() {
             AddModel model = new AddModel { };
             return View(model);
         }
 
 
-        [HttpPost]
+        [AllowPost]
         [ConditionalAntiForgeryToken]
         [ExcludeDemoMode]
         public ActionResult CategoryAdd_Partial(AddModel model) {

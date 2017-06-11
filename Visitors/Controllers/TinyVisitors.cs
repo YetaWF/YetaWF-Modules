@@ -33,7 +33,7 @@ namespace YetaWF.Modules.Visitors.Controllers {
             }
         }
 
-        [HttpGet]
+        [AllowGet]
         public ActionResult TinyVisitors() {
             using (VisitorEntryDataProvider visitorDP = new VisitorEntryDataProvider()) {
                 if (visitorDP.Usable) {

@@ -19,7 +19,7 @@ namespace YetaWF.Modules.Blog.Controllers {
             public string ShortName { get; set; }
         }
 
-        [HttpGet]
+        [AllowGet]
         public ActionResult DisqusLinks(string disqus) {
             using (DisqusConfigDataProvider dataProvider = new DisqusConfigDataProvider()) {
                 DisqusConfigData config = dataProvider.GetItem();

@@ -45,13 +45,13 @@ namespace YetaWF.Modules.Pages.Controllers {
             }
         }
 
-        [HttpGet]
+        [AllowGet]
         public ActionResult TemplateListOfLocalPages() {
             Model model = new Model { };
             return View(model);
         }
 
-        [HttpPost]
+        [AllowPost]
         [ConditionalAntiForgeryToken]
         public ActionResult TemplateListOfLocalPages_Partial(Model model) {
             if (!ModelState.IsValid)
@@ -59,7 +59,7 @@ namespace YetaWF.Modules.Pages.Controllers {
             return FormProcessed(model, this.__ResStr("ok", "OK"));
         }
 
-        [HttpPost]
+        [AllowPost]
         [ConditionalAntiForgeryToken]
         [ExcludeDemoMode]
         public ActionResult AddPage(string prefix, int newRecNumber, string newValue) {

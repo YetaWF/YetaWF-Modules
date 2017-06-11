@@ -28,14 +28,14 @@ namespace YetaWF.Modules.Sites.Controllers {
             public EditModel() { }
         }
 
-        [HttpGet]
+        [AllowGet]
         public ActionResult ConfirmRemoval(string siteDomain) {
             EditModel model = new EditModel {};
             model.SiteDomain = Manager.CurrentSite.SiteDomain;
             return View(model);
         }
 
-        [HttpPost]
+        [AllowPost]
         [ConditionalAntiForgeryToken]
         [ExcludeDemoMode]
         public ActionResult ConfirmRemoval_Partial(EditModel model) {

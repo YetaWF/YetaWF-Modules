@@ -59,13 +59,13 @@ namespace YetaWF.Modules.DevTests.Controllers {
             }
         }
 
-        [HttpGet]
+        [AllowGet]
         public ActionResult TemplateTestUrl() {
             EditModel model = new EditModel { };
             return View(model);
         }
 
-        [HttpPost]
+        [AllowPost]
         [ConditionalAntiForgeryToken]
         public ActionResult TemplateTestUrl_Partial(EditModel model) {
             if (!ModelState.IsValid)

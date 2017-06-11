@@ -99,7 +99,7 @@ namespace YetaWF.Modules.Blog.Controllers {
             }
         }
 
-        [HttpGet]
+        [AllowGet]
         public ActionResult CommentAdd(int? blogEntry) {
             int entryNum = blogEntry ?? 0;
             int blogCategory;
@@ -125,7 +125,7 @@ namespace YetaWF.Modules.Blog.Controllers {
             return View(model);
         }
 
-        [HttpPost]
+        [AllowPost]
         [ConditionalAntiForgeryToken]
         [ExcludeDemoMode]
         public ActionResult CommentAdd_Partial(AddModel model) {

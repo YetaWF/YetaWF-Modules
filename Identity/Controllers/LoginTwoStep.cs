@@ -20,7 +20,7 @@ namespace YetaWF.Modules.Identity.Controllers {
         /// <summary>
         /// Log in a user after two-step authentication
         /// </summary>
-        [HttpGet]
+        [AllowGet]
         public ActionResult Login() {
 
             // verify that the user already entered the name/password correctly

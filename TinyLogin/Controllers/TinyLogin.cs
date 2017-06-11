@@ -29,7 +29,7 @@ namespace YetaWF.Modules.TinyLogin.Controllers {
             public TinyLoginModel() { }
         }
 
-        [HttpGet]
+        [AllowGet]
         public ActionResult TinyLogin() {
             TinyLoginModel model = new TinyLoginModel {
                 UserName = Manager.UserName,

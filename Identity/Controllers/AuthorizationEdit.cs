@@ -57,7 +57,7 @@ namespace YetaWF.Modules.Identity.Controllers {
 
         }
 
-        [HttpGet]
+        [AllowGet]
         public ActionResult AuthorizationEdit(string resourceName) {
             using (AuthorizationDataProvider dataProvider = new AuthorizationDataProvider()) {
                 EditModel model = new EditModel { };
@@ -70,7 +70,7 @@ namespace YetaWF.Modules.Identity.Controllers {
             }
         }
 
-        [HttpPost]
+        [AllowPost]
         [ConditionalAntiForgeryToken]
         [ExcludeDemoMode]
         public ActionResult AuthorizationEdit_Partial(EditModel model) {

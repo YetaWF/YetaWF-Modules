@@ -69,7 +69,7 @@ namespace YetaWF.Modules.Blog.Controllers {
             public EditModel() { }
         }
 
-        [HttpGet]
+        [AllowGet]
         public ActionResult CategoryEdit(int blogCategory) {
             using (BlogCategoryDataProvider dataProvider = new BlogCategoryDataProvider()) {
                 EditModel model = new EditModel { };
@@ -82,7 +82,7 @@ namespace YetaWF.Modules.Blog.Controllers {
             }
         }
 
-        [HttpPost]
+        [AllowPost]
         [ConditionalAntiForgeryToken]
         [ExcludeDemoMode]
         public ActionResult CategoryEdit_Partial(EditModel model) {

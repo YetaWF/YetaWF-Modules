@@ -57,7 +57,7 @@ namespace YetaWF.Modules.Visitors.Controllers {
             }
         }
 
-        [HttpGet]
+        [AllowGet]
         public ActionResult VisitorDisplay(int key) {
             using (VisitorEntryDataProvider visitorDP = new VisitorEntryDataProvider()) {
                 VisitorEntry data = visitorDP.GetItem(key);

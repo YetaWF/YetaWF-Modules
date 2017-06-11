@@ -99,7 +99,7 @@ namespace YetaWF.Modules.Search.Controllers {
             public GridDefinition GridDef { get; set; }
         }
 
-        [HttpGet]
+        [AllowGet]
         public ActionResult SearchBrowse() {
             if (!SearchDataProvider.IsUsable)
                 return View("SearchUnavailable_Browse");
@@ -113,7 +113,7 @@ namespace YetaWF.Modules.Search.Controllers {
             return View(model);
         }
 
-        [HttpPost]
+        [AllowPost]
         [ConditionalAntiForgeryToken]
         public ActionResult SearchBrowse_GridData(int skip, int take, List<DataProviderSortInfo> sort, List<DataProviderFilterInfo> filters, Guid settingsModuleGuid) {
             using (SearchDataProvider searchDP = new SearchDataProvider()) {
@@ -127,7 +127,7 @@ namespace YetaWF.Modules.Search.Controllers {
             }
         }
 
-        [HttpPost]
+        [AllowPost]
         [Permission("RemoveItems")]
         [ExcludeDemoMode]
         public ActionResult Remove(int searchDataId) {
@@ -137,7 +137,7 @@ namespace YetaWF.Modules.Search.Controllers {
             }
         }
 
-        [HttpPost]
+        [AllowPost]
         [Permission("RemoveItems")]
         [ExcludeDemoMode]
         public ActionResult RemoveAll() {
@@ -147,7 +147,7 @@ namespace YetaWF.Modules.Search.Controllers {
             }
         }
 
-        [HttpPost]
+        [AllowPost]
         [Permission("CollectKeywords")]
         [ExcludeDemoMode]
         public ActionResult CollectKeywords() {

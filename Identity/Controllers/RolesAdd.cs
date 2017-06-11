@@ -38,13 +38,13 @@ namespace YetaWF.Modules.Identity.Controllers {
             }
         }
 
-        [HttpGet]
+        [AllowGet]
         public ActionResult RolesAdd() {
             AddModel model = new AddModel { };
             return View(model);
         }
 
-        [HttpPost]
+        [AllowPost]
         [ConditionalAntiForgeryToken]
         [ExcludeDemoMode]
         public ActionResult RolesAdd_Partial(AddModel model) {

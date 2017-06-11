@@ -41,7 +41,7 @@ namespace YetaWF.Modules.DevTests.Controllers {
             public EditModel() { }
         }
 
-        [HttpGet]
+        [AllowGet]
         public ActionResult TemplateModuleSelection() {
             EditModel model = new EditModel {
                 ROModule = Module.PermanentGuid,// use this module as displayed module
@@ -50,7 +50,7 @@ namespace YetaWF.Modules.DevTests.Controllers {
             return View(model);
         }
 
-        [HttpPost]
+        [AllowPost]
         [ConditionalAntiForgeryToken]
         public ActionResult TemplateModuleSelection_Partial(EditModel model) {
             model.ROModule = Module.PermanentGuid;

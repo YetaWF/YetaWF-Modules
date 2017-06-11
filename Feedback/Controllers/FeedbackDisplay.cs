@@ -46,7 +46,7 @@ namespace YetaWF.Modules.Feedback.Controllers {
             }
         }
 
-        [HttpGet]
+        [AllowGet]
         public ActionResult FeedbackDisplay(int key) {
             using (FeedbackDataDataProvider dataProvider = new FeedbackDataDataProvider()) {
                 FeedbackData data = dataProvider.GetItem(key);

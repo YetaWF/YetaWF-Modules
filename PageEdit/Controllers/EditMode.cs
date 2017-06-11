@@ -17,7 +17,7 @@ namespace YetaWF.Modules.PageEdit.Controllers {
             public Model() { }
         }
 
-        [HttpGet]
+        [AllowGet]
         public ActionResult EditMode() {
             return View(new Model());
         }

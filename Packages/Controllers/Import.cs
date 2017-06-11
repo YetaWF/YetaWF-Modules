@@ -49,7 +49,7 @@ namespace YetaWF.Modules.Packages.Controllers {
             }
         }
 
-        [HttpGet]
+        [AllowGet]
         [Permission("Imports")]
         public ActionResult Import() {
             ImportModel model = new ImportModel  { };
@@ -57,7 +57,7 @@ namespace YetaWF.Modules.Packages.Controllers {
             return View(model);
         }
 
-        [HttpPost]
+        [AllowPost]
         [Permission("Imports")]
         [ExcludeDemoMode]
         public ActionResult Import_Partial(ImportModel model) {
@@ -101,7 +101,7 @@ namespace YetaWF.Modules.Packages.Controllers {
             }
         }
 
-        [HttpPost]
+        [AllowPost]
         [Permission("Imports")]
         [ExcludeDemoMode]
 #if MVC6
@@ -135,7 +135,7 @@ namespace YetaWF.Modules.Packages.Controllers {
                 throw new Error(msg);
             }
         }
-        [HttpPost]
+        [AllowPost]
         [Permission("Imports")]
         [ExcludeDemoMode]
         public ActionResult RemovePackage(string filename) {

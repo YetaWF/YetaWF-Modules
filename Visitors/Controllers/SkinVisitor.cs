@@ -23,7 +23,7 @@ namespace YetaWF.Modules.Visitors.Controllers {
             public string TrackClickUrl { get; set; }
         }
 
-        [HttpGet]
+        [AllowGet]
         public ActionResult SkinVisitor() {
             Module.ShowTitle = Manager.EditMode;// always show title in edit mode and never show in display mode
             using (VisitorEntryDataProvider visitorDP = new VisitorEntryDataProvider()) {
@@ -45,7 +45,7 @@ namespace YetaWF.Modules.Visitors.Controllers {
         public static bool? CallbackRegistered = null;
         public static bool InCallback = false;
 
-        [HttpPost]
+        [AllowPost]
         // Don't use ConditionalAntiForgeryToken here - We have to prevent malicious cross-site attacks as this could be
         // exploited to flood click tracking and fill up DBs, etc.
         // This means you cannot use tracking on STATIC pages.

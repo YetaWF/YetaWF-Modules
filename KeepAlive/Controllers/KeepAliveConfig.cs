@@ -43,7 +43,7 @@ namespace YetaWF.Modules.KeepAlive.Controllers {
             public Model() { }
         }
 
-        [HttpGet]
+        [AllowGet]
         public ActionResult KeepAliveConfig() {
             using (KeepAliveConfigDataProvider dataProvider = new KeepAliveConfigDataProvider()) {
                 Model model = new Model { };
@@ -55,7 +55,7 @@ namespace YetaWF.Modules.KeepAlive.Controllers {
             }
         }
 
-        [HttpPost]
+        [AllowPost]
         [ConditionalAntiForgeryToken]
         [ExcludeDemoMode]
         public ActionResult KeepAliveConfig_Partial(Model model) {
@@ -70,7 +70,7 @@ namespace YetaWF.Modules.KeepAlive.Controllers {
             }
         }
 
-        [HttpPost]
+        [AllowPost]
         public ActionResult RunKeepAlive() {
             Scheduler.KeepAlive keepAlive = new Scheduler.KeepAlive();
             keepAlive.RunKeepAlive(false);

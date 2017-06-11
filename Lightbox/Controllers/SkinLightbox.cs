@@ -15,7 +15,7 @@ namespace YetaWF.Modules.Lightbox.Controllers {
 
         public class Model { }
 
-        [HttpGet]
+        [AllowGet]
         public ActionResult SkinLightbox(string url) {
             Model model = new Model();
             return View(model);

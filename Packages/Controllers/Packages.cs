@@ -93,7 +93,7 @@ namespace YetaWF.Modules.Packages.Controllers {
             ModuleDefinition ModLocalize; //localization services
         }
 
-        [HttpGet]
+        [AllowGet]
         public ActionResult Packages() {
             PackagesModel model = new PackagesModel {};
             model.GridDef = new GridDefinition {
@@ -105,7 +105,7 @@ namespace YetaWF.Modules.Packages.Controllers {
             return View(model);
         }
 
-        [HttpPost]
+        [AllowPost]
         public ActionResult Packages_GridData(int skip, int take, List<DataProviderSortInfo> sort, List<DataProviderFilterInfo> filters, Guid settingsModuleGuid) {
             ModuleDefinition modLocalize = ModuleDefinition.Load(Manager.CurrentSite.PackageLocalizationServices, AllowNone: true);
             if (modLocalize == null)

@@ -20,7 +20,7 @@ namespace YetaWF.Modules.AddThis.Controllers {
 
         }
 
-        [HttpGet]
+        [AllowGet]
         public ActionResult SharingSidebar() {
             ConfigData config = ConfigDataDataProvider.GetConfig();
             if (string.IsNullOrWhiteSpace(config.Code)) return new EmptyResult();

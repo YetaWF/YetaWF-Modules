@@ -39,7 +39,7 @@ namespace YetaWF.Modules.Identity.Controllers {
             }
         }
 
-        [HttpGet]
+        [AllowGet]
         public ActionResult LoginSelector() {
 #if !DEBUG
             if (Manager.Deployed && !Manager.HasSuperUserRole) return new EmptyResult();
@@ -60,7 +60,7 @@ namespace YetaWF.Modules.Identity.Controllers {
             return View(model);
         }
 
-        [HttpPost]
+        [AllowPost]
         [ConditionalAntiForgeryToken]
         public ActionResult LoginSelector_Partial(EditModel model) {
             model.UpdateData(Module);

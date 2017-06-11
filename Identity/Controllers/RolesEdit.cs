@@ -45,7 +45,7 @@ namespace YetaWF.Modules.Identity.Controllers {
             }
         }
 
-        [HttpGet]
+        [AllowGet]
         public ActionResult RolesEdit(string name) {
             using (RoleDefinitionDataProvider dataProvider = new RoleDefinitionDataProvider()) {
                 EditModel model = new EditModel { };
@@ -58,7 +58,7 @@ namespace YetaWF.Modules.Identity.Controllers {
             }
         }
 
-        [HttpPost]
+        [AllowPost]
         [ConditionalAntiForgeryToken]
         [ExcludeDemoMode]
         public ActionResult RolesEdit_Partial(EditModel model) {

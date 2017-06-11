@@ -65,7 +65,7 @@ namespace YetaWF.Modules.Identity.Controllers {
             }
         }
 
-        [HttpGet]
+        [AllowGet]
         public ActionResult UsersAdd() {
             LoginConfigData config = LoginConfigDataProvider.GetConfig();
             AddModel model = new AddModel {
@@ -75,7 +75,7 @@ namespace YetaWF.Modules.Identity.Controllers {
         }
 
 
-        [HttpPost]
+        [AllowPost]
         [ConditionalAntiForgeryToken]
         [ExcludeDemoMode]
         public ActionResult UsersAdd_Partial(AddModel model) {

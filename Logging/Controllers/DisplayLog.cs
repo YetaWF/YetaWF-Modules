@@ -76,7 +76,7 @@ namespace YetaWF.Modules.Logging.Controllers {
             }
         }
 
-        [HttpGet]
+        [AllowGet]
         public ActionResult DisplayLog(int key) {
             using (LogRecordDataProvider dataProvider = new LogRecordDataProvider()) {
                 LogRecord data = dataProvider.GetItem(key);

@@ -64,7 +64,7 @@ namespace YetaWF.Modules.Identity.Controllers {
             public GridDefinition GridDef { get; set; }
         }
 
-        [HttpGet]
+        [AllowGet]
         public ActionResult AuthorizationBrowse() {
             BrowseModel model = new BrowseModel { };
             model.GridDef = new GridDefinition {
@@ -76,7 +76,7 @@ namespace YetaWF.Modules.Identity.Controllers {
             return View(model);
         }
 
-        [HttpPost]
+        [AllowPost]
         [ConditionalAntiForgeryToken]
         public ActionResult AuthorizationBrowse_GridData(int skip, int take, List<DataProviderSortInfo> sort, List<DataProviderFilterInfo> filters, Guid settingsModuleGuid) {
             using (AuthorizationDataProvider dataProvider = new AuthorizationDataProvider()) {
@@ -92,7 +92,7 @@ namespace YetaWF.Modules.Identity.Controllers {
             }
         }
 
-        [HttpPost]
+        [AllowPost]
         [Permission("RemoveResources")]
         [ExcludeDemoMode]
         public ActionResult Remove(string resourceName) {

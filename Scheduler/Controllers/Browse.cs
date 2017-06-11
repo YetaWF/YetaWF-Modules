@@ -111,7 +111,7 @@ namespace YetaWF.Modules.Scheduler.Controllers {
             public GridDefinition GridDef { get; set; }
         }
 
-        [HttpGet]
+        [AllowGet]
         public ActionResult SchedulerBrowse() {
             SchedulerBrowseModel model = new SchedulerBrowseModel { };
             model.GridDef = new GridDefinition {
@@ -123,7 +123,7 @@ namespace YetaWF.Modules.Scheduler.Controllers {
             return View(model);
         }
 
-        [HttpPost]
+        [AllowPost]
         public ActionResult SchedulerBrowse_GridData(int skip, int take, List<DataProviderSortInfo> sort, List<DataProviderFilterInfo> filters, Guid settingsModuleGuid) {
             using (SchedulerDataProvider dataProvider = new SchedulerDataProvider()) {
                 int total;
@@ -136,7 +136,7 @@ namespace YetaWF.Modules.Scheduler.Controllers {
             }
         }
 
-        [HttpPost]
+        [AllowPost]
         [Permission("RemoveItems")]
         [ExcludeDemoMode]
         public ActionResult RemoveItem(string name) {
@@ -148,7 +148,7 @@ namespace YetaWF.Modules.Scheduler.Controllers {
             }
         }
 
-        [HttpPost]
+        [AllowPost]
         [Permission("RunItems")]
         [ExcludeDemoMode]
         public ActionResult RunItem(string name) {
@@ -158,7 +158,7 @@ namespace YetaWF.Modules.Scheduler.Controllers {
             return Reload(null, Reload: ReloadEnum.ModuleParts);
         }
 
-        [HttpPost]
+        [AllowPost]
         [ExcludeDemoMode]
         public ActionResult SchedulerToggle(bool start) {
             using (SchedulerDataProvider dataProvider = new SchedulerDataProvider()) {

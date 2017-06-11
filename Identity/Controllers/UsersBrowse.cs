@@ -118,7 +118,7 @@ namespace YetaWF.Modules.Identity.Controllers {
             public GridDefinition GridDef { get; set; }
         }
 
-        [HttpGet]
+        [AllowGet]
         public ActionResult UsersBrowse() {
             BrowseModel model = new BrowseModel { };
             model.GridDef = new GridDefinition {
@@ -130,7 +130,7 @@ namespace YetaWF.Modules.Identity.Controllers {
             return View(model);
         }
 
-        [HttpPost]
+        [AllowPost]
         [ConditionalAntiForgeryToken]
         public ActionResult UsersBrowse_GridData(int skip, int take, List<DataProviderSortInfo> sort, List<DataProviderFilterInfo> filters, Guid settingsModuleGuid) {
             using (UserDefinitionDataProvider dataProvider = new UserDefinitionDataProvider()) {
@@ -144,7 +144,7 @@ namespace YetaWF.Modules.Identity.Controllers {
             }
         }
 
-        [HttpPost]
+        [AllowPost]
         [Permission("RemoveUsers")]
         [ExcludeDemoMode]
         public ActionResult Remove(string userName) {
@@ -155,7 +155,7 @@ namespace YetaWF.Modules.Identity.Controllers {
             }
         }
 
-        [HttpPost]
+        [AllowPost]
         [Permission("SendEmails")]
         [ExcludeDemoMode]
         public ActionResult SendVerificationEmail(string userName) {
@@ -167,7 +167,7 @@ namespace YetaWF.Modules.Identity.Controllers {
             }
         }
 
-        [HttpPost]
+        [AllowPost]
         [Permission("SendEmails")]
         [ExcludeDemoMode]
         public ActionResult SendApprovedEmail(string userName) {
@@ -179,7 +179,7 @@ namespace YetaWF.Modules.Identity.Controllers {
             }
         }
 
-        [HttpPost]
+        [AllowPost]
         [ExcludeDemoMode]
         public ActionResult RehashAllPasswords() {
             using (UserDefinitionDataProvider userDP = new UserDefinitionDataProvider()) {

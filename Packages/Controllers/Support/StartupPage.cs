@@ -19,7 +19,7 @@ namespace YetaWF.Modules.Packages.Controllers {
 
     public class StartupPageController : YetaWFController {
 
-        [HttpGet]
+        [AllowGet]
         public ActionResult Show() {
 
             if (SiteDefinition.INITIAL_INSTALL_ENDED)
@@ -31,7 +31,7 @@ namespace YetaWF.Modules.Packages.Controllers {
 #endif
         }
 
-        [HttpPost]
+        [AllowPost]
         public ActionResult Run() {
 
             if (!SiteDefinition.INITIAL_INSTALL || SiteDefinition.INITIAL_INSTALL_ENDED)

@@ -20,7 +20,7 @@ namespace YetaWF.Modules.ModuleEdit.Controllers {
         public class ModuleControlModel { }
 
         // Move a module up
-        [HttpPost]
+        [AllowPost]
         [ExcludeDemoMode]
         public ActionResult MoveUp(Guid pageGuid, Guid moduleGuid, string pane, int moduleIndex = -1) {
             if (pageGuid == Guid.Empty || moduleGuid == Guid.Empty || pane == null || moduleIndex == -1)
@@ -33,7 +33,7 @@ namespace YetaWF.Modules.ModuleEdit.Controllers {
             return Reload();
         }
         // Move a module down
-        [HttpPost]
+        [AllowPost]
         [ExcludeDemoMode]
         public ActionResult MoveDown(Guid pageGuid, Guid moduleGuid, string pane, int moduleIndex = -1) {
             if (pageGuid == Guid.Empty || moduleGuid == Guid.Empty || pane == null || moduleIndex == -1)
@@ -46,7 +46,7 @@ namespace YetaWF.Modules.ModuleEdit.Controllers {
             return Reload();
         }
         // Move a module to top
-        [HttpPost]
+        [AllowPost]
         [ExcludeDemoMode]
         public ActionResult MoveTop(Guid pageGuid, Guid moduleGuid, string pane, int moduleIndex = -1) {
             if (pageGuid == Guid.Empty || moduleGuid == Guid.Empty || pane == null || moduleIndex == -1)
@@ -59,7 +59,7 @@ namespace YetaWF.Modules.ModuleEdit.Controllers {
             return Reload();
         }
         // Move a module to bottom
-        [HttpPost]
+        [AllowPost]
         [ExcludeDemoMode]
         public ActionResult MoveBottom(Guid pageGuid, Guid moduleGuid, string pane, int moduleIndex = -1) {
             if (pageGuid == Guid.Empty || moduleGuid == Guid.Empty || pane == null || moduleIndex == -1)
@@ -73,7 +73,7 @@ namespace YetaWF.Modules.ModuleEdit.Controllers {
         }
 
         // Move a module to another pane
-        [HttpPost]
+        [AllowPost]
         [ExcludeDemoMode]
         public ActionResult MoveToPane(Guid pageGuid, Guid moduleGuid, string oldPane, string newPane) {
             if (pageGuid == Guid.Empty || moduleGuid == Guid.Empty || oldPane == null || newPane == null)
@@ -87,7 +87,7 @@ namespace YetaWF.Modules.ModuleEdit.Controllers {
         }
 
         // Remove a module from a page
-        [HttpPost]
+        [AllowPost]
         [ExcludeDemoMode]
         public ActionResult Remove(Guid pageGuid, Guid moduleGuid, string pane, int moduleIndex = -1) {
             if (pageGuid == Guid.Empty || pane == null || moduleIndex == -1)

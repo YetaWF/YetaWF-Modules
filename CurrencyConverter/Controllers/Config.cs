@@ -49,7 +49,7 @@ namespace YetaWF.Modules.CurrencyConverter.Controllers {
             }
         }
 
-        [HttpGet]
+        [AllowGet]
         public ActionResult Config() {
             using (ConfigDataProvider dataProvider = new ConfigDataProvider()) {
                 Model model = new Model { };
@@ -61,7 +61,7 @@ namespace YetaWF.Modules.CurrencyConverter.Controllers {
             }
         }
 
-        [HttpPost]
+        [AllowPost]
         [ConditionalAntiForgeryToken]
         [ExcludeDemoMode]
         public ActionResult Config_Partial(Model model) {

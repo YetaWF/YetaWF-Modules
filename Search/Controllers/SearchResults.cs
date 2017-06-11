@@ -28,7 +28,7 @@ namespace YetaWF.Modules.Search.Controllers {
             public bool ShowSummary { get; set; }
         }
 
-        [HttpGet]
+        [AllowGet]
         public ActionResult SearchResults(string searchTerms) {
             if (string.IsNullOrWhiteSpace(searchTerms)) return new EmptyResult();
 

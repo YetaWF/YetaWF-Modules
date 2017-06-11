@@ -30,7 +30,7 @@ namespace YetaWF.Modules.Search.Controllers {
             public Model() { }
         }
 
-        [HttpGet]
+        [AllowGet]
         public ActionResult SearchInput(string searchTerms) {
             if (!SearchDataProvider.IsUsable)
                 return View("SearchUnavailable_Input");
@@ -41,7 +41,7 @@ namespace YetaWF.Modules.Search.Controllers {
             return View(model);
         }
 
-        [HttpPost]
+        [AllowPost]
         [ConditionalAntiForgeryToken]
         public ActionResult SearchInput_Partial(Model model) {
             if (!ModelState.IsValid)

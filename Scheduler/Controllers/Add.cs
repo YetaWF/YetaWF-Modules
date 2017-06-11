@@ -69,13 +69,13 @@ namespace YetaWF.Modules.Scheduler.Controllers {
             }
         }
 
-        [HttpGet]
+        [AllowGet]
         public ActionResult SchedulerAdd() {
             SchedulerAddModel model = new SchedulerAddModel {};
             return View(model);
         }
 
-        [HttpPost]
+        [AllowPost]
         [ConditionalAntiForgeryToken]
         [ExcludeDemoMode]
         public ActionResult SchedulerAdd_Partial(SchedulerAddModel model) {

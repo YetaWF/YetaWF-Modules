@@ -144,7 +144,7 @@ namespace YetaWF.Modules.Pages.Controllers {
             public GridDefinition GridDef { get; set; }
         }
 
-        [HttpGet]
+        [AllowGet]
         public ActionResult PagesBrowse() {
             PagesBrowseModel model = new PagesBrowseModel { };
             model.GridDef = new GridDefinition {
@@ -156,7 +156,7 @@ namespace YetaWF.Modules.Pages.Controllers {
             return View(model);
         }
 
-        [HttpPost]
+        [AllowPost]
         public ActionResult PagesBrowse_GridData(int skip, int take, List<DataProviderSortInfo> sort, List<DataProviderFilterInfo> filters, Guid settingsModuleGuid) {
             using (PageDefinitionDataProvider dataProvider = new PageDefinitionDataProvider()) {
                 int total;
@@ -169,7 +169,7 @@ namespace YetaWF.Modules.Pages.Controllers {
             }
         }
 
-        [HttpPost]
+        [AllowPost]
         [Permission("RemovePages")]
         [ExcludeDemoMode]
         public ActionResult Remove(string pageName) {
@@ -183,7 +183,7 @@ namespace YetaWF.Modules.Pages.Controllers {
             return Reload(null, Reload: ReloadEnum.ModuleParts);
         }
 
-        [HttpPost]
+        [AllowPost]
         [Permission("SetAuthorization")]
         [ExcludeDemoMode]
         public ActionResult UpdateAdminAndEditorAuthorization() {
@@ -209,7 +209,7 @@ namespace YetaWF.Modules.Pages.Controllers {
             return Reload(null, Reload: ReloadEnum.ModuleParts);
         }
 
-        [HttpPost]
+        [AllowPost]
         [Permission("SiteMaps")]
         [ExcludeDemoMode]
         public ActionResult CreateSiteMap() {
@@ -218,7 +218,7 @@ namespace YetaWF.Modules.Pages.Controllers {
             return Reload(null, Reload: ReloadEnum.ModuleParts, PopupText: this.__ResStr("screDone", "The site map has been successfully created"));
         }
 
-        [HttpPost]
+        [AllowPost]
         [Permission("SiteMaps")]
         [ExcludeDemoMode]
         public ActionResult RemoveSiteMap() {

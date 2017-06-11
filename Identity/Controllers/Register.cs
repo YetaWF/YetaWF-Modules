@@ -70,7 +70,7 @@ namespace YetaWF.Modules.Identity.Controllers {
             public List<FormButton> ExternalProviders { get; set; }
         }
 
-        [HttpGet]
+        [AllowGet]
         public ActionResult Register(bool closeOnLogin = false) {
 
             LoginConfigData config = LoginConfigDataProvider.GetConfig();
@@ -105,7 +105,7 @@ namespace YetaWF.Modules.Identity.Controllers {
             return View(model);
         }
 
-        [HttpPost]
+        [AllowPost]
         [ConditionalAntiForgeryToken]
         [ExcludeDemoMode]
         public async Task<ActionResult> Register_Partial(RegisterModel model) {
@@ -206,7 +206,7 @@ namespace YetaWF.Modules.Identity.Controllers {
                 throw new InternalError("badUserStatus", "Unexpected account status {0}", user.UserStatus);
         }
 
-        [HttpGet]
+        [AllowGet]
         [Permission("ChangeAccounts")]
         [ExcludeDemoMode]
         public ActionResult Approve(string userName) {
@@ -233,7 +233,7 @@ namespace YetaWF.Modules.Identity.Controllers {
             }
         }
 
-        [HttpGet]
+        [AllowGet]
         [Permission("ChangeAccounts")]
         [ExcludeDemoMode]
         public ActionResult Reject(string userName) {
@@ -259,7 +259,7 @@ namespace YetaWF.Modules.Identity.Controllers {
             }
         }
 
-        [HttpGet]
+        [AllowGet]
         [Permission("ChangeAccounts")]
         [ExcludeDemoMode]
         public ActionResult Suspend(string userName) {

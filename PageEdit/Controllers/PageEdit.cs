@@ -235,7 +235,7 @@ namespace YetaWF.Modules.PageEdit.Controllers {
             }
         }
 
-        [HttpGet]
+        [AllowGet]
         public ActionResult PageEdit(Guid pageGuid) {
             if (pageGuid == Guid.Empty)
                 throw new InternalError("No pageGuid provided");
@@ -255,7 +255,7 @@ namespace YetaWF.Modules.PageEdit.Controllers {
             return View(model);
         }
 
-        [HttpPost]
+        [AllowPost]
         [ConditionalAntiForgeryToken]
         [ExcludeDemoMode]
         public ActionResult PageEdit_Partial(EditModel model) {
@@ -281,7 +281,7 @@ namespace YetaWF.Modules.PageEdit.Controllers {
             return FormProcessed(model, this.__ResStr("okSaved", "Page settings saved"), OnPopupClose: popupClose);
         }
 
-        [HttpPost]
+        [AllowPost]
         [ExcludeDemoMode]
         public ActionResult RemovePage(Guid pageGuid) {
             PageDefinition page = page = PageDefinition.Load(pageGuid);

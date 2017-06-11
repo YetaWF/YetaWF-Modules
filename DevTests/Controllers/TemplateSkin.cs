@@ -70,13 +70,13 @@ namespace YetaWF.Modules.DevTests.Controllers {
             }
         }
 
-        [HttpGet]
+        [AllowGet]
         public ActionResult TemplateSkin() {
             Model model = new Model { };
             return View(model);
         }
 
-        [HttpPost]
+        [AllowPost]
         [ConditionalAntiForgeryToken]
         public ActionResult TemplateSkin_Partial(Model model) {
             if (!ModelState.IsValid)

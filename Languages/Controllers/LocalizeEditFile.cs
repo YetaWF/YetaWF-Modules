@@ -76,7 +76,7 @@ namespace YetaWF.Modules.Languages.Controllers {
             }
         }
 
-        [HttpGet]
+        [AllowGet]
         public ActionResult LocalizeEditFile(string packageName, string typeName) {
             Package package = Package.GetPackageFromPackageName(packageName);
             bool custom = true;
@@ -109,7 +109,7 @@ namespace YetaWF.Modules.Languages.Controllers {
             return View(model);
         }
 
-        [HttpPost]
+        [AllowPost]
         [ConditionalAntiForgeryToken]
         [ExcludeDemoMode]
         public ActionResult LocalizeEditFile_Partial(EditModel model, bool RestoreDefaults = false) {

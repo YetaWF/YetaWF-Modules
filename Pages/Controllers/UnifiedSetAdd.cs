@@ -71,13 +71,13 @@ namespace YetaWF.Modules.Pages.Controllers {
             }
         }
 
-        [HttpGet]
+        [AllowGet]
         public ActionResult UnifiedSetAdd() {
             AddModel model = new AddModel {};
             ObjectSupport.CopyData(new UnifiedSetData(), model);
             return View(model);
         }
-        [HttpPost]
+        [AllowPost]
         [ConditionalAntiForgeryToken]
         [ExcludeDemoMode]
         public ActionResult UnifiedSetAdd_Partial(AddModel model) {
@@ -92,7 +92,7 @@ namespace YetaWF.Modules.Pages.Controllers {
                 return FormProcessed(model, this.__ResStr("okSaved", "New Unified Page Set saved"), OnPopupClose: OnPopupCloseEnum.ReloadModule);
             }
         }
-        [HttpPost]
+        [AllowPost]
         [ConditionalAntiForgeryToken]
         [ExcludeDemoMode]
         public ActionResult AddPage(string prefix, int newRecNumber, string newValue) {

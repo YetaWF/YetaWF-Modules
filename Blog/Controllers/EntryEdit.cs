@@ -105,7 +105,7 @@ namespace YetaWF.Modules.Blog.Controllers {
             public EditModel() { }
         }
 
-        [HttpGet]
+        [AllowGet]
         public ActionResult EntryEdit(int blogEntry) {
             using (BlogEntryDataProvider dataProvider = new BlogEntryDataProvider()) {
                 EditModel model = new EditModel { };
@@ -118,7 +118,7 @@ namespace YetaWF.Modules.Blog.Controllers {
             }
         }
 
-        [HttpPost]
+        [AllowPost]
         [ConditionalAntiForgeryToken]
         [ExcludeDemoMode]
         public ActionResult EntryEdit_Partial(EditModel model) {

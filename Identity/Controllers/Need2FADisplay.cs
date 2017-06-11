@@ -20,7 +20,7 @@ namespace YetaWF.Modules.Identity.Controllers {
             public ModuleAction SetupAction { get; set; }
         }
 
-        [HttpGet]
+        [AllowGet]
         public ActionResult Need2FADisplay() {
             if (!Manager.Need2FA) return new EmptyResult();
             if (Manager.EditMode) return new EmptyResult();

@@ -35,7 +35,7 @@ namespace YetaWF.Modules.Menus.Controllers {
             public ModuleAction ModAction { get; set; }
         }
 
-        [HttpGet]
+        [AllowGet]
         public ActionResult MenuEdit(Guid menuGuid) {
             MenuModule modMenu = (MenuModule) ModuleDefinition.Load(menuGuid);
             if (modMenu == null)
@@ -62,7 +62,7 @@ namespace YetaWF.Modules.Menus.Controllers {
             return View(model);
         }
 
-        [HttpPost]
+        [AllowPost]
         [ExcludeDemoMode]
         public ActionResult MenuEdit_Partial(MenuEditModel model, bool ValidateCurrent) {
             MenuModule modMenu = (MenuModule) ModuleDefinition.Load(model.MenuGuid);
@@ -88,7 +88,7 @@ namespace YetaWF.Modules.Menus.Controllers {
             return PartialView(model);
         }
 
-        [HttpPost]
+        [AllowPost]
         [ExcludeDemoMode]
         public ActionResult EntireMenu(string entireMenu, Guid menuGuid, long menuVersion) {
             MenuModule modMenu = (MenuModule) ModuleDefinition.Load(menuGuid);

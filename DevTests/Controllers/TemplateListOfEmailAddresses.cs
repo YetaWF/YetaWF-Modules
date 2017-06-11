@@ -45,13 +45,13 @@ namespace YetaWF.Modules.DevTests.Controllers {
             }
         }
 
-        [HttpGet]
+        [AllowGet]
         public ActionResult TemplateListOfEmailAddresses() {
             Model model = new Model { };
             return View(model);
         }
 
-        [HttpPost]
+        [AllowPost]
         [ConditionalAntiForgeryToken]
         public ActionResult TemplateListOfEmailAddresses_Partial(Model model) {
             if (!ModelState.IsValid)
@@ -59,7 +59,7 @@ namespace YetaWF.Modules.DevTests.Controllers {
             return FormProcessed(model, this.__ResStr("ok", "OK"));
         }
 
-        [HttpPost]
+        [AllowPost]
         [ConditionalAntiForgeryToken]
         [ExcludeDemoMode]
         public ActionResult AddEmailAddress(string prefix, int newRecNumber, string newValue) {

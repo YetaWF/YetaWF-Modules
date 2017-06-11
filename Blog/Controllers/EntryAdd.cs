@@ -79,7 +79,7 @@ namespace YetaWF.Modules.Blog.Controllers {
             }
         }
 
-        [HttpGet]
+        [AllowGet]
         public ActionResult EntryAdd(int? blogCategory) {
             AddModel model = new AddModel {
                 CategoryIdentity = blogCategory??0
@@ -88,7 +88,7 @@ namespace YetaWF.Modules.Blog.Controllers {
         }
 
 
-        [HttpPost]
+        [AllowPost]
         [ConditionalAntiForgeryToken]
         [ExcludeDemoMode]
         public ActionResult EntryAdd_Partial(AddModel model) {

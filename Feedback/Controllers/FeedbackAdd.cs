@@ -60,7 +60,7 @@ namespace YetaWF.Modules.Feedback.Controllers {
             }
         }
 
-        [HttpGet]
+        [AllowGet]
         public ActionResult FeedbackAdd() {
             AddModel model = new AddModel {
                 Captcha = new RecaptchaV2Data(),
@@ -71,7 +71,7 @@ namespace YetaWF.Modules.Feedback.Controllers {
         }
 
 
-        [HttpPost]
+        [AllowPost]
         [ConditionalAntiForgeryToken]
         [ExcludeDemoMode]
         public ActionResult FeedbackAdd_Partial(AddModel model) {

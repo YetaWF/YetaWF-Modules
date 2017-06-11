@@ -48,7 +48,7 @@ namespace YetaWF.Modules.ImageRepository.Controllers {
             }
         }
 
-        [HttpGet]
+        [AllowGet]
         public ActionResult CKEBrowseImages(Guid __FolderGuid, Guid __SubFolder, string CKEditor, int CKEditorFuncNum, string langCode) {
             Model model = new Model {
                 FolderGuid = __FolderGuid,
@@ -61,7 +61,7 @@ namespace YetaWF.Modules.ImageRepository.Controllers {
             return View(model);
         }
 
-        [HttpPost]
+        [AllowPost]
         [ConditionalAntiForgeryToken]
         [ExcludeDemoMode]
         public ActionResult CKEBrowseImages_Partial(Model model) {

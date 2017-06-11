@@ -87,7 +87,7 @@ namespace YetaWF.Modules.Pages.Controllers {
             }
         }
 
-        [HttpGet]
+        [AllowGet]
         public ActionResult UnifiedSetEdit(Guid unifiedSetGuid) {
             using (UnifiedSetDataProvider unifiedSetDP = new UnifiedSetDataProvider()) {
                 EditModel model = new EditModel {};
@@ -98,7 +98,7 @@ namespace YetaWF.Modules.Pages.Controllers {
                 return View(model);
             }
         }
-        [HttpPost]
+        [AllowPost]
         [ConditionalAntiForgeryToken]
         public ActionResult UnifiedSetEdit_Partial(EditModel model) {
 
@@ -128,7 +128,7 @@ namespace YetaWF.Modules.Pages.Controllers {
                 return FormProcessed(model, this.__ResStr("okSaved", "Unified page set saved"), OnPopupClose: OnPopupCloseEnum.ReloadModule);
             }
         }
-        [HttpPost]
+        [AllowPost]
         [ConditionalAntiForgeryToken]
         [ExcludeDemoMode]
         public ActionResult AddPage(string prefix, int newRecNumber, string newValue) {

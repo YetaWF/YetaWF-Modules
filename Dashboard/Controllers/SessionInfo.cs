@@ -47,7 +47,7 @@ namespace YetaWF.Modules.Dashboard.Controllers {
             public void SetData(SessionState session) { }
         }
 
-        [HttpGet]
+        [AllowGet]
         public ActionResult SessionInfo() {
             DisplayModel model = new DisplayModel();
             model.SetData(Manager.CurrentSession);
@@ -63,7 +63,7 @@ namespace YetaWF.Modules.Dashboard.Controllers {
             return View(model);
         }
 
-        [HttpPost]
+        [AllowPost]
         [ConditionalAntiForgeryToken]
         public ActionResult SessionInfo_GridData(int skip, int take, List<DataProviderSortInfo> sort, List<DataProviderFilterInfo> filters, Guid settingsModuleGuid) {
             int total;
@@ -97,7 +97,7 @@ namespace YetaWF.Modules.Dashboard.Controllers {
             return items;
         }
 
-        [HttpPost]
+        [AllowPost]
         public ActionResult ClearAll() {
             Manager.SessionSettings.ClearAll(true);
             return Reload(null, PopupText: this.__ResStr("clearDone", "Sessions settings have been cleared"));

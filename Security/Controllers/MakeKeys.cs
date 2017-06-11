@@ -26,7 +26,7 @@ namespace YetaWF.Modules.Security.Controllers {
             public string PrivateKey { get; set; }
         }
 
-        [HttpGet]
+        [AllowGet]
         public ActionResult MakeKeys() {
             string publicKey, privateKey;
             RSACrypto.MakeNewKeys(out publicKey, out privateKey);

@@ -96,7 +96,7 @@ namespace YetaWF.Modules.Blog.Controllers {
             public GridDefinition GridDef { get; set; }
         }
 
-        [HttpGet]
+        [AllowGet]
         public ActionResult CategoriesBrowse() {
             BrowseModel model = new BrowseModel { };
             model.GridDef = new GridDefinition {
@@ -108,7 +108,7 @@ namespace YetaWF.Modules.Blog.Controllers {
             return View(model);
         }
 
-        [HttpPost]
+        [AllowPost]
         [ConditionalAntiForgeryToken]
         public ActionResult CategoriesBrowse_GridData(int skip, int take, List<DataProviderSortInfo> sort, List<DataProviderFilterInfo> filters, Guid settingsModuleGuid) {
             using (BlogCategoryDataProvider dataProvider = new BlogCategoryDataProvider()) {
@@ -122,7 +122,7 @@ namespace YetaWF.Modules.Blog.Controllers {
             }
         }
 
-        [HttpPost]
+        [AllowPost]
         [Permission("RemoveItems")]
         [ExcludeDemoMode]
         public ActionResult Remove(int blogCategory) {
@@ -131,7 +131,7 @@ namespace YetaWF.Modules.Blog.Controllers {
                 return Reload(null, Reload: ReloadEnum.ModuleParts);
             }
         }
-        [HttpPost]
+        [AllowPost]
         [Permission("NewsSiteMap")]
         [ExcludeDemoMode]
         public ActionResult CreateNewsSiteMap() {
@@ -140,7 +140,7 @@ namespace YetaWF.Modules.Blog.Controllers {
             return Reload(null, Reload: ReloadEnum.ModuleParts, PopupText: this.__ResStr("screDone", "The news site map has been successfully created"));
         }
 
-        [HttpPost]
+        [AllowPost]
         [Permission("NewsSiteMap")]
         [ExcludeDemoMode]
         public ActionResult RemoveNewsSiteMap() {

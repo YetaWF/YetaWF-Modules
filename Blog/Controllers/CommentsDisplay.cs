@@ -68,7 +68,7 @@ namespace YetaWF.Modules.Blog.Controllers {
             public bool OpenForComments { get; set; }
         }
 
-        [HttpGet]
+        [AllowGet]
         public ActionResult CommentsDisplay(int? blogEntry) {
 
             int entryNum = blogEntry ?? 0;
@@ -128,7 +128,7 @@ namespace YetaWF.Modules.Blog.Controllers {
                 return View(model);
             }
         }
-        [HttpPost]
+        [AllowPost]
         [ResourceAuthorize(Info.Resource_AllowManageComments)]
         [ExcludeDemoMode]
         public ActionResult Approve(int blogEntry, int comment) {
@@ -143,7 +143,7 @@ namespace YetaWF.Modules.Blog.Controllers {
                 return Reload(null, Reload: ReloadEnum.Page);
             }
         }
-        [HttpPost]
+        [AllowPost]
         [ResourceAuthorize(Info.Resource_AllowManageComments)]
         [ExcludeDemoMode]
         public ActionResult Remove(int blogEntry, int comment) {

@@ -165,7 +165,7 @@ namespace YetaWF.Modules.PageEdit.Controllers {
             public AddNewPageModel AddNewPageModel { get; set; }
         }
 
-        [HttpGet]
+        [AllowGet]
         public ActionResult PageControl() {
             Guid pageGuid = Guid.Empty;
             if (pageGuid == Guid.Empty) {
@@ -198,7 +198,7 @@ namespace YetaWF.Modules.PageEdit.Controllers {
             return View(model);
         }
 
-        [HttpPost]
+        [AllowPost]
         [ConditionalAntiForgeryToken]
         [ExcludeDemoMode]
         public ActionResult AddNewPage_Partial(AddNewPageModel model) {
@@ -222,7 +222,7 @@ namespace YetaWF.Modules.PageEdit.Controllers {
             return FormProcessed(model, this.__ResStr("okNewPage", "New page created"), NextPage: page.EvaluatedCanonicalUrl);
         }
 
-        [HttpPost]
+        [AllowPost]
         [ConditionalAntiForgeryToken]
         [ExcludeDemoMode]
         public ActionResult AddNewModule_Partial(AddNewModuleModel model) {
@@ -243,7 +243,7 @@ namespace YetaWF.Modules.PageEdit.Controllers {
             return Reload(model, this.__ResStr("okNew", "New module added"));
         }
 
-        [HttpPost]
+        [AllowPost]
         [ConditionalAntiForgeryToken]
         [ExcludeDemoMode]
         public ActionResult AddExistingModule_Partial(AddExistingModel model) {
@@ -263,7 +263,7 @@ namespace YetaWF.Modules.PageEdit.Controllers {
             return Reload(model, this.__ResStr("okExisting", "Module added"));
         }
 
-        [HttpPost]
+        [AllowPost]
         [ExcludeDemoMode]
 #if MVC6
         public ActionResult ImportPackage(IFormFile __filename, ImportModel model)
@@ -298,7 +298,7 @@ namespace YetaWF.Modules.PageEdit.Controllers {
                 throw new Error(sb.ToString());
             }
         }
-        [HttpPost]
+        [AllowPost]
         [ExcludeDemoMode]
         public ActionResult RemovePackage(string filename) {
             // there is nothing to remove because we already imported the file

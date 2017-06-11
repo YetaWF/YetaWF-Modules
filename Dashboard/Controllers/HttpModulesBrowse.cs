@@ -48,7 +48,7 @@ namespace YetaWF.Modules.Dashboard.Controllers {
             [UIHint("Grid")]
             public GridDefinition GridDef { get; set; }
         }
-        [HttpGet]
+        [AllowGet]
         public ActionResult HttpModulesBrowse() {
             BrowseModel model = new BrowseModel { };
 #if MVC6
@@ -65,7 +65,7 @@ namespace YetaWF.Modules.Dashboard.Controllers {
 
 #if MVC6
 #else
-        [HttpPost]
+        [AllowPost]
         [ConditionalAntiForgeryToken]
         public ActionResult HttpModulesBrowse_GridData(int skip, int take, List<DataProviderSortInfo> sort, List<DataProviderFilterInfo> filters, Guid settingsModuleGuid) {
             HttpApplication httpApps = HttpContext.ApplicationInstance;

@@ -69,7 +69,7 @@ namespace YetaWF.Modules.Identity.Controllers {
             public GridDefinition GridDef { get; set; }
         }
 
-        [HttpGet]
+        [AllowGet]
         public ActionResult RolesBrowse() {
             BrowseModel model = new BrowseModel { };
             model.GridDef = new GridDefinition {
@@ -81,7 +81,7 @@ namespace YetaWF.Modules.Identity.Controllers {
             return View(model);
         }
 
-        [HttpPost]
+        [AllowPost]
         [ConditionalAntiForgeryToken]
         public ActionResult RolesBrowse_GridData(int skip, int take, List<DataProviderSortInfo> sort, List<DataProviderFilterInfo> filters, Guid settingsModuleGuid) {
             using (RoleDefinitionDataProvider dataProvider = new RoleDefinitionDataProvider()) {
@@ -95,7 +95,7 @@ namespace YetaWF.Modules.Identity.Controllers {
             }
         }
 
-        [HttpPost]
+        [AllowPost]
         [Permission("RemoveRoles")]
         [ExcludeDemoMode]
         public ActionResult Remove(string name) {

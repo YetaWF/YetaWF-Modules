@@ -73,7 +73,7 @@ namespace YetaWF.Modules.Sites.Controllers {
             public GridDefinition GridDef { get; set; }
         }
 
-        [HttpGet]
+        [AllowGet]
         public ActionResult SitesBrowse() {
             BrowseModel model = new BrowseModel { };
             model.GridDef = new GridDefinition {
@@ -85,7 +85,7 @@ namespace YetaWF.Modules.Sites.Controllers {
             return View(model);
         }
 
-        [HttpPost]
+        [AllowPost]
         [ConditionalAntiForgeryToken]
         public ActionResult SitesBrowse_GridData(int skip, int take, List<DataProviderSortInfo> sort, List<DataProviderFilterInfo> filters, Guid settingsModuleGuid) {
             ModuleDefinition siteEditModule = ModuleDefinition.Load(new Guid("522296A0-B03B-49b7-B849-AB4149466E0D"));

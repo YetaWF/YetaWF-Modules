@@ -72,7 +72,7 @@ namespace YetaWF.Modules.Identity.Controllers {
             }
         }
 
-        [HttpGet]
+        [AllowGet]
 #if MVC6
         public async Task<ActionResult> UserAccount()
 #else
@@ -112,7 +112,7 @@ namespace YetaWF.Modules.Identity.Controllers {
             }
         }
 
-        [HttpPost]
+        [AllowPost]
         [ConditionalAntiForgeryToken]
         [ExcludeDemoMode]
         public async Task<ActionResult> UserAccount_Partial(EditModel model) {

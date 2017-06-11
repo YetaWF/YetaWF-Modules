@@ -205,14 +205,14 @@ namespace YetaWF.Modules.DevTests.Controllers {
             }
         }
 
-        [HttpGet]
+        [AllowGet]
         public ActionResult BasicTemplates() {
             EditModel model = new EditModel();
             model.UpdateData(Module);
             return View(model);
         }
 
-        [HttpPost]
+        [AllowPost]
         [ConditionalAntiForgeryToken]
         public ActionResult BasicTemplates_Partial(EditModel model) {
             model.UpdateData(Module);
@@ -223,7 +223,7 @@ namespace YetaWF.Modules.DevTests.Controllers {
 
         // FileUpload1
 
-        [HttpPost]
+        [AllowPost]
         [ExcludeDemoMode]
 #if MVC6
         public ActionResult UploadSomething(IFormFile __filename)
@@ -254,7 +254,7 @@ namespace YetaWF.Modules.DevTests.Controllers {
                 throw new Error(msg);
             }
         }
-        [HttpPost]
+        [AllowPost]
         [ExcludeDemoMode]
         public ActionResult RemoveSomething(string filename) {
             // there is nothing to remove because we already deleted the file right after uploading it

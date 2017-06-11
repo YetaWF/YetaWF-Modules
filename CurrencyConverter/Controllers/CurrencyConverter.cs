@@ -27,7 +27,7 @@ namespace YetaWF.Modules.CurrencyConverter.Controllers {
             public SerializableList<ExchangeRateEntry> Rates { get; set; }
         }
 
-        [HttpGet]
+        [AllowGet]
         public ActionResult CurrencyConverter(decimal? amount) {
             decimal specificAmount = (amount == null) ? Module.DefaultAmount : (decimal) amount;
             using (ExchangeRateDataProvider dp = new ExchangeRateDataProvider()) {

@@ -85,7 +85,7 @@ namespace YetaWF.Modules.Pages.Controllers {
             public GridDefinition GridDef { get; set; }
         }
 
-        [HttpGet]
+        [AllowGet]
         public ActionResult UnifiedSetsBrowse() {
             BrowseModel model = new BrowseModel { };
             model.GridDef = new GridDefinition {
@@ -97,7 +97,7 @@ namespace YetaWF.Modules.Pages.Controllers {
             return View(model);
         }
 
-        [HttpPost]
+        [AllowPost]
         [ConditionalAntiForgeryToken]
         public ActionResult UnifiedSetsBrowse_GridData(int skip, int take, List<DataProviderSortInfo> sort, List<DataProviderFilterInfo> filters, Guid settingsModuleGuid) {
             using (UnifiedSetDataProvider unifiedSetDP = new UnifiedSetDataProvider()) {
@@ -111,7 +111,7 @@ namespace YetaWF.Modules.Pages.Controllers {
             }
         }
 
-        [HttpPost]
+        [AllowPost]
         [Permission("RemoveItems")]
         public ActionResult Remove(Guid unifiedSetGuid) {
             using (UnifiedSetDataProvider unifiedSet = new UnifiedSetDataProvider()) {

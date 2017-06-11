@@ -87,7 +87,7 @@ namespace YetaWF.Modules.Blog.Controllers {
             public EditModel() { }
         }
 
-        [HttpGet]
+        [AllowGet]
         [ResourceAuthorize(Info.Resource_AllowManageComments)]
         public ActionResult CommentEdit(int blogEntry, int comment) {
             using (BlogCommentDataProvider dataProvider = new BlogCommentDataProvider(blogEntry)) {
@@ -101,7 +101,7 @@ namespace YetaWF.Modules.Blog.Controllers {
             }
         }
 
-        [HttpPost]
+        [AllowPost]
         [ConditionalAntiForgeryToken]
         [ResourceAuthorize(Info.Resource_AllowManageComments)]
         [ExcludeDemoMode]

@@ -19,7 +19,7 @@ namespace YetaWF.Modules.Basics.Controllers {
             public string Message { get; set; }
         }
 
-        [HttpGet]
+        [AllowGet]
         public ActionResult AlertDisplay() {
             if (Manager.EditMode) return new EmptyResult();
             if (Manager.IsInPopup) return new EmptyResult();
@@ -45,7 +45,7 @@ namespace YetaWF.Modules.Basics.Controllers {
                 return View(model);
             }
         }
-        [HttpPost]
+        [AllowPost]
         public ActionResult Off() {
             Manager.SessionSettings.SiteSettings.SetValue<bool>("YetaWF_Basics_AlertDone", true);
             Manager.SessionSettings.SiteSettings.Save();

@@ -34,13 +34,13 @@ namespace YetaWF.Modules.SlideShow.Controllers {
             }
         }
 
-        [HttpGet]
+        [AllowGet]
         public ActionResult TemplateSlideShow() {
             Model model = new Model();
             model.SlideShow = model.SlideShowEdit = Module.SlideShow;
             return View(model);
         }
-        [HttpPost]
+        [AllowPost]
         [ConditionalAntiForgeryToken]
         [ExcludeDemoMode]
         public ActionResult TemplateSlideShow_Partial(Model model) {

@@ -68,7 +68,7 @@ namespace YetaWF.Modules.Search.Controllers {
             public EditModel() { }
         }
 
-        [HttpGet]
+        [AllowGet]
         public ActionResult SearchEdit(int searchDataId) {
             if (!SearchDataProvider.IsUsable) return View("SearchUnavailable_Edit");
             using (SearchDataProvider dataProvider = new SearchDataProvider()) {
@@ -81,7 +81,7 @@ namespace YetaWF.Modules.Search.Controllers {
             }
         }
 
-        [HttpPost]
+        [AllowPost]
         [ConditionalAntiForgeryToken]
         [ExcludeDemoMode]
         public ActionResult SearchEdit_Partial(EditModel model) {

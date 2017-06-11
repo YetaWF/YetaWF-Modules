@@ -54,7 +54,7 @@ namespace YetaWF.Modules.Basics.Controllers {
             }
         }
 
-        [HttpGet]
+        [AllowGet]
         public ActionResult RecaptchaConfig() {
             using (RecaptchaConfigDataProvider dataProvider = new RecaptchaConfigDataProvider()) {
                 EditModel model = new EditModel { };
@@ -64,7 +64,7 @@ namespace YetaWF.Modules.Basics.Controllers {
             }
         }
 
-        [HttpPost]
+        [AllowPost]
         [ConditionalAntiForgeryToken]
         [ExcludeDemoMode]
         public ActionResult RecaptchaConfig_Partial(EditModel model) {

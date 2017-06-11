@@ -49,7 +49,7 @@ namespace YetaWF.Modules.Identity.Controllers {
             public RegistrationTypeEnum RegistrationType { get; set; }
         }
 
-        [HttpGet]
+        [AllowGet]
         public async Task<ActionResult> SetupExternalAccount() {
             ExternalLoginInfo loginInfo;
 #if MVC6
@@ -93,7 +93,7 @@ namespace YetaWF.Modules.Identity.Controllers {
             return View(model);
         }
 
-        [HttpPost]
+        [AllowPost]
         [ConditionalAntiForgeryToken]
         [ExcludeDemoMode]
         public async Task<ActionResult> SetupExternalAccount_Partial(SetupExternalAccountModel model) {

@@ -107,7 +107,7 @@ namespace YetaWF.Modules.Modules.Controllers {
             public GridDefinition GridDef { get; set; }
         }
 
-        [HttpGet]
+        [AllowGet]
         public ActionResult ModulesBrowse() {
             BrowseModel model = new BrowseModel { };
             model.GridDef = new GridDefinition {
@@ -119,7 +119,7 @@ namespace YetaWF.Modules.Modules.Controllers {
             return View(model);
         }
 
-        [HttpPost]
+        [AllowPost]
         [ConditionalAntiForgeryToken]
         public ActionResult ModulesBrowse_GridData(int skip, int take, List<DataProviderSortInfo> sort, List<DataProviderFilterInfo> filters, Guid settingsModuleGuid) {
             // module settings services
@@ -141,7 +141,7 @@ namespace YetaWF.Modules.Modules.Controllers {
             });
         }
 
-        [HttpPost]
+        [AllowPost]
         [Permission("RemoveItems")]
         [ExcludeDemoMode]
         public ActionResult Remove(Guid moduleGuid) {
@@ -149,7 +149,7 @@ namespace YetaWF.Modules.Modules.Controllers {
                 throw new Error(this.__ResStr("errRemove", "The module could not be removed - It may already have been deleted"));
             return Reload(null, Reload: ReloadEnum.ModuleParts);
         }
-        [HttpPost]
+        [AllowPost]
         [Permission("RestoreAuthorization")]
         [ExcludeDemoMode]
         public ActionResult RestoreAuthorization() {

@@ -50,7 +50,7 @@ namespace YetaWF.Modules.Scheduler.Controllers {
             }
         }
 
-        [HttpGet]
+        [AllowGet]
         public ActionResult LogDisplay(int logEntry) {
             using (LogDataProvider logDP = new LogDataProvider()) {
                 LogData data = logDP.GetItem(logEntry);

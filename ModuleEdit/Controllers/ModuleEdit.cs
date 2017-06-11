@@ -26,7 +26,7 @@ namespace YetaWF.Modules.ModuleEdit.Controllers {
             public Guid ModuleGuid { get; set; }
         }
 
-        [HttpGet]
+        [AllowGet]
         public ActionResult ModuleEdit(Guid moduleGuid) {
             if (moduleGuid == Guid.Empty)
                 throw new InternalError("No moduleGuid provided");
@@ -44,7 +44,7 @@ namespace YetaWF.Modules.ModuleEdit.Controllers {
             return View(model);
         }
 
-        [HttpPost]
+        [AllowPost]
         [ConditionalAntiForgeryToken]
         [ExcludeDemoMode]
         public ActionResult ModuleEdit_Partial(ModuleEditModel model) {

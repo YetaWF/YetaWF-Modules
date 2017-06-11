@@ -38,7 +38,7 @@ namespace YetaWF.Modules.PageEdit.Controllers {
             public Model() { }
         }
 
-        [HttpGet]
+        [AllowGet]
         public ActionResult ControlPanelConfig() {
             using (ControlPanelConfigDataProvider dataProvider = new ControlPanelConfigDataProvider()) {
                 Model model = new Model { };
@@ -50,7 +50,7 @@ namespace YetaWF.Modules.PageEdit.Controllers {
             }
         }
 
-        [HttpPost]
+        [AllowPost]
         [ConditionalAntiForgeryToken]
         [ExcludeDemoMode]
         public ActionResult ControlPanelConfig_Partial(Model model) {

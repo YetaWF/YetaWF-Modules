@@ -64,7 +64,7 @@ namespace YetaWF.Modules.Dashboard.Controllers {
             public GridDefinition GridDef { get; set; }
         }
 
-        [HttpGet]
+        [AllowGet]
         public ActionResult StaticPagesBrowse() {
             BrowseModel model = new BrowseModel { };
             model.GridDef = new GridDefinition {
@@ -76,7 +76,7 @@ namespace YetaWF.Modules.Dashboard.Controllers {
             return View(model);
         }
 
-        [HttpPost]
+        [AllowPost]
         [ValidateAntiForgeryToken]
         public ActionResult StaticPagesBrowse_GridData(int skip, int take, List<DataProviderSortInfo> sort, List<DataProviderFilterInfo> filters, Guid settingsModuleGuid) {
             List<BrowseItem> items = (from k in Manager.StaticPageManager.GetSiteStaticPages() select new BrowseItem(Module, k)).ToList();
@@ -89,13 +89,13 @@ namespace YetaWF.Modules.Dashboard.Controllers {
             });
         }
 
-        [HttpPost]
+        [AllowPost]
         [ExcludeDemoMode]
         public ActionResult Remove(string localUrl) {
             Manager.StaticPageManager.RemovePage(localUrl);
             return Reload(null, Reload: ReloadEnum.ModuleParts);
         }
-        [HttpPost]
+        [AllowPost]
         [ExcludeDemoMode]
         public ActionResult RemoveAll() {
             Manager.StaticPageManager.RemoveAllPages();

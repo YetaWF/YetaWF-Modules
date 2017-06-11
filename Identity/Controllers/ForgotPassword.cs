@@ -38,7 +38,7 @@ namespace YetaWF.Modules.Identity.Controllers {
             public EditModel() { }
         }
 
-        [HttpGet]
+        [AllowGet]
         public ActionResult ForgotPassword() {
             LoginConfigData config = LoginConfigDataProvider.GetConfig();
             EditModel model = new EditModel {
@@ -48,7 +48,7 @@ namespace YetaWF.Modules.Identity.Controllers {
             return View(model);
         }
 
-        [HttpPost]
+        [AllowPost]
         [ConditionalAntiForgeryToken]
         [ExcludeDemoMode]
         public ActionResult ForgotPassword_Partial(EditModel model) {

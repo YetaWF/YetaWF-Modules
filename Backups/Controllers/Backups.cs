@@ -71,7 +71,7 @@ namespace YetaWF.Modules.Backups.Controllers {
             public GridDefinition GridDef { get; set; }
         }
 
-        [HttpGet]
+        [AllowGet]
         public ActionResult Backups() {
             BackupsModel model = new BackupsModel {};
             model.GridDef = new GridDefinition {
@@ -83,7 +83,7 @@ namespace YetaWF.Modules.Backups.Controllers {
             return View(model);
         }
 
-        [HttpPost]
+        [AllowPost]
         public ActionResult Backups_GridData(int skip, int take, List<DataProviderSortInfo> sort, List<DataProviderFilterInfo> filters, Guid settingsModuleGuid) {
             using (BackupsDataProvider dataProvider = new BackupsDataProvider()) {
                 int total;
@@ -98,7 +98,7 @@ namespace YetaWF.Modules.Backups.Controllers {
             }
         }
 
-        [HttpPost]
+        [AllowPost]
         [Permission("Backups")]
         [ExcludeDemoMode]
         public ActionResult PerformSiteBackup() {
@@ -113,7 +113,7 @@ namespace YetaWF.Modules.Backups.Controllers {
             return Reload(null, this.__ResStr("backupCreated", "The site backup has been successfully created"), Reload: ReloadEnum.ModuleParts);
         }
 
-        [HttpPost]
+        [AllowPost]
         [Permission("Backups")]
         [ExcludeDemoMode]
         public ActionResult MakeSiteTemplateData() {
@@ -150,7 +150,7 @@ namespace YetaWF.Modules.Backups.Controllers {
 #endif
         }
 
-        [HttpPost]
+        [AllowPost]
         [Permission("Backups")]
         [ExcludeDemoMode]
         public ActionResult Remove(string filename) {

@@ -38,7 +38,7 @@ namespace YetaWF.Modules.ImageRepository.Controllers {
             public void Update(ModuleDefinition module) { }
         }
 
-        [HttpGet]
+        [AllowGet]
         public ActionResult CKEBrowsePage(string CKEditor, int CKEditorFuncNum, string langCode) {
             Model model = new Model {
                 CKEditor = CKEditor,
@@ -49,7 +49,7 @@ namespace YetaWF.Modules.ImageRepository.Controllers {
             return View(model);
         }
 
-        [HttpPost]
+        [AllowPost]
         [ConditionalAntiForgeryToken]
         [ExcludeDemoMode]
         public ActionResult CKEBrowsePage_Partial(Model model) {

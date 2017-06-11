@@ -48,7 +48,7 @@ namespace YetaWF.Modules.Blog.Controllers {
             public List<Entry> BlogEntries { get; set; }
         }
 
-        [HttpGet]
+        [AllowGet]
         public ActionResult Summary() {
             //int category;
             //Manager.TryGetUrlArg<int>("BlogCategory", out category);

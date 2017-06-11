@@ -47,7 +47,7 @@ namespace YetaWF.Modules.Feed.Controllers {
             }
         }
 
-        [HttpGet]
+        [AllowGet]
         public ActionResult Feed() {
 
             CachedObject cache = new CachedObject();

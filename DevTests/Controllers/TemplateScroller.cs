@@ -39,7 +39,7 @@ namespace YetaWF.Modules.DevTests.Controllers {
             }
         }
 
-        [HttpGet]
+        [AllowGet]
         public ActionResult TemplateScroller() {
             Model model = new Model { };
             string addonUrl = VersionManager.GetAddOnModuleUrl(AreaRegistration.CurrentPackage.Domain, AreaRegistration.CurrentPackage.Product);

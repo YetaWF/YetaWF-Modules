@@ -81,7 +81,7 @@ namespace YetaWF.Modules.Scheduler.Controllers {
             }
         }
 
-        [HttpGet]
+        [AllowGet]
         public ActionResult SchedulerDisplay(string eventName) {
             using (SchedulerDataProvider dataProvider = new SchedulerDataProvider()) {
                 SchedulerDisplayModel model = new SchedulerDisplayModel { };

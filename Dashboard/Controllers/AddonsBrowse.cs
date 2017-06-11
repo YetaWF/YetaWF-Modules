@@ -83,7 +83,7 @@ namespace YetaWF.Modules.Dashboard.Controllers {
             public GridDefinition GridDef { get; set; }
         }
 
-        [HttpGet]
+        [AllowGet]
         public ActionResult AddonsBrowse() {
 
             List<VersionManager.AddOnProduct> list = VersionManager.GetAvailableAddOns();

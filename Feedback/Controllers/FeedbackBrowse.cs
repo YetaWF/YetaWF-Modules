@@ -75,7 +75,7 @@ namespace YetaWF.Modules.Feedback.Controllers {
             public GridDefinition GridDef { get; set; }
         }
 
-        [HttpGet]
+        [AllowGet]
         public ActionResult FeedbackBrowse() {
             BrowseModel model = new BrowseModel { };
             model.GridDef = new GridDefinition {
@@ -87,7 +87,7 @@ namespace YetaWF.Modules.Feedback.Controllers {
             return View(model);
         }
 
-        [HttpPost]
+        [AllowPost]
         [ConditionalAntiForgeryToken]
         public ActionResult FeedbackBrowse_GridData(int skip, int take, List<DataProviderSortInfo> sort, List<DataProviderFilterInfo> filters, Guid settingsModuleGuid) {
             using (FeedbackDataDataProvider dataProvider = new FeedbackDataDataProvider()) {
@@ -100,7 +100,7 @@ namespace YetaWF.Modules.Feedback.Controllers {
                 });
             }
         }
-        [HttpPost]
+        [AllowPost]
         [Permission("RemoveFeedback")]
         [ExcludeDemoMode]
         public ActionResult RemoveFeedback(int key) {

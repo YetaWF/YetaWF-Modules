@@ -33,7 +33,7 @@ namespace YetaWF.Modules.Blog.Controllers {
 
         }
 
-        [HttpGet]
+        [AllowGet]
         public ActionResult Archive(int? blogCategory) {
             int category = (int) (blogCategory ?? 0);
 

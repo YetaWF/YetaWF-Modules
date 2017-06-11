@@ -33,7 +33,7 @@ namespace YetaWF.Modules.Blog.Controllers {
             public int Height { get; set; }
         }
 
-        [HttpGet]
+        [AllowGet]
         public ActionResult Disqus() {
             using (DisqusConfigDataProvider dataProvider = new DisqusConfigDataProvider()) {
                 DisqusConfigData config = dataProvider.GetItem();

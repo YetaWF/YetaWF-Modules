@@ -43,7 +43,7 @@ namespace YetaWF.Modules.Dashboard.Controllers {
 
         }
 
-        [HttpGet]
+        [AllowGet]
         public ActionResult Status() {
             DisplayModel model = new DisplayModel {
                 LastRestart = YetaWFManager.SiteStart,

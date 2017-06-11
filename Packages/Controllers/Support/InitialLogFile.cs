@@ -24,7 +24,7 @@ namespace YetaWF.Modules.Packages.Controllers {
 #endif
     public class InitialLogFileController : YetaWFController {
 
-        [HttpPost]
+        [AllowPost]
         public ActionResult GetInitialInstallLogRecords(int offset) {
             bool ended;
             List<string> records = PackagesDataProvider.RetrieveInitialInstallLog(out ended);

@@ -62,7 +62,7 @@ namespace YetaWF.Modules.Blog.Controllers {
             }
         }
 
-        [HttpGet]
+        [AllowGet]
         public ActionResult CategoryDisplay(int blogCategory) {
             using (BlogCategoryDataProvider dataProvider = new BlogCategoryDataProvider()) {
                 BlogCategory data = dataProvider.GetItem(blogCategory);

@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using YetaWF.Core.Controllers;
 using YetaWF.Core.Localize;
 using YetaWF.Core.Log;
 using YetaWF.Core.Models.Attributes;
@@ -35,7 +36,7 @@ namespace YetaWF.Modules.Identity.Controllers {
 
         protected static YetaWFManager Manager { get { return YetaWFManager.Manager; } }
 
-        [HttpPost]
+        [AllowPost]
         [ConditionalAntiForgeryToken]
         //[ExcludeDemoMode]
         public ActionResult ExternalLogin(string provider, string returnUrl) {
@@ -54,7 +55,7 @@ namespace YetaWF.Modules.Identity.Controllers {
 #endif
         }
 
-        [HttpGet]
+        [AllowGet]
 #if MVC6
         public async Task<IActionResult> ExternalLoginCallback(string returnUrl = null, string remoteError = null)
 #else

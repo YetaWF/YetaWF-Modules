@@ -29,7 +29,7 @@ namespace YetaWF.Modules.Blog.Controllers {
             }
         }
 
-        [HttpGet]
+        [AllowGet]
         public ActionResult CategoryHeader(int? blogEntry) {
             int category;
             Manager.TryGetUrlArg<int>("BlogCategory", out category);

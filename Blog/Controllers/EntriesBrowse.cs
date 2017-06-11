@@ -100,7 +100,7 @@ namespace YetaWF.Modules.Blog.Controllers {
             public GridDefinition GridDef { get; set; }
         }
 
-        [HttpGet]
+        [AllowGet]
         public ActionResult EntriesBrowse(int blogCategory = 0) {
             BrowseModel model = new BrowseModel { };
             model.GridDef = new GridDefinition {
@@ -113,7 +113,7 @@ namespace YetaWF.Modules.Blog.Controllers {
             return View(model);
         }
 
-        [HttpPost]
+        [AllowPost]
         [ConditionalAntiForgeryToken]
         public ActionResult EntriesBrowse_GridData(int skip, int take, List<DataProviderSortInfo> sort, List<DataProviderFilterInfo> filters, Guid settingsModuleGuid, int blogCategory) {
             // filter by category
@@ -133,7 +133,7 @@ namespace YetaWF.Modules.Blog.Controllers {
             }
         }
 
-        [HttpPost]
+        [AllowPost]
         [Permission("RemoveItems")]
         [ExcludeDemoMode]
         public ActionResult Remove(int blogEntry) {

@@ -77,7 +77,7 @@ namespace YetaWF.Modules.Basics.Controllers {
             public int LettersHeight { get; set; }
         }
 
-        [HttpGet]
+        [AllowGet]
         public ActionResult ModuleSkinInfo() {
             DisplayModel model = new DisplayModel();
             model.SiteSelectedSkin = Manager.CurrentSite.SelectedSkin;

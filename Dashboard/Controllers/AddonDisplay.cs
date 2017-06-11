@@ -76,7 +76,7 @@ namespace YetaWF.Modules.Dashboard.Controllers {
             }
         }
 
-        [HttpGet]
+        [AllowGet]
         public ActionResult AddonDisplay(string key) {
             List<VersionManager.AddOnProduct> list = VersionManager.GetAvailableAddOns();
             VersionManager.AddOnProduct data = (from l in list where l.AddonKey == key select l).FirstOrDefault();

@@ -27,7 +27,7 @@ namespace YetaWF.Modules.Text.Controllers {
             public string Contents { get; set; }
         }
 
-        [HttpGet]
+        [AllowGet]
         public ActionResult Text() {
             if (Module.Feed) {
                 string rssUrl = string.IsNullOrWhiteSpace(Module.FeedMainUrl) ? Manager.CurrentSite.HomePageUrl : Module.FeedMainUrl;
@@ -46,7 +46,7 @@ namespace YetaWF.Modules.Text.Controllers {
             }
         }
 
-        [HttpPost]
+        [AllowPost]
         [Permission("Edit")]
         [ExcludeDemoMode]
         public ActionResult Text_Partial(TextModel model) {

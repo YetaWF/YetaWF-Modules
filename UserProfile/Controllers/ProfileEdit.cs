@@ -100,7 +100,7 @@ namespace YetaWF.Modules.UserProfile.Controllers {
             }
         }
 
-        [HttpGet]
+        [AllowGet]
         public ActionResult ProfileEdit() {
             Manager.NeedUser();
             using (UserInfoDataProvider userInfoDP = new UserInfoDataProvider()) {
@@ -114,7 +114,7 @@ namespace YetaWF.Modules.UserProfile.Controllers {
             }
         }
 
-        [HttpPost]
+        [AllowPost]
         [ExcludeDemoMode]
         [ConditionalAntiForgeryToken]
         public ActionResult ProfileEdit_Partial(EditModel model) {

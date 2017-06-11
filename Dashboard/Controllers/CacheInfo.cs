@@ -58,7 +58,7 @@ namespace YetaWF.Modules.Dashboard.Controllers {
 #endif
         }
 
-        [HttpGet]
+        [AllowGet]
         public ActionResult CacheInfo() {
             DisplayModel model = new DisplayModel();
 #if MVC6
@@ -80,7 +80,7 @@ namespace YetaWF.Modules.Dashboard.Controllers {
 
 #if MVC6
 #else
-        [HttpPost]
+        [AllowPost]
         [ConditionalAntiForgeryToken]
         public ActionResult CacheInfo_GridData(int skip, int take, List<DataProviderSortInfo> sort, List<DataProviderFilterInfo> filters, Guid settingsModuleGuid) {
             int total;

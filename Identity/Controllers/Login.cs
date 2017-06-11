@@ -77,7 +77,7 @@ namespace YetaWF.Modules.Identity.Controllers {
             public List<FormButton> ExternalProviders { get; set; }
         }
 
-        [HttpGet]
+        [AllowGet]
         public ActionResult Login(string name, string pswd, string v, bool closeOnLogin = false) {
 
             LoginConfigData config = LoginConfigDataProvider.GetConfig();
@@ -115,7 +115,7 @@ namespace YetaWF.Modules.Identity.Controllers {
             return View(model);
         }
 
-        [HttpPost]
+        [AllowPost]
         [ConditionalAntiForgeryToken]
         [ExcludeDemoMode]
         public async Task<ActionResult> Login_Partial(LoginModel model) {

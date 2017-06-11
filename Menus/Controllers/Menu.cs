@@ -17,7 +17,7 @@ namespace YetaWF.Modules.Menus.Controllers {
 
     public class MainMenuModuleController : MenuModuleController {
 
-        [HttpGet]
+        [AllowGet]
         public ActionResult MainMenu() {
             // add some bootstrap specific classes
             if (Manager.UsingBootstrap)
@@ -43,7 +43,7 @@ namespace YetaWF.Modules.Menus.Controllers {
             public MenuHelper.MenuData Menu { get; set; }
         }
 
-        [HttpGet]
+        [AllowGet]
         public ActionResult Menu() {
             MenuModel model = new MenuModel {
                 Menu = new MenuHelper.MenuData {

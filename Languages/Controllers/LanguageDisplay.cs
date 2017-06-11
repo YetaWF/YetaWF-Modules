@@ -38,7 +38,7 @@ namespace YetaWF.Modules.Languages.Controllers {
             }
         }
 
-        [HttpGet]
+        [AllowGet]
         public ActionResult LanguageDisplay(string id) {
             LanguageEntryElement language = (from l in LanguageSection.Languages where id == l.Id select l).FirstOrDefault();
             if (language == null)

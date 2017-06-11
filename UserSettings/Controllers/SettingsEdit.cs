@@ -85,7 +85,7 @@ namespace YetaWF.Modules.UserSettings.Controllers {
             public EditModel() { }
         }
 
-        [HttpGet]
+        [AllowGet]
         public ActionResult SettingsEdit() {
             using (UserDataProvider dataProvider = new UserDataProvider()) {
                 EditModel model = new EditModel { };
@@ -96,7 +96,7 @@ namespace YetaWF.Modules.UserSettings.Controllers {
             }
         }
 
-        [HttpPost]
+        [AllowPost]
         [ConditionalAntiForgeryToken]
         public ActionResult SettingsEdit_Partial(EditModel model) {
             using (UserDataProvider dataProvider = new UserDataProvider()) {

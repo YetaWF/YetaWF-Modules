@@ -31,7 +31,7 @@ namespace YetaWF.Modules.Visitors.Controllers {
             public int YesterdaysUsers { get; set; }
         }
 
-        [HttpGet]
+        [AllowGet]
         public ActionResult VisitorSummary() {
             using (VisitorEntryDataProvider visitorDP = new VisitorEntryDataProvider()) {
                 if (visitorDP.Usable) {

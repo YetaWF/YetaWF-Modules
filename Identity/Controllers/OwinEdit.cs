@@ -91,7 +91,7 @@ namespace YetaWF.Modules.Identity.Controllers {
             public string TwitterPrivate { get; set; }
         }
 
-        [HttpGet]
+        [AllowGet]
         public ActionResult OwinEdit() {
             EditModel model = new EditModel { };
 
@@ -112,7 +112,7 @@ namespace YetaWF.Modules.Identity.Controllers {
             return View(model);
         }
 
-        [HttpPost]
+        [AllowPost]
         [ConditionalAntiForgeryToken]
         [ExcludeDemoMode]
         public ActionResult OwinEdit_Partial(EditModel model) {

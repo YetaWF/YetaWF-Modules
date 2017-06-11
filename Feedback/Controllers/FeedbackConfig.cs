@@ -48,7 +48,7 @@ namespace YetaWF.Modules.Feedback.Controllers {
             public Model() { }
         }
 
-        [HttpGet]
+        [AllowGet]
         public ActionResult FeedbackConfig() {
             using (FeedbackConfigDataProvider dataProvider = new FeedbackConfigDataProvider()) {
                 Model model = new Model { };
@@ -60,7 +60,7 @@ namespace YetaWF.Modules.Feedback.Controllers {
             }
         }
 
-        [HttpPost]
+        [AllowPost]
         [ConditionalAntiForgeryToken]
         [ExcludeDemoMode]
         public ActionResult FeedbackConfig_Partial(Model model) {

@@ -17,7 +17,7 @@ namespace YetaWF.Modules.IFrame.Controllers {
             public string Style { get; set; }
         }
 
-        [HttpGet]
+        [AllowGet]
         public ActionResult IFrameDisplay() {
             if (string.IsNullOrWhiteSpace(Module.Url))
                 return new EmptyResult();

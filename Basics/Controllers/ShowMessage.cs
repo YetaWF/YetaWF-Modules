@@ -13,7 +13,7 @@ namespace YetaWF.Modules.Basics.Controllers {
 
         public ShowMessageModuleController() { }
 
-        [HttpGet]
+        [AllowGet]
         public ActionResult ShowMessage(string message, int? code = 0) {
             if (code != null)
                 Manager.CurrentResponse.StatusCode = (int)code;

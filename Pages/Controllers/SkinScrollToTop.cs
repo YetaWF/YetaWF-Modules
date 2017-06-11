@@ -15,7 +15,7 @@ namespace YetaWF.Modules.Pages.Controllers {
 
         public class DisplayModel { }
 
-        //[HttpGet, HttpPost]
+        [AllowHttp("GET", "POST")]
         public ActionResult SkinScrollToTop() {
             DisplayModel model = new DisplayModel();
             return View(model);

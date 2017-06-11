@@ -39,14 +39,14 @@ namespace YetaWF.Modules.Packages.Controllers {
             public EditModel() { }
         }
 
-        [HttpGet]
+        [AllowGet]
         public ActionResult SiteTemplateProcess(string fileName) {
             EditModel model = new EditModel { };
             model.UpdateData();
             return View(model);
         }
 
-        [HttpPost]
+        [AllowPost]
         [ConditionalAntiForgeryToken]
         [ExcludeDemoMode]
         public ActionResult SiteTemplateProcess_Partial(EditModel model) {
