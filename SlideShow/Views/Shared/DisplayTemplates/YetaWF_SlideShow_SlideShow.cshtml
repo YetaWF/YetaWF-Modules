@@ -20,7 +20,7 @@
                 @if (string.IsNullOrWhiteSpace(slide.Url)) {
                     <img data-u="image" src="@(Manager.GetCDNUrl(ImageHelper.FormatUrl(ImageSupport.ImageType, null, slide.Image)))" alt="">
                 } else {
-                    <a data-u="image" href="@(slide.Url)"><img src="@Html.Raw(Manager.GetCDNUrl(ImageHelper.FormatUrl(ImageSupport.ImageType, null, slide.Image)))" alt=""></a>
+                    <a data-u="image" href="@(slide.Url)" class="yaction-link"><img src="@Html.Raw(Manager.GetCDNUrl(ImageHelper.FormatUrl(ImageSupport.ImageType, null, slide.Image)))" alt=""></a>
                 }
                 @if (Model.Style == SlideShowInfo.SlideShowType.Thumbnails && !string.IsNullOrWhiteSpace(slide.ThumbnailImage)) {
                     <img data-u="thumb" src="@Html.Raw(Manager.GetCDNUrl(ImageHelper.FormatUrl(ImageSupport.ImageType, null, slide.ThumbnailImage)))">
