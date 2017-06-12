@@ -6,35 +6,37 @@ var YetaWF_Search = {};
 // SEARCH CONTROL - ENABLE DISABLE HIGHLIGHTING
 // SEARCH CONTROL - ENABLE DISABLE HIGHLIGHTING
 
-$(document).ready(function () {
-    function highlightSearch() {
-        $('.yModule').removeHighlight();
-        if (YVolatile.Basics.EditModeActive) return; // never in edit mode
-        var kwdsString = $(".YetaWF_Search_SearchControl input[name='SearchTerms']").val();
-        var kwds = eval(kwdsString);
-        $('.yPane .yModule').highlight(kwds);
-    }
-    $("body").on("click", ".YetaWF_Search_SearchControl a[data-name='On']", function () {
-        $(".YetaWF_Search_SearchControl a[data-name='On']").toggle(false);
-        $(".YetaWF_Search_SearchControl a[data-name='Off']").toggle(true);
-        highlightSearch();
-    });
-    $("body").on("click", ".YetaWF_Search_SearchControl a[data-name='Off']", function () {
-        $(".YetaWF_Search_SearchControl a[data-name='Off']").toggle(false);
-        $(".YetaWF_Search_SearchControl a[data-name='On']").toggle(true);
-        $('.yModule').removeHighlight();
-    });
-    if ($(".YetaWF_Search_SearchControl a[data-name='Off']:visible").length > 0) {
-        highlightSearch();
-    }
-    if (typeof YetaWF_Forms !== 'undefined' && YetaWF_Forms != undefined) {
-        YetaWF_Forms.addPostSubmitHandler(0/*!InPartialView*/, {
-            form: null,
-            callback: function (entry) {
-                highlightSearch();
-            },
-            userdata: null,
+YetaWF_Basics.whenReadyOnce.push({
+    callback: function ($tag) {
+        function highlightSearch() {
+            $('.yModule').removeHighlight();
+            if (YVolatile.Basics.EditModeActive) return; // never in edit mode
+            var kwdsString = $(".YetaWF_Search_SearchControl input[name='SearchTerms']").val();
+            var kwds = eval(kwdsString);
+            $('.yPane .yModule').highlight(kwds);
+        }
+        $("body").on("click", ".YetaWF_Search_SearchControl a[data-name='On']", function () {
+            $(".YetaWF_Search_SearchControl a[data-name='On']").toggle(false);
+            $(".YetaWF_Search_SearchControl a[data-name='Off']").toggle(true);
+            highlightSearch();
         });
+        $("body").on("click", ".YetaWF_Search_SearchControl a[data-name='Off']", function () {
+            $(".YetaWF_Search_SearchControl a[data-name='Off']").toggle(false);
+            $(".YetaWF_Search_SearchControl a[data-name='On']").toggle(true);
+            $('.yModule').removeHighlight();
+        });
+        if ($(".YetaWF_Search_SearchControl a[data-name='Off']:visible").length > 0) {
+            highlightSearch();
+        }
+        if (typeof YetaWF_Forms !== 'undefined' && YetaWF_Forms != undefined) {
+            YetaWF_Forms.addPostSubmitHandler(0/*!InPartialView*/, {
+                form: null,
+                callback: function (entry) {
+                    highlightSearch();
+                },
+                userdata: null,
+            });
+        }
     }
 });
 
