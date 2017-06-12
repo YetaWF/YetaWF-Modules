@@ -100,6 +100,7 @@ namespace YetaWF.Modules.Pages.Controllers {
         }
         [AllowPost]
         [ConditionalAntiForgeryToken]
+        [ExcludeDemoMode]
         public ActionResult UnifiedSetEdit_Partial(EditModel model) {
 
             using (UnifiedSetDataProvider unifiedSetDP = new UnifiedSetDataProvider()) {

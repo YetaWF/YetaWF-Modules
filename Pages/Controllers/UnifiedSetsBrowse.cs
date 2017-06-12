@@ -113,6 +113,7 @@ namespace YetaWF.Modules.Pages.Controllers {
 
         [AllowPost]
         [Permission("RemoveItems")]
+        [ExcludeDemoMode]
         public ActionResult Remove(Guid unifiedSetGuid) {
             using (UnifiedSetDataProvider unifiedSet = new UnifiedSetDataProvider()) {
                 if (!unifiedSet.RemoveItem(unifiedSetGuid))
