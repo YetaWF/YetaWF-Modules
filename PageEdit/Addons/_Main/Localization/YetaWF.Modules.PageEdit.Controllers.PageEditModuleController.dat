@@ -71,7 +71,7 @@
                           <Properties>
                             <Name Value="Analytics" />
                             <Caption Value="Analytics" />
-                            <Description Value="Add analytics Javascript code (for example, the Universal Analytics tracking code used by Google Analytics or the code used by Clicky) - Any code that should be added at the end of the HTML page can be added here - If omitted, the site defined analytics code is used (Site Settings)" />
+                            <Description Value="Add analytics Javascript code (for example, the Universal Analytics tracking code used by Google Analytics or the code used by Clicky) - Any code that should be added at the end of the HTML page can be added here including &lt;script&gt;&lt;/script&gt; tags - If omitted, the site defined analytics code is used (Site Settings)" />
                             <HelpLink />
                             <TextAbove Value="Analytics code is only available in deployed production sites and is ignored in debug builds (not marked deployed)." />
                             <TextBelow />
@@ -82,10 +82,10 @@
                         <Object Type="YetaWF.Core.Localize.LocalizationData+PropertyData" Assembly="YetaWF.Core">
                           <Properties>
                             <Name Value="AnalyticsContent" />
-                            <Caption />
-                            <Description />
+                            <Caption Value="Analytics (Content)" />
+                            <Description Value="Add analytics Javascript code that should be executed when a new page becomes active in an active Unified Page Set - Do not include &lt;script&gt;&lt;/script&gt; tags - Use &lt;&lt;Url&gt;&gt; to substitute the actual Url - If omitted, the site defined analytics code is used (Site Settings)" />
                             <HelpLink />
-                            <TextAbove Value="Analytics (Content) is only available in deployed production sites and is ignored in debug builds (not marked deployed)." />
+                            <TextAbove />
                             <TextBelow />
                           </Properties>
                         </Object>
