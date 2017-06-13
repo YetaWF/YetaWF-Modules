@@ -1,0 +1,12 @@
+﻿### Copyright © 2017 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/DevTests#License
+###
+### DevTests Package Upgrade
+###
+
+::PAGE-SECTION::
+
+Administrator /Tests/Escapes
+    Tests > {YetaWF.DevTests, YetaWF.Modules.DevTests.Modules.TestEscapesModule}.GetAction_Test({CURRENTURL})
+    -
+    YetaWF.DevTests, YetaWF.Modules.DevTests.Modules.TestEscapesModule
+
