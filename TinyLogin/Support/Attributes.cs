@@ -8,7 +8,6 @@ namespace YetaWF.Modules.TinyLogin.Support {
 
     [AttributeUsage(AttributeTargets.Property, AllowMultiple = false, Inherited = true)]
     public class LogoffUrlValidationAttribute : RegexValidationBaseAttribute {
-        [CombinedResources]
 
         private static string __ResStr(string name, string defaultValue, params object[] parms) { return ResourceAccess.GetResourceString(typeof(LogoffUrlValidationAttribute), name, defaultValue, parms); }
 
