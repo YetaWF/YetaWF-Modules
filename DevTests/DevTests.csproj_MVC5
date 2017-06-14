@@ -72,6 +72,7 @@
     <Compile Include="Controllers\TemplateSkin.cs" />
     <Compile Include="Controllers\TemplateTimeZone.cs" />
     <Compile Include="Controllers\SMSTest.cs" />
+    <Compile Include="Controllers\TestEscapes.cs" />
     <Compile Include="Modules\BasicTemplates.cs" />
     <Compile Include="Modules\SMSProcessorStatus.cs" />
     <Compile Include="Modules\TemplateDateTimeModule.cs" />
@@ -81,6 +82,7 @@
     <Compile Include="Modules\TemplateSkinModule.cs" />
     <Compile Include="Modules\TemplateTimeZoneModule.cs" />
     <Compile Include="Modules\SMSTestModule.cs" />
+    <Compile Include="Modules\TestEscapes.cs" />
     <Compile Include="Startup\Info.cs" />
     <Compile Include="Startup\AreaRegistration.cs" />
     <Compile Include="Controllers\TemplateEmail.cs" />
@@ -99,11 +101,14 @@
     <None Include="Addons\_Main\Grids\ListOfEmailAddressesHelper.GridEntryEdit" />
     <None Include="app.config" />
     <None Include="packages.config" />
+    <Content Include="Addons\_SiteTemplates\YetaWF_DevTests.2.5.0.txt" />
     <Content Include="Views\Shared\DisplayTemplates\YetaWF_DevTests_ListOfEmailAddresses.cshtml" />
     <None Include="Views\Shared\DisplayTemplates\YetaWF_DevTests_ScrollerItem.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\YetaWF_DevTests_ListOfEmailAddresses.cshtml" />
     <None Include="Views\YetaWF_DevTests_SMSProcessorStatus.cshtml" />
     <None Include="Views\YetaWF_DevTests_TemplateScroller.cshtml" />
+    <None Include="Views\YetaWF_DevTests_TestEscapes.cshtml" />
+    <None Include="Views\YetaWF_DevTests_TestEscapes_Partial.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\CoreComponents\Core\Core.csproj">
