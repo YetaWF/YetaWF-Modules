@@ -12,7 +12,7 @@
               <Properties>
                 <Name Value="YetaWF.Modules.DevTests.Controllers.TestEscapesModuleController+EditModel" />
                 <BaseTypeName />
-                <Header />
+                <Header Value="Special characters in the header (HeaderAttribute) &lt; &gt; &amp; @ {0}" />
                 <Footer />
                 <Legend />
                 <Categories>
@@ -32,8 +32,8 @@
                             <Caption Value="Caption &lt; &gt; &amp; @ {0}" />
                             <Description Value="A description &lt; &gt; &amp; @ {0}" />
                             <HelpLink />
-                            <TextAbove />
-                            <TextBelow />
+                            <TextAbove Value="Special characters in the text above the field (TextAboveAttribute) &lt; &gt; &amp; @ {0}" />
+                            <TextBelow Value="Special characters in the text below the field (TextAboveAttribute) &lt; &gt; &amp; @ {0}" />
                           </Properties>
                         </Object>
                       </Value>
