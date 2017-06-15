@@ -8,7 +8,7 @@ _YetaWF_Basics_Alert.on = true;
 // the alert is displayed until dismissed or if the page doesn't reference this module (dynamic content)
 
 // handle close click
-$('body').on('click', '.YetaWF_Basics_AlertDisplay .t_close img', function () {
+$(document).on('click', '.YetaWF_Basics_AlertDisplay .t_close img', function () {
     'use string';
     _YetaWF_Basics_Alert.dismissed = true;
     var $alert = $('.YetaWF_Basics_AlertDisplay');
