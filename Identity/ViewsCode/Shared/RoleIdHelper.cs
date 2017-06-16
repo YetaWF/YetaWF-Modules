@@ -37,7 +37,7 @@ namespace YetaWF.Modules.Identity.Views.Shared {
             using (RoleDefinitionDataProvider dataProvider = new RoleDefinitionDataProvider()) {
                 RoleDefinition role = dataProvider.GetRoleById(model);
                 tag.SetInnerText(role.Name);
-                tag.Attributes.Add(Basics.CssTooltipSpan, YetaWFManager.HtmlAttributeEncode(role.Description));
+                tag.Attributes.Add(Basics.CssTooltipSpan, role.Description);
                 return tag.ToHtmlString(TagRenderMode.Normal);
             }
         }

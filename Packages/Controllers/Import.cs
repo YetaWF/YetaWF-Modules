@@ -124,7 +124,7 @@ namespace YetaWF.Modules.Packages.Controllers {
             if (success) {
                 // Upload control considers Json result a success
                 ScriptBuilder sb = new ScriptBuilder();
-                sb.Append("{{ \"result\": \"Y_Confirm(\\\"{0}\\\", null, function() {{ window.location.reload(); }} ); \" }}",
+                sb.Append("{{ \"result\": \"Y_Confirm(\\\"{0}\\\", null, function() {{ Y_ReloadPage(true); }} ); \" }}",
                     YetaWFManager.JserEncode(YetaWFManager.JserEncode(msg))
                 );
                 //System.Web.HttpRuntime.UnloadAppDomain();

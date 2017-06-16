@@ -287,7 +287,7 @@ namespace YetaWF.Modules.PageEdit.Controllers {
             ScriptBuilder sb = new ScriptBuilder();
             if (success) {
                 // Upload control considers Json result a success
-                sb.Append("{{ \"result\": \"Y_Confirm(\\\"{0}\\\", null, function() {{ window.location.reload(); }} ); \" }}",
+                sb.Append("{{ \"result\": \"Y_Confirm(\\\"{0}\\\", null, function() {{ Y_ReloadPage(true); }} ); \" }}",
                     YetaWFManager.JserEncode(YetaWFManager.JserEncode(this.__ResStr("imported", "\"{0}\" successfully imported(+nl)", __filename.FileName) + errs))
                 );
                 return new YJsonResult { Data = sb.ToString() };

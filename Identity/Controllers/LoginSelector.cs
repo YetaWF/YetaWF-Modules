@@ -74,7 +74,7 @@ namespace YetaWF.Modules.Identity.Controllers {
                 Resource.ResourceAccess.LoginAs(userId);
             if (model.SuperuserStillActive != null && !(bool)model.SuperuserStillActive)
                 Manager.SetSuperUserRole(false);
-            return Redirect(Manager.ReturnToUrl);
+            return Redirect(Manager.ReturnToUrl, ForceRedirect: true);
         }
     }
 }

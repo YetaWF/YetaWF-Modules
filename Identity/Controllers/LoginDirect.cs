@@ -39,6 +39,7 @@ namespace YetaWF.Modules.Identity.Controllers {
                 url = config.LoggedOffUrl;
             if (string.IsNullOrWhiteSpace(url))
                 url = Manager.CurrentSite.HomePageUrl;
+            // Because this is a plain MVC controller, this Redirect really redirects (no Unified Page Set handling) which is the desired behavior
             return Redirect(url);
         }
     }

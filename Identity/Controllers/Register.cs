@@ -198,10 +198,10 @@ namespace YetaWF.Modules.Identity.Controllers {
                 await LoginModuleController.UserLoginAsync(user, config.PersistentLogin);
                 if (model.CloseOnLogin)
                     return FormProcessed(model, this.__ResStr("okRegText", "Your new account has been successfully registered."), this.__ResStr("okRegTitle", "Welcome!"),
-                        OnClose: OnCloseEnum.CloseWindow, OnPopupClose: OnPopupCloseEnum.GotoNewPage, NextPage: Manager.ReturnToUrl);
+                        OnClose: OnCloseEnum.CloseWindow, OnPopupClose: OnPopupCloseEnum.GotoNewPage, NextPage: Manager.ReturnToUrl, ForceRedirect: true);
                 else
                     return FormProcessed(model, this.__ResStr("okRegText", "Your new account has been successfully registered."), this.__ResStr("okRegTitle", "Welcome!"),
-                        NextPage: Manager.ReturnToUrl);
+                        NextPage: Manager.ReturnToUrl, ForceRedirect: true);
             } else
                 throw new InternalError("badUserStatus", "Unexpected account status {0}", user.UserStatus);
         }

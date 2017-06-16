@@ -258,9 +258,9 @@ namespace YetaWF.Modules.Identity.Controllers {
                 await LoginModuleController.UserLoginAsync(user, model.RememberMe);
                 Logging.AddLog("User {0} - logged on", model.UserName);
                 if (model.CloseOnLogin)
-                    return FormProcessed(model, OnClose: OnCloseEnum.CloseWindow, OnPopupClose: OnPopupCloseEnum.GotoNewPage, NextPage: Manager.ReturnToUrl);
+                    return FormProcessed(model, OnClose: OnCloseEnum.CloseWindow, OnPopupClose: OnPopupCloseEnum.GotoNewPage, NextPage: Manager.ReturnToUrl, ForceRedirect: true);
                 else
-                    return FormProcessed(model);
+                    return FormProcessed(model, ForceRedirect: true);
             } else
                 throw new InternalError("badUserStatus", "Unexpected account status {0}", user.UserStatus);
         }
