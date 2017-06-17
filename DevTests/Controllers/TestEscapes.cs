@@ -16,12 +16,12 @@ namespace YetaWF.Modules.DevTests.Controllers {
         public TestEscapesModuleController() { }
 
         [Trim]
-        [Header("Special characters in the header (HeaderAttribute) < > & @ {0}")]
+        [Header("Special characters in the header (HeaderAttribute) <A> &amp; & @ {0}")]
         public class EditModel {
 
-            [TextAbove("Special characters in the text above the field (TextAboveAttribute) < > & @ {0}")]
-            [TextBelow("Special characters in the text below the field (TextAboveAttribute) < > & @ {0}")]
-            [Caption("Caption < > & @ {0}"), Description("A description < > & @ {0}")]
+            [TextAbove("Special characters in the text above the field (TextAboveAttribute) <A> &amp; & @ {0}")]
+            [TextBelow("Special characters in the text below the field (TextAboveAttribute) <A> &amp; & @ {0}")]
+            [Caption("Caption <A> &amp; & @ {0}"), Description("A description <A> &amp; & @ {0}")]
             [UIHint("Text80"), StringLength(80), Trim]
             public string String1 { get; set; }
 
@@ -40,7 +40,7 @@ namespace YetaWF.Modules.DevTests.Controllers {
             if (!ModelState.IsValid)
                 return PartialView(model);
 
-            return FormProcessed(model, this.__ResStr("okSaved", "Test Done - Here are some special characters in a message: < > & @ {0}"), OnPopupClose: OnPopupCloseEnum.ReloadModule);
+            return FormProcessed(model, this.__ResStr("okSaved", "Test Done - Here are some special characters in a message: <A> &amp; & @ {0}"), OnPopupClose: OnPopupCloseEnum.ReloadModule);
         }
     }
 }
