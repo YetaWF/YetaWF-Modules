@@ -12,7 +12,7 @@
               <Properties>
                 <Name Value="YetaWF.Modules.DevTests.Controllers.TestEscapesModuleController+EditModel" />
                 <BaseTypeName />
-                <Header Value="Special characters in the header (HeaderAttribute) &lt; &gt; &amp; @ {0}" />
+                <Header Value="Special characters in the header (HeaderAttribute) &lt;A&gt; &amp;amp; &amp; @ {0}" />
                 <Footer />
                 <Legend />
                 <Categories>
@@ -29,11 +29,11 @@
                         <Object Type="YetaWF.Core.Localize.LocalizationData+PropertyData" Assembly="YetaWF.Core">
                           <Properties>
                             <Name Value="String1" />
-                            <Caption Value="Caption &lt; &gt; &amp; @ {0}" />
-                            <Description Value="A description &lt; &gt; &amp; @ {0}" />
+                            <Caption Value="Caption &lt;A&gt; &amp;amp; &amp; @ {0}" />
+                            <Description Value="A description &lt;A&gt; &amp;amp; &amp; @ {0}" />
                             <HelpLink />
-                            <TextAbove Value="Special characters in the text above the field (TextAboveAttribute) &lt; &gt; &amp; @ {0}" />
-                            <TextBelow Value="Special characters in the text below the field (TextAboveAttribute) &lt; &gt; &amp; @ {0}" />
+                            <TextAbove Value="Special characters in the text above the field (TextAboveAttribute) &lt;A&gt; &amp;amp; &amp; @ {0}" />
+                            <TextBelow Value="Special characters in the text below the field (TextAboveAttribute) &lt;A&gt; &amp;amp; &amp; @ {0}" />
                           </Properties>
                         </Object>
                       </Value>
@@ -60,7 +60,7 @@
             <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
               <Properties>
                 <Name Value="okSaved" />
-                <Text Value="Test Done - Here are some special characters in a message: &lt; &gt; &amp; @ {0}" />
+                <Text Value="Test Done - Here are some special characters in a message: &lt;A&gt; &amp;amp; &amp; @ {0}" />
               </Properties>
             </Object>
           </Value>
