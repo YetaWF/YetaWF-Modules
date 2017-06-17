@@ -37,7 +37,7 @@ namespace YetaWF.Modules.TinyLanguage.Controllers {
             if (!ModelState.IsValid)
                 return PartialView(model);
             Manager.SetUserLanguage(model.LanguageId);
-            return Redirect(Manager.ReturnToUrl);
+            return Redirect(Manager.ReturnToUrl, ForceRedirect: true);
         }
     }
 }

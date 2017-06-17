@@ -59,7 +59,7 @@ namespace YetaWF.Modules.Sites.Controllers {
                 return PartialView(model);
 
             string nextPage = Manager.CurrentSite.MakeFullUrl(RealDomain: model.SiteDomain, SecurityType: Core.Pages.PageDefinition.PageSecurityType.httpOnly);
-            return Redirect(nextPage);
+            return Redirect(nextPage, ForceRedirect: true);
         }
     }
 }
