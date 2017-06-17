@@ -19,8 +19,6 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 #else
 using Microsoft.AspNet.Identity;
-using Microsoft.Owin.Security;
-using System.Web;
 using System.Web.Mvc;
 #endif
 
