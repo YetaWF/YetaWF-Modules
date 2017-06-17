@@ -115,6 +115,7 @@ namespace YetaWF.Modules.Identity.Controllers {
             if (user.UserStatus == UserStatusEnum.Approved) {
                 await LoginModuleController.UserLoginAsync(user);
                 Logging.AddLog("User {0} - logged on", user.UserName);
+                returnUrl = QueryHelper.AddRando(returnUrl); // to defeat client-side caching
                 return Redirect(returnUrl);
             } else if (user.UserStatus == UserStatusEnum.Rejected) {
                 LoginModuleController.UserLogoff();

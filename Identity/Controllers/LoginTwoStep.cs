@@ -3,6 +3,7 @@
 using YetaWF.Core.Controllers;
 using YetaWF.Core.Identity;
 using YetaWF.Core.Support.TwoStepAuthorization;
+using YetaWF.Core.Support;
 #if MVC6
 using Microsoft.AspNetCore.Mvc;
 #else
@@ -43,8 +44,10 @@ namespace YetaWF.Modules.Identity.Controllers {
 
             if (closeOnLogin)
                 return View("YetaWF_Identity_TwoStepDone");
-            else
+            else {
+                returnUrl = QueryHelper.AddRando(returnUrl); // to defeat client-side caching
                 return Redirect(returnUrl);
+            }
         }
     }
 }

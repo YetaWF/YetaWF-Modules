@@ -203,7 +203,7 @@ namespace YetaWF.Modules.Identity.Controllers {
                     emails.SendNewUserCreated(user);
                 await LoginModuleController.UserLoginAsync(user, config.PersistentLogin);
                 return FormProcessed(model, this.__ResStr("okRegText", "Your new account has been successfully registered."), this.__ResStr("okRegTitle", "Welcome!"),
-                    NextPage: Manager.ReturnToUrl);
+                    NextPage: Manager.ReturnToUrl, ForceRedirect: true);
             } else
                 throw new InternalError("badUserStatus", "Unexpected account status {0}", user.UserStatus);
         }

@@ -22,6 +22,7 @@ namespace YetaWF.Modules.Identity.Controllers {
         public ActionResult LoginAs(int userId) {
             Resource.ResourceAccess.LoginAs(userId);
             string url = Manager.CurrentSite.HomePageUrl;
+            url = QueryHelper.AddRando(url); // to defeat client-side caching
             return Redirect(url);
         }
 
@@ -40,6 +41,7 @@ namespace YetaWF.Modules.Identity.Controllers {
             if (string.IsNullOrWhiteSpace(url))
                 url = Manager.CurrentSite.HomePageUrl;
             // Because this is a plain MVC controller, this Redirect really redirects (no Unified Page Set handling) which is the desired behavior
+            url = QueryHelper.AddRando(url); // to defeat client-side caching
             return Redirect(url);
         }
     }
