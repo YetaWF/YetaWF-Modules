@@ -206,6 +206,24 @@ namespace YetaWF.Modules.Scheduler.Support {
                             throw new Error(this.__ResStr("errUpdateEnable", "Failed to update scheduler item {0} during startup to enable it ({1})"), item.Name, status);
                     }
 
+                    // check for enabled items that should run eventually but have no Next time
+                    filters = new List<DataProviderFilterInfo> {
+                        new DataProviderFilterInfo {
+                            Logic = "&&",
+                            Filters = new List<DataProviderFilterInfo> {
+                                new DataProviderFilterInfo { Field = "Enabled", Operator = "==", Value = true, },
+                                new DataProviderFilterInfo { Field = "Next", Operator = "==", Value = null, },
+                            },
+                        }
+                    };
+                    list = dataProvider.GetItems(filters);
+                    foreach (var item in list) {
+                        item.SetNextRuntime();
+                        UpdateStatusEnum status = dataProvider.UpdateItem(item);
+                        if (status != UpdateStatusEnum.OK)
+                            throw new Error(this.__ResStr("errUpdateNext", "Failed to update scheduler item {0} during startup to set next time ({1})"), item.Name, status);
+                    }
+
                     // run all enabled startup items : Startup == true and Enabled == true
                     filters = new List<DataProviderFilterInfo> {
                         new DataProviderFilterInfo {
