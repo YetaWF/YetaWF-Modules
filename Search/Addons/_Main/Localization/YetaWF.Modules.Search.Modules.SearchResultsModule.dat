@@ -54,6 +54,14 @@
           <Value>
             <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
               <Properties>
+                <Name Value="noDesc" />
+                <Text Value="(No Description)" />
+              </Properties>
+            </Object>
+          </Value>
+          <Value>
+            <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
+              <Properties>
                 <Name Value="noResults" />
                 <Text Value="Your search for &quot;{0}&quot; did not match any documents." />
               </Properties>

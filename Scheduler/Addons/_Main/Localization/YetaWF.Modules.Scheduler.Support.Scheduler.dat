@@ -59,6 +59,14 @@
               </Properties>
             </Object>
           </Value>
+          <Value>
+            <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
+              <Properties>
+                <Name Value="errUpdateNext" />
+                <Text Value="Failed to update scheduler item {0} during startup to set next time ({1})" />
+              </Properties>
+            </Object>
+          </Value>
         </List>
       </Object>
     </Strings>
