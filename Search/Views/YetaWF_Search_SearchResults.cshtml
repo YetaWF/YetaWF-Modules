@@ -1,6 +1,7 @@
 @*Copyright © 2017 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Search#License*@
 @inherits YetaWF.Core.Views.RazorView<YetaWF.Modules.Search.Modules.SearchResultsModule, YetaWF.Modules.Search.Controllers.SearchResultsModuleController.Model>
 @using YetaWF.Core.Localize
+@using YetaWF.Core.Support
 @if (Model.SearchResults.Count == 0) {
     if (Manager.EditMode) {
         <div class='t_summary t_none'>@__ResStr("noResultsAdmin", "No search results available.")</div>
@@ -27,11 +28,16 @@
         @foreach (YetaWF.Modules.Search.DataProvider.SearchResult data in Model.SearchResults) {
             string row = string.Format("t_r{0}", count);
             string url = Manager.CurrentSite.MakeUrl(data.PageUrl, data.PageSecurity);
+            string urlKwds = QueryHelper.ToUrl(url, Model.QSArgs);// add search kwds
             <div class="t_entry @row">
                 <div class='t_desc @row'>
-                    <a href="@url" target="_blank">@data.Description</a>
+                    @if (!string.IsNullOrWhiteSpace(data.Description)) {
+                        <a href="@urlKwds" target="_blank">@data.Description</a>
+                    } else {
+                        <a href="@urlKwds" target="_blank">@__ResStr("noDesc", "(No Description)")</a>
+                    }
                 </div>
-                @if (Model.ShowSummary) {
+                @if (Model.ShowSummary && !string.IsNullOrWhiteSpace(data.PageSummary)) {
                     <div class='t_symmary @row'>
                         @data.PageSummary
                     </div>

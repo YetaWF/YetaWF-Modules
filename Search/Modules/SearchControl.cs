@@ -6,15 +6,13 @@ using YetaWF.Core.Localize;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Modules;
 using YetaWF.Core.Serializers;
-using YetaWF.Core.Support;
 using YetaWF.DataProvider;
-using YetaWF.Modules.Search.Controllers;
 
 namespace YetaWF.Modules.Search.Modules {
 
     public class SearchControlModuleDataProvider : ModuleDefinitionDataProvider<Guid, SearchControlModule>, IInstallableModel { }
 
-    [ModuleGuid("{f7202e79-30bc-43ea-8d7a-12218785207b}")]
+    [ModuleGuid("{f7202e79-30bc-43ea-8d7a-12218785207b}")] // Published Guid
     [UniqueModule(UniqueModuleStyle.UniqueOnly)]
     public class SearchControlModule : ModuleDefinition {
 
@@ -38,40 +36,36 @@ namespace YetaWF.Modules.Search.Modules {
 
         public override SerializableList<AllowedRole> DefaultAllowedRoles { get { return AdministratorLevel_DefaultAllowedRoles; } }
 
-        public ModuleAction GetAction_On(bool shown) {
+        public ModuleAction GetAction_On() {
             return new ModuleAction(this) {
-                Url = YetaWFManager.UrlFor(typeof(SearchControlModuleController), "Switch"), 
-                QueryArgs = new { Value = true },
                 Image = "On.png",
                 LinkText = this.__ResStr("onLink", "On"),
                 MenuText = this.__ResStr("onText", "On"),
                 Tooltip = this.__ResStr("onTooltip", "Turn on search results highlighting for this page"),
                 Legend = this.__ResStr("onLegend", "Turns on search results highlighting for a page"),
-                Style = ModuleAction.ActionStyleEnum.Post,
+                Style = ModuleAction.ActionStyleEnum.Nothing,
                 Category = ModuleAction.ActionCategoryEnum.Read,
                 Mode = ModuleAction.ActionModeEnum.Any,
                 Location = ModuleAction.ActionLocationEnum.NoAuto,
                 NeedsModuleContext = true,
                 Name = "On",
-                Displayed = shown,
+                Displayed = false,
             };
         }
-        public ModuleAction GetAction_Off(bool shown) {
+        public ModuleAction GetAction_Off() {
             return new ModuleAction(this) {
-                Url = YetaWFManager.UrlFor(typeof(SearchControlModuleController), "Switch"),
-                QueryArgs = new { Value = false },
                 Image = "Off.png",
                 LinkText = this.__ResStr("offLink", "Off"),
                 MenuText = this.__ResStr("offText", "Off"),
                 Tooltip = this.__ResStr("offTooltip", "Turn off search results highlighting for this page"),
                 Legend = this.__ResStr("offLegend", "Turns off search results highlighting for a page"),
-                Style = ModuleAction.ActionStyleEnum.Post,
+                Style = ModuleAction.ActionStyleEnum.Nothing,
                 Category = ModuleAction.ActionCategoryEnum.Read,
                 Mode = ModuleAction.ActionModeEnum.Any,
                 Location = ModuleAction.ActionLocationEnum.NoAuto,
                 NeedsModuleContext = true,
                 Name = "Off",
-                Displayed = shown,
+                Displayed = false,
             };
         }
     }

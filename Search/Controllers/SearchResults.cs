@@ -26,6 +26,7 @@ namespace YetaWF.Modules.Search.Controllers {
             public List<SearchResult> SearchResults { get; set; }
             public bool ShowUrl { get; set; }
             public bool ShowSummary { get; set; }
+            public string QSArgs { get; set; }
         }
 
         [AllowGet]
@@ -37,7 +38,6 @@ namespace YetaWF.Modules.Search.Controllers {
 
             SearchConfigData config = SearchConfigDataProvider.GetConfig();
             using (SearchResultDataProvider searchResDP = new SearchResultDataProvider()) {
-
                 bool haveMore;
                 List<SearchResult> list = searchResDP.GetSearchResults(searchTerms, config.MaxResults, MultiString.ActiveLanguage, Manager.HaveUser, out haveMore);
                 Model model = new Model() {
@@ -47,6 +47,7 @@ namespace YetaWF.Modules.Search.Controllers {
                     MaxResults = config.MaxResults,
                     ShowUrl = config.ShowUrl,
                     ShowSummary = config.ShowSummary,
+                    QSArgs = searchResDP.GetQueryArgsFromKeywords(searchTerms),
                 };
                 return View(model);
             }

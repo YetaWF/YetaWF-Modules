@@ -5,10 +5,23 @@ using System.Linq;
 using YetaWF.Core.DataProvider;
 using YetaWF.Core.Localize;
 using YetaWF.Core.Support;
+using YetaWF.Modules.Search.Addons;
 
 namespace YetaWF.Modules.Search.DataProvider {
 
     public partial class SearchResultDataProvider {
+
+        public string GetQueryArgsFromKeywords(string searchTerms) {
+            List<string> kwds = searchTerms.Split(new char[] { ' ', ',' }).ToList();
+            //using (SearchResultDataProvider searchResDP = new SearchResultDataProvider()) {
+            string searchKwdOr = GetKeyWordOr();
+            string searchKwdAnd = GetKeyWordAnd();
+            kwds.RemoveAll(m => { return m == searchKwdOr; });
+            kwds.RemoveAll(m => { return m == searchKwdAnd; });
+            //}
+            kwds = (from k in kwds select k.Trim(new char[] { '(', ')', '*' })).ToList();
+            return string.Format("{0}={1}", Info.UrlArg, YetaWFManager.HtmlAttributeEncode(string.Join(",", kwds)));
+        }
 
         internal List<SearchResult> Parse(string searchTerms, int maxResults, string languageId, bool haveUser, out bool haveMore, List<DataProviderFilterInfo> extraFilters = null) {
             using (SearchDataProvider searchDP = new SearchDataProvider()) {
