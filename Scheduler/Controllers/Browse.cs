@@ -98,6 +98,8 @@ namespace YetaWF.Modules.Scheduler.Controllers {
             [UIHint("YetaWF_Scheduler_Event"), ReadOnly]
             public SchedulerEvent Event { get; set; }
 
+            public bool __highlight { get { return IsRunning; } }
+
             private SchedulerBrowseModule Module { get; set; }
 
             public SchedulerItem(SchedulerBrowseModule module, SchedulerItemData evnt) {
