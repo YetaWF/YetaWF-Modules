@@ -64,7 +64,7 @@ namespace YetaWF.Modules.Search.Scheduler {
                             SearchWords searchWords = new SearchWords(searchDP, searchStarted);
                             iSearch.KeywordsForDynamicUrls(searchWords);
                             if (slow)
-                                Thread.Sleep(500);// delay a bit (slow can only be used by schedule items)
+                                Thread.Sleep(500);// delay a bit (slow can only be used by scheduler items)
                         } catch (Exception exc) {
                             Logging.AddErrorLog("KeywordsForDynamicUrls failed for {0}", type.FullName, exc);
                         }
@@ -82,7 +82,7 @@ namespace YetaWF.Modules.Search.Scheduler {
                                 SearchWords searchWords = new SearchWords(searchDP, searchStarted);
                                 iSearch.KeywordsForDynamicUrls(searchWords);
                                 if (slow)
-                                    Thread.Sleep(500);// delay a bit (slow can only be used by schedule items)
+                                    Thread.Sleep(500);// delay a bit (slow can only be used by scheduler items)
                             }
                         }
                     } catch (Exception exc) {
@@ -98,7 +98,7 @@ namespace YetaWF.Modules.Search.Scheduler {
                         SearchWords searchWords = new SearchWords(searchDP, searchStarted);
                         SearchPage(searchWords, page);
                         if (slow)
-                            Thread.Sleep(500);// delay a bit (slow can only be used by schedule items)
+                            Thread.Sleep(500);// delay a bit (slow can only be used by scheduler items)
                     }
                 }
 

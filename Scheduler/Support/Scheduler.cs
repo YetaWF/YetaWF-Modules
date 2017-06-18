@@ -123,7 +123,7 @@ namespace YetaWF.Modules.Scheduler.Support {
             Logging.AddTraceLog("Scheduler task started");
 
             // Because initialization is called during application startup, we'll wait before we
-            // check for any schedule items that may be due (just so app start isn't all too slow).
+            // check for any scheduler items that may be due (just so app start isn't all too slow).
             try {
                 Thread.Sleep(defaultStartupTimeSpan);
             } catch (ThreadInterruptedException) {
@@ -344,7 +344,7 @@ namespace YetaWF.Modules.Scheduler.Support {
 
                 TimeSpan diff = DateTime.UtcNow - now;
                 item.RunTime = diff;
-                errors.AppendLine(Logging.AddLog("Elapsed time for schedule item '{0}' was {1} (hh:mm:ss.ms).", item.Name, diff));
+                errors.AppendLine(Logging.AddLog("Elapsed time for scheduler item '{0}' was {1} (hh:mm:ss.ms).", item.Name, diff));
 
             } catch (Exception exc) {
                 errors.AppendLine(Logging.AddErrorLog("Scheduler item {0} failed.", item.Name, exc));
