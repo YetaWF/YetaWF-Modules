@@ -290,7 +290,7 @@ namespace YetaWF.Modules.PageEdit.Controllers {
             if (!page.IsAuthorized_Remove())
                 return NotAuthorized();
             PageDefinition.RemovePageDefinition(pageGuid);
-            return Redirect(null);
+            return Redirect((string)null);
         }
     }
 }
