@@ -12,8 +12,8 @@
               <Properties>
                 <Name Value="YetaWF.Modules.DevTests.Controllers.TestEscapesModuleController+EditModel" />
                 <BaseTypeName />
-                <Header Value="Special characters in the header (HeaderAttribute) &lt;A&gt; &amp;amp; &amp; @ {0}" />
-                <Footer />
+                <Header Value="This test page is used to test correct character encoding - header (HeaderAttribute) &lt;A&gt; &amp;amp; &amp; @ {0}" />
+                <Footer Value="Special characters in the footer (FooterAttribute) &lt;A&gt; &amp;amp; &amp; @ {0}" />
                 <Legend />
                 <Categories>
                   <Object Type="YetaWF.Core.Serializers.SerializableDictionary`2[[System.String, mscorlib, Culture=neutral, PublicKeyToken=b77a5c561934e089],[System.String, mscorlib, Culture=neutral, PublicKeyToken=b77a5c561934e089]]" Assembly="YetaWF.Core">
@@ -33,7 +33,7 @@
                             <Description Value="A description &lt;A&gt; &amp;amp; &amp; @ {0}" />
                             <HelpLink />
                             <TextAbove Value="Special characters in the text above the field (TextAboveAttribute) &lt;A&gt; &amp;amp; &amp; @ {0}" />
-                            <TextBelow Value="Special characters in the text below the field (TextAboveAttribute) &lt;A&gt; &amp;amp; &amp; @ {0}" />
+                            <TextBelow Value="Special characters in the text below the field (TextBelowAttribute) &lt;A&gt; &amp;amp; &amp; @ {0}" />
                           </Properties>
                         </Object>
                       </Value>
