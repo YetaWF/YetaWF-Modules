@@ -77,6 +77,7 @@ namespace YetaWF.Modules.Packages.DataProvider {
                 BuildSiteUsingTemplate("InitialSite.txt");
                 //BuildSiteUsingTemplate("Custom Site (Initial Site).txt");
             }
+            Package.SavePackageMap();
 
             SiteDefinition.RemoveInitialInstall();
             Logging.UnregisterLogging(log);
