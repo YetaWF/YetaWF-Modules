@@ -127,6 +127,7 @@ namespace YetaWF.Modules.Pages.DataProvider {
                         case WebConfigHelper.IOModeEnum.File:
                             _dataProvider = new YetaWF.DataProvider.FileDataProvider<Guid, UnifiedSetData>(
                                 Path.Combine(YetaWFManager.DataFolder, AreaName + "_UnifiedSets", SiteIdentity.ToString()),
+                                CurrentSiteIdentity: SiteIdentity,
                                 Cacheable: true);
                             break;
                         case WebConfigHelper.IOModeEnum.Sql:
