@@ -26,7 +26,7 @@ namespace YetaWF.Modules.Blog.Controllers {
 
             [Caption("Shortname"), Description("The Shortname you assigned to your site (at Disqus) - If omitted, Disqus comments are not available")]
             [UIHint("Text40"), StringLength(DisqusConfigData.MaxShortName), ShortNameValidation, Trim]
-            [HelpLink("https://yetawf.disqus.com/admin/settings/general/")]
+            [HelpLink("https://disqus.com/admin/settings/general/")]
             public string ShortName { get; set; }
 
             [Caption("Single Sign On"), Description("Defines whether SSO (Single Sign On) is enabled for your site allowing users to log in using their credentials")]
