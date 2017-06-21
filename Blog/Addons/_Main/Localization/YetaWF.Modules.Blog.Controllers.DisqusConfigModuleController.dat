@@ -127,7 +127,7 @@
                             <Name Value="ShortName" />
                             <Caption Value="Shortname" />
                             <Description Value="The Shortname you assigned to your site (at Disqus) - If omitted, Disqus comments are not available" />
-                            <HelpLink Value="https://yetawf.disqus.com/admin/settings/general/" />
+                            <HelpLink Value="https://disqus.com/admin/settings/general/" />
                             <TextAbove />
                             <TextBelow />
                           </Properties>
