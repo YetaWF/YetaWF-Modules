@@ -85,7 +85,7 @@ namespace YetaWF.Modules.Pages.DataProvider {
         public SerializableList<Guid> PageGuids { get; set; }
 
         public UnifiedSetData() {
-            UnifiedMode = PageDefinition.UnifiedModeEnum.ShowDivs;
+            UnifiedMode = PageDefinition.UnifiedModeEnum.SkinDynamicContent;
             UnifiedAnimation = 1000;
             PageList = new List<string>();
             PageGuids = new SerializableList<Guid>();
