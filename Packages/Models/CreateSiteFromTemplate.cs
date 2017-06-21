@@ -793,7 +793,7 @@ namespace YetaWF.Modules.Packages.DataProvider {
         private void ExtractSQLSection(List<string> lines, bool build) {
 
             string sqlConn = WebConfigHelper.GetValue<string>(DataProviderImpl.DefaultString, DataProviderImpl.SQLConnectString);
-            if (string.IsNullOrWhiteSpace(sqlConn)) throw TemplateError("No Sql connection string found in web.config/appsettings.json (P:Default:SQLConnect)");
+            if (string.IsNullOrWhiteSpace(sqlConn)) throw TemplateError("No Sql connection string found in Appsettings.json (P:Default:SQLConnect)");
 
             for (; lines.Count > 0;) {
 

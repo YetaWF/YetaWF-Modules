@@ -143,7 +143,7 @@ namespace YetaWF.Modules.Identity.Controllers {
 
             Manager.RestartSite();
 
-            return FormProcessed(model, this.__ResStr("okSaved", "Web.config/appsettings.json has been updated - Web application is now restarting."), NextPage: Manager.CurrentSite.HomePageUrl);
+            return FormProcessed(model, this.__ResStr("okSaved", "Appsettings.json has been updated - Web application is now restarting."), NextPage: Manager.CurrentSite.HomePageUrl);
         }
     }
 }

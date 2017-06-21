@@ -176,7 +176,7 @@ namespace YetaWF.Modules.Scheduler.DataProvider {
             return newFilters;
         }
 
-        // WEB.CONFIG/APPSETTINGS.JSON
+        // APPSETTINGS.JSON
 
         public void SetRunning(bool running) {
             if (running != GetRunning()) {
