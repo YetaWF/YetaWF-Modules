@@ -95,7 +95,7 @@
             <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
               <Properties>
                 <Name Value="explain" />
-                <Text Value="&lt;p&gt;Disposable objects implement the IDisposable interface. Their creation/destruction is tracked using the DisposableTracker class. If objects are shown they should be checked as they are possible leaks. Some classes deliberately create near permanent disposable object. These are SiteDefinition, LanguageData and LogRecordDataProvider. More than one object may be created per class. Only objects with explicit calls to DisposableTracker.AddObject/RemoveObject are tracked.&lt;/p&gt;&lt;p&gt;Tracking is enabled/disabled in the site's Web.config/appsettings.json using &amp;lt;add key=&quot;P: YetaWF_Core:DisposableTracker&quot; value=&quot;true|false&quot; /&amp;gt;&lt;/p&gt;" />
+                <Text Value="&lt;p&gt;Disposable objects implement the IDisposable interface. Their creation/destruction is tracked using the DisposableTracker class. If objects are shown they should be checked as they are possible leaks. Some classes deliberately create near permanent disposable object. These are SiteDefinition, LanguageData and LogRecordDataProvider. More than one object may be created per class. Only objects with explicit calls to DisposableTracker.AddObject/RemoveObject are tracked.&lt;/p&gt;&lt;p&gt;Tracking is enabled/disabled in the site's Appsettings.json file using &quot;P:YetaWF_Core:DisposableTracker&quot; set to true or false.&lt;/p&gt;" />
               </Properties>
             </Object>
           </Value>

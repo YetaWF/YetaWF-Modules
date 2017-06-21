@@ -228,7 +228,7 @@
             <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
               <Properties>
                 <Name Value="okSaved" />
-                <Text Value="Web.config/appsettings.json has been updated - Web application is now restarting." />
+                <Text Value="Appsettings.json has been updated - Web application is now restarting." />
               </Properties>
             </Object>
           </Value>
