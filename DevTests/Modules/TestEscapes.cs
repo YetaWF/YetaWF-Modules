@@ -30,7 +30,7 @@ namespace YetaWF.Modules.DevTests.Modules {
             return new ModuleAction(this) {
                 Url = string.IsNullOrWhiteSpace(url) ? ModulePermanentUrl : url,
                 QueryArgs = new { SomeChars = "TEST < > & @ {0} TEST" },
-                Image = "#Edit",
+                Image = "#Display",
                 LinkText = this.__ResStr("editLink", "Escapes"),
                 MenuText = this.__ResStr("editText", "Escapes"),
                 Tooltip = this.__ResStr("editTooltip", "Test various client-side & server side character translations/escapes"),
