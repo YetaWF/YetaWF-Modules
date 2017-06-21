@@ -104,6 +104,7 @@ namespace YetaWF.Modules.Languages.Controllers {
                 locSupport.SetUseLocalizationResources(model.UseLocalizationResources);
                 locSupport.SetAbortOnFailure(model.AbortOnFailure);
                 dataProvider.UpdateConfig(data);
+                Manager.RestartSite();
             }
             return FormProcessed(model, this.__ResStr("okSaved", "Localization settings saved - The site is now restarting"));
         }

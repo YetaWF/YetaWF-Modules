@@ -166,6 +166,7 @@ namespace YetaWF.Modules.Scheduler.Controllers {
             using (SchedulerDataProvider dataProvider = new SchedulerDataProvider()) {
                 dataProvider.SetRunning(start);
             }
+            Manager.RestartSite();
             return FormProcessed(null,
                 start ?
                 this.__ResStr("okStarting", "The scheduler has been started and the site is restarting") :
