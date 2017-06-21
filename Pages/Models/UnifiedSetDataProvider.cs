@@ -219,8 +219,13 @@ namespace YetaWF.Modules.Pages.DataProvider {
                 // find a unified page set that uses the matching skin
                 int total;
                 List<DataProviderFilterInfo> filters = null;
-                filters = DataProviderFilterInfo.Join(filters, new DataProviderFilterInfo { Field = "PageSkin_Collection", Operator = "==", Value = collectionName });
-                filters = DataProviderFilterInfo.Join(filters, new DataProviderFilterInfo { Field = "PageSkin_FileName", Operator = "==", Value = skinName });
+                if (unifiedSetDP.IOMode == WebConfigHelper.IOModeEnum.File) {
+                    filters = DataProviderFilterInfo.Join(filters, new DataProviderFilterInfo { Field = "PageSkin.Collection", Operator = "==", Value = collectionName });
+                    filters = DataProviderFilterInfo.Join(filters, new DataProviderFilterInfo { Field = "PageSkin.FileName", Operator = "==", Value = skinName });
+                } else if (unifiedSetDP.IOMode == WebConfigHelper.IOModeEnum.Sql) {
+                    filters = DataProviderFilterInfo.Join(filters, new DataProviderFilterInfo { Field = "PageSkin_Collection", Operator = "==", Value = collectionName });
+                    filters = DataProviderFilterInfo.Join(filters, new DataProviderFilterInfo { Field = "PageSkin_FileName", Operator = "==", Value = skinName });
+                }
                 filters = DataProviderFilterInfo.Join(filters, new DataProviderFilterInfo { Field = "UnifiedMode", Operator = "==", Value = PageDefinition.UnifiedModeEnum.SkinDynamicContent });
                 unifiedSet = unifiedSetDP.GetItems(0, 1, null, filters, out total).FirstOrDefault();
                 if (unifiedSet != null) {
