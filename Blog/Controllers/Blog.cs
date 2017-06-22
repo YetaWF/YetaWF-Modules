@@ -28,13 +28,16 @@ namespace YetaWF.Modules.Blog.Controllers {
             public int Identity { get; set; }
             public int CategoryIdentity { get; set; }
 
-            [Caption("Title"), Description("The title for this blog entry")]
-            [UIHint("MultiString"), ReadOnly]
             public MultiString Title { get; set; }
 
             [Caption("Author"), Description("The name of the blog author")]
-            [UIHint("String"), ReadOnly]
+            [UIHint("String"), ReadOnly, SuppressIfNotEqual("AuthorUrl", null)]
             public string Author { get; set; }
+
+            [Caption("Author"), Description("The optional Url linking to the author's information")]
+            [UIHint("Url"), ReadOnly, SuppressEmpty]
+            public string AuthorUrl { get; set; }
+            public string AuthorUrl_Text { get { return Author; } }
 
             [Caption("Date Published"), Description("The date this entry has been published")]
             [UIHint("Date"), ReadOnly]
