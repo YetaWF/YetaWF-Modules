@@ -25,7 +25,7 @@ namespace YetaWF.Modules.Pages.Modules {
             WantSearch = false;
             Invokable = true;
             InvokeInPopup = false;
-            InvokeInAjax = true;
+            InvokeInAjax = false;
         }
 
         public override IModuleDefinitionIO GetDataProvider() { return new SkinScrollToTopModuleDataProvider(); }
