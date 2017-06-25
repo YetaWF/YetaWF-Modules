@@ -6,6 +6,9 @@ using YetaWF.Core.Models;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Modules.UserProfile.DataProvider;
 using YetaWF.Modules.UserProfile.Attributes;
+using YetaWF.Core.Views.Shared;
+using YetaWF.Core.Support;
+using YetaWF.Core;
 #if MVC6
 using Microsoft.AspNetCore.Mvc;
 using YetaWF.Core.Support;
@@ -13,12 +16,10 @@ using YetaWF.Core.Support;
 using System.Web.Mvc;
 #endif
 
-// TODO: Address type should be driven off country selection and support multiple address types,
-// and consider the site's default Country for defaults.
-// Currently it's just a bit too biased towards US addresses.
-// https://blink.ucsd.edu/facilities/services/mail/international/addressing/index.html
-
 namespace YetaWF.Modules.UserProfile.Controllers {
+
+    // The Countries.txt file at .\CoreComponents\Core\Addons\_Templates\CountryISO3166 is used to define address types for each country.
+    // If a 5th entry is present it defines the address type. Otherwise "Generic" is the default.
 
     public class ProfileEditModuleController : ControllerImpl<YetaWF.Modules.UserProfile.Modules.ProfileEditModule> {
 
@@ -42,29 +43,61 @@ namespace YetaWF.Modules.UserProfile.Controllers {
             [UIHint("Text40"), StringLength(UserInfo.MaxAddress), Trim]
             public string Address2 { get; set; }
 
-            [Caption("Mailing Address Location"), Description("Select the location of your mailing address")]
-            [UIHint("Enum")]
-            public AddressTypeEnum AddressType { get; set; }
+            [Caption("Country"), Description("The country for your mailing address")]
+            [UIHint("CountryISO3166"), StringLength(UserInfo.MaxCountry), Trim, Required, SubmitFormOnChange(SubmitFormOnChangeAttribute.SubmitTypeEnum.Apply)]
+            public string Country { get; set; }
+            public string AddressType { get { return string.IsNullOrWhiteSpace(Country) ? null : CountryISO3166Helper.CountryToAddressType(Country); } }
 
+            // US - United States
             [Caption("City"), Description("The city portion of your mailing address")]
-            [UIHint("Text40"), StringLength(UserInfo.MaxCity), Trim, Required, ProcessIf("AddressType", AddressTypeEnum.US)]
+            [UIHint("Text40"), StringLength(UserInfo.MaxCity), Trim, Required, SuppressIfNotEqual("AddressType", CountryISO3166Helper.Country.US)]
             public string CityUS { get; set; }
             [Caption("State"), Description("The state of your mailing address")]
-            [UIHint("USState"), StringLength(UserInfo.MaxState), Trim, Required, ProcessIf("AddressType", AddressTypeEnum.US)]
+            [UIHint("USState"), StringLength(UserInfo.MaxState), Trim, Required, SuppressIfNotEqual("AddressType", CountryISO3166Helper.Country.US)]
             public string StateUS { get; set; }
             [Caption("ZIP Code"), Description("The ZIP code of your mailing address - Use format 00000 or 00000-0000")]
-            [UIHint("Text10"), StringLength(UserInfo.MaxZip), Trim, Required, ProcessIf("AddressType", AddressTypeEnum.US)]
+            [UIHint("Text10"), StringLength(UserInfo.MaxZip), Trim, Required, SuppressIfNotEqual("AddressType", CountryISO3166Helper.Country.US)]
             [ZipCodeValidation]
             public string ZipUS { get; set; }
 
-            [Caption("City & Postal Code"), Description("The city and postal code for your mailing address")]
-            [UIHint("Text40"), StringLength(UserInfo.MaxCity), Trim, Required, ProcessIf("AddressType", AddressTypeEnum.International)]
-            public string CityInternational { get; set; }
-            [Caption("Country"), Description("The country for your mailing address")]
-            [UIHint("CountryISO3166"), StringLength(UserInfo.MaxCountry), Trim, Required, ProcessIf("AddressType", AddressTypeEnum.International)]
-            public string Country { get; set; }
+            // Zip1 - Postal code first
+            [Caption("Postal Code"), Description("The postal code for your mailing address")]
+            [UIHint("Text20"), StringLength(UserInfo.MaxZip), Trim, Required, SuppressIfNotEqual("AddressType", CountryISO3166Helper.Country.Zip1)]
+            public string ZipZip1 { get; set; }
+            [Caption("City"), Description("The city portion of your mailing address")]
+            [UIHint("Text40"), StringLength(UserInfo.MaxCity), Trim, Required, SuppressIfNotEqual("AddressType", CountryISO3166Helper.Country.Zip1)]
+            public string CityZip1 { get; set; }
 
-            [Caption("Telephone Number"), Description("Your telephone number - please include country code and extensions if necessary")]
+            // ZipLast - Postal code last
+            [Caption("City"), Description("The city portion of your mailing address")]
+            [UIHint("Text40"), StringLength(UserInfo.MaxCity), Trim, Required, SuppressIfNotEqual("AddressType", CountryISO3166Helper.Country.ZipLast)]
+            public string CityZipLast { get; set; }
+            [Caption("Postal Code"), Description("The postal code of your mailing address")]
+            [UIHint("Text20"), StringLength(UserInfo.MaxZip), Trim, Required, SuppressIfNotEqual("AddressType", CountryISO3166Helper.Country.ZipLast)]
+            public string ZipZipLast { get; set; }
+
+            // Generic
+            [Caption("City"), Description("The city portion of your mailing address")]
+            [UIHint("Text40"), StringLength(UserInfo.MaxCity), Trim, Required, SuppressIfNotEqual("AddressType", CountryISO3166Helper.Country.Generic)]
+            public string CityGeneric { get; set; }
+            [Caption("Postal Code"), Description("The postal code of your mailing address")]
+            [UIHint("Text20"), StringLength(UserInfo.MaxZip), Trim, Required, SuppressIfNotEqual("AddressType", CountryISO3166Helper.Country.Generic)]
+            public string ZIPGeneric { get; set; }
+
+#if EXAMPLE
+            // DE - Germany (example, could be further customized with specific validation attributes)
+            // In Countries.txt file at .\CoreComponents\Core\Addons\_Templates\CountryISO3166, add an address type entry DE as the last entry (instead of Zip1)
+            // which enables custom processing for address type "DE" when Germany is selected. The address type "DE" could be any unique string and
+            // doesn't have to match the country id.
+            // Germany+DE+DEU+276+DE  instead of  Germany+DE+DEU+276+Zip1
+            [Caption("PLZ"), Description("The Postleitzahl for your mailing address")]
+            [UIHint("Text10"), StringLength(5), Trim, Required, SuppressIfNotEqual("AddressType", "DE")]
+            public string ZipDE { get; set; }
+            [Caption("City"), Description("The city for your mailing address")]
+            [UIHint("Text20"), StringLength(UserInfo.MaxCity), Trim, Required, SuppressIfNotEqual("AddressType", "DE")]
+            public string CityDE { get; set; }
+#endif
+            [Caption("Telephone Number"), Description("Your telephone number - please include country code and extension if necessary")]
             [UIHint("Text40"), StringLength(UserInfo.MaxTelephone), Required, Trim]
             public string Telephone { get; set; }
             [Caption("Email Address"), Description("Your email address - This is defined by your account on this site")]
@@ -73,30 +106,54 @@ namespace YetaWF.Modules.UserProfile.Controllers {
 
             public EditModel() { }
 
-            public UserInfo GetData(UserInfo data) {
-                ObjectSupport.CopyData(this, data);
-                if (AddressType == AddressTypeEnum.US) {
-                    data.City = CityUS;
-                    data.State = StateUS;
-                    data.Zip = ZipUS;
-                    data.Country = null;
-                } else {
-                    data.City = CityInternational;
-                    data.State = null;
-                    data.Zip = null;
-                    data.Country = Country;
-                }
-                return data;
+            public UserInfo GetData(UserInfo userInfo) {
+                ObjectSupport.CopyData(this, userInfo);
+                if (AddressType == CountryISO3166Helper.Country.US) {
+                    userInfo.City = CityUS;
+                    userInfo.State = StateUS;
+                    userInfo.Zip = ZipUS;
+                } else if (AddressType == CountryISO3166Helper.Country.Zip1) {
+                    userInfo.City = CityZip1;
+                    userInfo.State = null;
+                    userInfo.Zip = ZipZip1;
+                } else if (AddressType == CountryISO3166Helper.Country.ZipLast) {
+                    userInfo.City = CityZipLast;
+                    userInfo.State = null;
+                    userInfo.Zip = ZipZipLast;
+#if EXAMPLE
+                } else if (AddressType == "DE") {
+                    userInfo.City = CityDE;
+                    userInfo.State = null;
+                    userInfo.Zip = ZipDE;
+#endif
+                } else if (AddressType == CountryISO3166Helper.Country.Generic) {
+                    userInfo.City = CityGeneric;
+                    userInfo.State = null;
+                    userInfo.Zip = ZIPGeneric;
+                } else
+                    throw new InternalError("Invalid address type {0}", AddressType);
+                return userInfo;
             }
-            public void SetData(UserInfo data) {
-                ObjectSupport.CopyData(data, this);
-                AddressType = string.IsNullOrWhiteSpace(Country) ? AddressTypeEnum.US : AddressTypeEnum.International;
-                if (AddressType == AddressTypeEnum.US) {
-                    CityUS = data.City;
-                    StateUS = data.State;
-                    ZipUS = data.Zip;
+            public void SetData(UserInfo userInfo) {
+                ObjectSupport.CopyData(userInfo, this);
+                if (AddressType == CountryISO3166Helper.Country.US) {
+                    CityUS = userInfo.City;
+                    StateUS = userInfo.State;
+                    ZipUS = userInfo.Zip;
+                } else if (AddressType == CountryISO3166Helper.Country.Zip1) {
+                    CityZip1 = userInfo.City;
+                    ZipZip1 = userInfo.Zip;
+                } else if (AddressType == CountryISO3166Helper.Country.ZipLast) {
+                    CityZipLast = userInfo.City;
+                    ZipZipLast = userInfo.Zip;
+#if EXAMPLE
+                } else if (AddressType == "DE") {
+                    CityDE = userInfo.City;
+                    ZipDE = userInfo.Zip;
+#endif
                 } else {
-                    CityInternational = data.City;
+                    CityGeneric = userInfo.City;
+                    ZIPGeneric = userInfo.Zip;
                 }
             }
             public void UpdateData(UserInfo userInfo) {
@@ -132,8 +189,15 @@ namespace YetaWF.Modules.UserProfile.Controllers {
                     newUser = true;
                     userInfo = new UserInfo();
                 }
-
                 model.UpdateData(userInfo);
+
+                // in case of apply, we're just updating the form with new fields - we chose a postback when switching
+                // the country as potentially many different address formats could be supported which could overwhelm client side processing
+                // so we only provide the fields for one country to the form.
+                if (Manager.RequestForm[Globals.Link_SubmitIsApply] != null) {
+                    ModelState.Clear();
+                    return PartialView(model);
+                }
                 if (!ModelState.IsValid)
                     return PartialView(model);
 

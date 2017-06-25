@@ -3,6 +3,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using YetaWF.Core;
 using YetaWF.Core.DataProvider;
 using YetaWF.Core.DataProvider.Attributes;
 using YetaWF.Core.Identity;
@@ -11,8 +12,12 @@ using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Packages;
 using YetaWF.Core.Serializers;
 using YetaWF.Core.Support;
+using YetaWF.Core.Views.Shared;
 
 namespace YetaWF.Modules.UserProfile.DataProvider {
+
+    // The user's Country was incorrectly set to null when the user was in the US
+    // When retrieving/updating records we're replacing null with United States so the country is always available
 
     public enum AddressTypeEnum {
         [EnumDescription("Domestic, US Address")]
@@ -27,8 +32,8 @@ namespace YetaWF.Modules.UserProfile.DataProvider {
         public const int MaxCompanyName = 50;
         public const int MaxAddress = 50;
         public const int MaxCity = 50;
-        public const int MaxState = 2;
-        public const int MaxZip = 10;
+        public const int MaxState = 50;
+        public const int MaxZip = 20;
         public const int MaxCountry = 50;
         public const int MaxTelephone = 20;
 
@@ -59,10 +64,19 @@ namespace YetaWF.Modules.UserProfile.DataProvider {
 
         public string CityCombined {
             get {
-                if (string.IsNullOrWhiteSpace(Country))
+                string addressType = CountryISO3166Helper.CountryToAddressType(Country);
+                if (addressType == CountryISO3166Helper.Country.US)
                     return City + ", " + State + " " + Zip;
-                else
-                    return City;
+                else if (addressType == CountryISO3166Helper.Country.Zip1)
+                    return Zip + " " + City;
+                else if (addressType == CountryISO3166Helper.Country.ZipLast)
+                    return City + " " + Zip;
+#if DEBUG
+                else if (addressType == "DE")
+                    return Zip + " " + City;
+#endif
+                //else if (addressType == CountryISO3166Helper.Country.Generic)
+                return City + " " + Zip;
             }
         }
         [Data_DontSave]
@@ -114,21 +128,30 @@ namespace YetaWF.Modules.UserProfile.DataProvider {
             return string.Format("{0}_{1}", this.AreaName, key);
         }
         public UserInfo GetItem(int key) {
-            return DataProvider.Get(key);
+            UserInfo userInfo = DataProvider.Get(key);
+            if (userInfo == null) return null;
+            if (string.IsNullOrWhiteSpace(userInfo.Country)) userInfo.Country = Globals.DefaultCountry;
+            return userInfo;
         }
-        public bool AddItem(UserInfo data) {
-            data.Created = DateTime.UtcNow;
-            return DataProvider.Add(data);
+        public bool AddItem(UserInfo userInfo) {
+            userInfo.Created = DateTime.UtcNow;
+            if (string.IsNullOrWhiteSpace(userInfo.Country)) userInfo.Country = Globals.DefaultCountry;
+            return DataProvider.Add(userInfo);
         }
-        public UpdateStatusEnum UpdateItem(UserInfo data) {
-            data.Updated = DateTime.UtcNow;
-            return DataProvider.Update(data.UserId, data.UserId, data);
+        public UpdateStatusEnum UpdateItem(UserInfo userInfo) {
+            userInfo.Updated = DateTime.UtcNow;
+            if (string.IsNullOrWhiteSpace(userInfo.Country)) userInfo.Country = Globals.DefaultCountry;
+            return DataProvider.Update(userInfo.UserId, userInfo.UserId, userInfo);
         }
         public bool RemoveItem(int key) {
             return DataProvider.Remove(key);
         }
         public List<UserInfo> GetItems(int skip, int take, List<DataProviderSortInfo> sort, List<DataProviderFilterInfo> filters, out int total) {
-            return DataProvider.GetRecords(skip, take, sort, filters, out total);
+            List<UserInfo> list = DataProvider.GetRecords(skip, take, sort, filters, out total);
+            foreach (UserInfo l in list) {
+                if (string.IsNullOrWhiteSpace(l.Country)) l.Country = Globals.DefaultCountry;
+            }
+            return list;
         }
         public int RemoveItems(List<DataProviderFilterInfo> filters) {
             return DataProvider.RemoveRecords(filters);
