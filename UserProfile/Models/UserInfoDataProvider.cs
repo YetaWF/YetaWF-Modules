@@ -62,23 +62,8 @@ namespace YetaWF.Modules.UserProfile.DataProvider {
         [StringLength(MaxTelephone)]
         public string Telephone { get; set; }
 
-        public string CityCombined {
-            get {
-                string addressType = CountryISO3166Helper.CountryToAddressType(Country);
-                if (addressType == CountryISO3166Helper.Country.US)
-                    return City + ", " + State + " " + Zip;
-                else if (addressType == CountryISO3166Helper.Country.Zip1)
-                    return Zip + " " + City;
-                else if (addressType == CountryISO3166Helper.Country.ZipLast)
-                    return City + " " + Zip;
-#if DEBUG
-                else if (addressType == "DE")
-                    return Zip + " " + City;
-#endif
-                //else if (addressType == CountryISO3166Helper.Country.Generic)
-                return City + " " + Zip;
-            }
-        }
+        public string CityCombined { get { return CountryISO3166Helper.CombineCityStateZip(Country, City, State, Zip); } }
+
         [Data_DontSave]
         public string Email { get; set; }
     }
