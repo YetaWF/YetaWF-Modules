@@ -25,7 +25,7 @@ namespace YetaWF.Modules.Search.Modules {
             WantSearch = false;
             Print = false;
             Invokable = true;
-            InvokeInPopup = true;
+            InvokeInPopup = false;
             InvokeInAjax = false;
         }
 

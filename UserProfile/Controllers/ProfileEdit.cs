@@ -4,14 +4,19 @@ using YetaWF.Core.Controllers;
 using YetaWF.Core.Localize;
 using YetaWF.Core.Models;
 using YetaWF.Core.Models.Attributes;
-using YetaWF.Core.Support;
 using YetaWF.Modules.UserProfile.DataProvider;
 using YetaWF.Modules.UserProfile.Attributes;
 #if MVC6
 using Microsoft.AspNetCore.Mvc;
+using YetaWF.Core.Support;
 #else
 using System.Web.Mvc;
 #endif
+
+// TODO: Address type should be driven off country selection and support multiple address types,
+// and consider the site's default Country for defaults.
+// Currently it's just a bit too biased towards US addresses.
+// https://blink.ucsd.edu/facilities/services/mail/international/addressing/index.html
 
 namespace YetaWF.Modules.UserProfile.Controllers {
 
@@ -56,7 +61,7 @@ namespace YetaWF.Modules.UserProfile.Controllers {
             [UIHint("Text40"), StringLength(UserInfo.MaxCity), Trim, Required, ProcessIf("AddressType", AddressTypeEnum.International)]
             public string CityInternational { get; set; }
             [Caption("Country"), Description("The country for your mailing address")]
-            [UIHint("Text40"), StringLength(UserInfo.MaxCountry), Trim, Required, ProcessIf("AddressType", AddressTypeEnum.International)]
+            [UIHint("CountryISO3166"), StringLength(UserInfo.MaxCountry), Trim, Required, ProcessIf("AddressType", AddressTypeEnum.International)]
             public string Country { get; set; }
 
             [Caption("Telephone Number"), Description("Your telephone number - please include country code and extensions if necessary")]
