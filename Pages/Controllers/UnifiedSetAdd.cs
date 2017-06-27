@@ -37,7 +37,7 @@ namespace YetaWF.Modules.Pages.Controllers {
             public string Description { get; set; }
 
             [Caption("Master Page"), Description("Defines the master page for the Unified Page Set that defines the skin, referenced modules, authorization and all other page attributes - The Master Page is not automatically included in the Unified Page Set")]
-            [UIHint("PageSelection")]
+            [UIHint("PageSelection"), SelectionRequired]
             public Guid MasterPageGuid { get; set; }
 
             [Caption("Mode"), Description("Defines how page content is combined")]
