@@ -31,6 +31,7 @@ using YetaWF.Core.Packages;
 [assembly: ServiceLevel(ServiceLevelEnum.LowLevelServiceProvider)]
 
 [assembly: Resource(Info.Resource_AllowUserLogon, "Allow logon as another user", Administrator = true, Superuser = true)]
+[assembly: Resource(Info.Resource_AllowUserIdAjax, "Allow user list retrieval (Ajax) for UserId template", Administrator = true, Superuser = true)]
 
 [assembly: InstallOrder(typeof(YetaWF.Modules.Identity.DataProvider.RoleDefinitionDataProvider))]
 [assembly: InstallOrder(typeof(YetaWF.Modules.Identity.DataProvider.SuperuserDefinitionDataProvider))]
