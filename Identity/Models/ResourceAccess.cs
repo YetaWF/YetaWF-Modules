@@ -57,7 +57,7 @@ namespace YetaWF.Modules.Identity.DataProvider {
                 return true;
 
             // check if this is the superuser
-            if (Manager.UserId == SuperuserDefinitionDataProvider.SuperUserId)
+            if (Manager.HasSuperUserRole)
                 return true;
 
             using (AuthorizationDataProvider authDP = new AuthorizationDataProvider())
