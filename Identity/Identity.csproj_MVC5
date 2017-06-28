@@ -129,13 +129,16 @@
     <Compile Include="Controllers\Need2FADisplay.cs" />
     <Compile Include="Controllers\SelectTwoStepSetup.cs" />
     <Compile Include="Controllers\SelectTwoStepAuth.cs" />
+    <Compile Include="Controllers\Support\UserIdHelper.cs" />
     <Compile Include="Controllers\TemplateRolesSelector.cs" />
+    <Compile Include="Controllers\TemplateUserId.cs" />
     <Compile Include="Models\UserLoginInfoDataProvider.cs" />
     <Compile Include="Modules\ForgotPassword.cs" />
     <Compile Include="Modules\Need2FADisplay.cs" />
     <Compile Include="Modules\SelectTwoStepSetup.cs" />
     <Compile Include="Modules\SelectTwoStepAuth.cs" />
     <Compile Include="Modules\TemplateRolesSelectorModule.cs" />
+    <Compile Include="Modules\TemplateUserIdModule.cs" />
     <Compile Include="Startup\AreaRegistration.cs" />
     <Compile Include="Startup\AttributeAuthorizationHandler.cs" />
     <Compile Include="Startup\Info.cs" />
@@ -216,6 +219,7 @@
     <Compile Include="ViewsCode\Shared\UsersHelper.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Addons\_Main\Grids\UserIdHelper.GridAllEntry" />
     <None Include="Addons\_Main\Grids\RolesSelectorHelper.GridDisplay" />
     <None Include="Addons\_Main\Grids\RolesSelectorHelper.GridEdit" />
     <None Include="app.config">
@@ -231,8 +235,13 @@
     <Content Include="Addons\_Main\Icons\LoginProviders\Microsoft.png" />
     <Content Include="Addons\_Main\Icons\LoginProviders\Twitter.png" />
     <Content Include="Addons\_Main\Login.css" />
+    <Content Include="Addons\_SiteTemplates\YetaWF_Identity.2.5.1.txt" />
     <Content Include="Addons\_SiteTemplates\YetaWF_Identity.2.0.1.txt" />
     <Content Include="Addons\_SiteTemplates\YetaWF_Identity.1.0.5.txt" />
+    <Content Include="Addons\_Templates\UserId\filelistCSS.txt" />
+    <Content Include="Addons\_Templates\UserId\filelistJS.txt" />
+    <Content Include="Addons\_Templates\UserId\UserId.js" />
+    <Content Include="Addons\_Templates\UserId\UserId.css" />
     <Content Include="Addons\_Templates\RoleId\filelistCSS.txt" />
     <Content Include="Addons\_Templates\RoleId\RoleId.css" />
     <Content Include="Views\Shared\DisplayTemplates\YetaWF_Identity_Email.cshtml" />

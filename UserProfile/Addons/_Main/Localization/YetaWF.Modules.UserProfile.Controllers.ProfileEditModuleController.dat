@@ -52,21 +52,9 @@
                       <Value>
                         <Object Type="YetaWF.Core.Localize.LocalizationData+PropertyData" Assembly="YetaWF.Core">
                           <Properties>
-                            <Name Value="AddressType" />
-                            <Caption Value="Mailing Address Location" />
-                            <Description Value="Select the location of your mailing address" />
-                            <HelpLink />
-                            <TextAbove />
-                            <TextBelow />
-                          </Properties>
-                        </Object>
-                      </Value>
-                      <Value>
-                        <Object Type="YetaWF.Core.Localize.LocalizationData+PropertyData" Assembly="YetaWF.Core">
-                          <Properties>
-                            <Name Value="CityInternational" />
-                            <Caption Value="City &amp; Postal Code" />
-                            <Description Value="The city and postal code for your mailing address" />
+                            <Name Value="CityGeneric" />
+                            <Caption Value="City" />
+                            <Description Value="The city portion of your mailing address" />
                             <HelpLink />
                             <TextAbove />
                             <TextBelow />
@@ -77,6 +65,30 @@
                         <Object Type="YetaWF.Core.Localize.LocalizationData+PropertyData" Assembly="YetaWF.Core">
                           <Properties>
                             <Name Value="CityUS" />
+                            <Caption Value="City" />
+                            <Description Value="The city portion of your mailing address" />
+                            <HelpLink />
+                            <TextAbove />
+                            <TextBelow />
+                          </Properties>
+                        </Object>
+                      </Value>
+                      <Value>
+                        <Object Type="YetaWF.Core.Localize.LocalizationData+PropertyData" Assembly="YetaWF.Core">
+                          <Properties>
+                            <Name Value="CityZip1" />
+                            <Caption Value="City" />
+                            <Description Value="The city portion of your mailing address" />
+                            <HelpLink />
+                            <TextAbove />
+                            <TextBelow />
+                          </Properties>
+                        </Object>
+                      </Value>
+                      <Value>
+                        <Object Type="YetaWF.Core.Localize.LocalizationData+PropertyData" Assembly="YetaWF.Core">
+                          <Properties>
+                            <Name Value="CityZipLast" />
                             <Caption Value="City" />
                             <Description Value="The city portion of your mailing address" />
                             <HelpLink />
@@ -150,7 +162,19 @@
                           <Properties>
                             <Name Value="Telephone" />
                             <Caption Value="Telephone Number" />
-                            <Description Value="Your telephone number - please include country code and extensions if necessary" />
+                            <Description Value="Your telephone number - please include country code and extension if necessary" />
+                            <HelpLink />
+                            <TextAbove />
+                            <TextBelow />
+                          </Properties>
+                        </Object>
+                      </Value>
+                      <Value>
+                        <Object Type="YetaWF.Core.Localize.LocalizationData+PropertyData" Assembly="YetaWF.Core">
+                          <Properties>
+                            <Name Value="ZIPGeneric" />
+                            <Caption Value="Postal Code" />
+                            <Description Value="The postal code of your mailing address" />
                             <HelpLink />
                             <TextAbove />
                             <TextBelow />
@@ -163,6 +187,30 @@
                             <Name Value="ZipUS" />
                             <Caption Value="ZIP Code" />
                             <Description Value="The ZIP code of your mailing address - Use format 00000 or 00000-0000" />
+                            <HelpLink />
+                            <TextAbove />
+                            <TextBelow />
+                          </Properties>
+                        </Object>
+                      </Value>
+                      <Value>
+                        <Object Type="YetaWF.Core.Localize.LocalizationData+PropertyData" Assembly="YetaWF.Core">
+                          <Properties>
+                            <Name Value="ZipZip1" />
+                            <Caption Value="Postal Code" />
+                            <Description Value="The postal code for your mailing address" />
+                            <HelpLink />
+                            <TextAbove />
+                            <TextBelow />
+                          </Properties>
+                        </Object>
+                      </Value>
+                      <Value>
+                        <Object Type="YetaWF.Core.Localize.LocalizationData+PropertyData" Assembly="YetaWF.Core">
+                          <Properties>
+                            <Name Value="ZipZipLast" />
+                            <Caption Value="Postal Code" />
+                            <Description Value="The postal code of your mailing address" />
                             <HelpLink />
                             <TextAbove />
                             <TextBelow />
