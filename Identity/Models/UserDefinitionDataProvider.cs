@@ -255,29 +255,36 @@ namespace YetaWF.Modules.Identity.DataProvider {
         }
         public List<UserDefinition> GetItems(int skip, int take, List<DataProviderSortInfo> sort, List<DataProviderFilterInfo> filters, out int total) {
             UserDefinition superuser = null;
-            bool done = false;
+            int origSkip = skip, origTake = take;
             List<UserDefinition> users;
-            if (skip == 0) {
-                using (SuperuserDefinitionDataProvider superDP = new SuperuserDefinitionDataProvider()) {
-                    superuser = superDP.GetItem(filters);
-                    if (superuser != null) {
-                        if (take == 1) {
-                            total = 1;
-                            done = true;
-                        } else if (take > 1)
-                            take--;
-                    }
+
+            using (SuperuserDefinitionDataProvider superDP = new SuperuserDefinitionDataProvider()) {
+                superuser = superDP.GetItem(filters);
+            }
+
+            total = 0;
+            if (superuser != null) {
+                total = 1;
+                if (skip > 0) {
+                    superuser = null;
+                    --skip;
+                } else {
+                    if (take > 0)
+                        take--;
                 }
             }
-            if (done) {
+
+            int userTotal;
+            if (take == 0 && origTake > 0) {
+                // we just need the total
+                DataProvider.GetRecords(0, 1, sort, filters, out userTotal);
                 users = new List<UserDefinition>();
-                total = 0;
-            } else
-                users = DataProvider.GetRecords(skip, take, sort, filters, out total);
-            if (superuser != null) {
-                users.Insert(0, superuser);
-                ++total;
+            } else {
+                users = DataProvider.GetRecords(skip, take, sort, filters, out userTotal);
             }
+            if (superuser != null)
+                users.Insert(0, superuser);
+            total += userTotal;
             return users;
         }
         public void RehashAllPasswords() {
