@@ -19,7 +19,7 @@
     } else {
         HtmlString menu = Html.Render(Model.MenuList, DivId, Model.CssClass, YetaWF.Core.Modules.ModuleAction.RenderEngineEnum.JqueryMenu);
         if (!menu.IsEmpty()) {
-            Manager.ScriptManager.AddKendoUICoreJsFile("kendo.popup.min.js");
+            //Manager.ScriptManager.AddKendoUICoreJsFile("kendo.popup.min.js"); // is now a prereq of kendo.window (2017.2.621)
             Manager.ScriptManager.AddKendoUICoreJsFile("kendo.menu.min.js");
             <div class='yt_yetawf_menus_menu t_display' role="navigation">
                 @menu
