@@ -11,7 +11,6 @@ using YetaWF.Core.Support;
 using YetaWF.Core;
 #if MVC6
 using Microsoft.AspNetCore.Mvc;
-using YetaWF.Core.Support;
 #else
 using System.Web.Mvc;
 #endif
