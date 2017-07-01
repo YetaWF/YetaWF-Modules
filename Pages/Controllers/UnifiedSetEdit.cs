@@ -58,6 +58,11 @@ namespace YetaWF.Modules.Pages.Controllers {
             [ProcessIf("UnifiedMode", PageDefinition.UnifiedModeEnum.SkinDynamicContent)]
             public SkinDefinition PageSkin { get; set; }
 
+            [Caption("Popups"), Description("Defines whether popups are part of this Unified Page Set (used with SkinDynamicContent and DynamicContent only)")]
+            [UIHint("Boolean")]
+            [ProcessIf("UnifiedMode", PageDefinition.UnifiedModeEnum.SkinDynamicContent, PageDefinition.UnifiedModeEnum.DynamicContent)]
+            public bool Popups { get; set; }
+
             [Caption("Animation Duration"), Description("Defines the duration of the animation to scroll to the content (used only if Mode is set to Show All Content)")]
             [UIHint("IntValue6"), Range(0, 999999), ProcessIf("UnifiedMode", PageDefinition.UnifiedModeEnum.ShowDivs), Required]
             public int UnifiedAnimation { get; set; }

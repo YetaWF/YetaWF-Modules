@@ -46,7 +46,7 @@ namespace YetaWF.Modules.Pages.DataProvider {
         public Guid MasterPageGuid { get; set; }
 
         /// <summary>
-        /// Defines the skin that combines all pages into this Unified Page Set (used with UnifiedModeEnum.SkinDynamicContent only).
+        /// Defines the skin that combines all pages into this Unified Page Set (used with SkinDynamicContent only).
         /// </summary>
         public SkinDefinition PageSkin { get; set; }
 
@@ -54,6 +54,13 @@ namespace YetaWF.Modules.Pages.DataProvider {
         /// Defines how combined content is rendered.
         /// </summary>
         public PageDefinition.UnifiedModeEnum UnifiedMode { get; set; }
+
+        /// <summary>
+        /// Defines whether popups are part of this Unified Page Set (used with SkinDynamicContent and DynamicContent only).
+        /// </summary>
+        [Data_NewValue("(0)")]
+        public bool Popups { get; set; }
+
         /// <summary>
         /// The duration of the animation (in milliseconds) when scrolling to content.
         /// </summary>
@@ -86,6 +93,7 @@ namespace YetaWF.Modules.Pages.DataProvider {
 
         public UnifiedSetData() {
             UnifiedMode = PageDefinition.UnifiedModeEnum.SkinDynamicContent;
+            Popups = false;
             UnifiedAnimation = 1000;
             PageList = new List<string>();
             PageGuids = new SerializableList<Guid>();
@@ -209,6 +217,7 @@ namespace YetaWF.Modules.Pages.DataProvider {
                             UnifiedSetGuid = (Guid)unifiedSetGuid,
                             MasterPageGuid = unifiedSet.MasterPageGuid,
                             PageGuids = unifiedSet.PageGuids,
+                            Popups = unifiedSet.Popups,
                             Animation = unifiedSet.UnifiedAnimation,
                             Mode = unifiedSet.UnifiedMode,
                         };
@@ -234,6 +243,7 @@ namespace YetaWF.Modules.Pages.DataProvider {
                         UnifiedSetGuid = unifiedSet.UnifiedSetGuid,
                         MasterPageGuid = unifiedSet.MasterPageGuid,
                         PageGuids = new List<Guid>(),
+                        Popups = unifiedSet.Popups,
                         Animation = 0,
                         Mode = unifiedSet.UnifiedMode,
                         PageSkinCollectionName = collectionName,
