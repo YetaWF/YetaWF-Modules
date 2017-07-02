@@ -30,11 +30,9 @@ namespace YetaWF.Modules.Identity.Controllers {
     // Standard MVC Controller
     // In order to log in through an external provider, we are using a STANDARD MVC controller
 
-    public class LoginExternalController : Controller {
+    public class LoginExternalController : YetaWFController {
 
         public LoginExternalController() { }
-
-        protected static YetaWFManager Manager { get { return YetaWFManager.Manager; } }
 
         [AllowPost]
         [ConditionalAntiForgeryToken]
