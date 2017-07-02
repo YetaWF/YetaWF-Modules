@@ -33,6 +33,10 @@ namespace YetaWF.Modules.DevTests.Controllers {
             [UIHint("Boolean"), Required]
             public bool Boolean { get; set; }
 
+            [Category("Core"), Caption("Country"), Description("Country (Required)")]
+            [UIHint("CountryISO3166"), StringLength(80), Trim, Required]
+            public string Country { get; set; }
+
             [Category("Core"), Caption("Currency"), Description("Currency (Required)")]
             [UIHint("Currency"), Required]
             public decimal? Currency { get; set; }
