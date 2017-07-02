@@ -38,28 +38,30 @@ YetaWF_Basics.whenReady.push({
         'use strict';
 
         // Page Settings
-        var $ps = $('.YetaWF_PageEdit_PageControl a[data-name="PageSettings"]');
-        if ($ps.length > 0) {
-            var uri = new URI($ps[0].href);
-            uri.removeSearch('PageGuid');
-            uri.addSearch('PageGuid', YVolatile.Basics.PageGuid);
-            $ps[0].href = uri.toString();
-        }
-        // Remove Page
-        var $rp = $('.YetaWF_PageEdit_PageControl a[data-name="RemovePage"]');
-        if ($rp.length > 0) {
-            var uri = new URI($rp[0].href);
-            uri.removeSearch('PageGuid');
-            uri.addSearch('PageGuid', YVolatile.Basics.PageGuid);
-            $rp[0].href = uri.toString();
-        }
-        // W3C validation
-        var $w3c = $('.YetaWF_PageEdit_PageControl a[data-name="W3CValidate"]');
-        if ($w3c.length > 0)
-            $w3c[0].href = YConfigs.YetaWF_PageEdit.W3CUrl.format(window.location);
+        if (!Y_InPopup()) {
+            var $ps = $('.YetaWF_PageEdit_PageControl a[data-name="PageSettings"]');
+            if ($ps.length > 0) {
+                var uri = new URI($ps[0].href);
+                uri.removeSearch('PageGuid');
+                uri.addSearch('PageGuid', YVolatile.Basics.PageGuid);
+                $ps[0].href = uri.toString();
+            }
+            // Remove Page
+            var $rp = $('.YetaWF_PageEdit_PageControl a[data-name="RemovePage"]');
+            if ($rp.length > 0) {
+                var uri = new URI($rp[0].href);
+                uri.removeSearch('PageGuid');
+                uri.addSearch('PageGuid', YVolatile.Basics.PageGuid);
+                $rp[0].href = uri.toString();
+            }
+            // W3C validation
+            var $w3c = $('.YetaWF_PageEdit_PageControl a[data-name="W3CValidate"]');
+            if ($w3c.length > 0)
+                $w3c[0].href = YConfigs.YetaWF_PageEdit.W3CUrl.format(window.location);
 
-        // all hidden fields
-        $('.YetaWF_PageEdit_PageControl input[name="CurrentPageGuid"][type="hidden"]').val(YVolatile.Basics.PageGuid);
+            // all hidden fields
+            $('.YetaWF_PageEdit_PageControl input[name="CurrentPageGuid"][type="hidden"]').val(YVolatile.Basics.PageGuid);
+        }
     }
 });
 
