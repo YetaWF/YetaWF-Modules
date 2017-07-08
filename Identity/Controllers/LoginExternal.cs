@@ -38,6 +38,7 @@ namespace YetaWF.Modules.Identity.Controllers {
         [ConditionalAntiForgeryToken]
         //[ExcludeDemoMode]
         public ActionResult ExternalLogin(string provider, string returnUrl) {
+            AllowJavascriptResult = false;
             // Request a redirect to the external login provider
             if (Manager.IsDemo)
                 throw new Error("This action is not available in Demo mode.");
@@ -60,6 +61,7 @@ namespace YetaWF.Modules.Identity.Controllers {
         public async Task<ActionResult> ExternalLoginCallback(string returnUrl = null)
 #endif
         {
+            AllowJavascriptResult = false;
             ExternalLoginInfo loginInfo;
 #if MVC6
             if (remoteError != null)
