@@ -50,20 +50,12 @@ namespace YetaWF.Modules.Blog.Controllers {
             //[UIHint("DateTime"), ReadOnly]
             //public DateTime DateUpdated { get; set; }
 
-            [Caption("Actions"), Description("The available actions")]
-            [UIHint("ModuleActions"), AdditionalMetadata("RenderAs", ModuleAction.RenderModeEnum.IconsOnly), ReadOnly]
-            public List<ModuleAction> Actions { get; set; }
-
             [Caption("Blog Text"), Description("The complete text for this blog entry")]
             [UIHint("TextArea"), AdditionalMetadata("Encode", false), ReadOnly]
             public string Text { get; set; }
 
             public void SetData(BlogEntry data) {
                 ObjectSupport.CopyData(data, this);
-                Actions = new List<ModuleAction>() {};
-
-                BlogModule blogMod = new BlogModule();
-                Actions.New(blogMod.GetAction_RssFeed());
             }
         }
 

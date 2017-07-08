@@ -29,6 +29,7 @@ namespace YetaWF.Modules.Blog.Modules {
             Title = this.__ResStr("modTitle", "Blog Entry");
             Name = this.__ResStr("modName", "Display Blog Entry");
             Description = this.__ResStr("modSummary", "Displays an existing blog entry");
+            ShowTitleActions = true;
             DefaultViewName = StandardViews.Display;
         }
 
@@ -46,6 +47,8 @@ namespace YetaWF.Modules.Blog.Modules {
             int blogEntry;
             if (Manager.TryGetUrlArg<int>("BlogEntry", out blogEntry))
                 menuList.New(mod.GetAction_Edit(EditUrl, blogEntry), location);
+            BlogModule blogMod = new BlogModule();
+            menuList.New(blogMod.GetAction_RssFeed(), location);
             return menuList;
         }
 

@@ -96,17 +96,12 @@
     }
     div.t_author div.t_vals,
     div.t_authorurl div.t_vals,
-    div.t_datepublished div.t_vals,
-    div.t_actions div.t_vals {
+    div.t_datepublished div.t_vals {
         float:right;
         .yCondense & {
             clear:none;
             float:none;
         }
-    }
-    div.t_actions {
-        clear:none;
-        float:right;
     }
     .t_author .t_labels,
     .t_authorurl .t_labels {

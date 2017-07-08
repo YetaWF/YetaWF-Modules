@@ -30,6 +30,7 @@ namespace YetaWF.Modules.Blog.Modules {
             Title = this.__ResStr("modTitle", "Blog");
             Name = this.__ResStr("modName", "Blog");
             Description = this.__ResStr("modSummary", "Displays the main blog entry point with all or a single blog category");
+            ShowTitleActions = true;
         }
 
         public override IModuleDefinitionIO GetDataProvider() { return new BlogModuleDataProvider(); }
