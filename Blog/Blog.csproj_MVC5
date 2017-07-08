@@ -142,7 +142,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Addons\_Main\filelistCSS.txt" />
-    <None Include="Addons\_Main\Blog.css" />
+    <None Include="Addons\_Main\Blog.scss" />
     <None Include="Views\YetaWF_Blog_NotFound.cshtml" />
     <None Include="Views\YetaWF_Blog_Summary.cshtml" />
   </ItemGroup>

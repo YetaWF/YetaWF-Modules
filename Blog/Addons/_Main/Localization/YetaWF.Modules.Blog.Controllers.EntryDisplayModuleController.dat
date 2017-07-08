@@ -28,18 +28,6 @@
                       <Value>
                         <Object Type="YetaWF.Core.Localize.LocalizationData+PropertyData" Assembly="YetaWF.Core">
                           <Properties>
-                            <Name Value="Actions" />
-                            <Caption Value="Actions" />
-                            <Description Value="The available actions" />
-                            <HelpLink />
-                            <TextAbove />
-                            <TextBelow />
-                          </Properties>
-                        </Object>
-                      </Value>
-                      <Value>
-                        <Object Type="YetaWF.Core.Localize.LocalizationData+PropertyData" Assembly="YetaWF.Core">
-                          <Properties>
                             <Name Value="Author" />
                             <Caption Value="Author" />
                             <Description Value="The name of the blog author" />
