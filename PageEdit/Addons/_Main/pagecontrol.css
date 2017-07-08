@@ -50,3 +50,10 @@
     z-index:1500;
 }
 
+@media print {
+    #yEditControlDiv,
+    #yPageControlDiv {
+        display: none;
+    }
+}
+
