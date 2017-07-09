@@ -23,7 +23,7 @@
             <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
               <Properties>
                 <Name Value="modName" />
-                <Text Value="Syntax Highlighter (Skin)" />
+                <Text Value="Syntax Highlighter Alex Gorbatchev (Skin)" />
               </Properties>
             </Object>
           </Value>
@@ -31,7 +31,7 @@
             <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
               <Properties>
                 <Name Value="modSummary" />
-                <Text Value="Skin module supporting syntax highlighting in modules" />
+                <Text Value="Skin module supporting syntax highlighting in modules, by Alex Gorbatchev" />
               </Properties>
             </Object>
           </Value>
@@ -39,7 +39,7 @@
             <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
               <Properties>
                 <Name Value="modTitle" />
-                <Text Value="Skin Syntax Highlighter" />
+                <Text Value="Skin Syntax Highlighter (Alex Gorbatchev)" />
               </Properties>
             </Object>
           </Value>

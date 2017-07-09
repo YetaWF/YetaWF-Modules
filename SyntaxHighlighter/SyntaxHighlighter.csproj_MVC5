@@ -63,16 +63,111 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controllers\SkinHighlightJS.cs" />
+    <Compile Include="Controllers\SyntaxHighlighterConfig.cs" />
+    <Compile Include="Models\SyntaxHighlighterConfigDataProvider.cs" />
+    <Compile Include="Modules\SkinHighlightJS.cs" />
+    <Compile Include="Modules\SyntaxHighlighterConfig.cs" />
     <Compile Include="Startup\Info.cs" />
     <Compile Include="Startup\AreaRegistration.cs" />
     <Compile Include="Controllers\SkinSyntaxHighlighter.cs" />
     <Compile Include="Modules\SkinSyntaxHighlighter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Startup\SyntaxHighlighter.cs" />
+    <Compile Include="Support\HighlightJSSkins.cs" />
+    <Compile Include="Support\SyntaxHighlighterSkins.cs" />
+    <Compile Include="ViewsCode\Shared\HighlightJSSkinsHelper.cs" />
     <Compile Include="ViewsCode\Shared\SyntaxHighlighterSkinsHelper.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
     <None Include="packages.config" />
+    <Content Include="Addons\_Addons\SkinHighlightJS\FilelistCSS.txt" />
+    <Content Include="Addons\_Addons\SkinHighlightJS\FilelistJS.txt" />
+    <Content Include="Addons\_Addons\SkinHighlightJS\Init.js" />
+    <Content Include="Addons\_Addons\SkinHighlightJS\themelist.txt" />
+    <Content Include="Addons\_Addons\SkinHighlightJS\themes\agate.css" />
+    <Content Include="Addons\_Addons\SkinHighlightJS\themes\androidstudio.css" />
+    <Content Include="Addons\_Addons\SkinHighlightJS\themes\arduino-light.css" />
+    <Content Include="Addons\_Addons\SkinHighlightJS\themes\arta.css" />
+    <Content Include="Addons\_Addons\SkinHighlightJS\themes\ascetic.css" />
+    <Content Include="Addons\_Addons\SkinHighlightJS\themes\atelier-cave-dark.css" />
+    <Content Include="Addons\_Addons\SkinHighlightJS\themes\atelier-cave-light.css" />
+    <Content Include="Addons\_Addons\SkinHighlightJS\themes\atelier-dune-dark.css" />
+    <Content Include="Addons\_Addons\SkinHighlightJS\themes\atelier-dune-light.css" />
+    <Content Include="Addons\_Addons\SkinHighlightJS\themes\atelier-estuary-dark.css" />
+    <Content Include="Addons\_Addons\SkinHighlightJS\themes\atelier-estuary-light.css" />
+    <Content Include="Addons\_Addons\SkinHighlightJS\themes\atelier-forest-dark.css" />
+    <Content Include="Addons\_Addons\SkinHighlightJS\themes\atelier-forest-light.css" />
+    <Content Include="Addons\_Addons\SkinHighlightJS\themes\atelier-heath-dark.css" />
+    <Content Include="Addons\_Addons\SkinHighlightJS\themes\atelier-heath-light.css" />
+    <Content Include="Addons\_Addons\SkinHighlightJS\themes\atelier-lakeside-dark.css" />
+    <Content Include="Addons\_Addons\SkinHighlightJS\themes\atelier-lakeside-light.css" />
+    <Content Include="Addons\_Addons\SkinHighlightJS\themes\atelier-plateau-dark.css" />
+    <Content Include="Addons\_Addons\SkinHighlightJS\themes\atelier-plateau-light.css" />
+    <Content Include="Addons\_Addons\SkinHighlightJS\themes\atelier-savanna-dark.css" />
+    <Content Include="Addons\_Addons\SkinHighlightJS\themes\atelier-savanna-light.css" />
+    <Content Include="Addons\_Addons\SkinHighlightJS\themes\atelier-seaside-dark.css" />
+    <Content Include="Addons\_Addons\SkinHighlightJS\themes\atelier-seaside-light.css" />
+    <Content Include="Addons\_Addons\SkinHighlightJS\themes\atelier-sulphurpool-dark.css" />
+    <Content Include="Addons\_Addons\SkinHighlightJS\themes\atelier-sulphurpool-light.css" />
+    <Content Include="Addons\_Addons\SkinHighlightJS\themes\atom-one-dark.css" />
+    <Content Include="Addons\_Addons\SkinHighlightJS\themes\atom-one-light.css" />
+    <Content Include="Addons\_Addons\SkinHighlightJS\themes\brown-paper.css" />
+    <Content Include="Addons\_Addons\SkinHighlightJS\themes\brown-papersq.png" />
+    <Content Include="Addons\_Addons\SkinHighlightJS\themes\codepen-embed.css" />
+    <Content Include="Addons\_Addons\SkinHighlightJS\themes\color-brewer.css" />
+    <Content Include="Addons\_Addons\SkinHighlightJS\themes\darcula.css" />
+    <Content Include="Addons\_Addons\SkinHighlightJS\themes\dark.css" />
+    <Content Include="Addons\_Addons\SkinHighlightJS\themes\darkula.css" />
+    <Content Include="Addons\_Addons\SkinHighlightJS\themes\default.css" />
+    <Content Include="Addons\_Addons\SkinHighlightJS\themes\docco.css" />
+    <Content Include="Addons\_Addons\SkinHighlightJS\themes\dracula.css" />
+    <Content Include="Addons\_Addons\SkinHighlightJS\themes\far.css" />
+    <Content Include="Addons\_Addons\SkinHighlightJS\themes\foundation.css" />
+    <Content Include="Addons\_Addons\SkinHighlightJS\themes\github-gist.css" />
+    <Content Include="Addons\_Addons\SkinHighlightJS\themes\github.css" />
+    <Content Include="Addons\_Addons\SkinHighlightJS\themes\googlecode.css" />
+    <Content Include="Addons\_Addons\SkinHighlightJS\themes\grayscale.css" />
+    <Content Include="Addons\_Addons\SkinHighlightJS\themes\gruvbox-dark.css" />
+    <Content Include="Addons\_Addons\SkinHighlightJS\themes\gruvbox-light.css" />
+    <Content Include="Addons\_Addons\SkinHighlightJS\themes\hopscotch.css" />
+    <Content Include="Addons\_Addons\SkinHighlightJS\themes\hybrid.css" />
+    <Content Include="Addons\_Addons\SkinHighlightJS\themes\idea.css" />
+    <Content Include="Addons\_Addons\SkinHighlightJS\themes\ir-black.css" />
+    <Content Include="Addons\_Addons\SkinHighlightJS\themes\kimbie.dark.css" />
+    <Content Include="Addons\_Addons\SkinHighlightJS\themes\kimbie.light.css" />
+    <Content Include="Addons\_Addons\SkinHighlightJS\themes\magula.css" />
+    <Content Include="Addons\_Addons\SkinHighlightJS\themes\mono-blue.css" />
+    <Content Include="Addons\_Addons\SkinHighlightJS\themes\monokai-sublime.css" />
+    <Content Include="Addons\_Addons\SkinHighlightJS\themes\monokai.css" />
+    <Content Include="Addons\_Addons\SkinHighlightJS\themes\obsidian.css" />
+    <Content Include="Addons\_Addons\SkinHighlightJS\themes\ocean.css" />
+    <Content Include="Addons\_Addons\SkinHighlightJS\themes\paraiso-dark.css" />
+    <Content Include="Addons\_Addons\SkinHighlightJS\themes\paraiso-light.css" />
+    <Content Include="Addons\_Addons\SkinHighlightJS\themes\pojoaque.css" />
+    <Content Include="Addons\_Addons\SkinHighlightJS\themes\pojoaque.jpg" />
+    <Content Include="Addons\_Addons\SkinHighlightJS\themes\purebasic.css" />
+    <Content Include="Addons\_Addons\SkinHighlightJS\themes\qtcreator_dark.css" />
+    <Content Include="Addons\_Addons\SkinHighlightJS\themes\qtcreator_light.css" />
+    <Content Include="Addons\_Addons\SkinHighlightJS\themes\railscasts.css" />
+    <Content Include="Addons\_Addons\SkinHighlightJS\themes\rainbow.css" />
+    <Content Include="Addons\_Addons\SkinHighlightJS\themes\routeros.css" />
+    <Content Include="Addons\_Addons\SkinHighlightJS\themes\school-book.css" />
+    <Content Include="Addons\_Addons\SkinHighlightJS\themes\school-book.png" />
+    <Content Include="Addons\_Addons\SkinHighlightJS\themes\solarized-dark.css" />
+    <Content Include="Addons\_Addons\SkinHighlightJS\themes\solarized-light.css" />
+    <Content Include="Addons\_Addons\SkinHighlightJS\themes\sunburst.css" />
+    <Content Include="Addons\_Addons\SkinHighlightJS\themes\tomorrow-night-blue.css" />
+    <Content Include="Addons\_Addons\SkinHighlightJS\themes\tomorrow-night-bright.css" />
+    <Content Include="Addons\_Addons\SkinHighlightJS\themes\tomorrow-night-eighties.css" />
+    <Content Include="Addons\_Addons\SkinHighlightJS\themes\tomorrow-night.css" />
+    <Content Include="Addons\_Addons\SkinHighlightJS\themes\tomorrow.css" />
+    <Content Include="Addons\_Addons\SkinHighlightJS\themes\vs.css" />
+    <Content Include="Addons\_Addons\SkinHighlightJS\themes\vs2015.css" />
+    <Content Include="Addons\_Addons\SkinHighlightJS\themes\xcode.css" />
+    <Content Include="Addons\_Addons\SkinHighlightJS\themes\xt256.css" />
+    <Content Include="Addons\_Addons\SkinHighlightJS\themes\zenburn.css" />
     <Content Include="Addons\_Addons\SkinSyntaxHighlighter\cssfix.css" />
     <Content Include="Addons\_Addons\SkinSyntaxHighlighter\Docs.txt" />
     <Content Include="Addons\_Addons\SkinSyntaxHighlighter\FilelistCSS.txt" />
@@ -80,20 +175,30 @@
     <Content Include="Addons\_Addons\SkinSyntaxHighlighter\Init.js" />
     <Content Include="Addons\_Addons\SkinSyntaxHighlighter\themelistMVC5.txt" />
     <Content Include="Addons\_Addons\SkinSyntaxHighlighter\themelistMVC6.txt" />
+    <Content Include="Addons\_SiteTemplates\YetaWF_SyntaxHighlighter.2.5.2.txt" />
     <Content Include="Addons\_Templates\SyntaxHighlighter\filelistCSS.txt" />
     <Content Include="Addons\_Templates\SyntaxHighlighter\SyntaxHighlighterSkin.css" />
     <Content Include="Views\Shared\DisplayTemplates\YetaWF_SyntaxHighlighter_SyntaxHighlighter.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\YetaWF_SyntaxHighlighter_SyntaxHighlighter.cshtml" />
-    <None Include="Views\YetaWF_SyntaxHighlighter_SkinSyntaxHighlighter.cshtml" />
+    <Content Include="Views\Shared\DisplayTemplates\YetaWF_SyntaxHighlighter_HighlightJS.cshtml" />
+    <Content Include="Views\Shared\EditorTemplates\YetaWF_SyntaxHighlighter_HighlightJS.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\CoreComponents\Core\Core.csproj">
       <Project>{71acc7ac-2622-4127-b925-d058c01a39e5}</Project>
       <Name>Core</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\..\DataProvider\File\File.csproj">
+      <Project>{F0DF6C3B-2B71-4526-8FD0-AC2B731B2C3B}</Project>
+      <Name>File</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\..\DataProvider\ModuleDefinition\ModuleDefinition.csproj">
       <Project>{348F2A6B-57F5-47A3-8A46-3F44529ACD83}</Project>
       <Name>ModuleDefinition</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\DataProvider\SQL\SQL.csproj">
+      <Project>{22F3EC05-EC47-42B9-87CC-FF4D5494F8A4}</Project>
+      <Name>SQL</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

@@ -1,0 +1,144 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!--YetaWF.Core.Localize.LocalizationData-->
+<Object Type="YetaWF.Core.Localize.LocalizationData" Assembly="YetaWF.Core">
+  <Properties>
+    <Comment />
+    <Classes>
+      <Object Type="YetaWF.Core.Serializers.SerializableList`1[[YetaWF.Core.Localize.LocalizationData+ClassData, YetaWF.Core, Culture=neutral, PublicKeyToken=null]]" Assembly="YetaWF.Core">
+        <Properties />
+        <List>
+          <Value>
+            <Object Type="YetaWF.Core.Localize.LocalizationData+ClassData" Assembly="YetaWF.Core">
+              <Properties>
+                <Name Value="YetaWF.Modules.SyntaxHighlighter.Controllers.SyntaxHighlighterConfigModuleController+Model" />
+                <BaseTypeName />
+                <Header Value="The settings are used to define syntax highlighting for the entire site. If more than one syntax highlighter is available, both can be used, but should not be used on the same page. To activate syntax highlighting, the Site, Page or Module Settings must reference one of the available skin modules. The &lt;pre&gt; and/or &lt;code&gt; tags must be used to define the desired syntax coloring language" />
+                <Footer />
+                <Legend />
+                <Categories>
+                  <Object Type="YetaWF.Core.Serializers.SerializableDictionary`2[[System.String, mscorlib, Culture=neutral, PublicKeyToken=b77a5c561934e089],[System.String, mscorlib, Culture=neutral, PublicKeyToken=b77a5c561934e089]]" Assembly="YetaWF.Core">
+                    <Properties />
+                    <Dictionary>
+                      <Key Value="Alex Gorbatchev" />
+                      <Value Value="Alex Gorbatchev" />
+                      <Key Value="Highlight.js" />
+                      <Value Value="Highlight.js" />
+                    </Dictionary>
+                  </Object>
+                </Categories>
+                <Properties>
+                  <Object Type="YetaWF.Core.Serializers.SerializableList`1[[YetaWF.Core.Localize.LocalizationData+PropertyData, YetaWF.Core, Culture=neutral, PublicKeyToken=null]]" Assembly="YetaWF.Core">
+                    <Properties />
+                    <List>
+                      <Value>
+                        <Object Type="YetaWF.Core.Localize.LocalizationData+PropertyData" Assembly="YetaWF.Core">
+                          <Properties>
+                            <Name Value="HighlightJSSkin" />
+                            <Caption Value="Skin" />
+                            <Description Value="The skin used for syntax highlighting" />
+                            <HelpLink />
+                            <TextAbove />
+                            <TextBelow />
+                          </Properties>
+                        </Object>
+                      </Value>
+                      <Value>
+                        <Object Type="YetaWF.Core.Localize.LocalizationData+PropertyData" Assembly="YetaWF.Core">
+                          <Properties>
+                            <Name Value="HighlightJSUrl" />
+                            <Caption Value="Help" />
+                            <Description Value="The syntax highlighter uses Highlight.js" />
+                            <HelpLink />
+                            <TextAbove Value="The syntax highlighter uses Highlight.js." />
+                            <TextBelow />
+                          </Properties>
+                        </Object>
+                      </Value>
+                      <Value>
+                        <Object Type="YetaWF.Core.Localize.LocalizationData+PropertyData" Assembly="YetaWF.Core">
+                          <Properties>
+                            <Name Value="LanguagesHighlightJSUrl" />
+                            <Caption Value="Languages" />
+                            <Description Value="Displays help for the languages that can be used by Highlight.js for syntax coloring - Not all may be installed and available" />
+                            <HelpLink />
+                            <TextAbove />
+                            <TextBelow />
+                          </Properties>
+                        </Object>
+                      </Value>
+                      <Value>
+                        <Object Type="YetaWF.Core.Localize.LocalizationData+PropertyData" Assembly="YetaWF.Core">
+                          <Properties>
+                            <Name Value="LanguagesSyntaxHighlighterUrl" />
+                            <Caption Value="Languages" />
+                            <Description Value="Displays help for the languages (brushes) that can be used by Alex Gorbatchev's syntax highlighter - Not all may be installed and available" />
+                            <HelpLink />
+                            <TextAbove />
+                            <TextBelow />
+                          </Properties>
+                        </Object>
+                      </Value>
+                      <Value>
+                        <Object Type="YetaWF.Core.Localize.LocalizationData+PropertyData" Assembly="YetaWF.Core">
+                          <Properties>
+                            <Name Value="SyntaxHighlighterSkin" />
+                            <Caption Value="Skin" />
+                            <Description Value="The skin used for syntax highlighting" />
+                            <HelpLink />
+                            <TextAbove />
+                            <TextBelow />
+                          </Properties>
+                        </Object>
+                      </Value>
+                      <Value>
+                        <Object Type="YetaWF.Core.Localize.LocalizationData+PropertyData" Assembly="YetaWF.Core">
+                          <Properties>
+                            <Name Value="SyntaxHighlighterUrl" />
+                            <Caption Value="Help" />
+                            <Description Value="The syntax highlighter uses Alex Gorbatchev's SyntaxHighlighter" />
+                            <HelpLink />
+                            <TextAbove Value="The syntax highlighter uses Alex Gorbatchev's SyntaxHighlighter." />
+                            <TextBelow />
+                          </Properties>
+                        </Object>
+                      </Value>
+                    </List>
+                  </Object>
+                </Properties>
+              </Properties>
+            </Object>
+          </Value>
+        </List>
+      </Object>
+    </Classes>
+    <Enums>
+      <Object Type="YetaWF.Core.Serializers.SerializableList`1[[YetaWF.Core.Localize.LocalizationData+EnumData, YetaWF.Core, Culture=neutral, PublicKeyToken=null]]" Assembly="YetaWF.Core">
+        <Properties />
+        <List />
+      </Object>
+    </Enums>
+    <Strings>
+      <Object Type="YetaWF.Core.Serializers.SerializableList`1[[YetaWF.Core.Localize.LocalizationData+StringData, YetaWF.Core, Culture=neutral, PublicKeyToken=null]]" Assembly="YetaWF.Core">
+        <Properties />
+        <List>
+          <Value>
+            <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
+              <Properties>
+                <Name Value="notFound" />
+                <Text Value="The syntax highlighter settings could not be found" />
+              </Properties>
+            </Object>
+          </Value>
+          <Value>
+            <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
+              <Properties>
+                <Name Value="okSaved" />
+                <Text Value="Syntax highlighter settings saved" />
+              </Properties>
+            </Object>
+          </Value>
+        </List>
+      </Object>
+    </Strings>
+  </Properties>
+</Object>

@@ -1,6 +1,10 @@
 /* Copyright © 2017 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/SyntaxHighlighter#License */
 
 using YetaWF.Core.Controllers;
+using YetaWF.Modules.SyntaxHighlighter.DataProvider;
+using YetaWF.Core.Packages;
+using YetaWF.Core.Addons;
+using YetaWF.Modules.SyntaxHighlighter.Support;
 #if MVC6
 using Microsoft.AspNetCore.Mvc;
 #else
@@ -13,12 +17,21 @@ namespace YetaWF.Modules.SyntaxHighlighter.Controllers {
 
         public SkinSyntaxHighlighterModuleController() { }
 
-        public class Model { }
-
         [AllowGet]
         public ActionResult SkinSyntaxHighlighter() {
-            Model model = new Model();
-            return View(model);
+            ConfigData config = ConfigDataProvider.GetConfig();
+
+            // find theme specific skin
+            Package package = AreaRegistration.CurrentPackage;
+            SkinAccess skinAccess = new SkinAccess();
+            string theme = skinAccess.FindSyntaxHighlighterSkin(config.SyntaxHighlighterSkin);
+            Manager.AddOnManager.AddAddOnNamed(package.Domain, package.Product, "SkinSyntaxHighlighter", theme);
+
+            // add client-side init
+            string url = VersionManager.GetAddOnNamedUrl(package.Domain, package.Product, "SkinSyntaxHighlighter");
+            Manager.ScriptManager.AddLast("AlexGorbatchevCom_SyntaxHighlighter", "AlexGorbatchevCom_SyntaxHighlighter.Init('" + url + "');");
+
+            return new EmptyResult();
         }
     }
 }

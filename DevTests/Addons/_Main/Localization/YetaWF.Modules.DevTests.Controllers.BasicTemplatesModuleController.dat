@@ -331,18 +331,6 @@
                       <Value>
                         <Object Type="YetaWF.Core.Localize.LocalizationData+PropertyData" Assembly="YetaWF.Core">
                           <Properties>
-                            <Name Value="SyntaxHighlighterSkin" />
-                            <Caption Value="SyntaxHighlighterSkin" />
-                            <Description Value="SyntaxHighlighterSkin (Required)" />
-                            <HelpLink />
-                            <TextAbove />
-                            <TextBelow />
-                          </Properties>
-                        </Object>
-                      </Value>
-                      <Value>
-                        <Object Type="YetaWF.Core.Localize.LocalizationData+PropertyData" Assembly="YetaWF.Core">
-                          <Properties>
                             <Name Value="Text" />
                             <Caption Value="Text" />
                             <Description Value="Text (Required)" />

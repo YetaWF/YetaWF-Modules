@@ -124,18 +124,6 @@
                       <Value>
                         <Object Type="YetaWF.Core.Localize.LocalizationData+PropertyData" Assembly="YetaWF.Core">
                           <Properties>
-                            <Name Value="PageSyntaxHighlighterSkin" />
-                            <Caption Value="Page Syntax Highlighter Skin" />
-                            <Description Value="The page skin for syntax highlighting (in text areas)" />
-                            <HelpLink />
-                            <TextAbove />
-                            <TextBelow />
-                          </Properties>
-                        </Object>
-                      </Value>
-                      <Value>
-                        <Object Type="YetaWF.Core.Localize.LocalizationData+PropertyData" Assembly="YetaWF.Core">
-                          <Properties>
                             <Name Value="SitejQueryUISkin" />
                             <Caption Value="Site Default jQuery UI Skin" />
                             <Description Value="The default skin for jQuery-UI elements (buttons, modal dialogs, etc.)" />
@@ -175,18 +163,6 @@
                             <Name Value="SiteSelectedSkin" />
                             <Caption Value="Site Default Page Skin" />
                             <Description Value="The default skin used for pages" />
-                            <HelpLink />
-                            <TextAbove />
-                            <TextBelow />
-                          </Properties>
-                        </Object>
-                      </Value>
-                      <Value>
-                        <Object Type="YetaWF.Core.Localize.LocalizationData+PropertyData" Assembly="YetaWF.Core">
-                          <Properties>
-                            <Name Value="SiteSyntaxHighlighterSkin" />
-                            <Caption Value="Site Syntax Highlighter Skin" />
-                            <Description Value="The default skin for syntax highlighting in textareas" />
                             <HelpLink />
                             <TextAbove />
                             <TextBelow />

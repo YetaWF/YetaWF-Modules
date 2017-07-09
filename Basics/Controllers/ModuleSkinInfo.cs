@@ -34,10 +34,6 @@ namespace YetaWF.Modules.Basics.Controllers {
             [UIHint("KendoUISkin")]
             public string PageKendoUISkin { get; set; }
 
-            [Caption("Page Syntax Highlighter Skin"), Description("The page skin for syntax highlighting (in text areas)")]
-            [UIHint("YetaWF_SyntaxHighlighter_SyntaxHighlighterSkin")]
-            public string PageSyntaxHighlighterSkin { get; set; }
-
             [Caption("Site Default Page Skin"), Description("The default skin used for pages")]
             [UIHint("PageSkin")]
             public SkinDefinition SiteSelectedSkin { get; set; }
@@ -53,10 +49,6 @@ namespace YetaWF.Modules.Basics.Controllers {
             [Caption("Site Default Kendo UI Skin"), Description("The default skin for Kendo UI elements (buttons, modal dialogs, etc.)")]
             [UIHint("KendoUISkin")]
             public string SiteKendoUISkin { get; set; }
-
-            [Caption("Site Syntax Highlighter Skin"), Description("The default skin for syntax highlighting in textareas")]
-            [UIHint("YetaWF_SyntaxHighlighter_SyntaxHighlighter")]
-            public string SiteSyntaxHighlighterSkin { get; set; }
 
             [Caption("Letters"), Description("The letters used to calculate the average character width and height")]
             [UIHint("TextArea"), AdditionalMetadata("Encode", false), ReadOnly]
@@ -84,12 +76,10 @@ namespace YetaWF.Modules.Basics.Controllers {
             model.SiteSelectedPopupSkin = Manager.CurrentSite.SelectedPopupSkin;
             model.SitejQueryUISkin = Manager.CurrentSite.jQueryUISkin;
             model.SiteKendoUISkin = Manager.CurrentSite.KendoUISkin;
-            model.SiteSyntaxHighlighterSkin = Manager.CurrentSite.SyntaxHighlighterSkin;
             model.PageSelectedSkin = Manager.CurrentPage.SelectedSkin;
             model.PageSelectedPopupSkin = Manager.CurrentPage.SelectedPopupSkin;
             model.PagejQueryUISkin = Manager.CurrentPage.jQueryUISkin;
             model.PageKendoUISkin = Manager.CurrentPage.KendoUISkin;
-            model.PageSyntaxHighlighterSkin = Manager.CurrentPage.SyntaxHighlighterSkin;
             model.Characters = "<span class='t_chars'>abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789<br/>abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789</span>";
             return View(model);
         }

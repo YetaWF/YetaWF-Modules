@@ -52,15 +52,15 @@ AlexGorbatchevCom_SyntaxHighlighter.Init = function (addon) {
 
     //SyntaxHighlighter.autoloader.apply(null, _AlexGorbatchevCom_SyntaxHighlighter.path);
 
-    SyntaxHighlighter.config.strings.expandSource = YLocs.TextArea.msg_expandSource;
-    SyntaxHighlighter.config.strings.help = YLocs.TextArea.msg_help;
-    SyntaxHighlighter.config.strings.alert = YLocs.TextArea.msg_alert;
-    SyntaxHighlighter.config.strings.noBrush = YLocs.TextArea.msg_noBrush;
-    SyntaxHighlighter.config.strings.brushNotHtmlScript = YLocs.TextArea.msg_brushNotHtmlScript;
-    SyntaxHighlighter.config.strings.viewSource = YLocs.TextArea.msg_viewSource;
-    SyntaxHighlighter.config.strings.copyToClipboard = YLocs.TextArea.msg_copyToClipboard;
-    SyntaxHighlighter.config.strings.copyToClipboardConfirmation = YLocs.TextArea.msg_copyToClipboardConfirmation;
-    SyntaxHighlighter.config.strings.print = YLocs.TextArea.msg_print;
+    SyntaxHighlighter.config.strings.expandSource = YLocs.YetaWF_SyntaxHighlighter.msg_expandSource;
+    SyntaxHighlighter.config.strings.help = YLocs.YetaWF_SyntaxHighlighter.msg_help;
+    SyntaxHighlighter.config.strings.alert = YLocs.YetaWF_SyntaxHighlighter.msg_alert;
+    SyntaxHighlighter.config.strings.noBrush = YLocs.YetaWF_SyntaxHighlighter.msg_noBrush;
+    SyntaxHighlighter.config.strings.brushNotHtmlScript = YLocs.YetaWF_SyntaxHighlighter.msg_brushNotHtmlScript;
+    SyntaxHighlighter.config.strings.viewSource = YLocs.YetaWF_SyntaxHighlighter.msg_viewSource;
+    SyntaxHighlighter.config.strings.copyToClipboard = YLocs.YetaWF_SyntaxHighlighter.msg_copyToClipboard;
+    SyntaxHighlighter.config.strings.copyToClipboardConfirmation = YLocs.YetaWF_SyntaxHighlighter.msg_copyToClipboardConfirmation;
+    SyntaxHighlighter.config.strings.print = YLocs.YetaWF_SyntaxHighlighter.msg_print;
 
     SyntaxHighlighter.all();
 };
