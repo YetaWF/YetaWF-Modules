@@ -68,10 +68,22 @@
     <Compile Include="Controllers\SkinSyntaxHighlighter.cs" />
     <Compile Include="Modules\SkinSyntaxHighlighter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ViewsCode\Shared\SyntaxHighlighterSkinsHelper.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
     <None Include="packages.config" />
+    <Content Include="Addons\_Addons\SkinSyntaxHighlighter\cssfix.css" />
+    <Content Include="Addons\_Addons\SkinSyntaxHighlighter\Docs.txt" />
+    <Content Include="Addons\_Addons\SkinSyntaxHighlighter\FilelistCSS.txt" />
+    <Content Include="Addons\_Addons\SkinSyntaxHighlighter\FilelistJS.txt" />
+    <Content Include="Addons\_Addons\SkinSyntaxHighlighter\Init.js" />
+    <Content Include="Addons\_Addons\SkinSyntaxHighlighter\themelistMVC5.txt" />
+    <Content Include="Addons\_Addons\SkinSyntaxHighlighter\themelistMVC6.txt" />
+    <Content Include="Addons\_Templates\SyntaxHighlighter\filelistCSS.txt" />
+    <Content Include="Addons\_Templates\SyntaxHighlighter\SyntaxHighlighterSkin.css" />
+    <Content Include="Views\Shared\DisplayTemplates\YetaWF_SyntaxHighlighter_SyntaxHighlighter.cshtml" />
+    <Content Include="Views\Shared\EditorTemplates\YetaWF_SyntaxHighlighter_SyntaxHighlighter.cshtml" />
     <None Include="Views\YetaWF_SyntaxHighlighter_SkinSyntaxHighlighter.cshtml" />
   </ItemGroup>
   <ItemGroup>
