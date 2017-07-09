@@ -27,7 +27,7 @@ namespace YetaWF.Modules.SyntaxHighlighter.DataProvider {
 
         public ConfigData() {
             SyntaxHighlighterSkin = "Default";
-            HighlightJSSkin = "default";
+            HighlightJSSkin = "solarized-light";
         }
     }
 

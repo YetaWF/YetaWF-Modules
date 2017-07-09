@@ -1,4 +1,4 @@
-default
+solarized-light
 agate
 androidstudio
 arduino-light
@@ -32,6 +32,7 @@ color-brewer
 darcula
 dark
 darkula
+default
 docco
 dracula
 far
@@ -65,7 +66,6 @@ rainbow
 routeros
 school-book
 solarized-dark
-solarized-light
 sunburst
 tomorrow-night-blue
 tomorrow-night-bright
