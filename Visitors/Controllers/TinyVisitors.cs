@@ -37,7 +37,7 @@ namespace YetaWF.Modules.Visitors.Controllers {
         public ActionResult TinyVisitors() {
             using (VisitorEntryDataProvider visitorDP = new VisitorEntryDataProvider()) {
                 if (visitorDP.Usable) {
-                    string addonUrl = VersionManager.GetAddOnModuleUrl(AreaRegistration.CurrentPackage.Domain, AreaRegistration.CurrentPackage.Product);
+                    string addonUrl = VersionManager.GetAddOnPackageUrl(AreaRegistration.CurrentPackage.Domain, AreaRegistration.CurrentPackage.Product);
                     VisitorEntryDataProvider.Info info = visitorDP.GetStats();
                     DisplayModel model = new DisplayModel { };
                     model.TodaysAnonymous = info.TodaysAnonymous;

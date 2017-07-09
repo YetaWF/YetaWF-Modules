@@ -3,7 +3,7 @@
 @using YetaWF.Core.Support
 @{
     YetaWF.Core.Packages.Package currentPackage = YetaWF.Modules.Menus.Controllers.AreaRegistration.CurrentPackage;
-    Manager.AddOnManager.AddAddOn(currentPackage.Domain, currentPackage.Product, "MenuEdit");
+    Manager.AddOnManager.AddAddOnNamed(currentPackage.Domain, currentPackage.Product, "MenuEdit");
 
     Manager.AddOnManager.AddAddOnGlobal("jsTree.com", "jsTree");
 

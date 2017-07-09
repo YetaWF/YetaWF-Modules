@@ -16,7 +16,7 @@ namespace YetaWF.Modules.Basics.Controllers {
         [AllowGet]
         public ActionResult MailtoObfuscatorSkin(string mailtoObfuscator) {
             YetaWF.Core.Packages.Package package = YetaWF.Modules.Basics.Controllers.AreaRegistration.CurrentPackage;
-            Manager.AddOnManager.AddAddOn(package.Domain, package.Product, "MailToObfuscator");
+            Manager.AddOnManager.AddAddOnNamed(package.Domain, package.Product, "MailToObfuscator");
             return new EmptyResult();
         }
     }

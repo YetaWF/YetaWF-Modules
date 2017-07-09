@@ -135,8 +135,7 @@ namespace YetaWF.Modules.CurrencyConverter.DataProvider {
         }
 
         private static string GetJSFileName() {
-            VersionManager.AddOnProduct addon = VersionManager.FindModuleVersion(AreaRegistration.CurrentPackage.Domain, AreaRegistration.CurrentPackage.Product);
-            string url = addon.GetAddOnUrl();
+            string url = VersionManager.GetAddOnPackageUrl(AreaRegistration.CurrentPackage.Domain, AreaRegistration.CurrentPackage.Product);
             string path = YetaWFManager.UrlToPhysical(url);
             return Path.Combine(path, JSFile);
         }

@@ -7,7 +7,7 @@
 @using YetaWF.Modules.SlideShow.Models
 @{
     YetaWF.Core.Packages.Package package = YetaWF.Modules.SlideShow.Controllers.AreaRegistration.CurrentPackage;
-    string rootUrl = YetaWF.Core.Addons.VersionManager.GetAddOnModuleUrl(package.Domain, package.Product);
+    string rootUrl = YetaWF.Core.Addons.VersionManager.GetAddOnPackageUrl(package.Domain, package.Product);
     string widthPix = Model.Width.ToString();
     string heightPix = Model.Height.ToString();
     int slideIndex = 0;

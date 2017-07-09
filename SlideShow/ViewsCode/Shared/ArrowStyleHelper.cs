@@ -44,7 +44,7 @@ namespace YetaWF.Modules.SlideShow.Views.Shared {
             get {
                 List<Arrow> list = new List<Arrow>();
                 Package package = YetaWF.Modules.SlideShow.Controllers.AreaRegistration.CurrentPackage;
-                string rootUrl = VersionManager.GetAddOnModuleUrl(package.Domain, package.Product);
+                string rootUrl = VersionManager.GetAddOnPackageUrl(package.Domain, package.Product);
                 string[] files = Directory.GetFiles(YetaWFManager.UrlToPhysical(rootUrl + "jssor/skins/arrow"), "*.css");
                 foreach (var file in files) {
                     string name = Path.GetFileNameWithoutExtension(file);

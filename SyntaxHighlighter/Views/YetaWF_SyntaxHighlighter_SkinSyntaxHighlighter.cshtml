@@ -14,8 +14,8 @@
 
     Manager.AddOnManager.AddTemplate("TextArea");/*TODO: Why?*/
     Package package = AreaRegistration.CurrentPackage;
-    Manager.AddOnManager.AddAddOn(package.Domain, package.Product, "SkinSyntaxHighlighter", internalTheme);
+    Manager.AddOnManager.AddAddOnNamed(package.Domain, package.Product, "SkinSyntaxHighlighter", internalTheme);
 
-    string url = VersionManager.GetAddOnModuleUrl(package.Domain, package.Product, "SkinSyntaxHighlighter");
+    string url = VersionManager.GetAddOnNamedUrl(package.Domain, package.Product, "SkinSyntaxHighlighter");
     Manager.ScriptManager.AddLast("AlexGorbatchevCom_SyntaxHighlighter", "AlexGorbatchevCom_SyntaxHighlighter.Init('" + url + "');");
 }
