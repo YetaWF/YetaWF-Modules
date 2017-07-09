@@ -35,7 +35,7 @@ namespace YetaWF.Modules.Basics.Controllers {
             public string PageKendoUISkin { get; set; }
 
             [Caption("Page Syntax Highlighter Skin"), Description("The page skin for syntax highlighting (in text areas)")]
-            [UIHint("SyntaxHighlighterSkin")]
+            [UIHint("YetaWF_SyntaxHighlighter_SyntaxHighlighterSkin")]
             public string PageSyntaxHighlighterSkin { get; set; }
 
             [Caption("Site Default Page Skin"), Description("The default skin used for pages")]
@@ -55,7 +55,7 @@ namespace YetaWF.Modules.Basics.Controllers {
             public string SiteKendoUISkin { get; set; }
 
             [Caption("Site Syntax Highlighter Skin"), Description("The default skin for syntax highlighting in textareas")]
-            [UIHint("SyntaxHighlighterSkin")]
+            [UIHint("YetaWF_SyntaxHighlighter_SyntaxHighlighter")]
             public string SiteSyntaxHighlighterSkin { get; set; }
 
             [Caption("Letters"), Description("The letters used to calculate the average character width and height")]

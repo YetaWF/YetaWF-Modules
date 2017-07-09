@@ -1,0 +1,9 @@
+﻿/* Copyright © 2017 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/SyntaxHighlighter#License */
+/* Syntax highlighter */
+
+/* Fix container conflict with bootstrap */
+/* http://stackoverflow.com/questions/22610540/syntaxhighlighter-margin-bug-with-bootstrap */
+
+.syntaxhighlighter table .container:before {
+    display: none !important;
+}

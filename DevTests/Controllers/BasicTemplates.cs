@@ -143,7 +143,7 @@ namespace YetaWF.Modules.DevTests.Controllers {
             public SMTPServer SMTPServer { get; set; }
 
             [Category("Core"), Caption("SyntaxHighlighterSkin"), Description("SyntaxHighlighterSkin (Required)")]
-            [UIHint("SyntaxHighlighterSkin"), Required]
+            [UIHint("YetaWF_SyntaxHighlighter_SyntaxHighlighter"), Required]
             public string SyntaxHighlighterSkin { get; set; }
 
             [Category("Core"), Caption("Text"), Description("Text (Required)")]

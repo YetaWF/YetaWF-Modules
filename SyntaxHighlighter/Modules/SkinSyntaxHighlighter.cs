@@ -17,10 +17,10 @@ namespace YetaWF.Modules.SyntaxHighlighter.Modules {
     public class SkinSyntaxHighlighterModule : ModuleDefinition {
 
         public SkinSyntaxHighlighterModule() {
-            Title = this.__ResStr("modTitle", "Skin Syntax Highlighter");
-            Name = this.__ResStr("modName", "Syntax Highlighter (Skin)");
-            Description = this.__ResStr("modSummary", "Skin module supporting syntax highlighting in modules");
-            WantFocus = false; 
+            Title = this.__ResStr("modTitle", "Skin Syntax Highlighter (Alex Gorbatchev)");
+            Name = this.__ResStr("modName", "Syntax Highlighter Alex Gorbatchev (Skin)");
+            Description = this.__ResStr("modSummary", "Skin module supporting syntax highlighting in modules, by Alex Gorbatchev");
+            WantFocus = false;
             ShowTitle = false;
             WantSearch = false;
             Invokable = true;
