@@ -26,5 +26,3 @@ using YetaWF.Core.Packages;
 
 [assembly: RequiresPackage("YetaWF.ImageRepository")]
 
-[assembly: RequiresAddOnGlobal("ckeditor.com", "ckeditor", "4.3.3")]
-

@@ -25,5 +25,3 @@ using YetaWF.Core.Packages;
     "https://yetawf.com/Documentation/YetaWF/SyntaxHighlighter#License")]
 
 [assembly: PublicPartialViews]
-
-[assembly: RequiresAddOnGlobal("alexgorbatchev.com", "SyntaxHighlighter", "3.0.83")]

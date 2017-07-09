@@ -23,5 +23,3 @@ using YetaWF.Core.Packages;
     "https://YetaWF.com/Documentation/YetaWF/Support",
     "https://yetawf.com/Documentation/YetaWF/Lightbox#Release%20Notice",
     "https://yetawf.com/Documentation/YetaWF/Lightbox#License")]
-
-[assembly: RequiresAddOnGlobal("lokeshdhakar.com", "lightbox")]
