@@ -24,6 +24,9 @@ namespace YetaWF.Modules.PageEdit.Modules {
             Name = this.__ResStr("modName", "Control Panel");
             Title = this.__ResStr("modTitle", "Control Panel");
             Description = this.__ResStr("modSummary", "Control Panel with support for adding modules, new pages, importing modules and editing page settings");
+            ShowTitleActions = false;
+            WantFocus = false;
+            WantSearch = false;
         }
 
         public override IModuleDefinitionIO GetDataProvider() { return new PageControlModuleDataProvider(); }
