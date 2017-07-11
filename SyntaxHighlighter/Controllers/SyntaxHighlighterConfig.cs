@@ -79,6 +79,7 @@ namespace YetaWF.Modules.SyntaxHighlighter.Controllers {
 
         [AllowPost]
         [ConditionalAntiForgeryToken]
+        [ExcludeDemoMode]
         public ActionResult SyntaxHighlighterConfig_Partial(Model model) {
             using (ConfigDataProvider dataProvider = new ConfigDataProvider()) {
                 ConfigData data = dataProvider.GetItem();// get the original item
