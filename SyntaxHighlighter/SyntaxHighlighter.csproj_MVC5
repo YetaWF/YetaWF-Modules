@@ -85,6 +85,7 @@
     <Content Include="Addons\_Addons\SkinHighlightJS\FilelistCSS.txt" />
     <Content Include="Addons\_Addons\SkinHighlightJS\FilelistJS.txt" />
     <Content Include="Addons\_Addons\SkinHighlightJS\highlight.pack.js" />
+    <Content Include="Addons\_Addons\SkinHighlightJS\Fixup.css" />
     <Content Include="Addons\_Addons\SkinHighlightJS\Init.js" />
     <Content Include="Addons\_Addons\SkinHighlightJS\themelist.txt" />
     <Content Include="Addons\_Addons\SkinHighlightJS\themes\agate.css" />
