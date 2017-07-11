@@ -45,7 +45,7 @@ YetaWF_Basics.whenReady.push({
                     var uri = new URI(this.href);
                     uri.removeSearch('PageGuid');
                     uri.addSearch('PageGuid', YVolatile.Basics.PageGuid);
-                    this.href = uri.toString();
+                    $(this).attr("href", uri.toString());
                 });
             }
             // Remove Page
@@ -55,14 +55,14 @@ YetaWF_Basics.whenReady.push({
                     var uri = new URI(this.href);
                     uri.removeSearch('PageGuid');
                     uri.addSearch('PageGuid', YVolatile.Basics.PageGuid);
-                    this.href = uri.toString();
+                    $(this).attr("href", uri.toString());
                 });
             }
             // W3C validation
             var $w3c = $('.YetaWF_PageEdit_PageControl a[data-name="W3CValidate"]');
             if ($w3c.length > 0)
                 $w3c.each(function () {
-                    this.href = YConfigs.YetaWF_PageEdit.W3CUrl.format(window.location);
+                    $(this).attr("href", YConfigs.YetaWF_PageEdit.W3CUrl.format(window.location));
                 });
 
             // all hidden fields
