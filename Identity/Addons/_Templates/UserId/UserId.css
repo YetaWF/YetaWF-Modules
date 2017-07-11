@@ -7,3 +7,7 @@
 .yt_yetawf_identity_userid.t_edit.t_small {
     display:inline;
 }
+
+.yt_yetawf_identity_userid.t_edit .t_name img {
+    margin-right:.5ch;
+}
