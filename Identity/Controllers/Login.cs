@@ -78,7 +78,7 @@ namespace YetaWF.Modules.Identity.Controllers {
         }
 
         [AllowGet]
-        public ActionResult Login(string name, string pswd, string v, bool closeOnLogin = false) {
+        public ActionResult Login(string name, string pswd, string v, bool closeOnLogin = false, bool __f = false) {
 
             LoginConfigData config = LoginConfigDataProvider.GetConfig();
             bool isPersistent = config.PersistentLogin;
@@ -111,6 +111,8 @@ namespace YetaWF.Modules.Identity.Controllers {
                     model.Images.Add(Manager.GetCDNUrl(string.Format("{0}Icons/LoginProviders/{1}.png", url, provider.InternalName)));
                 }
             }
+            if (__f)
+                Manager.CurrentResponse.StatusCode = 401;
 
             return View(model);
         }
