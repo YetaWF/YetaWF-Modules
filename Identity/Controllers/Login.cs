@@ -133,7 +133,7 @@ namespace YetaWF.Modules.Identity.Controllers {
             if (!ModelState.IsValid)
                 return PartialView(model);
 
-            return await CompleteLogin(model, config);
+            return await CompleteLogin(model, config, useTwoStep: true);
         }
 
         [AllowPost]
@@ -150,13 +150,13 @@ namespace YetaWF.Modules.Identity.Controllers {
                 UserName = name,
                 Password = password,
             };
-            ActionResult result = await CompleteLogin(model, LoginConfigDataProvider.GetConfig());
+            ActionResult result = await CompleteLogin(model, LoginConfigDataProvider.GetConfig(), useTwoStep: false);
             if (!model.Success)
                 Manager.CurrentResponse.StatusCode = 401;
             return result;
         }
 
-        private async Task<ActionResult> CompleteLogin(LoginModel model, LoginConfigData config) {
+        private async Task<ActionResult> CompleteLogin(LoginModel model, LoginConfigData config, bool useTwoStep) {
 
             Manager.SessionSettings.SiteSettings.ClearValue(LoginTwoStepController.IDENTITY_TWOSTEP_USERID);
             Manager.SessionSettings.SiteSettings.ClearValue(LoginTwoStepController.IDENTITY_TWOSTEP_NEXTURL);
@@ -278,13 +278,15 @@ namespace YetaWF.Modules.Identity.Controllers {
                     this.__ResStr("accountSuspended", "Your account has been suspended."),
                     NextPage: nextPage);
             } else if (user.UserStatus == UserStatusEnum.Approved) {
-                ActionResult actionResult = TwoStepAuthetication(user);
-                if (actionResult != null) {
-                    Manager.SessionSettings.SiteSettings.SetValue<int>(LoginTwoStepController.IDENTITY_TWOSTEP_USERID, user.UserId);// marker that user has entered correct name/password
-                    Manager.SessionSettings.SiteSettings.SetValue<string>(LoginTwoStepController.IDENTITY_TWOSTEP_NEXTURL, Manager.ReturnToUrl);// marker that user has entered correct name/password
-                    Manager.SessionSettings.SiteSettings.SetValue<bool>(LoginTwoStepController.IDENTITY_TWOSTEP_CLOSEONLOGIN, model.CloseOnLogin);
-                    Manager.SessionSettings.SiteSettings.Save();
-                    return actionResult;
+                if (useTwoStep) {
+                    ActionResult actionResult = TwoStepAuthetication(user);
+                    if (actionResult != null) {
+                        Manager.SessionSettings.SiteSettings.SetValue<int>(LoginTwoStepController.IDENTITY_TWOSTEP_USERID, user.UserId);// marker that user has entered correct name/password
+                        Manager.SessionSettings.SiteSettings.SetValue<string>(LoginTwoStepController.IDENTITY_TWOSTEP_NEXTURL, Manager.ReturnToUrl);// marker that user has entered correct name/password
+                        Manager.SessionSettings.SiteSettings.SetValue<bool>(LoginTwoStepController.IDENTITY_TWOSTEP_CLOSEONLOGIN, model.CloseOnLogin);
+                        Manager.SessionSettings.SiteSettings.Save();
+                        return actionResult;
+                    }
                 }
                 await LoginModuleController.UserLoginAsync(user, model.RememberMe);
                 model.Success = true;
