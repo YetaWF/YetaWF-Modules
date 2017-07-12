@@ -19,6 +19,7 @@ using YetaWF.Core.Views.Shared;
 using YetaWF.Modules.Identity.DataProvider;
 using YetaWF.Modules.Identity.Models;
 using YetaWF.Modules.Identity.Support;
+using YetaWF.Core.Packages;
 #if MVC6
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -75,6 +76,8 @@ namespace YetaWF.Modules.Identity.Controllers {
 
             public List<string> Images { get; set; }
             public List<FormButton> ExternalProviders { get; set; }
+
+            public bool Success { get; set; }
         }
 
         [AllowGet]
@@ -122,11 +125,6 @@ namespace YetaWF.Modules.Identity.Controllers {
         [ExcludeDemoMode]
         public async Task<ActionResult> Login_Partial(LoginModel model) {
 
-            Manager.SessionSettings.SiteSettings.ClearValue(LoginTwoStepController.IDENTITY_TWOSTEP_USERID);
-            Manager.SessionSettings.SiteSettings.ClearValue(LoginTwoStepController.IDENTITY_TWOSTEP_NEXTURL);
-            Manager.SessionSettings.SiteSettings.ClearValue(LoginTwoStepController.IDENTITY_TWOSTEP_CLOSEONLOGIN);
-            Manager.SessionSettings.SiteSettings.Save();
-
             LoginConfigData config = LoginConfigDataProvider.GetConfig();
 
             if (model.ShowCaptcha != (config.Captcha && !model.ShowVerification))
@@ -134,6 +132,37 @@ namespace YetaWF.Modules.Identity.Controllers {
 
             if (!ModelState.IsValid)
                 return PartialView(model);
+
+            return await CompleteLogin(model, config);
+        }
+
+        [AllowPost]
+        [ExcludeDemoMode]
+        public async Task<ActionResult> LoginDirect(string name, string password, Guid security) {
+
+            Package package = AreaRegistration.CurrentPackage;
+            Guid batchKey = WebConfigHelper.GetValue<Guid>(package.AreaName, "BatchKey");
+            if (batchKey != security)
+                return NotAuthorized();
+
+            LoginModel model = new LoginModel {
+                RememberMe = true,
+                UserName = name,
+                Password = password,
+            };
+            ActionResult result = await CompleteLogin(model, LoginConfigDataProvider.GetConfig());
+            if (!model.Success)
+                Manager.CurrentResponse.StatusCode = 401;
+            return result;
+        }
+
+        private async Task<ActionResult> CompleteLogin(LoginModel model, LoginConfigData config) {
+
+            Manager.SessionSettings.SiteSettings.ClearValue(LoginTwoStepController.IDENTITY_TWOSTEP_USERID);
+            Manager.SessionSettings.SiteSettings.ClearValue(LoginTwoStepController.IDENTITY_TWOSTEP_NEXTURL);
+            Manager.SessionSettings.SiteSettings.ClearValue(LoginTwoStepController.IDENTITY_TWOSTEP_CLOSEONLOGIN);
+            Manager.SessionSettings.SiteSettings.Save();
+            model.Success = false;
 
             // make sure it's a valid user
             UserDefinition user = null;
@@ -258,6 +287,7 @@ namespace YetaWF.Modules.Identity.Controllers {
                     return actionResult;
                 }
                 await LoginModuleController.UserLoginAsync(user, model.RememberMe);
+                model.Success = true;
                 Logging.AddLog("User {0} - logged on", model.UserName);
                 if (model.CloseOnLogin)
                     return FormProcessed(model, OnClose: OnCloseEnum.CloseWindow, OnPopupClose: OnPopupCloseEnum.GotoNewPage, NextPage: Manager.ReturnToUrl, ForceRedirect: true);
