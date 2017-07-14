@@ -240,7 +240,7 @@ namespace YetaWF.Modules.PageEdit.Controllers {
                 module.ModuleGuid = Guid.NewGuid();
             page.AddModule(model.SelectedPane, module, model.ModuleLocation == Location.Top);
             page.Save();
-            return Reload(model, this.__ResStr("okNew", "New module added"));
+            return Reload(model, PopupText: this.__ResStr("okNew", "New module added"));
         }
 
         [AllowPost]
@@ -260,7 +260,7 @@ namespace YetaWF.Modules.PageEdit.Controllers {
             ModuleDefinition module = ModuleDefinition.Load(model.ExistingModule);
             page.AddModule(model.ExistingModulePane, module, model.ModuleLocation == Location.Top);
             page.Save();
-            return Reload(model, this.__ResStr("okExisting", "Module added"));
+            return Reload(model, PopupText: this.__ResStr("okExisting", "Module added"));
         }
 
         [AllowPost]
