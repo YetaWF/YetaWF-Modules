@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net461</TargetFramework>
+    <TargetFramework>net462</TargetFramework>
     <DefineConstants>$(DefineConstants);MVC6</DefineConstants>
     <AssemblyName>YetaWF.UserProfile</AssemblyName>
     <PackageId>UserProfile</PackageId>
@@ -17,10 +17,6 @@
 
   <ItemGroup>
     <Folder Include="ViewsCode\Shared\" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <PackageReference Include="NETStandard.Library.NETFramework" Version="2.0.0-*" />
   </ItemGroup>
 
   <ItemGroup>

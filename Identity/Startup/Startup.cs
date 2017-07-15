@@ -35,7 +35,7 @@ namespace YetaWF.Modules.Identity
 
                 long secIntvl = WebConfigHelper.GetValue<long>(AREA, "OWin:SecurityStampValidationInterval", new TimeSpan(0, 30, 0).Ticks); // 30 minutes
                 //$$ options.SecurityStampValidationInterval = new TimeSpan(secIntvl);
-
+                
                 // We handle lockouts
                 options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(0);
                 options.Lockout.MaxFailedAccessAttempts = 0;

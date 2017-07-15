@@ -1,4 +1,4 @@
 ﻿MVC5 \Content\SyntaxHighlighter\shCore.min.css
-MVC6 \lib\SyntaxHighlighter\styles\shCore.min.css
+MVC6 \lib\SyntaxHighlighter\styles\shCore.css
 {0}
 cssfix.css
