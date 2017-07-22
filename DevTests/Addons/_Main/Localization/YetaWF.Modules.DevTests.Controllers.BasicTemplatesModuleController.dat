@@ -44,8 +44,8 @@
                         <Object Type="YetaWF.Core.Localize.LocalizationData+PropertyData" Assembly="YetaWF.Core">
                           <Properties>
                             <Name Value="Country" />
-                            <Caption Value="Country" />
-                            <Description Value="Country (Required)" />
+                            <Caption Value="CountryISO3166" />
+                            <Description Value="CountryISO3166 (Required)" />
                             <HelpLink />
                             <TextAbove />
                             <TextBelow />
@@ -57,7 +57,7 @@
                           <Properties>
                             <Name Value="Currency" />
                             <Caption Value="Currency" />
-                            <Description Value="Currency (Required)" />
+                            <Description Value="Currency (Required) - Uses formatting defined using Site Settings, General tab" />
                             <HelpLink />
                             <TextAbove />
                             <TextBelow />
@@ -68,8 +68,8 @@
                         <Object Type="YetaWF.Core.Localize.LocalizationData+PropertyData" Assembly="YetaWF.Core">
                           <Properties>
                             <Name Value="CurrencyISO4217" />
-                            <Caption Value="Currency ISO 4217" />
-                            <Description Value="Currency (Required)" />
+                            <Caption Value="CurrencyISO4217" />
+                            <Description Value="CurrencyISO4217 (Required)" />
                             <HelpLink />
                             <TextAbove />
                             <TextBelow />

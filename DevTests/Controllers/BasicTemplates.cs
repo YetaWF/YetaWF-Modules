@@ -33,15 +33,15 @@ namespace YetaWF.Modules.DevTests.Controllers {
             [UIHint("Boolean"), Required]
             public bool Boolean { get; set; }
 
-            [Category("Core"), Caption("Country"), Description("Country (Required)")]
+            [Category("Core"), Caption("CountryISO3166"), Description("CountryISO3166 (Required)")]
             [UIHint("CountryISO3166"), StringLength(80), Trim, Required]
             public string Country { get; set; }
 
-            [Category("Core"), Caption("Currency"), Description("Currency (Required)")]
+            [Category("Core"), Caption("Currency"), Description("Currency (Required) - Uses formatting defined using Site Settings, General tab")]
             [UIHint("Currency"), Required]
             public decimal? Currency { get; set; }
 
-            [Category("Core"), Caption("Currency ISO 4217"), Description("Currency (Required)")]
+            [Category("Core"), Caption("CurrencyISO4217"), Description("CurrencyISO4217 (Required)")]
             [UIHint("CurrencyISO4217"), StringLength(CurrencyISO4217Helper.Currency.MaxId), Trim, Required]
             public string CurrencyISO4217 { get; set; }
 
