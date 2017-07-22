@@ -41,6 +41,10 @@ namespace YetaWF.Modules.DevTests.Controllers {
             [UIHint("Currency"), Required]
             public decimal? Currency { get; set; }
 
+            [Category("Core"), Caption("Currency ISO 4217"), Description("Currency (Required)")]
+            [UIHint("CurrencyISO4217"), StringLength(CurrencyISO4217Helper.Currency.MaxId), Trim, Required]
+            public string CurrencyISO4217 { get; set; }
+
             [Category("Core"), Caption("DropDownList"), Description("DropDownList (SelectionRequired)")]
             [UIHint("DropDownList"), StringLength(20), SelectionRequired]
             public string DropDownList { get; set; }
