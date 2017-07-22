@@ -11,6 +11,7 @@ using YetaWF.Core.Support;
 using YetaWF.Core.Views;
 using YetaWF.Core.Views.Shared;
 using YetaWF.Modules.Pages.DataProvider;
+using YetaWF.Modules.Pages.Controllers.Shared;
 #if MVC6
 using Microsoft.AspNetCore.Html;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -154,29 +155,15 @@ namespace YetaWF.Modules.Pages.Views.Shared {
         public static HtmlString RenderAllPages<TModel>(this HtmlHelper<TModel> htmlHelper, string name, string id)
 #endif
         {
-            List<GridAllEntry> list = new List<GridAllEntry>();
-            using (PageDefinitionDataProvider pagesDP = new PageDefinitionDataProvider()) {
-                int total;
-                List<PageDefinition> pages = pagesDP.GetItems(0, 0, null, null, out total);
-                list = (from p in pages select new GridAllEntry(p)).ToList();
-            }
             bool header;
             if (!htmlHelper.TryGetControlInfo<bool>("", "Header", out header))
                 header = true;
-            DataSourceResult data = new DataSourceResult {
-                Data = list.ToList<object>(),
-                Total = list.Count,
-            };
             GridModel model = new GridModel() {
                 GridDef = new GridDefinition() {
+                    AjaxUrl = YetaWFManager.UrlFor(typeof(ListOfLocalPagesHelperController), nameof(ListOfLocalPagesHelperController.ListOfLocalPagesBrowse_GridData)),
                     Id = id,
                     RecordType = typeof(GridAllEntry),
-                    Data = data,
-                    SupportReload = false,
-                    PageSizes = new List<int>(),
-                    InitialPageSize = 10,
                     ShowHeader = header,
-                    ReadOnly = true,
                 }
             };
 #if MVC6

@@ -2,7 +2,9 @@
 
 using System.Reflection;
 using System.Runtime.InteropServices;
+using YetaWF.Core.Identity;
 using YetaWF.Core.Packages;
+using YetaWF.Modules.Pages.Addons;
 using YetaWF.PackageAttributes;
 
 [assembly: AssemblyTitle("Pages")]
@@ -25,3 +27,5 @@ using YetaWF.PackageAttributes;
     "https://yetawf.com/Documentation/YetaWF/Pages#License")]
 
 [assembly:PublicPartialViews]
+
+[assembly: Resource(Info.Resource_AllowListOfLocalPagesAjax, "Allow list of local pages retrieval (Ajax) for ListOfLocalPages template", Administrator = true, Superuser = true)]

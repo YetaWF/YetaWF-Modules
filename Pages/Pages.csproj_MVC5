@@ -69,6 +69,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controllers\SkinScrollToTop.cs" />
+    <Compile Include="Controllers\Support\ListOfLocalPagesHelper.cs" />
     <Compile Include="Controllers\TemplateListOfPageDefinitions.cs" />
     <Compile Include="Controllers\UnifiedSetAdd.cs" />
     <Compile Include="Controllers\UnifiedSetEdit.cs" />
