@@ -40,7 +40,7 @@ namespace YetaWF.Modules.DevTests.Views.Shared {
 
             public GridEntryEdit() { }
 
-            [Caption("Delete"), Description("Click to delete this email address")]
+            [Caption("Delete"), Description("Click to remove this email address from the list")]
             [UIHint("GridDeleteEntry")]
             public int DeleteMe { get; set; }
 

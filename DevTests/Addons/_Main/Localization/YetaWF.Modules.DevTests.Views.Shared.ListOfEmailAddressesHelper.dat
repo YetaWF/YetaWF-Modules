@@ -78,7 +78,7 @@
                           <Properties>
                             <Name Value="DeleteMe" />
                             <Caption Value="Delete" />
-                            <Description Value="Click to delete this email address" />
+                            <Description Value="Click to remove this email address from the list" />
                             <HelpLink />
                             <TextAbove />
                             <TextBelow />

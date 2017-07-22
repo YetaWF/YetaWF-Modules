@@ -126,7 +126,7 @@
                           <Properties>
                             <Name Value="DeleteMe" />
                             <Caption Value="Delete" />
-                            <Description Value="Click to delete this page" />
+                            <Description Value="Click to remove this page from the list" />
                             <HelpLink />
                             <TextAbove />
                             <TextBelow />

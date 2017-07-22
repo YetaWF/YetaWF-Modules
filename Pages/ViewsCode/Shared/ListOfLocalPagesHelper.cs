@@ -43,7 +43,7 @@ namespace YetaWF.Modules.Pages.Views.Shared {
 
             public GridEntryEdit() { }
 
-            [Caption("Delete"), Description("Click to delete this page")]
+            [Caption("Delete"), Description("Click to remove this page from the list")]
             [UIHint("GridDeleteEntry")]
             public int DeleteMe { get; set; }
 
