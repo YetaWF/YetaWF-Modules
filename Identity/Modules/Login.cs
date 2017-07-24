@@ -84,6 +84,7 @@ namespace YetaWF.Modules.Identity.Modules {
                 Location = ModuleAction.ActionLocationEnum.NoAuto,
                 Category = ModuleAction.ActionCategoryEnum.Significant,
                 Mode = ModuleAction.ActionModeEnum.Any,
+                DontFollow = true,
             };
         }
     }

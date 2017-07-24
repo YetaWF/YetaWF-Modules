@@ -155,6 +155,25 @@ namespace YetaWF.Modules.Identity.Controllers {
                 Manager.CurrentResponse.StatusCode = 401;
             return result;
         }
+        [AllowGet]
+        [ExcludeDemoMode]
+        public async Task<ActionResult> LoginDirectGet(string name, string password, Guid security) {
+
+            Package package = AreaRegistration.CurrentPackage;
+            Guid batchKey = WebConfigHelper.GetValue<Guid>(package.AreaName, "BatchKey");
+            if (batchKey != security)
+                return NotAuthorized();
+
+            LoginModel model = new LoginModel {
+                RememberMe = true,
+                UserName = name,
+                Password = password,
+            };
+            ActionResult result = await CompleteLogin(model, LoginConfigDataProvider.GetConfig(), useTwoStep: false);
+            if (!model.Success)
+                Manager.CurrentResponse.StatusCode = 401;
+            return new EmptyResult();
+        }
 
         private async Task<ActionResult> CompleteLogin(LoginModel model, LoginConfigData config, bool useTwoStep) {
 
