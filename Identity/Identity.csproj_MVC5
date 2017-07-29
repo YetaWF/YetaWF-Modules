@@ -251,6 +251,7 @@
     <None Include="Views\YetaWF_Identity_ForgotPassword.cshtml" />
     <None Include="Views\YetaWF_Identity_ForgotPassword_Partial.cshtml" />
     <Content Include="Views\YetaWF_Identity_TwoStepDone.cshtml" />
+    <Content Include="Views\YetaWF_Identity_LoginDirect.cshtml" />
     <None Include="Views\YetaWF_Identity_Need2FADisplay.cshtml" />
     <None Include="Views\YetaWF_Identity_SelectTwoStepSetup.cshtml" />
     <None Include="Views\YetaWF_Identity_SelectTwoStepAuth.cshtml" />
