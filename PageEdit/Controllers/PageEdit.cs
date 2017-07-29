@@ -171,6 +171,18 @@ namespace YetaWF.Modules.PageEdit.Controllers {
             [UIHint("TextArea"), AdditionalMetadata("SourceOnly", true), StringLength(SiteDefinition.MaxMeta), Trim]
             public string PageMetaTags { get; set; }
 
+            [Category("Addons"), Caption("<HEAD>"), Description("Any tags that should be added to the <HEAD> tag of each page can be added here")]
+            [UIHint("TextArea"), AdditionalMetadata("SourceOnly", true), StringLength(SiteDefinition.MaxHead), Trim]
+            public string ExtraHead { get; set; }
+
+            [Category("Addons"), Caption("<BODY> Top"), Description("Any tags that should be added to the top of the <BODY> tag of each page can be added here")]
+            [UIHint("TextArea"), AdditionalMetadata("SourceOnly", true), StringLength(SiteDefinition.MaxBodyTop), Trim]
+            public string ExtraBodyTop { get; set; }
+
+            [Category("Addons"), Caption("<BODY> Bottom"), Description("Any tags that should be added to the bottom of the <BODY> tag of each page can be added here")]
+            [UIHint("TextArea"), AdditionalMetadata("SourceOnly", true), StringLength(SiteDefinition.MaxBodyBottom), Trim]
+            public string ExtraBodyBottom { get; set; }
+
             [Category("Meta"), Caption("SiteMap Priority"), Description("Defines the page priority used for the site map")]
             [UIHint("Enum")]
             public PageDefinition.SiteMapPriorityEnum SiteMapPriority { get; set; }
