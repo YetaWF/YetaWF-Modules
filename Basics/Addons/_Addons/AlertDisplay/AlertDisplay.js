@@ -1,38 +1,69 @@
-﻿/* Copyright © 2017 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Basics#License */
-
-var _YetaWF_Basics_Alert = {};
-_YetaWF_Basics_Alert.dismissed = false;
-_YetaWF_Basics_Alert.on = true;
-
-// if this javascript snippet is included, that means we're displaying the alert
-// the alert is displayed until dismissed or if the page doesn't reference this module (dynamic content)
-
-// handle close click
-$(document).on('click', '.YetaWF_Basics_AlertDisplay .t_close img', function () {
-    'use string';
-    _YetaWF_Basics_Alert.dismissed = true;
-    var $alert = $('.YetaWF_Basics_AlertDisplay');
-    if ($alert.length == 0) throw ".YetaWF_Basics_AlertDisplay not found";/*DEBUG*/
-    var ajaxurl = $('.t_close', $alert).attr('data-ajaxurl');
-    if (ajaxurl == undefined) throw "No ajax url specified";/*DEBUG*/
-    $alert.hide();
-    $.ajax({
-        url: ajaxurl,
-        cache: false, type: 'POST',
-        dataType: 'html',
-    });
-});
-
-// Handles events turning the addon on/off (used for dynamic content)
-$(document).on('YetaWF_Basics_Addon', function (event, addonGuid, on) {
-    if (addonGuid == '24b7dc07-e96a-409d-911f-47bffd38d0fc') {
-        _YetaWF_Basics_Alert.on = on;
-    }
-});
-YetaWF_Basics.whenReady.push({
-    callback: function ($tag) {
-        var $alert = $('.YetaWF_Basics_AlertDisplay');
-        if ($alert.length == 0) throw ".YetaWF_Basics_AlertDisplay not found";/*DEBUG*/
-        $alert.toggle(!_YetaWF_Basics_Alert.dismissed && _YetaWF_Basics_Alert.on);
-    }
-});
+/* Copyright © 2017 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Licensing */
+// If this javascript snippet is included, that means we're displaying the alert.
+// The alert is displayed until dismissed or if the page doesn't reference this module (dynamic content).
+var YetaWF_Basics_Mods;
+(function (YetaWF_Basics_Mods) {
+    var AlertDisplayModule = (function () {
+        function AlertDisplayModule() {
+        }
+        /**
+         * Initializes the module instance.
+         */
+        AlertDisplayModule.prototype.init = function () {
+            document.addEventListener("click", this.handleClick);
+            YetaWF_Basics.addWhenReady(function (section) {
+                alert.initSection(section);
+            });
+            YetaWF_Basics.RegisterContentChange(function (event, addonGuid, on) {
+                if (addonGuid === AlertDisplayModule.MODULEGUID) {
+                    AlertDisplayModule.on = on;
+                }
+            });
+        };
+        /**
+         * Initializes all alert elements in the specified tag.
+         * @param tag - an element containing Alert elements.
+         */
+        AlertDisplayModule.prototype.initSection = function (tag) {
+            var alert = document.querySelector(".YetaWF_Basics_AlertDisplay");
+            if (!alert)
+                throw ".YetaWF_Basics_AlertDisplay not found"; /*DEBUG*/
+            if (!AlertDisplayModule.dismissed && AlertDisplayModule.on)
+                alert.style.display = "";
+            else
+                alert.style.display = "none";
+        };
+        /**
+         * Handles the click on the image to close the Alert.
+         * @param event
+         */
+        AlertDisplayModule.prototype.handleClick = function (event) {
+            if (!YetaWF_Basics.elementMatches(event.srcElement, ".YetaWF_Basics_AlertDisplay .t_close img"))
+                return;
+            AlertDisplayModule.dismissed = true;
+            var alert = document.querySelector(".YetaWF_Basics_AlertDisplay");
+            if (!alert)
+                throw ".YetaWF_Basics_AlertDisplay not found"; /*DEBUG*/
+            var close = alert.querySelector(".t_close");
+            if (!close)
+                throw "No .t_close element found"; /*DEBUG*/
+            var ajaxurl = close.getAttribute("data-ajaxurl");
+            if (!ajaxurl)
+                throw "No ajax url specified"; /*DEBUG*/
+            alert.style.display = "none";
+            // Save alert status server side
+            var request = new XMLHttpRequest();
+            request.open("POST", ajaxurl, true);
+            request.setRequestHeader("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
+            request.send("");
+            // we don't care about the result of this request
+        };
+        AlertDisplayModule.MODULEGUID = "24b7dc07-e96a-409d-911f-47bffd38d0fc";
+        AlertDisplayModule.dismissed = false;
+        AlertDisplayModule.on = true;
+        return AlertDisplayModule;
+    }());
+    var alert = new AlertDisplayModule();
+    alert.init();
+})(YetaWF_Basics_Mods || (YetaWF_Basics_Mods = {}));
+//# sourceMappingURL=AlertDisplay.js.map

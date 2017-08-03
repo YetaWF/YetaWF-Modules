@@ -10,6 +10,9 @@
 packages.config
 app.config
 
+**/*.d.ts
+**/*.js.map
+
 **/obj/
 **/bin/**/*.xml
 **/bin/**/*.config
