@@ -1,8 +1,8 @@
-Default,\Content\SyntaxHighlighter\shThemeDefault.css
-Django,\Content\SyntaxHighlighter\shThemeDjango.css
-Eclipse,\Content\SyntaxHighlighter\shThemeEclipse.css
-Emacs,\Content\SyntaxHighlighter\shThemeEmacs.css
-FadeToGray,\Content\SyntaxHighlighter\shThemeFadeToGrey.css
-MDUltra,\Content\SyntaxHighlighter\shThemeMDUltra.css
-Midnight,\Content\SyntaxHighlighter\shThemeMidnight.css
-RDark,\Content\SyntaxHighlighter\shThemeRDark.css
+Default,\AddOns\YetaWF\SyntaxHighlighter\_Addons\SkinSyntaxHighlighter\Dist\css\shThemeDefault.css
+Django,\AddOns\YetaWF\SyntaxHighlighter\_Addons\SkinSyntaxHighlighter\Dist\css\shThemeDjango.css
+Eclipse,\AddOns\YetaWF\SyntaxHighlighter\_Addons\SkinSyntaxHighlighter\Dist\css\shThemeEclipse.css
+Emacs,\AddOns\YetaWF\SyntaxHighlighter\_Addons\SkinSyntaxHighlighter\Dist\css\shThemeEmacs.css
+FadeToGray,\AddOns\YetaWF\SyntaxHighlighter\_Addons\SkinSyntaxHighlighter\Dist\css\shThemeFadeToGrey.css
+MDUltra,\AddOns\YetaWF\SyntaxHighlighter\_Addons\SkinSyntaxHighlighter\Dist\css\shThemeMDUltra.css
+Midnight,\AddOns\YetaWF\SyntaxHighlighter\_Addons\SkinSyntaxHighlighter\Dist\css\shThemeMidnight.css
+RDark,\AddOns\YetaWF\SyntaxHighlighter\_Addons\SkinSyntaxHighlighter\Dist\css\shThemeRDark.css

@@ -10,6 +10,7 @@ using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Modules;
 using YetaWF.Core.Views.Shared;
 using YetaWF.Modules.Dashboard.Modules;
+using YetaWF.Core;
 #if MVC6
 using Microsoft.AspNetCore.Mvc;
 #else
@@ -74,9 +75,13 @@ namespace YetaWF.Modules.Dashboard.Controllers {
             [UIHint("String"), ReadOnly]
             public string AddOnsCustomUrl { get; set; }
 
-            [Caption("Script Url"), Description("The Url containing javascript files installed using Nuget")]
+            [Caption("NPM Url"), Description("The Url containing npm modules")]
             [UIHint("String"), ReadOnly]
-            public string NugetScriptsUrl { get; set; }
+            public string NodeModulesUrl { get; set; }
+
+            [Caption("Bower Url"), Description("The Url containing Bower components")]
+            [UIHint("String"), ReadOnly]
+            public string BowerComponentsUrl { get; set; }
 
             [Caption("Installed AddOns"), Description("Displays all installed AddOns")]
             [UIHint("Grid"), ReadOnly]
@@ -94,7 +99,8 @@ namespace YetaWF.Modules.Dashboard.Controllers {
             BrowseModel model = new BrowseModel {
                 AddOnsUrl = VersionManager.AddOnsUrl,
                 AddOnsCustomUrl = VersionManager.AddOnsCustomUrl,
-                NugetScriptsUrl = VersionManager.NugetScriptsUrl,
+                NodeModulesUrl = Globals.NodeModulesUrl,
+                BowerComponentsUrl = Globals.BowerComponentsUrl,
             };
             model.GridDef = new GridDefinition {
                 SupportReload = false,

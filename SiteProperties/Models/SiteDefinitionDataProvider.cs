@@ -105,8 +105,7 @@ namespace YetaWF.Modules.SiteProperties.Models {
                 site.OriginalCDNUrlSecure = site.CDNUrlSecure;
                 site.OriginalCDNSiteFiles = site.CDNSiteFiles;
                 site.OriginalCDNVault = site.CDNVault;
-                site.OriginalCDNContent = site.CDNContent;
-                site.OriginalCDNScripts = site.CDNScripts;
+                site.OriginalCDNScriptsContent = site.CDNScriptsContent;
                 site.OriginalCDNAddons = site.CDNAddons;
                 site.OriginalCDNAddonsCustom = site.CDNAddonsCustom;
                 site.OriginalCDNAddonsBundles = site.CDNAddonsBundles;
@@ -139,8 +138,9 @@ namespace YetaWF.Modules.SiteProperties.Models {
             }
             // restart required for uihint changes because uihints are cached or CDN changes
             if (site.OriginalUseCDN != site.UseCDN || site.OriginalCDNUrl != site.CDNUrl || site.OriginalCDNUrlSecure != site.CDNUrlSecure ||
-                    site.OriginalCDNSiteFiles != site.CDNSiteFiles || site.OriginalCDNVault != site.CDNVault || site.OriginalCDNContent != site.CDNContent ||
-                    site.OriginalCDNScripts != site.CDNScripts || site.OriginalCDNAddons != site.CDNAddons || site.OriginalCDNAddonsCustom != site.CDNAddonsCustom || site.OriginalCDNAddonsBundles != site.CDNAddonsBundles ||
+                    site.OriginalCDNSiteFiles != site.CDNSiteFiles || site.OriginalCDNVault != site.CDNVault ||
+                    site.OriginalCDNScriptsContent != site.CDNScriptsContent ||
+                    site.OriginalCDNAddons != site.CDNAddons || site.OriginalCDNAddonsCustom != site.CDNAddonsCustom || site.OriginalCDNAddonsBundles != site.CDNAddonsBundles ||
                     site.OriginalCDNFileImage != site.CDNFileImage)
                 restartRequired = true;
             return restartRequired;
