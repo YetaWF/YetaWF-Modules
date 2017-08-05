@@ -35,7 +35,7 @@ app.config
 **/Addons/YetaWF/**/*.min.css
 **/Addons/YetaWF/**/*.min.scss
 
-**/node_modules/
+**/node_modules
 
 CurrencyConverter/Addons/_Main/ExchangeRates.js
 
