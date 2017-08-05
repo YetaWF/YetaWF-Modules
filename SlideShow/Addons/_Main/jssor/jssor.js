@@ -1,4 +1,4 @@
-﻿/*
+/*
 * Jssor 19.0
 * http://www.jssor.com/
 *

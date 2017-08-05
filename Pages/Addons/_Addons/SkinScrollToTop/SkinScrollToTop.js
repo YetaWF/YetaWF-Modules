@@ -1,4 +1,4 @@
-﻿/* Copyright © 2017 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Pages#License */
+/* Copyright © 2017 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Pages#License */
 
 var YetaWF_Pages_ScrollUp = {};
 var _YetaWF_Pages_ScrollUp = {};

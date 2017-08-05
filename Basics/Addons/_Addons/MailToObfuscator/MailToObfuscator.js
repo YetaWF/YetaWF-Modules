@@ -1,4 +1,4 @@
-﻿/* Copyright © 2017 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Basics#License */
+/* Copyright © 2017 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Basics#License */
 
 var _YetaWF_Basics_MailTo = {};
 _YetaWF_Basics_MailTo.on = true;

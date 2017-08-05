@@ -1,4 +1,4 @@
-﻿/// <reference path="Jssor.js" />
+/// <reference path="Jssor.js" />
 
 /**
 * Jssor.Player.ytiframe 1.0

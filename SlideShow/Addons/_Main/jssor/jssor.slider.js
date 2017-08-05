@@ -1,4 +1,4 @@
-﻿/// <reference path="Jssor.js" />
+/// <reference path="Jssor.js" />
 
 /*
 * Jssor.Slider 19.0

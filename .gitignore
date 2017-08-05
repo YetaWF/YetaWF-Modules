@@ -9,6 +9,7 @@
 *.csproj
 packages.config
 app.config
+*.lastcodeanalysissucceeded
 
 **/*.d.ts
 **/*.js.map
@@ -34,7 +35,8 @@ app.config
 **/Addons/YetaWF/**/*.min.css
 **/Addons/YetaWF/**/*.min.scss
 
+**/node_modules/
+
 CurrencyConverter/Addons/_Main/ExchangeRates.js
 
-*.lastcodeanalysissucceeded
 

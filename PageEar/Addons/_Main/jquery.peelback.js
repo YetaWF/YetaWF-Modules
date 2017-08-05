@@ -1,4 +1,4 @@
-﻿/*!
+/*!
  * jQuery Peelback
  * Copyright 2011, Rob Flaherty
  *
