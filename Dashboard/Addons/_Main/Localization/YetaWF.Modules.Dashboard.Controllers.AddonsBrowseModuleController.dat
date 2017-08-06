@@ -160,6 +160,18 @@
                       <Value>
                         <Object Type="YetaWF.Core.Localize.LocalizationData+PropertyData" Assembly="YetaWF.Core">
                           <Properties>
+                            <Name Value="BowerComponentsUrl" />
+                            <Caption Value="Bower Url" />
+                            <Description Value="The Url containing Bower components" />
+                            <HelpLink />
+                            <TextAbove />
+                            <TextBelow />
+                          </Properties>
+                        </Object>
+                      </Value>
+                      <Value>
+                        <Object Type="YetaWF.Core.Localize.LocalizationData+PropertyData" Assembly="YetaWF.Core">
+                          <Properties>
                             <Name Value="GridDef" />
                             <Caption Value="Installed AddOns" />
                             <Description Value="Displays all installed AddOns" />
@@ -172,9 +184,9 @@
                       <Value>
                         <Object Type="YetaWF.Core.Localize.LocalizationData+PropertyData" Assembly="YetaWF.Core">
                           <Properties>
-                            <Name Value="NugetScriptsUrl" />
-                            <Caption Value="Script Url" />
-                            <Description Value="The Url containing javascript files installed using Nuget" />
+                            <Name Value="NodeModulesUrl" />
+                            <Caption Value="NPM Url" />
+                            <Description Value="The Url containing npm modules" />
                             <HelpLink />
                             <TextAbove />
                             <TextBelow />

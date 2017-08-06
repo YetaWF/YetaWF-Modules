@@ -177,6 +177,42 @@
                       <Value>
                         <Object Type="YetaWF.Core.Localize.LocalizationData+PropertyData" Assembly="YetaWF.Core">
                           <Properties>
+                            <Name Value="ExtraBodyBottom" />
+                            <Caption Value="&lt;BODY&gt; Bottom" />
+                            <Description Value="Any tags that should be added to the bottom of the &lt;BODY&gt; tag of each page can be added here" />
+                            <HelpLink />
+                            <TextAbove />
+                            <TextBelow />
+                          </Properties>
+                        </Object>
+                      </Value>
+                      <Value>
+                        <Object Type="YetaWF.Core.Localize.LocalizationData+PropertyData" Assembly="YetaWF.Core">
+                          <Properties>
+                            <Name Value="ExtraBodyTop" />
+                            <Caption Value="&lt;BODY&gt; Top" />
+                            <Description Value="Any tags that should be added to the top of the &lt;BODY&gt; tag of each page can be added here" />
+                            <HelpLink />
+                            <TextAbove />
+                            <TextBelow />
+                          </Properties>
+                        </Object>
+                      </Value>
+                      <Value>
+                        <Object Type="YetaWF.Core.Localize.LocalizationData+PropertyData" Assembly="YetaWF.Core">
+                          <Properties>
+                            <Name Value="ExtraHead" />
+                            <Caption Value="&lt;HEAD&gt;" />
+                            <Description Value="Any tags that should be added to the &lt;HEAD&gt; tag of each page can be added here" />
+                            <HelpLink />
+                            <TextAbove />
+                            <TextBelow />
+                          </Properties>
+                        </Object>
+                      </Value>
+                      <Value>
+                        <Object Type="YetaWF.Core.Localize.LocalizationData+PropertyData" Assembly="YetaWF.Core">
+                          <Properties>
                             <Name Value="FavIcon" />
                             <Caption Value="FavIcon" />
                             <Description Value="The icon representing this site (a 32x32 pixel PNG image) shown by the web browser used to display the page" />

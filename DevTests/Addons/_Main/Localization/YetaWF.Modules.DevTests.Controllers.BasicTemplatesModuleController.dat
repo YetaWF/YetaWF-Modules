@@ -79,6 +79,18 @@
                       <Value>
                         <Object Type="YetaWF.Core.Localize.LocalizationData+PropertyData" Assembly="YetaWF.Core">
                           <Properties>
+                            <Name Value="Decimal" />
+                            <Caption Value="Decimal" />
+                            <Description Value="Decimal (Required)" />
+                            <HelpLink />
+                            <TextAbove />
+                            <TextBelow />
+                          </Properties>
+                        </Object>
+                      </Value>
+                      <Value>
+                        <Object Type="YetaWF.Core.Localize.LocalizationData+PropertyData" Assembly="YetaWF.Core">
+                          <Properties>
                             <Name Value="DropDownList" />
                             <Caption Value="DropDownList" />
                             <Description Value="DropDownList (SelectionRequired)" />
