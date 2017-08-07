@@ -1,5 +1,4 @@
-﻿MVC6 Dist\js\XRegExp.js,bundle
-Dist\js\shCore.js,bundle
+﻿Dist\js\shCore.js,bundle
 Dist\js\shBrushXml.js,bundle
 Dist\js\shBrushCpp.js,bundle
 Dist\js\shBrushCSharp.js,bundle
