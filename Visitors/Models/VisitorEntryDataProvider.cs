@@ -183,6 +183,7 @@ namespace YetaWF.Modules.Visitors.DataProvider {
         // IINSTALLABLEMODEL
 
         public bool IsInstalled() {
+            if (DataProvider == null) return false;
             return DataProvider.IsInstalled();
         }
         public bool InstallModel(List<string> errorList) {
