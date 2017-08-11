@@ -229,14 +229,18 @@ namespace YetaWF.Modules.Packages.DataProvider {
             YetaWF.Core.Log.Logging.TerminateLogging();
 
             // SQL - drop all tables
-            string sqlDboDefault, connDefault;
-            DataProviderImpl.GetSQLInfo(out sqlDboDefault, out connDefault);
-            if (!string.IsNullOrWhiteSpace(sqlDboDefault) && !string.IsNullOrWhiteSpace(connDefault)) {
-                using (SQLDataProviderImpl sql = new SQLDataProviderImpl(sqlDboDefault, connDefault, null, NoLanguages: true)) {
-                    sql.DropAllTables();
+            string ioModeDefault = WebConfigHelper.GetValue<string>(DataProviderImpl.DefaultString, DataProviderImpl.IOModeString);
+            if (string.IsNullOrWhiteSpace(ioModeDefault))
+                throw new InternalError("Default IOMode is missing");
+            if (ioModeDefault.ToLower() == "sql") {
+                string sqlDboDefault, connDefault;
+                DataProviderImpl.GetSQLInfo(out sqlDboDefault, out connDefault);
+                if (!string.IsNullOrWhiteSpace(sqlDboDefault) && !string.IsNullOrWhiteSpace(connDefault)) {
+                    using (SQLDataProviderImpl sql = new SQLDataProviderImpl(sqlDboDefault, connDefault, null, NoLanguages: true)) {
+                        sql.DropAllTables();
+                    }
                 }
             }
-
             // File - Remove all folders (not files - those could be the sql db)
             if (Directory.Exists(YetaWFManager.DataFolder)) {
                 string[] dirs = Directory.GetDirectories(YetaWFManager.DataFolder);
