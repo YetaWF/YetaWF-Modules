@@ -22,7 +22,7 @@ namespace YetaWF.Modules.SyntaxHighlighter.Controllers {
         [Header("The settings are used to define syntax highlighting for the entire site. " +
             "If more than one syntax highlighter is available, both can be used, but should not be used on the same page. " +
             "To activate syntax highlighting, the Site, Page or Module Settings must reference one of the available skin modules. " +
-            "The <pre> and/or <code> tags must be used to define the desired syntax coloring language")]
+            "The <pre> and/or <code> tags must be used to define the desired syntax coloring language.")]
         public class Model {
 
             [Category("Highlight.js"), Caption("Skin"), Description("The skin used for syntax highlighting")]
