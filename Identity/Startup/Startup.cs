@@ -49,7 +49,6 @@ namespace YetaWF.Modules.Identity
 
             services.ConfigureApplicationCookie(c => {
                 long ticks = WebConfigHelper.GetValue<long>(AREA, "OWin:ExpireTimeSpan", new TimeSpan(10, 0, 0, 0).Ticks);
-                c.Cookie.Domain = YetaWFManager.DefaultSiteName;
                 c.Cookie.Expiration = new TimeSpan(ticks);
                 c.Cookie.Name = string.Format(".YetaWF.Cookies.{0}", YetaWFManager.DefaultSiteName);
                 c.Cookie.SecurePolicy = Microsoft.AspNetCore.Http.CookieSecurePolicy.None;
@@ -58,7 +57,6 @@ namespace YetaWF.Modules.Identity
             });
             services.ConfigureExternalCookie(c => {
                 long ticks = WebConfigHelper.GetValue<long>(AREA, "OWin:ExpireTimeSpan", new TimeSpan(10, 0, 0, 0).Ticks);
-                c.Cookie.Domain = YetaWFManager.DefaultSiteName;
                 c.Cookie.Expiration = new TimeSpan(ticks);
                 c.Cookie.Name = string.Format(".YetaWF.Cookies.Ext.{0}", YetaWFManager.DefaultSiteName);
                 c.Cookie.SecurePolicy = Microsoft.AspNetCore.Http.CookieSecurePolicy.None;
