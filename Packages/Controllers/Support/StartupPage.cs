@@ -25,9 +25,9 @@ namespace YetaWF.Modules.Packages.Controllers {
             if (SiteDefinition.INITIAL_INSTALL_ENDED)
                 return Redirect("/Maintenance/StartupDone.html");
 #if MVC6
-            return File("/Maintenance/StartupPage6.html", "text/html");
+            return Redirect("/Maintenance/StartupPage6.html");
 #else
-            return File("/Maintenance/StartupPage5.html", "text/html");
+            return Redirect("/Maintenance/StartupPage5.html");
 #endif
         }
 
