@@ -12,7 +12,7 @@
               <Properties>
                 <Name Value="YetaWF.Modules.SyntaxHighlighter.Controllers.SyntaxHighlighterConfigModuleController+Model" />
                 <BaseTypeName />
-                <Header Value="The settings are used to define syntax highlighting for the entire site. If more than one syntax highlighter is available, both can be used, but should not be used on the same page. To activate syntax highlighting, the Site, Page or Module Settings must reference one of the available skin modules. The &lt;pre&gt; and/or &lt;code&gt; tags must be used to define the desired syntax coloring language" />
+                <Header Value="The settings are used to define syntax highlighting for the entire site. If more than one syntax highlighter is available, both can be used, but should not be used on the same page. To activate syntax highlighting, the Site, Page or Module Settings must reference one of the available skin modules. The &lt;pre&gt; and/or &lt;code&gt; tags must be used to define the desired syntax coloring language." />
                 <Footer />
                 <Legend />
                 <Categories>
