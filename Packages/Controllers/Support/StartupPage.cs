@@ -22,10 +22,8 @@ namespace YetaWF.Modules.Packages.Controllers {
         [AllowGet]
         public ActionResult Show() {
 
-            Manager.CurrentResponse.Headers.Add("Cache-Control", "no-store, no-cache, must-revalidate");
-            Manager.CurrentResponse.Headers.Add("Expires", "0");
             if (SiteDefinition.INITIAL_INSTALL_ENDED)
-                return File("/Maintenance/StartupDone.html", "text/html");
+                return Redirect("/Maintenance/StartupDone.html");
 #if MVC6
             return File("/Maintenance/StartupPage6.html", "text/html");
 #else
