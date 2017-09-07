@@ -66,6 +66,7 @@ namespace YetaWF.Modules.Identity.Views.Shared {
             if (model == null)
                 model = new SerializableList<Role>();
             bool exclude2FA = htmlHelper.GetControlInfo<bool>(name, "ExcludeUser2FA", false);
+            bool? showFilter = htmlHelper.GetControlInfo<bool?>(name, "ShowFilter", null);
             List<RoleInfo> allRoles = Resource.ResourceAccess.GetDefaultRoleList(Exclude2FA: exclude2FA);
             int anonymousRole = Resource.ResourceAccess.GetAnonymousRoleId();
             List<GridEdit> roles = (from r in allRoles
@@ -94,6 +95,7 @@ namespace YetaWF.Modules.Identity.Views.Shared {
                     InitialPageSize = 10,
                     ShowHeader = header,
                     ReadOnly = false,
+                    ShowFilter = showFilter,
                 }
             };
 #if MVC6
@@ -138,6 +140,7 @@ namespace YetaWF.Modules.Identity.Views.Shared {
             if (model == null)
                 model = new SerializableList<Role>();
             bool exclude2FA = htmlHelper.GetControlInfo<bool>(name, "ExcludeUser2FA", false);
+            bool? showFilter = htmlHelper.GetControlInfo<bool?>(name, "ShowFilter", null);
             List<RoleInfo> allRoles = Resource.ResourceAccess.GetDefaultRoleList(Exclude2FA: exclude2FA);
             int anonymousRole = Resource.ResourceAccess.GetAnonymousRoleId();
             List<GridDisplay> roles = (from r in allRoles
@@ -166,6 +169,7 @@ namespace YetaWF.Modules.Identity.Views.Shared {
                     InitialPageSize = 10,
                     ShowHeader = header,
                     ReadOnly = true,
+                    ShowFilter = showFilter,
                 }
             };
 #if MVC6

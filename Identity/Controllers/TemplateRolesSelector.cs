@@ -24,7 +24,7 @@ namespace YetaWF.Modules.Identity.Controllers {
         public class Model {
 
             [Caption("RolesSelector (Required)"), Description("RolesSelector (Required)")]
-            [UIHint("YetaWF_Identity_RolesSelector"), AdditionalMetadata("ExcludeUser2FA", false), Required]
+            [UIHint("YetaWF_Identity_RolesSelector"), AdditionalMetadata("ExcludeUser2FA", false), AdditionalMetadata("ShowFilter", true), Required]
             public SerializableList<Role> Prop1Req { get; set; }
 
             [Caption("RolesSelector"), Description("RolesSelector")]

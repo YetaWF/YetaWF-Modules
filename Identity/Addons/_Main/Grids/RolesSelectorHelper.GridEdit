@@ -1,4 +1,4 @@
 ﻿ForceTwoStep        onlysubmitwhenchecked [Globals.ChBoolean] center sort
-Name                25 sort defaultsort asc
+Name                25 sort filter defaultsort asc
 Description         60
 RoleId              hidden
