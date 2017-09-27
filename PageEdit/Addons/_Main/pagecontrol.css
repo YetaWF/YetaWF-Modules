@@ -6,7 +6,7 @@
 .yPaneTag {
     position: absolute;
     top: -10px;
-    left: -10px;
+    left: 0px;
     color:black;
     background-color: silver;
     font-size:9px;
