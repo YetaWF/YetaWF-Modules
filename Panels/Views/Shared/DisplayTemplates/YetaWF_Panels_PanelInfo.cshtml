@@ -1,0 +1,104 @@
+﻿@*Copyright © 2017 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Panels#License*@
+@inherits YetaWF.Modules.Panels.Views.Shared.PanelInfoHelper<YetaWF.Modules.Panels.Models.PanelInfo>
+@using YetaWF.Core.Modules
+@using YetaWF.Modules.Panels.Models
+<div class="yt_panels_panelinfo t_display" id="@ControlId">
+    @if (Model.Style == PanelInfo.PanelStyleEnum.Tabs) {
+        <div class="t_panels" id="@DivId">
+            @{ int panelIndex = 0; }
+            @Html.RenderTabStripStart(DivId)
+            @for (panelIndex = 0; panelIndex < Model.Panels.Count; ++panelIndex) {
+                string caption = Model.Panels[panelIndex].Caption;
+                if (string.IsNullOrWhiteSpace(caption)) { caption = __ResStr("noCaption", "(no caption)"); }
+                string toolTip = Model.Panels[panelIndex].ToolTip;
+                if (string.IsNullOrWhiteSpace(toolTip)) { toolTip = null; }
+                @Html.RenderTabEntry(DivId, caption, toolTip, panelIndex)
+            }
+            @Html.RenderTabStripEnd(DivId)
+            @{ panelIndex = 0; }
+            @foreach (PanelInfo.PanelEntry panel in Model.Panels) {
+                @Html.RenderTabPaneStart(DivId, panelIndex, "t_panel")
+                @Html.RenderHidden("Index", panelIndex)
+                ModuleDefinition mod = ModuleDefinition.Load(Model.Panels[panelIndex].Module, AllowNone: true);
+                if (mod != null) {
+                    mod.BootstrapContainer = ModuleDefinition.BootstrapContainerEnum.None;/*Don't generate container css class*/
+                    mod.ShowTitle = false;
+                    @mod.RenderModule(Html);
+                } else {
+                    <div>
+                        @__ResStr("noModule", "(no module defined)")
+                    </div>
+                }
+                @Html.RenderTabPaneEnd(DivId, panelIndex)
+                panelIndex++;
+            }
+            @Html.RenderTabInit(DivId)
+        </div>
+    } else if (Model.Style == PanelInfo.PanelStyleEnum.AccordionjQuery) {
+        <div class="t_panels" id="@DivId">
+            @{ int panelIndex = 0; }
+            @for (panelIndex = 0; panelIndex < Model.Panels.Count; ++panelIndex) {
+                string caption = Model.Panels[panelIndex].Caption;
+                if (string.IsNullOrWhiteSpace(caption)) { caption = __ResStr("noCaption", "(no caption)"); }
+                <h3>@caption</h3>
+                ModuleDefinition mod = ModuleDefinition.Load(Model.Panels[panelIndex].Module, AllowNone: true);
+                if (mod != null) {
+                    mod.BootstrapContainer = ModuleDefinition.BootstrapContainerEnum.None;/*Don't generate container css class*/
+                    mod.ShowTitle = false;
+                    @mod.RenderModule(Html);
+                } else {
+                    <div>
+                        @__ResStr("noModule", "(no module defined)")
+                    </div>
+                }
+            }
+        </div>
+        <script>
+            $("#@DivId").accordion({
+                collapsible: true,
+                heightStyle: "content",
+                activate: function (ev, ui) {
+                    $('body').trigger('YetaWF_PropertyList_PanelSwitched', ui.newPanel);
+                }
+            });
+        </script>
+    } else if (Model.Style == PanelInfo.PanelStyleEnum.AccordionKendo) {
+        <ul class="t_panels" id="@DivId">
+            @{ int panelIndex = 0; }
+            @for (panelIndex = 0; panelIndex < Model.Panels.Count; ++panelIndex) {
+                string caption = Model.Panels[panelIndex].Caption;
+                if (string.IsNullOrWhiteSpace(caption)) { caption = __ResStr("noCaption", "(no caption)"); }
+                <li class="@(Model._ActiveTab == panelIndex ? "k-state-active" : "")">
+                    <span class="@(Model._ActiveTab == panelIndex ? "k-link k-state-selected" : "")">@caption</span>
+                    <div class="t_panel-kendo">
+                        @{ ModuleDefinition mod = ModuleDefinition.Load(Model.Panels[panelIndex].Module, AllowNone: true); }
+                        @if (mod != null) {
+                            mod.BootstrapContainer = ModuleDefinition.BootstrapContainerEnum.None;/*Don't generate container css class*/
+                            mod.ShowTitle = false;
+                            @mod.RenderModule(Html);
+                        } else {
+                            @__ResStr("noModule", "(no module defined)")
+                        }
+                    </div>
+                </li>
+            }
+        </ul>
+        Manager.ScriptManager.AddKendoUICoreJsFile("kendo.data.min.js");
+        Manager.ScriptManager.AddKendoUICoreJsFile("kendo.panelbar.min.js");
+        <script>
+            $("#@DivId").kendoPanelBar({
+                expandMode: "single",
+                activate: function(ev) {
+                    $('body').trigger('YetaWF_PropertyList_PanelSwitched', $(ev.item));
+                }
+            });
+            var $panelBar = $("#@DivId").kendoPanelBar().data("kendoPanelBar");
+            $panelBar.select()
+        </script>
+    }
+    <script>
+        @using (DocumentReady(ControlId)) {
+            @: $('body').trigger('YetaWF_PropertyList_PanelSwitched', $('#@ControlId'));
+        }
+    </script>
+</div>

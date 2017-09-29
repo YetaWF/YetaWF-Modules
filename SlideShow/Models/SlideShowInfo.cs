@@ -334,28 +334,43 @@ namespace YetaWF.Modules.SlideShow.Models {
         [HelpLink("http://www.jssor.com/development/tool-caption-transition-viewer.html")]
         public string DefaultCaptionTransitionOut { get; set; }
 
-        public void ExecuteAction(int action, object extraData) {
+        public bool ExecuteAction(int action, bool modelIsValid, object extraData) {
+            bool processed = false;
             SlideShowAction slideAction = (SlideShowAction)action;
             int slideIndex = Convert.ToInt32((string) extraData);
             switch (slideAction) {
                 case SlideShowAction.Insert:
-                    InsertSlide(slideIndex);
+                    if (modelIsValid) {
+                        InsertSlide(slideIndex);
+                        processed = true;
+                    }
                     break;
                 case SlideShowAction.Add:
-                    AddSlide(slideIndex);
+                    if (modelIsValid) {
+                        AddSlide(slideIndex);
+                        processed = true;
+                    }
                     break;
                 case SlideShowAction.Remove:
                     RemoveSlide(slideIndex);
+                    processed = true;
                     break;
                 case SlideShowAction.MoveLeft:
-                    MoveSlideLeft(slideIndex);
+                    if (modelIsValid) {
+                        MoveSlideLeft(slideIndex);
+                        processed = true;
+                    }
                     break;
                 case SlideShowAction.MoveRight:
-                    MoveSlideRight(slideIndex);
+                    if (modelIsValid) {
+                        MoveSlideRight(slideIndex);
+                        processed = true;
+                    }
                     break;
                 default:
                     throw new InternalError("Invalid action {0}", slideAction);
             }
+            return processed;
         }
         private void InsertSlide(int slideIndex) {
             Slides.Insert(slideIndex, new SlideInfo());

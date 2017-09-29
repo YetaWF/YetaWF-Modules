@@ -114,29 +114,44 @@ namespace YetaWF.Modules.BootstrapCarousel.Models {
         [DontSave]
         public int _ActiveTab { get; set; }
 
-        public void ExecuteAction(int action, object extraData) {
+        public bool ExecuteAction(int action, bool modelIsValid, object extraData) {
+            bool processed = false;
             CarouselAction slideAction = (CarouselAction)action;
             int slideIndex = Convert.ToInt32((string) extraData);
             switch (slideAction) {
                 case CarouselAction.Insert:
-                    InsertSlide(slideIndex);
+                    if (modelIsValid) {
+                        InsertSlide(slideIndex);
+                        processed = true;
+                    }
                     break;
                 case CarouselAction.Add:
-                    AddSlide(slideIndex);
+                    if (modelIsValid) {
+                        AddSlide(slideIndex);
+                        processed = true;
+                    }
                     break;
                 case CarouselAction.Remove:
                     RemoveSlide(slideIndex);
+                    processed = true;
                     break;
                 case CarouselAction.MoveLeft:
-                    MoveSlideLeft(slideIndex);
+                    if (modelIsValid) {
+                        MoveSlideLeft(slideIndex);
+                        processed = true;
+                    }
                     break;
                 case CarouselAction.MoveRight:
-                    MoveSlideRight(slideIndex);
+                    if (modelIsValid) {
+                        MoveSlideRight(slideIndex);
+                        processed = true;
+                    }
                     break;
                 default:
                     throw new InternalError("Invalid action {0}", slideAction);
             }
             _ActiveTab = Math.Min(Slides.Count - 1, Math.Max(0, _ActiveTab));
+            return processed;
         }
         private void InsertSlide(int slideIndex) {
             Slides.Insert(slideIndex, new CarouselItem());
