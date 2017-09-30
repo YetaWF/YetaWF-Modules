@@ -27,7 +27,7 @@ YetaWF_Panels.updateButtons = function ($control) {
         $del.attr("disabled", "disabled");
     else
         $del.removeAttr("disabled");
-}
+};
 
 YetaWF_Panels.init = function (divId) {
     var TEMPLATENAME = 'YetaWF_Panels_PanelInfo';
