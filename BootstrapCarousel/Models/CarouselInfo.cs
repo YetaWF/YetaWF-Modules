@@ -23,6 +23,7 @@ namespace YetaWF.Modules.BootstrapCarousel.Models {
         public const string TemplateName = "YetaWF_BootstrapCarousel_SlideShow";
 
         public enum CarouselAction {
+            Apply = 0,
             MoveLeft = 1,
             MoveRight = 2,
             Add = 3,
@@ -55,7 +56,7 @@ namespace YetaWF.Modules.BootstrapCarousel.Models {
             public MultiString CompleteCaption { get; set; }
 
             [Caption("Caption"), Description("The optional caption for this image")]
-            [UIHint("TextArea"), Trim]
+            [UIHint("TextArea"), AdditionalMetadata("EmHeight", 4), Trim]
             [DontSave]
             public string Caption {
                 get {
@@ -119,6 +120,10 @@ namespace YetaWF.Modules.BootstrapCarousel.Models {
             CarouselAction slideAction = (CarouselAction)action;
             int slideIndex = Convert.ToInt32((string) extraData);
             switch (slideAction) {
+                case CarouselAction.Apply:
+                    if (modelIsValid)
+                        processed = true;
+                    break;
                 case CarouselAction.Insert:
                     if (modelIsValid) {
                         InsertSlide(slideIndex);

@@ -27,9 +27,9 @@
                 } else {
                     @Html.DisplayFor(m => slide.ImageDisplay, "Image")
                 }
-                @if (!string.IsNullOrWhiteSpace(slide.Caption)) {
+                @if (!string.IsNullOrWhiteSpace(slide.CompleteCaption.ToString())) {
                     <div class="carousel-caption">
-                        @Html.Raw(slide.Caption)
+                        @Html.Raw(slide.CompleteCaption.ToString())
                     </div>
                 }
             </div>

@@ -2,6 +2,7 @@
 
 using YetaWF.Core.Controllers;
 using YetaWF.Modules.BootstrapCarousel.Models;
+using YetaWF.Core.Models.Attributes;
 #if MVC6
 using Microsoft.AspNetCore.Mvc;
 #else
@@ -14,17 +15,32 @@ namespace YetaWF.Modules.BootstrapCarousel.Controllers {
 
         public CarouselDisplayModuleController() { }
 
-        public class DisplayModel {
+        public class Model {
             public CarouselInfo SlideShow { get; set; }
+
+            public Model() {
+                SlideShow = new CarouselInfo();
+            }
         }
 
         [AllowGet]
         public ActionResult CarouselDisplay() {
-            if (Module.SlideShow.Slides.Count == 0) return new EmptyResult();
-            DisplayModel model = new DisplayModel {
+            if (!Manager.EditMode && Module.SlideShow.Slides.Count == 0) return new EmptyResult();
+            Model model = new Model {
                 SlideShow = Module.SlideShow
             };
             return View(model);
+        }
+        [AllowPost]
+        [ConditionalAntiForgeryToken]
+        [ExcludeDemoMode]
+        public ActionResult CarouselDisplay_Partial(Model model) {
+            if (!ModelState.IsValid)
+                return PartialView(model);
+            Module.SlideShow = model.SlideShow;
+            Module.Save();
+            model.SlideShow = Module.SlideShow;
+            return FormProcessed(model);
         }
     }
 }

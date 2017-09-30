@@ -4,9 +4,8 @@
 @using YetaWF.Modules.BootstrapCarousel.Views.Shared
 @{
     int tabEntry = 0;
-    string slideId = ControlId;
 }
-<div id="@slideId" class="yt_bootstrapcarousel_slideshow t_edit">
+<div id="@ControlId" class="yt_bootstrapcarousel_slideshow t_edit">
     @Html.RenderPropertyListTabbed("", Model)
     <div class="t_slides" id="@DivId">
         @Html.RenderTabStripStart(DivId)
@@ -19,19 +18,20 @@
             @Html.RenderTabPaneStart(DivId, tabEntry, "t_slide")
             @Html.RenderHidden("Index", tabEntry)
             @Html.EditorFor(m => slide, "PropertyList", string.Format("Slides[{0}]", tabEntry))
-            <div class="t_buttons">
-                <input type="button" class="t_up" value="@__ResStr("btnUp", "<<")" title="@__ResStr("txtUp", "Click to move the current image")" />
-                <input type="button" class="t_down" value="@__ResStr("btnDown", ">>")" title="@__ResStr("txtDown", "Click move the current image")" />
-                <input type="button" class="t_ins" value="@__ResStr("btnIns", "Insert")" title="@__ResStr("txtIns", "Click to insert a new image before the current image")" />
-                <input type="button" class="t_add" value="@__ResStr("btnAdd", "Add")" title="@__ResStr("txtAdd", "Click to add a new image after the current image")" />
-                <input type="button" class="t_delete" value="@__ResStr("btnDelete", "Remove")" title="@__ResStr("txtDelete", "Click to remove the current image")" />
-            </div>
             @Html.RenderTabPaneEnd(DivId, tabEntry)
             ++tabEntry;
         }
         @Html.RenderTabInit(DivId, Model)
     </div>
+    <div class="t_buttons">
+        <input type="button" class="t_apply" value="@__ResStr("btnApply", "Apply")" title="@__ResStr("txtUp", "Click to apply the current changes")" />
+        <input type="button" class="t_up" value="@__ResStr("btnUp", "<<")" title="@__ResStr("txtUp", "Click to move the current image")" />
+        <input type="button" class="t_down" value="@__ResStr("btnDown", ">>")" title="@__ResStr("txtDown", "Click move the current image")" />
+        <input type="button" class="t_ins" value="@__ResStr("btnIns", "Insert")" title="@__ResStr("txtIns", "Click to insert a new image before the current image")" />
+        <input type="button" class="t_add" value="@__ResStr("btnAdd", "Add")" title="@__ResStr("txtAdd", "Click to add a new image after the current image")" />
+        <input type="button" class="t_delete" value="@__ResStr("btnDelete", "Remove")" title="@__ResStr("txtDelete", "Click to remove the current image")" />
+    </div>
 </div>
 <script>
-    YetaWF_BootstrapCarousel.init('@slideId');
+    YetaWF_BootstrapCarousel.init('@ControlId');
 </script>

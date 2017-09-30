@@ -29,7 +29,7 @@ namespace YetaWF.Modules.BootstrapCarousel.Modules {
             Title = this.__ResStr("modTitle", "Bootstrap Carousel");
             Name = this.__ResStr("modName", "Bootstrap Carousel");
             Description = this.__ResStr("modSummary", "Displays a Bootstrap carousel (used on Bootstrap skins)");
-            SlideShow = new Models.CarouselInfo();
+            SlideShow = new CarouselInfo();
             WantFocus = false;
             WantSearch = false;
             ShowTitle = false;
@@ -40,19 +40,8 @@ namespace YetaWF.Modules.BootstrapCarousel.Modules {
 
         public override SerializableList<AllowedRole> DefaultAllowedRoles { get { return AdministratorLevel_DefaultAllowedRoles; } }
 
-        public override MenuList GetModuleMenuList(ModuleAction.RenderModeEnum renderMode, ModuleAction.ActionLocationEnum location) {
-            MenuList menuList = base.GetModuleMenuList(renderMode, location);
-            CarouselEditModule mod = new CarouselEditModule();
-            menuList.New(mod.GetAction_Edit(EditUrl, ModuleGuid), location);
-            return menuList;
-        }
-
-        [Category("General"), Caption("Edit Url"), Description("The Url used to edit this Bootstrap Carousel - If omitted, a default page is generated")]
-        [UIHint("Url"), AdditionalMetadata("UrlType", UrlHelperEx.UrlTypeEnum.Local), UrlValidation(UrlValidationAttribute.SchemaEnum.Any, UrlHelperEx.UrlTypeEnum.Local), StringLength(Globals.MaxUrl), Trim]
-        public string EditUrl { get; set; }
-
-        [Category("General"), Caption("Carousel"), Description("Defines the Bootstrap Carousel settings")]
-        [UIHint("YetaWF_BootstrapCarousel_SlideShow"), Trim]
+        [Caption("Slideshow"), Description("The slideshow displayed")] // no category so the property is not shown in property page
+        [UIHint("YetaWF_BootstrapCarousel_SlideShow")]
         public CarouselInfo SlideShow { get; set; }
 
         public override void ModuleSaving() {
