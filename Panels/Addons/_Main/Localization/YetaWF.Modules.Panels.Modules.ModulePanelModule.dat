@@ -10,8 +10,8 @@
           <Value>
             <Object Type="YetaWF.Core.Localize.LocalizationData+ClassData" Assembly="YetaWF.Core">
               <Properties>
-                <Name Value="YetaWF.Modules.BootstrapCarousel.Controllers.CarouselEditModuleController+EditModel" />
-                <BaseTypeName />
+                <Name Value="YetaWF.Modules.Panels.Modules.ModulePanelModule" />
+                <BaseTypeName Value="YetaWF.Core.Modules.ModuleDefinition" />
                 <Header />
                 <Footer />
                 <Legend />
@@ -28,9 +28,9 @@
                       <Value>
                         <Object Type="YetaWF.Core.Localize.LocalizationData+PropertyData" Assembly="YetaWF.Core">
                           <Properties>
-                            <Name Value="SlideShow" />
-                            <Caption Value="Carousel" />
-                            <Description Value="Defines the settings for the Bootstrap Carousel" />
+                            <Name Value="PanelInfo" />
+                            <Caption Value="Panels" />
+                            <Description Value="The panels displayed" />
                             <HelpLink />
                             <TextAbove />
                             <TextBelow />
@@ -59,24 +59,56 @@
           <Value>
             <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
               <Properties>
-                <Name Value="alreadyDeleted" />
-                <Text Value="Bootstrap Carousel module &quot;{0}&quot; has been removed and can no longer be updated" />
+                <Name Value="displayLegend" />
+                <Text Value="Displays the Module Panel" />
               </Properties>
             </Object>
           </Value>
           <Value>
             <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
               <Properties>
-                <Name Value="notFound" />
-                <Text Value="Bootstrap Carousel module &quot;{0}&quot; not found" />
+                <Name Value="displayLink" />
+                <Text Value="Module Panel" />
               </Properties>
             </Object>
           </Value>
           <Value>
             <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
               <Properties>
-                <Name Value="okSaved" />
-                <Text Value="Bootstrap Carousel saved" />
+                <Name Value="displayText" />
+                <Text Value="Module Panel" />
+              </Properties>
+            </Object>
+          </Value>
+          <Value>
+            <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
+              <Properties>
+                <Name Value="displayTooltip" />
+                <Text Value="Display the Module Panel" />
+              </Properties>
+            </Object>
+          </Value>
+          <Value>
+            <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
+              <Properties>
+                <Name Value="modName" />
+                <Text Value="Module Panel" />
+              </Properties>
+            </Object>
+          </Value>
+          <Value>
+            <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
+              <Properties>
+                <Name Value="modSummary" />
+                <Text Value="Module Panel - used to display multiple modules using tabs or an accordion widget" />
+              </Properties>
+            </Object>
+          </Value>
+          <Value>
+            <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
+              <Properties>
+                <Name Value="modTitle" />
+                <Text Value="Module Panel" />
               </Properties>
             </Object>
           </Value>

@@ -5,11 +5,11 @@
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{F5ECEE0B-353E-4FDC-8F62-6CD387355221}</ProjectGuid>
+    <ProjectGuid>{50E1D62C-4532-4C1D-BDE4-50CD7E0F9BC9}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>YetaWF.Modules.BootstrapCarousel</RootNamespace>
-    <AssemblyName>YetaWF.BootstrapCarousel</AssemblyName>
+    <RootNamespace>YetaWF.Modules.Panels</RootNamespace>
+    <AssemblyName>YetaWF.Panels</AssemblyName>
     <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
     <MvcBuildViews>false</MvcBuildViews>
     <TargetFrameworkProfile />
@@ -31,33 +31,36 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+  </PropertyGroup>
   <ItemGroup>
-    <Compile Include="Controllers\CarouselDisplay.cs" />
-    <Compile Include="Models\CarouselInfo.cs" />
-    <Compile Include="Modules\CarouselDisplay.cs" />
-    <Compile Include="Startup\Info.cs" />
-    <Compile Include="Startup\AreaRegistration.cs" />
+    <Compile Include="Controllers\ModulePanel.cs" />
+    <Compile Include="Models\ModulePanelData.cs" />
+    <Compile Include="Modules\ModulePanelModule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Support\ImageSupport.cs" />
-    <Compile Include="ViewsCode\Shared\SlideShowHelper.cs" />
+    <Compile Include="Startup\AreaRegistration.cs" />
+    <Compile Include="Startup\Info.cs" />
+    <Compile Include="ViewsCode\Shared\PanelInfoHelper.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Addons\_Main\filelistJS.txt" />
-    <None Include="Addons\_Main\filelistCSS.txt" />
-    <None Include="Addons\_Main\BootstrapCarousel.js" />
-    <None Include="Addons\_Main\BootstrapCarousel.css" />
-    <Content Include="Addons\_Templates\SlideShow\filelistCSS.txt" />
-    <Content Include="Addons\_Templates\SlideShow\filelistJS.txt" />
-    <Content Include="Addons\_Templates\SlideShow\SlideShow.css" />
-    <Content Include="Addons\_Templates\SlideShow\SlideShow.js" />
-    <Content Include="Addons\_SiteTemplates\YetaWF_BootstrapCarousel.txt" />
-    <Content Include="Views\Shared\EditorTemplates\YetaWF_BootstrapCarousel_SlideShow.cshtml" />
-    <None Include="Views\Shared\DisplayTemplates\YetaWF_BootstrapCarousel_SlideShow.cshtml" />
-    <None Include="Views\YetaWF_BootstrapCarousel_CarouselDisplay.cshtml" />
-    <None Include="Views\YetaWF_BootstrapCarousel_CarouselDisplay_Partial.cshtml" />
+    <Content Include="Addons\_Main\filelistCSS.txt" />
+    <Content Include="Addons\_Main\filelistJS.txt" />
+    <Content Include="Addons\_Main\Panels.css" />
+    <Content Include="Addons\_Main\Panels.js" />
+    <Content Include="Addons\_SiteTemplates\YetaWF_Panels.txt" />
+    <Content Include="Addons\_Templates\PanelInfo\filelistCSS.txt" />
+    <Content Include="Addons\_Templates\PanelInfo\filelistJS.txt" />
+    <Content Include="Addons\_Templates\PanelInfo\PanelInfo.css" />
+    <Content Include="Addons\_Templates\PanelInfo\PanelInfo.js" />
+    <Content Include="Views\Shared\EditorTemplates\YetaWF_Panels_PanelInfo.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="packages.config" />
+    <None Include="packages.config" />
+    <Content Include="Views\Shared\DisplayTemplates\YetaWF_Panels_PanelInfo.cshtml" />
+    <None Include="Views\YetaWF_Panels_ModulePanel.cshtml" />
+    <None Include="Views\YetaWF_Panels_ModulePanel_Partial.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\CoreComponents\Core\Core.csproj">
@@ -95,10 +98,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup />
-  <PropertyGroup>
-    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
-    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
-  </PropertyGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />

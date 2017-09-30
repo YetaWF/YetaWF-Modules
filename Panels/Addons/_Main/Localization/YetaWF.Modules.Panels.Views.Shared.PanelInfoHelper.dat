@@ -70,8 +70,24 @@
           <Value>
             <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
               <Properties>
-                <Name Value="tab" />
-                <Text Value="Image {0}" />
+                <Name Value="noCaption" />
+                <Text Value="(no caption)" />
+              </Properties>
+            </Object>
+          </Value>
+          <Value>
+            <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
+              <Properties>
+                <Name Value="noCaption" />
+                <Text Value="(no caption)" />
+              </Properties>
+            </Object>
+          </Value>
+          <Value>
+            <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
+              <Properties>
+                <Name Value="noModule" />
+                <Text Value="(no module defined)" />
               </Properties>
             </Object>
           </Value>
@@ -79,7 +95,7 @@
             <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
               <Properties>
                 <Name Value="txtAdd" />
-                <Text Value="Click to add a new image after the current image" />
+                <Text Value="Click to add a new panel after the current panel" />
               </Properties>
             </Object>
           </Value>
@@ -95,7 +111,7 @@
             <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
               <Properties>
                 <Name Value="txtDelete" />
-                <Text Value="Click to remove the current image" />
+                <Text Value="Click to remove the current panel" />
               </Properties>
             </Object>
           </Value>
@@ -103,7 +119,7 @@
             <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
               <Properties>
                 <Name Value="txtDown" />
-                <Text Value="Click move the current image" />
+                <Text Value="Click to move the current panel" />
               </Properties>
             </Object>
           </Value>
@@ -111,7 +127,7 @@
             <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
               <Properties>
                 <Name Value="txtIns" />
-                <Text Value="Click to insert a new image before the current image" />
+                <Text Value="Click to insert a new panel before the current panel" />
               </Properties>
             </Object>
           </Value>
@@ -119,7 +135,7 @@
             <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
               <Properties>
                 <Name Value="txtUp" />
-                <Text Value="Click to move the current image" />
+                <Text Value="Click to move the current panel" />
               </Properties>
             </Object>
           </Value>

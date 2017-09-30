@@ -18,10 +18,7 @@
                 <Categories>
                   <Object Type="YetaWF.Core.Serializers.SerializableDictionary`2[[System.String, mscorlib, Culture=neutral, PublicKeyToken=b77a5c561934e089],[System.String, mscorlib, Culture=neutral, PublicKeyToken=b77a5c561934e089]]" Assembly="YetaWF.Core">
                     <Properties />
-                    <Dictionary>
-                      <Key Value="General" />
-                      <Value Value="General" />
-                    </Dictionary>
+                    <Dictionary />
                   </Object>
                 </Categories>
                 <Properties>
@@ -31,21 +28,9 @@
                       <Value>
                         <Object Type="YetaWF.Core.Localize.LocalizationData+PropertyData" Assembly="YetaWF.Core">
                           <Properties>
-                            <Name Value="EditUrl" />
-                            <Caption Value="Edit Url" />
-                            <Description Value="The Url used to edit this Bootstrap Carousel - If omitted, a default page is generated" />
-                            <HelpLink />
-                            <TextAbove />
-                            <TextBelow />
-                          </Properties>
-                        </Object>
-                      </Value>
-                      <Value>
-                        <Object Type="YetaWF.Core.Localize.LocalizationData+PropertyData" Assembly="YetaWF.Core">
-                          <Properties>
                             <Name Value="SlideShow" />
-                            <Caption Value="Carousel" />
-                            <Description Value="Defines the Bootstrap Carousel settings" />
+                            <Caption Value="Slideshow" />
+                            <Description Value="The slideshow displayed" />
                             <HelpLink />
                             <TextAbove />
                             <TextBelow />
