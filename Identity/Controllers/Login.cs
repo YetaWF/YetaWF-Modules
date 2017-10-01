@@ -95,7 +95,7 @@ namespace YetaWF.Modules.Identity.Controllers {
                 CloseOnLogin = closeOnLogin,
             };
             model.ShowVerification = !string.IsNullOrWhiteSpace(model.VerificationCode);
-            model.ShowCaptcha = config.Captcha && !model.ShowVerification;
+            model.ShowCaptcha = config.Captcha && !model.ShowVerification && !Manager.IsLocalHost;
 
             using (LoginConfigDataProvider logConfigDP = new LoginConfigDataProvider()) {
                 List<LoginConfigDataProvider.LoginProviderDescription> loginProviders = logConfigDP.GetActiveExternalLoginProviders();
@@ -127,7 +127,7 @@ namespace YetaWF.Modules.Identity.Controllers {
 
             LoginConfigData config = LoginConfigDataProvider.GetConfig();
 
-            if (model.ShowCaptcha != (config.Captcha && !model.ShowVerification))
+            if (model.ShowCaptcha != (config.Captcha && !model.ShowVerification && !Manager.IsLocalHost))
                 throw new InternalError("Hidden field tampering detected");
 
             if (!ModelState.IsValid)
