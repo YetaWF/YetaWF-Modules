@@ -1,18 +1,16 @@
 ﻿/* Copyright © 2017 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/BootstrapCarousel#License */
 
 using System;
-using YetaWF.Core;
 using YetaWF.Core.IO;
 using YetaWF.Core.Localize;
-using YetaWF.Core.Menus;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Modules;
 using YetaWF.Core.Serializers;
-using YetaWF.Core.Views.Shared;
 using YetaWF.DataProvider;
 using YetaWF.Modules.BootstrapCarousel.Models;
 #if MVC6
-using YetaWF.Core.Support;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
+using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 #else
 using System.Web.Mvc;
 #endif
@@ -40,8 +38,10 @@ namespace YetaWF.Modules.BootstrapCarousel.Modules {
 
         public override SerializableList<AllowedRole> DefaultAllowedRoles { get { return AdministratorLevel_DefaultAllowedRoles; } }
 
-        [Caption("Slideshow"), Description("The slideshow displayed")] // no category so the property is not shown in property page
-        [UIHint("YetaWF_BootstrapCarousel_SlideShow")]
+#if MVC6
+        [ValidateNever, BindNever]
+#endif
+        [Copy] // not shown in property page, but copy during module settings edit
         public CarouselInfo SlideShow { get; set; }
 
         public override void ModuleSaving() {

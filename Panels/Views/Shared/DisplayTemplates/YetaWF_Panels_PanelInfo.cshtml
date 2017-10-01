@@ -32,9 +32,9 @@
                 @Html.RenderTabPaneEnd(DivId, panelIndex)
                 panelIndex++;
             }
-            @Html.RenderTabInit(DivId)
         </div>
-    } else if (Model.Style == PanelInfo.PanelStyleEnum.AccordionjQuery) {
+        @Html.RenderTabInit(DivId)
+    } else if (Model.Style == PanelInfo.PanelStyleEnum.AccordionjQuery) { 
         <div class="t_panels" id="@DivId">
             @{ int panelIndex = 0; }
             @for (panelIndex = 0; panelIndex < Model.Panels.Count; ++panelIndex) {

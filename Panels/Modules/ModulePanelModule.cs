@@ -8,6 +8,10 @@ using YetaWF.Core.Modules;
 using YetaWF.Core.Serializers;
 using YetaWF.DataProvider;
 using YetaWF.Modules.Panels.Models;
+#if MVC6
+using Microsoft.AspNetCore.Mvc.ModelBinding;
+using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
+#endif
 
 namespace YetaWF.Modules.Panels.Modules {
 
@@ -28,8 +32,10 @@ namespace YetaWF.Modules.Panels.Modules {
 
         public override SerializableList<AllowedRole> DefaultAllowedRoles { get { return AdministratorLevel_DefaultAllowedRoles; } }
 
-        [Caption("Panels"), Description("The panels displayed")] // no category so the property is not shown in property page
-        [UIHint("YetaWF_Panels_PanelInfo")]
+#if MVC6
+        [ValidateNever, BindNever]
+#endif
+        [Copy] // not shown in property page
         public PanelInfo PanelInfo { get; set; }
 
         public override void ModuleSaving() {

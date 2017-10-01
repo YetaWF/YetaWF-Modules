@@ -22,8 +22,8 @@
             @Html.RenderTabPaneEnd(DivId, tabEntry)
             ++tabEntry;
         }
-        @Html.RenderTabInit(DivId, Model)
     </div>
+    @Html.RenderTabInit(DivId, Model)
     <div class="t_buttons">
         <input type="button" class="t_apply" value="@__ResStr("btnApply", "Apply")" title="@__ResStr("txtApply", "Click to apply the current changes")" />
         <input type="button" class="t_up" value="@__ResStr("btnUp", "<<")" title="@__ResStr("txtUp", "Click to move the current panel")" />
