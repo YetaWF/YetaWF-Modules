@@ -5,31 +5,43 @@
 <div class="yt_panels_panelinfo t_display" id="@ControlId">
     @if (Model.Style == PanelInfo.PanelStyleEnum.Tabs) {
         <div class="t_panels" id="@DivId">
-            @{ int panelIndex = 0; }
+            @{ 
+                int panelIndex = 0;
+                int tabIndex = 0;
+            }
             @Html.RenderTabStripStart(DivId)
             @for (panelIndex = 0; panelIndex < Model.Panels.Count; ++panelIndex) {
-                string caption = Model.Panels[panelIndex].Caption;
-                if (string.IsNullOrWhiteSpace(caption)) { caption = __ResStr("noCaption", "(no caption)"); }
-                string toolTip = Model.Panels[panelIndex].ToolTip;
-                if (string.IsNullOrWhiteSpace(toolTip)) { toolTip = null; }
-                @Html.RenderTabEntry(DivId, caption, toolTip, panelIndex)
+                if (Model.Panels[panelIndex].IsAuthorized()) { 
+                    string caption = Model.Panels[panelIndex].Caption;
+                    if (string.IsNullOrWhiteSpace(caption)) { caption = __ResStr("noCaption", "(no caption)"); }
+                    string toolTip = Model.Panels[panelIndex].ToolTip;
+                    if (string.IsNullOrWhiteSpace(toolTip)) { toolTip = null; }
+                    @Html.RenderTabEntry(DivId, caption, toolTip, tabIndex)
+                    ++tabIndex;
+                }
             }
             @Html.RenderTabStripEnd(DivId)
-            @{ panelIndex = 0; }
+            @{ 
+                panelIndex = 0;
+                tabIndex = 0;
+            }
             @foreach (PanelInfo.PanelEntry panel in Model.Panels) {
-                @Html.RenderTabPaneStart(DivId, panelIndex, "t_panel")
-                @Html.RenderHidden("Index", panelIndex)
-                ModuleDefinition mod = ModuleDefinition.Load(Model.Panels[panelIndex].Module, AllowNone: true);
-                if (mod != null) {
-                    mod.BootstrapContainer = ModuleDefinition.BootstrapContainerEnum.None;/*Don't generate container css class*/
-                    mod.ShowTitle = false;
-                    @mod.RenderModule(Html);
-                } else {
-                    <div>
-                        @__ResStr("noModule", "(no module defined)")
-                    </div>
+                if (Model.Panels[panelIndex].IsAuthorized()) { 
+                    @Html.RenderTabPaneStart(DivId, tabIndex, "t_panel")
+                    @Html.RenderHidden("Index", tabIndex)
+                    ModuleDefinition mod = Model.Panels[panelIndex].GetModule();
+                    if (mod != null) {
+                        mod.BootstrapContainer = ModuleDefinition.BootstrapContainerEnum.None;/*Don't generate container css class*/
+                        mod.ShowTitle = false;
+                        @mod.RenderModule(Html);
+                    } else {
+                        <div>
+                            @__ResStr("noModule", "(no module defined)")
+                        </div>
+                    }
+                    @Html.RenderTabPaneEnd(DivId, tabIndex)
+                    tabIndex++;
                 }
-                @Html.RenderTabPaneEnd(DivId, panelIndex)
                 panelIndex++;
             }
         </div>
@@ -38,18 +50,20 @@
         <div class="t_panels" id="@DivId">
             @{ int panelIndex = 0; }
             @for (panelIndex = 0; panelIndex < Model.Panels.Count; ++panelIndex) {
-                string caption = Model.Panels[panelIndex].Caption;
-                if (string.IsNullOrWhiteSpace(caption)) { caption = __ResStr("noCaption", "(no caption)"); }
-                <h3>@caption</h3>
-                ModuleDefinition mod = ModuleDefinition.Load(Model.Panels[panelIndex].Module, AllowNone: true);
-                if (mod != null) {
-                    mod.BootstrapContainer = ModuleDefinition.BootstrapContainerEnum.None;/*Don't generate container css class*/
-                    mod.ShowTitle = false;
+                if (Model.Panels[panelIndex].IsAuthorized()) {
+                    string caption = Model.Panels[panelIndex].Caption;
+                    if (string.IsNullOrWhiteSpace(caption)) { caption = __ResStr("noCaption", "(no caption)"); }
+                    <h3>@caption</h3>
+                    ModuleDefinition mod = Model.Panels[panelIndex].GetModule();
+                    if (mod != null) {
+                        mod.BootstrapContainer = ModuleDefinition.BootstrapContainerEnum.None;/*Don't generate container css class*/
+                        mod.ShowTitle = false;
                     @mod.RenderModule(Html);
-                } else {
-                    <div>
-                        @__ResStr("noModule", "(no module defined)")
-                    </div>
+                    } else {
+                        <div>
+                            @__ResStr("noModule", "(no module defined)")
+                        </div>
+                    }
                 }
             }
         </div>
@@ -64,23 +78,29 @@
         </script>
     } else if (Model.Style == PanelInfo.PanelStyleEnum.AccordionKendo) {
         <ul class="t_panels" id="@DivId">
-            @{ int panelIndex = 0; }
+            @{ 
+                int panelIndex = 0;
+                int tabIndex = 0;
+            }
             @for (panelIndex = 0; panelIndex < Model.Panels.Count; ++panelIndex) {
-                string caption = Model.Panels[panelIndex].Caption;
-                if (string.IsNullOrWhiteSpace(caption)) { caption = __ResStr("noCaption", "(no caption)"); }
-                <li class="@(Model._ActiveTab == panelIndex ? "k-state-active" : "")">
-                    <span class="@(Model._ActiveTab == panelIndex ? "k-link k-state-selected" : "")">@caption</span>
-                    <div class="t_panel-kendo">
-                        @{ ModuleDefinition mod = ModuleDefinition.Load(Model.Panels[panelIndex].Module, AllowNone: true); }
-                        @if (mod != null) {
-                            mod.BootstrapContainer = ModuleDefinition.BootstrapContainerEnum.None;/*Don't generate container css class*/
-                            mod.ShowTitle = false;
-                            @mod.RenderModule(Html);
-                        } else {
-                            @__ResStr("noModule", "(no module defined)")
-                        }
-                    </div>
-                </li>
+                if (Model.Panels[panelIndex].IsAuthorized()) {
+                    string caption = Model.Panels[panelIndex].Caption;
+                    if (string.IsNullOrWhiteSpace(caption)) { caption = __ResStr("noCaption", "(no caption)"); }
+                    <li class="@(Model._ActiveTab == tabIndex ? "k-state-active" : "")">
+                        <span class="@(Model._ActiveTab == tabIndex ? "k-link k-state-selected" : "")">@caption</span>
+                        <div class="t_panel-kendo">
+                            @{ ModuleDefinition mod = Model.Panels[panelIndex].GetModule(); }
+                            @if (mod != null) {
+                                mod.BootstrapContainer = ModuleDefinition.BootstrapContainerEnum.None;/*Don't generate container css class*/
+                                mod.ShowTitle = false;
+                                @mod.RenderModule(Html);
+                            } else {
+                                @__ResStr("noModule", "(no module defined)")
+                            }
+                        </div>
+                    </li>
+                    ++tabIndex;
+                }
             }
         </ul>
         Manager.ScriptManager.AddKendoUICoreJsFile("kendo.data.min.js");

@@ -8,6 +8,7 @@ using YetaWF.Core.Support;
 using YetaWF.Core.Views.Shared;
 using YetaWF.Core.Models;
 using YetaWF.Core.Localize;
+using YetaWF.Core.Modules;
 #if MVC6
 #else
 using System.Web.Mvc;
@@ -52,6 +53,25 @@ namespace YetaWF.Modules.Panels.Models {
             [Caption("ToolTip"), Description("The optional ToolTip for this module")]
             [UIHint("MultiString80"), StringLength(MaxToolTip), Trim]
             public MultiString ToolTip { get; set; }
+
+            public ModuleDefinition GetModule() {
+                if (_moduleDef == null) {
+                    _moduleDef = NoModule;
+                    ModuleDefinition mod = ModuleDefinition.Load(Module, AllowNone: true);
+                    if (mod != null)
+                        _moduleDef = mod;
+                }
+                if (_moduleDef == NoModule) return null;
+                return _moduleDef;
+            }
+            private ModuleDefinition _moduleDef = null;
+            private static ModuleDefinition NoModule = new ModuleDefinition();
+
+            public bool IsAuthorized() {
+                ModuleDefinition mod = GetModule();
+                if (mod == null) return false;
+                return mod.IsAuthorized(null);
+            }
 
             public PanelEntry() {
                 Module = Guid.Empty;
