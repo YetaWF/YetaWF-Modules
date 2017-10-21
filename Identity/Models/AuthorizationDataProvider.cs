@@ -52,6 +52,8 @@ namespace YetaWF.Modules.Identity.DataProvider {
         public AuthorizationDataProvider() : base(YetaWFManager.Manager.CurrentSite.Identity) { SetDataProvider(DataProvider); }
         public AuthorizationDataProvider(int siteIdentity) : base(siteIdentity) { SetDataProvider(DataProvider); }
 
+        // TODO: the table YetaWF_Identity_Authorization is not actually used. (Notably there is no Add method)
+
         private IDataProvider<string, Authorization> DataProvider {
             get {
                 if (_dataProvider == null) {

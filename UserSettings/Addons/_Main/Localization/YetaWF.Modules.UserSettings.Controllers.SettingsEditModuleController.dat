@@ -64,6 +64,18 @@
                       <Value>
                         <Object Type="YetaWF.Core.Localize.LocalizationData+PropertyData" Assembly="YetaWF.Core">
                           <Properties>
+                            <Name Value="GridActions" />
+                            <Caption Value="Grid Actions" />
+                            <Description Value="The desired display method for available actions in grids" />
+                            <HelpLink />
+                            <TextAbove />
+                            <TextBelow />
+                          </Properties>
+                        </Object>
+                      </Value>
+                      <Value>
+                        <Object Type="YetaWF.Core.Localize.LocalizationData+PropertyData" Assembly="YetaWF.Core">
+                          <Properties>
                             <Name Value="LanguageId" />
                             <Caption Value="Language" />
                             <Description Value="The default language used for the entire site (only used when localization is enabled)" />

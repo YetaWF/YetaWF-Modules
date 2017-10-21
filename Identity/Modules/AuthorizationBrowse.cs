@@ -87,7 +87,5 @@ namespace YetaWF.Modules.Identity.Modules {
                 ConfirmationText = this.__ResStr("removeConfirm", "Are you sure you want to remove resource \"{0}\"?", resourceName),
             };
         }
-
-
     }
 }

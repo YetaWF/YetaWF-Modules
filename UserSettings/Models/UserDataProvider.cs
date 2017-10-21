@@ -15,8 +15,10 @@ using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Packages;
 using YetaWF.Core.Serializers;
 using YetaWF.Core.Support;
+using YetaWF.Core.Views.Shared;
 
 namespace YetaWF.Modules.UserSettings.DataProvider {
+
     public class UserData {
 
         public const int MaxTimeZone = 40;
@@ -29,6 +31,8 @@ namespace YetaWF.Modules.UserSettings.DataProvider {
         [StringLength(MaxTimeZone)]
         public string TimeZone { get; set; }
         public Formatting.TimeFormatEnum TimeFormat { get; set; }
+        [Data_NewValue("(0)")]
+        public GridHelper.GridActionsEnum GridActions { get; set; }
         [StringLength(LanguageData.MaxId)]
         public string LanguageId { get; set; }
         public bool ShowGridSearchToolbar { get; set; }
@@ -47,6 +51,7 @@ namespace YetaWF.Modules.UserSettings.DataProvider {
             TimeFormat = Formatting.TimeFormatEnum.HHMMAM;
             LanguageId = MultiString.DefaultLanguage;
             TimeZone = TimeZoneInfo.Local.Id;
+            GridActions = GridHelper.GridActionsEnum.Icons;
             ShowGridSearchToolbar = false;
             ShowModuleOwnership = false;
             ShowPageOwnership = false;

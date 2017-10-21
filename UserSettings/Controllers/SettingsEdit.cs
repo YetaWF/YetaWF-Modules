@@ -5,6 +5,7 @@ using YetaWF.Core.Language;
 using YetaWF.Core.Localize;
 using YetaWF.Core.Models;
 using YetaWF.Core.Models.Attributes;
+using YetaWF.Core.Views.Shared;
 using YetaWF.Modules.UserSettings.DataProvider;
 #if MVC6
 using Microsoft.AspNetCore.Mvc;
@@ -35,6 +36,10 @@ namespace YetaWF.Modules.UserSettings.Controllers {
             [Caption("Time Format"), Description("The desired time format when times are displayed on this website")]
             [UIHint("Enum"), Required]
             public Formatting.TimeFormatEnum TimeFormat { get; set; }
+
+            [Caption("Grid Actions"), Description("The desired display method for available actions in grids")]
+            [UIHint("Enum")]
+            public GridHelper.GridActionsEnum GridActions { get; set; }
 
             [Caption("Language"), Description("The default language used for the entire site (only used when localization is enabled)")]
             [UIHint("LanguageId"), StringLength(LanguageData.MaxId)]
