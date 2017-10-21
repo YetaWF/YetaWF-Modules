@@ -51,7 +51,7 @@ namespace YetaWF.Modules.UserSettings.DataProvider {
             TimeFormat = Formatting.TimeFormatEnum.HHMMAM;
             LanguageId = MultiString.DefaultLanguage;
             TimeZone = TimeZoneInfo.Local.Id;
-            GridActions = GridHelper.GridActionsEnum.Icons;
+            GridActions = GridHelper.GridActionsEnum.DropdownMenu;
             ShowGridSearchToolbar = false;
             ShowModuleOwnership = false;
             ShowPageOwnership = false;
