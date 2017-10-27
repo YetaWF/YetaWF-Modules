@@ -46,7 +46,7 @@ namespace YetaWF.Modules.DevTests.Controllers {
             // generate some random data for the scroller items
             for (int index = 0 ; index < 12 ; ++index) {
                 model.Items.Add(new Item {
-                    Image = Manager.GetCDNUrl(Manager.CurrentSite.MakeUrl(string.Format("{0}Images/Image{1}.png", addonUrl, index))),
+                    Image = Manager.GetCDNUrl(string.Format("{0}Images/Image{1}.png", addonUrl, index)),
                     Title = string.Format("Item {0}", index),
                     Summary = string.Format("Summary for item {0} - Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. ", index),
                 });

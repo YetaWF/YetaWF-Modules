@@ -79,6 +79,8 @@
     <Content Include="Addons\_Addons\LockedStatus\filelistJS.txt" />
     <Content Include="Addons\_Addons\LockedStatus\LockedStatus.js" />
     <None Include="Addons\_Addons\LockedStatus\LockedStatus.scss" />
+    <Content Include="Addons\_Main\filelistCSS.txt" />
+    <None Include="Addons\_Main\SiteProperties.scss" />
     <Content Include="Views\YetaWF_SiteProperties_SiteProperties.cshtml" />
   </ItemGroup>
   <ItemGroup>

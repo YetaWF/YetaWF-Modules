@@ -71,7 +71,7 @@ namespace YetaWF.Modules.ImageRepository.Controllers {
 
             // build javascript to return selected Flash image to CKEditor
             string imageUrl = model.FlashImageName_Info.MakeFlashUrl(model.FlashImageName);
-            string js = string.Format("window.opener.CKEDITOR.tools.callFunction({0}, '{1}');", model.CKEditorFuncNum, YetaWFManager.JserEncode(Manager.GetCDNUrl(imageUrl)));
+            string js = string.Format("window.opener.CKEDITOR.tools.callFunction({0}, '{1}');", model.CKEditorFuncNum, YetaWFManager.JserEncode(imageUrl));
 
             return FormProcessed(model, /*this.__ResStr("okSaved", "Flash image saved"),*/ OnClose: OnCloseEnum.CloseWindow, OnPopupClose: OnPopupCloseEnum.ReloadNothing, ExtraJavaScript: js);
         }

@@ -28,6 +28,9 @@ namespace YetaWF.Modules.SiteProperties.Models {
             SiteDefinition.SaveSiteDefinition = SaveSiteDefinition;
             SiteDefinition.RemoveSiteDefinition = RemoveSiteDefinition;
             SiteDefinition.GetSites = GetItems;
+            SiteDefinition.LoadStaticSiteDefinition = LoadStaticSiteDefinition;
+
+            LoadStaticSitesCache();
         }
 
         // IMPLEMENTATION
@@ -72,6 +75,16 @@ namespace YetaWF.Modules.SiteProperties.Models {
         // LOAD/SAVE
 
         static private Dictionary<string, SiteDefinition> SiteCache { get; set; }
+        static private Dictionary<string, string> StaticSiteCache { get; set; }
+
+        private void LoadStaticSitesCache() {
+            int total;
+            List<SiteDefinition> sites = GetItems(0, 0, null, null, out total);
+            StaticSiteCache = new Dictionary<string, string>();
+            foreach (SiteDefinition site in sites)
+                if (!string.IsNullOrWhiteSpace(site.StaticDomain))
+                    StaticSiteCache.Add(site.StaticDomain.ToLower(), site.SiteDomain);
+        }
 
         private static void AddCache(SiteDefinition site) {
             RemoveCache(site);
@@ -103,13 +116,7 @@ namespace YetaWF.Modules.SiteProperties.Models {
                 site.OriginalUseCDN = site.UseCDN;
                 site.OriginalCDNUrl = site.CDNUrl;
                 site.OriginalCDNUrlSecure = site.CDNUrlSecure;
-                site.OriginalCDNSiteFiles = site.CDNSiteFiles;
-                site.OriginalCDNVault = site.CDNVault;
-                site.OriginalCDNScriptsContent = site.CDNScriptsContent;
-                site.OriginalCDNAddons = site.CDNAddons;
-                site.OriginalCDNAddonsCustom = site.CDNAddonsCustom;
-                site.OriginalCDNAddonsBundles = site.CDNAddonsBundles;
-                site.OriginalCDNFileImage = site.CDNFileImage;
+                site.OriginalStaticDomain = site.StaticDomain;
                 AddCache(site);
                 AddLockedStatus(site);
                 return site;
@@ -117,6 +124,20 @@ namespace YetaWF.Modules.SiteProperties.Models {
             return null;
         }
         public SiteDefinition _defaultSite = null;
+
+        /// <summary>
+        /// Load a site definition for a static site domain.
+        /// </summary>
+        /// <param name="staticDomain">The domain name.</param>
+        /// <returns></returns>
+        public SiteDefinition LoadStaticSiteDefinition(string staticDomain) {
+            string domain;
+            if (StaticSiteCache.TryGetValue(staticDomain.ToLower(), out domain)) {
+                SiteDefinition site = LoadSiteDefinition(domain);
+                return site;
+            }
+            return null;
+        }
 
         /// <summary>
         /// Save the site definition for the current site
@@ -138,10 +159,7 @@ namespace YetaWF.Modules.SiteProperties.Models {
             }
             // restart required for uihint changes because uihints are cached or CDN changes
             if (site.OriginalUseCDN != site.UseCDN || site.OriginalCDNUrl != site.CDNUrl || site.OriginalCDNUrlSecure != site.CDNUrlSecure ||
-                    site.OriginalCDNSiteFiles != site.CDNSiteFiles || site.OriginalCDNVault != site.CDNVault ||
-                    site.OriginalCDNScriptsContent != site.CDNScriptsContent ||
-                    site.OriginalCDNAddons != site.CDNAddons || site.OriginalCDNAddonsCustom != site.CDNAddonsCustom || site.OriginalCDNAddonsBundles != site.CDNAddonsBundles ||
-                    site.OriginalCDNFileImage != site.CDNFileImage)
+                    site.OriginalStaticDomain != site.StaticDomain)
                 restartRequired = true;
             return restartRequired;
         }

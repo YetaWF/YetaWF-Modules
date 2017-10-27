@@ -27,7 +27,7 @@
             </div>
             @*use attributes so script manager doesn't reorder this*@
             <script type="text/javascript">
-                swfobject.embedSWF("@Html.Raw(Manager.GetCDNUrl(info.MakeFlashUrl(Model, ForceHttpHandler: true)))", "@objId", "@info.PreviewWidth", "@info.PreviewHeight", "9.0.0", false,
+                swfobject.embedSWF("@Html.Raw(info.MakeFlashUrl(Model, ForceHttpHandler: true))", "@objId", "@info.PreviewWidth", "@info.PreviewHeight", "9.0.0", false,
                     null, { wmode: "transparent", allowScriptAccess: "true", quality:"high" } );
             </script>
         </div>

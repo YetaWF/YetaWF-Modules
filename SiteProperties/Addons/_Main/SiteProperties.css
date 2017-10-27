@@ -1,0 +1,11 @@
+@charset "UTF-8";
+/* Copyright © 2017 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Search#License */
+.YetaWF_SiteProperties_SiteProperties .yt_propertylisttabbed .t_canusecdncomponents label,
+.YetaWF_SiteProperties_SiteProperties .yt_propertylisttabbed .t_canusecdn label,
+.YetaWF_SiteProperties_SiteProperties .yt_propertylisttabbed .t_canusestaticdomain label {
+  padding-left: 3ch; }
+
+.yCondense .YetaWF_SiteProperties_SiteProperties .yt_propertylisttabbed .t_canusecdncomponents label,
+.yCondense .YetaWF_SiteProperties_SiteProperties .yt_propertylisttabbed .t_canusecdn label,
+.yCondense .YetaWF_SiteProperties_SiteProperties .yt_propertylisttabbed .t_canusestaticdomain label {
+  padding-left: 0; }
