@@ -19,23 +19,21 @@ namespace ActiveEngage_Conversation { // nonstandard namespace to avoid conflict
 
             var tawkto: SkinTawkToModule = this;
 
-            YetaWF_Basics.addWhenReady(function (section: HTMLElement): void {
-                tawkto.initSection(section);
-            });
-
-            YetaWF_Basics.RegisterContentChange(function (event:Event, addonGuid:string, on:boolean):void {
+            YetaWF_Basics.RegisterContentChange(function (event: Event, addonGuid: string, on: boolean): void {
                 if (addonGuid === SkinTawkToModule.MODULEGUID) {
                     SkinTawkToModule.on = on;
                 }
             });
 
             YetaWF_Basics.RegisterNewPage(function (event: Event, url: string): void {
-                tawkto.showInvite(true);
-                // Functionality not available in Tawk.to to record a new page
-                //if (typeof ActivEngage !== "undefined" && ActivEngage !== undefined) {
-                //    if (typeof ActivEngage.recordPageView !== "undefined" && ActivEngage.recordPageView !== undefined)
-                //        ActivEngage.recordPageView({ "href": url });
-                //}
+                tawkto.showInvite(SkinTawkToModule.on);
+                if (SkinTawkToModule.on) {
+                    // Functionality not available in Tawk.to to record a new page
+                    //if (typeof ActivEngage !== "undefined" && ActivEngage !== undefined) {
+                    //    if (typeof ActivEngage.recordPageView !== "undefined" && ActivEngage.recordPageView !== undefined)
+                    //        ActivEngage.recordPageView({ "href": url });
+                    //}
+                }
             });
         }
         /**
@@ -43,6 +41,9 @@ namespace ActiveEngage_Conversation { // nonstandard namespace to avoid conflict
          * @param True to show, false to hide.
          */
         showInvite(show: boolean): void {
+
+            if (!Tawk_API || !Tawk_API.showWidget) return; // not yet initialized
+
             var body: HTMLElement = document.querySelector("body") as HTMLElement;
             if (!body) return;
 
@@ -74,7 +75,7 @@ namespace ActiveEngage_Conversation { // nonstandard namespace to avoid conflict
                     }
                 }
             }
-            if (!invite) {
+            if (!invite && show) {
                 if (Tawk_API.isVisitorEngaged())
                     invite = true;
             }
@@ -83,14 +84,6 @@ namespace ActiveEngage_Conversation { // nonstandard namespace to avoid conflict
             } else {
                 Tawk_API.hideWidget();
             }
-        }
-
-        /**
-         * Initializes all chat invite elements in the specified tag.
-         * @param tag - an element that was just updated that may contain chat invite elements.
-         */
-        initSection(tag: HTMLElement): void {
-            this.showInvite(SkinTawkToModule.on);
         }
     }
 

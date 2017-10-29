@@ -5,10 +5,19 @@
 
 ::PAGE-SECTION::
 
-Administrator /YetaWF/Config/TawkTo
+Administrator /Admin/Config/TawkTo
     Title=Tawk.to Settings
     Description=Tawk.to Settings
     Admin > Configuration > {YetaWF.TawkTo, YetaWF.Modules.TawkTo.Modules.ConfigModule}.GetAction_Edit({CURRENTURL})
     -
     YetaWF.TawkTo, YetaWF.Modules.TawkTo.Modules.ConfigModule
 
+Administrator /Tests/TawkTo
+    Title=TawkTo Chat Support
+    Tests > TawkTo Chat
+    -
+    YetaWF.Text, YetaWF.Modules.Text.Modules.TextModule
+        Name = "TawkTo Test Explanation"
+        Title = "TawkTo Chat Test"
+        Contents = "<p>This page displays a TawkTo Chat window (once configured using <a href='/Admin/Config/TawkTo'>Admin &gt; Config &gt; TawkTo</a> and your <a href='https://www.tawk.to' target='_blank'>Tawk.to</a> account information).<br />Yeah, don&#39;t expect a response from this test page.</p>"
+        AddModuleReference({CURRENTPAGE}, Guid(c063e089-aff3-44e4-ac44-063911853579))

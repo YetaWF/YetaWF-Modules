@@ -11,21 +11,20 @@ var ActiveEngage_Conversation;
          */
         SkinTawkToModule.prototype.init = function () {
             var tawkto = this;
-            YetaWF_Basics.addWhenReady(function (section) {
-                tawkto.initSection(section);
-            });
             YetaWF_Basics.RegisterContentChange(function (event, addonGuid, on) {
                 if (addonGuid === SkinTawkToModule.MODULEGUID) {
                     SkinTawkToModule.on = on;
                 }
             });
             YetaWF_Basics.RegisterNewPage(function (event, url) {
-                tawkto.showInvite(true);
-                // Functionality not available in Tawk.to to record a new page
-                //if (typeof ActivEngage !== "undefined" && ActivEngage !== undefined) {
-                //    if (typeof ActivEngage.recordPageView !== "undefined" && ActivEngage.recordPageView !== undefined)
-                //        ActivEngage.recordPageView({ "href": url });
-                //}
+                tawkto.showInvite(SkinTawkToModule.on);
+                if (SkinTawkToModule.on) {
+                    // Functionality not available in Tawk.to to record a new page
+                    //if (typeof ActivEngage !== "undefined" && ActivEngage !== undefined) {
+                    //    if (typeof ActivEngage.recordPageView !== "undefined" && ActivEngage.recordPageView !== undefined)
+                    //        ActivEngage.recordPageView({ "href": url });
+                    //}
+                }
             });
         };
         /**
@@ -33,6 +32,8 @@ var ActiveEngage_Conversation;
          * @param True to show, false to hide.
          */
         SkinTawkToModule.prototype.showInvite = function (show) {
+            if (!Tawk_API || !Tawk_API.showWidget)
+                return; // not yet initialized
             var body = document.querySelector("body");
             if (!body)
                 return;
@@ -66,7 +67,7 @@ var ActiveEngage_Conversation;
                     }
                 }
             }
-            if (!invite) {
+            if (!invite && show) {
                 if (Tawk_API.isVisitorEngaged())
                     invite = true;
             }
@@ -77,13 +78,6 @@ var ActiveEngage_Conversation;
                 Tawk_API.hideWidget();
             }
         };
-        /**
-         * Initializes all chat invite elements in the specified tag.
-         * @param tag - an element that was just updated that may contain chat invite elements.
-         */
-        SkinTawkToModule.prototype.initSection = function (tag) {
-            this.showInvite(SkinTawkToModule.on);
-        };
         SkinTawkToModule.MODULEGUID = "c063e089-aff3-44e4-ac44-063911853579";
         SkinTawkToModule.on = true;
         return SkinTawkToModule;
@@ -91,5 +85,4 @@ var ActiveEngage_Conversation;
     var tawkto = new SkinTawkToModule();
     tawkto.init();
 })(ActiveEngage_Conversation || (ActiveEngage_Conversation = {}));
-
 //# sourceMappingURL=SkinTawkTo.js.map
