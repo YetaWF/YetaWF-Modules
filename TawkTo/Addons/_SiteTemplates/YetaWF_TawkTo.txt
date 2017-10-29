@@ -1,0 +1,14 @@
+### Copyright © 2017 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/TawkTo#License
+###
+### TawkTo Package
+###
+
+::PAGE-SECTION::
+
+Administrator /YetaWF/Config/TawkTo
+    Title=Tawk.to Settings
+    Description=Tawk.to Settings
+    Admin > Configuration > {YetaWF.TawkTo, YetaWF.Modules.TawkTo.Modules.ConfigModule}.GetAction_Edit({CURRENTURL})
+    -
+    YetaWF.TawkTo, YetaWF.Modules.TawkTo.Modules.ConfigModule
+
