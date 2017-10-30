@@ -25,12 +25,14 @@ namespace YetaWF.Modules.TawkTo.Controllers {
             [Caption("Site ID"), Description("Defines the account used for the chat window - The Site ID can be obtained from your Tawk.to dashboard (Administration > Property Settings)")]
             [UIHint("Text80"), StringLength(ConfigData.MaxAccount), Required]
             [HelpLink("https://dashboard.tawk.to")]
+            [ExcludeDemoMode]
             public string Account { get; set; }
 
             [TextBelow("The API Key can be obtained from your Tawk.to dashboard (Administration > Property Settings)")]
             [Caption("API Key"), Description("Defines the API Key used for the chat window - The API Key can be obtained from your Tawk.to dashboard (Administration > Property Settings)")]
             [UIHint("Text80"), StringLength(ConfigData.MaxAPIKey), Required]
             [HelpLink("https://dashboard.tawk.to")]
+            [ExcludeDemoMode]
             public string APIKey { get; set; }
 
             [Caption(" "), Description(" ")]
