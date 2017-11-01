@@ -11,7 +11,7 @@
     string objId = UniqueId();
 }
 <div id="@ControlId" class="yt_imagerepository_flashselection">
-    @Html.HiddenFor(m => Model)
+    @Html.RenderHidden("", Model)
     <div class="t_imgarea">
         <div class="t_list">
             <select name="List" size="@info.Count">
@@ -26,9 +26,11 @@
                 <p>Flash Not Installed</p>
             </div>
             @*use attributes so script manager doesn't reorder this*@
-            <script type="text/javascript">
-                swfobject.embedSWF("@Html.Raw(info.MakeFlashUrl(Model, ForceHttpHandler: true))", "@objId", "@info.PreviewWidth", "@info.PreviewHeight", "9.0.0", false,
-                    null, { wmode: "transparent", allowScriptAccess: "true", quality:"high" } );
+            <script>
+            @using (DocumentReady(ControlId)) {
+                @: swfobject.embedSWF("@Html.Raw(info.MakeFlashUrl(Model, ForceHttpHandler: true))", "@objId", "@info.PreviewWidth", "@info.PreviewHeight", "9.0.0", false,
+                @:     null, { wmode: "transparent", allowScriptAccess: "true", quality:"high" } );
+            }
             </script>
         </div>
     </div>

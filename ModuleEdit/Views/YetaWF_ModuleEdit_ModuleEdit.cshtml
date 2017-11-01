@@ -2,9 +2,9 @@
 @inherits YetaWF.Core.Views.RazorView<YetaWF.Modules.ModuleEdit.Modules.ModuleEditModule, YetaWF.Modules.ModuleEdit.Controllers.ModuleEditModuleController.ModuleEditModel>
 @using YetaWF.Core.Addons
 @using (Form("ModuleEdit_Partial")) {
-    @Html.HiddenFor(m => Model.ModuleGuid)
+    @Html.DisplayFor(m => Model.ModuleGuid)
     @PartialForm()
-    @FormButtons(new FormButton[] { 
+    @FormButtons(new FormButton[] {
         new FormButton() { ButtonType= ButtonTypeEnum.Submit, },
         new FormButton() { ButtonType= ButtonTypeEnum.Cancel, },
     });

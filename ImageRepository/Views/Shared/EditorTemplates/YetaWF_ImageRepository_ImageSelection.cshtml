@@ -7,7 +7,7 @@
 @{ Manager.AddOnManager.AddTemplate("Image"); }
 @{ ImageSelectionInfo info = Html.GetParentModelSupportProperty<ImageSelectionInfo>("", "Info"); }
 <div id="@ControlId" class="yt_imagerepository_imageselection">
-    @Html.HiddenFor(m => Model)
+    @Html.RenderHidden("", Model)
     <div class="t_imgarea">
         <div class="t_list">
             <select name="List" size="@info.Count">

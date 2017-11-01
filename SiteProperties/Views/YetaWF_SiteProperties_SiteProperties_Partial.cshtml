@@ -2,6 +2,6 @@
 @inherits YetaWF.Core.Views.RazorView<YetaWF.Modules.SiteProperties.Modules.SitePropertiesModule, YetaWF.Modules.SiteProperties.Controllers.SitePropertiesModuleController.SitePropertiesModel>
 @Html.ValidationSummary()
 <div>
-    @Html.HiddenFor(m => Model.SiteHost)
+    @Html.DisplayFor(m => Model.SiteHost)
     @Html.EditorFor(m => Model.Site)
 </div>
