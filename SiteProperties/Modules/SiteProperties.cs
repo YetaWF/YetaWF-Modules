@@ -70,5 +70,4 @@ namespace YetaWF.Modules.SiteProperties.Modules {
             if (restartRequired) throw new InternalError("Adding a new site implementation error - restart required");
         }
     }
-
 }

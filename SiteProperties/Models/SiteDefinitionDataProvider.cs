@@ -157,10 +157,18 @@ namespace YetaWF.Modules.SiteProperties.Models {
                     throw new Error(this.__ResStr("siteExists", "Can't add new site \"{0}\" - site already exists", site.SiteDomain));
                 site.OriginalSiteDomain = site.SiteDomain;
             }
-            // restart required for uihint changes because uihints are cached or CDN changes
-            if (site.OriginalUseCDN != site.UseCDN || site.OriginalCDNUrl != site.CDNUrl || site.OriginalCDNUrlSecure != site.CDNUrlSecure ||
-                    site.OriginalStaticDomain != site.StaticDomain)
+            // update appsettings.json
+            if (string.Compare(YetaWFManager.DefaultSiteName, site.OriginalSiteDomain, true) == 0 && site.SiteDomain != site.OriginalSiteDomain) {
+                WebConfigHelper.SetValue<string>(YetaWF.Core.Controllers.AreaRegistration.CurrentPackage.AreaName, "DEFAULTSITE", site.SiteDomain);
+                WebConfigHelper.Save();
                 restartRequired = true;
+            }
+            // restart required for uihint changes because uihints are cached or CDN changes
+            if (!restartRequired) { 
+                if (site.OriginalUseCDN != site.UseCDN || site.OriginalCDNUrl != site.CDNUrl || site.OriginalCDNUrlSecure != site.CDNUrlSecure ||
+                        site.OriginalStaticDomain != site.StaticDomain)
+                    restartRequired = true;
+            }
             return restartRequired;
         }
 

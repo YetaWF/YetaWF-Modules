@@ -56,7 +56,8 @@ namespace YetaWF.Modules.SiteProperties.Controllers {
             model.Site.Save(out restartRequired);
             if (restartRequired) {
                 Manager.RestartSite();
-                return FormProcessed(model, this.__ResStr("okSavedRestart", "Site settings updated - Site is now restarting"), NextPage: Manager.CurrentSite.HomePageUrl);
+                return FormProcessed(model, this.__ResStr("okSavedRestart", "Site settings updated - Site is now restarting"),
+                    NextPage: Manager.CurrentSite.HomePageUrl, ForceRedirect: true);
             } else
                 return FormProcessed(model, this.__ResStr("okSaved", "Site settings updated"));
         }
