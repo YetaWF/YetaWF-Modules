@@ -13,7 +13,7 @@ namespace YetaWF.Modules.Languages.DataProvider {
     public class LocalizeConfigData {
 
         public enum TranslationServiceEnum {
-            [EnumDescription("none", "None")]
+            [EnumDescription("None", "None")]
             None = 0,
             [EnumDescription("Google Translate")]
             GoogleTranslate = 1,
@@ -23,8 +23,7 @@ namespace YetaWF.Modules.Languages.DataProvider {
 
         public const int MaxGoogleTranslateAPIKey = 100;
         public const int MaxGoogleTranslateAppName = 100;
-        public const int MaxMSClientId = 100;
-        public const int MaxMSClientSecret = 100;
+        public const int MaxMSClientKey = 100;
 
         [Data_PrimaryKey]
         public int Id { get; set; }
@@ -36,10 +35,8 @@ namespace YetaWF.Modules.Languages.DataProvider {
         [StringLength(MaxGoogleTranslateAppName)]
         public string GoogleTranslateAppName { get; set; }
 
-        [StringLength(MaxMSClientId)]
-        public string MSClientId { get; set; }
-        [StringLength(MaxMSClientSecret)]
-        public string MSClientSecret { get; set; }
+        [StringLength(MaxMSClientKey)]
+        public string MSClientKey { get; set; }
 
         public LocalizeConfigData() { }
     }

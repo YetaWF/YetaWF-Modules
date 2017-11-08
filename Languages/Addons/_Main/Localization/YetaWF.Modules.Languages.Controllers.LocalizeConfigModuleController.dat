@@ -64,22 +64,10 @@
                       <Value>
                         <Object Type="YetaWF.Core.Localize.LocalizationData+PropertyData" Assembly="YetaWF.Core">
                           <Properties>
-                            <Name Value="MSClientId" />
-                            <Caption Value="Client ID" />
-                            <Description Value="Defines the Client Id of your application performing translations - Provided by Microsoft when registering your application - This is not a free service" />
-                            <HelpLink Value="https://datamarket.azure.com/dataset/bing/microsofttranslator" />
-                            <TextAbove />
-                            <TextBelow />
-                          </Properties>
-                        </Object>
-                      </Value>
-                      <Value>
-                        <Object Type="YetaWF.Core.Localize.LocalizationData+PropertyData" Assembly="YetaWF.Core">
-                          <Properties>
-                            <Name Value="MSClientSecret" />
-                            <Caption Value="Client Secret" />
-                            <Description Value="Defines the Client Secret provided by Microsoft when registering your application - This is not a free service" />
-                            <HelpLink Value="https://datamarket.azure.com/dataset/bing/microsofttranslator" />
+                            <Name Value="MSClientKey" />
+                            <Caption Value="Client Key" />
+                            <Description Value="Defines the Client API Key of your application performing translations - Provided by Microsoft when registering your application - This is not a free service, although there are limited free accounts" />
+                            <HelpLink Value="https://www.microsoft.com/en-us/translator/getstarted.aspx" />
                             <TextAbove />
                             <TextBelow />
                           </Properties>

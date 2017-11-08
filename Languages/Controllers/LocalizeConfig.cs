@@ -37,17 +37,11 @@ namespace YetaWF.Modules.Languages.Controllers {
             public LocalizeConfigData.TranslationServiceEnum TranslationService { get; set; }
 
             [ExcludeDemoMode]
-            [Caption("Client ID"), Description("Defines the Client Id of your application performing translations - Provided by Microsoft when registering your application - This is not a free service")]
-            [HelpLink("https://datamarket.azure.com/dataset/bing/microsofttranslator")]
-            [UIHint("Text80"), StringLength(LocalizeConfigData.MaxMSClientId), Required, Trim]
+            [Caption("Client Key"), Description("Defines the Client API Key of your application performing translations - Provided by Microsoft when registering your application - This is not a free service, although there are limited free accounts")]
+            [HelpLink("https://www.microsoft.com/en-us/translator/getstarted.aspx")]
+            [UIHint("Text80"), StringLength(LocalizeConfigData.MaxMSClientKey), Required, Trim]
             [ProcessIf("TranslationService", LocalizeConfigData.TranslationServiceEnum.MicrosoftTranslator)]
-            public string MSClientId { get; set; }
-
-            [Caption("Client Secret"), Description("Defines the Client Secret provided by Microsoft when registering your application - This is not a free service")]
-            [HelpLink("https://datamarket.azure.com/dataset/bing/microsofttranslator")]
-            [UIHint("Text80"), StringLength(LocalizeConfigData.MaxMSClientSecret), Required, Trim]
-            [ProcessIf("TranslationService", LocalizeConfigData.TranslationServiceEnum.MicrosoftTranslator)]
-            public string MSClientSecret { get; set; }
+            public string MSClientKey { get; set; }
 
             [ExcludeDemoMode]
             [Caption("Translate API Key"), Description("Defines the Google Cloud Platform / Google Translate API key, which is used when translating localization resources into other languages - You can obtain an API key from the Google Cloud Platform service - This is not a free service")]

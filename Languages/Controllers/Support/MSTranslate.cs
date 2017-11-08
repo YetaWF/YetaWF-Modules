@@ -2,7 +2,6 @@
 using System.IO;
 using System.Net;
 using System.Runtime.Serialization;
-using System.Runtime.Serialization.Json;
 using System.Text;
 using System.Xml.Linq;
 using YetaWF.Core.Support;
@@ -13,41 +12,25 @@ using System.Web.Security.AntiXss;
 
 namespace YetaWF.Modules.Languages.Controllers.Support {
 
-    [DataContract]
-    internal class AdmAccessToken {
-        [DataMember]
-        public string access_token { get; set; }
-        [DataMember]
-        public string token_type { get; set; }
-        [DataMember]
-        public string expires_in { get; set; }
-        [DataMember]
-        public string scope { get; set; }
-    }
-
     internal class MSTranslate {
 
-        internal class AdmAuthentication {
+        internal class MSAuthentication {
 
-            public static readonly string DataMarketAccessUri = "https://datamarket.accesscontrol.windows.net/v2/OAuth2-13";
+            public static readonly string DataMarketAccessUri = "https://api.cognitive.microsoft.com/sts/v1.0/issueToken";
 
-            private string _clientId;
-            private string _clientSecret;
-            private string _request;
-            private AdmAccessToken _token;
+            private string _clientKey;
+            private string _token;
 
-            public AdmAuthentication(string clientId, string clientSecret) {
-                _clientId = clientId;
-                _clientSecret = clientSecret;
-                _request = string.Format("grant_type=client_credentials&client_id={0}&client_secret={1}&scope=http://api.microsofttranslator.com", YetaWFManager.UrlEncodeArgs(clientId), YetaWFManager.UrlEncodeArgs(clientSecret));
-                _token = HttpPost(DataMarketAccessUri, _request);
+            public MSAuthentication(string clientKey) {
+                _clientKey = clientKey;
+                string request = string.Format("Subscription-Key={0}", YetaWFManager.UrlEncodeArgs(clientKey));
+                _token = HttpPost(DataMarketAccessUri, request);
             }
-            public AdmAccessToken GetAccessToken() {
-                return this._token;
+            public string GetAccessToken() {
+                return _token;
             }
-            private AdmAccessToken HttpPost(string dataMarketAccessUri, string requestDetails) {
-                WebRequest webRequest = WebRequest.Create(dataMarketAccessUri);
-                webRequest.ContentType = "application/x-www-form-urlencoded";
+            private string HttpPost(string dataMarketAccessUri, string requestDetails) {
+                WebRequest webRequest = WebRequest.Create(dataMarketAccessUri + "?" + requestDetails);
                 webRequest.Method = "POST";
                 byte[] bytes = Encoding.ASCII.GetBytes(requestDetails);
                 webRequest.ContentLength = bytes.Length;
@@ -55,24 +38,24 @@ namespace YetaWF.Modules.Languages.Controllers.Support {
                     outputStream.Write(bytes, 0, bytes.Length);
                 }
                 using (WebResponse webResponse = webRequest.GetResponse()) {
-                    DataContractJsonSerializer serializer = new DataContractJsonSerializer(typeof(AdmAccessToken));
-                    AdmAccessToken token = (AdmAccessToken)serializer.ReadObject(webResponse.GetResponseStream());
-                    return token;
+                    using (StreamReader sr = new StreamReader(webResponse.GetResponseStream())) {
+                        return sr.ReadToEnd();
+                    }
                 }
             }
         }
 
-        private AdmAccessToken _admToken;
+        private string token;
 
-        public MSTranslate(string clientId, string clientSecret) {
-            AdmAuthentication admAuth = new AdmAuthentication(clientId, clientSecret);
-            _admToken = admAuth.GetAccessToken();
+        public MSTranslate(string clientId) {
+            MSAuthentication auth = new MSAuthentication(clientId);
+            token = auth.GetAccessToken();
         }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2202:Do not dispose objects multiple times", Justification = "Don't care")]
         public List<string> Translate(string from, string to, List<string> strings) {
 
-            string headerValue = "Bearer " + _admToken.access_token;
+            string headerValue = "Bearer " + token;
             string uri = "http://api.microsofttranslator.com/v2/Http.svc/TranslateArray";
             HtmlBuilder hb = new HtmlBuilder();
             hb.Append("<TranslateArrayRequest>" +
