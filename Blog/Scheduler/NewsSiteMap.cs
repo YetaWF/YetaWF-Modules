@@ -104,7 +104,7 @@ namespace YetaWF.Modules.Blog.Scheduler {
                 return;
             if (blogEntry.DatePublished < DateTime.UtcNow.AddDays(-3))
                 return; // too old
-            canonicalUrl = Manager.CurrentSite.MakeFullUrl(canonicalUrl);
+            canonicalUrl = Manager.CurrentSite.MakeUrl(canonicalUrl, PagePageSecurity: page.PageSecurity);
             if (!ValidForNewsSiteMap(page))
                 return;
             foreach (LanguageData lang in MultiString.Languages) {

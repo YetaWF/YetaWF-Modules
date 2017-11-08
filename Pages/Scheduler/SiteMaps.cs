@@ -122,7 +122,7 @@ namespace YetaWF.Modules.Pages.Scheduler {
         private void AddUrl(string file, PageDefinition page, string canonicalUrl, DateTime? lastMod, PageDefinition.SiteMapPriorityEnum siteMapPriority, PageDefinition.ChangeFrequencyEnum changeFrequency) {
             if (!PagesFound.Contains(page.PageGuid)) // keep track of pages so we don't add it as a designed page in case it was dynamic
                 PagesFound.Add(page.PageGuid);
-            canonicalUrl = Manager.CurrentSite.MakeFullUrl(canonicalUrl);
+            canonicalUrl = Manager.CurrentSite.MakeUrl(canonicalUrl, PagePageSecurity: page.PageSecurity);
             if (!ValidForSiteMap(page))
                 return;
             string cf = GetChangeFrequencyText(changeFrequency);
