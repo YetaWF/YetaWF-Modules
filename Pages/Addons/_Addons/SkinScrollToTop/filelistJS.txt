@@ -1,2 +1,2 @@
-﻿markgoodyear.com ScrollUp\jquery.scrollUp.js
+﻿markgoodyear.com ScrollUp/jquery.scrollUp.js
 SkinScrollToTop.js
