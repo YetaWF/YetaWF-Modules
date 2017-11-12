@@ -1,10 +1,10 @@
-﻿Dist\js\shCore.js,bundle
-Dist\js\shBrushXml.js,bundle
-Dist\js\shBrushCpp.js,bundle
-Dist\js\shBrushCSharp.js,bundle
-Dist\js\shBrushCss.js,bundle
-Dist\js\shBrushJscript.js,bundle
-Dist\js\shBrushSql.js,bundle
-Dist\js\shBrushVb.js,bundle
+﻿Dist/js/shCore.js,bundle
+Dist/js/shBrushXml.js,bundle
+Dist/js/shBrushCpp.js,bundle
+Dist/js/shBrushCSharp.js,bundle
+Dist/js/shBrushCss.js,bundle
+Dist/js/shBrushJscript.js,bundle
+Dist/js/shBrushSql.js,bundle
+Dist/js/shBrushVb.js,bundle
 
 Init.js,bundle
