@@ -223,7 +223,7 @@
             <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
               <Properties>
                 <Name Value="removeAllLegend" />
-                <Text Value="Remove all scheduler log records" />
+                <Text Value="Removes all scheduler log records" />
               </Properties>
             </Object>
           </Value>
@@ -247,7 +247,7 @@
             <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
               <Properties>
                 <Name Value="removeAllTT" />
-                <Text Value="Removes all scheduler log records" />
+                <Text Value="Remove all scheduler log records" />
               </Properties>
             </Object>
           </Value>
