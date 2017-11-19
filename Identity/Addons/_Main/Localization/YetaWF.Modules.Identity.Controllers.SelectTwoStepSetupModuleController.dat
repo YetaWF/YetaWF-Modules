@@ -54,6 +54,14 @@
           <Value>
             <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
               <Properties>
+                <Name Value="extUser" />
+                <Text Value="This account uses an external login provider - Two-step authentication (if available) must be set up using the external login provider." />
+              </Properties>
+            </Object>
+          </Value>
+          <Value>
+            <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
+              <Properties>
                 <Name Value="notEnabled" />
                 <Text Value="(Not Enabled)" />
               </Properties>

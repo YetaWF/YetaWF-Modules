@@ -46,7 +46,7 @@ namespace YetaWF.Modules.Identity.Controllers {
                     throw new InternalError("User with id {0} not found", Manager.UserId);
                 using (UserLoginInfoDataProvider logInfoDP = new UserLoginInfoDataProvider()) {
                     if (logInfoDP.IsExternalUser(Manager.UserId))
-                        return View("ExternalLoginOnly", (object)null);
+                        return View("ShowMessage", this.__ResStr("extUser", "This account uses an external login provider - Two-step authentication (if available) must be set up using the external login provider."), UseAreaViewName: false);
                 }
                 TwoStepAuth twoStep = new TwoStepAuth();
                 List<string> procs = (from p in twoStep.GetTwoStepAuthProcessors() where p.IsAvailable() select p.Name).ToList();

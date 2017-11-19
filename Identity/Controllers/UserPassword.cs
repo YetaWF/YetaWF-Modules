@@ -63,7 +63,7 @@ namespace YetaWF.Modules.Identity.Controllers {
 
             using (UserLoginInfoDataProvider logInfoDP = new UserLoginInfoDataProvider()) {
                 if (logInfoDP.IsExternalUser(Manager.UserId))
-                    return View("ExternalLoginOnly", (object)null);
+                    return View("ShowMessage", this.__ResStr("extUser", "This account uses an external login provider - The password (if available) must be set up using the external login provider."), UseAreaViewName: false);
             }
             UserManager<UserDefinition> userManager = Managers.GetUserManager();
             UserDefinition user;
@@ -103,7 +103,7 @@ namespace YetaWF.Modules.Identity.Controllers {
 
             using (UserLoginInfoDataProvider logInfoDP = new UserLoginInfoDataProvider()) {
                 if (logInfoDP.IsExternalUser(Manager.UserId))
-                    throw new Error(this.__ResStr("extUser", "This account can only be accessed using an external login provider"));
+                    throw new Error(this.__ResStr("extUserPswd", "This account can only be accessed using an external login provider"));
             }
 
             UserManager<UserDefinition> userManager = Managers.GetUserManager();
