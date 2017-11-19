@@ -70,7 +70,7 @@ namespace YetaWF.Modules.Identity.Support {
             };
             string subject = this.__ResStr("approvalNeededSubject", "Approval required for user {0} - site {1}", user.UserName, Manager.CurrentSite.SiteDomain);
             sendEmail.PrepareEmailMessage(null, subject, sendEmail.GetEmailFile(Package.GetCurrentPackage(this), "Account Approval.txt"), parameters: parms);
-            sendEmail.Send(true);
+            sendEmail.Send(false);
         }
 
         public void SendRejected(UserDefinition user, string ccEmail = null) {
@@ -109,7 +109,7 @@ namespace YetaWF.Modules.Identity.Support {
             };
             string subject = this.__ResStr("notifyNewUserSubject", "New account for user {0} - site  {1}", user.UserName, Manager.CurrentSite.SiteDomain);
             sendEmail.PrepareEmailMessage(null, subject, sendEmail.GetEmailFile(Package.GetCurrentPackage(this), "New Account Created.txt"), parameters: parms);
-            sendEmail.Send(true);
+            sendEmail.Send(false);
         }
     }
 }
