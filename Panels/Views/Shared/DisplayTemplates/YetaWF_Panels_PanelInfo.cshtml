@@ -4,7 +4,7 @@
 @using YetaWF.Modules.Panels.Models
 <div class="yt_panels_panelinfo t_display" id="@ControlId">
     @if (Model.Style == PanelInfo.PanelStyleEnum.Tabs) {
-        <div class="t_panels" id="@DivId">
+        <div class="t_panels t_acctabs" id="@DivId">
             @{
                 int panelIndex = 0;
                 int tabIndex = 0;
@@ -47,7 +47,7 @@
         </div>
         @Html.RenderTabInit(DivId)
     } else if (Model.Style == PanelInfo.PanelStyleEnum.AccordionjQuery) {
-        <div class="t_panels" id="@DivId">
+        <div class="t_panels t_accjquery" id="@DivId">
             @{ int panelIndex = 0; }
             @for (panelIndex = 0; panelIndex < Model.Panels.Count; ++panelIndex) {
                 if (Model.Panels[panelIndex].IsAuthorized()) {
@@ -77,7 +77,7 @@
             });
         </script>
     } else if (Model.Style == PanelInfo.PanelStyleEnum.AccordionKendo) {
-        <ul class="t_panels" id="@DivId">
+        <ul class="t_panels t_acckendo" id="@DivId">
             @{
                 int panelIndex = 0;
                 int tabIndex = 0;

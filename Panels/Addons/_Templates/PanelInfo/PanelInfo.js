@@ -77,3 +77,31 @@ $(document).on('YetaWF_PropertyList_PanelSwitched', function (event, panel) {
     $('input[name$="._ActiveTab"]', $control).val($panel.attr('data-tab'));
     YetaWF_Panels.updateButtons($control);
 });
+
+// A <div> is being emptied. Destroy all panels the <div> may contain.
+YetaWF_Basics.addClearDiv(function (tag) {
+    // tabs
+    var list = tag.querySelectorAll(".yt_panels_panelinfo .t_panels.t_acctabs");
+    var len = list.length;
+    for (var i = 0; i < len; ++i) {
+        var el = list[i];
+        var tabs = $(el);
+        if (tabs) tabs.tabs("destroy");
+    }
+    // jquery ui accordion
+    var list = tag.querySelectorAll(".yt_panels_panelinfo .t_panels.t_accjquery");
+    var len = list.length;
+    for (var i = 0; i < len; ++i) {
+        var el = list[i];
+        var accordion = $(el);
+        if (accordion) accordion.accordion("destroy");
+    }
+    // kendo accordion
+    var list = tag.querySelectorAll(".yt_panels_panelinfo .t_panels.t_acckendo");
+    var len = list.length;
+    for (var i = 0; i < len; ++i) {
+        var el = list[i];
+        var panelBar = $(el).data("kendoPanelBar");
+        if (panelBar) panelBar.destroy();
+    }
+});
