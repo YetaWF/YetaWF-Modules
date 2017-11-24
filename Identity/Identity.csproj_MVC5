@@ -255,7 +255,6 @@
     <None Include="Views\YetaWF_Identity_Need2FADisplay.cshtml" />
     <None Include="Views\YetaWF_Identity_SelectTwoStepSetup.cshtml" />
     <None Include="Views\YetaWF_Identity_SelectTwoStepAuth.cshtml" />
-    <Content Include="Views\YetaWF_Identity_ExternalLoginOnly.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\CoreComponents\Core\Core.csproj">
