@@ -83,7 +83,7 @@
             <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
               <Properties>
                 <Name Value="modExportLegend" />
-                <Text Value="Export the module data by creating an importable ZIP file (using Control Panel, Import Module)" />
+                <Text Value="Exports the module data by creating an importable ZIP file (using Control Panel, Import Module)" />
               </Properties>
             </Object>
           </Value>
@@ -107,7 +107,7 @@
             <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
               <Properties>
                 <Name Value="modExportTT" />
-                <Text Value="Exports the module data by creating an importable ZIP file (using Control Panel, Import Module)" />
+                <Text Value="Export the module data by creating an importable ZIP file (using Control Panel, Import Module)" />
               </Properties>
             </Object>
           </Value>
@@ -115,7 +115,7 @@
             <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
               <Properties>
                 <Name Value="modHelpLegend" />
-                <Text Value="Display help information for the package implementing this module" />
+                <Text Value="Displays help information for the package implementing this module" />
               </Properties>
             </Object>
           </Value>
@@ -139,7 +139,7 @@
             <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
               <Properties>
                 <Name Value="modHelpTT" />
-                <Text Value="Displays help information for the package implementing this module" />
+                <Text Value="Display help information for the package implementing this module" />
               </Properties>
             </Object>
           </Value>
