@@ -3,7 +3,7 @@
 var Tawk_API;
 var ActiveEngage_Conversation;
 (function (ActiveEngage_Conversation) {
-    var SkinTawkToModule = (function () {
+    var SkinTawkToModule = /** @class */ (function () {
         function SkinTawkToModule() {
         }
         /**

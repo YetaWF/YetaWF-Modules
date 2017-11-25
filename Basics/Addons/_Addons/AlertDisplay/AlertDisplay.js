@@ -3,7 +3,7 @@
 // The alert is displayed until dismissed or if the page doesn't reference this module (dynamic content).
 var YetaWF_Basics_Mods;
 (function (YetaWF_Basics_Mods) {
-    var AlertDisplayModule = (function () {
+    var AlertDisplayModule = /** @class */ (function () {
         function AlertDisplayModule() {
         }
         /**
