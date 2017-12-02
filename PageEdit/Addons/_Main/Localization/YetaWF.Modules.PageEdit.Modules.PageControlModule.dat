@@ -230,6 +230,14 @@
           <Value>
             <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
               <Properties>
+                <Name Value="saveSkins" />
+                <Text Value="Save &amp; Display" />
+              </Properties>
+            </Object>
+          </Value>
+          <Value>
+            <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
+              <Properties>
                 <Name Value="tabImport" />
                 <Text Value="Import Module" />
               </Properties>
@@ -288,6 +296,22 @@
               <Properties>
                 <Name Value="tabOldTT" />
                 <Text Value="Add an existing module to this page (this does not copy the module)" />
+              </Properties>
+            </Object>
+          </Value>
+          <Value>
+            <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
+              <Properties>
+                <Name Value="tabSkins" />
+                <Text Value="Default Skins" />
+              </Properties>
+            </Object>
+          </Value>
+          <Value>
+            <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
+              <Properties>
+                <Name Value="tabSkinsTT" />
+                <Text Value="Change default skins used site wide" />
               </Properties>
             </Object>
           </Value>

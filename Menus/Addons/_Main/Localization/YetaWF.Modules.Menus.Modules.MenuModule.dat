@@ -67,6 +67,18 @@
                       <Value>
                         <Object Type="YetaWF.Core.Localize.LocalizationData+PropertyData" Assembly="YetaWF.Core">
                           <Properties>
+                            <Name Value="LICssClass" />
+                            <Caption Value="&lt;LI&gt; Css Class" />
+                            <Description Value="The optional Css class added to every &lt;LI&gt; tag in the menu" />
+                            <HelpLink />
+                            <TextAbove />
+                            <TextBelow />
+                          </Properties>
+                        </Object>
+                      </Value>
+                      <Value>
+                        <Object Type="YetaWF.Core.Localize.LocalizationData+PropertyData" Assembly="YetaWF.Core">
+                          <Properties>
                             <Name Value="Orientation" />
                             <Caption Value="Orientation" />
                             <Description Value="The basic orientation of the menu - Ignored for Bootstrap menus" />
