@@ -24,13 +24,11 @@
 .yt_yetawf_devtests_scrolleritem .t_title {
     font-size: 15px;
     font-weight: bold;
-    color: #333;
     padding-bottom: 30px;
 }
 .yt_yetawf_devtests_scrolleritem .t_summary {
     font-size: 10px;
     font-weight: normal;
-    color: #333;
     max-height:200px;
     overflow:auto;
 }

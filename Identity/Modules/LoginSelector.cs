@@ -28,6 +28,7 @@ namespace YetaWF.Modules.Identity.Modules {
             Print = false;
             Users = new SerializableList<User>();
             Description = this.__ResStr("modSummary", "User login selector (used during development)");
+            UsePartialFormCss = false;
         }
 
         public override IModuleDefinitionIO GetDataProvider() { return new LoginSelectorModuleDataProvider(); }

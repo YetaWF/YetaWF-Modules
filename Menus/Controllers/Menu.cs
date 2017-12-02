@@ -20,7 +20,7 @@ namespace YetaWF.Modules.Menus.Controllers {
         [AllowGet]
         public ActionResult MainMenu() {
             // add some bootstrap specific classes
-            if (Manager.UsingBootstrap)
+            if (Manager.SkinInfo.UsingBootstrap)
                 Module.CssClass = YetaWFManager.CombineCss(Module.CssClass, "navbar-collapse collapse");
             MenuModel model = new MenuModel {
                 Menu = new MenuHelper.MenuData {
@@ -32,6 +32,7 @@ namespace YetaWF.Modules.Menus.Controllers {
                     ShowPath = Module.ShowPath,
                 },
             };
+            model.Menu.MenuList.LICssClass = Module.LICssClass;
             return View(model);
         }
     }
@@ -55,6 +56,7 @@ namespace YetaWF.Modules.Menus.Controllers {
                     ShowPath = Module.ShowPath,
                 },
             };
+            model.Menu.MenuList.LICssClass = Module.LICssClass;
             return View(model);
         }
 

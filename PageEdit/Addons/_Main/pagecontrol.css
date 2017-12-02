@@ -23,6 +23,7 @@
     display:none;
     position:absolute;
     right:20px;
+    color: brown;
     background-color: #e4e3e3;
     padding:5px 5px 5px 5px;
     border-radius:6px;
@@ -35,6 +36,11 @@
     margin-bottom:.2em;
     padding:0px 6px 6px 6px;
     line-height:12px;
+}
+#yPageControlMod a.yaction-link,
+#yPageControlMod a.yaction-link:hover,
+#yPageControlMod a.yaction-link:focus {
+    color:black;
 }
 #yEditControlDiv {
     position:absolute;

@@ -24,6 +24,7 @@ namespace YetaWF.Modules.TinyLanguage.Modules {
             WantFocus = false;
             WantSearch = false;
             Print = false;
+            UsePartialFormCss = false;
         }
 
         public override IModuleDefinitionIO GetDataProvider() { return new TinyLanguageModuleDataProvider(); }

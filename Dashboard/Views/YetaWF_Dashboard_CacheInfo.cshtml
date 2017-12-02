@@ -3,7 +3,6 @@
 @if (YetaWF.Core.Support.YetaWFManager.AspNetMvc == YetaWF.Core.Support.YetaWFManager.AspNetMvcVersion.MVC5) {
     using (Form("CacheInfo_Partial")) {
         @PartialForm()
-        @Html.DisplayFor(m => Model, "PropertyList")
         @FormButtons(new FormButton[] {
             new FormButton() { ButtonType= ButtonTypeEnum.Cancel, Text=this.__ResStr("btnCancel", "Return") },
         });

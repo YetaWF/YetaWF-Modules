@@ -27,8 +27,7 @@
     margin-left:0!important; /* override calculated left margin which is used to position the dropdown */
 }
 .YetaWF_Menus_MainMenu li.t_megamenu_content {
-    padding: 5px .5ch 5px .5ch;
-    background-color:#eee;
+    padding: 10px 1ch 10px 1ch;
 }
 
 /* Any site specific customizations for submodules should look like this: */

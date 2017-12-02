@@ -27,6 +27,8 @@ namespace YetaWF.Modules.Menus.Modules {
     [UniqueModule(UniqueModuleStyle.NonUnique)]
     public class MenuModule : ModuleDefinition, IModuleMenu {
 
+        private const int MaxLICssClass = 80;
+
         public MenuModule() {
             Name = this.__ResStr("modName", "Menu");
             Description = this.__ResStr("modSummary", "Simple and main page menus");
@@ -103,6 +105,10 @@ namespace YetaWF.Modules.Menus.Modules {
         [Category("General"), Caption("Edit Url"), Description("The Url used to edit this menu - If omitted, a default page is generated")]
         [UIHint("Url"), AdditionalMetadata("UrlType", UrlHelperEx.UrlTypeEnum.Local), UrlValidation(UrlValidationAttribute.SchemaEnum.Any, UrlHelperEx.UrlTypeEnum.Local), StringLength(Globals.MaxUrl), Trim]
         public string EditUrl { get; set; }
+
+        [Category("General"), Caption("<LI> Css Class"), Description("The optional Css class added to every <LI> tag in the menu")]
+        [UIHint("Text40"), StringLength(MaxLICssClass)]
+        public string LICssClass { get; set; }
 
         [Category("General"), Caption("Opening Direction"), Description("The direction in which submenus open - Ignored for Bootstrap menus")]
         [UIHint("Enum")]

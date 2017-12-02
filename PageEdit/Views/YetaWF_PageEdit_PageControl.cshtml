@@ -16,6 +16,8 @@
         }
         @Html.RenderTabEntry(DivId, __ResStr("tabImport", "Import Module"), __ResStr("tabImportTT", "Import module data into this page (creates a new module)"), tabEntry)
         ++tabEntry;
+        @Html.RenderTabEntry(DivId, __ResStr("tabSkins", "Default Skins"), __ResStr("tabSkinsTT", "Change default skins used site wide"), tabEntry)
+        ++tabEntry;
     }
     @Html.RenderTabStripEnd(DivId)
 
@@ -55,6 +57,16 @@
         @Html.RenderTabPaneStart(DivId, panel, "t_importMod")
         using (Form("ImportModule_Partial", Model: Model.ImportModel)) {
             @PartialForm()
+        }
+        @Html.RenderTabPaneEnd(DivId, panel)
+        ++panel;
+
+        @Html.RenderTabPaneStart(DivId, panel, "t_addSkins")
+        using (Form("SkinSelection_Partial", Model: Model.SkinSelectionModel)) {
+            @PartialForm()
+            <div>
+                <input type="submit" value="@__ResStr("saveSkins", "Save & Display")" />
+            </div>
         }
         @Html.RenderTabPaneEnd(DivId, panel)
         ++panel;

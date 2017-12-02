@@ -32,8 +32,7 @@ namespace YetaWF.Modules.CurrencyConverter.Views.Shared {
             using (ExchangeRateDataProvider dp = new ExchangeRateDataProvider()) {
                 ExchangeRateData data = dp.GetItem();
                 List<SelectionItem<string>> list = (from r in data.Rates orderby r.CurrencyName select new SelectionItem<string> { Text = r.CurrencyName, Value = r.Code }).ToList();
-                /* If this is a popup, use regular browser dropdown as the kendo dropdownlist is clipped by the containing window */
-                return htmlHelper.RenderDropDownSelectionList(name, model, list, HtmlAttributes: HtmlAttributes, BrowserControls: Manager.IsInPopup);
+                return htmlHelper.RenderDropDownSelectionList(name, model, list, HtmlAttributes: HtmlAttributes);
             }
         }
     }

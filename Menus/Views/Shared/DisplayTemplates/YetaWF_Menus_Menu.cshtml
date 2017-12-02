@@ -7,7 +7,7 @@
 @{
     MenuHelper.MenuStyleEnum style = Html.GetControlInfo<MenuHelper.MenuStyleEnum>("", "Style", MenuHelper.MenuStyleEnum.Automatic);
     if (style == MenuHelper.MenuStyleEnum.Automatic) {
-        style = Manager.UsingBootstrap ? MenuHelper.MenuStyleEnum.Bootstrap : MenuHelper.MenuStyleEnum.Kendo;
+        style = Manager.SkinInfo.UsingBootstrap ? MenuHelper.MenuStyleEnum.Bootstrap : MenuHelper.MenuStyleEnum.Kendo;
     }
 
     if (style == MenuHelper.MenuStyleEnum.Bootstrap) {

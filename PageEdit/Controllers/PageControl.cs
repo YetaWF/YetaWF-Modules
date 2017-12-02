@@ -13,6 +13,8 @@ using YetaWF.Core.Support;
 using YetaWF.Core.Upload;
 using YetaWF.Core.Views.Shared;
 using YetaWF.Modules.PageEdit.Modules;
+using YetaWF.Core.Skins;
+using YetaWF.Core.Site;
 #if MVC6
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Http;
@@ -157,12 +159,35 @@ namespace YetaWF.Modules.PageEdit.Controllers {
                 Description = new MultiString();
             }
         }
+        public class SkinSelectionModel {
+            [Category("Skin"), Caption("Default Bootstrap Skin"), Description("The default skin for overall page appearance and Bootstrap elements - individual pages can override the default skin")]
+            [HelpLink("https://www.bootstrapcdn.com/bootswatch/")]
+            [UIHint("BootstrapSkin"), StringLength(SkinDefinition.MaxName), AdditionalMetadata("NoDefault", true), Trim]
+            public string BootstrapSkin { get; set; }
+
+            [Category("Skin"), Caption("Default jQuery UI Skin"), Description("The default skin for jQuery-UI elements (buttons, modal dialogs, etc.) - individual pages can override the default skin")]
+            [HelpLink("http://jqueryui.com/themeroller/")]
+            [UIHint("jQueryUISkin"), StringLength(SkinDefinition.MaxName), AdditionalMetadata("NoDefault", true), Trim]
+            public string jQueryUISkin { get; set; }
+
+            [Category("Skin"), Caption("Default Kendo UI Skin"), Description("The default skin for Kendo UI elements (buttons, modal dialogs, etc.) - individual pages can override the default skin")]
+            [HelpLink("http://demos.telerik.com/kendo-ui/themebuilder/")]
+            [UIHint("KendoUISkin"), StringLength(SkinDefinition.MaxName), AdditionalMetadata("NoDefault", true), Trim]
+            public string KendoUISkin { get; set; }
+
+            public SkinSelectionModel() {
+                BootstrapSkin = Manager.CurrentSite.BootstrapSkin;
+                jQueryUISkin = Manager.CurrentSite.jQueryUISkin;
+                KendoUISkin = Manager.CurrentSite.KendoUISkin;
+            }
+        }
 
         public class PageControlModel {
             public AddNewModuleModel AddNewModel { get; set; }
             public AddExistingModel AddExistingModel { get; set; }
             public ImportModel ImportModel { get; set; }
             public AddNewPageModel AddNewPageModel { get; set; }
+            public SkinSelectionModel SkinSelectionModel { get; set; }
         }
 
         [AllowGet]
@@ -190,7 +215,8 @@ namespace YetaWF.Modules.PageEdit.Controllers {
                 },
                 ImportModel = new ImportModel() {
                     CurrentPageGuid = Manager.CurrentPage.PageGuid,
-                }
+                },
+                SkinSelectionModel = new SkinSelectionModel()
             };
             model.AddNewModel.AddData(page);
             model.AddExistingModel.AddData(page);
@@ -261,6 +287,28 @@ namespace YetaWF.Modules.PageEdit.Controllers {
             page.AddModule(model.ExistingModulePane, module, model.ModuleLocation == Location.Top);
             page.Save();
             return Reload(model, PopupText: this.__ResStr("okExisting", "Module added"));
+        }
+
+        [AllowPost]
+        [ConditionalAntiForgeryToken]
+        [ExcludeDemoMode]
+        public ActionResult SkinSelection_Partial(SkinSelectionModel model) {
+
+            if (!ModelState.IsValid)
+                return PartialView(model);
+
+            SiteDefinition site = Manager.CurrentSite;
+            site.BootstrapSkin = model.BootstrapSkin;
+            site.jQueryUISkin = model.jQueryUISkin;
+            site.KendoUISkin = model.KendoUISkin;
+            bool restartRequired;
+            site.Save(out restartRequired);
+            if (restartRequired) {
+                Manager.RestartSite();
+                return FormProcessed(model, this.__ResStr("okSavedRestart", "Site settings updated - Site is now restarting"),
+                    NextPage: Manager.CurrentSite.HomePageUrl, ForceRedirect: true);
+            } else
+                return FormProcessed(model, this.__ResStr("okSaved", "Site settings updated"), ForceRedirect: true);
         }
 
         [AllowPost]

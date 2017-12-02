@@ -3,7 +3,6 @@
 @if (YetaWF.Core.Support.YetaWFManager.AspNetMvc == YetaWF.Core.Support.YetaWFManager.AspNetMvcVersion.MVC5) {
     using (Form("HttpModulesBrowse_Partial")) {
         @PartialForm()
-        @Html.DisplayFor(m => Model.GridDef)
     }
 } else {
     <div class="@YetaWF.Core.Globals.CssDivWarning">

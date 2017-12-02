@@ -25,6 +25,7 @@ namespace YetaWF.Modules.Sites.Modules {
             WantSearch = false;
             Print = false;
             DefaultViewName = StandardViews.PropertyListEdit;
+            UsePartialFormCss = false;
         }
 
         public override IModuleDefinitionIO GetDataProvider() { return new SiteSelectorModuleDataProvider(); }

@@ -42,6 +42,10 @@ namespace YetaWF.Modules.Basics.Controllers {
             [UIHint("PopupSkin")]
             public SkinDefinition SiteSelectedPopupSkin { get; set; }
 
+            [Caption("Site Default Bootstrap Skin"), Description("The default skin for overall page appearance and Bootstrap elements")]
+            [UIHint("BootstrapSkin")]
+            public string SiteBootstrapSkin { get; set; }
+
             [Caption("Site Default jQuery UI Skin"), Description("The default skin for jQuery-UI elements (buttons, modal dialogs, etc.)")]
             [UIHint("jQueryUISkin")]
             public string SitejQueryUISkin { get; set; }
@@ -74,6 +78,7 @@ namespace YetaWF.Modules.Basics.Controllers {
             DisplayModel model = new DisplayModel();
             model.SiteSelectedSkin = Manager.CurrentSite.SelectedSkin;
             model.SiteSelectedPopupSkin = Manager.CurrentSite.SelectedPopupSkin;
+            model.SiteBootstrapSkin = Manager.CurrentSite.BootstrapSkin;
             model.SitejQueryUISkin = Manager.CurrentSite.jQueryUISkin;
             model.SiteKendoUISkin = Manager.CurrentSite.KendoUISkin;
             model.PageSelectedSkin = Manager.CurrentPage.SelectedSkin;

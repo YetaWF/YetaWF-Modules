@@ -39,6 +39,7 @@ namespace YetaWF.Modules.TinyLogin.Modules {
             WantSearch = false;
             WantFocus = false;
             Print = false;
+            UsePartialFormCss = false;
         }
 
         public override IModuleDefinitionIO GetDataProvider() { return new TinyLoginModuleDataProvider(); }
