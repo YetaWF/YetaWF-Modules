@@ -10,7 +10,7 @@
     @Html.RenderHidden("", Model)
     <div class="t_imgarea">
         <div class="t_list">
-            <select name="List" size="@info.Count">
+            <select class="t_native" name="List" size="@info.Count">
                 @foreach (var f in info.Files) {
                     string name = f.RemoveStartingAt(YetaWF.Core.Image.ImageSupport.ImageSeparator);
                     <option title="@name" value="@f">@name</option>
