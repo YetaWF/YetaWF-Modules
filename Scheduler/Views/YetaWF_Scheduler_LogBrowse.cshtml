@@ -20,7 +20,6 @@
 } else if (Model.BrowsingSupported) {
     using (Form("LogBrowse_Partial")) {
         @PartialForm()
-        @Html.DisplayFor(m => Model.GridDef)
     }
 } else {
     <div class="@Globals.CssDivWarning t_browselog t_file">
