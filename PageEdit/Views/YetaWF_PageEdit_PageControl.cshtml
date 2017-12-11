@@ -5,68 +5,84 @@
 <div id="@DivId">
     @Html.RenderTabStripStart(DivId)
     @{ int tabEntry = 0; }
-    @Html.RenderTabEntry(DivId, __ResStr("tabNewPage", "Add New Page"), __ResStr("tabNewPageTT", "Add a new page to the site"), tabEntry)
-    @{ ++tabEntry; }
-    @if (!Manager.CurrentPage.Temporary) {
-        @Html.RenderTabEntry(DivId, __ResStr("tabNew", "Add New Module"), __ResStr("tabNewTT", "Add a new module to this page (creates a new module)"), tabEntry)
+    @if (Model.EditAuthorized) {
+        @Html.RenderTabEntry(DivId, __ResStr("tabNewPage", "New Page"), __ResStr("tabNewPageTT", "Add a new page to the site"), tabEntry)
         ++tabEntry;
-        if (ModuleSelectionHelper.ExistingModulesExist()) {
-            @Html.RenderTabEntry(DivId, __ResStr("tabOld", "Add Existing Module"), __ResStr("tabOldTT", "Add an existing module to this page (this does not copy the module)"), tabEntry)
+    }
+    @if (!Manager.CurrentPage.Temporary) {
+        if (Model.EditAuthorized) {
+            @Html.RenderTabEntry(DivId, __ResStr("tabNew", "New Module"), __ResStr("tabNewTT", "Add a new module to this page (creates a new module)"), tabEntry)
+            ++tabEntry;
+            if (ModuleSelectionHelper.ExistingModulesExist()) {
+                @Html.RenderTabEntry(DivId, __ResStr("tabOld", "Existing Module"), __ResStr("tabOldTT", "Add an existing module to this page (this does not copy the module)"), tabEntry)
+                ++tabEntry;
+            }
+            @Html.RenderTabEntry(DivId, __ResStr("tabImport", "Import"), __ResStr("tabImportTT", "Import module data into this page (creates a new module)"), tabEntry)
+            ++tabEntry;
+            @Html.RenderTabEntry(DivId, __ResStr("tabSkins", "Skins"), __ResStr("tabSkinsTT", "Change default skins used site wide"), tabEntry)
             ++tabEntry;
         }
-        @Html.RenderTabEntry(DivId, __ResStr("tabImport", "Import Module"), __ResStr("tabImportTT", "Import module data into this page (creates a new module)"), tabEntry)
-        ++tabEntry;
-        @Html.RenderTabEntry(DivId, __ResStr("tabSkins", "Default Skins"), __ResStr("tabSkinsTT", "Change default skins used site wide"), tabEntry)
+        @Html.RenderTabEntry(DivId, __ResStr("tabLogin", "Login"), __ResStr("tabLoginTT", "Change site or log in as another user"), tabEntry)
         ++tabEntry;
     }
     @Html.RenderTabStripEnd(DivId)
 
     @{ int panel = 0; }
-    @Html.RenderTabPaneStart(DivId, panel, "t_addNewPage")
-    @using (Form("AddNewPage_Partial", Model: Model.AddNewPageModel)) {
-        @PartialForm()
-        <div>
-            <input type="submit" value="@__ResStr("addNewPage", "Add")" />
-        </div>
-    }
-    @Html.RenderTabPaneEnd(DivId, panel)
-    @{ ++panel; }
-    @if (!Manager.CurrentPage.Temporary) {
-        @Html.RenderTabPaneStart(DivId, panel, "t_addNewMod")
-        using (Form("AddNewModule_Partial", Model: Model.AddNewModel)) {
+    @if (Model.EditAuthorized) {
+        @Html.RenderTabPaneStart(DivId, panel, "t_addNewPage")
+        using (Form("AddNewPage_Partial", Model: Model.AddNewPageModel)) {
             @PartialForm()
             <div>
-                <input type="submit" value="@__ResStr("addNewModule", "Add")" />
+                <input type="submit" value="@__ResStr("addNewPage", "Add")" />
             </div>
         }
         @Html.RenderTabPaneEnd(DivId, panel)
         ++panel;
-
-        if (ModuleSelectionHelper.ExistingModulesExist()) {
-            @Html.RenderTabPaneStart(DivId, panel, "t_addExistingMod")
-            using (Form("AddExistingModule_Partial", Model: Model.AddExistingModel)) {
+    }
+    @if (!Manager.CurrentPage.Temporary) {
+        if (Model.EditAuthorized) {
+            @Html.RenderTabPaneStart(DivId, panel, "t_addNewMod")
+            using (Form("AddNewModule_Partial", Model: Model.AddNewModel)) {
                 @PartialForm()
                 <div>
-                    <input type="submit" value="@__ResStr("addOldModule", "Add")" />
+                    <input type="submit" value="@__ResStr("addNewModule", "Add")" />
+                </div>
+            }
+            @Html.RenderTabPaneEnd(DivId, panel)
+            ++panel;
+
+            if (ModuleSelectionHelper.ExistingModulesExist()) {
+                @Html.RenderTabPaneStart(DivId, panel, "t_addExistingMod")
+                using (Form("AddExistingModule_Partial", Model: Model.AddExistingModel)) {
+                    @PartialForm()
+                    <div>
+                        <input type="submit" value="@__ResStr("addOldModule", "Add")" />
+                    </div>
+                }
+                @Html.RenderTabPaneEnd(DivId, panel)
+                ++panel;
+            }
+
+            @Html.RenderTabPaneStart(DivId, panel, "t_importMod")
+            using (Form("ImportModule_Partial", Model: Model.ImportModel)) {
+                @PartialForm()
+            }
+            @Html.RenderTabPaneEnd(DivId, panel)
+            ++panel;
+
+            @Html.RenderTabPaneStart(DivId, panel, "t_addSkins")
+            using (Form("SkinSelection_Partial", Model: Model.SkinSelectionModel)) {
+                @PartialForm()
+                <div>
+                    <input type="submit" value="@__ResStr("saveSkins", "Save & Display")" />
                 </div>
             }
             @Html.RenderTabPaneEnd(DivId, panel)
             ++panel;
         }
-
-        @Html.RenderTabPaneStart(DivId, panel, "t_importMod")
-        using (Form("ImportModule_Partial", Model: Model.ImportModel)) {
+        @Html.RenderTabPaneStart(DivId, panel, "t_Login")
+        using (Form("LoginSiteSelection_Partial", Model: Model.LoginSiteSelectionModel)) {
             @PartialForm()
-        }
-        @Html.RenderTabPaneEnd(DivId, panel)
-        ++panel;
-
-        @Html.RenderTabPaneStart(DivId, panel, "t_addSkins")
-        using (Form("SkinSelection_Partial", Model: Model.SkinSelectionModel)) {
-            @PartialForm()
-            <div>
-                <input type="submit" value="@__ResStr("saveSkins", "Save & Display")" />
-            </div>
         }
         @Html.RenderTabPaneEnd(DivId, panel)
         ++panel;

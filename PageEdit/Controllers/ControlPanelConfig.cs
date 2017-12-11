@@ -8,6 +8,9 @@ using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Support;
 using YetaWF.Core.Views.Shared;
 using YetaWF.Modules.PageEdit.DataProvider;
+using YetaWF.Core.Serializers;
+using YetaWF.Core.DataProvider.Attributes;
+using YetaWF.Core.Identity;
 #if MVC6
 using Microsoft.AspNetCore.Mvc;
 #else
@@ -27,6 +30,11 @@ namespace YetaWF.Modules.PageEdit.Controllers {
             [UIHint("Url"), AdditionalMetadata("UrlType", UrlHelperEx.UrlTypeEnum.Remote), UrlValidation(UrlValidationAttribute.SchemaEnum.Any, UrlHelperEx.UrlTypeEnum.Remote)]
             [StringLength(Globals.MaxUrl), Trim]
             public string W3CUrl { get; set; }
+
+            [Category("General"), Caption("User List"), Description("List of user accounts that can be used to quickly log into the site")]
+            [UIHint("YetaWF_Identity_ResourceUsers")]
+            [Data_Binary]
+            public SerializableList<User> Users { get; set; }
 
             public ControlPanelConfigData GetData(ControlPanelConfigData data) {
                 ObjectSupport.CopyData(this, data);

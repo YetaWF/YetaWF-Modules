@@ -20,7 +20,7 @@ namespace YetaWF.Modules.Identity.Controllers {
         public LoginSelectorModuleController() { }
 
         public class EditModel {
-            [Caption("Active User"), Description("List of user accounts that can be used to quickly log into the site")]
+            [Caption("Active User"), Description("List of user accounts that can be used to quickly log into the site - select an entry to log in as that user")]
             [UIHint("YetaWF_Identity_LoginUsers"), SubmitFormOnChange]
             public int UserId { get; set; }
 

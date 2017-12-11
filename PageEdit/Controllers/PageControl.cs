@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using YetaWF.Core;
 using YetaWF.Core.Controllers;
 using YetaWF.Core.Localize;
@@ -12,9 +13,12 @@ using YetaWF.Core.Pages;
 using YetaWF.Core.Support;
 using YetaWF.Core.Upload;
 using YetaWF.Core.Views.Shared;
-using YetaWF.Modules.PageEdit.Modules;
 using YetaWF.Core.Skins;
 using YetaWF.Core.Site;
+using YetaWF.Core.Serializers;
+using YetaWF.Core.Identity;
+using YetaWF.Modules.PageEdit.DataProvider;
+using YetaWF.Modules.PageEdit.Modules;
 #if MVC6
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Http;
@@ -181,13 +185,64 @@ namespace YetaWF.Modules.PageEdit.Controllers {
                 KendoUISkin = Manager.CurrentSite.KendoUISkin;
             }
         }
+        [Trim]
+        public class LoginSiteSelectionModel {
+
+            [Caption("Active Site"), Description("List of sites that can be accessed - select an entry to visit the site")]
+            [UIHint("DropDownList"), SubmitFormOnChange]
+            public string SiteDomain { get; set; }
+
+            public List<SelectionItem<string>> SiteDomain_List { get; set; }
+
+            [Caption("Active User"), Description("List of user accounts that can be used to quickly log into the site - select an entry to log in as that user")]
+            [UIHint("YetaWF_Identity_LoginUsers"), SubmitFormOnChange]
+            public int UserId { get; set; }
+
+            [Caption("Superuser"), Description("If a superuser was signed on previously in this session, the superuser status remains even if logged in as another user - Uncheck to turn off superuser mode for this session")]
+            [UIHint("Boolean"), SuppressIfNotEqual("SuperuserStillActive", true), SubmitFormOnChange]
+            public bool? SuperuserStillActive { get; set; }
+
+            [Caption("Superuser"), Description("The currently logged on user is a superuser")]
+            [UIHint("Boolean"), SuppressIfEqual("SuperuserCurrent", false), ReadOnly]
+            public bool SuperuserCurrent { get; set; }
+
+            public SerializableList<User> UserId_List { get; set; }
+
+            public LoginSiteSelectionModel() { }
+
+            public void AddData() {
+
+                SiteDefinition.SitesInfo info = SiteDefinition.GetSites(0, 0, null, null);
+                SiteDomain_List = (from s in info.Sites orderby s.SiteDomain select new SelectionItem<string>() {
+                    Text = s.SiteDomain,
+                    Value = s.SiteDomain,
+                    Tooltip = this.__ResStr("switchSite", "Switch to site \"{0}\"", s.SiteDomain),
+                }).ToList();
+                SiteDomain = Manager.CurrentSite.SiteDomain;
+
+                ControlPanelConfigData config = ControlPanelConfigDataProvider.GetConfig();
+                UserId_List = config.Users;
+                UserId = Manager.UserId;
+
+                List<int> list = Manager.UserRoles;
+                int superuserRole = Resource.ResourceAccess.GetSuperuserRoleId();
+                if (Manager.UserRoles != null && Manager.UserRoles.Contains(superuserRole))
+                    SuperuserCurrent = true;// the current user is a superuser
+                else if (Manager.HasSuperUserRole)
+                    SuperuserStillActive = true;
+                else
+                    SuperuserStillActive = false;
+            }
+        }
 
         public class PageControlModel {
+            public bool EditAuthorized { get; set; }
             public AddNewModuleModel AddNewModel { get; set; }
             public AddExistingModel AddExistingModel { get; set; }
             public ImportModel ImportModel { get; set; }
             public AddNewPageModel AddNewPageModel { get; set; }
             public SkinSelectionModel SkinSelectionModel { get; set; }
+            public LoginSiteSelectionModel LoginSiteSelectionModel { get; set; }
         }
 
         [AllowGet]
@@ -199,11 +254,14 @@ namespace YetaWF.Modules.PageEdit.Controllers {
                 else
                     pageGuid = Manager.CurrentPage.PageGuid;
             }
+
             PageDefinition page = PageDefinition.Load(pageGuid);
-            if (!page.IsAuthorized_Edit())
-                return NotAuthorized();
+            bool editAuthorized = false;
+            if (page.IsAuthorized_Edit())
+                editAuthorized = true;
 
             PageControlModel model = new PageControlModel() {
+                EditAuthorized = editAuthorized,
                 AddNewPageModel = new AddNewPageModel() {
                     CurrentPageGuid = Manager.CurrentPage.PageGuid,
                 },
@@ -216,11 +274,13 @@ namespace YetaWF.Modules.PageEdit.Controllers {
                 ImportModel = new ImportModel() {
                     CurrentPageGuid = Manager.CurrentPage.PageGuid,
                 },
-                SkinSelectionModel = new SkinSelectionModel()
+                SkinSelectionModel = new SkinSelectionModel(),
+                LoginSiteSelectionModel = new LoginSiteSelectionModel(),
             };
             model.AddNewModel.AddData(page);
             model.AddExistingModel.AddData(page);
             model.ImportModel.AddData(page, Module);
+            model.LoginSiteSelectionModel.AddData();
             return View(model);
         }
 
@@ -353,15 +413,42 @@ namespace YetaWF.Modules.PageEdit.Controllers {
             return new EmptyResult();
         }
 
+        [AllowPost]
+        [ConditionalAntiForgeryToken]
+        public ActionResult LoginSiteSelection_Partial(LoginSiteSelectionModel model) {
+            if (!ModelState.IsValid) {
+                model.AddData();
+                return PartialView(model);
+            }
+
+            string nextPage;
+            if (Manager.CurrentSite.SiteDomain != model.SiteDomain) {
+                nextPage = Manager.CurrentSite.MakeFullUrl(RealDomain: model.SiteDomain, SecurityType: Core.Pages.PageDefinition.PageSecurityType.httpOnly);
+            } else { /* if (model.UserId != Manager.UserId) */
+                int userId = model.UserId;
+                if (userId == 0)
+                    Resource.ResourceAccess.Logoff();
+                else
+                    Resource.ResourceAccess.LoginAs(userId);
+                if (model.SuperuserStillActive != null && !(bool)model.SuperuserStillActive)
+                    Manager.SetSuperUserRole(false);
+                nextPage = Manager.ReturnToUrl;
+            }
+            Manager.PageControlShown = false;
+            return Redirect(nextPage, ForceRedirect: true, SetCurrentControlPanelMode: true);
+        }
+
         // if you have permission to view the pagecontrol module, you can switch modes
         public ActionResult SwitchToEdit() {
+            Manager.PageControlShown = false;
             Manager.EditMode = true;
-            return Redirect(Manager.ReturnToUrl, SetCurrentEditMode: true);
+            return Redirect(Manager.ReturnToUrl, SetCurrentEditMode: true, SetCurrentControlPanelMode: true);
         }
 
         public ActionResult SwitchToView() {
+            Manager.PageControlShown = false;
             Manager.EditMode = false;
-            return Redirect(Manager.ReturnToUrl, SetCurrentEditMode: true);
+            return Redirect(Manager.ReturnToUrl, SetCurrentEditMode: true, SetCurrentControlPanelMode: true);
         }
     }
 }

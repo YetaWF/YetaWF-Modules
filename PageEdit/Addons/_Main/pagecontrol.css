@@ -7,7 +7,7 @@
     position: absolute;
     top: -10px;
     left: 0px;
-    color:black;
+    color:#555;
     background-color: silver;
     font-size:9px;
     z-index:1;
@@ -23,7 +23,7 @@
     display:none;
     position:absolute;
     right:20px;
-    color: brown;
+    color: #555;
     background-color: #e4e3e3;
     padding:5px 5px 5px 5px;
     border-radius:6px;
@@ -37,10 +37,11 @@
     padding:0px 6px 6px 6px;
     line-height:12px;
 }
+#yPageControlMod h1,
 #yPageControlMod a.yaction-link,
 #yPageControlMod a.yaction-link:hover,
 #yPageControlMod a.yaction-link:focus {
-    color:black;
+    color:#555;
 }
 #yEditControlDiv {
     position:absolute;

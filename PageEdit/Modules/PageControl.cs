@@ -39,7 +39,7 @@ namespace YetaWF.Modules.PageEdit.Modules {
         public override bool ShowModuleMenu { get { return false; } }
         public override bool ModuleHasSettings { get { return false; } }
 
-        public override SerializableList<AllowedRole> DefaultAllowedRoles { get { return AdministratorLevel_DefaultAllowedRoles; } }
+        public override SerializableList<AllowedRole> DefaultAllowedRoles { get { return AnonymousLevel_DefaultAllowedRoles; } }
 
         public override MenuList GetModuleMenuList(ModuleAction.RenderModeEnum renderMode, ModuleAction.ActionLocationEnum location) {
             MenuList baseMenuList = base.GetModuleMenuList(renderMode, location);
@@ -59,8 +59,9 @@ namespace YetaWF.Modules.PageEdit.Modules {
         }
 
         public ModuleAction GetAction_SwitchToEdit() {
+            if (!Manager.CurrentPage.IsAuthorized_Edit()) return null;
             return new ModuleAction(this) {
-                Url = YetaWFManager.UrlFor(typeof(PageControlModuleController), "SwitchToEdit"),
+                Url = YetaWFManager.UrlFor(typeof(PageControlModuleController), nameof(PageControlModuleController.SwitchToEdit)),
                 QueryArgs = new { },
                 NeedsModuleContext = true,
                 Image = "#Edit",
@@ -79,7 +80,7 @@ namespace YetaWF.Modules.PageEdit.Modules {
         }
         public ModuleAction GetAction_SwitchToView() {
             return new ModuleAction(this) {
-                Url = YetaWFManager.UrlFor(typeof(PageControlModuleController), "SwitchToView"),
+                Url = YetaWFManager.UrlFor(typeof(PageControlModuleController), nameof(PageControlModuleController.SwitchToView)),
                 NeedsModuleContext = true,
                 QueryArgs = new { },
                 Image = "#Display",

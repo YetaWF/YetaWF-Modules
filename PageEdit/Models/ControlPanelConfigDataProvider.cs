@@ -5,6 +5,7 @@ using System.IO;
 using YetaWF.Core;
 using YetaWF.Core.DataProvider;
 using YetaWF.Core.DataProvider.Attributes;
+using YetaWF.Core.Identity;
 using YetaWF.Core.IO;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Packages;
@@ -21,8 +22,12 @@ namespace YetaWF.Modules.PageEdit.DataProvider {
         [StringLength(Globals.MaxUrl)]
         public string W3CUrl { get; set; }
 
+        [Data_Binary]
+        public SerializableList<User> Users { get; set; }
+
         public ControlPanelConfigData() {
             W3CUrl = "https://validator.w3.org/nu/?doc={0}";
+            Users = new SerializableList<User>();
         }
     }
 

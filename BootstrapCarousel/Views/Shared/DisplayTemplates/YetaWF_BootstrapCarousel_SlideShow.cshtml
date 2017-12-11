@@ -21,7 +21,7 @@
         @foreach (YetaWF.Modules.BootstrapCarousel.Models.CarouselInfo.CarouselItem slide in Model.Slides) {
             <div class="item@(index == 0 ? " active" :"")">
                 @if (!string.IsNullOrWhiteSpace(slide.Url)) {
-                    <a href="@Manager.CurrentSite.MakeUrl(slide.Url)" target="_blank" class="yNoToolTip">
+                    <a href="@Manager.CurrentSite.MakeUrl(slide.Url)" target="_blank" class="@YetaWF.Core.Addons.Basics.CssNoTooltip">
                         @Html.DisplayFor(m => slide.ImageDisplay, "Image")
                     </a>
                 } else {

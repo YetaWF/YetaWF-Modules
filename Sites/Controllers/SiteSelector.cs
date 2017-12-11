@@ -22,7 +22,7 @@ namespace YetaWF.Modules.Sites.Controllers {
         [Trim]
         public class EditModel {
 
-            [Caption("Active Site"), Description("List of sites that can be accessed")]
+            [Caption("Active Site"), Description("List of sites that can be accessed - select an entry to visit the site")]
             [UIHint("DropDownList"), SubmitFormOnChange]
             public string SiteDomain { get; set; }
 
