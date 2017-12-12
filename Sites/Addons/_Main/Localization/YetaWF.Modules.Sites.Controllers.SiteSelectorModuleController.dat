@@ -30,7 +30,7 @@
                           <Properties>
                             <Name Value="SiteDomain" />
                             <Caption Value="Active Site" />
-                            <Description Value="List of sites that can be accessed" />
+                            <Description Value="List of sites that can be accessed - select an entry to visit the site" />
                             <HelpLink />
                             <TextAbove />
                             <TextBelow />

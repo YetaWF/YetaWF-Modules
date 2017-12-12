@@ -54,7 +54,7 @@
                           <Properties>
                             <Name Value="UserId" />
                             <Caption Value="Active User" />
-                            <Description Value="List of user accounts that can be used to quickly log into the site" />
+                            <Description Value="List of user accounts that can be used to quickly log into the site - select an entry to log in as that user" />
                             <HelpLink />
                             <TextAbove />
                             <TextBelow />
