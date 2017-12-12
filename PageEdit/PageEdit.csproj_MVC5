@@ -132,7 +132,6 @@
     <Content Include="Views\YetaWF_PageEdit_ImportModule_Partial.cshtml" />
     <None Include="Views\YetaWF_PageEdit_AddExistingModule_Partial.cshtml" />
     <None Include="Views\YetaWF_PageEdit_AddNewModule_Partial.cshtml" />
-    <None Include="Views\YetaWF_PageEdit_LoginSiteSelection_Partial.cshtml" />
     <None Include="Views\YetaWF_PageEdit_SkinSelection_Partial.cshtml" />
     <None Include="Views\YetaWF_PageEdit_ControlPanelConfig.cshtml" />
     <None Include="Views\YetaWF_PageEdit_ControlPanelConfig_Partial.cshtml" />
