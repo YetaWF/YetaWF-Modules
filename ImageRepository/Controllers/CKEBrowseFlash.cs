@@ -42,7 +42,7 @@ namespace YetaWF.Modules.ImageRepository.Controllers {
             public Model() { }
 
             public void Update(YetaWFManager manager, ModuleDefinition module) {
-                FlashImageName_Info = new FlashSelectionInfo(manager, module, FolderGuid, SubFolder) {
+                FlashImageName_Info = new FlashSelectionInfo(module, FolderGuid, SubFolder) {
                     AllowUpload = true,
                 };
             }

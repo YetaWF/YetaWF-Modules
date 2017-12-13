@@ -34,11 +34,11 @@ namespace YetaWF.Modules.ImageRepository.Controllers {
 
             public Model() { }
 
-            public void Update(YetaWFManager manager, ModuleDefinition module) {
-                ImageName_Info = new ImageSelectionInfo(manager, module, module.ModuleGuid, null) {
+            public void Update(ModuleDefinition module) {
+                ImageName_Info = new ImageSelectionInfo(module, module.ModuleGuid, null) {
                     AllowUpload = true,
                 };
-                FlashImageName_Info = new FlashSelectionInfo(manager, module, module.ModuleGuid, null) {
+                FlashImageName_Info = new FlashSelectionInfo(module, module.ModuleGuid, null) {
                     AllowUpload = true,
                 };
             }
@@ -47,14 +47,14 @@ namespace YetaWF.Modules.ImageRepository.Controllers {
         [AllowGet]
         public ActionResult TemplateTest(string imageName) {
             Model model = new Model { };
-            model.Update(Manager, Module);
+            model.Update(Module);
             return View(model);
         }
 
         [AllowPost]
         [ConditionalAntiForgeryToken]
         public ActionResult TemplateTest_Partial(Model model) {
-            model.Update(Manager, Module);
+            model.Update(Module);
             if (!ModelState.IsValid)
                 return PartialView(model);
             return FormProcessed(model, this.__ResStr("okSaved", "Image saved"), OnClose: OnCloseEnum.Return, OnPopupClose: OnPopupCloseEnum.ReloadModule);

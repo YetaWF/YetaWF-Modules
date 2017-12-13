@@ -41,8 +41,8 @@ namespace YetaWF.Modules.ImageRepository.Controllers {
 
             public Model() { }
 
-            public void Update(YetaWFManager manager, ModuleDefinition module) {
-                ImageName_Info = new ImageSelectionInfo(manager, module, FolderGuid, SubFolder) {
+            public void Update(ModuleDefinition module) {
+                ImageName_Info = new ImageSelectionInfo(module, FolderGuid, SubFolder) {
                     AllowUpload = true,
                 };
             }
@@ -57,7 +57,7 @@ namespace YetaWF.Modules.ImageRepository.Controllers {
                 CKEditorFuncNum = CKEditorFuncNum,
                 LangCode = langCode,
             };
-            model.Update(Manager, Module);
+            model.Update(Module);
             return View(model);
         }
 
@@ -65,7 +65,7 @@ namespace YetaWF.Modules.ImageRepository.Controllers {
         [ConditionalAntiForgeryToken]
         [ExcludeDemoMode]
         public ActionResult CKEBrowseImages_Partial(Model model) {
-            model.Update(Manager, Module);
+            model.Update(Module);
             if (!ModelState.IsValid)
                 return PartialView(model);
 

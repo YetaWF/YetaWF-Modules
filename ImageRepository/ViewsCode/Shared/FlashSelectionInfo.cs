@@ -17,14 +17,13 @@ namespace YetaWF.Modules.ImageRepository.Views.Shared {
 
         public static string __ResStr(string name, string defaultValue, params object[] parms) { return ResourceAccess.GetResourceString(typeof(FlashSelectionInfo), name, defaultValue, parms); }
 
-        public FlashSelectionInfo(YetaWFManager manager, ModuleDefinition owningModule, Guid folderGuid, string subFolder, string fileType = "Flash") {
+        public FlashSelectionInfo(ModuleDefinition owningModule, Guid folderGuid, string subFolder, string fileType = "Flash") {
             FolderGuid = folderGuid;
             SubFolder = subFolder;
             FileType = fileType;
             AllowUpload = false;
-            Count = 10;
-            PreviewWidth = 2 * Count * manager.CharWidthAvg;
-            PreviewHeight = Count * manager.CharHeight;
+            PreviewWidth = 200;
+            PreviewHeight = 200;
             ClearFlashButton = new ModuleAction(owningModule) {
                 Url = YetaWFManager.UrlFor(typeof(FlashSelectionHelperController), "GetFiles"),
                 QueryArgs = new { FolderGuid = folderGuid, SubFolder = subFolder, FileType = FileType },

@@ -17,14 +17,13 @@ namespace YetaWF.Modules.ImageRepository.Views.Shared {
 
         public static string __ResStr(string name, string defaultValue, params object[] parms) { return ResourceAccess.GetResourceString(typeof(ImageSelectionInfo), name, defaultValue, parms); }
 
-        public ImageSelectionInfo(YetaWFManager manager, ModuleDefinition owningModule, Guid folderGuid, string subFolder, string fileType = "Images") {
+        public ImageSelectionInfo(ModuleDefinition owningModule, Guid folderGuid, string subFolder, string fileType = "Images") {
             FolderGuid = folderGuid;
             SubFolder = subFolder;
             FileType = fileType;
             AllowUpload = false;
-            Count = 10;
-            PreviewWidth = 2 * Count * manager.CharWidthAvg;
-            PreviewHeight = Count * manager.CharHeight;
+            PreviewWidth = 200;
+            PreviewHeight = 200;
             ClearImageButton = new ModuleAction(owningModule) {
                 Url = YetaWFManager.UrlFor(typeof(ImageSelectionHelperController), "GetFiles"),
                 QueryArgs = new { FolderGuid = folderGuid, SubFolder = subFolder, FileType = FileType },
