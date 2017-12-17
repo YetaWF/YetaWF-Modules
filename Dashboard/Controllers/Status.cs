@@ -7,6 +7,7 @@ using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Packages;
 using YetaWF.Core.Support;
 using YetaWF.Core;
+using YetaWF.Core.Localize;
 #if MVC6
 using Microsoft.AspNetCore.Mvc;
 #else
@@ -28,6 +29,10 @@ namespace YetaWF.Modules.Dashboard.Controllers {
             [Caption("ASP.NET/MVC Version"), Description("The ASP.NET/MVC version used")]
             [UIHint("String"), ReadOnly]
             public string AspNetMvc { get; set; }
+
+            [Caption("Blue-Green Deploy"), Description("The currently deployed site (Blue/Green)")]
+            [UIHint("String"), ReadOnly]
+            public string BlueGreenDeploy { get; set; }
 
             [Caption("Last Restart"), Description("The date and time the site was last restarted")]
             [UIHint("DateTime"), ReadOnly]
@@ -59,6 +64,23 @@ namespace YetaWF.Modules.Dashboard.Controllers {
             model.Build = "Release";
 #endif
             model.AspNetMvc = YetaWFManager.GetAspNetMvcName(YetaWFManager.AspNetMvc);
+
+            string healthCheckFile = YetaWFManager.UrlToPhysical("/_hc.html");
+            string blueGreen = "";
+            if (System.IO.File.Exists(healthCheckFile)) {
+                string contents = System.IO.File.ReadAllText(healthCheckFile);
+                if (contents.Contains("Blue"))
+                    blueGreen = "Blue";
+                else if (contents.Contains("Green"))
+                    blueGreen = "Green";
+                else 
+                    blueGreen = "(???)";
+            }
+            if (!string.IsNullOrWhiteSpace(blueGreen)) {
+                model.BlueGreenDeploy = this.__ResStr("blueGreen", "{0} - {1}:{2}", blueGreen, Manager.CurrentRequest.Url.Host, Manager.CurrentRequest.Url.Port);
+            } else {
+                model.BlueGreenDeploy = this.__ResStr("blueGreenNone", "N/A");
+            }
 
             return View(model);
         }
