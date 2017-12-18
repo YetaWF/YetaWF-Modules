@@ -119,8 +119,16 @@
           <Value>
             <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
               <Properties>
-                <Name Value="blueGreen" />
+                <Name Value="blueGreen4" />
                 <Text Value="{0} - {1}:{2}" />
+              </Properties>
+            </Object>
+          </Value>
+          <Value>
+            <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
+              <Properties>
+                <Name Value="blueGreen5" />
+                <Text Value="{0} - {1}" />
               </Properties>
             </Object>
           </Value>
