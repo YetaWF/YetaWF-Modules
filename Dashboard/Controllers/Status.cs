@@ -77,7 +77,11 @@ namespace YetaWF.Modules.Dashboard.Controllers {
                     blueGreen = "(???)";
             }
             if (!string.IsNullOrWhiteSpace(blueGreen)) {
-                model.BlueGreenDeploy = this.__ResStr("blueGreen", "{0} - {1}:{2}", blueGreen, Manager.CurrentRequest.Url.Host, Manager.CurrentRequest.Url.Port);
+#if MVC5
+                model.BlueGreenDeploy = this.__ResStr("blueGreen4", "{0} - {1}:{2}", blueGreen, Manager.CurrentRequest.Url.Host, Manager.CurrentRequest.Url.Port);
+#else
+                model.BlueGreenDeploy = this.__ResStr("blueGreen5", "{0} - {1}", blueGreen, Manager.CurrentRequest.Host);
+#endif
             } else {
                 model.BlueGreenDeploy = this.__ResStr("blueGreenNone", "N/A");
             }
