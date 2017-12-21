@@ -415,6 +415,7 @@ namespace YetaWF.Modules.PageEdit.Controllers {
 
         [AllowPost]
         [ConditionalAntiForgeryToken]
+        [ExcludeDemoMode]
         public ActionResult LoginSiteSelection_Partial(LoginSiteSelectionModel model) {
             if (!ModelState.IsValid) {
                 model.AddData();
