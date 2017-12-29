@@ -11,7 +11,7 @@
         @Html.RenderListOfLocalPages("", DivId + "_list", Model)
         @Html.RenderListOfLocalPagesAddNew("", Model)
     </div>
-    @Html.RenderExtLabel(__ResStr("lblAllPages", "All Pages"), ToolTip: __ResStr("ttAllPages", "Shows all designed pages available in the site - Select a page to update the dropdown list above, so the page can be added to the Unified Page Set"))
+    @Html.RenderExtLabel(__ResStr("lblAllPages", "All Pages"), ToolTip: __ResStr("ttAllPages", "Shows all designed pages available in the site - Select a page to update the dropdown list above, so the page can be added to the list of pages"))
     @Html.RenderAllPages("", DivId + "_listall")
 </div>
 <script>

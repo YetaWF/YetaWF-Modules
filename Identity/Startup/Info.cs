@@ -11,6 +11,7 @@ namespace YetaWF.Modules.Identity.Addons {
 
         public const string Resource_AllowUserLogon = "YetaWF_Identity-AllowUserLogon";
         public const string Resource_AllowUserIdAjax = "YetaWF_Identity-AllowUserIdAjax";
+        public const string Resource_AllowListOfUserNamesAjax = "YetaWF_Identity-AllowListOfUserNamesAjax";
 
         public static readonly int MAX_USERS_IN_RESOURCE = 10;// maximum allowed users in a resource definition
 

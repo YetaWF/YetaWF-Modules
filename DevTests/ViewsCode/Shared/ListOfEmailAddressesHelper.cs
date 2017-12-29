@@ -30,7 +30,7 @@ namespace YetaWF.Modules.DevTests.Views.Shared {
         }
 
         public class NewModel {
-            [Caption("New String"), Description("Please enter a new email address and click Add")]
+            [Caption("Email Address"), Description("Please enter a new email address and click Add")]
             [UIHint("Text80"), StringLength(80), Trim]
             public string NewValue { get; set; }
         }

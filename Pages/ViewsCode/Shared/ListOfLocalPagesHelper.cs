@@ -10,7 +10,6 @@ using YetaWF.Core.Skins;
 using YetaWF.Core.Support;
 using YetaWF.Core.Views;
 using YetaWF.Core.Views.Shared;
-using YetaWF.Modules.Pages.DataProvider;
 using YetaWF.Modules.Pages.Controllers.Shared;
 #if MVC6
 using Microsoft.AspNetCore.Html;
@@ -33,7 +32,7 @@ namespace YetaWF.Modules.Pages.Views.Shared {
         }
 
         public class NewModel {
-            [Caption("Page"), Description("Please select a page and click Add to add it to the Unified Page Set")]
+            [Caption("Page"), Description("Please select a page and click Add to add it to the list of pages")]
             [UIHint("Url"), StringLength(Globals.MaxUrl), AdditionalMetadata("UrlType", UrlHelperEx.UrlTypeEnum.Local), Trim]
             public string NewValue { get; set; }
         }

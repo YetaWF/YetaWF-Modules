@@ -4,20 +4,19 @@
 #else
 
 using Microsoft.AspNet.Identity;
-using Microsoft.Owin;
 using Microsoft.Owin.Security;
 using Microsoft.Owin.Security.Cookies;
 using Owin;
 using YetaWF.Core.Support;
 
-[assembly: OwinStartupAttribute(typeof(YetaWF.Modules.Identity.Startup))]
 namespace YetaWF.Modules.Identity {
-    public class Startup
-    {
+
+    public class Startup : IInitializeOwinStartup {
+
         const string XmlSchemaString = "http://www.w3.org/2001/XMLSchema#string";
 
         // For more information on configuring authentication, please visit http://go.microsoft.com/fwlink/?LinkId=301864
-        public void Configuration(IAppBuilder app) {
+        public void InitializeOwinStartup(IAppBuilder app) {
 
             // This may get initialized before our Core Components so we can't use the Package type
             // Package package = AreaRegistration.CurrentPackage;
