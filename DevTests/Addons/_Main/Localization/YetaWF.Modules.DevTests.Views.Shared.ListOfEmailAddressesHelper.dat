@@ -113,7 +113,7 @@
                         <Object Type="YetaWF.Core.Localize.LocalizationData+PropertyData" Assembly="YetaWF.Core">
                           <Properties>
                             <Name Value="NewValue" />
-                            <Caption Value="New String" />
+                            <Caption Value="Email Address" />
                             <Description Value="Please enter a new email address and click Add" />
                             <HelpLink />
                             <TextAbove />

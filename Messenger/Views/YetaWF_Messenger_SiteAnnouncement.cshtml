@@ -1,0 +1,9 @@
+@*Copyright © 2017 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Messenger#License*@
+@inherits YetaWF.Core.Views.RazorView<YetaWF.Modules.Messenger.Modules.SiteAnnouncementModule, YetaWF.Modules.Messenger.Controllers.SiteAnnouncementModuleController.AddModel>
+@using (Form("SiteAnnouncement_Partial")) {
+    @PartialForm()
+    @FormButtons(new FormButton[] {
+        new FormButton() { Text=__ResStr("btnSend", "Send"), ButtonType= ButtonTypeEnum.Submit, },
+        new FormButton() { ButtonType= ButtonTypeEnum.Cancel, },
+    });
+}

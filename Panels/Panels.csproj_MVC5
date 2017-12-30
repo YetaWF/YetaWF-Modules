@@ -57,6 +57,7 @@
     <Content Include="Views\Shared\EditorTemplates\YetaWF_Panels_PanelInfo.cshtml" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="app.config" />
     <None Include="packages.config" />
     <Content Include="Views\Shared\DisplayTemplates\YetaWF_Panels_PanelInfo.cshtml" />
     <None Include="Views\YetaWF_Panels_ModulePanel.cshtml" />

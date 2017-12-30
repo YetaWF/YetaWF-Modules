@@ -174,7 +174,7 @@
                           <Properties>
                             <Name Value="NewValue" />
                             <Caption Value="Page" />
-                            <Description Value="Please select a page and click Add to add it to the Unified Page Set" />
+                            <Description Value="Please select a page and click Add to add it to the list of pages" />
                             <HelpLink />
                             <TextAbove />
                             <TextBelow />
@@ -236,7 +236,7 @@
             <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
               <Properties>
                 <Name Value="ttAllPages" />
-                <Text Value="Shows all designed pages available in the site - Select a page to update the dropdown list above, so the page can be added to the Unified Page Set" />
+                <Text Value="Shows all designed pages available in the site - Select a page to update the dropdown list above, so the page can be added to the list of pages" />
               </Properties>
             </Object>
           </Value>

@@ -43,6 +43,7 @@
     <None Include="Addons\_Main\filelistCSS.txt" />
     <None Include="Addons\_Main\IFrame.js" />
     <None Include="Addons\_Main\IFrame.css" />
+    <None Include="app.config" />
     <None Include="Views\YetaWF_IFrame_IFrameDisplay.cshtml" />
   </ItemGroup>
   <ItemGroup>
