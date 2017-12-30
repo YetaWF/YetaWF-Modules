@@ -28,6 +28,18 @@
                       <Value>
                         <Object Type="YetaWF.Core.Localize.LocalizationData+PropertyData" Assembly="YetaWF.Core">
                           <Properties>
+                            <Name Value="Description" />
+                            <Caption Value=" " />
+                            <Description Value=" " />
+                            <HelpLink />
+                            <TextAbove />
+                            <TextBelow />
+                          </Properties>
+                        </Object>
+                      </Value>
+                      <Value>
+                        <Object Type="YetaWF.Core.Localize.LocalizationData+PropertyData" Assembly="YetaWF.Core">
+                          <Properties>
                             <Name Value="Message" />
                             <Caption Value="Message" />
                             <Description Value="Defines the message to be sent" />
@@ -40,7 +52,19 @@
                       <Value>
                         <Object Type="YetaWF.Core.Localize.LocalizationData+PropertyData" Assembly="YetaWF.Core">
                           <Properties>
-                            <Name Value="TestMode" />
+                            <Name Value="TestModeDemo" />
+                            <Caption Value="Test Mode" />
+                            <Description Value="Select to test sending a message to yourself (no other users will receive this message)" />
+                            <HelpLink />
+                            <TextAbove />
+                            <TextBelow />
+                          </Properties>
+                        </Object>
+                      </Value>
+                      <Value>
+                        <Object Type="YetaWF.Core.Localize.LocalizationData+PropertyData" Assembly="YetaWF.Core">
+                          <Properties>
+                            <Name Value="TestModeProd" />
                             <Caption Value="Test Mode" />
                             <Description Value="Select to test sending a message to yourself (no other users will receive this message)" />
                             <HelpLink />
@@ -93,6 +117,14 @@
               <Properties>
                 <Name Value="anncTitle" />
                 <Text Value="Site Announcement" />
+              </Properties>
+            </Object>
+          </Value>
+          <Value>
+            <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
+              <Properties>
+                <Name Value="demo" />
+                <Text Value="In Demo mode, the message is sent to the current user only - Other users do not receive the message." />
               </Properties>
             </Object>
           </Value>

@@ -30,15 +30,34 @@ namespace YetaWF.Modules.Messenger.Controllers {
             public string Message { get; set; }
 
             [Caption("Test Mode"), Description("Select to test sending a message to yourself (no other users will receive this message)")]
-            [UIHint("Boolean")]
+            [UIHint("Boolean"), SuppressIfEqual("IsDemoMode", false), ReadOnly]
+            public bool TestModeDemo { get { return TestMode; } set { TestMode = value; } }
+
+            [Caption("Test Mode"), Description("Select to test sending a message to yourself (no other users will receive this message)")]
+            [UIHint("Boolean"), SuppressIfEqual("IsDemoMode", true)]
+            public bool TestModeProd { get { return TestMode; } set { TestMode = value; } }
+
             public bool TestMode { get; set; }
 
-            public AddModel() { }
+            [Caption(" "), Description(" ")]
+            [UIHint("String"), SuppressIfEqual("IsDemoMode", false), ReadOnly]
+            public string Description { get; set; }
+
+            public bool IsDemoMode { get { return Manager.IsDemo; } }
+
+            public AddModel() {
+                TestMode = IsDemoMode;
+                Description = this.__ResStr("demo", "In Demo mode, the message is sent to the current user only - Other users do not receive the message.");
+            }
 
             public SiteAccouncement GetData() {
                 SiteAccouncement data = new SiteAccouncement();
                 ObjectSupport.CopyData(this, data);
                 return data;
+            }
+            public void UpdateData() {
+                if (IsDemoMode)
+                    TestMode = IsDemoMode;
             }
         }
 
@@ -53,11 +72,12 @@ namespace YetaWF.Modules.Messenger.Controllers {
         [AllowPost]
         [ConditionalAntiForgeryToken]
         public ActionResult SiteAnnouncement_Partial(AddModel model) {
+            model.UpdateData();
             if (!ModelState.IsValid)
                 return PartialView(model);
 
             if (model.TestMode) {
-                return FormProcessed(model, model.Message, model.Title, OnClose: OnCloseEnum.Nothing, PopupOptions: "{encoded:true}");
+                return FormProcessed(model, model.Message, model.Title, OnClose: OnCloseEnum.UpdateInPlace, OnPopupClose: OnPopupCloseEnum.UpdateInPlace, PopupOptions: "{encoded:true}");
             } else {
                 using (SiteAccouncementDataProvider dataProvider = new SiteAccouncementDataProvider()) {
                     if (!dataProvider.AddItem(model.GetData())) {
@@ -66,7 +86,7 @@ namespace YetaWF.Modules.Messenger.Controllers {
                     }
 
                     IHubContext context = GlobalHost.ConnectionManager.GetHubContext<YetaWF_Messenger_SiteAnnouncement>();
-                    context.Clients.All.message(model.Message);
+                    context.Clients.All.message(model.Message, model.Title);
 
                 }
                 return FormProcessed(model);

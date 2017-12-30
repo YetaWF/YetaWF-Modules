@@ -1,6 +1,6 @@
 ﻿/* Copyright © 2017 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Messenger#License */
 
-var Y_Message: any;
+var Y_Alert: any;
 
 namespace YetaWF_Messenger {
 
@@ -24,9 +24,9 @@ namespace YetaWF_Messenger {
             var $$: any = $;
             var connection = $$.hubConnection(YConfigs.Basics.SignalRUrl, { useDefaultPath: false });
             var hubProxy = connection.createHubProxy('YetaWF_Messenger_SiteAnnouncement');
-            hubProxy.on('message', function (content) {
+            hubProxy.on('message', function (content, title) {
                 if (SkinSiteAnnouncementsModule.on)
-                    Y_Message(content, null, { encoded: true });
+                    Y_Alert(content, title, null, { encoded: true });
             });
             connection.start().done(function () { });
         }
