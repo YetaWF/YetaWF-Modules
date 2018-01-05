@@ -38,26 +38,38 @@
   <ItemGroup>
     <Compile Include="Controllers\BrowseSiteAnnouncement.cs" />
     <Compile Include="Controllers\Config.cs" />
+    <Compile Include="Controllers\Messaging.cs" />
     <Compile Include="Controllers\SiteAnnouncement.cs" />
+    <Compile Include="Controllers\SkinMessaging.cs" />
     <Compile Include="Controllers\SkinSiteAnnouncements.cs" />
     <Compile Include="Controllers\SkinSignalr.cs" />
     <Compile Include="Models\ConfigDataProvider.cs" />
+    <Compile Include="Models\MessagingDataProvider.cs" />
     <Compile Include="Models\SiteAccouncementDataProvider.cs" />
     <Compile Include="Modules\BrowseSiteAnnouncement.cs" />
     <Compile Include="Modules\Config.cs" />
+    <Compile Include="Modules\Messaging.cs" />
     <Compile Include="Modules\SiteAnnouncement.cs" />
+    <Compile Include="Modules\SkinMessaging.cs" />
     <Compile Include="Modules\SkinSiteAnnouncements.cs" />
     <Compile Include="Modules\SkinSignalr.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup\AreaRegistration.cs" />
     <Compile Include="Startup\Info.cs" />
+    <Compile Include="ViewsCode\Shared\MessagesHelper.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Addons\_Templates\Messages\Messages.scss" />
     <None Include="Addons\_Main\Grids\BrowseSiteAnnouncementModuleController.BrowseItem" />
     <None Include="app.config" />
     <None Include="packages.config" />
     <None Include="tsconfig.json" />
     <None Include="tslint.json" />
+    <Content Include="Addons\_Addons\Messaging\filelistJS.txt" />
+    <Content Include="Addons\_Templates\Messages\filelistJS.txt" />
+    <Content Include="Views\Shared\DisplayTemplates\YetaWF_Messenger_Messages.cshtml" />
+    <None Include="Views\YetaWF_Messenger_Messaging.cshtml" />
+    <None Include="Views\YetaWF_Messenger_Messaging_Partial.cshtml" />
     <None Include="Views\YetaWF_Messenger_SiteAnnouncement.cshtml" />
     <None Include="Views\YetaWF_Messenger_SiteAnnouncement_Partial.cshtml" />
   </ItemGroup>
@@ -118,9 +130,12 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <TypeScriptCompile Include="Addons\_Addons\Messaging\Messaging.tsx" />
+    <TypeScriptCompile Include="Addons\_Templates\Messages\Messages.tsx" />
     <TypeScriptCompile Include="Addons\_Addons\SkinSiteAnnouncements\SkinSiteAnnouncements.tsx" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Addons\_Templates\Messages\filelistCSS.txt" />
     <Content Include="Addons\_Addons\SkinSiteAnnouncements\filelistCSS.txt" />
     <Content Include="Addons\_Addons\SkinSiteAnnouncements\filelistJS.txt" />
     <Content Include="Addons\_SiteTemplates\YetaWF_Messenger.txt" />

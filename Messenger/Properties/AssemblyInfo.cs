@@ -6,7 +6,7 @@ using YetaWF.Core.Packages;
 using YetaWF.PackageAttributes;
 
 [assembly: AssemblyTitle("Messenger")]
-[assembly: AssemblyDescription("Messaging support using site announcements")]
+[assembly: AssemblyDescription("Messaging support and site announcements")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Softel vdm, Inc.")]
 [assembly: AssemblyProduct("Messenger")]

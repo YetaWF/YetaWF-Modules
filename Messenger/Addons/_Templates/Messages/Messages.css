@@ -1,0 +1,35 @@
+@charset "UTF-8";
+/* Copyright � 2017 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Messaging#License */
+.yt_messenger_messages.t_display {
+  padding: 1ch;
+  margin-bottom: 1em;
+  background-color: white;
+  border-radius: 5px;
+  max-height: 300px;
+  overflow: auto; }
+  .yt_messenger_messages.t_display .t_messagearea {
+    margin-bottom: 1ch;
+    color: darkslategray; }
+    .yt_messenger_messages.t_display .t_messagearea .t_thisuser, .yt_messenger_messages.t_display .t_messagearea .t_otheruser {
+      padding-bottom: 3px;
+      clear: both; }
+      .yt_messenger_messages.t_display .t_messagearea .t_thisuser .t_sent, .yt_messenger_messages.t_display .t_messagearea .t_otheruser .t_sent {
+        clear: both;
+        font-size: smaller; }
+    .yt_messenger_messages.t_display .t_messagearea .t_thisuser .t_sent {
+      float: right; }
+    .yt_messenger_messages.t_display .t_messagearea .t_otheruser .t_sent {
+      float: left; }
+    .yt_messenger_messages.t_display .t_messagearea .t_thisuser .t_text,
+    .yt_messenger_messages.t_display .t_messagearea .t_otheruser .t_text {
+      clear: both;
+      border-radius: 3px;
+      padding: .5ch 1ch .5ch 1ch; }
+    .yt_messenger_messages.t_display .t_messagearea .t_thisuser .t_text {
+      float: right;
+      background-color: lightGoldenrodYellow;
+      border: solid Yellow 1px; }
+    .yt_messenger_messages.t_display .t_messagearea .t_otheruser .t_text {
+      float: left;
+      background-color: cyan;
+      border: solid lightblue 1px; }

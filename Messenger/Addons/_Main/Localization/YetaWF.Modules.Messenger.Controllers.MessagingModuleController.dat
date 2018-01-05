@@ -10,7 +10,7 @@
           <Value>
             <Object Type="YetaWF.Core.Localize.LocalizationData+ClassData" Assembly="YetaWF.Core">
               <Properties>
-                <Name Value="YetaWF.Modules.Messenger.Controllers.SiteAnnouncementModuleController+AddModel" />
+                <Name Value="YetaWF.Modules.Messenger.Controllers.MessagingModuleController+EditModel" />
                 <BaseTypeName />
                 <Header />
                 <Footer />
@@ -28,9 +28,9 @@
                       <Value>
                         <Object Type="YetaWF.Core.Localize.LocalizationData+PropertyData" Assembly="YetaWF.Core">
                           <Properties>
-                            <Name Value="Description" />
-                            <Caption Value=" " />
-                            <Description Value=" " />
+                            <Name Value="MessageData" />
+                            <Caption Value="Message History" />
+                            <Description Value="The history of messages sent to the selected user" />
                             <HelpLink />
                             <TextAbove />
                             <TextBelow />
@@ -40,21 +40,9 @@
                       <Value>
                         <Object Type="YetaWF.Core.Localize.LocalizationData+PropertyData" Assembly="YetaWF.Core">
                           <Properties>
-                            <Name Value="Message" />
-                            <Caption Value="Message" />
-                            <Description Value="Defines the message to be sent" />
-                            <HelpLink />
-                            <TextAbove Value="Please enter the message to be sent to all users that are currently using the site (anonymous and logged on users)." />
-                            <TextBelow />
-                          </Properties>
-                        </Object>
-                      </Value>
-                      <Value>
-                        <Object Type="YetaWF.Core.Localize.LocalizationData+PropertyData" Assembly="YetaWF.Core">
-                          <Properties>
-                            <Name Value="TestModeDemo" />
-                            <Caption Value="Test Mode" />
-                            <Description Value="Select to test sending a message to yourself (no other users will receive this message)" />
+                            <Name Value="MessageText" />
+                            <Caption Value="New Message" />
+                            <Description Value="Defines the message to send to the user" />
                             <HelpLink />
                             <TextAbove />
                             <TextBelow />
@@ -64,21 +52,9 @@
                       <Value>
                         <Object Type="YetaWF.Core.Localize.LocalizationData+PropertyData" Assembly="YetaWF.Core">
                           <Properties>
-                            <Name Value="TestModeProd" />
-                            <Caption Value="Test Mode" />
-                            <Description Value="Select to test sending a message to yourself (no other users will receive this message)" />
-                            <HelpLink />
-                            <TextAbove />
-                            <TextBelow />
-                          </Properties>
-                        </Object>
-                      </Value>
-                      <Value>
-                        <Object Type="YetaWF.Core.Localize.LocalizationData+PropertyData" Assembly="YetaWF.Core">
-                          <Properties>
-                            <Name Value="Title" />
-                            <Caption Value="Title" />
-                            <Description Value="Defines the title of the message to be sent" />
+                            <Name Value="ToUserId" />
+                            <Caption Value="To User" />
+                            <Description Value="Defines the current user for whom the history is shown" />
                             <HelpLink />
                             <TextAbove />
                             <TextBelow />
@@ -107,24 +83,16 @@
           <Value>
             <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
               <Properties>
-                <Name Value="alreadyExists" />
-                <Text Value="New site announcement couldn't be added" />
+                <Name Value="noUser" />
+                <Text Value="User id {0} doesn't exist" />
               </Properties>
             </Object>
           </Value>
           <Value>
             <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
               <Properties>
-                <Name Value="anncTitle" />
-                <Text Value="Site Announcement" />
-              </Properties>
-            </Object>
-          </Value>
-          <Value>
-            <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
-              <Properties>
-                <Name Value="demo" />
-                <Text Value="In Demo mode, the message is sent to the current user only - Other users do not receive the message." />
+                <Name Value="okSaved" />
+                <Text Value="Message sent" />
               </Properties>
             </Object>
           </Value>

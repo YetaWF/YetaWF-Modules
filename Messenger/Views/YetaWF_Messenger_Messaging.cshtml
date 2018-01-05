@@ -1,0 +1,26 @@
+@*Copyright © 2017 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Messenger#License*@
+@inherits YetaWF.Core.Views.RazorView<YetaWF.Modules.Messenger.Modules.MessagingModule, YetaWF.Modules.Messenger.Controllers.MessagingModuleController.EditModel>
+@using YetaWF.Core.Modules
+@using YetaWF.Core.Support
+@using YetaWF.Modules.Messenger.Modules
+@{ 
+    string idForm = UniqueId();
+    string idSend = UniqueId();
+    string idCancel = UniqueId();
+}
+@if (!Manager.AddOnManager.HasModuleReference(ModuleDefinition.GetPermanentGuid(typeof(SkinMessagingModule)))) {
+    <div class="yDivAlert">
+        Messaging services are not available (add a reference to the "Messaging (Skin)" module in Site Settings).
+    </div>
+} else {
+    using (Form("Messaging_Partial", HtmlAttributes: new { id = idForm })) {
+        @PartialForm()
+        @FormButtons(new FormButton[] {
+            new FormButton() { Text=__ResStr("btnSend", "Send"), Name="Send", ButtonType= ButtonTypeEnum.Button, },
+            new FormButton() { Text=__ResStr("btnClose", "Close"), Name="Cancel", ButtonType= ButtonTypeEnum.Button, },
+        });
+    }
+    <script>
+        new YetaWF_Messenger.MessagingModule('@idForm', '@idSend', '@idCancel', '@YetaWFManager.JserEncode(Model.MessageData.FromUser)', '@YetaWFManager.JserEncode(Model.MessageData.ToUser)');
+    </script>
+}

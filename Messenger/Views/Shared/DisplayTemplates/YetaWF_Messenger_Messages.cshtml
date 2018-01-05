@@ -1,0 +1,33 @@
+﻿@*Copyright © 2017 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Messenger#License*@
+@using YetaWF.Core.Support
+@using YetaWF.Modules.Messenger.DataProvider
+@inherits YetaWF.Modules.Messenger.Views.Shared.MessagesHelper<YetaWF.Modules.Messenger.Views.Shared.MessageData>
+<div class='yt_messenger_messages t_display' id="@DivId" style="display:none">
+    <div class="t_messagearea">
+        @foreach (Message msg in Model.Messages) {
+            if (msg.FromUser == Manager.UserId) {
+                <div class="t_thisuser @(msg.Seen ? "t_seen" : "t_notseen")">
+                    <div class="t_sent">@YetaWF.Core.Localize.Formatting.FormatDateTime(msg.Sent)</div>
+                    <div class="t_text">@msg.MessageText</div>
+                </div>
+            } else {
+                <div class="t_otheruser @(msg.Seen ? "t_seen" : "t_notseen")">
+                    <div class="t_sent">@YetaWF.Core.Localize.Formatting.FormatDateTime(msg.Sent)</div>
+                    <div class="t_text">@msg.MessageText</div>
+                </div>
+            }
+        }
+        <div class="t_last" style="clear:both"></div>
+    </div>
+</div>
+<div class='yt_messenger_messages t_display' id="@(DivId)_none" style="display:none">
+    @__ResStr("none", "(None)") 
+</div> 
+<script>
+    var out = document.getElementById("@DivId");
+    out.style.display = '@(Model.Messages.Count == 0 ? "none": "")';
+    out.scrollTop = out.scrollHeight - out.clientHeight;
+    out = document.getElementById("@(DivId)_none");
+    out.style.display = '@(Model.Messages.Count == 0 ? "": "none")';
+    new YetaWF_Messenger.MessagesTemplate("@DivId", "@YetaWFManager.JserEncode(Model.FromUser)", "@YetaWFManager.JserEncode(Model.ToUser)");
+</script>

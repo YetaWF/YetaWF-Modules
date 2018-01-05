@@ -24,7 +24,7 @@ namespace YetaWF.Modules.Messenger.Controllers {
             [UIHint("Text80"), StringLength(SiteAccouncement.MaxTitle), Trim, Required]
             public string Title { get; set; }
 
-            [TextAbove("Please enter the message to be sent to all users that are currently using the site (anonymous and logged on users)")]
+            [TextAbove("Please enter the message to be sent to all users that are currently using the site (anonymous and logged on users).")]
             [Caption("Message"), Description("Defines the message to be sent")]
             [UIHint("TextArea"), AdditionalMetadata("PageBrowse", true), AdditionalMetadata("Encode", false), StringLength(SiteAccouncement.MaxMessage), Trim, Required]
             public string Message { get; set; }

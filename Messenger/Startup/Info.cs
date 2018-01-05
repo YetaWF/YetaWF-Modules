@@ -8,5 +8,6 @@ namespace YetaWF.Modules.Messenger.Addons {
     public class Info : IAddOnSupport {
 
         public void AddSupport(YetaWFManager manager) { }
+
     }
 }

@@ -18,3 +18,10 @@ Administrator /Admin/Messenger/SiteAnnouncements
     Admin > Messenger > {YetaWF.Messenger, YetaWF.Modules.Messenger.Modules.BrowseSiteAnnouncementModule}.GetAction_Items({CURRENTURL})
     -
     YetaWF.Messenger, YetaWF.Modules.Messenger.Modules.BrowseSiteAnnouncementModule
+
+Administrator /Admin/Messenger/Messaging
+    Title=Send Message
+    Description=Send Message
+    Admin > Messenger > {YetaWF.Messenger, YetaWF.Modules.Messenger.Modules.MessagingModule}.GetAction_Send({CURRENTURL})
+    -
+    YetaWF.Messenger, YetaWF.Modules.Messenger.Modules.MessagingModule
