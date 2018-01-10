@@ -30,6 +30,6 @@ namespace YetaWF.Modules.Messenger.Modules {
 
         public override IModuleDefinitionIO GetDataProvider() { return new SkinMessagingModuleDataProvider(); }
 
-        public override SerializableList<AllowedRole> DefaultAllowedRoles { get { return UserLevel_DefaultAllowedRoles; } }
+        public override SerializableList<AllowedRole> DefaultAllowedRoles { get { return AnonymousLevel_DefaultAllowedRoles; } }
     }
 }

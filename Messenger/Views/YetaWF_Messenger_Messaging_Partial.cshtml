@@ -4,3 +4,9 @@
 <div>
     @Html.EditorFor(m => Model, "PropertyList")
 </div>
+@if (Manager.IsPostRequest) {
+    <script>
+        var mod = YetaWF_Basics.getObjectDataById($('form')[0].id);
+        mod.updateOnlineStatus();
+    </script>
+}

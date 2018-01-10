@@ -19,8 +19,11 @@ namespace YetaWF.Modules.Messenger.DataProvider {
         [Data_PrimaryKey, Data_Identity]
         public int Key { get; set; }
 
+        [Data_Index]
         public int FromUser { get; set; }
+        [Data_Index]
         public int ToUser { get; set; }
+
         public DateTime Sent { get; set; }
         public bool Seen { get; set; }
 

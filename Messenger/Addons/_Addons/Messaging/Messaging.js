@@ -3,22 +3,32 @@ var CKEDITOR;
 var YetaWF_Messenger;
 (function (YetaWF_Messenger) {
     var MessagingModule = /** @class */ (function () {
-        function MessagingModule(idForm, idSend, idCancel, fromUser, toUser) {
+        function MessagingModule(idForm, idSend, idCancel, offlineImage, onlineImage) {
             var _this = this;
             this.idForm = idForm;
             this.idSend = idSend;
             this.idCancel = idCancel;
-            this.fromUser = fromUser;
-            this.toUser = toUser;
-            //var selToUser: HTMLSelectElement = this.getSelToUserTest();
-            //selToUser.addEventListener("select", () => this.updateButtons(), false);
-            // CKEditor change event is not available in source only mode so we're using setTimeout
-            //var editMsg: HTMLTextAreaElement = this.getEditMsgTest();
-            //CKEDITOR.instances[editMsg.id].on("change", () => this.updateButtons());
+            var selToUser = this.getSelToUserTest();
+            $("#" + this.idForm).on("change", "select[name='ToUserId']", function () { return _this.onUserSelect(); });
             var btnSend = this.getBtnSendTest();
             btnSend.addEventListener("click", function (ev) { return _this.onClickSend(ev); }, false);
+            $(document).on("YetaWF_Messenger_Messaging_UserConnect", function (event, o) { return _this.handleUserConnect(o.user); });
+            $(document).on("YetaWF_Messenger_Messaging_UserDisconnect", function (event, o) { return _this.handleUserDisconnect(o.user); });
             this.updateButtons();
+            this.updateOnlineStatus();
         }
+        MessagingModule.prototype.handleUserConnect = function (user) {
+            var toUser = this.getSelToUserValue();
+            if (toUser && toUser.length > 0 && toUser == user) {
+                this.setOnlineStatus(true);
+            }
+        };
+        MessagingModule.prototype.handleUserDisconnect = function (user) {
+            var toUser = this.getSelToUserValue();
+            if (toUser && toUser.length > 0 && toUser == user) {
+                this.setOnlineStatus(false);
+            }
+        };
         MessagingModule.prototype.getSelToUser = function () {
             return document.querySelector("#" + this.idForm + " select[name=\"ToUserId\"]");
         };
@@ -27,6 +37,13 @@ var YetaWF_Messenger;
             if (!selToUser)
                 throw "user selection not found"; /*DEBUG*/
             return selToUser;
+        };
+        MessagingModule.prototype.getSelToUserValue = function () {
+            var selToUser = this.getSelToUserTest();
+            if (selToUser.selectedIndex <= 0)
+                return null;
+            var user = selToUser.options[selToUser.selectedIndex].text;
+            return user;
         };
         MessagingModule.prototype.getEditMsg = function () {
             return document.querySelector("#" + this.idForm + " textarea[name=\"MessageText\"]");
@@ -47,25 +64,19 @@ var YetaWF_Messenger;
             return btnSend;
         };
         MessagingModule.prototype.onClickSend = function (event) {
-            var _this = this;
-            var selToUser = this.getSelToUserTest();
             var editMsg = this.getEditMsgTest();
             var btnSend = this.getBtnSendTest();
-            if (selToUser.selectedIndex <= 0)
+            var user = this.getSelToUserValue();
+            if (!user)
                 return;
-            var user = selToUser.options[selToUser.selectedIndex].text;
             var msg = CKEDITOR.instances[editMsg.id].getData();
             if (msg.trim().length <= 0)
                 return;
-            var $$ = $;
-            var connection = $$.hubConnection(YConfigs.Basics.SignalRUrl, { useDefaultPath: false });
-            var proxy = connection.createHubProxy('YetaWF_Messenger_Messaging');
-            connection.start().done(function () { return _this.onConnectionStarted(connection, proxy, user, msg, editMsg.id); });
+            YetaWF_Messenger.SkinMessagingModule.singleton.send(user, msg);
+            CKEDITOR.instances[editMsg.id].setData('');
         };
-        MessagingModule.prototype.onConnectionStarted = function (connection, proxy, user, msg, editId) {
-            proxy.invoke("Send", user, msg);
-            CKEDITOR.instances[editId].setData('');
-            connection.stop();
+        MessagingModule.prototype.onUserSelect = function () {
+            this.clearOnlineStatus();
         };
         MessagingModule.prototype.updateButtons = function () {
             var _this = this;
@@ -86,6 +97,44 @@ var YetaWF_Messenger;
             }
             btnSend.disabled = !enabled;
             setTimeout(function () { return _this.updateButtons(); }, 100);
+        };
+        MessagingModule.prototype.updateOnlineStatus = function () {
+            var _this = this;
+            var user = this.getSelToUserValue();
+            if (user && user.length > 0) {
+                YetaWF_Messenger.SkinMessagingModule.singleton.isUserOnline(user)
+                    .done(function (online) { return _this.isUserOnlineDone(online); })
+                    .fail(function () { return _this.isUserOnlineDone(false); });
+            }
+            else {
+                this.isUserOnlineDone(false);
+            }
+        };
+        MessagingModule.prototype.isUserOnlineDone = function (online) {
+            this.setOnlineStatus(online);
+        };
+        MessagingModule.prototype.clearOnlineStatus = function () {
+            //var divUser: HTMLDivElement = document.querySelector(`#${this.idForm} .yt_yetawf_identity_userid`) as HTMLDivElement;
+            var $divId = $("#" + this.idForm + " .yt_yetawf_identity_userid");
+            if ($divId.length == 0)
+                throw "user Id Div not found"; /*DEBUG*/
+            var $parent = $divId.parent();
+            $('img.t_status', $parent).remove();
+            return $parent;
+        };
+        MessagingModule.prototype.setOnlineStatus = function (online) {
+            var $parent = this.clearOnlineStatus();
+            var user = this.getSelToUserValue();
+            if (!user)
+                return;
+            var content;
+            if (online) {
+                content = "<img class=\"t_status\" alt=\"" + YLocs.YetaWF_Messenger.msgOnlineTT + "\" title=\"" + YLocs.YetaWF_Messenger.msgOnlineTT + "\" src=\"" + YConfigs.YetaWF_Messenger.msgOnlineIcon + "\" >";
+            }
+            else {
+                content = "<img class=\"t_status\" alt=\"" + YLocs.YetaWF_Messenger.msgOfflineTT + "\" title=\"" + YLocs.YetaWF_Messenger.msgOfflineTT + "\" src=\"" + YConfigs.YetaWF_Messenger.msgOfflineIcon + "\" >";
+            }
+            $parent.append(content);
         };
         return MessagingModule;
     }());

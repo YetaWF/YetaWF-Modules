@@ -27,8 +27,11 @@
         .t_thisuser .t_text,
         .t_otheruser .t_text  {
             clear:both;
+            max-width:90%;
+            overflow-wrap: break-word;
             border-radius: 3px;
             padding:.5ch 1ch .5ch 1ch;
+            white-space: pre-wrap;
         }
         .t_thisuser .t_text {
             float:right;

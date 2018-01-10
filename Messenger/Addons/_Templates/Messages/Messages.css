@@ -23,8 +23,11 @@
     .yt_messenger_messages.t_display .t_messagearea .t_thisuser .t_text,
     .yt_messenger_messages.t_display .t_messagearea .t_otheruser .t_text {
       clear: both;
+      max-width: 90%;
+      overflow-wrap: break-word;
       border-radius: 3px;
-      padding: .5ch 1ch .5ch 1ch; }
+      padding: .5ch 1ch .5ch 1ch;
+      white-space: pre-wrap; }
     .yt_messenger_messages.t_display .t_messagearea .t_thisuser .t_text {
       float: right;
       background-color: lightGoldenrodYellow;

@@ -21,6 +21,7 @@
         });
     }
     <script>
-        new YetaWF_Messenger.MessagingModule('@idForm', '@idSend', '@idCancel', '@YetaWFManager.JserEncode(Model.MessageData.FromUser)', '@YetaWFManager.JserEncode(Model.MessageData.ToUser)');
+        var mod = new YetaWF_Messenger.MessagingModule('@idForm', '@idSend', '@idCancel', '@YetaWFManager.JserEncode(Model.OnlineImage)', '@YetaWFManager.JserEncode(Model.OfflineImage)');
+        YetaWF_Basics.addObjectDataById(YConfigs.Forms.CssFormAjax, '@idForm', mod);
     </script>
 }

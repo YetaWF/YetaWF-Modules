@@ -40,6 +40,9 @@ namespace YetaWF.Modules.Messenger.Controllers {
             [UIHint("TextArea"), AdditionalMetadata("SourceOnly", true), AdditionalMetadata("EmHeight", 3) StringLength(Message.MaxMessageText)]
             public string MessageText { get; set; }
 
+            public string OnlineImage { get; set; }
+            public string OfflineImage { get; set; }
+
             public EditModel() {
                 MessageData = new MessageData();
                 MaxMessages = 10;
@@ -48,11 +51,10 @@ namespace YetaWF.Modules.Messenger.Controllers {
 
         [AllowGet]
         public ActionResult Messaging() {
-
             Signalr.Use();
             Package currentPackage = AreaRegistration.CurrentPackage;
             Manager.AddOnManager.AddAddOnNamed(currentPackage.Domain, currentPackage.Product, "Messaging");
-            EditModel model = new EditModel {};
+            EditModel model = new EditModel { };
             return View(model);
         }
         private string UpdateMessage(EditModel model, int toUserId, bool NeedUser = false) {
