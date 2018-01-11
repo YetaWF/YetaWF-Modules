@@ -52,7 +52,7 @@ namespace YetaWF.Modules.Feed.Modules {
 
         [Category("Variables"), Caption("Cache Key"), Description("The name used to cache the news information")]
         [UIHint("String"), ReadOnly]
-        public string CacheKey { get { return YetaWF.Modules.Feed.Controllers.AreaRegistration.CurrentPackage.AreaName + "_" + ModuleGuidName + "_Rss"; } }
+        public string CacheKey { get { return YetaWF.Modules.Feed.Controllers.AreaRegistration.CurrentPackage.AreaName + "_" + ModuleGuidName + "_Rss_" + Manager.CurrentSite.Identity; } }
 
         public override SerializableList<AllowedRole> DefaultAllowedRoles { get { return AdministratorLevel_DefaultAllowedRoles; } }
 

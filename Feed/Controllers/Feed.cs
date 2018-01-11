@@ -63,9 +63,19 @@ namespace YetaWF.Modules.Feed.Controllers {
                 model.LastUpdate = feed.LastUpdatedTime.DateTime;
                 model.Url = GetFeedUrl(feed.Links);
                 foreach (SyndicationItem item in feed.Items) {
+                    string desc = null;
+                    if (string.IsNullOrWhiteSpace(desc))
+                        if (item.Summary != null) desc = item.Summary.Text;
+                    if (string.IsNullOrWhiteSpace(desc)) { 
+                        if (item.Content != null) {
+                            TextSyndicationContent tsc = item.Content as TextSyndicationContent;
+                            if (tsc != null)
+                                desc = tsc.Text;
+                        }
+                    }
                     Entry entry = new Entry {
                         Title = item.Title.Text,
-                        Description = item.Summary.Text,
+                        Description = desc,
                         Links = new SerializableList<string>(),
                         Authors = new SerializableList<Author>(),
                         PublishDate = item.PublishDate.DateTime,
