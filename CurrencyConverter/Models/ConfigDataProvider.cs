@@ -9,6 +9,7 @@ using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Packages;
 using YetaWF.Core.Serializers;
 using YetaWF.Core.Support;
+using YetaWF.DataProvider;
 
 namespace YetaWF.Modules.CurrencyConverter.DataProvider {
     public class ConfigData {
@@ -35,34 +36,32 @@ namespace YetaWF.Modules.CurrencyConverter.DataProvider {
         // IMPLEMENTATION
         // IMPLEMENTATION
 
-        public ConfigDataProvider() : base(YetaWFManager.Manager.CurrentSite.Identity) { SetDataProvider(DataProvider); }
+        public ConfigDataProvider() : base(YetaWFManager.Manager.CurrentSite.Identity) { SetDataProvider(CreateDataProvider()); }
         public ConfigDataProvider(int siteIdentity) : base(0) { }
 
-        private IDataProvider<int, ConfigData> DataProvider {
-            get {
-                if (_dataProvider == null) {
-                    Package package = Package.GetPackageFromAssembly(GetType().Assembly);
-                    switch (GetIOMode(package.AreaName)) {
-                        default:
-                        case WebConfigHelper.IOModeEnum.File:
-                            _dataProvider = new YetaWF.DataProvider.FileDataProvider<int, ConfigData>(
-                                Path.Combine(YetaWFManager.DataFolder, AreaName),
-                                Cacheable: true);
-                            break;
-                        case WebConfigHelper.IOModeEnum.Sql:
-                            _dataProvider = new YetaWF.DataProvider.SQLSimpleObjectDataProvider<int, ConfigData>(AreaName, SQLDbo, SQLConn,
-                                Cacheable: true);
-                            break;
-                    }
-                }
-                return _dataProvider;
-            }
-        }
-        private IDataProvider<int, ConfigData> _dataProvider { get; set; }
+        private IDataProvider<int, ConfigData> DataProvider { get { return GetDataProvider(); } }
 
-        // LOAD/SAVE
-        // LOAD/SAVE
-        // LOAD/SAVE
+        private IDataProvider<int, ConfigData> CreateDataProvider() {
+            Package package = YetaWF.Modules.CurrencyConverter.Controllers.AreaRegistration.CurrentPackage;
+            return MakeDataProvider(package.AreaName,
+                () => { // File
+                    return new FileDataProvider<int, ConfigData>(
+                        Path.Combine(YetaWFManager.DataFolder, AreaName),
+                        Cacheable: true);
+                },
+                (dbo, conn) => {  // SQL
+                    return new SQLSimpleObjectDataProvider<int, ConfigData>(AreaName, dbo, conn,
+                        Cacheable: true);
+                },
+                () => { // External
+                    return MakeExternalDataProvider(new { AreaName = AreaName, Cacheable = true });
+                }
+            );
+        }
+
+        // API
+        // API
+        // API
 
         public static ConfigData GetConfig() {
             using (ConfigDataProvider configDP = new ConfigDataProvider()) {
@@ -96,32 +95,6 @@ namespace YetaWF.Modules.CurrencyConverter.DataProvider {
             UpdateStatusEnum status = DataProvider.Update(data.Id, data.Id, data);
             if (status != UpdateStatusEnum.OK)
                 throw new InternalError("Unexpected error saving currency converter configuration {0}", status);
-        }
-
-        // IINSTALLABLEMODEL
-        // IINSTALLABLEMODEL
-        // IINSTALLABLEMODEL
-
-        public bool IsInstalled() {
-            return DataProvider.IsInstalled();
-        }
-        public bool InstallModel(List<string> errorList) {
-            return DataProvider.InstallModel(errorList);
-        }
-        public bool UninstallModel(List<string> errorList) {
-            return DataProvider.UninstallModel(errorList);
-        }
-        public void AddSiteData() {
-            DataProvider.AddSiteData();
-        }
-        public void RemoveSiteData() {
-            DataProvider.RemoveSiteData();
-        }
-        public bool ExportChunk(int chunk, SerializableList<SerializableFile> fileList, out object obj) {
-            return DataProvider.ExportChunk(chunk, fileList, out obj);
-        }
-        public void ImportChunk(int chunk, SerializableList<SerializableFile> fileList, object obj) {
-            DataProvider.ImportChunk(chunk, fileList, obj);
         }
     }
 }

@@ -64,37 +64,34 @@ namespace YetaWF.Modules.Identity.DataProvider {
         // IMPLEMENTATION
         // IMPLEMENTATION
 
-        public RoleDefinitionDataProvider() : base(YetaWFManager.Manager.CurrentSite.Identity) { SetDataProvider(DataProvider); }
-        public RoleDefinitionDataProvider(int siteIdentity) : base(siteIdentity) { SetDataProvider(DataProvider); }
+        public RoleDefinitionDataProvider() : base(YetaWFManager.Manager.CurrentSite.Identity) { SetDataProvider(CreateDataProvider()); }
+        public RoleDefinitionDataProvider(int siteIdentity) : base(siteIdentity) { SetDataProvider(CreateDataProvider()); }
 
-        private IDataProvider<string, RoleDefinition> DataProvider {
-            get {
-                if (_dataProvider == null) {
-                    Package package = Package.GetPackageFromAssembly(GetType().Assembly);
-                    switch (GetIOMode(package.AreaName)) {
-                        default:
-                        case WebConfigHelper.IOModeEnum.File:
-                            _dataProvider = new YetaWF.DataProvider.FileDataProvider<string, RoleDefinition>(
-                                Path.Combine(YetaWFManager.DataFolder, AreaName, "Roles", SiteIdentity.ToString()),
-                                CurrentSiteIdentity: SiteIdentity,
-                                Cacheable: true);
-                            break;
-                        case WebConfigHelper.IOModeEnum.Sql:
-                            _dataProvider = new YetaWF.DataProvider.SQLSimpleObjectDataProvider<string, RoleDefinition>(AreaName + "_Roles", SQLDbo, SQLConn,
-                                CurrentSiteIdentity: SiteIdentity,
-                                NoLanguages: true,
-                                Cacheable: true);
-                            break;
-                    }
+        private IDataProvider<string, RoleDefinition> DataProvider { get { return GetDataProvider(); } }
+
+        private IDataProvider<string, RoleDefinition> CreateDataProvider() {
+            Package package = YetaWF.Modules.Identity.Controllers.AreaRegistration.CurrentPackage;
+            return MakeDataProvider(package.AreaName,
+                () => { // File
+                    return new FileDataProvider<string, RoleDefinition>(
+                        Path.Combine(YetaWFManager.DataFolder, AreaName, "Roles", SiteIdentity.ToString()),
+                        CurrentSiteIdentity: SiteIdentity,
+                        Cacheable: true);
+                },
+                (dbo, conn) => {  // SQL
+                    return new SQLSimpleObjectDataProvider<string, RoleDefinition>(AreaName + "_Roles", dbo, conn,
+                        CurrentSiteIdentity: SiteIdentity,
+                        Cacheable: true);
+                },
+                () => { // External
+                    return MakeExternalDataProvider(new { AreaName = AreaName + "_Roles", CurrentSiteIdentity = SiteIdentity, Cacheable = true });
                 }
-                return _dataProvider;
-            }
+            );
         }
-        private IDataProvider<string, RoleDefinition> _dataProvider { get; set; }
 
-        // LOAD/SAVE
-        // LOAD/SAVE
-        // LOAD/SAVE
+        // API
+        // API
+        // API
 
         public RoleDefinition GetItem(string key) {
             if (key == Globals.Role_Superuser)
@@ -246,30 +243,15 @@ namespace YetaWF.Modules.Identity.DataProvider {
         // IINSTALLABLEMODEL
         // IINSTALLABLEMODEL
 
-        public bool IsInstalled() {
-            return DataProvider.IsInstalled();
-        }
-        public bool InstallModel(List<string> errorList) {
+        public new bool InstallModel(List<string> errorList) {
             if (!DataProvider.InstallModel(errorList))
                 return false;
             AddSiteData();
             return true;
         }
-        public bool UninstallModel(List<string> errorList) {
-            return DataProvider.UninstallModel(errorList);
-        }
-        public void AddSiteData() {
+        public new void AddSiteData() {
             AddAdministratorRole();
             AddEditorRole();
-        }
-        public void RemoveSiteData() {
-            DataProvider.RemoveSiteData();
-        }
-        public bool ExportChunk(int chunk, SerializableList<SerializableFile> fileList, out object obj) {
-            return DataProvider.ExportChunk(chunk, fileList, out obj);
-        }
-        public void ImportChunk(int chunk, SerializableList<SerializableFile> fileList, object obj) {
-            DataProvider.ImportChunk(chunk, fileList, obj);
         }
     }
 }

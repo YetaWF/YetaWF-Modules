@@ -1,17 +1,15 @@
 /* Copyright © 2017 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/TawkTo#License */
 
-using System.Collections.Generic;
 using System.IO;
 using YetaWF.Core.DataProvider;
 using YetaWF.Core.DataProvider.Attributes;
 using YetaWF.Core.IO;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Packages;
-using YetaWF.Core.Serializers;
 using YetaWF.Core.Support;
+using YetaWF.DataProvider;
 
-namespace YetaWF.Modules.TawkTo.DataProvider
-{
+namespace YetaWF.Modules.TawkTo.DataProvider {
 
     public class ConfigData {
 
@@ -51,36 +49,34 @@ namespace YetaWF.Modules.TawkTo.DataProvider
         // IMPLEMENTATION
         // IMPLEMENTATION
 
-        public ConfigDataDataProvider() : base(YetaWFManager.Manager.CurrentSite.Identity) { SetDataProvider(DataProvider); }
-        public ConfigDataDataProvider(int siteIdentity) : base(siteIdentity) { SetDataProvider(DataProvider); }
+        public ConfigDataDataProvider() : base(YetaWFManager.Manager.CurrentSite.Identity) { SetDataProvider(CreateDataProvider()); }
+        public ConfigDataDataProvider(int siteIdentity) : base(siteIdentity) { SetDataProvider(CreateDataProvider()); }
 
-        private IDataProvider<int, ConfigData> DataProvider {
-            get {
-                if (_dataProvider == null) {
-                    Package package = Package.GetPackageFromAssembly(GetType().Assembly);
-                    switch (GetIOMode(package.AreaName)) {
-                        default:
-                        case WebConfigHelper.IOModeEnum.File:
-                            _dataProvider = new YetaWF.DataProvider.FileDataProvider<int, ConfigData>(
-                                Path.Combine(YetaWFManager.DataFolder, AreaName + "_Config", SiteIdentity.ToString()),
-                                CurrentSiteIdentity: SiteIdentity,
-                                Cacheable: true);
-                            break;
-                        case WebConfigHelper.IOModeEnum.Sql:
-                            _dataProvider = new YetaWF.DataProvider.SQLSimpleObjectDataProvider<int, ConfigData>(AreaName + "_Config", SQLDbo, SQLConn,
-                                CurrentSiteIdentity: SiteIdentity,
-                                Cacheable: true);
-                            break;
-                    }
+        private IDataProvider<int, ConfigData> DataProvider { get { return GetDataProvider(); } }
+
+        private IDataProvider<int, ConfigData> CreateDataProvider() {
+            Package package = YetaWF.Modules.TawkTo.Controllers.AreaRegistration.CurrentPackage;
+            return MakeDataProvider(package.AreaName,
+                () => { // File
+                    return new FileDataProvider<int, ConfigData>(
+                        Path.Combine(YetaWFManager.DataFolder, AreaName + "_Config", SiteIdentity.ToString()),
+                        CurrentSiteIdentity: SiteIdentity,
+                        Cacheable: true);
+                },
+                (dbo, conn) => {  // SQL
+                    return new SQLSimpleObjectDataProvider<int, ConfigData>(AreaName + "_Config", dbo, conn,
+                        CurrentSiteIdentity: SiteIdentity,
+                        Cacheable: true);
+                },
+                () => { // External
+                    return MakeExternalDataProvider(new { AreaName = AreaName + "_Config", CurrentSiteIdentity = SiteIdentity, Cacheable = true });
                 }
-                return _dataProvider;
-            }
+            );
         }
-        private IDataProvider<int, ConfigData> _dataProvider { get; set; }
 
-        // LOAD/SAVE
-        // LOAD/SAVE
-        // LOAD/SAVE
+        // API
+        // API
+        // API
 
         public static ConfigData GetConfig() {
             using (ConfigDataDataProvider configDP = new ConfigDataDataProvider()) {
@@ -110,32 +106,6 @@ namespace YetaWF.Modules.TawkTo.DataProvider
             UpdateStatusEnum status = DataProvider.Update(data.Id, data.Id, data);
             if (status != UpdateStatusEnum.OK)
                 throw new InternalError("Unexpected error saving configuration {0}", status);
-        }
-
-        // IINSTALLABLEMODEL
-        // IINSTALLABLEMODEL
-        // IINSTALLABLEMODEL
-
-        public bool IsInstalled() {
-            return DataProvider.IsInstalled();
-        }
-        public bool InstallModel(List<string> errorList) {
-            return DataProvider.InstallModel(errorList);
-        }
-        public void AddSiteData() {
-            DataProvider.AddSiteData();
-        }
-        public void RemoveSiteData() {
-            DataProvider.RemoveSiteData();
-        }
-        public bool UninstallModel(List<string> errorList) {
-            return DataProvider.UninstallModel(errorList);
-        }
-        public bool ExportChunk(int chunk, SerializableList<SerializableFile> fileList, out object obj) {
-            return DataProvider.ExportChunk(chunk, fileList, out obj);
-        }
-        public void ImportChunk(int chunk, SerializableList<SerializableFile> fileList, object obj) {
-            DataProvider.ImportChunk(chunk, fileList, obj);
         }
     }
 }

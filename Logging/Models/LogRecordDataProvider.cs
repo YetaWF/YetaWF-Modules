@@ -17,6 +17,7 @@ using YetaWF.Core.Modules;
 using YetaWF.Core.Packages;
 using YetaWF.Core.Serializers;
 using YetaWF.Core.Support;
+using YetaWF.DataProvider;
 #if MVC6
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Extensions;
@@ -82,30 +83,29 @@ namespace YetaWF.Modules.Logging.DataProvider {
 
         List<string> LogCache { get; set; }
 
-        public LogRecordDataProvider() : base(0) { SetDataProvider(DataProvider); }
+        public LogRecordDataProvider() : base(0) { SetDataProvider(CreateDataProvider()); }
 
-        private IDataProvider<int, LogRecord> DataProvider {
-            get {
-                if (_dataProvider == null) {
-                    Package package = Package.GetPackageFromAssembly(GetType().Assembly);
-                    switch (GetIOMode(package.AreaName)) {
-                        default:
-                        case WebConfigHelper.IOModeEnum.File:
-                            _dataProvider = new YetaWF.DataProvider.FileDataProvider<int, LogRecord>(
-                                Path.Combine(YetaWFManager.DataFolder, AreaName));
-                            LogFile = Path.Combine(YetaWFManager.DataFolder, AreaName, LogfileName);
-                            break;
-                        case WebConfigHelper.IOModeEnum.Sql:
-                            _dataProvider = new YetaWF.DataProvider.SQLSimpleObjectDataProvider<int, LogRecord>(AreaName, SQLDbo, SQLConn,
-                                Logging: false, NoLanguages: true);
-                            break;
-                    }
+        private IDataProvider<int, LogRecord> DataProvider { get { return GetDataProvider(); } }
+
+        private IDataProvider<int, LogRecord> CreateDataProvider() {
+            // can't use CurrentPackage as RegisterAllAreas has not yet been called 
+            Package package = Package.GetPackageFromAssembly(GetType().Assembly);
+            return MakeDataProvider(package.AreaName,
+                () => { // File
+                    LogFile = Path.Combine(YetaWFManager.DataFolder, AreaName, LogfileName);
+                    return new FileDataProvider<int, LogRecord>(
+                        Path.Combine(YetaWFManager.DataFolder, AreaName));
+                },
+                (dbo, conn) => {  // SQL
+                    return new SQLSimpleObjectDataProvider<int, LogRecord>(AreaName, dbo, conn,
+                        Logging: false, 
+                        NoLanguages: true);
+                },
+                () => { // External
+                    return MakeExternalDataProvider(new { AreaName = AreaName });
                 }
-                return _dataProvider;
-            }
+            );
         }
-        private IDataProvider<int, LogRecord> _dataProvider { get; set; }
-
 
         // API
         // API
@@ -344,26 +344,17 @@ namespace YetaWF.Modules.Logging.DataProvider {
         // IINSTALLABLEMODEL
         // IINSTALLABLEMODEL
 
-        public bool IsInstalled() {
-            return DataProvider.IsInstalled();
-        }
-        public bool InstallModel(List<string> errorList) {
+        public new bool InstallModel(List<string> errorList) {
             bool success = DataProvider.InstallModel(errorList);
             if (success)
                 YetaWF.Core.Log.Logging.SetupLogging();
             return success;
         }
-        public bool UninstallModel(List<string> errorList) {
+        public new bool UninstallModel(List<string> errorList) {
             YetaWF.Core.Log.Logging.TerminateLogging();
             return DataProvider.UninstallModel(errorList);
         }
-        public void AddSiteData() {
-            DataProvider.AddSiteData();
-        }
-        public void RemoveSiteData() {
-            DataProvider.RemoveSiteData();
-        }
-        public bool ExportChunk(int chunk, SerializableList<SerializableFile> fileList, out object obj) {
+        public new bool ExportChunk(int chunk, SerializableList<SerializableFile> fileList, out object obj) {
             // we're not exporting any data
             //if (CanImportOrExport)
             //    return DataProvider.ExportChunk(chunk, fileList, out obj);
@@ -372,7 +363,7 @@ namespace YetaWF.Modules.Logging.DataProvider {
             return false;
             //}
         }
-        public void ImportChunk(int chunk, SerializableList<SerializableFile> fileList, object obj) {
+        public new void ImportChunk(int chunk, SerializableList<SerializableFile> fileList, object obj) {
             // we're not importing any data
             //if (CanImportOrExport)
             //    DataProvider.ImportChunk(chunk, fileList, obj);

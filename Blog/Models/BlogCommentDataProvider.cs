@@ -9,7 +9,6 @@ using YetaWF.Core.DataProvider.Attributes;
 using YetaWF.Core.IO;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Packages;
-using YetaWF.Core.Serializers;
 using YetaWF.Core.Support;
 using YetaWF.DataProvider;
 
@@ -53,40 +52,37 @@ namespace YetaWF.Modules.Blog.DataProvider {
 
     public class BlogCommentDataProvider : DataProviderImpl, IInstallableModel {
 
-        // IMPLEMENTATION
-        // IMPLEMENTATION
-        // IMPLEMENTATION
-
-        public BlogCommentDataProvider() : base(YetaWFManager.Manager.CurrentSite.Identity) { SetDataProvider(DataProvider); EntryIdentity = FileIdentityCount.IDENTITY_SEED; }
-        public BlogCommentDataProvider(int blogEntry) : base(YetaWFManager.Manager.CurrentSite.Identity) { SetDataProvider(DataProvider); EntryIdentity = blogEntry; }
-        public BlogCommentDataProvider(int blogEntry, int siteIdentity) : base(siteIdentity) { SetDataProvider(DataProvider); EntryIdentity = blogEntry; }
-
         public int EntryIdentity { get; private set; }// Blog entry
 
-        private IDataProvider<int, BlogComment> DataProvider {
-            get {
-                if (_dataProvider == null) {
-                    Package package = Package.GetPackageFromAssembly(GetType().Assembly);
-                    switch (GetIOMode(package.AreaName)) {
-                        default:
-                        case WebConfigHelper.IOModeEnum.File:
-                            _dataProvider = new YetaWF.DataProvider.FileDataProvider<int, BlogComment>(
-                                GetCommentFolder(EntryIdentity),
-                                CurrentSiteIdentity: SiteIdentity,
-                                Cacheable: true);
-                            break;
-                        case WebConfigHelper.IOModeEnum.Sql:
-                            _dataProvider = new YetaWF.DataProvider.SQLSimpleObjectDataProvider<int, BlogComment>(AreaName + "_Comments", SQLDbo, SQLConn,
-                                CurrentSiteIdentity: SiteIdentity,
-                                Cacheable: true);
-                            break;
-                    }
-                }
-                return _dataProvider;
-            }
-        }
-        private IDataProvider<int, BlogComment> _dataProvider { get; set; }
+        // IMPLEMENTATION
+        // IMPLEMENTATION
+        // IMPLEMENTATION
 
+        public BlogCommentDataProvider() : base(YetaWFManager.Manager.CurrentSite.Identity) { SetDataProvider(CreateDataProvider()); EntryIdentity = FileIdentityCount.IDENTITY_SEED; }
+        public BlogCommentDataProvider(int blogEntry) : base(YetaWFManager.Manager.CurrentSite.Identity) { SetDataProvider(CreateDataProvider()); EntryIdentity = blogEntry; }
+        public BlogCommentDataProvider(int blogEntry, int siteIdentity) : base(siteIdentity) { SetDataProvider(CreateDataProvider()); EntryIdentity = blogEntry; }
+
+        private IDataProvider<int, BlogComment> DataProvider { get { return GetDataProvider(); } }
+
+        private IDataProvider<int, BlogComment> CreateDataProvider() {
+            Package package = YetaWF.Modules.Blog.Controllers.AreaRegistration.CurrentPackage;
+            return MakeDataProvider(package.AreaName,
+                () => { // File
+                    return new FileDataProvider<int, BlogComment>(
+                        GetCommentFolder(EntryIdentity),
+                        CurrentSiteIdentity: SiteIdentity,
+                        Cacheable: true);
+                },
+                (dbo, conn) => {  // SQL
+                    return new SQLSimpleObjectDataProvider<int, BlogComment>(AreaName + "_Comments", dbo, conn,
+                        CurrentSiteIdentity: SiteIdentity,
+                        Cacheable: true);
+                },
+                () => { // External
+                    return MakeExternalDataProvider(new { AreaName = AreaName + "_Comments", CurrentSiteIdentity = SiteIdentity, Cacheable = true });
+                }
+            );
+        }
         internal string GetCommentFolderRoot() {
             return Path.Combine(YetaWFManager.DataFolder, AreaName, SiteIdentity.ToString(), "Comments");
         }
@@ -94,9 +90,9 @@ namespace YetaWF.Modules.Blog.DataProvider {
             return Path.Combine(GetCommentFolderRoot(), string.Format("Ent{0}", blogEntry));
         }
 
-        // LOAD/SAVE
-        // LOAD/SAVE
-        // LOAD/SAVE
+        // API
+        // API
+        // API
 
         public BlogComment GetItem(int comment) {
             BlogComment data = DataProvider.Get(comment);
@@ -145,32 +141,6 @@ namespace YetaWF.Modules.Blog.DataProvider {
                 DataProvider.RemoveRecords(filters);
             }
             return true;
-        }
-
-        // IINSTALLABLEMODEL
-        // IINSTALLABLEMODEL
-        // IINSTALLABLEMODEL
-
-        public bool IsInstalled() {
-            return DataProvider.IsInstalled();
-        }
-        public bool InstallModel(List<string> errorList) {
-            return DataProvider.InstallModel(errorList);
-        }
-        public bool UninstallModel(List<string> errorList) {
-            return DataProvider.UninstallModel(errorList);
-        }
-        public void AddSiteData() {
-            DataProvider.AddSiteData();
-        }
-        public void RemoveSiteData() {
-            DataProvider.RemoveSiteData();
-        }
-        public bool ExportChunk(int chunk, SerializableList<SerializableFile> fileList, out object obj) {
-            return DataProvider.ExportChunk(chunk, fileList, out obj);
-        }
-        public void ImportChunk(int chunk, SerializableList<SerializableFile> fileList, object obj) {
-            DataProvider.ImportChunk(chunk, fileList, obj);
         }
     }
 }

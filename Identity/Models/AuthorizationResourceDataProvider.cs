@@ -41,9 +41,9 @@ namespace YetaWF.Modules.Identity.DataProvider {
 
         public AuthorizationResourceDataProvider() { }
 
-        // LOAD/SAVE
-        // LOAD/SAVE
-        // LOAD/SAVE
+        // API
+        // API
+        // API
 
         public ResourceAttribute GetItem(string resourceName) {
             ResourceAttribute resAttr;

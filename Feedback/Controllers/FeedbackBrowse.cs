@@ -90,7 +90,7 @@ namespace YetaWF.Modules.Feedback.Controllers {
         [AllowPost]
         [ConditionalAntiForgeryToken]
         public ActionResult FeedbackBrowse_GridData(int skip, int take, List<DataProviderSortInfo> sort, List<DataProviderFilterInfo> filters, Guid settingsModuleGuid) {
-            using (FeedbackDataDataProvider dataProvider = new FeedbackDataDataProvider()) {
+            using (FeedbackDataProvider dataProvider = new FeedbackDataProvider()) {
                 int total;
                 List<FeedbackData> browseItems = dataProvider.GetItems(skip, take, sort, filters, out total);
                 GridHelper.SaveSettings(skip, take, sort, filters, settingsModuleGuid);
@@ -104,7 +104,7 @@ namespace YetaWF.Modules.Feedback.Controllers {
         [Permission("RemoveFeedback")]
         [ExcludeDemoMode]
         public ActionResult RemoveFeedback(int key) {
-            using (FeedbackDataDataProvider dataProvider = new FeedbackDataDataProvider()) {
+            using (FeedbackDataProvider dataProvider = new FeedbackDataProvider()) {
                 dataProvider.RemoveItem(key);
                 return Reload(null, Reload: ReloadEnum.ModuleParts);
             }

@@ -17,6 +17,7 @@ using YetaWF.Core.Support;
 using YetaWF.Core.Support.TwoStepAuthorization;
 using YetaWF.Modules.Identity.Controllers;
 using YetaWF.Modules.Identity.Models;
+using YetaWF.DataProvider;
 #if MVC6
 using Microsoft.AspNetCore.Identity;
 #else
@@ -144,36 +145,35 @@ namespace YetaWF.Modules.Identity.DataProvider {
 
         private static object _lockObject = new object();
 
-        public UserDefinitionDataProvider() : base(YetaWFManager.Manager.CurrentSite.Identity) { SetDataProvider(DataProvider); }
-        public UserDefinitionDataProvider(int siteIdentity) : base(siteIdentity) { SetDataProvider(DataProvider); }
+        public UserDefinitionDataProvider() : base(YetaWFManager.Manager.CurrentSite.Identity) { SetDataProvider(CreateDataProvider()); }
+        public UserDefinitionDataProvider(int siteIdentity) : base(siteIdentity) { SetDataProvider(CreateDataProvider()); }
 
-        protected IDataProvider<string, UserDefinition> DataProvider {
-            get {
-                if (_dataProvider == null) {
-                    switch (GetIOMode(AreaRegistration.CurrentPackage.AreaName + "_Users")) {
-                        default:
-                        case WebConfigHelper.IOModeEnum.File:
-                            _dataProvider = new YetaWF.DataProvider.FileDataProvider<string, UserDefinition>(
-                                Path.Combine(YetaWFManager.DataFolder, AreaName, SiteIdentity.ToString()),
-                                CurrentSiteIdentity: SiteIdentity,
-                                Cacheable: true);
-                            break;
-                        case WebConfigHelper.IOModeEnum.Sql:
-                            _dataProvider = new YetaWF.DataProvider.SQLSimpleObjectDataProvider<string, UserDefinition>(AreaName, SQLDbo, SQLConn,
-                                CurrentSiteIdentity: SiteIdentity,
-                                NoLanguages: true,
-                                Cacheable: true);
-                            break;
-                    }
+        private IDataProvider<string, UserDefinition> DataProvider { get { return GetDataProvider(); } }
+
+        private IDataProvider<string, UserDefinition> CreateDataProvider() {
+            Package package = YetaWF.Modules.Identity.Controllers.AreaRegistration.CurrentPackage;
+            return MakeDataProvider(package.AreaName + "_Users",
+                () => { // File
+                    return new FileDataProvider<string, UserDefinition>(
+                        Path.Combine(YetaWFManager.DataFolder, AreaName, SiteIdentity.ToString()),
+                        CurrentSiteIdentity: SiteIdentity,
+                        Cacheable: true);
+                },
+                (dbo, conn) => {  // SQL
+                    return new SQLSimpleObjectDataProvider<string, UserDefinition>(AreaName, dbo, conn,
+                        CurrentSiteIdentity: SiteIdentity,
+                        NoLanguages: true,
+                        Cacheable: true);
+                },
+                () => { // External
+                    return MakeExternalDataProvider(new { AreaName = AreaName, CurrentSiteIdentity = SiteIdentity, Cacheable = true });
                 }
-                return _dataProvider;
-            }
+            );
         }
-        private IDataProvider<string, UserDefinition> _dataProvider { get; set; }
 
-        // LOAD/SAVE
-        // LOAD/SAVE
-        // LOAD/SAVE
+        // API
+        // API
+        // API
 
         public UserDefinition GetItem(int userId) {
             List<DataProviderFilterInfo> filters = DataProviderFilterInfo.Join(null, new DataProviderFilterInfo { Field = "UserId", Operator = "==", Value = userId });
@@ -331,32 +331,6 @@ namespace YetaWF.Modules.Identity.DataProvider {
         }
         public void AddUser(string name) {
             DataProvider.Add(GetUser(name));
-        }
-
-        // IINSTALLABLEMODEL
-        // IINSTALLABLEMODEL
-        // IINSTALLABLEMODEL
-
-        public bool IsInstalled() {
-            return DataProvider.IsInstalled();
-        }
-        public bool InstallModel(List<string> errorList) {
-            return DataProvider.InstallModel(errorList);
-        }
-        public bool UninstallModel(List<string> errorList) {
-            return DataProvider.UninstallModel(errorList);
-        }
-        public void AddSiteData() {
-            DataProvider.AddSiteData();
-        }
-        public void RemoveSiteData() {
-            DataProvider.RemoveSiteData();
-        }
-        public bool ExportChunk(int chunk, SerializableList<SerializableFile> fileList, out object obj) {
-            return DataProvider.ExportChunk(chunk, fileList, out obj);
-        }
-        public void ImportChunk(int chunk, SerializableList<SerializableFile> fileList, object obj) {
-            DataProvider.ImportChunk(chunk, fileList, obj);
         }
         private UserDefinition GetUser(string name) {
             using (RoleDefinitionDataProvider roleProvider = new RoleDefinitionDataProvider(SiteIdentity)) {

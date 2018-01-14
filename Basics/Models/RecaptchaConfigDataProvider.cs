@@ -8,6 +8,7 @@ using YetaWF.Core.Packages;
 using YetaWF.Core.Serializers;
 using YetaWF.Core.Support;
 using YetaWF.Core.Views.Shared;
+using YetaWF.DataProvider;
 
 namespace YetaWF.Modules.Basics.DataProvider {
 
@@ -34,33 +35,31 @@ namespace YetaWF.Modules.Basics.DataProvider {
         // IMPLEMENTATION
         // IMPLEMENTATION
 
-        public RecaptchaConfigDataProvider() : base(0) { SetDataProvider(DataProvider); }
+        public RecaptchaConfigDataProvider() : base(0) { SetDataProvider(CreateDataProvider()); }
 
-        private IDataProvider<int, RecaptchaConfig> DataProvider {
-            get {
-                if (_dataProvider == null) {
-                    Package package = Package.GetPackageFromAssembly(GetType().Assembly);
-                    switch (GetIOMode(package.AreaName)) {
-                        default:
-                        case WebConfigHelper.IOModeEnum.File:
-                            _dataProvider = new YetaWF.DataProvider.FileDataProvider<int, RecaptchaConfig>(
-                                Path.Combine(YetaWFManager.DataFolder, AreaName),
-                                Cacheable: true);
-                            break;
-                        case WebConfigHelper.IOModeEnum.Sql:
-                            _dataProvider = new YetaWF.DataProvider.SQLSimpleObjectDataProvider<int, RecaptchaConfig>(AreaName, SQLDbo, SQLConn,
-                                Cacheable: true);
-                            break;
-                    }
+        private IDataProvider<int, RecaptchaConfig> DataProvider { get { return GetDataProvider(); } }
+
+        private IDataProvider<int, RecaptchaConfig> CreateDataProvider() {
+            Package package = YetaWF.Modules.Basics.Controllers.AreaRegistration.CurrentPackage;
+            return MakeDataProvider(package.AreaName,
+                () => { // File
+                    return new FileDataProvider<int, RecaptchaConfig>(
+                        Path.Combine(YetaWFManager.DataFolder, AreaName),
+                        Cacheable: true);
+                },
+                (dbo, conn) => {  // SQL
+                    return new SQLSimpleObjectDataProvider<int, RecaptchaConfig>(AreaName, dbo, conn,
+                        Cacheable: true);
+                },
+                () => { // External
+                    return MakeExternalDataProvider(new { AreaName = AreaName, Cacheable = true });
                 }
-                return _dataProvider;
-            }
+            );
         }
-        private IDataProvider<int, RecaptchaConfig> _dataProvider { get; set; }
 
-        // LOAD/SAVE
-        // LOAD/SAVE
-        // LOAD/SAVE
+        // API
+        // API
+        // API
 
         public static RecaptchaConfig GetConfig() {
             using (RecaptchaConfigDataProvider configDP = new RecaptchaConfigDataProvider()) {
@@ -102,33 +101,6 @@ namespace YetaWF.Modules.Basics.DataProvider {
             using (RecaptchaConfigDataProvider recaptchaDP = new RecaptchaConfigDataProvider()) {
                 recaptchaDP.UpdateConfig(config);
             }
-        }
-
-
-        // IINSTALLABLEMODEL
-        // IINSTALLABLEMODEL
-        // IINSTALLABLEMODEL
-
-        public bool IsInstalled() {
-            return DataProvider.IsInstalled();
-        }
-        public bool InstallModel(List<string> errorList) {
-            return DataProvider.InstallModel(errorList);
-        }
-        public bool UninstallModel(List<string> errorList) {
-            return DataProvider.UninstallModel(errorList);
-        }
-        public void AddSiteData() {
-            DataProvider.AddSiteData();
-        }
-        public void RemoveSiteData() {
-            DataProvider.RemoveSiteData();
-        }
-        public bool ExportChunk(int chunk, SerializableList<SerializableFile> fileList, out object obj) {
-            return DataProvider.ExportChunk(chunk, fileList, out obj);
-        }
-        public void ImportChunk(int chunk, SerializableList<SerializableFile> fileList, object obj) {
-            DataProvider.ImportChunk(chunk, fileList, obj);
         }
     }
 }

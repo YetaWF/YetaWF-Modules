@@ -13,6 +13,7 @@ using YetaWF.Core.Pages;
 using YetaWF.Core.Serializers;
 using YetaWF.Core.Skins;
 using YetaWF.Core.Support;
+using YetaWF.DataProvider;
 
 namespace YetaWF.Modules.Pages.DataProvider {
 
@@ -123,36 +124,34 @@ namespace YetaWF.Modules.Pages.DataProvider {
         // IMPLEMENTATION
         // IMPLEMENTATION
 
-        public UnifiedSetDataProvider() : base(YetaWFManager.Manager.CurrentSite.Identity) { SetDataProvider(DataProvider); }
-        public UnifiedSetDataProvider(int siteIdentity) : base(siteIdentity) { SetDataProvider(DataProvider); }
+        public UnifiedSetDataProvider() : base(YetaWFManager.Manager.CurrentSite.Identity) { SetDataProvider(CreateDataProvider()); }
+        public UnifiedSetDataProvider(int siteIdentity) : base(siteIdentity) { SetDataProvider(CreateDataProvider()); }
 
-        private IDataProvider<Guid, UnifiedSetData> DataProvider {
-            get {
-                if (_dataProvider == null) {
-                    Package package = Package.GetPackageFromAssembly(GetType().Assembly);
-                    switch (GetIOMode(package.AreaName)) {
-                        default:
-                        case WebConfigHelper.IOModeEnum.File:
-                            _dataProvider = new YetaWF.DataProvider.FileDataProvider<Guid, UnifiedSetData>(
-                                Path.Combine(YetaWFManager.DataFolder, AreaName + "_UnifiedSets", SiteIdentity.ToString()),
-                                CurrentSiteIdentity: SiteIdentity,
-                                Cacheable: true);
-                            break;
-                        case WebConfigHelper.IOModeEnum.Sql:
-                            _dataProvider = new YetaWF.DataProvider.SQLSimpleObjectDataProvider<Guid, UnifiedSetData>(AreaName + "_UnifiedSets", SQLDbo, SQLConn,
-                                CurrentSiteIdentity: SiteIdentity,
-                                Cacheable: true);
-                            break;
-                    }
+        private IDataProvider<Guid, UnifiedSetData> DataProvider { get { return GetDataProvider(); } }
+
+        private IDataProvider<Guid, UnifiedSetData> CreateDataProvider() {
+            Package package = YetaWF.Modules.Pages.Controllers.AreaRegistration.CurrentPackage;
+            return MakeDataProvider(package.AreaName,
+                () => { // File
+                    return new FileDataProvider<Guid, UnifiedSetData>(
+                        Path.Combine(YetaWFManager.DataFolder, AreaName + "_UnifiedSets", SiteIdentity.ToString()),
+                        CurrentSiteIdentity: SiteIdentity,
+                        Cacheable: true);
+                },
+                (dbo, conn) => {  // SQL
+                    return new SQLSimpleObjectDataProvider<Guid, UnifiedSetData>(AreaName + "_UnifiedSets", dbo, conn,
+                        CurrentSiteIdentity: SiteIdentity,
+                        Cacheable: true);
+                },
+                () => { // External
+                    return MakeExternalDataProvider(new { AreaName = AreaName + "_UnifiedSets", CurrentSiteIdentity = SiteIdentity, Cacheable = true });
                 }
-                return _dataProvider;
-            }
+            );
         }
-        private IDataProvider<Guid, UnifiedSetData> _dataProvider { get; set; }
 
-        // LOAD/SAVE
-        // LOAD/SAVE
-        // LOAD/SAVE
+        // API
+        // API
+        // API
 
         public void DoAction(Guid unifiedSetGuid, Action action) {
             StringLocks.DoAction(LockKey(unifiedSetGuid), () => {
@@ -316,32 +315,6 @@ namespace YetaWF.Modules.Pages.DataProvider {
                     pageDP.SavePageDefinition(pageDef);
                 }
             }
-        }
-
-        // IINSTALLABLEMODEL
-        // IINSTALLABLEMODEL
-        // IINSTALLABLEMODEL
-
-        public bool IsInstalled() {
-            return DataProvider.IsInstalled();
-        }
-        public bool InstallModel(List<string> errorList) {
-            return DataProvider.InstallModel(errorList);
-        }
-        public bool UninstallModel(List<string> errorList) {
-            return DataProvider.UninstallModel(errorList);
-        }
-        public void AddSiteData() {
-            DataProvider.AddSiteData();
-        }
-        public void RemoveSiteData() {
-            DataProvider.RemoveSiteData();
-        }
-        public bool ExportChunk(int chunk, SerializableList<SerializableFile> fileList, out object obj) {
-            return DataProvider.ExportChunk(chunk, fileList, out obj);
-        }
-        public void ImportChunk(int chunk, SerializableList<SerializableFile> fileList, object obj) {
-            DataProvider.ImportChunk(chunk, fileList, obj);
         }
     }
 }

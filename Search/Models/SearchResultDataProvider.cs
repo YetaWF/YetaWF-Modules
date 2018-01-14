@@ -8,6 +8,7 @@ using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Packages;
 using YetaWF.Core.Pages;
 using YetaWF.Core.Support;
+using YetaWF.DataProvider;
 
 namespace YetaWF.Modules.Search.DataProvider {
 
@@ -35,28 +36,29 @@ namespace YetaWF.Modules.Search.DataProvider {
         // IMPLEMENTATION
         // IMPLEMENTATION
 
-        public SearchResultDataProvider() : base(YetaWFManager.Manager.CurrentSite.Identity) { SetDataProvider(DataProvider); }
-        public SearchResultDataProvider(int siteIdentity) : base(siteIdentity) { SetDataProvider(DataProvider); }
+        public SearchResultDataProvider() : base(YetaWFManager.Manager.CurrentSite.Identity) { SetDataProvider(CreateDataProvider()); }
+        public SearchResultDataProvider(int siteIdentity) : base(siteIdentity) { SetDataProvider(CreateDataProvider()); }
 
-        private IDataProviderIdentity<int, object, int, SearchResult> DataProvider {
-            get {
-                if (_dataProvider == null) {
-                    Package package = Package.GetPackageFromAssembly(GetType().Assembly);
-                    switch (GetIOMode(package.AreaName + "_Urls")) {
-                        default:
-                        case WebConfigHelper.IOModeEnum.File:
-                            if (SearchDataProvider.IsUsable)
-                                throw new InternalError("File I/O is not supported");
-                            break;
-                        case WebConfigHelper.IOModeEnum.Sql:
-                            if (SearchDataProvider.IsUsable)
-                                _dataProvider = new YetaWF.DataProvider.SQLIdentityObjectDataProvider<int, object, int, SearchResult>(AreaName, SQLDbo, SQLConn,
-                                        CurrentSiteIdentity: SiteIdentity,
-                                        Cacheable: true);
-                            break;
+        private IDataProviderIdentity<int, object, int, SearchResult> DataProvider { get { return GetDataProvider(); } }
+
+        private IDataProviderIdentity<int, object, int, SearchResult> CreateDataProvider() {
+            if (SearchDataProvider.IsUsable) {
+                Package package = YetaWF.Modules.Search.Controllers.AreaRegistration.CurrentPackage;
+                return MakeDataProvider(package.AreaName + "_Urls",
+                    () => { // File
+                        throw new InternalError("File I/O is not supported");
+                    },
+                    (dbo, conn) => {  // SQL
+                        return new SQLIdentityObjectDataProvider<int, object, int, SearchResult>(AreaName, dbo, conn,
+                            CurrentSiteIdentity: SiteIdentity,
+                            Cacheable: true);
+                    },
+                    () => { // External
+                        return MakeExternalDataProvider(new { AreaName = AreaName, CurrentSiteIdentity = SiteIdentity, Cacheable = true });
                     }
-                }
-                return _dataProvider;
+                );
+            } else {
+                return null;
             }
         }
 

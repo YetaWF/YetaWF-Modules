@@ -12,9 +12,8 @@ using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Packages;
 using YetaWF.Core.Serializers;
 using YetaWF.Core.Support;
-using YetaWF.Core.Views.Shared;
+using YetaWF.DataProvider;
 using YetaWF.Modules.Identity.Addons;
-using YetaWF.Modules.Identity.Controllers;
 
 namespace YetaWF.Modules.Identity.DataProvider {
 
@@ -49,38 +48,37 @@ namespace YetaWF.Modules.Identity.DataProvider {
         // IMPLEMENTATION
         // IMPLEMENTATION
 
-        public AuthorizationDataProvider() : base(YetaWFManager.Manager.CurrentSite.Identity) { SetDataProvider(DataProvider); }
-        public AuthorizationDataProvider(int siteIdentity) : base(siteIdentity) { SetDataProvider(DataProvider); }
+        public AuthorizationDataProvider() : base(YetaWFManager.Manager.CurrentSite.Identity) { SetDataProvider(CreateDataProvider()); }
+        public AuthorizationDataProvider(int siteIdentity) : base(siteIdentity) { SetDataProvider(CreateDataProvider()); }
 
         // TODO: the table YetaWF_Identity_Authorization is not actually used. (Notably there is no Add method)
 
-        private IDataProvider<string, Authorization> DataProvider {
-            get {
-                if (_dataProvider == null) {
-                    switch (GetIOMode(AreaRegistration.CurrentPackage.AreaName)) {
-                        default:
-                        case WebConfigHelper.IOModeEnum.File:
-                            _dataProvider = new YetaWF.DataProvider.FileDataProvider<string, Authorization>(
-                                Path.Combine(YetaWFManager.DataFolder, AreaName, "Authorization", SiteIdentity.ToString()),
-                                CurrentSiteIdentity: SiteIdentity,
-                                Cacheable: true);
-                            break;
-                        case WebConfigHelper.IOModeEnum.Sql:
-                            _dataProvider = new YetaWF.DataProvider.SQLSimpleObjectDataProvider<string, Authorization>(AreaName + "_Authorization", SQLDbo, SQLConn,
-                                CurrentSiteIdentity: SiteIdentity,
-                                NoLanguages: true,
-                                Cacheable: true);
-                            break;
-                    }
-                }
-                return _dataProvider;
-            }
-        }
-        private IDataProvider<string, Authorization> _dataProvider { get; set; }
+        private IDataProvider<string, Authorization> DataProvider { get { return GetDataProvider(); } }
 
-        // LOAD/SAVE
-        // LOAD/SAVE
-        // LOAD/SAVE
+        private IDataProvider<string, Authorization> CreateDataProvider() {
+            Package package = YetaWF.Modules.Identity.Controllers.AreaRegistration.CurrentPackage;
+            return MakeDataProvider(package.AreaName,
+                () => { // File
+                    return new FileDataProvider<string, Authorization>(
+                        Path.Combine(YetaWFManager.DataFolder, AreaName, "Authorization", SiteIdentity.ToString()),
+                        CurrentSiteIdentity: SiteIdentity,
+                        Cacheable: true);
+                },
+                (dbo, conn) => {  // SQL
+                    return new SQLSimpleObjectDataProvider<string, Authorization>(AreaName + "_Authorization", dbo, conn,
+                        CurrentSiteIdentity: SiteIdentity,
+                        NoLanguages: true,
+                        Cacheable: true);
+                },
+                () => { // External
+                    return MakeExternalDataProvider(new { AreaName = AreaName + "_Authorization", CurrentSiteIdentity = SiteIdentity, Cacheable = true });
+                }
+            );
+        }
+
+        // API
+        // API
+        // API
 
         public Authorization GetItem(string resourceName) {
             Authorization data = DataProvider.Get(resourceName);
@@ -169,32 +167,6 @@ namespace YetaWF.Modules.Identity.DataProvider {
                     data.AllowedUsers = new SerializableList<User>((from u in data.AllowedUsers where u.UserId != SuperuserDefinitionDataProvider.SuperUserId select u).ToList());
                 }
             }
-        }
-
-        // IINSTALLABLEMODEL
-        // IINSTALLABLEMODEL
-        // IINSTALLABLEMODEL
-
-        public bool IsInstalled() {
-            return DataProvider.IsInstalled();
-        }
-        public bool InstallModel(List<string> errorList) {
-            return DataProvider.InstallModel(errorList);
-        }
-        public bool UninstallModel(List<string> errorList) {
-            return DataProvider.UninstallModel(errorList);
-        }
-        public void AddSiteData() {
-            DataProvider.AddSiteData();
-        }
-        public void RemoveSiteData() {
-            DataProvider.RemoveSiteData();
-        }
-        public bool ExportChunk(int chunk, SerializableList<SerializableFile> fileList, out object obj) {
-            return DataProvider.ExportChunk(chunk, fileList, out obj);
-        }
-        public void ImportChunk(int chunk, SerializableList<SerializableFile> fileList, object obj) {
-            DataProvider.ImportChunk(chunk, fileList, obj);
         }
     }
 }

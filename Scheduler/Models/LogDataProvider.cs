@@ -10,6 +10,7 @@ using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Packages;
 using YetaWF.Core.Serializers;
 using YetaWF.Core.Support;
+using YetaWF.DataProvider;
 
 namespace YetaWF.Modules.Scheduler.DataProvider
 {
@@ -46,30 +47,28 @@ namespace YetaWF.Modules.Scheduler.DataProvider
         private readonly string LogfileName = "SchedulerLog.txt";
         public string LogFile { get; private set; }// File IO
 
-        public LogDataProvider() : base(0) { SetDataProvider(DataProvider); }
+        public LogDataProvider() : base(0) { SetDataProvider(CreateDataProvider()); }
 
-        private IDataProvider<int, LogData> DataProvider {
-            get {
-                if (_dataProvider == null) {
-                    Package package = Package.GetPackageFromAssembly(GetType().Assembly);
-                    switch (GetIOMode(package.AreaName + "_Log")) {
-                        default:
-                        case WebConfigHelper.IOModeEnum.File:
-                            _dataProvider = new YetaWF.DataProvider.FileDataProvider<int, LogData>(
-                                Path.Combine(YetaWFManager.DataFolder, AreaName));
-                            LogFile = Path.Combine(YetaWFManager.DataFolder, AreaName, LogfileName);
-                            Directory.CreateDirectory(Path.GetDirectoryName(LogFile));
-                            break;
-                        case WebConfigHelper.IOModeEnum.Sql:
-                            _dataProvider = new YetaWF.DataProvider.SQLIdentityObjectDataProvider<int, object, int, LogData>(AreaName, SQLDbo, SQLConn,
-                                Cacheable: true);
-                            break;
-                    }
+        private IDataProvider<int, LogData> DataProvider { get { return GetDataProvider(); } }
+
+        private IDataProvider<int, LogData> CreateDataProvider() {
+            Package package = YetaWF.Modules.Scheduler.Controllers.AreaRegistration.CurrentPackage;
+            return MakeDataProvider(package.AreaName + "_Log",
+                () => { // File
+                    LogFile = Path.Combine(YetaWFManager.DataFolder, AreaName, LogfileName);
+                    Directory.CreateDirectory(Path.GetDirectoryName(LogFile));
+                    return new FileDataProvider<int, LogData>(
+                        Path.Combine(YetaWFManager.DataFolder, AreaName));
+                },
+                (dbo, conn) => {  // SQL
+                    return new YetaWF.DataProvider.SQLIdentityObjectDataProvider<int, object, int, LogData>(AreaName, dbo, conn,
+                        Cacheable: true);
+                },
+                () => { // External
+                    return MakeExternalDataProvider(new { AreaName = AreaName, Cacheable = true });
                 }
-                return _dataProvider;
-            }
+            );
         }
-        private IDataProvider<int, LogData> _dataProvider { get; set; }
 
         // API
         // API
@@ -127,22 +126,7 @@ namespace YetaWF.Modules.Scheduler.DataProvider
         // IINSTALLABLEMODEL
         // IINSTALLABLEMODEL
 
-        public bool IsInstalled() {
-            return DataProvider.IsInstalled();
-        }
-        public bool InstallModel(List<string> errorList) {
-            return DataProvider.InstallModel(errorList);
-        }
-        public bool UninstallModel(List<string> errorList) {
-            return DataProvider.UninstallModel(errorList);
-        }
-        public void AddSiteData() {
-            DataProvider.AddSiteData();
-        }
-        public void RemoveSiteData() {
-            DataProvider.RemoveSiteData();
-        }
-        public bool ExportChunk(int chunk, SerializableList<SerializableFile> fileList, out object obj) {
+        public new bool ExportChunk(int chunk, SerializableList<SerializableFile> fileList, out object obj) {
             // we're not exporting any data
             //if (CanImportOrExport)
             //    return DataProvider.ExportChunk(chunk, fileList, out obj);
@@ -151,7 +135,7 @@ namespace YetaWF.Modules.Scheduler.DataProvider
             return false;
             //}
         }
-        public void ImportChunk(int chunk, SerializableList<SerializableFile> fileList, object obj) {
+        public new void ImportChunk(int chunk, SerializableList<SerializableFile> fileList, object obj) {
             // we're not importing any data
             //if (CanImportOrExport)
             //    DataProvider.ImportChunk(chunk, fileList, obj);

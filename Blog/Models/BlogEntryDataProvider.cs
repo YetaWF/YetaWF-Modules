@@ -17,6 +17,7 @@ using YetaWF.Core.Pages;
 using YetaWF.Core.Search;
 using YetaWF.Core.Serializers;
 using YetaWF.Core.Support;
+using YetaWF.DataProvider;
 using YetaWF.Modules.Blog.Modules;
 
 namespace YetaWF.Modules.Blog.DataProvider {
@@ -189,33 +190,31 @@ namespace YetaWF.Modules.Blog.DataProvider {
         // IMPLEMENTATION
         // IMPLEMENTATION
 
-        public BlogEntryDataProvider() : base(YetaWFManager.Manager.CurrentSite.Identity) { SetDataProvider(DataProvider); }
+        public BlogEntryDataProvider() : base(YetaWFManager.Manager.CurrentSite.Identity) { SetDataProvider(CreateDataProvider()); }
 
-        private IDataProvider<int, BlogEntry> DataProvider {
-            get {
-                if (_dataProvider == null) {
-                    Package package = Package.GetPackageFromAssembly(GetType().Assembly);
-                    switch (GetIOMode(package.AreaName)) {
-                        default:
-                        case WebConfigHelper.IOModeEnum.File:
-                            _dataProvider = new YetaWF.DataProvider.FileDataProvider<int, BlogEntry>(
-                                Path.Combine(YetaWFManager.DataFolder, AreaName, SiteIdentity.ToString(), "Entries"),
-                                CurrentSiteIdentity: SiteIdentity,
-                                Cacheable: true,
-                                CalculatedPropertyCallback: GetCalculatedPropertyFile);
-                            break;
-                        case WebConfigHelper.IOModeEnum.Sql:
-                            _dataProvider = new YetaWF.DataProvider.SQLSimpleObjectDataProvider<int, BlogEntry>(AreaName + "_Entries", SQLDbo, SQLConn,
-                                CurrentSiteIdentity: SiteIdentity,
-                                Cacheable: true,
-                                CalculatedPropertyCallback: GetCalculatedPropertySql);
-                            break;
-                    }
+        private IDataProvider<int, BlogEntry> DataProvider { get { return GetDataProvider(); } }
+
+        private IDataProvider<int, BlogEntry> CreateDataProvider() {
+            Package package = YetaWF.Modules.Blog.Controllers.AreaRegistration.CurrentPackage;
+            return MakeDataProvider(package.AreaName,
+                () => { // File
+                    return new FileDataProvider<int, BlogEntry>(
+                        Path.Combine(YetaWFManager.DataFolder, AreaName, SiteIdentity.ToString(), "Entries"),
+                        CurrentSiteIdentity: SiteIdentity,
+                        Cacheable: true,
+                        CalculatedPropertyCallback: GetCalculatedPropertyFile);
+                },
+                (dbo, conn) => {  // SQL
+                    return new SQLSimpleObjectDataProvider<int, BlogEntry>(AreaName + "_Entries", dbo, conn,
+                        CurrentSiteIdentity: SiteIdentity,
+                        Cacheable: true,
+                        CalculatedPropertyCallback: GetCalculatedPropertySql);
+                },
+                () => { // External
+                    return MakeExternalDataProvider(new { AreaName = AreaName + "_Entries", CurrentSiteIdentity = SiteIdentity, Cacheable = true });
                 }
-                return _dataProvider;
-            }
+            );
         }
-        private IDataProvider<int, BlogEntry> _dataProvider { get; set; }
 
         private object GetCalculatedPropertyFile(string name, object obj) {
             BlogEntry entry = (BlogEntry) obj;
@@ -261,9 +260,9 @@ namespace YetaWF.Modules.Blog.DataProvider {
                 throw new InternalError("Unexpected property {0}", name);
         }
 
-        // LOAD/SAVE
-        // LOAD/SAVE
-        // LOAD/SAVE
+        // API
+        // API
+        // API
 
         public BlogEntry GetItem(int blogEntry) {
             BlogEntry data = DataProvider.Get(blogEntry);
@@ -303,32 +302,6 @@ namespace YetaWF.Modules.Blog.DataProvider {
                 }
             }
             return true;
-        }
-
-        // IINSTALLABLEMODEL
-        // IINSTALLABLEMODEL
-        // IINSTALLABLEMODEL
-
-        public bool IsInstalled() {
-            return DataProvider.IsInstalled();
-        }
-        public bool InstallModel(List<string> errorList) {
-            return DataProvider.InstallModel(errorList);
-        }
-        public bool UninstallModel(List<string> errorList) {
-            return DataProvider.UninstallModel(errorList);
-        }
-        public void AddSiteData() {
-            DataProvider.AddSiteData();
-        }
-        public void RemoveSiteData() {
-            DataProvider.RemoveSiteData();
-        }
-        public bool ExportChunk(int chunk, SerializableList<SerializableFile> fileList, out object obj) {
-            return DataProvider.ExportChunk(chunk, fileList, out obj);
-        }
-        public void ImportChunk(int chunk, SerializableList<SerializableFile> fileList, object obj) {
-            DataProvider.ImportChunk(chunk, fileList, obj);
         }
     }
 

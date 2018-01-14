@@ -12,6 +12,7 @@ using YetaWF.Core.Scheduler;
 using YetaWF.Core.Serializers;
 using YetaWF.Core.Support;
 using YetaWF.Core.Views.Shared;
+using YetaWF.DataProvider;
 using YetaWF.Modules.Scheduler.Controllers;
 
 namespace YetaWF.Modules.Scheduler.DataProvider {
@@ -70,34 +71,32 @@ namespace YetaWF.Modules.Scheduler.DataProvider {
         // IMPLEMENTATION
         // IMPLEMENTATION
 
-        public SchedulerDataProvider() : base(0) { SetDataProvider(DataProvider); }
+        public SchedulerDataProvider() : base(0) { SetDataProvider(CreateDataProvider()); }
 
-        private IDataProvider<string, SchedulerItemData> DataProvider {
-            get {
-                if (_dataProvider == null) {
-                    Package package = Package.GetPackageFromAssembly(GetType().Assembly);
-                    switch (GetIOMode(package.AreaName)) {
-                        default:
-                        case WebConfigHelper.IOModeEnum.File:
-                            _dataProvider = new YetaWF.DataProvider.FileDataProvider<string, SchedulerItemData>(
-                                Path.Combine(YetaWFManager.DataFolder, AreaName),
-                                Cacheable: true);
-                            break;
-                        case WebConfigHelper.IOModeEnum.Sql:
-                            _dataProvider = new YetaWF.DataProvider.SQLSimpleObjectDataProvider<string, SchedulerItemData>(AreaName, SQLDbo, SQLConn,
-                                NoLanguages: true,
-                                Cacheable: true);
-                            break;
-                    }
+        private IDataProvider<string, SchedulerItemData> DataProvider { get { return GetDataProvider(); } }
+
+        private IDataProvider<string, SchedulerItemData> CreateDataProvider() {
+            Package package = YetaWF.Modules.Scheduler.Controllers.AreaRegistration.CurrentPackage;
+            return MakeDataProvider(package.AreaName,
+                () => { // File
+                    return new FileDataProvider<string, SchedulerItemData>(
+                        Path.Combine(YetaWFManager.DataFolder, AreaName),
+                        Cacheable: true);
+                },
+                (dbo, conn) => {  // SQL
+                    return new SQLSimpleObjectDataProvider<string, SchedulerItemData>(AreaName, dbo, conn,
+                        NoLanguages: true,
+                        Cacheable: true);
+                },
+                () => { // External
+                    return MakeExternalDataProvider(new { AreaName = AreaName, CurrentSiteIdentity = SiteIdentity, Cacheable = true });
                 }
-                return _dataProvider;
-            }
+            );
         }
-        private IDataProvider<string, SchedulerItemData> _dataProvider { get; set; }
 
-        // LOAD/SAVE
-        // LOAD/SAVE
-        // LOAD/SAVE
+        // API
+        // API
+        // API
 
         public SchedulerItemData GetItem(string key) {
             return DataProvider.Get(key);
@@ -186,32 +185,6 @@ namespace YetaWF.Modules.Scheduler.DataProvider {
         }
         public bool GetRunning() {
             return WebConfigHelper.GetValue<bool>(AreaRegistration.CurrentPackage.AreaName, "Running");
-        }
-
-        // IINSTALLABLEMODEL
-        // IINSTALLABLEMODEL
-        // IINSTALLABLEMODEL
-
-        public bool IsInstalled() {
-            return DataProvider.IsInstalled();
-        }
-        public bool InstallModel(List<string> errorList) {
-            return DataProvider.InstallModel(errorList);
-        }
-        public bool UninstallModel(List<string> errorList) {
-            return DataProvider.UninstallModel(errorList);
-        }
-        public void AddSiteData() {
-            DataProvider.AddSiteData();
-        }
-        public void RemoveSiteData() {
-            DataProvider.RemoveSiteData();
-        }
-        public bool ExportChunk(int chunk, SerializableList<SerializableFile> fileList, out object obj) {
-            return DataProvider.ExportChunk(chunk, fileList, out obj);
-        }
-        public void ImportChunk(int chunk, SerializableList<SerializableFile> fileList, object obj) {
-            DataProvider.ImportChunk(chunk, fileList, obj);
         }
     }
 }

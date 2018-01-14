@@ -16,6 +16,7 @@ using YetaWF.Core.Packages;
 using YetaWF.Core.Serializers;
 using YetaWF.Core.Support;
 using YetaWF.Core.Views.Shared;
+using YetaWF.DataProvider;
 
 namespace YetaWF.Modules.UserSettings.DataProvider {
 
@@ -115,42 +116,40 @@ namespace YetaWF.Modules.UserSettings.DataProvider {
 
     public class UserDataProvider : DataProviderImpl, IInstallableModel, IRemoveUser {
 
-        // IMPLEMENTATION
-        // IMPLEMENTATION
-        // IMPLEMENTATION
-
-        public UserDataProvider() : base(YetaWFManager.Manager.CurrentSite.Identity) { SetDataProvider(DataProvider); }
-        public UserDataProvider(int siteIdentity) : base(siteIdentity) { SetDataProvider(DataProvider); }
-
         public const string KEY = "YetaWF_UserSettings_Settings";
 
-        private IDataProvider<int, UserData> DataProvider {
-            get {
-                if (_dataProvider == null) {
-                    Package package = Package.GetPackageFromAssembly(GetType().Assembly);
-                    switch (GetIOMode(package.AreaName)) {
-                        default:
-                        case WebConfigHelper.IOModeEnum.File:
-                            _dataProvider = new YetaWF.DataProvider.FileDataProvider<int, UserData>(
-                                Path.Combine(YetaWFManager.DataFolder, AreaName, SiteIdentity.ToString()),
-                                CurrentSiteIdentity: SiteIdentity,
-                                Cacheable: true);
-                            break;
-                        case WebConfigHelper.IOModeEnum.Sql:
-                            _dataProvider = new YetaWF.DataProvider.SQLSimpleObjectDataProvider<int, UserData>(AreaName, SQLDbo, SQLConn,
-                                CurrentSiteIdentity: SiteIdentity,
-                                Cacheable: true);
-                            break;
-                    }
-                }
-                return _dataProvider;
-            }
-        }
-        private IDataProvider<int, UserData> _dataProvider { get; set; }
+        // IMPLEMENTATION
+        // IMPLEMENTATION
+        // IMPLEMENTATION
 
-        // LOAD/SAVE
-        // LOAD/SAVE
-        // LOAD/SAVE
+        public UserDataProvider() : base(YetaWFManager.Manager.CurrentSite.Identity) { SetDataProvider(CreateDataProvider()); }
+        public UserDataProvider(int siteIdentity) : base(siteIdentity) { SetDataProvider(CreateDataProvider()); }
+
+        private IDataProvider<int, UserData> DataProvider { get { return GetDataProvider(); } }
+
+        private IDataProvider<int, UserData> CreateDataProvider() {
+            Package package = YetaWF.Modules.UserSettings.Controllers.AreaRegistration.CurrentPackage;
+            return MakeDataProvider(package.AreaName,
+                () => { // File
+                    return new FileDataProvider<int, UserData>(
+                        Path.Combine(YetaWFManager.DataFolder, AreaName, SiteIdentity.ToString()),
+                        CurrentSiteIdentity: SiteIdentity,
+                        Cacheable: true);
+                },
+                (dbo, conn) => {  // SQL
+                    return new SQLSimpleObjectDataProvider<int, UserData>(AreaName, dbo, conn,
+                        CurrentSiteIdentity: SiteIdentity,
+                        Cacheable: true);
+                },
+                () => { // External
+                    return MakeExternalDataProvider(new { AreaName = AreaName, CurrentSiteIdentity = SiteIdentity, Cacheable = true });
+                }
+            );
+        }
+
+        // API
+        // API
+        // API
 
         public UserData GetItem() {
             UserData userInfo = null;
@@ -200,32 +199,6 @@ namespace YetaWF.Modules.UserSettings.DataProvider {
 
         public void Remove(int userId) {
             DataProvider.Remove(userId);
-        }
-
-        // IINSTALLABLEMODEL
-        // IINSTALLABLEMODEL
-        // IINSTALLABLEMODEL
-
-        public bool IsInstalled() {
-            return DataProvider.IsInstalled();
-        }
-        public bool InstallModel(List<string> errorList) {
-            return DataProvider.InstallModel(errorList);
-        }
-        public bool UninstallModel(List<string> errorList) {
-            return DataProvider.UninstallModel(errorList);
-        }
-        public void AddSiteData() {
-            DataProvider.AddSiteData();
-        }
-        public void RemoveSiteData() {
-            DataProvider.RemoveSiteData();
-        }
-        public bool ExportChunk(int chunk, SerializableList<SerializableFile> fileList, out object obj) {
-            return DataProvider.ExportChunk(chunk, fileList, out obj);
-        }
-        public void ImportChunk(int chunk, SerializableList<SerializableFile> fileList, object obj) {
-            DataProvider.ImportChunk(chunk, fileList, obj);
         }
     }
 }

@@ -10,6 +10,7 @@ using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Packages;
 using YetaWF.Core.Serializers;
 using YetaWF.Core.Support;
+using YetaWF.DataProvider;
 
 namespace YetaWF.Modules.KeepAlive.DataProvider {
 
@@ -38,33 +39,31 @@ namespace YetaWF.Modules.KeepAlive.DataProvider {
         // IMPLEMENTATION
         // IMPLEMENTATION
 
-        public KeepAliveConfigDataProvider() : base(0) { SetDataProvider(DataProvider); }
+        public KeepAliveConfigDataProvider() : base(0) { SetDataProvider(CreateDataProvider()); }
 
-        private IDataProvider<int, KeepAliveConfigData> DataProvider {
-            get {
-                if (_dataProvider == null) {
-                    Package package = Package.GetPackageFromAssembly(GetType().Assembly);
-                    switch (GetIOMode(package.AreaName)) {
-                        default:
-                        case WebConfigHelper.IOModeEnum.File:
-                            _dataProvider = new YetaWF.DataProvider.FileDataProvider<int, KeepAliveConfigData>(
-                                Path.Combine(YetaWFManager.DataFolder, AreaName + "_Config"),
-                                Cacheable: true);
-                            break;
-                        case WebConfigHelper.IOModeEnum.Sql:
-                            _dataProvider = new YetaWF.DataProvider.SQLSimpleObjectDataProvider<int, KeepAliveConfigData>(AreaName + "_Config", SQLDbo, SQLConn,
-                                Cacheable: true);
-                            break;
-                    }
+        private IDataProvider<int, KeepAliveConfigData> DataProvider { get { return GetDataProvider(); } }
+
+        private IDataProvider<int, KeepAliveConfigData> CreateDataProvider() {
+            Package package = YetaWF.Modules.KeepAlive.Controllers.AreaRegistration.CurrentPackage;
+            return MakeDataProvider(package.AreaName,
+                () => { // File
+                    return new FileDataProvider<int, KeepAliveConfigData>(
+                        Path.Combine(YetaWFManager.DataFolder, AreaName + "_Config"),
+                        Cacheable: true);
+                },
+                (dbo, conn) => {  // SQL
+                    return new SQLSimpleObjectDataProvider<int, KeepAliveConfigData>(AreaName + "_Config", dbo, conn,
+                        Cacheable: true);
+                },
+                () => { // External
+                    return MakeExternalDataProvider(new { AreaName = AreaName + "_Config", Cacheable = true });
                 }
-                return _dataProvider;
-            }
+            );
         }
-        private IDataProvider<int, KeepAliveConfigData> _dataProvider { get; set; }
 
-        // LOAD/SAVE
-        // LOAD/SAVE
-        // LOAD/SAVE
+        // API
+        // API
+        // API
 
         public static KeepAliveConfigData GetConfig() {
             using (KeepAliveConfigDataProvider configDP = new KeepAliveConfigDataProvider()) {
@@ -94,32 +93,6 @@ namespace YetaWF.Modules.KeepAlive.DataProvider {
             UpdateStatusEnum status = DataProvider.Update(data.Id, data.Id, data);
             if (status != UpdateStatusEnum.OK)
                 throw new InternalError("Unexpected error saving configuration {0}", status);
-        }
-
-        // IINSTALLABLEMODEL
-        // IINSTALLABLEMODEL
-        // IINSTALLABLEMODEL
-
-        public bool IsInstalled() {
-            return DataProvider.IsInstalled();
-        }
-        public bool InstallModel(List<string> errorList) {
-            return DataProvider.InstallModel(errorList);
-        }
-        public void AddSiteData() {
-            DataProvider.AddSiteData();
-        }
-        public void RemoveSiteData() {
-            DataProvider.RemoveSiteData();
-        }
-        public bool UninstallModel(List<string> errorList) {
-            return DataProvider.UninstallModel(errorList);
-        }
-        public bool ExportChunk(int chunk, SerializableList<SerializableFile> fileList, out object obj) {
-            return DataProvider.ExportChunk(chunk, fileList, out obj);
-        }
-        public void ImportChunk(int chunk, SerializableList<SerializableFile> fileList, object obj) {
-            DataProvider.ImportChunk(chunk, fileList, obj);
         }
     }
 }

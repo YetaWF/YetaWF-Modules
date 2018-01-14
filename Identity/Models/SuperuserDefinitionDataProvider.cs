@@ -1,6 +1,5 @@
 ﻿/* Copyright © 2017 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Identity#License */
 
-using System;
 using System.Collections.Generic;
 using System.IO;
 using YetaWF.Core;
@@ -11,6 +10,7 @@ using YetaWF.Core.Localize;
 using YetaWF.Core.Packages;
 using YetaWF.Core.Serializers;
 using YetaWF.Core.Support;
+using YetaWF.DataProvider;
 using YetaWF.Modules.Identity.Controllers;
 
 namespace YetaWF.Modules.Identity.DataProvider {
@@ -44,35 +44,34 @@ namespace YetaWF.Modules.Identity.DataProvider {
 
         private static object _lockObject = new object();
 
-        public SuperuserDefinitionDataProvider() : base(0) { SetDataProvider(DataProvider); }
+        public SuperuserDefinitionDataProvider() : base(0) { SetDataProvider(CreateDataProvider()); }
 
-        protected IDataProvider<string, UserDefinition> DataProvider {
-            get {
-                if (_dataProvider == null) {
-                    switch (GetIOMode(AreaRegistration.CurrentPackage.AreaName + "_Superusers")) {
-                        default:
-                        case WebConfigHelper.IOModeEnum.File:
-                            _dataProvider = new YetaWF.DataProvider.FileDataProvider<string, UserDefinition>(
-                                Path.Combine(YetaWFManager.DataFolder, AreaName),
-                                IdentitySeed: SuperUserId,
-                                Cacheable: true);
-                            break;
-                        case WebConfigHelper.IOModeEnum.Sql:
-                            _dataProvider = new YetaWF.DataProvider.SQLSimpleObjectDataProvider<string, UserDefinition>(AreaName, SQLDbo, SQLConn,
-                                NoLanguages: true,
-                                IdentitySeed: SuperUserId,
-                                Cacheable: true);
-                            break;
-                    }
+        private IDataProvider<string, UserDefinition> DataProvider { get { return GetDataProvider(); } }
+
+        protected IDataProvider<string, UserDefinition> CreateDataProvider() {
+            Package package = YetaWF.Modules.Identity.Controllers.AreaRegistration.CurrentPackage;
+            return MakeDataProvider(package.AreaName + "_Superusers",
+                () => { // File
+                    return new FileDataProvider<string, UserDefinition>(
+                        Path.Combine(YetaWFManager.DataFolder, AreaName),
+                        IdentitySeed: SuperUserId,
+                        Cacheable: true);
+                },
+                (dbo, conn) => {  // SQL
+                    return new SQLSimpleObjectDataProvider<string, UserDefinition>(AreaName, dbo, conn,
+                        NoLanguages: true,
+                        IdentitySeed: SuperUserId, 
+                        Cacheable: true);
+                },
+                () => { // External
+                    return MakeExternalDataProvider(new { AreaName = AreaName, IdentitySeed = SuperUserId, Cacheable = true });
                 }
-                return _dataProvider;
-            }
+            );
         }
-        private IDataProvider<string, UserDefinition> _dataProvider { get; set; }
 
-        // LOAD/SAVE
-        // LOAD/SAVE
-        // LOAD/SAVE
+        // API
+        // API
+        // API
 
         public UserDefinition GetSuperuser() {
             List<DataProviderFilterInfo> filters = DataProviderFilterInfo.Join(null, new DataProviderFilterInfo { Field = "UserId", Operator = "==", Value = SuperuserDefinitionDataProvider.SuperUserId });
@@ -122,33 +121,6 @@ namespace YetaWF.Modules.Identity.DataProvider {
         public void AddSuperuser() {
             DataProvider.Add(GetSuperuserUser());
         }
-
-        // IINSTALLABLEMODEL
-        // IINSTALLABLEMODEL
-        // IINSTALLABLEMODEL
-
-        public bool IsInstalled() {
-            return DataProvider.IsInstalled();
-        }
-        public bool InstallModel(List<string> errorList) {
-            if (!DataProvider.InstallModel(errorList))
-                return false;
-            // add the one and only superuser
-            DataProvider.Add(GetSuperuserUser());
-            return true;
-        }
-        public bool UninstallModel(List<string> errorList) {
-            return DataProvider.UninstallModel(errorList);
-        }
-        public void AddSiteData() { }
-        public void RemoveSiteData() { }
-        public bool ExportChunk(int chunk, SerializableList<SerializableFile> fileList, out object obj) {
-            return DataProvider.ExportChunk(chunk, fileList, out obj);
-        }
-        public void ImportChunk(int chunk, SerializableList<SerializableFile> fileList, object obj) {
-            DataProvider.ImportChunk(chunk, fileList, obj);
-        }
-
         private UserDefinition GetSuperuserUser() {
             using (RoleDefinitionDataProvider roleProvider = new RoleDefinitionDataProvider(SiteIdentity)) {
                 RoleDefinition role = roleProvider.GetItem(Globals.Role_Superuser);
@@ -162,5 +134,19 @@ namespace YetaWF.Modules.Identity.DataProvider {
                 };
             }
         }
+
+        // IINSTALLABLEMODEL
+        // IINSTALLABLEMODEL
+        // IINSTALLABLEMODEL
+
+        public new bool InstallModel(List<string> errorList) {
+            if (!DataProvider.InstallModel(errorList))
+                return false;
+            // add the one and only superuser
+            DataProvider.Add(GetSuperuserUser());
+            return true;
+        }
+        public new void AddSiteData() { }
+        public new void RemoveSiteData() { }
     }
 }

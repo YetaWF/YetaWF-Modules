@@ -11,6 +11,7 @@ using YetaWF.Core.IO;
 using YetaWF.Core.Packages;
 using YetaWF.Core.Serializers;
 using YetaWF.Core.Support;
+using YetaWF.DataProvider;
 using YetaWF.Modules.CurrencyConverter.Controllers;
 
 namespace YetaWF.Modules.CurrencyConverter.DataProvider {
@@ -50,23 +51,20 @@ namespace YetaWF.Modules.CurrencyConverter.DataProvider {
 
         private static object LockObject = new object();
 
-        public ExchangeRateDataProvider() : base(YetaWFManager.Manager.CurrentSite.Identity) { SetDataProvider(DataProvider); }
+        public ExchangeRateDataProvider() : base(YetaWFManager.Manager.CurrentSite.Identity) { SetDataProvider(CreateDataProvider()); }
 
-        private IDataProvider<int, ExchangeRateData> DataProvider {
-            get {
-                if (_dataProvider == null) {
-                    _dataProvider = new YetaWF.DataProvider.FileDataProvider<int, ExchangeRateData>(
-                        Path.Combine(YetaWFManager.DataFolder, AreaRegistration.CurrentPackage.AreaName),
-                        Cacheable: true);
-                }
-                return _dataProvider;
-            }
+        private IDataProvider<int, ExchangeRateData> DataProvider { get { return GetDataProvider(); } }
+
+        private IDataProvider<int, ExchangeRateData> CreateDataProvider() {
+            Package package = YetaWF.Modules.CurrencyConverter.Controllers.AreaRegistration.CurrentPackage;
+            return new FileDataProvider<int, ExchangeRateData>(
+                Path.Combine(YetaWFManager.DataFolder, package.AreaName),
+                Cacheable: true);
         }
-        private IDataProvider<int, ExchangeRateData> _dataProvider { get; set; }
 
-        // LOAD/SAVE
-        // LOAD/SAVE
-        // LOAD/SAVE
+        // API
+        // API
+        // API
 
         public ExchangeRateData GetItem() {
             lock (LockObject) {
@@ -164,22 +162,7 @@ namespace YetaWF.Modules.CurrencyConverter.DataProvider {
         // IINSTALLABLEMODEL
         // IINSTALLABLEMODEL
 
-        public bool IsInstalled() {
-            return DataProvider.IsInstalled();
-        }
-        public bool InstallModel(List<string> errorList) {
-            return DataProvider.InstallModel(errorList);
-        }
-        public bool UninstallModel(List<string> errorList) {
-            return DataProvider.UninstallModel(errorList);
-        }
-        public void AddSiteData() {
-            DataProvider.AddSiteData();
-        }
-        public void RemoveSiteData() {
-            DataProvider.RemoveSiteData();
-        }
-        public bool ExportChunk(int chunk, SerializableList<SerializableFile> fileList, out object obj) { obj = null; return false; }
-        public void ImportChunk(int chunk, SerializableList<SerializableFile> fileList, object obj) { }
+        public new bool ExportChunk(int chunk, SerializableList<SerializableFile> fileList, out object obj) { obj = null; return false; }
+        public new void ImportChunk(int chunk, SerializableList<SerializableFile> fileList, object obj) { }
     }
 }

@@ -65,33 +65,38 @@ namespace YetaWF.Modules.Search.DataProvider {
         // IMPLEMENTATION
         // IMPLEMENTATION
 
-        public SearchDataProvider() : base(YetaWFManager.Manager.CurrentSite.Identity) { SetDataProvider(DataProvider); }
-        public SearchDataProvider(int siteIdentity) : base(siteIdentity) { SetDataProvider(DataProvider); }
+        public SearchDataProvider() : base(YetaWFManager.Manager.CurrentSite.Identity) { SetDataProvider(CreateDataProvider()); }
+        public SearchDataProvider(int siteIdentity) : base(siteIdentity) { SetDataProvider(CreateDataProvider()); }
 
-        private IDataProviderIdentity<int, object, int, SearchData> DataProvider {
-            get {
-                if (_dataProvider == null) {
-                    Package package = Package.GetPackageFromAssembly(GetType().Assembly);
-                    switch (GetIOMode(package.AreaName + "_Data")) {
-                        default:
-                        case WebConfigHelper.IOModeEnum.File:
-                            // accept so we can run without failure. However, it's only usable with Sql
-                            Usable = false;
-                            break;
-                        case WebConfigHelper.IOModeEnum.Sql:
-                            _dataProvider = new YetaWF.DataProvider.SQLIdentityObjectDataProvider<int, object, int, SearchData>(AreaName, SQLDbo, SQLConn,
-                                CurrentSiteIdentity: SiteIdentity,
-                                Cacheable: true);
-                            Usable = true;
-                            break;
-                    }
+        private IDataProviderIdentity<int, object, int, SearchData> DataProvider { get { return GetDataProvider(); } }
+
+        private IDataProviderIdentity<int, object, int, SearchData> CreateDataProvider() {
+            Package package = YetaWF.Modules.Search.Controllers.AreaRegistration.CurrentPackage;
+            return MakeDataProvider(package.AreaName + "_Data",
+                () => { // File
+                    // accept so we can run without failure. However, it's only usable with Sql
+                    Usable = false;
+                    return null;
+                },
+                (dbo, conn) => {  // SQL
+                    Usable = true;
+                    return new SQLIdentityObjectDataProvider<int, object, int, SearchData>(AreaName, dbo, conn,
+                        CurrentSiteIdentity: SiteIdentity,
+                        Cacheable: true);
+                },
+                () => { // External
+                    IDataProviderIdentity<int, object, int, SearchData> dp = MakeExternalDataProvider(new { AreaName = AreaName, CurrentSiteIdentity = SiteIdentity, Cacheable = true });
+                    Usable = dp != null;
+                    return dp;
                 }
-                return _dataProvider;
-            }
+            );
         }
-        private IDataProviderIdentity<int, object, int, SearchData> _dataProvider { get; set; }
 
         private bool Usable { get; set; }
+
+        // API
+        // API
+        // API
 
         public static bool IsUsable {
             get {
@@ -100,10 +105,6 @@ namespace YetaWF.Modules.Search.DataProvider {
                 }
             }
         }
-
-        // LOAD/SAVE
-        // LOAD/SAVE
-        // LOAD/SAVE
 
         // Locking is only used when collecting keywords
         public void DoAction(Action action) {
@@ -263,34 +264,34 @@ namespace YetaWF.Modules.Search.DataProvider {
         // IINSTALLABLEMODEL
         // IINSTALLABLEMODEL
 
-        public bool IsInstalled() {
+        public new bool IsInstalled() {
             if (DataProvider == null) return false;
             return DataProvider.IsInstalled();
         }
-        public bool InstallModel(List<string> errorList) {
+        public new bool InstallModel(List<string> errorList) {
             if (!IsUsable) return true;
             return DataProvider.InstallModel(errorList);
         }
-        public bool UninstallModel(List<string> errorList) {
+        public new bool UninstallModel(List<string> errorList) {
             if (!IsUsable) return true;
             return DataProvider.UninstallModel(errorList);
         }
-        public void AddSiteData() {
+        public new void AddSiteData() {
             if (!IsUsable) return;
             DataProvider.AddSiteData();
         }
-        public void RemoveSiteData() {
+        public new void RemoveSiteData() {
             if (!IsUsable) return;
             DataProvider.RemoveSiteData();
         }
-        public bool ExportChunk(int chunk, SerializableList<SerializableFile> fileList, out object obj) {
+        public new bool ExportChunk(int chunk, SerializableList<SerializableFile> fileList, out object obj) {
             // we don't export search data
             obj = null;
             return false;
             //if (!IsUsable) return false;
             //return DataProvider.ExportChunk(chunk, fileList, out obj);
         }
-        public void ImportChunk(int chunk, SerializableList<SerializableFile> fileList, object obj) {
+        public new void ImportChunk(int chunk, SerializableList<SerializableFile> fileList, object obj) {
             // we don't import search data
             return;
             //if (!IsUsable) return;

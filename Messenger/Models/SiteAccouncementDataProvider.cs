@@ -9,6 +9,7 @@ using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Packages;
 using YetaWF.Core.Serializers;
 using YetaWF.Core.Support;
+using YetaWF.DataProvider;
 
 namespace YetaWF.Modules.Messenger.DataProvider {
 
@@ -38,32 +39,32 @@ namespace YetaWF.Modules.Messenger.DataProvider {
         // IMPLEMENTATION
         // IMPLEMENTATION
 
-        public SiteAccouncementDataProvider() : base(YetaWFManager.Manager.CurrentSite.Identity) { SetDataProvider(DataProvider); }
-        public SiteAccouncementDataProvider(int siteIdentity) : base(siteIdentity) { SetDataProvider(DataProvider); }
+        public SiteAccouncementDataProvider() : base(YetaWFManager.Manager.CurrentSite.Identity) { SetDataProvider(CreateDataProvider()); }
+        public SiteAccouncementDataProvider(int siteIdentity) : base(siteIdentity) { SetDataProvider(CreateDataProvider()); }
 
-        private IDataProviderIdentity<int, object, int, SiteAccouncement> DataProvider {
-            get {
-                if (_dataProvider == null) {
-                    Package package = Package.GetPackageFromAssembly(GetType().Assembly);
-                    switch (GetIOMode(package.AreaName)) {
-                        default:
-                        case WebConfigHelper.IOModeEnum.File:
-                            throw new InternalError("File I/O is not supported");
-                        case WebConfigHelper.IOModeEnum.Sql:
-                            _dataProvider = new YetaWF.DataProvider.SQLIdentityObjectDataProvider<int, object, int, SiteAccouncement>(AreaName + "_Announcements", SQLDbo, SQLConn,
-                                CurrentSiteIdentity: SiteIdentity,
-                                Cacheable: true);
-                            break;
-                    }
+        private IDataProviderIdentity<int, object, int, SiteAccouncement> DataProvider { get { return GetDataProvider(); } }
+
+        private IDataProviderIdentity<int, object, int, SiteAccouncement> CreateDataProvider() {
+            Package package = YetaWF.Modules.Messenger.Controllers.AreaRegistration.CurrentPackage;
+            return MakeDataProvider(package.AreaName,
+                () => { // File
+                    throw new InternalError("File I/O is not supported");
+                },
+                (dbo, conn) => {  // SQL
+                    return new SQLIdentityObjectDataProvider<int, object, int, SiteAccouncement>(AreaName + "_Announcements", dbo, conn,
+                        CurrentSiteIdentity: SiteIdentity,
+                        Cacheable: true);
+                },
+                () => { // External
+                    return MakeExternalDataProvider(new { AreaName = AreaName + "_Announcements", CurrentSiteIdentity = SiteIdentity, Cacheable = true });
                 }
-                return _dataProvider;
-            }
+            );
         }
-        private IDataProviderIdentity<int, object, int, SiteAccouncement> _dataProvider { get; set; }
 
-        // LOAD/SAVE
-        // LOAD/SAVE
-        // LOAD/SAVE
+        // API
+        // API
+        // API
+
         public SiteAccouncement GetItem(int key) {
             return DataProvider.GetByIdentity(key);
         }
@@ -81,32 +82,6 @@ namespace YetaWF.Modules.Messenger.DataProvider {
         }
         public int RemoveItems(List<DataProviderFilterInfo> filters) {
             return DataProvider.RemoveRecords(filters);
-        }
-
-        // IINSTALLABLEMODEL
-        // IINSTALLABLEMODEL
-        // IINSTALLABLEMODEL
-
-        public bool IsInstalled() {
-            return DataProvider.IsInstalled();
-        }
-        public bool InstallModel(List<string> errorList) {
-            return DataProvider.InstallModel(errorList);
-        }
-        public bool UninstallModel(List<string> errorList) {
-            return DataProvider.UninstallModel(errorList);
-        }
-        public void AddSiteData() {
-            DataProvider.AddSiteData();
-        }
-        public void RemoveSiteData() {
-            DataProvider.RemoveSiteData();
-        }
-        public bool ExportChunk(int chunk, SerializableList<SerializableFile> fileList, out object obj) {
-            return DataProvider.ExportChunk(chunk, fileList, out obj);
-        }
-        public void ImportChunk(int chunk, SerializableList<SerializableFile> fileList, object obj) {
-            DataProvider.ImportChunk(chunk, fileList, obj);
         }
     }
 }

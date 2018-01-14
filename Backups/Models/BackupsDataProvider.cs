@@ -6,8 +6,11 @@ using System.Globalization;
 using System.IO;
 using YetaWF.Core.DataProvider;
 using YetaWF.Core.Packages;
+using YetaWF.Core.Support;
+using YetaWF.DataProvider;
 
 namespace YetaWF.Modules.Backups.DataProvider {
+
     public class BackupEntry {
         public string FileName { get; set; }
         public string FullFileName { get; set; }
@@ -21,24 +24,20 @@ namespace YetaWF.Modules.Backups.DataProvider {
         // IMPLEMENTATION
         // IMPLEMENTATION
 
-        public BackupsDataProvider() : base(0) { SetDataProvider(DataProvider); }
+        public BackupsDataProvider() : base(0) { SetDataProvider(CreateDataProvider()); }
 
         // File
 
-        private IDataProvider<string, BackupEntry> DataProvider {
-            get {
-                if (_dataProvider == null) {
-                    _dataProvider = new YetaWF.DataProvider.FileDataProvider<string, BackupEntry>(
-                                     Path.Combine(Manager.SiteFolder, SiteBackup.BackupFolder));
-                }
-                return _dataProvider;
-            }
-        }
-        private IDataProvider<string, BackupEntry> _dataProvider { get; set; }
+        private IDataProvider<string, BackupEntry> DataProvider { get { return GetDataProvider(); } }
 
-        // LOAD/SAVE
-        // LOAD/SAVE
-        // LOAD/SAVE
+        private IDataProvider<string, BackupEntry> CreateDataProvider() {
+            return new FileDataProvider<string, BackupEntry>(
+                Path.Combine(Manager.SiteFolder, SiteBackup.BackupFolder));
+        }
+
+        // API
+        // API
+        // API
 
         public List<BackupEntry> GetBackups(int skip, int take, List<DataProviderSortInfo> sort, List<DataProviderFilterInfo> filters, out int total)
         {

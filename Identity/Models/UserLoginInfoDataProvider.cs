@@ -12,6 +12,7 @@ using YetaWF.Core.Packages;
 using YetaWF.Core.Serializers;
 using YetaWF.Core.Site;
 using YetaWF.Core.Support;
+using YetaWF.DataProvider;
 using YetaWF.Modules.Identity.Controllers;
 
 namespace YetaWF.Modules.Identity.DataProvider {
@@ -79,42 +80,41 @@ namespace YetaWF.Modules.Identity.DataProvider {
 
         static UserLoginInfoDataProvider() { }
 
-        // IMPLEMENTATION
-        // IMPLEMENTATION
-        // IMPLEMENTATION
-
         private static object _lockObject = new object();
 
-        public UserLoginInfoDataProvider() : base(YetaWFManager.Manager.CurrentSite.Identity) { SetDataProvider(DataProvider); }
-        public UserLoginInfoDataProvider(int siteIdentity) : base(siteIdentity) { SetDataProvider(DataProvider); }
+        // IMPLEMENTATION
+        // IMPLEMENTATION
+        // IMPLEMENTATION
 
-        protected IDataProvider<string, LoginInfo> DataProvider {
-            get {
-                if (_dataProvider == null) {
-                    switch (GetIOMode(AreaRegistration.CurrentPackage.AreaName + "_LoginInfoList")) {
-                        default:
-                        case WebConfigHelper.IOModeEnum.File:
-                            _dataProvider = new YetaWF.DataProvider.FileDataProvider<string, LoginInfo>(
-                                Path.Combine(YetaWFManager.DataFolder, AreaName, SiteIdentity.ToString()),
-                                CurrentSiteIdentity: SiteIdentity,
-                                Cacheable: true);
-                            break;
-                        case WebConfigHelper.IOModeEnum.Sql:
-                            _dataProvider = new YetaWF.DataProvider.SQLSimpleObjectDataProvider<string, LoginInfo>(AreaName, SQLDbo, SQLConn,
-                                CurrentSiteIdentity: SiteIdentity,
-                                NoLanguages: true,
-                                Cacheable: true);
-                            break;
-                    }
+        public UserLoginInfoDataProvider() : base(YetaWFManager.Manager.CurrentSite.Identity) { SetDataProvider(CreateDataProvider()); }
+        public UserLoginInfoDataProvider(int siteIdentity) : base(siteIdentity) { SetDataProvider(CreateDataProvider()); }
+
+        private IDataProvider<string, LoginInfo> DataProvider { get { return GetDataProvider(); } }
+
+        private IDataProvider<string, LoginInfo> CreateDataProvider() {
+            Package package = YetaWF.Modules.Identity.Controllers.AreaRegistration.CurrentPackage;
+            return MakeDataProvider(package.AreaName + "_LoginInfoList",
+                () => { // File
+                    return new FileDataProvider<string, LoginInfo>(
+                        Path.Combine(YetaWFManager.DataFolder, AreaName, SiteIdentity.ToString()),
+                        CurrentSiteIdentity: SiteIdentity,
+                        Cacheable: true);
+                },
+                (dbo, conn) => {  // SQL
+                    return new SQLSimpleObjectDataProvider<string, LoginInfo>(AreaName, dbo, conn,
+                        CurrentSiteIdentity: SiteIdentity,
+                        NoLanguages: true,
+                        Cacheable: true);
+                },
+                () => { // External
+                    return MakeExternalDataProvider(new { AreaName = AreaName, CurrentSiteIdentity = SiteIdentity, Cacheable = true });
                 }
-                return _dataProvider;
-            }
+            );
         }
-        private IDataProvider<string, LoginInfo> _dataProvider { get; set; }
 
-        // LOAD/SAVE
-        // LOAD/SAVE
-        // LOAD/SAVE
+        // API
+        // API
+        // API
 
         /// <summary>
         /// Returns the user id given a login provider and key.
@@ -194,32 +194,6 @@ namespace YetaWF.Modules.Identity.DataProvider {
         /// <returns></returns>
         public int RemoveItems(List<DataProviderFilterInfo> filters) {
             return DataProvider.RemoveRecords(filters);
-        }
-
-        // IINSTALLABLEMODEL
-        // IINSTALLABLEMODEL
-        // IINSTALLABLEMODEL
-
-        public bool IsInstalled() {
-            return DataProvider.IsInstalled();
-        }
-        public bool InstallModel(List<string> errorList) {
-            return DataProvider.InstallModel(errorList);
-        }
-        public bool UninstallModel(List<string> errorList) {
-            return DataProvider.UninstallModel(errorList);
-        }
-        public void AddSiteData() {
-            DataProvider.AddSiteData();
-        }
-        public void RemoveSiteData() {
-            DataProvider.RemoveSiteData();
-        }
-        public bool ExportChunk(int chunk, SerializableList<SerializableFile> fileList, out object obj) {
-            return DataProvider.ExportChunk(chunk, fileList, out obj);
-        }
-        public void ImportChunk(int chunk, SerializableList<SerializableFile> fileList, object obj) {
-            DataProvider.ImportChunk(chunk, fileList, obj);
         }
 
         // IINSTALLABLEMODEL2

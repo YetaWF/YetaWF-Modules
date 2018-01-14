@@ -48,7 +48,7 @@ namespace YetaWF.Modules.Feedback.Controllers {
 
         [AllowGet]
         public ActionResult FeedbackDisplay(int key) {
-            using (FeedbackDataDataProvider dataProvider = new FeedbackDataDataProvider()) {
+            using (FeedbackDataProvider dataProvider = new FeedbackDataProvider()) {
                 FeedbackData data = dataProvider.GetItem(key);
                 if (data == null)
                     throw new Error(this.__ResStr("notFound", "Feedback \"{0}\" not found."), key);

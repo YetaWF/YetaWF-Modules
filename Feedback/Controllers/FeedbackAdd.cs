@@ -77,7 +77,7 @@ namespace YetaWF.Modules.Feedback.Controllers {
         public ActionResult FeedbackAdd_Partial(AddModel model) {
             if (!ModelState.IsValid)
                 return PartialView(model);
-            using (FeedbackDataDataProvider dataProvider = new FeedbackDataDataProvider()) {
+            using (FeedbackDataProvider dataProvider = new FeedbackDataProvider()) {
                 if (!dataProvider.AddItem(model.GetData()))
                     throw new InternalError("Feedback couldn't be sent");
 

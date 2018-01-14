@@ -11,6 +11,7 @@ using YetaWF.Core.Packages;
 using YetaWF.Core.Pages;
 using YetaWF.Core.Serializers;
 using YetaWF.Core.Support;
+using YetaWF.DataProvider;
 
 namespace YetaWF.Modules.Search.DataProvider {
 
@@ -44,37 +45,35 @@ namespace YetaWF.Modules.Search.DataProvider {
         // IMPLEMENTATION
         // IMPLEMENTATION
 
-        public SearchDataUrlDataProvider() : base(YetaWFManager.Manager.CurrentSite.Identity) { SetDataProvider(DataProvider); }
-        public SearchDataUrlDataProvider(int siteIdentity) : base(siteIdentity) { SetDataProvider(DataProvider); }
+        public SearchDataUrlDataProvider() : base(YetaWFManager.Manager.CurrentSite.Identity) { SetDataProvider(CreateDataProvider()); }
+        public SearchDataUrlDataProvider(int siteIdentity) : base(siteIdentity) { SetDataProvider(CreateDataProvider()); }
 
-        private IDataProviderIdentity<string, object, int, SearchDataUrl> DataProvider {
-            get {
-                if (_dataProvider == null) {
-                    Package package = Package.GetPackageFromAssembly(GetType().Assembly);
-                    switch (GetIOMode(package.AreaName + "_Urls")) {
-                        default:
-                        case WebConfigHelper.IOModeEnum.File:
-                            if (SearchDataProvider.IsUsable)
-                                throw new InternalError("File I/O is not supported");
-                            break;
-                        case WebConfigHelper.IOModeEnum.Sql:
-                            using (SearchDataProvider searchDP = new SearchDataProvider()) {
-                                if (SearchDataProvider.IsUsable)
-                                    _dataProvider = new YetaWF.DataProvider.SQLIdentityObjectDataProvider<string, object, int, SearchDataUrl>(AreaName, SQLDbo, SQLConn,
-                                        CurrentSiteIdentity: SiteIdentity,
-                                        Cacheable: true);
-                            }
-                            break;
+        private IDataProviderIdentity<string, object, int, SearchDataUrl> DataProvider { get { return GetDataProvider(); } }
+
+        private IDataProviderIdentity<string, object, int, SearchDataUrl> CreateDataProvider() {
+            if (SearchDataProvider.IsUsable) {
+                Package package = YetaWF.Modules.Search.Controllers.AreaRegistration.CurrentPackage;
+                return MakeDataProvider(package.AreaName + "_Urls",
+                    () => { // File
+                        throw new InternalError("File I/O is not supported");
+                    },
+                    (dbo, conn) => {  // SQL
+                        return new SQLIdentityObjectDataProvider<string, object, int, SearchDataUrl>(AreaName, dbo, conn,
+                            CurrentSiteIdentity: SiteIdentity,
+                            Cacheable: true);
+                    },
+                    () => { // External
+                        return MakeExternalDataProvider(new { AreaName = AreaName, CurrentSiteIdentity = SiteIdentity, Cacheable = true });
                     }
-                }
-                return _dataProvider;
+                );
+            } else {
+                return null;
             }
         }
-        private IDataProviderIdentity<string, object, int, SearchDataUrl> _dataProvider { get; set; }
 
-        // LOAD/SAVE
-        // LOAD/SAVE
-        // LOAD/SAVE
+        // API
+        // API
+        // API
 
         public SearchDataUrl GetItem(int id) {
             if (!SearchDataProvider.IsUsable) return null;
@@ -104,34 +103,34 @@ namespace YetaWF.Modules.Search.DataProvider {
         // IINSTALLABLEMODEL
         // IINSTALLABLEMODEL
 
-        public bool IsInstalled() {
+        public new bool IsInstalled() {
             if (DataProvider == null) return false;
             return DataProvider.IsInstalled();
         }
-        public bool InstallModel(List<string> errorList) {
+        public new bool InstallModel(List<string> errorList) {
             if (!SearchDataProvider.IsUsable) return true;
             return DataProvider.InstallModel(errorList);
         }
-        public bool UninstallModel(List<string> errorList) {
+        public new bool UninstallModel(List<string> errorList) {
             if (!SearchDataProvider.IsUsable) return true;
             return DataProvider.UninstallModel(errorList);
         }
-        public void AddSiteData() {
+        public new void AddSiteData() {
             if (!SearchDataProvider.IsUsable) return;
             DataProvider.AddSiteData();
         }
-        public void RemoveSiteData() {
+        public new void RemoveSiteData() {
             if (!SearchDataProvider.IsUsable) return;
             DataProvider.RemoveSiteData();
         }
-        public bool ExportChunk(int chunk, SerializableList<SerializableFile> fileList, out object obj) {
+        public new bool ExportChunk(int chunk, SerializableList<SerializableFile> fileList, out object obj) {
             // we don't export search data
             obj = null;
             return false;
             //if (!SearchDataProvider.IsUsable) return true;
             //return DataProvider.ExportChunk(chunk, fileList, out obj);
         }
-        public void ImportChunk(int chunk, SerializableList<SerializableFile> fileList, object obj) {
+        public new void ImportChunk(int chunk, SerializableList<SerializableFile> fileList, object obj) {
             // we don't export search data
             return;
             //if (!SearchDataProvider.IsUsable) return;
