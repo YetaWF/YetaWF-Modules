@@ -57,13 +57,13 @@ namespace YetaWF.Modules.Messenger.Controllers {
                     };
                     if (!msgDP.AddItem(msg)) throw new InternalError("Message not delivered - Message could not be saved");
 
-                    Clients.User(toUser).message(msg.Key, manager.UserName, message, Formatting.FormatDateTime(msg.Sent));
-                    Clients.User(manager.UserName).messageSent(msg.Key, toUser, message, Formatting.FormatDateTime(msg.Sent));
+                    Dispatch(Clients.User(toUser), "message", msg.Key, manager.UserName, message, Formatting.FormatDateTime(msg.Sent));
+                    Dispatch(Clients.User(manager.UserName), "messageSent", msg.Key, toUser, message, Formatting.FormatDateTime(msg.Sent));
 
                 } catch (Exception exc) {
                     string messageText = exc.Message;
 
-                    Clients.Caller.notifyException(messageText);
+                    Dispatch(Clients.Caller, "notifyException", messageText);
                     Message msg = new Message {
                         FromUser = manager.UserId,
                         ToUser = 0,
@@ -110,7 +110,7 @@ namespace YetaWF.Modules.Messenger.Controllers {
                 string toUser = Resource.ResourceAccess.GetUserName(msg.ToUser);
                 if (string.IsNullOrWhiteSpace(toUser)) throw new Error(this.__ResStr("noToUser", "User {0} doesn't exist", msg.ToUser));
 
-                Clients.User(fromUser).messageSeen(msg.Key, toUser);
+                Dispatch(Clients.User(fromUser), "messageSeen", msg.Key, toUser);
             }
         }
         public void AllMessagesSeen(string fromUser) {
@@ -133,7 +133,7 @@ namespace YetaWF.Modules.Messenger.Controllers {
                     msgDP.UpdateItem(msg);
                 }
             }
-            Clients.User(fromUser).allMessagesSeen(manager.UserName);
+            Dispatch(Clients.User(fromUser), "allMessagesSeen", manager.UserName);
         }
 
         private void UpdateConnection(string user, string ipAddress, string connectionId) {
@@ -142,6 +142,9 @@ namespace YetaWF.Modules.Messenger.Controllers {
                     connDP.UpdateEntry(user, ipAddress, connectionId);
                 }
             } catch (Exception) { }
+        }
+        private void Dispatch(dynamic targets, string message, params object[] parms) {
+            targets.Invoke(message, parms);
         }
 
         // Connection Management
@@ -172,7 +175,7 @@ namespace YetaWF.Modules.Messenger.Controllers {
 
                 //$$ notify users in scope of new user
                 if (!string.IsNullOrWhiteSpace(name)) {
-                    this.Clients.Others.userConnect(name);
+                    Dispatch(this.Clients.Others, "userConnect", name);
                 }
             } catch (Exception) { }
 
@@ -187,7 +190,7 @@ namespace YetaWF.Modules.Messenger.Controllers {
                     name = Context.User.Identity.Name;
                 }
                 if (!string.IsNullOrWhiteSpace(name)) {
-                    this.Clients.Others.userDisconnect(name);
+                    Dispatch(this.Clients.Others, "userDisconnect", name);
                 }
             } catch (Exception) { }
 

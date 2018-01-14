@@ -6,6 +6,7 @@ using YetaWF.Core.Models;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Modules.Messenger.DataProvider;
 using Microsoft.AspNet.SignalR;
+using System;
 #if MVC6
 using Microsoft.AspNetCore.Mvc;
 #else
@@ -86,12 +87,17 @@ namespace YetaWF.Modules.Messenger.Controllers {
                     }
 
                     IHubContext context = GlobalHost.ConnectionManager.GetHubContext<YetaWF_Messenger_SiteAnnouncement>();
-                    context.Clients.All.message(model.Message, model.Title);
+                    Dispatch(context.Clients.All, "message", model.Message, model.Title);
 
                 }
                 return FormProcessed(model);
             }
         }
+
+        private void Dispatch(dynamic targets, string message, params object[] parms) {
+            targets.Invoke(message, parms);
+        }
+
         public class YetaWF_Messenger_SiteAnnouncement : Hub { }
     }
 }
