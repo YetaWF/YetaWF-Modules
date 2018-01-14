@@ -33,6 +33,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Microsoft.CSharp" />
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Web" />
@@ -63,6 +64,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Models\FeedbackDataProvider.cs" />
     <Compile Include="Startup\Info.cs" />
     <Compile Include="Startup\AreaRegistration.cs" />
     <Compile Include="Controllers\FeedbackAdd.cs" />
@@ -74,7 +76,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Models\FeedbackConfigDataProvider.cs" />
-    <Compile Include="Models\FeedbackDataDataProvider.cs" />
     <Compile Include="Modules\FeedbackAdd.cs" />
     <Compile Include="Modules\FeedbackBrowse.cs">
       <SubType>Code</SubType>

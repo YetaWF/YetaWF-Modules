@@ -22,24 +22,24 @@
           <Value>
             <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
               <Properties>
-                <Name Value="noFromUser" />
-                <Text Value="User {0} doesn't exist" />
+                <Name Value="notSeen" />
+                <Text Value="This message has not been seen" />
               </Properties>
             </Object>
           </Value>
           <Value>
             <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
               <Properties>
-                <Name Value="noToUser" />
-                <Text Value="User {0} doesn't exist" />
+                <Name Value="offline" />
+                <Text Value="User is offline and can't receive messages - If you send a message it will be stored and shown to the user at a later time" />
               </Properties>
             </Object>
           </Value>
           <Value>
             <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
               <Properties>
-                <Name Value="noUser" />
-                <Text Value="User {0} doesn't exist" />
+                <Name Value="online" />
+                <Text Value="User is online and can receive messages" />
               </Properties>
             </Object>
           </Value>
