@@ -9,13 +9,13 @@ using YetaWF.Core.IO;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Packages;
 using YetaWF.Core.Scheduler;
-using YetaWF.Core.Serializers;
 using YetaWF.Core.Support;
 using YetaWF.Core.Views.Shared;
 using YetaWF.DataProvider;
 using YetaWF.Modules.Scheduler.Controllers;
 
 namespace YetaWF.Modules.Scheduler.DataProvider {
+
     public class SchedulerItemData {
 
         public const int MaxName = 50;
@@ -32,6 +32,8 @@ namespace YetaWF.Modules.Scheduler.DataProvider {
         public bool Startup { get; set; }
         public bool SiteSpecific { get; set; }
         public SchedulerFrequency Frequency { get; set; }
+        [Data_NewValue("(0)")]
+        public TimeSpan TimeSpan { get; set; }
         public SchedulerEvent Event { get; set; }
 
         public DateTime? Last { get; set; }
@@ -61,11 +63,11 @@ namespace YetaWF.Modules.Scheduler.DataProvider {
         public void SetNextRuntime() {
             Next = null;
             if (Enabled)
-                Next = DateTime.UtcNow.Add(Frequency.GetTimeSpan());
+                Next = DateTime.UtcNow.Add(Frequency.TimeSpan);
         }
     }
 
-    public class SchedulerDataProvider : DataProviderImpl, IInstallableModel {
+    public class SchedulerDataProvider : DataProviderImpl, IInstallableModel, IInstallableModel2 {
 
         // IMPLEMENTATION
         // IMPLEMENTATION
@@ -102,12 +104,14 @@ namespace YetaWF.Modules.Scheduler.DataProvider {
             return DataProvider.Get(key);
         }
         public bool AddItem(SchedulerItemData evnt) {
+            evnt.TimeSpan = evnt.Frequency.TimeSpan;
             return DataProvider.Add(evnt);
         }
         public UpdateStatusEnum UpdateItem(SchedulerItemData evnt) {
             return UpdateItem(evnt.Name, evnt);
         }
         public UpdateStatusEnum UpdateItem(string originalName, SchedulerItemData evnt) {
+            evnt.TimeSpan = evnt.Frequency.TimeSpan;
             return DataProvider.Update(originalName, evnt.Name, evnt);
         }
         public bool RemoveItem(string key) {
@@ -134,11 +138,9 @@ namespace YetaWF.Modules.Scheduler.DataProvider {
             List<DataProviderSortInfo> newSort = new List<DataProviderSortInfo>();
             foreach (DataProviderSortInfo s in sort) {
                 if (s.Field == "IsRunning") {
-                    if (s.Order == DataProviderSortInfo.SortDirection.Ascending) {
-                        newSort.Add(new DataProviderSortInfo { Field = "Next", Order = DataProviderSortInfo.SortDirection.Ascending });
-                    } else {
-                        newSort.Add(new DataProviderSortInfo { Field = "Next", Order = DataProviderSortInfo.SortDirection.Descending });
-                    }
+                    newSort.Add(new DataProviderSortInfo { Field = "Next", Order = s.Order });
+                } else if (s.Field == "Frequency") {
+                    newSort.Add(new DataProviderSortInfo { Field = "TimeSpan", Order = s.Order });
                 } else {
                     newSort.Add(s);
                 }
@@ -146,7 +148,6 @@ namespace YetaWF.Modules.Scheduler.DataProvider {
             return newSort;
         }
 
-        // Replace IsRunning ... with  Next == DateTime.MaxValue
         private List<DataProviderFilterInfo> FixFilters(List<DataProviderFilterInfo> filters) {
             if (filters == null) return filters;
             List<DataProviderFilterInfo> newFilters = new List<DataProviderFilterInfo>();
@@ -185,6 +186,33 @@ namespace YetaWF.Modules.Scheduler.DataProvider {
         }
         public bool GetRunning() {
             return WebConfigHelper.GetValue<bool>(AreaRegistration.CurrentPackage.AreaName, "Running");
+        }
+
+        // IINSTALLABLEMODEL2
+        // IINSTALLABLEMODEL2
+        // IINSTALLABLEMODEL2
+
+        public bool UpgradeModel(List<string> errorList, string lastSeenVersion) {
+
+            // Convert 2.7.0 (and older) data and add TimeSpan
+            if (Package.CompareVersion(lastSeenVersion, AreaRegistration.CurrentPackage.Version) < 0 &&
+                    Package.CompareVersion(lastSeenVersion, "2.7.0") <= 0) {
+                using (SchedulerDataProvider schedDP = new SchedulerDataProvider()) {
+                    const int chunk = 100;
+                    int skip = 0;
+                    for (; ; skip += chunk) {
+                        int total;
+                        List<SchedulerItemData> list = schedDP.GetItems(skip, chunk, null, null, out total);
+                        if (list.Count <= 0)
+                            break;
+                        foreach (SchedulerItemData l in list) {
+                            l.TimeSpan = l.Frequency.TimeSpan;
+                            UpdateItem(l.Name, l);
+                        }
+                    }
+                }
+            }
+            return true;
         }
     }
 }
