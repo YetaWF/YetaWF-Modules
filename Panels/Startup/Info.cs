@@ -1,4 +1,4 @@
-/* Copyright © 2017 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Panels#License */
+/* Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Panels#License */
 
 using YetaWF.Core.Addons;
 using YetaWF.Core.Localize;

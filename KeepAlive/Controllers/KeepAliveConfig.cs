@@ -1,4 +1,4 @@
-/* Copyright © 2017 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/KeepAlive#License */
+/* Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/KeepAlive#License */
 
 using YetaWF.Core;
 using YetaWF.Core.Controllers;

@@ -1,4 +1,4 @@
-/* Copyright © 2017 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/SiteProperties#License */
+/* Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/SiteProperties#License */
 
 using YetaWF.Core.Controllers;
 #if MVC6

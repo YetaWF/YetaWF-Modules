@@ -1,4 +1,4 @@
-/* Copyright © 2017 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/AddThis#License */
+/* Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/AddThis#License */
 
 // Handles events turning the addon on/off (used for dynamic content)
 $(document).on('YetaWF_Basics_Addon', function (event, addonGuid, on) {

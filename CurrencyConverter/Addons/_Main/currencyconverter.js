@@ -1,4 +1,4 @@
-/* Copyright © 2017 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/CurrencyConverter#License */
+/* Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/CurrencyConverter#License */
 
 $(document).on('click', '.YetaWF_CurrencyConverter_CurrencyConverter input[name="convert"]', function () {
     var $ctl = $(this).closest('.t_converter');
