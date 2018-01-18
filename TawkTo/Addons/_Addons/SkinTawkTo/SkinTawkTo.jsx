@@ -1,4 +1,4 @@
-/* Copyright © 2017 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Licensing */
+/* Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Licensing */
 // If this javascript snippet is included, that means we're displaying the chat.
 var ActiveEngage_Conversation;
 (function (ActiveEngage_Conversation) {
