@@ -49,20 +49,20 @@ namespace YetaWF.Modules.PageEdit.DataProvider {
 
         private IDataProvider<int, ControlPanelConfigData> CreateDataProvider() {
             Package package = YetaWF.Modules.PageEdit.Controllers.AreaRegistration.CurrentPackage;
-            return MakeDataProvider(package.AreaName,
+            return MakeDataProvider(package, package.AreaName + "_ControlPanel_Config",
                 () => { // File
                     return new FileDataProvider<int, ControlPanelConfigData>(
-                        Path.Combine(YetaWFManager.DataFolder, AreaName + "_ControlPanel_Config", SiteIdentity.ToString()),
+                        Path.Combine(YetaWFManager.DataFolder, Dataset, SiteIdentity.ToString()),
                         CurrentSiteIdentity: SiteIdentity,
                         Cacheable: true);
                 },
                 (dbo, conn) => {  // SQL
-                    return new SQLSimpleObjectDataProvider<int, ControlPanelConfigData>(AreaName + "_ControlPanel_Config", dbo, conn,
+                    return new SQLSimpleObjectDataProvider<int, ControlPanelConfigData>(Dataset, dbo, conn,
                         CurrentSiteIdentity: SiteIdentity,
                         Cacheable: true);
                 },
                 () => { // External
-                    return MakeExternalDataProvider(new { AreaName = AreaName + "_ControlPanel_Config", CurrentSiteIdentity = SiteIdentity, Cacheable = true });
+                    return MakeExternalDataProvider(new { Package = Package, Dataset = Dataset, CurrentSiteIdentity = SiteIdentity, Cacheable = true });
                 }
             );
         }

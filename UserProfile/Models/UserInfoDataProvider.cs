@@ -82,19 +82,19 @@ namespace YetaWF.Modules.UserProfile.DataProvider {
 
         private IDataProvider<int, UserInfo> CreateDataProvider() {
             Package package = YetaWF.Modules.UserProfile.Controllers.AreaRegistration.CurrentPackage;
-            return MakeDataProvider(package.AreaName,
+            return MakeDataProvider(package, package.AreaName,
                 () => { // File
                     return new FileDataProvider<int, UserInfo>(
-                        Path.Combine(YetaWFManager.DataFolder, AreaName, SiteIdentity.ToString()),
+                        Path.Combine(YetaWFManager.DataFolder, Dataset, SiteIdentity.ToString()),
                         Cacheable: true);
                 },
                 (dbo, conn) => {  // SQL
-                    return new SQLSimpleObjectDataProvider<int, UserInfo>(AreaName, dbo, conn,
+                    return new SQLSimpleObjectDataProvider<int, UserInfo>(Dataset, dbo, conn,
                         CurrentSiteIdentity: SiteIdentity,
                         Cacheable: true);
                 },
                 () => { // External
-                    return MakeExternalDataProvider(new { AreaName = AreaName, CurrentSiteIdentity = SiteIdentity, Cacheable = true });
+                    return MakeExternalDataProvider(new { Package = Package, Dataset = Dataset, CurrentSiteIdentity = SiteIdentity, Cacheable = true });
                 }
             );
         }
@@ -109,7 +109,7 @@ namespace YetaWF.Modules.UserProfile.DataProvider {
             });
         }
         private string LockKey(int key) {
-            return string.Format("{0}_{1}", this.AreaName, key);
+            return string.Format("{0}_{1}", this.Dataset, key);
         }
         public UserInfo GetItem(int key) {
             UserInfo userInfo = DataProvider.Get(key);

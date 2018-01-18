@@ -129,20 +129,20 @@ namespace YetaWF.Modules.UserSettings.DataProvider {
 
         private IDataProvider<int, UserData> CreateDataProvider() {
             Package package = YetaWF.Modules.UserSettings.Controllers.AreaRegistration.CurrentPackage;
-            return MakeDataProvider(package.AreaName,
+            return MakeDataProvider(package, package.AreaName,
                 () => { // File
                     return new FileDataProvider<int, UserData>(
-                        Path.Combine(YetaWFManager.DataFolder, AreaName, SiteIdentity.ToString()),
+                        Path.Combine(YetaWFManager.DataFolder, Dataset, SiteIdentity.ToString()),
                         CurrentSiteIdentity: SiteIdentity,
                         Cacheable: true);
                 },
                 (dbo, conn) => {  // SQL
-                    return new SQLSimpleObjectDataProvider<int, UserData>(AreaName, dbo, conn,
+                    return new SQLSimpleObjectDataProvider<int, UserData>(Dataset, dbo, conn,
                         CurrentSiteIdentity: SiteIdentity,
                         Cacheable: true);
                 },
                 () => { // External
-                    return MakeExternalDataProvider(new { AreaName = AreaName, CurrentSiteIdentity = SiteIdentity, Cacheable = true });
+                    return MakeExternalDataProvider(new { Package = Package, Dataset = Dataset, CurrentSiteIdentity = SiteIdentity, Cacheable = true });
                 }
             );
         }

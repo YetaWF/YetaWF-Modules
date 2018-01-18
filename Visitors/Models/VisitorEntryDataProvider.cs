@@ -73,7 +73,7 @@ namespace YetaWF.Modules.Visitors.DataProvider {
 
         private IDataProvider<int, VisitorEntry> CreateDataProvider() {
             Package package = YetaWF.Modules.Visitors.Controllers.AreaRegistration.CurrentPackage;
-            return MakeDataProvider(package.AreaName,
+            return MakeDataProvider(package, package.AreaName,
                 () => { // File
                     // accept so we can run without failure. However, it's only usable with Sql
                     Usable = false;
@@ -81,12 +81,12 @@ namespace YetaWF.Modules.Visitors.DataProvider {
                 },
                 (dbo, conn) => {  // SQL
                     Usable = true;
-                    return new SQLSimpleObjectDataProvider<int, VisitorEntry>(AreaName, dbo, conn,
+                    return new SQLSimpleObjectDataProvider<int, VisitorEntry>(Dataset, dbo, conn,
                         CurrentSiteIdentity: SiteIdentity,
                         Cacheable: true);
                 },
                 () => { // External
-                    IDataProvider<int, VisitorEntry> dp = MakeExternalDataProvider(new { AreaName = AreaName, CurrentSiteIdentity = SiteIdentity, Cacheable = true });
+                    IDataProvider<int, VisitorEntry> dp = MakeExternalDataProvider(new { Package = Package, Dataset = Dataset, CurrentSiteIdentity = SiteIdentity, Cacheable = true });
                     Usable = dp != null;
                     return dp;
                 }
@@ -103,7 +103,7 @@ namespace YetaWF.Modules.Visitors.DataProvider {
             });
         }
         private string LockKey(int key) {
-            return string.Format("{0}_{1}", AreaName, key);
+            return string.Format("{0}_{1}", Dataset, key);
         }
         public VisitorEntry GetItem(int key) {
             if (!Usable) return null;

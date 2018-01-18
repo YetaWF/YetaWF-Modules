@@ -72,7 +72,7 @@ namespace YetaWF.Modules.Search.DataProvider {
 
         private IDataProviderIdentity<int, object, int, SearchData> CreateDataProvider() {
             Package package = YetaWF.Modules.Search.Controllers.AreaRegistration.CurrentPackage;
-            return MakeDataProvider(package.AreaName + "_Data",
+            return MakeDataProvider(package, package.AreaName + "_Data",
                 () => { // File
                     // accept so we can run without failure. However, it's only usable with Sql
                     Usable = false;
@@ -80,12 +80,12 @@ namespace YetaWF.Modules.Search.DataProvider {
                 },
                 (dbo, conn) => {  // SQL
                     Usable = true;
-                    return new SQLIdentityObjectDataProvider<int, object, int, SearchData>(AreaName, dbo, conn,
+                    return new SQLIdentityObjectDataProvider<int, object, int, SearchData>(Dataset, dbo, conn,
                         CurrentSiteIdentity: SiteIdentity,
                         Cacheable: true);
                 },
                 () => { // External
-                    IDataProviderIdentity<int, object, int, SearchData> dp = MakeExternalDataProvider(new { AreaName = AreaName, CurrentSiteIdentity = SiteIdentity, Cacheable = true });
+                    IDataProviderIdentity<int, object, int, SearchData> dp = MakeExternalDataProvider(new { Package = Package, Dataset = Dataset, CurrentSiteIdentity = SiteIdentity, Cacheable = true });
                     Usable = dp != null;
                     return dp;
                 }

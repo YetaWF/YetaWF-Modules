@@ -196,22 +196,22 @@ namespace YetaWF.Modules.Blog.DataProvider {
 
         private IDataProvider<int, BlogEntry> CreateDataProvider() {
             Package package = YetaWF.Modules.Blog.Controllers.AreaRegistration.CurrentPackage;
-            return MakeDataProvider(package.AreaName,
+            return MakeDataProvider(package, package.AreaName + "_Entries",
                 () => { // File
                     return new FileDataProvider<int, BlogEntry>(
-                        Path.Combine(YetaWFManager.DataFolder, AreaName, SiteIdentity.ToString(), "Entries"),
+                        Path.Combine(YetaWFManager.DataFolder, Dataset, SiteIdentity.ToString(), "Entries"),
                         CurrentSiteIdentity: SiteIdentity,
                         Cacheable: true,
                         CalculatedPropertyCallback: GetCalculatedPropertyFile);
                 },
                 (dbo, conn) => {  // SQL
-                    return new SQLSimpleObjectDataProvider<int, BlogEntry>(AreaName + "_Entries", dbo, conn,
+                    return new SQLSimpleObjectDataProvider<int, BlogEntry>(Dataset, dbo, conn,
                         CurrentSiteIdentity: SiteIdentity,
                         Cacheable: true,
                         CalculatedPropertyCallback: GetCalculatedPropertySql);
                 },
                 () => { // External
-                    return MakeExternalDataProvider(new { AreaName = AreaName + "_Entries", CurrentSiteIdentity = SiteIdentity, Cacheable = true });
+                    return MakeExternalDataProvider(new { Package = Package, Dataset = Dataset, CurrentSiteIdentity = SiteIdentity, Cacheable = true });
                 }
             );
         }

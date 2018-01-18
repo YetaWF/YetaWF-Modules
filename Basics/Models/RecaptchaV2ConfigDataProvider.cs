@@ -41,20 +41,20 @@ namespace YetaWF.Modules.Basics.DataProvider {
 
         private IDataProvider<int, RecaptchaV2Config> CreateDataProvider() {
             Package package = YetaWF.Modules.Basics.Controllers.AreaRegistration.CurrentPackage;
-            return MakeDataProvider(package.AreaName + "_RecaptchaV2",
+            return MakeDataProvider(package, package.AreaName + "_RecaptchaV2",
                 () => { // File
                     return new FileDataProvider<int, RecaptchaV2Config>(
-                        Path.Combine(YetaWFManager.DataFolder, AreaName),
+                        Path.Combine(YetaWFManager.DataFolder, Dataset),
                         CurrentSiteIdentity: SiteIdentity,
                         Cacheable: true);
                 },
                 (dbo, conn) => {  // SQL
-                    return new SQLSimpleObjectDataProvider<int, RecaptchaV2Config>(AreaName, dbo, conn,
+                    return new SQLSimpleObjectDataProvider<int, RecaptchaV2Config>(Dataset, dbo, conn,
                         CurrentSiteIdentity: SiteIdentity,
                         Cacheable: true);
                 },
                 () => { // External
-                    return MakeExternalDataProvider(new { AreaName = AreaName, CurrentSiteIdentity = SiteIdentity, Cacheable = true });
+                    return MakeExternalDataProvider(new { Package = Package, Dataset = Dataset, CurrentSiteIdentity = SiteIdentity, Cacheable = true });
                 }
             );
         }

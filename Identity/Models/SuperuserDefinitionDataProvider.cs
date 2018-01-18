@@ -50,21 +50,21 @@ namespace YetaWF.Modules.Identity.DataProvider {
 
         protected IDataProvider<string, UserDefinition> CreateDataProvider() {
             Package package = YetaWF.Modules.Identity.Controllers.AreaRegistration.CurrentPackage;
-            return MakeDataProvider(package.AreaName + "_Superusers",
+            return MakeDataProvider(package, package.AreaName + "_Superusers",
                 () => { // File
                     return new FileDataProvider<string, UserDefinition>(
-                        Path.Combine(YetaWFManager.DataFolder, AreaName),
+                        Path.Combine(YetaWFManager.DataFolder, Dataset),
                         IdentitySeed: SuperUserId,
                         Cacheable: true);
                 },
                 (dbo, conn) => {  // SQL
-                    return new SQLSimpleObjectDataProvider<string, UserDefinition>(AreaName, dbo, conn,
+                    return new SQLSimpleObjectDataProvider<string, UserDefinition>(Dataset, dbo, conn,
                         NoLanguages: true,
                         IdentitySeed: SuperUserId, 
                         Cacheable: true);
                 },
                 () => { // External
-                    return MakeExternalDataProvider(new { AreaName = AreaName, IdentitySeed = SuperUserId, Cacheable = true });
+                    return MakeExternalDataProvider(new { Package = Package, Dataset = Dataset, IdentitySeed = SuperUserId, Cacheable = true });
                 }
             );
         }

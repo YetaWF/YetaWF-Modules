@@ -53,19 +53,19 @@ namespace YetaWF.Modules.Scheduler.DataProvider
 
         private IDataProvider<int, LogData> CreateDataProvider() {
             Package package = YetaWF.Modules.Scheduler.Controllers.AreaRegistration.CurrentPackage;
-            return MakeDataProvider(package.AreaName + "_Log",
+            return MakeDataProvider(package, package.AreaName + "_Log",
                 () => { // File
-                    LogFile = Path.Combine(YetaWFManager.DataFolder, AreaName, LogfileName);
+                    LogFile = Path.Combine(YetaWFManager.DataFolder, Dataset, LogfileName);
                     Directory.CreateDirectory(Path.GetDirectoryName(LogFile));
                     return new FileDataProvider<int, LogData>(
-                        Path.Combine(YetaWFManager.DataFolder, AreaName));
+                        Path.Combine(YetaWFManager.DataFolder, Dataset));
                 },
                 (dbo, conn) => {  // SQL
-                    return new YetaWF.DataProvider.SQLIdentityObjectDataProvider<int, object, int, LogData>(AreaName, dbo, conn,
+                    return new YetaWF.DataProvider.SQLIdentityObjectDataProvider<int, object, int, LogData>(Dataset, dbo, conn,
                         Cacheable: true);
                 },
                 () => { // External
-                    return MakeExternalDataProvider(new { AreaName = AreaName, Cacheable = true });
+                    return MakeExternalDataProvider(new { Package = Package, Dataset = Dataset, Cacheable = true });
                 }
             );
         }

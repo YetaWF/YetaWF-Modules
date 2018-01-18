@@ -90,19 +90,19 @@ namespace YetaWF.Modules.Logging.DataProvider {
         private IDataProvider<int, LogRecord> CreateDataProvider() {
             // can't use CurrentPackage as RegisterAllAreas has not yet been called 
             Package package = Package.GetPackageFromAssembly(GetType().Assembly);
-            return MakeDataProvider(package.AreaName,
+            return MakeDataProvider(package, package.AreaName,
                 () => { // File
-                    LogFile = Path.Combine(YetaWFManager.DataFolder, AreaName, LogfileName);
+                    LogFile = Path.Combine(YetaWFManager.DataFolder, Dataset, LogfileName);
                     return new FileDataProvider<int, LogRecord>(
-                        Path.Combine(YetaWFManager.DataFolder, AreaName));
+                        Path.Combine(YetaWFManager.DataFolder, Dataset));
                 },
                 (dbo, conn) => {  // SQL
-                    return new SQLSimpleObjectDataProvider<int, LogRecord>(AreaName, dbo, conn,
+                    return new SQLSimpleObjectDataProvider<int, LogRecord>(Dataset, dbo, conn,
                         Logging: false, 
                         NoLanguages: true);
                 },
                 () => { // External
-                    return MakeExternalDataProvider(new { AreaName = AreaName });
+                    return MakeExternalDataProvider(new { Package = Package, Dataset = Dataset });
                 }
             );
         }

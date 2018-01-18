@@ -70,20 +70,20 @@ namespace YetaWF.Modules.Blog.DataProvider {
 
         private IDataProvider<int, BlogCategory> CreateDataProvider() {
             Package package = YetaWF.Modules.Blog.Controllers.AreaRegistration.CurrentPackage;
-            return MakeDataProvider(package.AreaName,
+            return MakeDataProvider(package, package.AreaName + "_Categories",
                 () => { // File
                     return new FileDataProvider<int, BlogCategory>(
-                        Path.Combine(YetaWFManager.DataFolder, AreaName, SiteIdentity.ToString(), "Categories"),
+                        Path.Combine(YetaWFManager.DataFolder, package.AreaName, SiteIdentity.ToString(), "Categories"),
                         CurrentSiteIdentity: SiteIdentity,
                         Cacheable: true);
                 },
                 (dbo, conn) => {  // SQL
-                    return new SQLSimpleObjectDataProvider<int, BlogCategory>(AreaName + "_Categories", dbo, conn,
+                    return new SQLSimpleObjectDataProvider<int, BlogCategory>(Dataset, dbo, conn,
                         CurrentSiteIdentity: SiteIdentity,
                         Cacheable: true);
                 },
                 () => { // External
-                    return MakeExternalDataProvider(new { AreaName = AreaName + "_Categories", CurrentSiteIdentity = SiteIdentity, Cacheable = true });
+                    return MakeExternalDataProvider(new { Package = Package, Dataset = Dataset, CurrentSiteIdentity = SiteIdentity, Cacheable = true });
                 }
             );
         }

@@ -46,17 +46,17 @@ namespace YetaWF.Modules.Messenger.DataProvider {
 
         private IDataProviderIdentity<int, object, int, SiteAccouncement> CreateDataProvider() {
             Package package = YetaWF.Modules.Messenger.Controllers.AreaRegistration.CurrentPackage;
-            return MakeDataProvider(package.AreaName,
+            return MakeDataProvider(package, package.AreaName + "_Announcements",
                 () => { // File
                     throw new InternalError("File I/O is not supported");
                 },
                 (dbo, conn) => {  // SQL
-                    return new SQLIdentityObjectDataProvider<int, object, int, SiteAccouncement>(AreaName + "_Announcements", dbo, conn,
+                    return new SQLIdentityObjectDataProvider<int, object, int, SiteAccouncement>(Dataset, dbo, conn,
                         CurrentSiteIdentity: SiteIdentity,
                         Cacheable: true);
                 },
                 () => { // External
-                    return MakeExternalDataProvider(new { AreaName = AreaName + "_Announcements", CurrentSiteIdentity = SiteIdentity, Cacheable = true });
+                    return MakeExternalDataProvider(new { Package = Package, Dataset = Dataset, CurrentSiteIdentity = SiteIdentity, Cacheable = true });
                 }
             );
         }

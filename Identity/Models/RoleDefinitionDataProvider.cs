@@ -71,20 +71,20 @@ namespace YetaWF.Modules.Identity.DataProvider {
 
         private IDataProvider<string, RoleDefinition> CreateDataProvider() {
             Package package = YetaWF.Modules.Identity.Controllers.AreaRegistration.CurrentPackage;
-            return MakeDataProvider(package.AreaName,
+            return MakeDataProvider(package, package.AreaName + "_Roles",
                 () => { // File
                     return new FileDataProvider<string, RoleDefinition>(
-                        Path.Combine(YetaWFManager.DataFolder, AreaName, "Roles", SiteIdentity.ToString()),
+                        Path.Combine(YetaWFManager.DataFolder, package.AreaName, "Roles", SiteIdentity.ToString()),
                         CurrentSiteIdentity: SiteIdentity,
                         Cacheable: true);
                 },
                 (dbo, conn) => {  // SQL
-                    return new SQLSimpleObjectDataProvider<string, RoleDefinition>(AreaName + "_Roles", dbo, conn,
+                    return new SQLSimpleObjectDataProvider<string, RoleDefinition>(Dataset, dbo, conn,
                         CurrentSiteIdentity: SiteIdentity,
                         Cacheable: true);
                 },
                 () => { // External
-                    return MakeExternalDataProvider(new { AreaName = AreaName + "_Roles", CurrentSiteIdentity = SiteIdentity, Cacheable = true });
+                    return MakeExternalDataProvider(new { Package = Package, Dataset = Dataset, CurrentSiteIdentity = SiteIdentity, Cacheable = true });
                 }
             );
         }

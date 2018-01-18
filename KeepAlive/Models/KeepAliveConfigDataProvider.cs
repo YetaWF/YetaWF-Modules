@@ -45,18 +45,18 @@ namespace YetaWF.Modules.KeepAlive.DataProvider {
 
         private IDataProvider<int, KeepAliveConfigData> CreateDataProvider() {
             Package package = YetaWF.Modules.KeepAlive.Controllers.AreaRegistration.CurrentPackage;
-            return MakeDataProvider(package.AreaName,
+            return MakeDataProvider(package, package.AreaName + "_Config",
                 () => { // File
                     return new FileDataProvider<int, KeepAliveConfigData>(
-                        Path.Combine(YetaWFManager.DataFolder, AreaName + "_Config"),
+                        Path.Combine(YetaWFManager.DataFolder, Dataset),
                         Cacheable: true);
                 },
                 (dbo, conn) => {  // SQL
-                    return new SQLSimpleObjectDataProvider<int, KeepAliveConfigData>(AreaName + "_Config", dbo, conn,
+                    return new SQLSimpleObjectDataProvider<int, KeepAliveConfigData>(Dataset, dbo, conn,
                         Cacheable: true);
                 },
                 () => { // External
-                    return MakeExternalDataProvider(new { AreaName = AreaName + "_Config", Cacheable = true });
+                    return MakeExternalDataProvider(new { Package = Package, Dataset = Dataset, Cacheable = true });
                 }
             );
         }

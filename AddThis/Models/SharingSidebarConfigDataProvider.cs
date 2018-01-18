@@ -41,20 +41,20 @@ namespace YetaWF.Modules.AddThis.DataProvider {
 
         private IDataProvider<int, ConfigData> CreateDataProvider() {
             Package package = YetaWF.Modules.AddThis.Controllers.AreaRegistration.CurrentPackage;
-            return MakeDataProvider(package.AreaName,
+            return MakeDataProvider(package, package.AreaName + "_Config",
                 () => { // File
                     return new FileDataProvider<int, ConfigData>(
-                        Path.Combine(YetaWFManager.DataFolder, AreaName + "_Config", SiteIdentity.ToString()),
+                        Path.Combine(YetaWFManager.DataFolder, Dataset, SiteIdentity.ToString()),
                         CurrentSiteIdentity: SiteIdentity,
                         Cacheable: true);
                 },
                 (dbo, conn) => {  // SQL
-                    return new SQLSimpleObjectDataProvider<int, ConfigData>(AreaName + "_Config", dbo, conn,
+                    return new SQLSimpleObjectDataProvider<int, ConfigData>(Dataset, dbo, conn,
                         CurrentSiteIdentity: SiteIdentity,
                         Cacheable: true);
                 },
                 () => { // External
-                    return MakeExternalDataProvider(new { AreaName = AreaName + "_Config", CurrentSiteIdentity = SiteIdentity, Cacheable = true });
+                    return MakeExternalDataProvider(new { Package = Package, Dataset = Dataset, CurrentSiteIdentity = SiteIdentity, Cacheable = true });
                 }
             );
         }

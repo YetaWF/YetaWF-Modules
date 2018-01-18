@@ -79,19 +79,19 @@ namespace YetaWF.Modules.Scheduler.DataProvider {
 
         private IDataProvider<string, SchedulerItemData> CreateDataProvider() {
             Package package = YetaWF.Modules.Scheduler.Controllers.AreaRegistration.CurrentPackage;
-            return MakeDataProvider(package.AreaName,
+            return MakeDataProvider(package, package.AreaName,
                 () => { // File
                     return new FileDataProvider<string, SchedulerItemData>(
-                        Path.Combine(YetaWFManager.DataFolder, AreaName),
+                        Path.Combine(YetaWFManager.DataFolder, Dataset),
                         Cacheable: true);
                 },
                 (dbo, conn) => {  // SQL
-                    return new SQLSimpleObjectDataProvider<string, SchedulerItemData>(AreaName, dbo, conn,
+                    return new SQLSimpleObjectDataProvider<string, SchedulerItemData>(Dataset, dbo, conn,
                         NoLanguages: true,
                         Cacheable: true);
                 },
                 () => { // External
-                    return MakeExternalDataProvider(new { AreaName = AreaName, CurrentSiteIdentity = SiteIdentity, Cacheable = true });
+                    return MakeExternalDataProvider(new { Package = Package, Dataset = Dataset, CurrentSiteIdentity = SiteIdentity, Cacheable = true });
                 }
             );
         }

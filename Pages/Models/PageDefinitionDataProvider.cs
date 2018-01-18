@@ -97,20 +97,20 @@ namespace YetaWF.Modules.Pages.DataProvider
 
         private IDataProvider<Guid, PageDefinition> CreateDataProvider() {
             Package package = YetaWF.Modules.Pages.Controllers.AreaRegistration.CurrentPackage;
-            return MakeDataProvider(package.AreaName,
+            return MakeDataProvider(package, package.AreaName,
                 () => { // File
                     return new FileDataProvider<Guid, PageDefinition>(
-                        Path.Combine(YetaWFManager.DataFolder, AreaName, SiteIdentity.ToString()),
+                        Path.Combine(YetaWFManager.DataFolder, Dataset, SiteIdentity.ToString()),
                         CurrentSiteIdentity: SiteIdentity,
                         Cacheable: true);
                 },
                 (dbo, conn) => {  // SQL
-                    return new SQLSimpleObjectDataProvider<Guid, PageDefinition>(AreaName, dbo, conn,
+                    return new SQLSimpleObjectDataProvider<Guid, PageDefinition>(Dataset, dbo, conn,
                         CurrentSiteIdentity: SiteIdentity,
                         Cacheable: true);
                 },
                 () => { // External
-                    return MakeExternalDataProvider(new { AreaName = AreaName, CurrentSiteIdentity = SiteIdentity, Cacheable = true });
+                    return MakeExternalDataProvider(new { Package = Package, Dataset = Dataset, CurrentSiteIdentity = SiteIdentity, Cacheable = true });
                 }
             );
         }
@@ -304,7 +304,7 @@ namespace YetaWF.Modules.Pages.DataProvider
         }
 
         private void GetDesignedPages_Sql(out DesignedPagesDictionaryByUrl designedPagesByUrl) {
-            using (SQLSimpleObjectDataProvider<Guid, DesignedPage> dp = new SQLSimpleObjectDataProvider<Guid, DesignedPage>(AreaName, GetSqlDbo(), GetSqlConnectionString(), CurrentSiteIdentity: SiteIdentity)) {
+            using (SQLSimpleObjectDataProvider<Guid, DesignedPage> dp = new SQLSimpleObjectDataProvider<Guid, DesignedPage>(Dataset, GetSqlDbo(), GetSqlConnectionString(), CurrentSiteIdentity: SiteIdentity)) {
                 IDataProvider<Guid, DesignedPage> dataProvider = dp;
                 int total;
                 List<DesignedPage> pages = dataProvider.GetRecords(0, 0, null, null, out total);

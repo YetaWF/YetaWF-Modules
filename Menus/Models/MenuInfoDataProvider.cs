@@ -38,20 +38,20 @@ namespace YetaWF.Modules.Menus.DataProvider {
 
         private IDataProvider<Guid, MenuInfo> CreateDataProvider() {
             Package package = YetaWF.Modules.Menus.Controllers.AreaRegistration.CurrentPackage;
-            return MakeDataProvider(package.AreaName + "_MenuInfo",
+            return MakeDataProvider(package, package.AreaName + "_MenuInfo",
                 () => { // File
                     return new FileDataProvider<Guid, MenuInfo>(
-                        Path.Combine(YetaWFManager.DataFolder, AreaName, SiteIdentity.ToString()),
+                        Path.Combine(YetaWFManager.DataFolder, Dataset, SiteIdentity.ToString()),
                         CurrentSiteIdentity: SiteIdentity,
                         Cacheable: true);
                 },
                 (dbo, conn) => {  // SQL
-                    return new SQLSimpleObjectDataProvider<Guid, MenuInfo>(AreaName, dbo, conn,
+                    return new SQLSimpleObjectDataProvider<Guid, MenuInfo>(Dataset, dbo, conn,
                         CurrentSiteIdentity: SiteIdentity,
                         Cacheable: true);
                 },
                 () => { // External
-                    return MakeExternalDataProvider(new { AreaName = AreaName, CurrentSiteIdentity = SiteIdentity, Cacheable = true });
+                    return MakeExternalDataProvider(new { Package = Package, Dataset = Dataset, CurrentSiteIdentity = SiteIdentity, Cacheable = true });
                 }
             );
         }
@@ -66,7 +66,7 @@ namespace YetaWF.Modules.Menus.DataProvider {
             });
         }
         private string LockKey(Guid moduleGuid) {
-            return string.Format("{0}_{1}", this.AreaName, moduleGuid);
+            return string.Format("{0}_{1}", this.Dataset, moduleGuid);
         }
         public MenuInfo GetItem(Guid moduleGuid) {
             return DataProvider.Get(moduleGuid);

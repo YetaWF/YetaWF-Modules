@@ -131,20 +131,20 @@ namespace YetaWF.Modules.Pages.DataProvider {
 
         private IDataProvider<Guid, UnifiedSetData> CreateDataProvider() {
             Package package = YetaWF.Modules.Pages.Controllers.AreaRegistration.CurrentPackage;
-            return MakeDataProvider(package.AreaName,
+            return MakeDataProvider(package, package.AreaName + "_UnifiedSets",
                 () => { // File
                     return new FileDataProvider<Guid, UnifiedSetData>(
-                        Path.Combine(YetaWFManager.DataFolder, AreaName + "_UnifiedSets", SiteIdentity.ToString()),
+                        Path.Combine(YetaWFManager.DataFolder, Dataset, SiteIdentity.ToString()),
                         CurrentSiteIdentity: SiteIdentity,
                         Cacheable: true);
                 },
                 (dbo, conn) => {  // SQL
-                    return new SQLSimpleObjectDataProvider<Guid, UnifiedSetData>(AreaName + "_UnifiedSets", dbo, conn,
+                    return new SQLSimpleObjectDataProvider<Guid, UnifiedSetData>(Dataset, dbo, conn,
                         CurrentSiteIdentity: SiteIdentity,
                         Cacheable: true);
                 },
                 () => { // External
-                    return MakeExternalDataProvider(new { AreaName = AreaName + "_UnifiedSets", CurrentSiteIdentity = SiteIdentity, Cacheable = true });
+                    return MakeExternalDataProvider(new { Package = Package, Dataset = Dataset, CurrentSiteIdentity = SiteIdentity, Cacheable = true });
                 }
             );
         }
@@ -159,7 +159,7 @@ namespace YetaWF.Modules.Pages.DataProvider {
             });
         }
         private string LockKey(Guid unifiedSetGuid) {
-            return string.Format("{0}_{1}", this.AreaName, unifiedSetGuid);
+            return string.Format("{0}_{1}", this.Dataset, unifiedSetGuid);
         }
         public UnifiedSetData GetItem(Guid unifiedSetGuid) {
             UnifiedSetData unifiedSet = DataProvider.Get(unifiedSetGuid);

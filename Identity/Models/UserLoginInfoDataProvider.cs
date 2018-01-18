@@ -93,21 +93,21 @@ namespace YetaWF.Modules.Identity.DataProvider {
 
         private IDataProvider<string, LoginInfo> CreateDataProvider() {
             Package package = YetaWF.Modules.Identity.Controllers.AreaRegistration.CurrentPackage;
-            return MakeDataProvider(package.AreaName + "_LoginInfoList",
+            return MakeDataProvider(package, package.AreaName + "_LoginInfoList",
                 () => { // File
                     return new FileDataProvider<string, LoginInfo>(
-                        Path.Combine(YetaWFManager.DataFolder, AreaName, SiteIdentity.ToString()),
+                        Path.Combine(YetaWFManager.DataFolder, Dataset, SiteIdentity.ToString()),
                         CurrentSiteIdentity: SiteIdentity,
                         Cacheable: true);
                 },
                 (dbo, conn) => {  // SQL
-                    return new SQLSimpleObjectDataProvider<string, LoginInfo>(AreaName, dbo, conn,
+                    return new SQLSimpleObjectDataProvider<string, LoginInfo>(Dataset, dbo, conn,
                         CurrentSiteIdentity: SiteIdentity,
                         NoLanguages: true,
                         Cacheable: true);
                 },
                 () => { // External
-                    return MakeExternalDataProvider(new { AreaName = AreaName, CurrentSiteIdentity = SiteIdentity, Cacheable = true });
+                    return MakeExternalDataProvider(new { Package = Package, Dataset = Dataset, CurrentSiteIdentity = SiteIdentity, Cacheable = true });
                 }
             );
         }

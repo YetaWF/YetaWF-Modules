@@ -44,17 +44,17 @@ namespace YetaWF.Modules.Search.DataProvider {
         private IDataProviderIdentity<int, object, int, SearchResult> CreateDataProvider() {
             if (SearchDataProvider.IsUsable) {
                 Package package = YetaWF.Modules.Search.Controllers.AreaRegistration.CurrentPackage;
-                return MakeDataProvider(package.AreaName + "_Urls",
+                return MakeDataProvider(package, package.AreaName + "_Urls",
                     () => { // File
                         throw new InternalError("File I/O is not supported");
                     },
                     (dbo, conn) => {  // SQL
-                        return new SQLIdentityObjectDataProvider<int, object, int, SearchResult>(AreaName, dbo, conn,
+                        return new SQLIdentityObjectDataProvider<int, object, int, SearchResult>(Dataset, dbo, conn,
                             CurrentSiteIdentity: SiteIdentity,
                             Cacheable: true);
                     },
                     () => { // External
-                        return MakeExternalDataProvider(new { AreaName = AreaName, CurrentSiteIdentity = SiteIdentity, Cacheable = true });
+                        return MakeExternalDataProvider(new { Package = Package, Dataset = Dataset, CurrentSiteIdentity = SiteIdentity, Cacheable = true });
                     }
                 );
             } else {

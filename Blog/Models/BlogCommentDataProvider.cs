@@ -66,7 +66,7 @@ namespace YetaWF.Modules.Blog.DataProvider {
 
         private IDataProvider<int, BlogComment> CreateDataProvider() {
             Package package = YetaWF.Modules.Blog.Controllers.AreaRegistration.CurrentPackage;
-            return MakeDataProvider(package.AreaName,
+            return MakeDataProvider(package, package.AreaName + "_Comments",
                 () => { // File
                     return new FileDataProvider<int, BlogComment>(
                         GetCommentFolder(EntryIdentity),
@@ -74,17 +74,17 @@ namespace YetaWF.Modules.Blog.DataProvider {
                         Cacheable: true);
                 },
                 (dbo, conn) => {  // SQL
-                    return new SQLSimpleObjectDataProvider<int, BlogComment>(AreaName + "_Comments", dbo, conn,
+                    return new SQLSimpleObjectDataProvider<int, BlogComment>(Dataset, dbo, conn,
                         CurrentSiteIdentity: SiteIdentity,
                         Cacheable: true);
                 },
                 () => { // External
-                    return MakeExternalDataProvider(new { AreaName = AreaName + "_Comments", CurrentSiteIdentity = SiteIdentity, Cacheable = true });
+                    return MakeExternalDataProvider(new { Package = Package, Dataset = Dataset, CurrentSiteIdentity = SiteIdentity, Cacheable = true });
                 }
             );
         }
         internal string GetCommentFolderRoot() {
-            return Path.Combine(YetaWFManager.DataFolder, AreaName, SiteIdentity.ToString(), "Comments");
+            return Path.Combine(YetaWFManager.DataFolder, Package.AreaName + "_Comments", SiteIdentity.ToString(), "Comments");
         }
         internal string GetCommentFolder(int blogEntry) {
             return Path.Combine(GetCommentFolderRoot(), string.Format("Ent{0}", blogEntry));

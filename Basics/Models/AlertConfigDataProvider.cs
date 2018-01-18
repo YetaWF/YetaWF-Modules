@@ -70,20 +70,20 @@ namespace YetaWF.Modules.Basics.DataProvider {
 
         private IDataProvider<int, AlertConfig> CreateDataProvider() {
             Package package = YetaWF.Modules.Basics.Controllers.AreaRegistration.CurrentPackage;
-            return MakeDataProvider(package.AreaName,
+            return MakeDataProvider(package, package.AreaName + "_AlertConfig",
                 () => { // File
                     return new FileDataProvider<int, AlertConfig>(
-                        Path.Combine(YetaWFManager.DataFolder, AreaName + "_AlertConfig", SiteIdentity.ToString()),
+                        Path.Combine(YetaWFManager.DataFolder, Dataset, SiteIdentity.ToString()),
                         CurrentSiteIdentity: SiteIdentity,
                         Cacheable: true);
                 },
                 (dbo, conn) => {  // SQL
-                    return new SQLSimpleObjectDataProvider<int, AlertConfig>(AreaName + "_AlertConfig", dbo, conn,
+                    return new SQLSimpleObjectDataProvider<int, AlertConfig>(Dataset, dbo, conn,
                         CurrentSiteIdentity: SiteIdentity,
                         Cacheable: true);
                 },
                 () => { // External
-                    return MakeExternalDataProvider(new { AreaName = AreaName + "_AlertConfig", CurrentSiteIdentity = SiteIdentity, Cacheable = true });
+                    return MakeExternalDataProvider(new { Package = Package, Dataset = Dataset, CurrentSiteIdentity = SiteIdentity, Cacheable = true });
                 }
             );
         }

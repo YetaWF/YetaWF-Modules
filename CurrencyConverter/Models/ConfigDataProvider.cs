@@ -43,18 +43,18 @@ namespace YetaWF.Modules.CurrencyConverter.DataProvider {
 
         private IDataProvider<int, ConfigData> CreateDataProvider() {
             Package package = YetaWF.Modules.CurrencyConverter.Controllers.AreaRegistration.CurrentPackage;
-            return MakeDataProvider(package.AreaName,
+            return MakeDataProvider(package, package.AreaName,
                 () => { // File
                     return new FileDataProvider<int, ConfigData>(
-                        Path.Combine(YetaWFManager.DataFolder, AreaName),
+                        Path.Combine(YetaWFManager.DataFolder, Dataset),
                         Cacheable: true);
                 },
                 (dbo, conn) => {  // SQL
-                    return new SQLSimpleObjectDataProvider<int, ConfigData>(AreaName, dbo, conn,
+                    return new SQLSimpleObjectDataProvider<int, ConfigData>(Dataset, dbo, conn,
                         Cacheable: true);
                 },
                 () => { // External
-                    return MakeExternalDataProvider(new { AreaName = AreaName, Cacheable = true });
+                    return MakeExternalDataProvider(new { Package = Package, Dataset = Dataset, Cacheable = true });
                 }
             );
         }

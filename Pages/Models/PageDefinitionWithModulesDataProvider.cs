@@ -26,17 +26,17 @@ namespace YetaWF.Modules.Pages.DataProvider {
 
         private IDataProvider<string, PageDefinitionForModules> CreateDataProvider() {
             Package package = YetaWF.Modules.Pages.Controllers.AreaRegistration.CurrentPackage;
-            return MakeDataProvider(package.AreaName,
+            return MakeDataProvider(package, package.AreaName + "_ModuleDefinitions",
                 () => { // File
                     throw new InternalError("File I/O is not supported");
                 },
                 (dbo, conn) => {  // SQL
-                    return new SQLSimpleObjectDataProvider<string, PageDefinitionForModules>(AreaName + "_ModuleDefinitions", dbo, conn,
+                    return new SQLSimpleObjectDataProvider<string, PageDefinitionForModules>(Dataset, dbo, conn,
                         CurrentSiteIdentity: SiteIdentity,
                         Cacheable: true);
                 },
                 () => { // External
-                    return MakeExternalDataProvider(new { AreaName = AreaName + "_ModuleDefinitions", CurrentSiteIdentity = SiteIdentity, Cacheable = true });
+                    return MakeExternalDataProvider(new { Package = Package, Dataset = Dataset, CurrentSiteIdentity = SiteIdentity, Cacheable = true });
                 }
             );
         }

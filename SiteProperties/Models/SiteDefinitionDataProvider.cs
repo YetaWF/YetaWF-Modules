@@ -49,20 +49,20 @@ namespace YetaWF.Modules.SiteProperties.Models {
 
         private IDataProvider<String, SiteDefinition> CreateDataProvider() {
             Package package = YetaWF.Modules.SiteProperties.Controllers.AreaRegistration.CurrentPackage;
-            return MakeDataProvider(package.AreaName,
+            return MakeDataProvider(package, package.AreaName,
                 () => { // File
                     return new FileDataProvider<String, SiteDefinition>(
-                        Path.Combine(YetaWFManager.DataFolder, AreaName),
+                        Path.Combine(YetaWFManager.DataFolder, Dataset),
                         IdentitySeed: SiteDefinition.SiteIdentitySeed);
                 },
                 (dbo, conn) => {  // SQL
-                    return new SQLSimpleObjectDataProvider<String, SiteDefinition>(AreaName, dbo, conn,
+                    return new SQLSimpleObjectDataProvider<String, SiteDefinition>(Dataset, dbo, conn,
                         NoLanguages: true,
                         IdentitySeed: SiteDefinition.SiteIdentitySeed,
                         Cacheable: true);
                 },
                 () => { // External
-                    return MakeExternalDataProvider(new { AreaName = AreaName, CurrentSiteIdentity = SiteIdentity, Cacheable = true });
+                    return MakeExternalDataProvider(new { Package = Package, Dataset = Dataset, CurrentSiteIdentity = SiteIdentity, Cacheable = true });
                 }
             );
         }

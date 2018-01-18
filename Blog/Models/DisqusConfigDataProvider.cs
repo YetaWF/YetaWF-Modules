@@ -77,20 +77,20 @@ namespace YetaWF.Modules.Blog.DataProvider {
 
         private IDataProvider<int, DisqusConfigData> CreateDataProvider() {
             Package package = YetaWF.Modules.Blog.Controllers.AreaRegistration.CurrentPackage;
-            return MakeDataProvider(package.AreaName,
+            return MakeDataProvider(package, package.AreaName + "_DisqusConfig",
                 () => { // File
                     return new FileDataProvider<int, DisqusConfigData>(
-                        Path.Combine(YetaWFManager.DataFolder, AreaName + "_DisqusConfig", SiteIdentity.ToString()),
+                        Path.Combine(YetaWFManager.DataFolder, Dataset, SiteIdentity.ToString()),
                         CurrentSiteIdentity: SiteIdentity,
                         Cacheable: true);
                 },
                 (dbo, conn) => {  // SQL
-                    return new SQLSimpleObjectDataProvider<int, DisqusConfigData>(AreaName + "_DisqusConfig", dbo, conn,
+                    return new SQLSimpleObjectDataProvider<int, DisqusConfigData>(Dataset, dbo, conn,
                         CurrentSiteIdentity: SiteIdentity,
                         Cacheable: true);
                 },
                 () => { // External
-                    return MakeExternalDataProvider(new { AreaName = AreaName + "_DisqusConfig", CurrentSiteIdentity = SiteIdentity, Cacheable = true });
+                    return MakeExternalDataProvider(new { Package = Package, Dataset = Dataset, CurrentSiteIdentity = SiteIdentity, Cacheable = true });
                 }
             );
         }
