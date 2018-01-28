@@ -57,7 +57,7 @@ namespace YetaWF.Modules.Blog.Controllers {
 
             public Entry(BlogEntry data, EntryEditModule editMod, EntryDisplayModule dispMod) {
                 ObjectSupport.CopyData(data, this);
-                ViewAction = dispMod.GetAction_Display(data.Identity, ReadMore: data.Summary.ToString() != data.Text.ToString());
+                ViewAction = dispMod.GetAction_Display(data.Identity, ReadMore: data.Summary != data.Text);
                 Actions = new List<ModuleAction>();
                 Actions.New(editMod.GetAction_Edit(null, data.Identity));
             }

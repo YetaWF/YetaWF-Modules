@@ -2,17 +2,14 @@
 
 using System;
 using System.Collections.Generic;
-using System.IO;
 using YetaWF.Core;
 using YetaWF.Core.DataProvider;
 using YetaWF.Core.DataProvider.Attributes;
 using YetaWF.Core.IO;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Packages;
-using YetaWF.Core.Serializers;
 using YetaWF.Core.Site;
 using YetaWF.Core.Support;
-using YetaWF.DataProvider;
 using YetaWF.Modules.Identity.Controllers;
 
 namespace YetaWF.Modules.Identity.DataProvider {
@@ -93,23 +90,7 @@ namespace YetaWF.Modules.Identity.DataProvider {
 
         private IDataProvider<string, LoginInfo> CreateDataProvider() {
             Package package = YetaWF.Modules.Identity.Controllers.AreaRegistration.CurrentPackage;
-            return MakeDataProvider(package, package.AreaName + "_LoginInfoList",
-                () => { // File
-                    return new FileDataProvider<string, LoginInfo>(
-                        Path.Combine(YetaWFManager.DataFolder, Dataset, SiteIdentity.ToString()),
-                        CurrentSiteIdentity: SiteIdentity,
-                        Cacheable: true);
-                },
-                (dbo, conn) => {  // SQL
-                    return new SQLSimpleObjectDataProvider<string, LoginInfo>(Dataset, dbo, conn,
-                        CurrentSiteIdentity: SiteIdentity,
-                        NoLanguages: true,
-                        Cacheable: true);
-                },
-                () => { // External
-                    return MakeExternalDataProvider(new { Package = Package, Dataset = Dataset, CurrentSiteIdentity = SiteIdentity, Cacheable = true });
-                }
-            );
+            return MakeDataProvider2(package, package.AreaName + "_LoginInfoList", SiteIdentity: SiteIdentity, Cacheable: true, Parms: new { NoLanguages = true });
         }
 
         // API

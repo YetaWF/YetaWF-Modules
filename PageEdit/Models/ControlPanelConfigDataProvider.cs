@@ -1,7 +1,5 @@
 ﻿/* Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/PageEdit#License */
 
-using System.Collections.Generic;
-using System.IO;
 using YetaWF.Core;
 using YetaWF.Core.DataProvider;
 using YetaWF.Core.DataProvider.Attributes;
@@ -11,7 +9,6 @@ using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Packages;
 using YetaWF.Core.Serializers;
 using YetaWF.Core.Support;
-using YetaWF.DataProvider;
 
 namespace YetaWF.Modules.PageEdit.DataProvider {
 
@@ -49,22 +46,7 @@ namespace YetaWF.Modules.PageEdit.DataProvider {
 
         private IDataProvider<int, ControlPanelConfigData> CreateDataProvider() {
             Package package = YetaWF.Modules.PageEdit.Controllers.AreaRegistration.CurrentPackage;
-            return MakeDataProvider(package, package.AreaName + "_ControlPanel_Config",
-                () => { // File
-                    return new FileDataProvider<int, ControlPanelConfigData>(
-                        Path.Combine(YetaWFManager.DataFolder, Dataset, SiteIdentity.ToString()),
-                        CurrentSiteIdentity: SiteIdentity,
-                        Cacheable: true);
-                },
-                (dbo, conn) => {  // SQL
-                    return new SQLSimpleObjectDataProvider<int, ControlPanelConfigData>(Dataset, dbo, conn,
-                        CurrentSiteIdentity: SiteIdentity,
-                        Cacheable: true);
-                },
-                () => { // External
-                    return MakeExternalDataProvider(new { Package = Package, Dataset = Dataset, CurrentSiteIdentity = SiteIdentity, Cacheable = true });
-                }
-            );
+            return MakeDataProvider2(package, package.AreaName + "_ControlPanel_Config", SiteIdentity: SiteIdentity, Cacheable: true);
         }
 
         // API

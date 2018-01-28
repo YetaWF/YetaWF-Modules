@@ -2,7 +2,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.IO;
 using YetaWF.Core;
 using YetaWF.Core.DataProvider;
 using YetaWF.Core.DataProvider.Attributes;
@@ -58,36 +57,15 @@ namespace YetaWF.Modules.Blog.DataProvider {
         // IMPLEMENTATION
         // IMPLEMENTATION
 
-        public BlogCommentDataProvider() : base(YetaWFManager.Manager.CurrentSite.Identity) { SetDataProvider(CreateDataProvider()); EntryIdentity = FileIdentityCount.IDENTITY_SEED; }
-        public BlogCommentDataProvider(int blogEntry) : base(YetaWFManager.Manager.CurrentSite.Identity) { SetDataProvider(CreateDataProvider()); EntryIdentity = blogEntry; }
-        public BlogCommentDataProvider(int blogEntry, int siteIdentity) : base(siteIdentity) { SetDataProvider(CreateDataProvider()); EntryIdentity = blogEntry; }
+        public BlogCommentDataProvider() : base(YetaWFManager.Manager.CurrentSite.Identity) { EntryIdentity = FileIdentityCount.IDENTITY_SEED; SetDataProvider(CreateDataProvider()); }
+        public BlogCommentDataProvider(int blogEntry) : base(YetaWFManager.Manager.CurrentSite.Identity) { EntryIdentity = blogEntry; SetDataProvider(CreateDataProvider());  }
+        public BlogCommentDataProvider(int blogEntry, int siteIdentity) : base(siteIdentity) { EntryIdentity = blogEntry; SetDataProvider(CreateDataProvider()); }
 
         private IDataProvider<int, BlogComment> DataProvider { get { return GetDataProvider(); } }
 
         private IDataProvider<int, BlogComment> CreateDataProvider() {
             Package package = YetaWF.Modules.Blog.Controllers.AreaRegistration.CurrentPackage;
-            return MakeDataProvider(package, package.AreaName + "_Comments",
-                () => { // File
-                    return new FileDataProvider<int, BlogComment>(
-                        GetCommentFolder(EntryIdentity),
-                        CurrentSiteIdentity: SiteIdentity,
-                        Cacheable: true);
-                },
-                (dbo, conn) => {  // SQL
-                    return new SQLSimpleObjectDataProvider<int, BlogComment>(Dataset, dbo, conn,
-                        CurrentSiteIdentity: SiteIdentity,
-                        Cacheable: true);
-                },
-                () => { // External
-                    return MakeExternalDataProvider(new { Package = Package, Dataset = Dataset, CurrentSiteIdentity = SiteIdentity, Cacheable = true });
-                }
-            );
-        }
-        internal string GetCommentFolderRoot() {
-            return Path.Combine(YetaWFManager.DataFolder, Package.AreaName + "_Comments", SiteIdentity.ToString(), "Comments");
-        }
-        internal string GetCommentFolder(int blogEntry) {
-            return Path.Combine(GetCommentFolderRoot(), string.Format("Ent{0}", blogEntry));
+            return MakeDataProvider2(package, package.AreaName + "_Comments", SiteIdentity: SiteIdentity, Cacheable: true, Parms: new { EntryIdentity = EntryIdentity });
         }
 
         // API
@@ -127,19 +105,12 @@ namespace YetaWF.Modules.Blog.DataProvider {
             return DataProvider.Remove(comment);
         }
         public List<BlogComment> GetItems(int skip, int take, List<DataProviderSortInfo> sort, List<DataProviderFilterInfo> filters, out int total) {
-            IDataProvider<int, BlogComment> dp = DataProvider;// evaluate IOMode
-            if (IOMode == WebConfigHelper.IOModeEnum.Sql)
-                filters = DataProviderFilterInfo.Join(filters, new DataProviderFilterInfo { Field = "EntryIdentity", Operator = "==", Value = EntryIdentity });
+            filters = DataProviderFilterInfo.Join(filters, new DataProviderFilterInfo { Field = "EntryIdentity", Operator = "==", Value = EntryIdentity });
             return DataProvider.GetRecords(skip, take, sort, filters, out total);
         }
         public bool RemoveAllComments() {
-            IDataProvider<int, BlogComment> dp = DataProvider;// evaluate IOMode
-            if (IOMode == WebConfigHelper.IOModeEnum.File) {
-                DirectoryIO.DeleteFolder(GetCommentFolder(EntryIdentity));
-            } else {
-                List<DataProviderFilterInfo> filters = DataProviderFilterInfo.Join(null, new DataProviderFilterInfo { Field = "EntryIdentity", Operator = "==", Value = EntryIdentity });
-                DataProvider.RemoveRecords(filters);
-            }
+            List<DataProviderFilterInfo> filters = DataProviderFilterInfo.Join(null, new DataProviderFilterInfo { Field = "EntryIdentity", Operator = "==", Value = EntryIdentity });
+            DataProvider.RemoveRecords(filters);
             return true;
         }
     }

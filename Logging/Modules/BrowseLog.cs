@@ -56,7 +56,7 @@ namespace YetaWF.Modules.Logging.Modules {
         public override MenuList GetModuleMenuList(ModuleAction.RenderModeEnum renderMode, ModuleAction.ActionLocationEnum location) {
             MenuList menuList = base.GetModuleMenuList(renderMode, location);
             if (location == ModuleAction.ActionLocationEnum.ModuleLinks) {
-                using (LogRecordDataProvider dataProvider = new LogRecordDataProvider()) {
+                using (LogRecordDataProvider dataProvider = LogRecordDataProvider.GetLogRecordDataProvider()) {
                     if (dataProvider.CanBrowse)
                         menuList.New(GetAction_RemoveAll());
                     else {
@@ -84,7 +84,7 @@ namespace YetaWF.Modules.Logging.Modules {
         }
         public ModuleAction GetAction_RemoveAll() {
             if (!IsAuthorized("RemoveLog")) return null;
-            using (LogRecordDataProvider dataProvider = new LogRecordDataProvider()) {
+            using (LogRecordDataProvider dataProvider = LogRecordDataProvider.GetLogRecordDataProvider()) {
                 if (!dataProvider.IsInstalled()) return null;
             };
             return new ModuleAction(this) {
@@ -104,7 +104,7 @@ namespace YetaWF.Modules.Logging.Modules {
         }
         public ModuleAction GetAction_DownloadLog() {
             if (!IsAuthorized("Downloads")) return null;
-            using (LogRecordDataProvider dataProvider = new LogRecordDataProvider()) {
+            using (LogRecordDataProvider dataProvider = LogRecordDataProvider.GetLogRecordDataProvider()) {
                 if (!dataProvider.IsInstalled()) return null;
             };
             return new ModuleAction(this) {
@@ -124,7 +124,7 @@ namespace YetaWF.Modules.Logging.Modules {
         }
         public ModuleAction GetAction_DownloadZippedLog() {
             if (!IsAuthorized("Downloads")) return null;
-            using (LogRecordDataProvider dataProvider = new LogRecordDataProvider()) {
+            using (LogRecordDataProvider dataProvider = LogRecordDataProvider.GetLogRecordDataProvider()) {
                 if (!dataProvider.IsInstalled()) return null;
             };
             return new ModuleAction(this) {

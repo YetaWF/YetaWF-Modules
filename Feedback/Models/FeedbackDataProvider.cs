@@ -2,17 +2,13 @@
 
 using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Web;
 using YetaWF.Core;
 using YetaWF.Core.DataProvider;
 using YetaWF.Core.DataProvider.Attributes;
 using YetaWF.Core.IO;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Packages;
-using YetaWF.Core.Serializers;
 using YetaWF.Core.Support;
-using YetaWF.DataProvider;
 
 namespace YetaWF.Modules.Feedback.DataProvider {
     public class FeedbackData {
@@ -54,22 +50,7 @@ namespace YetaWF.Modules.Feedback.DataProvider {
 
         private IDataProvider<int, FeedbackData> CreateDataProvider() {
             Package package = YetaWF.Modules.Feedback.Controllers.AreaRegistration.CurrentPackage;
-            return MakeDataProvider(package, package.AreaName,
-                () => { // File
-                    return new FileDataProvider<int, FeedbackData>(
-                        Path.Combine(YetaWFManager.DataFolder, Dataset, SiteIdentity.ToString()),
-                        CurrentSiteIdentity: SiteIdentity,
-                        Cacheable: true);
-                },
-                (dbo, conn) => {  // SQL
-                    return new SQLSimpleObjectDataProvider<int, FeedbackData>(Dataset, dbo, conn,
-                        CurrentSiteIdentity: SiteIdentity,
-                        Cacheable: true);
-                },
-                () => { // External
-                    return MakeExternalDataProvider(new { Package = Package, Dataset = Dataset, CurrentSiteIdentity = SiteIdentity, Cacheable = true });
-                }
-            );
+            return MakeDataProvider2(package, package.AreaName, SiteIdentity: SiteIdentity, Cacheable: true);
         }
 
         // API
@@ -90,7 +71,6 @@ namespace YetaWF.Modules.Feedback.DataProvider {
         public bool RemoveItem(int key) {
             return DataProvider.Remove(key);
         }
-
         public List<FeedbackData> GetItems(List<DataProviderFilterInfo> filters) {
             int total;
             return DataProvider.GetRecords(0, 0, null, filters, out total);

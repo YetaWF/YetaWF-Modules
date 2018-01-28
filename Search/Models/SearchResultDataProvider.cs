@@ -8,7 +8,6 @@ using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Packages;
 using YetaWF.Core.Pages;
 using YetaWF.Core.Support;
-using YetaWF.DataProvider;
 
 namespace YetaWF.Modules.Search.DataProvider {
 
@@ -39,30 +38,16 @@ namespace YetaWF.Modules.Search.DataProvider {
         public SearchResultDataProvider() : base(YetaWFManager.Manager.CurrentSite.Identity) { SetDataProvider(CreateDataProvider()); }
         public SearchResultDataProvider(int siteIdentity) : base(siteIdentity) { SetDataProvider(CreateDataProvider()); }
 
-        private IDataProviderIdentity<int, object, int, SearchResult> DataProvider { get { return GetDataProvider(); } }
+        private IDataProvider<int, SearchResult> DataProvider { get { return GetDataProvider(); } }
 
-        private IDataProviderIdentity<int, object, int, SearchResult> CreateDataProvider() {
+        private IDataProvider<int, SearchResult> CreateDataProvider() {
             if (SearchDataProvider.IsUsable) {
                 Package package = YetaWF.Modules.Search.Controllers.AreaRegistration.CurrentPackage;
-                return MakeDataProvider(package, package.AreaName + "_Urls",
-                    () => { // File
-                        throw new InternalError("File I/O is not supported");
-                    },
-                    (dbo, conn) => {  // SQL
-                        return new SQLIdentityObjectDataProvider<int, object, int, SearchResult>(Dataset, dbo, conn,
-                            CurrentSiteIdentity: SiteIdentity,
-                            Cacheable: true);
-                    },
-                    () => { // External
-                        return MakeExternalDataProvider(new { Package = Package, Dataset = Dataset, CurrentSiteIdentity = SiteIdentity, Cacheable = true });
-                    }
-                );
+                return MakeDataProvider2(package, package.AreaName + "_Urls", SiteIdentity: SiteIdentity, Cacheable: true);
             } else {
                 return null;
             }
         }
-
-        private IDataProviderIdentity<int, object, int, SearchResult> _dataProvider { get; set; }
 
         // API
         // API

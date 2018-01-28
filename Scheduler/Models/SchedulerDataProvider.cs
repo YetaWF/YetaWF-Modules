@@ -2,7 +2,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.IO;
 using YetaWF.Core.DataProvider;
 using YetaWF.Core.DataProvider.Attributes;
 using YetaWF.Core.IO;
@@ -11,7 +10,6 @@ using YetaWF.Core.Packages;
 using YetaWF.Core.Scheduler;
 using YetaWF.Core.Support;
 using YetaWF.Core.Views.Shared;
-using YetaWF.DataProvider;
 using YetaWF.Modules.Scheduler.Controllers;
 
 namespace YetaWF.Modules.Scheduler.DataProvider {
@@ -79,21 +77,7 @@ namespace YetaWF.Modules.Scheduler.DataProvider {
 
         private IDataProvider<string, SchedulerItemData> CreateDataProvider() {
             Package package = YetaWF.Modules.Scheduler.Controllers.AreaRegistration.CurrentPackage;
-            return MakeDataProvider(package, package.AreaName,
-                () => { // File
-                    return new FileDataProvider<string, SchedulerItemData>(
-                        Path.Combine(YetaWFManager.DataFolder, Dataset),
-                        Cacheable: true);
-                },
-                (dbo, conn) => {  // SQL
-                    return new SQLSimpleObjectDataProvider<string, SchedulerItemData>(Dataset, dbo, conn,
-                        NoLanguages: true,
-                        Cacheable: true);
-                },
-                () => { // External
-                    return MakeExternalDataProvider(new { Package = Package, Dataset = Dataset, CurrentSiteIdentity = SiteIdentity, Cacheable = true });
-                }
-            );
+            return MakeDataProvider2(package, package.AreaName, Cacheable: true, Parms: new { NoLanguages = true });
         }
 
         // API
@@ -117,7 +101,6 @@ namespace YetaWF.Modules.Scheduler.DataProvider {
         public bool RemoveItem(string key) {
             return DataProvider.Remove(key);
         }
-
         public List<SchedulerItemData> GetItems(List<DataProviderFilterInfo> filters) {
             int total;
             filters = FixFilters(filters);

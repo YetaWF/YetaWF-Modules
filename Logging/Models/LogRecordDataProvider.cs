@@ -3,21 +3,15 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.IO;
 using System.Reflection;
 using System.Text;
 using YetaWF.Core;
 using YetaWF.Core.DataProvider;
 using YetaWF.Core.DataProvider.Attributes;
 using YetaWF.Core.Extensions;
-using YetaWF.Core.IO;
-using YetaWF.Core.Log;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Modules;
-using YetaWF.Core.Packages;
-using YetaWF.Core.Serializers;
 using YetaWF.Core.Support;
-using YetaWF.DataProvider;
 #if MVC6
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Extensions;
@@ -26,10 +20,8 @@ using Microsoft.AspNetCore.Http.Features;
 using System.Web;
 #endif
 
-// The logging data provider uses a simple sequential (flat) file for logging so the entire file implementation is in this code (not FileDataProvider)
-// For SQL we're using the regular SQL data provider
-
 namespace YetaWF.Modules.Logging.DataProvider {
+
     public class LogRecord {
 
         public const int MaxSessionId = 50;
@@ -69,82 +61,49 @@ namespace YetaWF.Modules.Logging.DataProvider {
         public LogRecord() { }
     }
 
-    public class LogRecordDataProvider : DataProviderImpl, IInstallableModel, ILogging {
+    public abstract class LogRecordDataProvider : IDisposable {
+
+        protected YetaWFManager Manager { get { return YetaWFManager.Manager; } }
 
         // IMPLEMENTATION
         // IMPLEMENTATION
         // IMPLEMENTATION
 
-        static object lockObject = new object();
-
-        private readonly string LogfileName = "Logfile.txt";
-        public string LogFile { get; private set; }// File IO
-        private const int MAXRECORDS = 1000;// cache # of records
-
-        List<string> LogCache { get; set; }
-
-        public LogRecordDataProvider() : base(0) { SetDataProvider(CreateDataProvider()); }
-
-        private IDataProvider<int, LogRecord> DataProvider { get { return GetDataProvider(); } }
-
-        private IDataProvider<int, LogRecord> CreateDataProvider() {
-            // can't use CurrentPackage as RegisterAllAreas has not yet been called 
-            Package package = Package.GetPackageFromAssembly(GetType().Assembly);
-            return MakeDataProvider(package, package.AreaName,
-                () => { // File
-                    LogFile = Path.Combine(YetaWFManager.DataFolder, Dataset, LogfileName);
-                    return new FileDataProvider<int, LogRecord>(
-                        Path.Combine(YetaWFManager.DataFolder, Dataset));
-                },
-                (dbo, conn) => {  // SQL
-                    return new SQLSimpleObjectDataProvider<int, LogRecord>(Dataset, dbo, conn,
-                        Logging: false, 
-                        NoLanguages: true);
-                },
-                () => { // External
-                    return MakeExternalDataProvider(new { Package = Package, Dataset = Dataset });
-                }
-            );
+        protected LogRecordDataProvider() {
+            DisposableTracker.AddObject(this);
         }
+        public void Dispose() {
+            Dispose(true);
+        }
+        protected virtual void Dispose(bool disposing) {
+            if (disposing)
+                DisposableTracker.RemoveObject(this);
+        }
+        //~DataProviderImpl() { Dispose(false); }
 
         // API
         // API
         // API
 
-        public void Clear() {
-            switch (IOMode) {
-                default:
-                    throw new InternalError("IOMode undetermined - this means we don't have a valid data provider");
-                case WebConfigHelper.IOModeEnum.File:
-                    lock (lockObject) {
-                        try {
-                            File.Delete(LogFile);
-                        } catch (Exception) { }
-                        Directory.CreateDirectory(Path.GetDirectoryName(LogFile));
-                        LogCache = new List<string>();
-                    }
-                    break;
-                case WebConfigHelper.IOModeEnum.Sql:
-                    // nothing
-                    break;
-            }
+        public static LogRecordDataProvider GetLogRecordDataProvider() {
+            if (YetaWF.Core.Log.Logging.DefaultLoggerType == null) throw new InternalError("No logging data provider type");
+            LogRecordDataProvider dp = (LogRecordDataProvider)Activator.CreateInstance(YetaWF.Core.Log.Logging.DefaultLoggerType);
+            return dp;
         }
 
-        public YetaWF.Core.Log.Logging.LevelEnum GetLevel() {
-            return WebConfigHelper.GetValue<YetaWF.Core.Log.Logging.LevelEnum>("Logging", "MinLevel", YetaWF.Core.Log.Logging.LevelEnum.Trace);
-        }
+        public virtual void Clear() { }
 
-        public void Flush() {
-            if (IOMode == WebConfigHelper.IOModeEnum.File) {
-                lock (lockObject) {
-                    if (LogCache != null)
-                        File.AppendAllLines(LogFile, LogCache);
-                    LogCache = new List<string>();
-                }
-            }
+        public virtual YetaWF.Core.Log.Logging.LevelEnum GetLevel() {
+            if (_level == null)
+                _level = WebConfigHelper.GetValue<YetaWF.Core.Log.Logging.LevelEnum>("Logging", "MinLevel", YetaWF.Core.Log.Logging.LevelEnum.Trace);
+            return (YetaWF.Core.Log.Logging.LevelEnum)_level;
         }
+        YetaWF.Core.Log.Logging.LevelEnum? _level;
 
-        static bool WriteInProgess = false;
+        public virtual void Flush() { }
+        public abstract void SaveMessage(LogRecord record);
+
+        protected static bool WriteInProgess = false;
 
         public void WriteToLogFile(Core.Log.Logging.LevelEnum level, int relStack, string message) {
 
@@ -166,7 +125,7 @@ namespace YetaWF.Modules.Logging.DataProvider {
                 string referrer = "";
                 string requestedUrl = "";
                 string sessionId = null;
-                if (HaveManager) {
+                if (YetaWFManager.HaveManager) {
                     if (Manager.HaveCurrentSite)
                         siteIdentity = Manager.CurrentSite.Identity;
                     userId = Manager.UserId;
@@ -208,83 +167,53 @@ namespace YetaWF.Modules.Logging.DataProvider {
                 }
                 MethodBase methBase = GetCallInfo(relStack + 1, out moduleName);
 
-                switch (IOMode) {
-                    default:
-                        throw new InternalError("IOMode undetermined - this means we don't have a valid data provider");
-                    case WebConfigHelper.IOModeEnum.File:
-                        string text = string.Format("{0}-{1}-{2}-{3}-{4}-{5}({6})-{7}: {8},{9},{10},{11} - {12}:{13}",
-                            DateTime.Now/*Local Time*/, sessionId, siteIdentity, ipAddress, requestedUrl, userName, userId, referrer,
-                                moduleName,
-                                (methBase.DeclaringType != null) ? methBase.DeclaringType.Name : "",
-                                methBase.Name,
-                                (methBase.DeclaringType != null) ? methBase.DeclaringType.Namespace : "",
-                                level, message);
-                        text = text.Replace("\n", "\r\n");
-                        lock (lockObject) {
-                            LogCache.Add(text);
-                            if (LogCache.Count >= MAXRECORDS)
-                                Flush();
-                        }
-                        break;
-                    case WebConfigHelper.IOModeEnum.Sql:
-                        LogRecord record = new LogRecord {
-                            Level = level,
-                            Info = message,
-                            TimeStamp = DateTime.UtcNow,
-                            SessionId = sessionId,
-                            ModuleName = moduleName,
-                            Class = (methBase.DeclaringType != null) ? methBase.DeclaringType.Name : "",
-                            Method = methBase.Name,
-                            Namespace = (methBase.DeclaringType != null) ? methBase.DeclaringType.Namespace : "",
-                            SiteIdentity = siteIdentity,
-                            UserId = userId,
-                            UserName = userName,
-                            IPAddress = ipAddress,
-                            RequestedUrl = requestedUrl,
-                            ReferrerUrl = referrer,
-                        };
-                        DataProvider.Add(record);
-                        break;
-                }
+                SaveMessage(new LogRecord {
+                    Level = level,
+                    Info = message,
+                    TimeStamp = DateTime.UtcNow,
+                    SessionId = sessionId,
+                    ModuleName = moduleName,
+                    Class = (methBase.DeclaringType != null) ? methBase.DeclaringType.Name : "",
+                    Method = methBase.Name,
+                    Namespace = (methBase.DeclaringType != null) ? methBase.DeclaringType.Namespace : "",
+                    SiteIdentity = siteIdentity,
+                    UserId = userId,
+                    UserName = userName,
+                    IPAddress = ipAddress,
+                    RequestedUrl = requestedUrl,
+                    ReferrerUrl = referrer,
+                });
             } catch (Exception) { }
 
             WriteInProgess = false;
         }
 
-        public LogRecord GetItem(int key) {
-            Flush();
-            if (IOMode == WebConfigHelper.IOModeEnum.File) throw new InternalError("Not supported for File I/O");
-            return DataProvider.Get(key);
+        public virtual LogRecord GetItem(int key) {
+            throw new NotImplementedException();
         }
-        public bool RemoveItem(int key) {
-            Flush();
-            if (IOMode == WebConfigHelper.IOModeEnum.File) throw new InternalError("Not supported for File I/O");
-            return DataProvider.Remove(key);
+        public virtual bool RemoveItem(int key) {
+            throw new NotImplementedException();
         }
-
-        public List<LogRecord> GetItems(List<DataProviderFilterInfo> filters) {
-            Flush();
-            if (IOMode == WebConfigHelper.IOModeEnum.File) throw new InternalError("Not supported for File I/O");
-            int total;
-            return DataProvider.GetRecords(0, 0, null, filters, out total);
+        public virtual List<LogRecord> GetItems(List<DataProviderFilterInfo> filters) {
+            throw new NotImplementedException();
         }
-        public List<LogRecord> GetItems(int skip, int take, List<DataProviderSortInfo> sort, List<DataProviderFilterInfo> filters, out int total) {
-            Flush();
-            if (IOMode == WebConfigHelper.IOModeEnum.File) throw new InternalError("Not supported for File I/O");
-            return DataProvider.GetRecords(skip, take, sort, filters, out total);
+        public virtual List<LogRecord> GetItems(int skip, int take, List<DataProviderSortInfo> sort, List<DataProviderFilterInfo> filters, out int total) {
+            throw new NotImplementedException();
         }
-        public int RemoveItems(List<DataProviderFilterInfo> filters) {
-            Flush();
-            if (IOMode == WebConfigHelper.IOModeEnum.File) throw new InternalError("Not supported for File I/O");
-            return DataProvider.RemoveRecords(filters);
+        public virtual int RemoveItems(List<DataProviderFilterInfo> filters) {
+            throw new NotImplementedException();
         }
 
-        private static MethodBase GetCallInfo(int level, out string moduleName) {
+        public abstract bool CanBrowse { get; }
+        public abstract bool CanImportOrExport { get; }
+        public virtual string GetLogFileName() { return null; }
+
+        static MethodBase GetCallInfo(int level, out string moduleName) {
             StackTrace stackTrace = new StackTrace();
             StackFrame stackFrame = stackTrace.GetFrame(level + 2);
             MethodBase methodBase = stackFrame.GetMethod();
             moduleName = "(core)";
-            for (int lvl = level + 1 ; lvl < stackTrace.FrameCount ; ++lvl) {
+            for (int lvl = level + 1; lvl < stackTrace.FrameCount; ++lvl) {
                 stackFrame = stackTrace.GetFrame(lvl);
                 MethodBase mb = stackFrame.GetMethod();
                 if (mb.DeclaringType != null) {
@@ -303,10 +232,10 @@ namespace YetaWF.Modules.Logging.DataProvider {
             return methodBase;
         }
 
-        private static string GetCallStack(int level) {
+        static string GetCallStack(int level) {
             StringBuilder sb = new StringBuilder();
             StackTrace stackTrace = new StackTrace();
-            for (int lvl = level+2 ; lvl < stackTrace.FrameCount ; ++lvl) {
+            for (int lvl = level + 2; lvl < stackTrace.FrameCount; ++lvl) {
                 StackFrame stackFrame = stackTrace.GetFrame(lvl);
                 MethodBase methBase = stackFrame.GetMethod();
                 if (methBase.DeclaringType != null) {
@@ -318,55 +247,6 @@ namespace YetaWF.Modules.Logging.DataProvider {
             return sb.ToString();
         }
 
-        public bool CanBrowse {
-            get {
-                return CanImportOrExport;
-            }
-        }
-
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1065:DoNotRaiseExceptionsInUnexpectedLocations")]
-        public bool CanImportOrExport {
-            get {
-                IDataProvider<int, LogRecord> providef = DataProvider;// to evaluate IOMode
-                if (IOMode == WebConfigHelper.IOModeEnum.Determine)
-                    throw new InternalError("unexpected IOMode");
-                return base.IOMode == WebConfigHelper.IOModeEnum.Sql;
-            }
-        }
-        public string GetLogFileName() {
-            IDataProvider<int, LogRecord> providef = DataProvider;// to evaluate IOMode
-            if (IOMode != WebConfigHelper.IOModeEnum.File)
-                throw new InternalError("Not supported for current I/O mode");
-            return LogFile;
-        }
-
-        // IINSTALLABLEMODEL
-        // IINSTALLABLEMODEL
-        // IINSTALLABLEMODEL
-
-        public new bool InstallModel(List<string> errorList) {
-            bool success = DataProvider.InstallModel(errorList);
-            if (success)
-                YetaWF.Core.Log.Logging.SetupLogging();
-            return success;
-        }
-        public new bool UninstallModel(List<string> errorList) {
-            YetaWF.Core.Log.Logging.TerminateLogging();
-            return DataProvider.UninstallModel(errorList);
-        }
-        public new bool ExportChunk(int chunk, SerializableList<SerializableFile> fileList, out object obj) {
-            // we're not exporting any data
-            //if (CanImportOrExport)
-            //    return DataProvider.ExportChunk(chunk, fileList, out obj);
-            //else {
-            obj = null;
-            return false;
-            //}
-        }
-        public new void ImportChunk(int chunk, SerializableList<SerializableFile> fileList, object obj) {
-            // we're not importing any data
-            //if (CanImportOrExport)
-            //    DataProvider.ImportChunk(chunk, fileList, obj);
-        }
+        public abstract bool IsInstalled();
     }
 }

@@ -67,7 +67,7 @@ namespace YetaWF.Modules.Blog.Controllers {
                     }
                     ModuleAction viewAction = dispMod.GetAction_Display(blogEntry.Identity);
                     if (viewAction == null) continue;
-                    SyndicationItem sItem = new SyndicationItem(blogEntry.Title.ToString(), blogEntry.Text.ToString(), new Uri(viewAction.GetCompleteUrl()));
+                    SyndicationItem sItem = new SyndicationItem(blogEntry.Title.ToString(), blogEntry.Text, new Uri(viewAction.GetCompleteUrl()));
                     DateTime updDate = blogEntry.DateUpdated ?? blogEntry.DateCreated;
                     sItem.LastUpdatedTime = updDate;
                     if (!string.IsNullOrEmpty(category.SyndicationEmail))

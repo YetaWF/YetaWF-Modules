@@ -40,7 +40,7 @@ namespace YetaWF.Modules.Logging.Scheduler {
 
         public void Remove(List<string> errorList) {
             DateTime oldest = DateTime.UtcNow.AddMonths(-1);
-            using (LogRecordDataProvider logDP = new LogRecordDataProvider()) {
+            using (LogRecordDataProvider logDP = LogRecordDataProvider.GetLogRecordDataProvider()) {
                 List<DataProviderFilterInfo> filters = DataProviderFilterInfo.Join(null, new DataProviderFilterInfo { Field = "TimeStamp", Operator = "<", Value = oldest });
                 int removed = logDP.RemoveItems(filters);
                 errorList.Add(string.Format("{0} records removed from log data", removed));

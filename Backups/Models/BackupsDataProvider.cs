@@ -2,12 +2,9 @@
 
 using System;
 using System.Collections.Generic;
-using System.Globalization;
-using System.IO;
 using YetaWF.Core.DataProvider;
 using YetaWF.Core.Packages;
 using YetaWF.Core.Support;
-using YetaWF.DataProvider;
 
 namespace YetaWF.Modules.Backups.DataProvider {
 
@@ -26,39 +23,24 @@ namespace YetaWF.Modules.Backups.DataProvider {
 
         public BackupsDataProvider() : base(0) { SetDataProvider(CreateDataProvider()); }
 
-        // File
-
         private IDataProvider<string, BackupEntry> DataProvider { get { return GetDataProvider(); } }
 
         private IDataProvider<string, BackupEntry> CreateDataProvider() {
-            return new FileDataProvider<string, BackupEntry>(
-                Path.Combine(Manager.SiteFolder, SiteBackup.BackupFolder));
+            Package package = YetaWF.Modules.Backups.Controllers.AreaRegistration.CurrentPackage;
+            return MakeDataProvider2(package, package.AreaName);
         }
 
         // API
         // API
         // API
 
-        public List<BackupEntry> GetBackups(int skip, int take, List<DataProviderSortInfo> sort, List<DataProviderFilterInfo> filters, out int total)
-        {
-            List<BackupEntry> backups = new List<BackupEntry>();
-            List<string> files = DataProvider.GetKeyList();
-            foreach (string file in files) {
-                DateTime dateTime;
-                string filename = Path.GetFileNameWithoutExtension(file);
-                DateTime.TryParseExact(filename, string.Format(SiteBackup.BackupFileFormat, SiteBackup.BackupDateTimeFormat), new DateTimeFormatInfo(), System.Globalization.DateTimeStyles.None, out dateTime);
-                FileInfo fi = new FileInfo(Path.Combine(Manager.SiteFolder, SiteBackup.BackupFolder, file));
-                long fileSize = fi.Length;
-                BackupEntry backup = new BackupEntry() {
-                    FileName = filename,
-                    FullFileName = file,
-                    Created = dateTime,
-                    Size = fileSize,
-                };
-                backups.Add(backup);
-            }
-            return DataProviderImpl<BackupEntry>.GetRecords(backups, skip, take, sort, filters, out total);
-        }
+        public List<BackupEntry> GetBackups(int skip, int take, List<DataProviderSortInfo> sorts, List<DataProviderFilterInfo> filters, out int total) {
 
+            File.FileDataProvider.BackupsDataProvider fileDP = DataProvider as File.FileDataProvider.BackupsDataProvider;
+            if (fileDP == null)
+                throw new InternalError($"{nameof(BackupsDataProvider)} only supports File I/O");
+
+            return fileDP.GetBackups(skip, take, sorts, filters, out total);
+        }
     }
 }

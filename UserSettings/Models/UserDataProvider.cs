@@ -2,7 +2,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Reflection;
 using YetaWF.Core.DataProvider;
 using YetaWF.Core.DataProvider.Attributes;
@@ -13,10 +12,8 @@ using YetaWF.Core.Localize;
 using YetaWF.Core.Models;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Packages;
-using YetaWF.Core.Serializers;
 using YetaWF.Core.Support;
 using YetaWF.Core.Views.Shared;
-using YetaWF.DataProvider;
 
 namespace YetaWF.Modules.UserSettings.DataProvider {
 
@@ -129,22 +126,7 @@ namespace YetaWF.Modules.UserSettings.DataProvider {
 
         private IDataProvider<int, UserData> CreateDataProvider() {
             Package package = YetaWF.Modules.UserSettings.Controllers.AreaRegistration.CurrentPackage;
-            return MakeDataProvider(package, package.AreaName,
-                () => { // File
-                    return new FileDataProvider<int, UserData>(
-                        Path.Combine(YetaWFManager.DataFolder, Dataset, SiteIdentity.ToString()),
-                        CurrentSiteIdentity: SiteIdentity,
-                        Cacheable: true);
-                },
-                (dbo, conn) => {  // SQL
-                    return new SQLSimpleObjectDataProvider<int, UserData>(Dataset, dbo, conn,
-                        CurrentSiteIdentity: SiteIdentity,
-                        Cacheable: true);
-                },
-                () => { // External
-                    return MakeExternalDataProvider(new { Package = Package, Dataset = Dataset, CurrentSiteIdentity = SiteIdentity, Cacheable = true });
-                }
-            );
+            return MakeDataProvider2(package, package.AreaName, SiteIdentity: SiteIdentity, Cacheable: true);
         }
 
         // API

@@ -2,17 +2,14 @@
 
 using System;
 using System.Collections.Generic;
-using System.IO;
 using YetaWF.Core.DataProvider;
 using YetaWF.Core.IO;
 using YetaWF.Core.Localize;
 using YetaWF.Core.Modules;
 using YetaWF.Core.Packages;
 using YetaWF.Core.Security;
-using YetaWF.Core.Serializers;
 using YetaWF.Core.Site;
 using YetaWF.Core.Support;
-using YetaWF.DataProvider;
 using YetaWF.Modules.SiteProperties.Modules;
 
 namespace YetaWF.Modules.SiteProperties.Models {
@@ -43,28 +40,14 @@ namespace YetaWF.Modules.SiteProperties.Models {
         static SiteDefinitionDataProvider() {
             SiteCache = new Dictionary<string, SiteDefinition>();
         }
+
         public SiteDefinitionDataProvider() : base(0) { SetDataProvider(CreateDataProvider()); }
 
-        private IDataProvider<String, SiteDefinition> DataProvider { get { return GetDataProvider(); } }
+        private IDataProvider<string, SiteDefinition> DataProvider { get { return GetDataProvider(); } }
 
-        private IDataProvider<String, SiteDefinition> CreateDataProvider() {
+        private IDataProvider<string, SiteDefinition> CreateDataProvider() {
             Package package = YetaWF.Modules.SiteProperties.Controllers.AreaRegistration.CurrentPackage;
-            return MakeDataProvider(package, package.AreaName,
-                () => { // File
-                    return new FileDataProvider<String, SiteDefinition>(
-                        Path.Combine(YetaWFManager.DataFolder, Dataset),
-                        IdentitySeed: SiteDefinition.SiteIdentitySeed);
-                },
-                (dbo, conn) => {  // SQL
-                    return new SQLSimpleObjectDataProvider<String, SiteDefinition>(Dataset, dbo, conn,
-                        NoLanguages: true,
-                        IdentitySeed: SiteDefinition.SiteIdentitySeed,
-                        Cacheable: true);
-                },
-                () => { // External
-                    return MakeExternalDataProvider(new { Package = Package, Dataset = Dataset, CurrentSiteIdentity = SiteIdentity, Cacheable = true });
-                }
-            );
+            return MakeDataProvider2(package, package.AreaName, Cacheable: true, Parms: new { IdentitySeed = SiteDefinition.SiteIdentitySeed, NoLanguages = true });
         }
 
         // API

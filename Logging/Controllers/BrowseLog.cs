@@ -111,7 +111,7 @@ namespace YetaWF.Modules.Logging.Controllers {
         [AllowGet]
         public ActionResult BrowseLog() {
             FlushLog();
-            using (LogRecordDataProvider dataProvider = new LogRecordDataProvider()) {
+            using (LogRecordDataProvider dataProvider = LogRecordDataProvider.GetLogRecordDataProvider()) {
                 BrowseModel model = new BrowseModel {
                     LogAvailable = dataProvider.IsInstalled(),
                     BrowsingSupported = dataProvider.CanBrowse,
@@ -138,7 +138,7 @@ namespace YetaWF.Modules.Logging.Controllers {
         public ActionResult BrowseLog_GridData(int skip, int take, List<DataProviderSortInfo> sort, List<DataProviderFilterInfo> filters, Guid settingsModuleGuid) {
             FlushLog();
             GridHelper.UpdateAlternateSortColumn(sort, filters, "UserId", "UserName");
-            using (LogRecordDataProvider dataProvider = new LogRecordDataProvider()) {
+            using (LogRecordDataProvider dataProvider = LogRecordDataProvider.GetLogRecordDataProvider()) {
                 int total;
                 List<LogRecord> browseItems = dataProvider.GetItems(skip, take, sort, filters, out total);
                 GridHelper.SaveSettings(skip, take, sort, filters, settingsModuleGuid);
@@ -154,7 +154,7 @@ namespace YetaWF.Modules.Logging.Controllers {
         [ExcludeDemoMode]
         public ActionResult RemoveAll() {
             FlushLog();
-            using (LogRecordDataProvider dataProvider = new LogRecordDataProvider()) {
+            using (LogRecordDataProvider dataProvider = LogRecordDataProvider.GetLogRecordDataProvider()) {
                 dataProvider.RemoveItems(null);// that means all records
                 return Reload(null, PopupText: this.__ResStr("allRemoved", "All log records have been removed"), Reload: ReloadEnum.ModuleParts);
             }
@@ -163,7 +163,7 @@ namespace YetaWF.Modules.Logging.Controllers {
         [Permission("Downloads")]
         public ActionResult DownloadLog(long cookieToReturn) {
             FlushLog();
-            using (LogRecordDataProvider dataProvider = new LogRecordDataProvider()) {
+            using (LogRecordDataProvider dataProvider = LogRecordDataProvider.GetLogRecordDataProvider()) {
                 string filename = dataProvider.GetLogFileName();
                 if (!System.IO.File.Exists(filename))
                     throw new Error(this.__ResStr("logNotFound", "The log file '{0}' cannot be located", filename));
@@ -190,7 +190,7 @@ namespace YetaWF.Modules.Logging.Controllers {
         [Permission("Downloads")]
         public ActionResult DownloadZippedLog(long cookieToReturn) {
             FlushLog();
-            using (LogRecordDataProvider dataProvider = new LogRecordDataProvider()) {
+            using (LogRecordDataProvider dataProvider = LogRecordDataProvider.GetLogRecordDataProvider()) {
                 string filename = dataProvider.GetLogFileName();
                 if (!System.IO.File.Exists(filename))
                     throw new Error(this.__ResStr("logNotFound", "The log file '{0}' cannot be located", filename));

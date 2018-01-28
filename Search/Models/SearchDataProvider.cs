@@ -13,7 +13,6 @@ using YetaWF.Core.Packages;
 using YetaWF.Core.Pages;
 using YetaWF.Core.Serializers;
 using YetaWF.Core.Support;
-using YetaWF.DataProvider;
 
 namespace YetaWF.Modules.Search.DataProvider {
     public class SearchData {
@@ -59,6 +58,11 @@ namespace YetaWF.Modules.Search.DataProvider {
         }
     }
 
+    public interface ISearchDataProviderIOMode {
+        void RemoveUnusedUrls();
+        void MarkUpdated(int searchDataUrlId);
+    }
+
     public class SearchDataProvider : DataProviderImpl, IInstallableModel {
 
         // IMPLEMENTATION
@@ -68,28 +72,15 @@ namespace YetaWF.Modules.Search.DataProvider {
         public SearchDataProvider() : base(YetaWFManager.Manager.CurrentSite.Identity) { SetDataProvider(CreateDataProvider()); }
         public SearchDataProvider(int siteIdentity) : base(siteIdentity) { SetDataProvider(CreateDataProvider()); }
 
-        private IDataProviderIdentity<int, object, int, SearchData> DataProvider { get { return GetDataProvider(); } }
+        private IDataProvider<int, SearchData> DataProvider { get { return GetDataProvider(); } }
+        private ISearchDataProviderIOMode DataProviderIOMode { get { return GetDataProvider(); } }
 
-        private IDataProviderIdentity<int, object, int, SearchData> CreateDataProvider() {
+        private IDataProvider<int, SearchData> CreateDataProvider() {
             Package package = YetaWF.Modules.Search.Controllers.AreaRegistration.CurrentPackage;
-            return MakeDataProvider(package, package.AreaName + "_Data",
-                () => { // File
-                    // accept so we can run without failure. However, it's only usable with Sql
-                    Usable = false;
-                    return null;
-                },
-                (dbo, conn) => {  // SQL
-                    Usable = true;
-                    return new SQLIdentityObjectDataProvider<int, object, int, SearchData>(Dataset, dbo, conn,
-                        CurrentSiteIdentity: SiteIdentity,
-                        Cacheable: true);
-                },
-                () => { // External
-                    IDataProviderIdentity<int, object, int, SearchData> dp = MakeExternalDataProvider(new { Package = Package, Dataset = Dataset, CurrentSiteIdentity = SiteIdentity, Cacheable = true });
-                    Usable = dp != null;
-                    return dp;
-                }
-            );
+            dynamic dp = MakeDataProvider2(package, package.AreaName + "_Data", SiteIdentity: SiteIdentity, Cacheable: true);
+            if (dp != null)
+                Usable = true;
+            return dp;
         }
 
         private bool Usable { get; set; }
@@ -172,11 +163,11 @@ namespace YetaWF.Modules.Search.DataProvider {
         }
         public UpdateStatusEnum UpdateItem(SearchData data) {
             if (!IsUsable) return UpdateStatusEnum.RecordDeleted;
-            return DataProvider.Update(data.SearchDataId, null, data.SearchDataId, null, data);
+            return DataProvider.Update(data.SearchDataId, data.SearchDataId, data);
         }
         public bool RemoveItem(int id) {
             if (!IsUsable) return false;
-            return DataProvider.RemoveByIdentity(id);
+            return DataProvider.Remove(id);
         }
         public List<SearchData> GetItemsWithUrl(int skip, int take, List<DataProviderSortInfo> sort, List<DataProviderFilterInfo> filters, out int total) {
             if (!IsUsable) {
@@ -215,20 +206,10 @@ namespace YetaWF.Modules.Search.DataProvider {
                 RemoveUnusedUrls();
             });
         }
-
         private void RemoveUnusedUrls() {
-            using (SearchDataUrlDataProvider searchUrlDP = new SearchDataUrlDataProvider()) {
-                DoAction(() => {
-                    SQLSimpleObjectDataProvider<int, SearchData> sqlDP = (SQLSimpleObjectDataProvider<int, SearchData>)DataProvider;
-                    string sql = @"
-                        DELETE {UrlTableName}
-                          FROM {UrlTableName}
-                          LEFT JOIN {TableName} ON {UrlTableName}.[SearchDataUrlId] = {TableName}.[SearchDataUrlId]
-                          WHERE {TableName}.[SearchDataUrlId] IS NULL";
-                    sql = sql.Replace("{UrlTableName}", SQLDataProviderImpl.WrapBrackets(searchUrlDP.GetTableName()));
-                    sqlDP.Direct_Query(GetTableName(), sql);
-                });
-            }
+            DoAction(() => {
+                DataProviderIOMode.RemoveUnusedUrls();
+            });
         }
 
         /// <summary>
@@ -250,14 +231,14 @@ namespace YetaWF.Modules.Search.DataProvider {
                 if (dataAge.AddSeconds(1) < newAge) // all for slight difference in timestamps
                     return true;
                 // update the dateadded datetimes for all search terms on this page to reflect that we didn't search and just accept them again
-                DoAction(() => {
-                    SQLSimpleObjectDataProvider<int, SearchData> sqlDP = (SQLSimpleObjectDataProvider<int, SearchData>)DataProvider;
-                    string sql = @"UPDATE {TableName} Set DateAdded = GETUTCDATE() WHERE {__Site} AND [SearchDataUrlId] = {UrlId}";
-                    sql = sql.Replace("{UrlId}", searchUrl.SearchDataUrlId.ToString());
-                    sqlDP.Direct_Query(GetTableName(), sql);
-                });
+                MarkUpdated(searchUrl.SearchDataUrlId);
             }
             return false;
+        }
+        private void MarkUpdated(int searchDataUrlId) {
+            DoAction(() => {
+                DataProviderIOMode.MarkUpdated(searchDataUrlId);
+            });
         }
 
         // IINSTALLABLEMODEL

@@ -15,7 +15,7 @@ namespace YetaWF.Modules.TawkTo.Addons {
             ScriptManager scripts = manager.ScriptManager;
             string area = AreaRegistration.CurrentPackage.AreaName;
 
-            ConfigData config = ConfigDataDataProvider.GetConfig();
+            ConfigData config = ConfigDataProvider.GetConfig();
             //scripts.AddLocalization(area, "msg_expandSource", this.__ResStr("expandSource", "+ expand source"));
             scripts.AddConfigOption(area, "ExcludedPagesCss", config.ExcludedPagesCss);
             scripts.AddConfigOption(area, "IncludedPagesCss", config.IncludedPagesCss);

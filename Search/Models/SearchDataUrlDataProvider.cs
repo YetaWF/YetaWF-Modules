@@ -11,7 +11,6 @@ using YetaWF.Core.Packages;
 using YetaWF.Core.Pages;
 using YetaWF.Core.Serializers;
 using YetaWF.Core.Support;
-using YetaWF.DataProvider;
 
 namespace YetaWF.Modules.Search.DataProvider {
 
@@ -48,24 +47,12 @@ namespace YetaWF.Modules.Search.DataProvider {
         public SearchDataUrlDataProvider() : base(YetaWFManager.Manager.CurrentSite.Identity) { SetDataProvider(CreateDataProvider()); }
         public SearchDataUrlDataProvider(int siteIdentity) : base(siteIdentity) { SetDataProvider(CreateDataProvider()); }
 
-        private IDataProviderIdentity<string, object, int, SearchDataUrl> DataProvider { get { return GetDataProvider(); } }
+        private IDataProvider<int, SearchDataUrl> DataProvider { get { return GetDataProvider(); } }
 
-        private IDataProviderIdentity<string, object, int, SearchDataUrl> CreateDataProvider() {
+        private IDataProvider<int, SearchDataUrl> CreateDataProvider() {
             if (SearchDataProvider.IsUsable) {
                 Package package = YetaWF.Modules.Search.Controllers.AreaRegistration.CurrentPackage;
-                return MakeDataProvider(package, package.AreaName + "_Urls",
-                    () => { // File
-                        throw new InternalError("File I/O is not supported");
-                    },
-                    (dbo, conn) => {  // SQL
-                        return new SQLIdentityObjectDataProvider<string, object, int, SearchDataUrl>(Dataset, dbo, conn,
-                            CurrentSiteIdentity: SiteIdentity,
-                            Cacheable: true);
-                    },
-                    () => { // External
-                        return MakeExternalDataProvider(new { Package = Package, Dataset = Dataset, CurrentSiteIdentity = SiteIdentity, Cacheable = true });
-                    }
-                );
+                return MakeDataProvider2(package, package.AreaName + "_Urls", SiteIdentity: SiteIdentity, Cacheable: true);
             } else {
                 return null;
             }
@@ -77,7 +64,7 @@ namespace YetaWF.Modules.Search.DataProvider {
 
         public SearchDataUrl GetItem(int id) {
             if (!SearchDataProvider.IsUsable) return null;
-            return DataProvider.GetByIdentity(id);
+            return DataProvider.Get(id);
         }
         internal SearchDataUrl GetItemByUrl(string pageUrl) {
             if (!SearchDataProvider.IsUsable) return null;
@@ -92,7 +79,7 @@ namespace YetaWF.Modules.Search.DataProvider {
         }
         public UpdateStatusEnum UpdateItem(SearchDataUrl data) {
             if (!SearchDataProvider.IsUsable) return UpdateStatusEnum.RecordDeleted;
-            return DataProvider.UpdateByIdentity(data.SearchDataUrlId, data);
+            return DataProvider.Update(data.SearchDataUrlId, data.SearchDataUrlId, data);
         }
         public int RemoveItems(List<DataProviderFilterInfo> filters) {
             if (!SearchDataProvider.IsUsable) return 0;
