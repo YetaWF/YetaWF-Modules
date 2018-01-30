@@ -34,7 +34,7 @@ namespace YetaWF.Modules.Menus.DataProvider {
 
         private IDataProvider<Guid, MenuInfo> CreateDataProvider() {
             Package package = YetaWF.Modules.Menus.Controllers.AreaRegistration.CurrentPackage;
-            return MakeDataProvider2(package, package.AreaName + "_MenuInfo", SiteIdentity: SiteIdentity, Cacheable: true);
+            return MakeDataProvider(package, package.AreaName + "_MenuInfo", SiteIdentity: SiteIdentity, Cacheable: true);
         }
 
         // API

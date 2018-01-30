@@ -68,7 +68,7 @@ namespace YetaWF.Modules.Identity.DataProvider {
 
         private IDataProvider<string, RoleDefinition> CreateDataProvider() {
             Package package = YetaWF.Modules.Identity.Controllers.AreaRegistration.CurrentPackage;
-            return MakeDataProvider2(package, package.AreaName + "_Roles", SiteIdentity: SiteIdentity, Cacheable: true);
+            return MakeDataProvider(package, package.AreaName + "_Roles", SiteIdentity: SiteIdentity, Cacheable: true);
         }
 
         // API

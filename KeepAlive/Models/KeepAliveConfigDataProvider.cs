@@ -41,7 +41,7 @@ namespace YetaWF.Modules.KeepAlive.DataProvider {
 
         private IDataProvider<int, KeepAliveConfigData> CreateDataProvider() {
             Package package = YetaWF.Modules.KeepAlive.Controllers.AreaRegistration.CurrentPackage;
-            return MakeDataProvider2(package, package.AreaName + "_Config", Cacheable: true);
+            return MakeDataProvider(package, package.AreaName + "_Config", Cacheable: true);
         }
 
         // API

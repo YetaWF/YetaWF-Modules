@@ -26,14 +26,16 @@ namespace YetaWF.Modules.Blog.DataProvider.SQL {
                 if (name == "CommentsUnapproved") {
                     using (DataProvider.BlogCommentDataProvider commentDP = new DataProvider.BlogCommentDataProvider(-1)) {// we don't know the entry, but it's not needed
                         sql = "SELECT COUNT(*) FROM $BlogComments$ WHERE ($BlogComments$.EntryIdentity = $ThisTable$.[Identity]) AND ($ThisTable$.Published = 1) AND ($BlogComments$.Deleted = 0) AND ($BlogComments$.Approved = 0)";
-                        sql = commentDP.ReplaceWithTableName(sql, "$BlogComments$");
+                        ISQLTableInfo info = (ISQLTableInfo)commentDP.GetDataProvider();
+                        sql = info.ReplaceWithTableName(sql, "$BlogComments$");
                         sql = ReplaceWithTableName(sql, "$ThisTable$");
                         return sql;
                     }
                 } else if (name == "Comments") {
                     using (DataProvider.BlogCommentDataProvider commentDP = new DataProvider.BlogCommentDataProvider(-1)) {// we don't know the entry, but it's not needed
                         sql = "SELECT COUNT(*) FROM $BlogComments$ WHERE ($BlogComments$.EntryIdentity = $ThisTable$.[Identity]) AND ($ThisTable$.Published = 1)";
-                        sql = commentDP.ReplaceWithTableName(sql, "$BlogComments$");
+                        ISQLTableInfo info = (ISQLTableInfo)commentDP.GetDataProvider();
+                        sql = info.ReplaceWithTableName(sql, "$BlogComments$");
                         sql = ReplaceWithTableName(sql, "$ThisTable$");
                         return sql;
                     }

@@ -124,7 +124,7 @@ namespace YetaWF.Modules.Pages.DataProvider {
 
         private IDataProvider<Guid, UnifiedSetData> CreateDataProvider() {
             Package package = YetaWF.Modules.Pages.Controllers.AreaRegistration.CurrentPackage;
-            return MakeDataProvider2(package, package.AreaName + "_UnifiedSets", SiteIdentity: SiteIdentity, Cacheable: true);
+            return MakeDataProvider(package, package.AreaName + "_UnifiedSets", SiteIdentity: SiteIdentity, Cacheable: true);
         }
 
         // API

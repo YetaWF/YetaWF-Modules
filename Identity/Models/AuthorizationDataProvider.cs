@@ -55,7 +55,7 @@ namespace YetaWF.Modules.Identity.DataProvider {
 
         private IDataProvider<string, Authorization> CreateDataProvider() {
             Package package = YetaWF.Modules.Identity.Controllers.AreaRegistration.CurrentPackage;
-            return MakeDataProvider2(package, package.AreaName + "_Authorization", SiteIdentity: SiteIdentity, Cacheable: true, Parms: new { NoLanguages = true });
+            return MakeDataProvider(package, package.AreaName + "_Authorization", SiteIdentity: SiteIdentity, Cacheable: true, Parms: new { NoLanguages = true });
         }
 
         // API

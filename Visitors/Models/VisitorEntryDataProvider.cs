@@ -77,7 +77,7 @@ namespace YetaWF.Modules.Visitors.DataProvider {
 
         private IDataProvider<int, VisitorEntry> CreateDataProvider() {
             Package package = YetaWF.Modules.Visitors.Controllers.AreaRegistration.CurrentPackage;
-            return MakeDataProvider2(package, package.AreaName, SiteIdentity: SiteIdentity, Cacheable: true);
+            return MakeDataProvider(package, package.AreaName, SiteIdentity: SiteIdentity, Cacheable: true);
         }
 
         // API

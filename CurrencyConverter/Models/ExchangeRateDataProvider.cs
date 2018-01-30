@@ -61,7 +61,7 @@ namespace YetaWF.Modules.CurrencyConverter.DataProvider {
 
         private IDataProvider<int, ExchangeRateData> CreateDataProvider() {
             Package package = YetaWF.Modules.CurrencyConverter.Controllers.AreaRegistration.CurrentPackage;
-            return MakeDataProvider2(package, package.AreaName + "_Data", Cacheable: true);
+            return MakeDataProvider(package, package.AreaName + "_Data", Cacheable: true);
         }
 
         // API

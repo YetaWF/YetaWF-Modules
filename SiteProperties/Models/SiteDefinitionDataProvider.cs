@@ -47,7 +47,7 @@ namespace YetaWF.Modules.SiteProperties.Models {
 
         private IDataProvider<string, SiteDefinition> CreateDataProvider() {
             Package package = YetaWF.Modules.SiteProperties.Controllers.AreaRegistration.CurrentPackage;
-            return MakeDataProvider2(package, package.AreaName, Cacheable: true, Parms: new { IdentitySeed = SiteDefinition.SiteIdentitySeed, NoLanguages = true });
+            return MakeDataProvider(package, package.AreaName, Cacheable: true, Parms: new { IdentitySeed = SiteDefinition.SiteIdentitySeed, NoLanguages = true });
         }
 
         // API

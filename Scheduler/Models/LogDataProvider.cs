@@ -53,7 +53,7 @@ namespace YetaWF.Modules.Scheduler.DataProvider {
 
         private IDataProvider<int, LogData> CreateDataProvider() {
             Package package = YetaWF.Modules.Scheduler.Controllers.AreaRegistration.CurrentPackage;
-            return MakeDataProvider2(package, package.AreaName + "_Log", Cacheable: true);
+            return MakeDataProvider(package, package.AreaName + "_Log", Cacheable: true);
         }
 
         // API

@@ -39,7 +39,7 @@ namespace YetaWF.Modules.CurrencyConverter.DataProvider {
 
         private IDataProvider<int, ConfigData> CreateDataProvider() {
             Package package = YetaWF.Modules.CurrencyConverter.Controllers.AreaRegistration.CurrentPackage;
-            return MakeDataProvider2(package, package.AreaName, Cacheable: true);
+            return MakeDataProvider(package, package.AreaName, Cacheable: true);
         }
 
         // API

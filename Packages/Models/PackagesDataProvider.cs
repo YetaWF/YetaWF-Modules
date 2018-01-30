@@ -67,7 +67,7 @@ namespace YetaWF.Modules.Packages.DataProvider {
 
             Logging.AddLog("Site initialization starting");
 
-            ClearAll();
+            //ClearAll();
             InstallPackages();
             if (qs["From"] == "Data") {
                 BuildSiteUsingData(false);
@@ -213,43 +213,43 @@ namespace YetaWF.Modules.Packages.DataProvider {
             return true;
         }
 
-        private void ClearAll() {
+        //private void ClearAll() {
 
-            try {
-                // this can fail if there is no session (during initial install)
-                YetaWFManager.SetRequestedDomain(null);
-            } catch (Exception) { }
+        //    try {
+        //        // this can fail if there is no session (during initial install)
+        //        YetaWFManager.SetRequestedDomain(null);
+        //    } catch (Exception) { }
 
-            Logging.AddLog("Removing all known tables (if any)");
+        //    Logging.AddLog("Removing all known tables (if any)");
 
-            LocalizationSupport localizationSupport = new LocalizationSupport();
-            localizationSupport.SetUseLocalizationResources(false);// turn off use of localization resources - things are about to be removed
+        //    LocalizationSupport localizationSupport = new LocalizationSupport();
+        //    localizationSupport.SetUseLocalizationResources(false);// turn off use of localization resources - things are about to be removed
 
-            // turn off logging - things are about to be removed
-            YetaWF.Core.Log.Logging.TerminateLogging();
+        //    // turn off logging - things are about to be removed
+        //    YetaWF.Core.Log.Logging.TerminateLogging();
 
-            // SQL - drop all tables
-            string ioModeDefault = WebConfigHelper.GetValue<string>(DataProviderImpl.DefaultString, DataProviderImpl.IOModeString);
-            if (string.IsNullOrWhiteSpace(ioModeDefault))
-                throw new InternalError("Default IOMode is missing");
-            if (ioModeDefault.ToLower() == "sql") {
-                string sqlDboDefault, connDefault;
-                DataProviderImpl.GetSQLInfo(out sqlDboDefault, out connDefault);
-                if (!string.IsNullOrWhiteSpace(sqlDboDefault) && !string.IsNullOrWhiteSpace(connDefault)) {
-                    using (SQLDataProviderImpl sql = new SQLDataProviderImpl(sqlDboDefault, connDefault, null, NoLanguages: true)) {
-                        sql.DropAllTables();
-                    }
-                }
-            }
-            // File - Remove all folders (not files - those could be the sql db)
-            if (Directory.Exists(YetaWFManager.DataFolder)) {
-                string[] dirs = Directory.GetDirectories(YetaWFManager.DataFolder);
-                foreach (string dir in dirs) {
-                    Logging.AddLog("Removing folder {0}", dir);
-                    DirectoryIO.DeleteFolder(dir);
-                }
-            }
-        }
+        //    // SQL - drop all tables
+        //    string ioModeDefault = WebConfigHelper.GetValue<string>(DataProviderImpl.DefaultString, DataProviderImpl.IOModeString);
+        //    if (string.IsNullOrWhiteSpace(ioModeDefault))
+        //        throw new InternalError("Default IOMode is missing");
+        //    if (ioModeDefault.ToLower() == "sql") {
+        //        string sqlDboDefault, connDefault;
+        //        DataProviderImpl.GetSQLInfo(out sqlDboDefault, out connDefault);
+        //        if (!string.IsNullOrWhiteSpace(sqlDboDefault) && !string.IsNullOrWhiteSpace(connDefault)) {
+        //            using (SQLDataProviderImpl sql = new SQLDataProviderImpl(sqlDboDefault, connDefault, null, NoLanguages: true)) {
+        //                sql.DropAllTables();
+        //            }
+        //        }
+        //    }
+        //    // File - Remove all folders (not files - those could be the sql db)
+        //    if (Directory.Exists(YetaWFManager.DataFolder)) {
+        //        string[] dirs = Directory.GetDirectories(YetaWFManager.DataFolder);
+        //        foreach (string dir in dirs) {
+        //            Logging.AddLog("Removing folder {0}", dir);
+        //            DirectoryIO.DeleteFolder(dir);
+        //        }
+        //    }
+        //}
         /// <summary>
         /// Installs all models for the specified package
         /// </summary>

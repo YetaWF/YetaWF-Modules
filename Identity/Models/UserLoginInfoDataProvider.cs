@@ -90,7 +90,7 @@ namespace YetaWF.Modules.Identity.DataProvider {
 
         private IDataProvider<string, LoginInfo> CreateDataProvider() {
             Package package = YetaWF.Modules.Identity.Controllers.AreaRegistration.CurrentPackage;
-            return MakeDataProvider2(package, package.AreaName + "_LoginInfoList", SiteIdentity: SiteIdentity, Cacheable: true, Parms: new { NoLanguages = true });
+            return MakeDataProvider(package, package.AreaName + "_LoginInfoList", SiteIdentity: SiteIdentity, Cacheable: true, Parms: new { NoLanguages = true });
         }
 
         // API

@@ -53,7 +53,7 @@ namespace YetaWF.Modules.Messenger.DataProvider {
 
         private IDataProvider<string, Connection> CreateDataProvider() {
             Package package = YetaWF.Modules.Messenger.Controllers.AreaRegistration.CurrentPackage;
-            return MakeDataProvider2(package, package.AreaName + "_Connections", SiteIdentity: SiteIdentity, Cacheable: true);
+            return MakeDataProvider(package, package.AreaName + "_Connections", SiteIdentity: SiteIdentity, Cacheable: true);
         }
 
         // API

@@ -20,10 +20,10 @@ namespace YetaWF.Modules.Messenger.DataProvider.SQL {
         class ConnectionDataProvider : SQLSimpleObject<int, ConfigData> {
             public ConnectionDataProvider(Dictionary<string, object> options) : base(options) { }
         }
-        class MessagingDataProvider : SQLSimple2Object<int, object, Message> {
+        class MessagingDataProvider : SQLSimple2IdentityObject<int, object, Message> {
             public MessagingDataProvider(Dictionary<string, object> options) : base(options) { }
         }
-        class SiteAccouncementDataProvider : SQLSimple2Object<int, object, Message> {
+        class SiteAccouncementDataProvider : SQLSimple2IdentityObject<int, object, Message> {
             public SiteAccouncementDataProvider(Dictionary<string, object> options) : base(options) { }
         }
     }

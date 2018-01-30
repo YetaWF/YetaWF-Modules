@@ -43,11 +43,11 @@ namespace YetaWF.Modules.Messenger.DataProvider {
         public MessagingDataProvider() : base(YetaWFManager.Manager.CurrentSite.Identity) { SetDataProvider(CreateDataProvider()); }
         public MessagingDataProvider(int siteIdentity) : base(siteIdentity) { SetDataProvider(CreateDataProvider()); }
 
-        private IDataProviderIdentity<int, object, int, Message> DataProvider { get { return GetDataProvider(); } }
+        private IDataProviderIdentity<int, object, Message> DataProvider { get { return GetDataProvider(); } }
 
-        private IDataProviderIdentity<int, object, int, Message> CreateDataProvider() {
+        private IDataProviderIdentity<int, object, Message> CreateDataProvider() {
             Package package = YetaWF.Modules.Messenger.Controllers.AreaRegistration.CurrentPackage;
-            return MakeDataProvider2(package, package.AreaName + "_Messaging", SiteIdentity: SiteIdentity, Cacheable: true);
+            return MakeDataProvider(package, package.AreaName + "_Messaging", SiteIdentity: SiteIdentity, Cacheable: true);
         }
 
         // API

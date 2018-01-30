@@ -77,7 +77,7 @@ namespace YetaWF.Modules.Scheduler.DataProvider {
 
         private IDataProvider<string, SchedulerItemData> CreateDataProvider() {
             Package package = YetaWF.Modules.Scheduler.Controllers.AreaRegistration.CurrentPackage;
-            return MakeDataProvider2(package, package.AreaName, Cacheable: true, Parms: new { NoLanguages = true });
+            return MakeDataProvider(package, package.AreaName, Cacheable: true, Parms: new { NoLanguages = true });
         }
 
         // API

@@ -40,11 +40,11 @@ namespace YetaWF.Modules.Messenger.DataProvider {
         public SiteAccouncementDataProvider() : base(YetaWFManager.Manager.CurrentSite.Identity) { SetDataProvider(CreateDataProvider()); }
         public SiteAccouncementDataProvider(int siteIdentity) : base(siteIdentity) { SetDataProvider(CreateDataProvider()); }
 
-        private IDataProviderIdentity<int, object, int, SiteAccouncement> DataProvider { get { return GetDataProvider(); } }
+        private IDataProviderIdentity<int, object, SiteAccouncement> DataProvider { get { return GetDataProvider(); } }
 
-        private IDataProviderIdentity<int, object, int, SiteAccouncement> CreateDataProvider() {
+        private IDataProviderIdentity<int, object, SiteAccouncement> CreateDataProvider() {
             Package package = YetaWF.Modules.Messenger.Controllers.AreaRegistration.CurrentPackage;
-            return MakeDataProvider2(package, package.AreaName + "_Announcements", SiteIdentity: SiteIdentity, Cacheable: true);
+            return MakeDataProvider(package, package.AreaName + "_Announcements", SiteIdentity: SiteIdentity, Cacheable: true);
         }
 
         // API

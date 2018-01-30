@@ -37,7 +37,7 @@ namespace YetaWF.Modules.Basics.DataProvider {
 
         private IDataProvider<int, RecaptchaConfig> CreateDataProvider() {
             Package package = YetaWF.Modules.Basics.Controllers.AreaRegistration.CurrentPackage;
-            return MakeDataProvider2(package, package.AreaName, Cacheable: true);
+            return MakeDataProvider(package, package.AreaName, Cacheable: true);
         }
 
         // API

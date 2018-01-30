@@ -77,7 +77,7 @@ namespace YetaWF.Modules.Search.DataProvider {
 
         private IDataProvider<int, SearchData> CreateDataProvider() {
             Package package = YetaWF.Modules.Search.Controllers.AreaRegistration.CurrentPackage;
-            dynamic dp = MakeDataProvider2(package, package.AreaName + "_Data", SiteIdentity: SiteIdentity, Cacheable: true);
+            dynamic dp = MakeDataProvider(package, package.AreaName + "_Data", SiteIdentity: SiteIdentity, Cacheable: true);
             if (dp != null)
                 Usable = true;
             return dp;
@@ -104,7 +104,7 @@ namespace YetaWF.Modules.Search.DataProvider {
             });
         }
         private string LockKey() {
-            return GetTableName();
+            return Dataset;
         }
         internal SearchData GetItemWithUrl(int searchDataId) {
             if (!IsUsable) return null;

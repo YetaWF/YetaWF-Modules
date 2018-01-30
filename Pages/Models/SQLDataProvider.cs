@@ -74,7 +74,7 @@ namespace YetaWF.Modules.Pages.DataProvider.SQL {
 
                 private IDataProvider<string, PageDefinitionForModules> CreateDataProvider() {
                     Package package = YetaWF.Modules.Pages.Controllers.AreaRegistration.CurrentPackage;
-                    return MakeDataProvider2(package, package.AreaName + "_ModuleDefinitions", SiteIdentity: SiteIdentity, Cacheable: true);
+                    return MakeDataProvider(package, package.AreaName + "_ModuleDefinitions", SiteIdentity: SiteIdentity, Cacheable: true);
                 }
             }
             public class PageDefinitionForModulesDataProviderSQL : SQLSimpleObject<string, PageDefinitionForModules> {
