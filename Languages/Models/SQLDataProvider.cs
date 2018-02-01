@@ -2,14 +2,14 @@
 
 using System.Collections.Generic;
 using YetaWF.Core.DataProvider;
-using YetaWF.DataProvider.SQL2;
+using YetaWF.DataProvider.SQL;
 
 namespace YetaWF.Modules.Languages.DataProvider.SQL {
 
     public class SQLDataProvider : IExternalDataProvider {
 
         public void Register() {
-            DataProviderImpl.RegisterExternalDataProvider(SQL2Base.ExternalName, typeof(DataProvider.LocalizeConfigDataProvider), typeof(LocalizeConfigDataProvider));
+            DataProviderImpl.RegisterExternalDataProvider(SQLBase.ExternalName, typeof(DataProvider.LocalizeConfigDataProvider), typeof(LocalizeConfigDataProvider));
         }
         class LocalizeConfigDataProvider : SQLSimpleObject<int, LocalizeConfigData> {
             public LocalizeConfigDataProvider(Dictionary<string, object> options) : base(options) { }

@@ -3,17 +3,17 @@
 using System;
 using System.Collections.Generic;
 using YetaWF.Core.DataProvider;
-using YetaWF.DataProvider.SQL2;
+using YetaWF.DataProvider.SQL;
 
 namespace YetaWF.Modules.Search.DataProvider.SQL {
 
     public class SQLDataProvider : IExternalDataProvider {
 
         public void Register() {
-            DataProviderImpl.RegisterExternalDataProvider(SQL2Base.ExternalName, typeof(DataProvider.SearchConfigDataProvider), typeof(SearchConfigDataProvider));
-            DataProviderImpl.RegisterExternalDataProvider(SQL2Base.ExternalName, typeof(DataProvider.SearchDataProvider), typeof(SearchDataProvider));
-            DataProviderImpl.RegisterExternalDataProvider(SQL2Base.ExternalName, typeof(DataProvider.SearchResultDataProvider), typeof(SearchResultDataProvider));
-            DataProviderImpl.RegisterExternalDataProvider(SQL2Base.ExternalName, typeof(DataProvider.SearchDataUrlDataProvider), typeof(SearchDataUrlDataProvider));
+            DataProviderImpl.RegisterExternalDataProvider(SQLBase.ExternalName, typeof(DataProvider.SearchConfigDataProvider), typeof(SearchConfigDataProvider));
+            DataProviderImpl.RegisterExternalDataProvider(SQLBase.ExternalName, typeof(DataProvider.SearchDataProvider), typeof(SearchDataProvider));
+            DataProviderImpl.RegisterExternalDataProvider(SQLBase.ExternalName, typeof(DataProvider.SearchResultDataProvider), typeof(SearchResultDataProvider));
+            DataProviderImpl.RegisterExternalDataProvider(SQLBase.ExternalName, typeof(DataProvider.SearchDataUrlDataProvider), typeof(SearchDataUrlDataProvider));
         }
         class SearchConfigDataProvider : SQLSimpleObject<int, SearchConfigData> {
             public SearchConfigDataProvider(Dictionary<string, object> options) : base(options) { }

@@ -2,15 +2,15 @@
 
 using System.Collections.Generic;
 using YetaWF.Core.DataProvider;
-using YetaWF.DataProvider.SQL2;
+using YetaWF.DataProvider.SQL;
 
 namespace YetaWF.Modules.Scheduler.DataProvider.SQL {
 
     public class SQLDataProvider : IExternalDataProvider {
 
         public void Register() {
-            DataProviderImpl.RegisterExternalDataProvider(SQL2Base.ExternalName, typeof(DataProvider.SchedulerDataProvider), typeof(SchedulerDataProvider));
-            DataProviderImpl.RegisterExternalDataProvider(SQL2Base.ExternalName, typeof(DataProvider.LogDataProvider), typeof(LogDataProvider));
+            DataProviderImpl.RegisterExternalDataProvider(SQLBase.ExternalName, typeof(DataProvider.SchedulerDataProvider), typeof(SchedulerDataProvider));
+            DataProviderImpl.RegisterExternalDataProvider(SQLBase.ExternalName, typeof(DataProvider.LogDataProvider), typeof(LogDataProvider));
         }
         class SchedulerDataProvider : SQLSimpleObject<string, SchedulerItemData> {
             public SchedulerDataProvider(Dictionary<string, object> options) : base(options) { }

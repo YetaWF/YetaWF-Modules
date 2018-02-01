@@ -2,15 +2,15 @@
 
 using System.Collections.Generic;
 using YetaWF.Core.DataProvider;
-using YetaWF.DataProvider.SQL2;
+using YetaWF.DataProvider.SQL;
 
 namespace YetaWF.Modules.CurrencyConverter.DataProvider.SQL {
 
     public class SQLDataProvider : IExternalDataProvider {
 
         public void Register() {
-            DataProviderImpl.RegisterExternalDataProvider(SQL2Base.ExternalName, typeof(DataProvider.ConfigDataProvider), typeof(ConfigDataProvider));
-            DataProviderImpl.RegisterExternalDataProvider(SQL2Base.ExternalName, typeof(DataProvider.ExchangeRateDataProvider), typeof(ExchangeRateDataProvider));
+            DataProviderImpl.RegisterExternalDataProvider(SQLBase.ExternalName, typeof(DataProvider.ConfigDataProvider), typeof(ConfigDataProvider));
+            DataProviderImpl.RegisterExternalDataProvider(SQLBase.ExternalName, typeof(DataProvider.ExchangeRateDataProvider), typeof(ExchangeRateDataProvider));
         }
         class ConfigDataProvider : SQLSimpleObject<int, ConfigData> {
             public ConfigDataProvider(Dictionary<string, object> options) : base(options) { }

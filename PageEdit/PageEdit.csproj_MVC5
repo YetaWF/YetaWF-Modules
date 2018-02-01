@@ -69,6 +69,8 @@
   <ItemGroup>
     <Compile Include="Controllers\ControlPanelConfig.cs" />
     <Compile Include="Models\ControlPanelConfigDataProvider.cs" />
+    <Compile Include="Models\FileDataProvider.cs" />
+    <Compile Include="Models\SQLDataProvider.cs" />
     <Compile Include="Modules\ControlPanelConfig.cs" />
     <Compile Include="Startup\Info.cs" />
     <Compile Include="Startup\AreaRegistration.cs" />
@@ -114,7 +116,7 @@
       <Name>ModuleDefinition</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\..\DataProvider\SQL\SQL.csproj">
-      <Project>{22F3EC05-EC47-42B9-87CC-FF4D5494F8A4}</Project>
+      <Project>{67e180a4-fc9f-4eec-bec1-457714963596}</Project>
       <Name>SQL</Name>
     </ProjectReference>
   </ItemGroup>
@@ -132,6 +134,7 @@
     <Content Include="Views\YetaWF_PageEdit_ImportModule_Partial.cshtml" />
     <None Include="Views\YetaWF_PageEdit_AddExistingModule_Partial.cshtml" />
     <None Include="Views\YetaWF_PageEdit_AddNewModule_Partial.cshtml" />
+    <None Include="Views\YetaWF_PageEdit_LoginSiteSelection_Partial.cshtml" />
     <None Include="Views\YetaWF_PageEdit_SkinSelection_Partial.cshtml" />
     <None Include="Views\YetaWF_PageEdit_ControlPanelConfig.cshtml" />
     <None Include="Views\YetaWF_PageEdit_ControlPanelConfig_Partial.cshtml" />

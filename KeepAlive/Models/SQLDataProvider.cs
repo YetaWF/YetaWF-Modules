@@ -2,14 +2,14 @@
 
 using System.Collections.Generic;
 using YetaWF.Core.DataProvider;
-using YetaWF.DataProvider.SQL2;
+using YetaWF.DataProvider.SQL;
 
 namespace YetaWF.Modules.KeepAlive.DataProvider.SQL {
 
     public class SQLDataProvider : IExternalDataProvider {
 
         public void Register() {
-            DataProviderImpl.RegisterExternalDataProvider(SQL2Base.ExternalName, typeof(DataProvider.KeepAliveConfigDataProvider), typeof(KeepAliveConfigDataProvider));
+            DataProviderImpl.RegisterExternalDataProvider(SQLBase.ExternalName, typeof(DataProvider.KeepAliveConfigDataProvider), typeof(KeepAliveConfigDataProvider));
         }
         class KeepAliveConfigDataProvider : SQLSimpleObject<int, KeepAliveConfigData> {
             public KeepAliveConfigDataProvider(Dictionary<string, object> options) : base(options) { }

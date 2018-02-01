@@ -6,16 +6,16 @@ using YetaWF.Core.DataProvider;
 using YetaWF.Core.DataProvider.Attributes;
 using YetaWF.Core.Packages;
 using YetaWF.Core.Pages;
-using YetaWF.DataProvider.SQL2;
+using YetaWF.DataProvider.SQL;
 
 namespace YetaWF.Modules.Pages.DataProvider.SQL {
 
     public class SQLDataProvider : IExternalDataProvider {
 
         public void Register() {
-            DataProviderImpl.RegisterExternalDataProvider(SQL2Base.ExternalName, typeof(DataProvider.PageDefinitionDataProvider), typeof(PageDefinitionDataProvider));
-            DataProviderImpl.RegisterExternalDataProvider(SQL2Base.ExternalName, typeof(PageDefinitionDataProvider.PageDefinitionForModulesProvider), typeof(PageDefinitionDataProvider.PageDefinitionForModulesDataProviderSQL));
-            DataProviderImpl.RegisterExternalDataProvider(SQL2Base.ExternalName, typeof(DataProvider.UnifiedSetDataProvider), typeof(UnifiedSetDataProvider));
+            DataProviderImpl.RegisterExternalDataProvider(SQLBase.ExternalName, typeof(DataProvider.PageDefinitionDataProvider), typeof(PageDefinitionDataProvider));
+            DataProviderImpl.RegisterExternalDataProvider(SQLBase.ExternalName, typeof(PageDefinitionDataProvider.PageDefinitionForModulesProvider), typeof(PageDefinitionDataProvider.PageDefinitionForModulesDataProviderSQL));
+            DataProviderImpl.RegisterExternalDataProvider(SQLBase.ExternalName, typeof(DataProvider.UnifiedSetDataProvider), typeof(UnifiedSetDataProvider));
         }
         class PageDefinitionDataProvider : SQLSimpleObject<Guid, PageDefinition>, IPageDefinitionIOMode {
 
@@ -52,7 +52,7 @@ namespace YetaWF.Modules.Pages.DataProvider.SQL {
                 using (DataProvider.PageDefinitionDataProvider pageDefDP = new DataProvider.PageDefinitionDataProvider()) {
                     using (PageDefinitionForModulesProvider pageDefForModDP = new PageDefinitionForModulesProvider()) {
                         List<JoinData> joins = new List<JoinData> {
-                            new JoinData {MainDP = pageDefDP, JoinDP = pageDefForModDP, MainColumn = nameof(PageDefinition.Identity), JoinColumn = SQL2Base.SubTableKeyColumn, UseSite = false },
+                            new JoinData {MainDP = pageDefDP, JoinDP = pageDefForModDP, MainColumn = nameof(PageDefinition.Identity), JoinColumn = SQLBase.SubTableKeyColumn, UseSite = false },
                         };
                         return GetRecords(0, 0, sorts, filters, out total, Joins: joins);
                     }

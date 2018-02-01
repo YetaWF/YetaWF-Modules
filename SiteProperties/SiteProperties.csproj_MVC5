@@ -65,6 +65,8 @@
     <Reference Include="System.Web.Extensions" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Models\FileDataProvider.cs" />
+    <Compile Include="Models\SQLDataProvider.cs" />
     <Compile Include="Startup\Info.cs" />
     <Compile Include="Startup\AreaRegistration.cs" />
     <Compile Include="Controllers\LockedStatus.cs" />
@@ -100,7 +102,7 @@
       <Name>ModuleDefinition</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\..\DataProvider\SQL\SQL.csproj">
-      <Project>{22f3ec05-ec47-42b9-87cc-ff4d5494f8a4}</Project>
+      <Project>{67e180a4-fc9f-4eec-bec1-457714963596}</Project>
       <Name>SQL</Name>
     </ProjectReference>
   </ItemGroup>

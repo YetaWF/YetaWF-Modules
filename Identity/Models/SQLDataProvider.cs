@@ -2,19 +2,19 @@
 
 using System.Collections.Generic;
 using YetaWF.Core.DataProvider;
-using YetaWF.DataProvider.SQL2;
+using YetaWF.DataProvider.SQL;
 
 namespace YetaWF.Modules.Identity.DataProvider.SQL {
 
     public class SQLDataProvider : IExternalDataProvider {
 
         public void Register() {
-            DataProviderImpl.RegisterExternalDataProvider(SQL2Base.ExternalName, typeof(DataProvider.AuthorizationDataProvider), typeof(AuthorizationDataProvider));
-            DataProviderImpl.RegisterExternalDataProvider(SQL2Base.ExternalName, typeof(DataProvider.LoginConfigDataProvider), typeof(LoginConfigDataProvider));
-            DataProviderImpl.RegisterExternalDataProvider(SQL2Base.ExternalName, typeof(DataProvider.RoleDefinitionDataProvider), typeof(RoleDefinitionDataProvider));
-            DataProviderImpl.RegisterExternalDataProvider(SQL2Base.ExternalName, typeof(DataProvider.SuperuserDefinitionDataProvider), typeof(SuperuserDefinitionDataProvider));
-            DataProviderImpl.RegisterExternalDataProvider(SQL2Base.ExternalName, typeof(DataProvider.UserDefinitionDataProvider), typeof(UserDefinitionDataProvider));
-            DataProviderImpl.RegisterExternalDataProvider(SQL2Base.ExternalName, typeof(DataProvider.UserLoginInfoDataProvider), typeof(UserLoginInfoDataProvider));
+            DataProviderImpl.RegisterExternalDataProvider(SQLBase.ExternalName, typeof(DataProvider.AuthorizationDataProvider), typeof(AuthorizationDataProvider));
+            DataProviderImpl.RegisterExternalDataProvider(SQLBase.ExternalName, typeof(DataProvider.LoginConfigDataProvider), typeof(LoginConfigDataProvider));
+            DataProviderImpl.RegisterExternalDataProvider(SQLBase.ExternalName, typeof(DataProvider.RoleDefinitionDataProvider), typeof(RoleDefinitionDataProvider));
+            DataProviderImpl.RegisterExternalDataProvider(SQLBase.ExternalName, typeof(DataProvider.SuperuserDefinitionDataProvider), typeof(SuperuserDefinitionDataProvider));
+            DataProviderImpl.RegisterExternalDataProvider(SQLBase.ExternalName, typeof(DataProvider.UserDefinitionDataProvider), typeof(UserDefinitionDataProvider));
+            DataProviderImpl.RegisterExternalDataProvider(SQLBase.ExternalName, typeof(DataProvider.UserLoginInfoDataProvider), typeof(UserLoginInfoDataProvider));
         }
         class AuthorizationDataProvider : SQLSimpleObject<string, Authorization> {
             public AuthorizationDataProvider(Dictionary<string, object> options) : base(options) { }

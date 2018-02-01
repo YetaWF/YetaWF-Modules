@@ -3,14 +3,14 @@
 using System.Collections.Generic;
 using YetaWF.Core.DataProvider;
 using YetaWF.Core.Site;
-using YetaWF.DataProvider.SQL2;
+using YetaWF.DataProvider.SQL;
 
 namespace YetaWF.Modules.SiteProperties.DataProvider.SQL {
 
     public class SQLDataProvider : IExternalDataProvider {
 
         public void Register() {
-            DataProviderImpl.RegisterExternalDataProvider(SQL2Base.ExternalName, typeof(YetaWF.Modules.SiteProperties.Models.SiteDefinitionDataProvider), typeof(SiteDefinitionDataProvider));
+            DataProviderImpl.RegisterExternalDataProvider(SQLBase.ExternalName, typeof(YetaWF.Modules.SiteProperties.Models.SiteDefinitionDataProvider), typeof(SiteDefinitionDataProvider));
         }
         class SiteDefinitionDataProvider : SQLSimpleObject<string, SiteDefinition> {
             public SiteDefinitionDataProvider(Dictionary<string, object> options) : base(options) { }

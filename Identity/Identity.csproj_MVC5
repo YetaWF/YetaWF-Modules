@@ -153,6 +153,8 @@
     <Compile Include="Controllers\TemplateListOfUserNames.cs" />
     <Compile Include="Controllers\TemplateRolesSelector.cs" />
     <Compile Include="Controllers\TemplateUserId.cs" />
+    <Compile Include="Models\FileDataProvider.cs" />
+    <Compile Include="Models\SQLDataProvider.cs" />
     <Compile Include="Models\UserLoginInfoDataProvider.cs" />
     <Compile Include="Modules\ForgotPassword.cs" />
     <Compile Include="Modules\Need2FADisplay.cs" />
@@ -303,7 +305,7 @@
       <Name>ModuleDefinition</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\..\DataProvider\SQL\SQL.csproj">
-      <Project>{22F3EC05-EC47-42B9-87CC-FF4D5494F8A4}</Project>
+      <Project>{67e180a4-fc9f-4eec-bec1-457714963596}</Project>
       <Name>SQL</Name>
     </ProjectReference>
   </ItemGroup>
@@ -338,7 +340,6 @@
     <Content Include="Views\YetaWF_Identity_LoginSelector.cshtml">
       <SubType>Code</SubType>
     </Content>
-    <Content Include="_RoadMap.txt" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\YetaWF_Identity_Login.cshtml" />

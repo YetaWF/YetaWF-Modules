@@ -6,7 +6,7 @@ using YetaWF.Core.IO;
 using YetaWF.Core.Log;
 using YetaWF.Core.Packages;
 using YetaWF.Core.Serializers;
-using YetaWF.DataProvider.SQL2;
+using YetaWF.DataProvider.SQL;
 
 namespace YetaWF.Modules.Logging.DataProvider.SQL {
 
