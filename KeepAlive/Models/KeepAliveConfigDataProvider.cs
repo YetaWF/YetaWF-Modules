@@ -1,16 +1,12 @@
 ﻿/* Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/KeepAlive#License */
 
-using System.Collections.Generic;
-using System.IO;
 using YetaWF.Core;
 using YetaWF.Core.DataProvider;
 using YetaWF.Core.DataProvider.Attributes;
 using YetaWF.Core.IO;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Packages;
-using YetaWF.Core.Serializers;
 using YetaWF.Core.Support;
-using YetaWF.DataProvider;
 
 namespace YetaWF.Modules.KeepAlive.DataProvider {
 
@@ -45,20 +41,7 @@ namespace YetaWF.Modules.KeepAlive.DataProvider {
 
         private IDataProvider<int, KeepAliveConfigData> CreateDataProvider() {
             Package package = YetaWF.Modules.KeepAlive.Controllers.AreaRegistration.CurrentPackage;
-            return MakeDataProvider(package, package.AreaName + "_Config",
-                () => { // File
-                    return new FileDataProvider<int, KeepAliveConfigData>(
-                        Path.Combine(YetaWFManager.DataFolder, Dataset),
-                        Cacheable: true);
-                },
-                (dbo, conn) => {  // SQL
-                    return new SQLSimpleObjectDataProvider<int, KeepAliveConfigData>(Dataset, dbo, conn,
-                        Cacheable: true);
-                },
-                () => { // External
-                    return MakeExternalDataProvider(new { Package = Package, Dataset = Dataset, Cacheable = true });
-                }
-            );
+            return MakeDataProvider(package, package.AreaName + "_Config", Cacheable: true);
         }
 
         // API

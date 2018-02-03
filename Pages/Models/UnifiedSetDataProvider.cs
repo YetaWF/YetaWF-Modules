@@ -2,7 +2,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using YetaWF.Core.DataProvider;
 using YetaWF.Core.DataProvider.Attributes;
@@ -13,7 +12,6 @@ using YetaWF.Core.Pages;
 using YetaWF.Core.Serializers;
 using YetaWF.Core.Skins;
 using YetaWF.Core.Support;
-using YetaWF.DataProvider;
 
 namespace YetaWF.Modules.Pages.DataProvider {
 
@@ -115,11 +113,6 @@ namespace YetaWF.Modules.Pages.DataProvider {
 
     public class UnifiedSetDataProvider : DataProviderImpl, IInstallableModel {
 
-        // IINITIALIZEAPPLICATIONSTARTUP
-        // IINITIALIZEAPPLICATIONSTARTUP
-        // IINITIALIZEAPPLICATIONSTARTUP
-
-
         // IMPLEMENTATION
         // IMPLEMENTATION
         // IMPLEMENTATION
@@ -131,22 +124,7 @@ namespace YetaWF.Modules.Pages.DataProvider {
 
         private IDataProvider<Guid, UnifiedSetData> CreateDataProvider() {
             Package package = YetaWF.Modules.Pages.Controllers.AreaRegistration.CurrentPackage;
-            return MakeDataProvider(package, package.AreaName + "_UnifiedSets",
-                () => { // File
-                    return new FileDataProvider<Guid, UnifiedSetData>(
-                        Path.Combine(YetaWFManager.DataFolder, Dataset, SiteIdentity.ToString()),
-                        CurrentSiteIdentity: SiteIdentity,
-                        Cacheable: true);
-                },
-                (dbo, conn) => {  // SQL
-                    return new SQLSimpleObjectDataProvider<Guid, UnifiedSetData>(Dataset, dbo, conn,
-                        CurrentSiteIdentity: SiteIdentity,
-                        Cacheable: true);
-                },
-                () => { // External
-                    return MakeExternalDataProvider(new { Package = Package, Dataset = Dataset, CurrentSiteIdentity = SiteIdentity, Cacheable = true });
-                }
-            );
+            return MakeDataProvider(package, package.AreaName + "_UnifiedSets", SiteIdentity: SiteIdentity, Cacheable: true);
         }
 
         // API
@@ -228,13 +206,13 @@ namespace YetaWF.Modules.Pages.DataProvider {
                 // find a unified page set that uses the matching skin
                 int total;
                 List<DataProviderFilterInfo> filters = null;
-                if (unifiedSetDP.IOMode == WebConfigHelper.IOModeEnum.File) {
-                    filters = DataProviderFilterInfo.Join(filters, new DataProviderFilterInfo { Field = "PageSkin.Collection", Operator = "==", Value = collectionName });
-                    filters = DataProviderFilterInfo.Join(filters, new DataProviderFilterInfo { Field = "PageSkin.FileName", Operator = "==", Value = skinName });
-                } else if (unifiedSetDP.IOMode == WebConfigHelper.IOModeEnum.Sql) {
+                //$$$ if (unifiedSetDP.IOMode == WebConfigHelper.IOModeEnum.File) {
+                //    filters = DataProviderFilterInfo.Join(filters, new DataProviderFilterInfo { Field = "PageSkin.Collection", Operator = "==", Value = collectionName });
+                //    filters = DataProviderFilterInfo.Join(filters, new DataProviderFilterInfo { Field = "PageSkin.FileName", Operator = "==", Value = skinName });
+                //} else if (unifiedSetDP.IOMode == WebConfigHelper.IOModeEnum.Sql) {
                     filters = DataProviderFilterInfo.Join(filters, new DataProviderFilterInfo { Field = "PageSkin_Collection", Operator = "==", Value = collectionName });
                     filters = DataProviderFilterInfo.Join(filters, new DataProviderFilterInfo { Field = "PageSkin_FileName", Operator = "==", Value = skinName });
-                }
+                //$$ }
                 filters = DataProviderFilterInfo.Join(filters, new DataProviderFilterInfo { Field = "UnifiedMode", Operator = "==", Value = PageDefinition.UnifiedModeEnum.SkinDynamicContent });
                 unifiedSet = unifiedSetDP.GetItems(0, 1, null, filters, out total).FirstOrDefault();
                 if (unifiedSet != null) {

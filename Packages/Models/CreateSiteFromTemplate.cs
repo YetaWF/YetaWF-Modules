@@ -16,6 +16,7 @@ using YetaWF.Core.Modules;
 using YetaWF.Core.Pages;
 using YetaWF.Core.Serializers;
 using YetaWF.Core.Support;
+using YetaWF.DataProvider.SQL;
 
 namespace YetaWF.Modules.Packages.DataProvider {
     // not a real data provider - used to clear/create all package data and initial web pages
@@ -792,10 +793,10 @@ namespace YetaWF.Modules.Packages.DataProvider {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Security", "CA2100:Review SQL queries for security vulnerabilities")]
         private void ExtractSQLSection(List<string> lines, bool build) {
 
-            string sqlConn = WebConfigHelper.GetValue<string>(DataProviderImpl.DefaultString, DataProviderImpl.SQLConnectString);
-            if (string.IsNullOrWhiteSpace(sqlConn)) throw TemplateError("No Sql connection string found in Appsettings.json (P:Default:SQLConnect)");
+            string sqlConn = WebConfigHelper.GetValue<string>(DataProviderImpl.DefaultString, SQLBase.SQLConnectString);
+            if (string.IsNullOrWhiteSpace(sqlConn)) throw TemplateError("No SQL connection string found in Appsettings.json (P:Default:SQLConnect)");
 
-            for (; lines.Count > 0;) {
+            for ( ; lines.Count > 0;) {
 
                 // get the command line
                 string sqlLine = lines.First();

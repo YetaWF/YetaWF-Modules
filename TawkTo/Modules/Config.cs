@@ -27,7 +27,7 @@ namespace YetaWF.Modules.TawkTo.Modules {
         }
 
         public override IModuleDefinitionIO GetDataProvider() { return new ConfigModuleDataProvider(); }
-        public override DataProviderImpl GetConfigDataProvider() { return new ConfigDataDataProvider(); }
+        public override DataProviderImpl GetConfigDataProvider() { return new ConfigDataProvider(); }
 
         public override SerializableList<AllowedRole> DefaultAllowedRoles { get { return AdministratorLevel_DefaultAllowedRoles; } }
 

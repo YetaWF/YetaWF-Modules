@@ -1,7 +1,6 @@
 ﻿/* Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Identity#License */
 
 using System.Collections.Generic;
-using System.IO;
 using YetaWF.Core;
 using YetaWF.Core.DataProvider;
 using YetaWF.Core.Identity;
@@ -10,7 +9,6 @@ using YetaWF.Core.Localize;
 using YetaWF.Core.Packages;
 using YetaWF.Core.Serializers;
 using YetaWF.Core.Support;
-using YetaWF.DataProvider;
 using YetaWF.Modules.Identity.Controllers;
 
 namespace YetaWF.Modules.Identity.DataProvider {
@@ -50,23 +48,7 @@ namespace YetaWF.Modules.Identity.DataProvider {
 
         protected IDataProvider<string, UserDefinition> CreateDataProvider() {
             Package package = YetaWF.Modules.Identity.Controllers.AreaRegistration.CurrentPackage;
-            return MakeDataProvider(package, package.AreaName + "_Superusers",
-                () => { // File
-                    return new FileDataProvider<string, UserDefinition>(
-                        Path.Combine(YetaWFManager.DataFolder, Dataset),
-                        IdentitySeed: SuperUserId,
-                        Cacheable: true);
-                },
-                (dbo, conn) => {  // SQL
-                    return new SQLSimpleObjectDataProvider<string, UserDefinition>(Dataset, dbo, conn,
-                        NoLanguages: true,
-                        IdentitySeed: SuperUserId, 
-                        Cacheable: true);
-                },
-                () => { // External
-                    return MakeExternalDataProvider(new { Package = Package, Dataset = Dataset, IdentitySeed = SuperUserId, Cacheable = true });
-                }
-            );
+            return MakeDataProvider(package, package.AreaName + "_Superusers", Cacheable: true, Parms: new { IdentitySeed = SuperUserId, NoLanguages = true });
         }
 
         // API

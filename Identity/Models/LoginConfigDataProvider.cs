@@ -1,7 +1,6 @@
 ﻿/* Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Identity#License */
 
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using YetaWF.Core;
 using YetaWF.Core.DataProvider;
@@ -13,7 +12,6 @@ using YetaWF.Core.Serializers;
 using YetaWF.Core.Support;
 using YetaWF.Modules.Identity.Modules;
 using YetaWF.Core.Identity;
-using YetaWF.DataProvider;
 using YetaWF.Modules.Identity.Controllers;
 #if MVC6
 using Microsoft.AspNetCore.Identity;
@@ -117,22 +115,7 @@ namespace YetaWF.Modules.Identity.DataProvider {
 
         private IDataProvider<int, LoginConfigData> CreateDataProvider() {
             Package package = YetaWF.Modules.Identity.Controllers.AreaRegistration.CurrentPackage;
-            return MakeDataProvider(package, package.AreaName,
-                () => { // File
-                    return new FileDataProvider<int, LoginConfigData>(
-                        Path.Combine(YetaWFManager.DataFolder, Dataset, SiteIdentity.ToString()),
-                        CurrentSiteIdentity: SiteIdentity,
-                        Cacheable: true);
-                },
-                (dbo, conn) => {  // SQL
-                    return new SQLSimpleObjectDataProvider<int, LoginConfigData>(Dataset, dbo, conn,
-                        CurrentSiteIdentity: SiteIdentity,
-                        Cacheable: true);
-                },
-                () => { // External
-                    return MakeExternalDataProvider(new { Package = Package, Dataset = Dataset, CurrentSiteIdentity = SiteIdentity, Cacheable = true });
-                }
-            );
+            return MakeDataProvider(package, package.AreaName, SiteIdentity: SiteIdentity, Cacheable: true);
         }
 
         // API

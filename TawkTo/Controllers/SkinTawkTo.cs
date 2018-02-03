@@ -21,7 +21,7 @@ namespace YetaWF.Modules.TawkTo.Controllers {
 
         [AllowGet]
         public ActionResult SkinTawkTo() {
-            ConfigData config = ConfigDataDataProvider.GetConfig();
+            ConfigData config = ConfigDataProvider.GetConfig();
             if (Manager.EditMode || !config.IsConfigured) return new EmptyResult();
             DisplayModel model = new DisplayModel();
 

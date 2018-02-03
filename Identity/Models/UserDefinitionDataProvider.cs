@@ -2,7 +2,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using YetaWF.Core;
 using YetaWF.Core.DataProvider;
@@ -15,9 +14,7 @@ using YetaWF.Core.Packages;
 using YetaWF.Core.Serializers;
 using YetaWF.Core.Support;
 using YetaWF.Core.Support.TwoStepAuthorization;
-using YetaWF.Modules.Identity.Controllers;
 using YetaWF.Modules.Identity.Models;
-using YetaWF.DataProvider;
 #if MVC6
 using Microsoft.AspNetCore.Identity;
 #else
@@ -152,23 +149,7 @@ namespace YetaWF.Modules.Identity.DataProvider {
 
         private IDataProvider<string, UserDefinition> CreateDataProvider() {
             Package package = YetaWF.Modules.Identity.Controllers.AreaRegistration.CurrentPackage;
-            return MakeDataProvider(package, package.AreaName + "_Users",
-                () => { // File
-                    return new FileDataProvider<string, UserDefinition>(
-                        Path.Combine(YetaWFManager.DataFolder, Dataset, SiteIdentity.ToString()),
-                        CurrentSiteIdentity: SiteIdentity,
-                        Cacheable: true);
-                },
-                (dbo, conn) => {  // SQL
-                    return new SQLSimpleObjectDataProvider<string, UserDefinition>(Dataset, dbo, conn,
-                        CurrentSiteIdentity: SiteIdentity,
-                        NoLanguages: true,
-                        Cacheable: true);
-                },
-                () => { // External
-                    return MakeExternalDataProvider(new { Package = Package, Dataset = Dataset, CurrentSiteIdentity = SiteIdentity, Cacheable = true });
-                }
-            );
+            return MakeDataProvider(package, package.AreaName + "_Users", SiteIdentity: SiteIdentity, Cacheable: true, Parms: new { NoLanguages = true});
         }
 
         // API

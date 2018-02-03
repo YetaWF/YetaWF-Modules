@@ -8,16 +8,20 @@ using YetaWF.Core.Addons;
 using YetaWF.Core.DataProvider;
 using YetaWF.Core.DataProvider.Attributes;
 using YetaWF.Core.IO;
+using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Packages;
 using YetaWF.Core.Serializers;
 using YetaWF.Core.Support;
-using YetaWF.DataProvider;
 using YetaWF.Modules.CurrencyConverter.Controllers;
 
 namespace YetaWF.Modules.CurrencyConverter.DataProvider {
 
     public class ExchangeRateEntry {
+        public const int MaxCurrencyName = 50;
+        public const int MaxCode = 10;
+        [StringLength(MaxCurrencyName)]
         public string CurrencyName { get; set; }
+        [StringLength(MaxCode)]
         public string Code { get; set; }
         public decimal Rate { get; set; }
     }
@@ -31,8 +35,8 @@ namespace YetaWF.Modules.CurrencyConverter.DataProvider {
 #endif
         [Data_PrimaryKey]
         public int Key { get; set; }
-        public DateTime SaveTime { get; set; }
 
+        public DateTime SaveTime { get; set; }
         public SerializableList<ExchangeRateEntry> Rates { get; set; }
 
         public ExchangeRateData() {
@@ -57,9 +61,7 @@ namespace YetaWF.Modules.CurrencyConverter.DataProvider {
 
         private IDataProvider<int, ExchangeRateData> CreateDataProvider() {
             Package package = YetaWF.Modules.CurrencyConverter.Controllers.AreaRegistration.CurrentPackage;
-            return new FileDataProvider<int, ExchangeRateData>(
-                Path.Combine(YetaWFManager.DataFolder, package.AreaName),
-                Cacheable: true);
+            return MakeDataProvider(package, package.AreaName + "_Data", Cacheable: true);
         }
 
         // API
@@ -71,7 +73,7 @@ namespace YetaWF.Modules.CurrencyConverter.DataProvider {
                 ExchangeRateData data = DataProvider.Get(KEY);
                 if (data != null && data.SaveTime.Add(ExchangeRateData.ExpiresAfter) < DateTime.UtcNow)
                     data = null;
-                if (data != null && !File.Exists(GetJSFileName()))
+                if (data != null && !System.IO.File.Exists(GetJSFileName()))
                     data = null;
                 if (data == null)
                     data = GetExchangeRates();
@@ -129,7 +131,7 @@ namespace YetaWF.Modules.CurrencyConverter.DataProvider {
             sb.Append("YetaWF_CurrencyConverter_Rates = \n");
             sb.Append(YetaWFManager.JsonSerialize(data.Rates));
             sb.Append(";\n");
-            File.WriteAllText(file, sb.ToString());
+            System.IO.File.WriteAllText(file, sb.ToString());
         }
 
         private static string GetJSFileName() {

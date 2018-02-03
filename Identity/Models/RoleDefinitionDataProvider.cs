@@ -2,7 +2,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using YetaWF.Core;
 using YetaWF.Core.DataProvider;
@@ -11,9 +10,7 @@ using YetaWF.Core.IO;
 using YetaWF.Core.Localize;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Packages;
-using YetaWF.Core.Serializers;
 using YetaWF.Core.Support;
-using YetaWF.DataProvider;
 #if MVC6
 #else
 using Microsoft.AspNet.Identity;
@@ -55,10 +52,10 @@ namespace YetaWF.Modules.Identity.DataProvider {
 
         private static object _lockObject = new object();
 
-        private static int User2FAIdentity = SQLDataProviderImpl.IDENTITY_SEED - 4;
-        public static int SuperUserId = SQLDataProviderImpl.IDENTITY_SEED - 3;
-        private static int UserIdentity = SQLDataProviderImpl.IDENTITY_SEED - 2;
-        private static int AnonymousIdentity = SQLDataProviderImpl.IDENTITY_SEED - 1;
+        private static int User2FAIdentity = DataProviderImpl.IDENTITY_SEED - 4;
+        public static int SuperUserId = DataProviderImpl.IDENTITY_SEED - 3;
+        private static int UserIdentity = DataProviderImpl.IDENTITY_SEED - 2;
+        private static int AnonymousIdentity = DataProviderImpl.IDENTITY_SEED - 1;
 
         // IMPLEMENTATION
         // IMPLEMENTATION
@@ -71,22 +68,7 @@ namespace YetaWF.Modules.Identity.DataProvider {
 
         private IDataProvider<string, RoleDefinition> CreateDataProvider() {
             Package package = YetaWF.Modules.Identity.Controllers.AreaRegistration.CurrentPackage;
-            return MakeDataProvider(package, package.AreaName + "_Roles",
-                () => { // File
-                    return new FileDataProvider<string, RoleDefinition>(
-                        Path.Combine(YetaWFManager.DataFolder, package.AreaName, "Roles", SiteIdentity.ToString()),
-                        CurrentSiteIdentity: SiteIdentity,
-                        Cacheable: true);
-                },
-                (dbo, conn) => {  // SQL
-                    return new SQLSimpleObjectDataProvider<string, RoleDefinition>(Dataset, dbo, conn,
-                        CurrentSiteIdentity: SiteIdentity,
-                        Cacheable: true);
-                },
-                () => { // External
-                    return MakeExternalDataProvider(new { Package = Package, Dataset = Dataset, CurrentSiteIdentity = SiteIdentity, Cacheable = true });
-                }
-            );
+            return MakeDataProvider(package, package.AreaName + "_Roles", SiteIdentity: SiteIdentity, Cacheable: true);
         }
 
         // API
@@ -239,6 +221,7 @@ namespace YetaWF.Modules.Identity.DataProvider {
                 }
             );
         }
+
         // IINSTALLABLEMODEL
         // IINSTALLABLEMODEL
         // IINSTALLABLEMODEL

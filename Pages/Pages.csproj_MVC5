@@ -74,7 +74,8 @@
     <Compile Include="Controllers\UnifiedSetAdd.cs" />
     <Compile Include="Controllers\UnifiedSetEdit.cs" />
     <Compile Include="Controllers\UnifiedSetsBrowse.cs" />
-    <Compile Include="Models\PageDefinitionWithModulesDataProvider.cs" />
+    <Compile Include="Models\FileDataProvider.cs" />
+    <Compile Include="Models\SQLDataProvider.cs" />
     <Compile Include="Models\UnifiedSetDataProvider.cs" />
     <Compile Include="Modules\SkinScrollToTop.cs" />
     <Compile Include="Modules\TemplateListOfPageDefinitionsModule.cs" />
@@ -105,7 +106,7 @@
       <Name>ModuleDefinition</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\..\DataProvider\SQL\SQL.csproj">
-      <Project>{22f3ec05-ec47-42b9-87cc-ff4d5494f8a4}</Project>
+      <Project>{67e180a4-fc9f-4eec-bec1-457714963596}</Project>
       <Name>SQL</Name>
     </ProjectReference>
   </ItemGroup>

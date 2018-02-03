@@ -7,9 +7,7 @@ using YetaWF.Core.DataProvider.Attributes;
 using YetaWF.Core.IO;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Packages;
-using YetaWF.Core.Serializers;
 using YetaWF.Core.Support;
-using YetaWF.DataProvider;
 
 namespace YetaWF.Modules.Messenger.DataProvider {
 
@@ -42,23 +40,11 @@ namespace YetaWF.Modules.Messenger.DataProvider {
         public SiteAccouncementDataProvider() : base(YetaWFManager.Manager.CurrentSite.Identity) { SetDataProvider(CreateDataProvider()); }
         public SiteAccouncementDataProvider(int siteIdentity) : base(siteIdentity) { SetDataProvider(CreateDataProvider()); }
 
-        private IDataProviderIdentity<int, object, int, SiteAccouncement> DataProvider { get { return GetDataProvider(); } }
+        private IDataProviderIdentity<int, object, SiteAccouncement> DataProvider { get { return GetDataProvider(); } }
 
-        private IDataProviderIdentity<int, object, int, SiteAccouncement> CreateDataProvider() {
+        private IDataProviderIdentity<int, object, SiteAccouncement> CreateDataProvider() {
             Package package = YetaWF.Modules.Messenger.Controllers.AreaRegistration.CurrentPackage;
-            return MakeDataProvider(package, package.AreaName + "_Announcements",
-                () => { // File
-                    throw new InternalError("File I/O is not supported");
-                },
-                (dbo, conn) => {  // SQL
-                    return new SQLIdentityObjectDataProvider<int, object, int, SiteAccouncement>(Dataset, dbo, conn,
-                        CurrentSiteIdentity: SiteIdentity,
-                        Cacheable: true);
-                },
-                () => { // External
-                    return MakeExternalDataProvider(new { Package = Package, Dataset = Dataset, CurrentSiteIdentity = SiteIdentity, Cacheable = true });
-                }
-            );
+            return MakeDataProvider(package, package.AreaName + "_Announcements", SiteIdentity: SiteIdentity, Cacheable: true);
         }
 
         // API

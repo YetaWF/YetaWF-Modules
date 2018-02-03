@@ -2,7 +2,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Text.RegularExpressions;
 using YetaWF.Core;
 using YetaWF.Core.DataProvider;
@@ -15,9 +14,7 @@ using YetaWF.Core.Modules;
 using YetaWF.Core.Packages;
 using YetaWF.Core.Pages;
 using YetaWF.Core.Search;
-using YetaWF.Core.Serializers;
 using YetaWF.Core.Support;
-using YetaWF.DataProvider;
 using YetaWF.Modules.Blog.Modules;
 
 namespace YetaWF.Modules.Blog.DataProvider {
@@ -77,8 +74,8 @@ namespace YetaWF.Modules.Blog.DataProvider {
         [DontSave]
         public string DisplayableSummary {
             get {
-                if (!string.IsNullOrWhiteSpace(Summary.ToString())) return Summary.ToString();
-                string summary = Text.ToString();
+                if (!string.IsNullOrWhiteSpace(Summary)) return Summary;
+                string summary = Text;
                 if (summary.Length > MaxSummary)
                     summary = summary.Truncate(MaxSummary).Trim() + " ...";
                 // remove all <tags> as they may not be properly ended because we truncated the summary
@@ -119,10 +116,10 @@ namespace YetaWF.Modules.Blog.DataProvider {
         public string DisplayableSummaryText {
             get {
                 string summary;
-                if (!string.IsNullOrWhiteSpace(Summary.ToString()))
-                    summary = Summary.ToString();
+                if (!string.IsNullOrWhiteSpace(Summary))
+                    summary = Summary;
                 else {
-                    summary = Text.ToString();
+                    summary = Text;
                     if (summary.Length > MaxSummary)
                         summary = summary.Truncate(MaxSummary).Trim() + " ...";
                 }
@@ -184,7 +181,7 @@ namespace YetaWF.Modules.Blog.DataProvider {
         public static Guid FolderGuid { get { return ModuleDefinition.GetPermanentGuid(typeof(EntryDisplayModule)); } }
     }
 
-    public class BlogEntryDataProvider : DataProviderImpl, IInstallableModel {
+    public class BlogEntryDataProvider : DataProviderImpl, IInstallableModel, ISearchDynamicUrls, ISiteMapDynamicUrls {
 
         // IMPLEMENTATION
         // IMPLEMENTATION
@@ -196,68 +193,7 @@ namespace YetaWF.Modules.Blog.DataProvider {
 
         private IDataProvider<int, BlogEntry> CreateDataProvider() {
             Package package = YetaWF.Modules.Blog.Controllers.AreaRegistration.CurrentPackage;
-            return MakeDataProvider(package, package.AreaName + "_Entries",
-                () => { // File
-                    return new FileDataProvider<int, BlogEntry>(
-                        Path.Combine(YetaWFManager.DataFolder, Dataset, SiteIdentity.ToString(), "Entries"),
-                        CurrentSiteIdentity: SiteIdentity,
-                        Cacheable: true,
-                        CalculatedPropertyCallback: GetCalculatedPropertyFile);
-                },
-                (dbo, conn) => {  // SQL
-                    return new SQLSimpleObjectDataProvider<int, BlogEntry>(Dataset, dbo, conn,
-                        CurrentSiteIdentity: SiteIdentity,
-                        Cacheable: true,
-                        CalculatedPropertyCallback: GetCalculatedPropertySql);
-                },
-                () => { // External
-                    return MakeExternalDataProvider(new { Package = Package, Dataset = Dataset, CurrentSiteIdentity = SiteIdentity, Cacheable = true });
-                }
-            );
-        }
-
-        private object GetCalculatedPropertyFile(string name, object obj) {
-            BlogEntry entry = (BlogEntry) obj;
-            if (name == "CommentsUnapproved") {
-                using (BlogCommentDataProvider commentDP = new BlogCommentDataProvider(entry.Identity)) {
-                    List<DataProviderFilterInfo> filters = new List<DataProviderFilterInfo>() {
-                        new DataProviderFilterInfo {
-                            Field = "Approved", Operator = "==", Value = false,
-                        },
-                    };
-                    int commentsUnapproved;
-                    commentDP.GetItems(0, 0, null, filters, out commentsUnapproved);
-                    entry.CommentsUnapproved = commentsUnapproved;
-                    return obj;
-                }
-            } else if (name == "Comments") {
-                using (BlogCommentDataProvider commentDP = new BlogCommentDataProvider(entry.Identity)) {
-                    int comments;
-                    commentDP.GetItems(0, 0, null, null, out comments);
-                    entry.Comments = comments;
-                    return obj;
-                }
-            } else throw new InternalError("Unexpected property {0}", name);
-        }
-
-        private string GetCalculatedPropertySql(string name) {
-            string sql = null;
-            if (name == "CommentsUnapproved") {
-                using (BlogCommentDataProvider commentDP = new BlogCommentDataProvider(-1)) {// we don't know the entry, but it's not needed
-                    sql = "SELECT COUNT(*) FROM $BlogComments$ WHERE ($BlogComments$.EntryIdentity = $ThisTable$.[Identity]) AND ($ThisTable$.Published = 1) AND ($BlogComments$.Deleted = 0) AND ($BlogComments$.Approved = 0)";
-                    sql = commentDP.ReplaceWithTableName(sql, "$BlogComments$");
-                    sql = ReplaceWithTableName(sql, "$ThisTable$");
-                    return sql;
-                }
-            } else if (name == "Comments") {
-                using (BlogCommentDataProvider commentDP = new BlogCommentDataProvider(-1)) {// we don't know the entry, but it's not needed
-                    sql = "SELECT COUNT(*) FROM $BlogComments$ WHERE ($BlogComments$.EntryIdentity = $ThisTable$.[Identity]) AND ($ThisTable$.Published = 1)";
-                    sql = commentDP.ReplaceWithTableName(sql, "$BlogComments$");
-                    sql = ReplaceWithTableName(sql, "$ThisTable$");
-                    return sql;
-                }
-            } else
-                throw new InternalError("Unexpected property {0}", name);
+            return MakeDataProvider(package, package.AreaName + "_Entries", SiteIdentity: SiteIdentity, Cacheable: true);
         }
 
         // API
@@ -303,10 +239,7 @@ namespace YetaWF.Modules.Blog.DataProvider {
             }
             return true;
         }
-    }
-
-    public class BlogEntryDataProviderSearch : BlogEntryDataProvider, ISearchDynamicUrls, ISiteMapDynamicUrls {
-
+    
         // ISEARCHDYNAMICURLS
         // ISEARCHDYNAMICURLS
         // ISEARCHDYNAMICURLS

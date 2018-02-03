@@ -78,7 +78,7 @@ namespace YetaWF.Modules.Logging.Controllers {
 
         [AllowGet]
         public ActionResult DisplayLog(int key) {
-            using (LogRecordDataProvider dataProvider = new LogRecordDataProvider()) {
+            using (LogRecordDataProvider dataProvider = LogRecordDataProvider.GetLogRecordDataProvider()) {
                 LogRecord data = dataProvider.GetItem(key);
                 if (data == null)
                     throw new Error(this.__ResStr("notFound", "Record \"{0}\" not found."), key);

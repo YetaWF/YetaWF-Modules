@@ -1,13 +1,11 @@
 /* Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/TawkTo#License */
 
-using System.IO;
 using YetaWF.Core.DataProvider;
 using YetaWF.Core.DataProvider.Attributes;
 using YetaWF.Core.IO;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Packages;
 using YetaWF.Core.Support;
-using YetaWF.DataProvider;
 
 namespace YetaWF.Modules.TawkTo.DataProvider {
 
@@ -39,7 +37,7 @@ namespace YetaWF.Modules.TawkTo.DataProvider {
         public ConfigData() { }
     }
 
-    public class ConfigDataDataProvider : DataProviderImpl, IInstallableModel {
+    public class ConfigDataProvider : DataProviderImpl, IInstallableModel {
 
         private const int KEY = 1;
 
@@ -49,29 +47,14 @@ namespace YetaWF.Modules.TawkTo.DataProvider {
         // IMPLEMENTATION
         // IMPLEMENTATION
 
-        public ConfigDataDataProvider() : base(YetaWFManager.Manager.CurrentSite.Identity) { SetDataProvider(CreateDataProvider()); }
-        public ConfigDataDataProvider(int siteIdentity) : base(siteIdentity) { SetDataProvider(CreateDataProvider()); }
+        public ConfigDataProvider() : base(YetaWFManager.Manager.CurrentSite.Identity) { SetDataProvider(CreateDataProvider()); }
+        public ConfigDataProvider(int siteIdentity) : base(siteIdentity) { SetDataProvider(CreateDataProvider()); }
 
         private IDataProvider<int, ConfigData> DataProvider { get { return GetDataProvider(); } }
 
         private IDataProvider<int, ConfigData> CreateDataProvider() {
             Package package = YetaWF.Modules.TawkTo.Controllers.AreaRegistration.CurrentPackage;
-            return MakeDataProvider(package, package.AreaName + "_Config",
-                () => { // File
-                    return new FileDataProvider<int, ConfigData>(
-                        Path.Combine(YetaWFManager.DataFolder, Dataset, SiteIdentity.ToString()),
-                        CurrentSiteIdentity: SiteIdentity,
-                        Cacheable: true);
-                },
-                (dbo, conn) => {  // SQL
-                    return new SQLSimpleObjectDataProvider<int, ConfigData>(Dataset, dbo, conn,
-                        CurrentSiteIdentity: SiteIdentity,
-                        Cacheable: true);
-                },
-                () => { // External
-                    return MakeExternalDataProvider(new { Package = Package, Dataset = Dataset, CurrentSiteIdentity = SiteIdentity, Cacheable = true });
-                }
-            );
+            return MakeDataProvider(package, package.AreaName + "_Config", SiteIdentity: SiteIdentity, Cacheable: true);
         }
 
         // API
@@ -79,7 +62,7 @@ namespace YetaWF.Modules.TawkTo.DataProvider {
         // API
 
         public static ConfigData GetConfig() {
-            using (ConfigDataDataProvider configDP = new ConfigDataDataProvider()) {
+            using (ConfigDataProvider configDP = new ConfigDataProvider()) {
                 return configDP.GetItem();
             }
         }

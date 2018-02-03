@@ -1,15 +1,11 @@
 ﻿/* Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/CurrencyConverter#License */
 
-using System.Collections.Generic;
-using System.IO;
 using YetaWF.Core.DataProvider;
 using YetaWF.Core.DataProvider.Attributes;
 using YetaWF.Core.IO;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Packages;
-using YetaWF.Core.Serializers;
 using YetaWF.Core.Support;
-using YetaWF.DataProvider;
 
 namespace YetaWF.Modules.CurrencyConverter.DataProvider {
     public class ConfigData {
@@ -43,20 +39,7 @@ namespace YetaWF.Modules.CurrencyConverter.DataProvider {
 
         private IDataProvider<int, ConfigData> CreateDataProvider() {
             Package package = YetaWF.Modules.CurrencyConverter.Controllers.AreaRegistration.CurrentPackage;
-            return MakeDataProvider(package, package.AreaName,
-                () => { // File
-                    return new FileDataProvider<int, ConfigData>(
-                        Path.Combine(YetaWFManager.DataFolder, Dataset),
-                        Cacheable: true);
-                },
-                (dbo, conn) => {  // SQL
-                    return new SQLSimpleObjectDataProvider<int, ConfigData>(Dataset, dbo, conn,
-                        Cacheable: true);
-                },
-                () => { // External
-                    return MakeExternalDataProvider(new { Package = Package, Dataset = Dataset, Cacheable = true });
-                }
-            );
+            return MakeDataProvider(package, package.AreaName, Cacheable: true);
         }
 
         // API

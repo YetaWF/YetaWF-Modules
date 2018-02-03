@@ -2,11 +2,9 @@
 
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using YetaWF.Core;
 using YetaWF.Core.DataProvider;
-using YetaWF.Core.DataProvider.Attributes;
 using YetaWF.Core.Identity;
 using YetaWF.Core.IO;
 using YetaWF.Core.Localize;
@@ -14,12 +12,11 @@ using YetaWF.Core.Packages;
 using YetaWF.Core.Pages;
 using YetaWF.Core.Serializers;
 using YetaWF.Core.Support;
-using YetaWF.DataProvider;
 
-namespace YetaWF.Modules.Pages.DataProvider
-{
-    public class PageDefinitionDataProviderStartup : IInitializeApplicationStartup
-    {
+namespace YetaWF.Modules.Pages.DataProvider {
+
+    public class PageDefinitionDataProviderStartup : IInitializeApplicationStartup {
+
         public void InitializeApplicationStartup() {
             PageDefinition.LoadPageDefinition = LoadPageDefinition;
             PageDefinition.LoadPageDefinitionByUrl = LoadPageDefinition;
@@ -82,37 +79,30 @@ namespace YetaWF.Modules.Pages.DataProvider
 
     // For performance reasons, all page urls are preloaded to make lookup faster - this could be changed for SQL
 
+    public class DesignedPagesDictionaryByUrl : SerializableDictionary<string, PageDefinition.DesignedPage> { }
+
+    interface IPageDefinitionIOMode {
+        DesignedPagesDictionaryByUrl GetDesignedPages();
+        List<PageDefinition> GetPagesFromModule(Guid moduleGuid);
+    }
+    
     public class PageDefinitionDataProvider : DataProviderImpl, IInstallableModel {
 
-        // IMPLEMENTATION
-        // IMPLEMENTATION
-        // IMPLEMENTATION
-
         private static object _lockObject = new object();
+
+        // IMPLEMENTATION
+        // IMPLEMENTATION
+        // IMPLEMENTATION
 
         public PageDefinitionDataProvider() : base(YetaWFManager.Manager.CurrentSite.Identity) { SetDataProvider(CreateDataProvider()); }
         public PageDefinitionDataProvider(int siteIdentity) : base(siteIdentity) { SetDataProvider(CreateDataProvider()); }
 
         private IDataProvider<Guid, PageDefinition> DataProvider { get { return GetDataProvider(); } }
+        private IPageDefinitionIOMode DataProviderIOMode { get { return GetDataProvider(); } }
 
         private IDataProvider<Guid, PageDefinition> CreateDataProvider() {
             Package package = YetaWF.Modules.Pages.Controllers.AreaRegistration.CurrentPackage;
-            return MakeDataProvider(package, package.AreaName,
-                () => { // File
-                    return new FileDataProvider<Guid, PageDefinition>(
-                        Path.Combine(YetaWFManager.DataFolder, Dataset, SiteIdentity.ToString()),
-                        CurrentSiteIdentity: SiteIdentity,
-                        Cacheable: true);
-                },
-                (dbo, conn) => {  // SQL
-                    return new SQLSimpleObjectDataProvider<Guid, PageDefinition>(Dataset, dbo, conn,
-                        CurrentSiteIdentity: SiteIdentity,
-                        Cacheable: true);
-                },
-                () => { // External
-                    return MakeExternalDataProvider(new { Package = Package, Dataset = Dataset, CurrentSiteIdentity = SiteIdentity, Cacheable = true });
-                }
-            );
+            return MakeDataProvider(package, package.AreaName, SiteIdentity: SiteIdentity, Cacheable: true);
         }
 
         // API PAGE
@@ -132,7 +122,7 @@ namespace YetaWF.Modules.Pages.DataProvider
         }
         private PageDefinition CreatePageDefinition(PageDefinition page) {
             lock (_lockObject) {
-                DesignedPage desPage = new DesignedPage() { PageGuid = page.PageGuid, Url = page.Url, };
+                PageDefinition.DesignedPage desPage = new PageDefinition.DesignedPage() { PageGuid = page.PageGuid, Url = page.Url, };
                 if (DesignedPagesByUrl.ContainsKey(desPage.Url.ToLower()))
                     throw new Error(this.__ResStr("pageUrlErr", "A page with Url {0} already exists.", desPage.Url));
                 if (!DataProvider.Add(page))
@@ -199,7 +189,7 @@ namespace YetaWF.Modules.Pages.DataProvider
                 if (newPage == Guid.Empty) {
                     DesignedPagesByUrl.Remove(oldPage.Url.ToLower());
 
-                    DesignedPage desPage = new DesignedPage() { PageGuid = page.PageGuid, Url = page.Url, };
+                    PageDefinition.DesignedPage desPage = new PageDefinition.DesignedPage() { PageGuid = page.PageGuid, Url = page.Url, };
                     DesignedPagesByUrl.Add(page.Url.ToLower(), desPage);
                 }
             }
@@ -225,7 +215,6 @@ namespace YetaWF.Modules.Pages.DataProvider
                 return true;
             }
         }
-
         public List<PageDefinition> GetItems(int skip, int take, List<DataProviderSortInfo> sort, List<DataProviderFilterInfo> filters, out int total) {
             List<PageDefinition> list = DataProvider.GetRecords(skip, take, sort, filters, out total);
             foreach (PageDefinition page in list)
@@ -238,14 +227,7 @@ namespace YetaWF.Modules.Pages.DataProvider
         // DESIGNED PAGES
 
         // Designed pages are site specific and DesignedPagesByUrl is a permanent site-specific object
-
-        public class DesignedPage {
-            public string Url { get; set; } // absolute Url (w/o http: or domain) e.g., /Home or /Test/Page123
-            [Data_PrimaryKey]
-            public Guid PageGuid { get; set; }
-        }
-        protected class DesignedPagesDictionaryByUrl : SerializableDictionary<string, DesignedPage> { }
-
+        
         public List<PageDefinition.DesignedPage> DesignedPages {
             get {
                 return (from p in DesignedPagesByUrl select new PageDefinition.DesignedPage { Url = p.Value.Url, PageGuid = p.Value.PageGuid }).ToList();
@@ -264,78 +246,33 @@ namespace YetaWF.Modules.Pages.DataProvider
 
         protected DesignedPagesDictionaryByUrl DesignedPagesByUrl {
             get {
-                DesignedPagesDictionaryByUrl byUrl;
-                GetDesignedPages(out byUrl);
-                return byUrl;
+                return GetDesignedPages();
             }
         }
-        protected void GetDesignedPages(out DesignedPagesDictionaryByUrl designedPagesByUrl) {
+        private DesignedPagesDictionaryByUrl GetDesignedPages() {
             DesignedPagesDictionaryByUrl byUrl;
-
-            if (PermanentManager.TryGetObject<DesignedPagesDictionaryByUrl>(out byUrl)) {
-                designedPagesByUrl = byUrl;
-                return;
-            }
+            if (PermanentManager.TryGetObject<DesignedPagesDictionaryByUrl>(out byUrl))
+                return byUrl;
 
             lock (_lockObject) { // lock this so we only do this once
                 // See if we already have it as a permanent object
-                if (PermanentManager.TryGetObject<DesignedPagesDictionaryByUrl>(out byUrl)) {
-                    designedPagesByUrl = byUrl;
-                    return;
-                }
+                if (PermanentManager.TryGetObject<DesignedPagesDictionaryByUrl>(out byUrl))
+                    return byUrl;
                 // Load the designed pages
-                if (!DataProvider.IsInstalled()) {
-                    designedPagesByUrl = new DesignedPagesDictionaryByUrl();// don't save this, it's not permanent
-                    return;
-                }
-                switch (IOMode) {
-                    default:
-                        throw new InternalError("IOMode undetermined");
-                    case WebConfigHelper.IOModeEnum.File:
-                        GetDesignedPages_File(out byUrl);
-                        break;
-                    case WebConfigHelper.IOModeEnum.Sql:
-                        GetDesignedPages_Sql(out byUrl);
-                        break;
-                }
+                if (!DataProvider.IsInstalled())
+                    return new DesignedPagesDictionaryByUrl();// don't save this, it's not permanent
+                byUrl = DataProviderIOMode.GetDesignedPages();
                 PermanentManager.AddObject<DesignedPagesDictionaryByUrl>(byUrl);
             }
-            designedPagesByUrl = byUrl;
-        }
-
-        private void GetDesignedPages_Sql(out DesignedPagesDictionaryByUrl designedPagesByUrl) {
-            using (SQLSimpleObjectDataProvider<Guid, DesignedPage> dp = new SQLSimpleObjectDataProvider<Guid, DesignedPage>(Dataset, GetSqlDbo(), GetSqlConnectionString(), CurrentSiteIdentity: SiteIdentity)) {
-                IDataProvider<Guid, DesignedPage> dataProvider = dp;
-                int total;
-                List<DesignedPage> pages = dataProvider.GetRecords(0, 0, null, null, out total);
-
-                DesignedPagesDictionaryByUrl byUrl = new DesignedPagesDictionaryByUrl();
-                foreach (DesignedPage page in pages) {
-                    byUrl.Add(page.Url.ToLower(), page);
-                }
-                designedPagesByUrl = byUrl;
-            }
-        }
-
-        private void GetDesignedPages_File(out DesignedPagesDictionaryByUrl designedPagesByUrl) {
-            DesignedPagesDictionaryByUrl byUrl = new DesignedPagesDictionaryByUrl();
-            List<Guid> pageGuids = DataProvider.GetKeyList();
-            foreach (var pageGuid in pageGuids) {
-                PageDefinition page = DataProvider.Get(pageGuid);
-                if (page == null)
-                    throw new InternalError("No PageDefinition for guid {0}", pageGuid);
-                DesignedPage desPage = new DesignedPage() { Url = page.Url, PageGuid = page.PageGuid };
-                byUrl.Add(page.Url.ToLower(), desPage);
-            }
-            designedPagesByUrl = byUrl;
+            return byUrl;
         }
 
         /// <summary>
         /// Given a url returns a designed page guid.
-        /// Searching page page id is slow - use Url instead
+        /// Searching page by guid is slow - use Url instead
         /// </summary>
         protected Guid FindPage(string url) {
-            DesignedPage designedPage;
+            PageDefinition.DesignedPage designedPage;
             if (DesignedPagesByUrl.TryGetValue(url.ToLower(), out designedPage))
                 return designedPage.PageGuid;
             return Guid.Empty;
@@ -346,41 +283,7 @@ namespace YetaWF.Modules.Pages.DataProvider
         // MODULE ON WHICH PAGE(S) QUERY
 
         public List<PageDefinition> GetPagesFromModule(Guid moduleGuid) {
-            DataProvider.IsInstalled();// to initialize
-            switch (IOMode) {
-                default:
-                    throw new InternalError("IOMode undetermined");
-                case WebConfigHelper.IOModeEnum.File:
-                    return PagesFromModule_File(moduleGuid);
-                case WebConfigHelper.IOModeEnum.Sql:
-                    return PagesFromModule_Sql(moduleGuid);
-            }
-        }
-
-        private List<PageDefinition> PagesFromModule_File(Guid moduleGuid) {
-            int total;
-            List<PageDefinition> pages = GetItems(0, 0, null, null, out total);
-            List<PageDefinition> pagesWithModule = new List<PageDefinition>();
-            foreach (PageDefinition page in pages) {
-                PageDefinition p = (from m in page.ModuleDefinitions where m.ModuleGuid == moduleGuid select page).FirstOrDefault();
-                if (p != null)
-                    pagesWithModule.Add(p);
-            }
-            return pagesWithModule.OrderBy(p => p.Url).ToList();
-        }
-
-        private List<PageDefinition> PagesFromModule_Sql(Guid moduleGuid) {
-            int total;
-            List<DataProviderSortInfo> sorts = DataProviderSortInfo.Join(null, new DataProviderSortInfo { Field = "Url", Order = DataProviderSortInfo.SortDirection.Ascending });
-            List<DataProviderFilterInfo> filters = DataProviderFilterInfo.Join(null, new DataProviderFilterInfo { Field = "ModuleGuid", Operator = "==", Value = moduleGuid });
-            using (PageDefinitionDataProvider pageDefDP = new PageDefinitionDataProvider()) {
-                using (PageDefinitionForModulesProvider pageDefForModDP = new PageDefinitionForModulesProvider()) {
-                    List<JoinData> joins = new List<JoinData> {
-                        new JoinData {MainDP = pageDefDP, JoinDP = pageDefForModDP, MainColumn = "Identity", JoinColumn = "__Key", UseSite = false },
-                    };
-                    return DataProvider.GetRecords(0, 0, sorts, filters, out total, Joins: joins);
-                }
-            }
+            return DataProviderIOMode.GetPagesFromModule(moduleGuid);
         }
 
         // IINSTALLABLEMODEL

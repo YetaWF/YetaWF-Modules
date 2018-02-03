@@ -1,14 +1,10 @@
 ﻿/* Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Basics#License */
 
-using System.Collections.Generic;
-using System.IO;
 using YetaWF.Core.DataProvider;
 using YetaWF.Core.IO;
 using YetaWF.Core.Packages;
-using YetaWF.Core.Serializers;
 using YetaWF.Core.Support;
 using YetaWF.Core.Views.Shared;
-using YetaWF.DataProvider;
 
 namespace YetaWF.Modules.Basics.DataProvider {
 
@@ -41,20 +37,7 @@ namespace YetaWF.Modules.Basics.DataProvider {
 
         private IDataProvider<int, RecaptchaConfig> CreateDataProvider() {
             Package package = YetaWF.Modules.Basics.Controllers.AreaRegistration.CurrentPackage;
-            return MakeDataProvider(package, package.AreaName,
-                () => { // File
-                    return new FileDataProvider<int, RecaptchaConfig>(
-                        Path.Combine(YetaWFManager.DataFolder, Dataset),
-                        Cacheable: true);
-                },
-                (dbo, conn) => {  // SQL
-                    return new SQLSimpleObjectDataProvider<int, RecaptchaConfig>(Dataset, dbo, conn,
-                        Cacheable: true);
-                },
-                () => { // External
-                    return MakeExternalDataProvider(new { Package = Package, Dataset = Dataset, Cacheable = true });
-                }
-            );
+            return MakeDataProvider(package, package.AreaName, Cacheable: true);
         }
 
         // API

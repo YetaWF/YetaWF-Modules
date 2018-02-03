@@ -175,7 +175,7 @@
             <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
               <Properties>
                 <Name Value="fileNA2" />
-                <Text Value="This may be caused by a missing log folder (\Data\DataFolder\YetaWF_Logging) or due to permissions issues writing to the folder." />
+                <Text Value="This may be caused by a missing log folder (\Data\DataFolder\YetaWF_Logging), database or external dataprovider." />
               </Properties>
             </Object>
           </Value>

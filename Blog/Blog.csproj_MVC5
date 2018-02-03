@@ -72,6 +72,8 @@
     <Compile Include="Controllers\Summary.cs" />
     <Compile Include="Controllers\Support\DisqusSSO.cs" />
     <Compile Include="Models\DisqusConfigDataProvider.cs" />
+    <Compile Include="Models\FileDataProvider.cs" />
+    <Compile Include="Models\SQLDataProvider.cs" />
     <Compile Include="Modules\Disqus.cs" />
     <Compile Include="Modules\DisqusConfig.cs" />
     <Compile Include="Modules\DisqusLinks.cs" />
@@ -177,7 +179,7 @@
       <Name>Core</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\..\DataProvider\File\File.csproj">
-      <Project>{F0DF6C3B-2B71-4526-8FD0-AC2B731B2C3B}</Project>
+      <Project>{f0df6c3b-2b71-4526-8fd0-ac2b731b2c3b}</Project>
       <Name>File</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\..\DataProvider\ModuleDefinition\ModuleDefinition.csproj">
@@ -185,7 +187,7 @@
       <Name>ModuleDefinition</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\..\DataProvider\SQL\SQL.csproj">
-      <Project>{22F3EC05-EC47-42B9-87CC-FF4D5494F8A4}</Project>
+      <Project>{67e180a4-fc9f-4eec-bec1-457714963596}</Project>
       <Name>SQL</Name>
     </ProjectReference>
   </ItemGroup>

@@ -31,6 +31,7 @@ namespace YetaWF.Modules.Languages.Modules {
             Title = this.__ResStr("modTitle", "Localization Resources");
             Name = this.__ResStr("modName", "Localization Resources");
             Description = this.__ResStr("modSummary", "Displays and manages localization resources for a package");
+            UsePartialFormCss = false;
         }
 
         public override IModuleDefinitionIO GetDataProvider() { return new LocalizeBrowsePackageModuleDataProvider(); }

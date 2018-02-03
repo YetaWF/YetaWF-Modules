@@ -70,7 +70,9 @@
   <ItemGroup>
     <Compile Include="Controllers\LogBrowse.cs" />
     <Compile Include="Controllers\LogDisplay.cs" />
+    <Compile Include="Models\FileDataProvider.cs" />
     <Compile Include="Models\LogDataProvider.cs" />
+    <Compile Include="Models\SQLDataProvider.cs" />
     <Compile Include="Modules\LogBrowse.cs" />
     <Compile Include="Modules\LogDisplay.cs" />
     <Compile Include="Startup\Info.cs" />
@@ -116,7 +118,7 @@
       <Name>ModuleDefinition</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\..\DataProvider\SQL\SQL.csproj">
-      <Project>{22f3ec05-ec47-42b9-87cc-ff4d5494f8a4}</Project>
+      <Project>{67e180a4-fc9f-4eec-bec1-457714963596}</Project>
       <Name>SQL</Name>
     </ProjectReference>
   </ItemGroup>
