@@ -12,6 +12,7 @@ using YetaWF.Core.Views.Shared;
 using YetaWF.Modules.Identity.Controllers.Shared;
 using YetaWF.Modules.Identity.DataProvider;
 using YetaWF.Core.Localize;
+using YetaWF.Modules.Identity.Support;
 #if MVC6
 using Microsoft.AspNetCore.Html;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -48,7 +49,7 @@ namespace YetaWF.Modules.Identity.Views.Shared {
             public int DeleteMe { get; set; }
 
             [Caption("User Name"), Description("Shows all defined user names")]
-            [UIHint("Text80"), StringLength(Globals.MaxUser), /*$$ UserNameValidation,*/ ListNoDuplicates, Required, Trim]
+            [UIHint("Text80"), StringLength(Globals.MaxUser), UserNameValidation, ListNoDuplicates, Required, Trim]
             public string UserName { get; set; }
 
             [UIHint("Hidden"), Required, Trim]
