@@ -32,6 +32,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Microsoft.CSharp" />
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Web" />
@@ -64,12 +65,15 @@
   <ItemGroup>
     <Compile Include="Controllers\AddonDisplay.cs" />
     <Compile Include="Controllers\AddonsBrowse.cs" />
+    <Compile Include="Controllers\BrowseDataProviders.cs" />
     <Compile Include="Controllers\DisposableTrackerBrowse.cs" />
     <Compile Include="Controllers\HttpModulesBrowse.cs" />
     <Compile Include="Controllers\StaticPagesBrowse.cs" />
     <Compile Include="Controllers\Status.cs" />
+    <Compile Include="Models\DataProviderInfoDataProvider.cs" />
     <Compile Include="Modules\AddonDisplay.cs" />
     <Compile Include="Modules\AddonsBrowse.cs" />
+    <Compile Include="Modules\BrowseDataProviders.cs" />
     <Compile Include="Modules\DisposableTrackerBrowse.cs" />
     <Compile Include="Modules\HttpModulesBrowse.cs" />
     <Compile Include="Modules\StaticPagesBrowse.cs" />
@@ -91,6 +95,7 @@
     <None Include="Addons\_Main\Grids\HttpModulesBrowseModuleController.BrowseItem" />
     <None Include="Addons\_Main\Grids\DisposableTrackerBrowseModuleController.BrowseItem" />
     <None Include="Addons\_Main\Grids\StaticPagesBrowseModuleController.BrowseItem" />
+    <None Include="Addons\_Main\Grids\BrowseDataProvidersModuleController.BrowseItem" />
     <None Include="Views\YetaWF_Dashboard_DisposableTrackerBrowse.cshtml" />
     <None Include="Views\YetaWF_Dashboard_DisposableTrackerBrowse_Partial.cshtml" />
     <None Include="Views\YetaWF_Dashboard_HttpModulesBrowse.cshtml" />
