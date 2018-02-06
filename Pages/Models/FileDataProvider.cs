@@ -15,6 +15,7 @@ namespace YetaWF.Modules.Pages.DataProvider.File {
 
         public void Register() {
             DataProviderImpl.RegisterExternalDataProvider(FileDataProviderBase.ExternalName, typeof(DataProvider.PageDefinitionDataProvider), typeof(PageDefinitionDataProvider));
+            DataProviderImpl.RegisterExternalDataProvider(FileDataProviderBase.ExternalName, typeof(DataProvider.UnifiedSetDataProvider), typeof(UnifiedSetDataProvider));
         }
         class PageDefinitionDataProvider : FileDataProvider<Guid, PageDefinition>, IPageDefinitionIOMode {
 

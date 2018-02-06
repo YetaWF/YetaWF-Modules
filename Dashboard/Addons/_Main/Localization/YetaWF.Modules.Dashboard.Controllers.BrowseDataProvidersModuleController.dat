@@ -10,7 +10,7 @@
           <Value>
             <Object Type="YetaWF.Core.Localize.LocalizationData+ClassData" Assembly="YetaWF.Core">
               <Properties>
-                <Name Value="YetaWF.Modules.Backups.Controllers.BackupsModuleController+BackupModel" />
+                <Name Value="YetaWF.Modules.Dashboard.Controllers.BrowseDataProvidersModuleController+BrowseItem" />
                 <BaseTypeName />
                 <Header />
                 <Footer />
@@ -28,9 +28,9 @@
                       <Value>
                         <Object Type="YetaWF.Core.Localize.LocalizationData+PropertyData" Assembly="YetaWF.Core">
                           <Properties>
-                            <Name Value="Commands" />
-                            <Caption Value="Actions" />
-                            <Description Value="All available actions" />
+                            <Name Value="IOModeName" />
+                            <Caption Value="I/O Mode" />
+                            <Description Value="The I/O mode supported by this data provider" />
                             <HelpLink />
                             <TextAbove />
                             <TextBelow />
@@ -40,9 +40,9 @@
                       <Value>
                         <Object Type="YetaWF.Core.Localize.LocalizationData+PropertyData" Assembly="YetaWF.Core">
                           <Properties>
-                            <Name Value="Created" />
-                            <Caption Value="Created" />
-                            <Description Value="The date/time the site backup was created" />
+                            <Name Value="TypeImplName" />
+                            <Caption Value="Implementation Type Name" />
+                            <Description Value="The type of the implementation of the supported data provider" />
                             <HelpLink />
                             <TextAbove />
                             <TextBelow />
@@ -52,33 +52,45 @@
                       <Value>
                         <Object Type="YetaWF.Core.Localize.LocalizationData+PropertyData" Assembly="YetaWF.Core">
                           <Properties>
-                            <Name Value="FileName" />
-                            <Caption Value="File Name" />
-                            <Description Value="The site backup file name (located in the Backups folder)" />
+                            <Name Value="TypeName" />
+                            <Caption Value="Type Name" />
+                            <Description Value="The type of the supported data provider" />
                             <HelpLink />
                             <TextAbove />
                             <TextBelow />
                           </Properties>
                         </Object>
                       </Value>
+                    </List>
+                  </Object>
+                </Properties>
+              </Properties>
+            </Object>
+          </Value>
+          <Value>
+            <Object Type="YetaWF.Core.Localize.LocalizationData+ClassData" Assembly="YetaWF.Core">
+              <Properties>
+                <Name Value="YetaWF.Modules.Dashboard.Controllers.BrowseDataProvidersModuleController+BrowseModel" />
+                <BaseTypeName />
+                <Header />
+                <Footer />
+                <Legend />
+                <Categories>
+                  <Object Type="YetaWF.Core.Serializers.SerializableDictionary`2[[System.String, mscorlib, Culture=neutral, PublicKeyToken=b77a5c561934e089],[System.String, mscorlib, Culture=neutral, PublicKeyToken=b77a5c561934e089]]" Assembly="YetaWF.Core">
+                    <Properties />
+                    <Dictionary />
+                  </Object>
+                </Categories>
+                <Properties>
+                  <Object Type="YetaWF.Core.Serializers.SerializableList`1[[YetaWF.Core.Localize.LocalizationData+PropertyData, YetaWF.Core, Culture=neutral, PublicKeyToken=null]]" Assembly="YetaWF.Core">
+                    <Properties />
+                    <List>
                       <Value>
                         <Object Type="YetaWF.Core.Localize.LocalizationData+PropertyData" Assembly="YetaWF.Core">
                           <Properties>
-                            <Name Value="FullFileName" />
-                            <Caption Value="Full File Name" />
-                            <Description Value="The site backup file name" />
-                            <HelpLink />
-                            <TextAbove />
-                            <TextBelow />
-                          </Properties>
-                        </Object>
-                      </Value>
-                      <Value>
-                        <Object Type="YetaWF.Core.Localize.LocalizationData+PropertyData" Assembly="YetaWF.Core">
-                          <Properties>
-                            <Name Value="Size" />
-                            <Caption Value="Size" />
-                            <Description Value="The file size of the site backup" />
+                            <Name Value="GridDef" />
+                            <Caption Value="" />
+                            <Description Value="" />
                             <HelpLink />
                             <TextAbove />
                             <TextBelow />
@@ -103,40 +115,7 @@
     <Strings>
       <Object Type="YetaWF.Core.Serializers.SerializableList`1[[YetaWF.Core.Localize.LocalizationData+StringData, YetaWF.Core, Culture=neutral, PublicKeyToken=null]]" Assembly="YetaWF.Core">
         <Properties />
-        <List>
-          <Value>
-            <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
-              <Properties>
-                <Name Value="backupCreated" />
-                <Text Value="The site backup has been successfully created" />
-              </Properties>
-            </Object>
-          </Value>
-          <Value>
-            <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
-              <Properties>
-                <Name Value="backupNotFound" />
-                <Text Value="The backup '{0}' cannot be located." />
-              </Properties>
-            </Object>
-          </Value>
-          <Value>
-            <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
-              <Properties>
-                <Name Value="cantBackup" />
-                <Text Value="Can't create a site backup for site {0}:(+nl)" />
-              </Properties>
-            </Object>
-          </Value>
-          <Value>
-            <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
-              <Properties>
-                <Name Value="templatesCreated" />
-                <Text Value="The templates for the current site have been successfully created in the \SiteTemplates\Data folder" />
-              </Properties>
-            </Object>
-          </Value>
-        </List>
+        <List />
       </Object>
     </Strings>
   </Properties>

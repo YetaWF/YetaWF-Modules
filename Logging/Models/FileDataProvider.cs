@@ -113,18 +113,21 @@ namespace YetaWF.Modules.Logging.DataProvider.File {
         // IINSTALLABLEMODEL
 
         public override bool IsInstalled() {
+            if (YetaWF.Core.Log.Logging.DefinedLoggerType != typeof(LogRecordDataProvider)) return false;
             if (_isInstalled == null)
                 _isInstalled = Directory.Exists(Path.GetDirectoryName(LogFile));
             return (bool)_isInstalled;
         }
         private bool? _isInstalled;
         public bool InstallModel(List<string> errorList) {
+            if (YetaWF.Core.Log.Logging.DefinedLoggerType != typeof(LogRecordDataProvider)) return true;
             System.IO.Directory.CreateDirectory(Path.GetDirectoryName(LogFile));
             YetaWF.Core.Log.Logging.SetupLogging();
             _isInstalled = true;
             return true;
         }
         public bool UninstallModel(List<string> errorList) {
+            if (YetaWF.Core.Log.Logging.DefinedLoggerType != typeof(LogRecordDataProvider)) return true;
             YetaWF.Core.Log.Logging.TerminateLogging();
             try {
                 System.IO.File.Delete(LogFile);

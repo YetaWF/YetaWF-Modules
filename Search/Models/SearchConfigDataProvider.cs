@@ -1,11 +1,13 @@
 ﻿/* Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Search#License */
 
+using System.Collections.Generic;
 using YetaWF.Core;
 using YetaWF.Core.DataProvider;
 using YetaWF.Core.DataProvider.Attributes;
 using YetaWF.Core.IO;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Packages;
+using YetaWF.Core.Serializers;
 using YetaWF.Core.Support;
 
 namespace YetaWF.Modules.Search.DataProvider {
@@ -89,6 +91,43 @@ namespace YetaWF.Modules.Search.DataProvider {
             UpdateStatusEnum status = DataProvider.Update(data.Id, data.Id, data);
             if (status != UpdateStatusEnum.OK)
                 throw new InternalError("Unexpected error saving settings {0}", status);
+        }
+
+
+        // IINSTALLABLEMODEL
+        // IINSTALLABLEMODEL
+        // IINSTALLABLEMODEL
+
+        public new bool IsInstalled() {
+            if (DataProvider == null) return false;
+            return base.IsInstalled();
+        }
+        public new bool InstallModel(List<string> errorList) {
+            if (DataProvider == null) return true;
+            return base.InstallModel(errorList);
+        }
+        public new bool UninstallModel(List<string> errorList) {
+            if (DataProvider == null) return true;
+            return base.UninstallModel(errorList);
+        }
+        public new void AddSiteData() {
+            if (DataProvider == null) return;
+            base.AddSiteData();
+        }
+        public new void RemoveSiteData() {
+            if (DataProvider == null) return;
+            base.RemoveSiteData();
+        }
+        public new bool ExportChunk(int chunk, SerializableList<SerializableFile> fileList, out object obj) {
+            if (DataProvider == null) {
+                obj = null;
+                return false;
+            }
+            return base.ExportChunk(chunk, fileList, out obj);
+        }
+        public new void ImportChunk(int chunk, SerializableList<SerializableFile> fileList, object obj) {
+            if (DataProvider == null) return;
+            base.ImportChunk(chunk, fileList, obj);
         }
     }
 }

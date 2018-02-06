@@ -6,6 +6,7 @@ using YetaWF.Core.IO;
 using YetaWF.Core.Log;
 using YetaWF.Core.Packages;
 using YetaWF.Core.Serializers;
+using YetaWF.Core.Support;
 using YetaWF.DataProvider.SQL;
 
 namespace YetaWF.Modules.Logging.DataProvider.SQL {
@@ -97,15 +98,18 @@ namespace YetaWF.Modules.Logging.DataProvider.SQL {
         // IINSTALLABLEMODEL
 
         public override bool IsInstalled() {
+            if (YetaWF.Core.Log.Logging.DefinedLoggerType != typeof(LogRecordDataProvider)) return false;
             return DataProvider.IsInstalled();
         }
         public bool InstallModel(List<string> errorList) {
+            if (YetaWF.Core.Log.Logging.DefinedLoggerType != typeof(LogRecordDataProvider)) return true;
             bool success = DataProvider.InstallModel(errorList);
             if (success)
                 YetaWF.Core.Log.Logging.SetupLogging();
             return success;
         }
         public bool UninstallModel(List<string> errorList) {
+            if (YetaWF.Core.Log.Logging.DefinedLoggerType != typeof(LogRecordDataProvider)) return true;
             YetaWF.Core.Log.Logging.TerminateLogging();
             return DataProvider.UninstallModel(errorList);
         }

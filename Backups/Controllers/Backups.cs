@@ -121,7 +121,7 @@ namespace YetaWF.Modules.Backups.Controllers {
                 throw new InternalError("Can't make site template data on a deployed site");
             SiteTemplateData siteTemplateData = new SiteTemplateData();
             siteTemplateData.MakeSiteTemplateData();
-            return Reload(null, PopupText: this.__ResStr("templatesCreated", "The template for the current site has been successfully created in the \\SiteTemplates\\Data folder"), Reload: ReloadEnum.ModuleParts);
+            return Reload(null, PopupText: this.__ResStr("templatesCreated", "The templates for the current site have been successfully created in the \\SiteTemplates\\Data folder"), Reload: ReloadEnum.ModuleParts);
         }
 
         [Permission("Downloads")]
