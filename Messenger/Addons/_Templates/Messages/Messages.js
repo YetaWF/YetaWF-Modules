@@ -2,8 +2,11 @@
 var Y_AttrEscape;
 var YetaWF_Messenger;
 (function (YetaWF_Messenger) {
-    var MessagesTemplate = /** @class */ (function () {
+    var MessagesTemplate = (function () {
         function MessagesTemplate(divId, fromUser, toUser) {
+            this.divId = "";
+            this.fromUser = "";
+            this.toUser = "";
             this.init(divId, fromUser, toUser);
         }
         /**
@@ -81,5 +84,4 @@ var YetaWF_Messenger;
     }());
     YetaWF_Messenger.MessagesTemplate = MessagesTemplate;
 })(YetaWF_Messenger || (YetaWF_Messenger = {}));
-
 //# sourceMappingURL=Messages.js.map

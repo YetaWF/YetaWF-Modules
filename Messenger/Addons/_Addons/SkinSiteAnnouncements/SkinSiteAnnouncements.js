@@ -2,7 +2,7 @@
 var Y_Alert;
 var YetaWF_Messenger;
 (function (YetaWF_Messenger) {
-    var SkinSiteAnnouncementsModule = /** @class */ (function () {
+    var SkinSiteAnnouncementsModule = (function () {
         function SkinSiteAnnouncementsModule() {
         }
         /**
@@ -30,5 +30,4 @@ var YetaWF_Messenger;
     var announceMod = new SkinSiteAnnouncementsModule();
     announceMod.init();
 })(YetaWF_Messenger || (YetaWF_Messenger = {}));
-
 //# sourceMappingURL=SkinSiteAnnouncements.js.map

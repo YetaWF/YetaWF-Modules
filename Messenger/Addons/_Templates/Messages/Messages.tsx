@@ -6,9 +6,9 @@ namespace YetaWF_Messenger {
 
     export class MessagesTemplate {
 
-        private divId: string;
-        private fromUser: string;
-        private toUser: string;
+        private divId: string = "";
+        private fromUser: string = "";
+        private toUser: string = "";
 
         constructor(divId: string, fromUser: string, toUser: string) {
             this.init(divId, fromUser, toUser);

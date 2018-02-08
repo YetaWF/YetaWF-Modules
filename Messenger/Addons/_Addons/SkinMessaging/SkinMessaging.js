@@ -2,7 +2,7 @@
 var Y_Alert;
 var YetaWF_Messenger;
 (function (YetaWF_Messenger) {
-    var SkinMessagingModule = /** @class */ (function () {
+    var SkinMessagingModule = (function () {
         function SkinMessagingModule() {
             this.init();
         }
@@ -90,5 +90,4 @@ var YetaWF_Messenger;
     YetaWF_Messenger.SkinMessagingModule = SkinMessagingModule;
 })(YetaWF_Messenger || (YetaWF_Messenger = {}));
 YetaWF_Messenger.SkinMessagingModule.singleton = new YetaWF_Messenger.SkinMessagingModule();
-
 //# sourceMappingURL=SkinMessaging.js.map

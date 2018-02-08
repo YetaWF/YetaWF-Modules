@@ -2,7 +2,7 @@
 var CKEDITOR;
 var YetaWF_Messenger;
 (function (YetaWF_Messenger) {
-    var MessagingModule = /** @class */ (function () {
+    var MessagingModule = (function () {
         function MessagingModule(idForm, idSend, idCancel, offlineImage, onlineImage) {
             var _this = this;
             this.idForm = idForm;
@@ -140,5 +140,4 @@ var YetaWF_Messenger;
     }());
     YetaWF_Messenger.MessagingModule = MessagingModule;
 })(YetaWF_Messenger || (YetaWF_Messenger = {}));
-
 //# sourceMappingURL=Messaging.js.map
