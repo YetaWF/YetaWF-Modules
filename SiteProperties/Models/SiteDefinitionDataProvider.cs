@@ -58,9 +58,10 @@ namespace YetaWF.Modules.SiteProperties.Models {
         static private Dictionary<string, string> StaticSiteCache { get; set; }
 
         private void LoadStaticSitesCache() {
+            StaticSiteCache = new Dictionary<string, string>();
+            if (SiteDefinition.INITIAL_INSTALL) return;
             int total;
             List<SiteDefinition> sites = GetItems(0, 0, null, null, out total);
-            StaticSiteCache = new Dictionary<string, string>();
             foreach (SiteDefinition site in sites)
                 if (!string.IsNullOrWhiteSpace(site.StaticDomain))
                     StaticSiteCache.Add(site.StaticDomain.ToLower(), site.SiteDomain);
@@ -144,7 +145,7 @@ namespace YetaWF.Modules.SiteProperties.Models {
                 restartRequired = true;
             }
             // restart required for uihint changes because uihints are cached or CDN changes
-            if (!restartRequired) { 
+            if (!restartRequired) {
                 if (site.OriginalUseCDN != site.UseCDN || site.OriginalCDNUrl != site.CDNUrl || site.OriginalCDNUrlSecure != site.CDNUrlSecure ||
                         site.OriginalStaticDomain != site.StaticDomain)
                     restartRequired = true;
