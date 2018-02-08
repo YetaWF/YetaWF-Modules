@@ -2,7 +2,7 @@
 var Y_AttrEscape;
 var YetaWF_Messenger;
 (function (YetaWF_Messenger) {
-    var MessagesTemplate = (function () {
+    var MessagesTemplate = /** @class */ (function () {
         function MessagesTemplate(divId, fromUser, toUser) {
             this.divId = "";
             this.fromUser = "";
@@ -30,7 +30,7 @@ var YetaWF_Messenger;
                 var line = "<div class=\"t_otheruser t_seen\" data-key=\"" + key + "\">" +
                     ("<div class=\"t_sent\">" + Y_AttrEscape(sent) + "</div>") +
                     ("<div class=\"t_text\">" + Y_AttrEscape(messageText) + "</div>") +
-                    '</div>';
+                    "</div>";
                 $("#" + this.divId + " .t_messagearea .t_last").before(line);
                 this.scrollMessageArea();
                 YetaWF_Messenger.SkinMessagingModule.singleton.messageSeen(key);
@@ -41,7 +41,7 @@ var YetaWF_Messenger;
                 var line = "<div class=\"t_thisuser t_notseen\" data-key=\"" + key + "\">" +
                     ("<div class=\"t_sent\"><img alt=\"" + Y_AttrEscape(YLocs.YetaWF_Messenger.notSeen) + "\" title=\"" + Y_AttrEscape(YLocs.YetaWF_Messenger.notSeen) + "\" src=\"" + Y_AttrEscape(YConfigs.YetaWF_Messenger.msgNotSeenIcon) + "\">" + sent + "</div>") +
                     ("<div class=\"t_text\">" + Y_AttrEscape(messageText) + "</div>") +
-                    '</div>';
+                    "</div>";
                 $("#" + this.divId + " .t_messagearea .t_last").before(line);
                 this.scrollMessageArea();
             }
@@ -59,13 +59,13 @@ var YetaWF_Messenger;
         };
         MessagesTemplate.prototype.markMessageSeen = function (key, to) {
             var $msgArea = $("#" + this.divId);
-            if ($msgArea.length == 0)
+            if ($msgArea.length === 0)
                 throw "Div " + this.divId + " not found"; /*DEBUG*/
             $("div.t_notseen[data-key=" + key + "] img", $msgArea).remove();
         };
         MessagesTemplate.prototype.markAllMessagesSeen = function (to) {
             var $msgArea = $("#" + this.divId);
-            if ($msgArea.length == 0)
+            if ($msgArea.length === 0)
                 throw "Div " + this.divId + " not found"; /*DEBUG*/
             $("div.t_notseen img", $msgArea).remove();
         };
@@ -73,15 +73,16 @@ var YetaWF_Messenger;
             var out = document.getElementById(this.divId);
             if (!out)
                 throw "Div " + this.divId + " not found"; /*DEBUG*/
-            out.style.display = '';
+            out.style.display = "";
             out.scrollTop = out.scrollHeight - out.clientHeight;
             out = document.getElementById(this.divId + "_none");
             if (!out)
                 throw this.divId + "_none not found"; /*DEBUG*/
-            out.style.display = 'none';
+            out.style.display = "none";
         };
         return MessagesTemplate;
     }());
     YetaWF_Messenger.MessagesTemplate = MessagesTemplate;
 })(YetaWF_Messenger || (YetaWF_Messenger = {}));
+
 //# sourceMappingURL=Messages.js.map

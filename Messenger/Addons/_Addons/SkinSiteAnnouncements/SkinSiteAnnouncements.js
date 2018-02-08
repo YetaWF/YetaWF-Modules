@@ -2,7 +2,7 @@
 var Y_Alert;
 var YetaWF_Messenger;
 (function (YetaWF_Messenger) {
-    var SkinSiteAnnouncementsModule = (function () {
+    var SkinSiteAnnouncementsModule = /** @class */ (function () {
         function SkinSiteAnnouncementsModule() {
         }
         /**
@@ -16,8 +16,8 @@ var YetaWF_Messenger;
             });
             var $$ = $;
             var connection = $$.hubConnection(YConfigs.Basics.SignalRUrl, { useDefaultPath: false });
-            var hubProxy = connection.createHubProxy('YetaWF_Messenger_SiteAnnouncement');
-            hubProxy.on('message', function (content, title) {
+            var hubProxy = connection.createHubProxy("YetaWF_Messenger_SiteAnnouncement");
+            hubProxy.on("message", function (content, title) {
                 if (SkinSiteAnnouncementsModule.on)
                     Y_Alert(content, title, null, { encoded: true });
             });
@@ -30,4 +30,5 @@ var YetaWF_Messenger;
     var announceMod = new SkinSiteAnnouncementsModule();
     announceMod.init();
 })(YetaWF_Messenger || (YetaWF_Messenger = {}));
+
 //# sourceMappingURL=SkinSiteAnnouncements.js.map

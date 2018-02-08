@@ -2,7 +2,7 @@
 var CKEDITOR;
 var YetaWF_Messenger;
 (function (YetaWF_Messenger) {
-    var MessagingModule = (function () {
+    var MessagingModule = /** @class */ (function () {
         function MessagingModule(idForm, idSend, idCancel, offlineImage, onlineImage) {
             var _this = this;
             this.idForm = idForm;
@@ -19,13 +19,13 @@ var YetaWF_Messenger;
         }
         MessagingModule.prototype.handleUserConnect = function (user) {
             var toUser = this.getSelToUserValue();
-            if (toUser && toUser.length > 0 && toUser == user) {
+            if (toUser && toUser.length > 0 && toUser === user) {
                 this.setOnlineStatus(true);
             }
         };
         MessagingModule.prototype.handleUserDisconnect = function (user) {
             var toUser = this.getSelToUserValue();
-            if (toUser && toUser.length > 0 && toUser == user) {
+            if (toUser && toUser.length > 0 && toUser === user) {
                 this.setOnlineStatus(false);
             }
         };
@@ -73,7 +73,7 @@ var YetaWF_Messenger;
             if (msg.trim().length <= 0)
                 return;
             YetaWF_Messenger.SkinMessagingModule.singleton.send(user, msg);
-            CKEDITOR.instances[editMsg.id].setData('');
+            CKEDITOR.instances[editMsg.id].setData("");
         };
         MessagingModule.prototype.onUserSelect = function () {
             this.clearOnlineStatus();
@@ -116,10 +116,10 @@ var YetaWF_Messenger;
         MessagingModule.prototype.clearOnlineStatus = function () {
             //var divUser: HTMLDivElement = document.querySelector(`#${this.idForm} .yt_yetawf_identity_userid`) as HTMLDivElement;
             var $divId = $("#" + this.idForm + " .yt_yetawf_identity_userid");
-            if ($divId.length == 0)
+            if ($divId.length === 0)
                 throw "user Id Div not found"; /*DEBUG*/
             var $parent = $divId.parent();
-            $('img.t_status', $parent).remove();
+            $("img.t_status", $parent).remove();
             return $parent;
         };
         MessagingModule.prototype.setOnlineStatus = function (online) {
@@ -140,4 +140,5 @@ var YetaWF_Messenger;
     }());
     YetaWF_Messenger.MessagingModule = MessagingModule;
 })(YetaWF_Messenger || (YetaWF_Messenger = {}));
+
 //# sourceMappingURL=Messaging.js.map

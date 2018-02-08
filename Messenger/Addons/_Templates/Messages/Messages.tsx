@@ -27,17 +27,17 @@ namespace YetaWF_Messenger {
             $(document).on("YetaWF_Messenger_Messaging_MessageSent", (event: any, o: any) => this.handleMessageSent(o.key, o.to, o.messageText, o.sent));
             $(document).on("YetaWF_Messenger_Messaging_MessageSeen", (event: any, o: any) => this.handleMessageSeen(o.key, o.to));
             $(document).on("YetaWF_Messenger_Messaging_AllMessagesSeen", (event: any, o: any) => this.handleAllMessagesSeen(o.to));
-            
+
             if (this.toUser && this.toUser.length > 0) {
                 YetaWF_Messenger.SkinMessagingModule.singleton.allMessagesSeen(this.toUser);
             }
         }
         private handleMessage(key: number, from: string, messageText: string, sent: string): void {
             if (from === this.toUser) {
-                var line = `<div class="t_otheruser t_seen" data-key="${key}">` +
-                    `<div class="t_sent">${Y_AttrEscape(sent)}</div>` + 
-                    `<div class="t_text">${Y_AttrEscape(messageText)}</div>` + 
-                    '</div>';
+                var line: string = `<div class="t_otheruser t_seen" data-key="${key}">` +
+                    `<div class="t_sent">${Y_AttrEscape(sent)}</div>` +
+                    `<div class="t_text">${Y_AttrEscape(messageText)}</div>` +
+                    "</div>";
                 $(`#${this.divId} .t_messagearea .t_last`).before(line);
                 this.scrollMessageArea();
                 YetaWF_Messenger.SkinMessagingModule.singleton.messageSeen(key);
@@ -45,10 +45,10 @@ namespace YetaWF_Messenger {
         }
         private handleMessageSent(key: number, to: string, messageText: string, sent: string): void {
             if (to === this.toUser) {
-                var line = `<div class="t_thisuser t_notseen" data-key="${key}">` +
+                var line: string = `<div class="t_thisuser t_notseen" data-key="${key}">` +
                     `<div class="t_sent"><img alt="${Y_AttrEscape(YLocs.YetaWF_Messenger.notSeen)}" title="${Y_AttrEscape(YLocs.YetaWF_Messenger.notSeen)}" src="${Y_AttrEscape(YConfigs.YetaWF_Messenger.msgNotSeenIcon)}">${sent}</div>` +
                     `<div class="t_text">${Y_AttrEscape(messageText)}</div>` +
-                    '</div>';
+                    "</div>";
                 $(`#${this.divId} .t_messagearea .t_last`).before(line);
                 this.scrollMessageArea();
             }
@@ -66,22 +66,22 @@ namespace YetaWF_Messenger {
         }
         private markMessageSeen(key: number, to: string): void {
             var $msgArea: JQuery<HTMLElement> = $(`#${this.divId}`);
-            if ($msgArea.length == 0) throw `Div ${this.divId} not found`;/*DEBUG*/
+            if ($msgArea.length === 0) throw `Div ${this.divId} not found`;/*DEBUG*/
             $(`div.t_notseen[data-key=${key}] img`, $msgArea).remove();
         }
         private markAllMessagesSeen(to: string): void {
             var $msgArea: JQuery<HTMLElement> = $(`#${this.divId}`);
-            if ($msgArea.length == 0) throw `Div ${this.divId} not found`;/*DEBUG*/
+            if ($msgArea.length === 0) throw `Div ${this.divId} not found`;/*DEBUG*/
             $(`div.t_notseen img`, $msgArea).remove();
         }
-        private scrollMessageArea() {
+        private scrollMessageArea(): void {
             var out: HTMLElement | null = document.getElementById(this.divId);
             if (!out) throw `Div ${this.divId} not found`;/*DEBUG*/
-            out.style.display = '';
+            out.style.display = "";
             out.scrollTop = out.scrollHeight - out.clientHeight;
             out = document.getElementById(`${this.divId}_none`);
             if (!out) throw `${this.divId}_none not found`;/*DEBUG*/
-            out.style.display = 'none';
+            out.style.display = "none";
         }
     }
 }

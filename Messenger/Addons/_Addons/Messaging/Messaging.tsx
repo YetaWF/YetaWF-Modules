@@ -1,5 +1,5 @@
 ﻿/* Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Messenger#License */
-  
+
 var CKEDITOR: any;
 
 namespace YetaWF_Messenger {
@@ -29,13 +29,13 @@ namespace YetaWF_Messenger {
         }
         private handleUserConnect(user: string): void {
             var toUser: string | null = this.getSelToUserValue();
-            if (toUser && toUser.length > 0 && toUser == user) {
+            if (toUser && toUser.length > 0 && toUser === user) {
                 this.setOnlineStatus(true);
             }
         }
         private handleUserDisconnect(user: string): void {
             var toUser: string | null = this.getSelToUserValue();
-            if (toUser && toUser.length > 0 && toUser == user) {
+            if (toUser && toUser.length > 0 && toUser === user) {
                 this.setOnlineStatus(false);
             }
         }
@@ -50,7 +50,7 @@ namespace YetaWF_Messenger {
         private getSelToUserValue(): string | null {
             var selToUser: HTMLSelectElement = this.getSelToUserTest();
             if (selToUser.selectedIndex <= 0) return null;
-            var user = selToUser.options[selToUser.selectedIndex].text;
+            var user: string = selToUser.options[selToUser.selectedIndex].text;
             return user;
         }
         private getEditMsg(): HTMLTextAreaElement {
@@ -81,12 +81,12 @@ namespace YetaWF_Messenger {
 
             YetaWF_Messenger.SkinMessagingModule.singleton.send(user, msg);
 
-            CKEDITOR.instances[editMsg.id].setData('');
+            CKEDITOR.instances[editMsg.id].setData("");
         }
         private onUserSelect(): void {
             this.clearOnlineStatus();
         }
-        private updateButtons() {
+        private updateButtons(): void {
             var selToUser: HTMLSelectElement = this.getSelToUser();
             var editMsg: HTMLTextAreaElement = this.getEditMsg();
             var btnSend: HTMLButtonElement = this.getBtnSend();
@@ -107,7 +107,7 @@ namespace YetaWF_Messenger {
 
             setTimeout(() => this.updateButtons(), 100);
         }
-        private updateOnlineStatus() {
+        private updateOnlineStatus(): void {
             var user: string | null = this.getSelToUserValue();
             if (user && user.length > 0) {
                 YetaWF_Messenger.SkinMessagingModule.singleton.isUserOnline(user)
@@ -123,9 +123,9 @@ namespace YetaWF_Messenger {
         private clearOnlineStatus(): JQuery<HTMLElement>  {
             //var divUser: HTMLDivElement = document.querySelector(`#${this.idForm} .yt_yetawf_identity_userid`) as HTMLDivElement;
             var $divId: JQuery<HTMLElement> = $(`#${this.idForm} .yt_yetawf_identity_userid`);
-            if ($divId.length == 0) throw "user Id Div not found";/*DEBUG*/
+            if ($divId.length === 0) throw "user Id Div not found";/*DEBUG*/
             var $parent: JQuery<HTMLElement> = $divId.parent();
-            $('img.t_status', $parent).remove();
+            $("img.t_status", $parent).remove();
             return $parent;
 
         }
@@ -135,7 +135,7 @@ namespace YetaWF_Messenger {
             var user: string | null = this.getSelToUserValue();
             if (!user) return;
 
-            var content;
+            var content: string;
             if (online) {
                 content = `<img class="t_status" alt="${YLocs.YetaWF_Messenger.msgOnlineTT}" title="${YLocs.YetaWF_Messenger.msgOnlineTT}" src="${YConfigs.YetaWF_Messenger.msgOnlineIcon}" >`;
             } else {

@@ -9,7 +9,7 @@ namespace YetaWF_Messenger {
         static readonly MODULEGUID: string = "54F6B691-B835-4568-90AA-AA9B308D4272";
 
         static on: boolean = true;
-    
+
         /**
          * Initializes the module instance.
          */
@@ -22,13 +22,13 @@ namespace YetaWF_Messenger {
             });
 
             var $$: any = $;
-            var connection = $$.hubConnection(YConfigs.Basics.SignalRUrl, { useDefaultPath: false });
-            var hubProxy = connection.createHubProxy('YetaWF_Messenger_SiteAnnouncement');
-            hubProxy.on('message', function (content, title) {
+            var connection: any = $$.hubConnection(YConfigs.Basics.SignalRUrl, { useDefaultPath: false });
+            var hubProxy: any = connection.createHubProxy("YetaWF_Messenger_SiteAnnouncement");
+            hubProxy.on("message", function (content: string, title: string): void {
                 if (SkinSiteAnnouncementsModule.on)
                     Y_Alert(content, title, null, { encoded: true });
             });
-            connection.start().done(function () { });
+            connection.start().done(function (): void { /*empty*/ });
         }
     }
 
