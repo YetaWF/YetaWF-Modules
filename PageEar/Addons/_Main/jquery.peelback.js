@@ -58,7 +58,7 @@
 
             //Assemble
             //&&&&&&&&&&&&&&&&&&& CUSTOMIZATION:  id="peelback" & rel=
-            peelHTML = $('<div id="peelback"><a href="' + base.settings.clickURL + '" class="peelback" target="_blank" rel='noopener noreferrer'><img src="' + base.settings.peelImage + '" alt="" border="0" /></a><div></div></div>');
+            peelHTML = $('<div id="peelback"><a href="' + base.settings.clickURL + '" class="peelback" target="_blank" rel="noopener noreferrer"><img src="' + base.settings.peelImage + '" alt="" border="0" /></a><div></div></div>');
             peelImage = peelHTML.find('img');
             peelMask = peelHTML.find('div');
 
