@@ -32,9 +32,9 @@
             <div class="t_entry @row">
                 <div class='t_desc @row'>
                     @if (!string.IsNullOrWhiteSpace(data.Description)) {
-                        <a href="@urlKwds" target="_blank">@data.Description</a>
+                        <a href="@urlKwds" target="_blank" rel="noopener noreferrer">@data.Description</a>
                     } else {
-                        <a href="@urlKwds" target="_blank">@__ResStr("noDesc", "(No Description)")</a>
+                        <a href="@urlKwds" target="_blank" rel="noopener noreferrer">@__ResStr("noDesc", "(No Description)")</a>
                     }
                 </div>
                 @if (Model.ShowSummary && !string.IsNullOrWhiteSpace(data.PageSummary)) {

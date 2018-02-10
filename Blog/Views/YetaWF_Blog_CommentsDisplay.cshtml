@@ -49,7 +49,7 @@
                             @if (string.IsNullOrEmpty(comment.Website)) {
                                 @comment.Name
                             } else {
-                                @Html.Raw(string.Format("<a href='{0}' class='linkpreview-show' target='_blank' rel='nofollow'>{1}</a>", YetaWFManager.HtmlEncode(comment.Website), YetaWFManager.HtmlEncode(comment.Name)));
+                                @Html.Raw(string.Format("<a href='{0}' class='linkpreview-show' target='_blank' rel='nofollow noopener noreferrer'>{1}</a>", YetaWFManager.HtmlEncode(comment.Website), YetaWFManager.HtmlEncode(comment.Name)));
                             }
                         </div>
                         <div class='t_cmton'>On:</div>

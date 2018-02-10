@@ -29,7 +29,7 @@ YetaWF_Feed.init = function (divId, interval) {
 
         var formattedDate = $entry.attr('data-publishedDate');
 
-        var newsEntry = "<a class='t_title' href='{0}' target='_blank'>{1}</a>".format($entry.attr('href'), $entry.text());
+        var newsEntry = "<a class='t_title' href='{0}' target='_blank' rel='noopener noreferrer'>{1}</a>".format($entry.attr('href'), $entry.text());
         newsEntry += "<div class='t_text'>{0}</div>".format($entry.attr('data-text'));
         var author = $entry.attr('data-author');
         newsEntry += "<div class='t_author'>{0}</div>".format(author);
@@ -39,6 +39,7 @@ YetaWF_Feed.init = function (divId, interval) {
         // save next entry #
         $('.t_header', $div).attr('data-entry', ++num);
         $('a', $div).attr("target", "_blank"); // change all a tags to open a new window
+        $('a', $div).attr("rel", "noopener noreferrer");
     }
 
     changeEntry();

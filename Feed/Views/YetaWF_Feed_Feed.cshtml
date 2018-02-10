@@ -5,7 +5,7 @@
 <div id="@DivId" class='t_news'>
     <div class='t_header' data-entry='0'>
         @if (Model.Url != null) {
-            <a class='t_title' href='@Model.Url' data-tooltip="@Model.Description" target='_blank'>@Model.Title</a>
+            <a class='t_title' href='@Model.Url' data-tooltip="@Model.Description" target='_blank' rel='noopener noreferrer'>@Model.Title</a>
         } else {
             <span class='t_title' title="@Model.Description">@Model.Title</span>
         }
@@ -30,7 +30,7 @@
         }
         <div class='t_entry'>
             <a class='t_title' href='@entry.Links.First()'
-                target='_blank' data-text='@entry.Description' data-publishedDate='@Formatting.FormatDate(entry.PublishDate)' data-author='@author'>@entry.Title</a>
+                target='_blank' rel='noopener noreferrer' data-text='@entry.Description' data-publishedDate='@Formatting.FormatDate(entry.PublishDate)' data-author='@author'>@entry.Title</a>
         </div>
     }
 </div>

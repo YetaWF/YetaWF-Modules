@@ -12,7 +12,7 @@ Administrator /Admin/Config/Alert
     YetaWF.Basics, YetaWF.Modules.Basics.Modules.AlertConfigModule
         UpdateConfigProperty("Enabled", true)
         UpdateConfigProperty("MessageHandling", 1)
-        UpdateConfigProperty("Message", "<p style='text-align: center;'>YetaWF is AWESOME - Visit our <a href='http://demo.YetaWF.com/YetaWF_Identity/LoginDirect/LoginAs?UserId=1' target='_blank'>demo site</a></p>")
+        UpdateConfigProperty("Message", "<p style='text-align: center;'>YetaWF is AWESOME - Visit our <a href='http://demo.YetaWF.com/YetaWF_Identity/LoginDirect/LoginAs?UserId=1' target='_blank' rel='noopener noreferrer'>demo site</a></p>")
 
 Administrator /Tests/Alert
     Title=Alert Test Page
