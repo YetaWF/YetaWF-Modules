@@ -47,9 +47,9 @@ namespace YetaWF.Modules.Search.DataProvider {
         public SearchDataUrlDataProvider() : base(YetaWFManager.Manager.CurrentSite.Identity) { SetDataProvider(CreateDataProvider()); }
         public SearchDataUrlDataProvider(int siteIdentity) : base(siteIdentity) { SetDataProvider(CreateDataProvider()); }
 
-        private IDataProvider<int, SearchDataUrl> DataProvider { get { return GetDataProvider(); } }
+        private IDataProviderIdentity<int, object, SearchDataUrl> DataProvider { get { return GetDataProvider(); } }
 
-        private IDataProvider<int, SearchDataUrl> CreateDataProvider() {
+        private IDataProviderIdentity<int, object, SearchDataUrl> CreateDataProvider() {
             if (SearchDataProvider.IsUsable) {
                 Package package = YetaWF.Modules.Search.Controllers.AreaRegistration.CurrentPackage;
                 return MakeDataProvider(package, package.AreaName + "_Urls", SiteIdentity: SiteIdentity, Cacheable: true);
@@ -64,7 +64,7 @@ namespace YetaWF.Modules.Search.DataProvider {
 
         public SearchDataUrl GetItem(int id) {
             if (!SearchDataProvider.IsUsable) return null;
-            return DataProvider.Get(id);
+            return DataProvider.GetByIdentity(id);
         }
         internal SearchDataUrl GetItemByUrl(string pageUrl) {
             if (!SearchDataProvider.IsUsable) return null;
@@ -79,7 +79,7 @@ namespace YetaWF.Modules.Search.DataProvider {
         }
         public UpdateStatusEnum UpdateItem(SearchDataUrl data) {
             if (!SearchDataProvider.IsUsable) return UpdateStatusEnum.RecordDeleted;
-            return DataProvider.Update(data.SearchDataUrlId, data.SearchDataUrlId, data);
+            return DataProvider.UpdateByIdentity(data.SearchDataUrlId, data);
         }
         public int RemoveItems(List<DataProviderFilterInfo> filters) {
             if (!SearchDataProvider.IsUsable) return 0;

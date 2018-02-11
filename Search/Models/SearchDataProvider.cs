@@ -59,7 +59,7 @@ namespace YetaWF.Modules.Search.DataProvider {
     }
 
     public interface ISearchDataProviderIOMode {
-        void RemoveUnusedUrls();
+        void RemoveUnusedUrls(SearchDataProvider searchDP);
         void MarkUpdated(int searchDataUrlId);
     }
 
@@ -208,7 +208,7 @@ namespace YetaWF.Modules.Search.DataProvider {
         }
         private void RemoveUnusedUrls() {
             DoAction(() => {
-                DataProviderIOMode.RemoveUnusedUrls();
+                DataProviderIOMode.RemoveUnusedUrls(this);
             });
         }
 

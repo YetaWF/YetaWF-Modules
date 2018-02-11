@@ -20,16 +20,19 @@ namespace YetaWF.Modules.Search.DataProvider.SQL {
         }
         class SearchDataProvider : SQLSimpleObject<int, SearchData>, ISearchDataProviderIOMode {
             public SearchDataProvider(Dictionary<string, object> options) : base(options) { }
-            public void RemoveUnusedUrls() {
-                string sql = @"
-                DELETE {UrlTableName}
-                    FROM {UrlTableName}
-                    LEFT JOIN {TableName} ON {UrlTableName}.[SearchDataUrlId] = {TableName}.[SearchDataUrlId]
-                    WHERE {TableName}.[SearchDataUrlId] IS NULL";
-                ISQLTableInfo info = (ISQLTableInfo)this;
-                sql = sql.Replace("{UrlTableName}", SQLBuilder.WrapBrackets(info.GetTableName()));
-                Direct_Query(GetTableName(), sql);
+            public void RemoveUnusedUrls(DataProvider.SearchDataProvider searchDP) {
+                using (DataProvider.SearchDataUrlDataProvider searchUrlDP = new DataProvider.SearchDataUrlDataProvider()) {
+                    string sql = @"
+DELETE {UrlTableName}
+FROM {UrlTableName}
+LEFT JOIN {TableName} ON {UrlTableName}.[SearchDataUrlId] = {TableName}.[SearchDataUrlId]
+WHERE {TableName}.[SearchDataUrlId] IS NULL";
+                        ISQLTableInfo info = (ISQLTableInfo)searchUrlDP.GetDataProvider();
+                        sql = sql.Replace("{UrlTableName}", SQLBuilder.WrapBrackets(info.GetTableName()));
+                        Direct_Query(GetTableName(), sql);
+                }
             }
+
             public void MarkUpdated(int searchDataUrlId) {
                 string sql = $@"UPDATE {{TableName}} Set DateAdded = GETUTCDATE() WHERE [SearchDataUrlId] = {{UrlId}} AND {{__Site}}";
                 sql = sql.Replace("{UrlId}", searchDataUrlId.ToString());
@@ -39,7 +42,7 @@ namespace YetaWF.Modules.Search.DataProvider.SQL {
         class SearchResultDataProvider : SQLSimpleObject<int, SearchResult> {
             public SearchResultDataProvider(Dictionary<string, object> options) : base(options) { }
         }
-        class SearchDataUrlDataProvider : SQLSimpleObject<int, SearchDataUrl> {
+        class SearchDataUrlDataProvider : SQLSimpleIdentityObject<int, SearchDataUrl> {
             public SearchDataUrlDataProvider(Dictionary<string, object> options) : base(options) { }
         }
     }
