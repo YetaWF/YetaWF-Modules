@@ -30,7 +30,7 @@ namespace YetaWF.Modules.CurrencyConverter.Controllers {
             [UIHint("Boolean")]
             public bool UseHttps { get; set; }
 
-            [Category("General"), Caption("openexchangerates.org"), Description("Provides a link to openexchangerates.org to set up an account for all your site within this YetaWF instance")]
+            [Category("General"), Caption("openexchangerates.org"), Description("Provides a link to openexchangerates.org to set up an account for all your sites within this YetaWF instance")]
             [UIHint("Url"), ReadOnly]
             public string OpenExchangeRatesUrl { get; set; }
 
