@@ -144,15 +144,20 @@ namespace YetaWF.Modules.Logging.DataProvider {
                     if (req != null) {
 #if MVC6
                         requestedUrl = req.GetDisplayUrl();
-                        IHttpConnectionFeature connectionFeature = httpContext.Features.Get<IHttpConnectionFeature>();
-                        if (connectionFeature != null)
-                            ipAddress = connectionFeature.RemoteIpAddress.ToString();
+                        ipAddress = req.Headers["X-Forwarded-For"];
+                        if (string.IsNullOrWhiteSpace(ipAddress)) {
+                            IHttpConnectionFeature connectionFeature = httpContext.Features.Get<IHttpConnectionFeature>();
+                            if (connectionFeature != null)
+                                ipAddress = connectionFeature.RemoteIpAddress.ToString();
+                        }
                         referrer = req.Headers["Referer"].ToString();
                         if (httpContext.Session != null)
                             sessionId = httpContext.Session.Id;
 #else
                         requestedUrl = req.Url != null ? req.Url.ToString() : null;
-                        ipAddress = req.UserHostAddress;
+                        ipAddress = req.Headers["X-Forwarded-For"];
+                        if (string.IsNullOrWhiteSpace(ipAddress)) 
+                            ipAddress = req.UserHostAddress;
                         referrer = req.UrlReferrer != null ? req.UrlReferrer.ToString() : null;
                         if (httpContext.Session != null)
                             sessionId = httpContext.Session.SessionID;

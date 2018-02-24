@@ -3,6 +3,7 @@
 using System;
 using System.Collections.Generic;
 using YetaWF.Core;
+using YetaWF.Core.Controllers;
 using YetaWF.Core.DataProvider;
 using YetaWF.Core.DataProvider.Attributes;
 using YetaWF.Core.Extensions;
@@ -61,7 +62,12 @@ namespace YetaWF.Modules.Visitors.DataProvider {
         VisitorEntryDataProvider.Info GetStats();
     }
 
-    public class VisitorEntryDataProvider : DataProviderImpl, IInstallableModel {
+    public class VisitorEntryDataProvider : DataProviderImpl, IInstallableModel, IInitializeApplicationStartup {
+
+        public void InitializeApplicationStartup() {
+            ErrorHandling.RegisterCallback(AddVisitEntryError);
+            PageLogging.RegisterCallback(AddVisitEntryUrl);
+        }
 
         public bool Usable { get { return DataProvider != null; } }
 
@@ -135,6 +141,77 @@ namespace YetaWF.Modules.Visitors.DataProvider {
             if (!Usable) return new VisitorEntryDataProvider.Info();
             return DataProviderIOMode.GetStats();
         }
+
+        // LOGGING CALLBACKS
+        // LOGGING CALLBACKS
+        // LOGGING CALLBACKS
+
+        public static void AddVisitEntryError(string error) {
+            AddVisitEntry(null, error);
+        }
+        public static void AddVisitEntryUrl(string url, bool full) {
+            AddVisitEntry(url);
+        }
+
+        private static void AddVisitEntry(string url, string error = null) {
+
+            if (!InCallback) {
+                InCallback = true;
+
+                try {
+
+                    if (!YetaWFManager.HaveManager || YetaWFManager.Manager.CurrentSite == null || !YetaWFManager.Manager.HaveCurrentContext) return;
+                    YetaWFManager manager = YetaWFManager.Manager;
+
+                    using (VisitorEntryDataProvider visitorDP = new VisitorEntryDataProvider()) {
+
+                        if (!visitorDP.Usable) return;
+
+                        GeoLocation geoLocation = new GeoLocation(manager);
+                        GeoLocation.UserInfo userInfo = geoLocation.GetCurrentUserInfo();
+
+                        string userAgent;
+                        string sessionId = null;
+#if MVC6
+                        if (url == null)
+                            url = Manager.CurrentRequest.GetDisplayUrl();
+                        userAgent = Manager.CurrentRequest.Headers["User-Agent"].ToString();
+                        if (Manager.HaveCurrentSession)
+                            sessionId = Manager.CurrentContext.Session.Id;
+#else
+                        if (url == null)
+                            url = manager.CurrentRequest.Url.ToString();
+                        userAgent = manager.CurrentRequest.UserAgent;
+                        if (manager.HaveCurrentSession)
+                            sessionId = manager.CurrentContext.Session.SessionID;
+#endif
+                        string referrer = manager.ReferrerUrl;
+
+                        VisitorEntry visitorEntry = new VisitorEntry {
+                            SessionId = sessionId,
+                            AccessDateTime = DateTime.UtcNow,
+                            UserId = manager.UserId,
+                            IPAddress = userInfo.IPAddress.Truncate(Globals.MaxIP),
+                            Url = url != null ? url.Truncate(Globals.MaxUrl) : "",
+                            Referrer = referrer != null ? referrer.Truncate(Globals.MaxUrl) : "",
+                            UserAgent = userAgent != null ? userAgent.Truncate(VisitorEntry.MaxUserAgent) : "",
+                            Longitude = userInfo.Longitude,
+                            Latitude = userInfo.Latitude,
+                            ContinentCode = userInfo.ContinentCode.Truncate(VisitorEntry.MaxContinentCode),
+                            CountryCode = userInfo.CountryCode.Truncate(VisitorEntry.MaxCountryCode),
+                            RegionCode = userInfo.RegionCode.Truncate(VisitorEntry.MaxRegionCode),
+                            City = userInfo.City.Truncate(VisitorEntry.MaxCity),
+                            Error = error.Truncate(VisitorEntry.MaxError),
+                        };
+                        visitorDP.AddItem(visitorEntry);
+                    }
+                } catch (Exception) {
+                } finally {
+                    InCallback = false;
+                }
+            }
+        }
+        private static bool InCallback = false;
 
         // IINSTALLABLEMODEL
         // IINSTALLABLEMODEL

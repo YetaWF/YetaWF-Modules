@@ -19,7 +19,7 @@ namespace YetaWF.Modules.Visitors.Modules {
         public SkinVisitorModule() {
             Title = this.__ResStr("modTitle", "Skin Visitor Module");
             Name = this.__ResStr("modName", "Visitor (Skin) Module");
-            Description = this.__ResStr("modSummary", "Records visitor activity");
+            Description = this.__ResStr("modSummary", "Records visitor activity (links with yTrack CSS class)");
             Invokable = true;
             InvokeInPopup = true;
             WantFocus = false;
