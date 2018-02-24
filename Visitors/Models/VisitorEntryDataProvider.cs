@@ -12,6 +12,9 @@ using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Packages;
 using YetaWF.Core.Serializers;
 using YetaWF.Core.Support;
+#if MVC6
+using Microsoft.AspNetCore.Http.Extensions;
+#endif
 
 namespace YetaWF.Modules.Visitors.DataProvider {
 
@@ -174,10 +177,10 @@ namespace YetaWF.Modules.Visitors.DataProvider {
                         string sessionId = null;
 #if MVC6
                         if (url == null)
-                            url = Manager.CurrentRequest.GetDisplayUrl();
-                        userAgent = Manager.CurrentRequest.Headers["User-Agent"].ToString();
-                        if (Manager.HaveCurrentSession)
-                            sessionId = Manager.CurrentContext.Session.Id;
+                            url = manager.CurrentRequest.GetDisplayUrl();
+                        userAgent = manager.CurrentRequest.Headers["User-Agent"].ToString();
+                        if (manager.HaveCurrentSession)
+                            sessionId = manager.CurrentContext.Session.Id;
 #else
                         if (url == null)
                             url = manager.CurrentRequest.Url.ToString();
