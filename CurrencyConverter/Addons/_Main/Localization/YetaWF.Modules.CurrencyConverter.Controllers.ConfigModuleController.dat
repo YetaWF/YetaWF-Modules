@@ -45,7 +45,7 @@
                           <Properties>
                             <Name Value="OpenExchangeRatesUrl" />
                             <Caption Value="openexchangerates.org" />
-                            <Description Value="Provides a link to openexchangerates.org to set up an account for all your site within this YetaWF instance" />
+                            <Description Value="Provides a link to openexchangerates.org to set up an account for all your sites within this YetaWF instance" />
                             <HelpLink />
                             <TextAbove />
                             <TextBelow />

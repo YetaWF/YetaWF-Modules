@@ -31,7 +31,7 @@
             <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
               <Properties>
                 <Name Value="modSummary" />
-                <Text Value="Records visitor activity" />
+                <Text Value="Records visitor activity (links with yTrack CSS class)" />
               </Properties>
             </Object>
           </Value>
