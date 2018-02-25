@@ -58,7 +58,7 @@ namespace YetaWF.Modules.Visitors.Scheduler {
                             ve.City = userInfo.City;
                             ve.ContinentCode = userInfo.ContinentCode;
                             ve.CountryCode = userInfo.CountryCode;
-                            ve.RegionCode = ve.RegionCode;
+                            ve.RegionCode = userInfo.RegionCode;
                         } else {
                             ve.City = "";
                             ve.ContinentCode = "";

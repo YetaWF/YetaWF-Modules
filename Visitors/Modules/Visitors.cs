@@ -80,7 +80,7 @@ namespace YetaWF.Modules.Visitors.Modules {
                 Mode = ModuleAction.ActionModeEnum.Any,
                 Location = ModuleAction.ActionLocationEnum.ModuleLinks,
                 ConfirmationText = this.__ResStr("updgUpdateGeoLocation", "Are you sure you want to update GetLocation data?"),
-                PleaseWaitText = this.__ResStr("updgUpdateGeoLocation", "Updating GetLocation data..."),
+                PleaseWaitText = this.__ResStr("confUpdateGeoLocation", "Updating GetLocation data..."),
             };
         }
     }

@@ -94,6 +94,14 @@
           <Value>
             <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
               <Properties>
+                <Name Value="confUpdateGeoLocation" />
+                <Text Value="Updating GetLocation data..." />
+              </Properties>
+            </Object>
+          </Value>
+          <Value>
+            <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
+              <Properties>
                 <Name Value="modName" />
                 <Text Value="Visitor Activity" />
               </Properties>
@@ -118,8 +126,80 @@
           <Value>
             <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
               <Properties>
+                <Name Value="roleUpdateGeoLocationC" />
+                <Text Value="Update Geolocation Data" />
+              </Properties>
+            </Object>
+          </Value>
+          <Value>
+            <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
+              <Properties>
+                <Name Value="roleUpdateGeoLocations" />
+                <Text Value="The role has permission to update Geolocation data" />
+              </Properties>
+            </Object>
+          </Value>
+          <Value>
+            <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
+              <Properties>
                 <Name Value="unavailable" />
                 <Text Value="Visitor information is not available - See &lt;a href='https://yetawf.com/Documentation/YetaWF/Visitors' target='_blank' rel='noopener noreferrer'&gt;https://yetawf.com/Documentation/YetaWF/Visitors&lt;/a&gt; for additional information." />
+              </Properties>
+            </Object>
+          </Value>
+          <Value>
+            <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
+              <Properties>
+                <Name Value="updgAuthLegend" />
+                <Text Value="Updates GeoLocation Data" />
+              </Properties>
+            </Object>
+          </Value>
+          <Value>
+            <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
+              <Properties>
+                <Name Value="updgAuthLink" />
+                <Text Value="GeoLocation Data" />
+              </Properties>
+            </Object>
+          </Value>
+          <Value>
+            <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
+              <Properties>
+                <Name Value="updgAuthMenu" />
+                <Text Value="GeoLocation Data" />
+              </Properties>
+            </Object>
+          </Value>
+          <Value>
+            <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
+              <Properties>
+                <Name Value="updgAuthTT" />
+                <Text Value="Update GeoLocation Data" />
+              </Properties>
+            </Object>
+          </Value>
+          <Value>
+            <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
+              <Properties>
+                <Name Value="updgUpdateGeoLocation" />
+                <Text Value="Are you sure you want to update GetLocation data?" />
+              </Properties>
+            </Object>
+          </Value>
+          <Value>
+            <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
+              <Properties>
+                <Name Value="userUpdateGeoLocationC" />
+                <Text Value="Update Geolocation Data" />
+              </Properties>
+            </Object>
+          </Value>
+          <Value>
+            <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
+              <Properties>
+                <Name Value="userUpdateGeoLocations" />
+                <Text Value="The user has permission to update Geolocation data" />
               </Properties>
             </Object>
           </Value>
