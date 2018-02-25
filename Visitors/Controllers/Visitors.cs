@@ -12,6 +12,7 @@ using YetaWF.Core.Modules;
 using YetaWF.Core.Views.Shared;
 using YetaWF.Modules.Visitors.DataProvider;
 using YetaWF.Modules.Visitors.Modules;
+using YetaWF.Modules.Visitors.Scheduler;
 #if MVC6
 using Microsoft.AspNetCore.Mvc;
 #else
@@ -122,6 +123,16 @@ namespace YetaWF.Modules.Visitors.Controllers {
                     Total = total
                 });
             }
+        }
+
+        [AllowPost]
+        [Permission("UpdateGeoLocation")]
+        [ExcludeDemoMode]
+        public ActionResult UpdateGeoLocation() {
+            AddVisitorGeoLocation geo = new AddVisitorGeoLocation();
+            List<string> errorList = new List<string>();
+            geo.AddGeoLocation(errorList);
+            return Reload(null, Reload: ReloadEnum.ModuleParts);
         }
     }
 }

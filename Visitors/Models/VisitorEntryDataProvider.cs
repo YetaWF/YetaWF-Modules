@@ -28,6 +28,8 @@ namespace YetaWF.Modules.Visitors.DataProvider {
         public const int MaxCountryCode = 10;
         public const int MaxContinentCode = 10;
 
+        public const string Unknown = "??";
+
         [Data_PrimaryKey, Data_Identity]
         public int Key { get; set; }
 
@@ -170,9 +172,6 @@ namespace YetaWF.Modules.Visitors.DataProvider {
 
                         if (!visitorDP.Usable) return;
 
-                        GeoLocation geoLocation = new GeoLocation(manager);
-                        GeoLocation.UserInfo userInfo = geoLocation.GetCurrentUserInfo();
-
                         string userAgent;
                         string sessionId = null;
 #if MVC6
@@ -194,16 +193,16 @@ namespace YetaWF.Modules.Visitors.DataProvider {
                             SessionId = sessionId,
                             AccessDateTime = DateTime.UtcNow,
                             UserId = manager.UserId,
-                            IPAddress = userInfo.IPAddress.Truncate(Globals.MaxIP),
+                            IPAddress = manager.UserHostAddress.Truncate(Globals.MaxIP),
                             Url = url != null ? url.Truncate(Globals.MaxUrl) : "",
                             Referrer = referrer != null ? referrer.Truncate(Globals.MaxUrl) : "",
                             UserAgent = userAgent != null ? userAgent.Truncate(VisitorEntry.MaxUserAgent) : "",
-                            Longitude = userInfo.Longitude,
-                            Latitude = userInfo.Latitude,
-                            ContinentCode = userInfo.ContinentCode.Truncate(VisitorEntry.MaxContinentCode),
-                            CountryCode = userInfo.CountryCode.Truncate(VisitorEntry.MaxCountryCode),
-                            RegionCode = userInfo.RegionCode.Truncate(VisitorEntry.MaxRegionCode),
-                            City = userInfo.City.Truncate(VisitorEntry.MaxCity),
+                            Longitude = 0.0f,
+                            Latitude = 0.0f,
+                            ContinentCode = VisitorEntry.Unknown,
+                            CountryCode = VisitorEntry.Unknown,
+                            RegionCode = VisitorEntry.Unknown,
+                            City = VisitorEntry.Unknown,
                             Error = error.Truncate(VisitorEntry.MaxError),
                         };
                         visitorDP.AddItem(visitorEntry);
