@@ -54,7 +54,7 @@ namespace YetaWF.Modules.Visitors.Controllers {
             model.IPAddress = ipAddress;
 
             if (geoData) {
-                GeoLocation geoLocation = new GeoLocation(Manager);
+                GeoLocation geoLocation = new GeoLocation();
                 GeoLocation.UserInfo info = geoLocation.GetUserInfo(ipAddress);
                 ObjectSupport.CopyData(info, model);
             }
