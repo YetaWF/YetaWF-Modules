@@ -49,6 +49,7 @@
     <Compile Include="Controllers\VisitorSummary.cs" />
     <Compile Include="Models\SQLDataProvider.cs" />
     <Compile Include="Modules\VisitorSummary.cs" />
+    <Compile Include="Scheduler\AddVisitorGeoLocation.cs" />
     <Compile Include="Startup\Info.cs" />
     <Compile Include="Startup\AreaRegistration.cs" />
     <Compile Include="Controllers\IPAddressLookup.cs" />
