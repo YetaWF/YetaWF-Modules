@@ -1,5 +1,6 @@
 ﻿/* Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/AddThis#License */
 
+using System.Threading.Tasks;
 using YetaWF.Core.DataProvider;
 using YetaWF.Core.DataProvider.Attributes;
 using YetaWF.Core.IO;
@@ -46,12 +47,12 @@ namespace YetaWF.Modules.AddThis.DataProvider {
         // API
         // API
 
-        public static ConfigData GetConfig() {
+        public static Task<ConfigData> GetConfig() {
             using (ConfigDataProvider configDP = new ConfigDataProvider()) {
                 return configDP.GetItem();
             }
         }
-        public ConfigData GetItem() {
+        public Task<ConfigData> GetItem() {
             ConfigData config = DataProvider.Get(KEY);
             if (config == null) {
                 lock (_lockObject) {
@@ -62,7 +63,7 @@ namespace YetaWF.Modules.AddThis.DataProvider {
                     }
                 }
             }
-            return config;
+            return Task.FromResult(config);
         }
         private void AddConfig(ConfigData data) {
             data.Id = KEY;

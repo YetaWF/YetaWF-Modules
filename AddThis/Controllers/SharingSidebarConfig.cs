@@ -6,6 +6,7 @@ using YetaWF.Core.Models;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Support;
 using YetaWF.Modules.AddThis.DataProvider;
+using System.Threading.Tasks;
 #if MVC6
 using Microsoft.AspNetCore.Mvc;
 #else
@@ -37,10 +38,10 @@ namespace YetaWF.Modules.AddThis.Controllers {
         }
 
         [AllowGet]
-        public ActionResult SharingSidebarConfig() {
+        public async Task<ActionResult> SharingSidebarConfig() {
             using (ConfigDataProvider dataProvider = new ConfigDataProvider()) {
                 Model model = new Model { };
-                ConfigData data = dataProvider.GetItem();
+                ConfigData data = await dataProvider.GetItem();
                 if (data == null)
                     throw new Error(this.__ResStr("notFound", "The configuration settings could not be found"));
                 model.SetData(data);
@@ -51,9 +52,9 @@ namespace YetaWF.Modules.AddThis.Controllers {
         [AllowPost]
         [ConditionalAntiForgeryToken]
         [ExcludeDemoMode]
-        public ActionResult SharingSidebarConfig_Partial(Model model) {
+        public async Task<ActionResult> SharingSidebarConfig_Partial(Model model) {
             using (ConfigDataProvider dataProvider = new ConfigDataProvider()) {
-                ConfigData data = dataProvider.GetItem();// get the original item
+                ConfigData data = await dataProvider.GetItem();// get the original item
                 if (!ModelState.IsValid)
                     return PartialView(model);
                 data = model.GetData(data); // merge new data into original

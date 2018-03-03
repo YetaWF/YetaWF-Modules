@@ -21,8 +21,8 @@ namespace YetaWF.Modules.AddThis.Controllers {
         }
 
         [AllowGet]
-        public ActionResult SharingSidebar() {
-            ConfigData config = ConfigDataProvider.GetConfig();
+        public async System.Threading.Tasks.Task<ActionResult> SharingSidebar() {
+            ConfigData config = await ConfigDataProvider.GetConfig();
             if (string.IsNullOrWhiteSpace(config.Code)) return new EmptyResult();
             DisplayModel model = new DisplayModel() {
                 Code = config.Code,
