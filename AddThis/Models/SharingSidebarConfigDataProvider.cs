@@ -47,9 +47,9 @@ namespace YetaWF.Modules.AddThis.DataProvider {
         // API
         // API
 
-        public static Task<ConfigData> GetConfigAsync() {
+        public static async Task<ConfigData> GetConfigAsync() {
             using (ConfigDataProvider configDP = new ConfigDataProvider()) {
-                return configDP.GetItemAsync();
+                return await configDP.GetItemAsync();
             }
         }
         public async Task<ConfigData> GetItemAsync() {

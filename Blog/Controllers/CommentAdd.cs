@@ -1,5 +1,6 @@
 /* Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Blog#License */
 
+using System.Threading.Tasks;
 using YetaWF.Core;
 using YetaWF.Core.Controllers;
 using YetaWF.Core.Localize;
@@ -78,21 +79,21 @@ namespace YetaWF.Modules.Blog.Controllers {
                 return data;
             }
 
-            internal void UpdateData() {
-                BlogConfigData config = BlogConfigDataProvider.GetConfig();
+            internal async Task UpdateDataAsync() {
+                BlogConfigData config = await BlogConfigDataProvider.GetConfigAsync();
                 GravatarsEnabled = config.ShowGravatar;
 
                 using (BlogCategoryDataProvider categoryDP = new BlogCategoryDataProvider()) {
-                    BlogCategory cat = categoryDP.GetItem(CategoryIdentity);
+                    BlogCategory cat = await categoryDP.GetItemAsync(CategoryIdentity);
                     if (cat == null) throw new InternalError("Category with id {0} not found", CategoryIdentity);
                     ShowCaptcha = cat.UseCaptcha;
                     ShowGravatar = GravatarsEnabled;
                 }
-                OpenForComments = TestOpenForComments(EntryIdentity);
+                OpenForComments = await TestOpenForCommentsAsync(EntryIdentity);
             }
-            private bool TestOpenForComments(int blogEntry) {
+            private async Task<bool> TestOpenForCommentsAsync(int blogEntry) {
                 using (BlogEntryDataProvider entryDP = new BlogEntryDataProvider()) {
-                    BlogEntry ent = entryDP.GetItem(blogEntry);
+                    BlogEntry ent = await entryDP.GetItemAsync(blogEntry);
                     if (ent == null) throw new InternalError("Entry with id {0} not found", blogEntry);
                     return ent.OpenForComments;
                 }
@@ -100,13 +101,13 @@ namespace YetaWF.Modules.Blog.Controllers {
         }
 
         [AllowGet]
-        public ActionResult CommentAdd(int? blogEntry) {
+        public async Task<ActionResult> CommentAdd(int? blogEntry) {
             int entryNum = blogEntry ?? 0;
             int blogCategory;
             using (BlogEntryDataProvider entryDP = new BlogEntryDataProvider()) {
                 BlogEntry data = null;
                 if (entryNum != 0)
-                    data = entryDP.GetItem(entryNum);
+                    data = await entryDP.GetItemAsync(entryNum);
                 if (data == null)
                     return new EmptyResult();
                 blogCategory = data.CategoryIdentity;
@@ -120,7 +121,7 @@ namespace YetaWF.Modules.Blog.Controllers {
                 EntryIdentity = entryNum,
                 Captcha = new RecaptchaV2Data(),
             };
-            model.UpdateData();
+            await model.UpdateDataAsync();
 
             return View(model);
         }
@@ -128,10 +129,10 @@ namespace YetaWF.Modules.Blog.Controllers {
         [AllowPost]
         [ConditionalAntiForgeryToken]
         [ExcludeDemoMode]
-        public ActionResult CommentAdd_Partial(AddModel model) {
-            model.UpdateData();
+        public async Task<ActionResult> CommentAdd_Partial(AddModel model) {
+            await model.UpdateDataAsync();
             using (BlogEntryDataProvider entryDP = new BlogEntryDataProvider()) {
-                BlogEntry blogEntry = entryDP.GetItem(model.EntryIdentity);
+                BlogEntry blogEntry = await entryDP.GetItemAsync(model.EntryIdentity);
                 if (blogEntry == null)
                     throw new Error(this.__ResStr("notFound", "Blog entry with id {0} not found."), model.EntryIdentity);
                 if (!blogEntry.OpenForComments)
@@ -140,19 +141,19 @@ namespace YetaWF.Modules.Blog.Controllers {
                     return PartialView(model);
                 using (BlogCommentDataProvider blogCommentDP = new BlogCommentDataProvider(model.EntryIdentity)) {
                     BlogComment blogComment = model.GetData();
-                    if (!blogCommentDP.AddItem(blogComment)) {
+                    if (!await blogCommentDP.AddItemAsync(blogComment)) {
                         ModelState.AddModelError("Name", this.__ResStr("alreadyExists", "An error occurred adding this new comment"));
                         return PartialView(model);
                     }
                     // send notification email
-                    BlogConfigData config = BlogConfigDataProvider.GetConfig();
+                    BlogConfigData config = await BlogConfigDataProvider.GetConfigAsync();
                     if (config.NotifyNewComment) {
                         SendEmail sendEmail = new SendEmail();
                         object parms = new {
                             Description = !blogComment.Approved ? this.__ResStr("needApproval", "This comment requires your approval.") : this.__ResStr("autoApproval", "This comment has been automatically approved."),
                             Category = blogEntry.Category.ToString(),
                             Title = blogEntry.Title.ToString(),
-                            Url = Manager.CurrentSite.MakeUrl(BlogConfigData.GetEntryCanonicalName(blogEntry.Identity)),
+                            Url = Manager.CurrentSite.MakeUrl(await BlogConfigData.GetEntryCanonicalNameAsync(blogEntry.Identity)),
                             Comment = YetaWFManager.HtmlDecode(model.Comment),
                             UserName = model.Name,
                             UserEmail = model.Email,

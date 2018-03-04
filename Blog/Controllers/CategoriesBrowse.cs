@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using YetaWF.Core.Addons;
 using YetaWF.Core.Controllers;
 using YetaWF.Core.DataProvider;
@@ -110,14 +111,13 @@ namespace YetaWF.Modules.Blog.Controllers {
 
         [AllowPost]
         [ConditionalAntiForgeryToken]
-        public ActionResult CategoriesBrowse_GridData(int skip, int take, List<DataProviderSortInfo> sort, List<DataProviderFilterInfo> filters, Guid settingsModuleGuid) {
+        public async Task<ActionResult> CategoriesBrowse_GridData(int skip, int take, List<DataProviderSortInfo> sort, List<DataProviderFilterInfo> filters, Guid settingsModuleGuid) {
             using (BlogCategoryDataProvider dataProvider = new BlogCategoryDataProvider()) {
-                int total;
-                List<BlogCategory> browseItems = dataProvider.GetItems(skip, take, sort, filters, out total);
+                DataProviderGetRecords<BlogCategory> browseItems = await dataProvider.GetItemsAsync(skip, take, sort, filters);
                 GridHelper.SaveSettings(skip, take, sort, filters, settingsModuleGuid);
                 return GridPartialView(new DataSourceResult {
-                    Data = (from s in browseItems select new BrowseItem(Module, s)).ToList<object>(),
-                    Total = total
+                    Data = (from s in browseItems.Data select new BrowseItem(Module, s)).ToList<object>(),
+                    Total = browseItems.Total
                 });
             }
         }
@@ -125,9 +125,9 @@ namespace YetaWF.Modules.Blog.Controllers {
         [AllowPost]
         [Permission("RemoveItems")]
         [ExcludeDemoMode]
-        public ActionResult Remove(int blogCategory) {
+        public async Task<ActionResult> Remove(int blogCategory) {
             using (BlogCategoryDataProvider dataProvider = new BlogCategoryDataProvider()) {
-                dataProvider.RemoveItem(blogCategory);
+                await dataProvider.RemoveItemAsync(blogCategory);
                 return Reload(null, Reload: ReloadEnum.ModuleParts);
             }
         }

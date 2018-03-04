@@ -2,6 +2,7 @@
 
 using System.Collections.Generic;
 using System.Linq;
+using YetaWF.Core.DataProvider;
 using YetaWF.Core.Localize;
 using YetaWF.Core.Views;
 using YetaWF.Core.Views.Shared;
@@ -20,15 +21,14 @@ namespace YetaWF.Modules.Blog.Views.Shared {
 
         private static string __ResStr(string name, string defaultValue, params object[] parms) { return ResourceAccess.GetResourceString(typeof(CategoryHelper), name, defaultValue, parms); }
 #if MVC6
-        public static HtmlString RenderCategory<TModel>(this IHtmlHelper<TModel> htmlHelper, string name, int model, object HtmlAttributes = null)
+        public static async System.Threading.Tasks.Task<HtmlString> RenderCategoryAsync<TModel>(this IHtmlHelper<TModel> htmlHelper, string name, int model, object HtmlAttributes = null)
 #else
         public static HtmlString RenderCategory<TModel>(this HtmlHelper<TModel> htmlHelper, string name, int model, object HtmlAttributes = null)
 #endif
         {
             using (BlogCategoryDataProvider categoryDP = new BlogCategoryDataProvider()) {
-                int total;
-                List<BlogCategory> data = categoryDP.GetItems(0, 0, null, null, out total);
-                List<SelectionItem<int>> list = (from c in data orderby c.Category.ToString() select new SelectionItem<int> {
+                DataProviderGetRecords<BlogCategory> data = await categoryDP.GetItemsAsync(0, 0, null, null);
+                List<SelectionItem<int>> list = (from c in data.Data orderby c.Category.ToString() select new SelectionItem<int> {
                     Text = c.Category.ToString(),
                     Tooltip = c.Description,
                     Value = c.Identity

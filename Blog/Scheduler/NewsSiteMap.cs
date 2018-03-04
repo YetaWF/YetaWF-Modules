@@ -74,7 +74,7 @@ namespace YetaWF.Modules.Blog.Scheduler {
                 if (iSiteMap != null) {
                     BlogEntryDataProvider blogEntryDP = obj as BlogEntryDataProvider;
                     if (blogEntryDP != null) { // limit to blog entries
-                        iSiteMap.FindDynamicUrls(AddNewsSiteMapPage, ValidForNewsSiteMap);
+                        iSiteMap.FindDynamicUrlsAsync(AddNewsSiteMapPage, ValidForNewsSiteMap);
                     }
                 }
             }

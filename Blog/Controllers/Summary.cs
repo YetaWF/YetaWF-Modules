@@ -3,6 +3,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using YetaWF.Core.Controllers;
 using YetaWF.Core.DataProvider;
 using YetaWF.Core.Models;
@@ -38,7 +39,7 @@ namespace YetaWF.Modules.Blog.Controllers {
 
             public Entry(BlogEntry data, EntryDisplayModule dispMod) {
                 ObjectSupport.CopyData(data, this);
-                ViewAction = dispMod.GetAction_Display(data.Identity);
+                ViewAction = dispMod.GetAction_DisplayAsync(data.Identity).Result;//$$$
                 ViewAction.LinkText = Title;
                 ViewAction.Tooltip = this.__ResStr("viewTT", "Published {0} - {1}", Formatting.FormatDate(data.DatePublished), data.DisplayableSummaryText);
             }
@@ -49,10 +50,10 @@ namespace YetaWF.Modules.Blog.Controllers {
         }
 
         [AllowGet]
-        public ActionResult Summary() {
+        public async Task<ActionResult> Summary() {
             //int category;
             //Manager.TryGetUrlArg<int>("BlogCategory", out category);
-            BlogConfigData config = BlogConfigDataProvider.GetConfig();
+            BlogConfigData config = await BlogConfigDataProvider.GetConfigAsync();
             using (BlogEntryDataProvider dataProvider = new BlogEntryDataProvider()) {
                 List<DataProviderSortInfo> sort = new List<DataProviderSortInfo> {
                     new DataProviderSortInfo { Field = "DatePublished", Order = DataProviderSortInfo.SortDirection.Descending },
@@ -62,14 +63,13 @@ namespace YetaWF.Modules.Blog.Controllers {
                 };
                 //if (category != 0)
                 //    filters = DataProviderFilterInfo.Join(filters, new DataProviderFilterInfo { Field = "CategoryIdentity", Operator = "==", Value = category });
-                int total;
-                List<BlogEntry> data = dataProvider.GetItems(0, Module.Entries, sort, filters, out total);
-                if (data.Count == 0)
+                DataProviderGetRecords<BlogEntry> data = await dataProvider.GetItemsAsync(0, Module.Entries, sort, filters);
+                if (data.Data.Count == 0)
                     return new EmptyResult();
 
                 EntryDisplayModule dispMod = new EntryDisplayModule();
                 DisplayModel model = new DisplayModel() {
-                    BlogEntries = (from d in data select new Entry(d, dispMod)).ToList(),
+                    BlogEntries = (from d in data.Data select new Entry(d, dispMod)).ToList(),
                 };
                 return View(model);
             }

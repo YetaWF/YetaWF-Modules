@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using YetaWF.Core;
 using YetaWF.Core.DataProvider;
 using YetaWF.Core.DataProvider.Attributes;
@@ -49,7 +50,7 @@ namespace YetaWF.Modules.Blog.DataProvider {
         }
     }
 
-    public class BlogCommentDataProvider : DataProviderImpl, IInstallableModel {
+    public class BlogCommentDataProvider : DataProviderImpl, IInstallableModelAsync {
 
         public int EntryIdentity { get; private set; }// Blog entry
 
@@ -61,9 +62,9 @@ namespace YetaWF.Modules.Blog.DataProvider {
         public BlogCommentDataProvider(int blogEntry) : base(YetaWFManager.Manager.CurrentSite.Identity) { EntryIdentity = blogEntry; SetDataProvider(CreateDataProvider());  }
         public BlogCommentDataProvider(int blogEntry, int siteIdentity) : base(siteIdentity) { EntryIdentity = blogEntry; SetDataProvider(CreateDataProvider()); }
 
-        private IDataProvider<int, BlogComment> DataProvider { get { return GetDataProvider(); } }
+        private IDataProviderAsync<int, BlogComment> DataProvider { get { return GetDataProvider(); } }
 
-        private IDataProvider<int, BlogComment> CreateDataProvider() {
+        private IDataProviderAsync<int, BlogComment> CreateDataProvider() {
             Package package = YetaWF.Modules.Blog.Controllers.AreaRegistration.CurrentPackage;
             return MakeDataProvider(package, package.AreaName + "_Comments", SiteIdentity: SiteIdentity, Cacheable: true, Parms: new { EntryIdentity = EntryIdentity });
         }
@@ -72,21 +73,19 @@ namespace YetaWF.Modules.Blog.DataProvider {
         // API
         // API
 
-        public BlogComment GetItem(int comment) {
-            BlogComment data = DataProvider.Get(comment);
-            if (data == null) return null;
-            return data;
+        public Task<BlogComment> GetItemAsync(int comment) {
+            return DataProvider.GetAsync(comment);
         }
-        public bool AddItem(BlogComment data) {
+        public async Task<bool> AddItemAsync(BlogComment data) {
             data.DateCreated = DateTime.UtcNow;
             data.EntryIdentity = EntryIdentity;
             using (BlogEntryDataProvider entryDP = new BlogEntryDataProvider()) {
-                BlogEntry entry = entryDP.GetItem(EntryIdentity);
+                BlogEntry entry = await entryDP.GetItemAsync(EntryIdentity);
                 if (entry == null) throw new InternalError("Entry with id {0} not found", EntryIdentity);
                 data.CategoryIdentity = entry.CategoryIdentity;
             }
             using (BlogCategoryDataProvider categoryDP = new BlogCategoryDataProvider()) {
-                BlogCategory cat = categoryDP.GetItem(data.CategoryIdentity);
+                BlogCategory cat = await categoryDP.GetItemAsync(data.CategoryIdentity);
                 if (cat == null)
                     throw new InternalError("Category {0} not found", data.CategoryIdentity);
                 if (cat.CommentApproval == BlogCategory.ApprovalType.None)
@@ -96,21 +95,21 @@ namespace YetaWF.Modules.Blog.DataProvider {
                         data.Approved = true;
                 }
             }
-            return DataProvider.Add(data);
+            return await DataProvider.AddAsync(data);
         }
-        public UpdateStatusEnum UpdateItem(BlogComment data) {
-            return DataProvider.Update(data.Identity, data.Identity, data);
+        public Task<UpdateStatusEnum> UpdateItemAsync(BlogComment data) {
+            return DataProvider.UpdateAsync(data.Identity, data.Identity, data);
         }
-        public bool RemoveItem(int comment) {
-            return DataProvider.Remove(comment);
+        public Task<bool> RemoveItemAsync(int comment) {
+            return DataProvider.RemoveAsync(comment);
         }
-        public List<BlogComment> GetItems(int skip, int take, List<DataProviderSortInfo> sort, List<DataProviderFilterInfo> filters, out int total) {
+        public Task<DataProviderGetRecords<BlogComment>> GetItemsAsync(int skip, int take, List<DataProviderSortInfo> sort, List<DataProviderFilterInfo> filters) {
             filters = DataProviderFilterInfo.Join(filters, new DataProviderFilterInfo { Field = "EntryIdentity", Operator = "==", Value = EntryIdentity });
-            return DataProvider.GetRecords(skip, take, sort, filters, out total);
+            return DataProvider.GetRecordsAsync(skip, take, sort, filters);
         }
-        public bool RemoveAllComments() {
+        public async Task<bool> RemoveAllCommentsAsync() {
             List<DataProviderFilterInfo> filters = DataProviderFilterInfo.Join(null, new DataProviderFilterInfo { Field = "EntryIdentity", Operator = "==", Value = EntryIdentity });
-            DataProvider.RemoveRecords(filters);
+            await DataProvider.RemoveRecordsAsync(filters);
             return true;
         }
     }

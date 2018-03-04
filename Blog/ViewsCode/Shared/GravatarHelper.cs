@@ -4,6 +4,7 @@ using YetaWF.Core.Localize;
 using YetaWF.Core.Security;
 using YetaWF.Core.Support;
 using YetaWF.Modules.Blog.DataProvider;
+using System.Threading.Tasks;
 #if MVC6
 using Microsoft.AspNetCore.Html;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -20,14 +21,14 @@ namespace YetaWF.Modules.Blog.Views.Shared {
 
         private static string __ResStr(string name, string defaultValue, params object[] parms) { return ResourceAccess.GetResourceString(typeof(GravatarHelper), name, defaultValue, parms); }
 #if MVC6
-        public static HtmlString RenderGravatarDisplay<TModel>(this IHtmlHelper<TModel> htmlHelper, string name, string model, object HtmlAttributes = null)
+        public static async Task<HtmlString> RenderGravatarDisplayAsync<TModel>(this IHtmlHelper<TModel> htmlHelper, string name, string model, object HtmlAttributes = null) //$$$$$
 #else
-        public static HtmlString RenderGravatarDisplay<TModel>(this HtmlHelper<TModel> htmlHelper, string name, string model, object HtmlAttributes = null)
+        public static async Task<HtmlString> RenderGravatarDisplayAsync<TModel>(this HtmlHelper<TModel> htmlHelper, string name, string model, object HtmlAttributes = null)
 #endif
         {
             TagBuilder tagLink = new TagBuilder("a");
             TagBuilder tagImg = new TagBuilder("img");
-            BlogConfigData config = BlogConfigDataProvider.GetConfig();
+            BlogConfigData config = await BlogConfigDataProvider.GetConfigAsync();
             string url = GravatarUrl(model, config.GravatarSize, config.GravatarRating, config.GravatarDefault);
             tagImg.Attributes.Add("src", url);
             tagImg.Attributes.Add("alt", __ResStr("altGravatar", "Gravatar image - {0}", model));

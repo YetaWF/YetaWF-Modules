@@ -3,6 +3,7 @@
 using System;
 using System.Collections.Generic;
 using System.ServiceModel.Syndication;
+using System.Threading.Tasks;
 using YetaWF.Core.Controllers;
 using YetaWF.Core.DataProvider;
 using YetaWF.Core.Localize;
@@ -24,8 +25,8 @@ namespace YetaWF.Modules.Blog.Controllers {
 
         // Windows RSS Publisher's Guide http://blogs.msdn.com/b/rssteam/archive/2005/08/02/publishersguide.aspx
 
-        public ActionResult RssFeed(int? blogCategory) {
-            BlogConfigData config = BlogConfigDataProvider.GetConfig();
+        public async Task<ActionResult> RssFeed(int? blogCategory) {
+            BlogConfigData config = await BlogConfigDataProvider.GetConfigAsync();
             if (!config.Feed)
                 throw new Error(this.__ResStr("noFeed", "The feed is no longer available"));
 
@@ -33,7 +34,7 @@ namespace YetaWF.Modules.Blog.Controllers {
             BlogCategory category = null;
             if (categoryIdentity != 0) {
                 using (BlogCategoryDataProvider categoryDP = new BlogCategoryDataProvider()) {
-                    category = categoryDP.GetItem(categoryIdentity);
+                    category = await categoryDP.GetItemAsync(categoryIdentity);
                     if (!category.Syndicated)
                         throw new Error(this.__ResStr("noFeed", "The feed is no longer available"));
                 }
@@ -48,8 +49,7 @@ namespace YetaWF.Modules.Blog.Controllers {
                 };
                 if (categoryIdentity != 0)
                     filters = DataProviderFilterInfo.Join(filters, new DataProviderFilterInfo { Field = "CategoryIdentity", Operator = "==", Value = categoryIdentity });
-                int totalRecs;
-                List<BlogEntry> data = dataProvider.GetItems(0, 0, sort, filters, out totalRecs);
+                DataProviderGetRecords<BlogEntry> data = await dataProvider.GetItemsAsync(0, 0, sort, filters);
 
                 string url = string.IsNullOrWhiteSpace(config.FeedMainUrl) ? Manager.CurrentSite.HomePageUrl : config.FeedMainUrl;
 
@@ -57,15 +57,15 @@ namespace YetaWF.Modules.Blog.Controllers {
                 EntryDisplayModule dispMod = new EntryDisplayModule();
 
                 DateTime lastUpdated = DateTime.MinValue;
-                foreach (BlogEntry blogEntry in data) {
+                foreach (BlogEntry blogEntry in data.Data) {
                     if (categoryIdentity == 0) {
                         using (BlogCategoryDataProvider categoryDP = new BlogCategoryDataProvider()) {
-                            category = categoryDP.GetItem(blogEntry.CategoryIdentity);
+                            category = await categoryDP.GetItemAsync(blogEntry.CategoryIdentity);
                             if (!category.Syndicated)
                                 continue;
                         }
                     }
-                    ModuleAction viewAction = dispMod.GetAction_Display(blogEntry.Identity);
+                    ModuleAction viewAction = await dispMod.GetAction_DisplayAsync(blogEntry.Identity);
                     if (viewAction == null) continue;
                     SyndicationItem sItem = new SyndicationItem(blogEntry.Title.ToString(), blogEntry.Text, new Uri(viewAction.GetCompleteUrl()));
                     DateTime updDate = blogEntry.DateUpdated ?? blogEntry.DateCreated;

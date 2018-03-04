@@ -3,6 +3,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using YetaWF.Core.Controllers;
 using YetaWF.Core.DataProvider;
 using YetaWF.Core.Identity;
@@ -69,10 +70,10 @@ namespace YetaWF.Modules.Blog.Controllers {
         }
 
         [AllowGet]
-        public ActionResult CommentsDisplay(int? blogEntry) {
+        public async Task<ActionResult> CommentsDisplay(int? blogEntry) {
 
             int entryNum = blogEntry ?? 0;
-            BlogConfigData config = BlogConfigDataProvider.GetConfig();
+            BlogConfigData config = await BlogConfigDataProvider.GetConfigAsync();
 
             DisplayModel model = new DisplayModel() { };
 
@@ -80,16 +81,15 @@ namespace YetaWF.Modules.Blog.Controllers {
             using (BlogEntryDataProvider entryDP = new BlogEntryDataProvider()) {
                 BlogEntry entry = null;
                 if (entryNum != 0)
-                    entry = entryDP.GetItem(entryNum);
+                    entry = await entryDP.GetItemAsync(entryNum);
                 if (entry == null)
                     return new EmptyResult();
                 model.OpenForComments = entry.OpenForComments;
             }
             using (BlogCommentDataProvider commentDP = new BlogCommentDataProvider(entryNum)) {
-                int total;
-                List<BlogComment> comments = commentDP.GetItems(0, 0, null, null, out total);
+                DataProviderGetRecords<BlogComment> comments = await commentDP.GetItemsAsync(0, 0, null, null);
 
-                if (!model.OpenForComments && total == 0)
+                if (!model.OpenForComments && comments.Total == 0)
                     return new EmptyResult();
 
                 model.ShowGravatars = config.ShowGravatar;
@@ -97,13 +97,13 @@ namespace YetaWF.Modules.Blog.Controllers {
                 model.CanRemove = Resource.ResourceAccess.IsResourceAuthorized(Info.Resource_AllowManageComments);
 
                 if (model.CanApprove || model.CanRemove)
-                    model.Comments = (from d in comments select new CommentData(d, Module, editMod)).ToList();
+                    model.Comments = (from d in comments.Data select new CommentData(d, Module, editMod)).ToList();
                 else
-                    model.Comments = (from d in comments where !d.Deleted && d.Approved select new CommentData(d, Module, editMod)).ToList();
+                    model.Comments = (from d in comments.Data where !d.Deleted && d.Approved select new CommentData(d, Module, editMod)).ToList();
 
-                int pending = (from d in comments where !d.Deleted && !d.Approved select d).Count();
+                int pending = (from d in comments.Data where !d.Deleted && !d.Approved select d).Count();
                 model.PendingApproval = pending;
-                int commentsTotal = (from c in comments where !c.Deleted select c).Count();
+                int commentsTotal = (from c in comments.Data where !c.Deleted select c).Count();
 
                 // set a module title
                 string title;
@@ -131,13 +131,13 @@ namespace YetaWF.Modules.Blog.Controllers {
         [AllowPost]
         [ResourceAuthorize(Info.Resource_AllowManageComments)]
         [ExcludeDemoMode]
-        public ActionResult Approve(int blogEntry, int comment) {
+        public async Task<ActionResult> ApproveAsync(int blogEntry, int comment) {
             using (BlogCommentDataProvider dataProvider = new BlogCommentDataProvider(blogEntry)) {
-                BlogComment cmt = dataProvider.GetItem(comment);
+                BlogComment cmt = await dataProvider.GetItemAsync(comment);
                 if (cmt == null)
                     throw new InternalError("Can't find comment entry {0}", comment);
                 cmt.Approved = true;
-                UpdateStatusEnum status = dataProvider.UpdateItem(cmt);
+                UpdateStatusEnum status = await dataProvider.UpdateItemAsync(cmt);
                 if (status != UpdateStatusEnum.OK)
                     throw new InternalError("Can't update comment entry - {0}", status);
                 return Reload(null, Reload: ReloadEnum.Page);
@@ -146,12 +146,12 @@ namespace YetaWF.Modules.Blog.Controllers {
         [AllowPost]
         [ResourceAuthorize(Info.Resource_AllowManageComments)]
         [ExcludeDemoMode]
-        public ActionResult Remove(int blogEntry, int comment) {
+        public async Task<ActionResult> RemoveAsync(int blogEntry, int comment) {
             using (BlogCommentDataProvider dataProvider = new BlogCommentDataProvider(blogEntry)) {
-                BlogComment cmt = dataProvider.GetItem(comment);
+                BlogComment cmt = await dataProvider.GetItemAsync(comment);
                 if (cmt == null)
                     throw new InternalError("Can't find comment entry {0}", comment);
-                if (!dataProvider.RemoveItem(comment))
+                if (!await dataProvider.RemoveItemAsync(comment))
                     throw new InternalError("Can't remove comment entry");
                 return Reload(null, Reload: ReloadEnum.Page);
             }

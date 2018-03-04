@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using YetaWF.Core.Extensions;
 using YetaWF.Core.IO;
 using YetaWF.Core.Localize;
@@ -40,16 +41,16 @@ namespace YetaWF.Modules.Blog.Modules {
         public override List<ModuleAction> ModuleActions {
             get {
                 List<ModuleAction> actions = base.ModuleActions;
-                actions.New(GetAction_RssFeed());
+                actions.New(GetAction_RssFeedAsync().Result);//$$$$$
                 return actions;
             }
         }
 
-        public ModuleAction GetAction_Blog(string url, int blogCategory = 0, DateTime? StartDate = null, int Count = 0) {
-            BlogConfigData config = BlogConfigDataProvider.GetConfig();
+        public async Task<ModuleAction> GetAction_BlogAsync(string url, int blogCategory = 0, DateTime? StartDate = null, int Count = 0) { //$$$$$
+            BlogConfigData config = await BlogConfigDataProvider.GetConfigAsync();
             QueryHelper query = new QueryHelper();
             if (string.IsNullOrWhiteSpace(url))
-                url = BlogConfigData.GetCategoryCanonicalName(blogCategory);
+                url = await BlogConfigData.GetCategoryCanonicalNameAsync(blogCategory);
             else {
                 url = ModulePermanentUrl;
                 query.Add("BlogCategory", blogCategory.ToString());
@@ -77,8 +78,8 @@ namespace YetaWF.Modules.Blog.Modules {
                 Location = ModuleAction.ActionLocationEnum.NoAuto,
             };
         }
-        public ModuleAction GetAction_RssFeed(int blogCategory = 0) {
-            BlogConfigData config = BlogConfigDataProvider.GetConfig();
+        public async Task<ModuleAction> GetAction_RssFeedAsync(int blogCategory = 0) {   //?$$$$$$
+            BlogConfigData config = await BlogConfigDataProvider.GetConfigAsync();
             if (!config.Feed) return null;
             //if (blogCategory == 0)
             //    manager.TryGetUrlArg<int>("BlogCategory", out blogCategory);
@@ -86,7 +87,7 @@ namespace YetaWF.Modules.Blog.Modules {
             if (blogCategory != 0) {
                 qargs = new { BlogCategory = blogCategory, };
                 using (BlogCategoryDataProvider dataProvider = new BlogCategoryDataProvider()) {
-                    BlogCategory data = dataProvider.GetItem(blogCategory);
+                    BlogCategory data = await dataProvider.GetItemAsync(blogCategory);
                     if (data != null)
                         qargsHR = new { Title = data.Category.ToString().Truncate(80) };
                 }

@@ -1,5 +1,6 @@
 /* Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/AddThis#License */
 
+using System.Threading.Tasks;
 using YetaWF.Core.Controllers;
 using YetaWF.Modules.AddThis.DataProvider;
 #if MVC6
@@ -21,7 +22,7 @@ namespace YetaWF.Modules.AddThis.Controllers {
         }
 
         [AllowGet]
-        public async System.Threading.Tasks.Task<ActionResult> SharingSidebar() {
+        public async Task<ActionResult> SharingSidebar() {
             ConfigData config = await ConfigDataProvider.GetConfigAsync();
             if (string.IsNullOrWhiteSpace(config.Code)) return new EmptyResult();
             DisplayModel model = new DisplayModel() {

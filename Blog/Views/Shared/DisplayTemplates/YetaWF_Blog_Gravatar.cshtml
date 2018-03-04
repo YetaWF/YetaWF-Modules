@@ -1,4 +1,4 @@
 ﻿@*Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Blog#License*@
 @inherits YetaWF.Core.Pages.RazorTemplate<string>
 @using YetaWF.Modules.Blog.Views.Shared
-@Html.RenderGravatarDisplay("", Model, HtmlAttributes: new { @class = "yt_yetawf_blog_gravatar t_display" })
+@Html.RenderGravatarDisplayAsync("", Model, HtmlAttributes: new { @class = "yt_yetawf_blog_gravatar t_display" })

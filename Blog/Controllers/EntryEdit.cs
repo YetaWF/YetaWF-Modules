@@ -1,6 +1,7 @@
 /* Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Blog#License */
 
 using System;
+using System.Threading.Tasks;
 using YetaWF.Core;
 using YetaWF.Core.Controllers;
 using YetaWF.Core.DataProvider;
@@ -106,10 +107,10 @@ namespace YetaWF.Modules.Blog.Controllers {
         }
 
         [AllowGet]
-        public ActionResult EntryEdit(int blogEntry) {
+        public async Task<ActionResult> EntryEdit(int blogEntry) {
             using (BlogEntryDataProvider dataProvider = new BlogEntryDataProvider()) {
                 EditModel model = new EditModel { };
-                BlogEntry data = dataProvider.GetItem(blogEntry);
+                BlogEntry data = await dataProvider.GetItemAsync(blogEntry);
                 if (data == null)
                     throw new Error(this.__ResStr("notFound", "Blog entry with id {0} not found"), blogEntry);
                 model.SetData(data);
@@ -121,18 +122,18 @@ namespace YetaWF.Modules.Blog.Controllers {
         [AllowPost]
         [ConditionalAntiForgeryToken]
         [ExcludeDemoMode]
-        public ActionResult EntryEdit_Partial(EditModel model) {
+        public async Task<ActionResult> EntryEdit_Partial(EditModel model) {
             if (!ModelState.IsValid)
                 return PartialView(model);
             using (BlogEntryDataProvider dataProvider = new BlogEntryDataProvider()) {
-                BlogEntry data = dataProvider.GetItem(model.Identity);
+                BlogEntry data = await dataProvider.GetItemAsync(model.Identity);
                 if (data == null)
                     throw new Error(this.__ResStr("notFound", "Blog entry with id {0} not found"), model.Identity);
                 // save updated item
                 data = model.GetData(data); // merge new data into original
                 model.SetData(data); // and all the data back into model for final display
 
-                UpdateStatusEnum status = dataProvider.UpdateItem(data);
+                UpdateStatusEnum status = await dataProvider.UpdateItemAsync(data);
                 if (status != UpdateStatusEnum.OK) {
                     ModelState.AddModelError("Name", this.__ResStr("errSaving", "An unexpected error occurred saving the blog entry - {0}", status));
                     return PartialView(model);

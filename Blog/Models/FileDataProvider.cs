@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using YetaWF.Core.DataProvider;
 using YetaWF.Core.IO;
 using YetaWF.Core.Packages;
@@ -26,9 +27,9 @@ namespace YetaWF.Modules.Blog.DataProvider.File {
             public override string GetBaseFolder() { return Path.Combine(YetaWFManager.DataFolder, Package.AreaName, SiteIdentity.ToString(), "Categories"); }
         }
         class BlogEntryDataProvider : FileDataProvider<int, BlogEntry> {
-            public BlogEntryDataProvider(Dictionary<string, object> options) : base(options) { CalculatedPropertyCallback = GetCalculatedProperty; }
+            public BlogEntryDataProvider(Dictionary<string, object> options) : base(options) { CalculatedPropertyCallback = GetCalculatedPropertyAsync; }//$$$$$
             public override string GetBaseFolder() { return Path.Combine(YetaWFManager.DataFolder, Package.AreaName, SiteIdentity.ToString(), "Entries"); }
-            private object GetCalculatedProperty(string name, object obj) {
+            private async Task<object> GetCalculatedPropertyAsync(string name, object obj) {
                 BlogEntry entry = (BlogEntry)obj;
                 if (name == "CommentsUnapproved") {
                     using (DataProvider.BlogCommentDataProvider commentDP = new DataProvider.BlogCommentDataProvider(entry.Identity)) {
@@ -37,16 +38,14 @@ namespace YetaWF.Modules.Blog.DataProvider.File {
                                 Field = "Approved", Operator = "==", Value = false,
                             },
                         };
-                        int commentsUnapproved;
-                        commentDP.GetItems(0, 0, null, filters, out commentsUnapproved);
-                        entry.CommentsUnapproved = commentsUnapproved;
+                        DataProviderGetRecords<BlogComment> commentsUnapproved = await commentDP.GetItemsAsync(0, 0, null, filters);
+                        entry.CommentsUnapproved = commentsUnapproved.Total;
                         return obj;
                     }
                 } else if (name == "Comments") {
                     using (DataProvider.BlogCommentDataProvider commentDP = new DataProvider.BlogCommentDataProvider(entry.Identity)) {
-                        int comments;
-                        commentDP.GetItems(0, 0, null, null, out comments);
-                        entry.Comments = comments;
+                        DataProviderGetRecords<BlogComment> comments = await commentDP.GetItemsAsync(0, 0, null, null);
+                        entry.Comments = comments.Total;
                         return obj;
                     }
                 } else throw new InternalError("Unexpected property {0}", name);

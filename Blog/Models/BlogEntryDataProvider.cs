@@ -3,6 +3,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 using YetaWF.Core;
 using YetaWF.Core.DataProvider;
 using YetaWF.Core.DataProvider.Attributes;
@@ -159,7 +160,7 @@ namespace YetaWF.Modules.Blog.DataProvider {
         public MultiString Category {
             get {
                 using (BlogCategoryDataProvider categoryDP = new BlogCategoryDataProvider()) {
-                    BlogCategory blogCategory = categoryDP.GetItem(CategoryIdentity);
+                    BlogCategory blogCategory = categoryDP.GetItemAsync(CategoryIdentity).Result;//$$$
                     if (blogCategory != null)
                         return blogCategory.Category;
                     return new MultiString();
@@ -181,7 +182,7 @@ namespace YetaWF.Modules.Blog.DataProvider {
         public static Guid FolderGuid { get { return ModuleDefinition.GetPermanentGuid(typeof(EntryDisplayModule)); } }
     }
 
-    public class BlogEntryDataProvider : DataProviderImpl, IInstallableModel, ISearchDynamicUrls, ISiteMapDynamicUrls {
+    public class BlogEntryDataProvider : DataProviderImpl, IInstallableModelAsync, ISearchDynamicUrlsAsync, ISiteMapDynamicUrlsAsync {
 
         // IMPLEMENTATION
         // IMPLEMENTATION
@@ -189,9 +190,9 @@ namespace YetaWF.Modules.Blog.DataProvider {
 
         public BlogEntryDataProvider() : base(YetaWFManager.Manager.CurrentSite.Identity) { SetDataProvider(CreateDataProvider()); }
 
-        private IDataProvider<int, BlogEntry> DataProvider { get { return GetDataProvider(); } }
+        private IDataProviderAsync<int, BlogEntry> DataProvider { get { return GetDataProvider(); } }
 
-        private IDataProvider<int, BlogEntry> CreateDataProvider() {
+        private IDataProviderAsync<int, BlogEntry> CreateDataProvider() {
             Package package = YetaWF.Modules.Blog.Controllers.AreaRegistration.CurrentPackage;
             return MakeDataProvider(package, package.AreaName + "_Entries", SiteIdentity: SiteIdentity, Cacheable: true);
         }
@@ -200,41 +201,40 @@ namespace YetaWF.Modules.Blog.DataProvider {
         // API
         // API
 
-        public BlogEntry GetItem(int blogEntry) {
-            BlogEntry data = DataProvider.Get(blogEntry);
+        public async Task<BlogEntry> GetItemAsync(int blogEntry) {
+            BlogEntry data = await DataProvider.GetAsync(blogEntry);
             if (data == null) return null;
             data.Identity = blogEntry;
             return data;
         }
-        public bool AddItem(BlogEntry data) {
-            return DataProvider.Add(data);
+        public Task<bool> AddItemAsync(BlogEntry data) {
+            return DataProvider.AddAsync(data);
         }
-        public UpdateStatusEnum UpdateItem(BlogEntry data) {
+        public Task<UpdateStatusEnum> UpdateItemAsync(BlogEntry data) {
             data.DateUpdated = DateTime.UtcNow;
-            return DataProvider.Update(data.Identity, data.Identity, data);
+            return DataProvider.UpdateAsync(data.Identity, data.Identity, data);
         }
-        public bool RemoveItem(int blogEntry) {
-            bool status = DataProvider.Remove(blogEntry);
+        public async Task<bool> RemoveItemAsync(int blogEntry) {
+            bool status = await DataProvider.RemoveAsync(blogEntry);
             if (!status) return false;
             // remove comments for this entry
             using (BlogCommentDataProvider commentDP = new BlogCommentDataProvider(blogEntry)) {
-                commentDP.RemoveAllComments();
+                await commentDP.RemoveAllCommentsAsync();
             }
             return true;
         }
-        public List<BlogEntry> GetItems(int skip, int take, List<DataProviderSortInfo> sort, List<DataProviderFilterInfo> filters, out int total) {
-            return DataProvider.GetRecords(skip, take, sort, filters, out total);
+        public Task<DataProviderGetRecords<BlogEntry>> GetItemsAsync(int skip, int take, List<DataProviderSortInfo> sort, List<DataProviderFilterInfo> filters) {
+            return DataProvider.GetRecordsAsync(skip, take, sort, filters);
         }
-        public bool RemoveEntries(int categoryIdentity) {
+        public async Task<bool> RemoveEntriesAsync(int categoryIdentity) {
             // TODO: This could be optimized for SQL using joins
             // remove all entries for this category
             List<DataProviderFilterInfo> filters = DataProviderFilterInfo.Join(null, new DataProviderFilterInfo { Field = "CategoryIdentity", Operator = "==", Value = categoryIdentity });
-            int total;
-            List<BlogEntry> entries = GetItems(0, 0, null, filters, out total);
-            foreach (BlogEntry entry in entries) {
+            DataProviderGetRecords<BlogEntry> data = await GetItemsAsync(0, 0, null, filters);
+            foreach (BlogEntry entry in data.Data) {
                 // remove all comments
                 using (BlogCommentDataProvider commentDP = new BlogCommentDataProvider(entry.Identity)) {
-                    commentDP.RemoveAllComments();
+                    await commentDP.RemoveAllCommentsAsync();
                 }
             }
             return true;
@@ -244,16 +244,15 @@ namespace YetaWF.Modules.Blog.DataProvider {
         // ISEARCHDYNAMICURLS
         // ISEARCHDYNAMICURLS
 
-        public void KeywordsForDynamicUrls(ISearchWords searchWords) {
+        public async Task KeywordsForDynamicUrlsAsync(ISearchWords searchWords) {
 
             using (this) {
-                BlogConfigData config = BlogConfigDataProvider.GetConfig();
-                int total;
+                BlogConfigData config = await BlogConfigDataProvider.GetConfigAsync();
                 List<DataProviderFilterInfo> filters = DataProviderFilterInfo.Join(null, new DataProviderFilterInfo { Field = "Published", Operator = "==", Value = true });
-                List<BlogEntry> entries = GetItems(0, 0, null, filters, out total);
-                foreach (BlogEntry entry in entries) {
+                DataProviderGetRecords<BlogEntry> entries = await GetItemsAsync(0, 0, null, filters);
+                foreach (BlogEntry entry in entries.Data) {
 
-                    string url = BlogConfigData.GetEntryCanonicalName(entry.Identity);
+                    string url = await BlogConfigData.GetEntryCanonicalNameAsync(entry.Identity);
 
                     PageDefinition page = PageDefinition.LoadFromUrl(url);
                     if (page == null) return; // there is no such root page
@@ -262,9 +261,8 @@ namespace YetaWF.Modules.Blog.DataProvider {
                     if (searchWords.SetUrl(url, page.PageSecurity, entry.Title, entry.DisplayableSummaryText, entry.DateCreated, entry.DateUpdated, page.IsAuthorized_View_Anonymous(), page.IsAuthorized_View_AnyUser())) {
                         searchWords.AddObjectContents(entry);
                         using (BlogCommentDataProvider commentDP = new BlogCommentDataProvider(entry.Identity)) {
-                            int totalComments;
-                            List<BlogComment> comments = commentDP.GetItems(0, 0, null, null, out totalComments);
-                            foreach (BlogComment comment in comments) {
+                            DataProviderGetRecords<BlogComment> comments = await commentDP.GetItemsAsync(0, 0, null, null);
+                            foreach (BlogComment comment in comments.Data) {
                                 searchWords.AddObjectContents(comment);
                             }
                         }
@@ -278,13 +276,12 @@ namespace YetaWF.Modules.Blog.DataProvider {
         // ISITEMAPDYNAMICURLS
         // ISITEMAPDYNAMICURLS
 
-        public void FindDynamicUrls(Action<PageDefinition, string, DateTime?, PageDefinition.SiteMapPriorityEnum, PageDefinition.ChangeFrequencyEnum, object> addDynamicUrl, Func<PageDefinition, bool> validForSiteMap) {
+        public async Task FindDynamicUrlsAsync(Action<PageDefinition, string, DateTime?, PageDefinition.SiteMapPriorityEnum, PageDefinition.ChangeFrequencyEnum, object> addDynamicUrl, Func<PageDefinition, bool> validForSiteMap) {
             using (this) {
-                int total;
                 List<DataProviderFilterInfo> filters = DataProviderFilterInfo.Join(null, new DataProviderFilterInfo { Field = "Published", Operator = "==", Value = true });
-                List<BlogEntry> entries = GetItems(0, 0, null, filters, out total);
-                foreach (BlogEntry entry in entries) {
-                    string url = BlogConfigData.GetEntryCanonicalName(entry.Identity);
+                DataProviderGetRecords<BlogEntry> entries = await GetItemsAsync(0, 0, null, filters);
+                foreach (BlogEntry entry in entries.Data) {
+                    string url = await BlogConfigData.GetEntryCanonicalNameAsync(entry.Identity);
                     PageDefinition page = PageDefinition.LoadFromUrl(url);
                     if (page == null) return; // there is no such root page
                     addDynamicUrl(page, url, entry.DateUpdated, page.SiteMapPriority, page.ChangeFrequency, entry);

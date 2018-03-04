@@ -3,6 +3,7 @@
 using YetaWF.Core.Controllers;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Modules.Blog.DataProvider;
+using System.Threading.Tasks;
 #if MVC6
 using Microsoft.AspNetCore.Mvc;
 using YetaWF.Core.Support;
@@ -25,7 +26,7 @@ namespace YetaWF.Modules.Blog.Controllers {
         }
 
         [AllowGet]
-        public ActionResult CategoriesList() {
+        public async Task<ActionResult> CategoriesList() {
 
             int blogCategory = Module.DefaultCategory;
             if (!Manager.TryGetUrlArg<int>("BlogCategory", out blogCategory, blogCategory))
@@ -34,16 +35,16 @@ namespace YetaWF.Modules.Blog.Controllers {
                 BlogCategory = blogCategory,
             };
 
-            Manager.CurrentPage.EvaluatedCanonicalUrl = BlogConfigData.GetCategoryCanonicalName(blogCategory);
+            Manager.CurrentPage.EvaluatedCanonicalUrl = await BlogConfigData.GetCategoryCanonicalNameAsync(blogCategory);
             return View(model);
         }
 
         [AllowPost]
         [ConditionalAntiForgeryToken]
-        public ActionResult CategoriesList_Partial(Model model) {
+        public async Task<ActionResult> CategoriesList_Partial(Model model) {
             if (!ModelState.IsValid)
                 return PartialView(model);
-            return Redirect(BlogConfigData.GetCategoryCanonicalName(model.BlogCategory));
+            return Redirect(await BlogConfigData.GetCategoryCanonicalNameAsync(model.BlogCategory));
         }
 
     }

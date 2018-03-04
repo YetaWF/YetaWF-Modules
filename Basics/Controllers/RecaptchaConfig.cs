@@ -56,7 +56,7 @@ namespace YetaWF.Modules.Basics.Controllers {
         }
 
         [AllowGet]
-        public async System.Threading.Tasks.Task<ActionResult> RecaptchaConfig() {
+        public async Task<ActionResult> RecaptchaConfig() {
             using (RecaptchaConfigDataProvider dataProvider = new RecaptchaConfigDataProvider()) {
                 EditModel model = new EditModel { };
                 RecaptchaConfig data = await dataProvider.GetItemAsync();

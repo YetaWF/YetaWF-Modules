@@ -1,5 +1,6 @@
 /* Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Blog#License */
 
+using System.Threading.Tasks;
 using YetaWF.Core;
 using YetaWF.Core.Controllers;
 using YetaWF.Core.Localize;
@@ -104,10 +105,10 @@ namespace YetaWF.Modules.Blog.Controllers {
         }
 
         [AllowGet]
-        public ActionResult BlogConfig() {
+        public async Task<ActionResult> BlogConfig() {
             using (BlogConfigDataProvider dataProvider = new BlogConfigDataProvider()) {
                 Model model = new Model { };
-                BlogConfigData data = dataProvider.GetItem();
+                BlogConfigData data = await dataProvider.GetItemAsync();
                 if (data == null)
                     throw new Error(this.__ResStr("notFound", "The blog settings were not found."));
                 model.SetData(data);
@@ -118,14 +119,14 @@ namespace YetaWF.Modules.Blog.Controllers {
         [AllowPost]
         [ConditionalAntiForgeryToken]
         [ExcludeDemoMode]
-        public ActionResult BlogConfig_Partial(Model model) {
+        public async Task<ActionResult> BlogConfig_Partial(Model model) {
             using (BlogConfigDataProvider dataProvider = new BlogConfigDataProvider()) {
-                BlogConfigData data = dataProvider.GetItem();// get the original item
+                BlogConfigData data = await dataProvider.GetItemAsync();// get the original item
                 if (!ModelState.IsValid)
                     return PartialView(model);
                 data = model.GetData(data); // merge new data into original
                 model.SetData(data); // and all the data back into model for final display
-                dataProvider.UpdateConfig(data);
+                await dataProvider.UpdateConfigAsync(data);
                 return FormProcessed(model, this.__ResStr("okSaved", "Blog settings saved"));
             }
         }

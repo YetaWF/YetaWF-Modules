@@ -75,15 +75,15 @@ namespace YetaWF.Modules.Basics.DataProvider {
                 throw new InternalError("Can't save captcha configuration {0}", status);
         }
 
-        internal static Task<RecaptchaConfig> LoadRecaptchaConfig() {
+        internal static async Task<RecaptchaConfig> LoadRecaptchaConfig() {
             using (RecaptchaConfigDataProvider recaptchaDP = new RecaptchaConfigDataProvider()) {
-                return recaptchaDP.GetItemAsync();
+                return await recaptchaDP.GetItemAsync();
             }
         }
 
-        internal static Task SaveRecaptchaConfig(RecaptchaConfig config) {
+        internal static async Task SaveRecaptchaConfig(RecaptchaConfig config) {
             using (RecaptchaConfigDataProvider recaptchaDP = new RecaptchaConfigDataProvider()) {
-                return recaptchaDP.UpdateConfigAsync(config);
+                await recaptchaDP.UpdateConfigAsync(config);
             }
         }
     }

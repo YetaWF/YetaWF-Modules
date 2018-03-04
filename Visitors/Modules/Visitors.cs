@@ -13,7 +13,6 @@ using YetaWF.Core.Support;
 using YetaWF.Modules.Visitors.Controllers;
 using System.Collections.Generic;
 #if MVC6
-using YetaWF.Core.Support;
 #else
 using System.Web.Mvc;
 #endif

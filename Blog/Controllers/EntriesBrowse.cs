@@ -3,6 +3,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using YetaWF.Core.Controllers;
 using YetaWF.Core.DataProvider;
 using YetaWF.Core.Menus;
@@ -34,7 +35,7 @@ namespace YetaWF.Modules.Blog.Controllers {
                 get {
                     MenuList actions = new MenuList() { RenderMode = ModuleAction.RenderModeEnum.IconsOnly };
                     EntryDisplayModule dispMod = new EntryDisplayModule();
-                    actions.New(dispMod.GetAction_Display(Identity), ModuleAction.ActionLocationEnum.GridLinks);
+                    actions.New(dispMod.GetAction_DisplayAsync(Identity).Result, ModuleAction.ActionLocationEnum.GridLinks);//$$$$
                     EntryEditModule editMod = new EntryEditModule();
                     actions.New(editMod.GetAction_Edit(Module.EditUrl, Identity), ModuleAction.ActionLocationEnum.GridLinks);
                     actions.New(Module.GetAction_Remove(Identity), ModuleAction.ActionLocationEnum.GridLinks);
@@ -115,19 +116,18 @@ namespace YetaWF.Modules.Blog.Controllers {
 
         [AllowPost]
         [ConditionalAntiForgeryToken]
-        public ActionResult EntriesBrowse_GridData(int skip, int take, List<DataProviderSortInfo> sort, List<DataProviderFilterInfo> filters, Guid settingsModuleGuid, int blogCategory) {
+        public async Task<ActionResult> EntriesBrowse_GridData(int skip, int take, List<DataProviderSortInfo> sort, List<DataProviderFilterInfo> filters, Guid settingsModuleGuid, int blogCategory) {
             // filter by category
             if (blogCategory != 0) {
                 filters = DataProviderFilterInfo.Join(filters, new DataProviderFilterInfo { Field = "CategoryIdentity", Operator = "==", Value = blogCategory, });
             }
             using (BlogEntryDataProvider entryDP = new BlogEntryDataProvider()) {
                 using (BlogCategoryDataProvider categoryDP = new BlogCategoryDataProvider()) {
-                    int total;
-                    List<BlogEntry> browseItems = entryDP.GetItems(skip, take, sort, filters, out total);
+                    DataProviderGetRecords<BlogEntry> browseItems = await entryDP.GetItemsAsync(skip, take, sort, filters);
                     GridHelper.SaveSettings(skip, take, sort, filters, settingsModuleGuid);
                     return GridPartialView(new DataSourceResult {
-                        Data = (from s in browseItems select new BrowseItem(Module, categoryDP, s)).ToList<object>(),
-                        Total = total
+                        Data = (from s in browseItems.Data select new BrowseItem(Module, categoryDP, s)).ToList<object>(),
+                        Total = browseItems.Total
                     });
                 }
             }
@@ -136,9 +136,9 @@ namespace YetaWF.Modules.Blog.Controllers {
         [AllowPost]
         [Permission("RemoveItems")]
         [ExcludeDemoMode]
-        public ActionResult Remove(int blogEntry) {
+        public async Task<ActionResult> Remove(int blogEntry) {
             using (BlogEntryDataProvider dataProvider = new BlogEntryDataProvider()) {
-                dataProvider.RemoveItem(blogEntry);
+                await dataProvider.RemoveItemAsync(blogEntry);
                 return Reload(null, Reload: ReloadEnum.ModuleParts);
             }
         }

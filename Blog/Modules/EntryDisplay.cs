@@ -1,6 +1,7 @@
 ﻿/* Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Blog#License */
 
 using System;
+using System.Threading.Tasks;
 using YetaWF.Core;
 using YetaWF.Core.IO;
 using YetaWF.Core.Localize;
@@ -48,12 +49,12 @@ namespace YetaWF.Modules.Blog.Modules {
             if (Manager.TryGetUrlArg<int>("BlogEntry", out blogEntry))
                 menuList.New(mod.GetAction_Edit(EditUrl, blogEntry), location);
             BlogModule blogMod = new BlogModule();
-            menuList.New(blogMod.GetAction_RssFeed(), location);
+            menuList.New(blogMod.GetAction_RssFeedAsync().Result, location); //$$$$$
             return menuList;
         }
 
-        public ModuleAction GetAction_Display(int blogEntry, bool ReadMore = false) {
-            string url = BlogConfigData.GetEntryCanonicalName(blogEntry);
+        public async Task<ModuleAction> GetAction_DisplayAsync(int blogEntry, bool ReadMore = false) {
+            string url = await BlogConfigData.GetEntryCanonicalNameAsync(blogEntry);
             return new ModuleAction(this) {
                 Url = url,
                 Image = "#Display",

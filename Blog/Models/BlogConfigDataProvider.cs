@@ -1,5 +1,6 @@
 ﻿/* Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Blog#License */
 
+using System.Threading.Tasks;
 using YetaWF.Core;
 using YetaWF.Core.DataProvider;
 using YetaWF.Core.DataProvider.Attributes;
@@ -31,7 +32,7 @@ namespace YetaWF.Modules.Blog.DataProvider {
             content = null;
             if (!string.IsNullOrWhiteSpace(location)) return false;
             if (string.IsNullOrWhiteSpace(name)) return false;
-            BlogConfigData config = BlogConfigDataProvider.GetConfig();
+            BlogConfigData config = BlogConfigDataProvider.GetConfigAsync().Result;//$$$$$
             if (config.FeedImage_Data == null || config.FeedImage_Data.Length == 0) return false;
             content = config.FeedImage_Data;
             return true;
@@ -107,12 +108,12 @@ namespace YetaWF.Modules.Blog.DataProvider {
             FeedImage_Data = new byte[0];
         }
 
-        internal static string GetCategoryCanonicalName(int blogCategory = 0) {
+        internal static async Task<string> GetCategoryCanonicalNameAsync(int blogCategory = 0) {
             using (BlogCategoryDataProvider categoryDP = new BlogCategoryDataProvider()) {
-                BlogConfigData config = BlogConfigDataProvider.GetConfig();
+                BlogConfigData config = await BlogConfigDataProvider.GetConfigAsync();
                 string canon = config.BlogUrl;
                 if (blogCategory != 0) {
-                    BlogCategory cat = categoryDP.GetItem(blogCategory);
+                    BlogCategory cat = await categoryDP.GetItemAsync(blogCategory);
                     if (cat != null)
                         canon = string.Format("{0}/Title/{1}/?BlogCategory={2}", config.BlogUrl, YetaWFManager.UrlEncodeSegment(cat.Category.ToString().Truncate(80)), blogCategory);
                 } else {
@@ -121,11 +122,11 @@ namespace YetaWF.Modules.Blog.DataProvider {
                 return canon;
             }
         }
-        public static string GetEntryCanonicalName(int blogEntry) {
-            BlogConfigData config = BlogConfigDataProvider.GetConfig();
+        public static async Task<string> GetEntryCanonicalNameAsync(int blogEntry) {
+            BlogConfigData config = await BlogConfigDataProvider.GetConfigAsync();
             string canon = string.Format("{0}/?BlogEntry={1}", config.BlogEntryUrl, blogEntry);
-            using (BlogEntryDataProvider dataProvider = new BlogEntryDataProvider()) {
-                BlogEntry data = dataProvider.GetItem(blogEntry);
+            using (BlogEntryDataProvider entryDP = new BlogEntryDataProvider()) {
+                BlogEntry data = await entryDP.GetItemAsync(blogEntry);
                 if (data != null)
                     canon = string.Format("{0}/Title/{1}/?BlogEntry={2}", config.BlogEntryUrl, YetaWFManager.UrlEncodeSegment(data.Title.ToString().Truncate(80)), blogEntry);
                 return canon;
@@ -146,9 +147,9 @@ namespace YetaWF.Modules.Blog.DataProvider {
         public BlogConfigDataProvider() : base(YetaWFManager.Manager.CurrentSite.Identity) { SetDataProvider(CreateDataProvider()); }
         public BlogConfigDataProvider(int siteIdentity) : base(siteIdentity) { SetDataProvider(CreateDataProvider()); }
 
-        private IDataProvider<int, BlogConfigData> DataProvider { get { return GetDataProvider(); } }
+        private IDataProviderAsync<int, BlogConfigData> DataProvider { get { return GetDataProvider(); } }
 
-        private IDataProvider<int, BlogConfigData> CreateDataProvider() {
+        private IDataProviderAsync<int, BlogConfigData> CreateDataProvider() {
             Package package = YetaWF.Modules.Blog.Controllers.AreaRegistration.CurrentPackage;
             return MakeDataProvider(package, package.AreaName + "_Config", SiteIdentity: SiteIdentity, Cacheable: true);
         }
@@ -157,34 +158,34 @@ namespace YetaWF.Modules.Blog.DataProvider {
         // API
         // API
 
-        public static BlogConfigData GetConfig() {
+        public static async Task<BlogConfigData> GetConfigAsync() {
             using (BlogConfigDataProvider configDP = new BlogConfigDataProvider()) {
-                return configDP.GetItem();
+                return await configDP.GetItemAsync();
             }
         }
-        public BlogConfigData GetItem() {
-            BlogConfigData config = DataProvider.Get(KEY);
+        public async Task<BlogConfigData> GetItemAsync() {
+            BlogConfigData config = await DataProvider.GetAsync(KEY);
             if (config == null) {
-                lock (_lockObject) {
-                    config = DataProvider.Get(KEY);
+                //$$lock (_lockObject) {
+                    config = await DataProvider.GetAsync(KEY);
                     if (config == null) {
                         config = new BlogConfigData();
-                        AddConfig(config);
+                        await AddConfigAsync(config);
                     }
-                }
+                //}
             }
             return config;
         }
-        private void AddConfig(BlogConfigData data) {
+        private async Task AddConfigAsync(BlogConfigData data) {
             data.Id = KEY;
             SaveImages(ModuleDefinition.GetPermanentGuid(typeof(BlogConfigModule)), data);
-            if (!DataProvider.Add(data))
+            if (!await DataProvider.AddAsync(data))
                 throw new InternalError("Unexpected error adding settings");
         }
-        public void UpdateConfig(BlogConfigData data) {
+        public async Task UpdateConfigAsync(BlogConfigData data) {
             data.Id = KEY;
             SaveImages(ModuleDefinition.GetPermanentGuid(typeof(BlogConfigModule)), data);
-            UpdateStatusEnum status = DataProvider.Update(data.Id, data.Id, data);
+            UpdateStatusEnum status = await DataProvider.UpdateAsync(data.Id, data.Id, data);
             if (status != UpdateStatusEnum.OK)
                 throw new InternalError("Unexpected error saving settings {0}", status);
         }

@@ -1,14 +1,11 @@
 /* Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Blog#License */
 
+using System.Threading.Tasks;
 using System;
-using System.Collections.Generic;
 using YetaWF.Core.Controllers;
 using YetaWF.Core.Models;
 using YetaWF.Core.Models.Attributes;
-using YetaWF.Core.Modules;
 using YetaWF.Modules.Blog.DataProvider;
-using YetaWF.Modules.Blog.Modules;
-using YetaWF.Core;
 #if MVC6
 using Microsoft.AspNetCore.Mvc;
 using YetaWF.Core.Support;
@@ -16,7 +13,8 @@ using YetaWF.Core.Support;
 using System.Web.Mvc;
 #endif
 
-namespace YetaWF.Modules.Blog.Controllers {
+namespace YetaWF.Modules.Blog.Controllers
+{
 
     public class EntryDisplayModuleController : ControllerImpl<YetaWF.Modules.Blog.Modules.EntryDisplayModule> {
 
@@ -60,18 +58,18 @@ namespace YetaWF.Modules.Blog.Controllers {
         }
 
         [AllowGet]
-        public ActionResult EntryDisplay(int? blogEntry) {
+        public async Task<ActionResult> EntryDisplay(int? blogEntry) {
             int entryNum = blogEntry ?? 0;
             using (BlogEntryDataProvider dataProvider = new BlogEntryDataProvider()) {
                 BlogEntry data = null;
                 if (entryNum != 0)
-                    data = dataProvider.GetItem(entryNum);
+                    data = await dataProvider.GetItemAsync(entryNum);
                 if (data == null) {
                     MarkNotFound();
                     return View("NotFound");
                 }
 
-                Manager.CurrentPage.EvaluatedCanonicalUrl = BlogConfigData.GetEntryCanonicalName(entryNum);
+                Manager.CurrentPage.EvaluatedCanonicalUrl = await BlogConfigData.GetEntryCanonicalNameAsync(entryNum);
                 if (!string.IsNullOrWhiteSpace(data.Keywords)) {
                     Manager.CurrentPage.Keywords = data.Keywords;
                     Manager.MetatagsManager.AddMetatag("news_keywords", data.Keywords.ToString());

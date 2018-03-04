@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using YetaWF.Core.Controllers;
 using YetaWF.Core.DataProvider;
 using YetaWF.Core.Models.Attributes;
@@ -34,7 +35,7 @@ namespace YetaWF.Modules.Blog.Controllers {
         }
 
         [AllowGet]
-        public ActionResult Archive(int? blogCategory) {
+        public async Task<ActionResult> Archive(int? blogCategory) {
             int category = (int) (blogCategory ?? 0);
 
             BlogModule blogMod = new BlogModule();
@@ -55,15 +56,15 @@ namespace YetaWF.Modules.Blog.Controllers {
                 int totalRecs = 0, start = 0, incr = 100;
                 for ( ; ; ) {
 
-                    List<BlogEntry> data = entryDP.GetItems(start, incr, sort, filters, out totalRecs);
-                    if (data.Count == 0)
+                    DataProviderGetRecords<BlogEntry> data = await entryDP.GetItemsAsync(start, incr, sort, filters);
+                    if (data.Data.Count == 0)
                         return new EmptyResult();
 
-                    foreach (BlogEntry entry in data) {
+                    foreach (BlogEntry entry in data.Data) {
                         if (entry.DatePublished.Month != month || entry.DatePublished.Year != year) {
                             if (count > 0) {
                                 DateTime d = new DateTime(year, month, 1).AddMonths(1).AddSeconds(-1);
-                                model.Actions.New(blogMod.GetAction_Blog(null, category, StartDate: d, Count: count));
+                                model.Actions.New(await blogMod.GetAction_BlogAsync(null, category, StartDate: d, Count: count));
                                 count = 0;
                             }
                             month = entry.DatePublished.Month;
@@ -75,7 +76,7 @@ namespace YetaWF.Modules.Blog.Controllers {
                     if (start >= totalRecs) {
                         if (count > 0) {
                             DateTime d = new DateTime(year, month, 1).AddMonths(1).AddSeconds(-1);
-                            model.Actions.New(blogMod.GetAction_Blog(null, category, StartDate: d, Count: count));
+                            model.Actions.New(await blogMod.GetAction_BlogAsync(null, category, StartDate: d, Count: count));
                         }
                         break;
                     }

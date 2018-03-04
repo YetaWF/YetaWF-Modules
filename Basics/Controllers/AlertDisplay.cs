@@ -2,6 +2,7 @@
 
 using YetaWF.Core.Controllers;
 using YetaWF.Modules.Basics.DataProvider;
+using System.Threading.Tasks;
 #if MVC6
 using Microsoft.AspNetCore.Mvc;
 #else
@@ -20,7 +21,7 @@ namespace YetaWF.Modules.Basics.Controllers {
         }
 
         [AllowGet]
-        public async System.Threading.Tasks.Task<ActionResult> AlertDisplay() {
+        public async Task<ActionResult> AlertDisplay() {
             if (Manager.EditMode) return new EmptyResult();
             if (Manager.IsInPopup) return new EmptyResult();
 

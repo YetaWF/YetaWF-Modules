@@ -45,9 +45,9 @@ namespace YetaWF.Modules.Basics.DataProvider {
         // API
         // API
 
-        public static Task<RecaptchaV2Config> GetConfigAsync() {
+        public static async Task<RecaptchaV2Config> GetConfigAsync() {
             using (RecaptchaV2ConfigDataProvider configDP = new RecaptchaV2ConfigDataProvider()) {
-                return configDP.GetItemAsync();
+                return await configDP.GetItemAsync();
             }
         }
         public async Task<RecaptchaV2Config> GetItemAsync() {
@@ -75,15 +75,15 @@ namespace YetaWF.Modules.Basics.DataProvider {
                 throw new InternalError("Can't save captcha configuration {0}", status);
         }
 
-        internal static Task<RecaptchaV2Config> LoadRecaptchaV2Config() {
+        internal static async Task<RecaptchaV2Config> LoadRecaptchaV2Config() {
             using (RecaptchaV2ConfigDataProvider dp = new RecaptchaV2ConfigDataProvider()) {
-                return dp.GetItemAsync();
+                return await dp.GetItemAsync();
             }
         }
 
-        internal static Task SaveRecaptchaV2Config(RecaptchaV2Config config) {
+        internal static async Task SaveRecaptchaV2Config(RecaptchaV2Config config) {
             using (RecaptchaV2ConfigDataProvider dp = new RecaptchaV2ConfigDataProvider()) {
-                return dp.UpdateConfigAsync(config);
+                await dp.UpdateConfigAsync(config);
             }
         }
     }

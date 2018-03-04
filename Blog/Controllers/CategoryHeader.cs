@@ -1,5 +1,6 @@
 /* Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Blog#License */
 
+using System.Threading.Tasks;
 using YetaWF.Core.Controllers;
 using YetaWF.Core.Models;
 using YetaWF.Core.Models.Attributes;
@@ -30,20 +31,20 @@ namespace YetaWF.Modules.Blog.Controllers {
         }
 
         [AllowGet]
-        public ActionResult CategoryHeader(int? blogEntry) {
+        public async Task<ActionResult> CategoryHeader(int? blogEntry) {
             int category;
             Manager.TryGetUrlArg<int>("BlogCategory", out category);
             int entry = (int) (blogEntry ?? 0);
             if (entry != 0) {
                 using (BlogEntryDataProvider entryDP = new BlogEntryDataProvider()) {
-                    BlogEntry data = entryDP.GetItem(entry);
+                    BlogEntry data = await entryDP.GetItemAsync(entry);
                     if (data != null)
                         category = data.CategoryIdentity;
                 }
             }
             if (category != 0) {
                 using (BlogCategoryDataProvider dataProvider = new BlogCategoryDataProvider()) {
-                    BlogCategory data = dataProvider.GetItem(category);
+                    BlogCategory data = await dataProvider.GetItemAsync(category);
                     if (data != null) {
                         DisplayModel model = new DisplayModel();
                         model.SetData(data);

@@ -1,6 +1,7 @@
 /* Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Blog#License */
 
 using System;
+using System.Threading.Tasks;
 using YetaWF.Core.Controllers;
 using YetaWF.Core.Localize;
 using YetaWF.Core.Models;
@@ -91,12 +92,12 @@ namespace YetaWF.Modules.Blog.Controllers {
         [AllowPost]
         [ConditionalAntiForgeryToken]
         [ExcludeDemoMode]
-        public ActionResult EntryAdd_Partial(AddModel model) {
+        public async Task<ActionResult> EntryAdd_Partial(AddModel model) {
             if (!ModelState.IsValid)
                 return PartialView(model);
 
             using (BlogEntryDataProvider dataProvider = new BlogEntryDataProvider()) {
-                if (!dataProvider.AddItem(model.GetData())) {
+                if (!await dataProvider.AddItemAsync(model.GetData())) {
                     ModelState.AddModelError("Name", this.__ResStr("alreadyExists", "An error occurred adding this new blog entry"));
                     return PartialView(model);
                 }

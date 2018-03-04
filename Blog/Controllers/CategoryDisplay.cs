@@ -1,6 +1,7 @@
 /* Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Blog#License */
 
 using System;
+using System.Threading.Tasks;
 using YetaWF.Core.Controllers;
 using YetaWF.Core.Localize;
 using YetaWF.Core.Models;
@@ -63,9 +64,9 @@ namespace YetaWF.Modules.Blog.Controllers {
         }
 
         [AllowGet]
-        public ActionResult CategoryDisplay(int blogCategory) {
+        public async Task<ActionResult> CategoryDisplay(int blogCategory) {
             using (BlogCategoryDataProvider dataProvider = new BlogCategoryDataProvider()) {
-                BlogCategory data = dataProvider.GetItem(blogCategory);
+                BlogCategory data = await dataProvider.GetItemAsync(blogCategory);
                 if (data == null)
                     throw new Error(this.__ResStr("notFound", "Blog category with id {0} not found."), blogCategory);
                 DisplayModel model = new DisplayModel();

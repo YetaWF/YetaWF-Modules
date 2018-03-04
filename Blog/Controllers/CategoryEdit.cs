@@ -1,5 +1,6 @@
 /* Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Blog#License */
 
+using System.Threading.Tasks;
 using YetaWF.Core;
 using YetaWF.Core.Controllers;
 using YetaWF.Core.DataProvider;
@@ -70,10 +71,10 @@ namespace YetaWF.Modules.Blog.Controllers {
         }
 
         [AllowGet]
-        public ActionResult CategoryEdit(int blogCategory) {
+        public async Task<ActionResult> CategoryEdit(int blogCategory) {
             using (BlogCategoryDataProvider dataProvider = new BlogCategoryDataProvider()) {
                 EditModel model = new EditModel { };
-                BlogCategory data = dataProvider.GetItem(blogCategory);
+                BlogCategory data = await dataProvider.GetItemAsync(blogCategory);
                 if (data == null)
                     throw new Error(this.__ResStr("notFound", "Blog category with id {0} not found."), blogCategory);
                 model.SetData(data);
@@ -85,12 +86,12 @@ namespace YetaWF.Modules.Blog.Controllers {
         [AllowPost]
         [ConditionalAntiForgeryToken]
         [ExcludeDemoMode]
-        public ActionResult CategoryEdit_Partial(EditModel model) {
+        public async Task<ActionResult> CategoryEdit_Partial(EditModel model) {
             int originalCategory = model.Identity;
 
             using (BlogCategoryDataProvider dataProvider = new BlogCategoryDataProvider()) {
                 // get the original item
-                BlogCategory data = dataProvider.GetItem(originalCategory);
+                BlogCategory data = await dataProvider.GetItemAsync(originalCategory);
                 if (data == null)
                     ModelState.AddModelError("Category", this.__ResStr("alreadyDeletedId", "The blog category with id {0} has been removed and can no longer be updated.", originalCategory));
 
@@ -101,7 +102,7 @@ namespace YetaWF.Modules.Blog.Controllers {
                 data = model.GetData(data); // merge new data into original
                 model.SetData(data); // and all the data back into model for final display
 
-                switch (dataProvider.UpdateItem(data)) {
+                switch (await dataProvider.UpdateItemAsync(data)) {
                     default:
                     case UpdateStatusEnum.RecordDeleted:
                         ModelState.AddModelError("Name", this.__ResStr("alreadyDeleted", "The blog category named \"{0}\" has been removed and can no longer be updated.", model.Category.ToString()));

@@ -73,7 +73,7 @@ namespace YetaWF.Modules.Blog.DataProvider {
 
         private IDataProvider<int, DisqusConfigData> DataProvider { get { return GetDataProvider(); } }
 
-        private IDataProvider<int, DisqusConfigData> CreateDataProvider() {
+        private IDataProvider<int, DisqusConfigData> CreateDataProvider() {//$$$$
             Package package = YetaWF.Modules.Blog.Controllers.AreaRegistration.CurrentPackage;
             return MakeDataProvider(package, package.AreaName + "_DisqusConfig", SiteIdentity: SiteIdentity, Cacheable: true);
         }

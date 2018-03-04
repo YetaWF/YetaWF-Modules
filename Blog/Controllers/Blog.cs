@@ -3,6 +3,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using YetaWF.Core.Controllers;
 using YetaWF.Core.DataProvider;
 using YetaWF.Core.Models;
@@ -57,7 +58,7 @@ namespace YetaWF.Modules.Blog.Controllers {
 
             public Entry(BlogEntry data, EntryEditModule editMod, EntryDisplayModule dispMod) {
                 ObjectSupport.CopyData(data, this);
-                ViewAction = dispMod.GetAction_Display(data.Identity, ReadMore: data.Summary != data.Text);
+                ViewAction = dispMod.GetAction_DisplayAsync(data.Identity, ReadMore: data.Summary != data.Text).Result;//$$$$
                 Actions = new List<ModuleAction>();
                 Actions.New(editMod.GetAction_Edit(null, data.Identity));
             }
@@ -70,10 +71,10 @@ namespace YetaWF.Modules.Blog.Controllers {
         }
 
         [AllowGet]
-        public ActionResult Blog(DateTime? StartDate = null) {
+        public async Task<ActionResult> Blog(DateTime? StartDate = null) {
             int category;
             Manager.TryGetUrlArg<int>("BlogCategory", out category);
-            BlogConfigData config = BlogConfigDataProvider.GetConfig();
+            BlogConfigData config = await BlogConfigDataProvider.GetConfigAsync();
             using (BlogEntryDataProvider dataProvider = new BlogEntryDataProvider()) {
                 List<DataProviderSortInfo> sort = new List<DataProviderSortInfo> {
                     new DataProviderSortInfo { Field = "DatePublished", Order = DataProviderSortInfo.SortDirection.Descending },
@@ -91,9 +92,8 @@ namespace YetaWF.Modules.Blog.Controllers {
                     else
                         sdShown = DateTime.MaxValue;
                 }
-                int total;
-                List<BlogEntry> data = dataProvider.GetItems(0, config.Entries, sort, filters, out total);
-                if (data.Count == 0)
+                DataProviderGetRecords<BlogEntry> data = await dataProvider.GetItemsAsync(0, config.Entries, sort, filters);
+                if (data.Data.Count == 0)
                     return new EmptyResult();
 
                 string rssUrl = string.IsNullOrWhiteSpace(config.FeedMainUrl) ? Manager.CurrentSite.HomePageUrl : config.FeedMainUrl;
@@ -102,7 +102,7 @@ namespace YetaWF.Modules.Blog.Controllers {
                 EntryEditModule editMod = new EntryEditModule();
                 EntryDisplayModule dispMod = new EntryDisplayModule();
                 DisplayModel model = new DisplayModel() {
-                    BlogEntries = (from d in data select new Entry(d, editMod, dispMod)).ToList(),
+                    BlogEntries = (from d in data.Data select new Entry(d, editMod, dispMod)).ToList(),
                     CategoryIdentity = category,
                     StartDate = sdShown == DateTime.MaxValue ? null : (DateTime?) sdShown,
                 };

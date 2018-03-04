@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using YetaWF.Core;
 using YetaWF.Core.DataProvider;
 using YetaWF.Core.DataProvider.Attributes;
@@ -12,6 +13,7 @@ using YetaWF.Core.Packages;
 using YetaWF.Core.Support;
 
 namespace YetaWF.Modules.Blog.DataProvider {
+
     public class BlogCategory {
 
         public enum ApprovalType {
@@ -54,7 +56,7 @@ namespace YetaWF.Modules.Blog.DataProvider {
         }
     }
 
-    public class BlogCategoryDataProvider : DataProviderImpl, IInstallableModel {
+    public class BlogCategoryDataProvider : DataProviderImpl, IInstallableModelAsync {
 
         // IMPLEMENTATION
         // IMPLEMENTATION
@@ -63,9 +65,9 @@ namespace YetaWF.Modules.Blog.DataProvider {
         public BlogCategoryDataProvider() : base(YetaWFManager.Manager.CurrentSite.Identity) { SetDataProvider(CreateDataProvider()); }
         public BlogCategoryDataProvider(int siteIdentity) : base(siteIdentity) { SetDataProvider(CreateDataProvider()); }
 
-        private IDataProvider<int, BlogCategory> DataProvider { get { return GetDataProvider(); } }
+        private IDataProviderAsync<int, BlogCategory> DataProvider { get { return GetDataProvider(); } }
 
-        private IDataProvider<int, BlogCategory> CreateDataProvider() {
+        private IDataProviderAsync<int, BlogCategory> CreateDataProvider() {
             Package package = YetaWF.Modules.Blog.Controllers.AreaRegistration.CurrentPackage;
             return MakeDataProvider(package, package.AreaName + "_Categories", SiteIdentity: SiteIdentity, Cacheable: true);
         }
@@ -74,26 +76,26 @@ namespace YetaWF.Modules.Blog.DataProvider {
         // API
         // API
 
-        public BlogCategory GetItem(int identity) {
-            return DataProvider.Get(identity);
+        public Task<BlogCategory> GetItemAsync(int identity) {
+            return DataProvider.GetAsync(identity);
         }
-        public bool AddItem(BlogCategory data) {
+        public Task<bool> AddItemAsync(BlogCategory data) {
             data.DateCreated = DateTime.UtcNow;
-            return DataProvider.Add(data);
+            return DataProvider.AddAsync(data);
         }
-        public UpdateStatusEnum UpdateItem(BlogCategory data) {
-            return DataProvider.Update(data.Identity, data.Identity, data);
+        public Task<UpdateStatusEnum> UpdateItemAsync(BlogCategory data) {
+            return DataProvider.UpdateAsync(data.Identity, data.Identity, data);
         }
-        public bool RemoveItem(int identity) {
-            if (!DataProvider.Remove(identity))
+        public async Task<bool> RemoveItemAsync(int identity) {
+            if (! await DataProvider.RemoveAsync(identity))
                 return false;
             using (BlogEntryDataProvider entryDP = new BlogEntryDataProvider()) {
-                entryDP.RemoveEntries(identity);// remove all entries for this category
+                await entryDP.RemoveEntriesAsync(identity);// remove all entries for this category
             }
             return true;
         }
-        public List<BlogCategory> GetItems(int skip, int take, List<DataProviderSortInfo> sort, List<DataProviderFilterInfo> filters, out int total) {
-            return DataProvider.GetRecords(skip, take, sort, filters, out total);
+        public Task<DataProviderGetRecords<BlogCategory>> GetItemsAsync(int skip, int take, List<DataProviderSortInfo> sort, List<DataProviderFilterInfo> filters) {
+            return DataProvider.GetRecordsAsync(skip, take, sort, filters);
         }
     }
 }

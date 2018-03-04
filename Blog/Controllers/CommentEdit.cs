@@ -1,6 +1,7 @@
 /* Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Blog#License */
 
 using System;
+using System.Threading.Tasks;
 using YetaWF.Core;
 using YetaWF.Core.Controllers;
 using YetaWF.Core.DataProvider;
@@ -71,17 +72,17 @@ namespace YetaWF.Modules.Blog.Controllers {
             [AdditionalMetadata("TextAreaSave", false), AdditionalMetadata("RestrictedHtml", true)]
             public string Comment { get; set; }
 
-            public BlogComment GetData(BlogComment data) {
+            internal BlogComment GetData(BlogComment data) {
                 ObjectSupport.CopyData(this, data);
                 return data;
             }
 
-            public void SetData(BlogComment data) {
+            internal Task SetData(BlogComment data) {
                 ObjectSupport.CopyData(data, this);
-                UpdateData();
+                return UpdateDataAsync();
             }
-            internal void UpdateData() {
-                BlogConfigData config = BlogConfigDataProvider.GetConfig();
+            internal async Task UpdateDataAsync() {
+                BlogConfigData config = await BlogConfigDataProvider.GetConfigAsync();
                 GravatarsEnabled = config.ShowGravatar;
             }
             public EditModel() { }
@@ -89,13 +90,13 @@ namespace YetaWF.Modules.Blog.Controllers {
 
         [AllowGet]
         [ResourceAuthorize(Info.Resource_AllowManageComments)]
-        public ActionResult CommentEdit(int blogEntry, int comment) {
+        public async Task<ActionResult> CommentEdit(int blogEntry, int comment) {
             using (BlogCommentDataProvider dataProvider = new BlogCommentDataProvider(blogEntry)) {
                 EditModel model = new EditModel { };
-                BlogComment data = dataProvider.GetItem(comment);
+                BlogComment data = await dataProvider.GetItemAsync(comment);
                 if (data == null)
                     throw new Error(this.__ResStr("notFound", "Comment entry with id {0} not found."), comment);
-                model.SetData(data);
+                await model.SetData(data);
                 Module.Title = data.Title;
                 return View(model);
             }
@@ -105,10 +106,10 @@ namespace YetaWF.Modules.Blog.Controllers {
         [ConditionalAntiForgeryToken]
         [ResourceAuthorize(Info.Resource_AllowManageComments)]
         [ExcludeDemoMode]
-        public ActionResult CommentEdit_Partial(EditModel model) {
-            model.UpdateData();
+        public async Task<ActionResult> CommentEdit_Partial(EditModel model) {
+            await model.UpdateDataAsync();
             using (BlogCommentDataProvider dataProvider = new BlogCommentDataProvider(model.EntryIdentity)) {
-                BlogComment data = dataProvider.GetItem(model.Identity);
+                BlogComment data = await dataProvider.GetItemAsync(model.Identity);
                 if (data == null)
                     ModelState.AddModelError("", this.__ResStr("alreadyDeleted", "The comment entry with id {0} has been removed and can no longer be updated", model.Identity));
                 if (!ModelState.IsValid)
@@ -116,9 +117,9 @@ namespace YetaWF.Modules.Blog.Controllers {
 
                 // save updated item
                 data = model.GetData(data); // merge new data into original
-                model.SetData(data); // and all the data back into model for final display
+                await model.SetData(data); // and all the data back into model for final display
 
-                switch (dataProvider.UpdateItem(data)) {
+                switch (await dataProvider.UpdateItemAsync(data)) {
                     default:
                     case UpdateStatusEnum.RecordDeleted:
                         ModelState.AddModelError("Name", this.__ResStr("alreadyDeleted", "The comment entry with id {0} has been removed and can no longer be updated", model.Identity));

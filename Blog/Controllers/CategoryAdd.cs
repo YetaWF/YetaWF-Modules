@@ -1,5 +1,6 @@
 /* Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Blog#License */
 
+using System.Threading.Tasks;
 using YetaWF.Core;
 using YetaWF.Core.Controllers;
 using YetaWF.Core.Localize;
@@ -71,12 +72,12 @@ namespace YetaWF.Modules.Blog.Controllers {
         [AllowPost]
         [ConditionalAntiForgeryToken]
         [ExcludeDemoMode]
-        public ActionResult CategoryAdd_Partial(AddModel model) {
+        public async Task<ActionResult> CategoryAdd_Partial(AddModel model) {
             if (!ModelState.IsValid)
                 return PartialView(model);
 
             using (BlogCategoryDataProvider dataProvider = new BlogCategoryDataProvider()) {
-                if (!dataProvider.AddItem(model.GetData())) {
+                if (!await dataProvider.AddItemAsync(model.GetData())) {
                     ModelState.AddModelError("Name", this.__ResStr("alreadyExists", "A blog category named \"{0}\" already exists.", model.Category));
                     return PartialView(model);
                 }
