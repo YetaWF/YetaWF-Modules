@@ -1,5 +1,6 @@
 /* Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/CurrencyConverter#License */
 
+using System.Threading.Tasks;
 using YetaWF.Core.Controllers;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Serializers;
@@ -28,10 +29,10 @@ namespace YetaWF.Modules.CurrencyConverter.Controllers {
         }
 
         [AllowGet]
-        public ActionResult CurrencyConverter(decimal? amount) {
+        public async Task<ActionResult> CurrencyConverter(decimal? amount) {
             decimal specificAmount = (amount == null) ? Module.DefaultAmount : (decimal) amount;
             using (ExchangeRateDataProvider dp = new ExchangeRateDataProvider()) {
-                ExchangeRateData data = dp.GetItem();
+                ExchangeRateData data = await dp.GetItemAsync();
                 Model model = new Model() {
                     Rates = data.Rates,
                     FromCountry = Module.FromCountry,

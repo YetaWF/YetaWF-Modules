@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using YetaWF.Core;
 using YetaWF.Core.DataProvider;
 using YetaWF.Core.DataProvider.Attributes;
@@ -46,9 +47,9 @@ namespace YetaWF.Modules.Feedback.DataProvider {
         public FeedbackDataProvider() : base(YetaWFManager.Manager.CurrentSite.Identity) { SetDataProvider(CreateDataProvider()); }
         public FeedbackDataProvider(int siteIdentity) : base(siteIdentity) { SetDataProvider(CreateDataProvider()); }
 
-        private IDataProvider<int, FeedbackData> DataProvider { get { return GetDataProvider(); } }
+        private IDataProviderAsync<int, FeedbackData> DataProvider { get { return GetDataProvider(); } }
 
-        private IDataProvider<int, FeedbackData> CreateDataProvider() {
+        private IDataProviderAsync<int, FeedbackData> CreateDataProvider() {
             Package package = YetaWF.Modules.Feedback.Controllers.AreaRegistration.CurrentPackage;
             return MakeDataProvider(package, package.AreaName, SiteIdentity: SiteIdentity, Cacheable: true);
         }
@@ -57,29 +58,28 @@ namespace YetaWF.Modules.Feedback.DataProvider {
         // API
         // API
 
-        public FeedbackData GetItem(int key) {
-            return DataProvider.Get(key);
+        public Task<FeedbackData> GetItemAsync(int key) {
+            return DataProvider.GetAsync(key);
         }
-        public bool AddItem(FeedbackData data) {
+        public Task<bool> AddItemAsync(FeedbackData data) {
             data.Created = DateTime.UtcNow;
             data.IPAddress = Manager.UserHostAddress;
-            return DataProvider.Add(data);
+            return DataProvider.AddAsync(data);
         }
-        public UpdateStatusEnum UpdateItem(FeedbackData data) {
-            return DataProvider.Update(data.Key, data.Key, data);
+        public Task<UpdateStatusEnum> UpdateItemAsync(FeedbackData data) {
+            return DataProvider.UpdateAsync(data.Key, data.Key, data);
         }
-        public bool RemoveItem(int key) {
-            return DataProvider.Remove(key);
+        public Task<bool> RemoveItemAsync(int key) {
+            return DataProvider.RemoveAsync(key);
         }
-        public List<FeedbackData> GetItems(List<DataProviderFilterInfo> filters) {
-            int total;
-            return DataProvider.GetRecords(0, 0, null, filters, out total);
+        public Task<DataProviderGetRecords<FeedbackData>> GetItemsAsync(List<DataProviderFilterInfo> filters) {
+            return DataProvider.GetRecordsAsync(0, 0, null, filters);
         }
-        public List<FeedbackData> GetItems(int skip, int take, List<DataProviderSortInfo> sort, List<DataProviderFilterInfo> filters, out int total) {
-            return DataProvider.GetRecords(skip, take, sort, filters, out total);
+        public Task<DataProviderGetRecords<FeedbackData>> GetItemsAsync(int skip, int take, List<DataProviderSortInfo> sort, List<DataProviderFilterInfo> filters) {
+            return DataProvider.GetRecordsAsync(skip, take, sort, filters);
         }
-        public int RemoveItems(List<DataProviderFilterInfo> filters) {
-            return DataProvider.RemoveRecords(filters);
+        public Task<int> RemoveItemsAsync(List<DataProviderFilterInfo> filters) {
+            return DataProvider.RemoveRecordsAsync(filters);
         }
     }
 }

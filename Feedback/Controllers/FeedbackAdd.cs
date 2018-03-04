@@ -1,5 +1,6 @@
 /* Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Feedback#License */
 
+using System.Threading.Tasks;
 using YetaWF.Core;
 using YetaWF.Core.Controllers;
 using YetaWF.Core.Localize;
@@ -47,10 +48,7 @@ namespace YetaWF.Modules.Feedback.Controllers {
             public bool ShowCaptcha { get; set; }
 
             public AddModel() {
-                FeedbackConfigData config = FeedbackConfigDataProvider.GetConfig();
                 Captcha = new RecaptchaV2Data() { };
-                RequireEmail = config.RequireEmail;
-                ShowCaptcha = config.Captcha;
             }
 
             public FeedbackData GetData() {
@@ -61,12 +59,15 @@ namespace YetaWF.Modules.Feedback.Controllers {
         }
 
         [AllowGet]
-        public ActionResult FeedbackAdd() {
+        public async Task<ActionResult> FeedbackAdd() {
             AddModel model = new AddModel {
                 Captcha = new RecaptchaV2Data(),
                 Subject = Module.DefaultSubject,
                 Message = Module.DefaultMessage,
             };
+            FeedbackConfigData config = await FeedbackConfigDataProvider.GetConfigAsync();
+            model.RequireEmail = config.RequireEmail;
+            model.ShowCaptcha = config.Captcha;
             return View(model);
         }
 
@@ -74,14 +75,19 @@ namespace YetaWF.Modules.Feedback.Controllers {
         [AllowPost]
         [ConditionalAntiForgeryToken]
         [ExcludeDemoMode]
-        public ActionResult FeedbackAdd_Partial(AddModel model) {
+        public async Task<ActionResult> FeedbackAdd_Partial(AddModel model) {
+
+            FeedbackConfigData config = await FeedbackConfigDataProvider.GetConfigAsync();
+            model.RequireEmail = config.RequireEmail;
+            model.ShowCaptcha = config.Captcha;
+
             if (!ModelState.IsValid)
                 return PartialView(model);
+
             using (FeedbackDataProvider dataProvider = new FeedbackDataProvider()) {
-                if (!dataProvider.AddItem(model.GetData()))
+                if (!await dataProvider.AddItemAsync(model.GetData()))
                     throw new InternalError("Feedback couldn't be sent");
 
-                FeedbackConfigData config = FeedbackConfigDataProvider.GetConfig();
                 Emails emails = new Emails(Manager);
                 emails.SendFeedback(config.Email, model.Email, model.Subject, model.Message, config.BccEmails ? Manager.CurrentSite.AdminEmail : null);
 

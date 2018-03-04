@@ -1,5 +1,6 @@
 /* Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/CurrencyConverter#License */
 
+using System.Threading.Tasks;
 using YetaWF.Core.Controllers;
 using YetaWF.Core.Localize;
 using YetaWF.Core.Models;
@@ -50,10 +51,10 @@ namespace YetaWF.Modules.CurrencyConverter.Controllers {
         }
 
         [AllowGet]
-        public ActionResult Config() {
+        public async Task<ActionResult> Config() {
             using (ConfigDataProvider dataProvider = new ConfigDataProvider()) {
                 Model model = new Model { };
-                ConfigData data = dataProvider.GetItem();
+                ConfigData data = await dataProvider.GetItemAsync();
                 if (data == null)
                     throw new Error(this.__ResStr("notFound", "Currency converter configuration not found."));
                 model.SetData(data);
@@ -64,9 +65,9 @@ namespace YetaWF.Modules.CurrencyConverter.Controllers {
         [AllowPost]
         [ConditionalAntiForgeryToken]
         [ExcludeDemoMode]
-        public ActionResult Config_Partial(Model model) {
+        public async Task<ActionResult> Config_Partial(Model model) {
             using (ConfigDataProvider dataProvider = new ConfigDataProvider()) {
-                ConfigData data = dataProvider.GetItem();// get the original item
+                ConfigData data = await dataProvider.GetItemAsync();// get the original item
                 if (data == null)
                     ModelState.AddModelError("Key", this.__ResStr("alreadyDeleted", "The currency converter configuration has been removed and can no longer be updated."));
 
@@ -76,7 +77,7 @@ namespace YetaWF.Modules.CurrencyConverter.Controllers {
                 data = model.GetData(data); // merge new data into original
                 model.SetData(data); // and all the data back into model for final display
 
-                dataProvider.UpdateConfig(data); // save updated item
+                await dataProvider.UpdateConfigAsync(data); // save updated item
                 return FormProcessed(model, this.__ResStr("okSaved", "Currency converter configuration saved"));
             }
         }

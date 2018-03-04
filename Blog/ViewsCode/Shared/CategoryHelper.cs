@@ -7,6 +7,7 @@ using YetaWF.Core.Localize;
 using YetaWF.Core.Views;
 using YetaWF.Core.Views.Shared;
 using YetaWF.Modules.Blog.DataProvider;
+using System.Threading.Tasks;
 #if MVC6
 using Microsoft.AspNetCore.Html;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -21,9 +22,9 @@ namespace YetaWF.Modules.Blog.Views.Shared {
 
         private static string __ResStr(string name, string defaultValue, params object[] parms) { return ResourceAccess.GetResourceString(typeof(CategoryHelper), name, defaultValue, parms); }
 #if MVC6
-        public static async System.Threading.Tasks.Task<HtmlString> RenderCategoryAsync<TModel>(this IHtmlHelper<TModel> htmlHelper, string name, int model, object HtmlAttributes = null)
+        public static async Task<HtmlString> RenderCategoryAsync<TModel>(this IHtmlHelper<TModel> htmlHelper, string name, int model, object HtmlAttributes = null)
 #else
-        public static HtmlString RenderCategory<TModel>(this HtmlHelper<TModel> htmlHelper, string name, int model, object HtmlAttributes = null)
+        public static async Task<HtmlString> RenderCategoryAsync<TModel>(this HtmlHelper<TModel> htmlHelper, string name, int model, object HtmlAttributes = null)
 #endif
         {
             using (BlogCategoryDataProvider categoryDP = new BlogCategoryDataProvider()) {

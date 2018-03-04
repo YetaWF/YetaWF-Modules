@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Net;
+using System.Threading.Tasks;
 using YetaWF.Core.Addons;
 using YetaWF.Core.DataProvider;
 using YetaWF.Core.DataProvider.Attributes;
@@ -57,9 +58,9 @@ namespace YetaWF.Modules.CurrencyConverter.DataProvider {
 
         public ExchangeRateDataProvider() : base(YetaWFManager.Manager.CurrentSite.Identity) { SetDataProvider(CreateDataProvider()); }
 
-        private IDataProvider<int, ExchangeRateData> DataProvider { get { return GetDataProvider(); } }
+        private IDataProviderAsync<int, ExchangeRateData> DataProvider { get { return GetDataProvider(); } }
 
-        private IDataProvider<int, ExchangeRateData> CreateDataProvider() {
+        private IDataProviderAsync<int, ExchangeRateData> CreateDataProvider() {
             Package package = YetaWF.Modules.CurrencyConverter.Controllers.AreaRegistration.CurrentPackage;
             return MakeDataProvider(package, package.AreaName + "_Data", Cacheable: true);
         }
@@ -68,21 +69,21 @@ namespace YetaWF.Modules.CurrencyConverter.DataProvider {
         // API
         // API
 
-        public ExchangeRateData GetItem() {
-            lock (LockObject) {
-                ExchangeRateData data = DataProvider.Get(KEY);
+        public async Task<ExchangeRateData> GetItemAsync() {
+            //$$lock (LockObject) {
+                ExchangeRateData data = await DataProvider.GetAsync(KEY);
                 if (data != null && data.SaveTime.Add(ExchangeRateData.ExpiresAfter) < DateTime.UtcNow)
                     data = null;
                 if (data != null && !System.IO.File.Exists(GetJSFileName()))
                     data = null;
                 if (data == null)
-                    data = GetExchangeRates();
+                    data = await GetExchangeRatesAsync();
                 return data;
-            }
+            //}
         }
-        private ExchangeRateData GetExchangeRates() {
+        private async Task<ExchangeRateData> GetExchangeRatesAsync() {
 
-            ConfigData config = ConfigDataProvider.GetConfig();
+            ConfigData config = await ConfigDataProvider.GetConfigAsync();
             if (string.IsNullOrWhiteSpace(config.AppID))
                 throw new InternalError("The App ID has not been specified in the Currency Converter Settings (see Admin > Configuration > Currency Converter Settings) - openexchangerates.org requires an app id to be able to retrieve currency exchange rates");
 
@@ -108,15 +109,15 @@ namespace YetaWF.Modules.CurrencyConverter.DataProvider {
                 object currency;
                 if (!currencies.TryGetValue(code, out currency))// replace 3 digit codes by actual name
                     currency = code;
-                decimal val = (decimal) rate.Value;
-                data.Rates.Add(new ExchangeRateEntry { Code = code, CurrencyName = (string) currency, Rate = val });
+                decimal val = (decimal)rate.Value;
+                data.Rates.Add(new ExchangeRateEntry { Code = code, CurrencyName = (string)currency, Rate = val });
             }
             // Save new rates
-            UpdateStatusEnum status = DataProvider.Update(KEY, KEY, data);
+            UpdateStatusEnum status = await DataProvider.UpdateAsync(KEY, KEY, data);
             if (status != UpdateStatusEnum.OK) {
                 if (status != UpdateStatusEnum.RecordDeleted)
                     throw new InternalError("Unexpected status {0}", status);
-                if (!DataProvider.Add(data))
+                if (!await DataProvider.AddAsync(data))
                     throw new InternalError("Unexpected error adding data");
             }
             // Create a javascript file with rates so we can include it in a page
@@ -164,7 +165,7 @@ namespace YetaWF.Modules.CurrencyConverter.DataProvider {
         // IINSTALLABLEMODEL
         // IINSTALLABLEMODEL
 
-        public new bool ExportChunk(int chunk, SerializableList<SerializableFile> fileList, out object obj) { obj = null; return false; }
-        public new void ImportChunk(int chunk, SerializableList<SerializableFile> fileList, object obj) { }
+        public new Task<DataProviderExportChunk> ExportChunkAsync(int chunk, SerializableList<SerializableFile> fileList) { return Task.FromResult(new DataProviderExportChunk { More = false, ObjectList = null }); }
+        public new Task ImportChunkAsync(int chunk, SerializableList<SerializableFile> fileList, object obj) { return Task.CompletedTask; }
     }
 }

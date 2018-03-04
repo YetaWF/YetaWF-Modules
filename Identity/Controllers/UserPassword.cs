@@ -125,7 +125,7 @@ namespace YetaWF.Modules.Identity.Controllers {
             IPasswordValidator<UserDefinition> passVal = (IPasswordValidator<UserDefinition>)YetaWFManager.ServiceProvider.GetService(typeof(IPasswordValidator<UserDefinition>));
             result = await passVal.ValidateAsync(userManager, user, model.NewPassword);
 #else
-            result = userManager.PasswordValidator.ValidateAsync(model.NewPassword).Result;
+            result = userManager.PasswordValidator.ValidateAsync(model.NewPassword).Result;//$$$
 #endif
             if (!result.Succeeded) {
                 foreach (var err in result.Errors) {

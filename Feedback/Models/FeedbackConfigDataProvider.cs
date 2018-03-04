@@ -1,5 +1,6 @@
 ﻿/* Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Feedback#License */
 
+using System.Threading.Tasks;
 using YetaWF.Core;
 using YetaWF.Core.DataProvider;
 using YetaWF.Core.DataProvider.Attributes;
@@ -44,9 +45,9 @@ namespace YetaWF.Modules.Feedback.DataProvider {
         public FeedbackConfigDataProvider() : base(YetaWFManager.Manager.CurrentSite.Identity) { SetDataProvider(CreateDataProvider()); }
         public FeedbackConfigDataProvider(int siteIdentity) : base(siteIdentity) { SetDataProvider(CreateDataProvider()); }
 
-        private IDataProvider<int, FeedbackConfigData> DataProvider { get { return GetDataProvider(); } }
+        private IDataProviderAsync<int, FeedbackConfigData> DataProvider { get { return GetDataProvider(); } }
 
-        private IDataProvider<int, FeedbackConfigData> CreateDataProvider() {
+        private IDataProviderAsync<int, FeedbackConfigData> CreateDataProvider() {
             Package package = YetaWF.Modules.Feedback.Controllers.AreaRegistration.CurrentPackage;
             return MakeDataProvider(package, package.AreaName + "_Config", SiteIdentity: SiteIdentity, Cacheable: true);
         }
@@ -55,32 +56,32 @@ namespace YetaWF.Modules.Feedback.DataProvider {
         // API
         // API
 
-        public static FeedbackConfigData GetConfig() {
+        public static async Task<FeedbackConfigData> GetConfigAsync() {
             using (FeedbackConfigDataProvider configDP = new FeedbackConfigDataProvider()) {
-                return configDP.GetItem();
+                return await configDP.GetItemAsync();
             }
         }
-        public FeedbackConfigData GetItem() {
-            FeedbackConfigData config = DataProvider.Get(KEY);
+        public async Task<FeedbackConfigData> GetItemAsync() {
+            FeedbackConfigData config = await DataProvider.GetAsync(KEY);
             if (config == null) {
-                lock (_lockObject) {
-                    config = DataProvider.Get(KEY);
+                //$$lock (_lockObject) {
+                    config = await DataProvider.GetAsync(KEY);
                     if (config == null) {
                         config = new FeedbackConfigData();
-                        AddConfig(config);
+                        await AddConfigAsync(config);
                     }
-                }
+                //}
             }
             return config;
         }
-        private void AddConfig(FeedbackConfigData data) {
+        private async Task AddConfigAsync(FeedbackConfigData data) {
             data.Id = KEY;
-            if (!DataProvider.Add(data))
+            if (!await DataProvider.AddAsync(data))
                 throw new InternalError("Unexpected error adding settings");
         }
-        public void UpdateConfig(FeedbackConfigData data) {
+        public async Task UpdateConfigAsync(FeedbackConfigData data) {
             data.Id = KEY;
-            UpdateStatusEnum status = DataProvider.Update(data.Id, data.Id, data);
+            UpdateStatusEnum status = await DataProvider.UpdateAsync(data.Id, data.Id, data);
             if (status != UpdateStatusEnum.OK)
                 throw new InternalError("Unexpected error saving configuration {0}", status);
         }

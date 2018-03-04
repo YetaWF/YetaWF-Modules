@@ -1,5 +1,6 @@
 /* Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Feedback#License */
 
+using System.Threading.Tasks;
 using System;
 using YetaWF.Core.Controllers;
 using YetaWF.Core.Localize;
@@ -47,9 +48,9 @@ namespace YetaWF.Modules.Feedback.Controllers {
         }
 
         [AllowGet]
-        public ActionResult FeedbackDisplay(int key) {
+        public async Task<ActionResult> FeedbackDisplay(int key) {
             using (FeedbackDataProvider dataProvider = new FeedbackDataProvider()) {
-                FeedbackData data = dataProvider.GetItem(key);
+                FeedbackData data = await dataProvider.GetItemAsync(key);
                 if (data == null)
                     throw new Error(this.__ResStr("notFound", "Feedback \"{0}\" not found."), key);
                 DisplayModel model = new DisplayModel();

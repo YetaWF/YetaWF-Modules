@@ -1,5 +1,6 @@
 ﻿/* Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/CurrencyConverter#License */
 
+using System.Threading.Tasks;
 using YetaWF.Core.DataProvider;
 using YetaWF.Core.DataProvider.Attributes;
 using YetaWF.Core.IO;
@@ -35,9 +36,9 @@ namespace YetaWF.Modules.CurrencyConverter.DataProvider {
         public ConfigDataProvider() : base(YetaWFManager.Manager.CurrentSite.Identity) { SetDataProvider(CreateDataProvider()); }
         public ConfigDataProvider(int siteIdentity) : base(0) { }
 
-        private IDataProvider<int, ConfigData> DataProvider { get { return GetDataProvider(); } }
+        private IDataProviderAsync<int, ConfigData> DataProvider { get { return GetDataProvider(); } }
 
-        private IDataProvider<int, ConfigData> CreateDataProvider() {
+        private IDataProviderAsync<int, ConfigData> CreateDataProvider() {
             Package package = YetaWF.Modules.CurrencyConverter.Controllers.AreaRegistration.CurrentPackage;
             return MakeDataProvider(package, package.AreaName, Cacheable: true);
         }
@@ -46,36 +47,36 @@ namespace YetaWF.Modules.CurrencyConverter.DataProvider {
         // API
         // API
 
-        public static ConfigData GetConfig() {
+        public static async Task<ConfigData> GetConfigAsync() {
             using (ConfigDataProvider configDP = new ConfigDataProvider()) {
-                return configDP.GetItem();
+                return await configDP.GetItemAsync();
             }
         }
-        public ConfigData GetItem() {
-            ConfigData config = DataProvider.Get(KEY);
+        public async Task<ConfigData> GetItemAsync() {
+            ConfigData config = await DataProvider.GetAsync(KEY);
             if (config == null) {
-                lock (_lockObject) {
-                    config = DataProvider.Get(KEY);
-                    if (config == null) {
-                        config = new ConfigData() {
-                            Id = KEY,
-                            AppID = "",
-                            UseHttps = false,
-                        };
-                        AddConfig(config);
-                    }
+                //$$lock (_lockObject) {
+                config = await DataProvider.GetAsync(KEY);
+                if (config == null) {
+                    config = new ConfigData() {
+                        Id = KEY,
+                        AppID = "",
+                        UseHttps = false,
+                    };
+                    await AddConfigAsync(config);
                 }
+                //}
             }
             return config;
         }
-        private void AddConfig(ConfigData data) {
+        private async Task AddConfigAsync(ConfigData data) {
             data.Id = KEY;
-            if (!DataProvider.Add(data))
+            if (!await DataProvider.AddAsync(data))
                 throw new InternalError("Unexpected error adding currency converter settings");
         }
-        public void UpdateConfig(ConfigData data) {
+        public async Task UpdateConfigAsync(ConfigData data) {
             data.Id = KEY;
-            UpdateStatusEnum status = DataProvider.Update(data.Id, data.Id, data);
+            UpdateStatusEnum status = await DataProvider.UpdateAsync(data.Id, data.Id, data);
             if (status != UpdateStatusEnum.OK)
                 throw new InternalError("Unexpected error saving currency converter configuration {0}", status);
         }
