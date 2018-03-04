@@ -1,6 +1,7 @@
 ﻿/* Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Backups#License */
 
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using YetaWF.Core.Localize;
 using YetaWF.Core.Packages;
 using YetaWF.Core.Scheduler;
@@ -18,12 +19,12 @@ namespace YetaWF.Modules.Backups.Scheduler {
             if (evnt.EventName == EventCreateBackup) {
                 SiteBackup siteBackup = new SiteBackup();
                 List<string> errorList = new List<string>();
-                ConfigData config = ConfigDataProvider.GetConfig();
+                ConfigData config = ConfigDataProvider.GetConfigAsync().Result;
                 siteBackup.Create(errorList, DataOnly: config.DataOnly);
             } else if (evnt.EventName == EventRemoveOldBackups) {
                 SiteBackup siteBackup = new SiteBackup();
                 List<string> errorList = new List<string>();
-                ConfigData config = ConfigDataProvider.GetConfig();
+                ConfigData config = ConfigDataProvider.GetConfigAsync().Result;
                 siteBackup.RemoveOldBackups(errorList, config.Days);
             } else
                 throw new Error(this.__ResStr("eventNameErr", "Unknown scheduler event {0}"), evnt.EventName);

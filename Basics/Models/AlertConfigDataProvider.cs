@@ -1,5 +1,6 @@
 ﻿/* Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Basics#License */
 
+using System.Threading.Tasks;
 using YetaWF.Core.DataProvider;
 using YetaWF.Core.DataProvider.Attributes;
 using YetaWF.Core.IO;
@@ -62,9 +63,9 @@ namespace YetaWF.Modules.Basics.DataProvider {
         public AlertConfigDataProvider() : base(YetaWFManager.Manager.CurrentSite.Identity) { SetDataProvider(CreateDataProvider()); }
         public AlertConfigDataProvider(int siteIdentity) : base(siteIdentity) { SetDataProvider(CreateDataProvider()); }
 
-        private IDataProvider<int, AlertConfig> DataProvider { get { return GetDataProvider(); } }
+        private IDataProviderAsync<int, AlertConfig> DataProvider { get { return GetDataProvider(); } }
 
-        private IDataProvider<int, AlertConfig> CreateDataProvider() {
+        private IDataProviderAsync<int, AlertConfig> CreateDataProvider() {
             Package package = YetaWF.Modules.Basics.Controllers.AreaRegistration.CurrentPackage;
             return MakeDataProvider(package, package.AreaName + "_AlertConfig", SiteIdentity: SiteIdentity, Cacheable: true);
         }
@@ -73,32 +74,32 @@ namespace YetaWF.Modules.Basics.DataProvider {
         // API
         // API
 
-        public static AlertConfig GetConfig() {
+        public static async Task<AlertConfig> GetConfig() {
             using (AlertConfigDataProvider configDP = new AlertConfigDataProvider()) {
-                return configDP.GetItem();
+                return await configDP.GetItemAsync();
             }
         }
-        public AlertConfig GetItem() {
-            AlertConfig config = DataProvider.Get(KEY);
+        public async Task<AlertConfig> GetItemAsync() {
+            AlertConfig config = await DataProvider.GetAsync(KEY);
             if (config == null) {
-                lock (_lockObject) {
-                    config = DataProvider.Get(KEY);
+                //$$lock (_lockObject) {
+                    config = await DataProvider.GetAsync(KEY);
                     if (config == null) {
                         config = new AlertConfig();
-                        AddConfig(config);
+                        await AddConfigAsync(config);
                     }
-                }
+                //}
             }
             return config;
         }
-        private void AddConfig(AlertConfig data) {
+        private async Task AddConfigAsync(AlertConfig data) {
             data.Id = KEY;
-            if (!DataProvider.Add(data))
+            if (!await DataProvider.AddAsync(data))
                 throw new InternalError("Unexpected error adding settings");
         }
-        public void UpdateConfig(AlertConfig data) {
+        public async Task UpdateConfigAsync(AlertConfig data) {
             data.Id = KEY;
-            UpdateStatusEnum status = DataProvider.Update(data.Id, data.Id, data);
+            UpdateStatusEnum status = await DataProvider.UpdateAsync(data.Id, data.Id, data);
             if (status != UpdateStatusEnum.OK)
                 throw new InternalError("Unexpected error saving configuration {0}", status);
         }

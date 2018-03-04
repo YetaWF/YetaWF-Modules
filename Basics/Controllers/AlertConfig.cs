@@ -6,6 +6,7 @@ using YetaWF.Core.Models;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Support;
 using YetaWF.Modules.Basics.DataProvider;
+using System.Threading.Tasks;
 #if MVC6
 using Microsoft.AspNetCore.Mvc;
 #else
@@ -45,10 +46,10 @@ namespace YetaWF.Modules.Basics.Controllers {
         }
 
         [AllowGet]
-        public ActionResult AlertConfig() {
+        public async Task<ActionResult> AlertConfig() {
             using (AlertConfigDataProvider dataProvider = new AlertConfigDataProvider()) {
                 Model model = new Model { };
-                AlertConfig data = dataProvider.GetItem();
+                AlertConfig data = await dataProvider.GetItemAsync();
                 if (data == null)
                     throw new Error(this.__ResStr("notFound", "The Alert settings could not be found"));
                 model.SetData(data);
@@ -59,14 +60,14 @@ namespace YetaWF.Modules.Basics.Controllers {
         [AllowPost]
         [ConditionalAntiForgeryToken]
         [ExcludeDemoMode]
-        public ActionResult AlertConfig_Partial(Model model) {
+        public async Task<ActionResult> AlertConfig_Partial(Model model) {
             using (AlertConfigDataProvider dataProvider = new AlertConfigDataProvider()) {
-                AlertConfig data = dataProvider.GetItem();// get the original item
+                AlertConfig data = await dataProvider.GetItemAsync();// get the original item
                 if (!ModelState.IsValid)
                     return PartialView(model);
                 data = model.GetData(data); // merge new data into original
                 model.SetData(data); // and all the data back into model for final display
-                dataProvider.UpdateConfig(data);
+                await dataProvider.UpdateConfigAsync(data);
                 return FormProcessed(model, this.__ResStr("okSaved", "Alert settings saved"), NextPage: Manager.ReturnToUrl);
             }
         }

@@ -6,6 +6,7 @@ using YetaWF.Core.Models;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Views.Shared;
 using YetaWF.Modules.Basics.DataProvider;
+using System.Threading.Tasks;
 #if MVC6
 using Microsoft.AspNetCore.Mvc;
 #else
@@ -55,10 +56,10 @@ namespace YetaWF.Modules.Basics.Controllers {
         }
 
         [AllowGet]
-        public ActionResult RecaptchaConfig() {
+        public async System.Threading.Tasks.Task<ActionResult> RecaptchaConfig() {
             using (RecaptchaConfigDataProvider dataProvider = new RecaptchaConfigDataProvider()) {
                 EditModel model = new EditModel { };
-                RecaptchaConfig data = dataProvider.GetItem();
+                RecaptchaConfig data = await dataProvider.GetItemAsync();
                 model.SetData(data);
                 return View(model);
             }
@@ -67,9 +68,9 @@ namespace YetaWF.Modules.Basics.Controllers {
         [AllowPost]
         [ConditionalAntiForgeryToken]
         [ExcludeDemoMode]
-        public ActionResult RecaptchaConfig_Partial(EditModel model) {
+        public async Task<ActionResult> RecaptchaConfig_Partial(EditModel model) {
             using (RecaptchaConfigDataProvider dataProvider = new RecaptchaConfigDataProvider()) {
-                RecaptchaConfig data = dataProvider.GetItem();// get the original item
+                RecaptchaConfig data = await dataProvider.GetItemAsync();// get the original item
 
                 if (!ModelState.IsValid)
                     return PartialView(model);
@@ -77,7 +78,7 @@ namespace YetaWF.Modules.Basics.Controllers {
                 ObjectSupport.CopyData(model, data); // merge new data into original
                 model.SetData(data); // and all the data back into model for final display
 
-                dataProvider.UpdateConfig(data);
+                await dataProvider.UpdateConfigAsync(data);
                 return FormProcessed(model, this.__ResStr("okSaved", "Captcha configuration saved"));
             }
         }

@@ -1,5 +1,6 @@
 ﻿/* Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Basics#License */
 
+using System.Threading.Tasks;
 using YetaWF.Core.DataProvider;
 using YetaWF.Core.IO;
 using YetaWF.Core.Packages;
@@ -33,9 +34,9 @@ namespace YetaWF.Modules.Basics.DataProvider {
 
         public RecaptchaConfigDataProvider() : base(0) { SetDataProvider(CreateDataProvider()); }
 
-        private IDataProvider<int, RecaptchaConfig> DataProvider { get { return GetDataProvider(); } }
+        private IDataProviderAsync<int, RecaptchaConfig> DataProvider { get { return GetDataProvider(); } }
 
-        private IDataProvider<int, RecaptchaConfig> CreateDataProvider() {
+        private IDataProviderAsync<int, RecaptchaConfig> CreateDataProvider() {
             Package package = YetaWF.Modules.Basics.Controllers.AreaRegistration.CurrentPackage;
             return MakeDataProvider(package, package.AreaName, Cacheable: true);
         }
@@ -44,45 +45,45 @@ namespace YetaWF.Modules.Basics.DataProvider {
         // API
         // API
 
-        public static RecaptchaConfig GetConfig() {
+        public static async Task<RecaptchaConfig> GetConfigAsync() {
             using (RecaptchaConfigDataProvider configDP = new RecaptchaConfigDataProvider()) {
-                return configDP.GetItem();
+                return await configDP.GetItemAsync();
             }
         }
-        public RecaptchaConfig GetItem() {
-            RecaptchaConfig config = DataProvider.Get(KEY);
+        public async Task<RecaptchaConfig> GetItemAsync() {
+            RecaptchaConfig config = await DataProvider.GetAsync(KEY);
             if (config == null) {
-                lock (_lockObject) {
-                    config = DataProvider.Get(KEY);
-                    if (config == null) {
-                        config = new RecaptchaConfig();
-                        AddConfig(config);
-                    }
+                //$$lock (_lockObject) {
+                config = await DataProvider.GetAsync(KEY);
+                if (config == null) {
+                    config = new RecaptchaConfig();
+                    await AddConfigAsync(config);
                 }
+                //}
             }
             return config;
         }
-        public void AddConfig(RecaptchaConfig data) {
+        public async Task AddConfigAsync(RecaptchaConfig data) {
             data.Key = KEY;
-            if (!DataProvider.Add(data))
+            if (!await DataProvider.AddAsync(data))
                 throw new InternalError("Unexpected error adding recaptcha settings");
         }
-        public void UpdateConfig(RecaptchaConfig data) {
+        public async Task UpdateConfigAsync(RecaptchaConfig data) {
             data.Key = KEY;
-            UpdateStatusEnum status = DataProvider.Update(data.Key, data.Key, data);
+            UpdateStatusEnum status = await DataProvider.UpdateAsync(data.Key, data.Key, data);
             if (status != UpdateStatusEnum.OK)
                 throw new InternalError("Can't save captcha configuration {0}", status);
         }
 
-        internal static RecaptchaConfig LoadRecaptchaConfig() {
+        internal static Task<RecaptchaConfig> LoadRecaptchaConfig() {
             using (RecaptchaConfigDataProvider recaptchaDP = new RecaptchaConfigDataProvider()) {
-                return recaptchaDP.GetItem();
+                return recaptchaDP.GetItemAsync();
             }
         }
 
-        internal static void SaveRecaptchaConfig(RecaptchaConfig config) {
+        internal static Task SaveRecaptchaConfig(RecaptchaConfig config) {
             using (RecaptchaConfigDataProvider recaptchaDP = new RecaptchaConfigDataProvider()) {
-                recaptchaDP.UpdateConfig(config);
+                return recaptchaDP.UpdateConfigAsync(config);
             }
         }
     }

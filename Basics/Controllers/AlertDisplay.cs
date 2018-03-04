@@ -20,7 +20,7 @@ namespace YetaWF.Modules.Basics.Controllers {
         }
 
         [AllowGet]
-        public ActionResult AlertDisplay() {
+        public async System.Threading.Tasks.Task<ActionResult> AlertDisplay() {
             if (Manager.EditMode) return new EmptyResult();
             if (Manager.IsInPopup) return new EmptyResult();
 
@@ -29,7 +29,7 @@ namespace YetaWF.Modules.Basics.Controllers {
 
             using (AlertConfigDataProvider dataProvider = new AlertConfigDataProvider()) {
 
-                AlertConfig config = dataProvider.GetItem();
+                AlertConfig config = await dataProvider.GetItemAsync();
                 if (config == null || !config.Enabled)
                     return new EmptyResult();
 
