@@ -1,5 +1,6 @@
 ﻿/* Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/KeepAlive#License */
 
+using System.Threading.Tasks;
 using YetaWF.Core;
 using YetaWF.Core.DataProvider;
 using YetaWF.Core.DataProvider.Attributes;
@@ -29,7 +30,7 @@ namespace YetaWF.Modules.KeepAlive.DataProvider {
 
         private const int KEY = 1;
 
-        private static object _lockObject = new object();
+        private static AsyncLock _lockObject = new AsyncLock();
 
         // IMPLEMENTATION
         // IMPLEMENTATION
@@ -37,9 +38,9 @@ namespace YetaWF.Modules.KeepAlive.DataProvider {
 
         public KeepAliveConfigDataProvider() : base(0) { SetDataProvider(CreateDataProvider()); }
 
-        private IDataProvider<int, KeepAliveConfigData> DataProvider { get { return GetDataProvider(); } }
+        private IDataProviderAsync<int, KeepAliveConfigData> DataProvider { get { return GetDataProvider(); } }
 
-        private IDataProvider<int, KeepAliveConfigData> CreateDataProvider() {
+        private IDataProviderAsync<int, KeepAliveConfigData> CreateDataProvider() {
             Package package = YetaWF.Modules.KeepAlive.Controllers.AreaRegistration.CurrentPackage;
             return MakeDataProvider(package, package.AreaName + "_Config", Cacheable: true);
         }
@@ -48,32 +49,32 @@ namespace YetaWF.Modules.KeepAlive.DataProvider {
         // API
         // API
 
-        public static KeepAliveConfigData GetConfig() {
+        public static async Task<KeepAliveConfigData> GetConfigAsync() {
             using (KeepAliveConfigDataProvider configDP = new KeepAliveConfigDataProvider()) {
-                return configDP.GetItem();
+                return await configDP.GetItemAsync();
             }
         }
-        public KeepAliveConfigData GetItem() {
-            KeepAliveConfigData config = DataProvider.Get(KEY);
+        public async Task<KeepAliveConfigData> GetItemAsync() {
+            KeepAliveConfigData config = await DataProvider.GetAsync(KEY);
             if (config == null) {
-                lock (_lockObject) {
-                    config = DataProvider.Get(KEY);
+                using (await _lockObject.LockAsync()) {
+                    config = await DataProvider.GetAsync(KEY);
                     if (config == null) {
                         config = new KeepAliveConfigData();
-                        AddConfig(config);
+                        await AddConfigAsync(config);
                     }
                 }
             }
             return config;
         }
-        private void AddConfig(KeepAliveConfigData data) {
+        private async Task AddConfigAsync(KeepAliveConfigData data) {
             data.Id = KEY;
-            if (!DataProvider.Add(data))
+            if (!await DataProvider.AddAsync(data))
                 throw new InternalError("Unexpected error adding settings");
         }
-        public void UpdateConfig(KeepAliveConfigData data) {
+        public async Task UpdateConfigAsync(KeepAliveConfigData data) {
             data.Id = KEY;
-            UpdateStatusEnum status = DataProvider.Update(data.Id, data.Id, data);
+            UpdateStatusEnum status = await DataProvider.UpdateAsync(data.Id, data.Id, data);
             if (status != UpdateStatusEnum.OK)
                 throw new InternalError("Unexpected error saving configuration {0}", status);
         }

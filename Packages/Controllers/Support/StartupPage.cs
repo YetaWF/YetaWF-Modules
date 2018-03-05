@@ -1,10 +1,10 @@
 ﻿/* Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Packages#License */
 
+using System.Threading.Tasks;
 using YetaWF.Core.Controllers;
 using YetaWF.Core.Support;
 using YetaWF.Modules.Packages.DataProvider;
 using YetaWF.Core.Site;
-using YetaWF.Core.Models.Attributes;
 #if MVC6
 using Microsoft.AspNetCore.Mvc;
 #else
@@ -32,7 +32,7 @@ namespace YetaWF.Modules.Packages.Controllers {
         }
 
         [AllowPost]
-        public ActionResult Run() {
+        public async Task<ActionResult> Run() {
 
             if (!SiteDefinition.INITIAL_INSTALL || SiteDefinition.INITIAL_INSTALL_ENDED)
                 return NotAuthorized();
@@ -40,7 +40,7 @@ namespace YetaWF.Modules.Packages.Controllers {
             PackagesDataProvider packagesDP = new PackagesDataProvider();
             QueryHelper qh = new QueryHelper();
             qh.Add("From", "Data");
-            packagesDP.InitAll(qh);
+            await packagesDP.InitAllAsync(qh);
 
             return new EmptyResult();
         }

@@ -1,5 +1,6 @@
 ﻿/* Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Menus#License */
 
+using System.Threading.Tasks;
 using YetaWF.Core.Controllers;
 using YetaWF.Core.Menus;
 using YetaWF.Core.Models.Attributes;
@@ -18,13 +19,13 @@ namespace YetaWF.Modules.Menus.Controllers {
     public class MainMenuModuleController : MenuModuleController {
 
         [AllowGet]
-        public ActionResult MainMenu() {
+        public async Task<ActionResult> MainMenu() {
             // add some bootstrap specific classes
             if (Manager.SkinInfo.UsingBootstrap)
                 Module.CssClass = YetaWFManager.CombineCss(Module.CssClass, "navbar-collapse collapse");
             MenuModel model = new MenuModel {
                 Menu = new MenuHelper.MenuData {
-                    MenuList = GetEditMenu(Module),
+                    MenuList = await GetEditMenu(Module),
                     Direction = Module.Direction,
                     Orientation = Module.Orientation,
                     HoverDelay = Module.HoverDelay,
@@ -45,10 +46,10 @@ namespace YetaWF.Modules.Menus.Controllers {
         }
 
         [AllowGet]
-        public ActionResult Menu() {
+        public async Task<ActionResult> Menu() {
             MenuModel model = new MenuModel {
                 Menu = new MenuHelper.MenuData {
-                    MenuList = GetEditMenu(Module),
+                    MenuList = await GetEditMenu(Module),
                     Direction = Module.Direction,
                     Orientation = Module.Orientation,
                     HoverDelay = Module.HoverDelay,
@@ -70,13 +71,13 @@ namespace YetaWF.Modules.Menus.Controllers {
         /// The menu is cached in session settings because it is a costly operation to determine permissions for all entries.
         /// The full menu is only evaluated when switching between edit/view mode, when the user logs on/off or when the menu contents have changed.
         /// </remarks>
-        protected MenuList GetEditMenu(MenuModule module) {
+        protected async Task<MenuList> GetEditMenu(MenuModule module) {
             MenuList.SavedCacheInfo info = MenuList.GetCache(module.ModuleGuid);
             if (info == null || info.EditMode != Manager.EditMode || info.UserId != Manager.UserId || info.MenuVersion != Module.MenuVersion) {
                 info = new MenuList.SavedCacheInfo {
                     EditMode = Manager.EditMode,
                     UserId = Manager.UserId,
-                    Menu = Module.GetMenu().GetUserMenu(),
+                    Menu = (await Module.GetMenuAsync()).GetUserMenu(),
                     MenuVersion = Module.MenuVersion,
                 };
                 MenuList.SetCache(module.ModuleGuid, info);

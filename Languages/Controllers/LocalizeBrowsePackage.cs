@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using YetaWF.Core.Controllers;
 using YetaWF.Core.DataProvider;
 using YetaWF.Core.Localize;
@@ -105,24 +106,24 @@ namespace YetaWF.Modules.Languages.Controllers {
         [AllowPost]
         [Permission("Localize")]
         [ExcludeDemoMode]
-        public ActionResult CreateCustomLocalization(string packageName, string language) {
+        public async Task<ActionResult> CreateCustomLocalization(string packageName, string language) {
             if (Manager.Deployed)
                 throw new InternalError("Can't localize packages on a deployed site");
-            TranslatePackage(packageName, language, LocalizationSupport.Location.CustomResources);
+            await TranslatePackageAsync(packageName, language, LocalizationSupport.Location.CustomResources);
             return FormProcessed(null, popupText: this.__ResStr("custGenerated", "Custom localization resources successfully generated"), OnClose: OnCloseEnum.Nothing);
         }
 
         [AllowPost]
         [Permission("Localize")]
         [ExcludeDemoMode]
-        public ActionResult CreateInstalledLocalization(string packageName, string language) {
+        public async Task<ActionResult> CreateInstalledLocalization(string packageName, string language) {
             if (Manager.Deployed)
                 throw new InternalError("Can't localize packages on a deployed site");
-            TranslatePackage(packageName, language, LocalizationSupport.Location.InstalledResources);
+            await TranslatePackageAsync(packageName, language, LocalizationSupport.Location.InstalledResources);
             return FormProcessed(null, popupText: this.__ResStr("instGenerated", "Installed localization resources successfully generated"), OnClose: OnCloseEnum.Nothing);
         }
 
-        private void TranslatePackage(string packageName, string language, LocalizationSupport.Location resourceType) {
+        private async Task TranslatePackageAsync(string packageName, string language, LocalizationSupport.Location resourceType) {
             Package package = Package.GetPackageFromPackageName(packageName);
             if (resourceType == LocalizationSupport.Location.InstalledResources && language == MultiString.DefaultLanguage)
                 throw new InternalError("Can't save installed resources using the default language {0}", MultiString.DefaultLanguage);
@@ -168,7 +169,7 @@ namespace YetaWF.Modules.Languages.Controllers {
                 }
             }
             // Translate all strings
-            strings = TranslateStrings(language, strings);
+            strings = await TranslateStringsAsync(language, strings);
             // put new strings into localization resource
             int stringIndex = 0, index = 0;
             foreach (LocalizationData locData in allData) {
@@ -213,18 +214,18 @@ namespace YetaWF.Modules.Languages.Controllers {
                 ++index;
             }
         }
-        private List<string> TranslateStrings(string language, List<string> strings) {
-            LocalizeConfigData config = LocalizeConfigDataProvider.GetConfig();
+        private async Task<List<string>> TranslateStringsAsync(string language, List<string> strings) {
+            LocalizeConfigData config = await LocalizeConfigDataProvider.GetConfigAsync();
             if (config.TranslationService == LocalizeConfigData.TranslationServiceEnum.GoogleTranslate) {
                 if (!string.IsNullOrWhiteSpace(config.GoogleTranslateAPIKey) && !string.IsNullOrWhiteSpace(config.GoogleTranslateAppName))
-                    return TranslateStringsUsingGoogle(language, config.GoogleTranslateAPIKey, config.GoogleTranslateAppName, strings);
+                    return await TranslateStringsUsingGoogleAsync(language, config.GoogleTranslateAPIKey, config.GoogleTranslateAppName, strings);
             } else if (config.TranslationService == LocalizeConfigData.TranslationServiceEnum.MicrosoftTranslator) {
                 if (!string.IsNullOrWhiteSpace(config.MSClientKey))
                     return TranslateStringsUsingMicrosoft(language, config.MSClientKey, strings);
             }
             throw new InternalError("No translation API available - Define a translation API using Localization Settings");
         }
-        private List<string> TranslateStringsUsingGoogle(string language, string apiKey, string appName, List<string> strings) {
+        private async Task<List<string>> TranslateStringsUsingGoogleAsync(string language, string apiKey, string appName, List<string> strings) {
             string from = MultiString.GetPrimaryLanguage(MultiString.DefaultLanguage);
             string to = MultiString.GetPrimaryLanguage(language);
             List<string> newStrings = new List<string>();
@@ -235,7 +236,7 @@ namespace YetaWF.Modules.Languages.Controllers {
                     ApiKey = apiKey,
                     ApplicationName = appName,
                 });
-                TranslationsListResponse resp = service.Translations.List(strings.Skip(skip).Take(40).ToList(), to).Execute();
+                TranslationsListResponse resp = await service.Translations.List(strings.Skip(skip).Take(40).ToList(), to).ExecuteAsync();
                 List<string> returnedStrings = (from r in resp.Translations select r.TranslatedText).ToList();
                 returnedStrings = (from r in returnedStrings select YetaWFManager.HtmlDecode(r)).ToList();
                 newStrings.AddRange(returnedStrings);

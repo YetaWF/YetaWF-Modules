@@ -1,5 +1,6 @@
 /* Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/KeepAlive#License */
 
+using System.Threading.Tasks;
 using YetaWF.Core;
 using YetaWF.Core.Controllers;
 using YetaWF.Core.Localize;
@@ -44,10 +45,10 @@ namespace YetaWF.Modules.KeepAlive.Controllers {
         }
 
         [AllowGet]
-        public ActionResult KeepAliveConfig() {
+        public async Task<ActionResult> KeepAliveConfig() {
             using (KeepAliveConfigDataProvider dataProvider = new KeepAliveConfigDataProvider()) {
                 Model model = new Model { };
-                KeepAliveConfigData data = dataProvider.GetItem();
+                KeepAliveConfigData data = await dataProvider.GetItemAsync();
                 if (data == null)
                     throw new Error(this.__ResStr("notFound", "The keep alive settings could not be found"));
                 model.SetData(data);
@@ -58,22 +59,22 @@ namespace YetaWF.Modules.KeepAlive.Controllers {
         [AllowPost]
         [ConditionalAntiForgeryToken]
         [ExcludeDemoMode]
-        public ActionResult KeepAliveConfig_Partial(Model model) {
+        public async Task<ActionResult> KeepAliveConfig_Partial(Model model) {
             using (KeepAliveConfigDataProvider dataProvider = new KeepAliveConfigDataProvider()) {
-                KeepAliveConfigData data = dataProvider.GetItem();// get the original item
+                KeepAliveConfigData data = await dataProvider.GetItemAsync();// get the original item
                 if (!ModelState.IsValid)
                     return PartialView(model);
                 data = model.GetData(data); // merge new data into original
                 model.SetData(data); // and all the data back into model for final display
-                dataProvider.UpdateConfig(data);
+                await dataProvider.UpdateConfigAsync(data);
                 return FormProcessed(model, this.__ResStr("okSaved", "Keep alive settings saved"), NextPage: Manager.ReturnToUrl);
             }
         }
 
         [AllowPost]
-        public ActionResult RunKeepAlive() {
+        public async Task<ActionResult> RunKeepAlive() {
             Scheduler.KeepAlive keepAlive = new Scheduler.KeepAlive();
-            keepAlive.RunKeepAlive(false);
+            await keepAlive.RunKeepAliveAsync(false);
             return Reload(PopupText: this.__ResStr("done", "Site accessed"), Reload: ReloadEnum.ModuleParts);
         }
     }

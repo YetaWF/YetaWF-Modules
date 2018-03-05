@@ -2,6 +2,7 @@
 
 using System;
 using System.Net;
+using System.Threading.Tasks;
 using YetaWF.Core.Localize;
 using YetaWF.Core.Log;
 using YetaWF.Core.Scheduler;
@@ -14,10 +15,10 @@ namespace YetaWF.Modules.KeepAlive.Scheduler {
 
         public const string EventKeepAlive = "YetaWF.KeepAlive: Keep Site Alive";
 
-        public void RunItem(SchedulerItemBase evnt) {
+        public void RunItem(SchedulerItemBase evnt) {//$$$asyncify
             if (evnt.EventName != EventKeepAlive)
                 throw new Error(this.__ResStr("eventNameErr", "Unknown scheduler event {0}."), evnt.EventName);
-            RunKeepAlive(slow: true);
+            RunKeepAliveAsync(slow: true).Wait(); //$$
         }
 
         public SchedulerItemBase[] GetItems() {
@@ -40,9 +41,8 @@ namespace YetaWF.Modules.KeepAlive.Scheduler {
 
         private static DateTime LastRun = DateTime.MinValue;
 
-        public void RunKeepAlive(bool slow)
-        {
-            KeepAliveConfigData config = KeepAliveConfigDataProvider.GetConfig();
+        public async Task RunKeepAliveAsync(bool slow) {
+            KeepAliveConfigData config = await KeepAliveConfigDataProvider.GetConfigAsync();
             if (slow) {
                 if (config.Interval == 0) return;
                 if (DateTime.UtcNow.Subtract(new TimeSpan(0, config.Interval, 0)) <= LastRun) return;

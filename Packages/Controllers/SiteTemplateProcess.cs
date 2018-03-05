@@ -7,6 +7,7 @@ using YetaWF.Core.Controllers;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Views.Shared;
 using YetaWF.Modules.Packages.DataProvider;
+using System.Threading.Tasks;
 #if MVC6
 using Microsoft.AspNetCore.Mvc;
 #else
@@ -49,13 +50,13 @@ namespace YetaWF.Modules.Packages.Controllers {
         [AllowPost]
         [ConditionalAntiForgeryToken]
         [ExcludeDemoMode]
-        public ActionResult SiteTemplateProcess_Partial(EditModel model) {
+        public async Task<ActionResult> SiteTemplateProcess_Partial(EditModel model) {
             model.UpdateData();
             if (!ModelState.IsValid)
                 return PartialView(model);
 
             PackagesDataProvider packagesDP = new PackagesDataProvider();
-            packagesDP.BuildSiteUsingTemplate(model.SiteTemplate);
+            await packagesDP.BuildSiteUsingTemplateAsync(model.SiteTemplate);
             return FormProcessed(model);
         }
     }

@@ -6,6 +6,7 @@ using System.Data.SqlClient;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Threading.Tasks;
 using YetaWF.Core;
 using YetaWF.Core.DataProvider;
 using YetaWF.Core.Identity;
@@ -52,23 +53,23 @@ namespace YetaWF.Modules.Packages.DataProvider {
         /// Builds the current site from the template file
         /// </summary>
         /// <returns></returns>
-        public void BuildSiteUsingTemplate(string template, bool build = true) {
+        public async Task BuildSiteUsingTemplateAsync(string template, bool build = true) {
             Logging.AddLog("Running site template {0}", template);
             // Get the current site menu
             ModuleDefinition menuServices = ModuleDefinition.Load(Manager.CurrentSite.MenuServices, AllowNone: true);
             if (menuServices == null)
                 throw TemplateError("No menu services available - no module has been defined in Site Settings");
-            IModuleMenu iModMenu = (IModuleMenu)menuServices;
+            IModuleMenuAsync iModMenu = (IModuleMenuAsync)menuServices;
             if (iModMenu == null)
-                throw TemplateError("Menu services module doesn't implement IModuleMenu interface");
+                throw TemplateError($"Menu services module doesn't implement {nameof(IModuleMenuAsync)} interface");
 
-            _SiteMenu = iModMenu.GetMenu();
+            _SiteMenu = await iModMenu.GetMenuAsync();
             Manager.SiteCreationTemplateActive = true;
             BuildSite(template, build);
             Manager.SiteCreationTemplateActive = false;
 
             // Save the new site menu
-            iModMenu.SaveMenu(_SiteMenu);
+            await iModMenu.SaveMenuAsync(_SiteMenu);
         }
 
         /// <summary>

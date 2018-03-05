@@ -5,15 +5,13 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading;
+using System.Threading.Tasks;
 using YetaWF.Core.Addons;
-using YetaWF.Core.DataProvider;
-using YetaWF.Core.IO;
 using YetaWF.Core.Localize;
 using YetaWF.Core.Log;
 using YetaWF.Core.Packages;
 using YetaWF.Core.Site;
 using YetaWF.Core.Support;
-using YetaWF.DataProvider;
 
 namespace YetaWF.Modules.Packages.DataProvider {
     // not a real data provider - used to clear/create all package data and initial web pages
@@ -28,21 +26,22 @@ namespace YetaWF.Modules.Packages.DataProvider {
         protected YetaWFManager Manager { get { return YetaWFManager.Manager; } }
 
         public void InitializeApplicationStartup() {
-            BuiltinCommands.Add("/$initall", CoreInfo.Resource_BuiltinCommands, InitAll);
-            BuiltinCommands.Add("/$initnew", CoreInfo.Resource_BuiltinCommands, InitNew);
-            BuiltinCommands.Add("/$restart", CoreInfo.Resource_BuiltinCommands, RestartSite);
-            BuiltinCommands.Add("/$initpackage", CoreInfo.Resource_BuiltinCommands, InitPackage);
-            BuiltinCommands.Add("/$importdata", CoreInfo.Resource_BuiltinCommands, ImportData);
-            BuiltinCommands.Add("/$processtemplate", CoreInfo.Resource_BuiltinCommands, ProcessTemplate);
-            BuiltinCommands.Add("/$undotemplate", CoreInfo.Resource_BuiltinCommands, UndoTemplate);
+            BuiltinCommands.Add("/$initall", CoreInfo.Resource_BuiltinCommands, InitAllAsync);
+            BuiltinCommands.Add("/$initnew", CoreInfo.Resource_BuiltinCommands, InitNewAsync);
+            BuiltinCommands.Add("/$restart", CoreInfo.Resource_BuiltinCommands, RestartSiteAsync);
+            BuiltinCommands.Add("/$initpackage", CoreInfo.Resource_BuiltinCommands, InitPackageAsync);
+            BuiltinCommands.Add("/$importdata", CoreInfo.Resource_BuiltinCommands, ImportDataAsync);
+            BuiltinCommands.Add("/$processtemplate", CoreInfo.Resource_BuiltinCommands, ProcessTemplateAsync);
+            BuiltinCommands.Add("/$undotemplate", CoreInfo.Resource_BuiltinCommands, UndoTemplateAsync);
         }
 
         // RESTART
         // RESTART
         // RESTART
 
-        private void RestartSite(QueryHelper qs) {
+        private Task RestartSiteAsync(QueryHelper qs) {
             Manager.RestartSite(Manager.CurrentSite.MakeUrl());
+            return Task.CompletedTask;
         }
 
         // INITALL
@@ -60,7 +59,7 @@ namespace YetaWF.Modules.Packages.DataProvider {
         /// <remarks>
         /// This removes all data for all sites
         /// </remarks>
-        public void InitAll(QueryHelper qs) {
+        public async Task InitAllAsync(QueryHelper qs) {
 
             InitialSiteLogging log = new InitialSiteLogging(LogFile, _lockObject);
             Logging.RegisterLogging(log);
@@ -72,9 +71,9 @@ namespace YetaWF.Modules.Packages.DataProvider {
             if (qs["From"] == "Data") {
                 BuildSiteUsingData(false);
                 PermanentManager.ClearAll();// clear any cached objects
-                BuildSiteUsingTemplate(Path.Combine(DataFolderName, "Add Site.txt"));
+                await BuildSiteUsingTemplateAsync(Path.Combine(DataFolderName, "Add Site.txt"));
             } else { //if (qs["From"] == "Template") {
-                BuildSiteUsingTemplate("InitialSite.txt");
+                await BuildSiteUsingTemplateAsync("InitialSite.txt");
                 //BuildSiteUsingTemplate("Custom Site (Initial Site).txt");
             }
             Package.SavePackageMap();
@@ -148,12 +147,12 @@ namespace YetaWF.Modules.Packages.DataProvider {
         /// Builds the current site (an additional site) using the new site template
         /// </summary>
         /// <param name="template"></param>
-        public void InitNew(QueryHelper qs) {
+        public async Task InitNewAsync(QueryHelper qs) {
             if (qs["From"] == "Data") {
                 BuildSiteUsingData(false);
-                BuildSiteUsingTemplate(Path.Combine(DataFolderName, "Add Site.txt"));
+                await BuildSiteUsingTemplateAsync(Path.Combine(DataFolderName, "Add Site.txt"));
             } else { //if (qs["From"] == "Template") {
-                BuildSiteUsingTemplate("NewSite.txt");
+                await BuildSiteUsingTemplateAsync("NewSite.txt");
                 //BuildSiteUsingTemplate("Custom Site (Additional Sites).txt");
             }
             // Cache is now invalid so we'll just restart
@@ -253,7 +252,7 @@ namespace YetaWF.Modules.Packages.DataProvider {
         /// <summary>
         /// Installs all models for the specified package
         /// </summary>
-        public void InitPackage(QueryHelper qs) {
+        public Task InitPackageAsync(QueryHelper qs) {
             string packageName = qs["Package"];
             if (string.IsNullOrWhiteSpace(packageName))
                 throw new InternalError("Package name missing");
@@ -265,11 +264,12 @@ namespace YetaWF.Modules.Packages.DataProvider {
                 sb.Append(errorList, LeadingNL: true);
                 throw new Error(sb.ToString());
             }
+            return Task.CompletedTask;//$$
         }
         /// <summary>
         /// Imports all package data from a zip file (created using Export Data) or from templates
         /// </summary>
-        public void ImportData(QueryHelper qs) {
+        public Task ImportDataAsync(QueryHelper qs) {
             string zipFileName = qs["ZipFile"];
             if (string.IsNullOrWhiteSpace(zipFileName))
                 throw new InternalError("Zip filename missing");
@@ -280,26 +280,27 @@ namespace YetaWF.Modules.Packages.DataProvider {
                 sb.Append(errorList, LeadingNL: true);
                 throw new Error(sb.ToString());
             }
+            return Task.CompletedTask;//$$
         }
         /// <summary>
         /// Apply a template (creates pages)
         /// </summary>
-        public void ProcessTemplate(QueryHelper qs) {
+        public async Task ProcessTemplateAsync(QueryHelper qs) {
             string templateName = qs["Template"];
             if (string.IsNullOrWhiteSpace(templateName))
                 throw new InternalError("Template name missing");
             PackagesDataProvider packagesDP = new PackagesDataProvider();
-            packagesDP.BuildSiteUsingTemplate(templateName);
+            await packagesDP.BuildSiteUsingTemplateAsync(templateName);
         }
         /// <summary>
         /// Remove a template (removes pages)
         /// </summary>
-        public void UndoTemplate(QueryHelper qs) {
+        public async Task UndoTemplateAsync(QueryHelper qs) {
             string templateName = qs["Template"];
             if (string.IsNullOrWhiteSpace(templateName))
                 throw new InternalError("Template name missing");
             PackagesDataProvider packagesDP = new PackagesDataProvider();
-            packagesDP.BuildSiteUsingTemplate(templateName, false);
+            await packagesDP.BuildSiteUsingTemplateAsync(templateName, false);
         }
     }
 }

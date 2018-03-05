@@ -1,5 +1,6 @@
 /* Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Languages#License */
 
+using System.Threading.Tasks;
 using YetaWF.Core.Controllers;
 using YetaWF.Core.Localize;
 using YetaWF.Core.Models;
@@ -71,10 +72,10 @@ namespace YetaWF.Modules.Languages.Controllers {
         }
 
         [AllowGet]
-        public ActionResult LocalizeConfig() {
+        public async Task<ActionResult> LocalizeConfig() {
             using (LocalizeConfigDataProvider dataProvider = new LocalizeConfigDataProvider()) {
                 Model model = new Model { };
-                LocalizeConfigData data = dataProvider.GetItem();
+                LocalizeConfigData data = await dataProvider.GetItemAsync();
                 if (data == null)
                     throw new Error(this.__ResStr("notFound", "The localization settings could not be found"));
                 model.SetData(data);
@@ -86,9 +87,9 @@ namespace YetaWF.Modules.Languages.Controllers {
         [AllowPost]
         [ConditionalAntiForgeryToken]
         [ExcludeDemoMode]
-        public ActionResult LocalizeConfig_Partial(Model model) {
+        public async Task<ActionResult> LocalizeConfig_Partial(Model model) {
             using (LocalizeConfigDataProvider dataProvider = new LocalizeConfigDataProvider()) {
-                LocalizeConfigData data = dataProvider.GetItem();// get the original item
+                LocalizeConfigData data = await dataProvider.GetItemAsync();// get the original item
                 if (!ModelState.IsValid)
                     return PartialView(model);
                 data = model.GetData(data); // merge new data into original
@@ -97,7 +98,7 @@ namespace YetaWF.Modules.Languages.Controllers {
                 LocalizationSupport locSupport = new LocalizationSupport();
                 locSupport.SetUseLocalizationResources(model.UseLocalizationResources);
                 locSupport.SetAbortOnFailure(model.AbortOnFailure);
-                dataProvider.UpdateConfig(data);
+                await dataProvider.UpdateConfigAsync(data);
                 Manager.RestartSite();
             }
             return FormProcessed(model, this.__ResStr("okSaved", "Localization settings saved - The site is now restarting"));

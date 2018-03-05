@@ -1,5 +1,6 @@
 ﻿/* Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Languages#License */
 
+using System.Threading.Tasks;
 using YetaWF.Core.DataProvider;
 using YetaWF.Core.DataProvider.Attributes;
 using YetaWF.Core.IO;
@@ -44,7 +45,7 @@ namespace YetaWF.Modules.Languages.DataProvider {
 
         private const int KEY = 1;
 
-        private static object _lockObject = new object();
+        private static AsyncLock _lockObject = new AsyncLock();
 
         // IMPLEMENTATION
         // IMPLEMENTATION
@@ -53,9 +54,9 @@ namespace YetaWF.Modules.Languages.DataProvider {
         public LocalizeConfigDataProvider() : base(YetaWFManager.Manager.CurrentSite.Identity) { SetDataProvider(CreateDataProvider()); }
         public LocalizeConfigDataProvider(int siteIdentity) : base(siteIdentity) { SetDataProvider(CreateDataProvider()); }
 
-        private IDataProvider<int, LocalizeConfigData> DataProvider { get { return GetDataProvider(); } }
+        private IDataProviderAsync<int, LocalizeConfigData> DataProvider { get { return GetDataProvider(); } }
 
-        private IDataProvider<int, LocalizeConfigData> CreateDataProvider() {
+        private IDataProviderAsync<int, LocalizeConfigData> CreateDataProvider() {
             Package package = YetaWF.Modules.Languages.Controllers.AreaRegistration.CurrentPackage;
             return MakeDataProvider(package, package.AreaName + "_Config", SiteIdentity: SiteIdentity, Cacheable: true);
         }
@@ -64,32 +65,32 @@ namespace YetaWF.Modules.Languages.DataProvider {
         // API
         // API
 
-        public static LocalizeConfigData GetConfig() {
+        public static async Task<LocalizeConfigData> GetConfigAsync() {
             using (LocalizeConfigDataProvider configDP = new LocalizeConfigDataProvider()) {
-                return configDP.GetItem();
+                return await configDP.GetItemAsync();
             }
         }
-        public LocalizeConfigData GetItem() {
-            LocalizeConfigData config = DataProvider.Get(KEY);
+        public async Task<LocalizeConfigData> GetItemAsync() {
+            LocalizeConfigData config = await DataProvider.GetAsync(KEY);
             if (config == null) {
-                lock (_lockObject) {
-                    config = DataProvider.Get(KEY);
+                using (await _lockObject.LockAsync()) {
+                    config = await DataProvider.GetAsync(KEY);
                     if (config == null) {
                         config = new LocalizeConfigData();
-                        AddConfig(config);
+                        await AddConfigAsync(config);
                     }
                 }
             }
             return config;
         }
-        private void AddConfig(LocalizeConfigData data) {
+        private async Task AddConfigAsync(LocalizeConfigData data) {
             data.Id = KEY;
-            if (!DataProvider.Add(data))
+            if (!await DataProvider.AddAsync(data))
                 throw new InternalError("Unexpected error adding settings");
         }
-        public void UpdateConfig(LocalizeConfigData data) {
+        public async Task UpdateConfigAsync(LocalizeConfigData data) {
             data.Id = KEY;
-            UpdateStatusEnum status = DataProvider.Update(data.Id, data.Id, data);
+            UpdateStatusEnum status = await DataProvider.UpdateAsync(data.Id, data.Id, data);
             if (status != UpdateStatusEnum.OK)
                 throw new InternalError("Unexpected error saving configuration {0}", status);
         }

@@ -1,6 +1,7 @@
 ﻿/* Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Menus#License */
 
 using System;
+using System.Threading.Tasks;
 using YetaWF.Core.DataProvider;
 using YetaWF.Core.DataProvider.Attributes;
 using YetaWF.Core.IO;
@@ -30,9 +31,9 @@ namespace YetaWF.Modules.Menus.DataProvider {
         public MenuInfoDataProvider() : base(YetaWFManager.Manager.CurrentSite.Identity) { SetDataProvider(CreateDataProvider()); }
         public MenuInfoDataProvider(int siteIdentity) : base(siteIdentity) { SetDataProvider(CreateDataProvider()); }
 
-        private IDataProvider<Guid, MenuInfo> DataProvider { get { return GetDataProvider(); } }
+        private IDataProviderAsync<Guid, MenuInfo> DataProvider { get { return GetDataProvider(); } }
 
-        private IDataProvider<Guid, MenuInfo> CreateDataProvider() {
+        private IDataProviderAsync<Guid, MenuInfo> CreateDataProvider() {
             Package package = YetaWF.Modules.Menus.Controllers.AreaRegistration.CurrentPackage;
             return MakeDataProvider(package, package.AreaName + "_MenuInfo", SiteIdentity: SiteIdentity, Cacheable: true);
         }
@@ -41,31 +42,31 @@ namespace YetaWF.Modules.Menus.DataProvider {
         // API
         // API
 
-        public void DoAction(Guid moduleGuid, Action action) {
-            StringLocks.DoAction(LockKey(moduleGuid), () => {
-                action();
+        public async Task DoActionAsync(Guid moduleGuid, Func<Task> action) {
+            await StringLocks.DoActionAsync(LockKey(moduleGuid), async () => {
+                await action();
             });
         }
         private string LockKey(Guid moduleGuid) {
             return string.Format("{0}_{1}", this.Dataset, moduleGuid);
         }
-        public MenuInfo GetItem(Guid moduleGuid) {
-            return DataProvider.Get(moduleGuid);
+        public async Task<MenuInfo> GetItemAsync(Guid moduleGuid) {
+            return await DataProvider.GetAsync(moduleGuid);
         }
-        public void ReplaceItem(MenuInfo data) {
-            DoAction(data.ModuleGuid, () => {
-                RemoveItem(data.ModuleGuid);
-                AddItem(data);
+        public async Task ReplaceItemAsync(MenuInfo data) {
+            await DoActionAsync(data.ModuleGuid, async () => {
+                await RemoveItemAsync(data.ModuleGuid);
+                await AddItemAsync(data);
             });
         }
-        protected bool AddItem(MenuInfo data) {
-            return DataProvider.Add(data);
+        protected async Task<bool> AddItemAsync(MenuInfo data) {
+            return await DataProvider.AddAsync(data);
         }
-        protected UpdateStatusEnum UpdateItem(MenuInfo data) {
-            return DataProvider.Update(data.ModuleGuid, data.ModuleGuid, data);
+        protected async Task<UpdateStatusEnum> UpdateItemAsync(MenuInfo data) {
+            return await DataProvider.UpdateAsync(data.ModuleGuid, data.ModuleGuid, data);
         }
-        public bool RemoveItem(Guid moduleGuid) {
-            return DataProvider.Remove(moduleGuid);
+        public async Task<bool> RemoveItemAsync(Guid moduleGuid) {
+            return await DataProvider.RemoveAsync(moduleGuid);
         }
     }
 }

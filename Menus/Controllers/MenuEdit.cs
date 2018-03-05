@@ -8,6 +8,7 @@ using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Modules;
 using YetaWF.Core.Support;
 using YetaWF.Modules.Menus.Modules;
+using System.Threading.Tasks;
 #if MVC6
 using Microsoft.AspNetCore.Mvc;
 #else
@@ -36,12 +37,12 @@ namespace YetaWF.Modules.Menus.Controllers {
         }
 
         [AllowGet]
-        public ActionResult MenuEdit(Guid menuGuid) {
-            MenuModule modMenu = (MenuModule) ModuleDefinition.Load(menuGuid);
+        public async Task<ActionResult> MenuEdit(Guid menuGuid) {
+            MenuModule modMenu = (MenuModule)ModuleDefinition.Load(menuGuid);
             if (modMenu == null)
                 throw new InternalError("Can't find menu module {0}", menuGuid);
 
-            MenuList origMenu = modMenu.GetMenu();
+            MenuList origMenu = await modMenu.GetMenuAsync();
 
             MenuList newMenu = new MenuList {
                 new ModuleAction(Module) {
@@ -64,12 +65,12 @@ namespace YetaWF.Modules.Menus.Controllers {
 
         [AllowPost]
         [ExcludeDemoMode]
-        public ActionResult MenuEdit_Partial(MenuEditModel model, bool ValidateCurrent) {
-            MenuModule modMenu = (MenuModule) ModuleDefinition.Load(model.MenuGuid);
+        public async Task<ActionResult> MenuEdit_Partial(MenuEditModel model, bool ValidateCurrent) {
+            MenuModule modMenu = (MenuModule)ModuleDefinition.Load(model.MenuGuid);
             if (modMenu == null)
                 throw new InternalError("Can't find menu module {0}", model.MenuGuid);
 
-            MenuList origMenu = modMenu.GetMenu();
+            MenuList origMenu = await modMenu.GetMenuAsync();
 
             if (model.MenuVersion != modMenu.MenuVersion)
                 throw new Error(this.__ResStr("menuChanged", "The menu has been changed by someone else - Your changes can't be saved - Please refresh the current page before proceeding"));
@@ -81,7 +82,7 @@ namespace YetaWF.Modules.Menus.Controllers {
 
             MenuList menu = origMenu;
             menu.MergeNewAction(model.ActiveEntry, model.NewAfter, model.ModAction);
-            modMenu.SaveMenu(menu);
+            await modMenu.SaveMenuAsync(menu);
 
             model.MenuVersion = modMenu.MenuVersion;
 
@@ -90,17 +91,17 @@ namespace YetaWF.Modules.Menus.Controllers {
 
         [AllowPost]
         [ExcludeDemoMode]
-        public ActionResult EntireMenu(string entireMenu, Guid menuGuid, long menuVersion) {
-            MenuModule modMenu = (MenuModule) ModuleDefinition.Load(menuGuid);
+        public async Task<ActionResult> EntireMenu(string entireMenu, Guid menuGuid, long menuVersion) {
+            MenuModule modMenu = (MenuModule)ModuleDefinition.Load(menuGuid);
             if (modMenu == null)
                 throw new InternalError("Can't find menu module {0}", menuGuid);
             if (menuVersion != modMenu.MenuVersion)
                 throw new Error(this.__ResStr("menuChanged", "The menu has been changed by someone else - Your changes can't be saved - Please refresh the current page before proceeding"));
 
-            MenuList origMenu = modMenu.GetMenu();
+            MenuList origMenu = await modMenu.GetMenuAsync();
             MenuList menu = MenuList.DeserializeFromJSON(entireMenu, Original: origMenu);
             MenuList newMenu = new MenuList(menu[0].SubMenu);
-            modMenu.SaveMenu(newMenu);
+            await modMenu.SaveMenuAsync(newMenu);
 
             return new YJsonResult() { Data = modMenu.MenuVersion };
         }

@@ -26,7 +26,7 @@ namespace YetaWF.Modules.Menus.Modules {
 
     [ModuleGuid("{51E5EB91-56CF-4ad6-A0D9-5C084FFD5D3F}")]
     [UniqueModule(UniqueModuleStyle.NonUnique)]
-    public class MenuModule : ModuleDefinition, IModuleMenu {
+    public class MenuModule : ModuleDefinition, IModuleMenuAsync {
 
         private const int MaxLICssClass = 80;
 
@@ -63,15 +63,15 @@ namespace YetaWF.Modules.Menus.Modules {
 
         public void NewMenuVersion() { MenuVersion = MenuVersion+1; }
 
-        public MenuList GetMenu() {
+        public async Task<MenuList> GetMenuAsync() {
             using (MenuInfoDataProvider menuInfoDP = new MenuInfoDataProvider()) {
 #pragma warning disable 0618 // Type or member is obsolete
                 MenuList menu = Menu;
 #pragma warning restore 0618 // Type or member is obsolete
                 if (menu != null) {
-                    SaveMenu(menu); // Legacy: the menu was saved as part of module definition, move it to MenuInfoDataProvider
+                    await SaveMenuAsync(menu); // Legacy: the menu was saved as part of module definition, move it to MenuInfoDataProvider
                 } else {
-                    MenuInfo menuInfo = menuInfoDP.GetItem(ModuleGuid);
+                    MenuInfo menuInfo = await menuInfoDP.GetItemAsync(ModuleGuid);
                     if (menuInfo != null)
                         menu = menuInfo.Menu;
                     else
@@ -80,12 +80,12 @@ namespace YetaWF.Modules.Menus.Modules {
                 return menu;
             }
         }
-        public void SaveMenu(MenuList newMenu) {
+        public async Task SaveMenuAsync(MenuList newMenu) {
             using (MenuInfoDataProvider menuInfoDP = new MenuInfoDataProvider()) {
 #pragma warning disable 0618 // Type or member is obsolete
                 MenuList menu = Menu;
 #pragma warning restore 0618 // Type or member is obsolete
-                menuInfoDP.ReplaceItem(new MenuInfo {
+                await menuInfoDP.ReplaceItemAsync(new MenuInfo {
                     ModuleGuid = ModuleGuid,
                     Menu = newMenu,
                 });

@@ -3,6 +3,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using YetaWF.Core.Controllers;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Views.Shared;
@@ -49,13 +50,13 @@ namespace YetaWF.Modules.Packages.Controllers {
         [AllowPost]
         [ConditionalAntiForgeryToken]
         [ExcludeDemoMode]
-        public ActionResult SiteTemplateUndo_Partial(EditModel model) {
+        public async Task<ActionResult> SiteTemplateUndo_Partial(EditModel model) {
             model.UpdateData();
             if (!ModelState.IsValid)
                 return PartialView(model);
 
             PackagesDataProvider packagesDP = new PackagesDataProvider();
-            packagesDP.BuildSiteUsingTemplate(model.SiteTemplate, false);
+            await packagesDP.BuildSiteUsingTemplateAsync(model.SiteTemplate, false);
             return FormProcessed(model);
         }
     }
