@@ -49,7 +49,7 @@ namespace YetaWF.Modules.Identity.DataProvider {
     /// Roles are separated by site
     /// File,SQL - A small set of roles is expected, so they're preloaded - If a large # > 100 is expected, this must be rewritten
     /// </summary>
-    public class RoleDefinitionDataProvider : DataProviderImpl, IInstallableModel {
+    public class RoleDefinitionDataProvider : DataProviderImpl, IInstallableModelAsync {
 
         private static object _lockObject = new object();
 
@@ -139,16 +139,17 @@ namespace YetaWF.Modules.Identity.DataProvider {
             GetAllUserRoles(true);
             return count;
         }
-        public async Task<int> GetAdministratorRoleIdAsync() { return await GetRoleIdAsync(Globals.Role_Administrator); }
-        public async Task<int> GetEditorRoleIdAsync() { return await GetRoleIdAsync(Globals.Role_Editor); }
+        public int GetAdministratorRoleId() { return GetRoleId(Globals.Role_Administrator); }
+        public int GetEditorRoleId() { return GetRoleId(Globals.Role_Editor); }
         public int GetUserRoleId() { return UserIdentity; }
         public int GetUser2FARoleId() { return User2FAIdentity; }
         public int GetAnonymousRoleId() { return AnonymousIdentity; }
-        public async Task<int> GetRoleIdAsync(string roleName) {
+        public int GetRoleId(string roleName) {
             if (roleName == Globals.Role_Superuser)
                 return RoleDefinitionDataProvider.SuperUserId;
-            RoleDefinition role = await DataProvider.GetAsync(roleName);
-            if (role == null) throw new InternalError("Required role {0} not found", roleName);
+            List<RoleDefinition> roles = GetAllUserRoles();
+            RoleDefinition role = (from RoleDefinition r in roles where r.Name == Globals.Role_Editor select r).FirstOrDefault();
+            if (role == null) throw new InternalError($"Required role {Globals.Role_Editor} not found");
             return role.RoleId;
         }
         public bool IsPredefinedRole(string role) {
@@ -170,7 +171,7 @@ namespace YetaWF.Modules.Identity.DataProvider {
         public List<RoleDefinition> GetAllUserRoles(bool force = false) {
 
             bool isInstalled = Manager.Syncify<bool>(() => DataProvider.IsInstalledAsync());
-            if (isInstalled)
+            if (!isInstalled)
                 return new List<RoleDefinition>() { MakeSuperuserRole() };
 
             List<RoleDefinition> roles;

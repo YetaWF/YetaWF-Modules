@@ -99,7 +99,7 @@ namespace YetaWF.Modules.Identity.DataProvider {
         public LoginConfigData() { }
     }
 
-    public class LoginConfigDataProvider : DataProviderImpl, IInstallableModel {
+    public class LoginConfigDataProvider : DataProviderImpl, IInstallableModelAsync {
 
         private const int KEY = 1;
 

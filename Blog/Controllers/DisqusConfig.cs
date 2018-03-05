@@ -9,6 +9,7 @@ using YetaWF.Core.Support;
 using YetaWF.Core.Views.Shared;
 using YetaWF.Modules.Blog.DataProvider;
 using YetaWF.Modules.Blog.Support;
+using System.Threading.Tasks;
 #if MVC6
 using Microsoft.AspNetCore.Mvc;
 #else
@@ -84,10 +85,10 @@ namespace YetaWF.Modules.Blog.Controllers {
         }
 
         [AllowGet]
-        public ActionResult DisqusConfig() {
+        public async Task<ActionResult> DisqusConfig() {
             using (DisqusConfigDataProvider dataProvider = new DisqusConfigDataProvider()) {
                 Model model = new Model { };
-                DisqusConfigData data = dataProvider.GetItem();
+                DisqusConfigData data = await dataProvider.GetItemAsync();
                 if (data == null)
                     throw new Error(this.__ResStr("notFound", "The Disqus settings could not be found"));
                 model.SetData(data);
@@ -98,14 +99,14 @@ namespace YetaWF.Modules.Blog.Controllers {
         [AllowPost]
         [ExcludeDemoMode]
         [ConditionalAntiForgeryToken]
-        public ActionResult DisqusConfig_Partial(Model model) {
+        public async Task<ActionResult> DisqusConfig_Partial(Model model) {
             using (DisqusConfigDataProvider dataProvider = new DisqusConfigDataProvider()) {
-                DisqusConfigData data = dataProvider.GetItem();// get the original item
+                DisqusConfigData data = await dataProvider.GetItemAsync();// get the original item
                 if (!ModelState.IsValid)
                     return PartialView(model);
                 data = model.GetData(data); // merge new data into original
                 model.SetData(data); // and all the data back into model for final display
-                dataProvider.UpdateConfig(data);
+                await dataProvider.UpdateConfigAsync(data);
                 return FormProcessed(model, this.__ResStr("okSaved", "Disqus settings saved"), NextPage: Manager.ReturnToUrl);
             }
         }

@@ -41,7 +41,7 @@ namespace YetaWF.Modules.Identity.DataProvider {
         }
     }
 
-    public class AuthorizationDataProvider : DataProviderImpl, IInstallableModel {
+    public class AuthorizationDataProvider : DataProviderImpl, IInstallableModelAsync {
 
         // IMPLEMENTATION
         // IMPLEMENTATION
@@ -71,7 +71,7 @@ namespace YetaWF.Modules.Identity.DataProvider {
             }
             AuthorizationResourceDataProvider authResDP = new AuthorizationResourceDataProvider();
             using (RoleDefinitionDataProvider roleDP = new RoleDefinitionDataProvider(SiteIdentity)) {
-                return await GetFromAuthorizationResourceAsync(roleDP, authResDP.GetItem(resourceName));
+                return GetFromAuthorizationResource(roleDP, authResDP.GetItem(resourceName));
             }
         }
         public async Task<UpdateStatusEnum> UpdateItemAsync(Authorization data) {
@@ -103,7 +103,7 @@ namespace YetaWF.Modules.Identity.DataProvider {
                 foreach (ResourceAttribute resAttr in resAttrs.Data) {
                     Authorization auth = (from l in list.Data where l.ResourceName == resAttr.Name select l).FirstOrDefault();
                     if (auth == null) {
-                        auth = await GetFromAuthorizationResourceAsync(roleDP, resAttr);
+                        auth = GetFromAuthorizationResource(roleDP, resAttr);
                         list.Data.Add(auth);
                     }
                 }
@@ -113,7 +113,7 @@ namespace YetaWF.Modules.Identity.DataProvider {
             return list;
         }
 
-        private async Task<Authorization> GetFromAuthorizationResourceAsync(RoleDefinitionDataProvider roleDP, ResourceAttribute resAttr) {
+        private Authorization GetFromAuthorizationResource(RoleDefinitionDataProvider roleDP, ResourceAttribute resAttr) {
             Authorization auth = new Authorization() {
                 ResourceName = resAttr.Name,
                 ResourceDescription = resAttr.Description,
@@ -124,9 +124,9 @@ namespace YetaWF.Modules.Identity.DataProvider {
             if (resAttr.User)
                 auth.AllowedRoles.Add(new Role() { RoleId = roleDP.GetUserRoleId() });
             if (resAttr.Editor)
-                auth.AllowedRoles.Add(new Role() { RoleId = await roleDP.GetEditorRoleIdAsync() });
+                auth.AllowedRoles.Add(new Role() { RoleId = roleDP.GetEditorRoleId() });
             if (resAttr.Administrator)
-                auth.AllowedRoles.Add(new Role() { RoleId = await roleDP.GetAdministratorRoleIdAsync() });
+                auth.AllowedRoles.Add(new Role() { RoleId = roleDP.GetAdministratorRoleId() });
             return auth;
         }
         public Task<int> RemoveItemsAsync(List<DataProviderFilterInfo> filters) {

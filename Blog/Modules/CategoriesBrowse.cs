@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using YetaWF.Core;
 using YetaWF.Core.IO;
 using YetaWF.Core.Localize;
@@ -63,8 +64,8 @@ namespace YetaWF.Modules.Blog.Modules {
             }
         }
 
-        public override MenuList GetModuleMenuList(ModuleAction.RenderModeEnum renderMode, ModuleAction.ActionLocationEnum location) {
-            MenuList menuList = base.GetModuleMenuList(renderMode, location);
+        public override async Task<MenuList> GetModuleMenuListAsync(ModuleAction.RenderModeEnum renderMode, ModuleAction.ActionLocationEnum location) {
+            MenuList menuList = await base.GetModuleMenuListAsync(renderMode, location);
             CategoryAddModule mod = new CategoryAddModule();
             menuList.New(mod.GetAction_Add(AddUrl), location);
             return menuList;

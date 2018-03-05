@@ -1,5 +1,6 @@
 /* Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Blog#License */
 
+using System.Threading.Tasks;
 using YetaWF.Core.Controllers;
 using YetaWF.Core.Localize;
 using YetaWF.Core.Support;
@@ -34,9 +35,9 @@ namespace YetaWF.Modules.Blog.Controllers {
         }
 
         [AllowGet]
-        public ActionResult Disqus() {
+        public async Task<ActionResult> Disqus() {
             using (DisqusConfigDataProvider dataProvider = new DisqusConfigDataProvider()) {
-                DisqusConfigData config = dataProvider.GetItem();
+                DisqusConfigData config = await dataProvider.GetItemAsync();
                 if (config == null)
                     throw new Error(this.__ResStr("notFound", "The Disqus settings could not be found"));
                 if (string.IsNullOrWhiteSpace(config.ShortName))

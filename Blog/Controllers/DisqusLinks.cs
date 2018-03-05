@@ -1,5 +1,6 @@
 /* Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Blog#License */
 
+using System.Threading.Tasks;
 using YetaWF.Core.Controllers;
 using YetaWF.Modules.Blog.DataProvider;
 #if MVC6
@@ -20,9 +21,9 @@ namespace YetaWF.Modules.Blog.Controllers {
         }
 
         [AllowGet]
-        public ActionResult DisqusLinks(string disqus) {
+        public async Task<ActionResult> DisqusLinks(string disqus) {
             using (DisqusConfigDataProvider dataProvider = new DisqusConfigDataProvider()) {
-                DisqusConfigData config = dataProvider.GetItem();
+                DisqusConfigData config = await dataProvider.GetItemAsync();
                 if (config == null)
                     return new EmptyResult();
                 if (string.IsNullOrWhiteSpace(config.ShortName))

@@ -29,8 +29,8 @@ namespace YetaWF.Modules.Identity.Modules {
 
         public override SerializableList<AllowedRole> DefaultAllowedRoles { get { return AnonymousLevel_DefaultAllowedRoles; } }
 
-        public override MenuList GetModuleMenuList(ModuleAction.RenderModeEnum renderMode, ModuleAction.ActionLocationEnum location) {
-            MenuList menuList = base.GetModuleMenuList(renderMode, location);
+        public override async Task<MenuList> GetModuleMenuListAsync(ModuleAction.RenderModeEnum renderMode, ModuleAction.ActionLocationEnum location) {
+            MenuList menuList = await base.GetModuleMenuListAsync(renderMode, location);
             LoginConfigData config = await LoginConfigDataProvider.GetConfigAsync();
             RegisterModule regMod = (RegisterModule)ModuleDefinition.CreateUniqueModule(typeof(RegisterModule));
             LoginModule loginMod = (LoginModule)ModuleDefinition.CreateUniqueModule(typeof(LoginModule));

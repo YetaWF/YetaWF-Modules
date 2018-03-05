@@ -133,7 +133,7 @@ namespace YetaWF.Modules.Identity.DataProvider {
     /// File - A small set of users is expected - all users are preloaded so less than 20 is recommended
     /// SQL - No limit
     /// </summary>
-    public class UserDefinitionDataProvider : DataProviderImpl, IInstallableModel {
+    public class UserDefinitionDataProvider : DataProviderImpl, IInstallableModelAsync {
 
         static UserDefinitionDataProvider() { }
 
@@ -310,10 +310,10 @@ namespace YetaWF.Modules.Identity.DataProvider {
             }
         }
         public async Task AddAdministratorAsync(string name) {
-            await DataProvider.AddAsync(await GetAdministratorAsync(name));
+            await DataProvider.AddAsync(GetAdministrator(name));
         }
         public async Task AddEditorAsync(string name) {
-            await DataProvider.AddAsync(await GetEditorAsync(name));
+            await DataProvider.AddAsync(GetEditor(name));
         }
         public async Task AddUserAsync(string name) {
             await DataProvider.AddAsync(GetUser(name));
@@ -331,12 +331,12 @@ namespace YetaWF.Modules.Identity.DataProvider {
                 };
             }
         }
-        private async Task<UserDefinition> GetEditorAsync(string name) {
+        private UserDefinition GetEditor(string name) {
             using (RoleDefinitionDataProvider roleProvider = new RoleDefinitionDataProvider(SiteIdentity)) {
                 return new UserDefinition() {
                     UserName = name,
                     RolesList = new SerializableList<Role>() {
-                        new Role() { RoleId = await roleProvider.GetEditorRoleIdAsync() },
+                        new Role() { RoleId = roleProvider.GetEditorRoleId() },
                     },
                     UserStatus = UserStatusEnum.Approved,
                     Comment = this.__ResStr("editor", "A sample site editor"),
@@ -345,12 +345,12 @@ namespace YetaWF.Modules.Identity.DataProvider {
                 };
             }
         }
-        private async Task<UserDefinition> GetAdministratorAsync(string name) {
+        private UserDefinition GetAdministrator(string name) {
             using (RoleDefinitionDataProvider roleProvider = new RoleDefinitionDataProvider(SiteIdentity)) {
                 return new UserDefinition() {
                     UserName = name,
                     RolesList = new SerializableList<Role>() {
-                        new Role() { RoleId = await roleProvider.GetAdministratorRoleIdAsync() },
+                        new Role() { RoleId = roleProvider.GetAdministratorRoleId() },
                     },
                     UserStatus = UserStatusEnum.Approved,
                     Comment = this.__ResStr("admin", "A sample administrator"),

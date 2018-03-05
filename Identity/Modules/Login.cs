@@ -1,6 +1,7 @@
 ﻿/* Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Identity#License */
 
 using System;
+using System.Threading.Tasks;
 using YetaWF.Core.Identity;
 using YetaWF.Core.IO;
 using YetaWF.Core.Localize;
@@ -32,8 +33,8 @@ namespace YetaWF.Modules.Identity.Modules {
 
         public override SerializableList<AllowedRole> DefaultAllowedRoles { get { return AnonymousLevel_DefaultAllowedRoles; } }
 
-        public override MenuList GetModuleMenuList(ModuleAction.RenderModeEnum renderMode, ModuleAction.ActionLocationEnum location) {
-            MenuList menuList = base.GetModuleMenuList(renderMode, location);
+        public override async Task<MenuList> GetModuleMenuListAsync(ModuleAction.RenderModeEnum renderMode, ModuleAction.ActionLocationEnum location) {
+            MenuList menuList = await base.GetModuleMenuListAsync(renderMode, location);
             RegisterModule regMod = (RegisterModule)ModuleDefinition.CreateUniqueModule(typeof(RegisterModule));
             ForgotPasswordModule pswdMod = (ForgotPasswordModule)ModuleDefinition.CreateUniqueModule(typeof(ForgotPasswordModule));
             LoginConfigData config = Manager.Syncify<LoginConfigData>(() => //$$$ think about this
@@ -41,11 +42,11 @@ namespace YetaWF.Modules.Identity.Modules {
             );
             bool closeOnLogin;
             Manager.TryGetUrlArg<bool>("CloseOnLogin", out closeOnLogin, false);
-            ModuleAction pswdAction = pswdMod.GetAction_ForgotPassword(config.ForgotPasswordUrl, CloseOnLogin: closeOnLogin);
+            ModuleAction pswdAction = await pswdMod.GetAction_ForgotPassword(config.ForgotPasswordUrl, CloseOnLogin: closeOnLogin);
             if (pswdAction != null)
                 pswdAction.AddToOriginList = false;
             menuList.New(pswdAction, location);
-            ModuleAction registerAction = regMod.GetAction_RegisterAsync(config.RegisterUrl, Force: true, CloseOnLogin: closeOnLogin);
+            ModuleAction registerAction = await regMod.GetAction_RegisterAsync(config.RegisterUrl, Force: true, CloseOnLogin: closeOnLogin);
             if (registerAction != null)
                 registerAction.AddToOriginList = false;
             menuList.New(registerAction, location);

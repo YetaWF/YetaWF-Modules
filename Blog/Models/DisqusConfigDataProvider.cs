@@ -1,5 +1,6 @@
 ﻿/* Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Blog#License */
 
+using System.Threading.Tasks;
 using YetaWF.Core;
 using YetaWF.Core.DataProvider;
 using YetaWF.Core.DataProvider.Attributes;
@@ -71,9 +72,9 @@ namespace YetaWF.Modules.Blog.DataProvider {
         public DisqusConfigDataProvider() : base(YetaWFManager.Manager.CurrentSite.Identity) { SetDataProvider(CreateDataProvider()); }
         public DisqusConfigDataProvider(int siteIdentity) : base(siteIdentity) { SetDataProvider(CreateDataProvider()); }
 
-        private IDataProvider<int, DisqusConfigData> DataProvider { get { return GetDataProvider(); } }
+        private IDataProviderAsync<int, DisqusConfigData> DataProvider { get { return GetDataProvider(); } }
 
-        private IDataProvider<int, DisqusConfigData> CreateDataProvider() {//$$$$
+        private IDataProviderAsync<int, DisqusConfigData> CreateDataProvider() {
             Package package = YetaWF.Modules.Blog.Controllers.AreaRegistration.CurrentPackage;
             return MakeDataProvider(package, package.AreaName + "_DisqusConfig", SiteIdentity: SiteIdentity, Cacheable: true);
         }
@@ -82,32 +83,32 @@ namespace YetaWF.Modules.Blog.DataProvider {
         // API
         // API
 
-        public static DisqusConfigData GetConfig() {
+        public static async Task<DisqusConfigData> GetConfigAsync() {
             using (DisqusConfigDataProvider configDP = new DisqusConfigDataProvider()) {
-                return configDP.GetItem();
+                return await configDP.GetItemAsync();
             }
         }
-        public DisqusConfigData GetItem() {
-            DisqusConfigData config = DataProvider.Get(KEY);
+        public async Task<DisqusConfigData> GetItemAsync() {
+            DisqusConfigData config = await DataProvider.GetAsync(KEY);
             if (config == null) {
-                lock (_lockObject) {
-                    config = DataProvider.Get(KEY);
+                //$$lock (_lockObject) {
+                    config = await DataProvider.GetAsync(KEY);
                     if (config == null) {
                         config = new DisqusConfigData();
-                        AddConfig(config);
+                        await AddConfigAsync(config);
                     }
-                }
+                //}
             }
             return config;
         }
-        private void AddConfig(DisqusConfigData data) {
+        private async Task AddConfigAsync(DisqusConfigData data) {
             data.Id = KEY;
-            if (!DataProvider.Add(data))
+            if (!await DataProvider.AddAsync(data))
                 throw new InternalError("Unexpected error adding settings");
         }
-        public void UpdateConfig(DisqusConfigData data) {
+        public async Task UpdateConfigAsync(DisqusConfigData data) {
             data.Id = KEY;
-            UpdateStatusEnum status = DataProvider.Update(data.Id, data.Id, data);
+            UpdateStatusEnum status = await DataProvider.UpdateAsync(data.Id, data.Id, data);
             if (status != UpdateStatusEnum.OK)
                 throw new InternalError("Unexpected error saving configuration {0}", status);
         }
