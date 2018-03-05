@@ -138,7 +138,7 @@ namespace YetaWF.Modules.Blog.DataProvider {
 
         private const int KEY = 1;
 
-        private static object _lockObject = new object();
+        private static AsyncLock _lockObject = new AsyncLock();
 
         // IMPLEMENTATION
         // IMPLEMENTATION
@@ -166,13 +166,13 @@ namespace YetaWF.Modules.Blog.DataProvider {
         public async Task<BlogConfigData> GetItemAsync() {
             BlogConfigData config = await DataProvider.GetAsync(KEY);
             if (config == null) {
-                //$$lock (_lockObject) {
+                using (await _lockObject.LockAsync()) {
                     config = await DataProvider.GetAsync(KEY);
                     if (config == null) {
                         config = new BlogConfigData();
                         await AddConfigAsync(config);
                     }
-                //}
+                }
             }
             return config;
         }

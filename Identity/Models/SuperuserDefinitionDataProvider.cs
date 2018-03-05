@@ -41,7 +41,7 @@ namespace YetaWF.Modules.Identity.DataProvider {
         // IMPLEMENTATION
         // IMPLEMENTATION
 
-        private static object _lockObject = new object();
+        private static AsyncLock _lockObject = new AsyncLock();
 
         public SuperuserDefinitionDataProvider() : base(0) { SetDataProvider(CreateDataProvider()); }
 
@@ -89,13 +89,13 @@ namespace YetaWF.Modules.Identity.DataProvider {
             }
             if (data.UserId != SuperuserDefinitionDataProvider.SuperUserId || string.Compare(data.UserName, SuperUserName, true) != 0)
                 throw new Error(this.__ResStr("cantUpdateSuper", "Wrong user id or user name - Can't update as superuser"));
-            //$$lock (_lockObject) {
+            using (await _lockObject.LockAsync()) {
                 UserDefinition superUser;// need to get current superuser because user may have changed the name through Appsettings.json
                 List<DataProviderFilterInfo> filters = DataProviderFilterInfo.Join(null, new DataProviderFilterInfo { Field = "UserId", Operator = "==", Value = SuperuserDefinitionDataProvider.SuperUserId });
                 superUser = await DataProvider.GetOneRecordAsync(filters);
                 superUser.RolesList = new SerializableList<Role> { new Role { RoleId = Resource.ResourceAccess.GetSuperuserRoleId() } };
                 return await DataProvider.UpdateAsync(superUser.UserName, data.UserName, data);
-            //}
+            }
         }
         public bool RemoveItem(string userName) {
             throw new Error(this.__ResStr("cantRemoveSuper", "The user with role \"{0}\" can't be removed. Who else is going to bail you out once you mess up your website?", Globals.Role_Superuser));

@@ -103,7 +103,7 @@ namespace YetaWF.Modules.Identity.DataProvider {
 
         private const int KEY = 1;
 
-        private static object _lockObject = new object();
+        private static AsyncLock _lockObject = new AsyncLock();
 
         // IMPLEMENTATION
         // IMPLEMENTATION
@@ -131,7 +131,7 @@ namespace YetaWF.Modules.Identity.DataProvider {
         public async Task<LoginConfigData> GetItemAsync() {
             LoginConfigData config = await DataProvider.GetAsync(KEY);
             if (config == null) {
-                //$$lock (_lockObject) {
+                using (await _lockObject.LockAsync()) {
                     config = await DataProvider.GetAsync(KEY);
                     if (config == null) {
                         config = new LoginConfigData() {
@@ -149,7 +149,7 @@ namespace YetaWF.Modules.Identity.DataProvider {
                         };
                         await AddConfigAsync(config);
                     }
-                //}
+                }
             }
             return config;
         }

@@ -25,7 +25,7 @@ namespace YetaWF.Modules.Basics.DataProvider {
 
         public static readonly int KEY = 1;
 
-        private static object _lockObject = new object();
+        private static AsyncLock _lockObject = new AsyncLock();
 
         // IMPLEMENTATION
         // IMPLEMENTATION
@@ -53,13 +53,13 @@ namespace YetaWF.Modules.Basics.DataProvider {
         public async Task<RecaptchaV2Config> GetItemAsync() {
             RecaptchaV2Config config = await DataProvider.GetAsync(KEY);
             if (config == null) {
-                //$$lock (_lockObject) {
+                using (await _lockObject.LockAsync()) {
                     config = await DataProvider.GetAsync(KEY);
                     if (config == null) {
                         config = new RecaptchaV2Config();
                         await AddConfigAsync(config);
                     }
-                //}
+                }
             }
             return config;
         }

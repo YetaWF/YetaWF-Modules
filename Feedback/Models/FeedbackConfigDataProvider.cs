@@ -36,7 +36,7 @@ namespace YetaWF.Modules.Feedback.DataProvider {
 
         private const int KEY = 1;
 
-        private static object _lockObject = new object();
+        private static AsyncLock _lockObject = new AsyncLock();
 
         // IMPLEMENTATION
         // IMPLEMENTATION
@@ -64,13 +64,13 @@ namespace YetaWF.Modules.Feedback.DataProvider {
         public async Task<FeedbackConfigData> GetItemAsync() {
             FeedbackConfigData config = await DataProvider.GetAsync(KEY);
             if (config == null) {
-                //$$lock (_lockObject) {
+                using (await _lockObject.LockAsync()) {
                     config = await DataProvider.GetAsync(KEY);
                     if (config == null) {
                         config = new FeedbackConfigData();
                         await AddConfigAsync(config);
                     }
-                //}
+                }
             }
             return config;
         }

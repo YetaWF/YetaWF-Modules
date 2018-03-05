@@ -54,7 +54,7 @@ namespace YetaWF.Modules.CurrencyConverter.DataProvider {
         public const int KEY = 1000;
         public const string JSFile = "ExchangeRates.js";
 
-        private static object LockObject = new object();
+        private static AsyncLock _lockObject = new AsyncLock();
 
         public ExchangeRateDataProvider() : base(YetaWFManager.Manager.CurrentSite.Identity) { SetDataProvider(CreateDataProvider()); }
 
@@ -70,7 +70,7 @@ namespace YetaWF.Modules.CurrencyConverter.DataProvider {
         // API
 
         public async Task<ExchangeRateData> GetItemAsync() {
-            //$$lock (LockObject) {
+            using (await _lockObject.LockAsync()) {
                 ExchangeRateData data = await DataProvider.GetAsync(KEY);
                 if (data != null && data.SaveTime.Add(ExchangeRateData.ExpiresAfter) < DateTime.UtcNow)
                     data = null;
@@ -79,7 +79,7 @@ namespace YetaWF.Modules.CurrencyConverter.DataProvider {
                 if (data == null)
                     data = await GetExchangeRatesAsync();
                 return data;
-            //}
+            }
         }
         private async Task<ExchangeRateData> GetExchangeRatesAsync() {
 

@@ -179,7 +179,8 @@ namespace YetaWF.Modules.Identity.DataProvider {
                 if (PermanentManager.TryGetObject<List<RoleDefinition>>(out roles))
                     return roles;
             }
-            //$$$lock (_lockObject) { // lock this so we only do this once
+            //$$$
+            lock (_lockObject) { // lock this so we only do this once
                 // See if we already have it as a permanent object
                 if (!force) {
                     if (PermanentManager.TryGetObject<List<RoleDefinition>>(out roles))
@@ -190,7 +191,7 @@ namespace YetaWF.Modules.Identity.DataProvider {
                 roles = list.Data;
 
                 PermanentManager.AddObject<List<RoleDefinition>>(roles);
-            //}
+            }
             return roles;
         }
         private RoleDefinition MakeSuperuserRole() {
