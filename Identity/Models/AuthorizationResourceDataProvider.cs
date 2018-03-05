@@ -2,6 +2,7 @@
 
 using System.Collections.Generic;
 using System.Linq;
+using YetaWF.Core.DataProvider;
 using YetaWF.Core.Identity;
 using YetaWF.Core.Localize;
 using YetaWF.Core.Log;
@@ -50,11 +51,11 @@ namespace YetaWF.Modules.Identity.DataProvider {
                 throw new Error(this.__ResStr("noRes", "Authorization resource {0} not found", resourceName));
             return resAttr;
         }
-        public List<ResourceAttribute> GetItems() {
-            int total;
-            List<ResourceAttribute> list = (from d in AuthorizationResources.Values select d).ToList();//copy
-            total = list.Count();
-            return list;
+        public DataProviderGetRecords<ResourceAttribute> GetItems() {
+            DataProviderGetRecords<ResourceAttribute> recs = new DataProviderGetRecords<ResourceAttribute>();
+            recs.Data = (from d in AuthorizationResources.Values select d).ToList();//copy
+            recs.Total = recs.Data.Count();
+            return recs;
         }
     }
 }

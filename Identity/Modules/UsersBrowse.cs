@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using YetaWF.Core;
 using YetaWF.Core.DataProvider;
 using YetaWF.Core.IO;
@@ -198,7 +199,7 @@ namespace YetaWF.Modules.Identity.Modules {
         // Properties used to save initial user settings from InitPages.txt
         public string SuperUserPassword {
             set {
-                ChangePassword(SuperuserDefinitionDataProvider.SuperUserName, value);
+                YetaWFManager.Manager.Syncify(() => ChangePasswordAsync(SuperuserDefinitionDataProvider.SuperUserName, value));// super rare, so sync is OK
             }
         }
 
@@ -206,36 +207,42 @@ namespace YetaWF.Modules.Identity.Modules {
         /// Add administrator - used from site template to add a site admin
         /// </summary>
         public void AddAdministrator(string name, string pswd) {
-            using (UserDefinitionDataProvider dataProvider = new UserDefinitionDataProvider()) {
-                dataProvider.AddAdministrator(name);
-            }
-            ChangePassword(name, pswd);
+            YetaWFManager.Manager.Syncify(async () => { // super rare, so sync is OK
+                using (UserDefinitionDataProvider dataProvider = new UserDefinitionDataProvider()) {
+                    await dataProvider.AddAdministratorAsync(name);
+                }
+                await ChangePasswordAsync(name, pswd);
+            });
         }
         /// <summary>
         /// Add an editor - used from site template to add a site editor
         /// </summary>
         public void AddEditor(string name, string pswd) {
-            using (UserDefinitionDataProvider dataProvider = new UserDefinitionDataProvider()) {
-                dataProvider.AddEditor(name);
-            }
-            ChangePassword(name, pswd);
+            YetaWFManager.Manager.Syncify(async () => { // super rare, so sync is OK
+                using (UserDefinitionDataProvider dataProvider = new UserDefinitionDataProvider()) {
+                    await dataProvider.AddEditorAsync(name);
+                }
+                await ChangePasswordAsync(name, pswd);
+            });
         }
 
         /// <summary>
         /// Add a user - used from site template to add a site user
         /// </summary>
         public void AddUser(string name, string pswd) {
-            using (UserDefinitionDataProvider dataProvider = new UserDefinitionDataProvider()) {
-                dataProvider.AddUser(name);
-            }
-            ChangePassword(name, pswd);
+            YetaWFManager.Manager.Syncify(async () => { // super rare, so sync is OK
+                using (UserDefinitionDataProvider dataProvider = new UserDefinitionDataProvider()) {
+                    await dataProvider.AddUserAsync(name);
+                }
+                await ChangePasswordAsync(name, pswd);
+            });
         }
 
         // Change a user password
-        private void ChangePassword(string userName, string newPassword) {
+        private async Task ChangePasswordAsync(string userName, string newPassword) {
 
             using (UserDefinitionDataProvider dataProvider = new UserDefinitionDataProvider()) {
-                UserDefinition user = dataProvider.GetItem(userName);
+                UserDefinition user = await dataProvider.GetItemAsync(userName);
                 if (user == null)
                     throw new Error(this.__ResStr("notFound", "User {0} not found", userName));
 
@@ -248,11 +255,11 @@ namespace YetaWF.Modules.Identity.Modules {
                 hashedNewPassword = userManager.PasswordHasher.HashPassword(newPassword);
 #endif
                 //ModuleDefinition.GetPermanentGuid(typeof(RegisterModule))
-                LoginConfigData config = LoginConfigDataProvider.GetConfig();
+                LoginConfigData config = await LoginConfigDataProvider.GetConfigAsync();
                 if (config.SavePlainTextPassword)
                     user.PasswordPlainText = newPassword;
                 user.PasswordHash = hashedNewPassword;
-                UpdateStatusEnum status = dataProvider.UpdateItem(user);
+                UpdateStatusEnum status = await dataProvider.UpdateItemAsync(user);
                 switch (status) {
                     default:
                     case UpdateStatusEnum.NewKeyExists:

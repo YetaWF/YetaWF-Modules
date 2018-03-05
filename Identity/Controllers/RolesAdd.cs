@@ -1,5 +1,6 @@
 /* Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Identity#License */
 
+using System.Threading.Tasks;
 using YetaWF.Core.Controllers;
 using YetaWF.Core.Localize;
 using YetaWF.Core.Models;
@@ -47,11 +48,11 @@ namespace YetaWF.Modules.Identity.Controllers {
         [AllowPost]
         [ConditionalAntiForgeryToken]
         [ExcludeDemoMode]
-        public ActionResult RolesAdd_Partial(AddModel model) {
+        public async Task<ActionResult> RolesAdd_Partial(AddModel model) {
             if (!ModelState.IsValid)
                 return PartialView(model);
             using (RoleDefinitionDataProvider dataProvider = new RoleDefinitionDataProvider()) {
-                if (!dataProvider.AddItem(model.GetData()))
+                if (!await dataProvider.AddItemAsync(model.GetData()))
                     throw new Error(this.__ResStr("alreadyExists", "A role named \"{0}\" already exists."), model.Name);
                 return FormProcessed(model, this.__ResStr("okSaved", "New role \"{0}\" saved", model.Name), OnPopupClose: OnPopupCloseEnum.ReloadModule);
             }

@@ -3,6 +3,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using YetaWF.Core;
 using YetaWF.Core.Controllers;
 using YetaWF.Core.DataProvider;
@@ -132,14 +133,13 @@ namespace YetaWF.Modules.Identity.Controllers {
 
         [AllowPost]
         [ConditionalAntiForgeryToken]
-        public ActionResult UsersBrowse_GridData(int skip, int take, List<DataProviderSortInfo> sort, List<DataProviderFilterInfo> filters, Guid settingsModuleGuid) {
+        public async Task<ActionResult> UsersBrowse_GridData(int skip, int take, List<DataProviderSortInfo> sort, List<DataProviderFilterInfo> filters, Guid settingsModuleGuid) {
             using (UserDefinitionDataProvider dataProvider = new UserDefinitionDataProvider()) {
-                int total;
-                List<UserDefinition> browseItems = dataProvider.GetItems(skip, take, sort, filters, out total);
+                DataProviderGetRecords<UserDefinition> browseItems = await dataProvider.GetItemsAsync(skip, take, sort, filters);
                 GridHelper.SaveSettings(skip, take, sort, filters, settingsModuleGuid);
                 return GridPartialView(new DataSourceResult {
-                    Data = (from s in browseItems select new BrowseItem(Module, s)).ToList<object>(),
-                    Total = total
+                    Data = (from s in browseItems.Data select new BrowseItem(Module, s)).ToList<object>(),
+                    Total = browseItems.Total
                 });
             }
         }
@@ -147,10 +147,10 @@ namespace YetaWF.Modules.Identity.Controllers {
         [AllowPost]
         [Permission("RemoveUsers")]
         [ExcludeDemoMode]
-        public ActionResult Remove(string userName) {
+        public async Task<ActionResult> Remove(string userName) {
             using (UserDefinitionDataProvider dataProvider = new UserDefinitionDataProvider()) {
-                UserDefinition user = GetUser(userName, dataProvider);
-                dataProvider.RemoveItem(userName);
+                UserDefinition user = await GetUserAsync(userName, dataProvider);
+                await dataProvider.RemoveItemAsync(userName);
                 return Reload(null, Reload: ReloadEnum.ModuleParts);
             }
         }
@@ -158,9 +158,9 @@ namespace YetaWF.Modules.Identity.Controllers {
         [AllowPost]
         [Permission("SendEmails")]
         [ExcludeDemoMode]
-        public ActionResult SendVerificationEmail(string userName) {
+        public async Task<ActionResult> SendVerificationEmail(string userName) {
             using (UserDefinitionDataProvider dataProvider = new UserDefinitionDataProvider()) {
-                UserDefinition user = GetUser(userName, dataProvider);
+                UserDefinition user = await GetUserAsync(userName, dataProvider);
                 Emails emails = new Emails();
                 emails.SendVerification(user);
                 return Reload(null, Reload: ReloadEnum.ModuleParts, PopupText: this.__ResStr("verificationSent", "Verification email sent to user {0}.", user.Email));
@@ -170,9 +170,9 @@ namespace YetaWF.Modules.Identity.Controllers {
         [AllowPost]
         [Permission("SendEmails")]
         [ExcludeDemoMode]
-        public ActionResult SendApprovedEmail(string userName) {
+        public async Task<ActionResult> SendApprovedEmail(string userName) {
             using (UserDefinitionDataProvider dataProvider = new UserDefinitionDataProvider()) {
-                UserDefinition user = GetUser(userName, dataProvider);
+                UserDefinition user = await GetUserAsync(userName, dataProvider);
                 Emails emails = new Emails();
                 emails.SendApproval(user);
                 return Reload(null, Reload: ReloadEnum.ModuleParts, PopupText: this.__ResStr("approvalSent", "Approval email sent to user {0}.", user.Email));
@@ -181,17 +181,17 @@ namespace YetaWF.Modules.Identity.Controllers {
 
         [AllowPost]
         [ExcludeDemoMode]
-        public ActionResult RehashAllPasswords() {
+        public async Task<ActionResult> RehashAllPasswords() {
             using (UserDefinitionDataProvider userDP = new UserDefinitionDataProvider()) {
-                userDP.RehashAllPasswords();
+                await userDP.RehashAllPasswordsAsync();
                 return Reload(null, Reload: ReloadEnum.ModuleParts, PopupText: this.__ResStr("rehashDone", "All user passwords have been rehashed"));
             }
         }
 
-        private UserDefinition GetUser(string userName, UserDefinitionDataProvider dataProvider) {
+        private async Task<UserDefinition> GetUserAsync(string userName, UserDefinitionDataProvider dataProvider) {
             if (string.IsNullOrWhiteSpace(userName))
                 throw new Error(this.__ResStr("noItem", "No user name specified"));
-            UserDefinition user = dataProvider.GetItem(userName);
+            UserDefinition user = await dataProvider.GetItemAsync(userName);
             if (user == null)
                 throw new Error(this.__ResStr("notFoundUser", "User {0} not found.", userName));
             return user;

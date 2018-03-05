@@ -81,9 +81,9 @@ namespace YetaWF.Modules.Identity.Controllers {
         }
 
         [AllowGet]
-        public ActionResult Login(string name, string pswd, string v, bool closeOnLogin = false, bool __f = false) {
+        public async Task<ActionResult> Login(string name, string pswd, string v, bool closeOnLogin = false, bool __f = false) {
 
-            LoginConfigData config = LoginConfigDataProvider.GetConfig();
+            LoginConfigData config = await LoginConfigDataProvider.GetConfigAsync();
             bool isPersistent = config.PersistentLogin;
 
             LoginModel model = new LoginModel {
@@ -98,7 +98,7 @@ namespace YetaWF.Modules.Identity.Controllers {
             model.ShowCaptcha = config.Captcha && !model.ShowVerification && !Manager.IsLocalHost;
 
             using (LoginConfigDataProvider logConfigDP = new LoginConfigDataProvider()) {
-                List<LoginConfigDataProvider.LoginProviderDescription> loginProviders = logConfigDP.GetActiveExternalLoginProviders();
+                List<LoginConfigDataProvider.LoginProviderDescription> loginProviders = await logConfigDP.GetActiveExternalLoginProvidersAsync();
                 if (loginProviders.Count > 0 && Manager.IsInPopup)
                     throw new InternalError("When using external login providers, the Login module cannot be used in a popup window");
                 foreach (LoginConfigDataProvider.LoginProviderDescription provider in loginProviders) {
@@ -125,7 +125,7 @@ namespace YetaWF.Modules.Identity.Controllers {
         [ExcludeDemoMode]
         public async Task<ActionResult> Login_Partial(LoginModel model) {
 
-            LoginConfigData config = LoginConfigDataProvider.GetConfig();
+            LoginConfigData config = await LoginConfigDataProvider.GetConfigAsync();
 
             if (model.ShowCaptcha != (config.Captcha && !model.ShowVerification && !Manager.IsLocalHost))
                 throw new InternalError("Hidden field tampering detected");
@@ -150,7 +150,7 @@ namespace YetaWF.Modules.Identity.Controllers {
                 UserName = name,
                 Password = password,
             };
-            ActionResult result = await CompleteLogin(model, LoginConfigDataProvider.GetConfig(), useTwoStep: false);
+            ActionResult result = await CompleteLogin(model, await LoginConfigDataProvider.GetConfigAsync(), useTwoStep: false);
             if (!model.Success)
                 Manager.CurrentResponse.StatusCode = 401;
             return result;
@@ -169,7 +169,7 @@ namespace YetaWF.Modules.Identity.Controllers {
                 UserName = name,
                 Password = password,
             };
-            ActionResult result = await CompleteLogin(model, LoginConfigDataProvider.GetConfig(), useTwoStep: false);
+            ActionResult result = await CompleteLogin(model, await LoginConfigDataProvider.GetConfigAsync(), useTwoStep: false);
             if (!model.Success)
                 Manager.CurrentResponse.StatusCode = 401;
             return new EmptyResult();
@@ -192,7 +192,7 @@ namespace YetaWF.Modules.Identity.Controllers {
                 return PartialView(model);
             }
             using (UserLoginInfoDataProvider logInfoDP = new UserLoginInfoDataProvider()) {
-                if (logInfoDP.IsExternalUser(user.UserId))
+                if (await logInfoDP.IsExternalUserAsync(user.UserId))
                     throw new Error(this.__ResStr("extUser", "This account can only be accessed using an external login provider"));
             }
 
@@ -331,12 +331,11 @@ namespace YetaWF.Modules.Identity.Controllers {
         }
 
         // User logoff
+        internal static
 #if MVC6
-        internal static async void UserLogoff()
-#else
-        internal static void UserLogoff()
+                async 
 #endif
-        {
+                Task UserLogoffAsync() {
             Manager.EditMode = false;
 #if MVC6
             SignInManager<UserDefinition> _signinManager = (SignInManager<UserDefinition>)YetaWFManager.ServiceProvider.GetService(typeof(SignInManager<UserDefinition>));
@@ -346,16 +345,20 @@ namespace YetaWF.Modules.Identity.Controllers {
             authManager.SignOut(DefaultAuthenticationTypes.ExternalCookie, DefaultAuthenticationTypes.ApplicationCookie, DefaultAuthenticationTypes.ExternalBearer, DefaultAuthenticationTypes.TwoFactorCookie, DefaultAuthenticationTypes.TwoFactorRememberBrowserCookie);
 #endif
             Manager.SessionSettings.ClearAll();
+#if MVC6
+#else
+            return Task.CompletedTask;
+#endif
         }
 
         // User login
         internal static async Task UserLoginAsync(UserDefinition user, bool? rememberme = null) {
 
-            LoginModuleController.UserLogoff();
+            await LoginModuleController.UserLogoffAsync();
 
             bool isPersistent;
             if (rememberme == null) {
-                LoginConfigData config = LoginConfigDataProvider.GetConfig();
+                LoginConfigData config = await LoginConfigDataProvider.GetConfigAsync();
                 isPersistent = config.PersistentLogin;
             } else {
                 isPersistent = (bool) rememberme;

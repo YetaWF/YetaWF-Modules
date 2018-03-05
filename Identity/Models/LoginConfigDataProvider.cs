@@ -2,6 +2,7 @@
 
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using YetaWF.Core;
 using YetaWF.Core.DataProvider;
 using YetaWF.Core.DataProvider.Attributes;
@@ -111,9 +112,9 @@ namespace YetaWF.Modules.Identity.DataProvider {
         public LoginConfigDataProvider() : base(YetaWFManager.Manager.CurrentSite.Identity) { SetDataProvider(CreateDataProvider()); }
         public LoginConfigDataProvider(int siteIdentity) : base(siteIdentity) { SetDataProvider(CreateDataProvider()); }
 
-        private IDataProvider<int, LoginConfigData> DataProvider { get { return GetDataProvider(); } }
+        private IDataProviderAsync<int, LoginConfigData> DataProvider { get { return GetDataProvider(); } }
 
-        private IDataProvider<int, LoginConfigData> CreateDataProvider() {
+        private IDataProviderAsync<int, LoginConfigData> CreateDataProvider() {
             Package package = YetaWF.Modules.Identity.Controllers.AreaRegistration.CurrentPackage;
             return MakeDataProvider(package, package.AreaName, SiteIdentity: SiteIdentity, Cacheable: true);
         }
@@ -122,16 +123,16 @@ namespace YetaWF.Modules.Identity.DataProvider {
         // API
         // API
 
-        public static LoginConfigData GetConfig() {
+        public static async Task<LoginConfigData> GetConfigAsync() {
             using (LoginConfigDataProvider configDP = new LoginConfigDataProvider()) {
-                return configDP.GetItem();
+                return await configDP.GetItemAsync();
             }
         }
-        public LoginConfigData GetItem() {
-            LoginConfigData config = DataProvider.Get(KEY);
+        public async Task<LoginConfigData> GetItemAsync() {
+            LoginConfigData config = await DataProvider.GetAsync(KEY);
             if (config == null) {
-                lock (_lockObject) {
-                    config = DataProvider.Get(KEY);
+                //$$lock (_lockObject) {
+                    config = await DataProvider.GetAsync(KEY);
                     if (config == null) {
                         config = new LoginConfigData() {
                             Id = KEY,
@@ -146,20 +147,20 @@ namespace YetaWF.Modules.Identity.DataProvider {
                             BccForgottenPassword = false,
                             PersistentLogin = true,
                         };
-                        AddConfig(config);
+                        await AddConfigAsync(config);
                     }
-                }
+                //}
             }
             return config;
         }
-        private void AddConfig(LoginConfigData data) {
+        private async Task AddConfigAsync(LoginConfigData data) {
             data.Id = KEY;
-            if (!DataProvider.Add(data))
+            if (!await DataProvider.AddAsync(data))
                 throw new InternalError("Unexpected error adding settings");
         }
-        public void UpdateConfig(LoginConfigData data) {
+        public async Task UpdateConfigAsync(LoginConfigData data) {
             data.Id = KEY;
-            UpdateStatusEnum status = DataProvider.Update(data.Id, data.Id, data);
+            UpdateStatusEnum status = await DataProvider.UpdateAsync(data.Id, data.Id, data);
             if (status != UpdateStatusEnum.OK)
                 throw new InternalError("Unexpected error saving configuration {0}", status);
         }
@@ -169,13 +170,13 @@ namespace YetaWF.Modules.Identity.DataProvider {
             public string DisplayName { get; set; }
         }
 
-        public List<LoginProviderDescription> GetActiveExternalLoginProviders() {
-            LoginConfigData configData = GetConfig();
-            List <LoginProviderDescription> list = new List<LoginProviderDescription>();
+        public async Task<List<LoginProviderDescription>> GetActiveExternalLoginProvidersAsync() {
+            LoginConfigData configData = await GetConfigAsync();
+            List<LoginProviderDescription> list = new List<LoginProviderDescription>();
 #if MVC6
             SignInManager<UserDefinition> _signinManager = (SignInManager<UserDefinition>)YetaWFManager.ServiceProvider.GetService(typeof(SignInManager<UserDefinition>));
 
-            List<AuthenticationScheme> loginProviders = _signinManager.GetExternalAuthenticationSchemesAsync().Result.ToList();
+            List<AuthenticationScheme> loginProviders = _signinManager.GetExternalAuthenticationSchemesAsync().Result.ToList();//$$$asyncify
             foreach (AuthenticationScheme provider in loginProviders) {
                 string name = provider.Name;
                 if (name == "Facebook" && configData.UseFacebook && configData.DefinedFacebook)

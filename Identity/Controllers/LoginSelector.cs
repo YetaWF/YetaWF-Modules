@@ -1,6 +1,7 @@
 /* Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Identity#License */
 
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using YetaWF.Core.Controllers;
 using YetaWF.Core.Identity;
 using YetaWF.Core.Models;
@@ -62,16 +63,16 @@ namespace YetaWF.Modules.Identity.Controllers {
 
         [AllowPost]
         [ConditionalAntiForgeryToken]
-        public ActionResult LoginSelector_Partial(EditModel model) {
+        public async Task<ActionResult> LoginSelector_Partial(EditModel model) {
             model.UpdateData(Module);
             if (!ModelState.IsValid)
                 return PartialView(model);
 
             int userId = model.UserId;
             if (userId == 0)
-                LoginModuleController.UserLogoff();
+                await LoginModuleController.UserLogoffAsync();
             else
-                Resource.ResourceAccess.LoginAs(userId);
+                await Resource.ResourceAccess.LoginAsAsync(userId);
             if (model.SuperuserStillActive != null && !(bool)model.SuperuserStillActive)
                 Manager.SetSuperUserRole(false);
             return Redirect(Manager.ReturnToUrl, ForceRedirect: true);

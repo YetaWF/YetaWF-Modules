@@ -3,6 +3,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using YetaWF.Core.Controllers;
 using YetaWF.Core.DataProvider;
 using YetaWF.Core.Localize;
@@ -78,15 +79,14 @@ namespace YetaWF.Modules.Identity.Controllers {
 
         [AllowPost]
         [ConditionalAntiForgeryToken]
-        public ActionResult AuthorizationBrowse_GridData(int skip, int take, List<DataProviderSortInfo> sort, List<DataProviderFilterInfo> filters, Guid settingsModuleGuid) {
+        public async Task<ActionResult> AuthorizationBrowse_GridData(int skip, int take, List<DataProviderSortInfo> sort, List<DataProviderFilterInfo> filters, Guid settingsModuleGuid) {
             using (AuthorizationDataProvider dataProvider = new AuthorizationDataProvider()) {
-                int total;
-                List<Authorization> browseItems = dataProvider.GetItems(skip, take, sort, filters, out total);
+                DataProviderGetRecords<Authorization> browseItems = await dataProvider.GetItemsAsync(skip, take, sort, filters);
                 GridHelper.SaveSettings(skip, take, sort, filters, settingsModuleGuid);
                 return GridPartialView(
                     new DataSourceResult {
-                        Data = (from s in browseItems select new BrowseItem(Module, s)).ToList<object>(),
-                        Total = total
+                        Data = (from s in browseItems.Data select new BrowseItem(Module, s)).ToList<object>(),
+                        Total = browseItems.Total
                     }
                 );
             }
@@ -95,11 +95,11 @@ namespace YetaWF.Modules.Identity.Controllers {
         [AllowPost]
         [Permission("RemoveResources")]
         [ExcludeDemoMode]
-        public ActionResult Remove(string resourceName) {
+        public async Task<ActionResult> Remove(string resourceName) {
             using (AuthorizationDataProvider authDP = new AuthorizationDataProvider()) {
-                if (authDP.GetItem(resourceName) == null)
+                if (await authDP.GetItemAsync(resourceName) == null)
                     throw new Error(this.__ResStr("cantDel", "Resource {0} not found", resourceName));
-                authDP.RemoveItem(resourceName);
+                await authDP.RemoveItemAsync(resourceName);
                 return Reload(null, Reload: ReloadEnum.ModuleParts);
             }
         }

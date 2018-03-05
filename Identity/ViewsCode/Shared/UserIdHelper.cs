@@ -2,6 +2,7 @@
 
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using YetaWF.Core.DataProvider;
 using YetaWF.Core.Localize;
 using YetaWF.Core.Models;
@@ -34,9 +35,9 @@ namespace YetaWF.Modules.Identity.Views.Shared {
         public const int MAXUSERS = 50; // maximum # of users for a dropdown
 
 #if MVC6
-        public static HtmlString RenderUserIdDisplay<TModel>(this IHtmlHelper<TModel> htmlHelper, string name, int model, object HtmlAttributes = null)
+        public static async Task<HtmlString> RenderUserIdDisplayAsync<TModel>(this IHtmlHelper<TModel> htmlHelper, string name, int model, object HtmlAttributes = null)
 #else
-        public static HtmlString RenderUserIdDisplay<TModel>(this HtmlHelper<TModel> htmlHelper, string name, int model, object HtmlAttributes = null)
+        public static async Task<HtmlString> RenderUserIdDisplayAsync<TModel>(this HtmlHelper<TModel> htmlHelper, string name, int model, object HtmlAttributes = null)
 #endif
         {
             TagBuilder tag = new TagBuilder("span");
@@ -45,7 +46,7 @@ namespace YetaWF.Modules.Identity.Views.Shared {
             ModuleAction actionDisplay = null;
             ModuleAction actionLoginAs = null;
             using (UserDefinitionDataProvider dataProvider = new UserDefinitionDataProvider()) {
-                UserDefinition user = dataProvider.GetItemByUserId(model);
+                UserDefinition user = await dataProvider.GetItemByUserIdAsync(model);
                 string userName = "";
                 if (user == null) {
                     if (model != 0)
@@ -67,30 +68,24 @@ namespace YetaWF.Modules.Identity.Views.Shared {
             return new HtmlString(html);
         }
 
-#if MVC6
-        public static bool IsLargeUserBase()
-#else
-        public static bool IsLargeUserBase()
-#endif
-        {
+        public static async Task<bool> IsLargeUserBaseAsync() {
             using (UserDefinitionDataProvider userDP = new UserDefinitionDataProvider()) {
-                int total;
-                userDP.GetItems(0, 1, null, null, out total);
-                return total > MAXUSERS;
+                DataProviderGetRecords<UserDefinition> recs = await userDP.GetItemsAsync(0, 1, null, null);
+                return recs.Total > MAXUSERS;
             }
         }
 
 #if MVC6
-        public static HtmlString RenderUserId<TModel>(this IHtmlHelper<TModel> htmlHelper, string name, int model, object HtmlAttributes = null)
+        public static async Task<HtmlString> RenderUserIdAsync<TModel>(this IHtmlHelper<TModel> htmlHelper, string name, int model, object HtmlAttributes = null)
 #else
-        public static HtmlString RenderUserId<TModel>(this HtmlHelper<TModel> htmlHelper, string name, int model, object HtmlAttributes = null)
+        public static async Task<HtmlString> RenderUserIdAsync<TModel>(this HtmlHelper<TModel> htmlHelper, string name, int model, object HtmlAttributes = null)
 #endif
         {
             using (UserDefinitionDataProvider userDP = new UserDefinitionDataProvider()) {
                 List<DataProviderSortInfo> sorts = null;
                 DataProviderSortInfo.Join(sorts, new DataProviderSortInfo { Field = "UserName", Order = DataProviderSortInfo.SortDirection.Ascending });
-                int total;
-                List<SelectionItem<int>> list = (from u in userDP.GetItems(0, MAXUSERS, sorts, null, out total) select new SelectionItem<int> {
+                DataProviderGetRecords<UserDefinition> recs = await userDP.GetItemsAsync(0, MAXUSERS, sorts, null);
+                List<SelectionItem<int>> list = (from u in recs.Data select new SelectionItem<int> {
                     Text = u.UserName,
                     Value = u.UserId,
                 }).ToList();
@@ -102,19 +97,19 @@ namespace YetaWF.Modules.Identity.Views.Shared {
             }
         }
 #if MVC6
-        public static HtmlString RenderUserIdName<TModel>(this IHtmlHelper<TModel> htmlHelper, string name, int model, string id, string noUser)
+        public static async Task<HtmlString> RenderUserIdNameAsync<TModel>(this IHtmlHelper<TModel> htmlHelper, string name, int model, string id, string noUser)
 #else
-        public static HtmlString RenderUserIdName<TModel>(this HtmlHelper<TModel> htmlHelper, string name, int model, string id, string noUser)
+        public static async Task<HtmlString> RenderUserIdNameAsync<TModel>(this HtmlHelper<TModel> htmlHelper, string name, int model, string id, string noUser)
 #endif
         {
             using (UserDefinitionDataProvider userDP = new UserDefinitionDataProvider()) {
                 string s;
-                UserDefinition user = userDP.GetItemByUserId(model);
+                UserDefinition user = await userDP.GetItemByUserIdAsync(model);
                 if (user == null)
                     s = noUser;
                 else
                     s = user.UserName;
-                return htmlHelper.RenderTextBoxDisplay(name, s, HtmlAttributes: new { @class="yt_text40 t_display", id = id, data_nouser = noUser });
+                return htmlHelper.RenderTextBoxDisplay(name, s, HtmlAttributes: new { @class = "yt_text40 t_display", id = id, data_nouser = noUser });
             }
         }
 #if MVC6

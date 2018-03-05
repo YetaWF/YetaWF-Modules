@@ -1,6 +1,7 @@
 ﻿/* Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Identity#License */
 
 using System;
+using System.Threading.Tasks;
 using YetaWF.Core.IO;
 using YetaWF.Core.Localize;
 using YetaWF.Core.Models.Attributes;
@@ -28,12 +29,12 @@ namespace YetaWF.Modules.Identity.Modules {
 
         public override SerializableList<AllowedRole> DefaultAllowedRoles { get { return AdministratorLevel_DefaultAllowedRoles; } }
 
-        public ModuleAction GetAction_SelectTwoStepSetup(string url) {
-            return GetAction_ForceTwoStepSetup(url);
+        public async Task<ModuleAction> GetAction_SelectTwoStepSetupAsync(string url) {
+            return await GetAction_ForceTwoStepSetupAsync(url);
         }
-        public ModuleAction GetAction_ForceTwoStepSetup(string url) {
+        public async Task<ModuleAction> GetAction_ForceTwoStepSetupAsync(string url) {
             if (string.IsNullOrWhiteSpace(url)) {
-                LoginConfigData config = LoginConfigDataProvider.GetConfig();
+                LoginConfigData config = await LoginConfigDataProvider.GetConfigAsync();
                 url = config.TwoStepAuthUrl;
             }
             return new ModuleAction(this) {

@@ -1,5 +1,6 @@
 /* Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Messenger#License */
 
+using System.Threading.Tasks;
 using YetaWF.Core.Controllers;
 using YetaWF.Core.Localize;
 using YetaWF.Core.Models.Attributes;
@@ -57,11 +58,11 @@ namespace YetaWF.Modules.Messenger.Controllers {
             EditModel model = new EditModel { };
             return View(model);
         }
-        private string UpdateMessage(EditModel model, int toUserId, bool NeedUser = false) {
+        private async Task<string> UpdateMessage(EditModel model, int toUserId, bool NeedUser = false) {
             if (!NeedUser && toUserId == 0) return null;
             using (MessagingDataProvider msgDP = new MessagingDataProvider()) {
 
-                string toUser = Resource.ResourceAccess.GetUserName(model.ToUserId);
+                string toUser = await Resource.ResourceAccess.GetUserNameAsync(model.ToUserId);
                 if (string.IsNullOrWhiteSpace(toUser)) throw new Error(this.__ResStr("noUser", "User id {0} doesn't exist", model.ToUserId));
 
                 List<DataProviderFilterInfo> filters = null;
@@ -88,16 +89,16 @@ namespace YetaWF.Modules.Messenger.Controllers {
         [AllowPost]
         [ConditionalAntiForgeryToken]
         [ExcludeDemoMode]
-        public ActionResult Messaging_Partial(EditModel model) {
+        public async Task<ActionResult> Messaging_Partial(EditModel model) {
 
             Manager.NeedUser();
-            string toUser = UpdateMessage(model, model.ToUserId);
+            string toUser = await UpdateMessage(model, model.ToUserId);
 
             if (!ModelState.IsValid)
                 return PartialView(model);
 
             //if (Manager.RequestForm[Globals.Link_SubmitIsApply] != null)
-                return PartialView(model);
+            return PartialView(model);
 
             //DateTime msgTime;
             //using (MessagingDataProvider msgDP = new MessagingDataProvider()) {

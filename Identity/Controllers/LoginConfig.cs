@@ -1,5 +1,6 @@
 /* Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Identity#License */
 
+using System.Threading.Tasks;
 using YetaWF.Core;
 using YetaWF.Core.Controllers;
 using YetaWF.Core.Identity;
@@ -171,17 +172,17 @@ namespace YetaWF.Modules.Identity.Controllers {
                 ObjectSupport.CopyData(data, this);
             }
             public Model() {
-                ConfigData = LoginConfigDataProvider.GetConfig();
+                ConfigData = YetaWFManager.Manager.Syncify(() => LoginConfigDataProvider.GetConfigAsync());//$$$
                 NoExternalSettings = this.__ResStr("noExt", "No External Login Providers available");
                 TwoStepAuth = new SerializableList<Role>();
             }
         }
 
         [AllowGet]
-        public ActionResult LoginConfig() {
+        public async Task<ActionResult> LoginConfig() {
             using (LoginConfigDataProvider dataProvider = new LoginConfigDataProvider()) {
                 Model model = new Model { };
-                LoginConfigData data = dataProvider.GetItem();
+                LoginConfigData data = await dataProvider.GetItemAsync();
                 if (data == null)
                     throw new Error(this.__ResStr("notFound", "User login configuration was not found."));
                 model.SetData(data);
@@ -192,14 +193,14 @@ namespace YetaWF.Modules.Identity.Controllers {
         [AllowPost]
         [ConditionalAntiForgeryToken]
         [ExcludeDemoMode]
-        public ActionResult LoginConfig_Partial(Model model) {
+        public async Task<ActionResult> LoginConfig_Partial(Model model) {
             using (LoginConfigDataProvider dataProvider = new LoginConfigDataProvider()) {
-                LoginConfigData data = dataProvider.GetItem();// get the original item
+                LoginConfigData data = await dataProvider.GetItemAsync();// get the original item
                 if (!ModelState.IsValid)
                     return PartialView(model);
                 data = model.GetData(data); // merge new data into original
                 model.SetData(data); // and all the data back into model for final display
-                dataProvider.UpdateConfig(data);
+                await dataProvider.UpdateConfigAsync(data);
                 Manager.Need2FAState = null;// we may have changed two-step auth settings, so re-evaluate
                 return FormProcessed(model, this.__ResStr("okSaved", "Configuration settings saved"));
             }

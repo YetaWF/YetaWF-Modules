@@ -1,6 +1,7 @@
 ﻿/* Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Identity#License */
 
 using System;
+using System.Threading.Tasks;
 using YetaWF.Core.IO;
 using YetaWF.Core.Localize;
 using YetaWF.Core.Menus;
@@ -30,7 +31,7 @@ namespace YetaWF.Modules.Identity.Modules {
 
         public override MenuList GetModuleMenuList(ModuleAction.RenderModeEnum renderMode, ModuleAction.ActionLocationEnum location) {
             MenuList menuList = base.GetModuleMenuList(renderMode, location);
-            LoginConfigData config = LoginConfigDataProvider.GetConfig();
+            LoginConfigData config = await LoginConfigDataProvider.GetConfigAsync();
             RegisterModule regMod = (RegisterModule)ModuleDefinition.CreateUniqueModule(typeof(RegisterModule));
             LoginModule loginMod = (LoginModule)ModuleDefinition.CreateUniqueModule(typeof(LoginModule));
             bool closeOnLogin;
@@ -40,15 +41,15 @@ namespace YetaWF.Modules.Identity.Modules {
             if (logAction != null)
                 logAction.AddToOriginList = false;
             menuList.New(logAction, location);
-            ModuleAction regAction = regMod.GetAction_Register(config.RegisterUrl, Force: true, CloseOnLogin: closeOnLogin);
+            ModuleAction regAction = await regMod.GetAction_RegisterAsync(config.RegisterUrl, Force: true, CloseOnLogin: closeOnLogin);
             if (regAction != null)
                 regAction.AddToOriginList = false;
             menuList.New(regAction, location);
             return menuList;
         }
 
-        public ModuleAction GetAction_ForgotPassword(string url, bool CloseOnLogin = false) {
-            LoginConfigData config = LoginConfigDataProvider.GetConfig();
+        public async Task<ModuleAction> GetAction_ForgotPassword(string url, bool CloseOnLogin = false) {
+            LoginConfigData config = await LoginConfigDataProvider.GetConfigAsync();
             if (!config.SavePlainTextPassword) return null;
             return new ModuleAction(this) {
                 Url = string.IsNullOrWhiteSpace(url) ? ModulePermanentUrl : url,

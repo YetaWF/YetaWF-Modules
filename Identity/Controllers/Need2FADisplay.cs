@@ -1,5 +1,6 @@
 /* Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Identity#License */
 
+using System.Threading.Tasks;
 using YetaWF.Core.Controllers;
 using YetaWF.Core.Modules;
 using YetaWF.Core.Support;
@@ -21,7 +22,7 @@ namespace YetaWF.Modules.Identity.Controllers {
         }
 
         [AllowGet]
-        public ActionResult Need2FADisplay() {
+        public async Task<ActionResult> Need2FADisplay() {
             if (!Manager.Need2FA) return new EmptyResult();
             if (Manager.EditMode) return new EmptyResult();
             if (Manager.IsInPopup) return new EmptyResult();
@@ -30,7 +31,7 @@ namespace YetaWF.Modules.Identity.Controllers {
             if (mod2FA == null)
                 throw new InternalError("Two-step authentication setup module not found");
 
-            ModuleAction action2FA = mod2FA.GetAction_SelectTwoStepSetup(null);
+            ModuleAction action2FA = await mod2FA.GetAction_SelectTwoStepSetupAsync(null);
             if (action2FA == null)
                 throw new InternalError("Two-step authentication setup action not found");
 

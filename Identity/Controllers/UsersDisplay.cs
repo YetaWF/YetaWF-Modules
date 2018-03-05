@@ -3,6 +3,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using YetaWF.Core;
 using YetaWF.Core.Controllers;
 using YetaWF.Core.DataProvider;
@@ -92,9 +93,9 @@ namespace YetaWF.Modules.Identity.Controllers {
         }
 
         [AllowGet]
-        public ActionResult UsersDisplay(string userName) {
+        public async Task<ActionResult> UsersDisplay(string userName) {
             using (UserDefinitionDataProvider dataProvider = new UserDefinitionDataProvider()) {
-                UserDefinition user = dataProvider.GetItem(userName);
+                UserDefinition user = await dataProvider.GetItemAsync(userName);
                 if (user == null)
                     throw new Error(this.__ResStr("notFound", "User \"{0}\" not found."), userName);
                 DisplayModel model = new DisplayModel();
@@ -102,9 +103,8 @@ namespace YetaWF.Modules.Identity.Controllers {
                 using (UserLoginInfoDataProvider userLogInfoDP = new UserLoginInfoDataProvider()) {
                     List<DataProviderFilterInfo> filters = null;
                     filters = DataProviderFilterInfo.Join(filters, new DataProviderFilterInfo { Field = "UserId", Operator = "==", Value = user.UserId });
-                    int total;
-                    List<LoginInfo> list = userLogInfoDP.GetItems(0, 0, null, filters, out total);
-                    model.LoginProviders = (from LoginInfo l in list select l.LoginProvider).ToList();
+                    DataProviderGetRecords<LoginInfo> list = await userLogInfoDP.GetItemsAsync(0, 0, null, filters);
+                    model.LoginProviders = (from LoginInfo l in list.Data select l.LoginProvider).ToList();
                 }
                 Module.Title = this.__ResStr("modDisplayTitle", "User {0}", userName);
                 return View(model);

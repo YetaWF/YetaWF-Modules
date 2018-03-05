@@ -1,6 +1,7 @@
 /* Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Identity#License */
 
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using YetaWF.Core;
 using YetaWF.Core.Controllers;
 using YetaWF.Core.DataProvider;
@@ -66,8 +67,8 @@ namespace YetaWF.Modules.Identity.Controllers {
         }
 
         [AllowGet]
-        public ActionResult UsersAdd() {
-            LoginConfigData config = LoginConfigDataProvider.GetConfig();
+        public async Task<ActionResult> UsersAdd() {
+            LoginConfigData config = await LoginConfigDataProvider.GetConfigAsync();
             AddModel model = new AddModel {
                 RegistrationType = config.RegistrationType,
             };
@@ -78,24 +79,24 @@ namespace YetaWF.Modules.Identity.Controllers {
         [AllowPost]
         [ConditionalAntiForgeryToken]
         [ExcludeDemoMode]
-        public ActionResult UsersAdd_Partial(AddModel model) {
+        public async Task<ActionResult> UsersAdd_Partial(AddModel model) {
             if (!ModelState.IsValid)
                 return PartialView(model);
 
             using (UserDefinitionDataProvider dataProvider = new UserDefinitionDataProvider()) {
 
-                LoginConfigData config = LoginConfigDataProvider.GetConfig();
+                LoginConfigData config = await LoginConfigDataProvider.GetConfigAsync();
                 switch (config.RegistrationType) {
                     default:
                     case RegistrationTypeEnum.NameAndEmail: { // Email == model.Email
-                        List<DataProviderFilterInfo> filters = DataProviderFilterInfo.Join(null, new DataProviderFilterInfo { Field = "Email", Operator = "==", Value = model.Email, });
-                        UserDefinition userExists = dataProvider.GetItem(filters);
-                        if (userExists != null) {
-                            ModelState.AddModelError("Email", this.__ResStr("emailUsed", "An account using email address {0} already exists.", model.Email));
-                            return PartialView(model);
+                            List<DataProviderFilterInfo> filters = DataProviderFilterInfo.Join(null, new DataProviderFilterInfo { Field = "Email", Operator = "==", Value = model.Email, });
+                            UserDefinition userExists = await dataProvider.GetItemAsync(filters);
+                            if (userExists != null) {
+                                ModelState.AddModelError("Email", this.__ResStr("emailUsed", "An account using email address {0} already exists.", model.Email));
+                                return PartialView(model);
+                            }
+                            break;
                         }
-                        break;
-                     }
                     case RegistrationTypeEnum.EmailOnly:
                         model.UserName = model.Email;
                         break;
@@ -118,7 +119,7 @@ namespace YetaWF.Modules.Identity.Controllers {
                     user.PasswordPlainText = model.Password;
                 user.PasswordHash = hashedNewPassword;
 
-                if (!dataProvider.AddItem(user))
+                if (!await dataProvider.AddItemAsync(user))
                     throw new Error(this.__ResStr("alreadyExists", "A user named \"{0}\" already exists."), model.UserName);
                 return FormProcessed(model, this.__ResStr("okSaved", "New user saved"), OnPopupClose: OnPopupCloseEnum.ReloadModule);
             }

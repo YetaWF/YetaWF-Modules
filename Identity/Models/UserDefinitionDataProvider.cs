@@ -3,6 +3,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using YetaWF.Core;
 using YetaWF.Core.DataProvider;
 using YetaWF.Core.DataProvider.Attributes;
@@ -145,9 +146,9 @@ namespace YetaWF.Modules.Identity.DataProvider {
         public UserDefinitionDataProvider() : base(YetaWFManager.Manager.CurrentSite.Identity) { SetDataProvider(CreateDataProvider()); }
         public UserDefinitionDataProvider(int siteIdentity) : base(siteIdentity) { SetDataProvider(CreateDataProvider()); }
 
-        private IDataProvider<string, UserDefinition> DataProvider { get { return GetDataProvider(); } }
+        private IDataProviderAsync<string, UserDefinition> DataProvider { get { return GetDataProvider(); } }
 
-        private IDataProvider<string, UserDefinition> CreateDataProvider() {
+        private IDataProviderAsync<string, UserDefinition> CreateDataProvider() {
             Package package = YetaWF.Modules.Identity.Controllers.AreaRegistration.CurrentPackage;
             return MakeDataProvider(package, package.AreaName + "_Users", SiteIdentity: SiteIdentity, Cacheable: true, Parms: new { NoLanguages = true});
         }
@@ -156,51 +157,51 @@ namespace YetaWF.Modules.Identity.DataProvider {
         // API
         // API
 
-        public UserDefinition GetItem(int userId) {
+        public async Task<UserDefinition> GetItemAsync(int userId) {
             List<DataProviderFilterInfo> filters = DataProviderFilterInfo.Join(null, new DataProviderFilterInfo { Field = "UserId", Operator = "==", Value = userId });
-            return GetItem(filters);
+            return await GetItemAsync(filters);
         }
-        public UserDefinition GetItem(string userName) {
-            if (string.Compare(userName, SuperuserDefinitionDataProvider.SuperUserName, true) == 0 ) {
+        public async Task<UserDefinition> GetItemAsync(string userName) {
+            if (string.Compare(userName, SuperuserDefinitionDataProvider.SuperUserName, true) == 0) {
                 using (SuperuserDefinitionDataProvider superDP = new SuperuserDefinitionDataProvider()) {
-                    return superDP.GetSuperuser();
+                    return await superDP.GetSuperuserAsync();
                 }
             }
-            return DataProvider.Get(userName);
+            return await DataProvider.GetAsync(userName);
         }
-        public UserDefinition GetItem(List<DataProviderFilterInfo> filters) {
-            UserDefinition user = DataProvider.GetOneRecord(filters);
+        public async Task<UserDefinition> GetItemAsync(List<DataProviderFilterInfo> filters) {
+            UserDefinition user = await DataProvider.GetOneRecordAsync(filters);
             if (user != null)
                 return user;
             using (SuperuserDefinitionDataProvider superDP = new SuperuserDefinitionDataProvider()) {
-                return superDP.GetItem(filters);
+                return await superDP.GetItemAsync(filters);
             }
         }
-        public UserDefinition GetItemByUserId(int id) { return GetItem(id); }
-        public UserDefinition GetItemByEmail(string email) {
+        public async Task<UserDefinition> GetItemByUserIdAsync(int id) { return await GetItemAsync(id); }
+        public async Task<UserDefinition> GetItemByEmailAsync(string email) {
             List<DataProviderFilterInfo> filters = DataProviderFilterInfo.Join(null, new DataProviderFilterInfo { Field = "Email", Operator = "==", Value = email });
-            return GetItem(filters);
+            return await GetItemAsync(filters);
         }
 
-        public bool AddItem(UserDefinition data) {
+        public async Task<bool> AddItemAsync(UserDefinition data) {
             CleanupRoles(data);
             if (data.UserId == SuperuserDefinitionDataProvider.SuperUserId || string.Compare(data.UserName, SuperuserDefinitionDataProvider.SuperUserName, true) == 0) {
                 using (SuperuserDefinitionDataProvider superDP = new SuperuserDefinitionDataProvider()) {
-                    return superDP.AddItem(data);
+                    return await superDP.AddItemAsync(data);
                 }
             }
-            return DataProvider.Add(data);
+            return await DataProvider.AddAsync(data);
         }
-        public UpdateStatusEnum UpdateItem(UserDefinition data) {
+        public async Task<UpdateStatusEnum> UpdateItemAsync(UserDefinition data) {
             CleanupRoles(data);
             if (data.UserId == SuperuserDefinitionDataProvider.SuperUserId || string.Compare(data.UserName, SuperuserDefinitionDataProvider.SuperUserName, true) == 0) {
                 using (SuperuserDefinitionDataProvider superDP = new SuperuserDefinitionDataProvider()) {
-                    return superDP.UpdateItem(data);
+                    return await superDP.UpdateItemAsync(data);
                 }
             }
-            return UpdateItem(data.UserName, data);
+            return await UpdateItemAsync(data.UserName, data);
         }
-        public UpdateStatusEnum UpdateItem(string originalName, UserDefinition data) {
+        public async Task<UpdateStatusEnum> UpdateItemAsync(string originalName, UserDefinition data) {
             CleanupRoles(data);
             if (string.Compare(data.UserName, SuperuserDefinitionDataProvider.SuperUserName, true) == 0 &&
                     string.Compare(originalName, SuperuserDefinitionDataProvider.SuperUserName, true) != 0)
@@ -209,17 +210,17 @@ namespace YetaWF.Modules.Identity.DataProvider {
                 if (data.UserName != originalName)
                     throw new Error(this.__ResStr("cantRenameSuper", "The user \"{0}\" can't be renamed. It is defined in the site's Appsettings.json", originalName));
                 using (SuperuserDefinitionDataProvider superDP = new SuperuserDefinitionDataProvider()) {
-                    return superDP.UpdateItem(data);
+                    return await superDP.UpdateItemAsync(data);
                 }
             }
-            return DataProvider.Update(originalName, data.UserName, data);
+            return await DataProvider.UpdateAsync(originalName, data.UserName, data);
         }
-        public bool RemoveItem(string userName) {
-            UserDefinition user = GetItem(userName);
+        public async Task<bool> RemoveItemAsync(string userName) {
+            UserDefinition user = await GetItemAsync(userName);
             if (user == null)
                 return false;
             using (UserLoginInfoDataProvider logInfoDP = new UserLoginInfoDataProvider(SiteIdentity)) {
-                logInfoDP.RemoveItem(user.UserId);
+                await logInfoDP.RemoveItemAsync(user.UserId);
             }
             if (string.Compare(userName, SuperuserDefinitionDataProvider.SuperUserName, true) == 0) {
                 using (SuperuserDefinitionDataProvider superDP = new SuperuserDefinitionDataProvider()) {
@@ -227,25 +228,27 @@ namespace YetaWF.Modules.Identity.DataProvider {
                         return false;
                 }
             } else {
-                if (!DataProvider.Remove(userName))
+                if (!await DataProvider.RemoveAsync(userName))
                     return false;
             }
             // remove any data stored for this user from packages (if it fails, whatevz)
-            User.RemoveDependentPackages(user.UserId);
+            User.RemoveDependentPackages(user.UserId); //$$$asyncify
             return true;
         }
-        public List<UserDefinition> GetItems(int skip, int take, List<DataProviderSortInfo> sort, List<DataProviderFilterInfo> filters, out int total) {
+        public async Task<DataProviderGetRecords<UserDefinition>> GetItemsAsync(int skip, int take, List<DataProviderSortInfo> sort, List<DataProviderFilterInfo> filters) {
             UserDefinition superuser = null;
             int origSkip = skip, origTake = take;
             List<UserDefinition> users;
 
             using (SuperuserDefinitionDataProvider superDP = new SuperuserDefinitionDataProvider()) {
-                superuser = superDP.GetItem(filters);
+                superuser = await superDP.GetItemAsync(filters);
             }
 
-            total = 0;
+            DataProviderGetRecords<UserDefinition> recs = new DataProviderGetRecords<UserDefinition>();
+
+            recs.Total = 0;
             if (superuser != null) {
-                total = 1;
+                recs.Total = 1;
                 if (skip > 0) {
                     superuser = null;
                     --skip;
@@ -255,31 +258,33 @@ namespace YetaWF.Modules.Identity.DataProvider {
                 }
             }
 
-            int userTotal;
+            int userTotal = 0;
             if (take == 0 && origTake > 0) {
                 // we just need the total
-                DataProvider.GetRecords(0, 1, sort, filters, out userTotal);
-                users = new List<UserDefinition>();
+                DataProviderGetRecords<UserDefinition> trecs = await DataProvider.GetRecordsAsync(0, 1, sort, filters);
+                userTotal = trecs.Total;
+                recs.Data = new List<UserDefinition>();
             } else {
-                users = DataProvider.GetRecords(skip, take, sort, filters, out userTotal);
+                DataProviderGetRecords<UserDefinition> trecs = await DataProvider.GetRecordsAsync(skip, take, sort, filters);
+                userTotal = trecs.Total;
+                users = trecs.Data;
             }
             if (superuser != null)
-                users.Insert(0, superuser);
-            total += userTotal;
-            return users;
+                recs.Data.Insert(0, superuser);
+            recs.Total += userTotal;
+            return recs;
         }
-        public void RehashAllPasswords() {
-            LoginConfigData config = LoginConfigDataProvider.GetConfig();
+        public async Task RehashAllPasswordsAsync() {
+            LoginConfigData config = await LoginConfigDataProvider.GetConfigAsync();
             if (!config.SavePlainTextPassword)
-                throw new InternalError("RehashAllPasswords is only available if plain text passwords are saved");
+                throw new InternalError("Rehashing all passwords is only available if plain text passwords are saved");
             UserManager<UserDefinition> userManager = Managers.GetUserManager();
             const int TAKE = 10;
-            for (int skip = 0 ; ; skip += TAKE) {
-                int total;
-                List<UserDefinition> list = GetItems(skip, TAKE, null, null, out total);
-                if (list.Count == 0)
+            for (int skip = 0; ; skip += TAKE) {
+                DataProviderGetRecords<UserDefinition> list = await GetItemsAsync(skip, TAKE, null, null);
+                if (list.Data.Count == 0)
                     break;
-                foreach (UserDefinition user in list) {
+                foreach (UserDefinition user in list.Data) {
                     if (!string.IsNullOrWhiteSpace(user.PasswordPlainText)) {
 #if MVC6
                         IPasswordHasher<UserDefinition> passwordHasher = (IPasswordHasher<UserDefinition>) YetaWFManager.ServiceProvider.GetService(typeof(IPasswordHasher<UserDefinition>));
@@ -287,7 +292,7 @@ namespace YetaWF.Modules.Identity.DataProvider {
 #else
                         user.PasswordHash = userManager.PasswordHasher.HashPassword(user.PasswordPlainText);
 #endif
-                        UpdateStatusEnum status = UpdateItem(user);
+                        UpdateStatusEnum status = await UpdateItemAsync(user);
                         if (status != UpdateStatusEnum.OK)
                             throw new InternalError("Update failed - status {0} user id {1}", status, user.Id);
                     }
@@ -304,14 +309,14 @@ namespace YetaWF.Modules.Identity.DataProvider {
                 data.RolesList = new SerializableList<Role>((from r in data.RolesList where r.RoleId != userRole && r.RoleId != superuserRole select r).ToList());
             }
         }
-        public void AddAdministrator(string name) {
-            DataProvider.Add(GetAdministrator(name));
+        public async Task AddAdministratorAsync(string name) {
+            await DataProvider.AddAsync(await GetAdministratorAsync(name));
         }
-        public void AddEditor(string name) {
-            DataProvider.Add(GetEditor(name));
+        public async Task AddEditorAsync(string name) {
+            await DataProvider.AddAsync(await GetEditorAsync(name));
         }
-        public void AddUser(string name) {
-            DataProvider.Add(GetUser(name));
+        public async Task AddUserAsync(string name) {
+            await DataProvider.AddAsync(GetUser(name));
         }
         private UserDefinition GetUser(string name) {
             using (RoleDefinitionDataProvider roleProvider = new RoleDefinitionDataProvider(SiteIdentity)) {
@@ -326,12 +331,12 @@ namespace YetaWF.Modules.Identity.DataProvider {
                 };
             }
         }
-        private UserDefinition GetEditor(string name) {
+        private async Task<UserDefinition> GetEditorAsync(string name) {
             using (RoleDefinitionDataProvider roleProvider = new RoleDefinitionDataProvider(SiteIdentity)) {
                 return new UserDefinition() {
                     UserName = name,
                     RolesList = new SerializableList<Role>() {
-                        new Role() { RoleId = roleProvider.GetEditorRoleId() },
+                        new Role() { RoleId = await roleProvider.GetEditorRoleIdAsync() },
                     },
                     UserStatus = UserStatusEnum.Approved,
                     Comment = this.__ResStr("editor", "A sample site editor"),
@@ -340,12 +345,12 @@ namespace YetaWF.Modules.Identity.DataProvider {
                 };
             }
         }
-        private UserDefinition GetAdministrator(string name) {
+        private async Task<UserDefinition> GetAdministratorAsync(string name) {
             using (RoleDefinitionDataProvider roleProvider = new RoleDefinitionDataProvider(SiteIdentity)) {
                 return new UserDefinition() {
                     UserName = name,
                     RolesList = new SerializableList<Role>() {
-                        new Role() { RoleId = roleProvider.GetAdministratorRoleId() },
+                        new Role() { RoleId = await roleProvider.GetAdministratorRoleIdAsync() },
                     },
                     UserStatus = UserStatusEnum.Approved,
                     Comment = this.__ResStr("admin", "A sample administrator"),

@@ -45,12 +45,7 @@ namespace YetaWF.Modules.Identity.Controllers {
         }
 
         [AllowGet]
-#if MVC6
-        public async Task<ActionResult> UserPassword()
-#else
-        public ActionResult UserPassword()
-#endif
-        {
+        public async Task<ActionResult> UserPassword() {
 #if MVC6
             if (!Manager.CurrentContext.User.Identity.IsAuthenticated)
 #else
@@ -62,7 +57,7 @@ namespace YetaWF.Modules.Identity.Controllers {
             string userName = User.Identity.Name;
 
             using (UserLoginInfoDataProvider logInfoDP = new UserLoginInfoDataProvider()) {
-                if (logInfoDP.IsExternalUser(Manager.UserId))
+                if (await logInfoDP.IsExternalUserAsync(Manager.UserId))
                     return View("ShowMessage", this.__ResStr("extUser", "This account uses an external login provider - The password (if available) must be set up using the external login provider."), UseAreaViewName: false);
             }
             UserManager<UserDefinition> userManager = Managers.GetUserManager();
@@ -84,12 +79,7 @@ namespace YetaWF.Modules.Identity.Controllers {
         [AllowPost]
         [ConditionalAntiForgeryToken]
         [ExcludeDemoMode]
-#if MVC6
-        public async Task<ActionResult> UserPassword_Partial(EditModel model)
-#else
-        public async Task<ActionResult> UserPassword_Partial(EditModel model)
-#endif
-        {
+        public async Task<ActionResult> UserPassword_Partial(EditModel model) {
             // get current user we're changing
 #if MVC6
             if (!Manager.CurrentContext.User.Identity.IsAuthenticated)
@@ -102,7 +92,7 @@ namespace YetaWF.Modules.Identity.Controllers {
             string userName = User.Identity.Name;
 
             using (UserLoginInfoDataProvider logInfoDP = new UserLoginInfoDataProvider()) {
-                if (logInfoDP.IsExternalUser(Manager.UserId))
+                if (await logInfoDP.IsExternalUserAsync(Manager.UserId))
                     throw new Error(this.__ResStr("extUserPswd", "This account can only be accessed using an external login provider"));
             }
 
@@ -125,7 +115,7 @@ namespace YetaWF.Modules.Identity.Controllers {
             IPasswordValidator<UserDefinition> passVal = (IPasswordValidator<UserDefinition>)YetaWFManager.ServiceProvider.GetService(typeof(IPasswordValidator<UserDefinition>));
             result = await passVal.ValidateAsync(userManager, user, model.NewPassword);
 #else
-            result = userManager.PasswordValidator.ValidateAsync(model.NewPassword).Result;//$$$
+            result = await userManager.PasswordValidator.ValidateAsync(model.NewPassword);
 #endif
             if (!result.Succeeded) {
                 foreach (var err in result.Errors) {
@@ -160,7 +150,7 @@ namespace YetaWF.Modules.Identity.Controllers {
 #endif
 
             // update user info
-            LoginConfigData config = LoginConfigDataProvider.GetConfig();
+            LoginConfigData config = await LoginConfigDataProvider.GetConfigAsync();
             user.LastPasswordChangedDate = DateTime.UtcNow;
             user.PasswordChangeIP = Manager.UserHostAddress;
             if (config.SavePlainTextPassword)

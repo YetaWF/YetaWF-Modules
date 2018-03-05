@@ -1,5 +1,6 @@
 ﻿/* Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Identity#License */
 
+using System.Threading.Tasks;
 using YetaWF.Core.Controllers;
 using YetaWF.Core.Identity;
 using YetaWF.Core.Support.TwoStepAuthorization;
@@ -22,7 +23,7 @@ namespace YetaWF.Modules.Identity.Controllers {
         /// Log in a user after two-step authentication
         /// </summary>
         [AllowGet]
-        public ActionResult Login() {
+        public async Task<ActionResult> Login() {
 
             // verify that the user already entered the name/password correctly
             int userId = Manager.SessionSettings.SiteSettings.GetValue<int>(IDENTITY_TWOSTEP_USERID, 0);
@@ -40,7 +41,7 @@ namespace YetaWF.Modules.Identity.Controllers {
                 return Redirect(Manager.CurrentSite.HomePageUrl);
             twoStep.ClearTwoStepAuthetication(userId);
 
-            Resource.ResourceAccess.LoginAs(userId);
+            await Resource.ResourceAccess.LoginAsAsync(userId);
 
             if (closeOnLogin)
                 return View("YetaWF_Identity_TwoStepDone");

@@ -1,5 +1,6 @@
 /* Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Identity#License */
 
+using System.Threading.Tasks;
 using YetaWF.Core;
 using YetaWF.Core.Controllers;
 using YetaWF.Core.Localize;
@@ -39,8 +40,8 @@ namespace YetaWF.Modules.Identity.Controllers {
         }
 
         [AllowGet]
-        public ActionResult ForgotPassword() {
-            LoginConfigData config = LoginConfigDataProvider.GetConfig();
+        public async Task<ActionResult> ForgotPassword() {
+            LoginConfigData config = await LoginConfigDataProvider.GetConfigAsync();
             EditModel model = new EditModel {
                 ShowCaptcha = config.CaptchaForgotPassword,
                 Captcha = new RecaptchaV2Data(),
@@ -51,9 +52,9 @@ namespace YetaWF.Modules.Identity.Controllers {
         [AllowPost]
         [ConditionalAntiForgeryToken]
         [ExcludeDemoMode]
-        public ActionResult ForgotPassword_Partial(EditModel model) {
+        public async Task<ActionResult> ForgotPassword_Partial(EditModel model) {
 
-            LoginConfigData config = LoginConfigDataProvider.GetConfig();
+            LoginConfigData config = await LoginConfigDataProvider.GetConfigAsync();
             if (model.ShowCaptcha != config.CaptchaForgotPassword)
                 throw new InternalError("Hidden field tampering detected");
 
@@ -61,13 +62,13 @@ namespace YetaWF.Modules.Identity.Controllers {
             if (!ModelState.IsValid)
                 return PartialView(model);
             using (UserDefinitionDataProvider userDP = new UserDefinitionDataProvider()) {
-                UserDefinition userDef = userDP.GetItemByEmail(model.Email);
+                UserDefinition userDef = await userDP.GetItemByEmailAsync(model.Email);
                 if (userDef == null) {
                     ModelState.AddModelError("Email", this.__ResStr("badEmail", "According to our records there is no account associated with this email address"));
                     return PartialView(model);
                 }
                 using (UserLoginInfoDataProvider logInfoDP = new UserLoginInfoDataProvider()) {
-                    if (logInfoDP.IsExternalUser(Manager.UserId)) {
+                    if (await logInfoDP.IsExternalUserAsync(Manager.UserId)) {
                         ModelState.AddModelError("Email", this.__ResStr("extUser", "This account can only be accessed using an external login provider"));
                         return PartialView(model);
                     }

@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using YetaWF.Core.Controllers;
 using YetaWF.Core.Localize;
 using YetaWF.Core.Models;
@@ -11,6 +12,7 @@ using YetaWF.Core;
 using YetaWF.Modules.Identity.Views.Shared;
 using YetaWF.Modules.Identity.DataProvider;
 using System.Linq;
+using YetaWF.Core.DataProvider;
 #if MVC6
 using Microsoft.AspNetCore.Mvc;
 #else
@@ -45,37 +47,37 @@ namespace YetaWF.Modules.Identity.Controllers {
                 Prop1 = new List<int>();
                 Prop1RO = new List<int>();
             }
-            public void Init() {
+            public async Task Init() {
                 using (UserDefinitionDataProvider userDP = new DataProvider.UserDefinitionDataProvider()) {
-                    int total;
                     // get 5 sample users
-                    List<int> users = (from u in userDP.GetItems(0, 5, null, null, out total) select u.UserId).ToList();
+                    DataProviderGetRecords<UserDefinition> recs = await userDP.GetItemsAsync(0, 5, null, null);
+                    List<int> users = (from u in recs.Data select u.UserId).ToList();
                     Prop1Req = users;
                     Prop1 = users;
                     Prop1RO = users;
                 }
             }
-            public void Update() {
+            public async Task Update() {
                 using (UserDefinitionDataProvider userDP = new DataProvider.UserDefinitionDataProvider()) {
-                    int total;
                     // get 5 sample users
-                    List<int> users = (from u in userDP.GetItems(0, 5, null, null, out total) select u.UserId).ToList();
+                    DataProviderGetRecords<UserDefinition> recs = await userDP.GetItemsAsync(0, 5, null, null);
+                    List<int> users = (from u in recs.Data select u.UserId).ToList();
                     Prop1RO = users;
                 }
             }
         }
 
         [AllowGet]
-        public ActionResult TemplateListOfUserNames() {
+        public async Task<ActionResult> TemplateListOfUserNames() {
             Model model = new Model { };
-            model.Init();
+            await model.Init();
             return View(model);
         }
 
         [AllowPost]
         [ConditionalAntiForgeryToken]
-        public ActionResult TemplateListOfUserNames_Partial(Model model) {
-            model.Update();
+        public async Task<ActionResult> TemplateListOfUserNames_Partial(Model model) {
+            await model.Update();
             if (!ModelState.IsValid)
                 return PartialView(model);
             return FormProcessed(model, this.__ResStr("ok", "OK"));
@@ -84,9 +86,9 @@ namespace YetaWF.Modules.Identity.Controllers {
         [AllowPost]
         [ConditionalAntiForgeryToken]
         [ExcludeDemoMode]
-        public ActionResult AddUserName(string prefix, int newRecNumber, string newValue) {
+        public async Task<ActionResult> AddUserName(string prefix, int newRecNumber, string newValue) {
             using (UserDefinitionDataProvider userDP = new DataProvider.UserDefinitionDataProvider()) {
-                UserDefinition user = userDP.GetItem(newValue);
+                UserDefinition user = await userDP.GetItemAsync(newValue);
                 if (user == null)
                     throw new Error(this.__ResStr("noUser", "User {0} not found", newValue));
                 ListOfUserNamesHelper.GridEntryEdit entry = (ListOfUserNamesHelper.GridEntryEdit)Activator.CreateInstance(typeof(ListOfUserNamesHelper.GridEntryEdit));

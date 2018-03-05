@@ -2,6 +2,7 @@
 
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using YetaWF.Core.Identity;
 using YetaWF.Core.Localize;
 using YetaWF.Core.Pages;
@@ -26,9 +27,9 @@ namespace YetaWF.Modules.Identity.Views.Shared {
 
         public static string __ResStr(string name, string defaultValue, params object[] parms) { return ResourceAccess.GetResourceString(typeof(LoginUsersHelper), name, defaultValue, parms); }
 #if MVC6
-        public static HtmlString RenderLoginUsers(this IHtmlHelper htmlHelper, string name, int model, object HtmlAttributes = null)
+        public static async Task<HtmlString> RenderLoginUsersAsync(this IHtmlHelper htmlHelper, string name, int model, object HtmlAttributes = null)
 #else
-        public static HtmlString RenderLoginUsers(this HtmlHelper htmlHelper, string name, int model, object HtmlAttributes = null)
+        public static async Task<HtmlString> RenderLoginUsersAsync(this HtmlHelper htmlHelper, string name, int model, object HtmlAttributes = null)
 #endif
         {
 
@@ -45,7 +46,7 @@ namespace YetaWF.Modules.Identity.Views.Shared {
             List<SelectionItem<int>> list = new List<SelectionItem<int>>();
             using (UserDefinitionDataProvider dataProvider = new UserDefinitionDataProvider()) {
                 foreach (var u in users) {
-                    UserDefinition user = dataProvider.GetItemByUserId(u.UserId);
+                    UserDefinition user = await dataProvider.GetItemByUserIdAsync(u.UserId);
                     if (user != null) {
                         list.Add(new SelectionItem<int> {
                             Text = user.UserName,
@@ -60,7 +61,7 @@ namespace YetaWF.Modules.Identity.Views.Shared {
 
             // add the superuser if it hasn't already been added
             using (SuperuserDefinitionDataProvider superDataProvider = new SuperuserDefinitionDataProvider()) {
-                UserDefinition user = superDataProvider.GetSuperuser();
+                UserDefinition user = await superDataProvider.GetSuperuserAsync();
                 if (user != null) {
                     if ((from l in list where l.Value == user.UserId select l).FirstOrDefault() == null) {
                         list.Insert(0, new SelectionItem<int> {

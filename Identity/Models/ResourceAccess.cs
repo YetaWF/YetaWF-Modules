@@ -2,6 +2,7 @@
 
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using YetaWF.Core.DataProvider;
 using YetaWF.Core.Identity;
 using YetaWF.Core.Localize;
@@ -44,7 +45,11 @@ namespace YetaWF.Modules.Identity.DataProvider {
         }
         private bool? backDoor = null;
 
-        public bool IsResourceAuthorized(string resourceName) {
+        public bool IsResourceAuthorized(string resourceName) {//$$$eliminate
+            return Manager.Syncify<bool>(() => IsResourceAuthorizedAsync(resourceName));
+        }
+
+        public async Task<bool> IsResourceAuthorizedAsync(string resourceName) {
             // we need to check if this resource is protected
 
             if (string.IsNullOrEmpty(resourceName))
@@ -59,11 +64,10 @@ namespace YetaWF.Modules.Identity.DataProvider {
             if (Manager.HasSuperUserRole)
                 return true;
 
-            using (AuthorizationDataProvider authDP = new AuthorizationDataProvider())
-            {
-                Authorization auth = authDP.GetItem(resourceName);
-                if (auth == null)
-                {
+            using (AuthorizationDataProvider authDP = new AuthorizationDataProvider()) {
+
+                Authorization auth = await authDP.GetItemAsync(resourceName);
+                if (auth == null) {
                     Logging.AddLog("Resource {0} doesn't exist", resourceName);
 #if DEBUG
                     throw new InternalError("Resource {0} doesn't exist", resourceName);
@@ -72,8 +76,7 @@ namespace YetaWF.Modules.Identity.DataProvider {
 #endif
                 }
                 RoleComparer roleComp = new RoleComparer();
-                using (RoleDefinitionDataProvider roleDP = new RoleDefinitionDataProvider())
-                {
+                using (RoleDefinitionDataProvider roleDP = new RoleDefinitionDataProvider()) {
                     if (!Manager.HaveUser) {
                         // check if anonymous user allowed
                         if (auth.AllowedRoles.Contains(new Role { RoleId = roleDP.GetAnonymousRoleId() }, roleComp))
@@ -96,8 +99,7 @@ namespace YetaWF.Modules.Identity.DataProvider {
                     return true;
 
                 // check if this user is in a permitted role
-                foreach (Role loginRole in user.RolesList)
-                {
+                foreach (Role loginRole in user.RolesList) {
                     if (auth.AllowedRoles.Contains(new Role { RoleId = loginRole.RoleId }, roleComp))
                         return true;
                 }
@@ -105,7 +107,8 @@ namespace YetaWF.Modules.Identity.DataProvider {
             return false;
         }
 
-        public void ResolveUser() {
+        public async Task ResolveUserAsync() {
+
             if (!Manager.HaveCurrentRequest)
                 throw new InternalError("No httpRequest");
 
@@ -125,7 +128,7 @@ namespace YetaWF.Modules.Identity.DataProvider {
                     Logging.AddErrorLog("UserDefinitionDataProvider not installed");
                     return;
                 }
-                UserDefinition user = userDP.GetItem(userName);
+                UserDefinition user = await userDP.GetItemAsync(userName);
                 if (user == null) {
                     Logging.AddErrorLog("Authenticated user {0} doesn't exist", userName);
 #if DEBUG
@@ -142,9 +145,9 @@ namespace YetaWF.Modules.Identity.DataProvider {
                 if (Manager.Need2FAState == null) {
                     Manager.Need2FAState = false;
                     using (UserLoginInfoDataProvider logInfoDP = new UserLoginInfoDataProvider()) {
-                        if (!logInfoDP.IsExternalUser(user.UserId)) {
+                        if (!await logInfoDP.IsExternalUserAsync(user.UserId)) {
                             // not an external login, so check if we need two-step auth
-                            LoginConfigData config = LoginConfigDataProvider.GetConfig();
+                            LoginConfigData config = await LoginConfigDataProvider.GetConfigAsync();
                             if (config.TwoStepAuth != null && user.RolesList != null) {
                                 foreach (Role role in config.TwoStepAuth) {
                                     if (role.RoleId == Resource.ResourceAccess.GetUserRoleId() || user.RolesList.Contains(new Role { RoleId = role.RoleId }, new RoleComparer())) {
@@ -206,52 +209,45 @@ namespace YetaWF.Modules.Identity.DataProvider {
         }
 
         public int GetEditorRoleId() {
-            using (RoleDefinitionDataProvider roleDP = new RoleDefinitionDataProvider())
-            {
+            using (RoleDefinitionDataProvider roleDP = new RoleDefinitionDataProvider()) {
                 return roleDP.GetEditorRoleId();
             }
         }
 
         public int GetAdministratorRoleId() {
-            using (RoleDefinitionDataProvider roleDP = new RoleDefinitionDataProvider())
-            {
+            using (RoleDefinitionDataProvider roleDP = new RoleDefinitionDataProvider()) {
                 return roleDP.GetAdministratorRoleId();
             }
         }
 
         public int GetAnonymousRoleId() {
-            using (RoleDefinitionDataProvider roleDP = new RoleDefinitionDataProvider())
-            {
+            using (RoleDefinitionDataProvider roleDP = new RoleDefinitionDataProvider()) {
                 return roleDP.GetAnonymousRoleId();
             }
         }
         public int GetRoleId(string name) {
-            using (RoleDefinitionDataProvider roleDP = new RoleDefinitionDataProvider())
-            {
+            using (RoleDefinitionDataProvider roleDP = new RoleDefinitionDataProvider()) {
                 return roleDP.GetRoleId(name);
             }
         }
 
-        public int GetUserId(string userName) {
-            using (UserDefinitionDataProvider userDP = new UserDefinitionDataProvider())
-            {
-                UserDefinition user = userDP.GetItem(userName);
+        public async Task<int> GetUserIdAsync(string userName) {
+            using (UserDefinitionDataProvider userDP = new UserDefinitionDataProvider()) {
+                UserDefinition user = await userDP.GetItemAsync(userName);
                 if (user == null) return 0;
                 return user.UserId;
             }
         }
-        public string GetUserName(int userId) {
-            using (UserDefinitionDataProvider userDP = new UserDefinitionDataProvider())
-            {
-                UserDefinition user = userDP.GetItemByUserId(userId);
+        public async Task<string> GetUserNameAsync(int userId) {
+            using (UserDefinitionDataProvider userDP = new UserDefinitionDataProvider()) {
+                UserDefinition user = await userDP.GetItemByUserIdAsync(userId);
                 if (user == null) return null;
                 return user.UserName;
             }
         }
-        public string GetUserEmail(int userId) {
-            using (UserDefinitionDataProvider userDP = new UserDefinitionDataProvider())
-            {
-                UserDefinition user = userDP.GetItemByUserId(userId);
+        public async Task<string> GetUserEmailAsync(int userId) {
+            using (UserDefinitionDataProvider userDP = new UserDefinitionDataProvider()) {
+                UserDefinition user = await userDP.GetItemByUserIdAsync(userId);
                 if (user == null) return null;
                 return user.Email;
             }
@@ -260,58 +256,55 @@ namespace YetaWF.Modules.Identity.DataProvider {
             return SuperuserDefinitionDataProvider.SuperUserId;
         }
 
-        public void AddRole(string roleName, string description) {
-            using (RoleDefinitionDataProvider roleDP = new RoleDefinitionDataProvider())
-            {
-                roleDP.AddItem(new RoleDefinition { Name = roleName, Description = description });
+        public async Task AddRoleAsync(string roleName, string description) {
+            using (RoleDefinitionDataProvider roleDP = new RoleDefinitionDataProvider()) {
+                await roleDP.AddItemAsync(new RoleDefinition { Name = roleName, Description = description });
+            }
+        }
+        public async Task RemoveRoleAsync(string roleName) {
+            using (RoleDefinitionDataProvider roleDP = new RoleDefinitionDataProvider()) {
+                await roleDP.RemoveItemAsync(roleName);
             }
         }
 
-        public void RemoveRole(string roleName) {
-            using (RoleDefinitionDataProvider roleDP = new RoleDefinitionDataProvider())
-            {
-                roleDP.RemoveItem(roleName);
-            }
-        }
-
-        public void AddRoleToUser(int userId, string roleName) {
+        public async Task AddRoleToUserAsync(int userId, string roleName) {
             int roleId;
             // get the role id for roleName
             using (RoleDefinitionDataProvider roleDP = new RoleDefinitionDataProvider()) {
-                RoleDefinition role = roleDP.GetItem(roleName);
+                RoleDefinition role = await roleDP.GetItemAsync(roleName);
                 if (role == null) throw new InternalError("Unexpected error in AddRoleToUser - expected role {0} not found", roleName);
                 roleId = role.RoleId;
             }
             // add the role to the user
             using (UserDefinitionDataProvider userDP = new UserDefinitionDataProvider()) {
-                UserDefinition user = userDP.GetItemByUserId(userId);
+                UserDefinition user = await userDP.GetItemByUserIdAsync(userId);
                 if (user == null) throw new InternalError("Unexpected error in AddRoleToUser - no user found");
                 Role role = new Role { RoleId = roleId };
                 if (!user.RolesList.Contains(role, new RoleComparer())) {
                     user.RolesList.Add(role);
-                    UpdateStatusEnum status = userDP.UpdateItem(user);
+                    UpdateStatusEnum status = await userDP.UpdateItemAsync(user);
                     if (status != UpdateStatusEnum.OK)
                         throw new InternalError("Unexpected status {0} updating user account in AddRoleToUser", status);
                 }
             }
         }
 
-        public void RemoveRoleFromUser(int userId, string roleName) {
+        public async Task RemoveRoleFromUserAsync(int userId, string roleName) {
             int roleId;
             // get the role id for roleName
             using (RoleDefinitionDataProvider roleDP = new RoleDefinitionDataProvider()) {
-                RoleDefinition role = roleDP.GetItem(roleName);
+                RoleDefinition role = await roleDP.GetItemAsync(roleName);
                 if (role == null) throw new InternalError("Unexpected error in AddRoleToUser - expected role {0} not found", roleName);
                 roleId = role.RoleId;
             }
             // remove the role from the user
             using (UserDefinitionDataProvider userDP = new UserDefinitionDataProvider()) {
-                UserDefinition user = userDP.GetItemByUserId(userId);
+                UserDefinition user = await userDP.GetItemByUserIdAsync(userId);
                 if (user != null) {
                     Role role = (from Role r in user.RolesList where r.RoleId == roleId select r).FirstOrDefault();
                     if (role != null) {
                         user.RolesList.Remove(role);
-                        UpdateStatusEnum status = userDP.UpdateItem(user);
+                        UpdateStatusEnum status = await userDP.UpdateItemAsync(user);
                         if (status != UpdateStatusEnum.OK)
                             throw new InternalError("Unexpected status {0} updating user account in RemoveRoleFromUser", status);
                     }
@@ -325,7 +318,7 @@ namespace YetaWF.Modules.Identity.DataProvider {
         }
         public ModuleAction GetForceTwoStepActionSetup(string url) {
             SelectTwoStepSetupModule mod = new SelectTwoStepSetupModule();
-            return mod.GetAction_ForceTwoStepSetup(url);
+            return mod.GetAction_ForceTwoStepSetupAsync(url);
         }
         public void ShowNeed2FA() {
             Manager.AddOnManager.AddExplicitlyInvokedModules(
@@ -335,100 +328,100 @@ namespace YetaWF.Modules.Identity.DataProvider {
             );
         }
 
-        public List<string> GetEnabledTwoStepAuthentications(int userId) {
+        //$$public async Task<List<string>> GetEnabledTwoStepAuthenticationsAsync(int userId) {
+        //    using (UserDefinitionDataProvider userDP = new UserDefinitionDataProvider()) {
+        //        UserDefinition user = await userDP.GetItemByUserIdAsync(userId);
+        //        if (user == null) throw new InternalError("Unexpected error in GetEnabledTwoStepAuthentications - no user found");
+        //        return (from e in user.EnabledTwoStepAuthentications select e.Name).ToList();
+        //    }
+        //}
+        //public async Task SetEnabledTwoStepAuthenticationsAsync(int userId, List<string> auths) {
+        //    using (UserDefinitionDataProvider userDP = new UserDefinitionDataProvider()) {
+        //        UserDefinition user = await userDP.GetItemByUserIdAsync(userId);
+        //        if (user == null) throw new InternalError("Unexpected error in SetEnabledTwoStepAuthentications - no user found");
+        //        user.EnabledTwoStepAuthentications = new SerializableList<TwoStepDefinition>(from a in auths select new TwoStepDefinition { Name = a });
+        //        UpdateStatusEnum status = await userDP.UpdateItemAsync(user);
+        //        if (status != UpdateStatusEnum.OK)
+        //            throw new InternalError("Unexpected status {0} updating user account in SetEnabledTwoStepAuthentications", status);
+        //    }
+        //}
+        public async Task AddEnabledTwoStepAuthenticationAsync(int userId, string auth) {
             using (UserDefinitionDataProvider userDP = new UserDefinitionDataProvider()) {
-                UserDefinition user = userDP.GetItemByUserId(userId);
-                if (user == null) throw new InternalError("Unexpected error in GetEnabledTwoStepAuthentications - no user found");
-                return (from e in user.EnabledTwoStepAuthentications select e.Name).ToList();
-            }
-        }
-        public void SetEnabledTwoStepAuthentications(int userId, List<string> auths) {
-            using (UserDefinitionDataProvider userDP = new UserDefinitionDataProvider()) {
-                UserDefinition user = userDP.GetItemByUserId(userId);
-                if (user == null) throw new InternalError("Unexpected error in SetEnabledTwoStepAuthentications - no user found");
-                user.EnabledTwoStepAuthentications = new SerializableList<TwoStepDefinition>(from a in auths select new TwoStepDefinition { Name = a });
-                UpdateStatusEnum status = userDP.UpdateItem(user);
-                if (status != UpdateStatusEnum.OK)
-                    throw new InternalError("Unexpected status {0} updating user account in SetEnabledTwoStepAuthentications", status);
-            }
-        }
-        public void AddEnabledTwoStepAuthentication(int userId, string auth) {
-            using (UserDefinitionDataProvider userDP = new UserDefinitionDataProvider()) {
-                UserDefinition user = userDP.GetItemByUserId(userId);
-                if (user == null) throw new InternalError("Unexpected error in AddEnabledTwoStepAuthentication - no user found");
+                UserDefinition user = await userDP.GetItemByUserIdAsync(userId);
+                if (user == null) throw new InternalError($"Unexpected error in {nameof(AddEnabledTwoStepAuthenticationAsync)} - no user found");
                 TwoStepDefinition authDef = new DataProvider.TwoStepDefinition { Name = auth };
                 if (!user.EnabledTwoStepAuthentications.Contains(authDef, new TwoStepDefinitionComparer())) {
                     user.EnabledTwoStepAuthentications.Add(authDef);
-                    UpdateStatusEnum status = userDP.UpdateItem(user);
+                    UpdateStatusEnum status = await userDP.UpdateItemAsync(user);
                     if (status != UpdateStatusEnum.OK)
-                        throw new InternalError("Unexpected status {0} updating user account in AddEnabledTwoStepAuthentication", status);
+                        throw new InternalError($"Unexpected status {status} updating user account in {nameof(AddEnabledTwoStepAuthenticationAsync)}");
                     Manager.Need2FAState = null;//reevaluate now that user has enabled a two-step authentication
                 }
             }
         }
-        public bool HasEnabledTwoStepAuthentication(int userId, string auth) {
+        public async Task<bool> HasEnabledTwoStepAuthenticationAsync(int userId, string auth) {
             using (UserDefinitionDataProvider userDP = new UserDefinitionDataProvider()) {
-                UserDefinition user = userDP.GetItemByUserId(userId);
+                UserDefinition user = await userDP.GetItemByUserIdAsync(userId);
                 if (user == null) return false;
                 TwoStepDefinition authDef = new DataProvider.TwoStepDefinition { Name = auth };
                 return user.EnabledTwoStepAuthentications.Contains(authDef, new TwoStepDefinitionComparer());
             }
         }
-        public void RemoveEnabledTwoStepAuthentication(int userId, string auth) {
+        public async Task RemoveEnabledTwoStepAuthenticationAsync(int userId, string auth) {
             using (UserDefinitionDataProvider userDP = new UserDefinitionDataProvider()) {
-                UserDefinition user = userDP.GetItemByUserId(userId);
+                UserDefinition user = await userDP.GetItemByUserIdAsync(userId);
                 if (user == null) throw new InternalError("Unexpected error in RemoveEnabledTwoStepAuthentication - no user found");
                 TwoStepDefinition authDef = user.EnabledTwoStepAuthentications.Find(m => m.Name == auth);
                 if (authDef != null) {
                     user.EnabledTwoStepAuthentications.Remove(authDef);
-                    UpdateStatusEnum status = userDP.UpdateItem(user);
+                    UpdateStatusEnum status = await userDP.UpdateItemAsync(user);
                     if (status != UpdateStatusEnum.OK)
                         throw new InternalError("Unexpected status {0} updating user account in RemoveEnabledTwoStepAuthentication", status);
                     Manager.Need2FAState = null;//reevaluate now that user has removed a two-step authentication
                 }
             }
         }
-        public void AddTwoStepLoginFailure() {
+        public async Task AddTwoStepLoginFailureAsync() {
             int userId = Manager.SessionSettings.SiteSettings.GetValue<int>(LoginTwoStepController.IDENTITY_TWOSTEP_USERID);
             if (userId == 0)
                 throw new InternalError("No user id available in AddTwoStepLoginFailure");
             using (UserDefinitionDataProvider userDP = new UserDefinitionDataProvider()) {
-                UserDefinition user = userDP.GetItemByUserId(userId);
+                UserDefinition user = await userDP.GetItemByUserIdAsync(userId);
                 if (user == null) throw new InternalError("Unexpected error in AddTwoStepLoginFailure - no user found");
-                LoginConfigData config = LoginConfigDataProvider.GetConfig();
+                LoginConfigData config = await LoginConfigDataProvider.GetConfigAsync();
                 user.LoginFailures = user.LoginFailures + 1;
                 if (config.MaxLoginFailures != 0 && user.LoginFailures >= config.MaxLoginFailures) {
                     if (user.UserStatus != UserStatusEnum.Suspended)
                         user.UserStatus = UserStatusEnum.Suspended;
                 }
-                UpdateStatusEnum status = userDP.UpdateItem(user);
+                UpdateStatusEnum status = await userDP.UpdateItemAsync(user);
                 if (status != UpdateStatusEnum.OK)
                     throw new InternalError("Unexpected status {0} updating user account in AddTwoStepLoginFailure", status);
             }
         }
-        public bool GetTwoStepLoginFailuresExceeded() {
+        public async Task<bool> GetTwoStepLoginFailuresExceededAsync() {
             int userId = Manager.SessionSettings.SiteSettings.GetValue<int>(LoginTwoStepController.IDENTITY_TWOSTEP_USERID);
             if (userId == 0)
                 throw new InternalError("No user id available in GetTwoStepLoginFailures");
             using (UserDefinitionDataProvider userDP = new UserDefinitionDataProvider()) {
-                UserDefinition user = userDP.GetItemByUserId(userId);
+                UserDefinition user = await userDP.GetItemByUserIdAsync(userId);
                 if (user == null) throw new InternalError("Unexpected error in GetTwoStepLoginFailures - no user found");
-                LoginConfigData config = LoginConfigDataProvider.GetConfig();
+                LoginConfigData config = await LoginConfigDataProvider.GetConfigAsync();
                 return config.MaxLoginFailures != 0 && user.LoginFailures >= config.MaxLoginFailures;
             }
         }
 
-        public void Logoff() {
-            LoginModuleController.UserLogoff();
+        public async Task LogoffAsync() {
+            await LoginModuleController.UserLogoffAsync();
         }
-        public void LoginAs(int userId) {
+        public async Task LoginAsAsync(int userId) {
             using (UserDefinitionDataProvider dataProvider = new UserDefinitionDataProvider()) {
-                UserDefinition user = dataProvider.GetItemByUserId(userId);
+                UserDefinition user = await dataProvider.GetItemByUserIdAsync(userId);
                 if (user == null)
                     throw new Error(this.__ResStr("noUser", "User with id {0} doesn't exist", userId));
                 if (user.UserStatus != UserStatusEnum.Approved)
                     throw new Error(this.__ResStr("notApproved", "User account for user {0} has not been approved - can't log in", user.UserName));
-                LoginModuleController.UserLoginAsync(user).Wait();
+                await LoginModuleController.UserLoginAsync(user);
             }
         }
     }

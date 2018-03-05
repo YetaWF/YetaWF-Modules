@@ -2,6 +2,7 @@
 
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using YetaWF.Core.Controllers;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Modules;
@@ -38,14 +39,14 @@ namespace YetaWF.Modules.Identity.Controllers {
         }
 
         [AllowGet]
-        public ActionResult SelectTwoStepAuth(int userId, string userName, string userEmail) {
+        public async Task<ActionResult> SelectTwoStepAuth(int userId, string userName, string userEmail) {
             EditModel model = new EditModel {
                 UserId = userId,
                 UserName = userName,
                 UserEmail = userEmail,
             };
             using (UserDefinitionDataProvider userDP = new UserDefinitionDataProvider()) {
-                UserDefinition user = userDP.GetItemByUserId(userId);
+                UserDefinition user = await userDP.GetItemByUserIdAsync(userId);
                 if (user == null)
                     throw new InternalError("User with id {0} not found", userId);
                 TwoStepAuth twoStep = new TwoStepAuth();

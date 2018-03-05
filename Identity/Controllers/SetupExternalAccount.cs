@@ -80,7 +80,7 @@ namespace YetaWF.Modules.Identity.Controllers {
             loginProvider = loginInfo.Login.LoginProvider;
 #endif
             // get the registration module for some defaults
-            LoginConfigData config = LoginConfigDataProvider.GetConfig();
+            LoginConfigData config = await LoginConfigDataProvider.GetConfigAsync();
 
             SetupExternalAccountModel model;
 
@@ -114,7 +114,7 @@ namespace YetaWF.Modules.Identity.Controllers {
             }
 
             // get the registration module for some defaults
-            LoginConfigData config = LoginConfigDataProvider.GetConfig();
+            LoginConfigData config = await LoginConfigDataProvider.GetConfigAsync();
 
             // set new user info
             UserDefinition user = new UserDefinition();
@@ -147,7 +147,7 @@ namespace YetaWF.Modules.Identity.Controllers {
                             Field = "Email", Operator = "==", Value = user.Email,
                         },
                     };
-                    UserDefinition userExists = dataProvider.GetItem(filters);
+                    UserDefinition userExists = await dataProvider.GetItemAsync(filters);
                     if (userExists != null && user.UserName != userExists.Email) {
                         ModelState.AddModelError("Email", this.__ResStr("emailUsed", "An account with email address {0} already exists.", user.Email));
                         return PartialView(model);

@@ -1,6 +1,7 @@
 ﻿/* Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/ModuleEdit#License */
 
 using System;
+using System.Threading.Tasks;
 using YetaWF.Core.Controllers;
 using YetaWF.Core.Identity;
 using YetaWF.Core.Localize;
@@ -23,14 +24,14 @@ namespace YetaWF.Modules.ModuleEdit.Controllers {
         [AllowPost]
         [ConditionalAntiForgeryToken]
         [ExcludeDemoMode]
-        public ActionResult AddUserToModule(string prefix, int newRecNumber, string newValue, Guid editGuid) {
+        public async Task<ActionResult> AddUserToModule(string prefix, int newRecNumber, string newValue, Guid editGuid) {
 
             if (string.IsNullOrWhiteSpace(newValue))
                 throw new Error(this.__ResStr("noParm", "No user name specified"));
             if (editGuid == Guid.Empty)
                 throw new InternalError("No module being edited");
 
-            int userId = Resource.ResourceAccess.GetUserId(newValue);
+            int userId = await Resource.ResourceAccess.GetUserIdAsync(newValue);
             if (userId == 0)
                 throw new Error(this.__ResStr("noUser", "User {0} doesn't exist", newValue));
 
@@ -41,7 +42,7 @@ namespace YetaWF.Modules.ModuleEdit.Controllers {
             Type gridEntryType = propData.GetAdditionalAttributeValue<Type>("GridEntry");
 
             // add new grid record
-            ModuleDefinition.GridAllowedUser userEntry = (ModuleDefinition.GridAllowedUser) Activator.CreateInstance(gridEntryType);
+            ModuleDefinition.GridAllowedUser userEntry = (ModuleDefinition.GridAllowedUser)Activator.CreateInstance(gridEntryType);
             userEntry.SetUser(userId);
             GridDefinition.GridEntryDefinition gridEntryDef = new GridDefinition.GridEntryDefinition(prefix, newRecNumber, userEntry);
             return GridPartialView(gridEntryDef);

@@ -8,6 +8,7 @@ using YetaWF.Core.Localize;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Modules;
 using YetaWF.Core.Serializers;
+using YetaWF.Core.Support;
 using YetaWF.DataProvider;
 using YetaWF.Modules.Identity.DataProvider;
 
@@ -50,13 +51,15 @@ namespace YetaWF.Modules.Identity.Modules {
 
         // Add a user from a site template
         public void AddUser(string userName) {
-            using (UserDefinitionDataProvider dataProvider = new UserDefinitionDataProvider()) {
-                UserDefinition user = dataProvider.GetItem(userName);
-                if (user != null) {
-                    Users.Add(new User { UserId = user.UserId });
-                    Save();
+            YetaWFManager.Manager.Syncify(async () => { // rarely used so sync is OK
+                using (UserDefinitionDataProvider dataProvider = new UserDefinitionDataProvider()) {
+                    UserDefinition user = await dataProvider.GetItemAsync(userName);
+                    if (user != null) {
+                        Users.Add(new User { UserId = user.UserId });
+                        Save();
+                    }
                 }
-            }
+            });
         }
     }
 }

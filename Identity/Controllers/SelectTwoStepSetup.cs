@@ -2,6 +2,7 @@
 
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using YetaWF.Core.Controllers;
 using YetaWF.Core.Localize;
 using YetaWF.Core.Models.Attributes;
@@ -37,15 +38,15 @@ namespace YetaWF.Modules.Identity.Controllers {
         }
 
         [AllowGet]
-        public ActionResult SelectTwoStepSetup() {
+        public async Task<ActionResult> SelectTwoStepSetup() {
             EditModel model = new EditModel();
             Manager.NeedUser();
             using (UserDefinitionDataProvider userDP = new UserDefinitionDataProvider()) {
-                UserDefinition user = userDP.GetItemByUserId(Manager.UserId);
+                UserDefinition user = await userDP.GetItemByUserIdAsync(Manager.UserId);
                 if (user == null)
                     throw new InternalError("User with id {0} not found", Manager.UserId);
                 using (UserLoginInfoDataProvider logInfoDP = new UserLoginInfoDataProvider()) {
-                    if (logInfoDP.IsExternalUser(Manager.UserId))
+                    if (await logInfoDP.IsExternalUserAsync(Manager.UserId))
                         return View("ShowMessage", this.__ResStr("extUser", "This account uses an external login provider - Two-step authentication (if available) must be set up using the external login provider."), UseAreaViewName: false);
                 }
                 TwoStepAuth twoStep = new TwoStepAuth();
@@ -65,7 +66,7 @@ namespace YetaWF.Modules.Identity.Controllers {
                                 Action = action,
                                 Status = status,
                                 Description = auth.GetDescription()
-                           });
+                            });
                         }
                     }
                 }

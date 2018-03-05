@@ -67,6 +67,7 @@ namespace YetaWF.Modules.Identity.Models {
         // IUserStore
 
 #if MVC6
+        //$$$ FIX ALL ASYNC
         public Task<IdentityResult> CreateAsync(UserDefinition user, CancellationToken cancellationToken) {
             using (UserDefinitionDataProvider dataProvider = new UserDefinitionDataProvider(this.CurrentSiteIdentity)) {
                 bool status = dataProvider.AddItem(user);
@@ -76,12 +77,11 @@ namespace YetaWF.Modules.Identity.Models {
             }
         }
 #else
-        public Task CreateAsync(UserDefinition user) {
+        public async Task CreateAsync(UserDefinition user) {
             using (UserDefinitionDataProvider dataProvider = new UserDefinitionDataProvider(this.CurrentSiteIdentity)) {
-                bool status = dataProvider.AddItem(user);
+                bool status = await dataProvider.AddItemAsync(user);
                 if (!status)
                     throw new Error(this.__ResStr("userExists", "User {0} already exists.", user.UserName));
-                return Task.FromResult(0);
             }
         }
 #endif
@@ -95,12 +95,11 @@ namespace YetaWF.Modules.Identity.Models {
             }
         }
 #else
-        public Task DeleteAsync(UserDefinition user) {
+        public async Task DeleteAsync(UserDefinition user) {
             using (UserDefinitionDataProvider dataProvider = new UserDefinitionDataProvider(this.CurrentSiteIdentity)) {
-                bool status = dataProvider.RemoveItem(user.UserName);
+                bool status = await dataProvider.RemoveItemAsync(user.UserName);
                 if (!status)
                     throw new Error(this.__ResStr("userNotFound", "User {0} not found.", user.UserName));
-                return Task.FromResult(0);
             }
         }
 #endif
@@ -121,9 +120,9 @@ namespace YetaWF.Modules.Identity.Models {
             }
         }
 #else
-        public Task UpdateAsync(UserDefinition user) {
+        public async Task UpdateAsync(UserDefinition user) {
             using (UserDefinitionDataProvider dataProvider = new UserDefinitionDataProvider(this.CurrentSiteIdentity)) {
-                UpdateStatusEnum status = dataProvider.UpdateItem(user);
+                UpdateStatusEnum status = await dataProvider.UpdateItemAsync(user);
                 switch (status) {
                     default:
                     case UpdateStatusEnum.NewKeyExists:
@@ -133,22 +132,21 @@ namespace YetaWF.Modules.Identity.Models {
                     case UpdateStatusEnum.OK:
                         break;
                 }
-                return Task.FromResult(0);
             }
         }
 #endif
 #if MVC6
         public Task<UserDefinition> FindByIdAsync(string userId, CancellationToken cancellationToken)
 #else
-        public Task<UserDefinition> FindByIdAsync(string userId)
+        public async Task<UserDefinition> FindByIdAsync(string userId)
 #endif
         {
             using (UserDefinitionDataProvider dataProvider = new UserDefinitionDataProvider(this.CurrentSiteIdentity)) {
                 UserDefinition user = null;
                 try {
-                    user = dataProvider.GetItemByUserId(Convert.ToInt32(userId));
+                    user = await dataProvider.GetItemByUserIdAsync(Convert.ToInt32(userId));
                 } catch (Exception) { }
-                return Task.FromResult(user);
+                return user;
             }
         }
 #if MVC6
@@ -175,12 +173,12 @@ namespace YetaWF.Modules.Identity.Models {
 #if MVC6
         public Task<UserDefinition> FindByNameAsync(string userName, CancellationToken cancellationToken)
 #else
-        public Task<UserDefinition> FindByNameAsync(string userName)
+        public async Task<UserDefinition> FindByNameAsync(string userName)
 #endif
         {
             using (UserDefinitionDataProvider dataProvider = new UserDefinitionDataProvider(this.CurrentSiteIdentity)) {
-                UserDefinition user = dataProvider.GetItem(userName);
-                return Task.FromResult(user);
+                UserDefinition user = await dataProvider.GetItemAsync(userName);
+                return user;
             }
         }
 
@@ -190,15 +188,15 @@ namespace YetaWF.Modules.Identity.Models {
 #if MVC6
         public Task AddLoginAsync(UserDefinition user, UserLoginInfo login, CancellationToken cancellationToken)
 #else
-        public Task AddLoginAsync(UserDefinition user, UserLoginInfo login)
+        public async Task AddLoginAsync(UserDefinition user, UserLoginInfo login)
 #endif
         {
             using (UserLoginInfoDataProvider logInfoDP = new DataProvider.UserLoginInfoDataProvider()) {
-                logInfoDP.AddItem(user.UserId, login.LoginProvider, login.ProviderKey);
+                await logInfoDP.AddItemAsync(user.UserId, login.LoginProvider, login.ProviderKey);
             }
 
             using (UserDefinitionDataProvider dataProvider = new UserDefinitionDataProvider(this.CurrentSiteIdentity)) {
-                UpdateStatusEnum status = dataProvider.UpdateItem(user);
+                UpdateStatusEnum status = await dataProvider.UpdateItemAsync(user);
                 switch (status) {
                     case UpdateStatusEnum.RecordDeleted:
                         throw new Error(this.__ResStr("delUser", "Can't update user {0}, because the user has been deleted.", user.UserName));
@@ -208,7 +206,6 @@ namespace YetaWF.Modules.Identity.Models {
                     case UpdateStatusEnum.OK:
                         break;
                 }
-                return Task.FromResult(0);
             }
         }
 #if MVC6
@@ -219,10 +216,10 @@ namespace YetaWF.Modules.Identity.Models {
             }
         }
 #else
-        public Task<UserDefinition> FindAsync(UserLoginInfo login) {
+        public async Task<UserDefinition> FindAsync(UserLoginInfo login) {
             using (UserLoginInfoDataProvider logInfoDP = new DataProvider.UserLoginInfoDataProvider(CurrentSiteIdentity)) {
-                UserDefinition user = logInfoDP.GetItem(login.LoginProvider, login.ProviderKey);
-                return Task.FromResult(user);
+                UserDefinition user = await logInfoDP.GetItemAsync(login.LoginProvider, login.ProviderKey);
+                return user;
             }
         }
 #endif
@@ -242,10 +239,9 @@ namespace YetaWF.Modules.Identity.Models {
             }
         }
 #else
-        public Task RemoveLoginAsync(UserDefinition user, UserLoginInfo login) {
+        public async Task RemoveLoginAsync(UserDefinition user, UserLoginInfo login) {
             using (UserLoginInfoDataProvider logInfoDP = new DataProvider.UserLoginInfoDataProvider(CurrentSiteIdentity)) {
-                logInfoDP.RemoveItem(login.LoginProvider, login.ProviderKey);
-                return Task.FromResult(0);
+                await logInfoDP.RemoveItemAsync(login.LoginProvider, login.ProviderKey);
             }
         }
 #endif
@@ -276,7 +272,7 @@ namespace YetaWF.Modules.Identity.Models {
 #endif
         {
             user.PasswordHash = passwordHash;
-            return Task.FromResult(0);
+            return Task.CompletedTask;
         }
 
         // IUserRoleStore
@@ -291,7 +287,7 @@ namespace YetaWF.Modules.Identity.Models {
         {
             int roleId = Convert.ToInt32(role);
             user.RolesList.Add(new Role() { RoleId = roleId });
-            return Task.FromResult(0);
+            return Task.CompletedTask;
         }
 #if MVC6
         public Task<IList<string>> GetRolesAsync(UserDefinition user, CancellationToken cancellationToken)
@@ -327,7 +323,7 @@ namespace YetaWF.Modules.Identity.Models {
             Role role = (from Role r in user.RolesList where r.RoleId == roleId select r).FirstOrDefault();
             if (role != null)
                 user.RolesList.Remove(role);
-            return Task.FromResult(0);
+            return Task.CompletedTask;
         }
 
 #if MVC6

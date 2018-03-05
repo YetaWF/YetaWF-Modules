@@ -1,5 +1,6 @@
 /* Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Identity#License */
 
+using System.Threading.Tasks;
 using YetaWF.Core.Controllers;
 using YetaWF.Core.Localize;
 using YetaWF.Core.Models;
@@ -39,9 +40,9 @@ namespace YetaWF.Modules.Identity.Controllers {
         }
 
         [AllowGet]
-        public ActionResult RolesDisplay(string name) {
+        public async Task<ActionResult> RolesDisplay(string name) {
             using (RoleDefinitionDataProvider dataProvider = new RoleDefinitionDataProvider()) {
-                RoleDefinition data = dataProvider.GetItem(name);
+                RoleDefinition data = await dataProvider.GetItemAsync(name);
                 if (data == null)
                     throw new Error(this.__ResStr("notFound", "Role \"{0}\" not found."), name);
                 DisplayModel model = new DisplayModel();

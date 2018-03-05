@@ -3,6 +3,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using YetaWF.Core;
 using YetaWF.Core.Controllers;
 using YetaWF.Core.Localize;
@@ -416,7 +417,7 @@ namespace YetaWF.Modules.PageEdit.Controllers {
         [AllowPost]
         [ConditionalAntiForgeryToken]
         [ExcludeDemoMode]
-        public ActionResult LoginSiteSelection_Partial(LoginSiteSelectionModel model) {
+        public async Task<ActionResult> LoginSiteSelection_Partial(LoginSiteSelectionModel model) {
             if (!ModelState.IsValid) {
                 model.AddData();
                 return PartialView(model);
@@ -428,9 +429,9 @@ namespace YetaWF.Modules.PageEdit.Controllers {
             } else { /* if (model.UserId != Manager.UserId) */
                 int userId = model.UserId;
                 if (userId == 0)
-                    Resource.ResourceAccess.Logoff();
+                    await Resource.ResourceAccess.LogoffAsync();
                 else
-                    Resource.ResourceAccess.LoginAs(userId);
+                    await Resource.ResourceAccess.LoginAsAsync(userId);
                 if (model.SuperuserStillActive != null && !(bool)model.SuperuserStillActive)
                     Manager.SetSuperUserRole(false);
                 nextPage = Manager.ReturnToUrl;

@@ -61,7 +61,7 @@ namespace YetaWF.Modules.Identity.Views.Shared {
             public string __TextDisplay { get { return UserName; } }
 
             public GridEntryEdit(UserDefinitionDataProvider userDP, int userId) {
-                UserDefinition user = userDP.GetItemByUserId(userId);
+                UserDefinition user = YetaWFManager.Manager.Syncify(() => userDP.GetItemByUserIdAsync(userId));
                 if (user == null) {
                     UserName = this.__ResStr("noUser", "({0})", userId);
                 } else {
@@ -180,7 +180,7 @@ namespace YetaWF.Modules.Identity.Views.Shared {
             public int UserId { get; set; }
 
             public GridEntryDisplay(UserDefinitionDataProvider userDP, int userId) {
-                UserDefinition user = userDP.GetItemByUserId(userId);
+                UserDefinition user = YetaWFManager.Manager.Syncify(() => userDP.GetItemByUserIdAsync(userId));//$$$
                 if (user == null) {
                     UserName = this.__ResStr("noUser", "({0})", userId);
                 } else {

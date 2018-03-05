@@ -32,6 +32,8 @@ namespace YetaWF.Modules.PageEdit.Views.Shared {
 
         public class GridAllowedUser {
 
+            protected YetaWFManager Manager { get { return YetaWFManager.Manager; } }
+
             [Caption("Delete"), Description("Click to delete a user")]
             [UIHint("GridDeleteEntry")]
             public int DeleteMe { get; set; }
@@ -60,12 +62,12 @@ namespace YetaWF.Modules.PageEdit.Views.Shared {
             public GridAllowedUser(PageDefinition.AllowedUser allowedUser) {
                 ObjectSupport.CopyData(allowedUser, this);
                 UserId = DisplayUserId = allowedUser.UserId;
-                UserName = Resource.ResourceAccess.GetUserName(allowedUser.UserId);
+                UserName = Manager.Syncify<string>(() => Resource.ResourceAccess.GetUserNameAsync(allowedUser.UserId));//$$$ what to do
             }
             public GridAllowedUser(int userId) {
                 UserId = DisplayUserId = userId;
                 View = PageDefinition.AllowedEnum.Yes;
-                UserName = Resource.ResourceAccess.GetUserName(userId);
+                UserName = Manager.Syncify<string>(() => Resource.ResourceAccess.GetUserNameAsync(userId));//$$$ what to do
             }
         }
 #if MVC6

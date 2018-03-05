@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using YetaWF.Core.DataProvider;
 using YetaWF.Core.IO;
 using YetaWF.Core.Localize;
@@ -63,8 +64,8 @@ namespace YetaWF.Modules.Identity.Modules {
             menuList.New(logAction, location);
             return menuList;
         }
-        public ModuleAction GetAction_Register(string url, bool Force = false, bool CloseOnLogin = false) {
-            LoginConfigData config = LoginConfigDataProvider.GetConfig();
+        public async Task<ModuleAction> GetAction_RegisterAsync(string url, bool Force = false, bool CloseOnLogin = false) {
+            LoginConfigData config = await LoginConfigDataProvider.GetConfigAsync();
             if (!config.AllowUserRegistration) return null;
             if (!Force && Manager.HaveUser) return null;
             return new ModuleAction(this) {

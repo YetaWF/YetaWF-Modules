@@ -71,14 +71,10 @@ namespace YetaWF.Modules.Identity.Controllers {
         }
 
         [AllowGet]
-#if MVC6
         public async Task<ActionResult> UserAccount()
-#else
-        public ActionResult UserAccount()
-#endif
         {
             using (UserDefinitionDataProvider dataProvider = new UserDefinitionDataProvider()) {
-                LoginConfigData config = LoginConfigDataProvider.GetConfig();
+                LoginConfigData config = await LoginConfigDataProvider.GetConfigAsync();
                 EditModel model = new EditModel {
                     RegistrationType = config.RegistrationType,
                 };
@@ -129,13 +125,13 @@ namespace YetaWF.Modules.Identity.Controllers {
 
             // update email/user name - can't use an existing email address
             // get the registration module for some defaults
-            LoginConfigData config = LoginConfigDataProvider.GetConfig();
+            LoginConfigData config = await LoginConfigDataProvider.GetConfigAsync();
             switch (config.RegistrationType) {
                 default:
                 case RegistrationTypeEnum.NameAndEmail: {
                     using (UserDefinitionDataProvider dataProvider = new UserDefinitionDataProvider()) {
                         List<DataProviderFilterInfo> filters = DataProviderFilterInfo.Join(null, new DataProviderFilterInfo { Field = "Email", Operator = "==", Value = model.Email, });
-                        UserDefinition userExists = dataProvider.GetItem(filters);
+                        UserDefinition userExists = await dataProvider.GetItemAsync(filters);
                         if (userExists != null && user.UserName != userExists.UserName) {
                             ModelState.AddModelError("Email", this.__ResStr("emailUsed", "An account using email address {0} already exists.", model.Email));
                             return PartialView(model);
@@ -158,7 +154,7 @@ namespace YetaWF.Modules.Identity.Controllers {
             if (model.OriginalUserName != user.UserName) {
                 // user name changed - change data through data provider directly
                 using (UserDefinitionDataProvider dataProvider = new UserDefinitionDataProvider()) {
-                    UpdateStatusEnum status = dataProvider.UpdateItem(model.OriginalUserName, user);
+                    UpdateStatusEnum status = await dataProvider.UpdateItemAsync(model.OriginalUserName, user);
                     switch (status) {
                         default:
                         case UpdateStatusEnum.RecordDeleted:
@@ -174,7 +170,7 @@ namespace YetaWF.Modules.Identity.Controllers {
                 // log the user off and back on so new name takes effect
                 //IAuthenticationManager authManager = HttpContext.GetOwinContext().Authentication;
                 //deleted, done in UserLogff authManager.SignOut(DefaultAuthenticationTypes.ExternalCookie, DefaultAuthenticationTypes.ApplicationCookie, DefaultAuthenticationTypes.ExternalBearer);
-                LoginModuleController.UserLogoff();
+                await LoginModuleController.UserLogoffAsync();
                 await LoginModuleController.UserLoginAsync(user);
             } else {
                 IdentityResult result;

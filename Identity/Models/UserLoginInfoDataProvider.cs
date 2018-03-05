@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using YetaWF.Core;
 using YetaWF.Core.DataProvider;
 using YetaWF.Core.DataProvider.Attributes;
@@ -73,7 +74,7 @@ namespace YetaWF.Modules.Identity.DataProvider {
     /// File - A small set of users is expected - all users are preloaded so less than 20 is recommended
     /// SQL - No limit
     /// </summary>
-    public class UserLoginInfoDataProvider : DataProviderImpl, IInstallableModel, IInstallableModel2 {
+    public class UserLoginInfoDataProvider : DataProviderImpl, IInstallableModelAsync, IInstallableModel2Async {
 
         static UserLoginInfoDataProvider() { }
 
@@ -86,9 +87,9 @@ namespace YetaWF.Modules.Identity.DataProvider {
         public UserLoginInfoDataProvider() : base(YetaWFManager.Manager.CurrentSite.Identity) { SetDataProvider(CreateDataProvider()); }
         public UserLoginInfoDataProvider(int siteIdentity) : base(siteIdentity) { SetDataProvider(CreateDataProvider()); }
 
-        private IDataProvider<string, LoginInfo> DataProvider { get { return GetDataProvider(); } }
+        private IDataProviderAsync<string, LoginInfo> DataProvider { get { return GetDataProvider(); } }
 
-        private IDataProvider<string, LoginInfo> CreateDataProvider() {
+        private IDataProviderAsync<string, LoginInfo> CreateDataProvider() {
             Package package = YetaWF.Modules.Identity.Controllers.AreaRegistration.CurrentPackage;
             return MakeDataProvider(package, package.AreaName + "_LoginInfoList", SiteIdentity: SiteIdentity, Cacheable: true, Parms: new { NoLanguages = true });
         }
@@ -103,12 +104,12 @@ namespace YetaWF.Modules.Identity.DataProvider {
         /// <param name="loginProvider"></param>
         /// <param name="providerKey"></param>
         /// <returns>The UserDefinition object or null if no such user exists.</returns>
-        public UserDefinition GetItem(string loginProvider, string providerKey) {
-            LoginInfo info = DataProvider.Get(LoginInfo.MakeKey(loginProvider, providerKey));
+        public async Task<UserDefinition> GetItemAsync(string loginProvider, string providerKey) {
+            LoginInfo info = await DataProvider.GetAsync(LoginInfo.MakeKey(loginProvider, providerKey));
             if (info == null)
                 return null;
             using (UserDefinitionDataProvider userDP = new UserDefinitionDataProvider()) {
-                return userDP.GetItem(info.UserId);
+                return await userDP.GetItemAsync(info.UserId);
             }
         }
         /// <summary>
@@ -118,8 +119,8 @@ namespace YetaWF.Modules.Identity.DataProvider {
         /// <param name="loginProvider"></param>
         /// <param name="providerKey"></param>
         /// <returns></returns>
-        public bool AddItem(int userId, string loginProvider, string providerKey) {
-            return DataProvider.Add(new LoginInfo {
+        public async Task<bool> AddItemAsync(int userId, string loginProvider, string providerKey) {
+            return await DataProvider.AddAsync(new LoginInfo {
                 UserId = userId,
                 LoginProvider = loginProvider,
                 ProviderKey = providerKey,
@@ -131,18 +132,18 @@ namespace YetaWF.Modules.Identity.DataProvider {
         /// <param name="loginProvider"></param>
         /// <param name="providerKey"></param>
         /// <returns></returns>
-        public bool RemoveItem(string loginProvider, string providerKey) {
-            return DataProvider.Remove(LoginInfo.MakeKey(loginProvider, providerKey));
+        public async Task<bool> RemoveItemAsync(string loginProvider, string providerKey) {
+            return await DataProvider.RemoveAsync(LoginInfo.MakeKey(loginProvider, providerKey));
         }
         /// <summary>
         /// Removes all login provider and key info for a specific user.
         /// </summary>
         /// <param name="userId"></param>
         /// <returns></returns>
-        public bool RemoveItem(int userId) {
+        public async Task<bool> RemoveItemAsync(int userId) {
             List<DataProviderFilterInfo> filters = null;
             filters = DataProviderFilterInfo.Join(filters, new DataProviderFilterInfo { Field = "UserId", Operator = "==", Value = userId });
-            return RemoveItems(filters) > 0;
+            return await RemoveItemsAsync(filters) > 0;
         }
         /// <summary>
         /// Retrieves a list of login providers and keys
@@ -153,54 +154,52 @@ namespace YetaWF.Modules.Identity.DataProvider {
         /// <param name="filters"></param>
         /// <param name="total"></param>
         /// <returns></returns>
-        public List<LoginInfo> GetItems(int skip, int take, List<DataProviderSortInfo> sort, List<DataProviderFilterInfo> filters, out int total) {
-            return DataProvider.GetRecords(skip, take, sort, filters, out total);
+        public async Task<DataProviderGetRecords<LoginInfo>> GetItemsAsync(int skip, int take, List<DataProviderSortInfo> sort, List<DataProviderFilterInfo> filters) {
+            return await DataProvider.GetRecordsAsync(skip, take, sort, filters);
         }
         /// <summary>
         /// Return whether the specified user id is an external user.
         /// </summary>
         /// <param name="userId"></param>
         /// <returns></returns>
-        public bool IsExternalUser(int userId) {
+        public async Task<bool> IsExternalUserAsync(int userId) {
             List<DataProviderFilterInfo> filters = null;
             filters = DataProviderFilterInfo.Join(filters, new DataProviderFilterInfo { Field = "UserId", Operator = "==", Value = userId });
-            int total;
-            List<LoginInfo> logInfo = GetItems(0, 0, null, filters, out total);
-            return logInfo.Count > 0;
+            DataProviderGetRecords<LoginInfo> logInfo = await GetItemsAsync(0, 0, null, filters);
+            return logInfo.Data.Count > 0;
         }
         /// <summary>
         /// Removes login provider and key info.
         /// </summary>
         /// <param name="filters"></param>
         /// <returns></returns>
-        public int RemoveItems(List<DataProviderFilterInfo> filters) {
-            return DataProvider.RemoveRecords(filters);
+        public async Task<int> RemoveItemsAsync(List<DataProviderFilterInfo> filters) {
+            return await DataProvider.RemoveRecordsAsync(filters);
         }
 
         // IINSTALLABLEMODEL2
         // IINSTALLABLEMODEL2
         // IINSTALLABLEMODEL2
 
-        public bool UpgradeModel(List<string> errorList, string lastSeenVersion) {
+        public async Task<bool> UpgradeModelAsync(List<string> errorList, string lastSeenVersion) {
 
             // Convert pre 1.1.1 data to new format (for all sites)
             if (Package.CompareVersion(lastSeenVersion, AreaRegistration.CurrentPackage.Version) < 0 &&
                     Package.CompareVersion(lastSeenVersion, "1.1.1") < 0) {
 
-                SiteDefinition.SitesInfo info = SiteDefinition.GetSites(0,0,null,null);
+                SiteDefinition.SitesInfo info = SiteDefinition.GetSites(0, 0, null, null);
                 foreach (SiteDefinition site in info.Sites) {
                     using (UserLoginInfoDataProvider userLoginInfoDP = new UserLoginInfoDataProvider(site.Identity)) {
                         const int chunk = 100;
                         int skip = 0;
-                        for ( ; ; skip += chunk) {
-                            int total;
-                            List<LoginInfo> list = userLoginInfoDP.GetItems(skip, chunk, null, null, out total);
-                            if (list.Count <= 0)
+                        for (; ; skip += chunk) {
+                            DataProviderGetRecords<LoginInfo> list = await userLoginInfoDP.GetItemsAsync(skip, chunk, null, null);
+                            if (list.Data.Count <= 0)
                                 break;
-                            foreach (LoginInfo l in list) {
-                                RemoveItem(l.UserId);
+                            foreach (LoginInfo l in list.Data) {
+                                await RemoveItemAsync(l.UserId);
 #pragma warning disable 0618 // Type or member is obsolete
-                                AddItem(l.UserId, l.OldLoginProvider, l.OldProviderKey);
+                                await AddItemAsync(l.UserId, l.OldLoginProvider, l.OldProviderKey);
 #pragma warning restore 0618 // Type or member is obsolete
                             }
                         }

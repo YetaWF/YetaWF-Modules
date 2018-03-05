@@ -36,14 +36,16 @@ namespace YetaWF.Modules.Identity.Modules {
             MenuList menuList = base.GetModuleMenuList(renderMode, location);
             RegisterModule regMod = (RegisterModule)ModuleDefinition.CreateUniqueModule(typeof(RegisterModule));
             ForgotPasswordModule pswdMod = (ForgotPasswordModule)ModuleDefinition.CreateUniqueModule(typeof(ForgotPasswordModule));
-            LoginConfigData config = LoginConfigDataProvider.GetConfig();
+            LoginConfigData config = Manager.Syncify<LoginConfigData>(() => //$$$ think about this
+                LoginConfigDataProvider.GetConfigAsync()
+            );
             bool closeOnLogin;
             Manager.TryGetUrlArg<bool>("CloseOnLogin", out closeOnLogin, false);
             ModuleAction pswdAction = pswdMod.GetAction_ForgotPassword(config.ForgotPasswordUrl, CloseOnLogin: closeOnLogin);
             if (pswdAction != null)
                 pswdAction.AddToOriginList = false;
             menuList.New(pswdAction, location);
-            ModuleAction registerAction = regMod.GetAction_Register(config.RegisterUrl, Force: true, CloseOnLogin: closeOnLogin);
+            ModuleAction registerAction = regMod.GetAction_RegisterAsync(config.RegisterUrl, Force: true, CloseOnLogin: closeOnLogin);
             if (registerAction != null)
                 registerAction.AddToOriginList = false;
             menuList.New(registerAction, location);

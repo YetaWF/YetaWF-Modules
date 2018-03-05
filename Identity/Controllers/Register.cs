@@ -71,9 +71,9 @@ namespace YetaWF.Modules.Identity.Controllers {
         }
 
         [AllowGet]
-        public ActionResult Register(bool closeOnLogin = false) {
+        public async Task<ActionResult> Register(bool closeOnLogin = false) {
 
-            LoginConfigData config = LoginConfigDataProvider.GetConfig();
+            LoginConfigData config = await LoginConfigDataProvider.GetConfigAsync();
             if (!config.AllowUserRegistration)
                 throw new Error(this.__ResStr("cantRegister", "This site does not allow new user registration"));
 
@@ -85,7 +85,7 @@ namespace YetaWF.Modules.Identity.Controllers {
             };
 
             using (LoginConfigDataProvider logConfigDP = new LoginConfigDataProvider()) {
-                List<LoginConfigDataProvider.LoginProviderDescription> loginProviders = logConfigDP.GetActiveExternalLoginProviders();
+                List<LoginConfigDataProvider.LoginProviderDescription> loginProviders = await logConfigDP.GetActiveExternalLoginProvidersAsync();
                 if (loginProviders.Count > 0 && Manager.IsInPopup)
                     throw new InternalError("When using external login providers, the Register module cannot be used in a popup window");
                 foreach (LoginConfigDataProvider.LoginProviderDescription provider in loginProviders) {
@@ -109,7 +109,7 @@ namespace YetaWF.Modules.Identity.Controllers {
         [ConditionalAntiForgeryToken]
         [ExcludeDemoMode]
         public async Task<ActionResult> Register_Partial(RegisterModel model) {
-            LoginConfigData config = LoginConfigDataProvider.GetConfig();
+            LoginConfigData config = await LoginConfigDataProvider.GetConfigAsync();
             if (!config.AllowUserRegistration)
                 throw new Error(this.__ResStr("cantRegister", "This site does not allow new user registration"));
 
@@ -148,7 +148,7 @@ namespace YetaWF.Modules.Identity.Controllers {
                             Field = "Email", Operator = "==", Value = user.Email,
                         },
                     };
-                    UserDefinition userExists = dataProvider.GetItem(filters);
+                    UserDefinition userExists = await dataProvider.GetItemAsync(filters);
                     if (userExists != null && user.UserName != userExists.Email) {
                         ModelState.AddModelError("Email", this.__ResStr("emailUsed", "An account with email address {0} already exists.", user.Email));
                         return PartialView(model);
@@ -209,14 +209,14 @@ namespace YetaWF.Modules.Identity.Controllers {
         [AllowGet]
         [Permission("ChangeAccounts")]
         [ExcludeDemoMode]
-        public ActionResult Approve(string userName) {
+        public async Task<ActionResult> Approve(string userName) {
             using (UserDefinitionDataProvider dataProvider = new UserDefinitionDataProvider()) {
-                UserDefinition user = GetUser(userName, dataProvider);
+                UserDefinition user = await GetUserAsync(userName, dataProvider);
                 if (user.UserStatus != UserStatusEnum.Approved) {
                     if (user.UserStatus != UserStatusEnum.NeedApproval)
                         throw new Error(this.__ResStr("notCantApprove", "User {0} is no longer new and cannot be approved.", userName));
                     user.UserStatus = UserStatusEnum.Approved;
-                    UpdateStatusEnum status = dataProvider.UpdateItem(user);
+                    UpdateStatusEnum status = await dataProvider.UpdateItemAsync(user);
                     switch (status) {
                         default:
                         case UpdateStatusEnum.NewKeyExists:
@@ -236,12 +236,12 @@ namespace YetaWF.Modules.Identity.Controllers {
         [AllowGet]
         [Permission("ChangeAccounts")]
         [ExcludeDemoMode]
-        public ActionResult Reject(string userName) {
+        public async Task<ActionResult> Reject(string userName) {
             using (UserDefinitionDataProvider dataProvider = new UserDefinitionDataProvider()) {
-                UserDefinition user = GetUser(userName, dataProvider);
+                UserDefinition user = await GetUserAsync(userName, dataProvider);
                 if (user.UserStatus != UserStatusEnum.Rejected) {
                     user.UserStatus = UserStatusEnum.Rejected;
-                    UpdateStatusEnum status = dataProvider.UpdateItem(user);
+                    UpdateStatusEnum status = await dataProvider.UpdateItemAsync(user);
                     switch (status) {
                         default:
                         case UpdateStatusEnum.NewKeyExists:
@@ -262,12 +262,12 @@ namespace YetaWF.Modules.Identity.Controllers {
         [AllowGet]
         [Permission("ChangeAccounts")]
         [ExcludeDemoMode]
-        public ActionResult Suspend(string userName) {
+        public async Task<ActionResult> Suspend(string userName) {
             using (UserDefinitionDataProvider dataProvider = new UserDefinitionDataProvider()) {
-                UserDefinition user = GetUser(userName, dataProvider);
+                UserDefinition user = await GetUserAsync(userName, dataProvider);
                 if (user.UserStatus != UserStatusEnum.Suspended) {
                     user.UserStatus = UserStatusEnum.Suspended;
-                    UpdateStatusEnum status = dataProvider.UpdateItem(user);
+                    UpdateStatusEnum status = await dataProvider.UpdateItemAsync(user);
                     switch (status) {
                         default:
                         case UpdateStatusEnum.NewKeyExists:
@@ -284,10 +284,10 @@ namespace YetaWF.Modules.Identity.Controllers {
                 return Reload(null, Reload: ReloadEnum.ModuleParts, PopupText: this.__ResStr("userSuspended", "The user account for user {0} has been marked as suspended. An email has been sent to the user.", userName));
             }
         }
-        private UserDefinition GetUser(string userName, UserDefinitionDataProvider dataProvider) {
+        private async Task<UserDefinition> GetUserAsync(string userName, UserDefinitionDataProvider dataProvider) {
             if (string.IsNullOrWhiteSpace(userName))
                 throw new Error(this.__ResStr("noItem", "No user name specified"));
-            UserDefinition user = dataProvider.GetItem(userName);
+            UserDefinition user = await dataProvider.GetItemAsync(userName);
             if (user == null)
                 throw new Error(this.__ResStr("notFoundUser", "User {0} not found.", userName));
             return user;

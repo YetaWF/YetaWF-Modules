@@ -39,6 +39,7 @@ namespace YetaWF.Modules.Identity.Models {
         // IRoleStore
 
 #if MVC6
+        //$$$ FIX ALL ASYNC
         public Task<IdentityResult> CreateAsync(RoleDefinition role, CancellationToken cancellationToken) {
             return Task.Run<IdentityResult>(() => {
                 RoleDefinitionDataProvider dataProvider = new RoleDefinitionDataProvider(this.CurrentSiteIdentity);
@@ -47,11 +48,10 @@ namespace YetaWF.Modules.Identity.Models {
             });
         }
 #else
-        public Task CreateAsync(RoleDefinition role) {
-            return Task.Run(() => {
-                RoleDefinitionDataProvider dataProvider = new RoleDefinitionDataProvider(this.CurrentSiteIdentity);
-                dataProvider.AddItem(role);
-            });
+        public async Task CreateAsync(RoleDefinition role) {
+            using (RoleDefinitionDataProvider dataProvider = new RoleDefinitionDataProvider(this.CurrentSiteIdentity)) {
+                await dataProvider.AddItemAsync(role);
+            }
         }
 #endif
 #if MVC6
@@ -63,11 +63,10 @@ namespace YetaWF.Modules.Identity.Models {
             });
         }
 #else
-        public Task DeleteAsync(RoleDefinition role) {
-            return Task.Run(() => {
-                RoleDefinitionDataProvider dataProvider = new RoleDefinitionDataProvider(this.CurrentSiteIdentity);
-                dataProvider.RemoveItem(role.Name);
-            });
+        public async Task DeleteAsync(RoleDefinition role) {
+            using (RoleDefinitionDataProvider dataProvider = new RoleDefinitionDataProvider(this.CurrentSiteIdentity)) {
+                await dataProvider.RemoveItemAsync(role.Name);
+            }
         }
 #endif
 #if MVC6
@@ -89,10 +88,9 @@ namespace YetaWF.Modules.Identity.Models {
             });
         }
 #else
-        public Task UpdateAsync(RoleDefinition role) {
-            return Task.Run(() => {
-                RoleDefinitionDataProvider dataProvider = new RoleDefinitionDataProvider(this.CurrentSiteIdentity);
-                UpdateStatusEnum status = dataProvider.UpdateItem(role);
+        public async Task UpdateAsync(RoleDefinition role) {
+            using (RoleDefinitionDataProvider dataProvider = new RoleDefinitionDataProvider(this.CurrentSiteIdentity)) {
+                UpdateStatusEnum status = await dataProvider.UpdateItemAsync(role);
                 switch (status) {
                     default:
                     case UpdateStatusEnum.RecordDeleted:
@@ -103,7 +101,7 @@ namespace YetaWF.Modules.Identity.Models {
                     case UpdateStatusEnum.OK:
                         break;
                 }
-            });
+            }
         }
 #endif
 #if MVC6
@@ -112,23 +110,20 @@ namespace YetaWF.Modules.Identity.Models {
         public Task<RoleDefinition> FindByIdAsync(string roleId)
 #endif
         {
-            return Task.Run(() => {
-                RoleDefinitionDataProvider dataProvider = new RoleDefinitionDataProvider(this.CurrentSiteIdentity);
-                return dataProvider.GetRoleById(roleId);
-            });
+            using (RoleDefinitionDataProvider dataProvider = new RoleDefinitionDataProvider(this.CurrentSiteIdentity)) {
+                return Task.FromResult(dataProvider.GetRoleById(roleId));
+            }
         }
 
 #if MVC6
         public Task<RoleDefinition> FindByNameAsync(string roleName, CancellationToken cancellationToken)
 #else
-        public Task<RoleDefinition> FindByNameAsync(string roleName)
+        public async Task<RoleDefinition> FindByNameAsync(string roleName)
 #endif
         {
-            return Task.Run(() => {
-                RoleDefinitionDataProvider dataProvider = new RoleDefinitionDataProvider(this.CurrentSiteIdentity);
-                RoleDefinition role = dataProvider.GetItem(roleName);
-                return role;
-            });
+            using (RoleDefinitionDataProvider dataProvider = new RoleDefinitionDataProvider(this.CurrentSiteIdentity)) {
+                return await dataProvider.GetItemAsync(roleName);
+            }
         }
 #if MVC6
         Task<IdentityResult> IRoleStore<RoleDefinition>.DeleteAsync(RoleDefinition role, CancellationToken cancellationToken) {

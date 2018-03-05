@@ -1,5 +1,6 @@
 /* Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Identity#License */
 
+using System.Threading.Tasks;
 using YetaWF.Core.Controllers;
 using YetaWF.Core.DataProvider;
 using YetaWF.Core.Localize;
@@ -46,10 +47,10 @@ namespace YetaWF.Modules.Identity.Controllers {
         }
 
         [AllowGet]
-        public ActionResult RolesEdit(string name) {
+        public async Task<ActionResult> RolesEdit(string name) {
             using (RoleDefinitionDataProvider dataProvider = new RoleDefinitionDataProvider()) {
                 EditModel model = new EditModel { };
-                RoleDefinition data = dataProvider.GetItem(name);
+                RoleDefinition data = await dataProvider.GetItemAsync(name);
                 if (data == null)
                     throw new Error(this.__ResStr("notFound", "Role \"{0}\" not found."), name);
                 model.SetData(data);
@@ -61,10 +62,10 @@ namespace YetaWF.Modules.Identity.Controllers {
         [AllowPost]
         [ConditionalAntiForgeryToken]
         [ExcludeDemoMode]
-        public ActionResult RolesEdit_Partial(EditModel model) {
+        public async Task<ActionResult> RolesEdit_Partial(EditModel model) {
             using (RoleDefinitionDataProvider dataProvider = new RoleDefinitionDataProvider()) {
                 string originalRole = model.OriginalName;
-                RoleDefinition role = dataProvider.GetItem(originalRole);// get the original item
+                RoleDefinition role = await dataProvider.GetItemAsync(originalRole);// get the original item
                 if (role == null)
                     ModelState.AddModelError("Name", this.__ResStr("alreadyDeleted", "The role named \"{0}\" has been removed and can no longer be updated.", originalRole));
 
@@ -74,7 +75,7 @@ namespace YetaWF.Modules.Identity.Controllers {
                 role = model.GetData(role); // merge new data into original
                 model.SetData(role); // and all the data back into model for final display
 
-                switch (dataProvider.UpdateItem(originalRole, role)) {
+                switch (await dataProvider.UpdateItemAsync(originalRole, role)) {
                     default:
                     case UpdateStatusEnum.RecordDeleted:
                         ModelState.AddModelError("Name", this.__ResStr("alreadyDeleted", "The role named \"{0}\" has been removed and can no longer be updated.", originalRole));

@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using YetaWF.Core;
 using YetaWF.Core.Controllers;
 using YetaWF.Core.DataProvider;
@@ -102,13 +103,13 @@ namespace YetaWF.Modules.Identity.Controllers {
         }
 
         [AllowGet]
-        public ActionResult UsersEdit(string userName) {
+        public async Task<ActionResult> UsersEdit(string userName) {
             using (UserDefinitionDataProvider dataProvider = new UserDefinitionDataProvider()) {
-                LoginConfigData config = LoginConfigDataProvider.GetConfig();
+                LoginConfigData config = await LoginConfigDataProvider.GetConfigAsync();
                 EditModel model = new EditModel {
                     RegistrationType = config.RegistrationType,
                 };
-                UserDefinition data = dataProvider.GetItem(userName);
+                UserDefinition data = await dataProvider.GetItemAsync(userName);
                 if (data == null)
                     throw new Error(this.__ResStr("notFound", "User \"{0}\" not found."), userName);
                 model.SetData(data);
@@ -120,26 +121,26 @@ namespace YetaWF.Modules.Identity.Controllers {
         [AllowPost]
         [ConditionalAntiForgeryToken]
         [ExcludeDemoMode]
-        public ActionResult UsersEdit_Partial(EditModel model) {
+        public async Task<ActionResult> UsersEdit_Partial(EditModel model) {
             using (UserDefinitionDataProvider dataProvider = new UserDefinitionDataProvider()) {
                 string originalUserName = model.OriginalUserName;
-                UserDefinition user = dataProvider.GetItem(originalUserName);
+                UserDefinition user = await dataProvider.GetItemAsync(originalUserName);
                 if (user == null)
                     ModelState.AddModelError("UserName", this.__ResStr("alreadyDeleted", "The user named \"{0}\" has been removed and can no longer be updated.", originalUserName));
                 if (!ModelState.IsValid)
                     return PartialView(model);
 
-                LoginConfigData config = LoginConfigDataProvider.GetConfig();
+                LoginConfigData config = await LoginConfigDataProvider.GetConfigAsync();
                 switch (config.RegistrationType) {
                     case RegistrationTypeEnum.NameAndEmail: {
-                        List<DataProviderFilterInfo> filters = DataProviderFilterInfo.Join(null, new DataProviderFilterInfo { Field = "Email", Operator = "==", Value = model.Email, });
-                        UserDefinition userExists = dataProvider.GetItem(filters);
-                        if (userExists != null && user.UserName != userExists.UserName) {
-                            ModelState.AddModelError("Email", this.__ResStr("emailUsed", "An account using email address {0} already exists.", model.Email));
-                            return PartialView(model);
+                            List<DataProviderFilterInfo> filters = DataProviderFilterInfo.Join(null, new DataProviderFilterInfo { Field = "Email", Operator = "==", Value = model.Email, });
+                            UserDefinition userExists = await dataProvider.GetItemAsync(filters);
+                            if (userExists != null && user.UserName != userExists.UserName) {
+                                ModelState.AddModelError("Email", this.__ResStr("emailUsed", "An account using email address {0} already exists.", model.Email));
+                                return PartialView(model);
+                            }
+                            break;
                         }
-                        break;
-                     }
                     case RegistrationTypeEnum.EmailOnly:
                         model.UserName = model.Email;
                         break;
@@ -151,7 +152,7 @@ namespace YetaWF.Modules.Identity.Controllers {
                 user = model.GetData(user); // merge new data into original
                 model.SetData(user); // and all the data back into model for final display
 
-                switch (dataProvider.UpdateItem(originalUserName, user)) {
+                switch (await dataProvider.UpdateItemAsync(originalUserName, user)) {
                     default:
                     case UpdateStatusEnum.RecordDeleted:
                         ModelState.AddModelError("Name", this.__ResStr("alreadyDeleted", "The user named \"{0}\" has been removed and can no longer be updated.", originalUserName));

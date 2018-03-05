@@ -3,6 +3,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using YetaWF.Core.Controllers;
 using YetaWF.Core.DataProvider;
 using YetaWF.Core.Localize;
@@ -83,14 +84,13 @@ namespace YetaWF.Modules.Identity.Controllers {
 
         [AllowPost]
         [ConditionalAntiForgeryToken]
-        public ActionResult RolesBrowse_GridData(int skip, int take, List<DataProviderSortInfo> sort, List<DataProviderFilterInfo> filters, Guid settingsModuleGuid) {
+        public async Task<ActionResult> RolesBrowse_GridData(int skip, int take, List<DataProviderSortInfo> sort, List<DataProviderFilterInfo> filters, Guid settingsModuleGuid) {
             using (RoleDefinitionDataProvider dataProvider = new RoleDefinitionDataProvider()) {
-                int total;
-                List<RoleDefinition> browseItems = dataProvider.GetItems(skip, take, sort, filters, out total);
+                DataProviderGetRecords<RoleDefinition> browseItems = await dataProvider.GetItemsAsync(skip, take, sort, filters);
                 GridHelper.SaveSettings(skip, take, sort, filters, settingsModuleGuid);
                 return GridPartialView(new DataSourceResult {
-                    Data = (from s in browseItems select new BrowseItem(Module, s)).ToList<object>(),
-                    Total = total
+                    Data = (from s in browseItems.Data select new BrowseItem(Module, s)).ToList<object>(),
+                    Total = browseItems.Total
                 });
             }
         }
@@ -98,11 +98,11 @@ namespace YetaWF.Modules.Identity.Controllers {
         [AllowPost]
         [Permission("RemoveRoles")]
         [ExcludeDemoMode]
-        public ActionResult Remove(string name) {
+        public async Task<ActionResult> Remove(string name) {
             if (string.IsNullOrWhiteSpace(name))
                 throw new Error(this.__ResStr("noItem", "No role name specified"));
             using (RoleDefinitionDataProvider dataProvider = new RoleDefinitionDataProvider()) {
-                dataProvider.RemoveItem(name);
+                await dataProvider.RemoveItemAsync(name);
                 return Reload(null, Reload: ReloadEnum.ModuleParts);
             }
         }

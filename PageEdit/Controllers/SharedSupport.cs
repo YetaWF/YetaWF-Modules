@@ -1,5 +1,6 @@
 ﻿/* Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/PageEdit#License */
 
+using System.Threading.Tasks;
 using YetaWF.Core.Controllers;
 using YetaWF.Core.Identity;
 using YetaWF.Core.Localize;
@@ -22,12 +23,12 @@ namespace YetaWF.Modules.PageEdit.Controllers {
         [AllowPost]
         [ConditionalAntiForgeryToken]
         [ExcludeDemoMode]
-        public ActionResult AddUserToPage(string prefix, int newRecNumber, string newValue) {
+        public async Task<ActionResult> AddUserToPage(string prefix, int newRecNumber, string newValue) {
 
             if (string.IsNullOrWhiteSpace(newValue))
                 throw new Error(this.__ResStr("noParm", "No user name specified."));
 
-            int userId = Resource.ResourceAccess.GetUserId(newValue);
+            int userId = await Resource.ResourceAccess.GetUserIdAsync(newValue);
             if (userId == 0)
                 throw new Error(this.__ResStr("noUser", "User {0} doesn't exist", newValue));
 

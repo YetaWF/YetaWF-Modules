@@ -1,5 +1,6 @@
 /* Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Identity#License */
 
+using System.Threading.Tasks;
 using YetaWF.Core.Controllers;
 using YetaWF.Core.DataProvider;
 using YetaWF.Core.Identity;
@@ -58,10 +59,10 @@ namespace YetaWF.Modules.Identity.Controllers {
         }
 
         [AllowGet]
-        public ActionResult AuthorizationEdit(string resourceName) {
+        public async Task<ActionResult> AuthorizationEdit(string resourceName) {
             using (AuthorizationDataProvider dataProvider = new AuthorizationDataProvider()) {
                 EditModel model = new EditModel { };
-                Authorization data = dataProvider.GetItem(resourceName);
+                Authorization data = await dataProvider.GetItemAsync(resourceName);
                 if (data == null)
                     throw new Error(this.__ResStr("notFound", "Resource \"{0}\" not found."), resourceName);
                 model.SetData(data);
@@ -73,11 +74,11 @@ namespace YetaWF.Modules.Identity.Controllers {
         [AllowPost]
         [ConditionalAntiForgeryToken]
         [ExcludeDemoMode]
-        public ActionResult AuthorizationEdit_Partial(EditModel model) {
+        public async Task<ActionResult> AuthorizationEdit_Partial(EditModel model) {
             string originalName = model.OriginalName;
 
             using (AuthorizationDataProvider dataProvider = new AuthorizationDataProvider()) {
-                Authorization data = dataProvider.GetItem(originalName);// get the original resource
+                Authorization data = await dataProvider.GetItemAsync(originalName);// get the original resource
                 if (data == null)
                     ModelState.AddModelError("Key", this.__ResStr("alreadyDeleted", "The resource named \"{0}\" has been removed and can no longer be updated.", originalName));
 
@@ -87,7 +88,7 @@ namespace YetaWF.Modules.Identity.Controllers {
                 data = model.GetData(data); // merge new data into original
                 model.SetData(data); // and all the data back into model for final display
 
-                switch (dataProvider.UpdateItem(data)) {
+                switch (await dataProvider.UpdateItemAsync(data)) {
                     default:
                     case UpdateStatusEnum.RecordDeleted:
                         ModelState.AddModelError("Name", this.__ResStr("alreadyDeleted", "The resource named \"{0}\" has been removed and can no longer be updated.", originalName));

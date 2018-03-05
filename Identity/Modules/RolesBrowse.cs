@@ -101,9 +101,11 @@ namespace YetaWF.Modules.Identity.Modules {
         /// Used from site template to add a site admin role
         /// </summary>
         public void AddAdministratorRole() {
-            using (RoleDefinitionDataProvider dataProvider = new RoleDefinitionDataProvider()) {
-                dataProvider.AddAdministratorRole();
-            }
+            Manager.Syncify(async () => { // super-rare so sync is OK
+                using (RoleDefinitionDataProvider dataProvider = new RoleDefinitionDataProvider()) {
+                    await dataProvider.AddAdministratorRoleAsync();
+                }
+            });
         }
     }
 }

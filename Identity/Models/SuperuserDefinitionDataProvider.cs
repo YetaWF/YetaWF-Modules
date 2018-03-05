@@ -1,6 +1,7 @@
 ﻿/* Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Identity#License */
 
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using YetaWF.Core;
 using YetaWF.Core.DataProvider;
 using YetaWF.Core.Identity;
@@ -44,9 +45,9 @@ namespace YetaWF.Modules.Identity.DataProvider {
 
         public SuperuserDefinitionDataProvider() : base(0) { SetDataProvider(CreateDataProvider()); }
 
-        private IDataProvider<string, UserDefinition> DataProvider { get { return GetDataProvider(); } }
+        private IDataProviderAsync<string, UserDefinition> DataProvider { get { return GetDataProvider(); } }
 
-        protected IDataProvider<string, UserDefinition> CreateDataProvider() {
+        protected IDataProviderAsync<string, UserDefinition> CreateDataProvider() {
             Package package = YetaWF.Modules.Identity.Controllers.AreaRegistration.CurrentPackage;
             return MakeDataProvider(package, package.AreaName + "_Superusers", Cacheable: true, Parms: new { IdentitySeed = SuperUserId, NoLanguages = true });
         }
@@ -55,30 +56,30 @@ namespace YetaWF.Modules.Identity.DataProvider {
         // API
         // API
 
-        public UserDefinition GetSuperuser() {
+        public async Task<UserDefinition> GetSuperuserAsync() {
             List<DataProviderFilterInfo> filters = DataProviderFilterInfo.Join(null, new DataProviderFilterInfo { Field = "UserId", Operator = "==", Value = SuperuserDefinitionDataProvider.SuperUserId });
-            return GetItem(filters);
+            return await GetItemAsync(filters);
         }
-        public UserDefinition GetItem(List<DataProviderFilterInfo> filters) {
-            UserDefinition user = DataProvider.GetOneRecord(filters);
+        public async Task<UserDefinition> GetItemAsync(List<DataProviderFilterInfo> filters) {
+            UserDefinition user = await DataProvider.GetOneRecordAsync(filters);
             if (user == null) return null;
             user.UserName = SuperUserName;
             user.RolesList.Add(new Role { RoleId = Resource.ResourceAccess.GetSuperuserRoleId() });
             return user;
         }
-        public bool AddItem(UserDefinition user) {
+        public async Task<bool> AddItemAsync(UserDefinition user) {
             if (user.UserId != SuperuserDefinitionDataProvider.SuperUserId || string.Compare(user.UserName, SuperUserName, true) != 0)
                 throw new Error(this.__ResStr("cantAddSuper", "Wrong user id or user name - Can't add as superuser"));
             user.RolesList = new SerializableList<Role> { new Role { RoleId = Resource.ResourceAccess.GetSuperuserRoleId() } };
-            return DataProvider.Add(user);
+            return await DataProvider.AddAsync(user);
         }
-        public UpdateStatusEnum UpdateItem(UserDefinition user) {
+        public async Task<UpdateStatusEnum> UpdateItemAsync(UserDefinition user) {
             if (user.UserId != SuperuserDefinitionDataProvider.SuperUserId || string.Compare(user.UserName, SuperUserName, true) != 0)
                 throw new Error(this.__ResStr("cantUpdateSuper", "Wrong user id or user name - Can't update as superuser"));
             user.RolesList = new SerializableList<Role> { new Role { RoleId = Resource.ResourceAccess.GetSuperuserRoleId() } };
-            return UpdateItem(user.UserName, user);
+            return await UpdateItemAsync(user.UserName, user);
         }
-        public UpdateStatusEnum UpdateItem(string originalName, UserDefinition data) {
+        public async Task<UpdateStatusEnum> UpdateItemAsync(string originalName, UserDefinition data) {
             if (string.Compare(originalName, SuperUserName, true) == 0) {
                 if (data.UserName != originalName)
                     throw new Error(this.__ResStr("cantRenameSuper", "The user \"{0}\" can't be renamed. It is defined in the site's Appsettings.json", data.UserName));
@@ -88,24 +89,24 @@ namespace YetaWF.Modules.Identity.DataProvider {
             }
             if (data.UserId != SuperuserDefinitionDataProvider.SuperUserId || string.Compare(data.UserName, SuperUserName, true) != 0)
                 throw new Error(this.__ResStr("cantUpdateSuper", "Wrong user id or user name - Can't update as superuser"));
-            lock (_lockObject) {
+            //$$lock (_lockObject) {
                 UserDefinition superUser;// need to get current superuser because user may have changed the name through Appsettings.json
                 List<DataProviderFilterInfo> filters = DataProviderFilterInfo.Join(null, new DataProviderFilterInfo { Field = "UserId", Operator = "==", Value = SuperuserDefinitionDataProvider.SuperUserId });
-                superUser = DataProvider.GetOneRecord(filters);
+                superUser = await DataProvider.GetOneRecordAsync(filters);
                 superUser.RolesList = new SerializableList<Role> { new Role { RoleId = Resource.ResourceAccess.GetSuperuserRoleId() } };
-                return DataProvider.Update(superUser.UserName, data.UserName, data);
-            }
+                return await DataProvider.UpdateAsync(superUser.UserName, data.UserName, data);
+            //}
         }
         public bool RemoveItem(string userName) {
             throw new Error(this.__ResStr("cantRemoveSuper", "The user with role \"{0}\" can't be removed. Who else is going to bail you out once you mess up your website?", Globals.Role_Superuser));
         }
 
-        public void AddSuperuser() {
-            DataProvider.Add(GetSuperuserUser());
+        public async Task AddSuperuser() {
+            await DataProvider.AddAsync(await GetSuperuserUserAsync());
         }
-        private UserDefinition GetSuperuserUser() {
+        private async Task<UserDefinition> GetSuperuserUserAsync() {
             using (RoleDefinitionDataProvider roleProvider = new RoleDefinitionDataProvider(SiteIdentity)) {
-                RoleDefinition role = roleProvider.GetItem(Globals.Role_Superuser);
+                RoleDefinition role = await roleProvider.GetItemAsync(Globals.Role_Superuser);
                 return new UserDefinition() {
                     UserName = SuperUserName,
                     RolesList = new SerializableList<Role>() { new Role() { RoleId = role.RoleId } },
@@ -121,14 +122,14 @@ namespace YetaWF.Modules.Identity.DataProvider {
         // IINSTALLABLEMODEL
         // IINSTALLABLEMODEL
 
-        public new bool InstallModel(List<string> errorList) {
-            if (!DataProvider.InstallModel(errorList))
+        public new async Task<bool> InstallModelAsync(List<string> errorList) {
+            if (!await DataProvider.InstallModelAsync(errorList))
                 return false;
             // add the one and only superuser
-            DataProvider.Add(GetSuperuserUser());
+            await DataProvider.AddAsync(await GetSuperuserUserAsync());
             return true;
         }
-        public new void AddSiteData() { }
-        public new void RemoveSiteData() { }
+        public new Task AddSiteDataAsync() { return Task.CompletedTask; }
+        public new Task RemoveSiteDataAsync() { return Task.CompletedTask; }
     }
 }

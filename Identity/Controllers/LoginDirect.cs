@@ -1,5 +1,6 @@
 ﻿/* Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Identity#License */
 
+using System.Threading.Tasks;
 using YetaWF.Core.Controllers;
 using YetaWF.Core.Identity;
 using YetaWF.Core.Support;
@@ -19,8 +20,8 @@ namespace YetaWF.Modules.Identity.Controllers {
         /// Log in as someone else
         /// </summary>
         [ResourceAuthorize(Info.Resource_AllowUserLogon)]
-        public ActionResult LoginAs(int userId) {
-            Resource.ResourceAccess.LoginAs(userId);
+        public async Task<ActionResult> LoginAs(int userId) {
+            await Resource.ResourceAccess.LoginAsAsync(userId);
             string url = Manager.CurrentSite.HomePageUrl;
             url = QueryHelper.AddRando(url); // to defeat client-side caching
             return Redirect(url);
@@ -29,12 +30,12 @@ namespace YetaWF.Modules.Identity.Controllers {
         /// <summary>
         /// Log off
         /// </summary>
-        public ActionResult Logoff(string nextUrl, bool resetForcedDomain = true) {
+        public async Task<ActionResult> Logoff(string nextUrl, bool resetForcedDomain = true) {
             Manager.SetSuperUserRole(false);// explicit logoff clears superuser state
-            LoginConfigData config = LoginConfigDataProvider.GetConfig();
-            LoginModuleController.UserLogoff();
+            await LoginModuleController.UserLogoffAsync();
             if (resetForcedDomain)
                 YetaWFManager.SetRequestedDomain(null);
+            LoginConfigData config = await LoginConfigDataProvider.GetConfigAsync();
             string url = nextUrl;
             if (string.IsNullOrWhiteSpace(url))
                 url = config.LoggedOffUrl;

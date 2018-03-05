@@ -3,6 +3,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using YetaWF.Core;
 using YetaWF.Core.DataProvider;
 using YetaWF.Core.DataProvider.Attributes;
@@ -64,9 +65,9 @@ namespace YetaWF.Modules.Identity.DataProvider {
         public RoleDefinitionDataProvider() : base(YetaWFManager.Manager.CurrentSite.Identity) { SetDataProvider(CreateDataProvider()); }
         public RoleDefinitionDataProvider(int siteIdentity) : base(siteIdentity) { SetDataProvider(CreateDataProvider()); }
 
-        private IDataProvider<string, RoleDefinition> DataProvider { get { return GetDataProvider(); } }
+        private IDataProviderAsync<string, RoleDefinition> DataProvider { get { return GetDataProvider(); } }
 
-        private IDataProvider<string, RoleDefinition> CreateDataProvider() {
+        private IDataProviderAsync<string, RoleDefinition> CreateDataProvider() {
             Package package = YetaWF.Modules.Identity.Controllers.AreaRegistration.CurrentPackage;
             return MakeDataProvider(package, package.AreaName + "_Roles", SiteIdentity: SiteIdentity, Cacheable: true);
         }
@@ -75,10 +76,10 @@ namespace YetaWF.Modules.Identity.DataProvider {
         // API
         // API
 
-        public RoleDefinition GetItem(string key) {
+        public async Task<RoleDefinition> GetItemAsync(string key) {
             if (key == Globals.Role_Superuser)
                 return MakeSuperuserRole();
-            return DataProvider.Get(key);
+            return await DataProvider.GetAsync(key);
         }
         public RoleDefinition GetRoleById(string roleId) {
             if (roleId == RoleDefinitionDataProvider.SuperUserId.ToString())
@@ -92,62 +93,61 @@ namespace YetaWF.Modules.Identity.DataProvider {
             List<RoleDefinition> roles = GetAllRoles();
             return (from RoleDefinition r in roles where r.RoleId == roleId select r).FirstOrDefault();
         }
-        public bool AddItem(RoleDefinition data) {
+        public async Task<bool> AddItemAsync(RoleDefinition data) {
             if (data.RoleId == RoleDefinitionDataProvider.SuperUserId || data.Name == Globals.Role_Superuser)
                 throw new InternalError("Can't add built-in superuser role");
-            if (!DataProvider.Add(data))
+            if (!await DataProvider.AddAsync(data))
                 return false;
             GetAllUserRoles(true);
             return true;
         }
-        public UpdateStatusEnum UpdateItem(RoleDefinition data) {
-            return UpdateItem(data.Name, data);
+        public Task<UpdateStatusEnum> UpdateItemAsync(RoleDefinition data) {
+            return UpdateItemAsync(data.Name, data);
         }
-        public UpdateStatusEnum UpdateItem(string originalRole, RoleDefinition data) {
+        public async Task<UpdateStatusEnum> UpdateItemAsync(string originalRole, RoleDefinition data) {
             if (data.RoleId == RoleDefinitionDataProvider.SuperUserId || data.Name == Globals.Role_Superuser)
                 throw new InternalError("Can't update built-in superuser role");
             if (originalRole != data.Name && IsPredefinedRole(originalRole))
                 throw new Error(this.__ResStr("cantUpdateUser", "The {0} role can't be updated", originalRole));
-            UpdateStatusEnum status = DataProvider.Update(originalRole, data.Name, data);
+            UpdateStatusEnum status = await DataProvider.UpdateAsync(originalRole, data.Name, data);
             if (status == UpdateStatusEnum.OK)
                 GetAllUserRoles(true);
             return status;
         }
-        public bool RemoveItem(string role) {
+        public async Task<bool> RemoveItemAsync(string role) {
             if (role == Globals.Role_Superuser)
                 throw new InternalError("Can't remove built-in superuser role");
             if (IsPredefinedRole(role))
                 throw new Error(this.__ResStr("cantRemoveUser", "The {0} role can't be removed", role));
-            if (!DataProvider.Remove(role))
+            if (!await DataProvider.RemoveAsync(role))
                 return false;
             GetAllUserRoles(true);
             return true;
         }
-        public List<RoleDefinition> GetItems() {
-            int total;
-            List<RoleDefinition> list = DataProvider.GetRecords(0, 0, null, null, out total);
-            list.Insert(0, MakeSuperuserRole());
+        public async Task<DataProviderGetRecords<RoleDefinition>> GetItemsAsync() {
+            DataProviderGetRecords<RoleDefinition> list = await DataProvider.GetRecordsAsync(0, 0, null, null);
+            list.Data.Insert(0, MakeSuperuserRole());
             return list;
         }
-        public List<RoleDefinition> GetItems(int skip, int take, List<DataProviderSortInfo> sort, List<DataProviderFilterInfo> filters, out int total) {
-            List<RoleDefinition> list = DataProvider.GetRecords(skip, take, sort, filters, out total);
-            list.Insert(0, MakeSuperuserRole());
+        public async Task<DataProviderGetRecords<RoleDefinition>> GetItemsAsync(int skip, int take, List<DataProviderSortInfo> sort, List<DataProviderFilterInfo> filters) {
+            DataProviderGetRecords<RoleDefinition> list = await DataProvider.GetRecordsAsync(skip, take, sort, filters);
+            list.Data.Insert(0, MakeSuperuserRole());
             return list;
         }
-        public int RemoveItems(List<DataProviderFilterInfo> filters) {
-            int count = DataProvider.RemoveRecords(filters);
+        public async Task<int> RemoveItemsAsync(List<DataProviderFilterInfo> filters) {
+            int count = await DataProvider.RemoveRecordsAsync(filters);
             GetAllUserRoles(true);
             return count;
         }
-        public int GetAdministratorRoleId() { return GetRoleId(Globals.Role_Administrator); }
-        public int GetEditorRoleId() { return GetRoleId(Globals.Role_Editor); }
+        public async Task<int> GetAdministratorRoleIdAsync() { return await GetRoleIdAsync(Globals.Role_Administrator); }
+        public async Task<int> GetEditorRoleIdAsync() { return await GetRoleIdAsync(Globals.Role_Editor); }
         public int GetUserRoleId() { return UserIdentity; }
         public int GetUser2FARoleId() { return User2FAIdentity; }
         public int GetAnonymousRoleId() { return AnonymousIdentity; }
-        public int GetRoleId(string roleName) {
+        public async Task<int> GetRoleIdAsync(string roleName) {
             if (roleName == Globals.Role_Superuser)
                 return RoleDefinitionDataProvider.SuperUserId;
-            RoleDefinition role = DataProvider.Get(roleName);
+            RoleDefinition role = await DataProvider.GetAsync(roleName);
             if (role == null) throw new InternalError("Required role {0} not found", roleName);
             return role.RoleId;
         }
@@ -166,9 +166,11 @@ namespace YetaWF.Modules.Identity.DataProvider {
         }
 
         // all roles except user and anonymous
+        // This method is cached and deliberately does not use async/await to simplify usage
         public List<RoleDefinition> GetAllUserRoles(bool force = false) {
 
-            if (!DataProvider.IsInstalled())
+            bool isInstalled = Manager.Syncify<bool>(() => DataProvider.IsInstalledAsync());
+            if (isInstalled)
                 return new List<RoleDefinition>() { MakeSuperuserRole() };
 
             List<RoleDefinition> roles;
@@ -176,17 +178,18 @@ namespace YetaWF.Modules.Identity.DataProvider {
                 if (PermanentManager.TryGetObject<List<RoleDefinition>>(out roles))
                     return roles;
             }
-            lock (_lockObject) { // lock this so we only do this once
+            //$$$lock (_lockObject) { // lock this so we only do this once
                 // See if we already have it as a permanent object
                 if (!force) {
                     if (PermanentManager.TryGetObject<List<RoleDefinition>>(out roles))
                         return roles;
                 }
                 // Load the roles
-                roles = GetItems();
+                DataProviderGetRecords<RoleDefinition> list = Manager.Syncify<DataProviderGetRecords<RoleDefinition>>(() => GetItemsAsync());
+                roles = list.Data;
 
                 PermanentManager.AddObject<List<RoleDefinition>>(roles);
-            }
+            //}
             return roles;
         }
         private RoleDefinition MakeSuperuserRole() {
@@ -205,16 +208,16 @@ namespace YetaWF.Modules.Identity.DataProvider {
         private RoleDefinition MakeAnonymousRole() {
             return new RoleDefinition() { RoleId = AnonymousIdentity, Name = Globals.Role_Anonymous, Description = this.__ResStr("anonymousRole", "The {0} role describes every user that is not logged in (i.e., not an authenticated user)", Globals.Role_Anonymous) };
         }
-        public void AddAdministratorRole() {
-            DataProvider.Add(
+        public async Task AddAdministratorRoleAsync() {
+            await DataProvider.AddAsync(
                 new RoleDefinition() {
                     Name = Globals.Role_Administrator,
                     Description = this.__ResStr("adminRole", "An administrator can do EVERYTHING on ONE site (the site where the user has the {0} role)", Globals.Role_Administrator)
                 }
             );
         }
-        public void AddEditorRole() {
-            DataProvider.Add(
+        public async Task AddEditorRoleAsync() {
+            await DataProvider.AddAsync(
                 new RoleDefinition() {
                     Name = Globals.Role_Editor,
                     Description = this.__ResStr("editorRole", "An editor is a user who can perform editing actions on the site")
@@ -226,15 +229,15 @@ namespace YetaWF.Modules.Identity.DataProvider {
         // IINSTALLABLEMODEL
         // IINSTALLABLEMODEL
 
-        public new bool InstallModel(List<string> errorList) {
-            if (!DataProvider.InstallModel(errorList))
+        public new async Task<bool> InstallModelAsync(List<string> errorList) {
+            if (!await DataProvider.InstallModelAsync(errorList))
                 return false;
-            AddSiteData();
+            await AddSiteDataAsync();
             return true;
         }
-        public new void AddSiteData() {
-            AddAdministratorRole();
-            AddEditorRole();
+        public new async Task AddSiteDataAsync() {
+            await AddAdministratorRoleAsync();
+            await AddEditorRoleAsync();
         }
     }
 }

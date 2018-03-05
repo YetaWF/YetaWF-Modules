@@ -1,5 +1,6 @@
 ﻿/* Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Identity#License */
 
+using System.Threading.Tasks;
 using YetaWF.Core.Localize;
 using YetaWF.Core.Modules;
 using YetaWF.Core.Pages;
@@ -21,9 +22,9 @@ namespace YetaWF.Modules.Identity.Views.Shared {
     public static class EmailHelper {
         public static string __ResStr(string name, string defaultValue, params object[] parms) { return ResourceAccess.GetResourceString(typeof(EmailHelper), name, defaultValue, parms); }
 #if MVC6
-        public static HtmlString RenderEmailDisplay<TModel>(this IHtmlHelper<TModel> htmlHelper, string name, string model, object HtmlAttributes = null)
+        public static async Task<HtmlString> RenderEmailDisplayAsync<TModel>(this IHtmlHelper<TModel> htmlHelper, string name, string model, object HtmlAttributes = null)
 #else
-        public static HtmlString RenderEmailDisplay<TModel>(this HtmlHelper<TModel> htmlHelper, string name, string model, object HtmlAttributes = null)
+        public static async Task<HtmlString> RenderEmailDisplayAsync<TModel>(this HtmlHelper<TModel> htmlHelper, string name, string model, object HtmlAttributes = null)
 #endif
         {
             TagBuilder tag = new TagBuilder("span");
@@ -35,7 +36,7 @@ namespace YetaWF.Modules.Identity.Views.Shared {
                 UserDefinition user = null;
                 string userName = "";
                 if (!string.IsNullOrWhiteSpace(model)) {
-                    user = userDefDP.GetItemByEmail(model);
+                    user = await userDefDP.GetItemByEmailAsync(model);
                     if (user == null) {
                         userName = model;
                     } else {

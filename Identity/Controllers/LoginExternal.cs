@@ -78,7 +78,7 @@ namespace YetaWF.Modules.Identity.Controllers {
                 return Redirect(Helper.GetSafeReturnUrl(Manager.CurrentSite.LoginUrl));
             }
             using (LoginConfigDataProvider logConfigDP = new LoginConfigDataProvider()) {
-                List<LoginConfigDataProvider.LoginProviderDescription> loginProviders = logConfigDP.GetActiveExternalLoginProviders();
+                List<LoginConfigDataProvider.LoginProviderDescription> loginProviders = await logConfigDP.GetActiveExternalLoginProvidersAsync();
 #if MVC6
                 if ((from l in loginProviders where l.InternalName == loginInfo.LoginProvider select l).FirstOrDefault() == null) {
                     Logging.AddErrorLog("Callback from external login provider {0} which is not active", loginInfo.LoginProvider);
@@ -93,7 +93,7 @@ namespace YetaWF.Modules.Identity.Controllers {
             }
 
             // get our registration defaults
-            LoginConfigData config = LoginConfigDataProvider.GetConfig();
+            LoginConfigData config = await LoginConfigDataProvider.GetConfigAsync();
 
             // Sign in the user with this external login provider if the user already has a login
             UserDefinition user;
@@ -118,31 +118,31 @@ namespace YetaWF.Modules.Identity.Controllers {
                 returnUrl = QueryHelper.AddRando(returnUrl); // to defeat client-side caching
                 return Redirect(returnUrl);
             } else if (user.UserStatus == UserStatusEnum.Rejected) {
-                LoginModuleController.UserLogoff();
+                await LoginModuleController.UserLogoffAsync();
                 Logging.AddErrorLog("User {0} - rejected user", user.UserName);
                 if (string.IsNullOrWhiteSpace(config.RejectedUrl))
                     return Redirect(MessageUrl("Your account has been rejected by the site administrator."));
                 return Redirect(Helper.GetSafeReturnUrl(config.RejectedUrl));
             } else if (user.UserStatus == UserStatusEnum.Suspended) {
-                LoginModuleController.UserLogoff();
+                await LoginModuleController.UserLogoffAsync();
                 Logging.AddErrorLog("User {0} - suspended user", user.UserName);
                 if (string.IsNullOrWhiteSpace(config.SuspendedUrl))
                     return Redirect(MessageUrl("Your account has been suspended by the site administrator."));
                 return Redirect(Helper.GetSafeReturnUrl(config.SuspendedUrl));
             } else if (user.UserStatus == UserStatusEnum.NeedValidation) {
-                LoginModuleController.UserLogoff();
+                await LoginModuleController.UserLogoffAsync();
                 Logging.AddErrorLog("User {0} - not yet validated", user.UserName);
                 if (string.IsNullOrWhiteSpace(config.VerificationPendingUrl))
                     return Redirect(MessageUrl(this.__ResStr("notValidated", "Your account has not yet been validated. You will receive an email with validation information. Once received, please use the information in the email to complete the registration.")));
                 return Redirect(Helper.GetSafeReturnUrl(config.VerificationPendingUrl));
             } else if (user.UserStatus == UserStatusEnum.NeedApproval) {
-                LoginModuleController.UserLogoff();
+                await LoginModuleController.UserLogoffAsync();
                 Logging.AddErrorLog("User {0} - not yet approved", user.UserName);
                 if (string.IsNullOrWhiteSpace(config.ApprovalPendingUrl))
                     return Redirect(MessageUrl(this.__ResStr("notApproved", "Your account has not yet been approved by the site administrator. You will receive an email confirmation as soon as your account is active.")));
                 return Redirect(Helper.GetSafeReturnUrl(config.ApprovalPendingUrl));
             } else {
-                LoginModuleController.UserLogoff();
+                await LoginModuleController.UserLogoffAsync();
                 throw new InternalError("badUserStatus", "Unexpected account status {0}", user.UserStatus);
             }
         }
