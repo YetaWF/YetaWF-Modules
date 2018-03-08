@@ -1,6 +1,7 @@
 ﻿/* Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/ModuleEdit#License */
 
 using System;
+using System.Threading.Tasks;
 using YetaWF.Core;
 using YetaWF.Core.IO;
 using YetaWF.Core.Localize;
@@ -32,8 +33,8 @@ namespace YetaWF.Modules.ModuleEdit.Modules {
         public override bool ShowModuleMenu { get { return false; } }
         public override bool ModuleHasSettings { get { return false; } }
 
-        public ModuleAction GetAction_Settings(Guid editGuid) {
-            ModuleDefinition editMod = ModuleDefinition.Load(editGuid, AllowNone: true);
+        public async Task<ModuleAction> GetAction_SettingsAsync(Guid editGuid) {
+            ModuleDefinition editMod = await ModuleDefinition.LoadAsync(editGuid, AllowNone: true);
             if (editMod == null) return null;
             if (!editMod.ModuleHasSettings) return null;
             if (!editMod.IsAuthorized(RoleDefinition.Edit)) return null;

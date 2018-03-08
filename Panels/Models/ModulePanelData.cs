@@ -1,6 +1,7 @@
 ﻿/* Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Panels#License */
 
 using System;
+using System.Threading.Tasks;
 using YetaWF.Core.DataProvider.Attributes;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Serializers;
@@ -54,10 +55,10 @@ namespace YetaWF.Modules.Panels.Models {
             [UIHint("MultiString80"), StringLength(MaxToolTip), Trim]
             public MultiString ToolTip { get; set; }
 
-            public ModuleDefinition GetModule() {
+            public async Task<ModuleDefinition> GetModuleAsync() {
                 if (_moduleDef == null) {
                     _moduleDef = NoModule;
-                    ModuleDefinition mod = ModuleDefinition.Load(Module, AllowNone: true);
+                    ModuleDefinition mod = await ModuleDefinition.LoadAsync(Module, AllowNone: true);
                     if (mod != null)
                         _moduleDef = mod;
                 }
@@ -67,8 +68,8 @@ namespace YetaWF.Modules.Panels.Models {
             private ModuleDefinition _moduleDef = null;
             private static ModuleDefinition NoModule = new ModuleDefinition();
 
-            public bool IsAuthorized() {
-                ModuleDefinition mod = GetModule();
+            public async Task<bool> IsAuthorizedAsync() {//$$$this isn't used. Why Not?
+                ModuleDefinition mod = await GetModuleAsync();
                 if (mod == null) return false;
                 return mod.IsAuthorized(null);
             }

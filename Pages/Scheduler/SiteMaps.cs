@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Xml;
+using System.Threading.Tasks;
 using YetaWF.Core.Localize;
 using YetaWF.Core.Modules;
 using YetaWF.Core.Pages;
@@ -31,7 +32,7 @@ namespace YetaWF.Modules.Pages.Scheduler {
         public void RunItem(SchedulerItemBase evnt) {
             if (evnt.EventName != EventSiteMaps)
                 throw new Error(this.__ResStr("eventNameErr", "Unknown scheduler event {0}."), evnt.EventName);
-            Create(slow: true);
+            CreateAsync(slow: true).Wait(); //$$$$
         }
 
         public SchedulerItemBase[] GetItems() {
@@ -55,7 +56,7 @@ namespace YetaWF.Modules.Pages.Scheduler {
         /// <summary>
         /// Create a site map for the current site.
         /// </summary>
-        public void Create(bool slow = false) {
+        public async Task CreateAsync(bool slow = false) {
             string file = GetTempFile();
             File.Delete(file);
 
@@ -76,9 +77,9 @@ namespace YetaWF.Modules.Pages.Scheduler {
             }
 
             // search all designed modules that have dynamic urls
-            List<DesignedModule> desMods = DesignedModules.LoadDesignedModules();
+            List<DesignedModule> desMods = await DesignedModules.LoadDesignedModulesAsync();
             foreach (DesignedModule desMod in desMods) {
-                ModuleDefinition mod = ModuleDefinition.Load(desMod.ModuleGuid, AllowNone: true);
+                ModuleDefinition mod = await ModuleDefinition.LoadAsync(desMod.ModuleGuid, AllowNone: true);
                 if (mod != null) {
                     ISiteMapDynamicUrls iSiteMap = mod as ISiteMapDynamicUrls;
                     if (iSiteMap != null) {

@@ -27,11 +27,11 @@ namespace YetaWF.Modules.ModuleEdit.Controllers {
         }
 
         [AllowGet]
-        public ActionResult ModuleEdit(Guid moduleGuid) {
+        public async Task<ActionResult> ModuleEdit(Guid moduleGuid) {
             if (moduleGuid == Guid.Empty)
                 throw new InternalError("No moduleGuid provided");
 
-            ModuleDefinition module = ModuleDefinition.Load(moduleGuid);
+            ModuleDefinition module = await ModuleDefinition.LoadAsync(moduleGuid);
             if (!module.IsAuthorized(ModuleDefinition.RoleDefinition.Edit))
                 return NotAuthorized();
 
@@ -47,11 +47,11 @@ namespace YetaWF.Modules.ModuleEdit.Controllers {
         [AllowPost]
         [ConditionalAntiForgeryToken]
         [ExcludeDemoMode]
-        public ActionResult ModuleEdit_Partial(ModuleEditModel model) {
+        public async Task<ActionResult> ModuleEdit_Partial(ModuleEditModel model) {
             if (model.ModuleGuid == Guid.Empty)
                 throw new InternalError("No moduleGuid provided");
             // we need to find the real type of the module for data binding
-            ModuleDefinition origModule = ModuleDefinition.Load(model.ModuleGuid);
+            ModuleDefinition origModule = await ModuleDefinition.LoadAsync(model.ModuleGuid);
             if (!origModule.IsAuthorized(ModuleDefinition.RoleDefinition.Edit))
                 return NotAuthorized();
 
@@ -67,7 +67,7 @@ namespace YetaWF.Modules.ModuleEdit.Controllers {
             // copy/save
             ObjectSupport.CopyDataFromOriginal(origModule, model.Module);
             model.Module.Temporary = false;
-            model.Module.Save();
+            await model.Module.SaveAsync();
             return FormProcessed(model, this.__ResStr("okSaved", "Module settings saved"));
         }
     }

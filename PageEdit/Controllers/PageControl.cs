@@ -288,7 +288,7 @@ namespace YetaWF.Modules.PageEdit.Controllers {
         [AllowPost]
         [ConditionalAntiForgeryToken]
         [ExcludeDemoMode]
-        public ActionResult AddNewPage_Partial(AddNewPageModel model) {
+        public async Task<ActionResult> AddNewPage_Partial(AddNewPageModel model) {
             if (!ModelState.IsValid)
                 return PartialView(model);
 
@@ -305,14 +305,14 @@ namespace YetaWF.Modules.PageEdit.Controllers {
             if (!page.IsAuthorized_Edit())
                 return NotAuthorized();
 
-            page.Save();
+            await page.SaveAsync();
             return FormProcessed(model, this.__ResStr("okNewPage", "New page created"), NextPage: page.EvaluatedCanonicalUrl);
         }
 
         [AllowPost]
         [ConditionalAntiForgeryToken]
         [ExcludeDemoMode]
-        public ActionResult AddNewModule_Partial(AddNewModuleModel model) {
+        public async Task<ActionResult> AddNewModule_Partial(AddNewModuleModel model) {
             PageDefinition page = PageDefinition.Load(model.CurrentPageGuid);
             if (page == null)
                 throw new Error("Can't edit this page");
@@ -326,14 +326,14 @@ namespace YetaWF.Modules.PageEdit.Controllers {
             if (!module.IsModuleUnique)
                 module.ModuleGuid = Guid.NewGuid();
             page.AddModule(model.SelectedPane, module, model.ModuleLocation == Location.Top);
-            page.Save();
+            await page.SaveAsync();
             return Reload(model, PopupText: this.__ResStr("okNew", "New module added"));
         }
 
         [AllowPost]
         [ConditionalAntiForgeryToken]
         [ExcludeDemoMode]
-        public ActionResult AddExistingModule_Partial(AddExistingModel model) {
+        public async Task<ActionResult> AddExistingModule_Partial(AddExistingModel model) {
             PageDefinition page = PageDefinition.Load(model.CurrentPageGuid);
             if (page == null)
                 throw new Error("Can't edit this page");
@@ -344,9 +344,9 @@ namespace YetaWF.Modules.PageEdit.Controllers {
             if (!ModelState.IsValid)
                 return PartialView(model);
 
-            ModuleDefinition module = ModuleDefinition.Load(model.ExistingModule);
+            ModuleDefinition module = await ModuleDefinition.LoadAsync(model.ExistingModule);
             page.AddModule(model.ExistingModulePane, module, model.ModuleLocation == Location.Top);
-            page.Save();
+            await page.SaveAsync();
             return Reload(model, PopupText: this.__ResStr("okExisting", "Module added"));
         }
 
@@ -377,14 +377,14 @@ namespace YetaWF.Modules.PageEdit.Controllers {
 #if MVC6
         public ActionResult ImportPackage(IFormFile __filename, ImportModel model)
 #else
-        public ActionResult ImportPackage(HttpPostedFileBase __filename, ImportModel model)
+        public async Task<ActionResult> ImportPackage(HttpPostedFileBase __filename, ImportModel model)
 #endif
         {
             FileUpload upload = new FileUpload();
             string tempName = upload.StoreTempPackageFile(__filename);
 
             List<string> errorList = new List<string>();
-            bool success = ModuleDefinition.Import(tempName, model.CurrentPageGuid, true, model.ModulePane, model.ModuleLocation == Location.Top, errorList);
+            bool success = await ModuleDefinition.ImportAsync(tempName, model.CurrentPageGuid, true, model.ModulePane, model.ModuleLocation == Location.Top, errorList);
             upload.RemoveTempFile(tempName);
 
             string errs = "";

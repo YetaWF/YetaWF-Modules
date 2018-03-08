@@ -9,7 +9,7 @@
     foreach (SelectTwoStepSetupModuleController.EditModel.AuthMethod meth in Model.AuthMethods) {
         <div class="t_auth_info">
             <div class="t_auth">
-                @meth.Action.RenderAsLink()
+                @meth.Action.RenderAsLinkAsync().Result
             </div>
             <div class="t_stat">
                 @meth.Status

@@ -90,7 +90,7 @@ namespace YetaWF.Modules.Menus.Modules {
                     Menu = newMenu,
                 });
                 // get a fresh copy of the module definitions
-                MenuModule menuMod = (MenuModule)ModuleDefinition.Load(ModuleGuid);
+                MenuModule menuMod = (MenuModule) await ModuleDefinition.LoadAsync(ModuleGuid);
                 if (menuMod == null)
                     throw new InternalError("Menu module {0} was deleted", ModuleGuid);
                 menuMod.NewMenuVersion();
@@ -99,7 +99,7 @@ namespace YetaWF.Modules.Menus.Modules {
                 // the menu was saved as part of module definition, move it to MenuInfoDataProvider
                 this.Menu = menuMod.Menu = null;// Legacy: clear menu saved as part of module definition
 #pragma warning restore 0618 // Type or member is obsolete
-                menuMod.Save();// save module definition (without menu)
+                await menuMod.SaveAsync();// save module definition (without menu)
             }
         }
 

@@ -11,13 +11,13 @@
     }
 
     if (style == MenuHelper.MenuStyleEnum.Bootstrap) {
-        HtmlString menu = Html.Render(Model.MenuList, DivId, null, YetaWF.Core.Modules.ModuleAction.RenderEngineEnum.BootstrapSmartMenu);
+        HtmlString menu = Html.RenderAsync(Model.MenuList, DivId, null, YetaWF.Core.Modules.ModuleAction.RenderEngineEnum.BootstrapSmartMenu).Result;
         if (!menu.IsEmpty()) {
             Manager.AddOnManager.AddAddOnGlobal("github.com.vadikom", "smartmenus"); // multilevel navbar
             @menu;
         }
     } else {
-        HtmlString menu = Html.Render(Model.MenuList, DivId, Model.CssClass, YetaWF.Core.Modules.ModuleAction.RenderEngineEnum.JqueryMenu);
+        HtmlString menu = Html.RenderAsync(Model.MenuList, DivId, Model.CssClass, YetaWF.Core.Modules.ModuleAction.RenderEngineEnum.JqueryMenu).Result;
         if (!menu.IsEmpty()) {
             //Manager.ScriptManager.AddKendoUICoreJsFile("kendo.popup.min.js"); // is now a prereq of kendo.window (2017.2.621)
             Manager.ScriptManager.AddKendoUICoreJsFile("kendo.menu.min.js");

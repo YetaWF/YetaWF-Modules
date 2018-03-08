@@ -251,7 +251,7 @@ namespace YetaWF.Modules.Identity.Controllers {
 #endif
 
                     Emails emails = new Emails();
-                    emails.SendApprovalNeeded(user);
+                    await emails.SendApprovalNeededAsync(user);
 
                     string nextPage = string.IsNullOrWhiteSpace(config.ApprovalPendingUrl) ? Manager.CurrentSite.HomePageUrl : config.ApprovalPendingUrl;
                     return FormProcessed(model,

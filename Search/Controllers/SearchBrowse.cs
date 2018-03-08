@@ -3,6 +3,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using YetaWF.Core.Controllers;
 using YetaWF.Core.DataProvider;
 using YetaWF.Core.Localize;
@@ -150,9 +151,9 @@ namespace YetaWF.Modules.Search.Controllers {
         [AllowPost]
         [Permission("CollectKeywords")]
         [ExcludeDemoMode]
-        public ActionResult CollectKeywords() {
+        public async Task<ActionResult> CollectKeywords() {
             Scheduler.Search search = new Scheduler.Search();
-            search.SearchSite(false);
+            await search.SearchSiteAsync(false);
             return Reload(PopupText: this.__ResStr("done", "Site search keywords updated"), Reload: ReloadEnum.ModuleParts);
         }
     }

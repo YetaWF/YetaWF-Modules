@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using YetaWF.Core;
 using YetaWF.Core.DataProvider.Attributes;
 using YetaWF.Core.Extensions;
@@ -10,7 +11,6 @@ using YetaWF.Core.Localize;
 using YetaWF.Core.Models;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Modules;
-using YetaWF.Core.Pages;
 using YetaWF.Core.Serializers;
 using YetaWF.Core.Support;
 using YetaWF.Core.Views.Shared;
@@ -117,17 +117,15 @@ namespace YetaWF.Modules.Text.Modules {
 
         public override SerializableList<AllowedRole> DefaultAllowedRoles { get { return EditorLevel_DefaultAllowedRoles; } }
 
-        public override List<ModuleAction> ModuleActions {
-            get {
-                List<ModuleAction> actions = base.ModuleActions;
-                if (Feed)
-                    actions.New(GetAction_RssFeed(ModuleGuid));
-                return actions;
-            }
+        public override async Task<List<ModuleAction>> RetrieveModuleActionsAsync() {
+            List<ModuleAction> actions = await base.RetrieveModuleActionsAsync();
+            if (Feed)
+                actions.New(await GetAction_RssFeedAwait(ModuleGuid));
+            return actions;
         }
 
-        public ModuleAction GetAction_RssFeed(Guid moduleGuid) {
-            TextModule mod = (TextModule) ModuleDefinition.Load(moduleGuid, AllowNone: true);
+        public async System.Threading.Tasks.Task<ModuleAction> GetAction_RssFeedAwait(Guid moduleGuid) {
+            TextModule mod = (TextModule)await ModuleDefinition.LoadAsync(moduleGuid, AllowNone: true);
             if (mod == null) return null;
             return new ModuleAction(this) {
                 Url = YetaWFManager.UrlFor(typeof(RssController), "RssFeed"),
@@ -144,8 +142,8 @@ namespace YetaWF.Modules.Text.Modules {
                 Location = ModuleAction.ActionLocationEnum.ModuleLinks,
             };
         }
-        public ModuleAction GetAction_RssDetail(string url, Guid moduleGuid, string AnchorId = null) {
-            TextModule mod = (TextModule) ModuleDefinition.Load(moduleGuid, AllowNone: true);
+        public async Task<ModuleAction> GetAction_RssDetailAsync(string url, Guid moduleGuid, string AnchorId = null) {
+            TextModule mod = (TextModule)await ModuleDefinition.LoadAsync(moduleGuid, AllowNone: true);
             if (mod == null) return null;
             if (string.IsNullOrWhiteSpace(url))
                 url = Manager.CurrentSite.MakeUrl(GetModuleUrl(moduleGuid));

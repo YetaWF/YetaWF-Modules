@@ -4,6 +4,6 @@
 @Html.EditorFor(m => Model, "PropertyList")
 @foreach (ModuleAction action in Model.Actions) {
     <div class="t_auth">
-        @action.RenderAsLink()
+        @action.RenderAsLinkAsync().Result
     </div>
 }

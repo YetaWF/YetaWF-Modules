@@ -37,7 +37,7 @@ namespace YetaWF.Modules.ModuleEdit.Controllers {
 
             // get the type of the grid record from the module being edited by checking its
             // AllowedUsers property [AdditionalMetadata("GridEntry", typeof(GridAllowedUserEntry))]
-            ModuleDefinition editMod = ModuleDefinition.Load(editGuid);
+            ModuleDefinition editMod = await ModuleDefinition.LoadAsync(editGuid);
             PropertyData propData = ObjectSupport.GetPropertyData(editMod.GetType(), "AllowedUsers");
             Type gridEntryType = propData.GetAdditionalAttributeValue<Type>("GridEntry");
 

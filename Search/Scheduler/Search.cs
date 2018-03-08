@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading;
+using System.Threading.Tasks;
 using YetaWF.Core.Extensions;
 using YetaWF.Core.Localize;
 using YetaWF.Core.Log;
@@ -25,7 +26,7 @@ namespace YetaWF.Modules.Search.Scheduler {
         public void RunItem(SchedulerItemBase evnt) {
             if (evnt.EventName != EventSearchPages)
                 throw new Error(this.__ResStr("eventNameErr", "Unknown scheduler event {0}."), evnt.EventName);
-            SearchSite(slow: true);
+            SearchSiteAsync(slow: true).Wait();//$$$$
         }
 
         public SchedulerItemBase[] GetItems() {
@@ -46,7 +47,7 @@ namespace YetaWF.Modules.Search.Scheduler {
 
         public Search() { }
 
-        public void SearchSite(bool slow) {
+        public async Task SearchSiteAsync(bool slow) {
             DateTime searchStarted = DateTime.UtcNow; // once we have all new keywords, delete all keywords that were added before this date/time
             using (SearchDataProvider searchDP = new SearchDataProvider()) {
 
@@ -72,10 +73,10 @@ namespace YetaWF.Modules.Search.Scheduler {
                 }
 
                 // search all designed modules that have dynamic urls
-                List<DesignedModule> desMods = DesignedModules.LoadDesignedModules();
+                List<DesignedModule> desMods = await DesignedModules.LoadDesignedModulesAsync();
                 foreach (DesignedModule desMod in desMods) {
                     try {
-                        ModuleDefinition mod = ModuleDefinition.Load(desMod.ModuleGuid, AllowNone: true);
+                        ModuleDefinition mod = await ModuleDefinition.LoadAsync(desMod.ModuleGuid, AllowNone: true);
                         if (mod != null && types.Contains(mod.GetType()) && mod.WantSearch) {
                             ISearchDynamicUrls iSearch = mod as ISearchDynamicUrls;
                             if (iSearch != null) {
@@ -96,7 +97,7 @@ namespace YetaWF.Modules.Search.Scheduler {
                     PageDefinition page = PageDefinition.Load(pageGuid);
                     if (page != null) {
                         SearchWords searchWords = new SearchWords(searchDP, searchStarted);
-                        SearchPage(searchWords, page);
+                        await SearchPageAsync(searchWords, page);
                         if (slow)
                             Thread.Sleep(500);// delay a bit (slow can only be used by scheduler items)
                     }
@@ -107,7 +108,7 @@ namespace YetaWF.Modules.Search.Scheduler {
             }
         }
 
-        private void SearchPage(SearchWords searchWords, PageDefinition page) {
+        private async Task SearchPageAsync(SearchWords searchWords, PageDefinition page) {
             if (!searchWords.WantPage(page)) return;
             if (searchWords.SetUrl(page.Url, page.PageSecurity, page.Title, page.Description, page.Created, page.Updated, page.IsAuthorized_View_Anonymous(), page.IsAuthorized_View_AnyUser())) {
                 searchWords.AddKeywords(page.Keywords);
@@ -115,7 +116,7 @@ namespace YetaWF.Modules.Search.Scheduler {
                     Guid modGuid = m.ModuleGuid;
                     ModuleDefinition mod = null;
                     try {
-                        mod = ModuleDefinition.Load(m.ModuleGuid);
+                        mod = await ModuleDefinition.LoadAsync(m.ModuleGuid);
                     } catch (Exception ex) {
                         Logging.AddErrorLog("An error occurred retrieving module {0} in page {1}", m.ModuleGuid, page.Url, ex);
                     }

@@ -37,7 +37,7 @@ namespace YetaWF.Modules.Blog.Controllers {
                     EntryDisplayModule dispMod = new EntryDisplayModule();
                     actions.New(dispMod.GetAction_DisplayAsync(Identity).Result, ModuleAction.ActionLocationEnum.GridLinks);//$$$$
                     EntryEditModule editMod = new EntryEditModule();
-                    actions.New(editMod.GetAction_Edit(Module.EditUrl, Identity), ModuleAction.ActionLocationEnum.GridLinks);
+                    actions.New(editMod.GetAction_EditAsync(Module.EditUrl, Identity).Result, ModuleAction.ActionLocationEnum.GridLinks);//$$$$$
                     actions.New(Module.GetAction_Remove(Identity), ModuleAction.ActionLocationEnum.GridLinks);
                     return actions;
                 }

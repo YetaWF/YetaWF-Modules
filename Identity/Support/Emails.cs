@@ -1,5 +1,6 @@
 ﻿/* Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Identity#License */
 
+using System.Threading.Tasks;
 using YetaWF.Core.Localize;
 using YetaWF.Core.Modules;
 using YetaWF.Core.Packages;
@@ -56,9 +57,9 @@ namespace YetaWF.Modules.Identity.Support {
             sendEmail.Send(true);
         }
 
-        public void SendApprovalNeeded(UserDefinition user) {
+        public async Task SendApprovalNeededAsync(UserDefinition user) {
             // get the registration module for some defaults
-            RegisterModule regMod = (RegisterModule) ModuleDefinition.CreateUniqueModule(typeof(RegisterModule));
+            RegisterModule regMod = (RegisterModule)await ModuleDefinition.CreateUniqueModuleAsync(typeof(RegisterModule));
             ModuleAction approve = regMod.GetAction_Approve(user.UserName);
             ModuleAction reject = regMod.GetAction_Reject(user.UserName);
 
@@ -97,9 +98,9 @@ namespace YetaWF.Modules.Identity.Support {
             sendEmail.Send(true);
         }
 
-        public void SendNewUserCreated(UserDefinition user) {
+        public async Task SendNewUserCreated(UserDefinition user) {
             // get the registration module for some defaults
-            RegisterModule regMod = (RegisterModule) ModuleDefinition.CreateUniqueModule(typeof(RegisterModule));
+            RegisterModule regMod = (RegisterModule)await ModuleDefinition.CreateUniqueModuleAsync(typeof(RegisterModule));
             ModuleAction reject = regMod.GetAction_Reject(user.UserName);
 
             SendEmail sendEmail = new SendEmail();

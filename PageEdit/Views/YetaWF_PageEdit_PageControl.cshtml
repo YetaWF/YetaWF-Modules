@@ -13,7 +13,7 @@
         if (Model.EditAuthorized) {
             @Html.RenderTabEntry(DivId, __ResStr("tabNew", "New Module"), __ResStr("tabNewTT", "Add a new module to this page (creates a new module)"), tabEntry)
             ++tabEntry;
-            if (ModuleSelectionHelper.ExistingModulesExist()) {
+            if (ModuleSelectionHelper.ExistingModulesExistAsync().Result) {
                 @Html.RenderTabEntry(DivId, __ResStr("tabOld", "Existing Module"), __ResStr("tabOldTT", "Add an existing module to this page (this does not copy the module)"), tabEntry)
                 ++tabEntry;
             }
@@ -51,7 +51,7 @@
             @Html.RenderTabPaneEnd(DivId, panel)
             ++panel;
 
-            if (ModuleSelectionHelper.ExistingModulesExist()) {
+            if (ModuleSelectionHelper.ExistingModulesExistAsync().Result) {
                 @Html.RenderTabPaneStart(DivId, panel, "t_addExistingMod")
                 using (Form("AddExistingModule_Partial", Model: Model.AddExistingModel)) {
                     @PartialForm()

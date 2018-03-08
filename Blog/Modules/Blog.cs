@@ -38,12 +38,10 @@ namespace YetaWF.Modules.Blog.Modules {
 
         public override SerializableList<AllowedRole> DefaultAllowedRoles { get { return AdministratorLevel_DefaultAllowedRoles; } }
 
-        public override List<ModuleAction> ModuleActions {
-            get {
-                List<ModuleAction> actions = base.ModuleActions;
-                actions.New(GetAction_RssFeedAsync().Result);//$$$$$
-                return actions;
-            }
+        public override async Task<List<ModuleAction>> RetrieveModuleActionsAsync() {
+            List<ModuleAction> actions = await base.RetrieveModuleActionsAsync();
+            actions.New(await GetAction_RssFeedAsync());
+            return actions;
         }
 
         public async Task<ModuleAction> GetAction_BlogAsync(string url, int blogCategory = 0, DateTime? StartDate = null, int Count = 0) { //$$$$$

@@ -1,5 +1,6 @@
 ﻿/* Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Text#License */
 
+using System.Threading.Tasks;
 using YetaWF.Core;
 using YetaWF.Core.Controllers;
 using YetaWF.Core.Models.Attributes;
@@ -49,9 +50,9 @@ namespace YetaWF.Modules.Text.Controllers {
         [AllowPost]
         [Permission("Edit")]
         [ExcludeDemoMode]
-        public ActionResult Text_Partial(TextModel model) {
+        public async Task<ActionResult> Text_Partial(TextModel model) {
             Module.Contents = model.Contents;
-            Module.Save();
+            await Module.SaveAsync();
             if (Manager.RequestForm[Globals.Link_SubmitIsApply] != null) {
                 return FormProcessed(model, "Contents saved", OnClose: OnCloseEnum.Nothing, OnPopupClose: OnPopupCloseEnum.ReloadModule, OnApply: OnApplyEnum.ReloadModule);
             } else {

@@ -1,5 +1,6 @@
 /* Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/SlideShow#License */
 
+using System.Threading.Tasks;
 using YetaWF.Core.Controllers;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Modules.SlideShow.Models;
@@ -43,11 +44,11 @@ namespace YetaWF.Modules.SlideShow.Controllers {
         [AllowPost]
         [ConditionalAntiForgeryToken]
         [ExcludeDemoMode]
-        public ActionResult TemplateSlideShow_Partial(Model model) {
+        public async Task<ActionResult> TemplateSlideShow_Partial(Model model) {
             if (!ModelState.IsValid)
                 return PartialView(model);
             Module.SlideShow = model.SlideShowEdit;
-            Module.Save();
+            await Module.SaveAsync();
             model.SlideShowEdit = model.SlideShow = Module.SlideShow;
             return FormProcessed(model);
         }

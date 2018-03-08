@@ -1,5 +1,6 @@
 /* Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Panels#License */
 
+using System.Threading.Tasks;
 using YetaWF.Core.Controllers;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Modules.Panels.Models;
@@ -35,11 +36,11 @@ namespace YetaWF.Modules.Panels.Controllers
         [AllowPost]
         [ConditionalAntiForgeryToken]
         [ExcludeDemoMode]
-        public ActionResult ModulePanel_Partial(Model model) {
+        public async Task<ActionResult> ModulePanel_Partial(Model model) {
             if (!ModelState.IsValid)
                 return PartialView(model);
             Module.PanelInfo = model.PanelInfo;
-            Module.Save();
+            await Module.SaveAsync();
             model.PanelInfo = Module.PanelInfo;
             return FormProcessed(model);
         }

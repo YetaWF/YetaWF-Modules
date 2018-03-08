@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using YetaWF.Core.Addons;
 using YetaWF.Core.Controllers;
 using YetaWF.Core.DataProvider;
@@ -42,7 +43,7 @@ namespace YetaWF.Modules.Pages.Controllers {
                     actions.New(Module.GetAction_ShowPage(EvaluatedCanonicalUrl), ModuleAction.ActionLocationEnum.GridLinks);
 
                     if (PageEditModule != null)
-                        actions.New(PageEditModule.GetModuleAction("Edit", null, PageGuid), ModuleAction.ActionLocationEnum.GridLinks);
+                        actions.New(PageEditModule.GetModuleActionAsync("Edit", null, PageGuid).Result, ModuleAction.ActionLocationEnum.GridLinks);//$$$
 
                     actions.New(Module.GetAction_RemoveLink(Url), ModuleAction.ActionLocationEnum.GridLinks);
 
@@ -125,14 +126,9 @@ namespace YetaWF.Modules.Pages.Controllers {
             private PagesBrowseModule Module { get; set; }
             public ModuleDefinition PageEditModule { get; set; }
 
-            public PageItem(YetaWFManager manager, PagesBrowseModule module, PageDefinition page) {
+            public PageItem(PagesBrowseModule module, PageDefinition page, ModuleDefinition pageSettings) {
                 Module = module;
-                // page editing services
-                ModuleDefinition pageSettings = ModuleDefinition.Load(manager.CurrentSite.PageEditingServices, AllowNone: true);
-                //if (pageSettings == null)
-                //    throw new InternalError("No page edit services available - no module has been defined in Site Properties");
                 PageEditModule = pageSettings;
-
                 ObjectSupport.CopyData(page, this);
                 Anonymous = page.IsAuthorized_View_Anonymous();
                 Users = page.IsAuthorized_View_AnyUser();
@@ -157,13 +153,18 @@ namespace YetaWF.Modules.Pages.Controllers {
         }
 
         [AllowPost]
-        public ActionResult PagesBrowse_GridData(int skip, int take, List<DataProviderSortInfo> sort, List<DataProviderFilterInfo> filters, Guid settingsModuleGuid) {
+        public async Task<ActionResult> PagesBrowse_GridData(int skip, int take, List<DataProviderSortInfo> sort, List<DataProviderFilterInfo> filters, Guid settingsModuleGuid) {
+            // page editing services
+            ModuleDefinition pageSettings = await ModuleDefinition.LoadAsync(Manager.CurrentSite.PageEditingServices, AllowNone: true);
+            //if (pageSettings == null)
+            //    throw new InternalError("No page edit services available - no module has been defined in Site Properties");
+
             using (PageDefinitionDataProvider dataProvider = new PageDefinitionDataProvider()) {
                 int total;
                 List<PageDefinition> pages = dataProvider.GetItems(skip, take, sort, filters, out total);
                 GridHelper.SaveSettings(skip, take, sort, filters, settingsModuleGuid);
                 return GridPartialView(new DataSourceResult {
-                    Data = (from s in pages select new PageItem(Manager, Module, s)).ToList<object>(),
+                    Data = (from s in pages select new PageItem(Module, s, pageSettings)).ToList<object>(),
                     Total = total
                 });
             }
@@ -186,7 +187,7 @@ namespace YetaWF.Modules.Pages.Controllers {
         [AllowPost]
         [Permission("SetAuthorization")]
         [ExcludeDemoMode]
-        public ActionResult UpdateAdminAndEditorAuthorization() {
+        public async Task<ActionResult> UpdateAdminAndEditorAuthorization() {
             using (PageDefinitionDataProvider dataProvider = new PageDefinitionDataProvider()) {
                 int adminRole = Resource.ResourceAccess.GetAdministratorRoleId();
                 int editorRole = Resource.ResourceAccess.GetEditorRoleId();
@@ -199,10 +200,10 @@ namespace YetaWF.Modules.Pages.Controllers {
                         while ((role = PageDefinition.AllowedRole.Find(page.AllowedRoles, adminRole)) != null)
                             page.AllowedRoles.Remove(role);
                         page.AllowedRoles.Add(new PageDefinition.AllowedRole { RoleId = adminRole, View = PageDefinition.AllowedEnum.Yes, Edit = PageDefinition.AllowedEnum.Yes, Remove = PageDefinition.AllowedEnum.Yes, });
-                        while ((role = PageDefinition.AllowedRole.Find(page.AllowedRoles, editorRole)) != null )
+                        while ((role = PageDefinition.AllowedRole.Find(page.AllowedRoles, editorRole)) != null)
                             page.AllowedRoles.Remove(role);
                         page.AllowedRoles.Add(new PageDefinition.AllowedRole { RoleId = editorRole, View = PageDefinition.AllowedEnum.Yes, Edit = PageDefinition.AllowedEnum.Yes, });
-                        page.Save();
+                        await page.SaveAsync();
                     }
                 }
             }
@@ -212,9 +213,9 @@ namespace YetaWF.Modules.Pages.Controllers {
         [AllowPost]
         [Permission("SiteMaps")]
         [ExcludeDemoMode]
-        public ActionResult CreateSiteMap() {
+        public async Task<ActionResult> CreateSiteMap() {
             SiteMaps sm = new SiteMaps();
-            sm.Create();
+            await sm.CreateAsync();
             return Reload(null, Reload: ReloadEnum.ModuleParts, PopupText: this.__ResStr("screDone", "The site map has been successfully created"));
         }
 

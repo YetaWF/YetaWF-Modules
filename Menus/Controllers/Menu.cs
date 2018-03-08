@@ -77,7 +77,7 @@ namespace YetaWF.Modules.Menus.Controllers {
                 info = new MenuList.SavedCacheInfo {
                     EditMode = Manager.EditMode,
                     UserId = Manager.UserId,
-                    Menu = (await Module.GetMenuAsync()).GetUserMenu(),
+                    Menu = await (await Module.GetMenuAsync()).GetUserMenuAsync(),
                     MenuVersion = Module.MenuVersion,
                 };
                 MenuList.SetCache(module.ModuleGuid, info);

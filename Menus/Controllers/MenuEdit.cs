@@ -38,7 +38,7 @@ namespace YetaWF.Modules.Menus.Controllers {
 
         [AllowGet]
         public async Task<ActionResult> MenuEdit(Guid menuGuid) {
-            MenuModule modMenu = (MenuModule)ModuleDefinition.Load(menuGuid);
+            MenuModule modMenu = (MenuModule) await ModuleDefinition.LoadAsync(menuGuid);
             if (modMenu == null)
                 throw new InternalError("Can't find menu module {0}", menuGuid);
 
@@ -66,7 +66,7 @@ namespace YetaWF.Modules.Menus.Controllers {
         [AllowPost]
         [ExcludeDemoMode]
         public async Task<ActionResult> MenuEdit_Partial(MenuEditModel model, bool ValidateCurrent) {
-            MenuModule modMenu = (MenuModule)ModuleDefinition.Load(model.MenuGuid);
+            MenuModule modMenu = (MenuModule) await ModuleDefinition.LoadAsync(model.MenuGuid);
             if (modMenu == null)
                 throw new InternalError("Can't find menu module {0}", model.MenuGuid);
 
@@ -92,7 +92,7 @@ namespace YetaWF.Modules.Menus.Controllers {
         [AllowPost]
         [ExcludeDemoMode]
         public async Task<ActionResult> EntireMenu(string entireMenu, Guid menuGuid, long menuVersion) {
-            MenuModule modMenu = (MenuModule)ModuleDefinition.Load(menuGuid);
+            MenuModule modMenu = (MenuModule) await ModuleDefinition.LoadAsync(menuGuid);
             if (modMenu == null)
                 throw new InternalError("Can't find menu module {0}", menuGuid);
             if (menuVersion != modMenu.MenuVersion)

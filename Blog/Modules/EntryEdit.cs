@@ -1,6 +1,7 @@
 ﻿/* Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Blog#License */
 
 using System;
+using System.Threading.Tasks;
 using YetaWF.Core.IO;
 using YetaWF.Core.Localize;
 using YetaWF.Core.Models.Attributes;
@@ -26,7 +27,7 @@ namespace YetaWF.Modules.Blog.Modules {
 
         public override SerializableList<AllowedRole> DefaultAllowedRoles { get { return AdministratorLevel_DefaultAllowedRoles; } }
 
-        public ModuleAction GetAction_Edit(string url, int blogEntry) {
+        public async Task<ModuleAction> GetAction_EditAsync(string url, int blogEntry) {
             if (blogEntry == 0) return null;
             ModuleAction action = new ModuleAction(this) {
                 Url = string.IsNullOrWhiteSpace(url) ? ModulePermanentUrl : url,
@@ -42,7 +43,7 @@ namespace YetaWF.Modules.Blog.Modules {
                 Location = ModuleAction.ActionLocationEnum.ModuleLinks,
                 SaveReturnUrl = true,
             };
-            if (!action.IsAuthorized) return null;
+            if (!await action.IsAuthorizedAsync()) return null;
             return action;
         }
     }

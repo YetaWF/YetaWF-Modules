@@ -13,6 +13,7 @@ using YetaWF.Core.Modules;
 using YetaWF.Core.Support;
 using YetaWF.Core.Views.Shared;
 using YetaWF.Modules.Modules.Modules;
+using System.Threading.Tasks;
 #if MVC6
 using Microsoft.AspNetCore.Mvc;
 #else
@@ -37,7 +38,7 @@ namespace YetaWF.Modules.Modules.Controllers {
                     } catch (Exception) { }
                     if (ModSettings != null) {
                         try {
-                            actions.New(ModSettings.GetModuleAction("Settings", guid), ModuleAction.ActionLocationEnum.GridLinks);
+                            actions.New(ModSettings.GetModuleActionAsync("Settings", guid).Result, ModuleAction.ActionLocationEnum.GridLinks); //$$$
                         } catch (Exception) { }
                     }
                     try {
@@ -121,19 +122,19 @@ namespace YetaWF.Modules.Modules.Controllers {
 
         [AllowPost]
         [ConditionalAntiForgeryToken]
-        public ActionResult ModulesBrowse_GridData(int skip, int take, List<DataProviderSortInfo> sort, List<DataProviderFilterInfo> filters, Guid settingsModuleGuid) {
+        public async Task<ActionResult> ModulesBrowse_GridData(int skip, int take, List<DataProviderSortInfo> sort, List<DataProviderFilterInfo> filters, Guid settingsModuleGuid) {
             // module settings services
-            ModuleDefinition modSettings = ModuleDefinition.Load(Manager.CurrentSite.ModuleEditingServices, AllowNone: true);
+            ModuleDefinition modSettings = await ModuleDefinition.LoadAsync(Manager.CurrentSite.ModuleEditingServices, AllowNone: true);
             //if (modSettings == null)
             //    throw new InternalError("No module edit settings services available - no module has been defined");
 
             ModuleDefinition.ModuleBrowseInfo info = new ModuleDefinition.ModuleBrowseInfo() {
                 Skip = skip,
-                Take= take,
+                Take = take,
                 Sort = sort,
                 Filters = filters,
             };
-            ModuleDefinition.GetModules(info);
+            await ModuleDefinition.GetModulesAsync(info);
             GridHelper.SaveSettings(skip, take, sort, filters, settingsModuleGuid);
             return GridPartialView(new DataSourceResult {
                 Data = (from s in info.Modules select new BrowseItem(Module, modSettings, s)).ToList<object>(),
@@ -144,19 +145,19 @@ namespace YetaWF.Modules.Modules.Controllers {
         [AllowPost]
         [Permission("RemoveItems")]
         [ExcludeDemoMode]
-        public ActionResult Remove(Guid moduleGuid) {
-            if (!ModuleDefinition.RemoveModuleDefinition(moduleGuid))
+        public async Task<ActionResult> Remove(Guid moduleGuid) {
+            if (!await ModuleDefinition.RemoveModuleDefinitionAsync(moduleGuid))
                 throw new Error(this.__ResStr("errRemove", "The module could not be removed - It may already have been deleted"));
             return Reload(null, Reload: ReloadEnum.ModuleParts);
         }
         [AllowPost]
         [Permission("RestoreAuthorization")]
         [ExcludeDemoMode]
-        public ActionResult RestoreAuthorization() {
+        public async Task<ActionResult> RestoreAuthorization() {
             ModuleDefinition.ModuleBrowseInfo info = new ModuleDefinition.ModuleBrowseInfo();
-            ModuleDefinition.GetModules(info);
+            await ModuleDefinition.GetModulesAsync(info);
             foreach (ModuleDefinition genericMod in info.Modules) {
-                ModuleDefinition mod = ModuleDefinition.Load(genericMod.ModuleGuid, AllowNone: true);
+                ModuleDefinition mod = await ModuleDefinition.LoadAsync(genericMod.ModuleGuid, AllowNone: true);
                 if (mod != null) {
 #if MERGE // enable this to preserve anon and user settings
                     int anonRoleId = Resource.ResourceAccess.GetAnonymousRoleId();
@@ -180,7 +181,7 @@ namespace YetaWF.Modules.Modules.Controllers {
 #endif
                     //mod.AllowedUsers = // we're not touching this
 
-                    mod.Save();
+                    await mod.SaveAsync();
                 }
             }
             return Reload(null, Reload: ReloadEnum.ModuleParts);

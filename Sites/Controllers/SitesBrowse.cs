@@ -3,6 +3,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using YetaWF.Core.Controllers;
 using YetaWF.Core.DataProvider;
 using YetaWF.Core.Menus;
@@ -31,7 +32,7 @@ namespace YetaWF.Modules.Sites.Controllers {
                     MenuList actions = new MenuList() { RenderMode = ModuleAction.RenderModeEnum.IconsOnly };
 
                     actions.New(Module.GetAction_SiteDisplay(SiteData), ModuleAction.ActionLocationEnum.GridLinks);
-                    actions.New(SiteEditModule.GetModuleAction("EditSite", null, SiteDomain), ModuleAction.ActionLocationEnum.GridLinks);
+                    actions.New(SiteEditModule.GetModuleActionAsync("EditSite", null, SiteDomain).Result, ModuleAction.ActionLocationEnum.GridLinks);//$$$
                     actions.New(ConfirmModule.GetAction_Remove(null, SiteData), ModuleAction.ActionLocationEnum.GridLinks);
                     return actions;
                 }
@@ -87,8 +88,8 @@ namespace YetaWF.Modules.Sites.Controllers {
 
         [AllowPost]
         [ConditionalAntiForgeryToken]
-        public ActionResult SitesBrowse_GridData(int skip, int take, List<DataProviderSortInfo> sort, List<DataProviderFilterInfo> filters, Guid settingsModuleGuid) {
-            ModuleDefinition siteEditModule = ModuleDefinition.Load(new Guid("522296A0-B03B-49b7-B849-AB4149466E0D"));
+        public async Task<ActionResult> SitesBrowse_GridData(int skip, int take, List<DataProviderSortInfo> sort, List<DataProviderFilterInfo> filters, Guid settingsModuleGuid) {
+            ModuleDefinition siteEditModule = await ModuleDefinition.LoadAsync(new Guid("522296A0-B03B-49b7-B849-AB4149466E0D"));
             ConfirmRemovalModule confirmModule = new ConfirmRemovalModule();
 
             SiteDefinition.SitesInfo info = SiteDefinition.GetSites(skip, take, sort, filters);

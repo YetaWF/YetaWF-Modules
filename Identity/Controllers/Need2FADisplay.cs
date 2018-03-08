@@ -27,7 +27,7 @@ namespace YetaWF.Modules.Identity.Controllers {
             if (Manager.EditMode) return new EmptyResult();
             if (Manager.IsInPopup) return new EmptyResult();
 
-            SelectTwoStepSetupModule mod2FA = (SelectTwoStepSetupModule)ModuleDefinition.Load(ModuleDefinition.GetPermanentGuid(typeof(SelectTwoStepSetupModule)));
+            SelectTwoStepSetupModule mod2FA = (SelectTwoStepSetupModule) await ModuleDefinition.LoadAsync(ModuleDefinition.GetPermanentGuid(typeof(SelectTwoStepSetupModule)));
             if (mod2FA == null)
                 throw new InternalError("Two-step authentication setup module not found");
 

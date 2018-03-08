@@ -32,8 +32,8 @@ namespace YetaWF.Modules.Identity.Modules {
         public override async Task<MenuList> GetModuleMenuListAsync(ModuleAction.RenderModeEnum renderMode, ModuleAction.ActionLocationEnum location) {
             MenuList menuList = await base.GetModuleMenuListAsync(renderMode, location);
             LoginConfigData config = await LoginConfigDataProvider.GetConfigAsync();
-            RegisterModule regMod = (RegisterModule)ModuleDefinition.CreateUniqueModule(typeof(RegisterModule));
-            LoginModule loginMod = (LoginModule)ModuleDefinition.CreateUniqueModule(typeof(LoginModule));
+            RegisterModule regMod = (RegisterModule) await ModuleDefinition.CreateUniqueModuleAsync(typeof(RegisterModule));
+            LoginModule loginMod = (LoginModule) await ModuleDefinition.CreateUniqueModuleAsync(typeof(LoginModule));
             bool closeOnLogin;
             Manager.TryGetUrlArg<bool>("CloseOnLogin", out closeOnLogin, false);
 
@@ -48,7 +48,7 @@ namespace YetaWF.Modules.Identity.Modules {
             return menuList;
         }
 
-        public async Task<ModuleAction> GetAction_ForgotPassword(string url, bool CloseOnLogin = false) {
+        public async Task<ModuleAction> GetAction_ForgotPasswordAsync(string url, bool CloseOnLogin = false) {
             LoginConfigData config = await LoginConfigDataProvider.GetConfigAsync();
             if (!config.SavePlainTextPassword) return null;
             return new ModuleAction(this) {

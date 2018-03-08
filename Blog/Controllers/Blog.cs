@@ -60,7 +60,7 @@ namespace YetaWF.Modules.Blog.Controllers {
                 ObjectSupport.CopyData(data, this);
                 ViewAction = dispMod.GetAction_DisplayAsync(data.Identity, ReadMore: data.Summary != data.Text).Result;//$$$$
                 Actions = new List<ModuleAction>();
-                Actions.New(editMod.GetAction_Edit(null, data.Identity));
+                Actions.New(editMod.GetAction_EditAsync(null, data.Identity).Result);//$$$$
             }
         }
 

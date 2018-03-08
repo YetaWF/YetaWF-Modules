@@ -1,5 +1,6 @@
 /* Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/BootstrapCarousel#License */
 
+using System.Threading.Tasks;
 using YetaWF.Core.Controllers;
 using YetaWF.Modules.BootstrapCarousel.Models;
 using YetaWF.Core.Models.Attributes;
@@ -34,11 +35,11 @@ namespace YetaWF.Modules.BootstrapCarousel.Controllers {
         [AllowPost]
         [ConditionalAntiForgeryToken]
         [ExcludeDemoMode]
-        public ActionResult CarouselDisplay_Partial(Model model) {
+        public async Task<ActionResult> CarouselDisplay_Partial(Model model) {
             if (!ModelState.IsValid)
                 return PartialView(model);
             Module.SlideShow = model.SlideShow;
-            Module.Save();
+            await Module.SaveAsync();
             model.SlideShow = Module.SlideShow;
             return FormProcessed(model);
         }

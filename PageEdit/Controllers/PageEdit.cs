@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using YetaWF.Core;
 using YetaWF.Core.Controllers;
 using YetaWF.Core.Language;
@@ -270,7 +271,7 @@ namespace YetaWF.Modules.PageEdit.Controllers {
         [AllowPost]
         [ConditionalAntiForgeryToken]
         [ExcludeDemoMode]
-        public ActionResult PageEdit_Partial(EditModel model) {
+        public async Task<ActionResult> PageEdit_Partial(EditModel model) {
             PageDefinition page = PageDefinition.Load(model.PageGuid);
             if (page == null)
                 ModelState.AddModelError("Key", this.__ResStr("alreadyDeleted", "This page has been removed and can no longer be updated."));
@@ -284,7 +285,7 @@ namespace YetaWF.Modules.PageEdit.Controllers {
             page = model.GetData(page); // merge new data into original
             model.SetData(page); // and all the data back into model for final display
 
-            page.Save();// this handles changing the Url automatically
+            await page.SaveAsync();// this handles changing the Url automatically
             MenuList.ClearCachedMenus();// page changes may affect all menus so clear the menu cache (this only clears current session)
             // if we're in a popup and the parent page is the page we're editing, then force a reload
             OnPopupCloseEnum popupClose = OnPopupCloseEnum.ReloadModule;

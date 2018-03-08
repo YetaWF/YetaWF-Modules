@@ -56,7 +56,7 @@ namespace YetaWF.Modules.Packages.DataProvider {
         public async Task BuildSiteUsingTemplateAsync(string template, bool build = true) {
             Logging.AddLog("Running site template {0}", template);
             // Get the current site menu
-            ModuleDefinition menuServices = ModuleDefinition.Load(Manager.CurrentSite.MenuServices, AllowNone: true);
+            ModuleDefinition menuServices = await ModuleDefinition.LoadAsync(Manager.CurrentSite.MenuServices, AllowNone: true);
             if (menuServices == null)
                 throw TemplateError("No menu services available - no module has been defined in Site Settings");
             IModuleMenuAsync iModMenu = (IModuleMenuAsync)menuServices;
@@ -65,7 +65,7 @@ namespace YetaWF.Modules.Packages.DataProvider {
 
             _SiteMenu = await iModMenu.GetMenuAsync();
             Manager.SiteCreationTemplateActive = true;
-            BuildSite(template, build);
+            await BuildSiteAsync(template, build);
             Manager.SiteCreationTemplateActive = false;
 
             // Save the new site menu
@@ -76,7 +76,7 @@ namespace YetaWF.Modules.Packages.DataProvider {
         /// Builds the current site from the template file
         /// </summary>
         /// <returns></returns>
-        private void BuildSite(string template, bool build) {
+        private async Task BuildSiteAsync(string template, bool build) {
 
             string initDataFile = Path.Combine(TemplateFolder, template);
 
@@ -93,7 +93,7 @@ namespace YetaWF.Modules.Packages.DataProvider {
             string oldTemplate = _Template;
             _LineCounter = 0;
             _Template = template;
-            BuildSiteFromText(newLines, build);
+            await BuildSiteFromTextAsync(newLines, build);
             _LineCounter = oldLineCounter;
             _Template = oldTemplate;
         }
@@ -102,7 +102,7 @@ namespace YetaWF.Modules.Packages.DataProvider {
         /// Builds the current site from the template file
         /// </summary>
         /// <returns></returns>
-        private void BuildSiteFromText(List<string> lines, bool build) {
+        private async Task BuildSiteFromTextAsync(List<string> lines, bool build) {
             // Build site from a template
             if (lines.Count() > 0) {
                 lines = RemoveComments(lines);
@@ -112,21 +112,21 @@ namespace YetaWF.Modules.Packages.DataProvider {
                     if (section == "")
                         continue;
                     else if (section == "::PAGE-SECTION::")
-                        ExtractPageSection(lines, build);
+                        await ExtractPageSectionAsync(lines, build);
                     else if (section == "::UNIQUE-MODULE-SECTION::")
-                        ExtractUniqueModuleSection(lines, build);
+                        await ExtractUniqueModuleSectionAsync(lines, build);
                     else if (section == "::NON-UNIQUE-MODULE-SECTION::")
-                        ExtractUniqueModuleSection(lines, build, Unique: false);
+                        await ExtractUniqueModuleSectionAsync(lines, build, Unique: false);
                     else if (section == "::LINK-SECTION::")
-                        ExtractLinkSection(lines, build);
+                        await ExtractLinkSectionAsync(lines, build);
                     else if (section == "::WEBCONFIG-SECTION::")
                         ExtractWebconfigSection(lines, build);
                     else if (section == "::COMMAND-SECTION::")
-                        ExtractCommandSection(lines, build);
+                        await ExtractCommandSectionAsync(lines, build);
                     else if (section == "::SQL-SECTION::")
                         ExtractSQLSection(lines, build);
                     else if (section.StartsWith("::INC "))
-                        ExtractINCSection(lines, build, section);
+                        await ExtractINCSectionAsync(lines, build, section);
                     else
                         throw TemplateError("Invalid section statement");
                 }
@@ -136,14 +136,14 @@ namespace YetaWF.Modules.Packages.DataProvider {
                     // Build a site with a few pages
                     //PageDefinition page = new PageDefinition() { Title = "Home Page", Url = "/", PageGuid = new Guid(Globals.HomePageGuid) };
                     PageDefinition page = PageDefinition.CreatePageDefinition("/");
-                    page.Save();
+                    await page.SaveAsync();
 #if DEBUG
                     page = PageDefinition.CreatePageDefinition("/page1");
-                    page.Save();
+                    await page.SaveAsync();
                     page = PageDefinition.CreatePageDefinition("/page2");
-                    page.Save();
+                    await page.SaveAsync();
                     page = PageDefinition.CreatePageDefinition("/page3");
-                    page.Save();
+                    await page.SaveAsync();
 #endif
                 }
             }
@@ -186,7 +186,7 @@ namespace YetaWF.Modules.Packages.DataProvider {
             return nl;
         }
 
-        private void ExtractPageSection(List<string> lines, bool build) {
+        private async Task ExtractPageSectionAsync(List<string> lines, bool build) {
 
             for (; lines.Count > 0;) {
                 // get the menu path (site url)
@@ -236,11 +236,11 @@ namespace YetaWF.Modules.Packages.DataProvider {
                 // add a menu entry to the site menu
                 if (menu != "-") {
                     if (build) {
-                        ModuleAction action = AddMenu(menu);
+                        ModuleAction action = await AddMenuAsync(menu);
                         //if (string.IsNullOrWhiteSpace(action.Url)) // I don't remember why this was here
                         action.Url = url;
                     } else {
-                        RemoveMenu(menu);
+                        await RemoveMenuAsync(menu);
                     }
                 }
 
@@ -320,7 +320,7 @@ namespace YetaWF.Modules.Packages.DataProvider {
                         modDef = parts[1].Trim();
                     } else
                         throw TemplateError("Invalid \"pane: module definition\"");
-                    ModuleDefinition mod = EvaluateModuleAsmTypeExpression(modDef);
+                    ModuleDefinition mod = await EvaluateModuleAsmTypeExpression(modDef);
                     page.AddModule(pane, mod);
 
                     for (; lines.Count > 0;) {
@@ -349,7 +349,7 @@ namespace YetaWF.Modules.Packages.DataProvider {
                     }
                 }
                 if (build)
-                    page.Save();
+                    await page.SaveAsync();
                 _CurrentPage = null;
                 _CurrentUrl = null;
             }
@@ -381,7 +381,7 @@ namespace YetaWF.Modules.Packages.DataProvider {
             return true;
         }
 
-        private void ExtractUniqueModuleSection(List<string> lines, bool build, bool Unique = true) {
+        private async Task ExtractUniqueModuleSectionAsync(List<string> lines, bool build, bool Unique = true) {
 
             for (; lines.Count > 0;) {
                 // get the module definition
@@ -393,7 +393,7 @@ namespace YetaWF.Modules.Packages.DataProvider {
                 ++_LineCounter; lines.RemoveAt(0);// accept as module line
                 if (string.IsNullOrWhiteSpace(modsLine))
                     continue;
-                ModuleDefinition mod = EvaluateModuleAsmTypeExpression(modsLine, UniqueMod: Unique);
+                ModuleDefinition mod = await EvaluateModuleAsmTypeExpression(modsLine, UniqueMod: Unique);
                 if (Unique) {
                     if (!mod.IsModuleUnique)
                         throw TemplateError("Can't use a non-unique module here");
@@ -425,16 +425,16 @@ namespace YetaWF.Modules.Packages.DataProvider {
                         throw TemplateError("Variable assignment invalid");
                 }
                 if (build)
-                    mod.Save();
+                    await mod.SaveAsync();
             }
         }
-        private ModuleDefinition EvaluateModuleAsmTypeExpression(string modsText, bool UniqueMod = false) {
-            object obj = EvaluateObjectAsmTypeExpression(modsText, UniqueMod: UniqueMod);
+        private async Task<ModuleDefinition> EvaluateModuleAsmTypeExpression(string modsText, bool UniqueMod = false) {
+            object obj = await EvaluateObjectAsmTypeExpressionAsync(modsText, UniqueMod: UniqueMod);
             if (obj is ModuleDefinition)
                 return (ModuleDefinition)obj;
             throw new InternalError("Object doesn't evaluate to a module definition");
         }
-        private object EvaluateObjectAsmTypeExpression(string objText, bool UniqueMod = false) {
+        private async Task<object> EvaluateObjectAsmTypeExpressionAsync(string objText, bool UniqueMod = false) {
             string[] s = objText.Split(new char[] { ',' });
             if (s.Length != 2)
                 throw TemplateError("Object {0} invalid (need assembly, type)", objText);
@@ -449,7 +449,7 @@ namespace YetaWF.Modules.Packages.DataProvider {
                 Assembly asm = Assemblies.Load(assembly);
                 Type tp = asm.GetType(type);
                 if (UniqueMod)
-                    return ModuleDefinition.CreateUniqueModule(tp);
+                    return await ModuleDefinition.CreateUniqueModuleAsync(tp);
                 else
                     return Activator.CreateInstance(tp);
             } catch (Exception exc) {
@@ -503,7 +503,7 @@ namespace YetaWF.Modules.Packages.DataProvider {
             return value;
         }
 
-        private void ExtractLinkSection(List<string> lines, bool build) {
+        private async Task ExtractLinkSectionAsync(List<string> lines, bool build) {
 
             for (; lines.Count > 0;) {
                 // get the url
@@ -529,7 +529,7 @@ namespace YetaWF.Modules.Packages.DataProvider {
                 menu = menu.Trim();
 
                 if (build) {
-                    ModuleAction action = AddMenu(menu);
+                    ModuleAction action = await AddMenuAsync(menu);
                     action.Url = url;
                 }
             }
@@ -566,7 +566,7 @@ namespace YetaWF.Modules.Packages.DataProvider {
             }
         }
 
-        private void ExtractCommandSection(List<string> lines, bool build) {
+        private async Task ExtractCommandSectionAsync(List<string> lines, bool build) {
             for (; lines.Count > 0;) {
                 // get the command line
                 string cmd = lines.First();
@@ -577,11 +577,13 @@ namespace YetaWF.Modules.Packages.DataProvider {
                 if (cmd.Trim() == "")
                     continue;
 
-                EvaluateVariable(cmd);
+                await EvaluateVariableAsync(cmd);
             }
         }
-        private ModuleAction AddMenu(string menuText) {
-            ModuleAction menuEntry = GetMenuAction(ref menuText);
+        private async Task<ModuleAction> AddMenuAsync(string menuText) {
+            MenuActionInfo menuInfo = await GetMenuActionAsync(menuText);
+            menuText = menuInfo.MenuText;
+            ModuleAction menuEntry = menuInfo.Action;
             ModuleAction parentAction = FindAction(_SiteMenu, menuText);
             if (parentAction != null) {
                 if (parentAction.SubMenu == null)
@@ -623,8 +625,13 @@ namespace YetaWF.Modules.Packages.DataProvider {
             else
                 return FindAction(newParent.SubMenu, menuText);
         }
+
+        public class MenuActionInfo {
+            public ModuleAction Action { get; set; }
+            public string MenuText { get; set; }
+        }
         // get the action text from the entire menu string menu>submenu>submenu>action
-        private ModuleAction GetMenuAction(ref string menuText) {
+        private async Task<MenuActionInfo> GetMenuActionAsync(string menuText) {
             string[] s = menuText.Split(new char[] { '>' });
             string menuString;
             if (s.Length == 0) {
@@ -635,7 +642,7 @@ namespace YetaWF.Modules.Packages.DataProvider {
                 menuString = s[s.Length - 1];
             }
             menuString = menuString.Trim();
-            object obj = EvaluateVariable(menuString);
+            object obj = await EvaluateVariableAsync(menuString);
             if (obj is string) {
                 string text = (string)obj;
                 ModuleAction action = new ModuleAction(null) {
@@ -645,7 +652,10 @@ namespace YetaWF.Modules.Packages.DataProvider {
                     MenuText = text,
                     Style = ModuleAction.ActionStyleEnum.Normal,
                 };
-                return action;
+                return new MenuActionInfo {
+                    Action = action,
+                    MenuText = menuText,
+                };
             } else if (obj is ModuleAction) {
                 // create a copy with all attributes except queryargs as they can't be serialized, convert to Url instead
                 ModuleAction action = new ModuleAction();
@@ -654,7 +664,10 @@ namespace YetaWF.Modules.Packages.DataProvider {
                 action.QueryArgs = null;
                 action.QueryArgsHR = null;
                 action.QueryArgsDict = null;
-                return action;
+                return new MenuActionInfo {
+                    Action = action,
+                    MenuText = menuText,
+                };
             } else
                 throw TemplateError("Unknown menu action {0}", menuString);
         }
@@ -664,12 +677,12 @@ namespace YetaWF.Modules.Packages.DataProvider {
             menuText = string.Join(">", s.Skip(1));
             return s[0].Trim();
         }
-        private void RemoveMenu(string menuText) {
+        private async Task RemoveMenuAsync(string menuText) {
             string[] menuStrings = menuText.Split(new char[] { '>' });
             SerializableList<ModuleAction> menu = _SiteMenu;
             for (int si = 0, maxSi = menuStrings.Count(); si < maxSi; ++si) {
                 string menuString = menuStrings[si].Trim();
-                object obj = EvaluateVariable(menuString);
+                object obj = await EvaluateVariableAsync(menuString);
                 if (obj is ModuleAction) {
                     ModuleAction action = (ModuleAction)obj;
                     menuString = action.MenuText.ToString();
@@ -697,7 +710,7 @@ namespace YetaWF.Modules.Packages.DataProvider {
                 if (!found) return;
             }
         }
-        private object EvaluateVariable(string expr) {
+        private async Task<object> EvaluateVariableAsync(string expr) {
             // "string"     -> string
             // {asm,type}.method_call(parms)   ->  invoke method on object. All parms must be constants.
             expr = expr.Trim();
@@ -713,7 +726,7 @@ namespace YetaWF.Modules.Packages.DataProvider {
 
                 object obj;
                 try {
-                    obj = EvaluateObjectAsmTypeExpression(asmtype);
+                    obj = await EvaluateObjectAsmTypeExpressionAsync(asmtype);
                 } catch (Exception exc) {
                     throw TemplateError("Can't create object {0}: {1}", asmtype, exc.Message);
                 }
@@ -829,13 +842,13 @@ namespace YetaWF.Modules.Packages.DataProvider {
                 }
             }
         }
-        private void ExtractINCSection(List<string> lines, bool build, string section) {
+        private async Task ExtractINCSectionAsync(List<string> lines, bool build, string section) {
             string[] parts = section.Split(new char[] { ' ' }, 2);
             if (parts.Length != 2)
                 throw TemplateError("::INC statement invalid");
             string file = parts[1].Trim();
             file = TrimQuotes(file);
-            BuildSite(file, build);
+            await BuildSiteAsync(file, build);
         }
     }
 }

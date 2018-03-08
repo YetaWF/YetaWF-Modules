@@ -7,7 +7,7 @@
 }
 <div class="t_message">
     @__ResStr("need2FA", "Please set up Two-Step Authentication for full access to this site - ")
-    @Model.SetupAction.RenderAsLink()
+    @Model.SetupAction.RenderAsLinkAsync().Result
 </div>
 <script>
  $('#@Module.ModuleHtmlId').prependTo('body');

@@ -3,6 +3,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using YetaWF.Core.Controllers;
 using YetaWF.Core.DataProvider;
 using YetaWF.Core.Localize;
@@ -50,7 +51,7 @@ namespace YetaWF.Modules.Packages.Controllers {
                     actions.New(Module.GetAction_LocalizePackage(Package), ModuleAction.ActionLocationEnum.GridLinks);
                     actions.New(Module.GetAction_RemovePackage(Package), ModuleAction.ActionLocationEnum.GridLinks);
 
-                    actions.New(ModLocalize.GetModuleAction("Browse", null, Package), ModuleAction.ActionLocationEnum.GridLinks);
+                    actions.New(ModLocalize.GetModuleActionAsync("Browse", null, Package).Result, ModuleAction.ActionLocationEnum.GridLinks);//$$$$
                     return actions;
                 }
             }
@@ -106,8 +107,8 @@ namespace YetaWF.Modules.Packages.Controllers {
         }
 
         [AllowPost]
-        public ActionResult Packages_GridData(int skip, int take, List<DataProviderSortInfo> sort, List<DataProviderFilterInfo> filters, Guid settingsModuleGuid) {
-            ModuleDefinition modLocalize = ModuleDefinition.Load(Manager.CurrentSite.PackageLocalizationServices, AllowNone: true);
+        public async Task<ActionResult> Packages_GridData(int skip, int take, List<DataProviderSortInfo> sort, List<DataProviderFilterInfo> filters, Guid settingsModuleGuid) {
+            ModuleDefinition modLocalize = await ModuleDefinition.LoadAsync(Manager.CurrentSite.PackageLocalizationServices, AllowNone: true);
             if (modLocalize == null)
                 throw new InternalError("No localization services available - no module has been defined");
             int total;

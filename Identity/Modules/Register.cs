@@ -55,7 +55,7 @@ namespace YetaWF.Modules.Identity.Modules {
 
         public override async Task<MenuList> GetModuleMenuListAsync(ModuleAction.RenderModeEnum renderMode, ModuleAction.ActionLocationEnum location) {
             MenuList menuList = await base.GetModuleMenuListAsync(renderMode, location);
-            LoginModule loginMod = (LoginModule)ModuleDefinition.CreateUniqueModule(typeof(LoginModule));
+            LoginModule loginMod = (LoginModule) await ModuleDefinition.CreateUniqueModuleAsync(typeof(LoginModule));
             bool closeOnLogin;
             Manager.TryGetUrlArg<bool>("CloseOnLogin", out closeOnLogin, false);
             ModuleAction logAction = loginMod.GetAction_Login(Manager.CurrentSite.LoginUrl, Force: true, CloseOnLogin: closeOnLogin);

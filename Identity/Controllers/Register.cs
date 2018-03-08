@@ -187,14 +187,14 @@ namespace YetaWF.Modules.Identity.Controllers {
                     this.__ResStr("okRegTitle", "Welcome!"),
                     NextPage: nextPage);
             } else if (user.UserStatus == UserStatusEnum.NeedApproval) {
-                emails.SendApprovalNeeded(user);
+                await emails.SendApprovalNeededAsync(user);
                 string nextPage = string.IsNullOrWhiteSpace(config.ApprovalPendingUrl) ? Manager.CurrentSite.HomePageUrl : config.ApprovalPendingUrl;
                 return FormProcessed(model, this.__ResStr("okAwaitApproval", "An email has just been sent to the site administrator for approval of your new account. Once processed and approved, you will receive an email confirming your approval."),
                     this.__ResStr("okRegTitle", "Welcome!"),
                     NextPage: nextPage);
             } else if (user.UserStatus == UserStatusEnum.Approved) {
                 if (config.NotifyAdminNewUsers)
-                    emails.SendNewUserCreated(user);
+                    await emails.SendNewUserCreated(user);
                 await LoginModuleController.UserLoginAsync(user, config.PersistentLogin);
                 if (model.CloseOnLogin)
                     return FormProcessed(model, this.__ResStr("okRegText", "Your new account has been successfully registered."), this.__ResStr("okRegTitle", "Welcome!"),

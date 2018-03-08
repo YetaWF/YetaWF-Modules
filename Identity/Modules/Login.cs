@@ -35,14 +35,12 @@ namespace YetaWF.Modules.Identity.Modules {
 
         public override async Task<MenuList> GetModuleMenuListAsync(ModuleAction.RenderModeEnum renderMode, ModuleAction.ActionLocationEnum location) {
             MenuList menuList = await base.GetModuleMenuListAsync(renderMode, location);
-            RegisterModule regMod = (RegisterModule)ModuleDefinition.CreateUniqueModule(typeof(RegisterModule));
-            ForgotPasswordModule pswdMod = (ForgotPasswordModule)ModuleDefinition.CreateUniqueModule(typeof(ForgotPasswordModule));
-            LoginConfigData config = Manager.Syncify<LoginConfigData>(() => //$$$ think about this
-                LoginConfigDataProvider.GetConfigAsync()
-            );
+            RegisterModule regMod = (RegisterModule) await ModuleDefinition.CreateUniqueModuleAsync(typeof(RegisterModule));
+            ForgotPasswordModule pswdMod = (ForgotPasswordModule) await ModuleDefinition.CreateUniqueModuleAsync(typeof(ForgotPasswordModule));
+            LoginConfigData config = await LoginConfigDataProvider.GetConfigAsync();
             bool closeOnLogin;
             Manager.TryGetUrlArg<bool>("CloseOnLogin", out closeOnLogin, false);
-            ModuleAction pswdAction = await pswdMod.GetAction_ForgotPassword(config.ForgotPasswordUrl, CloseOnLogin: closeOnLogin);
+            ModuleAction pswdAction = await pswdMod.GetAction_ForgotPasswordAsync(config.ForgotPasswordUrl, CloseOnLogin: closeOnLogin);
             if (pswdAction != null)
                 pswdAction.AddToOriginList = false;
             menuList.New(pswdAction, location);

@@ -55,16 +55,16 @@ namespace YetaWF.Modules.Identity.Views.Shared {
                     userName = user.UserName;
                     Modules.UsersDisplayModule modDisp = new Modules.UsersDisplayModule();
                     actionDisplay = modDisp.GetAction_Display(null, userName);
-                    Modules.LoginModule modLogin = (Modules.LoginModule)ModuleDefinition.CreateUniqueModule(typeof(Modules.LoginModule));
+                    Modules.LoginModule modLogin = (Modules.LoginModule) await ModuleDefinition.CreateUniqueModuleAsync(typeof(Modules.LoginModule));
                     actionLoginAs = modLogin.GetAction_LoginAs(model, userName);
                 }
                 tag.SetInnerText(userName);
             }
             string html = tag.ToString(TagRenderMode.Normal);
             if (actionDisplay != null)
-                html += actionDisplay.Render(ModuleAction.RenderModeEnum.IconsOnly);
+                html += await actionDisplay.RenderAsync(ModuleAction.RenderModeEnum.IconsOnly);
             if (actionLoginAs != null)
-                html += actionLoginAs.Render(ModuleAction.RenderModeEnum.IconsOnly);
+                html += await actionLoginAs.RenderAsync(ModuleAction.RenderModeEnum.IconsOnly);
             return new HtmlString(html);
         }
 

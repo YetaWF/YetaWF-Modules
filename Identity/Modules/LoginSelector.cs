@@ -56,7 +56,7 @@ namespace YetaWF.Modules.Identity.Modules {
                     UserDefinition user = await dataProvider.GetItemAsync(userName);
                     if (user != null) {
                         Users.Add(new User { UserId = user.UserId });
-                        Save();
+                        await SaveAsync();
                     }
                 }
             });

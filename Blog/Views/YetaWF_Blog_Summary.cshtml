@@ -6,6 +6,6 @@
 @foreach (YetaWF.Modules.Blog.Controllers.SummaryModuleController.Entry blogEntry in Model.BlogEntries) {
     ++count;
     <div class="t_entry @("t_entry" + count.ToString())">
-        @blogEntry.ViewAction.RenderAsLink()
+        @blogEntry.ViewAction.RenderAsLinkAsync().Result
     </div>
 }

@@ -2,19 +2,19 @@
 @inherits YetaWF.Core.Views.RazorView<YetaWF.Modules.TinyLogin.Modules.TinyLoginModule, YetaWF.Modules.TinyLogin.Controllers.TinyLoginModuleController.TinyLoginModel>
 @if (Model.LoggedOn) {
     <div class="t_haveuser t_link">
-        @Module.GetAction_Logoff(Model.LogoffUrl).Render(YetaWF.Core.Modules.ModuleAction.RenderModeEnum.NormalLinks)
+        @Module.GetAction_Logoff(Model.LogoffUrl).RenderAsync(YetaWF.Core.Modules.ModuleAction.RenderModeEnum.NormalLinks).Result
     </div>
     <div class="t_haveuser t_user">
-        @Module.GetAction_UserName(Model.UserUrl, Model.UserName, Model.UserTooltip).Render(YetaWF.Core.Modules.ModuleAction.RenderModeEnum.NormalLinks)
+        @Module.GetAction_UserName(Model.UserUrl, Model.UserName, Model.UserTooltip).RenderAsync(YetaWF.Core.Modules.ModuleAction.RenderModeEnum.NormalLinks).Result
     </div>
 } else {
     <div class="t_nouser t_logon">
-        @Module.GetAction_Login(Model.LogonUrl).Render(YetaWF.Core.Modules.ModuleAction.RenderModeEnum.NormalLinks)
+        @Module.GetAction_Login(Model.LogonUrl).RenderAsync(YetaWF.Core.Modules.ModuleAction.RenderModeEnum.NormalLinks).Result
     </div>
     <div class="t_nouser t_register">
         @{ YetaWF.Core.Modules.ModuleAction action = Module.GetAction_Register(Model.RegisterUrl); }
         @if (action != null) {
-            @action.Render(YetaWF.Core.Modules.ModuleAction.RenderModeEnum.NormalLinks)
+            @action.RenderAsync(YetaWF.Core.Modules.ModuleAction.RenderModeEnum.NormalLinks).Result
         }
     </div>
 }
