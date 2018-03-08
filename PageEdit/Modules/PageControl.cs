@@ -51,9 +51,9 @@ namespace YetaWF.Modules.PageEdit.Modules {
 
             PageEditModule modEdit = new PageEditModule();
             menuList.New(modEdit.GetAction_Edit(null), location);
-            menuList.New(modEdit.GetAction_Remove(null), location);
+            menuList.New(await modEdit.GetAction_RemoveAsync(null), location);
 
-            menuList.New(this.GetAction_W3CValidation(), location);
+            menuList.New(await this.GetAction_W3CValidationAsync(), location);
 
             menuList.AddRange(baseMenuList);
             return menuList;
@@ -97,15 +97,15 @@ namespace YetaWF.Modules.PageEdit.Modules {
                 DontFollow = true,
             };
         }
-        public ModuleAction GetAction_W3CValidation() {
+        public async Task<ModuleAction> GetAction_W3CValidationAsync() {
             if (Manager.CurrentPage == null) return null;
-            ControlPanelConfigData config = ControlPanelConfigDataProvider.GetConfig();
+            ControlPanelConfigData config = await ControlPanelConfigDataProvider.GetConfigAsync();
             if (string.IsNullOrWhiteSpace(config.W3CUrl)) return null;
             if (!config.W3CUrl.Contains("{0}")) return null;
             return new ModuleAction(this) {
                 Url = string.Format(config.W3CUrl, Manager.CurrentPage.EvaluatedCanonicalUrl),
                 Image = "W3CValidator.png",
-                Name="W3CValidate",
+                Name = "W3CValidate",
                 LinkText = this.__ResStr("modW3CValLink", "W3C Validation"),
                 MenuText = this.__ResStr("modW3CValText", "W3C Validation"),
                 Tooltip = this.__ResStr("modW3CValTooltip", "Use W3C Validation service to validate the current page - The page must be accessible to the remote service as an anonymous user"),

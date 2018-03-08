@@ -254,7 +254,7 @@ namespace YetaWF.Modules.Blog.DataProvider {
 
                     string url = await BlogConfigData.GetEntryCanonicalNameAsync(entry.Identity);
 
-                    PageDefinition page = PageDefinition.LoadFromUrl(url);
+                    PageDefinition page = await PageDefinition.LoadFromUrlAsync(url);
                     if (page == null) return; // there is no such root page
                     if (!searchWords.WantPage(page)) return;
 
@@ -282,7 +282,7 @@ namespace YetaWF.Modules.Blog.DataProvider {
                 DataProviderGetRecords<BlogEntry> entries = await GetItemsAsync(0, 0, null, filters);
                 foreach (BlogEntry entry in entries.Data) {
                     string url = await BlogConfigData.GetEntryCanonicalNameAsync(entry.Identity);
-                    PageDefinition page = PageDefinition.LoadFromUrl(url);
+                    PageDefinition page = await PageDefinition.LoadFromUrlAsync(url);
                     if (page == null) return; // there is no such root page
                     addDynamicUrl(page, url, entry.DateUpdated, page.SiteMapPriority, page.ChangeFrequency, entry);
                 }

@@ -91,7 +91,7 @@ namespace YetaWF.Modules.Pages.Scheduler {
             // Designed pages
             List<Guid> pages = PageDefinition.GetDesignedGuids();
             foreach (Guid pageGuid in pages) {
-                PageDefinition page = PageDefinition.Load(pageGuid);
+                PageDefinition page = await PageDefinition.LoadAsync(pageGuid);
                 if (page == null)
                     continue;
                 if (!PagesFound.Contains(page.PageGuid)) // don't include same again (this could be a page that generates dynamic Urls)

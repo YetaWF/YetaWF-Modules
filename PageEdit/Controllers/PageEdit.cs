@@ -249,11 +249,11 @@ namespace YetaWF.Modules.PageEdit.Controllers {
         }
 
         [AllowGet]
-        public ActionResult PageEdit(Guid pageGuid) {
+        public async Task<ActionResult> PageEdit(Guid pageGuid) {
             if (pageGuid == Guid.Empty)
                 throw new InternalError("No pageGuid provided");
 
-            PageDefinition page = PageDefinition.Load(pageGuid);
+            PageDefinition page = await PageDefinition.LoadAsync(pageGuid);
             if (page == null)
                 throw new Error(this.__ResStr("notFound", "Page {0} doesn't exist", pageGuid));
 
@@ -272,7 +272,7 @@ namespace YetaWF.Modules.PageEdit.Controllers {
         [ConditionalAntiForgeryToken]
         [ExcludeDemoMode]
         public async Task<ActionResult> PageEdit_Partial(EditModel model) {
-            PageDefinition page = PageDefinition.Load(model.PageGuid);
+            PageDefinition page = await PageDefinition.LoadAsync(model.PageGuid);
             if (page == null)
                 ModelState.AddModelError("Key", this.__ResStr("alreadyDeleted", "This page has been removed and can no longer be updated."));
 
@@ -296,13 +296,13 @@ namespace YetaWF.Modules.PageEdit.Controllers {
 
         [AllowPost]
         [ExcludeDemoMode]
-        public ActionResult RemovePage(Guid pageGuid) {
-            PageDefinition page = page = PageDefinition.Load(pageGuid);
+        public async Task<ActionResult> RemovePage(Guid pageGuid) {
+            PageDefinition page = page = await PageDefinition.LoadAsync(pageGuid);
             if (page == null)
                 throw new InternalError("Page {0} does not exist", pageGuid);
             if (!page.IsAuthorized_Remove())
                 return NotAuthorized();
-            PageDefinition.RemovePageDefinition(pageGuid);
+            await PageDefinition.RemovePageDefinitionAsync(pageGuid);
             return Redirect((string)null);
         }
     }

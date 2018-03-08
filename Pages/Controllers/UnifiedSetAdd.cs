@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using YetaWF.Core;
 using YetaWF.Core.Controllers;
 using YetaWF.Core.Localize;
@@ -85,12 +86,12 @@ namespace YetaWF.Modules.Pages.Controllers {
         [AllowPost]
         [ConditionalAntiForgeryToken]
         [ExcludeDemoMode]
-        public ActionResult UnifiedSetAdd_Partial(AddModel model) {
+        public async Task<ActionResult> UnifiedSetAdd_Partial(AddModel model) {
             if (!ModelState.IsValid)
                 return PartialView(model);
 
             using (UnifiedSetDataProvider unifiedSetDP = new UnifiedSetDataProvider()) {
-                if (!unifiedSetDP.AddItem(model.GetData())) {
+                if (!await unifiedSetDP.AddItemAsync(model.GetData())) {
                     ModelState.AddModelError("Name", this.__ResStr("alreadyExists", "A Unified Page Set named \"{0}\" already exists", model.Name));
                     return PartialView(model);
                 }

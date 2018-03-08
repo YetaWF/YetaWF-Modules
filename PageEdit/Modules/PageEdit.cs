@@ -1,6 +1,7 @@
 ﻿/* Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/PageEdit#License */
 
 using System;
+using System.Threading.Tasks;
 using YetaWF.Core;
 using YetaWF.Core.IO;
 using YetaWF.Core.Localize;
@@ -62,7 +63,7 @@ namespace YetaWF.Modules.PageEdit.Modules {
                 SaveReturnUrl = true,
             };
         }
-        public ModuleAction GetAction_Remove(Guid? pageGuid = null) {
+        public async Task<ModuleAction> GetAction_RemoveAsync(Guid? pageGuid = null) {
             Guid guid;
             PageDefinition page;
             if (pageGuid == null) {
@@ -71,7 +72,7 @@ namespace YetaWF.Modules.PageEdit.Modules {
                 guid = page.PageGuid;
             } else {
                 guid = (Guid)pageGuid;
-                page = PageDefinition.Load(guid);
+                page = await PageDefinition.LoadAsync(guid);
             }
             if (page == null) return null;
             if (!page.IsAuthorized_Remove()) return null;

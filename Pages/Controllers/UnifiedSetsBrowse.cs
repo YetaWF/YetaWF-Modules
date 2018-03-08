@@ -3,6 +3,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using YetaWF.Core.Controllers;
 using YetaWF.Core.DataProvider;
 using YetaWF.Core.Localize;
@@ -99,14 +100,13 @@ namespace YetaWF.Modules.Pages.Controllers {
 
         [AllowPost]
         [ConditionalAntiForgeryToken]
-        public ActionResult UnifiedSetsBrowse_GridData(int skip, int take, List<DataProviderSortInfo> sort, List<DataProviderFilterInfo> filters, Guid settingsModuleGuid) {
+        public async Task<ActionResult> UnifiedSetsBrowse_GridData(int skip, int take, List<DataProviderSortInfo> sort, List<DataProviderFilterInfo> filters, Guid settingsModuleGuid) {
             using (UnifiedSetDataProvider unifiedSetDP = new UnifiedSetDataProvider()) {
-                int total;
-                List<UnifiedSetData> browseItems = unifiedSetDP.GetItems(skip, take, sort, filters, out total);
+                DataProviderGetRecords<UnifiedSetData> browseItems = await unifiedSetDP.GetItemsAsync(skip, take, sort, filters);
                 GridHelper.SaveSettings(skip, take, sort, filters, settingsModuleGuid);
                 return GridPartialView(new DataSourceResult {
-                    Data = (from s in browseItems select new BrowseItem(Module, s)).ToList<object>(),
-                    Total = total
+                    Data = (from s in browseItems.Data select new BrowseItem(Module, s)).ToList<object>(),
+                    Total = browseItems.Total
                 });
             }
         }
@@ -114,9 +114,9 @@ namespace YetaWF.Modules.Pages.Controllers {
         [AllowPost]
         [Permission("RemoveItems")]
         [ExcludeDemoMode]
-        public ActionResult Remove(Guid unifiedSetGuid) {
+        public async Task<ActionResult> Remove(Guid unifiedSetGuid) {
             using (UnifiedSetDataProvider unifiedSet = new UnifiedSetDataProvider()) {
-                if (!unifiedSet.RemoveItem(unifiedSetGuid))
+                if (!await unifiedSet.RemoveItemAsync(unifiedSetGuid))
                     throw new Error(this.__ResStr("cantRemove", "Couldn't remove {0}", unifiedSetGuid));
                 return Reload(null, Reload: ReloadEnum.ModuleParts);
             }

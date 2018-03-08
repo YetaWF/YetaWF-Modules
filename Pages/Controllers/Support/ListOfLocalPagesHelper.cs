@@ -2,6 +2,7 @@
 
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using YetaWF.Core.Controllers;
 using YetaWF.Core.DataProvider;
 using YetaWF.Core.Identity;
@@ -23,14 +24,13 @@ namespace YetaWF.Modules.Pages.Controllers.Shared {
         [AllowPost]
         [ConditionalAntiForgeryToken]
         [ResourceAuthorize(Info.Resource_AllowListOfLocalPagesAjax)]
-        public ActionResult ListOfLocalPagesBrowse_GridData(int skip, int take, List<DataProviderSortInfo> sort, List<DataProviderFilterInfo> filters /*, Guid settingsModuleGuid - not available in templates */) {
+        public async Task<ActionResult> ListOfLocalPagesBrowse_GridData(int skip, int take, List<DataProviderSortInfo> sort, List<DataProviderFilterInfo> filters /*, Guid settingsModuleGuid - not available in templates */) {
             using (PageDefinitionDataProvider pagesDP = new PageDefinitionDataProvider()) {
-                int total;
-                List<PageDefinition> browseItems = pagesDP.GetItems(skip, take, sort, filters, out total);
+                DataProviderGetRecords<PageDefinition> browseItems = await pagesDP.GetItemsAsync(skip, take, sort, filters);
                 //GridHelper.SaveSettings(skip, take, sort, filters, settingsModuleGuid);
                 return GridPartialView(new DataSourceResult {
-                    Data = (from s in browseItems select new Views.Shared.ListOfLocalPagesHelper.GridAllEntry(s)).ToList<object>(),
-                    Total = total
+                    Data = (from s in browseItems.Data select new Views.Shared.ListOfLocalPagesHelper.GridAllEntry(s)).ToList<object>(),
+                    Total = browseItems.Total
                 });
             }
         }

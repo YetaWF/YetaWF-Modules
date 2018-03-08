@@ -1,5 +1,6 @@
 ﻿/* Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/PageEdit#License */
 
+using System.Threading.Tasks;
 using YetaWF.Core;
 using YetaWF.Core.DataProvider;
 using YetaWF.Core.DataProvider.Attributes;
@@ -33,7 +34,7 @@ namespace YetaWF.Modules.PageEdit.DataProvider {
 
         private const int KEY = 1;
 
-        private static object _lockObject = new object();
+        private static AsyncLock _lockObject = new AsyncLock();
 
         // IMPLEMENTATION
         // IMPLEMENTATION
@@ -42,9 +43,9 @@ namespace YetaWF.Modules.PageEdit.DataProvider {
         public ControlPanelConfigDataProvider() : base(YetaWFManager.Manager.CurrentSite.Identity) { SetDataProvider(CreateDataProvider()); }
         public ControlPanelConfigDataProvider(int siteIdentity) : base(siteIdentity) { SetDataProvider(CreateDataProvider()); }
 
-        private IDataProvider<int, ControlPanelConfigData> DataProvider { get { return GetDataProvider(); } }
+        private IDataProviderAsync<int, ControlPanelConfigData> DataProvider { get { return GetDataProvider(); } }
 
-        private IDataProvider<int, ControlPanelConfigData> CreateDataProvider() {
+        private IDataProviderAsync<int, ControlPanelConfigData> CreateDataProvider() {
             Package package = YetaWF.Modules.PageEdit.Controllers.AreaRegistration.CurrentPackage;
             return MakeDataProvider(package, package.AreaName + "_ControlPanel_Config", SiteIdentity: SiteIdentity, Cacheable: true);
         }
@@ -53,32 +54,32 @@ namespace YetaWF.Modules.PageEdit.DataProvider {
         // API
         // API
 
-        public static ControlPanelConfigData GetConfig() {
+        public static async Task<ControlPanelConfigData> GetConfigAsync() {
             using (ControlPanelConfigDataProvider configDP = new ControlPanelConfigDataProvider()) {
-                return configDP.GetItem();
+                return await configDP.GetItemAsync();
             }
         }
-        public ControlPanelConfigData GetItem() {
-            ControlPanelConfigData config = DataProvider.Get(KEY);
+        public async Task<ControlPanelConfigData> GetItemAsync() {
+            ControlPanelConfigData config = await DataProvider.GetAsync(KEY);
             if (config == null) {
-                lock (_lockObject) {
-                    config = DataProvider.Get(KEY);
+                using (await _lockObject.LockAsync()) {
+                    config = await DataProvider.GetAsync(KEY);
                     if (config == null) {
                         config = new ControlPanelConfigData();
-                        AddConfig(config);
+                        await AddConfigAsync(config);
                     }
                 }
             }
             return config;
         }
-        private void AddConfig(ControlPanelConfigData data) {
+        private async Task AddConfigAsync(ControlPanelConfigData data) {
             data.Id = KEY;
-            if (!DataProvider.Add(data))
+            if (!await DataProvider.AddAsync(data))
                 throw new InternalError("Unexpected error adding settings");
         }
-        public void UpdateConfig(ControlPanelConfigData data) {
+        public async Task UpdateConfigAsync(ControlPanelConfigData data) {
             data.Id = KEY;
-            UpdateStatusEnum status = DataProvider.Update(data.Id, data.Id, data);
+            UpdateStatusEnum status = await DataProvider.UpdateAsync(data.Id, data.Id, data);
             if (status != UpdateStatusEnum.OK)
                 throw new InternalError("Unexpected error saving configuration {0}", status);
         }

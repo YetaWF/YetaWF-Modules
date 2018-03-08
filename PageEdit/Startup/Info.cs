@@ -16,7 +16,7 @@ namespace YetaWF.Modules.PageEdit.Addons {
 
             ScriptManager scripts = manager.ScriptManager;
             string areaName = AreaRegistration.CurrentPackage.AreaName;
-            ControlPanelConfigData config = ControlPanelConfigDataProvider.GetConfig();
+            ControlPanelConfigData config = ControlPanelConfigDataProvider.GetConfigAsync().Result;//$$$$
 
             scripts.AddConfigOption(areaName, "PageControlMod", PageControlMod);
             scripts.AddConfigOption(areaName, "W3CUrl", config.W3CUrl);

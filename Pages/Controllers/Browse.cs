@@ -160,12 +160,11 @@ namespace YetaWF.Modules.Pages.Controllers {
             //    throw new InternalError("No page edit services available - no module has been defined in Site Properties");
 
             using (PageDefinitionDataProvider dataProvider = new PageDefinitionDataProvider()) {
-                int total;
-                List<PageDefinition> pages = dataProvider.GetItems(skip, take, sort, filters, out total);
+                DataProviderGetRecords<PageDefinition> pages = await dataProvider.GetItemsAsync(skip, take, sort, filters);
                 GridHelper.SaveSettings(skip, take, sort, filters, settingsModuleGuid);
                 return GridPartialView(new DataSourceResult {
-                    Data = (from s in pages select new PageItem(Module, s, pageSettings)).ToList<object>(),
-                    Total = total
+                    Data = (from s in pages.Data select new PageItem(Module, s, pageSettings)).ToList<object>(),
+                    Total = pages.Total
                 });
             }
         }
@@ -173,14 +172,14 @@ namespace YetaWF.Modules.Pages.Controllers {
         [AllowPost]
         [Permission("RemovePages")]
         [ExcludeDemoMode]
-        public ActionResult Remove(string pageName) {
+        public async Task<ActionResult> Remove(string pageName) {
             if (string.IsNullOrWhiteSpace(pageName))
                 throw new Error(this.__ResStr("noPageName", "No page name specified"));
-            PageDefinition page = PageDefinition.LoadFromUrl(pageName);
+            PageDefinition page = await PageDefinition.LoadFromUrlAsync(pageName);
             if (page == null)
                 throw new Error(this.__ResStr("noPage", "Page \"{0}\" not found", pageName));
 
-            PageDefinition.RemovePageDefinition(page.PageGuid);
+            await PageDefinition.RemovePageDefinitionAsync(page.PageGuid);
             return Reload(null, Reload: ReloadEnum.ModuleParts);
         }
 
@@ -191,10 +190,9 @@ namespace YetaWF.Modules.Pages.Controllers {
             using (PageDefinitionDataProvider dataProvider = new PageDefinitionDataProvider()) {
                 int adminRole = Resource.ResourceAccess.GetAdministratorRoleId();
                 int editorRole = Resource.ResourceAccess.GetEditorRoleId();
-                int total;
-                List<PageDefinition> pages = dataProvider.GetItems(0, 0, null, null, out total);
-                foreach (PageDefinition genericPage in pages) {
-                    PageDefinition page = PageDefinition.Load(genericPage.PageGuid);
+                DataProviderGetRecords<PageDefinition> pages = await dataProvider.GetItemsAsync(0, 0, null, null);
+                foreach (PageDefinition genericPage in pages.Data) {
+                    PageDefinition page = await PageDefinition.LoadAsync(genericPage.PageGuid);
                     if (page != null) {
                         PageDefinition.AllowedRole role;
                         while ((role = PageDefinition.AllowedRole.Find(page.AllowedRoles, adminRole)) != null)

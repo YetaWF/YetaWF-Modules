@@ -2,11 +2,13 @@
 
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using YetaWF.Core.DataProvider;
 using YetaWF.Core.DataProvider.Attributes;
 using YetaWF.Core.Packages;
 using YetaWF.Core.Pages;
-using YetaWF.DataProvider.SQL;
+using YetaWF.Core.Support;
+using YetaWF.DataProvider.SQL2;
 
 namespace YetaWF.Modules.Pages.DataProvider.SQL {
 
@@ -21,20 +23,22 @@ namespace YetaWF.Modules.Pages.DataProvider.SQL {
 
             public PageDefinitionDataProvider(Dictionary<string, object> options) : base(options) { }
 
+            // This is cached so we keep it sync for simplicity
             public DesignedPagesDictionaryByUrl GetDesignedPages() {
                 // get the names of all designed pages
-                using (SQLSimpleObject<Guid, DesignedPage> dp = new SQLSimpleObject<Guid, DesignedPage>(Options)) {
-                    int total;
-                    List<DesignedPage> pages = dp.GetRecords(0, 0, null, null, out total);
-                    DesignedPagesDictionaryByUrl byUrl = new DesignedPagesDictionaryByUrl();
-                    foreach (DesignedPage page in pages) {
-                        byUrl.Add(page.Url.ToLower(), new PageDefinition.DesignedPage {
-                            PageGuid = page.PageGuid,
-                            Url = page.Url,
-                        });
+                return YetaWFManager.Manager.Syncify<DesignedPagesDictionaryByUrl>(async () => {
+                    using (SQLSimpleObject<Guid, DesignedPage> dp = new SQLSimpleObject<Guid, DesignedPage>(Options)) {
+                        DataProviderGetRecords<DesignedPage> pages = await dp.GetRecordsAsync(0, 0, null, null);
+                        DesignedPagesDictionaryByUrl byUrl = new DesignedPagesDictionaryByUrl();
+                        foreach (DesignedPage page in pages.Data) {
+                            byUrl.Add(page.Url.ToLower(), new PageDefinition.DesignedPage {
+                                PageGuid = page.PageGuid,
+                                Url = page.Url,
+                            });
+                        }
+                        return byUrl;
                     }
-                    return byUrl;
-                }
+                });
             }
 
             public class DesignedPage {
@@ -45,8 +49,7 @@ namespace YetaWF.Modules.Pages.DataProvider.SQL {
                 public int Identity { get; set; }
             }
 
-            public List<PageDefinition> GetPagesFromModule(Guid moduleGuid) {
-                int total;
+            public async Task<List<PageDefinition>> GetPagesFromModuleAsync(Guid moduleGuid) {
                 List<DataProviderSortInfo> sorts = DataProviderSortInfo.Join(null, new DataProviderSortInfo { Field = "Url", Order = DataProviderSortInfo.SortDirection.Ascending });
                 List<DataProviderFilterInfo> filters = DataProviderFilterInfo.Join(null, new DataProviderFilterInfo { Field = "ModuleGuid", Operator = "==", Value = moduleGuid });
                 using (DataProvider.PageDefinitionDataProvider pageDefDP = new DataProvider.PageDefinitionDataProvider()) {
@@ -54,7 +57,8 @@ namespace YetaWF.Modules.Pages.DataProvider.SQL {
                         List<JoinData> joins = new List<JoinData> {
                             new JoinData {MainDP = pageDefDP, JoinDP = pageDefForModDP, MainColumn = nameof(PageDefinition.Identity), JoinColumn = SQLBase.SubTableKeyColumn, UseSite = false },
                         };
-                        return GetRecords(0, 0, sorts, filters, out total, Joins: joins);
+                        DataProviderGetRecords<PageDefinition> recs = await GetRecordsAsync(0, 0, sorts, filters, Joins: joins);
+                        return recs.Data;
                     }
                 }
             }

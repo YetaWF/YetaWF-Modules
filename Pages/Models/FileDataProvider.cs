@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using YetaWF.Core.DataProvider;
 using YetaWF.Core.Pages;
 using YetaWF.Core.Support;
@@ -34,7 +35,7 @@ namespace YetaWF.Modules.Pages.DataProvider.File {
                 }
                 return byUrl;
             }
-            public List<PageDefinition> GetPagesFromModule(Guid moduleGuid) {
+            public Task<List<PageDefinition>> GetPagesFromModuleAsync(Guid moduleGuid) {
                 int total;
                 List<PageDefinition> pages = GetRecords(0, 0, null, null, out total);
                 List<PageDefinition> pagesWithModule = new List<PageDefinition>();
@@ -43,7 +44,7 @@ namespace YetaWF.Modules.Pages.DataProvider.File {
                     if (p != null)
                         pagesWithModule.Add(p);
                 }
-                return pagesWithModule.OrderBy(p => p.Url).ToList();
+                return Task.FromResult( pagesWithModule.OrderBy(p => p.Url).ToList());
             }
         }
         class UnifiedSetDataProvider : FileDataProvider<Guid, UnifiedSetData> {

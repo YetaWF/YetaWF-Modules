@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using YetaWF.Core;
 using YetaWF.Core.Controllers;
 using YetaWF.Core.DataProvider;
@@ -93,10 +94,10 @@ namespace YetaWF.Modules.Pages.Controllers {
         }
 
         [AllowGet]
-        public ActionResult UnifiedSetEdit(Guid unifiedSetGuid) {
+        public async Task<ActionResult> UnifiedSetEdit(Guid unifiedSetGuid) {
             using (UnifiedSetDataProvider unifiedSetDP = new UnifiedSetDataProvider()) {
-                EditModel model = new EditModel {};
-                UnifiedSetData data = unifiedSetDP.GetItem(unifiedSetGuid);
+                EditModel model = new EditModel { };
+                UnifiedSetData data = await unifiedSetDP.GetItemAsync(unifiedSetGuid);
                 if (data == null)
                     throw new Error(this.__ResStr("notFound", "Unified page set with id \"{0}\" not found"), unifiedSetGuid);
                 model.SetData(data);
@@ -106,10 +107,10 @@ namespace YetaWF.Modules.Pages.Controllers {
         [AllowPost]
         [ConditionalAntiForgeryToken]
         [ExcludeDemoMode]
-        public ActionResult UnifiedSetEdit_Partial(EditModel model) {
+        public async Task<ActionResult> UnifiedSetEdit_Partial(EditModel model) {
 
             using (UnifiedSetDataProvider unifiedSetDP = new UnifiedSetDataProvider()) {
-                UnifiedSetData unifiedSet = unifiedSetDP.GetItem(model.UnifiedSetGuid);// get the original item
+                UnifiedSetData unifiedSet = await unifiedSetDP.GetItemAsync(model.UnifiedSetGuid);// get the original item
                 if (unifiedSet == null)
                     ModelState.AddModelError("UnifiedSetGuid", this.__ResStr("alreadyDeleted", "The unified page set with id {0} has been removed and can no longer be updated", model.UnifiedSetGuid));
 
@@ -120,7 +121,7 @@ namespace YetaWF.Modules.Pages.Controllers {
                 unifiedSet = model.GetData(unifiedSet); // merge new data into original
                 model.SetData(unifiedSet); // and all the data back into model for final display
 
-                switch (unifiedSetDP.UpdateItem(unifiedSet)) {
+                switch (await unifiedSetDP.UpdateItemAsync(unifiedSet)) {
                     default:
                     case UpdateStatusEnum.RecordDeleted:
                         ModelState.AddModelError("Name", this.__ResStr("alreadyDeleted", "The unified page set with id {0} has been removed and can no longer be updated", model.UnifiedSetGuid));

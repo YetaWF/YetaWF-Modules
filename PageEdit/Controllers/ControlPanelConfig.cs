@@ -1,5 +1,6 @@
 /* Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/PageEdit#License */
 
+using System.Threading.Tasks;
 using YetaWF.Core;
 using YetaWF.Core.Controllers;
 using YetaWF.Core.Localize;
@@ -47,10 +48,10 @@ namespace YetaWF.Modules.PageEdit.Controllers {
         }
 
         [AllowGet]
-        public ActionResult ControlPanelConfig() {
+        public async Task<ActionResult> ControlPanelConfig() {
             using (ControlPanelConfigDataProvider dataProvider = new ControlPanelConfigDataProvider()) {
                 Model model = new Model { };
-                ControlPanelConfigData data = dataProvider.GetItem();
+                ControlPanelConfigData data = await dataProvider.GetItemAsync();
                 if (data == null)
                     throw new Error(this.__ResStr("notFound", "The Control Panel settings could not be found"));
                 model.SetData(data);
@@ -61,14 +62,14 @@ namespace YetaWF.Modules.PageEdit.Controllers {
         [AllowPost]
         [ConditionalAntiForgeryToken]
         [ExcludeDemoMode]
-        public ActionResult ControlPanelConfig_Partial(Model model) {
+        public async Task<ActionResult> ControlPanelConfig_Partial(Model model) {
             using (ControlPanelConfigDataProvider dataProvider = new ControlPanelConfigDataProvider()) {
-                ControlPanelConfigData data = dataProvider.GetItem();// get the original item
+                ControlPanelConfigData data = await dataProvider.GetItemAsync();// get the original item
                 if (!ModelState.IsValid)
                     return PartialView(model);
                 data = model.GetData(data); // merge new data into original
                 model.SetData(data); // and all the data back into model for final display
-                dataProvider.UpdateConfig(data);
+                await dataProvider.UpdateConfigAsync(data);
                 return FormProcessed(model, this.__ResStr("okSaved", "Control Panel settings saved"), NextPage: Manager.ReturnToUrl);
             }
         }

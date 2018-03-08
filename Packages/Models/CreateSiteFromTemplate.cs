@@ -17,7 +17,7 @@ using YetaWF.Core.Modules;
 using YetaWF.Core.Pages;
 using YetaWF.Core.Serializers;
 using YetaWF.Core.Support;
-using YetaWF.DataProvider.SQL;
+using YetaWF.DataProvider.SQL2;
 
 namespace YetaWF.Modules.Packages.DataProvider {
     // not a real data provider - used to clear/create all package data and initial web pages
@@ -135,14 +135,14 @@ namespace YetaWF.Modules.Packages.DataProvider {
                     // Just build a site with a home page
                     // Build a site with a few pages
                     //PageDefinition page = new PageDefinition() { Title = "Home Page", Url = "/", PageGuid = new Guid(Globals.HomePageGuid) };
-                    PageDefinition page = PageDefinition.CreatePageDefinition("/");
+                    PageDefinition page = await PageDefinition.CreatePageDefinitionAsync("/");
                     await page.SaveAsync();
 #if DEBUG
-                    page = PageDefinition.CreatePageDefinition("/page1");
+                    page = await PageDefinition.CreatePageDefinitionAsync("/page1");
                     await page.SaveAsync();
-                    page = PageDefinition.CreatePageDefinition("/page2");
+                    page = await PageDefinition.CreatePageDefinitionAsync("/page2");
                     await page.SaveAsync();
-                    page = PageDefinition.CreatePageDefinition("/page3");
+                    page = await PageDefinition.CreatePageDefinitionAsync("/page3");
                     await page.SaveAsync();
 #endif
                 }
@@ -210,11 +210,11 @@ namespace YetaWF.Modules.Packages.DataProvider {
 
                 PageDefinition page = null;
                 if (build) {
-                    page = PageDefinition.CreatePageDefinition(url);
+                    page = await PageDefinition.CreatePageDefinitionAsync(url);
                 } else {
-                    page = PageDefinition.LoadFromUrl(url);
+                    page = await PageDefinition.LoadFromUrlAsync(url);
                     if (page != null)
-                        PageDefinition.RemovePageDefinition(page.PageGuid);
+                        await PageDefinition.RemovePageDefinitionAsync(page.PageGuid);
                     page = new PageDefinition();
                 }
                 _CurrentPage = page;

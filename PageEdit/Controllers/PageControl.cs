@@ -211,7 +211,7 @@ namespace YetaWF.Modules.PageEdit.Controllers {
 
             public LoginSiteSelectionModel() { }
 
-            public void AddData() {
+            public async Task AddDataAsync() {
 
                 SiteDefinition.SitesInfo info = SiteDefinition.GetSites(0, 0, null, null);
                 SiteDomain_List = (from s in info.Sites orderby s.SiteDomain select new SelectionItem<string>() {
@@ -221,7 +221,7 @@ namespace YetaWF.Modules.PageEdit.Controllers {
                 }).ToList();
                 SiteDomain = Manager.CurrentSite.SiteDomain;
 
-                ControlPanelConfigData config = ControlPanelConfigDataProvider.GetConfig();
+                ControlPanelConfigData config = await ControlPanelConfigDataProvider.GetConfigAsync();
                 UserId_List = config.Users;
                 UserId = Manager.UserId;
 
@@ -247,7 +247,7 @@ namespace YetaWF.Modules.PageEdit.Controllers {
         }
 
         [AllowGet]
-        public ActionResult PageControl() {
+        public async Task<ActionResult> PageControl() {
             Guid pageGuid = Guid.Empty;
             if (pageGuid == Guid.Empty) {
                 if (Manager.CurrentPage == null)
@@ -256,7 +256,7 @@ namespace YetaWF.Modules.PageEdit.Controllers {
                     pageGuid = Manager.CurrentPage.PageGuid;
             }
 
-            PageDefinition page = PageDefinition.Load(pageGuid);
+            PageDefinition page = await PageDefinition.LoadAsync(pageGuid);
             bool editAuthorized = false;
             if (page.IsAuthorized_Edit())
                 editAuthorized = true;
@@ -281,7 +281,7 @@ namespace YetaWF.Modules.PageEdit.Controllers {
             model.AddNewModel.AddData(page);
             model.AddExistingModel.AddData(page);
             model.ImportModel.AddData(page, Module);
-            model.LoginSiteSelectionModel.AddData();
+            await model.LoginSiteSelectionModel.AddDataAsync();
             return View(model);
         }
 
@@ -294,12 +294,12 @@ namespace YetaWF.Modules.PageEdit.Controllers {
 
             PageDefinition basePage = null;
             if (model.CopyPage)
-                basePage = PageDefinition.Load(model.CurrentPageGuid);
+                basePage = await PageDefinition.LoadAsync(model.CurrentPageGuid);
 
-            string message;
-            PageDefinition page = PageDefinition.CreateNewPage(model.Title, model.Description, model.Url, basePage, model.CopyModules, out message);
+            PageDefinition.NewPageInfo newPage = await PageDefinition.CreateNewPageAsync(model.Title, model.Description, model.Url, basePage, model.CopyModules);
+            PageDefinition page = newPage.Page;
             if (page == null) {
-                ModelState.AddModelError("Url", message);
+                ModelState.AddModelError("Url", newPage.Message);
                 return PartialView(model);
             }
             if (!page.IsAuthorized_Edit())
@@ -313,7 +313,7 @@ namespace YetaWF.Modules.PageEdit.Controllers {
         [ConditionalAntiForgeryToken]
         [ExcludeDemoMode]
         public async Task<ActionResult> AddNewModule_Partial(AddNewModuleModel model) {
-            PageDefinition page = PageDefinition.Load(model.CurrentPageGuid);
+            PageDefinition page = await PageDefinition.LoadAsync(model.CurrentPageGuid);
             if (page == null)
                 throw new Error("Can't edit this page");
             if (!page.IsAuthorized_Edit())
@@ -334,7 +334,7 @@ namespace YetaWF.Modules.PageEdit.Controllers {
         [ConditionalAntiForgeryToken]
         [ExcludeDemoMode]
         public async Task<ActionResult> AddExistingModule_Partial(AddExistingModel model) {
-            PageDefinition page = PageDefinition.Load(model.CurrentPageGuid);
+            PageDefinition page = await PageDefinition.LoadAsync(model.CurrentPageGuid);
             if (page == null)
                 throw new Error("Can't edit this page");
             if (!page.IsAuthorized_Edit())
@@ -419,7 +419,7 @@ namespace YetaWF.Modules.PageEdit.Controllers {
         [ExcludeDemoMode]
         public async Task<ActionResult> LoginSiteSelection_Partial(LoginSiteSelectionModel model) {
             if (!ModelState.IsValid) {
-                model.AddData();
+                await model.AddDataAsync();
                 return PartialView(model);
             }
 
