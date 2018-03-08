@@ -159,7 +159,7 @@ namespace YetaWF.Modules.Packages.DataProvider {
             Manager.RestartSite(Manager.CurrentSite.MakeUrl(ForceDomain: Manager.CurrentSite.SiteDomain));
         }
 
-        private void InstallPackages() {
+        private async void InstallPackages() {
 
             Logging.AddLog("Installing packages");
 
@@ -180,7 +180,7 @@ namespace YetaWF.Modules.Packages.DataProvider {
                     List<string> errorList = new List<string>();
                     Logging.AddLog("Installing package {0}", package.Name);
                     if (!installedPackages.Contains(package) && ArePackageDependenciesInstalled(package, installedPackages)) {
-                        if (!package.InstallModels(errorList)) {
+                        if (!await package.InstallModelsAsync(errorList)) {
                             ScriptBuilder sb = new ScriptBuilder();
                             sb.Append(this.__ResStr("cantInstallPackage", "Can't install package {0}:(+nl)"), package.Name);
                             sb.Append(errorList, LeadingNL: true);
@@ -252,19 +252,18 @@ namespace YetaWF.Modules.Packages.DataProvider {
         /// <summary>
         /// Installs all models for the specified package
         /// </summary>
-        public Task InitPackageAsync(QueryHelper qs) {
+        public async Task InitPackageAsync(QueryHelper qs) {
             string packageName = qs["Package"];
             if (string.IsNullOrWhiteSpace(packageName))
                 throw new InternalError("Package name missing");
             Package package = Package.GetPackageFromPackageName(packageName);
             List<string> errorList = new List<string>();
-            if (!package.InstallModels(errorList)) {
+            if (!await package.InstallModelsAsync(errorList)) {
                 ScriptBuilder sb = new ScriptBuilder();
                 sb.Append(this.__ResStr("cantInstallModels", "Can't install models for package {0}:(+nl)"), packageName.Split(new char[] { ',' }).First());
                 sb.Append(errorList, LeadingNL: true);
                 throw new Error(sb.ToString());
             }
-            return Task.CompletedTask;//$$
         }
         /// <summary>
         /// Imports all package data from a zip file (created using Export Data) or from templates

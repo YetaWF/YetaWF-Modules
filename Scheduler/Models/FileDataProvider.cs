@@ -3,6 +3,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Threading.Tasks;
 using YetaWF.Core.DataProvider;
 using YetaWF.Core.Support;
 using YetaWF.DataProvider;
@@ -19,7 +20,7 @@ namespace YetaWF.Modules.Scheduler.DataProvider.File {
             public SchedulerDataProvider(Dictionary<string, object> options) : base(options) { }
             public override string GetBaseFolder() { return Path.Combine(YetaWFManager.DataFolder, Dataset); }
         }
-        class LogDataProvider : FileDataProvider<int, LogData>, ILogDataProviderIOMode {
+        class LogDataProvider : FileDataProvider<int, LogData>, ILogDataProviderIOModeAsync {
 
             static object lockObject = new object();
 
@@ -32,19 +33,19 @@ namespace YetaWF.Modules.Scheduler.DataProvider.File {
             }
             public override string GetBaseFolder() { return Path.Combine(YetaWFManager.DataFolder, Dataset); }
 
-            public bool AddItem(LogData data) {
+            public Task<bool> AddItemAsync(LogData data) {
                 string text = string.Format("{0}-{1}-{2}-{3}-{4}: {5}\n",
                     data.TimeStamp, data.RunId, data.Level, data.Name, data.SiteIdentity, data.Info);
                 text = text.Replace("\n", "\r\n");
                 lock (lockObject) {
                     System.IO.File.AppendAllText(LogFile, text);
                 }
-                return true;
+                return Task.FromResult(true);
             }
-            public List<LogData> GetItems(int skip, int take, List<DataProviderSortInfo> sort, List<DataProviderFilterInfo> filters, out int total) {
+            public Task<DataProviderGetRecords<LogData>> GetItemsAsync(int skip, int take, List<DataProviderSortInfo> sort, List<DataProviderFilterInfo> filters) {
                 throw new NotImplementedException();
             }
-            public int RemoveItems(List<DataProviderFilterInfo> filters) {
+            public Task<int> RemoveItemsAsync(List<DataProviderFilterInfo> filters) {
                 throw new NotImplementedException();
             }
             public bool CanBrowse {

@@ -29,10 +29,10 @@ namespace YetaWF.Modules.Pages.Scheduler {
 
         private List<Guid> PagesFound = new List<Guid>();
 
-        public void RunItem(SchedulerItemBase evnt) {
+        public Task RunItemAsync(SchedulerItemBase evnt) {
             if (evnt.EventName != EventSiteMaps)
                 throw new Error(this.__ResStr("eventNameErr", "Unknown scheduler event {0}."), evnt.EventName);
-            CreateAsync(slow: true).Wait(); //$$$$
+            return CreateAsync(slow: true);
         }
 
         public SchedulerItemBase[] GetItems() {

@@ -4,6 +4,7 @@ using Ionic.Zip;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using YetaWF.Core.Addons;
 using YetaWF.Core.Controllers;
 using YetaWF.Core.DataProvider;
@@ -84,10 +85,10 @@ namespace YetaWF.Modules.Scheduler.Controllers {
         }
 
         [AllowGet]
-        public ActionResult LogBrowse() {
+        public async Task<ActionResult> LogBrowse() {
             using (LogDataProvider logDP = new LogDataProvider()) {
                 BrowseModel model = new BrowseModel {
-                    LogAvailable = logDP.IsInstalled(),
+                    LogAvailable = await logDP.IsInstalledAsync(),
                     BrowsingSupported = logDP.CanBrowse,
                 };
                 if (logDP.CanBrowse) {
@@ -105,23 +106,22 @@ namespace YetaWF.Modules.Scheduler.Controllers {
 
         [AllowPost]
         [ConditionalAntiForgeryToken]
-        public ActionResult LogBrowse_GridData(int skip, int take, List<DataProviderSortInfo> sort, List<DataProviderFilterInfo> filters, Guid settingsModuleGuid) {
+        public async Task<ActionResult> LogBrowse_GridData(int skip, int take, List<DataProviderSortInfo> sort, List<DataProviderFilterInfo> filters, Guid settingsModuleGuid) {
             using (LogDataProvider logDP = new LogDataProvider()) {
-                int total;
-                List<LogData> browseItems = logDP.GetItems(skip, take, sort, filters, out total);
+                DataProviderGetRecords<LogData> browseItems = await logDP.GetItemsAsync(skip, take, sort, filters);
                 GridHelper.SaveSettings(skip, take, sort, filters, settingsModuleGuid);
                 return GridPartialView(new DataSourceResult {
-                    Data = (from s in browseItems select new BrowseItem(Module, s)).ToList<object>(),
-                    Total = total
+                    Data = (from s in browseItems.Data select new BrowseItem(Module, s)).ToList<object>(),
+                    Total = browseItems.Total
                 });
             }
         }
 
         [AllowPost]
         [Permission("RemoveLog")]
-        public ActionResult RemoveAll() {
+        public async Task<ActionResult> RemoveAll() {
             using (LogDataProvider logDP = new LogDataProvider()) {
-                logDP.RemoveItems(null);
+                await logDP.RemoveItemsAsync(null);
                 return Reload(null, Reload: ReloadEnum.ModuleParts);
             }
         }

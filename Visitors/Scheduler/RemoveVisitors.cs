@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using YetaWF.Core.DataProvider;
 using YetaWF.Core.Localize;
 using YetaWF.Core.Scheduler;
@@ -14,10 +15,11 @@ namespace YetaWF.Modules.Visitors.Scheduler {
 
        public const string EventRemoveOldVisitorData = "YetaWF.Visitors: Remove Old Visitor Data";
 
-        public void RunItem(SchedulerItemBase evnt) {
+        public Task RunItemAsync(SchedulerItemBase evnt) {
             if (evnt.EventName != EventRemoveOldVisitorData)
                 throw new Error(this.__ResStr("eventNameErr", "Unknown scheduler event {0}."), evnt.EventName);
             Remove(evnt.Log);
+            return Task.CompletedTask;
         }
 
         public SchedulerItemBase[] GetItems() {

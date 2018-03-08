@@ -1,5 +1,6 @@
 ﻿/* Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Scheduler#License */
 
+using System.Threading.Tasks;
 using YetaWF.Core.Controllers;
 using YetaWF.Core.Localize;
 using YetaWF.Core.Models;
@@ -78,11 +79,11 @@ namespace YetaWF.Modules.Scheduler.Controllers {
         [AllowPost]
         [ConditionalAntiForgeryToken]
         [ExcludeDemoMode]
-        public ActionResult SchedulerAdd_Partial(SchedulerAddModel model) {
+        public async Task<ActionResult> SchedulerAdd_Partial(SchedulerAddModel model) {
             if (!ModelState.IsValid)
                 return PartialView(model);
             using (SchedulerDataProvider dataProvider = new SchedulerDataProvider()) {
-                if (!dataProvider.AddItem(model.GetEvent()))
+                if (!await dataProvider.AddItemAsync(model.GetEvent()))
                     throw new Error(this.__ResStr("alreadyExists", "A scheduler item named \"{0}\" already exists."), model.Name);
                 return FormProcessed(model, this.__ResStr("okSaved", "New scheduler item saved"), OnPopupClose: OnPopupCloseEnum.ReloadModule);
             }

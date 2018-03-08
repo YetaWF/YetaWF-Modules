@@ -1,5 +1,6 @@
 ﻿/* Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Scheduler#License */
 
+using System.Threading.Tasks;
 using YetaWF.Core.Controllers;
 using YetaWF.Core.DataProvider;
 using YetaWF.Core.Localize;
@@ -76,10 +77,10 @@ namespace YetaWF.Modules.Scheduler.Controllers {
         }
 
         [AllowGet]
-        public ActionResult SchedulerEdit(string eventName) {
+        public async Task<ActionResult> SchedulerEdit(string eventName) {
             using (SchedulerDataProvider dataProvider = new SchedulerDataProvider()) {
-                SchedulerEditModel model = new SchedulerEditModel {};
-                SchedulerItemData evnt = dataProvider.GetItem(eventName);
+                SchedulerEditModel model = new SchedulerEditModel { };
+                SchedulerItemData evnt = await dataProvider.GetItemAsync(eventName);
                 if (evnt == null)
                     throw new Error(this.__ResStr("notFound", "Scheduler item \"{0}\" not found."), eventName);
                 model.SetEvent(evnt);
@@ -91,11 +92,11 @@ namespace YetaWF.Modules.Scheduler.Controllers {
         [AllowPost]
         [ConditionalAntiForgeryToken]
         [ExcludeDemoMode]
-        public ActionResult SchedulerEdit_Partial(SchedulerEditModel model) {
+        public async Task<ActionResult> SchedulerEdit_Partial(SchedulerEditModel model) {
             if (!ModelState.IsValid)
                 return PartialView(model);
             using (SchedulerDataProvider dataProvider = new SchedulerDataProvider()) {
-                switch (dataProvider.UpdateItem(model.OriginalName, model.GetEvent())) {
+                switch (await dataProvider.UpdateItemAsync(model.OriginalName, model.GetEvent())) {
                     default:
                     case UpdateStatusEnum.RecordDeleted:
                         ModelState.AddModelError("Name", this.__ResStr("alreadyDeleted", "The scheduler item named \"{0}\" has been removed and can no longer be updated.", model.Name));

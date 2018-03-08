@@ -1,6 +1,7 @@
 ﻿/* Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Scheduler#License */
 
 using System;
+using System.Threading.Tasks;
 using YetaWF.Core.Controllers;
 using YetaWF.Core.Localize;
 using YetaWF.Core.Models;
@@ -82,10 +83,10 @@ namespace YetaWF.Modules.Scheduler.Controllers {
         }
 
         [AllowGet]
-        public ActionResult SchedulerDisplay(string eventName) {
+        public async Task<ActionResult> SchedulerDisplay(string eventName) {
             using (SchedulerDataProvider dataProvider = new SchedulerDataProvider()) {
                 SchedulerDisplayModel model = new SchedulerDisplayModel { };
-                SchedulerItemData evnt = dataProvider.GetItem(eventName);
+                SchedulerItemData evnt = await dataProvider.GetItemAsync(eventName);
                 if (evnt == null)
                     throw new Error(this.__ResStr("notFound", "Scheduler item \"{0}\" not found."), eventName);
                 model.SetEvent(evnt);

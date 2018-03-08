@@ -3,6 +3,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using YetaWF.Core.Controllers;
 using YetaWF.Core.DataProvider;
 using YetaWF.Core.Localize;
@@ -126,14 +127,13 @@ namespace YetaWF.Modules.Scheduler.Controllers {
         }
 
         [AllowPost]
-        public ActionResult SchedulerBrowse_GridData(int skip, int take, List<DataProviderSortInfo> sort, List<DataProviderFilterInfo> filters, Guid settingsModuleGuid) {
+        public async Task<ActionResult> SchedulerBrowse_GridData(int skip, int take, List<DataProviderSortInfo> sort, List<DataProviderFilterInfo> filters, Guid settingsModuleGuid) {
             using (SchedulerDataProvider dataProvider = new SchedulerDataProvider()) {
-                int total;
-                List<SchedulerItemData> schedulerItems = dataProvider.GetItems(skip, take, sort, filters, out total);
+                DataProviderGetRecords<SchedulerItemData> schedulerItems = await dataProvider.GetItemsAsync(skip, take, sort, filters);
                 GridHelper.SaveSettings(skip, take, sort, filters, settingsModuleGuid);
                 return GridPartialView(new DataSourceResult {
-                    Data = (from s in schedulerItems select new SchedulerItem(Module, s)).ToList<object>(),
-                    Total = total
+                    Data = (from s in schedulerItems.Data select new SchedulerItem(Module, s)).ToList<object>(),
+                    Total = schedulerItems.Total
                 });
             }
         }
@@ -141,11 +141,11 @@ namespace YetaWF.Modules.Scheduler.Controllers {
         [AllowPost]
         [Permission("RemoveItems")]
         [ExcludeDemoMode]
-        public ActionResult RemoveItem(string name) {
+        public async Task<ActionResult> RemoveItem(string name) {
             if (string.IsNullOrWhiteSpace(name))
                 throw new Error(this.__ResStr("noEvent", "No scheduler item name specified"));
             using (SchedulerDataProvider dataProvider = new SchedulerDataProvider()) {
-                dataProvider.RemoveItem(name);
+                await dataProvider.RemoveItemAsync(name);
                 return Reload(null, Reload: ReloadEnum.ModuleParts);
             }
         }
@@ -156,7 +156,7 @@ namespace YetaWF.Modules.Scheduler.Controllers {
         public ActionResult RunItem(string name) {
             if (string.IsNullOrWhiteSpace(name))
                 throw new Error(this.__ResStr("noEvent", "No scheduler item name specified"));
-            SchedulerSupport.RunItem(name);
+            SchedulerSupport.RunItemAsync(name);
             return Reload(null, Reload: ReloadEnum.ModuleParts);
         }
 

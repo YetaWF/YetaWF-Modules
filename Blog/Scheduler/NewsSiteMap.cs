@@ -11,6 +11,7 @@ using YetaWF.Core.Pages;
 using YetaWF.Core.Scheduler;
 using YetaWF.Core.Support;
 using YetaWF.Modules.Blog.DataProvider;
+using System.Threading.Tasks;
 #if MVC6
 using System.Net;
 #else
@@ -28,10 +29,11 @@ namespace YetaWF.Modules.Blog.Scheduler {
         private const string NEWSSITEMAPFMT = "blognews-sitemap-{0}.xml";
         private const string NEWSSITEMAPTEMPFMT = "blognews-sitemap-{0}.temp.xml";
 
-        public void RunItem(SchedulerItemBase evnt) {
+        public Task RunItemAsync(SchedulerItemBase evnt) {
             if (evnt.EventName != EventSiteMaps)
                 throw new Error(this.__ResStr("eventNameErr", "Unknown scheduler event {0}."), evnt.EventName);
             Create(slow: true);
+            return Task.CompletedTask;
         }
 
         public SchedulerItemBase[] GetItems() {

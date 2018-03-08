@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using YetaWF.Core.DataProvider;
 using YetaWF.Core.DataProvider.Attributes;
 using YetaWF.Core.IO;
@@ -31,16 +32,16 @@ namespace YetaWF.Modules.Scheduler.DataProvider {
         public LogData() { }
     }
 
-    public interface ILogDataProviderIOMode {
-        bool AddItem(LogData data);
-        List<LogData> GetItems(int skip, int take, List<DataProviderSortInfo> sort, List<DataProviderFilterInfo> filters, out int total);
-        int RemoveItems(List<DataProviderFilterInfo> filters);
+    public interface ILogDataProviderIOModeAsync {
+        Task<bool> AddItemAsync(LogData data);
+        Task<DataProviderGetRecords<LogData>> GetItemsAsync(int skip, int take, List<DataProviderSortInfo> sort, List<DataProviderFilterInfo> filters);
+        Task<int> RemoveItemsAsync(List<DataProviderFilterInfo> filters);
         bool CanBrowse { get; }
         bool CanImportOrExport { get; }
         string GetLogFileName();
     }
 
-    public class LogDataProvider : DataProviderImpl, IInstallableModel {
+    public class LogDataProvider : DataProviderImpl, IInstallableModelAsync {
 
         // IMPLEMENTATION
         // IMPLEMENTATION
@@ -48,10 +49,10 @@ namespace YetaWF.Modules.Scheduler.DataProvider {
 
         public LogDataProvider() : base(0) { SetDataProvider(CreateDataProvider()); }
 
-        private IDataProvider<int, LogData> DataProvider { get { return GetDataProvider(); } }
-        private ILogDataProviderIOMode DataProviderIOMode { get { return GetDataProvider(); } }
+        private IDataProviderAsync<int, LogData> DataProvider { get { return GetDataProvider(); } }
+        private ILogDataProviderIOModeAsync DataProviderIOMode { get { return GetDataProvider(); } }
 
-        private IDataProvider<int, LogData> CreateDataProvider() {
+        private IDataProviderAsync<int, LogData> CreateDataProvider() {
             Package package = YetaWF.Modules.Scheduler.Controllers.AreaRegistration.CurrentPackage;
             return MakeDataProvider(package, package.AreaName + "_Log", Cacheable: true);
         }
@@ -60,17 +61,17 @@ namespace YetaWF.Modules.Scheduler.DataProvider {
         // API
         // API
 
-        public LogData GetItem(int logEntry) {
-            return DataProvider.Get(logEntry);
+        public async Task<LogData> GetItemAsync(int logEntry) {
+            return await DataProvider.GetAsync(logEntry);
         }
-        public bool AddItem(LogData data) {
-            return DataProviderIOMode.AddItem(data);
+        public async Task<bool> AddItemAsync(LogData data) {
+            return await DataProviderIOMode.AddItemAsync(data);
         }
-        public List<LogData> GetItems(int skip, int take, List<DataProviderSortInfo> sort, List<DataProviderFilterInfo> filters, out int total) {
-            return DataProviderIOMode.GetItems(skip, take, sort, filters, out total);
+        public async Task<DataProviderGetRecords<LogData>> GetItemsAsync(int skip, int take, List<DataProviderSortInfo> sort, List<DataProviderFilterInfo> filters) {
+            return await DataProviderIOMode.GetItemsAsync(skip, take, sort, filters);
         }
-        public int RemoveItems(List<DataProviderFilterInfo> filters) {
-            return DataProviderIOMode.RemoveItems(filters);
+        public async Task<int> RemoveItemsAsync(List<DataProviderFilterInfo> filters) {
+            return await DataProviderIOMode.RemoveItemsAsync(filters);
         }
         public bool CanBrowse {
             get {
@@ -90,19 +91,22 @@ namespace YetaWF.Modules.Scheduler.DataProvider {
         // IINSTALLABLEMODEL
         // IINSTALLABLEMODEL
 
-        public new bool ExportChunk(int chunk, SerializableList<SerializableFile> fileList, out object obj) {
+        public new Task<DataProviderExportChunk> ExportChunkAsync(int chunk, SerializableList<SerializableFile> fileList) {
             // we're not exporting any data
             //if (CanImportOrExport)
             //    return DataProvider.ExportChunk(chunk, fileList, out obj);
             //else {
-            obj = null;
-            return false;
+            return Task.FromResult(new DataProviderExportChunk {
+                ObjectList = null,
+                More = false,
+            });
             //}
         }
-        public new void ImportChunk(int chunk, SerializableList<SerializableFile> fileList, object obj) {
+        public new Task ImportChunk(int chunk, SerializableList<SerializableFile> fileList, object obj) {
             // we're not importing any data
             //if (CanImportOrExport)
             //    DataProvider.ImportChunk(chunk, fileList, obj);
+            return Task.CompletedTask;
         }
     }
 }

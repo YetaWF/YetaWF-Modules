@@ -15,20 +15,21 @@ namespace YetaWF.Modules.Backups.Scheduler {
         public const string EventCreateBackup = "YetaWF.Backups: Create Daily Backup";
         public const string EventRemoveOldBackups = "YetaWF.Backups: Remove Old Backups";
 
-        public void RunItem(SchedulerItemBase evnt) {
+        public Task RunItemAsync(SchedulerItemBase evnt) {
             if (evnt.EventName == EventCreateBackup) {
                 SiteBackup siteBackup = new SiteBackup();
                 List<string> errorList = new List<string>();
                 ConfigData config = ConfigDataProvider.GetConfigAsync().Result;//$$$
                 siteBackup.Create(errorList, DataOnly: config.DataOnly);
+                return Task.CompletedTask;
             } else if (evnt.EventName == EventRemoveOldBackups) {
                 SiteBackup siteBackup = new SiteBackup();
                 List<string> errorList = new List<string>();
                 ConfigData config = ConfigDataProvider.GetConfigAsync().Result;//$$$
                 siteBackup.RemoveOldBackups(errorList, config.Days);
+                return Task.CompletedTask;
             } else
                 throw new Error(this.__ResStr("eventNameErr", "Unknown scheduler event {0}"), evnt.EventName);
-
         }
 
         public SchedulerItemBase[] GetItems() {

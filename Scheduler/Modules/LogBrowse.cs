@@ -60,10 +60,10 @@ namespace YetaWF.Modules.Scheduler.Modules {
             if (location == ModuleAction.ActionLocationEnum.ModuleLinks) {
                 using (LogDataProvider logDP = new LogDataProvider()) {
                     if (logDP.CanBrowse)
-                        menuList.New(GetAction_RemoveAll());
+                        menuList.New(await GetAction_RemoveAllAsync());
                     else {
-                        menuList.New(GetAction_DownloadZippedLog());
-                        menuList.New(GetAction_DownloadLog());
+                        menuList.New(await GetAction_DownloadZippedLogAsync());
+                        menuList.New(await GetAction_DownloadLogAsync());
                     }
                 }
             }
@@ -84,10 +84,10 @@ namespace YetaWF.Modules.Scheduler.Modules {
                 Mode = ModuleAction.ActionModeEnum.Any,
             };
         }
-        public ModuleAction GetAction_RemoveAll() {
+        public async Task<ModuleAction> GetAction_RemoveAllAsync() {
             if (!IsAuthorized("RemoveLog")) return null;
             using (LogDataProvider logDP = new LogDataProvider()) {
-                if (!logDP.IsInstalled()) return null;
+                if (!await logDP.IsInstalledAsync()) return null;
             };
             return new ModuleAction(this) {
                 Url = YetaWFManager.UrlFor(typeof(LogBrowseModuleController), "RemoveAll"),
@@ -104,10 +104,10 @@ namespace YetaWF.Modules.Scheduler.Modules {
                 ConfirmationText = this.__ResStr("removeConfirm", "Are you sure you want to remove ALL scheduler log records?"),
             };
         }
-        public ModuleAction GetAction_DownloadLog() {
+        public async Task<ModuleAction> GetAction_DownloadLogAsync() {
             if (!IsAuthorized("Downloads")) return null;
             using (LogDataProvider logDP = new LogDataProvider()) {
-                if (!logDP.IsInstalled()) return null;
+                if (!await logDP.IsInstalledAsync()) return null;
             };
             return new ModuleAction(this) {
                 Url = YetaWFManager.UrlFor(typeof(LogBrowseModuleController), "DownloadLog"),
@@ -124,10 +124,10 @@ namespace YetaWF.Modules.Scheduler.Modules {
                 Location = ModuleAction.ActionLocationEnum.NoAuto,
             };
         }
-        public ModuleAction GetAction_DownloadZippedLog() {
+        public async Task<ModuleAction> GetAction_DownloadZippedLogAsync() {
             if (!IsAuthorized("Downloads")) return null;
             using (LogDataProvider logDP = new LogDataProvider()) {
-                if (!logDP.IsInstalled()) return null;
+                if (!await logDP.IsInstalledAsync()) return null;
             };
             return new ModuleAction(this) {
                 Url = YetaWFManager.UrlFor(typeof(LogBrowseModuleController), "DownloadZippedLog"),

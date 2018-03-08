@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using YetaWF.Core.DataProvider;
 using YetaWF.Core.Localize;
 using YetaWF.Core.Log;
@@ -15,10 +16,11 @@ namespace YetaWF.Modules.Visitors.Scheduler {
 
         public const string EventAddVisitorGeoLocation = "YetaWF.Visitors: Add Geolocation to Visitor Data";
 
-        public void RunItem(SchedulerItemBase evnt) {
+        public Task RunItemAsync(SchedulerItemBase evnt) {
             if (evnt.EventName != EventAddVisitorGeoLocation)
                 throw new Error(this.__ResStr("eventNameErr", "Unknown scheduler event {0}."), evnt.EventName);
             AddGeoLocation(evnt.Log);
+            return Task.CompletedTask;
         }
 
         public SchedulerItemBase[] GetItems() {

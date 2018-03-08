@@ -23,10 +23,10 @@ namespace YetaWF.Modules.Search.Scheduler {
 
         public const string EventSearchPages = "YetaWF.Search: Extract Search Keywords From Pages";
 
-        public void RunItem(SchedulerItemBase evnt) {
+        public async Task RunItemAsync(SchedulerItemBase evnt) {
             if (evnt.EventName != EventSearchPages)
                 throw new Error(this.__ResStr("eventNameErr", "Unknown scheduler event {0}."), evnt.EventName);
-            SearchSiteAsync(slow: true).Wait();//$$$$
+            await SearchSiteAsync(slow: true);
         }
 
         public SchedulerItemBase[] GetItems() {

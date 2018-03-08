@@ -60,14 +60,17 @@ namespace YetaWF.Modules.Scheduler.Support {
         public bool IsInstalled() { return true; }
 
         public void WriteToLogFile(Logging.LevelEnum level, int relStack, string text) {
-            if (YetaWFManager.HaveManager && YetaWFManager.Manager != LimitToManager) return; // this log entry is for another thread
-            logDP.AddItem(new DataProvider.LogData {
-                TimeStamp = DateTime.UtcNow,
-                RunId = CurrentId,
-                Name = CurrentName,
-                Level = level,
-                SiteIdentity = CurrentSiteId,
-                Info = text,
+            if (!YetaWFManager.HaveManager) return;
+            if (YetaWFManager.Manager != LimitToManager) return; // this log entry is for another thread
+            YetaWFManager.Manager.Syncify(async () => { //$$$$MUST CHANGE
+                await logDP.AddItemAsync(new DataProvider.LogData {
+                    TimeStamp = DateTime.UtcNow,
+                    RunId = CurrentId,
+                    Name = CurrentName,
+                    Level = level,
+                    SiteIdentity = CurrentSiteId,
+                    Info = text,
+                });
             });
         }
     }

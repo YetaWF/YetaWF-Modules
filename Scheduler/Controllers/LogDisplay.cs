@@ -1,12 +1,13 @@
 /* Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Scheduler#License */
 
+using System;
+using System.Threading.Tasks;
 using YetaWF.Core.Controllers;
 using YetaWF.Core.Localize;
 using YetaWF.Core.Models;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Support;
 using YetaWF.Modules.Scheduler.DataProvider;
-using System;
 #if MVC6
 using Microsoft.AspNetCore.Mvc;
 #else
@@ -51,9 +52,9 @@ namespace YetaWF.Modules.Scheduler.Controllers {
         }
 
         [AllowGet]
-        public ActionResult LogDisplay(int logEntry) {
+        public async Task<ActionResult> LogDisplay(int logEntry) {
             using (LogDataProvider logDP = new LogDataProvider()) {
-                LogData data = logDP.GetItem(logEntry);
+                LogData data = await logDP.GetItemAsync(logEntry);
                 if (data == null)
                     throw new Error(this.__ResStr("notFound", "Scheduler log entry with id {0} not found"), logEntry);
                 DisplayModel model = new DisplayModel();

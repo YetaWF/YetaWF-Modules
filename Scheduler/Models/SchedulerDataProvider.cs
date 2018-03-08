@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using YetaWF.Core.DataProvider;
 using YetaWF.Core.DataProvider.Attributes;
 using YetaWF.Core.IO;
@@ -65,7 +66,7 @@ namespace YetaWF.Modules.Scheduler.DataProvider {
         }
     }
 
-    public class SchedulerDataProvider : DataProviderImpl, IInstallableModel, IInstallableModel2 {
+    public class SchedulerDataProvider : DataProviderImpl, IInstallableModelAsync, IInstallableModel2Async {
 
         // IMPLEMENTATION
         // IMPLEMENTATION
@@ -73,9 +74,9 @@ namespace YetaWF.Modules.Scheduler.DataProvider {
 
         public SchedulerDataProvider() : base(0) { SetDataProvider(CreateDataProvider()); }
 
-        private IDataProvider<string, SchedulerItemData> DataProvider { get { return GetDataProvider(); } }
+        private IDataProviderAsync<string, SchedulerItemData> DataProvider { get { return GetDataProvider(); } }
 
-        private IDataProvider<string, SchedulerItemData> CreateDataProvider() {
+        private IDataProviderAsync<string, SchedulerItemData> CreateDataProvider() {
             Package package = YetaWF.Modules.Scheduler.Controllers.AreaRegistration.CurrentPackage;
             return MakeDataProvider(package, package.AreaName, Cacheable: true, Parms: new { NoLanguages = true });
         }
@@ -84,36 +85,35 @@ namespace YetaWF.Modules.Scheduler.DataProvider {
         // API
         // API
 
-        public SchedulerItemData GetItem(string key) {
-            return DataProvider.Get(key);
+        public async Task<SchedulerItemData> GetItemAsync(string key) {
+            return await DataProvider.GetAsync(key);
         }
-        public bool AddItem(SchedulerItemData evnt) {
+        public async Task<bool> AddItemAsync(SchedulerItemData evnt) {
             evnt.TimeSpan = evnt.Frequency.TimeSpan;
-            return DataProvider.Add(evnt);
+            return await DataProvider.AddAsync(evnt);
         }
-        public UpdateStatusEnum UpdateItem(SchedulerItemData evnt) {
-            return UpdateItem(evnt.Name, evnt);
+        public async Task<UpdateStatusEnum> UpdateItemAsync(SchedulerItemData evnt) {
+            return await UpdateItemAsync(evnt.Name, evnt);
         }
-        public UpdateStatusEnum UpdateItem(string originalName, SchedulerItemData evnt) {
+        public async Task<UpdateStatusEnum> UpdateItemAsync(string originalName, SchedulerItemData evnt) {
             evnt.TimeSpan = evnt.Frequency.TimeSpan;
-            return DataProvider.Update(originalName, evnt.Name, evnt);
+            return await DataProvider.UpdateAsync(originalName, evnt.Name, evnt);
         }
-        public bool RemoveItem(string key) {
-            return DataProvider.Remove(key);
+        public async Task<bool> RemoveItemAsync(string key) {
+            return await DataProvider.RemoveAsync(key);
         }
-        public List<SchedulerItemData> GetItems(List<DataProviderFilterInfo> filters) {
-            int total;
+        public async Task<DataProviderGetRecords<SchedulerItemData>> GetItemsAsync(List<DataProviderFilterInfo> filters) {
             filters = FixFilters(filters);
-            return DataProvider.GetRecords(0, 0, null, filters, out total);
+            return await DataProvider.GetRecordsAsync(0, 0, null, filters);
         }
-        public List<SchedulerItemData> GetItems(int skip, int take, List<DataProviderSortInfo> sort, List<DataProviderFilterInfo> filters, out int total) {
+        public async Task<DataProviderGetRecords<SchedulerItemData>> GetItemsAsync(int skip, int take, List<DataProviderSortInfo> sort, List<DataProviderFilterInfo> filters) {
             filters = FixFilters(filters);
             sort = FixSort(sort);
-            return DataProvider.GetRecords(skip, take, sort, filters, out total);
+            return await DataProvider.GetRecordsAsync(skip, take, sort, filters);
         }
-        public int RemoveItems(List<DataProviderFilterInfo> filters) {
+        public async Task<int> RemoveItemsAsync(List<DataProviderFilterInfo> filters) {
             filters = FixFilters(filters);
-            return DataProvider.RemoveRecords(filters);
+            return await DataProvider.RemoveRecordsAsync(filters);
         }
         // Replace IsRunning ... with  Next == DateTime.MaxValue
         private List<DataProviderSortInfo> FixSort(List<DataProviderSortInfo> sort) {
@@ -175,7 +175,7 @@ namespace YetaWF.Modules.Scheduler.DataProvider {
         // IINSTALLABLEMODEL2
         // IINSTALLABLEMODEL2
 
-        public bool UpgradeModel(List<string> errorList, string lastSeenVersion) {
+        public async Task<bool> UpgradeModelAsync(List<string> errorList, string lastSeenVersion) {
 
             // Convert 2.7.0 (and older) data and add TimeSpan
             if (Package.CompareVersion(lastSeenVersion, AreaRegistration.CurrentPackage.Version) < 0 &&
@@ -184,13 +184,12 @@ namespace YetaWF.Modules.Scheduler.DataProvider {
                     const int chunk = 100;
                     int skip = 0;
                     for (; ; skip += chunk) {
-                        int total;
-                        List<SchedulerItemData> list = schedDP.GetItems(skip, chunk, null, null, out total);
-                        if (list.Count <= 0)
+                        DataProviderGetRecords<SchedulerItemData> list = await schedDP.GetItemsAsync(skip, chunk, null, null);
+                        if (list.Data.Count <= 0)
                             break;
-                        foreach (SchedulerItemData l in list) {
+                        foreach (SchedulerItemData l in list.Data) {
                             l.TimeSpan = l.Frequency.TimeSpan;
-                            UpdateItem(l.Name, l);
+                            await UpdateItemAsync(l.Name, l);
                         }
                     }
                 }

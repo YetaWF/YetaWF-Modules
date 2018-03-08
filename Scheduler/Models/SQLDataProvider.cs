@@ -1,8 +1,9 @@
 ﻿/* Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Scheduler#License */
 
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using YetaWF.Core.DataProvider;
-using YetaWF.DataProvider.SQL;
+using YetaWF.DataProvider.SQL2;
 
 namespace YetaWF.Modules.Scheduler.DataProvider.SQL {
 
@@ -15,17 +16,17 @@ namespace YetaWF.Modules.Scheduler.DataProvider.SQL {
         class SchedulerDataProvider : SQLSimpleObject<string, SchedulerItemData> {
             public SchedulerDataProvider(Dictionary<string, object> options) : base(options) { }
         }
-        class LogDataProvider : SQLSimpleObject<int, LogData>, ILogDataProviderIOMode {
+        class LogDataProvider : SQLSimpleObject<int, LogData>, ILogDataProviderIOModeAsync {
             public LogDataProvider(Dictionary<string, object> options) : base(options) { }
 
-            public bool AddItem(LogData data) {
-                return Add(data);
+            public async Task<bool> AddItemAsync(LogData data) {
+                return await AddAsync(data);
             }
-            public List<LogData> GetItems(int skip, int take, List<DataProviderSortInfo> sort, List<DataProviderFilterInfo> filters, out int total) {
-                return GetRecords(skip, take, sort, filters, out total);
+            public async Task<DataProviderGetRecords<LogData>> GetItemsAsync(int skip, int take, List<DataProviderSortInfo> sort, List<DataProviderFilterInfo> filters) {
+                return await GetRecordsAsync(skip, take, sort, filters);
             }
-            public int RemoveItems(List<DataProviderFilterInfo> filters) {
-                return RemoveRecords(filters);
+            public async Task<int> RemoveItemsAsync(List<DataProviderFilterInfo> filters) {
+                return await RemoveRecordsAsync(filters);
             }
             public bool CanBrowse {
                 get { return true; }

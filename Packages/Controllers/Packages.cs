@@ -145,12 +145,12 @@ namespace YetaWF.Modules.Packages.Controllers {
 
         [Permission("Installs")]
         [ExcludeDemoMode]
-        public ActionResult InstallPackageModels(string packageName) {
+        public async Task<ActionResult> InstallPackageModels(string packageName) {
             Package package = Package.GetPackageFromPackageName(packageName);
             List<string> errorList = new List<string>();
-            if (!package.InstallModels(errorList)) {
+            if (!await package.InstallModelsAsync(errorList)) {
                 ScriptBuilder sb = new ScriptBuilder();
-                sb.Append(this.__ResStr("cantInstallModels", "Can't install models for package {0}:(+nl)"), packageName.Split(new char[]{','}).First());
+                sb.Append(this.__ResStr("cantInstallModels", "Can't install models for package {0}:(+nl)"), packageName.Split(new char[] { ',' }).First());
                 sb.Append(errorList, LeadingNL: true);
                 throw new Error(sb.ToString());
             }
@@ -159,10 +159,10 @@ namespace YetaWF.Modules.Packages.Controllers {
 
         [Permission("Installs")]
         [ExcludeDemoMode]
-        public ActionResult UninstallPackageModels(string packageName) {
+        public async Task<ActionResult> UninstallPackageModels(string packageName) {
             Package package = Package.GetPackageFromPackageName(packageName);
             List<string> errorList = new List<string>();
-            if (!package.UninstallModels(errorList)) {
+            if (!await package.UninstallModelsAsync(errorList)) {
                 ScriptBuilder sb = new ScriptBuilder();
                 sb.Append(this.__ResStr("cantUninstallModels", "Can't uninstall models for package {0}:(+nl)"), packageName.Split(new char[] { ',' }).First());
                 sb.Append(errorList, LeadingNL: true);
@@ -207,12 +207,12 @@ namespace YetaWF.Modules.Packages.Controllers {
 
         [Permission("Installs")]
         [ExcludeDemoMode]
-        public ActionResult RemovePackage(string packageName) {
+        public async Task<ActionResult> RemovePackage(string packageName) {
             Package package = Package.GetPackageFromPackageName(packageName);
             List<string> errorList = new List<string>();
-            if (!package.Remove(packageName, errorList)) {
+            if (!await package.RemoveAsync(packageName, errorList)) {
                 ScriptBuilder sb = new ScriptBuilder();
-                sb.Append(this.__ResStr("cantRemove", "Can't remove package {0}:(+nl)"), packageName.Split(new char[]{','}).First());
+                sb.Append(this.__ResStr("cantRemove", "Can't remove package {0}:(+nl)"), packageName.Split(new char[] { ',' }).First());
                 sb.Append(errorList, LeadingNL: true);
                 throw new Error(sb.ToString());
             }

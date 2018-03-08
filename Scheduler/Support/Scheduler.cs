@@ -6,6 +6,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading;
+using System.Threading.Tasks;
 using YetaWF.Core.DataProvider;
 using YetaWF.Core.IO;
 using YetaWF.Core.Localize;
@@ -24,9 +25,9 @@ namespace YetaWF.Modules.Scheduler.Support {
 
         public void InitializeApplicationStartup() {
             Instance = this;
-            SchedulerSupport.Install = InstallItems;
-            SchedulerSupport.Uninstall = UninstallItems;
-            SchedulerSupport.RunItem = RunItem;
+            SchedulerSupport.InstallAsync = InstallItemsAsync;
+            SchedulerSupport.UninstallAsync = UninstallItemsAsync;
+            SchedulerSupport.RunItemAsync = RunItemAsync;
 
             using (SchedulerDataProvider dataProvider = new SchedulerDataProvider()) {
                 SchedulerSupport.Enabled = dataProvider.GetRunning();
@@ -68,13 +69,13 @@ namespace YetaWF.Modules.Scheduler.Support {
         /// Run a scheduler item.
         /// </summary>
         /// <param name="name"></param>
-        public void RunItem(string name) {
+        public async Task RunItemAsync(string name) {
 
             using (SchedulerDataProvider dataProvider = new SchedulerDataProvider()) {
 
-                StringLocks.DoAction("YetaWF_Scheduler##Scheduler_" + name, () => {
+                await StringLocks.DoActionAsync("YetaWF_Scheduler##Scheduler_" + name, async () => {
 
-                    SchedulerItemData evnt = dataProvider.GetItem(name);
+                    SchedulerItemData evnt = await dataProvider.GetItemAsync(name);
                     if (evnt == null)
                         throw new Error(this.__ResStr("errItemNotFound", "Scheduler item '{0}' does not exist."), name);
                     if (evnt.RunOnce)
@@ -83,7 +84,7 @@ namespace YetaWF.Modules.Scheduler.Support {
                         throw new Error(this.__ResStr("errItemDisabled", "Scheduler item '{0}' is currently disabled and cannot be scheduled."), evnt.Name);
                     evnt.Next = DateTime.UtcNow.AddSeconds(-1);
                     evnt.Errors = null;
-                    UpdateStatusEnum status = dataProvider.UpdateItem(evnt);
+                    UpdateStatusEnum status = await dataProvider.UpdateItemAsync(evnt);
                     if (status != UpdateStatusEnum.OK)
                         throw new Error(this.__ResStr("errItemUpdFail", "Scheduler item '{0}' couldn't be updated."), evnt.Name);
 
@@ -115,58 +116,64 @@ namespace YetaWF.Modules.Scheduler.Support {
             // get a manager for the scheduler
             YetaWFManager.MakeInitialThreadInstance(null);
 
-            SchedulerLog = new SchedulerLogging();
-            SchedulerLog.Init();
-            SchedulerLog.LimitTo(YetaWFManager.Manager);
-            Logging.RegisterLogging(SchedulerLog);
+            using (new YetaWFManager.NeedSync(YetaWFManager.Manager)) { // there is no point in running the scheduler async
+                YetaWFManager.Manager.Syncify(async () => {
 
-            Logging.AddTraceLog("Scheduler task started");
+                    SchedulerLog = new SchedulerLogging();
+                    SchedulerLog.Init();
+                    SchedulerLog.LimitTo(YetaWFManager.Manager);
+                    Logging.RegisterLogging(SchedulerLog);
 
-            // Because initialization is called during application startup, we'll wait before we
-            // check for any scheduler items that may be due (just so app start isn't all too slow).
-            try {
-                Thread.Sleep(defaultStartupTimeSpan);
-            } catch (ThreadInterruptedException) {
-                // thread was interrupted because there is work to be done
-            }
+                    Logging.AddTraceLog("Scheduler task started");
 
-            // run all scheduled items that are supposed to be run at application startup
-            try {
-                RunStartupItems();
-            } catch (Exception exc) {
-                Logging.AddErrorLog("An error occurred running startup items", exc);
-            }
-
-            for ( ; ; ) {
-                TimeSpan delayTime = new TimeSpan(1, 0, 0);// 1 minute
-                if (SchedulerSupport.Enabled) {
+                    // Because initialization is called during application startup, we'll wait before we
+                    // check for any scheduler items that may be due (just so app start isn't all too slow).
                     try {
-                        delayTime = RunItems();
-                    } catch (Exception exc) {
-                        delayTime = defaultTimeSpan;
-                        Logging.AddErrorLog("An error occurred in the scheduling loop.", exc);
+                        Thread.Sleep(defaultStartupTimeSpan);
+                    } catch (ThreadInterruptedException) {
+                        // thread was interrupted because there is work to be done
                     }
-                    if (delayTime < new TimeSpan(0, 0, 10))// at least 10 seconds
-                        delayTime = new TimeSpan(0, 0, 10);
-                }
-                try {
-                    Thread.Sleep(delayTime);
-                } catch (ThreadInterruptedException) {
-                    // thread was interrupted because there is work to be done
-                } catch (ThreadAbortException) { }
-            }
 
-            // This never really ends so we don't need to unregister logging
-            //log.Shutdown();
-            //Logging.UnregisterLogging(log);
+                    // run all scheduled items that are supposed to be run at application startup
+                    try {
+                        await RunStartupItemsAsync();
+                    } catch (Exception exc) {
+                        Logging.AddErrorLog("An error occurred running startup items", exc);
+                    }
+
+                    for (;;) {
+                        TimeSpan delayTime = new TimeSpan(1, 0, 0);// 1 minute
+                        if (SchedulerSupport.Enabled) {
+                            try {
+                                delayTime = await RunItemsAsync();
+                            } catch (Exception exc) {
+                                delayTime = defaultTimeSpan;
+                                Logging.AddErrorLog("An error occurred in the scheduling loop.", exc);
+                            }
+                            if (delayTime < new TimeSpan(0, 0, 10))// at least 10 seconds
+                                delayTime = new TimeSpan(0, 0, 10);
+                        }
+                        try {
+                            Thread.Sleep(delayTime);
+                        } catch (ThreadInterruptedException) {
+                            // thread was interrupted because there is work to be done
+                        } catch (ThreadAbortException) { }
+                    }
+
+                    // This never really ends so we don't need to unregister logging
+                    //log.Shutdown();
+                    //Logging.UnregisterLogging(log);
+
+                });
+            }
         }
 
-        private void RunStartupItems() {
+        private async Task RunStartupItemsAsync() {
 
             Logging.AddTraceLog("Scheduler event - checking startup scheduler items");
 
             using (SchedulerDataProvider dataProvider = new SchedulerDataProvider()) {
-                if (!dataProvider.IsInstalled()) return;
+                if (!await dataProvider.IsInstalledAsync()) return;
 
                 // reset any items that are still marked as running : Next >= DateTime.MaxValue
                 List<DataProviderFilterInfo> filters = new List<DataProviderFilterInfo> {
@@ -174,10 +181,10 @@ namespace YetaWF.Modules.Scheduler.Support {
                         Field = "Next", Operator = ">=", Value = DateTime.MaxValue,
                     },
                 };
-                List<SchedulerItemData> list = dataProvider.GetItems(filters);
-                foreach (var item in list) {
+                DataProviderGetRecords<SchedulerItemData> list = await dataProvider.GetItemsAsync(filters);
+                foreach (var item in list.Data) {
                     item.SetNextRuntime();
-                    UpdateStatusEnum status = dataProvider.UpdateItem(item);
+                    UpdateStatusEnum status = await dataProvider.UpdateItemAsync(item);
                     if (status != UpdateStatusEnum.OK)
                         throw new Error(this.__ResStr("errUpdate", "Failed to update scheduler item {0} during startup to reset its next run time ({1})"), item.Name, status);
                 }
@@ -197,11 +204,11 @@ namespace YetaWF.Modules.Scheduler.Support {
                              },
                         }
                     };
-                    list = dataProvider.GetItems(filters);
-                    foreach (var item in list) {
+                    list = await dataProvider.GetItemsAsync(filters);
+                    foreach (var item in list.Data) {
                         item.Enabled = true;
                         item.SetNextRuntime();
-                        UpdateStatusEnum status = dataProvider.UpdateItem(item);
+                        UpdateStatusEnum status = await dataProvider.UpdateItemAsync(item);
                         if (status != UpdateStatusEnum.OK)
                             throw new Error(this.__ResStr("errUpdateEnable", "Failed to update scheduler item {0} during startup to enable it ({1})"), item.Name, status);
                     }
@@ -216,10 +223,10 @@ namespace YetaWF.Modules.Scheduler.Support {
                             },
                         }
                     };
-                    list = dataProvider.GetItems(filters);
-                    foreach (var item in list) {
+                    list = await dataProvider.GetItemsAsync(filters);
+                    foreach (var item in list.Data) {
                         item.SetNextRuntime();
-                        UpdateStatusEnum status = dataProvider.UpdateItem(item);
+                        UpdateStatusEnum status = await dataProvider.UpdateItemAsync(item);
                         if (status != UpdateStatusEnum.OK)
                             throw new Error(this.__ResStr("errUpdateNext", "Failed to update scheduler item {0} during startup to set next time ({1})"), item.Name, status);
                     }
@@ -239,25 +246,25 @@ namespace YetaWF.Modules.Scheduler.Support {
                         }
                     };
                     DateTime next = DateTime.UtcNow.Add(defaultTimeSpan);
-                    list = dataProvider.GetItems(filters);
-                    foreach (var item in list) {
-                        RunItem(dataProvider, item);
+                    list = await dataProvider.GetItemsAsync(filters);
+                    foreach (var item in list.Data) {
+                        await RunItemAsync(dataProvider, item);
                         // check if we have to start back up before the default timespan elapses
                         if (item.Next != null && (((DateTime)item.Next) > DateTime.UtcNow && next > item.Next))
-                            next = (DateTime) item.Next;
+                            next = (DateTime)item.Next;
                     }
                 }
             }
         }
 
-        private TimeSpan RunItems() {
+        private async Task<TimeSpan> RunItemsAsync() {
 
             Logging.AddTraceLog("Scheduler event - checking scheduler items");
 
             using (SchedulerDataProvider dataProvider = new SchedulerDataProvider()) {
 
                 DateTime next = DateTime.UtcNow.Add(defaultTimeSpan);
-                if (dataProvider.IsInstalled()) {
+                if (await dataProvider.IsInstalledAsync()) {
                     // Enabled == true and Next != null and Next < DateTime.UtcNow
                     List<DataProviderFilterInfo> filters = new List<DataProviderFilterInfo> {
                         new DataProviderFilterInfo {
@@ -275,19 +282,19 @@ namespace YetaWF.Modules.Scheduler.Support {
                              },
                         }
                     };
-                    List<SchedulerItemData> list = dataProvider.GetItems(filters);
-                    foreach (var item in list) {
-                        RunItem(dataProvider, item);
+                    DataProviderGetRecords<SchedulerItemData> list = await dataProvider.GetItemsAsync(filters);
+                    foreach (var item in list.Data) {
+                        await RunItemAsync(dataProvider, item);
                         // check if we have to start back up before the default timespan elapses
                         if (item.Next != null && ((DateTime)item.Next) > DateTime.UtcNow && next > item.Next)
-                            next = (DateTime) item.Next;
+                            next = (DateTime)item.Next;
                     }
                 }
                 return next.Subtract(DateTime.UtcNow);
             }
         }
 
-        private void RunItem(SchedulerDataProvider dataProvider, SchedulerItemData item) {
+        private async Task RunItemAsync(SchedulerDataProvider dataProvider, SchedulerItemData item) {
 
             long logId = DateTime.UtcNow.Ticks;
             SchedulerLog.SetCurrent(logId, 0, item.Name);
@@ -297,7 +304,7 @@ namespace YetaWF.Modules.Scheduler.Support {
             item.Last = DateTime.UtcNow;
 
             try {
-                dataProvider.UpdateItem(item);
+                await dataProvider.UpdateItemAsync(item);
             } catch (Exception exc) {
                 Logging.AddErrorLog("Updating scheduler item {0} failed.", item.Name, exc);
             }
@@ -334,7 +341,7 @@ namespace YetaWF.Modules.Scheduler.Support {
                             }
 
                             SchedulerItemBase itemBase = new SchedulerItemBase { Name = item.Name, Description = item.Description, EventName = item.Event.Name, Enabled = true, Frequency = item.Frequency, Startup = item.Startup, SiteSpecific = true };
-                            schedEvt.RunItem(itemBase);
+                            await schedEvt.RunItemAsync(itemBase);
                             foreach (var s in itemBase.Log)
                                 errors.AppendLine(Logging.AddLog("{0}: {1}", site.Identity, s));
 
@@ -352,7 +359,7 @@ namespace YetaWF.Modules.Scheduler.Support {
                         }
 
                         SchedulerItemBase itemBase = new SchedulerItemBase { Name = item.Name, Description = item.Description, EventName = item.Event.Name, Enabled = true, Frequency = item.Frequency, Startup = item.Startup, SiteSpecific = false };
-                        schedEvt.RunItem(itemBase);
+                        await schedEvt.RunItemAsync(itemBase);
                         foreach (var s in itemBase.Log)
                             errors.AppendLine(Logging.AddLog(s));
                     }
@@ -376,7 +383,7 @@ namespace YetaWF.Modules.Scheduler.Support {
             item.Errors = errors.ToString();
 
             try {
-                dataProvider.UpdateItem(item);
+                await dataProvider.UpdateItemAsync(item);
             } catch (Exception exc) {
                 Logging.AddErrorLog("Updating scheduler item {0} failed.", item.Name, exc);
             }

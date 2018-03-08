@@ -15,10 +15,10 @@ namespace YetaWF.Modules.KeepAlive.Scheduler {
 
         public const string EventKeepAlive = "YetaWF.KeepAlive: Keep Site Alive";
 
-        public void RunItem(SchedulerItemBase evnt) {//$$$asyncify
+        public async Task RunItemAsync(SchedulerItemBase evnt) {
             if (evnt.EventName != EventKeepAlive)
                 throw new Error(this.__ResStr("eventNameErr", "Unknown scheduler event {0}."), evnt.EventName);
-            RunKeepAliveAsync(slow: true).Wait(); //$$
+            await RunKeepAliveAsync(slow: true);
         }
 
         public SchedulerItemBase[] GetItems() {

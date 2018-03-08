@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using YetaWF.Core.DataProvider;
 using YetaWF.Core.Localize;
 using YetaWF.Core.Scheduler;
@@ -14,10 +15,11 @@ namespace YetaWF.Modules.Logging.Scheduler {
 
         public const string EventRemoveOldLogData = "YetaWF.Logging: Remove Old Log Data";
 
-        public void RunItem(SchedulerItemBase evnt) {
+        public Task RunItemAsync(SchedulerItemBase evnt) {
             if (evnt.EventName != EventRemoveOldLogData)
                 throw new Error(this.__ResStr("eventNameErr", "Unknown scheduler event {0}."), evnt.EventName);
             Remove(evnt.Log);
+            return Task.CompletedTask;
         }
 
         public SchedulerItemBase[] GetItems() {
