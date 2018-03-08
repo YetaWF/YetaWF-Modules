@@ -3,6 +3,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using YetaWF.Core.DataProvider;
 using YetaWF.Core.DataProvider.Attributes;
 using YetaWF.Core.Extensions;
@@ -59,11 +60,11 @@ namespace YetaWF.Modules.Search.DataProvider {
     }
 
     public interface ISearchDataProviderIOMode {
-        void RemoveUnusedUrls(SearchDataProvider searchDP);
-        void MarkUpdated(int searchDataUrlId);
+        Task RemoveUnusedUrlsAsync(SearchDataProvider searchDP);
+        Task MarkUpdatedAsync(int searchDataUrlId);
     }
 
-    public class SearchDataProvider : DataProviderImpl, IInstallableModel {
+    public class SearchDataProvider : DataProviderImpl, IInstallableModelAsync {
 
         // IMPLEMENTATION
         // IMPLEMENTATION
@@ -72,10 +73,10 @@ namespace YetaWF.Modules.Search.DataProvider {
         public SearchDataProvider() : base(YetaWFManager.Manager.CurrentSite.Identity) { SetDataProvider(CreateDataProvider()); }
         public SearchDataProvider(int siteIdentity) : base(siteIdentity) { SetDataProvider(CreateDataProvider()); }
 
-        private IDataProvider<int, SearchData> DataProvider { get { return GetDataProvider(); } }
+        private IDataProviderAsync<int, SearchData> DataProvider { get { return GetDataProvider(); } }
         private ISearchDataProviderIOMode DataProviderIOMode { get { return GetDataProvider(); } }
 
-        private IDataProvider<int, SearchData> CreateDataProvider() {
+        private IDataProviderAsync<int, SearchData> CreateDataProvider() {
             Package package = YetaWF.Modules.Search.Controllers.AreaRegistration.CurrentPackage;
             dynamic dp = MakeDataProvider(package, package.AreaName + "_Data", SiteIdentity: SiteIdentity, Cacheable: true);
             if (dp != null)
@@ -98,15 +99,15 @@ namespace YetaWF.Modules.Search.DataProvider {
         }
 
         // Locking is only used when collecting keywords
-        public void DoAction(Action action) {
-            StringLocks.DoAction(LockKey(), () => {
-                action();
+        public Task DoActionAsync(Func<Task> action) {
+            return StringLocks.DoActionAsync(LockKey(), async () => {
+                await action();
             });
         }
         private string LockKey() {
             return Dataset;
         }
-        internal SearchData GetItemWithUrl(int searchDataId) {
+        internal async Task<SearchData> GetItemWithUrlAsync(int searchDataId) {
             if (!IsUsable) return null;
             using (SearchDataUrlDataProvider searchUrlDP = new SearchDataUrlDataProvider()) {
                 List<DataProviderFilterInfo> filters = null;
@@ -114,22 +115,22 @@ namespace YetaWF.Modules.Search.DataProvider {
                 List<JoinData> joins = new List<JoinData> {
                     new JoinData {MainDP = this, JoinDP= searchUrlDP, MainColumn = "SearchDataUrlId", JoinColumn = "SearchDataUrlId" },
                 };
-                return DataProvider.GetOneRecord(filters, Joins: joins);
+                return await DataProvider.GetOneRecordAsync(filters, Joins: joins);
             }
         }
 
-        public bool AddItem(SearchData data) {
+        public async Task<bool> AddItemAsync(SearchData data) {
             if (!IsUsable) return false;
-            return DataProvider.Add(data);
+            return await DataProvider.AddAsync(data);
         }
-        public bool AddItems(List<SearchData> list, string pageUrl, PageDefinition.PageSecurityType pageSecurity, string pageDescription, string pageSummary, DateTime pageCreated, DateTime? pageUpdated, DateTime searchStarted) {
+        public async Task<bool> AddItemsAsync(List<SearchData> list, string pageUrl, PageDefinition.PageSecurityType pageSecurity, string pageDescription, string pageSummary, DateTime pageCreated, DateTime? pageUpdated, DateTime searchStarted) {
             if (!IsUsable) return false;
             bool status = false;
-            DoAction(() => {
+            await DoActionAsync(async () => {
                 if (pageUpdated != null && (DateTime)pageUpdated < pageCreated)
                     pageCreated = (DateTime)pageUpdated;
                 using (SearchDataUrlDataProvider searchUrlDP = new SearchDataUrlDataProvider()) {
-                    SearchDataUrl searchUrl = searchUrlDP.GetItemByUrl(pageUrl);
+                    SearchDataUrl searchUrl = await searchUrlDP.GetItemByUrlAsync(pageUrl);
                     if (searchUrl == null) {
                         searchUrl = new SearchDataUrl {
                             DatePageCreated = pageCreated,
@@ -139,7 +140,7 @@ namespace YetaWF.Modules.Search.DataProvider {
                             PageSecurity = pageSecurity,
                             PageSummary = pageSummary.Truncate(SearchDataUrl.MaxSummary),
                         };
-                        if (!searchUrlDP.AddItem(searchUrl))
+                        if (!await searchUrlDP.AddItemAsync(searchUrl))
                             throw new InternalError("Unexpected error adding SearchDataUrl for url {0}", pageUrl);
                     } else {
                         searchUrl.PageTitle = pageDescription.Truncate(SearchDataUrl.MaxTitle);
@@ -147,79 +148,77 @@ namespace YetaWF.Modules.Search.DataProvider {
                         searchUrl.DatePageCreated = pageCreated;
                         searchUrl.DatePageUpdated = pageUpdated ?? pageCreated;
                         searchUrl.PageSecurity = pageSecurity;
-                        UpdateStatusEnum updStatus = searchUrlDP.UpdateItem(searchUrl);
+                        UpdateStatusEnum updStatus = await searchUrlDP.UpdateItemAsync(searchUrl);
                         if (updStatus != UpdateStatusEnum.OK)
                             throw new InternalError("Unexpected error updating SearchDataUrl for url {0} - {1}", pageUrl, updStatus);
                     }
                     foreach (SearchData data in list) {
                         data.SearchDataUrlId = searchUrl.SearchDataUrlId;
                         data.DateAdded = searchStarted;
-                        AddItem(data);
+                        await AddItemAsync(data);
                     }
                 }
                 status = true;
             });
             return status;
         }
-        public UpdateStatusEnum UpdateItem(SearchData data) {
+        public async Task<UpdateStatusEnum> UpdateItemAsync(SearchData data) {
             if (!IsUsable) return UpdateStatusEnum.RecordDeleted;
-            return DataProvider.Update(data.SearchDataId, data.SearchDataId, data);
+            return await DataProvider.UpdateAsync(data.SearchDataId, data.SearchDataId, data);
         }
-        public bool RemoveItem(int id) {
+        public async Task<bool> RemoveItemAsync(int id) {
             if (!IsUsable) return false;
-            return DataProvider.Remove(id);
+            return await DataProvider.RemoveAsync(id);
         }
-        public List<SearchData> GetItemsWithUrl(int skip, int take, List<DataProviderSortInfo> sort, List<DataProviderFilterInfo> filters, out int total) {
-            if (!IsUsable) {
-                total = 0;
-                return new List<SearchData>();
-            }
+        public async Task<DataProviderGetRecords<SearchData>> GetItemsWithUrlAsync(int skip, int take, List<DataProviderSortInfo> sort, List<DataProviderFilterInfo> filters) {
+            if (!IsUsable)
+                return new DataProviderGetRecords<SearchData>();
             using (SearchDataUrlDataProvider searchUrlDP = new SearchDataUrlDataProvider()) {
                 List<JoinData> joins = new List<JoinData> {
                     new JoinData {MainDP = this, JoinDP= searchUrlDP, MainColumn = "SearchDataUrlId", JoinColumn = "SearchDataUrlId" },
                 };
-                return DataProvider.GetRecords(skip, take, sort, filters, out total, Joins: joins).ToList();
+                return await DataProvider.GetRecordsAsync(skip, take, sort, filters, Joins: joins);
             }
         }
-        public int RemoveItems(List<DataProviderFilterInfo> filters) {
+        public async Task<int> RemoveItemsAsync(List<DataProviderFilterInfo> filters) {
             if (!IsUsable) return 0;
             int count = 0;
-            DoAction(() => {
-                count = DataProvider.RemoveRecords(filters);
+            await DoActionAsync(async () => {
+                count = await DataProvider.RemoveRecordsAsync(filters);
                 if (filters == null) {
                     using (SearchDataUrlDataProvider searchUrlDP = new SearchDataUrlDataProvider()) {
-                        searchUrlDP.RemoveItems(null);
+                        await searchUrlDP.RemoveItemsAsync(null);
                     }
                 } else {
-                    RemoveUnusedUrls();
+                    await RemoveUnusedUrlsAsync();
                 }
             });
             return count;
         }
 
-        public void RemoveOldItems(DateTime searchStarted) {
+        public async Task RemoveOldItemsAsync(DateTime searchStarted) {
             if (!IsUsable) return;
-            DoAction(() => {
+            await DoActionAsync(async () => {
                 List<DataProviderFilterInfo> filters = null;
                 filters = DataProviderFilterInfo.Join(filters, new DataProviderFilterInfo { Field = "DateAdded", Operator = "<", Value = searchStarted });
-                RemoveItems(filters);
-                RemoveUnusedUrls();
+                await RemoveItemsAsync(filters);
+                await RemoveUnusedUrlsAsync();
             });
         }
-        private void RemoveUnusedUrls() {
-            DoAction(() => {
-                DataProviderIOMode.RemoveUnusedUrls(this);
+        private async Task RemoveUnusedUrlsAsync() {
+            await DoActionAsync(async () => {
+                await DataProviderIOMode.RemoveUnusedUrlsAsync(this);
             });
         }
 
         /// <summary>
         /// Check whether the specified url contents have changed since last time we collected keywords
         /// </summary>
-        public bool PageUpdated(string pageUrl, DateTime dateCreated, DateTime? dateUpdated) {
+        public async Task<bool> PageUpdated(string pageUrl, DateTime dateCreated, DateTime? dateUpdated) {
             if (dateCreated == DateTime.MinValue && (dateUpdated == null || dateUpdated == DateTime.MinValue))// if no one supplied a date, we don't know
                 return true;
             using (SearchDataUrlDataProvider searchUrlDP = new SearchDataUrlDataProvider()) {
-                SearchDataUrl searchUrl = searchUrlDP.GetItemByUrl(pageUrl);
+                SearchDataUrl searchUrl = await searchUrlDP.GetItemByUrlAsync(pageUrl);
                 if (searchUrl == null)
                     return true;
                 DateTime dataAge = searchUrl.DatePageCreated;
@@ -231,13 +230,13 @@ namespace YetaWF.Modules.Search.DataProvider {
                 if (dataAge.AddSeconds(1) < newAge) // all for slight difference in timestamps
                     return true;
                 // update the dateadded datetimes for all search terms on this page to reflect that we didn't search and just accept them again
-                MarkUpdated(searchUrl.SearchDataUrlId);
+                await MarkUpdatedAsync(searchUrl.SearchDataUrlId);
             }
             return false;
         }
-        private void MarkUpdated(int searchDataUrlId) {
-            DoAction(() => {
-                DataProviderIOMode.MarkUpdated(searchDataUrlId);
+        private async Task MarkUpdatedAsync(int searchDataUrlId) {
+            await DoActionAsync(async () => {
+                await DataProviderIOMode.MarkUpdatedAsync(searchDataUrlId);
             });
         }
 
@@ -245,36 +244,35 @@ namespace YetaWF.Modules.Search.DataProvider {
         // IINSTALLABLEMODEL
         // IINSTALLABLEMODEL
 
-        public new bool IsInstalled() {
+        public new async Task<bool> IsInstalledAsync() {
             if (DataProvider == null) return false;
-            return DataProvider.IsInstalled();
+            return await DataProvider.IsInstalledAsync();
         }
-        public new bool InstallModel(List<string> errorList) {
+        public new async Task<bool> InstallModelAsync(List<string> errorList) {
             if (!IsUsable) return true;
-            return DataProvider.InstallModel(errorList);
+            return await DataProvider.InstallModelAsync(errorList);
         }
-        public new bool UninstallModel(List<string> errorList) {
+        public new async Task<bool> UninstallModelAsync(List<string> errorList) {
             if (!IsUsable) return true;
-            return DataProvider.UninstallModel(errorList);
+            return await DataProvider.UninstallModelAsync(errorList);
         }
-        public new void AddSiteData() {
+        public new async Task AddSiteDataAsync() {
             if (!IsUsable) return;
-            DataProvider.AddSiteData();
+            await DataProvider.AddSiteDataAsync();
         }
-        public new void RemoveSiteData() {
+        public new async Task RemoveSiteDataAsync() {
             if (!IsUsable) return;
-            DataProvider.RemoveSiteData();
+            await DataProvider.RemoveSiteDataAsync();
         }
-        public new bool ExportChunk(int chunk, SerializableList<SerializableFile> fileList, out object obj) {
+        public new Task<DataProviderExportChunk> ExportChunkAsync(int chunk, SerializableList<SerializableFile> fileList) {
             // we don't export search data
-            obj = null;
-            return false;
+            return Task.FromResult(new DataProviderExportChunk());
             //if (!IsUsable) return false;
             //return DataProvider.ExportChunk(chunk, fileList, out obj);
         }
-        public new void ImportChunk(int chunk, SerializableList<SerializableFile> fileList, object obj) {
+        public new Task ImportChunkAsync(int chunk, SerializableList<SerializableFile> fileList, object obj) {
             // we don't import search data
-            return;
+            return Task.CompletedTask;
             //if (!IsUsable) return;
             //DataProvider.ImportChunk(chunk, fileList, obj);
         }

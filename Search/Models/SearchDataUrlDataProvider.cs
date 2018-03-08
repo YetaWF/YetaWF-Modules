@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using YetaWF.Core;
 using YetaWF.Core.DataProvider;
 using YetaWF.Core.DataProvider.Attributes;
@@ -38,7 +39,7 @@ namespace YetaWF.Modules.Search.DataProvider {
         public SearchDataUrl() { }
     }
 
-    public class SearchDataUrlDataProvider : DataProviderImpl, IInstallableModel {
+    public class SearchDataUrlDataProvider : DataProviderImpl, IInstallableModelAsync {
 
         // IMPLEMENTATION
         // IMPLEMENTATION
@@ -47,9 +48,9 @@ namespace YetaWF.Modules.Search.DataProvider {
         public SearchDataUrlDataProvider() : base(YetaWFManager.Manager.CurrentSite.Identity) { SetDataProvider(CreateDataProvider()); }
         public SearchDataUrlDataProvider(int siteIdentity) : base(siteIdentity) { SetDataProvider(CreateDataProvider()); }
 
-        private IDataProviderIdentity<int, object, SearchDataUrl> DataProvider { get { return GetDataProvider(); } }
+        private IDataProviderIdentityAsync<int, object, SearchDataUrl> DataProvider { get { return GetDataProvider(); } }
 
-        private IDataProviderIdentity<int, object, SearchDataUrl> CreateDataProvider() {
+        private IDataProviderIdentityAsync<int, object, SearchDataUrl> CreateDataProvider() {
             if (SearchDataProvider.IsUsable) {
                 Package package = YetaWF.Modules.Search.Controllers.AreaRegistration.CurrentPackage;
                 return MakeDataProvider(package, package.AreaName + "_Urls", SiteIdentity: SiteIdentity, Cacheable: true);
@@ -62,64 +63,65 @@ namespace YetaWF.Modules.Search.DataProvider {
         // API
         // API
 
-        public SearchDataUrl GetItem(int id) {
+        public async Task<SearchDataUrl> GetItemAsync(int id) {
             if (!SearchDataProvider.IsUsable) return null;
-            return DataProvider.GetByIdentity(id);
+            return await DataProvider.GetByIdentityAsync(id);
         }
-        internal SearchDataUrl GetItemByUrl(string pageUrl) {
+        internal async Task<SearchDataUrl> GetItemByUrlAsync(string pageUrl) {
             if (!SearchDataProvider.IsUsable) return null;
             List<DataProviderFilterInfo> filters = null;
             filters = DataProviderFilterInfo.Join(filters, new DataProviderFilterInfo { Field = "PageUrl", Operator = "==", Value = pageUrl });
-            SearchDataUrl searchUrl = DataProvider.GetOneRecord(filters);
+            SearchDataUrl searchUrl = await DataProvider.GetOneRecordAsync(filters);
             return searchUrl;
         }
-        public bool AddItem(SearchDataUrl data) {
+        public async Task<bool> AddItemAsync(SearchDataUrl data) {
             if (!SearchDataProvider.IsUsable) return false;
-            return DataProvider.Add(data);
+            return await DataProvider.AddAsync(data);
         }
-        public UpdateStatusEnum UpdateItem(SearchDataUrl data) {
+        public async Task<UpdateStatusEnum> UpdateItemAsync(SearchDataUrl data) {
             if (!SearchDataProvider.IsUsable) return UpdateStatusEnum.RecordDeleted;
-            return DataProvider.UpdateByIdentity(data.SearchDataUrlId, data);
+            return await DataProvider.UpdateByIdentityAsync(data.SearchDataUrlId, data);
         }
-        public int RemoveItems(List<DataProviderFilterInfo> filters) {
+        public async Task<int> RemoveItemsAsync(List<DataProviderFilterInfo> filters) {
             if (!SearchDataProvider.IsUsable) return 0;
-            return DataProvider.RemoveRecords(filters);
+            return await DataProvider.RemoveRecordsAsync(filters);
         }
 
         // IINSTALLABLEMODEL
         // IINSTALLABLEMODEL
         // IINSTALLABLEMODEL
 
-        public new bool IsInstalled() {
+        public new async Task<bool> IsInstalledAsync() {
             if (DataProvider == null) return false;
-            return DataProvider.IsInstalled();
+            return await DataProvider.IsInstalledAsync();
         }
-        public new bool InstallModel(List<string> errorList) {
+        public new async Task<bool> InstallModelAsync(List<string> errorList) {
             if (!SearchDataProvider.IsUsable) return true;
-            return DataProvider.InstallModel(errorList);
+            return await DataProvider.InstallModelAsync(errorList);
         }
-        public new bool UninstallModel(List<string> errorList) {
+        public new async Task<bool> UninstallModelAsync(List<string> errorList) {
             if (!SearchDataProvider.IsUsable) return true;
-            return DataProvider.UninstallModel(errorList);
+            return await DataProvider.UninstallModelAsync(errorList);
         }
-        public new void AddSiteData() {
+        public new async Task AddSiteDataAsync() {
             if (!SearchDataProvider.IsUsable) return;
-            DataProvider.AddSiteData();
+            await DataProvider.AddSiteDataAsync();
         }
-        public new void RemoveSiteData() {
+        public new async Task RemoveSiteDataAsync() {
             if (!SearchDataProvider.IsUsable) return;
-            DataProvider.RemoveSiteData();
+            await DataProvider.RemoveSiteDataAsync();
         }
-        public new bool ExportChunk(int chunk, SerializableList<SerializableFile> fileList, out object obj) {
+        public new Task<DataProviderExportChunk> ExportChunkAsync(int chunk, SerializableList<SerializableFile> fileList) {
             // we don't export search data
-            obj = null;
-            return false;
+            return Task.FromResult(new DataProviderExportChunk {
+                More = false,
+            });
             //if (!SearchDataProvider.IsUsable) return true;
             //return DataProvider.ExportChunk(chunk, fileList, out obj);
         }
-        public new void ImportChunk(int chunk, SerializableList<SerializableFile> fileList, object obj) {
+        public new Task ImportChunkAsync(int chunk, SerializableList<SerializableFile> fileList, object obj) {
             // we don't export search data
-            return;
+            return Task.CompletedTask;
             //if (!SearchDataProvider.IsUsable) return;
             //DataProvider.ImportChunk(chunk, fileList, obj);
         }

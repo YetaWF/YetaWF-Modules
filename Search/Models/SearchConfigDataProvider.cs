@@ -1,6 +1,7 @@
 ﻿/* Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Search#License */
 
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using YetaWF.Core;
 using YetaWF.Core.DataProvider;
 using YetaWF.Core.DataProvider.Attributes;
@@ -39,11 +40,11 @@ namespace YetaWF.Modules.Search.DataProvider {
         }
     }
 
-    public class SearchConfigDataProvider : DataProviderImpl, IInstallableModel {
+    public class SearchConfigDataProvider : DataProviderImpl, IInstallableModelAsync {
 
         private const int KEY = 1;
 
-        private static object _lockObject = new object();
+        private static AsyncLock _lockObject = new AsyncLock();
 
         // IMPLEMENTATION
         // IMPLEMENTATION
@@ -52,9 +53,9 @@ namespace YetaWF.Modules.Search.DataProvider {
         public SearchConfigDataProvider() : base(YetaWFManager.Manager.CurrentSite.Identity) { SetDataProvider(CreateDataProvider()); }
         public SearchConfigDataProvider(int siteIdentity) : base(siteIdentity) { SetDataProvider(CreateDataProvider()); }
 
-        private IDataProvider<int, SearchConfigData> DataProvider { get { return GetDataProvider(); } }
+        private IDataProviderAsync<int, SearchConfigData> DataProvider { get { return GetDataProvider(); } }
 
-        private IDataProvider<int, SearchConfigData> CreateDataProvider() {
+        private IDataProviderAsync<int, SearchConfigData> CreateDataProvider() {
             Package package = YetaWF.Modules.Search.Controllers.AreaRegistration.CurrentPackage;
             return MakeDataProvider(package, package.AreaName + "_Config", SiteIdentity: SiteIdentity, Cacheable: true);
         }
@@ -63,32 +64,32 @@ namespace YetaWF.Modules.Search.DataProvider {
         // API
         // API
 
-        public static SearchConfigData GetConfig() {
+        public static async Task<SearchConfigData> GetConfigAsync() {
             using (SearchConfigDataProvider configDP = new SearchConfigDataProvider()) {
-                return configDP.GetItem();
+                return await configDP.GetItemAsync();
             }
         }
-        public SearchConfigData GetItem() {
-            SearchConfigData config = DataProvider.Get(KEY);
+        public async Task<SearchConfigData> GetItemAsync() {
+            SearchConfigData config = await DataProvider.GetAsync(KEY);
             if (config == null) {
-                lock (_lockObject) {
-                    config = DataProvider.Get(KEY);
+                using (await _lockObject.LockAsync()) {
+                    config = await DataProvider.GetAsync(KEY);
                     if (config == null) {
                         config = new SearchConfigData();
-                        AddConfig(config);
+                        await AddConfigAsync(config);
                     }
                 }
             }
             return config;
         }
-        private void AddConfig(SearchConfigData data) {
+        private async Task AddConfigAsync(SearchConfigData data) {
             data.Id = KEY;
-            if (!DataProvider.Add(data))
+            if (!await DataProvider.AddAsync(data))
                 throw new InternalError("Unexpected error adding settings");
         }
-        public void UpdateConfig(SearchConfigData data) {
+        public async Task UpdateConfigAsync(SearchConfigData data) {
             data.Id = KEY;
-            UpdateStatusEnum status = DataProvider.Update(data.Id, data.Id, data);
+            UpdateStatusEnum status = await DataProvider.UpdateAsync(data.Id, data.Id, data);
             if (status != UpdateStatusEnum.OK)
                 throw new InternalError("Unexpected error saving settings {0}", status);
         }
@@ -98,36 +99,37 @@ namespace YetaWF.Modules.Search.DataProvider {
         // IINSTALLABLEMODEL
         // IINSTALLABLEMODEL
 
-        public new bool IsInstalled() {
+        public new async Task<bool> IsInstalledAsync() {
             if (DataProvider == null) return false;
-            return base.IsInstalled();
+            return await base.IsInstalledAsync();
         }
-        public new bool InstallModel(List<string> errorList) {
+        public new async Task<bool> InstallModelAsync(List<string> errorList) {
             if (DataProvider == null) return true;
-            return base.InstallModel(errorList);
+            return await base.InstallModelAsync(errorList);
         }
-        public new bool UninstallModel(List<string> errorList) {
+        public new async Task<bool> UninstallModelAsync(List<string> errorList) {
             if (DataProvider == null) return true;
-            return base.UninstallModel(errorList);
+            return await base.UninstallModelAsync(errorList);
         }
-        public new void AddSiteData() {
+        public new async Task AddSiteDataAsync() {
             if (DataProvider == null) return;
-            base.AddSiteData();
+            await base.AddSiteDataAsync();
         }
-        public new void RemoveSiteData() {
+        public new async Task RemoveSiteDataAsync() {
             if (DataProvider == null) return;
-            base.RemoveSiteData();
+            await base.RemoveSiteDataAsync();
         }
-        public new bool ExportChunk(int chunk, SerializableList<SerializableFile> fileList, out object obj) {
+        public new async Task<DataProviderExportChunk> ExportChunkAsync(int chunk, SerializableList<SerializableFile> fileList) {
             if (DataProvider == null) {
-                obj = null;
-                return false;
+                return new DataProviderExportChunk {
+                    More = false
+                };
             }
-            return base.ExportChunk(chunk, fileList, out obj);
+            return await base.ExportChunkAsync(chunk, fileList);
         }
-        public new void ImportChunk(int chunk, SerializableList<SerializableFile> fileList, object obj) {
+        public new async Task ImportChunkAsync(int chunk, SerializableList<SerializableFile> fileList, object obj) {
             if (DataProvider == null) return;
-            base.ImportChunk(chunk, fileList, obj);
+            await base.ImportChunkAsync(chunk, fileList, obj);
         }
     }
 }

@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using YetaWF.Core.DataProvider;
 using YetaWF.Core.Localize;
 using YetaWF.Core.Models.Attributes;
@@ -38,9 +39,9 @@ namespace YetaWF.Modules.Search.DataProvider {
         public SearchResultDataProvider() : base(YetaWFManager.Manager.CurrentSite.Identity) { SetDataProvider(CreateDataProvider()); }
         public SearchResultDataProvider(int siteIdentity) : base(siteIdentity) { SetDataProvider(CreateDataProvider()); }
 
-        private IDataProvider<int, SearchResult> DataProvider { get { return GetDataProvider(); } }
+        private IDataProviderAsync<int, SearchResult> DataProvider { get { return GetDataProvider(); } }
 
-        private IDataProvider<int, SearchResult> CreateDataProvider() {
+        private IDataProviderAsync<int, SearchResult> CreateDataProvider() {
             if (SearchDataProvider.IsUsable) {
                 Package package = YetaWF.Modules.Search.Controllers.AreaRegistration.CurrentPackage;
                 return MakeDataProvider(package, package.AreaName + "_Urls", SiteIdentity: SiteIdentity, Cacheable: true);
@@ -59,11 +60,15 @@ namespace YetaWF.Modules.Search.DataProvider {
         public string GetKeyWordAnd() {
             return this.__ResStr("keyWordAnd", "AND");
         }
-        public List<SearchResult> GetSearchResults(string searchTerms, int maxResults, string languageId, bool haveUser, out bool haveMore, List<DataProviderFilterInfo> Filters = null) {
-            haveMore = false;
-            if (!SearchDataProvider.IsUsable) return new List<SearchResult>();
-            List<SearchResult> results = Parse(searchTerms, maxResults, languageId, haveUser, out haveMore, Filters);
-            return results;
+        public class SearchResultsInfo {
+            public bool HaveMore{ get; set; }
+            public List<SearchResult> Data { get; set; }
+        }
+
+        public async Task<SearchResultsInfo> GetSearchResultsAsync(string searchTerms, int maxResults, string languageId, bool haveUser, List<DataProviderFilterInfo> Filters = null) {
+            if (!SearchDataProvider.IsUsable) return new SearchResultsInfo();
+            SearchResultsInfo info = await ParseAsync(searchTerms, maxResults, languageId, haveUser, Filters);
+            return info;
         }
     }
 }

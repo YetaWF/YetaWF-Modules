@@ -2,6 +2,7 @@
 
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using YetaWF.Core.DataProvider;
 using YetaWF.Core.Localize;
 using YetaWF.Core.Support;
@@ -23,9 +24,9 @@ namespace YetaWF.Modules.Search.DataProvider {
             return string.Format("{0}={1}", Info.UrlArg, YetaWFManager.HtmlAttributeEncode(string.Join(",", kwds)));
         }
 
-        internal List<SearchResult> Parse(string searchTerms, int maxResults, string languageId, bool haveUser, out bool haveMore, List<DataProviderFilterInfo> extraFilters = null) {
+        internal async Task<SearchResultsInfo> ParseAsync(string searchTerms, int maxResults, string languageId, bool haveUser, List<DataProviderFilterInfo> extraFilters = null) {
             using (SearchDataProvider searchDP = new SearchDataProvider()) {
-                haveMore = false;
+                bool haveMore = false;
 
                 extraFilters = DataProviderFilterInfo.Join(extraFilters, new DataProviderFilterInfo { Field = "Language", Operator = "==", Value = languageId });
                 if (haveUser)
@@ -34,9 +35,10 @@ namespace YetaWF.Modules.Search.DataProvider {
                     extraFilters = DataProviderFilterInfo.Join(extraFilters, new DataProviderFilterInfo { Field = "AllowAnonymous", Operator = "==", Value = true });
 
                 string s = searchTerms;
-                List<SearchData> urls = BuildNodes(searchDP, ref s, languageId, haveUser, extraFilters);
+                BuildNodesInfo urls = await BuildNodesAsync(searchDP, s, languageId, haveUser, extraFilters);
+                s = urls.Search;
 
-                List<DataProvider.SearchResult> results = (from u in urls group u by u.SearchDataUrlId into g select new SearchResult {
+                List<DataProvider.SearchResult> results = (from u in urls.Data group u by u.SearchDataUrlId into g select new SearchResult {
                     Count = g.Sum(x => x.Count),
                     PageUrl = g.Select(m => m.PageUrl).FirstOrDefault(),
                     DateCreated = g.Select(m => m.DatePageCreated).FirstOrDefault(),
@@ -47,18 +49,26 @@ namespace YetaWF.Modules.Search.DataProvider {
                 }).OrderByDescending(m => m.Count).Take(maxResults + 1).ToList();
 
                 haveMore = (results.Count >= maxResults);
-                return results;
+                return new Search.DataProvider.SearchResultDataProvider.SearchResultsInfo {
+                    Data = results,
+                    HaveMore = haveMore,
+                };
             }
         }
 
         private int parenLevel = 0;
 
+        private class BuildNodesInfo {
+            public List<SearchData> Data { get; set; }
+            public string Search { get; set; }
+        }
         // generate a list of url (ids) based on search terms
-        private List<SearchData> BuildNodes(SearchDataProvider searchDP, ref string search, string languageId, bool haveUser, List<DataProviderFilterInfo> extraFilters) {
-            if (string.IsNullOrEmpty(search))
-                return null;
+        private async Task<BuildNodesInfo> BuildNodesAsync(SearchDataProvider searchDP, string search, string languageId, bool haveUser, List<DataProviderFilterInfo> extraFilters) {
 
-            List<SearchData> list = null;
+            if (string.IsNullOrEmpty(search))
+                return new BuildNodesInfo();
+
+            BuildNodesInfo list = null;
             for ( ; ; ) {
                 search = search.Trim();
                 if (search.Length <= 0)
@@ -68,7 +78,8 @@ namespace YetaWF.Modules.Search.DataProvider {
                 if (c == '(') {
                     parenLevel++;
                     search = search.Remove(0, 1);
-                    list = BuildNodes(searchDP, ref search, languageId, haveUser, extraFilters);
+                    list = await BuildNodesAsync(searchDP, search, languageId, haveUser, extraFilters);
+                    search = list.Search;
                 } else if (c == ')') {
                     if (parenLevel <= 0)
                         throw new Error(this.__ResStr("invQueryCloseParen", "Invalid query - too many ')'"));
@@ -93,11 +104,13 @@ namespace YetaWF.Modules.Search.DataProvider {
                     }
                     if (list != null) {
                         if (string.Compare(token, GetKeyWordOr(), true) == 0) {
-                            List<SearchData> rhsList = BuildNodes(searchDP, ref search, languageId, haveUser, extraFilters);
-                            list = list.Union(rhsList, new SearchDataComparer()).ToList();
+                            BuildNodesInfo rhsList = await BuildNodesAsync(searchDP, search, languageId, haveUser, extraFilters);
+                            search = rhsList.Search;
+                            list.Data = list.Data.Union(rhsList.Data, new SearchDataComparer()).ToList();
                         } else if (string.Compare(token, GetKeyWordAnd(), true) == 0) {
-                            List<SearchData> rhsList = BuildNodes(searchDP, ref search, languageId, haveUser, extraFilters);
-                            list = list.Intersect(rhsList, new SearchDataComparer()).ToList();
+                            BuildNodesInfo rhsList = await BuildNodesAsync(searchDP, search, languageId, haveUser, extraFilters);
+                            search = rhsList.Search;
+                            list.Data = list.Data.Intersect(rhsList.Data, new SearchDataComparer()).ToList();
                         } else {
                             List<DataProviderFilterInfo> filters = DataProviderFilterInfo.Copy(extraFilters);
                             if (token.EndsWith("*")) {
@@ -105,9 +118,8 @@ namespace YetaWF.Modules.Search.DataProvider {
                                 filters = DataProviderFilterInfo.Join(filters, new DataProviderFilterInfo { Field = "SearchTerm", Operator = "StartsWith", Value = token });
                             } else
                                 filters = DataProviderFilterInfo.Join(filters, new DataProviderFilterInfo { Field = "SearchTerm", Operator = "==", Value = token });
-                            int total;
-                            List<SearchData> rhsList = searchDP.GetItemsWithUrl(0, 0, null, filters, out total);
-                            list = list.Intersect(rhsList, new SearchDataComparer()).ToList();
+                            DataProviderGetRecords<SearchData> rhsList = await searchDP.GetItemsWithUrlAsync(0, 0, null, filters);
+                            list.Data = list.Data.Intersect(rhsList.Data, new SearchDataComparer()).ToList();
                         }
                     } else {
                         List<DataProviderFilterInfo> filters = DataProviderFilterInfo.Copy(extraFilters);
@@ -116,8 +128,7 @@ namespace YetaWF.Modules.Search.DataProvider {
                             filters = DataProviderFilterInfo.Join(filters, new DataProviderFilterInfo { Field = "SearchTerm", Operator = "StartsWith", Value = token });
                         } else
                             filters = DataProviderFilterInfo.Join(filters, new DataProviderFilterInfo { Field = "SearchTerm", Operator = "==", Value = token });
-                        int total;
-                        list = searchDP.GetItemsWithUrl(0, 0, null, filters, out total);
+                        list.Data = (await searchDP.GetItemsWithUrlAsync(0, 0, null, filters)).Data;
                     }
                 }
             }

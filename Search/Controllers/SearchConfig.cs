@@ -1,5 +1,6 @@
 /* Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Search#License */
 
+using System.Threading.Tasks;
 using YetaWF.Core;
 using YetaWF.Core.Controllers;
 using YetaWF.Core.Localize;
@@ -59,10 +60,10 @@ namespace YetaWF.Modules.Search.Controllers {
         }
 
         [AllowGet]
-        public ActionResult SearchConfig() {
+        public async Task<ActionResult> SearchConfig() {
             using (SearchConfigDataProvider dataProvider = new SearchConfigDataProvider()) {
                 Model model = new Model { };
-                SearchConfigData data = dataProvider.GetItem();
+                SearchConfigData data = await dataProvider.GetItemAsync();
                 if (data == null)
                     throw new Error(this.__ResStr("notFound", "The search configuration was not found."));
                 model.SetData(data);
@@ -73,14 +74,14 @@ namespace YetaWF.Modules.Search.Controllers {
         [AllowPost]
         [ConditionalAntiForgeryToken]
         [ExcludeDemoMode]
-        public ActionResult SearchConfig_Partial(Model model) {
+        public async Task<ActionResult> SearchConfig_Partial(Model model) {
             using (SearchConfigDataProvider dataProvider = new SearchConfigDataProvider()) {
-                SearchConfigData data = dataProvider.GetItem();// get the original item
+                SearchConfigData data = await dataProvider.GetItemAsync();// get the original item
                 if (!ModelState.IsValid)
                     return PartialView(model);
                 data = model.GetData(data); // merge new data into original
                 model.SetData(data); // and all the data back into model for final display
-                dataProvider.UpdateConfig(data);
+                await dataProvider.UpdateConfigAsync(data);
                 return FormProcessed(model, this.__ResStr("okSaved", "Search configuration saved"));
             }
         }

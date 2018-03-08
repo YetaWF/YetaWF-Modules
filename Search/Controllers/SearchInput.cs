@@ -1,5 +1,6 @@
 /* Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Search#License */
 
+using System.Threading.Tasks;
 using YetaWF.Core.Controllers;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Modules.Search.DataProvider;
@@ -31,10 +32,10 @@ namespace YetaWF.Modules.Search.Controllers {
         }
 
         [AllowGet]
-        public ActionResult SearchInput(string searchTerms) {
+        public async Task<ActionResult> SearchInput(string searchTerms) {
             if (!SearchDataProvider.IsUsable)
                 return View("SearchUnavailable_Input");
-            SearchConfigData config = SearchConfigDataProvider.GetConfig();
+            SearchConfigData config = await SearchConfigDataProvider.GetConfigAsync();
             if (!Manager.EditMode && string.IsNullOrWhiteSpace(config.ResultsUrl)) // if no search result url is available, don't show the module
                 return new EmptyResult();
             Model model = new Model { SearchTerms = searchTerms };
@@ -43,10 +44,10 @@ namespace YetaWF.Modules.Search.Controllers {
 
         [AllowPost]
         [ConditionalAntiForgeryToken]
-        public ActionResult SearchInput_Partial(Model model) {
+        public async Task<ActionResult> SearchInput_Partial(Model model) {
             if (!ModelState.IsValid)
                 return PartialView(model);
-            SearchConfigData config = SearchConfigDataProvider.GetConfig();
+            SearchConfigData config = await SearchConfigDataProvider.GetConfigAsync();
             QueryHelper query = new QueryHelper();
             query["SearchTerms"] = model.SearchTerms;
             string url = query.ToUrl(config.ResultsUrl);

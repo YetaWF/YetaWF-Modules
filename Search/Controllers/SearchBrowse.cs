@@ -116,14 +116,13 @@ namespace YetaWF.Modules.Search.Controllers {
 
         [AllowPost]
         [ConditionalAntiForgeryToken]
-        public ActionResult SearchBrowse_GridData(int skip, int take, List<DataProviderSortInfo> sort, List<DataProviderFilterInfo> filters, Guid settingsModuleGuid) {
+        public async Task<ActionResult> SearchBrowse_GridData(int skip, int take, List<DataProviderSortInfo> sort, List<DataProviderFilterInfo> filters, Guid settingsModuleGuid) {
             using (SearchDataProvider searchDP = new SearchDataProvider()) {
-                int total;
-                List<SearchData> browseItems = searchDP.GetItemsWithUrl(skip, take, sort, filters, out total);
+                DataProviderGetRecords<SearchData> browseItems = await searchDP.GetItemsWithUrlAsync(skip, take, sort, filters);
                 GridHelper.SaveSettings(skip, take, sort, filters, settingsModuleGuid);
                 return GridPartialView(new DataSourceResult {
-                    Data = (from s in browseItems select new BrowseItem(Module, s)).ToList<object>(),
-                    Total = total
+                    Data = (from s in browseItems.Data select new BrowseItem(Module, s)).ToList<object>(),
+                    Total = browseItems.Total
                 });
             }
         }
@@ -131,9 +130,9 @@ namespace YetaWF.Modules.Search.Controllers {
         [AllowPost]
         [Permission("RemoveItems")]
         [ExcludeDemoMode]
-        public ActionResult Remove(int searchDataId) {
+        public async Task<ActionResult> Remove(int searchDataId) {
             using (SearchDataProvider searchDP = new SearchDataProvider()) {
-                searchDP.RemoveItem(searchDataId);
+                await searchDP.RemoveItemAsync(searchDataId);
                 return Reload(null, Reload: ReloadEnum.ModuleParts);
             }
         }
@@ -141,9 +140,9 @@ namespace YetaWF.Modules.Search.Controllers {
         [AllowPost]
         [Permission("RemoveItems")]
         [ExcludeDemoMode]
-        public ActionResult RemoveAll() {
+        public async Task<ActionResult> RemoveAll() {
             using (SearchDataProvider searchDP = new SearchDataProvider()) {
-                searchDP.RemoveItems(null);/* ALL */
+                await searchDP.RemoveItemsAsync(null);/* ALL */
                 return Reload(null, Reload: ReloadEnum.ModuleParts);
             }
         }

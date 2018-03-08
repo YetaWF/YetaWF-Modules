@@ -1,6 +1,7 @@
 /* Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Search#License */
 
 using System;
+using System.Threading.Tasks;
 using YetaWF.Core.Controllers;
 using YetaWF.Core.DataProvider;
 using YetaWF.Core.Localize;
@@ -69,11 +70,11 @@ namespace YetaWF.Modules.Search.Controllers {
         }
 
         [AllowGet]
-        public ActionResult SearchEdit(int searchDataId) {
+        public async Task<ActionResult> SearchEdit(int searchDataId) {
             if (!SearchDataProvider.IsUsable) return View("SearchUnavailable_Edit");
             using (SearchDataProvider dataProvider = new SearchDataProvider()) {
                 EditModel model = new EditModel { };
-                SearchData data = dataProvider.GetItemWithUrl(searchDataId);
+                SearchData data = await dataProvider.GetItemWithUrlAsync(searchDataId);
                 if (data == null)
                     throw new Error(this.__ResStr("notFound", "Search keyword with id {0} not found."), searchDataId);
                 model.SetData(data);
@@ -84,9 +85,9 @@ namespace YetaWF.Modules.Search.Controllers {
         [AllowPost]
         [ConditionalAntiForgeryToken]
         [ExcludeDemoMode]
-        public ActionResult SearchEdit_Partial(EditModel model) {
+        public async Task<ActionResult> SearchEdit_Partial(EditModel model) {
             using (SearchDataProvider dataProvider = new SearchDataProvider()) {
-                SearchData data = dataProvider.GetItemWithUrl(model.SearchDataId);
+                SearchData data = await dataProvider.GetItemWithUrlAsync(model.SearchDataId);
                 if (data == null)
                     ModelState.AddModelError("SearchDataId", this.__ResStr("alreadyDeleted", "The search keyword with id {0} has been removed and can no longer be updated.", model.SearchDataId));
 
@@ -96,7 +97,7 @@ namespace YetaWF.Modules.Search.Controllers {
                 data = model.GetData(data); // merge new data into original
                 model.SetData(data); // and all the data back into model for final display
 
-                switch (dataProvider.UpdateItem(data)) {
+                switch (await dataProvider.UpdateItemAsync(data)) {
                     default:
                     case UpdateStatusEnum.RecordDeleted:
                         ModelState.AddModelError("Name", this.__ResStr("alreadyDeleted", "The search keyword with id {0} has been removed and can no longer be updated.", model.SearchDataId));

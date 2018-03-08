@@ -1,6 +1,7 @@
 /* Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Search#License */
 
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using YetaWF.Core.Controllers;
 using YetaWF.Core.Models;
 using YetaWF.Core.Models.Attributes;
@@ -30,20 +31,19 @@ namespace YetaWF.Modules.Search.Controllers {
         }
 
         [AllowGet]
-        public ActionResult SearchResults(string searchTerms) {
+        public async Task<ActionResult> SearchResults(string searchTerms) {
             if (string.IsNullOrWhiteSpace(searchTerms)) return new EmptyResult();
 
             if (!SearchDataProvider.IsUsable)
                 return View("SearchUnavailable_Results");
 
-            SearchConfigData config = SearchConfigDataProvider.GetConfig();
+            SearchConfigData config = await SearchConfigDataProvider.GetConfigAsync();
             using (SearchResultDataProvider searchResDP = new SearchResultDataProvider()) {
-                bool haveMore;
-                List<SearchResult> list = searchResDP.GetSearchResults(searchTerms, config.MaxResults, MultiString.ActiveLanguage, Manager.HaveUser, out haveMore);
+                SearchResultDataProvider.SearchResultsInfo list = await searchResDP.GetSearchResultsAsync(searchTerms, config.MaxResults, MultiString.ActiveLanguage, Manager.HaveUser);
                 Model model = new Model() {
                     SearchTerms = searchTerms,
-                    SearchResults = list,
-                    MoreResults = haveMore,
+                    SearchResults = list.Data,
+                    MoreResults = list.HaveMore,
                     MaxResults = config.MaxResults,
                     ShowUrl = config.ShowUrl,
                     ShowSummary = config.ShowSummary,

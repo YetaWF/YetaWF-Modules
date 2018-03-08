@@ -48,6 +48,7 @@ namespace YetaWF.Modules.Search.Scheduler {
         public Search() { }
 
         public async Task SearchSiteAsync(bool slow) {
+            SearchConfigData searchConfig = await SearchConfigDataProvider.GetConfigAsync();
             DateTime searchStarted = DateTime.UtcNow; // once we have all new keywords, delete all keywords that were added before this date/time
             using (SearchDataProvider searchDP = new SearchDataProvider()) {
 
@@ -62,7 +63,7 @@ namespace YetaWF.Modules.Search.Scheduler {
                     ISearchDynamicUrls iSearch = Activator.CreateInstance(type) as ISearchDynamicUrls;
                     if (iSearch != null) {
                         try {
-                            SearchWords searchWords = new SearchWords(searchDP, searchStarted);
+                            SearchWords searchWords = new SearchWords(searchConfig, searchDP, searchStarted);
                             iSearch.KeywordsForDynamicUrls(searchWords);
                             if (slow)
                                 Thread.Sleep(500);// delay a bit (slow can only be used by scheduler items)
@@ -80,7 +81,7 @@ namespace YetaWF.Modules.Search.Scheduler {
                         if (mod != null && types.Contains(mod.GetType()) && mod.WantSearch) {
                             ISearchDynamicUrls iSearch = mod as ISearchDynamicUrls;
                             if (iSearch != null) {
-                                SearchWords searchWords = new SearchWords(searchDP, searchStarted);
+                                SearchWords searchWords = new SearchWords(searchConfig, searchDP, searchStarted);
                                 iSearch.KeywordsForDynamicUrls(searchWords);
                                 if (slow)
                                     Thread.Sleep(500);// delay a bit (slow can only be used by scheduler items)
@@ -96,7 +97,7 @@ namespace YetaWF.Modules.Search.Scheduler {
                 foreach (Guid pageGuid in pages) {
                     PageDefinition page = await PageDefinition.LoadAsync(pageGuid);
                     if (page != null) {
-                        SearchWords searchWords = new SearchWords(searchDP, searchStarted);
+                        SearchWords searchWords = new SearchWords(searchConfig, searchDP, searchStarted);
                         await SearchPageAsync(searchWords, page);
                         if (slow)
                             Thread.Sleep(500);// delay a bit (slow can only be used by scheduler items)
@@ -104,13 +105,13 @@ namespace YetaWF.Modules.Search.Scheduler {
                 }
 
                 // Remove old keywords
-                searchDP.RemoveOldItems(searchStarted);
+                await searchDP.RemoveOldItemsAsync(searchStarted);
             }
         }
 
         private async Task SearchPageAsync(SearchWords searchWords, PageDefinition page) {
             if (!searchWords.WantPage(page)) return;
-            if (searchWords.SetUrl(page.Url, page.PageSecurity, page.Title, page.Description, page.Created, page.Updated, page.IsAuthorized_View_Anonymous(), page.IsAuthorized_View_AnyUser())) {
+            if (await searchWords.SetUrlAsync(page.Url, page.PageSecurity, page.Title, page.Description, page.Created, page.Updated, page.IsAuthorized_View_Anonymous(), page.IsAuthorized_View_AnyUser())) {
                 searchWords.AddKeywords(page.Keywords);
                 foreach (var m in page.ModuleDefinitions) {
                     Guid modGuid = m.ModuleGuid;
@@ -123,7 +124,7 @@ namespace YetaWF.Modules.Search.Scheduler {
                     if (mod != null)
                         SearchModule(searchWords, mod);
                 }
-                searchWords.Save();
+                await searchWords.SaveAsync();
             }
         }
         private void SearchModule(SearchWords searchWords, ModuleDefinition mod) {
@@ -165,11 +166,10 @@ namespace YetaWF.Modules.Search.Scheduler {
             DateTime? CurrentDateUpdated;
             List<SearchData> CurrentSearchData;
 
-            public SearchWords(SearchDataProvider searchDP, DateTime searchStarted) {
+            public SearchWords(SearchConfigData searchConfig, SearchDataProvider searchDP, DateTime searchStarted) {
                 CurrentSearchDP = searchDP;
                 CurrentSearchStarted = searchStarted;
 
-                SearchConfigData searchConfig = SearchConfigDataProvider.GetConfig();
                 SmallestMixedToken = searchConfig.SmallestMixedToken;
                 SmallestUpperCaseToken = searchConfig.SmallestUpperCaseToken;
             }
@@ -192,9 +192,9 @@ namespace YetaWF.Modules.Search.Scheduler {
                 }
                 return true;
             }
-            public bool SetUrl(string url, PageDefinition.PageSecurityType pageSecurity, MultiString title, MultiString summary, DateTime dateCreated, DateTime? dateUpdated, bool allowAnonymous, bool allowUser) {
+            public async Task<bool> SetUrlAsync(string url, PageDefinition.PageSecurityType pageSecurity, MultiString title, MultiString summary, DateTime dateCreated, DateTime? dateUpdated, bool allowAnonymous, bool allowUser) {
                 YetaWFManager manager = YetaWFManager.Manager;
-                if (CurrentUrl != null) throw new InternalError("Already have an active Url - {0} {1} called", nameof(SetUrl), url);
+                if (CurrentUrl != null) throw new InternalError("Already have an active Url - {0} {1} called", nameof(SetUrlAsync), url);
                 if (!url.StartsWith("/"))
                     throw new InternalError("Urls for search terms must be local and start with \"/\"");
                 CurrentPageSecurity = pageSecurity;
@@ -209,7 +209,7 @@ namespace YetaWF.Modules.Search.Scheduler {
                     Logging.AddLog("No search keywords for Url {0} - neither Anonymous nor User role has access to the page", url);
                     return false;
                 }
-                if (!CurrentSearchDP.PageUpdated(url, CurrentDateCreated, CurrentDateUpdated)) {
+                if (!await CurrentSearchDP.PageUpdated(url, CurrentDateCreated, CurrentDateUpdated)) {
                     Logging.AddLog("Page {0} not evaluated as it has not changed", url);
                     return false;
                 }
@@ -236,9 +236,9 @@ namespace YetaWF.Modules.Search.Scheduler {
                     }
                 }
             }
-            public void Save() {
+            public async Task SaveAsync() {
                 VerifyPage();
-                CurrentSearchDP.AddItems(CurrentSearchData, CurrentUrl, CurrentPageSecurity, CurrentTitle, CurrentSummary, CurrentDateCreated, CurrentDateUpdated, CurrentSearchStarted);
+                await CurrentSearchDP.AddItemsAsync(CurrentSearchData, CurrentUrl, CurrentPageSecurity, CurrentTitle, CurrentSummary, CurrentDateCreated, CurrentDateUpdated, CurrentSearchStarted);
                 Reset(CurrentSearchDP, CurrentSearchStarted);
             }
             internal bool SetModule(bool allowAnonymous, bool allowUser) {
