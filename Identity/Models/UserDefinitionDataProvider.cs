@@ -232,7 +232,7 @@ namespace YetaWF.Modules.Identity.DataProvider {
                     return false;
             }
             // remove any data stored for this user from packages (if it fails, whatevz)
-            User.RemoveDependentPackages(user.UserId); //$$$asyncify
+            await User.RemoveDependentPackagesAsync(user.UserId);
             return true;
         }
         public async Task<DataProviderGetRecords<UserDefinition>> GetItemsAsync(int skip, int take, List<DataProviderSortInfo> sort, List<DataProviderFilterInfo> filters) {

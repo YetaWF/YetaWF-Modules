@@ -2,7 +2,7 @@
 
 using System.Collections.Generic;
 using YetaWF.Core.DataProvider;
-using YetaWF.DataProvider.SQL;
+using YetaWF.DataProvider.SQL2;
 
 namespace YetaWF.Modules.UserProfile.DataProvider.SQL {
 

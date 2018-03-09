@@ -16,11 +16,10 @@ namespace YetaWF.Modules.Visitors.Scheduler {
 
         public const string EventAddVisitorGeoLocation = "YetaWF.Visitors: Add Geolocation to Visitor Data";
 
-        public Task RunItemAsync(SchedulerItemBase evnt) {
+        public async Task RunItemAsync(SchedulerItemBase evnt) {
             if (evnt.EventName != EventAddVisitorGeoLocation)
                 throw new Error(this.__ResStr("eventNameErr", "Unknown scheduler event {0}."), evnt.EventName);
-            AddGeoLocation(evnt.Log);
-            return Task.CompletedTask;
+            await AddGeoLocationAsync(evnt.Log);
         }
 
         public SchedulerItemBase[] GetItems() {
@@ -41,7 +40,7 @@ namespace YetaWF.Modules.Visitors.Scheduler {
 
         public AddVisitorGeoLocation() { }
 
-        public void AddGeoLocation(List<string> errorList) {
+        public async Task AddGeoLocationAsync(List<string> errorList) {
             using (VisitorEntryDataProvider visitorEntryDP = new VisitorEntryDataProvider()) {
 
                 DateTime startTime = DateTime.UtcNow;
@@ -49,11 +48,10 @@ namespace YetaWF.Modules.Visitors.Scheduler {
                 List<DataProviderFilterInfo> filters = null;
                 filters = DataProviderFilterInfo.Join(filters, new DataProviderFilterInfo { Field = "ContinentCode", Operator = "==", Value = VisitorEntry.Unknown });
                 filters = DataProviderFilterInfo.Join(filters, new DataProviderFilterInfo { Field = "AccessDateTime", Operator = "<", Value = startTime });
-                for ( ; ; ) {
-                    int total;
-                    List<VisitorEntry> list = visitorEntryDP.GetItems(0, 20, null, filters, out total);
-                    if (list.Count == 0) break;
-                    foreach (VisitorEntry ve in list) {
+                for (;;) {
+                    DataProviderGetRecords<VisitorEntry> list = await visitorEntryDP.GetItemsAsync(0, 20, null, filters);
+                    if (list.Data.Count == 0) break;
+                    foreach (VisitorEntry ve in list.Data) {
                         GeoLocation geoLocation = new GeoLocation();
                         GeoLocation.UserInfo userInfo = geoLocation.GetUserInfo(ve.IPAddress);
                         if (!string.IsNullOrWhiteSpace(userInfo.ContinentCode)) {
@@ -67,14 +65,14 @@ namespace YetaWF.Modules.Visitors.Scheduler {
                             ve.CountryCode = "";
                             ve.RegionCode = "";
                         }
-                        UpdateStatusEnum status = visitorEntryDP.UpdateItem(ve);
+                        UpdateStatusEnum status = await visitorEntryDP.UpdateItemAsync(ve);
                         if (status == UpdateStatusEnum.OK || status == UpdateStatusEnum.RecordDeleted) {
                             // all is well
                         } else {
-                            throw new InternalError($"Failed to update {nameof(VisitorEntry)} in {nameof(AddGeoLocation)}");
+                            throw new InternalError($"Failed to update {nameof(VisitorEntry)} in {nameof(AddGeoLocationAsync)}");
                         }
                     }
-                    overall += list.Count;
+                    overall += list.Data.Count;
                 }
                 Logging.AddLog($"Updated {overall} visitor entries");
             }

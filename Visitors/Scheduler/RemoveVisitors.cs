@@ -15,11 +15,10 @@ namespace YetaWF.Modules.Visitors.Scheduler {
 
        public const string EventRemoveOldVisitorData = "YetaWF.Visitors: Remove Old Visitor Data";
 
-        public Task RunItemAsync(SchedulerItemBase evnt) {
+        public async Task RunItemAsync(SchedulerItemBase evnt) {
             if (evnt.EventName != EventRemoveOldVisitorData)
                 throw new Error(this.__ResStr("eventNameErr", "Unknown scheduler event {0}."), evnt.EventName);
-            Remove(evnt.Log);
-            return Task.CompletedTask;
+            await RemoveAsync(evnt.Log);
         }
 
         public SchedulerItemBase[] GetItems() {
@@ -40,12 +39,11 @@ namespace YetaWF.Modules.Visitors.Scheduler {
 
         public RemoveOldVisitorData() { }
 
-        public void Remove(List<string> errorList)
-        {
+        public async Task RemoveAsync(List<string> errorList) {
             DateTime oldest = DateTime.UtcNow.AddMonths(-1);
             using (VisitorEntryDataProvider visitorEntryDP = new VisitorEntryDataProvider()) {
-                List<DataProviderFilterInfo> filters = DataProviderFilterInfo.Join(null, new DataProviderFilterInfo { Field="AccessDateTime", Operator="<", Value = oldest});
-                int removed = visitorEntryDP.RemoveItems(filters);
+                List<DataProviderFilterInfo> filters = DataProviderFilterInfo.Join(null, new DataProviderFilterInfo { Field = "AccessDateTime", Operator = "<", Value = oldest });
+                int removed = await visitorEntryDP.RemoveItemsAsync(filters);
                 errorList.Add(string.Format("{0} records removed from visitor data", removed));
             }
         }

@@ -1,5 +1,6 @@
 /* Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Visitors#License */
 
+using System.Threading.Tasks;
 using YetaWF.Core.Addons;
 using YetaWF.Core.Controllers;
 using YetaWF.Core.Localize;
@@ -34,11 +35,11 @@ namespace YetaWF.Modules.Visitors.Controllers {
         }
 
         [AllowGet]
-        public ActionResult TinyVisitors() {
+        public async Task<ActionResult> TinyVisitors() {
             using (VisitorEntryDataProvider visitorDP = new VisitorEntryDataProvider()) {
                 if (visitorDP.Usable) {
                     string addonUrl = VersionManager.GetAddOnPackageUrl(AreaRegistration.CurrentPackage.Domain, AreaRegistration.CurrentPackage.Product);
-                    VisitorEntryDataProvider.Info info = visitorDP.GetStats();
+                    VisitorEntryDataProvider.Info info = await visitorDP.GetStatsAsync();
                     DisplayModel model = new DisplayModel { };
                     model.TodaysAnonymous = info.TodaysAnonymous;
                     model.TodaysUsers = info.TodaysUsers;

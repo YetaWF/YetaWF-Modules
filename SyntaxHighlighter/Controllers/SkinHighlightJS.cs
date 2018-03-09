@@ -1,5 +1,6 @@
 /* Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/SyntaxHighlighter#License */
 
+using System.Threading.Tasks;
 using YetaWF.Core.Controllers;
 using YetaWF.Core.Packages;
 using YetaWF.Modules.SyntaxHighlighter.DataProvider;
@@ -17,8 +18,8 @@ namespace YetaWF.Modules.SyntaxHighlighter.Controllers {
         public SkinHighlightJSModuleController() { }
 
         [AllowGet]
-        public ActionResult SkinHighlightJS() {
-            ConfigData config = ConfigDataProvider.GetConfig();
+        public async Task<ActionResult> SkinHighlightJS() {
+            ConfigData config = await ConfigDataProvider.GetConfigAsync();
 
             // find theme specific skin
             Package package = AreaRegistration.CurrentPackage;

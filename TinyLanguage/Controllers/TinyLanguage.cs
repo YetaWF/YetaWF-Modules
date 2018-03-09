@@ -3,6 +3,7 @@
 using YetaWF.Core.Controllers;
 using YetaWF.Core.Language;
 using YetaWF.Core.Models.Attributes;
+using System.Threading.Tasks;
 #if MVC6
 using Microsoft.AspNetCore.Mvc;
 #else
@@ -33,10 +34,10 @@ namespace YetaWF.Modules.TinyLanguage.Controllers {
 
         [AllowPost]
         [ConditionalAntiForgeryToken]
-        public ActionResult TinyLanguage_Partial(EditModel model) {
+        public async Task<ActionResult> TinyLanguage_Partial(EditModel model) {
             if (!ModelState.IsValid)
                 return PartialView(model);
-            Manager.SetUserLanguage(model.LanguageId);
+            await Manager.SetUserLanguageAsync(model.LanguageId);
             return Redirect(Manager.ReturnToUrl, ForceRedirect: true);
         }
     }

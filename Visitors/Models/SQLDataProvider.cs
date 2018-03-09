@@ -2,8 +2,9 @@
 
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using YetaWF.Core.DataProvider;
-using YetaWF.DataProvider.SQL;
+using YetaWF.DataProvider.SQL2;
 
 namespace YetaWF.Modules.Visitors.DataProvider.SQL {
 
@@ -16,18 +17,18 @@ namespace YetaWF.Modules.Visitors.DataProvider.SQL {
 
             public VisitorEntryDataProvider(Dictionary<string, object> options) : base(options) { }
 
-            public DataProvider.VisitorEntryDataProvider.Info GetStats() {
+            public async Task<DataProvider.VisitorEntryDataProvider.Info> GetStatsAsync() {
                 DataProvider.VisitorEntryDataProvider.Info info = new DataProvider.VisitorEntryDataProvider.Info();
                 DateTime now = DateTime.Now.Date.ToUniversalTime();
                 string startDate = string.Format("{0}", now);
                 string endDate = string.Format("{0}", now.AddDays(1));
-                info.TodaysAnonymous = Direct_ScalarInt(GetTableName(),
+                info.TodaysAnonymous = await Direct_ScalarIntAsync(GetTableName(),
                     "SELECT Count(DISTINCT SessionId) FROM {TableName} Where " +
                         string.Format("AccessDateTime >= '{0}' AND AccessDateTime < '{1}'", startDate, endDate) +
                         " AND [UserId] = 0" +
                         " AND {__Site}"
                 );
-                info.TodaysUsers = Direct_ScalarInt(GetTableName(),
+                info.TodaysUsers = await Direct_ScalarIntAsync(GetTableName(),
                     "SELECT Count(DISTINCT UserId) FROM {TableName} Where " +
                         string.Format("AccessDateTime >= '{0}' AND AccessDateTime < '{1}'", startDate, endDate) +
                         " AND [UserId] <> 0" +
@@ -35,13 +36,13 @@ namespace YetaWF.Modules.Visitors.DataProvider.SQL {
                 );
                 startDate = string.Format("{0}", now.AddDays(-1));
                 endDate = string.Format("{0}", now);
-                info.YesterdaysAnonymous = Direct_ScalarInt(GetTableName(),
+                info.YesterdaysAnonymous = await Direct_ScalarIntAsync(GetTableName(),
                     "SELECT Count(DISTINCT SessionId) FROM {TableName} Where " +
                         string.Format("AccessDateTime >= '{0}' AND AccessDateTime < '{1}'", startDate, endDate) +
                         " AND [UserId] = 0" +
                         " AND {__Site}"
                 );
-                info.YesterdaysUsers = Direct_ScalarInt(GetTableName(),
+                info.YesterdaysUsers = await Direct_ScalarIntAsync(GetTableName(),
                     "SELECT Count(DISTINCT UserId) FROM {TableName} Where " +
                         string.Format("AccessDateTime >= '{0}' AND AccessDateTime < '{1}'", startDate, endDate) +
                         " AND [UserId] <> 0" +

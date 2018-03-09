@@ -1,5 +1,6 @@
 /* Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Visitors#License */
 
+using System.Threading.Tasks;
 using YetaWF.Core.Controllers;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Modules.Visitors.DataProvider;
@@ -32,13 +33,13 @@ namespace YetaWF.Modules.Visitors.Controllers {
         }
 
         [AllowGet]
-        public ActionResult VisitorSummary() {
+        public async Task<ActionResult> VisitorSummary() {
             using (VisitorEntryDataProvider visitorDP = new VisitorEntryDataProvider()) {
                 if (visitorDP.Usable) {
 
                     Manager.AddOnManager.AddAddOnNamed(AreaRegistration.CurrentPackage.Domain, AreaRegistration.CurrentPackage.Product, Module.ModuleName); // add module specific items
 
-                    VisitorEntryDataProvider.Info info = visitorDP.GetStats();
+                    VisitorEntryDataProvider.Info info = await visitorDP.GetStatsAsync();
                     DisplayModel model = new DisplayModel { };
                     model.TodaysAnonymous = info.TodaysAnonymous;
                     model.TodaysUsers = info.TodaysUsers;

@@ -1,5 +1,6 @@
 /* Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/UserProfile#License */
 
+using System.Threading.Tasks;
 using YetaWF.Core.Controllers;
 using YetaWF.Core.Localize;
 using YetaWF.Core.Models;
@@ -162,11 +163,11 @@ namespace YetaWF.Modules.UserProfile.Controllers {
         }
 
         [AllowGet]
-        public ActionResult ProfileEdit() {
+        public async Task<ActionResult> ProfileEditAsync() {
             Manager.NeedUser();
             using (UserInfoDataProvider userInfoDP = new UserInfoDataProvider()) {
                 EditModel model = new EditModel { };
-                UserInfo userInfo = userInfoDP.GetItem(Manager.UserId);
+                UserInfo userInfo = await userInfoDP.GetItemAsync(Manager.UserId);
                 if (userInfo == null)
                     userInfo = new UserInfo { UserId = Manager.UserId };
                 model.SetData(userInfo);
@@ -178,12 +179,12 @@ namespace YetaWF.Modules.UserProfile.Controllers {
         [AllowPost]
         [ExcludeDemoMode]
         [ConditionalAntiForgeryToken]
-        public ActionResult ProfileEdit_Partial(EditModel model) {
+        public async Task<ActionResult> ProfileEdit_Partial(EditModel model) {
             using (UserInfoDataProvider userInfoDP = new UserInfoDataProvider()) {
                 Manager.NeedUser();
 
                 bool newUser = false;
-                UserInfo userInfo = userInfoDP.GetItem(model.UserId);
+                UserInfo userInfo = await userInfoDP.GetItemAsync(model.UserId);
                 if (userInfo == null) {
                     newUser = true;
                     userInfo = new UserInfo();
@@ -204,9 +205,9 @@ namespace YetaWF.Modules.UserProfile.Controllers {
                 model.SetData(userInfo); // and all the data back into model for final display
 
                 if (newUser)
-                    userInfoDP.AddItem(userInfo);
+                    await userInfoDP.AddItemAsync(userInfo);
                 else
-                    userInfoDP.UpdateItem(userInfo);
+                    await userInfoDP.UpdateItemAsync(userInfo);
                 return FormProcessed(model, this.__ResStr("okSaved", "Profile saved"));
             }
         }

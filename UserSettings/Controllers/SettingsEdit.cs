@@ -1,5 +1,6 @@
 /* Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/UserSettings#License */
 
+using System.Threading.Tasks;
 using YetaWF.Core.Controllers;
 using YetaWF.Core.Language;
 using YetaWF.Core.Localize;
@@ -91,11 +92,11 @@ namespace YetaWF.Modules.UserSettings.Controllers {
         }
 
         [AllowGet]
-        public ActionResult SettingsEdit() {
+        public async Task<ActionResult> SettingsEdit() {
             using (UserDataProvider dataProvider = new UserDataProvider()) {
                 EditModel model = new EditModel { };
                 model.ShowDevInfo = Module.IsAuthorized("Development Info");
-                UserData data = dataProvider.GetItem();
+                UserData data = await dataProvider.GetItemAsync();
                 model.SetData(data);
                 return View(model);
             }
@@ -103,14 +104,14 @@ namespace YetaWF.Modules.UserSettings.Controllers {
 
         [AllowPost]
         [ConditionalAntiForgeryToken]
-        public ActionResult SettingsEdit_Partial(EditModel model) {
+        public async Task<ActionResult> SettingsEdit_Partial(EditModel model) {
             using (UserDataProvider dataProvider = new UserDataProvider()) {
-                UserData data = dataProvider.GetItem();
+                UserData data = await dataProvider.GetItemAsync();
                 if (!ModelState.IsValid)
                     return PartialView(model);
                 data = model.GetData(data); // merge new data into original
                 model.SetData(data); // and all the data back into model for final display
-                dataProvider.UpdateItem(data);
+                await dataProvider.UpdateItemAsync(data);
                 return FormProcessed(model, this.__ResStr("okSaved", "Your settings have been successfully saved"));
             }
         }

@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using YetaWF.Core;
 using YetaWF.Core.DataProvider;
 using YetaWF.Core.DataProvider.Attributes;
@@ -66,7 +67,7 @@ namespace YetaWF.Modules.UserProfile.DataProvider {
         public string Email { get; set; }
     }
 
-    public class UserInfoDataProvider : DataProviderImpl, IInstallableModel, IRemoveUser {
+    public class UserInfoDataProvider : DataProviderImpl, IInstallableModelAsync, IRemoveUser {
 
         // IMPLEMENTATION
         // IMPLEMENTATION
@@ -75,9 +76,9 @@ namespace YetaWF.Modules.UserProfile.DataProvider {
         public UserInfoDataProvider() : base(YetaWFManager.Manager.CurrentSite.Identity) { SetDataProvider(CreateDataProvider()); }
         public UserInfoDataProvider(int siteIdentity) : base(siteIdentity) { SetDataProvider(CreateDataProvider()); }
 
-        private IDataProvider<int, UserInfo> DataProvider { get { return GetDataProvider(); } }
+        private IDataProviderAsync<int, UserInfo> DataProvider { get { return GetDataProvider(); } }
 
-        private IDataProvider<int, UserInfo> CreateDataProvider() {
+        private IDataProviderAsync<int, UserInfo> CreateDataProvider() {
             Package package = YetaWF.Modules.UserProfile.Controllers.AreaRegistration.CurrentPackage;
             return MakeDataProvider(package, package.AreaName, SiteIdentity: SiteIdentity, Cacheable: true);
         }
@@ -86,50 +87,42 @@ namespace YetaWF.Modules.UserProfile.DataProvider {
         // API
         // API
 
-        public void DoAction(int key, Action action) {
-            StringLocks.DoAction(LockKey(key), () => {
-                action();
-            });
-        }
-        private string LockKey(int key) {
-            return string.Format("{0}_{1}", this.Dataset, key);
-        }
-        public UserInfo GetItem(int key) {
-            UserInfo userInfo = DataProvider.Get(key);
+        public async Task<UserInfo> GetItemAsync(int key) {
+            UserInfo userInfo = await DataProvider.GetAsync(key);
             if (userInfo == null) return null;
             if (string.IsNullOrWhiteSpace(userInfo.Country)) userInfo.Country = Globals.DefaultCountry;
             return userInfo;
         }
-        public bool AddItem(UserInfo userInfo) {
+        public async Task<bool> AddItemAsync(UserInfo userInfo) {
             userInfo.Created = DateTime.UtcNow;
             if (string.IsNullOrWhiteSpace(userInfo.Country)) userInfo.Country = Globals.DefaultCountry;
-            return DataProvider.Add(userInfo);
+            return await DataProvider.AddAsync(userInfo);
         }
-        public UpdateStatusEnum UpdateItem(UserInfo userInfo) {
+        public async Task<UpdateStatusEnum> UpdateItemAsync(UserInfo userInfo) {
             userInfo.Updated = DateTime.UtcNow;
             if (string.IsNullOrWhiteSpace(userInfo.Country)) userInfo.Country = Globals.DefaultCountry;
-            return DataProvider.Update(userInfo.UserId, userInfo.UserId, userInfo);
+            return await DataProvider.UpdateAsync(userInfo.UserId, userInfo.UserId, userInfo);
         }
-        public bool RemoveItem(int key) {
-            return DataProvider.Remove(key);
+        public async Task<bool> RemoveItemAsync(int key) {
+            return await DataProvider.RemoveAsync(key);
         }
-        public List<UserInfo> GetItems(int skip, int take, List<DataProviderSortInfo> sort, List<DataProviderFilterInfo> filters, out int total) {
-            List<UserInfo> list = DataProvider.GetRecords(skip, take, sort, filters, out total);
-            foreach (UserInfo l in list) {
+        public async Task<DataProviderGetRecords<UserInfo>> GetItemsAsync(int skip, int take, List<DataProviderSortInfo> sort, List<DataProviderFilterInfo> filters) {
+            DataProviderGetRecords<UserInfo> list = await DataProvider.GetRecordsAsync(skip, take, sort, filters);
+            foreach (UserInfo l in list.Data) {
                 if (string.IsNullOrWhiteSpace(l.Country)) l.Country = Globals.DefaultCountry;
             }
             return list;
         }
-        public int RemoveItems(List<DataProviderFilterInfo> filters) {
-            return DataProvider.RemoveRecords(filters);
+        public async Task<int> RemoveItemsAsync(List<DataProviderFilterInfo> filters) {
+            return await DataProvider.RemoveRecordsAsync(filters);
         }
 
         // IREMOVEUSER
         // IREMOVEUSER
         // IREMOVEUSER
 
-        public void Remove(int userId) {
-            RemoveItem(userId);
+        public async Task RemoveAsync(int userId) {
+            await RemoveItemAsync(userId);
         }
     }
 }

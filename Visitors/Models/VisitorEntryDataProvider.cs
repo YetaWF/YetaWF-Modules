@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using YetaWF.Core;
 using YetaWF.Core.Controllers;
 using YetaWF.Core.DataProvider;
@@ -64,10 +65,10 @@ namespace YetaWF.Modules.Visitors.DataProvider {
     }
 
     public interface VisitorEntryDataProviderIOMode {
-        VisitorEntryDataProvider.Info GetStats();
+        Task<VisitorEntryDataProvider.Info> GetStatsAsync();
     }
 
-    public class VisitorEntryDataProvider : DataProviderImpl, IInstallableModel, IInitializeApplicationStartup {
+    public class VisitorEntryDataProvider : DataProviderImpl, IInstallableModelAsync, IInitializeApplicationStartup {
 
         public void InitializeApplicationStartup() {
             ErrorHandling.RegisterCallback(AddVisitEntryError);
@@ -83,10 +84,10 @@ namespace YetaWF.Modules.Visitors.DataProvider {
         public VisitorEntryDataProvider() : base(YetaWFManager.Manager.CurrentSite.Identity) { SetDataProvider(CreateDataProvider()); }
         public VisitorEntryDataProvider(int siteIdentity) : base(siteIdentity) { SetDataProvider(CreateDataProvider()); }
 
-        private IDataProvider<int, VisitorEntry> DataProvider { get { return GetDataProvider(); } }
+        private IDataProviderAsync<int, VisitorEntry> DataProvider { get { return GetDataProvider(); } }
         private VisitorEntryDataProviderIOMode DataProviderIOMode { get { return GetDataProvider(); } }
 
-        private IDataProvider<int, VisitorEntry> CreateDataProvider() {
+        private IDataProviderAsync<int, VisitorEntry> CreateDataProvider() {
             Package package = YetaWF.Modules.Visitors.Controllers.AreaRegistration.CurrentPackage;
             return MakeDataProvider(package, package.AreaName, SiteIdentity: SiteIdentity, Cacheable: true);
         }
@@ -95,46 +96,36 @@ namespace YetaWF.Modules.Visitors.DataProvider {
         // API
         // API
 
-        public void DoAction(int key, Action action) {
-            StringLocks.DoAction(LockKey(key), () => {
-                action();
-            });
-        }
-        private string LockKey(int key) {
-            return string.Format("{0}_{1}", Dataset, key);
-        }
-        public VisitorEntry GetItem(int key) {
+        public async Task<VisitorEntry> GetItemAsync(int key) {
             if (!Usable) return null;
-            return DataProvider.Get(key);
+            return await DataProvider.GetAsync(key);
         }
-        public bool AddItem(VisitorEntry data) {
+        public async Task<bool> AddItemAsync(VisitorEntry data) {
             if (!Usable) return false;
             data.Referrer = data.Referrer.Truncate(Globals.MaxUrl);
             data.Url = data.Url.Truncate(Globals.MaxUrl);
-            return DataProvider.Add(data);
+            return await DataProvider.AddAsync(data);
         }
-        public UpdateStatusEnum UpdateItem(VisitorEntry data) {
+        public async Task<UpdateStatusEnum> UpdateItemAsync(VisitorEntry data) {
             if (!Usable) return UpdateStatusEnum.RecordDeleted;
-            return UpdateItem(data.Key, data);
+            return await UpdateItemAsync(data.Key, data);
         }
-        public UpdateStatusEnum UpdateItem(int originalKey, VisitorEntry data) {
+        public async Task<UpdateStatusEnum> UpdateItemAsync(int originalKey, VisitorEntry data) {
             if (!Usable) return UpdateStatusEnum.RecordDeleted;
-            return DataProvider.Update(originalKey, data.Key, data);
+            return await DataProvider.UpdateAsync(originalKey, data.Key, data);
         }
-        public bool RemoveItem(int key) {
+        public async Task<bool> RemoveItemAsync(int key) {
             if (!Usable) return false;
-            return DataProvider.Remove(key);
+            return await DataProvider.RemoveAsync(key);
         }
-        public List<VisitorEntry> GetItems(int skip, int take, List<DataProviderSortInfo> sort, List<DataProviderFilterInfo> filters, out int total) {
-            if (!Usable) {
-                total = 0;
-                return new List<VisitorEntry>();
-            }
-            return DataProvider.GetRecords(skip, take, sort, filters, out total);
+        public async Task<DataProviderGetRecords<VisitorEntry>> GetItemsAsync(int skip, int take, List<DataProviderSortInfo> sort, List<DataProviderFilterInfo> filters) {
+            if (!Usable)
+                return new DataProviderGetRecords<VisitorEntry>();
+            return await DataProvider.GetRecordsAsync(skip, take, sort, filters);
         }
-        public int RemoveItems(List<DataProviderFilterInfo> filters) {
+        public async Task<int> RemoveItemsAsync(List<DataProviderFilterInfo> filters) {
             if (!Usable) return 0;
-            return DataProvider.RemoveRecords(filters);
+            return await DataProvider.RemoveRecordsAsync(filters);
         }
         public class Info {
             public int TodaysAnonymous { get; set; }
@@ -142,9 +133,9 @@ namespace YetaWF.Modules.Visitors.DataProvider {
             public int YesterdaysAnonymous { get; set; }
             public int YesterdaysUsers { get; set; }
         }
-        public Info GetStats() {
+        public async Task<Info> GetStatsAsync() {
             if (!Usable) return new VisitorEntryDataProvider.Info();
-            return DataProviderIOMode.GetStats();
+            return await DataProviderIOMode.GetStatsAsync();
         }
 
         // LOGGING CALLBACKS
@@ -205,7 +196,7 @@ namespace YetaWF.Modules.Visitors.DataProvider {
                             City = VisitorEntry.Unknown,
                             Error = error.Truncate(VisitorEntry.MaxError),
                         };
-                        visitorDP.AddItem(visitorEntry);
+                        //$$$$DISABLED FOR NOW     visitorDP.AddItemAsync(visitorEntry).Wait(); //$$$$$
                     }
                 } catch (Exception) {
                 } finally {
@@ -219,36 +210,35 @@ namespace YetaWF.Modules.Visitors.DataProvider {
         // IINSTALLABLEMODEL
         // IINSTALLABLEMODEL
 
-        public new bool IsInstalled() {
+        public new async Task<bool> IsInstalledAsync() {
             if (DataProvider == null) return false;
-            return DataProvider.IsInstalled();
+            return await DataProvider.IsInstalledAsync();
         }
-        public new bool InstallModel(List<string> errorList) {
+        public new async Task<bool> InstallModelAsync(List<string> errorList) {
             if (!Usable) return true;
-            return DataProvider.InstallModel(errorList);
+            return await DataProvider.InstallModelAsync(errorList);
         }
-        public new bool UninstallModel(List<string> errorList) {
+        public new async Task<bool> UninstallModelAsync(List<string> errorList) {
             if (!Usable) return true;
-            return DataProvider.UninstallModel(errorList);
+            return await DataProvider.UninstallModelAsync(errorList);
         }
-        public new void AddSiteData() {
+        public new async Task AddSiteDataAsync() {
             if (!Usable) return;
-            DataProvider.AddSiteData();
+            await DataProvider.AddSiteDataAsync();
         }
-        public new void RemoveSiteData() {
+        public new async Task RemoveSiteDataAsync() {
             if (!Usable) return;
-            DataProvider.RemoveSiteData();
+            await DataProvider.RemoveSiteDataAsync();
         }
-        public new bool ExportChunk(int chunk, SerializableList<SerializableFile> fileList, out object obj) {
+        public new Task<DataProviderExportChunk> ExportChunkAsync(int chunk, SerializableList<SerializableFile> fileList) {
             // we don't export visitor data
-            obj = null;
-            return false;
+            return Task.FromResult(new DataProviderExportChunk());
             //if (!Usable) return false;
             //return DataProvider.ExportChunk(chunk, fileList, out obj);
         }
-        public new void ImportChunk(int chunk, SerializableList<SerializableFile> fileList, object obj) {
+        public new Task ImportChunk(int chunk, SerializableList<SerializableFile> fileList, object obj) {
             // we don't import visitor data
-            return;
+            return Task.CompletedTask;
             //if (!Usable) return;
             //DataProvider.ImportChunk(chunk, fileList, obj);
         }

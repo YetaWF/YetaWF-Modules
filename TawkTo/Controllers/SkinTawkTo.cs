@@ -1,8 +1,9 @@
 /* Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/TawkTo#License */
 
+using System.Text;
+using System.Threading.Tasks;
 using YetaWF.Core.Controllers;
 using YetaWF.Modules.TawkTo.DataProvider;
-using System.Text;
 #if MVC6
 using Microsoft.AspNetCore.Mvc;
 #else
@@ -20,8 +21,8 @@ namespace YetaWF.Modules.TawkTo.Controllers {
         }
 
         [AllowGet]
-        public ActionResult SkinTawkTo() {
-            ConfigData config = ConfigDataProvider.GetConfig();
+        public async Task<ActionResult> SkinTawkTo() {
+            ConfigData config = await ConfigDataProvider.GetConfigAsync();
             if (Manager.EditMode || !config.IsConfigured) return new EmptyResult();
             DisplayModel model = new DisplayModel();
 

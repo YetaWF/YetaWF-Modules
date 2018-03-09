@@ -1,6 +1,7 @@
 /* Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Visitors#License */
 
 using System;
+using System.Threading.Tasks;
 using YetaWF.Core.Controllers;
 using YetaWF.Core.Localize;
 using YetaWF.Core.Models;
@@ -58,9 +59,9 @@ namespace YetaWF.Modules.Visitors.Controllers {
         }
 
         [AllowGet]
-        public ActionResult VisitorDisplay(int key) {
+        public async Task<ActionResult> VisitorDisplay(int key) {
             using (VisitorEntryDataProvider visitorDP = new VisitorEntryDataProvider()) {
-                VisitorEntry data = visitorDP.GetItem(key);
+                VisitorEntry data = await visitorDP.GetItemAsync(key);
                 if (data == null)
                     throw new Error(this.__ResStr("notFound", "Visitor Entry {0} not found."), key);
                 DisplayModel model = new DisplayModel();

@@ -1,5 +1,6 @@
 /* Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/SyntaxHighlighter#License */
 
+using System.Threading.Tasks;
 using YetaWF.Core.Controllers;
 using YetaWF.Core.Localize;
 using YetaWF.Core.Models;
@@ -66,10 +67,10 @@ namespace YetaWF.Modules.SyntaxHighlighter.Controllers {
         }
 
         [AllowGet]
-        public ActionResult SyntaxHighlighterConfig() {
+        public async Task<ActionResult> SyntaxHighlighterConfig() {
             using (ConfigDataProvider dataProvider = new ConfigDataProvider()) {
                 Model model = new Model { };
-                ConfigData data = dataProvider.GetItem();
+                ConfigData data = await dataProvider.GetItemAsync();
                 if (data == null)
                     throw new Error(this.__ResStr("notFound", "The syntax highlighter settings could not be found"));
                 model.SetData(data);
@@ -80,14 +81,14 @@ namespace YetaWF.Modules.SyntaxHighlighter.Controllers {
         [AllowPost]
         [ConditionalAntiForgeryToken]
         [ExcludeDemoMode]
-        public ActionResult SyntaxHighlighterConfig_Partial(Model model) {
+        public async Task<ActionResult> SyntaxHighlighterConfig_Partial(Model model) {
             using (ConfigDataProvider dataProvider = new ConfigDataProvider()) {
-                ConfigData data = dataProvider.GetItem();// get the original item
+                ConfigData data = await dataProvider.GetItemAsync();// get the original item
                 if (!ModelState.IsValid)
                     return PartialView(model);
                 data = model.GetData(data); // merge new data into original
                 model.SetData(data); // and all the data back into model for final display
-                dataProvider.UpdateConfig(data);
+                await dataProvider.UpdateConfigAsync(data);
                 return FormProcessed(model, this.__ResStr("okSaved", "Syntax highlighter settings saved"));
             }
         }

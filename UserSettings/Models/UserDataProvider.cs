@@ -3,6 +3,7 @@
 using System;
 using System.Collections.Generic;
 using System.Reflection;
+using System.Threading.Tasks;
 using YetaWF.Core.DataProvider;
 using YetaWF.Core.DataProvider.Attributes;
 using YetaWF.Core.Identity;
@@ -77,14 +78,20 @@ namespace YetaWF.Modules.UserSettings.DataProvider {
         // IUSERSETTINGS
         // IUSERSETTINGS
 
-        public object GetProperty(string name, System.Type type) {
-            // get the user settings (for anonymous users create one)
+        public async Task<object> ResolveUserAsync() {
             object userInfo = Manager.UserSettingsObject;
             if (userInfo == null) {
                 using (UserDataProvider userDP = new UserDataProvider()) {
-                    Manager.UserSettingsObject = userInfo = userDP.GetItem();
+                    userInfo = await userDP.GetItemAsync();
                 }
             }
+            return userInfo;
+        }
+
+        public object GetProperty(string name, Type type) {
+            // get the user settings (for anonymous users create one)
+            object userInfo = Manager.UserSettingsObject;
+            if (userInfo == null) return null;
             // get the requested property
             PropertyInfo pi = ObjectSupport.TryGetProperty(userInfo.GetType(), name);
             if (pi == null) throw new InternalError("User setting {0} doesn't exist", name);
@@ -92,21 +99,16 @@ namespace YetaWF.Modules.UserSettings.DataProvider {
             return pi.GetValue(userInfo);
         }
 
-        public void SetProperty(string name, System.Type type, object value) {
+        public async Task SetPropertyAsync(string name, System.Type type, object value) {
             // set the user settings (for anonymous users create one)
-            UserData userInfo = (UserData)Manager.UserSettingsObject;
-            if (userInfo == null) {
-                using (UserDataProvider userDP = new UserDataProvider()) {
-                    Manager.UserSettingsObject = userInfo = userDP.GetItem();
-                }
-            }
+            UserData userInfo = (UserData)await ResolveUserAsync();
             // get the requested property
             PropertyInfo pi = ObjectSupport.GetProperty(userInfo.GetType(), name);
             if (pi == null) throw new InternalError("User setting {0} doesn't exist", name);
             if (pi.PropertyType != type) throw new InternalError("User setting {0} is not of the requested type {1}", name, type.FullName);
             pi.SetValue(userInfo, value);
             using (UserDataProvider userDP = new UserDataProvider()) {
-                userDP.UpdateItem(userInfo);
+                await userDP.UpdateItemAsync(userInfo);
             }
         }
     }
@@ -122,9 +124,9 @@ namespace YetaWF.Modules.UserSettings.DataProvider {
         public UserDataProvider() : base(YetaWFManager.Manager.CurrentSite.Identity) { SetDataProvider(CreateDataProvider()); }
         public UserDataProvider(int siteIdentity) : base(siteIdentity) { SetDataProvider(CreateDataProvider()); }
 
-        private IDataProvider<int, UserData> DataProvider { get { return GetDataProvider(); } }
+        private IDataProviderAsync<int, UserData> DataProvider { get { return GetDataProvider(); } }
 
-        private IDataProvider<int, UserData> CreateDataProvider() {
+        private IDataProviderAsync<int, UserData> CreateDataProvider() {
             Package package = YetaWF.Modules.UserSettings.Controllers.AreaRegistration.CurrentPackage;
             return MakeDataProvider(package, package.AreaName, SiteIdentity: SiteIdentity, Cacheable: true);
         }
@@ -133,22 +135,22 @@ namespace YetaWF.Modules.UserSettings.DataProvider {
         // API
         // API
 
-        public UserData GetItem() {
+        public async Task<UserData> GetItemAsync() {
             UserData userInfo = null;
             if (Manager.HaveUser)
-                 userInfo = DataProvider.Get(Manager.UserId);
+                userInfo = await DataProvider.GetAsync(Manager.UserId);
             else
                 userInfo = Manager.SessionSettings.SiteSettings.GetValue<UserData>(KEY);
             if (userInfo == null)
                 userInfo = new UserData();
             return userInfo;
         }
-        public void UpdateItem(UserData data) {
+        public async Task UpdateItemAsync(UserData data) {
             if (Manager.HaveUser) {
                 data.Key = Manager.UserId;
-                UpdateStatusEnum status = DataProvider.Update(data.Key, data.Key, data);
+                UpdateStatusEnum status = await DataProvider.UpdateAsync(data.Key, data.Key, data);
                 if (status == UpdateStatusEnum.RecordDeleted) {
-                    if (!DataProvider.Add(data))
+                    if (!await DataProvider.AddAsync(data))
                         throw new InternalError("Unexpected failure saving user settings", status);
                 } else if (status != UpdateStatusEnum.OK)
                     throw new InternalError("Unexpected status {0} updating user settings", status);
@@ -157,30 +159,29 @@ namespace YetaWF.Modules.UserSettings.DataProvider {
                 Manager.SessionSettings.SiteSettings.Save();
             }
         }
-        public bool RemoveItem() {
+        public async Task<bool> RemoveItemAsync() {
             if (Manager.SessionSettings.SiteSettings.ContainsKey(KEY))
                 Manager.SessionSettings.SiteSettings[KEY].Remove();
-            DataProvider.Remove(Manager.UserId);
+            await DataProvider.RemoveAsync(Manager.UserId);
             return true;
         }
 
-        public List<UserData> GetItems(List<DataProviderFilterInfo> filter) {
-            int total;
-            return DataProvider.GetRecords(0, 0, null, filter, out total);
+        public async Task<DataProviderGetRecords<UserData>> GetItemsAsync(List<DataProviderFilterInfo> filter) {
+            return await DataProvider.GetRecordsAsync(0, 0, null, filter);
         }
-        public List<UserData> GetItems(int skip, int take, List<DataProviderSortInfo> sort, List<DataProviderFilterInfo> filters, out int total) {
-            return DataProvider.GetRecords(skip, take, sort, filters, out total);
+        public async Task<DataProviderGetRecords<UserData>> GetItemsAsync(int skip, int take, List<DataProviderSortInfo> sort, List<DataProviderFilterInfo> filters) {
+            return await DataProvider.GetRecordsAsync(skip, take, sort, filters);
         }
-        public int RemoveItems(List<DataProviderFilterInfo> filters) {
-            return DataProvider.RemoveRecords(filters);
+        public async Task<int> RemoveItemsAsync(List<DataProviderFilterInfo> filters) {
+            return await DataProvider.RemoveRecordsAsync(filters);
         }
 
         // IREMOVEUSER
         // IREMOVEUSER
         // IREMOVEUSER
 
-        public void Remove(int userId) {
-            DataProvider.Remove(userId);
+        public async Task RemoveAsync(int userId) {
+            await DataProvider.RemoveAsync(userId);
         }
     }
 }

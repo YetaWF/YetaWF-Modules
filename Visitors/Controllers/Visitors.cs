@@ -3,6 +3,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using YetaWF.Core.Controllers;
 using YetaWF.Core.DataProvider;
 using YetaWF.Core.Menus;
@@ -113,14 +114,13 @@ namespace YetaWF.Modules.Visitors.Controllers {
 
         [AllowPost]
         [ConditionalAntiForgeryToken]
-        public ActionResult Visitors_GridData(int skip, int take, List<DataProviderSortInfo> sort, List<DataProviderFilterInfo> filters, Guid settingsModuleGuid) {
+        public async Task<ActionResult> Visitors_GridData(int skip, int take, List<DataProviderSortInfo> sort, List<DataProviderFilterInfo> filters, Guid settingsModuleGuid) {
             using (VisitorEntryDataProvider dataProvider = new VisitorEntryDataProvider()) {
-                int total;
-                List<VisitorEntry> browseItems = dataProvider.GetItems(skip, take, sort, filters, out total);
+                DataProviderGetRecords<VisitorEntry> browseItems = await dataProvider.GetItemsAsync(skip, take, sort, filters);
                 GridHelper.SaveSettings(skip, take, sort, filters, settingsModuleGuid);
                 return GridPartialView(new DataSourceResult {
-                    Data = (from s in browseItems select new BrowseItem(Module, s)).ToList<object>(),
-                    Total = total
+                    Data = (from s in browseItems.Data select new BrowseItem(Module, s)).ToList<object>(),
+                    Total = browseItems.Total
                 });
             }
         }
@@ -128,10 +128,10 @@ namespace YetaWF.Modules.Visitors.Controllers {
         [AllowPost]
         [Permission("UpdateGeoLocation")]
         [ExcludeDemoMode]
-        public ActionResult UpdateGeoLocation() {
+        public async Task<ActionResult> UpdateGeoLocation() {
             AddVisitorGeoLocation geo = new AddVisitorGeoLocation();
             List<string> errorList = new List<string>();
-            geo.AddGeoLocation(errorList);
+            await geo.AddGeoLocationAsync(errorList);
             return Reload(null, Reload: ReloadEnum.ModuleParts);
         }
     }

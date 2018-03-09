@@ -165,7 +165,7 @@ namespace YetaWF.Modules.Identity.DataProvider {
                 Manager.UserEmail = user.Email;
                 Manager.UserId = user.UserId;
                 Manager.UserObject = user;
-                Manager.UserSettingsObject = null;
+                await UserSettings.UserSettingsAccess.ResolveUserAsync();
                 Manager.UserRoles = (from l in user.RolesList select l.RoleId).ToList();
 
                 int superuserRole = Resource.ResourceAccess.GetSuperuserRoleId();
