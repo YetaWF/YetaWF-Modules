@@ -47,7 +47,7 @@ namespace YetaWF.Modules.Identity.Views.Shared {
 
             public GridAllowedUser(int userId) {
                 UserId = UserNameFromId = userId;
-                UserName = YetaWFManager.Manager.Syncify<string>(() => Resource.ResourceAccess.GetUserNameAsync(userId));//$$
+                UserName = YetaWFManager.Syncify<string>(() => Resource.ResourceAccess.GetUserNameAsync(userId));//$$
             }
         }
 #if MVC6

@@ -170,7 +170,7 @@ namespace YetaWF.Modules.Identity.DataProvider {
         // This method is cached and deliberately does not use async/await to simplify usage
         public List<RoleDefinition> GetAllUserRoles(bool force = false) {
 
-            bool isInstalled = Manager.Syncify<bool>(() => DataProvider.IsInstalledAsync());
+            bool isInstalled = YetaWFManager.Syncify<bool>(() => DataProvider.IsInstalledAsync());
             if (!isInstalled)
                 return new List<RoleDefinition>() { MakeSuperuserRole() };
 
@@ -187,7 +187,7 @@ namespace YetaWF.Modules.Identity.DataProvider {
                         return roles;
                 }
                 // Load the roles
-                DataProviderGetRecords<RoleDefinition> list = Manager.Syncify<DataProviderGetRecords<RoleDefinition>>(() => GetItemsAsync());
+                DataProviderGetRecords<RoleDefinition> list = YetaWFManager.Syncify<DataProviderGetRecords<RoleDefinition>>(() => GetItemsAsync());
                 roles = list.Data;
 
                 PermanentManager.AddObject<List<RoleDefinition>>(roles);

@@ -46,7 +46,7 @@ namespace YetaWF.Modules.Messenger.Controllers {
 
                 try {
 
-                    int toUserId = manager.Syncify<int>(() => Resource.ResourceAccess.GetUserIdAsync(toUser));//$$$$$
+                    int toUserId = YetaWFManager.Syncify<int>(() => Resource.ResourceAccess.GetUserIdAsync(toUser));//$$$$$
                     if (toUserId == 0) throw new Error(this.__ResStr("noUser", "User {0} doesn't exist", toUser));
 
                     Message msg = new Message {
@@ -105,9 +105,9 @@ namespace YetaWF.Modules.Messenger.Controllers {
                     msg.Seen = true;
                     msgDP.UpdateItem(msg);
                 }
-                string fromUser = manager.Syncify<string>(() => Resource.ResourceAccess.GetUserNameAsync(msg.FromUser));//$$syncify
+                string fromUser = YetaWFManager.Syncify<string>(() => Resource.ResourceAccess.GetUserNameAsync(msg.FromUser));//$$syncify
                 if (string.IsNullOrWhiteSpace(fromUser)) throw new Error(this.__ResStr("noFromUser", "User {0} doesn't exist", msg.FromUser));
-                string toUser = manager.Syncify<string>(() => Resource.ResourceAccess.GetUserNameAsync(msg.ToUser));//$$syncify
+                string toUser = YetaWFManager.Syncify<string>(() => Resource.ResourceAccess.GetUserNameAsync(msg.ToUser));//$$syncify
                 if (string.IsNullOrWhiteSpace(toUser)) throw new Error(this.__ResStr("noToUser", "User {0} doesn't exist", msg.ToUser));
 
                 Dispatch(Clients.User(fromUser), "messageSeen", msg.Key, toUser);
@@ -117,7 +117,7 @@ namespace YetaWF.Modules.Messenger.Controllers {
             YetaWFManager manager = Signalr.SetupEnvironment();
             if (manager.UserId == 0) throw new InternalError("No current user");
 
-            int fromUserId = manager.Syncify(() => Resource.ResourceAccess.GetUserIdAsync(fromUser));
+            int fromUserId = YetaWFManager.Syncify(() => Resource.ResourceAccess.GetUserIdAsync(fromUser));//$$$
             if (fromUserId == 0) throw new Error(this.__ResStr("noFromUser", "User {0} doesn't exist", fromUser));
 
             using (MessagingDataProvider msgDP = new MessagingDataProvider()) {
@@ -149,10 +149,10 @@ namespace YetaWF.Modules.Messenger.Controllers {
 
         // Connection Management
 
-        public override Task OnConnected() {
+        public override async Task OnConnected() {
             try {
                 string host = Context.Headers["Host"];
-                SiteDefinition site = SiteDefinition.LoadSiteDefinition(host);
+                SiteDefinition site = await SiteDefinition.LoadSiteDefinitionAsync(host);
                 if (site == null) throw new InternalError("No site definition for {0}", host);
 
                 string name = null;
@@ -179,9 +179,9 @@ namespace YetaWF.Modules.Messenger.Controllers {
                 }
             } catch (Exception) { }
 
-            return base.OnConnected();
+            await base.OnConnected();
         }
-        public override Task OnDisconnected(bool stopCalled) {
+        public override async Task OnDisconnected(bool stopCalled) {
 
             //$$ notify users in scope of user disconnect
             string name = null;
@@ -196,14 +196,14 @@ namespace YetaWF.Modules.Messenger.Controllers {
 
             try {
                 string host = Context.Headers["Host"];
-                SiteDefinition site = SiteDefinition.LoadSiteDefinition(host);
+                SiteDefinition site = await SiteDefinition.LoadSiteDefinitionAsync(host);
                 if (site == null) throw new InternalError("No site definition for {0}", host);
                 using (ConnectionDataProvider connDP = new ConnectionDataProvider(site.Identity)) {
                     connDP.RemoveItem(Context.ConnectionId);
                 }
             } catch (Exception) { }
 
-            return base.OnDisconnected(stopCalled);
+            await base.OnDisconnected(stopCalled);
         }
     }
 }

@@ -1,6 +1,7 @@
 ﻿/* Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/SiteProperties#License */
 
 using System;
+using System.Threading.Tasks;
 using YetaWF.Core.IO;
 using YetaWF.Core.Localize;
 using YetaWF.Core.Models.Attributes;
@@ -64,10 +65,9 @@ namespace YetaWF.Modules.SiteProperties.Modules {
                 return Manager.CurrentSite;
             }
         }
-        public void InitComplete() {
-            bool restartRequired;
-            Manager.CurrentSite.Save(out restartRequired);
-            if (restartRequired) throw new InternalError("Adding a new site implementation error - restart required");
+        public async Task InitCompleteAsync() {
+            SiteDefinition.SaveResult res = await Manager.CurrentSite.SaveAsync();
+            if (res.RestartRequired) throw new InternalError("Adding a new site implementation error - restart required");
         }
     }
 }

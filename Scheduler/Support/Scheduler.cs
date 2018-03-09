@@ -116,56 +116,54 @@ namespace YetaWF.Modules.Scheduler.Support {
             // get a manager for the scheduler
             YetaWFManager.MakeInitialThreadInstance(null);
 
-            using (new YetaWFManager.NeedSync(YetaWFManager.Manager)) { // there is no point in running the scheduler async
-                YetaWFManager.Manager.Syncify(async () => {
+            YetaWFManager.Syncify(async () => { // there is no point in running the scheduler async
 
-                    SchedulerLog = new SchedulerLogging();
-                    SchedulerLog.Init();
-                    SchedulerLog.LimitTo(YetaWFManager.Manager);
-                    Logging.RegisterLogging(SchedulerLog);
+                SchedulerLog = new SchedulerLogging();
+                SchedulerLog.Init();
+                SchedulerLog.LimitTo(YetaWFManager.Manager);
+                Logging.RegisterLogging(SchedulerLog);
 
-                    Logging.AddTraceLog("Scheduler task started");
+                Logging.AddTraceLog("Scheduler task started");
 
-                    // Because initialization is called during application startup, we'll wait before we
-                    // check for any scheduler items that may be due (just so app start isn't all too slow).
+                // Because initialization is called during application startup, we'll wait before we
+                // check for any scheduler items that may be due (just so app start isn't all too slow).
+                try {
+                    Thread.Sleep(defaultStartupTimeSpan);
+                } catch (ThreadInterruptedException) {
+                    // thread was interrupted because there is work to be done
+                }
+
+                // run all scheduled items that are supposed to be run at application startup
+                try {
+                    await RunStartupItemsAsync();
+                } catch (Exception exc) {
+                    Logging.AddErrorLog("An error occurred running startup items", exc);
+                }
+
+                for (;;) {
+                    TimeSpan delayTime = new TimeSpan(1, 0, 0);// 1 minute
+                    if (SchedulerSupport.Enabled) {
+                        try {
+                            delayTime = await RunItemsAsync();
+                        } catch (Exception exc) {
+                            delayTime = defaultTimeSpan;
+                            Logging.AddErrorLog("An error occurred in the scheduling loop.", exc);
+                        }
+                        if (delayTime < new TimeSpan(0, 0, 10))// at least 10 seconds
+                            delayTime = new TimeSpan(0, 0, 10);
+                    }
                     try {
-                        Thread.Sleep(defaultStartupTimeSpan);
+                        Thread.Sleep(delayTime);
                     } catch (ThreadInterruptedException) {
                         // thread was interrupted because there is work to be done
-                    }
+                    } catch (ThreadAbortException) { }
+                }
 
-                    // run all scheduled items that are supposed to be run at application startup
-                    try {
-                        await RunStartupItemsAsync();
-                    } catch (Exception exc) {
-                        Logging.AddErrorLog("An error occurred running startup items", exc);
-                    }
+                // This never really ends so we don't need to unregister logging
+                //log.Shutdown();
+                //Logging.UnregisterLogging(log);
 
-                    for (;;) {
-                        TimeSpan delayTime = new TimeSpan(1, 0, 0);// 1 minute
-                        if (SchedulerSupport.Enabled) {
-                            try {
-                                delayTime = await RunItemsAsync();
-                            } catch (Exception exc) {
-                                delayTime = defaultTimeSpan;
-                                Logging.AddErrorLog("An error occurred in the scheduling loop.", exc);
-                            }
-                            if (delayTime < new TimeSpan(0, 0, 10))// at least 10 seconds
-                                delayTime = new TimeSpan(0, 0, 10);
-                        }
-                        try {
-                            Thread.Sleep(delayTime);
-                        } catch (ThreadInterruptedException) {
-                            // thread was interrupted because there is work to be done
-                        } catch (ThreadAbortException) { }
-                    }
-
-                    // This never really ends so we don't need to unregister logging
-                    //log.Shutdown();
-                    //Logging.UnregisterLogging(log);
-
-                });
-            }
+            });
         }
 
         private async Task RunStartupItemsAsync() {
@@ -327,8 +325,8 @@ namespace YetaWF.Modules.Scheduler.Support {
 
                 try {
                     if (item.SiteSpecific) {
-                        SiteDefinition.SitesInfo info = SiteDefinition.GetSites(0, 0, null, null);
-                        foreach (SiteDefinition site in info.Sites) {
+                        DataProviderGetRecords<SiteDefinition> info = await SiteDefinition.GetSitesAsync(0, 0, null, null);
+                        foreach (SiteDefinition site in info.Data) {
                             YetaWFManager.MakeThreadInstance(site);// set up a manager for the site
                             SchedulerLog.LimitTo(YetaWFManager.Manager);
                             SchedulerLog.SetCurrent(logId, site.Identity, item.Name);

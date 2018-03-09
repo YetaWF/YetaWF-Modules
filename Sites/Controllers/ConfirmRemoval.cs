@@ -1,5 +1,6 @@
 /* Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Sites#License */
 
+using System.Threading.Tasks;
 using YetaWF.Core.Controllers;
 using YetaWF.Core.Localize;
 using YetaWF.Core.Models.Attributes;
@@ -38,14 +39,14 @@ namespace YetaWF.Modules.Sites.Controllers {
         [AllowPost]
         [ConditionalAntiForgeryToken]
         [ExcludeDemoMode]
-        public ActionResult ConfirmRemoval_Partial(EditModel model) {
+        public async Task<ActionResult> ConfirmRemoval_Partial(EditModel model) {
             if (!ModelState.IsValid)
                 return PartialView(model);
             string siteName = Manager.CurrentSite.SiteDomain;
-            SiteDefinition site = SiteDefinition.LoadSiteDefinition(null);//load the default site
+            SiteDefinition site = await SiteDefinition.LoadSiteDefinitionAsync(null);//load the default site
             string nextPage = Manager.CurrentSite.MakeUrl(RealDomain: site.SiteDomain);
 
-            Manager.CurrentSite.Remove();
+            await Manager.CurrentSite.RemoveAsync();
             return FormProcessed(null, this.__ResStr("okRemoved", "Site \"{0}\" has been removed(+nl)(+nl)The site is now restarting", siteName),
                 NextPage: nextPage);
         }

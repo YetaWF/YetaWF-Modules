@@ -67,7 +67,7 @@ namespace YetaWF.Modules.Packages.DataProvider {
             Logging.AddLog("Site initialization starting");
 
             //ClearAll();
-            InstallPackages();
+            await InstallPackagesAsync();
             if (qs["From"] == "Data") {
                 BuildSiteUsingData(false);
                 PermanentManager.ClearAll();// clear any cached objects
@@ -159,7 +159,7 @@ namespace YetaWF.Modules.Packages.DataProvider {
             Manager.RestartSite(Manager.CurrentSite.MakeUrl(ForceDomain: Manager.CurrentSite.SiteDomain));
         }
 
-        private async void InstallPackages() {
+        private async Task InstallPackagesAsync() {
 
             Logging.AddLog("Installing packages");
 

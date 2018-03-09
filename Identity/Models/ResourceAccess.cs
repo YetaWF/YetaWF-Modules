@@ -46,7 +46,7 @@ namespace YetaWF.Modules.Identity.DataProvider {
         private bool? backDoor = null;
 
         public bool IsResourceAuthorized(string resourceName) {//$$$eliminate
-            return Manager.Syncify<bool>(() => IsResourceAuthorizedAsync(resourceName));
+            return YetaWFManager.Syncify<bool>(() => IsResourceAuthorizedAsync(resourceName));
         }
 
         public async Task<bool> IsResourceAuthorizedAsync(string resourceName) {

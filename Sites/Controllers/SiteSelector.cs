@@ -2,7 +2,9 @@
 
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using YetaWF.Core.Controllers;
+using YetaWF.Core.DataProvider;
 using YetaWF.Core.Localize;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Site;
@@ -28,9 +30,9 @@ namespace YetaWF.Modules.Sites.Controllers {
 
             public List<SelectionItem<string>> SiteDomain_List { get; set; }
 
-            public void UpdateData() {
-                SiteDefinition.SitesInfo info = SiteDefinition.GetSites(0, 0, null, null);
-                SiteDomain_List = (from s in info.Sites orderby s.SiteDomain select new SelectionItem<string>() {
+            public async Task UpdateDataAsync() {
+                DataProviderGetRecords<SiteDefinition> info = await SiteDefinition.GetSitesAsync(0, 0, null, null);
+                SiteDomain_List = (from s in info.Data orderby s.SiteDomain select new SelectionItem<string>() {
                     Text = s.SiteDomain,
                     Value = s.SiteDomain,
                     Tooltip = this.__ResStr("switchSite", "Switch to site \"{0}\"", s.SiteDomain),
@@ -40,21 +42,21 @@ namespace YetaWF.Modules.Sites.Controllers {
         }
 
         [AllowGet]
-        public ActionResult SiteSelector(string siteDomain) {
+        public async Task<ActionResult> SiteSelector(string siteDomain) {
 #if !DEBUG
             if (Manager.Deployed && !Manager.HasSuperUserRole) return new EmptyResult();
 #endif
             if (Manager.RenderStaticPage) return new EmptyResult();
 
             EditModel model = new EditModel { SiteDomain = Manager.CurrentSite.SiteDomain };
-            model.UpdateData();
+            await model.UpdateDataAsync();
             return View(model);
         }
 
         [AllowPost]
         [ConditionalAntiForgeryToken]
-        public ActionResult SiteSelector_Partial(EditModel model) {
-            model.UpdateData();
+        public async Task<ActionResult> SiteSelector_Partial(EditModel model) {
+            await model.UpdateDataAsync();
             if (!ModelState.IsValid)
                 return PartialView(model);
 

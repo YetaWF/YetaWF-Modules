@@ -26,7 +26,7 @@ namespace YetaWF.Modules.Pages.DataProvider.SQL {
             // This is cached so we keep it sync for simplicity
             public DesignedPagesDictionaryByUrl GetDesignedPages() {
                 // get the names of all designed pages
-                return YetaWFManager.Manager.Syncify<DesignedPagesDictionaryByUrl>(async () => {
+                return YetaWFManager.Syncify<DesignedPagesDictionaryByUrl>(async () => {
                     using (SQLSimpleObject<Guid, DesignedPage> dp = new SQLSimpleObject<Guid, DesignedPage>(Options)) {
                         DataProviderGetRecords<DesignedPage> pages = await dp.GetRecordsAsync(0, 0, null, null);
                         DesignedPagesDictionaryByUrl byUrl = new DesignedPagesDictionaryByUrl();

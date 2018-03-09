@@ -187,8 +187,8 @@ namespace YetaWF.Modules.Identity.DataProvider {
             if (Package.CompareVersion(lastSeenVersion, AreaRegistration.CurrentPackage.Version) < 0 &&
                     Package.CompareVersion(lastSeenVersion, "1.1.1") < 0) {
 
-                SiteDefinition.SitesInfo info = SiteDefinition.GetSites(0, 0, null, null);
-                foreach (SiteDefinition site in info.Sites) {
+                DataProviderGetRecords<SiteDefinition> info = await SiteDefinition.GetSitesAsync(0, 0, null, null);
+                foreach (SiteDefinition site in info.Data) {
                     using (UserLoginInfoDataProvider userLoginInfoDP = new UserLoginInfoDataProvider(site.Identity)) {
                         const int chunk = 100;
                         int skip = 0;

@@ -51,7 +51,7 @@ namespace YetaWF.Modules.Identity.Modules {
 
         // Add a user from a site template
         public void AddUser(string userName) {
-            YetaWFManager.Manager.Syncify(async () => { // rarely used so sync is OK
+            YetaWFManager.Syncify(async () => { // rarely used so sync is OK
                 using (UserDefinitionDataProvider dataProvider = new UserDefinitionDataProvider()) {
                     UserDefinition user = await dataProvider.GetItemAsync(userName);
                     if (user != null) {

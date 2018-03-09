@@ -92,10 +92,10 @@ namespace YetaWF.Modules.Sites.Controllers {
             ModuleDefinition siteEditModule = await ModuleDefinition.LoadAsync(new Guid("522296A0-B03B-49b7-B849-AB4149466E0D"));
             ConfirmRemovalModule confirmModule = new ConfirmRemovalModule();
 
-            SiteDefinition.SitesInfo info = SiteDefinition.GetSites(skip, take, sort, filters);
+            DataProviderGetRecords<SiteDefinition> info = await SiteDefinition.GetSitesAsync(skip, take, sort, filters);
             GridHelper.SaveSettings(skip, take, sort, filters, settingsModuleGuid);
             return GridPartialView(new DataSourceResult {
-                Data = (from s in info.Sites select new BrowseItem(Module, siteEditModule, confirmModule, s)).ToList<object>(),
+                Data = (from s in info.Data select new BrowseItem(Module, siteEditModule, confirmModule, s)).ToList<object>(),
                 Total = info.Total
             });
         }

@@ -50,7 +50,7 @@ namespace YetaWF.Modules.Sites.Controllers {
             if (!ModelState.IsValid)
                 return PartialView(model);
             SiteDefinition newSite = model.GetData();
-            newSite.AddNew();
+            newSite.AddNewAsync();
             string newUrl = newSite.MakeUrl("/$initnew?From=Data", ForceDomain: newSite.SiteDomain); // This builds the new site (supported by YetaWF.Packages as a builtin command)
             return FormProcessed(model, this.__ResStr("okSaved", "New site \"{0}\" created - Click OK to populate the new site with the current site template.(+nl)(+nl)IMPORTANT: This site is not accessible by its Url until the domain \"{0}\" is defined in IIS and in the hosts file.", newSite.SiteDomain),
                 NextPage: newUrl);

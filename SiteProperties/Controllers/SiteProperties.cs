@@ -1,5 +1,6 @@
 ﻿/* Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/SiteProperties#License */
 
+using System.Threading.Tasks;
 using YetaWF.Core.Controllers;
 using YetaWF.Core.Localize;
 using YetaWF.Core.Models;
@@ -25,12 +26,12 @@ namespace YetaWF.Modules.SiteProperties.Controllers {
         }
 
         [AllowGet]
-        public ActionResult SiteProperties(string domain) {
+        public async Task<ActionResult> SiteProperties(string domain) {
             SiteDefinition site;
             if (domain == null)
                 site = Manager.CurrentSite;
             else
-                site = SiteDefinition.LoadSiteDefinition(domain);
+                site = await SiteDefinition.LoadSiteDefinitionAsync(domain);
             if (site == null)
                 throw new Error(this.__ResStr("errNoSite", "Site \"{0}\" not found", domain));
             SitePropertiesModel model = new SitePropertiesModel {
@@ -43,18 +44,17 @@ namespace YetaWF.Modules.SiteProperties.Controllers {
         [AllowPost]
         [ConditionalAntiForgeryToken]
         [ExcludeDemoMode]
-        public ActionResult SiteProperties_Partial(SitePropertiesModel model) {
+        public async Task<ActionResult> SiteProperties_Partial(SitePropertiesModel model) {
             SiteDefinition site;
             if (model.SiteHost == null)
                 site = Manager.CurrentSite;
             else
-                site = SiteDefinition.LoadSiteDefinition(model.SiteHost);
+                site = await SiteDefinition.LoadSiteDefinitionAsync(model.SiteHost);
             if (!ModelState.IsValid)
                 return PartialView(model);
             ObjectSupport.CopyDataFromOriginal(site, model.Site);
-            bool restartRequired;
-            model.Site.Save(out restartRequired);
-            if (restartRequired) {
+            SiteDefinition.SaveResult res = await model.Site.SaveAsync();
+            if (res.RestartRequired) {
                 Manager.RestartSite();
                 return FormProcessed(model, this.__ResStr("okSavedRestart", "Site settings updated - Site is now restarting"),
                     NextPage: Manager.CurrentSite.HomePageUrl, ForceRedirect: true);

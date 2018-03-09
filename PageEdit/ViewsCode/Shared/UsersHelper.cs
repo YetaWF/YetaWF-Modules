@@ -62,12 +62,12 @@ namespace YetaWF.Modules.PageEdit.Views.Shared {
             public GridAllowedUser(PageDefinition.AllowedUser allowedUser) {
                 ObjectSupport.CopyData(allowedUser, this);
                 UserId = DisplayUserId = allowedUser.UserId;
-                UserName = Manager.Syncify<string>(() => Resource.ResourceAccess.GetUserNameAsync(allowedUser.UserId));//$$$ what to do
+                UserName = YetaWFManager.Syncify<string>(() => Resource.ResourceAccess.GetUserNameAsync(allowedUser.UserId));//$$$ what to do
             }
             public GridAllowedUser(int userId) {
                 UserId = DisplayUserId = userId;
                 View = PageDefinition.AllowedEnum.Yes;
-                UserName = Manager.Syncify<string>(() => Resource.ResourceAccess.GetUserNameAsync(userId));//$$$ what to do
+                UserName = YetaWFManager.Syncify<string>(() => Resource.ResourceAccess.GetUserNameAsync(userId));//$$$ what to do
             }
         }
 #if MVC6

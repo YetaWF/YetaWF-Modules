@@ -6,6 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using YetaWF.Core;
 using YetaWF.Core.Controllers;
+using YetaWF.Core.DataProvider;
 using YetaWF.Core.Localize;
 using YetaWF.Core.Models;
 using YetaWF.Core.Models.Attributes;
@@ -213,8 +214,8 @@ namespace YetaWF.Modules.PageEdit.Controllers {
 
             public async Task AddDataAsync() {
 
-                SiteDefinition.SitesInfo info = SiteDefinition.GetSites(0, 0, null, null);
-                SiteDomain_List = (from s in info.Sites orderby s.SiteDomain select new SelectionItem<string>() {
+                DataProviderGetRecords<SiteDefinition> info = await SiteDefinition.GetSitesAsync(0, 0, null, null);
+                SiteDomain_List = (from s in info.Data orderby s.SiteDomain select new SelectionItem<string>() {
                     Text = s.SiteDomain,
                     Value = s.SiteDomain,
                     Tooltip = this.__ResStr("switchSite", "Switch to site \"{0}\"", s.SiteDomain),
@@ -353,7 +354,7 @@ namespace YetaWF.Modules.PageEdit.Controllers {
         [AllowPost]
         [ConditionalAntiForgeryToken]
         [ExcludeDemoMode]
-        public ActionResult SkinSelection_Partial(SkinSelectionModel model) {
+        public async Task<ActionResult> SkinSelection_Partial(SkinSelectionModel model) {
 
             if (!ModelState.IsValid)
                 return PartialView(model);
@@ -362,9 +363,8 @@ namespace YetaWF.Modules.PageEdit.Controllers {
             site.BootstrapSkin = model.BootstrapSkin;
             site.jQueryUISkin = model.jQueryUISkin;
             site.KendoUISkin = model.KendoUISkin;
-            bool restartRequired;
-            site.Save(out restartRequired);
-            if (restartRequired) {
+            SiteDefinition.SaveResult res = await site.SaveAsync();
+            if (res.RestartRequired) {
                 Manager.RestartSite();
                 return FormProcessed(model, this.__ResStr("okSavedRestart", "Site settings updated - Site is now restarting"),
                     NextPage: Manager.CurrentSite.HomePageUrl, ForceRedirect: true);

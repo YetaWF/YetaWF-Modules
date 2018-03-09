@@ -172,7 +172,7 @@ namespace YetaWF.Modules.Identity.Controllers {
                 ObjectSupport.CopyData(data, this);
             }
             public Model() {
-                ConfigData = YetaWFManager.Manager.Syncify(() => LoginConfigDataProvider.GetConfigAsync());//$$$
+                ConfigData = YetaWFManager.Syncify(() => LoginConfigDataProvider.GetConfigAsync());//$$$
                 NoExternalSettings = this.__ResStr("noExt", "No External Login Providers available");
                 TwoStepAuth = new SerializableList<Role>();
             }

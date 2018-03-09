@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using YetaWF.Core.DataProvider;
 using YetaWF.Core.IO;
 using YetaWF.Core.Localize;
@@ -14,7 +15,7 @@ using YetaWF.Modules.SiteProperties.Modules;
 
 namespace YetaWF.Modules.SiteProperties.Models {
 
-    public class SiteDefinitionDataProvider : DataProviderImpl, IInstallableModel, IInitializeApplicationStartup {
+    public class SiteDefinitionDataProvider : DataProviderImpl, IInstallableModelAsync, IInitializeApplicationStartup {
 
         // STARTUP
         // STARTUP
@@ -22,13 +23,15 @@ namespace YetaWF.Modules.SiteProperties.Models {
 
         public void InitializeApplicationStartup() {
             // The SiteDefinitionDataProvider has two permanent disposable objects
-            SiteDefinition.LoadSiteDefinition = LoadSiteDefinition;
-            SiteDefinition.SaveSiteDefinition = SaveSiteDefinition;
-            SiteDefinition.RemoveSiteDefinition = RemoveSiteDefinition;
-            SiteDefinition.GetSites = GetItems;
-            SiteDefinition.LoadStaticSiteDefinition = LoadStaticSiteDefinition;
+            SiteDefinition.LoadSiteDefinitionAsync = LoadSiteDefinitionAsync;
+            SiteDefinition.SaveSiteDefinitionAsync = SaveSiteDefinitionAsync;
+            SiteDefinition.RemoveSiteDefinitionAsync = RemoveSiteDefinitionAsync;
+            SiteDefinition.GetSitesAsync = GetItemsAsync;
+            SiteDefinition.LoadStaticSiteDefinitionAsync = LoadStaticSiteDefinitionAsync;
 
-            LoadStaticSitesCache();
+            YetaWFManager.Syncify(async () => {
+                await LoadStaticSitesCacheAsync();
+            });
         }
 
         // IMPLEMENTATION
@@ -43,9 +46,9 @@ namespace YetaWF.Modules.SiteProperties.Models {
 
         public SiteDefinitionDataProvider() : base(0) { SetDataProvider(CreateDataProvider()); }
 
-        private IDataProvider<string, SiteDefinition> DataProvider { get { return GetDataProvider(); } }
+        private IDataProviderAsync<string, SiteDefinition> DataProvider { get { return GetDataProvider(); } }
 
-        private IDataProvider<string, SiteDefinition> CreateDataProvider() {
+        private IDataProviderAsync<string, SiteDefinition> CreateDataProvider() {
             Package package = YetaWF.Modules.SiteProperties.Controllers.AreaRegistration.CurrentPackage;
             return MakeDataProvider(package, package.AreaName, Cacheable: true, Parms: new { IdentitySeed = SiteDefinition.SiteIdentitySeed, NoLanguages = true });
         }
@@ -57,12 +60,11 @@ namespace YetaWF.Modules.SiteProperties.Models {
         static private Dictionary<string, SiteDefinition> SiteCache { get; set; }
         static private Dictionary<string, string> StaticSiteCache { get; set; }
 
-        private void LoadStaticSitesCache() {
+        private async Task LoadStaticSitesCacheAsync() {
             StaticSiteCache = new Dictionary<string, string>();
             if (SiteDefinition.INITIAL_INSTALL) return;
-            int total;
-            List<SiteDefinition> sites = GetItems(0, 0, null, null, out total);
-            foreach (SiteDefinition site in sites)
+            DataProviderGetRecords<SiteDefinition> sites = await GetItemsAsync(0, 0, null, null);
+            foreach (SiteDefinition site in sites.Data)
                 if (!string.IsNullOrWhiteSpace(site.StaticDomain))
                     StaticSiteCache.Add(site.StaticDomain.ToLower(), site.SiteDomain);
         }
@@ -83,14 +85,14 @@ namespace YetaWF.Modules.SiteProperties.Models {
         /// Load the site definition for the current site
         /// </summary>
         /// <returns></returns>
-        public SiteDefinition LoadSiteDefinition(string siteDomain) {
-            if (DataProvider.IsInstalled()) {
+        public async Task<SiteDefinition> LoadSiteDefinitionAsync(string siteDomain) {
+            if (await DataProvider.IsInstalledAsync()) {
                 SiteDefinition site;
                 if (siteDomain == null || string.Compare(siteDomain, "Localhost", true) == 0)
                     siteDomain = YetaWFManager.DefaultSiteName;
                 if (SiteCache.TryGetValue(siteDomain.ToLower(), out site))
                     return site;
-                site = DataProvider.Get(siteDomain);
+                site = await DataProvider.GetAsync(siteDomain);
                 if (site == null)
                     return null;
                 site.OriginalSiteDomain = site.SiteDomain;
@@ -111,10 +113,10 @@ namespace YetaWF.Modules.SiteProperties.Models {
         /// </summary>
         /// <param name="staticDomain">The domain name.</param>
         /// <returns></returns>
-        public SiteDefinition LoadStaticSiteDefinition(string staticDomain) {
+        public async Task<SiteDefinition> LoadStaticSiteDefinitionAsync(string staticDomain) {
             string domain;
             if (StaticSiteCache.TryGetValue(staticDomain.ToLower(), out domain)) {
-                SiteDefinition site = LoadSiteDefinition(domain);
+                SiteDefinition site = await LoadSiteDefinitionAsync(domain);
                 return site;
             }
             return null;
@@ -123,18 +125,18 @@ namespace YetaWF.Modules.SiteProperties.Models {
         /// <summary>
         /// Save the site definition for the current site
         /// </summary>
-        internal bool SaveSiteDefinition(SiteDefinition site) {
+        internal async Task<bool> SaveSiteDefinitionAsync(SiteDefinition site) {
             bool restartRequired = false;
             RemoveCache(site);// next load will add it again
             AddLockedStatus(site);
             CleanData(site);
             SaveImages(ModuleDefinition.GetPermanentGuid(typeof(SitePropertiesModule)), site);
             if (site.OriginalSiteDomain != null) {
-                UpdateStatusEnum status = DataProvider.Update(site.OriginalSiteDomain, site.SiteDomain, site);
+                UpdateStatusEnum status = await DataProvider.UpdateAsync(site.OriginalSiteDomain, site.SiteDomain, site);
                 if (status != UpdateStatusEnum.OK)
                     throw new Error(this.__ResStr("updFail", "Can't update site definition - it may have already been removed", site.OriginalSiteDomain));
             } else {
-                if (!DataProvider.Add(site))
+                if (!await DataProvider.AddAsync(site))
                     throw new Error(this.__ResStr("siteExists", "Can't add new site \"{0}\" - site already exists", site.SiteDomain));
                 site.OriginalSiteDomain = site.SiteDomain;
             }
@@ -181,7 +183,7 @@ namespace YetaWF.Modules.SiteProperties.Models {
             }
         }
 
-        internal void RemoveSiteDefinition() {
+        internal async Task RemoveSiteDefinitionAsync() {
             SiteDefinition site = Manager.CurrentSite;
             if (site.IsDefaultSite)
                 throw new Error(this.__ResStr("cantDeleteDefault", "The default site of a YetaWF instance cannot be removed"));
@@ -195,39 +197,29 @@ namespace YetaWF.Modules.SiteProperties.Models {
             // remove all saved data
             RemoveCache(site);
             Package.RemoveSiteData(Manager.SiteFolder);
-            DataProvider.Remove(site.SiteDomain);// remove domain
+            await DataProvider.RemoveAsync(site.SiteDomain);// remove domain
             Manager.RestartSite();// everything is now invalid anyway
         }
 
         /// <summary>
         /// Retrieve sites
         /// </summary>
-        internal List<SiteDefinition> GetItems(int skip, int take, List<DataProviderSortInfo> sort, List<DataProviderFilterInfo> filters, out int total) {
-            return DataProvider.GetRecords(skip, take, sort, filters, out total);
-        }
-        /// <summary>
-        /// Retrieve sites
-        /// </summary>
-        internal SiteDefinition.SitesInfo GetItems(int skip, int take, List<DataProviderSortInfo> sort, List<DataProviderFilterInfo> filters) {
-            SiteDefinition.SitesInfo info = new SiteDefinition.SitesInfo();
-            int total;
-            info.Sites = GetItems(skip, take, sort, filters, out total);
-            info.Total = total;
-            return info;
+        internal async Task<DataProviderGetRecords<SiteDefinition>> GetItemsAsync(int skip, int take, List<DataProviderSortInfo> sort, List<DataProviderFilterInfo> filters) {
+            return await DataProvider.GetRecordsAsync(skip, take, sort, filters);
         }
 
         // IINSTALLABLEMODEL
         // IINSTALLABLEMODEL
         // IINSTALLABLEMODEL
 
-        public new bool InstallModel(List<string> errorList) {
-            if (!DataProvider.InstallModel(errorList))
+        public new async Task<bool> InstallModelAsync(List<string> errorList) {
+            if (!await DataProvider.InstallModelAsync(errorList))
                 return false;
             try {
                 SiteDefinition siteDef = new SiteDefinition();
                 if (SiteDefinition.INITIAL_INSTALL) {
                     siteDef.SiteDomain = YetaWFManager.DefaultSiteName;
-                    if (!DataProvider.Add(siteDef))
+                    if (!await DataProvider.AddAsync(siteDef))
                         throw new InternalError("Couldn't add default site");
                     Manager.CurrentSite = siteDef;
                     siteDef.OriginalSiteDomain = siteDef.SiteDomain;

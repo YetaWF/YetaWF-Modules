@@ -199,7 +199,7 @@ namespace YetaWF.Modules.Identity.Modules {
         // Properties used to save initial user settings from InitPages.txt
         public string SuperUserPassword {
             set {
-                YetaWFManager.Manager.Syncify(() => ChangePasswordAsync(SuperuserDefinitionDataProvider.SuperUserName, value));// super rare, so sync is OK
+                YetaWFManager.Syncify(() => ChangePasswordAsync(SuperuserDefinitionDataProvider.SuperUserName, value));// super rare, so sync is OK
             }
         }
 
@@ -207,7 +207,7 @@ namespace YetaWF.Modules.Identity.Modules {
         /// Add administrator - used from site template to add a site admin
         /// </summary>
         public void AddAdministrator(string name, string pswd) {
-            YetaWFManager.Manager.Syncify(async () => { // super rare, so sync is OK
+            YetaWFManager.Syncify(async () => { // super rare, so sync is OK
                 using (UserDefinitionDataProvider dataProvider = new UserDefinitionDataProvider()) {
                     await dataProvider.AddAdministratorAsync(name);
                 }
@@ -218,7 +218,7 @@ namespace YetaWF.Modules.Identity.Modules {
         /// Add an editor - used from site template to add a site editor
         /// </summary>
         public void AddEditor(string name, string pswd) {
-            YetaWFManager.Manager.Syncify(async () => { // super rare, so sync is OK
+            YetaWFManager.Syncify(async () => { // super rare, so sync is OK
                 using (UserDefinitionDataProvider dataProvider = new UserDefinitionDataProvider()) {
                     await dataProvider.AddEditorAsync(name);
                 }
@@ -230,7 +230,7 @@ namespace YetaWF.Modules.Identity.Modules {
         /// Add a user - used from site template to add a site user
         /// </summary>
         public void AddUser(string name, string pswd) {
-            YetaWFManager.Manager.Syncify(async () => { // super rare, so sync is OK
+            YetaWFManager.Syncify(async () => { // super rare, so sync is OK
                 using (UserDefinitionDataProvider dataProvider = new UserDefinitionDataProvider()) {
                     await dataProvider.AddUserAsync(name);
                 }
