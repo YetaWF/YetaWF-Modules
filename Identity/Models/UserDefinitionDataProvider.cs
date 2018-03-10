@@ -93,14 +93,13 @@ namespace YetaWF.Modules.Identity.DataProvider {
         public SerializableList<Role> RolesList { get; set; } // role ids for this user
         public SerializableList<TwoStepDefinition> EnabledTwoStepAuthentications { get; set; }
 
-        public List<string> EnabledAndAvailableTwoStepAuthentications {
-            get {
-                TwoStepAuth twoStep = new TwoStepAuth();
-                List<string> procs = (from p in twoStep.GetTwoStepAuthProcessors() where p.IsAvailable() select p.Name).ToList();
-                List<string> enabledTwoStepAuths = (from e in EnabledTwoStepAuthentications select e.Name).ToList();
-                procs = procs.Intersect(enabledTwoStepAuths).ToList();
-                return procs;
-            }
+        public async Task<List<string>> GetEnabledAndAvailableTwoStepAuthenticationsAsync() {
+            TwoStepAuth twoStep = new TwoStepAuth();
+            List<ITwoStepAuth> list = await twoStep.GetTwoStepAuthProcessorsAsync();
+            List<string> procs = (from p in list select p.Name).ToList();
+            List<string> enabledTwoStepAuths = (from e in EnabledTwoStepAuthentications select e.Name).ToList();
+            procs = procs.Intersect(enabledTwoStepAuths).ToList();
+            return procs;
         }
 
         public UserDefinition() {

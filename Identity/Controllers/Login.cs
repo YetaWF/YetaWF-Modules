@@ -197,7 +197,7 @@ namespace YetaWF.Modules.Identity.Controllers {
             }
 
             TwoStepAuth twoStep = new TwoStepAuth();// clear any two-step info we may have
-            twoStep.ClearTwoStepAuthetication(user.UserId);
+            await twoStep.ClearTwoStepAutheticationAsync(user.UserId);
 
             if (config.MaxLoginFailures != 0 && user.LoginFailures >= config.MaxLoginFailures) {
                 ModelState.AddModelError("", this.__ResStr("maxAttemps", "The maximum number of login attempts has been exceeded - Your account has been suspended"));
@@ -298,7 +298,7 @@ namespace YetaWF.Modules.Identity.Controllers {
                     NextPage: nextPage);
             } else if (user.UserStatus == UserStatusEnum.Approved) {
                 if (useTwoStep) {
-                    ActionResult actionResult = TwoStepAuthetication(user);
+                    ActionResult actionResult = await TwoStepAuthetication(user);
                     if (actionResult != null) {
                         Manager.SessionSettings.SiteSettings.SetValue<int>(LoginTwoStepController.IDENTITY_TWOSTEP_USERID, user.UserId);// marker that user has entered correct name/password
                         Manager.SessionSettings.SiteSettings.SetValue<string>(LoginTwoStepController.IDENTITY_TWOSTEP_NEXTURL, Manager.ReturnToUrl);// marker that user has entered correct name/password
@@ -321,10 +321,10 @@ namespace YetaWF.Modules.Identity.Controllers {
         /// <summary>
         /// Returns an action result to start the two-step authentication process (if any).
         /// </summary>
-        private ActionResult TwoStepAuthetication(UserDefinition user) {
+        private async Task<ActionResult> TwoStepAuthetication(UserDefinition user) {
             TwoStepAuth twoStep = new TwoStepAuth();
             List<string> enabledTwoStepAuthentications = (from e in user.EnabledTwoStepAuthentications select e.Name).ToList();
-            ModuleAction action = twoStep.GetLoginAction(enabledTwoStepAuthentications, user.UserId, user.UserName, user.Email);
+            ModuleAction action = await twoStep.GetLoginActionAsync(enabledTwoStepAuthentications, user.UserId, user.UserName, user.Email);
             if (action == null)
                 return null;
             return Redirect(action);

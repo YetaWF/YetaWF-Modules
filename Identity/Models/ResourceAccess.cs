@@ -151,7 +151,7 @@ namespace YetaWF.Modules.Identity.DataProvider {
                             if (config.TwoStepAuth != null && user.RolesList != null) {
                                 foreach (Role role in config.TwoStepAuth) {
                                     if (role.RoleId == Resource.ResourceAccess.GetUserRoleId() || user.RolesList.Contains(new Role { RoleId = role.RoleId }, new RoleComparer())) {
-                                        if (user.EnabledAndAvailableTwoStepAuthentications.Count == 0)
+                                        if ((await user.GetEnabledAndAvailableTwoStepAuthenticationsAsync()).Count == 0)
                                             Manager.Need2FAState = true;
                                         break;
                                     }

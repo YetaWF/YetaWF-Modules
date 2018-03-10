@@ -50,13 +50,14 @@ namespace YetaWF.Modules.Identity.Controllers {
                 if (user == null)
                     throw new InternalError("User with id {0} not found", userId);
                 TwoStepAuth twoStep = new TwoStepAuth();
-                List<string> procs = (from p in twoStep.GetTwoStepAuthProcessors() where p.IsAvailable() select p.Name).ToList();
+                List<ITwoStepAuth> list = await twoStep.GetTwoStepAuthProcessorsAsync();
+                List<string> procs = (from p in list select p.Name).ToList();
                 List<string> enabledTwoStepAuths = (from e in user.EnabledTwoStepAuthentications select e.Name).ToList();
                 procs = procs.Intersect(enabledTwoStepAuths).ToList();
                 foreach (string proc in procs) {
-                    ITwoStepAuth auth = twoStep.GetTwoStepAuthProcessorByName(proc);
+                    ITwoStepAuth auth = await twoStep.GetTwoStepAuthProcessorByNameAsync(proc);
                     if (auth != null) {
-                        model.Actions.New(auth.GetLoginAction(userId, userName, userEmail));
+                        model.Actions.New(await auth.GetLoginActionAsync(userId, userName, userEmail));
                     }
                 }
                 if (model.Actions.Count == 0)

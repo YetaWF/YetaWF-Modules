@@ -50,12 +50,13 @@ namespace YetaWF.Modules.Identity.Controllers {
                         return View("ShowMessage", this.__ResStr("extUser", "This account uses an external login provider - Two-step authentication (if available) must be set up using the external login provider."), UseAreaViewName: false);
                 }
                 TwoStepAuth twoStep = new TwoStepAuth();
-                List<string> procs = (from p in twoStep.GetTwoStepAuthProcessors() where p.IsAvailable() select p.Name).ToList();
+                List<ITwoStepAuth> list = await twoStep.GetTwoStepAuthProcessorsAsync();
+                List<string> procs = (from p in list select p.Name).ToList();
                 List<string> enabledTwoStepAuths = (from e in user.EnabledTwoStepAuthentications select e.Name).ToList();
                 foreach (string proc in procs) {
-                    ITwoStepAuth auth = twoStep.GetTwoStepAuthProcessorByName(proc);
+                    ITwoStepAuth auth = await twoStep.GetTwoStepAuthProcessorByNameAsync(proc);
                     if (auth != null) {
-                        ModuleAction action = auth.GetSetupAction();
+                        ModuleAction action = await auth.GetSetupActionAsync();
                         if (action != null) {
                             string status;
                             if (enabledTwoStepAuths.Contains(auth.Name))

@@ -1,5 +1,6 @@
 /* Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/DevTests#License */
 
+using System.Threading.Tasks;
 using YetaWF.Core.Controllers;
 using YetaWF.Core.Support.SendSMS;
 #if MVC6
@@ -21,15 +22,14 @@ namespace YetaWF.Modules.DevTests.Controllers {
         }
 
         [AllowGet]
-        public ActionResult SMSProcessorStatus() {
+        public async Task<ActionResult> SMSProcessorStatus() {
             if (!Manager.HasSuperUserRole)
                 return new EmptyResult();
-            int count;
-            ISendSMS processor = SendSMS.GetSMSProcessorCond(out count);
+            SendSMS.GetSMSProcessorCondInfo info = await SendSMS.GetSMSProcessorCondAsync();
             DisplayModel model = new DisplayModel() {
-                Available = count,
-                TestMode = processor != null ? processor.IsTestMode() : false,
-                ProcessorName = processor != null ? processor.Name : null,
+                Available = info.Count,
+                TestMode = info.Processor != null ? await info.Processor.IsTestModeAsync() : false,
+                ProcessorName = info.Processor != null ? info.Processor.Name : null,
             };
             if (model.Available == 1 && !model.TestMode)
                 return new EmptyResult();

@@ -37,9 +37,9 @@ namespace YetaWF.Modules.Identity.Controllers {
 
             // verify that the TwoStepAuthorization provider just verified this user
             TwoStepAuth twoStep = new TwoStepAuth();
-            if (!twoStep.VerifyTwoStepAutheticationDone(userId))
+            if (!await twoStep.VerifyTwoStepAutheticationDoneAsync(userId))
                 return Redirect(Manager.CurrentSite.HomePageUrl);
-            twoStep.ClearTwoStepAuthetication(userId);
+            await twoStep.ClearTwoStepAutheticationAsync(userId);
 
             await Resource.ResourceAccess.LoginAsAsync(userId);
 
