@@ -33,7 +33,7 @@ namespace YetaWF.Modules.CurrencyConverter.Views.Shared {
             using (ExchangeRateDataProvider dp = new ExchangeRateDataProvider()) {
                 ExchangeRateData data = await dp.GetItemAsync();
                 List<SelectionItem<string>> list = (from r in data.Rates orderby r.CurrencyName select new SelectionItem<string> { Text = r.CurrencyName, Value = r.Code }).ToList();
-                return htmlHelper.RenderDropDownSelectionList(name, model, list, HtmlAttributes: HtmlAttributes);
+                return await htmlHelper.RenderDropDownSelectionListAsync(name, model, list, HtmlAttributes: HtmlAttributes);
             }
         }
     }

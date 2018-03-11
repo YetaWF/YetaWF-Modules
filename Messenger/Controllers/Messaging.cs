@@ -51,10 +51,10 @@ namespace YetaWF.Modules.Messenger.Controllers {
         }
 
         [AllowGet]
-        public ActionResult Messaging() {
-            Signalr.Use();
+        public async Task<ActionResult> Messaging() {
+            await Signalr.UseAsync();
             Package currentPackage = AreaRegistration.CurrentPackage;
-            Manager.AddOnManager.AddAddOnNamed(currentPackage.Domain, currentPackage.Product, "Messaging");
+            await Manager.AddOnManager.AddAddOnNamedAsync(currentPackage.Domain, currentPackage.Product, "Messaging");
             EditModel model = new EditModel { };
             return View(model);
         }

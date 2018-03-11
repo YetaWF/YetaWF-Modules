@@ -1,5 +1,6 @@
 ﻿/* Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Blog#License */
 
+using System.Threading.Tasks;
 using YetaWF.Core.Addons;
 using YetaWF.Core.Support;
 
@@ -9,8 +10,8 @@ namespace YetaWF.Modules.Blog.Addons {
 
         public const string Resource_AllowManageComments = "YetaWF_Blog-AllowManageComments";
 
-        public void AddSupport(YetaWFManager manager) {
-
+        public Task AddSupportAsync(YetaWFManager manager) {
+            return Task.CompletedTask;
         }
     }
 }

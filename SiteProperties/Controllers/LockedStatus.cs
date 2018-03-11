@@ -1,6 +1,7 @@
 /* Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/SiteProperties#License */
 
 using YetaWF.Core.Controllers;
+using System.Threading.Tasks;
 #if MVC6
 using Microsoft.AspNetCore.Mvc;
 #else
@@ -16,9 +17,9 @@ namespace YetaWF.Modules.SiteProperties.Controllers {
         public LockedStatusModuleController() { }
 
         [AllowGet]
-        public ActionResult LockedStatus() {
+        public async Task<ActionResult> LockedStatus() {
             if (Manager.CurrentSite.IsLockedAny) {
-                Manager.AddOnManager.AddAddOnNamed(AreaRegistration.CurrentPackage.Domain, AreaRegistration.CurrentPackage.Product, "LockedStatus");
+                await Manager.AddOnManager.AddAddOnNamedAsync(AreaRegistration.CurrentPackage.Domain, AreaRegistration.CurrentPackage.Product, "LockedStatus");
                 return View(new Model());
             } else
                 return new EmptyResult();

@@ -3,9 +3,9 @@
 @using YetaWF.Core.Support
 @{
     YetaWF.Core.Packages.Package currentPackage = YetaWF.Modules.Menus.Controllers.AreaRegistration.CurrentPackage;
-    Manager.AddOnManager.AddAddOnNamed(currentPackage.Domain, currentPackage.Product, "MenuEdit");
+    Manager.AddOnManager.AddAddOnNamedAsync(currentPackage.Domain, currentPackage.Product, "MenuEdit").Wait();
 
-    Manager.AddOnManager.AddAddOnGlobal("jsTree.com", "jsTree");
+    Manager.AddOnManager.AddAddOnGlobalAsync("jsTree.com", "jsTree").Wait();
 
     string treeId = DivId;
     string detailsId = UniqueId();

@@ -3,7 +3,7 @@
 @using YetaWF.Modules.Scheduler.Views.Shared
 <div class='yt_yetawf_scheduler_event t_edit'>
     <div class="t_event">
-        @Html.RenderSchedulerEvent("DropDown", Model.Name)
+        @Html.RenderSchedulerEventAsync("DropDown", Model.Name).Result
         @Html.RenderHidden("Name", Model.Name)
         @Html.RenderHidden("ImplementingAssembly", Model.ImplementingAssembly)
         @Html.RenderHidden("ImplementingType", Model.ImplementingType)

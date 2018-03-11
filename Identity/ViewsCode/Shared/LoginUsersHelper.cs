@@ -77,7 +77,7 @@ namespace YetaWF.Modules.Identity.Views.Shared {
                 Tooltip = __ResStr("selLogoff", "Select to log off"),
                 Value = 0,
             });
-            return htmlHelper.RenderDropDownSelectionList<int>(name, model, list, HtmlAttributes: HtmlAttributes);
+            return await htmlHelper.RenderDropDownSelectionListAsync<int>(name, model, list, HtmlAttributes: HtmlAttributes);
         }
     }
 }

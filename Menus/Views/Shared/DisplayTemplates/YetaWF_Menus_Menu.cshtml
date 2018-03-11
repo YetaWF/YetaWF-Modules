@@ -13,7 +13,7 @@
     if (style == MenuHelper.MenuStyleEnum.Bootstrap) {
         HtmlString menu = Html.RenderAsync(Model.MenuList, DivId, null, YetaWF.Core.Modules.ModuleAction.RenderEngineEnum.BootstrapSmartMenu).Result;
         if (!menu.IsEmpty()) {
-            Manager.AddOnManager.AddAddOnGlobal("github.com.vadikom", "smartmenus"); // multilevel navbar
+            Manager.AddOnManager.AddAddOnGlobalAsync("github.com.vadikom", "smartmenus").Wait(); // multilevel navbar
             @menu;
         }
     } else {

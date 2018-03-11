@@ -7,6 +7,7 @@ using YetaWF.Core.Pages;
 using YetaWF.Core.Views;
 using YetaWF.Core.Views.Shared;
 using YetaWF.Modules.SyntaxHighlighter.Support;
+using System.Threading.Tasks;
 #if MVC6
 using Microsoft.AspNetCore.Html;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -23,9 +24,9 @@ namespace YetaWF.Modules.SyntaxHighlighter.Views.Shared {
 
         private static string __ResStr(string name, string defaultValue, params object[] parms) { return ResourceAccess.GetResourceString(typeof(HighlightJSSkinsHelper), name, defaultValue, parms); }
 #if MVC6
-        public static HtmlString RenderHighlightJSSkins(this IHtmlHelper htmlHelper, string name, string selection, object HtmlAttributes = null) {
+        public static async Task<HtmlString> RenderHighlightJSSkinsAsync(this IHtmlHelper htmlHelper, string name, string selection, object HtmlAttributes = null) {
 #else
-        public static HtmlString RenderHighlightJSSkins(this HtmlHelper htmlHelper, string name, string selection, object HtmlAttributes = null) {
+        public static async Task<HtmlString> RenderHighlightJSSkinsAsync(this HtmlHelper htmlHelper, string name, string selection, object HtmlAttributes = null) {
 #endif
             // get all available skins
             SkinAccess skinAccess = new SkinAccess();
@@ -34,7 +35,7 @@ namespace YetaWF.Modules.SyntaxHighlighter.Views.Shared {
                 Value = theme.Name,
             }).ToList();
 
-            bool useDefault = ! htmlHelper.GetControlInfo<bool>("", "NoDefault");
+            bool useDefault = !htmlHelper.GetControlInfo<bool>("", "NoDefault");
             if (useDefault)
                 list.Insert(0, new SelectionItem<string> {
                     Text = __ResStr("default", "(Site Default)"),
@@ -45,7 +46,7 @@ namespace YetaWF.Modules.SyntaxHighlighter.Views.Shared {
                 selection = SkinAccess.GetHighlightJSDefaultSkin();
 
             // display the skins in a drop down
-            return htmlHelper.RenderDropDownSelectionList(name, selection, list, HtmlAttributes: HtmlAttributes);
+            return await htmlHelper.RenderDropDownSelectionListAsync(name, selection, list, HtmlAttributes: HtmlAttributes);
         }
     }
 }

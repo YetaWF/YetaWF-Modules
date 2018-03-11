@@ -18,9 +18,9 @@ namespace YetaWF.Modules.Messenger.Controllers {
 
         [AllowGet]
         public ActionResult SkinSiteAnnouncements() {
-            Signalr.Use();
+            Signalr.UseAsync();
             Package currentPackage = AreaRegistration.CurrentPackage;
-            Manager.AddOnManager.AddAddOnNamed(currentPackage.Domain, currentPackage.Product, "SkinSiteAnnouncements");
+            Manager.AddOnManager.AddAddOnNamedAsync(currentPackage.Domain, currentPackage.Product, "SkinSiteAnnouncements");
             return new EmptyResult();
         }
     }

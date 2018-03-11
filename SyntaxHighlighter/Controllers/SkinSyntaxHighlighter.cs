@@ -26,7 +26,7 @@ namespace YetaWF.Modules.SyntaxHighlighter.Controllers {
             Package package = AreaRegistration.CurrentPackage;
             SkinAccess skinAccess = new SkinAccess();
             string theme = skinAccess.FindSyntaxHighlighterSkin(config.SyntaxHighlighterSkin);
-            Manager.AddOnManager.AddAddOnNamed(package.Domain, package.Product, "SkinSyntaxHighlighter", theme);
+            await Manager.AddOnManager.AddAddOnNamedAsync(package.Domain, package.Product, "SkinSyntaxHighlighter", theme);
 
             // add client-side init
             string url = VersionManager.GetAddOnNamedUrl(package.Domain, package.Product, "SkinSyntaxHighlighter");

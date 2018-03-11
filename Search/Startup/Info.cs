@@ -1,5 +1,6 @@
 ﻿/* Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Search#License */
 
+using System.Threading.Tasks;
 using YetaWF.Core.Addons;
 using YetaWF.Core.Pages;
 using YetaWF.Core.Support;
@@ -11,13 +12,14 @@ namespace YetaWF.Modules.Search.Addons {
 
         public const string UrlArg = "!YetaWF_Search_SearchControl";
 
-        public void AddSupport(YetaWFManager manager) {
+        public Task AddSupportAsync(YetaWFManager manager) {
 
             ScriptManager scripts = manager.ScriptManager;
             string areaName = AreaRegistration.CurrentPackage.AreaName;
 
             scripts.AddConfigOption(areaName, "UrlArg", UrlArg);
 
+            return Task.CompletedTask;
         }
     }
 }

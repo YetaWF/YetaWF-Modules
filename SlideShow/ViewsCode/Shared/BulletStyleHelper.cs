@@ -9,6 +9,7 @@ using YetaWF.Core.Packages;
 using YetaWF.Core.Pages;
 using YetaWF.Core.Support;
 using YetaWF.Core.Views.Shared;
+using System.Threading.Tasks;
 #if MVC6
 using Microsoft.AspNetCore.Html;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -25,9 +26,9 @@ namespace YetaWF.Modules.SlideShow.Views.Shared {
 
         private static string __ResStr(string name, string defaultValue, params object[] parms) { return ResourceAccess.GetResourceString(typeof(BulletStyleHelper), name, defaultValue, parms); }
 #if MVC6
-        public static HtmlString RenderBulletStyle(this IHtmlHelper htmlHelper, string name, string selection, object HtmlAttributes = null)
+        public static async Task<HtmlString> RenderBulletStyleAsync(this IHtmlHelper htmlHelper, string name, string selection, object HtmlAttributes = null)
 #else
-        public static HtmlString RenderBulletStyle(this HtmlHelper htmlHelper, string name, string selection, object HtmlAttributes = null)
+        public static async Task<HtmlString> RenderBulletStyleAsync(this HtmlHelper htmlHelper, string name, string selection, object HtmlAttributes = null)
 #endif
         {
 
@@ -35,7 +36,7 @@ namespace YetaWF.Modules.SlideShow.Views.Shared {
                 Text = a.Name,
                 Value = a.Value,
             }).ToList();
-            return htmlHelper.RenderDropDownSelectionList(name, selection, list, HtmlAttributes: HtmlAttributes);
+            return await htmlHelper.RenderDropDownSelectionListAsync(name, selection, list, HtmlAttributes: HtmlAttributes);
         }
         public class Bullet {
             public string Name { get; set; }

@@ -37,7 +37,7 @@ namespace YetaWF.Modules.Visitors.Controllers {
             using (VisitorEntryDataProvider visitorDP = new VisitorEntryDataProvider()) {
                 if (visitorDP.Usable) {
 
-                    Manager.AddOnManager.AddAddOnNamed(AreaRegistration.CurrentPackage.Domain, AreaRegistration.CurrentPackage.Product, Module.ModuleName); // add module specific items
+                    await Manager.AddOnManager.AddAddOnNamedAsync(AreaRegistration.CurrentPackage.Domain, AreaRegistration.CurrentPackage.Product, Module.ModuleName); // add module specific items
 
                     VisitorEntryDataProvider.Info info = await visitorDP.GetStatsAsync();
                     DisplayModel model = new DisplayModel { };

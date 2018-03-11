@@ -1,6 +1,7 @@
 /* Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Basics#License */
 
 using YetaWF.Core.Controllers;
+using System.Threading.Tasks;
 #if MVC6
 using Microsoft.AspNetCore.Mvc;
 #else
@@ -14,9 +15,9 @@ namespace YetaWF.Modules.Basics.Controllers {
         public MailtoObfuscatorSkinModuleController() { }
 
         [AllowGet]
-        public ActionResult MailtoObfuscatorSkin(string mailtoObfuscator) {
+        public async Task<ActionResult> MailtoObfuscatorSkin(string mailtoObfuscator) {
             YetaWF.Core.Packages.Package package = YetaWF.Modules.Basics.Controllers.AreaRegistration.CurrentPackage;
-            Manager.AddOnManager.AddAddOnNamed(package.Domain, package.Product, "MailToObfuscator");
+            await Manager.AddOnManager.AddAddOnNamedAsync(package.Domain, package.Product, "MailToObfuscator");
             return new EmptyResult();
         }
     }

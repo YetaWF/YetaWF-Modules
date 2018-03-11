@@ -93,7 +93,7 @@ namespace YetaWF.Modules.Identity.Views.Shared {
                     Text = __ResStr("select", "(select)"),
                     Value = 0,
                 });
-                return htmlHelper.RenderDropDownSelectionList<int>(name, model, list, HtmlAttributes: HtmlAttributes);
+                return await htmlHelper.RenderDropDownSelectionListAsync<int>(name, model, list, HtmlAttributes: HtmlAttributes);
             }
         }
 #if MVC6
@@ -109,7 +109,7 @@ namespace YetaWF.Modules.Identity.Views.Shared {
                     s = noUser;
                 else
                     s = user.UserName;
-                return htmlHelper.RenderTextBoxDisplay(name, s, HtmlAttributes: new { @class = "yt_text40 t_display", id = id, data_nouser = noUser });
+                return await htmlHelper.RenderTextBoxDisplayAsync(name, s, HtmlAttributes: new { @class = "yt_text40 t_display", id = id, data_nouser = noUser });
             }
         }
 #if MVC6

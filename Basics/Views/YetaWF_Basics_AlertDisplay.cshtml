@@ -4,7 +4,7 @@
 @using YetaWF.Core.Addons
 @{
     YetaWF.Core.Packages.Package package = YetaWF.Modules.Basics.Controllers.AreaRegistration.CurrentPackage;
-    Manager.AddOnManager.AddAddOnNamed(package.Domain, package.Product, "AlertDisplay");
+    Manager.AddOnManager.AddAddOnNamedAsync(package.Domain, package.Product, "AlertDisplay").Wait();
     string rootUrl = VersionManager.GetAddOnPackageUrl(package.Domain, package.Product);
     string closeUrl = Manager.GetCDNUrl(System.IO.Path.Combine(rootUrl, "Icons", "Close.png"));
 }

@@ -4,7 +4,7 @@
 @using YetaWF.Modules.ImageRepository.Support
 @using YetaWF.Core.Extensions;
 @using YetaWF.Modules.ImageRepository.Views.Shared
-@{ Manager.AddOnManager.AddTemplate("Image"); }
+@{ Manager.AddOnManager.AddTemplateAsync("Image").Wait(); }
 @{ ImageSelectionInfo info = Html.GetParentModelSupportProperty<ImageSelectionInfo>("", "Info"); }
 <div id="@ControlId" class="yt_imagerepository_imageselection">
     @Html.RenderHidden("", Model)

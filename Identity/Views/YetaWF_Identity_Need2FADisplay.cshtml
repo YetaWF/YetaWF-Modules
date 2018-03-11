@@ -3,7 +3,7 @@
 @using YetaWF.Core.Support
 @{
     YetaWF.Core.Packages.Package package = YetaWF.Modules.Identity.Controllers.AreaRegistration.CurrentPackage;
-    Manager.AddOnManager.AddAddOnNamed(package.Domain, package.Product, "Need2FADisplay");
+    Manager.AddOnManager.AddAddOnNamedAsync(package.Domain, package.Product, "Need2FADisplay").Wait();
 }
 <div class="t_message">
     @__ResStr("need2FA", "Please set up Two-Step Authentication for full access to this site - ")

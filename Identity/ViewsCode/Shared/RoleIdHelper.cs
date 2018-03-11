@@ -10,6 +10,7 @@ using YetaWF.Core.Views;
 using YetaWF.Core.Views.Shared;
 using YetaWF.Modules.Identity.DataProvider;
 using YetaWF.Core.Support;
+using System.Threading.Tasks;
 #if MVC6
 using Microsoft.AspNetCore.Html;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -42,9 +43,9 @@ namespace YetaWF.Modules.Identity.Views.Shared {
             }
         }
 #if MVC6
-        public static HtmlString RenderRoleId(this IHtmlHelper htmlHelper, string name, int model, object HtmlAttributes = null)
+        public static async Task<HtmlString> RenderRoleIdAsync(this IHtmlHelper htmlHelper, string name, int model, object HtmlAttributes = null)
 #else
-        public static HtmlString RenderRoleId(this HtmlHelper htmlHelper, string name, int model, object HtmlAttributes = null)
+        public static async Task<HtmlString> RenderRoleIdAsync(this HtmlHelper htmlHelper, string name, int model, object HtmlAttributes = null)
 #endif
         {
             List<SelectionItem<int>> list;
@@ -62,7 +63,7 @@ namespace YetaWF.Modules.Identity.Views.Shared {
             if (model == 0 || showDefault)
                 list.Insert(0, new SelectionItem<int> { Text = __ResStr("select", "(none)"), Value = 0 });
 
-            return htmlHelper.RenderDropDownSelectionList<int>(name, model, list, HtmlAttributes: HtmlAttributes);
+            return await htmlHelper.RenderDropDownSelectionListAsync<int>(name, model, list, HtmlAttributes: HtmlAttributes);
         }
     }
 }

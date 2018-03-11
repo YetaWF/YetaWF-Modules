@@ -1,5 +1,6 @@
 ﻿/* Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Licensing */
 
+using System.Threading.Tasks;
 using YetaWF.Core.Addons;
 using YetaWF.Core.Localize;
 using YetaWF.Core.Packages;
@@ -12,7 +13,7 @@ namespace YetaWF.Modules.Messenger.Addons {
 
     public class Messaging : IAddOnSupport {
 
-        public void AddSupport(YetaWFManager manager) {
+        public Task AddSupportAsync(YetaWFManager manager) {
 
             ScriptManager scripts = manager.ScriptManager;
             Package package = AreaRegistration.CurrentPackage;
@@ -26,6 +27,8 @@ namespace YetaWF.Modules.Messenger.Addons {
             scripts.AddConfigOption(area, "msgOnlineIcon", skinImages.FindIcon_Package("Online.png", package));
             scripts.AddConfigOption(area, "msgOfflineIcon", skinImages.FindIcon_Package("Offline.png", package));
             scripts.AddConfigOption(area, "msgNotSeenIcon", skinImages.FindIcon_Package("NotSeen.png", package));
+
+            return Task.CompletedTask;
         }
     }
 }

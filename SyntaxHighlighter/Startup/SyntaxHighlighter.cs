@@ -1,5 +1,6 @@
 ﻿/* Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Licensing */
 
+using System.Threading.Tasks;
 using YetaWF.Core.Addons;
 using YetaWF.Core.Localize;
 using YetaWF.Core.Pages;
@@ -10,7 +11,7 @@ namespace YetaWF.Modules.SyntaxHighlighter.Addons {
 
     public class SkinSyntaxHighlighter : IAddOnSupport {
 
-        public void AddSupport(YetaWFManager manager) {
+        public Task AddSupportAsync(YetaWFManager manager) {
 
             ScriptManager scripts = manager.ScriptManager;
             string area = AreaRegistration.CurrentPackage.AreaName;
@@ -25,6 +26,8 @@ namespace YetaWF.Modules.SyntaxHighlighter.Addons {
             scripts.AddLocalization(area, "msg_copyToClipboard", this.__ResStr("copyToClipboard", "Copy to Clipboard"));
             scripts.AddLocalization(area, "msg_copyToClipboardConfirmation", this.__ResStr("copyToClipboardConfirmation", "The code has been copied to your clipboard."));
             scripts.AddLocalization(area, "msg_print", this.__ResStr("print", "Print"));
+
+            return Task.CompletedTask;
         }
     }
 }

@@ -2,7 +2,7 @@
 @inherits YetaWF.Core.Views.RazorView<YetaWF.Modules.Pages.Modules.SkinScrollToTopModule, YetaWF.Modules.Pages.Controllers.SkinScrollToTopModuleController.DisplayModel>
 @{
     YetaWF.Core.Packages.Package currentPackage = YetaWF.Modules.Pages.Controllers.AreaRegistration.CurrentPackage;
-    Manager.AddOnManager.AddAddOnNamed(currentPackage.Domain, currentPackage.Product, "SkinScrollToTop");
+    Manager.AddOnManager.AddAddOnNamedAsync(currentPackage.Domain, currentPackage.Product, "SkinScrollToTop").Wait();
 }
 <script>
     YetaWF_Pages_ScrollUp.init();

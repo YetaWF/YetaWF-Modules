@@ -6,7 +6,7 @@
     int tabEntry = 0;
 }
 <div id="@ControlId" class="yt_bootstrapcarousel_slideshow t_edit">
-    @Html.RenderPropertyListTabbed("", Model)
+    @Html.RenderPropertyListTabbedAsync("", Model).Result
     <div class="t_slides" id="@DivId">
         @Html.RenderTabStripStart(DivId)
         @for (int i = 0 ; i <= Model.Slides.Count-1 ; ++i ) {
@@ -21,7 +21,7 @@
             @Html.RenderTabPaneEnd(DivId, tabEntry)
             ++tabEntry;
         }
-        @Html.RenderTabInit(DivId, Model)
+        @Html.RenderTabInitAsync(DivId, Model).Result
     </div>
     <div class="t_buttons">
         <input type="button" class="t_apply" value="@__ResStr("btnApply", "Apply")" title="@__ResStr("txtApply", "Click to apply the current changes")" />

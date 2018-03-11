@@ -1,4 +1,4 @@
 ﻿@*Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/SlideShow#License*@
 @inherits YetaWF.Modules.SlideShow.Views.Shared.Transition<string>
 @using YetaWF.Modules.SlideShow.Views.Shared
-@Html.RenderTransition("", Model, HtmlAttributes: new { @class = "yt_yetawf_slideshow_transition t_edit" })
+@Html.RenderTransitionAsync("", Model, HtmlAttributes: new { @class = "yt_yetawf_slideshow_transition t_edit" }).Result

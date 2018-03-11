@@ -9,6 +9,7 @@ using YetaWF.Core.Scheduler;
 using YetaWF.Core.Support;
 using YetaWF.Core.Views;
 using YetaWF.Core.Views.Shared;
+using System.Threading.Tasks;
 #if MVC6
 using Microsoft.AspNetCore.Html;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -25,16 +26,16 @@ namespace YetaWF.Modules.Scheduler.Views.Shared {
 
         private static string __ResStr(string name, string defaultValue, params object[] parms) { return ResourceAccess.GetResourceString(typeof(SchedulerEventHelper), name, defaultValue, parms); }
 #if MVC6
-        public static HtmlString RenderSchedulerEvent(this IHtmlHelper htmlHelper, string name, string eventName, object HtmlAttributes = null)
+        public static async Task<HtmlString> RenderSchedulerEventAsync(this IHtmlHelper htmlHelper, string name, string eventName, object HtmlAttributes = null)
 #else
-        public static HtmlString RenderSchedulerEvent(this HtmlHelper htmlHelper, string name, string eventName, object HtmlAttributes = null)
+        public static async Task<HtmlString> RenderSchedulerEventAsync(this HtmlHelper htmlHelper, string name, string eventName, object HtmlAttributes = null)
 #endif
         {
             List<Type> schedulerEvents = YetaWF.Modules.Scheduler.Support.Scheduler.Instance.SchedulerEvents;
 
             List<SelectionItem<string>> list = new List<SelectionItem<string>>();
             foreach (Type type in schedulerEvents) {
-                IScheduling isched = (IScheduling) Activator.CreateInstance(type);
+                IScheduling isched = (IScheduling)Activator.CreateInstance(type);
                 SchedulerItemBase[] items = isched.GetItems();
                 foreach (var item in items) {
                     list.Add(new SelectionItem<string>() {
@@ -50,7 +51,7 @@ namespace YetaWF.Modules.Scheduler.Views.Shared {
             string select = null;
             if (eventName != null)
                 select = eventName + "," + htmlHelper.GetModelProperty<string>("ImplementingType") + "," + htmlHelper.GetModelProperty<string>("ImplementingAssembly");
-            return htmlHelper.RenderDropDownSelectionList(name, select, list, HtmlAttributes: HtmlAttributes);
+            return await htmlHelper.RenderDropDownSelectionListAsync(name, select, list, HtmlAttributes: HtmlAttributes);
         }
     }
 }

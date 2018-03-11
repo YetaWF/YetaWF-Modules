@@ -62,7 +62,7 @@ namespace YetaWF.Modules.Blog.Views.Shared {
                         });
                     }
                 }
-                return htmlHelper.RenderDropDownSelectionList(name, model, list, HtmlAttributes: HtmlAttributes);
+                return await htmlHelper.RenderDropDownSelectionListAsync(name, model, list, HtmlAttributes: HtmlAttributes);
             }
         }
     }

@@ -1,5 +1,6 @@
 ﻿/* Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/SlideShow#License */
 
+using System.Threading.Tasks;
 using YetaWF.Core.Addons;
 using YetaWF.Core.Localize;
 using YetaWF.Core.Pages;
@@ -11,7 +12,7 @@ namespace YetaWF.Modules.SlideShow.Addons {
 
     public class Info : IAddOnSupport {
 
-        public void AddSupport(YetaWFManager manager) {
+        public Task AddSupportAsync(YetaWFManager manager) {
 
             ScriptManager scripts = manager.ScriptManager;
             string areaName = AreaRegistration.CurrentPackage.AreaName;
@@ -24,6 +25,8 @@ namespace YetaWF.Modules.SlideShow.Addons {
 
             scripts.AddLocalization(areaName, "RemoveConfirm", this.__ResStr("removeConfirm", "Are you sure you want to remove this image?"));
             scripts.AddLocalization(areaName, "RemoveTitle", this.__ResStr("removeTitle", "Remove Image"));
+
+            return Task.CompletedTask;
         }
     }
 }

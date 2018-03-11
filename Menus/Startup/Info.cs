@@ -1,5 +1,6 @@
 ﻿/* Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Menus#License */
 
+using System.Threading.Tasks;
 using YetaWF.Core.Addons;
 using YetaWF.Core.Localize;
 using YetaWF.Core.Pages;
@@ -10,7 +11,7 @@ namespace YetaWF.Modules.Menus.Addons {
 
     public class Info : IAddOnSupport {
 
-        public void AddSupport(YetaWFManager manager) {
+        public Task AddSupportAsync(YetaWFManager manager) {
 
             ScriptManager scripts = manager.ScriptManager;
             string areaName = AreaRegistration.CurrentPackage.AreaName;
@@ -21,6 +22,7 @@ namespace YetaWF.Modules.Menus.Addons {
             scripts.AddLocalization(areaName, "NoResetMenu", this.__ResStr("NoResetMenu", "You can't reset the entire menu"));
             scripts.AddLocalization(areaName, "NoRemoveMenu", this.__ResStr("NoRemoveMenu", "You can't remove the entire menu"));
 
+            return Task.CompletedTask;
         }
     }
 }

@@ -6,6 +6,7 @@ using YetaWF.Core.Localize;
 using YetaWF.Core.Pages;
 using YetaWF.Core.Views;
 using YetaWF.Core.Views.Shared;
+using System.Threading.Tasks;
 #if MVC6
 using Microsoft.AspNetCore.Html;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -31,9 +32,9 @@ namespace YetaWF.Modules.SlideShow.Views.Shared {
             public string Name { get; set; }
         };
 #if MVC6
-        public static HtmlString RenderTransition(this IHtmlHelper htmlHelper, string name, string selection, object HtmlAttributes = null)
+        public static async Task<HtmlString> RenderTransitionAsync(this IHtmlHelper htmlHelper, string name, string selection, object HtmlAttributes = null)
 #else
-        public static HtmlString RenderTransition(this HtmlHelper htmlHelper, string name, string selection, object HtmlAttributes = null)
+        public static async Task<HtmlString> RenderTransitionAsync(this HtmlHelper htmlHelper, string name, string selection, object HtmlAttributes = null)
 #endif
         {
             List<SelectionItem<string>> list = (from t in Transitions select new SelectionItem<string>() {
@@ -41,7 +42,7 @@ namespace YetaWF.Modules.SlideShow.Views.Shared {
                 Value = t.Effect,
             }).ToList();
 
-            bool useDefault = ! htmlHelper.GetControlInfo<bool>("", "NoDefault");
+            bool useDefault = !htmlHelper.GetControlInfo<bool>("", "NoDefault");
             if (useDefault)
                 list.Insert(0, new SelectionItem<string> {
                     Text = __ResStr("default", "(Slider Default)"),
@@ -56,7 +57,7 @@ namespace YetaWF.Modules.SlideShow.Views.Shared {
                     Value = Transition.RANDOM,
                 });
 
-            return htmlHelper.RenderDropDownSelectionList(name, selection, list, HtmlAttributes: HtmlAttributes);
+            return await htmlHelper.RenderDropDownSelectionListAsync(name, selection, list, HtmlAttributes: HtmlAttributes);
         }
 
         public static List<Transition> Transitions {

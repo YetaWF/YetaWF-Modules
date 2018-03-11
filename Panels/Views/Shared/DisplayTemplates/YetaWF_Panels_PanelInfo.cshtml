@@ -45,7 +45,7 @@
                 panelIndex++;
             }
         </div>
-        @Html.RenderTabInit(DivId)
+        @Html.RenderTabInitAsync(DivId).Result
     } else if (Model.Style == PanelInfo.PanelStyleEnum.AccordionjQuery) {
         <div class="t_panels t_accjquery" id="@DivId">
             @{ int panelIndex = 0; }
