@@ -72,9 +72,9 @@ namespace YetaWF.Modules.Blog.DataProvider {
         public DisqusConfigDataProvider() : base(YetaWFManager.Manager.CurrentSite.Identity) { SetDataProvider(CreateDataProvider()); }
         public DisqusConfigDataProvider(int siteIdentity) : base(siteIdentity) { SetDataProvider(CreateDataProvider()); }
 
-        private IDataProviderAsync<int, DisqusConfigData> DataProvider { get { return GetDataProvider(); } }
+        private IDataProvider<int, DisqusConfigData> DataProvider { get { return GetDataProvider(); } }
 
-        private IDataProviderAsync<int, DisqusConfigData> CreateDataProvider() {
+        private IDataProvider<int, DisqusConfigData> CreateDataProvider() {
             Package package = YetaWF.Modules.Blog.Controllers.AreaRegistration.CurrentPackage;
             return MakeDataProvider(package, package.AreaName + "_DisqusConfig", SiteIdentity: SiteIdentity, Cacheable: true);
         }

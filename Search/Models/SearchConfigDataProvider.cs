@@ -40,7 +40,7 @@ namespace YetaWF.Modules.Search.DataProvider {
         }
     }
 
-    public class SearchConfigDataProvider : DataProviderImpl, IInstallableModelAsync {
+    public class SearchConfigDataProvider : DataProviderImpl, IInstallableModel {
 
         private const int KEY = 1;
 
@@ -53,9 +53,9 @@ namespace YetaWF.Modules.Search.DataProvider {
         public SearchConfigDataProvider() : base(YetaWFManager.Manager.CurrentSite.Identity) { SetDataProvider(CreateDataProvider()); }
         public SearchConfigDataProvider(int siteIdentity) : base(siteIdentity) { SetDataProvider(CreateDataProvider()); }
 
-        private IDataProviderAsync<int, SearchConfigData> DataProvider { get { return GetDataProvider(); } }
+        private IDataProvider<int, SearchConfigData> DataProvider { get { return GetDataProvider(); } }
 
-        private IDataProviderAsync<int, SearchConfigData> CreateDataProvider() {
+        private IDataProvider<int, SearchConfigData> CreateDataProvider() {
             Package package = YetaWF.Modules.Search.Controllers.AreaRegistration.CurrentPackage;
             return MakeDataProvider(package, package.AreaName + "_Config", SiteIdentity: SiteIdentity, Cacheable: true);
         }

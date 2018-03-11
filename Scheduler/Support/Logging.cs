@@ -1,6 +1,7 @@
 ﻿/* Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Scheduler#License */
 
 using System;
+using System.Threading.Tasks;
 using YetaWF.Core.Log;
 using YetaWF.Core.Support;
 using YetaWF.Modules.Scheduler.DataProvider;
@@ -57,7 +58,7 @@ namespace YetaWF.Modules.Scheduler.Support {
 
         public void Clear() { }
         public void Flush() { }
-        public bool IsInstalled() { return true; }
+        public Task<bool> IsInstalledAsync() { return Task.FromResult(true); }
 
         public void WriteToLogFile(Logging.LevelEnum level, int relStack, string text) {
             if (!YetaWFManager.HaveManager) return;

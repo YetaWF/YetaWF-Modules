@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using YetaWF.Core.DataProvider;
 using YetaWF.Core.DataProvider.Attributes;
 using YetaWF.Core.IO;
@@ -54,23 +55,23 @@ namespace YetaWF.Modules.Messenger.DataProvider {
         // API
         // API
 
-        public Message GetItem(int key) {
-            return DataProvider.GetByIdentity(key);
+        public async Task<Message> GetItemAsync(int key) {
+            return await DataProvider.GetByIdentityAsync(key);
         }
-        public bool AddItem(Message data) {
-            return DataProvider.Add(data);
+        public async Task<bool> AddItemAsync(Message data) {
+            return await DataProvider.AddAsync(data);
         }
-        public UpdateStatusEnum UpdateItem(Message data) {
-            return DataProvider.UpdateByIdentity(data.Key, data);
+        public async Task<UpdateStatusEnum> UpdateItemAsync(Message data) {
+            return await DataProvider.UpdateByIdentityAsync(data.Key, data);
         }
-        public bool RemoveItem(int key) {
-            return DataProvider.RemoveByIdentity(key);
+        public async Task<bool> RemoveItemAsync(int key) {
+            return await DataProvider.RemoveByIdentityAsync(key);
         }
-        public List<Message> GetItems(int skip, int take, List<DataProviderSortInfo> sort, List<DataProviderFilterInfo> filters, out int total) {
-            return DataProvider.GetRecords(skip, take, sort, filters, out total);
+        public async Task<DataProviderGetRecords<Message>> GetItemsAsync(int skip, int take, List<DataProviderSortInfo> sort, List<DataProviderFilterInfo> filters) {
+            return await DataProvider.GetRecordsAsync(skip, take, sort, filters);
         }
-        public int RemoveItems(List<DataProviderFilterInfo> filters) {
-            return DataProvider.RemoveRecords(filters);
+        public async Task<int> RemoveItemsAsync(List<DataProviderFilterInfo> filters) {
+            return await DataProvider.RemoveRecordsAsync(filters);
         }
     }
 }

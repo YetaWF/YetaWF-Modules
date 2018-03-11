@@ -29,11 +29,10 @@ namespace YetaWF.Modules.Blog.Scheduler {
         private const string NEWSSITEMAPFMT = "blognews-sitemap-{0}.xml";
         private const string NEWSSITEMAPTEMPFMT = "blognews-sitemap-{0}.temp.xml";
 
-        public Task RunItemAsync(SchedulerItemBase evnt) {
+        public async Task RunItemAsync(SchedulerItemBase evnt) {
             if (evnt.EventName != EventSiteMaps)
                 throw new Error(this.__ResStr("eventNameErr", "Unknown scheduler event {0}."), evnt.EventName);
-            Create(slow: true);
-            return Task.CompletedTask;
+            await CreateAsync(slow: true);
         }
 
         public SchedulerItemBase[] GetItems() {
@@ -57,7 +56,7 @@ namespace YetaWF.Modules.Blog.Scheduler {
         /// <summary>
         /// Create a blog based news site map for the current site.
         /// </summary>
-        public void Create(bool slow = false) {
+        public async Task CreateAsync(bool slow = false) {
             string file = GetTempFile();
             File.Delete(file);
 
@@ -76,7 +75,7 @@ namespace YetaWF.Modules.Blog.Scheduler {
                 if (iSiteMap != null) {
                     BlogEntryDataProvider blogEntryDP = obj as BlogEntryDataProvider;
                     if (blogEntryDP != null) { // limit to blog entries
-                        iSiteMap.FindDynamicUrls(AddNewsSiteMapPage, ValidForNewsSiteMap);
+                        await iSiteMap.FindDynamicUrlsAsync(AddNewsSiteMapPage, ValidForNewsSiteMap);
                     }
                 }
             }

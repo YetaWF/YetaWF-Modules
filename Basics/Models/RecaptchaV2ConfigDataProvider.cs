@@ -34,9 +34,9 @@ namespace YetaWF.Modules.Basics.DataProvider {
         public RecaptchaV2ConfigDataProvider() : base(YetaWFManager.Manager.CurrentSite.Identity) { SetDataProvider(CreateDataProvider()); }
         public RecaptchaV2ConfigDataProvider(int siteIdentity) : base(siteIdentity) { SetDataProvider(CreateDataProvider()); }
 
-        private IDataProviderAsync<int, RecaptchaV2Config> DataProvider { get { return GetDataProvider(); } }
+        private IDataProvider<int, RecaptchaV2Config> DataProvider { get { return GetDataProvider(); } }
 
-        private IDataProviderAsync<int, RecaptchaV2Config> CreateDataProvider() {
+        private IDataProvider<int, RecaptchaV2Config> CreateDataProvider() {
             Package package = YetaWF.Modules.Basics.Controllers.AreaRegistration.CurrentPackage;
             return MakeDataProvider(package, package.AreaName + "_RecaptchaV2", SiteIdentity: SiteIdentity, Cacheable: true);
         }

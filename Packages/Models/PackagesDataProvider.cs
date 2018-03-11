@@ -69,7 +69,7 @@ namespace YetaWF.Modules.Packages.DataProvider {
             //ClearAll();
             await InstallPackagesAsync();
             if (qs["From"] == "Data") {
-                BuildSiteUsingData(false);
+                await BuildSiteUsingDataAsync(false);
                 PermanentManager.ClearAll();// clear any cached objects
                 await BuildSiteUsingTemplateAsync(Path.Combine(DataFolderName, "Add Site.txt"));
             } else { //if (qs["From"] == "Template") {
@@ -107,7 +107,7 @@ namespace YetaWF.Modules.Packages.DataProvider {
             public Logging.LevelEnum GetLevel() { return Logging.LevelEnum.Info; }
             public void Clear() { }
             public void Flush() { }
-            public bool IsInstalled() { return true; }
+            public Task<bool> IsInstalledAsync() { return Task.FromResult(true); }
             public void WriteToLogFile(Logging.LevelEnum level, int relStack, string text) {
                 lock (_lockObject) {
                     File.AppendAllText(LogFile, text + "\r\n");
@@ -149,7 +149,7 @@ namespace YetaWF.Modules.Packages.DataProvider {
         /// <param name="template"></param>
         public async Task InitNewAsync(QueryHelper qs) {
             if (qs["From"] == "Data") {
-                BuildSiteUsingData(false);
+                await BuildSiteUsingDataAsync(false);
                 await BuildSiteUsingTemplateAsync(Path.Combine(DataFolderName, "Add Site.txt"));
             } else { //if (qs["From"] == "Template") {
                 await BuildSiteUsingTemplateAsync("NewSite.txt");
@@ -268,18 +268,17 @@ namespace YetaWF.Modules.Packages.DataProvider {
         /// <summary>
         /// Imports all package data from a zip file (created using Export Data) or from templates
         /// </summary>
-        public Task ImportDataAsync(QueryHelper qs) {
+        public async Task ImportDataAsync(QueryHelper qs) {
             string zipFileName = qs["ZipFile"];
             if (string.IsNullOrWhiteSpace(zipFileName))
                 throw new InternalError("Zip filename missing");
             List<string> errorList = new List<string>();
-            if (!Package.ImportData(zipFileName, errorList)) {
+            if (!await Package.ImportDataAsync(zipFileName, errorList)) {
                 ScriptBuilder sb = new ScriptBuilder();
                 sb.Append(this.__ResStr("cantImportData", "Can't import data from file {0}:(+nl)"), zipFileName);
                 sb.Append(errorList, LeadingNL: true);
                 throw new Error(sb.ToString());
             }
-            return Task.CompletedTask;//$$
         }
         /// <summary>
         /// Apply a template (creates pages)

@@ -1,6 +1,7 @@
 ﻿/* Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Packages#License */
 
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using YetaWF.Core.Controllers;
 using YetaWF.Core.Localize;
 using YetaWF.Core.Models.Attributes;
@@ -43,13 +44,13 @@ namespace YetaWF.Modules.Packages.Controllers {
 #if MVC6
         public ActionResult ImportPackageData(IFormFile __filename)
 #else
-        public ActionResult ImportPackageData(HttpPostedFileBase __filename)
+        public async Task<ActionResult> ImportPackageData(HttpPostedFileBase __filename)
 #endif
         {
             FileUpload upload = new FileUpload();
             string tempName = upload.StoreTempPackageFile(__filename);
             List<string> errorList = new List<string>();
-            bool success = Package.ImportData(tempName, errorList);
+            bool success = await Package.ImportDataAsync(tempName, errorList);
             upload.RemoveTempFile(tempName);
 
             string errs = "";

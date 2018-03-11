@@ -56,7 +56,7 @@ namespace YetaWF.Modules.Blog.DataProvider {
         }
     }
 
-    public class BlogCategoryDataProvider : DataProviderImpl, IInstallableModelAsync {
+    public class BlogCategoryDataProvider : DataProviderImpl, IInstallableModel {
 
         // IMPLEMENTATION
         // IMPLEMENTATION
@@ -65,9 +65,9 @@ namespace YetaWF.Modules.Blog.DataProvider {
         public BlogCategoryDataProvider() : base(YetaWFManager.Manager.CurrentSite.Identity) { SetDataProvider(CreateDataProvider()); }
         public BlogCategoryDataProvider(int siteIdentity) : base(siteIdentity) { SetDataProvider(CreateDataProvider()); }
 
-        private IDataProviderAsync<int, BlogCategory> DataProvider { get { return GetDataProvider(); } }
+        private IDataProvider<int, BlogCategory> DataProvider { get { return GetDataProvider(); } }
 
-        private IDataProviderAsync<int, BlogCategory> CreateDataProvider() {
+        private IDataProvider<int, BlogCategory> CreateDataProvider() {
             Package package = YetaWF.Modules.Blog.Controllers.AreaRegistration.CurrentPackage;
             return MakeDataProvider(package, package.AreaName + "_Categories", SiteIdentity: SiteIdentity, Cacheable: true);
         }

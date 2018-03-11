@@ -66,7 +66,7 @@ namespace YetaWF.Modules.Scheduler.DataProvider {
         }
     }
 
-    public class SchedulerDataProvider : DataProviderImpl, IInstallableModelAsync, IInstallableModel2Async {
+    public class SchedulerDataProvider : DataProviderImpl, IInstallableModel, IInstallableModel2 {
 
         // IMPLEMENTATION
         // IMPLEMENTATION
@@ -74,9 +74,9 @@ namespace YetaWF.Modules.Scheduler.DataProvider {
 
         public SchedulerDataProvider() : base(0) { SetDataProvider(CreateDataProvider()); }
 
-        private IDataProviderAsync<string, SchedulerItemData> DataProvider { get { return GetDataProvider(); } }
+        private IDataProvider<string, SchedulerItemData> DataProvider { get { return GetDataProvider(); } }
 
-        private IDataProviderAsync<string, SchedulerItemData> CreateDataProvider() {
+        private IDataProvider<string, SchedulerItemData> CreateDataProvider() {
             Package package = YetaWF.Modules.Scheduler.Controllers.AreaRegistration.CurrentPackage;
             return MakeDataProvider(package, package.AreaName, Cacheable: true, Parms: new { NoLanguages = true });
         }

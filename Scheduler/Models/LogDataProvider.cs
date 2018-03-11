@@ -41,7 +41,7 @@ namespace YetaWF.Modules.Scheduler.DataProvider {
         string GetLogFileName();
     }
 
-    public class LogDataProvider : DataProviderImpl, IInstallableModelAsync {
+    public class LogDataProvider : DataProviderImpl, IInstallableModel {
 
         // IMPLEMENTATION
         // IMPLEMENTATION
@@ -49,10 +49,10 @@ namespace YetaWF.Modules.Scheduler.DataProvider {
 
         public LogDataProvider() : base(0) { SetDataProvider(CreateDataProvider()); }
 
-        private IDataProviderAsync<int, LogData> DataProvider { get { return GetDataProvider(); } }
+        private IDataProvider<int, LogData> DataProvider { get { return GetDataProvider(); } }
         private ILogDataProviderIOModeAsync DataProviderIOMode { get { return GetDataProvider(); } }
 
-        private IDataProviderAsync<int, LogData> CreateDataProvider() {
+        private IDataProvider<int, LogData> CreateDataProvider() {
             Package package = YetaWF.Modules.Scheduler.Controllers.AreaRegistration.CurrentPackage;
             return MakeDataProvider(package, package.AreaName + "_Log", Cacheable: true);
         }

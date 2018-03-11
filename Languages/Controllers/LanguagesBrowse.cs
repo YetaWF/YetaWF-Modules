@@ -79,12 +79,11 @@ namespace YetaWF.Modules.Languages.Controllers {
         [AllowPost]
         [ConditionalAntiForgeryToken]
         public ActionResult LanguagesBrowse_GridData(int skip, int take, List<DataProviderSortInfo> sort, List<DataProviderFilterInfo> filters, Guid settingsModuleGuid) {
-            int total;
-            List<LanguageEntryElement> browseItems = DataProviderImpl<LanguageEntryElement>.GetRecords(LanguageSection.Languages, skip, take, sort, filters, out total);
+            DataProviderGetRecords<LanguageEntryElement> browseItems = DataProviderImpl<LanguageEntryElement>.GetRecords(LanguageSection.Languages, skip, take, sort, filters);
             GridHelper.SaveSettings(skip, take, sort, filters, settingsModuleGuid);
             return GridPartialView(new DataSourceResult {
-                Data = (from s in browseItems select new BrowseItem(Module, s)).ToList<object>(),
-                Total = total
+                Data = (from s in browseItems.Data select new BrowseItem(Module, s)).ToList<object>(),
+                Total = browseItems.Total
             });
         }
     }

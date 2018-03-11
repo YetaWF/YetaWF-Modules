@@ -11,7 +11,7 @@ using YetaWF.DataProvider;
 
 namespace YetaWF.Modules.Packages.Modules {
 
-    public class ImportDataModuleDataProvider : ModuleDefinitionDataProvider<Guid, ImportDataModule>, IInstallableModelAsync { }
+    public class ImportDataModuleDataProvider : ModuleDefinitionDataProvider<Guid, ImportDataModule>, IInstallableModel { }
 
     [ModuleGuid("{3AEB70E7-A60F-4306-BDE3-C4355B9B30A4}")]
     [UniqueModule(UniqueModuleStyle.NonUnique)]

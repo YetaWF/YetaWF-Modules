@@ -31,9 +31,9 @@ namespace YetaWF.Modules.Menus.DataProvider {
         public MenuInfoDataProvider() : base(YetaWFManager.Manager.CurrentSite.Identity) { SetDataProvider(CreateDataProvider()); }
         public MenuInfoDataProvider(int siteIdentity) : base(siteIdentity) { SetDataProvider(CreateDataProvider()); }
 
-        private IDataProviderAsync<Guid, MenuInfo> DataProvider { get { return GetDataProvider(); } }
+        private IDataProvider<Guid, MenuInfo> DataProvider { get { return GetDataProvider(); } }
 
-        private IDataProviderAsync<Guid, MenuInfo> CreateDataProvider() {
+        private IDataProvider<Guid, MenuInfo> CreateDataProvider() {
             Package package = YetaWF.Modules.Menus.Controllers.AreaRegistration.CurrentPackage;
             return MakeDataProvider(package, package.AreaName + "_MenuInfo", SiteIdentity: SiteIdentity, Cacheable: true);
         }

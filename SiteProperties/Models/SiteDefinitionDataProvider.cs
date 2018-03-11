@@ -15,7 +15,7 @@ using YetaWF.Modules.SiteProperties.Modules;
 
 namespace YetaWF.Modules.SiteProperties.Models {
 
-    public class SiteDefinitionDataProvider : DataProviderImpl, IInstallableModelAsync, IInitializeApplicationStartup {
+    public class SiteDefinitionDataProvider : DataProviderImpl, IInstallableModel, IInitializeApplicationStartup {
 
         // STARTUP
         // STARTUP
@@ -46,9 +46,9 @@ namespace YetaWF.Modules.SiteProperties.Models {
 
         public SiteDefinitionDataProvider() : base(0) { SetDataProvider(CreateDataProvider()); }
 
-        private IDataProviderAsync<string, SiteDefinition> DataProvider { get { return GetDataProvider(); } }
+        private IDataProvider<string, SiteDefinition> DataProvider { get { return GetDataProvider(); } }
 
-        private IDataProviderAsync<string, SiteDefinition> CreateDataProvider() {
+        private IDataProvider<string, SiteDefinition> CreateDataProvider() {
             Package package = YetaWF.Modules.SiteProperties.Controllers.AreaRegistration.CurrentPackage;
             return MakeDataProvider(package, package.AreaName, Cacheable: true, Parms: new { IdentitySeed = SiteDefinition.SiteIdentitySeed, NoLanguages = true });
         }
@@ -196,7 +196,7 @@ namespace YetaWF.Modules.SiteProperties.Models {
 
             // remove all saved data
             RemoveCache(site);
-            Package.RemoveSiteData(Manager.SiteFolder);
+            await Package.RemoveSiteDataAsync(Manager.SiteFolder);
             await DataProvider.RemoveAsync(site.SiteDomain);// remove domain
             Manager.RestartSite();// everything is now invalid anyway
         }

@@ -132,7 +132,7 @@ namespace YetaWF.Modules.Identity.DataProvider {
     /// File - A small set of users is expected - all users are preloaded so less than 20 is recommended
     /// SQL - No limit
     /// </summary>
-    public class UserDefinitionDataProvider : DataProviderImpl, IInstallableModelAsync {
+    public class UserDefinitionDataProvider : DataProviderImpl, IInstallableModel {
 
         static UserDefinitionDataProvider() { }
 
@@ -145,9 +145,9 @@ namespace YetaWF.Modules.Identity.DataProvider {
         public UserDefinitionDataProvider() : base(YetaWFManager.Manager.CurrentSite.Identity) { SetDataProvider(CreateDataProvider()); }
         public UserDefinitionDataProvider(int siteIdentity) : base(siteIdentity) { SetDataProvider(CreateDataProvider()); }
 
-        private IDataProviderAsync<string, UserDefinition> DataProvider { get { return GetDataProvider(); } }
+        private IDataProvider<string, UserDefinition> DataProvider { get { return GetDataProvider(); } }
 
-        private IDataProviderAsync<string, UserDefinition> CreateDataProvider() {
+        private IDataProvider<string, UserDefinition> CreateDataProvider() {
             Package package = YetaWF.Modules.Identity.Controllers.AreaRegistration.CurrentPackage;
             return MakeDataProvider(package, package.AreaName + "_Users", SiteIdentity: SiteIdentity, Cacheable: true, Parms: new { NoLanguages = true});
         }

@@ -1,13 +1,15 @@
 ﻿/* Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Logging#License */
 
+using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using YetaWF.Core.DataProvider;
 using YetaWF.Core.IO;
 using YetaWF.Core.Log;
 using YetaWF.Core.Packages;
 using YetaWF.Core.Serializers;
 using YetaWF.Core.Support;
-using YetaWF.DataProvider.SQL;
+using YetaWF.DataProvider.SQL2;
 
 namespace YetaWF.Modules.Logging.DataProvider.SQL {
 
@@ -64,23 +66,22 @@ namespace YetaWF.Modules.Logging.DataProvider.SQL {
         public override void Flush() { }
 
         public override void SaveMessage(LogRecord record) {
-            DataProvider.Add(record);
+            DataProvider.AddAsync(record).Wait();//$$$
         }
-        public override LogRecord GetItem(int key) {
-            return DataProvider.Get(key);
+        public new Task<LogRecord> GetItemAsync(int key) {
+            return DataProvider.GetAsync(key);
         }
-        public override bool RemoveItem(int key) {
-            return DataProvider.Remove(key);
+        public new Task<bool> RemoveItemAsync(int key) {
+            return DataProvider.RemoveAsync(key);
         }
-        public override List<LogRecord> GetItems(List<DataProviderFilterInfo> filters) {
-            int total;
-            return DataProvider.GetRecords(0, 0, null, filters, out total);
+        public new DataProviderGetRecords<LogRecord> GetItemsAsync(List<DataProviderFilterInfo> filters) {
+            return DataProvider.GetRecordsAsync(0, 0, null, filters).Result;
         }
-        public override List<LogRecord> GetItems(int skip, int take, List<DataProviderSortInfo> sort, List<DataProviderFilterInfo> filters, out int total) {
-            return DataProvider.GetRecords(skip, take, sort, filters, out total);
+        public override async Task<DataProviderGetRecords<LogRecord>> GetItemsAsync(int skip, int take, List<DataProviderSortInfo> sort, List<DataProviderFilterInfo> filters) {
+            return await DataProvider.GetRecordsAsync(skip, take, sort, filters);
         }
-        public override int RemoveItems(List<DataProviderFilterInfo> filters) {
-            return DataProvider.RemoveRecords(filters);
+        public new async Task<int> RemoveItemsAsync(List<DataProviderFilterInfo> filters) {
+            return await DataProvider.RemoveRecordsAsync(filters);
         }
         public override bool CanBrowse {
             get {
@@ -97,31 +98,31 @@ namespace YetaWF.Modules.Logging.DataProvider.SQL {
         // IINSTALLABLEMODEL
         // IINSTALLABLEMODEL
 
-        public override bool IsInstalled() {
+        public override async Task<bool> IsInstalledAsync() {
             if (YetaWF.Core.Log.Logging.DefinedLoggerType != typeof(LogRecordDataProvider)) return false;
-            return DataProvider.IsInstalled();
+            return await DataProvider.IsInstalledAsync();
         }
-        public bool InstallModel(List<string> errorList) {
+        public async Task<bool> InstallModelAsync(List<string> errorList) {
             if (YetaWF.Core.Log.Logging.DefinedLoggerType != typeof(LogRecordDataProvider)) return true;
-            bool success = DataProvider.InstallModel(errorList);
+            bool success = await DataProvider.InstallModelAsync(errorList);
             if (success)
-                YetaWF.Core.Log.Logging.SetupLogging();
+                await YetaWF.Core.Log.Logging.SetupLoggingAsync();
             return success;
         }
-        public bool UninstallModel(List<string> errorList) {
+        public async Task<bool> UninstallModelAsync(List<string> errorList) {
             if (YetaWF.Core.Log.Logging.DefinedLoggerType != typeof(LogRecordDataProvider)) return true;
             YetaWF.Core.Log.Logging.TerminateLogging();
-            return DataProvider.UninstallModel(errorList);
+            return await DataProvider.UninstallModelAsync(errorList);
         }
-        public void AddSiteData() { }
-        public void RemoveSiteData() { }
-        public bool ExportChunk(int chunk, SerializableList<SerializableFile> fileList, out object obj) {
+        public Task AddSiteDataAsync() { return Task.CompletedTask; }
+        public Task RemoveSiteDataAsync() { return Task.CompletedTask; }
+        public Task<DataProviderExportChunk> ExportChunkAsync(int chunk, SerializableList<SerializableFile> fileList) {
             // we're not exporting any data
-            obj = null;
-            return false;
+            return Task.FromResult(new DataProviderExportChunk());
         }
-        public void ImportChunk(int chunk, SerializableList<SerializableFile> fileList, object obj) {
+        public Task ImportChunkAsync(int chunk, SerializableList<SerializableFile> fileList, object obj) {
             // we're not importing any data
+            return Task.CompletedTask;
         }
     }
 }

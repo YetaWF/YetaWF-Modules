@@ -16,8 +16,8 @@ namespace YetaWF.Modules.Basics.DataProvider {
         // STARTUP
 
         public void InitializeApplicationStartup() {
-            RecaptchaConfig.LoadRecaptchaConfig = RecaptchaConfigDataProvider.LoadRecaptchaConfig;
-            RecaptchaConfig.SaveRecaptchaConfig = RecaptchaConfigDataProvider.SaveRecaptchaConfig;
+            RecaptchaConfig.LoadRecaptchaConfigAsync = RecaptchaConfigDataProvider.LoadRecaptchaConfigAsync;
+            RecaptchaConfig.SaveRecaptchaConfigAsync = RecaptchaConfigDataProvider.SaveRecaptchaConfigAsync;
         }
 
     }
@@ -34,9 +34,9 @@ namespace YetaWF.Modules.Basics.DataProvider {
 
         public RecaptchaConfigDataProvider() : base(0) { SetDataProvider(CreateDataProvider()); }
 
-        private IDataProviderAsync<int, RecaptchaConfig> DataProvider { get { return GetDataProvider(); } }
+        private IDataProvider<int, RecaptchaConfig> DataProvider { get { return GetDataProvider(); } }
 
-        private IDataProviderAsync<int, RecaptchaConfig> CreateDataProvider() {
+        private IDataProvider<int, RecaptchaConfig> CreateDataProvider() {
             Package package = YetaWF.Modules.Basics.Controllers.AreaRegistration.CurrentPackage;
             return MakeDataProvider(package, package.AreaName, Cacheable: true);
         }
@@ -75,13 +75,13 @@ namespace YetaWF.Modules.Basics.DataProvider {
                 throw new InternalError("Can't save captcha configuration {0}", status);
         }
 
-        internal static async Task<RecaptchaConfig> LoadRecaptchaConfig() {
+        internal static async Task<RecaptchaConfig> LoadRecaptchaConfigAsync() {
             using (RecaptchaConfigDataProvider recaptchaDP = new RecaptchaConfigDataProvider()) {
                 return await recaptchaDP.GetItemAsync();
             }
         }
 
-        internal static async Task SaveRecaptchaConfig(RecaptchaConfig config) {
+        internal static async Task SaveRecaptchaConfigAsync(RecaptchaConfig config) {
             using (RecaptchaConfigDataProvider recaptchaDP = new RecaptchaConfigDataProvider()) {
                 await recaptchaDP.UpdateConfigAsync(config);
             }

@@ -99,7 +99,7 @@ namespace YetaWF.Modules.Identity.DataProvider {
         public LoginConfigData() { }
     }
 
-    public class LoginConfigDataProvider : DataProviderImpl, IInstallableModelAsync {
+    public class LoginConfigDataProvider : DataProviderImpl, IInstallableModel {
 
         private const int KEY = 1;
 
@@ -112,9 +112,9 @@ namespace YetaWF.Modules.Identity.DataProvider {
         public LoginConfigDataProvider() : base(YetaWFManager.Manager.CurrentSite.Identity) { SetDataProvider(CreateDataProvider()); }
         public LoginConfigDataProvider(int siteIdentity) : base(siteIdentity) { SetDataProvider(CreateDataProvider()); }
 
-        private IDataProviderAsync<int, LoginConfigData> DataProvider { get { return GetDataProvider(); } }
+        private IDataProvider<int, LoginConfigData> DataProvider { get { return GetDataProvider(); } }
 
-        private IDataProviderAsync<int, LoginConfigData> CreateDataProvider() {
+        private IDataProvider<int, LoginConfigData> CreateDataProvider() {
             Package package = YetaWF.Modules.Identity.Controllers.AreaRegistration.CurrentPackage;
             return MakeDataProvider(package, package.AreaName, SiteIdentity: SiteIdentity, Cacheable: true);
         }

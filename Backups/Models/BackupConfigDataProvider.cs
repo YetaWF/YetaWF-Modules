@@ -36,9 +36,9 @@ namespace YetaWF.Modules.Backups.DataProvider {
         public ConfigDataProvider() : base(YetaWFManager.Manager.CurrentSite.Identity) { SetDataProvider(CreateDataProvider()); }
         public ConfigDataProvider(int siteIdentity) : base(siteIdentity) { SetDataProvider(CreateDataProvider()); }
 
-        private IDataProviderAsync<int, ConfigData> DataProvider { get { return GetDataProvider(); } }
+        private IDataProvider<int, ConfigData> DataProvider { get { return GetDataProvider(); } }
 
-        private IDataProviderAsync<int, ConfigData> CreateDataProvider() {
+        private IDataProvider<int, ConfigData> CreateDataProvider() {
             Package package = YetaWF.Modules.Backups.Controllers.AreaRegistration.CurrentPackage;
             return MakeDataProvider(package, package.AreaName + "_Config", SiteIdentity: SiteIdentity, Cacheable: true);
         }

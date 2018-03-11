@@ -11,7 +11,7 @@
             }
             @Html.RenderTabStripStart(DivId)
             @for (panelIndex = 0; panelIndex < Model.Panels.Count; ++panelIndex) {
-                if (Model.Panels[panelIndex].IsAuthorized()) {
+                if (Model.Panels[panelIndex].IsAuthorizedAsync().Result) {
                     string caption = Model.Panels[panelIndex].Caption;
                     if (string.IsNullOrWhiteSpace(caption)) { caption = __ResStr("noCaption", "(no caption)"); }
                     string toolTip = Model.Panels[panelIndex].ToolTip;
@@ -26,14 +26,14 @@
                 tabIndex = 0;
             }
             @foreach (PanelInfo.PanelEntry panel in Model.Panels) {
-                if (Model.Panels[panelIndex].IsAuthorized()) {
+                if (Model.Panels[panelIndex].IsAuthorizedAsync().Result) {
                     @Html.RenderTabPaneStart(DivId, tabIndex, "t_panel")
                     @Html.RenderHidden("Index", tabIndex)
-                    ModuleDefinition mod = Model.Panels[panelIndex].GetModule();
+                    ModuleDefinition mod = Model.Panels[panelIndex].GetModuleAsync().Result;
                     if (mod != null) {
                         mod.BootstrapContainer = ModuleDefinition.BootstrapContainerEnum.None;/*Don't generate container css class*/
                         mod.ShowTitle = false;
-                        @mod.RenderModule(Html);
+                        @mod.RenderModuleAsync(Html).Result;
                     } else {
                         <div>
                             @__ResStr("noModule", "(no module defined)")
@@ -50,15 +50,15 @@
         <div class="t_panels t_accjquery" id="@DivId">
             @{ int panelIndex = 0; }
             @for (panelIndex = 0; panelIndex < Model.Panels.Count; ++panelIndex) {
-                if (Model.Panels[panelIndex].IsAuthorized()) {
+                if (Model.Panels[panelIndex].IsAuthorizedAsync().Result) {
                     string caption = Model.Panels[panelIndex].Caption;
                     if (string.IsNullOrWhiteSpace(caption)) { caption = __ResStr("noCaption", "(no caption)"); }
                     <h3>@caption</h3>
-                    ModuleDefinition mod = Model.Panels[panelIndex].GetModule();
+                    ModuleDefinition mod = Model.Panels[panelIndex].GetModuleAsync().Result;
                     if (mod != null) {
                         mod.BootstrapContainer = ModuleDefinition.BootstrapContainerEnum.None;/*Don't generate container css class*/
                         mod.ShowTitle = false;
-                    @mod.RenderModule(Html);
+                        @mod.RenderModuleAsync(Html).Result;
                     } else {
                         <div>
                             @__ResStr("noModule", "(no module defined)")
@@ -83,17 +83,17 @@
                 int tabIndex = 0;
             }
             @for (panelIndex = 0; panelIndex < Model.Panels.Count; ++panelIndex) {
-                if (Model.Panels[panelIndex].IsAuthorized()) {
+                if (Model.Panels[panelIndex].IsAuthorizedAsync().Result) {
                     string caption = Model.Panels[panelIndex].Caption;
                     if (string.IsNullOrWhiteSpace(caption)) { caption = __ResStr("noCaption", "(no caption)"); }
                     <li class="@(Model._ActiveTab == tabIndex ? "k-state-active" : "")">
                         <span class="@(Model._ActiveTab == tabIndex ? "k-link k-state-selected" : "")">@caption</span>
                         <div class="t_panel-kendo" style="display:none">
-                            @{ ModuleDefinition mod = Model.Panels[panelIndex].GetModule(); }
+                            @{ ModuleDefinition mod = Model.Panels[panelIndex].GetModuleAsync().Result; }
                             @if (mod != null) {
                                 mod.BootstrapContainer = ModuleDefinition.BootstrapContainerEnum.None;/*Don't generate container css class*/
                                 mod.ShowTitle = false;
-                                @mod.RenderModule(Html);
+                                @mod.RenderModuleAsync(Html).Result;
                             } else {
                                 @__ResStr("noModule", "(no module defined)")
                             }

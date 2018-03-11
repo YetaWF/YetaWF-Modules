@@ -38,7 +38,7 @@ namespace YetaWF.Modules.Messenger.Controllers {
 
     public class YetaWF_Messenger_Messaging : Hub {
 
-        public void Send(string toUser, string message) {
+        public async Task Send(string toUser, string message) {
 
             YetaWFManager manager = Signalr.SetupEnvironment();
             using (MessagingDataProvider msgDP = new MessagingDataProvider()) {
@@ -55,7 +55,7 @@ namespace YetaWF.Modules.Messenger.Controllers {
                         Seen = false,
                         MessageText = message,
                     };
-                    if (!msgDP.AddItem(msg)) throw new InternalError("Message not delivered - Message could not be saved");
+                    if (!await msgDP.AddItemAsync(msg)) throw new InternalError("Message not delivered - Message could not be saved");
 
                     Dispatch(Clients.User(toUser), "message", msg.Key, manager.UserName, message, Formatting.FormatDateTime(msg.Sent));
                     Dispatch(Clients.User(manager.UserName), "messageSent", msg.Key, toUser, message, Formatting.FormatDateTime(msg.Sent));
@@ -70,40 +70,39 @@ namespace YetaWF.Modules.Messenger.Controllers {
                         Seen = false,
                         MessageText = messageText,
                     };
-                    msgDP.AddItem(msg);
+                    await msgDP.AddItemAsync(msg);
                 }
             }
         }
-        public List<string> GetOnlineUsers() {
+        public async Task<List<string>> GetOnlineUsers() {
             YetaWFManager manager = Signalr.SetupEnvironment();
             using (ConnectionDataProvider connDP = new ConnectionDataProvider()) {
                 //$$$ limit scope to friend users
-                int total;
                 List<DataProviderFilterInfo> filters = null;
                 filters = DataProviderFilterInfo.Join(filters, new DataProviderFilterInfo { Field = "Name", Operator = "!=", Value = null });
                 List<DataProviderSortInfo> sorts = null;
                 sorts = DataProviderSortInfo.Join(sorts, new DataProviderSortInfo { Field = "Name", Order = DataProviderSortInfo.SortDirection.Ascending });
-                List<Connection> conns = connDP.GetItems(0, 0, sorts, filters, out total);
+                DataProviderGetRecords<Connection> conns = await connDP.GetItemsAsync(0, 0, sorts, filters);
 
-                return (from c in conns select c.Name).Distinct().ToList();
+                return (from c in conns.Data select c.Name).Distinct().ToList();
             }
         }
-        public bool IsUserOnline(string user) {
+        public async Task<bool> IsUserOnline(string user) {
             YetaWFManager manager = Signalr.SetupEnvironment();
             using (ConnectionDataProvider connDP = new ConnectionDataProvider()) {
-                Connection conn = connDP.GetEntry(user);
+                Connection conn = await connDP.GetEntryAsync(user);
                 return conn != null;
             }
         }
-        public void MessageSeen(int key) {
+        public async Task MessageSeen(int key) {
             YetaWFManager manager = Signalr.SetupEnvironment();
             if (manager.UserId == 0) throw new InternalError("No current user");
             using (MessagingDataProvider msgDP = new MessagingDataProvider()) {
-                Message msg = msgDP.GetItem(key);
+                Message msg = await msgDP.GetItemAsync(key);
                 if (msg.ToUser != manager.UserId) throw new InternalError("User mismatch");
                 if (!msg.Seen) {
                     msg.Seen = true;
-                    msgDP.UpdateItem(msg);
+                    await msgDP.UpdateItemAsync(msg);
                 }
                 string fromUser = YetaWFManager.Syncify<string>(() => Resource.ResourceAccess.GetUserNameAsync(msg.FromUser));//$$syncify
                 if (string.IsNullOrWhiteSpace(fromUser)) throw new Error(this.__ResStr("noFromUser", "User {0} doesn't exist", msg.FromUser));
@@ -113,7 +112,7 @@ namespace YetaWF.Modules.Messenger.Controllers {
                 Dispatch(Clients.User(fromUser), "messageSeen", msg.Key, toUser);
             }
         }
-        public void AllMessagesSeen(string fromUser) {
+        public async Task AllMessagesSeen(string fromUser) {
             YetaWFManager manager = Signalr.SetupEnvironment();
             if (manager.UserId == 0) throw new InternalError("No current user");
 
@@ -126,20 +125,19 @@ namespace YetaWF.Modules.Messenger.Controllers {
                 filters = DataProviderFilterInfo.Join(filters, new DataProviderFilterInfo { Field = "FromUser", Operator = "==", Value = fromUserId });
                 filters = DataProviderFilterInfo.Join(filters, new DataProviderFilterInfo { Field = "ToUser", Operator = "==", Value = manager.UserId });
                 filters = DataProviderFilterInfo.Join(filters, new DataProviderFilterInfo { Field = "Seen", Operator = "==", Value = false });
-                int total;
-                List<Message> msgs = msgDP.GetItems(0, 0, null, filters, out total);
-                foreach (Message msg in msgs) {
+                DataProviderGetRecords<Message> msgs = await msgDP.GetItemsAsync(0, 0, null, filters);
+                foreach (Message msg in msgs.Data) {
                     msg.Seen = true;
-                    msgDP.UpdateItem(msg);
+                    await msgDP.UpdateItemAsync(msg);
                 }
             }
             Dispatch(Clients.User(fromUser), "allMessagesSeen", manager.UserName);
         }
 
-        private void UpdateConnection(string user, string ipAddress, string connectionId) {
+        private async Task UpdateConnection(string user, string ipAddress, string connectionId) {
             try {
                 using (ConnectionDataProvider connDP = new ConnectionDataProvider()) {
-                    connDP.UpdateEntry(user, ipAddress, connectionId);
+                    await connDP.UpdateEntryAsync(user, ipAddress, connectionId);
                 }
             } catch (Exception) { }
         }
@@ -169,7 +167,7 @@ namespace YetaWF.Modules.Messenger.Controllers {
 
                 try {
                     using (ConnectionDataProvider connDP = new ConnectionDataProvider(site.Identity)) {
-                        connDP.UpdateEntry(name, ipAddress, connectionId);
+                        await connDP.UpdateEntryAsync(name, ipAddress, connectionId);
                     }
                 } catch (Exception) { }
 
@@ -199,7 +197,7 @@ namespace YetaWF.Modules.Messenger.Controllers {
                 SiteDefinition site = await SiteDefinition.LoadSiteDefinitionAsync(host);
                 if (site == null) throw new InternalError("No site definition for {0}", host);
                 using (ConnectionDataProvider connDP = new ConnectionDataProvider(site.Identity)) {
-                    connDP.RemoveItem(Context.ConnectionId);
+                    await connDP.RemoveItemAsync(Context.ConnectionId);
                 }
             } catch (Exception) { }
 

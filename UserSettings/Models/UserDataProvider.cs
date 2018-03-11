@@ -124,9 +124,9 @@ namespace YetaWF.Modules.UserSettings.DataProvider {
         public UserDataProvider() : base(YetaWFManager.Manager.CurrentSite.Identity) { SetDataProvider(CreateDataProvider()); }
         public UserDataProvider(int siteIdentity) : base(siteIdentity) { SetDataProvider(CreateDataProvider()); }
 
-        private IDataProviderAsync<int, UserData> DataProvider { get { return GetDataProvider(); } }
+        private IDataProvider<int, UserData> DataProvider { get { return GetDataProvider(); } }
 
-        private IDataProviderAsync<int, UserData> CreateDataProvider() {
+        private IDataProvider<int, UserData> CreateDataProvider() {
             Package package = YetaWF.Modules.UserSettings.Controllers.AreaRegistration.CurrentPackage;
             return MakeDataProvider(package, package.AreaName, SiteIdentity: SiteIdentity, Cacheable: true);
         }

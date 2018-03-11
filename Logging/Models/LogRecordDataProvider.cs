@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Reflection;
 using System.Text;
+using System.Threading.Tasks;
 using YetaWF.Core;
 using YetaWF.Core.DataProvider;
 using YetaWF.Core.DataProvider.Attributes;
@@ -195,19 +196,19 @@ namespace YetaWF.Modules.Logging.DataProvider {
             WriteInProgess = false;
         }
 
-        public virtual LogRecord GetItem(int key) {
+        public virtual Task<LogRecord> GetItemAsync(int key) {
             throw new NotImplementedException();
         }
-        public virtual bool RemoveItem(int key) {
+        public virtual Task<bool> RemoveItemAsync(int key) {
             throw new NotImplementedException();
         }
-        public virtual List<LogRecord> GetItems(List<DataProviderFilterInfo> filters) {
+        public virtual Task<List<LogRecord>> GetItemsAsync(List<DataProviderFilterInfo> filters) {
             throw new NotImplementedException();
         }
-        public virtual List<LogRecord> GetItems(int skip, int take, List<DataProviderSortInfo> sort, List<DataProviderFilterInfo> filters, out int total) {
+        public virtual Task<DataProviderGetRecords<LogRecord>> GetItemsAsync(int skip, int take, List<DataProviderSortInfo> sort, List<DataProviderFilterInfo> filters) {
             throw new NotImplementedException();
         }
-        public virtual int RemoveItems(List<DataProviderFilterInfo> filters) {
+        public virtual Task<int> RemoveItemsAsync(List<DataProviderFilterInfo> filters) {
             throw new NotImplementedException();
         }
 
@@ -254,6 +255,6 @@ namespace YetaWF.Modules.Logging.DataProvider {
             return sb.ToString();
         }
 
-        public abstract bool IsInstalled();
+        public abstract Task<bool> IsInstalledAsync();
     }
 }

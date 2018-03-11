@@ -49,7 +49,7 @@ namespace YetaWF.Modules.Identity.DataProvider {
     /// Roles are separated by site
     /// File,SQL - A small set of roles is expected, so they're preloaded - If a large # > 100 is expected, this must be rewritten
     /// </summary>
-    public class RoleDefinitionDataProvider : DataProviderImpl, IInstallableModelAsync {
+    public class RoleDefinitionDataProvider : DataProviderImpl, IInstallableModel {
 
         private static object _lockObject = new object();
 
@@ -65,9 +65,9 @@ namespace YetaWF.Modules.Identity.DataProvider {
         public RoleDefinitionDataProvider() : base(YetaWFManager.Manager.CurrentSite.Identity) { SetDataProvider(CreateDataProvider()); }
         public RoleDefinitionDataProvider(int siteIdentity) : base(siteIdentity) { SetDataProvider(CreateDataProvider()); }
 
-        private IDataProviderAsync<string, RoleDefinition> DataProvider { get { return GetDataProvider(); } }
+        private IDataProvider<string, RoleDefinition> DataProvider { get { return GetDataProvider(); } }
 
-        private IDataProviderAsync<string, RoleDefinition> CreateDataProvider() {
+        private IDataProvider<string, RoleDefinition> CreateDataProvider() {
             Package package = YetaWF.Modules.Identity.Controllers.AreaRegistration.CurrentPackage;
             return MakeDataProvider(package, package.AreaName + "_Roles", SiteIdentity: SiteIdentity, Cacheable: true);
         }

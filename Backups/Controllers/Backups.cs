@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using YetaWF.Core.Addons;
 using YetaWF.Core.Controllers;
 using YetaWF.Core.DataProvider;
@@ -84,15 +85,14 @@ namespace YetaWF.Modules.Backups.Controllers {
         }
 
         [AllowPost]
-        public ActionResult Backups_GridData(int skip, int take, List<DataProviderSortInfo> sort, List<DataProviderFilterInfo> filters, Guid settingsModuleGuid) {
+        public async Task<ActionResult> Backups_GridData(int skip, int take, List<DataProviderSortInfo> sort, List<DataProviderFilterInfo> filters, Guid settingsModuleGuid) {
             using (BackupsDataProvider dataProvider = new BackupsDataProvider()) {
-                int total;
-                List<BackupEntry> backups = dataProvider.GetBackups(skip, take, sort, filters, out total);
+                DataProviderGetRecords<BackupEntry> backups = await dataProvider.GetBackupsAsync(skip, take, sort, filters);
                 GridHelper.SaveSettings(skip, take, sort, filters, settingsModuleGuid);
                 return GridPartialView(
                     new DataSourceResult {
-                        Data = (from b in backups select new BackupModel(Module, b)).ToList<object>(),
-                        Total = total
+                        Data = (from b in backups.Data select new BackupModel(Module, b)).ToList<object>(),
+                        Total = backups.Total
                     }
                 );
             }
@@ -101,10 +101,10 @@ namespace YetaWF.Modules.Backups.Controllers {
         [AllowPost]
         [Permission("Backups")]
         [ExcludeDemoMode]
-        public ActionResult PerformSiteBackup() {
+        public async System.Threading.Tasks.Task<ActionResult> PerformSiteBackup() {
             List<string> errorList = new List<string>();
             SiteBackup siteBackup = new SiteBackup();
-            if (!siteBackup.Create(errorList, ForDistribution: true)) {
+            if (!await siteBackup.CreateAsync(errorList, ForDistribution: true)) {
                 ScriptBuilder sb = new ScriptBuilder();
                 sb.Append(this.__ResStr("cantBackup", "Can't create a site backup for site {0}:(+nl)"), Manager.CurrentSite.SiteDomain);
                 sb.Append(errorList, LeadingNL: true);
@@ -116,11 +116,11 @@ namespace YetaWF.Modules.Backups.Controllers {
         [AllowPost]
         [Permission("Backups")]
         [ExcludeDemoMode]
-        public ActionResult MakeSiteTemplateData() {
+        public async Task<ActionResult> MakeSiteTemplateData() {
             if (Manager.Deployed)
                 throw new InternalError("Can't make site template data on a deployed site");
             SiteTemplateData siteTemplateData = new SiteTemplateData();
-            siteTemplateData.MakeSiteTemplateData();
+            await siteTemplateData.MakeSiteTemplateDataAsync();
             return Reload(null, PopupText: this.__ResStr("templatesCreated", "The templates for the current site have been successfully created in the \\SiteTemplates\\Data folder"), Reload: ReloadEnum.ModuleParts);
         }
 

@@ -18,7 +18,7 @@ namespace YetaWF.Modules.Identity.DataProvider {
     /// SuperuserDefinitionDataProvider
     /// The superuser is common to all sites - only ONE is supported (how many security holes do you really need?)
     /// </summary>
-    public class SuperuserDefinitionDataProvider : DataProviderImpl, IInstallableModelAsync {
+    public class SuperuserDefinitionDataProvider : DataProviderImpl, IInstallableModel {
 
         public static readonly int SuperUserId = 1;
 
@@ -45,9 +45,9 @@ namespace YetaWF.Modules.Identity.DataProvider {
 
         public SuperuserDefinitionDataProvider() : base(0) { SetDataProvider(CreateDataProvider()); }
 
-        private IDataProviderAsync<string, UserDefinition> DataProvider { get { return GetDataProvider(); } }
+        private IDataProvider<string, UserDefinition> DataProvider { get { return GetDataProvider(); } }
 
-        protected IDataProviderAsync<string, UserDefinition> CreateDataProvider() {
+        protected IDataProvider<string, UserDefinition> CreateDataProvider() {
             Package package = YetaWF.Modules.Identity.Controllers.AreaRegistration.CurrentPackage;
             return MakeDataProvider(package, package.AreaName + "_Superusers", Cacheable: true, Parms: new { IdentitySeed = SuperUserId, NoLanguages = true });
         }

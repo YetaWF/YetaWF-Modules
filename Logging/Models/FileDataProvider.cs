@@ -3,6 +3,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Threading.Tasks;
 using YetaWF.Core.DataProvider;
 using YetaWF.Core.IO;
 using YetaWF.Core.Log;
@@ -78,20 +79,20 @@ namespace YetaWF.Modules.Logging.DataProvider.File {
             }
         }
 
-        public override LogRecord GetItem(int key) {
+        public override Task<LogRecord> GetItemAsync(int key) {
             throw new NotImplementedException();
         }
-        public override bool RemoveItem(int key) {
+        public override Task<bool> RemoveItemAsync(int key) {
             throw new NotImplementedException();
         }
 
-        public override List<LogRecord> GetItems(List<DataProviderFilterInfo> filters) {
+        public override Task<List<LogRecord>> GetItemsAsync(List<DataProviderFilterInfo> filters) {
             throw new NotImplementedException();
         }
-        public override List<LogRecord> GetItems(int skip, int take, List<DataProviderSortInfo> sort, List<DataProviderFilterInfo> filters, out int total) {
+        public override Task<DataProviderGetRecords<LogRecord>> GetItemsAsync(int skip, int take, List<DataProviderSortInfo> sort, List<DataProviderFilterInfo> filters) {
             throw new NotImplementedException();
         }
-        public override int RemoveItems(List<DataProviderFilterInfo> filters) {
+        public override Task<int> RemoveItemsAsync(List<DataProviderFilterInfo> filters) {
             throw new NotImplementedException();
         }
         public override bool CanBrowse {
@@ -112,38 +113,38 @@ namespace YetaWF.Modules.Logging.DataProvider.File {
         // IINSTALLABLEMODEL
         // IINSTALLABLEMODEL
 
-        public override bool IsInstalled() {
-            if (YetaWF.Core.Log.Logging.DefinedLoggerType != typeof(LogRecordDataProvider)) return false;
+        public override Task<bool> IsInstalledAsync() {
+            if (YetaWF.Core.Log.Logging.DefinedLoggerType != typeof(LogRecordDataProvider)) return Task.FromResult(false);
+            return Task.FromResult(_isInstalled != null);
+        }
+        public async Task<bool> InstallModelAsync(List<string> errorList) {
+            if (YetaWF.Core.Log.Logging.DefinedLoggerType != typeof(LogRecordDataProvider)) return true;
             if (_isInstalled == null)
                 _isInstalled = Directory.Exists(Path.GetDirectoryName(LogFile));
-            return (bool)_isInstalled;
-        }
-        private bool? _isInstalled;
-        public bool InstallModel(List<string> errorList) {
-            if (YetaWF.Core.Log.Logging.DefinedLoggerType != typeof(LogRecordDataProvider)) return true;
-            System.IO.Directory.CreateDirectory(Path.GetDirectoryName(LogFile));
-            YetaWF.Core.Log.Logging.SetupLogging();
+            await YetaWF.Core.Log.Logging.SetupLoggingAsync();
             _isInstalled = true;
             return true;
         }
-        public bool UninstallModel(List<string> errorList) {
-            if (YetaWF.Core.Log.Logging.DefinedLoggerType != typeof(LogRecordDataProvider)) return true;
+        private bool? _isInstalled;
+
+        public Task<bool> UninstallModelAsync(List<string> errorList) {
+            if (YetaWF.Core.Log.Logging.DefinedLoggerType != typeof(LogRecordDataProvider)) return Task.FromResult(true);
             YetaWF.Core.Log.Logging.TerminateLogging();
             try {
                 System.IO.File.Delete(LogFile);
             } catch (Exception) { }
             _isInstalled = false;
-            return true;
+            return Task.FromResult(true);
         }
-        public void AddSiteData() { }
-        public void RemoveSiteData() { }
-        public bool ExportChunk(int chunk, SerializableList<SerializableFile> fileList, out object obj) {
+        public Task AddSiteDataAsync() { return Task.CompletedTask;  }
+        public Task RemoveSiteDataAsync() { return Task.CompletedTask; }
+        public Task<DataProviderExportChunk> ExportChunkAsync(int chunk, SerializableList<SerializableFile> fileList) {
             // we're not exporting any data
-            obj = null;
-            return false;
+            return Task.FromResult(new DataProviderExportChunk());
         }
-        public void ImportChunk(int chunk, SerializableList<SerializableFile> fileList, object obj) {
+        public Task ImportChunkAsync(int chunk, SerializableList<SerializableFile> fileList, object obj) {
             // we're not importing any data
+            return Task.CompletedTask;
         }
     }
 }

@@ -111,12 +111,11 @@ namespace YetaWF.Modules.Packages.Controllers {
             ModuleDefinition modLocalize = await ModuleDefinition.LoadAsync(Manager.CurrentSite.PackageLocalizationServices, AllowNone: true);
             if (modLocalize == null)
                 throw new InternalError("No localization services available - no module has been defined");
-            int total;
-            List<Package> packages = Package.GetAvailablePackages(skip, take, sort, filters, out total);
+            DataProviderGetRecords<Package> packages = Package.GetAvailablePackages(skip, take, sort, filters);
             GridHelper.SaveSettings(skip, take, sort, filters, settingsModuleGuid);
             return GridPartialView(new DataSourceResult {
-                Data = (from p in packages select new PackageModel(Module, modLocalize, p)).ToList<object>(),
-                Total = total
+                Data = (from p in packages.Data select new PackageModel(Module, modLocalize, p)).ToList<object>(),
+                Total = packages.Total
             });
         }
 
@@ -137,9 +136,9 @@ namespace YetaWF.Modules.Packages.Controllers {
         }
 
         [Permission("Imports")]
-        public ActionResult ExportPackageData(string packageName, long cookieToReturn) {
+        public async Task<ActionResult> ExportPackageData(string packageName, long cookieToReturn) {
             Package package = Package.GetPackageFromPackageName(packageName);
-            YetaWFZipFile zipFile = package.ExportData();
+            YetaWFZipFile zipFile = await package.ExportDataAsync();
             return new ZippedFileResult(zipFile, cookieToReturn);
         }
 

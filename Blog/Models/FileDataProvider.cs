@@ -65,7 +65,7 @@ namespace YetaWF.Modules.Blog.DataProvider.File {
             internal string GetCommentFolder(int blogEntry) {
                 return Path.Combine(GetCommentFolderRoot(), string.Format("Ent{0}", blogEntry));
             }
-            public new int RemoveRecords(List<DataProviderFilterInfo> filters) {
+            public new async Task<int> RemoveRecordsAsync(List<DataProviderFilterInfo> filters) {
                 if (filters != null && filters.Count == 1) {
                     DataProviderFilterInfo f = filters.First();
                     int entryIdentity = GetEntryIdentity();
@@ -74,7 +74,7 @@ namespace YetaWF.Modules.Blog.DataProvider.File {
                         return 1;
                     }
                 }
-                return base.RemoveRecords(filters);
+                return await base.RemoveRecordsAsync(filters);
             }
         }
         class BlogConfigDataProvider : FileDataProvider<int, BlogConfigData> {

@@ -182,7 +182,7 @@ namespace YetaWF.Modules.Blog.DataProvider {
         public static Guid FolderGuid { get { return ModuleDefinition.GetPermanentGuid(typeof(EntryDisplayModule)); } }
     }
 
-    public class BlogEntryDataProvider : DataProviderImpl, IInstallableModelAsync, ISearchDynamicUrlsAsync, ISiteMapDynamicUrlsAsync {
+    public class BlogEntryDataProvider : DataProviderImpl, IInstallableModel, ISearchDynamicUrls, ISiteMapDynamicUrls {
 
         // IMPLEMENTATION
         // IMPLEMENTATION
@@ -190,9 +190,9 @@ namespace YetaWF.Modules.Blog.DataProvider {
 
         public BlogEntryDataProvider() : base(YetaWFManager.Manager.CurrentSite.Identity) { SetDataProvider(CreateDataProvider()); }
 
-        private IDataProviderAsync<int, BlogEntry> DataProvider { get { return GetDataProvider(); } }
+        private IDataProvider<int, BlogEntry> DataProvider { get { return GetDataProvider(); } }
 
-        private IDataProviderAsync<int, BlogEntry> CreateDataProvider() {
+        private IDataProvider<int, BlogEntry> CreateDataProvider() {
             Package package = YetaWF.Modules.Blog.Controllers.AreaRegistration.CurrentPackage;
             return MakeDataProvider(package, package.AreaName + "_Entries", SiteIdentity: SiteIdentity, Cacheable: true);
         }

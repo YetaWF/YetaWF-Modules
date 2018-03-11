@@ -4,6 +4,7 @@ using Ionic.Zip;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using YetaWF.Core.Addons;
 using YetaWF.Core.Controllers;
 using YetaWF.Core.DataProvider;
@@ -109,11 +110,11 @@ namespace YetaWF.Modules.Logging.Controllers {
         }
 
         [AllowGet]
-        public ActionResult BrowseLog() {
+        public async Task<ActionResult> BrowseLog() {
             FlushLog();
             using (LogRecordDataProvider dataProvider = LogRecordDataProvider.GetLogRecordDataProvider()) {
                 BrowseModel model = new BrowseModel {
-                    LogAvailable = dataProvider.IsInstalled(),
+                    LogAvailable = await dataProvider.IsInstalledAsync(),
                     BrowsingSupported = dataProvider.CanBrowse,
                 };
                 if (dataProvider.CanBrowse) {
@@ -135,16 +136,15 @@ namespace YetaWF.Modules.Logging.Controllers {
         }
 
         [AllowPost]
-        public ActionResult BrowseLog_GridData(int skip, int take, List<DataProviderSortInfo> sort, List<DataProviderFilterInfo> filters, Guid settingsModuleGuid) {
+        public async Task<ActionResult> BrowseLog_GridData(int skip, int take, List<DataProviderSortInfo> sort, List<DataProviderFilterInfo> filters, Guid settingsModuleGuid) {
             FlushLog();
             GridHelper.UpdateAlternateSortColumn(sort, filters, "UserId", "UserName");
             using (LogRecordDataProvider dataProvider = LogRecordDataProvider.GetLogRecordDataProvider()) {
-                int total;
-                List<LogRecord> browseItems = dataProvider.GetItems(skip, take, sort, filters, out total);
+                DataProviderGetRecords<LogRecord> browseItems = await dataProvider.GetItemsAsync(skip, take, sort, filters);
                 GridHelper.SaveSettings(skip, take, sort, filters, settingsModuleGuid);
                 return GridPartialView(new DataSourceResult {
-                    Data = (from s in browseItems select new BrowseItem(Module, s)).ToList<object>(),
-                    Total = total
+                    Data = (from s in browseItems.Data select new BrowseItem(Module, s)).ToList<object>(),
+                    Total = browseItems.Total
                 });
             }
         }
@@ -155,7 +155,7 @@ namespace YetaWF.Modules.Logging.Controllers {
         public ActionResult RemoveAll() {
             FlushLog();
             using (LogRecordDataProvider dataProvider = LogRecordDataProvider.GetLogRecordDataProvider()) {
-                dataProvider.RemoveItems(null);// that means all records
+                dataProvider.RemoveItemsAsync(null);// that means all records
                 return Reload(null, PopupText: this.__ResStr("allRemoved", "All log records have been removed"), Reload: ReloadEnum.ModuleParts);
             }
         }

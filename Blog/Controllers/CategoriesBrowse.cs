@@ -134,9 +134,9 @@ namespace YetaWF.Modules.Blog.Controllers {
         [AllowPost]
         [Permission("NewsSiteMap")]
         [ExcludeDemoMode]
-        public ActionResult CreateNewsSiteMap() {
+        public async Task<ActionResult> CreateNewsSiteMap() {
             NewsSiteMap sm = new NewsSiteMap();
-            sm.Create();
+            await sm.CreateAsync();
             return Reload(null, Reload: ReloadEnum.ModuleParts, PopupText: this.__ResStr("screDone", "The news site map has been successfully created"));
         }
 

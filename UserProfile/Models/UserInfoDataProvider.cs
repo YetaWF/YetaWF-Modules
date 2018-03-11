@@ -67,7 +67,7 @@ namespace YetaWF.Modules.UserProfile.DataProvider {
         public string Email { get; set; }
     }
 
-    public class UserInfoDataProvider : DataProviderImpl, IInstallableModelAsync, IRemoveUser {
+    public class UserInfoDataProvider : DataProviderImpl, IInstallableModel, IRemoveUser {
 
         // IMPLEMENTATION
         // IMPLEMENTATION
@@ -76,9 +76,9 @@ namespace YetaWF.Modules.UserProfile.DataProvider {
         public UserInfoDataProvider() : base(YetaWFManager.Manager.CurrentSite.Identity) { SetDataProvider(CreateDataProvider()); }
         public UserInfoDataProvider(int siteIdentity) : base(siteIdentity) { SetDataProvider(CreateDataProvider()); }
 
-        private IDataProviderAsync<int, UserInfo> DataProvider { get { return GetDataProvider(); } }
+        private IDataProvider<int, UserInfo> DataProvider { get { return GetDataProvider(); } }
 
-        private IDataProviderAsync<int, UserInfo> CreateDataProvider() {
+        private IDataProvider<int, UserInfo> CreateDataProvider() {
             Package package = YetaWF.Modules.UserProfile.Controllers.AreaRegistration.CurrentPackage;
             return MakeDataProvider(package, package.AreaName, SiteIdentity: SiteIdentity, Cacheable: true);
         }

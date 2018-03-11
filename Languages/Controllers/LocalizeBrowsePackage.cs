@@ -93,13 +93,12 @@ namespace YetaWF.Modules.Languages.Controllers {
         [ConditionalAntiForgeryToken]
         public ActionResult LocalizeBrowsePackage_GridData(int skip, int take, List<DataProviderSortInfo> sort, List<DataProviderFilterInfo> filters, Guid settingsModuleGuid, string packageName) {
             Package package = Package.GetPackageFromPackageName(packageName);
-            int total;
             List<LocalizeFile> files = (from s in LocalizationSupport.GetFiles(package) select new LocalizeFile { FileName = Path.GetFileName(s) }).ToList();
-            files = DataProviderImpl<LocalizeFile>.GetRecords(files, skip, take, sort, filters, out total);
+            DataProviderGetRecords<LocalizeFile> recs = DataProviderImpl<LocalizeFile>.GetRecords(files, skip, take, sort, filters);
             GridHelper.SaveSettings(skip, take, sort, filters, settingsModuleGuid);
             return GridPartialView(new DataSourceResult {
-                Data = (from s in files select new BrowseItem(Module, packageName, s.FileName)).ToList<object>(),
-                Total = total
+                Data = (from s in recs.Data select new BrowseItem(Module, packageName, s.FileName)).ToList<object>(),
+                Total = recs.Total
             });
         }
 

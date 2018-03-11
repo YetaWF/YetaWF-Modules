@@ -76,12 +76,12 @@ namespace YetaWF.Modules.Messenger.Controllers {
                 filters = DataProviderFilterInfo.Join(filters, new DataProviderFilterInfo { Logic = "||", Filters = subFilters });
                 List<DataProviderSortInfo> sorts = null;
                 sorts = DataProviderSortInfo.Join(sorts, new DataProviderSortInfo { Field = "Sent", Order = DataProviderSortInfo.SortDirection.Descending });
-                int total;
-                model.MessageData.Messages = msgDP.GetItems(0, model.MaxMessages, sorts, filters, out total);
+                DataProviderGetRecords<Message> recs = await msgDP.GetItemsAsync(0, model.MaxMessages, sorts, filters);
+                model.MessageData.Messages = recs.Data ;
                 model.MessageData.Messages.Reverse();
                 model.MessageData.FromUser = Manager.UserName;
                 model.MessageData.ToUser = toUser;
-                model.MessageData.TotalMessages = total;
+                model.MessageData.TotalMessages = recs.Total;
                 return toUser;
             }
         }

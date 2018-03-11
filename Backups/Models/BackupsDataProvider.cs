@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using YetaWF.Core.DataProvider;
 using YetaWF.Core.Packages;
 using YetaWF.Core.Support;
@@ -34,13 +35,13 @@ namespace YetaWF.Modules.Backups.DataProvider {
         // API
         // API
 
-        public List<BackupEntry> GetBackups(int skip, int take, List<DataProviderSortInfo> sorts, List<DataProviderFilterInfo> filters, out int total) {
+        public async Task<DataProviderGetRecords<BackupEntry>> GetBackupsAsync(int skip, int take, List<DataProviderSortInfo> sorts, List<DataProviderFilterInfo> filters) {
 
             File.FileDataProvider.BackupsDataProvider fileDP = DataProvider as File.FileDataProvider.BackupsDataProvider;
             if (fileDP == null)
                 throw new InternalError($"{nameof(BackupsDataProvider)} only supports File I/O");
 
-            return fileDP.GetBackups(skip, take, sorts, filters, out total);
+            return await fileDP.GetBackupsAsync(skip, take, sorts, filters);
         }
     }
 }

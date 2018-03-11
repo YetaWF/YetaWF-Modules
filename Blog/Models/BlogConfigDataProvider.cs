@@ -147,9 +147,9 @@ namespace YetaWF.Modules.Blog.DataProvider {
         public BlogConfigDataProvider() : base(YetaWFManager.Manager.CurrentSite.Identity) { SetDataProvider(CreateDataProvider()); }
         public BlogConfigDataProvider(int siteIdentity) : base(siteIdentity) { SetDataProvider(CreateDataProvider()); }
 
-        private IDataProviderAsync<int, BlogConfigData> DataProvider { get { return GetDataProvider(); } }
+        private IDataProvider<int, BlogConfigData> DataProvider { get { return GetDataProvider(); } }
 
-        private IDataProviderAsync<int, BlogConfigData> CreateDataProvider() {
+        private IDataProvider<int, BlogConfigData> CreateDataProvider() {
             Package package = YetaWF.Modules.Blog.Controllers.AreaRegistration.CurrentPackage;
             return MakeDataProvider(package, package.AreaName + "_Config", SiteIdentity: SiteIdentity, Cacheable: true);
         }

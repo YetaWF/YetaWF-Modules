@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
+using System.Threading.Tasks;
 using YetaWF.Core.DataProvider;
 using YetaWF.Core.Packages;
 using YetaWF.Core.Support;
@@ -26,10 +27,10 @@ namespace YetaWF.Modules.Backups.DataProvider.File {
             public BackupsDataProvider(Dictionary<string, object> options) : base(options) { }
             public override string GetBaseFolder() { return Path.Combine(YetaWFManager.Manager.SiteFolder, SiteBackup.BackupFolder); }
 
-            internal List<BackupEntry> GetBackups(int skip, int take, List<DataProviderSortInfo> sorts, List<DataProviderFilterInfo> filters, out int total) {
+            internal async Task<DataProviderGetRecords<BackupEntry>> GetBackupsAsync(int skip, int take, List<DataProviderSortInfo> sorts, List<DataProviderFilterInfo> filters) {
 
                 List<BackupEntry> backups = new List<BackupEntry>();
-                List<string> files = FileDataProvider<string, BackupEntry>.GetListOfKeys(BaseFolder);
+                List<string> files = await FileDataProvider<string, BackupEntry>.GetListOfKeysAsync(BaseFolder);
                 foreach (string file in files) {
                     DateTime dateTime;
                     string filename = Path.GetFileNameWithoutExtension(file);
@@ -44,7 +45,7 @@ namespace YetaWF.Modules.Backups.DataProvider.File {
                     };
                     backups.Add(backup);
                 }
-                return DataProviderImpl<BackupEntry>.GetRecords(backups, skip, take, sorts, filters, out total);
+                return DataProviderImpl<BackupEntry>.GetRecords(backups, skip, take, sorts, filters);
             }
         }
     }

@@ -68,7 +68,7 @@ namespace YetaWF.Modules.Visitors.DataProvider {
         Task<VisitorEntryDataProvider.Info> GetStatsAsync();
     }
 
-    public class VisitorEntryDataProvider : DataProviderImpl, IInstallableModelAsync, IInitializeApplicationStartup {
+    public class VisitorEntryDataProvider : DataProviderImpl, IInstallableModel, IInitializeApplicationStartup {
 
         public void InitializeApplicationStartup() {
             ErrorHandling.RegisterCallback(AddVisitEntryError);
@@ -84,10 +84,10 @@ namespace YetaWF.Modules.Visitors.DataProvider {
         public VisitorEntryDataProvider() : base(YetaWFManager.Manager.CurrentSite.Identity) { SetDataProvider(CreateDataProvider()); }
         public VisitorEntryDataProvider(int siteIdentity) : base(siteIdentity) { SetDataProvider(CreateDataProvider()); }
 
-        private IDataProviderAsync<int, VisitorEntry> DataProvider { get { return GetDataProvider(); } }
+        private IDataProvider<int, VisitorEntry> DataProvider { get { return GetDataProvider(); } }
         private VisitorEntryDataProviderIOMode DataProviderIOMode { get { return GetDataProvider(); } }
 
-        private IDataProviderAsync<int, VisitorEntry> CreateDataProvider() {
+        private IDataProvider<int, VisitorEntry> CreateDataProvider() {
             Package package = YetaWF.Modules.Visitors.Controllers.AreaRegistration.CurrentPackage;
             return MakeDataProvider(package, package.AreaName, SiteIdentity: SiteIdentity, Cacheable: true);
         }

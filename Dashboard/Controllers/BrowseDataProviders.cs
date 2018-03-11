@@ -58,12 +58,11 @@ namespace YetaWF.Modules.Dashboard.Controllers {
         [ConditionalAntiForgeryToken]
         public ActionResult BrowseDataProviders_GridData(int skip, int take, List<DataProviderSortInfo> sort, List<DataProviderFilterInfo> filters, Guid settingsModuleGuid) {
             using (DataProviderInfoDataProvider dataProvider = new DataProviderInfoDataProvider()) {
-                int total;
-                List<DataProviderInfo> browseItems = dataProvider.GetItems(skip, take, sort, filters, out total);
+                DataProviderGetRecords<DataProviderInfo> browseItems = dataProvider.GetItems(skip, take, sort, filters);
                 GridHelper.SaveSettings(skip, take, sort, filters, settingsModuleGuid);
                 return GridPartialView(new DataSourceResult {
-                    Data = (from s in browseItems select new BrowseItem(s)).ToList<object>(),
-                    Total = total
+                    Data = (from s in browseItems.Data select new BrowseItem(s)).ToList<object>(),
+                    Total = browseItems.Total
                 });
             }
         }

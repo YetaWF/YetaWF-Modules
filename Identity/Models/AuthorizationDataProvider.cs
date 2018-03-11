@@ -41,7 +41,7 @@ namespace YetaWF.Modules.Identity.DataProvider {
         }
     }
 
-    public class AuthorizationDataProvider : DataProviderImpl, IInstallableModelAsync {
+    public class AuthorizationDataProvider : DataProviderImpl, IInstallableModel {
 
         // IMPLEMENTATION
         // IMPLEMENTATION
@@ -52,9 +52,9 @@ namespace YetaWF.Modules.Identity.DataProvider {
 
         // TODO: the table YetaWF_Identity_Authorization is not actually used. (Notably there is no Add method)
 
-        private IDataProviderAsync<string, Authorization> DataProvider { get { return GetDataProvider(); } }
+        private IDataProvider<string, Authorization> DataProvider { get { return GetDataProvider(); } }
 
-        private IDataProviderAsync<string, Authorization> CreateDataProvider() {
+        private IDataProvider<string, Authorization> CreateDataProvider() {
             Package package = YetaWF.Modules.Identity.Controllers.AreaRegistration.CurrentPackage;
             return MakeDataProvider(package, package.AreaName + "_Authorization", SiteIdentity: SiteIdentity, Cacheable: true, Parms: new { NoLanguages = true });
         }
@@ -108,9 +108,7 @@ namespace YetaWF.Modules.Identity.DataProvider {
                     }
                 }
             }
-            int total;
-            list.Data = DataProviderImpl<Authorization>.GetRecords(list.Data, skip, take, sort, filters, out total);
-            return list;
+            return DataProviderImpl<Authorization>.GetRecords(list.Data, skip, take, sort, filters);
         }
 
         private Authorization GetFromAuthorizationResource(RoleDefinitionDataProvider roleDP, ResourceAttribute resAttr) {

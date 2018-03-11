@@ -28,13 +28,13 @@ namespace YetaWF.Modules.Dashboard.DataProvider {
         // API
         // API
 
-        public List<DataProviderInfo> GetItems(int skip, int take, List<DataProviderSortInfo> sort, List<DataProviderFilterInfo> filters, out int total) {
+        public DataProviderGetRecords<DataProviderInfo> GetItems(int skip, int take, List<DataProviderSortInfo> sort, List<DataProviderFilterInfo> filters) {
             List<DataProviderInfo> list = (from r in DataProviderImpl.RegisteredExternalDataProviders select new DataProviderInfo {
                 IOModeName = r.IOModeName,
                 TypeName = r.Type.FullName,
                 TypeImplName = r.TypeImpl.FullName,
             }).ToList();
-            return DataProviderImpl<DataProviderInfo>.GetRecords(list, skip, take, sort, filters, out total);
+            return DataProviderImpl<DataProviderInfo>.GetRecords(list, skip, take, sort, filters);
         }
     }
 }

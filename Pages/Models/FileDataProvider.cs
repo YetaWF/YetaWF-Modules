@@ -24,27 +24,28 @@ namespace YetaWF.Modules.Pages.DataProvider.File {
             public override string GetBaseFolder() { return Path.Combine(YetaWFManager.DataFolder, Dataset, SiteIdentity.ToString()); }
 
             public DesignedPagesDictionaryByUrl GetDesignedPages() {
-                DesignedPagesDictionaryByUrl byUrl = new DesignedPagesDictionaryByUrl();
-                List<Guid> pageGuids = FileDataProvider<Guid, PageDefinition>.GetListOfKeys(BaseFolder);
-                foreach (var pageGuid in pageGuids) {
-                    PageDefinition page = Get(pageGuid);
-                    if (page == null)
-                        throw new InternalError("No PageDefinition for guid {0}", pageGuid);
-                    PageDefinition.DesignedPage desPage = new PageDefinition.DesignedPage() { Url = page.Url, PageGuid = page.PageGuid };
-                    byUrl.Add(page.Url.ToLower(), desPage);
-                }
-                return byUrl;
+                return YetaWFManager.Syncify<DesignedPagesDictionaryByUrl>(async () => { // Deliberately async to simplify and we need this at startup
+                    DesignedPagesDictionaryByUrl byUrl = new DesignedPagesDictionaryByUrl();
+                    List<Guid> pageGuids = await FileDataProvider<Guid, PageDefinition>.GetListOfKeysAsync(BaseFolder);
+                    foreach (var pageGuid in pageGuids) {
+                        PageDefinition page = await GetAsync(pageGuid);
+                        if (page == null)
+                            throw new InternalError("No PageDefinition for guid {0}", pageGuid);
+                        PageDefinition.DesignedPage desPage = new PageDefinition.DesignedPage() { Url = page.Url, PageGuid = page.PageGuid };
+                        byUrl.Add(page.Url.ToLower(), desPage);
+                    }
+                    return byUrl;
+                });
             }
-            public Task<List<PageDefinition>> GetPagesFromModuleAsync(Guid moduleGuid) {
-                int total;
-                List<PageDefinition> pages = GetRecords(0, 0, null, null, out total);
+            public async Task<List<PageDefinition>> GetPagesFromModuleAsync(Guid moduleGuid) {
+                DataProviderGetRecords<PageDefinition> pages = await GetRecordsAsync(0, 0, null, null);
                 List<PageDefinition> pagesWithModule = new List<PageDefinition>();
-                foreach (PageDefinition page in pages) {
+                foreach (PageDefinition page in pages.Data) {
                     PageDefinition p = (from m in page.ModuleDefinitions where m.ModuleGuid == moduleGuid select page).FirstOrDefault();
                     if (p != null)
                         pagesWithModule.Add(p);
                 }
-                return Task.FromResult( pagesWithModule.OrderBy(p => p.Url).ToList());
+                return pagesWithModule.OrderBy(p => p.Url).ToList();
             }
         }
         class UnifiedSetDataProvider : FileDataProvider<Guid, UnifiedSetData> {

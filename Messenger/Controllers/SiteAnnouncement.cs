@@ -1,12 +1,12 @@
 /* Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Messenger#License */
 
+using Microsoft.AspNet.SignalR;
+using System.Threading.Tasks;
 using YetaWF.Core.Controllers;
 using YetaWF.Core.Localize;
 using YetaWF.Core.Models;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Modules.Messenger.DataProvider;
-using Microsoft.AspNet.SignalR;
-using System;
 #if MVC6
 using Microsoft.AspNetCore.Mvc;
 #else
@@ -72,7 +72,7 @@ namespace YetaWF.Modules.Messenger.Controllers {
 
         [AllowPost]
         [ConditionalAntiForgeryToken]
-        public ActionResult SiteAnnouncement_Partial(AddModel model) {
+        public async Task<ActionResult> SiteAnnouncement_Partial(AddModel model) {
             model.UpdateData();
             if (!ModelState.IsValid)
                 return PartialView(model);
@@ -81,7 +81,7 @@ namespace YetaWF.Modules.Messenger.Controllers {
                 return FormProcessed(model, model.Message, model.Title, OnClose: OnCloseEnum.UpdateInPlace, OnPopupClose: OnPopupCloseEnum.UpdateInPlace, PopupOptions: "{encoded:true}");
             } else {
                 using (SiteAccouncementDataProvider dataProvider = new SiteAccouncementDataProvider()) {
-                    if (!dataProvider.AddItem(model.GetData())) {
+                    if (!await dataProvider.AddItemAsync(model.GetData())) {
                         ModelState.AddModelError("Name", this.__ResStr("alreadyExists", "New site announcement couldn't be added"));
                         return PartialView(model);
                     }

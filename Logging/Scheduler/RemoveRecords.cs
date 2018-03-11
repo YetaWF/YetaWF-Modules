@@ -15,11 +15,10 @@ namespace YetaWF.Modules.Logging.Scheduler {
 
         public const string EventRemoveOldLogData = "YetaWF.Logging: Remove Old Log Data";
 
-        public Task RunItemAsync(SchedulerItemBase evnt) {
+        public async Task RunItemAsync(SchedulerItemBase evnt) {
             if (evnt.EventName != EventRemoveOldLogData)
                 throw new Error(this.__ResStr("eventNameErr", "Unknown scheduler event {0}."), evnt.EventName);
-            Remove(evnt.Log);
-            return Task.CompletedTask;
+            await RemoveAsync(evnt.Log);
         }
 
         public SchedulerItemBase[] GetItems() {
@@ -40,11 +39,11 @@ namespace YetaWF.Modules.Logging.Scheduler {
 
         public RemoveOldLogData() { }
 
-        public void Remove(List<string> errorList) {
+        public async Task RemoveAsync(List<string> errorList) {
             DateTime oldest = DateTime.UtcNow.AddMonths(-1);
             using (LogRecordDataProvider logDP = LogRecordDataProvider.GetLogRecordDataProvider()) {
                 List<DataProviderFilterInfo> filters = DataProviderFilterInfo.Join(null, new DataProviderFilterInfo { Field = "TimeStamp", Operator = "<", Value = oldest });
-                int removed = logDP.RemoveItems(filters);
+                int removed = await logDP.RemoveItemsAsync(filters);
                 errorList.Add(string.Format("{0} records removed from log data", removed));
             }
         }

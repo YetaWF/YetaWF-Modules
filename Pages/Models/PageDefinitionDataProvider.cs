@@ -98,10 +98,10 @@ namespace YetaWF.Modules.Pages.DataProvider {
         public PageDefinitionDataProvider() : base(YetaWFManager.Manager.CurrentSite.Identity) { SetDataProvider(CreateDataProvider()); }
         public PageDefinitionDataProvider(int siteIdentity) : base(siteIdentity) { SetDataProvider(CreateDataProvider()); }
 
-        private IDataProviderAsync<Guid, PageDefinition> DataProvider { get { return GetDataProvider(); } }
+        private IDataProvider<Guid, PageDefinition> DataProvider { get { return GetDataProvider(); } }
         private IPageDefinitionIOMode DataProviderIOMode { get { return GetDataProvider(); } }
 
-        private IDataProviderAsync<Guid, PageDefinition> CreateDataProvider() {
+        private IDataProvider<Guid, PageDefinition> CreateDataProvider() {
             Package package = YetaWF.Modules.Pages.Controllers.AreaRegistration.CurrentPackage;
             return MakeDataProvider(package, package.AreaName, SiteIdentity: SiteIdentity, Cacheable: true);
         }

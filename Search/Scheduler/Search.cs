@@ -64,7 +64,7 @@ namespace YetaWF.Modules.Search.Scheduler {
                     if (iSearch != null) {
                         try {
                             SearchWords searchWords = new SearchWords(searchConfig, searchDP, searchStarted);
-                            iSearch.KeywordsForDynamicUrls(searchWords);
+                            await iSearch.KeywordsForDynamicUrlsAsync(searchWords);
                             if (slow)
                                 Thread.Sleep(500);// delay a bit (slow can only be used by scheduler items)
                         } catch (Exception exc) {
@@ -82,7 +82,7 @@ namespace YetaWF.Modules.Search.Scheduler {
                             ISearchDynamicUrls iSearch = mod as ISearchDynamicUrls;
                             if (iSearch != null) {
                                 SearchWords searchWords = new SearchWords(searchConfig, searchDP, searchStarted);
-                                iSearch.KeywordsForDynamicUrls(searchWords);
+                                await iSearch.KeywordsForDynamicUrlsAsync(searchWords);
                                 if (slow)
                                     Thread.Sleep(500);// delay a bit (slow can only be used by scheduler items)
                             }

@@ -1,6 +1,7 @@
 /* Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Logging#License */
 
 using System;
+using System.Threading.Tasks;
 using YetaWF.Core.Controllers;
 using YetaWF.Core.Localize;
 using YetaWF.Core.Models;
@@ -77,9 +78,9 @@ namespace YetaWF.Modules.Logging.Controllers {
         }
 
         [AllowGet]
-        public ActionResult DisplayLog(int key) {
+        public async Task<ActionResult> DisplayLog(int key) {
             using (LogRecordDataProvider dataProvider = LogRecordDataProvider.GetLogRecordDataProvider()) {
-                LogRecord data = dataProvider.GetItem(key);
+                LogRecord data = await dataProvider.GetItemAsync(key);
                 if (data == null)
                     throw new Error(this.__ResStr("notFound", "Record \"{0}\" not found."), key);
                 DisplayModel model = new DisplayModel();

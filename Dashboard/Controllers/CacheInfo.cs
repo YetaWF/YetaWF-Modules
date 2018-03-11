@@ -83,15 +83,14 @@ namespace YetaWF.Modules.Dashboard.Controllers {
         [AllowPost]
         [ConditionalAntiForgeryToken]
         public ActionResult CacheInfo_GridData(int skip, int take, List<DataProviderSortInfo> sort, List<DataProviderFilterInfo> filters, Guid settingsModuleGuid) {
-            int total;
-            List<BrowseItem> items = DataProviderImpl<BrowseItem>.GetRecords(GetAllItems(), skip, take, sort, filters, out total);
-            foreach (BrowseItem item in items)
+            DataProviderGetRecords<BrowseItem> items = DataProviderImpl<BrowseItem>.GetRecords(GetAllItems(), skip, take, sort, filters);
+            foreach (BrowseItem item in items.Data)
                 item.Value  = item.Value.PadRight(100, ' ').Substring(0, 100).TrimEnd();
 
             GridHelper.SaveSettings(skip, take, sort, filters, settingsModuleGuid);
             return GridPartialView(new DataSourceResult {
-                Data = items.ToList<object>(),
-                Total = total,
+                Data = items.Data.ToList<object>(),
+                Total = items.Total,
             });
         }
 

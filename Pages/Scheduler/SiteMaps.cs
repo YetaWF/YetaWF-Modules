@@ -72,7 +72,7 @@ namespace YetaWF.Modules.Pages.Scheduler {
             foreach (Type type in types) {
                 ISiteMapDynamicUrls iSiteMap = Activator.CreateInstance(type) as ISiteMapDynamicUrls;
                 if (iSiteMap != null) {
-                    iSiteMap.FindDynamicUrls(AddSiteMapPage, ValidForSiteMap);
+                    await iSiteMap.FindDynamicUrlsAsync(AddSiteMapPage, ValidForSiteMap);
                 }
             }
 
@@ -83,7 +83,7 @@ namespace YetaWF.Modules.Pages.Scheduler {
                 if (mod != null) {
                     ISiteMapDynamicUrls iSiteMap = mod as ISiteMapDynamicUrls;
                     if (iSiteMap != null) {
-                        iSiteMap.FindDynamicUrls(AddSiteMapPage, ValidForSiteMap);
+                        await iSiteMap.FindDynamicUrlsAsync(AddSiteMapPage, ValidForSiteMap);
                     }
                 }
             }

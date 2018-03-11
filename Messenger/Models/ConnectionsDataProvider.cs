@@ -3,6 +3,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using YetaWF.Core;
 using YetaWF.Core.DataProvider;
 using YetaWF.Core.DataProvider.Attributes;
@@ -39,7 +40,7 @@ namespace YetaWF.Modules.Messenger.DataProvider {
         public void InitializeApplicationStartup() {
             // clear all connections from db
             // removes all sites
-            RemoveItems(null);
+            RemoveItemsAsync(null).Wait();//$$$$
         }
 
         // IMPLEMENTATION
@@ -60,50 +61,49 @@ namespace YetaWF.Modules.Messenger.DataProvider {
         // API
         // API
 
-        private static object lockObject = new object();
+        private static AsyncLock _lockObject = new AsyncLock();
 
-        public Connection GetItem(string key) {
-            return DataProvider.Get(key);
+        public async Task<Connection> GetItemAsync(string key) {
+            return await DataProvider.GetAsync(key);
         }
-        public bool AddItem(Connection data) {
-            return DataProvider.Add(data);
+        public async Task<bool> AddItemAsync(Connection data) {
+            return await DataProvider.AddAsync(data);
         }
-        public UpdateStatusEnum UpdateItem(Connection data) {
-            return DataProvider.Update(data.ConnectionId, data.ConnectionId, data);
+        public async Task<UpdateStatusEnum> UpdateItemAsync(Connection data) {
+            return await DataProvider.UpdateAsync(data.ConnectionId, data.ConnectionId, data);
         }
-        public bool RemoveItem(string key) {
-            return DataProvider.Remove(key);
+        public async Task<bool> RemoveItemAsync(string key) {
+            return await DataProvider.RemoveAsync(key);
         }
-        public List<Connection> GetItems(int skip, int take, List<DataProviderSortInfo> sort, List<DataProviderFilterInfo> filters, out int total) {
-            return DataProvider.GetRecords(skip, take, sort, filters, out total);
+        public async Task<DataProviderGetRecords<Connection>> GetItemsAsync(int skip, int take, List<DataProviderSortInfo> sort, List<DataProviderFilterInfo> filters) {
+            return await DataProvider.GetRecordsAsync(skip, take, sort, filters);
         }
-        public int RemoveItems(List<DataProviderFilterInfo> filters) {
-            return DataProvider.RemoveRecords(filters);
+        public async Task<int> RemoveItemsAsync(List<DataProviderFilterInfo> filters) {
+            return await DataProvider.RemoveRecordsAsync(filters);
         }
-        public Connection GetEntry(string name) {
-            int total;
+        public async Task<Connection> GetEntryAsync(string name) {
             List<DataProviderFilterInfo> filters = null;
             filters = DataProviderFilterInfo.Join(filters, new DataProviderFilterInfo { Field = "Name", Operator = "==", Value = name });
-            List<Connection> conns = GetItems(0, 1, null, filters, out total);
-            return conns.FirstOrDefault();
+            DataProviderGetRecords<Connection> conns = await GetItemsAsync(0, 1, null, filters);
+            return conns.Data.FirstOrDefault();
         }
 
-        public void UpdateEntry(string name, string ipAddress, string connectionId) {
-            lock (lockObject) {
+        public async Task UpdateEntryAsync(string name, string ipAddress, string connectionId) {
+            using (await _lockObject.LockAsync()) {
                 try {
-                    Connection conn = GetItem(connectionId);
+                    Connection conn = await GetItemAsync(connectionId);
                     if (conn == null) {
                         conn = new Connection {
                             ConnectionId = connectionId,
                             IpAddress = ipAddress,
                             Name = name,
                         };
-                        AddItem(conn);
+                        await AddItemAsync(conn);
                     } else {
                         conn.IpAddress = ipAddress;
                         conn.Name = name;
                         conn.LastSeen = DateTime.UtcNow;
-                        UpdateItem(conn);
+                        await UpdateItemAsync(conn);
                     }
                 } catch (Exception) { }
             }

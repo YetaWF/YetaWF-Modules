@@ -50,7 +50,7 @@ namespace YetaWF.Modules.Blog.DataProvider {
         }
     }
 
-    public class BlogCommentDataProvider : DataProviderImpl, IInstallableModelAsync {
+    public class BlogCommentDataProvider : DataProviderImpl, IInstallableModel {
 
         public int EntryIdentity { get; private set; }// Blog entry
 
@@ -62,9 +62,9 @@ namespace YetaWF.Modules.Blog.DataProvider {
         public BlogCommentDataProvider(int blogEntry) : base(YetaWFManager.Manager.CurrentSite.Identity) { EntryIdentity = blogEntry; SetDataProvider(CreateDataProvider());  }
         public BlogCommentDataProvider(int blogEntry, int siteIdentity) : base(siteIdentity) { EntryIdentity = blogEntry; SetDataProvider(CreateDataProvider()); }
 
-        private IDataProviderAsync<int, BlogComment> DataProvider { get { return GetDataProvider(); } }
+        private IDataProvider<int, BlogComment> DataProvider { get { return GetDataProvider(); } }
 
-        private IDataProviderAsync<int, BlogComment> CreateDataProvider() {
+        private IDataProvider<int, BlogComment> CreateDataProvider() {
             Package package = YetaWF.Modules.Blog.Controllers.AreaRegistration.CurrentPackage;
             return MakeDataProvider(package, package.AreaName + "_Comments", SiteIdentity: SiteIdentity, Cacheable: true, Parms: new { EntryIdentity = EntryIdentity });
         }

@@ -64,7 +64,7 @@ namespace YetaWF.Modules.Search.DataProvider {
         Task MarkUpdatedAsync(int searchDataUrlId);
     }
 
-    public class SearchDataProvider : DataProviderImpl, IInstallableModelAsync {
+    public class SearchDataProvider : DataProviderImpl, IInstallableModel {
 
         // IMPLEMENTATION
         // IMPLEMENTATION
@@ -73,10 +73,10 @@ namespace YetaWF.Modules.Search.DataProvider {
         public SearchDataProvider() : base(YetaWFManager.Manager.CurrentSite.Identity) { SetDataProvider(CreateDataProvider()); }
         public SearchDataProvider(int siteIdentity) : base(siteIdentity) { SetDataProvider(CreateDataProvider()); }
 
-        private IDataProviderAsync<int, SearchData> DataProvider { get { return GetDataProvider(); } }
+        private IDataProvider<int, SearchData> DataProvider { get { return GetDataProvider(); } }
         private ISearchDataProviderIOMode DataProviderIOMode { get { return GetDataProvider(); } }
 
-        private IDataProviderAsync<int, SearchData> CreateDataProvider() {
+        private IDataProvider<int, SearchData> CreateDataProvider() {
             Package package = YetaWF.Modules.Search.Controllers.AreaRegistration.CurrentPackage;
             dynamic dp = MakeDataProvider(package, package.AreaName + "_Data", SiteIdentity: SiteIdentity, Cacheable: true);
             if (dp != null)

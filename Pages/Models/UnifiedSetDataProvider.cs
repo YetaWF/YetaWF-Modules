@@ -121,9 +121,9 @@ namespace YetaWF.Modules.Pages.DataProvider {
         public UnifiedSetDataProvider() : base(YetaWFManager.Manager.CurrentSite.Identity) { SetDataProvider(CreateDataProvider()); }
         public UnifiedSetDataProvider(int siteIdentity) : base(siteIdentity) { SetDataProvider(CreateDataProvider()); }
 
-        private IDataProviderAsync<Guid, UnifiedSetData> DataProvider { get { return GetDataProvider(); } }
+        private IDataProvider<Guid, UnifiedSetData> DataProvider { get { return GetDataProvider(); } }
 
-        private IDataProviderAsync<Guid, UnifiedSetData> CreateDataProvider() {
+        private IDataProvider<Guid, UnifiedSetData> CreateDataProvider() {
             Package package = YetaWF.Modules.Pages.Controllers.AreaRegistration.CurrentPackage;
             return MakeDataProvider(package, package.AreaName + "_UnifiedSets", SiteIdentity: SiteIdentity, Cacheable: true);
         }
