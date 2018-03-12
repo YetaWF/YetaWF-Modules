@@ -6,7 +6,7 @@ using YetaWF.PackageAttributes;
 using YetaWF.Core.Packages;
 
 [assembly: AssemblyTitle("Logging")]
-[assembly: AssemblyDescription("Logging for YetaWF websites")]
+[assembly: AssemblyDescription("Logging for YetaWF websites (simple, synchronous logging)")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Softel vdm, Inc.")]
 [assembly: AssemblyProduct("Logging")]

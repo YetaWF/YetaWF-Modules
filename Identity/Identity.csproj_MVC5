@@ -304,9 +304,9 @@
       <Project>{348f2a6b-57f5-47a3-8a46-3f44529acd83}</Project>
       <Name>ModuleDefinition</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\DataProvider\SQL2\SQL2.csproj">
+    <ProjectReference Include="..\..\..\DataProvider\SQL\SQL.csproj">
       <Project>{6a90eab3-a9e4-4a2c-90d9-145859790c46}</Project>
-      <Name>SQL2</Name>
+      <Name>SQL</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

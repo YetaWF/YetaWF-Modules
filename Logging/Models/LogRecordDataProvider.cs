@@ -21,8 +21,6 @@ using Microsoft.AspNetCore.Http.Features;
 using System.Web;
 #endif
 
-//$$ASYNCIFY
-
 namespace YetaWF.Modules.Logging.DataProvider {
 
     public class LogRecord {

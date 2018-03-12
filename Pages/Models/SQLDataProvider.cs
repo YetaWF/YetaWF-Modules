@@ -8,7 +8,7 @@ using YetaWF.Core.DataProvider.Attributes;
 using YetaWF.Core.Packages;
 using YetaWF.Core.Pages;
 using YetaWF.Core.Support;
-using YetaWF.DataProvider.SQL2;
+using YetaWF.DataProvider.SQL;
 
 namespace YetaWF.Modules.Pages.DataProvider.SQL {
 

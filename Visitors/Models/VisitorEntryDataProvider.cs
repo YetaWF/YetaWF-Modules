@@ -72,7 +72,7 @@ namespace YetaWF.Modules.Visitors.DataProvider {
 
         public Task InitializeApplicationStartupAsync() {
             ErrorHandling.RegisterCallback(AddVisitEntryError);
-            PageLogging.RegisterCallback(AddVisitEntryUrl);
+            PageLogging.RegisterCallback(AddVisitEntryUrlAsync);
             return Task.CompletedTask;
         }
 
@@ -144,25 +144,27 @@ namespace YetaWF.Modules.Visitors.DataProvider {
         // LOGGING CALLBACKS
 
         public static void AddVisitEntryError(string error) {
-            AddVisitEntry(null, error);
+            YetaWFManager.Syncify(async () => {
+                await AddVisitEntryAsync(null, error);
+            });
         }
-        public static void AddVisitEntryUrl(string url, bool full) {
-            AddVisitEntry(url);
+        public static Task AddVisitEntryUrlAsync(string url, bool full) {
+            return AddVisitEntryAsync(url);
         }
 
-        private static void AddVisitEntry(string url, string error = null) {
+        private static Task AddVisitEntryAsync(string url, string error = null) {
 
             if (!InCallback) {
                 InCallback = true;
 
                 try {
 
-                    if (!YetaWFManager.HaveManager || YetaWFManager.Manager.CurrentSite == null || !YetaWFManager.Manager.HaveCurrentContext) return;
+                    if (!YetaWFManager.HaveManager || YetaWFManager.Manager.CurrentSite == null || !YetaWFManager.Manager.HaveCurrentContext) return Task.CompletedTask;
                     YetaWFManager manager = YetaWFManager.Manager;
 
                     using (VisitorEntryDataProvider visitorDP = new VisitorEntryDataProvider()) {
 
-                        if (!visitorDP.Usable) return;
+                        if (!visitorDP.Usable) return Task.CompletedTask;
 
                         string userAgent;
                         string sessionId = null;
@@ -197,13 +199,14 @@ namespace YetaWF.Modules.Visitors.DataProvider {
                             City = VisitorEntry.Unknown,
                             Error = error.Truncate(VisitorEntry.MaxError),
                         };
-                        //$$$$DISABLED FOR NOW     visitorDP.AddItemAsync(visitorEntry).Wait(); //$$$$$
+                        return visitorDP.AddItemAsync(visitorEntry);
                     }
                 } catch (Exception) {
                 } finally {
                     InCallback = false;
                 }
             }
+            return Task.CompletedTask;
         }
         private static bool InCallback = false;
 

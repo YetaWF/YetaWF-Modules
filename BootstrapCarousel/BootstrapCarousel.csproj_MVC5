@@ -73,10 +73,6 @@
       <Project>{348F2A6B-57F5-47A3-8A46-3F44529ACD83}</Project>
       <Name>ModuleDefinition</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\DataProvider\SQL\SQL.csproj">
-      <Project>{67e180a4-fc9f-4eec-bec1-457714963596}</Project>
-      <Name>SQL</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />

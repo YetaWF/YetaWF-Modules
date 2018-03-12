@@ -63,7 +63,7 @@ namespace YetaWF.Modules.Scheduler.Support {
         public void WriteToLogFile(Logging.LevelEnum level, int relStack, string text) {
             if (!YetaWFManager.HaveManager) return;
             if (YetaWFManager.Manager != LimitToManager) return; // this log entry is for another thread
-            YetaWFManager.Syncify(async () => { //$$$$MUST CHANGE
+            YetaWFManager.Syncify(async () => {
                 await logDP.AddItemAsync(new DataProvider.LogData {
                     TimeStamp = DateTime.UtcNow,
                     RunId = CurrentId,

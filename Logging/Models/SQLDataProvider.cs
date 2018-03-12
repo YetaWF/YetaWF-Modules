@@ -1,6 +1,5 @@
 ﻿/* Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Logging#License */
 
-using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using YetaWF.Core.DataProvider;
@@ -9,7 +8,7 @@ using YetaWF.Core.Log;
 using YetaWF.Core.Packages;
 using YetaWF.Core.Serializers;
 using YetaWF.Core.Support;
-using YetaWF.DataProvider.SQL2;
+using YetaWF.DataProvider.SQL;
 
 namespace YetaWF.Modules.Logging.DataProvider.SQL {
 
@@ -66,7 +65,9 @@ namespace YetaWF.Modules.Logging.DataProvider.SQL {
         public override void Flush() { }
 
         public override void SaveMessage(LogRecord record) {
-            //$$$ DataProvider.AddAsync(record).Wait();//$$$
+            YetaWFManager.Syncify(async () => {
+                await DataProvider.AddAsync(record);
+            });
         }
         public new Task<LogRecord> GetItemAsync(int key) {
             return DataProvider.GetAsync(key);

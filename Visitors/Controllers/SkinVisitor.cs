@@ -39,7 +39,7 @@ namespace YetaWF.Modules.Visitors.Controllers {
             string origin = Manager.CurrentRequest.Headers["Origin"];
             if (!string.IsNullOrWhiteSpace(origin))
                 return new EmptyResult();
-            VisitorEntryDataProvider.AddVisitEntryUrl(url, true);
+            VisitorEntryDataProvider.AddVisitEntryUrlAsync(url, true);
             return new EmptyResult();
         }
     }
