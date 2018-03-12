@@ -137,7 +137,7 @@ namespace YetaWF.Modules.Identity.Controllers {
             using (UserDefinitionDataProvider dataProvider = new UserDefinitionDataProvider()) {
                 DataProviderGetRecords<UserDefinition> browseItems = await dataProvider.GetItemsAsync(skip, take, sort, filters);
                 GridHelper.SaveSettings(skip, take, sort, filters, settingsModuleGuid);
-                return GridPartialView(new DataSourceResult {
+                return await GridPartialViewAsync(new DataSourceResult {
                     Data = (from s in browseItems.Data select new BrowseItem(Module, s)).ToList<object>(),
                     Total = browseItems.Total
                 });
@@ -162,7 +162,7 @@ namespace YetaWF.Modules.Identity.Controllers {
             using (UserDefinitionDataProvider dataProvider = new UserDefinitionDataProvider()) {
                 UserDefinition user = await GetUserAsync(userName, dataProvider);
                 Emails emails = new Emails();
-                emails.SendVerification(user);
+                await emails.SendVerificationAsync(user);
                 return Reload(null, Reload: ReloadEnum.ModuleParts, PopupText: this.__ResStr("verificationSent", "Verification email sent to user {0}.", user.Email));
             }
         }
@@ -174,7 +174,7 @@ namespace YetaWF.Modules.Identity.Controllers {
             using (UserDefinitionDataProvider dataProvider = new UserDefinitionDataProvider()) {
                 UserDefinition user = await GetUserAsync(userName, dataProvider);
                 Emails emails = new Emails();
-                emails.SendApproval(user);
+                await emails.SendApprovalAsync(user);
                 return Reload(null, Reload: ReloadEnum.ModuleParts, PopupText: this.__ResStr("approvalSent", "Approval email sent to user {0}.", user.Email));
             }
         }

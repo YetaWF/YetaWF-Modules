@@ -44,7 +44,7 @@ namespace YetaWF.Modules.Identity.Views.Shared {
                         Modules.UsersDisplayModule modDisp = new Modules.UsersDisplayModule();
                         actionDisplay = modDisp.GetAction_Display(null, userName);
                         Modules.LoginModule modLogin = (Modules.LoginModule) await ModuleDefinition.CreateUniqueModuleAsync(typeof(Modules.LoginModule));
-                        actionLoginAs = modLogin.GetAction_LoginAs(user.UserId, userName);
+                        actionLoginAs = await modLogin.GetAction_LoginAsAsync(user.UserId, userName);
                     }
                 } else
                     userName = __ResStr("noEmail", "(not specified)");

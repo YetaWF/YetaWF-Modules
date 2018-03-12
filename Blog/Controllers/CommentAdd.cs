@@ -151,7 +151,7 @@ namespace YetaWF.Modules.Blog.Controllers {
                         SendEmail sendEmail = new SendEmail();
                         object parms = new {
                             Description = !blogComment.Approved ? this.__ResStr("needApproval", "This comment requires your approval.") : this.__ResStr("autoApproval", "This comment has been automatically approved."),
-                            Category = blogEntry.Category.ToString(),
+                            Category = (await blogEntry.GetCategoryAsync()).ToString(),
                             Title = blogEntry.Title.ToString(),
                             Url = Manager.CurrentSite.MakeUrl(await BlogConfigData.GetEntryCanonicalNameAsync(blogEntry.Identity)),
                             Comment = YetaWFManager.HtmlDecode(model.Comment),
@@ -161,7 +161,7 @@ namespace YetaWF.Modules.Blog.Controllers {
                         };
                         string subject = this.__ResStr("newComment", "New Blog Comment ({0} - {1})", blogEntry.Title.ToString(), Manager.CurrentSite.SiteDomain);
                         sendEmail.PrepareEmailMessage(config.NotifyEmail, subject, sendEmail.GetEmailFile(Package.GetCurrentPackage(this), "New Comment.txt"), parameters: parms);
-                        sendEmail.Send(true);
+                        await sendEmail.SendAsync(true);
                     }
 
                     if (!blogComment.Approved)

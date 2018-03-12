@@ -13,6 +13,7 @@ using YetaWF.Core.Support.StaticPages;
 using YetaWF.Core.Views.Shared;
 using YetaWF.Modules.Dashboard.Modules;
 using YetaWF.Core.Support;
+using System.Threading.Tasks;
 #if MVC6
 using Microsoft.AspNetCore.Mvc;
 #else
@@ -78,12 +79,12 @@ namespace YetaWF.Modules.Dashboard.Controllers {
 
         [AllowPost]
         [ValidateAntiForgeryToken]
-        public ActionResult StaticPagesBrowse_GridData(int skip, int take, List<DataProviderSortInfo> sort, List<DataProviderFilterInfo> filters, Guid settingsModuleGuid) {
+        public async Task<ActionResult> StaticPagesBrowse_GridData(int skip, int take, List<DataProviderSortInfo> sort, List<DataProviderFilterInfo> filters, Guid settingsModuleGuid) {
             List<BrowseItem> items = (from k in Manager.StaticPageManager.GetSiteStaticPages() select new BrowseItem(Module, k)).ToList();
             int total = items.Count;
             DataProviderGetRecords<BrowseItem> recs = DataProviderImpl<BrowseItem>.GetRecords(items, skip, take, sort, filters);
             GridHelper.SaveSettings(skip, take, sort, filters, settingsModuleGuid);
-            return GridPartialView(new DataSourceResult {
+            return await GridPartialViewAsync(new DataSourceResult {
                 Data = recs.Data.ToList<object>(),
                 Total = total
             });

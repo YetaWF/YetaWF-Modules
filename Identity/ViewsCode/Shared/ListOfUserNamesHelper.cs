@@ -13,6 +13,7 @@ using YetaWF.Modules.Identity.Controllers.Shared;
 using YetaWF.Modules.Identity.DataProvider;
 using YetaWF.Core.Localize;
 using YetaWF.Modules.Identity.Support;
+using System.Threading.Tasks;
 #if MVC6
 using Microsoft.AspNetCore.Html;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -179,8 +180,7 @@ namespace YetaWF.Modules.Identity.Views.Shared {
             [UIHint("Raw"), ReadOnly]
             public int UserId { get; set; }
 
-            public GridEntryDisplay(UserDefinitionDataProvider userDP, int userId) {
-                UserDefinition user = YetaWFManager.Syncify(() => userDP.GetItemByUserIdAsync(userId));//$$$
+            public GridEntryDisplay(UserDefinitionDataProvider userDP, UserDefinition user, int userId) {
                 if (user == null) {
                     UserName = this.__ResStr("noUser", "({0})", userId);
                 } else {
@@ -190,15 +190,19 @@ namespace YetaWF.Modules.Identity.Views.Shared {
             }
         }
 #if MVC6
-        public static HtmlString RenderListOfUserNamesDisplay<TModel>(this IHtmlHelper<TModel> htmlHelper, string name, List<int> model) {
+        public static async Task<HtmlString> RenderListOfUserNamesDisplayAsync<TModel>(this IHtmlHelper<TModel> htmlHelper, string name, List<int> model) {
 #else
-        public static HtmlString RenderListOfUserNamesDisplay<TModel>(this HtmlHelper<TModel> htmlHelper, string name, List<int> model) {
+        public static async Task<HtmlString> RenderListOfUserNamesDisplayAsync<TModel>(this HtmlHelper<TModel> htmlHelper, string name, List<int> model) {
 #endif
             List<GridEntryDisplay> list = new List<GridEntryDisplay>();
 
             using (UserDefinitionDataProvider userDP = new DataProvider.UserDefinitionDataProvider()) {
-                if (model != null)
-                    list = (from u in model select new GridEntryDisplay(userDP, u)).ToList();
+                if (model != null) {
+                    foreach (int userId in model) {
+                        UserDefinition user = await userDP.GetItemByUserIdAsync(userId);
+                        list.Add(new GridEntryDisplay(userDP, user, userId));
+                    }
+                }
             }
             bool header;
             if (!htmlHelper.TryGetControlInfo<bool>("", "Header", out header))

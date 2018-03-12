@@ -176,7 +176,7 @@ namespace YetaWF.Modules.Identity.DataProvider {
 #if MVC6
             SignInManager<UserDefinition> _signinManager = (SignInManager<UserDefinition>)YetaWFManager.ServiceProvider.GetService(typeof(SignInManager<UserDefinition>));
 
-            List<AuthenticationScheme> loginProviders = _signinManager.GetExternalAuthenticationSchemesAsync().Result.ToList();//$$$asyncify
+            List<AuthenticationScheme> loginProviders = (await _signinManager.GetExternalAuthenticationSchemesAsync()).ToList();
             foreach (AuthenticationScheme provider in loginProviders) {
                 string name = provider.Name;
                 if (name == "Facebook" && configData.UseFacebook && configData.DefinedFacebook)

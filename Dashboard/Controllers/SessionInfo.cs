@@ -10,6 +10,7 @@ using YetaWF.Core.Models;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Views.Shared;
 using YetaWF.Core.Support;
+using System.Threading.Tasks;
 #if MVC6
 using Microsoft.AspNetCore.Mvc;
 #else
@@ -65,13 +66,13 @@ namespace YetaWF.Modules.Dashboard.Controllers {
 
         [AllowPost]
         [ConditionalAntiForgeryToken]
-        public ActionResult SessionInfo_GridData(int skip, int take, List<DataProviderSortInfo> sort, List<DataProviderFilterInfo> filters, Guid settingsModuleGuid) {
+        public async Task<ActionResult> SessionInfo_GridData(int skip, int take, List<DataProviderSortInfo> sort, List<DataProviderFilterInfo> filters, Guid settingsModuleGuid) {
             DataProviderGetRecords<BrowseItem> items = DataProviderImpl<BrowseItem>.GetRecords(GetAllItems(), skip, take, sort, filters);
             foreach (BrowseItem item in items.Data)
                 item.Value = item.Value.PadRight(100, ' ').Substring(0, 100).TrimEnd();
 
             GridHelper.SaveSettings(skip, take, sort, filters, settingsModuleGuid);
-            return GridPartialView(new DataSourceResult {
+            return await GridPartialViewAsync(new DataSourceResult {
                 Data = items.Data.ToList<object>(),
                 Total = items.Total,
             });

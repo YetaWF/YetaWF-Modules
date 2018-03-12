@@ -10,6 +10,7 @@ using YetaWF.Core.Serializers;
 using YetaWF.Core.Views;
 using YetaWF.Core.Views.Shared;
 using YetaWF.Core.Support;
+using System.Threading.Tasks;
 #if MVC6
 using Microsoft.AspNetCore.Html;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -45,22 +46,24 @@ namespace YetaWF.Modules.Identity.Views.Shared {
             [UIHint("Raw"), ReadOnly]
             public string UserName { get; set; }
 
-            public GridAllowedUser(int userId) {
+            public GridAllowedUser(int userId, string userName) {
                 UserId = UserNameFromId = userId;
-                UserName = YetaWFManager.Syncify<string>(() => Resource.ResourceAccess.GetUserNameAsync(userId));//$$
+                UserName = userName;
             }
         }
 #if MVC6
-        public static HtmlString RenderResourceAllowedUsers<TModel>(this IHtmlHelper<TModel> htmlHelper, string name, SerializableList<User> model)
+        public static async Task<HtmlString> RenderResourceAllowedUsersAsync<TModel>(this IHtmlHelper<TModel> htmlHelper, string name, SerializableList<User> model)
 #else
-        public static HtmlString RenderResourceAllowedUsers<TModel>(this HtmlHelper<TModel> htmlHelper, string name, SerializableList<User> model)
+        public static async Task<HtmlString> RenderResourceAllowedUsersAsync<TModel>(this HtmlHelper<TModel> htmlHelper, string name, SerializableList<User> model)
 #endif
         {
-            List<GridAllowedUser> users;
-            if (model == null)
-                users = new List<GridAllowedUser>();
-            else
-                users = (from u in model select new GridAllowedUser(u.UserId)).ToList();
+            List<GridAllowedUser> users = new List<GridAllowedUser>();
+            if (model != null) {
+                foreach (User u in model) {
+                    string userName = await Resource.ResourceAccess.GetUserNameAsync(u.UserId);
+                    users.Add(new GridAllowedUser(u.UserId, userName));
+                }
+            }
 
             bool header;
             if (!htmlHelper.TryGetControlInfo<bool>("", "Header", out header))

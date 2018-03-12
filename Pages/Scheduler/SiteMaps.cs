@@ -72,7 +72,7 @@ namespace YetaWF.Modules.Pages.Scheduler {
             foreach (Type type in types) {
                 ISiteMapDynamicUrls iSiteMap = Activator.CreateInstance(type) as ISiteMapDynamicUrls;
                 if (iSiteMap != null) {
-                    await iSiteMap.FindDynamicUrlsAsync(AddSiteMapPage, ValidForSiteMap);
+                    await iSiteMap.FindDynamicUrlsAsync(AddSiteMapPageAsync, ValidForSiteMap);
                 }
             }
 
@@ -83,7 +83,7 @@ namespace YetaWF.Modules.Pages.Scheduler {
                 if (mod != null) {
                     ISiteMapDynamicUrls iSiteMap = mod as ISiteMapDynamicUrls;
                     if (iSiteMap != null) {
-                        await iSiteMap.FindDynamicUrlsAsync(AddSiteMapPage, ValidForSiteMap);
+                        await iSiteMap.FindDynamicUrlsAsync(AddSiteMapPageAsync, ValidForSiteMap);
                     }
                 }
             }
@@ -108,8 +108,9 @@ namespace YetaWF.Modules.Pages.Scheduler {
             File.Move(file, finalFile);
         }
 
-        private void AddSiteMapPage(PageDefinition page, string url, DateTime? dateUpdated, PageDefinition.SiteMapPriorityEnum priority, PageDefinition.ChangeFrequencyEnum changeFrequency, object obj) {
+        private Task AddSiteMapPageAsync(PageDefinition page, string url, DateTime? dateUpdated, PageDefinition.SiteMapPriorityEnum priority, PageDefinition.ChangeFrequencyEnum changeFrequency, object obj) {
             AddUrl(GetTempFile(), page, url, dateUpdated, priority, changeFrequency);
+            return Task.CompletedTask;
         }
         private bool ValidForSiteMap(PageDefinition page) {
             if (!string.IsNullOrWhiteSpace(page.RedirectToPageUrl)) // no redirected pages

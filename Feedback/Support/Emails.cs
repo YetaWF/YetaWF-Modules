@@ -1,6 +1,7 @@
 ﻿/* Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Feedback#License */
 
 using System;
+using System.Threading.Tasks;
 using YetaWF.Core.Localize;
 using YetaWF.Core.SendEmail;
 using YetaWF.Core.Support;
@@ -14,7 +15,7 @@ namespace YetaWF.Modules.Feedback.Support {
 
         protected static YetaWFManager Manager { get; private set; }
 
-        public void SendFeedback(string toEmail, string fromEmail, string subject, string message, string ccEmail = null) {
+        public async Task SendFeedbackAsync(string toEmail, string fromEmail, string subject, string message, string ccEmail = null) {
 
             if (string.IsNullOrWhiteSpace(toEmail) && string.IsNullOrWhiteSpace(ccEmail))
                 return;
@@ -39,7 +40,7 @@ namespace YetaWF.Modules.Feedback.Support {
                 if (!string.IsNullOrWhiteSpace(ccEmail))
                     sendEmail.AddBcc(ccEmail);
             }
-            sendEmail.Send(true);
+            await sendEmail.SendAsync(true);
         }
     }
 }

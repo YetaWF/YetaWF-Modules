@@ -25,17 +25,20 @@ namespace YetaWF.Modules.Blog.DataProvider {
         // IInitializeApplicationStartup
         public const string ImageType = "YetaWF_Blog_BlogConfigData";
 
-        public void InitializeApplicationStartup() {
-            ImageSupport.AddHandler(ImageType, GetBytes: RetrieveImage);
+        public Task InitializeApplicationStartupAsync() {
+            ImageSupport.AddHandler(ImageType, GetBytesAsync: RetrieveImageAsync);
+            return Task.CompletedTask;
         }
-        private bool RetrieveImage(string name, string location, out byte[] content) {
-            content = null;
-            if (!string.IsNullOrWhiteSpace(location)) return false;
-            if (string.IsNullOrWhiteSpace(name)) return false;
-            BlogConfigData config = BlogConfigDataProvider.GetConfigAsync().Result;//$$$$$
-            if (config.FeedImage_Data == null || config.FeedImage_Data.Length == 0) return false;
-            content = config.FeedImage_Data;
-            return true;
+        private async Task<ImageSupport.GetImageInBytesInfo> RetrieveImageAsync(string name, string location) {
+            ImageSupport.GetImageInBytesInfo fail = new ImageSupport.GetImageInBytesInfo();
+            if (!string.IsNullOrWhiteSpace(location)) return fail;
+            if (string.IsNullOrWhiteSpace(name)) return fail;
+            BlogConfigData config = await BlogConfigDataProvider.GetConfigAsync();
+            if (config.FeedImage_Data == null || config.FeedImage_Data.Length == 0) return fail;
+            return new ImageSupport.GetImageInBytesInfo {
+                Content = config.FeedImage_Data,
+                Success = true,
+            };
         }
 
         public const int MaxFeedTitle = 80;

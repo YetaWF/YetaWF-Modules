@@ -56,11 +56,11 @@ namespace YetaWF.Modules.Blog.Controllers {
             [UIHint("ModuleAction"), AdditionalMetadata("RenderAs", ModuleAction.RenderModeEnum.NormalLinks), ReadOnly]
             public ModuleAction ViewAction { get; set; }
 
-            public Entry(BlogEntry data, EntryEditModule editMod, EntryDisplayModule dispMod) {
+            public Entry(BlogEntry data, EntryEditModule editMod, EntryDisplayModule dispMod, ModuleAction editAction, ModuleAction viewAction) {
                 ObjectSupport.CopyData(data, this);
-                ViewAction = dispMod.GetAction_DisplayAsync(data.Identity, ReadMore: data.Summary != data.Text).Result;//$$$$
+                ViewAction = viewAction;
                 Actions = new List<ModuleAction>();
-                Actions.New(editMod.GetAction_EditAsync(null, data.Identity).Result);//$$$$
+                Actions.New(editAction);
             }
         }
 
@@ -101,8 +101,15 @@ namespace YetaWF.Modules.Blog.Controllers {
 
                 EntryEditModule editMod = new EntryEditModule();
                 EntryDisplayModule dispMod = new EntryDisplayModule();
+
+                List<Entry> list = new List<Entry>();
+                foreach (BlogEntry d in data.Data) {
+                    ModuleAction viewAction = await dispMod.GetAction_DisplayAsync(d.Identity, ReadMore: d.Summary != d.Text);
+                    ModuleAction editAction = await editMod.GetAction_EditAsync(null, d.Identity);
+                    list.Add(new Entry(d, editMod, dispMod, editAction, viewAction));
+                }
                 DisplayModel model = new DisplayModel() {
-                    BlogEntries = (from d in data.Data select new Entry(d, editMod, dispMod)).ToList(),
+                    BlogEntries = list,
                     CategoryIdentity = category,
                     StartDate = sdShown == DateTime.MaxValue ? null : (DateTime?) sdShown,
                 };

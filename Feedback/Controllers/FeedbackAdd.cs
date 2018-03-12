@@ -89,7 +89,7 @@ namespace YetaWF.Modules.Feedback.Controllers {
                     throw new InternalError("Feedback couldn't be sent");
 
                 Emails emails = new Emails(Manager);
-                emails.SendFeedback(config.Email, model.Email, model.Subject, model.Message, config.BccEmails ? Manager.CurrentSite.AdminEmail : null);
+                await emails.SendFeedbackAsync(config.Email, model.Email, model.Subject, model.Message, config.BccEmails ? Manager.CurrentSite.AdminEmail : null);
 
                 return FormProcessed(model, this.__ResStr("okSaved", "Feedback sent!"), NextPage: Manager.ReturnToUrl);
             }

@@ -94,7 +94,7 @@ namespace YetaWF.Modules.Feedback.Controllers {
             using (FeedbackDataProvider dataProvider = new FeedbackDataProvider()) {
                 DataProviderGetRecords<FeedbackData> browseItems = await dataProvider.GetItemsAsync(skip, take, sort, filters);
                 GridHelper.SaveSettings(skip, take, sort, filters, settingsModuleGuid);
-                return GridPartialView(new DataSourceResult {
+                return await GridPartialViewAsync(new DataSourceResult {
                     Data = (from s in browseItems.Data select new BrowseItem(Module, s)).ToList<object>(),
                     Total = browseItems.Total
                 });

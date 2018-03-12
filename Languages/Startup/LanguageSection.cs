@@ -4,6 +4,7 @@
 #else
 
 using System.IO;
+using System.Threading.Tasks;
 using YetaWF.Core;
 using YetaWF.Core.Support;
 
@@ -15,7 +16,7 @@ namespace YetaWF.Modules.Languages.Startup {
         // IInitializeApplicationStartup
         // IInitializeApplicationStartup
 
-        public void InitializeApplicationStartup() {
+        public Task InitializeApplicationStartupAsync() {
             string rootFolder;
 #if MVC6
             rootFolder = YetaWFManager.RootFolderWebProject;
@@ -23,6 +24,7 @@ namespace YetaWF.Modules.Languages.Startup {
             rootFolder = YetaWFManager.RootFolder;
 #endif
             YetaWF.Core.Language.LanguageSection.Init(Path.Combine(rootFolder, Globals.DataFolder, LanguageSettingsFile));
+            return Task.CompletedTask;
         }
 
         public const string LanguageSettingsFile = "LanguageSettings.json";

@@ -27,15 +27,15 @@ namespace YetaWF.Modules.Sites.Controllers {
 
             [Caption("Actions"), Description("The available actions")]
             [UIHint("ActionIcons"), ReadOnly]
-            public MenuList Commands {
-                get {
-                    MenuList actions = new MenuList() { RenderMode = ModuleAction.RenderModeEnum.IconsOnly };
+            public MenuList Commands { get; set; }
 
-                    actions.New(Module.GetAction_SiteDisplay(SiteData), ModuleAction.ActionLocationEnum.GridLinks);
-                    actions.New(SiteEditModule.GetModuleActionAsync("EditSite", null, SiteDomain).Result, ModuleAction.ActionLocationEnum.GridLinks);//$$$
-                    actions.New(ConfirmModule.GetAction_Remove(null, SiteData), ModuleAction.ActionLocationEnum.GridLinks);
-                    return actions;
-                }
+            public async Task<MenuList> __GetCommandsAsync() {
+                MenuList actions = new MenuList() { RenderMode = ModuleAction.RenderModeEnum.IconsOnly };
+
+                actions.New(Module.GetAction_SiteDisplay(SiteData), ModuleAction.ActionLocationEnum.GridLinks);
+                actions.New(await SiteEditModule.GetModuleActionAsync("EditSite", null, SiteDomain), ModuleAction.ActionLocationEnum.GridLinks);
+                actions.New(ConfirmModule.GetAction_Remove(null, SiteData), ModuleAction.ActionLocationEnum.GridLinks);
+                return actions;
             }
 
             [Caption("Site Domain"), Description("The domain name of the site")]
@@ -94,7 +94,7 @@ namespace YetaWF.Modules.Sites.Controllers {
 
             DataProviderGetRecords<SiteDefinition> info = await SiteDefinition.GetSitesAsync(skip, take, sort, filters);
             GridHelper.SaveSettings(skip, take, sort, filters, settingsModuleGuid);
-            return GridPartialView(new DataSourceResult {
+            return await GridPartialViewAsync(new DataSourceResult {
                 Data = (from s in info.Data select new BrowseItem(Module, siteEditModule, confirmModule, s)).ToList<object>(),
                 Total = info.Total
             });

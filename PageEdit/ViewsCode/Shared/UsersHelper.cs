@@ -10,6 +10,7 @@ using YetaWF.Core.Serializers;
 using YetaWF.Core.Views;
 using YetaWF.Core.Views.Shared;
 using YetaWF.Core.Support;
+using System.Threading.Tasks;
 #if MVC6
 using Microsoft.AspNetCore.Html;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -59,27 +60,31 @@ namespace YetaWF.Modules.PageEdit.Views.Shared {
             [UIHint("Raw"), ReadOnly]
             public string UserName { get; set; }
 
-            public GridAllowedUser(PageDefinition.AllowedUser allowedUser) {
+            public GridAllowedUser(PageDefinition.AllowedUser allowedUser, string userName) {
                 ObjectSupport.CopyData(allowedUser, this);
                 UserId = DisplayUserId = allowedUser.UserId;
-                UserName = YetaWFManager.Syncify<string>(() => Resource.ResourceAccess.GetUserNameAsync(allowedUser.UserId));//$$$ what to do
+                UserName = userName;
             }
-            public GridAllowedUser(int userId) {
+            public GridAllowedUser(int userId, string userName) {
                 UserId = DisplayUserId = userId;
+                UserName = userName;
                 View = PageDefinition.AllowedEnum.Yes;
-                UserName = YetaWFManager.Syncify<string>(() => Resource.ResourceAccess.GetUserNameAsync(userId));//$$$ what to do
             }
         }
 #if MVC6
-        public static HtmlString RenderAllowedUsers<TModel>(this IHtmlHelper<TModel> htmlHelper, string name, SerializableList<PageDefinition.AllowedUser> model)
+        public static async Task<HtmlString> RenderAllowedUsersAsync<TModel>(this IHtmlHelper<TModel> htmlHelper, string name, SerializableList<PageDefinition.AllowedUser> model)
 #else
-        public static HtmlString RenderAllowedUsers<TModel>(this HtmlHelper<TModel> htmlHelper, string name, SerializableList<PageDefinition.AllowedUser> model)
+        public static async Task<HtmlString> RenderAllowedUsersAsync<TModel>(this HtmlHelper<TModel> htmlHelper, string name, SerializableList<PageDefinition.AllowedUser> model)
 #endif
         {
             List<GridAllowedUser> list;
-            if (model != null)
-                list = (from u in model select new GridAllowedUser(u)).ToList();
-            else
+            if (model != null) {
+                list = new List<GridAllowedUser>();
+                foreach (PageDefinition.AllowedUser allowedUser in model) {
+                    string userName = await Resource.ResourceAccess.GetUserNameAsync(allowedUser.UserId);
+                    list.Add(new GridAllowedUser(allowedUser, userName));
+                }
+            } else
                 list = new List<GridAllowedUser>();
 
             bool header;

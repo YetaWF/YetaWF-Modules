@@ -2,6 +2,7 @@
 
 using System;
 using System.IO;
+using System.Threading.Tasks;
 using YetaWF.Core.Support;
 using YetaWF.Modules.ImageRepository.Views.Shared;
 
@@ -15,23 +16,25 @@ namespace YetaWF.Modules.ImageRepository.Support {
 
         public readonly static string ImageType = "YetaWF_Image";
 
-        public void InitializeApplicationStartup() {
-            YetaWF.Core.Image.ImageSupport.AddHandler(ImageType, GetAsFile: RetrieveImage);
+        public Task InitializeApplicationStartupAsync() {
+            YetaWF.Core.Image.ImageSupport.AddHandler(ImageType, GetAsFileAsync: RetrieveImageAsync);
+            return Task.CompletedTask;
         }
 
-        private bool RetrieveImage(string name, string location, out string fileName) {
-            fileName = null;
-            if (string.IsNullOrWhiteSpace(location)) return false;
-            if (string.IsNullOrWhiteSpace(name)) return false;
+        private Task<YetaWF.Core.Image.ImageSupport.GetImageAsFileInfo> RetrieveImageAsync(string name, string location) {
+            Task<YetaWF.Core.Image.ImageSupport.GetImageAsFileInfo> fail = Task.FromResult(new YetaWF.Core.Image.ImageSupport.GetImageAsFileInfo());
+            if (string.IsNullOrWhiteSpace(location)) return fail;
+            if (string.IsNullOrWhiteSpace(name)) return fail;
             string[] parts = location.Split(new char[] { ',' });
-            if (parts.Length != 3) return false;
+            if (parts.Length != 3) return fail;
             string folderGuid = parts[0];
             string subFolder = parts[1];
             string fileType = parts[2];
-
             string storagePath = ImageSelectionInfo.StoragePath(new Guid(folderGuid), subFolder, fileType);
-            fileName = Path.Combine(storagePath, name);
-            return true;
+            return Task.FromResult(new YetaWF.Core.Image.ImageSupport.GetImageAsFileInfo {
+                File = Path.Combine(storagePath, name),
+                Success = true,
+            });
         }
     }
 }

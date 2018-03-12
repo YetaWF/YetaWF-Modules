@@ -9,6 +9,7 @@ using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Support;
 using YetaWF.Modules.DevTests.Views.Shared;
 using YetaWF.Core;
+using System.Threading.Tasks;
 #if MVC6
 using Microsoft.AspNetCore.Mvc;
 #else
@@ -62,7 +63,7 @@ namespace YetaWF.Modules.DevTests.Controllers {
         [AllowPost]
         [ConditionalAntiForgeryToken]
         [ExcludeDemoMode]
-        public ActionResult AddEmailAddress(string prefix, int newRecNumber, string newValue) {
+        public async Task<ActionResult> AddEmailAddress(string prefix, int newRecNumber, string newValue) {
             // Validation
             EmailValidationAttribute attr = new EmailValidationAttribute();
             if (!attr.IsValid(newValue))
@@ -70,7 +71,7 @@ namespace YetaWF.Modules.DevTests.Controllers {
             // add new grid record
             ListOfEmailAddressesHelper.GridEntryEdit entry = (ListOfEmailAddressesHelper.GridEntryEdit)Activator.CreateInstance(typeof(ListOfEmailAddressesHelper.GridEntryEdit));
             entry.__Value = newValue;
-            return GridPartialView(new GridDefinition.GridEntryDefinition(prefix, newRecNumber, entry));
+            return await GridPartialViewAsync(new GridDefinition.GridEntryDefinition(prefix, newRecNumber, entry));
         }
     }
 }

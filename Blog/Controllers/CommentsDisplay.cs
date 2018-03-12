@@ -50,13 +50,13 @@ namespace YetaWF.Modules.Blog.Controllers {
             [UIHint("ModuleActions"), AdditionalMetadata("RenderAs", ModuleAction.RenderModeEnum.IconsOnly)]
             public List<ModuleAction> Actions { get; set; }
 
-            public CommentData(BlogComment data, CommentsDisplayModule dispMod, CommentEditModule editMod) {
+            public CommentData(BlogComment data, ModuleAction editAction, ModuleAction approveAction, ModuleAction removeAction) {
                 ObjectSupport.CopyData(data, this);
                 Actions = new List<ModuleAction>();
-                Actions.New(editMod.GetAction_Edit(dispMod.EditUrl, EntryIdentity, Identity));
+                Actions.New(editAction);
                 if (!data.Deleted && !data.Approved)
-                    Actions.New(dispMod.GetAction_Approve(CategoryIdentity, Identity));
-                Actions.New(dispMod.GetAction_Remove(CategoryIdentity, Identity));
+                    Actions.New(approveAction);
+                Actions.New(removeAction);
             }
         }
 
@@ -93,13 +93,23 @@ namespace YetaWF.Modules.Blog.Controllers {
                     return new EmptyResult();
 
                 model.ShowGravatars = config.ShowGravatar;
-                model.CanApprove = Resource.ResourceAccess.IsResourceAuthorized(Info.Resource_AllowManageComments);
-                model.CanRemove = Resource.ResourceAccess.IsResourceAuthorized(Info.Resource_AllowManageComments);
+                model.CanApprove = await Resource.ResourceAccess.IsResourceAuthorizedAsync(Info.Resource_AllowManageComments);
+                model.CanRemove = await Resource.ResourceAccess.IsResourceAuthorizedAsync(Info.Resource_AllowManageComments);
+                
+                List<CommentData> list = new List<CommentData>();
+                foreach (BlogComment d in comments.Data) {
+                    ModuleAction editAction = await editMod.GetAction_EditAsync(Module.EditUrl, d.EntryIdentity, d.Identity);
+                    ModuleAction approveAction = await Module.GetAction_ApproveAsync(d.CategoryIdentity, d.Identity);
+                    ModuleAction removeAction = await Module.GetAction_RemoveAsync(d.CategoryIdentity, d.Identity);
+                    if (model.CanApprove || model.CanRemove)
+                        list.Add(new CommentData(d, editAction, approveAction, removeAction));
+                    else {
+                        if (!d.Deleted && d.Approved)
+                            list.Add(new CommentData(d, editAction, approveAction, removeAction));
+                    }
 
-                if (model.CanApprove || model.CanRemove)
-                    model.Comments = (from d in comments.Data select new CommentData(d, Module, editMod)).ToList();
-                else
-                    model.Comments = (from d in comments.Data where !d.Deleted && d.Approved select new CommentData(d, Module, editMod)).ToList();
+                }
+                model.Comments = list;
 
                 int pending = (from d in comments.Data where !d.Deleted && !d.Approved select d).Count();
                 model.PendingApproval = pending;

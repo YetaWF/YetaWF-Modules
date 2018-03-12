@@ -25,7 +25,7 @@ namespace YetaWF.Modules.Packages.DataProvider {
 
         protected YetaWFManager Manager { get { return YetaWFManager.Manager; } }
 
-        public void InitializeApplicationStartup() {
+        public Task InitializeApplicationStartupAsync() {
             BuiltinCommands.Add("/$initall", CoreInfo.Resource_BuiltinCommands, InitAllAsync);
             BuiltinCommands.Add("/$initnew", CoreInfo.Resource_BuiltinCommands, InitNewAsync);
             BuiltinCommands.Add("/$restart", CoreInfo.Resource_BuiltinCommands, RestartSiteAsync);
@@ -33,6 +33,7 @@ namespace YetaWF.Modules.Packages.DataProvider {
             BuiltinCommands.Add("/$importdata", CoreInfo.Resource_BuiltinCommands, ImportDataAsync);
             BuiltinCommands.Add("/$processtemplate", CoreInfo.Resource_BuiltinCommands, ProcessTemplateAsync);
             BuiltinCommands.Add("/$undotemplate", CoreInfo.Resource_BuiltinCommands, UndoTemplateAsync);
+            return Task.CompletedTask;
         }
 
         // RESTART

@@ -120,7 +120,7 @@ namespace YetaWF.Modules.Search.Controllers {
             using (SearchDataProvider searchDP = new SearchDataProvider()) {
                 DataProviderGetRecords<SearchData> browseItems = await searchDP.GetItemsWithUrlAsync(skip, take, sort, filters);
                 GridHelper.SaveSettings(skip, take, sort, filters, settingsModuleGuid);
-                return GridPartialView(new DataSourceResult {
+                return await GridPartialViewAsync(new DataSourceResult {
                     Data = (from s in browseItems.Data select new BrowseItem(Module, s)).ToList<object>(),
                     Total = browseItems.Total
                 });

@@ -44,7 +44,7 @@ namespace YetaWF.Modules.Blog.Modules {
             return actions;
         }
 
-        public async Task<ModuleAction> GetAction_BlogAsync(string url, int blogCategory = 0, DateTime? StartDate = null, int Count = 0) { //$$$$$
+        public async Task<ModuleAction> GetAction_BlogAsync(string url, int blogCategory = 0, DateTime? StartDate = null, int Count = 0) {
             BlogConfigData config = await BlogConfigDataProvider.GetConfigAsync();
             QueryHelper query = new QueryHelper();
             if (string.IsNullOrWhiteSpace(url))
@@ -76,7 +76,7 @@ namespace YetaWF.Modules.Blog.Modules {
                 Location = ModuleAction.ActionLocationEnum.NoAuto,
             };
         }
-        public async Task<ModuleAction> GetAction_RssFeedAsync(int blogCategory = 0) {   //?$$$$$$
+        public async Task<ModuleAction> GetAction_RssFeedAsync(int blogCategory = 0) {
             BlogConfigData config = await BlogConfigDataProvider.GetConfigAsync();
             if (!config.Feed) return null;
             //if (blogCategory == 0)

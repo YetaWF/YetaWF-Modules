@@ -166,11 +166,15 @@ namespace YetaWF.Modules.Identity.DataProvider {
             return roles;
         }
 
-        // all roles except user and anonymous
-        // This method is cached and deliberately does not use async/await to simplify usage
+        /// <summary>
+        /// Retrieve all roles except user and anonymous. 
+        /// </summary>
+        /// <remarks>
+        /// This method is cached and deliberately does not use async/await to simplify usage
+        /// </remarks>
         public List<RoleDefinition> GetAllUserRoles(bool force = false) {
 
-            bool isInstalled = YetaWFManager.Syncify<bool>(() => DataProvider.IsInstalledAsync());
+            bool isInstalled = YetaWFManager.Syncify<bool>(() => DataProvider.IsInstalledAsync()); // There's nothing really async about this
             if (!isInstalled)
                 return new List<RoleDefinition>() { MakeSuperuserRole() };
 
@@ -179,7 +183,7 @@ namespace YetaWF.Modules.Identity.DataProvider {
                 if (PermanentManager.TryGetObject<List<RoleDefinition>>(out roles))
                     return roles;
             }
-            //$$$
+
             lock (_lockObject) { // lock this so we only do this once
                 // See if we already have it as a permanent object
                 if (!force) {
@@ -187,7 +191,7 @@ namespace YetaWF.Modules.Identity.DataProvider {
                         return roles;
                 }
                 // Load the roles
-                DataProviderGetRecords<RoleDefinition> list = YetaWFManager.Syncify<DataProviderGetRecords<RoleDefinition>>(() => GetItemsAsync());
+                DataProviderGetRecords<RoleDefinition> list = YetaWFManager.Syncify<DataProviderGetRecords<RoleDefinition>>(() => GetItemsAsync()); // Only done once during startup and never again, all cached
                 roles = list.Data;
 
                 PermanentManager.AddObject<List<RoleDefinition>>(roles);

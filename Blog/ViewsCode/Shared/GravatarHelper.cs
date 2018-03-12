@@ -21,7 +21,7 @@ namespace YetaWF.Modules.Blog.Views.Shared {
 
         private static string __ResStr(string name, string defaultValue, params object[] parms) { return ResourceAccess.GetResourceString(typeof(GravatarHelper), name, defaultValue, parms); }
 #if MVC6
-        public static async Task<HtmlString> RenderGravatarDisplayAsync<TModel>(this IHtmlHelper<TModel> htmlHelper, string name, string model, object HtmlAttributes = null) //$$$$$
+        public static async Task<HtmlString> RenderGravatarDisplayAsync<TModel>(this IHtmlHelper<TModel> htmlHelper, string name, string model, object HtmlAttributes = null)
 #else
         public static async Task<HtmlString> RenderGravatarDisplayAsync<TModel>(this HtmlHelper<TModel> htmlHelper, string name, string model, object HtmlAttributes = null)
 #endif

@@ -1,6 +1,7 @@
 ﻿/* Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Blog#License */
 
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using YetaWF.Core.DataProvider;
 using YetaWF.Core.Support;
 using YetaWF.DataProvider.SQL2;
@@ -20,8 +21,8 @@ namespace YetaWF.Modules.Blog.DataProvider.SQL {
             public BlogCategoryDataProvider(Dictionary<string, object> options) : base(options) { }
         }
         class BlogEntryDataProvider : SQLSimpleObject<int, BlogEntry> {
-            public BlogEntryDataProvider(Dictionary<string, object> options) : base(options) { CalculatedPropertyCallback = GetCalculatedProperty; }
-            private string GetCalculatedProperty(string name) {
+            public BlogEntryDataProvider(Dictionary<string, object> options) : base(options) { CalculatedPropertyCallbackAsync = GetCalculatedPropertyAsync; }
+            private Task<string> GetCalculatedPropertyAsync(string name) {
                 string sql = null;
                 if (name == "CommentsUnapproved") {
                     using (DataProvider.BlogCommentDataProvider commentDP = new DataProvider.BlogCommentDataProvider(-1)) {// we don't know the entry, but it's not needed
@@ -29,7 +30,6 @@ namespace YetaWF.Modules.Blog.DataProvider.SQL {
                         ISQLTableInfo info = (ISQLTableInfo)commentDP.GetDataProvider();
                         sql = info.ReplaceWithTableName(sql, "$BlogComments$");
                         sql = ReplaceWithTableName(sql, "$ThisTable$");
-                        return sql;
                     }
                 } else if (name == "Comments") {
                     using (DataProvider.BlogCommentDataProvider commentDP = new DataProvider.BlogCommentDataProvider(-1)) {// we don't know the entry, but it's not needed
@@ -37,10 +37,10 @@ namespace YetaWF.Modules.Blog.DataProvider.SQL {
                         ISQLTableInfo info = (ISQLTableInfo)commentDP.GetDataProvider();
                         sql = info.ReplaceWithTableName(sql, "$BlogComments$");
                         sql = ReplaceWithTableName(sql, "$ThisTable$");
-                        return sql;
                     }
                 } else
                     throw new InternalError("Unexpected property {0}", name);
+                return Task.FromResult(sql);
             }
         }
         class BlogCommentDataProvider : SQLSimpleObject<int, BlogComment> {

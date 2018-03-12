@@ -13,6 +13,7 @@ using YetaWF.Core.Views.Shared;
 using YetaWF.DataProvider;
 using YetaWF.Modules.Blog.Addons;
 using YetaWF.Modules.Blog.Controllers;
+using System.Threading.Tasks;
 #if MVC6
 #else
 using System.Web.Mvc;
@@ -42,8 +43,8 @@ namespace YetaWF.Modules.Blog.Modules {
 
         public override SerializableList<AllowedRole> DefaultAllowedRoles { get { return AdministratorLevel_DefaultAllowedRoles; } }
 
-        public ModuleAction GetAction_Approve(int blogEntry, int comment) {
-            if (!Resource.ResourceAccess.IsResourceAuthorized(Info.Resource_AllowManageComments)) return null;
+        public async Task<ModuleAction> GetAction_ApproveAsync(int blogEntry, int comment) {
+            if (!await Resource.ResourceAccess.IsResourceAuthorizedAsync(Info.Resource_AllowManageComments)) return null;
             return new ModuleAction(this) {
                 Url = YetaWFManager.UrlFor(typeof(CommentsDisplayModuleController), "Approve"),
                 NeedsModuleContext = true,
@@ -60,8 +61,8 @@ namespace YetaWF.Modules.Blog.Modules {
                 ConfirmationText = this.__ResStr("approveConfirm", "Are you sure you want to approve this comment?"),
             };
         }
-        public ModuleAction GetAction_Remove(int blogEntry, int comment) {
-            if (!Resource.ResourceAccess.IsResourceAuthorized(Info.Resource_AllowManageComments)) return null;
+        public async Task<ModuleAction> GetAction_RemoveAsync(int blogEntry, int comment) {
+            if (!await Resource.ResourceAccess.IsResourceAuthorizedAsync(Info.Resource_AllowManageComments)) return null;
             return new ModuleAction(this) {
                 Url = YetaWFManager.UrlFor(typeof(CommentsDisplayModuleController), "Remove"),
                 NeedsModuleContext = true,

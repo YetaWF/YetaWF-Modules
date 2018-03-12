@@ -107,8 +107,9 @@ namespace YetaWF.Modules.Pages.DataProvider {
         // IINITIALIZEAPPLICATIONSTARTUP
         // IINITIALIZEAPPLICATIONSTARTUP
 
-        public void InitializeApplicationStartup() {
+        public Task InitializeApplicationStartupAsync() {
             PageDefinition.GetUnifiedPageInfoAsync = UnifiedSetDataProvider.GetUnifiedPageInfoAsync;
+            return Task.CompletedTask;
         }
     }
 
@@ -132,14 +133,6 @@ namespace YetaWF.Modules.Pages.DataProvider {
         // API
         // API
 
-        //$$$public void DoAction(Guid unifiedSetGuid, Action action) {
-        //    StringLocks.DoAction(LockKey(unifiedSetGuid), () => {
-        //        action();
-        //    });
-        //}
-        //private string LockKey(Guid unifiedSetGuid) {
-        //    return string.Format("{0}_{1}", this.Dataset, unifiedSetGuid);
-        //}
         public async Task<UnifiedSetData> GetItemAsync(Guid unifiedSetGuid) {
             UnifiedSetData unifiedSet = await DataProvider.GetAsync(unifiedSetGuid);
             if (unifiedSet == null) return null;

@@ -31,17 +31,18 @@ namespace YetaWF.Modules.Blog.Controllers {
 
             [Caption("Actions"), Description("The available actions")]
             [UIHint("ActionIcons"), ReadOnly]
-            public MenuList Commands {
-                get {
-                    MenuList actions = new MenuList() { RenderMode = ModuleAction.RenderModeEnum.IconsOnly };
-                    EntryDisplayModule dispMod = new EntryDisplayModule();
-                    actions.New(dispMod.GetAction_DisplayAsync(Identity).Result, ModuleAction.ActionLocationEnum.GridLinks);//$$$$
-                    EntryEditModule editMod = new EntryEditModule();
-                    actions.New(editMod.GetAction_EditAsync(Module.EditUrl, Identity).Result, ModuleAction.ActionLocationEnum.GridLinks);//$$$$$
-                    actions.New(Module.GetAction_Remove(Identity), ModuleAction.ActionLocationEnum.GridLinks);
-                    return actions;
-                }
+            public MenuList Commands { get; set; }
+
+            public async Task<MenuList> __GetCommandsAsync() {
+                MenuList actions = new MenuList() { RenderMode = ModuleAction.RenderModeEnum.IconsOnly };
+                EntryDisplayModule dispMod = new EntryDisplayModule();
+                actions.New(await dispMod.GetAction_DisplayAsync(Identity), ModuleAction.ActionLocationEnum.GridLinks);
+                EntryEditModule editMod = new EntryEditModule();
+                actions.New(await editMod.GetAction_EditAsync(Module.EditUrl, Identity), ModuleAction.ActionLocationEnum.GridLinks);
+                actions.New(Module.GetAction_Remove(Identity), ModuleAction.ActionLocationEnum.GridLinks);
+                return actions;
             }
+            
 
             [Caption("Id"), Description("The id of this blog entry - used to uniquely identify this blog entry internally")]
             [UIHint("IntValue"), ReadOnly]
@@ -125,7 +126,7 @@ namespace YetaWF.Modules.Blog.Controllers {
                 using (BlogCategoryDataProvider categoryDP = new BlogCategoryDataProvider()) {
                     DataProviderGetRecords<BlogEntry> browseItems = await entryDP.GetItemsAsync(skip, take, sort, filters);
                     GridHelper.SaveSettings(skip, take, sort, filters, settingsModuleGuid);
-                    return GridPartialView(new DataSourceResult {
+                    return await GridPartialViewAsync(new DataSourceResult {
                         Data = (from s in browseItems.Data select new BrowseItem(Module, categoryDP, s)).ToList<object>(),
                         Total = browseItems.Total
                     });

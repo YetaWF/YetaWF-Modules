@@ -19,7 +19,7 @@ namespace YetaWF.Modules.Identity.Support {
 
         public Emails() { }
 
-        public void SendForgottenEmail(UserDefinition user, string ccEmail = null) {
+        public async Task SendForgottenEmailAsync(UserDefinition user, string ccEmail = null) {
             SendEmail sendEmail = new SendEmail();
             object parms = new {
                 User = user,
@@ -29,9 +29,9 @@ namespace YetaWF.Modules.Identity.Support {
             sendEmail.PrepareEmailMessage(user.Email, subject, sendEmail.GetEmailFile(Package.GetCurrentPackage(this), "Forgot Password.txt"), parameters: parms);
             if (!string.IsNullOrWhiteSpace(ccEmail))
                 sendEmail.AddBcc(ccEmail);
-            sendEmail.Send(true);
+            await sendEmail.SendAsync(true);
         }
-        public void SendVerification(UserDefinition user, string ccEmail = null) {
+        public async Task SendVerificationAsync(UserDefinition user, string ccEmail = null) {
             SendEmail sendEmail = new SendEmail();
             object parms = new {
                 User = user,
@@ -41,10 +41,10 @@ namespace YetaWF.Modules.Identity.Support {
             sendEmail.PrepareEmailMessage(user.Email, subject, sendEmail.GetEmailFile(Package.GetCurrentPackage(this), "Account Verification.txt"), parameters: parms);
             if (!string.IsNullOrWhiteSpace(ccEmail))
                 sendEmail.AddBcc(ccEmail);
-            sendEmail.Send(true);
+            await sendEmail.SendAsync(true);
         }
 
-        public void SendApproval(UserDefinition user, string ccEmail = null) {
+        public async Task SendApprovalAsync(UserDefinition user, string ccEmail = null) {
             SendEmail sendEmail = new SendEmail();
             object parms = new {
                 User = user,
@@ -54,7 +54,7 @@ namespace YetaWF.Modules.Identity.Support {
             sendEmail.PrepareEmailMessage(user.Email, subject, sendEmail.GetEmailFile(Package.GetCurrentPackage(this), "Account Approved.txt"), parameters: parms);
             if (!string.IsNullOrWhiteSpace(ccEmail))
                 sendEmail.AddBcc(ccEmail);
-            sendEmail.Send(true);
+            await sendEmail.SendAsync(true);
         }
 
         public async Task SendApprovalNeededAsync(UserDefinition user) {
@@ -71,10 +71,10 @@ namespace YetaWF.Modules.Identity.Support {
             };
             string subject = this.__ResStr("approvalNeededSubject", "Approval required for user {0} - site {1}", user.UserName, Manager.CurrentSite.SiteDomain);
             sendEmail.PrepareEmailMessage(null, subject, sendEmail.GetEmailFile(Package.GetCurrentPackage(this), "Account Approval.txt"), parameters: parms);
-            sendEmail.Send(false);
+            await sendEmail.SendAsync(false);
         }
 
-        public void SendRejected(UserDefinition user, string ccEmail = null) {
+        public async Task SendRejectedAsync(UserDefinition user, string ccEmail = null) {
             SendEmail sendEmail = new SendEmail();
             object parms = new {
                 User = user,
@@ -83,10 +83,10 @@ namespace YetaWF.Modules.Identity.Support {
             sendEmail.PrepareEmailMessage(user.Email, subject, sendEmail.GetEmailFile(Package.GetCurrentPackage(this), "Account Rejected.txt"), parameters: parms);
             if (!string.IsNullOrWhiteSpace(ccEmail))
                 sendEmail.AddBcc(ccEmail);
-            sendEmail.Send(true);
+            await sendEmail.SendAsync(true);
         }
 
-        public void SendSuspended(UserDefinition user, string ccEmail = null) {
+        public async Task SendSuspendedAsync(UserDefinition user, string ccEmail = null) {
             SendEmail sendEmail = new SendEmail();
             object parms = new {
                 User = user,
@@ -95,10 +95,10 @@ namespace YetaWF.Modules.Identity.Support {
             sendEmail.PrepareEmailMessage(user.Email, subject, sendEmail.GetEmailFile(Package.GetCurrentPackage(this), "Account Suspended.txt"), parameters: parms);
             if (!string.IsNullOrWhiteSpace(ccEmail))
                 sendEmail.AddBcc(ccEmail);
-            sendEmail.Send(true);
+            await sendEmail.SendAsync(true);
         }
 
-        public async Task SendNewUserCreated(UserDefinition user) {
+        public async Task SendNewUserCreatedAsync(UserDefinition user) {
             // get the registration module for some defaults
             RegisterModule regMod = (RegisterModule)await ModuleDefinition.CreateUniqueModuleAsync(typeof(RegisterModule));
             ModuleAction reject = regMod.GetAction_Reject(user.UserName);
@@ -110,7 +110,7 @@ namespace YetaWF.Modules.Identity.Support {
             };
             string subject = this.__ResStr("notifyNewUserSubject", "New account for user {0} - site  {1}", user.UserName, Manager.CurrentSite.SiteDomain);
             sendEmail.PrepareEmailMessage(null, subject, sendEmail.GetEmailFile(Package.GetCurrentPackage(this), "New Account Created.txt"), parameters: parms);
-            sendEmail.Send(false);
+            await sendEmail.SendAsync(false);
         }
     }
 }

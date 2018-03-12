@@ -28,7 +28,7 @@ namespace YetaWF.Modules.Pages.Controllers.Shared {
             using (PageDefinitionDataProvider pagesDP = new PageDefinitionDataProvider()) {
                 DataProviderGetRecords<PageDefinition> browseItems = await pagesDP.GetItemsAsync(skip, take, sort, filters);
                 //GridHelper.SaveSettings(skip, take, sort, filters, settingsModuleGuid);
-                return GridPartialView(new DataSourceResult {
+                return await GridPartialViewAsync(new DataSourceResult {
                     Data = (from s in browseItems.Data select new Views.Shared.ListOfLocalPagesHelper.GridAllEntry(s)).ToList<object>(),
                     Total = browseItems.Total
                 });

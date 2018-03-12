@@ -18,7 +18,7 @@ namespace YetaWF.Modules.Pages.DataProvider {
 
     public class PageDefinitionDataProviderStartup : IInitializeApplicationStartup {
 
-        public void InitializeApplicationStartup() {
+        public Task InitializeApplicationStartupAsync() {
             PageDefinition.LoadPageDefinitionAsync = LoadPageDefinitionAsync;
             PageDefinition.LoadPageDefinitionByUrlAsync = LoadPageDefinitionAsync;
             PageDefinition.CreatePageDefinitionAsync = CreatePageDefinitionAsync;
@@ -28,6 +28,7 @@ namespace YetaWF.Modules.Pages.DataProvider {
             PageDefinition.GetDesignedGuids = GetDesignedGuids;
             PageDefinition.GetDesignedUrls = GetDesignedUrls;
             PageDefinition.GetPagesFromModuleAsync = GetPagesFromModuleAsync;
+            return Task.CompletedTask;
         }
 
         private List<PageDefinition.DesignedPage> GetDesignedPages() {

@@ -101,7 +101,7 @@ namespace YetaWF.Modules.Pages.Controllers {
         [AllowPost]
         [ConditionalAntiForgeryToken]
         [ExcludeDemoMode]
-        public ActionResult AddPage(string prefix, int newRecNumber, string newValue) {
+        public async Task<ActionResult> AddPage(string prefix, int newRecNumber, string newValue) {
             // Validation
             UrlValidationAttribute attr = new UrlValidationAttribute(UrlValidationAttribute.SchemaEnum.Any, UrlHelperEx.UrlTypeEnum.Local);
             if (!attr.IsValid(newValue))
@@ -109,7 +109,7 @@ namespace YetaWF.Modules.Pages.Controllers {
             // add new grid record
             ListOfLocalPagesHelper.GridEntryEdit entry = (ListOfLocalPagesHelper.GridEntryEdit)Activator.CreateInstance(typeof(ListOfLocalPagesHelper.GridEntryEdit));
             entry.Url = newValue;
-            return GridPartialView(new GridDefinition.GridEntryDefinition(prefix, newRecNumber, entry));
+            return await GridPartialViewAsync(new GridDefinition.GridEntryDefinition(prefix, newRecNumber, entry));
         }
     }
 }

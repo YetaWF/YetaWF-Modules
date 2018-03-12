@@ -47,9 +47,9 @@ namespace YetaWF.Modules.Blog.Modules {
             EntryEditModule mod = new EntryEditModule();
             int blogEntry;
             if (Manager.TryGetUrlArg<int>("BlogEntry", out blogEntry))
-                menuList.New(mod.GetAction_EditAsync(EditUrl, blogEntry).Result, location);//$$$$$
+                menuList.New(await mod.GetAction_EditAsync(EditUrl, blogEntry), location);
             BlogModule blogMod = new BlogModule();
-            menuList.New(blogMod.GetAction_RssFeedAsync().Result, location); //$$$$$
+            menuList.New(await blogMod.GetAction_RssFeedAsync(), location);
             return menuList;
         }
 

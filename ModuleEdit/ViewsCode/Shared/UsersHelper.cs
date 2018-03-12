@@ -11,6 +11,7 @@ using YetaWF.Core.Serializers;
 using YetaWF.Core.Support;
 using YetaWF.Core.Views;
 using YetaWF.Core.Views.Shared;
+using System.Threading.Tasks;
 #if MVC6
 using Microsoft.AspNetCore.Html;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -33,9 +34,9 @@ namespace YetaWF.Modules.ModuleEdit.Views.Shared {
             public GridDefinition GridDef { get; set; }
         }
 #if MVC6
-        public static HtmlString RenderAllowedUsers<TModel>(this IHtmlHelper<TModel> htmlHelper, string name, SerializableList<ModuleDefinition.AllowedUser> model)
+        public static async Task<HtmlString> RenderAllowedUsersAsync<TModel>(this IHtmlHelper<TModel> htmlHelper, string name, SerializableList<ModuleDefinition.AllowedUser> model)
 #else
-        public static HtmlString RenderAllowedUsers<TModel>(this HtmlHelper<TModel> htmlHelper, string name, SerializableList<ModuleDefinition.AllowedUser> model)
+        public static async Task<HtmlString> RenderAllowedUsersAsync<TModel>(this HtmlHelper<TModel> htmlHelper, string name, SerializableList<ModuleDefinition.AllowedUser> model)
 #endif
         {
             Type gridEntryType;
@@ -46,9 +47,9 @@ namespace YetaWF.Modules.ModuleEdit.Views.Shared {
             if (model != null) {
                 // we have to create a more derived type here to get all the "extra" fields
                 foreach (ModuleDefinition.AllowedUser u in model) {
-                    ModuleDefinition.GridAllowedUser user = (ModuleDefinition.GridAllowedUser) Activator.CreateInstance(gridEntryType);
+                    ModuleDefinition.GridAllowedUser user = (ModuleDefinition.GridAllowedUser)Activator.CreateInstance(gridEntryType);
                     ObjectSupport.CopyData(u, user);
-                    user.SetUser(u.UserId);
+                    await user.SetUserAsync(u.UserId);
                     list.Add(user);
                 }
             }

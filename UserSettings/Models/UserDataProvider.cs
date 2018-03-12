@@ -70,8 +70,9 @@ namespace YetaWF.Modules.UserSettings.DataProvider {
         // STARTUP
         // STARTUP
 
-        public void InitializeApplicationStartup() {
+        public Task InitializeApplicationStartupAsync() {
             YetaWF.Core.Localize.UserSettings.UserSettingsAccess = (IUserSettings)this;
+            return Task.CompletedTask;
         }
 
         // IUSERSETTINGS
@@ -82,7 +83,7 @@ namespace YetaWF.Modules.UserSettings.DataProvider {
             object userInfo = Manager.UserSettingsObject;
             if (userInfo == null) {
                 using (UserDataProvider userDP = new UserDataProvider()) {
-                    userInfo = await userDP.GetItemAsync();
+                    Manager.UserSettingsObject = userInfo = await userDP.GetItemAsync();
                 }
             }
             return userInfo;

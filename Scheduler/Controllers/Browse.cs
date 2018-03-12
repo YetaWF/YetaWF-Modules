@@ -131,7 +131,7 @@ namespace YetaWF.Modules.Scheduler.Controllers {
             using (SchedulerDataProvider dataProvider = new SchedulerDataProvider()) {
                 DataProviderGetRecords<SchedulerItemData> schedulerItems = await dataProvider.GetItemsAsync(skip, take, sort, filters);
                 GridHelper.SaveSettings(skip, take, sort, filters, settingsModuleGuid);
-                return GridPartialView(new DataSourceResult {
+                return await GridPartialViewAsync(new DataSourceResult {
                     Data = (from s in schedulerItems.Data select new SchedulerItem(Module, s)).ToList<object>(),
                     Total = schedulerItems.Total
                 });

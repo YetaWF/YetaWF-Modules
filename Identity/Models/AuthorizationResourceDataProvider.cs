@@ -2,6 +2,7 @@
 
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using YetaWF.Core.DataProvider;
 using YetaWF.Core.Identity;
 using YetaWF.Core.Localize;
@@ -22,7 +23,7 @@ namespace YetaWF.Modules.Identity.DataProvider {
         /// <summary>
         /// Visit all known assemblies and collect authorization resources
         /// </summary>
-        public void InitializeApplicationStartup() {
+        public Task InitializeApplicationStartupAsync() {
 
             AuthorizationResources = new Dictionary<string, ResourceAttribute>();
 
@@ -33,6 +34,7 @@ namespace YetaWF.Modules.Identity.DataProvider {
                     AuthorizationResources.Add(attr.Name, attr);
             }
             Logging.AddLog("Completed locating Authorization Resources");
+            return Task.CompletedTask;
         }
 
         // IMPLEMENTATION

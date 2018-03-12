@@ -75,7 +75,7 @@ namespace YetaWF.Modules.Blog.Scheduler {
                 if (iSiteMap != null) {
                     BlogEntryDataProvider blogEntryDP = obj as BlogEntryDataProvider;
                     if (blogEntryDP != null) { // limit to blog entries
-                        await iSiteMap.FindDynamicUrlsAsync(AddNewsSiteMapPage, ValidForNewsSiteMap);
+                        await iSiteMap.FindDynamicUrlsAsync(AddNewsSiteMapPageAsync, ValidForNewsSiteMap);
                     }
                 }
             }
@@ -89,9 +89,9 @@ namespace YetaWF.Modules.Blog.Scheduler {
             File.Move(file, finalFile);
         }
 
-        private void AddNewsSiteMapPage(PageDefinition page, string url, DateTime? dateUpdated, PageDefinition.SiteMapPriorityEnum priority, PageDefinition.ChangeFrequencyEnum changeFrequency, object obj) {
+        private async Task AddNewsSiteMapPageAsync(PageDefinition page, string url, DateTime? dateUpdated, PageDefinition.SiteMapPriorityEnum priority, PageDefinition.ChangeFrequencyEnum changeFrequency, object obj) {
             BlogEntry blogEntry = (BlogEntry)obj;
-            AddUrl(GetTempFile(), page, blogEntry, url, dateUpdated);
+            await AddUrlAsync(GetTempFile(), page, blogEntry, url, dateUpdated);
         }
         private bool ValidForNewsSiteMap(PageDefinition page) {
             if (!string.IsNullOrWhiteSpace(page.RedirectToPageUrl)) // no redirected pages
@@ -100,7 +100,7 @@ namespace YetaWF.Modules.Blog.Scheduler {
                 return false;
             return true;
         }
-        private void AddUrl(string file, PageDefinition page, BlogEntry blogEntry, string canonicalUrl, DateTime? lastMod) {
+        private async Task AddUrlAsync(string file, PageDefinition page, BlogEntry blogEntry, string canonicalUrl, DateTime? lastMod) {
             if (!blogEntry.Published)
                 return;
             if (blogEntry.DatePublished < DateTime.UtcNow.AddDays(-3))
@@ -121,7 +121,7 @@ namespace YetaWF.Modules.Blog.Scheduler {
                 canonicalUrl = AntiXssEncoder.XmlEncode(canonicalUrl);
                 blogTitle = AntiXssEncoder.XmlEncode(blogEntry.Title[lang.Id]);
                 kwds = AntiXssEncoder.XmlEncode(blogEntry.Keywords[lang.Id]);
-                blogCategory = AntiXssEncoder.XmlEncode(blogEntry.Category[lang.Id]);
+                blogCategory = AntiXssEncoder.XmlEncode((await blogEntry.GetCategoryAsync())[lang.Id]);
                 langId = AntiXssEncoder.XmlEncode(lang.Id);
 #endif
                 File.AppendAllText(file, string.Format(
@@ -137,7 +137,7 @@ namespace YetaWF.Modules.Blog.Scheduler {
                     "      <news:title>{4}</news:title>\r\n" +
                     "      <news:keywords>{5}</news:keywords>\r\n" +
                     "    </news:news>\r\n" +
-                    "  </url>\r\n", canonicalUrl, blogCategory,  langId, publishDate, blogTitle, kwds
+                    "  </url>\r\n", canonicalUrl, blogCategory, langId, publishDate, blogTitle, kwds
                 ));
             }
         }

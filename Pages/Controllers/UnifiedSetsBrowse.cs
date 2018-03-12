@@ -104,7 +104,7 @@ namespace YetaWF.Modules.Pages.Controllers {
             using (UnifiedSetDataProvider unifiedSetDP = new UnifiedSetDataProvider()) {
                 DataProviderGetRecords<UnifiedSetData> browseItems = await unifiedSetDP.GetItemsAsync(skip, take, sort, filters);
                 GridHelper.SaveSettings(skip, take, sort, filters, settingsModuleGuid);
-                return GridPartialView(new DataSourceResult {
+                return await GridPartialViewAsync(new DataSourceResult {
                     Data = (from s in browseItems.Data select new BrowseItem(Module, s)).ToList<object>(),
                     Total = browseItems.Total
                 });

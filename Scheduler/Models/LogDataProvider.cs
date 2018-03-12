@@ -102,7 +102,7 @@ namespace YetaWF.Modules.Scheduler.DataProvider {
             });
             //}
         }
-        public new Task ImportChunk(int chunk, SerializableList<SerializableFile> fileList, object obj) {
+        public new Task ImportChunkAsync(int chunk, SerializableList<SerializableFile> fileList, object obj) {
             // we're not importing any data
             //if (CanImportOrExport)
             //    DataProvider.ImportChunk(chunk, fileList, obj);

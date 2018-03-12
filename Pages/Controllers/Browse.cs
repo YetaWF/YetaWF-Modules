@@ -36,19 +36,19 @@ namespace YetaWF.Modules.Pages.Controllers {
 
             [Caption("Actions"), Description("The available actions")]
             [UIHint("ActionIcons"), ReadOnly]
-            public MenuList Commands {
-                get {
-                    MenuList actions = new MenuList() { RenderMode = ModuleAction.RenderModeEnum.IconsOnly };
+            public MenuList Commands { get; set; }
 
-                    actions.New(Module.GetAction_ShowPage(EvaluatedCanonicalUrl), ModuleAction.ActionLocationEnum.GridLinks);
+            public async Task<MenuList> __GetCommandsAsync() {
+                MenuList actions = new MenuList() { RenderMode = ModuleAction.RenderModeEnum.IconsOnly };
 
-                    if (PageEditModule != null)
-                        actions.New(PageEditModule.GetModuleActionAsync("Edit", null, PageGuid).Result, ModuleAction.ActionLocationEnum.GridLinks);//$$$
+                actions.New(Module.GetAction_ShowPage(EvaluatedCanonicalUrl), ModuleAction.ActionLocationEnum.GridLinks);
 
-                    actions.New(Module.GetAction_RemoveLink(Url), ModuleAction.ActionLocationEnum.GridLinks);
+                if (PageEditModule != null)
+                    actions.New(await PageEditModule.GetModuleActionAsync("Edit", null, PageGuid), ModuleAction.ActionLocationEnum.GridLinks);
 
-                    return actions;
-                }
+                actions.New(Module.GetAction_RemoveLink(Url), ModuleAction.ActionLocationEnum.GridLinks);
+
+                return actions;
             }
 
             [Caption("Url"), Description("The Url used to identify this page - This is the name of the designed page and may not include necessary query string arguments to display the page")]
@@ -162,7 +162,7 @@ namespace YetaWF.Modules.Pages.Controllers {
             using (PageDefinitionDataProvider dataProvider = new PageDefinitionDataProvider()) {
                 DataProviderGetRecords<PageDefinition> pages = await dataProvider.GetItemsAsync(skip, take, sort, filters);
                 GridHelper.SaveSettings(skip, take, sort, filters, settingsModuleGuid);
-                return GridPartialView(new DataSourceResult {
+                return await GridPartialViewAsync(new DataSourceResult {
                     Data = (from s in pages.Data select new PageItem(Module, s, pageSettings)).ToList<object>(),
                     Total = pages.Total
                 });

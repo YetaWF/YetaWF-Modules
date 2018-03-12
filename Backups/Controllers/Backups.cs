@@ -89,7 +89,7 @@ namespace YetaWF.Modules.Backups.Controllers {
             using (BackupsDataProvider dataProvider = new BackupsDataProvider()) {
                 DataProviderGetRecords<BackupEntry> backups = await dataProvider.GetBackupsAsync(skip, take, sort, filters);
                 GridHelper.SaveSettings(skip, take, sort, filters, settingsModuleGuid);
-                return GridPartialView(
+                return await GridPartialViewAsync(
                     new DataSourceResult {
                         Data = (from b in backups.Data select new BackupModel(Module, b)).ToList<object>(),
                         Total = backups.Total

@@ -27,7 +27,7 @@ namespace YetaWF.Modules.Blog.DataProvider.File {
             public override string GetBaseFolder() { return Path.Combine(YetaWFManager.DataFolder, Package.AreaName, SiteIdentity.ToString(), "Categories"); }
         }
         class BlogEntryDataProvider : FileDataProvider<int, BlogEntry> {
-            public BlogEntryDataProvider(Dictionary<string, object> options) : base(options) { CalculatedPropertyCallback = GetCalculatedPropertyAsync; }//$$$$$
+            public BlogEntryDataProvider(Dictionary<string, object> options) : base(options) { CalculatedPropertyCallbackAsync = GetCalculatedPropertyAsync; }
             public override string GetBaseFolder() { return Path.Combine(YetaWFManager.DataFolder, Package.AreaName, SiteIdentity.ToString(), "Entries"); }
             private async Task<object> GetCalculatedPropertyAsync(string name, object obj) {
                 BlogEntry entry = (BlogEntry)obj;

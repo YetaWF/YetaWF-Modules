@@ -157,14 +157,12 @@ namespace YetaWF.Modules.Blog.DataProvider {
         [Data_CalculatedProperty]
         public int Comments { get; set; }
 
-        public MultiString Category {
-            get {
-                using (BlogCategoryDataProvider categoryDP = new BlogCategoryDataProvider()) {
-                    BlogCategory blogCategory = categoryDP.GetItemAsync(CategoryIdentity).Result;//$$$
-                    if (blogCategory != null)
-                        return blogCategory.Category;
-                    return new MultiString();
-                }
+        public async Task<MultiString> GetCategoryAsync() {
+            using (BlogCategoryDataProvider categoryDP = new BlogCategoryDataProvider()) {
+                BlogCategory blogCategory = await categoryDP.GetItemAsync(CategoryIdentity);
+                if (blogCategory != null)
+                    return blogCategory.Category;
+                return new MultiString();
             }
         }
 
@@ -276,7 +274,7 @@ namespace YetaWF.Modules.Blog.DataProvider {
         // ISITEMAPDYNAMICURLS
         // ISITEMAPDYNAMICURLS
 
-        public async Task FindDynamicUrlsAsync(Action<PageDefinition, string, DateTime?, PageDefinition.SiteMapPriorityEnum, PageDefinition.ChangeFrequencyEnum, object> addDynamicUrl, Func<PageDefinition, bool> validForSiteMap) {
+        public async Task FindDynamicUrlsAsync(AddDynamicUrlAsync addDynamicUrlAsync, Func<PageDefinition, bool> validForSiteMap) {
             using (this) {
                 List<DataProviderFilterInfo> filters = DataProviderFilterInfo.Join(null, new DataProviderFilterInfo { Field = "Published", Operator = "==", Value = true });
                 DataProviderGetRecords<BlogEntry> entries = await GetItemsAsync(0, 0, null, filters);
@@ -284,7 +282,7 @@ namespace YetaWF.Modules.Blog.DataProvider {
                     string url = await BlogConfigData.GetEntryCanonicalNameAsync(entry.Identity);
                     PageDefinition page = await PageDefinition.LoadFromUrlAsync(url);
                     if (page == null) return; // there is no such root page
-                    addDynamicUrl(page, url, entry.DateUpdated, page.SiteMapPriority, page.ChangeFrequency, entry);
+                    await addDynamicUrlAsync(page, url, entry.DateUpdated, page.SiteMapPriority, page.ChangeFrequency, entry);
                 }
             }
         }

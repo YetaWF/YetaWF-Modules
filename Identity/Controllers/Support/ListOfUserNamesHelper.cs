@@ -27,7 +27,7 @@ namespace YetaWF.Modules.Identity.Controllers.Shared {
             using (UserDefinitionDataProvider userDP = new UserDefinitionDataProvider()) {
                 DataProviderGetRecords<UserDefinition> browseItems = await userDP.GetItemsAsync(skip, take, sort, filters);
                 //GridHelper.SaveSettings(skip, take, sort, filters, settingsModuleGuid);
-                return GridPartialView(new DataSourceResult {
+                return await GridPartialViewAsync(new DataSourceResult {
                     Data = (from s in browseItems.Data select new Views.Shared.ListOfUserNamesHelper.GridAllEntry(s)).ToList<object>(),
                     Total = browseItems.Total
                 });

@@ -23,8 +23,9 @@ namespace YetaWF.Modules.Identity.DataProvider {
         // STARTUP
         // STARTUP
 
-        public void InitializeApplicationStartup() {
+        public Task InitializeApplicationStartupAsync() {
             Resource.ResourceAccess = (IResource)this;
+            return Task.CompletedTask;
         }
 
         // IRESOURCE
@@ -44,10 +45,6 @@ namespace YetaWF.Modules.Identity.DataProvider {
             backDoor = false;
         }
         private bool? backDoor = null;
-
-        public bool IsResourceAuthorized(string resourceName) {//$$$eliminate
-            return YetaWFManager.Syncify<bool>(() => IsResourceAuthorizedAsync(resourceName));
-        }
 
         public async Task<bool> IsResourceAuthorizedAsync(string resourceName) {
             // we need to check if this resource is protected
@@ -328,23 +325,6 @@ namespace YetaWF.Modules.Identity.DataProvider {
             );
         }
 
-        //$$public async Task<List<string>> GetEnabledTwoStepAuthenticationsAsync(int userId) {
-        //    using (UserDefinitionDataProvider userDP = new UserDefinitionDataProvider()) {
-        //        UserDefinition user = await userDP.GetItemByUserIdAsync(userId);
-        //        if (user == null) throw new InternalError("Unexpected error in GetEnabledTwoStepAuthentications - no user found");
-        //        return (from e in user.EnabledTwoStepAuthentications select e.Name).ToList();
-        //    }
-        //}
-        //public async Task SetEnabledTwoStepAuthenticationsAsync(int userId, List<string> auths) {
-        //    using (UserDefinitionDataProvider userDP = new UserDefinitionDataProvider()) {
-        //        UserDefinition user = await userDP.GetItemByUserIdAsync(userId);
-        //        if (user == null) throw new InternalError("Unexpected error in SetEnabledTwoStepAuthentications - no user found");
-        //        user.EnabledTwoStepAuthentications = new SerializableList<TwoStepDefinition>(from a in auths select new TwoStepDefinition { Name = a });
-        //        UpdateStatusEnum status = await userDP.UpdateItemAsync(user);
-        //        if (status != UpdateStatusEnum.OK)
-        //            throw new InternalError("Unexpected status {0} updating user account in SetEnabledTwoStepAuthentications", status);
-        //    }
-        //}
         public async Task AddEnabledTwoStepAuthenticationAsync(int userId, string auth) {
             using (UserDefinitionDataProvider userDP = new UserDefinitionDataProvider()) {
                 UserDefinition user = await userDP.GetItemByUserIdAsync(userId);

@@ -28,10 +28,10 @@ namespace YetaWF.Modules.Messenger.Controllers {
         public class MessageModel { }
 
         [AllowGet]
-        public ActionResult SkinMessaging() {
-            Signalr.UseAsync();
+        public async Task<ActionResult> SkinMessaging() {
+            await Signalr.UseAsync();
             Package currentPackage = AreaRegistration.CurrentPackage;
-            Manager.AddOnManager.AddAddOnNamedAsync(currentPackage.Domain, currentPackage.Product, "SkinMessaging");
+            await Manager.AddOnManager.AddAddOnNamedAsync(currentPackage.Domain, currentPackage.Product, "SkinMessaging");
             return new EmptyResult();
         }
     }
@@ -40,13 +40,13 @@ namespace YetaWF.Modules.Messenger.Controllers {
 
         public async Task Send(string toUser, string message) {
 
-            YetaWFManager manager = Signalr.SetupEnvironment();
+            YetaWFManager manager = await Signalr.SetupEnvironmentAsync();
             using (MessagingDataProvider msgDP = new MessagingDataProvider()) {
                 if (manager.UserId == 0) throw new InternalError("No current user");
 
                 try {
 
-                    int toUserId = YetaWFManager.Syncify<int>(() => Resource.ResourceAccess.GetUserIdAsync(toUser));//$$$$$
+                    int toUserId = await Resource.ResourceAccess.GetUserIdAsync(toUser);
                     if (toUserId == 0) throw new Error(this.__ResStr("noUser", "User {0} doesn't exist", toUser));
 
                     Message msg = new Message {
@@ -75,7 +75,7 @@ namespace YetaWF.Modules.Messenger.Controllers {
             }
         }
         public async Task<List<string>> GetOnlineUsers() {
-            YetaWFManager manager = Signalr.SetupEnvironment();
+            YetaWFManager manager = await Signalr.SetupEnvironmentAsync();
             using (ConnectionDataProvider connDP = new ConnectionDataProvider()) {
                 //$$$ limit scope to friend users
                 List<DataProviderFilterInfo> filters = null;
@@ -88,14 +88,14 @@ namespace YetaWF.Modules.Messenger.Controllers {
             }
         }
         public async Task<bool> IsUserOnline(string user) {
-            YetaWFManager manager = Signalr.SetupEnvironment();
+            YetaWFManager manager = await Signalr.SetupEnvironmentAsync();
             using (ConnectionDataProvider connDP = new ConnectionDataProvider()) {
                 Connection conn = await connDP.GetEntryAsync(user);
                 return conn != null;
             }
         }
         public async Task MessageSeen(int key) {
-            YetaWFManager manager = Signalr.SetupEnvironment();
+            YetaWFManager manager = await Signalr.SetupEnvironmentAsync();
             if (manager.UserId == 0) throw new InternalError("No current user");
             using (MessagingDataProvider msgDP = new MessagingDataProvider()) {
                 Message msg = await msgDP.GetItemAsync(key);
@@ -104,19 +104,19 @@ namespace YetaWF.Modules.Messenger.Controllers {
                     msg.Seen = true;
                     await msgDP.UpdateItemAsync(msg);
                 }
-                string fromUser = YetaWFManager.Syncify<string>(() => Resource.ResourceAccess.GetUserNameAsync(msg.FromUser));//$$syncify
+                string fromUser = await Resource.ResourceAccess.GetUserNameAsync(msg.FromUser);
                 if (string.IsNullOrWhiteSpace(fromUser)) throw new Error(this.__ResStr("noFromUser", "User {0} doesn't exist", msg.FromUser));
-                string toUser = YetaWFManager.Syncify<string>(() => Resource.ResourceAccess.GetUserNameAsync(msg.ToUser));//$$syncify
+                string toUser = await Resource.ResourceAccess.GetUserNameAsync(msg.ToUser);
                 if (string.IsNullOrWhiteSpace(toUser)) throw new Error(this.__ResStr("noToUser", "User {0} doesn't exist", msg.ToUser));
 
                 Dispatch(Clients.User(fromUser), "messageSeen", msg.Key, toUser);
             }
         }
         public async Task AllMessagesSeen(string fromUser) {
-            YetaWFManager manager = Signalr.SetupEnvironment();
+            YetaWFManager manager = await Signalr.SetupEnvironmentAsync();
             if (manager.UserId == 0) throw new InternalError("No current user");
 
-            int fromUserId = YetaWFManager.Syncify(() => Resource.ResourceAccess.GetUserIdAsync(fromUser));//$$$
+            int fromUserId = await Resource.ResourceAccess.GetUserIdAsync(fromUser);
             if (fromUserId == 0) throw new Error(this.__ResStr("noFromUser", "User {0} doesn't exist", fromUser));
 
             using (MessagingDataProvider msgDP = new MessagingDataProvider()) {

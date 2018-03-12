@@ -70,9 +70,10 @@ namespace YetaWF.Modules.Visitors.DataProvider {
 
     public class VisitorEntryDataProvider : DataProviderImpl, IInstallableModel, IInitializeApplicationStartup {
 
-        public void InitializeApplicationStartup() {
+        public Task InitializeApplicationStartupAsync() {
             ErrorHandling.RegisterCallback(AddVisitEntryError);
             PageLogging.RegisterCallback(AddVisitEntryUrl);
+            return Task.CompletedTask;
         }
 
         public bool Usable { get { return DataProvider != null; } }
@@ -236,7 +237,7 @@ namespace YetaWF.Modules.Visitors.DataProvider {
             //if (!Usable) return false;
             //return DataProvider.ExportChunk(chunk, fileList, out obj);
         }
-        public new Task ImportChunk(int chunk, SerializableList<SerializableFile> fileList, object obj) {
+        public new Task ImportChunkAsync(int chunk, SerializableList<SerializableFile> fileList, object obj) {
             // we don't import visitor data
             return Task.CompletedTask;
             //if (!Usable) return;

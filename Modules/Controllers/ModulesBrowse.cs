@@ -28,24 +28,24 @@ namespace YetaWF.Modules.Modules.Controllers {
 
             [Caption("Actions"), Description("The available actions")]
             [UIHint("ActionIcons"), ReadOnly]
-            public MenuList Commands {
-                get {
-                    MenuList actions = new MenuList() { RenderMode = ModuleAction.RenderModeEnum.IconsOnly };
+            public MenuList Commands { get; set; }
 
-                    Guid guid = ModuleGuid;
+            public async Task<MenuList> __GetCommandsAsync() {
+                MenuList actions = new MenuList() { RenderMode = ModuleAction.RenderModeEnum.IconsOnly };
+
+                Guid guid = ModuleGuid;
+                try {
+                    actions.New(Module.GetAction_ShowModule(guid), ModuleAction.ActionLocationEnum.GridLinks);
+                } catch (Exception) { }
+                if (ModSettings != null) {
                     try {
-                        actions.New(Module.GetAction_ShowModule(guid), ModuleAction.ActionLocationEnum.GridLinks);
+                        actions.New(await ModSettings.GetModuleActionAsync("Settings", guid), ModuleAction.ActionLocationEnum.GridLinks);
                     } catch (Exception) { }
-                    if (ModSettings != null) {
-                        try {
-                            actions.New(ModSettings.GetModuleActionAsync("Settings", guid).Result, ModuleAction.ActionLocationEnum.GridLinks); //$$$
-                        } catch (Exception) { }
-                    }
-                    try {
-                        actions.New(Module.GetAction_Remove(guid), ModuleAction.ActionLocationEnum.GridLinks);
-                    } catch (Exception) { }
-                    return actions;
                 }
+                try {
+                    actions.New(Module.GetAction_Remove(guid), ModuleAction.ActionLocationEnum.GridLinks);
+                } catch (Exception) { }
+                return actions;
             }
 
             [Caption("Name"), Description("The module name, which is used to identify the module")]
@@ -136,7 +136,7 @@ namespace YetaWF.Modules.Modules.Controllers {
             };
             await ModuleDefinition.GetModulesAsync(info);
             GridHelper.SaveSettings(skip, take, sort, filters, settingsModuleGuid);
-            return GridPartialView(new DataSourceResult {
+            return await GridPartialViewAsync(new DataSourceResult {
                 Data = (from s in info.Modules select new BrowseItem(Module, modSettings, s)).ToList<object>(),
                 Total = info.Total
             });

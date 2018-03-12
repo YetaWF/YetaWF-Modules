@@ -142,7 +142,7 @@ namespace YetaWF.Modules.Logging.Controllers {
             using (LogRecordDataProvider dataProvider = LogRecordDataProvider.GetLogRecordDataProvider()) {
                 DataProviderGetRecords<LogRecord> browseItems = await dataProvider.GetItemsAsync(skip, take, sort, filters);
                 GridHelper.SaveSettings(skip, take, sort, filters, settingsModuleGuid);
-                return GridPartialView(new DataSourceResult {
+                return await GridPartialViewAsync(new DataSourceResult {
                     Data = (from s in browseItems.Data select new BrowseItem(Module, s)).ToList<object>(),
                     Total = browseItems.Total
                 });

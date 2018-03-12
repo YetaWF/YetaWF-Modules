@@ -34,27 +34,28 @@ namespace YetaWF.Modules.Packages.Controllers {
 
             [Caption("Actions"), Description("The available actions")]
             [UIHint("ActionIcons"), ReadOnly]
-            public MenuList Commands {
-                get {
-                    MenuList actions = new MenuList() { RenderMode = ModuleAction.RenderModeEnum.IconsOnly };
+            public MenuList Commands { get; set; }
 
-                    actions.New(Module.GetAction_InfoLink(Package.InfoLink), ModuleAction.ActionLocationEnum.GridLinks);
-                    //actions.New(Module.GetAction_SupportLink(Package.SupportLink), ModuleAction.ActionLocationEnum.GridLinks);
-                    //actions.New(Module.GetAction_LicenseLink(Package.LicenseLink), ModuleAction.ActionLocationEnum.GridLinks);
-                    //actions.New(Module.GetAction_ReleaseNoticeLink(Package.ReleaseNoticeLink), ModuleAction.ActionLocationEnum.GridLinks);
+            public async Task<MenuList> __GetCommandsAsync() {
+                MenuList actions = new MenuList() { RenderMode = ModuleAction.RenderModeEnum.IconsOnly };
 
-                    actions.New(Module.GetAction_ExportPackage(Package), ModuleAction.ActionLocationEnum.GridLinks);
-                    actions.New(Module.GetAction_ExportPackageWithSource(Package), ModuleAction.ActionLocationEnum.GridLinks);
-                    actions.New(Module.GetAction_ExportPackageData(Package), ModuleAction.ActionLocationEnum.GridLinks);
-                    actions.New(Module.GetAction_InstallPackageModels(Package), ModuleAction.ActionLocationEnum.GridLinks);
-                    actions.New(Module.GetAction_UninstallPackageModels(Package), ModuleAction.ActionLocationEnum.GridLinks);
-                    actions.New(Module.GetAction_LocalizePackage(Package), ModuleAction.ActionLocationEnum.GridLinks);
-                    actions.New(Module.GetAction_RemovePackage(Package), ModuleAction.ActionLocationEnum.GridLinks);
+                actions.New(Module.GetAction_InfoLink(Package.InfoLink), ModuleAction.ActionLocationEnum.GridLinks);
+                //actions.New(Module.GetAction_SupportLink(Package.SupportLink), ModuleAction.ActionLocationEnum.GridLinks);
+                //actions.New(Module.GetAction_LicenseLink(Package.LicenseLink), ModuleAction.ActionLocationEnum.GridLinks);
+                //actions.New(Module.GetAction_ReleaseNoticeLink(Package.ReleaseNoticeLink), ModuleAction.ActionLocationEnum.GridLinks);
 
-                    actions.New(ModLocalize.GetModuleActionAsync("Browse", null, Package).Result, ModuleAction.ActionLocationEnum.GridLinks);//$$$$
-                    return actions;
-                }
+                actions.New(Module.GetAction_ExportPackage(Package), ModuleAction.ActionLocationEnum.GridLinks);
+                actions.New(Module.GetAction_ExportPackageWithSource(Package), ModuleAction.ActionLocationEnum.GridLinks);
+                actions.New(Module.GetAction_ExportPackageData(Package), ModuleAction.ActionLocationEnum.GridLinks);
+                actions.New(Module.GetAction_InstallPackageModels(Package), ModuleAction.ActionLocationEnum.GridLinks);
+                actions.New(Module.GetAction_UninstallPackageModels(Package), ModuleAction.ActionLocationEnum.GridLinks);
+                actions.New(Module.GetAction_LocalizePackage(Package), ModuleAction.ActionLocationEnum.GridLinks);
+                actions.New(Module.GetAction_RemovePackage(Package), ModuleAction.ActionLocationEnum.GridLinks);
+
+                actions.New(await ModLocalize.GetModuleActionAsync("Browse", null, Package), ModuleAction.ActionLocationEnum.GridLinks);
+                return actions;
             }
+
             [Caption("Package Name"), Description("The assembly name of the package")]
             [UIHint("String"), ReadOnly]
             public string Name { get; set; }
@@ -113,7 +114,7 @@ namespace YetaWF.Modules.Packages.Controllers {
                 throw new InternalError("No localization services available - no module has been defined");
             DataProviderGetRecords<Package> packages = Package.GetAvailablePackages(skip, take, sort, filters);
             GridHelper.SaveSettings(skip, take, sort, filters, settingsModuleGuid);
-            return GridPartialView(new DataSourceResult {
+            return await GridPartialViewAsync(new DataSourceResult {
                 Data = (from p in packages.Data select new PackageModel(Module, modLocalize, p)).ToList<object>(),
                 Total = packages.Total
             });

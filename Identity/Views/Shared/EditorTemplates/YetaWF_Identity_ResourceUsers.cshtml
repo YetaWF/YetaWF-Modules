@@ -6,7 +6,7 @@
         data-dupmsg="@__ResStr("dupmsg", "User {0} has already been added")"
         data-addedmsg="@__ResStr("addedmsg", "User {0} has been added")"
         data-remmsg="@__ResStr("remmsg", "User {0} has been removed")">
-    @Html.RenderResourceAllowedUsers("", Model)
+    @Html.RenderResourceAllowedUsersAsync("", Model).Result
     <div class="t_newvalue">
         @Html.RenderExtLabel(__ResStr("newUser", "New User"), ToolTip: __ResStr("newUserTT", "Enter a new user name and click Add."))
         @Html.RenderTextBoxAsync("NewValue", null, HtmlAttributes: new { @class = "yt_text40 yt_text_base t_edit", maxlength = YetaWF.Core.Globals.MaxUser }).Result

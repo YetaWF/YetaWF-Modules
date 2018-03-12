@@ -15,9 +15,10 @@ namespace YetaWF.Modules.Basics.DataProvider {
         // STARTUP
         // STARTUP
 
-        public void InitializeApplicationStartup() {
+        public Task InitializeApplicationStartupAsync() {
             RecaptchaConfig.LoadRecaptchaConfigAsync = RecaptchaConfigDataProvider.LoadRecaptchaConfigAsync;
             RecaptchaConfig.SaveRecaptchaConfigAsync = RecaptchaConfigDataProvider.SaveRecaptchaConfigAsync;
+            return Task.CompletedTask;
         }
 
     }

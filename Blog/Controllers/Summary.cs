@@ -37,9 +37,9 @@ namespace YetaWF.Modules.Blog.Controllers {
             [UIHint("ModuleAction"), AdditionalMetadata("RenderAs", ModuleAction.RenderModeEnum.LinksOnly), ReadOnly]
             public ModuleAction ViewAction { get; set; }
 
-            public Entry(BlogEntry data, EntryDisplayModule dispMod) {
+            public Entry(BlogEntry data, EntryDisplayModule dispMod, ModuleAction viewAction) {
                 ObjectSupport.CopyData(data, this);
-                ViewAction = dispMod.GetAction_DisplayAsync(data.Identity).Result;//$$$
+                ViewAction = viewAction;
                 ViewAction.LinkText = Title;
                 ViewAction.Tooltip = this.__ResStr("viewTT", "Published {0} - {1}", Formatting.FormatDate(data.DatePublished), data.DisplayableSummaryText);
             }
@@ -68,8 +68,13 @@ namespace YetaWF.Modules.Blog.Controllers {
                     return new EmptyResult();
 
                 EntryDisplayModule dispMod = new EntryDisplayModule();
+                List<Entry> list = new List<Entry>();
+                foreach (BlogEntry d in data.Data) {
+                    ModuleAction viewAction = await dispMod.GetAction_DisplayAsync(d.Identity);
+                    list.Add(new Entry(d, dispMod, viewAction));
+                }
                 DisplayModel model = new DisplayModel() {
-                    BlogEntries = (from d in data.Data select new Entry(d, dispMod)).ToList(),
+                    BlogEntries = list,
                 };
                 return View(model);
             }

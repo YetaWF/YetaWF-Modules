@@ -43,9 +43,9 @@ namespace YetaWF.Modules.ModuleEdit.Controllers {
 
             // add new grid record
             ModuleDefinition.GridAllowedUser userEntry = (ModuleDefinition.GridAllowedUser)Activator.CreateInstance(gridEntryType);
-            userEntry.SetUser(userId);
+            await userEntry.SetUserAsync(userId);
             GridDefinition.GridEntryDefinition gridEntryDef = new GridDefinition.GridEntryDefinition(prefix, newRecNumber, userEntry);
-            return GridPartialView(gridEntryDef);
+            return await GridPartialViewAsync(gridEntryDef);
         }
     }
 }

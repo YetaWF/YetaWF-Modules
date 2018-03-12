@@ -94,7 +94,7 @@ namespace YetaWF.Modules.Identity.Controllers {
                 ListOfUserNamesHelper.GridEntryEdit entry = (ListOfUserNamesHelper.GridEntryEdit)Activator.CreateInstance(typeof(ListOfUserNamesHelper.GridEntryEdit));
                 entry.UserName = newValue;
                 entry.__Value = user.UserId.ToString();
-                return GridPartialView(new GridDefinition.GridEntryDefinition(prefix, newRecNumber, entry));
+                return await GridPartialViewAsync(new GridDefinition.GridEntryDefinition(prefix, newRecNumber, entry));
             }
         }
     }

@@ -21,7 +21,7 @@ namespace YetaWF.Modules.SiteProperties.Models {
         // STARTUP
         // STARTUP
 
-        public void InitializeApplicationStartup() {
+        public async Task InitializeApplicationStartupAsync() {
             // The SiteDefinitionDataProvider has two permanent disposable objects
             SiteDefinition.LoadSiteDefinitionAsync = LoadSiteDefinitionAsync;
             SiteDefinition.SaveSiteDefinitionAsync = SaveSiteDefinitionAsync;
@@ -29,9 +29,7 @@ namespace YetaWF.Modules.SiteProperties.Models {
             SiteDefinition.GetSitesAsync = GetItemsAsync;
             SiteDefinition.LoadStaticSiteDefinitionAsync = LoadStaticSiteDefinitionAsync;
 
-            YetaWFManager.Syncify(async () => {
-                await LoadStaticSitesCacheAsync();
-            });
+            await LoadStaticSitesCacheAsync();
         }
 
         // IMPLEMENTATION

@@ -56,7 +56,7 @@ namespace YetaWF.Modules.Identity.Views.Shared {
                     Modules.UsersDisplayModule modDisp = new Modules.UsersDisplayModule();
                     actionDisplay = modDisp.GetAction_Display(null, userName);
                     Modules.LoginModule modLogin = (Modules.LoginModule) await ModuleDefinition.CreateUniqueModuleAsync(typeof(Modules.LoginModule));
-                    actionLoginAs = modLogin.GetAction_LoginAs(model, userName);
+                    actionLoginAs = await modLogin.GetAction_LoginAsAsync(model, userName);
                 }
                 tag.SetInnerText(userName);
             }

@@ -83,7 +83,7 @@ namespace YetaWF.Modules.Identity.Controllers {
             using (AuthorizationDataProvider dataProvider = new AuthorizationDataProvider()) {
                 DataProviderGetRecords<Authorization> browseItems = await dataProvider.GetItemsAsync(skip, take, sort, filters);
                 GridHelper.SaveSettings(skip, take, sort, filters, settingsModuleGuid);
-                return GridPartialView(
+                return await GridPartialViewAsync(
                     new DataSourceResult {
                         Data = (from s in browseItems.Data select new BrowseItem(Module, s)).ToList<object>(),
                         Total = browseItems.Total

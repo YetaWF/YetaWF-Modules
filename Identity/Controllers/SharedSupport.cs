@@ -32,9 +32,10 @@ namespace YetaWF.Modules.Identity.Controllers {
             if (userId == 0)
                 throw new Error(this.__ResStr("noUser", "User {0} doesn't exist.", newValue));
 
-            UsersHelper.GridAllowedUser userEntry = new UsersHelper.GridAllowedUser(userId);
+            string userName = await Resource.ResourceAccess.GetUserNameAsync(userId);
+            UsersHelper.GridAllowedUser userEntry = new UsersHelper.GridAllowedUser(userId, userName);
             GridDefinition.GridEntryDefinition gridEntryDef = new GridDefinition.GridEntryDefinition(prefix, newRecNumber, userEntry);
-            return GridPartialView(gridEntryDef);
+            return await GridPartialViewAsync(gridEntryDef);
         }
     }
 }
