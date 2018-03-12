@@ -66,7 +66,7 @@ namespace YetaWF.Modules.Logging.DataProvider.SQL {
         public override void Flush() { }
 
         public override void SaveMessage(LogRecord record) {
-            DataProvider.AddAsync(record).Wait();//$$$
+            //$$$ DataProvider.AddAsync(record).Wait();//$$$
         }
         public new Task<LogRecord> GetItemAsync(int key) {
             return DataProvider.GetAsync(key);

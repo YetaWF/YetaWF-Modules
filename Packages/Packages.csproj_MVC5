@@ -110,17 +110,13 @@
       <Project>{71acc7ac-2622-4127-b925-d058c01a39e5}</Project>
       <Name>Core</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\DataProvider\File\File.csproj">
-      <Project>{f0df6c3b-2b71-4526-8fd0-ac2b731b2c3b}</Project>
-      <Name>File</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\..\DataProvider\ModuleDefinition\ModuleDefinition.csproj">
       <Project>{348f2a6b-57f5-47a3-8a46-3f44529acd83}</Project>
       <Name>ModuleDefinition</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\DataProvider\SQL\SQL.csproj">
-      <Project>{67e180a4-fc9f-4eec-bec1-457714963596}</Project>
-      <Name>SQL</Name>
+    <ProjectReference Include="..\..\..\DataProvider\SQL2\SQL2.csproj">
+      <Project>{6A90EAB3-A9E4-4A2C-90D9-145859790C46}</Project>
+      <Name>SQL2</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
