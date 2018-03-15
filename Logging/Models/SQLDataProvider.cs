@@ -75,8 +75,8 @@ namespace YetaWF.Modules.Logging.DataProvider.SQL {
         public new Task<bool> RemoveItemAsync(int key) {
             return DataProvider.RemoveAsync(key);
         }
-        public new DataProviderGetRecords<LogRecord> GetItemsAsync(List<DataProviderFilterInfo> filters) {
-            return DataProvider.GetRecordsAsync(0, 0, null, filters).Result;
+        public new async Task<DataProviderGetRecords<LogRecord>> GetItemsAsync(List<DataProviderFilterInfo> filters) {
+            return await DataProvider.GetRecordsAsync(0, 0, null, filters);
         }
         public override async Task<DataProviderGetRecords<LogRecord>> GetItemsAsync(int skip, int take, List<DataProviderSortInfo> sort, List<DataProviderFilterInfo> filters) {
             return await DataProvider.GetRecordsAsync(skip, take, sort, filters);

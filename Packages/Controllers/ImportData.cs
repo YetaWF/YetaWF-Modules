@@ -42,7 +42,7 @@ namespace YetaWF.Modules.Packages.Controllers {
         [Permission("Imports")]
         [ExcludeDemoMode]
 #if MVC6
-        public ActionResult ImportPackageData(IFormFile __filename)
+        public async Task<ActionResult> ImportPackageData(IFormFile __filename)
 #else
         public async Task<ActionResult> ImportPackageData(HttpPostedFileBase __filename)
 #endif

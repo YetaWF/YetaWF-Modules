@@ -91,13 +91,13 @@ namespace YetaWF.Modules.Modules.Controllers {
             private ModulesBrowseModule Module { get; set; }
             private ModuleDefinition ModSettings { get; set; }
 
-            public BrowseItem(ModulesBrowseModule browseMod,  ModuleDefinition modSettings, ModuleDefinition mod) {
+            public BrowseItem(ModulesBrowseModule browseMod,  ModuleDefinition modSettings, ModuleDefinition mod, int useCount) {
                 Module = browseMod;
                 ModSettings = modSettings;
                 ObjectSupport.CopyData(mod, this);
                 ModuleGuid = mod.ModuleGuid;
                 Description = mod.Description;
-                UseCount = mod.Pages.Count;
+                UseCount = useCount;
                 Anonymous = mod.IsAuthorized_View_Anonymous();
                 Users = mod.IsAuthorized_View_AnyUser();
             }
@@ -136,8 +136,13 @@ namespace YetaWF.Modules.Modules.Controllers {
             };
             await ModuleDefinition.GetModulesAsync(info);
             GridHelper.SaveSettings(skip, take, sort, filters, settingsModuleGuid);
+            List<BrowseItem> list = new List<BrowseItem>();
+            foreach (ModuleDefinition s in info.Modules) {
+                int useCount = (await s.__GetPagesAsync()).Count;
+                list.Add(new BrowseItem(Module, modSettings, s, useCount));
+            }
             return await GridPartialViewAsync(new DataSourceResult {
-                Data = (from s in info.Modules select new BrowseItem(Module, modSettings, s)).ToList<object>(),
+                Data = list.ToList<object>(),
                 Total = info.Total
             });
         }

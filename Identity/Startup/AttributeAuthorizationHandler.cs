@@ -51,13 +51,13 @@ namespace YetaWF.Core.Identity {
             context.Succeed(requirement);
         }
 
-        private Task<bool> AuthorizeAsync(ClaimsPrincipal user, string permission) {
-            YetaWFController.SetupEnvironmentInfo();// for ajax calls this may be the first chance to set up identity
-            if (!Resource.ResourceAccess.IsResourceAuthorized(permission)) {
+        private async Task<bool> AuthorizeAsync(ClaimsPrincipal user, string permission) {
+            await YetaWFController.SetupEnvironmentInfoAsync();// for ajax calls this may be the first chance to set up identity
+            if (!await Resource.ResourceAccess.IsResourceAuthorizedAsync(permission)) {
                 // Don't challenge a resource as there is no alternative
                 throw new Error(this.__ResStr("notAuth", "Not Authorized"));
             }
-            return Task.FromResult<bool>(true);
+            return true;
         }
     }
 }

@@ -115,7 +115,7 @@ namespace YetaWF.Modules.Blog.Scheduler {
                 canonicalUrl = WebUtility.HtmlEncode(canonicalUrl);
                 blogTitle = WebUtility.HtmlEncode(blogEntry.Title[lang.Id]);
                 kwds = WebUtility.HtmlEncode(blogEntry.Keywords[lang.Id]);
-                blogCategory = WebUtility.HtmlEncode(blogEntry.Category[lang.Id]);
+                blogCategory = WebUtility.HtmlEncode((await blogEntry.GetCategoryAsync())[lang.Id]);
                 langId = WebUtility.HtmlEncode(lang.Id);
 #else
                 canonicalUrl = AntiXssEncoder.XmlEncode(canonicalUrl);

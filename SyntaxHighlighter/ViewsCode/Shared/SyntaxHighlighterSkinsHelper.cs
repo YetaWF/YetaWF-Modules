@@ -24,7 +24,7 @@ namespace YetaWF.Modules.SyntaxHighlighter.Views.Shared {
 
         private static string __ResStr(string name, string defaultValue, params object[] parms) { return ResourceAccess.GetResourceString(typeof(SyntaxHighlighterSkinsHelper), name, defaultValue, parms); }
 #if MVC6
-        public static HtmlString RenderSyntaxHighlighterSkins(this IHtmlHelper htmlHelper, string name, string selection, object HtmlAttributes = null) {
+        public static async Task<HtmlString> RenderSyntaxHighlighterSkinsAsync(this IHtmlHelper htmlHelper, string name, string selection, object HtmlAttributes = null) {
 #else
         public static async Task<HtmlString> RenderSyntaxHighlighterSkinsAsync(this HtmlHelper htmlHelper, string name, string selection, object HtmlAttributes = null) {
 #endif

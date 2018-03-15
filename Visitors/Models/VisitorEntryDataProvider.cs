@@ -199,7 +199,7 @@ namespace YetaWF.Modules.Visitors.DataProvider {
                             City = VisitorEntry.Unknown,
                             Error = error.Truncate(VisitorEntry.MaxError),
                         };
-                        return visitorDP.AddItemAsync(visitorEntry);
+                        //$$$$$$$$$$ return visitorDP.AddItemAsync(visitorEntry);
                     }
                 } catch (Exception) {
                 } finally {

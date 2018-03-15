@@ -375,7 +375,7 @@ namespace YetaWF.Modules.PageEdit.Controllers {
         [AllowPost]
         [ExcludeDemoMode]
 #if MVC6
-        public ActionResult ImportPackage(IFormFile __filename, ImportModel model)
+        public async Task<ActionResult> ImportPackage(IFormFile __filename, ImportModel model)
 #else
         public async Task<ActionResult> ImportPackage(HttpPostedFileBase __filename, ImportModel model)
 #endif

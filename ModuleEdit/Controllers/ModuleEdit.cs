@@ -8,6 +8,8 @@ using YetaWF.Core.Models;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Modules;
 using YetaWF.Core.Support;
+using System.Collections.Generic;
+using YetaWF.Core.Pages;
 #if MVC6
 using Microsoft.AspNetCore.Mvc;
 #else
@@ -17,13 +19,18 @@ using System.Web.Mvc;
 namespace YetaWF.Modules.ModuleEdit.Controllers {
 
     public class ModuleEditModuleController : ControllerImpl<YetaWF.Modules.ModuleEdit.Modules.ModuleEditModule> {
-
+        
         public class ModuleEditModel {
+
             [UIHint("PropertyListTabbed"), Trim]
             public ModuleDefinition Module { get; set; }
 
             [UIHint("Hidden")]
             public Guid ModuleGuid { get; set; }
+
+            internal async Task UpdateDataAsync() {
+                await ObjectSupport.HandlePropertyAsync<List<PageDefinition>>(nameof(ModuleDefinition.Pages), nameof(ModuleDefinition.__GetPagesAsync), Module);
+            }
         }
 
         [AllowGet]
@@ -40,6 +47,7 @@ namespace YetaWF.Modules.ModuleEdit.Controllers {
                 ModuleGuid = moduleGuid,
             };
             Module.Title = this.__ResStr("modEditTitle", "Module \"{0}\"", module.Title.ToString());
+            await model.UpdateDataAsync();
             Manager.CurrentModuleEdited = module;
             return View(model);
         }
@@ -50,12 +58,13 @@ namespace YetaWF.Modules.ModuleEdit.Controllers {
         public async Task<ActionResult> ModuleEdit_Partial(ModuleEditModel model) {
             if (model.ModuleGuid == Guid.Empty)
                 throw new InternalError("No moduleGuid provided");
+            await model.UpdateDataAsync();
             // we need to find the real type of the module for data binding
             ModuleDefinition origModule = await ModuleDefinition.LoadAsync(model.ModuleGuid);
             if (!origModule.IsAuthorized(ModuleDefinition.RoleDefinition.Edit))
                 return NotAuthorized();
 
-            model.Module = (ModuleDefinition)GetObjectFromModel(origModule.GetType(), "Module");
+            model.Module = (ModuleDefinition)await GetObjectFromModelAsync(origModule.GetType(), "Module");
             Manager.CurrentModuleEdited = model.Module;
 
             ObjectSupport.CopyData(origModule, model.Module, ReadOnly: true); // update read only properties in model in case there is an error

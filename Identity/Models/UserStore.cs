@@ -67,13 +67,12 @@ namespace YetaWF.Modules.Identity.Models {
         // IUserStore
 
 #if MVC6
-        //$$$ FIX ALL ASYNC
-        public Task<IdentityResult> CreateAsync(UserDefinition user, CancellationToken cancellationToken) {
+        public async Task<IdentityResult> CreateAsync(UserDefinition user, CancellationToken cancellationToken) {
             using (UserDefinitionDataProvider dataProvider = new UserDefinitionDataProvider(this.CurrentSiteIdentity)) {
-                bool status = dataProvider.AddItem(user);
+                bool status = await dataProvider.AddItemAsync(user);
                 if (!status)
                     throw new Error(this.__ResStr("userExists", "User {0} already exists.", user.UserName));
-                return Task.FromResult<IdentityResult>(IdentityResult.Success);
+                return IdentityResult.Success;
             }
         }
 #else
@@ -86,12 +85,12 @@ namespace YetaWF.Modules.Identity.Models {
         }
 #endif
 #if MVC6
-        public Task<IdentityResult> DeleteAsync(UserDefinition user, CancellationToken cancellationToken) {
+        public async Task<IdentityResult> DeleteAsync(UserDefinition user, CancellationToken cancellationToken) {
             using (UserDefinitionDataProvider dataProvider = new UserDefinitionDataProvider(this.CurrentSiteIdentity)) {
-                bool status = dataProvider.RemoveItem(user.UserName);
+                bool status = await dataProvider.RemoveItemAsync(user.UserName);
                 if (!status)
                     throw new Error(this.__ResStr("userNotFound", "User {0} not found.", user.UserName));
-                return Task.FromResult<IdentityResult>(IdentityResult.Success);
+                return IdentityResult.Success;
             }
         }
 #else
@@ -104,9 +103,9 @@ namespace YetaWF.Modules.Identity.Models {
         }
 #endif
 #if MVC6
-        public Task<IdentityResult> UpdateAsync(UserDefinition user, CancellationToken cancellationToken) {
+        public async Task<IdentityResult> UpdateAsync(UserDefinition user, CancellationToken cancellationToken) {
             using (UserDefinitionDataProvider dataProvider = new UserDefinitionDataProvider(this.CurrentSiteIdentity)) {
-                UpdateStatusEnum status = dataProvider.UpdateItem(user);
+                UpdateStatusEnum status = await dataProvider.UpdateItemAsync(user);
                 switch (status) {
                     default:
                     case UpdateStatusEnum.NewKeyExists:
@@ -116,7 +115,7 @@ namespace YetaWF.Modules.Identity.Models {
                     case UpdateStatusEnum.OK:
                         break;
                 }
-                return Task.FromResult<IdentityResult>(IdentityResult.Success);
+                return IdentityResult.Success;
             }
         }
 #else
@@ -136,7 +135,7 @@ namespace YetaWF.Modules.Identity.Models {
         }
 #endif
 #if MVC6
-        public Task<UserDefinition> FindByIdAsync(string userId, CancellationToken cancellationToken)
+        public async Task<UserDefinition> FindByIdAsync(string userId, CancellationToken cancellationToken)
 #else
         public async Task<UserDefinition> FindByIdAsync(string userId)
 #endif
@@ -171,7 +170,7 @@ namespace YetaWF.Modules.Identity.Models {
 #else
 #endif
 #if MVC6
-        public Task<UserDefinition> FindByNameAsync(string userName, CancellationToken cancellationToken)
+        public async Task<UserDefinition> FindByNameAsync(string userName, CancellationToken cancellationToken)
 #else
         public async Task<UserDefinition> FindByNameAsync(string userName)
 #endif
@@ -186,7 +185,7 @@ namespace YetaWF.Modules.Identity.Models {
         // IUserLoginStore
         // IUserLoginStore
 #if MVC6
-        public Task AddLoginAsync(UserDefinition user, UserLoginInfo login, CancellationToken cancellationToken)
+        public async Task AddLoginAsync(UserDefinition user, UserLoginInfo login, CancellationToken cancellationToken)
 #else
         public async Task AddLoginAsync(UserDefinition user, UserLoginInfo login)
 #endif
@@ -209,10 +208,10 @@ namespace YetaWF.Modules.Identity.Models {
             }
         }
 #if MVC6
-        public Task<UserDefinition> FindByLoginAsync(string loginProvider, string providerKey, CancellationToken cancellationToken) {
+        public async Task<UserDefinition> FindByLoginAsync(string loginProvider, string providerKey, CancellationToken cancellationToken) {
             using (UserLoginInfoDataProvider logInfoDP = new DataProvider.UserLoginInfoDataProvider(CurrentSiteIdentity)) {
-                UserDefinition user = logInfoDP.GetItem(loginProvider, providerKey);
-                return Task.FromResult(user);
+                UserDefinition user = await logInfoDP.GetItemAsync(loginProvider, providerKey);
+                return user;
             }
         }
 #else
@@ -232,10 +231,9 @@ namespace YetaWF.Modules.Identity.Models {
             throw new NotImplementedException();
         }
 #if MVC6
-        public Task RemoveLoginAsync(UserDefinition user, string loginProvider, string providerKey, CancellationToken cancellationToken) {
+        public async Task RemoveLoginAsync(UserDefinition user, string loginProvider, string providerKey, CancellationToken cancellationToken) {
             using (UserLoginInfoDataProvider logInfoDP = new DataProvider.UserLoginInfoDataProvider(CurrentSiteIdentity)) {
-                logInfoDP.RemoveItem(loginProvider, providerKey);
-                return Task.FromResult(0);
+                await logInfoDP.RemoveItemAsync(loginProvider, providerKey);
             }
         }
 #else

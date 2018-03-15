@@ -39,13 +39,11 @@ namespace YetaWF.Modules.Identity.Models {
         // IRoleStore
 
 #if MVC6
-        //$$$ FIX ALL ASYNC
-        public Task<IdentityResult> CreateAsync(RoleDefinition role, CancellationToken cancellationToken) {
-            return Task.Run<IdentityResult>(() => {
-                RoleDefinitionDataProvider dataProvider = new RoleDefinitionDataProvider(this.CurrentSiteIdentity);
-                dataProvider.AddItem(role);
-                return IdentityResult.Success;
-            });
+        public async Task<IdentityResult> CreateAsync(RoleDefinition role, CancellationToken cancellationToken) {
+            using (RoleDefinitionDataProvider dataProvider = new RoleDefinitionDataProvider(this.CurrentSiteIdentity)) { 
+                await dataProvider.AddItemAsync(role);
+            }
+            return IdentityResult.Success;
         }
 #else
         public async Task CreateAsync(RoleDefinition role) {
@@ -55,12 +53,11 @@ namespace YetaWF.Modules.Identity.Models {
         }
 #endif
 #if MVC6
-        public Task<IdentityResult> DeleteAsync(RoleDefinition role) {
-            return Task.Run<IdentityResult>(() => {
-                RoleDefinitionDataProvider dataProvider = new RoleDefinitionDataProvider(this.CurrentSiteIdentity);
-                dataProvider.RemoveItem(role.Name);
-                return IdentityResult.Success;
-            });
+        public async Task<IdentityResult> DeleteAsync(RoleDefinition role) {
+            using (RoleDefinitionDataProvider dataProvider = new RoleDefinitionDataProvider(this.CurrentSiteIdentity)) { 
+                await dataProvider.RemoveItemAsync(role.Name);
+            }
+            return IdentityResult.Success;
         }
 #else
         public async Task DeleteAsync(RoleDefinition role) {
@@ -70,22 +67,19 @@ namespace YetaWF.Modules.Identity.Models {
         }
 #endif
 #if MVC6
-        public Task<IdentityResult> UpdateAsync(RoleDefinition role, CancellationToken cancellationToken) {
-            return Task.Run<IdentityResult>(() => {
-                RoleDefinitionDataProvider dataProvider = new RoleDefinitionDataProvider(this.CurrentSiteIdentity);
-                UpdateStatusEnum status = dataProvider.UpdateItem(role);
-                switch (status) {
-                    default:
-                    case UpdateStatusEnum.RecordDeleted:
-                        throw new Error(this.__ResStr("alreadyDeleted", "The role named \"{0}\" has been removed and can no longer be updated.", role.Name));
-
-                    case UpdateStatusEnum.NewKeyExists:
-                        throw new Error(this.__ResStr("alreadyExists", "A role named \"{0}\" already exists.", role.Name));
-                    case UpdateStatusEnum.OK:
-                        break;
-                }
-                return IdentityResult.Success;
-            });
+        public async Task<IdentityResult> UpdateAsync(RoleDefinition role, CancellationToken cancellationToken) {
+            RoleDefinitionDataProvider dataProvider = new RoleDefinitionDataProvider(this.CurrentSiteIdentity);
+            UpdateStatusEnum status = await dataProvider.UpdateItemAsync(role);
+            switch (status) {
+                default:
+                case UpdateStatusEnum.RecordDeleted:
+                    throw new Error(this.__ResStr("alreadyDeleted", "The role named \"{0}\" has been removed and can no longer be updated.", role.Name));
+                case UpdateStatusEnum.NewKeyExists:
+                    throw new Error(this.__ResStr("alreadyExists", "A role named \"{0}\" already exists.", role.Name));
+                case UpdateStatusEnum.OK:
+                    break;
+            }
+            return IdentityResult.Success;
         }
 #else
         public async Task UpdateAsync(RoleDefinition role) {
@@ -95,7 +89,6 @@ namespace YetaWF.Modules.Identity.Models {
                     default:
                     case UpdateStatusEnum.RecordDeleted:
                         throw new Error(this.__ResStr("alreadyDeleted", "The role named \"{0}\" has been removed and can no longer be updated.", role.Name));
-
                     case UpdateStatusEnum.NewKeyExists:
                         throw new Error(this.__ResStr("alreadyExists", "A role named \"{0}\" already exists.", role.Name));
                     case UpdateStatusEnum.OK:
@@ -116,7 +109,7 @@ namespace YetaWF.Modules.Identity.Models {
         }
 
 #if MVC6
-        public Task<RoleDefinition> FindByNameAsync(string roleName, CancellationToken cancellationToken)
+        public async Task<RoleDefinition> FindByNameAsync(string roleName, CancellationToken cancellationToken)
 #else
         public async Task<RoleDefinition> FindByNameAsync(string roleName)
 #endif
