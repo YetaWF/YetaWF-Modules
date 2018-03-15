@@ -38,6 +38,10 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
+      <HintPath>..\..\..\packages\NLog.4.4.13\lib\net45\NLog.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Web" />
@@ -69,6 +73,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Models\FileDataProvider.cs" />
+    <Compile Include="Models\NLogDataProvider.cs" />
     <Compile Include="Models\SQLDataProvider.cs" />
     <Compile Include="Scheduler\RemoveRecords.cs" />
     <Compile Include="Startup\Info.cs" />
@@ -90,6 +95,9 @@
   <ItemGroup>
     <None Include="Addons\_Main\Grids\BrowseLogModuleController.BrowseItem" />
     <None Include="app.config" />
+    <None Include="NLog.xsd">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="Views\YetaWF_Logging_BrowseLog.cshtml" />
     <None Include="Views\YetaWF_Logging_BrowseLog_Partial.cshtml" />
   </ItemGroup>

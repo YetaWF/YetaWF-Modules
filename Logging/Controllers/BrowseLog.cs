@@ -107,15 +107,18 @@ namespace YetaWF.Modules.Logging.Controllers {
             public GridDefinition GridDef { get; set; }
             public bool LogAvailable { get; set; }
             public bool BrowsingSupported { get; set; }
+            public string LoggerName { get; set; }
         }
 
         [AllowGet]
         public async Task<ActionResult> BrowseLog() {
             FlushLog();
             using (LogRecordDataProvider dataProvider = LogRecordDataProvider.GetLogRecordDataProvider()) {
+                dataProvider.Flush();// get the latest records
                 BrowseModel model = new BrowseModel {
                     LogAvailable = await dataProvider.IsInstalledAsync(),
                     BrowsingSupported = dataProvider.CanBrowse,
+                    LoggerName = dataProvider.LoggerName,
                 };
                 if (dataProvider.CanBrowse) {
                     model.GridDef = new GridDefinition {

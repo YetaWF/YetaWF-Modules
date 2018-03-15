@@ -171,7 +171,7 @@ namespace YetaWF.Modules.Logging.DataProvider {
                         ipAddress = ipAddress.Truncate(Globals.MaxIP);
                     }
                 }
-                MethodBase methBase = GetCallInfo(relStack + 1, out moduleName);
+                MethodBase methBase = GetCallInfo(relStack + 3, out moduleName);
 
                 SaveMessage(new LogRecord {
                     Level = level,
@@ -200,7 +200,7 @@ namespace YetaWF.Modules.Logging.DataProvider {
         public virtual Task<bool> RemoveItemAsync(int key) {
             throw new NotImplementedException();
         }
-        public virtual Task<List<LogRecord>> GetItemsAsync(List<DataProviderFilterInfo> filters) {
+        public virtual Task<DataProviderGetRecords<LogRecord>> GetItemsAsync(List<DataProviderFilterInfo> filters) {
             throw new NotImplementedException();
         }
         public virtual Task<DataProviderGetRecords<LogRecord>> GetItemsAsync(int skip, int take, List<DataProviderSortInfo> sort, List<DataProviderFilterInfo> filters) {
@@ -210,8 +210,11 @@ namespace YetaWF.Modules.Logging.DataProvider {
             throw new NotImplementedException();
         }
 
+        public abstract string LoggerName { get; }
         public abstract bool CanBrowse { get; }
         public abstract bool CanImportOrExport { get; }
+        public abstract bool CanRemove { get; }
+        public abstract bool CanDownload { get; }
         public virtual string GetLogFileName() { return null; }
 
         static MethodBase GetCallInfo(int level, out string moduleName) {

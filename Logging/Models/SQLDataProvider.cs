@@ -69,31 +69,27 @@ namespace YetaWF.Modules.Logging.DataProvider.SQL {
                 await DataProvider.AddAsync(record);
             });
         }
-        public new Task<LogRecord> GetItemAsync(int key) {
+        public override Task<LogRecord> GetItemAsync(int key) {
             return DataProvider.GetAsync(key);
         }
-        public new Task<bool> RemoveItemAsync(int key) {
+        public override Task<bool> RemoveItemAsync(int key) {
             return DataProvider.RemoveAsync(key);
         }
-        public new async Task<DataProviderGetRecords<LogRecord>> GetItemsAsync(List<DataProviderFilterInfo> filters) {
+        public override async Task<DataProviderGetRecords<LogRecord>> GetItemsAsync(List<DataProviderFilterInfo> filters) {
             return await DataProvider.GetRecordsAsync(0, 0, null, filters);
         }
         public override async Task<DataProviderGetRecords<LogRecord>> GetItemsAsync(int skip, int take, List<DataProviderSortInfo> sort, List<DataProviderFilterInfo> filters) {
             return await DataProvider.GetRecordsAsync(skip, take, sort, filters);
         }
-        public new async Task<int> RemoveItemsAsync(List<DataProviderFilterInfo> filters) {
+        public override async Task<int> RemoveItemsAsync(List<DataProviderFilterInfo> filters) {
             return await DataProvider.RemoveRecordsAsync(filters);
         }
-        public override bool CanBrowse {
-            get {
-                return true;
-            }
-        }
-        public override bool CanImportOrExport {
-            get {
-                return true;
-            }
-        }
+
+        public override string LoggerName { get { return "SQL Table (synchronous I/O)"; } }
+        public override bool CanBrowse { get { return true; } }
+        public override bool CanImportOrExport { get { return true; } }
+        public override bool CanRemove { get { return true; } }
+        public override bool CanDownload { get { return false; } }
 
         // IINSTALLABLEMODEL
         // IINSTALLABLEMODEL

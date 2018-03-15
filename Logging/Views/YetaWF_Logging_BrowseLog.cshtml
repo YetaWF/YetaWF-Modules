@@ -13,7 +13,6 @@
     }
 } else {
     <div class="@Globals.CssDivWarning t_browselog t_file">
-        @__ResStr("file", "The site log is a flat file. Online browsing is not available.")
-        @__ResStr("flush", "All cached log records have now been written to the log file.")
+        @__ResStr("file", "Log browsing is not available. The following log provider is used: {0}", Model.LoggerName)
     </div>
 }

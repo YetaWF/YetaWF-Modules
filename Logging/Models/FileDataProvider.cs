@@ -86,7 +86,7 @@ namespace YetaWF.Modules.Logging.DataProvider.File {
             throw new NotImplementedException();
         }
 
-        public override Task<List<LogRecord>> GetItemsAsync(List<DataProviderFilterInfo> filters) {
+        public override Task<DataProviderGetRecords<LogRecord>> GetItemsAsync(List<DataProviderFilterInfo> filters) {
             throw new NotImplementedException();
         }
         public override Task<DataProviderGetRecords<LogRecord>> GetItemsAsync(int skip, int take, List<DataProviderSortInfo> sort, List<DataProviderFilterInfo> filters) {
@@ -95,19 +95,12 @@ namespace YetaWF.Modules.Logging.DataProvider.File {
         public override Task<int> RemoveItemsAsync(List<DataProviderFilterInfo> filters) {
             throw new NotImplementedException();
         }
-        public override bool CanBrowse {
-            get {
-                return CanImportOrExport;
-            }
-        }
-        public override bool CanImportOrExport {
-            get {
-                return false;
-            }
-        }
-        public override string GetLogFileName() {
-            return LogFile;
-        }
+
+        public override string LoggerName { get { return "Flat File (synchronous I/O)"; } }
+        public override bool CanBrowse { get { return false; } }
+        public override bool CanImportOrExport { get { return false; } }
+        public override bool CanRemove { get { return true; } }
+        public override bool CanDownload { get { return true; } }
 
         // IINSTALLABLEMODEL
         // IINSTALLABLEMODEL

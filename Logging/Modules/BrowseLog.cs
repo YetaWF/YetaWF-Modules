@@ -58,12 +58,9 @@ namespace YetaWF.Modules.Logging.Modules {
             MenuList menuList = await base.GetModuleMenuListAsync(renderMode, location);
             if (location == ModuleAction.ActionLocationEnum.ModuleLinks) {
                 using (LogRecordDataProvider dataProvider = LogRecordDataProvider.GetLogRecordDataProvider()) {
-                    if (dataProvider.CanBrowse)
-                        menuList.New(await GetAction_RemoveAllAsync());
-                    else {
-                        menuList.New(await GetAction_DownloadZippedLogAsync());
-                        menuList.New(await GetAction_DownloadLogAsync());
-                    }
+                    menuList.New(await GetAction_RemoveAllAsync());
+                    menuList.New(await GetAction_DownloadZippedLogAsync());
+                    menuList.New(await GetAction_DownloadLogAsync());
                 }
             }
             return menuList;
@@ -87,6 +84,7 @@ namespace YetaWF.Modules.Logging.Modules {
             if (!IsAuthorized("RemoveLog")) return null;
             using (LogRecordDataProvider dataProvider = LogRecordDataProvider.GetLogRecordDataProvider()) {
                 if (!await dataProvider.IsInstalledAsync()) return null;
+                if (!dataProvider.CanRemove) return null;
             };
             return new ModuleAction(this) {
                 Url = YetaWFManager.UrlFor(typeof(BrowseLogModuleController), "RemoveAll"),
@@ -107,6 +105,7 @@ namespace YetaWF.Modules.Logging.Modules {
             if (!IsAuthorized("Downloads")) return null;
             using (LogRecordDataProvider dataProvider = LogRecordDataProvider.GetLogRecordDataProvider()) {
                 if (!await dataProvider.IsInstalledAsync()) return null;
+                if (!dataProvider.CanDownload) return null;
             };
             return new ModuleAction(this) {
                 Url = YetaWFManager.UrlFor(typeof(BrowseLogModuleController), "DownloadLog"),
@@ -127,6 +126,7 @@ namespace YetaWF.Modules.Logging.Modules {
             if (!IsAuthorized("Downloads")) return null;
             using (LogRecordDataProvider dataProvider = LogRecordDataProvider.GetLogRecordDataProvider()) {
                 if (!await dataProvider.IsInstalledAsync()) return null;
+                if (!dataProvider.CanDownload) return null;
             };
             return new ModuleAction(this) {
                 Url = YetaWFManager.UrlFor(typeof(BrowseLogModuleController), "DownloadZippedLog"),
