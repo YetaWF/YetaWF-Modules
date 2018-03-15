@@ -1,10 +1,8 @@
 ﻿/* Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Logging#License */
 
 using NLog;
-using NLog.Common;
 using NLog.Config;
 using NLog.Targets;
-using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
