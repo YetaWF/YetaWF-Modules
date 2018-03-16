@@ -1,0 +1,12 @@
+@*Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Feedback#License*@
+@inherits YetaWF.Core.Views.RazorView<YetaWF.Modules.Feedback.Modules.FeedbackAddModule, YetaWF.Modules.Feedback.Controllers.FeedbackAddModuleController.AddModel>
+@using (Form("FeedbackAdd_Partial")) {
+    List<FormButton> buttons = new List<FormButton> {
+        new FormButton() { ButtonType= ButtonTypeEnum.Submit, Text=this.__ResStr("btnSave", "Send") }
+    };
+    if (Manager.IsInPopup) {
+        buttons.Add(new FormButton() { ButtonType = ButtonTypeEnum.Cancel, });
+    }
+    @PartialForm()
+    @FormButtons(buttons);
+}

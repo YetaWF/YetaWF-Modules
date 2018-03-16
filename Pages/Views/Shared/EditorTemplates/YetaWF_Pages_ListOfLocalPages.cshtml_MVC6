@@ -1,0 +1,22 @@
+﻿@*Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Pages#License*@
+@inherits YetaWF.Modules.Pages.Views.Shared.ListOfLocalPagesHelper<List<string>>
+@using YetaWF.Core.Support
+@using YetaWF.Core.Views
+@using YetaWF.Modules.Pages.Views.Shared
+<div class="yt_listoflocalpages t_edit">
+    <div class='yt_grid_addordelete' id="@DivId"
+         data-dupmsg="@__ResStr("dupmsg", "Page {0} has already been added")"
+         data-addedmsg="@__ResStr("addedmsg", "Page {0} has been added")"
+         data-remmsg="@__ResStr("remmsg", "Page {0} has been removed")">
+        @Html.RenderListOfLocalPages("", DivId + "_list", Model)
+        @Html.RenderListOfLocalPagesAddNew("", Model)
+    </div>
+    @Html.RenderExtLabel(__ResStr("lblAllPages", "All Pages"), ToolTip: __ResStr("ttAllPages", "Shows all designed pages available in the site - Select a page to update the dropdown list above, so the page can be added to the list of pages"))
+    @Html.RenderAllPages("", DivId + "_listall")
+</div>
+<script>
+    @using (DocumentReady(DivId)) {
+        @: $('#@(DivId)_list').jqGrid('sortableRows', { connectWith: '#@(DivId)_list' });
+        @: YetaWF_Pages_ListOfLocalPages.init($('#@DivId'), $("#@(DivId)_list"), $("#@(DivId)_listall"), $("#@DivId .yt_url.t_edit[data-name$='.NewValue']"));
+    }
+</script>

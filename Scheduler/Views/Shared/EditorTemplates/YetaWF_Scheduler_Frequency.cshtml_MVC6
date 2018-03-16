@@ -1,0 +1,8 @@
+﻿@*Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Scheduler#License*@
+@inherits YetaWF.Modules.Scheduler.Views.Shared.SchedulerFrequency<YetaWF.Core.Scheduler.SchedulerFrequency>
+<div class='yt_yetawf_scheduler_frequency t_edit'>
+    @__ResStr("every", "Every ")
+    @Html.EditorFor(m => Model.Value)@Html.ValidationMessageFor(m => Model.Value)
+    @Html.EditorFor(m => Model.TimeUnits)@Html.ValidationMessageFor(m => Model.TimeUnits)
+    @__ResStr("everyPost", "")
+</div>

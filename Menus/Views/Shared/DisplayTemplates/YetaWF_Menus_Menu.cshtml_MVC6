@@ -1,0 +1,48 @@
+﻿@*Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Menus#License*@
+@inherits YetaWF.Modules.Menus.Views.Shared.Menu<YetaWF.Modules.Menus.Views.Shared.MenuHelper.MenuData>
+@using YetaWF.Core.Extensions
+@using YetaWF.Core.Views
+@using YetaWF.Core.Views.Shared
+@using YetaWF.Modules.Menus.Views.Shared
+@{
+    MenuHelper.MenuStyleEnum style = Html.GetControlInfo<MenuHelper.MenuStyleEnum>("", "Style", MenuHelper.MenuStyleEnum.Automatic);
+    if (style == MenuHelper.MenuStyleEnum.Automatic) {
+        style = Manager.SkinInfo.UsingBootstrap ? MenuHelper.MenuStyleEnum.Bootstrap : MenuHelper.MenuStyleEnum.Kendo;
+    }
+
+    if (style == MenuHelper.MenuStyleEnum.Bootstrap) {
+        HtmlString menu = Html.RenderAsync(Model.MenuList, DivId, null, YetaWF.Core.Modules.ModuleAction.RenderEngineEnum.BootstrapSmartMenu).Result;
+        if (!menu.IsEmpty()) {
+            Manager.AddOnManager.AddAddOnGlobalAsync("github.com.vadikom", "smartmenus").Wait(); // multilevel navbar
+            @menu;
+        }
+    } else {
+        HtmlString menu = Html.RenderAsync(Model.MenuList, DivId, Model.CssClass, YetaWF.Core.Modules.ModuleAction.RenderEngineEnum.JqueryMenu).Result;
+        if (!menu.IsEmpty()) {
+            //Manager.ScriptManager.AddKendoUICoreJsFile("kendo.popup.min.js"); // is now a prereq of kendo.window (2017.2.621)
+            Manager.ScriptManager.AddKendoUICoreJsFile("kendo.menu.min.js");
+            <div class='yt_yetawf_menus_menu t_display' role="navigation">
+                @menu
+            </div>
+            <script>
+                $("#@DivId").kendoMenu({
+                    direction: '@Model.GetDirection()',
+                    orientation: '@Model.GetOrientation()',
+                    popupCollision: 'fit flip',
+                    @*@if (Module.UseAnimation) {
+                        @:  animation: {
+                        @:      open: { effects: '@Module.GetOpenEffects()', duration: @Module.OpenDuration },
+                        @:      close: { effects: '@Module.GetCloseEffects()', duration: @Module.CloseDuration }
+                        @:  },
+                    },*@
+                    hoverDelay: @Model.HoverDelay.ToString()
+                });
+                @if (Model.ShowPath) {
+                    using (DocumentReady(DivId)) {
+                        @: YetaWF_Menu.init('@DivId');
+                    }
+                }
+            </script>
+        }
+    }
+}

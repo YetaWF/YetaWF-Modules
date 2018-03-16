@@ -1,0 +1,4 @@
+﻿@*Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Identity#License*@
+@inherits YetaWF.Modules.Identity.Views.Shared.UserId<int>
+@using YetaWF.Modules.Identity.Views.Shared
+@Html.RenderUserIdDisplayAsync("", Model, HtmlAttributes: new { @class = "yt_yetawf_identity_userid t_display" }).Result

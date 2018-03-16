@@ -1,0 +1,4 @@
+﻿@*Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/SlideShow#License*@
+@inherits YetaWF.Modules.SlideShow.Views.Shared.BulletStyle<string>
+@using YetaWF.Modules.SlideShow.Views.Shared
+@Html.RenderBulletStyleAsync("", Model, HtmlAttributes: new { @class = "yt_yetawf_slideshow_bulletstyle t_edit" }).Result

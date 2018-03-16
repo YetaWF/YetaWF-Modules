@@ -1,0 +1,48 @@
+@*Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/BootstrapCarousel#License*@
+@inherits YetaWF.Core.Pages.RazorTemplate<YetaWF.Modules.BootstrapCarousel.Models.CarouselInfo>
+@{
+    int index = 0;
+}
+<div id="@ControlId" class="yt_bootstrapcarousel_slideshow t_display carousel slide" data-ride="carousel" data-interval="@Model.Interval.ToString()" data-wrap="@(Model.Wrap?"true":"false")" data-pause="@(Model.Pause?"hover":"null")" data-keyboard="@(Model.Keyboard?"true":"false")">
+    <!-- Indicators -->
+    <ol class="carousel-indicators">
+        @foreach (YetaWF.Modules.BootstrapCarousel.Models.CarouselInfo.CarouselItem slide in Model.Slides) {
+            if (index == 0) {
+                <li data-target="#@ControlId" data-slide-to="@index.ToString()" class="active"></li>
+            } else {
+                <li data-target="#@ControlId" data-slide-to="@index.ToString()"></li>
+            }
+            ++index;
+        }
+    </ol>
+    <!-- Wrapper for slides -->
+    <div class="carousel-inner" role="listbox">
+        @{ index = 0; }
+        @foreach (YetaWF.Modules.BootstrapCarousel.Models.CarouselInfo.CarouselItem slide in Model.Slides) {
+            <div class="item@(index == 0 ? " active" :"")">
+                @if (!string.IsNullOrWhiteSpace(slide.Url)) {
+                    <a href="@Manager.CurrentSite.MakeUrl(slide.Url)" target="_blank" rel="noopener noreferrer" class="@YetaWF.Core.Addons.Basics.CssNoTooltip">
+                        @Html.DisplayFor(m => slide.ImageDisplay, "Image")
+                    </a>
+                } else {
+                    @Html.DisplayFor(m => slide.ImageDisplay, "Image")
+                }
+                @if (!string.IsNullOrWhiteSpace(slide.CompleteCaption.ToString())) {
+                    <div class="carousel-caption">
+                        @Html.Raw(slide.CompleteCaption.ToString())
+                    </div>
+                }
+            </div>
+            ++index;
+        }
+    </div>
+    <!-- Controls -->
+    <a class="left carousel-control" href="#@ControlId" role="button" data-slide="prev">
+        <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+        <span class="sr-only">Previous</span>
+    </a>
+    <a class="right carousel-control" href="#@ControlId" role="button" data-slide="next">
+        <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+        <span class="sr-only">Next</span>
+    </a>
+</div>

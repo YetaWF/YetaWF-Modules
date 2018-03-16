@@ -1,0 +1,28 @@
+@*Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/TawkTo#License*@
+@inherits YetaWF.Core.Views.RazorView<YetaWF.Modules.TawkTo.Modules.SkinTawkToModule, YetaWF.Modules.TawkTo.Controllers.SkinTawkToModuleController.DisplayModel>
+@using YetaWF.Core.Support
+@using YetaWF.Modules.TawkTo.DataProvider
+@{
+    YetaWF.Core.Packages.Package currentPackage = YetaWF.Modules.TawkTo.Controllers.AreaRegistration.CurrentPackage;
+    Manager.AddOnManager.AddAddOnNamedAsync(currentPackage.Domain, currentPackage.Product, "SkinTawkTo").Wait();
+    ConfigData config = ConfigDataProvider.GetConfigAsync().Result;
+}
+<script>
+    // https://www.tawk.to/javascript-api/
+    var Tawk_API = Tawk_API || {}, Tawk_LoadStart = new Date();
+    @if (Manager.HaveUser) {
+        @: Tawk_API.visitor = {
+        @:     name: '@YetaWFManager.JserEncode(Manager.UserName)',
+        @:     email: '@YetaWFManager.JserEncode(Manager.UserEmail)',
+        @:     hash: '@YetaWFManager.JserEncode(Model.Hash)'
+        @: };
+    }
+    (function(){
+        var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
+        s1.async=true;
+        s1.src = 'https://embed.tawk.to/@(YetaWFManager.UrlEncodePath(config.Account))/default';
+        s1.charset='UTF-8';
+        s1.setAttribute('crossorigin','*');
+        s0.parentNode.insertBefore(s1,s0);
+    })();
+</script>

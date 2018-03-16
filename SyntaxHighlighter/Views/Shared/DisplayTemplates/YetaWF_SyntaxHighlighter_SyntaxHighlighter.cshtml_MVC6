@@ -1,0 +1,10 @@
+﻿@*Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/SyntaxHighlighter#License*@
+@inherits YetaWF.Modules.SyntaxHighlighter.Views.Shared.SyntaxHighlighterSkins<string>
+@using YetaWF.Modules.SyntaxHighlighter.Views.Shared
+<div class='yt_yetawf_syntaxhighlighter_syntaxhighlighter t_display'>
+    @if (string.IsNullOrEmpty(Model)) {
+        @: @__ResStr("noSyntaxHighlighterSkin", "(default)")
+    } else {
+        @: @Model
+    }
+</div>
