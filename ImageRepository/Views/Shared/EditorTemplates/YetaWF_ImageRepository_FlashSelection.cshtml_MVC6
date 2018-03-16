@@ -4,9 +4,9 @@
 @using YetaWF.Modules.ImageRepository.Support
 @using YetaWF.Core.Extensions;
 @using YetaWF.Modules.ImageRepository.Views.Shared
-@{ Manager.AddOnManager.AddTemplateAsync("Flash").Wait(); }
-@{
-    Manager.AddOnManager.AddAddOnGlobalAsync("google.com.swfobject", "swfobject").Wait();
+@{ 
+    await Manager.AddOnManager.AddTemplateAsync("Flash");
+    await Manager.AddOnManager.AddAddOnGlobalAsync("google.com.swfobject", "swfobject");
     FlashSelectionInfo info = Html.GetParentModelSupportProperty<FlashSelectionInfo>("", "Info");
     string objId = UniqueId();
 }

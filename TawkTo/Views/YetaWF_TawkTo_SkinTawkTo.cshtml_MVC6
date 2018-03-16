@@ -4,8 +4,8 @@
 @using YetaWF.Modules.TawkTo.DataProvider
 @{
     YetaWF.Core.Packages.Package currentPackage = YetaWF.Modules.TawkTo.Controllers.AreaRegistration.CurrentPackage;
-    Manager.AddOnManager.AddAddOnNamedAsync(currentPackage.Domain, currentPackage.Product, "SkinTawkTo").Wait();
-    ConfigData config = ConfigDataProvider.GetConfigAsync().Result;
+    await Manager.AddOnManager.AddAddOnNamedAsync(currentPackage.Domain, currentPackage.Product, "SkinTawkTo");
+    ConfigData config = await ConfigDataProvider.GetConfigAsync();
 }
 <script>
     // https://www.tawk.to/javascript-api/

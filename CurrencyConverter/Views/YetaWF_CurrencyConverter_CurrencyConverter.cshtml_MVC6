@@ -31,7 +31,7 @@
         @{
             FormButton button = new FormButton() { ButtonType = ButtonTypeEnum.Button, Name = "convert", Text = this.__ResStr("btnGo", "Go") };   
         }
-        @button.RenderAsync().Result
+        @await button.RenderAsync()
     </div>
     <div class="t_result_from t_results">
     </div>

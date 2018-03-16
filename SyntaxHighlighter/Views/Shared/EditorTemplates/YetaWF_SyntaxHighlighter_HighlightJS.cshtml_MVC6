@@ -3,5 +3,5 @@
 @using YetaWF.Modules.SyntaxHighlighter.Views.Shared
 @using YetaWF.Core.Views
 <div class='yt_yetawf_syntaxhighlighter_highlightjs t_edit'>
-    @Html.RenderHighlightJSSkinsAsync("", Model).Result
+    @await Html.RenderHighlightJSSkinsAsync("", Model)
 </div>

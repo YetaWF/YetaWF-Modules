@@ -12,7 +12,7 @@
 }
 @foreach (YetaWF.Modules.Blog.Controllers.BlogModuleController.Entry blogEntry in Model.BlogEntries) {
     ++count;
-    <h2><a href="@BlogConfigData.GetEntryCanonicalNameAsync(blogEntry.Identity).Result" class="yaction-link">@blogEntry.Title.ToString()</a></h2>
+    <h2><a href="@await BlogConfigData.GetEntryCanonicalNameAsync(blogEntry.Identity)" class="yaction-link">@blogEntry.Title.ToString()</a></h2>
     <div class="t_entry @("t_entry" + count.ToString())">
         @Html.DisplayFor(m => blogEntry, "PropertyList")
     </div>

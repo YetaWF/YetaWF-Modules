@@ -2,5 +2,5 @@
 @inherits YetaWF.Modules.Identity.Views.Shared.ListOfUserNamesHelper<List<int>>
 @using YetaWF.Modules.Identity.Views.Shared
 <div class='yt_listofusernames t_display' id="@DivId">
-    @Html.RenderListOfUserNamesDisplayAsync("", Model).Result
+    @await Html.RenderListOfUserNamesDisplayAsync("", Model)
 </div>

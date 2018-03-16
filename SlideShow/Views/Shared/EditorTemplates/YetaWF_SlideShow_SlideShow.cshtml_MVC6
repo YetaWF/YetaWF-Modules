@@ -7,7 +7,7 @@
     string slideId = ControlId;
 }
 <div id="@slideId" class="yt_slideshow_slideshow t_edit">
-    @Html.RenderPropertyListTabbedAsync("", Model).Result
+    @await Html.RenderPropertyListTabbedAsync("", Model)
     <div class="t_slides" id="@DivId">
         @Html.RenderTabStripStart(DivId)
         @for (int i = 0 ; i <= Model.Slides.Count-1 ; ++i ) {
@@ -29,7 +29,7 @@
             @Html.RenderTabPaneEnd(DivId, tabEntry)
             ++tabEntry;
         }
-        @Html.RenderTabInitAsync(DivId).Result
+        @await Html.RenderTabInitAsync(DivId)
     </div>
 </div>
 <script>
