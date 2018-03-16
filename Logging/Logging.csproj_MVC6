@@ -30,4 +30,8 @@
     <None Remove="node_modules\**" /><EmbeddedResource Remove="node_modules\**" />
   </ItemGroup>
 
+  <ItemGroup>
+    <PackageReference Include="NLog.Web.AspNetCore" Version="4.4.1" />
+  </ItemGroup>
+
 </Project>

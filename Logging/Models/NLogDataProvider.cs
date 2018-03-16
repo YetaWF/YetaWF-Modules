@@ -35,7 +35,13 @@ namespace YetaWF.Modules.Logging.DataProvider.NLogProvider {
             Target.Register<YetaWFDBTarget>("YetaWFDB");
 
             // Get config file
-            string configFile = Path.Combine(YetaWFManager.RootFolder, Globals.DataFolder, NLogSettingsFile);
+            string rootFolder;
+#if MVC6
+            rootFolder = YetaWFManager.RootFolderWebProject;
+#else
+            rootFolder = YetaWFManager.RootFolder;
+#endif
+            string configFile = Path.Combine(rootFolder, Globals.DataFolder, NLogSettingsFile);
             if (!System.IO.File.Exists(configFile)) throw new InternalError($"NLog config file missing - Not found at {configFile}");
             LogManager.Configuration = new XmlLoggingConfiguration(configFile);
 
@@ -55,8 +61,10 @@ namespace YetaWF.Modules.Logging.DataProvider.NLogProvider {
         public YetaWFDBTarget() { }
 
         protected override void Write(LogEventInfo logEvent) {
-            LogRecord data = (LogRecord)logEvent.Properties["record"];
-            if (data == null) throw new InternalError("When using the YetaWFDB target for NLog, the NLogMessageEvent property (appsettings.json) must be set to true");
+            object o;
+            if (!logEvent.Properties.TryGetValue("record", out o))
+                throw new InternalError("When using the YetaWFDB target for NLog, the NLogMessageEvent property (appsettings.json) must be set to true");
+            LogRecord data = (LogRecord)o;
             DataProvider.AddAsync(data).Wait();
         }
         private IDataProvider<int, LogRecord> DataProvider {
