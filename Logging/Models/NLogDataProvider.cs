@@ -65,7 +65,7 @@ namespace YetaWF.Modules.Logging.DataProvider.NLogProvider {
             if (!logEvent.Properties.TryGetValue("record", out o))
                 throw new InternalError("When using the YetaWFDB target for NLog, the NLogMessageEvent property (appsettings.json) must be set to true");
             LogRecord data = (LogRecord)o;
-            DataProvider.AddAsync(data).Wait();
+            DataProvider.AddAsync(data).Wait(); // sync is OK as we're saving on a separate thread with async NLog
         }
         private IDataProvider<int, LogRecord> DataProvider {
             get {
@@ -154,7 +154,7 @@ namespace YetaWF.Modules.Logging.DataProvider.NLogProvider {
             if (NLogDataProvider.MessageFormat == "json") {
                 message = YetaWFManager.JsonSerialize(record);
             } else {
-                message = $"{Enc(record.Info)};{Enc(record.RequestedUrl)};{record.ReferrerUrl};{record.IPAddress};{Enc(record.UserName)};{record.UserId};{record.SessionId}" +
+                message = $"{Enc(record.Info)};{Enc(record.Category)};{Enc(record.RequestedUrl)};{record.ReferrerUrl};{record.IPAddress};{Enc(record.UserName)};{record.UserId};{record.SessionId}" +
                                     $";{record.ModuleName};{record.Class};{record.Method}" +
                                     $";{record.Namespace};{record.SiteIdentity}";
             }

@@ -329,21 +329,23 @@ namespace YetaWF.Modules.Scheduler.Support {
                         DataProviderGetRecords<SiteDefinition> info = await SiteDefinition.GetSitesAsync(0, 0, null, null);
                         foreach (SiteDefinition site in info.Data) {
                             YetaWFManager.MakeThreadInstance(site);// set up a manager for the site
-                            SchedulerLog.LimitTo(YetaWFManager.Manager);
-                            SchedulerLog.SetCurrent(logId, site.Identity, item.Name);
+                            YetaWFManager.Syncify(async () => { // there is no point in running the scheduler async
+                                SchedulerLog.LimitTo(YetaWFManager.Manager);
+                                SchedulerLog.SetCurrent(logId, site.Identity, item.Name);
 
-                            IScheduling schedEvt = null;
-                            try {
-                                schedEvt = (IScheduling)Activator.CreateInstance(tp);
-                            } catch (Exception exc) {
-                                throw new InternalError("Scheduler item '{0}' could not be instantiated (Type={1}, Assembly={2}) - {3}", item.Name, item.Event.ImplementingType, item.Event.ImplementingAssembly, exc.Message);
-                            }
+                                IScheduling schedEvt = null;
+                                try {
+                                    schedEvt = (IScheduling)Activator.CreateInstance(tp);
+                                } catch (Exception exc) {
+                                    throw new InternalError("Scheduler item '{0}' could not be instantiated (Type={1}, Assembly={2}) - {3}", item.Name, item.Event.ImplementingType, item.Event.ImplementingAssembly, exc.Message);
+                                }
 
-                            SchedulerItemBase itemBase = new SchedulerItemBase { Name = item.Name, Description = item.Description, EventName = item.Event.Name, Enabled = true, Frequency = item.Frequency, Startup = item.Startup, SiteSpecific = true };
-                            await schedEvt.RunItemAsync(itemBase);
-                            foreach (var s in itemBase.Log)
-                                errors.AppendLine(Logging.AddLog("{0}: {1}", site.Identity, s));
+                                SchedulerItemBase itemBase = new SchedulerItemBase { Name = item.Name, Description = item.Description, EventName = item.Event.Name, Enabled = true, Frequency = item.Frequency, Startup = item.Startup, SiteSpecific = true };
+                                await schedEvt.RunItemAsync(itemBase);
+                                foreach (var s in itemBase.Log)
+                                    errors.AppendLine(Logging.AddLog("{0}: {1}", site.Identity, s));
 
+                            });
                             YetaWFManager.MakeThreadInstance(null);// restore scheduler's manager
                             SchedulerLog.LimitTo(YetaWFManager.Manager);
                             SchedulerLog.SetCurrent(logId, 0, item.Name);

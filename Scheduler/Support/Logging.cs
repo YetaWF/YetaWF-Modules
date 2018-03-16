@@ -60,10 +60,10 @@ namespace YetaWF.Modules.Scheduler.Support {
         public void Flush() { }
         public Task<bool> IsInstalledAsync() { return Task.FromResult(true); }
 
-        public void WriteToLogFile(Logging.LevelEnum level, int relStack, string text) {
+        public void WriteToLogFile(string category, Logging.LevelEnum level, int relStack, string text) {
             if (!YetaWFManager.HaveManager) return;
             if (YetaWFManager.Manager != LimitToManager) return; // this log entry is for another thread
-            YetaWFManager.Syncify(async () => {
+            YetaWFManager.Syncify(async () => { // Logging is sync (because most log providers like NLog use async tasks), not worth the trouble to make this async. Scheduler is separate thread anyway.
                 await logDP.AddItemAsync(new DataProvider.LogData {
                     TimeStamp = DateTime.UtcNow,
                     RunId = CurrentId,

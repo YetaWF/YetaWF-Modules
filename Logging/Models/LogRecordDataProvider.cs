@@ -28,12 +28,16 @@ namespace YetaWF.Modules.Logging.DataProvider {
         public const int MaxSessionId = 50;
         public const int MaxMethod = 100;
         public const int MaxNamespace = 100;
+        public const int MaxCategory = 50;
+
 
         [Data_PrimaryKey, Data_Identity]
         public int Key { get; set; }
 
         [Data_Index]
         public DateTime TimeStamp { get; set; }
+        [StringLength(MaxCategory)]
+        public string Category { get; set; }
         [StringLength(MaxSessionId)]
         public string SessionId { get; set; }
         public Core.Log.Logging.LevelEnum Level { get; set; }
@@ -106,7 +110,7 @@ namespace YetaWF.Modules.Logging.DataProvider {
 
         protected static bool WriteInProgess = false;
 
-        public void WriteToLogFile(Core.Log.Logging.LevelEnum level, int relStack, string message) {
+        public void WriteToLogFile(string category, Core.Log.Logging.LevelEnum level, int relStack, string message) {
 
             if (WriteInProgess) return;
             WriteInProgess = true;
@@ -126,6 +130,7 @@ namespace YetaWF.Modules.Logging.DataProvider {
                 string referrer = "";
                 string requestedUrl = "";
                 string sessionId = null;
+                category = category.Truncate(LogRecord.MaxCategory);
                 if (YetaWFManager.HaveManager) {
                     if (Manager.HaveCurrentSite)
                         siteIdentity = Manager.CurrentSite.Identity;
@@ -152,7 +157,7 @@ namespace YetaWF.Modules.Logging.DataProvider {
                                 ipAddress = connectionFeature.RemoteIpAddress.ToString();
                         }
                         referrer = req.Headers["Referer"].ToString();
-                        if (httpContext.Session != null)
+                        if (category == YetaWF.Core.Log.Logging.YetaWFEvent && httpContext.Session != null)
                             sessionId = httpContext.Session.Id;
 #else
                         requestedUrl = req.Url != null ? req.Url.ToString() : null;
@@ -174,6 +179,7 @@ namespace YetaWF.Modules.Logging.DataProvider {
                 MethodBase methBase = GetCallInfo(relStack + 3, out moduleName);
 
                 SaveMessage(new LogRecord {
+                    Category = category,
                     Level = level,
                     Info = message,
                     TimeStamp = DateTime.UtcNow,

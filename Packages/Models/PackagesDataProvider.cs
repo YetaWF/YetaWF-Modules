@@ -109,7 +109,7 @@ namespace YetaWF.Modules.Packages.DataProvider {
             public void Clear() { }
             public void Flush() { }
             public Task<bool> IsInstalledAsync() { return Task.FromResult(true); }
-            public void WriteToLogFile(Logging.LevelEnum level, int relStack, string text) {
+            public void WriteToLogFile(string category, Logging.LevelEnum level, int relStack, string text) {
                 lock (_lockObject) {
                     File.AppendAllText(LogFile, text + "\r\n");
                 }

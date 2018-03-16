@@ -50,6 +50,10 @@ namespace YetaWF.Modules.Logging.Controllers {
             [UIHint("DateTime"), ReadOnly]
             public DateTime TimeStamp { get; set; }
 
+            [Caption("Category"), Description("The log category")]
+            [UIHint("String"), ReadOnly]
+            public string Category { get; set; }
+
             [Caption("Session Id"), Description("The session id used to identify the visitor")]
             [UIHint("String"), ReadOnly]
             public string SessionId { get; set; }

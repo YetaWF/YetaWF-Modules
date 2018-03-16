@@ -153,10 +153,10 @@ namespace YetaWF.Modules.Scheduler.Controllers {
         [AllowPost]
         [Permission("RunItems")]
         [ExcludeDemoMode]
-        public ActionResult RunItem(string name) {
+        public async Task<ActionResult> RunItem(string name) {
             if (string.IsNullOrWhiteSpace(name))
                 throw new Error(this.__ResStr("noEvent", "No scheduler item name specified"));
-            SchedulerSupport.RunItemAsync(name);
+            await SchedulerSupport.RunItemAsync(name);
             return Reload(null, Reload: ReloadEnum.ModuleParts);
         }
 

@@ -1,5 +1,6 @@
 ﻿Commands            icons 1
 TimeStamp           sort filter 20 defaultSort desc
+Category			sort filter 20
 SessionId           sort filter 20
 UserId              sort filter [Globals.ChUserName]
 IPAddress           sort filter [Globals.ChIPAddress]

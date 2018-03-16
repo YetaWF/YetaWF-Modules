@@ -65,7 +65,7 @@ namespace YetaWF.Modules.Logging.DataProvider.SQL {
         public override void Flush() { }
 
         public override void SaveMessage(LogRecord record) {
-            YetaWFManager.Syncify(async () => {
+            YetaWFManager.Syncify(async () => { // Logging is advertised as Sync - use NLog instead
                 await DataProvider.AddAsync(record);
             });
         }

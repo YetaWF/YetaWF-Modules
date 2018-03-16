@@ -63,8 +63,8 @@ namespace YetaWF.Modules.Logging.DataProvider.File {
 
         public override void SaveMessage(LogRecord record) {
 
-            string text = string.Format("{0}-{1}-{2}-{3}-{4}-{5}({6})-{7}: {8},{9},{10},{11} - {12}:{13}",
-                DateTime.Now/*Local Time*/, record.SessionId, record.SiteIdentity, record.IPAddress, record.RequestedUrl, record.UserName, record.UserId, record.ReferrerUrl,
+            string text = string.Format("{0}-{1}-{2}-{3}-{4}-{5}-{6}({7})-{8}: {9},{10},{11},{12} - {13}:{14}",
+                DateTime.Now/*Local Time*/, record.Category, record.SessionId, record.SiteIdentity, record.IPAddress, record.RequestedUrl, record.UserName, record.UserId, record.ReferrerUrl,
                     record.ModuleName,
                     record.Class,
                     record.Method,

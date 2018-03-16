@@ -11,6 +11,7 @@ using YetaWF.Core.Packages;
 using YetaWF.Core.Serializers;
 
 namespace YetaWF.Modules.Scheduler.DataProvider {
+
     public class LogData {
 
         [Data_PrimaryKey, Data_Identity]
