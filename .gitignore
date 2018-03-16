@@ -40,3 +40,4 @@ app.config
 CurrencyConverter/Addons/_Main/ExchangeRates.js
 
 
+*.cshtml
