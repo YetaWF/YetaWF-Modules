@@ -1,6 +1,6 @@
 @*Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/DevTests#License*@
 @inherits YetaWF.Core.Views.RazorView<YetaWF.Modules.DevTests.Modules.TestEscapesModule, YetaWF.Modules.DevTests.Controllers.TestEscapesModuleController.EditModel>
-@using (Form("TestEscapes_Partial", HtmlAttributes: new { id = DivId })) {
+@using (await CreateFormAsync("TestEscapes_Partial", HtmlAttributes: new { id = DivId })) {
     @PartialForm()
 
     <input type="button" value="Y_Message()" name="Y_Message" />
@@ -10,7 +10,7 @@
     <input type="button" value="Y_Confirm()" name="Y_Confirm" />
     <input type="button" value="Y_PleaseWait()" name="Y_PleaseWait" />
 
-    @FormButtons(new FormButton[] {
+    @await FormButtonsAsync(new FormButton[] {
         new FormButton() { ButtonType= ButtonTypeEnum.Apply, Text= "Apply (Test <A> &amp; & @ {0})", Title = "Tooltip with special characters <A> &amp; & @ {0}" },
         new FormButton() { ButtonType= ButtonTypeEnum.Submit, },
         new FormButton() { ButtonType= ButtonTypeEnum.Cancel, },

@@ -18,7 +18,7 @@
         }
     </div>
 } else if (Model.BrowsingSupported) {
-    using (Form("LogBrowse_Partial")) {
+    using (await CreateFormAsync("LogBrowse_Partial")) {
         @PartialForm()
     }
 } else {

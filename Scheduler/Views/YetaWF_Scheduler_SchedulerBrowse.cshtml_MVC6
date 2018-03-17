@@ -9,6 +9,6 @@
     @__ResStr("disabled", "The Scheduler is disabled.")
 </div>
 }
-@using (Form("SchedulerBrowse_Partial")) {
+@using (await CreateFormAsync("SchedulerBrowse_Partial")) {
     @PartialForm()
 }

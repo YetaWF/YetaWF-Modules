@@ -10,14 +10,14 @@
     string treeId = DivId;
     string detailsId = UniqueId();
 }
-@using (Form("MenuEdit_Partial")) {
+@using (await CreateFormAsync("MenuEdit_Partial")) {
     <div>
         <div id="@treeId" class="t_view">
             <div class="t_treeview"></div>
         </div>
         <div id="@detailsId" class="t_details" data-ajaxurl="@YetaWFManager.UrlFor(typeof(YetaWF.Modules.Menus.Controllers.MenuEditModuleController), "EntireMenu")" >
             @PartialForm()
-            @FormButtons(new FormButton[] {
+            @await FormButtonsAsync(new FormButton[] {
                 new FormButton() { ButtonType= ButtonTypeEnum.Button, Name="t_submit", Text=this.__ResStr("btnSave", "Save") },
                 new FormButton() { ButtonType= ButtonTypeEnum.Button, Name="t_reset", Text=this.__ResStr("btnReset", "Reset") },
                 new FormButton() { ButtonType= ButtonTypeEnum.Button, Name="t_add", Text=this.__ResStr("btnAdd", "New Entry") },

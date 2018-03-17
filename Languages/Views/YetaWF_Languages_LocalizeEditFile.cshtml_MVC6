@@ -11,9 +11,9 @@
         @__ResStr("disabled2", "Localization support is currently disabled - Use Site Settings to enable.")
     </div>
 }
-@using (Form("LocalizeEditFile_Partial")) {
+@using (await CreateFormAsync("LocalizeEditFile_Partial")) {
     @PartialForm()
-    @FormButtons(new FormButton[] {
+    @await FormButtonsAsync(new FormButton[] {
         new FormButton() { ButtonType= ButtonTypeEnum.Apply, Text=this.__ResStr("btnApply", "Apply") },
         new FormButton() { ButtonType= ButtonTypeEnum.Submit },
         new FormButton() { ButtonType= ButtonTypeEnum.Button, Text=this.__ResStr("btnReset", "Restore Defaults"), Title = this.__ResStr("btnResetTT", "Removes custom and installed localization resources for the current language (US-English default resources are never removed)"), Id = btnReset },

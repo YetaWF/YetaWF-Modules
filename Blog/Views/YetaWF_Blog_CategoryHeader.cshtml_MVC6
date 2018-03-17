@@ -1,10 +1,10 @@
 @*Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Blog#License*@
 @inherits YetaWF.Core.Views.RazorView<YetaWF.Modules.Blog.Modules.CategoryHeaderModule, YetaWF.Modules.Blog.Controllers.CategoryHeaderModuleController.DisplayModel>
-@using (Form("CategoryHeader")) {
+@using (await CreateFormAsync("CategoryHeader")) {
     <div class="t_desc">
         @Html.DisplayFor(m => Model.Description)
     </div>
-    @FormButtons(new FormButton[] {
+    @await FormButtonsAsync(new FormButton[] {
         new FormButton() { ButtonType= ButtonTypeEnum.Cancel, Text=this.__ResStr("btnCancel", "Return") },
     });
 }

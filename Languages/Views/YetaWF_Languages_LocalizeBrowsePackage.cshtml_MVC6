@@ -10,7 +10,7 @@
         @__ResStr("disabled2", "Localization support is currently disabled - Use Site Settings to enable.")
     </div>
 }
-@using (Form("LocalizeBrowsePackage_Partial")) {
+@using (await CreateFormAsync("LocalizeBrowsePackage_Partial")) {
     @PartialForm()
     @Html.DisplayFor(m => Model.GridDef)
 }

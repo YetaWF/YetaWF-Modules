@@ -1,5 +1,5 @@
 @*Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Identity#License*@
 @inherits YetaWF.Core.Views.RazorView<YetaWF.Modules.Identity.Modules.AuthorizationBrowseModule, YetaWF.Modules.Identity.Controllers.AuthorizationBrowseModuleController.BrowseModel>
-@using (Form("AuthorizationBrowse_Partial")) {
+@using (await CreateFormAsync("AuthorizationBrowse_Partial")) {
     @PartialForm()
 }

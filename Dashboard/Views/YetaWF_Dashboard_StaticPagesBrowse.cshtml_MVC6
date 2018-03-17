@@ -5,6 +5,6 @@
         @__ResStr("disabled", "Static pages are disabled for this site.")
     </div>
 }
-@using (Form("StaticPagesBrowse_Partial")) {
+@using (await CreateFormAsync("StaticPagesBrowse_Partial")) {
     @PartialForm()
 }

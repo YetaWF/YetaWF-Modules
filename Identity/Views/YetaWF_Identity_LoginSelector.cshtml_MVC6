@@ -1,5 +1,5 @@
 @*Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Identity#License*@
 @inherits YetaWF.Core.Views.RazorView<YetaWF.Modules.Identity.Modules.LoginSelectorModule, YetaWF.Modules.Identity.Controllers.LoginSelectorModuleController.EditModel>
-@using (Form("LoginSelector_Partial", SaveReturnUrl: true, HtmlAttributes: new { Id = DivId })) {
+@using (await CreateFormAsync("LoginSelector_Partial", SaveReturnUrl: true, HtmlAttributes: new { Id = DivId })) {
     @PartialForm()
 }

@@ -1,8 +1,8 @@
 @*Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Basics#License*@
 @inherits YetaWF.Core.Views.RazorView<YetaWF.Modules.Basics.Modules.ModuleSkinInfoModule, YetaWF.Modules.Basics.Controllers.ModuleSkinInfoModuleController.DisplayModel>
-@using (Form("ModuleSkinInfo", HtmlAttributes: new { Id = DivId })) {
+@using (await CreateFormAsync("ModuleSkinInfo", HtmlAttributes: new { Id = DivId })) {
     @Html.DisplayFor(m => Model, "PropertyList")
-    @FormButtons(new FormButton[] {
+    @await FormButtonsAsync(new FormButton[] {
         new FormButton() { ButtonType= ButtonTypeEnum.Cancel, Text=this.__ResStr("btnCancel", "Return") },
     });
     <div>

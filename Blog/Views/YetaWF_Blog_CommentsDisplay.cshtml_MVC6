@@ -1,7 +1,7 @@
 @*Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Blog#License*@
 @inherits YetaWF.Core.Views.RazorView<YetaWF.Modules.Blog.Modules.CommentsDisplayModule, YetaWF.Modules.Blog.Controllers.CommentsDisplayModuleController.DisplayModel>
 @using YetaWF.Core.Support
-@using (Form("CommentsDisplay")) {
+@using (await CreateFormAsync("CommentsDisplay")) {
     if (Model.Comments.Count() == 0) {
         <div class='t_nocomments'>
             @__ResStr("nocommentsAdd", "Be the first to add a comment!")
@@ -63,7 +63,7 @@
             }
         }
     </div>
-    @FormButtons(new FormButton[] {
+    @await FormButtonsAsync(new FormButton[] {
         new FormButton() { ButtonType= ButtonTypeEnum.Cancel, Text=this.__ResStr("btnCancel", "Return") },
     });
 }

@@ -30,7 +30,7 @@
     @{ int panel = 0; }
     @if (Model.EditAuthorized) {
         @Html.RenderTabPaneStart(DivId, panel, "t_addNewPage")
-        using (Form("AddNewPage_Partial", Model: Model.AddNewPageModel)) {
+        using (await CreateFormAsync("AddNewPage_Partial", Model: Model.AddNewPageModel)) {
             @PartialForm()
             <div>
                 <input type="submit" value="@__ResStr("addNewPage", "Add")" />
@@ -42,7 +42,7 @@
     @if (!Manager.CurrentPage.Temporary) {
         if (Model.EditAuthorized) {
             @Html.RenderTabPaneStart(DivId, panel, "t_addNewMod")
-            using (Form("AddNewModule_Partial", Model: Model.AddNewModel)) {
+            using (await CreateFormAsync("AddNewModule_Partial", Model: Model.AddNewModel)) {
                 @PartialForm()
                 <div>
                     <input type="submit" value="@__ResStr("addNewModule", "Add")" />
@@ -53,7 +53,7 @@
 
             if (await ModuleSelectionHelper.ExistingModulesExistAsync()) {
                 @Html.RenderTabPaneStart(DivId, panel, "t_addExistingMod")
-                using (Form("AddExistingModule_Partial", Model: Model.AddExistingModel)) {
+                using (await CreateFormAsync("AddExistingModule_Partial", Model: Model.AddExistingModel)) {
                     @PartialForm()
                     <div>
                         <input type="submit" value="@__ResStr("addOldModule", "Add")" />
@@ -64,14 +64,14 @@
             }
 
             @Html.RenderTabPaneStart(DivId, panel, "t_importMod")
-            using (Form("ImportModule_Partial", Model: Model.ImportModel)) {
+            using (await CreateFormAsync("ImportModule_Partial", Model: Model.ImportModel)) {
                 @PartialForm()
             }
             @Html.RenderTabPaneEnd(DivId, panel)
             ++panel;
 
             @Html.RenderTabPaneStart(DivId, panel, "t_addSkins")
-            using (Form("SkinSelection_Partial", Model: Model.SkinSelectionModel)) {
+            using (await CreateFormAsync("SkinSelection_Partial", Model: Model.SkinSelectionModel)) {
                 @PartialForm()
                 <div>
                     <input type="submit" value="@__ResStr("saveSkins", "Save & Display")" />
@@ -81,7 +81,7 @@
             ++panel;
         }
         @Html.RenderTabPaneStart(DivId, panel, "t_Login")
-        using (Form("LoginSiteSelection_Partial", Model: Model.LoginSiteSelectionModel)) {
+        using (await CreateFormAsync("LoginSiteSelection_Partial", Model: Model.LoginSiteSelectionModel)) {
             @PartialForm()
         }
         @Html.RenderTabPaneEnd(DivId, panel)

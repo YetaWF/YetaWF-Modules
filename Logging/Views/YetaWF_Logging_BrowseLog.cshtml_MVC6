@@ -8,7 +8,7 @@
         @__ResStr("fileNA2", "This may be caused by a missing log folder (\\Data\\DataFolder\\YetaWF_Logging), database or external dataprovider.")
     </div>
 } else if (Model.BrowsingSupported) {
-    using (Form("BrowseLog_Partial")) {
+    using (await CreateFormAsync("BrowseLog_Partial")) {
         @PartialForm()
     }
 } else {
