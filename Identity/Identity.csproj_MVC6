@@ -24,6 +24,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="**\*.cshtml_MVC5" />
+    <None Remove="**\*.cshtml_MVC6" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.Facebook" Version="2.0.1" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.Google" Version="2.0.1" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.Twitter" Version="2.0.1" />
