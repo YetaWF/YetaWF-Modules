@@ -159,7 +159,7 @@
             <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
               <Properties>
                 <Name Value="file" />
-                <Text Value="The site log is a flat file. Online browsing is not available." />
+                <Text Value="Log browsing is not available. The following log provider is used: {0}" />
               </Properties>
             </Object>
           </Value>
@@ -176,14 +176,6 @@
               <Properties>
                 <Name Value="fileNA2" />
                 <Text Value="This may be caused by a missing log folder (\Data\DataFolder\YetaWF_Logging), database or external dataprovider." />
-              </Properties>
-            </Object>
-          </Value>
-          <Value>
-            <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
-              <Properties>
-                <Name Value="flush" />
-                <Text Value="All cached log records have now been written to the log file." />
               </Properties>
             </Object>
           </Value>
