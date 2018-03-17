@@ -3,10 +3,10 @@
 @using YetaWF.Core.Support
 @using (Form("Login_Partial")) {
     @PartialForm()
-    @FormButtons(new FormButton[] {
+    @FormButtonsAsync(new FormButton[] {
         new FormButton() { ButtonType= ButtonTypeEnum.Submit, Text=this.__ResStr("btnSave", "Log In") },
         new FormButton() { ButtonType= ButtonTypeEnum.Cancel, },
-    });
+    }).Result;
 }
 @{
     if (Model.ExternalProviders.Count > 0) {

@@ -3,9 +3,9 @@
 @if (YetaWF.Core.Support.YetaWFManager.AspNetMvc == YetaWF.Core.Support.YetaWFManager.AspNetMvcVersion.MVC5) {
     using (Form("CacheInfo_Partial")) {
         @PartialForm()
-        @FormButtons(new FormButton[] {
+        @FormButtonsAsync(new FormButton[] {
             new FormButton() { ButtonType= ButtonTypeEnum.Cancel, Text=this.__ResStr("btnCancel", "Return") },
-        });
+        }).Result;
     }
 } else {
     <div class="@YetaWF.Core.Globals.CssDivWarning">

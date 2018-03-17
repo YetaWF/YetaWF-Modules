@@ -3,10 +3,10 @@
 @using YetaWF.Core.Addons
 @using (Form("SetupExternalAccount_Partial")) {
     @PartialForm()
-    @FormButtons(new FormButton[] {
+    @FormButtonsAsync(new FormButton[] {
         new FormButton() { ButtonType= ButtonTypeEnum.Submit, Text=this.__ResStr("btnSave", "Register") },
         new FormButton() { ButtonType= ButtonTypeEnum.Cancel, },
-    });
+    }).Result;
 }
 
 

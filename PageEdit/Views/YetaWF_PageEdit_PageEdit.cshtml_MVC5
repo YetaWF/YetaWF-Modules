@@ -3,8 +3,8 @@
 @using (Form("PageEdit_Partial")) {
     @Html.DisplayFor(m => Model.PageGuid)
     @PartialForm()
-    @FormButtons(new FormButton[] {
+    @FormButtonsAsync(new FormButton[] {
         new FormButton() { ButtonType= ButtonTypeEnum.Submit, },
         new FormButton() { ButtonType= ButtonTypeEnum.Cancel, },
-    });
+    }).Result;
 }

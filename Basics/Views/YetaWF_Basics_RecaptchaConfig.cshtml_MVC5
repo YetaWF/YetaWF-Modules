@@ -3,8 +3,8 @@
 @using (Form("RecaptchaConfig_Partial")) {
     <div class="yDivWarning">Recaptcha has been replaced by RecaptchaV2. Recaptcha applies to ALL sites within this YetaWF instance and should no longer be used.</div>
     @PartialForm()
-    @FormButtons(new FormButton[] {
+    @FormButtonsAsync(new FormButton[] {
         new FormButton() { ButtonType= ButtonTypeEnum.Submit, },
         new FormButton() { ButtonType= ButtonTypeEnum.Cancel, },
-    });
+    }).Result;
 }

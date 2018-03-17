@@ -2,8 +2,8 @@
 @inherits YetaWF.Core.Views.RazorView<YetaWF.Modules.SiteProperties.Modules.SitePropertiesModule, YetaWF.Modules.SiteProperties.Controllers.SitePropertiesModuleController.SitePropertiesModel>
 @using (Form("SiteProperties_Partial")) {
     @PartialForm()
-    @FormButtons(new FormButton[] { 
+    @FormButtonsAsync(new FormButton[] { 
         new FormButton() { ButtonType= ButtonTypeEnum.Submit, },
         new FormButton() { ButtonType= ButtonTypeEnum.Cancel, },
-    });
+    }).Result;
 }

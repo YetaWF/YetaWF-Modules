@@ -2,8 +2,8 @@
 @inherits YetaWF.Core.Views.RazorView<YetaWF.Modules.Packages.Modules.SiteTemplateProcessModule, YetaWF.Modules.Packages.Controllers.SiteTemplateProcessModuleController.EditModel>
 @using (Form("SiteTemplateProcess_Partial")) {
     @PartialForm()
-    @FormButtons(new FormButton[] {
+    @FormButtonsAsync(new FormButton[] {
         new FormButton() { ButtonType= ButtonTypeEnum.Apply, Text=this.__ResStr("btnSave", "Process") },
         new FormButton() { ButtonType= ButtonTypeEnum.Cancel, },
-    });
+    }).Result;
 }

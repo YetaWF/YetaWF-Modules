@@ -9,9 +9,9 @@
 } else {
     using (Form("SiteAnnouncement_Partial")) {
         @PartialForm()
-        @FormButtons(new FormButton[] {
+        @FormButtonsAsync(new FormButton[] {
             new FormButton() { Text=__ResStr("btnSend", "Send"), ButtonType= ButtonTypeEnum.Submit, },
             new FormButton() { ButtonType= ButtonTypeEnum.Cancel, },
-        });
+        }).Result;
     }
 }

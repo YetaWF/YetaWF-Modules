@@ -2,7 +2,7 @@
 @inherits YetaWF.Core.Views.RazorView<YetaWF.Modules.Search.Modules.SearchInputModule, YetaWF.Modules.Search.Controllers.SearchInputModuleController.Model>
 @using (Form("SearchInput_Partial")) {
     @PartialForm()
-    @FormButtons(new FormButton[] {
+    @FormButtonsAsync(new FormButton[] {
         new FormButton() { ButtonType= ButtonTypeEnum.Submit, Text=Module.SearchButtonText, Title=Module.SearchButtonTT },
-    });
+    }).Result;
 }

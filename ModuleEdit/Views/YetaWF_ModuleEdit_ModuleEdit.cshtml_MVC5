@@ -4,8 +4,8 @@
 @using (Form("ModuleEdit_Partial")) {
     @Html.DisplayFor(m => Model.ModuleGuid)
     @PartialForm()
-    @FormButtons(new FormButton[] {
+    @FormButtonsAsync(new FormButton[] {
         new FormButton() { ButtonType= ButtonTypeEnum.Submit, },
         new FormButton() { ButtonType= ButtonTypeEnum.Cancel, },
-    });
+    }).Result;
 }

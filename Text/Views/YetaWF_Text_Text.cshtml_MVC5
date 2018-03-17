@@ -12,5 +12,5 @@
     @PartialForm(UsePartialFormCss:false)
     @Html.EditorFor(m => Model.Contents)
     @Html.DisplayFor(m => Model.Url)
-    @FormButtons(buttons);
+    @FormButtonsAsync(buttons).Result;
 }

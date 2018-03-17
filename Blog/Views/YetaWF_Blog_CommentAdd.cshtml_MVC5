@@ -3,10 +3,10 @@
 @if (Model.OpenForComments) {
     using (Form("CommentAdd_Partial")) {
         @PartialForm()
-        @FormButtons(new FormButton[] {
+        @FormButtonsAsync(new FormButton[] {
             new FormButton() { ButtonType= ButtonTypeEnum.Submit, },
             new FormButton() { ButtonType= ButtonTypeEnum.Cancel, },
-        });
+        }).Result;
     }
 } else {
     <div class="t_closedforcomments">

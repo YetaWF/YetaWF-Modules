@@ -2,7 +2,7 @@
 @inherits YetaWF.Core.Views.RazorView<YetaWF.Modules.Security.Modules.MakeKeysModule, YetaWF.Modules.Security.Controllers.MakeKeysModuleController.Model>
 @using (Form("MakeKeys")) {
     @Html.EditorFor(m => Model, "PropertyList")
-    @FormButtons(new FormButton[] {
+    @FormButtonsAsync(new FormButton[] {
         new FormButton() { ButtonType= ButtonTypeEnum.Cancel, Text=this.__ResStr("btnCancel", "Return") },
-    });
+    }).Result;
 }

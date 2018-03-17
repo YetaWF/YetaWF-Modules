@@ -8,5 +8,5 @@
         buttons.Add(new FormButton() { ButtonType = ButtonTypeEnum.Cancel, });
     }
     @PartialForm()
-    @FormButtons(buttons);
+    @FormButtonsAsync(buttons).Result;
 }

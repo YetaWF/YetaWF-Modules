@@ -2,8 +2,8 @@
 @inherits YetaWF.Core.Views.RazorView<YetaWF.Modules.SlideShow.Modules.TemplateSlideShowModule, YetaWF.Modules.SlideShow.Controllers.TemplateSlideShowModuleController.Model>
 @using (Form("TemplateSlideShow_Partial")) {
     @PartialForm()
-    @FormButtons(new FormButton[] {
+    @FormButtonsAsync(new FormButton[] {
         new FormButton() { ButtonType= ButtonTypeEnum.Apply, Text=this.__ResStr("btnApply", "Apply") },
         new FormButton() { ButtonType= ButtonTypeEnum.Cancel, },
-    });
+    }).Result;
 }

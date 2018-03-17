@@ -2,9 +2,9 @@
 @inherits YetaWF.Core.Views.RazorView<YetaWF.Modules.Basics.Modules.ModuleSkinInfoModule, YetaWF.Modules.Basics.Controllers.ModuleSkinInfoModuleController.DisplayModel>
 @using (Form("ModuleSkinInfo", HtmlAttributes: new { Id = DivId })) {
     @Html.DisplayFor(m => Model, "PropertyList")
-    @FormButtons(new FormButton[] {
+    @FormButtonsAsync(new FormButton[] {
         new FormButton() { ButtonType= ButtonTypeEnum.Cancel, Text=this.__ResStr("btnCancel", "Return") },
-    });
+    }).Result;
     <div>
         <h1>Testing HTML Element Display</h1>
         <p>This test page is located at http://www.cs.tut.fi/~jkorpela/www/testel.html - credit goes to the author Jukka Korpela.</p>

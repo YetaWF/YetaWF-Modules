@@ -10,11 +10,11 @@
     <input type="button" value="Y_Confirm()" name="Y_Confirm" />
     <input type="button" value="Y_PleaseWait()" name="Y_PleaseWait" />
 
-    @FormButtons(new FormButton[] {
+    @FormButtonsAsync(new FormButton[] {
         new FormButton() { ButtonType= ButtonTypeEnum.Apply, Text= "Apply (Test <A> &amp; & @ {0})", Title = "Tooltip with special characters <A> &amp; & @ {0}" },
         new FormButton() { ButtonType= ButtonTypeEnum.Submit, },
         new FormButton() { ButtonType= ButtonTypeEnum.Cancel, },
-    });
+    }).Result;
 }
 <script>
     $('#@DivId').on('click', 'input[name="Y_Message"]', function () {

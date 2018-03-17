@@ -63,7 +63,7 @@
             }
         }
     </div>
-    @FormButtons(new FormButton[] {
+    @FormButtonsAsync(new FormButton[] {
         new FormButton() { ButtonType= ButtonTypeEnum.Cancel, Text=this.__ResStr("btnCancel", "Return") },
-    });
+    }).Result;
 }
