@@ -70,7 +70,7 @@ namespace YetaWF.Modules.ImageRepository.Controllers {
                 return PartialView(model);
 
             // build javascript to return selected image to CKEditor
-            string imageUrl = model.ImageName_Info.MakeImageUrl(model.ImageName, ForceHttpHandler: true);
+            string imageUrl = model.ImageName_Info.MakeImageUrl(model.ImageName);
             string js = string.Format("window.opener.CKEDITOR.tools.callFunction({0}, '{1}');", model.CKEditorFuncNum, YetaWFManager.JserEncode(imageUrl));
 
             return FormProcessed(model, /*this.__ResStr("okSaved", "Image saved"), */ OnClose: OnCloseEnum.CloseWindow, OnPopupClose: OnPopupCloseEnum.ReloadNothing, ExtraJavaScript: js);

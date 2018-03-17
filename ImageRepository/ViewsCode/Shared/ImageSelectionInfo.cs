@@ -132,8 +132,8 @@ namespace YetaWF.Modules.ImageRepository.Views.Shared {
                 files = Directory.GetFiles(storagePath).ToList();
             return files;
         }
-        public string MakeImageUrl(string filename, int width = 0, int height = 0, bool ForceHttpHandler = false) {
-            return ImageHelper.FormatUrl(ImageSupport.ImageType, string.Format("{0},{1},{2}", FolderGuid.ToString(), SubFolder, FileType), filename, width, height, ForceHttpHandler: ForceHttpHandler);
+        public string MakeImageUrl(string filename, int width = 0, int height = 0) {
+            return ImageHelper.FormatUrl(ImageSupport.ImageType, string.Format("{0},{1},{2}", FolderGuid.ToString(), SubFolder, FileType), filename, width, height);
         }
     }
 }

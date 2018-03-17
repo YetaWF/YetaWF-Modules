@@ -20,7 +20,7 @@
             </select>
         </div>
         <div class="t_preview">
-            <img src="@info.MakeImageUrl(Model, info.PreviewWidth, info.PreviewHeight, ForceHttpHandler: true)" alt="@__ResStr("preview", "Image Preview")" />
+            <img src="@info.MakeImageUrl(Model, info.PreviewWidth, info.PreviewHeight)" alt="@__ResStr("preview", "Image Preview")" />
         </div>
     </div>
     <div class="t_haveimage" @Html.Raw(string.IsNullOrWhiteSpace(Model) ? "style='display:none'" : "")>

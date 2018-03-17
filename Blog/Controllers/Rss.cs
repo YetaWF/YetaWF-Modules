@@ -90,7 +90,7 @@ namespace YetaWF.Modules.Blog.Controllers {
                     feed = new SyndicationFeed(config.FeedTitle, config.FeedSummary, new Uri(Manager.CurrentSite.MakeUrl(url)), items);
                 }
                 if (config.FeedImage != null)
-                    feed.ImageUrl = new Uri(Manager.CurrentSite.MakeUrl(ImageHelper.FormatUrl(BlogConfigData.ImageType, null, config.FeedImage, ForceHttpHandler: true)));
+                    feed.ImageUrl = new Uri(Manager.CurrentSite.MakeUrl(ImageHelper.FormatUrl(BlogConfigData.ImageType, null, config.FeedImage)));
                 if (lastUpdated != DateTime.MinValue)
                     feed.LastUpdatedTime = lastUpdated;
                 return new RssResult(feed);
