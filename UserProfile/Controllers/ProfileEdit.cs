@@ -163,7 +163,7 @@ namespace YetaWF.Modules.UserProfile.Controllers {
         }
 
         [AllowGet]
-        public async Task<ActionResult> ProfileEditAsync() {
+        public async Task<ActionResult> ProfileEdit() {
             Manager.NeedUser();
             using (UserInfoDataProvider userInfoDP = new UserInfoDataProvider()) {
                 EditModel model = new EditModel { };

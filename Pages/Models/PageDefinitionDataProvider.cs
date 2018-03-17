@@ -261,7 +261,7 @@ namespace YetaWF.Modules.Pages.DataProvider {
                 if (PermanentManager.TryGetObject<DesignedPagesDictionaryByUrl>(out byUrl))
                     return byUrl;
                 // Load the designed pages
-                if (!DataProvider.IsInstalledAsync().Result) // sync OK because this code is only execute once during startup
+                if (!DataProvider.IsInstalledAsync().Result) // sync OK because this code is only executed once during startup
                     return new DesignedPagesDictionaryByUrl();// don't save this, it's not permanent
                 byUrl = DataProviderIOMode.GetDesignedPages();
                 PermanentManager.AddObject<DesignedPagesDictionaryByUrl>(byUrl);

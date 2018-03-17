@@ -141,7 +141,7 @@ namespace YetaWF.Modules.Blog.Controllers {
         [AllowPost]
         [ResourceAuthorize(Info.Resource_AllowManageComments)]
         [ExcludeDemoMode]
-        public async Task<ActionResult> ApproveAsync(int blogEntry, int comment) {
+        public async Task<ActionResult> Approve(int blogEntry, int comment) {
             using (BlogCommentDataProvider dataProvider = new BlogCommentDataProvider(blogEntry)) {
                 BlogComment cmt = await dataProvider.GetItemAsync(comment);
                 if (cmt == null)
@@ -156,7 +156,7 @@ namespace YetaWF.Modules.Blog.Controllers {
         [AllowPost]
         [ResourceAuthorize(Info.Resource_AllowManageComments)]
         [ExcludeDemoMode]
-        public async Task<ActionResult> RemoveAsync(int blogEntry, int comment) {
+        public async Task<ActionResult> Remove(int blogEntry, int comment) {
             using (BlogCommentDataProvider dataProvider = new BlogCommentDataProvider(blogEntry)) {
                 BlogComment cmt = await dataProvider.GetItemAsync(comment);
                 if (cmt == null)

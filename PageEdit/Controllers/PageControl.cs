@@ -323,7 +323,7 @@ namespace YetaWF.Modules.PageEdit.Controllers {
             if (!ModelState.IsValid)
                 return PartialView(model);
 
-            ModuleDefinition module = ModuleDefinition.CreateNewDesignedModule(model.SelectedModule, model.ModuleName, model.ModuleTitle); //$$ should this use Create(Async)? 
+            ModuleDefinition module = ModuleDefinition.CreateNewDesignedModule(model.SelectedModule, model.ModuleName, model.ModuleTitle);
             if (!module.IsModuleUnique)
                 module.ModuleGuid = Guid.NewGuid();
             page.AddModule(model.SelectedPane, module, model.ModuleLocation == Location.Top);
