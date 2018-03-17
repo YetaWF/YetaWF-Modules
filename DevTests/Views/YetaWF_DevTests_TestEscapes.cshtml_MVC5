@@ -1,6 +1,6 @@
 @*Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/DevTests#License*@
 @inherits YetaWF.Core.Views.RazorView<YetaWF.Modules.DevTests.Modules.TestEscapesModule, YetaWF.Modules.DevTests.Controllers.TestEscapesModuleController.EditModel>
-@using (Form("TestEscapes_Partial", HtmlAttributes: new { id = DivId })) {
+@using (CreateFormAsync("TestEscapes_Partial", HtmlAttributes: new { id = DivId }).Result) {
     @PartialForm()
 
     <input type="button" value="Y_Message()" name="Y_Message" />

@@ -1,7 +1,7 @@
 ﻿@*Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/ModuleEdit#License*@
 @inherits YetaWF.Core.Views.RazorView<YetaWF.Modules.ModuleEdit.Modules.ModuleEditModule, YetaWF.Modules.ModuleEdit.Controllers.ModuleEditModuleController.ModuleEditModel>
 @using YetaWF.Core.Addons
-@using (Form("ModuleEdit_Partial")) {
+@using (CreateFormAsync("ModuleEdit_Partial").Result) {
     @Html.DisplayFor(m => Model.ModuleGuid)
     @PartialForm()
     @FormButtonsAsync(new FormButton[] {

@@ -10,7 +10,7 @@
     string treeId = DivId;
     string detailsId = UniqueId();
 }
-@using (Form("MenuEdit_Partial")) {
+@using (CreateFormAsync("MenuEdit_Partial").Result) {
     <div>
         <div id="@treeId" class="t_view">
             <div class="t_treeview"></div>

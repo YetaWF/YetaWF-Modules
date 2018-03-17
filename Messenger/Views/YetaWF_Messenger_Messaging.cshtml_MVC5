@@ -13,7 +13,7 @@
         Messaging services are not available (add a reference to the "Messaging (Skin)" module in Site Settings).
     </div>
 } else {
-    using (Form("Messaging_Partial", HtmlAttributes: new { id = idForm })) {
+    using (CreateFormAsync("Messaging_Partial", HtmlAttributes: new { id = idForm }).Result) {
         @PartialForm()
         @FormButtonsAsync(new FormButton[] {
             new FormButton() { Text=__ResStr("btnSend", "Send"), Name="Send", ButtonType= ButtonTypeEnum.Button, },

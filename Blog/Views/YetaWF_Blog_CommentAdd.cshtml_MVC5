@@ -1,7 +1,7 @@
 @*Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Blog#License*@
 @inherits YetaWF.Core.Views.RazorView<YetaWF.Modules.Blog.Modules.CommentAddModule, YetaWF.Modules.Blog.Controllers.CommentAddModuleController.AddModel>
 @if (Model.OpenForComments) {
-    using (Form("CommentAdd_Partial")) {
+    using (CreateFormAsync("CommentAdd_Partial").Result) {
         @PartialForm()
         @FormButtonsAsync(new FormButton[] {
             new FormButton() { ButtonType= ButtonTypeEnum.Submit, },

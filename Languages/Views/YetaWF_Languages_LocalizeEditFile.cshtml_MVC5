@@ -11,7 +11,7 @@
         @__ResStr("disabled2", "Localization support is currently disabled - Use Site Settings to enable.")
     </div>
 }
-@using (Form("LocalizeEditFile_Partial")) {
+@using (CreateFormAsync("LocalizeEditFile_Partial").Result) {
     @PartialForm()
     @FormButtonsAsync(new FormButton[] {
         new FormButton() { ButtonType= ButtonTypeEnum.Apply, Text=this.__ResStr("btnApply", "Apply") },

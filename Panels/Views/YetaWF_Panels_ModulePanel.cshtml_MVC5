@@ -1,7 +1,7 @@
 @*Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Panels#License*@
 @inherits YetaWF.Core.Views.RazorView<YetaWF.Modules.Panels.Modules.ModulePanelModule, YetaWF.Modules.Panels.Controllers.ModulePanelModuleController.Model>
 @if (Manager.EditMode) {
-    using (Form("ModulePanel_Partial")) {
+    using (CreateFormAsync("ModulePanel_Partial").Result) {
         @PartialForm()
     }
 } else {

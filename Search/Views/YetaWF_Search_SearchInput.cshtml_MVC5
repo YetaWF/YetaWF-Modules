@@ -1,6 +1,6 @@
 @*Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Search#License*@
 @inherits YetaWF.Core.Views.RazorView<YetaWF.Modules.Search.Modules.SearchInputModule, YetaWF.Modules.Search.Controllers.SearchInputModuleController.Model>
-@using (Form("SearchInput_Partial")) {
+@using (CreateFormAsync("SearchInput_Partial").Result) {
     @PartialForm()
     @FormButtonsAsync(new FormButton[] {
         new FormButton() { ButtonType= ButtonTypeEnum.Submit, Text=Module.SearchButtonText, Title=Module.SearchButtonTT },

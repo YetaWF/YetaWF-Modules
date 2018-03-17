@@ -1,7 +1,7 @@
 @*Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Blog#License*@
 @inherits YetaWF.Core.Views.RazorView<YetaWF.Modules.Blog.Modules.CommentsDisplayModule, YetaWF.Modules.Blog.Controllers.CommentsDisplayModuleController.DisplayModel>
 @using YetaWF.Core.Support
-@using (Form("CommentsDisplay")) {
+@using (CreateFormAsync("CommentsDisplay").Result) {
     if (Model.Comments.Count() == 0) {
         <div class='t_nocomments'>
             @__ResStr("nocommentsAdd", "Be the first to add a comment!")

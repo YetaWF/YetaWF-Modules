@@ -7,7 +7,7 @@
         Messaging services are not available (add a reference to the "Site Announcements (Skin)" module in Site Settings).
     </div>
 } else {
-    using (Form("SiteAnnouncement_Partial")) {
+    using (CreateFormAsync("SiteAnnouncement_Partial").Result) {
         @PartialForm()
         @FormButtonsAsync(new FormButton[] {
             new FormButton() { Text=__ResStr("btnSend", "Send"), ButtonType= ButtonTypeEnum.Submit, },
