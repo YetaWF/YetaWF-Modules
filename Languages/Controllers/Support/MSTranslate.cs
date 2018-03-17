@@ -4,12 +4,11 @@ using System.Net;
 using System.Text;
 using System.Xml.Linq;
 using YetaWF.Core.Support;
+using System.Threading.Tasks;
 #if MVC6
 #else
 using System.Web.Security.AntiXss;
 #endif
-
-//$$$ASYNCIFY
 
 namespace YetaWF.Modules.Languages.Controllers.Support {
 
@@ -24,39 +23,46 @@ namespace YetaWF.Modules.Languages.Controllers.Support {
 
             public MSAuthentication(string clientKey) {
                 _clientKey = clientKey;
-                string request = string.Format("Subscription-Key={0}", YetaWFManager.UrlEncodeArgs(clientKey));
-                _token = HttpPost(DataMarketAccessUri, request);
             }
-            public string GetAccessToken() {
+            public async Task<string> GetAccessTokenAsync() {
+                if (_token == null) {
+                    string request = string.Format("Subscription-Key={0}", YetaWFManager.UrlEncodeArgs(_clientKey));
+                    _token = await HttpPostAsync(DataMarketAccessUri, request);
+                }
                 return _token;
             }
-            private string HttpPost(string dataMarketAccessUri, string requestDetails) {
+            private async Task<string> HttpPostAsync(string dataMarketAccessUri, string requestDetails) {
                 WebRequest webRequest = WebRequest.Create(dataMarketAccessUri + "?" + requestDetails);
                 webRequest.Method = "POST";
                 byte[] bytes = Encoding.ASCII.GetBytes(requestDetails);
                 webRequest.ContentLength = bytes.Length;
-                using (Stream outputStream = webRequest.GetRequestStream()) {
-                    outputStream.Write(bytes, 0, bytes.Length);
+                using (Stream outputStream = await webRequest.GetRequestStreamAsync()) {
+                    await outputStream.WriteAsync(bytes, 0, bytes.Length);
                 }
-                using (WebResponse webResponse = webRequest.GetResponse()) {
+                using (WebResponse webResponse = await webRequest.GetResponseAsync()) {
                     using (StreamReader sr = new StreamReader(webResponse.GetResponseStream())) {
-                        return sr.ReadToEnd();
+                        return await sr.ReadToEndAsync();
                     }
                 }
             }
         }
 
-        private string token;
-
         public MSTranslate(string clientId) {
-            MSAuthentication auth = new MSAuthentication(clientId);
-            token = auth.GetAccessToken();
+            _clientId = clientId;
         }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2202:Do not dispose objects multiple times", Justification = "Don't care")]
-        public List<string> Translate(string from, string to, List<string> strings) {
+        private string _clientId;
+        private string _token;
 
-            string headerValue = "Bearer " + token;
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2202:Do not dispose objects multiple times", Justification = "Don't care")]
+        public async Task<List<string>> TranslateAsync(string from, string to, List<string> strings) {
+
+            if (_token == null) {
+                MSAuthentication auth = new MSAuthentication(_clientId);
+                _token = await auth.GetAccessTokenAsync();
+            }
+
+            string headerValue = "Bearer " + _token;
             string uri = "http://api.microsofttranslator.com/v2/Http.svc/TranslateArray";
             HtmlBuilder hb = new HtmlBuilder();
             hb.Append("<TranslateArrayRequest>" +
@@ -90,19 +96,19 @@ namespace YetaWF.Modules.Languages.Controllers.Support {
             request.ContentType = "text/xml";
             request.Method = "POST";
 
-            using (System.IO.Stream stream = request.GetRequestStream()) {
+            using (System.IO.Stream stream = await request.GetRequestStreamAsync()) {
                 byte[] arrBytes = System.Text.Encoding.UTF8.GetBytes(hb.ToString());
-                stream.Write(arrBytes, 0, arrBytes.Length);
+                await stream.WriteAsync(arrBytes, 0, arrBytes.Length);
             }
 
             // Get the response
             List<string> newStrings = new List<string>();
             WebResponse response = null;
 
-            using (response = request.GetResponse()) {
+            using (response = await request.GetResponseAsync()) {
                 using (Stream stream = response.GetResponseStream()) {
                     using (StreamReader rdr = new StreamReader(stream, System.Text.Encoding.UTF8)) {
-                        string strResponse = rdr.ReadToEnd();
+                        string strResponse = await rdr.ReadToEndAsync();
                         XDocument doc = XDocument.Parse(strResponse);
                         XNamespace ns = "http://schemas.datacontract.org/2004/07/Microsoft.MT.Web.Service.V2";
                         foreach (XElement xe in doc.Descendants(ns + "TranslateArrayResponse")) {

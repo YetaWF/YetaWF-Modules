@@ -220,7 +220,7 @@ namespace YetaWF.Modules.Languages.Controllers {
                     return await TranslateStringsUsingGoogleAsync(language, config.GoogleTranslateAPIKey, config.GoogleTranslateAppName, strings);
             } else if (config.TranslationService == LocalizeConfigData.TranslationServiceEnum.MicrosoftTranslator) {
                 if (!string.IsNullOrWhiteSpace(config.MSClientKey))
-                    return TranslateStringsUsingMicrosoft(language, config.MSClientKey, strings);
+                    return await TranslateStringsUsingMicrosoftAsync(language, config.MSClientKey, strings);
             }
             throw new InternalError("No translation API available - Define a translation API using Localization Settings");
         }
@@ -244,7 +244,7 @@ namespace YetaWF.Modules.Languages.Controllers {
             }
             return newStrings;
         }
-        private List<string> TranslateStringsUsingMicrosoft(string language, string clientId, List<string> strings) {
+        private async Task<List<string>> TranslateStringsUsingMicrosoftAsync(string language, string clientId, List<string> strings) {
             string from = MultiString.GetPrimaryLanguage(MultiString.DefaultLanguage);
             string to = MultiString.GetPrimaryLanguage(language);
 
@@ -254,7 +254,7 @@ namespace YetaWF.Modules.Languages.Controllers {
             int skip = 0;
             List<string> newStrings = new List<string>();
             while (total > 0) {
-                List<string> returnedStrings = msTrans.Translate(from, to, strings.Skip(skip).Take(40).ToList());
+                List<string> returnedStrings = await msTrans.TranslateAsync(from, to, strings.Skip(skip).Take(40).ToList());
                 newStrings.AddRange(returnedStrings);
                 skip += returnedStrings.Count();
                 total -= returnedStrings.Count();
