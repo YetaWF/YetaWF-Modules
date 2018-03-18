@@ -16,8 +16,8 @@ namespace YetaWF.Modules.Messenger.Controllers {
         public SkinSignalrModuleController() { }
 
         [AllowGet]
-        public ActionResult SkinSignalr() {
-            Signalr.UseAsync();
+        public async Task<ActionResult> SkinSignalr() {
+            await Signalr.UseAsync();
             return new EmptyResult();
         }
     }

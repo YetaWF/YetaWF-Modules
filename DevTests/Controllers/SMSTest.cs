@@ -1,5 +1,6 @@
 /* Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/DevTests#License */
 
+using System.Threading.Tasks;
 using YetaWF.Core.Controllers;
 using YetaWF.Core.Localize;
 using YetaWF.Core.Models.Attributes;
@@ -42,11 +43,11 @@ namespace YetaWF.Modules.DevTests.Controllers {
         [AllowPost]
         [ConditionalAntiForgeryToken]
         [ExcludeDemoMode]
-        public ActionResult SMSTest_Partial(Model model) {
+        public async Task<ActionResult> SMSTest_Partial(Model model) {
             if (!ModelState.IsValid)
                 return PartialView(model);
             SendSMS sendSMS = new SendSMS();
-            sendSMS.SendMessageAsync(model.PhoneNumber, model.Text);
+            await sendSMS.SendMessageAsync(model.PhoneNumber, model.Text);
             return FormProcessed(model, this.__ResStr("ok", "SMS sent"));
         }
     }

@@ -17,10 +17,10 @@ namespace YetaWF.Modules.Messenger.Controllers {
         public SkinSiteAnnouncementsModuleController() { }
 
         [AllowGet]
-        public ActionResult SkinSiteAnnouncements() {
-            Signalr.UseAsync();
+        public async Task<ActionResult> SkinSiteAnnouncements() {
+            await Signalr.UseAsync();
             Package currentPackage = AreaRegistration.CurrentPackage;
-            Manager.AddOnManager.AddAddOnNamedAsync(currentPackage.Domain, currentPackage.Product, "SkinSiteAnnouncements");
+            await Manager.AddOnManager.AddAddOnNamedAsync(currentPackage.Domain, currentPackage.Product, "SkinSiteAnnouncements");
             return new EmptyResult();
         }
     }

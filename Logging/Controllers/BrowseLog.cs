@@ -159,10 +159,10 @@ namespace YetaWF.Modules.Logging.Controllers {
         [AllowPost]
         [Permission("RemoveLog")]
         [ExcludeDemoMode]
-        public ActionResult RemoveAll() {
+        public async Task<ActionResult> RemoveAll() {
             FlushLog();
             using (LogRecordDataProvider dataProvider = LogRecordDataProvider.GetLogRecordDataProvider()) {
-                dataProvider.RemoveItemsAsync(null);// that means all records
+                await dataProvider.RemoveItemsAsync(null);// that means all records
                 return Reload(null, PopupText: this.__ResStr("allRemoved", "All log records have been removed"), Reload: ReloadEnum.ModuleParts);
             }
         }
