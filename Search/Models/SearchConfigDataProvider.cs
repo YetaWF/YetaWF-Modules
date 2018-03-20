@@ -44,8 +44,6 @@ namespace YetaWF.Modules.Search.DataProvider {
 
         private const int KEY = 1;
 
-        private static AsyncLock _lockObject = new AsyncLock();
-
         // IMPLEMENTATION
         // IMPLEMENTATION
         // IMPLEMENTATION
@@ -72,13 +70,8 @@ namespace YetaWF.Modules.Search.DataProvider {
         public async Task<SearchConfigData> GetItemAsync() {
             SearchConfigData config = await DataProvider.GetAsync(KEY);
             if (config == null) {
-                using (await _lockObject.LockAsync()) {
-                    config = await DataProvider.GetAsync(KEY);
-                    if (config == null) {
-                        config = new SearchConfigData();
-                        await AddConfigAsync(config);
-                    }
-                }
+                config = new SearchConfigData();
+                await AddConfigAsync(config);
             }
             return config;
         }

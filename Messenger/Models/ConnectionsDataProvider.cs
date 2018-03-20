@@ -37,10 +37,12 @@ namespace YetaWF.Modules.Messenger.DataProvider {
 
         // Startup
 
-        public async Task InitializeApplicationStartupAsync() {
-            // clear all connections from db
-            // removes all sites
-            await RemoveItemsAsync(null);
+        public async Task InitializeApplicationStartupAsync(bool firstNode) {
+            if (firstNode) {
+                // clear all connections from db
+                // removes all sites
+                await RemoveItemsAsync(null);
+            }
         }
 
         // IMPLEMENTATION

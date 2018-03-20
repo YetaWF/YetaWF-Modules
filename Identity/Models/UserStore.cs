@@ -45,8 +45,6 @@ namespace YetaWF.Modules.Identity.Models {
             IUserRoleStore<UserDefinition>
     {
 
-        static object _lockObject = new object();
-
 #if MVC6
         public UserStore(){
             CurrentSiteIdentity = YetaWFManager.Manager.CurrentSite.Identity;

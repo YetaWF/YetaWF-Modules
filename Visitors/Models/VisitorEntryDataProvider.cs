@@ -70,7 +70,7 @@ namespace YetaWF.Modules.Visitors.DataProvider {
 
     public class VisitorEntryDataProvider : DataProviderImpl, IInstallableModel, IInitializeApplicationStartup {
 
-        public Task InitializeApplicationStartupAsync() {
+        public Task InitializeApplicationStartupAsync(bool firstNode) {
             ErrorHandling.RegisterCallback(AddVisitEntryError);
             PageLogging.RegisterCallback(AddVisitEntryUrlAsync);
             return Task.CompletedTask;

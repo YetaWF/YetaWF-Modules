@@ -18,7 +18,7 @@ namespace YetaWF.Modules.Pages.DataProvider {
 
     public class PageDefinitionDataProviderStartup : IInitializeApplicationStartup {
 
-        public Task InitializeApplicationStartupAsync() {
+        public Task InitializeApplicationStartupAsync(bool firstNode) {
             PageDefinition.LoadPageDefinitionAsync = LoadPageDefinitionAsync;
             PageDefinition.LoadPageDefinitionByUrlAsync = LoadPageDefinitionAsync;
             PageDefinition.CreatePageDefinitionAsync = CreatePageDefinitionAsync;

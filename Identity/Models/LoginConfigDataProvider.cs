@@ -103,8 +103,6 @@ namespace YetaWF.Modules.Identity.DataProvider {
 
         private const int KEY = 1;
 
-        private static AsyncLock _lockObject = new AsyncLock();
-
         // IMPLEMENTATION
         // IMPLEMENTATION
         // IMPLEMENTATION
@@ -131,25 +129,20 @@ namespace YetaWF.Modules.Identity.DataProvider {
         public async Task<LoginConfigData> GetItemAsync() {
             LoginConfigData config = await DataProvider.GetAsync(KEY);
             if (config == null) {
-                using (await _lockObject.LockAsync()) {
-                    config = await DataProvider.GetAsync(KEY);
-                    if (config == null) {
-                        config = new LoginConfigData() {
-                            Id = KEY,
-                            AllowUserRegistration = true,
-                            RegistrationType = RegistrationTypeEnum.EmailOnly,
-                            SavePlainTextPassword = true,
-                            Captcha = false,
-                            VerifyNewUsers = false,
-                            ApproveNewUsers = false,
-                            NotifyAdminNewUsers = false,
-                            BccVerification = false,
-                            BccForgottenPassword = false,
-                            PersistentLogin = true,
-                        };
-                        await AddConfigAsync(config);
-                    }
-                }
+                config = new LoginConfigData() {
+                    Id = KEY,
+                    AllowUserRegistration = true,
+                    RegistrationType = RegistrationTypeEnum.EmailOnly,
+                    SavePlainTextPassword = true,
+                    Captcha = false,
+                    VerifyNewUsers = false,
+                    ApproveNewUsers = false,
+                    NotifyAdminNewUsers = false,
+                    BccVerification = false,
+                    BccForgottenPassword = false,
+                    PersistentLogin = true,
+                };
+                await AddConfigAsync(config);
             }
             return config;
         }

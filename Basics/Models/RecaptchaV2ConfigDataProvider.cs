@@ -15,7 +15,7 @@ namespace YetaWF.Modules.Basics.DataProvider {
         // STARTUP
         // STARTUP
 
-        public Task InitializeApplicationStartupAsync() {
+        public Task InitializeApplicationStartupAsync(bool firstNode) {
             RecaptchaV2Config.LoadRecaptchaV2ConfigAsync = RecaptchaV2ConfigDataProvider.LoadRecaptchaV2Config;
             RecaptchaV2Config.SaveRecaptchaV2ConfigAsync = RecaptchaV2ConfigDataProvider.SaveRecaptchaV2Config;
             return Task.CompletedTask;
@@ -25,8 +25,6 @@ namespace YetaWF.Modules.Basics.DataProvider {
     public class RecaptchaV2ConfigDataProvider : DataProviderImpl, IInstallableModel {
 
         public static readonly int KEY = 1;
-
-        private static AsyncLock _lockObject = new AsyncLock();
 
         // IMPLEMENTATION
         // IMPLEMENTATION
@@ -54,13 +52,8 @@ namespace YetaWF.Modules.Basics.DataProvider {
         public async Task<RecaptchaV2Config> GetItemAsync() {
             RecaptchaV2Config config = await DataProvider.GetAsync(KEY);
             if (config == null) {
-                using (await _lockObject.LockAsync()) {
-                    config = await DataProvider.GetAsync(KEY);
-                    if (config == null) {
-                        config = new RecaptchaV2Config();
-                        await AddConfigAsync(config);
-                    }
-                }
+                config = new RecaptchaV2Config();
+                await AddConfigAsync(config);
             }
             return config;
         }

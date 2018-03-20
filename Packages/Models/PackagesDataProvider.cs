@@ -25,7 +25,7 @@ namespace YetaWF.Modules.Packages.DataProvider {
 
         protected YetaWFManager Manager { get { return YetaWFManager.Manager; } }
 
-        public Task InitializeApplicationStartupAsync() {
+        public Task InitializeApplicationStartupAsync(bool firstNode) {
             BuiltinCommands.Add("/$initall", CoreInfo.Resource_BuiltinCommands, InitAllAsync);
             BuiltinCommands.Add("/$initnew", CoreInfo.Resource_BuiltinCommands, InitNewAsync);
             BuiltinCommands.Add("/$restart", CoreInfo.Resource_BuiltinCommands, RestartSiteAsync);

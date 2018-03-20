@@ -107,7 +107,7 @@ namespace YetaWF.Modules.Pages.DataProvider {
         // IINITIALIZEAPPLICATIONSTARTUP
         // IINITIALIZEAPPLICATIONSTARTUP
 
-        public Task InitializeApplicationStartupAsync() {
+        public Task InitializeApplicationStartupAsync(bool firstNode) {
             PageDefinition.GetUnifiedPageInfoAsync = UnifiedSetDataProvider.GetUnifiedPageInfoAsync;
             return Task.CompletedTask;
         }

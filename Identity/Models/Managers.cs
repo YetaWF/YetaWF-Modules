@@ -22,7 +22,7 @@ namespace YetaWF.Modules.Identity.Models {
             if (PermanentManager.TryGetObject<UserManager<UserDefinition>>(out userManager))
                 return userManager;
 
-            lock (_lockObject) {
+            lock (_lockObject) { // lock used to insure we only get one user store (during startup)
 
                 if (PermanentManager.TryGetObject<UserManager<UserDefinition>>(out userManager))
                     return userManager;

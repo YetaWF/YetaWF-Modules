@@ -33,8 +33,6 @@ namespace YetaWF.Modules.SyntaxHighlighter.DataProvider {
 
         private const int KEY = 1;
 
-        private static AsyncLock _lockObject = new AsyncLock();
-
         // IMPLEMENTATION
         // IMPLEMENTATION
         // IMPLEMENTATION
@@ -61,13 +59,8 @@ namespace YetaWF.Modules.SyntaxHighlighter.DataProvider {
         public async Task<ConfigData> GetItemAsync() {
             ConfigData config = await DataProvider.GetAsync(KEY);
             if (config == null) {
-                using (await _lockObject.LockAsync()) {
-                    config = await DataProvider.GetAsync(KEY);
-                    if (config == null) {
-                        config = new ConfigData();
-                        await AddConfigAsync(config);
-                    }
-                }
+                config = new ConfigData();
+                await AddConfigAsync(config);
             }
             return config;
         }

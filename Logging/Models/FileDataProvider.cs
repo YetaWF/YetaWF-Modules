@@ -46,7 +46,7 @@ namespace YetaWF.Modules.Logging.DataProvider.File {
         public override void Clear() {
             lock (lockObject) {
                 try {
-                    System.IO.File.Delete(LogFile);
+                    System.IO.File.Delete(LogFile);//$$$$
                 } catch (Exception) { }
                 Directory.CreateDirectory(Path.GetDirectoryName(LogFile));
                 LogCache = new List<string>();
@@ -56,7 +56,7 @@ namespace YetaWF.Modules.Logging.DataProvider.File {
         public override void Flush() {
             lock (lockObject) {
                 if (LogCache != null)
-                    System.IO.File.AppendAllLines(LogFile, LogCache);
+                    System.IO.File.AppendAllLines(LogFile, LogCache);//$$$$$
                 LogCache = new List<string>();
             }
         }
@@ -72,7 +72,7 @@ namespace YetaWF.Modules.Logging.DataProvider.File {
                     record.Level, record.Info);
             text = text.Replace("\n", "\r\n");
 
-            lock (lockObject) {
+            lock (lockObject) { //$$$$$$
                 LogCache.Add(text);
                 if (LogCache.Count >= MAXRECORDS)
                     Flush();

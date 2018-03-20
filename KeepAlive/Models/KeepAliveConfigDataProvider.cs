@@ -30,8 +30,6 @@ namespace YetaWF.Modules.KeepAlive.DataProvider {
 
         private const int KEY = 1;
 
-        private static AsyncLock _lockObject = new AsyncLock();
-
         // IMPLEMENTATION
         // IMPLEMENTATION
         // IMPLEMENTATION
@@ -57,13 +55,8 @@ namespace YetaWF.Modules.KeepAlive.DataProvider {
         public async Task<KeepAliveConfigData> GetItemAsync() {
             KeepAliveConfigData config = await DataProvider.GetAsync(KEY);
             if (config == null) {
-                using (await _lockObject.LockAsync()) {
-                    config = await DataProvider.GetAsync(KEY);
-                    if (config == null) {
-                        config = new KeepAliveConfigData();
-                        await AddConfigAsync(config);
-                    }
-                }
+                config = new KeepAliveConfigData();
+                await AddConfigAsync(config);
             }
             return config;
         }

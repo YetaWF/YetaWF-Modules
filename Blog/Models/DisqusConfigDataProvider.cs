@@ -63,8 +63,6 @@ namespace YetaWF.Modules.Blog.DataProvider {
 
         private const int KEY = 1;
 
-        private static AsyncLock _lockObject = new AsyncLock();
-
         // IMPLEMENTATION
         // IMPLEMENTATION
         // IMPLEMENTATION
@@ -91,13 +89,8 @@ namespace YetaWF.Modules.Blog.DataProvider {
         public async Task<DisqusConfigData> GetItemAsync() {
             DisqusConfigData config = await DataProvider.GetAsync(KEY);
             if (config == null) {
-                using (await _lockObject.LockAsync()) {
-                    config = await DataProvider.GetAsync(KEY);
-                    if (config == null) {
-                        config = new DisqusConfigData();
-                        await AddConfigAsync(config);
-                    }
-                }
+                config = new DisqusConfigData();
+                await AddConfigAsync(config);
             }
             return config;
         }

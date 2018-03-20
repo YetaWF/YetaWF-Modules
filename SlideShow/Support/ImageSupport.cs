@@ -16,7 +16,7 @@ namespace YetaWF.Modules.SlideShow.Support {
 
         public const string ImageType = "YetaWF_SlideShow";
 
-        public Task InitializeApplicationStartupAsync() {
+        public Task InitializeApplicationStartupAsync(bool firstNode) {
             YetaWF.Core.Image.ImageSupport.AddHandler(ImageType, GetAsFileAsync: RetrieveImageAsync);
             return Task.CompletedTask;
         }

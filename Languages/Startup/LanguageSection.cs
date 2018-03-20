@@ -16,7 +16,7 @@ namespace YetaWF.Modules.Languages.Startup {
         // IInitializeApplicationStartup
         // IInitializeApplicationStartup
 
-        public Task InitializeApplicationStartupAsync() {
+        public Task InitializeApplicationStartupAsync(bool firstNode) {
             string rootFolder;
 #if MVC6
             rootFolder = YetaWFManager.RootFolderWebProject;

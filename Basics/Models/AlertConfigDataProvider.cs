@@ -54,8 +54,6 @@ namespace YetaWF.Modules.Basics.DataProvider {
 
         private const int KEY = 1;
 
-        private static AsyncLock _lockObject = new AsyncLock();
-
         // IMPLEMENTATION
         // IMPLEMENTATION
         // IMPLEMENTATION
@@ -82,13 +80,8 @@ namespace YetaWF.Modules.Basics.DataProvider {
         public async Task<AlertConfig> GetItemAsync() {
             AlertConfig config = await DataProvider.GetAsync(KEY);
             if (config == null) {
-                using (await _lockObject.LockAsync()) {
-                    config = await DataProvider.GetAsync(KEY);
-                    if (config == null) {
-                        config = new AlertConfig();
-                        await AddConfigAsync(config);
-                    }
-                }
+                config = new AlertConfig();
+                await AddConfigAsync(config);
             }
             return config;
         }

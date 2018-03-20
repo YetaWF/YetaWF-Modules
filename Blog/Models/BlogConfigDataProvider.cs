@@ -25,7 +25,7 @@ namespace YetaWF.Modules.Blog.DataProvider {
         // IInitializeApplicationStartup
         public const string ImageType = "YetaWF_Blog_BlogConfigData";
 
-        public Task InitializeApplicationStartupAsync() {
+        public Task InitializeApplicationStartupAsync(bool firstNode) {
             ImageSupport.AddHandler(ImageType, GetBytesAsync: RetrieveImageAsync);
             return Task.CompletedTask;
         }
@@ -141,8 +141,6 @@ namespace YetaWF.Modules.Blog.DataProvider {
 
         private const int KEY = 1;
 
-        private static AsyncLock _lockObject = new AsyncLock();
-
         // IMPLEMENTATION
         // IMPLEMENTATION
         // IMPLEMENTATION
@@ -169,13 +167,8 @@ namespace YetaWF.Modules.Blog.DataProvider {
         public async Task<BlogConfigData> GetItemAsync() {
             BlogConfigData config = await DataProvider.GetAsync(KEY);
             if (config == null) {
-                using (await _lockObject.LockAsync()) {
-                    config = await DataProvider.GetAsync(KEY);
-                    if (config == null) {
-                        config = new BlogConfigData();
-                        await AddConfigAsync(config);
-                    }
-                }
+                config = new BlogConfigData();
+                await AddConfigAsync(config);
             }
             return config;
         }

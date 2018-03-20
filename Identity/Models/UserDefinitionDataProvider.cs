@@ -140,8 +140,6 @@ namespace YetaWF.Modules.Identity.DataProvider {
         // IMPLEMENTATION
         // IMPLEMENTATION
 
-        private static object _lockObject = new object();
-
         public UserDefinitionDataProvider() : base(YetaWFManager.Manager.CurrentSite.Identity) { SetDataProvider(CreateDataProvider()); }
         public UserDefinitionDataProvider(int siteIdentity) : base(siteIdentity) { SetDataProvider(CreateDataProvider()); }
 

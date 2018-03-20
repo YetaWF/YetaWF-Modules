@@ -16,7 +16,7 @@ namespace YetaWF.Modules.ImageRepository.Support {
 
         public readonly static string ImageType = "YetaWF_Image";
 
-        public Task InitializeApplicationStartupAsync() {
+        public Task InitializeApplicationStartupAsync(bool firstNode) {
             YetaWF.Core.Image.ImageSupport.AddHandler(ImageType, GetAsFileAsync: RetrieveImageAsync);
             return Task.CompletedTask;
         }

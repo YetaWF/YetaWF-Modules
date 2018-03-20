@@ -34,8 +34,6 @@ namespace YetaWF.Modules.PageEdit.DataProvider {
 
         private const int KEY = 1;
 
-        private static AsyncLock _lockObject = new AsyncLock();
-
         // IMPLEMENTATION
         // IMPLEMENTATION
         // IMPLEMENTATION
@@ -62,13 +60,8 @@ namespace YetaWF.Modules.PageEdit.DataProvider {
         public async Task<ControlPanelConfigData> GetItemAsync() {
             ControlPanelConfigData config = await DataProvider.GetAsync(KEY);
             if (config == null) {
-                using (await _lockObject.LockAsync()) {
-                    config = await DataProvider.GetAsync(KEY);
-                    if (config == null) {
-                        config = new ControlPanelConfigData();
-                        await AddConfigAsync(config);
-                    }
-                }
+                config = await DataProvider.GetAsync(KEY);
+                await AddConfigAsync(config);
             }
             return config;
         }

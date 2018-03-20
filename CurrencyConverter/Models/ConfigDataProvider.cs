@@ -27,8 +27,6 @@ namespace YetaWF.Modules.CurrencyConverter.DataProvider {
 
         private const int KEY = 1;
 
-        private static AsyncLock _lockObject = new AsyncLock();
-
         // IMPLEMENTATION
         // IMPLEMENTATION
         // IMPLEMENTATION
@@ -55,17 +53,12 @@ namespace YetaWF.Modules.CurrencyConverter.DataProvider {
         public async Task<ConfigData> GetItemAsync() {
             ConfigData config = await DataProvider.GetAsync(KEY);
             if (config == null) {
-                using (await _lockObject.LockAsync()) {
-                    config = await DataProvider.GetAsync(KEY);
-                    if (config == null) {
-                        config = new ConfigData() {
-                            Id = KEY,
-                            AppID = "",
-                            UseHttps = false,
-                        };
-                        await AddConfigAsync(config);
-                    }
-                }
+                config = new ConfigData() {
+                    Id = KEY,
+                    AppID = "",
+                    UseHttps = false,
+                };
+                await AddConfigAsync(config);
             }
             return config;
         }

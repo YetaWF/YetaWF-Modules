@@ -184,7 +184,7 @@ namespace YetaWF.Modules.Identity.DataProvider {
                     return roles;
             }
 
-            lock (_lockObject) { // lock this so we only do this once
+            lock (_lockObject) { // lock this to build cached roles list
                 // See if we already have it as a permanent object
                 if (!force) {
                     if (PermanentManager.TryGetObject<List<RoleDefinition>>(out roles))

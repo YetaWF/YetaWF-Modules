@@ -78,8 +78,6 @@ namespace YetaWF.Modules.Identity.DataProvider {
 
         static UserLoginInfoDataProvider() { }
 
-        private static object _lockObject = new object();
-
         // IMPLEMENTATION
         // IMPLEMENTATION
         // IMPLEMENTATION

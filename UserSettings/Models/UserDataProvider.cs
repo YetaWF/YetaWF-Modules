@@ -70,7 +70,7 @@ namespace YetaWF.Modules.UserSettings.DataProvider {
         // STARTUP
         // STARTUP
 
-        public Task InitializeApplicationStartupAsync() {
+        public Task InitializeApplicationStartupAsync(bool firstNode) {
             YetaWF.Core.Localize.UserSettings.UserSettingsAccess = (IUserSettings)this;
             return Task.CompletedTask;
         }
