@@ -1,6 +1,7 @@
 ﻿/* Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/BootstrapCarousel#License */
 
 using System;
+using System.Threading.Tasks;
 using YetaWF.Core.IO;
 using YetaWF.Core.Localize;
 using YetaWF.Core.Models.Attributes;
@@ -44,8 +45,9 @@ namespace YetaWF.Modules.BootstrapCarousel.Modules {
         [Copy] // not shown in property page, but copy during module settings edit
         public CarouselInfo SlideShow { get; set; }
 
-        public override void ModuleSaving() {
+        public override Task ModuleSavingAsync() {
             SlideShow.Saving("SlideShow", ModuleGuid); // update internal information (images)
+            return Task.CompletedTask;
         }
 
         public ModuleAction GetAction_Display(string url) {

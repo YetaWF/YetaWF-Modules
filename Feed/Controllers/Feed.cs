@@ -4,6 +4,7 @@ using System;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.ServiceModel.Syndication;
+using System.Threading.Tasks;
 using System.Xml;
 using YetaWF.Core.Controllers;
 using YetaWF.Core.IO;
@@ -48,11 +49,10 @@ namespace YetaWF.Modules.Feed.Controllers {
         }
 
         [AllowGet]
-        public ActionResult Feed() {
-
-            CachedObject cache = new CachedObject();
+        public async Task<ActionResult> Feed() {
             DisplayModel model;
-            if (!cache.GetObjectFromCache<DisplayModel>(Module.CacheKey, out model) || model.CacheExpires < DateTime.UtcNow) {
+            GetObjectInfo<DisplayModel> cacheInfo = await Caching.LocalCacheProvider.GetAsync<DisplayModel>(Module.CacheKey);
+            if (!cacheInfo.Success || cacheInfo.Data.CacheExpires < DateTime.UtcNow) {
                 model = new DisplayModel();
                 string url = Module.FeedUrl;
                 XmlReader reader = XmlReader.Create(url);
@@ -66,7 +66,7 @@ namespace YetaWF.Modules.Feed.Controllers {
                     string desc = null;
                     if (string.IsNullOrWhiteSpace(desc))
                         if (item.Summary != null) desc = item.Summary.Text;
-                    if (string.IsNullOrWhiteSpace(desc)) { 
+                    if (string.IsNullOrWhiteSpace(desc)) {
                         if (item.Content != null) {
                             TextSyndicationContent tsc = item.Content as TextSyndicationContent;
                             if (tsc != null)
@@ -94,7 +94,9 @@ namespace YetaWF.Modules.Feed.Controllers {
                 model.Entries = new SerializableList<Entry>((from e in model.Entries orderby e.PublishDate descending select e).Take(Module.NumEntries));
                 model.CacheExpires = DateTime.UtcNow.AddMinutes(5);// only retrieve news feed every 5 minutes
 
-                cache.AddObjectToCache(Module.CacheKey, model);
+                await Caching.LocalCacheProvider.AddAsync(Module.CacheKey, model);
+            } else {
+                model = cacheInfo.Data;
             }
             return View(model);
         }

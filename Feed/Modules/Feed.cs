@@ -1,6 +1,7 @@
 ﻿/* Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Feed#License */
 
 using System;
+using System.Threading.Tasks;
 using YetaWF.Core;
 using YetaWF.Core.IO;
 using YetaWF.Core.Localize;
@@ -71,15 +72,14 @@ namespace YetaWF.Modules.Feed.Modules {
                 SaveReturnUrl = true,
             };
         }
-        public override void ModuleSaving() {
-            RemoveCachedInfo();// whenever the module is saved, we remove the cached information
+        public override Task ModuleSavingAsync() {
+            return RemoveCachedInfoAsync();// whenever the module is saved, we remove the cached information
         }
-        public override void ModuleRemoving() {
-            RemoveCachedInfo();// whenever the module is removed, we remove the cached information
+        public override Task ModuleRemovingAsync() {
+            return RemoveCachedInfoAsync();// whenever the module is removed, we remove the cached information
         }
-        private void RemoveCachedInfo() {
-            CachedObject cache = new CachedObject();
-            cache.RemoveFromCache(CacheKey);
+        private async Task RemoveCachedInfoAsync() {
+            await Caching.LocalCacheProvider.RemoveAsync(CacheKey);
         }
     }
 }
