@@ -1,23 +1,14 @@
 using System.Threading.Tasks;
 using YetaWF.Core.DataProvider;
 using YetaWF.Core.IO;
-using YetaWF.Core.Support;
 using YetaWF.Core.Support.Serializers;
 
 namespace YetaWF.Modules.Caching.DataProvider {
 
-    public class LocalCacheObjectDataProvider : DataProviderImpl, ICacheObject, IInitializeApplicationStartup {
-
-        // Startup
-
-        public Task InitializeApplicationStartupAsync(bool firstNode) {
-            YetaWF.Core.IO.Caching.LocalCacheProvider = this;
-            return Task.CompletedTask;
-        }
+    public class LocalCacheObjectDataProvider : DataProviderImpl, ICacheObject {
 
         // Implementation
 
-        public LocalCacheObjectDataProvider(int siteIdentity) : base(0) { }
         public LocalCacheObjectDataProvider() : base(0) { }
 
         public Task AddAsync<TYPE>(string key, TYPE data) {
@@ -72,7 +63,7 @@ namespace YetaWF.Modules.Caching.DataProvider {
                 return Task.FromResult(new GetObjectInfo<TYPE>());
         }
 
-        public Task RemoveAsync(string key) {
+        public Task RemoveAsync<TYPE>(string key) {
 #if MVC6
             YetaWFManager.MemoryCache.Remove(cacheKey);
 #else

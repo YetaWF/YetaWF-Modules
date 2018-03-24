@@ -34,6 +34,11 @@ namespace YetaWF.Modules.Dashboard.Controllers {
             [UIHint("String"), ReadOnly]
             public string BlueGreenDeploy { get; set; }
 
+            [Caption("WebFarm/WebGarden Enabled"), Description("Defines whether webfarm/webgarden support is enabled using shared caching")]
+            [UIHint("Boolean"), ReadOnly]
+            public bool MultiInstance { get; set; }
+
+
             [Caption("Last Restart"), Description("The date and time the site was last restarted")]
             [UIHint("DateTime"), ReadOnly]
             public DateTime LastRestart { get; set; }
@@ -52,6 +57,7 @@ namespace YetaWF.Modules.Dashboard.Controllers {
         public ActionResult Status() {
             DisplayModel model = new DisplayModel {
                 LastRestart = YetaWFManager.SiteStart,
+                MultiInstance = YetaWF.Core.IO.Caching.MultiInstance,
             };
             Package corePackage = Package.GetPackageFromPackageName("YetaWF.Core");
             if (corePackage != null)

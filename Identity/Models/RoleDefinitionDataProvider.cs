@@ -94,6 +94,7 @@ namespace YetaWF.Modules.Identity.DataProvider {
             return (from RoleDefinition r in roles where r.RoleId == roleId select r).FirstOrDefault();
         }
         public async Task<bool> AddItemAsync(RoleDefinition data) {
+            if (YetaWF.Core.IO.Caching.MultiInstance) throw new InternalError("Adding new models is not possible when distributed caching is enabled");
             if (data.RoleId == RoleDefinitionDataProvider.SuperUserId || data.Name == Globals.Role_Superuser)
                 throw new InternalError("Can't add built-in superuser role");
             if (!await DataProvider.AddAsync(data))
@@ -109,6 +110,7 @@ namespace YetaWF.Modules.Identity.DataProvider {
                 throw new InternalError("Can't update built-in superuser role");
             if (originalRole != data.Name && IsPredefinedRole(originalRole))
                 throw new Error(this.__ResStr("cantUpdateUser", "The {0} role can't be updated", originalRole));
+            if (YetaWF.Core.IO.Caching.MultiInstance) throw new InternalError("Changing roles is not possible when distributed caching is enabled");
             UpdateStatusEnum status = await DataProvider.UpdateAsync(originalRole, data.Name, data);
             if (status == UpdateStatusEnum.OK)
                 GetAllUserRoles(true);
@@ -119,6 +121,7 @@ namespace YetaWF.Modules.Identity.DataProvider {
                 throw new InternalError("Can't remove built-in superuser role");
             if (IsPredefinedRole(role))
                 throw new Error(this.__ResStr("cantRemoveUser", "The {0} role can't be removed", role));
+            if (YetaWF.Core.IO.Caching.MultiInstance) throw new InternalError("Removing roles is not possible when distributed caching is enabled");
             if (!await DataProvider.RemoveAsync(role))
                 return false;
             GetAllUserRoles(true);
@@ -135,6 +138,7 @@ namespace YetaWF.Modules.Identity.DataProvider {
             return list;
         }
         public async Task<int> RemoveItemsAsync(List<DataProviderFilterInfo> filters) {
+            if (YetaWF.Core.IO.Caching.MultiInstance) throw new InternalError("Removing roles is not possible when distributed caching is enabled");
             int count = await DataProvider.RemoveRecordsAsync(filters);
             GetAllUserRoles(true);
             return count;
@@ -215,6 +219,7 @@ namespace YetaWF.Modules.Identity.DataProvider {
             return new RoleDefinition() { RoleId = AnonymousIdentity, Name = Globals.Role_Anonymous, Description = this.__ResStr("anonymousRole", "The {0} role describes every user that is not logged in (i.e., not an authenticated user)", Globals.Role_Anonymous) };
         }
         public async Task AddAdministratorRoleAsync() {
+            if (YetaWF.Core.IO.Caching.MultiInstance) throw new InternalError("Adding roles is not possible when distributed caching is enabled");
             await DataProvider.AddAsync(
                 new RoleDefinition() {
                     Name = Globals.Role_Administrator,
@@ -223,6 +228,7 @@ namespace YetaWF.Modules.Identity.DataProvider {
             );
         }
         public async Task AddEditorRoleAsync() {
+            if (YetaWF.Core.IO.Caching.MultiInstance) throw new InternalError("Adding roles is not possible when distributed caching is enabled");
             await DataProvider.AddAsync(
                 new RoleDefinition() {
                     Name = Globals.Role_Editor,
@@ -236,12 +242,14 @@ namespace YetaWF.Modules.Identity.DataProvider {
         // IINSTALLABLEMODEL
 
         public new async Task<bool> InstallModelAsync(List<string> errorList) {
+            if (YetaWF.Core.IO.Caching.MultiInstance) throw new InternalError("Installing new models is not possible when distributed caching is enabled");
             if (!await DataProvider.InstallModelAsync(errorList))
                 return false;
             await AddSiteDataAsync();
             return true;
         }
         public new async Task AddSiteDataAsync() {
+            if (YetaWF.Core.IO.Caching.MultiInstance) throw new InternalError("Adding site data is not possible when distributed caching is enabled");
             await AddAdministratorRoleAsync();
             await AddEditorRoleAsync();
         }

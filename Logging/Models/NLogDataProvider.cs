@@ -201,12 +201,14 @@ namespace YetaWF.Modules.Logging.DataProvider.NLogProvider {
         }
         public async Task<bool> InstallModelAsync(List<string> errorList) {
             if (YetaWF.Core.Log.Logging.DefinedLoggerType != typeof(LogRecordDataProvider)) return true;
+            if (YetaWF.Core.IO.Caching.MultiInstance) throw new InternalError("Installing new models is not possible when distributed caching is enabled");
             bool success = await DataProvider.InstallModelAsync(errorList);
             if (success)
                 await YetaWF.Core.Log.Logging.SetupLoggingAsync();
             return success;
         }
         public async Task<bool> UninstallModelAsync(List<string> errorList) {
+            if (YetaWF.Core.IO.Caching.MultiInstance) throw new InternalError("Uninstalling models is not possible when distributed caching is enabled");
             if (YetaWF.Core.Log.Logging.DefinedLoggerType != typeof(LogRecordDataProvider)) return true;
             YetaWF.Core.Log.Logging.TerminateLogging();
             return await DataProvider.UninstallModelAsync(errorList);

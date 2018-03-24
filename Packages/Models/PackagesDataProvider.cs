@@ -62,6 +62,8 @@ namespace YetaWF.Modules.Packages.DataProvider {
         /// </remarks>
         public async Task InitAllAsync(QueryHelper qs) {
 
+            if (YetaWF.Core.IO.Caching.MultiInstance) throw new InternalError("Installing packages is not possible when distributed caching is enabled");
+
             InitialSiteLogging log = new InitialSiteLogging(LogFile, _lockObject);
             Logging.RegisterLogging(log);
 
@@ -71,12 +73,12 @@ namespace YetaWF.Modules.Packages.DataProvider {
             await InstallPackagesAsync();
             if (qs["From"] == "Data") {
                 await BuildSiteUsingDataAsync(false);
-                PermanentManager.ClearAll();// clear any cached objects
                 await BuildSiteUsingTemplateAsync(Path.Combine(DataFolderName, "Add Site.txt"));
             } else { //if (qs["From"] == "Template") {
                 await BuildSiteUsingTemplateAsync("InitialSite.txt");
                 //BuildSiteUsingTemplate("Custom Site (Initial Site).txt");
             }
+            PermanentManager.ClearAll();// clear any cached objects
             Package.SavePackageMap();
 
             SiteDefinition.RemoveInitialInstall();
@@ -149,6 +151,9 @@ namespace YetaWF.Modules.Packages.DataProvider {
         /// </summary>
         /// <param name="template"></param>
         public async Task InitNewAsync(QueryHelper qs) {
+
+            if (YetaWF.Core.IO.Caching.MultiInstance) throw new InternalError("Building a new site is not possible when distributed caching is enabled");
+
             if (qs["From"] == "Data") {
                 await BuildSiteUsingDataAsync(false);
                 await BuildSiteUsingTemplateAsync(Path.Combine(DataFolderName, "Add Site.txt"));
@@ -254,6 +259,9 @@ namespace YetaWF.Modules.Packages.DataProvider {
         /// Installs all models for the specified package
         /// </summary>
         public async Task InitPackageAsync(QueryHelper qs) {
+            
+            if (YetaWF.Core.IO.Caching.MultiInstance) throw new InternalError("Installing new packagesis not possible when distributed caching is enabled");
+
             string packageName = qs["Package"];
             if (string.IsNullOrWhiteSpace(packageName))
                 throw new InternalError("Package name missing");
@@ -285,6 +293,7 @@ namespace YetaWF.Modules.Packages.DataProvider {
         /// Apply a template (creates pages)
         /// </summary>
         public async Task ProcessTemplateAsync(QueryHelper qs) {
+            if (YetaWF.Core.IO.Caching.MultiInstance) throw new InternalError("Processing site templates is not possible when distributed caching is enabled");
             string templateName = qs["Template"];
             if (string.IsNullOrWhiteSpace(templateName))
                 throw new InternalError("Template name missing");
@@ -295,6 +304,7 @@ namespace YetaWF.Modules.Packages.DataProvider {
         /// Remove a template (removes pages)
         /// </summary>
         public async Task UndoTemplateAsync(QueryHelper qs) {
+            if (YetaWF.Core.IO.Caching.MultiInstance) throw new InternalError("Processing site templates is not possible when distributed caching is enabled");
             string templateName = qs["Template"];
             if (string.IsNullOrWhiteSpace(templateName))
                 throw new InternalError("Template name missing");

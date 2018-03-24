@@ -8,7 +8,6 @@ using YetaWF.Core.Localize;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Modules;
 using YetaWF.Core.Serializers;
-using YetaWF.Core.Support;
 using YetaWF.Core.Views.Shared;
 using YetaWF.DataProvider;
 #if MVC6
@@ -79,7 +78,7 @@ namespace YetaWF.Modules.Feed.Modules {
             return RemoveCachedInfoAsync();// whenever the module is removed, we remove the cached information
         }
         private async Task RemoveCachedInfoAsync() {
-            await Caching.LocalCacheProvider.RemoveAsync(CacheKey);
+            await Caching.LocalCacheProvider.RemoveAsync<Controllers.FeedModuleController.DisplayModel>(CacheKey);
         }
     }
 }

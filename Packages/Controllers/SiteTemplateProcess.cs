@@ -6,6 +6,7 @@ using System.Linq;
 using YetaWF.Core.Controllers;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Views.Shared;
+using YetaWF.Core.Support;
 using YetaWF.Modules.Packages.DataProvider;
 using System.Threading.Tasks;
 #if MVC6
@@ -54,6 +55,8 @@ namespace YetaWF.Modules.Packages.Controllers {
             model.UpdateData();
             if (!ModelState.IsValid)
                 return PartialView(model);
+
+            if (YetaWF.Core.IO.Caching.MultiInstance) throw new InternalError("Site template processing is not possible when distributed caching is enabled");
 
             PackagesDataProvider packagesDP = new PackagesDataProvider();
             await packagesDP.BuildSiteUsingTemplateAsync(model.SiteTemplate);

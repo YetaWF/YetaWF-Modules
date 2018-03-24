@@ -96,18 +96,22 @@ namespace YetaWF.Modules.Search.DataProvider {
             return await DataProvider.IsInstalledAsync();
         }
         public new async Task<bool> InstallModelAsync(List<string> errorList) {
+            if (YetaWF.Core.IO.Caching.MultiInstance) throw new InternalError("Installing new models is not possible when distributed caching is enabled");
             if (!SearchDataProvider.IsUsable) return true;
             return await DataProvider.InstallModelAsync(errorList);
         }
         public new async Task<bool> UninstallModelAsync(List<string> errorList) {
+            if (YetaWF.Core.IO.Caching.MultiInstance) throw new InternalError("Uninstalling models is not possible when distributed caching is enabled");
             if (!SearchDataProvider.IsUsable) return true;
             return await DataProvider.UninstallModelAsync(errorList);
         }
         public new async Task AddSiteDataAsync() {
+            if (YetaWF.Core.IO.Caching.MultiInstance) throw new InternalError("Adding site data is not possible when distributed caching is enabled");
             if (!SearchDataProvider.IsUsable) return;
             await DataProvider.AddSiteDataAsync();
         }
         public new async Task RemoveSiteDataAsync() {
+            if (YetaWF.Core.IO.Caching.MultiInstance) throw new InternalError("Removing site data is not possible when distributed caching is enabled");
             if (!SearchDataProvider.IsUsable) return;
             await DataProvider.RemoveSiteDataAsync();
         }

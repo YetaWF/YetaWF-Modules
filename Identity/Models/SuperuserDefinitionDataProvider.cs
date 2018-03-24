@@ -123,6 +123,7 @@ namespace YetaWF.Modules.Identity.DataProvider {
         // IINSTALLABLEMODEL
 
         public new async Task<bool> InstallModelAsync(List<string> errorList) {
+            if (YetaWF.Core.IO.Caching.MultiInstance) throw new InternalError("Installing new models is not possible when distributed caching is enabled");
             if (!await DataProvider.InstallModelAsync(errorList))
                 return false;
             // add the one and only superuser

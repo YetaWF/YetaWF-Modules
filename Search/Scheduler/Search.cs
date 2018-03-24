@@ -93,7 +93,7 @@ namespace YetaWF.Modules.Search.Scheduler {
                 }
 
                 // Search all designed pages and extract keywords
-                List<Guid> pages = PageDefinition.GetDesignedGuids();
+                List<Guid> pages = await PageDefinition.GetDesignedGuidsAsync();
                 foreach (Guid pageGuid in pages) {
                     PageDefinition page = await PageDefinition.LoadAsync(pageGuid);
                     if (page != null) {
