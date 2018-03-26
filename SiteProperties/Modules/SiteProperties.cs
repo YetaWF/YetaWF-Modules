@@ -66,8 +66,7 @@ namespace YetaWF.Modules.SiteProperties.Modules {
             }
         }
         public async Task InitCompleteAsync() {
-            SiteDefinition.SaveResult res = await Manager.CurrentSite.SaveAsync();
-            if (res.RestartRequired) throw new InternalError("Adding a new site implementation error - restart required");
+            await Manager.CurrentSite.SaveAsync();
         }
     }
 }

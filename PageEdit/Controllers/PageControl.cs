@@ -359,17 +359,24 @@ namespace YetaWF.Modules.PageEdit.Controllers {
             if (!ModelState.IsValid)
                 return PartialView(model);
 
-            SiteDefinition site = Manager.CurrentSite;
+            SiteDefinition origSite = new SiteDefinition();
+            ObjectSupport.CopyData(Manager.CurrentSite, origSite);// make a copy of original site
+            SiteDefinition site = Manager.CurrentSite;// update new settings
             site.BootstrapSkin = model.BootstrapSkin;
             site.jQueryUISkin = model.jQueryUISkin;
             site.KendoUISkin = model.KendoUISkin;
-            SiteDefinition.SaveResult res = await site.SaveAsync();
-            if (res.RestartRequired) {
-                Manager.RestartSite();
-                return FormProcessed(model, this.__ResStr("okSavedRestart", "Site settings updated - Site is now restarting"),
-                    NextPage: Manager.CurrentSite.HomePageUrl, ForceRedirect: true);
-            } else
-                return FormProcessed(model, this.__ResStr("okSaved", "Site settings updated"), ForceRedirect: true);
+            ObjectSupport.ModelDisposition modelDisp = ObjectSupport.EvaluateModelChanges(origSite, site);
+            switch (modelDisp) {
+                default:
+                case ObjectSupport.ModelDisposition.None:
+                    return FormProcessed(model, this.__ResStr("okSaved", "Site settings updated"));
+                case ObjectSupport.ModelDisposition.PageReload:
+                    await site.SaveAsync();
+                    return FormProcessed(model, this.__ResStr("okSaved", "Site settings updated"), OnClose: OnCloseEnum.ReloadPage, OnPopupClose: OnPopupCloseEnum.ReloadParentPage);
+                case ObjectSupport.ModelDisposition.SiteRestart:
+                    await site.SaveAsync();
+                    return FormProcessed(model, this.__ResStr("okSavedRestart", "Site settings updated - These settings won't take effect until the site is restarted"));
+            }
         }
 
         [AllowPost]

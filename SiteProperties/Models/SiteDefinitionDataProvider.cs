@@ -3,6 +3,7 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using YetaWF.Core.Audit;
 using YetaWF.Core.DataProvider;
 using YetaWF.Core.IO;
 using YetaWF.Core.Localize;
@@ -94,10 +95,6 @@ namespace YetaWF.Modules.SiteProperties.Models {
                 if (site == null)
                     return null;
                 site.OriginalSiteDomain = site.SiteDomain;
-                site.OriginalUseCDN = site.UseCDN;
-                site.OriginalCDNUrl = site.CDNUrl;
-                site.OriginalCDNUrlSecure = site.CDNUrlSecure;
-                site.OriginalStaticDomain = site.StaticDomain;
                 AddLockedStatus(site);
                 AddCache(site);
                 return site;
@@ -123,8 +120,11 @@ namespace YetaWF.Modules.SiteProperties.Models {
         /// <summary>
         /// Save the site definition for the current site
         /// </summary>
-        internal async Task<bool> SaveSiteDefinitionAsync(SiteDefinition site) {
-            bool restartRequired = false;
+        internal async Task SaveSiteDefinitionAsync(SiteDefinition site) {
+            //$$$need static lock
+
+            SiteDefinition origSite = YetaWF.Core.Audit.Auditing.Active ? await LoadSiteDefinitionAsync(site.OriginalSiteDomain) : null;
+
             RemoveCache(site);// next load will add it again
             AddLockedStatus(site);
             CleanData(site);
@@ -142,15 +142,14 @@ namespace YetaWF.Modules.SiteProperties.Models {
             if (string.Compare(YetaWFManager.DefaultSiteName, site.OriginalSiteDomain, true) == 0 && site.SiteDomain != site.OriginalSiteDomain) {
                 WebConfigHelper.SetValue<string>(YetaWF.Core.Controllers.AreaRegistration.CurrentPackage.AreaName, "DEFAULTSITE", site.SiteDomain);
                 WebConfigHelper.Save();
-                restartRequired = true;
             }
-            // restart required for uihint changes because uihints are cached or CDN changes
-            if (!restartRequired) {
-                if (site.OriginalUseCDN != site.UseCDN || site.OriginalCDNUrl != site.CDNUrl || site.OriginalCDNUrlSecure != site.CDNUrlSecure ||
-                        site.OriginalStaticDomain != site.StaticDomain)
-                    restartRequired = true;
-            }
-            return restartRequired;
+
+            await Auditing.AddAuditAsync($"{nameof(SiteDefinitionDataProvider)}.{nameof(SaveSiteDefinitionAsync)}", site.OriginalSiteDomain, Guid.Empty,
+                "Save Site Settings",
+                DataBefore: origSite,
+                DataAfter: site,
+                ExpensiveMultiInstance: true
+            );
         }
 
         private void AddLockedStatus(SiteDefinition siteDef) {
@@ -183,6 +182,7 @@ namespace YetaWF.Modules.SiteProperties.Models {
 
         internal async Task RemoveSiteDefinitionAsync() {
             SiteDefinition site = Manager.CurrentSite;
+
             if (site.IsDefaultSite)
                 throw new Error(this.__ResStr("cantDeleteDefault", "The default site of a YetaWF instance cannot be removed"));
 
@@ -196,7 +196,13 @@ namespace YetaWF.Modules.SiteProperties.Models {
             RemoveCache(site);
             await Package.RemoveSiteDataAsync(Manager.SiteFolder);
             await DataProvider.RemoveAsync(site.SiteDomain);// remove domain
-            Manager.RestartSite();// everything is now invalid anyway
+
+            await Auditing.AddAuditAsync($"{nameof(SiteDefinitionDataProvider)}.{nameof(SaveSiteDefinitionAsync)}", site.SiteDomain, Guid.Empty,
+                "Remove Site",
+                DataBefore: site,
+                DataAfter: null,
+                ExpensiveMultiInstance: true
+            );
         }
 
         /// <summary>

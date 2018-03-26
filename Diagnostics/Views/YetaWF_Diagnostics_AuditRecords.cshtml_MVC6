@@ -1,0 +1,9 @@
+@inherits YetaWF.Core.Views.RazorView<YetaWF.Modules.Diagnostics.Modules.AuditRecordsModule, YetaWF.Modules.Diagnostics.Controllers.AuditRecordsModuleController.BrowseModel>
+
+@* This view is normally not used. This module defines the DefaultViewName property, set to StandardViews.Browse. If you don't customize the view, it can be removed. *@
+@* You can customize and use this view, if you set the DefaultViewName property to null.                                                                              *@
+
+@using (await CreateFormAsync("AuditRecords_Partial")) {
+    @PartialForm()
+    @Html.DisplayFor(m => Model.GridDef)
+}

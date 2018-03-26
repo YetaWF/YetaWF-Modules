@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using YetaWF.Core;
+using YetaWF.Core.Audit;
 using YetaWF.Core.DataProvider;
 using YetaWF.Core.Identity;
 using YetaWF.Core.IO;
@@ -131,9 +132,15 @@ namespace YetaWF.Modules.Pages.DataProvider {
                         throw new Error(this.__ResStr("pageGuidErr", "A page with Guid {0} already exists.", desPage.PageGuid));
                     await AddDesignedPageAsync(designedPagesByUrl, page.Url.ToLower(), desPage);
                     await lockObject.UnlockAsync();
-                    return page;
                 }
             }
+            await Auditing.AddAuditAsync($"{nameof(PageDefinitionDataProvider)}.{nameof(CreatePageDefinitionAsync)}", page.Url, page.PageGuid,
+                "Create Page",
+                DataBefore: null,
+                DataAfter: page,
+                ExpensiveMultiInstance: true
+            );
+            return page;
         }
 
         public async Task<PageDefinition> LoadPageDefinitionAsync(Guid key) {
@@ -165,6 +172,8 @@ namespace YetaWF.Modules.Pages.DataProvider {
             if (page.Temporary)
                 throw new InternalError("Page {0} is a temporary page and can't be saved", page.PageGuid);
 
+            PageDefinition oldPage = null;
+
             using (await _lockObject.LockAsync()) {
                 using (IStaticLockObject lockObject = await LockAsync()) {
 
@@ -172,7 +181,7 @@ namespace YetaWF.Modules.Pages.DataProvider {
                     CleanupUsersAndRoles(page);
                     SaveImages(page.PageGuid, page);
 
-                    PageDefinition oldPage = await LoadPageDefinitionAsync(page.PageGuid);
+                    oldPage = await LoadPageDefinitionAsync(page.PageGuid);
                     if (oldPage == null)
                         throw new Error(this.__ResStr("pageDeleted", "Page '{0}' has been deleted and can no longer be updated."), page.Url);
 
@@ -202,6 +211,12 @@ namespace YetaWF.Modules.Pages.DataProvider {
                     await lockObject.UnlockAsync();
                 }
             }
+            await Auditing.AddAuditAsync($"{nameof(PageDefinitionDataProvider)}.{nameof(SavePageDefinitionAsync)}", oldPage.Url, oldPage.PageGuid,
+                "Save Page",
+                DataBefore: oldPage,
+                DataAfter: page,
+                ExpensiveMultiInstance: true
+            );
         }
         private void CleanupUsersAndRoles(PageDefinition page) {
             // remove superuser from allowed roles as he/she's in there by default
@@ -214,9 +229,10 @@ namespace YetaWF.Modules.Pages.DataProvider {
             page.AllowedUsers = new SerializableList<PageDefinition.AllowedUser>((from u in page.AllowedUsers where u.UserId != superuserId && !u.IsEmpty() select u).ToList());
         }
         public async Task<bool> RemovePageDefinitionAsync(Guid pageGuid) {
+            PageDefinition page;
             using (await _lockObject.LockAsync()) {
                 using (IStaticLockObject lockObject = await LockAsync()) {
-                    PageDefinition page = await LoadPageDefinitionAsync(pageGuid);
+                    page = await LoadPageDefinitionAsync(pageGuid);
                     if (page == null)
                         return false;
                     Manager.StaticPageManager.RemovePage(page.Url);
@@ -224,9 +240,15 @@ namespace YetaWF.Modules.Pages.DataProvider {
                     DesignedPagesDictionaryByUrl designedPagesUrl = await GetDesignedPagesAsync();
                     await RemoveDesignedPageAsync(designedPagesUrl, page.Url);
                     await lockObject.UnlockAsync();
-                    return true;
                 }
             }
+            await Auditing.AddAuditAsync($"{nameof(PageDefinitionDataProvider)}.{nameof(RemovePageDefinitionAsync)}", page.Url, page.PageGuid,
+                "Remove Page",
+                DataBefore: page,
+                DataAfter: null,
+                ExpensiveMultiInstance: true
+            );
+            return true;
         }
 
         public async Task<DataProviderGetRecords<PageDefinition>> GetItemsAsync(int skip, int take, List<DataProviderSortInfo> sort, List<DataProviderFilterInfo> filters) {

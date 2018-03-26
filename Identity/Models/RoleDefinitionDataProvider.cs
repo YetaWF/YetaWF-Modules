@@ -12,6 +12,7 @@ using YetaWF.Core.Localize;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Packages;
 using YetaWF.Core.Support;
+using YetaWF.Core.Audit;
 #if MVC6
 #else
 using Microsoft.AspNet.Identity;
@@ -100,6 +101,12 @@ namespace YetaWF.Modules.Identity.DataProvider {
             if (!await DataProvider.AddAsync(data))
                 return false;
             GetAllUserRoles(true);
+            await Auditing.AddAuditAsync($"{nameof(RoleDefinitionDataProvider)}.{nameof(AddItemAsync)}", data.Name, Guid.Empty,
+                "Add Role",
+                DataBefore: null,
+                DataAfter: data,
+                ExpensiveMultiInstance: true
+            );
             return true;
         }
         public Task<UpdateStatusEnum> UpdateItemAsync(RoleDefinition data) {
@@ -111,9 +118,16 @@ namespace YetaWF.Modules.Identity.DataProvider {
             if (originalRole != data.Name && IsPredefinedRole(originalRole))
                 throw new Error(this.__ResStr("cantUpdateUser", "The {0} role can't be updated", originalRole));
             if (YetaWF.Core.IO.Caching.MultiInstance) throw new InternalError("Changing roles is not possible when distributed caching is enabled");
+            RoleDefinition origRole = Auditing.Active ? await GetItemAsync(originalRole) : null;
             UpdateStatusEnum status = await DataProvider.UpdateAsync(originalRole, data.Name, data);
             if (status == UpdateStatusEnum.OK)
                 GetAllUserRoles(true);
+            await Auditing.AddAuditAsync($"{nameof(RoleDefinitionDataProvider)}.{nameof(UpdateItemAsync)}", originalRole, Guid.Empty,
+                "Update Role",
+                DataBefore: origRole,
+                DataAfter: data,
+                ExpensiveMultiInstance: true
+            );
             return status;
         }
         public async Task<bool> RemoveItemAsync(string role) {
@@ -122,9 +136,16 @@ namespace YetaWF.Modules.Identity.DataProvider {
             if (IsPredefinedRole(role))
                 throw new Error(this.__ResStr("cantRemoveUser", "The {0} role can't be removed", role));
             if (YetaWF.Core.IO.Caching.MultiInstance) throw new InternalError("Removing roles is not possible when distributed caching is enabled");
+            RoleDefinition origRole = Auditing.Active ? await GetItemAsync(role) : null;
             if (!await DataProvider.RemoveAsync(role))
                 return false;
             GetAllUserRoles(true);
+            await Auditing.AddAuditAsync($"{nameof(RoleDefinitionDataProvider)}.{nameof(RemoveItemAsync)}", role, Guid.Empty,
+                "Remove Role",
+                DataBefore: origRole,
+                DataAfter: null,
+                ExpensiveMultiInstance: true
+            );
             return true;
         }
         public async Task<DataProviderGetRecords<RoleDefinition>> GetItemsAsync() {

@@ -14,6 +14,8 @@ using YetaWF.Core.Support;
 using YetaWF.Modules.Identity.Modules;
 using YetaWF.Core.Identity;
 using YetaWF.Modules.Identity.Controllers;
+using YetaWF.Core.Audit;
+using System;
 #if MVC6
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Authentication;
@@ -150,12 +152,25 @@ namespace YetaWF.Modules.Identity.DataProvider {
             data.Id = KEY;
             if (!await DataProvider.AddAsync(data))
                 throw new InternalError("Unexpected error adding settings");
+            await Auditing.AddAuditAsync($"{nameof(LoginConfigDataProvider)}.{nameof(AddConfigAsync)}", "Config", Guid.Empty,
+                "Add Login Config",
+                DataBefore: null,
+                DataAfter: data,
+                ExpensiveMultiInstance: true
+            );
         }
         public async Task UpdateConfigAsync(LoginConfigData data) {
+            LoginConfigData origConfig = Auditing.Active ? await GetItemAsync() : null;
             data.Id = KEY;
             UpdateStatusEnum status = await DataProvider.UpdateAsync(data.Id, data.Id, data);
             if (status != UpdateStatusEnum.OK)
                 throw new InternalError("Unexpected error saving configuration {0}", status);
+            await Auditing.AddAuditAsync($"{nameof(LoginConfigDataProvider)}.{nameof(UpdateConfigAsync)}", "Config", Guid.Empty,
+                "Update Login Config",
+                DataBefore: origConfig,
+                DataAfter: data,
+                ExpensiveMultiInstance: true
+            );
         }
 
         public class LoginProviderDescription {

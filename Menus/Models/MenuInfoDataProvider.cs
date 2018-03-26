@@ -2,6 +2,7 @@
 
 using System;
 using System.Threading.Tasks;
+using YetaWF.Core.Audit;
 using YetaWF.Core.DataProvider;
 using YetaWF.Core.DataProvider.Attributes;
 using YetaWF.Core.IO;
@@ -60,13 +61,36 @@ namespace YetaWF.Modules.Menus.DataProvider {
             });
         }
         protected async Task<bool> AddItemAsync(MenuInfo data) {
-            return await DataProvider.AddAsync(data);
+            bool result = await DataProvider.AddAsync(data);
+            await Auditing.AddAuditAsync($"{nameof(MenuInfoDataProvider)}.{nameof(AddItemAsync)}", "Menu", data.ModuleGuid,
+                "Add Menu",
+                DataBefore: null,
+                DataAfter: data,
+                ExpensiveMultiInstance: true
+            );
+            return result;
         }
         protected async Task<UpdateStatusEnum> UpdateItemAsync(MenuInfo data) {
-            return await DataProvider.UpdateAsync(data.ModuleGuid, data.ModuleGuid, data);
+            MenuInfo origMenu = Auditing.Active ? await GetItemAsync(data.ModuleGuid) : null;
+            UpdateStatusEnum result = await DataProvider.UpdateAsync(data.ModuleGuid, data.ModuleGuid, data);
+            await Auditing.AddAuditAsync($"{nameof(MenuInfoDataProvider)}.{nameof(UpdateItemAsync)}", "Menu", data.ModuleGuid,
+                "Update Menu",
+                DataBefore: origMenu,
+                DataAfter: data,
+                ExpensiveMultiInstance: true
+            );
+            return result;
         }
         public async Task<bool> RemoveItemAsync(Guid moduleGuid) {
-            return await DataProvider.RemoveAsync(moduleGuid);
+            MenuInfo origMenu = Auditing.Active ? await GetItemAsync(moduleGuid) : null;
+            bool result = await DataProvider.RemoveAsync(moduleGuid);
+            await Auditing.AddAuditAsync($"{nameof(MenuInfoDataProvider)}.{nameof(RemoveItemAsync)}", "Menu", moduleGuid,
+                "Remove Menu",
+                DataBefore: origMenu,
+                DataAfter: null,
+                ExpensiveMultiInstance: true
+            );
+            return result;
         }
     }
 }

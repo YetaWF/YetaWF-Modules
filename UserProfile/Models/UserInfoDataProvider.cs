@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using YetaWF.Core;
+using YetaWF.Core.Audit;
 using YetaWF.Core.DataProvider;
 using YetaWF.Core.DataProvider.Attributes;
 using YetaWF.Core.Identity;
@@ -96,15 +97,35 @@ namespace YetaWF.Modules.UserProfile.DataProvider {
         public async Task<bool> AddItemAsync(UserInfo userInfo) {
             userInfo.Created = DateTime.UtcNow;
             if (string.IsNullOrWhiteSpace(userInfo.Country)) userInfo.Country = Globals.DefaultCountry;
-            return await DataProvider.AddAsync(userInfo);
+            bool result = await DataProvider.AddAsync(userInfo);
+            await Auditing.AddAuditAsync($"{nameof(UserInfoDataProvider)}.{nameof(AddItemAsync)}", userInfo.UserId.ToString(), Guid.Empty,
+                "Add UserInfo",
+                DataBefore: null,
+                DataAfter: userInfo
+            );
+            return result;
         }
         public async Task<UpdateStatusEnum> UpdateItemAsync(UserInfo userInfo) {
+            UserInfo origUserInfo = Auditing.Active ? await GetItemAsync(userInfo.UserId) : null;
             userInfo.Updated = DateTime.UtcNow;
             if (string.IsNullOrWhiteSpace(userInfo.Country)) userInfo.Country = Globals.DefaultCountry;
-            return await DataProvider.UpdateAsync(userInfo.UserId, userInfo.UserId, userInfo);
+            UpdateStatusEnum result = await DataProvider.UpdateAsync(userInfo.UserId, userInfo.UserId, userInfo);
+            await Auditing.AddAuditAsync($"{nameof(UserInfoDataProvider)}.{nameof(UpdateItemAsync)}", userInfo.UserId.ToString(), Guid.Empty,
+                "Update UserInfo",
+                DataBefore: origUserInfo,
+                DataAfter: userInfo
+            );
+            return result;
         }
         public async Task<bool> RemoveItemAsync(int key) {
-            return await DataProvider.RemoveAsync(key);
+            UserInfo origUserInfo = Auditing.Active ? await GetItemAsync(key) : null;
+            bool result = await DataProvider.RemoveAsync(key);
+            await Auditing.AddAuditAsync($"{nameof(UserInfoDataProvider)}.{nameof(RemoveItemAsync)}", key.ToString(), Guid.Empty,
+                "Remove UserInfo",
+                DataBefore: origUserInfo,
+                DataAfter: null
+            );
+            return result;
         }
         public async Task<DataProviderGetRecords<UserInfo>> GetItemsAsync(int skip, int take, List<DataProviderSortInfo> sort, List<DataProviderFilterInfo> filters) {
             DataProviderGetRecords<UserInfo> list = await DataProvider.GetRecordsAsync(skip, take, sort, filters);

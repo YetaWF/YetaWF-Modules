@@ -45,21 +45,25 @@ namespace YetaWF.Modules.SiteProperties.Controllers {
         [ConditionalAntiForgeryToken]
         [ExcludeDemoMode]
         public async Task<ActionResult> SiteProperties_Partial(SitePropertiesModel model) {
-            SiteDefinition site;
+            SiteDefinition origSite;
             if (model.SiteHost == null)
-                site = Manager.CurrentSite;
+                origSite = Manager.CurrentSite;
             else
-                site = await SiteDefinition.LoadSiteDefinitionAsync(model.SiteHost);
+                origSite = await SiteDefinition.LoadSiteDefinitionAsync(model.SiteHost);
             if (!ModelState.IsValid)
                 return PartialView(model);
-            ObjectSupport.CopyDataFromOriginal(site, model.Site);
-            SiteDefinition.SaveResult res = await model.Site.SaveAsync();
-            if (res.RestartRequired) {
-                Manager.RestartSite();
-                return FormProcessed(model, this.__ResStr("okSavedRestart", "Site settings updated - Site is now restarting"),
-                    NextPage: Manager.CurrentSite.HomePageUrl, ForceRedirect: true);
-            } else
-                return FormProcessed(model, this.__ResStr("okSaved", "Site settings updated"));
+            ObjectSupport.CopyDataFromOriginal(origSite, model.Site);
+            await model.Site.SaveAsync();
+            ObjectSupport.ModelDisposition modelDisp = ObjectSupport.EvaluateModelChanges(origSite, model.Site);
+            switch (modelDisp) {
+                default:
+                case ObjectSupport.ModelDisposition.None:
+                    return FormProcessed(model, this.__ResStr("okSaved", "Site settings updated"));
+                case ObjectSupport.ModelDisposition.PageReload:
+                    return FormProcessed(model, this.__ResStr("okSaved", "Site settings updated"), OnClose: OnCloseEnum.ReloadPage, OnPopupClose: OnPopupCloseEnum.ReloadParentPage);
+                case ObjectSupport.ModelDisposition.SiteRestart:
+                    return FormProcessed(model, this.__ResStr("okSavedRestart", "Site settings updated - These settings won't take effect until the site is restarted"));
+            }
         }
     }
 }

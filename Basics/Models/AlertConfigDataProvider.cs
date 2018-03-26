@@ -1,6 +1,8 @@
 ﻿/* Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Basics#License */
 
+using System;
 using System.Threading.Tasks;
+using YetaWF.Core.Audit;
 using YetaWF.Core.DataProvider;
 using YetaWF.Core.DataProvider.Attributes;
 using YetaWF.Core.IO;
@@ -89,12 +91,25 @@ namespace YetaWF.Modules.Basics.DataProvider {
             data.Id = KEY;
             if (!await DataProvider.AddAsync(data))
                 throw new InternalError("Unexpected error adding settings");
+            await Auditing.AddAuditAsync($"{nameof(AlertConfigDataProvider)}.{nameof(AddConfigAsync)}", "Config", Guid.Empty,
+                "Add Alert Config",
+                DataBefore: null,
+                DataAfter: data,
+                ExpensiveMultiInstance: true
+            );
         }
         public async Task UpdateConfigAsync(AlertConfig data) {
+            AlertConfig origConfig = Auditing.Active ? await GetItemAsync() : null;
             data.Id = KEY;
             UpdateStatusEnum status = await DataProvider.UpdateAsync(data.Id, data.Id, data);
             if (status != UpdateStatusEnum.OK)
                 throw new InternalError("Unexpected error saving configuration {0}", status);
+            await Auditing.AddAuditAsync($"{nameof(AlertConfigDataProvider)}.{nameof(UpdateConfigAsync)}", "Config", Guid.Empty,
+                "Update Alert Config",
+                DataBefore: origConfig,
+                DataAfter: data,
+                ExpensiveMultiInstance: true
+            );
         }
     }
 }

@@ -16,6 +16,7 @@ using YetaWF.Core.Serializers;
 using YetaWF.Core.Support;
 using YetaWF.Core.Support.TwoStepAuthorization;
 using YetaWF.Modules.Identity.Models;
+using YetaWF.Core.Audit;
 #if MVC6
 using Microsoft.AspNetCore.Identity;
 #else
@@ -187,7 +188,13 @@ namespace YetaWF.Modules.Identity.DataProvider {
                     return await superDP.AddItemAsync(data);
                 }
             }
-            return await DataProvider.AddAsync(data);
+            bool result = await DataProvider.AddAsync(data);
+            await Auditing.AddAuditAsync($"{nameof(UserDefinitionDataProvider)}.{nameof(AddItemAsync)}", data.UserName, Guid.Empty,
+                "Add User",
+                DataBefore: null,
+                DataAfter: data
+            );
+            return result;
         }
         public async Task<UpdateStatusEnum> UpdateItemAsync(UserDefinition data) {
             CleanupRoles(data);
@@ -210,7 +217,14 @@ namespace YetaWF.Modules.Identity.DataProvider {
                     return await superDP.UpdateItemAsync(data);
                 }
             }
-            return await DataProvider.UpdateAsync(originalName, data.UserName, data);
+            UserDefinition origUser = Auditing.Active ? await GetItemAsync(originalName) : null;
+            UpdateStatusEnum result = await DataProvider.UpdateAsync(originalName, data.UserName, data);
+            await Auditing.AddAuditAsync($"{nameof(UserDefinitionDataProvider)}.{nameof(UpdateItemAsync)}", originalName, Guid.Empty,
+                "Update User",
+                DataBefore: origUser,
+                DataAfter: data
+            );
+            return result;
         }
         public async Task<bool> RemoveItemAsync(string userName) {
             UserDefinition user = await GetItemAsync(userName);
@@ -230,6 +244,11 @@ namespace YetaWF.Modules.Identity.DataProvider {
             }
             // remove any data stored for this user from packages (if it fails, whatevz)
             await User.RemoveDependentPackagesAsync(user.UserId);
+            await Auditing.AddAuditAsync($"{nameof(UserDefinitionDataProvider)}.{nameof(RemoveItemAsync)}", userName, Guid.Empty,
+                "Remove User",
+                DataBefore: user,
+                DataAfter: null
+            );
             return true;
         }
         public async Task<DataProviderGetRecords<UserDefinition>> GetItemsAsync(int skip, int take, List<DataProviderSortInfo> sort, List<DataProviderFilterInfo> filters) {

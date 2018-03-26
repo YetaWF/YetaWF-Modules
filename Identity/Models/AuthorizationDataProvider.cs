@@ -1,8 +1,10 @@
 ﻿/* Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Identity#License */
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using YetaWF.Core.Audit;
 using YetaWF.Core.DataProvider;
 using YetaWF.Core.DataProvider.Attributes;
 using YetaWF.Core.Identity;
@@ -75,6 +77,7 @@ namespace YetaWF.Modules.Identity.DataProvider {
             }
         }
         public async Task<UpdateStatusEnum> UpdateItemAsync(Authorization data) {
+            Authorization origData = Auditing.Active ? await GetItemAsync(data.ResourceName) : null;
             CleanupUsersAndRoles(data);
             if (data.AllowedUsers.Count > Info.MAX_USERS_IN_RESOURCE)
                 throw new Error(this.__ResStr("maxUsers", "Only up to {0} users can be authorized for a resource. Consider creating a role instead, and add all users to that role. There is no limit to the number of users that can be added to a role."));
@@ -86,10 +89,24 @@ namespace YetaWF.Modules.Identity.DataProvider {
             }
             if (status != UpdateStatusEnum.OK)
                 throw new Error(this.__ResStr("updFail", "Unexpected error updating record - {0}", status));
+            await Auditing.AddAuditAsync($"{nameof(AuthorizationDataProvider)}.{nameof(UpdateItemAsync)}", data.ResourceName, Guid.Empty,
+                "Add/Update Authorization",
+                DataBefore: origData,
+                DataAfter: data,
+                ExpensiveMultiInstance: true
+            );
             return status;
         }
-        public Task<bool> RemoveItemAsync(string resourceName) {
-            return DataProvider.RemoveAsync(resourceName);
+        public async Task<bool> RemoveItemAsync(string resourceName) {
+            Authorization origData = Auditing.Active ? await GetItemAsync(resourceName) : null;
+            if (!await DataProvider.RemoveAsync(resourceName)) return false;
+            await Auditing.AddAuditAsync($"{nameof(AuthorizationDataProvider)}.{nameof(RemoveItemAsync)}", resourceName, Guid.Empty,
+                "Remove Authorization",
+                DataBefore: origData,
+                DataAfter: null,
+                ExpensiveMultiInstance: true
+            );
+            return true;
         }
         public async Task<DataProviderGetRecords<Authorization>> GetItemsAsync(int skip, int take, List<DataProviderSortInfo> sort, List<DataProviderFilterInfo> filters) {
             // get all defined authorizations

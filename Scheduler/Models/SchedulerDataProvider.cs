@@ -3,6 +3,7 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using YetaWF.Core.Audit;
 using YetaWF.Core.DataProvider;
 using YetaWF.Core.DataProvider.Attributes;
 using YetaWF.Core.IO;
@@ -90,17 +91,37 @@ namespace YetaWF.Modules.Scheduler.DataProvider {
         }
         public async Task<bool> AddItemAsync(SchedulerItemData evnt) {
             evnt.TimeSpan = evnt.Frequency.TimeSpan;
-            return await DataProvider.AddAsync(evnt);
+            bool result = await DataProvider.AddAsync(evnt);
+            await Auditing.AddAuditAsync($"{nameof(SchedulerDataProvider)}.{nameof(AddItemAsync)}", evnt.Name, Guid.Empty,
+                "Add Scheduler Item",
+                DataBefore: null,
+                DataAfter: evnt
+            );
+            return result;
         }
         public async Task<UpdateStatusEnum> UpdateItemAsync(SchedulerItemData evnt) {
             return await UpdateItemAsync(evnt.Name, evnt);
         }
         public async Task<UpdateStatusEnum> UpdateItemAsync(string originalName, SchedulerItemData evnt) {
+            SchedulerItemData origEvent = Auditing.Active ? await GetItemAsync(originalName) : null;
             evnt.TimeSpan = evnt.Frequency.TimeSpan;
-            return await DataProvider.UpdateAsync(originalName, evnt.Name, evnt);
+            UpdateStatusEnum result = await DataProvider.UpdateAsync(originalName, evnt.Name, evnt);
+            await Auditing.AddAuditAsync($"{nameof(SchedulerDataProvider)}.{nameof(UpdateItemAsync)}", originalName, Guid.Empty,
+                "Update Scheduler Item",
+                DataBefore: origEvent,
+                DataAfter: evnt
+            );
+            return result;
         }
         public async Task<bool> RemoveItemAsync(string key) {
-            return await DataProvider.RemoveAsync(key);
+            SchedulerItemData origEvent = Auditing.Active ? await GetItemAsync(key) : null;
+            bool result = await DataProvider.RemoveAsync(key);
+            await Auditing.AddAuditAsync($"{nameof(SchedulerDataProvider)}.{nameof(RemoveItemAsync)}", key, Guid.Empty,
+                "Remove Scheduler Item",
+                DataBefore: origEvent,
+                DataAfter: null
+            );
+            return result;
         }
         public async Task<DataProviderGetRecords<SchedulerItemData>> GetItemsAsync(List<DataProviderFilterInfo> filters) {
             filters = FixFilters(filters);
@@ -113,7 +134,8 @@ namespace YetaWF.Modules.Scheduler.DataProvider {
         }
         public async Task<int> RemoveItemsAsync(List<DataProviderFilterInfo> filters) {
             filters = FixFilters(filters);
-            return await DataProvider.RemoveRecordsAsync(filters);
+            int result = await DataProvider.RemoveRecordsAsync(filters);
+            return result;
         }
         // Replace IsRunning ... with  Next == DateTime.MaxValue
         private List<DataProviderSortInfo> FixSort(List<DataProviderSortInfo> sort) {

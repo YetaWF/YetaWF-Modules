@@ -1,8 +1,10 @@
 ﻿/* Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Identity#License */
 
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using YetaWF.Core;
+using YetaWF.Core.Audit;
 using YetaWF.Core.DataProvider;
 using YetaWF.Core.Identity;
 using YetaWF.Core.IO;
@@ -71,7 +73,13 @@ namespace YetaWF.Modules.Identity.DataProvider {
             if (user.UserId != SuperuserDefinitionDataProvider.SuperUserId || string.Compare(user.UserName, SuperUserName, true) != 0)
                 throw new Error(this.__ResStr("cantAddSuper", "Wrong user id or user name - Can't add as superuser"));
             user.RolesList = new SerializableList<Role> { new Role { RoleId = Resource.ResourceAccess.GetSuperuserRoleId() } };
-            return await DataProvider.AddAsync(user);
+            bool result = await DataProvider.AddAsync(user);
+            await Auditing.AddAuditAsync($"{nameof(SuperuserDefinitionDataProvider)}.{nameof(AddItemAsync)}", user.UserName, Guid.Empty,
+                "Add Superuser",
+                DataBefore: null,
+                DataAfter: user
+            );
+            return result;
         }
         public async Task<UpdateStatusEnum> UpdateItemAsync(UserDefinition user) {
             if (user.UserId != SuperuserDefinitionDataProvider.SuperUserId || string.Compare(user.UserName, SuperUserName, true) != 0)
@@ -89,13 +97,20 @@ namespace YetaWF.Modules.Identity.DataProvider {
             }
             if (data.UserId != SuperuserDefinitionDataProvider.SuperUserId || string.Compare(data.UserName, SuperUserName, true) != 0)
                 throw new Error(this.__ResStr("cantUpdateSuper", "Wrong user id or user name - Can't update as superuser"));
+            UpdateStatusEnum result;
+            UserDefinition origSuperuser;// need to get current superuser because user may have changed the name through Appsettings.json
             using (await _lockObject.LockAsync()) {
-                UserDefinition superUser;// need to get current superuser because user may have changed the name through Appsettings.json
                 List<DataProviderFilterInfo> filters = DataProviderFilterInfo.Join(null, new DataProviderFilterInfo { Field = "UserId", Operator = "==", Value = SuperuserDefinitionDataProvider.SuperUserId });
-                superUser = await DataProvider.GetOneRecordAsync(filters);
-                superUser.RolesList = new SerializableList<Role> { new Role { RoleId = Resource.ResourceAccess.GetSuperuserRoleId() } };
-                return await DataProvider.UpdateAsync(superUser.UserName, data.UserName, data);
+                origSuperuser = await DataProvider.GetOneRecordAsync(filters);
+                data.RolesList = new SerializableList<Role> { new Role { RoleId = Resource.ResourceAccess.GetSuperuserRoleId() } };
+                result = await DataProvider.UpdateAsync(origSuperuser.UserName, data.UserName, data);
             }
+            await Auditing.AddAuditAsync($"{nameof(SuperuserDefinitionDataProvider)}.{nameof(UpdateItemAsync)}", data.UserName, Guid.Empty,
+                "Update Superuser",
+                DataBefore: origSuperuser,
+                DataAfter: data
+            );
+            return result;
         }
         public bool RemoveItem(string userName) {
             throw new Error(this.__ResStr("cantRemoveSuper", "The user with role \"{0}\" can't be removed. Who else is going to bail you out once you mess up your website?", Globals.Role_Superuser));
