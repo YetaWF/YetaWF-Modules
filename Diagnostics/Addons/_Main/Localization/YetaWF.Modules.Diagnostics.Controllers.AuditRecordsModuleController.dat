@@ -10,7 +10,7 @@
           <Value>
             <Object Type="YetaWF.Core.Localize.LocalizationData+ClassData" Assembly="YetaWF.Core">
               <Properties>
-                <Name Value="YetaWF.Modules.Scheduler.Controllers.SchedulerBrowseModuleController+SchedulerItem" />
+                <Name Value="YetaWF.Modules.Diagnostics.Controllers.AuditRecordsModuleController+BrowseItem" />
                 <BaseTypeName />
                 <Header />
                 <Footer />
@@ -28,6 +28,30 @@
                       <Value>
                         <Object Type="YetaWF.Core.Localize.LocalizationData+PropertyData" Assembly="YetaWF.Core">
                           <Properties>
+                            <Name Value="Action" />
+                            <Caption Value="Action" />
+                            <Description Value="The action that created this record" />
+                            <HelpLink />
+                            <TextAbove />
+                            <TextBelow />
+                          </Properties>
+                        </Object>
+                      </Value>
+                      <Value>
+                        <Object Type="YetaWF.Core.Localize.LocalizationData+PropertyData" Assembly="YetaWF.Core">
+                          <Properties>
+                            <Name Value="Changes" />
+                            <Caption Value="Changes" />
+                            <Description Value="The properties that were changed" />
+                            <HelpLink />
+                            <TextAbove />
+                            <TextBelow />
+                          </Properties>
+                        </Object>
+                      </Value>
+                      <Value>
+                        <Object Type="YetaWF.Core.Localize.LocalizationData+PropertyData" Assembly="YetaWF.Core">
+                          <Properties>
                             <Name Value="Commands" />
                             <Caption Value="Actions" />
                             <Description Value="The available actions" />
@@ -40,9 +64,21 @@
                       <Value>
                         <Object Type="YetaWF.Core.Localize.LocalizationData+PropertyData" Assembly="YetaWF.Core">
                           <Properties>
+                            <Name Value="Created" />
+                            <Caption Value="Created" />
+                            <Description Value="The date/time this record was created" />
+                            <HelpLink />
+                            <TextAbove />
+                            <TextBelow />
+                          </Properties>
+                        </Object>
+                      </Value>
+                      <Value>
+                        <Object Type="YetaWF.Core.Localize.LocalizationData+PropertyData" Assembly="YetaWF.Core">
+                          <Properties>
                             <Name Value="Description" />
                             <Caption Value="Description" />
-                            <Description Value="The description of this scheduler item" />
+                            <Description Value="The description for this record" />
                             <HelpLink />
                             <TextAbove />
                             <TextBelow />
@@ -52,9 +88,9 @@
                       <Value>
                         <Object Type="YetaWF.Core.Localize.LocalizationData+PropertyData" Assembly="YetaWF.Core">
                           <Properties>
-                            <Name Value="Enabled" />
-                            <Caption Value="Enabled" />
-                            <Description Value="The status of the scheduler item" />
+                            <Name Value="ExpensiveMultiInstance" />
+                            <Caption Value="Expensive Action" />
+                            <Description Value="Defines whether this action is an expensive action in a multi-instance site" />
                             <HelpLink />
                             <TextAbove />
                             <TextBelow />
@@ -64,9 +100,9 @@
                       <Value>
                         <Object Type="YetaWF.Core.Localize.LocalizationData+PropertyData" Assembly="YetaWF.Core">
                           <Properties>
-                            <Name Value="EnableOnStartup" />
-                            <Caption Value="Enable On Startup" />
-                            <Description Value="Shows whether the scheduler item is enabled every time the website is restarted" />
+                            <Name Value="Id" />
+                            <Caption Value="Id" />
+                            <Description Value="The internal id" />
                             <HelpLink />
                             <TextAbove />
                             <TextBelow />
@@ -76,9 +112,9 @@
                       <Value>
                         <Object Type="YetaWF.Core.Localize.LocalizationData+PropertyData" Assembly="YetaWF.Core">
                           <Properties>
-                            <Name Value="Event" />
-                            <Caption Value="Event" />
-                            <Description Value="The event name running at the scheduled time" />
+                            <Name Value="IdentifyGuid" />
+                            <Caption Value="Identifier/Type" />
+                            <Description Value="The type of the record - Identifier String and Type both identify the source of this record" />
                             <HelpLink />
                             <TextAbove />
                             <TextBelow />
@@ -88,9 +124,9 @@
                       <Value>
                         <Object Type="YetaWF.Core.Localize.LocalizationData+PropertyData" Assembly="YetaWF.Core">
                           <Properties>
-                            <Name Value="Frequency" />
-                            <Caption Value="Interval" />
-                            <Description Value="The scheduler item's frequency" />
+                            <Name Value="IdentifyString" />
+                            <Caption Value="Identifier/String" />
+                            <Description Value="The identifying string of the record - Identifier String and Type both identify the source of this record" />
                             <HelpLink />
                             <TextAbove />
                             <TextBelow />
@@ -100,9 +136,9 @@
                       <Value>
                         <Object Type="YetaWF.Core.Localize.LocalizationData+PropertyData" Assembly="YetaWF.Core">
                           <Properties>
-                            <Name Value="IsRunning" />
-                            <Caption Value="Running" />
-                            <Description Value="Shows whether the scheduler item is currently running" />
+                            <Name Value="RequiresRestart" />
+                            <Caption Value="Restart Pending" />
+                            <Description Value="Defines whether this action requires a restart to take effect" />
                             <HelpLink />
                             <TextAbove />
                             <TextBelow />
@@ -112,9 +148,9 @@
                       <Value>
                         <Object Type="YetaWF.Core.Localize.LocalizationData+PropertyData" Assembly="YetaWF.Core">
                           <Properties>
-                            <Name Value="Last" />
-                            <Caption Value="Last" />
-                            <Description Value="The last time this item ran" />
+                            <Name Value="SiteIdentity" />
+                            <Caption Value="Site" />
+                            <Description Value="The site that was changed" />
                             <HelpLink />
                             <TextAbove />
                             <TextBelow />
@@ -124,69 +160,45 @@
                       <Value>
                         <Object Type="YetaWF.Core.Localize.LocalizationData+PropertyData" Assembly="YetaWF.Core">
                           <Properties>
-                            <Name Value="Name" />
-                            <Caption Value="Name" />
-                            <Description Value="The name of this scheduler item - the name is used to identify a scheduler item" />
+                            <Name Value="UserId" />
+                            <Caption Value="User" />
+                            <Description Value="The user that made the change" />
                             <HelpLink />
                             <TextAbove />
                             <TextBelow />
                           </Properties>
                         </Object>
                       </Value>
+                    </List>
+                  </Object>
+                </Properties>
+              </Properties>
+            </Object>
+          </Value>
+          <Value>
+            <Object Type="YetaWF.Core.Localize.LocalizationData+ClassData" Assembly="YetaWF.Core">
+              <Properties>
+                <Name Value="YetaWF.Modules.Diagnostics.Controllers.AuditRecordsModuleController+BrowseModel" />
+                <BaseTypeName />
+                <Header />
+                <Footer />
+                <Legend />
+                <Categories>
+                  <Object Type="YetaWF.Core.Serializers.SerializableDictionary`2[[System.String, mscorlib, Culture=neutral, PublicKeyToken=b77a5c561934e089],[System.String, mscorlib, Culture=neutral, PublicKeyToken=b77a5c561934e089]]" Assembly="YetaWF.Core">
+                    <Properties />
+                    <Dictionary />
+                  </Object>
+                </Categories>
+                <Properties>
+                  <Object Type="YetaWF.Core.Serializers.SerializableList`1[[YetaWF.Core.Localize.LocalizationData+PropertyData, YetaWF.Core, Culture=neutral, PublicKeyToken=null]]" Assembly="YetaWF.Core">
+                    <Properties />
+                    <List>
                       <Value>
                         <Object Type="YetaWF.Core.Localize.LocalizationData+PropertyData" Assembly="YetaWF.Core">
                           <Properties>
-                            <Name Value="Next" />
-                            <Caption Value="Next" />
-                            <Description Value="The time this item is scheduled to run next" />
-                            <HelpLink />
-                            <TextAbove />
-                            <TextBelow />
-                          </Properties>
-                        </Object>
-                      </Value>
-                      <Value>
-                        <Object Type="YetaWF.Core.Localize.LocalizationData+PropertyData" Assembly="YetaWF.Core">
-                          <Properties>
-                            <Name Value="RunOnce" />
-                            <Caption Value="Run Once" />
-                            <Description Value="Shows whether the scheduler item is run just once - once it completes, it is disabled" />
-                            <HelpLink />
-                            <TextAbove />
-                            <TextBelow />
-                          </Properties>
-                        </Object>
-                      </Value>
-                      <Value>
-                        <Object Type="YetaWF.Core.Localize.LocalizationData+PropertyData" Assembly="YetaWF.Core">
-                          <Properties>
-                            <Name Value="RunTime" />
-                            <Caption Value="RunTime" />
-                            <Description Value="The duration of the last run of this scheduler item (hh:mm:ss)" />
-                            <HelpLink />
-                            <TextAbove />
-                            <TextBelow />
-                          </Properties>
-                        </Object>
-                      </Value>
-                      <Value>
-                        <Object Type="YetaWF.Core.Localize.LocalizationData+PropertyData" Assembly="YetaWF.Core">
-                          <Properties>
-                            <Name Value="SiteSpecific" />
-                            <Caption Value="Site Specific" />
-                            <Description Value="Shows whether the scheduler item runs for each site" />
-                            <HelpLink />
-                            <TextAbove />
-                            <TextBelow />
-                          </Properties>
-                        </Object>
-                      </Value>
-                      <Value>
-                        <Object Type="YetaWF.Core.Localize.LocalizationData+PropertyData" Assembly="YetaWF.Core">
-                          <Properties>
-                            <Name Value="Startup" />
-                            <Caption Value="Startup" />
-                            <Description Value="Shows whether the scheduler item runs at website startup" />
+                            <Name Value="GridDef" />
+                            <Caption Value="" />
+                            <Description Value="" />
                             <HelpLink />
                             <TextAbove />
                             <TextBelow />
@@ -215,24 +227,8 @@
           <Value>
             <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
               <Properties>
-                <Name Value="noEvent" />
-                <Text Value="No scheduler item name specified" />
-              </Properties>
-            </Object>
-          </Value>
-          <Value>
-            <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
-              <Properties>
-                <Name Value="okStarting" />
-                <Text Value="The scheduler will be started when the site is restarted" />
-              </Properties>
-            </Object>
-          </Value>
-          <Value>
-            <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
-              <Properties>
-                <Name Value="okStopping" />
-                <Text Value="The scheduler will be stopped when the site is restarted" />
+                <Name Value="cantRemove" />
+                <Text Value="Couldn't remove {0}" />
               </Properties>
             </Object>
           </Value>

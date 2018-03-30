@@ -538,7 +538,7 @@
             <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
               <Properties>
                 <Name Value="okSavedRestart" />
-                <Text Value="Site settings updated - Site is now restarting" />
+                <Text Value="Site settings updated - These settings won't take effect until the site is restarted" />
               </Properties>
             </Object>
           </Value>
