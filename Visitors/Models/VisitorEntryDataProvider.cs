@@ -90,7 +90,7 @@ namespace YetaWF.Modules.Visitors.DataProvider {
 
         private IDataProvider<int, VisitorEntry> CreateDataProvider() {
             Package package = YetaWF.Modules.Visitors.Controllers.AreaRegistration.CurrentPackage;
-            return MakeDataProvider(package, package.AreaName, SiteIdentity: SiteIdentity, Cacheable: true);
+            return MakeDataProvider(package, package.AreaName, SiteIdentity: SiteIdentity, Cacheable: true, Parms: new { NoLanguages = true } );
         }
 
         // API
@@ -159,7 +159,7 @@ namespace YetaWF.Modules.Visitors.DataProvider {
 
                 try {
 
-                    if (!YetaWFManager.HaveManager || YetaWFManager.Manager.CurrentSite == null || !YetaWFManager.Manager.HaveCurrentContext) return;
+                    if (!YetaWFManager.HaveManager || !YetaWFManager.Manager.HaveCurrentSite || !YetaWFManager.Manager.HaveCurrentContext) return;
                     YetaWFManager manager = YetaWFManager.Manager;
 
                     using (VisitorEntryDataProvider visitorDP = new VisitorEntryDataProvider()) {

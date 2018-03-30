@@ -10,6 +10,8 @@ using YetaWF.Core.Support;
 using YetaWF.Core.Upload;
 using YetaWF.Core.Views.Shared;
 using YetaWF.Modules.Packages.Modules;
+using System.Threading.Tasks;
+using YetaWF.Core.IO;
 #if MVC6
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -60,21 +62,21 @@ namespace YetaWF.Modules.Packages.Controllers {
         [AllowPost]
         [Permission("Imports")]
         [ExcludeDemoMode]
-        public ActionResult Import_Partial(ImportModel model) {
+        public async Task<ActionResult> Import_Partial(ImportModel model) {
             model.Update(Module, this);
             if (!ModelState.IsValid)
                 return PartialView(model);
 
             // Download the zip file
             FileUpload upload = new FileUpload();
-            string tempName = upload.StoreTempPackageFile(model.RemoteFile);
+            string tempName = await upload.StoreTempPackageFileAsync(model.RemoteFile);
 
             // import it
-            List <string> errorList = new List<string>();
-            bool success = Package.Import(tempName, errorList);
+            List<string> errorList = new List<string>();
+            bool success = await Package.ImportAsync(tempName, errorList);
 
             // delete the temp file just uploaded
-            System.IO.File.Delete(tempName);
+            await FileSystem.TempFileSystemProvider.DeleteFileAsync(tempName);
 
             string msg = FormatMessage(success, errorList, model.RemoteFile);
             if (success) {
@@ -105,19 +107,19 @@ namespace YetaWF.Modules.Packages.Controllers {
         [Permission("Imports")]
         [ExcludeDemoMode]
 #if MVC6
-        public ActionResult ImportPackage(IFormFile __filename)
+        public async Task<ActionResult> ImportPackage(IFormFile __filename)
 #else
-        public ActionResult ImportPackage(HttpPostedFileBase __filename)
+        public async Task<ActionResult> ImportPackage(HttpPostedFileBase __filename)
 #endif
         {
             // Save the uploaded file as a temp file
             FileUpload upload = new FileUpload();
-            string tempName = upload.StoreTempPackageFile(__filename);
+            string tempName = await upload.StoreTempPackageFileAsync(__filename);
             // Import the package
             List<string> errorList = new List<string>();
-            bool success = Package.Import(tempName, errorList);
+            bool success = await Package.ImportAsync(tempName, errorList);
             // Delete the temp file just uploaded
-            System.IO.File.Delete(tempName);
+            await FileSystem.TempFileSystemProvider.DeleteFileAsync(tempName);
 
             string msg = FormatMessage(success, errorList, __filename.FileName);
 

@@ -26,7 +26,7 @@ namespace YetaWF.Modules.Identity.Support {
                 LoginUrl = Manager.CurrentSite.MakeUrl(Manager.CurrentSite.LoginUrl),
             };
             string subject = this.__ResStr("forgotSubject", "Forgotten password for {0}", Manager.CurrentSite.SiteDomain);
-            sendEmail.PrepareEmailMessage(user.Email, subject, sendEmail.GetEmailFile(Package.GetCurrentPackage(this), "Forgot Password.txt"), parameters: parms);
+            await sendEmail.PrepareEmailMessageAsync(user.Email, subject, await sendEmail.GetEmailFileAsync(Package.GetCurrentPackage(this), "Forgot Password.txt"), parameters: parms);
             if (!string.IsNullOrWhiteSpace(ccEmail))
                 sendEmail.AddBcc(ccEmail);
             await sendEmail.SendAsync(true);
@@ -38,7 +38,7 @@ namespace YetaWF.Modules.Identity.Support {
                 LoginUrl = Manager.CurrentSite.MakeUrl(Manager.CurrentSite.LoginUrl),
             };
             string subject = this.__ResStr("verificationSubject", "Verification required for site {0}", Manager.CurrentSite.SiteDomain);
-            sendEmail.PrepareEmailMessage(user.Email, subject, sendEmail.GetEmailFile(Package.GetCurrentPackage(this), "Account Verification.txt"), parameters: parms);
+            await sendEmail.PrepareEmailMessageAsync(user.Email, subject, await sendEmail.GetEmailFileAsync(Package.GetCurrentPackage(this), "Account Verification.txt"), parameters: parms);
             if (!string.IsNullOrWhiteSpace(ccEmail))
                 sendEmail.AddBcc(ccEmail);
             await sendEmail.SendAsync(true);
@@ -51,7 +51,7 @@ namespace YetaWF.Modules.Identity.Support {
                 LoginUrl = Manager.CurrentSite.MakeUrl(Manager.CurrentSite.LoginUrl),
             };
             string subject = this.__ResStr("approvalSubject", "Approved for site {0}!", Manager.CurrentSite.SiteDomain);
-            sendEmail.PrepareEmailMessage(user.Email, subject, sendEmail.GetEmailFile(Package.GetCurrentPackage(this), "Account Approved.txt"), parameters: parms);
+            await sendEmail.PrepareEmailMessageAsync(user.Email, subject, await sendEmail.GetEmailFileAsync(Package.GetCurrentPackage(this), "Account Approved.txt"), parameters: parms);
             if (!string.IsNullOrWhiteSpace(ccEmail))
                 sendEmail.AddBcc(ccEmail);
             await sendEmail.SendAsync(true);
@@ -70,7 +70,7 @@ namespace YetaWF.Modules.Identity.Support {
                 RejectUrl = reject.GetCompleteUrl(),
             };
             string subject = this.__ResStr("approvalNeededSubject", "Approval required for user {0} - site {1}", user.UserName, Manager.CurrentSite.SiteDomain);
-            sendEmail.PrepareEmailMessage(null, subject, sendEmail.GetEmailFile(Package.GetCurrentPackage(this), "Account Approval.txt"), parameters: parms);
+            await sendEmail.PrepareEmailMessageAsync(null, subject, await sendEmail.GetEmailFileAsync(Package.GetCurrentPackage(this), "Account Approval.txt"), parameters: parms);
             await sendEmail.SendAsync(false);
         }
 
@@ -80,7 +80,7 @@ namespace YetaWF.Modules.Identity.Support {
                 User = user,
             };
             string subject = this.__ResStr("rejectedSubject", "Your account for {0}", Manager.CurrentSite.SiteDomain);
-            sendEmail.PrepareEmailMessage(user.Email, subject, sendEmail.GetEmailFile(Package.GetCurrentPackage(this), "Account Rejected.txt"), parameters: parms);
+            await sendEmail.PrepareEmailMessageAsync(user.Email, subject, await sendEmail.GetEmailFileAsync(Package.GetCurrentPackage(this), "Account Rejected.txt"), parameters: parms);
             if (!string.IsNullOrWhiteSpace(ccEmail))
                 sendEmail.AddBcc(ccEmail);
             await sendEmail.SendAsync(true);
@@ -92,7 +92,7 @@ namespace YetaWF.Modules.Identity.Support {
                 User = user,
             };
             string subject = this.__ResStr("suspendedSubject", "Your account for {0}", Manager.CurrentSite.SiteDomain);
-            sendEmail.PrepareEmailMessage(user.Email, subject, sendEmail.GetEmailFile(Package.GetCurrentPackage(this), "Account Suspended.txt"), parameters: parms);
+            await sendEmail.PrepareEmailMessageAsync(user.Email, subject, await sendEmail.GetEmailFileAsync(Package.GetCurrentPackage(this), "Account Suspended.txt"), parameters: parms);
             if (!string.IsNullOrWhiteSpace(ccEmail))
                 sendEmail.AddBcc(ccEmail);
             await sendEmail.SendAsync(true);
@@ -109,7 +109,7 @@ namespace YetaWF.Modules.Identity.Support {
                 RejectUrl = reject.GetCompleteUrl(),
             };
             string subject = this.__ResStr("notifyNewUserSubject", "New account for user {0} - site  {1}", user.UserName, Manager.CurrentSite.SiteDomain);
-            sendEmail.PrepareEmailMessage(null, subject, sendEmail.GetEmailFile(Package.GetCurrentPackage(this), "New Account Created.txt"), parameters: parms);
+            await sendEmail.PrepareEmailMessageAsync(null, subject, await sendEmail.GetEmailFileAsync(Package.GetCurrentPackage(this), "New Account Created.txt"), parameters: parms);
             await sendEmail.SendAsync(false);
         }
     }

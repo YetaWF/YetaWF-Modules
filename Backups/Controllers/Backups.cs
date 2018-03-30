@@ -18,6 +18,7 @@ using YetaWF.Core.Support;
 using YetaWF.Core.Views.Shared;
 using YetaWF.Modules.Backups.DataProvider;
 using YetaWF.Modules.Backups.Modules;
+using YetaWF.Core.IO;
 #if MVC6
 using Microsoft.AspNetCore.Mvc;
 #else
@@ -125,12 +126,12 @@ namespace YetaWF.Modules.Backups.Controllers {
         }
 
         [Permission("Downloads")]
-        public ActionResult Download(string filename, long cookieToReturn) {
+        public async Task<ActionResult> Download(string filename, long cookieToReturn) {
             if (string.IsNullOrWhiteSpace(filename))
                 throw new Error("No backup specified");
             filename = Path.ChangeExtension(filename, "zip");
             string path = Path.Combine(Manager.SiteFolder, SiteBackup.BackupFolder, filename);
-            if (!System.IO.File.Exists(path))
+            if (!await FileSystem.FileSystemProvider.FileExistsAsync(path))
                 throw new Error(this.__ResStr("backupNotFound", "The backup '{0}' cannot be located.", filename));
 #if MVC6
             Response.Headers.Remove("Cookie");
@@ -153,11 +154,11 @@ namespace YetaWF.Modules.Backups.Controllers {
         [AllowPost]
         [Permission("Backups")]
         [ExcludeDemoMode]
-        public ActionResult Remove(string filename) {
+        public async Task<ActionResult> Remove(string filename) {
             if (string.IsNullOrWhiteSpace(filename))
                 throw new Error("No backup specified");
             SiteBackup siteBackup = new SiteBackup();
-            siteBackup.Remove(filename);
+            await siteBackup.RemoveAsync(filename);
             return Reload(null, Reload: ReloadEnum.ModuleParts);
         }
     }

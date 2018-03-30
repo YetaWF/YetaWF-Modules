@@ -176,7 +176,7 @@ namespace YetaWF.Modules.Blog.DataProvider {
         }
         private async Task AddConfigAsync(BlogConfigData data) {
             data.Id = KEY;
-            SaveImages(ModuleDefinition.GetPermanentGuid(typeof(BlogConfigModule)), data);
+            await SaveImagesAsync(ModuleDefinition.GetPermanentGuid(typeof(BlogConfigModule)), data);
             if (!await DataProvider.AddAsync(data))
                 throw new InternalError("Unexpected error adding settings");
             await Auditing.AddAuditAsync($"{nameof(BlogConfigDataProvider)}.{nameof(AddConfigAsync)}", "Config", Guid.Empty,
@@ -189,7 +189,7 @@ namespace YetaWF.Modules.Blog.DataProvider {
         public async Task UpdateConfigAsync(BlogConfigData data) {
             BlogConfigData origConfig = Auditing.Active ? await GetItemAsync() : null;
             data.Id = KEY;
-            SaveImages(ModuleDefinition.GetPermanentGuid(typeof(BlogConfigModule)), data);
+            await SaveImagesAsync(ModuleDefinition.GetPermanentGuid(typeof(BlogConfigModule)), data);
             UpdateStatusEnum status = await DataProvider.UpdateAsync(data.Id, data.Id, data);
             if (status != UpdateStatusEnum.OK)
                 throw new InternalError("Unexpected error saving settings {0}", status);

@@ -388,11 +388,11 @@ namespace YetaWF.Modules.PageEdit.Controllers {
 #endif
         {
             FileUpload upload = new FileUpload();
-            string tempName = upload.StoreTempPackageFile(__filename);
+            string tempName = await upload.StoreTempPackageFileAsync(__filename);
 
             List<string> errorList = new List<string>();
             bool success = await ModuleDefinition.ImportAsync(tempName, model.CurrentPageGuid, true, model.ModulePane, model.ModuleLocation == Location.Top, errorList);
-            upload.RemoveTempFile(tempName);
+            await upload.RemoveTempFileAsync(tempName);
 
             string errs = "";
             if (errorList.Count > 0) {

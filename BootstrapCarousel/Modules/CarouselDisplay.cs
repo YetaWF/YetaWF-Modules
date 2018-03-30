@@ -46,8 +46,7 @@ namespace YetaWF.Modules.BootstrapCarousel.Modules {
         public CarouselInfo SlideShow { get; set; }
 
         public override Task ModuleSavingAsync() {
-            SlideShow.Saving("SlideShow", ModuleGuid); // update internal information (images)
-            return Task.CompletedTask;
+            return SlideShow.SavingAsync("SlideShow", ModuleGuid); // update internal information (images)
         }
 
         public ModuleAction GetAction_Display(string url) {

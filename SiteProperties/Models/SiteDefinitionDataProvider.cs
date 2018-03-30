@@ -128,7 +128,7 @@ namespace YetaWF.Modules.SiteProperties.Models {
             RemoveCache(site);// next load will add it again
             AddLockedStatus(site);
             CleanData(site);
-            SaveImages(ModuleDefinition.GetPermanentGuid(typeof(SitePropertiesModule)), site);
+            await SaveImagesAsync(ModuleDefinition.GetPermanentGuid(typeof(SitePropertiesModule)), site);
             if (site.OriginalSiteDomain != null) {
                 UpdateStatusEnum status = await DataProvider.UpdateAsync(site.OriginalSiteDomain, site.SiteDomain, site);
                 if (status != UpdateStatusEnum.OK)
@@ -141,7 +141,7 @@ namespace YetaWF.Modules.SiteProperties.Models {
             // update appsettings.json
             if (string.Compare(YetaWFManager.DefaultSiteName, site.OriginalSiteDomain, true) == 0 && site.SiteDomain != site.OriginalSiteDomain) {
                 WebConfigHelper.SetValue<string>(YetaWF.Core.Controllers.AreaRegistration.CurrentPackage.AreaName, "DEFAULTSITE", site.SiteDomain);
-                WebConfigHelper.Save();
+                await WebConfigHelper.SaveAsync();
             }
 
             await Auditing.AddAuditAsync($"{nameof(SiteDefinitionDataProvider)}.{nameof(SaveSiteDefinitionAsync)}", site.OriginalSiteDomain, Guid.Empty,
@@ -187,7 +187,7 @@ namespace YetaWF.Modules.SiteProperties.Models {
                 throw new Error(this.__ResStr("cantDeleteDefault", "The default site of a YetaWF instance cannot be removed"));
 
             LocalizationSupport localizationSupport = new LocalizationSupport();
-            localizationSupport.SetUseLocalizationResources(false);// turn off use of localization resources - things are about to be removed
+            await localizationSupport.SetUseLocalizationResourcesAsync(false);// turn off use of localization resources - things are about to be removed
 
             // turn off logging - things are about to be removed
             YetaWF.Core.Log.Logging.TerminateLogging();

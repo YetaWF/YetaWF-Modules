@@ -4,6 +4,8 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
+using YetaWF.Core.IO;
 using YetaWF.Core.Localize;
 using YetaWF.Core.Modules;
 using YetaWF.Core.Support;
@@ -94,24 +96,30 @@ namespace YetaWF.Modules.ImageRepository.Views.Shared {
         public List<string> Files {
             get {
                 if (_files == null)
-                    _files = ReadFiles();
+                    _files = ReadFilesAsync().Result;//$$$
                 return _files;
             }
         }
         List<string> _files;
 
-        public static List<string> ReadFiles(Guid folderGuid, string subFolder, string fileType) {
-            List<string> files = ReadFilePaths(folderGuid, subFolder, fileType);
-            return (from f in files select Path.GetFileName(f) + YetaWF.Core.Image.ImageSupport.ImageSeparator + (File.GetLastWriteTime(f).Ticks / TimeSpan.TicksPerSecond).ToString()).ToList();
+        public static async Task<List<string>> ReadFilesAsync(Guid folderGuid, string subFolder, string fileType) {
+            List<string> files = await ReadFilePathsAsync(folderGuid, subFolder, fileType);
+            List<string> list = new List<string>();
+            foreach (string f in files) {
+                //$$$$cache buster
+                long cb = (await FileSystem.FileSystemProvider.GetLastWriteTimeUtcAsync(f)).Ticks / TimeSpan.TicksPerSecond;
+                list.Add(Path.GetFileName(f) + YetaWF.Core.Image.ImageSupport.ImageSeparator + cb.ToString());
+            }
+            return list;
         }
-        private List<string> ReadFiles() {
-            return FlashSelectionInfo.ReadFiles(FolderGuid, SubFolder, FileType);
+        private async Task<List<string>> ReadFilesAsync() {
+            return await FlashSelectionInfo.ReadFilesAsync(FolderGuid, SubFolder, FileType);
         }
-        private static List<string> ReadFilePaths(Guid folderGuid, string subFolder, string fileType) {
+        private static async Task<List<string>> ReadFilePathsAsync(Guid folderGuid, string subFolder, string fileType) {
             List<string> files = new List<string>();
             string storagePath = FlashSelectionInfo.StoragePath(folderGuid, subFolder, fileType);
-            if (Directory.Exists(storagePath))
-                files = Directory.GetFiles(storagePath).ToList();
+            if (await FileSystem.FileSystemProvider.DirectoryExistsAsync(storagePath))
+                files = await FileSystem.FileSystemProvider.GetFilesAsync(storagePath);
             return files;
         }
         public string MakeFlashUrl(string filename) {

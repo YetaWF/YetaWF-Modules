@@ -18,6 +18,7 @@ using YetaWF.Core.Views.Shared;
 using YetaWF.Modules.Blog.DataProvider;
 using YetaWF.Modules.Blog.Modules;
 using YetaWF.Modules.Blog.Scheduler;
+using YetaWF.Core.IO;
 #if MVC6
 using Microsoft.AspNetCore.Mvc;
 #else
@@ -143,17 +144,17 @@ namespace YetaWF.Modules.Blog.Controllers {
         [AllowPost]
         [Permission("NewsSiteMap")]
         [ExcludeDemoMode]
-        public ActionResult RemoveNewsSiteMap() {
+        public async Task<ActionResult> RemoveNewsSiteMap() {
             NewsSiteMap sm = new NewsSiteMap();
-            sm.Remove();
+            await sm.RemoveAsync();
             return Reload(null, Reload: ReloadEnum.ModuleParts, PopupText: this.__ResStr("sremDone", "The news site map has been removed"));
         }
 
         [Permission("NewsSiteMap")]
-        public ActionResult DownloadNewsSiteMap(long cookieToReturn) {
+        public async Task<ActionResult> DownloadNewsSiteMap(long cookieToReturn) {
             NewsSiteMap sm = new NewsSiteMap();
             string filename = sm.GetNewsSiteMapFileName();
-            if (!System.IO.File.Exists(filename))
+            if (!await FileSystem.FileSystemProvider.FileExistsAsync(filename))
                 throw new Error(this.__ResStr("sitemapNotFound", "News site map not found - File '{0}' cannot be located", filename));
 #if MVC6
             Response.Headers.Remove("Cookie");

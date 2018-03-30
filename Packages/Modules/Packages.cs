@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using YetaWF.Core.IO;
 using YetaWF.Core.Localize;
 using YetaWF.Core.Models;
@@ -111,12 +112,12 @@ namespace YetaWF.Modules.Packages.Modules {
                 Legend = this.__ResStr("noticeLegend", "Links to the product's website and displays the release notice"),
             };
         }
-        public ModuleAction GetAction_ExportPackage(Package package) {
+        public async Task<ModuleAction> GetAction_ExportPackageAsync(Package package) {
 #if DEBUG
-            return null;
+            return await Task.FromResult<ModuleAction>(null);
 #else
             if (!IsAuthorized("Imports")) return null;
-            if (!package.HasSource) return null;
+            if (!await package.GetHasSourceAsync()) return null;
             if (!package.IsCorePackage && !package.IsCoreAssemblyPackage && !package.IsDataProviderPackage && !package.IsModulePackage && !package.IsSkinPackage) return null;
             return new ModuleAction(this) {
                 Url = YetaWFManager.UrlFor(typeof(PackagesModuleController), "ExportPackage"),
@@ -132,12 +133,12 @@ namespace YetaWF.Modules.Packages.Modules {
             };
 #endif
         }
-        public ModuleAction GetAction_ExportPackageWithSource(Package package) {
+        public async Task<ModuleAction> GetAction_ExportPackageWithSourceAsync(Package package) {
 #if DEBUG
-            return null;
+            return await Task.FromResult<ModuleAction>(null);
 #else
             if (!IsAuthorized("Imports")) return null;
-            if (!package.HasSource) return null;
+            if (!await package.GetHasSourceAsync()) return null;
             if (!package.IsCorePackage && !package.IsCoreAssemblyPackage && !package.IsDataProviderPackage && !package.IsModulePackage && !package.IsSkinPackage /*&& !package.IsTemplatePackage && !package.IsUtilityPackage*/) return null;
             return new ModuleAction(this) {
                 Url = YetaWFManager.UrlFor(typeof(PackagesModuleController), "ExportPackageWithSource"),

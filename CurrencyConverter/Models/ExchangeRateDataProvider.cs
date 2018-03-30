@@ -74,7 +74,7 @@ namespace YetaWF.Modules.CurrencyConverter.DataProvider {
                 ExchangeRateData data = await DataProvider.GetAsync(KEY);
                 if (data != null && data.SaveTime.Add(ExchangeRateData.ExpiresAfter) < DateTime.UtcNow)
                     data = null;
-                if (data != null && !System.IO.File.Exists(GetJSFileName()))
+                if (data != null && !await FileSystem.FileSystemProvider.FileExistsAsync(GetJSFileName()))
                     data = null;
                 if (data == null)
                     data = await GetExchangeRatesAsync();
@@ -92,11 +92,11 @@ namespace YetaWF.Modules.CurrencyConverter.DataProvider {
             data.SaveTime = DateTime.UtcNow;
 
             string url = string.Format("{0}://openexchangerates.org/api/latest.json?app_id={1}", config.UseHttps ? "https" : "http", config.AppID);
-            string json = GetJSONResponse(url);
+            string json = await GetJSONResponseAsync(url);
             CheckForErrors(json);
 
             url = string.Format("{0}://openexchangerates.org/api/currencies.json?app_id={1}", config.UseHttps ? "https" : "http", config.AppID);
-            string jsonCurrencies = GetJSONResponse(url);
+            string jsonCurrencies = await GetJSONResponseAsync(url);
             CheckForErrors(jsonCurrencies);
 
             // get all currencies
@@ -121,18 +121,18 @@ namespace YetaWF.Modules.CurrencyConverter.DataProvider {
                     throw new InternalError("Unexpected error adding data");
             }
             // Create a javascript file with rates so we can include it in a page
-            SaveRatesJS(data);
+            await SaveRatesJSAsync(data);
             return data;
         }
 
-        private void SaveRatesJS(ExchangeRateData data) {
+        private async Task SaveRatesJSAsync(ExchangeRateData data) {
             string file = GetJSFileName();
             ScriptBuilder sb = new ScriptBuilder();
             sb.Append("// Generated file (see ExchangeRateDataProvider) - Do not modify\n");
             sb.Append("YetaWF_CurrencyConverter_Rates = \n");
             sb.Append(YetaWFManager.JsonSerialize(data.Rates));
             sb.Append(";\n");
-            System.IO.File.WriteAllText(file, sb.ToString());
+            await FileSystem.FileSystemProvider.WriteAllTextAsync(file, sb.ToString());
         }
 
         private static string GetJSFileName() {
@@ -146,19 +146,20 @@ namespace YetaWF.Modules.CurrencyConverter.DataProvider {
             if (!string.IsNullOrWhiteSpace(jsonObject.error))
                 throw new InternalError("An error occurred retrieving exchange rates from openexchangerates.org - {0}: {1}", jsonObject["message"], jsonObject["description"]);
         }
-        private string GetJSONResponse(string url) {
-            var http = (HttpWebRequest) WebRequest.Create(new Uri(url));
+        private async Task<string> GetJSONResponseAsync(string url) {
+            var http = (HttpWebRequest)WebRequest.Create(new Uri(url));
             http.Accept = "application/json";
             http.ContentType = "application/json";
             http.Method = "POST";
-            System.Net.WebResponse resp;
+            System.Net.WebResponse resp;//$$$IDisposable
             try {
-                resp = http.GetResponse();
+                resp = await http.GetResponseAsync();
             } catch (Exception exc) {
                 throw new InternalError("An error occurred retrieving exchange rates from openexchangerates.org - {0}", exc.Message);
             }
-            System.IO.StreamReader sr = new System.IO.StreamReader(resp.GetResponseStream());
-            return sr.ReadToEnd().Trim();
+            using (System.IO.StreamReader sr = new System.IO.StreamReader(resp.GetResponseStream())) {
+                return (await sr.ReadToEndAsync()).Trim();
+            }
         }
 
         // IINSTALLABLEMODEL

@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using YetaWF.Core.Identity;
+using YetaWF.Core.IO;
 using YetaWF.Core.Log;
 using YetaWF.Core.Packages;
 using YetaWF.Core.Support;
@@ -18,7 +19,7 @@ namespace YetaWF.Modules.Packages.DataProvider {
         /// <param name="includeNonSiteSpecifics"></param>
         public async Task BuildSiteUsingDataAsync(bool includeNonSiteSpecifics) {
             Manager.ImportChunksNonSiteSpecifics = includeNonSiteSpecifics;
-            string[] files = Directory.GetFiles(Path.Combine(TemplateFolder, DataFolderName), "*.zip");
+            List<string> files = await FileSystem.FileSystemProvider.GetFilesAsync(Path.Combine(TemplateFolder, DataFolderName), "*.zip");
             foreach (string file in files) {
                 List<string> errorList = new List<string>();
                 Logging.AddLog("Restoring {0}", file);
@@ -27,7 +28,7 @@ namespace YetaWF.Modules.Packages.DataProvider {
                 }
             }
             Manager.ImportChunksNonSiteSpecifics = false;
-            Resource.ResourceAccess.ShutTheBackDoor();
+            await Resource.ResourceAccess.ShutTheBackDoorAsync();
         }
     }
 }

@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using YetaWF.Core.IO;
 using YetaWF.Core.Localize;
 using YetaWF.Core.Models.Attributes;
@@ -151,11 +152,11 @@ namespace YetaWF.Modules.Pages.Modules {
                 ConfirmationText = this.__ResStr("sremAuthConfirm", "Are you sure you want to remove the current site map?"),
             };
         }
-        public ModuleAction GetAction_DownloaSiteMap() {
+        public async Task<ModuleAction> GetAction_DownloaSiteMapAsync() {
             if (!IsAuthorized("SiteMaps")) return null;
             SiteMaps sm = new SiteMaps();
             string filename = sm.GetSiteMapFileName();
-            if (!System.IO.File.Exists(filename))
+            if (!await FileSystem.FileSystemProvider.FileExistsAsync(filename))
                 return null;
             return new ModuleAction(this) {
                 Url = YetaWFManager.UrlFor(typeof(PagesBrowseModuleController), "DownloadSiteMap"),

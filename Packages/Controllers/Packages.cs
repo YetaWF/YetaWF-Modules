@@ -44,8 +44,8 @@ namespace YetaWF.Modules.Packages.Controllers {
                 //actions.New(Module.GetAction_LicenseLink(Package.LicenseLink), ModuleAction.ActionLocationEnum.GridLinks);
                 //actions.New(Module.GetAction_ReleaseNoticeLink(Package.ReleaseNoticeLink), ModuleAction.ActionLocationEnum.GridLinks);
 
-                actions.New(Module.GetAction_ExportPackage(Package), ModuleAction.ActionLocationEnum.GridLinks);
-                actions.New(Module.GetAction_ExportPackageWithSource(Package), ModuleAction.ActionLocationEnum.GridLinks);
+                actions.New(await Module.GetAction_ExportPackageAsync(Package), ModuleAction.ActionLocationEnum.GridLinks);
+                actions.New(await Module.GetAction_ExportPackageWithSourceAsync(Package), ModuleAction.ActionLocationEnum.GridLinks);
                 actions.New(Module.GetAction_ExportPackageData(Package), ModuleAction.ActionLocationEnum.GridLinks);
                 actions.New(Module.GetAction_InstallPackageModels(Package), ModuleAction.ActionLocationEnum.GridLinks);
                 actions.New(Module.GetAction_UninstallPackageModels(Package), ModuleAction.ActionLocationEnum.GridLinks);
@@ -122,17 +122,17 @@ namespace YetaWF.Modules.Packages.Controllers {
 
         [Permission("Imports")]
         [ExcludeDemoMode]
-        public ActionResult ExportPackage(string packageName, long cookieToReturn) {
+        public async Task<ActionResult> ExportPackage(string packageName, long cookieToReturn) {
             Package package = Package.GetPackageFromPackageName(packageName);
-            YetaWFZipFile zipFile = package.ExportPackage();
+            YetaWFZipFile zipFile = await package.ExportPackageAsync();
             return new ZippedFileResult(zipFile, cookieToReturn);
         }
 
         [Permission("Imports")]
         [ExcludeDemoMode]
-        public ActionResult ExportPackageWithSource(string packageName, long cookieToReturn) {
+        public async Task<ActionResult> ExportPackageWithSource(string packageName, long cookieToReturn) {
             Package package = Package.GetPackageFromPackageName(packageName/*, Utilities: true*/);
-            YetaWFZipFile zipFile = package.ExportPackage(SourceCode: true);
+            YetaWFZipFile zipFile = await package.ExportPackageAsync(SourceCode: true);
             return new ZippedFileResult(zipFile, cookieToReturn);
         }
 
@@ -173,12 +173,12 @@ namespace YetaWF.Modules.Packages.Controllers {
 
         [Permission("Localize")]
         [ExcludeDemoMode]
-        public ActionResult LocalizePackage(string packageName) {
+        public async Task<ActionResult> LocalizePackage(string packageName) {
             if (Manager.Deployed)
                 throw new InternalError("Can't localize packages on a deployed site");
             Package package = Package.GetPackageFromPackageName(packageName);
             List<string> errorList = new List<string>();
-            if (!package.Localize(errorList)) {
+            if (!await package.LocalizeAsync(errorList)) {
                 ScriptBuilder sb = new ScriptBuilder();
                 sb.Append(this.__ResStr("cantLocalize", "Can't localize package {0}:(+nl)"), packageName.Split(new char[] { ',' }).First());
                 sb.Append(errorList, LeadingNL: true);
@@ -188,13 +188,13 @@ namespace YetaWF.Modules.Packages.Controllers {
         }
         [Permission("Localize")]
         [ExcludeDemoMode]
-        public ActionResult LocalizeAllPackages() {
+        public async Task<ActionResult> LocalizeAllPackages() {
             if (Manager.Deployed)
                 throw new InternalError("Can't localize packages on a deployed site");
             List<string> errorList = new List<string>();
             foreach (Package package in Package.GetAvailablePackages()) {
                 if (package.IsCorePackage || package.IsModulePackage || package.IsSkinPackage) {
-                    if (!package.Localize(errorList)) {
+                    if (!await package.LocalizeAsync(errorList)) {
                         ScriptBuilder sb = new ScriptBuilder();
                         sb.Append(this.__ResStr("cantLocalize", "Can't localize package {0}:(+nl)"), package.Name);
                         sb.Append(errorList, LeadingNL: true);
@@ -217,7 +217,7 @@ namespace YetaWF.Modules.Packages.Controllers {
                 throw new Error(sb.ToString());
             }
             string msg;
-            if (package.HasSource)
+            if (await package.GetHasSourceAsync())
                 msg = this.__ResStr("okRemovedSrc", "Package successfully removed - The site is now restarting...(+nl)(+nl)This package includes source code. The source code, project and project references have to be removed manually in the Visual Studio solution for this YetaWF site.");
             else
                 msg = this.__ResStr("okRemoved", "Package successfully removed - The site is now restarting...");

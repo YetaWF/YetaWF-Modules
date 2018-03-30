@@ -9,7 +9,7 @@
         data-addedmsg="@__ResStr("addedmsg", "Email address {0} has been added")"
         data-remmsg="@__ResStr("remmsg", "Email address {0} has been removed")">
     @Html.RenderListOfEmailAddresses("", Model)
-    @Html.RenderListOfEmailAddressesAddNew("", Model)
+    @Html.RenderListOfEmailAddressesAddNewAsync("", Model).Result
 </div>
 <script>
     @using (DocumentReady(DivId)) {

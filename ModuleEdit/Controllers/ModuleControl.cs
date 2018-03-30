@@ -111,7 +111,7 @@ namespace YetaWF.Modules.ModuleEdit.Controllers {
         [Permission("Exports")]
         public async Task<ActionResult> ExportModuleData(Guid moduleGuid, long cookieToReturn) {
             ModuleDefinition mod = await ModuleDefinition.LoadAsync(moduleGuid);
-            YetaWFZipFile zipFile = mod.ExportData();
+            YetaWFZipFile zipFile = await mod.ExportDataAsync();
             return new ZippedFileResult(zipFile, cookieToReturn);
         }
     }

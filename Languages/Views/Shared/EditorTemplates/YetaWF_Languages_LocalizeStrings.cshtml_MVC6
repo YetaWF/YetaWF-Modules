@@ -9,7 +9,7 @@
     @foreach (LocalizationData.StringData strData in Model) {
         <div class='t_string'>
             @Html.ExtHiddenFor(m => strData.Name, string.Format("[{0}].Name", index))
-            <div class='t_name'>@Html.ExtLabelFor(m => strData.Name, string.Format("[{0}].Text", index), Caption: strData.Name, HtmlAttributes: new { Title = __ResStr("captTT", "Text found in __ResStr(\"{0}\", ...)", strData.Name) })</div>
+            <div class='t_name'>@await Html.ExtLabelForAsync(m => strData.Name, string.Format("[{0}].Text", index), Caption: strData.Name, HtmlAttributes: new { Title = __ResStr("captTT", "Text found in __ResStr(\"{0}\", ...)", strData.Name) })</div>
             <div class='t_text'>@Html.EditorFor(m => strData.Text, "Text80", string.Format("[{0}].Text", index))</div>
         </div>
         ++index;

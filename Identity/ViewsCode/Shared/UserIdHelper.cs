@@ -113,13 +113,13 @@ namespace YetaWF.Modules.Identity.Views.Shared {
             }
         }
 #if MVC6
-        public static HtmlString RenderClear<TModel>(this IHtmlHelper<TModel> htmlHelper)
+        public static async Task<HtmlString> RenderClearAsync<TModel>(this IHtmlHelper<TModel> htmlHelper)
 #else
-        public static HtmlString RenderClear<TModel>(this HtmlHelper<TModel> htmlHelper)
+        public static async Task<HtmlString> RenderClearAsync<TModel>(this HtmlHelper<TModel> htmlHelper)
 #endif
         {
             SkinImages skinImages = new SkinImages();
-            string imageUrl = skinImages.FindIcon_Template("#RemoveLight", YetaWF.Modules.Identity.Controllers.AreaRegistration.CurrentPackage, "UserId");
+            string imageUrl = await skinImages.FindIcon_TemplateAsync("#RemoveLight", YetaWF.Modules.Identity.Controllers.AreaRegistration.CurrentPackage, "UserId");
             TagBuilder tagImg = ImageHelper.BuildKnownImageTag(imageUrl, title: __ResStr("ttClear", "Clear the current selection"), alt: __ResStr("altClear", "Clear the current selection"));
             tagImg.AddCssClass("t_clear");
             return tagImg.ToHtmlString(TagRenderMode.StartTag);

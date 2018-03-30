@@ -11,6 +11,7 @@ using YetaWF.Core.Support;
 using YetaWF.Core.Views;
 using YetaWF.Core.Views.Shared;
 using YetaWF.Modules.Pages.Controllers.Shared;
+using System.Threading.Tasks;
 #if MVC6
 using Microsoft.AspNetCore.Html;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -100,9 +101,9 @@ namespace YetaWF.Modules.Pages.Views.Shared {
 #endif
         }
 #if MVC6
-        public static HtmlString RenderListOfLocalPagesAddNew<TModel>(this IHtmlHelper<TModel> htmlHelper, string name, List<string> model)
+        public static async Task<HtmlString> RenderListOfLocalPagesAddNewAsync<TModel>(this IHtmlHelper<TModel> htmlHelper, string name, List<string> model)
 #else
-        public static HtmlString RenderListOfLocalPagesAddNew<TModel>(this HtmlHelper<TModel> htmlHelper, string name, List<string> model)
+        public static async Task<HtmlString> RenderListOfLocalPagesAddNewAsync<TModel>(this HtmlHelper<TModel> htmlHelper, string name, List<string> model)
 #endif
         {
             HtmlBuilder hb = new HtmlBuilder();
@@ -111,7 +112,7 @@ namespace YetaWF.Modules.Pages.Views.Shared {
             NewModel newModel = new NewModel();
 
             hb.Append("<div class='t_newvalue'>");
-            hb.Append(htmlHelper.ExtLabelFor(m => newModel.NewValue, "NewValue"));
+            hb.Append(await htmlHelper.ExtLabelForAsync(m => newModel.NewValue, "NewValue"));
             hb.Append(htmlHelper.EditorFor(m => newModel.NewValue, "Url", "NewValue"));
             hb.Append("<input name='btnAdd' type='button' value='Add' data-ajaxurl='{0}' />", YetaWFManager.JserEncode(ajaxUrl));
             hb.Append("</div>");

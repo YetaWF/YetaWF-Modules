@@ -179,7 +179,7 @@ namespace YetaWF.Modules.Pages.DataProvider {
 
                     page.Updated = DateTime.UtcNow;
                     CleanupUsersAndRoles(page);
-                    SaveImages(page.PageGuid, page);
+                    await SaveImagesAsync(page.PageGuid, page);
 
                     oldPage = await LoadPageDefinitionAsync(page.PageGuid);
                     if (oldPage == null)
@@ -199,7 +199,7 @@ namespace YetaWF.Modules.Pages.DataProvider {
                             throw new InternalError("Unexpected UpdateStatusEnum.RecordDeleted in SavePageDefinition");
                     }
 
-                    Manager.StaticPageManager.RemovePage(page.Url);
+                    await Manager.StaticPageManager.RemovePageAsync(page.Url);
 
                     if (newPage == Guid.Empty) {
                         DesignedPagesDictionaryByUrl designedPagesByUrl = await GetDesignedPagesAsync();
@@ -235,7 +235,7 @@ namespace YetaWF.Modules.Pages.DataProvider {
                     page = await LoadPageDefinitionAsync(pageGuid);
                     if (page == null)
                         return false;
-                    Manager.StaticPageManager.RemovePage(page.Url);
+                    await Manager.StaticPageManager.RemovePageAsync(page.Url);
                     await DataProvider.RemoveAsync(pageGuid);
                     DesignedPagesDictionaryByUrl designedPagesUrl = await GetDesignedPagesAsync();
                     await RemoveDesignedPageAsync(designedPagesUrl, page.Url);

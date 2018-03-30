@@ -48,10 +48,10 @@ namespace YetaWF.Modules.Packages.Controllers {
 #endif
         {
             FileUpload upload = new FileUpload();
-            string tempName = upload.StoreTempPackageFile(__filename);
+            string tempName = await upload.StoreTempPackageFileAsync(__filename);
             List<string> errorList = new List<string>();
             bool success = await Package.ImportDataAsync(tempName, errorList);
-            upload.RemoveTempFile(tempName);
+            await upload.RemoveTempFileAsync(tempName);
 
             string errs = "";
             if (errorList.Count > 0) {

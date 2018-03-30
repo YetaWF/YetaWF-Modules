@@ -13,7 +13,7 @@ namespace YetaWF.Modules.Messenger.Addons {
 
     public class Messaging : IAddOnSupport {
 
-        public Task AddSupportAsync(YetaWFManager manager) {
+        public async Task AddSupportAsync(YetaWFManager manager) {
 
             ScriptManager scripts = manager.ScriptManager;
             Package package = AreaRegistration.CurrentPackage;
@@ -24,11 +24,9 @@ namespace YetaWF.Modules.Messenger.Addons {
             scripts.AddLocalization(area, "msgOfflineTT", this.__ResStr("offline", "User is offline and can't receive messages - If you send a message it will be stored and shown to the user at a later time"));
             scripts.AddLocalization(area, "msgNotSeenTT", this.__ResStr("notSeen", "This message has not been seen"));
 
-            scripts.AddConfigOption(area, "msgOnlineIcon", skinImages.FindIcon_Package("Online.png", package));
-            scripts.AddConfigOption(area, "msgOfflineIcon", skinImages.FindIcon_Package("Offline.png", package));
-            scripts.AddConfigOption(area, "msgNotSeenIcon", skinImages.FindIcon_Package("NotSeen.png", package));
-
-            return Task.CompletedTask;
+            scripts.AddConfigOption(area, "msgOnlineIcon", await skinImages.FindIcon_PackageAsync("Online.png", package));
+            scripts.AddConfigOption(area, "msgOfflineIcon", await skinImages.FindIcon_PackageAsync("Offline.png", package));
+            scripts.AddConfigOption(area, "msgNotSeenIcon", await skinImages.FindIcon_PackageAsync("NotSeen.png", package));
         }
     }
 }

@@ -16,15 +16,14 @@ namespace YetaWF.Modules.Languages.Startup {
         // IInitializeApplicationStartup
         // IInitializeApplicationStartup
 
-        public Task InitializeApplicationStartupAsync(bool firstNode) {
+        public async Task InitializeApplicationStartupAsync(bool firstNode) {
             string rootFolder;
 #if MVC6
             rootFolder = YetaWFManager.RootFolderWebProject;
 #else
             rootFolder = YetaWFManager.RootFolder;
 #endif
-            YetaWF.Core.Language.LanguageSection.Init(Path.Combine(rootFolder, Globals.DataFolder, LanguageSettingsFile));
-            return Task.CompletedTask;
+            await YetaWF.Core.Language.LanguageSection.InitAsync(Path.Combine(rootFolder, Globals.DataFolder, LanguageSettingsFile));
         }
 
         public const string LanguageSettingsFile = "LanguageSettings.json";

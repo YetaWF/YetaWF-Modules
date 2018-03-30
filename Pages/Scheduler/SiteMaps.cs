@@ -10,6 +10,7 @@ using YetaWF.Core.Modules;
 using YetaWF.Core.Pages;
 using YetaWF.Core.Scheduler;
 using YetaWF.Core.Support;
+using YetaWF.Core.IO;
 #if MVC6
 using System.Net;
 #else
@@ -58,10 +59,10 @@ namespace YetaWF.Modules.Pages.Scheduler {
         /// </summary>
         public async Task CreateAsync(bool slow = false) {
             string file = GetTempFile();
-            File.Delete(file);
+            await FileSystem.FileSystemProvider.DeleteFileAsync(file);
 
             // header
-            File.AppendAllText(file,
+            await FileSystem.FileSystemProvider.AppendAllTextAsync(file,
                 "<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\r\n" +
                 "<urlset xsi:schemaLocation=\"http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns =\"http://www.sitemaps.org/schemas/sitemap/0.9\" >\r\n"
             );
@@ -95,22 +96,21 @@ namespace YetaWF.Modules.Pages.Scheduler {
                 if (page == null)
                     continue;
                 if (!PagesFound.Contains(page.PageGuid)) // don't include same again (this could be a page that generates dynamic Urls)
-                    AddUrl(file, page, page.EvaluatedCanonicalUrl, page.Updated, page.SiteMapPriority, page.ChangeFrequency);
+                    await AddUrlAsync(file, page, page.EvaluatedCanonicalUrl, page.Updated, page.SiteMapPriority, page.ChangeFrequency);
             }
 
             // end
-            File.AppendAllText(file,
+            await FileSystem.FileSystemProvider.AppendAllTextAsync(file,
                 "</urlset>\r\n"
             );
 
             string finalFile = GetFile();
-            File.Delete(finalFile);
-            File.Move(file, finalFile);
+            await FileSystem.FileSystemProvider.DeleteFileAsync(finalFile);
+            await FileSystem.FileSystemProvider.MoveFileAsync(file, finalFile);
         }
 
-        private Task AddSiteMapPageAsync(PageDefinition page, string url, DateTime? dateUpdated, PageDefinition.SiteMapPriorityEnum priority, PageDefinition.ChangeFrequencyEnum changeFrequency, object obj) {
-            AddUrl(GetTempFile(), page, url, dateUpdated, priority, changeFrequency);
-            return Task.CompletedTask;
+        private async Task AddSiteMapPageAsync(PageDefinition page, string url, DateTime? dateUpdated, PageDefinition.SiteMapPriorityEnum priority, PageDefinition.ChangeFrequencyEnum changeFrequency, object obj) {
+            await AddUrlAsync(GetTempFile(), page, url, dateUpdated, priority, changeFrequency);
         }
         private bool ValidForSiteMap(PageDefinition page) {
             if (!string.IsNullOrWhiteSpace(page.RedirectToPageUrl)) // no redirected pages
@@ -121,7 +121,7 @@ namespace YetaWF.Modules.Pages.Scheduler {
                 return false;
             return true;
         }
-        private void AddUrl(string file, PageDefinition page, string canonicalUrl, DateTime? lastMod, PageDefinition.SiteMapPriorityEnum siteMapPriority, PageDefinition.ChangeFrequencyEnum changeFrequency) {
+        private async Task AddUrlAsync(string file, PageDefinition page, string canonicalUrl, DateTime? lastMod, PageDefinition.SiteMapPriorityEnum siteMapPriority, PageDefinition.ChangeFrequencyEnum changeFrequency) {
             if (!PagesFound.Contains(page.PageGuid)) // keep track of pages so we don't add it as a designed page in case it was dynamic
                 PagesFound.Add(page.PageGuid);
             canonicalUrl = Manager.CurrentSite.MakeUrl(canonicalUrl, PagePageSecurity: page.PageSecurity);
@@ -135,7 +135,7 @@ namespace YetaWF.Modules.Pages.Scheduler {
 #else
             canonicalUrl = AntiXssEncoder.XmlEncode(canonicalUrl);
 #endif
-            File.AppendAllText(file, string.Format(
+            await FileSystem.FileSystemProvider.AppendAllTextAsync(file, string.Format(
                 "  <url>\r\n" +
                 "    <loc>{0}</loc>\r\n" +
                 "{1}" +
@@ -175,9 +175,9 @@ namespace YetaWF.Modules.Pages.Scheduler {
         /// <summary>
         /// Remove the site map for the current site.
         /// </summary>
-        public void Remove() {
+        public async Task RemoveAsync() {
             string file = GetFile();
-            File.Delete(file);
+            await FileSystem.FileSystemProvider.DeleteFileAsync(file);
         }
 
         /// <summary>

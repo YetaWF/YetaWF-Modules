@@ -10,6 +10,7 @@ using YetaWF.Core.Pages;
 using YetaWF.Core.Support;
 using YetaWF.Core.Views.Shared;
 using System.Threading.Tasks;
+using YetaWF.Core.IO;
 #if MVC6
 using Microsoft.AspNetCore.Html;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -32,7 +33,7 @@ namespace YetaWF.Modules.SlideShow.Views.Shared {
 #endif
         {
 
-            List<SelectionItem<string>> list = (from a in Bullets select new SelectionItem<string>() {
+            List<SelectionItem<string>> list = (from a in await GetBulletsAsync() select new SelectionItem<string>() {
                 Text = a.Name,
                 Value = a.Value,
             }).ToList();
@@ -42,21 +43,19 @@ namespace YetaWF.Modules.SlideShow.Views.Shared {
             public string Name { get; set; }
             public string Value { get; set; }
         }
-        public static List<Bullet> Bullets {
-            get {
-                List<Bullet> list = new List<Bullet>();
-                Package package = YetaWF.Modules.SlideShow.Controllers.AreaRegistration.CurrentPackage;
-                string rootUrl = VersionManager.GetAddOnPackageUrl(package.Domain, package.Product);
-                string[] files = Directory.GetFiles(YetaWFManager.UrlToPhysical(rootUrl + "jssor/skins/bullet"), "*.css");
-                foreach (var file in files) {
-                    string name = Path.GetFileNameWithoutExtension(file);
-                    list.Add(new Bullet {
-                        Name = string.Format("Bullet {0}", name.Substring(1)),
-                        Value = name,
-                    });
-                }
-                return list;
+        public static async Task<List<Bullet>> GetBulletsAsync() {
+            List<Bullet> list = new List<Bullet>();
+            Package package = YetaWF.Modules.SlideShow.Controllers.AreaRegistration.CurrentPackage;
+            string rootUrl = VersionManager.GetAddOnPackageUrl(package.Domain, package.Product);
+            List<string> files = await FileSystem.FileSystemProvider.GetFilesAsync(YetaWFManager.UrlToPhysical(rootUrl + "jssor/skins/bullet"), "*.css");
+            foreach (var file in files) {
+                string name = Path.GetFileNameWithoutExtension(file);
+                list.Add(new Bullet {
+                    Name = string.Format("Bullet {0}", name.Substring(1)),
+                    Value = name,
+                });
             }
+            return list;
         }
     }
 }

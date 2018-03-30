@@ -39,9 +39,9 @@ namespace YetaWF.Modules.Identity.DataProvider {
             }
             return (bool) backDoor;
         }
-        public void ShutTheBackDoor() {
+        public async Task ShutTheBackDoorAsync() {
             WebConfigHelper.SetValue<string>(AreaRegistration.CurrentPackage.AreaName, "BACKDOOR-IS-WIDE-OPEN", "0");
-            WebConfigHelper.Save();
+            await WebConfigHelper.SaveAsync();
             backDoor = false;
         }
         private bool? backDoor = null;

@@ -96,8 +96,8 @@ namespace YetaWF.Modules.Languages.Controllers {
                 model.SetData(data); // and all the data back into model for final display
 
                 LocalizationSupport locSupport = new LocalizationSupport();
-                locSupport.SetUseLocalizationResources(model.UseLocalizationResources);
-                locSupport.SetAbortOnFailure(model.AbortOnFailure);
+                await locSupport.SetUseLocalizationResourcesAsync(model.UseLocalizationResources);
+                await locSupport.SetAbortOnFailureAsync(model.AbortOnFailure);
                 await dataProvider.UpdateConfigAsync(data);
                 Manager.RestartSite();
             }

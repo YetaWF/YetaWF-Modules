@@ -34,8 +34,7 @@ namespace YetaWF.Modules.SlideShow.Modules {
         public SlideShowInfo SlideShow { get; set; }
 
         public override Task ModuleSavingAsync() {
-            SlideShow.Saving("SlideShow", ModuleGuid); // update internal information
-            return Task.CompletedTask;
+            return SlideShow.SavingAsync("SlideShow", ModuleGuid); // update internal information
         }
     }
 }

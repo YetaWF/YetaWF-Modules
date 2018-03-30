@@ -9,6 +9,7 @@ using YetaWF.Core.Views.Shared;
 using YetaWF.Core.Support;
 using YetaWF.Modules.Packages.DataProvider;
 using System.Threading.Tasks;
+using YetaWF.Core.IO;
 #if MVC6
 using Microsoft.AspNetCore.Mvc;
 #else
@@ -31,9 +32,9 @@ namespace YetaWF.Modules.Packages.Controllers {
 
             public List<SelectionItem<string>> SiteTemplate_List { get; set; }
 
-            public void UpdateData() {
+            public async Task UpdateDataAsync() {
                 PackagesDataProvider packagesDP = new PackagesDataProvider();
-                SiteTemplate_List = (from f in Directory.GetFiles(packagesDP.TemplateFolder, "*.txt") orderby f select new SelectionItem<string>() {
+                SiteTemplate_List = (from f in await FileSystem.FileSystemProvider.GetFilesAsync(packagesDP.TemplateFolder, "*.txt") orderby f select new SelectionItem<string>() {
                     Text = Path.GetFileName(f),
                     Value = Path.GetFileName(f),
                 }).ToList();
@@ -42,9 +43,9 @@ namespace YetaWF.Modules.Packages.Controllers {
         }
 
         [AllowGet]
-        public ActionResult SiteTemplateProcess(string fileName) {
+        public async Task<ActionResult> SiteTemplateProcess(string fileName) {
             EditModel model = new EditModel { };
-            model.UpdateData();
+            await model.UpdateDataAsync();
             return View(model);
         }
 
@@ -52,7 +53,7 @@ namespace YetaWF.Modules.Packages.Controllers {
         [ConditionalAntiForgeryToken]
         [ExcludeDemoMode]
         public async Task<ActionResult> SiteTemplateProcess_Partial(EditModel model) {
-            model.UpdateData();
+            await model.UpdateDataAsync();
             if (!ModelState.IsValid)
                 return PartialView(model);
 

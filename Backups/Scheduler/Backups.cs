@@ -25,7 +25,7 @@ namespace YetaWF.Modules.Backups.Scheduler {
                 SiteBackup siteBackup = new SiteBackup();
                 List<string> errorList = new List<string>();
                 ConfigData config = await ConfigDataProvider.GetConfigAsync();
-                siteBackup.RemoveOldBackups(errorList, config.Days);
+                await siteBackup.RemoveOldBackupsAsync(errorList, config.Days);
             } else
                 throw new Error(this.__ResStr("eventNameErr", "Unknown scheduler event {0}"), evnt.EventName);
         }

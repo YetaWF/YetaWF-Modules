@@ -80,7 +80,7 @@ namespace YetaWF.Modules.Dashboard.Controllers {
         [AllowPost]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> StaticPagesBrowse_GridData(int skip, int take, List<DataProviderSortInfo> sort, List<DataProviderFilterInfo> filters, Guid settingsModuleGuid) {
-            List<BrowseItem> items = (from k in Manager.StaticPageManager.GetSiteStaticPages() select new BrowseItem(Module, k)).ToList();
+            List<BrowseItem> items = (from k in await Manager.StaticPageManager.GetSiteStaticPagesAsync() select new BrowseItem(Module, k)).ToList();
             int total = items.Count;
             DataProviderGetRecords<BrowseItem> recs = DataProviderImpl<BrowseItem>.GetRecords(items, skip, take, sort, filters);
             GridHelper.SaveSettings(skip, take, sort, filters, settingsModuleGuid);
@@ -92,14 +92,14 @@ namespace YetaWF.Modules.Dashboard.Controllers {
 
         [AllowPost]
         [ExcludeDemoMode]
-        public ActionResult Remove(string localUrl) {
-            Manager.StaticPageManager.RemovePage(localUrl);
+        public async Task<ActionResult> Remove(string localUrl) {
+            await Manager.StaticPageManager.RemovePageAsync(localUrl);
             return Reload(null, Reload: ReloadEnum.ModuleParts);
         }
         [AllowPost]
         [ExcludeDemoMode]
-        public ActionResult RemoveAll() {
-            Manager.StaticPageManager.RemoveAllPages();
+        public async Task<ActionResult> RemoveAll() {
+            await Manager.StaticPageManager.RemoveAllPagesAsync();
             return Reload(null, Reload: ReloadEnum.ModuleParts);
         }
     }

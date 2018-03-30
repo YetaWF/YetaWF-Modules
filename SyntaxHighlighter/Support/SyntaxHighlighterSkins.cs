@@ -1,19 +1,26 @@
 ﻿/* Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/SyntaxHighlighter#License */
 
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using YetaWF.Core.Addons;
+using YetaWF.Core.IO;
 using YetaWF.Core.Packages;
 using YetaWF.Core.Support;
 using YetaWF.Modules.SyntaxHighlighter.Controllers;
 
 namespace YetaWF.Modules.SyntaxHighlighter.Support {
 
-    public partial class SkinAccess {
+    public partial class SkinAccess : IInitializeApplicationStartup {
 
         private const string SyntaxHighlighterThemeFileMVC5 = "ThemelistMVC5.txt";
         private const string SyntaxHighlighterThemeFileMVC6 = "ThemelistMVC6.txt";
+
+        public async Task InitializeApplicationStartupAsync(bool firstNode) {
+            await LoadSyntaxHighlighterThemesAsync();
+        }
 
         public class SyntaxHighlighterTheme {
             public string Name { get; set; }
@@ -22,14 +29,12 @@ namespace YetaWF.Modules.SyntaxHighlighter.Support {
         }
 
         public List<SyntaxHighlighterTheme> GetSyntaxHighlighterThemeList() {
-            if (_syntaxHighlighterThemeList == null)
-                LoadSyntaxHighlighterThemes();
-            return _syntaxHighlighterThemeList;
+            return SyntaxHighlighterThemeList;
         }
-        private static List<SyntaxHighlighterTheme> _syntaxHighlighterThemeList;
+        private static List<SyntaxHighlighterTheme> SyntaxHighlighterThemeList { get; set; }
         private static SyntaxHighlighterTheme _syntaxHighlighterThemeDefault;
 
-        private List<SyntaxHighlighterTheme> LoadSyntaxHighlighterThemes() {
+        private async Task LoadSyntaxHighlighterThemesAsync() {
             Package package = AreaRegistration.CurrentPackage;
             string url = VersionManager.GetAddOnNamedUrl(package.Domain, package.Product, "SkinSyntaxHighlighter");
             string customUrl = VersionManager.GetCustomUrlFromUrl(url);
@@ -43,10 +48,10 @@ namespace YetaWF.Modules.SyntaxHighlighter.Support {
             else
                 themeFile = SyntaxHighlighterThemeFileMVC6;
             string filename = Path.Combine(customPath, themeFile);
-            if (!File.Exists(filename))
+            if (!await FileSystem.FileSystemProvider.FileExistsAsync(filename))
                 filename = Path.Combine(path, themeFile);
 
-            string[] lines = File.ReadAllLines(filename);
+            List<string> lines = await FileSystem.FileSystemProvider.ReadAllLinesAsync(filename);
             List<SyntaxHighlighterTheme> syntaxHighlighterList = new List<SyntaxHighlighterTheme>();
 
             foreach (string line in lines) {
@@ -60,11 +65,11 @@ namespace YetaWF.Modules.SyntaxHighlighter.Support {
 #if DEBUG // only validate files in debug builds
                 if (file.StartsWith("\\")) {
                     string f = Path.Combine(YetaWFManager.RootFolder, file.Substring(1));
-                    if (!File.Exists(f))
+                    if (!await FileSystem.FileSystemProvider.FileExistsAsync(f))
                         throw new InternalError("SyntaxHighlighter theme file not found: {0} - {1}", line, f);
                 } else {
                     string f = Path.Combine(path, file);
-                    if (!File.Exists(f))
+                    if (!await FileSystem.FileSystemProvider.FileExistsAsync(f))
                         throw new InternalError("SyntaxHighlighter theme file not found: {0} - {1}", line, f);
                 }
 #endif
@@ -76,15 +81,14 @@ namespace YetaWF.Modules.SyntaxHighlighter.Support {
                 syntaxHighlighterList.Add(new SyntaxHighlighterTheme {
                     Name = name,
                     Description = description,
-                    File= file,
+                    File = file,
                 });
             }
             if (syntaxHighlighterList.Count == 0)
                 throw new InternalError("No SyntaxHighlighter themes found");
 
             _syntaxHighlighterThemeDefault = syntaxHighlighterList[0];
-            _syntaxHighlighterThemeList = (from theme in syntaxHighlighterList orderby theme.Name select theme).ToList();
-            return _syntaxHighlighterThemeList;
+            SyntaxHighlighterThemeList = (from theme in syntaxHighlighterList orderby theme.Name select theme).ToList();
         }
 
         public string FindSyntaxHighlighterSkin(string themeName) {

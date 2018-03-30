@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using YetaWF.Core;
 using YetaWF.Core.DataProvider;
 using YetaWF.Core.Identity;
+using YetaWF.Core.IO;
 using YetaWF.Core.Log;
 using YetaWF.Core.Menus;
 using YetaWF.Core.Models;
@@ -80,7 +81,7 @@ namespace YetaWF.Modules.Packages.DataProvider {
 
             string initDataFile = Path.Combine(TemplateFolder, template);
 
-            List<string> lines = new List<string>(File.ReadAllLines(initDataFile));
+            List<string> lines = new List<string>(await FileSystem.FileSystemProvider.ReadAllLinesAsync(initDataFile));
             // substitute all variables (if any)
             Variables vars = new Variables(Manager) { DoubleEscape = true, CurlyBraces = false };
             List<string> newLines = new List<string>();

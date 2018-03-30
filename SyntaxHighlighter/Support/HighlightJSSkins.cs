@@ -3,7 +3,9 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using YetaWF.Core.Addons;
+using YetaWF.Core.IO;
 using YetaWF.Core.Packages;
 using YetaWF.Core.Support;
 using YetaWF.Modules.SyntaxHighlighter.Controllers;
@@ -19,15 +21,15 @@ namespace YetaWF.Modules.SyntaxHighlighter.Support {
             public string Name { get; set; }
         }
 
-        public List<HighlightJSTheme> GetHighlightJSThemeList() {
+        public async Task<List<HighlightJSTheme>> GetHighlightJSThemeListAsync() {
             if (_HighlightJSThemeList == null)
-                LoadHighlightJSThemes();
+                await LoadHighlightJSThemesAsync();
             return _HighlightJSThemeList;
         }
         private static List<HighlightJSTheme> _HighlightJSThemeList;
         private static HighlightJSTheme _HighlightJSThemeDefault;
 
-        private List<HighlightJSTheme> LoadHighlightJSThemes() {
+        private async Task<List<HighlightJSTheme>> LoadHighlightJSThemesAsync() {
             Package package = AreaRegistration.CurrentPackage;
             string url = VersionManager.GetAddOnNamedUrl(package.Domain, package.Product, "SkinHighlightJS");
             string customUrl = VersionManager.GetCustomUrlFromUrl(url);
@@ -37,10 +39,10 @@ namespace YetaWF.Modules.SyntaxHighlighter.Support {
             // use custom or default theme list
             string themeFile = HighlightJSThemeFile;
             string filename = Path.Combine(customPath, themeFile);
-            if (!File.Exists(filename))
+            if (!await FileSystem.FileSystemProvider.FileExistsAsync(filename))
                 filename = Path.Combine(path, themeFile);
 
-            string[] lines = File.ReadAllLines(filename);
+            List<string> lines = await FileSystem.FileSystemProvider.ReadAllLinesAsync(filename);
             List<HighlightJSTheme> HighlightJSList = new List<HighlightJSTheme>();
 
             foreach (string line in lines) {
@@ -48,7 +50,7 @@ namespace YetaWF.Modules.SyntaxHighlighter.Support {
                 string name = line.Trim();
 #if DEBUG // only validate files in debug builds
                 string f = Path.Combine(path, "themes", name) + ".css";
-                if (!File.Exists(f))
+                if (!await FileSystem.FileSystemProvider.FileExistsAsync(f))
                     throw new InternalError("HighlightJS theme file not found: {0} - {1}", line, f);
 #endif
                 HighlightJSList.Add(new HighlightJSTheme {
@@ -63,15 +65,15 @@ namespace YetaWF.Modules.SyntaxHighlighter.Support {
             return _HighlightJSThemeList;
         }
 
-        public string FindHighlightJSSkin(string themeName) {
-            string intName = (from th in GetHighlightJSThemeList() where th.Name == themeName select th.Name).FirstOrDefault();
+        public async Task<string> FindHighlightJSSkinAsync(string themeName) {
+            string intName = (from th in await GetHighlightJSThemeListAsync() where th.Name == themeName select th.Name).FirstOrDefault();
             if (!string.IsNullOrWhiteSpace(intName))
                 return intName;
             return _HighlightJSThemeDefault.Name;
         }
-        public static string GetHighlightJSDefaultSkin() {
+        public static async Task<string> GetHighlightJSDefaultSkinAsync() {
             SkinAccess skinAccess = new SkinAccess();
-            skinAccess.GetHighlightJSThemeList();
+            await skinAccess.GetHighlightJSThemeListAsync();
             return _HighlightJSThemeDefault.Name;
         }
     }

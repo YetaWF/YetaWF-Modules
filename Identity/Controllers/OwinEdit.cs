@@ -5,6 +5,7 @@ using YetaWF.Core.Controllers;
 using YetaWF.Core.Localize;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Support;
+using System.Threading.Tasks;
 #if MVC6
 using Microsoft.AspNetCore.Mvc;
 #else
@@ -115,7 +116,7 @@ namespace YetaWF.Modules.Identity.Controllers {
         [AllowPost]
         [ConditionalAntiForgeryToken]
         [ExcludeDemoMode]
-        public ActionResult OwinEdit_Partial(EditModel model) {
+        public async Task<ActionResult> OwinEdit_Partial(EditModel model) {
             if (!ModelState.IsValid)
                 return PartialView(model);
             if (model.ExpireTimeSpan < new TimeSpan(0, 10, 0)) {
@@ -139,7 +140,7 @@ namespace YetaWF.Modules.Identity.Controllers {
             WebConfigHelper.SetValue<string>(Module.Area, "FacebookAccount:Private", model.FacebookPrivate);
             WebConfigHelper.SetValue<string>(Module.Area, "TwitterAccount:Public", model.TwitterPublic);
             WebConfigHelper.SetValue<string>(Module.Area, "TwitterAccount:Private", model.TwitterPrivate);
-            WebConfigHelper.Save();
+            await WebConfigHelper.SaveAsync();
 
             Manager.RestartSite();
 

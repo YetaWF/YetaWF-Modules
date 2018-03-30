@@ -1,4 +1,6 @@
-﻿using System.Threading.Tasks;
+﻿/* Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Caching#License */
+
+using System.Threading.Tasks;
 using YetaWF.Core.Support;
 using YetaWF.Modules.Caching.Controllers;
 using YetaWF.Modules.Caching.DataProvider;
