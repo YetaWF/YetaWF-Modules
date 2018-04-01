@@ -60,8 +60,8 @@ namespace YetaWF.Modules.Identity.Support {
         public async Task SendApprovalNeededAsync(UserDefinition user) {
             // get the registration module for some defaults
             RegisterModule regMod = (RegisterModule)await ModuleDefinition.CreateUniqueModuleAsync(typeof(RegisterModule));
-            ModuleAction approve = regMod.GetAction_Approve(user.UserName);
-            ModuleAction reject = regMod.GetAction_Reject(user.UserName);
+            ModuleAction approve = await regMod.GetAction_ApproveAsync(user.UserName);
+            ModuleAction reject = await regMod.GetAction_RejectAsync(user.UserName);
 
             SendEmail sendEmail = new SendEmail();
             object parms = new {
@@ -101,7 +101,7 @@ namespace YetaWF.Modules.Identity.Support {
         public async Task SendNewUserCreatedAsync(UserDefinition user) {
             // get the registration module for some defaults
             RegisterModule regMod = (RegisterModule)await ModuleDefinition.CreateUniqueModuleAsync(typeof(RegisterModule));
-            ModuleAction reject = regMod.GetAction_Reject(user.UserName);
+            ModuleAction reject = await regMod.GetAction_RejectAsync(user.UserName);
 
             SendEmail sendEmail = new SendEmail();
             object parms = new {

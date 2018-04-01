@@ -3,6 +3,7 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using YetaWF.Core.Audit;
 using YetaWF.Core.DataProvider;
 using YetaWF.Core.DataProvider.Attributes;
 using YetaWF.Core.IO;
@@ -164,9 +165,11 @@ namespace YetaWF.Modules.Scheduler.DataProvider {
 
         public async Task SetRunningAsync(bool running) {
             if (running != GetRunning()) {
-                //$$audit
                 WebConfigHelper.SetValue<bool>(AreaRegistration.CurrentPackage.AreaName, "Running", running);
                 await WebConfigHelper.SaveAsync();
+                await Auditing.AddAuditAsync($"{nameof(SchedulerDataProvider)}.{nameof(SetRunningAsync)}", "Scheduler", Guid.Empty,
+                    $"{nameof(SetRunningAsync)}({running})", RequiresRestart: true
+                );
             }
         }
         public bool GetRunning() {

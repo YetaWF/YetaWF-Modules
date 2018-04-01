@@ -2,12 +2,14 @@
 
 using System;
 using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 using YetaWF.Core.DataProvider;
 using YetaWF.Core.IO;
 using YetaWF.Core.Packages;
 using YetaWF.Core.Serializers;
 using YetaWF.Core.Support;
+using YetaWF.Core.Support.Serializers;
 
 namespace YetaWF.Modules.Caching.DataProvider {
 
@@ -25,18 +27,20 @@ namespace YetaWF.Modules.Caching.DataProvider {
 
     /// <summary>
     /// A shared cache implementation backed by memory to improve performance.
+    /// This is intended as a way to preserve and share "static" in-memory data across instances.
     /// Shared cache will only be retrieved to check if there is a newer cached object available. Once
     /// it is known that a new object is available the data is retrieved.
+    /// This is equivalent to StaticObjectSingleDataProvider on a single-instance site.
     /// </summary>
-    public class StaticSharedCacheObjectDataProvider : DataProviderImpl, ICacheStaticObject {
+    public class StaticObjectMultiDataProvider : DataProviderImpl, ICacheStaticObject {
 
         // Implementation
 
-        public StaticSharedCacheObjectDataProvider() : base(0) { SetDataProvider(CreateDataProvider()); }
+        public StaticObjectMultiDataProvider() : base(0) { SetDataProvider(CreateDataProvider()); }
 
-        private IDataProvider<string, SharedCacheVersion> DataProvider { get { return GetDataProvider(); } }
+        private IDataProvider<string, SharedCacheObject> DataProvider { get { return GetDataProvider(); } }
 
-        private IDataProvider<string, SharedCacheVersion> CreateDataProvider() {
+        private IDataProvider<string, SharedCacheObject> CreateDataProvider() {
             Package package = YetaWF.Modules.Caching.Controllers.AreaRegistration.CurrentPackage;
             return MakeDataProvider(package, package.AreaName + "_SharedCache", Cacheable: false, Parms: new { NoLanguages = true });
         }
@@ -45,18 +49,19 @@ namespace YetaWF.Modules.Caching.DataProvider {
 
         // API
 
-        private string GetKey<TYPE>() {
+        private string GetKey(string key) {
             int identity = (YetaWFManager.HaveManager && Manager.HaveCurrentSite) ? Manager.CurrentSite.Identity : 0;
-            return $"__static_{identity}/{typeof(TYPE).FullName}";
+            return $"__static_{identity}/{key}";
         }
-        public async Task AddAsync<TYPE>(TYPE data) {
-            string key = GetKey<TYPE>();
+        public async Task AddAsync<TYPE>(string key, TYPE data) {
+            key = GetKey(key);
             await StringLocks.DoActionAsync(key, async () => {
                 using (DataProviderTransaction trans = DataProvider.StartTransaction()) {
                     // save new version shared and locally
-                    SharedCacheVersion sharedCacheObj = new SharedCacheVersion {
+                    SharedCacheObject sharedCacheObj = new SharedCacheObject {
                         Created = DateTime.UtcNow,
                         Key = key,
+                        Value = new GeneralFormatter().Serialize(data),
                     };
                     await DataProvider.RemoveAsync(key);
                     await DataProvider.AddAsync(sharedCacheObj); // save shared cached version
@@ -65,33 +70,45 @@ namespace YetaWF.Modules.Caching.DataProvider {
                     StaticCacheObject cachedObj = new StaticCacheObject {
                         Key = key,
                         Value = data,
-                        Created = DateTime.UtcNow,
+                        Created = sharedCacheObj.Created,
                     };
                     StaticObjects.Remove(key);
                     StaticObjects.Add(key, cachedObj);
                 }
             });
         }
-        public async Task<GetObjectInfo<TYPE>> GetAsync<TYPE>(Func<Task<TYPE>> noDataCallback) {
+        public async Task<TYPE> GetAsync<TYPE>(string key, Func<Task<TYPE>> noDataCallback = null) {
             // get cached version
-            GetObjectInfo<TYPE> retVal = null;
-            string key = GetKey<TYPE>();
+            TYPE data = default(TYPE);
+            key = GetKey(key);
             await StringLocks.DoActionAsync(key, async () => {
                 StaticCacheObject cachedObj;
                 bool localValid = StaticObjects.TryGetValue(key, out cachedObj);
                 if (!localValid) {
                     cachedObj = new StaticCacheObject {
                         Key = key,
-                        Value = null,
+                        Value = data,
                         Created = DateTime.MinValue,
                     };
                 }
                 // get shared cached version
-                SharedCacheVersion sharedInfo = await DataProvider.GetAsync(key);
+                SharedCacheVersion sharedInfo = await SharedCacheVersionDataProvider.SharedCacheVersionDP.GetVersionAsync(key);
                 if (sharedInfo != null) {
                     if (sharedInfo.Created != cachedObj.Created) {
                         // shared cached version is different, use callback to set data
-                        TYPE data = await noDataCallback();
+                        if (noDataCallback == null) {
+                            // shared cached version is different, retrieve and save locally
+                            SharedCacheObject sharedCacheObj = await DataProvider.GetAsync(key);
+                            if (sharedCacheObj == null) { 
+                                // this shouldn't happen, we just got the shared version
+                            } else {
+                                data = (TYPE)new GeneralFormatter().Deserialize(sharedCacheObj.Value);
+                                sharedInfo = sharedCacheObj;
+                            }
+                        } else {
+                            // if there is a data callback, the caller provides all data (nothing, except version, is saved in shared cache)
+                            data = await noDataCallback();
+                        }
                         cachedObj = new StaticCacheObject {
                             Created = sharedInfo.Created,
                             Key = sharedInfo.Key,
@@ -99,10 +116,6 @@ namespace YetaWF.Modules.Caching.DataProvider {
                         };
                         StaticObjects.Remove(key);
                         StaticObjects.Add(key, cachedObj);
-                        retVal = new GetObjectInfo<TYPE> {
-                            Success = true,
-                            Data = data,
-                        };
                         return;
                     } else {
                         // shared version same as local version
@@ -111,46 +124,87 @@ namespace YetaWF.Modules.Caching.DataProvider {
                     // there is no shared version
                 }
                 // return the local data 
-                if (!localValid)
-                    cachedObj.Value = await noDataCallback();
-                retVal = new GetObjectInfo<TYPE> {
-                    Success = true,
-                    Data = (TYPE)cachedObj.Value,
-                };
-                return;
+                if (!localValid) {
+                    if (noDataCallback != null)
+                        cachedObj.Value = await noDataCallback();
+                }
+                data = (TYPE)cachedObj.Value;
             });
-            return retVal;
+            return data;
         }
-        public async Task RemoveAsync<TYPE>() {
+        public async Task RemoveAsync<TYPE>(string key) {
             // We're adding a new version
-            await AddAsync(default(TYPE));
+            await AddAsync(key, default(TYPE));
         }
 
         private class StaticLockObject : IDisposable, IStaticLockObject {
 
-            private IDataProvider<string, SharedCacheVersion> dataProvider;
-            private string key;
+            private IDataProvider<string, SharedCacheVersion> DataProvider;
+            private string Key;
+            private static SemaphoreSlim localLock = new SemaphoreSlim(1, 1);// to protect local instance
+            private bool LocalLocked = false;
+            private bool Locked = false;
 
             public StaticLockObject(IDataProvider<string, SharedCacheVersion> dataProvider, string key) {
-                this.dataProvider = dataProvider;
-                this.key = key;
+                this.DataProvider = dataProvider;
+                this.Key = key;
                 DisposableTracker.AddObject(this);
             }
+            internal async Task LockAsync() {
+                if (Locked) throw new InternalError($"{nameof(LockAsync)} called while already holding a lock on {Key}");
+                for (; !Locked;) {
+                    if (YetaWFManager.IsSync()) {
+                        if (localLock.Wait(10))
+                            LocalLocked = true;
+                    } else {
+                        await localLock.WaitAsync();
+                        LocalLocked = true;
+                    }
+                    if (LocalLocked) {
+                        SharedCacheVersion sharedObj = new SharedCacheVersion {
+                            Created = DateTime.UtcNow,
+                            Key = Key,
+                        };
+                        try {
+                            if (await DataProvider.AddAsync(sharedObj)) {
+                                // we own the lock
+                                Locked = true;
+                            }
+                        } catch (Exception) {
+                            throw;
+                        } finally {
+                            localLock.Release();
+                            LocalLocked = false;
+                        }
+                        if (Locked)
+                            break;
+                    }
+                    if (YetaWFManager.IsSync())
+                        Thread.Sleep(new TimeSpan(0, 0, 0, 0, 25));// wait a while - this is bad, only works because "other" instance has lock
+                    else
+                        await Task.Delay(new TimeSpan(0, 0, 0, 0, 25));// wait a while
 
+                }
+            }
             public async Task UnlockAsync() {
-                await dataProvider.RemoveAsync(key);
-                dataProvider = null;
+                if (Locked) {
+                    await DataProvider.RemoveAsync(Key);
+                    DataProvider = null;
+                    Locked = false;
+                }
             }
 
             public void Dispose() { Dispose(true); }
             protected virtual void Dispose(bool disposing) {
+                if (LocalLocked)
+                    throw new InternalError("Disposing with local lock present");
                 if (disposing) {
-                    if (dataProvider != null) {
+                    if (Locked) {
                         DisposableTracker.RemoveObject(this);
                         YetaWFManager.Syncify(async () => // Only used if caller forgets to Unlock
-                            await dataProvider.RemoveAsync(key)
+                            await UnlockAsync()
                         );
-                        dataProvider = null;
+                        DataProvider = null;
                     }
                 }
             }
@@ -158,19 +212,10 @@ namespace YetaWF.Modules.Caching.DataProvider {
         /// <summary>
         /// Lock a static shared object.
         /// </summary>
-        /// <returns>This does not support reentrancy.</returns>
-        public async Task<IStaticLockObject> LockAsync<TYPE>() {
-            string key = "__LOCK" + GetKey<TYPE>();
-            SharedCacheVersion sharedObj = new SharedCacheVersion {
-                Created = DateTime.UtcNow,
-                Key = key,
-            };
-            for (;;) {
-                if (await DataProvider.AddAsync(sharedObj))
-                    break;// we own the lock
-                await Task.Delay(new TimeSpan(0, 0, 0, 50));// wait a while
-            }
-            return new StaticLockObject(DataProvider, key);
+        public async Task<IStaticLockObject> LockAsync<TYPE>(string key) {
+            StaticLockObject staticLock = new StaticLockObject(SharedCacheVersionDataProvider.SharedCacheVersionDP.GetDataProvider(), "__LOCK" + GetKey(key));
+            await staticLock.LockAsync();
+            return staticLock;
         }
 
         //$$// API for Module

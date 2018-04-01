@@ -56,10 +56,10 @@ namespace YetaWF.Modules.Feed.Modules {
 
         public override SerializableList<AllowedRole> DefaultAllowedRoles { get { return AdministratorLevel_DefaultAllowedRoles; } }
 
-        public ModuleAction GetAction_News() {
+        public async Task<ModuleAction> GetAction_NewsAsync() {
             return new ModuleAction(this) {
                 Url = FeedUrl,
-                Image = "Feed.png",
+                Image = await CustomIconAsync("Feed.png"),
                 LinkText = Title,
                 MenuText = Title,
                 Tooltip = this.__ResStr("displayTooltip", "Display the {0} news feed", Title),

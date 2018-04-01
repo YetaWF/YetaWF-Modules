@@ -30,21 +30,21 @@ namespace YetaWF.Modules.Scheduler.Controllers {
 
             [Caption("Actions"), Description("The available actions")]
             [UIHint("ActionIcons"), ReadOnly]
-            public MenuList Commands {
-                get {
-                    MenuList actions = new MenuList() { RenderMode = ModuleAction.RenderModeEnum.IconsOnly };
+            public MenuList Commands { get; set; }
 
-                    SchedulerDisplayModule dispMod = new SchedulerDisplayModule();
-                    actions.New(dispMod.GetAction_Display(Module.DisplayUrl, Name), ModuleAction.ActionLocationEnum.GridLinks);
+            public async Task<MenuList> __GetCommandsAsync() {
+                MenuList actions = new MenuList() { RenderMode = ModuleAction.RenderModeEnum.IconsOnly };
 
-                    SchedulerEditModule editMod = new SchedulerEditModule();
-                    actions.New(editMod.GetAction_Edit(Module.EditUrl, Name), ModuleAction.ActionLocationEnum.GridLinks);
+                SchedulerDisplayModule dispMod = new SchedulerDisplayModule();
+                actions.New(dispMod.GetAction_Display(Module.DisplayUrl, Name), ModuleAction.ActionLocationEnum.GridLinks);
 
-                    actions.New(Module.GetAction_RunItem(Name), ModuleAction.ActionLocationEnum.GridLinks);
-                    actions.New(Module.GetAction_RemoveItem(Name), ModuleAction.ActionLocationEnum.GridLinks);
+                SchedulerEditModule editMod = new SchedulerEditModule();
+                actions.New(editMod.GetAction_Edit(Module.EditUrl, Name), ModuleAction.ActionLocationEnum.GridLinks);
 
-                    return actions;
-                }
+                actions.New(await Module.GetAction_RunItemAsync(Name), ModuleAction.ActionLocationEnum.GridLinks);
+                actions.New(Module.GetAction_RemoveItem(Name), ModuleAction.ActionLocationEnum.GridLinks);
+
+                return actions;
             }
 
             [Caption("Running"), Description("Shows whether the scheduler item is currently running")]

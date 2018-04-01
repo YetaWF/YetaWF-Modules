@@ -39,17 +39,17 @@ namespace YetaWF.Modules.Packages.Controllers {
             public async Task<MenuList> __GetCommandsAsync() {
                 MenuList actions = new MenuList() { RenderMode = ModuleAction.RenderModeEnum.IconsOnly };
 
-                actions.New(Module.GetAction_InfoLink(Package.InfoLink), ModuleAction.ActionLocationEnum.GridLinks);
+                actions.New(await Module.GetAction_InfoLinkAsync(Package.InfoLink), ModuleAction.ActionLocationEnum.GridLinks);
                 //actions.New(Module.GetAction_SupportLink(Package.SupportLink), ModuleAction.ActionLocationEnum.GridLinks);
                 //actions.New(Module.GetAction_LicenseLink(Package.LicenseLink), ModuleAction.ActionLocationEnum.GridLinks);
                 //actions.New(Module.GetAction_ReleaseNoticeLink(Package.ReleaseNoticeLink), ModuleAction.ActionLocationEnum.GridLinks);
 
                 actions.New(await Module.GetAction_ExportPackageAsync(Package), ModuleAction.ActionLocationEnum.GridLinks);
                 actions.New(await Module.GetAction_ExportPackageWithSourceAsync(Package), ModuleAction.ActionLocationEnum.GridLinks);
-                actions.New(Module.GetAction_ExportPackageData(Package), ModuleAction.ActionLocationEnum.GridLinks);
-                actions.New(Module.GetAction_InstallPackageModels(Package), ModuleAction.ActionLocationEnum.GridLinks);
-                actions.New(Module.GetAction_UninstallPackageModels(Package), ModuleAction.ActionLocationEnum.GridLinks);
-                actions.New(Module.GetAction_LocalizePackage(Package), ModuleAction.ActionLocationEnum.GridLinks);
+                actions.New(await Module.GetAction_ExportPackageDataAsync(Package), ModuleAction.ActionLocationEnum.GridLinks);
+                actions.New(await Module.GetAction_InstallPackageModelsAsync(Package), ModuleAction.ActionLocationEnum.GridLinks);
+                actions.New(await Module.GetAction_UninstallPackageModelsAsync(Package), ModuleAction.ActionLocationEnum.GridLinks);
+                actions.New(await Module.GetAction_LocalizePackageAsync(Package), ModuleAction.ActionLocationEnum.GridLinks);
                 actions.New(Module.GetAction_RemovePackage(Package), ModuleAction.ActionLocationEnum.GridLinks);
 
                 actions.New(await ModLocalize.GetModuleActionAsync("Browse", null, Package), ModuleAction.ActionLocationEnum.GridLinks);
@@ -218,9 +218,9 @@ namespace YetaWF.Modules.Packages.Controllers {
             }
             string msg;
             if (await package.GetHasSourceAsync())
-                msg = this.__ResStr("okRemovedSrc", "Package successfully removed - The site is now restarting...(+nl)(+nl)This package includes source code. The source code, project and project references have to be removed manually in the Visual Studio solution for this YetaWF site.");
+                msg = this.__ResStr("okRemovedSrc", "Package successfully removed - These settings won't take effect until the site is restarted(+nl)(+nl)This package includes source code. The source code, project and project references have to be removed manually in the Visual Studio solution for this YetaWF site.");
             else
-                msg = this.__ResStr("okRemoved", "Package successfully removed - The site is now restarting...");
+                msg = this.__ResStr("okRemoved", "Package successfully removed - These settings won't take effect until the site is restarted");
             return Reload(PopupText: msg);
         }
     }

@@ -7,6 +7,9 @@ using YetaWF.Core.Support.Serializers;
 
 namespace YetaWF.Modules.Caching.DataProvider {
 
+    /// <summary>
+    /// Local cache data provider.
+    /// </summary>
     public class LocalCacheObjectDataProvider : DataProviderImpl, ICacheObject {
 
         // Implementation

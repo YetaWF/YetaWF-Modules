@@ -1,6 +1,7 @@
 ﻿/* Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Search#License */
 
 using System;
+using System.Threading.Tasks;
 using YetaWF.Core.IO;
 using YetaWF.Core.Localize;
 using YetaWF.Core.Models.Attributes;
@@ -36,9 +37,9 @@ namespace YetaWF.Modules.Search.Modules {
 
         public override SerializableList<AllowedRole> DefaultAllowedRoles { get { return AdministratorLevel_DefaultAllowedRoles; } }
 
-        public ModuleAction GetAction_On() {
+        public async Task<ModuleAction> GetAction_OnAsync() {
             return new ModuleAction(this) {
-                Image = "On.png",
+                Image = await CustomIconAsync("On.png"),
                 LinkText = this.__ResStr("onLink", "On"),
                 MenuText = this.__ResStr("onText", "On"),
                 Tooltip = this.__ResStr("onTooltip", "Turn on search results highlighting for this page"),
@@ -52,9 +53,9 @@ namespace YetaWF.Modules.Search.Modules {
                 Displayed = false,
             };
         }
-        public ModuleAction GetAction_Off() {
+        public async Task<ModuleAction> GetAction_OffAsync() {
             return new ModuleAction(this) {
-                Image = "Off.png",
+                Image = await CustomIconAsync("Off.png"),
                 LinkText = this.__ResStr("offLink", "Off"),
                 MenuText = this.__ResStr("offText", "Off"),
                 Tooltip = this.__ResStr("offTooltip", "Turn off search results highlighting for this page"),

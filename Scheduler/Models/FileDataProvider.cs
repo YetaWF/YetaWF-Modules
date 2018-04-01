@@ -38,9 +38,7 @@ namespace YetaWF.Modules.Scheduler.DataProvider.File {
                 string text = string.Format("{0}-{1}-{2}-{3}-{4}: {5}\n",
                     data.TimeStamp, data.RunId, data.Level, data.Name, data.SiteIdentity, data.Info);
                 text = text.Replace("\n", "\r\n");
-                //lock (lockObject) {//$$$$
-                    await FileSystem.FileSystemProvider.AppendAllTextAsync(LogFile, text);
-                //}
+                await FileSystem.FileSystemProvider.AppendAllTextAsync(LogFile, text);
                 return true;
             }
             public Task<DataProviderGetRecords<LogData>> GetItemsAsync(int skip, int take, List<DataProviderSortInfo> sort, List<DataProviderFilterInfo> filters) {

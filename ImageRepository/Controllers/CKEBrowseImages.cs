@@ -6,6 +6,7 @@ using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Modules;
 using YetaWF.Core.Support;
 using YetaWF.Modules.ImageRepository.Views.Shared;
+using System.Threading.Tasks;
 #if MVC6
 using Microsoft.AspNetCore.Mvc;
 #else
@@ -41,15 +42,16 @@ namespace YetaWF.Modules.ImageRepository.Controllers {
 
             public Model() { }
 
-            public void Update(ModuleDefinition module) {
+            public async Task UpdateAsync(ModuleDefinition module) {
                 ImageName_Info = new ImageSelectionInfo(module, FolderGuid, SubFolder) {
                     AllowUpload = true,
                 };
+                await ImageName_Info.InitAsync();
             }
         }
 
         [AllowGet]
-        public ActionResult CKEBrowseImages(Guid __FolderGuid, Guid __SubFolder, string CKEditor, int CKEditorFuncNum, string langCode) {
+        public async Task<ActionResult> CKEBrowseImages(Guid __FolderGuid, Guid __SubFolder, string CKEditor, int CKEditorFuncNum, string langCode) {
             Model model = new Model {
                 FolderGuid = __FolderGuid,
                 SubFolder = __SubFolder == Guid.Empty ? null : __SubFolder.ToString(),
@@ -57,15 +59,15 @@ namespace YetaWF.Modules.ImageRepository.Controllers {
                 CKEditorFuncNum = CKEditorFuncNum,
                 LangCode = langCode,
             };
-            model.Update(Module);
+            await model.UpdateAsync(Module);
             return View(model);
         }
 
         [AllowPost]
         [ConditionalAntiForgeryToken]
         [ExcludeDemoMode]
-        public ActionResult CKEBrowseImages_Partial(Model model) {
-            model.Update(Module);
+        public async Task<ActionResult> CKEBrowseImages_Partial(Model model) {
+            await model.UpdateAsync(Module);
             if (!ModelState.IsValid)
                 return PartialView(model);
 

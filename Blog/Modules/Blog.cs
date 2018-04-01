@@ -16,7 +16,6 @@ using YetaWF.Modules.Blog.DataProvider;
 #if MVC6
 using Microsoft.AspNetCore.Routing;
 #else
-using System.Web.Routing;
 #endif
 
 namespace YetaWF.Modules.Blog.Modules {
@@ -91,10 +90,10 @@ namespace YetaWF.Modules.Blog.Modules {
                 }
             }
             return new ModuleAction(this) {
-                Url = YetaWFManager.UrlFor(typeof(RssController), "RssFeed"),
+                Url = YetaWFManager.UrlFor(typeof(RssController), nameof(RssController.RssFeed)),
                 QueryArgs = qargs,
                 QueryArgsHR = qargsHR,
-                Image = "RssFeed.png",
+                Image = await CustomIconAsync("RssFeed.png"),
                 Style = ModuleAction.ActionStyleEnum.NewWindow,
                 LinkText = this.__ResStr("rssLink", "RSS Feed"),
                 MenuText = this.__ResStr("rssMenu", "RSS Feed"),

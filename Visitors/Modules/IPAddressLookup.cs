@@ -1,6 +1,7 @@
 ﻿/* Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Visitors#License */
 
 using System;
+using System.Threading.Tasks;
 using YetaWF.Core.IO;
 using YetaWF.Core.Localize;
 using YetaWF.Core.Models.Attributes;
@@ -44,12 +45,12 @@ namespace YetaWF.Modules.Visitors.Modules {
                 SaveReturnUrl = true,
             };
         }
-        public ModuleAction GetAction_DisplayGeoData(string url, string ipAddress) {
+        public async Task<ModuleAction> GetAction_DisplayGeoDataAsync(string url, string ipAddress) {
             if (string.IsNullOrWhiteSpace(ipAddress)) return null;
             return new ModuleAction(this) {
                 Url = string.IsNullOrWhiteSpace(url) ? ModulePermanentUrl : url,
-                QueryArgs = new { IPAddress = ipAddress, GeoData=true },
-                Image = "GeoData.png",
+                QueryArgs = new { IPAddress = ipAddress, GeoData = true },
+                Image = await CustomIconAsync("GeoData.png"),
                 LinkText = this.__ResStr("displayGeoLink", "IP Address Geo Data"),
                 MenuText = this.__ResStr("displayGeoText", "IP Address Geo Data"),
                 Tooltip = this.__ResStr("displayGeoTooltip", "Display IP Address Geo Location"),

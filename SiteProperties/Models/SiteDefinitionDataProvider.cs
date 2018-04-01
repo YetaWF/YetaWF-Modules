@@ -121,7 +121,6 @@ namespace YetaWF.Modules.SiteProperties.Models {
         /// Save the site definition for the current site
         /// </summary>
         internal async Task SaveSiteDefinitionAsync(SiteDefinition site) {
-            //$$$need static lock
 
             SiteDefinition origSite = YetaWF.Core.Audit.Auditing.Active ? await LoadSiteDefinitionAsync(site.OriginalSiteDomain) : null;
 
@@ -142,6 +141,9 @@ namespace YetaWF.Modules.SiteProperties.Models {
             if (string.Compare(YetaWFManager.DefaultSiteName, site.OriginalSiteDomain, true) == 0 && site.SiteDomain != site.OriginalSiteDomain) {
                 WebConfigHelper.SetValue<string>(YetaWF.Core.Controllers.AreaRegistration.CurrentPackage.AreaName, "DEFAULTSITE", site.SiteDomain);
                 await WebConfigHelper.SaveAsync();
+                await Auditing.AddAuditAsync($"{nameof(SiteDefinitionDataProvider)}.{nameof(SaveSiteDefinitionAsync)}", site.OriginalSiteDomain, Guid.Empty,
+                    $"DEFAULTSITE", RequiresRestart: true
+                );
             }
 
             await Auditing.AddAuditAsync($"{nameof(SiteDefinitionDataProvider)}.{nameof(SaveSiteDefinitionAsync)}", site.OriginalSiteDomain, Guid.Empty,

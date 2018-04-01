@@ -20,13 +20,13 @@ namespace YetaWF.Modules.Caching.Startup {
                 // distributed caching uses local and shared cache
                 YetaWF.Core.IO.Caching.LocalCacheProvider = new LocalCacheObjectDataProvider();
                 YetaWF.Core.IO.Caching.SharedCacheProvider = new SharedCacheObjectDataProvider();
-                YetaWF.Core.IO.Caching.StaticCacheProvider = new StaticSharedCacheObjectDataProvider();
+                YetaWF.Core.IO.Caching.StaticCacheProvider = new StaticObjectMultiDataProvider();
                 YetaWF.Core.IO.Caching.MultiInstance = true;
             } else {
                 // non-distributed caching uses local cache only
                 YetaWF.Core.IO.Caching.LocalCacheProvider = new LocalCacheObjectDataProvider();
                 YetaWF.Core.IO.Caching.SharedCacheProvider = new LocalCacheObjectDataProvider();
-                YetaWF.Core.IO.Caching.StaticCacheProvider = new StaticSingleCacheObjectDataProvider();
+                YetaWF.Core.IO.Caching.StaticCacheProvider = new StaticObjectSingleDataProvider();
                 YetaWF.Core.IO.Caching.MultiInstance = false;
             }
             return Task.CompletedTask;

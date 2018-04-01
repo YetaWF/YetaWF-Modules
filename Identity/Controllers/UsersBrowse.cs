@@ -31,29 +31,29 @@ namespace YetaWF.Modules.Identity.Controllers {
 
             [Caption("Actions"), Description("The available actions")]
             [UIHint("ActionIcons"), ReadOnly]
-            public MenuList Commands {
-                get {
-                    MenuList actions = new MenuList() { RenderMode = ModuleAction.RenderModeEnum.IconsOnly };
+            public MenuList Commands { get; set; }
 
-                    UsersDisplayModule dispMod = new UsersDisplayModule();
-                    actions.New(dispMod.GetAction_Display(Module.DisplayUrl, UserName), ModuleAction.ActionLocationEnum.GridLinks);
+            public async Task<MenuList> __GetCommandsAsync() {
+                MenuList actions = new MenuList() { RenderMode = ModuleAction.RenderModeEnum.IconsOnly };
 
-                    UsersEditModule editMod = new UsersEditModule();
-                    actions.New(editMod.GetAction_Edit(Module.EditUrl, UserName), ModuleAction.ActionLocationEnum.GridLinks);
+                UsersDisplayModule dispMod = new UsersDisplayModule();
+                actions.New(dispMod.GetAction_Display(Module.DisplayUrl, UserName), ModuleAction.ActionLocationEnum.GridLinks);
 
-                    if (UserStatus == UserStatusEnum.NeedValidation) {
-                        actions.New(Module.GetAction_SendVerificationEmail(UserName), ModuleAction.ActionLocationEnum.GridLinks);
-                    } else if (UserStatus == UserStatusEnum.Approved) {
-                        actions.New(Module.GetAction_SendApprovedEmail(UserName), ModuleAction.ActionLocationEnum.GridLinks);
-                    } else if (UserStatus == UserStatusEnum.Rejected) {
-                        actions.New(Module.GetAction_SendRejectedEmail(UserName), ModuleAction.ActionLocationEnum.GridLinks);
-                    } else if (UserStatus == UserStatusEnum.Suspended) {
-                        actions.New(Module.GetAction_SendSuspendedEmail(UserName), ModuleAction.ActionLocationEnum.GridLinks);
-                    }
-                    actions.New(Module.GetAction_RemoveLink(UserName), ModuleAction.ActionLocationEnum.GridLinks);
+                UsersEditModule editMod = new UsersEditModule();
+                actions.New(editMod.GetAction_Edit(Module.EditUrl, UserName), ModuleAction.ActionLocationEnum.GridLinks);
 
-                    return actions;
+                if (UserStatus == UserStatusEnum.NeedValidation) {
+                    actions.New(await Module.GetAction_SendVerificationEmailAsync(UserName), ModuleAction.ActionLocationEnum.GridLinks);
+                } else if (UserStatus == UserStatusEnum.Approved) {
+                    actions.New(await Module.GetAction_SendApprovedEmailAsync(UserName), ModuleAction.ActionLocationEnum.GridLinks);
+                } else if (UserStatus == UserStatusEnum.Rejected) {
+                    actions.New(await Module.GetAction_SendRejectedEmailAsync(UserName), ModuleAction.ActionLocationEnum.GridLinks);
+                } else if (UserStatus == UserStatusEnum.Suspended) {
+                    actions.New(await Module.GetAction_SendSuspendedEmailAsync(UserName), ModuleAction.ActionLocationEnum.GridLinks);
                 }
+                actions.New(Module.GetAction_RemoveLink(UserName), ModuleAction.ActionLocationEnum.GridLinks);
+
+                return actions;
             }
 
             [Caption("Name"), Description("The user's name")]

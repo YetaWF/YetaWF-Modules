@@ -34,13 +34,13 @@ namespace YetaWF.Modules.Backups.Controllers {
 
             [Caption("Actions"), Description("All available actions")]
             [UIHint("ActionIcons"), ReadOnly]
-            public MenuList Commands {
-                get {
-                    MenuList actions = new MenuList() { RenderMode = ModuleAction.RenderModeEnum.IconsOnly };
-                    actions.New(Module.GetAction_DownloadLink(FileName), ModuleAction.ActionLocationEnum.GridLinks);
-                    actions.New(Module.GetAction_RemoveLink(FileName), ModuleAction.ActionLocationEnum.GridLinks);
-                    return actions;
-                }
+            public MenuList Commands { get; set; }
+
+            public async Task<MenuList> __GetCommandsAsync() {
+                MenuList actions = new MenuList() { RenderMode = ModuleAction.RenderModeEnum.IconsOnly };
+                actions.New(await Module.GetAction_DownloadLinkAsync(FileName), ModuleAction.ActionLocationEnum.GridLinks);
+                actions.New(Module.GetAction_RemoveLink(FileName), ModuleAction.ActionLocationEnum.GridLinks);
+                return actions;
             }
 
             [Caption("File Name"), Description("The site backup file name (located in the Backups folder)")]
@@ -102,7 +102,7 @@ namespace YetaWF.Modules.Backups.Controllers {
         [AllowPost]
         [Permission("Backups")]
         [ExcludeDemoMode]
-        public async System.Threading.Tasks.Task<ActionResult> PerformSiteBackup() {
+        public async Task<ActionResult> PerformSiteBackup() {
             List<string> errorList = new List<string>();
             SiteBackup siteBackup = new SiteBackup();
             if (!await siteBackup.CreateAsync(errorList, ForDistribution: true)) {

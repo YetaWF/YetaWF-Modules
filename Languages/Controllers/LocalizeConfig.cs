@@ -7,6 +7,8 @@ using YetaWF.Core.Models;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Support;
 using YetaWF.Modules.Languages.DataProvider;
+using YetaWF.Core.Audit;
+using System;
 #if MVC6
 using Microsoft.AspNetCore.Mvc;
 #else
@@ -20,11 +22,11 @@ namespace YetaWF.Modules.Languages.Controllers {
         public LocalizeConfigModuleController() { }
 
         [Trim]
-        [Footer("Individual web sites can enable/disable localization support (Site Settings). But localization is only available for individiual sites run by this instance of YetaWF if 'Use Localization Resources' is enabled, which applies to all sites.")]
+        [Footer("Individual web sites can enable/disable localization support (Site Settings). But localization is only available for individual sites run by this instance of YetaWF if 'Use Localization Resources' is enabled, which applies to all sites.")]
         public class Model {
 
             [Caption("Use Localization Resources"), Description("Defines whether localization resources are used, otherwise the application built-in text strings are used instead")]
-            [TextBelow("If multi-language support is required, this property must be enabled. This property applies to ALL sites run by this instance of YetaWF. The web site is automatically restarted when this property is changed.")]
+            [TextBelow("If multi-language support is required, this property must be enabled. This property applies to ALL sites run by this instance of YetaWF.")]
             [UIHint("Boolean")]
             public bool UseLocalizationResources { get; set; }
 
@@ -89,6 +91,7 @@ namespace YetaWF.Modules.Languages.Controllers {
         [ExcludeDemoMode]
         public async Task<ActionResult> LocalizeConfig_Partial(Model model) {
             using (LocalizeConfigDataProvider dataProvider = new LocalizeConfigDataProvider()) {
+                LocalizeConfigData origData = YetaWF.Core.Audit.Auditing.Active ? await dataProvider.GetItemAsync() : null;
                 LocalizeConfigData data = await dataProvider.GetItemAsync();// get the original item
                 if (!ModelState.IsValid)
                     return PartialView(model);
@@ -99,9 +102,14 @@ namespace YetaWF.Modules.Languages.Controllers {
                 await locSupport.SetUseLocalizationResourcesAsync(model.UseLocalizationResources);
                 await locSupport.SetAbortOnFailureAsync(model.AbortOnFailure);
                 await dataProvider.UpdateConfigAsync(data);
-                Manager.RestartSite();
+
+                await Auditing.AddAuditAsync($"{nameof(LocalizeConfigModuleController)}.{nameof(LocalizeConfig)}", null, Guid.Empty, $"Localization",
+                    DataBefore: origData,
+                    DataAfter: data,
+                    RequiresRestart: true
+                );
             }
-            return FormProcessed(model, this.__ResStr("okSaved", "Localization settings saved - The site is now restarting"));
+            return FormProcessed(model, this.__ResStr("okSaved", "Localization settings saved - These settings won't take effect until the site is restarted"));
         }
     }
 }

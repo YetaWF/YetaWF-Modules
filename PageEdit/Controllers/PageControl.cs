@@ -70,9 +70,9 @@ namespace YetaWF.Modules.PageEdit.Controllers {
             public AddNewModuleModel() {
                 ModuleTitle = new MultiString();
             }
-            public void AddData(PageDefinition page) {
+            public async Task AddDataAsync(PageDefinition page) {
                 if (page != null) {
-                    SelectedPane_List = page.Panes;
+                    SelectedPane_List = await page.GetPanesAsync();
                 }
             }
         }
@@ -96,9 +96,9 @@ namespace YetaWF.Modules.PageEdit.Controllers {
             [UIHint("Enum"), Required]
             public Location ModuleLocation { get; set; }
 
-            public void AddData(PageDefinition page) {
+            public async Task AddDataAsync(PageDefinition page) {
                 if (page != null) {
-                    ExistingModulePane_List = page.Panes;
+                    ExistingModulePane_List = await page.GetPanesAsync();
                 }
             }
         }
@@ -122,7 +122,7 @@ namespace YetaWF.Modules.PageEdit.Controllers {
             [UIHint("FileUpload1"), Required]
             public FileUpload1 UploadFile { get; set; }
 
-            public void AddData(PageDefinition page, PageControlModule mod) {
+            public async Task AddDataAsync(PageDefinition page, PageControlModule mod) {
                 UploadFile = new FileUpload1 {
                     SelectButtonText = this.__ResStr("btnImport", "Import Module Data..."),
                     SaveURL = YetaWFManager.UrlFor(typeof(PageControlModuleController), "ImportPackage", new { __ModuleGuid = mod.ModuleGuid }),
@@ -130,7 +130,7 @@ namespace YetaWF.Modules.PageEdit.Controllers {
                     SerializeForm = true,
                 };
                 if (page != null) {
-                    ModulePane_List = page.Panes;
+                    ModulePane_List = await page.GetPanesAsync();
                 }
             }
         }
@@ -279,9 +279,9 @@ namespace YetaWF.Modules.PageEdit.Controllers {
                 SkinSelectionModel = new SkinSelectionModel(),
                 LoginSiteSelectionModel = new LoginSiteSelectionModel(),
             };
-            model.AddNewModel.AddData(page);
-            model.AddExistingModel.AddData(page);
-            model.ImportModel.AddData(page, Module);
+            await model.AddNewModel.AddDataAsync(page);
+            await model.AddExistingModel.AddDataAsync(page);
+            await model.ImportModel.AddDataAsync(page, Module);
             await model.LoginSiteSelectionModel.AddDataAsync();
             return View(model);
         }
@@ -319,7 +319,7 @@ namespace YetaWF.Modules.PageEdit.Controllers {
                 throw new Error("Can't edit this page");
             if (!page.IsAuthorized_Edit())
                 return NotAuthorized();
-            model.AddData(page);
+            await model.AddDataAsync(page);
             if (!ModelState.IsValid)
                 return PartialView(model);
 
@@ -340,7 +340,7 @@ namespace YetaWF.Modules.PageEdit.Controllers {
                 throw new Error("Can't edit this page");
             if (!page.IsAuthorized_Edit())
                 return NotAuthorized();
-            model.AddData(page);
+            await model.AddDataAsync(page);
 
             if (!ModelState.IsValid)
                 return PartialView(model);

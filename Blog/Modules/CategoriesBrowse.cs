@@ -147,10 +147,10 @@ namespace YetaWF.Modules.Blog.Modules {
             if (!await FileSystem.FileSystemProvider.FileExistsAsync(filename))
                 return null;
             return new ModuleAction(this) {
-                Url = YetaWFManager.UrlFor(typeof(CategoriesBrowseModuleController), "DownloadNewsSiteMap"),
+                Url = YetaWFManager.UrlFor(typeof(CategoriesBrowseModuleController), nameof(CategoriesBrowseModuleController.DownloadNewsSiteMap)),
                 NeedsModuleContext = true,
                 CookieAsDoneSignal = true,
-                Image = "Download.png",
+                Image = await CustomIconAsync("Download.png"),
                 LinkText = this.__ResStr("downloadLink", "Download News Site Map"),
                 MenuText = this.__ResStr("downloadMenu", "Download News Site Map"),
                 Tooltip = this.__ResStr("downloadTT", "Download the news site map file"),

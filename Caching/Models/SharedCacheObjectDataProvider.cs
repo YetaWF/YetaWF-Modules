@@ -15,7 +15,7 @@ namespace YetaWF.Modules.Caching.DataProvider {
 
     public class SharedCacheVersion {
 
-        public const int MaxKey = 100;
+        public const int MaxKey = 1000;
 
         [Data_PrimaryKey, Data_Index, StringLength(MaxKey)]
         public string Key { get; set; }
@@ -78,7 +78,7 @@ namespace YetaWF.Modules.Caching.DataProvider {
     /// <summary>
     /// A shared cache implementation backed by local cache to improve performance.
     /// Shared cache will only be retrieved to check if there is a newer cached object available. Once
-    /// it is known that a new object is available the data is retrieved.
+    /// it is known that a new object is available, the data is retrieved.
     /// </summary>
     public class SharedCacheObjectDataProvider : DataProviderImpl, ICacheObject, IInstallableModel {
 

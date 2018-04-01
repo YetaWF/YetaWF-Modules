@@ -4,6 +4,8 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using YetaWF.Core.DataProvider;
 using YetaWF.Core.DataProvider.Attributes;
@@ -49,8 +51,6 @@ namespace YetaWF.Modules.Caching.DataProvider {
         public string RootFolder { get; private set; }
         public bool Permanent { get; private set; }
 
-        public const string LOCKFOLDER = "__LOCKS";
-
         // Implementation
 
         public FileSystemDataProvider(string rootFolder, bool Permanent) {
@@ -60,52 +60,160 @@ namespace YetaWF.Modules.Caching.DataProvider {
 
         // API
 
-        private class FileLockObject : IDisposable, IStaticLockObject {
+        private class FileMultiLockObject : IFileLockObject {
 
-            private string key;
+            private string LockFileName;
+            private System.IO.FileStream FileStream;
+            private static SemaphoreSlim localLock = new SemaphoreSlim(1, 1);// to protect local instance
+            private bool LocalLocked = false;
+            private bool Locked = false;
 
-            public FileLockObject(string key) {
-                this.key = key;
+            public FileMultiLockObject(string fileOrFolder) {
+                this.LockFileName = fileOrFolder + "__LOCK";
+                FileStream = new System.IO.FileStream(LockFileName, FileMode.Create, FileAccess.ReadWrite, FileShare.None);
                 DisposableTracker.AddObject(this);
             }
-
-            public Task UnlockAsync() {
-                //$$
-                return Task.CompletedTask;
+            internal async Task LockAsync() {
+                if (Locked) throw new InternalError($"{nameof(LockAsync)} called while already holding a lock on {LockFileName}");
+                for ( ; !Locked; ) {
+                    if (YetaWFManager.IsSync()) {
+                        if (localLock.Wait(10))
+                            LocalLocked = true;
+                    } else {
+                        await localLock.WaitAsync();
+                        LocalLocked = true;
+                    }
+                    if (LocalLocked) {
+                        try {
+                            if (YetaWFManager.IsSync()) {
+                                FileStream.Write(new byte[] { 99 }, 0, 1);
+                            } else {
+                                await FileStream.WriteAsync(new byte[] { 99 }, 0, 1);
+                            }
+                            Locked = true;
+                        } catch (Exception) { }
+                        localLock.Release();
+                        LocalLocked = false;
+                        if (Locked)
+                            break;
+                    }
+                    if (YetaWFManager.IsSync())
+                        Thread.Sleep(new TimeSpan(0, 0, 0, 0, 25));// wait a while - this is bad, only works because "other" instance has lock
+                    else
+                        await Task.Delay(new TimeSpan(0, 0, 0, 0, 25));// wait a while
+                }
+            }
+            public async Task UnlockAsync() {
+                if (Locked) {
+                    FileStream.Close();
+                    Locked = false;
+                    try {
+                        await YetaWF.Core.IO.FileSystem.FileSystemProvider.DeleteFileAsync(LockFileName);
+                    } catch (Exception) { }// this could fail if another task already obtained the lock
+                }
             }
 
             public void Dispose() { Dispose(true); }
             protected virtual void Dispose(bool disposing) {
                 if (disposing) {
-                    if (YetaWF.Core.IO.Caching.MultiInstance) {
-                        //if (... != null) {
-                        //    DisposableTracker.RemoveObject(this);
-                        //    YetaWFManager.Syncify(async () => // Only used if caller forgets to Unlock
-                        //        //$$
-                        //    );
-                        //    ... = null;
-                        //}
+                    DisposableTracker.RemoveObject(this);
+                    YetaWFManager.Syncify(async () => // Only used if caller forgets to Unlock
+                        await UnlockAsync()
+                    );
+                }
+            }
+        }
+        private class FileSingleLockObject : IFileLockObject {
+
+            private string Key;
+            private static List<string> LockKeys = new List<string>(); // single instance locked resources
+            private static SemaphoreSlim localLock = new SemaphoreSlim(1, 1);// to protect LockKeys
+            private bool LocalLocked = false;
+            private bool Locked = false;
+
+            public FileSingleLockObject(string key) {
+                this.Key = key;
+                DisposableTracker.AddObject(this);
+            }
+            internal async Task LockAsync() {
+                if (Locked) throw new InternalError($"{nameof(LockAsync)} called while already holding a lock on {Key}");
+                for (; !Locked;) {
+                    if (YetaWFManager.IsSync()) {
+                        if (localLock.Wait(10))
+                            LocalLocked = true;
+                    } else {
+                        await localLock.WaitAsync();
+                        LocalLocked = true;
                     }
+                    if (LocalLocked) {
+                        if (!LockKeys.Contains(Key)) {
+                            LockKeys.Add(Key);
+                            Locked = true;
+                        }
+                        localLock.Release();
+                        LocalLocked = false;
+                        if (Locked)
+                            break;
+                    }
+                    if (YetaWFManager.IsSync())
+                        Thread.Sleep(new TimeSpan(0, 0, 0, 0, 25));// wait a while - this is bad, only works because "other" instance has lock
+                    else
+                        await Task.Delay(new TimeSpan(0, 0, 0, 0, 25));// wait a while
+                }
+            }
+
+            public async Task UnlockAsync() {
+                if (Locked) {
+                    for (; !Locked;) {
+                        if (YetaWFManager.IsSync()) {
+                            if (localLock.Wait(10))
+                                LocalLocked = true;
+                        } else {
+                            await localLock.WaitAsync();
+                            LocalLocked = true;
+                        }
+                        if (LocalLocked) {
+                            LockKeys.Remove(Key);
+                            localLock.Release();
+                            LocalLocked = false;
+                            Locked = false;
+                        }
+                        if (YetaWFManager.IsSync())
+                            Thread.Sleep(new TimeSpan(0, 0, 0, 0, 25));// wait a while - this is bad, only works because "other" instance has lock
+                        else
+                            await Task.Delay(new TimeSpan(0, 0, 0, 0, 25));// wait a while
+                    }
+                }
+            }
+
+            public void Dispose() { Dispose(true); }
+            protected virtual void Dispose(bool disposing) {
+                if (disposing) {
+                    DisposableTracker.RemoveObject(this);
+                    YetaWFManager.Syncify(async () => // Only used if caller forgets to Unlock
+                        await UnlockAsync()
+                    );
                 }
             }
         }
 
-        public async Task<IDisposable> LockResourceAsync(string fileOrFolder) {
-            // If we're running in a single instance, no need for any locking.
-            // On multi instances, we need a locking implementation. This is somewhat expensive. 
+        /// <summary>
+        /// Lock a file/folder by name until disposed. 
+        /// </summary>
+        public async Task<IFileLockObject> LockResourceAsync(string fileOrFolder) {
+
+            // If we're running in a single instance, a simple lock by name is sufficient.
+            // On multi instances, we need a locking implementation using a lock file. This is somewhat expensive. 
             // This is a concept implementation. A better implementation would be a file system SERVER which is shared by all instances.
             if (YetaWF.Core.IO.Caching.MultiInstance) {
-                for (;;) {
-                    try {
-                        //$$$$
-                        if (true)
-                            break;
-                    } catch (Exception) {
-                        await Task.Delay(new TimeSpan(0, 0, 0, 50));// wait a while
-                    }
-                }
+                FileSingleLockObject fileLock = new FileSingleLockObject(fileOrFolder);
+                await fileLock.LockAsync();
+                return fileLock;
+            } else {
+                FileMultiLockObject fileLock = new FileMultiLockObject(fileOrFolder);
+                await fileLock.LockAsync();
+                return fileLock;
             }
-            return new FileLockObject(fileOrFolder);
         }
 
         // Folders
@@ -124,7 +232,10 @@ namespace YetaWF.Modules.Caching.DataProvider {
                     if (retry <= 1)
                         throw;
                 }
-                await Task.Delay(new TimeSpan(0, 0, 0, 50));// wait a while
+                if (YetaWFManager.IsSync())
+                    Thread.Sleep(new TimeSpan(0, 0, 0, 0, 50));// wait a while - this is bad, only works because "other" instance has lock
+                else
+                    await Task.Delay(new TimeSpan(0, 0, 0, 0, 50));// wait a while
                 --retry;
             }
         }
@@ -141,7 +252,10 @@ namespace YetaWF.Modules.Caching.DataProvider {
                     if (retry <= 1)
                         throw;
                 }
-                await Task.Delay(new TimeSpan(0, 0, 0, 50));// wait a while
+                if (YetaWFManager.IsSync())
+                    Thread.Sleep(new TimeSpan(0, 0, 0, 0, 50));// wait a while - this is bad, only works because "other" instance has lock
+                else
+                    await Task.Delay(new TimeSpan(0, 0, 0, 0, 50));// wait a while
                 --retry;
             }
         }
@@ -255,6 +369,54 @@ namespace YetaWF.Modules.Caching.DataProvider {
             return Task.CompletedTask;
         }
 
+        // Data Files
+
+        private static string ValidChars = " abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789~`!@#$^&()_-+={}[],.";
+        private const string FileExtension = ".dat";
+
+        public string GetDataFileExtension() {
+            return FileExtension;
+        }
+
+        public string MakeValidDataFileName(string name) {
+            StringBuilder sb = new StringBuilder();
+            foreach (var c in name) {
+                if (ValidChars.Contains(c))
+                    sb.Append(c);
+                else if (c == '%')
+                    sb.Append("%%");
+                else
+                    sb.Append(string.Format("%{0:x2}", (int)c));
+            }
+            sb.Append(FileExtension);
+            return sb.ToString();
+        }
+
+        public string ExtractNameFromDataFileName(string name) {
+            StringBuilder sb = new StringBuilder();
+            int total = name.Length;
+            if (name.EndsWith(FileExtension)) total -= FileExtension.Length;
+            for (int i = 0; i < total; ++i) {
+                char c = name[i];
+                if (c == '%') {
+                    if (i + 1 < total && name[i + 1] == '%') {
+                        sb.Append('%');
+                        i += 1;
+                    } else if (i + 2 < total) {
+                        string hex = name.Substring(i + 1, 2);
+                        int value = (int)'*';
+                        try {
+                            value = Convert.ToInt32(hex, 16);
+                        } catch (Exception) { }
+                        sb.Append((char)value);
+                        i += 2;
+                    }
+                } else
+                    sb.Append(c);
+            }
+            return sb.ToString();
+        }
+
         // FileStream
 
         public class FileStream : IDisposable, IFileStream {
@@ -302,16 +464,16 @@ namespace YetaWF.Modules.Caching.DataProvider {
                 if (!Closed) {
                     Stream.Close();
                     DisposableTracker.RemoveObject(this);
+                    Closed = true;
                 }
-                Closed = true;
                 return Task.CompletedTask;
             }
             protected void Close() {
                 if (!Closed) {
                     Stream.Close();
                     DisposableTracker.RemoveObject(this);
+                    Closed = true;
                 }
-                Closed = true;
             }
 
             public void Dispose() { Dispose(true); }

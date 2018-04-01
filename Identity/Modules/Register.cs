@@ -58,7 +58,7 @@ namespace YetaWF.Modules.Identity.Modules {
             LoginModule loginMod = (LoginModule) await ModuleDefinition.CreateUniqueModuleAsync(typeof(LoginModule));
             bool closeOnLogin;
             Manager.TryGetUrlArg<bool>("CloseOnLogin", out closeOnLogin, false);
-            ModuleAction logAction = loginMod.GetAction_Login(Manager.CurrentSite.LoginUrl, Force: true, CloseOnLogin: closeOnLogin);
+            ModuleAction logAction = await loginMod.GetAction_LoginAsync(Manager.CurrentSite.LoginUrl, Force: true, CloseOnLogin: closeOnLogin);
             if (logAction != null)
                 logAction.AddToOriginList = false;
             menuList.New(logAction, location);
@@ -71,7 +71,7 @@ namespace YetaWF.Modules.Identity.Modules {
             return new ModuleAction(this) {
                 Url = string.IsNullOrWhiteSpace(url) ? ModulePermanentUrl : url,
                 QueryArgs = CloseOnLogin ? new { CloseOnLogin = CloseOnLogin } : null,
-                Image = "Register.png",
+                Image = await CustomIconAsync("Register.png"),
                 LinkText = this.__ResStr("regLink", "Register a new user account"),
                 MenuText = this.__ResStr("regText", "Register"),
                 Tooltip = this.__ResStr("regTooltip", "If you don't have an account on this site, click to register"),
@@ -84,10 +84,10 @@ namespace YetaWF.Modules.Identity.Modules {
                 AddToOriginList = true,
             };
         }
-        public ModuleAction GetAction_Approve(string userName) {
+        public async Task<ModuleAction> GetAction_ApproveAsync(string userName) {
             return new ModuleAction(this) {
-                Url = YetaWFManager.UrlFor(typeof(RegisterModuleController), "Approve"),
-                Image = "Approve.png",
+                Url = YetaWFManager.UrlFor(typeof(RegisterModuleController), nameof(RegisterModuleController.Approve)),
+                Image = await CustomIconAsync("Approve.png"),
                 NeedsModuleContext = true,
                 QueryArgs = new { UserName = userName },
                 Style = ModuleAction.ActionStyleEnum.Post,
@@ -100,10 +100,10 @@ namespace YetaWF.Modules.Identity.Modules {
                 Location = ModuleAction.ActionLocationEnum.NoAuto,
             };
         }
-        public ModuleAction GetAction_Reject(string userName) {
+        public async Task<ModuleAction> GetAction_RejectAsync(string userName) {
             return new ModuleAction(this) {
-                Url = YetaWFManager.UrlFor(typeof(RegisterModuleController), "Reject"),
-                Image = "Reject.png",
+                Url = YetaWFManager.UrlFor(typeof(RegisterModuleController), nameof(RegisterModuleController.Reject)),
+                Image = await CustomIconAsync("Reject.png"),
                 NeedsModuleContext = true,
                 QueryArgs = new { UserName = userName },
                 Style = ModuleAction.ActionStyleEnum.Post,

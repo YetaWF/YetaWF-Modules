@@ -151,14 +151,20 @@ namespace YetaWF.Modules.CurrencyConverter.DataProvider {
             http.Accept = "application/json";
             http.ContentType = "application/json";
             http.Method = "POST";
-            System.Net.WebResponse resp;//$$$IDisposable
+            System.Net.WebResponse resp;
             try {
-                resp = await http.GetResponseAsync();
+                if (YetaWFManager.IsSync())
+                    resp = http.GetResponse();
+                else
+                    resp = await http.GetResponseAsync();
             } catch (Exception exc) {
                 throw new InternalError("An error occurred retrieving exchange rates from openexchangerates.org - {0}", exc.Message);
             }
             using (System.IO.StreamReader sr = new System.IO.StreamReader(resp.GetResponseStream())) {
-                return (await sr.ReadToEndAsync()).Trim();
+                if (YetaWFManager.IsSync())
+                    return sr.ReadToEnd().Trim();
+                else
+                    return (await sr.ReadToEndAsync()).Trim();
             }
         }
 

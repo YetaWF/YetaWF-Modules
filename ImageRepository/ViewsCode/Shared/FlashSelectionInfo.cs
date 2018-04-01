@@ -3,11 +3,12 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Threading.Tasks;
 using YetaWF.Core.IO;
 using YetaWF.Core.Localize;
 using YetaWF.Core.Modules;
+using YetaWF.Core.Packages;
+using YetaWF.Core.Skins;
 using YetaWF.Core.Support;
 using YetaWF.Core.Views.Shared;
 using YetaWF.Modules.ImageRepository.Controllers.Shared;
@@ -20,16 +21,18 @@ namespace YetaWF.Modules.ImageRepository.Views.Shared {
         public static string __ResStr(string name, string defaultValue, params object[] parms) { return ResourceAccess.GetResourceString(typeof(FlashSelectionInfo), name, defaultValue, parms); }
 
         public FlashSelectionInfo(ModuleDefinition owningModule, Guid folderGuid, string subFolder, string fileType = "Flash") {
+            OwningModule = owningModule;
             FolderGuid = folderGuid;
             SubFolder = subFolder;
             FileType = fileType;
             AllowUpload = false;
             PreviewWidth = 200;
             PreviewHeight = 200;
-            ClearFlashButton = new ModuleAction(owningModule) {
-                Url = YetaWFManager.UrlFor(typeof(FlashSelectionHelperController), "GetFiles"),
-                QueryArgs = new { FolderGuid = folderGuid, SubFolder = subFolder, FileType = FileType },
-                Image = "ClearImage.png",
+        }
+        public async Task InitAsync() {
+            ClearFlashButton = new ModuleAction(OwningModule) {
+                QueryArgs = new { FolderGuid = FolderGuid, SubFolder = SubFolder, FileType = FileType },
+                Image = await new SkinImages().FindIcon_PackageAsync("ClearImage.png", Package.GetCurrentPackage(OwningModule)),
                 LinkText = __ResStr("clearImage", "Clear"),
                 Tooltip = __ResStr("clearImageTT", "Clears the currently selected Flash image (the Flash image itself is NOT removed from the server)"),
                 Style = ModuleAction.ActionStyleEnum.Nothing,
@@ -39,9 +42,9 @@ namespace YetaWF.Modules.ImageRepository.Views.Shared {
                 NeedsModuleContext = true,
                 Name = "Clear"
             };
-            RemoveFlashButton = new ModuleAction(owningModule) {
-                Url = YetaWFManager.UrlFor(typeof(FlashSelectionHelperController), "RemoveSelectedFlashImage"),
-                QueryArgs = new { FolderGuid = folderGuid, SubFolder = subFolder, FileType = FileType, Name = "" },
+            RemoveFlashButton = new ModuleAction(OwningModule) {
+                Url = YetaWFManager.UrlFor(typeof(FlashSelectionHelperController), nameof(FlashSelectionHelperController.RemoveSelectedFlashImage)),
+                QueryArgs = new { FolderGuid = FolderGuid, SubFolder = SubFolder, FileType = FileType, Name = "" },
                 Image = "#Remove",
                 LinkText = __ResStr("removeImage", "Remove"),
                 Tooltip = __ResStr("removeImageTT", "Removes the currently selected Flash image from the server"),
@@ -93,12 +96,10 @@ namespace YetaWF.Modules.ImageRepository.Views.Shared {
                 path = Path.Combine(path, subFolder);
             return Path.Combine(path, fileType);
         }
-        public List<string> Files {
-            get {
-                if (_files == null)
-                    _files = ReadFilesAsync().Result;//$$$
-                return _files;
-            }
+        public async Task<List<string>> GetFilesAsync() {
+            if (_files == null)
+                _files = await ReadFilesAsync();
+            return _files;
         }
         List<string> _files;
 
@@ -106,7 +107,6 @@ namespace YetaWF.Modules.ImageRepository.Views.Shared {
             List<string> files = await ReadFilePathsAsync(folderGuid, subFolder, fileType);
             List<string> list = new List<string>();
             foreach (string f in files) {
-                //$$$$cache buster
                 long cb = (await FileSystem.FileSystemProvider.GetLastWriteTimeUtcAsync(f)).Ticks / TimeSpan.TicksPerSecond;
                 list.Add(Path.GetFileName(f) + YetaWF.Core.Image.ImageSupport.ImageSeparator + cb.ToString());
             }
