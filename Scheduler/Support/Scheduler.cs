@@ -23,7 +23,7 @@ namespace YetaWF.Modules.Scheduler.Support {
 
         internal static Scheduler Instance = null;
 
-        public Task InitializeApplicationStartupAsync(bool firstNode) {
+        public Task InitializeApplicationStartupAsync() {
             Instance = this;
             SchedulerSupport.InstallAsync = InstallItemsAsync;
             SchedulerSupport.UninstallAsync = UninstallItemsAsync;

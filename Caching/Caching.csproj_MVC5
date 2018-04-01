@@ -36,6 +36,7 @@
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Models\FileSystemDataProvider.cs" />
     <Compile Include="Models\LocalCacheObjectDataProvider.cs" />
     <Compile Include="Models\StaticObjectSingleDataProvider.cs" />
     <Compile Include="Models\StaticObjectMultiDataProvider.cs" />

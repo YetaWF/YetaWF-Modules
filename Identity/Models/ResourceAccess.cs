@@ -25,7 +25,7 @@ namespace YetaWF.Modules.Identity.DataProvider {
         // STARTUP
         // STARTUP
 
-        public Task InitializeApplicationStartupAsync(bool firstNode) {
+        public Task InitializeApplicationStartupAsync() {
             Resource.ResourceAccess = (IResource)this;
             return Task.CompletedTask;
         }

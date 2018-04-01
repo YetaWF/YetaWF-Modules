@@ -22,7 +22,7 @@ namespace YetaWF.Modules.SiteProperties.Models {
         // STARTUP
         // STARTUP
 
-        public async Task InitializeApplicationStartupAsync(bool firstNode) {
+        public async Task InitializeApplicationStartupAsync() {
             // The SiteDefinitionDataProvider has two permanent disposable objects
             SiteDefinition.LoadSiteDefinitionAsync = LoadSiteDefinitionAsync;
             SiteDefinition.SaveSiteDefinitionAsync = SaveSiteDefinitionAsync;
@@ -219,7 +219,7 @@ namespace YetaWF.Modules.SiteProperties.Models {
         // IINSTALLABLEMODEL
 
         public new async Task<bool> InstallModelAsync(List<string> errorList) {
-            if (YetaWF.Core.IO.Caching.MultiInstance) throw new InternalError("Installing new models is not possible when distributed caching is enabled");
+            if (YetaWF.Core.Support.Startup.MultiInstance) throw new InternalError("Installing new models is not possible when distributed caching is enabled");
             if (!await DataProvider.InstallModelAsync(errorList))
                 return false;
             try {

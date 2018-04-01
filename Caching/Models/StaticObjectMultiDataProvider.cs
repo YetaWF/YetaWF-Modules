@@ -50,8 +50,7 @@ namespace YetaWF.Modules.Caching.DataProvider {
         // API
 
         private string GetKey(string key) {
-            int identity = (YetaWFManager.HaveManager && Manager.HaveCurrentSite) ? Manager.CurrentSite.Identity : 0;
-            return $"__static_{identity}/{key}";
+            return $"__static__{key}";
         }
         public async Task AddAsync<TYPE>(string key, TYPE data) {
             key = GetKey(key);

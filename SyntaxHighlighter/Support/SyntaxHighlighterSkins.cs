@@ -1,6 +1,5 @@
 ﻿/* Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/SyntaxHighlighter#License */
 
-using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -18,7 +17,7 @@ namespace YetaWF.Modules.SyntaxHighlighter.Support {
         private const string SyntaxHighlighterThemeFileMVC5 = "ThemelistMVC5.txt";
         private const string SyntaxHighlighterThemeFileMVC6 = "ThemelistMVC6.txt";
 
-        public async Task InitializeApplicationStartupAsync(bool firstNode) {
+        public async Task InitializeApplicationStartupAsync() {
             await LoadSyntaxHighlighterThemesAsync();
         }
 

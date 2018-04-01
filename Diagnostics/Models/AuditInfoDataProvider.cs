@@ -55,7 +55,7 @@ namespace YetaWF.Modules.Diagnostics.DataProvider {
         // Startup
         // Startup
 
-        public Task InitializeApplicationStartupAsync(bool firstNode) {
+        public Task InitializeApplicationStartupAsync() {
             YetaWF.Core.Audit.Auditing.AuditProvider = this;
             return Task.CompletedTask;
         }

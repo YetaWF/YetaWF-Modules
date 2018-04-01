@@ -57,7 +57,7 @@ namespace YetaWF.Modules.Packages.Controllers {
             if (!ModelState.IsValid)
                 return PartialView(model);
 
-            if (YetaWF.Core.IO.Caching.MultiInstance) throw new InternalError("Site template processing is not possible when distributed caching is enabled");
+            if (YetaWF.Core.Support.Startup.MultiInstance) throw new InternalError("Site template processing is not possible when distributed caching is enabled");
 
             PackagesDataProvider packagesDP = new PackagesDataProvider();
             await packagesDP.BuildSiteUsingTemplateAsync(model.SiteTemplate, false);

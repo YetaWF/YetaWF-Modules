@@ -24,15 +24,18 @@ namespace YetaWF.Modules.Caching.DataProvider {
         public SharedCacheVersion() { }
     }
 
-    public class SharedCacheVersionDataProvider : DataProviderImpl, IInitializeApplicationStartup {
+    public class SharedCacheVersionDataProvider : DataProviderImpl, IInitializeApplicationStartup, IInitializeApplicationStartupFirstNodeOnly {
 
         public static SharedCacheVersionDataProvider SharedCacheVersionDP { get; private set; }
 
         // Startup
 
-        public Task InitializeApplicationStartupAsync(bool firstNode) {
+        public Task InitializeApplicationStartupAsync() {
             SharedCacheVersionDP = this;
             return Task.CompletedTask;
+        }
+        public async Task InitializeFirstNodeStartupAsync() {
+            await DataProvider.RemoveRecordsAsync(null);// remove all records
         }
 
         // Implementation

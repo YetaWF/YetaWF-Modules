@@ -58,8 +58,8 @@ namespace YetaWF.Modules.Dashboard.Controllers {
         [AllowGet]
         public async Task<ActionResult> Status() {
             DisplayModel model = new DisplayModel {
-                LastRestart = YetaWFManager.SiteStart,
-                MultiInstance = YetaWF.Core.IO.Caching.MultiInstance,
+                LastRestart = YetaWF.Core.Support.Startup.MultiInstanceStartTime,
+                MultiInstance = YetaWF.Core.Support.Startup.MultiInstance,
             };
             Package corePackage = Package.GetPackageFromPackageName("YetaWF.Core");
             if (corePackage != null)

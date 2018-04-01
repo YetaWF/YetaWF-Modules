@@ -27,7 +27,7 @@ namespace YetaWF.Modules.Blog.DataProvider {
         // IInitializeApplicationStartup
         public const string ImageType = "YetaWF_Blog_BlogConfigData";
 
-        public Task InitializeApplicationStartupAsync(bool firstNode) {
+        public Task InitializeApplicationStartupAsync() {
             ImageSupport.AddHandler(ImageType, GetBytesAsync: RetrieveImageAsync);
             return Task.CompletedTask;
         }

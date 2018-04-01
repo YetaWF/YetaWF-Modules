@@ -116,7 +116,7 @@ namespace YetaWF.Modules.Logging.DataProvider.File {
         }
         public async Task<bool> InstallModelAsync(List<string> errorList) {
             if (YetaWF.Core.Log.Logging.DefinedLoggerType != typeof(LogRecordDataProvider)) return true;
-            if (YetaWF.Core.IO.Caching.MultiInstance) throw new InternalError("Installing new models is not possible when distributed caching is enabled");
+            if (YetaWF.Core.Support.Startup.MultiInstance) throw new InternalError("Installing new models is not possible when distributed caching is enabled");
             if (_isInstalled == null)
                 _isInstalled = await FileSystem.FileSystemProvider.DirectoryExistsAsync(Path.GetDirectoryName(LogFile));
             await YetaWF.Core.Log.Logging.SetupLoggingAsync();
@@ -127,7 +127,7 @@ namespace YetaWF.Modules.Logging.DataProvider.File {
 
         public async Task<bool> UninstallModelAsync(List<string> errorList) {
             if (YetaWF.Core.Log.Logging.DefinedLoggerType != typeof(LogRecordDataProvider)) return true;
-            if (YetaWF.Core.IO.Caching.MultiInstance) throw new InternalError("Adding site data is not possible when distributed caching is enabled");
+            if (YetaWF.Core.Support.Startup.MultiInstance) throw new InternalError("Adding site data is not possible when distributed caching is enabled");
             YetaWF.Core.Log.Logging.TerminateLogging();
             try {
                 await FileSystem.FileSystemProvider.DeleteFileAsync(LogFile);

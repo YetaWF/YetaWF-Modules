@@ -24,4 +24,4 @@ using YetaWF.PackageAttributes;
     "http://YetaWF.com/Documentation/YetaWF/Caching#Release%20Notice",
     "http://YetaWF.com/Documentation/YetaWF/Caching#License")]
 
-[assembly: ServiceLevel(ServiceLevelEnum.LowLevelServiceProvider)]
+[assembly: ServiceLevel(ServiceLevelEnum.CachingProvider)]

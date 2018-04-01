@@ -19,7 +19,7 @@ namespace YetaWF.Modules.Pages.DataProvider {
 
     public class PageDefinitionDataProviderStartup : IInitializeApplicationStartup {
 
-        public Task InitializeApplicationStartupAsync(bool firstNode) {
+        public Task InitializeApplicationStartupAsync() {
             PageDefinition.LoadPageDefinitionAsync = LoadPageDefinitionAsync;
             PageDefinition.LoadPageDefinitionByUrlAsync = LoadPageDefinitionAsync;
             PageDefinition.CreatePageDefinitionAsync = CreatePageDefinitionAsync;
@@ -256,7 +256,7 @@ namespace YetaWF.Modules.Pages.DataProvider {
 
         // Designed pages are site specific and are stored as a static site-specific object
 
-        private const string DESIGNEDPAGESKEY = "__DesignedPages";
+        private string DESIGNEDPAGESKEY = $"__DesignedPages__{YetaWFManager.Manager.CurrentSite.Identity}";
 
         internal async Task<DesignedPagesDictionaryByUrl> GetDesignedPagesAsync() {
             if (!await DataProvider.IsInstalledAsync())
@@ -304,12 +304,12 @@ namespace YetaWF.Modules.Pages.DataProvider {
         // IINSTALLABLEMODEL
 
         public new async Task<bool> InstallModelAsync(List<string> errorList) {
-            if (YetaWF.Core.IO.Caching.MultiInstance) throw new InternalError("Installing new models is not possible when distributed caching is enabled");
+            if (YetaWF.Core.Support.Startup.MultiInstance) throw new InternalError("Installing new models is not possible when distributed caching is enabled");
             await Caching.StaticCacheProvider.RemoveAsync<DesignedPagesDictionaryByUrl>(DESIGNEDPAGESKEY);
             return await DataProvider.InstallModelAsync(errorList);
         }
         public new async Task<bool> UninstallModelAsync(List<string> errorList) {
-            if (YetaWF.Core.IO.Caching.MultiInstance) throw new InternalError("Uninstalling models is not possible when distributed caching is enabled");
+            if (YetaWF.Core.Support.Startup.MultiInstance) throw new InternalError("Uninstalling models is not possible when distributed caching is enabled");
             bool status = await DataProvider.UninstallModelAsync(errorList);
             await Caching.StaticCacheProvider.RemoveAsync<DesignedPagesDictionaryByUrl>(DESIGNEDPAGESKEY);
             return status;

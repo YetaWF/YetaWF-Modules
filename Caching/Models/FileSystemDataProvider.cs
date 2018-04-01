@@ -8,24 +8,11 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using YetaWF.Core.DataProvider;
-using YetaWF.Core.DataProvider.Attributes;
 using YetaWF.Core.IO;
-using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Packages;
 using YetaWF.Core.Support;
 
 namespace YetaWF.Modules.Caching.DataProvider {
-
-    public class SharedCacheVersion {
-
-        public const int MaxKey = 100;
-
-        [Data_PrimaryKey, Data_Index, StringLength(MaxKey)]
-        public string Key { get; set; }
-        public DateTime Created { get; set; }
-
-        public SharedCacheVersion() { }
-    }
 
     public class FileSystemDataProviderStartup : IExternalDataProvider {
 
@@ -37,7 +24,7 @@ namespace YetaWF.Modules.Caching.DataProvider {
 
             // used so this is installed immediately
             // permanently created dataproviders (never disposed)
-            Package package = YetaWF.Modules.FileSystem.Controllers.AreaRegistration.CurrentPackage;
+            Package package = YetaWF.Modules.Caching.Controllers.AreaRegistration.CurrentPackage;
             string permRootFolder = WebConfigHelper.GetValue(package.AreaName, "PermRootFolder", YetaWFManager.RootFolderWebProject);
             string tempRootFolder = WebConfigHelper.GetValue(package.AreaName, "TempRootFolder", YetaWFManager.RootFolderWebProject);
 
@@ -205,7 +192,7 @@ namespace YetaWF.Modules.Caching.DataProvider {
             // If we're running in a single instance, a simple lock by name is sufficient.
             // On multi instances, we need a locking implementation using a lock file. This is somewhat expensive. 
             // This is a concept implementation. A better implementation would be a file system SERVER which is shared by all instances.
-            if (YetaWF.Core.IO.Caching.MultiInstance) {
+            if (YetaWF.Core.Support.Startup.MultiInstance) {
                 FileSingleLockObject fileLock = new FileSingleLockObject(fileOrFolder);
                 await fileLock.LockAsync();
                 return fileLock;
