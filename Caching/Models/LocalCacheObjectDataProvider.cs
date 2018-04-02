@@ -10,7 +10,11 @@ namespace YetaWF.Modules.Caching.DataProvider {
     /// <summary>
     /// Local cache data provider.
     /// </summary>
-    public class LocalCacheObjectDataProvider : DataProviderImpl, ICacheObject {
+    public class LocalCacheObjectDataProvider : DataProviderImpl, ICacheDataProvider {
+
+        public static ICacheDataProvider GetLocalCacheProvider() {
+            return new LocalCacheObjectDataProvider();
+        }
 
         // Implementation
 

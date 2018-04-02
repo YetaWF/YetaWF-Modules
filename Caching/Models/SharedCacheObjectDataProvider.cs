@@ -15,7 +15,7 @@ namespace YetaWF.Modules.Caching.DataProvider {
 
     public class SharedCacheVersion {
 
-        public const int MaxKey = 1000;
+        public const int MaxKey = 200;
 
         [Data_PrimaryKey, Data_Index, StringLength(MaxKey)]
         public string Key { get; set; }
@@ -83,7 +83,11 @@ namespace YetaWF.Modules.Caching.DataProvider {
     /// Shared cache will only be retrieved to check if there is a newer cached object available. Once
     /// it is known that a new object is available, the data is retrieved.
     /// </summary>
-    public class SharedCacheObjectDataProvider : DataProviderImpl, ICacheObject, IInstallableModel {
+    public class SharedCacheObjectDataProvider : DataProviderImpl, ICacheDataProvider, IInstallableModel {
+
+        public static ICacheDataProvider GetLocalCacheProvider() {
+            return new SharedCacheObjectDataProvider();
+        }
 
         // Implementation
 
@@ -108,61 +112,66 @@ namespace YetaWF.Modules.Caching.DataProvider {
                     Value = cacheData,
                 };
                 await DataProvider.RemoveAsync(key);
-                await trans.CommitAsync();
                 await DataProvider.AddAsync(sharedCacheObj); // save shared cached version
+                await trans.CommitAsync();
                 LocalSharedCacheObject localCacheObj = new LocalSharedCacheObject {
                     Created = sharedCacheObj.Created,
                     Key = sharedCacheObj.Key,
                     Value = sharedCacheObj.Value,
                 };
-                await YetaWF.Core.IO.Caching.LocalCacheProvider.AddAsync(key, localCacheObj); // save locally cached version
+                using (ICacheDataProvider localCacheDP = YetaWF.Core.IO.Caching.GetLocalCacheProvider()) {
+                    await localCacheDP.AddAsync(key, localCacheObj); // save locally cached version
+                }
             }
         }
         public async Task<GetObjectInfo<TYPE>> GetAsync<TYPE>(string key) {
             // get locally cached version
-            GetObjectInfo<LocalSharedCacheObject> localInfo = await YetaWF.Core.IO.Caching.LocalCacheProvider.GetAsync<LocalSharedCacheObject>(key);
-            if (!localInfo.Success) {
-                // no locally cached data, create one
-                localInfo = new GetObjectInfo<LocalSharedCacheObject> {
-                    Data = new LocalSharedCacheObject {
-                        Created = DateTime.MinValue,
-                        Key = key,
-                        Value = null,
-                    },
-                    Success = true,
-                };
-            }
-            // get shared cached version
-            SharedCacheVersion sharedInfo = await SharedCacheVersionDataProvider.SharedCacheVersionDP.GetVersionAsync(key);
-            if (sharedInfo != null) {
-                if (sharedInfo.Created != localInfo.Data.Created) {
-                    // shared cached version is different, retrieve and save locally
-                    SharedCacheObject sharedCacheObj = await DataProvider.GetAsync(key);
-                    if (sharedCacheObj == null) { // this shouldn't happen, we just got the shared version
-                        // return the local data instead
+            GetObjectInfo<LocalSharedCacheObject> localInfo;
+            using (ICacheDataProvider localCacheDP = YetaWF.Core.IO.Caching.GetLocalCacheProvider()) {
+                localInfo = await localCacheDP.GetAsync<LocalSharedCacheObject>(key);
+                if (!localInfo.Success) {
+                    // no locally cached data, create one
+                    localInfo = new GetObjectInfo<LocalSharedCacheObject> {
+                        Data = new LocalSharedCacheObject {
+                            Created = DateTime.MinValue,
+                            Key = key,
+                            Value = null,
+                        },
+                        Success = true,
+                    };
+                }
+                // get shared cached version
+                SharedCacheVersion sharedInfo = await SharedCacheVersionDataProvider.SharedCacheVersionDP.GetVersionAsync(key);
+                if (sharedInfo != null) {
+                    if (sharedInfo.Created != localInfo.Data.Created) {
+                        // shared cached version is different, retrieve and save locally
+                        SharedCacheObject sharedCacheObj = await DataProvider.GetAsync(key);
+                        if (sharedCacheObj == null) { // this shouldn't happen, we just got the shared version
+                                                      // return the local data instead
+                        } else {
+                            LocalSharedCacheObject localCacheObj = new LocalSharedCacheObject {
+                                Created = sharedCacheObj.Created,
+                                Key = sharedCacheObj.Key,
+                                Value = sharedCacheObj.Value,
+                            };
+                            await localCacheDP.AddAsync(key, localCacheObj); // save as locally cached version
+                            return new GetObjectInfo<TYPE> {
+                                Success = true,
+                                Data = (TYPE)new GeneralFormatter().Deserialize(sharedCacheObj.Value),
+                            };
+                        }
                     } else {
-                        LocalSharedCacheObject localCacheObj = new LocalSharedCacheObject {
-                            Created = sharedCacheObj.Created,
-                            Key = sharedCacheObj.Key,
-                            Value = sharedCacheObj.Value,
-                        };
-                        await YetaWF.Core.IO.Caching.LocalCacheProvider.AddAsync(key, localCacheObj); // save as locally cached version
-                        return new GetObjectInfo<TYPE> {
-                            Success = true,
-                            Data = (TYPE) new GeneralFormatter().Deserialize(sharedCacheObj.Value),
-                        };
+                        // shared version same as local version
                     }
                 } else {
-                    // shared version same as local version
+                    // there is no shared version
                 }
-            } else {
-                // there is no shared version
+                // return the local data 
+                return new GetObjectInfo<TYPE> {
+                    Success = true,
+                    Data = (TYPE)new GeneralFormatter().Deserialize(localInfo.Data.Value),
+                };
             }
-            // return the local data 
-            return new GetObjectInfo<TYPE> {
-                Success = true,
-                Data = (TYPE) new GeneralFormatter().Deserialize(localInfo.Data.Value),
-            };
         }
         public async Task RemoveAsync<TYPE>(string key) {
             // We're adding a new version

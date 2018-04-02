@@ -51,54 +51,57 @@ namespace YetaWF.Modules.Feed.Controllers {
         [AllowGet]
         public async Task<ActionResult> Feed() {
             DisplayModel model;
-            GetObjectInfo<DisplayModel> cacheInfo = await Caching.LocalCacheProvider.GetAsync<DisplayModel>(Module.CacheKey);
-            if (!cacheInfo.Success || cacheInfo.Data.CacheExpires < DateTime.UtcNow) {
-                model = new DisplayModel();
-                string url = Module.FeedUrl;
-                XmlReader reader = XmlReader.Create(url);
-                SyndicationFeed feed = SyndicationFeed.Load(reader);
-                reader.Close();
-                model.Title = feed.Title.Text;
-                model.Description = feed.Description.Text;
-                model.LastUpdate = feed.LastUpdatedTime.DateTime;
-                model.Url = GetFeedUrl(feed.Links);
-                foreach (SyndicationItem item in feed.Items) {
-                    string desc = null;
-                    if (string.IsNullOrWhiteSpace(desc))
-                        if (item.Summary != null) desc = item.Summary.Text;
-                    if (string.IsNullOrWhiteSpace(desc)) {
-                        if (item.Content != null) {
-                            TextSyndicationContent tsc = item.Content as TextSyndicationContent;
-                            if (tsc != null)
-                                desc = tsc.Text;
+            GetObjectInfo<DisplayModel> cacheInfo;
+            using (ICacheDataProvider localCacheDP = YetaWF.Core.IO.Caching.GetLocalCacheProvider()) {
+                cacheInfo = await localCacheDP.GetAsync<DisplayModel>(Module.CacheKey);
+                if (!cacheInfo.Success || cacheInfo.Data.CacheExpires < DateTime.UtcNow) {
+                    model = new DisplayModel();
+                    string url = Module.FeedUrl;
+                    XmlReader reader = XmlReader.Create(url);
+                    SyndicationFeed feed = SyndicationFeed.Load(reader);
+                    reader.Close();
+                    model.Title = feed.Title.Text;
+                    model.Description = feed.Description.Text;
+                    model.LastUpdate = feed.LastUpdatedTime.DateTime;
+                    model.Url = GetFeedUrl(feed.Links);
+                    foreach (SyndicationItem item in feed.Items) {
+                        string desc = null;
+                        if (string.IsNullOrWhiteSpace(desc))
+                            if (item.Summary != null) desc = item.Summary.Text;
+                        if (string.IsNullOrWhiteSpace(desc)) {
+                            if (item.Content != null) {
+                                TextSyndicationContent tsc = item.Content as TextSyndicationContent;
+                                if (tsc != null)
+                                    desc = tsc.Text;
+                            }
                         }
+                        Entry entry = new Entry {
+                            Title = item.Title.Text,
+                            Description = desc,
+                            Links = new SerializableList<string>(),
+                            Authors = new SerializableList<Author>(),
+                            PublishDate = item.PublishDate.DateTime,
+                        };
+                        foreach (SyndicationLink l in item.Links) {
+                            entry.Links.Add(l.Uri.ToString());
+                        }
+                        foreach (SyndicationPerson a in item.Authors) {
+                            Author author = new Author();
+                            author.Email = a.Email;
+                            author.Name = a.Name;
+                            if (a.Uri != null) author.Url = a.Uri.ToString();
+                        }
+                        model.Entries.Add(entry);
                     }
-                    Entry entry = new Entry {
-                        Title = item.Title.Text,
-                        Description = desc,
-                        Links = new SerializableList<string>(),
-                        Authors = new SerializableList<Author>(),
-                        PublishDate = item.PublishDate.DateTime,
-                    };
-                    foreach (SyndicationLink l in item.Links) {
-                        entry.Links.Add(l.Uri.ToString());
-                    }
-                    foreach (SyndicationPerson a in item.Authors) {
-                        Author author = new Author();
-                        author.Email = a.Email;
-                        author.Name = a.Name;
-                        if (a.Uri != null) author.Url = a.Uri.ToString();
-                    }
-                    model.Entries.Add(entry);
-                }
-                model.Entries = new SerializableList<Entry>((from e in model.Entries orderby e.PublishDate descending select e).Take(Module.NumEntries));
-                model.CacheExpires = DateTime.UtcNow.AddMinutes(5);// only retrieve news feed every 5 minutes
+                    model.Entries = new SerializableList<Entry>((from e in model.Entries orderby e.PublishDate descending select e).Take(Module.NumEntries));
+                    model.CacheExpires = DateTime.UtcNow.AddMinutes(5);// only retrieve news feed every 5 minutes
 
-                await Caching.LocalCacheProvider.AddAsync(Module.CacheKey, model);
-            } else {
-                model = cacheInfo.Data;
+                    await localCacheDP.AddAsync(Module.CacheKey, model);
+                } else {
+                    model = cacheInfo.Data;
+                }
+                return View(model);
             }
-            return View(model);
         }
 
         private string GetFeedUrl(Collection<SyndicationLink> links) {

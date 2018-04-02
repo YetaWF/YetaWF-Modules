@@ -150,26 +150,25 @@ namespace YetaWF.Modules.Caching.DataProvider {
             }
 
             public async Task UnlockAsync() {
-                if (Locked) {
-                    for (; !Locked;) {
-                        if (YetaWFManager.IsSync()) {
-                            if (localLock.Wait(10))
-                                LocalLocked = true;
-                        } else {
-                            await localLock.WaitAsync();
+                for (; Locked;) {
+                    if (YetaWFManager.IsSync()) {
+                        if (localLock.Wait(10))
                             LocalLocked = true;
-                        }
-                        if (LocalLocked) {
-                            LockKeys.Remove(Key);
-                            localLock.Release();
-                            LocalLocked = false;
-                            Locked = false;
-                        }
-                        if (YetaWFManager.IsSync())
-                            Thread.Sleep(new TimeSpan(0, 0, 0, 0, 25));// wait a while - this is bad, only works because "other" instance has lock
-                        else
-                            await Task.Delay(new TimeSpan(0, 0, 0, 0, 25));// wait a while
+                    } else {
+                        await localLock.WaitAsync();
+                        LocalLocked = true;
                     }
+                    if (LocalLocked) {
+                        LockKeys.Remove(Key);
+                        localLock.Release();
+                        LocalLocked = false;
+                        Locked = false;
+                        break;
+                    }
+                    if (YetaWFManager.IsSync())
+                        Thread.Sleep(new TimeSpan(0, 0, 0, 0, 25));// wait a while - this is bad, only works because "other" instance has lock
+                    else
+                        await Task.Delay(new TimeSpan(0, 0, 0, 0, 25));// wait a while
                 }
             }
 
@@ -193,11 +192,11 @@ namespace YetaWF.Modules.Caching.DataProvider {
             // On multi instances, we need a locking implementation using a lock file. This is somewhat expensive. 
             // This is a concept implementation. A better implementation would be a file system SERVER which is shared by all instances.
             if (YetaWF.Core.Support.Startup.MultiInstance) {
-                FileSingleLockObject fileLock = new FileSingleLockObject(fileOrFolder);
+                FileMultiLockObject fileLock = new FileMultiLockObject(fileOrFolder);
                 await fileLock.LockAsync();
                 return fileLock;
             } else {
-                FileMultiLockObject fileLock = new FileMultiLockObject(fileOrFolder);
+                FileSingleLockObject fileLock = new FileSingleLockObject(fileOrFolder);
                 await fileLock.LockAsync();
                 return fileLock;
             }

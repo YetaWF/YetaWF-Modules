@@ -261,23 +261,32 @@ namespace YetaWF.Modules.Pages.DataProvider {
         internal async Task<DesignedPagesDictionaryByUrl> GetDesignedPagesAsync() {
             if (!await DataProvider.IsInstalledAsync())
                 return new DesignedPagesDictionaryByUrl();// don't save this, it's not permanent
-            DesignedPagesDictionaryByUrl data = await YetaWF.Core.IO.Caching.StaticCacheProvider.GetAsync<DesignedPagesDictionaryByUrl>(DESIGNEDPAGESKEY, async() => {
-                return await DataProviderIOMode.GetDesignedPagesAsync();
-            });
-            return data;
+            using (ICacheStaticDataProvider staticCacheDP = YetaWF.Core.IO.Caching.GetStaticCacheProvider()) {
+                DesignedPagesDictionaryByUrl data = await staticCacheDP.GetAsync<DesignedPagesDictionaryByUrl>(DESIGNEDPAGESKEY, async () => {
+                    return await DataProviderIOMode.GetDesignedPagesAsync();
+
+                });
+                return data;
+            }
         }
         // Requires an active static lock
         private async Task AddDesignedPageAsync(DesignedPagesDictionaryByUrl designedPagesByUrl, string url, PageDefinition.DesignedPage designedPage) {
             designedPagesByUrl.Add(url, designedPage);
-            await Caching.StaticCacheProvider.AddAsync(DESIGNEDPAGESKEY, designedPagesByUrl);
+            using (ICacheStaticDataProvider staticCacheDP = YetaWF.Core.IO.Caching.GetStaticCacheProvider()) {
+                await staticCacheDP.AddAsync(DESIGNEDPAGESKEY, designedPagesByUrl);
+            }
         }
         // Requires an active static lock
         private async Task RemoveDesignedPageAsync(DesignedPagesDictionaryByUrl designedPagesByUrl, string url) {
             designedPagesByUrl.Remove(url.ToLower());
-            await Caching.StaticCacheProvider.AddAsync(DESIGNEDPAGESKEY, designedPagesByUrl);
+            using (ICacheStaticDataProvider staticCacheDP = YetaWF.Core.IO.Caching.GetStaticCacheProvider()) {
+                await staticCacheDP.AddAsync(DESIGNEDPAGESKEY, designedPagesByUrl);
+            }
         }
         internal async Task<IStaticLockObject> LockAsync() {
-            return await Caching.StaticCacheProvider.LockAsync<DesignedPagesDictionaryByUrl>(DESIGNEDPAGESKEY);
+            using (ICacheStaticDataProvider staticCacheDP = YetaWF.Core.IO.Caching.GetStaticCacheProvider()) {
+                return await staticCacheDP.LockAsync<DesignedPagesDictionaryByUrl>(DESIGNEDPAGESKEY);
+            }
         }
         /// <summary>
         /// Given a url returns a designed page guid.
@@ -305,13 +314,17 @@ namespace YetaWF.Modules.Pages.DataProvider {
 
         public new async Task<bool> InstallModelAsync(List<string> errorList) {
             if (YetaWF.Core.Support.Startup.MultiInstance) throw new InternalError("Installing new models is not possible when distributed caching is enabled");
-            await Caching.StaticCacheProvider.RemoveAsync<DesignedPagesDictionaryByUrl>(DESIGNEDPAGESKEY);
+            using (ICacheStaticDataProvider staticCacheDP = YetaWF.Core.IO.Caching.GetStaticCacheProvider()) {
+                await staticCacheDP.RemoveAsync<DesignedPagesDictionaryByUrl>(DESIGNEDPAGESKEY);
+            }
             return await DataProvider.InstallModelAsync(errorList);
         }
         public new async Task<bool> UninstallModelAsync(List<string> errorList) {
             if (YetaWF.Core.Support.Startup.MultiInstance) throw new InternalError("Uninstalling models is not possible when distributed caching is enabled");
             bool status = await DataProvider.UninstallModelAsync(errorList);
-            await Caching.StaticCacheProvider.RemoveAsync<DesignedPagesDictionaryByUrl>(DESIGNEDPAGESKEY);
+            using (ICacheStaticDataProvider staticCacheDP = YetaWF.Core.IO.Caching.GetStaticCacheProvider()) {
+                await staticCacheDP.RemoveAsync<DesignedPagesDictionaryByUrl>(DESIGNEDPAGESKEY);
+            }
             return status;
         }
     }

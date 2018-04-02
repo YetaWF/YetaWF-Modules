@@ -13,18 +13,34 @@ namespace YetaWF.Modules.Caching.DataProvider {
     /// A shared cache implementation in-memory ONLY for a single instance. (Really not shared).
     /// This is intended as a way to preserve "static" in-memory data. This is equivalent to StaticObjectMultiDataProvider on a multi-instance site.
     /// </summary>
-    public class StaticObjectSingleDataProvider : ICacheStaticObject {
+    public class StaticObjectSingleDataProvider : ICacheStaticDataProvider {
+
+        public static ICacheStaticDataProvider GetLocalCacheProvider() {
+            return new StaticObjectMultiDataProvider();
+        }
 
         protected YetaWFManager Manager { get { return YetaWFManager.Manager; } }
         protected bool HaveManager { get { return YetaWFManager.HaveManager; } }
 
         private static Dictionary<string, object> StaticObjects = new Dictionary<string, object>();
 
+        protected StaticObjectSingleDataProvider() {
+            DisposableTracker.AddObject(this);
+        }
+        public void Dispose() {
+            Dispose(true);
+        }
+        protected virtual void Dispose(bool disposing) {
+            if (disposing) {
+                DisposableTracker.RemoveObject(this);
+            }
+        }
+        //~StaticObjectSingleDataProvider() { Dispose(false); }
+
         // API
 
         private string GetKey(string key) {
-            int identity = (YetaWFManager.HaveManager && Manager.HaveCurrentSite) ? Manager.CurrentSite.Identity : 0;
-            return $"__static_{identity}/{key}";
+            return $"__static__{key}";
         }
         public Task AddAsync<TYPE>(string key, TYPE data) {
             key = GetKey(key);
@@ -96,12 +112,27 @@ namespace YetaWF.Modules.Caching.DataProvider {
 
                 }
             }
-            public Task UnlockAsync() {
-                if (Locked) {
-                    LockKeys.Remove(Key);
-                    Locked = false;
+            public async Task UnlockAsync() {
+                for (; Locked;) {
+                    if (YetaWFManager.IsSync()) {
+                        if (localLock.Wait(10))
+                            LocalLocked = true;
+                    } else {
+                        await localLock.WaitAsync();
+                        LocalLocked = true;
+                    }
+                    if (LocalLocked) {
+                        LockKeys.Remove(Key);
+                        localLock.Release();
+                        LocalLocked = false;
+                        Locked = false;
+                        break;
+                    }
+                    if (YetaWFManager.IsSync())
+                        Thread.Sleep(new TimeSpan(0, 0, 0, 0, 25));// wait a while - this is bad, only works because "other" instance has lock
+                    else
+                        await Task.Delay(new TimeSpan(0, 0, 0, 0, 25));// wait a while
                 }
-                return Task.CompletedTask;
             }
             public void Dispose() { Dispose(true); }
             protected virtual void Dispose(bool disposing) {

@@ -19,15 +19,15 @@ namespace YetaWF.Modules.Caching.Startup {
 
             if (distributed) {
                 // distributed caching uses local and shared cache
-                YetaWF.Core.IO.Caching.LocalCacheProvider = new LocalCacheObjectDataProvider();
-                YetaWF.Core.IO.Caching.SharedCacheProvider = new SharedCacheObjectDataProvider();
-                YetaWF.Core.IO.Caching.StaticCacheProvider = new StaticObjectMultiDataProvider();
+                YetaWF.Core.IO.Caching.GetLocalCacheProvider = LocalCacheObjectDataProvider.GetLocalCacheProvider;
+                YetaWF.Core.IO.Caching.GetSharedCacheProvider = SharedCacheObjectDataProvider.GetLocalCacheProvider;
+                YetaWF.Core.IO.Caching.GetStaticCacheProvider = StaticObjectMultiDataProvider.GetLocalCacheProvider;
                 YetaWF.Core.Support.Startup.MultiInstance = true;
             } else {
                 // non-distributed caching uses local cache only
-                YetaWF.Core.IO.Caching.LocalCacheProvider = new LocalCacheObjectDataProvider();
-                YetaWF.Core.IO.Caching.SharedCacheProvider = new LocalCacheObjectDataProvider();
-                YetaWF.Core.IO.Caching.StaticCacheProvider = new StaticObjectSingleDataProvider();
+                YetaWF.Core.IO.Caching.GetLocalCacheProvider = LocalCacheObjectDataProvider.GetLocalCacheProvider;
+                YetaWF.Core.IO.Caching.GetSharedCacheProvider = LocalCacheObjectDataProvider.GetLocalCacheProvider;
+                YetaWF.Core.IO.Caching.GetStaticCacheProvider = StaticObjectSingleDataProvider.GetLocalCacheProvider;
                 YetaWF.Core.Support.Startup.MultiInstance = false;
             }
             return Task.CompletedTask;
