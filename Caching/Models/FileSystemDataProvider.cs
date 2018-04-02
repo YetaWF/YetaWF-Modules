@@ -57,7 +57,6 @@ namespace YetaWF.Modules.Caching.DataProvider {
 
             public FileMultiLockObject(string fileOrFolder) {
                 this.LockFileName = fileOrFolder + "__LOCK";
-                FileStream = new System.IO.FileStream(LockFileName, FileMode.Create, FileAccess.ReadWrite, FileShare.None);
                 DisposableTracker.AddObject(this);
             }
             internal async Task LockAsync() {
@@ -72,6 +71,7 @@ namespace YetaWF.Modules.Caching.DataProvider {
                     }
                     if (LocalLocked) {
                         try {
+                            FileStream = new System.IO.FileStream(LockFileName, FileMode.Create, FileAccess.ReadWrite, FileShare.None);
                             if (YetaWFManager.IsSync()) {
                                 FileStream.Write(new byte[] { 99 }, 0, 1);
                             } else {
@@ -79,6 +79,14 @@ namespace YetaWF.Modules.Caching.DataProvider {
                             }
                             Locked = true;
                         } catch (Exception) { }
+                        finally {
+                            if (!Locked) {
+                                if (FileStream != null) {
+                                    FileStream.Close();
+                                    FileStream = null;
+                                }
+                            }
+                        }
                         localLock.Release();
                         LocalLocked = false;
                         if (Locked)

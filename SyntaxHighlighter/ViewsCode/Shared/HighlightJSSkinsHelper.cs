@@ -30,7 +30,7 @@ namespace YetaWF.Modules.SyntaxHighlighter.Views.Shared {
 #endif
             // get all available skins
             SkinAccess skinAccess = new SkinAccess();
-            List<SelectionItem<string>> list = (from theme in await skinAccess.GetHighlightJSThemeListAsync() select new SelectionItem<string>() {
+            List<SelectionItem<string>> list = (from theme in skinAccess.GetHighlightJSThemeList() select new SelectionItem<string>() {
                 Text = theme.Name,
                 Value = theme.Name,
             }).ToList();
@@ -43,7 +43,7 @@ namespace YetaWF.Modules.SyntaxHighlighter.Views.Shared {
                     Value = "",
                 });
             else if (selection == null)
-                selection = await SkinAccess.GetHighlightJSDefaultSkinAsync();
+                selection = SkinAccess.GetHighlightJSDefaultSkin();
 
             // display the skins in a drop down
             return await htmlHelper.RenderDropDownSelectionListAsync(name, selection, list, HtmlAttributes: HtmlAttributes);

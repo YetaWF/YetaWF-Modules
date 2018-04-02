@@ -17,10 +17,6 @@ namespace YetaWF.Modules.SyntaxHighlighter.Support {
         private const string SyntaxHighlighterThemeFileMVC5 = "ThemelistMVC5.txt";
         private const string SyntaxHighlighterThemeFileMVC6 = "ThemelistMVC6.txt";
 
-        public async Task InitializeApplicationStartupAsync() {
-            await LoadSyntaxHighlighterThemesAsync();
-        }
-
         public class SyntaxHighlighterTheme {
             public string Name { get; set; }
             public string File { get; set; }

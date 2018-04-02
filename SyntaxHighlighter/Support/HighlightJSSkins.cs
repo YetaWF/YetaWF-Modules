@@ -12,24 +12,27 @@ using YetaWF.Modules.SyntaxHighlighter.Controllers;
 
 namespace YetaWF.Modules.SyntaxHighlighter.Support {
 
-    public partial class SkinAccess {
+    public partial class SkinAccess : IInitializeApplicationStartup {
 
         private const string HighlightJSThemeFile = "Themelist.txt";
         private const string HighlightJSThemeFileMVC6 = "ThemelistMVC6.txt";
+
+        public async Task InitializeApplicationStartupAsync() {
+            await LoadSyntaxHighlighterThemesAsync();
+            await LoadHighlightJSThemesAsync();
+        }
 
         public class HighlightJSTheme {
             public string Name { get; set; }
         }
 
-        public async Task<List<HighlightJSTheme>> GetHighlightJSThemeListAsync() {
-            if (_HighlightJSThemeList == null)
-                await LoadHighlightJSThemesAsync();
+        public List<HighlightJSTheme> GetHighlightJSThemeList() {
             return _HighlightJSThemeList;
         }
         private static List<HighlightJSTheme> _HighlightJSThemeList;
         private static HighlightJSTheme _HighlightJSThemeDefault;
 
-        private async Task<List<HighlightJSTheme>> LoadHighlightJSThemesAsync() {
+        private async Task LoadHighlightJSThemesAsync() {
             Package package = AreaRegistration.CurrentPackage;
             string url = VersionManager.GetAddOnNamedUrl(package.Domain, package.Product, "SkinHighlightJS");
             string customUrl = VersionManager.GetCustomUrlFromUrl(url);
@@ -62,18 +65,17 @@ namespace YetaWF.Modules.SyntaxHighlighter.Support {
 
             _HighlightJSThemeDefault = HighlightJSList[0];
             _HighlightJSThemeList = (from theme in HighlightJSList orderby theme.Name select theme).ToList();
-            return _HighlightJSThemeList;
         }
 
-        public async Task<string> FindHighlightJSSkinAsync(string themeName) {
-            string intName = (from th in await GetHighlightJSThemeListAsync() where th.Name == themeName select th.Name).FirstOrDefault();
+        public string FindHighlightJSSkin(string themeName) {
+            string intName = (from th in GetHighlightJSThemeList() where th.Name == themeName select th.Name).FirstOrDefault();
             if (!string.IsNullOrWhiteSpace(intName))
                 return intName;
             return _HighlightJSThemeDefault.Name;
         }
-        public static async Task<string> GetHighlightJSDefaultSkinAsync() {
+        public static string GetHighlightJSDefaultSkin() {
             SkinAccess skinAccess = new SkinAccess();
-            await skinAccess.GetHighlightJSThemeListAsync();
+            skinAccess.GetHighlightJSThemeList();
             return _HighlightJSThemeDefault.Name;
         }
     }

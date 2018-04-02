@@ -23,6 +23,7 @@ namespace YetaWF.Modules.Caching.DataProvider {
         protected bool HaveManager { get { return YetaWFManager.HaveManager; } }
 
         private static Dictionary<string, object> StaticObjects = new Dictionary<string, object>();
+        private static object _lockObject = new object();
 
         protected StaticObjectSingleDataProvider() {
             DisposableTracker.AddObject(this);
@@ -44,32 +45,30 @@ namespace YetaWF.Modules.Caching.DataProvider {
         }
         public Task AddAsync<TYPE>(string key, TYPE data) {
             key = GetKey(key);
-            StringLocks.DoAction(key, () => {
+            lock (_lockObject) { // used to protect StaticObjects - local only
                 StaticObjects.Remove(key);
                 StaticObjects.Add(key, data);
-            });
+            }
             return Task.CompletedTask;
         }
         public async Task<TYPE> GetAsync<TYPE>(string key, Func<Task<TYPE>> noDataCallback = null) {
             // get cached version
             TYPE data = default(TYPE);
             key = GetKey(key);
-            await StringLocks.DoActionAsync(key, async () => {
-                object obj;
-                if (!StaticObjects.TryGetValue(key, out obj)) {
-                    if (noDataCallback != null) {
-                        obj = await noDataCallback();
-                        data = (TYPE)obj;
-                    }
+            object obj;
+            if (!StaticObjects.TryGetValue(key, out obj)) {
+                if (noDataCallback != null) {
+                    obj = await noDataCallback();
+                    data = (TYPE)obj;
                 }
-            });
+            }
             return data;
         }
         public Task RemoveAsync<TYPE>(string key) {
             key = GetKey(key);
-            StringLocks.DoAction(key, () => {
+            lock (_lockObject) { // used to protect StaticObjects - local only
                 StaticObjects.Remove(key);
-            });
+            }
             return Task.CompletedTask;
         }
 

@@ -50,89 +50,92 @@ namespace YetaWF.Modules.Caching.DataProvider {
         }
 
         private static Dictionary<string, StaticCacheObject> StaticObjects = new Dictionary<string, StaticCacheObject>();
+        private static object _lockObject = new object();
 
         // API
 
         private string GetKey(string key) {
             return $"__static__{key}";
         }
+        /// <summary>
+        /// Add a shared object.
+        /// </summary>
+        /// <remarks>This requires an active Lock using LockAsync.</remarks>
         public async Task AddAsync<TYPE>(string key, TYPE data) {
             key = GetKey(key);
-            await StringLocks.DoActionAsync(key, async () => {
-                using (DataProviderTransaction trans = DataProvider.StartTransaction()) {
-                    // save new version shared and locally
-                    SharedCacheObject sharedCacheObj = new SharedCacheObject {
-                        Created = DateTime.UtcNow,
-                        Key = key,
-                        Value = new GeneralFormatter().Serialize(data),
-                    };
-                    await DataProvider.RemoveAsync(key);
-                    await DataProvider.AddAsync(sharedCacheObj); // save shared cached version
-                    await trans.CommitAsync();
+            // save new version shared and locally
+            SharedCacheObject sharedCacheObj = new SharedCacheObject {
+                Created = DateTime.UtcNow,
+                Key = key,
+                Value = new GeneralFormatter().Serialize(data),
+            };
+            await DataProvider.RemoveAsync(key);
+            await DataProvider.AddAsync(sharedCacheObj); // save shared cached version
 
-                    StaticCacheObject cachedObj = new StaticCacheObject {
-                        Key = key,
-                        Value = data,
-                        Created = sharedCacheObj.Created,
-                    };
-                    StaticObjects.Remove(key);
-                    StaticObjects.Add(key, cachedObj);
-                }
-            });
+            StaticCacheObject cachedObj = new StaticCacheObject {
+                Key = key,
+                Value = data,
+                Created = sharedCacheObj.Created,
+            };
+            lock (_lockObject) { // used to protect StaticObjects - local only
+                StaticObjects.Remove(key);
+                StaticObjects.Add(key, cachedObj);
+            }
         }
         public async Task<TYPE> GetAsync<TYPE>(string key, Func<Task<TYPE>> noDataCallback = null) {
             // get cached version
             TYPE data = default(TYPE);
             key = GetKey(key);
-            await StringLocks.DoActionAsync(key, async () => {
-                StaticCacheObject cachedObj;
-                bool localValid = StaticObjects.TryGetValue(key, out cachedObj);
-                if (!localValid) {
-                    cachedObj = new StaticCacheObject {
-                        Key = key,
-                        Value = data,
-                        Created = DateTime.MinValue,
-                    };
-                }
-                // get shared cached version
-                SharedCacheVersion sharedInfo = await SharedCacheVersionDataProvider.SharedCacheVersionDP.GetVersionAsync(key);
-                if (sharedInfo != null) {
-                    if (sharedInfo.Created != cachedObj.Created) {
-                        // shared cached version is different, use callback to set data
-                        if (noDataCallback == null) {
-                            // shared cached version is different, retrieve and save locally
-                            SharedCacheObject sharedCacheObj = await DataProvider.GetAsync(key);
-                            if (sharedCacheObj == null) { 
-                                // this shouldn't happen, we just got the shared version
-                            } else {
-                                data = (TYPE)new GeneralFormatter().Deserialize(sharedCacheObj.Value);
-                                sharedInfo = sharedCacheObj;
-                            }
+
+            StaticCacheObject cachedObj;
+            bool localValid = StaticObjects.TryGetValue(key, out cachedObj);
+            if (!localValid) {
+                cachedObj = new StaticCacheObject {
+                    Key = key,
+                    Value = data,
+                    Created = DateTime.MinValue,
+                };
+            }
+            // get shared cached version
+            SharedCacheVersion sharedInfo = await SharedCacheVersionDataProvider.SharedCacheVersionDP.GetVersionAsync(key);
+            if (sharedInfo != null) {
+                if (sharedInfo.Created != cachedObj.Created) {
+                    // shared cached version is different, use callback to set data
+                    if (noDataCallback == null) {
+                        // shared cached version is different, retrieve and save locally
+                        SharedCacheObject sharedCacheObj = await DataProvider.GetAsync(key);
+                        if (sharedCacheObj == null) { 
+                            // this shouldn't happen, we just got the shared version
                         } else {
-                            // if there is a data callback, the caller provides all data (nothing, except version, is saved in shared cache)
-                            data = await noDataCallback();
+                            data = (TYPE)new GeneralFormatter().Deserialize(sharedCacheObj.Value);
+                            sharedInfo = sharedCacheObj;
                         }
-                        cachedObj = new StaticCacheObject {
-                            Created = sharedInfo.Created,
-                            Key = sharedInfo.Key,
-                            Value = data,
-                        };
+                    } else {
+                        // if there is a data callback, the caller provides all data (nothing, except version, is saved in shared cache)
+                        data = await noDataCallback();
+                    }
+                    cachedObj = new StaticCacheObject {
+                        Created = sharedInfo.Created,
+                        Key = sharedInfo.Key,
+                        Value = data,
+                    };
+                    localValid = true;
+                    lock (_lockObject) { // used to protect StaticObjects - local only
                         StaticObjects.Remove(key);
                         StaticObjects.Add(key, cachedObj);
-                        return;
-                    } else {
-                        // shared version same as local version
                     }
                 } else {
-                    // there is no shared version
+                    // shared version same as local version
                 }
-                // return the local data 
-                if (!localValid) {
-                    if (noDataCallback != null)
-                        cachedObj.Value = await noDataCallback();
-                }
-                data = (TYPE)cachedObj.Value;
-            });
+            } else {
+                // there is no shared version
+            }
+            // return the local data 
+            if (!localValid) {
+                if (noDataCallback != null)
+                    cachedObj.Value = await noDataCallback();
+            }
+            data = (TYPE)cachedObj.Value;
             return data;
         }
         public async Task RemoveAsync<TYPE>(string key) {
