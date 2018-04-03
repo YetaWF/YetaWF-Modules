@@ -180,6 +180,30 @@ namespace YetaWF.Modules.Identity.Controllers {
         }
 
         [AllowPost]
+        [Permission("SendEmails")]
+        [ExcludeDemoMode]
+        public async Task<ActionResult> SendRejectedEmail(string userName) {
+            using (UserDefinitionDataProvider dataProvider = new UserDefinitionDataProvider()) {
+                UserDefinition user = await GetUserAsync(userName, dataProvider);
+                Emails emails = new Emails();
+                await emails.SendRejectedAsync(user);
+                return Reload(null, Reload: ReloadEnum.ModuleParts, PopupText: this.__ResStr("rejectionSent", "Rejection email sent to user {0}.", user.Email));
+            }
+        }
+        
+        [AllowPost]
+        [Permission("SendEmails")]
+        [ExcludeDemoMode]
+        public async Task<ActionResult> SendSuspendedEmail(string userName) {
+            using (UserDefinitionDataProvider dataProvider = new UserDefinitionDataProvider()) {
+                UserDefinition user = await GetUserAsync(userName, dataProvider);
+                Emails emails = new Emails();
+                await emails.SendSuspendedAsync(user);
+                return Reload(null, Reload: ReloadEnum.ModuleParts, PopupText: this.__ResStr("suspendedSent", "Suspension email sent to user {0}.", user.Email));
+            }
+        }
+
+        [AllowPost]
         [ExcludeDemoMode]
         public async Task<ActionResult> RehashAllPasswords() {
             using (UserDefinitionDataProvider userDP = new UserDefinitionDataProvider()) {

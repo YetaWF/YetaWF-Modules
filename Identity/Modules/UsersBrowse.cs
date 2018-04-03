@@ -146,7 +146,7 @@ namespace YetaWF.Modules.Identity.Modules {
         public async Task<ModuleAction> GetAction_SendRejectedEmailAsync(string userName) {
             if (!IsAuthorized("SendEmails")) return null;
             return new ModuleAction(this) {
-                Url = YetaWFManager.UrlFor(typeof(UsersBrowseModuleController), "SendRejectedEmail"),//$$$ this doesn't exist
+                Url = YetaWFManager.UrlFor(typeof(UsersBrowseModuleController), nameof(UsersBrowseModuleController.SendRejectedEmail)),
                 NeedsModuleContext = true,
                 QueryArgs = new { UserName = userName },
                 Image = await CustomIconAsync("RejectedEmail.png"),
@@ -164,7 +164,7 @@ namespace YetaWF.Modules.Identity.Modules {
         public async Task<ModuleAction> GetAction_SendSuspendedEmailAsync(string userName) {
             if (!IsAuthorized("SendEmails")) return null;
             return new ModuleAction(this) {
-                Url = YetaWFManager.UrlFor(typeof(UsersBrowseModuleController), "SendSuspendedEmail"),//$$$ this doesn't exist
+                Url = YetaWFManager.UrlFor(typeof(UsersBrowseModuleController), nameof(UsersBrowseModuleController.SendSuspendedEmail)),
                 NeedsModuleContext = true,
                 QueryArgs = new { UserName = userName },
                 Image = await CustomIconAsync("SuspendedEmail.png"),

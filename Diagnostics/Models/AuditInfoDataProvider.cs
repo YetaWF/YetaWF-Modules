@@ -124,7 +124,6 @@ namespace YetaWF.Modules.Diagnostics.DataProvider {
             DataProviderGetRecords<AuditInfo> info = await DataProvider.GetRecordsAsync(0, 1, null, filters);
             return info.Total > 0;
         }
-        //$$$ call to reset during multinstance startup
         public Task RemoveAllAsync() {
             return DataProvider.RemoveRecordsAsync(null);
         }
