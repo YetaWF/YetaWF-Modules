@@ -4,6 +4,10 @@ using System.Threading.Tasks;
 using YetaWF.Core.DataProvider;
 using YetaWF.Core.IO;
 using YetaWF.Core.Support.Serializers;
+#if MVC6
+using Microsoft.Extensions.Caching.Memory;
+using YetaWF.Core.Support;
+#endif
 
 namespace YetaWF.Modules.Caching.DataProvider {
 
@@ -23,7 +27,7 @@ namespace YetaWF.Modules.Caching.DataProvider {
         public Task AddAsync<TYPE>(string key, TYPE data) {
             if (data == null) {
 #if MVC6
-                YetaWFManager.MemoryCache.Set<object>(cacheKey, YetaWF.Core.IO.Caching.EmptyCachedObject);
+                YetaWFManager.MemoryCache.Set<object>(key, YetaWF.Core.IO.Caching.EmptyCachedObject);
 #else
                 System.Web.HttpRuntime.Cache[key] = YetaWF.Core.IO.Caching.EmptyCachedObject;
 #endif
@@ -47,7 +51,7 @@ namespace YetaWF.Modules.Caching.DataProvider {
         public Task<GetObjectInfo<TYPE>> GetAsync<TYPE>(string key) {
             object data = null;
 #if MVC6
-            data = YetaWFManager.MemoryCache.Get(cacheKey);
+            data = YetaWFManager.MemoryCache.Get(key);
 #else
             data = System.Web.HttpRuntime.Cache[key];
 #endif
@@ -74,7 +78,7 @@ namespace YetaWF.Modules.Caching.DataProvider {
 
         public Task RemoveAsync<TYPE>(string key) {
 #if MVC6
-            YetaWFManager.MemoryCache.Remove(cacheKey);
+            YetaWFManager.MemoryCache.Remove(key);
 #else
             System.Web.HttpRuntime.Cache.Remove(key);
 #endif

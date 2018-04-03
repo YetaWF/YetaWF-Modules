@@ -30,7 +30,7 @@ namespace YetaWF.Modules.Packages.Controllers {
             PackagesDataProvider.RetrieveInitialInstallLogInfo info = await PackagesDataProvider.RetrieveInitialInstallLogAsync();
             if (info.Ended) {
 #if MVC6
-                records.AddRange(new List<string> {
+                info.Lines.AddRange(new List<string> {
                     "*** This site has to be restarted now so the new settings can be activated ***",
                     "*** DONE. PLEASE CLOSE YOUR BROWSER AND RESTART YOUR SITE FROM VISUAL STUDIO ***",
                     "+++DONE",
