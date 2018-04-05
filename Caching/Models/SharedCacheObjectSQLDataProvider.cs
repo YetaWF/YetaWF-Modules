@@ -24,9 +24,9 @@ namespace YetaWF.Modules.Caching.DataProvider {
         public SharedCacheVersion() { }
     }
 
-    public class SharedCacheVersionDataProvider : DataProviderImpl, IInitializeApplicationStartup, IInitializeApplicationStartupFirstNodeOnly {
+    public class SharedCacheVersionSQLDataProvider : DataProviderImpl, IInitializeApplicationStartup, IInitializeApplicationStartupFirstNodeOnly {
 
-        public static SharedCacheVersionDataProvider SharedCacheVersionDP { get; private set; }
+        public static SharedCacheVersionSQLDataProvider SharedCacheVersionDP { get; private set; }
 
         // Startup
 
@@ -35,12 +35,13 @@ namespace YetaWF.Modules.Caching.DataProvider {
             return Task.CompletedTask;
         }
         public async Task InitializeFirstNodeStartupAsync() {
-            await DataProvider.RemoveRecordsAsync(null);// remove all records
+            if (YetaWF.Modules.Caching.Startup.Application.CacheProvider == YetaWF.Modules.Caching.Startup.Application.SQLCacheProvider)
+                await DataProvider.RemoveRecordsAsync(null);// remove all records
         }
 
         // Implementation
 
-        public SharedCacheVersionDataProvider() : base(0) { SetDataProvider(CreateDataProvider()); }
+        public SharedCacheVersionSQLDataProvider() : base(0) { SetDataProvider(CreateDataProvider()); }
 
         private IDataProvider<string, SharedCacheVersion> DataProvider { get { return GetDataProvider(); } }
 
@@ -83,15 +84,15 @@ namespace YetaWF.Modules.Caching.DataProvider {
     /// Shared cache will only be retrieved to check if there is a newer cached object available. Once
     /// it is known that a new object is available, the data is retrieved.
     /// </summary>
-    public class SharedCacheObjectDataProvider : DataProviderImpl, ICacheDataProvider, IInstallableModel {
+    public class SharedCacheObjectSQLDataProvider : DataProviderImpl, ICacheDataProvider, IInstallableModel {
 
-        public static ICacheDataProvider GetLocalCacheProvider() {
-            return new SharedCacheObjectDataProvider();
+        public static ICacheDataProvider GetProvider() {
+            return new SharedCacheObjectSQLDataProvider();
         }
 
         // Implementation
 
-        public SharedCacheObjectDataProvider() : base(YetaWFManager.Manager.CurrentSite.Identity) { SetDataProvider(CreateDataProvider()); }
+        public SharedCacheObjectSQLDataProvider() : base(YetaWFManager.Manager.CurrentSite.Identity) { SetDataProvider(CreateDataProvider()); }
 
         private IDataProvider<string, SharedCacheObject> DataProvider { get { return GetDataProvider(); } }
 
@@ -103,25 +104,22 @@ namespace YetaWF.Modules.Caching.DataProvider {
         // API
 
         public async Task AddAsync<TYPE>(string key, TYPE data) {
-            using (DataProviderTransaction trans = DataProvider.StartTransaction()) {
-                // save new version shared and locally
-                byte[] cacheData = new GeneralFormatter().Serialize(data);
-                SharedCacheObject sharedCacheObj = new SharedCacheObject {
-                    Created = DateTime.UtcNow,
-                    Key = key,
-                    Value = cacheData,
-                };
-                await DataProvider.RemoveAsync(key);
-                await DataProvider.AddAsync(sharedCacheObj); // save shared cached version
-                await trans.CommitAsync();
-                LocalSharedCacheObject localCacheObj = new LocalSharedCacheObject {
-                    Created = sharedCacheObj.Created,
-                    Key = sharedCacheObj.Key,
-                    Value = sharedCacheObj.Value,
-                };
-                using (ICacheDataProvider localCacheDP = YetaWF.Core.IO.Caching.GetLocalCacheProvider()) {
-                    await localCacheDP.AddAsync(key, localCacheObj); // save locally cached version
-                }
+            // save new version shared and locally
+            byte[] cacheData = new GeneralFormatter().Serialize(data);
+            SharedCacheObject sharedCacheObj = new SharedCacheObject {
+                Created = DateTime.UtcNow,
+                Key = key,
+                Value = cacheData,
+            };
+            await DataProvider.RemoveAsync(key);
+            await DataProvider.AddAsync(sharedCacheObj); // save shared cached version
+            LocalSharedCacheObject localCacheObj = new LocalSharedCacheObject {
+                Created = sharedCacheObj.Created,
+                Key = sharedCacheObj.Key,
+                Value = sharedCacheObj.Value,
+            };
+            using (ICacheDataProvider localCacheDP = YetaWF.Core.IO.Caching.GetLocalCacheProvider()) {
+                await localCacheDP.AddAsync(key, localCacheObj); // save locally cached version
             }
         }
         public async Task<GetObjectInfo<TYPE>> GetAsync<TYPE>(string key) {
@@ -130,18 +128,18 @@ namespace YetaWF.Modules.Caching.DataProvider {
             using (ICacheDataProvider localCacheDP = YetaWF.Core.IO.Caching.GetLocalCacheProvider()) {
                 localInfo = await localCacheDP.GetAsync<LocalSharedCacheObject>(key);
                 if (!localInfo.Success) {
-                    // no locally cached data, create one
+                    // no locally cached data
                     localInfo = new GetObjectInfo<LocalSharedCacheObject> {
                         Data = new LocalSharedCacheObject {
                             Created = DateTime.MinValue,
                             Key = key,
                             Value = null,
                         },
-                        Success = true,
+                        Success = false,
                     };
                 }
                 // get shared cached version
-                SharedCacheVersion sharedInfo = await SharedCacheVersionDataProvider.SharedCacheVersionDP.GetVersionAsync(key);
+                SharedCacheVersion sharedInfo = await SharedCacheVersionSQLDataProvider.SharedCacheVersionDP.GetVersionAsync(key);
                 if (sharedInfo != null) {
                     if (sharedInfo.Created != localInfo.Data.Created) {
                         // shared cached version is different, retrieve and save locally
@@ -167,33 +165,22 @@ namespace YetaWF.Modules.Caching.DataProvider {
                     // there is no shared version
                 }
                 // return the local data 
-                return new GetObjectInfo<TYPE> {
-                    Success = true,
-                    Data = (TYPE)new GeneralFormatter().Deserialize(localInfo.Data.Value),
-                };
+                if (localInfo.Success) {
+                    return new GetObjectInfo<TYPE> {
+                        Success = true,
+                        Data = (TYPE)new GeneralFormatter().Deserialize(localInfo.Data.Value),
+                    };
+                } else {
+                    return new GetObjectInfo<TYPE> {
+                        Success = false,
+                    };
+                }
             }
         }
         public async Task RemoveAsync<TYPE>(string key) {
             // We're adding a new version
             await AddAsync(key, default(TYPE));
         }
-
-        //// API for Module
-
-        ///// <summary>
-        ///// Retrieve the complete cached object including version information.
-        ///// </summary>
-        ///// <param name="key"></param>
-        ///// <returns></returns>
-        //public Task<SharedCacheObject> GetItemAsync(string key) {
-        //    return DataProvider.GetAsync(key, null);
-        //}
-        //public Task<DataProviderGetRecords<SharedCacheObject>> GetItemsAsync(int skip, int take, List<DataProviderSortInfo> sort, List<DataProviderFilterInfo> filters) {
-        //    return DataProvider.GetRecordsAsync(skip, take, sort, filters);
-        //}
-        //public Task<int> RemoveItemsAsync(List<DataProviderFilterInfo> filters) {
-        //    return DataProvider.RemoveRecordsAsync(filters);
-        //}
 
         // IInstallableModel
 

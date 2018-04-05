@@ -2,7 +2,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Threading;
 using System.Threading.Tasks;
 using YetaWF.Core.IO;
 using YetaWF.Core.Support;
@@ -15,8 +14,8 @@ namespace YetaWF.Modules.Caching.DataProvider {
     /// </summary>
     public class StaticObjectSingleDataProvider : ICacheStaticDataProvider {
 
-        public static ICacheStaticDataProvider GetLocalCacheProvider() {
-            return new StaticObjectMultiDataProvider();
+        public static ICacheStaticDataProvider GetProvider() {
+            return new StaticObjectMultiSQLDataProvider();
         }
 
         protected YetaWFManager Manager { get { return YetaWFManager.Manager; } }
@@ -71,102 +70,5 @@ namespace YetaWF.Modules.Caching.DataProvider {
             }
             return Task.CompletedTask;
         }
-
-        private class StaticLockObject : IDisposable, IStaticLockObject {
-
-            private static List<string> LockKeys = new List<string>();
-            private static SemaphoreSlim localLock = new SemaphoreSlim(1, 1);// to protect local instance
-            private string Key;
-            private bool LocalLocked = false;
-            private bool Locked = false;
-
-            public StaticLockObject(string key) {
-                Key = key;
-                DisposableTracker.AddObject(this);
-            }
-            internal async Task LockAsync() {
-                if (Locked) throw new InternalError($"{nameof(LockAsync)} called while already holding a lock for key {Key}");
-                for (; !Locked;) {
-                    if (YetaWFManager.IsSync()) {
-                        if (localLock.Wait(10))
-                            LocalLocked = true;
-                    } else {
-                        await localLock.WaitAsync();
-                        LocalLocked = true;
-                    }
-                    if (LocalLocked) {
-                        if (!LockKeys.Contains(Key)) {
-                            LockKeys.Add(Key);
-                            Locked = true;
-                        }
-                        localLock.Release();
-                        LocalLocked = false;
-                        if (Locked)
-                            break;
-                    }
-                    if (YetaWFManager.IsSync())
-                        Thread.Sleep(new TimeSpan(0, 0, 0, 0, 25));// wait a while - this is bad, only works because "other" instance has lock
-                    else
-                        await Task.Delay(new TimeSpan(0, 0, 0, 0, 25));// wait a while
-
-                }
-            }
-            public async Task UnlockAsync() {
-                for (; Locked;) {
-                    if (YetaWFManager.IsSync()) {
-                        if (localLock.Wait(10))
-                            LocalLocked = true;
-                    } else {
-                        await localLock.WaitAsync();
-                        LocalLocked = true;
-                    }
-                    if (LocalLocked) {
-                        LockKeys.Remove(Key);
-                        localLock.Release();
-                        LocalLocked = false;
-                        Locked = false;
-                        break;
-                    }
-                    if (YetaWFManager.IsSync())
-                        Thread.Sleep(new TimeSpan(0, 0, 0, 0, 25));// wait a while - this is bad, only works because "other" instance has lock
-                    else
-                        await Task.Delay(new TimeSpan(0, 0, 0, 0, 25));// wait a while
-                }
-            }
-            public void Dispose() { Dispose(true); }
-            protected virtual void Dispose(bool disposing) {
-                if (disposing) {
-                    YetaWFManager.Syncify(async () => // Only used if caller forgets to Unlock
-                        await UnlockAsync()
-                    );
-                }
-            }
-        }
-        /// <summary>
-        /// Lock a static shared object.
-        /// </summary>
-        public async Task<IStaticLockObject> LockAsync<TYPE>(string key) {
-            StaticLockObject staticLock = new StaticLockObject(key);
-            await staticLock.LockAsync();
-            return staticLock;
-        }
-
-        //$$// API for Module
-
-        ///// <summary>
-        ///// Retrieve the complete cached object including version information.
-        ///// </summary>
-        ///// <param name="key"></param>
-        ///// <returns></returns>
-        //public Task<StaticCacheObject> GetItemAsync(string key) {
-        //    return DataProvider.GetAsync(key, null);
-        //}
-        //public Task<DataProviderGetRecords<StaticCacheObject>> GetItemsAsync(int skip, int take, List<DataProviderSortInfo> sort, List<DataProviderFilterInfo> filters) {
-        //    return DataProvider.GetRecordsAsync(skip, take, sort, filters);
-        //}
-        //public Task<int> RemoveItemsAsync(List<DataProviderFilterInfo> filters) {
-        //    return DataProvider.RemoveRecordsAsync(filters);
-        //}
-
     }
 }

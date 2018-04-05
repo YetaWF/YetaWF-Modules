@@ -105,7 +105,7 @@ namespace YetaWF.Modules.Packages.DataProvider {
                 LogFile = logFile;
             }
             public async Task InitAsync() {
-                using (IFileLockObject lockObject = await FileSystem.FileSystemProvider.LockResourceAsync(LogFile)) {
+                using (ILockObject lockObject = await FileSystem.FileSystemProvider.LockResourceAsync(LogFile)) {
                     if (await FileSystem.FileSystemProvider.FileExistsAsync(LogFile))
                         await FileSystem.FileSystemProvider.DeleteFileAsync(LogFile);
                     await FileSystem.FileSystemProvider.CreateDirectoryAsync(Path.GetDirectoryName(LogFile));
@@ -143,7 +143,7 @@ namespace YetaWF.Modules.Packages.DataProvider {
                     // and the Package package itself is replaced while we're logging, so we just use a file to hold all data.
                     // unfortunately even the _lockObject is lost when the Package package is replaced. Since this is only used
                     // during an initial install, it's not critical enough to make it perfect...
-                    using (IFileLockObject lockObject = await FileSystem.FileSystemProvider.LockResourceAsync(LogFile)) {
+                    using (ILockObject lockObject = await FileSystem.FileSystemProvider.LockResourceAsync(LogFile)) {
                         if (await FileSystem.FileSystemProvider.FileExistsAsync(LogFile)) {
                             info.Lines = await FileSystem.FileSystemProvider.ReadAllLinesAsync(LogFile);
                             success = true;

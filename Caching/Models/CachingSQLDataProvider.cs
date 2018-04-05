@@ -9,9 +9,9 @@ namespace YetaWF.Modules.Caching.DataProvider.SQL {
     public class CachingSQLDataProvider : IExternalDataProvider {
 
         public void Register() {
-            DataProviderImpl.RegisterExternalDataProvider(SQLBase.ExternalName, typeof(DataProvider.SharedCacheObjectDataProvider), typeof(SharedCacheObjectSQLDataProvider));
-            DataProviderImpl.RegisterExternalDataProvider(SQLBase.ExternalName, typeof(DataProvider.SharedCacheVersionDataProvider), typeof(SharedCacheVersionSQLDataProvider));
-            DataProviderImpl.RegisterExternalDataProvider(SQLBase.ExternalName, typeof(DataProvider.StaticObjectMultiDataProvider), typeof(StaticObjectMultiSQLDataProvider));
+            DataProviderImpl.RegisterExternalDataProvider(SQLBase.ExternalName, typeof(DataProvider.SharedCacheObjectSQLDataProvider), typeof(SharedCacheObjectSQLDataProvider));
+            DataProviderImpl.RegisterExternalDataProvider(SQLBase.ExternalName, typeof(DataProvider.SharedCacheVersionSQLDataProvider), typeof(SharedCacheVersionSQLDataProvider));
+            DataProviderImpl.RegisterExternalDataProvider(SQLBase.ExternalName, typeof(DataProvider.StaticObjectMultiSQLDataProvider), typeof(StaticObjectMultiSQLDataProvider));
         }
         class SharedCacheObjectSQLDataProvider : SQLSimpleObject<string, SharedCacheObject> {
             public SharedCacheObjectSQLDataProvider(Dictionary<string, object> options) : base(options) { }

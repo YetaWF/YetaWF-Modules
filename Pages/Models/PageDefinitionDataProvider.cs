@@ -120,7 +120,7 @@ namespace YetaWF.Modules.Pages.DataProvider {
             return await CreatePageDefinitionAsync(page);
         }
         private async Task<PageDefinition> CreatePageDefinitionAsync(PageDefinition page) {
-            using (IStaticLockObject lockObject = await LockAsync()) {
+            using (ILockObject lockObject = await LockAsync()) {
                 PageDefinition.DesignedPage desPage = new PageDefinition.DesignedPage() { PageGuid = page.PageGuid, Url = page.Url, };
                 DesignedPagesDictionaryByUrl designedPagesByUrl = await GetDesignedPagesAsync();
                 if (designedPagesByUrl.ContainsKey(desPage.Url.ToLower()))
@@ -170,7 +170,7 @@ namespace YetaWF.Modules.Pages.DataProvider {
 
             PageDefinition oldPage = null;
 
-            using (IStaticLockObject lockObject = await LockAsync()) {
+            using (ILockObject lockObject = await LockAsync()) {
 
                 page.Updated = DateTime.UtcNow;
                 CleanupUsersAndRoles(page);
@@ -224,7 +224,7 @@ namespace YetaWF.Modules.Pages.DataProvider {
         }
         public async Task<bool> RemovePageDefinitionAsync(Guid pageGuid) {
             PageDefinition page;
-            using (IStaticLockObject lockObject = await LockAsync()) {
+            using (ILockObject lockObject = await LockAsync()) {
                 page = await LoadPageDefinitionAsync(pageGuid);
                 if (page == null)
                     return false;
@@ -283,10 +283,8 @@ namespace YetaWF.Modules.Pages.DataProvider {
                 await staticCacheDP.AddAsync(DESIGNEDPAGESKEY, designedPagesByUrl);
             }
         }
-        internal async Task<IStaticLockObject> LockAsync() {
-            using (ICacheStaticDataProvider staticCacheDP = YetaWF.Core.IO.Caching.GetStaticCacheProvider()) {
-                return await staticCacheDP.LockAsync<DesignedPagesDictionaryByUrl>(DESIGNEDPAGESKEY);
-            }
+        internal async Task<ILockObject> LockAsync() {
+            return await YetaWF.Core.IO.Caching.LockProvider.LockResourceAsync(DESIGNEDPAGESKEY);
         }
         /// <summary>
         /// Given a url returns a designed page guid.

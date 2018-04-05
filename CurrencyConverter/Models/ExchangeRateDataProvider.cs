@@ -69,7 +69,7 @@ namespace YetaWF.Modules.CurrencyConverter.DataProvider {
 
         public async Task<ExchangeRateData> GetItemAsync() {
             string jsFileName = GetJSFileName();
-            using (IFileLockObject lockObject = await FileSystem.FileSystemProvider.LockResourceAsync(jsFileName)) {
+            using (ILockObject lockObject = await FileSystem.FileSystemProvider.LockResourceAsync(jsFileName)) {
                 ExchangeRateData data = await DataProvider.GetAsync(KEY);
                 if (data != null && data.SaveTime.Add(ExchangeRateData.ExpiresAfter) < DateTime.UtcNow)
                     data = null;
