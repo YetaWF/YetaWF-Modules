@@ -13,7 +13,7 @@
                 <Name Value="YetaWF.Modules.Languages.Controllers.LocalizeConfigModuleController+Model" />
                 <BaseTypeName />
                 <Header />
-                <Footer Value="Individual web sites can enable/disable localization support (Site Settings). But localization is only available for individiual sites run by this instance of YetaWF if 'Use Localization Resources' is enabled, which applies to all sites." />
+                <Footer Value="Individual web sites can enable/disable localization support (Site Settings). But localization is only available for individual sites run by this instance of YetaWF if 'Use Localization Resources' is enabled, which applies to all sites." />
                 <Legend />
                 <Categories>
                   <Object Type="YetaWF.Core.Serializers.SerializableDictionary`2[[System.String, mscorlib, Culture=neutral, PublicKeyToken=b77a5c561934e089],[System.String, mscorlib, Culture=neutral, PublicKeyToken=b77a5c561934e089]]" Assembly="YetaWF.Core">
@@ -93,7 +93,7 @@
                             <Description Value="Defines whether localization resources are used, otherwise the application built-in text strings are used instead" />
                             <HelpLink />
                             <TextAbove />
-                            <TextBelow Value="If multi-language support is required, this property must be enabled. This property applies to ALL sites run by this instance of YetaWF. The web site is automatically restarted when this property is changed." />
+                            <TextBelow Value="If multi-language support is required, this property must be enabled. This property applies to ALL sites run by this instance of YetaWF." />
                           </Properties>
                         </Object>
                       </Value>
@@ -128,7 +128,7 @@
             <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
               <Properties>
                 <Name Value="okSaved" />
-                <Text Value="Localization settings saved - The site is now restarting" />
+                <Text Value="Localization settings saved - These settings won't take effect until the site is restarted" />
               </Properties>
             </Object>
           </Value>
