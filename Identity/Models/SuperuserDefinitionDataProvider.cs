@@ -43,8 +43,6 @@ namespace YetaWF.Modules.Identity.DataProvider {
         // IMPLEMENTATION
         // IMPLEMENTATION
 
-        private static AsyncLock _lockObject = new AsyncLock();
-
         public SuperuserDefinitionDataProvider() : base(0) { SetDataProvider(CreateDataProvider()); }
 
         private IDataProvider<string, UserDefinition> DataProvider { get { return GetDataProvider(); } }
@@ -87,7 +85,7 @@ namespace YetaWF.Modules.Identity.DataProvider {
             user.RolesList = new SerializableList<Role> { new Role { RoleId = Resource.ResourceAccess.GetSuperuserRoleId() } };
             return await UpdateItemAsync(user.UserName, user);
         }
-        public async Task<UpdateStatusEnum> UpdateItemAsync(string originalName, UserDefinition data) {
+        private async Task<UpdateStatusEnum> UpdateItemAsync(string originalName, UserDefinition data) {
             if (string.Compare(originalName, SuperUserName, true) == 0) {
                 if (data.UserName != originalName)
                     throw new Error(this.__ResStr("cantRenameSuper", "The user \"{0}\" can't be renamed. It is defined in the site's Appsettings.json", data.UserName));
@@ -99,7 +97,9 @@ namespace YetaWF.Modules.Identity.DataProvider {
                 throw new Error(this.__ResStr("cantUpdateSuper", "Wrong user id or user name - Can't update as superuser"));
             UpdateStatusEnum result;
             UserDefinition origSuperuser;// need to get current superuser because user may have changed the name through Appsettings.json
-            using (await _lockObject.LockAsync()) {
+
+            Package package = YetaWF.Modules.Identity.Controllers.AreaRegistration.CurrentPackage;
+            using (ILockObject lockObject = await YetaWF.Core.IO.Caching.LockProvider.LockResourceAsync($"{package.AreaName}.{nameof(SuperuserDefinitionDataProvider)}_{originalName}")) {
                 List<DataProviderFilterInfo> filters = DataProviderFilterInfo.Join(null, new DataProviderFilterInfo { Field = "UserId", Operator = "==", Value = SuperuserDefinitionDataProvider.SuperUserId });
                 origSuperuser = await DataProvider.GetOneRecordAsync(filters);
                 data.RolesList = new SerializableList<Role> { new Role { RoleId = Resource.ResourceAccess.GetSuperuserRoleId() } };

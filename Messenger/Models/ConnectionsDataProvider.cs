@@ -89,7 +89,7 @@ namespace YetaWF.Modules.Messenger.DataProvider {
         }
 
         public async Task UpdateEntryAsync(string name, string ipAddress, string connectionId) {
-            using (await _lockObject.LockAsync()) {
+            using (await _lockObject.LockAsync()) {//$$
                 try {
                     Connection conn = await GetItemAsync(connectionId);
                     if (conn == null) {

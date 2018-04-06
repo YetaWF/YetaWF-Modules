@@ -21,8 +21,6 @@ namespace YetaWF.Modules.Logging.DataProvider.File {
 
     public class LogRecordDataProvider : YetaWF.Modules.Logging.DataProvider.LogRecordDataProvider, IInstallableModel, ILogging {
 
-        static protected AsyncLock lockObject = new AsyncLock();
-
         private readonly string LogfileName = "Logfile.txt";
         string LogFile;
 
@@ -46,20 +44,23 @@ namespace YetaWF.Modules.Logging.DataProvider.File {
         public override Task InitAsync() { return Task.CompletedTask; }
 
         public override async Task ClearAsync() {
-            using (lockObject.LockAsync()) {
+            Package package = Package.GetPackageFromAssembly(GetType().Assembly);
+            using (ILockObject lockObject = await YetaWF.Core.IO.Caching.LockProvider.LockResourceAsync(LogFile)) {
                 try {
                     await FileSystem.FileSystemProvider.DeleteFileAsync(LogFile);
                 } catch (Exception) { }
                 await FileSystem.FileSystemProvider.CreateDirectoryAsync(Path.GetDirectoryName(LogFile));
                 LogCache = new List<string>();
+                await lockObject.UnlockAsync();
             }
         }
 
         public override async Task FlushAsync() {
-            using (lockObject.LockAsync()) {
+            using (ILockObject lockObject = await YetaWF.Core.IO.Caching.LockProvider.LockResourceAsync(LogFile)) {
                 if (LogCache != null)
                     await FileSystem.FileSystemProvider.AppendAllLinesAsync(LogFile, LogCache);
                 LogCache = new List<string>();
+                await lockObject.UnlockAsync();
             }
         }
 
@@ -74,13 +75,14 @@ namespace YetaWF.Modules.Logging.DataProvider.File {
                     record.Level, record.Info);
             text = text.Replace("\n", "\r\n");
 
-            using (lockObject.Lock()) {
-                YetaWFManager.Syncify(async () => { // logging is sync by default
+            YetaWFManager.Syncify(async () => { // logging is sync by default
+                using (ILockObject lockObject = await YetaWF.Core.IO.Caching.LockProvider.LockResourceAsync(LogFile)) {
                     LogCache.Add(text);
                     if (LogCache.Count >= MAXRECORDS)
                         await FlushAsync();
-                });
-            }
+                    await lockObject.UnlockAsync();
+                }
+            });
         }
 
         public override Task<LogRecord> GetItemAsync(int key) {

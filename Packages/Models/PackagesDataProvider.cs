@@ -53,7 +53,6 @@ namespace YetaWF.Modules.Packages.DataProvider {
         public static string LogFile {
             get { return Path.Combine(YetaWFManager.DataFolder, "InitialInstall.txt"); }
         }
-        private static AsyncLock _lockObject = new AsyncLock();
 
         /// <summary>
         /// Installs all packages and builds the initial site from the import data (zip files) or from templates
@@ -99,7 +98,6 @@ namespace YetaWF.Modules.Packages.DataProvider {
         public class InitialSiteLogging : ILogging {
 
             private string LogFile;
-            private AsyncLock _lockObject = new AsyncLock();
 
             public InitialSiteLogging(string logFile) {
                 LogFile = logFile;
@@ -117,11 +115,12 @@ namespace YetaWF.Modules.Packages.DataProvider {
             public Task FlushAsync() { return Task.CompletedTask; }
             public Task<bool> IsInstalledAsync() { return Task.FromResult(true); }
             public void WriteToLogFile(string category, Logging.LevelEnum level, int relStack, string text) {
-                using (_lockObject.Lock()) {
-                    YetaWFManager.Syncify(async () => { // Logging is sync by definition (this is only used for startup logging)
+                YetaWFManager.Syncify(async () => { // Logging is sync by definition (this is only used for startup logging)
+                    using (ILockObject lockObject = await YetaWF.Core.IO.Caching.LockProvider.LockResourceAsync(LogFile)) {
                         await FileSystem.FileSystemProvider.AppendAllTextAsync(LogFile, text + "\r\n");
-                    });
-                }
+                        await lockObject.UnlockAsync();
+                    }
+                });
             }
         }
 
@@ -141,7 +140,7 @@ namespace YetaWF.Modules.Packages.DataProvider {
                     // This is horrible, polling until the file is no longer in use.
                     // The problem is we can't use statics or some form of caching as this is called by multiple separate requests
                     // and the Package package itself is replaced while we're logging, so we just use a file to hold all data.
-                    // unfortunately even the _lockObject is lost when the Package package is replaced. Since this is only used
+                    // unfortunately even the lockObject is lost when the Package package is replaced. Since this is only used
                     // during an initial install, it's not critical enough to make it perfect...
                     using (ILockObject lockObject = await FileSystem.FileSystemProvider.LockResourceAsync(LogFile)) {
                         if (await FileSystem.FileSystemProvider.FileExistsAsync(LogFile)) {

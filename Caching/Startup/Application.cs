@@ -30,7 +30,7 @@ namespace YetaWF.Modules.Caching.Startup {
             Package package = YetaWF.Modules.Caching.Controllers.AreaRegistration.CurrentPackage;
 
             // permanently created dataproviders (never disposed)
-            bool distributed = WebConfigHelper.GetValue<bool>(AreaRegistration.CurrentPackage.AreaName, Distributed);
+            bool distributed = WebConfigHelper.GetValue<bool>(AreaRegistration.CurrentPackage.AreaName, Distributed, false);
 
             if (distributed) {
                 YetaWF.Core.Support.Startup.MultiInstance = true;

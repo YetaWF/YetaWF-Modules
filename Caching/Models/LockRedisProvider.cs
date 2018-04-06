@@ -26,11 +26,8 @@ namespace YetaWF.Modules.Caching.DataProvider {
             }
         }
 
-        public LockRedisProvider() {
-            if (Redis == null)
-                throw new InternalError("This constructor can only be used after the constructor with the configuration string has been used");
-        }
         public async Task InitializeFirstNodeStartupAsync() {
+            if (YetaWF.Modules.Caching.Startup.Application.LockProvider != YetaWF.Modules.Caching.Startup.Application.ReditCacheProvider) return;
             // this is the first node, so clear all data
             IDatabase db = Redis.GetDatabase();
             if (YetaWFManager.IsSync()) {
@@ -42,6 +39,7 @@ namespace YetaWF.Modules.Caching.DataProvider {
 
         // Implementation
 
+        public LockRedisProvider() { }
         public LockRedisProvider(string configString) {
             Redis = ConnectionMultiplexer.Connect(configString);
             Id = Guid.NewGuid();

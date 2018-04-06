@@ -15,7 +15,7 @@ namespace YetaWF.Modules.Caching.DataProvider {
     public class StaticObjectSingleDataProvider : ICacheStaticDataProvider {
 
         public static ICacheStaticDataProvider GetProvider() {
-            return new StaticObjectMultiSQLDataProvider();
+            return new StaticObjectSingleDataProvider();
         }
 
         protected YetaWFManager Manager { get { return YetaWFManager.Manager; } }
