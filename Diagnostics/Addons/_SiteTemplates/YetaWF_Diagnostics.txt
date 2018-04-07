@@ -5,9 +5,9 @@
 ::PAGE-SECTION::
 
 Administrator /YetaWF/Diagnostics/AuditRecords
-    Title=Diagnostics AuditRecords
-    Description=Description for Diagnostics AuditRecords
-    YetaWF > Diagnostics > {YetaWF.Diagnostics, YetaWF.Modules.Diagnostics.Modules.AuditRecordsModule}.GetAction_Items({CURRENTURL})
+    Title=Audit Information
+    Description=Audit Information
+    Admin > Diagnostics > {YetaWF.Diagnostics, YetaWF.Modules.Diagnostics.Modules.AuditRecordsModule}.GetAction_Items({CURRENTURL})
     -
     YetaWF.Diagnostics, YetaWF.Modules.Diagnostics.Modules.AuditRecordsModule
 

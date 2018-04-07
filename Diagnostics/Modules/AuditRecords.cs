@@ -27,31 +27,26 @@ namespace YetaWF.Modules.Diagnostics.Modules {
     public class AuditRecordsModule : ModuleDefinition {
 
         public AuditRecordsModule() {
-            Title = this.__ResStr("modTitle", "Audit Infos");
-            Name = this.__ResStr("modName", "Audit Infos");
-            Description = this.__ResStr("modSummary", "Displays and manages audit infos");
+            Title = this.__ResStr("modTitle", "Audit Information");
+            Name = this.__ResStr("modName", "Audit Information");
+            Description = this.__ResStr("modSummary", "Displays and manages audit information");
             DefaultViewName = StandardViews.PropertyListEdit;
+            UsePartialFormCss = false;
         }
 
         public override IModuleDefinitionIO GetDataProvider() { return new AuditRecordsModuleDataProvider(); }
 
-        [Category("General"), Caption("Add Url"), Description("The Url to add a new audit info - if omitted, a default page is generated")]
-        [UIHint("Url"), AdditionalMetadata("UrlType", UrlHelperEx.UrlTypeEnum.Local), UrlValidation(UrlValidationAttribute.SchemaEnum.Any, UrlHelperEx.UrlTypeEnum.Local), StringLength(Globals.MaxUrl), Trim]
-        public string AddUrl { get; set; }
-        [Category("General"), Caption("Display Url"), Description("The Url to display a audit info - if omitted, a default page is generated")]
+        [Category("General"), Caption("Display Url"), Description("The Url to display an audit record - if omitted, a default page is generated")]
         [UIHint("Url"), AdditionalMetadata("UrlType", UrlHelperEx.UrlTypeEnum.Local), UrlValidation(UrlValidationAttribute.SchemaEnum.Any, UrlHelperEx.UrlTypeEnum.Local), StringLength(Globals.MaxUrl), Trim]
         public string DisplayUrl { get; set; }
-        [Category("General"), Caption("Edit Url"), Description("The Url to edit a audit info - if omitted, a default page is generated")]
-        [UIHint("Url"), AdditionalMetadata("UrlType", UrlHelperEx.UrlTypeEnum.Local), UrlValidation(UrlValidationAttribute.SchemaEnum.Any, UrlHelperEx.UrlTypeEnum.Local), StringLength(Globals.MaxUrl), Trim]
-        public string EditUrl { get; set; }
 
         public override SerializableList<AllowedRole> DefaultAllowedRoles { get { return AdministratorLevel_DefaultAllowedRoles; } } // TODO: adjust default permissions
         public override List<RoleDefinition> ExtraRoles {
             get {
                 return new List<RoleDefinition>() {
                     new RoleDefinition("RemoveItems",
-                        this.__ResStr("roleRemItemsC", "Remove Audit Infos"), this.__ResStr("roleRemItems", "The role has permission to remove individual audit infos"),
-                        this.__ResStr("userRemItemsC", "Remove Audit Infos"), this.__ResStr("userRemItems", "The user has permission to remove individual audit infos")),
+                        this.__ResStr("roleRemItemsC", "Remove Audit Information"), this.__ResStr("roleRemItems", "The role has permission to remove individual audit records"),
+                        this.__ResStr("userRemItemsC", "Remove Audit Information"), this.__ResStr("userRemItems", "The user has permission to remove individual audit records")),
                 };
             }
         }
@@ -65,10 +60,10 @@ namespace YetaWF.Modules.Diagnostics.Modules {
             return new ModuleAction(this) {
                 Url = string.IsNullOrWhiteSpace(url) ? ModulePermanentUrl : url,
                 Image = "#Browse",
-                LinkText = this.__ResStr("browseLink", "Audit Infos"),
-                MenuText = this.__ResStr("browseText", "Audit Infos"),
-                Tooltip = this.__ResStr("browseTooltip", "Display and manage audit infos"),
-                Legend = this.__ResStr("browseLegend", "Displays and manages audit infos"),
+                LinkText = this.__ResStr("browseLink", "Audit Information"),
+                MenuText = this.__ResStr("browseText", "Audit Information"),
+                Tooltip = this.__ResStr("browseTooltip", "Display and manage audit information"),
+                Legend = this.__ResStr("browseLegend", "Displays and manages audit information"),
                 Style = ModuleAction.ActionStyleEnum.Normal,
                 Location = ModuleAction.ActionLocationEnum.NoAuto,
                 Category = ModuleAction.ActionCategoryEnum.Read,
@@ -83,14 +78,14 @@ namespace YetaWF.Modules.Diagnostics.Modules {
                 QueryArgs = new { Id = id },
                 Image = "#Remove",
                 Style = ModuleAction.ActionStyleEnum.Post,
-                LinkText = this.__ResStr("removeLink", "Remove Audit Info"),
-                MenuText = this.__ResStr("removeMenu", "Remove Audit Info"),
-                Tooltip = this.__ResStr("removeTT", "Remove the audit info"),
-                Legend = this.__ResStr("removeLegend", "Removes the audit info"),
+                LinkText = this.__ResStr("removeLink", "Remove Audit Record"),
+                MenuText = this.__ResStr("removeMenu", "Remove Audit Record"),
+                Tooltip = this.__ResStr("removeTT", "Remove the audit record"),
+                Legend = this.__ResStr("removeLegend", "Removes the audit record"),
                 Category = ModuleAction.ActionCategoryEnum.Delete,
                 Mode = ModuleAction.ActionModeEnum.Any,
                 Location = ModuleAction.ActionLocationEnum.NoAuto,
-                ConfirmationText = this.__ResStr("removeConfirm", "Are you sure you want to remove audit info \"{0}\"?", id),
+                ConfirmationText = this.__ResStr("removeConfirm", "Are you sure you want to remove audit record \"{0}\"?", id),
             };
         }
     }

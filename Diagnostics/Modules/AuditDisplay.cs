@@ -15,9 +15,9 @@ namespace YetaWF.Modules.Diagnostics.Modules {
     public class AuditDisplayModule : ModuleDefinition {
 
         public AuditDisplayModule() {
-            Title = this.__ResStr("modTitle", "Audit Info");
-            Name = this.__ResStr("modName", "Audit Info");
-            Description = this.__ResStr("modSummary", "Displays an existing audit info");
+            Title = this.__ResStr("modTitle", "Audit Record");
+            Name = this.__ResStr("modName", "Audit Record");
+            Description = this.__ResStr("modSummary", "Displays an existing audit record");
             DefaultViewName = StandardViews.Display;
         }
 
@@ -32,8 +32,8 @@ namespace YetaWF.Modules.Diagnostics.Modules {
                 Image = "#Display",
                 LinkText = this.__ResStr("displayLink", "Display"),
                 MenuText = this.__ResStr("displayText", "Display"),
-                Tooltip = this.__ResStr("displayTooltip", "Display the audit info"),
-                Legend = this.__ResStr("displayLegend", "Displays an existing audit info"),
+                Tooltip = this.__ResStr("displayTooltip", "Display the audit record"),
+                Legend = this.__ResStr("displayLegend", "Displays an existing audit record"),
                 Style = ModuleAction.ActionStyleEnum.Popup,
                 Category = ModuleAction.ActionCategoryEnum.Read,
                 Mode = ModuleAction.ActionModeEnum.Any,

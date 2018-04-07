@@ -91,21 +91,40 @@ namespace YetaWF.Modules.Diagnostics.Controllers {
         }
 
         public class BrowseModel {
+            [Caption("Restart Pending"), Description("Defines whether a site restart (all instances) is pending to active all pending changes")] // empty entries required so property is shown in property list (but with a suppressed label)
+            [UIHint("Boolean"), ReadOnly]
+            public bool RestartPending { get; set; }
+
+            [Caption("Last Restart"), Description("The date and time the site (all instances) was last restarted")]
+            [UIHint("DateTime"), ReadOnly]
+            public DateTime LastRestart { get; set; }
+
+            [Caption("Auditing Active"), Description("Defines whether auditing is active (enabled using appsettings.json)")]
+            [UIHint("Boolean"), ReadOnly]
+            [SuppressIfEqual("AuditingActive", true)]
+            public bool AuditingActive { get { return YetaWF.Core.Audit.Auditing.Active; } }
+
             [Caption(""), Description("")] // empty entries required so property is shown in property list (but with a suppressed label)
             [UIHint("Grid"), ReadOnly]
+            [SuppressIfEqual("AuditingActive", false)]
             public GridDefinition GridDef { get; set; }
         }
 
         [AllowGet]
-        public ActionResult AuditRecords() {
-            BrowseModel model = new BrowseModel { };
-            model.GridDef = new GridDefinition {
-                AjaxUrl = GetActionUrl("AuditRecords_GridData"),
-                ModuleGuid = Module.ModuleGuid,
-                RecordType = typeof(BrowseItem),
-                SettingsModuleGuid = Module.PermanentGuid,
-            };
-            return View(model);
+        public async Task<ActionResult> AuditRecords() {
+            using (AuditInfoDataProvider dataProvider = new AuditInfoDataProvider()) {
+                BrowseModel model = new BrowseModel {
+                    RestartPending = YetaWF.Core.Support.Startup.RestartPending || (YetaWF.Core.Audit.Auditing.Active ? await YetaWF.Core.Audit.Auditing.AuditProvider.HasPendingRestartAsync() : false),
+                    LastRestart = YetaWF.Core.Support.Startup.MultiInstanceStartTime,
+                };
+                model.GridDef = new GridDefinition {
+                    AjaxUrl = GetActionUrl("AuditRecords_GridData"),
+                    ModuleGuid = Module.ModuleGuid,
+                    RecordType = typeof(BrowseItem),
+                    SettingsModuleGuid = Module.PermanentGuid,
+                };
+                return View(model);
+            }
         }
 
         [AllowPost]

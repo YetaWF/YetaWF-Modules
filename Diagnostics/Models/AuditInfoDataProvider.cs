@@ -9,6 +9,7 @@ using YetaWF.Core.IO;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Packages;
 using YetaWF.Core.Support;
+using YetaWF.Modules.Diagnostics.Controllers;
 
 namespace YetaWF.Modules.Diagnostics.DataProvider {
 
@@ -56,7 +57,10 @@ namespace YetaWF.Modules.Diagnostics.DataProvider {
         // Startup
 
         public Task InitializeApplicationStartupAsync() {
-            YetaWF.Core.Audit.Auditing.AuditProvider = this;
+            Package package = AreaRegistration.CurrentPackage;
+            bool active = WebConfigHelper.GetValue<bool>(package.AreaName, "Auditing", false);
+            if (active)
+                YetaWF.Core.Audit.Auditing.AuditProvider = this;
             return Task.CompletedTask;
         }
 
@@ -118,9 +122,10 @@ namespace YetaWF.Modules.Diagnostics.DataProvider {
             if (!await AddItemAsync(auditInfo))
                 throw new InternalError("Couldn't add audit information");
         }
-        public async Task<bool> HasItemsAsync() {
+        public async Task<bool> HasPendingRestartAsync() {
             List<DataProviderFilterInfo> filters = null;
             filters = DataProviderFilterInfo.Join(filters, new DataProviderFilterInfo { Field = "Created", Operator = ">=", Value = YetaWF.Core.Support.Startup.MultiInstanceStartTime });
+            filters = DataProviderFilterInfo.Join(filters, new DataProviderFilterInfo { Field = "RequiresRestart", Operator = "==", Value = true });
             DataProviderGetRecords<AuditInfo> info = await DataProvider.GetRecordsAsync(0, 1, null, filters);
             return info.Total > 0;
         }

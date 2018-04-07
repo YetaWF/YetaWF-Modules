@@ -40,8 +40,7 @@ namespace YetaWF.Modules.Dashboard.Controllers {
             [UIHint("Boolean"), ReadOnly]
             public bool MultiInstance { get; set; }
 
-
-            [Caption("Last Restart"), Description("The date and time the site was last restarted")]
+            [Caption("Last Restart"), Description("The date and time the site (all instances) was last restarted")]
             [UIHint("DateTime"), ReadOnly]
             public DateTime LastRestart { get; set; }
 
