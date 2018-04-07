@@ -76,6 +76,9 @@ namespace YetaWF.Modules.Diagnostics.Controllers {
             [UIHint("Boolean"), ReadOnly]
             public bool ExpensiveMultiInstance { get; set; }
 
+            public bool __highlight { get { return RequiresRestart && YetaWF.Core.Support.Startup.MultiInstanceStartTime < Created; ; } }
+            public bool __lowlight { get { return YetaWF.Core.Support.Startup.MultiInstanceStartTime > Created; } }
+
             private AuditRecordsModule Module { get; set; }
 
             public BrowseItem(AuditRecordsModule module, AuditInfo data) {
@@ -83,6 +86,7 @@ namespace YetaWF.Modules.Diagnostics.Controllers {
                 ObjectSupport.CopyData(data, this);
                 Description = Description?.Truncate(100);
                 Changes = Changes?.Replace(",", ", ");
+                Changes = Changes.TruncateWithEllipse(100);
             }
         }
 

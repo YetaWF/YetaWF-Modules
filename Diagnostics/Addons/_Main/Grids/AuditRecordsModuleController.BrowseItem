@@ -10,3 +10,5 @@ UserId              sort filter [Globals.ChUserName]
 RequiresRestart     sort filter [Globals.ChBoolean] center
 ExpensiveMultiInstance sort filter [Globals.ChBoolean] center
 Id                  sort filter [Globals.ChId] right
+__highlight         hidden
+__lowlight          hidden
