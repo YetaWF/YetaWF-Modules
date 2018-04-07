@@ -30,9 +30,9 @@ namespace YetaWF.Modules.Caching.DataProvider {
     /// it is known that a new object is available the data is retrieved.
     /// This is equivalent to StaticObjectSingleDataProvider on a single-instance site.
     /// </summary>
-    public class StaticObjectMultiSQLDataProvider : DataProviderImpl, ICacheStaticDataProvider {
+    public class StaticObjectMultiSQLDataProvider : DataProviderImpl, ICacheDataProvider {
 
-        public static ICacheStaticDataProvider GetProvider() {
+        public static ICacheDataProvider GetProvider() {
             return new StaticObjectMultiSQLDataProvider();
         }
 
@@ -80,37 +80,36 @@ namespace YetaWF.Modules.Caching.DataProvider {
                 StaticObjects.Add(key, cachedObj);
             }
         }
-        public async Task<TYPE> GetAsync<TYPE>(string key, Func<Task<TYPE>> noDataCallback = null) {
+        public async Task<GetObjectInfo<TYPE>> GetAsync<TYPE>(string key) {
             // get cached version
             TYPE data = default(TYPE);
             key = GetKey(key);
 
             StaticCacheObject cachedObj;
-            bool localValid = StaticObjects.TryGetValue(key, out cachedObj);
+            bool localValid;
+            lock (_lockObject) { // used to protect StaticObjects - local only
+                localValid = StaticObjects.TryGetValue(key, out cachedObj);
+            }
             if (!localValid) {
                 cachedObj = new StaticCacheObject {
                     Key = key,
-                    Value = data,
+                    Value = default(TYPE),
                     Created = DateTime.MinValue,
                 };
+            } else {
+                data = (TYPE)cachedObj.Value;
             }
             // get shared cached version
             SharedCacheVersion sharedInfo = await SharedCacheVersionSQLDataProvider.SharedCacheVersionDP.GetVersionAsync(key);
             if (sharedInfo != null) {
                 if (sharedInfo.Created != cachedObj.Created) {
-                    // shared cached version is different, use callback to set data
-                    if (noDataCallback == null) {
-                        // shared cached version is different, retrieve and save locally
-                        SharedCacheObject sharedCacheObj = await DataProvider.GetAsync(key);
-                        if (sharedCacheObj == null) { 
-                            // this shouldn't happen, we just got the shared version
-                        } else {
-                            data = (TYPE)new GeneralFormatter().Deserialize(sharedCacheObj.Value);
-                            sharedInfo = sharedCacheObj;
-                        }
+                    // shared cached version is different, retrieve and save locally
+                    SharedCacheObject sharedCacheObj = await DataProvider.GetAsync(key);
+                    if (sharedCacheObj == null) { 
+                        // this shouldn't happen, we just got the shared version
                     } else {
-                        // if there is a data callback, the caller provides all data (nothing, except version, is saved in shared cache)
-                        data = await noDataCallback();
+                        data = (TYPE)new GeneralFormatter().Deserialize(sharedCacheObj.Value);
+                        sharedInfo = sharedCacheObj;
                     }
                     cachedObj = new StaticCacheObject {
                         Created = sharedInfo.Created,
@@ -125,16 +124,24 @@ namespace YetaWF.Modules.Caching.DataProvider {
                 } else {
                     // shared version same as local version
                 }
+                return new GetObjectInfo<TYPE> {
+                    Success = true,
+                    Data = data,
+                };
             } else {
                 // there is no shared version
+                // no shared cache
+                if (!localValid) {
+                    return new GetObjectInfo<TYPE> {
+                        Success = false
+                    };
+                } else {
+                    return new GetObjectInfo<TYPE> {
+                        Success = true,
+                        Data = data,
+                    };
+                }
             }
-            // return the local data 
-            if (!localValid) {
-                if (noDataCallback != null)
-                    cachedObj.Value = await noDataCallback();
-            }
-            data = (TYPE)cachedObj.Value;
-            return data;
         }
         public async Task RemoveAsync<TYPE>(string key) {
             // We're adding a new version

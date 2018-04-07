@@ -12,9 +12,9 @@ namespace YetaWF.Modules.Caching.DataProvider {
     /// A shared cache implementation in-memory ONLY for a single instance. (Really not shared).
     /// This is intended as a way to preserve "static" in-memory data. This is equivalent to StaticObjectMultiDataProvider on a multi-instance site.
     /// </summary>
-    public class StaticObjectSingleDataProvider : ICacheStaticDataProvider {
+    public class StaticObjectSingleDataProvider : ICacheDataProvider {
 
-        public static ICacheStaticDataProvider GetProvider() {
+        public static ICacheDataProvider GetProvider() {
             return new StaticObjectSingleDataProvider();
         }
 
@@ -50,18 +50,21 @@ namespace YetaWF.Modules.Caching.DataProvider {
             }
             return Task.CompletedTask;
         }
-        public async Task<TYPE> GetAsync<TYPE>(string key, Func<Task<TYPE>> noDataCallback = null) {
+        public Task<GetObjectInfo<TYPE>> GetAsync<TYPE>(string key) {
             // get cached version
-            TYPE data = default(TYPE);
             key = GetKey(key);
             object obj;
-            if (!StaticObjects.TryGetValue(key, out obj)) {
-                if (noDataCallback != null) {
-                    obj = await noDataCallback();
-                    data = (TYPE)obj;
+            lock (_lockObject) { // used to protect StaticObjects - local only
+                if (StaticObjects.TryGetValue(key, out obj)) {
+                    return Task.FromResult(new GetObjectInfo<TYPE> {
+                        Success = true,
+                        Data = (TYPE)obj,
+                    });
                 }
             }
-            return data;
+            return Task.FromResult(new GetObjectInfo<TYPE> {
+                Success = false,
+            });
         }
         public Task RemoveAsync<TYPE>(string key) {
             key = GetKey(key);

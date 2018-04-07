@@ -17,9 +17,9 @@ namespace YetaWF.Modules.Caching.DataProvider {
     /// it is known that a new object is available the data is retrieved.
     /// This is equivalent to StaticObjectSingleDataProvider on a single-instance site.
     /// </summary>
-    public class StaticObjectMultiRedisDataProvider : ICacheStaticDataProvider, IDisposable {
+    public class StaticObjectMultiRedisDataProvider : ICacheDataProvider, IDisposable {
 
-        public static ICacheStaticDataProvider GetProvider() {
+        public static ICacheDataProvider GetProvider() {
             return new StaticObjectMultiRedisDataProvider();
         }
 
@@ -92,25 +92,29 @@ namespace YetaWF.Modules.Caching.DataProvider {
                 StaticObjects.Add(key, cachedObj);
             }
         }
-        public async Task<TYPE> GetAsync<TYPE>(string key, Func<Task<TYPE>> noDataCallback = null) {
+        public async Task<GetObjectInfo<TYPE>> GetAsync<TYPE>(string key) {
             key = GetKey(key);
             // get cached version
             TYPE data = default(TYPE);
 
             StaticCacheObject cachedObj;
-            bool localValid = StaticObjects.TryGetValue(key, out cachedObj);
+            bool localValid;
+            lock (_lockObject) { // used to protect StaticObjects - local only
+                localValid = StaticObjects.TryGetValue(key, out cachedObj);
+            }
             if (!localValid) {
                 cachedObj = new StaticCacheObject {
                     Key = key,
                     Value = data,
                     Created = DateTime.MinValue,
                 };
+            } else {
+                data = (TYPE)cachedObj.Value;
             }
             // get shared cached version
             IDatabase db = Redis.GetDatabase();
             long? val;
             if (YetaWFManager.IsSync()) {
-                var xxxx = db.StringGet(GetVersionKey(key));
                 val = (long?)db.StringGet(GetVersionKey(key));
             } else {
                 val = (long?)await db.StringGetAsync(GetVersionKey(key));
@@ -118,23 +122,17 @@ namespace YetaWF.Modules.Caching.DataProvider {
             if (val != null) {
                 DateTime sharedCacheCreated = new DateTime((long)val);
                 if (sharedCacheCreated != cachedObj.Created) {
-                    // shared cached version is different, use callback to set data
-                    if (noDataCallback == null) {
-                        // shared cached version is different, retrieve and save locally
-                        byte[] sharedCacheData;
-                        if (YetaWFManager.IsSync()) {
-                            sharedCacheData = db.StringGet(GetDataKey(key));
-                        } else {
-                            sharedCacheData = await db.StringGetAsync(GetDataKey(key));
-                        }
-                        if (sharedCacheData == null) {
-                            data = default(TYPE);
-                        } else {
-                            data = (TYPE)new GeneralFormatter().Deserialize(sharedCacheData);
-                        }
+                    // shared cached version is different, retrieve and save locally
+                    byte[] sharedCacheData;
+                    if (YetaWFManager.IsSync()) {
+                        sharedCacheData = db.StringGet(GetDataKey(key));
                     } else {
-                        // if there is a data callback, the caller provides all data (nothing, except version, is saved in shared cache)
-                        data = await noDataCallback();
+                        sharedCacheData = await db.StringGetAsync(GetDataKey(key));
+                    }
+                    if (sharedCacheData == null) {
+                        data = default(TYPE);
+                    } else {
+                        data = (TYPE)new GeneralFormatter().Deserialize(sharedCacheData);
                     }
                     cachedObj = new StaticCacheObject {
                         Created = sharedCacheCreated,
@@ -149,16 +147,23 @@ namespace YetaWF.Modules.Caching.DataProvider {
                 } else {
                     // shared version same as local version
                 }
+                return new GetObjectInfo<TYPE> {
+                    Success = true,
+                    Data = data,
+                };
             } else {
-                // there is no shared version
+                // no shared cache
+                if (!localValid) {
+                    return new GetObjectInfo<TYPE> {
+                        Success = false
+                    };
+                } else {
+                    return new GetObjectInfo<TYPE> {
+                        Success = true,
+                        Data = data,
+                    };
+                }
             }
-            // return the local data 
-            if (!localValid) {
-                if (noDataCallback != null)
-                    cachedObj.Value = await noDataCallback();
-            }
-            data = (TYPE)cachedObj.Value;
-            return data;
         }
         public async Task RemoveAsync<TYPE>(string key) {
             // We're adding a new version
