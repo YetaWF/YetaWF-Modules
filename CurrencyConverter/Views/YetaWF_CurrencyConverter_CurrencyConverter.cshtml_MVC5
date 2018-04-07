@@ -5,7 +5,7 @@
 @using YetaWF.Modules.CurrencyConverter.DataProvider
 @*based on https://openexchangerates.org*@
 @{ 
-    Manager.ScriptManager.AddScript(YetaWF.Modules.CurrencyConverter.Controllers.AreaRegistration.CurrentPackage.Domain, YetaWF.Modules.CurrencyConverter.Controllers.AreaRegistration.CurrentPackage.Product, ExchangeRateDataProvider.JSFile, Bundle: false);
+    Manager.ScriptManager.AddScriptAsync(YetaWF.Modules.CurrencyConverter.Controllers.AreaRegistration.CurrentPackage.Domain, YetaWF.Modules.CurrencyConverter.Controllers.AreaRegistration.CurrentPackage.Product, ExchangeRateDataProvider.JSFile, Bundle: false).Wait();
     string wantFocus = Module.WantFocus ? " focusonme" : "";
 }
 <div class="t_converter">

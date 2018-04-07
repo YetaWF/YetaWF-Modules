@@ -126,8 +126,8 @@ namespace YetaWF.Modules.Languages.Controllers {
                 };
                 data = LocalizationSupport.Load(package, model.TypeName, LocalizationSupport.Location.DefaultResources);
                 model.SetData(data); // and all the data back into model for final display
-                LocalizationSupport.Save(package, model.TypeName, LocalizationSupport.Location.InstalledResources, null);// delete it
-                LocalizationSupport.Save(package, model.TypeName, LocalizationSupport.Location.CustomResources, null);// delete it
+                LocalizationSupport.SaveAsync(package, model.TypeName, LocalizationSupport.Location.InstalledResources, null);// delete it
+                LocalizationSupport.SaveAsync(package, model.TypeName, LocalizationSupport.Location.CustomResources, null);// delete it
                 return FormProcessed(model, this.__ResStr("okReset", "Localization resource default restored - The localization file has been removed - If you click Save or Apply, a new custom/installed addon file will be created. To keep the defaults only, simply close this form"), OnClose: OnCloseEnum.UpdateInPlace, OnPopupClose: OnPopupCloseEnum.UpdateInPlace);
             } else {
                 if (!ModelState.IsValid)
@@ -145,9 +145,9 @@ namespace YetaWF.Modules.Languages.Controllers {
                 model.CurrentLanguage = model.HiddenCurrentLanguage;
 
                 if (model.Custom)
-                    LocalizationSupport.Save(package, model.TypeName, LocalizationSupport.Location.CustomResources, data);
+                    LocalizationSupport.SaveAsync(package, model.TypeName, LocalizationSupport.Location.CustomResources, data);
                 else
-                    LocalizationSupport.Save(package, model.TypeName, LocalizationSupport.Location.InstalledResources, data);
+                    LocalizationSupport.SaveAsync(package, model.TypeName, LocalizationSupport.Location.InstalledResources, data);
 
                 return FormProcessed(model, this.__ResStr("okSaved", "Localization resource saved"), OnPopupClose: OnPopupCloseEnum.ReloadNothing);
             }

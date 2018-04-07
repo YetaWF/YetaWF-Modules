@@ -17,6 +17,7 @@ namespace YetaWF.Modules.Identity.Models {
 
         // Gets the site specific UserManager instance (permanent)
         public static UserManager<UserDefinition> GetUserManager() {
+
             // See if we already have it
             UserManager<UserDefinition> userManager;
             if (PermanentManager.TryGetObject<UserManager<UserDefinition>>(out userManager))

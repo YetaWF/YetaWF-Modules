@@ -12,6 +12,7 @@ using YetaWF.Core.Log;
 using YetaWF.Core.Packages;
 using YetaWF.Core.Site;
 using YetaWF.Core.Support;
+using YetaWF.Core.IO;
 
 namespace YetaWF.Modules.Packages.DataProvider {
     // not a real data provider - used to clear/create all package data and initial web pages
@@ -25,7 +26,7 @@ namespace YetaWF.Modules.Packages.DataProvider {
 
         protected YetaWFManager Manager { get { return YetaWFManager.Manager; } }
 
-        public Task InitializeApplicationStartupAsync(bool firstNode) {
+        public Task InitializeApplicationStartupAsync() {
             BuiltinCommands.Add("/$initall", CoreInfo.Resource_BuiltinCommands, InitAllAsync);
             BuiltinCommands.Add("/$initnew", CoreInfo.Resource_BuiltinCommands, InitNewAsync);
             BuiltinCommands.Add("/$restart", CoreInfo.Resource_BuiltinCommands, RestartSiteAsync);
@@ -52,7 +53,6 @@ namespace YetaWF.Modules.Packages.DataProvider {
         public static string LogFile {
             get { return Path.Combine(YetaWFManager.DataFolder, "InitialInstall.txt"); }
         }
-        private static object _lockObject = new object();
 
         /// <summary>
         /// Installs all packages and builds the initial site from the import data (zip files) or from templates
@@ -62,7 +62,9 @@ namespace YetaWF.Modules.Packages.DataProvider {
         /// </remarks>
         public async Task InitAllAsync(QueryHelper qs) {
 
-            InitialSiteLogging log = new InitialSiteLogging(LogFile, _lockObject);
+            if (YetaWF.Core.Support.Startup.MultiInstance) throw new InternalError("Installing packages is not possible when distributed caching is enabled");
+
+            InitialSiteLogging log = new InitialSiteLogging(LogFile);
             Logging.RegisterLogging(log);
 
             Logging.AddLog("Site initialization starting");
@@ -71,15 +73,15 @@ namespace YetaWF.Modules.Packages.DataProvider {
             await InstallPackagesAsync();
             if (qs["From"] == "Data") {
                 await BuildSiteUsingDataAsync(false);
-                PermanentManager.ClearAll();// clear any cached objects
                 await BuildSiteUsingTemplateAsync(Path.Combine(DataFolderName, "Add Site.txt"));
             } else { //if (qs["From"] == "Template") {
                 await BuildSiteUsingTemplateAsync("InitialSite.txt");
                 //BuildSiteUsingTemplate("Custom Site (Initial Site).txt");
             }
-            Package.SavePackageMap();
+            PermanentManager.ClearAll();// clear any cached objects
+            await Package.SavePackageMapAsync();
 
-            SiteDefinition.RemoveInitialInstall();
+            await SiteDefinition.RemoveInitialInstallAsync();
             Logging.UnregisterLogging(log);
 
             Logging.AddLog("Site initialization done");
@@ -94,54 +96,71 @@ namespace YetaWF.Modules.Packages.DataProvider {
 #endif
         }
         public class InitialSiteLogging : ILogging {
+
             private string LogFile;
-            private object _lockObject;
-            public InitialSiteLogging(string logFile, object _lockObject) {
+
+            public InitialSiteLogging(string logFile) {
                 LogFile = logFile;
-                this._lockObject = _lockObject;
-                lock (_lockObject) {
-                    if (File.Exists(LogFile))
-                        File.Delete(LogFile);
-                    Directory.CreateDirectory(Path.GetDirectoryName(LogFile));
+            }
+            public async Task InitAsync() {
+                using (ILockObject lockObject = await FileSystem.FileSystemProvider.LockResourceAsync(LogFile)) {
+                    if (await FileSystem.FileSystemProvider.FileExistsAsync(LogFile))
+                        await FileSystem.FileSystemProvider.DeleteFileAsync(LogFile);
+                    await FileSystem.FileSystemProvider.CreateDirectoryAsync(Path.GetDirectoryName(LogFile));
+                    await lockObject.UnlockAsync();
                 }
             }
             public Logging.LevelEnum GetLevel() { return Logging.LevelEnum.Info; }
-            public void Clear() { }
-            public void Flush() { }
+            public Task ClearAsync() { return Task.CompletedTask; }
+            public Task FlushAsync() { return Task.CompletedTask; }
             public Task<bool> IsInstalledAsync() { return Task.FromResult(true); }
             public void WriteToLogFile(string category, Logging.LevelEnum level, int relStack, string text) {
-                lock (_lockObject) {
-                    File.AppendAllText(LogFile, text + "\r\n");
-                }
+                YetaWFManager.Syncify(async () => { // Logging is sync by definition (this is only used for startup logging)
+                    using (ILockObject lockObject = await YetaWF.Core.IO.Caching.LockProvider.LockResourceAsync(LogFile)) {
+                        await FileSystem.FileSystemProvider.AppendAllTextAsync(LogFile, text + "\r\n");
+                        await lockObject.UnlockAsync();
+                    }
+                });
             }
         }
 
-        public static List<string> RetrieveInitialInstallLog(out bool ended) {
-            ended = false;
+        public class RetrieveInitialInstallLogInfo {
+            public bool Ended { get; set; }
+            public List<string> Lines { get; set; }
+        }
+
+        public static async Task<RetrieveInitialInstallLogInfo> RetrieveInitialInstallLogAsync() {
+            RetrieveInitialInstallLogInfo info = new RetrieveInitialInstallLogInfo();
+            info.Ended = false;
             if (!SiteDefinition.INITIAL_INSTALL || SiteDefinition.INITIAL_INSTALL_ENDED)
-                ended = true;
-            List<string> lines = new List<string>();
+                info.Ended = true;
             bool success = false;
             while (!success) {
                 try {
                     // This is horrible, polling until the file is no longer in use.
                     // The problem is we can't use statics or some form of caching as this is called by multiple separate requests
                     // and the Package package itself is replaced while we're logging, so we just use a file to hold all data.
-                    // unfortunately even the _lockObject is lost when the Package package is replaced. Since this is only used
+                    // unfortunately even the lockObject is lost when the Package package is replaced. Since this is only used
                     // during an initial install, it's not critical enough to make it perfect...
-                    lock (_lockObject) {
-                        if (!File.Exists(LogFile))
-                            return lines;
-                        lines = File.ReadAllLines(LogFile).ToList();
-                        success = true;
+                    using (ILockObject lockObject = await FileSystem.FileSystemProvider.LockResourceAsync(LogFile)) {
+                        if (await FileSystem.FileSystemProvider.FileExistsAsync(LogFile)) {
+                            info.Lines = await FileSystem.FileSystemProvider.ReadAllLinesAsync(LogFile);
+                            success = true;
+                        }
+                        await lockObject.UnlockAsync();
                     }
-                } catch (Exception) { Thread.Sleep(100); }
+                } catch (Exception) {
+                    if (YetaWFManager.IsSync())
+                        Thread.Sleep(new TimeSpan(0, 0, 0, 0, 50));// wait a while - this is bad, only works because "other" instance has lock
+                    else
+                        await Task.Delay(new TimeSpan(0, 0, 0, 0, 50));// wait a while
+                }
             }
-            if (lines.Count == 0)
-                return lines;
-            if (lines.Last() == "+++DONE")
-                ended = true;
-            return lines;
+            if (info.Lines.Count == 0)
+                return info;
+            if (info.Lines.Last() == "+++DONE")
+                info.Ended = true;
+            return info;
         }
 
         /// <summary>
@@ -149,6 +168,9 @@ namespace YetaWF.Modules.Packages.DataProvider {
         /// </summary>
         /// <param name="template"></param>
         public async Task InitNewAsync(QueryHelper qs) {
+
+            if (YetaWF.Core.Support.Startup.MultiInstance) throw new InternalError("Building a new site is not possible when distributed caching is enabled");
+
             if (qs["From"] == "Data") {
                 await BuildSiteUsingDataAsync(false);
                 await BuildSiteUsingTemplateAsync(Path.Combine(DataFolderName, "Add Site.txt"));
@@ -254,6 +276,9 @@ namespace YetaWF.Modules.Packages.DataProvider {
         /// Installs all models for the specified package
         /// </summary>
         public async Task InitPackageAsync(QueryHelper qs) {
+            
+            if (YetaWF.Core.Support.Startup.MultiInstance) throw new InternalError("Installing new packagesis not possible when distributed caching is enabled");
+
             string packageName = qs["Package"];
             if (string.IsNullOrWhiteSpace(packageName))
                 throw new InternalError("Package name missing");
@@ -285,6 +310,7 @@ namespace YetaWF.Modules.Packages.DataProvider {
         /// Apply a template (creates pages)
         /// </summary>
         public async Task ProcessTemplateAsync(QueryHelper qs) {
+            if (YetaWF.Core.Support.Startup.MultiInstance) throw new InternalError("Processing site templates is not possible when distributed caching is enabled");
             string templateName = qs["Template"];
             if (string.IsNullOrWhiteSpace(templateName))
                 throw new InternalError("Template name missing");
@@ -295,6 +321,7 @@ namespace YetaWF.Modules.Packages.DataProvider {
         /// Remove a template (removes pages)
         /// </summary>
         public async Task UndoTemplateAsync(QueryHelper qs) {
+            if (YetaWF.Core.Support.Startup.MultiInstance) throw new InternalError("Processing site templates is not possible when distributed caching is enabled");
             string templateName = qs["Template"];
             if (string.IsNullOrWhiteSpace(templateName))
                 throw new InternalError("Template name missing");

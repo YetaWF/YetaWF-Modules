@@ -6,6 +6,7 @@ using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Modules;
 using YetaWF.Core.Support;
 using YetaWF.Modules.ImageRepository.Views.Shared;
+using System.Threading.Tasks;
 #if MVC6
 using Microsoft.AspNetCore.Mvc;
 #else
@@ -34,27 +35,29 @@ namespace YetaWF.Modules.ImageRepository.Controllers {
 
             public Model() { }
 
-            public void Update(ModuleDefinition module) {
+            public async Task UpdateAsync(ModuleDefinition module) {
                 ImageName_Info = new ImageSelectionInfo(module, module.ModuleGuid, null) {
                     AllowUpload = true,
                 };
+                await ImageName_Info.InitAsync();
                 FlashImageName_Info = new FlashSelectionInfo(module, module.ModuleGuid, null) {
                     AllowUpload = true,
                 };
+                await FlashImageName_Info.InitAsync();
             }
         }
 
         [AllowGet]
-        public ActionResult TemplateTest(string imageName) {
+        public async Task<ActionResult> TemplateTest(string imageName) {
             Model model = new Model { };
-            model.Update(Module);
+            await model.UpdateAsync(Module);
             return View(model);
         }
 
         [AllowPost]
         [ConditionalAntiForgeryToken]
-        public ActionResult TemplateTest_Partial(Model model) {
-            model.Update(Module);
+        public async Task<ActionResult> TemplateTest_Partial(Model model) {
+            await model.UpdateAsync(Module);
             if (!ModelState.IsValid)
                 return PartialView(model);
             return FormProcessed(model, this.__ResStr("okSaved", "Image saved"), OnClose: OnCloseEnum.Return, OnPopupClose: OnPopupCloseEnum.ReloadModule);

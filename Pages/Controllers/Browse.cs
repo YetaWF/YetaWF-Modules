@@ -21,6 +21,7 @@ using YetaWF.Core.Views.Shared;
 using YetaWF.Modules.Pages.DataProvider;
 using YetaWF.Modules.Pages.Modules;
 using YetaWF.Modules.Pages.Scheduler;
+using YetaWF.Core.IO;
 #if MVC6
 using Microsoft.AspNetCore.Mvc;
 #else
@@ -220,17 +221,17 @@ namespace YetaWF.Modules.Pages.Controllers {
         [AllowPost]
         [Permission("SiteMaps")]
         [ExcludeDemoMode]
-        public ActionResult RemoveSiteMap() {
+        public async Task<ActionResult> RemoveSiteMap() {
             SiteMaps sm = new SiteMaps();
-            sm.Remove();
+            await sm.RemoveAsync();
             return Reload(null, Reload: ReloadEnum.ModuleParts, PopupText: this.__ResStr("sremDone", "The site map has been removed"));
         }
 
         [Permission("SiteMaps")]
-        public ActionResult DownloadSiteMap(long cookieToReturn) {
+        public async Task<ActionResult> DownloadSiteMap(long cookieToReturn) {
             SiteMaps sm = new SiteMaps();
             string filename = sm.GetSiteMapFileName();
-            if (!System.IO.File.Exists(filename))
+            if (!await FileSystem.FileSystemProvider.FileExistsAsync(filename))
                 throw new Error(this.__ResStr("sitemapNotFound", "Site map not found - File '{0}' cannot be located", filename));
 #if MVC6
             Response.Headers.Remove("Cookie");

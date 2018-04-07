@@ -1,0 +1,13 @@
+###
+### Diagnostics Package
+###
+
+::PAGE-SECTION::
+
+Administrator /YetaWF/Diagnostics/AuditRecords
+    Title=Audit Information
+    Description=Audit Information
+    Admin > Diagnostics > {YetaWF.Diagnostics, YetaWF.Modules.Diagnostics.Modules.AuditRecordsModule}.GetAction_Items({CURRENTURL})
+    -
+    YetaWF.Diagnostics, YetaWF.Modules.Diagnostics.Modules.AuditRecordsModule
+

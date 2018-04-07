@@ -1,8 +1,10 @@
 ﻿/* Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Identity#License */
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using YetaWF.Core.Audit;
 using YetaWF.Core.DataProvider;
 using YetaWF.Core.Identity;
 using YetaWF.Core.Localize;
@@ -23,7 +25,7 @@ namespace YetaWF.Modules.Identity.DataProvider {
         // STARTUP
         // STARTUP
 
-        public Task InitializeApplicationStartupAsync(bool firstNode) {
+        public Task InitializeApplicationStartupAsync() {
             Resource.ResourceAccess = (IResource)this;
             return Task.CompletedTask;
         }
@@ -39,10 +41,13 @@ namespace YetaWF.Modules.Identity.DataProvider {
             }
             return (bool) backDoor;
         }
-        public void ShutTheBackDoor() {
+        public async Task ShutTheBackDoorAsync() {
             WebConfigHelper.SetValue<string>(AreaRegistration.CurrentPackage.AreaName, "BACKDOOR-IS-WIDE-OPEN", "0");
-            WebConfigHelper.Save();
+            await WebConfigHelper.SaveAsync();
             backDoor = false;
+            await Auditing.AddAuditAsync($"{nameof(OwinEditModuleController)}.{nameof(ShutTheBackDoorAsync)}", "BACKDOOR-IS-WIDE-OPEN", Guid.Empty,
+                $"{nameof(ShutTheBackDoorAsync)}", RequiresRestart: true
+            );
         }
         private bool? backDoor = null;
 

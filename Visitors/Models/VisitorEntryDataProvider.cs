@@ -70,7 +70,7 @@ namespace YetaWF.Modules.Visitors.DataProvider {
 
     public class VisitorEntryDataProvider : DataProviderImpl, IInstallableModel, IInitializeApplicationStartup {
 
-        public Task InitializeApplicationStartupAsync(bool firstNode) {
+        public Task InitializeApplicationStartupAsync() {
             ErrorHandling.RegisterCallback(AddVisitEntryError);
             PageLogging.RegisterCallback(AddVisitEntryUrlAsync);
             return Task.CompletedTask;
@@ -90,7 +90,7 @@ namespace YetaWF.Modules.Visitors.DataProvider {
 
         private IDataProvider<int, VisitorEntry> CreateDataProvider() {
             Package package = YetaWF.Modules.Visitors.Controllers.AreaRegistration.CurrentPackage;
-            return MakeDataProvider(package, package.AreaName, SiteIdentity: SiteIdentity, Cacheable: true);
+            return MakeDataProvider(package, package.AreaName, SiteIdentity: SiteIdentity, Cacheable: true, Parms: new { NoLanguages = true } );
         }
 
         // API
@@ -159,7 +159,7 @@ namespace YetaWF.Modules.Visitors.DataProvider {
 
                 try {
 
-                    if (!YetaWFManager.HaveManager || YetaWFManager.Manager.CurrentSite == null || !YetaWFManager.Manager.HaveCurrentContext) return;
+                    if (!YetaWFManager.HaveManager || !YetaWFManager.Manager.HaveCurrentSite || !YetaWFManager.Manager.HaveCurrentContext) return;
                     YetaWFManager manager = YetaWFManager.Manager;
 
                     using (VisitorEntryDataProvider visitorDP = new VisitorEntryDataProvider()) {
@@ -218,18 +218,22 @@ namespace YetaWF.Modules.Visitors.DataProvider {
             return await DataProvider.IsInstalledAsync();
         }
         public new async Task<bool> InstallModelAsync(List<string> errorList) {
+            if (YetaWF.Core.Support.Startup.MultiInstance) throw new InternalError("Installing new models is not possible when distributed caching is enabled");
             if (!Usable) return true;
             return await DataProvider.InstallModelAsync(errorList);
         }
         public new async Task<bool> UninstallModelAsync(List<string> errorList) {
+            if (YetaWF.Core.Support.Startup.MultiInstance) throw new InternalError("Uninstalling models is not possible when distributed caching is enabled");
             if (!Usable) return true;
             return await DataProvider.UninstallModelAsync(errorList);
         }
         public new async Task AddSiteDataAsync() {
+            if (YetaWF.Core.Support.Startup.MultiInstance) throw new InternalError("Adding site data is not possible when distributed caching is enabled");
             if (!Usable) return;
             await DataProvider.AddSiteDataAsync();
         }
         public new async Task RemoveSiteDataAsync() {
+            if (YetaWF.Core.Support.Startup.MultiInstance) throw new InternalError("Removing site data is not possible when distributed caching is enabled");
             if (!Usable) return;
             await DataProvider.RemoveSiteDataAsync();
         }

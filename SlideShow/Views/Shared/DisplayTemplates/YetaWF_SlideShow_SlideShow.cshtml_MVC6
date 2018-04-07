@@ -55,12 +55,12 @@
         }
     </div>
     @if (Model.Style == SlideShowInfo.SlideShowType.Bullets) {
-        @Manager.AddOnManager.GetFile(rootUrl + string.Format("jssor/skins/bullet/{0}.html", Model.BulletStyle), new { WidthPix = widthPix });
+        @await Manager.AddOnManager.GetFileAsync(rootUrl + string.Format("jssor/skins/bullet/{0}.html", Model.BulletStyle), new { WidthPix = widthPix });
     } else if (Model.Style == SlideShowInfo.SlideShowType.Thumbnails) {
-        @Manager.AddOnManager.GetFile(rootUrl + string.Format("jssor/skins/thumb/{0}.html", Model.ThumbnailStyle), new { WidthPix = widthPix });
+        @await Manager.AddOnManager.GetFileAsync(rootUrl + string.Format("jssor/skins/thumb/{0}.html", Model.ThumbnailStyle), new { WidthPix = widthPix });
     }
     @if (Model.ShowArrows) {
-        @Manager.AddOnManager.GetFile(rootUrl + string.Format("jssor/skins/arrow/{0}.html", Model.ArrowStyle), new { WidthPix = widthPix });
+        @await Manager.AddOnManager.GetFileAsync(rootUrl + string.Format("jssor/skins/arrow/{0}.html", Model.ArrowStyle), new { WidthPix = widthPix });
     }
 </div>
 <script>

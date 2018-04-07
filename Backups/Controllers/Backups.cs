@@ -18,6 +18,7 @@ using YetaWF.Core.Support;
 using YetaWF.Core.Views.Shared;
 using YetaWF.Modules.Backups.DataProvider;
 using YetaWF.Modules.Backups.Modules;
+using YetaWF.Core.IO;
 #if MVC6
 using Microsoft.AspNetCore.Mvc;
 #else
@@ -33,13 +34,13 @@ namespace YetaWF.Modules.Backups.Controllers {
 
             [Caption("Actions"), Description("All available actions")]
             [UIHint("ActionIcons"), ReadOnly]
-            public MenuList Commands {
-                get {
-                    MenuList actions = new MenuList() { RenderMode = ModuleAction.RenderModeEnum.IconsOnly };
-                    actions.New(Module.GetAction_DownloadLink(FileName), ModuleAction.ActionLocationEnum.GridLinks);
-                    actions.New(Module.GetAction_RemoveLink(FileName), ModuleAction.ActionLocationEnum.GridLinks);
-                    return actions;
-                }
+            public MenuList Commands { get; set; }
+
+            public async Task<MenuList> __GetCommandsAsync() {
+                MenuList actions = new MenuList() { RenderMode = ModuleAction.RenderModeEnum.IconsOnly };
+                actions.New(await Module.GetAction_DownloadLinkAsync(FileName), ModuleAction.ActionLocationEnum.GridLinks);
+                actions.New(Module.GetAction_RemoveLink(FileName), ModuleAction.ActionLocationEnum.GridLinks);
+                return actions;
             }
 
             [Caption("File Name"), Description("The site backup file name (located in the Backups folder)")]
@@ -101,7 +102,7 @@ namespace YetaWF.Modules.Backups.Controllers {
         [AllowPost]
         [Permission("Backups")]
         [ExcludeDemoMode]
-        public async System.Threading.Tasks.Task<ActionResult> PerformSiteBackup() {
+        public async Task<ActionResult> PerformSiteBackup() {
             List<string> errorList = new List<string>();
             SiteBackup siteBackup = new SiteBackup();
             if (!await siteBackup.CreateAsync(errorList, ForDistribution: true)) {
@@ -125,12 +126,12 @@ namespace YetaWF.Modules.Backups.Controllers {
         }
 
         [Permission("Downloads")]
-        public ActionResult Download(string filename, long cookieToReturn) {
+        public async Task<ActionResult> Download(string filename, long cookieToReturn) {
             if (string.IsNullOrWhiteSpace(filename))
                 throw new Error("No backup specified");
             filename = Path.ChangeExtension(filename, "zip");
             string path = Path.Combine(Manager.SiteFolder, SiteBackup.BackupFolder, filename);
-            if (!System.IO.File.Exists(path))
+            if (!await FileSystem.FileSystemProvider.FileExistsAsync(path))
                 throw new Error(this.__ResStr("backupNotFound", "The backup '{0}' cannot be located.", filename));
 #if MVC6
             Response.Headers.Remove("Cookie");
@@ -153,11 +154,11 @@ namespace YetaWF.Modules.Backups.Controllers {
         [AllowPost]
         [Permission("Backups")]
         [ExcludeDemoMode]
-        public ActionResult Remove(string filename) {
+        public async Task<ActionResult> Remove(string filename) {
             if (string.IsNullOrWhiteSpace(filename))
                 throw new Error("No backup specified");
             SiteBackup siteBackup = new SiteBackup();
-            siteBackup.Remove(filename);
+            await siteBackup.RemoveAsync(filename);
             return Reload(null, Reload: ReloadEnum.ModuleParts);
         }
     }

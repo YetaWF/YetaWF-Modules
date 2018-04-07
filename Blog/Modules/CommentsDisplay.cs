@@ -46,10 +46,10 @@ namespace YetaWF.Modules.Blog.Modules {
         public async Task<ModuleAction> GetAction_ApproveAsync(int blogEntry, int comment) {
             if (!await Resource.ResourceAccess.IsResourceAuthorizedAsync(Info.Resource_AllowManageComments)) return null;
             return new ModuleAction(this) {
-                Url = YetaWFManager.UrlFor(typeof(CommentsDisplayModuleController), "Approve"),
+                Url = YetaWFManager.UrlFor(typeof(CommentsDisplayModuleController), nameof(CommentsDisplayModuleController.Approve)),
                 NeedsModuleContext = true,
                 QueryArgs = new { BlogEntry = blogEntry, Comment = comment },
-                Image = "CommentEntryApprove.png",
+                Image = await CustomIconAsync("CommentEntryApprove.png"),
                 Style = ModuleAction.ActionStyleEnum.Post,
                 LinkText = this.__ResStr("approveLink", "Approve"),
                 MenuText = this.__ResStr("approveMenu", "Approve"),

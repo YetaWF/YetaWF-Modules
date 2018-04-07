@@ -1,6 +1,7 @@
 ﻿/* Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Packages#License */
 
 using System;
+using System.Threading.Tasks;
 using YetaWF.Core.IO;
 using YetaWF.Core.Localize;
 using YetaWF.Core.Models.Attributes;
@@ -28,11 +29,11 @@ namespace YetaWF.Modules.Packages.Modules {
 
         public override SerializableList<AllowedRole> DefaultAllowedRoles { get { return AdministratorLevel_DefaultAllowedRoles; } }
 
-        public ModuleAction GetAction_ProcessSiteTemplate(string url, string fileName) {
+        public async Task<ModuleAction> GetAction_ProcessSiteTemplateAsync(string url, string fileName) {
             return new ModuleAction(this) {
                 Url = string.IsNullOrWhiteSpace(url) ? ModulePermanentUrl : url,
                 QueryArgs = new { FileName = fileName },
-                Image = "SiteTemplateProcess.png",
+                Image = await CustomIconAsync("SiteTemplateProcess.png"),
                 LinkText = this.__ResStr("processLink", "Site Template"),
                 MenuText = this.__ResStr("processText", "Site Template"),
                 Tooltip = this.__ResStr("processTooltip", "Process a site template and add all defined pages to the current site"),

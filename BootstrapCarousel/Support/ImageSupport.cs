@@ -16,7 +16,7 @@ namespace YetaWF.Modules.BootstrapCarousel.Support {
 
         public const string ImageType = "YetaWF_BootstrapCarousel";
 
-        public Task InitializeApplicationStartupAsync(bool firstNode) {
+        public Task InitializeApplicationStartupAsync() {
             YetaWF.Core.Image.ImageSupport.AddHandler(ImageType, GetAsFileAsync: RetrieveImageAsync);
             return Task.CompletedTask;
         }

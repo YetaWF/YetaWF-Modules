@@ -96,7 +96,8 @@ namespace YetaWF.Modules.Logging.DataProvider {
             return dp;
         }
 
-        public virtual void Clear() { }
+        public virtual Task InitAsync() { return Task.CompletedTask; }
+        public virtual Task ClearAsync() { return Task.CompletedTask; }
 
         public virtual YetaWF.Core.Log.Logging.LevelEnum GetLevel() {
             if (_level == null)
@@ -105,7 +106,7 @@ namespace YetaWF.Modules.Logging.DataProvider {
         }
         YetaWF.Core.Log.Logging.LevelEnum? _level;
 
-        public virtual void Flush() { }
+        public virtual Task FlushAsync() { return Task.CompletedTask; }
         public abstract void SaveMessage(LogRecord record);
 
         protected static bool WriteInProgess = false;

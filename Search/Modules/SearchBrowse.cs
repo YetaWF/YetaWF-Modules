@@ -13,6 +13,7 @@ using YetaWF.Core.Views.Shared;
 using YetaWF.DataProvider;
 using YetaWF.Modules.Search.Controllers;
 using YetaWF.Modules.Search.DataProvider;
+using System.Threading.Tasks;
 #if MVC6
 #else
 using System.Web.Mvc;
@@ -110,13 +111,13 @@ namespace YetaWF.Modules.Search.Modules {
                 PleaseWaitText = this.__ResStr("removeAllPlsWait", "Keywords are being removed..."),
             };
         }
-        public ModuleAction GetAction_CollectKeywords() {
+        public async Task<ModuleAction> GetAction_CollectKeywordsAsync() {
             if (!IsAuthorized("CollectKeywords")) return null;
             if (!SearchDataProvider.IsUsable) return null;
             return new ModuleAction(this) {
-                Url = YetaWFManager.UrlFor(typeof(SearchBrowseModuleController), "CollectKeywords"),
+                Url = YetaWFManager.UrlFor(typeof(SearchBrowseModuleController), nameof(SearchBrowseModuleController.CollectKeywords)),
                 NeedsModuleContext = true,
-                Image = "CollectKeywords.png",
+                Image = await CustomIconAsync("CollectKeywords.png"),
                 Style = ModuleAction.ActionStyleEnum.Post,
                 LinkText = this.__ResStr("collectLink", "Collect Keywords"),
                 MenuText = this.__ResStr("collectMenu", "Collect Keywords"),

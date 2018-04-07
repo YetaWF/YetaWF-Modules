@@ -15,6 +15,7 @@ using YetaWF.Core.Packages;
 using YetaWF.Core.Scheduler;
 using YetaWF.Core.Site;
 using YetaWF.Core.Support;
+using YetaWF.Modules.Scheduler.Controllers;
 using YetaWF.Modules.Scheduler.DataProvider;
 
 namespace YetaWF.Modules.Scheduler.Support {
@@ -23,7 +24,7 @@ namespace YetaWF.Modules.Scheduler.Support {
 
         internal static Scheduler Instance = null;
 
-        public Task InitializeApplicationStartupAsync(bool firstNode) {
+        public Task InitializeApplicationStartupAsync() {
             Instance = this;
             SchedulerSupport.InstallAsync = InstallItemsAsync;
             SchedulerSupport.UninstallAsync = UninstallItemsAsync;
@@ -74,7 +75,7 @@ namespace YetaWF.Modules.Scheduler.Support {
 
             using (SchedulerDataProvider dataProvider = new SchedulerDataProvider()) {
 
-                await StringLocks.DoActionAsync("YetaWF_Scheduler##Scheduler_" + name, async () => {
+                using (ILockObject lockObject = await YetaWF.Core.IO.Caching.LockProvider.LockResourceAsync($"{AreaRegistration.CurrentPackage.AreaName}_RunItem_{name}")) {
 
                     SchedulerItemData evnt = await dataProvider.GetItemAsync(name);
                     if (evnt == null)
@@ -86,11 +87,14 @@ namespace YetaWF.Modules.Scheduler.Support {
                     evnt.Next = DateTime.UtcNow.AddSeconds(-1);
                     evnt.Errors = null;
                     UpdateStatusEnum status = await dataProvider.UpdateItemAsync(evnt);
+
+                    await lockObject.UnlockAsync();
+
                     if (status != UpdateStatusEnum.OK)
                         throw new Error(this.__ResStr("errItemUpdFail", "Scheduler item '{0}' couldn't be updated."), evnt.Name);
 
                     Dispatch();// run the scheduler now
-                });
+                }
             }
         }
 

@@ -224,7 +224,7 @@
             <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
               <Properties>
                 <Name Value="okStarting" />
-                <Text Value="The scheduler has been started and the site is restarting" />
+                <Text Value="The scheduler will be started when the site is restarted" />
               </Properties>
             </Object>
           </Value>
@@ -232,7 +232,7 @@
             <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
               <Properties>
                 <Name Value="okStopping" />
-                <Text Value="The scheduler has been stopped and the site is restarting" />
+                <Text Value="The scheduler will be stopped when the site is restarted" />
               </Properties>
             </Object>
           </Value>

@@ -28,13 +28,13 @@
                 </div>
             }
             <div class='t_classinfo'>
-                <div class='t_labels'>@Html.ExtLabelFor(m => classData.Header, string.Format("[{0}].Header", classIndex), Caption: __ResStr("header", "Class Header"), HtmlAttributes: new { Title = __ResStr("headerTT", "Text found in [HeaderAttribute(...)]") })</div>
+                <div class='t_labels'>@await Html.ExtLabelForAsync(m => classData.Header, string.Format("[{0}].Header", classIndex), Caption: __ResStr("header", "Class Header"), HtmlAttributes: new { Title = __ResStr("headerTT", "Text found in [HeaderAttribute(...)]") })</div>
                 <div class='t_header'>@Html.EditorFor(m => classData.Header, "Text80", string.Format("[{0}].Header", classIndex))</div>
                 <div class="y_cleardiv"></div>
-                <div class='t_labels'>@Html.ExtLabelFor(m => classData.Footer, string.Format("[{0}].Footer", classIndex), Caption: __ResStr("footer", "Class Footer"), HtmlAttributes: new { Title = __ResStr("footerTT", "Text found in [FooterAttribute(...)]") })</div>
+                <div class='t_labels'>@await Html.ExtLabelForAsync(m => classData.Footer, string.Format("[{0}].Footer", classIndex), Caption: __ResStr("footer", "Class Footer"), HtmlAttributes: new { Title = __ResStr("footerTT", "Text found in [FooterAttribute(...)]") })</div>
                 <div class='t_footer'>@Html.EditorFor(m => classData.Footer, "Text80", string.Format("[{0}].Footer", classIndex))</div>
                 <div class="y_cleardiv"></div>
-                <div class='t_labels'>@Html.ExtLabelFor(m => classData.Legend, string.Format("[{0}].Legend", classIndex), Caption: __ResStr("legend", "Class Legend"), HtmlAttributes: new { Title = __ResStr("legendTT", "Text found in [LegendAttribute(...)]") })</div>
+                <div class='t_labels'>@await Html.ExtLabelForAsync(m => classData.Legend, string.Format("[{0}].Legend", classIndex), Caption: __ResStr("legend", "Class Legend"), HtmlAttributes: new { Title = __ResStr("legendTT", "Text found in [LegendAttribute(...)]") })</div>
                 <div class='t_legend'>@Html.EditorFor(m => classData.Legend, "Text80", string.Format("[{0}].Legend", classIndex))</div>
                 <div class="y_cleardiv"></div>
             </div>
@@ -43,7 +43,7 @@
                 @foreach (LocalizationData.PropertyData prop in classData.Properties) {
                     <div class='t_propentry'>
                         <div class='t_name'>@Html.ExtHiddenFor(m => prop.Name, string.Format("[{0}].Properties[{1}].Name", classIndex, entryIndex))</div>
-                        <div class='t_name'>@Html.ExtLabelFor(m => prop.Name, string.Format("[{0}].Properties[{1}].Name", classIndex, entryIndex), Caption: prop.Name, HtmlAttributes: new { Title = __ResStr("propTT", "Text found in attributes for property {0}", prop.Name) })</div>
+                        <div class='t_name'>@await Html.ExtLabelForAsync(m => prop.Name, string.Format("[{0}].Properties[{1}].Name", classIndex, entryIndex), Caption: prop.Name, HtmlAttributes: new { Title = __ResStr("propTT", "Text found in attributes for property {0}", prop.Name) })</div>
                         <div class='t_propvars'>
                             <div class='t_caption'>@Html.EditorFor(m => prop.Caption, "Text40", string.Format("[{0}].Properties[{1}].Caption", classIndex, entryIndex)) (Caption)</div>
                             <div class='t_desc'>@Html.EditorFor(m => prop.Description, "Text80", string.Format("[{0}].Properties[{1}].Description", classIndex, entryIndex)) (Description)</div>

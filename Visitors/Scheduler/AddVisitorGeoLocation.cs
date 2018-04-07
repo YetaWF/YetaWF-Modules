@@ -53,7 +53,7 @@ namespace YetaWF.Modules.Visitors.Scheduler {
                     if (list.Data.Count == 0) break;
                     foreach (VisitorEntry ve in list.Data) {
                         GeoLocation geoLocation = new GeoLocation();
-                        GeoLocation.UserInfo userInfo = geoLocation.GetUserInfo(ve.IPAddress);
+                        GeoLocation.UserInfo userInfo = await geoLocation.GetUserInfoAsync(ve.IPAddress);
                         if (!string.IsNullOrWhiteSpace(userInfo.ContinentCode)) {
                             ve.City = userInfo.City;
                             ve.ContinentCode = userInfo.ContinentCode;

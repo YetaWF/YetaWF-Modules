@@ -15,7 +15,7 @@
     <div class="t_imgarea">
         <div class="t_list">
             <select class="t_native" name="List" size="10" style="height:@(info.PreviewHeight)px">
-                @foreach (var f in info.Files) {
+                @foreach (var f in info.GetFilesAsync().Result) {
                     string name = f.RemoveStartingAt(YetaWF.Core.Image.ImageSupport.ImageSeparator);
                     <option title="@name" value="@f">@name</option>
                 }

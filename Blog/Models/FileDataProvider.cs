@@ -70,7 +70,7 @@ namespace YetaWF.Modules.Blog.DataProvider.File {
                     DataProviderFilterInfo f = filters.First();
                     int entryIdentity = GetEntryIdentity();
                     if (f.Field == "EntryIdentity" && f.Operator == "==" && entryIdentity.CompareTo(f.Value) == 0) {
-                        DirectoryIO.DeleteFolder(GetCommentFolder(entryIdentity));
+                        await FileSystem.FileSystemProvider.DeleteDirectoryAsync(GetCommentFolder(entryIdentity));
                         return 1;
                     }
                 }

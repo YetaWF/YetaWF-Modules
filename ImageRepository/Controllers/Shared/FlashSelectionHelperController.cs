@@ -10,6 +10,7 @@ using YetaWF.Core.Localize;
 using YetaWF.Core.Support;
 using YetaWF.Core.Upload;
 using YetaWF.Modules.ImageRepository.Views.Shared;
+using System.Threading.Tasks;
 #if MVC6
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -24,14 +25,14 @@ namespace YetaWF.Modules.ImageRepository.Controllers.Shared {
         [AllowPost]
         [ResourceAuthorize(CoreInfo.Resource_UploadImages)]
 #if MVC6
-        public ActionResult SaveFlashImage(IFormFile __filename, string folderGuid, string subFolder, string fileType)
+        public async Task<ActionResult> SaveFlashImage(IFormFile __filename, string folderGuid, string subFolder, string fileType)
 #else
-        public ActionResult SaveFlashImage(HttpPostedFileBase __filename, string folderGuid, string subFolder, string fileType)
+        public async Task<ActionResult> SaveFlashImage(HttpPostedFileBase __filename, string folderGuid, string subFolder, string fileType)
 #endif
         {
             FileUpload upload = new FileUpload();
             string storagePath = FlashSelectionInfo.StoragePath(new Guid(folderGuid), subFolder, fileType);
-            string name = upload.StoreFile(__filename, storagePath, MimeSection.FlashUse, uf => uf.FileName);
+            string name = await upload.StoreFileAsync(__filename, storagePath, MimeSection.FlashUse, uf => uf.FileName);
 
             ScriptBuilder sb = new ScriptBuilder();
             // Upload control considers Json result a success. result has a function to execute, newName has the file name
@@ -41,7 +42,7 @@ namespace YetaWF.Modules.ImageRepository.Controllers.Shared {
             sb.Append("  \"filename\": \"{0}\",\n", YetaWFManager.JserEncode(name));
             sb.Append("  \"realFilename\": \"{0}\",\n", YetaWFManager.JserEncode(__filename.FileName));
             sb.Append("  \"list\": \"");
-            foreach (var f in FlashSelectionInfo.ReadFiles(new Guid(folderGuid), subFolder, fileType))
+            foreach (var f in await FlashSelectionInfo.ReadFilesAsync(new Guid(folderGuid), subFolder, fileType))
                 sb.Append("<option title=\\\"{0}\\\">{0}</option>", YetaWFManager.JserEncode(f.RemoveStartingAt(ImageSupport.ImageSeparator)));
             sb.Append("\"\n");
             sb.Append("}");
@@ -50,13 +51,13 @@ namespace YetaWF.Modules.ImageRepository.Controllers.Shared {
 
         [AllowPost]
         [ResourceAuthorize(CoreInfo.Resource_RemoveImages)]
-        public ActionResult RemoveSelectedFlashImage(string name, string folderGuid, string subFolder, string fileType) {
+        public async Task<ActionResult> RemoveSelectedFlashImage(string name, string folderGuid, string subFolder, string fileType) {
 
             name = name.RemoveStartingAt(ImageSupport.ImageSeparator);
 
             FileUpload upload = new FileUpload();
             string storagePath = FlashSelectionInfo.StoragePath(new Guid(folderGuid), subFolder, fileType);
-            upload.RemoveFile(name, storagePath);
+            await upload.RemoveFileAsync(name, storagePath);
 
             ScriptBuilder sb = new ScriptBuilder();
             // return new list of selected files
@@ -64,7 +65,7 @@ namespace YetaWF.Modules.ImageRepository.Controllers.Shared {
             sb.Append("  \"result\": ");
             sb.Append("      \"Y_Confirm(\\\"{0}\\\");\",", this.__ResStr("removeImageOK", "Image \\\\\\\"{0}\\\\\\\" successfully removed", YetaWFManager.JserEncode(name)));
             sb.Append("  \"list\": \"");
-            foreach (var f in FlashSelectionInfo.ReadFiles(new Guid(folderGuid), subFolder, fileType))
+            foreach (var f in await FlashSelectionInfo.ReadFilesAsync(new Guid(folderGuid), subFolder, fileType))
                 sb.Append("<option title=\\\"{0}\\\">{0}</option>", YetaWFManager.JserEncode(f.RemoveStartingAt(ImageSupport.ImageSeparator)));
             sb.Append("\"\n");
             sb.Append("}");

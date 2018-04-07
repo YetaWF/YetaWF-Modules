@@ -1,6 +1,7 @@
 ﻿/* Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/SlideShow#License */
 
 using System;
+using System.Threading.Tasks;
 using YetaWF.Core.IO;
 using YetaWF.Core.Localize;
 using YetaWF.Core.Models.Attributes;
@@ -32,8 +33,8 @@ namespace YetaWF.Modules.SlideShow.Modules {
         [UIHint("YetaWF_SlideShow_SlideShow")]
         public SlideShowInfo SlideShow { get; set; }
 
-        public override void ModuleSaving() {
-            SlideShow.Saving("SlideShow", ModuleGuid); // update internal information
+        public override Task ModuleSavingAsync() {
+            return SlideShow.SavingAsync("SlideShow", ModuleGuid); // update internal information
         }
     }
 }

@@ -18,6 +18,7 @@ using YetaWF.Core.Support;
 using YetaWF.Core.Views.Shared;
 using YetaWF.Modules.Logging.DataProvider;
 using YetaWF.Modules.Logging.Modules;
+using YetaWF.Core.IO;
 #if MVC6
 using Microsoft.AspNetCore.Mvc;
 #else
@@ -118,7 +119,7 @@ namespace YetaWF.Modules.Logging.Controllers {
         public async Task<ActionResult> BrowseLog() {
             FlushLog();
             using (LogRecordDataProvider dataProvider = LogRecordDataProvider.GetLogRecordDataProvider()) {
-                dataProvider.Flush();// get the latest records
+                await dataProvider.FlushAsync();// get the latest records
                 BrowseModel model = new BrowseModel {
                     LogAvailable = await dataProvider.IsInstalledAsync(),
                     BrowsingSupported = dataProvider.CanBrowse,
@@ -168,11 +169,11 @@ namespace YetaWF.Modules.Logging.Controllers {
         }
 
         [Permission("Downloads")]
-        public ActionResult DownloadLog(long cookieToReturn) {
+        public async Task<ActionResult> DownloadLog(long cookieToReturn) {
             FlushLog();
             using (LogRecordDataProvider dataProvider = LogRecordDataProvider.GetLogRecordDataProvider()) {
                 string filename = dataProvider.GetLogFileName();
-                if (!System.IO.File.Exists(filename))
+                if (!await FileSystem.FileSystemProvider.FileExistsAsync(filename))
                     throw new Error(this.__ResStr("logNotFound", "The log file '{0}' cannot be located", filename));
 #if MVC6
                 Response.Headers.Remove("Cookie");
@@ -195,11 +196,11 @@ namespace YetaWF.Modules.Logging.Controllers {
         }
 
         [Permission("Downloads")]
-        public ActionResult DownloadZippedLog(long cookieToReturn) {
+        public async Task<ActionResult> DownloadZippedLog(long cookieToReturn) {
             FlushLog();
             using (LogRecordDataProvider dataProvider = LogRecordDataProvider.GetLogRecordDataProvider()) {
                 string filename = dataProvider.GetLogFileName();
-                if (!System.IO.File.Exists(filename))
+                if (!await FileSystem.FileSystemProvider.FileExistsAsync(filename))
                     throw new Error(this.__ResStr("logNotFound", "The log file '{0}' cannot be located", filename));
 #if MVC6
 #else

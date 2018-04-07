@@ -42,13 +42,16 @@ namespace YetaWF.Modules.Logging.DataProvider.NLogProvider {
             rootFolder = YetaWFManager.RootFolder;
 #endif
             string configFile = Path.Combine(rootFolder, Globals.DataFolder, NLogSettingsFile);
-            if (!System.IO.File.Exists(configFile)) throw new InternalError($"NLog config file missing - Not found at {configFile}");
+            YetaWFManager.Syncify(async () => { // registration is sync by definition (this runs once during startup only)
+                if (!await FileSystem.FileSystemProvider.FileExistsAsync(configFile))
+                    throw new InternalError($"NLog config file missing - Not found at {configFile}");
+            });
             LogManager.Configuration = new XmlLoggingConfiguration(configFile);
 
             MessageFormat = WebConfigHelper.GetValue<string>(AreaRegistration.CurrentPackage.AreaName, NLogMessageFormat);
             MessageFormat = MessageFormat?.ToLower();
             MessageEvent = WebConfigHelper.GetValue<bool>(AreaRegistration.CurrentPackage.AreaName, NLogMessageEvent);
-            
+
             // get logger
             Logger = NLog.LogManager.GetLogger("YetaWF");
         }
@@ -132,9 +135,10 @@ namespace YetaWF.Modules.Logging.DataProvider.NLogProvider {
         // API
         // API
 
-        public override void Clear() { }
-        public override void Flush() {
+        public override Task ClearAsync() { return Task.CompletedTask; }
+        public override Task FlushAsync() {
             NLog.LogManager.Flush();
+            return Task.CompletedTask;
         }
 
         public override void SaveMessage(LogRecord record) {
@@ -201,12 +205,14 @@ namespace YetaWF.Modules.Logging.DataProvider.NLogProvider {
         }
         public async Task<bool> InstallModelAsync(List<string> errorList) {
             if (YetaWF.Core.Log.Logging.DefinedLoggerType != typeof(LogRecordDataProvider)) return true;
+            if (YetaWF.Core.Support.Startup.MultiInstance) throw new InternalError("Installing new models is not possible when distributed caching is enabled");
             bool success = await DataProvider.InstallModelAsync(errorList);
             if (success)
                 await YetaWF.Core.Log.Logging.SetupLoggingAsync();
             return success;
         }
         public async Task<bool> UninstallModelAsync(List<string> errorList) {
+            if (YetaWF.Core.Support.Startup.MultiInstance) throw new InternalError("Uninstalling models is not possible when distributed caching is enabled");
             if (YetaWF.Core.Log.Logging.DefinedLoggerType != typeof(LogRecordDataProvider)) return true;
             YetaWF.Core.Log.Logging.TerminateLogging();
             return await DataProvider.UninstallModelAsync(errorList);

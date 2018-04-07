@@ -106,6 +106,7 @@ namespace YetaWF.Modules.Text.Modules {
         [Category("General"), Caption("Contents"), Description("The text contents")]
         [UIHint("TextArea"), AdditionalMetadata("ImageBrowse", true), AdditionalMetadata("FlashBrowse", true), StringLength(MaxContents), AdditionalMetadata("PageBrowse", true)]
         [DontSave]
+        [NoModelChange]
         public string Contents {
             get {
                 return CompleteContents[MultiString.ActiveLanguage];
@@ -124,14 +125,14 @@ namespace YetaWF.Modules.Text.Modules {
             return actions;
         }
 
-        public async System.Threading.Tasks.Task<ModuleAction> GetAction_RssFeedAwait(Guid moduleGuid) {
+        public async Task<ModuleAction> GetAction_RssFeedAwait(Guid moduleGuid) {
             TextModule mod = (TextModule)await ModuleDefinition.LoadAsync(moduleGuid, AllowNone: true);
             if (mod == null) return null;
             return new ModuleAction(this) {
                 Url = YetaWFManager.UrlFor(typeof(RssController), "RssFeed"),
                 QueryArgs = new { ModuleGuid = moduleGuid, },
                 QueryArgsHR = new { Title = mod.Title.ToString() },
-                Image = "RssFeed.png",
+                Image = await CustomIconAsync("RssFeed.png"),
                 Style = ModuleAction.ActionStyleEnum.NewWindow,
                 LinkText = this.__ResStr("rssLink", "RSS Feed"),
                 MenuText = this.__ResStr("rssMenu", "RSS Feed"),
@@ -152,7 +153,7 @@ namespace YetaWF.Modules.Text.Modules {
                 QueryArgs = new { ModuleGuid = moduleGuid, },
                 QueryArgsHR = new { Title = mod.Title.ToString().Truncate(80) },
                 AnchorId = AnchorId,
-                Image = "RssFeed.png",
+                Image = await CustomIconAsync("RssFeed.png"),
                 Style = ModuleAction.ActionStyleEnum.NewWindow,
                 LinkText = this.__ResStr("rssDetailLink", "RSS Feed Entry"),
                 MenuText = this.__ResStr("rssDetailMenu", "RSS Feed Entry"),

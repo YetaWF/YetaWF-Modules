@@ -70,9 +70,9 @@ namespace YetaWF.Modules.PageEdit.Controllers {
             public AddNewModuleModel() {
                 ModuleTitle = new MultiString();
             }
-            public void AddData(PageDefinition page) {
+            public async Task AddDataAsync(PageDefinition page) {
                 if (page != null) {
-                    SelectedPane_List = page.Panes;
+                    SelectedPane_List = await page.GetPanesAsync();
                 }
             }
         }
@@ -96,9 +96,9 @@ namespace YetaWF.Modules.PageEdit.Controllers {
             [UIHint("Enum"), Required]
             public Location ModuleLocation { get; set; }
 
-            public void AddData(PageDefinition page) {
+            public async Task AddDataAsync(PageDefinition page) {
                 if (page != null) {
-                    ExistingModulePane_List = page.Panes;
+                    ExistingModulePane_List = await page.GetPanesAsync();
                 }
             }
         }
@@ -122,7 +122,7 @@ namespace YetaWF.Modules.PageEdit.Controllers {
             [UIHint("FileUpload1"), Required]
             public FileUpload1 UploadFile { get; set; }
 
-            public void AddData(PageDefinition page, PageControlModule mod) {
+            public async Task AddDataAsync(PageDefinition page, PageControlModule mod) {
                 UploadFile = new FileUpload1 {
                     SelectButtonText = this.__ResStr("btnImport", "Import Module Data..."),
                     SaveURL = YetaWFManager.UrlFor(typeof(PageControlModuleController), "ImportPackage", new { __ModuleGuid = mod.ModuleGuid }),
@@ -130,7 +130,7 @@ namespace YetaWF.Modules.PageEdit.Controllers {
                     SerializeForm = true,
                 };
                 if (page != null) {
-                    ModulePane_List = page.Panes;
+                    ModulePane_List = await page.GetPanesAsync();
                 }
             }
         }
@@ -279,9 +279,9 @@ namespace YetaWF.Modules.PageEdit.Controllers {
                 SkinSelectionModel = new SkinSelectionModel(),
                 LoginSiteSelectionModel = new LoginSiteSelectionModel(),
             };
-            model.AddNewModel.AddData(page);
-            model.AddExistingModel.AddData(page);
-            model.ImportModel.AddData(page, Module);
+            await model.AddNewModel.AddDataAsync(page);
+            await model.AddExistingModel.AddDataAsync(page);
+            await model.ImportModel.AddDataAsync(page, Module);
             await model.LoginSiteSelectionModel.AddDataAsync();
             return View(model);
         }
@@ -319,7 +319,7 @@ namespace YetaWF.Modules.PageEdit.Controllers {
                 throw new Error("Can't edit this page");
             if (!page.IsAuthorized_Edit())
                 return NotAuthorized();
-            model.AddData(page);
+            await model.AddDataAsync(page);
             if (!ModelState.IsValid)
                 return PartialView(model);
 
@@ -340,7 +340,7 @@ namespace YetaWF.Modules.PageEdit.Controllers {
                 throw new Error("Can't edit this page");
             if (!page.IsAuthorized_Edit())
                 return NotAuthorized();
-            model.AddData(page);
+            await model.AddDataAsync(page);
 
             if (!ModelState.IsValid)
                 return PartialView(model);
@@ -359,17 +359,24 @@ namespace YetaWF.Modules.PageEdit.Controllers {
             if (!ModelState.IsValid)
                 return PartialView(model);
 
-            SiteDefinition site = Manager.CurrentSite;
+            SiteDefinition origSite = new SiteDefinition();
+            ObjectSupport.CopyData(Manager.CurrentSite, origSite);// make a copy of original site
+            SiteDefinition site = Manager.CurrentSite;// update new settings
             site.BootstrapSkin = model.BootstrapSkin;
             site.jQueryUISkin = model.jQueryUISkin;
             site.KendoUISkin = model.KendoUISkin;
-            SiteDefinition.SaveResult res = await site.SaveAsync();
-            if (res.RestartRequired) {
-                Manager.RestartSite();
-                return FormProcessed(model, this.__ResStr("okSavedRestart", "Site settings updated - Site is now restarting"),
-                    NextPage: Manager.CurrentSite.HomePageUrl, ForceRedirect: true);
-            } else
-                return FormProcessed(model, this.__ResStr("okSaved", "Site settings updated"), ForceRedirect: true);
+            ObjectSupport.ModelDisposition modelDisp = ObjectSupport.EvaluateModelChanges(origSite, site);
+            switch (modelDisp) {
+                default:
+                case ObjectSupport.ModelDisposition.None:
+                    return FormProcessed(model, this.__ResStr("okSaved", "Site settings updated"));
+                case ObjectSupport.ModelDisposition.PageReload:
+                    await site.SaveAsync();
+                    return FormProcessed(model, this.__ResStr("okSaved", "Site settings updated"), OnClose: OnCloseEnum.ReloadPage, OnPopupClose: OnPopupCloseEnum.ReloadParentPage);
+                case ObjectSupport.ModelDisposition.SiteRestart:
+                    await site.SaveAsync();
+                    return FormProcessed(model, this.__ResStr("okSavedRestart", "Site settings updated - These settings won't take effect until the site is restarted"));
+            }
         }
 
         [AllowPost]
@@ -381,11 +388,11 @@ namespace YetaWF.Modules.PageEdit.Controllers {
 #endif
         {
             FileUpload upload = new FileUpload();
-            string tempName = upload.StoreTempPackageFile(__filename);
+            string tempName = await upload.StoreTempPackageFileAsync(__filename);
 
             List<string> errorList = new List<string>();
             bool success = await ModuleDefinition.ImportAsync(tempName, model.CurrentPageGuid, true, model.ModulePane, model.ModuleLocation == Location.Top, errorList);
-            upload.RemoveTempFile(tempName);
+            await upload.RemoveTempFileAsync(tempName);
 
             string errs = "";
             if (errorList.Count > 0) {

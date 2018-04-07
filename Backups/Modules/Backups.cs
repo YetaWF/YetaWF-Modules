@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using YetaWF.Core.IO;
 using YetaWF.Core.Localize;
 using YetaWF.Core.Models.Attributes;
@@ -56,12 +57,12 @@ namespace YetaWF.Modules.Backups.Modules {
                 Mode = ModuleAction.ActionModeEnum.Any,
             };
         }
-        public ModuleAction GetAction_PerformSiteBackup() {
+        public async Task<ModuleAction> GetAction_PerformSiteBackupAsync() {
             if (!IsAuthorized("Backups")) return null;
             return new ModuleAction(this) {
-                Url = YetaWFManager.UrlFor(typeof(BackupsModuleController), "PerformSiteBackup"),
+                Url = YetaWFManager.UrlFor(typeof(BackupsModuleController), nameof(BackupsModuleController.PerformSiteBackup)),
                 NeedsModuleContext = true,
-                Image = "SiteBackup.png",
+                Image = await CustomIconAsync("SiteBackup.png"),
                 Style = ModuleAction.ActionStyleEnum.Post,
                 LinkText = this.__ResStr("sbackupLink", "Site Backup"),
                 MenuText = this.__ResStr("sbackupMenu", "Site Backup"),
@@ -76,13 +77,13 @@ namespace YetaWF.Modules.Backups.Modules {
         }
 
         // This action is only useful if you're the YetaWF Publisher
-        public ModuleAction GetAction_MakeSiteTemplateData() {
+        public async Task<ModuleAction> GetAction_MakeSiteTemplateDataAsync() {
             if (Manager.Deployed) return null; //Can't make site template data on a deployed site
             if (!IsAuthorized("Backups")) return null;
             return new ModuleAction(this) {
-                Url = YetaWFManager.UrlFor(typeof(BackupsModuleController), "MakeSiteTemplateData"),
+                Url = YetaWFManager.UrlFor(typeof(BackupsModuleController), nameof(BackupsModuleController.MakeSiteTemplateData)),
                 NeedsModuleContext = true,
-                Image = "SiteBackup.png",
+                Image = await CustomIconAsync("SiteBackup.png"),
                 Style = ModuleAction.ActionStyleEnum.Post,
                 LinkText = this.__ResStr("makeTemplateLink", "Make Site Template Data"),
                 MenuText = this.__ResStr("makeTemplateMenu", "Make Site Template Data"),
@@ -95,12 +96,12 @@ namespace YetaWF.Modules.Backups.Modules {
             };
         }
 
-        public ModuleAction GetAction_DownloadLink(string filename) {
+        public async Task<ModuleAction> GetAction_DownloadLinkAsync(string filename) {
             if (!IsAuthorized("Downloads")) return null;
             return new ModuleAction(this) {
-                Url = YetaWFManager.UrlFor(typeof(BackupsModuleController), "Download"),
+                Url = YetaWFManager.UrlFor(typeof(BackupsModuleController), nameof(BackupsModuleController.Download)),
                 QueryArgs = new { FileName = filename },
-                Image = "Download.png",
+                Image = await CustomIconAsync("Download.png"),
                 NeedsModuleContext = true,
                 CookieAsDoneSignal = true,
                 LinkText = this.__ResStr("dnldLink", "Download Backup"),

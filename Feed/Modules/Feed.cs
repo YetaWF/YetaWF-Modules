@@ -1,16 +1,17 @@
 ﻿/* Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Feed#License */
 
 using System;
+using System.Threading.Tasks;
 using YetaWF.Core;
 using YetaWF.Core.IO;
 using YetaWF.Core.Localize;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Modules;
 using YetaWF.Core.Serializers;
-using YetaWF.Core.Support;
 using YetaWF.Core.Views.Shared;
 using YetaWF.DataProvider;
 #if MVC6
+using YetaWF.Core.Support;
 #else
 using System.Web.Mvc;
 #endif
@@ -56,10 +57,10 @@ namespace YetaWF.Modules.Feed.Modules {
 
         public override SerializableList<AllowedRole> DefaultAllowedRoles { get { return AdministratorLevel_DefaultAllowedRoles; } }
 
-        public ModuleAction GetAction_News() {
+        public async Task<ModuleAction> GetAction_NewsAsync() {
             return new ModuleAction(this) {
                 Url = FeedUrl,
-                Image = "Feed.png",
+                Image = await CustomIconAsync("Feed.png"),
                 LinkText = Title,
                 MenuText = Title,
                 Tooltip = this.__ResStr("displayTooltip", "Display the {0} news feed", Title),
@@ -71,15 +72,16 @@ namespace YetaWF.Modules.Feed.Modules {
                 SaveReturnUrl = true,
             };
         }
-        public override void ModuleSaving() {
-            RemoveCachedInfo();// whenever the module is saved, we remove the cached information
+        public override Task ModuleSavingAsync() {
+            return RemoveCachedInfoAsync();// whenever the module is saved, we remove the cached information
         }
-        public override void ModuleRemoving() {
-            RemoveCachedInfo();// whenever the module is removed, we remove the cached information
+        public override Task ModuleRemovingAsync() {
+            return RemoveCachedInfoAsync();// whenever the module is removed, we remove the cached information
         }
-        private void RemoveCachedInfo() {
-            CachedObject cache = new CachedObject();
-            cache.RemoveFromCache(CacheKey);
+        private async Task RemoveCachedInfoAsync() {
+            using (ICacheDataProvider localCacheDP = YetaWF.Core.IO.Caching.GetLocalCacheProvider()) {
+                await localCacheDP.RemoveAsync<Controllers.FeedModuleController.DisplayModel>(CacheKey);
+            }
         }
     }
 }

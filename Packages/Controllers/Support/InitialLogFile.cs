@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using YetaWF.Core.Controllers;
 using YetaWF.Core.Support;
 using YetaWF.Modules.Packages.DataProvider;
+using System.Threading.Tasks;
 #if MVC6
 using Microsoft.AspNetCore.Mvc;
 #else
@@ -25,26 +26,25 @@ namespace YetaWF.Modules.Packages.Controllers {
     public class InitialLogFileController : YetaWFController {
 
         [AllowPost]
-        public ActionResult GetInitialInstallLogRecords(int offset) {
-            bool ended;
-            List<string> records = PackagesDataProvider.RetrieveInitialInstallLog(out ended);
-            if (ended) {
+        public async Task<ActionResult> GetInitialInstallLogRecords(int offset) {
+            PackagesDataProvider.RetrieveInitialInstallLogInfo info = await PackagesDataProvider.RetrieveInitialInstallLogAsync();
+            if (info.Ended) {
 #if MVC6
-                records.AddRange(new List<string> {
+                info.Lines.AddRange(new List<string> {
                     "*** This site has to be restarted now so the new settings can be activated ***",
                     "*** DONE. PLEASE CLOSE YOUR BROWSER AND RESTART YOUR SITE FROM VISUAL STUDIO ***",
                     "+++DONE",
                 });
 #else
-                records.AddRange(new List<string> {
+                info.Lines.AddRange(new List<string> {
                     "*** DONE. THE SITE IS NOW RESTARTING ***",
                     "+++DONE",
                 });
 #endif
             } else {
-                records.RemoveRange(0, Math.Min(offset, records.Count));
+                info.Lines.RemoveRange(0, Math.Min(offset, info.Lines.Count));
             }
-            return new YJsonResult() { Data = records };
+            return new YJsonResult() { Data = info.Lines };
         }
     }
 }

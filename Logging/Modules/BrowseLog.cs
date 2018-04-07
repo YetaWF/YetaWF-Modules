@@ -87,9 +87,9 @@ namespace YetaWF.Modules.Logging.Modules {
                 if (!dataProvider.CanRemove) return null;
             };
             return new ModuleAction(this) {
-                Url = YetaWFManager.UrlFor(typeof(BrowseLogModuleController), "RemoveAll"),
+                Url = YetaWFManager.UrlFor(typeof(BrowseLogModuleController), nameof(BrowseLogModuleController.RemoveAll)),
                 NeedsModuleContext = true,
-                Image = "RemoveAll.png",
+                Image = await CustomIconAsync("RemoveAll.png"),
                 Style = ModuleAction.ActionStyleEnum.Post,
                 LinkText = this.__ResStr("removeAllLink", "Remove All"),
                 MenuText = this.__ResStr("removeAllMenu", "Remove All"),
@@ -108,10 +108,10 @@ namespace YetaWF.Modules.Logging.Modules {
                 if (!dataProvider.CanDownload) return null;
             };
             return new ModuleAction(this) {
-                Url = YetaWFManager.UrlFor(typeof(BrowseLogModuleController), "DownloadLog"),
+                Url = YetaWFManager.UrlFor(typeof(BrowseLogModuleController), nameof(BrowseLogModuleController.DownloadLog)),
                 NeedsModuleContext = true,
                 CookieAsDoneSignal = true,
-                Image = "Download.png",
+                Image = await CustomIconAsync("Download.png"),
                 LinkText = this.__ResStr("downloadLink", "Download Log"),
                 MenuText = this.__ResStr("downloadMenu", "Download Log"),
                 Tooltip = this.__ResStr("downloadTT", "Download the log file"),
@@ -129,10 +129,10 @@ namespace YetaWF.Modules.Logging.Modules {
                 if (!dataProvider.CanDownload) return null;
             };
             return new ModuleAction(this) {
-                Url = YetaWFManager.UrlFor(typeof(BrowseLogModuleController), "DownloadZippedLog"),
+                Url = YetaWFManager.UrlFor(typeof(BrowseLogModuleController), nameof(BrowseLogModuleController.DownloadZippedLog)),
                 NeedsModuleContext = true,
                 CookieAsDoneSignal = true,
-                Image = "Download.png",
+                Image = await CustomIconAsync("Download.png"),
                 LinkText = this.__ResStr("dlZipLink", "Download Log (Zipped)"),
                 MenuText = this.__ResStr("dlZipMenu", "Download Log (Zipped)"),
                 Tooltip = this.__ResStr("dlZipTT", "Download the log file as a ZIP file"),

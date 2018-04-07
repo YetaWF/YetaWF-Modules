@@ -3,6 +3,7 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using YetaWF.Core.Audit;
 using YetaWF.Core.DataProvider;
 using YetaWF.Core.DataProvider.Attributes;
 using YetaWF.Core.IO;
@@ -113,7 +114,8 @@ namespace YetaWF.Modules.Scheduler.DataProvider {
         }
         public async Task<int> RemoveItemsAsync(List<DataProviderFilterInfo> filters) {
             filters = FixFilters(filters);
-            return await DataProvider.RemoveRecordsAsync(filters);
+            int result = await DataProvider.RemoveRecordsAsync(filters);
+            return result;
         }
         // Replace IsRunning ... with  Next == DateTime.MaxValue
         private List<DataProviderSortInfo> FixSort(List<DataProviderSortInfo> sort) {
@@ -161,10 +163,13 @@ namespace YetaWF.Modules.Scheduler.DataProvider {
 
         // APPSETTINGS.JSON
 
-        public void SetRunning(bool running) {
+        public async Task SetRunningAsync(bool running) {
             if (running != GetRunning()) {
                 WebConfigHelper.SetValue<bool>(AreaRegistration.CurrentPackage.AreaName, "Running", running);
-                WebConfigHelper.Save();
+                await WebConfigHelper.SaveAsync();
+                await Auditing.AddAuditAsync($"{nameof(SchedulerDataProvider)}.{nameof(SetRunningAsync)}", "Scheduler", Guid.Empty,
+                    $"{nameof(SetRunningAsync)}({running})", RequiresRestart: true
+                );
             }
         }
         public bool GetRunning() {

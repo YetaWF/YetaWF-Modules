@@ -1,6 +1,7 @@
 ﻿/* Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Search#License */
 
 using System;
+using System.Threading.Tasks;
 using YetaWF.Core.DataProvider.Attributes;
 using YetaWF.Core.IO;
 using YetaWF.Core.Localize;
@@ -29,11 +30,11 @@ namespace YetaWF.Modules.Search.Modules {
 
         public override SerializableList<AllowedRole> DefaultAllowedRoles { get { return AdministratorLevel_DefaultAllowedRoles; } }
 
-        public ModuleAction GetAction_GetResults(string url, string searchTerms) {
+        public async Task<ModuleAction> GetAction_GetResultsAsync(string url, string searchTerms) {
             return new ModuleAction(this) {
                 Url = string.IsNullOrWhiteSpace(url) ? ModulePermanentUrl : url,
                 QueryArgs = new { SearchTerms = searchTerms },
-                Image = "SearchResults.png",
+                Image = await CustomIconAsync("SearchResults.png"),
                 LinkText = this.__ResStr("resultsLink", "Search Results"),
                 MenuText = this.__ResStr("resultsText", "Search Results"),
                 Tooltip = this.__ResStr("resultsTooltip", "Display the search results for \"{0}\"", searchTerms),

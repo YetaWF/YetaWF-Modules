@@ -16,7 +16,7 @@
                     <div class='t_enumentry'>
                         @Html.ExtHiddenFor(m => entry.Name, string.Format("[{0}].Entries[{1}].Name", enumIndex, entryIndex))
                         @Html.ExtHiddenFor(m => entry.Value, string.Format("[{0}].Entries[{1}].Value", enumIndex, entryIndex))
-                        <div class='t_name'>@Html.ExtLabelFor(m => entry.Name, string.Format("[{0}].Entries[{1}].Caption", enumIndex, entryIndex), Caption: entry.Name, HtmlAttributes: new { Title = __ResStr("enumTT", "Text found in EnumDescriptionAttribute(...) for {0}", entry.Name) })</div>
+                        <div class='t_name'>@Html.ExtLabelForAsync(m => entry.Name, string.Format("[{0}].Entries[{1}].Caption", enumIndex, entryIndex), Caption: entry.Name, HtmlAttributes: new { Title = __ResStr("enumTT", "Text found in EnumDescriptionAttribute(...) for {0}", entry.Name) })</div>
                         <div class='t_enumvars'>
                             <div class='t_caption'>@Html.EditorFor(m => entry.Caption, "Text40", string.Format("[{0}].Entries[{1}].Caption", enumIndex, entryIndex))</div>
                             <div class='t_desc'>@Html.EditorFor(m => entry.Description, "Text80", string.Format("[{0}].Entries[{1}].Description", enumIndex, entryIndex))</div>

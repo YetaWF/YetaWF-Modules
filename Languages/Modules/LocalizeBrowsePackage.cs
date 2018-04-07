@@ -14,6 +14,7 @@ using YetaWF.Core.Support;
 using YetaWF.Core.Views.Shared;
 using YetaWF.DataProvider;
 using YetaWF.Modules.Languages.Controllers;
+using System.Threading.Tasks;
 #if MVC6
 #else
 using System.Web.Mvc;
@@ -67,7 +68,7 @@ namespace YetaWF.Modules.Languages.Modules {
                 Mode = ModuleAction.ActionModeEnum.Any,
             };
         }
-        public ModuleAction GetAction_CreateCustomLocalization() {
+        public async Task<ModuleAction> GetAction_CreateCustomLocalizationAsync() {
             if (Manager.Deployed) return null; // can't do this on a deployed site
             if (!IsAuthorized("Localize")) return null;
             string packageName = Manager.GetUrlArg<string>("PackageName");
@@ -76,9 +77,9 @@ namespace YetaWF.Modules.Languages.Modules {
             if (!package.IsCorePackage && !package.IsCoreAssemblyPackage && !package.IsModulePackage && !package.IsSkinPackage) return null;
             if (MultiString.ActiveLanguage == MultiString.DefaultLanguage) return null;
             return new ModuleAction(this) {
-                Url = YetaWFManager.UrlFor(typeof(LocalizeBrowsePackageModuleController), "CreateCustomLocalization"),
+                Url = YetaWFManager.UrlFor(typeof(LocalizeBrowsePackageModuleController), nameof(LocalizeBrowsePackageModuleController.CreateCustomLocalization)),
                 QueryArgs = new { PackageName = packageName, Language = MultiString.ActiveLanguage },
-                Image = "LocalizePackage.png",
+                Image = await CustomIconAsync("LocalizePackage.png"),
                 LinkText = this.__ResStr("creCustLink", "Create Localization Resources (Custom - {0})", MultiString.ActiveLanguage),
                 MenuText = this.__ResStr("creCustText", "Create Localization Resources (Custom - {0})", MultiString.ActiveLanguage),
                 Tooltip = this.__ResStr("creCustTooltip", "Create a custom localization resources for package {0} using language {1} - Saved in folder ./AddonsCustom/...", package.Name, MultiString.ActiveLanguage),
@@ -91,7 +92,7 @@ namespace YetaWF.Modules.Languages.Modules {
                 NeedsModuleContext = true,
             };
         }
-        public ModuleAction GetAction_CreateInstalledLocalization() {
+        public async Task<ModuleAction> GetAction_CreateInstalledLocalizationAsync() {
             if (Manager.Deployed) return null; // can't do this on a deployed site
             if (!IsAuthorized("Localize")) return null;
             string packageName = Manager.GetUrlArg<string>("PackageName");
@@ -100,9 +101,9 @@ namespace YetaWF.Modules.Languages.Modules {
             if (!package.IsCorePackage && !package.IsCoreAssemblyPackage && !package.IsModulePackage && !package.IsSkinPackage) return null;
             if (MultiString.ActiveLanguage == MultiString.DefaultLanguage) return null;
             return new ModuleAction(this) {
-                Url = YetaWFManager.UrlFor(typeof(LocalizeBrowsePackageModuleController), "CreateInstalledLocalization"),
+                Url = YetaWFManager.UrlFor(typeof(LocalizeBrowsePackageModuleController), nameof(LocalizeBrowsePackageModuleController.CreateInstalledLocalization)),
                 QueryArgs = new { PackageName = packageName, Language = MultiString.ActiveLanguage },
-                Image = "LocalizePackage.png",
+                Image = await CustomIconAsync("LocalizePackage.png"),
                 LinkText = this.__ResStr("creInstLink", "Create Localization Resources (Installed - {0})", MultiString.ActiveLanguage),
                 MenuText = this.__ResStr("creInstText", "Create Localization Resources (Installed - {0})", MultiString.ActiveLanguage),
                 Tooltip = this.__ResStr("creInstTooltip", "Create an installed localization resources for package {0} using language {1} - Saved in folder ./Addons/...", package.Name, MultiString.ActiveLanguage),

@@ -1,6 +1,7 @@
 ﻿/* Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Packages#License */
 
 using System;
+using System.Threading.Tasks;
 using YetaWF.Core.IO;
 using YetaWF.Core.Localize;
 using YetaWF.Core.Models.Attributes;
@@ -28,11 +29,11 @@ namespace YetaWF.Modules.Packages.Modules {
 
         public override SerializableList<AllowedRole> DefaultAllowedRoles { get { return AdministratorLevel_DefaultAllowedRoles; } }
 
-        public ModuleAction GetAction_UndoSiteTemplate(string url, string fileName) {
+        public async Task<ModuleAction> GetAction_UndoSiteTemplateAsync(string url, string fileName) {
             return new ModuleAction(this) {
                 Url = string.IsNullOrWhiteSpace(url) ? ModulePermanentUrl : url,
                 QueryArgs = new { FileName = fileName },
-                Image = "SiteTemplateUndo.png",
+                Image = await CustomIconAsync("SiteTemplateUndo.png"),
                 LinkText = this.__ResStr("undoLink", "Site Template"),
                 MenuText = this.__ResStr("undoText", "Site Template"),
                 Tooltip = this.__ResStr("undoTooltip", "Undo a site template and add all defined pages to current site"),

@@ -2,11 +2,13 @@
 
 using System;
 using System.IO;
+using System.Threading.Tasks;
 using YetaWF.Core.Controllers;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Packages;
 using YetaWF.Core.Support;
 using YetaWF.Core;
+using YetaWF.Core.IO;
 using YetaWF.Core.Localize;
 #if MVC6
 using Microsoft.AspNetCore.Mvc;
@@ -34,7 +36,11 @@ namespace YetaWF.Modules.Dashboard.Controllers {
             [UIHint("String"), ReadOnly]
             public string BlueGreenDeploy { get; set; }
 
-            [Caption("Last Restart"), Description("The date and time the site was last restarted")]
+            [Caption("WebFarm/WebGarden Enabled"), Description("Defines whether webfarm/webgarden support is enabled using shared caching")]
+            [UIHint("Boolean"), ReadOnly]
+            public bool MultiInstance { get; set; }
+
+            [Caption("Last Restart"), Description("The date and time the site (all instances) was last restarted")]
             [UIHint("DateTime"), ReadOnly]
             public DateTime LastRestart { get; set; }
 
@@ -49,15 +55,16 @@ namespace YetaWF.Modules.Dashboard.Controllers {
         }
 
         [AllowGet]
-        public ActionResult Status() {
+        public async Task<ActionResult> Status() {
             DisplayModel model = new DisplayModel {
-                LastRestart = YetaWFManager.SiteStart,
+                LastRestart = YetaWF.Core.Support.Startup.MultiInstanceStartTime,
+                MultiInstance = YetaWF.Core.Support.Startup.MultiInstance,
             };
             Package corePackage = Package.GetPackageFromPackageName("YetaWF.Core");
             if (corePackage != null)
                 model.CoreVersion = corePackage.Version;
             if (Manager.Deployed)
-                model.LastDeploy = Directory.GetCreationTimeUtc(Path.Combine(YetaWFManager.RootFolderWebProject, Globals.NodeModulesFolder));
+                model.LastDeploy = await FileSystem.FileSystemProvider.GetCreationTimeUtcAsync(Path.Combine(YetaWFManager.RootFolderWebProject, Globals.NodeModulesFolder));
 #if DEBUG
             model.Build = "Debug";
 #else
@@ -67,13 +74,13 @@ namespace YetaWF.Modules.Dashboard.Controllers {
 
             string healthCheckFile = YetaWFManager.UrlToPhysical("/_hc.html");
             string blueGreen = "";
-            if (System.IO.File.Exists(healthCheckFile)) {
-                string contents = System.IO.File.ReadAllText(healthCheckFile);
+            if (await FileSystem.FileSystemProvider.FileExistsAsync(healthCheckFile)) {
+                string contents = await FileSystem.FileSystemProvider.ReadAllTextAsync(healthCheckFile);
                 if (contents.Contains("Blue"))
                     blueGreen = "Blue";
                 else if (contents.Contains("Green"))
                     blueGreen = "Green";
-                else 
+                else
                     blueGreen = "(???)";
             }
             if (!string.IsNullOrWhiteSpace(blueGreen)) {

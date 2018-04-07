@@ -1,6 +1,7 @@
 ﻿/* Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/KeepAlive#License */
 
 using System;
+using System.Threading.Tasks;
 using YetaWF.Core.DataProvider;
 using YetaWF.Core.IO;
 using YetaWF.Core.Localize;
@@ -48,11 +49,11 @@ namespace YetaWF.Modules.KeepAlive.Modules {
                 SaveReturnUrl = true,
             };
         }
-        public ModuleAction GetAction_RunKeepAlive() {
+        public async Task<ModuleAction> GetAction_RunKeepAliveAsync() {
             return new ModuleAction(this) {
-                Url = YetaWFManager.UrlFor(typeof(KeepAliveConfigModuleController), "RunKeepAlive"),
+                Url = YetaWFManager.UrlFor(typeof(KeepAliveConfigModuleController), nameof(KeepAliveConfigModuleController.RunKeepAlive)),
                 NeedsModuleContext = true,
-                Image = "KeepAlive.png",
+                Image = await CustomIconAsync("KeepAlive.png"),
                 Style = ModuleAction.ActionStyleEnum.Post,
                 LinkText = this.__ResStr("keepAliveLink", "Keep Alive"),
                 MenuText = this.__ResStr("keepAliveMenu", "Keep Alive"),

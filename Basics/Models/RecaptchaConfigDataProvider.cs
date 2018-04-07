@@ -1,6 +1,8 @@
 ﻿/* Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Basics#License */
 
+using System;
 using System.Threading.Tasks;
+using YetaWF.Core.Audit;
 using YetaWF.Core.DataProvider;
 using YetaWF.Core.IO;
 using YetaWF.Core.Packages;
@@ -15,7 +17,7 @@ namespace YetaWF.Modules.Basics.DataProvider {
         // STARTUP
         // STARTUP
 
-        public Task InitializeApplicationStartupAsync(bool firstNode) {
+        public Task InitializeApplicationStartupAsync() {
             RecaptchaConfig.LoadRecaptchaConfigAsync = RecaptchaConfigDataProvider.LoadRecaptchaConfigAsync;
             RecaptchaConfig.SaveRecaptchaConfigAsync = RecaptchaConfigDataProvider.SaveRecaptchaConfigAsync;
             return Task.CompletedTask;
@@ -61,12 +63,25 @@ namespace YetaWF.Modules.Basics.DataProvider {
             data.Key = KEY;
             if (!await DataProvider.AddAsync(data))
                 throw new InternalError("Unexpected error adding recaptcha settings");
+            await Auditing.AddAuditAsync($"{nameof(RecaptchaConfigDataProvider)}.{nameof(AddConfigAsync)}", "Config", Guid.Empty,
+                "Add Recaptcha Config",
+                DataBefore: null,
+                DataAfter: data,
+                ExpensiveMultiInstance: true
+            );
         }
         public async Task UpdateConfigAsync(RecaptchaConfig data) {
+            RecaptchaConfig origConfig = Auditing.Active ? await GetItemAsync() : null;
             data.Key = KEY;
             UpdateStatusEnum status = await DataProvider.UpdateAsync(data.Key, data.Key, data);
             if (status != UpdateStatusEnum.OK)
                 throw new InternalError("Can't save captcha configuration {0}", status);
+            await Auditing.AddAuditAsync($"{nameof(RecaptchaConfigDataProvider)}.{nameof(UpdateConfigAsync)}", "Config", Guid.Empty,
+                "Update Recaptcha Config",
+                DataBefore: origConfig,
+                DataAfter: data,
+                ExpensiveMultiInstance: true
+            );
         }
 
         internal static async Task<RecaptchaConfig> LoadRecaptchaConfigAsync() {

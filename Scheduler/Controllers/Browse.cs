@@ -30,21 +30,21 @@ namespace YetaWF.Modules.Scheduler.Controllers {
 
             [Caption("Actions"), Description("The available actions")]
             [UIHint("ActionIcons"), ReadOnly]
-            public MenuList Commands {
-                get {
-                    MenuList actions = new MenuList() { RenderMode = ModuleAction.RenderModeEnum.IconsOnly };
+            public MenuList Commands { get; set; }
 
-                    SchedulerDisplayModule dispMod = new SchedulerDisplayModule();
-                    actions.New(dispMod.GetAction_Display(Module.DisplayUrl, Name), ModuleAction.ActionLocationEnum.GridLinks);
+            public async Task<MenuList> __GetCommandsAsync() {
+                MenuList actions = new MenuList() { RenderMode = ModuleAction.RenderModeEnum.IconsOnly };
 
-                    SchedulerEditModule editMod = new SchedulerEditModule();
-                    actions.New(editMod.GetAction_Edit(Module.EditUrl, Name), ModuleAction.ActionLocationEnum.GridLinks);
+                SchedulerDisplayModule dispMod = new SchedulerDisplayModule();
+                actions.New(dispMod.GetAction_Display(Module.DisplayUrl, Name), ModuleAction.ActionLocationEnum.GridLinks);
 
-                    actions.New(Module.GetAction_RunItem(Name), ModuleAction.ActionLocationEnum.GridLinks);
-                    actions.New(Module.GetAction_RemoveItem(Name), ModuleAction.ActionLocationEnum.GridLinks);
+                SchedulerEditModule editMod = new SchedulerEditModule();
+                actions.New(editMod.GetAction_Edit(Module.EditUrl, Name), ModuleAction.ActionLocationEnum.GridLinks);
 
-                    return actions;
-                }
+                actions.New(await Module.GetAction_RunItemAsync(Name), ModuleAction.ActionLocationEnum.GridLinks);
+                actions.New(Module.GetAction_RemoveItem(Name), ModuleAction.ActionLocationEnum.GridLinks);
+
+                return actions;
             }
 
             [Caption("Running"), Description("Shows whether the scheduler item is currently running")]
@@ -162,16 +162,15 @@ namespace YetaWF.Modules.Scheduler.Controllers {
 
         [AllowPost]
         [ExcludeDemoMode]
-        public ActionResult SchedulerToggle(bool start) {
+        public async Task<ActionResult> SchedulerToggle(bool start) {
             using (SchedulerDataProvider dataProvider = new SchedulerDataProvider()) {
-                dataProvider.SetRunning(start);
+                await dataProvider.SetRunningAsync(start);
             }
-            Manager.RestartSite();
             return FormProcessed(null,
                 start ?
-                this.__ResStr("okStarting", "The scheduler has been started and the site is restarting") :
-                    this.__ResStr("okStopping", "The scheduler has been stopped and the site is restarting"),
-                OnClose: OnCloseEnum.GotoNewPage, OnPopupClose: OnPopupCloseEnum.GotoNewPage, NextPage: null );
+                this.__ResStr("okStarting", "The scheduler will be started when the site is restarted") :
+                    this.__ResStr("okStopping", "The scheduler will be stopped when the site is restarted"),
+                OnClose: OnCloseEnum.GotoNewPage, OnPopupClose: OnPopupCloseEnum.GotoNewPage, NextPage: null);
         }
     }
 }

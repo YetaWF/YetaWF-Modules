@@ -48,10 +48,10 @@ namespace YetaWF.Modules.Packages.Controllers {
 #endif
         {
             FileUpload upload = new FileUpload();
-            string tempName = upload.StoreTempPackageFile(__filename);
+            string tempName = await upload.StoreTempPackageFileAsync(__filename);
             List<string> errorList = new List<string>();
             bool success = await Package.ImportDataAsync(tempName, errorList);
-            upload.RemoveTempFile(tempName);
+            await upload.RemoveTempFileAsync(tempName);
 
             string errs = "";
             if (errorList.Count > 0) {
@@ -63,7 +63,7 @@ namespace YetaWF.Modules.Packages.Controllers {
             if (success) {
                 // Upload control considers Json result a success
                 sb.Append("{{ \"result\": \"Y_Confirm(\\\"{0}\\\", null, function() {{ Y_ReloadPage(true); }} ); \" }}",
-                    YetaWFManager.JserEncode(YetaWFManager.JserEncode(this.__ResStr("importedData", "\"{0}\" successfully imported - The site is now restarting...(+nl)", __filename.FileName) + errs))
+                    YetaWFManager.JserEncode(YetaWFManager.JserEncode(this.__ResStr("importedData", "\"{0}\" successfully imported - These settings won't take effect until the site is restarted(+nl)", __filename.FileName) + errs))
                 );
                 return new YJsonResult { Data = sb.ToString() };
             } else {

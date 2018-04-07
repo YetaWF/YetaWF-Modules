@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using YetaWF.Core.IO;
 using YetaWF.Core.Localize;
 using YetaWF.Core.Models;
@@ -60,11 +61,11 @@ namespace YetaWF.Modules.Packages.Modules {
                 Mode = ModuleAction.ActionModeEnum.Any,
             };
         }
-        public ModuleAction GetAction_InfoLink(string infoLink) {
+        public async Task<ModuleAction> GetAction_InfoLinkAsync(string infoLink) {
             if (string.IsNullOrWhiteSpace(infoLink)) return null;
             return new ModuleAction(this) {
                 Url = infoLink,
-                Image = "Info.png",
+                Image = await CustomIconAsync("Info.png"),
                 Style = ModuleAction.ActionStyleEnum.NewWindow,
                 LinkText = this.__ResStr("infoLink", "Info"),
                 MenuText = this.__ResStr("infoMenu", "Info"),
@@ -72,11 +73,11 @@ namespace YetaWF.Modules.Packages.Modules {
                 Legend = this.__ResStr("infoLegend", "Links to the product's website and display product information"),
             };
         }
-        public ModuleAction GetAction_SupportLink(string supportLink) {
+        public async Task<ModuleAction> GetAction_SupportLinkAsync(string supportLink) {
             if (string.IsNullOrWhiteSpace(supportLink)) return null;
             return new ModuleAction(this) {
                 Url = supportLink,
-                Image = "Support.png",
+                Image = await CustomIconAsync("Support.png"),
                 Style = ModuleAction.ActionStyleEnum.NewWindow,
                 LinkText = this.__ResStr("supportLink", "Support"),
                 MenuText = this.__ResStr("supportMenu", "Support"),
@@ -85,12 +86,11 @@ namespace YetaWF.Modules.Packages.Modules {
             };
         }
 
-        public ModuleAction GetAction_LicenseLink(string licenseLink)
-        {
+        public async Task<ModuleAction> GetAction_LicenseLinkAsync(string licenseLink) {
             if (string.IsNullOrWhiteSpace(licenseLink)) return null;
             return new ModuleAction(this) {
                 Url = licenseLink,
-                Image = "License.png",
+                Image = await CustomIconAsync("License.png"),
                 Style = ModuleAction.ActionStyleEnum.NewWindow,
                 LinkText = this.__ResStr("licenseLink", "License"),
                 MenuText = this.__ResStr("licenseMenu", "License"),
@@ -98,12 +98,11 @@ namespace YetaWF.Modules.Packages.Modules {
                 Legend = this.__ResStr("licenseLegend", "Links to the product's website and displays the licensing information"),
             };
         }
-        public ModuleAction GetAction_ReleaseNoticeLink(string releaseNoticeLink)
-        {
+        public async Task<ModuleAction> GetAction_ReleaseNoticeLinkAsync(string releaseNoticeLink) {
             if (string.IsNullOrWhiteSpace(releaseNoticeLink)) return null;
             return new ModuleAction(this) {
                 Url = releaseNoticeLink,
-                Image = "Release.png",
+                Image = await CustomIconAsync("Release.png"),
                 Style = ModuleAction.ActionStyleEnum.NewWindow,
                 LinkText = this.__ResStr("noticeLink", "Release Notice"),
                 MenuText = this.__ResStr("noticeMenu", "Release Notice"),
@@ -111,18 +110,18 @@ namespace YetaWF.Modules.Packages.Modules {
                 Legend = this.__ResStr("noticeLegend", "Links to the product's website and displays the release notice"),
             };
         }
-        public ModuleAction GetAction_ExportPackage(Package package) {
+        public async Task<ModuleAction> GetAction_ExportPackageAsync(Package package) {
 #if DEBUG
-            return null;
+            return await Task.FromResult<ModuleAction>(null);
 #else
             if (!IsAuthorized("Imports")) return null;
-            if (!package.HasSource) return null;
+            if (!await package.GetHasSourceAsync()) return null;
             if (!package.IsCorePackage && !package.IsCoreAssemblyPackage && !package.IsDataProviderPackage && !package.IsModulePackage && !package.IsSkinPackage) return null;
             return new ModuleAction(this) {
-                Url = YetaWFManager.UrlFor(typeof(PackagesModuleController), "ExportPackage"),
+                Url = YetaWFManager.UrlFor(typeof(PackagesModuleController), nameof(PackagesModuleController.ExportPackage)),
                 QueryArgs = new { PackageName = package.Name },
                 NeedsModuleContext = true,
-                Image = "ExportPackage.png",
+                Image = await CustomIconAsync("ExportPackage.png"),
                 LinkText = this.__ResStr("pLink", "Export Package"),
                 MenuText = this.__ResStr("pMenu", "Export Package"),
                 Tooltip = this.__ResStr("pTT", "Export the package (binary) by creating an installable ZIP file"),
@@ -132,18 +131,18 @@ namespace YetaWF.Modules.Packages.Modules {
             };
 #endif
         }
-        public ModuleAction GetAction_ExportPackageWithSource(Package package) {
+        public async Task<ModuleAction> GetAction_ExportPackageWithSourceAsync(Package package) {
 #if DEBUG
-            return null;
+            return await Task.FromResult<ModuleAction>(null);
 #else
             if (!IsAuthorized("Imports")) return null;
-            if (!package.HasSource) return null;
+            if (!await package.GetHasSourceAsync()) return null;
             if (!package.IsCorePackage && !package.IsCoreAssemblyPackage && !package.IsDataProviderPackage && !package.IsModulePackage && !package.IsSkinPackage /*&& !package.IsTemplatePackage && !package.IsUtilityPackage*/) return null;
             return new ModuleAction(this) {
-                Url = YetaWFManager.UrlFor(typeof(PackagesModuleController), "ExportPackageWithSource"),
+                Url = YetaWFManager.UrlFor(typeof(PackagesModuleController), nameof(PackagesModuleController.ExportPackageWithSource)),
                 QueryArgs = new { PackageName = package.Name },
                 NeedsModuleContext = true,
-                Image = "ExportPackageWithSource.png",
+                Image = await CustomIconAsync("ExportPackageWithSource.png"),
                 LinkText = this.__ResStr("exportSrcLink", "Export (with source code)"),
                 MenuText = this.__ResStr("exportSrcMenu", "Export Package (with source code)"),
                 Tooltip = this.__ResStr("exportSrcTT", "Export the package (with source code) by creating an installable ZIP file"),
@@ -153,14 +152,14 @@ namespace YetaWF.Modules.Packages.Modules {
             };
 #endif
         }
-        public ModuleAction GetAction_ExportPackageData(Package package) {
+        public async Task<ModuleAction> GetAction_ExportPackageDataAsync(Package package) {
             if (!package.IsModulePackage) return null;
             if (!IsAuthorized("Imports")) return null;
             return new ModuleAction(this) {
-                Url = YetaWFManager.UrlFor(typeof(PackagesModuleController), "ExportPackageData"),
+                Url = YetaWFManager.UrlFor(typeof(PackagesModuleController), nameof(PackagesModuleController.ExportPackageData)),
                 QueryArgs = new { PackageName = package.Name },
                 NeedsModuleContext = true,
-                Image = "ExportPackageData.png",
+                Image = await CustomIconAsync("ExportPackageData.png"),
                 LinkText = this.__ResStr("exportLink", "Export Data"),
                 MenuText = this.__ResStr("exportMenu", "Export Data"),
                 Tooltip = this.__ResStr("exportTT", "Export the package data (data only) by creating a ZIP file"),
@@ -169,15 +168,15 @@ namespace YetaWF.Modules.Packages.Modules {
                 Style = ModuleAction.ActionStyleEnum.Normal,
             };
         }
-        public ModuleAction GetAction_InstallPackageModels(Package package) {
+        public async Task<ModuleAction> GetAction_InstallPackageModelsAsync(Package package) {
             if (!package.IsModulePackage && !package.IsCorePackage) return null;
             if (!IsAuthorized("Installs")) return null;
             return new ModuleAction(this) {
                 Style = ModuleAction.ActionStyleEnum.Post,
-                Url = YetaWFManager.UrlFor(typeof(PackagesModuleController), "InstallPackageModels"),
+                Url = YetaWFManager.UrlFor(typeof(PackagesModuleController), nameof(PackagesModuleController.InstallPackageModels)),
                 QueryArgs = new { PackageName = package.Name },
                 NeedsModuleContext = true,
-                Image = "InstallPackageModels.png",
+                Image = await CustomIconAsync("InstallPackageModels.png"),
                 LinkText = this.__ResStr("installLink", "Install Models"),
                 MenuText = this.__ResStr("installMenu", "Install Models"),
                 Tooltip = this.__ResStr("installTT", "Install all data (files, SQL tables, etc.) that are needed by this package"),
@@ -185,15 +184,15 @@ namespace YetaWF.Modules.Packages.Modules {
                 Category = ModuleAction.ActionCategoryEnum.Update,
             };
         }
-        public ModuleAction GetAction_UninstallPackageModels(Package package) {
+        public async Task<ModuleAction> GetAction_UninstallPackageModelsAsync(Package package) {
             if (!package.IsModulePackage) return null;
             if (!IsAuthorized("Installs")) return null;
             return new ModuleAction(this) {
                 Style = ModuleAction.ActionStyleEnum.Post,
-                Url = YetaWFManager.UrlFor(typeof(PackagesModuleController), "UninstallPackageModels"),
+                Url = YetaWFManager.UrlFor(typeof(PackagesModuleController), nameof(PackagesModuleController.UninstallPackageModels)),
                 QueryArgs = new { PackageName = package.Name },
                 NeedsModuleContext = true,
-                Image = "UninstallPackageModels.png",
+                Image = await CustomIconAsync("UninstallPackageModels.png"),
                 LinkText = this.__ResStr("uninstallLink", "Uninstall Models"),
                 MenuText = this.__ResStr("uninstallMenu", "Uninstall Models"),
                 Legend = this.__ResStr("uninstallLegend", "Removes all data (files, SQL tables, etc.) that are used by this package"),
@@ -201,16 +200,16 @@ namespace YetaWF.Modules.Packages.Modules {
                 Category = ModuleAction.ActionCategoryEnum.Update,
             };
         }
-        public ModuleAction GetAction_LocalizePackage(Package package) {
+        public async Task<ModuleAction> GetAction_LocalizePackageAsync(Package package) {
             if (Manager.Deployed) return null; // can't do this on a deployed site
             if (!package.IsModulePackage && !package.IsCorePackage && !package.IsSkinPackage) return null;
             if (!IsAuthorized("Localize")) return null;
             return new ModuleAction(this) {
                 Style = ModuleAction.ActionStyleEnum.Post,
-                Url = YetaWFManager.UrlFor(typeof(PackagesModuleController), "LocalizePackage"),
+                Url = YetaWFManager.UrlFor(typeof(PackagesModuleController), nameof(PackagesModuleController.LocalizePackage)),
                 QueryArgs = new { PackageName = package.Name },
                 NeedsModuleContext = true,
-                Image = "LocalizePackage.png",
+                Image = await CustomIconAsync("LocalizePackage.png"),
                 LinkText = this.__ResStr("localizeLink", "Localize Package"),
                 MenuText = this.__ResStr("localizeMenu", "Localize Package"),
                 Tooltip = this.__ResStr("localizeTT", "Generate all default localization resources ({0}) used by this package", MultiString.DefaultLanguage),
@@ -218,14 +217,14 @@ namespace YetaWF.Modules.Packages.Modules {
                 Category = ModuleAction.ActionCategoryEnum.Update,
             };
         }
-        public ModuleAction GetAction_LocalizeAllPackages() {
+        public async Task<ModuleAction> GetAction_LocalizeAllPackagesAsync() {
             if (Manager.Deployed) return null; // can't do this on a deployed site
             if (!IsAuthorized("Localize")) return null;
             return new ModuleAction(this) {
                 Style = ModuleAction.ActionStyleEnum.Post,
-                Url = YetaWFManager.UrlFor(typeof(PackagesModuleController), "LocalizeAllPackages"),
+                Url = YetaWFManager.UrlFor(typeof(PackagesModuleController), nameof(PackagesModuleController.LocalizeAllPackages)),
                 NeedsModuleContext = true,
-                Image = "LocalizeAllPackages.png",
+                Image = await CustomIconAsync("LocalizeAllPackages.png"),
                 LinkText = this.__ResStr("localizeAllLink", "Localize All Packages ({0})", MultiString.DefaultLanguage),
                 MenuText = this.__ResStr("localizeAllMenu", "Localize All Packages ({0})", MultiString.DefaultLanguage),
                 Tooltip = this.__ResStr("localizeAllTT", "Generate all default localization resources ({0}) used by all packages", MultiString.DefaultLanguage),

@@ -11,6 +11,8 @@ using YetaWF.Core.Views.Shared;
 using YetaWF.Modules.DevTests.Modules;
 using YetaWF.Core.Models;
 using YetaWF.Core.SendEmail;
+using System.Threading.Tasks;
+using YetaWF.Core.IO;
 #if MVC6
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -234,18 +236,18 @@ namespace YetaWF.Modules.DevTests.Controllers {
         [AllowPost]
         [ExcludeDemoMode]
 #if MVC6
-        public ActionResult UploadSomething(IFormFile __filename)
+        public async Task<ActionResult> UploadSomething(IFormFile __filename)
 #else
-        public ActionResult UploadSomething(HttpPostedFileBase __filename)
+        public async Task<ActionResult> UploadSomething(HttpPostedFileBase __filename)
 #endif
         {
             // Save the uploaded file as a temp file
             FileUpload upload = new FileUpload();
-            string tempName = upload.StoreTempImageFile(__filename);
+            string tempName = await upload.StoreTempImageFileAsync(__filename);
             // do something with the uploaded file "tempName"
             //...
             // Delete the temp file just uploaded
-            System.IO.File.Delete(tempName);
+            await FileSystem.TempFileSystemProvider.DeleteFileAsync(tempName);
 
             bool success = true;
             string msg = this.__ResStr("uploadSuccess", "File {0} successfully uploaded", __filename.FileName);

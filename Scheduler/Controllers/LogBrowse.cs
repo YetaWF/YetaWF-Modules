@@ -17,6 +17,7 @@ using YetaWF.Core.Support;
 using YetaWF.Core.Views.Shared;
 using YetaWF.Modules.Scheduler.DataProvider;
 using YetaWF.Modules.Scheduler.Modules;
+using YetaWF.Core.IO;
 #if MVC6
 using Microsoft.AspNetCore.Mvc;
 #else
@@ -127,10 +128,10 @@ namespace YetaWF.Modules.Scheduler.Controllers {
         }
 
         [Permission("Downloads")]
-        public ActionResult DownloadLog(long cookieToReturn) {
+        public async Task<ActionResult> DownloadLog(long cookieToReturn) {
             using (LogDataProvider logDP = new LogDataProvider()) {
                 string filename = logDP.GetLogFileName();
-                if (!System.IO.File.Exists(filename))
+                if (!await FileSystem.FileSystemProvider.FileExistsAsync(filename))
                     throw new Error(this.__ResStr("logNotFound", "The scheduler log file '{0}' cannot be located", filename));
 #if MVC6
                 Response.Headers.Remove("Cookie");
@@ -153,10 +154,10 @@ namespace YetaWF.Modules.Scheduler.Controllers {
         }
 
         [Permission("Downloads")]
-        public ActionResult DownloadZippedLog(long cookieToReturn) {
+        public async Task<ActionResult> DownloadZippedLog(long cookieToReturn) {
             using (LogDataProvider dataProvider = new LogDataProvider()) {
                 string filename = dataProvider.GetLogFileName();
-                if (!System.IO.File.Exists(filename))
+                if (!await FileSystem.FileSystemProvider.FileExistsAsync(filename))
                     throw new Error(this.__ResStr("logNotFound", "The scheduler log file '{0}' cannot be located", filename));
 #if MVC6
 #else

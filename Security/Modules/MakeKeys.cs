@@ -1,6 +1,7 @@
 ﻿/* Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Security#License */
 
 using System;
+using System.Threading.Tasks;
 using YetaWF.Core.IO;
 using YetaWF.Core.Localize;
 using YetaWF.Core.Models.Attributes;
@@ -27,10 +28,10 @@ namespace YetaWF.Modules.Security.Modules {
 
         public override SerializableList<AllowedRole> DefaultAllowedRoles { get { return AdministratorLevel_DefaultAllowedRoles; } }
 
-        public ModuleAction GetAction_Display(string url) {
+        public async Task<ModuleAction> GetAction_DisplayAsync(string url) {
             return new ModuleAction(this) {
                 Url = string.IsNullOrWhiteSpace(url) ? ModulePermanentUrl : url,
-                Image = "MakeKeys.png",
+                Image = await CustomIconAsync("MakeKeys.png"),
                 LinkText = this.__ResStr("displayLink", "Make Keys"),
                 MenuText = this.__ResStr("displayText", "Make Keys"),
                 Tooltip = this.__ResStr("displayTooltip", "Create a public/private key using RSA"),

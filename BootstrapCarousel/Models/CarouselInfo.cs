@@ -1,6 +1,7 @@
 ﻿/* Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/BootstrapCarousel#License */
 
 using System;
+using System.Threading.Tasks;
 using YetaWF.Core;
 using YetaWF.Core.DataProvider;
 using YetaWF.Core.DataProvider.Attributes;
@@ -84,10 +85,10 @@ namespace YetaWF.Modules.BootstrapCarousel.Models {
             Wrap = true;
             Keyboard = true;
         }
-        public void Saving(string propertyName, Guid moduleGuid) {
+        public async Task SavingAsync(string propertyName, Guid moduleGuid) {
             int index = 0;
             foreach (CarouselItem s in Slides) {
-                DataProviderImpl.SaveImages(moduleGuid, s);
+                await DataProviderImpl.SaveImagesAsync(moduleGuid, s);
                 s.Image = string.Format("{0},{1},{2}", moduleGuid, "Image", s.Image_Guid);
                 ++index;
             }

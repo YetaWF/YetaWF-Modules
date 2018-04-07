@@ -4,8 +4,12 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
+using YetaWF.Core.IO;
 using YetaWF.Core.Localize;
 using YetaWF.Core.Modules;
+using YetaWF.Core.Packages;
+using YetaWF.Core.Skins;
 using YetaWF.Core.Support;
 using YetaWF.Core.Views.Shared;
 using YetaWF.Modules.ImageRepository.Controllers.Shared;
@@ -18,16 +22,18 @@ namespace YetaWF.Modules.ImageRepository.Views.Shared {
         public static string __ResStr(string name, string defaultValue, params object[] parms) { return ResourceAccess.GetResourceString(typeof(ImageSelectionInfo), name, defaultValue, parms); }
 
         public ImageSelectionInfo(ModuleDefinition owningModule, Guid folderGuid, string subFolder, string fileType = "Images") {
+            OwningModule = owningModule;
             FolderGuid = folderGuid;
             SubFolder = subFolder;
             FileType = fileType;
             AllowUpload = false;
             PreviewWidth = 200;
             PreviewHeight = 200;
-            ClearImageButton = new ModuleAction(owningModule) {
-                Url = YetaWFManager.UrlFor(typeof(ImageSelectionHelperController), "GetFiles"),
-                QueryArgs = new { FolderGuid = folderGuid, SubFolder = subFolder, FileType = FileType },
-                Image = "ClearImage.png",
+        }
+        public async Task InitAsync() {
+            ClearImageButton = new ModuleAction(OwningModule) {
+                QueryArgs = new { FolderGuid = FolderGuid, SubFolder = SubFolder, FileType = FileType },
+                Image = await new SkinImages().FindIcon_PackageAsync("ClearImage.png", Package.GetCurrentPackage(OwningModule)),
                 LinkText = __ResStr("clearImage", "Clear"),
                 Tooltip = __ResStr("clearImageTT", "Clears the currently selected image (the image itself is NOT removed from the server)"),
                 Style = ModuleAction.ActionStyleEnum.Nothing,
@@ -37,9 +43,9 @@ namespace YetaWF.Modules.ImageRepository.Views.Shared {
                 NeedsModuleContext = true,
                 Name = "Clear"
             };
-            RemoveImageButton = new ModuleAction(owningModule) {
-                Url = YetaWFManager.UrlFor(typeof(ImageSelectionHelperController), "RemoveSelectedImage"),
-                QueryArgs = new { FolderGuid = folderGuid, SubFolder = subFolder, FileType = FileType, Name = "" },
+            RemoveImageButton = new ModuleAction(OwningModule) {
+                Url = YetaWFManager.UrlFor(typeof(ImageSelectionHelperController), nameof(ImageSelectionHelperController.RemoveSelectedImage)),
+                QueryArgs = new { FolderGuid = FolderGuid, SubFolder = SubFolder, FileType = FileType, Name = "" },
                 Image = "#Remove",
                 LinkText = __ResStr("removeImage", "Remove"),
                 Tooltip = __ResStr("removeImageTT", "Removes the currently selected image from the server"),
@@ -92,44 +98,47 @@ namespace YetaWF.Modules.ImageRepository.Views.Shared {
             return Path.Combine(path, fileType);
         }
         // remove folder, then move up and remove all empty parent folders
-        public static void RemoveStorage(Guid folderGuid, string subFolder, string fileType = "Images") {
+        public static async Task RemoveStorageAsync(Guid folderGuid, string subFolder, string fileType = "Images") {
             string path = StoragePath(folderGuid, subFolder, fileType);
             try {
-                Directory.Delete(path, true);
+                await FileSystem.FileSystemProvider.DeleteDirectoryAsync(path);
             } catch (Exception) {
                 return;
             }
-            for ( ; ; ) {
+            for (;;) {
                 path = Path.GetDirectoryName(path);
                 try {
-                    Directory.Delete(path, false);
+                    await FileSystem.FileSystemProvider.DeleteDirectoryAsync(path);
                 } catch (Exception) {
                     return;
                 }
             }
         }
 
-        public List<string> Files {
-            get {
-                if (_files == null)
-                    _files = ReadFiles();
-                return _files;
-            }
+        public async Task<List<string>> GetFilesAsync() {
+            if (_files == null)
+                _files = await ReadFilesAsync();
+            return _files;
         }
         List<string> _files;
 
-        public static List<string> ReadFiles(Guid folderGuid, string subFolder, string fileType) {
-            List<string> files = ReadFilePaths(folderGuid, subFolder, fileType);
-            return (from f in files select Path.GetFileName(f) + YetaWF.Core.Image.ImageSupport.ImageSeparator + (File.GetLastWriteTime(f).Ticks/TimeSpan.TicksPerSecond).ToString() ).ToList();
+        public static async Task<List<string>> ReadFilesAsync(Guid folderGuid, string subFolder, string fileType) {
+            List<string> files = await ReadFilePathsAsync(folderGuid, subFolder, fileType);
+            List<string> list = new List<string>();
+            foreach (string f in files) {
+                long cb = (await FileSystem.FileSystemProvider.GetLastWriteTimeUtcAsync(f)).Ticks / TimeSpan.TicksPerSecond;
+                list.Add(Path.GetFileName(f) + YetaWF.Core.Image.ImageSupport.ImageSeparator + cb.ToString());
+            }
+            return list;
         }
-        private List<string> ReadFiles() {
-            return ImageSelectionInfo.ReadFiles(FolderGuid, SubFolder, FileType);
+        private async Task<List<string>> ReadFilesAsync() {
+            return await ReadFilesAsync(FolderGuid, SubFolder, FileType);
         }
-        private static List<string> ReadFilePaths(Guid folderGuid, string subFolder, string fileType) {
+        private static async Task<List<string>> ReadFilePathsAsync(Guid folderGuid, string subFolder, string fileType) {
             List<string> files = new List<string>();
             string storagePath = ImageSelectionInfo.StoragePath(folderGuid, subFolder, fileType);
-            if (Directory.Exists(storagePath))
-                files = Directory.GetFiles(storagePath).ToList();
+            if (await FileSystem.FileSystemProvider.DirectoryExistsAsync(storagePath))
+                files = await FileSystem.FileSystemProvider.GetFilesAsync(storagePath);
             return files;
         }
         public string MakeImageUrl(string filename, int width = 0, int height = 0) {

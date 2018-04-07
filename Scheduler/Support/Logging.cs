@@ -55,9 +55,9 @@ namespace YetaWF.Modules.Scheduler.Support {
             return Logging.LevelEnum.Info;
 #endif
         }
-
-        public void Clear() { }
-        public void Flush() { }
+        public Task InitAsync() { return Task.CompletedTask; }
+        public Task ClearAsync() { return Task.CompletedTask; }
+        public Task FlushAsync() { return Task.CompletedTask; }
         public Task<bool> IsInstalledAsync() { return Task.FromResult(true); }
 
         public void WriteToLogFile(string category, Logging.LevelEnum level, int relStack, string text) {

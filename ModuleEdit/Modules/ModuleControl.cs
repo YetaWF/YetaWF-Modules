@@ -14,6 +14,7 @@ using YetaWF.Core.Serializers;
 using YetaWF.Core.Support;
 using YetaWF.DataProvider;
 using YetaWF.Modules.ModuleEdit.Controllers;
+using System.Threading.Tasks;
 #if MVC6
 using Microsoft.AspNetCore.Routing;
 #else
@@ -55,16 +56,16 @@ namespace YetaWF.Modules.ModuleEdit.Modules {
             }
         }
 
-        public ModuleAction GetAction_ExportModule(ModuleDefinition mod) {
+        public async Task<ModuleAction> GetAction_ExportModuleAsync(ModuleDefinition mod) {
             if (!mod.ModuleHasSettings) return null;
             if (!mod.IsAuthorized(RoleDefinition.Edit)) return null;
             return new ModuleAction(this) {
-                Url = YetaWFManager.UrlFor(typeof(ModuleControlModuleController), "ExportModuleData"),
+                Url = YetaWFManager.UrlFor(typeof(ModuleControlModuleController), nameof(ModuleControlModuleController.ExportModuleData)),
                 QueryArgs = new { ModuleGuid = mod.ModuleGuid },
                 QueryArgsDict = new QueryHelper(new QueryDictionary {
                     { Basics.ModuleGuid, this.ModuleGuid }, // the module authorizing this
                 }),
-                Image = "ExportModule.png",
+                Image = await CustomIconAsync("ExportModule.png"),
                 LinkText = this.__ResStr("modExportLink", "Export"),
                 MenuText = this.__ResStr("modExportMenu", "Export Module"),
                 Tooltip = this.__ResStr("modExportTT", "Export the module data by creating an importable ZIP file (using Control Panel, Import Module)"),
@@ -76,12 +77,12 @@ namespace YetaWF.Modules.ModuleEdit.Modules {
             };
         }
 
-        public ModuleAction GetAction_Help(ModuleDefinition mod) {
+        public async Task<ModuleAction> GetAction_HelpAsync(ModuleDefinition mod) {
             Package package = Package.GetCurrentPackage(mod);
             return new ModuleAction(this) {
                 Url = package.InfoLink,
                 QueryArgsDict = new QueryHelper(new QueryDictionary { { Globals.Link_NoEditMode, "y" }, { Globals.Link_NoPageControl, "y" } }),
-                Image = "Help.png",
+                Image = await CustomIconAsync("Help.png"),
                 LinkText = this.__ResStr("modHelpLink", "Help"),
                 MenuText = this.__ResStr("modHelpMenu", "Help"),
                 Tooltip = this.__ResStr("modHelpTT", "Display help information for the package implementing this module"),
@@ -92,18 +93,18 @@ namespace YetaWF.Modules.ModuleEdit.Modules {
             };
         }
 
-        public ModuleAction GetAction_MoveToPane(PageDefinition page, ModuleDefinition mod, string oldPane, string newPane) {
+        public async Task<ModuleAction> GetAction_MoveToPaneAsync(PageDefinition page, ModuleDefinition mod, string oldPane, string newPane) {
             if (page == null) return null;
             if (oldPane == null) return null;
             if (newPane == null) return null;
             if (!page.IsAuthorized_Edit()) return null;
             return new ModuleAction(this) {
-                Url = YetaWFManager.UrlFor(typeof(ModuleControlModuleController), "MoveToPane"),
+                Url = YetaWFManager.UrlFor(typeof(ModuleControlModuleController), nameof(ModuleControlModuleController.MoveToPane)),
                 QueryArgs = new { PageGuid = page.PageGuid, ModuleGuid = mod.ModuleGuid, OldPane = oldPane, NewPane = newPane },
                 QueryArgsDict = new QueryHelper(new QueryDictionary {
                     { Basics.ModuleGuid, this.ModuleGuid }, // the module authorizing this
                 }),
-                Image = "MoveToPane.png",
+                Image = await CustomIconAsync("MoveToPane.png"),
                 LinkText = this.__ResStr("modMoveToLink", "Move To {0}", newPane),
                 Style = ModuleAction.ActionStyleEnum.Post,
                 MenuText = newPane,
@@ -115,19 +116,19 @@ namespace YetaWF.Modules.ModuleEdit.Modules {
                 Location = ModuleAction.ActionLocationEnum.ModuleMenu,
             };
         }
-        public ModuleAction GetAction_MoveUp(PageDefinition page, ModuleDefinition mod, string pane) {
+        public async Task<ModuleAction> GetAction_MoveUpAsync(PageDefinition page, ModuleDefinition mod, string pane) {
             if (page == null) return null;
             if (pane == null) return null;
             if (!page.IsAuthorized_Edit()) return null;
             PageDefinition.ModuleList modList = page.ModuleDefinitions.GetModulesForPane(pane);
             int modIndex = modList.IndexInPane(mod, pane);
             return new ModuleAction(this) {
-                Url = YetaWFManager.UrlFor(typeof(ModuleControlModuleController), "MoveUp"),
+                Url = YetaWFManager.UrlFor(typeof(ModuleControlModuleController), nameof(ModuleControlModuleController.MoveUp)),
                 QueryArgs = new { PageGuid = page.PageGuid, ModuleGuid = mod.ModuleGuid, Pane = pane, ModuleIndex = modIndex },
                 QueryArgsDict = new QueryHelper(new QueryDictionary {
                     { Basics.ModuleGuid, this.ModuleGuid }, // the module authorizing this
                 }),
-                Image = "MoveUp.png",
+                Image = await CustomIconAsync("MoveUp.png"),
                 Style = ModuleAction.ActionStyleEnum.Post,
                 LinkText = this.__ResStr("modMoveUpLink", "Move Up"),
                 MenuText = this.__ResStr("modMoveUpText", "Up"),
@@ -139,19 +140,19 @@ namespace YetaWF.Modules.ModuleEdit.Modules {
                 Location = ModuleAction.ActionLocationEnum.ModuleMenu,
             };
         }
-        public ModuleAction GetAction_MoveDown(PageDefinition page, ModuleDefinition mod, string pane) {
+        public async Task<ModuleAction> GetAction_MoveDownAsync(PageDefinition page, ModuleDefinition mod, string pane) {
             if (page == null) return null;
             if (pane == null) return null;
             if (!page.IsAuthorized_Edit()) return null;
             PageDefinition.ModuleList modList = page.ModuleDefinitions.GetModulesForPane(pane);
             int modIndex = modList.IndexInPane(mod, pane);
             return new ModuleAction(this) {
-                Url = YetaWFManager.UrlFor(typeof(ModuleControlModuleController), "MoveDown"),
+                Url = YetaWFManager.UrlFor(typeof(ModuleControlModuleController), nameof(ModuleControlModuleController.MoveDown)),
                 QueryArgs = new { PageGuid = page.PageGuid, ModuleGuid = mod.ModuleGuid, Pane = pane, ModuleIndex = modIndex },
                 QueryArgsDict = new QueryHelper(new QueryDictionary {
                     { Basics.ModuleGuid, this.ModuleGuid }, // the module authorizing this
                 }),
-                Image = "MoveDown.png",
+                Image = await CustomIconAsync("MoveDown.png"),
                 Style = ModuleAction.ActionStyleEnum.Post,
                 LinkText = this.__ResStr("modMoveDownLink", "Move Down"),
                 MenuText = this.__ResStr("modMoveDownText", "Down"),
@@ -164,19 +165,19 @@ namespace YetaWF.Modules.ModuleEdit.Modules {
             };
         }
 
-        public ModuleAction GetAction_MoveTop(PageDefinition page, ModuleDefinition mod, string pane) {
+        public async Task<ModuleAction> GetAction_MoveTopAsync(PageDefinition page, ModuleDefinition mod, string pane) {
             if (page == null) return null;
             if (pane == null) return null;
             if (!page.IsAuthorized_Edit()) return null;
             PageDefinition.ModuleList modList = page.ModuleDefinitions.GetModulesForPane(pane);
             int modIndex = modList.IndexInPane(mod, pane);
             return new ModuleAction(this) {
-                Url = YetaWFManager.UrlFor(typeof(ModuleControlModuleController), "MoveTop"),
+                Url = YetaWFManager.UrlFor(typeof(ModuleControlModuleController), nameof(ModuleControlModuleController.MoveTop)),
                 QueryArgs = new { PageGuid = page.PageGuid, ModuleGuid = mod.ModuleGuid, Pane = pane, ModuleIndex = modIndex },
                 QueryArgsDict = new QueryHelper(new QueryDictionary {
                     { Basics.ModuleGuid, this.ModuleGuid }, // the module authorizing this
                 }),
-                Image = "MoveTop.png",
+                Image = await CustomIconAsync("MoveTop.png"),
                 Style = ModuleAction.ActionStyleEnum.Post,
                 LinkText = this.__ResStr("modMoveTopLink", "Move To Top"),
                 MenuText = this.__ResStr("modMoveTopText", "Top"),
@@ -189,19 +190,19 @@ namespace YetaWF.Modules.ModuleEdit.Modules {
             };
         }
 
-        public ModuleAction GetAction_MoveBottom(PageDefinition page, ModuleDefinition mod, string pane) {
+        public async Task<ModuleAction> GetAction_MoveBottomAsync(PageDefinition page, ModuleDefinition mod, string pane) {
             if (page == null) return null;
             if (pane == null) return null;
             if (!page.IsAuthorized_Edit()) return null;
             PageDefinition.ModuleList modList = page.ModuleDefinitions.GetModulesForPane(pane);
             int modIndex = modList.IndexInPane(mod, pane);
             return new ModuleAction(this) {
-                Url = YetaWFManager.UrlFor(typeof(ModuleControlModuleController), "MoveBottom"),
+                Url = YetaWFManager.UrlFor(typeof(ModuleControlModuleController), nameof(ModuleControlModuleController.MoveBottom)),
                 QueryArgs = new { PageGuid = page.PageGuid, ModuleGuid = mod.ModuleGuid, Pane = pane, ModuleIndex = modIndex },
                 QueryArgsDict = new QueryHelper(new QueryDictionary {
                     { Basics.ModuleGuid, this.ModuleGuid }, // the module authorizing this
                 }),
-                Image = "MoveBottom.png",
+                Image = await CustomIconAsync("MoveBottom.png"),
                 Style = ModuleAction.ActionStyleEnum.Post,
                 LinkText = this.__ResStr("modMoveBottomLink", "Move To Bottom"),
                 MenuText = this.__ResStr("modMoveBottomText", "Bottom"),
@@ -225,7 +226,7 @@ namespace YetaWF.Modules.ModuleEdit.Modules {
             PageDefinition.ModuleList modList = page.ModuleDefinitions.GetModulesForPane(pane);
             int modIndex = modList.IndexInPane(moduleGuid, pane);
             return new ModuleAction(this) {
-                Url = YetaWFManager.UrlFor(typeof(ModuleControlModuleController), "Remove"),
+                Url = YetaWFManager.UrlFor(typeof(ModuleControlModuleController), nameof(ModuleControlModuleController.Remove)),
                 QueryArgs = new { PageGuid = page.PageGuid, ModuleGuid = moduleGuid, Pane = pane, ModuleIndex = modIndex },
                 QueryArgsDict = new QueryHelper(new QueryDictionary {
                     { Basics.ModuleGuid, this.ModuleGuid }, // the module authorizing this

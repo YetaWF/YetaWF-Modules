@@ -16,7 +16,7 @@ namespace YetaWF.Modules.ImageRepository.Support {
 
         public readonly static string FlashType = "YetaWF_Flash";
 
-        public Task InitializeApplicationStartupAsync(bool firstNode) {
+        public Task InitializeApplicationStartupAsync() {
             YetaWF.Core.Image.ImageSupport.AddHandler(FlashType, GetAsFileAsync: RetrieveFlashAsync);
             return Task.CompletedTask;
         }

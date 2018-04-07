@@ -4,6 +4,7 @@ using YetaWF.Core.Controllers;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Modules;
 using YetaWF.Modules.Search.DataProvider;
+using System.Threading.Tasks;
 #if MVC6
 using Microsoft.AspNetCore.Mvc;
 #else
@@ -28,7 +29,7 @@ namespace YetaWF.Modules.Search.Controllers {
         }
 
         [AllowGet]
-        public ActionResult SearchControl() {
+        public async Task<ActionResult> SearchControl() {
             if (Manager.EditMode)
                 return new EmptyResult();
             if (!SearchDataProvider.IsUsable)
@@ -40,8 +41,8 @@ namespace YetaWF.Modules.Search.Controllers {
 
             Model model = new Model() {
                 HighlightSearch = shown,
-                On = Module.GetAction_On(),
-                Off = Module.GetAction_Off(),
+                On = await Module.GetAction_OnAsync(),
+                Off = await Module.GetAction_OffAsync(),
             };
             return View(model);
         }

@@ -222,6 +222,9 @@ namespace YetaWF.Modules.PageEdit.Controllers {
             public EditablePage() {
                 ReferencedModules = new SerializableList<ModuleDefinition.ReferencedModule>();
             }
+            public async Task UpdateDataAsync(PageDefinition page) {
+                this.Panes = await page.GetPanesAsync();
+            }
 
             [UIHint("Hidden")]
             public Guid PageGuid { get; set; }
@@ -246,6 +249,9 @@ namespace YetaWF.Modules.PageEdit.Controllers {
             public void SetData(PageDefinition page) {
                 ObjectSupport.CopyData(page, this.Page);
             }
+            public async Task UpdateDataAsync(PageDefinition page) {
+                Page.Panes = await page.GetPanesAsync();
+            }
         }
 
         [AllowGet]
@@ -264,6 +270,7 @@ namespace YetaWF.Modules.PageEdit.Controllers {
                 PageGuid = pageGuid
             };
             model.SetData(page);
+            await model.UpdateDataAsync(page);
             Module.Title = this.__ResStr("modEditTitle", "Page {0}", page.Url);
             return View(model);
         }
@@ -279,6 +286,7 @@ namespace YetaWF.Modules.PageEdit.Controllers {
             if (!page.IsAuthorized_Edit())
                 return NotAuthorized();
 
+            await model.UpdateDataAsync(page);
             ObjectSupport.CopyData(page, model.Page, ReadOnly: true); // update read only properties in model in case there is an error
             if (!ModelState.IsValid)
                 return PartialView(model);

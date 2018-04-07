@@ -1,11 +1,14 @@
 ﻿/* Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/CurrencyConverter#License */
 
 using System;
+using System.Threading.Tasks;
 using YetaWF.Core.IO;
 using YetaWF.Core.Localize;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Modules;
+using YetaWF.Core.Packages;
 using YetaWF.Core.Serializers;
+using YetaWF.Core.Skins;
 using YetaWF.DataProvider;
 
 namespace YetaWF.Modules.CurrencyConverter.Modules {
@@ -42,12 +45,12 @@ namespace YetaWF.Modules.CurrencyConverter.Modules {
 
         public override SerializableList<AllowedRole> DefaultAllowedRoles { get { return AdministratorLevel_DefaultAllowedRoles; } }
 
-        public ModuleAction GetAction_CurrencyConverter(string url, decimal amount = 0.0M) {
+        public async Task<ModuleAction> GetAction_CurrencyConverterAsync(string url, decimal amount = 0.0M) {
             if (amount == 0.0M) amount = DefaultAmount;
             return new ModuleAction(this) {
                 Url = string.IsNullOrWhiteSpace(url) ? ModulePermanentUrl : url,
                 QueryArgs = new { Amount = amount.ToString("0.00") },
-                Image = "CurrencyConverter.png",
+                Image = await CustomIconAsync("CurrencyConverter.png"),
                 LinkText = this.__ResStr("editLink", "Currency Converter"),
                 MenuText = this.__ResStr("editText", "Currency Converter"),
                 Tooltip = this.__ResStr("editTooltip", "Get currency conversion information"),

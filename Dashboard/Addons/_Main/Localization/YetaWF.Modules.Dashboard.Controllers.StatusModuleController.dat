@@ -97,6 +97,18 @@
                           </Properties>
                         </Object>
                       </Value>
+                      <Value>
+                        <Object Type="YetaWF.Core.Localize.LocalizationData+PropertyData" Assembly="YetaWF.Core">
+                          <Properties>
+                            <Name Value="MultiInstance" />
+                            <Caption Value="WebFarm/WebGarden Enabled" />
+                            <Description Value="Defines whether webfarm/webgarden support is enabled using shared caching" />
+                            <HelpLink />
+                            <TextAbove />
+                            <TextBelow />
+                          </Properties>
+                        </Object>
+                      </Value>
                     </List>
                   </Object>
                 </Properties>

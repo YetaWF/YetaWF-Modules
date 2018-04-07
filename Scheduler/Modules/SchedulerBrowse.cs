@@ -104,12 +104,12 @@ namespace YetaWF.Modules.Scheduler.Modules {
                 ConfirmationText = this.__ResStr("removeConfirm", "Are you sure you want to remove scheduler item \"{0}\"?", name),
             };
         }
-        public ModuleAction GetAction_RunItem(string name) {
+        public async Task<ModuleAction> GetAction_RunItemAsync(string name) {
             return new ModuleAction(this) {
-                Url = YetaWFManager.UrlFor(typeof(SchedulerBrowseModuleController), "RunItem"),
+                Url = YetaWFManager.UrlFor(typeof(SchedulerBrowseModuleController), nameof(SchedulerBrowseModuleController.RunItem)),
                 QueryArgs = new { Name = name },
                 NeedsModuleContext = true,
-                Image = "RunItem.png",
+                Image = await CustomIconAsync("RunItem.png"),
                 Style = ModuleAction.ActionStyleEnum.Post,
                 LinkText = this.__ResStr("runLink", "Run Item"),
                 MenuText = this.__ResStr("runMenu", "Run Item"),
@@ -121,16 +121,16 @@ namespace YetaWF.Modules.Scheduler.Modules {
                 ConfirmationText = this.__ResStr("runConfirm", "Are you sure you want to run scheduler item \"{0}\"?", name),
             };
         }
-        public ModuleAction GetAction_SchedulerToggle() {
+        public async Task<ModuleAction> GetAction_SchedulerToggleAsync() {
             bool running;
             using (SchedulerDataProvider dataProvider = new SchedulerDataProvider()) {
                 running = dataProvider.GetRunning();
             }
             return new ModuleAction(this) {
-                Url = YetaWFManager.UrlFor(typeof(SchedulerBrowseModuleController), "SchedulerToggle"),
+                Url = YetaWFManager.UrlFor(typeof(SchedulerBrowseModuleController), nameof(SchedulerBrowseModuleController.SchedulerToggle)),
                 QueryArgs = new { Start = !running },
                 NeedsModuleContext = true,
-                Image = "SchedulerToggle.png",
+                Image = await CustomIconAsync("SchedulerToggle.png"),
                 Style = ModuleAction.ActionStyleEnum.Post,
                 LinkText = running ? this.__ResStr("stopLink", "Stop Scheduler") : this.__ResStr("startLink", "Start Scheduler"),
                 MenuText = running ? this.__ResStr("stopMenu", "Stop Scheduler") : this.__ResStr("startMenu", "Start Scheduler"),
@@ -139,7 +139,7 @@ namespace YetaWF.Modules.Scheduler.Modules {
                 Category = ModuleAction.ActionCategoryEnum.Significant,
                 Mode = ModuleAction.ActionModeEnum.Any,
                 Location = ModuleAction.ActionLocationEnum.ModuleLinks,
-                ConfirmationText =  running ?
+                ConfirmationText = running ?
                     this.__ResStr("toggleConfirmStart", "Are you sure you want to stop the scheduler?") :
                     this.__ResStr("toggleConfirmStop", "Are you sure you want to start the scheduler?"),
             };

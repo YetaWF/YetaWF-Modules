@@ -34,9 +34,9 @@ namespace YetaWF.Modules.Feedback.Support {
 
             subject = this.__ResStr("feedbackSubject2", "Feedback \"{0}\" from {1} - {2}", subject, fromEmail, Manager.CurrentSite.SiteDomain);
             if (string.IsNullOrWhiteSpace(toEmail)) {
-                sendEmail.PrepareEmailMessage(ccEmail, subject, sendEmail.GetEmailFile(AreaRegistration.CurrentPackage, "Feedback Email.txt"), parameters: parms);
+                await sendEmail.PrepareEmailMessageAsync(ccEmail, subject, await sendEmail.GetEmailFileAsync(AreaRegistration.CurrentPackage, "Feedback Email.txt"), parameters: parms);
             } else {
-                sendEmail.PrepareEmailMessage(toEmail, subject, sendEmail.GetEmailFile(AreaRegistration.CurrentPackage, "Feedback Email.txt"), parameters: parms);
+                await sendEmail.PrepareEmailMessageAsync(toEmail, subject, await sendEmail.GetEmailFileAsync(AreaRegistration.CurrentPackage, "Feedback Email.txt"), parameters: parms);
                 if (!string.IsNullOrWhiteSpace(ccEmail))
                     sendEmail.AddBcc(ccEmail);
             }

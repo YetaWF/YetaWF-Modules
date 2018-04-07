@@ -1,6 +1,7 @@
 /* Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Panels#License */
 
 using System;
+using System.Threading.Tasks;
 using YetaWF.Core.IO;
 using YetaWF.Core.Localize;
 using YetaWF.Core.Models.Attributes;
@@ -38,8 +39,9 @@ namespace YetaWF.Modules.Panels.Modules {
         [Copy] // not shown in property page
         public PanelInfo PanelInfo { get; set; }
 
-        public override void ModuleSaving() {
+        public override Task ModuleSavingAsync() {
             PanelInfo.Saving("PanelInfo", ModuleGuid); // update internal information
+            return Task.CompletedTask;
         }
 
         public ModuleAction GetAction_Display(string url) {

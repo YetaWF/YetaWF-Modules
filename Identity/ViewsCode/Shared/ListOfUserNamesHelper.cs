@@ -112,9 +112,9 @@ namespace YetaWF.Modules.Identity.Views.Shared {
 #endif
         }
 #if MVC6
-        public static HtmlString RenderListOfUserNamesAddNew<TModel>(this IHtmlHelper<TModel> htmlHelper, string name, List<int> model)
+        public static async Task<HtmlString> RenderListOfUserNamesAddNewAsync<TModel>(this IHtmlHelper<TModel> htmlHelper, string name, List<int> model)
 #else
-        public static HtmlString RenderListOfUserNamesAddNew<TModel>(this HtmlHelper<TModel> htmlHelper, string name, List<int> model)
+        public static async Task<HtmlString> RenderListOfUserNamesAddNewAsync<TModel>(this HtmlHelper<TModel> htmlHelper, string name, List<int> model)
 #endif
         {
             HtmlBuilder hb = new HtmlBuilder();
@@ -123,7 +123,7 @@ namespace YetaWF.Modules.Identity.Views.Shared {
             NewModel newModel = new NewModel();
 
             hb.Append("<div class='t_newvalue'>");
-            hb.Append(htmlHelper.ExtLabelFor(m => newModel.NewValue, "NewValue"));
+            hb.Append(await htmlHelper.ExtLabelForAsync(m => newModel.NewValue, "NewValue"));
             hb.Append(htmlHelper.EditorFor(m => newModel.NewValue, "Text80", "NewValue"));
             hb.Append("<input name='btnAdd' type='button' value='Add' data-ajaxurl='{0}' />", YetaWFManager.JserEncode(ajaxUrl));
             hb.Append("</div>");

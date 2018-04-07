@@ -10,6 +10,7 @@ using YetaWF.Core.Pages;
 using YetaWF.Core.Support;
 using YetaWF.Core.Views.Shared;
 using System.Threading.Tasks;
+using YetaWF.Core.IO;
 #if MVC6
 using Microsoft.AspNetCore.Html;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -31,7 +32,7 @@ namespace YetaWF.Modules.SlideShow.Views.Shared {
         public static async Task<HtmlString> RenderArrowStyleAsync(this HtmlHelper htmlHelper, string name, string selection, object HtmlAttributes = null)
 #endif
         {
-            List<SelectionItem<string>> list = (from a in Arrows select new SelectionItem<string>() {
+            List<SelectionItem<string>> list = (from a in await GetArrowsAsync() select new SelectionItem<string>() {
                 Text = a.Name,
                 Value = a.Value,
             }).ToList();
@@ -41,21 +42,19 @@ namespace YetaWF.Modules.SlideShow.Views.Shared {
             public string Name { get; set; }
             public string Value { get; set; }
         }
-        public static List<Arrow> Arrows {
-            get {
-                List<Arrow> list = new List<Arrow>();
-                Package package = YetaWF.Modules.SlideShow.Controllers.AreaRegistration.CurrentPackage;
-                string rootUrl = VersionManager.GetAddOnPackageUrl(package.Domain, package.Product);
-                string[] files = Directory.GetFiles(YetaWFManager.UrlToPhysical(rootUrl + "jssor/skins/arrow"), "*.css");
-                foreach (var file in files) {
-                    string name = Path.GetFileNameWithoutExtension(file);
-                    list.Add(new Arrow {
-                        Name = string.Format("Arrow {0}", name.Substring(1)),
-                        Value = name,
-                    });
-                }
-                return list;
+        public static async Task<List<Arrow>> GetArrowsAsync() {
+            List<Arrow> list = new List<Arrow>();
+            Package package = YetaWF.Modules.SlideShow.Controllers.AreaRegistration.CurrentPackage;
+            string rootUrl = VersionManager.GetAddOnPackageUrl(package.Domain, package.Product);
+            List<string> files = await FileSystem.FileSystemProvider.GetFilesAsync(YetaWFManager.UrlToPhysical(rootUrl + "jssor/skins/arrow"), "*.css");
+            foreach (var file in files) {
+                string name = Path.GetFileNameWithoutExtension(file);
+                list.Add(new Arrow {
+                    Name = string.Format("Arrow {0}", name.Substring(1)),
+                    Value = name,
+                });
             }
+            return list;
         }
     }
 }

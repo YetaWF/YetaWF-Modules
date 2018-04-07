@@ -33,16 +33,14 @@ namespace YetaWF.Modules.Messenger.DataProvider {
         }
     }
 
-    public class ConnectionDataProvider : DataProviderImpl, IInstallableModel, IInitializeApplicationStartup {
+    public class ConnectionDataProvider : DataProviderImpl, IInstallableModel, IInitializeApplicationStartupFirstNodeOnly {
 
         // Startup
 
-        public async Task InitializeApplicationStartupAsync(bool firstNode) {
-            if (firstNode) {
-                // clear all connections from db
-                // removes all sites
-                await RemoveItemsAsync(null);
-            }
+        public async Task InitializeFirstNodeStartupAsync() {
+            // clear all connections from db
+            // removes all sites
+            await RemoveItemsAsync(null);
         }
 
         // IMPLEMENTATION
@@ -91,7 +89,7 @@ namespace YetaWF.Modules.Messenger.DataProvider {
         }
 
         public async Task UpdateEntryAsync(string name, string ipAddress, string connectionId) {
-            using (await _lockObject.LockAsync()) {
+            using (await _lockObject.LockAsync()) {//$$
                 try {
                     Connection conn = await GetItemAsync(connectionId);
                     if (conn == null) {

@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using YetaWF.Core;
+using YetaWF.Core.Audit;
 using YetaWF.Core.DataProvider;
 using YetaWF.Core.Identity;
 using YetaWF.Core.IO;
@@ -18,33 +19,45 @@ namespace YetaWF.Modules.Pages.DataProvider {
 
     public class PageDefinitionDataProviderStartup : IInitializeApplicationStartup {
 
-        public Task InitializeApplicationStartupAsync(bool firstNode) {
+        public Task InitializeApplicationStartupAsync() {
             PageDefinition.LoadPageDefinitionAsync = LoadPageDefinitionAsync;
             PageDefinition.LoadPageDefinitionByUrlAsync = LoadPageDefinitionAsync;
             PageDefinition.CreatePageDefinitionAsync = CreatePageDefinitionAsync;
             PageDefinition.SavePageDefinitionAsync = SavePageDefinitionAsync;
             PageDefinition.RemovePageDefinitionAsync = RemovePageDefinitionAsync;
-            PageDefinition.GetDesignedPages = GetDesignedPages;
-            PageDefinition.GetDesignedGuids = GetDesignedGuids;
-            PageDefinition.GetDesignedUrls = GetDesignedUrls;
+            PageDefinition.GetDesignedPagesAsync = GetDesignedPagesAsync;
+            PageDefinition.GetDesignedGuidsAsync = GetDesignedGuidsAsync;
+            PageDefinition.GetDesignedUrlsAsync = GetDesignedUrlsAsync;
             PageDefinition.GetPagesFromModuleAsync = GetPagesFromModuleAsync;
             return Task.CompletedTask;
         }
 
-        private List<PageDefinition.DesignedPage> GetDesignedPages() {
+        private async Task<List<PageDefinition.DesignedPage>> GetDesignedPagesAsync() {
             using (PageDefinitionDataProvider pageDP = new PageDefinitionDataProvider()) {
-                return pageDP.DesignedPages;
+                using (ILockObject lockObject = await pageDP.LockAsync()) {
+                    List<PageDefinition.DesignedPage> pages = (from p in await pageDP.GetDesignedPagesWithoutLockAsync() select new PageDefinition.DesignedPage { Url = p.Value.Url, PageGuid = p.Value.PageGuid }).ToList();
+                    await lockObject.UnlockAsync();
+                    return pages;
+                }
             }
         }
 
-        private List<string> GetDesignedUrls() {
+        private async Task<List<string>> GetDesignedUrlsAsync() {
             using (PageDefinitionDataProvider pageDP = new PageDefinitionDataProvider()) {
-                return pageDP.DesignedUrls;
+                using (ILockObject lockObject = await pageDP.LockAsync()) {
+                    List<string> pages = (from p in await pageDP.GetDesignedPagesWithoutLockAsync() select p.Value.Url).ToList();
+                    await lockObject.UnlockAsync();
+                    return pages;
+                }
             }
         }
-        private List<Guid> GetDesignedGuids() {
+        private async Task<List<Guid>> GetDesignedGuidsAsync() {
             using (PageDefinitionDataProvider pageDP = new PageDefinitionDataProvider()) {
-                return pageDP.DesignedGuids;
+                using (ILockObject lockObject = await pageDP.LockAsync()) {
+                    List<Guid> pages = (from p in await pageDP.GetDesignedPagesWithoutLockAsync() select p.Value.PageGuid).ToList();
+                    await lockObject.UnlockAsync();
+                    return pages;
+                }
             }
         }
         private async Task<bool> RemovePageDefinitionAsync(Guid pageGuid) {
@@ -84,13 +97,11 @@ namespace YetaWF.Modules.Pages.DataProvider {
     public class DesignedPagesDictionaryByUrl : SerializableDictionary<string, PageDefinition.DesignedPage> { }
 
     interface IPageDefinitionIOMode {
-        DesignedPagesDictionaryByUrl GetDesignedPages();
+        Task<DesignedPagesDictionaryByUrl> GetDesignedPagesAsync();
         Task<List<PageDefinition>> GetPagesFromModuleAsync(Guid moduleGuid);
     }
-    
-    public class PageDefinitionDataProvider : DataProviderImpl, IInstallableModel {
 
-        private static AsyncLock _lockObject = new AsyncLock();
+    public class PageDefinitionDataProvider : DataProviderImpl, IInstallableModel {
 
         // IMPLEMENTATION
         // IMPLEMENTATION
@@ -112,27 +123,34 @@ namespace YetaWF.Modules.Pages.DataProvider {
         // API PAGE
 
         public async Task<PageDefinition> CreatePageDefinitionAsync(string url) {
-            using (await _lockObject.LockAsync()) {
-                PageDefinition page = new PageDefinition();
-                page.AllowedRoles.Add(
-                    new PageDefinition.AllowedRole { RoleId = Resource.ResourceAccess.GetAdministratorRoleId(), View = PageDefinition.AllowedEnum.Yes, Edit = PageDefinition.AllowedEnum.Yes, Remove = PageDefinition.AllowedEnum.Yes, }
-                );
-                page.Url = url.Trim();
-                page.Temporary = false;
-                return await CreatePageDefinitionAsync(page);
-            }
+            PageDefinition page = new PageDefinition();
+            page.AllowedRoles.Add(
+                new PageDefinition.AllowedRole { RoleId = Resource.ResourceAccess.GetAdministratorRoleId(), View = PageDefinition.AllowedEnum.Yes, Edit = PageDefinition.AllowedEnum.Yes, Remove = PageDefinition.AllowedEnum.Yes, }
+            );
+            page.Url = url.Trim();
+            page.Temporary = false;
+            return await CreatePageDefinitionAsync(page);
         }
         private async Task<PageDefinition> CreatePageDefinitionAsync(PageDefinition page) {
-            using (await _lockObject.LockAsync()) {
+            using (ILockObject lockObject = await LockAsync()) {
                 PageDefinition.DesignedPage desPage = new PageDefinition.DesignedPage() { PageGuid = page.PageGuid, Url = page.Url, };
-                if (DesignedPagesByUrl.ContainsKey(desPage.Url.ToLower()))
+                DesignedPagesDictionaryByUrl designedPagesByUrl = await GetDesignedPagesWithoutLockAsync();
+                if (designedPagesByUrl.ContainsKey(desPage.Url.ToLower()))
                     throw new Error(this.__ResStr("pageUrlErr", "A page with Url {0} already exists.", desPage.Url));
                 if (!await DataProvider.AddAsync(page))
                     throw new Error(this.__ResStr("pageGuidErr", "A page with Guid {0} already exists.", desPage.PageGuid));
-                DesignedPagesByUrl.Add(page.Url.ToLower(), desPage);
-                return page;
+                await AddDesignedPageAsync(designedPagesByUrl, page.Url.ToLower(), desPage);
+                await lockObject.UnlockAsync();
             }
+            await Auditing.AddAuditAsync($"{nameof(PageDefinitionDataProvider)}.{nameof(CreatePageDefinitionAsync)}", page.Url, page.PageGuid,
+                "Create Page",
+                DataBefore: null,
+                DataAfter: page,
+                ExpensiveMultiInstance: true
+            );
+            return page;
         }
+
         public async Task<PageDefinition> LoadPageDefinitionAsync(Guid key) {
             PageDefinition page = await DataProvider.GetAsync(key);
             if (page == null)
@@ -143,7 +161,7 @@ namespace YetaWF.Modules.Pages.DataProvider {
         public async Task<PageDefinition> LoadPageDefinitionAsync(string url) {
             Guid guid = GetGuidFromUrl(url);
             if (guid == Guid.Empty)
-                guid = FindPage(url);
+                guid = await FindPageAsync(url);
             if (guid == Guid.Empty)
                 return null;
             return await LoadPageDefinitionAsync(guid);
@@ -162,17 +180,19 @@ namespace YetaWF.Modules.Pages.DataProvider {
             if (page.Temporary)
                 throw new InternalError("Page {0} is a temporary page and can't be saved", page.PageGuid);
 
-            page.Updated = DateTime.UtcNow;
-            CleanupUsersAndRoles(page);
-            SaveImages(page.PageGuid, page);
+            PageDefinition oldPage = null;
 
-            using (await _lockObject.LockAsync()) {
+            using (ILockObject lockObject = await LockAsync()) {
 
-                PageDefinition oldPage = await LoadPageDefinitionAsync(page.PageGuid);
+                page.Updated = DateTime.UtcNow;
+                CleanupUsersAndRoles(page);
+                await SaveImagesAsync(page.PageGuid, page);
+
+                oldPage = await LoadPageDefinitionAsync(page.PageGuid);
                 if (oldPage == null)
                     throw new Error(this.__ResStr("pageDeleted", "Page '{0}' has been deleted and can no longer be updated."), page.Url);
 
-                Guid newPage = FindPage(page.Url);
+                Guid newPage = await FindPageAsync(page.Url);
                 if (newPage != Guid.Empty && newPage != page.PageGuid)
                     throw new Error(this.__ResStr("pageRename", "A page with Url '{0}' already exists."), page.Url);
 
@@ -186,15 +206,23 @@ namespace YetaWF.Modules.Pages.DataProvider {
                         throw new InternalError("Unexpected UpdateStatusEnum.RecordDeleted in SavePageDefinition");
                 }
 
-                Manager.StaticPageManager.RemovePage(page.Url);
+                await Manager.StaticPageManager.RemovePageAsync(page.Url);
 
                 if (newPage == Guid.Empty) {
-                    DesignedPagesByUrl.Remove(oldPage.Url.ToLower());
+                    DesignedPagesDictionaryByUrl designedPagesByUrl = await GetDesignedPagesWithoutLockAsync();
+                    designedPagesByUrl.Remove(oldPage.Url.ToLower());
 
                     PageDefinition.DesignedPage desPage = new PageDefinition.DesignedPage() { PageGuid = page.PageGuid, Url = page.Url, };
-                    DesignedPagesByUrl.Add(page.Url.ToLower(), desPage);
+                    await AddDesignedPageAsync(designedPagesByUrl, page.Url, desPage);
                 }
+                await lockObject.UnlockAsync();
             }
+            await Auditing.AddAuditAsync($"{nameof(PageDefinitionDataProvider)}.{nameof(SavePageDefinitionAsync)}", oldPage.Url, oldPage.PageGuid,
+                "Save Page",
+                DataBefore: oldPage,
+                DataAfter: page,
+                ExpensiveMultiInstance: true
+            );
         }
         private void CleanupUsersAndRoles(PageDefinition page) {
             // remove superuser from allowed roles as he/she's in there by default
@@ -207,16 +235,26 @@ namespace YetaWF.Modules.Pages.DataProvider {
             page.AllowedUsers = new SerializableList<PageDefinition.AllowedUser>((from u in page.AllowedUsers where u.UserId != superuserId && !u.IsEmpty() select u).ToList());
         }
         public async Task<bool> RemovePageDefinitionAsync(Guid pageGuid) {
-            using (await _lockObject.LockAsync()) {
-                PageDefinition page = await LoadPageDefinitionAsync(pageGuid);
+            PageDefinition page;
+            using (ILockObject lockObject = await LockAsync()) {
+                page = await LoadPageDefinitionAsync(pageGuid);
                 if (page == null)
                     return false;
-                Manager.StaticPageManager.RemovePage(page.Url);
+                await Manager.StaticPageManager.RemovePageAsync(page.Url);
                 await DataProvider.RemoveAsync(pageGuid);
-                DesignedPagesByUrl.Remove(page.Url.ToLower());
-                return true;
+                DesignedPagesDictionaryByUrl designedPagesUrl = await GetDesignedPagesWithoutLockAsync();
+                await RemoveDesignedPageAsync(designedPagesUrl, page.Url);
+                await lockObject.UnlockAsync();
             }
+            await Auditing.AddAuditAsync($"{nameof(PageDefinitionDataProvider)}.{nameof(RemovePageDefinitionAsync)}", page.Url, page.PageGuid,
+                "Remove Page",
+                DataBefore: page,
+                DataAfter: null,
+                ExpensiveMultiInstance: true
+            );
+            return true;
         }
+
         public async Task<DataProviderGetRecords<PageDefinition>> GetItemsAsync(int skip, int take, List<DataProviderSortInfo> sort, List<DataProviderFilterInfo> filters) {
             DataProviderGetRecords<PageDefinition> list = await DataProvider.GetRecordsAsync(skip, take, sort, filters);
             foreach (PageDefinition page in list.Data)
@@ -228,54 +266,49 @@ namespace YetaWF.Modules.Pages.DataProvider {
         // DESIGNED PAGES
         // DESIGNED PAGES
 
-        // Designed pages are site specific and DesignedPagesByUrl is a permanent site-specific object
+        // Designed pages are site specific and are stored as a static site-specific object
 
-        public List<PageDefinition.DesignedPage> DesignedPages {
-            get {
-                return (from p in DesignedPagesByUrl select new PageDefinition.DesignedPage { Url = p.Value.Url, PageGuid = p.Value.PageGuid }).ToList();
-            }
-        }
-        public List<Guid> DesignedGuids {
-            get {
-                return (from p in DesignedPagesByUrl select p.Value.PageGuid).ToList();
-            }
-        }
-        public List<string> DesignedUrls {
-            get {
-                return (from p in DesignedPagesByUrl select p.Value.Url).ToList();
-            }
-        }
+        private string DESIGNEDPAGESKEY = $"__DesignedPages__{YetaWFManager.Manager.CurrentSite.Identity}";
 
-        protected DesignedPagesDictionaryByUrl DesignedPagesByUrl {
-            get {
-                return GetDesignedPages();
+        internal async Task<DesignedPagesDictionaryByUrl> GetDesignedPagesWithoutLockAsync() {
+            if (!await DataProvider.IsInstalledAsync())
+                return new DesignedPagesDictionaryByUrl();// don't save this, it's not permanent
+            using (ICacheDataProvider staticCacheDP = YetaWF.Core.IO.Caching.GetStaticCacheProvider()) {
+                DesignedPagesDictionaryByUrl data;
+                GetObjectInfo<DesignedPagesDictionaryByUrl> info = await staticCacheDP.GetAsync<DesignedPagesDictionaryByUrl>(DESIGNEDPAGESKEY);
+                if (!info.Success) {
+                    data = await DataProviderIOMode.GetDesignedPagesAsync();
+                    await staticCacheDP.AddAsync(DESIGNEDPAGESKEY, data);
+                } else
+                    data = info.Data;
+                return data;
             }
         }
-        private DesignedPagesDictionaryByUrl GetDesignedPages() {
-            DesignedPagesDictionaryByUrl byUrl;
-            if (PermanentManager.TryGetObject<DesignedPagesDictionaryByUrl>(out byUrl))
-                return byUrl;
-
-            using (_lockObject.Lock()) {
-                // See if we already have it as a permanent object
-                if (PermanentManager.TryGetObject<DesignedPagesDictionaryByUrl>(out byUrl))
-                    return byUrl;
-                // Load the designed pages
-                if (!DataProvider.IsInstalledAsync().Result) // sync OK because this code is only executed once during startup
-                    return new DesignedPagesDictionaryByUrl();// don't save this, it's not permanent
-                byUrl = DataProviderIOMode.GetDesignedPages();
-                PermanentManager.AddObject<DesignedPagesDictionaryByUrl>(byUrl);
+        // Requires an active static lock
+        private async Task AddDesignedPageAsync(DesignedPagesDictionaryByUrl designedPagesByUrl, string url, PageDefinition.DesignedPage designedPage) {
+            designedPagesByUrl.Add(url, designedPage);
+            using (ICacheDataProvider staticCacheDP = YetaWF.Core.IO.Caching.GetStaticCacheProvider()) {
+                await staticCacheDP.AddAsync(DESIGNEDPAGESKEY, designedPagesByUrl);
             }
-            return byUrl;
         }
-
+        // Requires an active static lock
+        private async Task RemoveDesignedPageAsync(DesignedPagesDictionaryByUrl designedPagesByUrl, string url) {
+            designedPagesByUrl.Remove(url.ToLower());
+            using (ICacheDataProvider staticCacheDP = YetaWF.Core.IO.Caching.GetStaticCacheProvider()) {
+                await staticCacheDP.AddAsync(DESIGNEDPAGESKEY, designedPagesByUrl);
+            }
+        }
+        internal async Task<ILockObject> LockAsync() {
+            return await YetaWF.Core.IO.Caching.LockProvider.LockResourceAsync(DESIGNEDPAGESKEY);
+        }
         /// <summary>
         /// Given a url returns a designed page guid.
         /// Searching page by guid is slow - use Url instead
         /// </summary>
-        protected Guid FindPage(string url) {
+        protected async Task<Guid> FindPageAsync(string url) {
             PageDefinition.DesignedPage designedPage;
-            if (DesignedPagesByUrl.TryGetValue(url.ToLower(), out designedPage))
+            DesignedPagesDictionaryByUrl designedPagesByUrl = await GetDesignedPagesWithoutLockAsync();
+            if (designedPagesByUrl.TryGetValue(url.ToLower(), out designedPage))
                 return designedPage.PageGuid;
             return Guid.Empty;
         }
@@ -293,12 +326,18 @@ namespace YetaWF.Modules.Pages.DataProvider {
         // IINSTALLABLEMODEL
 
         public new async Task<bool> InstallModelAsync(List<string> errorList) {
-            PermanentManager.RemoveObject<DesignedPagesDictionaryByUrl>();
+            if (YetaWF.Core.Support.Startup.MultiInstance) throw new InternalError("Installing new models is not possible when distributed caching is enabled");
+            using (ICacheDataProvider staticCacheDP = YetaWF.Core.IO.Caching.GetStaticCacheProvider()) {
+                await staticCacheDP.RemoveAsync<DesignedPagesDictionaryByUrl>(DESIGNEDPAGESKEY);
+            }
             return await DataProvider.InstallModelAsync(errorList);
         }
         public new async Task<bool> UninstallModelAsync(List<string> errorList) {
+            if (YetaWF.Core.Support.Startup.MultiInstance) throw new InternalError("Uninstalling models is not possible when distributed caching is enabled");
             bool status = await DataProvider.UninstallModelAsync(errorList);
-            PermanentManager.RemoveObject<DesignedPagesDictionaryByUrl>();
+            using (ICacheDataProvider staticCacheDP = YetaWF.Core.IO.Caching.GetStaticCacheProvider()) {
+                await staticCacheDP.RemoveAsync<DesignedPagesDictionaryByUrl>(DESIGNEDPAGESKEY);
+            }
             return status;
         }
     }

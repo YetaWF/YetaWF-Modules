@@ -51,12 +51,12 @@ namespace YetaWF.Modules.Identity.Modules {
             return menuList;
         }
 
-        public ModuleAction GetAction_Login(string url = null, bool Force = false, bool CloseOnLogin = false) {
+        public async Task<ModuleAction> GetAction_LoginAsync(string url = null, bool Force = false, bool CloseOnLogin = false) {
             if (!Force && Manager.HaveUser) return null; // the login action should not be shown if a user is logged on
             return new ModuleAction(this) {
                 Url = string.IsNullOrWhiteSpace(url) ? ModulePermanentUrl : url,
                 QueryArgs = CloseOnLogin ? new { CloseOnLogin = CloseOnLogin } : null,
-                Image="Login.png",
+                Image = await CustomIconAsync("Login.png"),
                 LinkText = this.__ResStr("loginLink", "Login using your existing account"),
                 MenuText = this.__ResStr("loginText", "Login"),
                 Tooltip = this.__ResStr("loginTooltip", "If you have an account on this site, click to log in"),
@@ -74,9 +74,9 @@ namespace YetaWF.Modules.Identity.Modules {
             if (!await Resource.ResourceAccess.IsResourceAuthorizedAsync(Info.Resource_AllowUserLogon))
                 return null;
             return new ModuleAction(this) {
-                Url = YetaWFManager.UrlFor(typeof(LoginDirectController), "LoginAs"),
+                Url = YetaWFManager.UrlFor(typeof(LoginDirectController), nameof(LoginDirectController.LoginAs)),
                 QueryArgs = new { UserId = userId },
-                Image = "LoginAs.png",
+                Image = await CustomIconAsync("LoginAs.png"),
                 LinkText = this.__ResStr("loginAsLink", "Login a user {0}", userName),
                 MenuText = this.__ResStr("loginAsText", "not used"),
                 Tooltip = this.__ResStr("loginAsTooltip", "Log in as user {0}", userName),

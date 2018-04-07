@@ -10,6 +10,7 @@ using YetaWF.Core.Pages;
 using YetaWF.Core.Support;
 using YetaWF.Core.Views.Shared;
 using System.Threading.Tasks;
+using YetaWF.Core.IO;
 #if MVC6
 using Microsoft.AspNetCore.Html;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -32,7 +33,7 @@ namespace YetaWF.Modules.SlideShow.Views.Shared {
 #endif
         {
 
-            List<SelectionItem<string>> list = (from a in Thumbnails select new SelectionItem<string>() {
+            List<SelectionItem<string>> list = (from a in await GetThumbnailsAsync() select new SelectionItem<string>() {
                 Text = a.Name,
                 Value = a.Value,
             }).ToList();
@@ -42,21 +43,19 @@ namespace YetaWF.Modules.SlideShow.Views.Shared {
             public string Name { get; set; }
             public string Value { get; set; }
         }
-        public static List<Thumbnail> Thumbnails {
-            get {
-                List<Thumbnail> list = new List<Thumbnail>();
-                Package package = YetaWF.Modules.SlideShow.Controllers.AreaRegistration.CurrentPackage;
-                string rootUrl = VersionManager.GetAddOnPackageUrl(package.Domain, package.Product);
-                string[] files = Directory.GetFiles(YetaWFManager.UrlToPhysical(rootUrl + "jssor/skins/thumb"), "*.css");
-                foreach (var file in files) {
-                    string name = Path.GetFileNameWithoutExtension(file);
-                    list.Add(new Thumbnail {
-                        Name = string.Format("Thumbnail {0}", name.Substring(1)),
-                        Value = name,
-                    });
-                }
-                return list;
+        private static async Task<List<Thumbnail>> GetThumbnailsAsync() {
+            List<Thumbnail> list = new List<Thumbnail>();
+            Package package = YetaWF.Modules.SlideShow.Controllers.AreaRegistration.CurrentPackage;
+            string rootUrl = VersionManager.GetAddOnPackageUrl(package.Domain, package.Product);
+            List<string> files = await FileSystem.FileSystemProvider.GetFilesAsync(YetaWFManager.UrlToPhysical(rootUrl + "jssor/skins/thumb"), "*.css");
+            foreach (var file in files) {
+                string name = Path.GetFileNameWithoutExtension(file);
+                list.Add(new Thumbnail {
+                    Name = string.Format("Thumbnail {0}", name.Substring(1)),
+                    Value = name,
+                });
             }
+            return list;
         }
     }
 }

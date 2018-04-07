@@ -12,6 +12,7 @@ using YetaWF.Core.Scheduler;
 using YetaWF.Core.Support;
 using YetaWF.Modules.Blog.DataProvider;
 using System.Threading.Tasks;
+using YetaWF.Core.IO;
 #if MVC6
 using System.Net;
 #else
@@ -58,10 +59,10 @@ namespace YetaWF.Modules.Blog.Scheduler {
         /// </summary>
         public async Task CreateAsync(bool slow = false) {
             string file = GetTempFile();
-            File.Delete(file);
+            await FileSystem.FileSystemProvider.DeleteFileAsync(file);
 
             // header
-            File.AppendAllText(file,
+            await FileSystem.FileSystemProvider.AppendAllTextAsync(file,
                 "<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\r\n" +
                 "<urlset xsi:schemaLocation=\"http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns =\"http://www.sitemaps.org/schemas/sitemap/0.9\" xmlns:news=\"http://www.google.com/schemas/sitemap-news/0.9\" >\r\n"
             );
@@ -80,13 +81,13 @@ namespace YetaWF.Modules.Blog.Scheduler {
                 }
             }
             // end
-            File.AppendAllText(file,
+            await FileSystem.FileSystemProvider.AppendAllTextAsync(file,
                 "</urlset>\r\n"
             );
 
             string finalFile = GetFile();
-            File.Delete(finalFile);
-            File.Move(file, finalFile);
+            await FileSystem.FileSystemProvider.DeleteFileAsync(finalFile);
+            await FileSystem.FileSystemProvider.MoveFileAsync(file, finalFile);
         }
 
         private async Task AddNewsSiteMapPageAsync(PageDefinition page, string url, DateTime? dateUpdated, PageDefinition.SiteMapPriorityEnum priority, PageDefinition.ChangeFrequencyEnum changeFrequency, object obj) {
@@ -124,7 +125,7 @@ namespace YetaWF.Modules.Blog.Scheduler {
                 blogCategory = AntiXssEncoder.XmlEncode((await blogEntry.GetCategoryAsync())[lang.Id]);
                 langId = AntiXssEncoder.XmlEncode(lang.Id);
 #endif
-                File.AppendAllText(file, string.Format(
+                await FileSystem.FileSystemProvider.AppendAllTextAsync(file, string.Format(
                     "  <url>\r\n" +
                     "    <loc>{0}</loc>\r\n" +
                     "    <news:news>\r\n" +
@@ -144,9 +145,9 @@ namespace YetaWF.Modules.Blog.Scheduler {
         /// <summary>
         /// Remove the news site map for the current site.
         /// </summary>
-        public void Remove() {
+        public async Task RemoveAsync() {
             string file = GetFile();
-            File.Delete(file);
+            await FileSystem.FileSystemProvider.DeleteFileAsync(file);
         }
         /// <summary>
         /// Returns the news site map file name

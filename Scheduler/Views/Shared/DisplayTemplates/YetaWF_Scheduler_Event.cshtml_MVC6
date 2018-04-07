@@ -7,7 +7,7 @@
     <div class="t_info">
         <div class="t_row t_implementingassembly">
             <div class="t_labels">
-                @Html.ExtLabelFor(m => Model.ImplementingAssembly)
+                @await Html.ExtLabelForAsync(m => Model.ImplementingAssembly)
             </div>
             <div class="t_vals">
                 <span class="t_implasm">@Model.ImplementingAssembly</span>
@@ -15,7 +15,7 @@
         </div>
         <div class="t_row t_implementingtype">
             <div class="t_labels">
-                @Html.ExtLabelFor(m => Model.ImplementingType)
+                @await Html.ExtLabelForAsync(m => Model.ImplementingType)
             </div>
             <div class="t_vals">
                 <span class="t_impltype">@Model.ImplementingType</span>

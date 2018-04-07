@@ -12,6 +12,7 @@ using YetaWF.Core.Serializers;
 using YetaWF.Core.Views.Shared;
 using YetaWF.DataProvider;
 using YetaWF.Modules.TinyLogin.Support;
+using System.Threading.Tasks;
 #if MVC6
 using YetaWF.Core.Support;
 #else
@@ -87,12 +88,12 @@ namespace YetaWF.Modules.TinyLogin.Modules {
 
         public override SerializableList<AllowedRole> DefaultAllowedRoles { get { return AnonymousLevel_DefaultAllowedRoles; } }
 
-        public ModuleAction GetAction_Login(string url) {
+        public async Task<ModuleAction> GetAction_LoginAsync(string url) {
             return new ModuleAction(this) {
                 Url = url,
                 LinkText = this.__ResStr("loginLink", "Login"),
                 MenuText = this.__ResStr("loginText", "Login"),
-                Image = "Login.png",
+                Image = await CustomIconAsync("Login.png"),
                 Tooltip = this.__ResStr("loginTooltip", "Click to log into this site using your existing account"),
                 Legend = this.__ResStr("loginLegend", "Logs into this site using your existing account"),
                 Style = UseFullPage ? ModuleAction.ActionStyleEnum.Normal : ModuleAction.ActionStyleEnum.Popup,
@@ -102,13 +103,13 @@ namespace YetaWF.Modules.TinyLogin.Modules {
                 SaveReturnUrl = true,
             };
         }
-        public ModuleAction GetAction_Register(string url) {
+        public async Task<ModuleAction> GetAction_RegisterAsync(string url) {
             if (!AllowUserRegistration) return null;
             return new ModuleAction(this) {
                 Url = url,
                 LinkText = this.__ResStr("registerLink", "Register"),
                 MenuText = this.__ResStr("registerText", "Register"),
-                Image = "Register.png",
+                Image = await CustomIconAsync("Register.png"),
                 Tooltip = this.__ResStr("registerTooltip", "Click to register a new account for access to this site"),
                 Legend = this.__ResStr("registerLegend", "register to access this site with a new account"),
                 Style = UseFullPage ? ModuleAction.ActionStyleEnum.Normal : ModuleAction.ActionStyleEnum.Popup,
@@ -118,12 +119,12 @@ namespace YetaWF.Modules.TinyLogin.Modules {
                 SaveReturnUrl = true,
             };
         }
-        public ModuleAction GetAction_Logoff(string url) {
+        public async Task<ModuleAction> GetAction_LogoffAsync(string url) {
             return new ModuleAction(this) {
                 Url = url,
                 LinkText = this.__ResStr("logoffLink", "Logout"),
                 MenuText = this.__ResStr("logoffText", "Logout"),
-                Image = "Logoff.png",
+                Image = await CustomIconAsync("Logoff.png"),
                 Tooltip = this.__ResStr("logoffTooltip", "Click to log off from this site"),
                 Legend = this.__ResStr("logoffLegend", "Logs you out from this site"),
                 Style = ModuleAction.ActionStyleEnum.Normal,
@@ -133,12 +134,12 @@ namespace YetaWF.Modules.TinyLogin.Modules {
                 DontFollow = true,
             };
         }
-        public ModuleAction GetAction_UserName(string url, string userName, string tooltip) {
+        public async Task<ModuleAction> GetAction_UserNameAsync(string url, string userName, string tooltip) {
             return new ModuleAction(this) {
                 Url = url,
                 LinkText = userName,
                 MenuText = userName,
-                Image = "UserName.png",
+                Image = await CustomIconAsync("UserName.png"),
                 Tooltip = tooltip,
                 Style = ModuleAction.ActionStyleEnum.Normal,
                 Category = ModuleAction.ActionCategoryEnum.Update,

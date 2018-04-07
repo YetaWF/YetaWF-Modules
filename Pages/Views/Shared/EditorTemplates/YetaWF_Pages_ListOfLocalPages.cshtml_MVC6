@@ -9,7 +9,7 @@
          data-addedmsg="@__ResStr("addedmsg", "Page {0} has been added")"
          data-remmsg="@__ResStr("remmsg", "Page {0} has been removed")">
         @Html.RenderListOfLocalPages("", DivId + "_list", Model)
-        @Html.RenderListOfLocalPagesAddNew("", Model)
+        @await Html.RenderListOfLocalPagesAddNewAsync("", Model)
     </div>
     @Html.RenderExtLabel(__ResStr("lblAllPages", "All Pages"), ToolTip: __ResStr("ttAllPages", "Shows all designed pages available in the site - Select a page to update the dropdown list above, so the page can be added to the list of pages"))
     @Html.RenderAllPages("", DivId + "_listall")

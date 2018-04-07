@@ -62,7 +62,7 @@ namespace YetaWF.Modules.Backups.Controllers {
                     return PartialView(model);
                 data = model.GetData(data); // merge new data into original
                 model.SetData(data); // and all the data back into model for final display
-                await dataProvider.UpdateConfig(data);
+                await dataProvider.UpdateConfigAsync(data);
                 return FormProcessed(model, this.__ResStr("okSaved", "Backup settings saved"), NextPage: Manager.ReturnToUrl);
             }
         }

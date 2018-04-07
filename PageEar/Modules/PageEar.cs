@@ -1,6 +1,7 @@
 ﻿/* Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/PageEar#License */
 
 using System;
+using System.Threading.Tasks;
 using YetaWF.Core;
 using YetaWF.Core.DataProvider.Attributes;
 using YetaWF.Core.Image;
@@ -39,9 +40,10 @@ namespace YetaWF.Modules.PageEar.Modules {
         }
 
         public override IModuleDefinitionIO GetDataProvider() { return new PageEarModuleDataProvider(); }
-        public override void ModuleSaving() {
+        public override Task ModuleSavingAsync() {
             System.Drawing.Size size = ImageSupport.GetImageSize(AdImage_Data);
             LargeSize = size.Height;
+            return Task.CompletedTask;
         }
 
         [Category("General"), Caption("Ad Image"), Description("The image used for the page ear (the advertisement) - this should be the same size as the CoverImage image")]

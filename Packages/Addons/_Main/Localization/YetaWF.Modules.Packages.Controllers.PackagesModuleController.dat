@@ -212,7 +212,7 @@
             <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
               <Properties>
                 <Name Value="okRemoved" />
-                <Text Value="Package successfully removed - The site is now restarting..." />
+                <Text Value="Package successfully removed - These settings won't take effect until the site is restarted" />
               </Properties>
             </Object>
           </Value>
@@ -220,7 +220,7 @@
             <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
               <Properties>
                 <Name Value="okRemovedSrc" />
-                <Text Value="Package successfully removed - The site is now restarting...(+nl)(+nl)This package includes source code. The source code, project and project references have to be removed manually in the Visual Studio solution for this YetaWF site." />
+                <Text Value="Package successfully removed - These settings won't take effect until the site is restarted(+nl)(+nl)This package includes source code. The source code, project and project references have to be removed manually in the Visual Studio solution for this YetaWF site." />
               </Properties>
             </Object>
           </Value>

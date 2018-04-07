@@ -106,13 +106,13 @@ namespace YetaWF.Modules.Identity.Modules {
             };
         }
 
-        public ModuleAction GetAction_SendVerificationEmail(string userName) {
+        public async Task<ModuleAction> GetAction_SendVerificationEmailAsync(string userName) {
             if (!IsAuthorized("SendEmails")) return null;
             return new ModuleAction(this) {
-                Url = YetaWFManager.UrlFor(typeof(UsersBrowseModuleController), "SendVerificationEmail"),
+                Url = YetaWFManager.UrlFor(typeof(UsersBrowseModuleController), nameof(UsersBrowseModuleController.SendVerificationEmail)),
                 NeedsModuleContext = true,
                 QueryArgs = new { UserName = userName },
-                Image = "VerificationEmail.png",
+                Image = await CustomIconAsync("VerificationEmail.png"),
                 Style = ModuleAction.ActionStyleEnum.Post,
                 LinkText = this.__ResStr("sendVerificationLink", "Send Verification"),
                 MenuText = this.__ResStr("sendVerificationMenu", "Send Verification"),
@@ -125,13 +125,13 @@ namespace YetaWF.Modules.Identity.Modules {
             };
         }
 
-        public ModuleAction GetAction_SendApprovedEmail(string userName) {
+        public async Task<ModuleAction> GetAction_SendApprovedEmailAsync(string userName) {
             if (!IsAuthorized("SendEmails")) return null;
             return new ModuleAction(this) {
-                Url = YetaWFManager.UrlFor(typeof(UsersBrowseModuleController), "SendApprovedEmail"),
+                Url = YetaWFManager.UrlFor(typeof(UsersBrowseModuleController), nameof(UsersBrowseModuleController.SendApprovedEmail)),
                 NeedsModuleContext = true,
                 QueryArgs = new { UserName = userName },
-                Image = "ApprovedEmail.png",
+                Image = await CustomIconAsync("ApprovedEmail.png"),
                 Style = ModuleAction.ActionStyleEnum.Post,
                 LinkText = this.__ResStr("sendApprovedLink", "Send Approved"),
                 MenuText = this.__ResStr("sendApprovedMenu", "Send Approved"),
@@ -143,13 +143,13 @@ namespace YetaWF.Modules.Identity.Modules {
                 ConfirmationText = this.__ResStr("sendApprovedConfirm", "Are you sure you want to send an email to user \"{0}\" that the account has been approved?", userName),
             };
         }
-        public ModuleAction GetAction_SendRejectedEmail(string userName) {
+        public async Task<ModuleAction> GetAction_SendRejectedEmailAsync(string userName) {
             if (!IsAuthorized("SendEmails")) return null;
             return new ModuleAction(this) {
-                Url = YetaWFManager.UrlFor(typeof(UsersBrowseModuleController), "SendRejectedEmail"),
+                Url = YetaWFManager.UrlFor(typeof(UsersBrowseModuleController), nameof(UsersBrowseModuleController.SendRejectedEmail)),
                 NeedsModuleContext = true,
                 QueryArgs = new { UserName = userName },
-                Image = "RejectedEmail.png",
+                Image = await CustomIconAsync("RejectedEmail.png"),
                 Style = ModuleAction.ActionStyleEnum.Post,
                 LinkText = this.__ResStr("sendRejectedLink", "Send Rejected"),
                 MenuText = this.__ResStr("sendRejectedMenu", "Send Rejected"),
@@ -161,13 +161,13 @@ namespace YetaWF.Modules.Identity.Modules {
                 ConfirmationText = this.__ResStr("sendRejectedConfirm", "Are you sure you want to send an email to user \"{0}\" that the account has been rejected?", userName),
             };
         }
-        public ModuleAction GetAction_SendSuspendedEmail(string userName) {
+        public async Task<ModuleAction> GetAction_SendSuspendedEmailAsync(string userName) {
             if (!IsAuthorized("SendEmails")) return null;
             return new ModuleAction(this) {
-                Url = YetaWFManager.UrlFor(typeof(UsersBrowseModuleController), "SendSuspendedEmail"),
+                Url = YetaWFManager.UrlFor(typeof(UsersBrowseModuleController), nameof(UsersBrowseModuleController.SendSuspendedEmail)),
                 NeedsModuleContext = true,
                 QueryArgs = new { UserName = userName },
-                Image = "SuspendedEmail.png",
+                Image = await CustomIconAsync("SuspendedEmail.png"),
                 Style = ModuleAction.ActionStyleEnum.Post,
                 LinkText = this.__ResStr("sendSuspendedLink", "Send Suspended"),
                 MenuText = this.__ResStr("sendSuspendedMenu", "Send Suspended"),
@@ -182,7 +182,7 @@ namespace YetaWF.Modules.Identity.Modules {
         public ModuleAction GetAction_RehashAllPasswords() {
             if (!Manager.HasSuperUserRole) return null;
             return new ModuleAction(this) {
-                Url = YetaWFManager.UrlFor(typeof(UsersBrowseModuleController), "RehashAllPasswords"),
+                Url = YetaWFManager.UrlFor(typeof(UsersBrowseModuleController), nameof(UsersBrowseModuleController.RehashAllPasswords)),
                 NeedsModuleContext = true,
                 Style = ModuleAction.ActionStyleEnum.Post,
                 LinkText = this.__ResStr("rehashLink", "Rehash All Passwords"),

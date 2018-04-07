@@ -103,8 +103,8 @@
                 }
             }
         </ul>
-        Manager.ScriptManager.AddKendoUICoreJsFile("kendo.data.min.js");
-        Manager.ScriptManager.AddKendoUICoreJsFile("kendo.panelbar.min.js");
+        Manager.ScriptManager.AddKendoUICoreJsFileAsync("kendo.data.min.js").Wait();
+        Manager.ScriptManager.AddKendoUICoreJsFileAsync("kendo.panelbar.min.js").Wait();
         <script>
             $("#@DivId").kendoPanelBar({
                 expandMode: "single",

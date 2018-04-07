@@ -3,6 +3,7 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using YetaWF.Core.Audit;
 using YetaWF.Core.DataProvider;
 using YetaWF.Core.IO;
 using YetaWF.Core.Localize;
@@ -21,7 +22,7 @@ namespace YetaWF.Modules.SiteProperties.Models {
         // STARTUP
         // STARTUP
 
-        public async Task InitializeApplicationStartupAsync(bool firstNode) {
+        public async Task InitializeApplicationStartupAsync() {
             // The SiteDefinitionDataProvider has two permanent disposable objects
             SiteDefinition.LoadSiteDefinitionAsync = LoadSiteDefinitionAsync;
             SiteDefinition.SaveSiteDefinitionAsync = SaveSiteDefinitionAsync;
@@ -37,6 +38,8 @@ namespace YetaWF.Modules.SiteProperties.Models {
         // IMPLEMENTATION
 
         public const string LOCKEDURL = "/Maintenance/Offline For Maintenance.html";
+
+        private static AsyncLock lockObject = new AsyncLock();
 
         static SiteDefinitionDataProvider() {
             SiteCache = new Dictionary<string, SiteDefinition>();
@@ -67,17 +70,6 @@ namespace YetaWF.Modules.SiteProperties.Models {
                     StaticSiteCache.Add(site.StaticDomain.ToLower(), site.SiteDomain);
         }
 
-        private static void AddCache(SiteDefinition site) {
-            RemoveCache(site);
-            try {
-                SiteCache.Add(site.SiteDomain.ToLower(), site);
-            } catch (Exception) { }// could fail if added by two threads. Simply ignore, first just won, which is OK.
-        }
-        private static void RemoveCache(SiteDefinition siteDefinition) {
-            try {
-                SiteCache.Remove(siteDefinition.SiteDomain.ToLower());
-            } catch (Exception) { }// could fail if it wasn't added.
-        }
 
         /// <summary>
         /// Load the site definition for the current site
@@ -90,17 +82,18 @@ namespace YetaWF.Modules.SiteProperties.Models {
                     siteDomain = YetaWFManager.DefaultSiteName;
                 if (SiteCache.TryGetValue(siteDomain.ToLower(), out site))
                     return site;
-                site = await DataProvider.GetAsync(siteDomain);
-                if (site == null)
-                    return null;
-                site.OriginalSiteDomain = site.SiteDomain;
-                site.OriginalUseCDN = site.UseCDN;
-                site.OriginalCDNUrl = site.CDNUrl;
-                site.OriginalCDNUrlSecure = site.CDNUrlSecure;
-                site.OriginalStaticDomain = site.StaticDomain;
-                AddCache(site);
-                AddLockedStatus(site);
-                return site;
+                using (await lockObject.LockAsync()) { // protect SiteCache locally
+                    if (SiteCache.TryGetValue(siteDomain.ToLower(), out site)) // try again within lock
+                        return site;
+                    site = await DataProvider.GetAsync(siteDomain);
+                    if (site == null)
+                        return null;
+                    site.OriginalSiteDomain = site.SiteDomain;
+                    AddLockedStatus(site);
+                    SiteCache.Remove(site.SiteDomain.ToLower());
+                    SiteCache.Add(site.SiteDomain.ToLower(), site);
+                    return site;
+                }
             }
             return null;
         }
@@ -123,34 +116,39 @@ namespace YetaWF.Modules.SiteProperties.Models {
         /// <summary>
         /// Save the site definition for the current site
         /// </summary>
-        internal async Task<bool> SaveSiteDefinitionAsync(SiteDefinition site) {
-            bool restartRequired = false;
-            RemoveCache(site);// next load will add it again
-            AddLockedStatus(site);
-            CleanData(site);
-            SaveImages(ModuleDefinition.GetPermanentGuid(typeof(SitePropertiesModule)), site);
-            if (site.OriginalSiteDomain != null) {
-                UpdateStatusEnum status = await DataProvider.UpdateAsync(site.OriginalSiteDomain, site.SiteDomain, site);
-                if (status != UpdateStatusEnum.OK)
-                    throw new Error(this.__ResStr("updFail", "Can't update site definition - it may have already been removed", site.OriginalSiteDomain));
-            } else {
-                if (!await DataProvider.AddAsync(site))
-                    throw new Error(this.__ResStr("siteExists", "Can't add new site \"{0}\" - site already exists", site.SiteDomain));
-                site.OriginalSiteDomain = site.SiteDomain;
+        internal async Task SaveSiteDefinitionAsync(SiteDefinition site) {
+
+            SiteDefinition origSite = YetaWF.Core.Audit.Auditing.Active ? await LoadSiteDefinitionAsync(site.OriginalSiteDomain) : null;
+
+            using (await lockObject.LockAsync()) { // protect SiteCache locally
+                SiteCache.Remove(site.SiteDomain.ToLower());
+                AddLockedStatus(site);
+                CleanData(site);
+                await SaveImagesAsync(ModuleDefinition.GetPermanentGuid(typeof(SitePropertiesModule)), site);
+                if (site.OriginalSiteDomain != null) {
+                    UpdateStatusEnum status = await DataProvider.UpdateAsync(site.OriginalSiteDomain, site.SiteDomain, site);
+                    if (status != UpdateStatusEnum.OK)
+                        throw new Error(this.__ResStr("updFail", "Can't update site definition - it may have already been removed", site.OriginalSiteDomain));
+                } else {
+                    if (!await DataProvider.AddAsync(site))
+                        throw new Error(this.__ResStr("siteExists", "Can't add new site \"{0}\" - site already exists", site.SiteDomain));
+                    site.OriginalSiteDomain = site.SiteDomain;
+                }
+                // update appsettings.json
+                if (string.Compare(YetaWFManager.DefaultSiteName, site.OriginalSiteDomain, true) == 0 && site.SiteDomain != site.OriginalSiteDomain) {
+                    WebConfigHelper.SetValue<string>(YetaWF.Core.Controllers.AreaRegistration.CurrentPackage.AreaName, "DEFAULTSITE", site.SiteDomain);
+                    await WebConfigHelper.SaveAsync();
+                    await Auditing.AddAuditAsync($"{nameof(SiteDefinitionDataProvider)}.{nameof(SaveSiteDefinitionAsync)}", site.OriginalSiteDomain, Guid.Empty,
+                        $"DEFAULTSITE", RequiresRestart: true
+                    );
+                }
             }
-            // update appsettings.json
-            if (string.Compare(YetaWFManager.DefaultSiteName, site.OriginalSiteDomain, true) == 0 && site.SiteDomain != site.OriginalSiteDomain) {
-                WebConfigHelper.SetValue<string>(YetaWF.Core.Controllers.AreaRegistration.CurrentPackage.AreaName, "DEFAULTSITE", site.SiteDomain);
-                WebConfigHelper.Save();
-                restartRequired = true;
-            }
-            // restart required for uihint changes because uihints are cached or CDN changes
-            if (!restartRequired) {
-                if (site.OriginalUseCDN != site.UseCDN || site.OriginalCDNUrl != site.CDNUrl || site.OriginalCDNUrlSecure != site.CDNUrlSecure ||
-                        site.OriginalStaticDomain != site.StaticDomain)
-                    restartRequired = true;
-            }
-            return restartRequired;
+            await Auditing.AddAuditAsync($"{nameof(SiteDefinitionDataProvider)}.{nameof(SaveSiteDefinitionAsync)}", site.OriginalSiteDomain, Guid.Empty,
+                "Save Site Settings",
+                DataBefore: origSite,
+                DataAfter: site,
+                ExpensiveMultiInstance: true
+            );
         }
 
         private void AddLockedStatus(SiteDefinition siteDef) {
@@ -183,20 +181,28 @@ namespace YetaWF.Modules.SiteProperties.Models {
 
         internal async Task RemoveSiteDefinitionAsync() {
             SiteDefinition site = Manager.CurrentSite;
+
             if (site.IsDefaultSite)
                 throw new Error(this.__ResStr("cantDeleteDefault", "The default site of a YetaWF instance cannot be removed"));
 
-            LocalizationSupport localizationSupport = new LocalizationSupport();
-            localizationSupport.SetUseLocalizationResources(false);// turn off use of localization resources - things are about to be removed
+            using (await lockObject.LockAsync()) { // protect SiteCache locally
+                LocalizationSupport localizationSupport = new LocalizationSupport();
+                await localizationSupport.SetUseLocalizationResourcesAsync(false);// turn off use of localization resources - things are about to be removed
 
-            // turn off logging - things are about to be removed
-            YetaWF.Core.Log.Logging.TerminateLogging();
+                // turn off logging - things are about to be removed
+                YetaWF.Core.Log.Logging.TerminateLogging();
 
-            // remove all saved data
-            RemoveCache(site);
-            await Package.RemoveSiteDataAsync(Manager.SiteFolder);
-            await DataProvider.RemoveAsync(site.SiteDomain);// remove domain
-            Manager.RestartSite();// everything is now invalid anyway
+                // remove all saved data
+                SiteCache.Remove(site.SiteDomain.ToLower());
+                await Package.RemoveSiteDataAsync(Manager.SiteFolder);
+                await DataProvider.RemoveAsync(site.SiteDomain);// remove domain
+            }
+            await Auditing.AddAuditAsync($"{nameof(SiteDefinitionDataProvider)}.{nameof(SaveSiteDefinitionAsync)}", site.SiteDomain, Guid.Empty,
+                "Remove Site",
+                DataBefore: site,
+                DataAfter: null,
+                ExpensiveMultiInstance: true
+            );
         }
 
         /// <summary>
@@ -211,6 +217,7 @@ namespace YetaWF.Modules.SiteProperties.Models {
         // IINSTALLABLEMODEL
 
         public new async Task<bool> InstallModelAsync(List<string> errorList) {
+            if (YetaWF.Core.Support.Startup.MultiInstance) throw new InternalError("Installing new models is not possible when distributed caching is enabled");
             if (!await DataProvider.InstallModelAsync(errorList))
                 return false;
             try {

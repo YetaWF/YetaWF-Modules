@@ -7,7 +7,6 @@ using YetaWF.Core.DataProvider;
 using YetaWF.Core.DataProvider.Attributes;
 using YetaWF.Core.Packages;
 using YetaWF.Core.Pages;
-using YetaWF.Core.Support;
 using YetaWF.DataProvider.SQL;
 
 namespace YetaWF.Modules.Pages.DataProvider.SQL {
@@ -23,22 +22,19 @@ namespace YetaWF.Modules.Pages.DataProvider.SQL {
 
             public PageDefinitionDataProvider(Dictionary<string, object> options) : base(options) { }
 
-            // This is cached so we keep it sync for simplicity
-            public DesignedPagesDictionaryByUrl GetDesignedPages() {
+            public async Task<DesignedPagesDictionaryByUrl> GetDesignedPagesAsync() {
                 // get the names of all designed pages
-                return YetaWFManager.Syncify<DesignedPagesDictionaryByUrl>(async () => { // Deliberately async to simplify and we need this at startup
-                    using (SQLSimpleObject<Guid, DesignedPage> dp = new SQLSimpleObject<Guid, DesignedPage>(Options)) {
-                        DataProviderGetRecords<DesignedPage> pages = await dp.GetRecordsAsync(0, 0, null, null);
-                        DesignedPagesDictionaryByUrl byUrl = new DesignedPagesDictionaryByUrl();
-                        foreach (DesignedPage page in pages.Data) {
-                            byUrl.Add(page.Url.ToLower(), new PageDefinition.DesignedPage {
-                                PageGuid = page.PageGuid,
-                                Url = page.Url,
-                            });
-                        }
-                        return byUrl;
+                using (SQLSimpleObject<Guid, DesignedPage> dp = new SQLSimpleObject<Guid, DesignedPage>(Options)) {
+                    DataProviderGetRecords<DesignedPage> pages = await dp.GetRecordsAsync(0, 0, null, null);
+                    DesignedPagesDictionaryByUrl byUrl = new DesignedPagesDictionaryByUrl();
+                    foreach (DesignedPage page in pages.Data) {
+                        byUrl.Add(page.Url.ToLower(), new PageDefinition.DesignedPage {
+                            PageGuid = page.PageGuid,
+                            Url = page.Url,
+                        });
                     }
-                });
+                    return byUrl;
+                }
             }
 
             public class DesignedPage {

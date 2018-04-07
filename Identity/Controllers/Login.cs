@@ -133,7 +133,7 @@ namespace YetaWF.Modules.Identity.Controllers {
             if (!ModelState.IsValid)
                 return PartialView(model);
 
-            return await CompleteLogin(model, config, useTwoStep: true);
+            return await CompleteLoginAsync(model, config, useTwoStep: true);
         }
 
         [AllowPost]
@@ -150,7 +150,7 @@ namespace YetaWF.Modules.Identity.Controllers {
                 UserName = name,
                 Password = password,
             };
-            ActionResult result = await CompleteLogin(model, await LoginConfigDataProvider.GetConfigAsync(), useTwoStep: false);
+            ActionResult result = await CompleteLoginAsync(model, await LoginConfigDataProvider.GetConfigAsync(), useTwoStep: false);
             if (!model.Success)
                 Manager.CurrentResponse.StatusCode = 401;
             return result;
@@ -169,13 +169,13 @@ namespace YetaWF.Modules.Identity.Controllers {
                 UserName = name,
                 Password = password,
             };
-            ActionResult result = await CompleteLogin(model, await LoginConfigDataProvider.GetConfigAsync(), useTwoStep: false);
+            ActionResult result = await CompleteLoginAsync(model, await LoginConfigDataProvider.GetConfigAsync(), useTwoStep: false);
             if (!model.Success)
                 Manager.CurrentResponse.StatusCode = 401;
             return new EmptyResult();
         }
 
-        private async Task<ActionResult> CompleteLogin(LoginModel model, LoginConfigData config, bool useTwoStep) {
+        private async Task<ActionResult> CompleteLoginAsync(LoginModel model, LoginConfigData config, bool useTwoStep) {
 
             Manager.SessionSettings.SiteSettings.ClearValue(LoginTwoStepController.IDENTITY_TWOSTEP_USERID);
             Manager.SessionSettings.SiteSettings.ClearValue(LoginTwoStepController.IDENTITY_TWOSTEP_NEXTURL);

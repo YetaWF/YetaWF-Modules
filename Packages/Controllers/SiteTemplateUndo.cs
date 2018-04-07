@@ -6,8 +6,10 @@ using System.Linq;
 using System.Threading.Tasks;
 using YetaWF.Core.Controllers;
 using YetaWF.Core.Models.Attributes;
+using YetaWF.Core.Support;
 using YetaWF.Core.Views.Shared;
 using YetaWF.Modules.Packages.DataProvider;
+using YetaWF.Core.IO;
 #if MVC6
 using Microsoft.AspNetCore.Mvc;
 #else
@@ -30,9 +32,9 @@ namespace YetaWF.Modules.Packages.Controllers {
 
             public List<SelectionItem<string>> SiteTemplate_List { get; set; }
 
-            public void UpdateData() {
+            public async Task UpdateDataAsync() {
                 PackagesDataProvider packagesDP = new PackagesDataProvider();
-                SiteTemplate_List = (from f in Directory.GetFiles(packagesDP.TemplateFolder, "*.txt") orderby f select new SelectionItem<string>() {
+                SiteTemplate_List = (from f in await FileSystem.FileSystemProvider.GetFilesAsync(packagesDP.TemplateFolder, "*.txt") orderby f select new SelectionItem<string>() {
                     Text = Path.GetFileName(f),
                     Value = Path.GetFileName(f),
                 }).ToList();
@@ -41,9 +43,9 @@ namespace YetaWF.Modules.Packages.Controllers {
         }
 
         [AllowGet]
-        public ActionResult SiteTemplateUndo(string fileName) {
+        public async Task<ActionResult> SiteTemplateUndo(string fileName) {
             EditModel model = new EditModel { };
-            model.UpdateData();
+            await model.UpdateDataAsync();
             return View(model);
         }
 
@@ -51,9 +53,11 @@ namespace YetaWF.Modules.Packages.Controllers {
         [ConditionalAntiForgeryToken]
         [ExcludeDemoMode]
         public async Task<ActionResult> SiteTemplateUndo_Partial(EditModel model) {
-            model.UpdateData();
+            await model.UpdateDataAsync();
             if (!ModelState.IsValid)
                 return PartialView(model);
+
+            if (YetaWF.Core.Support.Startup.MultiInstance) throw new InternalError("Site template processing is not possible when distributed caching is enabled");
 
             PackagesDataProvider packagesDP = new PackagesDataProvider();
             await packagesDP.BuildSiteUsingTemplateAsync(model.SiteTemplate, false);

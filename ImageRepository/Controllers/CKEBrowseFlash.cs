@@ -6,6 +6,7 @@ using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Modules;
 using YetaWF.Core.Support;
 using YetaWF.Modules.ImageRepository.Views.Shared;
+using System.Threading.Tasks;
 #if MVC6
 using Microsoft.AspNetCore.Mvc;
 #else
@@ -41,15 +42,16 @@ namespace YetaWF.Modules.ImageRepository.Controllers {
 
             public Model() { }
 
-            public void Update(YetaWFManager manager, ModuleDefinition module) {
+            public async Task UpdateAsync(YetaWFManager manager, ModuleDefinition module) {
                 FlashImageName_Info = new FlashSelectionInfo(module, FolderGuid, SubFolder) {
                     AllowUpload = true,
                 };
+                await FlashImageName_Info.InitAsync();
             }
         }
 
         [AllowGet]
-        public ActionResult CKEBrowseFlash(Guid __FolderGuid, Guid __SubFolder, string CKEditor, int CKEditorFuncNum, string langCode) {
+        public async Task<ActionResult> CKEBrowseFlash(Guid __FolderGuid, Guid __SubFolder, string CKEditor, int CKEditorFuncNum, string langCode) {
             Model model = new Model {
                 FolderGuid = __FolderGuid,
                 SubFolder = __SubFolder == Guid.Empty ? null : __SubFolder.ToString(),
@@ -57,15 +59,15 @@ namespace YetaWF.Modules.ImageRepository.Controllers {
                 CKEditorFuncNum = CKEditorFuncNum,
                 LangCode = langCode,
             };
-            model.Update(Manager, Module);
+            await model.UpdateAsync(Manager, Module);
             return View(model);
         }
 
         [AllowPost]
         [ConditionalAntiForgeryToken]
         [ExcludeDemoMode]
-        public ActionResult CKEBrowseFlash_Partial(Model model) {
-            model.Update(Manager, Module);
+        public async Task<ActionResult> CKEBrowseFlash_Partial(Model model) {
+            await model.UpdateAsync(Manager, Module);
             if (!ModelState.IsValid)
                 return PartialView(model);
 
