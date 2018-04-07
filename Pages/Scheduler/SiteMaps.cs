@@ -78,8 +78,7 @@ namespace YetaWF.Modules.Pages.Scheduler {
             }
 
             // search all designed modules that have dynamic urls
-            List<DesignedModule> desMods = await DesignedModules.LoadDesignedModulesAsync();
-            foreach (DesignedModule desMod in desMods) {
+            foreach (DesignedModule desMod in await DesignedModules.LoadDesignedModulesAsync()) {
                 ModuleDefinition mod = await ModuleDefinition.LoadAsync(desMod.ModuleGuid, AllowNone: true);
                 if (mod != null) {
                     ISiteMapDynamicUrls iSiteMap = mod as ISiteMapDynamicUrls;
