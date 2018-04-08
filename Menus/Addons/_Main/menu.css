@@ -20,7 +20,7 @@
     width:600px!important;
     max-width:600px!important;
 }
-.YetaWF_Menus_MainMenu ul.t_megamenu_content.t_lvl1 {
+.YetaWF_Menus_MainMenu ul.t_lvl0 ul.t_megamenu_content.t_lvl1 {
     /* first-level modules use the full width */
     width:100%!important;
     max-width:100%!important;
@@ -28,6 +28,9 @@
 }
 .YetaWF_Menus_MainMenu li.t_megamenu_content {
     padding: 10px 1ch 10px 1ch;
+}
+.YetaWF_Menus_MainMenu .t_megamenu_content .modStandard h1 { /* don't show h1 titles in submodules */
+    display:none;
 }
 
 /* Any site specific customizations for submodules should look like this: */

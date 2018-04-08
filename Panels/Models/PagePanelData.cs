@@ -1,19 +1,8 @@
 ﻿/* Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Panels#License */
 
-using System;
-using System.Threading.Tasks;
 using YetaWF.Core.DataProvider.Attributes;
-using YetaWF.Core.Models.Attributes;
-using YetaWF.Core.Serializers;
-using YetaWF.Core.Support;
-using YetaWF.Core.Views.Shared;
 using YetaWF.Core.Models;
-using YetaWF.Core.Localize;
-using YetaWF.Core.Modules;
-#if MVC6
-#else
-using System.Web.Mvc;
-#endif
+using YetaWF.Core.Serializers;
 
 namespace YetaWF.Modules.Panels.Models {
 

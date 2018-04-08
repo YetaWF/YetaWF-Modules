@@ -10,15 +10,18 @@
           <Value>
             <Object Type="YetaWF.Core.Localize.LocalizationData+ClassData" Assembly="YetaWF.Core">
               <Properties>
-                <Name Value="YetaWF.Modules.Dashboard.Controllers.StatusModuleController+DisplayModel" />
-                <BaseTypeName />
+                <Name Value="YetaWF.Modules.Panels.Modules.PagePanelModule" />
+                <BaseTypeName Value="YetaWF.Core.Modules.ModuleDefinition" />
                 <Header />
                 <Footer />
                 <Legend />
                 <Categories>
                   <Object Type="YetaWF.Core.Serializers.SerializableDictionary`2[[System.String, mscorlib, Culture=neutral, PublicKeyToken=b77a5c561934e089],[System.String, mscorlib, Culture=neutral, PublicKeyToken=b77a5c561934e089]]" Assembly="YetaWF.Core">
                     <Properties />
-                    <Dictionary />
+                    <Dictionary>
+                      <Key Value="General" />
+                      <Value Value="General" />
+                    </Dictionary>
                   </Object>
                 </Categories>
                 <Properties>
@@ -28,9 +31,9 @@
                       <Value>
                         <Object Type="YetaWF.Core.Localize.LocalizationData+PropertyData" Assembly="YetaWF.Core">
                           <Properties>
-                            <Name Value="AspNetMvc" />
-                            <Caption Value="ASP.NET/MVC Version" />
-                            <Description Value="The ASP.NET/MVC version used" />
+                            <Name Value="PageList" />
+                            <Caption Value="Pages" />
+                            <Description Value="Defines the pages and their order as they are displayed in the Page Panel using their FavIcons and page description" />
                             <HelpLink />
                             <TextAbove />
                             <TextBelow />
@@ -40,9 +43,9 @@
                       <Value>
                         <Object Type="YetaWF.Core.Localize.LocalizationData+PropertyData" Assembly="YetaWF.Core">
                           <Properties>
-                            <Name Value="BlueGreenDeploy" />
-                            <Caption Value="Blue-Green Deploy" />
-                            <Description Value="The currently deployed site (Blue/Green)" />
+                            <Name Value="PagePattern" />
+                            <Caption Value="Page Pattern" />
+                            <Description Value="Defines a Regex pattern - all pages matching this pattern will be included in the Page Panel - for example, ^/Admin/Config/[^/]*$ would include all pages starting with /Admin/Config, but would not include their child pages" />
                             <HelpLink />
                             <TextAbove />
                             <TextBelow />
@@ -52,57 +55,9 @@
                       <Value>
                         <Object Type="YetaWF.Core.Localize.LocalizationData+PropertyData" Assembly="YetaWF.Core">
                           <Properties>
-                            <Name Value="Build" />
-                            <Caption Value="Build" />
-                            <Description Value="The type of build that is currently running" />
-                            <HelpLink />
-                            <TextAbove />
-                            <TextBelow />
-                          </Properties>
-                        </Object>
-                      </Value>
-                      <Value>
-                        <Object Type="YetaWF.Core.Localize.LocalizationData+PropertyData" Assembly="YetaWF.Core">
-                          <Properties>
-                            <Name Value="CoreVersion" />
-                            <Caption Value="YetaWF Version" />
-                            <Description Value="The YetaWF version installed (Core Package)" />
-                            <HelpLink />
-                            <TextAbove />
-                            <TextBelow />
-                          </Properties>
-                        </Object>
-                      </Value>
-                      <Value>
-                        <Object Type="YetaWF.Core.Localize.LocalizationData+PropertyData" Assembly="YetaWF.Core">
-                          <Properties>
-                            <Name Value="LastDeploy" />
-                            <Caption Value="Last Deploy" />
-                            <Description Value="The date and time the site was deployed - Only shown for deployed sites" />
-                            <HelpLink />
-                            <TextAbove />
-                            <TextBelow />
-                          </Properties>
-                        </Object>
-                      </Value>
-                      <Value>
-                        <Object Type="YetaWF.Core.Localize.LocalizationData+PropertyData" Assembly="YetaWF.Core">
-                          <Properties>
-                            <Name Value="LastRestart" />
-                            <Caption Value="Last Restart" />
-                            <Description Value="The date and time the site (all instances) was last restarted" />
-                            <HelpLink />
-                            <TextAbove />
-                            <TextBelow />
-                          </Properties>
-                        </Object>
-                      </Value>
-                      <Value>
-                        <Object Type="YetaWF.Core.Localize.LocalizationData+PropertyData" Assembly="YetaWF.Core">
-                          <Properties>
-                            <Name Value="MultiInstance" />
-                            <Caption Value="WebFarm/WebGarden Enabled" />
-                            <Description Value="Defines whether webfarm/webgarden support is enabled using shared caching" />
+                            <Name Value="UsePopup" />
+                            <Caption Value="Use Popups" />
+                            <Description Value="Defines whether all pages are shown as popups - otherwise full pages are shown" />
                             <HelpLink />
                             <TextAbove />
                             <TextBelow />
@@ -131,24 +86,56 @@
           <Value>
             <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
               <Properties>
-                <Name Value="blueGreen4" />
-                <Text Value="{0} - {1}:{2}" />
+                <Name Value="displayLegend" />
+                <Text Value="Displays the Page Panel" />
               </Properties>
             </Object>
           </Value>
           <Value>
             <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
               <Properties>
-                <Name Value="blueGreen5" />
-                <Text Value="{0} - {1}" />
+                <Name Value="displayLink" />
+                <Text Value="Page Panel" />
               </Properties>
             </Object>
           </Value>
           <Value>
             <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
               <Properties>
-                <Name Value="blueGreenNone" />
-                <Text Value="N/A" />
+                <Name Value="displayText" />
+                <Text Value="Page Panel" />
+              </Properties>
+            </Object>
+          </Value>
+          <Value>
+            <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
+              <Properties>
+                <Name Value="displayTooltip" />
+                <Text Value="Display the Page Panel" />
+              </Properties>
+            </Object>
+          </Value>
+          <Value>
+            <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
+              <Properties>
+                <Name Value="modName" />
+                <Text Value="Page Panel" />
+              </Properties>
+            </Object>
+          </Value>
+          <Value>
+            <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
+              <Properties>
+                <Name Value="modSummary" />
+                <Text Value="Page Panel - used to display multiple links to pages using the pages' FavIcon" />
+              </Properties>
+            </Object>
+          </Value>
+          <Value>
+            <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
+              <Properties>
+                <Name Value="modTitle" />
+                <Text Value="Page Panel" />
               </Properties>
             </Object>
           </Value>

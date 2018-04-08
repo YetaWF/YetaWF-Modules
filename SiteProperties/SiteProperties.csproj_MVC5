@@ -87,12 +87,13 @@
     <None Include="Addons\_Addons\LockedStatus\LockedStatus.scss" />
     <Content Include="Addons\_Main\filelistCSS.txt" />
     <None Include="Addons\_Main\SiteProperties.scss" />
+    <Content Include="Addons\_Main\Images\SiteDefinition Large.png" />
+    <Content Include="Addons\_Main\Images\SiteDefinition.png" />
     <Content Include="Views\YetaWF_SiteProperties_SiteProperties.cshtml" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Addons\_Main\Icons\" />
-    <Folder Include="Addons\_Main\Images\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\CoreComponents\Core\Core.csproj">

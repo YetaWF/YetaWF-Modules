@@ -138,7 +138,7 @@
                           <Properties>
                             <Name Value="Url" />
                             <Caption Value="Page" />
-                            <Description Value="Shows all pages part of this Unified Page Set" />
+                            <Description Value="Shows all pages" />
                             <HelpLink />
                             <TextAbove />
                             <TextBelow />
@@ -227,6 +227,14 @@
           <Value>
             <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
               <Properties>
+                <Name Value="lblFindPages" />
+                <Text Value="Find Pages" />
+              </Properties>
+            </Object>
+          </Value>
+          <Value>
+            <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
+              <Properties>
                 <Name Value="remmsg" />
                 <Text Value="Page {0} has been removed" />
               </Properties>
@@ -237,6 +245,14 @@
               <Properties>
                 <Name Value="ttAllPages" />
                 <Text Value="Shows all designed pages available in the site - Select a page to update the dropdown list above, so the page can be added to the list of pages" />
+              </Properties>
+            </Object>
+          </Value>
+          <Value>
+            <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
+              <Properties>
+                <Name Value="ttFindPages" />
+                <Text Value="Expand to find pages available for this site" />
               </Properties>
             </Object>
           </Value>

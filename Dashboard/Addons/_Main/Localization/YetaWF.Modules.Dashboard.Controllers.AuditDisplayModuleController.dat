@@ -10,7 +10,7 @@
           <Value>
             <Object Type="YetaWF.Core.Localize.LocalizationData+ClassData" Assembly="YetaWF.Core">
               <Properties>
-                <Name Value="YetaWF.Modules.Dashboard.Controllers.StatusModuleController+DisplayModel" />
+                <Name Value="YetaWF.Modules.Dashboard.Controllers.AuditDisplayModuleController+DisplayModel" />
                 <BaseTypeName />
                 <Header />
                 <Footer />
@@ -28,9 +28,9 @@
                       <Value>
                         <Object Type="YetaWF.Core.Localize.LocalizationData+PropertyData" Assembly="YetaWF.Core">
                           <Properties>
-                            <Name Value="AspNetMvc" />
-                            <Caption Value="ASP.NET/MVC Version" />
-                            <Description Value="The ASP.NET/MVC version used" />
+                            <Name Value="Action" />
+                            <Caption Value="Action" />
+                            <Description Value="The action that created this record" />
                             <HelpLink />
                             <TextAbove />
                             <TextBelow />
@@ -40,9 +40,9 @@
                       <Value>
                         <Object Type="YetaWF.Core.Localize.LocalizationData+PropertyData" Assembly="YetaWF.Core">
                           <Properties>
-                            <Name Value="BlueGreenDeploy" />
-                            <Caption Value="Blue-Green Deploy" />
-                            <Description Value="The currently deployed site (Blue/Green)" />
+                            <Name Value="Changes" />
+                            <Caption Value="Changes" />
+                            <Description Value="The properties that were changed" />
                             <HelpLink />
                             <TextAbove />
                             <TextBelow />
@@ -52,9 +52,9 @@
                       <Value>
                         <Object Type="YetaWF.Core.Localize.LocalizationData+PropertyData" Assembly="YetaWF.Core">
                           <Properties>
-                            <Name Value="Build" />
-                            <Caption Value="Build" />
-                            <Description Value="The type of build that is currently running" />
+                            <Name Value="Created" />
+                            <Caption Value="Created" />
+                            <Description Value="The date/time this record was created" />
                             <HelpLink />
                             <TextAbove />
                             <TextBelow />
@@ -64,9 +64,9 @@
                       <Value>
                         <Object Type="YetaWF.Core.Localize.LocalizationData+PropertyData" Assembly="YetaWF.Core">
                           <Properties>
-                            <Name Value="CoreVersion" />
-                            <Caption Value="YetaWF Version" />
-                            <Description Value="The YetaWF version installed (Core Package)" />
+                            <Name Value="Description" />
+                            <Caption Value="Description" />
+                            <Description Value="The description for this record" />
                             <HelpLink />
                             <TextAbove />
                             <TextBelow />
@@ -76,9 +76,9 @@
                       <Value>
                         <Object Type="YetaWF.Core.Localize.LocalizationData+PropertyData" Assembly="YetaWF.Core">
                           <Properties>
-                            <Name Value="LastDeploy" />
-                            <Caption Value="Last Deploy" />
-                            <Description Value="The date and time the site was deployed - Only shown for deployed sites" />
+                            <Name Value="ExpensiveMultiInstance" />
+                            <Caption Value="Expensive Action" />
+                            <Description Value="Defines whether this action is an expensive action in a multi-instance site" />
                             <HelpLink />
                             <TextAbove />
                             <TextBelow />
@@ -88,9 +88,9 @@
                       <Value>
                         <Object Type="YetaWF.Core.Localize.LocalizationData+PropertyData" Assembly="YetaWF.Core">
                           <Properties>
-                            <Name Value="LastRestart" />
-                            <Caption Value="Last Restart" />
-                            <Description Value="The date and time the site (all instances) was last restarted" />
+                            <Name Value="Id" />
+                            <Caption Value="Id" />
+                            <Description Value="The internal id" />
                             <HelpLink />
                             <TextAbove />
                             <TextBelow />
@@ -100,9 +100,57 @@
                       <Value>
                         <Object Type="YetaWF.Core.Localize.LocalizationData+PropertyData" Assembly="YetaWF.Core">
                           <Properties>
-                            <Name Value="MultiInstance" />
-                            <Caption Value="WebFarm/WebGarden Enabled" />
-                            <Description Value="Defines whether webfarm/webgarden support is enabled using shared caching" />
+                            <Name Value="IdentifyGuid" />
+                            <Caption Value="Identifier/Type" />
+                            <Description Value="The type of the record - Identifier String and Type both identify the source of this record" />
+                            <HelpLink />
+                            <TextAbove />
+                            <TextBelow />
+                          </Properties>
+                        </Object>
+                      </Value>
+                      <Value>
+                        <Object Type="YetaWF.Core.Localize.LocalizationData+PropertyData" Assembly="YetaWF.Core">
+                          <Properties>
+                            <Name Value="IdentifyString" />
+                            <Caption Value="Identifier/String" />
+                            <Description Value="The identifying string of the record - Identifier String and Type both identify the source of this record" />
+                            <HelpLink />
+                            <TextAbove />
+                            <TextBelow />
+                          </Properties>
+                        </Object>
+                      </Value>
+                      <Value>
+                        <Object Type="YetaWF.Core.Localize.LocalizationData+PropertyData" Assembly="YetaWF.Core">
+                          <Properties>
+                            <Name Value="RequiresRestart" />
+                            <Caption Value="Restart Pending" />
+                            <Description Value="Defines whether this action requires a restart to take effect" />
+                            <HelpLink />
+                            <TextAbove />
+                            <TextBelow />
+                          </Properties>
+                        </Object>
+                      </Value>
+                      <Value>
+                        <Object Type="YetaWF.Core.Localize.LocalizationData+PropertyData" Assembly="YetaWF.Core">
+                          <Properties>
+                            <Name Value="SiteIdentity" />
+                            <Caption Value="Site" />
+                            <Description Value="The site that was changed" />
+                            <HelpLink />
+                            <TextAbove />
+                            <TextBelow />
+                          </Properties>
+                        </Object>
+                      </Value>
+                      <Value>
+                        <Object Type="YetaWF.Core.Localize.LocalizationData+PropertyData" Assembly="YetaWF.Core">
+                          <Properties>
+                            <Name Value="UserId" />
+                            <Caption Value="User" />
+                            <Description Value="The user that made the change" />
                             <HelpLink />
                             <TextAbove />
                             <TextBelow />
@@ -131,24 +179,16 @@
           <Value>
             <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
               <Properties>
-                <Name Value="blueGreen4" />
-                <Text Value="{0} - {1}:{2}" />
+                <Name Value="modTitle" />
+                <Text Value="Audit Info &quot;{0}&quot;" />
               </Properties>
             </Object>
           </Value>
           <Value>
             <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
               <Properties>
-                <Name Value="blueGreen5" />
-                <Text Value="{0} - {1}" />
-              </Properties>
-            </Object>
-          </Value>
-          <Value>
-            <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
-              <Properties>
-                <Name Value="blueGreenNone" />
-                <Text Value="N/A" />
+                <Name Value="notFound" />
+                <Text Value="Audit Info &quot;{0}&quot; not found" />
               </Properties>
             </Object>
           </Value>

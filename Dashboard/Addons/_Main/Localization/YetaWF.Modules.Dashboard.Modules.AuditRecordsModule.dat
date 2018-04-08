@@ -6,7 +6,47 @@
     <Classes>
       <Object Type="YetaWF.Core.Serializers.SerializableList`1[[YetaWF.Core.Localize.LocalizationData+ClassData, YetaWF.Core, Culture=neutral, PublicKeyToken=null]]" Assembly="YetaWF.Core">
         <Properties />
-        <List />
+        <List>
+          <Value>
+            <Object Type="YetaWF.Core.Localize.LocalizationData+ClassData" Assembly="YetaWF.Core">
+              <Properties>
+                <Name Value="YetaWF.Modules.Dashboard.Modules.AuditRecordsModule" />
+                <BaseTypeName Value="YetaWF.Core.Modules.ModuleDefinition" />
+                <Header />
+                <Footer />
+                <Legend />
+                <Categories>
+                  <Object Type="YetaWF.Core.Serializers.SerializableDictionary`2[[System.String, mscorlib, Culture=neutral, PublicKeyToken=b77a5c561934e089],[System.String, mscorlib, Culture=neutral, PublicKeyToken=b77a5c561934e089]]" Assembly="YetaWF.Core">
+                    <Properties />
+                    <Dictionary>
+                      <Key Value="General" />
+                      <Value Value="General" />
+                    </Dictionary>
+                  </Object>
+                </Categories>
+                <Properties>
+                  <Object Type="YetaWF.Core.Serializers.SerializableList`1[[YetaWF.Core.Localize.LocalizationData+PropertyData, YetaWF.Core, Culture=neutral, PublicKeyToken=null]]" Assembly="YetaWF.Core">
+                    <Properties />
+                    <List>
+                      <Value>
+                        <Object Type="YetaWF.Core.Localize.LocalizationData+PropertyData" Assembly="YetaWF.Core">
+                          <Properties>
+                            <Name Value="DisplayUrl" />
+                            <Caption Value="Display Url" />
+                            <Description Value="The Url to display an audit record - if omitted, a default page is generated" />
+                            <HelpLink />
+                            <TextAbove />
+                            <TextBelow />
+                          </Properties>
+                        </Object>
+                      </Value>
+                    </List>
+                  </Object>
+                </Properties>
+              </Properties>
+            </Object>
+          </Value>
+        </List>
       </Object>
     </Classes>
     <Enums>
@@ -22,128 +62,128 @@
           <Value>
             <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
               <Properties>
-                <Name Value="btnAdd" />
-                <Text Value="Add" />
+                <Name Value="browseLegend" />
+                <Text Value="Displays and manages audit information" />
               </Properties>
             </Object>
           </Value>
           <Value>
             <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
               <Properties>
-                <Name Value="btnApply" />
-                <Text Value="Apply" />
+                <Name Value="browseLink" />
+                <Text Value="Audit Information" />
               </Properties>
             </Object>
           </Value>
           <Value>
             <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
               <Properties>
-                <Name Value="btnDelete" />
-                <Text Value="Remove" />
+                <Name Value="browseText" />
+                <Text Value="Audit Information" />
               </Properties>
             </Object>
           </Value>
           <Value>
             <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
               <Properties>
-                <Name Value="btnDown" />
-                <Text Value="&gt;&gt;" />
+                <Name Value="browseTooltip" />
+                <Text Value="Display and manage audit information" />
               </Properties>
             </Object>
           </Value>
           <Value>
             <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
               <Properties>
-                <Name Value="btnIns" />
-                <Text Value="Insert" />
+                <Name Value="modName" />
+                <Text Value="Audit Information" />
               </Properties>
             </Object>
           </Value>
           <Value>
             <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
               <Properties>
-                <Name Value="btnUp" />
-                <Text Value="&lt;&lt;" />
+                <Name Value="modSummary" />
+                <Text Value="Displays and manages audit information" />
               </Properties>
             </Object>
           </Value>
           <Value>
             <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
               <Properties>
-                <Name Value="emptyCaption" />
-                <Text Value="(no caption - Page Title)" />
+                <Name Value="modTitle" />
+                <Text Value="Audit Information" />
               </Properties>
             </Object>
           </Value>
           <Value>
             <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
               <Properties>
-                <Name Value="noCaption" />
-                <Text Value="(no caption)" />
+                <Name Value="removeConfirm" />
+                <Text Value="Are you sure you want to remove audit record &quot;{0}&quot;?" />
               </Properties>
             </Object>
           </Value>
           <Value>
             <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
               <Properties>
-                <Name Value="noCaption" />
-                <Text Value="(no caption)" />
+                <Name Value="removeLegend" />
+                <Text Value="Removes the audit record" />
               </Properties>
             </Object>
           </Value>
           <Value>
             <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
               <Properties>
-                <Name Value="noModule" />
-                <Text Value="(no module defined)" />
+                <Name Value="removeLink" />
+                <Text Value="Remove Audit Record" />
               </Properties>
             </Object>
           </Value>
           <Value>
             <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
               <Properties>
-                <Name Value="txtAdd" />
-                <Text Value="Click to add a new panel after the current panel" />
+                <Name Value="removeMenu" />
+                <Text Value="Remove Audit Record" />
               </Properties>
             </Object>
           </Value>
           <Value>
             <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
               <Properties>
-                <Name Value="txtApply" />
-                <Text Value="Click to apply the current changes" />
+                <Name Value="removeTT" />
+                <Text Value="Remove the audit record" />
               </Properties>
             </Object>
           </Value>
           <Value>
             <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
               <Properties>
-                <Name Value="txtDelete" />
-                <Text Value="Click to remove the current panel" />
+                <Name Value="roleRemItems" />
+                <Text Value="The role has permission to remove individual audit records" />
               </Properties>
             </Object>
           </Value>
           <Value>
             <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
               <Properties>
-                <Name Value="txtDown" />
-                <Text Value="Click to move the current panel" />
+                <Name Value="roleRemItemsC" />
+                <Text Value="Remove Audit Information" />
               </Properties>
             </Object>
           </Value>
           <Value>
             <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
               <Properties>
-                <Name Value="txtIns" />
-                <Text Value="Click to insert a new panel before the current panel" />
+                <Name Value="userRemItems" />
+                <Text Value="The user has permission to remove individual audit records" />
               </Properties>
             </Object>
           </Value>
           <Value>
             <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
               <Properties>
-                <Name Value="txtUp" />
-                <Text Value="Click to move the current panel" />
+                <Name Value="userRemItemsC" />
+                <Text Value="Remove Audit Information" />
               </Properties>
             </Object>
           </Value>
