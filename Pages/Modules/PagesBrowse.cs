@@ -173,5 +173,22 @@ namespace YetaWF.Modules.Pages.Modules {
                 Location = ModuleAction.ActionLocationEnum.ModuleLinks,
             };
         }
+        public async Task<ModuleAction> GetAction_CreatePageList() {
+            if (!IsAuthorized("SiteMaps")) return null;
+            return new ModuleAction(this) {
+                Url = YetaWFManager.UrlFor(typeof(PagesBrowseModuleController), nameof(PagesBrowseModuleController.CreatePageList)),
+                NeedsModuleContext = true,
+                CookieAsDoneSignal = true,
+                Image = await CustomIconAsync("Download.png"),
+                LinkText = this.__ResStr("downloadLink", "Download Page List"),
+                MenuText = this.__ResStr("downloadMenu", "Download Page List"),
+                Tooltip = this.__ResStr("downloadTT", "Download the list of designed pages"),
+                Legend = this.__ResStr("downloadLegend", "Downloads the list of designed pages"),
+                Style = ModuleAction.ActionStyleEnum.Normal,
+                Category = ModuleAction.ActionCategoryEnum.Read,
+                Mode = ModuleAction.ActionModeEnum.Any,
+                Location = ModuleAction.ActionLocationEnum.ModuleLinks,
+            };
+        }
     }
 }

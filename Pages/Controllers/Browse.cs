@@ -22,6 +22,7 @@ using YetaWF.Modules.Pages.DataProvider;
 using YetaWF.Modules.Pages.Modules;
 using YetaWF.Modules.Pages.Scheduler;
 using YetaWF.Core.IO;
+using System.Text;
 #if MVC6
 using Microsoft.AspNetCore.Mvc;
 #else
@@ -250,6 +251,29 @@ namespace YetaWF.Modules.Pages.Controllers {
             result.FileDownloadName = Path.GetFileName(filename);
             return result;
 #endif
+        }
+        [Permission("SiteMaps")]
+        public async Task<ActionResult> CreatePageList(long cookieToReturn) {
+            PageList sm = new PageList();
+            string list = await sm.CreateAsync();
+#if MVC6
+            Response.Headers.Remove("Cookie");
+            Response.Cookies.Append(Basics.CookieDone, cookieToReturn.ToString(), new Microsoft.AspNetCore.Http.CookieOptions { HttpOnly = false, Path = "/" });
+#else
+            HttpCookie cookie = new HttpCookie(Basics.CookieDone, cookieToReturn.ToString());
+            Response.Cookies.Remove(Basics.CookieDone);
+            Response.SetCookie(cookie);
+#endif
+
+            string contentType = "application/octet-stream";
+#if MVC6
+            //$$$$
+#else
+            byte[] btes = Encoding.UTF8.GetBytes(list);
+            FileContentResult result = new FileContentResult(btes, contentType);
+            result.FileDownloadName = "FileList.txt";
+#endif
+            return result;
         }
     }
 }
