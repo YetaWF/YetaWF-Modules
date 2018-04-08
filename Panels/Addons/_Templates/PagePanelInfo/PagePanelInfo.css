@@ -1,0 +1,10 @@
+@charset "UTF-8";
+/* Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Panels#License */
+.yt_panels_pagepanelinfo.t_display .t_entry {
+  display: inline-block;
+  width: 200px;
+  height: 120px;
+  padding: 16px 16px 16px 16px;
+  text-align: center; }
+  .yt_panels_pagepanelinfo.t_display .t_entry .t_link {
+    font-size: smaller; }

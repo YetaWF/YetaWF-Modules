@@ -47,7 +47,7 @@ namespace YetaWF.Modules.Pages.Views.Shared {
             [UIHint("GridDeleteEntry")]
             public int DeleteMe { get; set; }
 
-            [Caption("Page"), Description("Shows all pages part of this Unified Page Set")]
+            [Caption("Page"), Description("Shows all pages")]
             [UIHint("Url"), ReadOnly]
             public string Url { get { return __Value; } set { __Value = value; } }
 

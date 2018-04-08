@@ -61,6 +61,7 @@ namespace YetaWF.Modules.ModuleEdit.Controllers {
             await model.UpdateDataAsync();
             // we need to find the real type of the module for data binding
             ModuleDefinition origModule = await ModuleDefinition.LoadAsync(model.ModuleGuid);
+            await ObjectSupport.HandlePropertyAsync<List<PageDefinition>>(nameof(ModuleDefinition.Pages), nameof(ModuleDefinition.__GetPagesAsync), origModule);
             if (!origModule.IsAuthorized(ModuleDefinition.RoleDefinition.Edit))
                 return NotAuthorized();
 
@@ -68,13 +69,13 @@ namespace YetaWF.Modules.ModuleEdit.Controllers {
             Manager.CurrentModuleEdited = model.Module;
 
             ObjectSupport.CopyData(origModule, model.Module, ReadOnly: true); // update read only properties in model in case there is an error
+            ObjectSupport.CopyDataFromOriginal(origModule, model.Module);
             model.Module.CustomValidation(ModelState, "Module.");
 
             if (!ModelState.IsValid)
                 return PartialView(model);
 
             // copy/save
-            ObjectSupport.CopyDataFromOriginal(origModule, model.Module);
             model.Module.Temporary = false;
             await model.Module.SaveAsync();
             return FormProcessed(model, this.__ResStr("okSaved", "Module settings saved"));

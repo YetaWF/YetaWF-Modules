@@ -288,6 +288,7 @@ namespace YetaWF.Modules.PageEdit.Controllers {
 
             await model.UpdateDataAsync(page);
             ObjectSupport.CopyData(page, model.Page, ReadOnly: true); // update read only properties in model in case there is an error
+            model.Page.FavIcon_Data = page.FavIcon_Data; // copy favicon
             if (!ModelState.IsValid)
                 return PartialView(model);
             page = model.GetData(page); // merge new data into original
@@ -296,6 +297,9 @@ namespace YetaWF.Modules.PageEdit.Controllers {
             await page.SaveAsync();// this handles changing the Url automatically
             MenuList.ClearCachedMenus();// page changes may affect all menus so clear the menu cache (this only clears current session)
             // if we're in a popup and the parent page is the page we're editing, then force a reload
+
+
+            //$$$$ rename with querystring doesn't work
             OnPopupCloseEnum popupClose = OnPopupCloseEnum.ReloadModule;
             if (PageDefinition.IsSamePage(Manager.QueryReturnToUrl.Url, model.Page.Url))
                 popupClose = OnPopupCloseEnum.ReloadParentPage;

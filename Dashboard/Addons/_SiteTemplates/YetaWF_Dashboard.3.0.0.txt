@@ -1,0 +1,13 @@
+###
+### Dashboard Package
+###
+
+::PAGE-SECTION::
+
+Administrator  /Admin/Dashboard/AuditRecords
+    Title=Audit Information
+    Description=Audit Information
+    Admin > Dashboard > {YetaWF.Dashboard, YetaWF.Modules.Dashboard.Modules.AuditRecordsModule}.GetAction_Items({CURRENTURL})
+    -
+    YetaWF.Dashboard, YetaWF.Modules.Dashboard.Modules.AuditRecordsModule
+

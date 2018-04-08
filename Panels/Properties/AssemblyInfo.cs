@@ -6,7 +6,7 @@ using YetaWF.Core.Packages;
 using YetaWF.PackageAttributes;
 
 [assembly: AssemblyTitle("Panels")]
-[assembly: AssemblyDescription("Panels & Tabs (Module Container)")]
+[assembly: AssemblyDescription("Panels & Tabs (Module & Page Container)")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Softel vdm, Inc.")]
 [assembly: AssemblyProduct("Panels")]
@@ -24,4 +24,5 @@ using YetaWF.PackageAttributes;
     "https://yetawf.com/Documentation/YetaWF/Panels#Release%20Notice",
     "https://yetawf.com/Documentation/YetaWF/Panels#License")]
 
+[assembly: RequiresPackage("YetaWF.Pages")]
 [assembly:PublicPartialViews]

@@ -172,6 +172,9 @@ namespace YetaWF.Modules.Identity.Controllers {
                 ObjectSupport.CopyData(data, this);
             }
             public Model() {
+                YetaWFManager.Syncify(async () => { // this is needed during model validation
+                    ConfigData = await LoginConfigDataProvider.GetConfigAsync();
+                });
                 NoExternalSettings = this.__ResStr("noExt", "No External Login Providers available");
                 TwoStepAuth = new SerializableList<Role>();
             }
@@ -180,9 +183,7 @@ namespace YetaWF.Modules.Identity.Controllers {
         [AllowGet]
         public async Task<ActionResult> LoginConfig() {
             using (LoginConfigDataProvider dataProvider = new LoginConfigDataProvider()) {
-                Model model = new Model {
-                    ConfigData = await LoginConfigDataProvider.GetConfigAsync()
-                };
+                Model model = new Model { };
                 LoginConfigData data = await dataProvider.GetItemAsync();
                 if (data == null)
                     throw new Error(this.__ResStr("notFound", "User login configuration was not found."));
@@ -195,7 +196,6 @@ namespace YetaWF.Modules.Identity.Controllers {
         [ConditionalAntiForgeryToken]
         [ExcludeDemoMode]
         public async Task<ActionResult> LoginConfig_Partial(Model model) {
-            model.ConfigData = await LoginConfigDataProvider.GetConfigAsync();
             using (LoginConfigDataProvider dataProvider = new LoginConfigDataProvider()) {
                 LoginConfigData data = await dataProvider.GetItemAsync();// get the original item
                 if (!ModelState.IsValid)

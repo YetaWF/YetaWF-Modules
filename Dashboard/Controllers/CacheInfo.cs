@@ -4,6 +4,7 @@ using YetaWF.Core.Controllers;
 using YetaWF.Core.Models;
 using YetaWF.Core.Models.Attributes;
 using System.Threading.Tasks;
+using YetaWF.Core.Extensions;
 #if MVC6
 using Microsoft.AspNetCore.Mvc;
 #else
@@ -86,7 +87,7 @@ namespace YetaWF.Modules.Dashboard.Controllers {
         public async Task<ActionResult> CacheInfo_GridData(int skip, int take, List<DataProviderSortInfo> sort, List<DataProviderFilterInfo> filters, Guid settingsModuleGuid) {
             DataProviderGetRecords<BrowseItem> items = DataProviderImpl<BrowseItem>.GetRecords(GetAllItems(), skip, take, sort, filters);
             foreach (BrowseItem item in items.Data)
-                item.Value = item.Value.PadRight(100, ' ').Substring(0, 100).TrimEnd();
+                item.Value = item.Value.TruncateWithEllipse(100);
 
             GridHelper.SaveSettings(skip, take, sort, filters, settingsModuleGuid);
             return await GridPartialViewAsync(new DataSourceResult {
