@@ -1,22 +1,28 @@
 ﻿@*Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Pages#License*@
 @inherits YetaWF.Modules.Pages.Views.Shared.ListOfLocalPagesHelper<List<string>>
-@using YetaWF.Core.Support
-@using YetaWF.Core.Views
+@using YetaWF.Core.Modules
 @using YetaWF.Modules.Pages.Views.Shared
-<div class="yt_listoflocalpages t_edit">
-    <div class='yt_grid_addordelete' id="@DivId"
+@{ string tmpltId = Manager.UniqueId(); }
+<div class="yt_listoflocalpages t_edit" id="@DivId">
+    <div class='yt_grid_addordelete' id="@tmpltId"
          data-dupmsg="@__ResStr("dupmsg", "Page {0} has already been added")"
          data-addedmsg="@__ResStr("addedmsg", "Page {0} has been added")"
          data-remmsg="@__ResStr("remmsg", "Page {0} has been removed")">
-        @Html.RenderListOfLocalPages("", DivId + "_list", Model)
+        @Html.RenderListOfLocalPages("", tmpltId + "_list", Model)
         @Html.RenderListOfLocalPagesAddNewAsync("", Model).Result
     </div>
-    @Html.RenderExtLabel(__ResStr("lblAllPages", "All Pages"), ToolTip: __ResStr("ttAllPages", "Shows all designed pages available in the site - Select a page to update the dropdown list above, so the page can be added to the list of pages"))
-    @Html.RenderAllPages("", DivId + "_listall")
+    <div id="@(DivId)_coll">
+        @ModuleActionHelper.BuiltIn_ExpandAction(__ResStr("lblFindPages", "Find Pages"), __ResStr("ttFindPages", "Expand to find pages available for this site")).RenderAsNormalLinkAsync().Result
+    </div>
+    <div id="@(DivId)_exp" style="display:none">
+        @ModuleActionHelper.BuiltIn_CollapseAction(__ResStr("lblAllPages", "All Pages"), __ResStr("ttAllPages", "Shows all designed pages available in the site - Select a page to update the dropdown list above, so the page can be added to the list of pages")).RenderAsNormalLinkAsync().Result
+        @Html.RenderAllPages("", tmpltId + "_listall")
+    </div>
 </div>
 <script>
+    YetaWF_Basics.ExpandCollapse('@DivId', '@(DivId)_coll', '@(DivId)_exp');
     @using (DocumentReady(DivId)) {
-        @: $('#@(DivId)_list').jqGrid('sortableRows', { connectWith: '#@(DivId)_list' });
-        @: YetaWF_Pages_ListOfLocalPages.init($('#@DivId'), $("#@(DivId)_list"), $("#@(DivId)_listall"), $("#@DivId .yt_url.t_edit[data-name$='.NewValue']"));
+        @: $('#@(tmpltId)_list').jqGrid('sortableRows', { connectWith: '#@(tmpltId)_list' });
+        @: YetaWF_Pages_ListOfLocalPages.init($('#@tmpltId'), $("#@(tmpltId)_list"), $("#@(tmpltId)_listall"), $("#@tmpltId .yt_url.t_edit[data-name$='.NewValue']"));
     }
 </script>

@@ -94,6 +94,8 @@
     <Content Include="Addons\_Main\filelistJS.txt" />
     <Content Include="Addons\_Main\Icons\PageEdit.png" />
     <Content Include="Addons\_Main\Icons\W3CValidator.png" />
+    <Content Include="Addons\_Main\Images\ControlPanel.png" />
+    <Content Include="Addons\_Main\Images\ControlPanelLarge.png" />
     <Content Include="Addons\_Main\pagecontrol.css" />
     <Content Include="Addons\_Main\pagecontrol.js" />
     <Content Include="Addons\_SiteTemplates\YetaWF_PageEdit.1.0.3.txt" />

@@ -86,6 +86,8 @@
   <ItemGroup>
     <Content Include="Addons\_Main\Icons\Download.png" />
     <Content Include="Addons\_Main\Icons\SiteBackup.png" />
+    <Content Include="Addons\_Main\Images\Backup Large.png" />
+    <Content Include="Addons\_Main\Images\Backup.png" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

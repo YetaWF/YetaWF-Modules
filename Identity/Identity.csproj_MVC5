@@ -267,6 +267,8 @@
     <Content Include="Addons\_Main\Icons\LoginProviders\Google.png" />
     <Content Include="Addons\_Main\Icons\LoginProviders\Microsoft.png" />
     <Content Include="Addons\_Main\Icons\LoginProviders\Twitter.png" />
+    <Content Include="Addons\_Main\Images\Identity Large.png" />
+    <Content Include="Addons\_Main\Images\Identity.png" />
     <Content Include="Addons\_Main\Login.css" />
     <Content Include="Addons\_SiteTemplates\YetaWF_Identity.2.8.0.txt" />
     <Content Include="Addons\_SiteTemplates\YetaWF_Identity.2.5.1.txt" />

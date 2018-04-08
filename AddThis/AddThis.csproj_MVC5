@@ -110,6 +110,10 @@
   <ItemGroup>
     <Folder Include="Addons\_Main\Icons\" />
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="Addons\_Main\Images\AddThis Large.png" />
+    <Content Include="Addons\_Main\Images\AddThis.png" />
+  </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>

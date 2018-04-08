@@ -53,6 +53,7 @@
     <Content Include="Addons\_Main\filelistJS.txt" />
     <Content Include="Addons\_Addons\SkinTawkTo\filelistCSS.txt" />
     <Content Include="Addons\_Addons\SkinTawkTo\filelistJS.txt" />
+    <Content Include="Addons\_Main\Images\tawky_big.png" />
     <Content Include="Addons\_Main\TawkTo.css" />
     <Content Include="Addons\_Main\TawkTo.js" />
     <Content Include="Addons\_SiteTemplates\YetaWF_TawkTo.txt" />
@@ -115,6 +116,7 @@
   <ItemGroup>
     <TypeScriptCompile Include="Addons\_Addons\SkinTawkTo\SkinTawkTo.tsx" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />

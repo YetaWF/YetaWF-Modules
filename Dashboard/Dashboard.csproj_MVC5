@@ -69,14 +69,20 @@
   <ItemGroup>
     <Compile Include="Controllers\AddonDisplay.cs" />
     <Compile Include="Controllers\AddonsBrowse.cs" />
+    <Compile Include="Controllers\AuditDisplay.cs" />
+    <Compile Include="Controllers\AuditRecords.cs" />
     <Compile Include="Controllers\BrowseDataProviders.cs" />
     <Compile Include="Controllers\DisposableTrackerBrowse.cs" />
     <Compile Include="Controllers\HttpModulesBrowse.cs" />
     <Compile Include="Controllers\StaticPagesBrowse.cs" />
     <Compile Include="Controllers\Status.cs" />
+    <Compile Include="Models\AuditInfoDataProvider.cs" />
+    <Compile Include="Models\AuditInfoSQLDataProvider.cs" />
     <Compile Include="Models\DataProviderInfoDataProvider.cs" />
     <Compile Include="Modules\AddonDisplay.cs" />
     <Compile Include="Modules\AddonsBrowse.cs" />
+    <Compile Include="Modules\AuditDisplay.cs" />
+    <Compile Include="Modules\AuditRecords.cs" />
     <Compile Include="Modules\BrowseDataProviders.cs" />
     <Compile Include="Modules\DisposableTrackerBrowse.cs" />
     <Compile Include="Modules\HttpModulesBrowse.cs" />
@@ -91,6 +97,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Addons\_Main\Grids\AuditRecordsModuleController.BrowseItem" />
     <None Include="Addons\_Main\filelistJS.txt" />
     <None Include="Addons\_Main\filelistCSS.txt" />
     <None Include="Addons\_Main\Dashboard.js" />
@@ -109,9 +116,26 @@
     <None Include="Views\YetaWF_Dashboard_StaticPagesBrowse_Partial.cshtml" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Addons\_Main\Images\Addons Large.png" />
+    <Content Include="Addons\_Main\Images\Addons.png" />
+    <Content Include="Addons\_Main\Images\Audit Large.png" />
+    <Content Include="Addons\_Main\Images\Audit.png" />
+    <Content Include="Addons\_Main\Images\Cache Large.png" />
+    <Content Include="Addons\_Main\Images\Cache.png" />
+    <Content Include="Addons\_Main\Images\Data Provider Large.png" />
+    <Content Include="Addons\_Main\Images\Data Provider.png" />
+    <Content Include="Addons\_Main\Images\Disposable Large.png" />
+    <Content Include="Addons\_Main\Images\Disposable.png" />
+    <Content Include="Addons\_Main\Images\IIS Large.png" />
+    <Content Include="Addons\_Main\Images\IIS.png" />
+    <Content Include="Addons\_Main\Images\Session Large.png" />
+    <Content Include="Addons\_Main\Images\Session.png" />
+    <Content Include="Addons\_Main\Images\Static Large.jpg" />
+    <Content Include="Addons\_Main\Images\Static.png" />
     <Content Include="Addons\_SiteTemplates\YetaWF_Dashboard.1.1.1.txt" />
     <Content Include="Addons\_SiteTemplates\YetaWF_Dashboard.1.0.9.txt" />
     <Content Include="Addons\_SiteTemplates\YetaWF_Dashboard.1.0.3.txt" />
+    <Content Include="Addons\_SiteTemplates\YetaWF_Dashboard.3.0.0.txt" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Addons\_Main\Grids\SessionInfoModuleController.BrowseItem" />
@@ -132,6 +156,10 @@
     <ProjectReference Include="..\..\..\DataProvider\ModuleDefinition\ModuleDefinition.csproj">
       <Project>{348F2A6B-57F5-47A3-8A46-3F44529ACD83}</Project>
       <Name>ModuleDefinition</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\DataProvider\SQL\SQL.csproj">
+      <Project>{6a90eab3-a9e4-4a2c-90d9-145859790c46}</Project>
+      <Name>SQL</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

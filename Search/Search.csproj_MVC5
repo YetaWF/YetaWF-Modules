@@ -101,6 +101,8 @@
     <Content Include="Addons\_Main\Icons\On.png" />
     <Content Include="Addons\_Main\Icons\SearchInput.png" />
     <Content Include="Addons\_Main\Icons\SearchResults.png" />
+    <Content Include="Addons\_Main\Images\Search Large.png" />
+    <Content Include="Addons\_Main\Images\Search.png" />
     <Content Include="Addons\_Main\search.css" />
     <Content Include="Addons\_Main\search.js" />
   </ItemGroup>

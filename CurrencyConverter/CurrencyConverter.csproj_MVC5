@@ -113,6 +113,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Addons\_Main\Images\" />
     <Folder Include="obj\" />
   </ItemGroup>
   <PropertyGroup>

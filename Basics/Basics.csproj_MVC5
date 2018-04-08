@@ -96,6 +96,10 @@
     <None Include="Addons\_Addons\AlertDisplay\filelistCSS.txt" />
     <Content Include="Addons\_Addons\AlertDisplay\AlertDisplay.css" />
     <None Include="Addons\_Addons\AlertDisplay\filelistJS.txt" />
+    <Content Include="Addons\_Addons\Images\Alert Large.png" />
+    <Content Include="Addons\_Addons\Images\Alert.png" />
+    <Content Include="Addons\_Addons\Images\hero-recaptcha-invisible.gif" />
+    <Content Include="Addons\_Addons\Images\RecaptchaV2.png" />
     <Content Include="Addons\_Main\Icons\Close.png" />
     <Content Include="Addons\_Main\Icons\ModuleSkinInfo.png" />
     <Content Include="Addons\_SiteTemplates\YetaWF_Basics.1.0.8.txt" />

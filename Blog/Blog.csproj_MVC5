@@ -170,6 +170,8 @@
     <None Include="Views\YetaWF_Blog_CommentsDisplay.cshtml" />
     <None Include="Views\YetaWF_Blog_Disqus.cshtml" />
     <None Include="Views\YetaWF_Blog_DisqusLinks.cshtml" />
+    <Content Include="Addons\_Main\Images\Blog Large.png" />
+    <Content Include="Addons\_Main\Images\Blog.png" />
     <Content Include="Addons\_SiteTemplates\YetaWF_Blog.1.0.8.txt" />
     <Content Include="Addons\_SiteTemplates\YetaWF_Blog.txt" />
     <None Include="Addons\_Templates\Category\filelistCSS.txt" />

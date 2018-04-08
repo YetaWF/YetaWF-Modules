@@ -1,0 +1,24 @@
+﻿@*Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Panels#License*@
+@inherits YetaWF.Modules.Panels.Views.Shared.PanelInfoHelper<YetaWF.Modules.Panels.Models.PagePanelInfo>
+@using YetaWF.Core.Modules
+@using YetaWF.Modules.Panels.Models
+<div class="yt_panels_pagepanelinfo t_display" id="@ControlId">
+    @foreach (PagePanelInfo.PanelEntry entry in Model.Panels) {
+        string caption = entry.Caption.ToString();
+        if (string.IsNullOrWhiteSpace(caption)) {
+            caption = __ResStr("emptyCaption", "(no caption - Page Title)");
+        }
+        string actionLinkClass = "yaction-link";
+        if (Model.UsePopups) {
+            actionLinkClass += " ypopup-link";
+        }
+        <div class="t_entry">
+            <div class="t_image">
+                <a class="@actionLinkClass" href="@entry.Url" data-tooltip="@entry.ToolTip.ToString()">
+                    <img src="@entry.ImageUrl" alt="@caption" title="@entry.ToolTip.ToString()" />
+                </a>
+            </div>
+            <div class="t_link"><a class="@actionLinkClass" href="@entry.Url" data-tooltip="@entry.ToolTip.ToString()">@caption</a></div>
+        </div>
+    }
+</div>

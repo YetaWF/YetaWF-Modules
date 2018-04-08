@@ -218,6 +218,8 @@
   <ItemGroup>
     <Content Include="Addons\_Main\Icons\LocalizeAllPackages.png" />
     <Content Include="Addons\_Main\Icons\LocalizePackage.png" />
+    <Content Include="Addons\_Main\Images\Localization Large.png" />
+    <Content Include="Addons\_Main\Images\Localization.png" />
     <Content Include="Addons\_Templates\LocalizeClasses\filelistCSS.txt" />
     <Content Include="Addons\_Templates\LocalizeClasses\LocalizeClasses.css" />
     <Content Include="Addons\_Templates\LocalizeEnums\filelistCSS.txt" />
