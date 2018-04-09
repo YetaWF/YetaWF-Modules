@@ -101,10 +101,11 @@ namespace YetaWF.Modules.Panels.Controllers {
         }
 
         private async Task<SerializableList<PagePanelInfo.PanelEntry>> GetPanelsAsync() {
+            //$$$ add caching based on logged on user/language
             SerializableList<PagePanelInfo.PanelEntry> list = new SerializableList<PagePanelInfo.PanelEntry>();
             foreach (string page in Module.PageList) {
                 PageDefinition pageDef = await YetaWF.Core.Pages.PageDefinition.LoadPageDefinitionByUrlAsync(page);
-                if (pageDef != null) {
+                if (pageDef != null && pageDef.IsAuthorized_View()) {
                     string imageUrl = null;
                     if (pageDef.FavIcon != null)
                         imageUrl = ImageHelper.FormatUrl(PageDefinition.ImageType, null, pageDef.FavIcon, 64, 64, Stretch: true);
@@ -116,6 +117,7 @@ namespace YetaWF.Modules.Panels.Controllers {
                         ToolTip = pageDef.Description,
                         ImageUrl = imageUrl,
                     });
+
                 }
             }
             if (!string.IsNullOrWhiteSpace(Module.PagePattern)) {
@@ -126,7 +128,7 @@ namespace YetaWF.Modules.Panels.Controllers {
                         Match m = regPages.Match(desPage.Url);
                         if (m.Success) {
                             PageDefinition pageDef = await YetaWF.Core.Pages.PageDefinition.LoadPageDefinitionAsync(desPage.PageGuid);
-                            if (pageDef != null) {
+                            if (pageDef != null && pageDef.IsAuthorized_View()) {
                                 string imageUrl = null;
                                 if (pageDef.FavIcon != null)
                                     imageUrl = ImageHelper.FormatUrl(PageDefinition.ImageType, null, pageDef.FavIcon, 64, 64, Stretch: true);

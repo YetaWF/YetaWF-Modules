@@ -10,7 +10,6 @@ using YetaWF.Modules.Menus.Views.Shared;
 #if MVC6
 using Microsoft.AspNetCore.Mvc;
 #else
-using System;
 using System.Web.Mvc;
 #endif
 

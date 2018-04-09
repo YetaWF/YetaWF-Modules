@@ -54,6 +54,7 @@ namespace YetaWF.Modules.PageEdit.Modules {
             menuList.New(await modEdit.GetAction_RemoveAsync(null), location);
 
             menuList.New(await this.GetAction_W3CValidationAsync(), location);
+            menuList.New(await this.GetAction_RestartSite(), location);
 
             menuList.AddRange(baseMenuList);
             return menuList;
@@ -111,6 +112,24 @@ namespace YetaWF.Modules.PageEdit.Modules {
                 Tooltip = this.__ResStr("modW3CValTooltip", "Use W3C Validation service to validate the current page - The page must be accessible to the remote service as an anonymous user"),
                 Legend = this.__ResStr("modW3CValLegend", "Uses the defined W3C Validation service to validate a page - The page must be accessible to the remote service as an anonymous user"),
                 Category = ModuleAction.ActionCategoryEnum.Read,
+                Mode = ModuleAction.ActionModeEnum.Any,
+                Location = ModuleAction.ActionLocationEnum.NoAuto |
+                            ModuleAction.ActionLocationEnum.MainMenu | ModuleAction.ActionLocationEnum.ModuleLinks | ModuleAction.ActionLocationEnum.ModuleMenu,
+                Style = ModuleAction.ActionStyleEnum.NewWindow,
+                DontFollow = true,
+            };
+        }
+        public async Task<ModuleAction> GetAction_RestartSite() {
+            if (!Manager.HasSuperUserRole) return null;
+            if (YetaWF.Core.Support.Startup.MultiInstance) return null;
+            return new ModuleAction(this) {
+                Url = "/$restart",
+                Image = await CustomIconAsync("RestartSite.png"),
+                LinkText = this.__ResStr("restartLink", "Restart Site"),
+                MenuText = this.__ResStr("restartText", "Restart Site"),
+                Tooltip = this.__ResStr("restartTooltip", "Restart the site immediately (IIS restart)"),
+                Legend = this.__ResStr("restartLegend", "Restarts the site immediately (IIS restart)"),
+                Category = ModuleAction.ActionCategoryEnum.Significant,
                 Mode = ModuleAction.ActionModeEnum.Any,
                 Location = ModuleAction.ActionLocationEnum.NoAuto |
                             ModuleAction.ActionLocationEnum.MainMenu | ModuleAction.ActionLocationEnum.ModuleLinks | ModuleAction.ActionLocationEnum.ModuleMenu,

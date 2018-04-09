@@ -20,17 +20,17 @@ Administrator /Admin/Config/Blog
     -
     YetaWF.Blog, YetaWF.Modules.Blog.Modules.BlogConfigModule
 
-Administrator /Admin/Blog/Categories
+Administrator /Admin/BlogCategories
     Title=Blog Categories
-    Admin > Blog > {YetaWF.Blog, YetaWF.Modules.Blog.Modules.CategoriesBrowseModule}.GetAction_Categories("/Admin/Blog/Categories")
+    -
     -
     YetaWF.Blog, YetaWF.Modules.Blog.Modules.CategoriesBrowseModule
         BrowseEntriesUrl = "/Admin/Blog/Entries"
         WantSearch = false
 
-Administrator /Admin/Blog/Entries
+Administrator /Admin/BlogEntries
     Title=Blog Entries
-    Admin > Blog > {YetaWF.Blog, YetaWF.Modules.Blog.Modules.EntriesBrowseModule}.GetAction_BrowseEntries("/Admin/Blog/Entries", 0)
+    -
     -
     YetaWF.Blog, YetaWF.Modules.Blog.Modules.EntriesBrowseModule
         WantSearch = false
