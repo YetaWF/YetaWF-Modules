@@ -31,6 +31,18 @@
                       <Value>
                         <Object Type="YetaWF.Core.Localize.LocalizationData+PropertyData" Assembly="YetaWF.Core">
                           <Properties>
+                            <Name Value="DefaultImage" />
+                            <Caption Value="Default Image" />
+                            <Description Value="The default image used when a page doesn't define its own FavIcon" />
+                            <HelpLink />
+                            <TextAbove />
+                            <TextBelow />
+                          </Properties>
+                        </Object>
+                      </Value>
+                      <Value>
+                        <Object Type="YetaWF.Core.Localize.LocalizationData+PropertyData" Assembly="YetaWF.Core">
+                          <Properties>
                             <Name Value="PageList" />
                             <Caption Value="Pages" />
                             <Description Value="Defines the pages and their order as they are displayed in the Page Panel using their FavIcons and page description" />
@@ -46,6 +58,18 @@
                             <Name Value="PagePattern" />
                             <Caption Value="Page Pattern" />
                             <Description Value="Defines a Regex pattern - all pages matching this pattern will be included in the Page Panel - for example, ^/Admin/Config/[^/]*$ would include all pages starting with /Admin/Config, but would not include their child pages" />
+                            <HelpLink />
+                            <TextAbove />
+                            <TextBelow />
+                          </Properties>
+                        </Object>
+                      </Value>
+                      <Value>
+                        <Object Type="YetaWF.Core.Localize.LocalizationData+PropertyData" Assembly="YetaWF.Core">
+                          <Properties>
+                            <Name Value="Style" />
+                            <Caption Value="Style" />
+                            <Description Value="Defines the appearance of page entries" />
                             <HelpLink />
                             <TextAbove />
                             <TextBelow />

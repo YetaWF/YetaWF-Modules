@@ -31,9 +31,21 @@
                       <Value>
                         <Object Type="YetaWF.Core.Localize.LocalizationData+PropertyData" Assembly="YetaWF.Core">
                           <Properties>
+                            <Name Value="DefaultImage" />
+                            <Caption Value="Default Image" />
+                            <Description Value="The default image used when a page doesn't define its own FavIcon" />
+                            <HelpLink />
+                            <TextAbove />
+                            <TextBelow />
+                          </Properties>
+                        </Object>
+                      </Value>
+                      <Value>
+                        <Object Type="YetaWF.Core.Localize.LocalizationData+PropertyData" Assembly="YetaWF.Core">
+                          <Properties>
                             <Name Value="PageList" />
-                            <Caption Value="Pages" />
-                            <Description Value="Defines the pages and their order as they are displayed in the Page Panel using their FavIcons and page description" />
+                            <Caption Value="Page List" />
+                            <Description Value="Defines the pages and their order as they are displayed in the Page Panel using their FavIcons and page description - Pages added to the Page List are shown ahead of pages discovered using the Page Pattern" />
                             <HelpLink />
                             <TextAbove />
                             <TextBelow />
@@ -45,7 +57,19 @@
                           <Properties>
                             <Name Value="PagePattern" />
                             <Caption Value="Page Pattern" />
-                            <Description Value="Defines a Regex pattern - all pages matching this pattern will be included in the Page Panel - for example, ^/Admin/Config/[^/]*$ would include all pages starting with /Admin/Config, but would not include their child pages" />
+                            <Description Value="Defines a Regex pattern - All pages matching this pattern will be included in the Page Panel - for example, ^/Admin/Config/[^/]*$ would include all pages starting with /Admin/Config, but would not include their child pages - Pages added to the Page List are shown ahead of pages discovered using the Page Pattern" />
+                            <HelpLink />
+                            <TextAbove />
+                            <TextBelow />
+                          </Properties>
+                        </Object>
+                      </Value>
+                      <Value>
+                        <Object Type="YetaWF.Core.Localize.LocalizationData+PropertyData" Assembly="YetaWF.Core">
+                          <Properties>
+                            <Name Value="Style" />
+                            <Caption Value="Style" />
+                            <Description Value="Defines the appearance of page entries" />
                             <HelpLink />
                             <TextAbove />
                             <TextBelow />
@@ -57,7 +81,7 @@
                           <Properties>
                             <Name Value="UsePopup" />
                             <Caption Value="Use Popups" />
-                            <Description Value="Defines whether all pages are shown as popups - otherwise full pages are shown" />
+                            <Description Value="Defines whether all pages are shown as popups, otherwise full pages are shown" />
                             <HelpLink />
                             <TextAbove />
                             <TextBelow />
@@ -76,7 +100,52 @@
     <Enums>
       <Object Type="YetaWF.Core.Serializers.SerializableList`1[[YetaWF.Core.Localize.LocalizationData+EnumData, YetaWF.Core, Culture=neutral, PublicKeyToken=null]]" Assembly="YetaWF.Core">
         <Properties />
-        <List />
+        <List>
+          <Value>
+            <Object Type="YetaWF.Core.Localize.LocalizationData+EnumData" Assembly="YetaWF.Core">
+              <Properties>
+                <Name Value="YetaWF.Modules.Panels.Modules.PagePanelModule+PanelStyleEnum" />
+                <Entries>
+                  <Object Type="YetaWF.Core.Serializers.SerializableList`1[[YetaWF.Core.Localize.LocalizationData+EnumDataEntry, YetaWF.Core, Culture=neutral, PublicKeyToken=null]]" Assembly="YetaWF.Core">
+                    <Properties />
+                    <List>
+                      <Value>
+                        <Object Type="YetaWF.Core.Localize.LocalizationData+EnumDataEntry" Assembly="YetaWF.Core">
+                          <Properties>
+                            <Name Value="Default" />
+                            <Value Value="Default" />
+                            <Caption Value="Default" />
+                            <Description Value="Displays the page FavIcon and page title in tiles, arranged horizontally, wrapping around within the available space - A large icon is used" />
+                          </Properties>
+                        </Object>
+                      </Value>
+                      <Value>
+                        <Object Type="YetaWF.Core.Localize.LocalizationData+EnumDataEntry" Assembly="YetaWF.Core">
+                          <Properties>
+                            <Name Value="SmallVertical" />
+                            <Value Value="SmallVertical" />
+                            <Caption Value="Small Vertical" />
+                            <Description Value="Displays the page FavIcon and page title as a list, arranged vertically, wrapping around within the available space - A small icon is used" />
+                          </Properties>
+                        </Object>
+                      </Value>
+                      <Value>
+                        <Object Type="YetaWF.Core.Localize.LocalizationData+EnumDataEntry" Assembly="YetaWF.Core">
+                          <Properties>
+                            <Name Value="SmallTable" />
+                            <Value Value="SmallTable" />
+                            <Caption Value="Small Table" />
+                            <Description Value="Displays the page FavIcon, page title and description as a table - A small icon is used" />
+                          </Properties>
+                        </Object>
+                      </Value>
+                    </List>
+                  </Object>
+                </Entries>
+              </Properties>
+            </Object>
+          </Value>
+        </List>
       </Object>
     </Enums>
     <Strings>
