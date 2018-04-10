@@ -7,7 +7,7 @@
 @{ 
     string notSeen = __ResStr("seen", "This message has not been seen");
     SkinImages skinImages = new SkinImages();
-    string notSeenUrl = skinImages.FindIcon_Package("NotSeen.png", AreaRegistration.CurrentPackage);
+    string notSeenUrl = await skinImages.FindIcon_PackageAsync("NotSeen.png", AreaRegistration.CurrentPackage);
 }
 <div class='yt_messenger_messages t_display' id="@DivId" style="display:none">
     <div class="t_messagearea">
