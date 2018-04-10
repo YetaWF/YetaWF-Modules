@@ -93,6 +93,7 @@
     <Content Include="Addons\_Main\filelistCSS.txt" />
     <Content Include="Addons\_Main\filelistJS.txt" />
     <Content Include="Addons\_Main\Icons\PageEdit.png" />
+    <Content Include="Addons\_Main\Icons\RestartSite.png" />
     <Content Include="Addons\_Main\Icons\W3CValidator.png" />
     <Content Include="Addons\_Main\Images\ControlPanel.png" />
     <Content Include="Addons\_Main\Images\ControlPanelLarge.png" />

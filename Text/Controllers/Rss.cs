@@ -42,7 +42,7 @@ namespace YetaWF.Modules.Text.Controllers {
             items.Add(sItem);
 
             if (mod.FeedImage != null)
-                feed.ImageUrl = new Uri(Manager.CurrentSite.MakeUrl(ImageHelper.FormatUrl(YetaWF.Core.Modules.ModuleImageSupport.ImageType, null, mod.FeedImage)));
+                feed.ImageUrl = new Uri(Manager.CurrentSite.MakeUrl(ImageHelper.FormatUrl(YetaWF.Core.Modules.ModuleImageSupport.ImageType, null, mod.FeedImage, CacheBuster:mod.DateUpdated.Ticks.ToString())));
             feed.LastUpdatedTime = mod.FeedUpdateDate ?? DateTime.MinValue;
 
             return new RssResult(feed);

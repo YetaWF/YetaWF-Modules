@@ -1,10 +1,37 @@
 @charset "UTF-8";
 /* Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Panels#License */
-.yt_panels_pagepanelinfo.t_display .t_entry {
+.yt_panels_pagepanelinfo.t_styledefault.t_display .t_entry {
   display: inline-block;
   width: 200px;
   height: 120px;
   padding: 16px 16px 16px 16px;
   text-align: center; }
-  .yt_panels_pagepanelinfo.t_display .t_entry .t_link {
+  .yt_panels_pagepanelinfo.t_styledefault.t_display .t_entry .t_link {
     font-size: smaller; }
+
+.yt_panels_pagepanelinfo.t_stylesmallvert .t_image {
+  display: inline-block;
+  padding-right: 1ch; }
+
+.yt_panels_pagepanelinfo.t_stylesmallvert .t_link {
+  display: inline-block; }
+
+.yt_panels_pagepanelinfo.t_stylesmalltable .t_entry {
+  clear: both; }
+
+.yt_panels_pagepanelinfo.t_stylesmalltable .t_image {
+  float: left;
+  display: inline-block;
+  padding-right: 1ch; }
+
+.yt_panels_pagepanelinfo.t_stylesmalltable .t_link {
+  float: left;
+  width: 30ch;
+  display: inline-block; }
+  .yt_panels_pagepanelinfo.t_stylesmalltable .t_link a {
+    white-space: normal; }
+
+.yt_panels_pagepanelinfo.t_stylesmalltable .t_desc {
+  float: none;
+  display: block;
+  overflow: hidden; }

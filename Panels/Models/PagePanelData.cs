@@ -29,5 +29,6 @@ namespace YetaWF.Modules.Panels.Models {
         public SerializableList<PanelEntry> Panels { get; set; }
 
         public bool UsePopups { get; internal set; }
+        public Modules.PagePanelModule.PanelStyleEnum Style { get; set; }
     }
 }

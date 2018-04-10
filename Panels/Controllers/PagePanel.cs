@@ -14,6 +14,7 @@ using System.Text.RegularExpressions;
 using System.Linq;
 using YetaWF.Core.Views.Shared;
 using System;
+using YetaWF.Modules.Panels.Modules;
 #if MVC6
 using Microsoft.AspNetCore.Mvc;
 #else
@@ -52,6 +53,19 @@ namespace YetaWF.Modules.Panels.Controllers {
             [UIHint("Boolean")]
             public bool UsePopup { get; set; }
 
+            [Category("General"), Caption("Style"), Description("Defines the appearance of page entries")]
+            [UIHint("Enum")]
+            public PagePanelModule.PanelStyleEnum Style { get; set; }
+
+            [Category("General"), Caption("Default Image"), Description("The default image used when a page doesn't define its own FavIcon")]
+            [UIHint("Image"), AdditionalMetadata("ImageType", ModuleImageSupport.ImageType)]
+            [AdditionalMetadata("Width", 100), AdditionalMetadata("Height", 100)]
+            [DontSave]
+            public string DefaultImage { get; set; }
+
+            [CopyAttribute]
+            public byte[] DefaultImage_Data { get; set; }
+
             [UIHint("Hidden")]
             public string Url { get; set; }
 
@@ -67,6 +81,9 @@ namespace YetaWF.Modules.Panels.Controllers {
                     PageList = Module.PageList,
                     Url = Manager.CurrentRequestUrl,
                     UsePopup = Module.UsePopup,
+                    Style = Module.Style,
+                    DefaultImage = Module.DefaultImage,
+                    DefaultImage_Data = Module.DefaultImage_Data
                 };
                 Module.DefaultViewName = ModuleDefinition.StandardViews.EditApply;
                 return View(model);
@@ -74,6 +91,7 @@ namespace YetaWF.Modules.Panels.Controllers {
                 ModelDisplay model = new ModelDisplay { };
                 model.PanelInfo = new Models.PagePanelInfo() {
                     UsePopups = Module.UsePopup,
+                    Style = Module.Style,
                     Panels = await GetPanelsAsync()
                 };
                 return View(model);
@@ -90,6 +108,9 @@ namespace YetaWF.Modules.Panels.Controllers {
             Module.PageList = model.PageList ?? new SerializableList<string>();
             Module.PagePattern = model.PagePattern;
             Module.UsePopup = model.UsePopup;
+            Module.Style = model.Style;
+            Module.DefaultImage = model.DefaultImage;
+            Module.DefaultImage_Data = Module.DefaultImage_Data;
             await Module.SaveAsync();
             model.PageList = Module.PageList;
             if (Manager.RequestForm[Globals.Link_SubmitIsApply] == null) {
@@ -104,21 +125,7 @@ namespace YetaWF.Modules.Panels.Controllers {
             //$$$ add caching based on logged on user/language
             SerializableList<PagePanelInfo.PanelEntry> list = new SerializableList<PagePanelInfo.PanelEntry>();
             foreach (string page in Module.PageList) {
-                PageDefinition pageDef = await YetaWF.Core.Pages.PageDefinition.LoadPageDefinitionByUrlAsync(page);
-                if (pageDef != null && pageDef.IsAuthorized_View()) {
-                    string imageUrl = null;
-                    if (pageDef.FavIcon != null)
-                        imageUrl = ImageHelper.FormatUrl(PageDefinition.ImageType, null, pageDef.FavIcon, 64, 64, Stretch: true);
-                    else
-                        imageUrl = ImageHelper.FormatUrl(PageDefinition.ImageType, null, Guid.Empty.ToString(), 64, 64, Stretch: true);
-                    list.Add(new PagePanelInfo.PanelEntry {
-                        Url = pageDef.EvaluatedCanonicalUrl,
-                        Caption = pageDef.Title,
-                        ToolTip = pageDef.Description,
-                        ImageUrl = imageUrl,
-                    });
-
-                }
+                AddPage(list, await YetaWF.Core.Pages.PageDefinition.LoadPageDefinitionByUrlAsync(page));
             }
             if (!string.IsNullOrWhiteSpace(Module.PagePattern)) {
                 SerializableList<PagePanelInfo.PanelEntry> listPattern = new SerializableList<PagePanelInfo.PanelEntry>();
@@ -126,22 +133,8 @@ namespace YetaWF.Modules.Panels.Controllers {
                 foreach (PageDefinition.DesignedPage desPage in await YetaWF.Core.Pages.PageDefinition.GetDesignedPagesAsync()) {
                     if (!Module.PageList.Contains(desPage.Url)) {
                         Match m = regPages.Match(desPage.Url);
-                        if (m.Success) {
-                            PageDefinition pageDef = await YetaWF.Core.Pages.PageDefinition.LoadPageDefinitionAsync(desPage.PageGuid);
-                            if (pageDef != null && pageDef.IsAuthorized_View()) {
-                                string imageUrl = null;
-                                if (pageDef.FavIcon != null)
-                                    imageUrl = ImageHelper.FormatUrl(PageDefinition.ImageType, null, pageDef.FavIcon, 64, 64, Stretch: true);
-                                else
-                                    imageUrl = ImageHelper.FormatUrl(PageDefinition.ImageType, null, Guid.Empty.ToString(), 64, 64, Stretch: true);
-                                listPattern.Add(new PagePanelInfo.PanelEntry {
-                                    Url = pageDef.EvaluatedCanonicalUrl,
-                                    Caption = pageDef.Title,
-                                    ToolTip = pageDef.Description,
-                                    ImageUrl = imageUrl,
-                                });
-                            }
-                        }
+                        if (m.Success)
+                            AddPage(listPattern, await YetaWF.Core.Pages.PageDefinition.LoadPageDefinitionAsync(desPage.PageGuid));
                     }
                 }
                 //$$$sort is language specific
@@ -149,6 +142,44 @@ namespace YetaWF.Modules.Panels.Controllers {
                 list.AddRange(listPattern);
             }
             return list;
+        }
+        private void AddPage(SerializableList<PagePanelInfo.PanelEntry> list, PageDefinition pageDef) {
+            if (pageDef != null && pageDef.IsAuthorized_View()) {
+                list.Add(new PagePanelInfo.PanelEntry {
+                    Url = pageDef.EvaluatedCanonicalUrl,
+                    Caption = pageDef.Title,
+                    ToolTip = pageDef.Description,
+                    ImageUrl = GetImage(pageDef),
+                });
+            }
+        }
+        private string GetImage(PageDefinition pageDef) {
+            string image;
+            string type;
+            if (pageDef.FavIcon != null) {
+                type = PageDefinition.ImageType;
+                image = pageDef.FavIcon;
+            } else if (Module.DefaultImage != null) {
+                type = ModuleImageSupport.ImageType;
+                image = Module.DefaultImage;
+            } else {
+                type = PageDefinition.ImageType;
+                image = Guid.Empty.ToString();
+            }
+            int size;
+            switch (Module.Style) {
+                default:
+                case PagePanelModule.PanelStyleEnum.Default:
+                    size = 64;
+                    break;
+                case PagePanelModule.PanelStyleEnum.SmallVertical:
+                    size = 16;
+                    break;
+                case PagePanelModule.PanelStyleEnum.SmallTable:
+                    size = 16;
+                    break;
+            }
+            return ImageHelper.FormatUrl(type, null, image, size, size, Stretch: true, CacheBuster: Module.DateUpdated.Ticks.ToString());
         }
     }
 }

@@ -1,9 +1,9 @@
 /* Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Panels#License */
 
 using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using YetaWF.Core.DataProvider.Attributes;
+using YetaWF.Core.Image;
 using YetaWF.Core.IO;
 using YetaWF.Core.Localize;
 using YetaWF.Core.Models.Attributes;
@@ -12,11 +12,11 @@ using YetaWF.Core.Serializers;
 using YetaWF.Core.Support;
 using YetaWF.DataProvider;
 using YetaWF.Modules.Pages.Controllers;
-using YetaWF.Modules.Panels.Controllers;
-using YetaWF.Modules.Panels.Models;
 #if MVC6
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
+#else 
+using System.Web.Mvc;
 #endif
 
 namespace YetaWF.Modules.Panels.Modules {
@@ -32,26 +32,61 @@ namespace YetaWF.Modules.Panels.Modules {
             Name = this.__ResStr("modName", "Page Panel");
             Description = this.__ResStr("modSummary", "Page Panel - used to display multiple links to pages using the pages' FavIcon");
             PageList = new SerializableList<string>();
+            DefaultImage_Data = new byte[] { };
         }
 
         public override IModuleDefinitionIO GetDataProvider() { return new PagePanelModuleDataProvider(); }
 
         public override SerializableList<AllowedRole> DefaultAllowedRoles { get { return AdministratorLevel_DefaultAllowedRoles; } }
 
-        [Category("General"), Caption("Pages"), Description("Defines the pages and their order as they are displayed in the Page Panel using their FavIcons and page description")]
+        [Category("General"), Caption("Page List"), Description("Defines the pages and their order as they are displayed in the Page Panel using their FavIcons and page description - Pages added to the Page List are shown ahead of pages discovered using the Page Pattern")]
         [UIHint("YetaWF_Pages_ListOfLocalPages")]
         [Data_Binary]
         public SerializableList<string> PageList { get; set; }
         public string PageList_AjaxUrl { get { return YetaWFManager.UrlFor(typeof(TemplateListOfLocalPagesModuleController), nameof(TemplateListOfLocalPagesModuleController.AddPage)); } }
 
-        [Category("General"), Caption("Page Pattern"), Description("Defines a Regex pattern - all pages matching this pattern will be included in the Page Panel - for example, ^/Admin/Config/[^/]*$ would include all pages starting with /Admin/Config, but would not include their child pages")]
+        [Category("General"), Caption("Page Pattern"), Description("Defines a Regex pattern - All pages matching this pattern will be included in the Page Panel - for example, ^/Admin/Config/[^/]*$ would include all pages starting with /Admin/Config, but would not include their child pages - Pages added to the Page List are shown ahead of pages discovered using the Page Pattern")]
         [UIHint("Text40"), Trim]
         [StringLength(500)]
         public string PagePattern { get; set; }
 
-        [Category("General"), Caption("Use Popups"), Description("Defines whether all pages are shown as popups - otherwise full pages are shown")]
+        [Category("General"), Caption("Use Popups"), Description("Defines whether all pages are shown as popups, otherwise full pages are shown")]
         [UIHint("Boolean")]
         public bool UsePopup { get; set; }
+
+        public enum PanelStyleEnum {
+            [EnumDescription("Default", "Displays the page FavIcon and page title in tiles, arranged horizontally, wrapping around within the available space - A large icon is used")]
+            Default = 0,
+            [EnumDescription("Small Vertical", "Displays the page FavIcon and page title as a list, arranged vertically, wrapping around within the available space - A small icon is used")]
+            SmallVertical = 1,
+            [EnumDescription("Small Table", "Displays the page FavIcon, page title and description as a table - A small icon is used")]
+            SmallTable = 2,
+        }
+        [Category("General"), Caption("Style"), Description("Defines the appearance of page entries")]
+        [UIHint("Enum")]
+        [Data_NewValue("(0)")]
+        public PanelStyleEnum Style { get; set; }
+
+        [Category("General"), Caption("Default Image"), Description("The default image used when a page doesn't define its own FavIcon")]
+        [UIHint("Image"), AdditionalMetadata("ImageType", ModuleImageSupport.ImageType)]
+        [AdditionalMetadata("Width", 100), AdditionalMetadata("Height", 100)]
+        [DontSave]
+        public string DefaultImage {
+            get {
+                if (_defaultImage == null) {
+                    if (DefaultImage_Data != null && DefaultImage_Data.Length > 0)
+                        _defaultImage = ModuleGuid.ToString() + ",DefaultImage_Data";
+                }
+                return _defaultImage;
+            }
+            set {
+                _defaultImage = value;
+            }
+        }
+        private string _defaultImage = null;
+
+        [Data_Binary, CopyAttribute]
+        public byte[] DefaultImage_Data { get; set; }
 
         public ModuleAction GetAction_Display(string url) {
             return new ModuleAction(this) {
