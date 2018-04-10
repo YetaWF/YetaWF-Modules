@@ -1,8 +1,23 @@
 ﻿@*Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Panels#License*@
 @inherits YetaWF.Modules.Panels.Views.Shared.PanelInfoHelper<YetaWF.Modules.Panels.Models.PagePanelInfo>
-@using YetaWF.Core.Modules
+@using YetaWF.Modules.Panels.Modules
 @using YetaWF.Modules.Panels.Models
-<div class="yt_panels_pagepanelinfo t_display" id="@ControlId">
+@{ 
+    string styleCss;
+    switch (Model.Style) {
+        default:
+        case PagePanelModule.PanelStyleEnum.Default:
+            styleCss = "t_styledefault";
+            break;
+        case PagePanelModule.PanelStyleEnum.SmallVertical:
+            styleCss = "t_stylesmallvert";
+            break;
+        case PagePanelModule.PanelStyleEnum.SmallTable:
+            styleCss = "t_stylesmalltable";
+            break;
+    }
+}
+<div class="yt_panels_pagepanelinfo t_display @styleCss" id="@ControlId">
     @foreach (PagePanelInfo.PanelEntry entry in Model.Panels) {
         string caption = entry.Caption.ToString();
         if (string.IsNullOrWhiteSpace(caption)) {
@@ -19,6 +34,9 @@
                 </a>
             </div>
             <div class="t_link"><a class="@actionLinkClass" href="@entry.Url" data-tooltip="@entry.ToolTip.ToString()">@caption</a></div>
+            @if (Model.Style == PagePanelModule.PanelStyleEnum.SmallTable) {
+                <div class="t_desc">@entry.ToolTip.ToString()</div>
+            }
         </div>
     }
 </div>
