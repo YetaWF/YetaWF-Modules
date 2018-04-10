@@ -122,7 +122,7 @@ namespace YetaWF.Modules.Blog.DataProvider {
                     if (cat != null)
                         canon = string.Format("{0}/Title/{1}/?BlogCategory={2}", config.BlogUrl, YetaWFManager.UrlEncodeSegment(cat.Category.ToString().Truncate(80)), blogCategory);
                 } else {
-                    canon = string.Format("{0}?BlogCategory=0", config.BlogUrl);
+                    canon = config.BlogUrl;
                 }
                 return canon;
             }

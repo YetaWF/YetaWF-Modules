@@ -35,7 +35,7 @@ namespace YetaWF.Modules.Dashboard.Controllers {
                     MenuList actions = new MenuList() { RenderMode = ModuleAction.RenderModeEnum.IconsOnly };
                     AuditDisplayModule dispMod = new AuditDisplayModule();
                     actions.New(dispMod.GetAction_Display(Module.DisplayUrl, Id), ModuleAction.ActionLocationEnum.GridLinks);
-                    actions.New(Module.GetAction_Remove(Id), ModuleAction.ActionLocationEnum.GridLinks);
+                    //actions.New(Module.GetAction_Remove(Id), ModuleAction.ActionLocationEnum.GridLinks);
                     return actions;
                 }
             }
