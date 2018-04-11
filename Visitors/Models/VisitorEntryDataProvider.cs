@@ -66,6 +66,7 @@ namespace YetaWF.Modules.Visitors.DataProvider {
 
     public interface VisitorEntryDataProviderIOMode {
         Task<VisitorEntryDataProvider.Info> GetStatsAsync();
+        Task UpdateSameIPAddressesAsync(VisitorEntry visitorEntry);
     }
 
     public class VisitorEntryDataProvider : DataProviderImpl, IInstallableModel, IInitializeApplicationStartup {
@@ -137,6 +138,10 @@ namespace YetaWF.Modules.Visitors.DataProvider {
         public async Task<Info> GetStatsAsync() {
             if (!Usable) return new VisitorEntryDataProvider.Info();
             return await DataProviderIOMode.GetStatsAsync();
+        }
+        public async Task UpdateSameIPAddressesAsync(VisitorEntry visitorEntry) {
+            // update all records that have the same IP Address
+            await DataProviderIOMode.UpdateSameIPAddressesAsync(visitorEntry);
         }
 
         // LOGGING CALLBACKS

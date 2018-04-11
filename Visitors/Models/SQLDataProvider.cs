@@ -50,6 +50,14 @@ namespace YetaWF.Modules.Visitors.DataProvider.SQL {
                 );
                 return info;
             }
+            public async Task UpdateSameIPAddressesAsync(VisitorEntry visitorEntry) {
+                string sql = $@"
+                    UPDATE {GetTableName()}
+                    SET [ContinentCode] = @p1, [CountryCode] = @p2, [RegionCode] = @p3, [City] = @p4
+                    WHERE [IPAddress] = '{visitorEntry.IPAddress}' AND [ContinentCode] = '{VisitorEntry.Unknown}'";
+
+                await base.Direct_QueryAsync(GetTableName(), sql, visitorEntry.ContinentCode, visitorEntry.CountryCode, visitorEntry.RegionCode, visitorEntry.City);
+            }
         }
     }
 }

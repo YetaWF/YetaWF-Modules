@@ -6,6 +6,7 @@ using YetaWF.Core.Models;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Support;
 using System.Threading.Tasks;
+using YetaWF.Core.Localize;
 #if MVC6
 using Microsoft.AspNetCore.Mvc;
 #else
@@ -56,6 +57,8 @@ namespace YetaWF.Modules.Visitors.Controllers {
 
             if (geoData) {
                 GeoLocation geoLocation = new GeoLocation();
+                if (geoLocation.GetRemainingRequests() <= 0)
+                    throw new Error(this.__ResStr("limitExceeded", "The current limit of geolocation requests per minute has been exceeded"));
                 GeoLocation.UserInfo info = await geoLocation.GetUserInfoAsync(ipAddress);
                 ObjectSupport.CopyData(info, model);
             }

@@ -6,7 +6,7 @@
 ::PAGE-SECTION::
 
 Administrator /Tests/Module Panels
-    Tests > {YetaWF.Panels, YetaWF.Modules.Panels.Modules.ModulePanelModule}.GetAction_Display({CURRENTURL})
+    -
     -
     YetaWF.Panels, YetaWF.Modules.Panels.Modules.ModulePanelModule
 

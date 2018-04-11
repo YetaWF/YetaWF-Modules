@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using YetaWF.Core.DataProvider;
 using YetaWF.Core.Localize;
@@ -48,31 +49,27 @@ namespace YetaWF.Modules.Visitors.Scheduler {
                 List<DataProviderFilterInfo> filters = null;
                 filters = DataProviderFilterInfo.Join(filters, new DataProviderFilterInfo { Field = "ContinentCode", Operator = "==", Value = VisitorEntry.Unknown });
                 filters = DataProviderFilterInfo.Join(filters, new DataProviderFilterInfo { Field = "AccessDateTime", Operator = "<", Value = startTime });
-                for (;;) {
-                    DataProviderGetRecords<VisitorEntry> list = await visitorEntryDP.GetItemsAsync(0, 20, null, filters);
+
+                GeoLocation geoLocation = new GeoLocation();
+                int maxRequest = geoLocation.GetRemainingRequests();
+                for (; maxRequest > 0; --maxRequest) {
+                    DataProviderGetRecords<VisitorEntry> list = await visitorEntryDP.GetItemsAsync(0, 1, null, filters);
                     if (list.Data.Count == 0) break;
-                    foreach (VisitorEntry ve in list.Data) {
-                        GeoLocation geoLocation = new GeoLocation();
-                        GeoLocation.UserInfo userInfo = await geoLocation.GetUserInfoAsync(ve.IPAddress);
-                        if (!string.IsNullOrWhiteSpace(userInfo.ContinentCode)) {
-                            ve.City = userInfo.City;
-                            ve.ContinentCode = userInfo.ContinentCode;
-                            ve.CountryCode = userInfo.CountryCode;
-                            ve.RegionCode = userInfo.RegionCode;
-                        } else {
-                            ve.City = "";
-                            ve.ContinentCode = "";
-                            ve.CountryCode = "";
-                            ve.RegionCode = "";
-                        }
-                        UpdateStatusEnum status = await visitorEntryDP.UpdateItemAsync(ve);
-                        if (status == UpdateStatusEnum.OK || status == UpdateStatusEnum.RecordDeleted) {
-                            // all is well
-                        } else {
-                            throw new InternalError($"Failed to update {nameof(VisitorEntry)} in {nameof(AddGeoLocationAsync)}");
-                        }
+                    VisitorEntry geoData = list.Data.First();
+                    GeoLocation.UserInfo userInfo = await geoLocation.GetUserInfoAsync(geoData.IPAddress);
+                    if (!string.IsNullOrWhiteSpace(userInfo.ContinentCode)) {
+                        geoData.City = userInfo.City;
+                        geoData.ContinentCode = userInfo.ContinentCode;
+                        geoData.CountryCode = userInfo.CountryCode;
+                        geoData.RegionCode = userInfo.RegionCode;
+                    } else {
+                        geoData.City = "";
+                        geoData.ContinentCode = "";
+                        geoData.CountryCode = "";
+                        geoData.RegionCode = "";
                     }
-                    overall += list.Data.Count;
+                    await visitorEntryDP.UpdateSameIPAddressesAsync(geoData);
+                    ++overall;
                 }
                 Logging.AddLog($"Updated {overall} visitor entries");
             }

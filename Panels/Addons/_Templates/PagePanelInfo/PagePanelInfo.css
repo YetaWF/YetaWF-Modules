@@ -26,7 +26,8 @@
 
 .yt_panels_pagepanelinfo.t_stylesmalltable .t_link {
   float: left;
-  width: 30ch;
+  width: 20ch;
+  padding-right: 1ch;
   display: inline-block; }
   .yt_panels_pagepanelinfo.t_stylesmalltable .t_link a {
     white-space: normal; }

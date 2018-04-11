@@ -1,1 +1,1 @@
-﻿PagePanelInfo.css
+﻿PagePanelInfo.scss

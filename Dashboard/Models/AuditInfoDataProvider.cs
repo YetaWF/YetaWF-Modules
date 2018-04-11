@@ -58,12 +58,13 @@ namespace YetaWF.Modules.Dashboard.DataProvider {
         // Startup
         // Startup
 
-        public Task InitializeApplicationStartupAsync() {
+        public async Task InitializeApplicationStartupAsync() {
             Package package = AreaRegistration.CurrentPackage;
             bool active = WebConfigHelper.GetValue<bool>(package.AreaName, "Auditing", false);
-            if (active)
-                YetaWF.Core.Audit.Auditing.AuditProvider = this;
-            return Task.CompletedTask;
+            if (active) {
+                if (await IsInstalledAsync())
+                    YetaWF.Core.Audit.Auditing.AuditProvider = this;
+            }
         }
 
         // IMPLEMENTATION
