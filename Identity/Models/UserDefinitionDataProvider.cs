@@ -254,7 +254,6 @@ namespace YetaWF.Modules.Identity.DataProvider {
         public async Task<DataProviderGetRecords<UserDefinition>> GetItemsAsync(int skip, int take, List<DataProviderSortInfo> sort, List<DataProviderFilterInfo> filters) {
             UserDefinition superuser = null;
             int origSkip = skip, origTake = take;
-            List<UserDefinition> users;
 
             using (SuperuserDefinitionDataProvider superDP = new SuperuserDefinitionDataProvider()) {
                 superuser = await superDP.GetItemAsync(filters);
@@ -283,7 +282,7 @@ namespace YetaWF.Modules.Identity.DataProvider {
             } else {
                 DataProviderGetRecords<UserDefinition> trecs = await DataProvider.GetRecordsAsync(skip, take, sort, filters);
                 userTotal = trecs.Total;
-                users = trecs.Data;
+                recs.Data = trecs.Data;
             }
             if (superuser != null)
                 recs.Data.Insert(0, superuser);
