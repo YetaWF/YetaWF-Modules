@@ -139,7 +139,16 @@
     <Strings>
       <Object Type="YetaWF.Core.Serializers.SerializableList`1[[YetaWF.Core.Localize.LocalizationData+StringData, YetaWF.Core, Culture=neutral, PublicKeyToken=null]]" Assembly="YetaWF.Core">
         <Properties />
-        <List />
+        <List>
+          <Value>
+            <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
+              <Properties>
+                <Name Value="limitExceeded" />
+                <Text Value="The current limit of geolocation requests per minute has been exceeded" />
+              </Properties>
+            </Object>
+          </Value>
+        </List>
       </Object>
     </Strings>
   </Properties>
