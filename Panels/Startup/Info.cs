@@ -12,6 +12,8 @@ namespace YetaWF.Modules.Panels.Addons {
 
     public class Info : IAddOnSupport {
 
+        public const string Resource_AllowListOfLocalPagesAjax = "YetaWF_Panels-AllowListOfLocalPagesAjax";
+
         public Task AddSupportAsync(YetaWFManager manager) {
 
             ScriptManager scripts = manager.ScriptManager;

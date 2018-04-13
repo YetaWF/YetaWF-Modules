@@ -6,7 +6,6 @@ using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Support;
 using YetaWF.Core.Serializers;
 using YetaWF.Modules.Panels.Models;
-using YetaWF.Modules.Pages.Controllers;
 using YetaWF.Core.Pages;
 using YetaWF.Core.Modules;
 using YetaWF.Core;
@@ -15,6 +14,9 @@ using System.Linq;
 using YetaWF.Core.Views.Shared;
 using System;
 using YetaWF.Modules.Panels.Modules;
+using YetaWF.Modules.Panels.Views.Shared;
+using YetaWF.Core.Models;
+using System.Collections.Generic;
 #if MVC6
 using Microsoft.AspNetCore.Mvc;
 #else
@@ -40,16 +42,16 @@ namespace YetaWF.Modules.Panels.Controllers {
         public class ModelEdit {
 
             [Caption("Pages"), Description("Defines the pages and their order as they are displayed in the Page Panel using their FavIcons and page description")]
-            [UIHint("YetaWF_Pages_ListOfLocalPages")]
-            public SerializableList<string> PageList { get; set; }
-            public string PageList_AjaxUrl { get { return YetaWFManager.UrlFor(typeof(TemplateListOfLocalPagesModuleController), nameof(TemplateListOfLocalPagesModuleController.AddPage)); } }
+            [UIHint("YetaWF_Panels_ListOfLocalPages")]
+            public SerializableList<LocalPage> PageList { get; set; }
+            public string PageList_AjaxUrl { get { return YetaWFManager.UrlFor(typeof(PagePanelModuleController), nameof(PagePanelModuleController.AddPage)); } }
 
             [Caption("Page Pattern"), Description("Defines a Regex pattern - all pages matching this pattern will be included in the Page Panel - for example, ^/Admin/Config/[^/]*$ would include all pages starting with /Admin/Config/, but would not include their child pages")]
             [UIHint("Text40"), Trim]
             [StringLength(500)]
             public string PagePattern { get; set; }
 
-            [Category("General"), Caption("Use Popups"), Description("Defines whether all pages are shown as popups - otherwise full pages are shown")]
+            [Category("General"), Caption("Use Popups"), Description("Defines whether pages added automatically using the Page Pattern field are shown as popups - otherwise full pages are shown")]
             [UIHint("Boolean")]
             public bool UsePopup { get; set; }
 
@@ -70,7 +72,7 @@ namespace YetaWF.Modules.Panels.Controllers {
             public string Url { get; set; }
 
             public ModelEdit() {
-                PageList = new SerializableList<string>();
+                PageList = new SerializableList<LocalPage>();
             }
         }
         [AllowGet]
@@ -105,7 +107,7 @@ namespace YetaWF.Modules.Panels.Controllers {
                 Module.DefaultViewName = ModuleDefinition.StandardViews.EditApply;
                 return PartialView(model);
             }
-            Module.PageList = model.PageList ?? new SerializableList<string>();
+            Module.PageList = model.PageList ?? new SerializableList<LocalPage>();
             Module.PagePattern = model.PagePattern;
             Module.UsePopup = model.UsePopup;
             Module.Style = model.Style;
@@ -121,20 +123,20 @@ namespace YetaWF.Modules.Panels.Controllers {
             return FormProcessed(model, OnClose:OnCloseEnum.ReloadPage, OnPopupClose: OnPopupCloseEnum.ReloadParentPage);
         }
 
-        private async Task<SerializableList<PagePanelInfo.PanelEntry>> GetPanelsAsync() {
+        private async Task<List<PagePanelInfo.PanelEntry>> GetPanelsAsync() {
             //$$$ add caching based on logged on user/language
-            SerializableList<PagePanelInfo.PanelEntry> list = new SerializableList<PagePanelInfo.PanelEntry>();
-            foreach (string page in Module.PageList) {
-                AddPage(list, await YetaWF.Core.Pages.PageDefinition.LoadPageDefinitionByUrlAsync(page));
+            List<PagePanelInfo.PanelEntry> list = new SerializableList<PagePanelInfo.PanelEntry>();
+            foreach (LocalPage page in Module.PageList) {
+                AddPage(list, await YetaWF.Core.Pages.PageDefinition.LoadPageDefinitionByUrlAsync(page.Url), page.Popup);
             }
             if (!string.IsNullOrWhiteSpace(Module.PagePattern)) {
                 SerializableList<PagePanelInfo.PanelEntry> listPattern = new SerializableList<PagePanelInfo.PanelEntry>();
                 Regex regPages = new Regex(Module.PagePattern);
                 foreach (PageDefinition.DesignedPage desPage in await YetaWF.Core.Pages.PageDefinition.GetDesignedPagesAsync()) {
-                    if (!Module.PageList.Contains(desPage.Url)) {
+                    if ((from p in Module.PageList where p.Url == desPage.Url select p).FirstOrDefault() == null) {
                         Match m = regPages.Match(desPage.Url);
                         if (m.Success)
-                            AddPage(listPattern, await YetaWF.Core.Pages.PageDefinition.LoadPageDefinitionAsync(desPage.PageGuid));
+                            AddPage(listPattern, await YetaWF.Core.Pages.PageDefinition.LoadPageDefinitionAsync(desPage.PageGuid), Module.UsePopup);
                     }
                 }
                 //$$$sort is language specific
@@ -143,13 +145,14 @@ namespace YetaWF.Modules.Panels.Controllers {
             }
             return list;
         }
-        private void AddPage(SerializableList<PagePanelInfo.PanelEntry> list, PageDefinition pageDef) {
+        private void AddPage(List<PagePanelInfo.PanelEntry> list, PageDefinition pageDef, bool popup) {
             if (pageDef != null && pageDef.IsAuthorized_View()) {
                 list.Add(new PagePanelInfo.PanelEntry {
                     Url = pageDef.EvaluatedCanonicalUrl,
                     Caption = pageDef.Title,
                     ToolTip = pageDef.Description,
                     ImageUrl = GetImage(pageDef),
+                    Popup = popup
                 });
             }
         }
@@ -180,6 +183,20 @@ namespace YetaWF.Modules.Panels.Controllers {
                     break;
             }
             return ImageHelper.FormatUrl(type, null, image, size, size, Stretch: true, CacheBuster: Module.DateUpdated.Ticks.ToString());
+        }
+
+        [AllowPost]
+        [ConditionalAntiForgeryToken]
+        [ExcludeDemoMode]
+        public async Task<ActionResult> AddPage(string prefix, int newRecNumber, string newValue) {
+            // Validation
+            UrlValidationAttribute attr = new UrlValidationAttribute(UrlValidationAttribute.SchemaEnum.Any, UrlHelperEx.UrlTypeEnum.Local);
+            if (!attr.IsValid(newValue))
+                throw new Error(attr.ErrorMessage);
+            // add new grid record
+            ListOfLocalPagesHelper.GridEntryEdit entry = (ListOfLocalPagesHelper.GridEntryEdit)Activator.CreateInstance(typeof(ListOfLocalPagesHelper.GridEntryEdit));
+            entry.UrlDisplay = newValue;
+            return await GridPartialViewAsync(new GridDefinition.GridEntryDefinition(prefix, newRecNumber, entry));
         }
     }
 }
