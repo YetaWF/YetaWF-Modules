@@ -24,7 +24,7 @@
             caption = __ResStr("emptyCaption", "(no caption - Page Title)");
         }
         string actionLinkClass = "yaction-link";
-        if (Model.UsePopups) {
+        if (entry.Popup) {
             actionLinkClass += " ypopup-link";
         }
         <div class="t_entry">

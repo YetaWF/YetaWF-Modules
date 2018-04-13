@@ -57,7 +57,7 @@
                           <Properties>
                             <Name Value="PagePattern" />
                             <Caption Value="Page Pattern" />
-                            <Description Value="Defines a Regex pattern - All pages matching this pattern will be included in the Page Panel - for example, ^/Admin/Config/[^/]*$ would include all pages starting with /Admin/Config, but would not include their child pages - Pages added to the Page List are shown ahead of pages discovered using the Page Pattern" />
+                            <Description Value="Defines a Regex pattern - All pages matching this pattern will be included in the Page Panel - for example, ^/Admin/Config/[^/]*$ would include all pages starting with /Admin/Config/, but would not include their child pages - Pages added to the Page List are shown ahead of pages discovered using the Page Pattern" />
                             <HelpLink />
                             <TextAbove />
                             <TextBelow />
@@ -81,7 +81,7 @@
                           <Properties>
                             <Name Value="UsePopup" />
                             <Caption Value="Use Popups" />
-                            <Description Value="Defines whether all pages are shown as popups, otherwise full pages are shown" />
+                            <Description Value="Defines whether pages added automatically using the Page Pattern field are shown as popups - otherwise full pages are shown" />
                             <HelpLink />
                             <TextAbove />
                             <TextBelow />
