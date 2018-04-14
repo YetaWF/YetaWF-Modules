@@ -1,22 +1,24 @@
 /* Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Panels#License */
 
-using System.Threading.Tasks;
-using YetaWF.Core.Controllers;
-using YetaWF.Core.Models.Attributes;
-using YetaWF.Core.Support;
-using YetaWF.Core.Serializers;
-using YetaWF.Modules.Panels.Models;
-using YetaWF.Core.Pages;
-using YetaWF.Core.Modules;
-using YetaWF.Core;
-using System.Text.RegularExpressions;
-using System.Linq;
-using YetaWF.Core.Views.Shared;
 using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text.RegularExpressions;
+using System.Threading.Tasks;
+using YetaWF.Core;
+using YetaWF.Core.Controllers;
+using YetaWF.Core.IO;
+using YetaWF.Core.Models;
+using YetaWF.Core.Models.Attributes;
+using YetaWF.Core.Modules;
+using YetaWF.Core.Packages;
+using YetaWF.Core.Pages;
+using YetaWF.Core.Serializers;
+using YetaWF.Core.Support;
+using YetaWF.Core.Views.Shared;
+using YetaWF.Modules.Panels.Models;
 using YetaWF.Modules.Panels.Modules;
 using YetaWF.Modules.Panels.Views.Shared;
-using YetaWF.Core.Models;
-using System.Collections.Generic;
 #if MVC6
 using Microsoft.AspNetCore.Mvc;
 #else
@@ -124,26 +126,33 @@ namespace YetaWF.Modules.Panels.Controllers {
         }
 
         private async Task<List<PagePanelInfo.PanelEntry>> GetPanelsAsync() {
-            //$$$ add caching based on logged on user/language
-            List<PagePanelInfo.PanelEntry> list = new SerializableList<PagePanelInfo.PanelEntry>();
-            foreach (LocalPage page in Module.PageList) {
-                AddPage(list, await YetaWF.Core.Pages.PageDefinition.LoadPageDefinitionByUrlAsync(page.Url), page.Popup);
-            }
-            if (!string.IsNullOrWhiteSpace(Module.PagePattern)) {
-                SerializableList<PagePanelInfo.PanelEntry> listPattern = new SerializableList<PagePanelInfo.PanelEntry>();
-                Regex regPages = new Regex(Module.PagePattern);
-                foreach (PageDefinition.DesignedPage desPage in await YetaWF.Core.Pages.PageDefinition.GetDesignedPagesAsync()) {
-                    if ((from p in Module.PageList where p.Url == desPage.Url select p).FirstOrDefault() == null) {
-                        Match m = regPages.Match(desPage.Url);
-                        if (m.Success)
-                            AddPage(listPattern, await YetaWF.Core.Pages.PageDefinition.LoadPageDefinitionAsync(desPage.PageGuid), Module.UsePopup);
-                    }
+            SavedCacheInfo info = GetCache(Module.ModuleGuid);
+            if (info == null || info.UserId != Manager.UserId || info.Language != Manager.UserLanguage) {
+                List<PagePanelInfo.PanelEntry> list = new SerializableList<PagePanelInfo.PanelEntry>();
+                foreach (LocalPage page in Module.PageList) {
+                    AddPage(list, await YetaWF.Core.Pages.PageDefinition.LoadPageDefinitionByUrlAsync(page.Url), page.Popup);
                 }
-                //$$$sort is language specific
-                listPattern = new SerializableList<PagePanelInfo.PanelEntry>(listPattern.OrderBy((m) => m.Caption.ToString()).ToList());
-                list.AddRange(listPattern);
+                if (!string.IsNullOrWhiteSpace(Module.PagePattern)) {
+                    SerializableList<PagePanelInfo.PanelEntry> listPattern = new SerializableList<PagePanelInfo.PanelEntry>();
+                    Regex regPages = new Regex(Module.PagePattern);
+                    foreach (PageDefinition.DesignedPage desPage in await YetaWF.Core.Pages.PageDefinition.GetDesignedPagesAsync()) {
+                        if ((from p in Module.PageList where p.Url == desPage.Url select p).FirstOrDefault() == null) {
+                            Match m = regPages.Match(desPage.Url);
+                            if (m.Success)
+                                AddPage(listPattern, await YetaWF.Core.Pages.PageDefinition.LoadPageDefinitionAsync(desPage.PageGuid), Module.UsePopup);
+                        }
+                    }
+                    listPattern = new SerializableList<PagePanelInfo.PanelEntry>(listPattern.OrderBy((m) => m.Caption.ToString()).ToList());
+                    list.AddRange(listPattern);
+                }
+                info = new SavedCacheInfo {
+                    PanelEntries = list,
+                    Language = Manager.UserLanguage,
+                    UserId = Manager.UserId,
+                };
+                SetCache(Module.ModuleGuid, info);
             }
-            return list;
+            return info.PanelEntries;
         }
         private void AddPage(List<PagePanelInfo.PanelEntry> list, PageDefinition pageDef, bool popup) {
             if (pageDef != null && pageDef.IsAuthorized_View()) {
@@ -183,6 +192,38 @@ namespace YetaWF.Modules.Panels.Controllers {
                     break;
             }
             return ImageHelper.FormatUrl(type, null, image, size, size, Stretch: true, CacheBuster: Module.DateUpdated.Ticks.ToString());
+        }
+
+        // Panel Cache
+        public class SavedCacheInfo {
+            public List<PagePanelInfo.PanelEntry> PanelEntries { get; set; }
+            public string Language { get; set; }
+            public int UserId { get; set; }
+            public DateTime Created { get; set; }
+            public SavedCacheInfo() {
+                Created = DateTime.UtcNow;
+            }
+        }
+        private string GetCacheName(Guid moduleGuid) {
+            Package package = YetaWF.Core.Controllers.AreaRegistration.CurrentPackage;
+            return string.Format("{0}_PagePanelCache_{1}_{2}", package.AreaName, Manager.CurrentSite.Identity, moduleGuid);
+        }
+        public SavedCacheInfo GetCache(Guid moduleGuid) {
+            if (!Manager.Deployed) return null;
+            SessionStateIO<SavedCacheInfo> session = new SessionStateIO<SavedCacheInfo> {
+                Key = GetCacheName(moduleGuid)
+            };
+            SavedCacheInfo info = session.Load();
+            if (info.Created < DateTime.UtcNow.AddMinutes(-5)) return null;
+            return info;
+        }
+        public void SetCache(Guid moduleGuid, SavedCacheInfo cacheInfo) {
+            if (!Manager.Deployed) return;
+            SessionStateIO<SavedCacheInfo> session = new SessionStateIO<SavedCacheInfo> {
+                Key = GetCacheName(moduleGuid),
+                Data = cacheInfo,
+            };
+            session.Save();
         }
 
         [AllowPost]
