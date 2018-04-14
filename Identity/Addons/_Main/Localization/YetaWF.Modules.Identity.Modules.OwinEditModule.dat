@@ -79,7 +79,7 @@
             <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
               <Properties>
                 <Name Value="restartOnSubmit" />
-                <Text Value="When saving these settings, the site (including all instances) must be restarted." />
+                <Text Value="When saving these settings, the site (and all instances) must be restarted for the new settings to take effect." />
               </Properties>
             </Object>
           </Value>
