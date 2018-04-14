@@ -60,7 +60,7 @@ namespace YetaWF.Modules.SiteProperties.Controllers {
                 case ObjectSupport.ModelDisposition.None:
                     return FormProcessed(model, this.__ResStr("okSaved", "Site settings updated"));
                 case ObjectSupport.ModelDisposition.PageReload:
-                    return FormProcessed(model, this.__ResStr("okSaved", "Site settings updated"), OnClose: OnCloseEnum.ReloadPage, OnPopupClose: OnPopupCloseEnum.ReloadParentPage);
+                    return FormProcessed(model, this.__ResStr("okSaved", "Site settings updated"), OnClose: OnCloseEnum.ReloadPage, OnPopupClose: OnPopupCloseEnum.ReloadParentPage, ForceRedirect: true);
                 case ObjectSupport.ModelDisposition.SiteRestart:
                     return FormProcessed(model, this.__ResStr("okSavedRestart", "Site settings updated - These settings won't take effect until the site is restarted"));
             }

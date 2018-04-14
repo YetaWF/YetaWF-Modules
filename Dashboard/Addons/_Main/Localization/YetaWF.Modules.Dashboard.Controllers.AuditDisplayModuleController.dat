@@ -179,14 +179,6 @@
           <Value>
             <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
               <Properties>
-                <Name Value="modTitle" />
-                <Text Value="Audit Info &quot;{0}&quot;" />
-              </Properties>
-            </Object>
-          </Value>
-          <Value>
-            <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
-              <Properties>
                 <Name Value="notFound" />
                 <Text Value="Audit Info &quot;{0}&quot; not found" />
               </Properties>

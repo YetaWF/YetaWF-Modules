@@ -12,6 +12,7 @@ using YetaWF.DataProvider;
 using YetaWF.Core.Support;
 using YetaWF.Modules.Visitors.Controllers;
 using System.Collections.Generic;
+using YetaWF.Modules.Visitors.DataProvider;
 #if MVC6
 #else
 using System.Web.Mvc;
@@ -65,6 +66,9 @@ namespace YetaWF.Modules.Visitors.Modules {
         }
         public ModuleAction GetAction_UpdateGeoLocation() {
             if (!IsAuthorized("UpdateGeoLocation")) return null;
+            using (VisitorEntryDataProvider visitorDP = new VisitorEntryDataProvider()) {
+                if (!visitorDP.Usable) return null;
+            }
             return new ModuleAction(this) {
                 Url = YetaWFManager.UrlFor(typeof(VisitorsModuleController), nameof(VisitorsModuleController.UpdateGeoLocation)),
                 NeedsModuleContext = true,

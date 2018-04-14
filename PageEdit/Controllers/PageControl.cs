@@ -372,7 +372,7 @@ namespace YetaWF.Modules.PageEdit.Controllers {
                     return FormProcessed(model, this.__ResStr("okSaved", "Site settings updated"));
                 case ObjectSupport.ModelDisposition.PageReload:
                     await site.SaveAsync();
-                    return FormProcessed(model, this.__ResStr("okSaved", "Site settings updated"), OnClose: OnCloseEnum.ReloadPage, OnPopupClose: OnPopupCloseEnum.ReloadParentPage);
+                    return FormProcessed(model, this.__ResStr("okSaved", "Site settings updated"), OnClose: OnCloseEnum.ReloadPage, OnPopupClose: OnPopupCloseEnum.ReloadParentPage, ForceRedirect: true);
                 case ObjectSupport.ModelDisposition.SiteRestart:
                     await site.SaveAsync();
                     return FormProcessed(model, this.__ResStr("okSavedRestart", "Site settings updated - These settings won't take effect until the site is restarted"));

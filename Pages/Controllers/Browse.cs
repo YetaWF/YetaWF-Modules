@@ -189,10 +189,10 @@ namespace YetaWF.Modules.Pages.Controllers {
         [Permission("SetAuthorization")]
         [ExcludeDemoMode]
         public async Task<ActionResult> UpdateAdminAndEditorAuthorization() {
-            using (PageDefinitionDataProvider dataProvider = new PageDefinitionDataProvider()) {
+            using (PageDefinitionDataProvider pageDP = new PageDefinitionDataProvider()) {
                 int adminRole = Resource.ResourceAccess.GetAdministratorRoleId();
                 int editorRole = Resource.ResourceAccess.GetEditorRoleId();
-                DataProviderGetRecords<PageDefinition> pages = await dataProvider.GetItemsAsync(0, 0, null, null);
+                DataProviderGetRecords<PageDefinition> pages = await pageDP.GetItemsAsync(0, 0, null, null);
                 foreach (PageDefinition genericPage in pages.Data) {
                     PageDefinition page = await PageDefinition.LoadAsync(genericPage.PageGuid);
                     if (page != null) {

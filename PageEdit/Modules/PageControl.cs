@@ -44,14 +44,14 @@ namespace YetaWF.Modules.PageEdit.Modules {
 
         public override async Task<MenuList> GetModuleMenuListAsync(ModuleAction.RenderModeEnum renderMode, ModuleAction.ActionLocationEnum location) {
             MenuList baseMenuList = await base.GetModuleMenuListAsync(renderMode, location);
-
             MenuList menuList = new MenuList();
-            menuList.New(this.GetAction_SwitchToView(), location);
-            menuList.New(this.GetAction_SwitchToEdit(), location);
 
             PageEditModule modEdit = new PageEditModule();
             menuList.New(modEdit.GetAction_Edit(null), location);
             menuList.New(await modEdit.GetAction_RemoveAsync(null), location);
+
+            menuList.New(this.GetAction_SwitchToView(), location);
+            menuList.New(this.GetAction_SwitchToEdit(), location);
 
             menuList.New(await this.GetAction_W3CValidationAsync(), location);
             menuList.New(await this.GetAction_RestartSite(), location);

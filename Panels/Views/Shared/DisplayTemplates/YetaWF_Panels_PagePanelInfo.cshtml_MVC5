@@ -2,6 +2,7 @@
 @inherits YetaWF.Modules.Panels.Views.Shared.PanelInfoHelper<YetaWF.Modules.Panels.Models.PagePanelInfo>
 @using YetaWF.Modules.Panels.Modules
 @using YetaWF.Modules.Panels.Models
+@using YetaWF.Core.Addons
 @{ 
     string styleCss;
     switch (Model.Style) {
@@ -29,11 +30,11 @@
         }
         <div class="t_entry">
             <div class="t_image">
-                <a class="@actionLinkClass" href="@entry.Url" data-tooltip="@entry.ToolTip.ToString()">
+                <a class="@actionLinkClass" @Basics.CssSaveReturnUrl="" href="@entry.Url" data-tooltip="@entry.ToolTip.ToString()">
                     <img src="@entry.ImageUrl" alt="@caption" title="@entry.ToolTip.ToString()" />
                 </a>
             </div>
-            <div class="t_link"><a class="@actionLinkClass" href="@entry.Url" data-tooltip="@entry.ToolTip.ToString()">@caption</a></div>
+            <div class="t_link"><a class="@actionLinkClass" @Basics.CssSaveReturnUrl="" href="@entry.Url" data-tooltip="@entry.ToolTip.ToString()">@caption</a></div>
             @if (Model.Style == PagePanelModule.PanelStyleEnum.SmallTable) {
                 <div class="t_desc">@entry.ToolTip.ToString()</div>
             }

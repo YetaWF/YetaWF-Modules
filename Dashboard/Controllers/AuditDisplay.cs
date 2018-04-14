@@ -76,7 +76,6 @@ namespace YetaWF.Modules.Dashboard.Controllers {
                     throw new Error(this.__ResStr("notFound", "Audit Info \"{0}\" not found"), id);
                 DisplayModel model = new DisplayModel();
                 model.SetData(data);
-                Module.Title = this.__ResStr("modTitle", "Audit Info \"{0}\"", id);
                 return View(model);
             }
         }

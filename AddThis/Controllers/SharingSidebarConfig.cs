@@ -60,7 +60,7 @@ namespace YetaWF.Modules.AddThis.Controllers {
                 data = model.GetData(data); // merge new data into original
                 model.SetData(data); // and all the data back into model for final display
                 await dataProvider.UpdateConfigAsync(data);
-                return FormProcessed(model, this.__ResStr("okSaved", "Configuration Settings saved"), NextPage: Manager.ReturnToUrl);
+                return FormProcessed(model, this.__ResStr("okSaved", "Configuration Settings saved"));
             }
         }
     }
