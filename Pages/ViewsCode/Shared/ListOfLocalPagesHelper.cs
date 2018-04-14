@@ -114,7 +114,7 @@ namespace YetaWF.Modules.Pages.Views.Shared {
             hb.Append("<div class='t_newvalue'>");
             hb.Append(await htmlHelper.ExtLabelForAsync(m => newModel.NewValue, "NewValue"));
             hb.Append(htmlHelper.EditorFor(m => newModel.NewValue, "Url", "NewValue"));
-            hb.Append("<input name='btnAdd' type='button' value='Add' data-ajaxurl='{0}' />", YetaWFManager.JserEncode(ajaxUrl));
+            hb.Append("<input name='btnAdd' type='button' value='Add' data-ajaxurl='{0}' />", YetaWFManager.HtmlAttributeEncode(ajaxUrl));
             hb.Append("</div>");
 
             return hb.ToHtmlString();

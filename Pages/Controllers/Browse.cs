@@ -266,13 +266,11 @@ namespace YetaWF.Modules.Pages.Controllers {
 #endif
 
             string contentType = "application/octet-stream";
-#if MVC6
-            //$$$$
-#else
+
             byte[] btes = Encoding.UTF8.GetBytes(list);
             FileContentResult result = new FileContentResult(btes, contentType);
             result.FileDownloadName = "FileList.txt";
-#endif
+
             return result;
         }
     }
