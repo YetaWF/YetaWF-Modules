@@ -65,8 +65,10 @@ namespace YetaWF.Modules.SiteProperties.Modules {
                 return Manager.CurrentSite;
             }
         }
-        public async Task InitCompleteAsync() {
-            await Manager.CurrentSite.SaveAsync();
+        public void InitComplete() {
+            YetaWFManager.Syncify(async () => { // Runs only during installation
+                await Manager.CurrentSite.SaveAsync();
+            });
         }
     }
 }

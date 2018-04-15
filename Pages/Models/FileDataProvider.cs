@@ -25,7 +25,7 @@ namespace YetaWF.Modules.Pages.DataProvider.File {
 
             public async Task<DesignedPagesDictionaryByUrl> GetDesignedPagesAsync() {
                 DesignedPagesDictionaryByUrl byUrl = new DesignedPagesDictionaryByUrl();
-                List<Guid> pageGuids = await FileDataProvider<Guid, PageDefinition>.GetListOfKeysAsync(BaseFolder);
+                List<Guid> pageGuids = await GetListOfKeysAsync(BaseFolder);
                 foreach (var pageGuid in pageGuids) {
                     PageDefinition page = await GetAsync(pageGuid);
                     if (page == null)

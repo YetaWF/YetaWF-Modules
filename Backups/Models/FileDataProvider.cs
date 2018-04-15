@@ -30,7 +30,7 @@ namespace YetaWF.Modules.Backups.DataProvider.File {
             internal async Task<DataProviderGetRecords<BackupEntry>> GetBackupsAsync(int skip, int take, List<DataProviderSortInfo> sorts, List<DataProviderFilterInfo> filters) {
 
                 List<BackupEntry> backups = new List<BackupEntry>();
-                List<string> files = await FileDataProvider<string, BackupEntry>.GetListOfKeysAsync(BaseFolder);
+                List<string> files = await GetListOfKeysAsync(BaseFolder);
                 foreach (string file in files) {
                     DateTime dateTime;
                     string filename = Path.GetFileNameWithoutExtension(file);
