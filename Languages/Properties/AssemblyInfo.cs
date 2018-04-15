@@ -15,7 +15,7 @@ using YetaWF.PackageAttributes;
 [assembly: AssemblyCulture("")]
 [assembly: ComVisible(false)]
 
-[assembly: AssemblyVersion("2.8.0.0")]
+[assembly: AssemblyVersion("3.0.0.0")]
 
 [assembly: ServiceLevel(ServiceLevelEnum.LowLevelServiceProvider)]
 

@@ -15,7 +15,7 @@ using YetaWF.Core.Packages;
 [assembly: AssemblyCulture("")]
 [assembly: ComVisible(false)]
 
-[assembly: AssemblyVersion("2.8.0.0")]
+[assembly: AssemblyVersion("3.0.0.0")]
 
 [assembly: Package(PackageTypeEnum.Module, "YetaWF")]
 [assembly: PackageInfo("https://YetaWF.com/UpdateServer",
