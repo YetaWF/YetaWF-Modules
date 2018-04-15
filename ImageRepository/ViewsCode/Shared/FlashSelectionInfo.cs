@@ -123,7 +123,8 @@ namespace YetaWF.Modules.ImageRepository.Views.Shared {
             return files;
         }
         public string MakeFlashUrl(string filename) {
-            return ImageHelper.FormatUrl(FlashSupport.FlashType, string.Format("{0},{1},{2}", FolderGuid.ToString(), SubFolder, FileType), filename);
+            // always defeat browser caching for image selection
+            return ImageHelper.FormatUrl(FlashSupport.FlashType, string.Format("{0},{1},{2}", FolderGuid.ToString(), SubFolder, FileType), filename, CacheBuster: DateTime.UtcNow.Ticks.ToString());
         }
     }
 }

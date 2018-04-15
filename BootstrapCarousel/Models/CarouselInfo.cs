@@ -69,7 +69,6 @@ namespace YetaWF.Modules.BootstrapCarousel.Models {
             }
 
             public CarouselItem() {
-                Image_Guid = Guid.NewGuid();
                 CompleteCaption = new MultiString();
             }
         }

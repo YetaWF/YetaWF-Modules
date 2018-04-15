@@ -142,7 +142,8 @@ namespace YetaWF.Modules.ImageRepository.Views.Shared {
             return files;
         }
         public string MakeImageUrl(string filename, int width = 0, int height = 0) {
-            return ImageHelper.FormatUrl(ImageSupport.ImageType, string.Format("{0},{1},{2}", FolderGuid.ToString(), SubFolder, FileType), filename, width, height);
+            // always defeat browser caching for image selection
+            return ImageHelper.FormatUrl(ImageSupport.ImageType, string.Format("{0},{1},{2}", FolderGuid.ToString(), SubFolder, FileType), filename, width, height, CacheBuster: DateTime.UtcNow.Ticks.ToString());
         }
     }
 }

@@ -134,8 +134,6 @@ namespace YetaWF.Modules.SlideShow.Models {
             public int CaptionHeight { get; set; }
 
             public SlideInfo() {
-                Image_Guid = Guid.NewGuid();
-                ThumbnailImage_Guid = Guid.NewGuid();
                 ImageTransition = TransitionHelper.Transition.DEFAULT;
                 CaptionTransitionIn = CaptionTransitionHelper.CaptionTransition.DEFAULT;
                 CaptionTransitionOut = CaptionTransitionHelper.CaptionTransition.DEFAULT;

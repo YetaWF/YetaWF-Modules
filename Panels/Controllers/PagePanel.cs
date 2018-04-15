@@ -191,7 +191,7 @@ namespace YetaWF.Modules.Panels.Controllers {
                     size = 16;
                     break;
             }
-            return ImageHelper.FormatUrl(type, null, image, size, size, Stretch: true, CacheBuster: Module.DateUpdated.Ticks.ToString());
+            return ImageHelper.FormatUrl(type, null, image, size, size, Stretch: true);
         }
 
         // Panel Cache
