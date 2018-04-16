@@ -173,8 +173,8 @@ namespace YetaWF.Modules.Identity.DataProvider {
             if (roleName == Globals.Role_Superuser)
                 return RoleDefinitionDataProvider.SuperUserId;
             List<RoleDefinition> roles = GetAllUserRoles();
-            RoleDefinition role = (from RoleDefinition r in roles where r.Name == Globals.Role_Editor select r).FirstOrDefault();
-            if (role == null) throw new InternalError($"Required role {Globals.Role_Editor} not found");
+            RoleDefinition role = (from RoleDefinition r in roles where r.Name == roleName select r).FirstOrDefault();
+            if (role == null) throw new InternalError($"Required role {roleName} not found");
             return role.RoleId;
         }
         public bool IsPredefinedRole(string role) {
