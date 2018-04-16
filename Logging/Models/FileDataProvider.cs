@@ -91,15 +91,17 @@ namespace YetaWF.Modules.Logging.DataProvider.File {
         public override Task<bool> RemoveItemAsync(int key) {
             throw new NotImplementedException();
         }
-
         public override Task<DataProviderGetRecords<LogRecord>> GetItemsAsync(List<DataProviderFilterInfo> filters) {
             throw new NotImplementedException();
         }
         public override Task<DataProviderGetRecords<LogRecord>> GetItemsAsync(int skip, int take, List<DataProviderSortInfo> sort, List<DataProviderFilterInfo> filters) {
             throw new NotImplementedException();
         }
-        public override Task<int> RemoveItemsAsync(List<DataProviderFilterInfo> filters) {
-            throw new NotImplementedException();
+        public override async Task<int> RemoveItemsAsync(List<DataProviderFilterInfo> filters) {
+            try {
+                await FileSystem.FileSystemProvider.DeleteFileAsync(LogFile);
+            } catch (Exception) { }
+            return 0;
         }
 
         public override string LoggerName { get { return "Flat File (synchronous I/O)"; } }
@@ -107,6 +109,7 @@ namespace YetaWF.Modules.Logging.DataProvider.File {
         public override bool CanImportOrExport { get { return false; } }
         public override bool CanRemove { get { return true; } }
         public override bool CanDownload { get { return true; } }
+        public override string GetLogFileName() { return LogFile; }
 
         // IINSTALLABLEMODEL
         // IINSTALLABLEMODEL
@@ -114,7 +117,7 @@ namespace YetaWF.Modules.Logging.DataProvider.File {
 
         public override Task<bool> IsInstalledAsync() {
             if (YetaWF.Core.Log.Logging.DefinedLoggerType != typeof(LogRecordDataProvider)) return Task.FromResult(false);
-            return Task.FromResult(_isInstalled != null);
+            return Task.FromResult(true);
         }
         public async Task<bool> InstallModelAsync(List<string> errorList) {
             if (YetaWF.Core.Log.Logging.DefinedLoggerType != typeof(LogRecordDataProvider)) return true;
