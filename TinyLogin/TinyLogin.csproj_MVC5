@@ -10,7 +10,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>YetaWF.Modules.TinyLogin</RootNamespace>
     <AssemblyName>YetaWF.TinyLogin</AssemblyName>
-    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.7.1</TargetFrameworkVersion>
     <MvcBuildViews>false</MvcBuildViews>
     <TargetFrameworkProfile />
     <NuGetPackageImportStamp>e1f631f3</NuGetPackageImportStamp>

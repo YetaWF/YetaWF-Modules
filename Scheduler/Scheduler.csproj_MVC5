@@ -12,7 +12,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>YetaWF.Modules.Scheduler</RootNamespace>
     <AssemblyName>YetaWF.Scheduler</AssemblyName>
-    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.7.1</TargetFrameworkVersion>
     <MvcBuildViews>false</MvcBuildViews>
     <NuGetPackageImportStamp>d342c542</NuGetPackageImportStamp>
     <TargetFrameworkProfile />
