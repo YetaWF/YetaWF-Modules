@@ -36,7 +36,6 @@ namespace YetaWF.Modules.Search.DataProvider {
 
                 string s = searchTerms;
                 BuildNodesInfo urls = await BuildNodesAsync(searchDP, s, languageId, haveUser, extraFilters);
-                s = urls.Search;
 
                 List<DataProvider.SearchResult> results = (from u in urls.Data group u by u.SearchDataUrlId into g select new SearchResult {
                     Count = g.Sum(x => x.Count),
@@ -128,7 +127,9 @@ namespace YetaWF.Modules.Search.DataProvider {
                             filters = DataProviderFilterInfo.Join(filters, new DataProviderFilterInfo { Field = "SearchTerm", Operator = "StartsWith", Value = token });
                         } else
                             filters = DataProviderFilterInfo.Join(filters, new DataProviderFilterInfo { Field = "SearchTerm", Operator = "==", Value = token });
+                        list = new BuildNodesInfo { Search = search };
                         list.Data = (await searchDP.GetItemsWithUrlAsync(0, 0, null, filters)).Data;
+                        search = list.Search;
                     }
                 }
             }
