@@ -7,14 +7,16 @@
 
 Administrator /Admin/Config/Search
     Title=Search Settings
-    Admin > Configuration > {YetaWF.Search, YetaWF.Modules.Search.Modules.SearchConfigModule}.GetAction_Edit("/Admin/Config/Search")
+	Description=Defines search settings, length of search keywords, Urls
+    -
     -
     YetaWF.Search, YetaWF.Modules.Search.Modules.SearchConfigModule
        UpdateConfigProperty("ResultsUrl", "/SearchResults")
 
 Administrator /Admin/Search
     Title=Search Keywords
-    Admin > {YetaWF.Search, YetaWF.Modules.Search.Modules.SearchBrowseModule}.GetAction_Items("/Admin/Search")
+	Description=Search keyword management and collection
+    -
     -
     YetaWF.Search, YetaWF.Modules.Search.Modules.SearchBrowseModule
 
