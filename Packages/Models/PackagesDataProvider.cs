@@ -13,6 +13,7 @@ using YetaWF.Core.Packages;
 using YetaWF.Core.Site;
 using YetaWF.Core.Support;
 using YetaWF.Core.IO;
+using YetaWF.Core;
 
 namespace YetaWF.Modules.Packages.DataProvider {
     // not a real data provider - used to clear/create all package data and initial web pages
@@ -51,7 +52,16 @@ namespace YetaWF.Modules.Packages.DataProvider {
         // INITALL
 
         public static string LogFile {
-            get { return Path.Combine(YetaWFManager.DataFolder, "InitialInstall.txt"); }
+            get {
+                string rootFolder;
+#if MVC6
+                rootFolder = YetaWFManager.RootFolderWebProject;
+#else
+                rootFolder = YetaWFManager.RootFolder;
+#endif
+                string folder = Path.Combine(rootFolder, Globals.DataFolder);
+                return Path.Combine(folder, "InitialInstall.txt");
+            }
         }
 
         /// <summary>
@@ -65,7 +75,7 @@ namespace YetaWF.Modules.Packages.DataProvider {
             if (YetaWF.Core.Support.Startup.MultiInstance) throw new InternalError("Installing packages is not possible when distributed caching is enabled");
 
             InitialSiteLogging log = new InitialSiteLogging(LogFile);
-            Logging.RegisterLogging(log);
+            await Logging.RegisterLoggingAsync(log);
 
             Logging.AddLog("Site initialization starting");
 

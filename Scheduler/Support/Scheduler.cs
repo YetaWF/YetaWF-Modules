@@ -126,7 +126,7 @@ namespace YetaWF.Modules.Scheduler.Support {
                 SchedulerLog = new SchedulerLogging();
                 SchedulerLog.Init();
                 SchedulerLog.LimitTo(YetaWFManager.Manager);
-                Logging.RegisterLogging(SchedulerLog);
+                await Logging.RegisterLoggingAsync(SchedulerLog);
 
                 Logging.AddTraceLog("Scheduler task started");
 
