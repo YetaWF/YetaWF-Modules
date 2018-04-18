@@ -135,10 +135,8 @@ namespace YetaWF.Modules.Identity.DataProvider {
                     Logging.AddErrorLog("Authenticated user {0} doesn't exist", userName);
 #if DEBUG
                     //throw new InternalError("Authenticated user doesn't exist");
-                    return;
-#else
-                    return;
 #endif
+                    return;
                 }
                 // Check whether user needs to set up two-step authentication
                 // External login providers don't require local two-step authentication (should be offered by external login provider)
