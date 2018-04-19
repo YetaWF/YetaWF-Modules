@@ -16,7 +16,7 @@
 #yPageControlDiv {
     position:absolute;
     z-index:1510;
-    right: 1ch;
+    left: 1ch;
     top: 260px;
 }
 #yPageControlMod {

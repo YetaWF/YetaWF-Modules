@@ -136,9 +136,9 @@ namespace YetaWF.Modules.Panels.Controllers {
                     SerializableList<PagePanelInfo.PanelEntry> listPattern = new SerializableList<PagePanelInfo.PanelEntry>();
                     Regex regPages = new Regex(Module.PagePattern);
                     foreach (PageDefinition.DesignedPage desPage in await YetaWF.Core.Pages.PageDefinition.GetDesignedPagesAsync()) {
-                        if ((from p in Module.PageList where p.Url == desPage.Url select p).FirstOrDefault() == null) {
-                            Match m = regPages.Match(desPage.Url);
-                            if (m.Success)
+                        Match m = regPages.Match(desPage.Url);
+                        if (m.Success) {
+                            if ((from p in Module.PageList where p.Url == desPage.Url select p).FirstOrDefault() == null)
                                 AddPage(listPattern, await YetaWF.Core.Pages.PageDefinition.LoadPageDefinitionAsync(desPage.PageGuid), Module.UsePopup);
                         }
                     }
