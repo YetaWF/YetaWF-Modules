@@ -2,8 +2,8 @@
 
   <PropertyGroup>
     <Version>3.0.0.0</Version>
-    <TargetFramework>net471</TargetFramework>
-    <DefineConstants>$(DefineConstants);MVC6</DefineConstants>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <DefineConstants>$(DefineConstants);MVC6;NETSTANDARD</DefineConstants>
     <AssemblyName>YetaWF.Messenger</AssemblyName>
     <PackageId>Messenger</PackageId>
     <GenerateAssemblyTitleAttribute>false</GenerateAssemblyTitleAttribute>

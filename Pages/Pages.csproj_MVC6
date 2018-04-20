@@ -2,8 +2,9 @@
 
   <PropertyGroup>
     <Version>3.0.0.0</Version>
-    <TargetFramework>net471</TargetFramework>
-    <DefineConstants>$(DefineConstants);MVC6</DefineConstants>
+    <TargetFramework>netcoreapp2.0</TargetFramework>
+    <RuntimeIdentifiers>win10-x64</RuntimeIdentifiers>
+    <DefineConstants>$(DefineConstants);MVC6;NETCOREAPP</DefineConstants>
     <AssemblyName>YetaWF.Pages</AssemblyName>
     <PackageId>Pages</PackageId>
     <GenerateAssemblyTitleAttribute>false</GenerateAssemblyTitleAttribute>
@@ -18,9 +19,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\..\CoreComponents\Core\Core.csproj" />
-    <ProjectReference Include="..\..\..\DataProvider\File\File.csproj" />
     <ProjectReference Include="..\..\..\DataProvider\ModuleDefinition\ModuleDefinition.csproj" />
-    <ProjectReference Include="..\..\..\DataProvider\SQL\SQL.csproj" />
   </ItemGroup>
 
   <ItemGroup>
