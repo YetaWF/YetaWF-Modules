@@ -1,6 +1,5 @@
 /* Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Messenger#License */
 
-using Microsoft.AspNet.SignalR;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,8 +13,10 @@ using YetaWF.Core.Site;
 using YetaWF.Core.Support;
 using YetaWF.Modules.Messenger.DataProvider;
 #if MVC6
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.AspNetCore.Mvc;
 #else
+using Microsoft.AspNet.SignalR;
 using System.Web.Mvc;
 #endif
 
@@ -147,7 +148,13 @@ namespace YetaWF.Modules.Messenger.Controllers {
 
         // Connection Management
 
-        public override async Task OnConnected() {
+        public override async Task
+#if MVC6
+            OnConnectedAsync()
+#else
+            OnConnected()
+#endif
+        {
             try {
                 string host = Context.Headers["Host"];
                 SiteDefinition site = await SiteDefinition.LoadSiteDefinitionAsync(host);
@@ -176,10 +183,20 @@ namespace YetaWF.Modules.Messenger.Controllers {
                     Dispatch(this.Clients.Others, "userConnect", name);
                 }
             } catch (Exception) { }
-
+#if MVC6
+            await base.OnConnectedAsync();
+#else
             await base.OnConnected();
+#endif
         }
-        public override async Task OnDisconnected(bool stopCalled) {
+
+        public override async Task
+#if MVC6
+            OnDisconnectedAsync(Exception exception)
+#else
+            OnDisconnected(bool stopCalled)
+#endif
+        {
 
             //$$ notify users in scope of user disconnect
             string name = null;
@@ -200,8 +217,11 @@ namespace YetaWF.Modules.Messenger.Controllers {
                     await connDP.RemoveItemAsync(Context.ConnectionId);
                 }
             } catch (Exception) { }
-
+#if MVC6
+            await base.OnDisconnectedAsync(exception);
+#else
             await base.OnDisconnected(stopCalled);
+#endif
         }
     }
 }

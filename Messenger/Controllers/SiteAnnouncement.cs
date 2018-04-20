@@ -1,15 +1,17 @@
 /* Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Messenger#License */
 
-using Microsoft.AspNet.SignalR;
 using System.Threading.Tasks;
 using YetaWF.Core.Controllers;
 using YetaWF.Core.Localize;
 using YetaWF.Core.Models;
 using YetaWF.Core.Models.Attributes;
+using YetaWF.Core.Support;
 using YetaWF.Modules.Messenger.DataProvider;
 #if MVC6
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.AspNetCore.Mvc;
 #else
+using Microsoft.AspNet.SignalR;
 using System.Web.Mvc;
 #endif
 
