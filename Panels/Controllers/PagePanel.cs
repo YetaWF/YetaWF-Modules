@@ -214,7 +214,7 @@ namespace YetaWF.Modules.Panels.Controllers {
                 Key = GetCacheName(moduleGuid)
             };
             SavedCacheInfo info = session.Load();
-            if (info.Created < DateTime.UtcNow.AddMinutes(-5)) return null;
+            if (info != null && info.Created < DateTime.UtcNow.AddMinutes(-5)) return null;
             return info;
         }
         public void SetCache(Guid moduleGuid, SavedCacheInfo cacheInfo) {

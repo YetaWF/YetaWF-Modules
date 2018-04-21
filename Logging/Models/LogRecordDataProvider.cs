@@ -177,7 +177,10 @@ namespace YetaWF.Modules.Logging.DataProvider {
                         ipAddress = ipAddress.Truncate(Globals.MaxIP);
                     }
                 }
-                MethodBase methBase = GetCallInfo(relStack + 3, out moduleName);
+                MethodBase methBase = null;
+                moduleName = null;
+                if (!Manager.Deployed)
+                    GetCallInfo(relStack + 3, out moduleName);// this is really slow
 
                 SaveMessage(new LogRecord {
                     Category = category,
@@ -186,9 +189,9 @@ namespace YetaWF.Modules.Logging.DataProvider {
                     TimeStamp = DateTime.UtcNow,
                     SessionId = sessionId,
                     ModuleName = moduleName,
-                    Class = (methBase.DeclaringType != null) ? methBase.DeclaringType.Name : "",
-                    Method = methBase.Name,
-                    Namespace = (methBase.DeclaringType != null) ? methBase.DeclaringType.Namespace : "",
+                    Class = methBase == null ? "" : (methBase.DeclaringType != null) ? methBase.DeclaringType.Name : "",
+                    Method = methBase == null ? "" : methBase.Name,
+                    Namespace = methBase == null ? "" : (methBase.DeclaringType != null) ? methBase.DeclaringType.Namespace : "",
                     SiteIdentity = siteIdentity,
                     UserId = userId,
                     UserName = userName,
