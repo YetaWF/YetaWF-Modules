@@ -179,8 +179,9 @@ namespace YetaWF.Modules.Logging.DataProvider {
                 }
                 MethodBase methBase = null;
                 moduleName = null;
-                if (!Manager.Deployed)
-                    GetCallInfo(relStack + 3, out moduleName);// this is really slow
+#if DEBUG
+                GetCallInfo(relStack + 3, out moduleName);// this is really slow
+#endif
 
                 SaveMessage(new LogRecord {
                     Category = category,
