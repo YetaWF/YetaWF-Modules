@@ -16,6 +16,7 @@ using YetaWF.Core.Support;
 using YetaWF.Core.Views.Shared;
 using YetaWF.Modules.Packages.Modules;
 using YetaWF.PackageAttributes;
+using YetaWF.Core.Support.Zip;
 #if MVC6
 using Microsoft.AspNetCore.Mvc;
 #else

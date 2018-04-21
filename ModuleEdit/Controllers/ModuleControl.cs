@@ -8,6 +8,7 @@ using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Modules;
 using YetaWF.Core.Pages;
 using YetaWF.Core.Support;
+using YetaWF.Core.Support.Zip;
 #if MVC6
 using Microsoft.AspNetCore.Mvc;
 #else

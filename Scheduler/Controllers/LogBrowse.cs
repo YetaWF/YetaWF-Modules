@@ -1,6 +1,5 @@
 /* Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Scheduler#License */
 
-using Ionic.Zip;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,6 +17,7 @@ using YetaWF.Core.Views.Shared;
 using YetaWF.Modules.Scheduler.DataProvider;
 using YetaWF.Modules.Scheduler.Modules;
 using YetaWF.Core.IO;
+using YetaWF.Core.Support.Zip;
 #if MVC6
 using Microsoft.AspNetCore.Mvc;
 #else
@@ -168,10 +168,8 @@ namespace YetaWF.Modules.Scheduler.Controllers {
                 string zipName = "Logfile.zip";
                 YetaWFZipFile zipFile = new YetaWFZipFile {
                     FileName = zipName,
-                    Zip = new ZipFile(zipName),
                 };
-                ZipEntry ze = zipFile.Zip.AddFile(filename);
-                ze.FileName = "SchedulerLog.txt";
+                zipFile.AddFile(filename, "SchedulerLog.txt");
                 return new ZippedFileResult(zipFile, cookieToReturn);
             }
         }
