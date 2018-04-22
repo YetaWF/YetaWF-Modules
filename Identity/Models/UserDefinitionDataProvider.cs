@@ -276,7 +276,9 @@ namespace YetaWF.Modules.Identity.DataProvider {
             int userTotal = 0;
             if (take == 0 && origTake > 0) {
                 // we just need the total
-                DataProviderGetRecords<UserDefinition> trecs = await DataProvider.GetRecordsAsync(0, 1, sort, filters);
+                List<DataProviderFilterInfo> newfilters = null;
+                newfilters = DataProviderFilterInfo.Join(newfilters, new DataProviderFilterInfo { Field = "UserName", Operator = "==", Value = null });
+                DataProviderGetRecords<UserDefinition> trecs = await DataProvider.GetRecordsAsync(0, 1, sort, newfilters);
                 userTotal = trecs.Total;
                 recs.Data = new List<UserDefinition>();
             } else {
