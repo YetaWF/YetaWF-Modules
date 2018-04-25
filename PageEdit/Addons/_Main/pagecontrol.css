@@ -16,8 +16,8 @@
 #yPageControlDiv {
     position:absolute;
     z-index:1510;
-    left: 1ch;
-    top: 260px;
+    left: 2ch;
+    top: 10px;
 }
 #yPageControlMod {
     display:none;
@@ -46,8 +46,8 @@
 #yEditControlDiv {
     position:absolute;
     z-index:1510;
-    right:1ch;
-    top: 220px;
+    top:60px;
+    left:2ch;
 }
 .yModule-current {
     background-color: silver;
