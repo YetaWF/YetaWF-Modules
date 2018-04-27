@@ -7,18 +7,19 @@ using System.Threading.Tasks;
 using YetaWF.Core;
 using YetaWF.Core.Controllers;
 using YetaWF.Core.DataProvider;
+using YetaWF.Core.Identity;
 using YetaWF.Core.Localize;
 using YetaWF.Core.Models;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Modules;
 using YetaWF.Core.Pages;
+using YetaWF.Core.Serializers;
+using YetaWF.Core.Site;
+using YetaWF.Core.Skins;
 using YetaWF.Core.Support;
+using YetaWF.Core.Support.Zip;
 using YetaWF.Core.Upload;
 using YetaWF.Core.Views.Shared;
-using YetaWF.Core.Skins;
-using YetaWF.Core.Site;
-using YetaWF.Core.Serializers;
-using YetaWF.Core.Identity;
 using YetaWF.Modules.PageEdit.DataProvider;
 using YetaWF.Modules.PageEdit.Modules;
 #if MVC6
@@ -458,6 +459,11 @@ namespace YetaWF.Modules.PageEdit.Controllers {
             Manager.PageControlShown = false;
             Manager.EditMode = false;
             return Redirect(Manager.ReturnToUrl, SetCurrentEditMode: true, SetCurrentControlPanelMode: true);
+        }
+        public async Task<ActionResult> ExportPage(Guid pageGuid, long cookieToReturn) {
+            PageDefinition page = await PageDefinition.LoadAsync(pageGuid);
+            YetaWFZipFile zipFile = await page.ExportAsync();
+            return new ZippedFileResult(zipFile, cookieToReturn);
         }
     }
 }

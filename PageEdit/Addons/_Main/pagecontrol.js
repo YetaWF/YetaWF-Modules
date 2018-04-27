@@ -48,6 +48,16 @@ YetaWF_Basics.whenReady.push({
                     $(this).attr("href", uri.toString());
                 });
             }
+            // Export Page
+            var $rp = $('.YetaWF_PageEdit_PageControl a[data-name="ExportPage"]');
+            if ($rp.length > 0) {
+                $rp.each(function () {
+                    var uri = new URI(this.href);
+                    uri.removeSearch('PageGuid');
+                    uri.addSearch('PageGuid', YVolatile.Basics.PageGuid);
+                    $(this).attr("href", uri.toString());
+                });
+            }
             // Remove Page
             var $rp = $('.YetaWF_PageEdit_PageControl a[data-name="RemovePage"]');
             if ($rp.length > 0) {

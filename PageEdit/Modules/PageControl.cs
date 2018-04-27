@@ -2,11 +2,13 @@
 
 using System;
 using System.Threading.Tasks;
+using YetaWF.Core.Addons;
 using YetaWF.Core.IO;
 using YetaWF.Core.Localize;
 using YetaWF.Core.Menus;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Modules;
+using YetaWF.Core.Pages;
 using YetaWF.Core.Serializers;
 using YetaWF.Core.Support;
 using YetaWF.DataProvider;
@@ -48,6 +50,7 @@ namespace YetaWF.Modules.PageEdit.Modules {
 
             PageEditModule modEdit = new PageEditModule();
             menuList.New(modEdit.GetAction_Edit(null), location);
+            menuList.New(await this.GetAction_ExportPageAsync(null), location);
             menuList.New(await modEdit.GetAction_RemoveAsync(null), location);
 
             menuList.New(this.GetAction_SwitchToView(), location);
@@ -96,6 +99,38 @@ namespace YetaWF.Modules.PageEdit.Modules {
                             ModuleAction.ActionLocationEnum.MainMenu | ModuleAction.ActionLocationEnum.ModuleLinks | ModuleAction.ActionLocationEnum.ModuleMenu,
                 SaveReturnUrl = true,
                 DontFollow = true,
+            };
+        }
+        public async Task<ModuleAction> GetAction_ExportPageAsync(Guid? pageGuid = null) {
+            Guid guid;
+            PageDefinition page;
+            if (pageGuid == null) {
+                page = Manager.CurrentPage;
+                if (page == null) return null;
+                guid = page.PageGuid;
+            } else {
+                guid = (Guid)pageGuid;
+                page = await PageDefinition.LoadAsync(guid);
+            }
+            if (page == null) return null;
+            if (!page.IsAuthorized_Edit()) return null;
+            return new ModuleAction(this) {
+                Url = YetaWFManager.UrlFor(typeof(PageControlModuleController), nameof(PageControlModuleController.ExportPage)),
+                QueryArgs = new { PageGuid = guid },
+                QueryArgsDict = new QueryHelper(new QueryDictionary {
+                    { Basics.ModuleGuid, this.ModuleGuid }, // the module authorizing this
+                }),
+                Image = await CustomIconAsync("ExportPage.png"),//$$$
+                Name = "ExportPage",
+                LinkText = this.__ResStr("modExportLink", "Export"),
+                MenuText = this.__ResStr("modExportMenu", "Export Page"),
+                Tooltip = this.__ResStr("modExportTT", "Export the page and modules by creating an importable ZIP file (using Control Panel, Import)"),
+                Legend = this.__ResStr("modExportLegend", "Exports the page and modules by creating an importable ZIP file (using Control Panel, Import)"),
+                Location = ModuleAction.ActionLocationEnum.NoAuto |
+                            ModuleAction.ActionLocationEnum.MainMenu | ModuleAction.ActionLocationEnum.ModuleLinks | ModuleAction.ActionLocationEnum.ModuleMenu,
+                Mode = ModuleAction.ActionModeEnum.Any,
+                CookieAsDoneSignal = true,
+                Style = ModuleAction.ActionStyleEnum.Normal,
             };
         }
         public async Task<ModuleAction> GetAction_W3CValidationAsync() {
