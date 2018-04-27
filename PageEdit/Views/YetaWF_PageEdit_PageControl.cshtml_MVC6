@@ -15,7 +15,9 @@
             ++tabEntry;
             @Html.RenderTabEntry(DivId, __ResStr("tabOld", "Existing Module"), __ResStr("tabOldTT", "Add an existing module to this page (this does not copy the module)"), tabEntry)
             ++tabEntry;
-            @Html.RenderTabEntry(DivId, __ResStr("tabImport", "Import"), __ResStr("tabImportTT", "Import module data into this page (creates a new module)"), tabEntry)
+            @Html.RenderTabEntry(DivId, __ResStr("tabImportPage", "Import Page"), __ResStr("tabImportPageTT", "Import a page (creates a new page)"), tabEntry)
+            ++tabEntry;
+            @Html.RenderTabEntry(DivId, __ResStr("tabImportModule", "Import Module"), __ResStr("tabImportModuleTT", "Import module data into this page (creates a new module)"), tabEntry)
             ++tabEntry;
             @Html.RenderTabEntry(DivId, __ResStr("tabSkins", "Skins"), __ResStr("tabSkinsTT", "Change default skins used site wide"), tabEntry)
             ++tabEntry;
@@ -59,8 +61,15 @@
             @Html.RenderTabPaneEnd(DivId, panel)
             ++panel;
 
+            @Html.RenderTabPaneStart(DivId, panel, "t_importPage")
+            using (await CreateFormAsync("ImportPage_Partial", Model: Model.ImportPageModel)) {
+                @PartialForm()
+            }
+            @Html.RenderTabPaneEnd(DivId, panel)
+            ++panel;
+
             @Html.RenderTabPaneStart(DivId, panel, "t_importMod")
-            using (await CreateFormAsync("ImportModule_Partial", Model: Model.ImportModel)) {
+            using (await CreateFormAsync("ImportModule_Partial", Model: Model.ImportModuleModel)) {
                 @PartialForm()
             }
             @Html.RenderTabPaneEnd(DivId, panel)

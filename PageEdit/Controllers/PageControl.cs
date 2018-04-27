@@ -105,7 +105,27 @@ namespace YetaWF.Modules.PageEdit.Controllers {
         }
 
         [Trim]
-        public class ImportModel {
+        public class ImportPageModel {
+
+            [UIHint("Hidden")]
+            public Guid CurrentPageGuid { get; set; }
+
+            [Caption("ZIP File"), Description("The ZIP file containing the page data to be imported - The page cannot already exist - Modules that are already present are not updated while importing the page")]
+            [UIHint("FileUpload1"), Required]
+            public FileUpload1 UploadFile { get; set; }
+
+            public void AddData(PageDefinition page, PageControlModule mod) {
+                UploadFile = new FileUpload1 {
+                    SelectButtonText = this.__ResStr("btnImportPage", "Import Page Data..."),
+                    SaveURL = YetaWFManager.UrlFor(typeof(PageControlModuleController), nameof(PageControlModuleController.ImportPage), new { __ModuleGuid = mod.ModuleGuid }),
+                    RemoveURL = YetaWFManager.UrlFor(typeof(PageControlModuleController), nameof(PageControlModuleController.RemovePage), new { __ModuleGuid = mod.ModuleGuid }),
+                    SerializeForm = true,
+                };
+            }
+        }
+
+        [Trim]
+        public class ImportModuleModel {
 
             [UIHint("Hidden")]
             public Guid CurrentPageGuid { get; set; }
@@ -126,8 +146,8 @@ namespace YetaWF.Modules.PageEdit.Controllers {
             public async Task AddDataAsync(PageDefinition page, PageControlModule mod) {
                 UploadFile = new FileUpload1 {
                     SelectButtonText = this.__ResStr("btnImport", "Import Module Data..."),
-                    SaveURL = YetaWFManager.UrlFor(typeof(PageControlModuleController), "ImportPackage", new { __ModuleGuid = mod.ModuleGuid }),
-                    RemoveURL = YetaWFManager.UrlFor(typeof(PageControlModuleController), "RemovePackage", new { __ModuleGuid = mod.ModuleGuid }),
+                    SaveURL = YetaWFManager.UrlFor(typeof(PageControlModuleController), nameof(PageControlModuleController.ImportModule), new { __ModuleGuid = mod.ModuleGuid }),
+                    RemoveURL = YetaWFManager.UrlFor(typeof(PageControlModuleController), nameof(PageControlModuleController.RemoveModule), new { __ModuleGuid = mod.ModuleGuid }),
                     SerializeForm = true,
                 };
                 if (page != null) {
@@ -242,7 +262,8 @@ namespace YetaWF.Modules.PageEdit.Controllers {
             public bool EditAuthorized { get; set; }
             public AddNewModuleModel AddNewModel { get; set; }
             public AddExistingModel AddExistingModel { get; set; }
-            public ImportModel ImportModel { get; set; }
+            public ImportPageModel ImportPageModel { get; set; }
+            public ImportModuleModel ImportModuleModel { get; set; }
             public AddNewPageModel AddNewPageModel { get; set; }
             public SkinSelectionModel SkinSelectionModel { get; set; }
             public LoginSiteSelectionModel LoginSiteSelectionModel { get; set; }
@@ -274,7 +295,8 @@ namespace YetaWF.Modules.PageEdit.Controllers {
                 AddExistingModel = new AddExistingModel() {
                     CurrentPageGuid = Manager.CurrentPage.PageGuid,
                 },
-                ImportModel = new ImportModel() {
+                ImportPageModel = new ImportPageModel(),
+                ImportModuleModel = new ImportModuleModel() {
                     CurrentPageGuid = Manager.CurrentPage.PageGuid,
                 },
                 SkinSelectionModel = new SkinSelectionModel(),
@@ -282,7 +304,8 @@ namespace YetaWF.Modules.PageEdit.Controllers {
             };
             await model.AddNewModel.AddDataAsync(page);
             await model.AddExistingModel.AddDataAsync(page);
-            await model.ImportModel.AddDataAsync(page, Module);
+            model.ImportPageModel.AddData(page, Module);
+            await model.ImportModuleModel.AddDataAsync(page, Module);
             await model.LoginSiteSelectionModel.AddDataAsync();
             return View(model);
         }
@@ -383,9 +406,9 @@ namespace YetaWF.Modules.PageEdit.Controllers {
         [AllowPost]
         [ExcludeDemoMode]
 #if MVC6
-        public async Task<ActionResult> ImportPackage(IFormFile __filename, ImportModel model)
+        public async Task<ActionResult> ImportModule(IFormFile __filename, ImportModel model)
 #else
-        public async Task<ActionResult> ImportPackage(HttpPostedFileBase __filename, ImportModel model)
+        public async Task<ActionResult> ImportModule(HttpPostedFileBase __filename, ImportModuleModel model)
 #endif
         {
             FileUpload upload = new FileUpload();
@@ -417,7 +440,49 @@ namespace YetaWF.Modules.PageEdit.Controllers {
         }
         [AllowPost]
         [ExcludeDemoMode]
-        public ActionResult RemovePackage(string filename) {
+        public ActionResult RemoveModule(string filename) {
+            // there is nothing to remove because we already imported the file
+            return new EmptyResult();
+        }
+        [AllowPost]
+        [ExcludeDemoMode]
+#if MVC6
+        public async Task<ActionResult> ImportPage(IFormFile __filename, ImportModel model)
+#else
+        public async Task<ActionResult> ImportPage(HttpPostedFileBase __filename, ImportPageModel model)
+#endif
+        {
+            FileUpload upload = new FileUpload();
+            string tempName = await upload.StoreTempPackageFileAsync(__filename);
+
+            List<string> errorList = new List<string>();
+            PageDefinition.ImportInfo info = await PageDefinition.ImportAsync(tempName, errorList);
+            await upload.RemoveTempFileAsync(tempName);
+
+            string errs = "";
+            if (errorList.Count > 0) {
+                ScriptBuilder sbErr = new ScriptBuilder();
+                sbErr.Append(errorList, LeadingNL: true);
+                errs = sbErr.ToString();
+            }
+            ScriptBuilder sb = new ScriptBuilder();
+            if (info.Success) {
+                // Upload control considers Json result a success
+                sb.Append("{{ \"result\": \"Y_Confirm(\\\"{0}\\\", null, function() {{ window.location.assign(\\\"{1}\\\"); }} ); \" }}",
+                    YetaWFManager.JserEncode(YetaWFManager.JserEncode(this.__ResStr("imported", "\"{0}\" successfully imported(+nl)", __filename.FileName) + errs)),
+                    YetaWFManager.JserEncode(info.Url)
+                );
+                return new YJsonResult { Data = sb.ToString() };
+            } else {
+                // Anything else is a failure
+                sb.Append(this.__ResStr("cantImport", "Can't import {0}:(+nl)"), __filename.FileName);
+                sb.Append(errs);
+                throw new Error(sb.ToString());
+            }
+        }
+        [AllowPost]
+        [ExcludeDemoMode]
+        public ActionResult RemovePage(string filename) {
             // there is nothing to remove because we already imported the file
             return new EmptyResult();
         }

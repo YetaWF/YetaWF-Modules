@@ -120,7 +120,7 @@ namespace YetaWF.Modules.PageEdit.Modules {
                 QueryArgsDict = new QueryHelper(new QueryDictionary {
                     { Basics.ModuleGuid, this.ModuleGuid }, // the module authorizing this
                 }),
-                Image = await CustomIconAsync("ExportPage.png"),//$$$
+                Image = await CustomIconAsync("ExportPage.png"),
                 Name = "ExportPage",
                 LinkText = this.__ResStr("modExportLink", "Export"),
                 MenuText = this.__ResStr("modExportMenu", "Export Page"),

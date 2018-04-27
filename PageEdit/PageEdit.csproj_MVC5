@@ -92,6 +92,7 @@
   <ItemGroup>
     <Content Include="Addons\_Main\filelistCSS.txt" />
     <Content Include="Addons\_Main\filelistJS.txt" />
+    <Content Include="Addons\_Main\Icons\ExportPage.png" />
     <Content Include="Addons\_Main\Icons\PageEdit.png" />
     <Content Include="Addons\_Main\Icons\RestartSite.png" />
     <Content Include="Addons\_Main\Icons\W3CValidator.png" />
@@ -141,6 +142,7 @@
     <None Include="packages.config" />
     <None Include="Views\YetaWF_PageEdit_AddExistingModule_Partial.cshtml" />
     <None Include="Views\YetaWF_PageEdit_AddNewModule_Partial.cshtml" />
+    <None Include="Views\YetaWF_PageEdit_ImportPage_Partial.cshtml" />
     <None Include="Views\YetaWF_PageEdit_LoginSiteSelection_Partial.cshtml" />
     <None Include="Views\YetaWF_PageEdit_SkinSelection_Partial.cshtml" />
     <None Include="Views\YetaWF_PageEdit_ControlPanelConfig.cshtml" />
