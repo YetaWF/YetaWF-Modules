@@ -124,8 +124,8 @@ namespace YetaWF.Modules.PageEdit.Modules {
                 Name = "ExportPage",
                 LinkText = this.__ResStr("modExportLink", "Export"),
                 MenuText = this.__ResStr("modExportMenu", "Export Page"),
-                Tooltip = this.__ResStr("modExportTT", "Export the page and modules by creating an importable ZIP file (using Control Panel, Import)"),
-                Legend = this.__ResStr("modExportLegend", "Exports the page and modules by creating an importable ZIP file (using Control Panel, Import)"),
+                Tooltip = this.__ResStr("modExportTT", "Export the page and modules by creating an importable ZIP file (using Control Panel, Import Page)"),
+                Legend = this.__ResStr("modExportLegend", "Exports the page and modules by creating an importable ZIP file (using Control Panel, Import Page)"),
                 Location = ModuleAction.ActionLocationEnum.NoAuto |
                             ModuleAction.ActionLocationEnum.MainMenu | ModuleAction.ActionLocationEnum.ModuleLinks | ModuleAction.ActionLocationEnum.ModuleMenu,
                 Mode = ModuleAction.ActionModeEnum.Any,
