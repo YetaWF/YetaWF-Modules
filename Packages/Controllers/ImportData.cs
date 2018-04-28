@@ -3,6 +3,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using YetaWF.Core.Controllers;
+using YetaWF.Core.IO;
 using YetaWF.Core.Localize;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Packages;
@@ -51,7 +52,7 @@ namespace YetaWF.Modules.Packages.Controllers {
             string tempName = await upload.StoreTempPackageFileAsync(__filename);
             List<string> errorList = new List<string>();
             bool success = await Package.ImportDataAsync(tempName, errorList);
-            await upload.RemoveTempFileAsync(tempName);
+            await FileSystem.TempFileSystemProvider.DeleteFileAsync(tempName);
 
             string errs = "";
             if (errorList.Count > 0) {

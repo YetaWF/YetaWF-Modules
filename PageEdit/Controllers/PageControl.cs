@@ -22,6 +22,7 @@ using YetaWF.Core.Upload;
 using YetaWF.Core.Views.Shared;
 using YetaWF.Modules.PageEdit.DataProvider;
 using YetaWF.Modules.PageEdit.Modules;
+using YetaWF.Core.IO;
 #if MVC6
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Http;
@@ -416,7 +417,7 @@ namespace YetaWF.Modules.PageEdit.Controllers {
 
             List<string> errorList = new List<string>();
             bool success = await ModuleDefinition.ImportAsync(tempName, model.CurrentPageGuid, true, model.ModulePane, model.ModuleLocation == Location.Top, errorList);
-            await upload.RemoveTempFileAsync(tempName);
+            await FileSystem.TempFileSystemProvider.DeleteFileAsync(tempName);
 
             string errs = "";
             if (errorList.Count > 0) {
@@ -457,7 +458,7 @@ namespace YetaWF.Modules.PageEdit.Controllers {
 
             List<string> errorList = new List<string>();
             PageDefinition.ImportInfo info = await PageDefinition.ImportAsync(tempName, errorList);
-            await upload.RemoveTempFileAsync(tempName);
+            await FileSystem.TempFileSystemProvider.DeleteFileAsync(tempName);
 
             string errs = "";
             if (errorList.Count > 0) {
