@@ -238,7 +238,7 @@
           <Value>
             <Object Type="YetaWF.Core.Localize.LocalizationData+ClassData" Assembly="YetaWF.Core">
               <Properties>
-                <Name Value="YetaWF.Modules.PageEdit.Controllers.PageControlModuleController+ImportModel" />
+                <Name Value="YetaWF.Modules.PageEdit.Controllers.PageControlModuleController+ImportModuleModel" />
                 <BaseTypeName />
                 <Header />
                 <Footer />
@@ -283,6 +283,42 @@
                             <Name Value="UploadFile" />
                             <Caption Value="ZIP File" />
                             <Description Value="The ZIP file containing the module data to be imported (creates a new module) " />
+                            <HelpLink />
+                            <TextAbove />
+                            <TextBelow />
+                          </Properties>
+                        </Object>
+                      </Value>
+                    </List>
+                  </Object>
+                </Properties>
+              </Properties>
+            </Object>
+          </Value>
+          <Value>
+            <Object Type="YetaWF.Core.Localize.LocalizationData+ClassData" Assembly="YetaWF.Core">
+              <Properties>
+                <Name Value="YetaWF.Modules.PageEdit.Controllers.PageControlModuleController+ImportPageModel" />
+                <BaseTypeName />
+                <Header />
+                <Footer />
+                <Legend />
+                <Categories>
+                  <Object Type="YetaWF.Core.Serializers.SerializableDictionary`2[[System.String, mscorlib, Culture=neutral, PublicKeyToken=b77a5c561934e089],[System.String, mscorlib, Culture=neutral, PublicKeyToken=b77a5c561934e089]]" Assembly="YetaWF.Core">
+                    <Properties />
+                    <Dictionary />
+                  </Object>
+                </Categories>
+                <Properties>
+                  <Object Type="YetaWF.Core.Serializers.SerializableList`1[[YetaWF.Core.Localize.LocalizationData+PropertyData, YetaWF.Core, Culture=neutral, PublicKeyToken=null]]" Assembly="YetaWF.Core">
+                    <Properties />
+                    <List>
+                      <Value>
+                        <Object Type="YetaWF.Core.Localize.LocalizationData+PropertyData" Assembly="YetaWF.Core">
+                          <Properties>
+                            <Name Value="UploadFile" />
+                            <Caption Value="ZIP File" />
+                            <Description Value="The ZIP file containing the page data to be imported - The page cannot already exist - Modules that are already present are not updated while importing the page" />
                             <HelpLink />
                             <TextAbove />
                             <TextBelow />
@@ -483,6 +519,14 @@
               <Properties>
                 <Name Value="btnImport" />
                 <Text Value="Import Module Data..." />
+              </Properties>
+            </Object>
+          </Value>
+          <Value>
+            <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
+              <Properties>
+                <Name Value="btnImportPage" />
+                <Text Value="Import Page Data..." />
               </Properties>
             </Object>
           </Value>
