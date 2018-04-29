@@ -27,6 +27,7 @@
         string actionLinkClass = "yaction-link";
         if (entry.Popup) {
             actionLinkClass += " ypopup-link";
+            await Manager.AddOnManager.AddAddOnNamedAsync("YetaWF", "Core", "Popups");
         }
         <div class="t_entry">
             <div class="t_image">
