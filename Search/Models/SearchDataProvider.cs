@@ -176,16 +176,13 @@ namespace YetaWF.Modules.Search.DataProvider {
         public async Task<int> RemoveItemsAsync(List<DataProviderFilterInfo> filters) {
             if (!IsUsable) return 0;
             int count = 0;
-            using (ILockObject lockObject = await YetaWF.Core.IO.Caching.LockProvider.LockResourceAsync($"{AreaRegistration.CurrentPackage.AreaName}_{nameof(SearchDataProvider)}")) {
-                count = await DataProvider.RemoveRecordsAsync(filters);
-                if (filters == null) {
-                    using (SearchDataUrlDataProvider searchUrlDP = new SearchDataUrlDataProvider()) {
-                        await searchUrlDP.RemoveItemsAsync(null);
-                    }
-                } else {
-                    await RemoveUnusedUrlsAsync();
+            count = await DataProvider.RemoveRecordsAsync(filters);
+            if (filters == null) {
+                using (SearchDataUrlDataProvider searchUrlDP = new SearchDataUrlDataProvider()) {
+                    await searchUrlDP.RemoveItemsAsync(null);
                 }
-                await lockObject.UnlockAsync();
+            } else {
+                await RemoveUnusedUrlsAsync();
             }
             return count;
         }
@@ -201,10 +198,7 @@ namespace YetaWF.Modules.Search.DataProvider {
             }
         }
         private async Task RemoveUnusedUrlsAsync() {
-            using (ILockObject lockObject = await YetaWF.Core.IO.Caching.LockProvider.LockResourceAsync($"{AreaRegistration.CurrentPackage.AreaName}_{nameof(SearchDataProvider)}")) {
-                await DataProviderIOMode.RemoveUnusedUrlsAsync(this);
-                await lockObject.UnlockAsync();
-            }
+            await DataProviderIOMode.RemoveUnusedUrlsAsync(this);
         }
 
         /// <summary>

@@ -14,6 +14,7 @@ using YetaWF.Core.Modules;
 using YetaWF.Core.Views.Shared;
 using YetaWF.Modules.Search.DataProvider;
 using YetaWF.Modules.Search.Modules;
+using YetaWF.Core.IO;
 #if MVC6
 using Microsoft.AspNetCore.Mvc;
 #else
@@ -142,7 +143,10 @@ namespace YetaWF.Modules.Search.Controllers {
         [ExcludeDemoMode]
         public async Task<ActionResult> RemoveAll() {
             using (SearchDataProvider searchDP = new SearchDataProvider()) {
-                await searchDP.RemoveItemsAsync(null);/* ALL */
+                using (ILockObject lockObject = await YetaWF.Core.IO.Caching.LockProvider.LockResourceAsync($"{AreaRegistration.CurrentPackage.AreaName}_{nameof(SearchDataProvider)}")) {
+                    await searchDP.RemoveItemsAsync(null);/* ALL */
+                    await lockObject.UnlockAsync();
+                }
                 return Reload(null, Reload: ReloadEnum.ModuleParts);
             }
         }
