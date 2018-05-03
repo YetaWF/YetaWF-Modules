@@ -29,9 +29,6 @@
 .YetaWF_Menus_MainMenu li.t_megamenu_content {
     padding: 10px 1ch 10px 1ch;
 }
-.YetaWF_Menus_MainMenu .t_megamenu_content .modStandard h1 { /* don't show h1 titles in submodules */
-    display:none;
-}
 
 /* Any site specific customizations for submodules should look like this: */
 /* These should be placed in .\Website\AddonsCustoms\....  NOT HERE */
