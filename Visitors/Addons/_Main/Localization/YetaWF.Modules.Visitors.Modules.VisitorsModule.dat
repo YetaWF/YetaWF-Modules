@@ -95,7 +95,7 @@
             <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
               <Properties>
                 <Name Value="confUpdateGeoLocation" />
-                <Text Value="Updating GetLocation data..." />
+                <Text Value="Updating GeoLocation data..." />
               </Properties>
             </Object>
           </Value>
@@ -183,7 +183,7 @@
             <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
               <Properties>
                 <Name Value="updgUpdateGeoLocation" />
-                <Text Value="Are you sure you want to update GetLocation data?" />
+                <Text Value="Are you sure you want to update GeoLocation data?" />
               </Properties>
             </Object>
           </Value>
