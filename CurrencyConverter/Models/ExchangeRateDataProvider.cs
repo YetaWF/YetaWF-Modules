@@ -158,7 +158,7 @@ namespace YetaWF.Modules.CurrencyConverter.DataProvider {
                 else
                     resp = await http.GetResponseAsync();
             } catch (Exception exc) {
-                throw new InternalError("An error occurred retrieving exchange rates from openexchangerates.org - {0}", exc.Message);
+                throw new InternalError("An error occurred retrieving exchange rates from openexchangerates.org - {0}", ErrorHandling.FormatExceptionMessage(exc));
             }
             using (System.IO.StreamReader sr = new System.IO.StreamReader(resp.GetResponseStream())) {
                 if (YetaWFManager.IsSync())

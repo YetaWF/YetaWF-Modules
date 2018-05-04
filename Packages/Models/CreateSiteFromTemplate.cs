@@ -454,7 +454,7 @@ namespace YetaWF.Modules.Packages.DataProvider {
                 else
                     return Activator.CreateInstance(tp);
             } catch (Exception exc) {
-                throw TemplateError("Can't create object {0}, {1}", assembly, type, exc.Message);
+                throw TemplateError("Can't create object {0}, {1}", assembly, type, ErrorHandling.FormatExceptionMessage(exc));
             }
         }
 
@@ -729,7 +729,7 @@ namespace YetaWF.Modules.Packages.DataProvider {
                 try {
                     obj = await EvaluateObjectAsmTypeExpressionAsync(asmtype);
                 } catch (Exception exc) {
-                    throw TemplateError("Can't create object {0}: {1}", asmtype, exc.Message);
+                    throw TemplateError("Can't create object {0}: {1}", asmtype, ErrorHandling.FormatExceptionMessage(exc));
                 }
 
                 // get the method call
@@ -800,7 +800,7 @@ namespace YetaWF.Modules.Packages.DataProvider {
             try {
                 result = mi.Invoke(obj, parmList.ToArray());
             } catch (Exception exc) {
-                throw TemplateError("Can't call {0} in expression \"{1}\": {2}", methodName, origExpr, exc.Message);
+                throw TemplateError("Can't call {0} in expression \"{1}\": {2}", methodName, origExpr, ErrorHandling.FormatExceptionMessage(exc));
             }
             return result;
         }

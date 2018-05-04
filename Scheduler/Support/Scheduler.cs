@@ -327,7 +327,7 @@ namespace YetaWF.Modules.Scheduler.Support {
                     Assembly asm = Assemblies.Load(item.Event.ImplementingAssembly);
                     tp = asm.GetType(item.Event.ImplementingType);
                 } catch (Exception exc) {
-                    throw new InternalError("Scheduler item '{0}' could not be loaded (Type={1}, Assembly={2}) - {3}", item.Name, item.Event.ImplementingType, item.Event.ImplementingAssembly, exc.Message);
+                    throw new InternalError("Scheduler item '{0}' could not be loaded (Type={1}, Assembly={2}) - {3}", item.Name, item.Event.ImplementingType, item.Event.ImplementingAssembly, ErrorHandling.FormatExceptionMessage(exc));
                 }
 
                 try {
@@ -343,7 +343,7 @@ namespace YetaWF.Modules.Scheduler.Support {
                                 try {
                                     schedEvt = (IScheduling)Activator.CreateInstance(tp);
                                 } catch (Exception exc) {
-                                    throw new InternalError("Scheduler item '{0}' could not be instantiated (Type={1}, Assembly={2}) - {3}", item.Name, item.Event.ImplementingType, item.Event.ImplementingAssembly, exc.Message);
+                                    throw new InternalError("Scheduler item '{0}' could not be instantiated (Type={1}, Assembly={2}) - {3}", item.Name, item.Event.ImplementingType, item.Event.ImplementingAssembly, ErrorHandling.FormatExceptionMessage(exc));
                                 }
 
                                 SchedulerItemBase itemBase = new SchedulerItemBase { Name = item.Name, Description = item.Description, EventName = item.Event.Name, Enabled = true, Frequency = item.Frequency, Startup = item.Startup, SiteSpecific = true };
@@ -362,7 +362,7 @@ namespace YetaWF.Modules.Scheduler.Support {
                         try {
                             schedEvt = (IScheduling)Activator.CreateInstance(tp);
                         } catch (Exception exc) {
-                            throw new InternalError("Scheduler item '{0}' could not be instantiated (Type={1}, Assembly={2}) - {3}", item.Name, item.Event.ImplementingType, item.Event.ImplementingAssembly, exc.Message);
+                            throw new InternalError("Scheduler item '{0}' could not be instantiated (Type={1}, Assembly={2}) - {3}", item.Name, item.Event.ImplementingType, item.Event.ImplementingAssembly, ErrorHandling.FormatExceptionMessage(exc));
                         }
 
                         SchedulerItemBase itemBase = new SchedulerItemBase { Name = item.Name, Description = item.Description, EventName = item.Event.Name, Enabled = true, Frequency = item.Frequency, Startup = item.Startup, SiteSpecific = false };
@@ -371,7 +371,7 @@ namespace YetaWF.Modules.Scheduler.Support {
                             errors.AppendLine(Logging.AddLog(s));
                     }
                 } catch (Exception exc) {
-                    throw new InternalError("An error occurred in scheduler item '{0}' - {1}", item.Name, exc.Message);
+                    throw new InternalError("An error occurred in scheduler item '{0}' - {1}", item.Name, ErrorHandling.FormatExceptionMessage(exc));
                 }
 
                 TimeSpan diff = DateTime.UtcNow - now;

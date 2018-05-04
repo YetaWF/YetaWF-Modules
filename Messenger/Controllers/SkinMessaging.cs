@@ -62,7 +62,7 @@ namespace YetaWF.Modules.Messenger.Controllers {
                     Dispatch(Clients.User(manager.UserName), "messageSent", msg.Key, toUser, message, Formatting.FormatDateTime(msg.Sent));
 
                 } catch (Exception exc) {
-                    string messageText = exc.Message;
+                    string messageText = ErrorHandling.FormatExceptionMessage(exc);
 
                     Dispatch(Clients.Caller, "notifyException", messageText);
                     Message msg = new Message {

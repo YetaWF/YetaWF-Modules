@@ -231,7 +231,7 @@ namespace YetaWF.Modules.SiteProperties.Models {
                 }
                 return true;
             } catch (Exception exc) {
-                errorList.Add(string.Format("{0}: {1}", typeof(SiteDefinition).FullName, exc.Message));
+                errorList.Add(string.Format("{0}: {1}", typeof(SiteDefinition).FullName, ErrorHandling.FormatExceptionMessage(exc)));
                 return false;
             }
         }
