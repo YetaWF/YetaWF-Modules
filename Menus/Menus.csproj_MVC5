@@ -12,7 +12,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>YetaWF.Modules.Menus</RootNamespace>
     <AssemblyName>YetaWF.Menus</AssemblyName>
-    <TargetFrameworkVersion>v4.7.1</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <MvcBuildViews>false</MvcBuildViews>
     <NuGetPackageImportStamp>cfba2f6b</NuGetPackageImportStamp>
     <TargetFrameworkProfile />

@@ -10,7 +10,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>YetaWF.Modules.SyntaxHighlighter</RootNamespace>
     <AssemblyName>YetaWF.SyntaxHighlighter</AssemblyName>
-    <TargetFrameworkVersion>v4.7.1</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <MvcBuildViews>false</MvcBuildViews>
     <TargetFrameworkProfile />
     <NuGetPackageImportStamp>7c442318</NuGetPackageImportStamp>
