@@ -57,11 +57,14 @@ namespace YetaWF.Modules.Logging.DataProvider.File {
 
         public override async Task FlushAsync() {
             using (ILockObject lockObject = await YetaWF.Core.IO.Caching.LockProvider.LockResourceAsync(LogFile)) {
-                if (LogCache != null)
-                    await FileSystem.FileSystemProvider.AppendAllLinesAsync(LogFile, LogCache);
-                LogCache = new List<string>();
+                await FlushAsyncNoLock();
                 await lockObject.UnlockAsync();
             }
+        }
+        private async Task FlushAsyncNoLock() {
+            if (LogCache != null)
+                await FileSystem.FileSystemProvider.AppendAllLinesAsync(LogFile, LogCache);
+            LogCache = new List<string>();
         }
 
         public override void SaveMessage(LogRecord record) {
@@ -79,7 +82,7 @@ namespace YetaWF.Modules.Logging.DataProvider.File {
                 using (ILockObject lockObject = await YetaWF.Core.IO.Caching.LockProvider.LockResourceAsync(LogFile)) {
                     LogCache.Add(text);
                     if (LogCache.Count >= MAXRECORDS)
-                        await FlushAsync();
+                        await FlushAsyncNoLock();
                     await lockObject.UnlockAsync();
                 }
             });
