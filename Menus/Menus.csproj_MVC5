@@ -87,7 +87,7 @@
   <ItemGroup>
     <Content Include="Addons\_Addons\MenuEdit\filelistJS.txt" />
     <Content Include="Addons\_Main\filelistCSS.txt" />
-    <Content Include="Addons\_Main\menu.css" />
+    <None Include="Addons\_Main\menu.scss" />
     <Content Include="Addons\_Addons\MenuEdit\filelistCSS.txt" />
     <Content Include="Addons\_Main\filelistJS.txt" />
     <Content Include="Addons\_Main\Images\foldersprite.png" />

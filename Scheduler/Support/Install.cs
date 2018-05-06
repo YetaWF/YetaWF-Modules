@@ -29,7 +29,6 @@ namespace YetaWF.Modules.Scheduler.Support {
         /// <summary>
         /// Install all events for the given object type. This is typically used to install scheduler items while installing packages.
         /// </summary>
-        /// <param name="container"></param>
         private async Task InstallItemsAsync(Type type) {
             string eventType = type.FullName + ", " + type.Assembly.GetName().Name;
             using (SchedulerDataProvider dataProvider = new SchedulerDataProvider()) {
@@ -66,7 +65,6 @@ namespace YetaWF.Modules.Scheduler.Support {
         /// <summary>
         /// Uninstall all events for the given object type. This is typically used to uninstall scheduler items while removing packages.
         /// </summary>
-        /// <param name="container"></param>
         private async Task UninstallItemsAsync(Type type) {
             string asmName = type.Assembly.GetName().Name;
             string eventType = type.FullName + ", " + asmName;

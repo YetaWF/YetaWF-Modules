@@ -32,7 +32,7 @@
         @Html.RenderTabPaneStart(DivId, panel, "t_addNewPage")
         using (await CreateFormAsync("AddNewPage_Partial", Model: Model.AddNewPageModel)) {
             @PartialForm()
-            <div>
+            <div class="t_detailsbuttons yNoPrint">
                 <input type="submit" value="@__ResStr("addNewPage", "Add")" />
             </div>
         }
@@ -44,7 +44,7 @@
             @Html.RenderTabPaneStart(DivId, panel, "t_addNewMod")
             using (await CreateFormAsync("AddNewModule_Partial", Model: Model.AddNewModel)) {
                 @PartialForm()
-                <div>
+                <div class="t_detailsbuttons yNoPrint">
                     <input type="submit" value="@__ResStr("addNewModule", "Add")" />
                 </div>
             }
@@ -54,7 +54,7 @@
             @Html.RenderTabPaneStart(DivId, panel, "t_addExistingMod")
             using (await CreateFormAsync("AddExistingModule_Partial", Model: Model.AddExistingModel)) {
                 @PartialForm()
-                <div>
+                <div class="t_detailsbuttons yNoPrint">
                     <input type="submit" value="@__ResStr("addOldModule", "Add")" />
                 </div>
             }
@@ -78,7 +78,7 @@
             @Html.RenderTabPaneStart(DivId, panel, "t_addSkins")
             using (await CreateFormAsync("SkinSelection_Partial", Model: Model.SkinSelectionModel)) {
                 @PartialForm()
-                <div>
+                <div class="t_detailsbuttons yNoPrint">
                     <input type="submit" value="@__ResStr("saveSkins", "Save & Display")" />
                 </div>
             }
