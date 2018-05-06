@@ -3,6 +3,11 @@
 
 .yt_panels_pagepanelinfo {
     &.t_styledefault.t_display {
+        .t_image img {
+            padding:3px;
+            border-radius:3px;
+            background-color:#FFF;
+        }
         .t_entry {
             display:inline-block;  
             width:200px;
@@ -15,6 +20,11 @@
         }
     }
     &.t_stylesmallvert {
+        .t_image img {
+            padding:3px;
+            border-radius:3px;
+            background-color:#FFF;
+        }
         .t_image {
             display:inline-block;
             padding-right: 1ch;
@@ -24,6 +34,11 @@
         }
     }
     &.t_stylesmalltable {
+        .t_image img {
+            padding:2px;
+            border-radius:2px;
+            background-color:#FFF;
+        }
         .t_entry {
             clear:both;
         }

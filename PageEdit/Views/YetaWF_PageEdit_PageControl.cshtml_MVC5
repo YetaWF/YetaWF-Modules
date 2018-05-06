@@ -31,7 +31,7 @@
     @if (Model.EditAuthorized) {
         @Html.RenderTabPaneStart(DivId, panel, "t_addNewPage")
         using (CreateFormAsync("AddNewPage_Partial", Model: Model.AddNewPageModel).Result) {
-            @PartialForm()
+            @PartialForm(UsePartialFormCss: false)
             <div class="t_detailsbuttons yNoPrint">
                 <input type="submit" value="@__ResStr("addNewPage", "Add")" />
             </div>
@@ -43,7 +43,7 @@
         if (Model.EditAuthorized) {
             @Html.RenderTabPaneStart(DivId, panel, "t_addNewMod")
             using (CreateFormAsync("AddNewModule_Partial", Model: Model.AddNewModel).Result) {
-                @PartialForm()
+                @PartialForm(UsePartialFormCss: false)
                 <div class="t_detailsbuttons yNoPrint">
                     <input type="submit" value="@__ResStr("addNewModule", "Add")" />
                 </div>
@@ -53,7 +53,7 @@
 
             @Html.RenderTabPaneStart(DivId, panel, "t_addExistingMod")
             using (CreateFormAsync("AddExistingModule_Partial", Model: Model.AddExistingModel).Result) {
-                @PartialForm()
+                @PartialForm(UsePartialFormCss: false)
                 <div class="t_detailsbuttons yNoPrint">
                     <input type="submit" value="@__ResStr("addOldModule", "Add")" />
                 </div>
@@ -63,21 +63,21 @@
 
             @Html.RenderTabPaneStart(DivId, panel, "t_importPage")
             using (CreateFormAsync("ImportPage_Partial", Model: Model.ImportPageModel).Result) {
-                @PartialForm()
+                @PartialForm(UsePartialFormCss: false)
             }
             @Html.RenderTabPaneEnd(DivId, panel)
             ++panel;
 
             @Html.RenderTabPaneStart(DivId, panel, "t_importMod")
             using (CreateFormAsync("ImportModule_Partial", Model: Model.ImportModuleModel).Result) {
-                @PartialForm()
+                @PartialForm(UsePartialFormCss: false)
             }
             @Html.RenderTabPaneEnd(DivId, panel)
             ++panel;
 
             @Html.RenderTabPaneStart(DivId, panel, "t_addSkins")
             using (CreateFormAsync("SkinSelection_Partial", Model: Model.SkinSelectionModel).Result) {
-                @PartialForm()
+                @PartialForm(UsePartialFormCss: false)
                 <div class="t_detailsbuttons yNoPrint">
                     <input type="submit" value="@__ResStr("saveSkins", "Save & Display")" />
                 </div>
@@ -87,7 +87,7 @@
         }
         @Html.RenderTabPaneStart(DivId, panel, "t_Login")
         using (CreateFormAsync("LoginSiteSelection_Partial", Model: Model.LoginSiteSelectionModel).Result) {
-            @PartialForm()
+            @PartialForm(UsePartialFormCss: false)
         }
         @Html.RenderTabPaneEnd(DivId, panel)
         ++panel;

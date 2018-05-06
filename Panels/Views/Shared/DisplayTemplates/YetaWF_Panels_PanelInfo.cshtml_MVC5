@@ -31,8 +31,8 @@
                     @Html.RenderHidden("Index", tabIndex)
                     ModuleDefinition mod = Model.Panels[panelIndex].GetModuleAsync().Result;
                     if (mod != null) {
-                        mod.BootstrapContainer = ModuleDefinition.BootstrapContainerEnum.None;/*Don't generate container css class*/
                         mod.ShowTitle = false;
+                        mod.UsePartialFormCss = false;
                         @mod.RenderModuleAsync(Html).Result;
                     } else {
                         <div>
@@ -56,8 +56,8 @@
                     <h3>@caption</h3>
                     ModuleDefinition mod = Model.Panels[panelIndex].GetModuleAsync().Result;
                     if (mod != null) {
-                        mod.BootstrapContainer = ModuleDefinition.BootstrapContainerEnum.None;/*Don't generate container css class*/
                         mod.ShowTitle = false;
+                        mod.UsePartialFormCss = false;
                         @mod.RenderModuleAsync(Html).Result;
                     } else {
                         <div>
@@ -91,8 +91,8 @@
                         <div class="t_panel-kendo" style="display:none">
                             @{ ModuleDefinition mod = Model.Panels[panelIndex].GetModuleAsync().Result; }
                             @if (mod != null) {
-                                mod.BootstrapContainer = ModuleDefinition.BootstrapContainerEnum.None;/*Don't generate container css class*/
                                 mod.ShowTitle = false;
+                                mod.UsePartialFormCss = false;
                                 @mod.RenderModuleAsync(Html).Result;
                             } else {
                                 @__ResStr("noModule", "(no module defined)")
