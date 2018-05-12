@@ -298,7 +298,6 @@ namespace YetaWF.Modules.PageEdit.Controllers {
             MenuList.ClearCachedMenus();// page changes may affect all menus so clear the menu cache (this only clears current session)
             // if we're in a popup and the parent page is the page we're editing, then force a reload
 
-
             //$$$$ rename with querystring doesn't work
             OnPopupCloseEnum popupClose = OnPopupCloseEnum.ReloadModule;
             if (PageDefinition.IsSamePage(Manager.QueryReturnToUrl.Url, model.Page.Url))

@@ -172,19 +172,13 @@ namespace YetaWF.Modules.Visitors.DataProvider {
                         if (!visitorDP.Usable) return;
 
                         string userAgent;
-                        string sessionId = null;
+                        string sessionId = manager.CurrentSessionId;
+                        if (url == null)
+                            url = manager.CurrentRequestUrl;
 #if MVC6
-                        if (url == null)
-                            url = manager.CurrentRequest.GetDisplayUrl();
                         userAgent = manager.CurrentRequest.Headers["User-Agent"].ToString();
-                        if (manager.HaveCurrentSession)
-                            sessionId = manager.CurrentContext.Session.Id;
 #else
-                        if (url == null)
-                            url = manager.CurrentRequest.Url.ToString();
                         userAgent = manager.CurrentRequest.UserAgent;
-                        if (manager.HaveCurrentSession)
-                            sessionId = manager.CurrentContext.Session.SessionID;
 #endif
                         string referrer = manager.ReferrerUrl;
 

@@ -128,6 +128,7 @@ namespace YetaWF.Modules.Panels.Controllers {
         private async Task<List<PagePanelInfo.PanelEntry>> GetPanelsAsync() {
             SavedCacheInfo info = GetCache(Module.ModuleGuid);
             if (info == null || info.UserId != Manager.UserId || info.Language != Manager.UserLanguage) {
+                // We only reload the pages when the user is new logon/logoff, otherwise we would build this too often
                 List<PagePanelInfo.PanelEntry> list = new SerializableList<PagePanelInfo.PanelEntry>();
                 foreach (LocalPage page in Module.PageList) {
                     AddPage(list, await YetaWF.Core.Pages.PageDefinition.LoadPageDefinitionByUrlAsync(page.Url), page.Popup);
@@ -209,7 +210,6 @@ namespace YetaWF.Modules.Panels.Controllers {
             return string.Format("{0}_PagePanelCache_{1}_{2}", package.AreaName, Manager.CurrentSite.Identity, moduleGuid);
         }
         public SavedCacheInfo GetCache(Guid moduleGuid) {
-            if (!Manager.Deployed) return null;
             SessionStateIO<SavedCacheInfo> session = new SessionStateIO<SavedCacheInfo> {
                 Key = GetCacheName(moduleGuid)
             };
@@ -218,7 +218,6 @@ namespace YetaWF.Modules.Panels.Controllers {
             return info;
         }
         public void SetCache(Guid moduleGuid, SavedCacheInfo cacheInfo) {
-            if (!Manager.Deployed) return;
             SessionStateIO<SavedCacheInfo> session = new SessionStateIO<SavedCacheInfo> {
                 Key = GetCacheName(moduleGuid),
                 Data = cacheInfo,

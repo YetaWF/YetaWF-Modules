@@ -130,7 +130,7 @@ namespace YetaWF.Modules.Logging.DataProvider {
                 string ipAddress = "";
                 string referrer = "";
                 string requestedUrl = "";
-                string sessionId = null;
+                string sessionId = "";
                 category = category.Truncate(LogRecord.MaxCategory);
                 if (YetaWFManager.HaveManager) {
                     if (Manager.HaveCurrentSite)
@@ -138,6 +138,7 @@ namespace YetaWF.Modules.Logging.DataProvider {
                     userId = Manager.UserId;
                     userName = Manager.UserName ?? "";
                     userName = userName.Truncate(Globals.MaxUser);
+                    sessionId = Manager.CurrentSessionId;
                 }
                 HttpContext httpContext;
 #if MVC6
@@ -158,16 +159,12 @@ namespace YetaWF.Modules.Logging.DataProvider {
                                 ipAddress = connectionFeature.RemoteIpAddress.ToString();
                         }
                         referrer = req.Headers["Referer"].ToString();
-                        if (category == YetaWF.Core.Log.Logging.YetaWFEvent && httpContext.Session != null)
-                            sessionId = httpContext.Session.Id;
 #else
                         requestedUrl = req.Url != null ? req.Url.ToString() : null;
                         ipAddress = req.Headers["X-Forwarded-For"];
                         if (string.IsNullOrWhiteSpace(ipAddress)) 
                             ipAddress = req.UserHostAddress;
                         referrer = req.UrlReferrer != null ? req.UrlReferrer.ToString() : null;
-                        if (httpContext.Session != null)
-                            sessionId = httpContext.Session.SessionID;
 #endif
                         requestedUrl = requestedUrl ?? "";
                         requestedUrl = requestedUrl.Truncate(Globals.MaxUrl);
