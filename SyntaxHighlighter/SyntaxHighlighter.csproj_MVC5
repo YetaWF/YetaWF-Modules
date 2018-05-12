@@ -87,7 +87,6 @@
     <Compile Include="ViewsCode\Shared\SyntaxHighlighterSkinsHelper.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="app.config" />
     <Content Include="Addons\_Addons\SkinHighlightJS\FilelistCSS.txt" />
     <Content Include="Addons\_Addons\SkinHighlightJS\FilelistJS.txt" />
     <Content Include="Addons\_Addons\SkinHighlightJS\highlight.pack.js" />
@@ -190,6 +189,7 @@
     <Content Include="Views\Shared\EditorTemplates\YetaWF_SyntaxHighlighter_SyntaxHighlighter.cshtml" />
     <Content Include="Views\Shared\DisplayTemplates\YetaWF_SyntaxHighlighter_HighlightJS.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\YetaWF_SyntaxHighlighter_HighlightJS.cshtml" />
+    <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>

@@ -137,8 +137,8 @@
     <None Include="Addons\_Main\Grids\UsersHelper.GridAllowedUser" />
     <None Include="Addons\_Main\Grids\RolesHelper.GridAllowedRole" />
     <Content Include="Views\YetaWF_PageEdit_EditMode.cshtml" />
-    <None Include="app.config" />
     <Content Include="Views\YetaWF_PageEdit_ImportModule_Partial.cshtml" />
+    <None Include="app.config" />
     <None Include="packages.config" />
     <None Include="Views\YetaWF_PageEdit_AddExistingModule_Partial.cshtml" />
     <None Include="Views\YetaWF_PageEdit_AddNewModule_Partial.cshtml" />

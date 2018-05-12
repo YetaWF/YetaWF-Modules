@@ -89,6 +89,7 @@
     <None Include="Addons\_Main\filelistCSS.txt" />
     <None Include="Addons\_Main\Sites.js" />
     <None Include="Addons\_Main\Sites.css" />
+    <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
@@ -96,7 +97,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Addons\_Main\Grids\SitesBrowseModuleController.BrowseItem" />
-    <None Include="app.config" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\CoreComponents\Core\Core.csproj">

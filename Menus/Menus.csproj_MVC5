@@ -121,11 +121,11 @@
     <Content Include="Views\YetaWF_Menus_MenuEdit.cshtml" />
     <Content Include="Views\YetaWF_Menus_MenuEdit_Partial.cshtml" />
     <Content Include="Views\YetaWF_Menus_MainMenu.cshtml" />
-    <None Include="app.config" />
     <Content Include="Views\Shared\DisplayTemplates\YetaWF_Menus_Menu.cshtml">
       <LastGenOutput>YetaWF_Menus_Menu.generated.cs</LastGenOutput>
     </Content>
     <Content Include="Views\YetaWF_Menus_Menu.cshtml" />
+    <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>
   <PropertyGroup>

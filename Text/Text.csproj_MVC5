@@ -82,6 +82,7 @@
     <Content Include="Addons\_Main\Icons\RssFeed.png" />
     <None Include="Addons\_Main\text.scss" />
     <Content Include="Views\YetaWF_Text_Text.cshtml" />
+    <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup />
@@ -98,7 +99,6 @@
   <ItemGroup>
     <Content Include="Views\YetaWF_Text_Text_Partial.cshtml" />
     <Content Include="Views\YetaWF_Text_TextDisplay.cshtml" />
-    <None Include="app.config" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

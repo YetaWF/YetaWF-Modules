@@ -90,6 +90,7 @@
     <Content Include="Addons\_Main\Images\SiteDefinition Large.png" />
     <Content Include="Addons\_Main\Images\SiteDefinition.png" />
     <Content Include="Views\YetaWF_SiteProperties_SiteProperties.cshtml" />
+    <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
@@ -116,7 +117,6 @@
   <ItemGroup>
     <Content Include="Views\YetaWF_SiteProperties_SiteProperties_Partial.cshtml" />
     <Content Include="Views\YetaWF_SiteProperties_LockedStatus.cshtml" />
-    <None Include="app.config" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

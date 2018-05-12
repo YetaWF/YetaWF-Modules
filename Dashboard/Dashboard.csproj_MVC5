@@ -107,6 +107,7 @@
     <None Include="Addons\_Main\Grids\DisposableTrackerBrowseModuleController.BrowseItem" />
     <None Include="Addons\_Main\Grids\StaticPagesBrowseModuleController.BrowseItem" />
     <None Include="Addons\_Main\Grids\BrowseDataProvidersModuleController.BrowseItem" />
+    <None Include="app.config" />
     <None Include="packages.config" />
     <None Include="Views\YetaWF_Dashboard_DisposableTrackerBrowse.cshtml" />
     <None Include="Views\YetaWF_Dashboard_DisposableTrackerBrowse_Partial.cshtml" />
@@ -140,7 +141,6 @@
   <ItemGroup>
     <None Include="Addons\_Main\Grids\SessionInfoModuleController.BrowseItem" />
     <None Include="Addons\_Main\Grids\CacheInfoModuleController.BrowseItem" />
-    <None Include="app.config" />
     <None Include="Views\YetaWF_Dashboard_CacheInfo_Partial.cshtml" />
     <None Include="Views\YetaWF_Dashboard_CacheInfo.cshtml" />
   </ItemGroup>

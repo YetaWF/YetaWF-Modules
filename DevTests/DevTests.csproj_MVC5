@@ -103,9 +103,9 @@
   <ItemGroup>
     <None Include="Addons\_Main\Grids\ListOfEmailAddressesHelper.GridEntryDisplay" />
     <None Include="Addons\_Main\Grids\ListOfEmailAddressesHelper.GridEntryEdit" />
-    <None Include="app.config" />
     <Content Include="Addons\_SiteTemplates\YetaWF_DevTests.2.5.0.txt" />
     <Content Include="Views\Shared\DisplayTemplates\YetaWF_DevTests_ListOfEmailAddresses.cshtml" />
+    <None Include="app.config" />
     <None Include="packages.config" />
     <None Include="Views\Shared\DisplayTemplates\YetaWF_DevTests_ScrollerItem.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\YetaWF_DevTests_ListOfEmailAddresses.cshtml" />
