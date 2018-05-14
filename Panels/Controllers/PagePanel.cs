@@ -117,6 +117,7 @@ namespace YetaWF.Modules.Panels.Controllers {
             Module.DefaultImage_Data = Module.DefaultImage_Data;
             await Module.SaveAsync();
             model.PageList = Module.PageList;
+            ClearCache(Module.ModuleGuid);
             if (Manager.RequestForm[Globals.Link_SubmitIsApply] == null) {
                 Manager.EditMode = false;
                 return Redirect(model.Url, SetCurrentEditMode: true);
@@ -224,7 +225,12 @@ namespace YetaWF.Modules.Panels.Controllers {
             };
             session.Save();
         }
-
+        public void ClearCache(Guid moduleGuid) {
+            SessionStateIO<SavedCacheInfo> session = new SessionStateIO<SavedCacheInfo> {
+                Key = GetCacheName(moduleGuid),
+            };
+            session.Remove();
+        }
         [AllowPost]
         [ConditionalAntiForgeryToken]
         [ExcludeDemoMode]
