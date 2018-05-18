@@ -3,7 +3,7 @@
 @{
     int index = 0;
 }
-<div id="@ControlId" class="yt_bootstrapcarousel_slideshow t_display carousel slide" data-ride="carousel" data-interval="@Model.Interval.ToString()" data-wrap="@(Model.Wrap?"true":"false")" data-pause="@(Model.Pause?"hover":"null")" data-keyboard="@(Model.Keyboard?"true":"false")">
+<div id="@ControlId" class="yt_bootstrapcarousel_slideshow t_display carousel slide" data-ride="carousel" data-interval="@Model.Interval.ToString()" data-wrap="@(Model.Wrap?"true":"false")" data-pause="@(Model.Pause?"hover":"false")" data-keyboard="@(Model.Keyboard?"true":"false")">
     <!-- Indicators -->
     <ol class="carousel-indicators">
         @foreach (YetaWF.Modules.BootstrapCarousel.Models.CarouselInfo.CarouselItem slide in Model.Slides) {
