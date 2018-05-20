@@ -7,7 +7,9 @@ using YetaWF.Core.Localize;
 using YetaWF.Core.Models;
 #if MVC6
 #else
+using System.Web;
 using System.Web.Mvc;
+using System.Web.Mvc.Html;
 using System.Web.Routing;
 #endif
 
@@ -22,9 +24,19 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         }
 
         /// <summary>
-        /// Include required JavaScript, Css files for all components in this package.
+        /// Include required JavaScript, Css files when displaying a component, for all components in this package.
         /// </summary>
-        public override async Task IncludeStandardAsync() {
+        public override async Task IncludeStandardDisplayAsync() {
+            await Manager.AddOnManager.AddAddOnGlobalAsync("jquery.com", "jquery");
+            await Manager.AddOnManager.AddAddOnGlobalAsync("jqueryui.com", "jqueryui");
+        }
+        /// <summary>
+        /// Include required JavaScript, Css files when editing a component, for all components in this package.
+        /// </summary>
+        public override async Task IncludeStandardEditAsync() {
+            await Manager.AddOnManager.AddAddOnGlobalAsync("bassistance.de", "jquery-validation");
+            await Manager.AddOnManager.AddAddOnGlobalAsync("microsoft.com", "jquery_unobtrusive_validation");
+            await Manager.AddOnManager.AddAddOnGlobalAsync("gist.github.com_remi_957732", "jquery_validate_hooks");
             await Manager.AddOnManager.AddAddOnGlobalAsync("jquery.com", "jquery");
             await Manager.AddOnManager.AddAddOnGlobalAsync("jqueryui.com", "jqueryui");
         }
@@ -33,7 +45,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         /// Include required JavaScript, Css files for this component.
         /// </summary>
         public virtual async Task IncludeAsync() {
-            await Manager.AddOnManager.AddTemplateAsync(Package.Domain, Package.Product, ComponentName);
+            await Manager.AddOnManager.AddTemplateAsync(Package.Domain, Package.Product, GetTemplateName());
         }
 
         /// <summary>
@@ -43,7 +55,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         /// Also adds validation attributes.</remarks>
         protected void FieldSetup(YTagBuilder tag, FieldType fieldType) {
             if (HtmlAttributes != null)
-                tag.MergeAttributes(AnonymousObjectToHtmlAttributes(HtmlAttributes), true);
+                tag.MergeAttributes(HtmlAttributes, true);
             switch (fieldType) {
                 case FieldType.Anonymous:
                     break;
@@ -61,6 +73,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         }
         private IDictionary<string, object> AnonymousObjectToHtmlAttributes(object htmlAttributes) {
             if (htmlAttributes as RouteValueDictionary != null) return (RouteValueDictionary)htmlAttributes;
+            if (htmlAttributes as Dictionary<string, object> != null) return (Dictionary<string, object>)htmlAttributes;
             return HtmlHelper.AnonymousObjectToHtmlAttributes(htmlAttributes);
         }
         private void AddErrorClass(YTagBuilder tagBuilder) {
@@ -82,15 +95,23 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         }
         private void AddValidation(YTagBuilder tagBuilder) {
 #if MVC6
-            ModelExplorer modelExplorer = ExpressionMetadataProvider.FromStringExpression(FieldName, HtmlHelper.ViewData, HtmlHelper.MetadataProvider);
-            ValidationHtmlAttributeProvider valHtmlAttrProvider = (ValidationHtmlAttributeProvider)YetaWFManager.ServiceProvider.GetService(typeof(ValidationHtmlAttributeProvider));
-            valHtmlAttrProvider.AddAndTrackValidationAttributes(HtmlHelper.ViewContext, modelExplorer, FieldName, tagBuilder.Attributes);
-            ModelMetadata metadata = modelExplorer.Metadata;
+            ModelMetadata metadata = metadataProvider.GetMetadataForProperty(Container, PropertyName); 
 #else
-            ModelMetadata metadata = ModelMetadata.FromStringExpression(FieldName, HtmlHelper.ViewContext.ViewData);
-            IDictionary<string, object> attrs = HtmlHelper.GetUnobtrusiveValidationAttributes(FieldName, metadata);
-            tagBuilder.MergeAttributes(attrs, replaceExisting: false);
+            ModelMetadata metadata = ModelMetadataProviders.Current.GetMetadataForProperty(() => PropData.GetPropertyValue<object>(Container), Container.GetType(), PropertyName);
 #endif
+            IDictionary<string, object> attrs = HtmlHelper.GetUnobtrusiveValidationAttributes(PropertyName, metadata);
+
+#if MVC6
+            //$$$ ??
+#else
+            // mvc5 won't render a field with the same name. This conflicts with out notion of nested components,
+            // which easily can have fields with the same name, except the prefix is different. But mvc5 doesn't know about our prefix
+            FormContext formContext = HtmlHelper.ViewContext.FormContext;
+            formContext.RenderedField(FieldName, false);
+            formContext.RenderedField(PropertyName, false);
+#endif
+            tagBuilder.MergeAttributes(attrs, replaceExisting: false);
+
             // patch up auto-generated "required" validation (added by MVC) and rename our own customrequired validation to required
             if (tagBuilder.Attributes.ContainsKey("data-val-required")) {
                 tagBuilder.Attributes.Remove("data-val-required");
@@ -101,9 +122,15 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             }
             // replace type dependent messages (MVC, please, who asked for this?)
             if (tagBuilder.Attributes.ContainsKey("data-val-number"))
-                tagBuilder.Attributes["data-val-number"] = this.__ResStr("valNumber", "Please enter a valid number for field '{0}'", AttributeHelper.GetPropertyCaption(metadata));
+                tagBuilder.Attributes["data-val-number"] = this.__ResStr("valNumber", "Please enter a valid number for field '{0}'", PropData.GetCaption(Container));
             if (tagBuilder.Attributes.ContainsKey("data-val-date"))
-                tagBuilder.Attributes["data-val-date"] = this.__ResStr("valDate", "Please enter a valid date for field '{0}'", AttributeHelper.GetPropertyCaption(metadata));
+                tagBuilder.Attributes["data-val-date"] = this.__ResStr("valDate", "Please enter a valid date for field '{0}'", PropData.GetCaption(Container));
+        }
+        protected IHtmlString ValidationMessage(string fieldName) {
+            // ValidationMessage is always called for a child component within the context of the PARENT
+            // component, so we need to prefix the child component field name with the parent field name
+            fieldName = FieldName + "." + fieldName;
+            return HtmlHelper.ValidationMessage(fieldName);
         }
     }
 }

@@ -1,48 +1,49 @@
 /* Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Licensing */
 var YetaWF_ComponentsHTML;
 (function (YetaWF_ComponentsHTML) {
-    var DateTimeComponent = /** @class */ (function () {
-        function DateTimeComponent() {
+    var DateComponent = /** @class */ (function () {
+        function DateComponent() {
         }
-        DateTimeComponent.prototype.getGrid = function (ctrlId) {
+        DateComponent.prototype.getGrid = function (ctrlId) {
             var el = document.getElementById(ctrlId);
             if (el == null)
                 throw "Grid element " + ctrlId + " not found"; /*DEBUG*/
             return el;
         };
-        DateTimeComponent.prototype.getControl = function (ctrlId) {
+        DateComponent.prototype.getControl = function (ctrlId) {
             var el = document.getElementById(ctrlId);
             if (el == null)
                 throw "Element " + ctrlId + " not found"; /*DEBUG*/
             return el;
         };
-        DateTimeComponent.prototype.getHidden = function (ctrl) {
+        DateComponent.prototype.getHidden = function (ctrl) {
             var hidden = ctrl.querySelector("input[type=\"hidden\"]");
             if (hidden == null)
                 throw "Couldn't find hidden field"; /*DEBUG*/
             return hidden;
         };
-        DateTimeComponent.prototype.setHidden = function (hidden, dateVal) {
+        DateComponent.prototype.setHidden = function (hidden, dateVal) {
             var s = "";
             if (dateVal != null) {
-                s = dateVal.toUTCString();
+                var utcDate = new Date(Date.UTC(dateVal.getFullYear(), dateVal.getMonth(), dateVal.getDate(), 0, 0, 0));
+                s = utcDate.toUTCString();
             }
             hidden.setAttribute("value", s);
         };
-        DateTimeComponent.prototype.setHiddenText = function (hidden, dateVal) {
+        DateComponent.prototype.setHiddenText = function (hidden, dateVal) {
             hidden.setAttribute("value", dateVal ? dateVal : "");
         };
-        DateTimeComponent.prototype.getDate = function (ctrl) {
+        DateComponent.prototype.getDate = function (ctrl) {
             var date = ctrl.querySelector("input[name=\"dtpicker\"]");
             if (date == null)
-                throw "Couldn't find datetime field"; /*DEBUG*/
+                throw "Couldn't find date field"; /*DEBUG*/
             return date;
         };
         /**
          * Initializes one instance of a Date template control.
          * @param ctrlId - The HTML id of the date template control.
          */
-        DateTimeComponent.prototype.init = function (ctrlId) {
+        DateComponent.prototype.init = function (ctrlId) {
             var thisObj = this;
             var ctrl = this.getControl(ctrlId);
             var hidden = this.getHidden(ctrl);
@@ -55,9 +56,9 @@ var YetaWF_ComponentsHTML;
             var ed = new Date(2199, 12 - 1, 31);
             if (d != null)
                 ed = new Date(Number(date.getAttribute("data-max-y")), Number(date.getAttribute("data-max-m")) - 1, Number(date.getAttribute("data-max-d")));
-            $(date).kendoDateTimePicker({
+            $(date).kendoDatePicker({
                 animation: false,
-                format: YVolatile.YetaWF_ComponentsHTML.DateTimeFormat,
+                format: YVolatile.YetaWF_ComponentsHTML.DateFormat,
                 min: sd, max: ed,
                 culture: YConfigs.Basics.Language,
                 change: function (ev) {
@@ -70,7 +71,7 @@ var YetaWF_ComponentsHTML;
                     YetaWF_Core.Forms.ValidateElement(hidden);
                 }
             });
-            var kdPicker = $(date).data("kendoDateTimePicker");
+            var kdPicker = $(date).data("kendoDatePicker");
             this.setHidden(hidden, kdPicker.value());
             function changeHandler(event) {
                 var val = kdPicker.value();
@@ -87,20 +88,20 @@ var YetaWF_ComponentsHTML;
          * @param gridId - The id of the grid containing the date picker.
          * @param elem - The element containing the date value.
          */
-        DateTimeComponent.prototype.renderjqGridFilter = function (gridId, elem) {
+        DateComponent.prototype.renderjqGridFilter = function (gridId, elem) {
             var grid = this.getGrid(gridId);
             // Build a kendo date picker
             // We have to add it next to the jqgrid provided input field elem
-            // We can't use the jqgrid provided element as a kendoDateTimePicker because jqgrid gets confused and
+            // We can't use the jqgrid provided element as a kendodatepicker because jqgrid gets confused and
             // uses the wrong sorting option. So we add the datepicker next to the "official" input field (which we hide)
             var dtPick = YetaWF_Basics.createElement("input", { name: "dtpicker" });
             elem.insertAdjacentElement("afterend", dtPick);
             // Hide the jqgrid provided input element (we update the date in this hidden element)
             elem.style.display = "none";
             // init date picker
-            $(dtPick).kendoDateTimePicker({
+            $(dtPick).kendoDatePicker({
                 animation: false,
-                format: YVolatile.YetaWF_ComponentsHTML.DateTimeFormat,
+                format: YVolatile.YetaWF_ComponentsHTML.DateFormat,
                 //sb.Append("min: sd, max: ed,");
                 culture: YConfigs.Basics.Language,
                 change: function (ev) {
@@ -108,7 +109,8 @@ var YetaWF_ComponentsHTML;
                     var val = kdPicker.value();
                     var s = "";
                     if (val !== null) {
-                        s = val.toUTCString();
+                        var utcDate = new Date(Date.UTC(val.getFullYear(), val.getMonth(), val.getDate(), 0, 0, 0));
+                        s = utcDate.toUTCString();
                     }
                     elem.setAttribute("value", s);
                 }
@@ -123,16 +125,16 @@ var YetaWF_ComponentsHTML;
             }
             dtPick.addEventListener("keydown", keydownHandler, false);
         };
-        return DateTimeComponent;
+        return DateComponent;
     }());
-    YetaWF_ComponentsHTML.DateTimeComponent = DateTimeComponent;
+    YetaWF_ComponentsHTML.DateComponent = DateComponent;
     // A <div> is being emptied. Destroy all date/time pickers the <div> may contain.
     YetaWF_Basics.addClearDiv(function (tag) {
-        var list = tag.querySelectorAll(".yt_datetime.t_edit input[name=\"dtpicker\"]");
+        var list = tag.querySelectorAll(".yt_date.t_edit input[name=\"dtpicker\"]");
         var len = list.length;
         for (var i = 0; i < len; ++i) {
             var el = list[i];
-            var datepicker = $(el).data("kendoDateTimePicker");
+            var datepicker = $(el).data("kendoDatePicker");
             if (!datepicker)
                 throw "No kendo object found"; /*DEBUG*/
             datepicker.destroy();
@@ -140,4 +142,4 @@ var YetaWF_ComponentsHTML;
     });
 })(YetaWF_ComponentsHTML || (YetaWF_ComponentsHTML = {}));
 
-//# sourceMappingURL=DateTime.js.map
+//# sourceMappingURL=Date.js.map

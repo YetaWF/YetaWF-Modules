@@ -10,12 +10,6 @@ namespace YetaWF.Modules.ComponentsHTML.Addons.Templates {
         public Task AddSupportAsync(YetaWFManager manager) {
 
             ScriptManager scripts = manager.ScriptManager;
-            //string areaName = AreaRegistration.CurrentPackage.AreaName;
-
-            //scripts.AddConfigOption(areaName, "something", Something);
-
-            //scripts.AddLocalization(areaName, "something", this.__ResStrxxx("something", "something"));
-
             scripts.AddVolatileOption("YetaWF_ComponentsHTML", "DateTimeFormat", YetaWF.Core.Localize.Formatting.GetFormatDateTimeFormat());
 
             return Task.CompletedTask;

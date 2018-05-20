@@ -8,16 +8,15 @@ using YetaWF.Core.Components;
 
 namespace YetaWF.Modules.ComponentsHTML.Components {
 
-    public abstract class DateTimeComponent : YetaWFComponent {
+    public abstract class DateComponent : YetaWFComponent {
 
-        public const string TemplateName = "DateTime";
+        public const string TemplateName = "Date";
 
         public override Package GetPackage() { return Controllers.AreaRegistration.CurrentPackage; }
         public override string GetTemplateName() { return TemplateName; }
-        // or $"{Package.Domain}_{Package.Product}_{TemplateName}";//$$
     }
 
-    public class DateTimeDisplayComponent : DateTimeComponent, IYetaWFComponent<DateTime?> {
+    public class DateDisplayComponent : DateComponent, IYetaWFComponent<DateTime?> {
 
         public override ComponentType GetComponentType() { return ComponentType.Display; }
 
@@ -37,7 +36,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             return Task.FromResult(hb.ToYHtmlString());
         }
     }
-    public class DateTimeEditComponent : DateTimeComponent, IYetaWFComponent<DateTime>, IYetaWFComponent<DateTime?> {
+    public class DateEditComponent : DateComponent, IYetaWFComponent<DateTime>, IYetaWFComponent<DateTime?> {
 
         public override ComponentType GetComponentType() { return ComponentType.Edit; }
 
@@ -46,7 +45,6 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             //await Manager.ScriptManager.AddKendoUICoreJsFileAsync("kendo.popup.min.js"); // is now a prereq of kendo.window (2017.2.621)
             await Manager.ScriptManager.AddKendoUICoreJsFileAsync("kendo.datepicker.min.js");
             await Manager.ScriptManager.AddKendoUICoreJsFileAsync("kendo.timepicker.min.js");
-            await Manager.ScriptManager.AddKendoUICoreJsFileAsync("kendo.datetimepicker.min.js");
             await base.IncludeAsync();
         }
         public async Task<YHtmlString> RenderAsync(DateTime model) {
@@ -55,9 +53,9 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         public async Task<YHtmlString> RenderAsync(DateTime? model) {
             HtmlBuilder hb = new HtmlBuilder();
 
-            hb.Append($"<div id='{ControlId}' class='yt_datetime t_edit'>");
+            hb.Append($"<div id='{ControlId}' class='yt_date t_edit'>");
 
-            hb.Append(await HtmlHelper.ForEditAsync(Container, PropertyName, null, "Hidden", HtmlAttributes: HtmlAttributes, Validation: Validation));
+            hb.Append(await HtmlHelper.ForEditAsync(Container, PropertyName, "", "Hidden", HtmlAttributes: HtmlAttributes, Validation: Validation));
 
             YTagBuilder tag = new YTagBuilder("input"); 
                 FieldSetup(tag, FieldType.Anonymous); 
@@ -78,13 +76,13 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                 }
 
                 if (model != null)
-                    tag.MergeAttribute("value", Formatting.FormatDateTime((DateTime)model));// shows date using user's timezone
+                    tag.MergeAttribute("value", Formatting.FormatDate((DateTime)model));// shows date using user's timezone
                 hb.Append(tag.ToString(YTagRenderMode.SelfClosing));
 
             hb.Append($"</div>");
 
             ScriptBuilder sb = new ScriptBuilder();
-            sb.Append($@"(new YetaWF_ComponentsHTML.DateTimeComponent()).init('{ControlId}');");
+            sb.Append($@"(new YetaWF_ComponentsHTML.DateComponent()).init('{ControlId}');");
 
             hb.Append(Manager.ScriptManager.AddNow(sb.ToString()).ToString());
 
