@@ -44,7 +44,7 @@ namespace YetaWF.Modules.DevTests.Controllers {
             public decimal? Currency { get; set; }
 
             [Category("Core"), Caption("CurrencyISO4217"), Description("CurrencyISO4217 (Required)")]
-            [UIHint("CurrencyISO4217"), StringLength(CurrencyISO4217Helper.Currency.MaxId), Trim, Required]
+            [UIHint("CurrencyISO4217"), StringLength(YetaWF.Core.Templates.CurrencyISO4217.Currency.MaxId), Trim, Required]
             public string CurrencyISO4217 { get; set; }
 
             [Category("Core"), Caption("Decimal"), Description("Decimal (Required)")]
