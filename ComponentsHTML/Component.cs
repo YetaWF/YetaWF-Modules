@@ -5,6 +5,7 @@ using YetaWF.Core.Components;
 using YetaWF.Core.Support;
 using YetaWF.Core.Localize;
 using YetaWF.Core.Models;
+using System.Linq;
 #if MVC6
 #else
 using System.Web;
@@ -48,12 +49,21 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             await Manager.AddOnManager.AddTemplateAsync(Package.Domain, Package.Product, GetTemplateName());
         }
 
+        public string MakeId(YTagBuilder tag) {
+            string id = (from a in tag.Attributes where string.Compare(a.Key, "id", true) == 0 select a.Value).FirstOrDefault();
+            if (string.IsNullOrWhiteSpace(id)) {
+                id = Manager.UniqueId();
+                tag.Attributes.Add("id", id);
+            }
+            return id;
+        }
+
         /// <summary>
         /// Add HTML attributes and name= attribute to tag.
         /// </summary>
         /// <remarks>This is used for the main tag of a template.
         /// Also adds validation attributes.</remarks>
-        protected void FieldSetup(YTagBuilder tag, FieldType fieldType) {
+        public void FieldSetup(YTagBuilder tag, FieldType fieldType) {
             if (HtmlAttributes != null)
                 tag.MergeAttributes(HtmlAttributes, true);
             switch (fieldType) {
