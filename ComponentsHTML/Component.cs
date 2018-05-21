@@ -65,15 +65,15 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         /// Also adds validation attributes.</remarks>
         public void FieldSetup(YTagBuilder tag, FieldType fieldType) {
             if (HtmlAttributes != null)
-                tag.MergeAttributes(HtmlAttributes, true);
+                tag.MergeAttributes(HtmlAttributes, false);
             switch (fieldType) {
                 case FieldType.Anonymous:
                     break;
                 case FieldType.Normal:
-                    tag.MergeAttribute("name", FieldName, true);
+                    tag.MergeAttribute("name", FieldName, false);
                     break;
                 case FieldType.Validated:
-                    tag.MergeAttribute("name", FieldName, true);
+                    tag.MergeAttribute("name", FieldName, false);
                     // error state
                     AddErrorClass(tag);
                     // client side validation

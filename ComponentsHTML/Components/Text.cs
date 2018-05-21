@@ -99,7 +99,8 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             bool useKendo = !Manager.IsRenderingGrid;
 
             YTagBuilder tag = new YTagBuilder("input");
-            tag.AddCssClass(templateCssClass);
+            if (!string.IsNullOrWhiteSpace(templateCssClass))
+                tag.AddCssClass(templateCssClass);
             tag.AddCssClass("yt_text_base");
             tag.AddCssClass("t_edit");
             component.FieldSetup(tag, component.Validation ? FieldType.Validated : FieldType.Normal);
