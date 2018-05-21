@@ -8,6 +8,7 @@ using YetaWF.Core.Support;
 using YetaWF.Modules.Identity.DataProvider;
 using YetaWF.Modules.Identity.Models;
 using System.Threading.Tasks;
+using YetaWF.Core;
 #if MVC6
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -26,15 +27,15 @@ namespace YetaWF.Modules.Identity.Controllers {
         public class EditModel {
 
             [Caption("Current Password"), Description("Enter your current password for verification")]
-            [UIHint("Password20")]
+            [UIHint("Password20"), StringLength(Globals.MaxPswd)]
             public string OldPassword { get; set; }
 
             [Caption("New Password"), Description("Enter your desired new password")]
-            [UIHint("Password20"), Required]
+            [UIHint("Password20"), StringLength(Globals.MaxPswd), Required]
             public string NewPassword { get; set; }
 
             [Caption("New Password Confirmation"), Description("Enter your new password again to confirm")]
-            [UIHint("Password20"), Required, SameAs("NewPassword", "The password confirmation doesn't match the password entered")]
+            [UIHint("Password20"), StringLength(Globals.MaxPswd), Required, SameAs("NewPassword", "The password confirmation doesn't match the password entered")]
             public string ConfirmPassword { get; set; }
 
             public string UserName { get; set; }

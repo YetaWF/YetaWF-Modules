@@ -14,7 +14,6 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
         public override Package GetPackage() { return Controllers.AreaRegistration.CurrentPackage; }
         public override string GetTemplateName() { return TemplateName; }
-        // or $"{Package.Domain}_{Package.Product}_{TemplateName}";//$$
     }
 
     public class CurrencyDisplayComponent : CurrencyComponent, IYetaWFComponent<decimal?> {

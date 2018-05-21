@@ -3,7 +3,7 @@
 
 var YetaWF_MultiString = {};
 
-if (YLocs.MultiString.Languages == undefined) throw ".MultiString.Languages missing";/*DEBUG*/
+if (YLocs.YetaWF_ComponentsHTML.Languages == undefined) throw "YLocs.YetaWF_ComponentsHTML.Languages missing";/*DEBUG*/
 
 // Load a multistring UI object with data
 // ms refers to the div class="yt_multistring t_edit"
@@ -12,14 +12,14 @@ if (YLocs.MultiString.Languages == undefined) throw ".MultiString.Languages miss
 // this is mainly so we can always validate the input field without having to worry about the selected language
 YetaWF_MultiString.Update = function($ms, data)
 {
-    var count = YLocs.MultiString.Languages.length;
+    var count = YLocs.YetaWF_ComponentsHTML.Languages.length;
     for (var index = 0; index < count ; ++index) {
-        var lang = YLocs.MultiString.Languages[index];
+        var lang = YLocs.YetaWF_ComponentsHTML.Languages[index];
         var s = '';
         if (data.hasOwnProperty(lang))
             s = data[lang];
-        else if (data.hasOwnProperty(YLocs.MultiString.Languages[0])) {
-            s = data[lang] = data[YLocs.MultiString.Languages[0]];// use default for languages w/o data
+        else if (data.hasOwnProperty(YLocs.YetaWF_ComponentsHTML.Languages[0])) {
+            s = data[lang] = data[YLocs.YetaWF_ComponentsHTML.Languages[0]];// use default for languages w/o data
         }
         else throw "No language data";/*DEBUG*/
         _YetaWF_MultiString.getHidden($ms, index).val(s);
@@ -43,13 +43,13 @@ YetaWF_MultiString.Retrieve = function ($ms, data) {
     // now check whether it actually changed
     // if nothing is specified for a language, save what is entered in the text box
     var changed = false;
-    var count = YLocs.MultiString.Languages.length;
+    var count = YLocs.YetaWF_ComponentsHTML.Languages.length;
     for (var index = 0; index < count ; ++index) {
         var langText = _YetaWF_MultiString.getHidden($ms, index).val();
         langText = langText.trim();
         if (langText == '')
             langText = newText;
-        var lang = YLocs.MultiString.Languages[index];
+        var lang = YLocs.YetaWF_ComponentsHTML.Languages[index];
         if (!StringYCompare(data[lang], langText)) {
             changed = true;
             data[lang] = langText;
@@ -66,12 +66,12 @@ YetaWF_MultiString.HasChanged = function ($ms, data) {
     var text = _YetaWF_MultiString.getText($ms).val();
 
     // now check whether it actually changed
-    var count = YLocs.MultiString.Languages.length;
+    var count = YLocs.YetaWF_ComponentsHTML.Languages.length;
     for (var index = 0; index < count ; ++index) {
         var langText = _YetaWF_MultiString.getHidden($ms, index).val();
         if (langText.trim() == '')
             langText = text;
-        var lang = YLocs.MultiString.Languages[index];
+        var lang = YLocs.YetaWF_ComponentsHTML.Languages[index];
         if (data[lang] != null && !StringYCompare(data[lang], langText))
             return true;
     }
@@ -105,7 +105,7 @@ YetaWF_MultiString.Clear = function($ms)
 
 // data is an object with language data for each language
 YetaWF_MultiString.ClearData = function (data) {
-    var defaultLang = YLocs.MultiString.Languages[0];
+    var defaultLang = YLocs.YetaWF_ComponentsHTML.Languages[0];
     data = {};
     data[defaultLang] = "";
 }
@@ -164,11 +164,11 @@ $(document).on("change", '.yt_multistring select', function () {
         var $hidval = _YetaWF_MultiString.getHidden($ms, 0);// default language
         var text = $hidval.val();
         if (text.trim() == '') {
-            if (YLocs.MultiString.NeedDefaultText == undefined) throw "YLocs.MultiString.NeedDefaultText missing";/*DEBUG*/
+            if (YLocs.YetaWF_ComponentsHTML.NeedDefaultText == undefined) throw "YLocs.YetaWF_ComponentsHTML.NeedDefaultText missing";/*DEBUG*/
             this.selectedIndex = 0;
             var $text = $('input.yt_multistring_text', $ms);
             $text.eq(0).focus();
-            Y_Alert(YLocs.MultiString.NeedDefaultText);
+            Y_Alert(YLocs.YetaWF_ComponentsHTML.NeedDefaultText);
             return;
         }
         $hidval = _YetaWF_MultiString.getHidden($ms, sel);

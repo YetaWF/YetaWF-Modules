@@ -146,7 +146,7 @@ namespace YetaWF.Modules.DevTests.Controllers {
             public List<string> PaneSelection_List { get; set; }
 
             [Category("Core"), Caption("Password20"), Description("Password20 (Required)")]
-            [UIHint("Password20"), Required]
+            [UIHint("Password20"), StringLength(20), Required]
             public string Password20 { get; set; }
 
             [Category("Core"), Caption("SMTPServer"), Description("SMTPServer (Required)")]

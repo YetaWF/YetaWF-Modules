@@ -108,7 +108,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                 text = (string)model;
             Guid owningGuid = Guid.Empty;
 
-            TryGetSiblingProperty<Guid>("Folder", out owningGuid);
+            TryGetSiblingProperty<Guid>($"{PropertyName}_Folder", out owningGuid);
             if (owningGuid == Guid.Empty && Manager.CurrentModuleEdited != null)
                 owningGuid = Manager.CurrentModuleEdited.ModuleGuid;
             if (owningGuid == Guid.Empty) {
@@ -116,7 +116,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             }
             Guid subFolder = PropData.GetAdditionalAttributeValue("SubFolder", Guid.Empty);
             if (subFolder == Guid.Empty)
-                TryGetSiblingProperty<Guid>("SubFolder", out subFolder);
+                TryGetSiblingProperty<Guid>($"{PropertyName}_SubFolder", out subFolder);
 
             bool sourceOnly = PropData.GetAdditionalAttributeValue("SourceOnly", false);
             bool useSave = PropData.GetAdditionalAttributeValue("TextAreaSave", false);

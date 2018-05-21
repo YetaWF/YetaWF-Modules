@@ -39,7 +39,7 @@ namespace YetaWF.Modules.Identity.Controllers {
             public string Email { get; set; }
 
             [Caption("Password"), Description("The password for this user")]
-            [UIHint("Password20"), Required]
+            [UIHint("Password20"), StringLength(Globals.MaxPswd), Required]
             public string Password { get; set; }
 
             [Caption("Status"), Description("The user's current account status")]
