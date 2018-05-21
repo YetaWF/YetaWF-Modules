@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using YetaWF.Core.Addons.Templates;
 using YetaWF.Core.Components;
 using YetaWF.Core.Packages;
 using YetaWF.Core.Support;
@@ -43,10 +42,10 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             List<SelectionItem<TYPE>> list;
             if (!TryGetSiblingProperty(PropertyName + "_List", out list))
                 list = new List<SelectionItem<TYPE>>();
-            return RenderDropDownList(model, list, this, "yt_dropdownlist");
+            return RenderDropDownListAsync(model, list, this, "yt_dropdownlist");
         }
 
-        public static Task<YHtmlString> RenderDropDownList(TYPE model, List<SelectionItem<TYPE>> list, YetaWFComponent component, string cssClass) {
+        public static Task<YHtmlString> RenderDropDownListAsync(TYPE model, List<SelectionItem<TYPE>> list, YetaWFComponent component, string cssClass) {
             bool useKendo = !Manager.IsRenderingGrid;
 
             YTagBuilder tag = new YTagBuilder("select");

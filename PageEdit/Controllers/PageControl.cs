@@ -23,6 +23,7 @@ using YetaWF.Core.Views.Shared;
 using YetaWF.Modules.PageEdit.DataProvider;
 using YetaWF.Modules.PageEdit.Modules;
 using YetaWF.Core.IO;
+using YetaWF.Core.Templates;
 #if MVC6
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Http;

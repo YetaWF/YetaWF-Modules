@@ -2,6 +2,7 @@ using System.Threading.Tasks;
 using YetaWF.Core.Addons;
 using YetaWF.Core.Pages;
 using YetaWF.Core.Support;
+using YetaWF.Modules.ComponentsHTML.Controllers;
 
 namespace YetaWF.Modules.ComponentsHTML.Addons.Templates {
 
@@ -10,7 +11,8 @@ namespace YetaWF.Modules.ComponentsHTML.Addons.Templates {
         public Task AddSupportAsync(YetaWFManager manager) {
 
             ScriptManager scripts = manager.ScriptManager;
-            scripts.AddVolatileOption("YetaWF_ComponentsHTML", "DateTimeFormat", YetaWF.Core.Localize.Formatting.GetFormatDateTimeFormat());
+            string area = AreaRegistration.CurrentPackage.AreaName;
+            scripts.AddVolatileOption(area, "DateTimeFormat", YetaWF.Core.Localize.Formatting.GetFormatDateTimeFormat());
 
             return Task.CompletedTask;
         }

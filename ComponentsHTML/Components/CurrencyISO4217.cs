@@ -1,12 +1,12 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using YetaWF.Core.Components;
+using YetaWF.Core.Localize;
 using YetaWF.Core.Packages;
 using YetaWF.Core.Support;
-using YetaWF.Core.Views.Shared;
 using YetaWF.Core.Templates;
-using System.Linq;
-using YetaWF.Core.Localize;
+using YetaWF.Core.Views.Shared;
 using static YetaWF.Core.Templates.CurrencyISO4217;
 
 namespace YetaWF.Modules.ComponentsHTML.Components {
@@ -45,7 +45,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                 Text = this.__ResStr("default", "(select)"),
                 Value = "",
             });
-            return await DropDownListComponent.RenderDropDownList(model, list, this, "yt_currencyiso4217");
+            return await DropDownListComponent.RenderDropDownListAsync(model, list, this, "yt_currencyiso4217");
         }
     }
 }

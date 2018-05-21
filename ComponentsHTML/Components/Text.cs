@@ -1,11 +1,11 @@
 ﻿using System.Threading.Tasks;
-using YetaWF.Core.Support;
+using YetaWF.Core.Components;
+using YetaWF.Core.Localize;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Packages;
-using YetaWF.Core.Components;
 using YetaWF.Core.Skins;
+using YetaWF.Core.Support;
 using YetaWF.Core.Views.Shared;
-using YetaWF.Core.Localize;
 
 namespace YetaWF.Modules.ComponentsHTML.Components {
 
@@ -35,7 +35,6 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         }
 
         public override async Task IncludeAsync() {
-            //$$ await Manager.AddOnManager.AddTemplateAsync("Text");
             await Manager.ScriptManager.AddKendoUICoreJsFileAsync("kendo.maskedtextbox.min.js");
         }
         public async Task<YHtmlString> RenderAsync(string model) {
@@ -72,6 +71,8 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
     }
     public abstract class TextEditComponentBase : YetaWFComponent, IYetaWFComponent<string> {
 
+        private static string __ResStr(string name, string defaultValue, params object[] parms) { return ResourceAccess.GetResourceString(typeof(TextEditComponentBase), name, defaultValue, parms); }
+
         public override Package GetPackage() { return Controllers.AreaRegistration.CurrentPackage; }
         public override string GetTemplateName() { return TemplateName; }
         public override ComponentType GetComponentType() { return ComponentType.Edit; }
@@ -89,29 +90,33 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             await base.IncludeAsync();
         }
         public async Task<YHtmlString> RenderAsync(string model) {
+            return await RenderTextAsync(model, this, TemplateClass);
+        }
+        public static async Task<YHtmlString> RenderTextAsync(string model, YetaWFComponent component, string templateCssClass) {
 
             HtmlBuilder hb = new HtmlBuilder();
 
             bool useKendo = !Manager.IsRenderingGrid;
 
             YTagBuilder tag = new YTagBuilder("input");
-            tag.AddCssClass(TemplateClass);
+            tag.AddCssClass(templateCssClass);
+            tag.AddCssClass("yt_text_base");
             tag.AddCssClass("t_edit");
-            FieldSetup(tag, Validation ? FieldType.Validated : FieldType.Normal);
+            component.FieldSetup(tag, component.Validation ? FieldType.Validated : FieldType.Normal);
             //string id = null;
             //if (!string.IsNullOrWhiteSpace(mask)) {
             //    id = htmlHelper.MakeId(tag);
             //}
 
-            bool copy = PropData.GetAdditionalAttributeValue<bool>("Copy", false);
+            bool copy = component.PropData.GetAdditionalAttributeValue<bool>("Copy", false);
             //string mask = htmlHelper.GetControlInfo<string>("", "Mask", null);
 
             // handle StringLengthAttribute as maxlength
-            StringLengthAttribute lenAttr = PropData.TryGetAttribute<StringLengthAttribute>();
+            StringLengthAttribute lenAttr = component.PropData.TryGetAttribute<StringLengthAttribute>();
             if (lenAttr != null) {
 #if DEBUG
                 if (tag.Attributes.ContainsKey("maxlength"))
-                    throw new InternalError("Both StringLengthAttribute and maxlength specified - {0}", FieldName);
+                    throw new InternalError("Both StringLengthAttribute and maxlength specified - {0}", component.FieldName);
 #endif
                 int maxLength = lenAttr.MaximumLength;
                 if (maxLength > 0 && maxLength <= 8000)
@@ -119,7 +124,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             }
 #if DEBUG
             if (lenAttr == null && !tag.Attributes.ContainsKey("maxlength"))
-                throw new InternalError("No max string length given using StringLengthAttribute or maxlength - {0}", FieldName);
+                throw new InternalError("No max string length given using StringLengthAttribute or maxlength - {0}", component.FieldName);
 #endif
             // text
             tag.MergeAttribute("type", "text");
@@ -133,8 +138,8 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             if (copy) {
                 await Manager.AddOnManager.AddAddOnGlobalAsync("clipboardjs.com", "clipboard");// add clipboard support
                 SkinImages skinImages = new SkinImages();
-                string imageUrl = await skinImages.FindIcon_TemplateAsync("Copy.png", Package, "Text");
-                YTagBuilder tagImg = ImageHelper.BuildKnownImageYTag(imageUrl, title: this.__ResStr("ttCopy", "Copy to Clipboard"), alt: this.__ResStr("altCopy", "Copy to Clipboard"));
+                string imageUrl = await skinImages.FindIcon_TemplateAsync("Copy.png", component.Package, "Text");
+                YTagBuilder tagImg = ImageHelper.BuildKnownImageYTag(imageUrl, title: __ResStr("ttCopy", "Copy to Clipboard"), alt: __ResStr("altCopy", "Copy to Clipboard"));
                 tagImg.AddCssClass("yt_text_copy");
                 hb.Append(tagImg.ToString(YTagRenderMode.StartTag));
             }

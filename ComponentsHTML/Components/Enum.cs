@@ -79,7 +79,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                     Tooltip = entry.Description,
                 });
             }
-            return await DropDownListIntComponent.RenderDropDownList((int)model, list, this, "yt_enum");
+            return await DropDownListIntComponent.RenderDropDownListAsync((int)model, list, this, "yt_enum");
         }
     }
 }
