@@ -57,7 +57,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
             hb.Append($"<div id='{ControlId}' class='yt_datetime t_edit'>");
 
-            hb.Append(await HtmlHelper.ForEditAsync(Container, PropertyName, null, "Hidden", HtmlAttributes: HtmlAttributes, Validation: Validation));
+            hb.Append(await HtmlHelper.ForEditComponentAsync(Container, PropertyName, null, "Hidden", HtmlAttributes: HtmlAttributes, Validation: Validation));
 
             YTagBuilder tag = new YTagBuilder("input"); 
                 FieldSetup(tag, FieldType.Anonymous); 

@@ -70,7 +70,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
             hb.Append($"<div id='{ControlId}' class='yt_timespan t_edit'>");
 
-            hb.Append(await HtmlHelper.ForEditAsync(Container, PropertyName, model.ToString(), "Hidden", HtmlAttributes: HtmlAttributes, Validation: Validation));
+            hb.Append(await HtmlHelper.ForEditComponentAsync(Container, PropertyName, model.ToString(), "Hidden", HtmlAttributes: HtmlAttributes, Validation: Validation));
 
             using (Manager.StartNestedComponent(FieldName)) {
 

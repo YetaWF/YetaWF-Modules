@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using YetaWF.Core.Components;
 using YetaWF.Core.Support;
 using YetaWF.Core.Localize;
-using YetaWF.Core.Models;
 using System.Linq;
 #if MVC6
 #else
@@ -141,6 +140,19 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             // component, so we need to prefix the child component field name with the parent field name
             fieldName = FieldName + "." + fieldName;
             return HtmlHelper.ValidationMessage(fieldName);
+        }
+        internal static IHtmlString ValidationMessage(
+#if MVC6
+            IHtmlHelper htmlHelper, 
+#else
+            HtmlHelper htmlHelper,
+#endif
+                 string containerFieldPrefix, string fieldName) {
+            // ValidationMessage is always called for a child component within the context of the PARENT
+            // component, so we need to prefix the child component field name with the parent field name
+            if (!string.IsNullOrEmpty(containerFieldPrefix))
+                fieldName = containerFieldPrefix + "." + fieldName;
+            return htmlHelper.ValidationMessage(fieldName);
         }
     }
 }
