@@ -138,7 +138,8 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         protected IHtmlString ValidationMessage(string fieldName) {
             // ValidationMessage is always called for a child component within the context of the PARENT
             // component, so we need to prefix the child component field name with the parent field name
-            fieldName = FieldName + "." + fieldName;
+            if (!IsContainerComponent)
+                fieldName = FieldName + "." + fieldName;
             return HtmlHelper.ValidationMessage(fieldName);
         }
         internal static IHtmlString ValidationMessage(

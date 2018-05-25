@@ -232,7 +232,7 @@ namespace YetaWF.Modules.PageEdit.Controllers {
 
         [Trim]
         public class EditModel {
-            [UIHint("PropertyListTabbed")]
+            [UIHint("PropertyList")]
             public EditablePage Page { get; set; }
 
             [UIHint("Hidden")]

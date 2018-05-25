@@ -100,8 +100,8 @@ namespace YetaWF.Modules.DevTests.Controllers {
             [UIHint("IntValue6"), Required]
             public int IntValue6 { get; set; }
 
-            [Category("Core"), Caption("JQueryUISkin"), Description("JQueryUISkin (Required)")]
-            [UIHint("JQueryUISkin"), AdditionalMetadata("NoDefault", false), Required]
+            [Category("Core"), Caption("jQueryUISkin"), Description("JQueryUISkin (Required)")]
+            [UIHint("jQueryUISkin"), AdditionalMetadata("NoDefault", false), Required]
             public string JQueryUISkin { get; set; }
 
             [Category("Core"), Caption("KendoUISkin"), Description("KendoUISkin (Required)")]

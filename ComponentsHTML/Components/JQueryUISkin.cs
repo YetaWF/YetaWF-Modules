@@ -12,7 +12,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
     public abstract class JQueryUISkinComponent : YetaWFComponent {
 
-        public const string TemplateName = "JQueryUISkin";
+        public const string TemplateName = "jQueryUISkin";
 
         public override Package GetPackage() { return Controllers.AreaRegistration.CurrentPackage; }
         public override string GetTemplateName() { return TemplateName; }

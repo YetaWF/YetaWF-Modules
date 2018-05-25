@@ -32,16 +32,6 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             if (!readOnly)
                 ObjectSupport.TryGetPropertyValue<bool>(model, "__editable", out recordEnabled, true);
 
-            //$$} else if (dataSrc != null) {
-            //    if (string.IsNullOrWhiteSpace(dataSrc.FieldPrefix)) {
-            //        readOnly = true;
-            //    } else {
-            //        readOnly = false;
-            //        prefix = dataSrc.FieldPrefix;
-            //    }
-            //    recordCount = dataSrc.RecordCount;
-            //    hiddenProps = await GridHelper.GetHiddenGridPropertiesAsync(model);
-            //    props = await GridHelper.GetGridPropertiesAsync(model);
             //$$} else if (gridEntry != null) {
             //    readOnly = false;
             //    prefix = gridEntry.Prefix;

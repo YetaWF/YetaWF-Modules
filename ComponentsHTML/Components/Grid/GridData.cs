@@ -36,14 +36,10 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
                 // determine record type (could use reflection, but this is easier)
                 ObjectSupport.ReadGridDictionaryInfo dictInfo = null;
-                List<Core.Views.Shared.PropertyListEntry> hiddenProps = null;
-                List<Core.Views.Shared.PropertyListEntry> props = null;
                 object firstRecord = model.Data.FirstOrDefault();
                 if (firstRecord != null) {
                     Type recordType = firstRecord.GetType();
                     dictInfo = await GridHelper.LoadGridColumnDefinitionsAsync(recordType);
-                    hiddenProps = GridDisplayComponent.GetHiddenGridProperties(firstRecord, dictInfo);
-                    props = GridDisplayComponent.GetGridProperties(firstRecord, dictInfo);
                 }
 
                 // render all records
@@ -55,6 +51,8 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                 foreach (var record in model.Data) {
                     if (model.RecordCount > 0)
                         sb.Append(",");
+                    List<Core.Views.Shared.PropertyListEntry> hiddenProps = GridDisplayComponent.GetHiddenGridProperties(record, dictInfo);
+                    List<Core.Views.Shared.PropertyListEntry> props = GridDisplayComponent.GetGridProperties(record, dictInfo);
                     sb.Append($@"{{ ""id"": ""{model.RecordCount}"", {await GridDisplayComponent.RenderOneRecordAsync(HtmlHelper, record, props, hiddenProps, readOnly)} }}");
                     model.RecordCount = model.RecordCount + 1;
                 }
