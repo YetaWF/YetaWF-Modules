@@ -1,6 +1,4 @@
 ﻿@*Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Panels#License*@
 @inherits YetaWF.Core.Views.RazorView<YetaWF.Modules.Panels.Modules.ModulePanelModule, YetaWF.Modules.Panels.Controllers.ModulePanelModuleController.Model>
-@Html.ValidationSummary()
-<div>
-    @Html.EditorFor(m => Model.PanelInfo, "YetaWF_Panels_PanelInfo")
-</div>
+@using YetaWF.Core.Components
+@Html.EditorFor(m => Model.PanelInfo, "YetaWF_Panels_PanelInfo")

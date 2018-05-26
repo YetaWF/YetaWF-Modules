@@ -18,7 +18,7 @@
         @foreach (var slide in Model.Slides) {
             @Html.RenderTabPaneStart(DivId, tabEntry, "t_slide")
             @Html.RenderHidden("Index", tabEntry)
-            @Html.EditorFor(m => slide, "PropertyList", string.Format("Slides[{0}]", tabEntry))
+            @Html.EditorFor(m => slide, "PropertyList", string.Format("Slides[{0}]", tabEntry)) //$$$
             <div class="t_buttons">
                 <input type="button" class="t_up" value="@__ResStr("btnUp", "<<")" title="@__ResStr("txtUp", "Click to move the current image")" />
                 <input type="button" class="t_down" value="@__ResStr("btnDown", ">>")" title="@__ResStr("txtDown", "Click to move the current image")" />

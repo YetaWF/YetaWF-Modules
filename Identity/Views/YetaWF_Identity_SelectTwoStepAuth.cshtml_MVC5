@@ -1,7 +1,7 @@
 @*Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Identity#License*@
 @inherits YetaWF.Core.Views.RazorView<YetaWF.Modules.Identity.Modules.SelectTwoStepAuthModule, YetaWF.Modules.Identity.Controllers.SelectTwoStepAuthModuleController.EditModel>
 @using YetaWF.Core.Modules
-@Html.EditorFor(m => Model, "PropertyList")
+@Html.ForEditContainerAsync(Model, "PropertyList").Result
 @foreach (ModuleAction action in Model.Actions) {
     <div class="t_auth">
         @action.RenderAsLinkAsync().Result

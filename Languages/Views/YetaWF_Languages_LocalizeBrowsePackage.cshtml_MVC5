@@ -12,5 +12,5 @@
 }
 @using (CreateFormAsync("LocalizeBrowsePackage_Partial").Result) {
     @PartialForm()
-    @Html.DisplayFor(m => Model.GridDef)
+    @Html.ForDisplayAsync(Model, "GridDef").Result
 }
