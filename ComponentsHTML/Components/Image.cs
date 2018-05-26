@@ -1,18 +1,19 @@
-﻿using System;
-using System.Threading.Tasks;
-using YetaWF.Core;
-using YetaWF.Core.Addons;
+﻿using System.Threading.Tasks;
 using YetaWF.Core.Components;
 using YetaWF.Core.Extensions;
+using YetaWF.Core.Image;
 using YetaWF.Core.Localize;
-using YetaWF.Core.Models;
 using YetaWF.Core.Packages;
 using YetaWF.Core.Pages;
 using YetaWF.Core.Support;
+using YetaWF.Modules.ComponentsHTML.Addons.Templates;
+using YetaWF.Modules.ComponentsHTML.Controllers.Support;
 
 namespace YetaWF.Modules.ComponentsHTML.Components {
 
     public abstract class ImageComponent : YetaWFComponent {
+
+        private static string __ResStr(string name, string defaultValue, params object[] parms) { return ResourceAccess.GetResourceString(typeof(ImageComponent), name, defaultValue, parms); }
 
         public const string TemplateName = "Image";
 
@@ -24,10 +25,10 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                 bool Stretch = false) {
             string url;
             if (width > 0 && height > 0) {
-                url = string.Format(YetaWF.Core.Addons.Templates.Image.FormatUrlWithSize, YetaWFManager.UrlEncodeArgs(imageType), YetaWFManager.UrlEncodeArgs(location), YetaWFManager.UrlEncodeArgs(name),
+                url = string.Format(Image.FormatUrlWithSize, YetaWFManager.UrlEncodeArgs(imageType), YetaWFManager.UrlEncodeArgs(location), YetaWFManager.UrlEncodeArgs(name),
                     width, height, Stretch ? "1" : "0");
             } else {
-                url = string.Format(YetaWF.Core.Addons.Templates.Image.FormatUrl, YetaWFManager.UrlEncodeArgs(imageType), YetaWFManager.UrlEncodeArgs(location), YetaWFManager.UrlEncodeArgs(name));
+                url = string.Format(Image.FormatUrl, YetaWFManager.UrlEncodeArgs(imageType), YetaWFManager.UrlEncodeArgs(location), YetaWFManager.UrlEncodeArgs(name));
             }
             if (!string.IsNullOrWhiteSpace(CacheBuster))
                 url += url.AddUrlCacheBuster(CacheBuster);
@@ -39,15 +40,28 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             }
             return url;
         }
+        public static string RenderImage(string imageType, int width, int height, string model,
+                string CacheBuster = null, string Alt = null, bool ExternalUrl = false, PageDefinition.PageSecurityType SecurityType = PageDefinition.PageSecurityType.Any) {
+            string url = FormatUrl(imageType, null, model, width, height, CacheBuster: CacheBuster, ExternalUrl: ExternalUrl, SecurityType: SecurityType);
+            YTagBuilder img = new YTagBuilder("img");
+            img.AddCssClass("t_preview");
+            img.Attributes.Add("src", url);
+            img.Attributes.Add("alt", Alt ?? __ResStr("altImg", "Image"));
+            return img.ToString(YTagRenderMode.StartTag);
+        }
+        public static async Task<string> RenderImageAttributesAsync(string model) {
+            if (model == null) return "";
+            System.Drawing.Size size = await ImageSupport.GetImageSizeAsync(model);
+            if (size.IsEmpty) return "";
+            return __ResStr("imgAttr", "{0} x {1} (w x h)", size.Width, size.Height);
+        }
     }
 
     public class ImageDisplayComponent : ImageComponent, IYetaWFComponent<string> {
 
         public override ComponentType GetComponentType() { return ComponentType.Display; }
 
-        public async Task<YHtmlString> RenderAsync(string model) {
-
-            string Alt = null;//$$$$
+        public Task<YHtmlString> RenderAsync(string model) {
 
             HtmlBuilder hb = new HtmlBuilder();
             hb.Append("<div class='yt_image t_display'>");
@@ -62,22 +76,24 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
                 YTagBuilder img = new YTagBuilder("img");
                 img.Attributes.Add("src", model);
-                img.Attributes.Add("alt", this.__ResStr("altImage", "{0}", Alt ?? "Image"));
-                return img.ToYHtmlString(YTagRenderMode.Normal);
+                if (!img.Attributes.ContainsKey("alt"))
+                    img.Attributes.Add("alt", this.__ResStr("altImage", "Image"));
+                hb.Append(img.ToYHtmlString(YTagRenderMode.Normal));
 
             } else {
 
                 if (string.IsNullOrWhiteSpace(imageType)) throw new InternalError("No ImageType specified");
 
                 bool showMissing = PropData.GetAdditionalAttributeValue("ShowMissing", true);
-                if (string.IsNullOrWhiteSpace(model) && !showMissing) return new YHtmlString("");
+                if (string.IsNullOrWhiteSpace(model) && !showMissing)
+                    return Task.FromResult(new YHtmlString(""));
 
-                string imgTag = RenderImage(imageType, width, height, model, CacheBuster: CacheBuster, Alt: Alt, ExternalUrl: ExternalUrl, SecurityType: SecurityType);
+                string imgTag = ImageComponent.RenderImage(imageType, width, height, model, Alt: (string)HtmlAttributes["alt"]);
 
                 bool linkToImage = PropData.GetAdditionalAttributeValue("LinkToImage", false);
                 if (linkToImage) {
                     YTagBuilder link = new YTagBuilder("a");
-                    string imgUrl = FormatUrl(imageType, null, model, CacheBuster: CacheBuster);
+                    string imgUrl = FormatUrl(imageType, null, model);
                     link.MergeAttribute("href", imgUrl);
                     link.MergeAttribute("target", "_blank");
                     link.MergeAttribute("rel", "noopener noreferrer");
@@ -86,8 +102,9 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                 } else
                     hb.Append(imgTag);
             }
+
             hb.Append("</div>");
-            return hb.ToYHtmlString();
+            return Task.FromResult(hb.ToYHtmlString());
         }
     }
     public class ImageEditComponent : ImageComponent, IYetaWFComponent<string> {
@@ -96,104 +113,33 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
         public async Task<YHtmlString> RenderAsync(string model) {
 
-            await Manager.AddOnManager.AddAddOnGlobalAsync("ckeditor.com", "ckeditor");
-            string addonUrl = AddOnManager.GetAddOnGlobalUrl("ckeditor.com", "ckeditor", YetaWF.Core.Addons.AddOnManager.UrlType.Base) + "__CUSTOM_FILES/";
-
-            string text;
-            if (model is MultiString)
-                text = (MultiString)model;
-            else
-                text = (string)model;
-            Guid owningGuid = Guid.Empty;
-
-            TryGetSiblingProperty<Guid>($"{PropertyName}_Folder", out owningGuid);
-            if (owningGuid == Guid.Empty && Manager.CurrentModuleEdited != null)
-                owningGuid = Manager.CurrentModuleEdited.ModuleGuid;
-            if (owningGuid == Guid.Empty) {
-                owningGuid = Manager.CurrentModule.ModuleGuid;
-            }
-            Guid subFolder = PropData.GetAdditionalAttributeValue("SubFolder", Guid.Empty);
-            if (subFolder == Guid.Empty)
-                TryGetSiblingProperty<Guid>($"{PropertyName}_SubFolder", out subFolder);
-
-            bool sourceOnly = PropData.GetAdditionalAttributeValue("SourceOnly", false);
-            bool useSave = PropData.GetAdditionalAttributeValue("ImageSave", false);
-            bool useImageBrowsing = PropData.GetAdditionalAttributeValue("ImageBrowse", false);
-            bool useFlashBrowsing = PropData.GetAdditionalAttributeValue("FlashBrowse", false);
-            bool usePageBrowsing = PropData.GetAdditionalAttributeValue("PageBrowse", false);
-            bool restrictedHtml = PropData.GetAdditionalAttributeValue("RestrictedHtml", false);
-            int emHeight = PropData.GetAdditionalAttributeValue("EmHeight", 10);
-            int pixHeight = Manager.CharHeight * emHeight;
-
-            string filebrowserImageBrowseUrl = null;
-            if (useImageBrowsing) {
-                filebrowserImageBrowseUrl = string.Format("/__CKEditor/ImageBrowseLinkUrl?__FolderGuid={0}&__SubFolder={1}",
-                    owningGuid.ToString(), subFolder.ToString());
-                filebrowserImageBrowseUrl += "&" + Globals.Link_NoEditMode + "=y";
-            }
-            string filebrowserFlashBrowseUrl = null;
-            if (useFlashBrowsing) {
-                filebrowserFlashBrowseUrl = string.Format("/__CKEditor/FlashBrowseLinkUrl?__FolderGuid={0}&__SubFolder={1}", owningGuid.ToString(), subFolder.ToString());
-                filebrowserFlashBrowseUrl += "&" + Globals.Link_NoEditMode + "=y";
-            }
-            string filebrowserPageBrowseUrl = null;
-            if (usePageBrowsing) {
-                filebrowserPageBrowseUrl = "/__CKEditor/PageBrowseLinkUrl?";
-                filebrowserPageBrowseUrl += Globals.Link_NoEditMode + "=y";
-            }
-            string url = addonUrl + "full_config.js";
-            if (sourceOnly) 
-                url = addonUrl + "sourceonly_config.js";
-            else if (!useSave)
-                url = addonUrl + "nosave_config.js";
+            // the upload control
+            Core.Templates.FileUpload1 info = new Core.Templates.FileUpload1() {
+                SaveURL = YetaWFManager.UrlFor(typeof(FileUpload1Controller), nameof(FileUpload1Controller.SaveImage), new { __ModuleGuid = Manager.CurrentModule.ModuleGuid }),
+                RemoveURL = YetaWFManager.UrlFor(typeof(FileUpload1Controller), nameof(FileUpload1Controller.RemoveImage), new { __ModuleGuid = Manager.CurrentModule.ModuleGuid }),
+            };
 
             HtmlBuilder hb = new HtmlBuilder();
-
-            YTagBuilder tag = new YTagBuilder("Image");
-            tag.AddCssClass("yt_Image");
-            tag.AddCssClass("t_edit");
-            FieldSetup(tag, Validation ? FieldType.Validated : FieldType.Normal);
-            tag.Attributes.Add("id", ControlId);
-            tag.Attributes.Add("data-height", pixHeight.ToString());
-
-            tag.SetInnerText(text);
-            hb.Append(tag.ToString(YTagRenderMode.Normal));
-
             hb.Append($@"
-                <script>
-                    CKEDITOR.replace('{ControlId}', {{
-                    customConfig: '{Manager.GetCDNUrl(url)}',
-                        height: '{pixHeight}px',
-                        allowedContent: {(restrictedHtml ? "false" : "true")},");
+<div class='yt_image t_edit' id='{ControlId}'>
+    {await HtmlHelper.ForEditComponentAsync(Container, PropertyName, "", "Hidden", Validation:true)}  // where the actual filename is returned
+    <div class='t_image'>
+        {await HtmlHelper.ForDisplayComponentAsync(Container, PropertyName, model, TemplateName, HtmlAttributes: new { alt = this.__ResStr("imgAlt", "Preview Image") } )} //Image Preview
+    </div>
+    <div class='t_info'>
+        {await RenderImageAttributesAsync(model)} // Image Attributes
+    </div>
+    <div class='t_haveimage' {(string.IsNullOrWhiteSpace(model) ? "style='display:none'" : "")}>
+        <input type='button' class='t_clear' value='{this.__ResStr("btnClear", "Clear")}' title='{this.__ResStr("txtClear", "Click to clear the current image")}' />
+    </div>
+    {HtmlHelper.ForEditComponentAsync(Container, PropertyName, info, "FileUpload1")} //* Upload Control
+</div>
 
-            if (!string.IsNullOrWhiteSpace(filebrowserImageBrowseUrl)) {
-                hb.Append($@"
-                    filebrowserImageBrowseUrl: {YetaWFManager.JserEncode(filebrowserImageBrowseUrl)},
-                    filebrowserImageBrowseLinkUrl: {YetaWFManager.JserEncode(filebrowserImageBrowseUrl)},");
-            }
-            if (!string.IsNullOrWhiteSpace(filebrowserFlashBrowseUrl)) {
-                hb.Append($@"
-                    filebrowserFlashBrowseUrl: {YetaWFManager.JserEncode(filebrowserFlashBrowseUrl)},");
-            }
-            if (!string.IsNullOrWhiteSpace(filebrowserFlashBrowseUrl)) {
-                hb.Append($@"
-                    filebrowserBrowseUrl: {YetaWFManager.JserEncode(filebrowserPageBrowseUrl)},");
-            }
-            hb.Append($@"
-                filebrowserWindowFeatures: 'modal=yes,location=no,menubar=no,toolbar=no,dependent=yes,minimizable=no,alwaysRaised=yes,resizable=yes,scrollbars=yes'
-            }});
-            // save data in the Image field when the form is submitted
-            YetaWF_Forms.addPreSubmitHandler({(Manager.InPartialView? 1 : 0)}, {{
-                form: YetaWF_Forms.getForm($('#{ControlId}')),
-                callback: function(entry) {{
-                    var $ctl = $('#{ControlId}');
-                    var ckEd = CKEDITOR.instances['{ControlId}'];
-                    var data = ckEd.getData();
-                    $ctl.val(data);
-                    //return $ctl[0].name + '&' + encodeURI(data);
-                }}
-            }});
-            </script>");
+<script>
+    //$$$using (DocumentReady({ControlId})) {{
+        YetaWF_Image.init('{ControlId}');
+    //$$$}}
+</script>");
 
             return hb.ToYHtmlString();
         }

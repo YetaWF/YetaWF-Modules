@@ -70,13 +70,17 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ComponentsHTML\FlashSelection\FlashSelection.cs" />
+    <Compile Include="ComponentsHTML\FlashSelection\FlashSelectionInfo.cs" />
+    <Compile Include="ComponentsHTML\ImageSelection\ImageSelection.cs" />
+    <Compile Include="ComponentsHTML\ImageSelection\ImageSelectionInfo.cs" />
+    <Compile Include="Controllers\CKEBrowseFlash.cs" />
+    <Compile Include="Controllers\Shared\FlashSelectionController.cs" />
     <Compile Include="Startup\Info.cs" />
     <Compile Include="Startup\AreaRegistration.cs" />
     <Compile Include="Controllers\CKEBrowsePage.cs" />
-    <Compile Include="Controllers\CKEBrowseFlash.cs" />
     <Compile Include="Controllers\CKEBrowseImages.cs" />
-    <Compile Include="Controllers\Shared\FlashSelectionHelperController.cs" />
-    <Compile Include="Controllers\Shared\ImageSelectionHelperController.cs" />
+    <Compile Include="Controllers\Shared\ImageSelection.cs" />
     <Compile Include="Controllers\TemplateTest.cs" />
     <Compile Include="Modules\CKEBrowsePage.cs" />
     <Compile Include="Modules\CKEBrowseFlash.cs" />
@@ -85,10 +89,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Support\FlashSupport.cs" />
     <Compile Include="Support\ImageSupport.cs" />
-    <Compile Include="ViewsCode\Shared\FlashSelectionHelper.cs" />
-    <Compile Include="ViewsCode\Shared\FlashSelectionInfo.cs" />
-    <Compile Include="ViewsCode\Shared\ImageSelectionHelper.cs" />
-    <Compile Include="ViewsCode\Shared\ImageSelectionInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Addons\_Main\Icons\ClearImage.png" />
@@ -102,8 +102,6 @@
     <Content Include="Addons\_Templates\ImageSelection\imageselection.js" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Shared\EditorTemplates\YetaWF_ImageRepository_ImageSelection.cshtml" />
-    <Content Include="Views\Shared\EditorTemplates\YetaWF_ImageRepository_FlashSelection.cshtml" />
     <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>
@@ -120,9 +118,15 @@
       <Project>{348F2A6B-57F5-47A3-8A46-3F44529ACD83}</Project>
       <Name>ModuleDefinition</Name>
     </ProjectReference>
+    <ProjectReference Include="..\ComponentsHTML\ComponentsHTML.csproj">
+      <Project>{ab7bfd23-57e8-40a6-85ea-9d4b3206075f}</Project>
+      <Name>ComponentsHTML</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Models\" />
+    <Folder Include="ViewsCode\" />
+    <Folder Include="Views\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

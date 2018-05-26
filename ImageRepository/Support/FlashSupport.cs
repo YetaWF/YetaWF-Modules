@@ -4,7 +4,7 @@ using System;
 using System.IO;
 using System.Threading.Tasks;
 using YetaWF.Core.Support;
-using YetaWF.Modules.ImageRepository.Views.Shared;
+using YetaWF.Modules.ImageRepository.Components;
 
 namespace YetaWF.Modules.ImageRepository.Support {
 

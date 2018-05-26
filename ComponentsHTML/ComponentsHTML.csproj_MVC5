@@ -46,6 +46,7 @@
     <Compile Include="Components\Grid\RenderOneRecord.cs" />
     <Compile Include="Components\BootstrapSkin.cs" />
     <Compile Include="Components\Email.cs" />
+    <Compile Include="Components\Image.cs" />
     <Compile Include="Components\PropertyList\ControlSets.cs" />
     <Compile Include="Components\PropertyList\Helpers.cs" />
     <Compile Include="Components\PropertyList\PropertyList.cs" />
@@ -80,6 +81,7 @@
     <Compile Include="Components\Label.cs" />
     <Compile Include="Components\Hidden.cs" />
     <Compile Include="Components\DateTime.cs" />
+    <Compile Include="Controllers\Support\FileUpload1.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup\AreaRegistration.cs" />
     <Compile Include="Startup\Info.cs" />
@@ -89,6 +91,7 @@
     <Compile Include="Startup\Templates\DateTime.cs" />
     <Compile Include="Startup\Templates\FileUpload1.cs" />
     <Compile Include="Startup\Templates\Grid.cs" />
+    <Compile Include="Startup\Templates\Image.cs" />
     <Compile Include="Startup\Templates\MultiString.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -102,8 +105,8 @@
     <Content Include="Addons\_Templates\DateTime\DateTime.css" />
     <Content Include="Addons\_Templates\DateTime\filelistCSS.txt" />
     <Content Include="Addons\_Templates\DateTime\filelistJS.txt" />
-    <Content Include="Addons\_Main\ComponentsTemplates.css" />
-    <Content Include="Addons\_Main\ComponentsTemplates.js" />
+    <Content Include="Addons\_Main\ComponentsHTML.css" />
+    <Content Include="Addons\_Main\ComponentsHTML.js" />
     <Content Include="Addons\_Main\filelistCSS.txt" />
     <Content Include="Addons\_Main\filelistJS.txt" />
     <Content Include="Addons\_Templates\Date\Date.css" />
@@ -180,6 +183,7 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Web" />
     <Reference Include="System.Web.Helpers, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>

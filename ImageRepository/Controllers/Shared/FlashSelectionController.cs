@@ -9,8 +9,8 @@ using YetaWF.Core.Image;
 using YetaWF.Core.Localize;
 using YetaWF.Core.Support;
 using YetaWF.Core.Upload;
-using YetaWF.Modules.ImageRepository.Views.Shared;
 using System.Threading.Tasks;
+using YetaWF.Modules.ImageRepository.Components;
 #if MVC6
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -20,7 +20,8 @@ using System.Web.Mvc;
 #endif
 
 namespace YetaWF.Modules.ImageRepository.Controllers.Shared {
-    public class FlashSelectionHelperController : YetaWFController {
+
+    public class FlashSelectionController : YetaWFController {
 
         [AllowPost]
         [ResourceAuthorize(CoreInfo.Resource_UploadImages)]
@@ -31,7 +32,7 @@ namespace YetaWF.Modules.ImageRepository.Controllers.Shared {
 #endif
         {
             FileUpload upload = new FileUpload();
-            string storagePath = FlashSelectionInfo.StoragePath(new Guid(folderGuid), subFolder, fileType);
+            string storagePath = ImageSelectionInfo.StoragePath(new Guid(folderGuid), subFolder, fileType);
             string name = await upload.StoreFileAsync(__filename, storagePath, MimeSection.FlashUse, uf => uf.FileName);
 
             ScriptBuilder sb = new ScriptBuilder();
@@ -42,7 +43,7 @@ namespace YetaWF.Modules.ImageRepository.Controllers.Shared {
             sb.Append("  \"filename\": \"{0}\",\n", YetaWFManager.JserEncode(name));
             sb.Append("  \"realFilename\": \"{0}\",\n", YetaWFManager.JserEncode(__filename.FileName));
             sb.Append("  \"list\": \"");
-            foreach (var f in await FlashSelectionInfo.ReadFilesAsync(new Guid(folderGuid), subFolder, fileType))
+            foreach (var f in await ImageSelectionInfo.ReadFilesAsync(new Guid(folderGuid), subFolder, fileType))
                 sb.Append("<option title=\\\"{0}\\\">{0}</option>", YetaWFManager.JserEncode(f.RemoveStartingAt(ImageSupport.ImageSeparator)));
             sb.Append("\"\n");
             sb.Append("}");
@@ -56,7 +57,7 @@ namespace YetaWF.Modules.ImageRepository.Controllers.Shared {
             name = name.RemoveStartingAt(ImageSupport.ImageSeparator);
 
             FileUpload upload = new FileUpload();
-            string storagePath = FlashSelectionInfo.StoragePath(new Guid(folderGuid), subFolder, fileType);
+            string storagePath = ImageSelectionInfo.StoragePath(new Guid(folderGuid), subFolder, fileType);
             await upload.RemoveFileAsync(name, storagePath);
 
             ScriptBuilder sb = new ScriptBuilder();
@@ -65,7 +66,7 @@ namespace YetaWF.Modules.ImageRepository.Controllers.Shared {
             sb.Append("  \"result\": ");
             sb.Append("      \"Y_Confirm(\\\"{0}\\\");\",", this.__ResStr("removeImageOK", "Image \\\\\\\"{0}\\\\\\\" successfully removed", YetaWFManager.JserEncode(name)));
             sb.Append("  \"list\": \"");
-            foreach (var f in await FlashSelectionInfo.ReadFilesAsync(new Guid(folderGuid), subFolder, fileType))
+            foreach (var f in await ImageSelectionInfo.ReadFilesAsync(new Guid(folderGuid), subFolder, fileType))
                 sb.Append("<option title=\\\"{0}\\\">{0}</option>", YetaWFManager.JserEncode(f.RemoveStartingAt(ImageSupport.ImageSeparator)));
             sb.Append("\"\n");
             sb.Append("}");

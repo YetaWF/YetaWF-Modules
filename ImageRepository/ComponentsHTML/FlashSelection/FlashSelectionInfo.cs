@@ -3,24 +3,25 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Threading.Tasks;
 using YetaWF.Core.IO;
 using YetaWF.Core.Localize;
+using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Modules;
 using YetaWF.Core.Packages;
 using YetaWF.Core.Skins;
 using YetaWF.Core.Support;
+using YetaWF.Core.Templates;
 using YetaWF.Modules.ImageRepository.Controllers.Shared;
 using YetaWF.Modules.ImageRepository.Support;
 
-namespace YetaWF.Modules.ImageRepository.Views.Shared {
+namespace YetaWF.Modules.ImageRepository.Components {
 
-    public class ImageSelectionInfo {
+    public class FlashSelectionInfo {
 
-        public static string __ResStr(string name, string defaultValue, params object[] parms) { return ResourceAccess.GetResourceString(typeof(ImageSelectionInfo), name, defaultValue, parms); }
+        public static string __ResStr(string name, string defaultValue, params object[] parms) { return ResourceAccess.GetResourceString(typeof(FlashSelectionInfo), name, defaultValue, parms); }
 
-        public ImageSelectionInfo(ModuleDefinition owningModule, Guid folderGuid, string subFolder, string fileType = "Images") {
+        public FlashSelectionInfo(ModuleDefinition owningModule, Guid folderGuid, string subFolder, string fileType = "Flash") {
             OwningModule = owningModule;
             FolderGuid = folderGuid;
             SubFolder = subFolder;
@@ -28,6 +29,12 @@ namespace YetaWF.Modules.ImageRepository.Views.Shared {
             AllowUpload = false;
             PreviewWidth = 200;
             PreviewHeight = 200;
+
+            // the upload control
+            FileUpload1 = new FileUpload1() {
+                SaveURL = YetaWFManager.UrlFor(typeof(FlashSelectionController), nameof(FlashSelectionController.SaveFlashImage),
+                    new { FolderGuid = FolderGuid, SubFolder = SubFolder, FileType = FileType }),
+            };
         }
         public async Task InitAsync() {
             ClearImageButton = new ModuleAction(OwningModule) {
@@ -43,7 +50,7 @@ namespace YetaWF.Modules.ImageRepository.Views.Shared {
                 Name = "Clear"
             };
             RemoveImageButton = new ModuleAction(OwningModule) {
-                Url = YetaWFManager.UrlFor(typeof(ImageSelectionHelperController), nameof(ImageSelectionHelperController.RemoveSelectedImage)),
+                Url = YetaWFManager.UrlFor(typeof(FlashSelectionController), nameof(FlashSelectionController.RemoveSelectedFlashImage)),
                 QueryArgs = new { FolderGuid = FolderGuid, SubFolder = SubFolder, FileType = FileType, Name = "" },
                 Image = "#Remove",
                 LinkText = __ResStr("removeImage", "Remove"),
@@ -56,6 +63,8 @@ namespace YetaWF.Modules.ImageRepository.Views.Shared {
                 Name = "Remove"
             };
         }
+        [UIHint("FileUpload1")]
+        public FileUpload1 FileUpload1 { get; set; }
 
         /// <summary>
         /// The module (Guid) for which we're storing images
@@ -86,63 +95,21 @@ namespace YetaWF.Modules.ImageRepository.Views.Shared {
         /// </summary>
         public int PreviewHeight { get; set; }
 
+        [UIHint("ModuleAction")]
         public ModuleAction ClearImageButton { get; set; }
+        [UIHint("ModuleAction")]
         public ModuleAction RemoveImageButton { get; set; }
         public ModuleDefinition OwningModule { get; set; }
 
-        public static string StoragePath(Guid folderGuid, string subFolder, string fileType = "Images") {
-            string path = ModuleDefinition.GetModuleDataFolder(folderGuid);
-            if (!string.IsNullOrWhiteSpace(subFolder))
-                path = Path.Combine(path, subFolder);
-            return Path.Combine(path, fileType);
+        public string MakeFlashUrl(string filename, int width = 0, int height = 0) {
+            // always defeat browser caching for image selection
+            return ComponentsHTML.Components.ImageComponent.FormatUrl(ImageSupport.ImageType, string.Format("{0},{1},{2}", FolderGuid.ToString(), SubFolder, FileType), filename, width, height, CacheBuster: DateTime.UtcNow.Ticks.ToString());
         }
-        // remove folder, then move up and remove all empty parent folders
-        public static async Task RemoveStorageAsync(Guid folderGuid, string subFolder, string fileType = "Images") {
-            string path = StoragePath(folderGuid, subFolder, fileType);
-            try {
-                await FileSystem.FileSystemProvider.DeleteDirectoryAsync(path);
-            } catch (Exception) {
-                return;
-            }
-            for (;;) {
-                path = Path.GetDirectoryName(path);
-                try {
-                    await FileSystem.FileSystemProvider.DeleteDirectoryAsync(path);
-                } catch (Exception) {
-                    return;
-                }
-            }
-        }
-
         public async Task<List<string>> GetFilesAsync() {
             if (_files == null)
-                _files = await ReadFilesAsync();
+                _files = await ImageSelectionInfo.ReadFilesAsync(FolderGuid, SubFolder, FileType);
             return _files;
         }
         List<string> _files;
-
-        public static async Task<List<string>> ReadFilesAsync(Guid folderGuid, string subFolder, string fileType) {
-            List<string> files = await ReadFilePathsAsync(folderGuid, subFolder, fileType);
-            List<string> list = new List<string>();
-            foreach (string f in files) {
-                long cb = (await FileSystem.FileSystemProvider.GetLastWriteTimeUtcAsync(f)).Ticks / TimeSpan.TicksPerSecond;
-                list.Add(Path.GetFileName(f) + YetaWF.Core.Image.ImageSupport.ImageSeparator + cb.ToString());
-            }
-            return list;
-        }
-        private async Task<List<string>> ReadFilesAsync() {
-            return await ReadFilesAsync(FolderGuid, SubFolder, FileType);
-        }
-        private static async Task<List<string>> ReadFilePathsAsync(Guid folderGuid, string subFolder, string fileType) {
-            List<string> files = new List<string>();
-            string storagePath = ImageSelectionInfo.StoragePath(folderGuid, subFolder, fileType);
-            if (await FileSystem.FileSystemProvider.DirectoryExistsAsync(storagePath))
-                files = await FileSystem.FileSystemProvider.GetFilesAsync(storagePath);
-            return files;
-        }
-        public string MakeImageUrl(string filename, int width = 0, int height = 0) {
-            // always defeat browser caching for image selection
-            return ImageHelper.FormatUrl(ImageSupport.ImageType, string.Format("{0},{1},{2}", FolderGuid.ToString(), SubFolder, FileType), filename, width, height, CacheBuster: DateTime.UtcNow.Ticks.ToString());
-        }
     }
 }

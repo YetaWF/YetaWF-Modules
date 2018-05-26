@@ -10,8 +10,8 @@ using YetaWF.Core.Image;
 using YetaWF.Core.Localize;
 using YetaWF.Core.Support;
 using YetaWF.Core.Upload;
-using YetaWF.Modules.ImageRepository.Views.Shared;
 using System.Threading.Tasks;
+using YetaWF.Modules.ImageRepository.Components;
 #if MVC6
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -21,7 +21,8 @@ using System.Web.Mvc;
 #endif
 
 namespace YetaWF.Modules.ImageRepository.Controllers.Shared {
-    public class ImageSelectionHelperController : YetaWFController {
+
+    public class ImageSelectionController : YetaWFController {
 
         [AllowPost]
         [ResourceAuthorize(CoreInfo.Resource_UploadImages)]

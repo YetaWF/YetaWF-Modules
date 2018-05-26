@@ -1,6 +1,5 @@
 ﻿using System.Threading.Tasks;
 using YetaWF.Core;
-using YetaWF.Core.Addons.Templates;
 using YetaWF.Core.Components;
 using YetaWF.Core.Localize;
 using YetaWF.Core.Menus;
@@ -8,6 +7,7 @@ using YetaWF.Core.Modules;
 using YetaWF.Core.Packages;
 using YetaWF.Core.Support;
 using YetaWF.Core.Views.Shared;
+using YetaWF.Modules.ComponentsHTML.Addons.Templates;
 
 namespace YetaWF.Modules.ComponentsHTML.Components {
 

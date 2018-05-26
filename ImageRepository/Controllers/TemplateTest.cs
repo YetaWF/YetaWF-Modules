@@ -4,9 +4,8 @@ using YetaWF.Core.Controllers;
 using YetaWF.Core.Localize;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Modules;
-using YetaWF.Core.Support;
-using YetaWF.Modules.ImageRepository.Views.Shared;
 using System.Threading.Tasks;
+using YetaWF.Modules.ImageRepository.Components;
 #if MVC6
 using Microsoft.AspNetCore.Mvc;
 #else
