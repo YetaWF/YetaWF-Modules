@@ -2,6 +2,7 @@
 
 using System.Collections.Generic;
 using YetaWF.Core.DataProvider;
+using YetaWF.Core.Templates;
 using YetaWF.Core.Views.Shared;
 using YetaWF.DataProvider.SQL;
 

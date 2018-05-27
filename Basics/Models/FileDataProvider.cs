@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using YetaWF.Core.DataProvider;
 using YetaWF.Core.Support;
+using YetaWF.Core.Templates;
 using YetaWF.Core.Views.Shared;
 using YetaWF.DataProvider;
 

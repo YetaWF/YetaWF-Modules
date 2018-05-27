@@ -25,3 +25,4 @@ using YetaWF.PackageAttributes;
     "https://YetaWF.com/Documentation/YetaWF/BootstrapCarousel#License")]
 
 [assembly: PublicPartialViews]
+[assembly: RequiresPackage("YetaWF.ComponentsHTML")]

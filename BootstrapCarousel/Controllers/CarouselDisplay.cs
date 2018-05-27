@@ -17,6 +17,7 @@ namespace YetaWF.Modules.BootstrapCarousel.Controllers {
         public CarouselDisplayModuleController() { }
 
         public class Model {
+            [UIHint("YetaWF_BootstrapCarousel_SlideShow")]
             public CarouselInfo SlideShow { get; set; }
 
             public Model() {

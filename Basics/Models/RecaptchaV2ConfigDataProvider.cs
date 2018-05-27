@@ -7,7 +7,7 @@ using YetaWF.Core.DataProvider;
 using YetaWF.Core.IO;
 using YetaWF.Core.Packages;
 using YetaWF.Core.Support;
-using YetaWF.Core.Views.Shared;
+using YetaWF.Core.Templates;
 
 namespace YetaWF.Modules.Basics.DataProvider {
 

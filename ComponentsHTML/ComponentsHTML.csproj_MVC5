@@ -46,6 +46,7 @@
     <Compile Include="Components\Grid\RenderOneRecord.cs" />
     <Compile Include="Components\BootstrapSkin.cs" />
     <Compile Include="Components\Email.cs" />
+    <Compile Include="Components\RecaptchaV2.cs" />
     <Compile Include="Components\Image.cs" />
     <Compile Include="Components\PropertyList\ControlSets.cs" />
     <Compile Include="Components\PropertyList\Helpers.cs" />
@@ -93,6 +94,7 @@
     <Compile Include="Startup\Templates\Grid.cs" />
     <Compile Include="Startup\Templates\Image.cs" />
     <Compile Include="Startup\Templates\MultiString.cs" />
+    <Compile Include="Startup\Templates\RecaptchaV2.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Addons\_Templates\ActionIcons\ActionIcons.css" />
@@ -127,6 +129,11 @@
     <Content Include="Addons\_Templates\Grid\filelistJS.txt" />
     <Content Include="Addons\_Templates\Grid\Grid.css" />
     <Content Include="Addons\_Templates\Grid\Grid.js" />
+    <Content Include="Addons\_Templates\Image\filelistCSS.txt" />
+    <Content Include="Addons\_Templates\Image\filelistJS.txt" />
+    <Content Include="Addons\_Templates\Image\image.css" />
+    <Content Include="Addons\_Templates\Image\image.js" />
+    <Content Include="Addons\_Templates\Image\Images\NoImage.png" />
     <Content Include="Addons\_Templates\IntValue\filelistCSS.txt" />
     <Content Include="Addons\_Templates\IntValue\filelistJS.txt" />
     <Content Include="Addons\_Templates\IntValue\intvalue.css" />
@@ -146,6 +153,8 @@
     <Content Include="Addons\_Templates\PropertyList\filelistCSS.txt" />
     <Content Include="Addons\_Templates\PropertyList\filelistJS.txt" />
     <Content Include="Addons\_Templates\PropertyList\propertylist.js" />
+    <Content Include="Addons\_Templates\RecaptchaV2\filelistJS.txt" />
+    <Content Include="Addons\_Templates\RecaptchaV2\recaptchav2.js" />
     <Content Include="Addons\_Templates\SMTPServer\filelistCSS.txt" />
     <Content Include="Addons\_Templates\SMTPServer\filelistJS.txt" />
     <Content Include="Addons\_Templates\SMTPServer\smtpserver.css" />

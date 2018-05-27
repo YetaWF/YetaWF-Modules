@@ -45,6 +45,7 @@ namespace YetaWF.Modules.BootstrapCarousel.Models {
 
             [AdditionalMetadata("ImageType", ImageSupport.ImageType), AdditionalMetadata("Width", 0), AdditionalMetadata("Height", 0)]
             [AdditionalMetadata("File", true)]
+            [UIHint("Image")]
             [DontSave] // Image with metadata for display rendering only
             public string ImageDisplay { get { return Image; } }
 

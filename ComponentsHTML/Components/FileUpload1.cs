@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using YetaWF.Core.Components;
 using YetaWF.Core.Packages;
 using YetaWF.Core.Support;
@@ -14,7 +15,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         public override string GetTemplateName() { return TemplateName; }
     }
 
-    public class FileUpload1EditComponent : FileUpload1Component, IYetaWFComponent<FileUpload1> {
+    public class FileUpload1EditComponent : FileUpload1Component, IYetaWFComponent<FileUpload1>, IYetaWFContainer<FileUpload1> {
 
         public override ComponentType GetComponentType() { return ComponentType.Edit; }
 
@@ -23,6 +24,9 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             await base.IncludeAsync();
         }
         public Task<YHtmlString> RenderAsync(FileUpload1 model) {
+            return RenderContainerAsync(model);
+        }
+        public Task<YHtmlString> RenderContainerAsync(FileUpload1 model) {
             HtmlBuilder hb = new HtmlBuilder();
 
             hb.Append($@"
@@ -40,5 +44,6 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
             return Task.FromResult(hb.ToYHtmlString());
         }
+
     }
 }

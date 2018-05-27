@@ -36,7 +36,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
     }
     public abstract partial class PropertyListComponentBase : PropertyListComponent {
 
-        protected async Task<YHtmlString> RenderPropertyListTabbedAsync(object model, bool readOnly) {
+        public async Task<YHtmlString> RenderPropertyListTabbedAsync(object model, bool readOnly) {
 
             await Manager.AddOnManager.AddTemplateAsync("PropertyList"); /*we're using the same javascript as the regular propertylist template */
 
@@ -78,7 +78,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             }
 
             hb.Append("</div>");
-            hb.Append(await RenderTabInitAsync(divId, model));
+            hb.Append(await RenderTabInitAsync(divId, FieldName, model));
 
             RenderFooter(hb, classData);
 

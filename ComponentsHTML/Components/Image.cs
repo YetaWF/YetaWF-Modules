@@ -88,7 +88,10 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                 if (string.IsNullOrWhiteSpace(model) && !showMissing)
                     return Task.FromResult(new YHtmlString(""));
 
-                string imgTag = ImageComponent.RenderImage(imageType, width, height, model, Alt: (string)HtmlAttributes["alt"]);
+                string alt = null;
+                if (HtmlAttributes.ContainsKey("alt"))
+                    alt = (string)HtmlAttributes["alt"];
+                string imgTag = ImageComponent.RenderImage(imageType, width, height, model, Alt: alt);
 
                 bool linkToImage = PropData.GetAdditionalAttributeValue("LinkToImage", false);
                 if (linkToImage) {
@@ -122,23 +125,21 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             HtmlBuilder hb = new HtmlBuilder();
             hb.Append($@"
 <div class='yt_image t_edit' id='{ControlId}'>
-    {await HtmlHelper.ForEditComponentAsync(Container, PropertyName, "", "Hidden", Validation:true)}  // where the actual filename is returned
+    {(await HtmlHelper.ForEditComponentAsync(Container, PropertyName, model, "Hidden", Validation:true)).ToString()}
     <div class='t_image'>
-        {await HtmlHelper.ForDisplayComponentAsync(Container, PropertyName, model, TemplateName, HtmlAttributes: new { alt = this.__ResStr("imgAlt", "Preview Image") } )} //Image Preview
+        {(await HtmlHelper.ForDisplayComponentAsync(Container, PropertyName, model, TemplateName, HtmlAttributes: new { alt = this.__ResStr("imgAlt", "Preview Image") } )).ToString()}
     </div>
     <div class='t_info'>
-        {await RenderImageAttributesAsync(model)} // Image Attributes
+        {(await RenderImageAttributesAsync(model)).ToString()}
     </div>
     <div class='t_haveimage' {(string.IsNullOrWhiteSpace(model) ? "style='display:none'" : "")}>
         <input type='button' class='t_clear' value='{this.__ResStr("btnClear", "Clear")}' title='{this.__ResStr("txtClear", "Click to clear the current image")}' />
     </div>
-    {HtmlHelper.ForEditComponentAsync(Container, PropertyName, info, "FileUpload1")} //* Upload Control
+    {(await HtmlHelper.ForEditContainerAsync(info, "FileUpload1")).ToString()}
 </div>
 
 <script>
-    //$$$using (DocumentReady({ControlId})) {{
-        YetaWF_Image.init('{ControlId}');
-    //$$$}}
+    YetaWF_Image.init('{ControlId}');
 </script>");
 
             return hb.ToYHtmlString();

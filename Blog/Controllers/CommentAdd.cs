@@ -6,11 +6,11 @@ using YetaWF.Core.Controllers;
 using YetaWF.Core.Localize;
 using YetaWF.Core.Models;
 using YetaWF.Core.Models.Attributes;
-using YetaWF.Core.Support;
-using YetaWF.Core.Views.Shared;
-using YetaWF.Modules.Blog.DataProvider;
-using YetaWF.Core.SendEmail;
 using YetaWF.Core.Packages;
+using YetaWF.Core.SendEmail;
+using YetaWF.Core.Support;
+using YetaWF.Core.Templates;
+using YetaWF.Modules.Blog.DataProvider;
 #if MVC6
 using Microsoft.AspNetCore.Mvc;
 #else
