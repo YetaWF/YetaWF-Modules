@@ -31,7 +31,7 @@ namespace YetaWF.Modules.ImageRepository.Components {
 
             HtmlBuilder hb = new HtmlBuilder();
 
-            FlashSelectionInfo info = GetSiblingProperty<FlashSelectionInfo>($"{FieldName}_Info");
+            FlashSelectionInfo info = GetSiblingProperty<FlashSelectionInfo>($"{PropertyName}_Info");
             string objId = UniqueId();
 
             hb.Append($@"

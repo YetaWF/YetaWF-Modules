@@ -46,15 +46,15 @@ namespace YetaWF.Modules.DevTests.Controllers {
             public SerializableList<SkinDefinition> ModuleSkins { get; set; }
 
             [Caption("Page Skin (Read/Only)"), Description("Page Skin (Read/Only)")]
-            [UIHint("PageSkin")]
+            [UIHint("PageSkin"), ReadOnly]
             public SkinDefinition PageSkinRO { get; set; }
 
             [Caption("Popup Skin (Read/Only)"), Description("Popup Skin (Read/Only)")]
-            [UIHint("PopupSkin")]
+            [UIHint("PopupSkin"), ReadOnly]
             public SkinDefinition PopupSkinRO { get; set; }
 
             [Caption("Module Skins (Read/Only)"), Description("Module Skins (Read/Only)")]
-            [UIHint("ModuleSkins")]
+            [UIHint("ModuleSkins"), ReadOnly]
             public SerializableList<SkinDefinition> ModuleSkinsRO { get; set; }
 
             public Model() {

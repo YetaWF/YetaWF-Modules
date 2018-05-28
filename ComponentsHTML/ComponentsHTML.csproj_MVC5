@@ -38,6 +38,7 @@
   <ItemGroup>
     <Compile Include="Component.cs" />
     <Compile Include="Components\ActionIcons.cs" />
+    <Compile Include="Components\ModuleSkinName.cs" />
     <Compile Include="Components\Grid\ColumnModel.cs" />
     <Compile Include="Components\Grid\GridData.cs" />
     <Compile Include="Components\Grid\Helpers.cs" />
@@ -46,6 +47,12 @@
     <Compile Include="Components\Grid\RenderOneRecord.cs" />
     <Compile Include="Components\BootstrapSkin.cs" />
     <Compile Include="Components\Email.cs" />
+    <Compile Include="Components\ModuleSkins.cs" />
+    <Compile Include="Components\PopupSkin.cs" />
+    <Compile Include="Components\PageSkin.cs" />
+    <Compile Include="Components\SkinNamePopup.cs" />
+    <Compile Include="Components\SkinNamePage.cs" />
+    <Compile Include="Components\SkinCollection.cs" />
     <Compile Include="Components\RecaptchaV2.cs" />
     <Compile Include="Components\Image.cs" />
     <Compile Include="Components\PropertyList\ControlSets.cs" />
@@ -83,6 +90,7 @@
     <Compile Include="Components\Hidden.cs" />
     <Compile Include="Components\DateTime.cs" />
     <Compile Include="Controllers\Support\FileUpload1.cs" />
+    <Compile Include="Controllers\Support\Skin.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup\AreaRegistration.cs" />
     <Compile Include="Startup\Info.cs" />
@@ -141,6 +149,8 @@
     <Content Include="Addons\_Templates\Label\Icons\HelpLink.png" />
     <Content Include="Addons\_Templates\ModuleAction\filelistCSS.txt" />
     <Content Include="Addons\_Templates\ModuleAction\ModuleAction.css" />
+    <Content Include="Addons\_Templates\ModuleSkins\filelistCSS.txt" />
+    <Content Include="Addons\_Templates\ModuleSkins\ModuleSkins.css" />
     <Content Include="Addons\_Templates\MultiString\filelistCSS.txt" />
     <Content Include="Addons\_Templates\MultiString\filelistJS.txt" />
     <Content Include="Addons\_Templates\MultiString\multistring.css" />
@@ -150,6 +160,10 @@
     <Content Include="Addons\_Templates\PageSelection\Icons\PagePreview.png" />
     <Content Include="Addons\_Templates\PageSelection\PageSelection.css" />
     <Content Include="Addons\_Templates\PageSelection\PageSelection.js" />
+    <Content Include="Addons\_Templates\PageSkin\filelistCSS.txt" />
+    <Content Include="Addons\_Templates\PageSkin\filelistJS.txt" />
+    <Content Include="Addons\_Templates\PageSkin\PageSkin.css" />
+    <Content Include="Addons\_Templates\PageSkin\PageSkin.js" />
     <Content Include="Addons\_Templates\PropertyList\filelistCSS.txt" />
     <Content Include="Addons\_Templates\PropertyList\filelistJS.txt" />
     <Content Include="Addons\_Templates\PropertyList\propertylist.js" />

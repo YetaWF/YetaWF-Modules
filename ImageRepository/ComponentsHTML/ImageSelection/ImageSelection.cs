@@ -26,7 +26,7 @@ namespace YetaWF.Modules.ImageRepository.Components {
 
             HtmlBuilder hb = new HtmlBuilder();
 
-            ImageSelectionInfo info = GetSiblingProperty<ImageSelectionInfo>($"{FieldName}_Info");
+            ImageSelectionInfo info = GetSiblingProperty<ImageSelectionInfo>($"{PropertyName}_Info");
 
             hb.Append($@"
 <div id='{ControlId}' class='yt_imagerepository_imageselection'>

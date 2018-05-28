@@ -19,6 +19,10 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
             HtmlBuilder sb = new HtmlBuilder();
 
+            string label;
+            if (TryGetSiblingProperty<string>($"{PropertyName}_Label", out label))
+                model = label;
+
             YTagBuilder tagLabel = new YTagBuilder("label");
             FieldSetup(tagLabel, FieldType.Anonymous);
             if (string.IsNullOrEmpty(model)) // we're distinguishing between "" and " "
