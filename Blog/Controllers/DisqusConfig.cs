@@ -44,7 +44,7 @@ namespace YetaWF.Modules.Blog.Controllers {
             public string PublicKey { get; set; }
 
             [Caption("Login Url"), Description("Defines the Url used when the user wants to log into the site to leave a comment (using SSO)")]
-            [UIHint("Url"), AdditionalMetadata("UrlType", UrlHelperEx.UrlTypeEnum.Local | UrlHelperEx.UrlTypeEnum.Remote), UrlValidation(UrlValidationAttribute.SchemaEnum.Any, UrlHelperEx.UrlTypeEnum.Local), StringLength(Globals.MaxUrl), Trim]
+            [UIHint("Url"), AdditionalMetadata("UrlType", UrlTypeEnum.Local | UrlTypeEnum.Remote), UrlValidation(UrlValidationAttribute.SchemaEnum.Any, UrlTypeEnum.Local), StringLength(Globals.MaxUrl), Trim]
             [RequiredIf("UseSSO", true)]
             public string LoginUrl { get; set; }
 

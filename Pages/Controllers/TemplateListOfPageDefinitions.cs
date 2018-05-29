@@ -65,7 +65,7 @@ namespace YetaWF.Modules.Pages.Controllers {
         [ExcludeDemoMode]
         public async Task<ActionResult> AddPage(string prefix, int newRecNumber, string newValue) {
             // Validation
-            UrlValidationAttribute attr = new UrlValidationAttribute(UrlValidationAttribute.SchemaEnum.Any, UrlHelperEx.UrlTypeEnum.Local);
+            UrlValidationAttribute attr = new UrlValidationAttribute(UrlValidationAttribute.SchemaEnum.Any, UrlTypeEnum.Local);
             if (!attr.IsValid(newValue))
                 throw new Error(attr.ErrorMessage);
             // add new grid record

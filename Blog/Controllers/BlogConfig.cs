@@ -25,7 +25,7 @@ namespace YetaWF.Modules.Blog.Controllers {
         public class Model {
 
             [Category("Blog"), Caption("Blog Main Url"), Description("Main entry point for the site's blog")]
-            [UIHint("Url"), AdditionalMetadata("UrlType", UrlHelperEx.UrlTypeEnum.Local), UrlValidation(UrlValidationAttribute.SchemaEnum.Any, UrlHelperEx.UrlTypeEnum.Local)]
+            [UIHint("Url"), AdditionalMetadata("UrlType", UrlTypeEnum.Local), UrlValidation(UrlValidationAttribute.SchemaEnum.Any, UrlTypeEnum.Local)]
             [StringLength(Globals.MaxUrl), Required, Trim]
             public string BlogUrl { get; set; }
 
@@ -38,7 +38,7 @@ namespace YetaWF.Modules.Blog.Controllers {
             public int Entries { get; set; }
 
             [Category("Blog"), Caption("Blog Entry Url"), Description("URL to display a blog entry with comments")]
-            [UIHint("Url"), AdditionalMetadata("UrlType", UrlHelperEx.UrlTypeEnum.Local), UrlValidation(UrlValidationAttribute.SchemaEnum.Any, UrlHelperEx.UrlTypeEnum.Local)]
+            [UIHint("Url"), AdditionalMetadata("UrlType", UrlTypeEnum.Local), UrlValidation(UrlValidationAttribute.SchemaEnum.Any, UrlTypeEnum.Local)]
             [StringLength(Globals.MaxUrl), Required, Trim]
             public string BlogEntryUrl { get; set; }
 
@@ -80,12 +80,12 @@ namespace YetaWF.Modules.Blog.Controllers {
             public string FeedSummary { get; set; }
 
             [Category("Rss"), Caption("Feed Main URL"), Description("The optional Rss feed's main URL")]
-            [UIHint("Url"), AdditionalMetadata("UrlType", UrlHelperEx.UrlTypeEnum.Local | UrlHelperEx.UrlTypeEnum.Remote), UrlValidation(UrlValidationAttribute.SchemaEnum.Any, UrlHelperEx.UrlTypeEnum.Local | UrlHelperEx.UrlTypeEnum.Remote)]
+            [UIHint("Url"), AdditionalMetadata("UrlType", UrlTypeEnum.Local | UrlTypeEnum.Remote), UrlValidation(UrlValidationAttribute.SchemaEnum.Any, UrlTypeEnum.Local | UrlTypeEnum.Remote)]
             [StringLength(Globals.MaxUrl), Trim]
             public string FeedMainUrl { get; set; }
 
             [Category("Rss"), Caption("Feed Detail URL"), Description("The optional Rss feed's detail page for a blog entry")]
-            [UIHint("Url"), AdditionalMetadata("UrlType", UrlHelperEx.UrlTypeEnum.Local), UrlValidation(UrlValidationAttribute.SchemaEnum.Any, UrlHelperEx.UrlTypeEnum.Local)]
+            [UIHint("Url"), AdditionalMetadata("UrlType", UrlTypeEnum.Local), UrlValidation(UrlValidationAttribute.SchemaEnum.Any, UrlTypeEnum.Local)]
             [StringLength(Globals.MaxUrl), Trim]
             public string FeedDetailUrl { get; set; }
 

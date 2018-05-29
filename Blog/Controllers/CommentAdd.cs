@@ -47,7 +47,7 @@ namespace YetaWF.Modules.Blog.Controllers {
             public bool ShowGravatar { get; set; }
 
             [Caption("Your Website"), Description("Enter your optional website, so readers of your comment may visit your website. Your website is completely optional - Once your comment is published, your website address will appear as part of your comment")]
-            [UIHint("Url"), StringLength(Globals.MaxUrl), UrlValidation(UrlValidationAttribute.SchemaEnum.Any, Core.Views.Shared.UrlHelperEx.UrlTypeEnum.Remote), Trim]
+            [UIHint("Url"), StringLength(Globals.MaxUrl), UrlValidation(UrlValidationAttribute.SchemaEnum.Any, UrlTypeEnum.Remote), Trim]
             public string Website { get; set; }
 
             [Caption("Title"), Description("Enter a title for your comment - Once your comment is published, the title will appear as part of your comment")]

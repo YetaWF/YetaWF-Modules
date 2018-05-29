@@ -33,7 +33,7 @@ namespace YetaWF.Modules.PageEdit.Controllers {
             public virtual List<string> CategoryOrder { get { return new List<string> { "Page", "Authorization", "Urls", "Skin", "References", "Addons", "Meta", "Variables" }; } }
 
             [Category("Page"), Caption("Url"), Description("The Url used to identify this page - local Urls start with / and do not include http:// or https://")]
-            [UIHint("Text80"), StringLength(Globals.MaxUrl), UrlValidation(urlType: UrlHelperEx.UrlTypeEnum.New), Required, Trim]
+            [UIHint("Text80"), StringLength(Globals.MaxUrl), UrlValidation(urlType: UrlTypeEnum.New), Required, Trim]
             public string Url { get; set; }
 
             [Category("Page"), Caption("Canonical Url"), Description("The optional complete Url used to identify this page (including query string) - If not specified, the Url is used instead - The data entered is used as-is but allows variable substitution - Special characters in the query string portion must be encoded")]
@@ -123,12 +123,12 @@ namespace YetaWF.Modules.PageEdit.Controllers {
             public SerializableList<PageDefinition.AllowedUser> AllowedUsers { get; set; }
 
             [Category("Urls"), Caption("Mobile Page Url"), Description("If this page is accessed by a mobile device, it is redirected to the Url defined here as mobile page Url - Redirection is not active in Site Edit Mode")]
-            [UIHint("Url"), AdditionalMetadata("UrlType", UrlHelperEx.UrlTypeEnum.Local | UrlHelperEx.UrlTypeEnum.Remote), UrlValidation(UrlValidationAttribute.SchemaEnum.Any, UrlHelperEx.UrlTypeEnum.Local | UrlHelperEx.UrlTypeEnum.Remote)]
+            [UIHint("Url"), AdditionalMetadata("UrlType", UrlTypeEnum.Local | UrlTypeEnum.Remote), UrlValidation(UrlValidationAttribute.SchemaEnum.Any, UrlTypeEnum.Local | UrlTypeEnum.Remote)]
             [StringLength(Globals.MaxUrl), Trim]
             public string MobilePageUrl { get; set; }
 
             [Category("Urls"), Caption("Redirect To Page"), Description("If this page is accessed, it is redirected to the Url defined here - Redirection is not active in Site Edit Mode")]
-            [UIHint("Url"), AdditionalMetadata("UrlType", UrlHelperEx.UrlTypeEnum.Local | UrlHelperEx.UrlTypeEnum.Remote), UrlValidation(UrlValidationAttribute.SchemaEnum.Any, UrlHelperEx.UrlTypeEnum.Local | UrlHelperEx.UrlTypeEnum.Remote)]
+            [UIHint("Url"), AdditionalMetadata("UrlType", UrlTypeEnum.Local | UrlTypeEnum.Remote), UrlValidation(UrlValidationAttribute.SchemaEnum.Any, UrlTypeEnum.Local | UrlTypeEnum.Remote)]
             [StringLength(Globals.MaxUrl), Trim]
             public string RedirectToPageUrl { get; set; }
 

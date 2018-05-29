@@ -30,7 +30,7 @@ namespace YetaWF.Modules.KeepAlive.Controllers {
             public int Interval { get; set; }
 
             [Caption("Page Accessed"), Description("The page to be accessed to keep the site alive - use a fully qualified Url including http://, https:// and domain name")]
-            [UIHint("Url"), AdditionalMetadata("UrlType", UrlHelperEx.UrlTypeEnum.Remote)]
+            [UIHint("Url"), AdditionalMetadata("UrlType", UrlTypeEnum.Remote)]
             [StringLength(Globals.MaxUrl), Trim]
             public string Url { get; set; }
 

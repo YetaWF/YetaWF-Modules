@@ -40,7 +40,7 @@ namespace YetaWF.Modules.Feed.Modules {
         public override IModuleDefinitionIO GetDataProvider() { return new FeedModuleDataProvider(); }
 
         [Category("General"), Caption("News Feed Url"), Description("The Url providing the news feed")]
-        [UIHint("Url"), AdditionalMetadata("UrlType", UrlHelperEx.UrlTypeEnum.Remote), StringLength(Globals.MaxUrl), UrlValidation, Required, Trim]
+        [UIHint("Url"), AdditionalMetadata("UrlType", UrlTypeEnum.Remote), StringLength(Globals.MaxUrl), UrlValidation, Required, Trim]
         public string FeedUrl { get; set; }
 
         [Category("General"), Caption("News Entries"), Description("The maximum number of news entries displayed (between 2 and 50)")]

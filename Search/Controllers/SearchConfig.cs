@@ -33,7 +33,7 @@ namespace YetaWF.Modules.Search.Controllers {
             public int SmallestUpperCaseToken { get; set; }
 
             [Caption("Results Url"), Description("The Url where the search results are displayed")]
-            [UIHint("Url"), AdditionalMetadata("UrlType", UrlHelperEx.UrlTypeEnum.Local), UrlValidation(UrlValidationAttribute.SchemaEnum.Any, UrlHelperEx.UrlTypeEnum.Local)]
+            [UIHint("Url"), AdditionalMetadata("UrlType", UrlTypeEnum.Local), UrlValidation(UrlValidationAttribute.SchemaEnum.Any, UrlTypeEnum.Local)]
             [StringLength(Globals.MaxUrl), Required, Trim]
             public string ResultsUrl { get; set; }
 

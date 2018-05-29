@@ -21,11 +21,10 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 #else
             HtmlHelper htmlHelper,
 #endif
-                object model, List<PropertyListEntry> props, List<PropertyListEntry> hiddenProps, bool readOnly) {
+            object model, List<PropertyListEntry> props, List<PropertyListEntry> hiddenProps, bool readOnly) {
             HtmlBuilder hb = new HtmlBuilder();
 
             //$$ GridDefinition.GridEntryDefinition gridEntry = Manager.GetParentModel() as GridDefinition.GridEntryDefinition;
-            //$$ DataSourceResult dataSrc = Manager.GetParentModel() as DataSourceResult;
 
             // check if the grid is readonly or the record supports an "__editable" grid entry property
             bool recordEnabled = !readOnly;

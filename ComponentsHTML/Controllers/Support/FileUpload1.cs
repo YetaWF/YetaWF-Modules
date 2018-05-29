@@ -17,7 +17,7 @@ using Microsoft.AspNetCore.Http;
 using System.Web.Mvc;
 #endif
 
-namespace YetaWF.Modules.ComponentsHTML.Controllers.Support {
+namespace YetaWF.Modules.ComponentsHTML.Controllers {
 
     /// <summary>
     /// FileUpload1 template support.

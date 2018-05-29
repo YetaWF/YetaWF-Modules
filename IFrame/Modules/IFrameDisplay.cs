@@ -37,7 +37,7 @@ namespace YetaWF.Modules.IFrame.Modules {
 
         [Category("General"), Caption("Url"), Description("The Url used to display the module contents")]
         [StringLength(Globals.MaxUrl), Required, Trim]
-        [UIHint("Url"), AdditionalMetadata("UrlType", UrlHelperEx.UrlTypeEnum.Local | UrlHelperEx.UrlTypeEnum.Remote), UrlValidation(UrlValidationAttribute.SchemaEnum.Any, UrlHelperEx.UrlTypeEnum.Local | UrlHelperEx.UrlTypeEnum.Remote)]
+        [UIHint("Url"), AdditionalMetadata("UrlType", UrlTypeEnum.Local | UrlTypeEnum.Remote), UrlValidation(UrlValidationAttribute.SchemaEnum.Any, UrlTypeEnum.Local | UrlTypeEnum.Remote)]
         public string Url { get; set; }
 
         [Category("General"), Caption("Width"), Description("The width used to display the module contents - used as is as Css width (e.g., 100%, 50px, 40em)")]

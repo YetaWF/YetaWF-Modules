@@ -6,7 +6,7 @@ using YetaWF.Core.Support;
 
 namespace YetaWF.Modules.ComponentsHTML.Components {
 
-    public abstract class GuidComponent : YetaWFComponent {
+    public abstract class GuidComponentBase : YetaWFComponent {
 
         public const string TemplateName = "Guid";
 
@@ -14,7 +14,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         public override string GetTemplateName() { return TemplateName; }
     }
 
-    public class GuidDisplayComponent : GuidComponent, IYetaWFComponent<Guid?> {
+    public class GuidDisplayComponent : GuidComponentBase, IYetaWFComponent<Guid?> {
 
         public override ComponentType GetComponentType() { return ComponentType.Display; }
 
@@ -29,7 +29,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             return Task.FromResult(hb.ToYHtmlString());
         }
     }
-    public class GuidEditComponent : GuidComponent, IYetaWFComponent<Guid>, IYetaWFComponent<Guid?> {
+    public class GuidEditComponent : GuidComponentBase, IYetaWFComponent<Guid>, IYetaWFComponent<Guid?> {
 
         public override ComponentType GetComponentType() { return ComponentType.Edit; }
 

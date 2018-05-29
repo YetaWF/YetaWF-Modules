@@ -7,7 +7,7 @@ using YetaWF.Core.Packages;
 using YetaWF.Core.Pages;
 using YetaWF.Core.Support;
 using YetaWF.Modules.ComponentsHTML.Addons.Templates;
-using YetaWF.Modules.ComponentsHTML.Controllers.Support;
+using YetaWF.Modules.ComponentsHTML.Controllers;
 
 namespace YetaWF.Modules.ComponentsHTML.Components {
 

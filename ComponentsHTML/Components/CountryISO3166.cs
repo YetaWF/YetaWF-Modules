@@ -10,7 +10,7 @@ using YetaWF.Core.Views.Shared;
 
 namespace YetaWF.Modules.ComponentsHTML.Components {
 
-    public class CountryISO3166Component : YetaWFComponent, IYetaWFComponent<string> {
+    public class CountryISO3166EditComponent : YetaWFComponent, IYetaWFComponent<string> {
 
         public const string TemplateName = "CountryISO3166";
 

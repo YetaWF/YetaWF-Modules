@@ -35,8 +35,8 @@ namespace YetaWF.Modules.Panels.Views.Shared {
 
         public class NewModel {
             [Caption("Page"), Description("Please select a page and click Add to add it to the list of pages")]
-            [UIHint("Url"), StringLength(Globals.MaxUrl), AdditionalMetadata("UrlType", UrlHelperEx.UrlTypeEnum.Local | UrlHelperEx.UrlTypeEnum.Remote),
-                UrlValidation(UrlValidationAttribute.SchemaEnum.Any, UrlHelperEx.UrlTypeEnum.Local), Trim]
+            [UIHint("Url"), StringLength(Globals.MaxUrl), AdditionalMetadata("UrlType", UrlTypeEnum.Local | UrlTypeEnum.Remote),
+                UrlValidation(UrlValidationAttribute.SchemaEnum.Any, UrlTypeEnum.Local), Trim]
             public string NewValue { get; set; }
         }
 

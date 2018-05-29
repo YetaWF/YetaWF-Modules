@@ -28,7 +28,7 @@ namespace YetaWF.Modules.Packages.Controllers {
         [Header("Provide a remote or local ZIP file to import a binary or source code package.")]
         public class ImportModel {
             [Category("Remote ZIP File"), Caption("ZIP File"), Description("Enter the Url of a ZIP file to download - Used to import a package (binary or source code package)")]
-            [UIHint("Url"), AdditionalMetadata("UrlType", UrlHelperEx.UrlTypeEnum.Remote), StringLength(Globals.MaxUrl), UrlValidation, Required, Trim]
+            [UIHint("Url"), AdditionalMetadata("UrlType", UrlTypeEnum.Remote), StringLength(Globals.MaxUrl), UrlValidation, Required, Trim]
             public string RemoteFile { get; set; }
 
             [Category("Remote ZIP File"), Caption("Submit"), Description("Click to download and install the package")]

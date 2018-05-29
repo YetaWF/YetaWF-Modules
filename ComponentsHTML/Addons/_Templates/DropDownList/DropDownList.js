@@ -61,7 +61,6 @@ YetaWF_TemplateDropDownList.getTitleFromId = function (id, index) {
 }
 
 // Send data to server using ajaxurl and update the dropdownlist with the returned data object (text,value & tooltips)
-//$$$ THIS NEEDS STANDARDIZATION
 YetaWF_TemplateDropDownList.AjaxUpdate = function ($control, data, ajaxurl, onSuccess, onFailure) {
     'use strict';
     $.ajax({

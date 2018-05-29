@@ -172,7 +172,7 @@ namespace YetaWF.Modules.PageEdit.Controllers {
             public bool CopyModules { get; set; }
 
             [Caption("Url"), Description("The Url of the new page - local Urls start with / and do not include http:// or https://")]
-            [UIHint("Text40"), StringLength(Globals.MaxUrl), UrlValidation(urlType: UrlHelperEx.UrlTypeEnum.New), Required, Trim]
+            [UIHint("Text40"), StringLength(Globals.MaxUrl), UrlValidation(urlType: UrlTypeEnum.New), Required, Trim]
             public string Url { get; set; }
 
             [Caption("Title"), Description("The title of the new page - the page title is displayed by the web browser in its header")]
