@@ -28,15 +28,15 @@ namespace YetaWF.Modules.DevTests.Controllers {
             [UIHint("ModuleSelection"), AdditionalMetadata("New", true), Required, Trim]
             public Guid ModuleNew { get; set; }
 
-            //$$[Caption("Module Selection (R/O)"), Description("Existing module, read/only")]
-            //[UIHint("ModuleSelection")]
-            //[ReadOnly]
-            //public Guid ROModule { get; set; }
+            [Caption("Module Selection (R/O)"), Description("Existing module, read/only")]
+            [UIHint("ModuleSelection")]
+            [ReadOnly]
+            public Guid ROModule { get; set; }
 
-            //[Caption("Module Selection (New, R/O)"), Description("New module, read/only")]
-            //[UIHint("ModuleSelection"), AdditionalMetadata("New", true)]
-            //[ReadOnly]
-            //public Guid ROModuleNew { get; set; }
+            [Caption("Module Selection (New, R/O)"), Description("New module, read/only")]
+            [UIHint("ModuleSelection"), AdditionalMetadata("New", true)]
+            [ReadOnly]
+            public Guid ROModuleNew { get; set; }
 
             public EditModel() { }
         }
@@ -44,8 +44,8 @@ namespace YetaWF.Modules.DevTests.Controllers {
         [AllowGet]
         public ActionResult TemplateModuleSelection() {
             EditModel model = new EditModel {
-                //$$ROModule = Module.PermanentGuid,// use this module as displayed module
-                //ROModuleNew = Module.PermanentGuid,
+                ROModule = Module.PermanentGuid,// use this module as displayed module
+                ROModuleNew = Module.PermanentGuid,
             };
             return View(model);
         }
@@ -53,8 +53,8 @@ namespace YetaWF.Modules.DevTests.Controllers {
         [AllowPost]
         [ConditionalAntiForgeryToken]
         public ActionResult TemplateModuleSelection_Partial(EditModel model) {
-            //$$model.ROModule = Module.PermanentGuid;
-            //model.ROModuleNew = Module.PermanentGuid;
+            model.ROModule = Module.PermanentGuid;
+            model.ROModuleNew = Module.PermanentGuid;
             if (!ModelState.IsValid)
                 return PartialView(model);
             return FormProcessed(model, this.__ResStr("ok", "OK"));

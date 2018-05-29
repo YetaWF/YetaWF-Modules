@@ -18,64 +18,78 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         public const string TemplateName = "ModuleSelection";
         public override Package GetPackage() { return Controllers.AreaRegistration.CurrentPackage; }
         public override string GetTemplateName() { return TemplateName; }
+
+        protected async Task<string> GetModuleLink(Guid model) {
+
+            YTagBuilder tag = new YTagBuilder("a");
+
+            tag.MergeAttribute("href", ModuleDefinition.GetModulePermanentUrl(model));
+            tag.MergeAttribute("target", "_blank");
+            tag.MergeAttribute("rel", "nofollow noopener noreferrer");
+            tag.Attributes.Add(Basics.CssTooltip, this.__ResStr("linkTT", "Click to preview the module in a new window - not all modules can be displayed correctly and may require additional parameters"));
+
+            // image
+            SkinImages skinImages = new SkinImages();
+            string imageUrl = await skinImages.FindIcon_TemplateAsync("ModulePreview.png", Package, "ModuleSelection");
+            YTagBuilder tagImg = ImageHelper.BuildKnownImageYTag(imageUrl, alt: this.__ResStr("linkAlt", "Preview"));
+
+            tag.InnerHtml = tag.InnerHtml + tagImg.ToString(YTagRenderMode.StartTag);
+            return tag.ToString(YTagRenderMode.Normal);
+        }
     }
 
-    //public class ModuleSelectionDisplayComponent : ModuleSelectionComponentBase, IYetaWFComponent<string> {
+    public class ModuleSelectionDisplayComponent : ModuleSelectionComponentBase, IYetaWFComponent<Guid> {
 
-    //    public override ComponentType GetComponentType() { return ComponentType.Display; }
+        public override ComponentType GetComponentType() { return ComponentType.Display; }
 
-    //    public async Task<YHtmlString> RenderAsync(string model) {
+        public async Task<YHtmlString> RenderAsync(Guid model) {
 
-    //        HtmlBuilder hb = new HtmlBuilder();
+            HtmlBuilder hb = new HtmlBuilder();
 
-    //        hb.Append("<div class='yt_url t_display'>");
+            hb.Append(@"
+<div class='yt_moduleselection t_display'>");
 
-    //        string hrefUrl;
-    //        if (!TryGetSiblingProperty($"{PropertyName}_Url", out hrefUrl))
-    //            hrefUrl = model;
+            ModuleDefinition mod = null;
+            if (model != Guid.Empty)
+                mod = await ModuleDefinition.LoadAsync(model, AllowNone: true);
 
-    //        if (string.IsNullOrWhiteSpace(hrefUrl)) {
-    //            // no link
-    //            YTagBuilder tag = new YTagBuilder("span");
-    //            FieldSetup(tag, FieldType.Anonymous);
+            string modName;
+            if (mod == null) {
+                if (model == Guid.Empty)
+                    modName = this.__ResStr("noLinkNone", "(none)");
+                else
+                    modName = this.__ResStr("noLink", "(not found - {0})", model.ToString());
+            } else {
+                Package package = Package.GetPackageFromType(mod.GetType());
+                modName = this.__ResStr("name", "{0} - {1}", package.Name, mod.Name);
+            }
 
-    //            string cssClass = PropData.GetAdditionalAttributeValue("CssClass", "");
-    //            if (!string.IsNullOrWhiteSpace(cssClass))
-    //                tag.AddCssClass(Manager.AddOnManager.CheckInvokedCssModule(cssClass));
+            YTagBuilder tag = new YTagBuilder("div");
+            tag.AddCssClass("t_select");
+            tag.SetInnerText(modName);
+            hb.Append(tag.ToString(YTagRenderMode.Normal));
 
-    //            tag.SetInnerText(model);
-    //            hb.Append(tag.ToString(YTagRenderMode.Normal));
+            if (mod != null) {
+                tag = new YTagBuilder("div");
+                tag.AddCssClass("t_link");
+                tag.InnerHtml = await GetModuleLink(model);
+                hb.Append(tag.ToString(YTagRenderMode.Normal));
+            }
 
-    //        } else {
-    //            // link
-    //            YTagBuilder tag = new YTagBuilder("a");
-    //            FieldSetup(tag, FieldType.Anonymous);
+            tag = new YTagBuilder("div");
+            tag.AddCssClass("t_description");
+            if (mod == null)
+                tag.InnerHtml = "&nbsp;";
+            else
+                tag.SetInnerText(mod.Description.ToString());
+            hb.Append(tag.ToString(YTagRenderMode.Normal));
 
-    //            string cssClass = PropData.GetAdditionalAttributeValue("CssClass", "");
-    //            if (!string.IsNullOrWhiteSpace(cssClass))
-    //                tag.AddCssClass(Manager.AddOnManager.CheckInvokedCssModule(cssClass));
+            hb.Append(@"
+</div>");
+            return hb.ToYHtmlString();
+        }
+    }
 
-    //            tag.MergeAttribute("href", hrefUrl);
-    //            tag.MergeAttribute("target", "_blank");
-    //            tag.MergeAttribute("rel", "nofollow noopener noreferrer");
-    //            string text;
-    //            if (!TryGetSiblingProperty($"{PropertyName}_Text", out text))
-    //                text = model;
-    //            tag.SetInnerText(text);
-
-    //            // image
-    //            Package currentPackage = YetaWF.Core.Controllers.AreaRegistration.CurrentPackage;
-    //            SkinImages skinImages = new SkinImages();
-    //            string imageUrl = await skinImages.FindIcon_TemplateAsync("UrlRemote.png", currentPackage, "Url");
-    //            YTagBuilder tagImg = ImageHelper.BuildKnownImageYTag(imageUrl, alt: this.__ResStr("altText", "Remote Url"));
-
-    //            tag.InnerHtml = tag.InnerHtml + tagImg.ToString(YTagRenderMode.StartTag);
-    //            hb.Append(tag.ToString(YTagRenderMode.Normal));
-    //        }
-    //        hb.Append("</div>");
-    //        return hb.ToYHtmlString();
-    //    }
-    //}
     public class ModuleSelectionEditComponent : ModuleSelectionComponentBase, IYetaWFComponent<Guid> {
 
         public override ComponentType GetComponentType() { return ComponentType.Edit; }
@@ -129,22 +143,6 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                 };
             }
 
-            // link
-            YTagBuilder tag = new YTagBuilder("a");
-
-            tag.MergeAttribute("href", ModuleDefinition.GetModulePermanentUrl(model));
-            tag.MergeAttribute("target", "_blank");
-            tag.MergeAttribute("rel", "nofollow noopener noreferrer");
-            tag.Attributes.Add(Basics.CssTooltip, this.__ResStr("linkTT", "Click to preview the module in a new window - not all modules can be displayed correctly and may require additional parameters"));
-
-            // image
-            SkinImages skinImages = new SkinImages();
-            string imageUrl = await skinImages.FindIcon_TemplateAsync("ModulePreview.png", Package, "ModuleSelection");
-            YTagBuilder tagImg = ImageHelper.BuildKnownImageYTag(imageUrl, alt: this.__ResStr("linkAlt", "Preview"));
-
-            tag.InnerHtml = tag.InnerHtml + tagImg.ToString(YTagRenderMode.StartTag);
-            string link = tag.ToString(YTagRenderMode.Normal);
-
             hb.Append($@"
 <div id='{DivId}' class='yt_moduleselection t_edit' data-name='{FieldName}'>");
 
@@ -181,7 +179,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             hb.Append($@"
     </div>
     <div class='t_link'>
-        {link}
+        {await GetModuleLink(model)}
     </div>
     <div class='t_description'>
     </div>

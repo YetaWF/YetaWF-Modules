@@ -21,8 +21,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         public DropDownListEditComponentBase(string templateName) {
             TemplateName = templateName;
         }
-
-        public override async Task IncludeAsync() {
+        public static async Task IncludeExplicitAsync() { // this component is reusable so we need to explicitly include all js/css
             bool useKendo = !Manager.IsRenderingGrid;
             if (useKendo) {
                 await Manager.ScriptManager.AddKendoUICoreJsFileAsync("kendo.data.min.js");
@@ -35,7 +34,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                 await Manager.ScriptManager.AddKendoUICoreJsFileAsync("kendo.virtuallist.min.js");
                 await Manager.ScriptManager.AddKendoUICoreJsFileAsync("kendo.dropdownlist.min.js");
             }
-            await base.IncludeAsync();
+            await Manager.AddOnManager.AddTemplateAsync(Controllers.AreaRegistration.CurrentPackage.Domain, Controllers.AreaRegistration.CurrentPackage.Product, "DropDownList");
         }
         public Task<YHtmlString> RenderAsync(TYPE model) {
 
@@ -45,7 +44,10 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             return RenderDropDownListAsync(model, list, this, "yt_dropdownlist");
         }
 
-        public static Task<YHtmlString> RenderDropDownListAsync(TYPE model, List<SelectionItem<TYPE>> list, YetaWFComponent component, string cssClass) {
+        public static async Task<YHtmlString> RenderDropDownListAsync(TYPE model, List<SelectionItem<TYPE>> list, YetaWFComponent component, string cssClass) {
+
+            await IncludeExplicitAsync();
+
             bool useKendo = !Manager.IsRenderingGrid;
 
             YTagBuilder tag = new YTagBuilder("select");
@@ -108,7 +110,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             HtmlBuilder hb = new HtmlBuilder();
             hb.Append(tag.ToString(YTagRenderMode.Normal));
             Manager.ScriptManager.AddLast(sb.ToString());
-            return Task.FromResult(hb.ToYHtmlString());
+            return hb.ToYHtmlString();
         }
     }
 }

@@ -85,14 +85,16 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             TemplateClass = templateClass;
         }
 
-        public override async Task IncludeAsync() {
+        public static async Task IncludeExplicitAsync() { // this component is reusable so we need to explicitly include all js/css
             await Manager.ScriptManager.AddKendoUICoreJsFileAsync("kendo.maskedtextbox.min.js");
-            await base.IncludeAsync();
+            await Manager.AddOnManager.AddTemplateAsync(Controllers.AreaRegistration.CurrentPackage.Domain, Controllers.AreaRegistration.CurrentPackage.Product, "Text");
         }
         public async Task<YHtmlString> RenderAsync(string model) {
             return await RenderTextAsync(model, this, TemplateClass);
         }
         public static async Task<YHtmlString> RenderTextAsync(string model, YetaWFComponent component, string templateCssClass) {
+
+            await IncludeExplicitAsync();
 
             HtmlBuilder hb = new HtmlBuilder();
 

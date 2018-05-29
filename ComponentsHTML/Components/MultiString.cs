@@ -69,7 +69,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         public async Task<YHtmlString> RenderAsync(MultiString model) {
             return await RenderMultiStringAsync(model, this, ExtraClass);
         }
-        public static async Task<YHtmlString> RenderMultiStringAsync(MultiString model, YetaWFComponent component, string extraCssClass) {
+        private static async Task<YHtmlString> RenderMultiStringAsync(MultiString model, YetaWFComponent component, string extraCssClass) {
 
             HtmlBuilder hb = new HtmlBuilder();
 
