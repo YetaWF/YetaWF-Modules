@@ -11,7 +11,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
     public partial class GridDisplayComponent {
 
-        private async Task<YHtmlString> RenderColNamesAsync(GridDefinition gridDef) {
+        internal async Task<YHtmlString> RenderColNamesAsync(GridDefinition gridDef) {
 
             ScriptBuilder sb = new ScriptBuilder();
 
@@ -192,10 +192,10 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             sb.Append("],");
         }
 
-        public YHtmlString RenderGridSortOrder(GridDefinition gridDef, GridHelper.GridSavedSettings gridSavedSettings) {
+        internal YHtmlString RenderGridSortOrder(GridDefinition gridDef, GridHelper.GridSavedSettings gridSavedSettings) {
             GridDefinition.ColumnDictionary columns = null;
 
-            if (gridSavedSettings.Columns.Count > 0) // use the saved sort order
+            if (gridSavedSettings != null && gridSavedSettings.Columns.Count > 0) // use the saved sort order
                 columns = gridSavedSettings.Columns;
             if (columns == null)
                 return new YHtmlString();

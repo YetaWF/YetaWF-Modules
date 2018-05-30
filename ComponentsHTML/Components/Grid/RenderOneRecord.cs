@@ -21,7 +21,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 #else
             HtmlHelper htmlHelper,
 #endif
-            object model, List<PropertyListEntry> props, List<PropertyListEntry> hiddenProps, bool readOnly) {
+                object model, List<PropertyListEntry> props, List<PropertyListEntry> hiddenProps, bool readOnly) {
             HtmlBuilder hb = new HtmlBuilder();
 
             //$$ GridDefinition.GridEntryDefinition gridEntry = Manager.GetParentModel() as GridDefinition.GridEntryDefinition;
@@ -76,7 +76,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                     if (!readOnly && prop.Editable && hiddenProps != null) {
                         // list hidden properties with the first editable field
                         foreach (var h in hiddenProps) {
-                            output = (await htmlHelper.ForEditComponentAsync(model, prop.Name, prop.Value, "Hidden")).ToString();
+                            output += (await htmlHelper.ForEditComponentAsync(model, h.Name, h.Value, "Hidden")).ToString();
                         }
                         hiddenProps = null;
                     }

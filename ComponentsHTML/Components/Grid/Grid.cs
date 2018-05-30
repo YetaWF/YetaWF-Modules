@@ -129,7 +129,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             } else {
 
                 hb.Append($@"
-            data: @dataId,
+            data: {dataId},
             datatype: 'local',");
             }
 
