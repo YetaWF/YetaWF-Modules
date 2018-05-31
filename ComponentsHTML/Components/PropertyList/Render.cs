@@ -111,7 +111,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                     if (HtmlHelper.IsSupported(model, property.Name)) {
                         hb.Append(await HtmlHelper.ForEditAsync(model, property.Name));
                     } else {
-                        hb.Append($"old template {property.UIHint} not supported - {property.Name}");
+                        hb.Append($"old template {property.UIHint} not supported - {property.Name}");//$$
                     }
                     hb.Append(ValidationMessage(property.Name));
                     hb.Append("</div>");

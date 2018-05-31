@@ -24,20 +24,10 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                 object model, List<PropertyListEntry> props, List<PropertyListEntry> hiddenProps, bool readOnly) {
             HtmlBuilder hb = new HtmlBuilder();
 
-            //$$ GridDefinition.GridEntryDefinition gridEntry = Manager.GetParentModel() as GridDefinition.GridEntryDefinition;
-
             // check if the grid is readonly or the record supports an "__editable" grid entry property
             bool recordEnabled = !readOnly;
             if (!readOnly)
                 ObjectSupport.TryGetPropertyValue<bool>(model, "__editable", out recordEnabled, true);
-
-            //$$} else if (gridEntry != null) {
-            //    readOnly = false;
-            //    prefix = gridEntry.Prefix;
-            //    recordCount = gridEntry.RecNumber;
-            //    hiddenProps = await GridHelper.GetHiddenGridPropertiesAsync(model);
-            //    props = await GridHelper.GetGridPropertiesAsync(model);
-            //}
 
             int propCount = 0;
             foreach (PropertyListEntry prop in props) {
