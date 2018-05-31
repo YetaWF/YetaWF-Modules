@@ -28,6 +28,8 @@ using YetaWF.Core.Packages;
 
 [assembly: PublicPartialViews]
 
+[assembly: RequiresPackage("YetaWF.ComponentsHTML")]
+
 [assembly: ServiceLevel(ServiceLevelEnum.LowLevelServiceProvider)]
 
 [assembly: Resource(Info.Resource_AllowUserLogon, "Allow logon as another user", Administrator = true, Superuser = true)]

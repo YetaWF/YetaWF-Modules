@@ -67,6 +67,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Components\HTML\ListOfEmailAddresses.cs" />
+    <Compile Include="Components\HTML\ScrollerItem.cs" />
     <Compile Include="Controllers\BasicTemplates.cs" />
     <Compile Include="Controllers\SMSProcessorStatus.cs" />
     <Compile Include="Controllers\TemplateDateTime.cs" />
@@ -101,8 +103,8 @@
     <Compile Include="ViewsCode\Shared\ListOfEmailAddressesHelper.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Addons\_Main\Grids\ListOfEmailAddressesHelper.GridEntryDisplay" />
-    <None Include="Addons\_Main\Grids\ListOfEmailAddressesHelper.GridEntryEdit" />
+    <None Include="Addons\_Main\Grids\ListOfEmailAddressesDisplayComponent.GridDisplay" />
+    <None Include="Addons\_Main\Grids\ListOfEmailAddressesEditComponent.GridEdit" />
     <Content Include="Addons\_SiteTemplates\YetaWF_DevTests.2.5.0.txt" />
     <Content Include="Views\Shared\DisplayTemplates\YetaWF_DevTests_ListOfEmailAddresses.cshtml" />
     <None Include="app.config" />
@@ -126,6 +128,10 @@
     <ProjectReference Include="..\..\..\DataProvider\ModuleDefinition\ModuleDefinition.csproj">
       <Project>{348F2A6B-57F5-47A3-8A46-3F44529ACD83}</Project>
       <Name>ModuleDefinition</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ComponentsHTML\ComponentsHTML.csproj">
+      <Project>{AB7BFD23-57E8-40A6-85EA-9D4B3206075F}</Project>
+      <Name>ComponentsHTML</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

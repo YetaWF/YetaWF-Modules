@@ -38,11 +38,18 @@
   <ItemGroup>
     <Compile Include="Component.cs" />
     <Compile Include="Components\ActionIcons.cs" />
+    <Compile Include="Components\FloatValue.cs" />
+    <Compile Include="Components\IPAddress.cs" />
+    <Compile Include="Components\Grid\GridDataOneRecord.cs" />
+    <Compile Include="Components\Raw.cs" />
+    <Compile Include="Components\Grid\GridDeleteEntry.cs" />
+    <Compile Include="Components\ReferencedModules.cs" />
     <Compile Include="Components\ModuleSelection\ModuleSelectionModuleExisting.cs" />
     <Compile Include="Components\ModuleSelection\ModuleSelectionModuleNew.cs" />
     <Compile Include="Components\ModuleSelection\ModuleSelectionPackageExisting.cs" />
     <Compile Include="Components\ModuleSelection\ModuleSelectionPackageNew.cs" />
     <Compile Include="Components\ModuleSelection\ModuleSelection.cs" />
+    <Compile Include="Components\Scroller.cs" />
     <Compile Include="Components\TimeZone.cs" />
     <Compile Include="Components\Skins\ModuleSkinName.cs" />
     <Compile Include="Components\Grid\ColumnModel.cs" />
@@ -184,6 +191,11 @@
     <Content Include="Addons\_Templates\PropertyList\propertylist.js" />
     <Content Include="Addons\_Templates\RecaptchaV2\filelistJS.txt" />
     <Content Include="Addons\_Templates\RecaptchaV2\recaptchav2.js" />
+    <Content Include="Addons\_Templates\Scroller\filelistCSS.txt" />
+    <Content Include="Addons\_Templates\Scroller\filelistJS.txt" />
+    <Content Include="Addons\_Templates\Scroller\Images\arrows.png" />
+    <Content Include="Addons\_Templates\Scroller\scroller.css" />
+    <Content Include="Addons\_Templates\Scroller\scroller.js" />
     <Content Include="Addons\_Templates\SMTPServer\filelistCSS.txt" />
     <Content Include="Addons\_Templates\SMTPServer\filelistJS.txt" />
     <Content Include="Addons\_Templates\SMTPServer\smtpserver.css" />
@@ -210,6 +222,8 @@
     <Content Include="Addons\_Templates\Url\Url.js" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Addons\_Main\Grids\ReferencedModulesDisplayComponent.GridDisplay" />
+    <None Include="Addons\_Main\Grids\ReferencedModulesEditComponent.GridEdit" />
     <None Include="Addons\_Templates\ModuleSelection\ModuleSelection.scss" />
     <None Include="Addons\_Templates\PropertyList\propertylist.scss" />
     <None Include="Addons\_Templates\Url\Url.scss" />
