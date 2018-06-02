@@ -13,7 +13,7 @@ using YetaWF.Core.Skins;
 using YetaWF.Core.Support;
 using YetaWF.Core.Views;
 using YetaWF.Core.Views.Shared;
-using YetaWF.Modules.Identity.Controllers.Shared;
+using YetaWF.Modules.Identity.Controllers.Support;
 using YetaWF.Modules.Identity.DataProvider;
 #if MVC6
 using Microsoft.AspNetCore.Html;
@@ -171,7 +171,7 @@ namespace YetaWF.Modules.Identity.Views.Shared {
                 header = true;
             GridAllModel model = new GridAllModel() {
                 GridDef = new GridDefinition() {
-                    AjaxUrl = YetaWFManager.UrlFor(typeof(UserIdHelperController), nameof(UserIdHelperController.UsersBrowse_GridData)),
+                    AjaxUrl = YetaWFManager.UrlFor(typeof(UserIdController), nameof(UserIdController.UsersBrowse_GridData)),
                     Id = id,
                     RecordType = typeof(GridAllEntry),
                     ShowHeader = header

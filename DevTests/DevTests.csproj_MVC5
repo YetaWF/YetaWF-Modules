@@ -133,6 +133,10 @@
       <Project>{AB7BFD23-57E8-40A6-85EA-9D4B3206075F}</Project>
       <Name>ComponentsHTML</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Identity\Identity.csproj">
+      <Project>{86178F8E-67E8-4D3D-9800-65C88D0B5849}</Project>
+      <Name>Identity</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Models\Attributes\" />

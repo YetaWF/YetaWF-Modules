@@ -23,6 +23,6 @@
 YetaWF_Basics.ExpandCollapse('@DivId', '@(DivId)_coll', '@(DivId)_exp');
 @using (DocumentReady(DivId)) {
     @: $('#@(tmpltId)_list').jqGrid('sortableRows', { connectWith: '#@(tmpltId)_list' });
-    @: YetaWF_Pages_ListOfUserNames.init($('#@tmpltId'), $("#@(tmpltId)_list"), $("#@(DivId)_listall"), $("#@tmpltId .t_edit[name$='.NewValue']"));
+    @: YetaWF_Identity_ListOfUserNames.init($('#@tmpltId'), $("#@(tmpltId)_list"), $("#@(DivId)_listall"), $("#@tmpltId .t_edit[name$='.NewValue']"));
 }
 </script>

@@ -1,6 +1,6 @@
 ﻿@*Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/SiteProperties#License*@
 @inherits YetaWF.Core.Views.RazorView<YetaWF.Modules.SiteProperties.Modules.SitePropertiesModule, YetaWF.Modules.SiteProperties.Controllers.SitePropertiesModuleController.SitePropertiesModel>
 @using YetaWF.Core.Components
-@Html.DisplayFor(m => Model.SiteHost)
-@Html.EditorFor(m => Model.Site)
+@Html.ForDisplayAsync(Model, "SiteHost").Result
+@Html.ForDisplayContainerAsync(Model.Site, "PropertyList").Result
 

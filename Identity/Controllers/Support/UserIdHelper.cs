@@ -16,9 +16,9 @@ using Microsoft.AspNetCore.Mvc;
 using System.Web.Mvc;
 #endif
 
-namespace YetaWF.Modules.Identity.Controllers.Shared {
+namespace YetaWF.Modules.Identity.Controllers.Support {
 
-    public class UserIdHelperController : YetaWFController {
+    public class UserIdController : YetaWFController {
 
         [AllowPost]
         [ConditionalAntiForgeryToken]

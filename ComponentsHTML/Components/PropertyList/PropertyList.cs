@@ -78,7 +78,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             }
 
             hb.Append("</div>");
-            hb.Append(await RenderTabInitAsync(divId, FieldName, model));
+            hb.Append(await RenderTabInitAsync(divId, model));
 
             RenderFooter(hb, classData);
 

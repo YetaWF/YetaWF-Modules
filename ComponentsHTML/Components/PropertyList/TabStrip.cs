@@ -30,7 +30,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             }
             return hb.ToString();
         }
-        public static async Task<string> RenderTabInitAsync(string controlId, string fieldName, object model) {
+        public static async Task<string> RenderTabInitAsync(string controlId, object model) {
 
             ScriptBuilder sb = new ScriptBuilder();
             // About tab switching and YetaWF_PropertyList_PanelSwitched
@@ -44,9 +44,8 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                 // check if the model has an _ActiveTab property in which case we'll activate the tab and keep track of the active tab so it can be returned on submit
                 if (ObjectSupport.TryGetPropertyValue<int>(model, "_ActiveTab", out activeTab, 0)) {
                     // add a hidden field for _ActiveTab property
-                    string name = fieldName;
                     activeTabId = Manager.UniqueId();
-                    sb.Append(@"$('#{0}').append(""<input name='{1}._ActiveTab' type='hidden' value='{2}' id='{3}'/>"");", controlId, name, activeTab, activeTabId);
+                    sb.Append(@"$('#{0}').append(""<input name='_ActiveTab' type='hidden' value='{1}' id='{2}'/>"");", controlId, activeTab, activeTabId);
                 }
             }
             if (Manager.CurrentSite.TabStyle == YetaWF.Core.Site.TabStyleEnum.JQuery) {

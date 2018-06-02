@@ -9,7 +9,7 @@ YetaWF_Panels.updateButtons = function ($control) {
     }
 
     // disable the << button if the active tab is the first one
-    var panelIndex = $('input[name$="._ActiveTab"]', $control).val();
+    var panelIndex = $('input[name$="_ActiveTab"]', $control).val();
     if (panelIndex == 0)
         $('input.t_up', $control).attr("disabled", "disabled");
     else
@@ -37,7 +37,7 @@ YetaWF_Panels.init = function (divId) {
     YetaWF_Panels.updateButtons($control);
 
     function getPanelIndex() {
-        var index = $('input[name$="._ActiveTab"]', $control).val();
+        var index = $('input[name$="_ActiveTab"]', $control).val();
         if (index == undefined) throw "Can't find panel index (hidden input _ActiveTab)";/*DEBUG*/
         return index;
     }
@@ -74,7 +74,7 @@ YetaWF_Panels.init = function (divId) {
 $(document).on('YetaWF_PropertyList_PanelSwitched', function (event, panel) {
     var $panel = $(panel);
     var $control = $panel.closest('.yt_panels_panelinfo');
-    $('input[name$="._ActiveTab"]', $control).val($panel.attr('data-tab'));
+    $('input[name$="_ActiveTab"]', $control).val($panel.attr('data-tab'));
     YetaWF_Panels.updateButtons($control);
 });
 

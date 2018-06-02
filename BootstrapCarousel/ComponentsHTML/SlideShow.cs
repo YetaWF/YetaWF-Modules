@@ -116,7 +116,7 @@ namespace YetaWF.Modules.ImageRepository.Components {
                 hb.Append(PropertyListComponentBase.RenderTabPaneEnd(DivId, tabEntry));
                 ++tabEntry;
             }
-            hb.Append(await PropertyListComponentBase.RenderTabInitAsync(DivId, FieldName, model));
+            hb.Append(await PropertyListComponentBase.RenderTabInitAsync(DivId, model));
 
             hb.Append($@"
 </div>

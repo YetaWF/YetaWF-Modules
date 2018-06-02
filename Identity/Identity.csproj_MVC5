@@ -128,13 +128,15 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Components\HTML\ListOfUserNames.cs" />
+    <Compile Include="Components\HTML\LoginUsers.cs" />
     <Compile Include="Components\HTML\Email.cs" />
     <Compile Include="Controllers\ForgotPassword.cs" />
     <Compile Include="Controllers\LoginTwoStep.cs" />
     <Compile Include="Controllers\Need2FADisplay.cs" />
     <Compile Include="Controllers\SelectTwoStepSetup.cs" />
     <Compile Include="Controllers\SelectTwoStepAuth.cs" />
-    <Compile Include="Controllers\Support\ListOfUserNamesHelper.cs" />
+    <Compile Include="Controllers\Support\ListOfUserNames.cs" />
     <Compile Include="Controllers\Support\UserIdHelper.cs" />
     <Compile Include="Controllers\TemplateListOfUserNames.cs" />
     <Compile Include="Controllers\TemplateRolesSelector.cs" />
@@ -230,9 +232,9 @@
     <Compile Include="ViewsCode\Shared\UsersHelper.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Addons\_Main\Grids\ListOfUserNamesHelper.GridAllEntry" />
-    <None Include="Addons\_Main\Grids\ListOfUserNamesHelper.GridEntryDisplay" />
-    <None Include="Addons\_Main\Grids\ListOfUserNamesHelper.GridEntryEdit" />
+    <None Include="Addons\_Main\Grids\ListOfUserNamesEditComponent.GridAllEntry" />
+    <None Include="Addons\_Main\Grids\ListOfUserNamesDisplayComponent.GridDisplay" />
+    <None Include="Addons\_Main\Grids\ListOfUserNamesEditComponent.GridEdit" />
     <None Include="Addons\_Main\Grids\UserIdHelper.GridAllEntry" />
     <None Include="Addons\_Main\Grids\RolesSelectorHelper.GridDisplay" />
     <None Include="Addons\_Main\Grids\RolesSelectorHelper.GridEdit" />
