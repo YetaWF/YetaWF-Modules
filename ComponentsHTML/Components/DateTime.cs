@@ -8,7 +8,7 @@ using YetaWF.Core.Support;
 
 namespace YetaWF.Modules.ComponentsHTML.Components {
 
-    public abstract class DateTimeComponent : YetaWFComponent {
+    public abstract class DateTimeComponentBase : YetaWFComponent {
 
         public const string TemplateName = "DateTime";
 
@@ -16,7 +16,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         public override string GetTemplateName() { return TemplateName; }
     }
 
-    public class DateTimeDisplayComponent : DateTimeComponent, IYetaWFComponent<DateTime?> {
+    public class DateTimeDisplayComponent : DateTimeComponentBase, IYetaWFComponent<DateTime?> {
 
         public override ComponentType GetComponentType() { return ComponentType.Display; }
 
@@ -36,7 +36,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             return Task.FromResult(hb.ToYHtmlString());
         }
     }
-    public class DateTimeEditComponent : DateTimeComponent, IYetaWFComponent<DateTime>, IYetaWFComponent<DateTime?> {
+    public class DateTimeEditComponent : DateTimeComponentBase, IYetaWFComponent<DateTime>, IYetaWFComponent<DateTime?> {
 
         public override ComponentType GetComponentType() { return ComponentType.Edit; }
 

@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using YetaWF.Core;
 using YetaWF.Core.Audit;
+using YetaWF.Core.Components;
 using YetaWF.Core.DataProvider;
 using YetaWF.Core.DataProvider.Attributes;
 using YetaWF.Core.Identity;
@@ -12,8 +13,6 @@ using YetaWF.Core.IO;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Packages;
 using YetaWF.Core.Support;
-using YetaWF.Core.Templates;
-using YetaWF.Core.Views.Shared;
 
 namespace YetaWF.Modules.UserProfile.DataProvider {
 

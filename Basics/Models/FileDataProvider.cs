@@ -2,10 +2,9 @@
 
 using System.Collections.Generic;
 using System.IO;
+using YetaWF.Core.Components;
 using YetaWF.Core.DataProvider;
 using YetaWF.Core.Support;
-using YetaWF.Core.Templates;
-using YetaWF.Core.Views.Shared;
 using YetaWF.DataProvider;
 
 namespace YetaWF.Modules.Basics.DataProvider.File {
@@ -14,14 +13,13 @@ namespace YetaWF.Modules.Basics.DataProvider.File {
 
         public void Register() {
             DataProviderImpl.RegisterExternalDataProvider(FileDataProviderBase.ExternalName, typeof(DataProvider.AlertConfigDataProvider), typeof(AlertConfigDataProvider));
-            DataProviderImpl.RegisterExternalDataProvider(FileDataProviderBase.ExternalName, typeof(DataProvider.RecaptchaConfigDataProvider), typeof(RecaptchaConfigDataProvider));
             DataProviderImpl.RegisterExternalDataProvider(FileDataProviderBase.ExternalName, typeof(DataProvider.RecaptchaV2ConfigDataProvider), typeof(RecaptchaV2ConfigDataProvider));
         }
         class AlertConfigDataProvider : FileDataProvider<int, AlertConfig> {
             public AlertConfigDataProvider(Dictionary<string, object> options) : base(options) { }
             public override string GetBaseFolder() { return Path.Combine(YetaWFManager.DataFolder, Dataset, SiteIdentity.ToString()); }
         }
-        class RecaptchaConfigDataProvider : FileDataProvider<int, RecaptchaConfig> {
+        class RecaptchaConfigDataProvider : FileDataProvider<int, RecaptchaV2Config> {
             public RecaptchaConfigDataProvider(Dictionary<string, object> options) : base(options) { }
             public override string GetBaseFolder() { return Path.Combine(YetaWFManager.DataFolder, Dataset); }
         }

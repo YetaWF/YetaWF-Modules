@@ -6,8 +6,8 @@ using YetaWF.Core.Language;
 using YetaWF.Core.Localize;
 using YetaWF.Core.Models;
 using YetaWF.Core.Models.Attributes;
-using YetaWF.Core.Views.Shared;
 using YetaWF.Modules.UserSettings.DataProvider;
+using YetaWF.Core.Components;
 #if MVC6
 using Microsoft.AspNetCore.Mvc;
 #else
@@ -40,7 +40,7 @@ namespace YetaWF.Modules.UserSettings.Controllers {
 
             [Caption("Grid Actions"), Description("The desired display method for available actions in grids")]
             [UIHint("Enum")]
-            public GridHelper.GridActionsEnum GridActions { get; set; }
+            public Grid.GridActionsEnum GridActions { get; set; }
 
             [Caption("Language"), Description("The default language used for the entire site (only used when localization is enabled)")]
             [UIHint("LanguageId"), StringLength(LanguageData.MaxId)]

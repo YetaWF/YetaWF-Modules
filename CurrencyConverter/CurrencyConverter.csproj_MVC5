@@ -79,7 +79,6 @@
     <Compile Include="Modules\Config.cs" />
     <Compile Include="Modules\CurrencyConverter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ViewsCode\Shared\CountryHelper.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Addons\_Main\currencyconverter.css" />
@@ -115,6 +114,7 @@
   <ItemGroup>
     <Folder Include="Addons\_Main\Images\" />
     <Folder Include="obj\" />
+    <Folder Include="ViewsCode\Shared\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

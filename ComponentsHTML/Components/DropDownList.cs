@@ -1,9 +1,10 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
+using YetaWF.Core.Addons;
 using YetaWF.Core.Components;
 using YetaWF.Core.Packages;
 using YetaWF.Core.Support;
-using YetaWF.Core.Views.Shared;
 
 namespace YetaWF.Modules.ComponentsHTML.Components {
 
@@ -112,5 +113,38 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             Manager.ScriptManager.AddLast(sb.ToString());
             return hb.ToYHtmlString();
         }
+
+        /// <summary>
+        /// Render a JSON object with data and tooltips for a dropdownlist.
+        /// </summary>
+        /// <typeparam name="TYPE">The Type of the property.</typeparam>
+        /// <param name="extraData">Optional data to be returned in JSON object as 'extra:' data.</param>
+        /// <param name="list">A list of all items part of the dropdownlist.</param>
+        /// <returns>A JSON object containing data and tooltips to update the contents of a dropdownlist.</returns>
+        public static YHtmlString RenderDataSource(List<SelectionItem<TYPE>> list, string extraData) {
+            ScriptBuilder sb = new ScriptBuilder();
+            sb.Append(Basics.AjaxJavascriptReturn);
+            sb.Append(@"{""data"":[");
+            foreach (SelectionItem<TYPE> item in list) {
+                sb.Append(@"{{""t"":{0},""v"":{1}}},", YetaWFManager.JsonSerialize(item.Text.ToString()), YetaWFManager.JsonSerialize(item.Value.ToString()));
+            }
+            if (list.Count > 0)
+                sb.RemoveLast();
+            sb.Append(@"],""tooltips"":[");
+            if ((from i in list where i.Tooltip != null && !string.IsNullOrWhiteSpace(i.Tooltip.ToString()) select i).FirstOrDefault() != null) {
+                foreach (SelectionItem<TYPE> item in list) {
+                    sb.Append("{0},", YetaWFManager.JsonSerialize(item.Tooltip == null ? "" : item.Tooltip.ToString()));
+                }
+                if (list.Count > 0)
+                    sb.RemoveLast();
+            }
+            if (!string.IsNullOrWhiteSpace(extraData)) {
+                sb.Append(@"],""extra"":[");
+                sb.Append("{0}", YetaWFManager.JsonSerialize(extraData));
+            }
+            sb.Append("]}");
+            return sb.ToYHtmlString();
+        }
+
     }
 }

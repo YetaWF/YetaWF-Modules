@@ -5,7 +5,6 @@ using YetaWF.Core.Components;
 using YetaWF.Core.Models;
 using YetaWF.Core.Packages;
 using YetaWF.Core.Support;
-using YetaWF.Core.Views.Shared;
 
 namespace YetaWF.Modules.ComponentsHTML.Components {
 
@@ -25,9 +24,9 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
             ObjectSupport.ReadGridDictionaryInfo dictInfo = null;
             Type recordType = model.GetType();
-            dictInfo = await GridHelper.LoadGridColumnDefinitionsAsync(recordType);
-            List<Core.Views.Shared.PropertyListEntry> hiddenProps = GridDisplayComponent.GetHiddenGridProperties(model, dictInfo);
-            List<Core.Views.Shared.PropertyListEntry> props = GridDisplayComponent.GetGridProperties(model, dictInfo);
+            dictInfo = await Grid.LoadGridColumnDefinitionsAsync(recordType);
+            List<PropertyListComponentBase.PropertyListEntry> hiddenProps = GridDisplayComponent.GetHiddenGridProperties(model, dictInfo);
+            List<PropertyListComponentBase.PropertyListEntry> props = GridDisplayComponent.GetGridProperties(model, dictInfo);
             hb.Append(await GridDisplayComponent.RenderOneRecordAsync(HtmlHelper, model, props, hiddenProps, false));
 
             hb.Append("}");

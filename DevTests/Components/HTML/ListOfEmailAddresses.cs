@@ -8,9 +8,9 @@ using YetaWF.Core.Models;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Packages;
 using YetaWF.Core.Support;
-using YetaWF.Core.Views.Shared;
+using YetaWF.Modules.ComponentsHTML.Components;
 
-namespace YetaWF.Modules.ComponentsHTML.Components {
+namespace YetaWF.Modules.DevTests.Components {
 
     public abstract class ListOfEmailAddressesComponent : YetaWFComponent {
 

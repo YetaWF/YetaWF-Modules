@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using YetaWF.Core.Models;
 using YetaWF.Core.Support;
 using YetaWF.Core.Components;
-using YetaWF.Core.Views.Shared;
 using System.Threading.Tasks;
 #if MVC6
 #else
@@ -21,7 +20,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 #else
             HtmlHelper htmlHelper,
 #endif
-                object model, List<PropertyListEntry> props, List<PropertyListEntry> hiddenProps, bool readOnly) {
+                object model, List<PropertyListComponentBase.PropertyListEntry> props, List<PropertyListComponentBase.PropertyListEntry> hiddenProps, bool readOnly) {
             HtmlBuilder hb = new HtmlBuilder();
 
             // check if the grid is readonly or the record supports an "__editable" grid entry property
@@ -30,7 +29,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                 ObjectSupport.TryGetPropertyValue<bool>(model, "__editable", out recordEnabled, true);
 
             int propCount = 0;
-            foreach (PropertyListEntry prop in props) {
+            foreach (PropertyListComponentBase.PropertyListEntry prop in props) {
 
                 //$$using (new HtmlHelperExtender.ControlInfoOverride(meta.AdditionalValues)) { //?? functionality still needed?
 

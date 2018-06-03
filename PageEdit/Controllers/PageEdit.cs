@@ -106,12 +106,16 @@ namespace YetaWF.Modules.PageEdit.Controllers {
             public MultiString Copyright { get; set; }
 
             [Category("Page"), Caption("Robots - NoIndex"), Description("Prevents a page from being indexed by search engines if set")]
+            [UIHint("Boolean")]
             public bool RobotNoIndex { get; set; }
             [Category("Page"), Caption("Robots - NoFollow"), Description("Prevents a page from being crawled by search engines if set")]
+            [UIHint("Boolean")]
             public bool RobotNoFollow { get; set; }
             [Category("Page"), Caption("Robots - NoArchive"), Description("Instructs search engines not to store an archived copy of the page if set - not supported by all search engines")]
+            [UIHint("Boolean")]
             public bool RobotNoArchive { get; set; }
             [Category("Page"), Caption("Robots - NoSnippet"), Description("Instructs search engines not include a snippet from the page along with the page's listing in search results - not supported by all search engines")]
+            [UIHint("Boolean")]
             public bool RobotNoSnippet { get; set; }
 
             [Category("Authorization"), Caption("Permitted Roles"), Description("The roles that are permitted to access this page")]

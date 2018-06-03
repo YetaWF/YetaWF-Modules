@@ -6,7 +6,6 @@ using YetaWF.Core.Localize;
 using YetaWF.Core.Packages;
 using YetaWF.Core.Pages;
 using YetaWF.Core.Support;
-using YetaWF.Modules.ComponentsHTML.Addons.Templates;
 using YetaWF.Modules.ComponentsHTML.Controllers;
 
 namespace YetaWF.Modules.ComponentsHTML.Components {
@@ -20,29 +19,9 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         public override Package GetPackage() { return Controllers.AreaRegistration.CurrentPackage; }
         public override string GetTemplateName() { return TemplateName; }
 
-        public static string FormatUrl(string imageType, string location, string name, int width = 0, int height = 0,
-                string CacheBuster = null, bool ExternalUrl = false, PageDefinition.PageSecurityType SecurityType = PageDefinition.PageSecurityType.Any,
-                bool Stretch = false) {
-            string url;
-            if (width > 0 && height > 0) {
-                url = string.Format(Image.FormatUrlWithSize, YetaWFManager.UrlEncodeArgs(imageType), YetaWFManager.UrlEncodeArgs(location), YetaWFManager.UrlEncodeArgs(name),
-                    width, height, Stretch ? "1" : "0");
-            } else {
-                url = string.Format(Image.FormatUrl, YetaWFManager.UrlEncodeArgs(imageType), YetaWFManager.UrlEncodeArgs(location), YetaWFManager.UrlEncodeArgs(name));
-            }
-            if (!string.IsNullOrWhiteSpace(CacheBuster))
-                url += url.AddUrlCacheBuster(CacheBuster);
-            url = Manager.GetCDNUrl(url);
-            if (ExternalUrl) {
-                // This is a local url, make the final url an external url, i.e., http(s)://
-                if (url.StartsWith("/"))
-                    url = Manager.CurrentSite.MakeUrl(url, PagePageSecurity: SecurityType);
-            }
-            return url;
-        }
         public static string RenderImage(string imageType, int width, int height, string model,
                 string CacheBuster = null, string Alt = null, bool ExternalUrl = false, PageDefinition.PageSecurityType SecurityType = PageDefinition.PageSecurityType.Any) {
-            string url = FormatUrl(imageType, null, model, width, height, CacheBuster: CacheBuster, ExternalUrl: ExternalUrl, SecurityType: SecurityType);
+            string url = ImageHTML.FormatUrl(imageType, null, model, width, height, CacheBuster: CacheBuster, ExternalUrl: ExternalUrl, SecurityType: SecurityType);
             YTagBuilder img = new YTagBuilder("img");
             img.AddCssClass("t_preview");
             img.Attributes.Add("src", url);
@@ -96,7 +75,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                 bool linkToImage = PropData.GetAdditionalAttributeValue("LinkToImage", false);
                 if (linkToImage) {
                     YTagBuilder link = new YTagBuilder("a");
-                    string imgUrl = FormatUrl(imageType, null, model);
+                    string imgUrl = ImageHTML.FormatUrl(imageType, null, model);
                     link.MergeAttribute("href", imgUrl);
                     link.MergeAttribute("target", "_blank");
                     link.MergeAttribute("rel", "noopener noreferrer");
@@ -117,7 +96,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         public async Task<YHtmlString> RenderAsync(string model) {
 
             // the upload control
-            Core.Templates.FileUpload1 info = new Core.Templates.FileUpload1() {
+            Core.Components.FileUpload1 info = new Core.Components.FileUpload1() {
                 SaveURL = YetaWFManager.UrlFor(typeof(FileUpload1Controller), nameof(FileUpload1Controller.SaveImage), new { __ModuleGuid = Manager.CurrentModule.ModuleGuid }),
                 RemoveURL = YetaWFManager.UrlFor(typeof(FileUpload1Controller), nameof(FileUpload1Controller.RemoveImage), new { __ModuleGuid = Manager.CurrentModule.ModuleGuid }),
             };

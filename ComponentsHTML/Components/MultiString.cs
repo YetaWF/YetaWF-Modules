@@ -7,7 +7,6 @@ using YetaWF.Core.Models;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Packages;
 using YetaWF.Core.Support;
-using YetaWF.Core.Views.Shared;
 
 namespace YetaWF.Modules.ComponentsHTML.Components {
 

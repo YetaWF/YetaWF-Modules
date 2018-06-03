@@ -19,11 +19,10 @@ using YetaWF.Core.Skins;
 using YetaWF.Core.Support;
 using YetaWF.Core.Support.Zip;
 using YetaWF.Core.Upload;
-using YetaWF.Core.Views.Shared;
 using YetaWF.Modules.PageEdit.DataProvider;
 using YetaWF.Modules.PageEdit.Modules;
 using YetaWF.Core.IO;
-using YetaWF.Core.Templates;
+using YetaWF.Core.Components;
 #if MVC6
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Http;

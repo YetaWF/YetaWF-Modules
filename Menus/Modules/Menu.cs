@@ -11,10 +11,9 @@ using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Modules;
 using YetaWF.Core.Serializers;
 using YetaWF.Core.Support;
-using YetaWF.Core.Views.Shared;
 using YetaWF.DataProvider;
 using YetaWF.Modules.Menus.DataProvider;
-using YetaWF.Modules.Menus.Views.Shared;
+using YetaWF.Modules.Menus.Components;
 #if MVC6
 #else
 using System.Web.Mvc;
@@ -37,8 +36,8 @@ namespace YetaWF.Modules.Menus.Modules {
             Menu = null;
 #pragma warning restore 0618 // Type or member is obsolete
             MenuVersion = 0;
-            Direction = MenuHelper.DirectionEnum.Bottom;
-            Orientation = MenuHelper.OrientationEnum.Horizontal;
+            Direction = MenuComponentBase.DirectionEnum.Bottom;
+            Orientation = MenuComponentBase.OrientationEnum.Horizontal;
             HoverDelay = 500;
             ShowTitle = false;
             WantSearch = false;
@@ -113,11 +112,11 @@ namespace YetaWF.Modules.Menus.Modules {
 
         [Category("General"), Caption("Opening Direction"), Description("The direction in which submenus open - Ignored for Bootstrap menus")]
         [UIHint("Enum")]
-        public MenuHelper.DirectionEnum Direction { get; set; }
+        public MenuComponentBase.DirectionEnum Direction { get; set; }
 
         [Category("General"), Caption("Orientation"), Description("The basic orientation of the menu - Ignored for Bootstrap menus")]
         [UIHint("Enum")]
-        public MenuHelper.OrientationEnum Orientation { get; set; }
+        public MenuComponentBase.OrientationEnum Orientation { get; set; }
 
         [Category("General"), Caption("Hover Delay"), Description("Specifies the delay (in milliseconds) before the menu is opened/closed - Used to avoid accidental closure on leaving - Ignored for Bootstrap menus")]
         [UIHint("IntValue4"), Required, Range(0, 10000)]

@@ -2,7 +2,6 @@
 using YetaWF.Core.Components;
 using YetaWF.Core.Packages;
 using YetaWF.Core.Support;
-using YetaWF.Core.Templates;
 
 namespace YetaWF.Modules.ComponentsHTML.Components {
 

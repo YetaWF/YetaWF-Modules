@@ -127,6 +127,10 @@
       <Project>{6a90eab3-a9e4-4a2c-90d9-145859790c46}</Project>
       <Name>SQL</Name>
     </ProjectReference>
+    <ProjectReference Include="..\ComponentsHTML\ComponentsHTML.csproj">
+      <Project>{ab7bfd23-57e8-40a6-85ea-9d4b3206075f}</Project>
+      <Name>ComponentsHTML</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\YetaWF_PageEdit_PageEdit.cshtml" />

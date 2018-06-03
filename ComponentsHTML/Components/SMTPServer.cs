@@ -3,7 +3,6 @@ using YetaWF.Core.Components;
 using YetaWF.Core.Packages;
 using YetaWF.Core.SendEmail;
 using YetaWF.Core.Support;
-using YetaWF.Core.Views.Shared;
 
 namespace YetaWF.Modules.ComponentsHTML.Components {
 
@@ -22,7 +21,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                 HtmlBuilder hb = new HtmlBuilder();
                 hb.Append($@"
 <div id='{DivId}' class='yt_smtpserver t_edit'>
-    {await HtmlHelper.RenderPropertyListAsync("", model)}
+    {await HtmlHelper.ForDisplayContainerAsync(model, "PropertyList")}
 </div>
 <script>
     YetaWF_SMTPServer.init('{DivId}');

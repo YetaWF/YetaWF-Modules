@@ -9,7 +9,7 @@ using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Packages;
 using YetaWF.Core.SendEmail;
 using YetaWF.Core.Support;
-using YetaWF.Core.Templates;
+using YetaWF.Core.Components;
 using YetaWF.Modules.Blog.DataProvider;
 #if MVC6
 using Microsoft.AspNetCore.Mvc;

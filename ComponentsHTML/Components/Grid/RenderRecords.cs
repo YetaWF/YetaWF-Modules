@@ -18,8 +18,8 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                     if (gridDef.RecordCount > 0) {
                         hb.Append(",");
                     }
-                    List<Core.Views.Shared.PropertyListEntry> hiddenProps = GetHiddenGridProperties(record, dictInfo);
-                    List<Core.Views.Shared.PropertyListEntry> props = GetGridProperties(record, dictInfo);
+                    List<PropertyListComponentBase.PropertyListEntry> hiddenProps = GetHiddenGridProperties(record, dictInfo);
+                    List<PropertyListComponentBase.PropertyListEntry> props = GetGridProperties(record, dictInfo);
                     hb.Append($"{{ 'id': {gridDef.RecordCount}, {await RenderOneRecordAsync(HtmlHelper, record, props, hiddenProps, gridDef.ReadOnly)} }}");
                     gridDef.RecordCount = gridDef.RecordCount + 1;
                 }

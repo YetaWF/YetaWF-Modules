@@ -4,7 +4,6 @@ using YetaWF.Core.Localize;
 using YetaWF.Core.Packages;
 using YetaWF.Core.Skins;
 using YetaWF.Core.Support;
-using YetaWF.Core.Views.Shared;
 
 namespace YetaWF.Modules.ComponentsHTML.Components {
 
@@ -26,7 +25,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
             SkinImages skinImages = new SkinImages();
             string imageUrl = await skinImages.FindIcon_PackageAsync("#RemoveLight", Package);
-            YTagBuilder tagImg = ImageHelper.BuildKnownImageYTag(imageUrl, alt: this.__ResStr("altRemove", "Remove"));
+            YTagBuilder tagImg = ImageHTML.BuildKnownImageYTag(imageUrl, alt: this.__ResStr("altRemove", "Remove"));
             tagImg.MergeAttribute("name", "DeleteAction", true);
             tag.InnerHtml = tagImg.ToString(YTagRenderMode.StartTag);
 

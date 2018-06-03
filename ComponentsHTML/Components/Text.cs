@@ -5,7 +5,6 @@ using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Packages;
 using YetaWF.Core.Skins;
 using YetaWF.Core.Support;
-using YetaWF.Core.Views.Shared;
 
 namespace YetaWF.Modules.ComponentsHTML.Components {
 
@@ -62,7 +61,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                 await Manager.AddOnManager.AddAddOnGlobalAsync("clipboardjs.com", "clipboard");// add clipboard support
                 SkinImages skinImages = new SkinImages();
                 string imageUrl = await skinImages.FindIcon_TemplateAsync("Copy.png", Package, "Text");
-                YTagBuilder tagImg = ImageHelper.BuildKnownImageYTag(imageUrl, title: this.__ResStr("ttCopy", "Copy to Clipboard"), alt: this.__ResStr("altCopy", "Copy to Clipboard"));
+                YTagBuilder tagImg = ImageHTML.BuildKnownImageYTag(imageUrl, title: this.__ResStr("ttCopy", "Copy to Clipboard"), alt: this.__ResStr("altCopy", "Copy to Clipboard"));
                 tagImg.AddCssClass("yt_text_copy");
                 hb.Append(tagImg.ToString(YTagRenderMode.StartTag));
             }
@@ -142,7 +141,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                 await Manager.AddOnManager.AddAddOnGlobalAsync("clipboardjs.com", "clipboard");// add clipboard support
                 SkinImages skinImages = new SkinImages();
                 string imageUrl = await skinImages.FindIcon_TemplateAsync("Copy.png", component.Package, "Text");
-                YTagBuilder tagImg = ImageHelper.BuildKnownImageYTag(imageUrl, title: __ResStr("ttCopy", "Copy to Clipboard"), alt: __ResStr("altCopy", "Copy to Clipboard"));
+                YTagBuilder tagImg = ImageHTML.BuildKnownImageYTag(imageUrl, title: __ResStr("ttCopy", "Copy to Clipboard"), alt: __ResStr("altCopy", "Copy to Clipboard"));
                 tagImg.AddCssClass("yt_text_copy");
                 hb.Append(tagImg.ToString(YTagRenderMode.StartTag));
             }

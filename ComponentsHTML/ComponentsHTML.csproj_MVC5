@@ -38,6 +38,8 @@
   <ItemGroup>
     <Compile Include="Component.cs" />
     <Compile Include="Components\ActionIcons.cs" />
+    <Compile Include="Components\ModuleActions.cs" />
+    <Compile Include="Components\StringTT.cs" />
     <Compile Include="Components\FloatValue.cs" />
     <Compile Include="Components\IPAddress.cs" />
     <Compile Include="Components\Grid\GridDataOneRecord.cs" />
@@ -118,7 +120,6 @@
     <Compile Include="Startup\Templates\DateTime.cs" />
     <Compile Include="Startup\Templates\FileUpload1.cs" />
     <Compile Include="Startup\Templates\Grid.cs" />
-    <Compile Include="Startup\Templates\Image.cs" />
     <Compile Include="Startup\Templates\MultiString.cs" />
     <Compile Include="Startup\Templates\RecaptchaV2.cs" />
   </ItemGroup>

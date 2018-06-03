@@ -7,9 +7,9 @@ using YetaWF.Core.Controllers;
 using YetaWF.Core.DataProvider;
 using YetaWF.Core.Identity;
 using YetaWF.Core.Models.Attributes;
-using YetaWF.Core.Views.Shared;
 using YetaWF.Modules.Identity.Addons;
 using YetaWF.Modules.Identity.DataProvider;
+using YetaWF.Core.Components;
 #if MVC6
 using Microsoft.AspNetCore.Mvc;
 #else
@@ -26,7 +26,7 @@ namespace YetaWF.Modules.Identity.Controllers.Support {
         public async Task<ActionResult> UsersBrowse_GridData(int skip, int take, List<DataProviderSortInfo> sort, List<DataProviderFilterInfo> filters /*, Guid settingsModuleGuid - not available in templates */) {
             using (UserDefinitionDataProvider dataProvider = new UserDefinitionDataProvider()) {
                 DataProviderGetRecords<UserDefinition> browseItems = await dataProvider.GetItemsAsync(skip, take, sort, filters);
-                //GridHelper.SaveSettings(skip, take, sort, filters, settingsModuleGuid);
+                //Grid.SaveSettings(skip, take, sort, filters, settingsModuleGuid);
                 return await GridPartialViewAsync(new DataSourceResult {
                     Data = (from s in browseItems.Data select new Views.Shared.UserIdHelper.GridAllEntry(s)).ToList<object>(),
                     Total = browseItems.Total

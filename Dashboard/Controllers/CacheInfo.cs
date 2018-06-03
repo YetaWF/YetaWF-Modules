@@ -5,6 +5,7 @@ using YetaWF.Core.Models;
 using YetaWF.Core.Models.Attributes;
 using System.Threading.Tasks;
 using YetaWF.Core.Extensions;
+using YetaWF.Core.Components;
 #if MVC6
 using Microsoft.AspNetCore.Mvc;
 #else
@@ -14,7 +15,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
 using YetaWF.Core.DataProvider;
-using YetaWF.Core.Views.Shared;
 #endif
 
 namespace YetaWF.Modules.Dashboard.Controllers {
@@ -89,7 +89,7 @@ namespace YetaWF.Modules.Dashboard.Controllers {
             foreach (BrowseItem item in items.Data)
                 item.Value = item.Value.TruncateWithEllipse(100);
 
-            GridHelper.SaveSettings(skip, take, sort, filters, settingsModuleGuid);
+            Grid.SaveSettings(skip, take, sort, filters, settingsModuleGuid);
             return await GridPartialViewAsync(new DataSourceResult {
                 Data = items.Data.ToList<object>(),
                 Total = items.Total,

@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
+using YetaWF.Core.Components;
 using YetaWF.Core.IO;
 using YetaWF.Core.Localize;
 using YetaWF.Core.Models.Attributes;
@@ -11,7 +12,6 @@ using YetaWF.Core.Modules;
 using YetaWF.Core.Packages;
 using YetaWF.Core.Skins;
 using YetaWF.Core.Support;
-using YetaWF.Core.Templates;
 using YetaWF.Modules.ImageRepository.Controllers.Shared;
 using YetaWF.Modules.ImageRepository.Support;
 
@@ -103,7 +103,7 @@ namespace YetaWF.Modules.ImageRepository.Components {
 
         public string MakeImageUrl(string filename, int width = 0, int height = 0) {
             // always defeat browser caching for image selection
-            return ComponentsHTML.Components.ImageComponent.FormatUrl(ImageSupport.ImageType, string.Format("{0},{1},{2}", FolderGuid.ToString(), SubFolder, FileType), filename, width, height, CacheBuster: DateTime.UtcNow.Ticks.ToString());
+            return ImageHTML.FormatUrl(ImageSupport.ImageType, string.Format("{0},{1},{2}", FolderGuid.ToString(), SubFolder, FileType), filename, width, height, CacheBuster: DateTime.UtcNow.Ticks.ToString());
         }
         public async Task<List<string>> GetFilesAsync() {
             if (_files == null)

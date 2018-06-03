@@ -4,7 +4,6 @@ using YetaWF.Core.Localize;
 using YetaWF.Core.Packages;
 using YetaWF.Core.Skins;
 using YetaWF.Core.Support;
-using YetaWF.Core.Views.Shared;
 
 namespace YetaWF.Modules.ComponentsHTML.Components {
 
@@ -40,7 +39,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                 tagA.AddCssClass(Manager.AddOnManager.CheckInvokedCssModule("yt_extlabel_img"));
                 SkinImages skinImages = new SkinImages();
                 string imageUrl = await skinImages.FindIcon_TemplateAsync("HelpLink.png", Package, "Label");
-                YTagBuilder tagImg = ImageHelper.BuildKnownImageYTag(imageUrl, alt: this.__ResStr("altHelp", "Help"));
+                YTagBuilder tagImg = ImageHTML.BuildKnownImageYTag(imageUrl, alt: this.__ResStr("altHelp", "Help"));
                 tagA.InnerHtml = tagImg.ToString(YTagRenderMode.StartTag);
                 sb.Append(tagA.ToString(YTagRenderMode.Normal));
             }

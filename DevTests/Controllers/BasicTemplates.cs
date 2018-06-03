@@ -13,7 +13,7 @@ using YetaWF.Core.Models;
 using YetaWF.Core.SendEmail;
 using System.Threading.Tasks;
 using YetaWF.Core.IO;
-using YetaWF.Core.Templates;
+using YetaWF.Core.Components;
 #if MVC6
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -45,7 +45,7 @@ namespace YetaWF.Modules.DevTests.Controllers {
             public decimal? Currency { get; set; }
 
             [Category("Core"), Caption("CurrencyISO4217"), Description("CurrencyISO4217 (Required)")]
-            [UIHint("CurrencyISO4217"), StringLength(YetaWF.Core.Templates.CurrencyISO4217.Currency.MaxId), Trim, Required]
+            [UIHint("CurrencyISO4217"), StringLength(YetaWF.Core.Components.CurrencyISO4217.Currency.MaxId), Trim, Required]
             public string CurrencyISO4217 { get; set; }
 
             [Category("Core"), Caption("Decimal"), Description("Decimal (Required)")]

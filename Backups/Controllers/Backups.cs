@@ -19,6 +19,7 @@ using YetaWF.Core.Views.Shared;
 using YetaWF.Modules.Backups.DataProvider;
 using YetaWF.Modules.Backups.Modules;
 using YetaWF.Core.IO;
+using YetaWF.Core.Components;
 #if MVC6
 using Microsoft.AspNetCore.Mvc;
 #else
@@ -89,7 +90,7 @@ namespace YetaWF.Modules.Backups.Controllers {
         public async Task<ActionResult> Backups_GridData(int skip, int take, List<DataProviderSortInfo> sort, List<DataProviderFilterInfo> filters, Guid settingsModuleGuid) {
             using (BackupsDataProvider dataProvider = new BackupsDataProvider()) {
                 DataProviderGetRecords<BackupEntry> backups = await dataProvider.GetBackupsAsync(skip, take, sort, filters);
-                GridHelper.SaveSettings(skip, take, sort, filters, settingsModuleGuid);
+                Grid.SaveSettings(skip, take, sort, filters, settingsModuleGuid);
                 return await GridPartialViewAsync(
                     new DataSourceResult {
                         Data = (from b in backups.Data select new BackupModel(Module, b)).ToList<object>(),

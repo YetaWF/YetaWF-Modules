@@ -7,10 +7,10 @@ using YetaWF.Core.Controllers;
 using YetaWF.Core.DataProvider;
 using YetaWF.Core.Identity;
 using YetaWF.Core.Models.Attributes;
-using YetaWF.Core.Views.Shared;
 using YetaWF.Modules.Pages.DataProvider;
 using YetaWF.Core.Pages;
 using YetaWF.Modules.Panels.Addons;
+using YetaWF.Core.Components;
 #if MVC6
 using Microsoft.AspNetCore.Mvc;
 #else
@@ -27,7 +27,7 @@ namespace YetaWF.Modules.Panels.Controllers.Shared {
         public async Task<ActionResult> ListOfLocalPagesBrowse_GridData(int skip, int take, List<DataProviderSortInfo> sort, List<DataProviderFilterInfo> filters /*, Guid settingsModuleGuid - not available in templates */) {
             using (PageDefinitionDataProvider pagesDP = new PageDefinitionDataProvider()) {
                 DataProviderGetRecords<PageDefinition> browseItems = await pagesDP.GetItemsAsync(skip, take, sort, filters);
-                //GridHelper.SaveSettings(skip, take, sort, filters, settingsModuleGuid);
+                //Grid.SaveSettings(skip, take, sort, filters, settingsModuleGuid);
                 return await GridPartialViewAsync(new DataSourceResult {
                     Data = (from s in browseItems.Data select new Views.Shared.ListOfLocalPagesHelper.GridAllEntry(s)).ToList<object>(),
                     Total = browseItems.Total

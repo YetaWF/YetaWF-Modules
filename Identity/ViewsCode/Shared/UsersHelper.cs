@@ -11,6 +11,7 @@ using YetaWF.Core.Views;
 using YetaWF.Core.Views.Shared;
 using YetaWF.Core.Support;
 using System.Threading.Tasks;
+using YetaWF.Core.Components;
 #if MVC6
 using Microsoft.AspNetCore.Html;
 using Microsoft.AspNetCore.Mvc.Rendering;

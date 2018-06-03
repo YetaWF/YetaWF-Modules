@@ -5,9 +5,9 @@ using System.Linq;
 using YetaWF.Core.DataProvider;
 using YetaWF.Core.Localize;
 using YetaWF.Core.Views;
-using YetaWF.Core.Views.Shared;
 using YetaWF.Modules.Blog.DataProvider;
 using System.Threading.Tasks;
+using YetaWF.Core.Components;
 #if MVC6
 using Microsoft.AspNetCore.Html;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -62,7 +62,8 @@ namespace YetaWF.Modules.Blog.Views.Shared {
                         });
                     }
                 }
-                return await htmlHelper.RenderDropDownSelectionListAsync(name, model, list, HtmlAttributes: HtmlAttributes);
+                return new HtmlString("");
+                //$$$ return await htmlHelper.RenderDropDownSelectionListAsync(name, model, list, HtmlAttributes: HtmlAttributes);
             }
         }
     }

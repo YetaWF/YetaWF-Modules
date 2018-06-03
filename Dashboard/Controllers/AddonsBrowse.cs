@@ -11,6 +11,7 @@ using YetaWF.Core.Modules;
 using YetaWF.Core.Views.Shared;
 using YetaWF.Modules.Dashboard.Modules;
 using YetaWF.Core;
+using YetaWF.Core.Components;
 #if MVC6
 using Microsoft.AspNetCore.Mvc;
 #else

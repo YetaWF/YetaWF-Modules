@@ -17,6 +17,7 @@ using YetaWF.Core.Views.Shared;
 using YetaWF.Modules.Packages.Modules;
 using YetaWF.PackageAttributes;
 using YetaWF.Core.Support.Zip;
+using YetaWF.Core.Components;
 #if MVC6
 using Microsoft.AspNetCore.Mvc;
 #else
@@ -114,7 +115,7 @@ namespace YetaWF.Modules.Packages.Controllers {
             if (modLocalize == null)
                 throw new InternalError("No localization services available - no module has been defined");
             DataProviderGetRecords<Package> packages = Package.GetAvailablePackages(skip, take, sort, filters);
-            GridHelper.SaveSettings(skip, take, sort, filters, settingsModuleGuid);
+            Grid.SaveSettings(skip, take, sort, filters, settingsModuleGuid);
             return await GridPartialViewAsync(new DataSourceResult {
                 Data = (from p in packages.Data select new PackageModel(Module, modLocalize, p)).ToList<object>(),
                 Total = packages.Total

@@ -7,10 +7,10 @@ using YetaWF.Core.Controllers;
 using YetaWF.Core.DataProvider;
 using YetaWF.Core.Identity;
 using YetaWF.Core.Models.Attributes;
-using YetaWF.Core.Views.Shared;
 using YetaWF.Modules.Pages.Addons;
 using YetaWF.Modules.Pages.DataProvider;
 using YetaWF.Core.Pages;
+using YetaWF.Core.Components;
 #if MVC6
 using Microsoft.AspNetCore.Mvc;
 #else

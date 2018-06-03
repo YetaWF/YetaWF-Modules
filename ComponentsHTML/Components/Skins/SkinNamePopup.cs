@@ -5,7 +5,6 @@ using YetaWF.Core.Components;
 using YetaWF.Core.Packages;
 using YetaWF.Core.Skins;
 using YetaWF.Core.Support;
-using YetaWF.Core.Views.Shared;
 
 namespace YetaWF.Modules.ComponentsHTML.Components {
 
@@ -52,6 +51,17 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             }).ToList();
             // display the skins in a drop down
             return await DropDownListComponent.RenderDropDownListAsync(model, list, this, "yt_skinname");
+        }
+        internal static YHtmlString RenderReplacementSkinsForCollection(string skinCollection) {
+            SkinAccess skinAccess = new SkinAccess();
+            PageSkinList skinList = skinAccess.GetAllPageSkins(skinCollection);
+            List<SelectionItem<string>> list = (from skin in skinList orderby skin.Description select new SelectionItem<string>() {
+                Text = skin.Name,
+                Tooltip = skin.Description,
+                Value = skin.FileName,
+            }).ToList();
+            // render a new dropdown list
+            return DropDownListEditComponentBase<string>.RenderDataSource(list, null);
         }
     }
 }

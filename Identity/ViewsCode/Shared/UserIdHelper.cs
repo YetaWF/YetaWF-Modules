@@ -15,6 +15,7 @@ using YetaWF.Core.Views;
 using YetaWF.Core.Views.Shared;
 using YetaWF.Modules.Identity.Controllers.Support;
 using YetaWF.Modules.Identity.DataProvider;
+using YetaWF.Core.Components;
 #if MVC6
 using Microsoft.AspNetCore.Html;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -93,7 +94,8 @@ namespace YetaWF.Modules.Identity.Views.Shared {
                     Text = __ResStr("select", "(select)"),
                     Value = 0,
                 });
-                return await htmlHelper.RenderDropDownSelectionListAsync<int>(name, model, list, HtmlAttributes: HtmlAttributes);
+                return new HtmlString("");
+                //$$return await htmlHelper.RenderDropDownSelectionListAsync<int>(name, model, list, HtmlAttributes: HtmlAttributes);
             }
         }
 #if MVC6
@@ -109,7 +111,8 @@ namespace YetaWF.Modules.Identity.Views.Shared {
                     s = noUser;
                 else
                     s = user.UserName;
-                return await htmlHelper.RenderTextBoxDisplayAsync(name, s, HtmlAttributes: new { @class = "yt_text40 t_display", id = id, data_nouser = noUser });
+                return new HtmlString("");
+                //$$return await htmlHelper.RenderTextBoxDisplayAsync(name, s, HtmlAttributes: new { @class = "yt_text40 t_display", id = id, data_nouser = noUser });
             }
         }
 #if MVC6
@@ -120,7 +123,7 @@ namespace YetaWF.Modules.Identity.Views.Shared {
         {
             SkinImages skinImages = new SkinImages();
             string imageUrl = await skinImages.FindIcon_TemplateAsync("#RemoveLight", YetaWF.Modules.Identity.Controllers.AreaRegistration.CurrentPackage, "UserId");
-            TagBuilder tagImg = ImageHelper.BuildKnownImageTag(imageUrl, title: __ResStr("ttClear", "Clear the current selection"), alt: __ResStr("altClear", "Clear the current selection"));
+            TagBuilder tagImg = ImageHTML.BuildKnownImageTag(imageUrl, title: __ResStr("ttClear", "Clear the current selection"), alt: __ResStr("altClear", "Clear the current selection"));
             tagImg.AddCssClass("t_clear");
             return tagImg.ToHtmlString(TagRenderMode.StartTag);
         }

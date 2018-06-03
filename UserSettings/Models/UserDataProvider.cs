@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Threading.Tasks;
+using YetaWF.Core.Components;
 using YetaWF.Core.DataProvider;
 using YetaWF.Core.DataProvider.Attributes;
 using YetaWF.Core.Identity;
@@ -14,7 +15,6 @@ using YetaWF.Core.Models;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Packages;
 using YetaWF.Core.Support;
-using YetaWF.Core.Views.Shared;
 
 namespace YetaWF.Modules.UserSettings.DataProvider {
 
@@ -31,7 +31,7 @@ namespace YetaWF.Modules.UserSettings.DataProvider {
         public string TimeZone { get; set; }
         public Formatting.TimeFormatEnum TimeFormat { get; set; }
         [Data_NewValue("(0)")]
-        public GridHelper.GridActionsEnum GridActions { get; set; }
+        public Grid.GridActionsEnum GridActions { get; set; }
         [StringLength(LanguageData.MaxId)]
         public string LanguageId { get; set; }
         public bool ShowGridSearchToolbar { get; set; }
@@ -50,7 +50,7 @@ namespace YetaWF.Modules.UserSettings.DataProvider {
             TimeFormat = Formatting.TimeFormatEnum.HHMMAM;
             LanguageId = MultiString.DefaultLanguage;
             TimeZone = TimeZoneInfo.Local.Id;
-            GridActions = GridHelper.GridActionsEnum.DropdownMenu;
+            GridActions = Grid.GridActionsEnum.DropdownMenu;
             ShowGridSearchToolbar = false;
             ShowModuleOwnership = false;
             ShowPageOwnership = false;

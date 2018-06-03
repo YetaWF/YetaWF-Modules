@@ -5,7 +5,6 @@ using YetaWF.Core.Localize;
 using YetaWF.Core.Models;
 using YetaWF.Core.Packages;
 using YetaWF.Core.Support;
-using YetaWF.Core.Views.Shared;
 
 namespace YetaWF.Modules.ComponentsHTML.Components {
 
@@ -49,11 +48,11 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
        data-charavgw={Manager.CharWidthAvg}></table>
 <div id='{model.Id}_Pager'></div>");
 
-            GridHelper.GridSavedSettings gridSavedSettings = null;
+            Grid.GridSavedSettings gridSavedSettings = null;
             int pageSize = model.InitialPageSize;
             int initialPage = 1;
             if (model.SettingsModuleGuid != Guid.Empty) {
-                gridSavedSettings = GridHelper.LoadModuleSettings(model.SettingsModuleGuid, initialPage, pageSize);
+                gridSavedSettings = Grid.LoadModuleSettings(model.SettingsModuleGuid, initialPage, pageSize);
                 pageSize = gridSavedSettings.PageSize;
                 initialPage = gridSavedSettings.CurrentPage;
             }
@@ -63,7 +62,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
             string dataId = @UniqueId("griddata");
 
-            ObjectSupport.ReadGridDictionaryInfo dictInfo = await GridHelper.LoadGridColumnDefinitionsAsync(model);
+            ObjectSupport.ReadGridDictionaryInfo dictInfo = await Grid.LoadGridColumnDefinitionsAsync(model);
             GetColModelInfo colModelInfo = await GetColModelAsync(gridSavedSettings, model);
 
             hb.Append($@"

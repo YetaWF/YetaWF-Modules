@@ -7,20 +7,20 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
     public abstract partial class PropertyListComponentBase {
 
-        public static string RenderTabStripStart(string controlId) {
-            return "<ul class='t_tabstrip'>";
+        public static YHtmlString RenderTabStripStart(string controlId) {
+            return new YHtmlString("<ul class='t_tabstrip'>");
         }
-        public static string RenderTabStripEnd(string controlId) {
-            return "</ul>";
+        public static YHtmlString RenderTabStripEnd(string controlId) {
+            return new YHtmlString("</ul>");
         }
-        public static string RenderTabPaneStart(string controlId, int panel, string cssClass = "") {//$$$
+        public static YHtmlString RenderTabPaneStart(string controlId, int panel, string cssClass = "") {//$$$
             if (!string.IsNullOrWhiteSpace(cssClass)) cssClass = " " + cssClass;
-            return $"<div class='t_table t_cat t_tabpanel{cssClass}' data-tab='{controlId}_tab{panel}' id='{controlId}_tab{panel}'>";
+            return new YHtmlString($"<div class='t_table t_cat t_tabpanel{cssClass}' data-tab='{controlId}_tab{panel}' id='{controlId}_tab{panel}'>");
         }
-        public static string RenderTabPaneEnd(string controlId, int panel) {
-            return "</div>";
+        public static YHtmlString RenderTabPaneEnd(string controlId, int panel) {
+            return new YHtmlString("</div>");
         }
-        public static string RenderTabEntry(string controlId, string label, string tooltip, int count) {
+        public static YHtmlString RenderTabEntry(string controlId, string label, string tooltip, int count) {
             HtmlBuilder hb = new HtmlBuilder();
             if (Manager.CurrentSite.TabStyle == YetaWF.Core.Site.TabStyleEnum.JQuery) {
                 string tabId = controlId + "_tab" + count.ToString();
@@ -28,9 +28,9 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             } else {
                 hb.Append("<li data-tab='{0}' {1}='{2}'>{3}</li>", count, Basics.CssTooltip, YetaWFManager.HtmlAttributeEncode(tooltip), YetaWFManager.HtmlEncode(label));
             }
-            return hb.ToString();
+            return hb.ToYHtmlString();
         }
-        public static async Task<string> RenderTabInitAsync(string controlId, object model) {
+        public static async Task<YHtmlString> RenderTabInitAsync(string controlId, object model) {
 
             ScriptBuilder sb = new ScriptBuilder();
             // About tab switching and YetaWF_PropertyList_PanelSwitched
@@ -58,10 +58,10 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                 throw new InternalError("Unknown tab control style");
 
             if (Manager.CurrentSite.JSLocation == YetaWF.Core.Site.JSLocationEnum.Top)
-                return Manager.ScriptManager.AddNow(sb.ToString()).ToString();
+                return Manager.ScriptManager.AddNow(sb.ToString()).ToYHtmlString();
             else {
                 Manager.ScriptManager.AddLast(sb.ToString());
-                return "";
+                return new YHtmlString("");
             }
         }
     }

@@ -13,6 +13,7 @@ using YetaWF.Core.Modules;
 using YetaWF.Core.Site;
 using YetaWF.Core.Views.Shared;
 using YetaWF.Modules.Sites.Modules;
+using YetaWF.Core.Components;
 #if MVC6
 using Microsoft.AspNetCore.Mvc;
 #else
@@ -93,7 +94,7 @@ namespace YetaWF.Modules.Sites.Controllers {
             ConfirmRemovalModule confirmModule = new ConfirmRemovalModule();
 
             DataProviderGetRecords<SiteDefinition> info = await SiteDefinition.GetSitesAsync(skip, take, sort, filters);
-            GridHelper.SaveSettings(skip, take, sort, filters, settingsModuleGuid);
+            Grid.SaveSettings(skip, take, sort, filters, settingsModuleGuid);
             return await GridPartialViewAsync(new DataSourceResult {
                 Data = (from s in info.Data select new BrowseItem(Module, siteEditModule, confirmModule, s)).ToList<object>(),
                 Total = info.Total

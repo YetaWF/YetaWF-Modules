@@ -5,7 +5,6 @@ using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Packages;
 using YetaWF.Core.Skins;
 using YetaWF.Core.Support;
-using YetaWF.Core.Views.Shared;
 
 namespace YetaWF.Modules.ComponentsHTML.Components {
 
@@ -21,6 +20,8 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         public override ComponentType GetComponentType() { return ComponentType.Display; }
 
         public async Task<YHtmlString> RenderAsync(string model) {
+
+            if (string.IsNullOrWhiteSpace(model)) return new YHtmlString("");
 
             HtmlBuilder hb = new HtmlBuilder();
 
@@ -63,7 +64,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                 Package currentPackage = YetaWF.Core.Controllers.AreaRegistration.CurrentPackage;
                 SkinImages skinImages = new SkinImages();
                 string imageUrl = await skinImages.FindIcon_TemplateAsync("UrlRemote.png", currentPackage, "Url");
-                YTagBuilder tagImg = ImageHelper.BuildKnownImageYTag(imageUrl, alt: this.__ResStr("altText", "Remote Url"));
+                YTagBuilder tagImg = ImageHTML.BuildKnownImageYTag(imageUrl, alt: this.__ResStr("altText", "Remote Url"));
 
                 tag.InnerHtml = tag.InnerHtml + tagImg.ToString(YTagRenderMode.StartTag);
                 hb.Append(tag.ToString(YTagRenderMode.Normal));
@@ -141,7 +142,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             // image
             SkinImages skinImages = new SkinImages();
             string imageUrl = await skinImages.FindIcon_TemplateAsync("UrlRemote.png", Package, "Url");
-            YTagBuilder tagImg = ImageHelper.BuildKnownImageYTag(imageUrl, alt: this.__ResStr("altText", "Remote Url"));
+            YTagBuilder tagImg = ImageHTML.BuildKnownImageYTag(imageUrl, alt: this.__ResStr("altText", "Remote Url"));
 
             tag.InnerHtml = tag.InnerHtml + tagImg.ToString(YTagRenderMode.StartTag);
             string link = tag.ToString(YTagRenderMode.Normal);

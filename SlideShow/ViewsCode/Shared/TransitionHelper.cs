@@ -7,6 +7,7 @@ using YetaWF.Core.Pages;
 using YetaWF.Core.Views;
 using YetaWF.Core.Views.Shared;
 using System.Threading.Tasks;
+using YetaWF.Core.Components;
 #if MVC6
 using Microsoft.AspNetCore.Html;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -34,7 +35,7 @@ namespace YetaWF.Modules.SlideShow.Views.Shared {
 #if MVC6
         public static async Task<HtmlString> RenderTransitionAsync(this IHtmlHelper htmlHelper, string name, string selection, object HtmlAttributes = null)
 #else
-        public static async Task<HtmlString> RenderTransitionAsync(this HtmlHelper htmlHelper, string name, string selection, object HtmlAttributes = null)
+        public static Task<HtmlString> RenderTransitionAsync(this HtmlHelper htmlHelper, string name, string selection, object HtmlAttributes = null)
 #endif
         {
             List<SelectionItem<string>> list = (from t in Transitions select new SelectionItem<string>() {
@@ -57,7 +58,8 @@ namespace YetaWF.Modules.SlideShow.Views.Shared {
                     Value = Transition.RANDOM,
                 });
 
-            return await htmlHelper.RenderDropDownSelectionListAsync(name, selection, list, HtmlAttributes: HtmlAttributes);
+            return Task.FromResult(new HtmlString(""));
+            //$$$$return await htmlHelper.RenderDropDownSelectionListAsync(name, selection, list, HtmlAttributes: HtmlAttributes);
         }
 
         public static List<Transition> Transitions {

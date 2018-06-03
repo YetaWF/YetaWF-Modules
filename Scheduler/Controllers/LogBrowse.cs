@@ -13,11 +13,11 @@ using YetaWF.Core.Models;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Modules;
 using YetaWF.Core.Support;
-using YetaWF.Core.Views.Shared;
 using YetaWF.Modules.Scheduler.DataProvider;
 using YetaWF.Modules.Scheduler.Modules;
 using YetaWF.Core.IO;
 using YetaWF.Core.Support.Zip;
+using YetaWF.Core.Components;
 #if MVC6
 using Microsoft.AspNetCore.Mvc;
 #else
@@ -110,7 +110,7 @@ namespace YetaWF.Modules.Scheduler.Controllers {
         public async Task<ActionResult> LogBrowse_GridData(int skip, int take, List<DataProviderSortInfo> sort, List<DataProviderFilterInfo> filters, Guid settingsModuleGuid) {
             using (LogDataProvider logDP = new LogDataProvider()) {
                 DataProviderGetRecords<LogData> browseItems = await logDP.GetItemsAsync(skip, take, sort, filters);
-                GridHelper.SaveSettings(skip, take, sort, filters, settingsModuleGuid);
+                Grid.SaveSettings(skip, take, sort, filters, settingsModuleGuid);
                 return await GridPartialViewAsync(new DataSourceResult {
                     Data = (from s in browseItems.Data select new BrowseItem(Module, s)).ToList<object>(),
                     Total = browseItems.Total

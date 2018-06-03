@@ -13,6 +13,7 @@ using YetaWF.Core.Modules;
 using YetaWF.Core.Views.Shared;
 using YetaWF.Modules.Blog.DataProvider;
 using YetaWF.Modules.Blog.Modules;
+using YetaWF.Core.Components;
 #if MVC6
 using Microsoft.AspNetCore.Mvc;
 #else
@@ -125,7 +126,7 @@ namespace YetaWF.Modules.Blog.Controllers {
             using (BlogEntryDataProvider entryDP = new BlogEntryDataProvider()) {
                 using (BlogCategoryDataProvider categoryDP = new BlogCategoryDataProvider()) {
                     DataProviderGetRecords<BlogEntry> browseItems = await entryDP.GetItemsAsync(skip, take, sort, filters);
-                    GridHelper.SaveSettings(skip, take, sort, filters, settingsModuleGuid);
+                    Grid.SaveSettings(skip, take, sort, filters, settingsModuleGuid);
                     return await GridPartialViewAsync(new DataSourceResult {
                         Data = (from s in browseItems.Data select new BrowseItem(Module, categoryDP, s)).ToList<object>(),
                         Total = browseItems.Total

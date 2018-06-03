@@ -6,7 +6,6 @@ using YetaWF.Core.Menus;
 using YetaWF.Core.Modules;
 using YetaWF.Core.Packages;
 using YetaWF.Core.Support;
-using YetaWF.Core.Views.Shared;
 using YetaWF.Modules.ComponentsHTML.Addons.Templates;
 
 namespace YetaWF.Modules.ComponentsHTML.Components {
@@ -23,18 +22,18 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
             HtmlBuilder hb = new HtmlBuilder();
 
-            GridHelper.GridActionsEnum actionStyle = GridHelper.GridActionsEnum.Icons;
+            Grid.GridActionsEnum actionStyle = Grid.GridActionsEnum.Icons;
             if (model.Count > 1) {
-                GridHelper.GridActionsEnum gridActionStyle;
-                if (!PropData.TryGetAdditionalAttributeValue<GridHelper.GridActionsEnum>("GridActionsEnum", out gridActionStyle))
-                    gridActionStyle = UserSettings.GetProperty<GridHelper.GridActionsEnum>("GridActions");
+                Grid.GridActionsEnum gridActionStyle;
+                if (!PropData.TryGetAdditionalAttributeValue<Grid.GridActionsEnum>("GridActionsEnum", out gridActionStyle))
+                    gridActionStyle = UserSettings.GetProperty<Grid.GridActionsEnum>("GridActions");
                 actionStyle = gridActionStyle;
             }
             switch (actionStyle) {
                 default:
-                case GridHelper.GridActionsEnum.Icons:
+                case Grid.GridActionsEnum.Icons:
                     return new YHtmlString((await model.RenderAsync(HtmlHelper, null, ActionIcons.CssActionIcons)).ToString());
-                case GridHelper.GridActionsEnum.DropdownMenu: {
+                case Grid.GridActionsEnum.DropdownMenu: {
                         MenuList menuActions = model;
                         menuActions.RenderMode = ModuleAction.RenderModeEnum.NormalMenu;
 

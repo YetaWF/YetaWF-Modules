@@ -11,6 +11,7 @@ using YetaWF.Core.Support;
 using YetaWF.Core.Views.Shared;
 using System.Threading.Tasks;
 using YetaWF.Core.IO;
+using YetaWF.Core.Components;
 #if MVC6
 using Microsoft.AspNetCore.Html;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -36,7 +37,8 @@ namespace YetaWF.Modules.SlideShow.Views.Shared {
                 Text = a.Name,
                 Value = a.Value,
             }).ToList();
-            return await htmlHelper.RenderDropDownSelectionListAsync(name, selection, list, HtmlAttributes: HtmlAttributes);
+            return new HtmlString("");
+            //$$$return await htmlHelper.RenderDropDownSelectionListAsync(name, selection, list, HtmlAttributes: HtmlAttributes);
         }
         public class Arrow {
             public string Name { get; set; }

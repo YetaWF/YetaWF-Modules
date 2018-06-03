@@ -7,11 +7,12 @@ using YetaWF.Core.Localize;
 using YetaWF.Core.Modules;
 using YetaWF.Core.Packages;
 using YetaWF.Core.Support;
-using YetaWF.Core.Views.Shared;
 
 namespace YetaWF.Modules.ComponentsHTML.Components {
 
     public class ModuleSelectionModuleNewEditComponent : YetaWFComponent, IYetaWFComponent<Guid> {
+
+        private static string __ResStr(string name, string defaultValue, params object[] parms) { return ResourceAccess.GetResourceString(typeof(ModuleSelectionModuleNewEditComponent), name, defaultValue, parms); }
 
         public const string TemplateName = "ModuleSelectionModuleNew";
 
@@ -34,8 +35,25 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                             Tooltip = module.Value.Summary,
                         }).ToList<SelectionItem<string>>();
             }
-            list.Insert(0, new SelectionItem<string> { Text = this.__ResStr("none", "(none)"), Value = null });
+            list.Insert(0, new SelectionItem<string> { Text = __ResStr("none", "(none)"), Value = null });
             return await DropDownListComponent.RenderDropDownListAsync(model.ToString(), list, this, "yt_moduleselectionmodulenew");
+        }
+
+        internal static YHtmlString RenderReplacementPackageModulesNew(string areaName) {
+            List<SelectionItem<string>> list = new List<SelectionItem<string>>();
+            if (!string.IsNullOrWhiteSpace(areaName)) {
+                list = (
+                    from module in InstalledModules.Modules
+                    where module.Value.Package.AreaName == areaName
+                    orderby module.Value.DisplayName.ToString() select
+                        new SelectionItem<string> {
+                            Text = module.Value.DisplayName.ToString(),
+                            Value = module.Key.ToString(),
+                            Tooltip = module.Value.Summary,
+                        }).ToList<SelectionItem<string>>();
+            }
+            list.Insert(0, new SelectionItem<string> { Text = __ResStr("none", "(none)"), Value = null });
+            return DropDownListEditComponentBase<string>.RenderDataSource(list, areaName);
         }
 
         internal static async Task<string> GetAreaNameFromGuidAsync(bool newMods, Guid? moduleGuid) {

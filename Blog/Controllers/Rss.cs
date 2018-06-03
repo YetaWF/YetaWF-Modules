@@ -13,6 +13,7 @@ using YetaWF.Core.Support.Rss;
 using YetaWF.Core.Views.Shared;
 using YetaWF.Modules.Blog.DataProvider;
 using YetaWF.Modules.Blog.Modules;
+using YetaWF.Core.Components;
 #if MVC6
 using Microsoft.AspNetCore.Mvc;
 #else
@@ -90,7 +91,7 @@ namespace YetaWF.Modules.Blog.Controllers {
                     feed = new SyndicationFeed(config.FeedTitle, config.FeedSummary, new Uri(Manager.CurrentSite.MakeUrl(url)), items);
                 }
                 if (config.FeedImage != null)
-                    feed.ImageUrl = new Uri(Manager.CurrentSite.MakeUrl(ImageHelper.FormatUrl(BlogConfigData.ImageType, null, config.FeedImage))); //$$$ caching issue
+                    feed.ImageUrl = new Uri(Manager.CurrentSite.MakeUrl(ImageHTML.FormatUrl(BlogConfigData.ImageType, null, config.FeedImage))); //$$$ caching issue
                 if (lastUpdated != DateTime.MinValue)
                     feed.LastUpdatedTime = lastUpdated;
                 return new RssResult(feed);

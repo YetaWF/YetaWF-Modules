@@ -83,11 +83,8 @@
     <Compile Include="Startup\Info.cs" />
     <Compile Include="Startup\AreaRegistration.cs" />
     <Compile Include="Controllers\ModuleSkinInfo.cs" />
-    <Compile Include="Controllers\RecaptchaConfig.cs" />
     <Compile Include="Controllers\ShowMessage.cs" />
-    <Compile Include="Models\RecaptchaConfigDataProvider.cs" />
     <Compile Include="Modules\ModuleSkinInfo.cs" />
-    <Compile Include="Modules\RecaptaConfig.cs" />
     <Compile Include="Modules\ShowMessage.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -134,8 +131,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Addons\_Addons\MailToObfuscator\MailToObfuscator.js" />
-    <Content Include="Views\YetaWF_Basics_RecaptchaConfig.cshtml" />
-    <Content Include="Views\YetaWF_Basics_RecaptchaConfig_Partial.cshtml" />
     <None Include="app.config" />
     <None Include="packages.config" />
     <None Include="tsconfig.json" />

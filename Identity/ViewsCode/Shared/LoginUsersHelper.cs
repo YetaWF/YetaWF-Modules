@@ -10,6 +10,7 @@ using YetaWF.Core.Serializers;
 using YetaWF.Core.Views;
 using YetaWF.Core.Views.Shared;
 using YetaWF.Modules.Identity.DataProvider;
+using YetaWF.Core.Components;
 #if MVC6
 using Microsoft.AspNetCore.Html;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -77,7 +78,8 @@ namespace YetaWF.Modules.Identity.Views.Shared {
                 Tooltip = __ResStr("selLogoff", "Select to log off"),
                 Value = 0,
             });
-            return await htmlHelper.RenderDropDownSelectionListAsync<int>(name, model, list, HtmlAttributes: HtmlAttributes);
+            return new HtmlString("");
+            //$$$return await htmlHelper.RenderDropDownSelectionListAsync<int>(name, model, list, HtmlAttributes: HtmlAttributes);
         }
     }
 }

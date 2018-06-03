@@ -18,10 +18,10 @@ using YetaWF.Core.Modules;
 using YetaWF.Core.Packages;
 using YetaWF.Core.Serializers;
 using YetaWF.Core.Support;
-using YetaWF.Core.Views.Shared;
 using YetaWF.Modules.Languages.Controllers.Support;
 using YetaWF.Modules.Languages.DataProvider;
 using YetaWF.Modules.Languages.Modules;
+using YetaWF.Core.Components;
 #if MVC6
 using Microsoft.AspNetCore.Mvc;
 #else
@@ -95,7 +95,7 @@ namespace YetaWF.Modules.Languages.Controllers {
             Package package = Package.GetPackageFromPackageName(packageName);
             List<LocalizeFile> files = (from s in await LocalizationSupport.GetFilesAsync(package) select new LocalizeFile { FileName = Path.GetFileName(s) }).ToList();
             DataProviderGetRecords<LocalizeFile> recs = DataProviderImpl<LocalizeFile>.GetRecords(files, skip, take, sort, filters);
-            GridHelper.SaveSettings(skip, take, sort, filters, settingsModuleGuid);
+            Grid.SaveSettings(skip, take, sort, filters, settingsModuleGuid);
             return await GridPartialViewAsync(new DataSourceResult {
                 Data = (from s in recs.Data select new BrowseItem(Module, packageName, s.FileName)).ToList<object>(),
                 Total = recs.Total

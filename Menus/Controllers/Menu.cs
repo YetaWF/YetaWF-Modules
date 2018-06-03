@@ -6,7 +6,7 @@ using YetaWF.Core.Menus;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Support;
 using YetaWF.Modules.Menus.Modules;
-using YetaWF.Modules.Menus.Views.Shared;
+using YetaWF.Modules.Menus.Components;
 #if MVC6
 using Microsoft.AspNetCore.Mvc;
 #else
@@ -23,7 +23,7 @@ namespace YetaWF.Modules.Menus.Controllers {
             if (Manager.SkinInfo.UsingBootstrap)
                 Module.CssClass = YetaWFManager.CombineCss(Module.CssClass, "navbar-collapse collapse");
             MenuModel model = new MenuModel {
-                Menu = new MenuHelper.MenuData {
+                Menu = new MenuComponentBase.MenuData {
                     MenuList = await GetEditMenu(Module),
                     Direction = Module.Direction,
                     Orientation = Module.Orientation,
@@ -40,14 +40,14 @@ namespace YetaWF.Modules.Menus.Controllers {
     public class MenuModuleController : ControllerImpl<YetaWF.Modules.Menus.Modules.MenuModule> {
 
         public class MenuModel {
-            [UIHint("YetaWF_Menus_Menu"), AdditionalMetadata("Style", MenuHelper.MenuStyleEnum.Automatic)]
-            public MenuHelper.MenuData Menu { get; set; }
+            [UIHint("YetaWF_Menus_Menu"), AdditionalMetadata("Style", MenuComponentBase.MenuStyleEnum.Automatic)]
+            public MenuComponentBase.MenuData Menu { get; set; }
         }
 
         [AllowGet]
         public async Task<ActionResult> Menu() {
             MenuModel model = new MenuModel {
-                Menu = new MenuHelper.MenuData {
+                Menu = new MenuComponentBase.MenuData {
                     MenuList = await GetEditMenu(Module),
                     Direction = Module.Direction,
                     Orientation = Module.Orientation,

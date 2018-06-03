@@ -8,6 +8,7 @@ using YetaWF.Core.Views;
 using YetaWF.Core.Views.Shared;
 using YetaWF.Modules.SyntaxHighlighter.Support;
 using System.Threading.Tasks;
+using YetaWF.Core.Components;
 #if MVC6
 using Microsoft.AspNetCore.Html;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -26,7 +27,7 @@ namespace YetaWF.Modules.SyntaxHighlighter.Views.Shared {
 #if MVC6
         public static async Task<HtmlString> RenderHighlightJSSkinsAsync(this IHtmlHelper htmlHelper, string name, string selection, object HtmlAttributes = null) {
 #else
-        public static async Task<HtmlString> RenderHighlightJSSkinsAsync(this HtmlHelper htmlHelper, string name, string selection, object HtmlAttributes = null) {
+        public static Task<HtmlString> RenderHighlightJSSkinsAsync(this HtmlHelper htmlHelper, string name, string selection, object HtmlAttributes = null) {
 #endif
             // get all available skins
             SkinAccess skinAccess = new SkinAccess();
@@ -46,7 +47,8 @@ namespace YetaWF.Modules.SyntaxHighlighter.Views.Shared {
                 selection = SkinAccess.GetHighlightJSDefaultSkin();
 
             // display the skins in a drop down
-            return await htmlHelper.RenderDropDownSelectionListAsync(name, selection, list, HtmlAttributes: HtmlAttributes);
+            return Task.FromResult(new HtmlString(""));
+            //$$$$ return await htmlHelper.RenderDropDownSelectionListAsync(name, selection, list, HtmlAttributes: HtmlAttributes);
         }
     }
 }

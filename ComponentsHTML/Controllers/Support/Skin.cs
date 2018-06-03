@@ -4,8 +4,8 @@ using YetaWF.Core.Addons;
 using YetaWF.Core.Identity;
 using YetaWF.Core.Skins;
 using YetaWF.Core.Support;
-using YetaWF.Core.Views.Shared;
 using YetaWF.Core.Controllers;
+using YetaWF.Modules.ComponentsHTML.Components;
 #if MVC6
 using Microsoft.AspNetCore.Mvc;
 #else
@@ -29,10 +29,8 @@ namespace YetaWF.Modules.ComponentsHTML.Controllers {
         [AllowPost]
         [ResourceAuthorize(CoreInfo.Resource_SkinLists)]
         public ActionResult GetPageSkins(string skinCollection) {
-            SkinAccess skinAccess = new SkinAccess();
-            PageSkinList skinList = skinAccess.GetAllPageSkins(skinCollection);
             ScriptBuilder sb = new ScriptBuilder();
-            sb.Append(PageSkinHelper.RenderReplacementSkinsForCollection(skinList));
+            sb.Append(SkinNamePageEditComponent.RenderReplacementSkinsForCollection(skinCollection));
             return new YJsonResult { Data = sb.ToString() };
         }
         /// <summary>
@@ -45,10 +43,8 @@ namespace YetaWF.Modules.ComponentsHTML.Controllers {
         [AllowPost]
         [ResourceAuthorize(CoreInfo.Resource_SkinLists)]
         public ActionResult GetPopupPageSkins(string skinCollection) {
-            SkinAccess skinAccess = new SkinAccess();
-            PageSkinList skinList = skinAccess.GetAllPopupSkins(skinCollection);
             ScriptBuilder sb = new ScriptBuilder();
-            sb.Append(PageSkinHelper.RenderReplacementSkinsForCollection(skinList));
+            sb.Append(SkinNamePopupEditComponent.RenderReplacementSkinsForCollection(skinCollection));
             return new YJsonResult { Data = sb.ToString() };
         }
     }

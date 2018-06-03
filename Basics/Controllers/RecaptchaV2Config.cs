@@ -5,8 +5,8 @@ using YetaWF.Core.Controllers;
 using YetaWF.Core.Localize;
 using YetaWF.Core.Models;
 using YetaWF.Core.Models.Attributes;
-using YetaWF.Core.Templates;
 using YetaWF.Modules.Basics.DataProvider;
+using YetaWF.Core.Components;
 #if MVC6
 using Microsoft.AspNetCore.Mvc;
 #else
@@ -27,12 +27,12 @@ namespace YetaWF.Modules.Basics.Controllers {
             }
 
             [Caption("Public Key"), Description("The public key used to communicate with the Google/Recaptcha site")]
-            [UIHint("Text80"), StringLength(YetaWF.Core.Templates.RecaptchaV2Config.MaxPublicKey), Required, Trim]
+            [UIHint("Text80"), StringLength(YetaWF.Core.Components.RecaptchaV2Config.MaxPublicKey), Required, Trim]
             [ExcludeDemoMode]
             public string PublicKey { get; set; }
 
             [Caption("Private Key"), Description("The private key used to communicate with the Google/Recaptcha site")]
-            [UIHint("Text80"), StringLength(YetaWF.Core.Templates.RecaptchaV2Config.MaxPrivateKey), Required, Trim]
+            [UIHint("Text80"), StringLength(YetaWF.Core.Components.RecaptchaV2Config.MaxPrivateKey), Required, Trim]
             [ExcludeDemoMode]
             public string PrivateKey { get; set; }
 

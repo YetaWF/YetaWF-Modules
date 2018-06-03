@@ -5,11 +5,11 @@ using System.IO;
 using System.Linq;
 using YetaWF.Core.Controllers;
 using YetaWF.Core.Models.Attributes;
-using YetaWF.Core.Views.Shared;
 using YetaWF.Core.Support;
 using YetaWF.Modules.Packages.DataProvider;
 using System.Threading.Tasks;
 using YetaWF.Core.IO;
+using YetaWF.Core.Components;
 #if MVC6
 using Microsoft.AspNetCore.Mvc;
 #else

@@ -8,8 +8,8 @@ using YetaWF.Core.Pages;
 using YetaWF.Core.Scheduler;
 using YetaWF.Core.Support;
 using YetaWF.Core.Views;
-using YetaWF.Core.Views.Shared;
 using System.Threading.Tasks;
+using YetaWF.Core.Components;
 #if MVC6
 using Microsoft.AspNetCore.Html;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -28,7 +28,7 @@ namespace YetaWF.Modules.Scheduler.Views.Shared {
 #if MVC6
         public static async Task<HtmlString> RenderSchedulerEventAsync(this IHtmlHelper htmlHelper, string name, string eventName, object HtmlAttributes = null)
 #else
-        public static async Task<HtmlString> RenderSchedulerEventAsync(this HtmlHelper htmlHelper, string name, string eventName, object HtmlAttributes = null)
+        public static Task<HtmlString> RenderSchedulerEventAsync(this HtmlHelper htmlHelper, string name, string eventName, object HtmlAttributes = null)
 #endif
         {
             List<Type> schedulerEvents = YetaWF.Modules.Scheduler.Support.Scheduler.Instance.SchedulerEvents;
@@ -51,7 +51,8 @@ namespace YetaWF.Modules.Scheduler.Views.Shared {
             string select = null;
             if (eventName != null)
                 select = eventName + "," + htmlHelper.GetModelProperty<string>("ImplementingType") + "," + htmlHelper.GetModelProperty<string>("ImplementingAssembly");
-            return await htmlHelper.RenderDropDownSelectionListAsync(name, select, list, HtmlAttributes: HtmlAttributes);
+            return Task.FromResult(new HtmlString(""));
+            //$$$ return await htmlHelper.RenderDropDownSelectionListAsync(name, select, list, HtmlAttributes: HtmlAttributes);
         }
     }
 }

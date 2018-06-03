@@ -8,7 +8,7 @@ using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Support;
 using YetaWF.Core;
 using System.Threading.Tasks;
-using YetaWF.Modules.ComponentsHTML.Components;
+using YetaWF.Modules.DevTests.Components;
 #if MVC6
 using Microsoft.AspNetCore.Mvc;
 #else
@@ -68,7 +68,7 @@ namespace YetaWF.Modules.DevTests.Controllers {
             if (!attr.IsValid(newValue))
                 throw new Error(attr.ErrorMessage);
             // add new grid record
-            ListOfEmailAddressesEditComponent.GridEdit entry = new ComponentsHTML.Components.ListOfEmailAddressesEditComponent.GridEdit(newValue);
+            ListOfEmailAddressesEditComponent.GridEdit entry = new ListOfEmailAddressesEditComponent.GridEdit(newValue);
             return await GridPartialViewAsync(new GridDefinition.GridEntryDefinition(prefix, newRecNumber, entry));
         }
     }

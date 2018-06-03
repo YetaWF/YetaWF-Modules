@@ -3,11 +3,11 @@
 using System;
 using System.Threading.Tasks;
 using YetaWF.Core.Audit;
+using YetaWF.Core.Components;
 using YetaWF.Core.DataProvider;
 using YetaWF.Core.IO;
 using YetaWF.Core.Packages;
 using YetaWF.Core.Support;
-using YetaWF.Core.Views.Shared;
 
 namespace YetaWF.Modules.Basics.DataProvider {
 
@@ -19,7 +19,7 @@ namespace YetaWF.Modules.Basics.DataProvider {
 
         public Task InitializeApplicationStartupAsync() {
             RecaptchaConfig.LoadRecaptchaConfigAsync = RecaptchaConfigDataProvider.LoadRecaptchaConfigAsync;
-            RecaptchaConfig.SaveRecaptchaConfigAsync = RecaptchaConfigDataProvider.SaveRecaptchaConfigAsync;
+            RecaptchaV2Config.SaveRecaptchaConfigAsync = RecaptchaConfigDataProvider.SaveRecaptchaConfigAsync;
             return Task.CompletedTask;
         }
 

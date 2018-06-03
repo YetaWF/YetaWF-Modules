@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Threading.Tasks;
 using YetaWF.Core.Addons;
+using YetaWF.Core.Components;
 using YetaWF.Core.Localize;
 using YetaWF.Core.Models;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Support;
-using YetaWF.Core.Views.Shared;
 
 namespace YetaWF.Modules.ComponentsHTML.Components {
 
@@ -15,7 +15,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
             ScriptBuilder sb = new ScriptBuilder();
 
-            ObjectSupport.ReadGridDictionaryInfo info = await Core.Views.Shared.GridHelper.LoadGridColumnDefinitionsAsync(gridDef);
+            ObjectSupport.ReadGridDictionaryInfo info = await Grid.LoadGridColumnDefinitionsAsync(gridDef);
 
             foreach (var d in info.ColumnInfo) {
                 string propName = d.Key;
@@ -42,11 +42,11 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             public bool HasFilters { get; set; }
         }
 
-        private async Task<GetColModelInfo> GetColModelAsync(Core.Views.Shared.GridHelper.GridSavedSettings gridSavedSettings, GridDefinition gridDef) {
+        private async Task<GetColModelInfo> GetColModelAsync(Grid.GridSavedSettings gridSavedSettings, GridDefinition gridDef) {
 
             ScriptBuilder sb = new ScriptBuilder();
 
-            ObjectSupport.ReadGridDictionaryInfo info = await Core.Views.Shared.GridHelper.LoadGridColumnDefinitionsAsync(gridDef);
+            ObjectSupport.ReadGridDictionaryInfo info = await Grid.LoadGridColumnDefinitionsAsync(gridDef);
 
             bool hasFilters = false;
 
@@ -66,12 +66,12 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                 int width = 0, charWidth = 0;
                 if (gridCol.Icons != 0) {
                     gridCol.Sortable = false;
-                    Core.Views.Shared.GridHelper.GridActionsEnum actionStyle = Core.Views.Shared.GridHelper.GridActionsEnum.Icons;
+                    Grid.GridActionsEnum actionStyle = Grid.GridActionsEnum.Icons;
                     if (gridCol.Icons > 1)
-                        actionStyle = UserSettings.GetProperty<Core.Views.Shared.GridHelper.GridActionsEnum>("GridActions");
+                        actionStyle = UserSettings.GetProperty<Grid.GridActionsEnum>("GridActions");
                     gridCol.ChWidth = gridCol.PixWidth = 0;
                     gridCol.Alignment = GridHAlignmentEnum.Center;
-                    if (actionStyle == Core.Views.Shared.GridHelper.GridActionsEnum.DropdownMenu) {
+                    if (actionStyle == Grid.GridActionsEnum.DropdownMenu) {
                         charWidth = gridDef.DropdownActionWidth ?? 12;
                     } else {
                         width = 10 + (Math.Abs(gridCol.Icons) * (16 + 4) + 10);
@@ -192,7 +192,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             sb.Append("],");
         }
 
-        internal YHtmlString RenderGridSortOrder(GridDefinition gridDef, GridHelper.GridSavedSettings gridSavedSettings) {
+        internal YHtmlString RenderGridSortOrder(GridDefinition gridDef, Grid.GridSavedSettings gridSavedSettings) {
             GridDefinition.ColumnDictionary columns = null;
 
             if (gridSavedSettings != null && gridSavedSettings.Columns.Count > 0) // use the saved sort order

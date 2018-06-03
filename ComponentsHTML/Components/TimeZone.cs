@@ -6,7 +6,6 @@ using YetaWF.Core.Components;
 using YetaWF.Core.Localize;
 using YetaWF.Core.Packages;
 using YetaWF.Core.Support;
-using YetaWF.Core.Views.Shared;
 
 namespace YetaWF.Modules.ComponentsHTML.Components {
 

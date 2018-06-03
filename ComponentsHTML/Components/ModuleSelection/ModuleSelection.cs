@@ -8,7 +8,6 @@ using YetaWF.Core.Modules;
 using YetaWF.Core.Packages;
 using YetaWF.Core.Skins;
 using YetaWF.Core.Support;
-using YetaWF.Core.Views.Shared;
 using YetaWF.Modules.ComponentsHTML.Controllers;
 
 namespace YetaWF.Modules.ComponentsHTML.Components {
@@ -31,7 +30,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             // image
             SkinImages skinImages = new SkinImages();
             string imageUrl = await skinImages.FindIcon_TemplateAsync("ModulePreview.png", Package, "ModuleSelection");
-            YTagBuilder tagImg = ImageHelper.BuildKnownImageYTag(imageUrl, alt: this.__ResStr("linkAlt", "Preview"));
+            YTagBuilder tagImg = ImageHTML.BuildKnownImageYTag(imageUrl, alt: this.__ResStr("linkAlt", "Preview"));
 
             tag.InnerHtml = tag.InnerHtml + tagImg.ToString(YTagRenderMode.StartTag);
             return tag.ToString(YTagRenderMode.Normal);

@@ -6,7 +6,6 @@ using YetaWF.Core.Components;
 using YetaWF.Core.Models;
 using YetaWF.Core.Packages;
 using YetaWF.Core.Support;
-using YetaWF.Core.Views.Shared;
 
 namespace YetaWF.Modules.ComponentsHTML.Components {
 
@@ -39,7 +38,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                 object firstRecord = model.Data.FirstOrDefault();
                 if (firstRecord != null) {
                     Type recordType = firstRecord.GetType();
-                    dictInfo = await GridHelper.LoadGridColumnDefinitionsAsync(recordType);
+                    dictInfo = await Grid.LoadGridColumnDefinitionsAsync(recordType);
                 }
 
                 // render all records
@@ -51,8 +50,8 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                 foreach (var record in model.Data) {
                     if (model.RecordCount > 0)
                         sb.Append(",");
-                    List<Core.Views.Shared.PropertyListEntry> hiddenProps = GridDisplayComponent.GetHiddenGridProperties(record, dictInfo);
-                    List<Core.Views.Shared.PropertyListEntry> props = GridDisplayComponent.GetGridProperties(record, dictInfo);
+                    List<PropertyListComponentBase.PropertyListEntry> hiddenProps = GridDisplayComponent.GetHiddenGridProperties(record, dictInfo);
+                    List<PropertyListComponentBase.PropertyListEntry> props = GridDisplayComponent.GetGridProperties(record, dictInfo);
                     sb.Append($@"{{ ""id"": ""{model.RecordCount}"", {await GridDisplayComponent.RenderOneRecordAsync(HtmlHelper, record, props, hiddenProps, readOnly)} }}");
                     model.RecordCount = model.RecordCount + 1;
                 }

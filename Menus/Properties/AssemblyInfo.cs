@@ -23,3 +23,5 @@ using YetaWF.Core.Packages;
     "https://YetaWF.com/Documentation/YetaWF/Support",
     "https://yetawf.com/Documentation/YetaWF/Menus#Release%20Notice",
     "https://yetawf.com/Documentation/YetaWF/Menus#License")]
+
+[assembly: RequiresPackage("YetaWF.ComponentsHTML")]

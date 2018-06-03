@@ -9,7 +9,6 @@ using YetaWF.Core.Packages;
 using YetaWF.Core.Pages;
 using YetaWF.Core.Skins;
 using YetaWF.Core.Support;
-using YetaWF.Core.Views.Shared;
 
 namespace YetaWF.Modules.ComponentsHTML.Components {
 
@@ -54,7 +53,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             // image
             SkinImages skinImages = new SkinImages();
             string imageUrl = await skinImages.FindIcon_TemplateAsync("PagePreview.png", Package, TemplateName);
-            YTagBuilder tagImg = ImageHelper.BuildKnownImageYTag(imageUrl, alt: this.__ResStr("linkAlt", "Preview"));
+            YTagBuilder tagImg = ImageHTML.BuildKnownImageYTag(imageUrl, alt: this.__ResStr("linkAlt", "Preview"));
 
             tag.InnerHtml = tag.InnerHtml + tagImg.ToString(YTagRenderMode.StartTag);
             string linkTag = tag.ToString(YTagRenderMode.Normal);

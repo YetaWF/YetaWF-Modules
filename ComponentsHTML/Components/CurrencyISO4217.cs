@@ -5,9 +5,6 @@ using YetaWF.Core.Components;
 using YetaWF.Core.Localize;
 using YetaWF.Core.Packages;
 using YetaWF.Core.Support;
-using YetaWF.Core.Templates;
-using YetaWF.Core.Views.Shared;
-using static YetaWF.Core.Templates.CurrencyISO4217;
 
 namespace YetaWF.Modules.ComponentsHTML.Components {
 
@@ -36,7 +33,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
             bool includeSiteCurrency = PropData.GetAdditionalAttributeValue<bool>("SiteCurrency", true);
 
-            List<Currency> currencies = await CurrencyISO4217.GetCurrenciesAsync(IncludeSiteCurrency: includeSiteCurrency);
+            List<CurrencyISO4217.Currency> currencies = await CurrencyISO4217.GetCurrenciesAsync(IncludeSiteCurrency: includeSiteCurrency);
             List<SelectionItem<string>> list = (from l in currencies select new SelectionItem<string>() {
                 Text = l.Name,
                 Value = l.Id,

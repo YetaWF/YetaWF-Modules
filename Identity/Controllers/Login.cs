@@ -20,7 +20,7 @@ using YetaWF.Modules.Identity.DataProvider;
 using YetaWF.Modules.Identity.Models;
 using YetaWF.Modules.Identity.Support;
 using YetaWF.Core.Packages;
-using YetaWF.Core.Templates;
+using YetaWF.Core.Components;
 #if MVC6
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;

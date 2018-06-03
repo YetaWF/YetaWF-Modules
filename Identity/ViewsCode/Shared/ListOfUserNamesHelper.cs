@@ -15,6 +15,7 @@ using YetaWF.Core.Localize;
 using YetaWF.Modules.Identity.Support;
 using System.Threading.Tasks;
 using YetaWF.Modules.Identity.Controllers;
+using YetaWF.Core.Components;
 #if MVC6
 using Microsoft.AspNetCore.Html;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -124,7 +125,7 @@ namespace YetaWF.Modules.Identity.Views.Shared {
             NewModel newModel = new NewModel();
 
             hb.Append("<div class='t_newvalue'>");
-            hb.Append(await htmlHelper.ExtLabelForAsync(m => newModel.NewValue, "NewValue"));
+            hb.Append(await htmlHelper.ForLabelAsync(newModel, nameof(newModel.NewValue)));
             hb.Append(htmlHelper.EditorFor(m => newModel.NewValue, "Text80", "NewValue"));
             hb.Append("<input name='btnAdd' type='button' value='Add' data-ajaxurl='{0}' />", YetaWFManager.HtmlAttributeEncode(ajaxUrl));
             hb.Append("</div>");

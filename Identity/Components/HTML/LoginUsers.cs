@@ -36,12 +36,12 @@ namespace YetaWF.Modules.Identity.Components {
                 users.Add(new User { UserId = model });
 
             // get list of desired users (ignore users that are invalid, they may have been deleted)
-            List<Core.Views.Shared.SelectionItem<int>> list = new List<Core.Views.Shared.SelectionItem<int>>();
+            List<SelectionItem<int>> list = new List<SelectionItem<int>>();
             using (UserDefinitionDataProvider dataProvider = new UserDefinitionDataProvider()) {
                 foreach (var u in users) {
                     UserDefinition user = await dataProvider.GetItemByUserIdAsync(u.UserId);
                     if (user != null) {
-                        list.Add(new Core.Views.Shared.SelectionItem<int> {
+                        list.Add(new SelectionItem<int> {
                             Text = user.UserName,
                             Tooltip = this.__ResStr("selUser", "Select to log in as {0}", user.UserName),
                             Value = user.UserId,
@@ -57,7 +57,7 @@ namespace YetaWF.Modules.Identity.Components {
                 UserDefinition user = await superDataProvider.GetSuperuserAsync();
                 if (user != null) {
                     if ((from l in list where l.Value == user.UserId select l).FirstOrDefault() == null) {
-                        list.Insert(0, new Core.Views.Shared.SelectionItem<int> {
+                        list.Insert(0, new SelectionItem<int> {
                             Text = user.UserName,
                             Tooltip = this.__ResStr("selUser", "Select to log in as {0}", user.UserName),
                             Value = user.UserId,
@@ -65,7 +65,7 @@ namespace YetaWF.Modules.Identity.Components {
                     }
                 }
             }
-            list.Insert(0, new Core.Views.Shared.SelectionItem<int> {
+            list.Insert(0, new SelectionItem<int> {
                 Text = this.__ResStr("noUser", "(none)"),
                 Tooltip = this.__ResStr("selLogoff", "Select to log off"),
                 Value = 0,

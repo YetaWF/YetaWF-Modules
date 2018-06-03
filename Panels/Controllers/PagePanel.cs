@@ -19,6 +19,7 @@ using YetaWF.Core.Views.Shared;
 using YetaWF.Modules.Panels.Models;
 using YetaWF.Modules.Panels.Modules;
 using YetaWF.Modules.Panels.Views.Shared;
+using YetaWF.Core.Components;
 #if MVC6
 using Microsoft.AspNetCore.Mvc;
 #else
@@ -193,7 +194,7 @@ namespace YetaWF.Modules.Panels.Controllers {
                     size = 16;
                     break;
             }
-            return ImageHelper.FormatUrl(type, null, image, size, size, Stretch: true);
+            return ImageHTML.FormatUrl(type, null, image, size, size, Stretch: true);
         }
 
         // Panel Cache
