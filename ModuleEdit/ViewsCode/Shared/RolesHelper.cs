@@ -11,7 +11,6 @@ using YetaWF.Core.Pages;
 using YetaWF.Core.Serializers;
 using YetaWF.Core.Support;
 using YetaWF.Core.Views;
-using YetaWF.Core.Views.Shared;
 using YetaWF.Core.Components;
 #if MVC6
 using Microsoft.AspNetCore.Html;

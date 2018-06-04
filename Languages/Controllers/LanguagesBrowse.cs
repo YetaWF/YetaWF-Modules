@@ -10,7 +10,6 @@ using YetaWF.Core.Menus;
 using YetaWF.Core.Models;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Modules;
-using YetaWF.Core.Views.Shared;
 using YetaWF.Modules.Languages.Modules;
 using System.Threading.Tasks;
 using YetaWF.Core.Components;

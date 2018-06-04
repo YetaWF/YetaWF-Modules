@@ -8,7 +8,6 @@ using YetaWF.Core.Localize;
 using YetaWF.Core.Packages;
 using YetaWF.Core.Pages;
 using YetaWF.Core.Support;
-using YetaWF.Core.Views.Shared;
 using System.Threading.Tasks;
 using YetaWF.Core.IO;
 using YetaWF.Core.Components;

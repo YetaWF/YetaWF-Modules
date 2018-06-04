@@ -17,7 +17,6 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using YetaWF.Core.DataProvider;
-using YetaWF.Core.Views.Shared;
 #endif
 
 namespace YetaWF.Modules.Dashboard.Controllers {

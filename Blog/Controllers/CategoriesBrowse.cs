@@ -14,7 +14,6 @@ using YetaWF.Core.Models;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Modules;
 using YetaWF.Core.Support;
-using YetaWF.Core.Views.Shared;
 using YetaWF.Modules.Blog.DataProvider;
 using YetaWF.Modules.Blog.Modules;
 using YetaWF.Modules.Blog.Scheduler;

@@ -8,7 +8,6 @@ using YetaWF.Core.DataProvider;
 using YetaWF.Core.Localize;
 using YetaWF.Core.Models;
 using YetaWF.Core.Models.Attributes;
-using YetaWF.Core.Views.Shared;
 using YetaWF.Core.Support;
 using System.Threading.Tasks;
 using YetaWF.Core.Components;

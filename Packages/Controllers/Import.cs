@@ -12,7 +12,6 @@ using YetaWF.Modules.Packages.Modules;
 using System.Threading.Tasks;
 using YetaWF.Core.IO;
 using YetaWF.Core.Components;
-using YetaWF.Core.Views.Shared;
 #if MVC6
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;

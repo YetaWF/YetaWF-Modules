@@ -5,7 +5,6 @@ using YetaWF.Core.Controllers;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Modules;
 using YetaWF.Core.Support;
-using YetaWF.Core.Views.Shared;
 #if MVC6
 using Microsoft.AspNetCore.Mvc;
 #else

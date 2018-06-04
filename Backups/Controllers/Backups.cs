@@ -15,7 +15,6 @@ using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Modules;
 using YetaWF.Core.Packages;
 using YetaWF.Core.Support;
-using YetaWF.Core.Views.Shared;
 using YetaWF.Modules.Backups.DataProvider;
 using YetaWF.Modules.Backups.Modules;
 using YetaWF.Core.IO;

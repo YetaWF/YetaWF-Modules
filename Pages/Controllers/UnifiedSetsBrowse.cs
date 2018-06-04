@@ -13,7 +13,6 @@ using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Modules;
 using YetaWF.Core.Pages;
 using YetaWF.Core.Support;
-using YetaWF.Core.Views.Shared;
 using YetaWF.Modules.Pages.DataProvider;
 using YetaWF.Modules.Pages.Modules;
 using YetaWF.Core.Components;

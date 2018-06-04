@@ -7,7 +7,6 @@ using YetaWF.Core.Identity;
 using YetaWF.Core.Localize;
 using YetaWF.Core.Pages;
 using YetaWF.Core.Views;
-using YetaWF.Core.Views.Shared;
 using YetaWF.Modules.Identity.DataProvider;
 using YetaWF.Core.Support;
 using System.Threading.Tasks;

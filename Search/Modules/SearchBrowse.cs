@@ -9,7 +9,6 @@ using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Modules;
 using YetaWF.Core.Serializers;
 using YetaWF.Core.Support;
-using YetaWF.Core.Views.Shared;
 using YetaWF.DataProvider;
 using YetaWF.Modules.Search.Controllers;
 using YetaWF.Modules.Search.DataProvider;

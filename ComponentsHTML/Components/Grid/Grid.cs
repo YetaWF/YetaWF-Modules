@@ -29,7 +29,10 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
             HtmlBuilder hb = new HtmlBuilder();
 
-            await model.FinalizeSettingsAsync();
+            if (model.ShowFilter == null)
+                model.ShowFilter = YetaWF.Core.Localize.UserSettings.GetProperty<bool>("ShowGridSearchToolbar");
+            if (model.DropdownActionWidth == null)
+                model.DropdownActionWidth = GetDropdownActionWidthInChars();
 
             string dataDelete = "", dataDisplay = "", dataExtra = "";
             if (model.CanAddOrDelete) {
@@ -246,6 +249,10 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 </script>");
 
             return hb.ToYHtmlString();
+        }
+        internal int GetDropdownActionWidthInChars() {
+            string s = this.__ResStr("dropdownWidth", "11");
+            return Convert.ToInt32(s);
         }
     }
 }

@@ -4,7 +4,6 @@ using YetaWF.Core;
 using YetaWF.Core.Controllers;
 using YetaWF.Core.Localize;
 using YetaWF.Core.Models.Attributes;
-using YetaWF.Core.Views.Shared;
 #if MVC6
 using Microsoft.AspNetCore.Mvc;
 using YetaWF.Core.Support;

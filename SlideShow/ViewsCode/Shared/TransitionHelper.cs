@@ -5,7 +5,6 @@ using System.Linq;
 using YetaWF.Core.Localize;
 using YetaWF.Core.Pages;
 using YetaWF.Core.Views;
-using YetaWF.Core.Views.Shared;
 using System.Threading.Tasks;
 using YetaWF.Core.Components;
 #if MVC6

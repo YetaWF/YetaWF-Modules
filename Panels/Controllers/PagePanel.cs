@@ -15,7 +15,6 @@ using YetaWF.Core.Packages;
 using YetaWF.Core.Pages;
 using YetaWF.Core.Serializers;
 using YetaWF.Core.Support;
-using YetaWF.Core.Views.Shared;
 using YetaWF.Modules.Panels.Models;
 using YetaWF.Modules.Panels.Modules;
 using YetaWF.Modules.Panels.Views.Shared;

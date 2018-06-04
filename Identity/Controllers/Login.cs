@@ -15,7 +15,6 @@ using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Modules;
 using YetaWF.Core.Support;
 using YetaWF.Core.Support.TwoStepAuthorization;
-using YetaWF.Core.Views.Shared;
 using YetaWF.Modules.Identity.DataProvider;
 using YetaWF.Modules.Identity.Models;
 using YetaWF.Modules.Identity.Support;

@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using YetaWF.Core.Addons;
 using YetaWF.Core.Identity;
 using YetaWF.Core.Support;
-using YetaWF.Core.Views.Shared;
 using YetaWF.Core.Controllers;
 using YetaWF.Modules.ComponentsHTML.Components;
 #if MVC6

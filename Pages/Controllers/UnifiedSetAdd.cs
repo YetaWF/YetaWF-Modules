@@ -3,14 +3,12 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using YetaWF.Core;
 using YetaWF.Core.Controllers;
 using YetaWF.Core.Localize;
 using YetaWF.Core.Models;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Pages;
 using YetaWF.Core.Support;
-using YetaWF.Core.Views.Shared;
 using YetaWF.Modules.Pages.DataProvider;
 using YetaWF.Modules.Pages.Views.Shared;
 using YetaWF.Core.Skins;

@@ -1,3 +1,4 @@
 ﻿@*Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Text#License*@
 @inherits YetaWF.Core.Views.RazorView<YetaWF.Modules.Text.Modules.TextModule, YetaWF.Modules.Text.Controllers.TextModuleController.TextModelDisplay>
-@Html.DisplayFor(m => Model.Contents)
+@using YetaWF.Core.Components
+@Html.ForDisplayAsync(Model, "Contents").Result

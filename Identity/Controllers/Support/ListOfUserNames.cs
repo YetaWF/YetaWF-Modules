@@ -3,16 +3,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using YetaWF.Core.Components;
 using YetaWF.Core.Controllers;
 using YetaWF.Core.DataProvider;
 using YetaWF.Core.Identity;
 using YetaWF.Core.Models.Attributes;
-
 using YetaWF.Modules.Identity.Addons;
 using YetaWF.Modules.Identity.DataProvider;
 using YetaWF.Modules.Identity.Components;
-using YetaWF.Core.Views.Shared;
-using YetaWF.Core.Components;
 #if MVC6
 using Microsoft.AspNetCore.Mvc;
 #else

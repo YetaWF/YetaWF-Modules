@@ -7,7 +7,6 @@ using YetaWF.Core.Localize;
 using YetaWF.Core.Models;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Support;
-using YetaWF.Core.Views.Shared;
 using YetaWF.Modules.PageEdit.DataProvider;
 using YetaWF.Core.Serializers;
 using YetaWF.Core.DataProvider.Attributes;

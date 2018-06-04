@@ -8,7 +8,6 @@ using YetaWF.Core.DataProvider.Attributes;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Serializers;
 using YetaWF.Core.Support;
-using YetaWF.Core.Views.Shared;
 using YetaWF.Modules.SlideShow.Support;
 using YetaWF.Modules.SlideShow.Views.Shared;
 #if MVC6

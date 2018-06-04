@@ -11,7 +11,6 @@ using YetaWF.Core.Models;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Modules;
 using YetaWF.Core.Site;
-using YetaWF.Core.Views.Shared;
 using YetaWF.Modules.Sites.Modules;
 using YetaWF.Core.Components;
 #if MVC6

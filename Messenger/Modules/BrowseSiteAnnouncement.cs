@@ -9,8 +9,6 @@ using YetaWF.Core.Menus;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Modules;
 using YetaWF.Core.Serializers;
-using YetaWF.Core.Support;
-using YetaWF.Core.Views.Shared;
 using YetaWF.DataProvider;
 #if MVC6
 using Microsoft.AspNetCore.Mvc;

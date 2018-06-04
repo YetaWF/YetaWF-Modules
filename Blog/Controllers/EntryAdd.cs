@@ -8,7 +8,6 @@ using YetaWF.Core.Models;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Modules.Blog.DataProvider;
 using YetaWF.Core;
-using YetaWF.Core.Views.Shared;
 #if MVC6
 using Microsoft.AspNetCore.Mvc;
 using YetaWF.Core.Support;

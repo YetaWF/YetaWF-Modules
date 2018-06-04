@@ -9,7 +9,6 @@ using YetaWF.Core.Models;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Modules;
 using YetaWF.Core.Serializers;
-using YetaWF.Core.Views.Shared;
 using YetaWF.DataProvider;
 using YetaWF.Modules.TinyLogin.Support;
 using System.Threading.Tasks;

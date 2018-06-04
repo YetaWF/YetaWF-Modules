@@ -8,7 +8,6 @@ using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Pages;
 using YetaWF.Core.Support;
 using YetaWF.Core.Views;
-using YetaWF.Core.Views.Shared;
 using System.Threading.Tasks;
 using YetaWF.Core.Components;
 #if MVC6

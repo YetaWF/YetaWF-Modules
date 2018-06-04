@@ -7,7 +7,6 @@ using YetaWF.Core.Localize;
 using YetaWF.Core.Models;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Support;
-using YetaWF.Core.Views.Shared;
 using YetaWF.Modules.Search.DataProvider;
 #if MVC6
 using Microsoft.AspNetCore.Mvc;

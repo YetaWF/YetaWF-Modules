@@ -13,7 +13,6 @@ using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Modules;
 using YetaWF.Core.Packages;
 using YetaWF.Core.Support;
-using YetaWF.Core.Views.Shared;
 using YetaWF.Modules.Packages.Modules;
 using YetaWF.PackageAttributes;
 using YetaWF.Core.Support.Zip;

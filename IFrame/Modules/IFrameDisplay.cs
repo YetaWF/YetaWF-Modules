@@ -7,7 +7,6 @@ using YetaWF.Core.Localize;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Modules;
 using YetaWF.Core.Serializers;
-using YetaWF.Core.Views.Shared;
 using YetaWF.DataProvider;
 #if MVC6
 using YetaWF.Core.Support;

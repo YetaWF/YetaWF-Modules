@@ -9,7 +9,6 @@ using YetaWF.Core.Pages;
 using YetaWF.Core.Skins;
 using YetaWF.Core.Support;
 using YetaWF.Core.Views;
-using YetaWF.Core.Views.Shared;
 using YetaWF.Modules.Panels.Controllers.Shared;
 using System.Threading.Tasks;
 using YetaWF.Modules.Panels.Models;
