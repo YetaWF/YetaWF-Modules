@@ -7,7 +7,6 @@ using YetaWF.Core;
 using YetaWF.Core.DataProvider;
 using YetaWF.Core.IO;
 using YetaWF.Core.Localize;
-using YetaWF.Core.Menus;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Modules;
 using YetaWF.Core.Serializers;
@@ -16,6 +15,7 @@ using YetaWF.DataProvider;
 using YetaWF.Modules.Identity.Controllers;
 using YetaWF.Modules.Identity.DataProvider;
 using YetaWF.Modules.Identity.Models;
+using YetaWF.Core.Components;
 #if MVC6
 using Microsoft.AspNetCore.Identity;
 #else

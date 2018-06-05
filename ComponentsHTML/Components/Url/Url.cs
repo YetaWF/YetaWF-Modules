@@ -61,9 +61,8 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                 tag.SetInnerText(text);
 
                 // image
-                Package currentPackage = YetaWF.Core.Controllers.AreaRegistration.CurrentPackage;
                 SkinImages skinImages = new SkinImages();
-                string imageUrl = await skinImages.FindIcon_TemplateAsync("UrlRemote.png", currentPackage, "Url");
+                string imageUrl = await skinImages.FindIcon_TemplateAsync("UrlRemote.png", Package, "Url");
                 YTagBuilder tagImg = ImageHTML.BuildKnownImageYTag(imageUrl, alt: this.__ResStr("altText", "Remote Url"));
 
                 tag.InnerHtml = tag.InnerHtml + tagImg.ToString(YTagRenderMode.StartTag);

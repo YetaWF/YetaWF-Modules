@@ -36,6 +36,7 @@
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="CoreRendering.cs" />
     <Compile Include="Component.cs" />
     <Compile Include="Components\ActionIcons.cs" />
     <Compile Include="Components\ModuleActions.cs" />
@@ -111,6 +112,7 @@
     <Compile Include="Controllers\Support\FileUpload1.cs" />
     <Compile Include="Controllers\Support\ModuleSelection.cs" />
     <Compile Include="Controllers\Support\Skin.cs" />
+    <Compile Include="CoreRendering\Module.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup\AreaRegistration.cs" />
     <Compile Include="Startup\Info.cs" />
@@ -124,6 +126,11 @@
     <Compile Include="Startup\Templates\RecaptchaV2.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Addons\_Addons\ModuleMenu\filelistJS.txt" />
+    <Content Include="Addons\_Addons\ModuleMenu\ModuleMenu.js" />
+    <Content Include="Addons\_Addons\Modules\filelistJS.txt" />
+    <Content Include="Addons\_Addons\Modules\images\ModuleMenuEditIcon.png" />
+    <Content Include="Addons\_Addons\Modules\modules.js" />
     <Content Include="Addons\_Templates\ActionIcons\ActionIcons.css" />
     <Content Include="Addons\_Templates\ActionIcons\ActionIcons.js" />
     <Content Include="Addons\_Templates\ActionIcons\filelistCSS.txt" />

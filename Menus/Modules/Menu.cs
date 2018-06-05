@@ -6,7 +6,6 @@ using YetaWF.Core;
 using YetaWF.Core.DataProvider.Attributes;
 using YetaWF.Core.IO;
 using YetaWF.Core.Localize;
-using YetaWF.Core.Menus;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Modules;
 using YetaWF.Core.Serializers;
@@ -14,6 +13,7 @@ using YetaWF.Core.Support;
 using YetaWF.DataProvider;
 using YetaWF.Modules.Menus.DataProvider;
 using YetaWF.Modules.Menus.Components;
+using YetaWF.Core.Components;
 #if MVC6
 #else
 using System.Web.Mvc;

@@ -1,6 +1,5 @@
 ﻿using System.Threading.Tasks;
 using YetaWF.Core.Components;
-using YetaWF.Core.Menus;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Modules;
 using YetaWF.Core.Packages;
