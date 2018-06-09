@@ -59,7 +59,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
                 hb.Append($@"<script>
                     CKEDITOR.replace('{ControlId}', {{
-                        customConfig: {YetaWFManager.JserEncode(Manager.GetCDNUrl(url))},
+                        customConfig: '{YetaWFManager.JserEncode(Manager.GetCDNUrl(url))}',
                         height: '{pixHeight}px'
                     }});</script>");
             } else {
@@ -170,16 +170,16 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
             if (!string.IsNullOrWhiteSpace(filebrowserImageBrowseUrl)) {
                 hb.Append($@"
-                    filebrowserImageBrowseUrl: {YetaWFManager.JserEncode(filebrowserImageBrowseUrl)},
-                    filebrowserImageBrowseLinkUrl: {YetaWFManager.JserEncode(filebrowserImageBrowseUrl)},");
+                    filebrowserImageBrowseUrl: '{YetaWFManager.JserEncode(filebrowserImageBrowseUrl)}',
+                    filebrowserImageBrowseLinkUrl: '{YetaWFManager.JserEncode(filebrowserImageBrowseUrl)}',");
             }
             if (!string.IsNullOrWhiteSpace(filebrowserFlashBrowseUrl)) {
                 hb.Append($@"
-                    filebrowserFlashBrowseUrl: {YetaWFManager.JserEncode(filebrowserFlashBrowseUrl)},");
+                    filebrowserFlashBrowseUrl: '{YetaWFManager.JserEncode(filebrowserFlashBrowseUrl)}',");
             }
             if (!string.IsNullOrWhiteSpace(filebrowserFlashBrowseUrl)) {
                 hb.Append($@"
-                    filebrowserBrowseUrl: {YetaWFManager.JserEncode(filebrowserPageBrowseUrl)},");
+                    filebrowserBrowseUrl: '{YetaWFManager.JserEncode(filebrowserPageBrowseUrl)}',");
             }
             hb.Append($@"
                 filebrowserWindowFeatures: 'modal=yes,location=no,menubar=no,toolbar=no,dependent=yes,minimizable=no,alwaysRaised=yes,resizable=yes,scrollbars=yes'

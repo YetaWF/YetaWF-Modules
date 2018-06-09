@@ -1,4 +1,0 @@
-﻿@*Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Blog#License*@
-@inherits YetaWF.Core.Pages.RazorTemplate<int>
-@using YetaWF.Modules.Blog.Views.Shared
-@await Html.RenderCategoryAsync("", Model, HtmlAttributes: new { @class = "yt_yetawf_blog_category t_edit" })

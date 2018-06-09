@@ -25,7 +25,7 @@
             @using (Html.BeginForm("ExternalLogin", "LoginExternal", new { ReturnUrl = Manager.ReturnToUrl })) {
                 int index = 0;
                 @Html.AntiForgeryToken()
-                foreach (YetaWF.Core.Views.Shared.FormButton formButton in Model.ExternalProviders) {
+                foreach (FormButton formButton in Model.ExternalProviders) {
                     <div class='t_ext1'>
                         <img src="@YetaWFManager.HtmlAttributeEncode(Model.Images[index])" alt="@YetaWFManager.HtmlAttributeEncode(formButton.Title)" title="@YetaWFManager.HtmlAttributeEncode(formButton.Title)" />
                         @formButton.RenderAsync().Result

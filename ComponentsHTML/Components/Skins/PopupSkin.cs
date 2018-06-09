@@ -77,7 +77,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         }
 
         public override async Task IncludeAsync() {
-            await Manager.AddOnManager.AddTemplateAsync("PageSkin");
+            await Manager.AddOnManager.AddTemplateFromUIHintAsync("PageSkin");
             await base.IncludeAsync();
         }
 

@@ -89,9 +89,9 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             await Manager.AddOnManager.AddTemplateAsync(Controllers.AreaRegistration.CurrentPackage.Domain, Controllers.AreaRegistration.CurrentPackage.Product, "Text");
         }
         public async Task<YHtmlString> RenderAsync(string model) {
-            return await RenderTextAsync(model, this, TemplateClass);
+            return await RenderTextAsync(this, model, TemplateClass);
         }
-        public static async Task<YHtmlString> RenderTextAsync(string model, YetaWFComponent component, string templateCssClass) {
+        public static async Task<YHtmlString> RenderTextAsync(YetaWFComponent component, string model, string templateCssClass) {
 
             await IncludeExplicitAsync();
 

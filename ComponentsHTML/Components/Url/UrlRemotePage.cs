@@ -21,7 +21,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         public async Task<YHtmlString> RenderAsync(string model) {
             HtmlAttributes.Add("class", "yt_urlremotepage");
             HtmlAttributes.Add("maxlength", Globals.MaxUrl);
-            return await TextEditComponent.RenderTextAsync(model != null ? model : "", this, "yt_urlremotepage");
+            return await TextEditComponent.RenderTextAsync(this, model != null ? model : "", "yt_urlremotepage");
         }
     }
 }

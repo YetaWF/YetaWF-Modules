@@ -42,10 +42,10 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             List<SelectionItem<TYPE>> list;
             if (!TryGetSiblingProperty($"{PropertyName}_List", out list))
                 list = new List<SelectionItem<TYPE>>();
-            return RenderDropDownListAsync(model, list, this, "yt_dropdownlist");
+            return RenderDropDownListAsync(this, model, list, "yt_dropdownlist");
         }
 
-        public static async Task<YHtmlString> RenderDropDownListAsync(TYPE model, List<SelectionItem<TYPE>> list, YetaWFComponent component, string cssClass) {
+        public static async Task<YHtmlString> RenderDropDownListAsync(YetaWFComponent component, TYPE model, List<SelectionItem<TYPE>> list, string cssClass) {
 
             await IncludeExplicitAsync();
 
@@ -126,7 +126,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             sb.Append(Basics.AjaxJavascriptReturn);
             sb.Append(@"{""data"":[");
             foreach (SelectionItem<TYPE> item in list) {
-                sb.Append(@"{{""t"":{0},""v"":{1}}},", YetaWFManager.JsonSerialize(item.Text.ToString()), YetaWFManager.JsonSerialize(item.Value.ToString()));
+                sb.Append(@"{{""t"":{0},""v"":{1}}},", YetaWFManager.JsonSerialize(item.Text.ToString()), YetaWFManager.JsonSerialize(item.Value?.ToString()));
             }
             if (list.Count > 0)
                 sb.RemoveLast();

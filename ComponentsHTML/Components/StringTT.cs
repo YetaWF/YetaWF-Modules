@@ -23,10 +23,17 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         public override ComponentType GetComponentType() { return ComponentType.Display; }
 
         public Task<YHtmlString> RenderAsync(StringTT model) {
+            return RenderStringTTAsync(this, model, null);
+        }
+        public static Task<YHtmlString> RenderStringTTAsync(YetaWFComponent component, StringTT model, string cssClass) {
             HtmlBuilder hb = new HtmlBuilder();
 
             YTagBuilder tag = new YTagBuilder("span");
-            FieldSetup(tag, FieldType.Anonymous);
+            if (!string.IsNullOrWhiteSpace(cssClass)) {
+                tag.AddCssClass(cssClass);
+                tag.AddCssClass("t_display");
+            }
+            component.FieldSetup(tag, FieldType.Anonymous);
 
             if (!string.IsNullOrWhiteSpace(model.Tooltip))
                 tag.Attributes.Add(Basics.CssTooltipSpan, model.Tooltip);

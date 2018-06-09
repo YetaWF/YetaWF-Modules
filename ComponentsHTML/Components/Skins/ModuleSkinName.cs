@@ -40,7 +40,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                 Tooltip = l.Description,
                 Value = l.CssClass,
             }).ToList();
-            return await DropDownListComponent.RenderDropDownListAsync(model, list, this, null);
+            return await DropDownListComponent.RenderDropDownListAsync(this, model, list, null);
         }
     }
 }

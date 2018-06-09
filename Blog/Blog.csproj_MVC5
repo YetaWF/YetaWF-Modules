@@ -71,6 +71,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Components\HTML\Gravatar.cs" />
+    <Compile Include="Components\HTML\Category.cs" />
     <Compile Include="Controllers\Disqus.cs" />
     <Compile Include="Controllers\DisqusConfig.cs" />
     <Compile Include="Controllers\DisqusLinks.cs" />
@@ -145,8 +147,6 @@
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Support\Validation.cs" />
-    <Compile Include="ViewsCode\Shared\CategoryHelper.cs" />
-    <Compile Include="ViewsCode\Shared\GravatarHelper.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Addons\_Main\filelistCSS.txt" />
@@ -175,10 +175,8 @@
     <Content Include="Addons\_SiteTemplates\YetaWF_Blog.txt" />
     <None Include="Addons\_Templates\Category\filelistCSS.txt" />
     <None Include="Addons\_Templates\Category\Category.css" />
-    <Content Include="Views\Shared\EditorTemplates\YetaWF_Blog_Category.cshtml" />
     <None Include="Views\YetaWF_Blog_EntryEdit.cshtml" />
     <None Include="Views\YetaWF_Blog_EntryEdit_Partial.cshtml" />
-    <Content Include="Views\Shared\DisplayTemplates\YetaWF_Blog_Gravatar.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\CoreComponents\Core\Core.csproj">
@@ -196,6 +194,10 @@
     <ProjectReference Include="..\..\..\DataProvider\SQL\SQL.csproj">
       <Project>{6a90eab3-a9e4-4a2c-90d9-145859790c46}</Project>
       <Name>SQL</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ComponentsHTML\ComponentsHTML.csproj">
+      <Project>{ab7bfd23-57e8-40a6-85ea-9d4b3206075f}</Project>
+      <Name>ComponentsHTML</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup />

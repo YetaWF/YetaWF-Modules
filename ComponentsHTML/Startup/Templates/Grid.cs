@@ -10,7 +10,7 @@ using YetaWF.Modules.ComponentsHTML.Controllers;
 
 namespace YetaWF.Modules.ComponentsHTML.Addons.Templates {
 
-    public class GridAddOn : IAddOnSupport {
+    public class Grid : IAddOnSupport {
 
         public Task AddSupportAsync(YetaWFManager manager) {
 

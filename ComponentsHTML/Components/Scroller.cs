@@ -6,7 +6,7 @@ using YetaWF.Core.Support;
 
 namespace YetaWF.Modules.ComponentsHTML.Components {
 
-    public abstract class ScrollerComponent : YetaWFComponent {
+    public abstract class ScrollerComponentBase : YetaWFComponent {
 
         public const string TemplateName = "Scroller";
 
@@ -14,7 +14,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         public override string GetTemplateName() { return TemplateName; }
     }
 
-    public class ScrollerDisplayComponent : ScrollerComponent, IYetaWFComponent<IEnumerable> {
+    public class ScrollerDisplayComponent : ScrollerComponentBase, IYetaWFComponent<IEnumerable> {
 
         public override ComponentType GetComponentType() { return ComponentType.Display; }
 

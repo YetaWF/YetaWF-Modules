@@ -36,7 +36,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                         }).ToList<SelectionItem<string>>();
             }
             list.Insert(0, new SelectionItem<string> { Text = __ResStr("none", "(none)"), Value = null });
-            return await DropDownListComponent.RenderDropDownListAsync(model.ToString(), list, this, "yt_moduleselectionmodulenew");
+            return await DropDownListComponent.RenderDropDownListAsync(this, model.ToString(), list, "yt_moduleselectionmodulenew");
         }
 
         internal static YHtmlString RenderReplacementPackageModulesNew(string areaName) {

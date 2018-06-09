@@ -40,7 +40,6 @@
     <Compile Include="Startup\AreaRegistration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Support\ImageSupport.cs" />
-    <Compile Include="ViewsCode\Shared\SlideShowHelper.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Addons\_Main\filelistJS.txt" />
@@ -52,9 +51,7 @@
     <Content Include="Addons\_Templates\SlideShow\SlideShow.css" />
     <Content Include="Addons\_Templates\SlideShow\SlideShow.js" />
     <Content Include="Addons\_SiteTemplates\YetaWF_BootstrapCarousel.txt" />
-    <Content Include="Views\Shared\EditorTemplates\YetaWF_BootstrapCarousel_SlideShow.cshtml" />
     <None Include="app.config" />
-    <None Include="Views\Shared\DisplayTemplates\YetaWF_BootstrapCarousel_SlideShow.cshtml" />
     <None Include="Views\YetaWF_BootstrapCarousel_CarouselDisplay.cshtml" />
     <None Include="Views\YetaWF_BootstrapCarousel_CarouselDisplay_Partial.cshtml" />
   </ItemGroup>

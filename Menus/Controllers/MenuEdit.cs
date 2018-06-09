@@ -51,7 +51,7 @@ namespace YetaWF.Modules.Menus.Controllers {
                 }
             };
             MenuEditModel model = new MenuEditModel {
-                MenuJSON = newMenu.SerializeToJSON(),
+                MenuJSON = YetaWFManager.JsonSerialize(newMenu),
                 NewEntryJSON = YetaWFManager.JsonSerialize(new ModuleAction(Module) { Url = this.__ResStr("newUrl", "(new)") }),
 
                 MenuGuid = menuGuid,

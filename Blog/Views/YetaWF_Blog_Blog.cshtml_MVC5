@@ -1,7 +1,6 @@
 @*Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Blog#License*@
 @inherits YetaWF.Core.Views.RazorView<YetaWF.Modules.Blog.Modules.BlogModule, YetaWF.Modules.Blog.Controllers.BlogModuleController.DisplayModel>
 @using YetaWF.Modules.Blog.DataProvider
-@using YetaWF.Core.Components
 @using YetaWF.Core.Localize
 @{
     int count = 0;

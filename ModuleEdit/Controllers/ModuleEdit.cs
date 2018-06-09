@@ -22,7 +22,6 @@ namespace YetaWF.Modules.ModuleEdit.Controllers {
         
         public class ModuleEditModel {
 
-            [UIHint("PropertyList"), Trim]
             public ModuleDefinition Module { get; set; }
 
             [UIHint("Hidden")]

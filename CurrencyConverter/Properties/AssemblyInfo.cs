@@ -23,3 +23,5 @@ using YetaWF.Core.Packages;
     "https://YetaWF.com/Documentation/YetaWF/Support",
     "https://yetawf.com/Documentation/YetaWF/CurrencyConverter#Release%20Notice",
     "https://yetawf.com/Documentation/YetaWF/CurrencyConverter#License")]
+
+[assembly: RequiresPackage("YetaWF.ComponentsHTML")]

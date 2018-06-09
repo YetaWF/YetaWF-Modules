@@ -36,7 +36,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             if ((model & UrlTypeEnum.New) != 0)
                 throw new InternalError("New url not supported by this template");
 
-            return await DropDownListComponent.RenderDropDownListAsync(model.ToString(), items, this, "yt_urltype");
+            return await DropDownListComponent.RenderDropDownListAsync(this, model.ToString(), items, "yt_urltype");
         }
     }
 }

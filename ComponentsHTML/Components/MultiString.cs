@@ -66,9 +66,9 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         }
 
         public async Task<YHtmlString> RenderAsync(MultiString model) {
-            return await RenderMultiStringAsync(model, this, ExtraClass);
+            return await RenderMultiStringAsync(this, model, ExtraClass);
         }
-        private static async Task<YHtmlString> RenderMultiStringAsync(MultiString model, YetaWFComponent component, string extraCssClass) {
+        private static async Task<YHtmlString> RenderMultiStringAsync(YetaWFComponent component, MultiString model, string extraCssClass) {
 
             HtmlBuilder hb = new HtmlBuilder();
 
@@ -108,7 +108,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
             // generate a textbox for the currently selected language
             component.HtmlAttributes.Add("class", "yt_multistring_text yt_text_base " + extraCssClass);
-            hb.Append(await TextEditComponent.RenderTextAsync(model[selectLang], component, null));
+            hb.Append(await TextEditComponent.RenderTextAsync(component, model[selectLang], null));
 
             // generate a dropdownlist for the available languages
             List<SelectionItem<string>> selectLangList = new List<SelectionItem<string>>();

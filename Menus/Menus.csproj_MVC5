@@ -71,7 +71,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Components\HTML\Menu.cs" />
     <Compile Include="Models\FileDataProvider.cs" />
     <Compile Include="Models\MenuInfoDataProvider.cs" />
     <Compile Include="Models\SQLDataProvider.cs" />

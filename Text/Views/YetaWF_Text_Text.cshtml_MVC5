@@ -10,7 +10,7 @@
         buttons.Add(new FormButton() { ButtonType = ButtonTypeEnum.Submit, Text = this.__ResStr("btnSave", "Save & Display"), Title = this.__ResStr("btnSaveTT", "Save all text and display the page in Site View mode") });
     }
     @PartialForm(UsePartialFormCss:false)
-    @Html.EditorFor(m => Model.Contents)
-    @Html.DisplayFor(m => Model.Url)
+    @Html.ForEditAsync(Model, "Contents").Result
+    @Html.ForDisplayAsync(Model, "Url").Result
     @FormButtonsAsync(buttons).Result;
 }

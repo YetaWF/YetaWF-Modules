@@ -21,6 +21,7 @@ namespace YetaWF.Modules.Panels.Controllers
         [Trim]
         public class Model {
 
+            [UIHint("YetaWF_Panels_PanelInfo")]
             public PanelInfo PanelInfo { get; set; }
 
             public Model() {

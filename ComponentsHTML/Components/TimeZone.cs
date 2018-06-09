@@ -62,7 +62,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             } else
                 list.Insert(0, new SelectionItem<string> { Text = this.__ResStr("select", "(select)"), Value = "" });
 
-            return await DropDownListComponent.RenderDropDownListAsync(model, list, this, "yt_timezone");
+            return await DropDownListComponent.RenderDropDownListAsync(this, model, list, "yt_timezone");
         }
     }
 }

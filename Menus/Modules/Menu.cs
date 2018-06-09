@@ -12,8 +12,8 @@ using YetaWF.Core.Serializers;
 using YetaWF.Core.Support;
 using YetaWF.DataProvider;
 using YetaWF.Modules.Menus.DataProvider;
-using YetaWF.Modules.Menus.Components;
 using YetaWF.Core.Components;
+using YetaWF.Modules.ComponentsHTML.Components;
 #if MVC6
 #else
 using System.Web.Mvc;

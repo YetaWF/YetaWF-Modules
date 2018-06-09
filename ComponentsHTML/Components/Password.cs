@@ -17,7 +17,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
             HtmlAttributes.Add("type", "password");
             HtmlAttributes.Add("autocomplete", "off");
-            return await TextEditComponent.RenderTextAsync(model, this, "yt_password20");
+            return await TextEditComponent.RenderTextAsync(this, model, "yt_password20");
         }
     }
 }

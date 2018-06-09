@@ -35,7 +35,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             StringLengthAttribute lenAttr = PropData.TryGetAttribute<StringLengthAttribute>();
             if (lenAttr == null)
                 HtmlAttributes.Add("maxlength", "40");
-            return await TextEditComponent.RenderTextAsync(model != null ? model.ToString() : "", this, "yt_email");
+            return await TextEditComponent.RenderTextAsync(this, model != null ? model.ToString() : "", "yt_email");
         }
     }
 }

@@ -68,6 +68,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Components\HTML\Country.cs" />
     <Compile Include="Models\FileDataProvider.cs" />
     <Compile Include="Models\SQLDataProvider.cs" />
     <Compile Include="Startup\Info.cs" />
@@ -91,7 +92,6 @@
     <None Include="app.config" />
     <None Include="packages.config" />
     <None Include="Views\YetaWF_CurrencyConverter_CurrencyConverter.cshtml" />
-    <Content Include="Views\Shared\EditorTemplates\YetaWF_CurrencyConverter_Country.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\CoreComponents\Core\Core.csproj">
@@ -110,11 +110,14 @@
       <Project>{6a90eab3-a9e4-4a2c-90d9-145859790c46}</Project>
       <Name>SQL</Name>
     </ProjectReference>
+    <ProjectReference Include="..\ComponentsHTML\ComponentsHTML.csproj">
+      <Project>{AB7BFD23-57E8-40A6-85EA-9D4B3206075F}</Project>
+      <Name>ComponentsHTML</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Addons\_Main\Images\" />
     <Folder Include="obj\" />
-    <Folder Include="ViewsCode\Shared\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

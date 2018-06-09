@@ -1,12 +1,12 @@
 ﻿/* Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Menus#License */
 
 using System.Threading.Tasks;
+using YetaWF.Core.Components;
 using YetaWF.Core.Controllers;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Support;
 using YetaWF.Modules.Menus.Modules;
-using YetaWF.Modules.Menus.Components;
-using YetaWF.Core.Components;
+using YetaWF.Modules.ComponentsHTML.Components;
 #if MVC6
 using Microsoft.AspNetCore.Mvc;
 #else
@@ -40,7 +40,7 @@ namespace YetaWF.Modules.Menus.Controllers {
     public class MenuModuleController : ControllerImpl<YetaWF.Modules.Menus.Modules.MenuModule> {
 
         public class MenuModel {
-            [UIHint("YetaWF_Menus_Menu"), AdditionalMetadata("Style", MenuComponentBase.MenuStyleEnum.Automatic)]
+            [UIHint("Menu"), AdditionalMetadata("Style", MenuComponentBase.MenuStyleEnum.Automatic)]
             public MenuComponentBase.MenuData Menu { get; set; }
         }
 

@@ -5,5 +5,5 @@
         @PartialForm()
     }
 } else {
-    @Html.DisplayFor(m => Model.PanelInfo, "YetaWF_Panels_PanelInfo")
+    @Html.ForDisplayAsync(Model, "PanelInfo").Result
 }

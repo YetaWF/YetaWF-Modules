@@ -56,7 +56,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                 model = await SkinAccess.GetBootstrapDefaultSkinAsync();
 
             // display the skins in a drop down
-            return await DropDownListComponent.RenderDropDownListAsync(model, list, this, "yt_bootstrapskin");
+            return await DropDownListComponent.RenderDropDownListAsync(this, model, list, "yt_bootstrapskin");
         }
     }
 }

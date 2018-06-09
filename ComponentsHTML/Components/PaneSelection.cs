@@ -26,7 +26,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                     Value = l,
                 });
             }
-            return await DropDownListComponent.RenderDropDownListAsync(model, itemList, this, "yt_paneselection");
+            return await DropDownListComponent.RenderDropDownListAsync(this, model, itemList, "yt_paneselection");
         }
     }
 }

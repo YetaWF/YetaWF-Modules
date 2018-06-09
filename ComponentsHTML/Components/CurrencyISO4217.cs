@@ -42,7 +42,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                 Text = this.__ResStr("default", "(select)"),
                 Value = "",
             });
-            return await DropDownListComponent.RenderDropDownListAsync(model, list, this, "yt_currencyiso4217");
+            return await DropDownListComponent.RenderDropDownListAsync(this, model, list, "yt_currencyiso4217");
         }
     }
 }

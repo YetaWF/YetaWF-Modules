@@ -38,8 +38,6 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
         public async Task<YHtmlString> RenderPropertyListTabbedAsync(object model, bool readOnly) {
 
-            await Manager.AddOnManager.AddTemplateAsync("PropertyList"); /*we're using the same javascript as the regular propertylist template */
-
             List<string> categories = GetCategories(model);
             if (categories.Count <= 1) // if there is only one tab, show as regular property list
                 return await RenderPropertyListAsync(model, null, readOnly);

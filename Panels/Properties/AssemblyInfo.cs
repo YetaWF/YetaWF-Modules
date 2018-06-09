@@ -24,5 +24,5 @@ using YetaWF.PackageAttributes;
     "https://yetawf.com/Documentation/YetaWF/Panels#Release%20Notice",
     "https://yetawf.com/Documentation/YetaWF/Panels#License")]
 
+[assembly: RequiresPackage("YetaWF.ComponentsHTML")]
 [assembly: RequiresPackage("YetaWF.Pages")]
-[assembly:PublicPartialViews]

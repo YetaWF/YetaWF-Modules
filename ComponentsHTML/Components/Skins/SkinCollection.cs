@@ -55,7 +55,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                     Value = "",
                 });
             // display the skins in a drop down
-            return await DropDownListComponent.RenderDropDownListAsync(model, list, this, "yt_skinselection");
+            return await DropDownListComponent.RenderDropDownListAsync(this, model, list, "yt_skinselection");
         }
     }
 }

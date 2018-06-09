@@ -1,4 +1,3 @@
 @*Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/DevTests#License*@
 @inherits YetaWF.Core.Views.RazorView<YetaWF.Modules.DevTests.Modules.TestEscapesModule, YetaWF.Modules.DevTests.Controllers.TestEscapesModuleController.EditModel>
-@using YetaWF.Core.Components
 @Html.ForEditContainerAsync(Model, "PropertyList").Result

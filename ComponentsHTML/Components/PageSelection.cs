@@ -36,7 +36,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                     }).ToList<SelectionItem<string>>();
             list.Insert(0, new SelectionItem<string> { Text = this.__ResStr("select", "(select)"), Value = null });
 
-            YHtmlString ddList = await DropDownListComponent.RenderDropDownListAsync((model ?? Guid.Empty).ToString(), list, this, "yt_pageselection");
+            YHtmlString ddList = await DropDownListComponent.RenderDropDownListAsync(this, (model ?? Guid.Empty).ToString(), list, "yt_pageselection");
 
             // link
             YTagBuilder tag = new YTagBuilder("a");

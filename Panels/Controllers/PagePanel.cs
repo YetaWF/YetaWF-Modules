@@ -34,6 +34,7 @@ namespace YetaWF.Modules.Panels.Controllers {
         [Trim]
         public class ModelDisplay {
 
+            [UIHint("YetaWF_Panels_PagePanelInfo")]
             public PagePanelInfo PanelInfo { get; set; }
 
             public ModelDisplay() {

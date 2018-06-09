@@ -33,7 +33,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             list = (from l in list orderby l.Text select l).ToList();
             list.Insert(0, new SelectionItem<string> { Text = __ResStr("selectPackage", "(select)"), Value = null });
 
-            return await DropDownListComponent.RenderDropDownListAsync(areaName, list, this, "yt_moduleselectionpackageexisting");
+            return await DropDownListComponent.RenderDropDownListAsync(this, areaName, list, "yt_moduleselectionpackageexisting");
         }
         internal static async Task<YHtmlString> RenderReplacementPackageModulesDesignedAsync(string areaName) {
             List<SelectionItem<string>> list = (

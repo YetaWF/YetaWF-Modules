@@ -23,7 +23,7 @@
         }
     }
     <div class="t_list">
-        @Html.DisplayFor(m => Model.SearchTerms)
+        @Html.ForDisplayAsync(Model, "SearchTerms").Result
         @{ int count = 0; }
         @foreach (YetaWF.Modules.Search.DataProvider.SearchResult data in Model.SearchResults) {
             string row = string.Format("t_r{0}", count);

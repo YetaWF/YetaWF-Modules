@@ -1,6 +1,5 @@
 ﻿using System.Threading.Tasks;
 using YetaWF.Core.Components;
-using YetaWF.Core.Extensions;
 using YetaWF.Core.Localize;
 using YetaWF.Core.Packages;
 using YetaWF.Core.Support;
@@ -8,7 +7,7 @@ using YetaWF.Modules.BootstrapCarousel.Controllers;
 using YetaWF.Modules.BootstrapCarousel.Models;
 using YetaWF.Modules.ComponentsHTML.Components;
 
-namespace YetaWF.Modules.ImageRepository.Components {
+namespace YetaWF.Modules.BootstrapCarousel.Components {
 
     public abstract class SlideShowComponent : YetaWFComponent {
 

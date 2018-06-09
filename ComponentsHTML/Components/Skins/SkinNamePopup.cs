@@ -50,7 +50,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                 Value = skin.FileName,
             }).ToList();
             // display the skins in a drop down
-            return await DropDownListComponent.RenderDropDownListAsync(model, list, this, "yt_skinname");
+            return await DropDownListComponent.RenderDropDownListAsync(this, model, list, "yt_skinname");
         }
         internal static YHtmlString RenderReplacementSkinsForCollection(string skinCollection) {
             SkinAccess skinAccess = new SkinAccess();

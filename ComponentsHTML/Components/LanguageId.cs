@@ -48,7 +48,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                     model = MultiString.ActiveLanguage;
             }
             // display the languages in a drop down
-            return await DropDownListComponent.RenderDropDownListAsync(model, list, this, "yt_languageid");
+            return await DropDownListComponent.RenderDropDownListAsync(this, model, list, "yt_languageid");
         }
     }
 }

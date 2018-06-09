@@ -41,7 +41,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             model = model ?? 0;
             HtmlAttributes.Add("class", "yt_text20");
             HtmlAttributes.Add("maxlength", "30");
-            return await TextEditComponent.RenderTextAsync(model.ToString(), this, "yt_longvalue");
+            return await TextEditComponent.RenderTextAsync(this, model.ToString(), "yt_longvalue");
         }
     }
 }
