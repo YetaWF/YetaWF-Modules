@@ -36,6 +36,7 @@
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Components\HTML\Messages.cs" />
     <Compile Include="Controllers\BrowseSiteAnnouncement.cs" />
     <Compile Include="Controllers\Config.cs" />
     <Compile Include="Controllers\Messaging.cs" />
@@ -60,7 +61,6 @@
     <Compile Include="Startup\AreaRegistration.cs" />
     <Compile Include="Startup\Info.cs" />
     <Compile Include="Startup\Messaging.cs" />
-    <Compile Include="ViewsCode\Shared\MessagesHelper.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Addons\_Templates\Messages\Messages.scss" />
@@ -74,7 +74,6 @@
     <Content Include="Addons\_Main\Icons\offline.png" />
     <Content Include="Addons\_Main\Icons\online.png" />
     <Content Include="Addons\_Templates\Messages\filelistJS.txt" />
-    <Content Include="Views\Shared\DisplayTemplates\YetaWF_Messenger_Messages.cshtml" />
     <None Include="Views\YetaWF_Messenger_Messaging.cshtml" />
     <None Include="Views\YetaWF_Messenger_Messaging_Partial.cshtml" />
     <None Include="Views\YetaWF_Messenger_SiteAnnouncement.cshtml" />
@@ -96,6 +95,10 @@
     <ProjectReference Include="..\..\..\DataProvider\SQL\SQL.csproj">
       <Project>{6a90eab3-a9e4-4a2c-90d9-145859790c46}</Project>
       <Name>SQL</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ComponentsHTML\ComponentsHTML.csproj">
+      <Project>{AB7BFD23-57E8-40A6-85EA-9D4B3206075F}</Project>
+      <Name>ComponentsHTML</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
@@ -160,7 +163,9 @@
     <Content Include="Addons\_Addons\SkinSiteAnnouncements\filelistJS.txt" />
     <Content Include="Addons\_SiteTemplates\YetaWF_Messenger.txt" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Views\Shared\" />
+  </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
