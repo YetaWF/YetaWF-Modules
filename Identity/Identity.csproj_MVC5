@@ -128,6 +128,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Components\HTML\UserId.cs" />
     <Compile Include="Components\HTML\ListOfUserNames.cs" />
     <Compile Include="Components\HTML\LoginUsers.cs" />
     <Compile Include="Components\HTML\Email.cs" />
@@ -225,14 +226,13 @@
     <Compile Include="ViewsCode\Shared\RoleIdHelper.cs" />
     <Compile Include="ViewsCode\Shared\RolesSelectorHelper.cs" />
     <Compile Include="ViewsCode\Shared\RolesHelper.cs" />
-    <Compile Include="ViewsCode\Shared\UserIdHelper.cs" />
     <Compile Include="ViewsCode\Shared\UsersHelper.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Addons\_Main\Grids\ListOfUserNamesEditComponent.GridAllEntry" />
     <None Include="Addons\_Main\Grids\ListOfUserNamesDisplayComponent.GridDisplay" />
     <None Include="Addons\_Main\Grids\ListOfUserNamesEditComponent.GridEdit" />
-    <None Include="Addons\_Main\Grids\UserIdHelper.GridAllEntry" />
+    <None Include="Addons\_Main\Grids\UserIdEditComponent.GridAllEntry" />
     <None Include="Addons\_Main\Grids\RolesSelectorHelper.GridDisplay" />
     <None Include="Addons\_Main\Grids\RolesSelectorHelper.GridEdit" />
     <None Include="Addons\_Templates\ListOfUserNames\ListOfUserNames.scss" />
@@ -337,7 +337,6 @@
     <Content Include="Views\Shared\DisplayTemplates\YetaWF_Identity_RoleId.cshtml" />
     <Content Include="Views\YetaWF_Identity_OwinEdit.cshtml" />
     <Content Include="Views\YetaWF_Identity_OwinEdit_Partial.cshtml" />
-    <Content Include="Views\Shared\DisplayTemplates\YetaWF_Identity_UserId.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\YetaWF_Identity_ResourceRoles.cshtml" />
     <Content Include="Views\Shared\DisplayTemplates\YetaWF_Identity_ResourceRoles.cshtml">
       <LastGenOutput>YetaWF_Identity_ResourceRoles.generated.cs</LastGenOutput>
@@ -346,7 +345,6 @@
     <Content Include="Views\Shared\DisplayTemplates\YetaWF_Identity_ResourceUsers.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\YetaWF_Identity_UserRoles.cshtml" />
     <Content Include="Views\Shared\DisplayTemplates\YetaWF_Identity_UserRoles.cshtml" />
-    <Content Include="Views\Shared\EditorTemplates\YetaWF_Identity_UserId.cshtml" />
     <Content Include="Views\YetaWF_Identity_LoginSelector_Partial.cshtml" />
     <Content Include="packages.config">
       <SubType>Designer</SubType>

@@ -81,11 +81,6 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                     break;
             }
         }
-        private IDictionary<string, object> AnonymousObjectToHtmlAttributes(object htmlAttributes) {
-            if (htmlAttributes as RouteValueDictionary != null) return (RouteValueDictionary)htmlAttributes;
-            if (htmlAttributes as Dictionary<string, object> != null) return (Dictionary<string, object>)htmlAttributes;
-            return HtmlHelper.AnonymousObjectToHtmlAttributes(htmlAttributes);
-        }
         private void AddErrorClass(YTagBuilder tagBuilder) {
             string cls = GetErrorClass();
             if (!string.IsNullOrWhiteSpace(cls))

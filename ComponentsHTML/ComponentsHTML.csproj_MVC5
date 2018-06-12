@@ -133,6 +133,7 @@
     <Compile Include="Startup\Templates\Grid.cs" />
     <Compile Include="Startup\Templates\MultiString.cs" />
     <Compile Include="Startup\Templates\RecaptchaV2.cs" />
+    <Compile Include="Startup\Templates\Text.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Addons\_Addons\ModuleMenu\filelistJS.txt" />

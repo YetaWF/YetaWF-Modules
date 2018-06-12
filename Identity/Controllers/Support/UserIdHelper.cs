@@ -10,13 +10,14 @@ using YetaWF.Core.Models.Attributes;
 using YetaWF.Modules.Identity.Addons;
 using YetaWF.Modules.Identity.DataProvider;
 using YetaWF.Core.Components;
+using static YetaWF.Modules.Identity.Components.UserIdEditComponent;
 #if MVC6
 using Microsoft.AspNetCore.Mvc;
 #else
 using System.Web.Mvc;
 #endif
 
-namespace YetaWF.Modules.Identity.Controllers.Support {
+namespace YetaWF.Modules.Identity.Controllers {
 
     public class UserIdController : YetaWFController {
 
@@ -28,7 +29,7 @@ namespace YetaWF.Modules.Identity.Controllers.Support {
                 DataProviderGetRecords<UserDefinition> browseItems = await dataProvider.GetItemsAsync(skip, take, sort, filters);
                 //Grid.SaveSettings(skip, take, sort, filters, settingsModuleGuid);
                 return await GridPartialViewAsync(new DataSourceResult {
-                    Data = (from s in browseItems.Data select new Views.Shared.UserIdHelper.GridAllEntry(s)).ToList<object>(),
+                    Data = (from s in browseItems.Data select new GridAllEntry(s)).ToList<object>(),
                     Total = browseItems.Total
                 });
             }
