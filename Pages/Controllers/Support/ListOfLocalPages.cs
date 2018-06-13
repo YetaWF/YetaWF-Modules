@@ -11,15 +11,16 @@ using YetaWF.Modules.Pages.Addons;
 using YetaWF.Modules.Pages.DataProvider;
 using YetaWF.Core.Pages;
 using YetaWF.Core.Components;
+using YetaWF.Modules.Pages.Components;
 #if MVC6
 using Microsoft.AspNetCore.Mvc;
 #else
 using System.Web.Mvc;
 #endif
 
-namespace YetaWF.Modules.Pages.Controllers.Shared {
+namespace YetaWF.Modules.Pages.Controllers {
 
-    public class ListOfLocalPagesHelperController : YetaWFController {
+    public class ListOfLocalPagesController : YetaWFController {
 
         [AllowPost]
         [ConditionalAntiForgeryToken]
@@ -29,7 +30,7 @@ namespace YetaWF.Modules.Pages.Controllers.Shared {
                 DataProviderGetRecords<PageDefinition> browseItems = await pagesDP.GetItemsAsync(skip, take, sort, filters);
                 //GridHelper.SaveSettings(skip, take, sort, filters, settingsModuleGuid);
                 return await GridPartialViewAsync(new DataSourceResult {
-                    Data = (from s in browseItems.Data select new Views.Shared.ListOfLocalPagesHelper.GridAllEntry(s)).ToList<object>(),
+                    Data = (from s in browseItems.Data select new ListOfLocalPagesEditComponent.GridAllEntry(s)).ToList<object>(),
                     Total = browseItems.Total
                 });
             }

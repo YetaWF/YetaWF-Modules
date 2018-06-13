@@ -104,7 +104,6 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 <div id='{ControlId}' class='yt_url t_edit' data-name='{FieldName}'>");
 
             YTagBuilder tag = new YTagBuilder("input");
-            tag.AddCssClass("yt_multistring");
             tag.AddCssClass("t_edit");
             tag.Attributes["type"] = "hidden";
             FieldSetup(tag, FieldType.Validated);

@@ -1,30 +1,31 @@
-﻿/* Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/PageEdit#License */
-
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
+using YetaWF.Core.Components;
 using YetaWF.Core.Identity;
 using YetaWF.Core.Models;
 using YetaWF.Core.Models.Attributes;
+using YetaWF.Core.Packages;
 using YetaWF.Core.Pages;
 using YetaWF.Core.Serializers;
-using YetaWF.Core.Views;
-using YetaWF.Core.Components;
-#if MVC6
-using Microsoft.AspNetCore.Html;
-using Microsoft.AspNetCore.Mvc.Rendering;
-#else
-using System.Web;
-using System.Web.Mvc;
-using System.Web.Mvc.Html;
-#endif
+using YetaWF.Core.Support;
+using YetaWF.Modules.ComponentsHTML.Components;
 
-namespace YetaWF.Modules.PageEdit.Views.Shared {
+namespace YetaWF.Modules.PageEdit.Components {
 
-    public class Roles<TModel> : RazorTemplate<TModel> { }
+    public abstract class AllowedRolesComponentBase : YetaWFComponent {
 
-    public static class RolesHelper {
+        public const string TemplateName = "AllowedRoles";
 
-        public class RolesModel {
+        public override Package GetPackage() { return Controllers.AreaRegistration.CurrentPackage; }
+        public override string GetTemplateName() { return TemplateName; }
+    }
+
+    public class AllowedRolesEditComponent : AllowedRolesComponentBase, IYetaWFComponent<SerializableList<PageDefinition.AllowedRole>> {
+
+        public override ComponentType GetComponentType() { return ComponentType.Edit; }
+
+        public class GridModel {
             [UIHint("Grid")]
             public GridDefinition GridDef { get; set; }
         }
@@ -32,6 +33,7 @@ namespace YetaWF.Modules.PageEdit.Views.Shared {
         public class GridAllowedRole {
 
             [DontSave]
+            [UIHint("Boolean")]
             public bool __editable { get; set; }
 
             [Caption("Role"), Description("Role Description")]
@@ -50,12 +52,13 @@ namespace YetaWF.Modules.PageEdit.Views.Shared {
             [UIHint("Enum")]
             public PageDefinition.AllowedEnum Remove { get; set; }
 
+            [UIHint("IntValue")]
             public int RoleId { get; set; }
 
             public GridAllowedRole() { __editable = true; }
         }
 
-        private static List<GridAllowedRole> GetGridAllowedRoleFromAllowedRoleList(SerializableList<PageDefinition.AllowedRole> allowedRoles) {
+        private List<GridAllowedRole> GetGridAllowedRoleFromAllowedRoleList(SerializableList<PageDefinition.AllowedRole> allowedRoles) {
             List<RoleInfo> list = Resource.ResourceAccess.GetDefaultRoleList();
             List<GridAllowedRole> roles = (from r in list orderby r.Name select new GridAllowedRole { RoleId = r.RoleId, RoleName = new StringTT { Text = r.Name, Tooltip = r.Description } }).ToList();
             if (allowedRoles != null) {
@@ -72,23 +75,21 @@ namespace YetaWF.Modules.PageEdit.Views.Shared {
             superuser.__editable = false;
             return roles;
         }
-#if MVC6
-        public static HtmlString RenderAllowedRoles<TModel>(this IHtmlHelper<TModel> htmlHelper, string name, SerializableList<PageDefinition.AllowedRole> model)
-#else
-        public static HtmlString RenderAllowedRoles<TModel>(this HtmlHelper<TModel> htmlHelper, string name, SerializableList<PageDefinition.AllowedRole> model)
-#endif
-        {
+        public async Task<YHtmlString> RenderAsync(SerializableList<PageDefinition.AllowedRole> model) {
+
+            HtmlBuilder hb = new HtmlBuilder();
+
+            hb.Append($"<div class='yt_yetawf_pageedit_allowedroles t_edit'>");
 
             List<GridAllowedRole> list = GetGridAllowedRoleFromAllowedRoleList(model);
 
-            bool header;
-            if (!htmlHelper.TryGetControlInfo<bool>("", "Header", out header))
-                header = true;
+            bool header = PropData.GetAdditionalAttributeValue("Header", true);
+
             DataSourceResult data = new DataSourceResult {
                 Data = list.ToList<object>(),
                 Total = list.Count,
             };
-            RolesModel rolesModel = new RolesModel() {
+            GridModel grid = new GridModel() {
                 GridDef = new GridDefinition() {
                     RecordType = typeof(GridAllowedRole),
                     Data = data,
@@ -99,11 +100,11 @@ namespace YetaWF.Modules.PageEdit.Views.Shared {
                     ReadOnly = false,
                 }
             };
-#if MVC6
-            return new HtmlString(htmlHelper.DisplayFor(m => rolesModel.GridDef).AsString());
-#else
-            return htmlHelper.DisplayFor(m => rolesModel.GridDef);
-#endif
+
+            hb.Append(await HtmlHelper.ForDisplayAsAsync(Container, PropertyName, FieldName, grid, nameof(grid.GridDef), grid.GridDef, "Grid", HtmlAttributes: HtmlAttributes));
+
+            hb.Append($"</div>");
+            return hb.ToYHtmlString();
         }
     }
 }

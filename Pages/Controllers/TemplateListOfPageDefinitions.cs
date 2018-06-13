@@ -7,8 +7,8 @@ using YetaWF.Core.Localize;
 using YetaWF.Core.Models;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Support;
-using YetaWF.Modules.Pages.Views.Shared;
 using System.Threading.Tasks;
+using YetaWF.Modules.Pages.Components;
 #if MVC6
 using Microsoft.AspNetCore.Mvc;
 #else
@@ -68,7 +68,7 @@ namespace YetaWF.Modules.Pages.Controllers {
             if (!attr.IsValid(newValue))
                 throw new Error(attr.ErrorMessage);
             // add new grid record
-            ListOfLocalPagesHelper.GridEntryEdit entry = (ListOfLocalPagesHelper.GridEntryEdit)Activator.CreateInstance(typeof(ListOfLocalPagesHelper.GridEntryEdit));
+            ListOfLocalPagesEditComponent.GridEntryEdit entry = (ListOfLocalPagesEditComponent.GridEntryEdit)Activator.CreateInstance(typeof(ListOfLocalPagesEditComponent.GridEntryEdit));
             entry.Url = newValue;
             return await GridPartialViewAsync(new GridDefinition.GridEntryDefinition(prefix, newRecNumber, entry));
         }

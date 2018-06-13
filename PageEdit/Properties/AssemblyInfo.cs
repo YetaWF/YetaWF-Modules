@@ -26,5 +26,5 @@ using YetaWF.PackageAttributes;
 
 [assembly: PublicPartialViews]
 
-[assembly: RequiresPackage("YetaWF.Identity")]
 [assembly: RequiresPackage("YetaWF.ComponentsHTML")]
+[assembly: RequiresPackage("YetaWF.Identity")]
