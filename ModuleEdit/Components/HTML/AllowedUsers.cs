@@ -29,10 +29,6 @@ namespace YetaWF.Modules.ModuleEdit.Components {
 
         public override ComponentType GetComponentType() { return ComponentType.Edit; }
 
-        public class GridModel {
-            [UIHint("Grid")]
-            public GridDefinition GridDef { get; set; }
-        }
         public class NewModel {
             [Caption("New User"), Description("Enter a new user name and click Add")]
             [UIHint("Text40"), StringLength(Globals.MaxUser), Trim]

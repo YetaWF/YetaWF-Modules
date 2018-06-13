@@ -28,7 +28,7 @@ namespace YetaWF.Modules.Pages.Controllers {
         public async Task<ActionResult> ListOfLocalPagesBrowse_GridData(int skip, int take, List<DataProviderSortInfo> sort, List<DataProviderFilterInfo> filters /*, Guid settingsModuleGuid - not available in templates */) {
             using (PageDefinitionDataProvider pagesDP = new PageDefinitionDataProvider()) {
                 DataProviderGetRecords<PageDefinition> browseItems = await pagesDP.GetItemsAsync(skip, take, sort, filters);
-                //GridHelper.SaveSettings(skip, take, sort, filters, settingsModuleGuid);
+                //Grid.SaveSettings(skip, take, sort, filters, settingsModuleGuid);
                 return await GridPartialViewAsync(new DataSourceResult {
                     Data = (from s in browseItems.Data select new ListOfLocalPagesEditComponent.GridAllEntry(s)).ToList<object>(),
                     Total = browseItems.Total

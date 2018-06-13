@@ -26,11 +26,6 @@ namespace YetaWF.Modules.ModuleEdit.Components {
 
         public override ComponentType GetComponentType() { return ComponentType.Edit; }
 
-        public class GridModel {
-            [UIHint("Grid")]
-            public GridDefinition GridDef { get; set; }
-        }
-
         private List<ModuleDefinition.GridAllowedRole> GetGridAllowedRoleFromAllowedRoleList(SerializableList<ModuleDefinition.AllowedRole> allowedRoles, Type gridEntryType) {
 
             List<RoleInfo> list = Resource.ResourceAccess.GetDefaultRoleList();

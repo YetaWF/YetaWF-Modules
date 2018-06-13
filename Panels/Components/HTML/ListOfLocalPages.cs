@@ -13,12 +13,13 @@ using YetaWF.Modules.ComponentsHTML.Components;
 using YetaWF.Modules.Pages.Controllers;
 using YetaWF.Core.Skins;
 using YetaWF.Core.Pages;
+using YetaWF.Modules.Panels.Models;
 #if MVC6
 #else
 using System.Web.Mvc;
 #endif
 
-namespace YetaWF.Modules.Pages.Components {
+namespace YetaWF.Modules.Panels.Components {
 
     public abstract class ListOfLocalPagesComponentBase : YetaWFComponent {
 
@@ -28,64 +29,13 @@ namespace YetaWF.Modules.Pages.Components {
         public override string GetTemplateName() { return TemplateName; }
     }
 
-    public class ListOfLocalPagesDisplayComponent : ListOfLocalPagesComponentBase, IYetaWFComponent<List<string>> {
-
-        public override ComponentType GetComponentType() { return ComponentType.Display; }
-
-        public class GridEntryDisplay {
-
-            [Caption("Page"), Description("Shows all page Urls that are part of the Unified Page Set")]
-            [UIHint("String"), ReadOnly]
-            public string Url { get; set; }
-
-            public GridEntryDisplay(string url) {
-                Url = url;
-            }
-        }
-
-        public async Task<YHtmlString> RenderAsync(List<string> model) {
-
-            HtmlBuilder hb = new HtmlBuilder();
-
-            hb.Append($@"
-<div class='yt_listoflocalpages t_display'>");
-
-            model = model ?? new List<string>();
-            List<GridEntryDisplay> list = (from u in model select new GridEntryDisplay(u)).ToList();
-
-            bool header = PropData.GetAdditionalAttributeValue("Header", true);
-
-            DataSourceResult data = new DataSourceResult {
-                Data = list.ToList<object>(),
-                Total = list.Count,
-            };
-            GridModel grid = new GridModel() {
-                GridDef = new GridDefinition() {
-                    RecordType = typeof(GridEntryDisplay),
-                    Data = data,
-                    SupportReload = false,
-                    PageSizes = new List<int>(),
-                    InitialPageSize = 20,
-                    ShowHeader = header,
-                    ReadOnly = true,
-                }
-            };
-
-            hb.Append(await HtmlHelper.ForDisplayAsAsync(Container, PropertyName, FieldName, grid, nameof(grid.GridDef), grid.GridDef, "Grid"));
-
-            hb.Append(@"
-</div>");
-            return hb.ToYHtmlString();
-        }
-    }
-
-    public class ListOfLocalPagesEditComponent : ListOfLocalPagesComponentBase, IYetaWFComponent<List<string>> {
+    public class ListOfLocalPagesEditComponent : ListOfLocalPagesComponentBase, IYetaWFComponent<List<LocalPage>> {
 
         public override ComponentType GetComponentType() { return ComponentType.Edit; }
 
         public class NewModel {
             [Caption("Page"), Description("Please select a page and click Add to add it to the list of pages")]
-            [UIHint("Url"), StringLength(Globals.MaxUrl), AdditionalMetadata("UrlType", UrlTypeEnum.Local), Trim]
+            [UIHint("Url"), StringLength(Globals.MaxUrl), AdditionalMetadata("UrlType", UrlTypeEnum.Local | UrlTypeEnum.Remote), UrlValidation(UrlValidationAttribute.SchemaEnum.Any, UrlTypeEnum.Local), Trim]
             public string NewValue { get; set; }
         }
         [Trim]
@@ -99,17 +49,18 @@ namespace YetaWF.Modules.Pages.Components {
 
             [Caption("Page"), Description("Shows all pages")]
             [UIHint("Url"), ReadOnly]
-            public string Url { get { return __Value; } set { __Value = value; } }
+            public string UrlDisplay { get { return Url; } set { Url = value; } }
 
-            [UIHint("Text80"), StringLength(Globals.MaxUrl), Required, Trim]
-            public string __Value { get; set; }
-            [UIHint("Raw"), ReadOnly]
-            public string __TextKey { get { return __Value; } }
-            [UIHint("Raw"), ReadOnly]
-            public string __TextDisplay { get { return __Value; } }
+            [Caption("Popup"), Description("Defines whether the page is shown in a popup window")]
+            [UIHint("Boolean")]
+            public bool Popup { get; set; }
 
-            public GridEntryEdit(string url) {
-                Url = url;
+            [UIHint("Raw"), ReadOnly]
+            public string Url { get; set; } // this is used so we have the pure url (without input field)
+
+            public GridEntryEdit(LocalPage page) {
+                Url = page.Url;
+                Popup = page.Popup;
             }
         }
         [Trim]
@@ -125,6 +76,10 @@ namespace YetaWF.Modules.Pages.Components {
             [UIHint("MultiString"), ReadOnly]
             public MultiString Title { get; set; }
 
+            [Caption("Popup"), Description("Defines whether the page is shown in a popup window")]
+            [UIHint("Boolean"), ReadOnly]
+            public bool Popup { get; set; }
+
             [Caption("Page Skin"), Description("The skin used to display the page")]
             [UIHint("PageSkin"), ReadOnly]
             public SkinDefinition SelectedSkin { get; set; }
@@ -136,20 +91,20 @@ namespace YetaWF.Modules.Pages.Components {
                 ObjectSupport.CopyData(page, this);
             }
         }
-        public async Task<YHtmlString> RenderAsync(List<string> model) {
+        public async Task<YHtmlString> RenderAsync(List<LocalPage> model) {
 
             HtmlBuilder hb = new HtmlBuilder();
 
             string tmpltId = UniqueId();
 
             hb.Append($@"
-<div class='yt_listoflocalpages t_edit' id='{DivId}'>
+<div class='yt_yetawf_panels_listoflocalpages t_edit' id='{DivId}'>
     <div class='yt_grid_addordelete' id='{tmpltId}'
         data-dupmsg='{this.__ResStr("dupmsg", "Page {0} has already been added")}'
         data-addedmsg='{this.__ResStr("addedmsg", "Page {0} has been added")}'
         data-remmsg='{this.__ResStr("remmsg", "Page {0} has been removed")}'>");
 
-            model = model ?? new List<string>();
+            model = model ?? new List<LocalPage>();
             List<GridEntryEdit> list = (from u in model select new GridEntryEdit(u)).ToList();
 
             bool header = PropData.GetAdditionalAttributeValue("Header", true);
@@ -168,8 +123,8 @@ namespace YetaWF.Modules.Pages.Components {
                     ShowHeader = header,
                     ReadOnly = false,
                     CanAddOrDelete = true,
-                    DeleteProperty = nameof(GridEntryEdit.__TextKey),
-                    DisplayProperty = nameof(GridEntryEdit.__TextDisplay)
+                    DeleteProperty = nameof(GridEntryEdit.Url),
+                    DisplayProperty = nameof(GridEntryEdit.Url)
                 }
             };
 

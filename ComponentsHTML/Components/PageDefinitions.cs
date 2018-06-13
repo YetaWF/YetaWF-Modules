@@ -22,11 +22,6 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
         public override ComponentType GetComponentType() { return ComponentType.Display; }
 
-        public class GridModel {
-            [UIHint("Grid")]
-            public GridDefinition GridDef { get; set; }
-        }
-
         public class GridDisplay {
 
             public GridDisplay(PageDefinition m) {

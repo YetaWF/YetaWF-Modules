@@ -24,10 +24,6 @@ namespace YetaWF.Modules.DevTests.Components {
 
         public override ComponentType GetComponentType() { return ComponentType.Display; }
 
-        public class GridModel {
-            [UIHint("Grid")]
-            public GridDefinition GridDef { get; set; }
-        }
         public class GridDisplay {
             [Caption("Email Address"), Description("Shows all defined email addresses")]
             [UIHint("String"), ReadOnly]
@@ -75,10 +71,6 @@ namespace YetaWF.Modules.DevTests.Components {
 
         public override ComponentType GetComponentType() { return ComponentType.Edit; }
 
-        public class GridModel {
-            [UIHint("Grid")]
-            public GridDefinition GridDef { get; set; }
-        }
         public class NewModel {
             [Caption("Email Address"), Description("Please enter a new email address and click Add")]
             [UIHint("Text80"), StringLength(80), Trim]

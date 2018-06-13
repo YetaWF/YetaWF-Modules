@@ -17,8 +17,8 @@ using YetaWF.Core.Serializers;
 using YetaWF.Core.Support;
 using YetaWF.Modules.Panels.Models;
 using YetaWF.Modules.Panels.Modules;
-using YetaWF.Modules.Panels.Views.Shared;
 using YetaWF.Core.Components;
+using YetaWF.Modules.Panels.Components;
 #if MVC6
 using Microsoft.AspNetCore.Mvc;
 #else
@@ -241,7 +241,7 @@ namespace YetaWF.Modules.Panels.Controllers {
             if (!attr.IsValid(newValue))
                 throw new Error(attr.ErrorMessage);
             // add new grid record
-            ListOfLocalPagesHelper.GridEntryEdit entry = (ListOfLocalPagesHelper.GridEntryEdit)Activator.CreateInstance(typeof(ListOfLocalPagesHelper.GridEntryEdit));
+            ListOfLocalPagesEditComponent.GridEntryEdit entry = (ListOfLocalPagesEditComponent.GridEntryEdit)Activator.CreateInstance(typeof(ListOfLocalPagesEditComponent.GridEntryEdit));
             entry.UrlDisplay = newValue;
             return await GridPartialViewAsync(new GridDefinition.GridEntryDefinition(prefix, newRecNumber, entry));
         }

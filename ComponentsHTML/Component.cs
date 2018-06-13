@@ -6,12 +6,13 @@ using YetaWF.Core.Support;
 using YetaWF.Core.Localize;
 using System.Linq;
 using System;
+using YetaWF.Core.Models.Attributes;
+using YetaWF.Core.Models;
 #if MVC6
 #else
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Mvc.Html;
-using System.Web.Routing;
 #endif
 
 namespace YetaWF.Modules.ComponentsHTML.Components {
@@ -22,6 +23,10 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             Normal, // with name, not validated
             Anonymous, // no name - no validation
             Validated, // with name, validated
+        }
+        public class GridModel {
+            [UIHint("Grid")]
+            public GridDefinition GridDef { get; set; }
         }
 
         /// <summary>

@@ -84,10 +84,6 @@ namespace YetaWF.Modules.Identity.Components {
 
         public override ComponentType GetComponentType() { return ComponentType.Edit; }
 
-        public class GridModel {
-            [UIHint("Grid"), ReadOnly]
-            public GridDefinition GridDef { get; set; }
-        }
         public class NewModel {
             [Caption("User Name"), Description("Please enter a new user name and click Add")]
             [UIHint("Text80"), StringLength(80), Trim]

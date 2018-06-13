@@ -23,11 +23,6 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
         public override ComponentType GetComponentType() { return ComponentType.Display; }
 
-        public class GridModel {
-            [UIHint("Grid")]
-            public GridDefinition GridDef { get; set; }
-        }
-
         public class GridDisplay {
 
             [Caption("Use"), Description("Checkbox indicates selection")]
@@ -103,11 +98,6 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
     public class RolesSelectorEditComponent : RolesSelectorComponentBase, IYetaWFComponent<SerializableList<Role>> {
 
         public override ComponentType GetComponentType() { return ComponentType.Edit; }
-
-        public class GridModel {
-            [UIHint("Grid")]
-            public GridDefinition GridDef { get; set; }
-        }
 
         public class GridEdit {
 

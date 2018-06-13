@@ -25,11 +25,6 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
         public override ComponentType GetComponentType() { return ComponentType.Display; }
 
-        public class GridModel {
-            [UIHint("Grid")]
-            public GridDefinition GridDef { get; set; }
-        }
-
         public class GridDisplay {
 
             [Caption("Name"), Description("Module Name")]
@@ -96,11 +91,6 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
     public class ReferencedModulesEditComponent : ReferencedModulesComponent, IYetaWFComponent<SerializableList<ModuleDefinition.ReferencedModule>> {
 
         public override ComponentType GetComponentType() { return ComponentType.Edit; }
-
-        public class GridModel {
-            [UIHint("Grid")]
-            public GridDefinition GridDef { get; set; }
-        }
 
         public class GridEdit {
 

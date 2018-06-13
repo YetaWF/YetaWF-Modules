@@ -28,10 +28,6 @@ namespace YetaWF.Modules.Identity.Components {
 
         public override ComponentType GetComponentType() { return ComponentType.Display; }
 
-        public class GridModel {
-            [UIHint("Grid")]
-            public GridDefinition GridDef { get; set; }
-        }
         public class GridDisplay {
             [Caption("User Names"), Description("Shows all defined user names")]
             [UIHint("String"), ReadOnly]
@@ -93,10 +89,6 @@ namespace YetaWF.Modules.Identity.Components {
 
         public override ComponentType GetComponentType() { return ComponentType.Edit; }
 
-        public class GridModel {
-            [UIHint("Grid")]
-            public GridDefinition GridDef { get; set; }
-        }
         public class NewModel {
             [Caption("User Name"), Description("Please enter a new user name and click Add")]
             [UIHint("Text80"), StringLength(80), Trim]
