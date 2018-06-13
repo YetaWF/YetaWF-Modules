@@ -72,8 +72,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Components\HTML\ListOfLocalPages.cs" />
     <Compile Include="Controllers\SkinScrollToTop.cs" />
-    <Compile Include="Controllers\Support\ListOfLocalPagesHelper.cs" />
+    <Compile Include="Controllers\Support\ListOfLocalPages.cs" />
     <Compile Include="Controllers\Support\PageList.cs" />
     <Compile Include="Controllers\TemplateListOfPageDefinitions.cs" />
     <Compile Include="Controllers\UnifiedSetAdd.cs" />
@@ -94,7 +95,6 @@
     <Compile Include="Models\PageDefinitionDataProvider.cs" />
     <Compile Include="Modules\PagesBrowse.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ViewsCode\Shared\ListOfLocalPagesHelper.cs" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
@@ -114,29 +114,29 @@
       <Project>{6a90eab3-a9e4-4a2c-90d9-145859790c46}</Project>
       <Name>SQL</Name>
     </ProjectReference>
+    <ProjectReference Include="..\ComponentsHTML\ComponentsHTML.csproj">
+      <Project>{AB7BFD23-57E8-40A6-85EA-9D4B3206075F}</Project>
+      <Name>ComponentsHTML</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Content Include="Addons\_Addons\SkinScrollToTop\img\top.png" />
     <Content Include="Addons\_Addons\SkinScrollToTop\SkinScrollToTop.js" />
     <Content Include="Addons\_Main\Icons\Download.png" />
     <Content Include="Addons\_Main\Grids\PagesBrowseModuleController.PageItem" />
-    <Content Include="Addons\_Main\Grids\RolesHelper.GridAllowedRole" />
-    <Content Include="Addons\_Main\Grids\UsersHelper.GridAllowedRole" />
     <Content Include="Addons\_Addons\SkinScrollToTop\filelistCSS.txt" />
     <Content Include="Addons\_Addons\SkinScrollToTop\filelistJS.txt" />
     <Content Include="Addons\_Addons\SkinScrollToTop\markgoodyear.com ScrollUp\jquery.scrollUp.js" />
     <Content Include="Addons\_SiteTemplates\YetaWF_Pages.2.0.3.txt" />
-    <None Include="Addons\_Main\Grids\ListOfLocalPagesHelper.GridAllEntry" />
-    <None Include="Addons\_Main\Grids\ListOfLocalPagesHelper.GridEntryDisplay" />
-    <None Include="Addons\_Main\Grids\ListOfLocalPagesHelper.GridEntryEdit" />
+    <None Include="Addons\_Main\Grids\ListOfLocalPagesEditComponent.GridAllEntry" />
+    <None Include="Addons\_Main\Grids\ListOfLocalPagesDisplayComponent.GridEntryDisplay" />
+    <None Include="Addons\_Main\Grids\ListOfLocalPagesEditComponent.GridEntryEdit" />
     <None Include="Addons\_Main\Grids\UnifiedSetsBrowseModuleController.BrowseItem" />
     <Content Include="Addons\_Addons\SkinScrollToTop\SkinScrollToTop.css" />
     <Content Include="Addons\_Templates\ListOfLocalPages\filelistCSS.txt" />
     <Content Include="Addons\_Templates\ListOfLocalPages\filelistJS.txt" />
     <None Include="Addons\_Templates\ListOfLocalPages\ListOfLocalPages.scss" />
     <Content Include="Addons\_Templates\ListOfLocalPages\ListOfLocalPages.js" />
-    <Content Include="Views\Shared\EditorTemplates\YetaWF_Pages_ListOfLocalPages.cshtml" />
-    <Content Include="Views\Shared\DisplayTemplates\YetaWF_Pages_ListOfLocalPages.cshtml" />
     <None Include="app.config" />
     <None Include="packages.config" />
     <None Include="Views\YetaWF_Pages_SkinScrollToTop.cshtml" />

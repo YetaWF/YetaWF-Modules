@@ -36,11 +36,12 @@
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Components\HTML\ListOfLocalPages.cs" />
     <Compile Include="Components\HTML\PanelInfo.cs" />
     <Compile Include="Components\HTML\PagePanelInfo.cs" />
     <Compile Include="Controllers\PagePanel.cs" />
     <Compile Include="Controllers\ModulePanel.cs" />
-    <Compile Include="Controllers\Support\ListOfLocalPagesHelper.cs" />
+    <Compile Include="Controllers\Support\ListOfLocalPages.cs" />
     <Compile Include="Models\PagePanelData.cs" />
     <Compile Include="Models\ModulePanelData.cs" />
     <Compile Include="Modules\PagePanelModule.cs" />
@@ -48,7 +49,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup\AreaRegistration.cs" />
     <Compile Include="Startup\Info.cs" />
-    <Compile Include="ViewsCode\Shared\ListOfLocalPagesHelper.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Addons\_Main\filelistCSS.txt" />
@@ -61,8 +61,8 @@
     <Content Include="Addons\_Templates\ListOfLocalPages\ListOfLocalPages.js" />
     <Content Include="Addons\_Templates\PagePanelInfo\filelistCSS.txt" />
     <Content Include="Addons\_Templates\PagePanelInfo\filelistJS.txt" />
-    <None Include="Addons\_Main\Grids\ListOfLocalPagesHelper.GridAllEntry" />
-    <None Include="Addons\_Main\Grids\ListOfLocalPagesHelper.GridEntryEdit" />
+    <None Include="Addons\_Main\Grids\ListOfLocalPagesEditComponent.GridAllEntry" />
+    <None Include="Addons\_Main\Grids\ListOfLocalPagesEditComponent.GridEntryEdit" />
     <None Include="Addons\_Templates\ListOfLocalPages\ListOfLocalPages.scss" />
     <None Include="Addons\_Templates\PagePanelInfo\PagePanelInfo.scss" />
     <Content Include="Addons\_Templates\PagePanelInfo\PagePanelInfo.js" />
@@ -74,7 +74,6 @@
   <ItemGroup>
     <None Include="app.config" />
     <None Include="packages.config" />
-    <Content Include="Views\Shared\EditorTemplates\YetaWF_Panels_ListOfLocalPages.cshtml" />
     <None Include="Views\YetaWF_Panels_PagePanel.cshtml" />
     <None Include="Views\YetaWF_Panels_ModulePanel.cshtml" />
     <None Include="Views\YetaWF_Panels_ModulePanel_Partial.cshtml" />

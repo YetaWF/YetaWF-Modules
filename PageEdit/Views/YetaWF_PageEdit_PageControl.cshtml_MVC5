@@ -1,7 +1,6 @@
 ﻿@*Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/PageEdit#License*@
 @inherits YetaWF.Core.Views.RazorView<YetaWF.Modules.PageEdit.Modules.PageControlModule, YetaWF.Modules.PageEdit.Controllers.PageControlModuleController.PageControlModel>
 @using YetaWF.Core.Modules
-@using YetaWF.Core.Components
 @using YetaWF.Modules.ComponentsHTML.Components
 <div id="@DivId">
     @PropertyListComponentBase.RenderTabStripStart(DivId)

@@ -1,7 +1,7 @@
 ﻿@*Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/PageEdit#License*@
 @inherits YetaWF.Core.Views.RazorView<YetaWF.Modules.PageEdit.Modules.PageEditModule, YetaWF.Modules.PageEdit.Controllers.PageEditModuleController.EditModel>
 @using (CreateFormAsync("PageEdit_Partial").Result) {
-    @Html.DisplayFor(m => Model.PageGuid)
+    @Html.ForDisplayAsync(Model, "PageGuid").Result
     @PartialForm()
     @FormButtonsAsync(new FormButton[] {
         new FormButton() { ButtonType= ButtonTypeEnum.Submit, },
