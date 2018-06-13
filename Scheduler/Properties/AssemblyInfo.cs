@@ -26,4 +26,6 @@ using YetaWF.PackageAttributes;
 
 [assembly: ServiceLevel(ServiceLevelEnum.SchedulerProvider)]
 
+[assembly: RequiresPackage("YetaWF.ComponentsHTML")]
+
 // RESEARCH: http://haacked.com/archive/2011/10/16/the-dangers-of-implementing-recurring-background-tasks-in-asp-net.aspx/

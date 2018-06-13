@@ -63,6 +63,11 @@ namespace YetaWF.Modules.Scheduler.Controllers {
             [UIHint("Hidden")]
             public string OriginalName { get; set; }
 
+            public SchedulerEditModel() {
+                Event = new SchedulerEvent();
+                Frequency = new SchedulerFrequency();
+            }
+
             public SchedulerItemData GetEvent() {
                 SchedulerItemData evnt = new SchedulerItemData();
                 ObjectSupport.CopyData(this, evnt);

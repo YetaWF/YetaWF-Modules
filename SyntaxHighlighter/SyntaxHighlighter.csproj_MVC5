@@ -68,6 +68,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Components\HTML\SyntaxHighlighter.cs" />
+    <Compile Include="Components\HTML\HighlightJS.cs" />
     <Compile Include="Controllers\SkinHighlightJS.cs" />
     <Compile Include="Controllers\SyntaxHighlighterConfig.cs" />
     <Compile Include="Models\FileDataProvider.cs" />
@@ -83,8 +85,6 @@
     <Compile Include="Startup\SyntaxHighlighter.cs" />
     <Compile Include="Support\HighlightJSSkins.cs" />
     <Compile Include="Support\SyntaxHighlighterSkins.cs" />
-    <Compile Include="ViewsCode\Shared\HighlightJSSkinsHelper.cs" />
-    <Compile Include="ViewsCode\Shared\SyntaxHighlighterSkinsHelper.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Addons\_Addons\SkinHighlightJS\FilelistCSS.txt" />
@@ -185,10 +185,6 @@
     <Content Include="Addons\_SiteTemplates\YetaWF_SyntaxHighlighter.2.5.2.txt" />
     <Content Include="Addons\_Templates\SyntaxHighlighter\filelistCSS.txt" />
     <Content Include="Addons\_Templates\SyntaxHighlighter\SyntaxHighlighterSkin.css" />
-    <Content Include="Views\Shared\DisplayTemplates\YetaWF_SyntaxHighlighter_SyntaxHighlighter.cshtml" />
-    <Content Include="Views\Shared\EditorTemplates\YetaWF_SyntaxHighlighter_SyntaxHighlighter.cshtml" />
-    <Content Include="Views\Shared\DisplayTemplates\YetaWF_SyntaxHighlighter_HighlightJS.cshtml" />
-    <Content Include="Views\Shared\EditorTemplates\YetaWF_SyntaxHighlighter_HighlightJS.cshtml" />
     <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>
@@ -209,10 +205,15 @@
       <Project>{6a90eab3-a9e4-4a2c-90d9-145859790c46}</Project>
       <Name>SQL</Name>
     </ProjectReference>
+    <ProjectReference Include="..\ComponentsHTML\ComponentsHTML.csproj">
+      <Project>{ab7bfd23-57e8-40a6-85ea-9d4b3206075f}</Project>
+      <Name>ComponentsHTML</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Addons\_Addons\SkinHighlightJS\src\" />
     <Folder Include="Addons\_Main\Images\" />
+    <Folder Include="Views\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
