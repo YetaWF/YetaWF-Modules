@@ -34,11 +34,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             HtmlBuilder hb = new HtmlBuilder();
             List<PropertyListEntry> properties = GetHiddenProperties(model);
             foreach (var property in properties) {
-                if (HtmlHelper.IsSupported(model, property.Name)) {
-                    hb.Append(await HtmlHelper.ForEditAsync(model, property.Name));// hidden fields are edit by definition otherwise they're useless
-                } else {
-                    hb.Append($"old template {property.UIHint} not supported - {property.Name}");
-                }
+                hb.Append(await HtmlHelper.ForEditAsync(model, property.Name));// hidden fields are edit by definition otherwise they're useless
             }
             return hb.ToYHtmlString();
         }
@@ -55,11 +51,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                 if (property.Restricted) {
                     shtmlDisp = new YHtmlString(this.__ResStr("demo", "This property is not available in Demo Mode"));
                 } else if (readOnly || !property.Editable) {
-                    if (HtmlHelper.IsSupported(model, property.Name)) {
-                        shtmlDisp = new YHtmlString((await HtmlHelper.ForDisplayAsync(model, property.Name)).ToString());
-                    } else {
-                        shtmlDisp = new YHtmlString($"old template {property.UIHint} not supported - {property.Name}");
-                    }
+                    shtmlDisp = new YHtmlString((await HtmlHelper.ForDisplayAsync(model, property.Name)).ToString());
                     string s = shtmlDisp.ToString().Trim();
                     if (string.IsNullOrWhiteSpace(s)) {
                         if (property.SuppressEmpty)
@@ -108,11 +100,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                     }
                     focusSet = true;
                     hb.Append("<div class='{0}'>", cls);
-                    if (HtmlHelper.IsSupported(model, property.Name)) {
-                        hb.Append(await HtmlHelper.ForEditAsync(model, property.Name));
-                    } else {
-                        hb.Append($"old template {property.UIHint} not supported - {property.Name}");//$$
-                    }
+                    hb.Append(await HtmlHelper.ForEditAsync(model, property.Name));
                     hb.Append(ValidationMessage(property.Name));
                     hb.Append("</div>");
                 } else {

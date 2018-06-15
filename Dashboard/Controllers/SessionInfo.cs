@@ -31,14 +31,14 @@ namespace YetaWF.Modules.Dashboard.Controllers {
             [UIHint("String"), ReadOnly]
             public string Value { get; set; }
             [Caption("Size"), Description("The size of the value (if available)")]
-            [UIHint("FileSize"), ReadOnly]
+            [UIHint("FileFolderSize"), ReadOnly]
             public long Size { get; set; }
         }
 
         public class DisplayModel {
 
             [Caption("Total Size"), Description("The approximate size of all SessionState items")]
-            [UIHint("FileSize"), ReadOnly]
+            [UIHint("FileFolderSize"), ReadOnly]
             public long TotalSize { get; set; }
 
             [Caption("SessionState Items"), Description("The SessionState keys and the values (either the data type or the first 100 bytes of data are shown)")]

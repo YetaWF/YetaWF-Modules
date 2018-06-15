@@ -18,11 +18,12 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         public override Package GetPackage() { return Controllers.AreaRegistration.CurrentPackage; }
         public override string GetTemplateName() { return TemplateName; }
 
-        protected async Task<string> GetModuleLink(Guid model) {
+        protected async Task<string> GetModuleLink(Guid? model) {
 
+            if (model == null || model == Guid.Empty) return "";
             YTagBuilder tag = new YTagBuilder("a");
 
-            tag.MergeAttribute("href", ModuleDefinition.GetModulePermanentUrl(model));
+            tag.MergeAttribute("href", ModuleDefinition.GetModulePermanentUrl((Guid)model));
             tag.MergeAttribute("target", "_blank");
             tag.MergeAttribute("rel", "nofollow noopener noreferrer");
             tag.Attributes.Add(Basics.CssTooltip, this.__ResStr("linkTT", "Click to preview the module in a new window - not all modules can be displayed correctly and may require additional parameters"));
@@ -37,11 +38,11 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         }
     }
 
-    public class ModuleSelectionDisplayComponent : ModuleSelectionComponentBase, IYetaWFComponent<Guid> {
+    public class ModuleSelectionDisplayComponent : ModuleSelectionComponentBase, IYetaWFComponent<Guid?> {
 
         public override ComponentType GetComponentType() { return ComponentType.Display; }
 
-        public async Task<YHtmlString> RenderAsync(Guid model) {
+        public async Task<YHtmlString> RenderAsync(Guid? model) {
 
             HtmlBuilder hb = new HtmlBuilder();
 
@@ -49,15 +50,15 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 <div class='yt_moduleselection t_display'>");
 
             ModuleDefinition mod = null;
-            if (model != Guid.Empty)
-                mod = await ModuleDefinition.LoadAsync(model, AllowNone: true);
+            if (model != null && model != Guid.Empty)
+                mod = await ModuleDefinition.LoadAsync((Guid)model, AllowNone: true);
 
             string modName;
             if (mod == null) {
-                if (model == Guid.Empty)
+                if (model != null && model == Guid.Empty)
                     modName = this.__ResStr("noLinkNone", "(none)");
                 else
-                    modName = this.__ResStr("noLink", "(not found - {0})", model.ToString());
+                    modName = this.__ResStr("noLink", "(not found - {0})", ((Guid)model).ToString());
             } else {
                 Package package = Package.GetPackageFromType(mod.GetType());
                 modName = this.__ResStr("name", "{0} - {1}", package.Name, mod.Name);
@@ -89,7 +90,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         }
     }
 
-    public class ModuleSelectionEditComponent : ModuleSelectionComponentBase, IYetaWFComponent<Guid> {
+    public class ModuleSelectionEditComponent : ModuleSelectionComponentBase, IYetaWFComponent<Guid?> {
 
         public override ComponentType GetComponentType() { return ComponentType.Edit; }
 
@@ -101,9 +102,9 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             public string AjaxUrlComplete { get; set; }
 
             [UIHint("ModuleSelectionPackageNew"), Caption("Packages"), Description("Select one of the installed packages to list all available modules for the package")]
-            public Guid Package { get; set; }
+            public Guid? Package { get; set; }
             [Caption("Module"), Description("Select one of the available modules")]
-            public Guid Module { get; set; }
+            public Guid? Module { get; set; }
         }
         public class ModuleSelectionUIExisting {
 
@@ -113,12 +114,12 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             public string AjaxUrlComplete { get; set; }
 
             [UIHint("ModuleSelectionPackageExisting"), Caption("Packages"), Description("Select one of the installed packages to list all available modules for the package")]
-            public Guid Package { get; set; }
+            public Guid? Package { get; set; }
             [Caption("Module"), Description("Select one of the available modules")]
-            public Guid Module { get; set; }
+            public Guid? Module { get; set; }
         }
 
-        public async Task<YHtmlString> RenderAsync(Guid model) {
+        public async Task<YHtmlString> RenderAsync(Guid? model) {
 
             HtmlBuilder hb = new HtmlBuilder();
 

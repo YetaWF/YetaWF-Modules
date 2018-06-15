@@ -11,7 +11,7 @@ using YetaWF.Modules.ComponentsHTML.Components;
 
 namespace YetaWF.Modules.ComponentsHTML.Components {
 
-    public class ModuleSelectionModuleExistingEditComponent : YetaWFComponent, IYetaWFComponent<Guid> {
+    public class ModuleSelectionModuleExistingEditComponent : YetaWFComponent, IYetaWFComponent<Guid?> {
 
         public const string TemplateName = "ModuleSelectionModuleExisting";
 
@@ -19,8 +19,9 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         public override Package GetPackage() { return Controllers.AreaRegistration.CurrentPackage; }
         public override string GetTemplateName() { return TemplateName; }
 
-        public async Task<YHtmlString> RenderAsync(Guid model) {
+        public async Task<YHtmlString> RenderAsync(Guid? model) {
 
+            model = model ?? Guid.Empty;
             string areaName = await ModuleSelectionModuleNewEditComponent.GetAreaNameFromGuidAsync(true, model);
 
             List<SelectionItem<string>> list = (

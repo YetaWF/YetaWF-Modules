@@ -31,7 +31,7 @@ namespace YetaWF.Modules.Dashboard.Controllers {
             [UIHint("String"), ReadOnly]
             public string Value { get; set; }
             [Caption("Size"), Description("The size of the value (if available)")]
-            [UIHint("FileSize"), ReadOnly]
+            [UIHint("FileFolderSize"), ReadOnly]
             public long Size { get; set; }
         }
 
@@ -42,11 +42,11 @@ namespace YetaWF.Modules.Dashboard.Controllers {
             public long EffectivePercentagePhysicalMemoryLimit { get; set; }
 
             [Caption("Bytes Limit"), Description("The number of bytes available for the cache")]
-            [UIHint("FileSize"), ReadOnly]
+            [UIHint("FileFolderSize"), ReadOnly]
             public long EffectivePrivateBytesLimit { get; set; }
 
             [Caption("Total Size"), Description("The approximate size of all cached items")]
-            [UIHint("FileSize"), ReadOnly]
+            [UIHint("FileFolderSize"), ReadOnly]
             public long TotalSize { get; set; }
 
             [Caption("Cached Items"), Description("The cache keys and the values (either the data type or the first 100 bytes of data are shown)")]

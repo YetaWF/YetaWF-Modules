@@ -13,7 +13,7 @@ using YetaWF.Core.Support;
 
 namespace YetaWF.Modules.ComponentsHTML.Components {
 
-    public abstract class ReferencedModulesComponent : YetaWFComponent {
+    public abstract class ReferencedModulesComponentBase : YetaWFComponent {
 
         public const string TemplateName = "ReferencedModules";
 
@@ -21,7 +21,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         public override string GetTemplateName() { return TemplateName; }
     }
 
-    public class ReferencedModulesDisplayComponent : ReferencedModulesComponent, IYetaWFComponent<SerializableList<ModuleDefinition.ReferencedModule>> {
+    public class ReferencedModulesDisplayComponent : ReferencedModulesComponentBase, IYetaWFComponent<SerializableList<ModuleDefinition.ReferencedModule>> {
 
         public override ComponentType GetComponentType() { return ComponentType.Display; }
 
@@ -39,7 +39,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             [UIHint("String"), ReadOnly]
             public string PermanentName { get; set; }
         }
-        protected static async Task<DataSourceResult> GetDataSourceResultAsync(SerializableList<ModuleDefinition.ReferencedModule> model) {
+        protected async Task<DataSourceResult> GetDataSourceResultAsync(SerializableList<ModuleDefinition.ReferencedModule> model) {
 
             List<AddOnManager.Module> allMods = Manager.AddOnManager.GetUniqueInvokedCssModules();
 
@@ -66,7 +66,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
             HtmlBuilder hb = new HtmlBuilder();
 
-            hb.Append($"<div class='yt_invokedmodules t_edit'>");
+            hb.Append($"<div class='yt_invokedmodules t_display'>");
 
             bool header = PropData.GetAdditionalAttributeValue("Header", true);
 
@@ -88,7 +88,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             return hb.ToYHtmlString();
         }
     }
-    public class ReferencedModulesEditComponent : ReferencedModulesComponent, IYetaWFComponent<SerializableList<ModuleDefinition.ReferencedModule>> {
+    public class ReferencedModulesEditComponent : ReferencedModulesComponentBase, IYetaWFComponent<SerializableList<ModuleDefinition.ReferencedModule>> {
 
         public override ComponentType GetComponentType() { return ComponentType.Edit; }
 
@@ -114,7 +114,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             [UIHint("Guid"), ReadOnly]
             public Guid ModuleGuid { get; set; } // this name must match the name used in the class ReferencedModule
         }
-        protected static async Task<DataSourceResult> GetDataSourceResultAsync(SerializableList<ModuleDefinition.ReferencedModule> model) {
+        protected async Task<DataSourceResult> GetDataSourceResultAsync(SerializableList<ModuleDefinition.ReferencedModule> model) {
 
             List<AddOnManager.Module> allMods = Manager.AddOnManager.GetUniqueInvokedCssModules();
 

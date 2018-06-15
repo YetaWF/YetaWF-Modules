@@ -36,6 +36,7 @@
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Components\FormButton.cs" />
     <Compile Include="Components\PageDefinitions.cs" />
     <Compile Include="Components\SiteId.cs" />
     <Compile Include="Components\ListOfStrings.cs" />

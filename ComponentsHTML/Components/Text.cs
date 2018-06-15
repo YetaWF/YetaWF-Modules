@@ -107,11 +107,11 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             component.FieldSetup(tag, component.Validation ? FieldType.Validated : FieldType.Normal);
             //string id = null;
             //if (!string.IsNullOrWhiteSpace(mask)) {
-            //    id = htmlHelper.MakeId(tag);
+            //    id = component.MakeId(tag);
             //}
 
             bool copy = component.PropData.GetAdditionalAttributeValue<bool>("Copy", false);
-            //string mask = htmlHelper.GetControlInfo<string>("", "Mask", null);
+            //string mask = component.PropData.GetAdditionalAttributeValue<string>("Mask", null);
 
             // handle StringLengthAttribute as maxlength
             StringLengthAttribute lenAttr = component.PropData.TryGetAttribute<StringLengthAttribute>();

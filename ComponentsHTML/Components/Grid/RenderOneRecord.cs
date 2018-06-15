@@ -32,6 +32,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             foreach (PropertyListComponentBase.PropertyListEntry prop in props) {
 
                 //$$using (new HtmlHelperExtender.ControlInfoOverride(meta.AdditionalValues)) { //?? functionality still needed?
+                //uses Manager.ControlInfoOverrides
 
                 string output = "";
                 if (propCount > 0)
@@ -46,18 +47,10 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                     hb.Append("\"{0}\"", prop.Value is bool && (bool)prop.Value == true ? YetaWFManager.JserEncode("<div class='yLowlightGridRow'/>") : "");
                 } else {
                     if (recordEnabled && prop.Editable) {
-                        if (htmlHelper.IsSupported(model, prop.Name, UIHint: prop.UIHint)) {
-                            output = (await htmlHelper.ForEditComponentAsync(model, prop.Name, prop.Value, prop.UIHint)).ToString();
-                            output += YetaWFComponent.ValidationMessage(htmlHelper, Manager.NestedComponentPrefix, prop.Name).ToString();
-                        } else {
-                            output = $"old template {prop.UIHint} not supported - {prop.Name}";
-                        }
+                        output = (await htmlHelper.ForEditComponentAsync(model, prop.Name, prop.Value, prop.UIHint)).ToString();
+                        output += YetaWFComponent.ValidationMessage(htmlHelper, Manager.NestedComponentPrefix, prop.Name).ToString();
                     } else {
-                        if (htmlHelper.IsSupported(model, prop.Name, UIHint: prop.UIHint)) {
-                            output = (await htmlHelper.ForDisplayComponentAsync(model, prop.Name, prop.Value, prop.UIHint)).ToString();
-                        } else {
-                            output = $"old template {prop.UIHint} not supported - {prop.Name}";
-                        }
+                        output = (await htmlHelper.ForDisplayComponentAsync(model, prop.Name, prop.Value, prop.UIHint)).ToString();
                     }
                     output = output.Trim(new char[] { '\r', '\n' }); // templates can generate a lot of extra \r\n which breaks filtering
                     if (string.IsNullOrWhiteSpace(output)) { output = "&nbsp;"; }

@@ -58,7 +58,7 @@ namespace YetaWF.Modules.Identity.Components {
             if (model == 0 || showDefault)
                 list.Insert(0, new SelectionItem<int> { Text = this.__ResStr("select", "(none)"), Value = 0 });
 
-            return await DropDownListEditComponentBase<int>.RenderDropDownListAsync(this, model, list, "yt_yetawf_identity_roleid");
+            return await DropDownListIntComponent.RenderDropDownListAsync(this, model, list, "yt_yetawf_identity_roleid");
         }
     }
 }

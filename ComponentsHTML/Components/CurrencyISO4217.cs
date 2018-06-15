@@ -8,14 +8,14 @@ using YetaWF.Core.Support;
 
 namespace YetaWF.Modules.ComponentsHTML.Components {
 
-    public abstract class CurrencyISO4217Component : YetaWFComponent {
+    public abstract class CurrencyISO4217ComponentBase : YetaWFComponent {
 
         public const string TemplateName = "CurrencyISO4217";
 
         public override Package GetPackage() { return Controllers.AreaRegistration.CurrentPackage; }
         public override string GetTemplateName() { return TemplateName; }
     }
-    public class CurrencyISO4217DisplayComponent : CurrencyISO4217Component, IYetaWFComponent<string> {
+    public class CurrencyISO4217DisplayComponent : CurrencyISO4217ComponentBase, IYetaWFComponent<string> {
 
         public override ComponentType GetComponentType() { return ComponentType.Display; }
 
@@ -25,7 +25,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             return new YHtmlString(currency);
         }
     }
-    public class CurrencyISO4217EditComponent : CurrencyISO4217Component, IYetaWFComponent<string> {
+    public class CurrencyISO4217EditComponent : CurrencyISO4217ComponentBase, IYetaWFComponent<string> {
 
         public override ComponentType GetComponentType() { return ComponentType.Edit; }
 

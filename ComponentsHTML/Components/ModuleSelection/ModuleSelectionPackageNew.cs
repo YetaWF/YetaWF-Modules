@@ -10,7 +10,7 @@ using YetaWF.Core.Support;
 
 namespace YetaWF.Modules.ComponentsHTML.Components {
 
-    public class ModuleSelectionPackageNewEditComponent : YetaWFComponent, IYetaWFComponent<Guid> {
+    public class ModuleSelectionPackageNewEditComponent : YetaWFComponent, IYetaWFComponent<Guid?> {
 
         public const string TemplateName = "ModuleSelectionPackageNew";
 
@@ -18,9 +18,10 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         public override Package GetPackage() { return Controllers.AreaRegistration.CurrentPackage; }
         public override string GetTemplateName() { return TemplateName; }
 
-        public async Task<YHtmlString> RenderAsync(Guid model) {
+        public async Task<YHtmlString> RenderAsync(Guid? model) {
 
-            string areaName = await ModuleSelectionModuleNewEditComponent.GetAreaNameFromGuidAsync(false, model);
+            model = model ?? Guid.Empty;
+            string areaName = await ModuleSelectionModuleNewEditComponent.GetAreaNameFromGuidAsync(true, model);
             List<SelectionItem<string>> list = (
                 from p in InstalledModules.Packages orderby p.Name select
                     new SelectionItem<string> {

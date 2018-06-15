@@ -240,7 +240,7 @@ namespace YetaWF.Modules.Identity.Components {
                         Text = this.__ResStr("select", "(select)"),
                         Value = 0,
                     });
-                    hb.Append(await DropDownListEditComponentBase<int>.RenderDropDownListAsync(this, model, list, null));
+                    hb.Append(await DropDownListIntComponent.RenderDropDownListAsync(this, model, list, null));
                 }
 
                 hb.Append($@"

@@ -52,7 +52,8 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             bool useKendo = !Manager.IsRenderingGrid;
 
             YTagBuilder tag = new YTagBuilder("select");
-            tag.AddCssClass(cssClass);
+            if (!string.IsNullOrWhiteSpace(cssClass))
+                tag.AddCssClass(cssClass);
             tag.AddCssClass("t_edit");
             tag.AddCssClass("yt_dropdownlist_base");
             component.FieldSetup(tag, component.Validation ? FieldType.Validated : FieldType.Normal);

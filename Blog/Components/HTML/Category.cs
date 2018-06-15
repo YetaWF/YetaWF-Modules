@@ -72,7 +72,7 @@ namespace YetaWF.Modules.Blog.Components {
                         });
                     }
                 }
-                return await DropDownListEditComponentBase<int>.RenderDropDownListAsync(this, model, list, "yt_yetawf_blog_category");
+                return await DropDownListIntComponent.RenderDropDownListAsync(this, model, list, "yt_yetawf_blog_category");
             }
         }
     }

@@ -51,7 +51,7 @@ namespace YetaWF.Modules.Backups.Controllers {
             public DateTime Created { get; set; }
 
             [Caption("Size"), Description("The file size of the site backup")]
-            [UIHint("FileSize"), ReadOnly]
+            [UIHint("FileFolderSize"), ReadOnly]
             public long Size { get; set; }
 
             [Caption("Full File Name"), Description("The site backup file name")]

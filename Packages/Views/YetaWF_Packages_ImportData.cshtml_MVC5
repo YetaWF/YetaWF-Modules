@@ -4,5 +4,5 @@
 <div class="t_description">
     @__ResStr("text", "Import package data from a zip file (created by Export Data).")
 </div>
-@Html.EditorFor(m => Model.UploadFile)
+@Html.ForEditAsync(Model, "UploadFile").Result
 

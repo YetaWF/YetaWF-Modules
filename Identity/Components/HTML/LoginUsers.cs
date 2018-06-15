@@ -70,7 +70,7 @@ namespace YetaWF.Modules.Identity.Components {
                 Tooltip = this.__ResStr("selLogoff", "Select to log off"),
                 Value = 0,
             });
-            return await DropDownListEditComponentBase<int>.RenderDropDownListAsync(this, model, list, "yt_yetawf_identity_loginusers");
+            return await DropDownListIntComponent.RenderDropDownListAsync(this, model, list, "yt_yetawf_identity_loginusers");
         }
     }
 }

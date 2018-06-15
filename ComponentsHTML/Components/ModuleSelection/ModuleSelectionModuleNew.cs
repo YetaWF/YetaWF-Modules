@@ -10,7 +10,7 @@ using YetaWF.Core.Support;
 
 namespace YetaWF.Modules.ComponentsHTML.Components {
 
-    public class ModuleSelectionModuleNewEditComponent : YetaWFComponent, IYetaWFComponent<Guid> {
+    public class ModuleSelectionModuleNewEditComponent : YetaWFComponent, IYetaWFComponent<Guid?> {
 
         private static string __ResStr(string name, string defaultValue, params object[] parms) { return ResourceAccess.GetResourceString(typeof(ModuleSelectionModuleNewEditComponent), name, defaultValue, parms); }
 
@@ -20,9 +20,10 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         public override Package GetPackage() { return Controllers.AreaRegistration.CurrentPackage; }
         public override string GetTemplateName() { return TemplateName; }
 
-        public async Task<YHtmlString> RenderAsync(Guid model) {
+        public async Task<YHtmlString> RenderAsync(Guid? model) {
 
             string areaName = await GetAreaNameFromGuidAsync(true, model);
+            model = model ?? Guid.Empty;
             List<SelectionItem<string>> list = new List<SelectionItem<string>>();
             if (!string.IsNullOrWhiteSpace(areaName)) {
                 list = (
@@ -57,7 +58,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         }
 
         internal static async Task<string> GetAreaNameFromGuidAsync(bool newMods, Guid? moduleGuid) {
-            if (moduleGuid != null) {
+            if (moduleGuid != null && moduleGuid != Guid.Empty) {
                 if (newMods) {
                     InstalledModules.ModuleTypeEntry modEntry = InstalledModules.TryFindModuleEntry((Guid)moduleGuid);
                     if (modEntry != null)
