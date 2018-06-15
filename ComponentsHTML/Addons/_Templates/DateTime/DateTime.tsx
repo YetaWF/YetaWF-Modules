@@ -1,14 +1,14 @@
 ﻿/* Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Licensing */
 
 namespace YetaWF_ComponentsHTML {
-     
-    export class DateTimeComponent { 
+
+    export class DateTimeComponent {
 
         private getGrid(ctrlId: string): HTMLElement {
             var el: HTMLElement | null = document.getElementById(ctrlId);
             if (el == null) throw `Grid element ${ctrlId} not found`;/*DEBUG*/
             return el;
-        } 
+        }
         private getControl(ctrlId: string): HTMLElement {
             var el: HTMLElement | null = document.getElementById(ctrlId);
             if (el == null) throw `Element ${ctrlId} not found`;/*DEBUG*/
@@ -51,13 +51,13 @@ namespace YetaWF_ComponentsHTML {
             var ed: Date = new Date(2199, 12 - 1, 31);
             if (d != null) ed = new Date(Number(date.getAttribute("data-max-y")), Number(date.getAttribute("data-max-m")) - 1, Number(date.getAttribute("data-max-d")));
             $(date).kendoDateTimePicker({
-                animation: false, 
+                animation: false,
                 format: YVolatile.YetaWF_ComponentsHTML.DateTimeFormat,
                 min: sd, max: ed,
                 culture: YConfigs.Basics.Language,
                 change: function (ev: kendo.ui.DateTimePickerEvent): void {
                     var kdPicker: kendo.ui.DateTimePicker = ev.sender;
-                    var val: Date = kdPicker.value(); 
+                    var val: Date = kdPicker.value();
                     if (val == null)
                         thisObj.setHiddenText(hidden, kdPicker.element.val() as string);
                     else

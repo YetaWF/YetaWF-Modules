@@ -8,8 +8,8 @@
 @if (Module.AdImage_Data.Length > 0 && Module.CoverImage_Data.Length > 0 && !string.IsNullOrWhiteSpace(Module.ClickUrl)) {
     <script>
         $('body').peelback({
-            adImage: '@Html.Raw(ImageHelper.FormatUrl(YetaWF.Core.Modules.ModuleImageSupport.ImageType, null, Module.AdImage))',
-            peelImage: '@Html.Raw(ImageHelper.FormatUrl(YetaWF.Core.Modules.ModuleImageSupport.ImageType, null, Module.CoverImage))',
+            adImage: '@Html.Raw(ImageHTML.FormatUrl(YetaWF.Core.Modules.ModuleImageSupport.ImageType, null, Module.AdImage))',
+            peelImage: '@Html.Raw(ImageHTML.FormatUrl(YetaWF.Core.Modules.ModuleImageSupport.ImageType, null, Module.CoverImage))',
             clickURL: '@Module.ClickUrl',
             smallSize: @Module.SmallSize,
             bigSize: @Module.LargeSize,

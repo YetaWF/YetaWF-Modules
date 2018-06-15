@@ -16,7 +16,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         public override string GetTemplateName() { return TemplateName; }
     }
 
-    public partial class PropertyListDisplayComponent : PropertyListComponentBase, IYetaWFContainer<object> {
+    public partial class PropertyListDisplayComponent : PropertyListComponentBase, IYetaWFContainer<object>, IYetaWFComponent<object> {
 
         public override ComponentType GetComponentType() { return ComponentType.Display; }
 
@@ -24,14 +24,24 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
             return await RenderPropertyListTabbedAsync(model, false);
         }
+        public async Task<YHtmlString> RenderAsync(object model) {
+            using (Manager.StartNestedComponent($"{FieldName}")) {
+                return await RenderPropertyListTabbedAsync(model, true);
+            }
+        }
     }
-    public partial class PropertyListEditComponent : PropertyListComponentBase, IYetaWFContainer<object> {
+    public partial class PropertyListEditComponent : PropertyListComponentBase, IYetaWFContainer<object>, IYetaWFComponent<object> {
 
         public override ComponentType GetComponentType() { return ComponentType.Edit; }
 
         public async Task<YHtmlString> RenderContainerAsync(object model) {
 
             return await RenderPropertyListTabbedAsync(model, false);
+        }
+        public async Task<YHtmlString> RenderAsync(object model) {
+            using (Manager.StartNestedComponent($"{FieldName}")) {
+                return await RenderPropertyListTabbedAsync(model, false);
+            }
         }
     }
     public abstract partial class PropertyListComponentBase : PropertyListComponent {

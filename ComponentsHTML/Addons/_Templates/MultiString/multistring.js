@@ -84,7 +84,7 @@ YetaWF_MultiString.Enable = function($ms, enabled)
 {
     if (enabled) {
         _YetaWF_MultiString.getText($ms).removeAttr('disabled');
-        if (YConfigs.MultiString.Localization)
+        if (YConfigs.YetaWF_ComponentsHTML.Localization)
             YetaWF_TemplateDropDownList.Enable(_YetaWF_MultiString.getDropDown($ms), true);
     } else {
         _YetaWF_MultiString.getText($ms).attr('disabled', 'disabled');
