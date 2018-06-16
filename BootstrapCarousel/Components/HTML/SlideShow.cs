@@ -11,8 +11,6 @@ namespace YetaWF.Modules.BootstrapCarousel.Components {
 
     public abstract class SlideShowComponent : YetaWFComponent {
 
-        private static string __ResStr(string name, string defaultValue, params object[] parms) { return ResourceAccess.GetResourceString(typeof(SlideShowComponent), name, defaultValue, parms); }
-
         public const string TemplateName = "SlideShow";
 
         public override Package GetPackage() { return AreaRegistration.CurrentPackage; }

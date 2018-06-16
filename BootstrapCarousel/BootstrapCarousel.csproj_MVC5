@@ -32,7 +32,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="ComponentsHTML\SlideShow.cs" />
+    <Compile Include="Components\HTML\SlideShow.cs" />
     <Compile Include="Controllers\CarouselDisplay.cs" />
     <Compile Include="Models\CarouselInfo.cs" />
     <Compile Include="Modules\CarouselDisplay.cs" />
@@ -40,6 +40,7 @@
     <Compile Include="Startup\AreaRegistration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Support\ImageSupport.cs" />
+    <Compile Include="Views\HTML\CarouselDisplay.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Addons\_Main\filelistJS.txt" />
@@ -52,8 +53,6 @@
     <Content Include="Addons\_Templates\SlideShow\SlideShow.js" />
     <Content Include="Addons\_SiteTemplates\YetaWF_BootstrapCarousel.txt" />
     <None Include="app.config" />
-    <None Include="Views\YetaWF_BootstrapCarousel_CarouselDisplay.cshtml" />
-    <None Include="Views\YetaWF_BootstrapCarousel_CarouselDisplay_Partial.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />

@@ -21,7 +21,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                 HtmlBuilder hb = new HtmlBuilder();
                 hb.Append($@"
 <div id='{DivId}' class='yt_smtpserver t_edit'>
-    {await HtmlHelper.ForDisplayContainerAsync(model, "PropertyList")}
+    {await HtmlHelper.ForEditContainerAsync(model, "PropertyList")}
 </div>
 <script>
     YetaWF_SMTPServer.init('{DivId}');

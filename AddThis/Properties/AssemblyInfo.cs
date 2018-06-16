@@ -2,6 +2,7 @@
 
 using System.Reflection;
 using System.Runtime.InteropServices;
+using YetaWF.Core.Packages;
 using YetaWF.PackageAttributes;
 
 [assembly: AssemblyTitle("AddThis Share Tools")]
@@ -22,3 +23,5 @@ using YetaWF.PackageAttributes;
     "https://YetaWF.com/Documentation/YetaWF/Support",
     "https://yetawf.com/Documentation/YetaWF/AddThis#Release%20Notice",
     "https://yetawf.com/Documentation/YetaWF/AddThis#License")]
+
+[assembly: RequiresPackage("YetaWF.ComponentsHTML")]

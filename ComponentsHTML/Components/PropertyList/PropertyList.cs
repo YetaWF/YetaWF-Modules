@@ -22,7 +22,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
         public async Task<YHtmlString> RenderContainerAsync(object model) {
 
-            return await RenderPropertyListTabbedAsync(model, false);
+            return await RenderPropertyListTabbedAsync(model, true);
         }
         public async Task<YHtmlString> RenderAsync(object model) {
             using (Manager.StartNestedComponent($"{FieldName}")) {

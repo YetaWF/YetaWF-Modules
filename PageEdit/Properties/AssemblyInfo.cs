@@ -24,7 +24,5 @@ using YetaWF.PackageAttributes;
     "https://yetawf.com/Documentation/YetaWF/PageEdit#Release%20Notice",
     "https://yetawf.com/Documentation/YetaWF/PageEdit#License")]
 
-[assembly: PublicPartialViews]
-
 [assembly: RequiresPackage("YetaWF.ComponentsHTML")]
 [assembly: RequiresPackage("YetaWF.Identity")]
