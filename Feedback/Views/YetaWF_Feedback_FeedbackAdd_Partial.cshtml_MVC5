@@ -1,6 +1,0 @@
-﻿@*Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Feedback#License*@
-@inherits YetaWF.Core.Views.RazorView<YetaWF.Modules.Feedback.Modules.FeedbackAddModule, YetaWF.Modules.Feedback.Controllers.FeedbackAddModuleController.AddModel>
-@using YetaWF.Core.Components
-@Html.ForEditContainerAsync(Model, "PropertyList").Result
-
-

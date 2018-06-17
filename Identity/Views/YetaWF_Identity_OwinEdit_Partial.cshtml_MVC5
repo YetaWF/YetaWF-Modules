@@ -1,4 +1,0 @@
-﻿@*Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Identity#License*@
-@inherits YetaWF.Core.Views.RazorView<YetaWF.Modules.Identity.Modules.OwinEditModule, YetaWF.Modules.Identity.Controllers.OwinEditModuleController.EditModel>
-@using YetaWF.Core.Components
-@Html.ForEditContainerAsync(Model, "PropertyList").Result

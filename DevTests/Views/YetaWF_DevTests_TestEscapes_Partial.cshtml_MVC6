@@ -1,6 +1,0 @@
-@*Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/DevTests#License*@
-@inherits YetaWF.Core.Views.RazorView<YetaWF.Modules.DevTests.Modules.TestEscapesModule, YetaWF.Modules.DevTests.Controllers.TestEscapesModuleController.EditModel>
-@Html.ValidationSummary()
-<div>
-    @Html.EditorFor(m => Model, "PropertyList")
-</div>

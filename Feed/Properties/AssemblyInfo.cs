@@ -23,3 +23,5 @@ using YetaWF.PackageAttributes;
     "https://YetaWF.com/Documentation/YetaWF/Support",
     "https://yetawf.com/Documentation/YetaWF/Feed#Release%20Notice",
     "https://yetawf.com/Documentation/YetaWF/Feed#License")]
+
+[assembly: RequiresPackage("YetaWF.ComponentsHTML")]

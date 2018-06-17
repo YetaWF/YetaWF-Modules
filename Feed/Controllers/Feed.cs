@@ -40,7 +40,7 @@ namespace YetaWF.Modules.Feed.Controllers {
             public string Description { get; set; }
             public DateTime LastUpdate { get; set; }
             public SerializableList<Entry> Entries { get; set; }
-            public object Url { get; set; }
+            public string Url { get; set; }
             public DateTime CacheExpires { get; set; }
 
             public DisplayModel() {
