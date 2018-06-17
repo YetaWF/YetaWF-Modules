@@ -228,6 +228,18 @@
     <Compile Include="Modules\Register.cs" />
     <Compile Include="Modules\Login.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Views\HTML\AuthorizationBrowse.cs" />
+    <Compile Include="Views\HTML\TwoStepDone.cs" />
+    <Compile Include="Views\HTML\SetupExternalAccount.cs" />
+    <Compile Include="Views\HTML\SelectTwoStepSetup.cs" />
+    <Compile Include="Views\HTML\SelectTwoStepAuth.cs" />
+    <Compile Include="Views\HTML\Register.cs" />
+    <Compile Include="Views\HTML\OwinEdit.cs" />
+    <Compile Include="Views\HTML\Need2FADisplay.cs" />
+    <Compile Include="Views\HTML\LoginSelector.cs" />
+    <Compile Include="Views\HTML\LoginDirect.cs" />
+    <Compile Include="Views\HTML\Login.cs" />
+    <Compile Include="Views\HTML\ForgotPassword.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Addons\_Main\Grids\ListOfUserNamesEditComponent.GridAllEntry" />
@@ -267,13 +279,6 @@
     <Content Include="Addons\_Templates\RoleId\filelistCSS.txt" />
     <Content Include="Addons\_Templates\RoleId\RoleId.css" />
     <None Include="app.config" />
-    <None Include="Views\YetaWF_Identity_ForgotPassword.cshtml" />
-    <None Include="Views\YetaWF_Identity_ForgotPassword_Partial.cshtml" />
-    <Content Include="Views\YetaWF_Identity_TwoStepDone.cshtml" />
-    <Content Include="Views\YetaWF_Identity_LoginDirect.cshtml" />
-    <None Include="Views\YetaWF_Identity_Need2FADisplay.cshtml" />
-    <None Include="Views\YetaWF_Identity_SelectTwoStepSetup.cshtml" />
-    <None Include="Views\YetaWF_Identity_SelectTwoStepAuth.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\CoreComponents\Core\Core.csproj">
@@ -323,22 +328,8 @@
     <Content Include="Addons\_Templates\ResourceUsers\ResourceUsers.css" />
     <Content Include="Addons\_Templates\UserRoles\filelistCSS.txt" />
     <Content Include="Addons\_Templates\UserRoles\Roles.css" />
-    <Content Include="Views\YetaWF_Identity_AuthorizationBrowse.cshtml" />
-    <Content Include="Views\YetaWF_Identity_AuthorizationBrowse_Partial.cshtml" />
-    <Content Include="Views\YetaWF_Identity_LoginSelector.cshtml">
-      <SubType>Code</SubType>
-    </Content>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\YetaWF_Identity_Login.cshtml" />
-    <Content Include="Views\YetaWF_Identity_Login_Partial.cshtml" />
-    <Content Include="Views\YetaWF_Identity_Register.cshtml" />
-    <Content Include="Views\YetaWF_Identity_Register_Partial.cshtml" />
-    <Content Include="Views\YetaWF_Identity_SetupExternalAccount.cshtml" />
-    <Content Include="Views\YetaWF_Identity_SetupExternalAccount_Partial.cshtml" />
-    <Content Include="Views\YetaWF_Identity_OwinEdit.cshtml" />
-    <Content Include="Views\YetaWF_Identity_OwinEdit_Partial.cshtml" />
-    <Content Include="Views\YetaWF_Identity_LoginSelector_Partial.cshtml" />
     <Content Include="packages.config">
       <SubType>Designer</SubType>
     </Content>
