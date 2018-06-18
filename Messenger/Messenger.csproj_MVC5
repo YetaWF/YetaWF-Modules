@@ -61,6 +61,8 @@
     <Compile Include="Startup\AreaRegistration.cs" />
     <Compile Include="Startup\Info.cs" />
     <Compile Include="Startup\Messaging.cs" />
+    <Compile Include="Views\HTML\SiteAnnouncement.cs" />
+    <Compile Include="Views\HTML\Messaging.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Addons\_Templates\Messages\Messages.scss" />
@@ -74,10 +76,6 @@
     <Content Include="Addons\_Main\Icons\offline.png" />
     <Content Include="Addons\_Main\Icons\online.png" />
     <Content Include="Addons\_Templates\Messages\filelistJS.txt" />
-    <None Include="Views\YetaWF_Messenger_Messaging.cshtml" />
-    <None Include="Views\YetaWF_Messenger_Messaging_Partial.cshtml" />
-    <None Include="Views\YetaWF_Messenger_SiteAnnouncement.cshtml" />
-    <None Include="Views\YetaWF_Messenger_SiteAnnouncement_Partial.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\CoreComponents\Core\Core.csproj">
@@ -163,9 +161,7 @@
     <Content Include="Addons\_Addons\SkinSiteAnnouncements\filelistJS.txt" />
     <Content Include="Addons\_SiteTemplates\YetaWF_Messenger.txt" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Views\Shared\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />

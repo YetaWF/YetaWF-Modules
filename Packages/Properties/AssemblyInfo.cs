@@ -24,4 +24,6 @@ using YetaWF.PackageAttributes;
     "https://yetawf.com/Documentation/YetaWF/Packages#Release%20Notice",
     "https://yetawf.com/Documentation/YetaWF/Packages#License")]
 
+[assembly: RequiresPackage("YetaWF.ComponentsHTML")]
+
 // Uninstalling a template does not physically remove modules on pages that are removed (even if their use count reaches 0)

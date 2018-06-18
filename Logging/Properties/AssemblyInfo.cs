@@ -24,4 +24,6 @@ using YetaWF.Core.Packages;
     "https://yetawf.com/Documentation/YetaWF/Logging#Release%20Notice",
     "https://yetawf.com/Documentation/YetaWF/Logging#License")]
 
+[assembly: RequiresPackage("YetaWF.ComponentsHTML")]
+
 [assembly: ServiceLevel(ServiceLevelEnum.ServiceProvider)]

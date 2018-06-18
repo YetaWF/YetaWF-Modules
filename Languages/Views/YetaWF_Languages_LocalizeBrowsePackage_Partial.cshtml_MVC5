@@ -1,4 +1,0 @@
-@*Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Languages#License*@
-@inherits YetaWF.Core.Views.RazorView<YetaWF.Modules.Languages.Modules.LocalizeBrowsePackageModule, YetaWF.Modules.Languages.Controllers.LocalizeBrowsePackageModuleController.BrowseModel>
-@using YetaWF.Core.Components
-

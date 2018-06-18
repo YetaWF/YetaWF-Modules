@@ -1,4 +1,0 @@
-﻿@*Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Menus#License*@
-@inherits YetaWF.Core.Views.RazorView<YetaWF.Modules.Menus.Modules.MenuModule, YetaWF.Modules.Menus.Controllers.MenuModuleController.MenuModel>
-@using YetaWF.Core.Components
-@Html.ForDisplayAsync(Model, "Menu").Result

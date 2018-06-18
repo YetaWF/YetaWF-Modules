@@ -82,6 +82,9 @@
     <Compile Include="Modules\MainMenu.cs" />
     <Compile Include="Modules\MenuEdit.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Views\HTML\MenuEdit.cs" />
+    <Compile Include="Views\HTML\Menu.cs" />
+    <Compile Include="Views\HTML\MainMenu.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Addons\_Addons\MenuEdit\filelistJS.txt" />
@@ -121,10 +124,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\YetaWF_Menus_MenuEdit.cshtml" />
-    <Content Include="Views\YetaWF_Menus_MenuEdit_Partial.cshtml" />
-    <Content Include="Views\YetaWF_Menus_MainMenu.cshtml" />
-    <Content Include="Views\YetaWF_Menus_Menu.cshtml" />
     <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>
