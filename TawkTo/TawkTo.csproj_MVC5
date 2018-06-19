@@ -47,6 +47,7 @@
     <Compile Include="Startup\AreaRegistration.cs" />
     <Compile Include="Startup\Info.cs" />
     <Compile Include="Startup\SkinTawkTo.cs" />
+    <Compile Include="Views\HTML\SkinTawkTo.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Addons\_Main\filelistCSS.txt" />
@@ -63,7 +64,6 @@
     <None Include="packages.config" />
     <None Include="tsconfig.json" />
     <None Include="tslint.json" />
-    <None Include="Views\YetaWF_TawkTo_SkinTawkTo.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\CoreComponents\Core\Core.csproj">
@@ -81,6 +81,10 @@
     <ProjectReference Include="..\..\..\DataProvider\SQL\SQL.csproj">
       <Project>{6a90eab3-a9e4-4a2c-90d9-145859790c46}</Project>
       <Name>SQL</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ComponentsHTML\ComponentsHTML.csproj">
+      <Project>{ab7bfd23-57e8-40a6-85ea-9d4b3206075f}</Project>
+      <Name>ComponentsHTML</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
@@ -116,7 +120,9 @@
   <ItemGroup>
     <TypeScriptCompile Include="Addons\_Addons\SkinTawkTo\SkinTawkTo.tsx" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="HTML\" />
+  </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />

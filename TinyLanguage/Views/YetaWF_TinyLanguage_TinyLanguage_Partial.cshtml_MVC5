@@ -1,4 +1,0 @@
-﻿@*Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/TinyLanguage#License*@
-@inherits YetaWF.Core.Views.RazorView<YetaWF.Modules.TinyLanguage.Modules.TinyLanguageModule, YetaWF.Modules.TinyLanguage.Controllers.TinyLanguageModuleController.EditModel>
-@using YetaWF.Core.Components
-@Html.ForEditContainerAsync(Model, "PropertyList").Result

@@ -1,5 +1,0 @@
-@*Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Visitors#License*@
-@inherits YetaWF.Core.Views.RazorView<YetaWF.Modules.Visitors.Modules.SkinVisitorModule, YetaWF.Modules.Visitors.Controllers.SkinVisitorModuleController.DisplayModel>
-@using (CreateFormAsync("SkinVisitor_Partial", HtmlAttributes: new { data_track = Model.TrackClickUrl }).Result) {
-    @PartialForm(UsePartialFormCss: false)
-}

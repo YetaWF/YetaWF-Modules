@@ -24,8 +24,8 @@ using YetaWF.PackageAttributes;
     "https://yetawf.com/Documentation/YetaWF/Scheduler#Release%20Notice",
     "https://yetawf.com/Documentation/YetaWF/Scheduler#License")]
 
-[assembly: ServiceLevel(ServiceLevelEnum.SchedulerProvider)]
-
 [assembly: RequiresPackage("YetaWF.ComponentsHTML")]
+
+[assembly: ServiceLevel(ServiceLevelEnum.SchedulerProvider)]
 
 // RESEARCH: http://haacked.com/archive/2011/10/16/the-dangers-of-implementing-recurring-background-tasks-in-asp-net.aspx/

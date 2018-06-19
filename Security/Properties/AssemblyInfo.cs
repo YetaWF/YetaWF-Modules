@@ -24,3 +24,4 @@ using YetaWF.Core.Packages;
     "https://yetawf.com/Documentation/YetaWF/Security#Release%20Notice",
     "https://yetawf.com/Documentation/YetaWF/Security#License")]
 
+[assembly: RequiresPackage("YetaWF.ComponentsHTML")]

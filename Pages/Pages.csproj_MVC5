@@ -95,6 +95,7 @@
     <Compile Include="Models\PageDefinitionDataProvider.cs" />
     <Compile Include="Modules\PagesBrowse.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Views\HTML\SkinScrollToTop.cs" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
@@ -139,7 +140,6 @@
     <Content Include="Addons\_Templates\ListOfLocalPages\ListOfLocalPages.js" />
     <None Include="app.config" />
     <None Include="packages.config" />
-    <None Include="Views\YetaWF_Pages_SkinScrollToTop.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

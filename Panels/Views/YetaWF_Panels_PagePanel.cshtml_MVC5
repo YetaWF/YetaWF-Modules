@@ -1,3 +1,0 @@
-@*Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Panels#License*@
-@inherits YetaWF.Core.Views.RazorView<YetaWF.Modules.Panels.Modules.PagePanelModule, YetaWF.Modules.Panels.Controllers.PagePanelModuleController.ModelDisplay>
-@Html.ForDisplayAsync(Model, "PanelInfo").Result

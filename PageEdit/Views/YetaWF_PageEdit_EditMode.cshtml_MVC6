@@ -1,3 +1,0 @@
-﻿@*Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/PageEdit#License*@
-@inherits YetaWF.Core.Views.RazorView<YetaWF.Modules.PageEdit.Modules.EditModeModule, YetaWF.Modules.PageEdit.Controllers.EditModeModuleController.Model>
-<!-- -->

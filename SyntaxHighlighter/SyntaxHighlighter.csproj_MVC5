@@ -213,7 +213,6 @@
   <ItemGroup>
     <Folder Include="Addons\_Addons\SkinHighlightJS\src\" />
     <Folder Include="Addons\_Main\Images\" />
-    <Folder Include="Views\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

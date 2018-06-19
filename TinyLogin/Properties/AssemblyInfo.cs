@@ -23,3 +23,5 @@ using YetaWF.PackageAttributes;
     "https://YetaWF.com/Documentation/YetaWF/Support",
     "https://yetawf.com/Documentation/YetaWF/TinyLogin#Release%20Notice",
     "https://yetawf.com/Documentation/YetaWF/TinyLogin#License")]
+
+[assembly: RequiresPackage("YetaWF.ComponentsHTML")]
