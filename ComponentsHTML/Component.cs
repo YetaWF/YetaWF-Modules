@@ -105,7 +105,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         }
         private void AddValidation(YTagBuilder tagBuilder) {
 #if MVC6
-            ModelMetadata metadata = metadataProvider.GetMetadataForProperty(Container, PropertyName); 
+            ModelMetadata metadata = metadataProvider.GetMetadataForProperty(Container, PropertyName);
 #else
             ModelMetadata metadata = ModelMetadataProviders.Current.GetMetadataForProperty(() => PropData.GetPropertyValue<object>(Container), Container.GetType(), PropertyName);
 #endif
@@ -141,11 +141,13 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             // component, so we need to prefix the child component field name with the parent field name
             if (!IsContainerComponent)
                 fieldName = FieldName + "." + fieldName;
+            if (!string.IsNullOrWhiteSpace(FieldNamePrefix))
+                fieldName = FieldNamePrefix + "." + fieldName;
             return HtmlHelper.ValidationMessage(fieldName);
         }
         internal static IHtmlString ValidationMessage(
 #if MVC6
-            IHtmlHelper htmlHelper, 
+            IHtmlHelper htmlHelper,
 #else
             HtmlHelper htmlHelper,
 #endif

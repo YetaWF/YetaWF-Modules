@@ -36,7 +36,7 @@ namespace YetaWF.Modules.SiteProperties.Views {
 
             hb.Append($@"
 {await HtmlHelper.ForDisplayAsync(model, nameof(model.SiteHost))}
-{await HtmlHelper.ForEditContainerAsync(model.Site, "PropertyList")}");
+{await HtmlHelper.ForEditAsync(model, nameof(model.Site))}");
             return hb.ToYHtmlString();
         }
     }
