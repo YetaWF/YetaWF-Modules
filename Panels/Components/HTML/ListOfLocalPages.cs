@@ -153,13 +153,12 @@ namespace YetaWF.Modules.Panels.Components {
     <div id='{DivId}_exp' style='display:none'>
         {await ModuleActionHelper.BuiltIn_CollapseAction(this.__ResStr("lblAllPages", "All Pages"), this.__ResStr("ttAllPages", "Shows all designed pages available in the site - Select a page to update the dropdown list above, so the page can be added to the list of pages")).RenderAsNormalLinkAsync() }");
 
-            //$$bool header = PropData.GetAdditionalAttributeValue("Header", true);
             grid = new GridModel() {
                 GridDef = new GridDefinition() {
                     AjaxUrl = YetaWFManager.UrlFor(typeof(ListOfLocalPagesController), nameof(ListOfLocalPagesController.ListOfLocalPagesBrowse_GridData)),
                     Id = DivId + "_listall",
                     RecordType = typeof(GridAllEntry),
-                    ShowHeader = header,
+                    ShowHeader = true,
                 }
             };
 
@@ -169,7 +168,7 @@ namespace YetaWF.Modules.Panels.Components {
     </div>
 </div>
 <script>
-    YetaWF_Basics.ExpandCollapse('{DivId}', '{DivId}_coll', '{DivId}_exp');");        
+    YetaWF_Basics.ExpandCollapse('{DivId}', '{DivId}_coll', '{DivId}_exp');");
 
             using (DocumentReady(hb, DivId)) {
         hb.Append($@"

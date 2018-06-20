@@ -58,8 +58,8 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
             hb.Append(await HtmlHelper.ForEditComponentAsync(Container, PropertyName, null, "Hidden", HtmlAttributes: HtmlAttributes, Validation: Validation));
 
-            YTagBuilder tag = new YTagBuilder("input"); 
-                FieldSetup(tag, FieldType.Anonymous); 
+            YTagBuilder tag = new YTagBuilder("input");
+                FieldSetup(tag, FieldType.Anonymous);
                 tag.Attributes.Add("name", "dtpicker");
 
                 // handle min/max date
@@ -88,6 +88,10 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             hb.Append(Manager.ScriptManager.AddNow(sb.ToString()).ToString());
 
             return hb.ToYHtmlString();
+        }
+        public async Task<string> RenderJavascriptAsync(string gridId, string elemVarName) {
+            await IncludeAsync();
+            return string.Format("(new YetaWF_ComponentsHTML.DateTimeComponent()).renderjqGridFilter('{0}', {1});", gridId, elemVarName);
         }
     }
 }

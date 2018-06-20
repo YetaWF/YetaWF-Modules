@@ -124,13 +124,12 @@ namespace YetaWF.Modules.ModuleEdit.Components {
     <div id='{DivId}_exp' style='display:none'>
         {await ModuleActionHelper.BuiltIn_CollapseAction(this.__ResStr("lblAllUserNames", "All User Names"), this.__ResStr("ttAllUserNames", "Shows all user names available on this site - Select a user name to update the text box above, so the user name can be added to the list of user names - Click to close")).RenderAsNormalLinkAsync() }");
 
-            //$$bool header = PropData.GetAdditionalAttributeValue("Header", true);
             grid = new GridModel() {
                 GridDef = new GridDefinition() {
                     AjaxUrl = YetaWFManager.UrlFor(typeof(AllowedUsersController), nameof(AllowedUsersController.AllowedUsersBrowse_GridData)),
                     Id = DivId + "_listall",
                     RecordType = typeof(GridAllEntry),
-                    ShowHeader = header,
+                    ShowHeader = true,
                 }
             };
 
@@ -140,7 +139,7 @@ namespace YetaWF.Modules.ModuleEdit.Components {
     </div>
 </div>
 <script>
-    YetaWF_Basics.ExpandCollapse('{DivId}', '{DivId}_coll', '{DivId}_exp');");        
+    YetaWF_Basics.ExpandCollapse('{DivId}', '{DivId}_coll', '{DivId}_exp');");
 
             using (DocumentReady(hb, DivId)) {
         hb.Append($@"

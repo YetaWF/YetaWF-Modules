@@ -128,9 +128,11 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                     } else if (prop.PropInfo.PropertyType == typeof(DateTime) || prop.PropInfo.PropertyType == typeof(DateTime?)) {
                         sb.Append("searchoptions:{sopt:['ge','le'],dataInit: function(elem) {");
                         if (prop.UIHint == "DateTime") {
-                            ;//$$$  sb.Append(await DateTimeHelper.RenderDateTimeJavascriptAsync(gridDef.Id, "elem"));
+                            DateTimeEditComponent dateTimeComp = new Components.DateTimeEditComponent();
+                            sb.Append(await dateTimeComp.RenderJavascriptAsync(gridDef.Id, "elem"));
                         } else if (prop.UIHint == "Date") {
-                            ;//$$$ sb.Append(await DateHelper.RenderDateJavascriptAsync(gridDef.Id, "elem"));
+                            DateEditComponent dateTimeComp = new Components.DateEditComponent();
+                            sb.Append(await dateTimeComp.RenderJavascriptAsync(gridDef.Id, "elem"));
                         } else {
                             throw new InternalError("Need DateTime or Date UIHint for DateTime data");
                         }

@@ -54,9 +54,10 @@ namespace YetaWF.Modules.ImageRepository.Components {
                 <p>{YetaWFManager.HtmlEncode(this.__ResStr("noFlash", "Flash Not Installed"))}</p>
             </div>
             <script>
-//$$$document ready
-                swfobject.embedSWF('{YetaWFManager.JserEncode(info.MakeFlashUrl(model))}', '{objId}', '{info.PreviewWidth}', '{info.PreviewHeight}', '9.0.0', false,
-                    null, {{ wmode: 'transparent', allowScriptAccess: 'true', quality:'high' }} );
+                {BeginDocumentReady()}
+                    swfobject.embedSWF('{YetaWFManager.JserEncode(info.MakeFlashUrl(model))}', '{objId}', '{info.PreviewWidth}', '{info.PreviewHeight}', '9.0.0', false,
+                        null, {{ wmode: 'transparent', allowScriptAccess: 'true', quality:'high' }} );
+                {EndDocumentReady()}
             </script>
         </div>
     </div>

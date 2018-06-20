@@ -19,6 +19,7 @@
     margin-right: .5ch; }
   .yt_propertylist .t_vals,
   .yt_propertylisttabbed .t_vals {
+    min-height: 1em;
     overflow: hidden; }
   .yt_propertylist .t_labels.t_fillerbelow,
   .yt_propertylisttabbed .t_labels.t_fillerbelow {

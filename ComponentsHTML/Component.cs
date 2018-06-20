@@ -145,7 +145,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                 fieldName = FieldNamePrefix + "." + fieldName;
             return HtmlHelper.ValidationMessage(fieldName);
         }
-        internal static IHtmlString ValidationMessage(
+        public static IHtmlString ValidationMessage(
 #if MVC6
             IHtmlHelper htmlHelper,
 #else
@@ -185,6 +185,16 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         protected JSDocumentReady DocumentReady(HtmlBuilder hb) {
             hb.Append("YetaWF_Basics.whenReadyOnce.push({callback: function ($tag) {\n");
             return new JSDocumentReady(hb);
+        }
+        protected string BeginDocumentReady(string id = null) {
+            if (string.IsNullOrWhiteSpace(id)) {
+                return "YetaWF_Basics.whenReadyOnce.push({callback: function ($tag) {\n";
+            } else {
+                return $@"YetaWF_Basics.whenReadyOnce.push({{callback: function ($tag) {{ if ($tag.has('#{id}').length > 0) {{\n";
+            }
+        }
+        protected string EndDocumentReady() {
+            return "}";
         }
     }
 }
