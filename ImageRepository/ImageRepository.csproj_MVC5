@@ -75,12 +75,12 @@
     <Compile Include="ComponentsHTML\ImageSelection\ImageSelection.cs" />
     <Compile Include="ComponentsHTML\ImageSelection\ImageSelectionInfo.cs" />
     <Compile Include="Controllers\CKEBrowseFlash.cs" />
-    <Compile Include="Controllers\Shared\FlashSelectionController.cs" />
+    <Compile Include="Controllers\Support\FlashSelectionController.cs" />
     <Compile Include="Startup\Info.cs" />
     <Compile Include="Startup\AreaRegistration.cs" />
     <Compile Include="Controllers\CKEBrowsePage.cs" />
     <Compile Include="Controllers\CKEBrowseImages.cs" />
-    <Compile Include="Controllers\Shared\ImageSelection.cs" />
+    <Compile Include="Controllers\Support\ImageSelection.cs" />
     <Compile Include="Controllers\TemplateTest.cs" />
     <Compile Include="Modules\CKEBrowsePage.cs" />
     <Compile Include="Modules\CKEBrowseFlash.cs" />

@@ -74,7 +74,7 @@
     <Compile Include="Components\HTML\AllowedRoles.cs" />
     <Compile Include="Components\HTML\AllowedUsers.cs" />
     <Compile Include="Controllers\ControlPanelConfig.cs" />
-    <Compile Include="Controllers\Shared\AllowedUsers.cs" />
+    <Compile Include="Controllers\Support\AllowedUsers.cs" />
     <Compile Include="Models\ControlPanelConfigDataProvider.cs" />
     <Compile Include="Models\FileDataProvider.cs" />
     <Compile Include="Models\SQLDataProvider.cs" />
