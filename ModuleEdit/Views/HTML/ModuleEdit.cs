@@ -36,7 +36,7 @@ namespace YetaWF.Modules.Modules.Views {
         public async Task<YHtmlString> RenderPartialViewAsync(ModuleEditModule module, ModuleEditModuleController.ModuleEditModel model) {
 
             HtmlBuilder hb = new HtmlBuilder();
-            hb.Append(await HtmlHelper.ForEditContainerAsync(model.Module, "PropertyList"));
+            hb.Append(await HtmlHelper.ForEditAsync(model, nameof(model.Module)));
             return hb.ToYHtmlString();
 
         }

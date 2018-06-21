@@ -17,9 +17,8 @@ namespace YetaWF.Modules.SiteProperties.Controllers {
         public LockedStatusModuleController() { }
 
         [AllowGet]
-        public async Task<ActionResult> LockedStatus() {
+        public ActionResult LockedStatus() {
             if (Manager.CurrentSite.IsLockedAny) {
-                await Manager.AddOnManager.AddAddOnNamedAsync(AreaRegistration.CurrentPackage.Domain, AreaRegistration.CurrentPackage.Product, "LockedStatus");
                 return View(new Model());
             } else
                 return new EmptyResult();

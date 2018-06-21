@@ -17,17 +17,15 @@ namespace YetaWF.Modules.Pages.Views {
         public override Package GetPackage() { return AreaRegistration.CurrentPackage; }
         public override string GetViewName() { return ViewName; }
 
-        public async Task<YHtmlString> RenderViewAsync(SkinScrollToTopModule module, SkinScrollToTopModuleController.DisplayModel model) {
+        public Task<YHtmlString> RenderViewAsync(SkinScrollToTopModule module, SkinScrollToTopModuleController.DisplayModel model) {
 
             HtmlBuilder hb = new HtmlBuilder();
-
-            await Manager.AddOnManager.AddAddOnNamedAsync(Package.Domain, Package.Product, ViewName);
 
             hb.Append($@"
 <script>
     YetaWF_Pages_ScrollUp.init();
 </script>");
-            return hb.ToYHtmlString();
+            return Task.FromResult(hb.ToYHtmlString());
         }
     }
 }

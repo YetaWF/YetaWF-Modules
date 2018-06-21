@@ -64,6 +64,7 @@ namespace YetaWF.Modules.ComponentsHTML {
                 //await Manager.ScriptManager.AddKendoUICoreJsFile("kendo.popup.min.js"); // is now a prereq of kendo.window (2017.2.621)
                 await Manager.ScriptManager.AddKendoUICoreJsFileAsync("kendo.menu.min.js");
 
+                //$$$ That's not good here
                 await Manager.AddOnManager.AddAddOnNamedAsync(Package.Domain, Package.Product, "ModuleMenu"); // module menu support
                 await Manager.AddOnManager.AddAddOnNamedAsync(Package.Domain, Package.Product, "Modules");// various module support
                 await Manager.AddOnManager.AddAddOnGlobalAsync("jquery.com", "jquery-color");// for color change when entering module edit menu

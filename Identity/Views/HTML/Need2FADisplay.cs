@@ -22,8 +22,6 @@ namespace YetaWF.Modules.Identity.Views {
 
             HtmlBuilder hb = new HtmlBuilder();
 
-            await Manager.AddOnManager.AddAddOnNamedAsync(Package.Domain, Package.Product, "Need2FADisplay");
-
             hb.Append($@"
 <div class='t_message'>
     {HE(this.__ResStr("need2FA", "Please set up Two-Step Authentication for full access to this site - "))}

@@ -19,11 +19,10 @@ namespace YetaWF.Modules.Basics.Views {
         public override Package GetPackage() { return AreaRegistration.CurrentPackage; }
         public override string GetViewName() { return ViewName; }
 
-        public async Task<YHtmlString> RenderViewAsync(AlertDisplayModule module, AlertDisplayModuleController.DisplayModel model) {
+        public Task<YHtmlString> RenderViewAsync(AlertDisplayModule module, AlertDisplayModuleController.DisplayModel model) {
 
             HtmlBuilder hb = new HtmlBuilder();
 
-            await Manager.AddOnManager.AddAddOnNamedAsync(Package.Domain, Package.Product, "AlertDisplay");
             string rootUrl = VersionManager.GetAddOnPackageUrl(Package.Domain, Package.Product);
             string closeUrl = Manager.GetCDNUrl(System.IO.Path.Combine(rootUrl, "Icons", "Close.png"));
 
@@ -42,7 +41,7 @@ namespace YetaWF.Modules.Basics.Views {
     {model.Message}
 </div>");
 
-            return hb.ToYHtmlString();
+            return Task.FromResult(hb.ToYHtmlString());
         }
     }
 }

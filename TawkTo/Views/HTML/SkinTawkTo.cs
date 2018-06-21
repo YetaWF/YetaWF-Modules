@@ -22,7 +22,6 @@ namespace YetaWF.Modules.TawkTo.Views {
 
             HtmlBuilder hb = new HtmlBuilder();
 
-            Manager.AddOnManager.AddAddOnNamedAsync(Package.Domain, Package.Product, ViewName).Wait();
             ConfigData config = ConfigDataProvider.GetConfigAsync().Result;
 
             hb.Append($@"

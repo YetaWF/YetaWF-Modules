@@ -109,7 +109,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                 selectLang = MultiString.DefaultLanguage;
 
             // generate a textbox for the currently selected language
-            component.HtmlAttributes.Add("class", "yt_multistring_text yt_text_base " + extraCssClass);
+            component.HtmlAttributes.Add("class", $"yt_multistring_text yt_text_base {Forms.CssFormNoSubmit} " + extraCssClass);
             hb.Append(await TextEditComponent.RenderTextAsync(component, model[selectLang], null));
 
             // generate a dropdownlist for the available languages
