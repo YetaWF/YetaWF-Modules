@@ -12,7 +12,7 @@ using YetaWF.Core.Modules;
 using YetaWF.Core.Packages;
 using YetaWF.Core.Skins;
 using YetaWF.Core.Support;
-using YetaWF.Modules.ImageRepository.Controllers.Shared;
+using YetaWF.Modules.ImageRepository.Controllers;
 using YetaWF.Modules.ImageRepository.Support;
 
 namespace YetaWF.Modules.ImageRepository.Components {

@@ -1,4 +1,6 @@
-﻿using System;
+﻿/* Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/ComponentsHTML#License */
+
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using YetaWF.Core.Components;
@@ -50,7 +52,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
             List<string> categories = GetCategories(model);
             if (categories.Count <= 1) // if there is only one tab, show as regular property list
-                return await RenderPropertyListAsync(model, null, readOnly);
+                return await RenderPropertyListAsync(model, readOnly);
 
             HtmlBuilder hb = new HtmlBuilder();
             Type modelType = model.GetType();
@@ -58,7 +60,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             ClassData classData = ObjectSupport.GetClassData(modelType);
             RenderHeader(hb, classData);
 
-            string divId = Manager.UniqueId(); //$$$ string.IsNullOrWhiteSpace(id) ? Manager.UniqueId() : id;
+            string divId = Manager.UniqueId();
             hb.Append("<div id='{0}' class='yt_propertylisttabbed {1}'>", divId, readOnly ? "t_display" : "t_edit");
 
             hb.Append(await RenderHiddenAsync(model));
@@ -101,8 +103,8 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             return hb.ToYHtmlString();
         }
 
-        public async Task<YHtmlString> RenderPropertyListAsync(object model, string id, bool ReadOnly) {//$$$ id
-             
+        public async Task<YHtmlString> RenderPropertyListAsync(object model, bool ReadOnly) {
+
             HtmlBuilder hb = new HtmlBuilder();
             Type modelType = model.GetType();
             ClassData classData = ObjectSupport.GetClassData(modelType);
@@ -113,7 +115,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
             // property table
             HtmlBuilder hbProps = new HtmlBuilder();
-            string divId = string.IsNullOrWhiteSpace(id) ? Manager.UniqueId() : id;
+            string divId = Manager.UniqueId();
             hbProps.Append("<div id='{0}' class='yt_propertylist t_table {1}'>", divId, ReadOnly ? "t_display" : "t_edit");
             hbProps.Append(await RenderListAsync(model, null, showVariables, ReadOnly));
             hbProps.Append("</div>");

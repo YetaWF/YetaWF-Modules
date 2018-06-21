@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿/* Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Messenger#License */
+
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using YetaWF.Core.Components;
 using YetaWF.Core.Localize;
@@ -73,7 +75,7 @@ namespace YetaWF.Modules.Messenger.Components {
 </div>
 <div class='yt_messenger_messages t_display' id='{DivId}_none' style='display:none'>
     {YetaWFManager.HtmlEncode(this.__ResStr("none", "(None)"))}
-</div> 
+</div>
 <script>
     var out = document.getElementById('{DivId}');
     out.style.display = '{(model.Messages.Count == 0 ? "none": "")}';

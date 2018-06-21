@@ -1,4 +1,6 @@
-﻿using System.Threading.Tasks;
+﻿/* Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/ComponentsHTML#License */
+
+using System.Threading.Tasks;
 using YetaWF.Core.Packages;
 using System.Collections.Generic;
 using YetaWF.Core.Components;
@@ -32,20 +34,11 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         /// <summary>
         /// Include required JavaScript, Css files when displaying a component, for all components in this package.
         /// </summary>
-        public override async Task IncludeStandardDisplayAsync() {
-            await Manager.AddOnManager.AddAddOnGlobalAsync("jquery.com", "jquery");
-            await Manager.AddOnManager.AddAddOnGlobalAsync("jqueryui.com", "jqueryui");
-        }
+        public override Task IncludeStandardDisplayAsync() { return Task.CompletedTask; }
         /// <summary>
         /// Include required JavaScript, Css files when editing a component, for all components in this package.
         /// </summary>
-        public override async Task IncludeStandardEditAsync() {
-            await Manager.AddOnManager.AddAddOnGlobalAsync("bassistance.de", "jquery-validation");
-            await Manager.AddOnManager.AddAddOnGlobalAsync("microsoft.com", "jquery_unobtrusive_validation");
-            await Manager.AddOnManager.AddAddOnGlobalAsync("gist.github.com_remi_957732", "jquery_validate_hooks");
-            await Manager.AddOnManager.AddAddOnGlobalAsync("jquery.com", "jquery");
-            await Manager.AddOnManager.AddAddOnGlobalAsync("jqueryui.com", "jqueryui");
-        }
+        public override Task IncludeStandardEditAsync() { return Task.CompletedTask; }
 
         /// <summary>
         /// Include required JavaScript, Css files for this component.

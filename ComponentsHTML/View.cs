@@ -1,4 +1,6 @@
-﻿using System;
+﻿/* Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/ComponentsHTML#License */
+
+using System;
 using YetaWF.Core.Components;
 using YetaWF.Core.Support;
 #if MVC6

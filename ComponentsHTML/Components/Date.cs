@@ -1,4 +1,6 @@
-﻿using System;
+﻿/* Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/ComponentsHTML#License */
+
+using System;
 using System.Threading.Tasks;
 using YetaWF.Core.Components;
 using YetaWF.Core.Localize;
@@ -90,7 +92,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         }
         public async Task<string> RenderJavascriptAsync(string gridId, string elemVarName) {
             await IncludeAsync();
-            return string.Format("(new YetaWF_ComponentsHTML.DateTimeComponent()).renderjqGridFilter('{0}', {1});", gridId, elemVarName);
+            return string.Format("(new YetaWF_ComponentsHTML.DateComponent()).renderjqGridFilter('{0}', {1});", gridId, elemVarName);
         }
     }
 }

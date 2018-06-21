@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿/* Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/ComponentsHTML#License */
+
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using YetaWF.Core.Components;
 using YetaWF.Core.Models;
@@ -51,7 +53,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         /// <param name="htmlHelper"></param>
         /// <returns></returns>
         private string GetSettingsSaveColumnWidthsUrl() {
-            return YetaWFManager.UrlFor(typeof(YetaWF.Core.Controllers.Shared.GridHelperController), nameof(YetaWF.Core.Controllers.Shared.GridHelperController.GridSaveColumnWidths));
+            return YetaWFManager.UrlFor(typeof(YetaWF.Core.Controllers.GridHelperController), nameof(YetaWF.Core.Controllers.GridHelperController.GridSaveColumnWidths));
         }
     }
 }

@@ -1,4 +1,6 @@
-﻿using System.Threading.Tasks;
+﻿/* Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/ImageRepository#License */
+
+using System.Threading.Tasks;
 using YetaWF.Core.Components;
 using YetaWF.Core.Extensions;
 using YetaWF.Core.Localize;

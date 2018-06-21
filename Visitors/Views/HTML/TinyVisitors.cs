@@ -1,4 +1,6 @@
-﻿using System.Threading.Tasks;
+﻿/* Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Visitors#License */
+
+using System.Threading.Tasks;
 using YetaWF.Core.Addons;
 using YetaWF.Core.Components;
 using YetaWF.Core.Localize;

@@ -1,4 +1,6 @@
-﻿using System.Threading.Tasks;
+﻿/* Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Panels#License */
+
+using System.Threading.Tasks;
 using YetaWF.Core.Addons;
 using YetaWF.Core.Components;
 using YetaWF.Core.Localize;
@@ -50,7 +52,7 @@ namespace YetaWF.Modules.Panels.Components {
                 string actionLinkClass = "yaction-link";
                 if (entry.Popup) {
                     actionLinkClass += string.Format(" {0}", Basics.CssPopupLink);
-                    await Manager.AddOnManager.AddAddOnNamedAsync("YetaWF", "Core", "Popups");
+                    await Manager.AddOnManager.AddAddOnNamedAsync("YetaWF", "Core", "Popups");//$$$ should be renamed
                 }
 
                 hb.Append($@"

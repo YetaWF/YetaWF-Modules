@@ -1,4 +1,6 @@
-﻿using System;
+﻿/* Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Blog#License */
+
+using System;
 using System.Security.Cryptography;
 using System.Text;
 using YetaWF.Core.Support;

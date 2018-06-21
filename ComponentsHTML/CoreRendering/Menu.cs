@@ -1,4 +1,6 @@
-﻿using System.Threading.Tasks;
+﻿/* Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/ComponentsHTML#License */
+
+using System.Threading.Tasks;
 using YetaWF.Core.Components;
 using YetaWF.Core.Modules;
 using YetaWF.Core.Support;
@@ -19,7 +21,7 @@ namespace YetaWF.Modules.ComponentsHTML {
 #else
             HtmlHelper HtmlHelper = null
 #endif
-            ) 
+            )
         {
             return RenderMenuAsync(menu, id, cssClass, RenderEngine: ModuleAction.RenderEngineEnum.BootstrapSmartMenu, HtmlHelper: HtmlHelper);
         }
@@ -29,7 +31,7 @@ namespace YetaWF.Modules.ComponentsHTML {
 #else
             HtmlHelper HtmlHelper = null
 #endif
-            ) 
+            )
         {
 
             HtmlBuilder hb = new HtmlBuilder();

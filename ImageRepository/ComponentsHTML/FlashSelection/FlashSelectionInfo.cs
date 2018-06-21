@@ -2,17 +2,15 @@
 
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Threading.Tasks;
 using YetaWF.Core.Components;
-using YetaWF.Core.IO;
 using YetaWF.Core.Localize;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Modules;
 using YetaWF.Core.Packages;
 using YetaWF.Core.Skins;
 using YetaWF.Core.Support;
-using YetaWF.Modules.ImageRepository.Controllers.Shared;
+using YetaWF.Modules.ImageRepository.Controllers;
 using YetaWF.Modules.ImageRepository.Support;
 
 namespace YetaWF.Modules.ImageRepository.Components {

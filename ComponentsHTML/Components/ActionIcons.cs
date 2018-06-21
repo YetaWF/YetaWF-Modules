@@ -1,4 +1,6 @@
-﻿using System.Threading.Tasks;
+﻿/* Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/ComponentsHTML#License */
+
+using System.Threading.Tasks;
 using YetaWF.Core;
 using YetaWF.Core.Components;
 using YetaWF.Core.Localize;
@@ -37,7 +39,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                         string id = Manager.UniqueId();
                         string idButton = id + "_btn";
                         string idMenu = id + "_menu";
-                        hb.Append("<button id=\"{0}\" type=\"button\" class=\"yt_actionicons\">{1}<span class=\"k-icon k-i-arrow-60-down\"></span></button>", 
+                        hb.Append("<button id=\"{0}\" type=\"button\" class=\"yt_actionicons\">{1}<span class=\"k-icon k-i-arrow-60-down\"></span></button>",
                             idButton, this.__ResStr("dropdownText", "Manage"));
                         hb.Append(await CoreRendering.RenderMenuAsync(model, idMenu, Globals.CssGridActionMenu, HtmlHelper: HtmlHelper));
 

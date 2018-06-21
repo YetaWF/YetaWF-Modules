@@ -1,4 +1,6 @@
-﻿using System;
+﻿/* Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/ComponentsHTML#License */
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -30,7 +32,6 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                     readOnly = true;
                 } else {
                     readOnly = false;
-                    //$$$ model.FieldPrefix;
                 }
 
                 // determine record type (could use reflection, but this is easier)

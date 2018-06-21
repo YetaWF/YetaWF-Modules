@@ -1,4 +1,6 @@
-﻿using System.Threading.Tasks;
+﻿/* Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/ComponentsHTML#License */
+
+using System.Threading.Tasks;
 using YetaWF.Core.Addons;
 using YetaWF.Core.Models;
 using YetaWF.Core.Support;
@@ -13,7 +15,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         public static YHtmlString RenderTabStripEnd(string controlId) {
             return new YHtmlString("</ul>");
         }
-        public static YHtmlString RenderTabPaneStart(string controlId, int panel, string cssClass = "") {//$$$
+        public static YHtmlString RenderTabPaneStart(string controlId, int panel, string cssClass = "") {
             if (!string.IsNullOrWhiteSpace(cssClass)) cssClass = " " + cssClass;
             return new YHtmlString($"<div class='t_table t_cat t_tabpanel{cssClass}' data-tab='{controlId}_tab{panel}' id='{controlId}_tab{panel}'>");
         }

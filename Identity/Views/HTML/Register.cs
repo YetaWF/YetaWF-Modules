@@ -1,5 +1,6 @@
-﻿using System.Threading.Tasks;
-using YetaWF.Core;
+﻿/* Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Identity#License */
+
+using System.Threading.Tasks;
 using YetaWF.Core.Components;
 using YetaWF.Core.Localize;
 using YetaWF.Core.Packages;

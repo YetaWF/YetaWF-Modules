@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿/* Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Languages#License */
+
+using System.Collections.Generic;
 using System.IO;
 using System.Net;
 using System.Text;

@@ -1,13 +1,12 @@
-﻿using System.Threading.Tasks;
-using YetaWF.Core;
+﻿/* Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Identity#License */
+
+using System.Threading.Tasks;
 using YetaWF.Core.Components;
-using YetaWF.Core.Localize;
 using YetaWF.Core.Modules;
 using YetaWF.Core.Packages;
 using YetaWF.Core.Support;
 using YetaWF.Modules.ComponentsHTML.Components;
 using YetaWF.Modules.Identity.Controllers;
-using YetaWF.Modules.Identity.Modules;
 
 namespace YetaWF.Modules.Identity.Views {
 
