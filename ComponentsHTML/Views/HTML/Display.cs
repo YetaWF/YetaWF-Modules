@@ -22,7 +22,7 @@ namespace YetaWF.Modules.ComponentsHTML.Views {
 
             HtmlBuilder hb = new HtmlBuilder();
 
-            string actionName = HtmlHelper.ViewContext.RouteData.Values["action"] + "_Partial";
+            string actionName = (string)HtmlHelper.ViewContext.RouteData.Values["action"];
 
             hb.Append($@"
 {await RenderBeginFormAsync(ActionName: actionName)}

@@ -1,16 +1,19 @@
 ﻿/* Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/ComponentsHTML#License */
 
-using System.Threading.Tasks;
-using YetaWF.Core.Packages;
-using System.Collections.Generic;
-using YetaWF.Core.Components;
-using YetaWF.Core.Support;
-using YetaWF.Core.Localize;
-using System.Linq;
 using System;
-using YetaWF.Core.Models.Attributes;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using YetaWF.Core.Components;
+using YetaWF.Core.Localize;
 using YetaWF.Core.Models;
+using YetaWF.Core.Models.Attributes;
+using YetaWF.Core.Packages;
+using YetaWF.Core.Support;
 #if MVC6
+using Microsoft.AspNetCore.Mvc.ModelBinding;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.Mvc.ViewFeatures;
 #else
 using System.Web;
 using System.Web.Mvc;
@@ -92,27 +95,31 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 #endif
             if (HtmlHelper.ViewData.ModelState.TryGetValue(FieldName, out modelState)) {
                 if (modelState.Errors.Count > 0)
+#if MVC6
+                    return Microsoft.AspNetCore.Mvc.ViewFeatures.HtmlHelper.ValidationInputCssClassName;
+#else
                     return HtmlHelper.ValidationInputCssClassName;
+#endif
             }
             return null;
         }
         private void AddValidation(YTagBuilder tagBuilder) {
 #if MVC6
-            ModelMetadata metadata = metadataProvider.GetMetadataForProperty(Container, PropertyName);
+
+            //$$$ ModelMetadata metadata = metadataProvider.GetMetadataForProperty(Container, PropertyName);
+            //$$$$$ NEEDS WORK
+            IDictionary<string, object> attrs = new Dictionary<string, object>();
 #else
             ModelMetadata metadata = ModelMetadataProviders.Current.GetMetadataForProperty(() => PropData.GetPropertyValue<object>(Container), Container.GetType(), PropertyName);
-#endif
             IDictionary<string, object> attrs = HtmlHelper.GetUnobtrusiveValidationAttributes(PropertyName, metadata);
-
-#if MVC6
-            //$$$ ??
-#else
-            // mvc5 won't render a field with the same name. This conflicts with out notion of nested components,
+            // mvc5 won't render a field with the same name. This conflicts with our notion of nested components,
             // which easily can have fields with the same name, except the prefix is different. But mvc5 doesn't know about our prefix
+#endif
+
             FormContext formContext = HtmlHelper.ViewContext.FormContext;
             formContext.RenderedField(FieldName, false);
             formContext.RenderedField(PropertyName, false);
-#endif
+
             tagBuilder.MergeAttributes(attrs, replaceExisting: false);
 
             // patch up auto-generated "required" validation (added by MVC) and rename our own customrequired validation to required
@@ -129,16 +136,16 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             if (tagBuilder.Attributes.ContainsKey("data-val-date"))
                 tagBuilder.Attributes["data-val-date"] = this.__ResStr("valDate", "Please enter a valid date for field '{0}'", PropData.GetCaption(Container));
         }
-        protected IHtmlString ValidationMessage(string fieldName) {
+        protected YHtmlString ValidationMessage(string fieldName) {
             // ValidationMessage is always called for a child component within the context of the PARENT
             // component, so we need to prefix the child component field name with the parent field name
             if (!IsContainerComponent)
                 fieldName = FieldName + "." + fieldName;
             if (!string.IsNullOrWhiteSpace(FieldNamePrefix))
                 fieldName = FieldNamePrefix + "." + fieldName;
-            return HtmlHelper.ValidationMessage(fieldName);
+            return new YHtmlString(HtmlHelper.ValidationMessage(fieldName));
         }
-        public static IHtmlString ValidationMessage(
+        public static YHtmlString ValidationMessage(
 #if MVC6
             IHtmlHelper htmlHelper,
 #else
@@ -149,7 +156,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             // component, so we need to prefix the child component field name with the parent field name
             if (!string.IsNullOrEmpty(containerFieldPrefix))
                 fieldName = containerFieldPrefix + "." + fieldName;
-            return htmlHelper.ValidationMessage(fieldName);
+            return new YHtmlString(htmlHelper.ValidationMessage(fieldName));
         }
 
         protected class JSDocumentReady : IDisposable {

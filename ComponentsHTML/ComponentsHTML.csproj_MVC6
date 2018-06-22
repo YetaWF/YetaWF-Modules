@@ -3,10 +3,10 @@
   <PropertyGroup>
     <Version>3.0.0.0</Version>
     <TargetFramework>netcoreapp2.0</TargetFramework>
-    
+
     <DefineConstants>$(DefineConstants);MVC6;NETCOREAPP</DefineConstants>
-    <AssemblyName>YetaWF.ImageRepository</AssemblyName>
-    <PackageId>ImageRepository</PackageId>
+    <AssemblyName>YetaWF.ComponentsHTML</AssemblyName>
+    <PackageId>ComponentsHTML</PackageId>
     <GenerateAssemblyTitleAttribute>false</GenerateAssemblyTitleAttribute>
     <GenerateAssemblyDescriptionAttribute>false</GenerateAssemblyDescriptionAttribute>
     <GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
@@ -14,13 +14,12 @@
     <GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
     <GenerateAssemblyCopyrightAttribute>false</GenerateAssemblyCopyrightAttribute>
     <GenerateAssemblyVersionAttribute>false</GenerateAssemblyVersionAttribute>
-    <RootNamespace>YetaWF.Modules.ImageRepository</RootNamespace>
+    <RootNamespace>YetaWF.Modules.ComponentsHTML</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\..\..\CoreComponents\Core\Core.csproj" />
     <ProjectReference Include="..\..\..\DataProvider\ModuleDefinition\ModuleDefinition.csproj" />
-    <ProjectReference Include="..\ComponentsHTML\ComponentsHTML.csproj" />
   </ItemGroup>
 
   <ItemGroup>

@@ -55,12 +55,7 @@ namespace YetaWF.Modules.PageEdit.Views {
             if (model.EditAuthorized) {
                 hb.Append($@"
     {PropertyListComponentBase.RenderTabPaneStart(DivId, panel, "t_addNewPage")}
-        {await RenderBeginFormAsync()}
-            {await PartialForm(async () => new YHtmlString(await HtmlHelper.ForEditContainerAsync(model.AddNewPageModel, "PropertyList")), UsePartialFormCss: false)}
-            <div class='t_detailsbuttons yNoPrint'>
-                <input type='submit' value='{this.__ResStr("addNewPage", "Add")}' />
-            </div>
-        {await RenderEndFormAsync()}
+        {await HtmlHelper.ForViewAsync($"{Package.Domain}_{Package.Product}_AddNewPage", module, model.AddNewPageModel)}
     {PropertyListComponentBase.RenderTabPaneEnd(DivId, panel)}");
                 ++panel;
             }
@@ -70,59 +65,38 @@ namespace YetaWF.Modules.PageEdit.Views {
 
                     hb.Append($@"
     {PropertyListComponentBase.RenderTabPaneStart(DivId, panel, "t_addNewMod")}
-        {await RenderBeginFormAsync()}
-            {await PartialForm(async () => new YHtmlString(await HtmlHelper.ForEditContainerAsync(model.AddNewModel, "PropertyList")), UsePartialFormCss: false)}
-            <div class='t_detailsbuttons yNoPrint'>
-                <input type='submit' value='{this.__ResStr("addNewModule", "Add")}' />
-            </div>
-        {await RenderEndFormAsync()}
+        {await HtmlHelper.ForViewAsync($"{Package.Domain}_{Package.Product}_AddNewModule", module, model.AddNewModel)}
     {PropertyListComponentBase.RenderTabPaneEnd(DivId, panel)}");
                 ++panel;
 
                     hb.Append($@"
     {PropertyListComponentBase.RenderTabPaneStart(DivId, panel, "t_addExistingMod")}
-        {await RenderBeginFormAsync()}
-            {await PartialForm(async () => new YHtmlString(await HtmlHelper.ForEditContainerAsync(model.AddExistingModel, "PropertyList")), UsePartialFormCss: false)}
-            <div class='t_detailsbuttons yNoPrint'>
-                <input type='submit' value='{this.__ResStr("addOldModule", "Add")}' />
-            </div>
-        {await RenderEndFormAsync()}
+        {await HtmlHelper.ForViewAsync($"{Package.Domain}_{Package.Product}_AddExistingModule", module, model.AddExistingModel)}
     {PropertyListComponentBase.RenderTabPaneEnd(DivId, panel)}");
                     ++panel;
 
                     hb.Append($@"
     {PropertyListComponentBase.RenderTabPaneStart(DivId, panel, "t_importPage")}
-        {await RenderBeginFormAsync()}
-            {await PartialForm(async () => new YHtmlString(await HtmlHelper.ForEditContainerAsync(model.ImportPageModel, "PropertyList")), UsePartialFormCss: false)}
-        {await RenderEndFormAsync()}
+        {await HtmlHelper.ForViewAsync($"{Package.Domain}_{Package.Product}_ImportPage", module, model.ImportPageModel)}
     {PropertyListComponentBase.RenderTabPaneEnd(DivId, panel)}");
                     ++panel;
 
                     hb.Append($@"
     {PropertyListComponentBase.RenderTabPaneStart(DivId, panel, "t_importMod")}
-        {await RenderBeginFormAsync()}
-            {await PartialForm(async () => new YHtmlString(await HtmlHelper.ForEditContainerAsync(model.ImportModuleModel, "PropertyList")), UsePartialFormCss: false)}
-        {await RenderEndFormAsync()}
+        {await HtmlHelper.ForViewAsync($"{Package.Domain}_{Package.Product}_ImportModule", module, model.ImportModuleModel)}
     {PropertyListComponentBase.RenderTabPaneEnd(DivId, panel)}");
                     ++panel;
 
                     hb.Append($@"
     {PropertyListComponentBase.RenderTabPaneStart(DivId, panel, "t_addSkins")}
-        {await RenderBeginFormAsync()}
-            {await PartialForm(async () => new YHtmlString(await HtmlHelper.ForEditContainerAsync(model.SkinSelectionModel, "PropertyList")), UsePartialFormCss: false)}
-            <div class='t_detailsbuttons yNoPrint'>
-                <input type='submit' value='{this.__ResStr("saveSkins", "Save & Display")}' />
-            </div>
-        {await RenderEndFormAsync()}
+        {await HtmlHelper.ForViewAsync($"{Package.Domain}_{Package.Product}_SkinSelection", module, model.SkinSelectionModel)}
     {PropertyListComponentBase.RenderTabPaneEnd(DivId, panel)}");
                     ++panel;
                 }
 
                 hb.Append($@"
     {PropertyListComponentBase.RenderTabPaneStart(DivId, panel, "t_Login")}
-        {await RenderBeginFormAsync()}
-            {await PartialForm(async () => new YHtmlString(await HtmlHelper.ForEditContainerAsync(model.LoginSiteSelectionModel, "PropertyList")), UsePartialFormCss: false)}
-        {await RenderEndFormAsync()}
+        {await HtmlHelper.ForViewAsync($"{Package.Domain}_{Package.Product}_LoginSiteSelection", module, model.LoginSiteSelectionModel)}
     {PropertyListComponentBase.RenderTabPaneEnd(DivId, panel)}");
                 ++panel;
             }

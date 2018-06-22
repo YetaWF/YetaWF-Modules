@@ -7,6 +7,7 @@ using YetaWF.Core.Support;
 using System.Collections.Generic;
 using System;
 #if MVC6
+using Microsoft.AspNetCore.Mvc.Rendering;
 #else
 using System.Web.Mvc;
 #endif

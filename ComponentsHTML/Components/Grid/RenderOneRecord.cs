@@ -6,6 +6,7 @@ using YetaWF.Core.Support;
 using YetaWF.Core.Components;
 using System.Threading.Tasks;
 #if MVC6
+using Microsoft.AspNetCore.Mvc.Rendering;
 #else
 using System.Web.Mvc;
 #endif
@@ -16,7 +17,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
         internal static async Task<YHtmlString> RenderOneRecordAsync(
 #if MVC6
-            IHtmlHelper htmlHelper, 
+            IHtmlHelper htmlHelper,
 #else
             HtmlHelper htmlHelper,
 #endif
