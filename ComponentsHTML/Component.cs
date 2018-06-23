@@ -14,6 +14,7 @@ using YetaWF.Core.Support;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
+using Microsoft.AspNetCore.Mvc.ViewFeatures.Internal;
 #else
 using System.Web;
 using System.Web.Mvc;
@@ -105,22 +106,19 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         }
         private void AddValidation(YTagBuilder tagBuilder) {
 #if MVC6
-
-            //$$$ ModelMetadata metadata = metadataProvider.GetMetadataForProperty(Container, PropertyName);
-            //$$$$$ NEEDS WORK
-            IDictionary<string, object> attrs = new Dictionary<string, object>();
+            ModelExplorer modelExplorer = ExpressionMetadataProvider.FromStringExpression(FieldName, HtmlHelper.ViewData, HtmlHelper.MetadataProvider);
+            ValidationHtmlAttributeProvider valHtmlAttrProvider = (ValidationHtmlAttributeProvider)YetaWFManager.ServiceProvider.GetService(typeof(ValidationHtmlAttributeProvider));
+            valHtmlAttrProvider.AddAndTrackValidationAttributes(HtmlHelper.ViewContext, modelExplorer, FieldName, tagBuilder.Attributes);
 #else
             ModelMetadata metadata = ModelMetadataProviders.Current.GetMetadataForProperty(() => PropData.GetPropertyValue<object>(Container), Container.GetType(), PropertyName);
             IDictionary<string, object> attrs = HtmlHelper.GetUnobtrusiveValidationAttributes(PropertyName, metadata);
-            // mvc5 won't render a field with the same name. This conflicts with our notion of nested components,
-            // which easily can have fields with the same name, except the prefix is different. But mvc5 doesn't know about our prefix
+            tagBuilder.MergeAttributes(attrs, replaceExisting: false);
 #endif
-
+            // mvc won't render a field with the same name. This conflicts with our notion of nested components,
+            // which easily can have fields with the same name, except the prefix is different. But mvc5 doesn't know about our prefix
             FormContext formContext = HtmlHelper.ViewContext.FormContext;
             formContext.RenderedField(FieldName, false);
             formContext.RenderedField(PropertyName, false);
-
-            tagBuilder.MergeAttributes(attrs, replaceExisting: false);
 
             // patch up auto-generated "required" validation (added by MVC) and rename our own customrequired validation to required
             if (tagBuilder.Attributes.ContainsKey("data-val-required")) {

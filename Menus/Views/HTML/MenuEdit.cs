@@ -22,7 +22,7 @@ namespace YetaWF.Modules.Menus.Views {
 
             HtmlBuilder hb = new HtmlBuilder();
 
-            await Manager.AddOnManager.AddAddOnGlobalAsync("jsTree.com", "jsTree");//$$$should be part of MenuEdit filelist.js
+            await Manager.AddOnManager.AddAddOnGlobalAsync("jsTree.com", "jsTree");
 
             string treeId = DivId;
             string detailsId = UniqueId();

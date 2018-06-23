@@ -32,9 +32,6 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             int propCount = 0;
             foreach (PropertyListComponentBase.PropertyListEntry prop in props) {
 
-                //$$using (new HtmlHelperExtender.ControlInfoOverride(meta.AdditionalValues)) { //?? functionality still needed?
-                //uses Manager.ControlInfoOverrides
-
                 string output = "";
                 if (propCount > 0)
                     hb.Append(",");
