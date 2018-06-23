@@ -110,14 +110,6 @@
           <Value>
             <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
               <Properties>
-                <Name Value="changeMod" />
-                <Text Value="Change &quot;Module Settings&quot; to configure the page ear displayed" />
-              </Properties>
-            </Object>
-          </Value>
-          <Value>
-            <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
-              <Properties>
                 <Name Value="modName" />
                 <Text Value="Page Ear" />
               </Properties>

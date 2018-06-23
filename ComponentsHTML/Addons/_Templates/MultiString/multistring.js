@@ -157,36 +157,23 @@ _YetaWF_MultiString.getSelLanguage = function($ms) {
 
 // selection change (put language specific text into text box)
 $(document).on("change", '.yt_multistring select', function () {
+
     var $ms = _YetaWF_MultiString.getMS(this);
     var sel = this.selectedIndex;
-    if (sel > 0) {
-        // switched to something other than default. This is only OK if we already have text for the default language
-        var $hidval = _YetaWF_MultiString.getHidden($ms, 0);// default language
-        var text = $hidval.val();
-        if (text.trim() == '') {
-            if (YLocs.YetaWF_ComponentsHTML.NeedDefaultText == undefined) throw "YLocs.YetaWF_ComponentsHTML.NeedDefaultText missing";/*DEBUG*/
-            this.selectedIndex = 0;
-            var $text = $('input.yt_multistring_text', $ms);
-            $text.eq(0).focus();
-            Y_Alert(YLocs.YetaWF_ComponentsHTML.NeedDefaultText);
-            return;
-        }
+
+    var $hidval = _YetaWF_MultiString.getHidden($ms, sel);
+    var $text = _YetaWF_MultiString.getText($ms);
+    var newText = $hidval.val();
+    if (newText.length == 0 && sel > 0) {
+        var $dftlhidval = _YetaWF_MultiString.getHidden($ms, 0);// default language
+        var newText = $dftlhidval.val();
         $hidval = _YetaWF_MultiString.getHidden($ms, sel);
-        var $text = _YetaWF_MultiString.getText($ms);
-        var newText = $hidval.val();
-        if (newText.trim() == '')
-            newText = text;// use default text
-        $text.val(newText);
+        $hidval.val(newText);
     }
-    if (sel == 0) {
-        var $hidval = _YetaWF_MultiString.getHidden($ms, sel);
-        var $text = _YetaWF_MultiString.getText($ms);
-        var newText = $hidval.val();
-        $text.val(newText);
-    }
+    $text.val(newText);
 });
 // textbox change (save text in language specific hidden fields)
-$(document).on("change blur", '.yt_multistring_text', function () {
+$(document).on("input", '.yt_multistring_text', function () {
 
     var $ms = _YetaWF_MultiString.getMS(this);
     var sel = _YetaWF_MultiString.getSelLanguage($ms);
@@ -194,6 +181,28 @@ $(document).on("change blur", '.yt_multistring_text', function () {
     var newText = $(this).val();
     var $hidden = _YetaWF_MultiString.getHidden($ms, sel);
     $hidden.val(newText);
+
+    if (sel == 0)
+        YetaWF_TemplateDropDownList.Enable(_YetaWF_MultiString.getDropDown($ms), newText.length > 0);
+});
+$(document).on("blur", '.yt_multistring_text', function () {
+
+    var $ms = _YetaWF_MultiString.getMS(this);
+    var sel = _YetaWF_MultiString.getSelLanguage($ms);
+
+    if (sel == 0) {
+        var $hidval = _YetaWF_MultiString.getHidden($ms, 0);
+        var text = $hidval.val();
+        if (text.length == 0) {
+            // the default text was cleared, clear all languages
+            var count = YLocs.YetaWF_ComponentsHTML.Languages.length;
+            for (var index = 0; index < count ; ++index) {
+                var lang = YLocs.YetaWF_ComponentsHTML.Languages[index];
+                $hidval = _YetaWF_MultiString.getHidden($ms, index);
+                $hidval.val('');
+            }
+        }
+    }
 });
 
 

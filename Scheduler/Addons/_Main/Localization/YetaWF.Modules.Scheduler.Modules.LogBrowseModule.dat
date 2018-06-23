@@ -94,14 +94,6 @@
           <Value>
             <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
               <Properties>
-                <Name Value="disabled" />
-                <Text Value="The Scheduler is disabled." />
-              </Properties>
-            </Object>
-          </Value>
-          <Value>
-            <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
-              <Properties>
                 <Name Value="dlZipLegend" />
                 <Text Value="Downloads the scheduler log file as a ZIP file" />
               </Properties>
@@ -160,38 +152,6 @@
               <Properties>
                 <Name Value="downloadTT" />
                 <Text Value="Download the scheduler log file" />
-              </Properties>
-            </Object>
-          </Value>
-          <Value>
-            <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
-              <Properties>
-                <Name Value="enabled" />
-                <Text Value="The Scheduler is enabled." />
-              </Properties>
-            </Object>
-          </Value>
-          <Value>
-            <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
-              <Properties>
-                <Name Value="file" />
-                <Text Value="The scheduler log is a flat file. Online browsing is not available." />
-              </Properties>
-            </Object>
-          </Value>
-          <Value>
-            <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
-              <Properties>
-                <Name Value="fileNA" />
-                <Text Value="The scheduler log is not available. Scheduler logging has not been started." />
-              </Properties>
-            </Object>
-          </Value>
-          <Value>
-            <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
-              <Properties>
-                <Name Value="fileNA2" />
-                <Text Value="This may be caused by a missing log folder (\Data\DataFolder\YetaWF_Scheduler) or due to permissions issues writing to the folder." />
               </Properties>
             </Object>
           </Value>

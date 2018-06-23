@@ -62,22 +62,6 @@
           <Value>
             <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
               <Properties>
-                <Name Value="blog404_1" />
-                <Text Value="It looks like something went wrong. There is no such page on this site." />
-              </Properties>
-            </Object>
-          </Value>
-          <Value>
-            <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
-              <Properties>
-                <Name Value="blog404_2" />
-                <Text Value="Maybe we haven't created this page yet. Or maybe there is a typo in the page Url." />
-              </Properties>
-            </Object>
-          </Value>
-          <Value>
-            <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
-              <Properties>
                 <Name Value="displayLegend" />
                 <Text Value="Displays an existing blog entry" />
               </Properties>

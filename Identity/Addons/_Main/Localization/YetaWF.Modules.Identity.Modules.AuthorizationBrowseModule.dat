@@ -118,14 +118,6 @@
           <Value>
             <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
               <Properties>
-                <Name Value="explain" />
-                <Text Value="&lt;p&gt;Resources are predefined by modules and packages. If a resource is deleted that is defined by an existing package, it is restored to its default state.&lt;/p&gt;" />
-              </Properties>
-            </Object>
-          </Value>
-          <Value>
-            <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
-              <Properties>
                 <Name Value="modName" />
                 <Text Value="Resources" />
               </Properties>

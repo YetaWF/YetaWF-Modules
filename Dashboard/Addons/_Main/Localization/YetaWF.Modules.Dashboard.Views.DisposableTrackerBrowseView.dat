@@ -1,0 +1,34 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!--YetaWF.Core.Localize.LocalizationData-->
+<Object Type="YetaWF.Core.Localize.LocalizationData" Assembly="YetaWF.Core">
+  <Properties>
+    <Comment />
+    <Classes>
+      <Object Type="YetaWF.Core.Serializers.SerializableList`1[[YetaWF.Core.Localize.LocalizationData+ClassData, YetaWF.Core]]" Assembly="YetaWF.Core">
+        <Properties />
+        <List />
+      </Object>
+    </Classes>
+    <Enums>
+      <Object Type="YetaWF.Core.Serializers.SerializableList`1[[YetaWF.Core.Localize.LocalizationData+EnumData, YetaWF.Core]]" Assembly="YetaWF.Core">
+        <Properties />
+        <List />
+      </Object>
+    </Enums>
+    <Strings>
+      <Object Type="YetaWF.Core.Serializers.SerializableList`1[[YetaWF.Core.Localize.LocalizationData+StringData, YetaWF.Core]]" Assembly="YetaWF.Core">
+        <Properties />
+        <List>
+          <Value>
+            <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
+              <Properties>
+                <Name Value="explain" />
+                <Text Value="&lt;p&gt;Disposable objects implement the IDisposable interface. Their creation/destruction is tracked using the DisposableTracker class. If objects are shown they should be checked as they are possible leaks.Some classes deliberately create near permanent disposable object. These are SiteDefinition, LanguageData and LogRecordDataProvider.More than one object may be created per class. Only objects with explicit calls to DisposableTracker.AddObject/RemoveObject are tracked.&lt;/p&gt;&lt;p&gt;Tracking is enabled/disabled in the site's Appsettings.json file using &quot;P:YetaWF_Core:DisposableTracker&quot; set to true or false.&lt;/p&gt;" />
+              </Properties>
+            </Object>
+          </Value>
+        </List>
+      </Object>
+    </Strings>
+  </Properties>
+</Object>

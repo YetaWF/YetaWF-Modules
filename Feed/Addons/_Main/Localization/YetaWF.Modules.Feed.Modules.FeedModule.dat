@@ -137,14 +137,6 @@
               </Properties>
             </Object>
           </Value>
-          <Value>
-            <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
-              <Properties>
-                <Name Value="sep" />
-                <Text Value=" | " />
-              </Properties>
-            </Object>
-          </Value>
         </List>
       </Object>
     </Strings>

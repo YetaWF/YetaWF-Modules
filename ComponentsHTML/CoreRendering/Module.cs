@@ -97,17 +97,69 @@ namespace YetaWF.Modules.ComponentsHTML {
             return hb.ToYHtmlString();
         }
 
-        public Task<YHtmlString> RenderModuleActionAsync(ModuleAction action, ModuleAction.RenderModeEnum mode, string id,
-                bool NewWindow = false, bool Popup = false, bool PopupEdit = false, bool Post = false, bool Nothing = false, bool OuterWindow = false) {
-            return CoreRendering.RenderActionAsync(action, mode, id, NewWindow: NewWindow, Popup: Popup, PopupEdit: PopupEdit, Post: Post, Nothing: Nothing, OuterWindow: OuterWindow);
+        public async Task<YHtmlString> RenderModuleActionAsync(ModuleAction action, RenderModeEnum mode, string id) {
+            return await RenderActionAsync(action, mode, id);
         }
+
         /// <summary>
         /// Render a module action.
         /// </summary>
-        public static async Task<YHtmlString> RenderActionAsync(ModuleAction action, RenderModeEnum mode, string id, RenderEngineEnum RenderEngine = RenderEngineEnum.JqueryMenu, bool HasSubmenu = false,
-            bool NewWindow = false, bool Popup = false, bool PopupEdit = false, bool Post = false, bool Nothing = false, bool OuterWindow = false, int BootstrapSmartMenuLevel = 0) {
+        public static async Task<YHtmlString> RenderActionAsync(ModuleAction action, RenderModeEnum mode, string id,
+                RenderEngineEnum RenderEngine = RenderEngineEnum.JqueryMenu, int BootstrapSmartMenuLevel = 0, bool HasSubmenu = false) {
+
+            // check if we're in the right mode
+            if (!await action.RendersSomethingAsync()) return new YHtmlString("");
 
             await Manager.AddOnManager.AddTemplateFromUIHintAsync("ActionIcons");// this is needed because we're not used by templates
+
+            if (!string.IsNullOrWhiteSpace(action.ConfirmationText) && (action.Style != ActionStyleEnum.Post && action.Style != ActionStyleEnum.Nothing))
+                throw new InternalError("When using ConfirmationText, the Style property must be set to Post");
+            if (!string.IsNullOrWhiteSpace(action.PleaseWaitText) && (action.Style != ActionStyleEnum.Normal && action.Style != ActionStyleEnum.Post))
+                throw new InternalError("When using PleaseWaitText, the Style property must be set to Normal or Post");
+            if (action.CookieAsDoneSignal && action.Style != ActionStyleEnum.Normal)
+                throw new InternalError("When using CookieAsDoneSignal, the Style property must be set to Normal");
+
+            ActionStyleEnum style = action.Style;
+            if (style == ActionStyleEnum.OuterWindow)
+                if (!Manager.IsInPopup)
+                    style = ActionStyleEnum.Normal;
+
+            if (style == ActionStyleEnum.Popup || style == ActionStyleEnum.PopupEdit)
+                if (Manager.IsInPopup)
+                    style = ActionStyleEnum.NewWindow;
+
+            if (style == ActionStyleEnum.Popup || style == ActionStyleEnum.PopupEdit || style == ActionStyleEnum.ForcePopup)
+                await Manager.AddOnManager.AddAddOnNamedAsync("YetaWF", "Core", "Popups");// this is needed for popup support //$$$$$this probably needs to move/rename
+
+            bool newWindow = false, outerWindow = false;
+            bool popup = false, popupEdit = false;
+            bool nothing = false, post = false;
+
+            switch (style) {
+                default:
+                case ActionStyleEnum.Normal:
+                    break;
+                case ActionStyleEnum.NewWindow:
+                    newWindow = true;
+                    break;
+                case ActionStyleEnum.Popup:
+                case ActionStyleEnum.ForcePopup:
+                    popup = Manager.CurrentSite.AllowPopups;
+                    break;
+                case ActionStyleEnum.PopupEdit:
+                    popup = Manager.CurrentSite.AllowPopups;
+                    popupEdit = Manager.CurrentSite.AllowPopups;
+                    break;
+                case ActionStyleEnum.OuterWindow:
+                    outerWindow = true;
+                    break;
+                case ActionStyleEnum.Nothing:
+                    nothing = true;
+                    break;
+                case ActionStyleEnum.Post:
+                    post = true;
+                    break;
+            }
 
             YTagBuilder tag = new YTagBuilder("a");
             if (!string.IsNullOrWhiteSpace(action.Tooltip))
@@ -184,23 +236,23 @@ namespace YetaWF.Modules.ComponentsHTML {
             if (action.NeedsModuleContext)
                 tag.Attributes.Add(Basics.CssAddModuleContext, "");
 
-            if (Post)
+            if (post)
                 tag.Attributes.Add(Basics.PostAttr, "");
-            if (action.DontFollow || action.CookieAsDoneSignal || Post || Nothing) {
-                if (!NewWindow)
+            if (action.DontFollow || action.CookieAsDoneSignal || post || nothing) {
+                if (!newWindow)
                     tag.Attributes.Add("rel", "nofollow"); // this is so bots don't follow this assuming it's a simple page (Post actions can't be retrieved with GET/HEAD anyway)
             }
-            if (OuterWindow)
+            if (outerWindow)
                 tag.Attributes.Add(Basics.CssOuterWindow, "");
-            if (!Nothing)
+            if (!nothing)
                 tag.AddCssClass(Manager.AddOnManager.CheckInvokedCssModule(Basics.CssActionLink));
-            if (NewWindow) {
+            if (newWindow) {
                 tag.MergeAttribute("target", "_blank");
                 tag.MergeAttribute("rel", "noopener noreferrer");
             }
-            if (Popup) {
+            if (popup) {
                 tag.AddCssClass(Manager.AddOnManager.CheckInvokedCssModule(Basics.CssPopupLink));
-                if (PopupEdit)
+                if (popupEdit)
                     tag.Attributes.Add(Basics.CssAttrDataSpecialEdit, "");
             }
             if (mode == RenderModeEnum.Button || mode == RenderModeEnum.ButtonIcon)

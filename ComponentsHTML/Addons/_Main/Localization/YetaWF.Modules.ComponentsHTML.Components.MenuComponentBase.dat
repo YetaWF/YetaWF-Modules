@@ -1,0 +1,178 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!--YetaWF.Core.Localize.LocalizationData-->
+<Object Type="YetaWF.Core.Localize.LocalizationData" Assembly="YetaWF.Core">
+  <Properties>
+    <Comment />
+    <Classes>
+      <Object Type="YetaWF.Core.Serializers.SerializableList`1[[YetaWF.Core.Localize.LocalizationData+ClassData, YetaWF.Core]]" Assembly="YetaWF.Core">
+        <Properties />
+        <List />
+      </Object>
+    </Classes>
+    <Enums>
+      <Object Type="YetaWF.Core.Serializers.SerializableList`1[[YetaWF.Core.Localize.LocalizationData+EnumData, YetaWF.Core]]" Assembly="YetaWF.Core">
+        <Properties />
+        <List>
+          <Value>
+            <Object Type="YetaWF.Core.Localize.LocalizationData+EnumData" Assembly="YetaWF.Core">
+              <Properties>
+                <Name Value="YetaWF.Modules.ComponentsHTML.Components.MenuComponentBase+AnimationEnum" />
+                <Entries>
+                  <Object Type="YetaWF.Core.Serializers.SerializableList`1[[YetaWF.Core.Localize.LocalizationData+EnumDataEntry, YetaWF.Core]]" Assembly="YetaWF.Core">
+                    <Properties />
+                    <List>
+                      <Value>
+                        <Object Type="YetaWF.Core.Localize.LocalizationData+EnumDataEntry" Assembly="YetaWF.Core">
+                          <Properties>
+                            <Name Value="SlideUp" />
+                            <Value Value="SlideUp" />
+                            <Caption Value="Slides up" />
+                            <Description />
+                          </Properties>
+                        </Object>
+                      </Value>
+                      <Value>
+                        <Object Type="YetaWF.Core.Localize.LocalizationData+EnumDataEntry" Assembly="YetaWF.Core">
+                          <Properties>
+                            <Name Value="SlideDown" />
+                            <Value Value="SlideDown" />
+                            <Caption Value="Slides down" />
+                            <Description />
+                          </Properties>
+                        </Object>
+                      </Value>
+                      <Value>
+                        <Object Type="YetaWF.Core.Localize.LocalizationData+EnumDataEntry" Assembly="YetaWF.Core">
+                          <Properties>
+                            <Name Value="FadeIn" />
+                            <Value Value="FadeIn" />
+                            <Caption Value="Fades in" />
+                            <Description />
+                          </Properties>
+                        </Object>
+                      </Value>
+                      <Value>
+                        <Object Type="YetaWF.Core.Localize.LocalizationData+EnumDataEntry" Assembly="YetaWF.Core">
+                          <Properties>
+                            <Name Value="ExpandsUp" />
+                            <Value Value="ExpandsUp" />
+                            <Caption Value="Expands up" />
+                            <Description />
+                          </Properties>
+                        </Object>
+                      </Value>
+                      <Value>
+                        <Object Type="YetaWF.Core.Localize.LocalizationData+EnumDataEntry" Assembly="YetaWF.Core">
+                          <Properties>
+                            <Name Value="ExpandsDown" />
+                            <Value Value="ExpandsDown" />
+                            <Caption Value="Expands down" />
+                            <Description />
+                          </Properties>
+                        </Object>
+                      </Value>
+                    </List>
+                  </Object>
+                </Entries>
+              </Properties>
+            </Object>
+          </Value>
+          <Value>
+            <Object Type="YetaWF.Core.Localize.LocalizationData+EnumData" Assembly="YetaWF.Core">
+              <Properties>
+                <Name Value="YetaWF.Modules.ComponentsHTML.Components.MenuComponentBase+DirectionEnum" />
+                <Entries>
+                  <Object Type="YetaWF.Core.Serializers.SerializableList`1[[YetaWF.Core.Localize.LocalizationData+EnumDataEntry, YetaWF.Core]]" Assembly="YetaWF.Core">
+                    <Properties />
+                    <List>
+                      <Value>
+                        <Object Type="YetaWF.Core.Localize.LocalizationData+EnumDataEntry" Assembly="YetaWF.Core">
+                          <Properties>
+                            <Name Value="Bottom" />
+                            <Value Value="Bottom" />
+                            <Caption Value="Opens towards the bottom" />
+                            <Description />
+                          </Properties>
+                        </Object>
+                      </Value>
+                      <Value>
+                        <Object Type="YetaWF.Core.Localize.LocalizationData+EnumDataEntry" Assembly="YetaWF.Core">
+                          <Properties>
+                            <Name Value="Top" />
+                            <Value Value="Top" />
+                            <Caption Value="Opens towards the top" />
+                            <Description />
+                          </Properties>
+                        </Object>
+                      </Value>
+                      <Value>
+                        <Object Type="YetaWF.Core.Localize.LocalizationData+EnumDataEntry" Assembly="YetaWF.Core">
+                          <Properties>
+                            <Name Value="Left" />
+                            <Value Value="Left" />
+                            <Caption Value="Opens towards the left" />
+                            <Description />
+                          </Properties>
+                        </Object>
+                      </Value>
+                      <Value>
+                        <Object Type="YetaWF.Core.Localize.LocalizationData+EnumDataEntry" Assembly="YetaWF.Core">
+                          <Properties>
+                            <Name Value="Right" />
+                            <Value Value="Right" />
+                            <Caption Value="Opens towards the right" />
+                            <Description />
+                          </Properties>
+                        </Object>
+                      </Value>
+                    </List>
+                  </Object>
+                </Entries>
+              </Properties>
+            </Object>
+          </Value>
+          <Value>
+            <Object Type="YetaWF.Core.Localize.LocalizationData+EnumData" Assembly="YetaWF.Core">
+              <Properties>
+                <Name Value="YetaWF.Modules.ComponentsHTML.Components.MenuComponentBase+OrientationEnum" />
+                <Entries>
+                  <Object Type="YetaWF.Core.Serializers.SerializableList`1[[YetaWF.Core.Localize.LocalizationData+EnumDataEntry, YetaWF.Core]]" Assembly="YetaWF.Core">
+                    <Properties />
+                    <List>
+                      <Value>
+                        <Object Type="YetaWF.Core.Localize.LocalizationData+EnumDataEntry" Assembly="YetaWF.Core">
+                          <Properties>
+                            <Name Value="Horizontal" />
+                            <Value Value="Horizontal" />
+                            <Caption Value="Horizontal menu" />
+                            <Description />
+                          </Properties>
+                        </Object>
+                      </Value>
+                      <Value>
+                        <Object Type="YetaWF.Core.Localize.LocalizationData+EnumDataEntry" Assembly="YetaWF.Core">
+                          <Properties>
+                            <Name Value="Vertical" />
+                            <Value Value="Vertical" />
+                            <Caption Value="Vertical menu" />
+                            <Description />
+                          </Properties>
+                        </Object>
+                      </Value>
+                    </List>
+                  </Object>
+                </Entries>
+              </Properties>
+            </Object>
+          </Value>
+        </List>
+      </Object>
+    </Enums>
+    <Strings>
+      <Object Type="YetaWF.Core.Serializers.SerializableList`1[[YetaWF.Core.Localize.LocalizationData+StringData, YetaWF.Core]]" Assembly="YetaWF.Core">
+        <Properties />
+        <List />
+      </Object>
+    </Strings>
+  </Properties>
+</Object>

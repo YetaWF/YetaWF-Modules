@@ -129,7 +129,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                 Dictionary<string, object> htmlAttr = new Dictionary<string, object>();
                 htmlAttr.Add("id", idDD);
                 htmlAttr.Add("class", Forms.CssFormNoSubmit);
-                if (!Manager.CurrentSite.Localization)
+                if (!Manager.CurrentSite.Localization || string.IsNullOrEmpty(model.DefaultText))
                     htmlAttr.Add("disabled", "disabled");
                 hb.Append(await component.HtmlHelper.ForEditAsync(msUI, nameof(MultiStringUI.Language), HtmlAttributes: htmlAttr, Validation: false));
             }

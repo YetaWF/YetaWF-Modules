@@ -12,6 +12,8 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
     public abstract partial class PropertyListComponentBase {
 
+        private static string __ResStr(string name, string defaultValue, params object[] parms) { return ResourceAccess.GetResourceString(typeof(PropertyListComponentBase), name, defaultValue, parms); }
+
         private static void RenderHeader(HtmlBuilder hb, ClassData classData) {
             if (!string.IsNullOrWhiteSpace(classData.Header)) {
                 hb.Append("<div class='y_header'>");
@@ -51,7 +53,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                 bool labelDone = false;
                 YHtmlString shtmlDisp = null;
                 if (property.Restricted) {
-                    shtmlDisp = new YHtmlString(this.__ResStr("demo", "This property is not available in Demo Mode"));
+                    shtmlDisp = new YHtmlString(__ResStr("demo", "This property is not available in Demo Mode"));
                 } else if (readOnly || !property.Editable) {
                     shtmlDisp = new YHtmlString((await HtmlHelper.ForDisplayAsync(model, property.Name)).ToString());
                     string s = shtmlDisp.ToString().Trim();

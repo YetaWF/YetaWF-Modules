@@ -75,30 +75,6 @@
               </Properties>
             </Object>
           </Value>
-          <Value>
-            <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
-              <Properties>
-                <Name Value="multiMode" />
-                <Text Value="There are multiple active SMS processors - there should only be one." />
-              </Properties>
-            </Object>
-          </Value>
-          <Value>
-            <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
-              <Properties>
-                <Name Value="noMode" />
-                <Text Value="There is no active SMS processor - It is still possible to send a message to an email address, instead of a phone number." />
-              </Properties>
-            </Object>
-          </Value>
-          <Value>
-            <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
-              <Properties>
-                <Name Value="testMode" />
-                <Text Value="The {0} SMS processor is in TEST/Sandbox mode - messages are simulated." />
-              </Properties>
-            </Object>
-          </Value>
         </List>
       </Object>
     </Strings>

@@ -22,22 +22,6 @@
           <Value>
             <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
               <Properties>
-                <Name Value="btnSave" />
-                <Text Value="Register" />
-              </Properties>
-            </Object>
-          </Value>
-          <Value>
-            <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
-              <Properties>
-                <Name Value="extAcct" />
-                <Text Value="You have successfully authenticated with &lt;strong&gt;{0}&lt;/strong&gt;.&lt;br/&gt;Please enter a user name for this site below and click the Register button to finish logging in." />
-              </Properties>
-            </Object>
-          </Value>
-          <Value>
-            <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
-              <Properties>
                 <Name Value="modSummary" />
                 <Text Value="External user account setup (used with external login providers only)" />
               </Properties>

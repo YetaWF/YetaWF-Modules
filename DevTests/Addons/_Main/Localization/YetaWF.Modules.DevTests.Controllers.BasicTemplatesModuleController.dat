@@ -200,7 +200,7 @@
                         <Object Type="YetaWF.Core.Localize.LocalizationData+PropertyData" Assembly="YetaWF.Core">
                           <Properties>
                             <Name Value="JQueryUISkin" />
-                            <Caption Value="JQueryUISkin" />
+                            <Caption Value="jQueryUISkin" />
                             <Description Value="JQueryUISkin (Required)" />
                             <HelpLink />
                             <TextAbove />

@@ -22,14 +22,6 @@
           <Value>
             <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
               <Properties>
-                <Name Value="lastUpd" />
-                <Text Value="Updated {0}" />
-              </Properties>
-            </Object>
-          </Value>
-          <Value>
-            <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
-              <Properties>
                 <Name Value="modName" />
                 <Text Value="Search Results" />
               </Properties>
@@ -54,46 +46,6 @@
           <Value>
             <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
               <Properties>
-                <Name Value="noDesc" />
-                <Text Value="(No Description)" />
-              </Properties>
-            </Object>
-          </Value>
-          <Value>
-            <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
-              <Properties>
-                <Name Value="noResults" />
-                <Text Value="Your search for &quot;{0}&quot; did not match any documents." />
-              </Properties>
-            </Object>
-          </Value>
-          <Value>
-            <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
-              <Properties>
-                <Name Value="noResultsAdmin" />
-                <Text Value="No search results available." />
-              </Properties>
-            </Object>
-          </Value>
-          <Value>
-            <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
-              <Properties>
-                <Name Value="results" />
-                <Text Value="Your search for &quot;{0}&quot; found {1} matches." />
-              </Properties>
-            </Object>
-          </Value>
-          <Value>
-            <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
-              <Properties>
-                <Name Value="results1" />
-                <Text Value="Your search for &quot;{0}&quot; found {1} match." />
-              </Properties>
-            </Object>
-          </Value>
-          <Value>
-            <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
-              <Properties>
                 <Name Value="resultsLegend" />
                 <Text Value="Displays the search results for &quot;{0}&quot;" />
               </Properties>
@@ -110,22 +62,6 @@
           <Value>
             <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
               <Properties>
-                <Name Value="resultsMore" />
-                <Text Value="Your search for &quot;{0}&quot; found {1} matches - more are available." />
-              </Properties>
-            </Object>
-          </Value>
-          <Value>
-            <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
-              <Properties>
-                <Name Value="resultsMore1" />
-                <Text Value="Your search for &quot;{0}&quot; found {1} match - more are available." />
-              </Properties>
-            </Object>
-          </Value>
-          <Value>
-            <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
-              <Properties>
                 <Name Value="resultsText" />
                 <Text Value="Search Results" />
               </Properties>
@@ -136,14 +72,6 @@
               <Properties>
                 <Name Value="resultsTooltip" />
                 <Text Value="Display the search results for &quot;{0}&quot;" />
-              </Properties>
-            </Object>
-          </Value>
-          <Value>
-            <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
-              <Properties>
-                <Name Value="unavailable" />
-                <Text Value="Search data is not available - See &lt;a href='https://yetawf.com/Documentation/YetaWF/Search' target='_blank' rel='noopener noreferrer'&gt;https://yetawf.com/Documentation/YetaWF/Search&lt;/a&gt; for additional information." />
               </Properties>
             </Object>
           </Value>

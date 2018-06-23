@@ -62,14 +62,6 @@
           <Value>
             <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
               <Properties>
-                <Name Value="text" />
-                <Text Value="Import package data from a zip file (created by Export Data)." />
-              </Properties>
-            </Object>
-          </Value>
-          <Value>
-            <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
-              <Properties>
                 <Name Value="userImports" />
                 <Text Value="The user has permission to import package data" />
               </Properties>

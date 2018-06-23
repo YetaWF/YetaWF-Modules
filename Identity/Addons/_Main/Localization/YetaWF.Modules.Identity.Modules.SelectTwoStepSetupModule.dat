@@ -46,14 +46,6 @@
           <Value>
             <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
               <Properties>
-                <Name Value="noAuthInstalled" />
-                <Text Value="There are no two-step authentication providers installed." />
-              </Properties>
-            </Object>
-          </Value>
-          <Value>
-            <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
-              <Properties>
                 <Name Value="setupLegend" />
                 <Text Value="Setup Two-Step Authentication" />
               </Properties>

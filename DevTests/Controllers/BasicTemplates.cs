@@ -115,26 +115,6 @@ namespace YetaWF.Modules.DevTests.Controllers {
             [UIHint("LongValue"), Required]
             public long LongValue { get; set; }
 
-            [Category("Core"), Caption("MultiString"), Description("MultiString (Required)")]
-            [UIHint("MultiString"), StringLength(200), Required]
-            public MultiString MultiString { get; set; }
-
-            [Category("Core"), Caption("MultiString10"), Description("MultiString10 (Required)")]
-            [UIHint("MultiString10"), StringLength(10), Required]
-            public MultiString MultiString10 { get; set; }
-
-            [Category("Core"), Caption("MultiString20"), Description("MultiString20 (Required)")]
-            [UIHint("MultiString20"), StringLength(20), Required]
-            public MultiString MultiString20 { get; set; }
-
-            [Category("Core"), Caption("MultiString40"), Description("MultiString40 (Required)")]
-            [UIHint("MultiString40"), StringLength(410), Required]
-            public MultiString MultiString40 { get; set; }
-
-            [Category("Core"), Caption("MultiString80"), Description("MultiString80 (Required)")]
-            [UIHint("MultiString80"), StringLength(80), Required]
-            public MultiString MultiString80 { get; set; }
-
             [Category("Core"), Caption("PageSelection"), Description("PageSelection (Required)")]
             [UIHint("PageSelection"), AdditionalMetadata("New", true), Required]
             public Guid PageSelection { get; set; }
@@ -181,12 +161,6 @@ namespace YetaWF.Modules.DevTests.Controllers {
             public string USState { get; set; }
 
             public EditModel() {
-                MultiString = new MultiString();
-                MultiString10 = new MultiString();
-                MultiString20 = new MultiString();
-                MultiString40 = new MultiString();
-                MultiString80 = new MultiString();
-
                 SMTPServer = new SMTPServer();
             }
             public void UpdateData(BasicTemplatesModule module) {

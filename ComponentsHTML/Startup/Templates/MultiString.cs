@@ -19,8 +19,6 @@ namespace YetaWF.Modules.ComponentsHTML.Addons.Templates {
             scripts.AddConfigOption(area, "Localization", manager.CurrentSite.Localization);
 
             scripts.AddLocalization(area, "Languages", YetaWF.Core.Models.MultiString.LanguageIdList);
-            scripts.AddLocalization(area, "NeedDefaultText", this.__ResStr("NeedDefaultText", "Please enter text for the default language before switching to another language."));
-
             return Task.CompletedTask;
         }
     }

@@ -86,14 +86,6 @@
           <Value>
             <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
               <Properties>
-                <Name Value="editMode" />
-                <Text Value="Url contents ({0}) not shown in Site Edit Mode" />
-              </Properties>
-            </Object>
-          </Value>
-          <Value>
-            <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
-              <Properties>
                 <Name Value="IFrameLegend" />
                 <Text Value="Displays a page in an iframe" />
               </Properties>

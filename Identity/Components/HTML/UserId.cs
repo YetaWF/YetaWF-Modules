@@ -115,7 +115,7 @@ namespace YetaWF.Modules.Identity.Components {
             public GridEdit(UserDefinitionDataProvider userDP, int userId) {
                 UserDefinition user = YetaWFManager.Syncify(() => userDP.GetItemByUserIdAsync(userId));
                 if (user == null) {
-                    UserName = this.__ResStr("noUser", "({0})", userId);
+                    UserName = this.__ResStr("unknownUser", "({0})", userId);
                 } else {
                     UserName = user.UserName;
                 }
@@ -135,7 +135,7 @@ namespace YetaWF.Modules.Identity.Components {
         }
         [Trim]
         public class GridAllEntry {
-            
+
             public GridAllEntry() { }
 
             [Caption("Name"), Description("Displays the user's name")]

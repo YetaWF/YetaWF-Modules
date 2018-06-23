@@ -142,14 +142,6 @@
           <Value>
             <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
               <Properties>
-                <Name Value="unavailable" />
-                <Text Value="Visitor information is not available - See &lt;a href='https://yetawf.com/Documentation/YetaWF/Visitors' target='_blank' rel='noopener noreferrer'&gt;https://yetawf.com/Documentation/YetaWF/Visitors&lt;/a&gt; for additional information." />
-              </Properties>
-            </Object>
-          </Value>
-          <Value>
-            <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
-              <Properties>
                 <Name Value="updgAuthLegend" />
                 <Text Value="Updates GeoLocation Data" />
               </Properties>

@@ -147,14 +147,6 @@
               </Properties>
             </Object>
           </Value>
-          <Value>
-            <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
-              <Properties>
-                <Name Value="startDate" />
-                <Text Value="Showing blog entries published on or before {0}." />
-              </Properties>
-            </Object>
-          </Value>
         </List>
       </Object>
     </Strings>

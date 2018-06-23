@@ -10,7 +10,7 @@ using YetaWF.Core.Support;
 
 namespace YetaWF.Modules.ComponentsHTML.Components {
 
-    public abstract class CurrencyComponent : YetaWFComponent {
+    public abstract class CurrencyComponentBase : YetaWFComponent {
 
         public const string TemplateName = "Currency";
 
@@ -18,7 +18,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         public override string GetTemplateName() { return TemplateName; }
     }
 
-    public class CurrencyDisplayComponent : CurrencyComponent, IYetaWFComponent<decimal?> {
+    public class CurrencyDisplayComponent : CurrencyComponentBase, IYetaWFComponent<decimal?> {
 
         public override ComponentType GetComponentType() { return ComponentType.Display; }
 
@@ -33,7 +33,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             return Task.FromResult(hb.ToYHtmlString());
         }
     }
-    public class CurrencyEditComponent : CurrencyComponent, IYetaWFComponent<Decimal>, IYetaWFComponent<Decimal?> {
+    public class CurrencyEditComponent : CurrencyComponentBase, IYetaWFComponent<Decimal>, IYetaWFComponent<Decimal?> {
 
         public override ComponentType GetComponentType() { return ComponentType.Edit; }
 

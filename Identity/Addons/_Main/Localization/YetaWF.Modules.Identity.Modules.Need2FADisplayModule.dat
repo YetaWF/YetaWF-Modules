@@ -43,14 +43,6 @@
               </Properties>
             </Object>
           </Value>
-          <Value>
-            <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
-              <Properties>
-                <Name Value="need2FA" />
-                <Text Value="Please set up Two-Step Authentication for full access to this site - " />
-              </Properties>
-            </Object>
-          </Value>
         </List>
       </Object>
     </Strings>

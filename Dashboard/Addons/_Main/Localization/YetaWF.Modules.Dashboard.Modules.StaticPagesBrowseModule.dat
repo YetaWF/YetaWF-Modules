@@ -54,22 +54,6 @@
           <Value>
             <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
               <Properties>
-                <Name Value="disabled" />
-                <Text Value="Static pages are disabled for this site." />
-              </Properties>
-            </Object>
-          </Value>
-          <Value>
-            <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
-              <Properties>
-                <Name Value="explain" />
-                <Text Value="&lt;p&gt;Static pages are fast loading pages whose content typically doesn't change. The list below shows all currently loaded static pages. There may be additional pages which were defined as static pages (in their Page Settings) which haven't been loaded yet.&lt;/p&gt;&lt;p&gt;Static pages are enabled per page (Page Settings) and site wide using Site Settings.&lt;/p&gt;" />
-              </Properties>
-            </Object>
-          </Value>
-          <Value>
-            <Object Type="YetaWF.Core.Localize.LocalizationData+StringData" Assembly="YetaWF.Core">
-              <Properties>
                 <Name Value="modName" />
                 <Text Value="Static Pages" />
               </Properties>
