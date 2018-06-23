@@ -1,3 +1,0 @@
-﻿SlideShow.js
-jssor/jssor.js
-jssor/jssor.slider.js
