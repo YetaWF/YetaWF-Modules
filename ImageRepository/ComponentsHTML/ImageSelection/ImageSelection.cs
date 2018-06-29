@@ -12,7 +12,7 @@ namespace YetaWF.Modules.ImageRepository.Components {
 
     public abstract class ImageSelectionComponent : YetaWFComponent {
 
-        private static string __ResStr(string name, string defaultValue, params object[] parms) { return ResourceAccess.GetResourceString(typeof(ImageSelectionComponent), name, defaultValue, parms); }
+        protected static string __ResStr(string name, string defaultValue, params object[] parms) { return ResourceAccess.GetResourceString(typeof(ImageSelectionComponent), name, defaultValue, parms); }
 
         public const string TemplateName = "ImageSelection";
 
@@ -46,7 +46,7 @@ namespace YetaWF.Modules.ImageRepository.Components {
             </select>
         </div>
         <div class='t_preview'>
-            <img src='{YetaWFManager.HtmlAttributeEncode(info.MakeImageUrl(model, info.PreviewWidth, info.PreviewHeight))}' alt='{this.__ResStr("preview", "Image Preview")}' />
+            <img src='{YetaWFManager.HtmlAttributeEncode(info.MakeImageUrl(model, info.PreviewWidth, info.PreviewHeight))}' alt='{__ResStr("preview", "Image Preview")}' />
         </div>
     </div>
     <div class='t_haveimage' {(string.IsNullOrWhiteSpace(model) ? "style='display:none'" : "")}>

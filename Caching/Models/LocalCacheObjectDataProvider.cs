@@ -14,6 +14,7 @@ namespace YetaWF.Modules.Caching.DataProvider {
     /// <summary>
     /// Local cache data provider.
     /// </summary>
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1063:ImplementIDisposableCorrectly")]
     public class LocalCacheObjectDataProvider : DataProviderImpl, ICacheDataProvider {
 
         public static ICacheDataProvider GetProvider() {

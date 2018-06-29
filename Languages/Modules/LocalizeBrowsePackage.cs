@@ -81,13 +81,13 @@ namespace YetaWF.Modules.Languages.Modules {
                 Image = await CustomIconAsync("LocalizePackage.png"),
                 LinkText = this.__ResStr("creCustLink", "Create Localization Resources (Custom - {0})", MultiString.ActiveLanguage),
                 MenuText = this.__ResStr("creCustText", "Create Localization Resources (Custom - {0})", MultiString.ActiveLanguage),
-                Tooltip = this.__ResStr("creCustTooltip", "Create a custom localization resources for package {0} using language {1} - Saved in folder ./AddonsCustom/...", package.Name, MultiString.ActiveLanguage),
-                Legend = this.__ResStr("creCustLegend", "Creates a custom localization resources for package {0} using language {1} - Saved in folder ./AddonsCustom/...", package.Name, MultiString.ActiveLanguage),
+                Tooltip = this.__ResStr("creCustTooltip", "Create custom localization resources for package {0} using language {1} - Saved in folder ./AddonsCustom/...", package.Name, MultiString.ActiveLanguage),
+                Legend = this.__ResStr("creCustLegend", "Creates custom localization resources for package {0} using language {1} - Saved in folder ./AddonsCustom/...", package.Name, MultiString.ActiveLanguage),
                 Style = ModuleAction.ActionStyleEnum.Post,
                 Location = ModuleAction.ActionLocationEnum.ModuleLinks,
                 Category = ModuleAction.ActionCategoryEnum.Read,
                 Mode = ModuleAction.ActionModeEnum.Any,
-                ConfirmationText = this.__ResStr("removeConfirm", "Are you sure you want to create custom localization resources for package {0} using language {1} - Custom localization resources are saved in ./AddonsCustom/...?", package.Name, MultiString.ActiveLanguage),
+                ConfirmationText = this.__ResStr("creCustConfirm", "Are you sure you want to create custom localization resources for package {0} using language {1} - Custom localization resources are saved in folder ./AddonsCustom/...", package.Name, MultiString.ActiveLanguage),
                 NeedsModuleContext = true,
             };
         }
@@ -105,13 +105,75 @@ namespace YetaWF.Modules.Languages.Modules {
                 Image = await CustomIconAsync("LocalizePackage.png"),
                 LinkText = this.__ResStr("creInstLink", "Create Localization Resources (Installed - {0})", MultiString.ActiveLanguage),
                 MenuText = this.__ResStr("creInstText", "Create Localization Resources (Installed - {0})", MultiString.ActiveLanguage),
-                Tooltip = this.__ResStr("creInstTooltip", "Create an installed localization resources for package {0} using language {1} - Saved in folder ./Addons/...", package.Name, MultiString.ActiveLanguage),
-                Legend = this.__ResStr("creInstLegend", "Creates an installed localization resources for package {0} using language {1} - Saved in folder ./Addons/...", package.Name, MultiString.ActiveLanguage),
+                Tooltip = this.__ResStr("creInstTooltip", "Create installed localization resources for package {0} using language {1} - Saved in folder ./Addons/...", package.Name, MultiString.ActiveLanguage),
+                Legend = this.__ResStr("creInstLegend", "Creates installed localization resources for package {0} using language {1} - Saved in folder ./Addons/...", package.Name, MultiString.ActiveLanguage),
                 Style = ModuleAction.ActionStyleEnum.Post,
                 Location = ModuleAction.ActionLocationEnum.ModuleLinks,
                 Category = ModuleAction.ActionCategoryEnum.Read,
                 Mode = ModuleAction.ActionModeEnum.Any,
-                ConfirmationText = this.__ResStr("removeConfirm", "Are you sure you want to create custom localization resources for package {0} using language {1} - Custom localization resources are saved in ./AddonsCustom/...?", package.Name, MultiString.ActiveLanguage),
+                ConfirmationText = this.__ResStr("creInstConfirm", "Are you sure you want to create installed localization resources for package {0} using language {1} - Installed localization resources are saved in folder ./Addons/...?", package.Name, MultiString.ActiveLanguage),
+                NeedsModuleContext = true,
+            };
+        }
+        public async Task<ModuleAction> GetAction_CreateAllInstalledLocalizationsAsync() {
+            if (Manager.Deployed) return null; // can't do this on a deployed site
+            if (!IsAuthorized("Localize")) return null;
+            if (MultiString.ActiveLanguage == MultiString.DefaultLanguage) return null;
+            return new ModuleAction(this) {
+                Url = YetaWFManager.UrlFor(typeof(LocalizeBrowsePackageModuleController), nameof(LocalizeBrowsePackageModuleController.CreateAllInstalledLocalizations)),
+                QueryArgs = new { Language = MultiString.ActiveLanguage },
+                Image = await CustomIconAsync("LocalizePackage.png"),
+                LinkText = this.__ResStr("creAllInstLink", "Create All Localization Resources (Installed - {0})", MultiString.ActiveLanguage),
+                MenuText = this.__ResStr("creAllInstText", "Create All Localization Resources (Installed - {0})", MultiString.ActiveLanguage),
+                Tooltip = this.__ResStr("creAllInstTooltip", "Create all installed localization resources using language {0} - Saved in folders ./Addons/...", MultiString.ActiveLanguage),
+                Legend = this.__ResStr("creAllInstLegend", "Creates all installed localization resources using language {0} - Saved in folder ./Addons/...", MultiString.ActiveLanguage),
+                Style = ModuleAction.ActionStyleEnum.Post,
+                Location = ModuleAction.ActionLocationEnum.ModuleLinks,
+                Category = ModuleAction.ActionCategoryEnum.Read,
+                Mode = ModuleAction.ActionModeEnum.Any,
+                ConfirmationText = this.__ResStr("creAllConfirm", "Are you sure you want to create ALL installed localization resources using language {0} - Installed localization resources are saved in folders ./Addons/...?", MultiString.ActiveLanguage),
+                NeedsModuleContext = true,
+            };
+        }
+        public async Task<ModuleAction> GetAction_LocalizePackageDataAsync(Package package) {
+            if (Manager.Deployed) return null; // can't do this on a deployed site
+            if (!IsAuthorized("Localize")) return null;
+            if (package == null) return null;
+            if (!package.IsCorePackage && !package.IsCoreAssemblyPackage && !package.IsModulePackage && !package.IsSkinPackage) return null;
+            if (MultiString.ActiveLanguage == MultiString.DefaultLanguage) return null;
+            return new ModuleAction(this) {
+                Url = YetaWFManager.UrlFor(typeof(LocalizeBrowsePackageModuleController), nameof(LocalizeBrowsePackageModuleController.LocalizePackageData)),
+                QueryArgs = new { PackageName = package.Name, Language = MultiString.ActiveLanguage },
+                Image = await CustomIconAsync("LocalizePackage.png"),
+                LinkText = this.__ResStr("locDataLink", "Localize Package Data ({0})", MultiString.ActiveLanguage),
+                MenuText = this.__ResStr("locDataText", "Localize Package Data ({0})", MultiString.ActiveLanguage),
+                Tooltip = this.__ResStr("locDataTooltip", "Localize all package data for package {0} using language {1} - Properties for which localized data has already been defined are not updated", package.Name, MultiString.ActiveLanguage),
+                Legend = this.__ResStr("locDataLegend", "Localizes all package data for package {0} using language {1} - Properties for which localized data has already been defined are not updated", package.Name, MultiString.ActiveLanguage),
+                Style = ModuleAction.ActionStyleEnum.Post,
+                Location = ModuleAction.ActionLocationEnum.ModuleLinks,
+                Category = ModuleAction.ActionCategoryEnum.Read,
+                Mode = ModuleAction.ActionModeEnum.Any,
+                ConfirmationText = this.__ResStr("locDataConfirm", "Are you sure you want to localize all package data for package {0} using language {1}? Properties for which localized data has already been defined are not updated.", package.Name, MultiString.ActiveLanguage),
+                NeedsModuleContext = true,
+            };
+        }
+        public async Task<ModuleAction> GetAction_LocalizeAllPackagesDataAsync() {
+            if (Manager.Deployed) return null; // can't do this on a deployed site
+            if (!IsAuthorized("Localize")) return null;
+            if (MultiString.ActiveLanguage == MultiString.DefaultLanguage) return null;
+            return new ModuleAction(this) {
+                Url = YetaWFManager.UrlFor(typeof(LocalizeBrowsePackageModuleController), nameof(LocalizeBrowsePackageModuleController.LocalizeAllPackagesData)),
+                QueryArgs = new { Language = MultiString.ActiveLanguage },
+                Image = await CustomIconAsync("LocalizePackage.png"),
+                LinkText = this.__ResStr("locAllDataLink", "Localize Data For All Packages ({0})", MultiString.ActiveLanguage),
+                MenuText = this.__ResStr("locAllDataText", "Localize Data For All Packages ({0})", MultiString.ActiveLanguage),
+                Tooltip = this.__ResStr("locAllDataTooltip", "Localize data for all packages using language {0} - Properties for which localized data has already been defined are not updated", MultiString.ActiveLanguage),
+                Legend = this.__ResStr("locAllDataLegend", "Localizes data for all packages using language {0} - Properties for which localized data has already been defined are not updated", MultiString.ActiveLanguage),
+                Style = ModuleAction.ActionStyleEnum.Post,
+                Location = ModuleAction.ActionLocationEnum.ModuleLinks,
+                Category = ModuleAction.ActionCategoryEnum.Read,
+                Mode = ModuleAction.ActionModeEnum.Any,
+                ConfirmationText = this.__ResStr("locAllDataConfirm", "Are you sure you want to localize all data for all packages using language {0}? Properties for which localized data has already been defined are not updated.", MultiString.ActiveLanguage),
                 NeedsModuleContext = true,
             };
         }

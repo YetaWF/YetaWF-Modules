@@ -23,14 +23,20 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
     public class MultiStringDisplayComponent : MultiStringDisplayComponentBase { public MultiStringDisplayComponent() : base("MultiString", "t_text") { } }
     public class MultiStringEditComponent : MultiStringEditComponentBase { public MultiStringEditComponent() : base("MultiString", "t_text") { } }
 
-    public abstract class MultiStringDisplayComponentBase : YetaWFComponent, IYetaWFComponent<MultiString> {
+    public abstract class MultiStringComponentBase : YetaWFComponent {
+
+        private static string __ResStr(string name, string defaultValue, params object[] parms) { return ResourceAccess.GetResourceString(typeof(MultiStringComponentBase), name, defaultValue, parms); }
 
         public override Package GetPackage() { return Controllers.AreaRegistration.CurrentPackage; }
         public override string GetTemplateName() { return TemplateName; }
-        public override ComponentType GetComponentType() { return ComponentType.Display; }
 
         public string TemplateName { get; set; }
         public string ExtraClass { get; set; }
+
+    }
+    public abstract class MultiStringDisplayComponentBase : MultiStringComponentBase, IYetaWFComponent<MultiString> {
+
+        public override ComponentType GetComponentType() { return ComponentType.Display; }
 
         public MultiStringDisplayComponentBase(string templateName, string extraClass) {
             TemplateName = templateName;
@@ -45,7 +51,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             return Task.FromResult(hb.ToYHtmlString());
         }
     }
-    public abstract class MultiStringEditComponentBase : YetaWFComponent, IYetaWFComponent<MultiString> {
+    public abstract class MultiStringEditComponentBase : MultiStringComponentBase, IYetaWFComponent<MultiString> {
 
         public class MultiStringUI {
             [UIHint("DropDownList")]
@@ -53,14 +59,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             public List<SelectionItem<string>> Language_List { get; set; }
         }
 
-        private static string __ResStr(string name, string defaultValue, params object[] parms) { return ResourceAccess.GetResourceString(typeof(MultiStringEditComponentBase), name, defaultValue, parms); }
-
-        public override Package GetPackage() { return Controllers.AreaRegistration.CurrentPackage; }
-        public override string GetTemplateName() { return TemplateName; }
         public override ComponentType GetComponentType() { return ComponentType.Edit; }
-
-        public string TemplateName { get; set; }
-        public string ExtraClass { get; set; }
 
         public MultiStringEditComponentBase(string templateName, string extraClass) {
             TemplateName = templateName;

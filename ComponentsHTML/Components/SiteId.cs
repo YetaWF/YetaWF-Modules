@@ -13,6 +13,8 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
     public abstract class SiteIdComponentBase : YetaWFComponent {
 
+        protected static string __ResStr(string name, string defaultValue, params object[] parms) { return ResourceAccess.GetResourceString(typeof(SiteIdComponentBase), name, defaultValue, parms); }
+
         public const string TemplateName = "SiteId";
 
         public override Package GetPackage() { return Controllers.AreaRegistration.CurrentPackage; }
@@ -46,8 +48,8 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                 stringTT = Sites[model];
             else {
                 stringTT = new StringTT {
-                    Text = this.__ResStr("none", "(none)"),
-                    Tooltip = this.__ResStr("noneTT", "")
+                    Text = __ResStr("none", "(none)"),
+                    Tooltip = __ResStr("noneTT", "")
                 };
             }
             return await StringTTDisplayComponent.RenderStringTTAsync(this, stringTT, "yt_siteid");

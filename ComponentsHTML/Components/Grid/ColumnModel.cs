@@ -13,6 +13,8 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
     public partial class GridDisplayComponent {
 
+        /* protected static string __ResStr(string name, string defaultValue, params object[] parms) { return ResourceAccess.GetResourceString(typeof(GridComponentBase), name, defaultValue, parms); } */
+
         internal async Task<YHtmlString> RenderColNamesAsync(GridDefinition gridDef) {
 
             ScriptBuilder sb = new ScriptBuilder();
@@ -142,7 +144,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                     } else if (prop.PropInfo.PropertyType == typeof(Guid) || prop.PropInfo.PropertyType == typeof(Guid?)) {
                         sb.Append("stype:'text',searchoptions:{sopt:['cn','bw','ew']},");
                     } else if (prop.PropInfo.PropertyType.IsEnum) {
-                        sb.Append("stype:'select',searchoptions:{sopt:['eq','ne'],value:':(no selection)");
+                        sb.Append($"stype:'select',searchoptions:{{sopt:['eq','ne'],value:':{__ResStr("noSel", "(no selection)")}");
                         EnumData enumData = ObjectSupport.GetEnumData(prop.PropInfo.PropertyType);
                         foreach (EnumDataEntry entry in enumData.Entries) {
                             string capt = YetaWFManager.JsonSerialize(entry.Caption);

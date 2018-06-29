@@ -11,14 +11,16 @@ using YetaWF.Core.Support;
 
 namespace YetaWF.Modules.ComponentsHTML.Components {
 
-    public abstract class JQueryUISkinComponent : YetaWFComponent {
+    public abstract class JQueryUISkinComponentBase : YetaWFComponent {
+
+        protected static string __ResStr(string name, string defaultValue, params object[] parms) { return ResourceAccess.GetResourceString(typeof(JQueryUISkinComponentBase), name, defaultValue, parms); }
 
         public const string TemplateName = "jQueryUISkin";
 
         public override Package GetPackage() { return Controllers.AreaRegistration.CurrentPackage; }
         public override string GetTemplateName() { return TemplateName; }
     }
-    public class JQueryUISkinDisplayComponent : JQueryUISkinComponent, IYetaWFComponent<string> {
+    public class JQueryUISkinDisplayComponent : JQueryUISkinComponentBase, IYetaWFComponent<string> {
 
         public override ComponentType GetComponentType() { return ComponentType.Display; }
 
@@ -33,7 +35,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             return Task.FromResult(hb.ToYHtmlString());
         }
     }
-    public class JQueryUISkinEditComponent : JQueryUISkinComponent, IYetaWFComponent<string> {
+    public class JQueryUISkinEditComponent : JQueryUISkinComponentBase, IYetaWFComponent<string> {
 
         public override ComponentType GetComponentType() { return ComponentType.Edit; }
 
@@ -50,8 +52,8 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             bool useDefault = !PropData.GetAdditionalAttributeValue<bool>("NoDefault");
             if (useDefault)
                 list.Insert(0, new SelectionItem<string> {
-                    Text = this.__ResStr("default", "(Site Default)"),
-                    Tooltip = this.__ResStr("defaultTT", "Use the site defined default theme"),
+                    Text = __ResStr("default", "(Site Default)"),
+                    Tooltip = __ResStr("defaultTT", "Use the site defined default theme"),
                     Value = "",
                 });
             else if (model == null)

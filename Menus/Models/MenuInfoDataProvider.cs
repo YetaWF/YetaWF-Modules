@@ -1,15 +1,19 @@
 ﻿/* Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Menus#License */
 
 using System;
+using System.Collections.Generic;
+using System.Reflection;
 using System.Threading.Tasks;
 using YetaWF.Core.Audit;
 using YetaWF.Core.Components;
 using YetaWF.Core.DataProvider;
 using YetaWF.Core.DataProvider.Attributes;
 using YetaWF.Core.IO;
+using YetaWF.Core.Models;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Modules;
 using YetaWF.Core.Packages;
+using YetaWF.Core.Serializers;
 using YetaWF.Core.Support;
 
 namespace YetaWF.Modules.Menus.DataProvider {
@@ -85,6 +89,43 @@ namespace YetaWF.Modules.Menus.DataProvider {
                 ExpensiveMultiInstance: true
             );
             return result;
+        }
+
+        // IINSTALLABLEMODEL
+        // IINSTALLABLEMODEL
+        // IINSTALLABLEMODEL
+
+        public new async Task LocalizeModelAsync(string language, Func<string, bool> isHtml, Func<List<string>, Task<List<string>>> translateStringsAsync, Func<string, Task<string>> translateComplexStringAsync) {
+
+            const int RECORDS = 20;
+
+            for (int offset = 0 ; ; ) {
+                DataProviderGetRecords<MenuInfo> data = await DataProvider.GetRecordsAsync(offset, RECORDS, null, null);
+                if (data.Data.Count == 0)
+                    break;
+                bool changed = false;
+                foreach (MenuInfo menu in data.Data) {
+                    changed = await TranslateMenuListAsync(menu.Menu, language, (s) => false, translateStringsAsync, translateComplexStringAsync);
+                    if (changed) {
+                        UpdateStatusEnum status = await UpdateItemAsync(menu);
+                        if (status != UpdateStatusEnum.OK)
+                            throw new InternalError($"Update failed for type {typeof(MenuInfo).FullName} ({status})");
+                    }
+                }
+                offset += data.Data.Count;
+                if (offset >= data.Total)
+                    break;
+            }
+        }
+
+        private async Task<bool> TranslateMenuListAsync(SerializableList<ModuleAction> menu, string language, Func<string, bool> isHtml, Func<List<string>, Task<List<string>>> translateStringsAsync, Func<string, Task<string>> translateComplexStringAsync) {
+            bool changed = false;
+            foreach (ModuleAction action in menu) {
+                changed = changed || await ObjectSupport.TranslateObject(action, language, isHtml, translateStringsAsync, translateComplexStringAsync);
+                if (action.SubMenu != null && action.SubMenu.Count > 0)
+                    changed = changed || await TranslateMenuListAsync(menu, language, isHtml, translateStringsAsync, translateComplexStringAsync);
+            }
+            return changed;
         }
     }
 }

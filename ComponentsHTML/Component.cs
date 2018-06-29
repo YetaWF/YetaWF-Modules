@@ -25,6 +25,8 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
     public abstract class YetaWFComponent : YetaWFComponentBase {
 
+        private static string __ResStr(string name, string defaultValue, params object[] parms) { return ResourceAccess.GetResourceString(typeof(YetaWFComponent), name, defaultValue, parms); }
+
         public enum FieldType {
             Normal, // with name, not validated
             Anonymous, // no name - no validation
@@ -130,9 +132,9 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             }
             // replace type dependent messages (MVC, please, who asked for this?)
             if (tagBuilder.Attributes.ContainsKey("data-val-number"))
-                tagBuilder.Attributes["data-val-number"] = this.__ResStr("valNumber", "Please enter a valid number for field '{0}'", PropData.GetCaption(Container));
+                tagBuilder.Attributes["data-val-number"] = __ResStr("valNumber", "Please enter a valid number for field '{0}'", PropData.GetCaption(Container));
             if (tagBuilder.Attributes.ContainsKey("data-val-date"))
-                tagBuilder.Attributes["data-val-date"] = this.__ResStr("valDate", "Please enter a valid date for field '{0}'", PropData.GetCaption(Container));
+                tagBuilder.Attributes["data-val-date"] = __ResStr("valDate", "Please enter a valid date for field '{0}'", PropData.GetCaption(Container));
         }
         protected YHtmlString ValidationMessage(string fieldName) {
             // ValidationMessage is always called for a child component within the context of the PARENT

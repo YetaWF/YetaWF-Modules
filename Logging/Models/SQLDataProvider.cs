@@ -1,5 +1,6 @@
 ﻿/* Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Logging#License */
 
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using YetaWF.Core.DataProvider;
@@ -45,7 +46,7 @@ namespace YetaWF.Modules.Logging.DataProvider.SQL {
         private SQLSimpleObject<int, LogRecord> _dataProvider;
 
         private SQLSimpleObject<int, LogRecord> CreateDataProvider() {
-            // can't use CurrentPackage as RegisterAllAreas has not yet been called 
+            // can't use CurrentPackage as RegisterAllAreas has not yet been called
             Package package = Package.GetPackageFromAssembly(GetType().Assembly);
 
             Dictionary<string, object> options = new Dictionary<string, object>() {
@@ -121,6 +122,9 @@ namespace YetaWF.Modules.Logging.DataProvider.SQL {
         }
         public Task ImportChunkAsync(int chunk, SerializableList<SerializableFile> fileList, object obj) {
             // we're not importing any data
+            return Task.CompletedTask;
+        }
+        public Task LocalizeModelAsync(string language, Func<string, bool> isHtml, Func<List<string>, Task<List<string>>> translateStringsAsync, Func<string, Task<string>> translateComplexStringAsync) {
             return Task.CompletedTask;
         }
     }

@@ -19,7 +19,7 @@ namespace YetaWF.Modules.ImageRepository.Components {
 
     public class ImageSelectionInfo {
 
-        public static string __ResStr(string name, string defaultValue, params object[] parms) { return ResourceAccess.GetResourceString(typeof(ImageSelectionInfo), name, defaultValue, parms); }
+        private static string __ResStr(string name, string defaultValue, params object[] parms) { return ResourceAccess.GetResourceString(typeof(ImageSelectionInfo), name, defaultValue, parms); }
 
         public ImageSelectionInfo(ModuleDefinition owningModule, Guid folderGuid, string subFolder, string fileType = "Images") {
             OwningModule = owningModule;

@@ -128,6 +128,10 @@
       <Project>{ab7bfd23-57e8-40a6-85ea-9d4b3206075f}</Project>
       <Name>ComponentsHTML</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Languages\Languages.csproj">
+      <Project>{e6751e29-eea1-4319-b050-38e1f2c7ec0d}</Project>
+      <Name>Languages</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Content Include="Addons\_Main\Grids\PackagesModuleController.PackageModel" />

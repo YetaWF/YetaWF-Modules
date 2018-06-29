@@ -69,6 +69,7 @@
   <ItemGroup>
     <Compile Include="Components\HTML\ListOfEmailAddresses.cs" />
     <Compile Include="Components\HTML\ScrollerItem.cs" />
+    <Compile Include="Controllers\TemplateMultiString.cs" />
     <Compile Include="Controllers\BasicTemplates.cs" />
     <Compile Include="Controllers\SMSProcessorStatus.cs" />
     <Compile Include="Controllers\TemplateDateTime.cs" />
@@ -79,6 +80,7 @@
     <Compile Include="Controllers\TemplateTimeZone.cs" />
     <Compile Include="Controllers\SMSTest.cs" />
     <Compile Include="Controllers\TestEscapes.cs" />
+    <Compile Include="Modules\TemplateMultiString.cs" />
     <Compile Include="Modules\BasicTemplates.cs" />
     <Compile Include="Modules\SMSProcessorStatus.cs" />
     <Compile Include="Modules\TemplateDateTimeModule.cs" />
@@ -107,7 +109,7 @@
   <ItemGroup>
     <None Include="Addons\_Main\Grids\ListOfEmailAddressesDisplayComponent.GridDisplay" />
     <None Include="Addons\_Main\Grids\ListOfEmailAddressesEditComponent.GridEdit" />
-    <Content Include="Addons\_SiteTemplates\YetaWF_DevTests.2.5.0.txt" />
+    <Content Include="Addons\_SiteTemplates\YetaWF_DevTests.4.0.0.txt" />
     <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>
@@ -149,9 +151,6 @@
     <Content Include="Addons\_Main\Images\image7.png" />
     <Content Include="Addons\_Main\Images\image8.png" />
     <Content Include="Addons\_Main\Images\image9.png" />
-    <Content Include="Addons\_SiteTemplates\YetaWF_DevTests.2.0.2.txt" />
-    <Content Include="Addons\_SiteTemplates\YetaWF_DevTests.1.0.7.txt" />
-    <Content Include="Addons\_SiteTemplates\YetaWF_DevTests.1.0.3.txt" />
     <Content Include="Addons\_Templates\ScrollerItem\filelistCSS.txt" />
     <Content Include="Addons\_Templates\ScrollerItem\ScrollerItem.css" />
   </ItemGroup>

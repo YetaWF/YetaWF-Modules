@@ -30,6 +30,7 @@ namespace YetaWF.Modules.Caching.DataProvider {
     /// it is known that a new object is available the data is retrieved.
     /// This is equivalent to StaticObjectSingleDataProvider on a single-instance site.
     /// </summary>
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1063:ImplementIDisposableCorrectly")]
     public class StaticObjectMultiSQLDataProvider : DataProviderImpl, ICacheDataProvider {
 
         public static ICacheDataProvider GetProvider() {

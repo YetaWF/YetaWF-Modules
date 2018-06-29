@@ -12,6 +12,8 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
     public abstract class USStateComponent : YetaWFComponent {
 
+        protected static string __ResStr(string name, string defaultValue, params object[] parms) { return ResourceAccess.GetResourceString(typeof(USStateComponent), name, defaultValue, parms); }
+
         public const string TemplateName = "USState";
 
         public override Package GetPackage() { return Controllers.AreaRegistration.CurrentPackage; }
@@ -40,8 +42,8 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             if (useDefault) {
                 states = (from s in states select s).ToList();//copy
                 states.Insert(0, new SelectionItem<string> {
-                    Text = this.__ResStr("default", "(select)"),
-                    Tooltip = this.__ResStr("defaultTT", "Please make a selection"),
+                    Text = __ResStr("default", "(select)"),
+                    Tooltip = __ResStr("defaultTT", "Please make a selection"),
                     Value = "",
                 });
             }

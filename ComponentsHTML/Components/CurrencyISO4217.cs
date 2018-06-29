@@ -12,6 +12,8 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
     public abstract class CurrencyISO4217ComponentBase : YetaWFComponent {
 
+        protected static string __ResStr(string name, string defaultValue, params object[] parms) { return ResourceAccess.GetResourceString(typeof(CurrencyISO4217ComponentBase), name, defaultValue, parms); }
+
         public const string TemplateName = "CurrencyISO4217";
 
         public override Package GetPackage() { return Controllers.AreaRegistration.CurrentPackage; }
@@ -41,7 +43,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                 Value = l.Id,
             }).ToList();
             list.Insert(0, new SelectionItem<string> {
-                Text = this.__ResStr("default", "(select)"),
+                Text = __ResStr("default", "(select)"),
                 Value = "",
             });
             return await DropDownListComponent.RenderDropDownListAsync(this, model, list, "yt_currencyiso4217");

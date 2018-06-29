@@ -12,9 +12,9 @@ using YetaWF.Modules.ComponentsHTML.Controllers;
 
 namespace YetaWF.Modules.ComponentsHTML.Components {
 
-    public abstract class ImageComponent : YetaWFComponent {
+    public abstract class ImageComponentBase : YetaWFComponent {
 
-        private static string __ResStr(string name, string defaultValue, params object[] parms) { return ResourceAccess.GetResourceString(typeof(ImageComponent), name, defaultValue, parms); }
+        protected static string __ResStr(string name, string defaultValue, params object[] parms) { return ResourceAccess.GetResourceString(typeof(ImageComponentBase), name, defaultValue, parms); }
 
         public const string TemplateName = "Image";
 
@@ -38,7 +38,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         }
     }
 
-    public class ImageDisplayComponent : ImageComponent, IYetaWFComponent<string> {
+    public class ImageDisplayComponent : ImageComponentBase, IYetaWFComponent<string> {
 
         public override ComponentType GetComponentType() { return ComponentType.Display; }
 
@@ -58,7 +58,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                 YTagBuilder img = new YTagBuilder("img");
                 img.Attributes.Add("src", model);
                 if (!img.Attributes.ContainsKey("alt"))
-                    img.Attributes.Add("alt", this.__ResStr("altImage", "Image"));
+                    img.Attributes.Add("alt", __ResStr("altImage", "Image"));
                 hb.Append(img.ToYHtmlString(YTagRenderMode.Normal));
 
             } else {
@@ -72,7 +72,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                 string alt = null;
                 if (HtmlAttributes.ContainsKey("alt"))
                     alt = (string)HtmlAttributes["alt"];
-                string imgTag = ImageComponent.RenderImage(imageType, width, height, model, Alt: alt);
+                string imgTag = ImageComponentBase.RenderImage(imageType, width, height, model, Alt: alt);
 
                 bool linkToImage = PropData.GetAdditionalAttributeValue("LinkToImage", false);
                 if (linkToImage) {
@@ -91,7 +91,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             return Task.FromResult(hb.ToYHtmlString());
         }
     }
-    public class ImageEditComponent : ImageComponent, IYetaWFComponent<string> {
+    public class ImageEditComponent : ImageComponentBase, IYetaWFComponent<string> {
 
         public override ComponentType GetComponentType() { return ComponentType.Edit; }
 
@@ -108,13 +108,13 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 <div class='yt_image t_edit' id='{ControlId}'>
     {(await HtmlHelper.ForEditComponentAsync(Container, PropertyName, model, "Hidden", Validation:true)).ToString()}
     <div class='t_image'>
-        {(await HtmlHelper.ForDisplayComponentAsync(Container, PropertyName, model, TemplateName, HtmlAttributes: new { alt = this.__ResStr("imgAlt", "Preview Image") } )).ToString()}
+        {(await HtmlHelper.ForDisplayComponentAsync(Container, PropertyName, model, TemplateName, HtmlAttributes: new { alt = __ResStr("imgAlt", "Preview Image") } )).ToString()}
     </div>
     <div class='t_info'>
         {(await RenderImageAttributesAsync(model)).ToString()}
     </div>
     <div class='t_haveimage' {(string.IsNullOrWhiteSpace(model) ? "style='display:none'" : "")}>
-        <input type='button' class='t_clear' value='{this.__ResStr("btnClear", "Clear")}' title='{this.__ResStr("txtClear", "Click to clear the current image")}' />
+        <input type='button' class='t_clear' value='{__ResStr("btnClear", "Clear")}' title='{__ResStr("txtClear", "Click to clear the current image")}' />
     </div>
     {(await HtmlHelper.ForEditContainerAsync(info, "FileUpload1")).ToString()}
 </div>

@@ -13,6 +13,8 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
     public abstract class UrlDesignedPageComponentBase : YetaWFComponent {
 
+        protected static string __ResStr(string name, string defaultValue, params object[] parms) { return ResourceAccess.GetResourceString(typeof(UrlDesignedPageComponentBase), name, defaultValue, parms); }
+
         public const string TemplateName = "UrlDesignedPage";
 
         public override Package GetPackage() { return Controllers.AreaRegistration.CurrentPackage; }
@@ -36,7 +38,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                 });
             }
             list = (from l in list orderby l.Text select l).ToList();
-            list.Insert(0, new SelectionItem<string> { Text = this.__ResStr("select", "(select)"), Value = "" });
+            list.Insert(0, new SelectionItem<string> { Text = __ResStr("select", "(select)"), Value = "" });
 
             return await DropDownListComponent.RenderDropDownListAsync(this, model, list, "yt_urldesignedpage");
         }

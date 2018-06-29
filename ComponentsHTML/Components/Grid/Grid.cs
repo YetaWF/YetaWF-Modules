@@ -10,7 +10,9 @@ using YetaWF.Core.Support;
 
 namespace YetaWF.Modules.ComponentsHTML.Components {
 
-    public abstract class GridComponent : YetaWFComponent {
+    public abstract class GridComponentBase : YetaWFComponent {
+
+        protected static string __ResStr(string name, string defaultValue, params object[] parms) { return ResourceAccess.GetResourceString(typeof(GridComponentBase), name, defaultValue, parms); }
 
         public const string TemplateName = "Grid";
 
@@ -18,7 +20,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         public override string GetTemplateName() { return TemplateName; }
     }
 
-    public partial class GridDisplayComponent : GridComponent, IYetaWFComponent<GridDefinition> {
+    public partial class GridDisplayComponent : GridComponentBase, IYetaWFComponent<GridDefinition> {
 
         public override ComponentType GetComponentType() { return ComponentType.Display; }
 
@@ -170,8 +172,8 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                 hb.Append($@"
         // Custom reload button so we can reload the grid without clearing search filters
         $grid.jqGrid('navButtonAdd', '#{model.Id}_Pager', {{
-            caption: {YetaWFManager.JsonSerialize(this.__ResStr("refreshtext", ""))},
-            title: {YetaWFManager.JsonSerialize(this.__ResStr("refreshtitle", "Reload data"))},
+            caption: {YetaWFManager.JsonSerialize(__ResStr("refreshtext", ""))},
+            title: {YetaWFManager.JsonSerialize(__ResStr("refreshtitle", "Reload data"))},
             buttonicon: 'ui-icon-refresh',
             onClickButton: function () {{
                 $grid.trigger('reloadGrid');
@@ -253,8 +255,9 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             return hb.ToYHtmlString();
         }
         internal int GetDropdownActionWidthInChars() {
-            string s = this.__ResStr("dropdownWidth", "11");
-            return Convert.ToInt32(s);
+            //$$string s = __ResStr("dropdownWidth", "11");
+            //return Convert.ToInt32(s);
+            return 11;
         }
     }
 }

@@ -12,6 +12,8 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
     public abstract class UrlComponentBase : YetaWFComponent {
 
+        protected static string __ResStr(string name, string defaultValue, params object[] parms) { return ResourceAccess.GetResourceString(typeof(UrlComponentBase), name, defaultValue, parms); }
+
         public const string TemplateName = "Url";
         public override Package GetPackage() { return Controllers.AreaRegistration.CurrentPackage; }
         public override string GetTemplateName() { return TemplateName; }
@@ -65,7 +67,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                 // image
                 SkinImages skinImages = new SkinImages();
                 string imageUrl = await skinImages.FindIcon_TemplateAsync("UrlRemote.png", Package, "Url");
-                YTagBuilder tagImg = ImageHTML.BuildKnownImageYTag(imageUrl, alt: this.__ResStr("altText", "Remote Url"));
+                YTagBuilder tagImg = ImageHTML.BuildKnownImageYTag(imageUrl, alt: __ResStr("altText", "Remote Url"));
 
                 tag.InnerHtml = tag.InnerHtml + tagImg.ToString(YTagRenderMode.StartTag);
                 hb.Append(tag.ToString(YTagRenderMode.Normal));
@@ -82,7 +84,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
             [UIHint("Hidden")]
             public string Url { get; set; }
-            
+
             [UIHint("UrlType")]
             public UrlTypeEnum UrlType { get; set; }
             [UIHint("UrlDesignedPage")]
@@ -142,7 +144,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             // image
             SkinImages skinImages = new SkinImages();
             string imageUrl = await skinImages.FindIcon_TemplateAsync("UrlRemote.png", Package, "Url");
-            YTagBuilder tagImg = ImageHTML.BuildKnownImageYTag(imageUrl, alt: this.__ResStr("altText", "Remote Url"));
+            YTagBuilder tagImg = ImageHTML.BuildKnownImageYTag(imageUrl, alt: __ResStr("altText", "Remote Url"));
 
             tag.InnerHtml = tag.InnerHtml + tagImg.ToString(YTagRenderMode.StartTag);
             string link = tag.ToString(YTagRenderMode.Normal);

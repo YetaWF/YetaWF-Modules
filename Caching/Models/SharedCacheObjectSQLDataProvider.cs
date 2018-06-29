@@ -85,6 +85,7 @@ namespace YetaWF.Modules.Caching.DataProvider {
     /// Shared cache will only be retrieved to check if there is a newer cached object available. Once
     /// it is known that a new object is available, the data is retrieved.
     /// </summary>
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1063:ImplementIDisposableCorrectly")]
     public class SharedCacheObjectSQLDataProvider : DataProviderImpl, ICacheDataProvider, IInstallableModel {
 
         public static ICacheDataProvider GetProvider() {

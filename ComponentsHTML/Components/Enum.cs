@@ -12,7 +12,9 @@ using YetaWF.Core.Support;
 
 namespace YetaWF.Modules.ComponentsHTML.Components {
 
-    public abstract class EnumComponent : YetaWFComponent {
+    public abstract class EnumComponentBase : YetaWFComponent {
+
+        protected static string __ResStr(string name, string defaultValue, params object[] parms) { return ResourceAccess.GetResourceString(typeof(EnumComponentBase), name, defaultValue, parms); }
 
         public const string TemplateName = "Enum";
 
@@ -20,7 +22,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         public override string GetTemplateName() { return TemplateName; }
     }
 
-    public class EnumDisplayComponent : EnumComponent, IYetaWFComponent<object> {
+    public class EnumDisplayComponent : EnumComponentBase, IYetaWFComponent<object> {
 
         public override ComponentType GetComponentType() { return ComponentType.Display; }
 
@@ -45,7 +47,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             }
         }
     }
-    public class EnumEditComponent : EnumComponent, IYetaWFComponent<object> {
+    public class EnumEditComponent : EnumComponentBase, IYetaWFComponent<object> {
 
         public override ComponentType GetComponentType() { return ComponentType.Edit; }
 
@@ -60,9 +62,9 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             bool showSelect = PropData.GetAdditionalAttributeValue("ShowSelect", false);
             if (showSelect) {
                 list.Add(new SelectionItem<int> {
-                    Text = this.__ResStr("enumSelect", "(select)"),
+                    Text = __ResStr("enumSelect", "(select)"),
                     Value = 0,
-                    Tooltip = this.__ResStr("enumPlsSelect", "Please select one of the available options"),
+                    Tooltip = __ResStr("enumPlsSelect", "Please select one of the available options"),
                 });
             }
             foreach (EnumDataEntry entry in enumData.Entries) {
@@ -72,7 +74,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
                 string caption = entry.Caption;
                 if (showValues)
-                    caption = this.__ResStr("enumFmt", "{0} - {1}", enumVal, caption);
+                    caption = __ResStr("enumFmt", "{0} - {1}", enumVal, caption);
 
                 list.Add(new SelectionItem<int> {
                     Text = caption,

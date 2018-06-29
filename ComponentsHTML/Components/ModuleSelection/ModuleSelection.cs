@@ -16,6 +16,8 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
     public abstract class ModuleSelectionComponentBase : YetaWFComponent {
 
+        protected static string __ResStr(string name, string defaultValue, params object[] parms) { return ResourceAccess.GetResourceString(typeof(ModuleSelectionComponentBase), name, defaultValue, parms); }
+
         public const string TemplateName = "ModuleSelection";
         public override Package GetPackage() { return Controllers.AreaRegistration.CurrentPackage; }
         public override string GetTemplateName() { return TemplateName; }
@@ -28,12 +30,12 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             tag.MergeAttribute("href", ModuleDefinition.GetModulePermanentUrl((Guid)model));
             tag.MergeAttribute("target", "_blank");
             tag.MergeAttribute("rel", "nofollow noopener noreferrer");
-            tag.Attributes.Add(Basics.CssTooltip, this.__ResStr("linkTT", "Click to preview the module in a new window - not all modules can be displayed correctly and may require additional parameters"));
+            tag.Attributes.Add(Basics.CssTooltip, __ResStr("linkTT", "Click to preview the module in a new window - not all modules can be displayed correctly and may require additional parameters"));
 
             // image
             SkinImages skinImages = new SkinImages();
             string imageUrl = await skinImages.FindIcon_TemplateAsync("ModulePreview.png", Package, "ModuleSelection");
-            YTagBuilder tagImg = ImageHTML.BuildKnownImageYTag(imageUrl, alt: this.__ResStr("linkAlt", "Preview"));
+            YTagBuilder tagImg = ImageHTML.BuildKnownImageYTag(imageUrl, alt: __ResStr("linkAlt", "Preview"));
 
             tag.InnerHtml = tag.InnerHtml + tagImg.ToString(YTagRenderMode.StartTag);
             return tag.ToString(YTagRenderMode.Normal);
@@ -58,12 +60,12 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             string modName;
             if (mod == null) {
                 if (model != null && model == Guid.Empty)
-                    modName = this.__ResStr("noLinkNone", "(none)");
+                    modName = __ResStr("noLinkNone", "(none)");
                 else
-                    modName = this.__ResStr("noLink", "(not found - {0})", ((Guid)model).ToString());
+                    modName = __ResStr("noLink", "(not found - {0})", ((Guid)model).ToString());
             } else {
                 Package package = Package.GetPackageFromType(mod.GetType());
-                modName = this.__ResStr("name", "{0} - {1}", package.Name, mod.Name);
+                modName = __ResStr("name", "{0} - {1}", package.Name, mod.Name);
             }
 
             YTagBuilder tag = new YTagBuilder("div");

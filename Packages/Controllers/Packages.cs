@@ -53,6 +53,7 @@ namespace YetaWF.Modules.Packages.Controllers {
                 actions.New(Module.GetAction_RemovePackage(Package), ModuleAction.ActionLocationEnum.GridLinks);
 
                 actions.New(await ModLocalize.GetModuleActionAsync("Browse", null, Package), ModuleAction.ActionLocationEnum.GridLinks);
+                actions.New(await ModLocalize.GetModuleActionAsync("LocalizePackageData", Package), ModuleAction.ActionLocationEnum.GridLinks);
                 return actions;
             }
 

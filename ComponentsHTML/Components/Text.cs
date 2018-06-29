@@ -21,14 +21,20 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
     public class TextDisplayComponent : TextDisplayComponentBase { public TextDisplayComponent() : base("Text", "yt_text") { } }
     public class TextEditComponent : TextEditComponentBase { public TextEditComponent() : base("Text", "yt_text") { } }
 
-    public abstract class TextDisplayComponentBase : YetaWFComponent, IYetaWFComponent<string> {
+    public abstract class TextComponentBase : YetaWFComponent {
+
+        protected static string __ResStr(string name, string defaultValue, params object[] parms) { return ResourceAccess.GetResourceString(typeof(TextEditComponentBase), name, defaultValue, parms); }
 
         public override Package GetPackage() { return Controllers.AreaRegistration.CurrentPackage; }
         public override string GetTemplateName() { return TemplateName; }
-        public override ComponentType GetComponentType() { return ComponentType.Display; }
 
         public string TemplateName { get; set; }
         public string TemplateClass { get; set; }
+    }
+
+    public abstract class TextDisplayComponentBase : TextComponentBase, IYetaWFComponent<string> {
+
+        public override ComponentType GetComponentType() { return ComponentType.Display; }
 
         public TextDisplayComponentBase(string templateName, string templateClass) {
             TemplateName = templateName;
@@ -63,23 +69,16 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                 await Manager.AddOnManager.AddAddOnGlobalAsync("clipboardjs.com", "clipboard");// add clipboard support
                 SkinImages skinImages = new SkinImages();
                 string imageUrl = await skinImages.FindIcon_TemplateAsync("Copy.png", Package, "Text");
-                YTagBuilder tagImg = ImageHTML.BuildKnownImageYTag(imageUrl, title: this.__ResStr("ttCopy", "Copy to Clipboard"), alt: this.__ResStr("altCopy", "Copy to Clipboard"));
+                YTagBuilder tagImg = ImageHTML.BuildKnownImageYTag(imageUrl, title: __ResStr("ttCopy", "Copy to Clipboard"), alt: __ResStr("altCopy", "Copy to Clipboard"));
                 tagImg.AddCssClass("yt_text_copy");
                 hb.Append(tagImg.ToString(YTagRenderMode.StartTag));
             }
             return hb.ToYHtmlString();
         }
     }
-    public abstract class TextEditComponentBase : YetaWFComponent, IYetaWFComponent<string> {
+    public abstract class TextEditComponentBase : TextComponentBase, IYetaWFComponent<string> {
 
-        private static string __ResStr(string name, string defaultValue, params object[] parms) { return ResourceAccess.GetResourceString(typeof(TextEditComponentBase), name, defaultValue, parms); }
-
-        public override Package GetPackage() { return Controllers.AreaRegistration.CurrentPackage; }
-        public override string GetTemplateName() { return TemplateName; }
         public override ComponentType GetComponentType() { return ComponentType.Edit; }
-
-        public string TemplateName { get; set; }
-        public string TemplateClass { get; set; }
 
         public TextEditComponentBase(string templateName, string templateClass) {
             TemplateName = templateName;

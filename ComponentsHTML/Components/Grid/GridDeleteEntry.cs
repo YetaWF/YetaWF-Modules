@@ -9,14 +9,16 @@ using YetaWF.Core.Support;
 
 namespace YetaWF.Modules.ComponentsHTML.Components {
 
-    public abstract class GridDeleteEntryComponent : YetaWFComponent {
+    public abstract class GridDeleteEntryComponentBase : YetaWFComponent {
+
+        protected static string __ResStr(string name, string defaultValue, params object[] parms) { return ResourceAccess.GetResourceString(typeof(GridDeleteEntryComponentBase), name, defaultValue, parms); }
 
         public const string TemplateName = "GridDeleteEntry";
 
         public override Package GetPackage() { return Controllers.AreaRegistration.CurrentPackage; }
         public override string GetTemplateName() { return TemplateName; }
     }
-    public class GridDeleteEntryEditComponent : GridDeleteEntryComponent, IYetaWFComponent<object> {
+    public class GridDeleteEntryEditComponent : GridDeleteEntryComponentBase, IYetaWFComponent<object> {
 
         public override ComponentType GetComponentType() { return ComponentType.Edit; }
 
@@ -27,7 +29,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
             SkinImages skinImages = new SkinImages();
             string imageUrl = await skinImages.FindIcon_PackageAsync("#RemoveLight", Package);
-            YTagBuilder tagImg = ImageHTML.BuildKnownImageYTag(imageUrl, alt: this.__ResStr("altRemove", "Remove"));
+            YTagBuilder tagImg = ImageHTML.BuildKnownImageYTag(imageUrl, alt: __ResStr("altRemove", "Remove"));
             tagImg.MergeAttribute("name", "DeleteAction", true);
             tag.InnerHtml = tagImg.ToString(YTagRenderMode.StartTag);
 

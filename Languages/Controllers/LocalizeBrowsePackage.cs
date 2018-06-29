@@ -21,6 +21,7 @@ using YetaWF.Modules.Languages.Controllers.Support;
 using YetaWF.Modules.Languages.DataProvider;
 using YetaWF.Modules.Languages.Modules;
 using YetaWF.Core.Components;
+using YetaWF.Core.IO;
 #if MVC6
 using Microsoft.AspNetCore.Mvc;
 #else
@@ -92,7 +93,7 @@ namespace YetaWF.Modules.Languages.Controllers {
         [ConditionalAntiForgeryToken]
         public async Task<ActionResult> LocalizeBrowsePackage_GridData(int skip, int take, List<DataProviderSortInfo> sort, List<DataProviderFilterInfo> filters, Guid settingsModuleGuid, string packageName) {
             Package package = Package.GetPackageFromPackageName(packageName);
-            List<LocalizeFile> files = (from s in await LocalizationSupport.GetFilesAsync(package) select new LocalizeFile { FileName = Path.GetFileName(s) }).ToList();
+            List<LocalizeFile> files = (from s in await LocalizationSupport.GetFilesAsync(package, MultiString.DefaultLanguage) select new LocalizeFile { FileName = Path.GetFileName(s) }).ToList();
             DataProviderGetRecords<LocalizeFile> recs = DataProviderImpl<LocalizeFile>.GetRecords(files, skip, take, sort, filters);
             Grid.SaveSettings(skip, take, sort, filters, settingsModuleGuid);
             return await GridPartialViewAsync(new DataSourceResult {
@@ -121,11 +122,24 @@ namespace YetaWF.Modules.Languages.Controllers {
             return FormProcessed(null, popupText: this.__ResStr("instGenerated", "Installed localization resources successfully generated"), OnClose: OnCloseEnum.Nothing);
         }
 
+        [AllowPost]
+        [Permission("Localize")]
+        [ExcludeDemoMode]
+        public async Task<ActionResult> CreateAllInstalledLocalizations(string language) {
+            if (Manager.Deployed)
+                throw new InternalError("Can't localize packages on a deployed site");
+            foreach (Package package in Package.GetAvailablePackages()) {
+                if (package.IsCorePackage || package.IsModulePackage || package.IsSkinPackage)
+                    await TranslatePackageAsync(package.Name, language, LocalizationSupport.Location.InstalledResources);
+            }
+            return FormProcessed(null, popupText: this.__ResStr("instGenerated", "Installed localization resources successfully generated"), OnClose: OnCloseEnum.Nothing);
+        }
+
         private async Task TranslatePackageAsync(string packageName, string language, LocalizationSupport.Location resourceType) {
             Package package = Package.GetPackageFromPackageName(packageName);
             if (resourceType == LocalizationSupport.Location.InstalledResources && language == MultiString.DefaultLanguage)
                 throw new InternalError("Can't save installed resources using the default language {0}", MultiString.DefaultLanguage);
-            List<LocalizeFile> files = (from s in await LocalizationSupport.GetFilesAsync(package) select new LocalizeFile { FileName = Path.GetFileName(s) }).ToList();
+            List<LocalizeFile> files = (from s in await LocalizationSupport.GetFilesAsync(package, MultiString.DefaultLanguage) select new LocalizeFile { FileName = Path.GetFileName(s) }).ToList();
 
             // Extract all strings into a list
             List<string> strings = new List<string>();
@@ -168,6 +182,7 @@ namespace YetaWF.Modules.Languages.Controllers {
             }
             // Translate all strings
             strings = await TranslateStringsAsync(language, strings);
+
             // put new strings into localization resource
             int stringIndex = 0, index = 0;
             foreach (LocalizationData locData in allData) {
@@ -212,6 +227,7 @@ namespace YetaWF.Modules.Languages.Controllers {
                 ++index;
             }
         }
+
         private async Task<List<string>> TranslateStringsAsync(string language, List<string> strings) {
             LocalizeConfigData config = await LocalizeConfigDataProvider.GetConfigAsync();
             if (config.TranslationService == LocalizeConfigData.TranslationServiceEnum.GoogleTranslate) {
@@ -259,6 +275,129 @@ namespace YetaWF.Modules.Languages.Controllers {
                 total -= returnedStrings.Count();
             }
             return newStrings;
+        }
+
+        public class TextItem {
+            public int Offset { get; set; }
+            public int Length { get; set; }
+            public string Text { get; set; }
+        }
+
+        public async Task<string> TranslateComplexStringAsync(string text, string language, Func<List<string>, Task<List<string>>> translateStringsAsync) {
+            List<TextItem> items = new List<TextItem>();
+            int textIndex = 0;
+            int index = 0;
+            bool inHtml = false;
+            bool inScript = false, inPre = false;
+            for (;;) {
+                if (index >= text.Length) {
+                    if (!inHtml) {
+                        string s = text.Substring(textIndex, index - textIndex);
+                        s = s.Replace("\r", " ");
+                        s = s.Replace("\n", " ");
+                        s = s.Replace("\t", " ");
+                        if (s.Trim().Length > 0)
+                            items.Add(new TextItem { Offset = textIndex, Length = index - textIndex, Text = s });
+                        break;
+                    }
+                }
+                if (!inHtml) {
+                    // in text
+                    if (text[index] == '<') {
+                        if (text.Substring(index).StartsWith("<script")) {
+                            inScript = true;
+                        } else if (text.Substring(index).StartsWith("<pre")) {
+                            inPre = true;
+                        } else {
+                            // start of html
+                            if (textIndex < index) {
+                                string s = text.Substring(textIndex, index - textIndex);
+                                s = s.Replace("\r", " ");
+                                s = s.Replace("\n", " ");
+                                s = s.Replace("\t", " ");
+                                if (s.Trim().Length > 0)
+                                    items.Add(new TextItem { Offset = textIndex, Length = index - textIndex, Text = s });
+                            }
+                        }
+                        inHtml = true;
+                    }
+                } else if (inScript) {
+                    if (text[index] == '<') {
+                        if (text.Substring(index).StartsWith("</script"))
+                            inScript = false;
+                    }
+                } else if (inPre) {
+                    if (text[index] == '<') {
+                        if (text.Substring(index).StartsWith("</pre"))
+                            inPre = false;
+                    }
+                } else {
+                    // in html
+                    if (text[index] == '>')
+                        inHtml = false;
+                    textIndex = index + 1;
+                }
+                ++index;
+            }
+
+            if (items.Count == 0) return "?";
+
+            List<string> strings = (from i in items select i.Text).ToList();
+            strings = await translateStringsAsync(strings);
+
+            for (int i = strings.Count - 1; i >= 0; --i) {
+                TextItem item = items[i];
+                text = text.Substring(0, item.Offset) + strings[i] + text.Substring(item.Offset + item.Length);
+                strings.RemoveAt(i);
+            }
+            return text;
+        }
+
+        public bool IsHtml(string text) {
+            text = text.Trim();
+            if (text.StartsWith("<") && text.EndsWith(">")) return true; // seen <.....> so it is most likely html
+            int gtIndex = text.IndexOf('>');
+            if (gtIndex < 0) return false;
+            int ltIndex = text.Substring(gtIndex).IndexOf('<');
+            if (ltIndex < 0) return false;
+            return true; // we've seen ..>....<.. so it is most likely html
+        }
+
+        [AllowPost]
+        [Permission("Localize")]
+        [ExcludeDemoMode]
+        public async Task<ActionResult> LocalizePackageData(string packageName, string language) {
+            if (Manager.Deployed)
+                throw new InternalError("Can't localize packages on a deployed site");
+            Package package = Package.GetPackageFromPackageName(packageName);
+            List<Type> models = package.InstallableModels;
+            foreach (Type type in models) {
+                await LocalizeOneTypeAsync(type, language);
+            }
+            return FormProcessed(null, popupText: this.__ResStr("packDataGenerated", "Translated package data successfully generated"), OnClose: OnCloseEnum.Nothing);
+        }
+        private async Task LocalizeOneTypeAsync(Type type, string language) {
+            object instMod = Activator.CreateInstance(type);
+            using ((IDisposable)instMod) {
+                IInstallableModel model = (IInstallableModel)instMod;
+                await model.LocalizeModelAsync(language, (t) => IsHtml(t), (t) => TranslateStringsAsync(language, t), (t) => TranslateComplexStringAsync(t, language, (c) => TranslateStringsAsync(language, c)));
+            }
+        }
+        [AllowPost]
+        [Permission("Localize")]
+        [ExcludeDemoMode]
+        public async Task<ActionResult> LocalizeAllPackagesData(string language) {
+            if (Manager.Deployed)
+                throw new InternalError("Can't localize packages on a deployed site");
+            foreach (Package package in Package.GetAvailablePackages()) {
+                if (package.IsCorePackage || package.IsModulePackage || package.IsSkinPackage) {
+                    List<Type> models = package.InstallableModels;
+                    foreach (Type type in models) {
+                        await LocalizeOneTypeAsync(type, language);
+                    }
+                }
+            }
+            return FormProcessed(null, popupText: this.__ResStr("packAllDataGenerated", "Translated package data for all packages successfully generated"), OnClose: OnCloseEnum.Nothing);
         }
     }
 }

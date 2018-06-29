@@ -13,6 +13,8 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
     public abstract class SkinCollectionComponentBase : YetaWFComponent {
 
+        protected static string __ResStr(string name, string defaultValue, params object[] parms) { return ResourceAccess.GetResourceString(typeof(SkinCollectionComponentBase), name, defaultValue, parms); }
+
         public const string TemplateName = "SkinCollection";
         public override Package GetPackage() { return Controllers.AreaRegistration.CurrentPackage; }
         public override string GetTemplateName() { return TemplateName; }
@@ -31,7 +33,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             if (desc == null) {
                 bool useDefault = !PropData.GetAdditionalAttributeValue("NoDefault", false);
                 if (useDefault)
-                    desc = this.__ResStr("siteDef", "(Site Default)");
+                    desc = __ResStr("siteDef", "(Site Default)");
             }
             return Task.FromResult(new YHtmlString(string.IsNullOrWhiteSpace(desc) ? "&nbsp;" : desc));
         }
@@ -52,8 +54,8 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             bool useDefault = !PropData.GetAdditionalAttributeValue("NoDefault", false);
             if (useDefault)
                 list.Insert(0, new SelectionItem<string> {
-                    Text = this.__ResStr("siteDef", "(Site Default)"),
-                    Tooltip = this.__ResStr("siteDefTT", "Use the site defined default skin"),
+                    Text = __ResStr("siteDef", "(Site Default)"),
+                    Tooltip = __ResStr("siteDefTT", "Use the site defined default skin"),
                     Value = "",
                 });
             // display the skins in a drop down

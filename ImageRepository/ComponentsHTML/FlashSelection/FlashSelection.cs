@@ -10,9 +10,9 @@ using YetaWF.Modules.ComponentsHTML.Components;
 
 namespace YetaWF.Modules.ImageRepository.Components {
 
-    public abstract class FlashSelectionComponent : YetaWFComponent {
+    public abstract class FlashSelectionComponentBase : YetaWFComponent {
 
-        private static string __ResStr(string name, string defaultValue, params object[] parms) { return ResourceAccess.GetResourceString(typeof(FlashSelectionComponent), name, defaultValue, parms); }
+        protected static string __ResStr(string name, string defaultValue, params object[] parms) { return ResourceAccess.GetResourceString(typeof(FlashSelectionComponentBase), name, defaultValue, parms); }
 
         public const string TemplateName = "FlashSelection";
 
@@ -20,7 +20,7 @@ namespace YetaWF.Modules.ImageRepository.Components {
         public override string GetTemplateName() { return TemplateName; }
     }
 
-    public class FlashSelectionEditComponent : FlashSelectionComponent, IYetaWFComponent<string> {
+    public class FlashSelectionEditComponent : FlashSelectionComponentBase, IYetaWFComponent<string> {
 
         public override ComponentType GetComponentType() { return ComponentType.Edit; }
 
@@ -53,7 +53,7 @@ namespace YetaWF.Modules.ImageRepository.Components {
         </div>
         <div class='t_preview'>
             <div id='{objId}'>
-                <p>{YetaWFManager.HtmlEncode(this.__ResStr("noFlash", "Flash Not Installed"))}</p>
+                <p>{YetaWFManager.HtmlEncode(__ResStr("noFlash", "Flash Not Installed"))}</p>
             </div>
             <script>
                 {BeginDocumentReady()}

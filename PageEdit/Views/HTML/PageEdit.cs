@@ -36,7 +36,7 @@ namespace YetaWF.Modules.PageEdit.Views {
         public async Task<YHtmlString> RenderPartialViewAsync(PageEditModule module, PageEditModuleController.EditModel model) {
 
             HtmlBuilder hb = new HtmlBuilder();
-            hb.Append(await HtmlHelper.ForEditContainerAsync(model.Page, "PropertyList"));
+            hb.Append(await HtmlHelper.ForEditAsync(model, nameof(model.Page)));
             return hb.ToYHtmlString();
 
         }

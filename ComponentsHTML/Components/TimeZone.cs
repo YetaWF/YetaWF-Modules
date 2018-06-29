@@ -13,6 +13,8 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
     public abstract class TimeZoneComponentBase : YetaWFComponent {
 
+        protected static string __ResStr(string name, string defaultValue, params object[] parms) { return ResourceAccess.GetResourceString(typeof(TimeZoneComponentBase), name, defaultValue, parms); }
+
         public const string TemplateName = "TimeZone";
 
         public override Package GetPackage() { return Controllers.AreaRegistration.CurrentPackage; }
@@ -30,7 +32,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
             TimeZoneInfo tzi = TimeZoneInfo.FindSystemTimeZoneById(model);
             if (tzi == null) {
-                tag.SetInnerText(this.__ResStr("unknown", "(unknown)"));
+                tag.SetInnerText(__ResStr("unknown", "(unknown)"));
             } else {
                 tag.SetInnerText(tzi.DisplayName);
                 tag.Attributes.Add("title", tzi.IsDaylightSavingTime(DateTime.Now/*need local time*/) ? tzi.DaylightName : tzi.StandardName);
@@ -62,7 +64,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                 if (string.IsNullOrWhiteSpace(model))
                     model = TimeZoneInfo.Local.Id;
             } else
-                list.Insert(0, new SelectionItem<string> { Text = this.__ResStr("select", "(select)"), Value = "" });
+                list.Insert(0, new SelectionItem<string> { Text = __ResStr("select", "(select)"), Value = "" });
 
             return await DropDownListComponent.RenderDropDownListAsync(this, model, list, "yt_timezone");
         }
