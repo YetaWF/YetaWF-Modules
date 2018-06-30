@@ -1,7 +1,6 @@
 ﻿/* Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/ComponentsHTML#License */
 
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using YetaWF.Core.Components;
@@ -16,7 +15,6 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.AspNetCore.Mvc.ViewFeatures.Internal;
 #else
-using System.Web;
 using System.Web.Mvc;
 using System.Web.Mvc.Html;
 #endif
@@ -107,34 +105,17 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             return null;
         }
         private void AddValidation(YTagBuilder tagBuilder) {
-#if MVC6
-            ModelExplorer modelExplorer = ExpressionMetadataProvider.FromStringExpression(FieldName, HtmlHelper.ViewData, HtmlHelper.MetadataProvider);
-            ValidationHtmlAttributeProvider valHtmlAttrProvider = (ValidationHtmlAttributeProvider)YetaWFManager.ServiceProvider.GetService(typeof(ValidationHtmlAttributeProvider));
-            valHtmlAttrProvider.AddAndTrackValidationAttributes(HtmlHelper.ViewContext, modelExplorer, FieldName, tagBuilder.Attributes);
-#else
-            ModelMetadata metadata = ModelMetadataProviders.Current.GetMetadataForProperty(() => PropData.GetPropertyValue<object>(Container), Container.GetType(), PropertyName);
-            IDictionary<string, object> attrs = HtmlHelper.GetUnobtrusiveValidationAttributes(PropertyName, metadata);
-            tagBuilder.MergeAttributes(attrs, replaceExisting: false);
-#endif
-            // mvc won't render a field with the same name. This conflicts with our notion of nested components,
-            // which easily can have fields with the same name, except the prefix is different. But mvc5 doesn't know about our prefix
-            FormContext formContext = HtmlHelper.ViewContext.FormContext;
-            formContext.RenderedField(FieldName, false);
-            formContext.RenderedField(PropertyName, false);
-
-            // patch up auto-generated "required" validation (added by MVC) and rename our own customrequired validation to required
-            if (tagBuilder.Attributes.ContainsKey("data-val-required")) {
-                tagBuilder.Attributes.Remove("data-val-required");
+            foreach (YIClientValidation val in PropData.ValidationAttributes) {
+                val.AddValidation(Container, PropData, tagBuilder);
             }
-            if (tagBuilder.Attributes.ContainsKey("data-val-customrequired")) {
-                tagBuilder.Attributes.Add("data-val-required", tagBuilder.Attributes["data-val-customrequired"]);
-                tagBuilder.Attributes.Remove("data-val-customrequired");
-            }
-            // replace type dependent messages (MVC, please, who asked for this?)
-            if (tagBuilder.Attributes.ContainsKey("data-val-number"))
-                tagBuilder.Attributes["data-val-number"] = __ResStr("valNumber", "Please enter a valid number for field '{0}'", PropData.GetCaption(Container));
-            if (tagBuilder.Attributes.ContainsKey("data-val-date"))
+            // add some default validations
+            if (PropData.PropInfo.PropertyType == typeof(DateTime) || PropData.PropInfo.PropertyType == typeof(DateTime?)) {
                 tagBuilder.Attributes["data-val-date"] = __ResStr("valDate", "Please enter a valid date for field '{0}'", PropData.GetCaption(Container));
+            }
+            if (PropData.PropInfo.PropertyType == typeof(int) || PropData.PropInfo.PropertyType == typeof(int?) ||
+                    PropData.PropInfo.PropertyType == typeof(long) || PropData.PropInfo.PropertyType == typeof(long?)) {
+                tagBuilder.Attributes["data-val-number"] = __ResStr("valNumber", "Please enter a valid number for field '{0}'", PropData.GetCaption(Container));
+            }
         }
         protected YHtmlString ValidationMessage(string fieldName) {
             // ValidationMessage is always called for a child component within the context of the PARENT

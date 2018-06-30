@@ -6,6 +6,7 @@ using YetaWF.Core.Models;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Packages;
 using YetaWF.Core.Serializers;
+using YetaWF.Core.Support;
 #if MVC6
 using Microsoft.AspNetCore.Mvc;
 using YetaWF.Core.Support;
@@ -90,6 +91,9 @@ namespace YetaWF.Modules.Languages.Controllers {
                 data = LocalizationSupport.Load(package, typeName, LocalizationSupport.Location.DefaultResources);
                 custom = false;
             }
+            if (data == null)
+                throw new InternalError($"No localization data available for package {package.Name}");
+
             if (MultiString.ActiveLanguage == MultiString.DefaultLanguage)
                 custom = true;
 #if !DEBUG

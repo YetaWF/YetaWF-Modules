@@ -3,6 +3,8 @@
 using System.Threading.Tasks;
 using YetaWF.Core.Components;
 using YetaWF.Core.Localize;
+using YetaWF.Core.Models;
+using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Packages;
 using YetaWF.Core.Serializers;
 using YetaWF.Core.Support;
@@ -22,6 +24,23 @@ namespace YetaWF.Modules.Languages.Components {
 
         public override ComponentType GetComponentType() { return ComponentType.Edit; }
 
+        public class UIStringData {
+
+            public UIStringData(LocalizationData.StringData entry) {
+                ObjectSupport.CopyData(entry, this);
+            }
+
+            [UIHint("Hidden"), ResourceRedirect(nameof(NameFieldCaption), nameof(NameFieldDescription)), StringLength(LocalizationData.MaxString)]
+            public string Name { get; set; }
+            [UIHint("Text80"), ResourceRedirect(nameof(TextFieldCaption), nameof(TextFieldDescription)), StringLength(LocalizationData.MaxString)]
+            public string Text { get; set; }
+
+            public string NameFieldCaption { get; set; }
+            public string NameFieldDescription { get; set; }
+            public string TextFieldCaption { get; set; }
+            public string TextFieldDescription { get; set; }
+        }
+
         public async Task<YHtmlString> RenderAsync(SerializableList<LocalizationData.StringData> model) {
             HtmlBuilder hb = new HtmlBuilder();
 
@@ -32,15 +51,22 @@ namespace YetaWF.Modules.Languages.Components {
 
             foreach (LocalizationData.StringData strData in model) {
 
+                UIStringData uiData = new UIStringData(strData) {
+                    NameFieldCaption = strData.Name,
+                    NameFieldDescription = this.__ResStr("strNameTT", "Text found in __ResStr(\"{0}\", ...)", strData.Name),
+                    TextFieldCaption = strData.Name,
+                    TextFieldDescription = this.__ResStr("strTextTT", "Text found in __ResStr(\"{0}\", ...)", strData.Name),
+                };
+
                 hb.Append($@"
     <div class='t_string'>");
                 using (Manager.StartNestedComponent($"{FieldName}[{index}]")) {
-                    hb.Append(await HtmlHelper.ForEditAsync(strData, nameof(strData.Name)));
+                    hb.Append(await HtmlHelper.ForEditAsync(uiData, nameof(uiData.Name)));
                     hb.Append($@"<div class='t_name'>");
-                    hb.Append(await HtmlHelper.ForLabelAsync(strData, nameof(strData.Name), HtmlAttributes: new { Caption = strData.Name, Description = this.__ResStr("captTT", "Text found in __ResStr(\"{0}\", ...)", strData.Name) }));
+                    hb.Append(await HtmlHelper.ForLabelAsync(uiData, nameof(uiData.Name)));
                     hb.Append($@"</div>");
                     hb.Append($@"<div class='t_text'>");
-                    hb.Append(await HtmlHelper.ForEditAsync(strData, nameof(strData.Text)));
+                    hb.Append(await HtmlHelper.ForEditAsync(uiData, nameof(uiData.Text)));
                     hb.Append($@"</div>");
                 }
                 hb.Append($@"

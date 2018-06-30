@@ -93,7 +93,7 @@ namespace YetaWF.Modules.Languages.Controllers {
         [ConditionalAntiForgeryToken]
         public async Task<ActionResult> LocalizeBrowsePackage_GridData(int skip, int take, List<DataProviderSortInfo> sort, List<DataProviderFilterInfo> filters, Guid settingsModuleGuid, string packageName) {
             Package package = Package.GetPackageFromPackageName(packageName);
-            List<LocalizeFile> files = (from s in await LocalizationSupport.GetFilesAsync(package, MultiString.DefaultLanguage) select new LocalizeFile { FileName = Path.GetFileName(s) }).ToList();
+            List<LocalizeFile> files = (from s in await LocalizationSupport.GetFilesAsync(package, MultiString.DefaultLanguage, false) select new LocalizeFile { FileName = Path.GetFileName(s) }).ToList();
             DataProviderGetRecords<LocalizeFile> recs = DataProviderImpl<LocalizeFile>.GetRecords(files, skip, take, sort, filters);
             Grid.SaveSettings(skip, take, sort, filters, settingsModuleGuid);
             return await GridPartialViewAsync(new DataSourceResult {
@@ -139,7 +139,7 @@ namespace YetaWF.Modules.Languages.Controllers {
             Package package = Package.GetPackageFromPackageName(packageName);
             if (resourceType == LocalizationSupport.Location.InstalledResources && language == MultiString.DefaultLanguage)
                 throw new InternalError("Can't save installed resources using the default language {0}", MultiString.DefaultLanguage);
-            List<LocalizeFile> files = (from s in await LocalizationSupport.GetFilesAsync(package, MultiString.DefaultLanguage) select new LocalizeFile { FileName = Path.GetFileName(s) }).ToList();
+            List<LocalizeFile> files = (from s in await LocalizationSupport.GetFilesAsync(package, MultiString.DefaultLanguage, false) select new LocalizeFile { FileName = Path.GetFileName(s) }).ToList();
 
             // Extract all strings into a list
             List<string> strings = new List<string>();
