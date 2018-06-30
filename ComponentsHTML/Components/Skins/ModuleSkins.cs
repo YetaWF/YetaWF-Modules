@@ -24,10 +24,10 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
         public class ModuleSkinUI {
 
-            [UIHint("ModuleSkinName"), Description("The name of the skin collection")]
+            [UIHint("ModuleSkinName"), ResourceRedirect(nameof(FileNameCaption)), Description("The name of the skin collection")]
             public string FileName { get; set; } // may be null for site default
             public ModuleSkinList FileName_ModuleSkinList { get; set; }
-            public string FileName_Label { get; set; }
+            public string FileNameCaption { get; set; }
         }
 
         public async Task<YHtmlString> RenderAsync(SerializableList<SkinDefinition> model) {
@@ -49,7 +49,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
                 ModuleSkinUI ms = new ModuleSkinUI {
                     FileName = fileName,
-                    FileName_Label = skinDef.CollectionDescription,
+                    FileNameCaption = skinDef.CollectionDescription,
                     FileName_ModuleSkinList = skinAccess.GetAllModuleSkins(skinDef.CollectionName),
                 };
 
@@ -77,10 +77,10 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             [UIHint("Hidden")]
             public string Collection { get; set; }
 
-            [UIHint("ModuleSkinName"), Description("The name of the skin collection")]
+            [UIHint("ModuleSkinName"), ResourceRedirect(nameof(FileNameCaption)), Description("The name of the skin collection")]
             public string FileName { get; set; } // may be null for site default
             public ModuleSkinList FileName_ModuleSkinList { get; set; }
-            public string FileName_Label { get; set; }
+            public string FileNameCaption { get; set; }
         }
 
         public async Task<YHtmlString> RenderAsync(SerializableList<SkinDefinition> model) {
@@ -103,7 +103,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                 ModuleSkinUI ms = new ModuleSkinUI {
                     Collection = skinDef.CollectionName,
                     FileName = fileName,
-                    FileName_Label = skinDef.CollectionDescription,
+                    FileNameCaption = skinDef.CollectionDescription,
                     FileName_ModuleSkinList = skinAccess.GetAllModuleSkins(skinDef.CollectionName),
                 };
 
