@@ -81,13 +81,13 @@ namespace YetaWF.Modules.Languages.Modules {
                 Image = await CustomIconAsync("LocalizePackage.png"),
                 LinkText = this.__ResStr("creCustLink", "Create Localization Resources (Custom - {0})", MultiString.ActiveLanguage),
                 MenuText = this.__ResStr("creCustText", "Create Localization Resources (Custom - {0})", MultiString.ActiveLanguage),
-                Tooltip = this.__ResStr("creCustTooltip", "Create custom localization resources for package {0} using language {1} - Saved in folder ./AddonsCustom/...", package.Name, MultiString.ActiveLanguage),
-                Legend = this.__ResStr("creCustLegend", "Creates custom localization resources for package {0} using language {1} - Saved in folder ./AddonsCustom/...", package.Name, MultiString.ActiveLanguage),
+                Tooltip = this.__ResStr("creCustTooltip", "Create custom localization resources for package {0} using language {1} - Saved in folder ./LocalizationCustom/...", package.Name, MultiString.ActiveLanguage),
+                Legend = this.__ResStr("creCustLegend", "Creates custom localization resources for package {0} using language {1} - Saved in folder ./LocalizationCustom/...", package.Name, MultiString.ActiveLanguage),
                 Style = ModuleAction.ActionStyleEnum.Post,
                 Location = ModuleAction.ActionLocationEnum.ModuleLinks,
                 Category = ModuleAction.ActionCategoryEnum.Read,
                 Mode = ModuleAction.ActionModeEnum.Any,
-                ConfirmationText = this.__ResStr("creCustConfirm", "Are you sure you want to create custom localization resources for package {0} using language {1} - Custom localization resources are saved in folder ./AddonsCustom/...", package.Name, MultiString.ActiveLanguage),
+                ConfirmationText = this.__ResStr("creCustConfirm", "Are you sure you want to create custom localization resources for package {0} using language {1} - Custom localization resources are saved in folder ./LocalizationCustom/...", package.Name, MultiString.ActiveLanguage),
                 NeedsModuleContext = true,
             };
         }
