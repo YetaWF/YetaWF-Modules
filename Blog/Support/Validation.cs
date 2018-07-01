@@ -11,7 +11,6 @@ namespace YetaWF.Modules.Blog.Support {
     [AttributeUsage(AttributeTargets.Property, AllowMultiple = false, Inherited = true)]
     public class ShortNameValidationAttribute : RegexValidationBaseAttribute {
 
-        [CombinedResources]
         private static string __ResStr(string name, string defaultValue, params object[] parms) { return ResourceAccess.GetResourceString(typeof(Resources), name, defaultValue, parms); }
 
         public ShortNameValidationAttribute() : base(@"^\s*[A-Za-z0-9_\-]*\s*$",

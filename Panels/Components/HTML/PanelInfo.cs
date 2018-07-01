@@ -196,7 +196,7 @@ namespace YetaWF.Modules.Panels.Components {
 
             foreach (var panel in model.Panels) {
                 hb.Append(PropertyListComponentBase.RenderTabPaneStart(DivId, tabEntry, "t_panel"));
-                using (Manager.StartNestedComponent($"Panels[{tabEntry}]")) {
+                using (Manager.StartNestedComponent($"{FieldNamePrefix}.Panels[{tabEntry}]")) {
                     hb.Append(await HtmlHelper.ForEditContainerAsync(panel, "PropertyList"));
                 }
                 hb.Append(PropertyListComponentBase.RenderTabPaneEnd(DivId, tabEntry));

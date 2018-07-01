@@ -40,7 +40,11 @@ namespace YetaWF.Modules.Panels.Views {
         public async Task<YHtmlString> RenderPartialViewAsync(ModulePanelModule module, ModulePanelModuleController.Model model) {
 
             HtmlBuilder hb = new HtmlBuilder();
-            hb.Append(await HtmlHelper.ForEditAsync(model, nameof(model.PanelInfo)));
+            using (Manager.StartNestedComponent(nameof(model.PanelInfo))) {
+
+                hb.Append(await HtmlHelper.ForEditAsync(model, nameof(model.PanelInfo)));
+
+            }
             return hb.ToYHtmlString();
 
         }

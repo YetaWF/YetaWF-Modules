@@ -9,7 +9,6 @@ using YetaWF.Core.Localize;
 using YetaWF.Core.Modules;
 using YetaWF.Core.Packages;
 using YetaWF.Core.Support;
-using YetaWF.Modules.ComponentsHTML.Components;
 
 namespace YetaWF.Modules.ComponentsHTML.Components {
 
@@ -24,7 +23,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         public async Task<YHtmlString> RenderAsync(Guid? model) {
 
             model = model ?? Guid.Empty;
-            string areaName = await ModuleSelectionModuleNewEditComponent.GetAreaNameFromGuidAsync(true, model);
+            string areaName = await ModuleSelectionModuleNewEditComponent.GetAreaNameFromGuidAsync(false, model);
 
             List<SelectionItem<string>> list = (
                 from module in await DesignedModules.LoadDesignedModulesAsync()

@@ -153,19 +153,20 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             using (Manager.StartNestedComponent(FieldName)) {
 
                 if (newMods) {
-                    hb.Append(await HtmlHelper.ForDisplayAsync(uiNew, nameof(uiNew.AjaxUrl)));
+                    hb.Append(await HtmlHelper.ForDisplayAsync(uiNew, nameof(uiNew.AjaxUrl), HtmlAttributes: new { @class = Forms.CssFormNoSubmit }));
                     hb.Append($@"
     <div class='t_packages'>");
                     hb.Append(await HtmlHelper.ForLabelAsync(uiNew, nameof(uiNew.Package)));
                     hb.Append(await HtmlHelper.ForEditAsync(uiNew, nameof(uiNew.Package)));
                 } else {
-                    hb.Append(await HtmlHelper.ForDisplayAsync(uiExisting, nameof(uiExisting.AjaxUrl)));
-                    hb.Append(await HtmlHelper.ForDisplayAsync(uiExisting, nameof(uiExisting.AjaxUrlComplete)));
+                    hb.Append(await HtmlHelper.ForDisplayAsync(uiExisting, nameof(uiExisting.AjaxUrl), HtmlAttributes: new { @class = Forms.CssFormNoSubmit }));
+                    hb.Append(await HtmlHelper.ForDisplayAsync(uiExisting, nameof(uiExisting.AjaxUrlComplete), HtmlAttributes: new { @class = Forms.CssFormNoSubmit }));
                     hb.Append($@"
     <div class='t_packages'>");
                     hb.Append(await HtmlHelper.ForLabelAsync(uiExisting, nameof(uiExisting.Package)));
                     hb.Append(await HtmlHelper.ForEditAsync(uiExisting, nameof(uiExisting.Package)));
                 }
+
             }
 
             hb.Append($@"
@@ -189,7 +190,9 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
     </div>
 </div>
 <script>
-    YetaWF_ModuleSelection.init('{DivId}')
+    {BeginDocumentReady(DivId)}
+        YetaWF_ModuleSelection.init('{DivId}');
+    {EndDocumentReady()}
 </script>");
 
             return hb.ToYHtmlString();

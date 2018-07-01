@@ -164,18 +164,21 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             return new JSDocumentReady(hb) { CloseParen = 1 };
         }
         protected JSDocumentReady DocumentReady(HtmlBuilder hb) {
-            hb.Append("YetaWF_Basics.whenReadyOnce.push({callback: function ($tag) {\n");
+            hb.Append("YetaWF_Basics.whenReadyOnce.push({callback: function ($tag) {");
             return new JSDocumentReady(hb);
         }
         protected string BeginDocumentReady(string id = null) {
             if (string.IsNullOrWhiteSpace(id)) {
-                return "YetaWF_Basics.whenReadyOnce.push({callback: function ($tag) {\n";
+                DocCloseParen = 0;
+                return "YetaWF_Basics.whenReadyOnce.push({callback: function ($tag) {";
             } else {
-                return $@"YetaWF_Basics.whenReadyOnce.push({{callback: function ($tag) {{ if ($tag.has('#{id}').length > 0) {{\n";
+                DocCloseParen = 1;
+                return $@"YetaWF_Basics.whenReadyOnce.push({{callback: function ($tag) {{ if ($tag.has('#{id}').length > 0) {{";
             }
         }
+        private int DocCloseParen;
         protected string EndDocumentReady() {
-            return "}";
+            return (DocCloseParen > 0 ? "}" : "") + "}});";
         }
     }
 }

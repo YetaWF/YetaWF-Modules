@@ -11,7 +11,6 @@ namespace YetaWF.Modules.Identity.Support {
     [AttributeUsage(AttributeTargets.Property, AllowMultiple = false, Inherited = true)]
     public class RoleNameValidationAttribute : RegexValidationBaseAttribute {
 
-        [CombinedResources]
         private static string __ResStr(string name, string defaultValue, params object[] parms) { return ResourceAccess.GetResourceString(typeof(Resources), name, defaultValue, parms); }
 
         public RoleNameValidationAttribute() : base(@"^\s*[A-Za-z0-9_][A-Za-z0-9_\.]*\s*$",
@@ -24,7 +23,6 @@ namespace YetaWF.Modules.Identity.Support {
     [AttributeUsage(AttributeTargets.Property, AllowMultiple = false, Inherited = true)]
     public class ResourceNameValidationAttribute : RegexValidationBaseAttribute {
 
-        [CombinedResources]
         private static string __ResStr(string name, string defaultValue, params object[] parms) { return ResourceAccess.GetResourceString(typeof(Resources), name, defaultValue, parms); }
 
         public ResourceNameValidationAttribute() : base(@"^\s*[A-Za-z][A-Za-z0-9]*_[A-Za-z][A-Za-z0-9]*\-.*\s*$",
@@ -37,7 +35,6 @@ namespace YetaWF.Modules.Identity.Support {
     [AttributeUsage(AttributeTargets.Property, AllowMultiple = false, Inherited = true)]
     public class UserNameValidationAttribute : RegexValidationBaseAttribute {
 
-        [CombinedResources]
         private static string __ResStr(string name, string defaultValue, params object[] parms) { return ResourceAccess.GetResourceString(typeof(Resources), name, defaultValue, parms); }
 
         public UserNameValidationAttribute() : base(@"^\s*\S.*\s*$",

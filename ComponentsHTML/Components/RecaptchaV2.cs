@@ -18,7 +18,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
             HtmlBuilder hb = new HtmlBuilder();
             hb.Append($@"<div id='{DivId}' class='yt_recaptchav2'></div>");
-            hb.Append(await HtmlHelper.ForEditAsync(model, nameof(RecaptchaV2Data.VerifyPresence)));
+            hb.Append(await HtmlHelper.ForDisplayAsync(model, nameof(RecaptchaV2Data.VerifyPresence)));
 
             if (Manager.IsPostRequest) { // We only need to render the recaptcha for postbacks. The initial setup is done in recaptchav2.js in response to the onload function called by google api
                 hb.Append($@"
