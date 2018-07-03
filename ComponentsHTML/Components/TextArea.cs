@@ -38,12 +38,12 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
             if (full || sourceOnly) {
 
-                await Manager.AddOnManager.AddAddOnGlobalAsync("ckeditor.com", "ckeditor");
+                await Manager.AddOnManager.AddAddOnNamedAsync(Package.Domain, Package.Product, "ckeditor");
 
                 int emHeight = PropData.GetAdditionalAttributeValue("EmHeight", 10);
                 int pixHeight = Manager.CharHeight * emHeight;
 
-                string addonUrl = AddOnManager.GetAddOnGlobalUrl("ckeditor.com", "ckeditor", YetaWF.Core.Addons.AddOnManager.UrlType.Base) + "__CUSTOM_FILES/";
+                string addonUrl = Manager.AddOnManager.GetAddOnNamedUrl(Package.Domain, Package.Product, "ckeditor") + "__CUSTOM_FILES/";
                 string url = addonUrl + "full_ro_config.js";
                 if (sourceOnly)
                     url = addonUrl + "sourceonly_ro_config.js";
@@ -100,8 +100,8 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
         public async Task<YHtmlString> RenderAsync(object model) {
 
-            await Manager.AddOnManager.AddAddOnGlobalAsync("ckeditor.com", "ckeditor");
-            string addonUrl = AddOnManager.GetAddOnGlobalUrl("ckeditor.com", "ckeditor", YetaWF.Core.Addons.AddOnManager.UrlType.Base) + "__CUSTOM_FILES/";
+            await Manager.AddOnManager.AddAddOnNamedAsync(Package.Domain, Package.Product, "ckeditor");
+            string addonUrl = Manager.AddOnManager.GetAddOnNamedUrl(Package.Domain, Package.Product, "ckeditor") + "__CUSTOM_FILES/";
 
             string text;
             if (model is MultiString)
@@ -146,7 +146,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                 filebrowserPageBrowseUrl += Globals.Link_NoEditMode + "=y";
             }
             string url = addonUrl + "full_config.js";
-            if (sourceOnly) 
+            if (sourceOnly)
                 url = addonUrl + "sourceonly_config.js";
             else if (!useSave)
                 url = addonUrl + "nosave_config.js";

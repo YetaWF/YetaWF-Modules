@@ -9,10 +9,8 @@ using YetaWF.Core.Modules;
 using YetaWF.Core.Packages;
 using YetaWF.Core.Skins;
 using YetaWF.Core.Support;
+using YetaWF.Modules.ComponentsHTML.Components;
 using static YetaWF.Core.Modules.ModuleAction;
-#if MVC6
-#else
-#endif
 
 namespace YetaWF.Modules.ComponentsHTML {
 
@@ -62,12 +60,11 @@ namespace YetaWF.Modules.ComponentsHTML {
             if (!string.IsNullOrWhiteSpace(menuContents)) {
 
                 //await Manager.ScriptManager.AddKendoUICoreJsFile("kendo.popup.min.js"); // is now a prereq of kendo.window (2017.2.621)
-                await Manager.ScriptManager.AddKendoUICoreJsFileAsync("kendo.menu.min.js");
+                await KendoUICore.AddFileAsync("kendo.menu.min.js");
 
-                //$$$ That's not good here
                 await Manager.AddOnManager.AddAddOnNamedAsync(Package.Domain, Package.Product, "ModuleMenu"); // module menu support
                 await Manager.AddOnManager.AddAddOnNamedAsync(Package.Domain, Package.Product, "Modules");// various module support
-                await Manager.AddOnManager.AddAddOnGlobalAsync("jquery.com", "jquery-color");// for color change when entering module edit menu
+                await Manager.AddOnManager.AddAddOnNamedAsync(Package.Domain, Package.Product, "jquery-color");// for color change when entering module edit menu
 
                 // <div class= >
                 YTagBuilder divTag = new YTagBuilder("div");

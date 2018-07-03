@@ -144,8 +144,8 @@ namespace YetaWF.Modules.Panels.Components {
                 hb.Append($@"
     </ul>");
 
-                await Manager.ScriptManager.AddKendoUICoreJsFileAsync("kendo.data.min.js");
-                await Manager.ScriptManager.AddKendoUICoreJsFileAsync("kendo.panelbar.min.js");
+                await KendoUICore.AddFileAsync("kendo.data.min.js");
+                await KendoUICore.AddFileAsync("kendo.panelbar.min.js");
                 hb.Append($@"
     <script>
         $('#{DivId}').kendoPanelBar({{

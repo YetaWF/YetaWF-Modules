@@ -43,11 +43,11 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         public override ComponentType GetComponentType() { return ComponentType.Edit; }
 
         public override async Task IncludeAsync() {
-            await Manager.ScriptManager.AddKendoUICoreJsFileAsync("kendo.calendar.min.js");
-            //await Manager.ScriptManager.AddKendoUICoreJsFileAsync("kendo.popup.min.js"); // is now a prereq of kendo.window (2017.2.621)
-            await Manager.ScriptManager.AddKendoUICoreJsFileAsync("kendo.datepicker.min.js");
-            await Manager.ScriptManager.AddKendoUICoreJsFileAsync("kendo.timepicker.min.js");
-            await Manager.ScriptManager.AddKendoUICoreJsFileAsync("kendo.datetimepicker.min.js");
+            await KendoUICore.AddFileAsync("kendo.calendar.min.js");
+            //await KendoUICore.AddFileAsync("kendo.popup.min.js"); // is now a prereq of kendo.window (2017.2.621)
+            await KendoUICore.AddFileAsync("kendo.datepicker.min.js");
+            await KendoUICore.AddFileAsync("kendo.timepicker.min.js");
+            await KendoUICore.AddFileAsync("kendo.datetimepicker.min.js");
             await base.IncludeAsync();
         }
         public async Task<YHtmlString> RenderAsync(DateTime model) {

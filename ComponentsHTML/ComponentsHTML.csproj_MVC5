@@ -36,6 +36,7 @@
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="KendoUICore.cs" />
     <Compile Include="View.cs" />
     <Compile Include="Components\FormButton.cs" />
     <Compile Include="Components\PageDefinitions.cs" />
@@ -148,11 +149,57 @@
     <Compile Include="Views\HTML\Browse.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Addons\_Addons\bassistance.de.jquery-validation\FilelistJS.txt" />
+    <Content Include="Addons\_Addons\bassistance.de.jquery-validation\__CUSTOM\jquery.validate.js" />
+    <Content Include="Addons\_Addons\ckeditor\ckeditor.css" />
+    <Content Include="Addons\_Addons\ckeditor\ckeditor.min.css" />
+    <Content Include="Addons\_Addons\ckeditor\filelistCSS.txt" />
+    <Content Include="Addons\_Addons\ckeditor\filelistJS.txt" />
+    <Content Include="Addons\_Addons\ckeditor\__CUSTOM_FILES\full_config.js" />
+    <Content Include="Addons\_Addons\ckeditor\__CUSTOM_FILES\full_ro_config.js" />
+    <Content Include="Addons\_Addons\ckeditor\__CUSTOM_FILES\nosave_config.js" />
+    <Content Include="Addons\_Addons\ckeditor\__CUSTOM_FILES\sourceonly_config.js" />
+    <Content Include="Addons\_Addons\ckeditor\__CUSTOM_FILES\sourceonly_ro_config.js" />
+    <Content Include="Addons\_Addons\clipboardjs.com.clipboard\filelistJS.txt" />
+    <Content Include="Addons\_Addons\gist.github.com_remi_957732.jquery_validate_hooks\filelistJS.txt" />
+    <Content Include="Addons\_Addons\gist.github.com_remi_957732.jquery_validate_hooks\jquery.validate.hooks.js" />
+    <Content Include="Addons\_Addons\github.com.danielm.uploader\filelistCSS.txt" />
+    <Content Include="Addons\_Addons\github.com.danielm.uploader\filelistJS.txt" />
+    <Content Include="Addons\_Addons\github.com.danielm.uploader\src\dmuploader.js" />
+    <Content Include="Addons\_Addons\github.com.free-jqgrid.jqgrid\FilelistCSS.txt" />
+    <Content Include="Addons\_Addons\github.com.free-jqgrid.jqgrid\FilelistJS.txt" />
+    <Content Include="Addons\_Addons\github.com.vadikom.smartmenus\filelistCSS.txt" />
+    <Content Include="Addons\_Addons\github.com.vadikom.smartmenus\filelistJS.txt" />
+    <Content Include="Addons\_Addons\google.com.swfobject\filelistJS.txt" />
+    <Content Include="Addons\_Addons\jquery-color\filelistJS.txt" />
+    <Content Include="Addons\_Addons\jquery-color\jquery.color-2.1.2.js" />
+    <Content Include="Addons\_Addons\jquery-color\jquery.color.plus-names-2.1.2.js" />
+    <Content Include="Addons\_Addons\jquery-color\jquery.color.svg-names-2.1.2.js" />
+    <Content Include="Addons\_Addons\jqueryui-themes\filelistCSS.txt" />
+    <Content Include="Addons\_Addons\jquery\filelistJS.txt" />
+    <Content Include="Addons\_Addons\jqueryui\filelistJS.txt" />
+    <Content Include="Addons\_Addons\jqueryui\postfixup.js" />
+    <Content Include="Addons\_Addons\jqueryui\prefixup.js" />
+    <Content Include="Addons\_Addons\jstree.com\filelistCSS.txt" />
+    <Content Include="Addons\_Addons\jstree.com\filelistJS.txt" />
+    <Content Include="Addons\_Addons\medialize.github.io.URI.js\filelistJS.txt" />
+    <Content Include="Addons\_Addons\microsoft.com.jquery_unobtrusive_validation\FilelistJS.txt" />
     <Content Include="Addons\_Addons\ModuleMenu\filelistJS.txt" />
     <Content Include="Addons\_Addons\ModuleMenu\ModuleMenu.js" />
     <Content Include="Addons\_Addons\Modules\filelistJS.txt" />
     <Content Include="Addons\_Addons\Modules\images\ModuleMenuEditIcon.png" />
     <Content Include="Addons\_Addons\Modules\modules.js" />
+    <Content Include="Addons\_Addons\necolas.github.io.normalize\filelistCSS.txt" />
+    <Content Include="Addons\_Addons\no-margin-for-errors.com.prettyloader\css\prettyLoader.css" />
+    <Content Include="Addons\_Addons\no-margin-for-errors.com.prettyloader\filelistCSS.txt" />
+    <Content Include="Addons\_Addons\no-margin-for-errors.com.prettyloader\filelistJS.txt" />
+    <Content Include="Addons\_Addons\no-margin-for-errors.com.prettyloader\images\prettyLoader\ajax-loader.gif" />
+    <Content Include="Addons\_Addons\no-margin-for-errors.com.prettyloader\images\prettyLoader\prettyLoader.gif" />
+    <Content Include="Addons\_Addons\no-margin-for-errors.com.prettyloader\images\prettyLoader\prettyLoader.png" />
+    <Content Include="Addons\_Addons\no-margin-for-errors.com.prettyloader\js\jquery.prettyLoader.js" />
+    <Content Include="Addons\_Addons\telerik.com.Kendo_UI_Core\filelistCSS.txt" />
+    <Content Include="Addons\_Addons\telerik.com.Kendo_UI_Core\filelistJS.txt" />
+    <Content Include="Addons\_Main\PrettyLoader.js" />
     <Content Include="Addons\_Templates\ActionIcons\ActionIcons.css" />
     <Content Include="Addons\_Templates\ActionIcons\ActionIcons.js" />
     <Content Include="Addons\_Templates\ActionIcons\filelistCSS.txt" />
@@ -268,6 +315,7 @@
     <Content Include="Addons\_Templates\Url\Url.js" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Addons\_Addons\no-margin-for-errors.com.prettyloader\README" />
     <None Include="Addons\_Main\Grids\PageDefinitionsDisplayComponent.GridDisplay" />
     <None Include="Addons\_Main\Grids\ReferencedModulesDisplayComponent.GridDisplay" />
     <None Include="Addons\_Main\Grids\ReferencedModulesEditComponent.GridEdit" />

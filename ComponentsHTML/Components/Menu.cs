@@ -113,14 +113,14 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             if (style == MenuStyleEnum.Bootstrap) {
                 string menu = (await CoreRendering.RenderMenuAsync(model.MenuList, DivId, null, RenderEngine: YetaWF.Core.Modules.ModuleAction.RenderEngineEnum.BootstrapSmartMenu, HtmlHelper: HtmlHelper)).ToString();
                 if (!string.IsNullOrWhiteSpace(menu)) {
-                    await Manager.AddOnManager.AddAddOnGlobalAsync("github.com.vadikom", "smartmenus"); // multilevel navbar
+                    await Manager.AddOnManager.AddAddOnNamedAsync(Package.Domain, Package.Product, "github.com.vadikom.smartmenus"); // multilevel navbar
                     hb.Append(menu);
                 }
             } else {
                 string menu = (await CoreRendering.RenderMenuAsync(model.MenuList, DivId, model.CssClass, RenderEngine: YetaWF.Core.Modules.ModuleAction.RenderEngineEnum.JqueryMenu, HtmlHelper: HtmlHelper)).ToString();
                 if (!string.IsNullOrWhiteSpace(menu)) {
-                    //await Manager.ScriptManager.AddKendoUICoreJsFileAsync("kendo.popup.min.js"); // is now a prereq of kendo.window (2017.2.621)
-                    await Manager.ScriptManager.AddKendoUICoreJsFileAsync("kendo.menu.min.js");
+                    //await KendoUICore.AddFileAsync("kendo.popup.min.js"); // is now a prereq of kendo.window (2017.2.621)
+                    await KendoUICore.AddFileAsync("kendo.menu.min.js");
                     hb.Append($@"
 <div class='yt_yetawf_menus_menu t_display' role='navigation'>
     {menu}

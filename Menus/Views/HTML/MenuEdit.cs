@@ -22,7 +22,7 @@ namespace YetaWF.Modules.Menus.Views {
 
             HtmlBuilder hb = new HtmlBuilder();
 
-            await Manager.AddOnManager.AddAddOnGlobalAsync("jsTree.com", "jsTree");
+            await Manager.AddOnManager.AddAddOnNamedAsync(Package.Domain, Package.Product, "jsTree.com.jsTree");
 
             string treeId = DivId;
             string detailsId = UniqueId();

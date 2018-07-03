@@ -18,6 +18,13 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         public override Package GetPackage() { return Controllers.AreaRegistration.CurrentPackage; }
         public override string GetTemplateName() { return TemplateName; }
 
+        public override async Task IncludeAsync() {
+            //await KendoUICore.AddFileAsync("kendo.popup.min.js"); // is now a prereq of kendo.window (2017.2.621)
+            await KendoUICore.AddFileAsync("kendo.button.min.js");
+            await KendoUICore.AddFileAsync("kendo.menu.min.js");
+            await base.IncludeAsync();
+        }
+
         public async Task<YHtmlString> RenderAsync(MenuList model) {
 
             HtmlBuilder hb = new HtmlBuilder();

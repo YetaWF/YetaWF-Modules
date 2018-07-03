@@ -1,6 +1,8 @@
 ﻿/* Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/ComponentsHTML#License */
 
 using System;
+using System.Collections.Generic;
+using System.Reflection;
 using System.Threading.Tasks;
 using YetaWF.Core.Components;
 using YetaWF.Core.Localize;
@@ -25,7 +27,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         public override ComponentType GetComponentType() { return ComponentType.Display; }
 
         public override async Task IncludeAsync() {
-            await Manager.AddOnManager.AddAddOnGlobalAsync("github.com.free-jqgrid", "jqgrid");
+            await Manager.AddOnManager.AddAddOnNamedAsync(Package.Domain, Package.Product, "github.com.free-jqgrid.jqgrid");
             await base.IncludeAsync();
         }
 
@@ -81,6 +83,9 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         var {dataId} = [
             {await RenderRecordsAsync(model, dictInfo)}
         ];");
+            } else {
+                // when we're rendering data during ajax call (POST) we can't add javascript files, so we add them now in preparation
+                await AddTemplatesForType(model.RecordType);
             }
 
             hb.Append($@"
@@ -254,10 +259,24 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
             return hb.ToYHtmlString();
         }
+
+        private async Task AddTemplatesForType(Type type) {
+            List<PropertyData> propData = ObjectSupport.GetPropertyData(type);
+            foreach (PropertyData prop in propData) {
+                if (prop.UIHint != null) {
+                    if (prop.ReadOnly)
+                        await YetaWFComponentExtender.MarkUsedDisplayAsync(prop.UIHint);
+                    else
+                        await YetaWFComponentExtender.MarkUsedEditAsync(prop.UIHint);
+                    if (prop.PropInfo.PropertyType.IsClass)
+                        await AddTemplatesForType(prop.PropInfo.PropertyType);
+                }
+            }
+        }
+
         internal int GetDropdownActionWidthInChars() {
-            //$$string s = __ResStr("dropdownWidth", "11");
-            //return Convert.ToInt32(s);
-            return 11;
+            string s = __ResStr("dropdownWidth", "11");
+            return Convert.ToInt32(s);
         }
     }
 }

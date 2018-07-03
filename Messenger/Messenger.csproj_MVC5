@@ -61,6 +61,7 @@
     <Compile Include="Startup\AreaRegistration.cs" />
     <Compile Include="Startup\Info.cs" />
     <Compile Include="Startup\Messaging.cs" />
+    <Compile Include="Startup\StartupSignalr.cs" />
     <Compile Include="Views\HTML\SiteAnnouncement.cs" />
     <Compile Include="Views\HTML\Messaging.cs" />
   </ItemGroup>
@@ -71,6 +72,7 @@
     <None Include="packages.config" />
     <None Include="tsconfig.json" />
     <None Include="tslint.json" />
+    <Content Include="Addons\_Addons\github.com.signalr.signalr\FilelistJS.txt" />
     <Content Include="Addons\_Addons\SkinMessaging\filelistJS.txt" />
     <Content Include="Addons\_Addons\Messaging\filelistJS.txt" />
     <Content Include="Addons\_Main\Icons\offline.png" />

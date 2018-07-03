@@ -42,7 +42,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         }
 
         public override async Task IncludeAsync() {
-            await Manager.ScriptManager.AddKendoUICoreJsFileAsync("kendo.maskedtextbox.min.js");
+            await KendoUICore.AddFileAsync("kendo.maskedtextbox.min.js");
         }
         public async Task<YHtmlString> RenderAsync(string model) {
             HtmlBuilder hb = new HtmlBuilder();
@@ -66,7 +66,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             hb.Append(tag.ToString(YTagRenderMode.StartTag));
 
             if (copy) {
-                await Manager.AddOnManager.AddAddOnGlobalAsync("clipboardjs.com", "clipboard");// add clipboard support
+                await Manager.AddOnManager.AddAddOnNamedAsync(Package.Domain, Package.Product, "clipboardjs.com.clipboard");// add clipboard support
                 SkinImages skinImages = new SkinImages();
                 string imageUrl = await skinImages.FindIcon_TemplateAsync("Copy.png", Package, "Text");
                 YTagBuilder tagImg = ImageHTML.BuildKnownImageYTag(imageUrl, title: __ResStr("ttCopy", "Copy to Clipboard"), alt: __ResStr("altCopy", "Copy to Clipboard"));
@@ -86,7 +86,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         }
 
         public static async Task IncludeExplicitAsync() { // this component is reusable so we need to explicitly include all js/css
-            await Manager.ScriptManager.AddKendoUICoreJsFileAsync("kendo.maskedtextbox.min.js");
+            await KendoUICore.AddFileAsync("kendo.maskedtextbox.min.js");
             await Manager.AddOnManager.AddTemplateAsync(Controllers.AreaRegistration.CurrentPackage.Domain, Controllers.AreaRegistration.CurrentPackage.Product, "Text");
         }
         public async Task<YHtmlString> RenderAsync(string model) {
@@ -139,7 +139,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             hb.Append(tag.ToString(YTagRenderMode.StartTag));
 
             if (copy) {
-                await Manager.AddOnManager.AddAddOnGlobalAsync("clipboardjs.com", "clipboard");// add clipboard support
+                await Manager.AddOnManager.AddAddOnNamedAsync(component.Package.Domain, component.Package.Product, "clipboardjs.com.clipboard");// add clipboard support
                 SkinImages skinImages = new SkinImages();
                 string imageUrl = await skinImages.FindIcon_TemplateAsync("Copy.png", component.Package, "Text");
                 YTagBuilder tagImg = ImageHTML.BuildKnownImageYTag(imageUrl, title: __ResStr("ttCopy", "Copy to Clipboard"), alt: __ResStr("altCopy", "Copy to Clipboard"));
@@ -149,7 +149,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
             //if (!string.IsNullOrWhiteSpace(mask)) {
             //    // if there is a Mask we need to use the KendoMaskedTextBox
-            //    await Manager.ScriptManager.AddKendoUICoreJsFileAsync("kendo.maskedtextbox.min.js");
+            //    await KendoUICore.AddFileAsync("kendo.maskedtextbox.min.js");
             //    ScriptBuilder sb = new ScriptBuilder();
             //    sb.Append("$('#{0}').kendoMaskedTextBox({{ mask: '{1}' }});\n", id, YetaWFManager.JserEncode(mask));
             //    Manager.ScriptManager.AddLastDocumentReady(sb);

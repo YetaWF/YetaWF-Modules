@@ -38,8 +38,8 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         public override ComponentType GetComponentType() { return ComponentType.Edit; }
 
         public override async Task IncludeAsync() {
-            await Manager.ScriptManager.AddKendoUICoreJsFileAsync("kendo.userevents.min.js");
-            await Manager.ScriptManager.AddKendoUICoreJsFileAsync("kendo.numerictextbox.min.js");
+            await KendoUICore.AddFileAsync("kendo.userevents.min.js");
+            await KendoUICore.AddFileAsync("kendo.numerictextbox.min.js");
             await base.IncludeAsync();
         }
         public async Task<YHtmlString> RenderAsync(Decimal model) {

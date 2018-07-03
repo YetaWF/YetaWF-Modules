@@ -21,7 +21,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         public override ComponentType GetComponentType() { return ComponentType.Edit; }
 
         public override async Task IncludeAsync() {
-            await Manager.AddOnManager.AddAddOnGlobalAsync("github.com.danielm", "uploader");
+            await Manager.AddOnManager.AddAddOnNamedAsync(Package.Domain, Package.Product, "github.com.danielm.uploader");
             await base.IncludeAsync();
         }
         public Task<YHtmlString> RenderAsync(FileUpload1 model) {

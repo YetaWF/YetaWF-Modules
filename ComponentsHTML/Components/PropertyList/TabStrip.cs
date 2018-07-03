@@ -53,8 +53,8 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             if (Manager.CurrentSite.TabStyle == YetaWF.Core.Site.TabStyleEnum.JQuery) {
                 sb.Append($"YetaWF_PropertyList.tabInitjQuery('{controlId}', {activeTab}, '{activeTabId}');\n");
             } else if (Manager.CurrentSite.TabStyle == YetaWF.Core.Site.TabStyleEnum.Kendo) {
-                await Manager.ScriptManager.AddKendoUICoreJsFileAsync("kendo.data.min.js");
-                await Manager.ScriptManager.AddKendoUICoreJsFileAsync("kendo.tabstrip.min.js");
+                await KendoUICore.AddFileAsync("kendo.data.min.js");
+                await KendoUICore.AddFileAsync("kendo.tabstrip.min.js");
                 sb.Append($"YetaWF_PropertyList.tabInitKendo('{controlId}', {activeTab}, '{activeTabId}');\n");
             } else
                 throw new InternalError("Unknown tab control style");

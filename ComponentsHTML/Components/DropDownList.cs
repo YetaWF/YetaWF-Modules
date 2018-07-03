@@ -27,15 +27,15 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         public static async Task IncludeExplicitAsync() { // this component is reusable so we need to explicitly include all js/css
             bool useKendo = !Manager.IsRenderingGrid;
             if (useKendo) {
-                await Manager.ScriptManager.AddKendoUICoreJsFileAsync("kendo.data.min.js");
-                // await Manager.ScriptManager.AddKendoUICoreJsFileAsync("kendo.popup.min.js"); // is now a prereq of kendo.window (2017.2.621)
-                await Manager.ScriptManager.AddKendoUICoreJsFileAsync("kendo.list.min.js");
-                await Manager.ScriptManager.AddKendoUICoreJsFileAsync("kendo.fx.min.js");
-                await Manager.ScriptManager.AddKendoUICoreJsFileAsync("kendo.userevents.min.js");
-                await Manager.ScriptManager.AddKendoUICoreJsFileAsync("kendo.draganddrop.min.js");
-                await Manager.ScriptManager.AddKendoUICoreJsFileAsync("kendo.mobile.scroller.min.js");
-                await Manager.ScriptManager.AddKendoUICoreJsFileAsync("kendo.virtuallist.min.js");
-                await Manager.ScriptManager.AddKendoUICoreJsFileAsync("kendo.dropdownlist.min.js");
+                await KendoUICore.AddFileAsync("kendo.data.min.js");
+                // await KendoUICore.AddFileAsync("kendo.popup.min.js"); // is now a prereq of kendo.window (2017.2.621)
+                await KendoUICore.AddFileAsync("kendo.list.min.js");
+                await KendoUICore.AddFileAsync("kendo.fx.min.js");
+                await KendoUICore.AddFileAsync("kendo.userevents.min.js");
+                await KendoUICore.AddFileAsync("kendo.draganddrop.min.js");
+                await KendoUICore.AddFileAsync("kendo.mobile.scroller.min.js");
+                await KendoUICore.AddFileAsync("kendo.virtuallist.min.js");
+                await KendoUICore.AddFileAsync("kendo.dropdownlist.min.js");
             }
             await Manager.AddOnManager.AddTemplateAsync(Controllers.AreaRegistration.CurrentPackage.Domain, Controllers.AreaRegistration.CurrentPackage.Product, "DropDownList");
         }
