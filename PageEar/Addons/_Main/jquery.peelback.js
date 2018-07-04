@@ -17,7 +17,7 @@
         base.el = el;
         base.$el.data("Peelback", base);
 
-        //Main stuff    
+        //Main stuff
         base.init = function () {
 
             //Vars
@@ -26,7 +26,7 @@
             //Defaults, meet Settings
             base.settings = $.extend({}, $.Peelback.defaultSettings, settings);
 
-            //If ad image is missing, stop the show            
+            //If ad image is missing, stop the show
             if (typeof (base.settings.adImage) !== 'string' || base.settings.adImage === '') {
                 if (base.settings.debug === true) {
                     console.log('Ad image missing');
@@ -34,7 +34,7 @@
                 return;
             }
 
-            //If peel image is missing, stop the show            
+            //If peel image is missing, stop the show
             if (typeof (base.settings.peelImage) !== 'string' || base.settings.peelImage === '') {
                 if (base.settings.debug === true) {
                     console.log('Peel effect image missing');
@@ -42,7 +42,7 @@
                 return;
             }
 
-            //If click URL is missing, stop the show            
+            //If click URL is missing, stop the show
             if (typeof (base.settings.clickURL) !== 'string' || base.settings.clickURL === '') {
                 if (base.settings.debug === true) {
                     console.log('Click URL missing');
@@ -86,7 +86,7 @@
             //Insert
             base.$el.prepend(peelHTML);
 
-            //Auto animate option      
+            //Auto animate option
             if (base.settings.autoAnimate === false) {
                 $(peelImage).css({ 'width': smallSize, 'height': smallSize });
                 $(peelMask).css({ 'width': smallMaskSize, 'height': smallMaskSize });

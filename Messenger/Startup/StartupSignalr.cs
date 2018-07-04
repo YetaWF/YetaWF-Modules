@@ -31,7 +31,7 @@ namespace YetaWF.Modules.Messenger {
         }
 
 #if MVC6
-        //$$$$Needs work
+        //$$$$$$ Needs work
         public static void ConfigureServices(IServiceCollection services) {
             services.AddSignalR();
         }

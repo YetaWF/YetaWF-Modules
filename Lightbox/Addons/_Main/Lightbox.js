@@ -50,9 +50,9 @@
     Lightbox.prototype.enable = function() {
       var self = this;
       $('body').on('click', 'a[rel^=lightbox], area[rel^=lightbox], a[data-lightbox], area[data-lightbox]', function (event) {
-        //$$$$CUSTOMIZATION TO SUPPORT DYNAMIC CONTENT
+          //&&&&&&&&&&&&&&&&&&& CUSTOMIZATION TO SUPPORT DYNAMIC CONTENT
         if (!_YetaWF_Lighbox_Skin.on) return true;
-        //$$$$END CUSTOMIZATION
+          //&&&&&&&&&&&&&&&&&&& END CUSTOMIZATION
         self.start($(event.currentTarget));
         return false;
       });
@@ -414,7 +414,7 @@
 
 }).call(this);
 
-//$$$$CUSTOMIZATION TO SUPPORT DYNAMIC CONTENT
+//&&&&&&&&&&&&&&&&&&& CUSTOMIZATION TO SUPPORT DYNAMIC CONTENT
 var _YetaWF_Lighbox_Skin = {};
 _YetaWF_Lighbox_Skin.on = true;
 
@@ -424,4 +424,4 @@ $(document).on('YetaWF_Basics_Addon', function (event, addonGuid, on) {
         _YetaWF_Lighbox_Skin.on = on;
     }
 });
-//$$$$END CUSTOMIZATION
+//&&&&&&&&&&&&&&&&&&& END CUSTOMIZATION

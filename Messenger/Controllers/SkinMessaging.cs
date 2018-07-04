@@ -78,7 +78,7 @@ namespace YetaWF.Modules.Messenger.Controllers {
         public async Task<List<string>> GetOnlineUsers() {
             YetaWFManager manager = await Signalr.SetupEnvironmentAsync();
             using (ConnectionDataProvider connDP = new ConnectionDataProvider()) {
-                //$$$ limit scope to friend users
+                //%%%%%%%%%%%%%%%%%%% limit scope to friend users
                 List<DataProviderFilterInfo> filters = null;
                 filters = DataProviderFilterInfo.Join(filters, new DataProviderFilterInfo { Field = "Name", Operator = "!=", Value = null });
                 List<DataProviderSortInfo> sorts = null;
@@ -178,7 +178,7 @@ namespace YetaWF.Modules.Messenger.Controllers {
                     }
                 } catch (Exception) { }
 
-                //$$ notify users in scope of new user
+                //%%%%%%%%%%%%%%%%%%% notify users in scope of new user
                 if (!string.IsNullOrWhiteSpace(name)) {
                     Dispatch(this.Clients.Others, "userConnect", name);
                 }
@@ -198,7 +198,7 @@ namespace YetaWF.Modules.Messenger.Controllers {
 #endif
         {
 
-            //$$ notify users in scope of user disconnect
+            //%%%%%%%%%%%%%%%%%%% notify users in scope of user disconnect
             string name = null;
             try {
                 if (Context.User != null) {

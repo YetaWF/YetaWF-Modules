@@ -1,7 +1,7 @@
 /*
  * dmuploader.js - Jquery File Uploader - 0.1
  * http://www.daniel.com.uy/projects/jquery-file-uploader/
- * 
+ *
  * Copyright (c) 2013 Daniel Morales
  * Dual licensed under the MIT and GPL licenses.
  * http://www.daniel.com.uy/doc/license/
@@ -15,7 +15,7 @@
     url: document.URL,
     method: 'POST',
     extraData: {},
-    onExtraData: function (id, extraData) { },//$$$$CUSTOMIZATION
+    onExtraData: function (id, extraData) { },// &&&&&&&&&&&&&&&&&&& CUSTOMIZATION
     maxFileSize: 0,
     maxFiles: 0,
     allowedTypes: '*',
@@ -122,7 +122,7 @@
 
       $(this).val('');
     });
-        
+
     this.settings.onInit.call(this.element);
   };
 
@@ -164,7 +164,7 @@
           continue;
         }
       }
-            
+
       // Check max files
       if(this.settings.maxFiles > 0) {
         if(this.queue.length >= this.settings.maxFiles) {
@@ -223,7 +223,7 @@
 
     // Return from client function (default === undefined)
     var can_continue = widget.settings.onBeforeUpload.call(widget.element, widget.queuePos);
-    
+
     // If the client function doesn't return FALSE then continue
     if( false === can_continue ) {
       return;
@@ -234,10 +234,10 @@
       fd.append(exKey, exVal);
     });
 
-    ///$$$$$ CUSTOMIZATION to allow caller to add additional DYNAMIC information to Ajax Post
+    /// &&&&&&&&&&&&&&&&&&& CUSTOMIZATION to allow caller to add additional DYNAMIC information to Ajax Post
     widget.settings.onExtraData(widget.element, fd);
-    ///$$$$$ END CUSTOMIZATION
-      
+    /// &&&&&&&&&&&&&&&&&&& END CUSTOMIZATION
+
     widget.queueRunning = true;
 
     // Ajax Submit

@@ -32,7 +32,7 @@ $.extend( $.fn, {
 		// Check if a validator for this form was already created
 		var validator = $.data( this[ 0 ], "validator" );
 		if ( validator ) {
-		    // $$$$$$$$$$$$$$$$$$$ CUSTOMIZATION:
+		    // &&&&&&&&&&&&&&&&&&& CUSTOMIZATION:
 		    if (options) {
 		        // if we already have a validator, update messages and rules (in case unobtrusive validation is calling to re-init after ajax)
 		        validator.rules = options.rules;
@@ -41,7 +41,7 @@ $.extend( $.fn, {
 		        validator.settings.messages = options.messages;
 		        validator.init();
 		    }
-		    // $$$$$$$$$$$$$$$$$$$ END-CUSTOMIZATION:
+		    // &&&&&&&&&&&&&&&&&&& END-CUSTOMIZATION:
 		    return validator;
 		}
 
@@ -295,12 +295,12 @@ $.extend( $.validator, {
 			}
 		},
 		onfocusout: function( element ) {
-		    // $$$$$$$$$$$$$$$$$$$ CUSTOMIZATION:
+		    // &&&&&&&&&&&&&&&&&&& CUSTOMIZATION:
 		    var result = this.optional( element );
 		    if ( !this.checkable( element ) && ( element.name in this.submitted || (!result || result == "dependency-mismatch") ) ) {
-		    // $$$$$$$$$$$$$$$$$$$ CUSTOMIZATION-ORIGINAL:
+		        // &&&&&&&&&&&&&&&&&&& CUSTOMIZATION-ORIGINAL:
 			//if ( !this.checkable( element ) && ( element.name in this.submitted || !this.optional( element ) ) ) {
-			// $$$$$$$$$$$$$$$$$$$ END-CUSTOMIZATION:
+		        // &&&&&&&&&&&&&&&&&&& END-CUSTOMIZATION:
 				this.element( element );
 			}
 		},
