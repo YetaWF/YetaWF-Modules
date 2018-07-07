@@ -31,7 +31,7 @@ YetaWF_FileUpload1.init = function (divId, serializeForm) {
         fileName:'__filename',
         onInit: function () { },
         onBeforeUpload: function (id) {
-            Y_Loading(true);
+            YetaWF_Basics.setLoading(true);
         },
         onExtraData: function (id, data) {
             if ($control.data().getFileName != undefined) {
@@ -60,24 +60,24 @@ YetaWF_FileUpload1.init = function (divId, serializeForm) {
             }
         },
         onUploadError: function (id, message) {
-            Y_Loading(false);
+            YetaWF_Basics.setLoading(false);
             if (message == "")
-                Y_Error(YLocs.YetaWF_ComponentsHTML.StatusUploadNoResp);
+                YetaWF_Basics.Y_Error(YLocs.YetaWF_ComponentsHTML.StatusUploadNoResp);
             else
-                Y_Error(YLocs.YetaWF_ComponentsHTML.StatusUploadFailed.format(message));
+                YetaWF_Basics.Y_Error(YLocs.YetaWF_ComponentsHTML.StatusUploadFailed.format(message));
         },
         onFileTypeError: function (file) {
-            Y_Error(YLocs.YetaWF_ComponentsHTML.FileTypeError);
+            YetaWF_Basics.Y_Error(YLocs.YetaWF_ComponentsHTML.FileTypeError);
         },
         onFileSizeError: function (file) {
-            Y_Error(YLocs.YetaWF_ComponentsHTML.FileSizeError);
+            YetaWF_Basics.Y_Error(YLocs.YetaWF_ComponentsHTML.FileSizeError);
         },
         onFallbackMode: function (message) {
-            Y_Error(YLocs.YetaWF_ComponentsHTML.FallbackMode);
+            YetaWF_Basics.Y_Error(YLocs.YetaWF_ComponentsHTML.FallbackMode);
         },
         onUploadSuccess: function (id, data) {
             //{
-            //    "result":      "Y_Confirm(\"Image \\\"logo_233x133.jpg\\\" successfully uploaded\");",
+            //    "result":      "YetaWF_Basics.Y_Confirm(\"Image \\\"logo_233x133.jpg\\\" successfully uploaded\");",
             //    "filename": "tempc8eb1eb6-31ef-4e5d-9100-9fab50761a81.jpg",
             //    "realFilename": "logo_233x133.jpg",
             //    "attributes": "233 x 123 (w x h)"
@@ -85,7 +85,7 @@ YetaWF_FileUpload1.init = function (divId, serializeForm) {
             // find form in case returned javascript needs to handle the form (e.g., to submit)
             var $form = $(this).closest('form');
 
-            Y_Loading(false);
+            YetaWF_Basics.setLoading(false);
             if (data.startsWith(YConfigs.Basics.AjaxJavascriptReturn)) {
                 var script = data.substring(YConfigs.Basics.AjaxJavascriptReturn.length);
                 eval(script);
@@ -115,7 +115,7 @@ YetaWF_FileUpload1.init = function (divId, serializeForm) {
             data: '__internalName=' + encodeURIComponent(name) + '&__filename=' + encodeURIComponent(name),
             success: function (result, textStatus, jqXHR) { },
             error: function (jqXHR, textStatus, errorThrown) {
-                Y_Alert(YLocs.Forms.AjaxError.format(jqXHR.status, jqXHR.statusText), YLocs.Forms.AjaxErrorTitle);
+                YetaWF_Basics.Y_Alert(YLocs.Forms.AjaxError.format(jqXHR.status, jqXHR.statusText), YLocs.Forms.AjaxErrorTitle);
             }
         });
     }

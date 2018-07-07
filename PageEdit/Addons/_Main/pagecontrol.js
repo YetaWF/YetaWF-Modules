@@ -38,7 +38,7 @@ YetaWF_Basics.whenReady.push({
         'use strict';
 
         // Page Settings
-        if (!Y_InPopup()) {
+        if (!YetaWF_Basics.isInPopup()) {
             var $ps = $('.YetaWF_PageEdit_PageControl a[data-name="PageSettings"]');
             if ($ps.length > 0) {
                 $ps.each(function () {

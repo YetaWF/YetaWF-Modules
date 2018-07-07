@@ -1,7 +1,5 @@
 ﻿/* Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Messenger#License */
 
-var Y_Alert: any;
-
 namespace YetaWF_Messenger {
 
     export class SkinMessagingModule {
@@ -70,7 +68,7 @@ namespace YetaWF_Messenger {
             });
         }
         private handleNotifyException(message: string): void {
-            Y_Alert(message, "Messages Error");
+            YetaWF_Basics.Y_Alert(message, "Messages Error");
         }
         private handleUserConnect(user: string): void {
             $(document).trigger("YetaWF_Messenger_Messaging_UserConnect", {

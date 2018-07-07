@@ -1,16 +1,6 @@
 /* Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/ComponentsHTML#License */
 
-/* YetaWF component package requirement */
-function Y_Loading(starting) {
-    if (starting != false) {
-        $.prettyLoader.show();
-    } else {
-        $.prettyLoader.hide();
-        Y_PleaseWaitClose();
-    }
-}
-
-// PRETTYLOADER
+// PRETTYLOADER initialization
 
 $.prettyLoader({
     animation_speed: 'fast', /* fast/normal/slow/integer */

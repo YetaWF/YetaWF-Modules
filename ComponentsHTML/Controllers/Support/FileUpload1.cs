@@ -49,7 +49,7 @@ namespace YetaWF.Modules.ComponentsHTML.Controllers {
             // Upload control considers Json result a success. result has a function to execute, newName has the file name
             sb.Append("{\n");
             sb.Append("  \"result\":");
-            sb.Append("      \"Y_Confirm(\\\"{0}\\\");\",", this.__ResStr("saveImageOK", "Image \\\\\\\"{0}\\\\\\\" successfully uploaded", YetaWFManager.JserEncode(__filename.FileName)));
+            sb.Append("      \"YetaWF_Basics.Y_Confirm(\\\"{0}\\\");\",", this.__ResStr("saveImageOK", "Image \\\\\\\"{0}\\\\\\\" successfully uploaded", YetaWFManager.JserEncode(__filename.FileName)));
             sb.Append("  \"filename\": \"{0}\",\n", YetaWFManager.JserEncode(tempName));
             sb.Append("  \"realFilename\": \"{0}\",\n", YetaWFManager.JserEncode(__filename.FileName));
             sb.Append("  \"attributes\": \"{0}\"\n", this.__ResStr("imgAttr", "{0} x {1} (w x h)", size.Width, size.Height));

@@ -13,15 +13,19 @@ namespace YetaWF.Modules.ComponentsHTML {
             return AreaRegistration.CurrentPackage;
         }
 
-        public async Task AddStandardAddOns() {
+        public async Task AddStandardAddOnsAsync() {
             await Manager.AddOnManager.AddAddOnNamedAsync(Package.Domain, Package.Product, "jquery");
             await Manager.AddOnManager.AddAddOnNamedAsync(Package.Domain, Package.Product, "jqueryui");
             await Manager.AddOnManager.AddAddOnNamedAsync(Package.Domain, Package.Product, "medialize.github.io.URI.js");
             await Manager.AddOnManager.AddAddOnNamedAsync(Package.Domain, Package.Product, "necolas.github.io.normalize");
             await Manager.AddOnManager.AddAddOnNamedAsync(Package.Domain, Package.Product, "no-margin-for-errors.com.prettyLoader");
+
+            await Manager.AddOnManager.AddAddOnNamedAsync("YetaWF", "Core", "Basics");//$$$ rename/remove
+            if (Manager.IsInPopup)
+                await AddPopupsAddOnsAsync();
         }
 
-        public async Task AddSkinAddOns() {
+        public async Task AddSkinAddOnsAsync() {
 
             SkinAccess skinAccess = new SkinAccess();
 
@@ -40,10 +44,15 @@ namespace YetaWF.Modules.ComponentsHTML {
             await Manager.AddOnManager.AddAddOnNamedAsync(Package.Domain, Package.Product, "telerik.com.Kendo_UI_Core", kendoUITheme);
         }
 
-        public async Task AddFormsAddOns() {
+        public async Task AddFormsAddOnsAsync() {
             await Manager.AddOnManager.AddAddOnNamedAsync(Package.Domain, Package.Product, "bassistance.de.jquery-validation");
             await Manager.AddOnManager.AddAddOnNamedAsync(Package.Domain, Package.Product, "microsoft.com.jquery_unobtrusive_validation");
             await Manager.AddOnManager.AddAddOnNamedAsync(Package.Domain, Package.Product, "gist.github.com_remi_957732.jquery_validate_hooks");
+        }
+
+        public async Task AddPopupsAddOnsAsync() {
+            await Manager.AddOnManager.AddAddOnNamedAsync("YetaWF", "Core", "Popups");//$$$ rename/remove
+            await Manager.AddOnManager.AddAddOnNamedAsync(Package.Domain, Package.Product, "Popups");
         }
     }
 }

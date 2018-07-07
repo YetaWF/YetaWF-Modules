@@ -1,5 +1,5 @@
+"use strict";
 /* Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Messenger#License */
-var Y_Alert;
 var YetaWF_Messenger;
 (function (YetaWF_Messenger) {
     var SkinSiteAnnouncementsModule = /** @class */ (function () {
@@ -19,7 +19,7 @@ var YetaWF_Messenger;
             var hubProxy = connection.createHubProxy("YetaWF_Messenger_SiteAnnouncement");
             hubProxy.on("message", function (content, title) {
                 if (SkinSiteAnnouncementsModule.on)
-                    Y_Alert(content, title, null, { encoded: true });
+                    YetaWF_Basics.Y_Alert(content, title, null, { encoded: true });
             });
             connection.start().done(function () { });
         };
@@ -30,5 +30,3 @@ var YetaWF_Messenger;
     var announceMod = new SkinSiteAnnouncementsModule();
     announceMod.init();
 })(YetaWF_Messenger || (YetaWF_Messenger = {}));
-
-//# sourceMappingURL=SkinSiteAnnouncements.js.map

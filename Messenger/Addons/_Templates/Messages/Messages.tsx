@@ -1,6 +1,6 @@
 ﻿/* Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Messenger#License */
 
-var Y_AttrEscape: any;
+var YetaWF_Basics.htmlAttrEscape: any;
 
 namespace YetaWF_Messenger {
 
@@ -35,8 +35,8 @@ namespace YetaWF_Messenger {
         private handleMessage(key: number, from: string, messageText: string, sent: string): void {
             if (from === this.toUser) {
                 var line: string = `<div class="t_otheruser t_seen" data-key="${key}">` +
-                    `<div class="t_sent">${Y_AttrEscape(sent)}</div>` +
-                    `<div class="t_text">${Y_AttrEscape(messageText)}</div>` +
+                    `<div class="t_sent">${YetaWF_Basics.htmlAttrEscape(sent)}</div>` +
+                    `<div class="t_text">${YetaWF_Basics.htmlAttrEscape(messageText)}</div>` +
                     "</div>";
                 $(`#${this.divId} .t_messagearea .t_last`).before(line);
                 this.scrollMessageArea();
@@ -46,8 +46,8 @@ namespace YetaWF_Messenger {
         private handleMessageSent(key: number, to: string, messageText: string, sent: string): void {
             if (to === this.toUser) {
                 var line: string = `<div class="t_thisuser t_notseen" data-key="${key}">` +
-                    `<div class="t_sent"><img alt="${Y_AttrEscape(YLocs.YetaWF_Messenger.notSeen)}" title="${Y_AttrEscape(YLocs.YetaWF_Messenger.notSeen)}" src="${Y_AttrEscape(YConfigs.YetaWF_Messenger.msgNotSeenIcon)}">${sent}</div>` +
-                    `<div class="t_text">${Y_AttrEscape(messageText)}</div>` +
+                    `<div class="t_sent"><img alt="${YetaWF_Basics.htmlAttrEscape(YLocs.YetaWF_Messenger.notSeen)}" title="${YetaWF_Basics.htmlAttrEscape(YLocs.YetaWF_Messenger.notSeen)}" src="${YetaWF_Basics.htmlAttrEscape(YConfigs.YetaWF_Messenger.msgNotSeenIcon)}">${sent}</div>` +
+                    `<div class="t_text">${YetaWF_Basics.htmlAttrEscape(messageText)}</div>` +
                     "</div>";
                 $(`#${this.divId} .t_messagearea .t_last`).before(line);
                 this.scrollMessageArea();

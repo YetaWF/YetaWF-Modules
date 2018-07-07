@@ -86,7 +86,7 @@ YetaWF_ImageRepository.initSelection = function (divId) {
                 return false;
             },
             error: function (jqXHR, textStatus, errorThrown) {
-                Y_Alert(YLocs.Forms.AjaxError.format(jqXHR.status, jqXHR.statusText), YLocs.Forms.AjaxErrorTitle);
+                YetaWF_Basics.Y_Alert(YLocs.Forms.AjaxError.format(jqXHR.status, jqXHR.statusText), YLocs.Forms.AjaxErrorTitle);
                 return false;
             }
         });

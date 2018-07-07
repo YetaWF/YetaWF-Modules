@@ -68,7 +68,7 @@ YetaWF_TemplateDropDownList.AjaxUpdate = function ($control, data, ajaxurl, onSu
         type: 'post',
         data: data,
         success: function (result, textStatus, jqXHR) {
-            Y_Loading(false);
+            YetaWF_Basics.setLoading(false);
             if (result.startsWith(YConfigs.Basics.AjaxJavascriptReturn)) {
                 var script = result.substring(YConfigs.Basics.AjaxJavascriptReturn.length);
                 var data = JSON.parse(script);
@@ -97,8 +97,8 @@ YetaWF_TemplateDropDownList.AjaxUpdate = function ($control, data, ajaxurl, onSu
             }
         },
         error: function (jqXHR, textStatus, errorThrown) {
-            Y_Loading(false);
-            Y_Alert(YLocs.Forms.AjaxError.format(jqXHR.status, jqXHR.statusText), YLocs.Forms.AjaxErrorTitle);
+            YetaWF_Basics.setLoading(false);
+            YetaWF_Basics.Y_Alert(YLocs.Forms.AjaxError.format(jqXHR.status, jqXHR.statusText), YLocs.Forms.AjaxErrorTitle);
             if (onFailure !== undefined)
                 onFailure(data);
         }
@@ -113,7 +113,7 @@ $(document).on('YetaWF_PropertyList_PanelSwitched', function (event, $panel) {
     });
 });
 $(document).on('change', 'select.yt_dropdownlist_base[data-val=true]', function () {
-    if (typeof YetaWF_Forms !== 'undefined' && YetaWF_Forms != undefined) YetaWF_Forms.validateElement($(this));
+    if (typeof FormsSupport !== 'undefined' && FormsSupport != undefined) FormsSupport.validateElement($(this));
 });
 
 // A <div> is being emptied. Destroy all date/time pickers the <div> may contain.

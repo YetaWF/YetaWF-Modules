@@ -56,7 +56,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         }
         internal static YHtmlString RenderReplacementSkinsForCollection(string skinCollection) {
             SkinAccess skinAccess = new SkinAccess();
-            PageSkinList skinList = skinAccess.GetAllPopupSkins(skinCollection);
+            PageSkinList skinList = skinAccess.GetAllPageSkins(skinCollection);
             List<SelectionItem<string>> list = (from skin in skinList orderby skin.Description select new SelectionItem<string>() {
                 Text = skin.Name,
                 Tooltip = skin.Description,

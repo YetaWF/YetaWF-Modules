@@ -20,7 +20,7 @@ YetaWF_Url.init = function (id) {
             else
                 urlString = $remoteCtl.val();
             YetaWF_Url.Update($control, urlString, false);
-            if (typeof YetaWF_Forms !== 'undefined' && YetaWF_Forms != undefined) YetaWF_Forms.validateElement($hidden);
+            if (typeof FormsSupport !== 'undefined' && FormsSupport != undefined) FormsSupport.validateElement($hidden);
         });
     }
     var $localCtl = _YetaWF_Url.getLocalControl($control);
@@ -29,7 +29,7 @@ YetaWF_Url.init = function (id) {
             var $hidden = _YetaWF_Url.getHidden($control);
             $hidden.val($localCtl.val());
             _YetaWF_Url.updateLink($control);
-            if (typeof YetaWF_Forms !== 'undefined' && YetaWF_Forms != undefined) YetaWF_Forms.validateElement($hidden);
+            if (typeof FormsSupport !== 'undefined' && FormsSupport != undefined) FormsSupport.validateElement($hidden);
             $hidden.trigger('change');// let everyone know value changed
         });
     }
@@ -39,7 +39,7 @@ YetaWF_Url.init = function (id) {
             var $hidden = _YetaWF_Url.getHidden($control);
             $hidden.val($remoteCtl.val());
             _YetaWF_Url.updateLink($control);
-            if (typeof YetaWF_Forms !== 'undefined' && YetaWF_Forms != undefined) YetaWF_Forms.validateElement($hidden);
+            if (typeof FormsSupport !== 'undefined' && FormsSupport != undefined) FormsSupport.validateElement($hidden);
             $hidden.trigger('change');// let everyone know value changed
         });
     }

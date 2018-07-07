@@ -36,11 +36,11 @@ YetaWF_ModuleSelection.UpdateComplete = function ($control, modGuid) {
             YetaWF_TemplateDropDownList.Update($packages, data.extra);
             YetaWF_TemplateDropDownList.Update($select, modGuid);
             _YetaWF_ModuleSelection.showDescription($control, data);
-            if (typeof YetaWF_Forms !== 'undefined' && YetaWF_Forms != undefined) YetaWF_Forms.validateElement($select);
+            if (typeof FormsSupport !== 'undefined' && FormsSupport != undefined) FormsSupport.validateElement($select);
         },
         function (data) { // failure
             YetaWF_ModuleSelection.Clear($control);
-            if (typeof YetaWF_Forms !== 'undefined' && YetaWF_Forms != undefined) YetaWF_Forms.validateElement($select);
+            if (typeof FormsSupport !== 'undefined' && FormsSupport != undefined) FormsSupport.validateElement($select);
         }
     );
 };

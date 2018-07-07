@@ -62,7 +62,7 @@ namespace YetaWF_ComponentsHTML {
                         thisObj.setHiddenText(hidden, kdPicker.element.val() as string);
                     else
                         thisObj.setHidden(hidden, val);
-                    YetaWF_Core.Forms.ValidateElement(hidden);
+                    FormsSupport.validateElement(hidden);
                 }
             });
             var kdPicker: kendo.ui.DateTimePicker = $(date).data("kendoDateTimePicker") as kendo.ui.DateTimePicker;
@@ -74,7 +74,7 @@ namespace YetaWF_ComponentsHTML {
                     thisObj.setHiddenText(hidden, (event.target as HTMLInputElement).value);
                 else
                     thisObj.setHidden(hidden, val);
-                YetaWF_Core.Forms.ValidateElement(hidden);
+                FormsSupport.validateElement(hidden);
             }
 
             date.addEventListener("change", changeHandler, false);

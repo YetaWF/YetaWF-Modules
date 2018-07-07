@@ -52,7 +52,7 @@ namespace YetaWF.Modules.Panels.Components {
                 string actionLinkClass = "yaction-link";
                 if (entry.Popup) {
                     actionLinkClass += string.Format(" {0}", Basics.CssPopupLink);
-                    await Manager.AddOnManager.AddAddOnNamedAsync("YetaWF", "Core", "Popups");//$$$ should be renamed
+                    await YetaWFCoreRendering.Render.AddPopupsAddOnsAsync();
                 }
 
                 hb.Append($@"

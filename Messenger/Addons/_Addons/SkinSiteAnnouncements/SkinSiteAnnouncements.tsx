@@ -1,7 +1,5 @@
 ﻿/* Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Messenger#License */
 
-var Y_Alert: any;
-
 namespace YetaWF_Messenger {
 
     class SkinSiteAnnouncementsModule {
@@ -26,7 +24,7 @@ namespace YetaWF_Messenger {
             var hubProxy: any = connection.createHubProxy("YetaWF_Messenger_SiteAnnouncement");
             hubProxy.on("message", function (content: string, title: string): void {
                 if (SkinSiteAnnouncementsModule.on)
-                    Y_Alert(content, title, null, { encoded: true });
+                    YetaWF_Basics.Y_Alert(content, title, null, { encoded: true });
             });
             connection.start().done(function (): void { /*empty*/ });
         }

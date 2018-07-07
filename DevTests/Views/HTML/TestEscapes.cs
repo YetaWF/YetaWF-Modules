@@ -41,22 +41,22 @@ namespace YetaWF.Modules.DevTests.Views {
 
 <script>
     $('#{DivId}').on('click', 'input[name=""Y_Message""]', function () {{
-        Y_Message('TEST <A> &amp; & @ {0} TEST');
+        YetaWF_Basics.Y_Message('TEST <A> &amp; & @ {0} TEST');
     }});
     $('#{DivId}').on('click', 'input[name=""Y_Error""]', function () {{
-        Y_Error('TEST <A> &amp; & @ {{0}} TEST');
+        YetaWF_Basics.Y_Error('TEST <A> &amp; & @ {{0}} TEST');
     }});
     $('#{DivId}').on('click', 'input[name=""Y_Alert""]', function () {{
-        Y_Alert('TEST <A> &amp; & @ {{0}} TEST', 'TITLE <A> &amp; & @ {{0}} TEST');
+        YetaWF_Basics.Y_Alert('TEST <A> &amp; & @ {{0}} TEST', 'TITLE <A> &amp; & @ {{0}} TEST');
     }});
     $('#{DivId}').on('click', 'input[name=""Y_Confirm""]', function () {{
-        Y_Confirm('TEST <A> &amp; & @ {{0}} TEST');
+        YetaWF_Basics.Y_Confirm('TEST <A> &amp; & @ {{0}} TEST');
     }});
     $('#{DivId}').on('click', 'input[name=""Y_AlertYesNo""]', function () {{
-        Y_AlertYesNo('TEST <A> &amp; & @ {{0}} TEST', 'TITLE <A> &amp; & @ {{0}} TEST');
+        YetaWF_Basics.Y_AlertYesNo('TEST <A> &amp; & @ {{0}} TEST', 'TITLE <A> &amp; & @ {{0}} TEST');
     }});
     $('#{DivId}').on('click', 'input[name=""Y_PleaseWait""]', function () {{
-        Y_PleaseWait('Reload page to continue\n\nTEST <A> &amp; & @ {{0}} TEST', 'TITLE <A> &amp; & @ {{0}} TEST');
+        YetaWF_Basics.Y_PleaseWait('Reload page to continue\n\nTEST <A> &amp; & @ {{0}} TEST', 'TITLE <A> &amp; & @ {{0}} TEST');
     }});
 </script>
 ");

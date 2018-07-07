@@ -69,7 +69,7 @@ var YetaWF_ComponentsHTML;
                         thisObj.setHiddenText(hidden, kdPicker.element.val());
                     else
                         thisObj.setHidden(hidden, val);
-                    YetaWF_Core.Forms.ValidateElement(hidden);
+                    FormsSupport.validateElement(hidden);
                 }
             });
             var kdPicker = $(date).data("kendoDatePicker");
@@ -80,7 +80,7 @@ var YetaWF_ComponentsHTML;
                     thisObj.setHiddenText(hidden, event.target.value);
                 else
                     thisObj.setHidden(hidden, val);
-                YetaWF_Core.Forms.ValidateElement(hidden);
+                FormsSupport.validateElement(hidden);
             }
             date.addEventListener("change", changeHandler, false);
         };

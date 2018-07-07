@@ -181,11 +181,11 @@ YetaWF_Grid.SaveSettingsColumnWidths = function ($grid, url, settingsGuid, optio
         data: data,
         cache: false,
         success: function (result, textStatus, jqXHR) {
-            //Y_Error(YLocs.Forms.AjaxError.format(jqXHR.status, jqXHR.statusText), YLocs.Forms.AjaxErrorTitle);
+            //YetaWF_Basics.Y_Error(YLocs.Forms.AjaxError.format(jqXHR.status, jqXHR.statusText), YLocs.Forms.AjaxErrorTitle);
             return false;
         },
         error: function (jqXHR, textStatus, errorThrown) {
-            //Y_Error(YLocs.Forms.AjaxError.format(jqXHR.status, jqXHR.statusText), YLocs.Forms.AjaxErrorTitle);
+            //YetaWF_Basics.Y_Error(YLocs.Forms.AjaxError.format(jqXHR.status, jqXHR.statusText), YLocs.Forms.AjaxErrorTitle);
             debugger;/*DEBUG*/
             return false;
         }
@@ -367,14 +367,14 @@ YetaWF_Grid.HandleSubmitFields = function ($grid, $form) {
 YetaWF_Grid.gridComplete = function ($grid, gridId) {
     'use strict';
     $grid.trigger('YetaWF_Grid_LoadSuccessful');
-    Y_KillTooltips();
+    YetaWF_ComponentsHTML.Tooltips.removeTooltips();
     // execute javascript in grid
     if ($grid.getGridParam("datatype") == 'json') {
         var $scripts = $("script", $grid);
         $scripts.each(function (index) {
             eval($scripts[index].innerHTML);
         });
-        _YetaWF_Basics.initButtons($grid);
+        YetaWF_ComponentsHTML.Buttons.init($grid);
     }
     // highlight data rows with the __highlight property set to true
     $('tr.yHighlightGridRow', $grid).removeClass('yHighlightGridRow'); // remove all highlights
@@ -529,7 +529,7 @@ $(document).on('click', '.yt_grid_addordelete .ui-jqgrid img[name="DeleteAction"
         var displayName = $grid.attr('data-displayproperty');
         if (displayName == undefined) throw "Can't get display property name";/*DEBUG*/
         if (rec[displayName] == undefined) throw "{0} property is missing".format(propertyName);/*DEBUG*/
-        Y_Confirm(fmt.format(rec[displayName]));
+        YetaWF_Basics.Y_Confirm(fmt.format(rec[displayName]));
     }
     var total = $grid.getGridParam("reccount");// get total # of records on page
     //var rowsPerPage = $grid.getGridParam("rowNum");// get # of rows per page
@@ -593,7 +593,7 @@ $(document).on('click', '.yt_grid_addordelete input[name="btnAdd"]', function ()
     attrVal = attrVal.trim();
     if (attrVal == "") return;
     if (_YetaWF_Grid.isDuplicate($grid, attrVal)) {
-        Y_Error($ctrl.attr('data-dupmsg').format(attrVal));
+        YetaWF_Basics.Y_Error($ctrl.attr('data-dupmsg').format(attrVal));
         return;
     }
 
@@ -621,7 +621,7 @@ $(document).on('click', '.yt_grid_addordelete input[name="btnAdd"]', function ()
         data: postData, cache: false, type: 'POST',
         dataType: 'html',
         success: function (result, textStatus, jqXHR) {
-            Y_Loading(false);
+            YetaWF_Basics.setLoading(false);
             if (result.startsWith(YConfigs.Basics.AjaxJavascriptReturn)) {
                 var script = result.substring(YConfigs.Basics.AjaxJavascriptReturn.length);
                 eval(script);
@@ -637,7 +637,7 @@ $(document).on('click', '.yt_grid_addordelete input[name="btnAdd"]', function ()
             // validate it's not a duplicate (again, just in case)
             if (_YetaWF_Grid.isDuplicate($grid, newAttrVal[propertyName])) {
                 if (newAttrVal[displayName] == undefined) throw "{0} property is missing".format(displayName);/*DEBUG*/
-                Y_Error($ctrl.attr('data-dupmsg').format(newAttrVal[displayName]));
+                YetaWF_Basics.Y_Error($ctrl.attr('data-dupmsg').format(newAttrVal[displayName]));
                 return;
             }
             $grid.addRowData(total + 1, newAttrVal, 'last')// add new user to grid datasource
@@ -648,11 +648,11 @@ $(document).on('click', '.yt_grid_addordelete input[name="btnAdd"]', function ()
 
             YetaWF_Forms.updateValidation($grid);
 
-            Y_Confirm($ctrl.attr('data-addedmsg').format(attrVal));
+            YetaWF_Basics.Y_Confirm($ctrl.attr('data-addedmsg').format(attrVal));
         },
         error: function (jqXHR, textStatus, errorThrown) {
-            Y_Loading(false);
-            Y_Alert(YLocs.Forms.AjaxError.format(jqXHR.status, jqXHR.statusText), YLocs.Forms.AjaxErrorTitle);
+            YetaWF_Basics.setLoading(false);
+            YetaWF_Basics.Y_Alert(YLocs.Forms.AjaxError.format(jqXHR.status, jqXHR.statusText), YLocs.Forms.AjaxErrorTitle);
         }
     });
 });

@@ -126,7 +126,7 @@ namespace YetaWF.Modules.ComponentsHTML {
                     style = ActionStyleEnum.NewWindow;
 
             if (style == ActionStyleEnum.Popup || style == ActionStyleEnum.PopupEdit || style == ActionStyleEnum.ForcePopup)
-                await Manager.AddOnManager.AddAddOnNamedAsync("YetaWF", "Core", "Popups");// this is needed for popup support //&&&&&&&&&&&&&&&&&&& this probably needs to move/rename
+                await YetaWFCoreRendering.Render.AddPopupsAddOnsAsync();
 
             bool newWindow = false, outerWindow = false;
             bool popup = false, popupEdit = false;

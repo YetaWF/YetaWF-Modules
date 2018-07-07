@@ -39,7 +39,7 @@ namespace YetaWF.Modules.ImageRepository.Controllers {
             // Upload control considers Json result a success. result has a function to execute, newName has the file name
             sb.Append("{\n");
             sb.Append("  \"result\":");
-            sb.Append("      \"Y_Confirm(\\\"{0}\\\");\",", this.__ResStr("saveImageOK", "Image \\\\\\\"{0}\\\\\\\" successfully uploaded", YetaWFManager.JserEncode(__filename.FileName)));
+            sb.Append("      \"YetaWF_Basics.Y_Confirm(\\\"{0}\\\");\",", this.__ResStr("saveImageOK", "Image \\\\\\\"{0}\\\\\\\" successfully uploaded", YetaWFManager.JserEncode(__filename.FileName)));
             sb.Append("  \"filename\": \"{0}\",\n", YetaWFManager.JserEncode(name));
             sb.Append("  \"realFilename\": \"{0}\",\n", YetaWFManager.JserEncode(__filename.FileName));
             sb.Append("  \"list\": \"");
@@ -64,7 +64,7 @@ namespace YetaWF.Modules.ImageRepository.Controllers {
             // return new list of selected files
             sb.Append("{\n");
             sb.Append("  \"result\": ");
-            sb.Append("      \"Y_Confirm(\\\"{0}\\\");\",", this.__ResStr("removeImageOK", "Image \\\\\\\"{0}\\\\\\\" successfully removed", YetaWFManager.JserEncode(name)));
+            sb.Append("      \"YetaWF_Basics.Y_Confirm(\\\"{0}\\\");\",", this.__ResStr("removeImageOK", "Image \\\\\\\"{0}\\\\\\\" successfully removed", YetaWFManager.JserEncode(name)));
             sb.Append("  \"list\": \"");
             foreach (var f in await ImageSelectionInfo.ReadFilesAsync(new Guid(folderGuid), subFolder, fileType))
                 sb.Append("<option title=\\\"{0}\\\">{0}</option>", YetaWFManager.JserEncode(f.RemoveStartingAt(ImageSupport.ImageSeparator)));

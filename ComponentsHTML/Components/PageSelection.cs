@@ -14,13 +14,38 @@ using YetaWF.Core.Support;
 
 namespace YetaWF.Modules.ComponentsHTML.Components {
 
-    public class PageSelectionComponent : YetaWFComponent, IYetaWFComponent<Guid>, IYetaWFComponent<Guid?> {
+    public abstract class PageSelectionComponentBase : YetaWFComponent {
 
         public const string TemplateName = "PageSelection";
 
-        public override ComponentType GetComponentType() { return ComponentType.Edit; }
         public override Package GetPackage() { return Controllers.AreaRegistration.CurrentPackage; }
         public override string GetTemplateName() { return TemplateName; }
+    }
+
+    public class PageSelectionComponentDisplay : PageSelectionComponentBase, IYetaWFComponent<Guid>, IYetaWFComponent<Guid?> {
+
+        public override ComponentType GetComponentType() { return ComponentType.Display; }
+
+        public async Task<YHtmlString> RenderAsync(Guid model) {
+            return await RenderAsync((Guid?)model);
+        }
+        public async Task<YHtmlString> RenderAsync(Guid? model) {
+            HtmlBuilder hb = new HtmlBuilder();
+
+            if (model != null) {
+                PageDefinition page = await PageDefinition.LoadPageDefinitionAsync((Guid)model);
+                if (page == null)
+                    hb.Append(this.__ResStr("notFound", "(Page not found - {0})", model.ToString()));
+                else
+                    hb.Append(HE(page.Url));
+            }
+            return hb.ToYHtmlString();
+        }
+    }
+
+    public class PageSelectionComponentEdit : PageSelectionComponentBase, IYetaWFComponent<Guid>, IYetaWFComponent<Guid?> {
+
+        public override ComponentType GetComponentType() { return ComponentType.Edit; }
 
         public async Task<YHtmlString> RenderAsync(Guid model) {
             return await RenderAsync((Guid?)model);
@@ -74,7 +99,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 <script>
     YetaWF_PageSelection.init('{DivId}');
 </script>");
-            
+
             return hb.ToYHtmlString();
         }
     }

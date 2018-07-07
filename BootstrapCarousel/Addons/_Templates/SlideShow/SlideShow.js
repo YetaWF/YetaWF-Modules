@@ -60,7 +60,7 @@ YetaWF_BootstrapCarousel.init = function (divId) {
     // delete button click
     $('input.t_delete', $control).on('click', function () {
         var btn = this;
-        Y_AlertYesNo(YLocs.YetaWF_BootstrapCarousel.RemoveConfirm, YLocs.YetaWF_BootstrapCarousel.RemoveTitle, function () {
+        YetaWF_Basics.Y_AlertYesNo(YLocs.YetaWF_BootstrapCarousel.RemoveConfirm, YLocs.YetaWF_BootstrapCarousel.RemoveTitle, function () {
             YetaWF_Forms.submitTemplate(btn, false, TEMPLATENAME, YConfigs.YetaWF_BootstrapCarousel.Action_Remove, getPanelIndex());
         });
     });
