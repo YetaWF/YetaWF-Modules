@@ -87,6 +87,8 @@
     <Compile Include="Views\HTML\MainMenu.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Addons\_Addons\jstree.com.jstree\filelistCSS.txt" />
+    <Content Include="Addons\_Addons\jstree.com.jstree\filelistJS.txt" />
     <Content Include="Addons\_Addons\MenuEdit\filelistJS.txt" />
     <Content Include="Addons\_Main\filelistCSS.txt" />
     <None Include="Addons\_Main\menu.scss" />
