@@ -113,7 +113,7 @@ YetaWF_FlashImageRepository.initSelection = function (divId) {
                 return false;
             },
             error: function (jqXHR, textStatus, errorThrown) {
-                YetaWF_Basics.Y_Alert(YLocs.Forms.AjaxError.format(jqXHR.status, jqXHR.statusText), YLocs.Forms.AjaxErrorTitle);
+                YetaWF_Basics.alert(YLocs.Forms.AjaxError.format(jqXHR.status, jqXHR.statusText), YLocs.Forms.AjaxErrorTitle);
                 return false;
             }
         });

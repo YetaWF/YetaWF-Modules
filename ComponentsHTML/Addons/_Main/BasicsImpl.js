@@ -23,25 +23,25 @@ var YetaWF_ComponentsHTML;
         /**
          * Displays an informational message, usually in a popup.
          */
-        BasicsImpl.prototype.Y_Message = function (message, title, onOK, options) {
-            this.Y_Alert(message, title || YLocs.Basics.DefaultSuccessTitle, onOK, options);
+        BasicsImpl.prototype.message = function (message, title, onOK, options) {
+            this.alert(message, title || YLocs.Basics.DefaultSuccessTitle, onOK, options);
         };
         /**
          * Displays an error message, usually in a popup.
          */
-        BasicsImpl.prototype.Y_Error = function (message, title, onOK, options) {
-            this.Y_Alert(message, title || YLocs.Basics.DefaultErrorTitle, onOK);
+        BasicsImpl.prototype.error = function (message, title, onOK, options) {
+            this.alert(message, title || YLocs.Basics.DefaultErrorTitle, onOK);
         };
         /**
          * Displays a confirmation message, usually in a popup.
          */
-        BasicsImpl.prototype.Y_Confirm = function (message, title, onOK, options) {
-            this.Y_Alert(message, title || YLocs.Basics.DefaultSuccessTitle, onOK);
+        BasicsImpl.prototype.confirm = function (message, title, onOK, options) {
+            this.alert(message, title || YLocs.Basics.DefaultSuccessTitle, onOK);
         };
         /**
          * Displays an alert message, usually in a popup.
          */
-        BasicsImpl.prototype.Y_Alert = function (message, title, onOK, options) {
+        BasicsImpl.prototype.alert = function (message, title, onOK, options) {
             var _this = this;
             // check if we already have a popup (and close it)
             this.closeAlert(onOK);
@@ -97,7 +97,7 @@ var YetaWF_ComponentsHTML;
         /**
          * Displays an alert message with Yes/No buttons, usually in a popup.
          */
-        BasicsImpl.prototype.Y_AlertYesNo = function (message, title, onYes, onNo, options) {
+        BasicsImpl.prototype.alertYesNo = function (message, title, onYes, onNo, options) {
             var $body = $("body");
             $body.prepend("<div id='yalert'></div>");
             var $dialog = $("#yalert", $body);
@@ -155,7 +155,7 @@ var YetaWF_ComponentsHTML;
         /**
          * Displays a "Please Wait" message
          */
-        BasicsImpl.prototype.Y_PleaseWait = function (message, title) {
+        BasicsImpl.prototype.pleaseWait = function (message, title) {
             // insert <div id="yplwait"></div> at top of page for the window
             // this is automatically removed when destroy() is called
             $("body").prepend("<div id='yplwait'></div>");
@@ -190,7 +190,7 @@ var YetaWF_ComponentsHTML;
         /**
          * Closes the "Please Wait" message (if any).
         */
-        BasicsImpl.prototype.Y_PleaseWaitClose = function () {
+        BasicsImpl.prototype.pleaseWaitClose = function () {
             var $popupwin = $("#yplwait");
             if ($popupwin.length == 0)
                 return;

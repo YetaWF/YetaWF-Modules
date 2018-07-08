@@ -25,12 +25,12 @@ namespace YetaWF.Modules.DevTests.Views {
 {await RenderBeginFormAsync(HtmlAttributes: new { id = DivId })}
     {await PartialForm(async () => await RenderPartialViewAsync(module, model))}
 
-    <input type='button' value='Y_Message()' name='Y_Message' />
-    <input type='button' value='Y_Error()' name='Y_Error' />
-    <input type='button' value='Y_Alert()' name='Y_Alert' />
-    <input type='button' value='Y_AlertYesNo()' name='Y_AlertYesNo' />
-    <input type='button' value='Y_Confirm()' name='Y_Confirm' />
-    <input type='button' value='Y_PleaseWait()' name='Y_PleaseWait' />
+    <input type='button' value='message()' name='message' />
+    <input type='button' value='error()' name='error' />
+    <input type='button' value='alert()' name='alert' />
+    <input type='button' value='alertYesNo()' name='alertYesNo' />
+    <input type='button' value='confirm()' name='confirm' />
+    <input type='button' value='pleaseWait()' name='pleaseWait' />
 
     {await FormButtonsAsync(new FormButton[] {
         new FormButton() { ButtonType= ButtonTypeEnum.Apply, Text= "Apply (Test <A> &amp; & @ {0})", Title = "Tooltip with special characters <A> &amp; & @ {0}" },
@@ -40,23 +40,23 @@ namespace YetaWF.Modules.DevTests.Views {
 {await RenderEndFormAsync()}
 
 <script>
-    $('#{DivId}').on('click', 'input[name=""Y_Message""]', function () {{
-        YetaWF_Basics.Y_Message('TEST <A> &amp; & @ {0} TEST');
+    $('#{DivId}').on('click', 'input[name=""message""]', function () {{
+        YetaWF_Basics.message('TEST <A> &amp; & @ {0} TEST');
     }});
-    $('#{DivId}').on('click', 'input[name=""Y_Error""]', function () {{
-        YetaWF_Basics.Y_Error('TEST <A> &amp; & @ {{0}} TEST');
+    $('#{DivId}').on('click', 'input[name=""error""]', function () {{
+        YetaWF_Basics.error('TEST <A> &amp; & @ {{0}} TEST');
     }});
-    $('#{DivId}').on('click', 'input[name=""Y_Alert""]', function () {{
-        YetaWF_Basics.Y_Alert('TEST <A> &amp; & @ {{0}} TEST', 'TITLE <A> &amp; & @ {{0}} TEST');
+    $('#{DivId}').on('click', 'input[name=""alert""]', function () {{
+        YetaWF_Basics.alert('TEST <A> &amp; & @ {{0}} TEST', 'TITLE <A> &amp; & @ {{0}} TEST');
     }});
-    $('#{DivId}').on('click', 'input[name=""Y_Confirm""]', function () {{
-        YetaWF_Basics.Y_Confirm('TEST <A> &amp; & @ {{0}} TEST');
+    $('#{DivId}').on('click', 'input[name=""confirm""]', function () {{
+        YetaWF_Basics.confirm('TEST <A> &amp; & @ {{0}} TEST');
     }});
-    $('#{DivId}').on('click', 'input[name=""Y_AlertYesNo""]', function () {{
-        YetaWF_Basics.Y_AlertYesNo('TEST <A> &amp; & @ {{0}} TEST', 'TITLE <A> &amp; & @ {{0}} TEST');
+    $('#{DivId}').on('click', 'input[name=""alertYesNo""]', function () {{
+        YetaWF_Basics.alertYesNo('TEST <A> &amp; & @ {{0}} TEST', 'TITLE <A> &amp; & @ {{0}} TEST');
     }});
-    $('#{DivId}').on('click', 'input[name=""Y_PleaseWait""]', function () {{
-        YetaWF_Basics.Y_PleaseWait('Reload page to continue\n\nTEST <A> &amp; & @ {{0}} TEST', 'TITLE <A> &amp; & @ {{0}} TEST');
+    $('#{DivId}').on('click', 'input[name=""pleaseWait""]', function () {{
+        YetaWF_Basics.pleaseWait('Reload page to continue\n\nTEST <A> &amp; & @ {{0}} TEST', 'TITLE <A> &amp; & @ {{0}} TEST');
     }});
 </script>
 ");

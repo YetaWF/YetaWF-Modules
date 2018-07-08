@@ -57,7 +57,7 @@ YetaWF_Panels.init = function (divId) {
     // delete button click
     $('input.t_delete', $control).on('click', function () {
         var btn = this;
-        YetaWF_Basics.Y_AlertYesNo(YLocs.YetaWF_Panels.RemoveConfirm, YLocs.YetaWF_Panels.RemoveTitle, function () {
+        YetaWF_Basics.alertYesNo(YLocs.YetaWF_Panels.RemoveConfirm, YLocs.YetaWF_Panels.RemoveTitle, function () {
             YetaWF_Forms.submitTemplate(btn, false, TEMPLATENAME, YConfigs.YetaWF_Panels.Action_Remove, getPanelIndex());
         });
     });

@@ -25,25 +25,25 @@ namespace YetaWF_ComponentsHTML {
         /**
          * Displays an informational message, usually in a popup.
          */
-        public Y_Message(message: string, title?: string, onOK?: () => void, options?: YetaWF.MessageOptions): void {
-            this.Y_Alert(message, title|| YLocs.Basics.DefaultSuccessTitle, onOK, options);
+        public message(message: string, title?: string, onOK?: () => void, options?: YetaWF.MessageOptions): void {
+            this.alert(message, title|| YLocs.Basics.DefaultSuccessTitle, onOK, options);
         }
         /**
          * Displays an error message, usually in a popup.
          */
-        public Y_Error(message: string, title?: string, onOK?: () => void, options?: YetaWF.MessageOptions): void {
-            this.Y_Alert(message, title || YLocs.Basics.DefaultErrorTitle, onOK);
+        public error(message: string, title?: string, onOK?: () => void, options?: YetaWF.MessageOptions): void {
+            this.alert(message, title || YLocs.Basics.DefaultErrorTitle, onOK);
         }
         /**
          * Displays a confirmation message, usually in a popup.
          */
-        public Y_Confirm(message: string, title?: string, onOK?: () => void, options?: YetaWF.MessageOptions): void {
-            this.Y_Alert(message, title || YLocs.Basics.DefaultSuccessTitle, onOK)
+        public confirm(message: string, title?: string, onOK?: () => void, options?: YetaWF.MessageOptions): void {
+            this.alert(message, title || YLocs.Basics.DefaultSuccessTitle, onOK)
         }
         /**
          * Displays an alert message, usually in a popup.
          */
-        public Y_Alert(message: string, title?: string, onOK?: () => void, options?: YetaWF.MessageOptions): void {
+        public alert(message: string, title?: string, onOK?: () => void, options?: YetaWF.MessageOptions): void {
             // check if we already have a popup (and close it)
             this.closeAlert(onOK);
 
@@ -102,7 +102,7 @@ namespace YetaWF_ComponentsHTML {
         /**
          * Displays an alert message with Yes/No buttons, usually in a popup.
          */
-        public Y_AlertYesNo(message: string, title?: string, onYes?: () => void, onNo?: () => void, options?: YetaWF.MessageOptions): void {
+        public alertYesNo(message: string, title?: string, onYes?: () => void, onNo?: () => void, options?: YetaWF.MessageOptions): void {
 
             var $body = $("body");
             $body.prepend("<div id='yalert'></div>");
@@ -164,7 +164,7 @@ namespace YetaWF_ComponentsHTML {
         /**
          * Displays a "Please Wait" message
          */
-        public Y_PleaseWait(message?: string, title?: string): void {
+        public pleaseWait(message?: string, title?: string): void {
             // insert <div id="yplwait"></div> at top of page for the window
             // this is automatically removed when destroy() is called
             $("body").prepend("<div id='yplwait'></div>");
@@ -202,7 +202,7 @@ namespace YetaWF_ComponentsHTML {
         /**
          * Closes the "Please Wait" message (if any).
         */
-        public Y_PleaseWaitClose(): void {
+        public pleaseWaitClose(): void {
             var $popupwin = $("#yplwait");
             if ($popupwin.length == 0) return;
             var popup = $popupwin.data("kendoWindow");

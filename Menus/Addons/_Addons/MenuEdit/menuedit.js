@@ -445,7 +445,7 @@ YetaWF_MenuEdit.LoadTree = function (treeId, detailsId, data, newEntry) {
             var dataItem = treefuncs.GetDataItem(tree, currentNode);
             if (HasChanged(dataItem)) {
                 if (e) e.preventDefault();// don't continue with selection change
-                YetaWF_Basics.Y_Alert(YLocs.YetaWF_Menus.ChangedEntry);
+                YetaWF_Basics.alert(YLocs.YetaWF_Menus.ChangedEntry);
                 return false;
             }
         }
@@ -487,7 +487,7 @@ YetaWF_MenuEdit.LoadTree = function (treeId, detailsId, data, newEntry) {
                 $('input[name="MenuVersion"]', $form).val(newVersion);
             },
             error: function (jqXHR, textStatus, errorThrown) {
-                YetaWF_Basics.Y_Alert(YLocs.Forms.AjaxError.format(jqXHR.status, jqXHR.statusText), YLocs.Forms.AjaxErrorTitle);
+                YetaWF_Basics.alert(YLocs.Forms.AjaxError.format(jqXHR.status, jqXHR.statusText), YLocs.Forms.AjaxErrorTitle);
             }
         });
     }
@@ -612,9 +612,9 @@ YetaWF_MenuEdit.LoadTree = function (treeId, detailsId, data, newEntry) {
         $("input[name='t_reset']", $details).on("click", function () {
             var node = treefuncs.GetSelectedNode(tree);
             if (!treefuncs.ValidNode(tree, node))
-                YetaWF_Basics.Y_Alert(YLocs.YetaWF_Menus.NoMenuEntry);
+                YetaWF_Basics.alert(YLocs.YetaWF_Menus.NoMenuEntry);
             else if (treefuncs.IsRootNode(tree, node))
-                YetaWF_Basics.Y_Alert(YLocs.YetaWF_Menus.NoResetMenu);
+                YetaWF_Basics.alert(YLocs.YetaWF_Menus.NoResetMenu);
             else {
                 CondEnable(tree, node);
                 currentNode = node;
@@ -625,7 +625,7 @@ YetaWF_MenuEdit.LoadTree = function (treeId, detailsId, data, newEntry) {
         $("input[name='t_add']", $details).on("click", function () {
             var node = treefuncs.GetSelectedNode(tree);
             if (!treefuncs.ValidNode(tree, node)) {
-                YetaWF_Basics.Y_Alert(YLocs.YetaWF_Menus.NoMenuEntry);
+                YetaWF_Basics.alert(YLocs.YetaWF_Menus.NoMenuEntry);
                 return;
             }
             PrepareNewEntry(tree, null, function () {
@@ -641,9 +641,9 @@ YetaWF_MenuEdit.LoadTree = function (treeId, detailsId, data, newEntry) {
         $("input[name='t_delete']", $details).on("click", function () {
             var node = treefuncs.GetSelectedNode(tree);
             if (!treefuncs.ValidNode(tree, node))
-                YetaWF_Basics.Y_Alert(YLocs.YetaWF_Menus.NoMenuEntry);
+                YetaWF_Basics.alert(YLocs.YetaWF_Menus.NoMenuEntry);
             else if (treefuncs.IsRootNode(tree, node))
-                YetaWF_Basics.Y_Alert(YLocs.YetaWF_Menus.NoRemoveMenu);
+                YetaWF_Basics.alert(YLocs.YetaWF_Menus.NoRemoveMenu);
             else {
                 var nextNode = treefuncs.GetNextNode(tree, node);
                 treefuncs.DeleteNode(tree, node);

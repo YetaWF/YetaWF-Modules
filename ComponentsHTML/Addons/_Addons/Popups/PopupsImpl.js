@@ -82,7 +82,7 @@ var YetaWF_ComponentsHTML;
                 },
                 error: function (e) {
                     YetaWF_Basics.setLoading(false);
-                    YetaWF_Basics.Y_Error("Request failed with status " + e.status);
+                    YetaWF_Basics.error("Request failed with status " + e.status);
                 }
             });
             // show and center the window
@@ -159,7 +159,7 @@ var YetaWF_ComponentsHTML;
                 },
                 error: function (e) {
                     YetaWF_Basics.setLoading(false);
-                    YetaWF_Basics.Y_Error("Request failed with status " + e.status);
+                    YetaWF_Basics.error("Request failed with status " + e.status);
                 }
             });
             // show and center the window

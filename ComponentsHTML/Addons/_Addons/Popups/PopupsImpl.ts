@@ -96,7 +96,7 @@ namespace YetaWF_ComponentsHTML {
                 },
                 error: function (e) {
                     YetaWF_Basics.setLoading(false);
-                    YetaWF_Basics.Y_Error("Request failed with status " + e.status);
+                    YetaWF_Basics.error("Request failed with status " + e.status);
                 }
             });
 
@@ -182,7 +182,7 @@ namespace YetaWF_ComponentsHTML {
                 },
                 error: function (e) {
                     YetaWF_Basics.setLoading(false);
-                    YetaWF_Basics.Y_Error("Request failed with status " + e.status);
+                    YetaWF_Basics.error("Request failed with status " + e.status);
                 }
             });
 

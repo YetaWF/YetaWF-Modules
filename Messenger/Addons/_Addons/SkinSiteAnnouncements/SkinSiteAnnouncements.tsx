@@ -28,7 +28,7 @@ namespace YetaWF_Messenger {
             var hubProxy: any = connection.createHubProxy("YetaWF_Messenger_SiteAnnouncement");
             hubProxy.on("message", function (content: string, title: string): void {
                 if (SkinSiteAnnouncementsModule.on)
-                    YetaWF_Basics.Y_Alert(content, title, null, { encoded: true });
+                    YetaWF_Basics.alert(content, title, null, { encoded: true });
             });
             connection.start().done(function (): void { /*empty*/ });
         }

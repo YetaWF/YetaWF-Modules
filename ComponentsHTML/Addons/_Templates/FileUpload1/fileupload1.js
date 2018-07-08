@@ -62,22 +62,22 @@ YetaWF_FileUpload1.init = function (divId, serializeForm) {
         onUploadError: function (id, message) {
             YetaWF_Basics.setLoading(false);
             if (message == "")
-                YetaWF_Basics.Y_Error(YLocs.YetaWF_ComponentsHTML.StatusUploadNoResp);
+                YetaWF_Basics.error(YLocs.YetaWF_ComponentsHTML.StatusUploadNoResp);
             else
-                YetaWF_Basics.Y_Error(YLocs.YetaWF_ComponentsHTML.StatusUploadFailed.format(message));
+                YetaWF_Basics.error(YLocs.YetaWF_ComponentsHTML.StatusUploadFailed.format(message));
         },
         onFileTypeError: function (file) {
-            YetaWF_Basics.Y_Error(YLocs.YetaWF_ComponentsHTML.FileTypeError);
+            YetaWF_Basics.error(YLocs.YetaWF_ComponentsHTML.FileTypeError);
         },
         onFileSizeError: function (file) {
-            YetaWF_Basics.Y_Error(YLocs.YetaWF_ComponentsHTML.FileSizeError);
+            YetaWF_Basics.error(YLocs.YetaWF_ComponentsHTML.FileSizeError);
         },
         onFallbackMode: function (message) {
-            YetaWF_Basics.Y_Error(YLocs.YetaWF_ComponentsHTML.FallbackMode);
+            YetaWF_Basics.error(YLocs.YetaWF_ComponentsHTML.FallbackMode);
         },
         onUploadSuccess: function (id, data) {
             //{
-            //    "result":      "YetaWF_Basics.Y_Confirm(\"Image \\\"logo_233x133.jpg\\\" successfully uploaded\");",
+            //    "result":      "YetaWF_Basics.confirm(\"Image \\\"logo_233x133.jpg\\\" successfully uploaded\");",
             //    "filename": "tempc8eb1eb6-31ef-4e5d-9100-9fab50761a81.jpg",
             //    "realFilename": "logo_233x133.jpg",
             //    "attributes": "233 x 123 (w x h)"
@@ -115,7 +115,7 @@ YetaWF_FileUpload1.init = function (divId, serializeForm) {
             data: '__internalName=' + encodeURIComponent(name) + '&__filename=' + encodeURIComponent(name),
             success: function (result, textStatus, jqXHR) { },
             error: function (jqXHR, textStatus, errorThrown) {
-                YetaWF_Basics.Y_Alert(YLocs.Forms.AjaxError.format(jqXHR.status, jqXHR.statusText), YLocs.Forms.AjaxErrorTitle);
+                YetaWF_Basics.alert(YLocs.Forms.AjaxError.format(jqXHR.status, jqXHR.statusText), YLocs.Forms.AjaxErrorTitle);
             }
         });
     }

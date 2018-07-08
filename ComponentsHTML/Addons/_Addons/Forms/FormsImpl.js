@@ -71,7 +71,7 @@ var YetaWF_ComponentsHTML;
                 s += el + '(+nl)';
             });
             this.dontUpdateWarningIcons = true;
-            YetaWF_Basics.Y_Error(YLocs.Forms.FormErrors + s);
+            YetaWF_Basics.error(YLocs.Forms.FormErrors + s);
             this.dontUpdateWarningIcons = false;
         };
         ;

@@ -98,7 +98,7 @@ YetaWF_TemplateDropDownList.AjaxUpdate = function ($control, data, ajaxurl, onSu
         },
         error: function (jqXHR, textStatus, errorThrown) {
             YetaWF_Basics.setLoading(false);
-            YetaWF_Basics.Y_Alert(YLocs.Forms.AjaxError.format(jqXHR.status, jqXHR.statusText), YLocs.Forms.AjaxErrorTitle);
+            YetaWF_Basics.alert(YLocs.Forms.AjaxError.format(jqXHR.status, jqXHR.statusText), YLocs.Forms.AjaxErrorTitle);
             if (onFailure !== undefined)
                 onFailure(data);
         }
