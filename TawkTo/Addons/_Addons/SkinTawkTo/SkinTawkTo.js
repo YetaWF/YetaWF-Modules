@@ -2,8 +2,8 @@
 /* Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/TawkTo#License */
 // If this javascript snippet is included, that means we're displaying the chat.
 var Tawk_API;
-var ActiveEngage_Conversation;
-(function (ActiveEngage_Conversation) {
+var YetaWF_TawkTo;
+(function (YetaWF_TawkTo) {
     var SkinTawkToModule = /** @class */ (function () {
         function SkinTawkToModule() {
         }
@@ -85,6 +85,6 @@ var ActiveEngage_Conversation;
     }());
     var tawkto = new SkinTawkToModule();
     tawkto.init();
-})(ActiveEngage_Conversation || (ActiveEngage_Conversation = {}));
+})(YetaWF_TawkTo || (YetaWF_TawkTo = {}));
 
 //# sourceMappingURL=SkinTawkTo.js.map

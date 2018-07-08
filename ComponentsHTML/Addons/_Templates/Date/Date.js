@@ -61,7 +61,7 @@ var YetaWF_ComponentsHTML;
                 animation: false,
                 format: YVolatile.YetaWF_ComponentsHTML.DateFormat,
                 min: sd, max: ed,
-                culture: YConfigs.Basics.Language,
+                culture: YVolatile.Basics.Language,
                 change: function (ev) {
                     var kdPicker = ev.sender;
                     var val = kdPicker.value();
@@ -104,7 +104,7 @@ var YetaWF_ComponentsHTML;
                 animation: false,
                 format: YVolatile.YetaWF_ComponentsHTML.DateFormat,
                 //sb.Append("min: sd, max: ed,");
-                culture: YConfigs.Basics.Language,
+                culture: YVolatile.Basics.Language,
                 change: function (ev) {
                     var kdPicker = ev.sender;
                     var val = kdPicker.value();
@@ -142,5 +142,3 @@ var YetaWF_ComponentsHTML;
         }
     });
 })(YetaWF_ComponentsHTML || (YetaWF_ComponentsHTML = {}));
-
-//# sourceMappingURL=Date.js.map

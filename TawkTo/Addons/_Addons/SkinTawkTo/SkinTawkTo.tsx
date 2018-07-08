@@ -4,7 +4,12 @@
 
 var Tawk_API: any;
 
-namespace ActiveEngage_Conversation { // nonstandard namespace to avoid conflict with core YetaWF_Basics
+namespace YetaWF_TawkTo { // nonstandard namespace to avoid conflict with core YetaWF_Basics
+
+    export interface IPackageConfigs {
+        IncludedPagesCss: string;
+        ExcludedPagesCss: string;
+    }
 
     class SkinTawkToModule {
 
@@ -49,8 +54,8 @@ namespace ActiveEngage_Conversation { // nonstandard namespace to avoid conflict
 
             var invite: boolean = show;
             if (invite) {
-                var inclCss: string | null = YConfigs.YetaWF_TawkTo.IncludedPagesCss;
-                var exclCss: string | null = YConfigs.YetaWF_TawkTo.ExcludedPagesCss;
+                var inclCss = YConfigs.YetaWF_TawkTo.IncludedPagesCss;
+                var exclCss = YConfigs.YetaWF_TawkTo.ExcludedPagesCss;
                 if (inclCss && inclCss.length > 0) {
                     // only included css pages show the chat invite
                     invite = false;

@@ -15,7 +15,7 @@ var YetaWF_Messenger;
                 }
             });
             var $$ = $;
-            var connection = $$.hubConnection(YConfigs.Basics.SignalRUrl, { useDefaultPath: false });
+            var connection = $$.hubConnection(YConfigs.YetaWF_Messenger.SignalRUrl, { useDefaultPath: false });
             var hubProxy = connection.createHubProxy("YetaWF_Messenger_SiteAnnouncement");
             hubProxy.on("message", function (content, title) {
                 if (SkinSiteAnnouncementsModule.on)

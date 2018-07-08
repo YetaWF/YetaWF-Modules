@@ -1,6 +1,6 @@
 "use strict";
 /* Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Messenger#License */
-var Y_AttrEscape;
+var YetaWF_Basics, htmlAttrEscape;
 var YetaWF_Messenger;
 (function (YetaWF_Messenger) {
     var MessagesTemplate = /** @class */ (function () {
@@ -29,8 +29,8 @@ var YetaWF_Messenger;
         MessagesTemplate.prototype.handleMessage = function (key, from, messageText, sent) {
             if (from === this.toUser) {
                 var line = "<div class=\"t_otheruser t_seen\" data-key=\"" + key + "\">" +
-                    ("<div class=\"t_sent\">" + Y_AttrEscape(sent) + "</div>") +
-                    ("<div class=\"t_text\">" + Y_AttrEscape(messageText) + "</div>") +
+                    ("<div class=\"t_sent\">" + YetaWF_Basics.htmlAttrEscape(sent) + "</div>") +
+                    ("<div class=\"t_text\">" + YetaWF_Basics.htmlAttrEscape(messageText) + "</div>") +
                     "</div>";
                 $("#" + this.divId + " .t_messagearea .t_last").before(line);
                 this.scrollMessageArea();
@@ -40,8 +40,8 @@ var YetaWF_Messenger;
         MessagesTemplate.prototype.handleMessageSent = function (key, to, messageText, sent) {
             if (to === this.toUser) {
                 var line = "<div class=\"t_thisuser t_notseen\" data-key=\"" + key + "\">" +
-                    ("<div class=\"t_sent\"><img alt=\"" + Y_AttrEscape(YLocs.YetaWF_Messenger.notSeen) + "\" title=\"" + Y_AttrEscape(YLocs.YetaWF_Messenger.notSeen) + "\" src=\"" + Y_AttrEscape(YConfigs.YetaWF_Messenger.msgNotSeenIcon) + "\">" + sent + "</div>") +
-                    ("<div class=\"t_text\">" + Y_AttrEscape(messageText) + "</div>") +
+                    ("<div class=\"t_sent\"><img alt=\"" + YetaWF_Basics.htmlAttrEscape(YLocs.YetaWF_Messenger.notSeen) + "\" title=\"" + YetaWF_Basics.htmlAttrEscape(YLocs.YetaWF_Messenger.notSeen) + "\" src=\"" + YetaWF_Basics.htmlAttrEscape(YConfigs.YetaWF_Messenger.msgNotSeenIcon) + "\">" + sent + "</div>") +
+                    ("<div class=\"t_text\">" + YetaWF_Basics.htmlAttrEscape(messageText) + "</div>") +
                     "</div>";
                 $("#" + this.divId + " .t_messagearea .t_last").before(line);
                 this.scrollMessageArea();

@@ -2,6 +2,10 @@
 
 namespace YetaWF_ComponentsHTML {
 
+    export interface IPackageVolatiles {
+        DateFormat: string;
+    }
+
     export class DateComponent {
 
         private getGrid(ctrlId: string): HTMLElement {
@@ -55,7 +59,7 @@ namespace YetaWF_ComponentsHTML {
                 animation: false,
                 format: YVolatile.YetaWF_ComponentsHTML.DateFormat,
                 min: sd, max: ed,
-                culture: YConfigs.Basics.Language,
+                culture: YVolatile.Basics.Language,
                 change: function (ev: kendo.ui.DatePickerEvent): void {
                     var kdPicker: kendo.ui.DatePicker = ev.sender;
                     var val: Date = kdPicker.value();
@@ -102,7 +106,7 @@ namespace YetaWF_ComponentsHTML {
                 animation: false,
                 format: YVolatile.YetaWF_ComponentsHTML.DateFormat,
                 //sb.Append("min: sd, max: ed,");
-                culture: YConfigs.Basics.Language,
+                culture: YVolatile.Basics.Language,
                 change: function (ev: kendo.ui.DatePickerEvent): void {
                     var kdPicker: kendo.ui.DatePicker = ev.sender;
                     var val: Date = kdPicker.value();

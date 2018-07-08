@@ -1,6 +1,6 @@
 ﻿/* Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/ComponentsHTML#License */
 
-declare var YetaWF_TemplateDropDownList: any;//$$$
+declare var YetaWF_TemplateDropDownList: any;// %%%%%%%%%%%%%%%%%%% TODO: update once dropdown is ts
 
 namespace YetaWF_ComponentsHTML {
 
@@ -8,9 +8,9 @@ namespace YetaWF_ComponentsHTML {
 
         public static init(): void {
 
-            var a1: string = YVolatile.Basics.CssNoTooltips;
-            var a2: string = YConfigs.Basics.CssTooltip;
-            var a3: string = YConfigs.Basics.CssTooltipSpan;
+            var a1 = YVolatile.Basics.CssNoTooltips;
+            var a2 = YConfigs.Basics.CssTooltip;
+            var a3 = YConfigs.Basics.CssTooltipSpan;
             var selectors = `img:not("${a1}"),label,input:not(".ui-button-disabled"),a:not("${a1},.ui-button-disabled"),i,.ui-jqgrid span[${a2}],span[${a3}],li[${a2}],div[${a2}]`;
             var ddsel = '.k-list-container.k-popup li[data-offset-index]';
             $('body').tooltip({
@@ -38,7 +38,7 @@ namespace YetaWF_ComponentsHTML {
                             return null;
                         if ($this.attr("disabled") !== undefined)
                             return null;
-                        var s:string | undefined = $this.attr(YConfigs.Basics.CssTooltip as string);
+                        var s: string | undefined = $this.attr(YConfigs.Basics.CssTooltip);
                         if (s)
                             return YetaWF_Basics.htmlEscape(s);
                         s = $this.attr(YConfigs.Basics.CssTooltipSpan as string);

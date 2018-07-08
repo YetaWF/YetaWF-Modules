@@ -34,5 +34,3 @@ var YetaWF_ComponentsHTML;
 YetaWF_Basics.whenReady.push({
     callback: YetaWF_ComponentsHTML.Buttons.init
 });
-
-//# sourceMappingURL=Buttons.js.map

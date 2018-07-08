@@ -2,6 +2,10 @@
 
 namespace YetaWF_Messenger {
 
+    export interface IPackageConfigs {
+        SignalRUrl: string;
+    }
+
     class SkinSiteAnnouncementsModule {
 
         static readonly MODULEGUID: string = "54F6B691-B835-4568-90AA-AA9B308D4272";
@@ -20,7 +24,7 @@ namespace YetaWF_Messenger {
             });
 
             var $$: any = $;
-            var connection: any = $$.hubConnection(YConfigs.Basics.SignalRUrl, { useDefaultPath: false });
+            var connection: any = $$.hubConnection(YConfigs.YetaWF_Messenger.SignalRUrl, { useDefaultPath: false });
             var hubProxy: any = connection.createHubProxy("YetaWF_Messenger_SiteAnnouncement");
             hubProxy.on("message", function (content: string, title: string): void {
                 if (SkinSiteAnnouncementsModule.on)

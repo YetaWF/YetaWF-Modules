@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using YetaWF.Core.Site;
 using YetaWF.Core.Support;
 using YetaWF.Core.Controllers;
+using YetaWF.Core.Packages;
 #if MVC6
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.SignalR;
@@ -26,8 +27,9 @@ namespace YetaWF.Modules.Messenger {
         public static readonly string SignalRUrl = "/__signalr";
 
         public static async Task UseAsync() {
-            await YetaWFManager.Manager.AddOnManager.AddAddOnNamedAsync(YetaWF.Modules.Messenger.Controllers.AreaRegistration.CurrentPackage.Domain, YetaWF.Modules.Messenger.Controllers.AreaRegistration.CurrentPackage.Product, "github.com.signalr.signalr");
-            YetaWFManager.Manager.ScriptManager.AddConfigOption("Basics", "SignalRUrl", SignalRUrl);
+            Package package = YetaWF.Modules.Messenger.Controllers.AreaRegistration.CurrentPackage;
+            await YetaWFManager.Manager.AddOnManager.AddAddOnNamedAsync(package.Domain, package.Product, "github.com.signalr.signalr");
+            YetaWFManager.Manager.ScriptManager.AddConfigOption(package.Domain, "SignalRUrl", SignalRUrl);
         }
 
 #if MVC6

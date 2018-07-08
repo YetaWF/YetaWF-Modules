@@ -176,5 +176,3 @@ var YetaWF_ComponentsHTML;
     YetaWF_ComponentsHTML.PopupsImpl = PopupsImpl;
 })(YetaWF_ComponentsHTML || (YetaWF_ComponentsHTML = {}));
 var YetaWF_PopupsImpl = new YetaWF_ComponentsHTML.PopupsImpl();
-
-//# sourceMappingURL=PopupsImpl.js.map

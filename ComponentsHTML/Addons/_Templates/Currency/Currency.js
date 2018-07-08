@@ -21,7 +21,7 @@ var YetaWF_ComponentsHTML;
                 $(el).kendoNumericTextBox({
                     format: YVolatile.YetaWF_ComponentsHTML.CurrencyFormat,
                     min: sd, max: ed,
-                    culture: YConfigs.Basics.Language
+                    culture: YVolatile.Basics.Language
                 });
             }
         };
@@ -44,5 +44,3 @@ var YetaWF_ComponentsHTML;
         }
     });
 })(YetaWF_ComponentsHTML || (YetaWF_ComponentsHTML = {}));
-
-//# sourceMappingURL=Currency.js.map

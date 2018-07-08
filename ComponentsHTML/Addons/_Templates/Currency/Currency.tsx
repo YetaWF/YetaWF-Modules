@@ -2,6 +2,10 @@
 
 namespace YetaWF_ComponentsHTML {
 
+    export interface IPackageVolatiles {
+        CurrencyFormat: string;
+    }
+
     export class CurrencyComponent {
         /**
          * Initializes all currency fields in the specified tag.
@@ -19,7 +23,7 @@ namespace YetaWF_ComponentsHTML {
                 $(el).kendoNumericTextBox({
                     format: YVolatile.YetaWF_ComponentsHTML.CurrencyFormat,
                     min: sd, max: ed,
-                    culture: YConfigs.Basics.Language
+                    culture: YVolatile.Basics.Language
                 });
             }
         }

@@ -169,5 +169,3 @@ YetaWF_Basics.whenReady.push({
 });
 /* Initialize validation system */
 YetaWF_FormsImpl.initValidation();
-
-//# sourceMappingURL=FormsImpl.js.map
