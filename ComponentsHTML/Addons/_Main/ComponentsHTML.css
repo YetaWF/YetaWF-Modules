@@ -1,0 +1,43 @@
+/* Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/ComponentsHTML#License */
+
+/* tooltip */
+.ui-tooltip.ui-widget {
+    font-size:12px;
+    z-index:20000;
+    overflow:hidden;
+}
+@media print {
+    .ui-tooltip {
+        display:none !important;
+    }
+}
+
+/* Ui overlay leaves horizontal stripe without this fix*/
+.ui-widget-overlay {
+    background: #333;
+}
+
+/* popups */
+.k-widget.k-window {
+    z-index:2000 !important;
+}
+.k-overlay {
+    z-index:1999 !important;
+}
+.ui-dialog {
+    z-index:2002 !important;
+    /* 2001 for overlay */
+}
+
+/* To keep ui dialogs on top of everything */
+.ui-front {
+    z-index: 3000;
+}
+
+/* Print */
+
+@media print {
+    .cke .cke_top {
+        display: none;
+    }
+}

@@ -75,6 +75,7 @@
     <Content Include="Addons\_Addons\github.com.signalr.signalr\FilelistJS.txt" />
     <Content Include="Addons\_Addons\SkinMessaging\filelistJS.txt" />
     <Content Include="Addons\_Addons\Messaging\filelistJS.txt" />
+    <Content Include="Addons\_Main\filelistJS.txt" />
     <Content Include="Addons\_Main\Icons\offline.png" />
     <Content Include="Addons\_Main\Icons\online.png" />
     <Content Include="Addons\_Templates\Messages\filelistJS.txt" />
@@ -154,6 +155,7 @@
   <ItemGroup>
     <TypeScriptCompile Include="Addons\_Addons\SkinMessaging\SkinMessaging.tsx" />
     <TypeScriptCompile Include="Addons\_Addons\Messaging\Messaging.tsx" />
+    <TypeScriptCompile Include="Addons\_Main\Messenger.ts" />
     <TypeScriptCompile Include="Addons\_Templates\Messages\Messages.tsx" />
     <TypeScriptCompile Include="Addons\_Addons\SkinSiteAnnouncements\SkinSiteAnnouncements.tsx" />
   </ItemGroup>

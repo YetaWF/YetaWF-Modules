@@ -1,5 +1,5 @@
 "use strict";
-/* Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Licensing */
+/* Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/ComponentsHTML#License */
 /* Basics implementation required by YetaWF */
 var YetaWF_ComponentsHTML;
 (function (YetaWF_ComponentsHTML) {
@@ -202,3 +202,5 @@ var YetaWF_ComponentsHTML;
     YetaWF_ComponentsHTML.BasicsImpl = BasicsImpl;
 })(YetaWF_ComponentsHTML || (YetaWF_ComponentsHTML = {}));
 var YetaWF_BasicsImpl = new YetaWF_ComponentsHTML.BasicsImpl();
+
+//# sourceMappingURL=BasicsImpl.js.map

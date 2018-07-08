@@ -208,6 +208,7 @@
     <Content Include="Addons\_Addons\Popups\popups.css" />
     <Content Include="Addons\_Addons\telerik.com.Kendo_UI_Core\filelistCSS.txt" />
     <Content Include="Addons\_Addons\telerik.com.Kendo_UI_Core\filelistJS.txt" />
+    <Content Include="Addons\_Main\ComponentsHTML.css" />
     <Content Include="Addons\_Main\PrettyLoader.js" />
     <TypeScriptCompile Include="Addons\_Main\ComponentsHTML.ts" />
     <TypeScriptCompile Include="Addons\_Main\Tooltips.ts" />

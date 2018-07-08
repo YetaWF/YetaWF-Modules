@@ -154,8 +154,8 @@ _YetaWF_Url.updateLink = function ($control) {
         $linkCtl.hide();
     } else {
         var currUri = new URI(urlString);
-        currUri.removeSearch(YGlobals.Link_NoEditMode);
-        currUri.addSearch(YGlobals.Link_NoEditMode, "y");
+        currUri.removeSearch(YConfigs.Basics.Link_NoEditMode);
+        currUri.addSearch(YConfigs.Basics.Link_NoEditMode, "y");
         $linkCtl.attr("href", currUri.toString());
 
         $linkCtl.show();

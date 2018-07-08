@@ -49,3 +49,5 @@ document.YPopupWindowActive = null;
  * Initial full page load (popup in iframe)
  */
 PopupsSupport.pageLoad();
+
+//# sourceMappingURL=PopupsSupport.js.map
