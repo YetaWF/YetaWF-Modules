@@ -1,5 +1,2 @@
 ﻿Validation.js
-Forms.js
 FormsImpl.ts
-FormsSupport.tsx
-FormsSupportLegacy.js

@@ -113,7 +113,7 @@ $(document).on('YetaWF_PropertyList_PanelSwitched', function (event, $panel) {
     });
 });
 $(document).on('change', 'select.yt_dropdownlist_base[data-val=true]', function () {
-    if (typeof FormsSupport !== 'undefined' && FormsSupport != undefined) FormsSupport.validateElement($(this));
+    FormsSupport.validateElement($(this));
 });
 
 // A <div> is being emptied. Destroy all date/time pickers the <div> may contain.

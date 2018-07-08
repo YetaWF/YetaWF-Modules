@@ -2,6 +2,7 @@
 
 // validation for all forms
 // does not implement any required externally callable functions
+// http://jqueryvalidation.org/reference/
 
 // Form submit handling for all forms
 // http://jqueryvalidation.org/documentation/

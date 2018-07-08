@@ -165,11 +165,9 @@
     <TypeScriptCompile Include="Addons\_Addons\Popups\PopupsSupport.ts" />
     <TypeScriptCompile Include="Addons\_Main\BasicsImpl.ts" />
     <TypeScriptCompile Include="Addons\_Addons\Forms\FormsImpl.ts" />
-    <Content Include="Addons\_Addons\Forms\docs.txt" />
     <Content Include="Addons\_Addons\Forms\filelistCSS.txt" />
     <Content Include="Addons\_Addons\Forms\filelistJS.txt" />
     <Content Include="Addons\_Addons\Forms\forms.css" />
-    <Content Include="Addons\_Addons\Forms\forms.js" />
     <Content Include="Addons\_Addons\Forms\validation.js" />
     <Content Include="Addons\_Addons\gist.github.com_remi_957732.jquery_validate_hooks\filelistJS.txt" />
     <Content Include="Addons\_Addons\gist.github.com_remi_957732.jquery_validate_hooks\jquery.validate.hooks.js" />
@@ -205,7 +203,9 @@
     <Content Include="Addons\_Addons\no-margin-for-errors.com.prettyloader\images\prettyLoader\prettyLoader.gif" />
     <Content Include="Addons\_Addons\no-margin-for-errors.com.prettyloader\images\prettyLoader\prettyLoader.png" />
     <Content Include="Addons\_Addons\no-margin-for-errors.com.prettyloader\js\jquery.prettyLoader.js" />
+    <Content Include="Addons\_Addons\Popups\filelistCSS.txt" />
     <Content Include="Addons\_Addons\Popups\filelistJS.txt" />
+    <Content Include="Addons\_Addons\Popups\popups.css" />
     <Content Include="Addons\_Addons\telerik.com.Kendo_UI_Core\filelistCSS.txt" />
     <Content Include="Addons\_Addons\telerik.com.Kendo_UI_Core\filelistJS.txt" />
     <Content Include="Addons\_Main\PrettyLoader.js" />
@@ -220,8 +220,6 @@
     <Content Include="Addons\_Templates\DateTime\DateTime.css" />
     <Content Include="Addons\_Templates\DateTime\filelistCSS.txt" />
     <Content Include="Addons\_Templates\DateTime\filelistJS.txt" />
-    <Content Include="Addons\_Main\ComponentsHTML.css" />
-    <Content Include="Addons\_Main\ComponentsHTML.js" />
     <Content Include="Addons\_Main\filelistCSS.txt" />
     <Content Include="Addons\_Main\filelistJS.txt" />
     <Content Include="Addons\_Templates\Date\Date.css" />
@@ -365,9 +363,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Addons\_Addons\Forms\FormsSupportLegacy.js" />
     <TypeScriptCompile Include="Addons\_Main\Buttons.ts" />
-    <TypeScriptCompile Include="Addons\_Addons\Forms\FormsSupport.tsx" />
+    <TypeScriptCompile Include="Addons\_Main\FormsSupport.ts" />
     <TypeScriptCompile Include="Addons\_Templates\Currency\Currency.tsx" />
     <TypeScriptCompile Include="Addons\_Templates\DateTime\DateTime.tsx" />
     <TypeScriptCompile Include="Addons\_Templates\Date\Date.tsx" />
