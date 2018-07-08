@@ -2,8 +2,6 @@
 
 /* Popups implementation required by YetaWF */
 
-declare var Y_ReloadWindowPage: any;//$$$
-
 interface Document {
     YPopupWindowActive: kendo.ui.Window | null;
 }
@@ -19,7 +17,7 @@ namespace YetaWF_ComponentsHTML {
             if (YVolatile.Basics.IsInPopup) {
                 var forced = (forceReload === true);
                 if (forced)
-                    Y_ReloadWindowPage(window.parent, true)
+                    YetaWF_Basics.reloadPage(true, window.parent);
                 // with unified page sets there may actually not be a parent, but window.parent returns itself in this case anyway
                 var popup: kendo.ui.Window | null = window.parent.document.YPopupWindowActive;
                 PopupsImpl.internalClosePopup(popup);
@@ -50,7 +48,7 @@ namespace YetaWF_ComponentsHTML {
         /**
          * Opens a dynamic popup, usually a div added to the current document.
          */
-        public openDynamicPopup(result: any): JQuery<HTMLElement> { //$$any
+        public openDynamicPopup(result: YetaWF.ContentResult): JQuery<HTMLElement> {
 
             // we're already in a popup
             if (YetaWF_Basics.isInPopup())

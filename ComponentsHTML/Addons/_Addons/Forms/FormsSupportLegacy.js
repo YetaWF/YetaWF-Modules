@@ -178,7 +178,7 @@ $(document).on('click', 'form .' + YConfigs.Forms.CssFormCancel, function (e) {
             uri.removeSearch(YGlobals.Link_OriginList);
             if (originList.length > 0)
                 uri.addSearch(YGlobals.Link_OriginList, JSON.stringify(originList));
-            if (!_YetaWF_Basics.setContent(uri, true))
+            if (!YetaWF_Basics.ContentHandling.setContent(uri, true))
                 window.location.assign(uri);
         } else {
             // we don't know where to return so just close the browser

@@ -12,7 +12,7 @@ var YetaWF_ComponentsHTML;
             if (YVolatile.Basics.IsInPopup) {
                 var forced = (forceReload === true);
                 if (forced)
-                    Y_ReloadWindowPage(window.parent, true);
+                    YetaWF_Basics.reloadPage(true, window.parent);
                 // with unified page sets there may actually not be a parent, but window.parent returns itself in this case anyway
                 var popup = window.parent.document.YPopupWindowActive;
                 PopupsImpl.internalClosePopup(popup);

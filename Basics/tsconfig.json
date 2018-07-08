@@ -24,7 +24,7 @@
     "strictNullChecks": true,
     "types": [
       "jquery", "jqueryui", "kendo-ui",
-      "YetaWF/HTML/Globals", "YetaWF/HTML/Basics2", "YetaWF/HTML/Forms2"
+      "YetaWF/HTML/Globals", "YetaWF/HTML/Basics", "YetaWF/HTML/Forms2"
     ]
   },
   "compileOnSave": true,
