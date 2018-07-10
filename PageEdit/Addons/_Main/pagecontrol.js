@@ -42,30 +42,30 @@ YetaWF_Basics.whenReady.push({
             var $ps = $('.YetaWF_PageEdit_PageControl a[data-name="PageSettings"]');
             if ($ps.length > 0) {
                 $ps.each(function () {
-                    var uri = new URI(this.href);
+                    var uri = YetaWF_Basics.parseUrl(this.href);
                     uri.removeSearch('PageGuid');
                     uri.addSearch('PageGuid', YVolatile.Basics.PageGuid);
-                    $(this).attr("href", uri.toString());
+                    $(this).attr("href", uri.toUrl());
                 });
             }
             // Export Page
             var $rp = $('.YetaWF_PageEdit_PageControl a[data-name="ExportPage"]');
             if ($rp.length > 0) {
                 $rp.each(function () {
-                    var uri = new URI(this.href);
+                    var uri = YetaWF_Basics.parseUrl(this.href);
                     uri.removeSearch('PageGuid');
                     uri.addSearch('PageGuid', YVolatile.Basics.PageGuid);
-                    $(this).attr("href", uri.toString());
+                    $(this).attr("href", uri.toUrl());
                 });
             }
             // Remove Page
             var $rp = $('.YetaWF_PageEdit_PageControl a[data-name="RemovePage"]');
             if ($rp.length > 0) {
                 $rp.each(function () {
-                    var uri = new URI(this.href);
+                    var uri = YetaWF_Basics.parseUrl(this.href);
                     uri.removeSearch('PageGuid');
                     uri.addSearch('PageGuid', YVolatile.Basics.PageGuid);
-                    $(this).attr("href", uri.toString());
+                    $(this).attr("href", uri.toUrl());
                 });
             }
             // W3C validation

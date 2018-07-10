@@ -16,7 +16,6 @@ namespace YetaWF.Modules.ComponentsHTML {
         public async Task AddStandardAddOnsAsync() {
             await Manager.AddOnManager.AddAddOnNamedAsync(Package.Domain, Package.Product, "jquery");
             await Manager.AddOnManager.AddAddOnNamedAsync(Package.Domain, Package.Product, "jqueryui");
-            await Manager.AddOnManager.AddAddOnNamedAsync(Package.Domain, Package.Product, "medialize.github.io.URI.js");
             await Manager.AddOnManager.AddAddOnNamedAsync(Package.Domain, Package.Product, "necolas.github.io.normalize");
             await Manager.AddOnManager.AddAddOnNamedAsync(Package.Domain, Package.Product, "no-margin-for-errors.com.prettyLoader");
 

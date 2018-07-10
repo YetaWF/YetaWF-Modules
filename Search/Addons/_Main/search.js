@@ -13,9 +13,9 @@ _YetaWF_Search.highlightSearch = function () {
     $('.yModule').removeHighlight();
     if (YVolatile.Basics.EditModeActive) return; // never in edit mode
     if ($(".YetaWF_Search_SearchControl a[data-name='Off']:visible").length == 0) return;
-    var uri = new URI(window.location.href);
-    var kwdsString = uri.search(true)[YConfigs.YetaWF_Search.UrlArg];
-    if (kwdsString === undefined || kwdsString == null) return;
+    var uri = YetaWF_Basics.parseUrl(window.location.href);
+    var kwdsString = uri.getSearch[YConfigs.YetaWF_Search.UrlArg];
+    if (kwdsString.length == 0) return;
     var kwds = kwdsString.split(',');
     $('.yPane .yModule').highlight(kwds);
 };
@@ -43,7 +43,7 @@ $(document).on("click", ".YetaWF_Search_SearchControl a[data-name='Off']", funct
 });
 _YetaWF_Search.setButtons = function() {
     if (_YetaWF_Search.on) {
-        if (new URI(window.location.href).hasSearch(YConfigs.YetaWF_Search.UrlArg)) {
+        if (YetaWF_Basics.parseUrl(window.location.href).hasSearch(YConfigs.YetaWF_Search.UrlArg)) {
             if (YVolatile.YetaWF_Search.HighLight) {
                 $(".YetaWF_Search_SearchControl a[data-name='Off']").show();
                 $(".YetaWF_Search_SearchControl a[data-name='On']").hide();

@@ -23,10 +23,10 @@ YetaWF_ImageRepository.initSelection = function (divId) {
     function setPreview(name) {
         $buttons.toggle(name!=null && name.length > 0);
         var src = $img.attr('src');
-        var currUri = new URI(src);
+        var currUri = YetaWF_Basics.parseUrl(src);
         currUri.removeSearch("Name");
         currUri.addSearch("Name", name);
-        $img.attr('src', currUri.toString());
+        $img.attr('src', currUri.toUrl());
     }
     function clearFileName() {
         $hidden.val('');
@@ -62,12 +62,12 @@ YetaWF_ImageRepository.initSelection = function (divId) {
 
         // get url to remove the file
         var href = $this.attr('href');
-        var uri = new URI(href);
+        var uri = YetaWF_Basics.parseUrl(href);
         uri.removeSearch("Name");
         uri.addSearch("Name", $hidden.val());
 
         $.ajax({
-            url: uri.toString(),
+            url: uri.toUrl(),
             type: 'post',
             success: function (result, textStatus, jqXHR) {
                 if (result.startsWith(YConfigs.Basics.AjaxJavascriptReturn)) {

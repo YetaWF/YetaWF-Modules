@@ -30,26 +30,26 @@ YetaWF_FlashImageRepository.initSelection = function (divId) {
             // change object data= (if present)
             if ($obj.attr('data') != undefined) {
                 var val = $obj.attr('data');
-                var currUri = new URI(val);
+                var currUri = YetaWF_Basics.parseUrl(val);
                 currUri.removeSearch("Name");
                 currUri.addSearch("Name", name);
-                $obj.attr('data', currUri.toString());
+                $obj.attr('data', currUri.toUrl());
             }
             // change param movie (if present)
             if ($param.length > 0) {
                 var val = $param.attr('value');
-                var currUri = new URI(val);
+                var currUri = YetaWF_Basics.parseUrl(val);
                 currUri.removeSearch("Name");
                 currUri.addSearch("Name", name);
-                $param.attr('value', currUri.toString());
+                $param.attr('value', currUri.toUrl());
             }
             // change embed (if present)
             if ($embed.length > 0) {
                 var src = $embed.attr('src');
-                currUri = new URI(src);
+                currUri = YetaWF_Basics.parseUrl(src);
                 currUri.removeSearch("Name");
                 currUri.addSearch("Name", name);
-                $embed.attr('src', currUri.toString());
+                $embed.attr('src', currUri.toUrl());
             }
             var s = $obj[0].outerHTML;
             $obj.replaceWith(s);// replace entire object to make flash recognize the image change
@@ -89,12 +89,12 @@ YetaWF_FlashImageRepository.initSelection = function (divId) {
 
         // get url to remove the file
         var href = $this.attr('href');
-        var uri = new URI(href);
+        var uri = YetaWF_Basics.parseUrl(href);
         uri.removeSearch("Name");
         uri.addSearch("Name", $hidden.val());
 
         $.ajax({
-            url: uri.toString(),
+            url: uri.toUrl(),
             type: 'post',
             success: function (result, textStatus, jqXHR) {
                 if (result.startsWith(YConfigs.Basics.AjaxJavascriptReturn)) {

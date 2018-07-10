@@ -19,10 +19,10 @@ YetaWF_Image.init = function (divId) {
     // set the preview image
     function setPreview(name) {
         var src = $img.attr('src');
-        var currUri = new URI(src);
+        var currUri = YetaWF_Basics.parseUrl(src);
         currUri.removeSearch("Name");
         currUri.addSearch("Name", name);
-        $img.attr('src', currUri.toString());
+        $img.attr('src', currUri.toUrl());
     };
     function getFileName() {
         return $hidden.val();

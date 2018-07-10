@@ -84,8 +84,8 @@ YetaWF_Grid.setColumnWidths = function ($grid, options) {
 YetaWF_Grid.modifySend = function ($grid, settingsModuleGuid, options, xhr, settings) {
     'use strict';
 
-    var uri = new URI("?" + settings.data);
-    var data = uri.search(true);
+    var uri = YetaWF_Basics.parseUrl("http://dummy/?" + settings.data);
+    var data = uri.getSearchObject();
     var newData = { SettingsModuleGuid: settingsModuleGuid }
     var rows = parseInt(data.rows);
     options['requestedRecords'] = rows; // save this so we can calculate the # of pages when receiving data
@@ -140,8 +140,8 @@ YetaWF_Grid.modifySend = function ($grid, settingsModuleGuid, options, xhr, sett
         $.extend(newData, extradata);
     }
 
-    uri.search(newData);
-    settings.data = uri.query();
+    uri.setSearchObject(newData);
+    settings.data = uri.getQuery();
     return true;
 };
 
