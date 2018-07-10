@@ -6,7 +6,8 @@ namespace YetaWF_ComponentsHTML {
 
     export class Buttons {
 
-        public static init($tag: JQuery<HTMLElement>): void {
+        public static init(tag: HTMLElement): void {
+            var $tag = $(tag);
             if (YVolatile.Skin.Bootstrap && YVolatile.Skin.BootstrapButtons) {
                 // bootstrap
                 $("input[type=submit],input[type=button],input[type=reset],input[type=file]", $tag).not('.y_jqueryui,.btn').addClass('btn btn-primary')

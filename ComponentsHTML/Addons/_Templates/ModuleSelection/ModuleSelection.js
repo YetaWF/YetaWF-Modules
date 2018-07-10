@@ -36,11 +36,11 @@ YetaWF_ModuleSelection.UpdateComplete = function ($control, modGuid) {
             YetaWF_TemplateDropDownList.Update($packages, data.extra);
             YetaWF_TemplateDropDownList.Update($select, modGuid);
             _YetaWF_ModuleSelection.showDescription($control, data);
-            FormsSupport.validateElement($select);
+            FormsSupport.validateElement($select[0]);
         },
         function (data) { // failure
             YetaWF_ModuleSelection.Clear($control);
-            FormsSupport.validateElement($select);
+            FormsSupport.validateElement($select[0]);
         }
     );
 };

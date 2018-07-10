@@ -33,8 +33,8 @@ YetaWF_PageSelection.init = function (id) {
         updateLink(val, desc);
     });
     YetaWF_Basics.whenReady.push({
-        callback: function ($tag) {
-            if ($tag.has($control)) {
+        callback: function (tag) {
+            if ($(tag).has($control)) {
                 $('.t_select select', $control).each(function () {
                     updateLink($(this).val(), "");
                 });

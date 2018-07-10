@@ -27,7 +27,7 @@ $(document).on("click", ".YetaWF_Search_SearchControl a[data-name='On']", functi
     $.ajax({
         'url': '/YetaWF_Search/SearchControlModule/Switch',
         'type': 'post',
-        'data': 'Value=true&' + YConfigs.Basics.ModuleGuid + "=" + encodeURIComponent(YetaWF_Basics.getModuleGuidFromTag($(this))),
+        'data': 'Value=true&' + YConfigs.Basics.ModuleGuid + "=" + encodeURIComponent(YetaWF_Basics.getModuleGuidFromTag(this)),
     });
 });
 $(document).on("click", ".YetaWF_Search_SearchControl a[data-name='Off']", function () {
@@ -38,7 +38,7 @@ $(document).on("click", ".YetaWF_Search_SearchControl a[data-name='Off']", funct
     $.ajax({
         'url': '/YetaWF_Search/SearchControlModule/Switch',
         'type': 'post',
-        'data': 'Value=false&' + YConfigs.Basics.ModuleGuid + "=" + encodeURIComponent(YetaWF_Basics.getModuleGuidFromTag($(this))),
+        'data': 'Value=false&' + YConfigs.Basics.ModuleGuid + "=" + encodeURIComponent(YetaWF_Basics.getModuleGuidFromTag(this)),
     });
 });
 _YetaWF_Search.setButtons = function() {
@@ -72,7 +72,7 @@ if (typeof YetaWF_Forms !== 'undefined' && YetaWF_Forms != undefined) {
 
 // page or page content update - highlight new stuff
 YetaWF_Basics.whenReady.push({
-    callback: function ($tag) {
+    callback: function (tag) {
         _YetaWF_Search.setButtons();
         _YetaWF_Search.highlightSearch();
     }

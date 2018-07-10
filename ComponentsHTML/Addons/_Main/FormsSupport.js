@@ -14,7 +14,7 @@ var YetaWF_ComponentsHTML;
          */
         FormsSupportClass.prototype.validateElement = function (elem) {
             if (typeof YetaWF_Forms !== "undefined" && YetaWF_Forms !== undefined)
-                YetaWF_Forms.validateElement($(elem));
+                YetaWF_Forms.validateElement(elem);
         };
         return FormsSupportClass;
     }());

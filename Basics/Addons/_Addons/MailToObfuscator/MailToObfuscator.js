@@ -5,10 +5,10 @@ _YetaWF_Basics_MailTo.on = true;
 
 // http://stackoverflow.com/questions/483212/effective-method-to-hide-email-from-spam-bots
 YetaWF_Basics.whenReady.push({
-    callback: function ($tag) {
+    callback: function (tag) {
         if (_YetaWF_Basics_MailTo.on) {
             // find all <a> YGenMailTo tags and format an email address
-            $('a.YGenMailTo', $tag).each(function () {
+            $('a.YGenMailTo', $(tag)).each(function () {
                 var $this = $(this);
                 var addr = $this.attr('data-name') + "@" + $this.attr('data-domain');
                 var s = 'mailto:' + addr;

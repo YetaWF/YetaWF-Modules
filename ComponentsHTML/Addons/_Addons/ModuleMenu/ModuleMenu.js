@@ -3,8 +3,8 @@
 /* Init all module menus */
 
 YetaWF_Basics.whenReady.push({
-    callback: function ($tag) {
-        $('.yModuleMenu', $tag).kendoMenu({
+    callback: function (tag) {
+        $('.yModuleMenu', $(tag)).kendoMenu({
             orientation: "vertical"
         })
         .css({

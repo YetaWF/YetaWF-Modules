@@ -39,8 +39,8 @@ YetaWF_FileUpload1.init = function (divId, serializeForm) {
                 data.append('__lastInternalName', filename);// the previous real filename of the file to remove
             }
             if (serializeForm) {
-                var $form = YetaWF_Forms.getForm($control);
-                var formData = YetaWF_Forms.serializeFormArray($form);
+                var form = YetaWF_Forms.getForm($control[0]);
+                var formData = YetaWF_Forms.serializeFormArray(form);
                 var i, l;
                 for (i = 0, l = formData.length; i < l ; ++i) {
                     data.append(formData[i].name, formData[i].value);
@@ -82,9 +82,6 @@ YetaWF_FileUpload1.init = function (divId, serializeForm) {
             //    "realFilename": "logo_233x133.jpg",
             //    "attributes": "233 x 123 (w x h)"
             //}
-            // find form in case returned javascript needs to handle the form (e.g., to submit)
-            var $form = $(this).closest('form');
-
             YetaWF_Basics.setLoading(false);
             if (data.startsWith(YConfigs.Basics.AjaxJavascriptReturn)) {
                 var script = data.substring(YConfigs.Basics.AjaxJavascriptReturn.length);

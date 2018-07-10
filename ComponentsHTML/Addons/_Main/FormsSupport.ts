@@ -14,7 +14,7 @@ namespace YetaWF_ComponentsHTML {
          * If the component is within a form, validation occurs, otherwise it is simply ignored.
          */
         public validateElement(elem: HTMLElement): void {
-            if (typeof YetaWF_Forms !== "undefined" && YetaWF_Forms !== undefined) YetaWF_Forms.validateElement($(elem));
+            if (typeof YetaWF_Forms !== "undefined" && YetaWF_Forms !== undefined) YetaWF_Forms.validateElement(elem);
         }
     }
 }

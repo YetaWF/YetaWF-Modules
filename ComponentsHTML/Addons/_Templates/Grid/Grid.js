@@ -128,7 +128,7 @@ YetaWF_Grid.modifySend = function ($grid, settingsModuleGuid, options, xhr, sett
         }
     }
 
-    var info = YetaWF_Forms.getFormInfo($grid);
+    var info = YetaWF_Forms.getFormInfo($grid[0]);
     newData[YConfigs.Basics.ModuleGuid] = info.ModuleGuid;
     newData[YConfigs.Forms.RequestVerificationToken] = info.RequestVerificationToken;
     newData[YConfigs.Forms.UniqueIdPrefix] = info.UniqueIdPrefix;
@@ -389,7 +389,7 @@ YetaWF_Grid.gridComplete = function ($grid, gridId) {
     if ($gbox.length != 1) throw "Can't find main grid";/*DEBUG*/
     $("option[value={0}]".format(YConfigs.YetaWF_ComponentsHTML.allRecords), $gbox).text(YLocs.YetaWF_ComponentsHTML.allRecords);
     // restart validation for new data exposed (by paging)
-    YetaWF_Forms.updateValidation($grid);
+    YetaWF_Forms.updateValidation($grid[0]);
 };
 
 // update the grid in case there are no records shown
@@ -575,7 +575,8 @@ $(document).on("keydown", ".yt_grid_addordelete input[name$='.NewValue']", funct
 // user clicked add button, validate new value and add to list
 $(document).on('click', '.yt_grid_addordelete input[name="btnAdd"]', function () {
 
-    var $btnAdd = $(this);
+    var btnAdd = this;
+    var $btnAdd = $(btnAdd);
     var $ctrl = $btnAdd.closest('.yt_grid_addordelete');
     if ($ctrl.length != 1) throw "Can't find yt_grid_addordelete with new value control";/*DEBUG*/
 
@@ -598,8 +599,8 @@ $(document).on('click', '.yt_grid_addordelete input[name="btnAdd"]', function ()
     }
 
     // find the guid of the module being edited (if any)
-    var $form = YetaWF_Forms.getForm($btnAdd);
-    var editGuid = $('input[name="ModuleGuid"]', $form).val();
+    var form = YetaWF_Forms.getForm(btnAdd);
+    var editGuid = $('input[name="ModuleGuid"]', $(form)).val();
 
     var ds = $grid.jqGrid('getGridParam', 'data');
     var total = ds.length;
@@ -615,7 +616,7 @@ $(document).on('click', '.yt_grid_addordelete input[name="btnAdd"]', function ()
                     + "&NewRecNumber=" + encodeURIComponent(total)
                     + "&Prefix=" + encodeURIComponent(prefix)
                     + "&EditGuid=" + encodeURIComponent(editGuid)
-                    + YetaWF_Forms.getFormInfo($btnAdd).QS;
+                    + YetaWF_Forms.getFormInfo(btnAdd).QS;
     $.ajax({
         url: ajaxurl,
         data: postData, cache: false, type: 'POST',
@@ -646,7 +647,7 @@ $(document).on('click', '.yt_grid_addordelete input[name="btnAdd"]', function ()
             $grid.trigger('reloadGrid');
             YetaWF_Grid.ShowPager($grid);
 
-            YetaWF_Forms.updateValidation($grid);
+            YetaWF_Forms.updateValidation($grid[0]);
 
             YetaWF_Basics.confirm($ctrl.attr('data-addedmsg').format(attrVal));
         },

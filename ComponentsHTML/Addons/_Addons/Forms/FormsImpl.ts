@@ -11,8 +11,9 @@ namespace YetaWF_ComponentsHTML {
         /**
          * Initializes a partialform.
          */
-        public initPartialForm($partialForm: JQuery<HTMLElement>): void {
+        public initPartialForm(partialForm: HTMLElement): void {
             // get all fields with errors (set server-side)
+            var $partialForm = $(partialForm);
             var $errs = $('.field-validation-error', $partialForm);
             // add warning icons to validation errors
             $errs.each(function () {
@@ -32,31 +33,34 @@ namespace YetaWF_ComponentsHTML {
         /**
          * Re-validate all fields within the div, typically used after paging in a grid to let jquery.validate update all fields
          */
-        public updateValidation($div: JQuery<HTMLElement>) : void {
+        public updateValidation(div: HTMLElement): void {
+            var $div = $(div);
             ($ as any).validator.unobtrusive.parse($div);
             $('input,select,textarea', $div).has("[data-val=true]").trigger('focusout');
         }
         /**
          * Validates one elements.
          */
-        public validateElement($ctrl: JQuery<HTMLElement>) : void {
-            var $form = YetaWF_Forms.getFormCond($ctrl);
-            if ($form === null) return;
-            ($form as any).validate().element($ctrl);
+        public validateElement(ctrl: HTMLElement): void {
+            var form = YetaWF_Forms.getFormCond(ctrl);
+            if (form === null) return;
+            ($(form) as any).validate().element($(ctrl));
         }
 
         /**
-         * Returns whether the form has errors.
-         */
-        public hasErrors($form: JQuery<HTMLElement>): boolean {
-            return $('.validation-summary-errors li', $form).length > 0;
+        * Returns whether a div has form errors.
+        */
+        public hasErrors(elem: HTMLElement): boolean {
+            var $elem = $(elem);
+            return $('.validation-summary-errors li', $elem).length > 0;
         };
 
         /**
-         * Shows all form errors in a popup.
+         * Shows all div form errors in a popup.
          */
-        public showErrors($form: JQuery<HTMLElement>): void {
-            var $summary: JQuery<HTMLElement> = this.formErrorSummary($form);
+        public showErrors(elem: HTMLElement): void {
+            var $elem = $(elem);
+            var $summary: JQuery<HTMLElement> = this.formErrorSummary($elem);
             var $list = $('ul li', $summary);
 
             // only show unique messages (no duplicates)
@@ -94,8 +98,9 @@ namespace YetaWF_ComponentsHTML {
          * Initialize the form when page/content is ready.
          * No external use.
          */
-        public initForm($tag: JQuery<HTMLElement>): void {
+        public initForm(tag: HTMLElement): void {
 
+            var $tag = $(tag);
             ($ as any).validator.unobtrusive.parse($('form', $tag));
             ($('form', $tag) as any).addTriggersToJqueryValidate().triggerElementValidationsOnFormValidation();
 
@@ -142,9 +147,10 @@ namespace YetaWF_ComponentsHTML {
                 $('body').on('elementValidationError', function (element) {
                     var fi: FormsImpl = YetaWF_FormsImpl as FormsImpl;
                     if (fi.dontUpdateWarningIcons) return;
-                    var $input = $(element.target);
-                    var $form = YetaWF_Forms.getForm($input);
-                    var name = $input.attr("name");
+                    var input = element.target;
+                    var form = YetaWF_Forms.getForm(input);
+                    var $form = $(form);
+                    var name = input.getAttribute("name");
                     // remove the error icon
                     var $err = $(`img.${YConfigs.Forms.CssWarningIcon}[name="${name}"]`, $form);
                     $err.remove();
@@ -159,9 +165,10 @@ namespace YetaWF_ComponentsHTML {
                 $('body').on('elementValidationSuccess', function (element) {
                     var fi: FormsImpl = YetaWF_FormsImpl as FormsImpl;
                     if (fi.dontUpdateWarningIcons) return;
-                    var $input = $(element.target);
-                    var $form = YetaWF_Forms.getForm($input);
-                    var name = $input.attr("name");
+                    var input = element.target;
+                    var form = YetaWF_Forms.getForm(input);
+                    var $form = $(form);
+                    var name = input.getAttribute("name");
                     // remove the error icon
                     var $err = $(`img.${YConfigs.Forms.CssWarningIcon}[name="${name}"]`, $form);
                     $err.remove();

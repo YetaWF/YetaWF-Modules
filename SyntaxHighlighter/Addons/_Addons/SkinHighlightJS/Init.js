@@ -22,8 +22,8 @@ $(document).on('YetaWF_Basics_Addon', function (event, addonGuid, on) {
         YetaWF_SyntaxHighlighter_HighlightJS.on = on;
 });
 YetaWF_Basics.whenReady.push({
-    callback: function ($tag) {
+    callback: function (tag) {
         if (YetaWF_SyntaxHighlighter_HighlightJS.on)
-            YetaWF_SyntaxHighlighterHighlightJS.highlight($tag);
+            YetaWF_SyntaxHighlighterHighlightJS.highlight($(tag));
     }
 });

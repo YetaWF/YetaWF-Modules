@@ -2,9 +2,9 @@
 
 var YetaWF_IntValue = {};
 
-YetaWF_IntValue.init = function ($tag) {
+YetaWF_IntValue.init = function (tag) {
     'use strict';
-    $('input.yt_intvalue.t_edit,input.yt_intvalue2.t_edit,input.yt_intvalue4.t_edit,input.yt_intvalue6.t_edit', $tag).each(function (index) {
+    $('input.yt_intvalue.t_edit,input.yt_intvalue2.t_edit,input.yt_intvalue4.t_edit,input.yt_intvalue6.t_edit', $(tag)).each(function (index) {
         var $this = $(this);
         var ed = $this.attr('data-max')
         if (ed === undefined)

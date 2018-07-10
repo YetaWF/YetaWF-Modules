@@ -15,10 +15,10 @@ YetaWF_TemplateText.Enable = function ($control, enabled) {
 
 _YetaWF_TemplateText.clip = null;
 
-// Initialize all text templates within $tag
-YetaWF_TemplateText.init = function ($tag) {
+// Initialize all text templates within tag
+YetaWF_TemplateText.init = function (tag) {
     'use strict';
-
+    var $tag = $(tag);
     // adding k-textbox to the control makes it look like a kendo maskedtext box without the overhead of actually calling kendoMaskedTextBox
     $('input.yt_text,input.yt_text10,input.yt_text20,input.yt_text40,input.yt_text80,input.yt_text_base', $tag).not('.ybrowsercontrols').addClass('k-textbox');
 

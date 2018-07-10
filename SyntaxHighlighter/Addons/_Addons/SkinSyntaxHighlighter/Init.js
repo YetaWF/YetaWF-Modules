@@ -73,7 +73,7 @@ $(document).on('YetaWF_Basics_Addon', function (event, addonGuid, on) {
         _AlexGorbatchevCom_SyntaxHighlighter.on = on;
 });
 YetaWF_Basics.whenReady.push({
-    callback: function ($tag) {
+    callback: function (tag) {
         if (_AlexGorbatchevCom_SyntaxHighlighter.on)
             SyntaxHighlighter.highlight();
     }

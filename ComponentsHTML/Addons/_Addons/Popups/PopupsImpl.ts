@@ -109,7 +109,7 @@ namespace YetaWF_ComponentsHTML {
             document.YPopupWindowActive = popup;
             YVolatile.Basics.IsInPopup = true; // we're in a popup
 
-            YetaWF_Basics.setCondense($popupwin, YVolatile.Skin.PopupWidth);
+            YetaWF_Basics.setCondense($popupwin[0], YVolatile.Skin.PopupWidth);
 
             return $popupwin;
         }

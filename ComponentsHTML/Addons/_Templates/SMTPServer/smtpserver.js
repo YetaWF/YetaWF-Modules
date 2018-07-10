@@ -54,8 +54,8 @@ YetaWF_SMTPServer.init = function (id) {
     });
 
     YetaWF_Basics.whenReady.push({
-        callback: function ($tag) {
-            if ($tag.has($server)) {
+        callback: function (tag) {
+            if ($(tag).has($server)) {
                 showFields($server.val().trim().length != 0);
             }
         }

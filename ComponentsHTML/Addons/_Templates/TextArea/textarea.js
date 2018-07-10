@@ -17,7 +17,7 @@ if (typeof CKEDITOR !== 'undefined') { // CKEDITOR is only defined when an edita
                 exec: function (editor) {
                     var $form = $(editor.element.$).closest('form.' + YConfigs.Forms.CssFormAjax);
                     if ($form.length != 1) throw "Couldn't find form";/*DEBUG*/
-                    YetaWF_Forms.submit($form, false);
+                    YetaWF_Forms.submit($form[0], false);
                 }
             });
 

@@ -33,8 +33,8 @@ $(document).ready(function () {
 // when a new page becomes active, update the module actions reflecting the new page/url
 // also update all hidden fields with the new current page guid
 YetaWF_Basics.whenReady.push({
-    callback: function ($tag) {
-        // disregards $tag as this callback is used when a page or page content has been rendered
+    callback: function (tag) {
+        // disregards tag as this callback is used when a page or page content has been rendered
         'use strict';
 
         // Page Settings

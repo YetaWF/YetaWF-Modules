@@ -455,7 +455,8 @@ YetaWF_MenuEdit.LoadTree = function (treeId, detailsId, data, newEntry) {
 
     function SendEntireMenu(tree)
     {
-        var $form = YetaWF_Forms.getForm($details);
+        var form = YetaWF_Forms.getForm($details[0]);
+        var $form = $(form);
 
         var ajaxurl = $details.attr('data-ajaxurl');
         if (ajaxurl == undefined) throw "Can't locate ajax url to validate and add user name";/*DEBUG*/
@@ -467,7 +468,7 @@ YetaWF_MenuEdit.LoadTree = function (treeId, detailsId, data, newEntry) {
         var postData = "EntireMenu=" + encodeURIComponent(JSON.stringify(treefuncs.GetData(tree)))
                        + "&menuGuid=" + encodeURIComponent(menuGuid)
                        + "&menuVersion=" + encodeURIComponent(menuVersion)
-                       + YetaWF_Forms.getFormInfo($form).QS;
+                       + YetaWF_Forms.getFormInfo(form).QS;
         $.ajax({
             url: ajaxurl,
             data: postData, cache: false, type: 'POST',
@@ -494,10 +495,10 @@ YetaWF_MenuEdit.LoadTree = function (treeId, detailsId, data, newEntry) {
 
     function SendOneEntry(tree, node) {
 
-        var $form = YetaWF_Forms.getForm($details);
+        var $form = YetaWF_Forms.getForm($details[0]);
         var useValidation = !treefuncs.IsRootNode(tree, node);
         var extraData = "ValidateCurrent=" + JSON.stringify(useValidation);
-        YetaWF_Forms.submit($form, useValidation, extraData,
+        YetaWF_Forms.submit($form[0], useValidation, extraData,
             function (hasErrors) {
                 if (!useValidation || !hasErrors) {
                     var dataItem = treefuncs.GetDataItem(tree, node);

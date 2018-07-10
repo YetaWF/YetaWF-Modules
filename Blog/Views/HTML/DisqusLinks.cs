@@ -36,7 +36,7 @@ namespace YetaWF.Modules.Blog.Views {
         }
     });
     YetaWF_Basics.whenReady.push({
-        callback: function ($tag) {
+        callback: function (tag) {
             if (_YetaWF_Blog_Disqus.on);
                 DISQUSWIDGETS.getCount({ reset: true });
         }

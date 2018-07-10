@@ -6,7 +6,8 @@ var YetaWF_ComponentsHTML;
     var Buttons = /** @class */ (function () {
         function Buttons() {
         }
-        Buttons.init = function ($tag) {
+        Buttons.init = function (tag) {
+            var $tag = $(tag);
             if (YVolatile.Skin.Bootstrap && YVolatile.Skin.BootstrapButtons) {
                 // bootstrap
                 $("input[type=submit],input[type=button],input[type=reset],input[type=file]", $tag).not('.y_jqueryui,.btn').addClass('btn btn-primary');

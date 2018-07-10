@@ -21,7 +21,7 @@ YetaWF_Core_RecaptchaV2.onLoad = function ($tag) {
 };
 
 YetaWF_Basics.whenReady.push({
-    callback: function ($tag) {
-        YetaWF_Core_RecaptchaV2.onLoad($tag);
+    callback: function (tag) {
+        YetaWF_Core_RecaptchaV2.onLoad($(tag));
     }
 });

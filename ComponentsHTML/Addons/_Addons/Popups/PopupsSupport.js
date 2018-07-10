@@ -21,7 +21,7 @@ var YetaWF_ComponentsHTML;
                     width: width,
                     height: height,
                 });
-                YetaWF_Basics.setCondense($popupwin, width);
+                YetaWF_Basics.setCondense($popupwin[0], width);
                 popup.center().open();
                 // show/hide the maximize button (not directly supported so we'll do it manually)
                 if ($popupwin.length == 0)
