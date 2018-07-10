@@ -48,7 +48,7 @@ namespace YetaWF_ComponentsHTML {
         /**
          * Opens a dynamic popup, usually a div added to the current document.
          */
-        public openDynamicPopup(result: YetaWF.ContentResult): JQuery<HTMLElement> {
+        public openDynamicPopup(result: YetaWF.ContentResult): HTMLElement {
 
             // we're already in a popup
             if (YetaWF_Basics.isInPopup())
@@ -111,7 +111,7 @@ namespace YetaWF_ComponentsHTML {
 
             YetaWF_Basics.setCondense($popupwin[0], YVolatile.Skin.PopupWidth);
 
-            return $popupwin;
+            return $popupwin[0];
         }
 
         private static closeDynamicPopup() : void {
