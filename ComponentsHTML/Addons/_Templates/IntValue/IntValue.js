@@ -29,9 +29,7 @@ YetaWF_IntValue.init = function (tag) {
     });
 };
 
-YetaWF_Basics.whenReady.push({
-    callback: YetaWF_IntValue.init
-});
+YetaWF_Basics.addWhenReady(YetaWF_IntValue.init);
 
 // A <div> is being emptied. Destroy all kendoNumericTextBox the <div> may contain.
 YetaWF_Basics.addClearDiv(function (tag) {

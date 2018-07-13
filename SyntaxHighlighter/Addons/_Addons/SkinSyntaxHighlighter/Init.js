@@ -72,9 +72,7 @@ $(document).on('YetaWF_Basics_Addon', function (event, addonGuid, on) {
     if (addonGuid == '7e3c4322-5bdb-44bf-acff-f62d498705ee')
         _AlexGorbatchevCom_SyntaxHighlighter.on = on;
 });
-YetaWF_Basics.whenReady.push({
-    callback: function (tag) {
-        if (_AlexGorbatchevCom_SyntaxHighlighter.on)
-            SyntaxHighlighter.highlight();
-    }
+YetaWF_Basics.addWhenReady(function (tag) {
+    if (_AlexGorbatchevCom_SyntaxHighlighter.on)
+        SyntaxHighlighter.highlight();
 });

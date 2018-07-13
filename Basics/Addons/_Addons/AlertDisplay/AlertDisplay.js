@@ -15,7 +15,7 @@ var YetaWF_Basics_Mods;
             YetaWF_Basics.addWhenReady(function (section) {
                 alert.initSection(section);
             });
-            YetaWF_Basics.RegisterContentChange(function (event, addonGuid, on) {
+            YetaWF_Basics.registerContentChange(function (event, addonGuid, on) {
                 if (addonGuid === AlertDisplayModule.MODULEGUID) {
                     AlertDisplayModule.on = on;
                 }

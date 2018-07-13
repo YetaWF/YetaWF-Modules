@@ -157,7 +157,7 @@ YetaWF_Grid.modifyReceive = function ($grid, options, data, status, xhr) {
 };
 // some error occurred during ajax
 YetaWF_Grid.loadError = function ($grid, xhr, status, error) {
-    YetaWF_Basics.processAjaxReturn(xhr.responseText, status, xhr);
+    YetaWF_Basics.processAjaxReturn(xhr.responseText, status, xhr);//$$verify
     $grid.trigger('YetaWF_Grid_LoadError');
 }
 

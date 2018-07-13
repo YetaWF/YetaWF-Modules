@@ -17,12 +17,10 @@ $(document).on('YetaWF_Basics_Addon', function (event, addonGuid, on) {
         _YetaWF_Pages_ScrollUp.on = on;
     }
 });
-YetaWF_Basics.whenReady.push({
-    callback: function (tag) {
-        if (_YetaWF_Pages_ScrollUp.on) {
-            YetaWF_Pages_ScrollUp.init();
-        } else {
-            $.scrollUp.destroy();
-        }
+YetaWF_Basics.addWhenReady(function (tag) {
+    if (_YetaWF_Pages_ScrollUp.on) {
+        YetaWF_Pages_ScrollUp.init();
+    } else {
+        $.scrollUp.destroy();
     }
 });

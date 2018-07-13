@@ -35,11 +35,9 @@ namespace YetaWF.Modules.Blog.Views {
             _YetaWF_Blog_Disqus.on = on;
         }
     });
-    YetaWF_Basics.whenReady.push({
-        callback: function (tag) {
-            if (_YetaWF_Blog_Disqus.on);
-                DISQUSWIDGETS.getCount({ reset: true });
-        }
+    YetaWF_Basics.addWhenReady(function (tag) {
+        if (_YetaWF_Blog_Disqus.on);
+            DISQUSWIDGETS.getCount({ reset: true });
     });
 </script>
 ");

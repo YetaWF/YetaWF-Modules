@@ -50,11 +50,11 @@ namespace YetaWF_ComponentsHTML {
             var hidden: HTMLElement = this.getHidden(ctrl);
             var date: HTMLElement = this.getDate(ctrl);
             var sd: Date = new Date(1900, 1 - 1, 1);
-            var d: string | null = date.getAttribute("data-min-y");
-            if (d != null) sd = new Date(Number(date.getAttribute("data-min-y")), Number(date.getAttribute("data-min-m")) - 1, Number(date.getAttribute("data-min-d")));
-            d = date.getAttribute("data-max-y");
+            var y = date.getAttribute("data-min-y");
+            if (y != null) sd = new Date(Number(y), Number(date.getAttribute("data-min-m")) - 1, Number(date.getAttribute("data-min-d")));
+            y = date.getAttribute("data-max-y");
             var ed: Date = new Date(2199, 12 - 1, 31);
-            if (d != null) ed = new Date(Number(date.getAttribute("data-max-y")), Number(date.getAttribute("data-max-m")) - 1, Number(date.getAttribute("data-max-d")));
+            if (y != null) ed = new Date(Number(y), Number(date.getAttribute("data-max-m")) - 1, Number(date.getAttribute("data-max-d")));
             $(date).kendoDatePicker({
                 animation: false,
                 format: YVolatile.YetaWF_ComponentsHTML.DateFormat,
@@ -132,10 +132,8 @@ namespace YetaWF_ComponentsHTML {
 
     // A <div> is being emptied. Destroy all date/time pickers the <div> may contain.
     YetaWF_Basics.addClearDiv(function (tag: HTMLElement): void {
-        var list: NodeListOf<Element> = tag.querySelectorAll(".yt_date.t_edit input[name=\"dtpicker\"]");
-        var len: number = list.length;
-        for (var i: number = 0; i < len; ++i) {
-            var el: HTMLElement = list[i] as HTMLElement;
+        var list = YetaWF_Basics.getElementsBySelector(".yt_date.t_edit input[name='dtpicker']", [tag]);
+        for (let el of list) {
             var datepicker : kendo.ui.DatePicker = $(el).data("kendoDatePicker");
             if (!datepicker) throw "No kendo object found";/*DEBUG*/
             datepicker.destroy();

@@ -21,9 +21,7 @@ $(document).on('YetaWF_Basics_Addon', function (event, addonGuid, on) {
     if (addonGuid == '25068AC6-BA74-4644-8B46-9D7FEC291E45')
         YetaWF_SyntaxHighlighter_HighlightJS.on = on;
 });
-YetaWF_Basics.whenReady.push({
-    callback: function (tag) {
-        if (YetaWF_SyntaxHighlighter_HighlightJS.on)
-            YetaWF_SyntaxHighlighterHighlightJS.highlight($(tag));
-    }
+YetaWF_Basics.addWhenReady(function (tag) {
+    if (YetaWF_SyntaxHighlighter_HighlightJS.on)
+        YetaWF_SyntaxHighlighterHighlightJS.highlight($(tag));
 });

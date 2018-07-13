@@ -49,13 +49,13 @@ var YetaWF_ComponentsHTML;
             var hidden = this.getHidden(ctrl);
             var date = this.getDate(ctrl);
             var sd = new Date(1900, 1 - 1, 1);
-            var d = date.getAttribute("data-min-y");
-            if (d != null)
-                sd = new Date(Number(date.getAttribute("data-min-y")), Number(date.getAttribute("data-min-m")) - 1, Number(date.getAttribute("data-min-d")));
-            d = date.getAttribute("data-max-y");
+            var y = date.getAttribute("data-min-y");
+            if (y != null)
+                sd = new Date(Number(y), Number(date.getAttribute("data-min-m")) - 1, Number(date.getAttribute("data-min-d")));
+            y = date.getAttribute("data-max-y");
             var ed = new Date(2199, 12 - 1, 31);
-            if (d != null)
-                ed = new Date(Number(date.getAttribute("data-max-y")), Number(date.getAttribute("data-max-m")) - 1, Number(date.getAttribute("data-max-d")));
+            if (y != null)
+                ed = new Date(Number(y), Number(date.getAttribute("data-max-m")) - 1, Number(date.getAttribute("data-max-d")));
             $(date).kendoDateTimePicker({
                 animation: false,
                 format: YVolatile.YetaWF_ComponentsHTML.DateTimeFormat,
@@ -129,10 +129,9 @@ var YetaWF_ComponentsHTML;
     YetaWF_ComponentsHTML.DateTimeComponent = DateTimeComponent;
     // A <div> is being emptied. Destroy all date/time pickers the <div> may contain.
     YetaWF_Basics.addClearDiv(function (tag) {
-        var list = tag.querySelectorAll(".yt_datetime.t_edit input[name=\"dtpicker\"]");
-        var len = list.length;
-        for (var i = 0; i < len; ++i) {
-            var el = list[i];
+        var list = YetaWF_Basics.getElementsBySelector(".yt_datetime.t_edit input[name=\"dtpicker\"]", [tag]);
+        for (var _i = 0, list_1 = list; _i < list_1.length; _i++) {
+            var el = list_1[_i];
             var datepicker = $(el).data("kendoDateTimePicker");
             if (!datepicker)
                 throw "No kendo object found"; /*DEBUG*/
@@ -140,5 +139,3 @@ var YetaWF_ComponentsHTML;
         }
     });
 })(YetaWF_ComponentsHTML || (YetaWF_ComponentsHTML = {}));
-
-//# sourceMappingURL=DateTime.js.map

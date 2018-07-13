@@ -71,11 +71,9 @@ if (typeof YetaWF_Forms !== 'undefined' && YetaWF_Forms != undefined) {
 }
 
 // page or page content update - highlight new stuff
-YetaWF_Basics.whenReady.push({
-    callback: function (tag) {
-        _YetaWF_Search.setButtons();
-        _YetaWF_Search.highlightSearch();
-    }
+YetaWF_Basics.addWhenReady(function (tag) {
+    _YetaWF_Search.setButtons();
+    _YetaWF_Search.highlightSearch();
 });
 
 // Handles events turning the addon on/off (used for dynamic content)

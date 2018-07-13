@@ -3,11 +3,18 @@
 var YetaWF_TemplateDropDownList = {};
 var _YetaWF_TemplateDropDownList = {};
 
+YetaWF_TemplateDropDownList._handleNativeEvents = function ($elem) {
+    if ($elem.closest('.ysubmitonchange, .yapplyonchange').length > 0) {
+        ComponentsHTML.jQueryToNativeEvent($elem, "change");
+    }
+};
+
 YetaWF_TemplateDropDownList.initOne = function ($this) {
     var w = $this.width();
     if (w > 0 && $this.attr("data-needinit") !== undefined) {
         $this.removeAttr("data-needinit");
         $this.kendoDropDownList({});
+        YetaWF_TemplateDropDownList._handleNativeEvents($this);
         var avgw = $this.attr("data-charavgw");
         if (!avgw) throw "dropdowlist without avg char width";/*DEBUG*/
         $this.closest('.k-widget.yt_dropdownlist,.k-widget.yt_dropdownlist_base,.k-widget.yt_enum').width(w + 3 * avgw);
@@ -78,6 +85,7 @@ YetaWF_TemplateDropDownList.AjaxUpdate = function ($control, data, ajaxurl, onSu
                     dataValueField: "v",
                     dataSource: data.data,
                 });
+                YetaWF_TemplateDropDownList._handleNativeEvents($this);
                 $control.data("tooltips", data.tooltips);
                 if (onSuccess !== undefined) {
                     onSuccess(data);

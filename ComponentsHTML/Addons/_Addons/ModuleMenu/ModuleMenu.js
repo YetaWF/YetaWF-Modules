@@ -2,15 +2,13 @@
 
 /* Init all module menus */
 
-YetaWF_Basics.whenReady.push({
-    callback: function (tag) {
-        $('.yModuleMenu', $(tag)).kendoMenu({
-            orientation: "vertical"
-        })
-        .css({
-            width: 'auto'
-        });
-    }
+YetaWF_Basics.addWhenReady(function (tag) {
+    $('.yModuleMenu', $(tag)).kendoMenu({
+        orientation: "vertical"
+    })
+    .css({
+        width: 'auto'
+    });
 });
 
 

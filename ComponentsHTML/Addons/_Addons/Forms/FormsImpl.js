@@ -89,6 +89,62 @@ var YetaWF_ComponentsHTML;
             return $summary;
         };
         ;
+        /**
+         * Serializes the form and returns a name/value pairs array
+         */
+        FormsImpl.prototype.serializeFormArray = function (form) {
+            // disable all fields that we don't want to submit (marked with YConfigs.Forms.CssFormNoSubmit)
+            var $disabledFields = $('.' + YConfigs.Forms.CssFormNoSubmit, $(form)).not(':disabled');
+            $disabledFields.attr('disabled', 'disabled');
+            // disable all input fields in containers (usually grids) - we don't want to submit them - they're collected separately
+            var $disabledGridFields = $("." + YConfigs.Forms.CssFormNoSubmitContents + " input,." + YConfigs.Forms.CssFormNoSubmitContents + " select", $(form)).not(':disabled');
+            $disabledGridFields.attr('disabled', 'disabled');
+            // serialize the form
+            var formData = $(form).serializeArray();
+            // and enable all the input fields we just disabled
+            $disabledFields.removeAttr('disabled');
+            $disabledGridFields.removeAttr('disabled');
+            return formData;
+        };
+        /**
+         * Validate all fields in the current form.
+         */
+        FormsImpl.prototype.validate = function (form) {
+            $(form).validate();
+        };
+        /**
+         * Returns whether all fields in the current form are valid.
+         */
+        FormsImpl.prototype.isValid = function (form) {
+            return $(form).valid();
+        };
+        /**
+         * If there is a validation in the specified tab control, the tab is activated.
+         */
+        FormsImpl.prototype.setErrorInTab = function (tabctrl) {
+            var $tabctrl = $(tabctrl);
+            // get the first field in error (if any)
+            var errField = YetaWF_Basics.getElement1BySelectorCond('.input-validation-error', [tabctrl]);
+            if (errField) {
+                // find out which tab panel we're on
+                var ttabpanel = YetaWF_Basics.elementClosest(errField, 'div.t_tabpanel');
+                if (!ttabpanel)
+                    throw "We found a validation error in a tab control, but we couldn't find the tab panel."; /*DEBUG*/
+                var panel = ttabpanel.getAttribute('data-tab');
+                if (!panel)
+                    throw "We found a panel in a tab control without panel number (data-tab attribute)."; /*DEBUG*/
+                // get the tab entry
+                var $te = $('ul.t_tabstrip > li', $tabctrl).eq(panel);
+                if ($te.length == 0)
+                    throw "We couldn't find the tab entry for panel " + panel; /*DEBUG*/
+                if (YVolatile.Forms.TabStyle === YetaWF.TabStyleEnum.JQuery)
+                    $tabctrl.tabs("option", "active", panel);
+                else if (YVolatile.Forms.TabStyle === YetaWF.TabStyleEnum.Kendo)
+                    $tabctrl.data("kendoTabStrip").activateTab($te);
+                else
+                    throw "Unknown tab style"; /*DEBUG*/
+            }
+        };
         // Forms initialization
         /**
          * Initialize the form when page/content is ready.
@@ -171,10 +227,6 @@ var YetaWF_ComponentsHTML;
 })(YetaWF_ComponentsHTML || (YetaWF_ComponentsHTML = {}));
 var YetaWF_FormsImpl = new YetaWF_ComponentsHTML.FormsImpl();
 /* Page load */
-YetaWF_Basics.whenReady.push({
-    callback: YetaWF_FormsImpl.initForm
-});
+YetaWF_Basics.addWhenReady(YetaWF_FormsImpl.initForm);
 /* Initialize validation system */
 YetaWF_FormsImpl.initValidation();
-
-//# sourceMappingURL=FormsImpl.js.map

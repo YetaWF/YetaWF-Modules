@@ -8,14 +8,12 @@ namespace YetaWF_ComponentsHTML {
          * @param tag - an element containing Decimal template controls.
          */
         initSection(tag: HTMLElement):void {
-            var list: NodeListOf<Element> = tag.querySelectorAll("input.yt_decimal.t_edit");
-            var len: number = list.length;
-            for (var i: number = 0; i < len; ++i) {
-                var el: HTMLElement = list[i] as HTMLElement;
-                var d: string | null = el.getAttribute("data-min");
-                var sd: number =  d == null ? 0.0 : Number(d);
+            var list: HTMLElement[] = YetaWF_Basics.getElementsBySelector("input.yt_decimal.t_edit", [tag]);
+            for (let el of list) {
+                var d = el.getAttribute("data-min");
+                var sd: number = d ? Number(d) : 0.0;
                 d = el.getAttribute("data-max");
-                var ed: number = d == null ? 99999999.99 : Number(d);
+                var ed: number = d ? Number(d) : 99999999.99;
                 $(el).kendoNumericTextBox({
                     format: "0.00",
                     min: sd, max: ed,
@@ -30,11 +28,9 @@ namespace YetaWF_ComponentsHTML {
     });
     // A <div> is being emptied. Destroy all kendoNumericTextBox the <div> may contain.
     YetaWF_Basics.addClearDiv(function (tag: HTMLElement): void {
-        var list: NodeListOf<Element> = tag.querySelectorAll("input.yt_decimal.t_edit");
-        var len: number = list.length;
-        for (var i: number = 0; i < len; ++i) {
-            var el: HTMLElement = list[i] as HTMLElement;
-            var numTextBox : kendo.ui.NumericTextBox = $(el).data("kendoNumericTextBox");
+        var list: HTMLElement[] = YetaWF_Basics.getElementsBySelector("input.yt_decimal.t_edit", [tag]);
+        for (let el of list) {
+            var numTextBox: kendo.ui.NumericTextBox = $(el).data("kendoNumericTextBox");
             if (numTextBox) numTextBox.destroy();
         }
     });

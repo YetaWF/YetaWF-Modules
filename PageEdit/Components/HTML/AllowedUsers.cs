@@ -176,7 +176,7 @@ namespace YetaWF.Modules.PageEdit.Components {
     </div>
 </div>
 <script>
-    YetaWF_Basics.ExpandCollapse('{DivId}', '{DivId}_coll', '{DivId}_exp');");
+    YetaWF_Basics.expandCollapseHandling('{DivId}', '{DivId}_coll', '{DivId}_exp');");
 
             using (DocumentReady(hb, DivId)) {
         hb.Append($@"

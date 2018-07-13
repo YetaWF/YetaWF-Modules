@@ -37,7 +37,5 @@ YetaWF_TemplateText.init = function (tag) {
     initClip();
 };
 
-YetaWF_Basics.whenReady.push({
-    callback: YetaWF_TemplateText.init
-});
+YetaWF_Basics.addWhenReady(YetaWF_TemplateText.init);
 

@@ -22,7 +22,7 @@ namespace YetaWF_Basics_Mods { // nonstandard namespace to avoid conflict with c
                 alert.initSection(section);
             });
 
-            YetaWF_Basics.RegisterContentChange(function (event:Event, addonGuid:string, on:boolean):void {
+            YetaWF_Basics.registerContentChange(function (event:Event, addonGuid:string, on:boolean):void {
                 if (addonGuid === AlertDisplayModule.MODULEGUID) {
                     AlertDisplayModule.on = on;
                 }
