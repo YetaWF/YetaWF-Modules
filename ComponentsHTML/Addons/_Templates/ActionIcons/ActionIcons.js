@@ -65,7 +65,7 @@ $(document).on('keydown', function (ev) {
 YetaWF_Basics.registerNewPage(function(url) {
     _YetaWF_TemplateActionIcons.closeMenus();
 });
-$/ A <div> is being emptied. Destroy all actionicons the <div> may contain.
+// A <div> is being emptied. Destroy all actionicons the <div> may contain.
 YetaWF_Basics.addClearDiv(function (tag) {
     //var list = tag.querySelectorAll("button.yt_actionicons");
     //var len = list.length;
