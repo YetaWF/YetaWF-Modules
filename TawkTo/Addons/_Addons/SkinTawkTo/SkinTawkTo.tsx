@@ -24,13 +24,13 @@ namespace YetaWF_TawkTo { // nonstandard namespace to avoid conflict with core Y
 
             var tawkto: SkinTawkToModule = this;
 
-            YetaWF_Basics.registerContentChange(function (event: Event, addonGuid: string, on: boolean): void {
+            YetaWF_Basics.registerContentChange((addonGuid: string, on: boolean): void => {
                 if (addonGuid === SkinTawkToModule.MODULEGUID) {
                     SkinTawkToModule.on = on;
                 }
             });
 
-            YetaWF_Basics.registerNewPage(function (event: Event, url: string): void {
+            YetaWF_Basics.registerNewPage((url: string): void => {
                 tawkto.showInvite(SkinTawkToModule.on);
                 if (SkinTawkToModule.on) {
                     // Functionality not available in Tawk.to to record a new page

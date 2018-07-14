@@ -12,12 +12,12 @@ var YetaWF_TawkTo;
          */
         SkinTawkToModule.prototype.init = function () {
             var tawkto = this;
-            YetaWF_Basics.registerContentChange(function (event, addonGuid, on) {
+            YetaWF_Basics.registerContentChange(function (addonGuid, on) {
                 if (addonGuid === SkinTawkToModule.MODULEGUID) {
                     SkinTawkToModule.on = on;
                 }
             });
-            YetaWF_Basics.registerNewPage(function (event, url) {
+            YetaWF_Basics.registerNewPage(function (url) {
                 tawkto.showInvite(SkinTawkToModule.on);
                 if (SkinTawkToModule.on) {
                     // Functionality not available in Tawk.to to record a new page

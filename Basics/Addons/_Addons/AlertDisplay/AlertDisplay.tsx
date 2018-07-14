@@ -18,11 +18,11 @@ namespace YetaWF_Basics_Mods { // nonstandard namespace to avoid conflict with c
         init(): void {
             document.addEventListener("click", this.handleClick);
 
-            YetaWF_Basics.addWhenReady(function (section: HTMLElement): void {
+            YetaWF_Basics.addWhenReady((section: HTMLElement): void => {
                 alert.initSection(section);
             });
 
-            YetaWF_Basics.registerContentChange(function (event:Event, addonGuid:string, on:boolean):void {
+            YetaWF_Basics.registerContentChange((addonGuid:string, on:boolean):void => {
                 if (addonGuid === AlertDisplayModule.MODULEGUID) {
                     AlertDisplayModule.on = on;
                 }

@@ -17,7 +17,7 @@ namespace YetaWF_Messenger {
          */
         init(): void {
 
-            YetaWF_Basics.registerContentChange(function (event: Event, addonGuid: string, on: boolean): void {
+            YetaWF_Basics.registerContentChange((addonGuid: string, on: boolean): void => {
                 if (addonGuid === SkinSiteAnnouncementsModule.MODULEGUID) {
                     SkinSiteAnnouncementsModule.on = on;
                 }

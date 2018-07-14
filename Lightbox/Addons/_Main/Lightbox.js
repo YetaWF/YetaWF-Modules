@@ -419,7 +419,7 @@ var _YetaWF_Lighbox_Skin = {};
 _YetaWF_Lighbox_Skin.on = true;
 
 // Handles events turning the addon on/off (used for dynamic content)
-$(document).on('YetaWF_Basics_Addon', function (event, addonGuid, on) {
+YetaWF_Basics.registerContentChange(function (addonGuid, on) {
     if (addonGuid == '39244dbc-0536-4c85-88d1-b84b504510ac') {
         _YetaWF_Lighbox_Skin.on = on;
     }

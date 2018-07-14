@@ -9,7 +9,7 @@ var YetaWF_Messenger;
          * Initializes the module instance.
          */
         SkinSiteAnnouncementsModule.prototype.init = function () {
-            YetaWF_Basics.RegisterContentChange(function (event, addonGuid, on) {
+            YetaWF_Basics.registerContentChange(function (addonGuid, on) {
                 if (addonGuid === SkinSiteAnnouncementsModule.MODULEGUID) {
                     SkinSiteAnnouncementsModule.on = on;
                 }
@@ -19,7 +19,7 @@ var YetaWF_Messenger;
             var hubProxy = connection.createHubProxy("YetaWF_Messenger_SiteAnnouncement");
             hubProxy.on("message", function (content, title) {
                 if (SkinSiteAnnouncementsModule.on)
-                    YetaWF_Basics.Y_Alert(content, title, null, { encoded: true });
+                    YetaWF_Basics.alert(content, title, null, { encoded: true });
             });
             connection.start().done(function () { });
         };

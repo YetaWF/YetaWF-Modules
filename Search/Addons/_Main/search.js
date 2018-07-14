@@ -77,7 +77,7 @@ YetaWF_Basics.addWhenReady(function (tag) {
 });
 
 // Handles events turning the addon on/off (used for dynamic content)
-$(document).on('YetaWF_Basics_Addon', function (event, addonGuid, on) {
+YetaWF_Basics.registerContentChange(function (addonGuid, on) {
     if (addonGuid == 'f7202e79-30bc-43ea-8d7a-12218785207b') {
         _YetaWF_Search.on = on;
     }
