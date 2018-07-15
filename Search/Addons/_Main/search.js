@@ -59,7 +59,7 @@ _YetaWF_Search.setButtons = function() {
 }
 
 // Form postback - highlight new stuff
-if (typeof $YetaWF.Forms !== 'undefined' && $YetaWF.Forms != undefined) {
+if ($YetaWF.FormsAvailable()) {
     $YetaWF.Forms.addPostSubmitHandler(0/*!InPartialView*/, {
         form: null,
         callback: function (entry) {
