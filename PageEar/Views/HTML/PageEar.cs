@@ -47,7 +47,7 @@ namespace YetaWF.Modules.PageEar.Views {
     }});
 
     // Listen for events that the page is changing
-    $(document).on('YetaWF_Basics_PageChange', function(event) {{
+    YetaWF_Basics.registerPageChange(function () {{
         // when the page is removed, we need to clean up
         $('#peelback').remove();
     }});

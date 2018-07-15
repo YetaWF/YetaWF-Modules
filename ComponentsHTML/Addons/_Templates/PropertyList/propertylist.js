@@ -29,7 +29,7 @@ YetaWF_PropertyList.init = function (divId, controlData, inPartialView) {
                 } else {
                     $row.toggle(found);
                     // init any controls that just became visible
-                    $(document).trigger('YetaWF_PropertyList_PanelSwitched', $row);
+                    YetaWF_Basics.processActivateDivs([$row[0]]);
                 }
                 if (found)
                     $('input,select,textarea', $row).removeClass('yNoValidate');
@@ -73,7 +73,8 @@ YetaWF_PropertyList.tabInitjQuery = function (id, activeTab, activeTabId) {
         active: activeTab,
         activate: function(ev,ui) {
             if (ui.newPanel != undefined) {
-                $ctl.trigger('YetaWF_PropertyList_PanelSwitched', ui.newPanel);
+                YetaWF_Basics.processActivateDivs([ui.newPanel]);
+                YetaWF_Basics.processPanelSwitched(ui.newPanel);
                 if (activeTabId)
                     $('#{0}'.format(activeTabId)).val((ui.newTab.length > 0) ? ui.newTab.attr('data-tab') : -1);
             }
@@ -93,7 +94,8 @@ YetaWF_PropertyList.tabInitKendo = function (id, activeTab, activeTabId) {
         animation: false,
         activate: function(ev) {
             if (ev.contentElement != undefined) {
-                $ts.trigger('YetaWF_PropertyList_PanelSwitched', $(ev.contentElement));
+                YetaWF_Basics.processActivateDivs([ev.contentElement]);
+                YetaWF_Basics.processPanelSwitched(ev.contentElement);
                 if (activeTabId)
                     $('#{0}'.format(activeTabId)).val($(ev.item).attr('data-tab'));
             }
@@ -138,7 +140,8 @@ $(document).on('YetaWF_PropertyList_Visible', function (event, $div) {
         if (tabid >= 0) {
             var $panel = $('#{0}_tab{1}'.format(id, tabid), $tabctl);
             if ($panel.length == 0) throw "Tab panel {0} not found in tab control {1}".format(tabid, id);/*DEBUG*/
-            $('body').trigger('YetaWF_PropertyList_PanelSwitched', $panel);
+            YetaWF_Basics.processActivateDivs([$panel[0]]);
+            YetaWF_Basics.processPanelSwitched($panel[0]);
         }
     });
     // kendo tabs
@@ -151,7 +154,8 @@ $(document).on('YetaWF_PropertyList_Visible', function (event, $div) {
         if (tabid >= 0) {
             var $panel = $('#{0}-{1}'.format(id, +tabid + 1), $tabctl);
             if ($panel.length == 0) throw "Tab panel {0} not found in tab control {1}".format(tabid, id);/*DEBUG*/
-            $('body').trigger('YetaWF_PropertyList_PanelSwitched', $panel);
+            YetaWF_Basics.processActivateDivs([$panel[0]]);
+            YetaWF_Basics.processPanelSwitched($panel[0]);
         }
     });
 });

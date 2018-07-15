@@ -35,7 +35,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         public static async Task<YHtmlString> RenderTabInitAsync(string controlId, object model) {
 
             ScriptBuilder sb = new ScriptBuilder();
-            // About tab switching and YetaWF_PropertyList_PanelSwitched
+            // About tab switching and registerPanelSwitched/processPanelSwitched
             // This event occurs even for the first tab, but event handlers may not yet be attached.
             // This event is only intended to notify you that an OTHER tab is now active, which may have updated div dimensions because they're now
             // visible. Divs on the first tab are already visible.  DO NOT use this event for initialization purposes.

@@ -103,7 +103,7 @@ namespace YetaWF.Modules.Panels.Components {
             collapsible: true,
             heightStyle: 'content',
             activate: function (ev, ui) {{
-                $('body').trigger('YetaWF_PropertyList_PanelSwitched', ui.newPanel);
+                YetaWF_Basics.processActivateDivs([ui.newPanel]);
             }}
         }});
     </script>");
@@ -151,7 +151,7 @@ namespace YetaWF.Modules.Panels.Components {
         $('#{DivId}').kendoPanelBar({{
             expandMode: 'single',
             activate: function(ev) {{
-                $('body').trigger('YetaWF_PropertyList_PanelSwitched', $(ev.item));
+                YetaWF_Basics.processActivateDivs(ev.item);
             }}
         }});
         var $panelBar = $('#{DivId}').kendoPanelBar().data('kendoPanelBar');
@@ -161,7 +161,7 @@ namespace YetaWF.Modules.Panels.Components {
             hb.Append($@"
     <script>");
             using (DocumentReady(hb, ControlId)) {
-                hb.Append($@"$('body').trigger('YetaWF_PropertyList_PanelSwitched', $('#{ControlId}'));");
+                hb.Append($@"YetaWF_Basics.processActivateDivs(YetaWF_Basics.getElement1ByID('{ControlId}'));");
             }
             hb.Append($@"
     </script>

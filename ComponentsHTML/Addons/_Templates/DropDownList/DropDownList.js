@@ -113,12 +113,14 @@ YetaWF_TemplateDropDownList.AjaxUpdate = function ($control, data, ajaxurl, onSu
     });
 }
 
-// We need to delay initialization until a panel becomes visible so we can calculate the dropdown width
-$(document).on('YetaWF_PropertyList_PanelSwitched', function (event, $panel) {
-    var $ctls = $('select.yt_dropdownlist_base[data-needinit]');
-    $ctls.each(function (index) {
-        YetaWF_TemplateDropDownList.initOne($(this));
-    });
+// We need to delay initialization until divs become visible so we can calculate the dropdown width
+YetaWF_Basics.registerActivateDivs(function (divs) {
+    for (var i in divs) {
+        var $ctls = $('select.yt_dropdownlist_base[data-needinit]', $(divs[i]));
+        $ctls.each(function (index) {
+            YetaWF_TemplateDropDownList.initOne($(this));
+        });
+    }
 });
 $(document).on('change', 'select.yt_dropdownlist_base[data-val=true]', function () {
     FormsSupport.validateElement(this);

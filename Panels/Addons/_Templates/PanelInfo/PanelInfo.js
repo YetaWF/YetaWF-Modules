@@ -71,7 +71,7 @@ YetaWF_Panels.init = function (divId) {
     });
 };
 
-$(document).on('YetaWF_PropertyList_PanelSwitched', function (event, panel) {
+YetaWF_Basics.registerPanelSwitched(function (panel) {
     var $panel = $(panel);
     var $control = $panel.closest('.yt_panels_panelinfo');
     $('input[name$="_ActiveTab"]', $control).val($panel.attr('data-tab'));
