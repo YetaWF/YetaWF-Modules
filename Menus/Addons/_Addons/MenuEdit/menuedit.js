@@ -445,7 +445,7 @@ YetaWF_MenuEdit.LoadTree = function (treeId, detailsId, data, newEntry) {
             var dataItem = treefuncs.GetDataItem(tree, currentNode);
             if (HasChanged(dataItem)) {
                 if (e) e.preventDefault();// don't continue with selection change
-                YetaWF_Basics.alert(YLocs.YetaWF_Menus.ChangedEntry);
+                $YetaWF.alert(YLocs.YetaWF_Menus.ChangedEntry);
                 return false;
             }
         }
@@ -455,7 +455,7 @@ YetaWF_MenuEdit.LoadTree = function (treeId, detailsId, data, newEntry) {
 
     function SendEntireMenu(tree)
     {
-        var form = YetaWF_Forms.getForm($details[0]);
+        var form = $YetaWF.Forms.getForm($details[0]);
         var $form = $(form);
 
         var ajaxurl = $details.attr('data-ajaxurl');
@@ -468,7 +468,7 @@ YetaWF_MenuEdit.LoadTree = function (treeId, detailsId, data, newEntry) {
         var postData = "EntireMenu=" + encodeURIComponent(JSON.stringify(treefuncs.GetData(tree)))
                        + "&menuGuid=" + encodeURIComponent(menuGuid)
                        + "&menuVersion=" + encodeURIComponent(menuVersion)
-                       + YetaWF_Forms.getFormInfo(form).QS;
+                       + $YetaWF.Forms.getFormInfo(form).QS;
         $.ajax({
             url: ajaxurl,
             data: postData, cache: false, type: 'POST',
@@ -488,17 +488,17 @@ YetaWF_MenuEdit.LoadTree = function (treeId, detailsId, data, newEntry) {
                 $('input[name="MenuVersion"]', $form).val(newVersion);
             },
             error: function (jqXHR, textStatus, errorThrown) {
-                YetaWF_Basics.alert(YLocs.Forms.AjaxError.format(jqXHR.status, jqXHR.statusText), YLocs.Forms.AjaxErrorTitle);
+                $YetaWF.alert(YLocs.Forms.AjaxError.format(jqXHR.status, jqXHR.statusText), YLocs.Forms.AjaxErrorTitle);
             }
         });
     }
 
     function SendOneEntry(tree, node) {
 
-        var $form = YetaWF_Forms.getForm($details[0]);
+        var $form = $YetaWF.Forms.getForm($details[0]);
         var useValidation = !treefuncs.IsRootNode(tree, node);
         var extraData = "ValidateCurrent=" + JSON.stringify(useValidation);
-        YetaWF_Forms.submit($form[0], useValidation, extraData,
+        $YetaWF.Forms.submit($form[0], useValidation, extraData,
             function (hasErrors) {
                 if (!useValidation || !hasErrors) {
                     var dataItem = treefuncs.GetDataItem(tree, node);
@@ -613,9 +613,9 @@ YetaWF_MenuEdit.LoadTree = function (treeId, detailsId, data, newEntry) {
         $("input[name='t_reset']", $details).on("click", function () {
             var node = treefuncs.GetSelectedNode(tree);
             if (!treefuncs.ValidNode(tree, node))
-                YetaWF_Basics.alert(YLocs.YetaWF_Menus.NoMenuEntry);
+                $YetaWF.alert(YLocs.YetaWF_Menus.NoMenuEntry);
             else if (treefuncs.IsRootNode(tree, node))
-                YetaWF_Basics.alert(YLocs.YetaWF_Menus.NoResetMenu);
+                $YetaWF.alert(YLocs.YetaWF_Menus.NoResetMenu);
             else {
                 CondEnable(tree, node);
                 currentNode = node;
@@ -626,7 +626,7 @@ YetaWF_MenuEdit.LoadTree = function (treeId, detailsId, data, newEntry) {
         $("input[name='t_add']", $details).on("click", function () {
             var node = treefuncs.GetSelectedNode(tree);
             if (!treefuncs.ValidNode(tree, node)) {
-                YetaWF_Basics.alert(YLocs.YetaWF_Menus.NoMenuEntry);
+                $YetaWF.alert(YLocs.YetaWF_Menus.NoMenuEntry);
                 return;
             }
             PrepareNewEntry(tree, null, function () {
@@ -642,9 +642,9 @@ YetaWF_MenuEdit.LoadTree = function (treeId, detailsId, data, newEntry) {
         $("input[name='t_delete']", $details).on("click", function () {
             var node = treefuncs.GetSelectedNode(tree);
             if (!treefuncs.ValidNode(tree, node))
-                YetaWF_Basics.alert(YLocs.YetaWF_Menus.NoMenuEntry);
+                $YetaWF.alert(YLocs.YetaWF_Menus.NoMenuEntry);
             else if (treefuncs.IsRootNode(tree, node))
-                YetaWF_Basics.alert(YLocs.YetaWF_Menus.NoRemoveMenu);
+                $YetaWF.alert(YLocs.YetaWF_Menus.NoRemoveMenu);
             else {
                 var nextNode = treefuncs.GetNextNode(tree, node);
                 treefuncs.DeleteNode(tree, node);

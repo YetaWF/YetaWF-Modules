@@ -75,7 +75,7 @@ YetaWF_TemplateDropDownList.AjaxUpdate = function ($control, data, ajaxurl, onSu
         type: 'post',
         data: data,
         success: function (result, textStatus, jqXHR) {
-            YetaWF_Basics.setLoading(false);
+            $YetaWF.setLoading(false);
             if (result.startsWith(YConfigs.Basics.AjaxJavascriptReturn)) {
                 var script = result.substring(YConfigs.Basics.AjaxJavascriptReturn.length);
                 var data = JSON.parse(script);
@@ -105,8 +105,8 @@ YetaWF_TemplateDropDownList.AjaxUpdate = function ($control, data, ajaxurl, onSu
             }
         },
         error: function (jqXHR, textStatus, errorThrown) {
-            YetaWF_Basics.setLoading(false);
-            YetaWF_Basics.alert(YLocs.Forms.AjaxError.format(jqXHR.status, jqXHR.statusText), YLocs.Forms.AjaxErrorTitle);
+            $YetaWF.setLoading(false);
+            $YetaWF.alert(YLocs.Forms.AjaxError.format(jqXHR.status, jqXHR.statusText), YLocs.Forms.AjaxErrorTitle);
             if (onFailure !== undefined)
                 onFailure(data);
         }
@@ -114,7 +114,7 @@ YetaWF_TemplateDropDownList.AjaxUpdate = function ($control, data, ajaxurl, onSu
 }
 
 // We need to delay initialization until divs become visible so we can calculate the dropdown width
-YetaWF_Basics.registerActivateDivs(function (divs) {
+$YetaWF.registerActivateDivs(function (divs) {
     for (var i in divs) {
         var $ctls = $('select.yt_dropdownlist_base[data-needinit]', $(divs[i]));
         $ctls.each(function (index) {
@@ -127,7 +127,7 @@ $(document).on('change', 'select.yt_dropdownlist_base[data-val=true]', function 
 });
 
 // A <div> is being emptied. Destroy all date/time pickers the <div> may contain.
-YetaWF_Basics.addClearDiv(function (tag) {
+$YetaWF.addClearDiv(function (tag) {
     var list = tag.querySelectorAll(".yt_dropdownlist_base select");
     var len = list.length;
     for (var i = 0; i < len; ++i) {

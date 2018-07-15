@@ -32,6 +32,6 @@ var YetaWF_ComponentsHTML;
     YetaWF_ComponentsHTML.Buttons = Buttons;
 })(YetaWF_ComponentsHTML || (YetaWF_ComponentsHTML = {}));
 ;
-YetaWF_Basics.addWhenReady(YetaWF_ComponentsHTML.Buttons.init);
+$YetaWF.addWhenReady(YetaWF_ComponentsHTML.Buttons.init);
 
 //# sourceMappingURL=Buttons.js.map

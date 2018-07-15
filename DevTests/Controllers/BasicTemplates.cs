@@ -229,7 +229,7 @@ namespace YetaWF.Modules.DevTests.Controllers {
             if (success) {
                 // Upload control considers Json result a success
                 ScriptBuilder sb = new ScriptBuilder();
-                sb.Append("{{ \"result\": \"YetaWF_Basics.confirm(\\\"{0}\\\", null, function() {{ /*add some javascript like  YetaWF_Basics.reloadPage(true); */ }} ); \" }}",
+                sb.Append("{{ \"result\": \"$YetaWF.confirm(\\\"{0}\\\", null, function() {{ /*add some javascript like  $YetaWF.reloadPage(true); */ }} ); \" }}",
                     YetaWFManager.JserEncode(YetaWFManager.JserEncode(msg))
                 );
                 return new YJsonResult { Data = sb.ToString() };

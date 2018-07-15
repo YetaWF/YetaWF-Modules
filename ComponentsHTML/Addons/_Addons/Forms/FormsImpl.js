@@ -23,7 +23,7 @@ var YetaWF_ComponentsHTML;
                 var name = $val.attr("data-valmsg-for");
                 var $err = $("img." + YConfigs.Forms.CssWarningIcon + "[name=\"" + name + "\"]", $val.closest('form'));
                 $err.remove();
-                $val.before("<img src=\"" + YetaWF_Basics.htmlAttrEscape(YConfigs.Forms.CssWarningIconUrl) + "\" name=" + name + " class=\"" + YConfigs.Forms.CssWarningIcon + "\" " + YConfigs.Basics.CssTooltip + "=\"" + YetaWF_Basics.htmlAttrEscape($val.text()) + "\"/>");
+                $val.before("<img src=\"" + $YetaWF.htmlAttrEscape(YConfigs.Forms.CssWarningIconUrl) + "\" name=" + name + " class=\"" + YConfigs.Forms.CssWarningIcon + "\" " + YConfigs.Basics.CssTooltip + "=\"" + $YetaWF.htmlAttrEscape($val.text()) + "\"/>");
             });
         };
         ;
@@ -39,7 +39,7 @@ var YetaWF_ComponentsHTML;
          * Validates one elements.
          */
         FormsImpl.prototype.validateElement = function (ctrl) {
-            var form = YetaWF_Forms.getFormCond(ctrl);
+            var form = $YetaWF.Forms.getFormCond(ctrl);
             if (form === null)
                 return;
             $(form).validate().element($(ctrl));
@@ -75,7 +75,7 @@ var YetaWF_ComponentsHTML;
                 s += el + '(+nl)';
             });
             this.dontUpdateWarningIcons = true;
-            YetaWF_Basics.error(YLocs.Forms.FormErrors + s);
+            $YetaWF.error(YLocs.Forms.FormErrors + s);
             this.dontUpdateWarningIcons = false;
         };
         ;
@@ -124,10 +124,10 @@ var YetaWF_ComponentsHTML;
         FormsImpl.prototype.setErrorInTab = function (tabctrl) {
             var $tabctrl = $(tabctrl);
             // get the first field in error (if any)
-            var errField = YetaWF_Basics.getElement1BySelectorCond('.input-validation-error', [tabctrl]);
+            var errField = $YetaWF.getElement1BySelectorCond('.input-validation-error', [tabctrl]);
             if (errField) {
                 // find out which tab panel we're on
-                var ttabpanel = YetaWF_Basics.elementClosest(errField, 'div.t_tabpanel');
+                var ttabpanel = $YetaWF.elementClosest(errField, 'div.t_tabpanel');
                 if (!ttabpanel)
                     throw "We found a validation error in a tab control, but we couldn't find the tab panel."; /*DEBUG*/
                 var panel = ttabpanel.getAttribute('data-tab');
@@ -192,7 +192,7 @@ var YetaWF_ComponentsHTML;
                     if (fi.dontUpdateWarningIcons)
                         return;
                     var input = element.target;
-                    var form = YetaWF_Forms.getForm(input);
+                    var form = $YetaWF.Forms.getForm(input);
                     var $form = $(form);
                     var name = input.getAttribute("name");
                     // remove the error icon
@@ -205,14 +205,14 @@ var YetaWF_ComponentsHTML;
                     if ($val.length < 1)
                         throw "Validation message not found"; /*DEBUG*/
                     // insert a new error icon
-                    $val.eq(0).before("<img src=\"" + YetaWF_Basics.htmlAttrEscape(YConfigs.Forms.CssWarningIconUrl) + "\" name=\"" + name + "\" class=\"" + YConfigs.Forms.CssWarningIcon + "\" " + YConfigs.Basics.CssTooltip + "=\"" + YetaWF_Basics.htmlAttrEscape($val.text()) + "\"/>");
+                    $val.eq(0).before("<img src=\"" + $YetaWF.htmlAttrEscape(YConfigs.Forms.CssWarningIconUrl) + "\" name=\"" + name + "\" class=\"" + YConfigs.Forms.CssWarningIcon + "\" " + YConfigs.Basics.CssTooltip + "=\"" + $YetaWF.htmlAttrEscape($val.text()) + "\"/>");
                 });
                 $('body').on('elementValidationSuccess', function (element) {
                     var fi = YetaWF_FormsImpl;
                     if (fi.dontUpdateWarningIcons)
                         return;
                     var input = element.target;
-                    var form = YetaWF_Forms.getForm(input);
+                    var form = $YetaWF.Forms.getForm(input);
                     var $form = $(form);
                     var name = input.getAttribute("name");
                     // remove the error icon
@@ -227,7 +227,7 @@ var YetaWF_ComponentsHTML;
 })(YetaWF_ComponentsHTML || (YetaWF_ComponentsHTML = {}));
 var YetaWF_FormsImpl = new YetaWF_ComponentsHTML.FormsImpl();
 /* Page load */
-YetaWF_Basics.addWhenReady(YetaWF_FormsImpl.initForm);
+$YetaWF.addWhenReady(YetaWF_FormsImpl.initForm);
 /* Initialize validation system */
 YetaWF_FormsImpl.initValidation();
 

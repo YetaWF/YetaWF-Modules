@@ -2,7 +2,7 @@
 
 /* Init all module menus */
 
-YetaWF_Basics.addWhenReady(function (tag) {
+$YetaWF.addWhenReady(function (tag) {
     $('.yModuleMenu', $(tag)).kendoMenu({
         orientation: "vertical"
     })

@@ -175,7 +175,7 @@ var YetaWF_ComponentsHTML;
                 iframe: true,
                 modal: true,
                 resizable: false,
-                title: YetaWF_Basics.htmlEscape(title),
+                title: $YetaWF.htmlEscape(title),
                 visible: false,
                 close: function () {
                     var popup = $popupwin.data("kendoWindow");
@@ -196,6 +196,24 @@ var YetaWF_ComponentsHTML;
                 return;
             var popup = $popupwin.data("kendoWindow");
             popup.destroy();
+        };
+        /**
+         * Closes any open overlays, menus, dropdownlists, etc. (Popup windows are not handled and are explicitly closed using YetaWF_Popups)
+         */
+        BasicsImpl.prototype.closeOverlays = function () {
+            // Close open bootstrap nav menus (if any) by clicking on the page
+            $('body').trigger('click');
+            // Close any open kendo menus (if any)
+            var $menus = $(".k-menu");
+            $menus.each(function () {
+                var menu = $(this).data("kendoMenu");
+                menu.close("li.k-item");
+            });
+            // Close any open smartmenus
+            try {
+                $('.YetaWF_Menus').collapse('hide');
+            }
+            catch (e) { }
         };
         return BasicsImpl;
     }());

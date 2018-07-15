@@ -10,7 +10,7 @@ var YetaWF_ComponentsHTML;
          * @param tag - an element containing Decimal template controls.
          */
         DecimalComponent.prototype.initSection = function (tag) {
-            var list = YetaWF_Basics.getElementsBySelector("input.yt_decimal.t_edit", [tag]);
+            var list = $YetaWF.getElementsBySelector("input.yt_decimal.t_edit", [tag]);
             for (var _i = 0, list_1 = list; _i < list_1.length; _i++) {
                 var el = list_1[_i];
                 var d = el.getAttribute("data-min");
@@ -28,12 +28,12 @@ var YetaWF_ComponentsHTML;
     }());
     YetaWF_ComponentsHTML.DecimalComponent = DecimalComponent;
     // initializes new decimal elements on demand
-    YetaWF_Basics.addWhenReady(function (section) {
+    $YetaWF.addWhenReady(function (section) {
         new DecimalComponent().initSection(section);
     });
     // A <div> is being emptied. Destroy all kendoNumericTextBox the <div> may contain.
-    YetaWF_Basics.addClearDiv(function (tag) {
-        var list = YetaWF_Basics.getElementsBySelector("input.yt_decimal.t_edit", [tag]);
+    $YetaWF.addClearDiv(function (tag) {
+        var list = $YetaWF.getElementsBySelector("input.yt_decimal.t_edit", [tag]);
         for (var _i = 0, list_2 = list; _i < list_2.length; _i++) {
             var el = list_2[_i];
             var numTextBox = $(el).data("kendoNumericTextBox");

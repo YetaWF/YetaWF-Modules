@@ -17,7 +17,7 @@ if (typeof CKEDITOR !== 'undefined') { // CKEDITOR is only defined when an edita
                 exec: function (editor) {
                     var $form = $(editor.element.$).closest('form.' + YConfigs.Forms.CssFormAjax);
                     if ($form.length != 1) throw "Couldn't find form";/*DEBUG*/
-                    YetaWF_Forms.submit($form[0], false);
+                    $YetaWF.Forms.submit($form[0], false);
                 }
             });
 
@@ -31,7 +31,7 @@ if (typeof CKEDITOR !== 'undefined') { // CKEDITOR is only defined when an edita
 // page has completely loaded, so we need to set it again.
 // For other cases (outside float div) this does no harm and resizes to the current size.
 
-YetaWF_Basics.registerActivateDivs(function (divs) {
+$YetaWF.registerActivateDivs(function (divs) {
     for (var i in divs) {
         var $ckeds = $('.yt_textarea.t_edit', $(divs[i]));
         $ckeds.each(function () {
@@ -43,7 +43,7 @@ YetaWF_Basics.registerActivateDivs(function (divs) {
 });
 
 // A <div> is being emptied. Destroy all ckeditors the <div> may contain.
-YetaWF_Basics.addClearDiv(function (tag) {
+$YetaWF.addClearDiv(function (tag) {
     var list = tag.querySelectorAll("textarea.yt_textarea");
     var len = list.length;
     for (var i = 0; i < len; ++i) {

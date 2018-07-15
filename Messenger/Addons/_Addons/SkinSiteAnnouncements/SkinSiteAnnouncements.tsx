@@ -17,7 +17,7 @@ namespace YetaWF_Messenger {
          */
         init(): void {
 
-            YetaWF_Basics.registerContentChange((addonGuid: string, on: boolean): void => {
+            $YetaWF.registerContentChange((addonGuid: string, on: boolean): void => {
                 if (addonGuid === SkinSiteAnnouncementsModule.MODULEGUID) {
                     SkinSiteAnnouncementsModule.on = on;
                 }
@@ -28,7 +28,7 @@ namespace YetaWF_Messenger {
             var hubProxy: any = connection.createHubProxy("YetaWF_Messenger_SiteAnnouncement");
             hubProxy.on("message", function (content: string, title: string): void {
                 if (SkinSiteAnnouncementsModule.on)
-                    YetaWF_Basics.alert(content, title, null, { encoded: true });
+                    $YetaWF.alert(content, title, null, { encoded: true });
             });
             connection.start().done(function (): void { /*empty*/ });
         }

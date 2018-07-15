@@ -12,10 +12,10 @@ var YetaWF_Basics_Mods;
          */
         AlertDisplayModule.prototype.init = function () {
             document.addEventListener("click", this.handleClick);
-            YetaWF_Basics.addWhenReady(function (section) {
+            $YetaWF.addWhenReady(function (section) {
                 alert.initSection(section);
             });
-            YetaWF_Basics.registerContentChange(function (addonGuid, on) {
+            $YetaWF.registerContentChange(function (addonGuid, on) {
                 if (addonGuid === AlertDisplayModule.MODULEGUID) {
                     AlertDisplayModule.on = on;
                 }
@@ -39,7 +39,7 @@ var YetaWF_Basics_Mods;
          * @param event
          */
         AlertDisplayModule.prototype.handleClick = function (event) {
-            if (!YetaWF_Basics.elementMatches(event.srcElement, ".YetaWF_Basics_AlertDisplay .t_close img"))
+            if (!$YetaWF.elementMatches(event.srcElement, ".YetaWF_Basics_AlertDisplay .t_close img"))
                 return;
             AlertDisplayModule.dismissed = true;
             var alert = document.querySelector(".YetaWF_Basics_AlertDisplay");

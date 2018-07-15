@@ -13,8 +13,8 @@ var YetaWF_ComponentsHTML;
          * If the component is within a form, validation occurs, otherwise it is simply ignored.
          */
         FormsSupportClass.prototype.validateElement = function (elem) {
-            if (typeof YetaWF_Forms !== "undefined" && YetaWF_Forms !== undefined)
-                YetaWF_Forms.validateElement(elem);
+            if (typeof $YetaWF.Forms !== "undefined" && $YetaWF.Forms !== undefined)
+                $YetaWF.Forms.validateElement(elem);
         };
         return FormsSupportClass;
     }());

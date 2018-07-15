@@ -44,34 +44,34 @@ YetaWF_Panels.init = function (divId) {
 
     // Apply button click
     $('input.t_apply', $control).on('click', function () {
-        YetaWF_Forms.submitTemplate(this, true, TEMPLATENAME, YConfigs.YetaWF_Panels.Action_Apply, getPanelIndex());
+        $YetaWF.Forms.submitTemplate(this, true, TEMPLATENAME, YConfigs.YetaWF_Panels.Action_Apply, getPanelIndex());
     });
     // << button click
     $('input.t_up', $control).on('click', function () {
-        YetaWF_Forms.submitTemplate(this, true, TEMPLATENAME, YConfigs.YetaWF_Panels.Action_MoveLeft, getPanelIndex());
+        $YetaWF.Forms.submitTemplate(this, true, TEMPLATENAME, YConfigs.YetaWF_Panels.Action_MoveLeft, getPanelIndex());
     });
     // >> button click
     $('input.t_down', $control).on('click', function () {
-        YetaWF_Forms.submitTemplate(this, true, TEMPLATENAME, YConfigs.YetaWF_Panels.Action_MoveRight, getPanelIndex());
+        $YetaWF.Forms.submitTemplate(this, true, TEMPLATENAME, YConfigs.YetaWF_Panels.Action_MoveRight, getPanelIndex());
     });
     // delete button click
     $('input.t_delete', $control).on('click', function () {
         var btn = this;
-        YetaWF_Basics.alertYesNo(YLocs.YetaWF_Panels.RemoveConfirm, YLocs.YetaWF_Panels.RemoveTitle, function () {
-            YetaWF_Forms.submitTemplate(btn, false, TEMPLATENAME, YConfigs.YetaWF_Panels.Action_Remove, getPanelIndex());
+        $YetaWF.alertYesNo(YLocs.YetaWF_Panels.RemoveConfirm, YLocs.YetaWF_Panels.RemoveTitle, function () {
+            $YetaWF.Forms.submitTemplate(btn, false, TEMPLATENAME, YConfigs.YetaWF_Panels.Action_Remove, getPanelIndex());
         });
     });
     // Insert button click
     $('input.t_ins', $control).on('click', function () {
-        YetaWF_Forms.submitTemplate(this, true, TEMPLATENAME, YConfigs.YetaWF_Panels.Action_Insert, getPanelIndex());
+        $YetaWF.Forms.submitTemplate(this, true, TEMPLATENAME, YConfigs.YetaWF_Panels.Action_Insert, getPanelIndex());
     });
     // Add button click
     $('input.t_add', $control).on('click', function () {
-        YetaWF_Forms.submitTemplate(this, true, TEMPLATENAME, YConfigs.YetaWF_Panels.Action_Add, getPanelIndex());
+        $YetaWF.Forms.submitTemplate(this, true, TEMPLATENAME, YConfigs.YetaWF_Panels.Action_Add, getPanelIndex());
     });
 };
 
-YetaWF_Basics.registerPanelSwitched(function (panel) {
+$YetaWF.registerPanelSwitched(function (panel) {
     var $panel = $(panel);
     var $control = $panel.closest('.yt_panels_panelinfo');
     $('input[name$="_ActiveTab"]', $control).val($panel.attr('data-tab'));
@@ -79,7 +79,7 @@ YetaWF_Basics.registerPanelSwitched(function (panel) {
 });
 
 // A <div> is being emptied. Destroy all panels the <div> may contain.
-YetaWF_Basics.addClearDiv(function (tag) {
+$YetaWF.addClearDiv(function (tag) {
     // tabs
     var list = tag.querySelectorAll(".yt_panels_panelinfo .t_panels.t_acctabs");
     var len = list.length;

@@ -12,12 +12,12 @@ var YetaWF_TawkTo;
          */
         SkinTawkToModule.prototype.init = function () {
             var tawkto = this;
-            YetaWF_Basics.registerContentChange(function (addonGuid, on) {
+            $YetaWF.registerContentChange(function (addonGuid, on) {
                 if (addonGuid === SkinTawkToModule.MODULEGUID) {
                     SkinTawkToModule.on = on;
                 }
             });
-            YetaWF_Basics.registerNewPage(function (url) {
+            $YetaWF.registerNewPage(function (url) {
                 tawkto.showInvite(SkinTawkToModule.on);
                 if (SkinTawkToModule.on) {
                     // Functionality not available in Tawk.to to record a new page
@@ -49,7 +49,7 @@ var YetaWF_TawkTo;
                         var csses = inclCss.split(" ");
                         for (var _i = 0, csses_1 = csses; _i < csses_1.length; _i++) {
                             var css = csses_1[_i];
-                            if (YetaWF_Basics.elementHasClass(body, css)) {
+                            if ($YetaWF.elementHasClass(body, css)) {
                                 invite = true;
                                 break;
                             }
@@ -61,7 +61,7 @@ var YetaWF_TawkTo;
                     csses = exclCss.split(" ");
                     for (var _a = 0, csses_2 = csses; _a < csses_2.length; _a++) {
                         css = csses_2[_a];
-                        if (YetaWF_Basics.elementHasClass(body, css)) {
+                        if ($YetaWF.elementHasClass(body, css)) {
                             invite = false;
                             break;
                         }

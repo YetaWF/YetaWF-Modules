@@ -4,7 +4,7 @@
 
 var Tawk_API: any;
 
-namespace YetaWF_TawkTo { // nonstandard namespace to avoid conflict with core YetaWF_Basics
+namespace YetaWF_TawkTo {
 
     export interface IPackageConfigs {
         IncludedPagesCss: string;
@@ -24,13 +24,13 @@ namespace YetaWF_TawkTo { // nonstandard namespace to avoid conflict with core Y
 
             var tawkto: SkinTawkToModule = this;
 
-            YetaWF_Basics.registerContentChange((addonGuid: string, on: boolean): void => {
+            $YetaWF.registerContentChange((addonGuid: string, on: boolean): void => {
                 if (addonGuid === SkinTawkToModule.MODULEGUID) {
                     SkinTawkToModule.on = on;
                 }
             });
 
-            YetaWF_Basics.registerNewPage((url: string): void => {
+            $YetaWF.registerNewPage((url: string): void => {
                 tawkto.showInvite(SkinTawkToModule.on);
                 if (SkinTawkToModule.on) {
                     // Functionality not available in Tawk.to to record a new page
@@ -62,7 +62,7 @@ namespace YetaWF_TawkTo { // nonstandard namespace to avoid conflict with core Y
                     if (inclCss) {
                         var csses: string[] = inclCss.split(" ");
                         for (var css of csses) {
-                            if (YetaWF_Basics.elementHasClass(body, css)) {
+                            if ($YetaWF.elementHasClass(body, css)) {
                                 invite = true;
                                 break;
                             }
@@ -73,7 +73,7 @@ namespace YetaWF_TawkTo { // nonstandard namespace to avoid conflict with core Y
                 if (exclCss && invite) {
                     csses = exclCss.split(" ");
                     for (css of csses) {
-                        if (YetaWF_Basics.elementHasClass(body, css)) {
+                        if ($YetaWF.elementHasClass(body, css)) {
                             invite = false;
                             break;
                         }

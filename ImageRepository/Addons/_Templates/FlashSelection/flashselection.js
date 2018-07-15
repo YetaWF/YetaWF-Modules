@@ -30,7 +30,7 @@ YetaWF_FlashImageRepository.initSelection = function (divId) {
             // change object data= (if present)
             if ($obj.attr('data') != undefined) {
                 var val = $obj.attr('data');
-                var currUri = YetaWF_Basics.parseUrl(val);
+                var currUri = $YetaWF.parseUrl(val);
                 currUri.removeSearch("Name");
                 currUri.addSearch("Name", name);
                 $obj.attr('data', currUri.toUrl());
@@ -38,7 +38,7 @@ YetaWF_FlashImageRepository.initSelection = function (divId) {
             // change param movie (if present)
             if ($param.length > 0) {
                 var val = $param.attr('value');
-                var currUri = YetaWF_Basics.parseUrl(val);
+                var currUri = $YetaWF.parseUrl(val);
                 currUri.removeSearch("Name");
                 currUri.addSearch("Name", name);
                 $param.attr('value', currUri.toUrl());
@@ -46,7 +46,7 @@ YetaWF_FlashImageRepository.initSelection = function (divId) {
             // change embed (if present)
             if ($embed.length > 0) {
                 var src = $embed.attr('src');
-                currUri = YetaWF_Basics.parseUrl(src);
+                currUri = $YetaWF.parseUrl(src);
                 currUri.removeSearch("Name");
                 currUri.addSearch("Name", name);
                 $embed.attr('src', currUri.toUrl());
@@ -89,7 +89,7 @@ YetaWF_FlashImageRepository.initSelection = function (divId) {
 
         // get url to remove the file
         var href = $this.attr('href');
-        var uri = YetaWF_Basics.parseUrl(href);
+        var uri = $YetaWF.parseUrl(href);
         uri.removeSearch("Name");
         uri.addSearch("Name", $hidden.val());
 
@@ -113,7 +113,7 @@ YetaWF_FlashImageRepository.initSelection = function (divId) {
                 return false;
             },
             error: function (jqXHR, textStatus, errorThrown) {
-                YetaWF_Basics.alert(YLocs.Forms.AjaxError.format(jqXHR.status, jqXHR.statusText), YLocs.Forms.AjaxErrorTitle);
+                $YetaWF.alert(YLocs.Forms.AjaxError.format(jqXHR.status, jqXHR.statusText), YLocs.Forms.AjaxErrorTitle);
                 return false;
             }
         });

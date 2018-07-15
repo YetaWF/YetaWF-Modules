@@ -48,7 +48,7 @@ $.validator.addMethod('requiredif', function (value, element, parameters) {
     // Get value of the target control - we can't use its Id because it could be non-unique, not predictable
     // use the name attribute instead
     // first, find the enclosing form
-    var form = YetaWF_Forms.getForm(element);
+    var form = $YetaWF.Forms.getForm(element);
 
     var name = parameters['dependentproperty'];
 
@@ -113,7 +113,7 @@ $.validator.addMethod('requiredifnot', function (value, element, parameters) {
     // Get value of the target control - we can't use its Id because it could be non-unique, not predictable
     // use the name attribute instead
     // first, find the enclosing form
-    var form = YetaWF_Forms.getForm(element);
+    var form = $YetaWF.Forms.getForm(element);
 
     var name = parameters['dependentproperty'];
 
@@ -171,7 +171,7 @@ $.validator.addMethod('requiredifinrange', function (value, element, parameters)
     // Get value of the target control - we can't use its Id because it could be non-unique, not predictable
     // use the name attribute instead
     // first, find the enclosing form
-    var form = YetaWF_Forms.getForm(element);
+    var form = $YetaWF.Forms.getForm(element);
 
     var name = parameters['dependentproperty'];
 
@@ -217,7 +217,7 @@ $.validator.addMethod('requiredifsupplied', function (value, element, parameters
     // Get value of the target control - we can't use its Id because it could be non-unique, not predictable
     // use the name attribute instead
     // first, find the enclosing form
-    var form = YetaWF_Forms.getForm(element);
+    var form = $YetaWF.Forms.getForm(element);
 
     var name = parameters['dependentproperty'];
 
@@ -260,7 +260,7 @@ $.validator.addMethod('sameas', function (value, element, parameters) {
     // Get value of the target control - we can't use its Id because it could be non-unique, not predictable
     // use the name attribute instead
     // first, find the enclosing form
-    var form = YetaWF_Forms.getForm(element);
+    var form = $YetaWF.Forms.getForm(element);
 
     var name = parameters['dependentproperty'];
 

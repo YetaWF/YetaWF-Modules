@@ -94,7 +94,7 @@ var YetaWF_ComponentsHTML;
             // We have to add it next to the jqgrid provided input field elem
             // We can't use the jqgrid provided element as a kendoDateTimePicker because jqgrid gets confused and
             // uses the wrong sorting option. So we add the datepicker next to the "official" input field (which we hide)
-            var dtPick = YetaWF_Basics.createElement("input", { name: "dtpicker" });
+            var dtPick = $YetaWF.createElement("input", { name: "dtpicker" });
             elem.insertAdjacentElement("afterend", dtPick);
             // Hide the jqgrid provided input element (we update the date in this hidden element)
             elem.style.display = "none";
@@ -128,8 +128,8 @@ var YetaWF_ComponentsHTML;
     }());
     YetaWF_ComponentsHTML.DateTimeComponent = DateTimeComponent;
     // A <div> is being emptied. Destroy all date/time pickers the <div> may contain.
-    YetaWF_Basics.addClearDiv(function (tag) {
-        var list = YetaWF_Basics.getElementsBySelector(".yt_datetime.t_edit input[name=\"dtpicker\"]", [tag]);
+    $YetaWF.addClearDiv(function (tag) {
+        var list = $YetaWF.getElementsBySelector(".yt_datetime.t_edit input[name=\"dtpicker\"]", [tag]);
         for (var _i = 0, list_1 = list; _i < list_1.length; _i++) {
             var el = list_1[_i];
             var datepicker = $(el).data("kendoDateTimePicker");

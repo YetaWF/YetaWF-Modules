@@ -66,7 +66,7 @@ $(document).on('click', '.yt_scroller .t_right', function () {
     _YetaWF_Scroller.scroll(1, this);
 });
 
-YetaWF_Basics.addWhenReady(function (tag) {
+$YetaWF.addWhenReady(function (tag) {
     $('.yt_scroller', $(tag)).each(function () {
         var $control = _YetaWF_Scroller.getControl(this);
         _YetaWF_Scroller.updateButtons($control);

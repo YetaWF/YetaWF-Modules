@@ -32,16 +32,16 @@ $(document).ready(function () {
 // in which case the original pageguid and url in the module actions have changed
 // when a new page becomes active, update the module actions reflecting the new page/url
 // also update all hidden fields with the new current page guid
-YetaWF_Basics.addWhenReady(function (tag) {
+$YetaWF.addWhenReady(function (tag) {
     // disregards tag as this callback is used when a page or page content has been rendered
     'use strict';
 
     // Page Settings
-    if (!YetaWF_Basics.isInPopup()) {
+    if (!$YetaWF.isInPopup()) {
         var $ps = $('.YetaWF_PageEdit_PageControl a[data-name="PageSettings"]');
         if ($ps.length > 0) {
             $ps.each(function () {
-                var uri = YetaWF_Basics.parseUrl(this.href);
+                var uri = $YetaWF.parseUrl(this.href);
                 uri.removeSearch('PageGuid');
                 uri.addSearch('PageGuid', YVolatile.Basics.PageGuid);
                 $(this).attr("href", uri.toUrl());
@@ -51,7 +51,7 @@ YetaWF_Basics.addWhenReady(function (tag) {
         var $rp = $('.YetaWF_PageEdit_PageControl a[data-name="ExportPage"]');
         if ($rp.length > 0) {
             $rp.each(function () {
-                var uri = YetaWF_Basics.parseUrl(this.href);
+                var uri = $YetaWF.parseUrl(this.href);
                 uri.removeSearch('PageGuid');
                 uri.addSearch('PageGuid', YVolatile.Basics.PageGuid);
                 $(this).attr("href", uri.toUrl());
@@ -61,7 +61,7 @@ YetaWF_Basics.addWhenReady(function (tag) {
         var $rp = $('.YetaWF_PageEdit_PageControl a[data-name="RemovePage"]');
         if ($rp.length > 0) {
             $rp.each(function () {
-                var uri = YetaWF_Basics.parseUrl(this.href);
+                var uri = $YetaWF.parseUrl(this.href);
                 uri.removeSearch('PageGuid');
                 uri.addSearch('PageGuid', YVolatile.Basics.PageGuid);
                 $(this).attr("href", uri.toUrl());

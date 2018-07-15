@@ -53,7 +53,7 @@ YetaWF_SMTPServer.init = function (id) {
         uri.addSearch('SSL', $('input[name$=".SSL"]', $control).is(':checked'));
     });
 
-    YetaWF_Basics.addWhenReady(function (tag) {
+    $YetaWF.addWhenReady(function (tag) {
         if ($(tag).has($server)) {
             showFields($server.val().trim().length != 0);
         }

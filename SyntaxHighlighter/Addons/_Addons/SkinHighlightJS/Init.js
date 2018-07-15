@@ -17,11 +17,11 @@ YetaWF_SyntaxHighlighterHighlightJS.highlight = function ($tag) {
 YetaWF_SyntaxHighlighter_HighlightJS.on = true; // initial state
 
 // Handles events turning the addon on/off (used for dynamic content)
-YetaWF_Basics.registerContentChange(function (addonGuid, on) {
+$YetaWF.registerContentChange(function (addonGuid, on) {
     if (addonGuid == '25068AC6-BA74-4644-8B46-9D7FEC291E45')
         YetaWF_SyntaxHighlighter_HighlightJS.on = on;
 });
-YetaWF_Basics.addWhenReady(function (tag) {
+$YetaWF.addWhenReady(function (tag) {
     if (YetaWF_SyntaxHighlighter_HighlightJS.on)
         YetaWF_SyntaxHighlighterHighlightJS.highlight($(tag));
 });

@@ -47,7 +47,7 @@ YetaWF_Feed.init = function (divId, interval) {
         entryTimer = setInterval(changeEntry, interval);
 
     // Listen for events that the page is changing
-    YetaWF_Basics.registerPageChange(function () {
+    $YetaWF.registerPageChange(function () {
         // when the page is removed, we need to clean up
         if (entryTimer !== undefined) {
             clearInterval(entryTimer);

@@ -26,6 +26,6 @@ $(document).on("change", ".yt_yetawf_scheduler_event.t_edit select[name$='.DropD
     $(".t_description", $div).text(tip);
 });
 
-YetaWF_Basics.addWhenReady(function (tag) {
+$YetaWF.addWhenReady(function (tag) {
     $(".yt_yetawf_scheduler_event.t_edit select[name$='.DropDown']", $(tag)).trigger("change");// to update all displayed info
 });

@@ -36,11 +36,11 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             public int CloseParen { get; internal set; }
         }
         protected JSDocumentReady DocumentReady(HtmlBuilder hb, string id) {
-            hb.Append($@"YetaWF_Basics.whenReadyOnce.push({{callback: function (tag) {{ if ($(tag).has('#{id}').length > 0) {{");
+            hb.Append($@"$YetaWF.whenReadyOnce.push({{callback: function (tag) {{ if ($(tag).has('#{id}').length > 0) {{");
             return new JSDocumentReady(hb) { CloseParen = 1 };
         }
         protected JSDocumentReady DocumentReady(HtmlBuilder hb) {
-            hb.Append("YetaWF_Basics.whenReadyOnce.push({callback: function (tag) {\n");
+            hb.Append("$YetaWF.whenReadyOnce.push({callback: function (tag) {\n");
             return new JSDocumentReady(hb);
         }
 

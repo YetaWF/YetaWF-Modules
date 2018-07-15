@@ -29,5 +29,5 @@ namespace YetaWF_ComponentsHTML {
     }
 };
 
-YetaWF_Basics.addWhenReady(YetaWF_ComponentsHTML.Buttons.init);
+$YetaWF.addWhenReady(YetaWF_ComponentsHTML.Buttons.init);
 

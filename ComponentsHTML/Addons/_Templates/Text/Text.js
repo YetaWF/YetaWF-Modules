@@ -30,12 +30,12 @@ YetaWF_TemplateText.init = function (tag) {
                 },
             });
             _YetaWF_TemplateText.clip.on('success', function (e) {
-                YetaWF_Basics.confirm(YLocs.Text.CopyToClip);
+                $YetaWF.confirm(YLocs.Text.CopyToClip);
             });
         }
     };
     initClip();
 };
 
-YetaWF_Basics.addWhenReady(YetaWF_TemplateText.init);
+$YetaWF.addWhenReady(YetaWF_TemplateText.init);
 

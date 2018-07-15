@@ -23,7 +23,7 @@ YetaWF_ImageRepository.initSelection = function (divId) {
     function setPreview(name) {
         $buttons.toggle(name!=null && name.length > 0);
         var src = $img.attr('src');
-        var currUri = YetaWF_Basics.parseUrl(src);
+        var currUri = $YetaWF.parseUrl(src);
         currUri.removeSearch("Name");
         currUri.addSearch("Name", name);
         $img.attr('src', currUri.toUrl());
@@ -62,7 +62,7 @@ YetaWF_ImageRepository.initSelection = function (divId) {
 
         // get url to remove the file
         var href = $this.attr('href');
-        var uri = YetaWF_Basics.parseUrl(href);
+        var uri = $YetaWF.parseUrl(href);
         uri.removeSearch("Name");
         uri.addSearch("Name", $hidden.val());
 
@@ -86,7 +86,7 @@ YetaWF_ImageRepository.initSelection = function (divId) {
                 return false;
             },
             error: function (jqXHR, textStatus, errorThrown) {
-                YetaWF_Basics.alert(YLocs.Forms.AjaxError.format(jqXHR.status, jqXHR.statusText), YLocs.Forms.AjaxErrorTitle);
+                $YetaWF.alert(YLocs.Forms.AjaxError.format(jqXHR.status, jqXHR.statusText), YLocs.Forms.AjaxErrorTitle);
                 return false;
             }
         });

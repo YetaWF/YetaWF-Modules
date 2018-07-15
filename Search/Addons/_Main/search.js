@@ -13,7 +13,7 @@ _YetaWF_Search.highlightSearch = function () {
     $('.yModule').removeHighlight();
     if (YVolatile.Basics.EditModeActive) return; // never in edit mode
     if ($(".YetaWF_Search_SearchControl a[data-name='Off']:visible").length == 0) return;
-    var uri = YetaWF_Basics.parseUrl(window.location.href);
+    var uri = $YetaWF.parseUrl(window.location.href);
     var kwdsString = uri.getSearch[YConfigs.YetaWF_Search.UrlArg];
     if (kwdsString.length == 0) return;
     var kwds = kwdsString.split(',');
@@ -27,7 +27,7 @@ $(document).on("click", ".YetaWF_Search_SearchControl a[data-name='On']", functi
     $.ajax({
         'url': '/YetaWF_Search/SearchControlModule/Switch',
         'type': 'post',
-        'data': 'Value=true&' + YConfigs.Basics.ModuleGuid + "=" + encodeURIComponent(YetaWF_Basics.getModuleGuidFromTag(this)),
+        'data': 'Value=true&' + YConfigs.Basics.ModuleGuid + "=" + encodeURIComponent($YetaWF.getModuleGuidFromTag(this)),
     });
 });
 $(document).on("click", ".YetaWF_Search_SearchControl a[data-name='Off']", function () {
@@ -38,12 +38,12 @@ $(document).on("click", ".YetaWF_Search_SearchControl a[data-name='Off']", funct
     $.ajax({
         'url': '/YetaWF_Search/SearchControlModule/Switch',
         'type': 'post',
-        'data': 'Value=false&' + YConfigs.Basics.ModuleGuid + "=" + encodeURIComponent(YetaWF_Basics.getModuleGuidFromTag(this)),
+        'data': 'Value=false&' + YConfigs.Basics.ModuleGuid + "=" + encodeURIComponent($YetaWF.getModuleGuidFromTag(this)),
     });
 });
 _YetaWF_Search.setButtons = function() {
     if (_YetaWF_Search.on) {
-        if (YetaWF_Basics.parseUrl(window.location.href).hasSearch(YConfigs.YetaWF_Search.UrlArg)) {
+        if ($YetaWF.parseUrl(window.location.href).hasSearch(YConfigs.YetaWF_Search.UrlArg)) {
             if (YVolatile.YetaWF_Search.HighLight) {
                 $(".YetaWF_Search_SearchControl a[data-name='Off']").show();
                 $(".YetaWF_Search_SearchControl a[data-name='On']").hide();
@@ -59,8 +59,8 @@ _YetaWF_Search.setButtons = function() {
 }
 
 // Form postback - highlight new stuff
-if (typeof YetaWF_Forms !== 'undefined' && YetaWF_Forms != undefined) {
-    YetaWF_Forms.addPostSubmitHandler(0/*!InPartialView*/, {
+if (typeof $YetaWF.Forms !== 'undefined' && $YetaWF.Forms != undefined) {
+    $YetaWF.Forms.addPostSubmitHandler(0/*!InPartialView*/, {
         form: null,
         callback: function (entry) {
             _YetaWF_Search.setButtons();
@@ -71,13 +71,13 @@ if (typeof YetaWF_Forms !== 'undefined' && YetaWF_Forms != undefined) {
 }
 
 // page or page content update - highlight new stuff
-YetaWF_Basics.addWhenReady(function (tag) {
+$YetaWF.addWhenReady(function (tag) {
     _YetaWF_Search.setButtons();
     _YetaWF_Search.highlightSearch();
 });
 
 // Handles events turning the addon on/off (used for dynamic content)
-YetaWF_Basics.registerContentChange(function (addonGuid, on) {
+$YetaWF.registerContentChange(function (addonGuid, on) {
     if (addonGuid == 'f7202e79-30bc-43ea-8d7a-12218785207b') {
         _YetaWF_Search.on = on;
     }

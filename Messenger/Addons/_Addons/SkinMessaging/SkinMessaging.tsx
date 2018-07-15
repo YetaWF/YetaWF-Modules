@@ -68,7 +68,7 @@ namespace YetaWF_Messenger {
             });
         }
         private handleNotifyException(message: string): void {
-            YetaWF_Basics.alert(message, "Messages Error");
+            $YetaWF.alert(message, "Messages Error");
         }
         private handleUserConnect(user: string): void {
             $(document).trigger("YetaWF_Messenger_Messaging_UserConnect", {

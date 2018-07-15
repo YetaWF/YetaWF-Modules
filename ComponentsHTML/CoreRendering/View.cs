@@ -48,7 +48,7 @@ namespace YetaWF.Modules.ComponentsHTML {
             hb.Append(tag.ToString(TagRenderMode.EndTag));
 
             if (divId != null)
-                Manager.ScriptManager.AddLast($"YetaWF_Forms.initPartialForm('{divId}');");
+                Manager.ScriptManager.AddLast($"$YetaWF.Forms.initPartialForm('{divId}');");
 
             return Task.FromResult(hb.ToYHtmlString());
         }

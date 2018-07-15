@@ -12,12 +12,12 @@ YetaWF_Pages_ScrollUp.init = function() {
 };
 
 // Handles events turning the addon on/off (used for dynamic content)
-YetaWF_Basics.registerContentChange(function (addonGuid, on) {
+$YetaWF.registerContentChange(function (addonGuid, on) {
     if (addonGuid == '2a4e6f13-24a0-45c1-8a42-f1072e6ac7de') {
         _YetaWF_Pages_ScrollUp.on = on;
     }
 });
-YetaWF_Basics.addWhenReady(function (tag) {
+$YetaWF.addWhenReady(function (tag) {
     if (_YetaWF_Pages_ScrollUp.on) {
         YetaWF_Pages_ScrollUp.init();
     } else {

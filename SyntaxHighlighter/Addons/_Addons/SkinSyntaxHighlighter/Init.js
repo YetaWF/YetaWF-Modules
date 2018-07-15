@@ -68,11 +68,11 @@ AlexGorbatchevCom_SyntaxHighlighter.Init = function (addon) {
 _AlexGorbatchevCom_SyntaxHighlighter.on = true; // initial state
 
 // Handles events turning the addon on/off (used for dynamic content)
-YetaWF_Basics.registerContentChange(function (addonGuid, on) {
+$YetaWF.registerContentChange(function (addonGuid, on) {
     if (addonGuid == '7e3c4322-5bdb-44bf-acff-f62d498705ee')
         _AlexGorbatchevCom_SyntaxHighlighter.on = on;
 });
-YetaWF_Basics.addWhenReady(function (tag) {
+$YetaWF.addWhenReady(function (tag) {
     if (_AlexGorbatchevCom_SyntaxHighlighter.on)
         SyntaxHighlighter.highlight();
 });

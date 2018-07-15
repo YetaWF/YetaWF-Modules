@@ -49,9 +49,9 @@ namespace YetaWF.Modules.Languages.Views {
 {await RenderEndFormAsync()}
 <script>
     $('#{btnReset}').on('click', function (e) {{
-        var form = YetaWF_Forms.getForm(this);
-        YetaWF_Basics.alertYesNo('{JE(this.__ResStr("confirmResetText","Are you sure you want to restore the default settings?"))}', null, function () {{
-             YetaWF_Forms.submit(form, true, 'RestoreDefaults=true');
+        var form = $YetaWF.Forms.getForm(this);
+        $YetaWF.alertYesNo('{JE(this.__ResStr("confirmResetText","Are you sure you want to restore the default settings?"))}', null, function () {{
+             $YetaWF.Forms.submit(form, true, 'RestoreDefaults=true');
         }});
     }});
 </script>");

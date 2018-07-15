@@ -30,12 +30,12 @@ namespace YetaWF.Modules.Blog.Views {
     _YetaWF_Blog_Disqus.on = true;
 
     // Handles events turning the addon on/off (used for dynamic content)
-    YetaWF_Basics.registerContentChange(function (addonGuid, on) {
+    $YetaWF.registerContentChange(function (addonGuid, on) {
         if (addonGuid == '776adfcd-da5f-4926-b29d-4c06353266c0') {
             _YetaWF_Blog_Disqus.on = on;
         }
     });
-    YetaWF_Basics.addWhenReady(function (tag) {
+    $YetaWF.addWhenReady(function (tag) {
         if (_YetaWF_Blog_Disqus.on);
             DISQUSWIDGETS.getCount({ reset: true });
     });

@@ -213,7 +213,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                 hb.Append($@"
         var $mod = $grid.closest('.yModule');
         if ($mod.length != 1) throw 'Can\'t find containing module';
-        YetaWF_Basics.reloadInfo.push({{
+        $YetaWF.reloadInfo.push({{
             module: $mod[0],
             callback: function() {{
                 $grid.trigger('reloadGrid');
@@ -223,14 +223,14 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
             if (!isAjax) {
                 hb.Append($@"
-        if (typeof YetaWF_Forms === 'undefined' || YetaWF_Forms == undefined) throw 'Can\'t use local data outside of a form or partial form';/*DEBUG*/
+        if (typeof $YetaWF.Forms === 'undefined' || $YetaWF.Forms == undefined) throw 'Can\'t use local data outside of a form or partial form';/*DEBUG*/
         var $form = $grid.closest('form');
         if ($form.length == 0) throw 'Can\'t find containing form';");
 
                 if (model.HandleLocalInput) {
                     hb.Append($@"
         YetaWF_Grid.HandleInputUpdates($grid, true);// handle input in grid for local data
-        YetaWF_Forms.addPreSubmitHandler({(Manager.InPartialView ? 1 : 0)}, {{
+        $YetaWF.Forms.addPreSubmitHandler({(Manager.InPartialView ? 1 : 0)}, {{
             form: $form[0],
             callback: function(entry) {{
                 YetaWF_Grid.HandleSubmitLocalData($grid, $form);
@@ -241,7 +241,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                 } else {
                     hb.Append($@"
         YetaWF_Grid.HandleInputUpdates($grid, false);
-        YetaWF_Forms.addPreSubmitHandler({(Manager.InPartialView ? 1 : 0)}, {{
+        $YetaWF.Forms.addPreSubmitHandler({(Manager.InPartialView ? 1 : 0)}, {{
             form: $form[0],
             callback: function(entry) {{
                 YetaWF_Grid.HandleSubmitFields($grid, $form);

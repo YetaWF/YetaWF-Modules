@@ -153,7 +153,7 @@ _YetaWF_Url.updateLink = function ($control) {
     if (urlString == undefined || urlString == "") {
         $linkCtl.hide();
     } else {
-        var currUri = YetaWF_Basics.parseUrl(urlString);
+        var currUri = $YetaWF.parseUrl(urlString);
         currUri.removeSearch(YConfigs.Basics.Link_NoEditMode);
         currUri.addSearch(YConfigs.Basics.Link_NoEditMode, "y");
         $linkCtl.attr("href", currUri.toUrl());

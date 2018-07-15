@@ -29,7 +29,7 @@ YetaWF_PropertyList.init = function (divId, controlData, inPartialView) {
                 } else {
                     $row.toggle(found);
                     // init any controls that just became visible
-                    YetaWF_Basics.processActivateDivs([$row[0]]);
+                    $YetaWF.processActivateDivs([$row[0]]);
                 }
                 if (found)
                     $('input,select,textarea', $row).removeClass('yNoValidate');
@@ -73,8 +73,8 @@ YetaWF_PropertyList.tabInitjQuery = function (id, activeTab, activeTabId) {
         active: activeTab,
         activate: function(ev,ui) {
             if (ui.newPanel != undefined) {
-                YetaWF_Basics.processActivateDivs([ui.newPanel]);
-                YetaWF_Basics.processPanelSwitched(ui.newPanel);
+                $YetaWF.processActivateDivs([ui.newPanel]);
+                $YetaWF.processPanelSwitched(ui.newPanel);
                 if (activeTabId)
                     $('#{0}'.format(activeTabId)).val((ui.newTab.length > 0) ? ui.newTab.attr('data-tab') : -1);
             }
@@ -94,8 +94,8 @@ YetaWF_PropertyList.tabInitKendo = function (id, activeTab, activeTabId) {
         animation: false,
         activate: function(ev) {
             if (ev.contentElement != undefined) {
-                YetaWF_Basics.processActivateDivs([ev.contentElement]);
-                YetaWF_Basics.processPanelSwitched(ev.contentElement);
+                $YetaWF.processActivateDivs([ev.contentElement]);
+                $YetaWF.processPanelSwitched(ev.contentElement);
                 if (activeTabId)
                     $('#{0}'.format(activeTabId)).val($(ev.item).attr('data-tab'));
             }
@@ -103,7 +103,7 @@ YetaWF_PropertyList.tabInitKendo = function (id, activeTab, activeTabId) {
     }).data('kendoTabStrip');
 };
 
-YetaWF_Basics.addClearDiv(function (tag) {
+$YetaWF.addClearDiv(function (tag) {
     var list = tag.querySelectorAll(".yt_propertylisttabbed.t_jquery");
     var len = list.length;
     for (var i = 0; i < len; ++i) {
@@ -140,8 +140,8 @@ $(document).on('YetaWF_PropertyList_Visible', function (event, $div) {
         if (tabid >= 0) {
             var $panel = $('#{0}_tab{1}'.format(id, tabid), $tabctl);
             if ($panel.length == 0) throw "Tab panel {0} not found in tab control {1}".format(tabid, id);/*DEBUG*/
-            YetaWF_Basics.processActivateDivs([$panel[0]]);
-            YetaWF_Basics.processPanelSwitched($panel[0]);
+            $YetaWF.processActivateDivs([$panel[0]]);
+            $YetaWF.processPanelSwitched($panel[0]);
         }
     });
     // kendo tabs
@@ -154,8 +154,8 @@ $(document).on('YetaWF_PropertyList_Visible', function (event, $div) {
         if (tabid >= 0) {
             var $panel = $('#{0}-{1}'.format(id, +tabid + 1), $tabctl);
             if ($panel.length == 0) throw "Tab panel {0} not found in tab control {1}".format(tabid, id);/*DEBUG*/
-            YetaWF_Basics.processActivateDivs([$panel[0]]);
-            YetaWF_Basics.processPanelSwitched($panel[0]);
+            $YetaWF.processActivateDivs([$panel[0]]);
+            $YetaWF.processPanelSwitched($panel[0]);
         }
     });
 });

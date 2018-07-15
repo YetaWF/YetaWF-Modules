@@ -84,7 +84,7 @@ YetaWF_Grid.setColumnWidths = function ($grid, options) {
 YetaWF_Grid.modifySend = function ($grid, settingsModuleGuid, options, xhr, settings) {
     'use strict';
 
-    var uri = YetaWF_Basics.parseUrl("http://dummy/?" + settings.data);
+    var uri = $YetaWF.parseUrl("http://dummy/?" + settings.data);
     var data = uri.getSearchObject();
     var newData = { SettingsModuleGuid: settingsModuleGuid }
     var rows = parseInt(data.rows);
@@ -128,7 +128,7 @@ YetaWF_Grid.modifySend = function ($grid, settingsModuleGuid, options, xhr, sett
         }
     }
 
-    var info = YetaWF_Forms.getFormInfo($grid[0]);
+    var info = $YetaWF.Forms.getFormInfo($grid[0]);
     newData[YConfigs.Basics.ModuleGuid] = info.ModuleGuid;
     newData[YConfigs.Forms.RequestVerificationToken] = info.RequestVerificationToken;
     newData[YConfigs.Forms.UniqueIdPrefix] = info.UniqueIdPrefix;
@@ -157,7 +157,7 @@ YetaWF_Grid.modifyReceive = function ($grid, options, data, status, xhr) {
 };
 // some error occurred during ajax
 YetaWF_Grid.loadError = function ($grid, xhr, status, error) {
-    YetaWF_Basics.processAjaxReturn(xhr.responseText, status, xhr);//$$verify
+    $YetaWF.processAjaxReturn(xhr.responseText, status, xhr);//$$verify
     $grid.trigger('YetaWF_Grid_LoadError');
 }
 
@@ -181,11 +181,11 @@ YetaWF_Grid.SaveSettingsColumnWidths = function ($grid, url, settingsGuid, optio
         data: data,
         cache: false,
         success: function (result, textStatus, jqXHR) {
-            //YetaWF_Basics.error(YLocs.Forms.AjaxError.format(jqXHR.status, jqXHR.statusText), YLocs.Forms.AjaxErrorTitle);
+            //$YetaWF.error(YLocs.Forms.AjaxError.format(jqXHR.status, jqXHR.statusText), YLocs.Forms.AjaxErrorTitle);
             return false;
         },
         error: function (jqXHR, textStatus, errorThrown) {
-            //YetaWF_Basics.error(YLocs.Forms.AjaxError.format(jqXHR.status, jqXHR.statusText), YLocs.Forms.AjaxErrorTitle);
+            //$YetaWF.error(YLocs.Forms.AjaxError.format(jqXHR.status, jqXHR.statusText), YLocs.Forms.AjaxErrorTitle);
             debugger;/*DEBUG*/
             return false;
         }
@@ -261,7 +261,7 @@ YetaWF_Grid.HandleInputUpdates = function ($grid, saveInDataSource) {
 YetaWF_Grid.HandleSubmitLocalData = function ($grid, $form) {
     'use strict';
     // build a data div with all the input fields
-    var div = "<div class='" + YetaWF_Forms.DATACLASS + "' style='display:none'>";
+    var div = "<div class='" + $YetaWF.Forms.DATACLASS + "' style='display:none'>";
 
     var prefix = $grid.attr('data-fieldprefix');
     if (prefix == undefined) throw "Can't locate grid's field prefix";/*DEBUG*/
@@ -327,7 +327,7 @@ YetaWF_Grid.HandleSubmitLocalData = function ($grid, $form) {
 YetaWF_Grid.HandleSubmitFields = function ($grid, $form) {
     'use strict';
     // build a data div with all the input fields
-    var div = "<div class='" + YetaWF_Forms.DATACLASS + "' style='display:none'>";
+    var div = "<div class='" + $YetaWF.Forms.DATACLASS + "' style='display:none'>";
 
     var prefix = $grid.attr('data-fieldprefix');
     if (prefix == undefined) throw "Can't locate grid's field prefix";/*DEBUG*/
@@ -389,7 +389,7 @@ YetaWF_Grid.gridComplete = function ($grid, gridId) {
     if ($gbox.length != 1) throw "Can't find main grid";/*DEBUG*/
     $("option[value={0}]".format(YConfigs.YetaWF_ComponentsHTML.allRecords), $gbox).text(YLocs.YetaWF_ComponentsHTML.allRecords);
     // restart validation for new data exposed (by paging)
-    YetaWF_Forms.updateValidation($grid[0]);
+    $YetaWF.Forms.updateValidation($grid[0]);
 };
 
 // update the grid in case there are no records shown
@@ -485,7 +485,7 @@ _YetaWF_Grid.isDuplicate = function ($grid, value) {
 // page has completely loaded, so we need to set it again. By then, jqgrid has added extra layers so we can't just
 // take $grid.parent()'s width.
 // For other cases (outside float div) this does no harm and resizes to the current size.
-YetaWF_Basics.registerActivateDivs(function (divs) {
+$YetaWF.registerActivateDivs(function (divs) {
     for (var i in divs) {
         var $grids = $('.yt_grid', $(divs[i]));
         $grids.each(function () {
@@ -531,7 +531,7 @@ $(document).on('click', '.yt_grid_addordelete .ui-jqgrid img[name="DeleteAction"
         var displayName = $grid.attr('data-displayproperty');
         if (displayName == undefined) throw "Can't get display property name";/*DEBUG*/
         if (rec[displayName] == undefined) throw "{0} property is missing".format(propertyName);/*DEBUG*/
-        YetaWF_Basics.confirm(fmt.format(rec[displayName]));
+        $YetaWF.confirm(fmt.format(rec[displayName]));
     }
     var total = $grid.getGridParam("reccount");// get total # of records on page
     //var rowsPerPage = $grid.getGridParam("rowNum");// get # of rows per page
@@ -596,12 +596,12 @@ $(document).on('click', '.yt_grid_addordelete input[name="btnAdd"]', function ()
     attrVal = attrVal.trim();
     if (attrVal == "") return;
     if (_YetaWF_Grid.isDuplicate($grid, attrVal)) {
-        YetaWF_Basics.error($ctrl.attr('data-dupmsg').format(attrVal));
+        $YetaWF.error($ctrl.attr('data-dupmsg').format(attrVal));
         return;
     }
 
     // find the guid of the module being edited (if any)
-    var form = YetaWF_Forms.getForm(btnAdd);
+    var form = $YetaWF.Forms.getForm(btnAdd);
     var editGuid = $('input[name="ModuleGuid"]', $(form)).val();
 
     var ds = $grid.jqGrid('getGridParam', 'data');
@@ -618,13 +618,13 @@ $(document).on('click', '.yt_grid_addordelete input[name="btnAdd"]', function ()
                     + "&NewRecNumber=" + encodeURIComponent(total)
                     + "&Prefix=" + encodeURIComponent(prefix)
                     + "&EditGuid=" + encodeURIComponent(editGuid)
-                    + YetaWF_Forms.getFormInfo(btnAdd).QS;
+                    + $YetaWF.Forms.getFormInfo(btnAdd).QS;
     $.ajax({
         url: ajaxurl,
         data: postData, cache: false, type: 'POST',
         dataType: 'html',
         success: function (result, textStatus, jqXHR) {
-            YetaWF_Basics.setLoading(false);
+            $YetaWF.setLoading(false);
             if (result.startsWith(YConfigs.Basics.AjaxJavascriptReturn)) {
                 var script = result.substring(YConfigs.Basics.AjaxJavascriptReturn.length);
                 eval(script);
@@ -640,7 +640,7 @@ $(document).on('click', '.yt_grid_addordelete input[name="btnAdd"]', function ()
             // validate it's not a duplicate (again, just in case)
             if (_YetaWF_Grid.isDuplicate($grid, newAttrVal[propertyName])) {
                 if (newAttrVal[displayName] == undefined) throw "{0} property is missing".format(displayName);/*DEBUG*/
-                YetaWF_Basics.error($ctrl.attr('data-dupmsg').format(newAttrVal[displayName]));
+                $YetaWF.error($ctrl.attr('data-dupmsg').format(newAttrVal[displayName]));
                 return;
             }
             $grid.addRowData(total + 1, newAttrVal, 'last')// add new user to grid datasource
@@ -649,18 +649,18 @@ $(document).on('click', '.yt_grid_addordelete input[name="btnAdd"]', function ()
             $grid.trigger('reloadGrid');
             YetaWF_Grid.ShowPager($grid);
 
-            YetaWF_Forms.updateValidation($grid[0]);
+            $YetaWF.Forms.updateValidation($grid[0]);
 
-            YetaWF_Basics.confirm($ctrl.attr('data-addedmsg').format(attrVal));
+            $YetaWF.confirm($ctrl.attr('data-addedmsg').format(attrVal));
         },
         error: function (jqXHR, textStatus, errorThrown) {
-            YetaWF_Basics.setLoading(false);
-            YetaWF_Basics.alert(YLocs.Forms.AjaxError.format(jqXHR.status, jqXHR.statusText), YLocs.Forms.AjaxErrorTitle);
+            $YetaWF.setLoading(false);
+            $YetaWF.alert(YLocs.Forms.AjaxError.format(jqXHR.status, jqXHR.statusText), YLocs.Forms.AjaxErrorTitle);
         }
     });
 });
 
-YetaWF_Basics.addClearDiv(function (tag) {
+$YetaWF.addClearDiv(function (tag) {
     var list = tag.querySelectorAll("table.yt_grid");
     var len = list.length;
     for (var i = 0; i < len; ++i) {

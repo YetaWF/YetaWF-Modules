@@ -4,7 +4,7 @@ var _YetaWF_Basics_MailTo = {};
 _YetaWF_Basics_MailTo.on = true;
 
 // http://stackoverflow.com/questions/483212/effective-method-to-hide-email-from-spam-bots
-YetaWF_Basics.addWhenReady(function (tag) {
+$YetaWF.addWhenReady(function (tag) {
     if (_YetaWF_Basics_MailTo.on) {
         // find all <a> YGenMailTo tags and format an email address
         $('a.YGenMailTo', $(tag)).each(function () {
@@ -28,7 +28,7 @@ YetaWF_Basics.addWhenReady(function (tag) {
 });
 
 // Handles events turning the addon on/off (used for dynamic content)
-YetaWF_Basics.registerContentChange(function (addonGuid, on) {
+$YetaWF.registerContentChange(function (addonGuid, on) {
     if (addonGuid == '749d0ca9-75e5-40b8-82e3-466a11d3b1d2') {
         _YetaWF_Basics_MailTo.on = on;
     }

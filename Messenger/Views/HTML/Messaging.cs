@@ -46,7 +46,7 @@ namespace YetaWF.Modules.Messenger.Views {
 {await RenderEndFormAsync()}
 <script>
     var mod = new YetaWF_Messenger.MessagingModule('{idForm}', '{idSend}', '{idCancel}', '{JE(model.OnlineImage)}', '{JE(model.OfflineImage)}');
-    YetaWF_Basics.addObjectDataById(YConfigs.Forms.CssFormAjax, '@idForm', mod);
+    $YetaWF.addObjectDataById(YConfigs.Forms.CssFormAjax, '@idForm', mod);
 </script>");
             }
             return hb.ToYHtmlString();
@@ -60,7 +60,7 @@ namespace YetaWF.Modules.Messenger.Views {
             if (Manager.IsPostRequest) {
                 hb.Append($@"
 <script>
-    var mod = YetaWF_Basics.getObjectDataById($('form')[0].id);
+    var mod = $YetaWF.getObjectDataById($('form')[0].id);
     mod.updateOnlineStatus();
 </script>
 ");

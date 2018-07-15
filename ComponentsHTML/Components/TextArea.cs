@@ -187,8 +187,8 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                 filebrowserWindowFeatures: 'modal=yes,location=no,menubar=no,toolbar=no,dependent=yes,minimizable=no,alwaysRaised=yes,resizable=yes,scrollbars=yes'
             }});
             // save data in the textarea field when the form is submitted
-            YetaWF_Forms.addPreSubmitHandler({(Manager.InPartialView? 1 : 0)}, {{
-                form: YetaWF_Forms.getForm(YetaWF_Basics.getElementById('{ControlId}')),
+            $YetaWF.Forms.addPreSubmitHandler({(Manager.InPartialView? 1 : 0)}, {{
+                form: $YetaWF.Forms.getForm($YetaWF.getElementById('{ControlId}')),
                 callback: function(entry) {{
                     var $ctl = $('#{ControlId}');
                     var ckEd = CKEDITOR.instances['{ControlId}'];

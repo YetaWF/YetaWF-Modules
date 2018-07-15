@@ -12,7 +12,7 @@ var YetaWF_ComponentsHTML;
             if (YVolatile.Basics.IsInPopup) {
                 var forced = (forceReload === true);
                 if (forced)
-                    YetaWF_Basics.reloadPage(true, window.parent);
+                    $YetaWF.reloadPage(true, window.parent);
                 // with unified page sets there may actually not be a parent, but window.parent returns itself in this case anyway
                 var popup = window.parent.document.YPopupWindowActive;
                 PopupsImpl.internalClosePopup(popup);
@@ -42,7 +42,7 @@ var YetaWF_ComponentsHTML;
          */
         PopupsImpl.prototype.openDynamicPopup = function (result) {
             // we're already in a popup
-            if (YetaWF_Basics.isInPopup())
+            if ($YetaWF.isInPopup())
                 PopupsImpl.closeDynamicPopup();
             // insert <div id="ypopup" class='yPopupDyn'></div> at top of page for the popup window
             // this is automatically removed when destroy() is called
@@ -78,11 +78,11 @@ var YetaWF_ComponentsHTML;
                 },
                 animation: false,
                 refresh: function () {
-                    YetaWF_Basics.setLoading(false);
+                    $YetaWF.setLoading(false);
                 },
                 error: function (e) {
-                    YetaWF_Basics.setLoading(false);
-                    YetaWF_Basics.error("Request failed with status " + e.status);
+                    $YetaWF.setLoading(false);
+                    $YetaWF.error("Request failed with status " + e.status);
                 }
             });
             // show and center the window
@@ -92,13 +92,13 @@ var YetaWF_ComponentsHTML;
             document.expando = true;
             document.YPopupWindowActive = popup;
             YVolatile.Basics.IsInPopup = true; // we're in a popup
-            YetaWF_Basics.setCondense($popupwin[0], YVolatile.Skin.PopupWidth);
+            $YetaWF.setCondense($popupwin[0], YVolatile.Skin.PopupWidth);
             return $popupwin[0];
         };
         PopupsImpl.closeDynamicPopup = function () {
             var $popup = $("#ypopup");
             if ($popup.length > 0) {
-                YetaWF_Basics.processClearDiv($popup[0]);
+                $YetaWF.processClearDiv($popup[0]);
                 var popup = $popup.data("kendoWindow");
                 // don't call internalClosePopup, otherwise we get close event
                 popup.destroy(); // don't close, just destroy
@@ -111,9 +111,9 @@ var YetaWF_ComponentsHTML;
          */
         PopupsImpl.prototype.openStaticPopup = function (url) {
             // we're already in a popup
-            if (YetaWF_Basics.isInPopup()) {
+            if ($YetaWF.isInPopup()) {
                 // we handle links within a popup by replacing the current popup page with the new page
-                YetaWF_Basics.setLoading(true);
+                $YetaWF.setLoading(true);
                 var $popupwin = $("#ypopup", $(window.parent.document));
                 if ($popupwin.length == 0)
                     throw "Couldn't find popup window"; /*DEBUG*/
@@ -155,11 +155,11 @@ var YetaWF_ComponentsHTML;
                         var iframeDocumentObject = iframeDomElement.contentDocument;
                         popup.title(iframeDocumentObject.title);
                     }
-                    YetaWF_Basics.setLoading(false);
+                    $YetaWF.setLoading(false);
                 },
                 error: function (e) {
-                    YetaWF_Basics.setLoading(false);
-                    YetaWF_Basics.error("Request failed with status " + e.status);
+                    $YetaWF.setLoading(false);
+                    $YetaWF.error("Request failed with status " + e.status);
                 }
             });
             // show and center the window

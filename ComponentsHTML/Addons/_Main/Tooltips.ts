@@ -31,7 +31,7 @@ namespace YetaWF_ComponentsHTML {
                         id = id.replace("-list", "");
                         var tip = YetaWF_TemplateDropDownList.getTitleFromId(id, ttindex);
                         if (tip == null) return null;
-                        return YetaWF_Basics.htmlEscape(tip);
+                        return $YetaWF.htmlEscape(tip);
                     }
                     for (; ;) {
                         if (!$this.is(':hover') && $this.is(':focus'))
@@ -40,13 +40,13 @@ namespace YetaWF_ComponentsHTML {
                             return null;
                         var s: string | undefined = $this.attr(YConfigs.Basics.CssTooltip);
                         if (s)
-                            return YetaWF_Basics.htmlEscape(s);
+                            return $YetaWF.htmlEscape(s);
                         s = $this.attr(YConfigs.Basics.CssTooltipSpan as string);
                         if (s)
-                            return YetaWF_Basics.htmlEscape(s);
+                            return $YetaWF.htmlEscape(s);
                         s = $this.attr('title');
                         if (s != undefined)
-                            return YetaWF_Basics.htmlEscape(s);
+                            return $YetaWF.htmlEscape(s);
                         if ($this[0].tagName != "IMG" && $this[0].tagName != "I")
                             break;
                         // we're in an IMG or I tag, find enclosing A (if any) and try again
@@ -61,8 +61,8 @@ namespace YetaWF_ComponentsHTML {
                             return null;
                         var target = ($this[0] as HTMLAnchorElement).target;
                         if (target === '_blank') {
-                            var uri = YetaWF_Basics.parseUrl(href);
-                            return YetaWF_Basics.htmlEscape(YLocs.Basics.OpenNewWindowTT.format(uri.getDomain()));
+                            var uri = $YetaWF.parseUrl(href);
+                            return $YetaWF.htmlEscape(YLocs.Basics.OpenNewWindowTT.format(uri.getDomain()));
                         }
                     }
                     return null;

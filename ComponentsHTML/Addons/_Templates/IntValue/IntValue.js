@@ -29,10 +29,10 @@ YetaWF_IntValue.init = function (tag) {
     });
 };
 
-YetaWF_Basics.addWhenReady(YetaWF_IntValue.init);
+$YetaWF.addWhenReady(YetaWF_IntValue.init);
 
 // A <div> is being emptied. Destroy all kendoNumericTextBox the <div> may contain.
-YetaWF_Basics.addClearDiv(function (tag) {
+$YetaWF.addClearDiv(function (tag) {
     var list = tag.querySelectorAll("input.yt_intvalue.t_edit,input.yt_intvalue2.t_edit,input.yt_intvalue4.t_edit,input.yt_intvalue6.t_edit");
     var len = list.length;
     for (var i = 0; i < len; ++i) {

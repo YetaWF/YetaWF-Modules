@@ -126,7 +126,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
     {menu}
 </div>
 <script>
-    $('#{DivId}).kendoMenu({{
+    $('#{DivId}').kendoMenu({{
         direction: '{model.GetDirection()}',
         orientation: '{model.GetOrientation()}',
         popupCollision: 'fit flip',");
@@ -145,13 +145,11 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                     if (model.ShowPath) {
                         using (DocumentReady(hb, DivId)) {
                             hb.Append($@"
-            YetaWF_Menu.init('@DivId');
-        }}");
+    YetaWF_Menu.init('@DivId');");
                         }
-                        hb.Append($@"
-    }}
-</script>");
                     }
+                    hb.Append($@"
+</script>");
                 }
             }
 
