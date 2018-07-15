@@ -153,32 +153,32 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                     HB.Append("}");
                     CloseParen = CloseParen - 1;
                 }
-                HB.Append("}});");
+                HB.Append("});");
             }
             //~JSDocumentReady() { Dispose(false); }
             public HtmlBuilder HB { get; set; }
             public int CloseParen { get; internal set; }
         }
         protected JSDocumentReady DocumentReady(HtmlBuilder hb, string id) {
-            hb.Append($@"$YetaWF.whenReadyOnce.push({{callback: function (tag) {{ if ($(tag).has('#{id}').length > 0) {{"); //$$$$
+            hb.Append($@"$YetaWF.addWhenReadyOnce(function (tag) {{ if ($(tag).has('#{id}').length > 0) {{");
             return new JSDocumentReady(hb) { CloseParen = 1 };
         }
         protected JSDocumentReady DocumentReady(HtmlBuilder hb) {
-            hb.Append("$YetaWF.whenReadyOnce.push({callback: function (tag) {");
+            hb.Append("$YetaWF.addWhenReadyOnce(function (tag) {function (tag) {");
             return new JSDocumentReady(hb);
         }
         protected string BeginDocumentReady(string id = null) {
             if (string.IsNullOrWhiteSpace(id)) {
                 DocCloseParen = 0;
-                return "$YetaWF.whenReadyOnce.push({callback: function (tag) {";
+                return "$YetaWF.addWhenReadyOnce(function (tag) {function (tag) {";
             } else {
                 DocCloseParen = 1;
-                return $@"$YetaWF.whenReadyOnce.push({{callback: function (tag) {{ if ($(tag).has('#{id}').length > 0) {{";
+                return $@"$YetaWF.addWhenReadyOnce(function (tag) {{ if ($(tag).has('#{id}').length > 0) {{";
             }
         }
         private int DocCloseParen;
         protected string EndDocumentReady() {
-            return (DocCloseParen > 0 ? "}" : "") + "}});";
+            return (DocCloseParen > 0 ? "}" : "") + "});";
         }
     }
 }
