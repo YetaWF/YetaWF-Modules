@@ -230,5 +230,3 @@ var YetaWF_FormsImpl = new YetaWF_ComponentsHTML.FormsImpl();
 $YetaWF.addWhenReady(YetaWF_FormsImpl.initForm);
 /* Initialize validation system */
 YetaWF_FormsImpl.initValidation();
-
-//# sourceMappingURL=FormsImpl.js.map

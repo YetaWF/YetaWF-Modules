@@ -201,7 +201,7 @@ namespace YetaWF_ComponentsHTML {
         }
         /**
          * Closes the "Please Wait" message (if any).
-        */
+         */
         public pleaseWaitClose(): void {
             var $popupwin = $("#yplwait");
             if ($popupwin.length == 0) return;

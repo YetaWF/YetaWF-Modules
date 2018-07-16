@@ -189,7 +189,7 @@ var YetaWF_ComponentsHTML;
         };
         /**
          * Closes the "Please Wait" message (if any).
-        */
+         */
         BasicsImpl.prototype.pleaseWaitClose = function () {
             var $popupwin = $("#yplwait");
             if ($popupwin.length == 0)
@@ -220,5 +220,3 @@ var YetaWF_ComponentsHTML;
     YetaWF_ComponentsHTML.BasicsImpl = BasicsImpl;
 })(YetaWF_ComponentsHTML || (YetaWF_ComponentsHTML = {}));
 var YetaWF_BasicsImpl = new YetaWF_ComponentsHTML.BasicsImpl();
-
-//# sourceMappingURL=BasicsImpl.js.map

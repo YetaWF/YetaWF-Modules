@@ -62,7 +62,7 @@ namespace YetaWF.Modules.Basics.Views {
         This is another paragraph. I think it needs to be added that
         the set of elements tested is not exhaustive in any sense. I have selected
         those elements for which it can make sense to write user style sheet rules,
-        in my opionion.
+        in my opinion.
     </p>
     <div>
         This is a <code>div</code> element. Authors may use such elements instead
