@@ -87,14 +87,14 @@ namespace YetaWF_ComponentsHTML {
                 resizable: false,
                 title: result.PageTitle,
                 visible: false,
-                close: () => {
+                close: (e: kendo.ui.WindowCloseEvent): void => {
                     PopupsImpl.closeDynamicPopup();
                 },
                 animation: false,
-                refresh: function () { // page complete
+                refresh: (e: kendo.ui.WindowEvent):void => { // page complete
                     $YetaWF.setLoading(false);
                 },
-                error: function (e) {
+                error: (e: kendo.ui.WindowErrorEvent): void => {
                     $YetaWF.setLoading(false);
                     $YetaWF.error("Request failed with status " + e.status);
                 }
@@ -136,7 +136,7 @@ namespace YetaWF_ComponentsHTML {
                 // we handle links within a popup by replacing the current popup page with the new page
                 $YetaWF.setLoading(true);
                 var $popupwin = $("#ypopup", $(window.parent.document));
-                if ($popupwin.length == 0) throw "Couldn't find popup window";/*DEBUG*/
+                if ($popupwin.length === 0) throw "Couldn't find popup window";/*DEBUG*/
                 var iframeDomElement = $popupwin.children("iframe")[0] as HTMLIFrameElement;
                 iframeDomElement.src = url;
                 return;
@@ -164,7 +164,7 @@ namespace YetaWF_ComponentsHTML {
                 title: " ", //title is set later once contents are available
                 visible: false,
                 content: url as kendo.ui.WindowContent, //Hello, this is not really WindowContent, but d.ts needs WindowContent
-                close: function () {
+                close: (e: kendo.ui.WindowCloseEvent): void => {
                     var popup: kendo.ui.Window | null = $popupwin.data("kendoWindow");
                     popup.destroy();
                     popup = null;
@@ -172,7 +172,7 @@ namespace YetaWF_ComponentsHTML {
                     YVolatile.Basics.IsInPopup = false;
                 },
                 animation: false,
-                refresh: function () { // page complete
+                refresh: (e: kendo.ui.WindowEvent):void => { // page complete
                     var iframeDomElement: HTMLIFrameElement | null = $popupwin.children("iframe")[0] as HTMLIFrameElement;
                     if (iframeDomElement && iframeDomElement.contentDocument && popup) {
                         var iframeDocumentObject: Document = iframeDomElement.contentDocument;
@@ -180,7 +180,7 @@ namespace YetaWF_ComponentsHTML {
                     }
                     $YetaWF.setLoading(false);
                 },
-                error: function (e) {
+                error: (e: kendo.ui.WindowErrorEvent): void => {
                     $YetaWF.setLoading(false);
                     $YetaWF.error("Request failed with status " + e.status);
                 }
@@ -199,5 +199,6 @@ namespace YetaWF_ComponentsHTML {
     }
 }
 
+// tslint:disable-next-line:variable-name
 var YetaWF_PopupsImpl: YetaWF.IPopupsImpl = new YetaWF_ComponentsHTML.PopupsImpl();
 

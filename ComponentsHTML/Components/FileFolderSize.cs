@@ -25,7 +25,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
             hb.Append($@"
 <div class='yt_filefoldersize t_display'>
-    {Formatting.FormatFileFolderSize(model)}
+    {HE(Formatting.FormatFileFolderSize(model))}
 </div>
 ");
             return Task.FromResult(hb.ToYHtmlString());

@@ -10,7 +10,7 @@ var YetaWF_ComponentsHTML;
         // LOADING
         // LOADING
         BasicsImpl.prototype.setLoading = function (on) {
-            if (on != false) {
+            if (on !== false) {
                 $.prettyLoader.show();
             }
             else {
@@ -52,28 +52,28 @@ var YetaWF_ComponentsHTML;
                 // change \n to <br/>
                 $dialog.text(message);
                 var s = $dialog.html();
-                s = s.replace(/\(\+nl\)/g, '<br/>');
+                s = s.replace(/\(\+nl\)/g, "<br/>");
                 $dialog.html(s);
             }
             else {
                 $dialog.html(message);
             }
-            if (title == undefined)
+            if (title === undefined)
                 title = YLocs.Basics.DefaultAlertTitle;
             $dialog.dialog({
                 autoOpen: true,
                 modal: true,
                 width: YConfigs.Basics.DefaultAlertWaitWidth,
-                height: YConfigs.Basics.DefaultAlertWaitHeight == 0 ? "auto" : YConfigs.Basics.DefaultAlertWaitHeight,
+                height: YConfigs.Basics.DefaultAlertWaitHeight === 0 ? "auto" : YConfigs.Basics.DefaultAlertWaitHeight,
                 closeOnEscape: true,
                 closeText: YLocs.Basics.CloseButtonText,
                 close: function (event, ui) { return _this.closeAlert(onOK); },
                 draggable: true,
                 resizable: false,
-                'title': title,
+                title: title,
                 buttons: [{
                         text: YLocs.Basics.OKButtonText,
-                        click: function () {
+                        click: function (eventObject) {
                             $dialog.dialog("close");
                         }
                     }]
@@ -81,11 +81,11 @@ var YetaWF_ComponentsHTML;
         };
         BasicsImpl.prototype.closeAlert = function (onOK) {
             var $dialog = $("#yalert");
-            if ($dialog.length == 0)
+            if ($dialog.length === 0)
                 return;
-            if ($dialog.attr('data-closing'))
+            if ($dialog.attr("data-closing"))
                 return;
-            $dialog.attr('data-closing', 1);
+            $dialog.attr("data-closing", 1);
             var endFunc = onOK;
             onOK = undefined; // clear this so close function doesn't call onOK handler also
             $dialog.dialog("close");
@@ -104,30 +104,30 @@ var YetaWF_ComponentsHTML;
             // change \n to <br/>
             $dialog.text(message);
             var s = $dialog.html();
-            s = s.replace(/\(\+nl\)/g, '<br/>');
+            s = s.replace(/\(\+nl\)/g, "<br/>");
             $dialog.html(s);
-            if (title == undefined)
+            if (title === undefined)
                 title = YLocs.Basics.DefaultAlertYesNoTitle;
             $dialog.dialog({
                 autoOpen: true,
                 modal: true,
                 width: YConfigs.Basics.DefaultAlertYesNoWidth,
-                height: YConfigs.Basics.DefaultAlertYesNoHeight == 0 ? "auto" : YConfigs.Basics.DefaultAlertYesNoHeight,
+                height: YConfigs.Basics.DefaultAlertYesNoHeight === 0 ? "auto" : YConfigs.Basics.DefaultAlertYesNoHeight,
                 closeOnEscape: true,
                 closeText: YLocs.Basics.CloseButtonText,
-                close: function () {
+                close: function (event, ui) {
                     $dialog.dialog("destroy");
                     $dialog.remove();
-                    if (onNo != undefined)
+                    if (onNo !== undefined)
                         onNo();
                 },
                 draggable: true,
                 resizable: false,
-                'title': title,
+                title: title,
                 buttons: [
                     {
                         text: YLocs.Basics.YesButtonText,
-                        click: function () {
+                        click: function (eventObject) {
                             var endFunc = onYes;
                             onYes = undefined; // clear this so close function doesn't try do call these
                             onNo = undefined;
@@ -139,7 +139,7 @@ var YetaWF_ComponentsHTML;
                     },
                     {
                         text: YLocs.Basics.NoButtonText,
-                        click: function () {
+                        click: function (eventObject) {
                             var endFunc = onNo;
                             onYes = undefined; // clear this so close function doesn't try do call these
                             onNo = undefined;
@@ -161,9 +161,9 @@ var YetaWF_ComponentsHTML;
             $("body").prepend("<div id='yplwait'></div>");
             var $popupwin = $("#yplwait");
             var popup = null;
-            if (message == undefined)
+            if (message === undefined)
                 message = YLocs.Basics.PleaseWaitText;
-            if (title == undefined)
+            if (title === undefined)
                 title = YLocs.Basics.PleaseWaitTitle;
             $popupwin.text(message);
             // Create the window
@@ -177,7 +177,7 @@ var YetaWF_ComponentsHTML;
                 resizable: false,
                 title: $YetaWF.htmlEscape(title),
                 visible: false,
-                close: function () {
+                close: function (event) {
                     var popup = $popupwin.data("kendoWindow");
                     popup.destroy();
                     popup = null;
@@ -192,7 +192,7 @@ var YetaWF_ComponentsHTML;
          */
         BasicsImpl.prototype.pleaseWaitClose = function () {
             var $popupwin = $("#yplwait");
-            if ($popupwin.length == 0)
+            if ($popupwin.length === 0)
                 return;
             var popup = $popupwin.data("kendoWindow");
             popup.destroy();
@@ -202,16 +202,16 @@ var YetaWF_ComponentsHTML;
          */
         BasicsImpl.prototype.closeOverlays = function () {
             // Close open bootstrap nav menus (if any) by clicking on the page
-            $('body').trigger('click');
+            $("body").trigger("click");
             // Close any open kendo menus (if any)
             var $menus = $(".k-menu");
-            $menus.each(function () {
-                var menu = $(this).data("kendoMenu");
+            $menus.each(function (index, element) {
+                var menu = $(element).data("kendoMenu");
                 menu.close("li.k-item");
             });
             // Close any open smartmenus
             try {
-                $('.YetaWF_Menus').collapse('hide');
+                $(".YetaWF_Menus").collapse("hide");
             }
             catch (e) { }
         };
@@ -219,4 +219,7 @@ var YetaWF_ComponentsHTML;
     }());
     YetaWF_ComponentsHTML.BasicsImpl = BasicsImpl;
 })(YetaWF_ComponentsHTML || (YetaWF_ComponentsHTML = {}));
+// tslint:disable-next-line:variable-name
 var YetaWF_BasicsImpl = new YetaWF_ComponentsHTML.BasicsImpl();
+
+//# sourceMappingURL=BasicsImpl.js.map

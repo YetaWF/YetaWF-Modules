@@ -15,10 +15,10 @@ var YetaWF_ComponentsHTML;
         ComponentsHTML.prototype.jQueryToNativeEvent = function ($elem, eventName) {
             $elem.on(eventName, function (ev) {
                 if (!ev.originalEvent || !ev.originalEvent.__YetaWF) {
-                    var nev = new Event(eventName, { bubbles: true, cancelable: true });
-                    nev.__YetaWF = true; // to avaid handling it again
+                    var nev_1 = new Event(eventName, { bubbles: true, cancelable: true });
+                    nev_1.__YetaWF = true; // to avaid handling it again
                     $elem.each(function (index, elem) {
-                        elem.dispatchEvent(nev);
+                        elem.dispatchEvent(nev_1);
                     });
                 }
             });
@@ -28,3 +28,5 @@ var YetaWF_ComponentsHTML;
     YetaWF_ComponentsHTML.ComponentsHTML = ComponentsHTML;
 })(YetaWF_ComponentsHTML || (YetaWF_ComponentsHTML = {}));
 var ComponentsHTML = new YetaWF_ComponentsHTML.ComponentsHTML();
+
+//# sourceMappingURL=ComponentsHTML.js.map

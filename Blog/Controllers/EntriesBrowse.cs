@@ -41,7 +41,7 @@ namespace YetaWF.Modules.Blog.Controllers {
                 actions.New(Module.GetAction_Remove(Identity), ModuleAction.ActionLocationEnum.GridLinks);
                 return actions;
             }
-            
+
 
             [Caption("Id"), Description("The id of this blog entry - used to uniquely identify this blog entry internally")]
             [UIHint("IntValue"), ReadOnly]

@@ -164,13 +164,13 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             return new JSDocumentReady(hb) { CloseParen = 1 };
         }
         protected JSDocumentReady DocumentReady(HtmlBuilder hb) {
-            hb.Append("$YetaWF.addWhenReadyOnce(function (tag) {function (tag) {");
+            hb.Append("$YetaWF.addWhenReadyOnce(function (tag) {");
             return new JSDocumentReady(hb);
         }
         protected string BeginDocumentReady(string id = null) {
             if (string.IsNullOrWhiteSpace(id)) {
                 DocCloseParen = 0;
-                return "$YetaWF.addWhenReadyOnce(function (tag) {function (tag) {";
+                return "$YetaWF.addWhenReadyOnce(function (tag) {";
             } else {
                 DocCloseParen = 1;
                 return $@"$YetaWF.addWhenReadyOnce(function (tag) {{ if ($(tag).has('#{id}').length > 0) {{";

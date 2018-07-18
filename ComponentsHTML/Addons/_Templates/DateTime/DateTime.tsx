@@ -59,7 +59,7 @@ namespace YetaWF_ComponentsHTML {
                 format: YVolatile.YetaWF_ComponentsHTML.DateTimeFormat,
                 min: sd, max: ed,
                 culture: YVolatile.Basics.Language,
-                change: function (ev: kendo.ui.DateTimePickerEvent): void {
+                change: (ev: kendo.ui.DateTimePickerEvent): void => {
                     var kdPicker: kendo.ui.DateTimePicker = ev.sender;
                     var val: Date = kdPicker.value();
                     if (val == null)
@@ -72,16 +72,14 @@ namespace YetaWF_ComponentsHTML {
             var kdPicker: kendo.ui.DateTimePicker = $(date).data("kendoDateTimePicker") as kendo.ui.DateTimePicker;
             this.setHidden(hidden, kdPicker.value());
 
-            function changeHandler(event: Event): void {
+            date.addEventListener("change", (event: Event): void => {
                 var val: Date = kdPicker.value();
                 if (val == null)
                     thisObj.setHiddenText(hidden, (event.target as HTMLInputElement).value);
                 else
                     thisObj.setHidden(hidden, val);
                 FormsSupport.validateElement(hidden);
-            }
-
-            date.addEventListener("change", changeHandler, false);
+            }, false);
         }
 
         /**
@@ -106,7 +104,7 @@ namespace YetaWF_ComponentsHTML {
                 format: YVolatile.YetaWF_ComponentsHTML.DateTimeFormat,
                 //sb.Append("min: sd, max: ed,");
                 culture: YVolatile.Basics.Language,
-                change: function (ev: kendo.ui.DateTimePickerEvent):void {
+                change: (ev: kendo.ui.DateTimePickerEvent) : void => {
                     var kdPicker: kendo.ui.DateTimePicker = ev.sender;
                     var val: Date = kdPicker.value();
                     var s: string = "";
@@ -120,16 +118,15 @@ namespace YetaWF_ComponentsHTML {
              * Handles Return key in Date picker, part of jqGrid filter toolbar.
              * @param event
              */
-            function keydownHandler(event: KeyboardEvent): void {
+            dtPick.addEventListener("keydown", (event: KeyboardEvent): void => {
                 if (event.keyCode === 13)
                     (grid as any).triggerToolbar();
-            }
-            dtPick.addEventListener("keydown", keydownHandler, false);
+            }, false);
         }
     }
 
     // A <div> is being emptied. Destroy all date/time pickers the <div> may contain.
-    $YetaWF.addClearDiv(function (tag: HTMLElement): void {
+    $YetaWF.addClearDiv((tag: HTMLElement): void => {
         var list: HTMLElement[] = $YetaWF.getElementsBySelector(".yt_datetime.t_edit input[name=\"dtpicker\"]", [tag]);
         for (let el of list) {
             var datepicker: kendo.ui.DateTimePicker = $(el).data("kendoDateTimePicker");

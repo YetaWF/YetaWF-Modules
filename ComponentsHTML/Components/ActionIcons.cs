@@ -41,21 +41,21 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                 case Grid.GridActionsEnum.Icons:
                     return await CoreRendering.RenderMenuAsync(model, null, Addons.Templates.ActionIcons.CssActionIcons, HtmlHelper: HtmlHelper);
                 case Grid.GridActionsEnum.DropdownMenu: {
-                        model.RenderMode = ModuleAction.RenderModeEnum.NormalMenu;
+                    model.RenderMode = ModuleAction.RenderModeEnum.NormalMenu;
 
-                        string id = Manager.UniqueId();
-                        string idButton = id + "_btn";
-                        string idMenu = id + "_menu";
-                        hb.Append("<button id=\"{0}\" type=\"button\" class=\"yt_actionicons\">{1}<span class=\"k-icon k-i-arrow-60-down\"></span></button>",
-                            idButton, this.__ResStr("dropdownText", "Manage"));
-                        hb.Append(await CoreRendering.RenderMenuAsync(model, idMenu, Globals.CssGridActionMenu, HtmlHelper: HtmlHelper));
+                    string id = Manager.UniqueId();
+                    string idButton = id + "_btn";
+                    string idMenu = id + "_menu";
+                    hb.Append("<button id=\"{0}\" type=\"button\" class=\"yt_actionicons\">{1}<span class=\"k-icon k-i-arrow-60-down\"></span></button>",
+                        idButton, this.__ResStr("dropdownText", "Manage"));
+                    hb.Append(await CoreRendering.RenderMenuAsync(model, idMenu, Globals.CssGridActionMenu, HtmlHelper: HtmlHelper));
 
-                        ScriptBuilder sb = new ScriptBuilder();
-                        sb.Append($"YetaWF_TemplateActionIcons.initMenu('{id}', $('#{idButton}'), $('#{idMenu}'));");
+                    ScriptBuilder sb = new ScriptBuilder();
+                    sb.Append($"YetaWF_TemplateActionIcons.initMenu('{id}', $('#{idButton}'), $('#{idMenu}'));");
 
-                        hb.Append(Manager.ScriptManager.AddNow(sb.ToString()).ToString());
-                        return hb.ToYHtmlString();
-                    }
+                    hb.Append(Manager.ScriptManager.AddNow(sb.ToString()).ToString());
+                    return hb.ToYHtmlString();
+                }
             }
         }
     }

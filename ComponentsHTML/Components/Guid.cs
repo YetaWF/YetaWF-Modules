@@ -26,7 +26,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         public Task<YHtmlString> RenderAsync(Guid? model) {
             HtmlBuilder hb = new HtmlBuilder();
             if (model != null && model != Guid.Empty) {
-                hb.Append(((Guid)model).ToString());
+                hb.Append(HE(((Guid)model).ToString()));
             }
             return Task.FromResult(hb.ToYHtmlString());
         }

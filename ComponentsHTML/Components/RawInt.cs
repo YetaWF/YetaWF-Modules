@@ -20,7 +20,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         public override ComponentType GetComponentType() { return ComponentType.Display; }
 
         public Task<YHtmlString> RenderAsync(int model) {
-            return Task.FromResult(new YHtmlString(model.ToString()));
+            return Task.FromResult(new YHtmlString(HE(model.ToString())));
         }
     }
 }

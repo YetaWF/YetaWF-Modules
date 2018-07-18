@@ -27,7 +27,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             List<SelectionItem<string>> states = await USState.ReadStatesListAsync();
             if (model == null) model = "";
             string state = (from s in states where string.Compare(s.Value, model.ToUpper(), true) == 0 select s.Text).FirstOrDefault();
-            return new YHtmlString(state);
+            return new YHtmlString(HE(state));
         }
     }
     public class USStateEditComponent : USStateComponent, IYetaWFComponent<string> {

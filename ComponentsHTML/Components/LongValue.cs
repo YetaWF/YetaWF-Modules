@@ -28,7 +28,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         public Task<YHtmlString> RenderAsync(long? model) {
             HtmlBuilder hb = new HtmlBuilder();
             model = model ?? 0;
-            hb.Append($@"<div class='yt_longvalue t_display'>{model.ToString()}</div>");
+            hb.Append($@"<div class='yt_longvalue t_display'>{HE(model.ToString())}</div>");
             return Task.FromResult(hb.ToYHtmlString());
         }
     }

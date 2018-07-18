@@ -73,11 +73,11 @@ var YetaWF_ComponentsHTML;
                 resizable: false,
                 title: result.PageTitle,
                 visible: false,
-                close: function () {
+                close: function (e) {
                     PopupsImpl.closeDynamicPopup();
                 },
                 animation: false,
-                refresh: function () {
+                refresh: function (e) {
                     $YetaWF.setLoading(false);
                 },
                 error: function (e) {
@@ -115,7 +115,7 @@ var YetaWF_ComponentsHTML;
                 // we handle links within a popup by replacing the current popup page with the new page
                 $YetaWF.setLoading(true);
                 var $popupwin = $("#ypopup", $(window.parent.document));
-                if ($popupwin.length == 0)
+                if ($popupwin.length === 0)
                     throw "Couldn't find popup window"; /*DEBUG*/
                 var iframeDomElement = $popupwin.children("iframe")[0];
                 iframeDomElement.src = url;
@@ -141,7 +141,7 @@ var YetaWF_ComponentsHTML;
                 title: " ",
                 visible: false,
                 content: url,
-                close: function () {
+                close: function (e) {
                     var popup = $popupwin.data("kendoWindow");
                     popup.destroy();
                     popup = null;
@@ -149,7 +149,7 @@ var YetaWF_ComponentsHTML;
                     YVolatile.Basics.IsInPopup = false;
                 },
                 animation: false,
-                refresh: function () {
+                refresh: function (e) {
                     var iframeDomElement = $popupwin.children("iframe")[0];
                     if (iframeDomElement && iframeDomElement.contentDocument && popup) {
                         var iframeDocumentObject = iframeDomElement.contentDocument;
@@ -175,4 +175,7 @@ var YetaWF_ComponentsHTML;
     }());
     YetaWF_ComponentsHTML.PopupsImpl = PopupsImpl;
 })(YetaWF_ComponentsHTML || (YetaWF_ComponentsHTML = {}));
+// tslint:disable-next-line:variable-name
 var YetaWF_PopupsImpl = new YetaWF_ComponentsHTML.PopupsImpl();
+
+//# sourceMappingURL=PopupsImpl.js.map

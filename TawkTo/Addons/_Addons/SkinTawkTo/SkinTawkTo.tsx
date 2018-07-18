@@ -2,6 +2,7 @@
 
 // If this javascript snippet is included, that means we're displaying the chat.
 
+// tslint:disable-next-line:variable-name
 var Tawk_API: any;
 
 namespace YetaWF_TawkTo {

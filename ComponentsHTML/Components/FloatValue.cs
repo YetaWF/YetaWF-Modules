@@ -25,7 +25,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             HtmlBuilder hb = new HtmlBuilder();
             if (model != null) {
                 if ((Single)model != 0.0 || !PropData.GetAdditionalAttributeValue("EmptyIf0", false)) {
-                    hb.Append(model.ToString());
+                    hb.Append(HE(model.ToString()));
                 }
             }
             return Task.FromResult(hb.ToYHtmlString());

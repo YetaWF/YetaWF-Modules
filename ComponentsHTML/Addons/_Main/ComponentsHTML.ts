@@ -27,11 +27,11 @@ namespace YetaWF_ComponentsHTML {
          * If it is necessary to handle the event using jquery also, use ev.__YetaWF to determine whether it's a native event.
          */
         public jQueryToNativeEvent($elem: JQuery<HTMLElement>, eventName: string): void {
-            $elem.on(eventName, function (ev: JQuery.Event) {
+            $elem.on(eventName, (ev: JQuery.Event) => {
                 if (!ev.originalEvent || !ev.originalEvent.__YetaWF) {
-                    var nev = new Event(eventName, { bubbles: true, cancelable: true });
+                    const nev = new Event(eventName, { bubbles: true, cancelable: true });
                     nev.__YetaWF = true;// to avaid handling it again
-                    $elem.each(function (index, elem) {
+                    $elem.each((index: number, elem: HTMLElement) => {
                         elem.dispatchEvent(nev);
                     });
                 }

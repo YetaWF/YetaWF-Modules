@@ -73,15 +73,14 @@ var YetaWF_ComponentsHTML;
             });
             var kdPicker = $(date).data("kendoDateTimePicker");
             this.setHidden(hidden, kdPicker.value());
-            function changeHandler(event) {
+            date.addEventListener("change", function (event) {
                 var val = kdPicker.value();
                 if (val == null)
                     thisObj.setHiddenText(hidden, event.target.value);
                 else
                     thisObj.setHidden(hidden, val);
                 FormsSupport.validateElement(hidden);
-            }
-            date.addEventListener("change", changeHandler, false);
+            }, false);
         };
         /**
          * Renders a date picker in the jqGrid filter toolbar.
@@ -118,11 +117,10 @@ var YetaWF_ComponentsHTML;
              * Handles Return key in Date picker, part of jqGrid filter toolbar.
              * @param event
              */
-            function keydownHandler(event) {
+            dtPick.addEventListener("keydown", function (event) {
                 if (event.keyCode === 13)
                     grid.triggerToolbar();
-            }
-            dtPick.addEventListener("keydown", keydownHandler, false);
+            }, false);
         };
         return DateTimeComponent;
     }());
@@ -139,3 +137,5 @@ var YetaWF_ComponentsHTML;
         }
     });
 })(YetaWF_ComponentsHTML || (YetaWF_ComponentsHTML = {}));
+
+//# sourceMappingURL=DateTime.js.map

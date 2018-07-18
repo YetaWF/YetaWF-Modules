@@ -93,7 +93,7 @@ namespace YetaWF.Modules.Scheduler.Components {
                 DropDown = select,
                 DropDown_List= list,
             };
-            
+
             using (Manager.StartNestedComponent(FieldName)) {
 
                 hb.Append($@"

@@ -27,7 +27,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             string name = (from l in modSkins where l.Name == model select l.Name).FirstOrDefault();
             if (name == null)
                 name = modSkins.First().Name;
-            return Task.FromResult(new YHtmlString(name));
+            return Task.FromResult(new YHtmlString(HE(name)));
         }
     }
     public class ModuleSkinNameEditComponent : ModuleSkinNameComponent, IYetaWFComponent<string> {

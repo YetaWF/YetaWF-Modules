@@ -28,7 +28,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         public Task<YHtmlString> RenderAsync(Decimal? model) {
             HtmlBuilder hb = new HtmlBuilder();
             if (model != null) {
-                hb.Append(Formatting.FormatAmount((decimal)model));
+                hb.Append(HE(Formatting.FormatAmount((decimal)model)));
             }
             return Task.FromResult(hb.ToYHtmlString());
         }

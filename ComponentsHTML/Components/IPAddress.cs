@@ -27,7 +27,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
             if (!string.IsNullOrWhiteSpace(model)) {
 
-                hb.Append(model);
+                hb.Append(HE(model));
 
                 bool lookup = PropData.GetAdditionalAttributeValue("Lookup", true);
                 if (lookup) {

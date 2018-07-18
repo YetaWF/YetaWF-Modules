@@ -16,24 +16,23 @@ var YetaWF_ComponentsHTML;
         FormsImpl.prototype.initPartialForm = function (partialForm) {
             // get all fields with errors (set server-side)
             var $partialForm = $(partialForm);
-            var $errs = $('.field-validation-error', $partialForm);
+            var $errs = $(".field-validation-error", $partialForm);
             // add warning icons to validation errors
-            $errs.each(function () {
-                var $val = $(this);
+            $errs.each(function (index, element) {
+                var $val = $(element);
                 var name = $val.attr("data-valmsg-for");
-                var $err = $("img." + YConfigs.Forms.CssWarningIcon + "[name=\"" + name + "\"]", $val.closest('form'));
+                var $err = $("img." + YConfigs.Forms.CssWarningIcon + "[name=\"" + name + "\"]", $val.closest("form"));
                 $err.remove();
                 $val.before("<img src=\"" + $YetaWF.htmlAttrEscape(YConfigs.Forms.CssWarningIconUrl) + "\" name=" + name + " class=\"" + YConfigs.Forms.CssWarningIcon + "\" " + YConfigs.Basics.CssTooltip + "=\"" + $YetaWF.htmlAttrEscape($val.text()) + "\"/>");
             });
         };
-        ;
         /**
          * Re-validate all fields within the div, typically used after paging in a grid to let jquery.validate update all fields
          */
         FormsImpl.prototype.updateValidation = function (div) {
             var $div = $(div);
             $.validator.unobtrusive.parse($div);
-            $('input,select,textarea', $div).has("[data-val=true]").trigger('focusout');
+            $("input,select,textarea", $div).has("[data-val=true]").trigger("focusout");
         };
         /**
          * Validates one elements.
@@ -45,24 +44,23 @@ var YetaWF_ComponentsHTML;
             $(form).validate().element($(ctrl));
         };
         /**
-        * Returns whether a div has form errors.
-        */
+         * Returns whether a div has form errors.
+         */
         FormsImpl.prototype.hasErrors = function (elem) {
             var $elem = $(elem);
-            return $('.validation-summary-errors li', $elem).length > 0;
+            return $(".validation-summary-errors li", $elem).length > 0;
         };
-        ;
         /**
          * Shows all div form errors in a popup.
          */
         FormsImpl.prototype.showErrors = function (elem) {
             var $elem = $(elem);
             var $summary = this.formErrorSummary($elem);
-            var $list = $('ul li', $summary);
+            var $list = $("ul li", $summary);
             // only show unique messages (no duplicates)
             var list = [];
-            $list.each(function () {
-                list.push($(this).text());
+            $list.each(function (index, element) {
+                list.push($(element).text());
             });
             var uniqueMsgs = [];
             $.each(list, function (i, el) {
@@ -72,38 +70,36 @@ var YetaWF_ComponentsHTML;
             // build output
             var s = "";
             $.each(uniqueMsgs, function (i, el) {
-                s += el + '(+nl)';
+                s += el + "(+nl)";
             });
             this.dontUpdateWarningIcons = true;
             $YetaWF.error(YLocs.Forms.FormErrors + s);
             this.dontUpdateWarningIcons = false;
         };
-        ;
         /**
          * Returns the form's error summary (div).
          */
         FormsImpl.prototype.formErrorSummary = function ($form) {
-            var $summary = $('.validation-summary-errors', $form);
-            if ($summary.length != 1)
+            var $summary = $(".validation-summary-errors", $form);
+            if ($summary.length !== 1)
                 throw "Error summary not found"; /*DEBUG*/
             return $summary;
         };
-        ;
         /**
          * Serializes the form and returns a name/value pairs array
          */
         FormsImpl.prototype.serializeFormArray = function (form) {
             // disable all fields that we don't want to submit (marked with YConfigs.Forms.CssFormNoSubmit)
-            var $disabledFields = $('.' + YConfigs.Forms.CssFormNoSubmit, $(form)).not(':disabled');
-            $disabledFields.attr('disabled', 'disabled');
+            var $disabledFields = $("." + YConfigs.Forms.CssFormNoSubmit, $(form)).not(":disabled");
+            $disabledFields.attr("disabled", "disabled");
             // disable all input fields in containers (usually grids) - we don't want to submit them - they're collected separately
-            var $disabledGridFields = $("." + YConfigs.Forms.CssFormNoSubmitContents + " input,." + YConfigs.Forms.CssFormNoSubmitContents + " select", $(form)).not(':disabled');
-            $disabledGridFields.attr('disabled', 'disabled');
+            var $disabledGridFields = $("." + YConfigs.Forms.CssFormNoSubmitContents + " input,." + YConfigs.Forms.CssFormNoSubmitContents + " select", $(form)).not(":disabled");
+            $disabledGridFields.attr("disabled", "disabled");
             // serialize the form
             var formData = $(form).serializeArray();
             // and enable all the input fields we just disabled
-            $disabledFields.removeAttr('disabled');
-            $disabledGridFields.removeAttr('disabled');
+            $disabledFields.removeAttr("disabled");
+            $disabledGridFields.removeAttr("disabled");
             return formData;
         };
         /**
@@ -124,18 +120,18 @@ var YetaWF_ComponentsHTML;
         FormsImpl.prototype.setErrorInTab = function (tabctrl) {
             var $tabctrl = $(tabctrl);
             // get the first field in error (if any)
-            var errField = $YetaWF.getElement1BySelectorCond('.input-validation-error', [tabctrl]);
+            var errField = $YetaWF.getElement1BySelectorCond(".input-validation-error", [tabctrl]);
             if (errField) {
                 // find out which tab panel we're on
-                var ttabpanel = $YetaWF.elementClosest(errField, 'div.t_tabpanel');
+                var ttabpanel = $YetaWF.elementClosest(errField, "div.t_tabpanel");
                 if (!ttabpanel)
                     throw "We found a validation error in a tab control, but we couldn't find the tab panel."; /*DEBUG*/
-                var panel = ttabpanel.getAttribute('data-tab');
+                var panel = ttabpanel.getAttribute("data-tab");
                 if (!panel)
                     throw "We found a panel in a tab control without panel number (data-tab attribute)."; /*DEBUG*/
                 // get the tab entry
-                var $te = $('ul.t_tabstrip > li', $tabctrl).eq(panel);
-                if ($te.length == 0)
+                var $te = $("ul.t_tabstrip > li", $tabctrl).eq(panel);
+                if ($te.length === 0)
                     throw "We couldn't find the tab entry for panel " + panel; /*DEBUG*/
                 if (YVolatile.Forms.TabStyle === YetaWF.TabStyleEnum.JQuery)
                     $tabctrl.tabs("option", "active", panel);
@@ -152,12 +148,12 @@ var YetaWF_ComponentsHTML;
          */
         FormsImpl.prototype.initForm = function (tag) {
             var $tag = $(tag);
-            $.validator.unobtrusive.parse($('form', $tag));
-            $('form', $tag).addTriggersToJqueryValidate().triggerElementValidationsOnFormValidation();
-            var $forms = $('form', $tag).filter('.yValidateImmediately');
+            $.validator.unobtrusive.parse($("form", $tag));
+            $("form", $tag).addTriggersToJqueryValidate().triggerElementValidationsOnFormValidation();
+            var $forms = $("form", $tag).filter(".yValidateImmediately");
             if ($forms.length > 0) {
-                $forms.each(function () {
-                    var f = $(this);
+                $forms.each(function (index, elem) {
+                    var f = $(elem);
                     f.validate();
                     f.valid(); // force all fields to show valid/not valid
                 });
@@ -172,7 +168,7 @@ var YetaWF_ComponentsHTML;
                 // running this overrides some jQuery Validate stuff so we can hook into its validations.
                 // triggerElementValidationsOnFormValidation is optional and will fire off all of your
                 // element validations WHEN the form validation runs ... it requires jquery.validate.unobtrusive
-                $('form').addTriggersToJqueryValidate().triggerElementValidationsOnFormValidation();
+                $("form").addTriggersToJqueryValidate().triggerElementValidationsOnFormValidation();
                 // You can bind to events that the forms/elements trigger on validation
                 //$('form').bind('formValidation', function (event, element, result) {
                 //    console.log(['validation ran for form:', element, 'and the result was:', result]);
@@ -187,7 +183,8 @@ var YetaWF_ComponentsHTML;
                 //$('input#address').elementValidationSuccess(function (element) {
                 //    console.log(['validations just ran for this element and it was valid!', element]);
                 //});
-                $('body').on('elementValidationError', function (element) {
+                // tslint:disable-next-line:typedef only-arrow-functions
+                $("body").on("elementValidationError", function (element) {
                     var fi = YetaWF_FormsImpl;
                     if (fi.dontUpdateWarningIcons)
                         return;
@@ -207,7 +204,8 @@ var YetaWF_ComponentsHTML;
                     // insert a new error icon
                     $val.eq(0).before("<img src=\"" + $YetaWF.htmlAttrEscape(YConfigs.Forms.CssWarningIconUrl) + "\" name=\"" + name + "\" class=\"" + YConfigs.Forms.CssWarningIcon + "\" " + YConfigs.Basics.CssTooltip + "=\"" + $YetaWF.htmlAttrEscape($val.text()) + "\"/>");
                 });
-                $('body').on('elementValidationSuccess', function (element) {
+                // tslint:disable-next-line:typedef only-arrow-functions
+                $("body").on("elementValidationSuccess", function (element) {
                     var fi = YetaWF_FormsImpl;
                     if (fi.dontUpdateWarningIcons)
                         return;
@@ -225,8 +223,11 @@ var YetaWF_ComponentsHTML;
     }());
     YetaWF_ComponentsHTML.FormsImpl = FormsImpl;
 })(YetaWF_ComponentsHTML || (YetaWF_ComponentsHTML = {}));
+// tslint:disable-next-line:variable-name
 var YetaWF_FormsImpl = new YetaWF_ComponentsHTML.FormsImpl();
 /* Page load */
 $YetaWF.addWhenReady(YetaWF_FormsImpl.initForm);
 /* Initialize validation system */
 YetaWF_FormsImpl.initValidation();
+
+//# sourceMappingURL=FormsImpl.js.map

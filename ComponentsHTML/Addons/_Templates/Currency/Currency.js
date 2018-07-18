@@ -14,7 +14,7 @@ var YetaWF_ComponentsHTML;
             for (var _i = 0, list_1 = list; _i < list_1.length; _i++) {
                 var el = list_1[_i];
                 var d = el.getAttribute("data-min");
-                var sd = d ? Number(d) : 0.0;
+                var sd = d ? Number(d) : 0;
                 d = el.getAttribute("data-max");
                 var ed = d ? Number(d) : 99999999.99;
                 $(el).kendoNumericTextBox({
@@ -42,3 +42,5 @@ var YetaWF_ComponentsHTML;
         }
     });
 })(YetaWF_ComponentsHTML || (YetaWF_ComponentsHTML = {}));
+
+//# sourceMappingURL=Currency.js.map

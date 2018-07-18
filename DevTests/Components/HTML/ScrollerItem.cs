@@ -27,8 +27,8 @@ namespace YetaWF.Modules.DevTests.Components {
             hb.Append($@"
 <div class='yt_yetawf_devtests_scrolleritem t_display'>
     <div class='t_image'>{await HtmlHelper.ForDisplayAsync(model, nameof(model.Image))}</div>
-    <div class='t_title'>{model.Title}</div>
-    <div class='t_summary'>{model.Summary}</div>
+    <div class='t_title'>{HE(model.Title)}</div>
+    <div class='t_summary'>{HE(model.Summary)}</div>
     <div class='y_cleardiv'></div>
 </div>");
 

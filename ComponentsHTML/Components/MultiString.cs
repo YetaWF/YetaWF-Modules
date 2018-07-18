@@ -46,7 +46,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         public Task<YHtmlString> RenderAsync(MultiString model) {
             HtmlBuilder hb = new HtmlBuilder();
             if (model != null) {
-                hb.Append(model.ToString());
+                hb.Append(HE(model.ToString()));
             }
             return Task.FromResult(hb.ToYHtmlString());
         }

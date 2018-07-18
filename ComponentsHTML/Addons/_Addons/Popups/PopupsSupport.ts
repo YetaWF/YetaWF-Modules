@@ -29,13 +29,13 @@ namespace YetaWF_ComponentsHTML {
                 popup.center().open();
 
                 // show/hide the maximize button (not directly supported so we'll do it manually)
-                if ($popupwin.length == 0) throw "Couldn't find popup window";/*DEBUG*/
-                var $popWindow = $popupwin.closest('.k-widget.k-window');
-                if ($popWindow.length == 0) throw "Couldn't find enclosing popup window";/*DEBUG*/
+                if ($popupwin.length === 0) throw "Couldn't find popup window";/*DEBUG*/
+                var $popWindow = $popupwin.closest(".k-widget.k-window");
+                if ($popWindow.length === 0) throw "Couldn't find enclosing popup window";/*DEBUG*/
                 if (YVolatile.Skin.PopupMaximize)
-                    $('.k-window-action.k-button,.k-window-action.k-link', $popWindow).eq(0).show();// show the maximize button
+                    $(".k-window-action.k-button,.k-window-action.k-link", $popWindow).eq(0).show();// show the maximize button
                 else
-                    $('.k-window-action.k-button,.k-window-action.k-link', $popWindow).eq(0).hide();// hide the maximize button
+                    $(".k-window-action.k-button,.k-window-action.k-link", $popWindow).eq(0).hide();// hide the maximize button
             }
         }
     }

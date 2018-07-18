@@ -26,7 +26,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         public async Task<YHtmlString> RenderAsync(string model) {
 
             string currency = await CurrencyISO4217.IdToCurrencyAsync(model, AllowMismatch: true);
-            return new YHtmlString(currency);
+            return new YHtmlString(HE(currency));
         }
     }
     public class CurrencyISO4217EditComponent : CurrencyISO4217ComponentBase, IYetaWFComponent<string> {

@@ -36,7 +36,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         }
         public Task<YHtmlString> RenderAsync(int? model) {
             if (model == null) return Task.FromResult(new YHtmlString(""));
-            return Task.FromResult(new YHtmlString(model.ToString()));
+            return Task.FromResult(new YHtmlString(HE(model.ToString())));
         }
     }
     public abstract class IntValueEditComponentBase : YetaWFComponent, IYetaWFComponent<int>, IYetaWFComponent<int?> {

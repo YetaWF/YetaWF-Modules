@@ -32,7 +32,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             string desc = (from skin in skinList where skin.FileName == model select skin.Name).FirstOrDefault();
             if (desc == null)
                 desc = skinList.First().Description;
-            return Task.FromResult(new YHtmlString(string.IsNullOrWhiteSpace(desc) ? "&nbsp;" : desc));
+            return Task.FromResult(new YHtmlString(string.IsNullOrWhiteSpace(desc) ? "&nbsp;" : HE(desc)));
         }
     }
 
