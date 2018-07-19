@@ -67,7 +67,7 @@ namespace YetaWF.Modules.Caching.DataProvider {
                     if (typeof(TYPE) == typeof(byte[]))
                         desData = (TYPE)data;
                     else
-                        desData = (TYPE)new GeneralFormatter().Deserialize((byte[])data);
+                        desData = new GeneralFormatter().Deserialize<TYPE>((byte[])data);
                     return Task.FromResult(new GetObjectInfo<TYPE> {
                         Data = (TYPE)desData,
                         Success = true,

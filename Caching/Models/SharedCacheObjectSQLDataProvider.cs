@@ -157,7 +157,7 @@ namespace YetaWF.Modules.Caching.DataProvider {
                             await localCacheDP.AddAsync(key, localCacheObj); // save as locally cached version
                             return new GetObjectInfo<TYPE> {
                                 Success = true,
-                                Data = (TYPE)new GeneralFormatter().Deserialize(sharedCacheObj.Value),
+                                Data = new GeneralFormatter().Deserialize<TYPE>(sharedCacheObj.Value),
                             };
                         }
                     } else {
@@ -166,11 +166,11 @@ namespace YetaWF.Modules.Caching.DataProvider {
                 } else {
                     // there is no shared version
                 }
-                // return the local data 
+                // return the local data
                 if (localInfo.Success) {
                     return new GetObjectInfo<TYPE> {
                         Success = true,
-                        Data = (TYPE)new GeneralFormatter().Deserialize(localInfo.Data.Value),
+                        Data = new GeneralFormatter().Deserialize<TYPE>(localInfo.Data.Value),
                     };
                 } else {
                     return new GetObjectInfo<TYPE> {

@@ -121,9 +121,9 @@ namespace YetaWF.Modules.Menus.DataProvider {
         private async Task<bool> TranslateMenuListAsync(SerializableList<ModuleAction> menu, string language, Func<string, bool> isHtml, Func<List<string>, Task<List<string>>> translateStringsAsync, Func<string, Task<string>> translateComplexStringAsync) {
             bool changed = false;
             foreach (ModuleAction action in menu) {
-                changed = changed || await ObjectSupport.TranslateObject(action, language, isHtml, translateStringsAsync, translateComplexStringAsync);
+                changed = await ObjectSupport.TranslateObject(action, language, isHtml, translateStringsAsync, translateComplexStringAsync) || changed;
                 if (action.SubMenu != null && action.SubMenu.Count > 0)
-                    changed = changed || await TranslateMenuListAsync(menu, language, isHtml, translateStringsAsync, translateComplexStringAsync);
+                    changed = await TranslateMenuListAsync(action.SubMenu, language, isHtml, translateStringsAsync, translateComplexStringAsync) || changed;
             }
             return changed;
         }

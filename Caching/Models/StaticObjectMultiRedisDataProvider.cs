@@ -132,7 +132,7 @@ namespace YetaWF.Modules.Caching.DataProvider {
                     if (sharedCacheData == null) {
                         data = default(TYPE);
                     } else {
-                        data = (TYPE)new GeneralFormatter().Deserialize(sharedCacheData);
+                        data = new GeneralFormatter().Deserialize<TYPE>(sharedCacheData);
                     }
                     cachedObj = new StaticCacheObject {
                         Created = sharedCacheCreated,

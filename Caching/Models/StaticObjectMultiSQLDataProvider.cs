@@ -106,10 +106,10 @@ namespace YetaWF.Modules.Caching.DataProvider {
                 if (sharedInfo.Created != cachedObj.Created) {
                     // shared cached version is different, retrieve and save locally
                     SharedCacheObject sharedCacheObj = await DataProvider.GetAsync(key);
-                    if (sharedCacheObj == null) { 
+                    if (sharedCacheObj == null) {
                         // this shouldn't happen, we just got the shared version
                     } else {
-                        data = (TYPE)new GeneralFormatter().Deserialize(sharedCacheObj.Value);
+                        data = new GeneralFormatter().Deserialize<TYPE>(sharedCacheObj.Value);
                         sharedInfo = sharedCacheObj;
                     }
                     cachedObj = new StaticCacheObject {
@@ -148,7 +148,7 @@ namespace YetaWF.Modules.Caching.DataProvider {
             // We're adding a new version
             await AddAsync(key, default(TYPE));
         }
-        
+
         // IInstallableModel
 
         public new Task<DataProviderExportChunk> ExportChunkAsync(int chunk, SerializableList<SerializableFile> fileList) {
