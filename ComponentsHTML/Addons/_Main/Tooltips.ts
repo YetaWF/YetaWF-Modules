@@ -16,7 +16,7 @@ namespace YetaWF_ComponentsHTML {
             $("body").tooltip({
                 items: (selectors + "," + ddsel),
                 content: function (a: any, b: any, c: any) : string|null {
-                    var $this = $(this);
+                    var $this = $(this as HTMLElement);
                     if ($this.is(ddsel)) {
                         // dropdown list - find who owns this and get the matching tooltip
                         // this is a bit hairy - we save all the tooltips for a dropdown list in a variable

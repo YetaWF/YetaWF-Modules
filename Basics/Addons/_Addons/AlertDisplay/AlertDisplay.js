@@ -67,3 +67,5 @@ var YetaWF_Basics_Mods;
     var alert = new AlertDisplayModule();
     alert.init();
 })(YetaWF_Basics_Mods || (YetaWF_Basics_Mods = {}));
+
+//# sourceMappingURL=AlertDisplay.js.map
