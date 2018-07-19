@@ -1,4 +1,4 @@
-﻿/* Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Licensing */
+﻿/* Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/TinyLogin#License */
 
 using System;
 using YetaWF.Core.Localize;

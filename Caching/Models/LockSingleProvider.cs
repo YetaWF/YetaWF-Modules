@@ -1,4 +1,4 @@
-/* Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/FileSystem#License */
+/* Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Caching#License */
 
 using System;
 using System.Collections.Generic;
@@ -100,7 +100,7 @@ namespace YetaWF.Modules.Caching.DataProvider {
         }
 
         /// <summary>
-        /// Lock a key by name until disposed. 
+        /// Lock a key by name until disposed.
         /// </summary>
         public async Task<ILockObject> LockResourceAsync(string key) {
             SingleLockObject lockObject = new SingleLockObject(key);

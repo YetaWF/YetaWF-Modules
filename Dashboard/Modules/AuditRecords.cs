@@ -1,3 +1,5 @@
+/* Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Dashboard#License */
+
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;

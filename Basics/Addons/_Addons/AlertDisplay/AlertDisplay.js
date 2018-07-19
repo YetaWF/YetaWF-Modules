@@ -1,5 +1,5 @@
 "use strict";
-/* Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Licensing */
+/* Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Basics#License */
 // If this javascript snippet is included, that means we're displaying the alert.
 // The alert is displayed until dismissed or if the page doesn't reference this module (dynamic content).
 var YetaWF_Basics_Mods;
@@ -67,5 +67,3 @@ var YetaWF_Basics_Mods;
     var alert = new AlertDisplayModule();
     alert.init();
 })(YetaWF_Basics_Mods || (YetaWF_Basics_Mods = {}));
-
-//# sourceMappingURL=AlertDisplay.js.map
