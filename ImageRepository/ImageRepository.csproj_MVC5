@@ -70,10 +70,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ComponentsHTML\FlashSelection\FlashSelection.cs" />
-    <Compile Include="ComponentsHTML\FlashSelection\FlashSelectionInfo.cs" />
-    <Compile Include="ComponentsHTML\ImageSelection\ImageSelection.cs" />
-    <Compile Include="ComponentsHTML\ImageSelection\ImageSelectionInfo.cs" />
+    <Compile Include="Components\HTML\FlashSelection.cs" />
+    <Compile Include="Components\HTML\FlashSelectionInfo.cs" />
+    <Compile Include="Components\HTML\ImageSelection.cs" />
+    <Compile Include="Components\HTML\ImageSelectionInfo.cs" />
     <Compile Include="Controllers\CKEBrowseFlash.cs" />
     <Compile Include="Controllers\Support\FlashSelectionController.cs" />
     <Compile Include="Startup\Info.cs" />

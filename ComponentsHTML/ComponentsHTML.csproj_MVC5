@@ -188,7 +188,6 @@
     <Content Include="Addons\_Addons\jqueryui\filelistJS.txt" />
     <Content Include="Addons\_Addons\jqueryui\postfixup.js" />
     <Content Include="Addons\_Addons\jqueryui\prefixup.js" />
-    <Content Include="Addons\_Addons\medialize.github.io.URI.js\filelistJS.txt" />
     <Content Include="Addons\_Addons\microsoft.com.jquery_unobtrusive_validation\FilelistJS.txt" />
     <Content Include="Addons\_Addons\ModuleMenu\filelistJS.txt" />
     <Content Include="Addons\_Addons\ModuleMenu\ModuleMenu.js" />
@@ -206,6 +205,8 @@
     <Content Include="Addons\_Addons\Popups\filelistCSS.txt" />
     <Content Include="Addons\_Addons\Popups\filelistJS.txt" />
     <Content Include="Addons\_Addons\Popups\popups.css" />
+    <Content Include="Addons\_Addons\smartresize\filelistJS.txt" />
+    <Content Include="Addons\_Addons\smartresize\SmartResize.js" />
     <Content Include="Addons\_Addons\telerik.com.Kendo_UI_Core\filelistCSS.txt" />
     <Content Include="Addons\_Addons\telerik.com.Kendo_UI_Core\filelistJS.txt" />
     <Content Include="Addons\_Main\ComponentsHTML.css" />
