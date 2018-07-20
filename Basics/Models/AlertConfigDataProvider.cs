@@ -74,7 +74,7 @@ namespace YetaWF.Modules.Basics.DataProvider {
         // API
         // API
 
-        public static async Task<AlertConfig> GetConfig() {
+        public static async Task<AlertConfig> GetConfigAsync() {
             using (AlertConfigDataProvider configDP = new AlertConfigDataProvider()) {
                 return await configDP.GetItemAsync();
             }
