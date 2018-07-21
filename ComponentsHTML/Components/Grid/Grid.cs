@@ -114,7 +114,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             }
 
             hb.Append($@"
-            {RenderGridSortOrder(model, gridSavedSettings)}
+            {RenderGridSortOrder(model, dictInfo, gridSavedSettings)}
             page: {initialPage},");
 
             if (isAjax) {

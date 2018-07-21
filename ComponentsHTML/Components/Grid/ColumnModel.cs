@@ -1,6 +1,7 @@
 ﻿/* Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/ComponentsHTML#License */
 
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using YetaWF.Core.Addons;
 using YetaWF.Core.Components;
@@ -198,33 +199,32 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             sb.Append("],");
         }
 
-        internal YHtmlString RenderGridSortOrder(GridDefinition gridDef, Grid.GridSavedSettings gridSavedSettings) {
-            GridDefinition.ColumnDictionary columns = null;
-
-            if (gridSavedSettings != null && gridSavedSettings.Columns.Count > 0) // use the saved sort order
-                columns = gridSavedSettings.Columns;
-            if (columns == null)
-                return new YHtmlString();
+        internal YHtmlString RenderGridSortOrder(GridDefinition gridDef, ObjectSupport.ReadGridDictionaryInfo dictInfo, Grid.GridSavedSettings gridSavedSettings) {
+            Dictionary<string, GridDefinition.ColumnInfo> columns = null;
 
             ScriptBuilder sb = new ScriptBuilder();
-            foreach (var col in columns) {
-                bool found = false;
-                switch (col.Value.Sort) {
-                    default:
-                    case GridDefinition.SortBy.NotSpecified:
-                        break;
-                    case GridDefinition.SortBy.Ascending:
-                        sb.Append("sortname:'{0}',sortorder:'{1}',", col.Key, "asc");
-                        found = true;
-                        break;
-                    case GridDefinition.SortBy.Descending:
-                        sb.Append("sortname:'{0}',sortorder:'{1}',", col.Key, "desc");
-                        found = true;
-                        break;
+            if (gridSavedSettings != null && gridSavedSettings.Columns.Count > 0) { // use the saved sort order
+                columns = gridSavedSettings.Columns;
+                foreach (var col in columns) {
+                    bool found = false;
+                    switch (col.Value.Sort) {
+                        default:
+                        case GridDefinition.SortBy.NotSpecified:
+                            break;
+                        case GridDefinition.SortBy.Ascending:
+                            sb.Append("sortname:'{0}',sortorder:'{1}',", col.Key, "asc");
+                            found = true;
+                            break;
+                        case GridDefinition.SortBy.Descending:
+                            sb.Append("sortname:'{0}',sortorder:'{1}',", col.Key, "desc");
+                            found = true;
+                            break;
+                    }
+                    if (found) break;// only one column supported in jqgrid
                 }
-                if (found) break;// only one column supported in jqgrid
+            } else if (dictInfo != null && !string.IsNullOrWhiteSpace(dictInfo.SortColumn))  {
+                sb.Append($"sortname:'{dictInfo.SortColumn}',sortorder:'{(dictInfo.SortBy == GridDefinition.SortBy.Ascending ? "asc" : "desc")}',");
             }
-
             return sb.ToYHtmlString();
         }
     }
