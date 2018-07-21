@@ -141,7 +141,7 @@ YetaWF_Url.RetrieveControl = function ($control) {
 YetaWF_Url.HasChanged = function ($control, data) {
     'use strict';
     var $hidden = _YetaWF_Url.getHidden($control);
-    return !StringYCompare(data, $hidden.val());
+    return !$YetaWF.stringCompare(data, $hidden.val());
 };
 
 

@@ -2,8 +2,8 @@
 /* Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Basics#License */
 // If this javascript snippet is included, that means we're displaying the alert.
 // The alert is displayed until dismissed or if the page doesn't reference this module (dynamic content).
-var YetaWF_Basics_Mods;
-(function (YetaWF_Basics_Mods) {
+var YetaWF_Basics;
+(function (YetaWF_Basics) {
     var AlertDisplayModule = /** @class */ (function () {
         function AlertDisplayModule() {
         }
@@ -39,7 +39,7 @@ var YetaWF_Basics_Mods;
          * @param event
          */
         AlertDisplayModule.prototype.handleClick = function (event) {
-            if (!$YetaWF.elementMatches(event.srcElement, ".YetaWF_Basics_AlertDisplay .t_close img"))
+            if (!$YetaWF.elementMatches(event.target, ".YetaWF_Basics_AlertDisplay .t_close img"))
                 return;
             AlertDisplayModule.dismissed = true;
             var alert = document.querySelector(".YetaWF_Basics_AlertDisplay");
@@ -66,6 +66,6 @@ var YetaWF_Basics_Mods;
     }());
     var alert = new AlertDisplayModule();
     alert.init();
-})(YetaWF_Basics_Mods || (YetaWF_Basics_Mods = {}));
+})(YetaWF_Basics || (YetaWF_Basics = {}));
 
 //# sourceMappingURL=AlertDisplay.js.map

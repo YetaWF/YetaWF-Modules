@@ -50,7 +50,7 @@ YetaWF_MultiString.Retrieve = function ($ms, data) {
         if (langText == '')
             langText = newText;
         var lang = YLocs.YetaWF_ComponentsHTML.Languages[index];
-        if (!StringYCompare(data[lang], langText)) {
+        if (!$YetaWF.stringCompare(data[lang], langText)) {
             changed = true;
             data[lang] = langText;
         }
@@ -72,7 +72,7 @@ YetaWF_MultiString.HasChanged = function ($ms, data) {
         if (langText.trim() == '')
             langText = text;
         var lang = YLocs.YetaWF_ComponentsHTML.Languages[index];
-        if (data[lang] != null && !StringYCompare(data[lang], langText))
+        if (data[lang] != null && !$YetaWF.stringCompare(data[lang], langText))
             return true;
     }
     return false;

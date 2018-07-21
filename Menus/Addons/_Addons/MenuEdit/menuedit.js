@@ -254,13 +254,13 @@ YetaWF_MenuEdit.LoadTree = function (treeId, detailsId, data, newEntry) {
         if (YetaWF_MultiString.HasChanged($("div[data-name='ModAction.MenuText']", $details), dataItem.MenuText)) return true;
         if (YetaWF_MultiString.HasChanged($("div[data-name='ModAction.LinkText']", $details), dataItem.LinkText)) return true;
         val = $("input[name='ModAction.ImageUrlFinal']", $details).val();
-        if (!StringYCompare(dataItem.ImageUrlFinal, val)) return true;
+        if (!$YetaWF.stringCompare(dataItem.ImageUrlFinal, val)) return true;
         if (YetaWF_MultiString.HasChanged($("div[data-name='ModAction.Tooltip']", $details), dataItem.Tooltip)) return true;
         if (YetaWF_MultiString.HasChanged($("div[data-name='ModAction.Legend']", $details), dataItem.Legend)) return true;
         val = $("input:checkbox[name='ModAction.Enabled']", $details).prop('checked');
         if (dataItem.Enabled != val) return true;
         val = $("input[name='ModAction.CssClass']", $details).val();
-        if (!StringYCompare(dataItem.CssClass, val)) return true;
+        if (!$YetaWF.stringCompare(dataItem.CssClass, val)) return true;
         val = $("select[name='ModAction.Style']", $details).val();
         if (dataItem.Style != val) return true;
         val = $("select[name='ModAction.Mode']", $details).val();
@@ -495,10 +495,10 @@ YetaWF_MenuEdit.LoadTree = function (treeId, detailsId, data, newEntry) {
 
     function SendOneEntry(tree, node) {
 
-        var $form = $YetaWF.Forms.getForm($details[0]);
+        var form = $YetaWF.Forms.getForm($details[0]);
         var useValidation = !treefuncs.IsRootNode(tree, node);
         var extraData = "ValidateCurrent=" + JSON.stringify(useValidation);
-        $YetaWF.Forms.submit($form[0], useValidation, extraData,
+        $YetaWF.Forms.submit(form, useValidation, extraData,
             function (hasErrors) {
                 if (!useValidation || !hasErrors) {
                     var dataItem = treefuncs.GetDataItem(tree, node);

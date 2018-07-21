@@ -209,7 +209,7 @@ namespace YetaWF_ComponentsHTML {
             popup.destroy();
         }
         /**
-         * Closes any open overlays, menus, dropdownlists, etc. (Popup windows are not handled and are explicitly closed using YetaWF_Popups)
+         * Closes any open overlays, menus, dropdownlists, etc. (Popup windows are not handled and are explicitly closed using $YetaWF.Popups)
          */
         public closeOverlays(): void {
 
