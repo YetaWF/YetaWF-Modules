@@ -19,7 +19,7 @@ namespace YetaWF.Modules.ComponentsHTML {
             await Manager.AddOnManager.AddAddOnNamedAsync(Package.Domain, Package.Product, "necolas.github.io.normalize");
             await Manager.AddOnManager.AddAddOnNamedAsync(Package.Domain, Package.Product, "no-margin-for-errors.com.prettyLoader");
 
-            await Manager.AddOnManager.AddAddOnNamedAsync("YetaWF", "Core", "Basics");//$$$ rename/remove
+            await Manager.AddOnManager.AddAddOnNamedAsync("YetaWF", "Core", "Basics");
             if (Manager.IsInPopup)
                 await AddPopupsAddOnsAsync();
         }
@@ -50,7 +50,7 @@ namespace YetaWF.Modules.ComponentsHTML {
         }
 
         public async Task AddPopupsAddOnsAsync() {
-            await Manager.AddOnManager.AddAddOnNamedAsync("YetaWF", "Core", "Popups");//$$$ rename/remove
+            await Manager.AddOnManager.AddAddOnNamedAsync("YetaWF", "Core", "Popups");
             await Manager.AddOnManager.AddAddOnNamedAsync(Package.Domain, Package.Product, "Popups");
         }
     }
