@@ -3,18 +3,11 @@
 var YetaWF_TemplateDropDownList = {};
 var _YetaWF_TemplateDropDownList = {};
 
-YetaWF_TemplateDropDownList._handleNativeEvents = function ($elem) {
-    if ($elem.closest('.ysubmitonchange, .yapplyonchange').length > 0) {
-        ComponentsHTML.jQueryToNativeEvent($elem, "change");
-    }
-};
-
 YetaWF_TemplateDropDownList.initOne = function ($this) {
     var w = $this.width();
     if (w > 0 && $this.attr("data-needinit") !== undefined) {
         $this.removeAttr("data-needinit");
         $this.kendoDropDownList({});
-        YetaWF_TemplateDropDownList._handleNativeEvents($this);
         var avgw = $this.attr("data-charavgw");
         if (!avgw) throw "dropdowlist without avg char width";/*DEBUG*/
         $this.closest('.k-widget.yt_dropdownlist,.k-widget.yt_dropdownlist_base,.k-widget.yt_enum').width(w + 3 * avgw);
@@ -85,7 +78,6 @@ YetaWF_TemplateDropDownList.AjaxUpdate = function ($control, data, ajaxurl, onSu
                     dataValueField: "v",
                     dataSource: data.data,
                 });
-                YetaWF_TemplateDropDownList._handleNativeEvents($this);
                 $control.data("tooltips", data.tooltips);
                 if (onSuccess !== undefined) {
                     onSuccess(data);
@@ -122,8 +114,13 @@ $YetaWF.registerActivateDivs(function (divs) {
         });
     }
 });
-$(document).on('change', 'select.yt_dropdownlist_base[data-val=true]', function () {
-    FormsSupport.validateElement(this);
+
+// handle submit/apply
+$(document).on('change', ".ysubmitonchange .k-dropdown select.yt_dropdownlist_base", function (ev) {
+    $YetaWF.Forms.submitOnChange(ev.target);
+});
+$(document).on('change', ".yapplyonchange .k-dropdown select.yt_dropdownlist_base", function (ev) {
+    $YetaWF.Forms.applyOnChange(ev.target);
 });
 
 // A <div> is being emptied. Destroy all date/time pickers the <div> may contain.
