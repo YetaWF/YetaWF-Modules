@@ -109,7 +109,7 @@
     <Content Include="Addons\_Main\Images\ControlPanel.png" />
     <Content Include="Addons\_Main\Images\ControlPanelLarge.png" />
     <Content Include="Addons\_Main\pagecontrol.css" />
-    <Content Include="Addons\_Main\pagecontrol.js" />
+    <TypeScriptCompile Include="Addons\_Main\PageControl.ts" />
     <Content Include="Addons\_SiteTemplates\YetaWF_PageEdit.1.0.3.txt" />
     <Content Include="Addons\_Templates\AllowedUsers\AllowedUsers.js" />
     <Content Include="Addons\_Templates\AllowedUsers\filelistJS.txt" />
@@ -151,6 +151,8 @@
     <None Include="Addons\_Main\Grids\AllowedRolesEditComponent.GridAllowedRole" />
     <None Include="app.config" />
     <None Include="packages.config" />
+    <None Include="tsconfig.json" />
+    <None Include="tslint.json" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

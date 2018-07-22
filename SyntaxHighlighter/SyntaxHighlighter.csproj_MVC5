@@ -91,7 +91,7 @@
     <Content Include="Addons\_Addons\SkinHighlightJS\FilelistJS.txt" />
     <Content Include="Addons\_Addons\SkinHighlightJS\highlight.pack.js" />
     <Content Include="Addons\_Addons\SkinHighlightJS\Fixup.css" />
-    <Content Include="Addons\_Addons\SkinHighlightJS\Init.js" />
+    <TypeScriptCompile Include="Addons\_Addons\SkinHighlightJS\Init.ts" />
     <Content Include="Addons\_Addons\SkinHighlightJS\themelist.txt" />
     <Content Include="Addons\_Addons\SkinHighlightJS\themes\agate.css" />
     <Content Include="Addons\_Addons\SkinHighlightJS\themes\androidstudio.css" />
@@ -179,14 +179,18 @@
     <Content Include="Addons\_Addons\SkinSyntaxHighlighter\Docs.txt" />
     <Content Include="Addons\_Addons\SkinSyntaxHighlighter\FilelistCSS.txt" />
     <Content Include="Addons\_Addons\SkinSyntaxHighlighter\FilelistJS.txt" />
-    <Content Include="Addons\_Addons\SkinSyntaxHighlighter\Init.js" />
+    <None Include="tsconfig.json" />
+    <None Include="tslint.json" />
+    <TypeScriptCompile Include="Addons\_Addons\SkinSyntaxHighlighter\Init.ts" />
     <Content Include="Addons\_Addons\SkinSyntaxHighlighter\themelistMVC5.txt" />
     <Content Include="Addons\_Addons\SkinSyntaxHighlighter\themelistMVC6.txt" />
+    <Content Include="Addons\_Main\filelistJS.txt" />
     <Content Include="Addons\_SiteTemplates\YetaWF_SyntaxHighlighter.2.5.2.txt" />
     <Content Include="Addons\_Templates\SyntaxHighlighter\filelistCSS.txt" />
     <Content Include="Addons\_Templates\SyntaxHighlighter\SyntaxHighlighterSkin.css" />
     <None Include="app.config" />
     <None Include="packages.config" />
+    <TypeScriptCompile Include="Addons\_Main\SyntaxHighlighter.ts" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\CoreComponents\Core\Core.csproj">
