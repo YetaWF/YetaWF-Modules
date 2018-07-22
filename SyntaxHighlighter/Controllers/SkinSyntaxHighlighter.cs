@@ -30,7 +30,7 @@ namespace YetaWF.Modules.SyntaxHighlighter.Controllers {
 
             // add client-side init
             string url = VersionManager.GetAddOnNamedUrl(package.Domain, package.Product, "SkinSyntaxHighlighter");
-            Manager.ScriptManager.AddLast("AlexGorbatchevCom_SyntaxHighlighter", "AlexGorbatchevCom_SyntaxHighlighter.Init('" + url + "');");
+            Manager.ScriptManager.AddLast("AlexGorbatchevCom_SyntaxHighlighter", "YetaWF_SyntaxHighlighter.AlexGorbatchevCom.init('" + url + "');");
 
             return new EmptyResult();
         }

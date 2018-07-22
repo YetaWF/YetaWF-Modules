@@ -151,7 +151,7 @@ namespace YetaWF.Modules.Panels.Components {
         $('#{DivId}').kendoPanelBar({{
             expandMode: 'single',
             activate: function(ev) {{
-                $YetaWF.processActivateDivs(ev.item);
+                $YetaWF.processActivateDivs([ev.item]);
             }}
         }});
         var $panelBar = $('#{DivId}').kendoPanelBar().data('kendoPanelBar');
@@ -161,7 +161,7 @@ namespace YetaWF.Modules.Panels.Components {
             hb.Append($@"
     <script>");
             using (DocumentReady(hb, ControlId)) {
-                hb.Append($@"$YetaWF.processActivateDivs($YetaWF.getElement1ByID('{ControlId}'));");
+                hb.Append($@"$YetaWF.processActivateDivs([$YetaWF.getElementById('{ControlId}')]);");
             }
             hb.Append($@"
     </script>
