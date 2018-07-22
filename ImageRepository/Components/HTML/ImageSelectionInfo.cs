@@ -112,7 +112,7 @@ namespace YetaWF.Modules.ImageRepository.Components {
         }
         List<string> _files;
 
-        // Some of the following is not HTML dependent TODO: ?
+        // Some of the following is not HTML dependent TODO: %%%%%%%%%%%%%%%%%%% ?
 
         public static string StoragePath(Guid folderGuid, string subFolder, string fileType) {
             string path = ModuleDefinition.GetModuleDataFolder(folderGuid);

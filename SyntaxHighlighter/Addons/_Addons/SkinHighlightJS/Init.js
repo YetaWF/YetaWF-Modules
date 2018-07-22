@@ -30,5 +30,3 @@ var YetaWF_SyntaxHighlighter;
     }());
     YetaWF_SyntaxHighlighter.HighlightJS = new HighlightJSModule();
 })(YetaWF_SyntaxHighlighter || (YetaWF_SyntaxHighlighter = {}));
-
-//# sourceMappingURL=Init.js.map

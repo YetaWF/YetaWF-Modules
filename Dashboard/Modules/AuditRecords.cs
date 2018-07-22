@@ -41,7 +41,7 @@ namespace YetaWF.Modules.Dashboard.Modules {
         [UIHint("Url"), AdditionalMetadata("UrlType", UrlTypeEnum.Local), UrlValidation(UrlValidationAttribute.SchemaEnum.Any, UrlTypeEnum.Local), StringLength(Globals.MaxUrl), Trim]
         public string DisplayUrl { get; set; }
 
-        public override SerializableList<AllowedRole> DefaultAllowedRoles { get { return AdministratorLevel_DefaultAllowedRoles; } } // TODO: adjust default permissions
+        public override SerializableList<AllowedRole> DefaultAllowedRoles { get { return AdministratorLevel_DefaultAllowedRoles; } }
         public override List<RoleDefinition> ExtraRoles {
             get {
                 return new List<RoleDefinition>() {

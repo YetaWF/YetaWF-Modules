@@ -70,5 +70,3 @@ var YetaWF_SyntaxHighlighter;
     }());
     YetaWF_SyntaxHighlighter.AlexGorbatchevCom = new AlexGorbatchevComHighlighterModule();
 })(YetaWF_SyntaxHighlighter || (YetaWF_SyntaxHighlighter = {}));
-
-//# sourceMappingURL=Init.js.map

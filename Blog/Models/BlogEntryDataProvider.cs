@@ -225,7 +225,7 @@ namespace YetaWF.Modules.Blog.DataProvider {
             return DataProvider.GetRecordsAsync(skip, take, sort, filters);
         }
         public async Task<bool> RemoveEntriesAsync(int categoryIdentity) {
-            // TODO: This could be optimized for SQL using joins
+            // TODO: This could be optimized for SQL using joins %%%%%%%%%%%%%%%%%%%
             // remove all entries for this category
             List<DataProviderFilterInfo> filters = DataProviderFilterInfo.Join(null, new DataProviderFilterInfo { Field = "CategoryIdentity", Operator = "==", Value = categoryIdentity });
             DataProviderGetRecords<BlogEntry> data = await GetItemsAsync(0, 0, null, filters);
