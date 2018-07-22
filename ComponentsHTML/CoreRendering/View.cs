@@ -5,6 +5,7 @@ using YetaWF.Core.Support;
 using YetaWF.Core.Modules;
 using YetaWF.Core.Addons;
 #if MVC6
+using Microsoft.AspNetCore.Mvc.Rendering;
 #else
 using System.Web.Mvc;
 using System.Web.Mvc.Html;

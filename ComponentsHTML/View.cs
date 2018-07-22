@@ -6,9 +6,13 @@ using System.Threading.Tasks;
 using YetaWF.Core.Components;
 using YetaWF.Core.Support;
 using YetaWF.Core.Addons;
-using System.Web.Routing;
 #if MVC6
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Routing;
+using Microsoft.AspNetCore.Routing;
+using Microsoft.Extensions.DependencyInjection;
 #else
+using System.Web.Routing;
 using System.Web.Mvc;
 #endif
 

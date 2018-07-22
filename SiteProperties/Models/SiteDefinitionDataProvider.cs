@@ -66,7 +66,7 @@ namespace YetaWF.Modules.SiteProperties.Models {
             if (SiteDefinition.INITIAL_INSTALL) return;
             DataProviderGetRecords<SiteDefinition> sites = await GetItemsAsync(0, 0, null, null);
             foreach (SiteDefinition site in sites.Data)
-                if (!string.IsNullOrWhiteSpace(site.StaticDomain))
+                if (!string.IsNullOrWhiteSpace(site.StaticDomain) && !StaticSiteCache.ContainsKey(site.StaticDomain.ToLower()))
                     StaticSiteCache.Add(site.StaticDomain.ToLower(), site.SiteDomain);
         }
 
