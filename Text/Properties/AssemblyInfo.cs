@@ -24,5 +24,5 @@ using YetaWF.Core.Packages;
     "https://yetawf.com/Documentation/YetaWF/Text#Release%20Notice",
     "https://yetawf.com/Documentation/YetaWF/Text#License")]
 
+[assembly: RequiresPackage("YetaWF.ComponentsHTML")]
 [assembly: RequiresPackage("YetaWF.ImageRepository")]
-

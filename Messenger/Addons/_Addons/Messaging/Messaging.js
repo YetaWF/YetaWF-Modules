@@ -1,3 +1,4 @@
+"use strict";
 /* Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Messenger#License */
 var CKEDITOR;
 var YetaWF_Messenger;
@@ -140,5 +141,3 @@ var YetaWF_Messenger;
     }());
     YetaWF_Messenger.MessagingModule = MessagingModule;
 })(YetaWF_Messenger || (YetaWF_Messenger = {}));
-
-//# sourceMappingURL=Messaging.js.map

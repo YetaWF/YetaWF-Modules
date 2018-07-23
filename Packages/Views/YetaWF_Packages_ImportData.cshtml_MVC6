@@ -1,8 +1,0 @@
-﻿@*Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Packages#License*@
-@inherits YetaWF.Core.Views.RazorView<YetaWF.Modules.Packages.Modules.ImportDataModule, YetaWF.Modules.Packages.Controllers.ImportDataModuleController.ImportDataModel>
-@using YetaWF.Core.Addons
-<div class="t_description">
-    @__ResStr("text", "Import package data from a zip file (created by Export Data).")
-</div>
-@Html.EditorFor(m => Model.UploadFile)
-

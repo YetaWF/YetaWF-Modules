@@ -8,11 +8,10 @@ using YetaWF.Core.Localize;
 using YetaWF.Core.Models;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Support;
-using YetaWF.Core;
-using YetaWF.Modules.Identity.Views.Shared;
 using YetaWF.Modules.Identity.DataProvider;
 using System.Linq;
 using YetaWF.Core.DataProvider;
+using YetaWF.Modules.Identity.Components;
 #if MVC6
 using Microsoft.AspNetCore.Mvc;
 #else
@@ -91,9 +90,10 @@ namespace YetaWF.Modules.Identity.Controllers {
                 UserDefinition user = await userDP.GetItemAsync(newValue);
                 if (user == null)
                     throw new Error(this.__ResStr("noUser", "User {0} not found", newValue));
-                ListOfUserNamesHelper.GridEntryEdit entry = (ListOfUserNamesHelper.GridEntryEdit)Activator.CreateInstance(typeof(ListOfUserNamesHelper.GridEntryEdit));
-                entry.UserName = newValue;
-                entry.__Value = user.UserId.ToString();
+                ListOfUserNamesEditComponent.GridEdit entry = new ListOfUserNamesEditComponent.GridEdit {
+                    UserName = newValue,
+                    __Value = user.UserId.ToString(),
+                };
                 return await GridPartialViewAsync(new GridDefinition.GridEntryDefinition(prefix, newRecNumber, entry));
             }
         }

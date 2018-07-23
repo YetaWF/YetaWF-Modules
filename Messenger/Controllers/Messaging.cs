@@ -1,16 +1,16 @@
 /* Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Messenger#License */
 
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using YetaWF.Core.Controllers;
+using YetaWF.Core.DataProvider;
+using YetaWF.Core.Identity;
 using YetaWF.Core.Localize;
 using YetaWF.Core.Models.Attributes;
+using YetaWF.Core.Packages;
 using YetaWF.Core.Support;
 using YetaWF.Modules.Messenger.DataProvider;
-using YetaWF.Core.Identity;
-using System.Collections.Generic;
-using YetaWF.Core.DataProvider;
-using YetaWF.Modules.Messenger.Views.Shared;
-using YetaWF.Core.Packages;
+using YetaWF.Modules.Messenger.Components;
 #if MVC6
 using Microsoft.AspNetCore.Mvc;
 #else
@@ -32,7 +32,7 @@ namespace YetaWF.Modules.Messenger.Controllers {
 
             [Caption("Message History"), Description("The history of messages sent to the selected user")]
             [UIHint("YetaWF_Messenger_Messages"), ReadOnly]
-            public MessageData MessageData { get; set; }
+            public MessagesEditComponent.MessageData MessageData { get; set; }
 
             [UIHint("Hidden")]
             public int MaxMessages { get; set; }
@@ -45,7 +45,7 @@ namespace YetaWF.Modules.Messenger.Controllers {
             public string OfflineImage { get; set; }
 
             public EditModel() {
-                MessageData = new MessageData();
+                MessageData = new MessagesEditComponent.MessageData();
                 MaxMessages = 10;
             }
         }

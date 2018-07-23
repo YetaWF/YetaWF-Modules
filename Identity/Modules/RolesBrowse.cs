@@ -6,15 +6,14 @@ using System.Threading.Tasks;
 using YetaWF.Core;
 using YetaWF.Core.IO;
 using YetaWF.Core.Localize;
-using YetaWF.Core.Menus;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Modules;
 using YetaWF.Core.Serializers;
 using YetaWF.Core.Support;
-using YetaWF.Core.Views.Shared;
 using YetaWF.DataProvider;
 using YetaWF.Modules.Identity.Controllers;
 using YetaWF.Modules.Identity.DataProvider;
+using YetaWF.Core.Components;
 #if MVC6
 #else
 using System.Web.Mvc;
@@ -38,13 +37,13 @@ namespace YetaWF.Modules.Identity.Modules {
         public override IModuleDefinitionIO GetDataProvider() { return new RolesBrowseModuleDataProvider(); }
 
         [Category("General"), Caption("Add URL"), Description("The URL to add a new role - if omitted, a default page is generated")]
-        [UIHint("Url"), AdditionalMetadata("UrlType", UrlHelperEx.UrlTypeEnum.Local), UrlValidation(UrlValidationAttribute.SchemaEnum.Any, UrlHelperEx.UrlTypeEnum.Local), StringLength(Globals.MaxUrl), Trim]
+        [UIHint("Url"), AdditionalMetadata("UrlType", UrlTypeEnum.Local), UrlValidation(UrlValidationAttribute.SchemaEnum.Any, UrlTypeEnum.Local), StringLength(Globals.MaxUrl), Trim]
         public string AddUrl { get; set; }
         [Category("General"), Caption("Display URL"), Description("The URL to display a role - if omitted, a default page is generated")]
-        [UIHint("Url"), AdditionalMetadata("UrlType", UrlHelperEx.UrlTypeEnum.Local), UrlValidation(UrlValidationAttribute.SchemaEnum.Any, UrlHelperEx.UrlTypeEnum.Local), StringLength(Globals.MaxUrl), Trim]
+        [UIHint("Url"), AdditionalMetadata("UrlType", UrlTypeEnum.Local), UrlValidation(UrlValidationAttribute.SchemaEnum.Any, UrlTypeEnum.Local), StringLength(Globals.MaxUrl), Trim]
         public string DisplayUrl { get; set; }
         [Category("General"), Caption("Edit URL"), Description("The URL to edit a role - if omitted, a default page is generated")]
-        [UIHint("Url"), AdditionalMetadata("UrlType", UrlHelperEx.UrlTypeEnum.Local), UrlValidation(UrlValidationAttribute.SchemaEnum.Any, UrlHelperEx.UrlTypeEnum.Local), StringLength(Globals.MaxUrl), Trim]
+        [UIHint("Url"), AdditionalMetadata("UrlType", UrlTypeEnum.Local), UrlValidation(UrlValidationAttribute.SchemaEnum.Any, UrlTypeEnum.Local), StringLength(Globals.MaxUrl), Trim]
         public string EditUrl { get; set; }
 
         public override SerializableList<AllowedRole> DefaultAllowedRoles { get { return AdministratorLevel_DefaultAllowedRoles; } }

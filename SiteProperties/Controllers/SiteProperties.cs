@@ -19,7 +19,7 @@ namespace YetaWF.Modules.SiteProperties.Controllers {
     public class SitePropertiesModuleController : ControllerImpl<YetaWF.Modules.SiteProperties.Modules.SitePropertiesModule> {
 
         public class SitePropertiesModel {
-            [UIHint("PropertyListTabbed")]
+            [UIHint("PropertyList")]
             public SiteDefinition Site { get; set; }
             [UIHint("Hidden")]
             public string SiteHost { get; set; }

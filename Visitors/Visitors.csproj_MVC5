@@ -85,6 +85,9 @@
     <Compile Include="Modules\Visitors.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Scheduler\RemoveVisitors.cs" />
+    <Compile Include="Views\HTML\VisitorsUnavailable.cs" />
+    <Compile Include="Views\HTML\TinyVisitors.cs" />
+    <Compile Include="Views\HTML\SkinVisitor.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Addons\_Addons\VisitorSummary\Visitors.scss" />
@@ -101,10 +104,6 @@
   <ItemGroup>
     <None Include="app.config" />
     <None Include="packages.config" />
-    <None Include="Views\YetaWF_Visitors_TinyVisitors.cshtml" />
-    <None Include="Views\YetaWF_Visitors_SkinVisitor.cshtml" />
-    <None Include="Views\YetaWF_Visitors_VisitorsUnavailable.cshtml" />
-    <None Include="Views\YetaWF_Visitors_SkinVisitor_Partial.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\CoreComponents\Core\Core.csproj">
@@ -122,6 +121,10 @@
     <ProjectReference Include="..\..\..\DataProvider\SQL\SQL.csproj">
       <Project>{6a90eab3-a9e4-4a2c-90d9-145859790c46}</Project>
       <Name>SQL</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ComponentsHTML\ComponentsHTML.csproj">
+      <Project>{ab7bfd23-57e8-40a6-85ea-9d4b3206075f}</Project>
+      <Name>ComponentsHTML</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup />

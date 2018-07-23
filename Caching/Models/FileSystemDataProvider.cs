@@ -1,4 +1,4 @@
-/* Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/FileSystem#License */
+/* Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Caching#License */
 
 using System;
 using System.Collections.Generic;
@@ -48,7 +48,7 @@ namespace YetaWF.Modules.Caching.DataProvider {
         // API
 
         /// <summary>
-        /// Lock a file/folder by name until disposed. 
+        /// Lock a file/folder by name until disposed.
         /// </summary>
         public async Task<ILockObject> LockResourceAsync(string fileOrFolder) {
             return await YetaWF.Core.IO.Caching.LockProvider.LockResourceAsync(fileOrFolder);
@@ -62,7 +62,7 @@ namespace YetaWF.Modules.Caching.DataProvider {
             int retry = 10; // folder occasionally are in use so we'll just wait a bit
             while (retry > 0) {
                 try {
-                    Directory.Delete(targetFolder, true);// recursive 
+                    Directory.Delete(targetFolder, true);// recursive
                     return;
                 } catch (Exception exc) {
                     if (exc is DirectoryNotFoundException)

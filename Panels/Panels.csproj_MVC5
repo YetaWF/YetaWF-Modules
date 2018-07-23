@@ -36,9 +36,12 @@
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Components\HTML\ListOfLocalPages.cs" />
+    <Compile Include="Components\HTML\PanelInfo.cs" />
+    <Compile Include="Components\HTML\PagePanelInfo.cs" />
     <Compile Include="Controllers\PagePanel.cs" />
     <Compile Include="Controllers\ModulePanel.cs" />
-    <Compile Include="Controllers\Support\ListOfLocalPagesHelper.cs" />
+    <Compile Include="Controllers\Support\ListOfLocalPages.cs" />
     <Compile Include="Models\PagePanelData.cs" />
     <Compile Include="Models\ModulePanelData.cs" />
     <Compile Include="Modules\PagePanelModule.cs" />
@@ -46,8 +49,8 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup\AreaRegistration.cs" />
     <Compile Include="Startup\Info.cs" />
-    <Compile Include="ViewsCode\Shared\ListOfLocalPagesHelper.cs" />
-    <Compile Include="ViewsCode\Shared\PanelInfoHelper.cs" />
+    <Compile Include="Views\HTML\PagePanel.cs" />
+    <Compile Include="Views\HTML\ModulePanel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Addons\_Main\filelistCSS.txt" />
@@ -60,8 +63,8 @@
     <Content Include="Addons\_Templates\ListOfLocalPages\ListOfLocalPages.js" />
     <Content Include="Addons\_Templates\PagePanelInfo\filelistCSS.txt" />
     <Content Include="Addons\_Templates\PagePanelInfo\filelistJS.txt" />
-    <None Include="Addons\_Main\Grids\ListOfLocalPagesHelper.GridAllEntry" />
-    <None Include="Addons\_Main\Grids\ListOfLocalPagesHelper.GridEntryEdit" />
+    <None Include="Addons\_Main\Grids\ListOfLocalPagesEditComponent.GridAllEntry" />
+    <None Include="Addons\_Main\Grids\ListOfLocalPagesEditComponent.GridEntryEdit" />
     <None Include="Addons\_Templates\ListOfLocalPages\ListOfLocalPages.scss" />
     <None Include="Addons\_Templates\PagePanelInfo\PagePanelInfo.scss" />
     <Content Include="Addons\_Templates\PagePanelInfo\PagePanelInfo.js" />
@@ -69,17 +72,10 @@
     <Content Include="Addons\_Templates\PanelInfo\filelistJS.txt" />
     <Content Include="Addons\_Templates\PanelInfo\PanelInfo.css" />
     <Content Include="Addons\_Templates\PanelInfo\PanelInfo.js" />
-    <Content Include="Views\Shared\EditorTemplates\YetaWF_Panels_PanelInfo.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
     <None Include="packages.config" />
-    <Content Include="Views\Shared\DisplayTemplates\YetaWF_Panels_PanelInfo.cshtml" />
-    <Content Include="Views\Shared\DisplayTemplates\YetaWF_Panels_PagePanelInfo.cshtml" />
-    <Content Include="Views\Shared\EditorTemplates\YetaWF_Panels_ListOfLocalPages.cshtml" />
-    <None Include="Views\YetaWF_Panels_PagePanel.cshtml" />
-    <None Include="Views\YetaWF_Panels_ModulePanel.cshtml" />
-    <None Include="Views\YetaWF_Panels_ModulePanel_Partial.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\CoreComponents\Core\Core.csproj">
@@ -89,6 +85,10 @@
     <ProjectReference Include="..\..\..\DataProvider\ModuleDefinition\ModuleDefinition.csproj">
       <Project>{348f2a6b-57f5-47a3-8a46-3f44529acd83}</Project>
       <Name>ModuleDefinition</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ComponentsHTML\ComponentsHTML.csproj">
+      <Project>{AB7BFD23-57E8-40A6-85EA-9D4B3206075F}</Project>
+      <Name>ComponentsHTML</Name>
     </ProjectReference>
     <ProjectReference Include="..\Pages\Pages.csproj">
       <Project>{abd7d692-a3d1-4175-a88b-a4b9ee97f61d}</Project>

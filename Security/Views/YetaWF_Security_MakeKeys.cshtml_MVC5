@@ -1,8 +1,0 @@
-@*Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Security#License*@
-@inherits YetaWF.Core.Views.RazorView<YetaWF.Modules.Security.Modules.MakeKeysModule, YetaWF.Modules.Security.Controllers.MakeKeysModuleController.Model>
-@using (CreateFormAsync("MakeKeys").Result) {
-    @Html.EditorFor(m => Model, "PropertyList")
-    @FormButtonsAsync(new FormButton[] {
-        new FormButton() { ButtonType= ButtonTypeEnum.Cancel, Text=this.__ResStr("btnCancel", "Return") },
-    }).Result;
-}

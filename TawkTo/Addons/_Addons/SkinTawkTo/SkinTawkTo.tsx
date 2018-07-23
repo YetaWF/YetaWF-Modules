@@ -2,9 +2,15 @@
 
 // If this javascript snippet is included, that means we're displaying the chat.
 
+// tslint:disable-next-line:variable-name
 var Tawk_API: any;
 
-namespace ActiveEngage_Conversation { // nonstandard namespace to avoid conflict with core YetaWF_Basics
+namespace YetaWF_TawkTo {
+
+    export interface IPackageConfigs {
+        IncludedPagesCss: string;
+        ExcludedPagesCss: string;
+    }
 
     class SkinTawkToModule {
 
@@ -19,13 +25,13 @@ namespace ActiveEngage_Conversation { // nonstandard namespace to avoid conflict
 
             var tawkto: SkinTawkToModule = this;
 
-            YetaWF_Basics.RegisterContentChange(function (event: Event, addonGuid: string, on: boolean): void {
+            $YetaWF.registerContentChange((addonGuid: string, on: boolean): void => {
                 if (addonGuid === SkinTawkToModule.MODULEGUID) {
                     SkinTawkToModule.on = on;
                 }
             });
 
-            YetaWF_Basics.RegisterNewPage(function (event: Event, url: string): void {
+            $YetaWF.registerNewPage((url: string): void => {
                 tawkto.showInvite(SkinTawkToModule.on);
                 if (SkinTawkToModule.on) {
                     // Functionality not available in Tawk.to to record a new page
@@ -49,15 +55,15 @@ namespace ActiveEngage_Conversation { // nonstandard namespace to avoid conflict
 
             var invite: boolean = show;
             if (invite) {
-                var inclCss: string | null = YConfigs.YetaWF_TawkTo.IncludedPagesCss;
-                var exclCss: string | null = YConfigs.YetaWF_TawkTo.ExcludedPagesCss;
+                var inclCss = YConfigs.YetaWF_TawkTo.IncludedPagesCss;
+                var exclCss = YConfigs.YetaWF_TawkTo.ExcludedPagesCss;
                 if (inclCss && inclCss.length > 0) {
                     // only included css pages show the chat invite
                     invite = false;
                     if (inclCss) {
                         var csses: string[] = inclCss.split(" ");
                         for (var css of csses) {
-                            if (YetaWF_Basics.elementHasClass(body, css)) {
+                            if ($YetaWF.elementHasClass(body, css)) {
                                 invite = true;
                                 break;
                             }
@@ -68,7 +74,7 @@ namespace ActiveEngage_Conversation { // nonstandard namespace to avoid conflict
                 if (exclCss && invite) {
                     csses = exclCss.split(" ");
                     for (css of csses) {
-                        if (YetaWF_Basics.elementHasClass(body, css)) {
+                        if ($YetaWF.elementHasClass(body, css)) {
                             invite = false;
                             break;
                         }

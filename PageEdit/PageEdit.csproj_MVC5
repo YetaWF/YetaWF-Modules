@@ -71,7 +71,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Components\HTML\AllowedRoles.cs" />
+    <Compile Include="Components\HTML\AllowedUsers.cs" />
     <Compile Include="Controllers\ControlPanelConfig.cs" />
+    <Compile Include="Controllers\Support\AllowedUsers.cs" />
     <Compile Include="Models\ControlPanelConfigDataProvider.cs" />
     <Compile Include="Models\FileDataProvider.cs" />
     <Compile Include="Models\SQLDataProvider.cs" />
@@ -81,13 +84,20 @@
     <Compile Include="Controllers\EditMode.cs" />
     <Compile Include="Controllers\PageEdit.cs" />
     <Compile Include="Controllers\PageControl.cs" />
-    <Compile Include="Controllers\SharedSupport.cs" />
     <Compile Include="Modules\EditMode.cs" />
     <Compile Include="Modules\PageEdit.cs" />
     <Compile Include="Modules\PageControl.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ViewsCode\Shared\RolesHelper.cs" />
-    <Compile Include="ViewsCode\Shared\UsersHelper.cs" />
+    <Compile Include="Views\HTML\AddExistingModule.cs" />
+    <Compile Include="Views\HTML\AddNewModule.cs" />
+    <Compile Include="Views\HTML\AddNewPage.cs" />
+    <Compile Include="Views\HTML\EditMode.cs" />
+    <Compile Include="Views\HTML\ImportModule.cs" />
+    <Compile Include="Views\HTML\ImportPage.cs" />
+    <Compile Include="Views\HTML\LoginSiteSelection.cs" />
+    <Compile Include="Views\HTML\PageControl.cs" />
+    <Compile Include="Views\HTML\PageEdit.cs" />
+    <Compile Include="Views\HTML\SkinSelection.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Addons\_Main\filelistCSS.txt" />
@@ -99,17 +109,16 @@
     <Content Include="Addons\_Main\Images\ControlPanel.png" />
     <Content Include="Addons\_Main\Images\ControlPanelLarge.png" />
     <Content Include="Addons\_Main\pagecontrol.css" />
-    <Content Include="Addons\_Main\pagecontrol.js" />
+    <TypeScriptCompile Include="Addons\_Main\PageControl.ts" />
     <Content Include="Addons\_SiteTemplates\YetaWF_PageEdit.1.0.3.txt" />
+    <Content Include="Addons\_Templates\AllowedUsers\AllowedUsers.js" />
+    <Content Include="Addons\_Templates\AllowedUsers\filelistJS.txt" />
     <Content Include="Addons\_Templates\AllowedUsers\allowedusers.css" />
     <Content Include="Addons\_Templates\AllowedUsers\filelistCSS.txt" />
     <Content Include="Addons\_Templates\AllowedRoles\filelistCSS.txt" />
     <Content Include="Addons\_Templates\AllowedRoles\allowedroles.css" />
-    <Content Include="Views\YetaWF_PageEdit_PageControl.cshtml" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Views\Shared\DisplayTemplates\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <ProjectReference Include="..\..\..\CoreComponents\Core\Core.csproj">
       <Project>{71acc7ac-2622-4127-b925-d058c01a39e5}</Project>
@@ -127,26 +136,23 @@
       <Project>{6a90eab3-a9e4-4a2c-90d9-145859790c46}</Project>
       <Name>SQL</Name>
     </ProjectReference>
+    <ProjectReference Include="..\ComponentsHTML\ComponentsHTML.csproj">
+      <Project>{ab7bfd23-57e8-40a6-85ea-9d4b3206075f}</Project>
+      <Name>ComponentsHTML</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Identity\Identity.csproj">
+      <Project>{86178F8E-67E8-4D3D-9800-65C88D0B5849}</Project>
+      <Name>Identity</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\YetaWF_PageEdit_PageEdit.cshtml" />
-    <Content Include="Views\YetaWF_PageEdit_PageEdit_Partial.cshtml" />
-    <Content Include="Views\YetaWF_PageEdit_AddNewPage_Partial.cshtml" />
-    <Content Include="Views\Shared\EditorTemplates\YetaWF_PageEdit_AllowedUsers.cshtml" />
-    <Content Include="Views\Shared\EditorTemplates\YetaWF_PageEdit_AllowedRoles.cshtml" />
-    <None Include="Addons\_Main\Grids\UsersHelper.GridAllowedUser" />
-    <None Include="Addons\_Main\Grids\RolesHelper.GridAllowedRole" />
-    <Content Include="Views\YetaWF_PageEdit_EditMode.cshtml" />
-    <Content Include="Views\YetaWF_PageEdit_ImportModule_Partial.cshtml" />
+    <None Include="Addons\_Main\Grids\AllowedUsersEditComponent.GridAllEntry" />
+    <None Include="Addons\_Main\Grids\AllowedUsersEditComponent.GridAllowedUser" />
+    <None Include="Addons\_Main\Grids\AllowedRolesEditComponent.GridAllowedRole" />
     <None Include="app.config" />
     <None Include="packages.config" />
-    <None Include="Views\YetaWF_PageEdit_AddExistingModule_Partial.cshtml" />
-    <None Include="Views\YetaWF_PageEdit_AddNewModule_Partial.cshtml" />
-    <None Include="Views\YetaWF_PageEdit_ImportPage_Partial.cshtml" />
-    <None Include="Views\YetaWF_PageEdit_LoginSiteSelection_Partial.cshtml" />
-    <None Include="Views\YetaWF_PageEdit_SkinSelection_Partial.cshtml" />
-    <None Include="Views\YetaWF_PageEdit_ControlPanelConfig.cshtml" />
-    <None Include="Views\YetaWF_PageEdit_ControlPanelConfig_Partial.cshtml" />
+    <None Include="tsconfig.json" />
+    <None Include="tslint.json" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

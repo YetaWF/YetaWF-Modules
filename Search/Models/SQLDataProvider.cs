@@ -43,7 +43,7 @@ WHERE {TableName}.[SearchDataUrlId] IS NULL";
         class SearchResultDataProvider : SQLSimpleObject<int, SearchResult> {
             public SearchResultDataProvider(Dictionary<string, object> options) : base(options) { }
         }
-        class SearchDataUrlDataProvider : SQLSimpleIdentityObject<int, SearchDataUrl> {
+        class SearchDataUrlDataProvider : SQLSimpleIdentityObject<string, SearchDataUrl> {
             public SearchDataUrlDataProvider(Dictionary<string, object> options) : base(options) { }
         }
     }

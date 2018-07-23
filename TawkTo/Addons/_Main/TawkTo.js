@@ -1,1 +1,4 @@
-/* Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/TawkTo#License */
+"use strict";
+/* Copyright ï¿½ 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/TawkTo#License */
+
+//# sourceMappingURL=TawkTo.js.map

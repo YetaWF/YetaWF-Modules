@@ -6,14 +6,13 @@ using System.Linq;
 using YetaWF.Core.Controllers;
 using YetaWF.Core.DataProvider;
 using YetaWF.Core.Localize;
-using YetaWF.Core.Menus;
 using YetaWF.Core.Models;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Modules;
 using YetaWF.Core.Support;
-using YetaWF.Core.Views.Shared;
 using YetaWF.Modules.Modules.Modules;
 using System.Threading.Tasks;
+using YetaWF.Core.Components;
 #if MVC6
 using Microsoft.AspNetCore.Mvc;
 #else
@@ -135,7 +134,7 @@ namespace YetaWF.Modules.Modules.Controllers {
                 Filters = filters,
             };
             await ModuleDefinition.GetModulesAsync(info);
-            GridHelper.SaveSettings(skip, take, sort, filters, settingsModuleGuid);
+            Grid.SaveSettings(skip, take, sort, filters, settingsModuleGuid);
             List<BrowseItem> list = new List<BrowseItem>();
             foreach (ModuleDefinition s in info.Modules) {
                 int useCount = (await s.__GetPagesAsync()).Count;

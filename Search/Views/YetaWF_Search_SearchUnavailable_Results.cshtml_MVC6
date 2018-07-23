@@ -1,5 +1,0 @@
-@*Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Search#License*@
-@inherits YetaWF.Core.Views.RazorView<YetaWF.Modules.Search.Modules.SearchResultsModule, object>
-<div class="@YetaWF.Core.Globals.CssDivWarning">
-    @Html.Raw(__ResStr("unavailable", "Search data is not available - See <a href='https://yetawf.com/Documentation/YetaWF/Search' target='_blank' rel='noopener noreferrer'>https://yetawf.com/Documentation/YetaWF/Search</a> for additional information."))
-</div>

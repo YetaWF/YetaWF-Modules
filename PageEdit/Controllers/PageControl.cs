@@ -19,10 +19,10 @@ using YetaWF.Core.Skins;
 using YetaWF.Core.Support;
 using YetaWF.Core.Support.Zip;
 using YetaWF.Core.Upload;
-using YetaWF.Core.Views.Shared;
 using YetaWF.Modules.PageEdit.DataProvider;
 using YetaWF.Modules.PageEdit.Modules;
 using YetaWF.Core.IO;
+using YetaWF.Core.Components;
 #if MVC6
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Http;
@@ -171,7 +171,7 @@ namespace YetaWF.Modules.PageEdit.Controllers {
             public bool CopyModules { get; set; }
 
             [Caption("Url"), Description("The Url of the new page - local Urls start with / and do not include http:// or https://")]
-            [UIHint("Text40"), StringLength(Globals.MaxUrl), UrlValidation(urlType: UrlHelperEx.UrlTypeEnum.New), Required, Trim]
+            [UIHint("Text40"), StringLength(Globals.MaxUrl), UrlValidation(urlType: UrlTypeEnum.New), Required, Trim]
             public string Url { get; set; }
 
             [Caption("Title"), Description("The title of the new page - the page title is displayed by the web browser in its header")]
@@ -428,7 +428,7 @@ namespace YetaWF.Modules.PageEdit.Controllers {
             ScriptBuilder sb = new ScriptBuilder();
             if (success) {
                 // Upload control considers Json result a success
-                sb.Append("{{ \"result\": \"Y_Confirm(\\\"{0}\\\", null, function() {{ Y_ReloadPage(true); }} ); \" }}",
+                sb.Append("{{ \"result\": \"$YetaWF.confirm(\\\"{0}\\\", null, function() {{ $YetaWF.reloadPage(true); }} ); \" }}",
                     YetaWFManager.JserEncode(YetaWFManager.JserEncode(this.__ResStr("imported", "\"{0}\" successfully imported(+nl)", __filename.FileName) + errs))
                 );
                 return new YJsonResult { Data = sb.ToString() };
@@ -469,7 +469,7 @@ namespace YetaWF.Modules.PageEdit.Controllers {
             ScriptBuilder sb = new ScriptBuilder();
             if (info.Success) {
                 // Upload control considers Json result a success
-                sb.Append("{{ \"result\": \"Y_Confirm(\\\"{0}\\\", null, function() {{ window.location.assign(\\\"{1}\\\"); }} ); \" }}",
+                sb.Append("{{ \"result\": \"$YetaWF.confirm(\\\"{0}\\\", null, function() {{ window.location.assign(\\\"{1}\\\"); }} ); \" }}",
                     YetaWFManager.JserEncode(YetaWFManager.JserEncode(this.__ResStr("imported", "\"{0}\" successfully imported(+nl)", __filename.FileName) + errs)),
                     YetaWFManager.JserEncode(info.Url)
                 );

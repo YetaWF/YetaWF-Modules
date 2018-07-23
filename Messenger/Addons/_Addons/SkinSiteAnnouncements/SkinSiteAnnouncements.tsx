@@ -1,8 +1,10 @@
 ﻿/* Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Messenger#License */
 
-var Y_Alert: any;
-
 namespace YetaWF_Messenger {
+
+    export interface IPackageConfigs {
+        SignalRUrl: string;
+    }
 
     class SkinSiteAnnouncementsModule {
 
@@ -15,18 +17,18 @@ namespace YetaWF_Messenger {
          */
         init(): void {
 
-            YetaWF_Basics.RegisterContentChange(function (event: Event, addonGuid: string, on: boolean): void {
+            $YetaWF.registerContentChange((addonGuid: string, on: boolean): void => {
                 if (addonGuid === SkinSiteAnnouncementsModule.MODULEGUID) {
                     SkinSiteAnnouncementsModule.on = on;
                 }
             });
 
             var $$: any = $;
-            var connection: any = $$.hubConnection(YConfigs.Basics.SignalRUrl, { useDefaultPath: false });
+            var connection: any = $$.hubConnection(YConfigs.YetaWF_Messenger.SignalRUrl, { useDefaultPath: false });
             var hubProxy: any = connection.createHubProxy("YetaWF_Messenger_SiteAnnouncement");
             hubProxy.on("message", function (content: string, title: string): void {
                 if (SkinSiteAnnouncementsModule.on)
-                    Y_Alert(content, title, null, { encoded: true });
+                    $YetaWF.alert(content, title, null, { encoded: true });
             });
             connection.start().done(function (): void { /*empty*/ });
         }

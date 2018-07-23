@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using YetaWF.Core;
 using YetaWF.Core.Audit;
+using YetaWF.Core.Components;
 using YetaWF.Core.DataProvider;
 using YetaWF.Core.DataProvider.Attributes;
 using YetaWF.Core.Identity;
@@ -12,7 +13,6 @@ using YetaWF.Core.IO;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Packages;
 using YetaWF.Core.Support;
-using YetaWF.Core.Views.Shared;
 
 namespace YetaWF.Modules.UserProfile.DataProvider {
 
@@ -62,7 +62,7 @@ namespace YetaWF.Modules.UserProfile.DataProvider {
         [StringLength(MaxTelephone)]
         public string Telephone { get; set; }
 
-        public string CityCombined { get { return CountryISO3166Helper.CombineCityStateZip(Country, City, State, Zip); } }
+        public string CityCombined { get { return CountryISO3166.CombineCityStateZip(Country, City, State, Zip); } }
 
         [Data_DontSave]
         public string Email { get; set; }

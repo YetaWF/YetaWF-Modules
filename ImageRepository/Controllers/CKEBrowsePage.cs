@@ -5,7 +5,6 @@ using YetaWF.Core.Controllers;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Modules;
 using YetaWF.Core.Support;
-using YetaWF.Core.Views.Shared;
 #if MVC6
 using Microsoft.AspNetCore.Mvc;
 #else
@@ -22,7 +21,7 @@ namespace YetaWF.Modules.ImageRepository.Controllers {
         public class Model {
 
             [Caption("Local Url"), Description("Local Url")]
-            [UIHint("Url"), AdditionalMetadata("UrlType", UrlHelperEx.UrlTypeEnum.Local), UrlValidation(UrlValidationAttribute.SchemaEnum.Any, UrlHelperEx.UrlTypeEnum.Local)]
+            [UIHint("Url"), AdditionalMetadata("UrlType", UrlTypeEnum.Local), UrlValidation(UrlValidationAttribute.SchemaEnum.Any, UrlTypeEnum.Local)]
             [StringLength(Globals.MaxUrl), Required, Trim]
             public string PageUrl { get; set; }
 

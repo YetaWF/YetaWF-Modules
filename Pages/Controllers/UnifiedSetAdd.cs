@@ -3,17 +3,15 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using YetaWF.Core;
 using YetaWF.Core.Controllers;
 using YetaWF.Core.Localize;
 using YetaWF.Core.Models;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Pages;
 using YetaWF.Core.Support;
-using YetaWF.Core.Views.Shared;
 using YetaWF.Modules.Pages.DataProvider;
-using YetaWF.Modules.Pages.Views.Shared;
 using YetaWF.Core.Skins;
+using YetaWF.Modules.Pages.Components;
 #if MVC6
 using Microsoft.AspNetCore.Mvc;
 #else
@@ -103,11 +101,11 @@ namespace YetaWF.Modules.Pages.Controllers {
         [ExcludeDemoMode]
         public async Task<ActionResult> AddPage(string prefix, int newRecNumber, string newValue) {
             // Validation
-            UrlValidationAttribute attr = new UrlValidationAttribute(UrlValidationAttribute.SchemaEnum.Any, UrlHelperEx.UrlTypeEnum.Local);
+            UrlValidationAttribute attr = new UrlValidationAttribute(UrlValidationAttribute.SchemaEnum.Any, UrlTypeEnum.Local);
             if (!attr.IsValid(newValue))
                 throw new Error(attr.ErrorMessage);
             // add new grid record
-            ListOfLocalPagesHelper.GridEntryEdit entry = (ListOfLocalPagesHelper.GridEntryEdit)Activator.CreateInstance(typeof(ListOfLocalPagesHelper.GridEntryEdit));
+            ListOfLocalPagesEditComponent.GridEntryEdit entry = (ListOfLocalPagesEditComponent.GridEntryEdit)Activator.CreateInstance(typeof(ListOfLocalPagesEditComponent.GridEntryEdit));
             entry.Url = newValue;
             return await GridPartialViewAsync(new GridDefinition.GridEntryDefinition(prefix, newRecNumber, entry));
         }

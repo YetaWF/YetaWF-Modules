@@ -1,2 +1,2 @@
 ﻿highlight.pack.js,bundle,nominify,allowCustom
-Init.js,bundle
+Init.ts,bundle

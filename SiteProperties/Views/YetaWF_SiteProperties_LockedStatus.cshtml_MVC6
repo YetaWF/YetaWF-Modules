@@ -1,5 +1,0 @@
-@*Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/SiteProperties#License*@
-@inherits YetaWF.Core.Views.RazorView<YetaWF.Modules.SiteProperties.Modules.LockedStatusModule, YetaWF.Modules.SiteProperties.Controllers.LockedStatusModuleController.Model>
-<div class="@YetaWF.Core.Globals.CssDivAlert">
-@__ResStr("locked", "Site is locked!")
-</div>

@@ -9,7 +9,7 @@ using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Packages;
 using YetaWF.Core.Support;
 using YetaWF.Core.Upload;
-using YetaWF.Core.Views.Shared;
+using YetaWF.Core.Components;
 #if MVC6
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -63,7 +63,7 @@ namespace YetaWF.Modules.Packages.Controllers {
             ScriptBuilder sb = new ScriptBuilder();
             if (success) {
                 // Upload control considers Json result a success
-                sb.Append("{{ \"result\": \"Y_Confirm(\\\"{0}\\\", null, function() {{ Y_ReloadPage(true); }} ); \" }}",
+                sb.Append("{{ \"result\": \"$YetaWF.confirm(\\\"{0}\\\", null, function() {{ $YetaWF.reloadPage(true); }} ); \" }}",
                     YetaWFManager.JserEncode(YetaWFManager.JserEncode(this.__ResStr("importedData", "\"{0}\" successfully imported - These settings won't take effect until the site is restarted(+nl)", __filename.FileName) + errs))
                 );
                 return new YJsonResult { Data = sb.ToString() };

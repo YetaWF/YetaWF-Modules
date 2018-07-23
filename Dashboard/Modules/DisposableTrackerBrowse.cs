@@ -7,10 +7,9 @@ using YetaWF.Core.Localize;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Modules;
 using YetaWF.Core.Serializers;
-using YetaWF.Core.Support;
-using YetaWF.Core.Views.Shared;
 using YetaWF.DataProvider;
 #if MVC6
+using YetaWF.Core.Support;
 #else
 using System.Web.Mvc;
 #endif
@@ -32,7 +31,7 @@ namespace YetaWF.Modules.Dashboard.Modules {
         public override IModuleDefinitionIO GetDataProvider() { return new DisposableTrackerBrowseModuleDataProvider(); }
 
         [Category("General"), Caption("Display Url"), Description("The Url to display a disposable object - if omitted, a default page is generated")]
-        [UIHint("Url"), AdditionalMetadata("UrlType", UrlHelperEx.UrlTypeEnum.Local), UrlValidation(UrlValidationAttribute.SchemaEnum.Any, UrlHelperEx.UrlTypeEnum.Local), StringLength(Globals.MaxUrl), Trim]
+        [UIHint("Url"), AdditionalMetadata("UrlType", UrlTypeEnum.Local), UrlValidation(UrlValidationAttribute.SchemaEnum.Any, UrlTypeEnum.Local), StringLength(Globals.MaxUrl), Trim]
         public string DisplayUrl { get; set; }
 
         public override SerializableList<AllowedRole> DefaultAllowedRoles { get { return AdministratorLevel_DefaultAllowedRoles; } }

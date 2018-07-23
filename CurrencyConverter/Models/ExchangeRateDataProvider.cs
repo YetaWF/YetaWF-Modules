@@ -174,5 +174,6 @@ namespace YetaWF.Modules.CurrencyConverter.DataProvider {
 
         public new Task<DataProviderExportChunk> ExportChunkAsync(int chunk, SerializableList<SerializableFile> fileList) { return Task.FromResult(new DataProviderExportChunk { More = false, ObjectList = null }); }
         public new Task ImportChunkAsync(int chunk, SerializableList<SerializableFile> fileList, object obj) { return Task.CompletedTask; }
+        public new Task LocalizeModelAsync(string language, Func<string, bool> isHtml, Func<List<string>, Task<List<string>>> translateStringsAsync, Func<string, Task<string>> translateComplexStringAsync) { return Task.CompletedTask; }
     }
 }

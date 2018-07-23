@@ -48,9 +48,9 @@ namespace YetaWF.Modules.Search.DataProvider {
         public SearchDataUrlDataProvider() : base(YetaWFManager.Manager.CurrentSite.Identity) { SetDataProvider(CreateDataProvider()); }
         public SearchDataUrlDataProvider(int siteIdentity) : base(siteIdentity) { SetDataProvider(CreateDataProvider()); }
 
-        private IDataProviderIdentity<int, object, SearchDataUrl> DataProvider { get { return GetDataProvider(); } }
+        private IDataProviderIdentity<string, object, SearchDataUrl> DataProvider { get { return GetDataProvider(); } }
 
-        private IDataProviderIdentity<int, object, SearchDataUrl> CreateDataProvider() {
+        private IDataProviderIdentity<string, object, SearchDataUrl> CreateDataProvider() {
             if (SearchDataProvider.IsUsable) {
                 Package package = YetaWF.Modules.Search.Controllers.AreaRegistration.CurrentPackage;
                 return MakeDataProvider(package, package.AreaName + "_Urls", SiteIdentity: SiteIdentity, Cacheable: true);

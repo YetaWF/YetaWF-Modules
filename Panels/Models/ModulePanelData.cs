@@ -6,7 +6,6 @@ using YetaWF.Core.DataProvider.Attributes;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Serializers;
 using YetaWF.Core.Support;
-using YetaWF.Core.Views.Shared;
 using YetaWF.Core.Models;
 using YetaWF.Core.Localize;
 using YetaWF.Core.Modules;

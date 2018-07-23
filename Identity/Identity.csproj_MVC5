@@ -36,11 +36,11 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.AspNet.Identity.Core, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\..\..\packages\Microsoft.AspNet.Identity.Core.2.2.1\lib\net45\Microsoft.AspNet.Identity.Core.dll</HintPath>
+      <HintPath>..\..\..\packages\Microsoft.AspNet.Identity.Core.2.2.2\lib\net45\Microsoft.AspNet.Identity.Core.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.AspNet.Identity.Owin, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\..\..\packages\Microsoft.AspNet.Identity.Owin.2.2.1\lib\net45\Microsoft.AspNet.Identity.Owin.dll</HintPath>
+      <HintPath>..\..\..\packages\Microsoft.AspNet.Identity.Owin.2.2.2\lib\net45\Microsoft.AspNet.Identity.Owin.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
@@ -128,12 +128,21 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Components\HTML\RoleId.cs" />
+    <Compile Include="Components\HTML\UserRoles.cs" />
+    <Compile Include="Components\HTML\RolesSelector.cs" />
+    <Compile Include="Components\HTML\ResourceUsers.cs" />
+    <Compile Include="Components\HTML\ResourceRoles.cs" />
+    <Compile Include="Components\HTML\UserId.cs" />
+    <Compile Include="Components\HTML\ListOfUserNames.cs" />
+    <Compile Include="Components\HTML\LoginUsers.cs" />
+    <Compile Include="Components\HTML\Email.cs" />
     <Compile Include="Controllers\ForgotPassword.cs" />
     <Compile Include="Controllers\LoginTwoStep.cs" />
     <Compile Include="Controllers\Need2FADisplay.cs" />
     <Compile Include="Controllers\SelectTwoStepSetup.cs" />
     <Compile Include="Controllers\SelectTwoStepAuth.cs" />
-    <Compile Include="Controllers\Support\ListOfUserNamesHelper.cs" />
+    <Compile Include="Controllers\Support\ListOfUserNames.cs" />
     <Compile Include="Controllers\Support\UserIdHelper.cs" />
     <Compile Include="Controllers\TemplateListOfUserNames.cs" />
     <Compile Include="Controllers\TemplateRolesSelector.cs" />
@@ -162,7 +171,7 @@
     <Compile Include="Controllers\LoginSelector.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Controllers\SharedSupport.cs" />
+    <Compile Include="Controllers\Support\ResourceUsers.cs" />
     <Compile Include="Controllers\UserAccount.cs" />
     <Compile Include="Controllers\UserPassword.cs" />
     <Compile Include="Controllers\UsersAdd.cs" />
@@ -219,22 +228,28 @@
     <Compile Include="Modules\Register.cs" />
     <Compile Include="Modules\Login.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ViewsCode\Shared\EmailHelper.cs" />
-    <Compile Include="ViewsCode\Shared\ListOfUserNamesHelper.cs" />
-    <Compile Include="ViewsCode\Shared\LoginUsersHelper.cs" />
-    <Compile Include="ViewsCode\Shared\RoleIdHelper.cs" />
-    <Compile Include="ViewsCode\Shared\RolesSelectorHelper.cs" />
-    <Compile Include="ViewsCode\Shared\RolesHelper.cs" />
-    <Compile Include="ViewsCode\Shared\UserIdHelper.cs" />
-    <Compile Include="ViewsCode\Shared\UsersHelper.cs" />
+    <Compile Include="Views\HTML\AuthorizationBrowse.cs" />
+    <Compile Include="Views\HTML\TwoStepDone.cs" />
+    <Compile Include="Views\HTML\SetupExternalAccount.cs" />
+    <Compile Include="Views\HTML\SelectTwoStepSetup.cs" />
+    <Compile Include="Views\HTML\SelectTwoStepAuth.cs" />
+    <Compile Include="Views\HTML\Register.cs" />
+    <Compile Include="Views\HTML\OwinEdit.cs" />
+    <Compile Include="Views\HTML\Need2FADisplay.cs" />
+    <Compile Include="Views\HTML\LoginSelector.cs" />
+    <Compile Include="Views\HTML\LoginDirect.cs" />
+    <Compile Include="Views\HTML\Login.cs" />
+    <Compile Include="Views\HTML\ForgotPassword.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Addons\_Main\Grids\ListOfUserNamesHelper.GridAllEntry" />
-    <None Include="Addons\_Main\Grids\ListOfUserNamesHelper.GridEntryDisplay" />
-    <None Include="Addons\_Main\Grids\ListOfUserNamesHelper.GridEntryEdit" />
-    <None Include="Addons\_Main\Grids\UserIdHelper.GridAllEntry" />
-    <None Include="Addons\_Main\Grids\RolesSelectorHelper.GridDisplay" />
-    <None Include="Addons\_Main\Grids\RolesSelectorHelper.GridEdit" />
+    <None Include="Addons\_Main\Grids\ListOfUserNamesEditComponent.GridAllEntry" />
+    <None Include="Addons\_Main\Grids\ListOfUserNamesDisplayComponent.GridDisplay" />
+    <None Include="Addons\_Main\Grids\ListOfUserNamesEditComponent.GridEdit" />
+    <None Include="Addons\_Main\Grids\ResourceUsersEditComponent.GridAllEntry" />
+    <None Include="Addons\_Main\Grids\UserIdEditComponent.GridAllEntry" />
+    <None Include="Addons\_Main\Grids\RolesSelectorDisplayComponent.GridDisplay" />
+    <None Include="Addons\_Main\Grids\RolesSelectorEditComponent.GridEdit" />
+    <None Include="Addons\_Main\Grids\UserRolesComponentBase.GridEntry" />
     <None Include="Addons\_Templates\ListOfUserNames\ListOfUserNames.scss" />
     <None Include="Addons\_Main\SelectTwoStepSetup.scss" />
     <None Include="Addons\_Addons\Need2FADisplay\Need2FADisplay.scss" />
@@ -255,26 +270,15 @@
     <Content Include="Addons\_Templates\ListOfUserNames\filelistCSS.txt" />
     <Content Include="Addons\_Templates\ListOfUserNames\filelistJS.txt" />
     <Content Include="Addons\_Templates\ListOfUserNames\ListOfUserNames.js" />
+    <Content Include="Addons\_Templates\ResourceUsers\filelistJS.txt" />
+    <Content Include="Addons\_Templates\ResourceUsers\ResourceUsers.js" />
     <Content Include="Addons\_Templates\UserId\filelistCSS.txt" />
     <Content Include="Addons\_Templates\UserId\filelistJS.txt" />
     <Content Include="Addons\_Templates\UserId\UserId.js" />
     <Content Include="Addons\_Templates\UserId\UserId.css" />
     <Content Include="Addons\_Templates\RoleId\filelistCSS.txt" />
     <Content Include="Addons\_Templates\RoleId\RoleId.css" />
-    <Content Include="Views\Shared\DisplayTemplates\YetaWF_Identity_Email.cshtml" />
-    <Content Include="Views\Shared\EditorTemplates\YetaWF_Identity_RoleId.cshtml" />
-    <Content Include="Views\Shared\EditorTemplates\YetaWF_Identity_RolesSelector.cshtml" />
-    <Content Include="Views\Shared\DisplayTemplates\YetaWF_Identity_RolesSelector.cshtml" />
-    <Content Include="Views\Shared\EditorTemplates\YetaWF_Identity_ListOfUserNames.cshtml" />
-    <Content Include="Views\Shared\DisplayTemplates\YetaWF_Identity_ListOfUserNames.cshtml" />
     <None Include="app.config" />
-    <None Include="Views\YetaWF_Identity_ForgotPassword.cshtml" />
-    <None Include="Views\YetaWF_Identity_ForgotPassword_Partial.cshtml" />
-    <Content Include="Views\YetaWF_Identity_TwoStepDone.cshtml" />
-    <Content Include="Views\YetaWF_Identity_LoginDirect.cshtml" />
-    <None Include="Views\YetaWF_Identity_Need2FADisplay.cshtml" />
-    <None Include="Views\YetaWF_Identity_SelectTwoStepSetup.cshtml" />
-    <None Include="Views\YetaWF_Identity_SelectTwoStepAuth.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\CoreComponents\Core\Core.csproj">
@@ -292,6 +296,10 @@
     <ProjectReference Include="..\..\..\DataProvider\SQL\SQL.csproj">
       <Project>{6a90eab3-a9e4-4a2c-90d9-145859790c46}</Project>
       <Name>SQL</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ComponentsHTML\ComponentsHTML.csproj">
+      <Project>{AB7BFD23-57E8-40A6-85EA-9D4B3206075F}</Project>
+      <Name>ComponentsHTML</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
@@ -320,43 +328,17 @@
     <Content Include="Addons\_Templates\ResourceUsers\ResourceUsers.css" />
     <Content Include="Addons\_Templates\UserRoles\filelistCSS.txt" />
     <Content Include="Addons\_Templates\UserRoles\Roles.css" />
-    <Content Include="Views\YetaWF_Identity_AuthorizationBrowse.cshtml" />
-    <Content Include="Views\YetaWF_Identity_AuthorizationBrowse_Partial.cshtml" />
-    <Content Include="Views\YetaWF_Identity_LoginSelector.cshtml">
-      <SubType>Code</SubType>
-    </Content>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\YetaWF_Identity_Login.cshtml" />
-    <Content Include="Views\YetaWF_Identity_Login_Partial.cshtml" />
-    <Content Include="Views\YetaWF_Identity_Register.cshtml" />
-    <Content Include="Views\YetaWF_Identity_Register_Partial.cshtml" />
-    <Content Include="Views\YetaWF_Identity_SetupExternalAccount.cshtml" />
-    <Content Include="Views\YetaWF_Identity_SetupExternalAccount_Partial.cshtml" />
-    <Content Include="Views\Shared\DisplayTemplates\YetaWF_Identity_RoleId.cshtml" />
-    <Content Include="Views\YetaWF_Identity_OwinEdit.cshtml" />
-    <Content Include="Views\YetaWF_Identity_OwinEdit_Partial.cshtml" />
-    <Content Include="Views\Shared\DisplayTemplates\YetaWF_Identity_UserId.cshtml" />
-    <Content Include="Views\Shared\EditorTemplates\YetaWF_Identity_ResourceRoles.cshtml" />
-    <Content Include="Views\Shared\DisplayTemplates\YetaWF_Identity_ResourceRoles.cshtml">
-      <LastGenOutput>YetaWF_Identity_ResourceRoles.generated.cs</LastGenOutput>
-    </Content>
-    <Content Include="Views\Shared\EditorTemplates\YetaWF_Identity_ResourceUsers.cshtml" />
-    <Content Include="Views\Shared\DisplayTemplates\YetaWF_Identity_ResourceUsers.cshtml" />
-    <Content Include="Views\Shared\EditorTemplates\YetaWF_Identity_UserRoles.cshtml" />
-    <Content Include="Views\Shared\DisplayTemplates\YetaWF_Identity_UserRoles.cshtml" />
-    <Content Include="Views\Shared\EditorTemplates\YetaWF_Identity_UserId.cshtml" />
-    <Content Include="Views\YetaWF_Identity_LoginSelector_Partial.cshtml" />
-    <Content Include="Views\Shared\EditorTemplates\YetaWF_Identity_LoginUsers.cshtml" />
     <Content Include="packages.config">
       <SubType>Designer</SubType>
     </Content>
     <Content Include="Addons\_Main\Grids\AuthorizationBrowseModuleController.BrowseItem" />
     <Content Include="Addons\_Main\Grids\RolesBrowseModuleController.BrowseItem" />
-    <Content Include="Addons\_Main\Grids\RolesHelper.GridAllowedRole" />
+    <Content Include="Addons\_Main\Grids\ResourceRolesComponentBase.GridAllowedRole" />
     <Content Include="Addons\_Main\Grids\UsersBrowseModuleController.BrowseItem" />
-    <Content Include="Addons\_Main\Grids\UsersHelper.GridAllowedUser" />
-    <Content Include="Addons\_Main\Grids\UsersHelper.GridAllowedUserDisplay" />
+    <Content Include="Addons\_Main\Grids\ResourceUsersEditComponent.GridAllowedUser" />
+    <None Include="Addons\_Main\Grids\ResourceUsersDisplayComponent.GridAllowedUser" />
   </ItemGroup>
   <ItemGroup />
   <PropertyGroup>

@@ -4,13 +4,12 @@ using System.Collections.Generic;
 using System.Linq;
 using YetaWF.Core.Addons;
 using YetaWF.Core.Controllers;
-using YetaWF.Core.Menus;
 using YetaWF.Core.Models;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Modules;
-using YetaWF.Core.Views.Shared;
 using YetaWF.Modules.Dashboard.Modules;
 using YetaWF.Core;
+using YetaWF.Core.Components;
 #if MVC6
 using Microsoft.AspNetCore.Mvc;
 #else

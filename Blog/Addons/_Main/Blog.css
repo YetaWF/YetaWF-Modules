@@ -141,8 +141,11 @@
   margin-bottom: .5em; }
 
 .YetaWF_Blog_CommentsDisplay .t_cmtby,
+.YetaWF_Blog_CommentsDisplay .t_cmton {
+  padding-right: 1ch;
+  display: inline; }
+
 .YetaWF_Blog_CommentsDisplay .t_cmtauthor,
-.YetaWF_Blog_CommentsDisplay .t_cmton,
 .YetaWF_Blog_CommentsDisplay .t_cmtdate {
   display: inline; }
 

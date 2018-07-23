@@ -10,19 +10,18 @@ using YetaWF.Core.Controllers;
 using YetaWF.Core.DataProvider;
 using YetaWF.Core.Identity;
 using YetaWF.Core.Localize;
-using YetaWF.Core.Menus;
 using YetaWF.Core.Models;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Modules;
 using YetaWF.Core.Pages;
 using YetaWF.Core.Skins;
 using YetaWF.Core.Support;
-using YetaWF.Core.Views.Shared;
 using YetaWF.Modules.Pages.DataProvider;
 using YetaWF.Modules.Pages.Modules;
 using YetaWF.Modules.Pages.Scheduler;
 using YetaWF.Core.IO;
 using System.Text;
+using YetaWF.Core.Components;
 #if MVC6
 using Microsoft.AspNetCore.Mvc;
 #else
@@ -163,7 +162,7 @@ namespace YetaWF.Modules.Pages.Controllers {
 
             using (PageDefinitionDataProvider dataProvider = new PageDefinitionDataProvider()) {
                 DataProviderGetRecords<PageDefinition> pages = await dataProvider.GetItemsAsync(skip, take, sort, filters);
-                GridHelper.SaveSettings(skip, take, sort, filters, settingsModuleGuid);
+                Grid.SaveSettings(skip, take, sort, filters, settingsModuleGuid);
                 return await GridPartialViewAsync(new DataSourceResult {
                     Data = (from s in pages.Data select new PageItem(Module, s, pageSettings)).ToList<object>(),
                     Total = pages.Total

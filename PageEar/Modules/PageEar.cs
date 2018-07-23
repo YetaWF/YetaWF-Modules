@@ -10,10 +10,9 @@ using YetaWF.Core.Localize;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Modules;
 using YetaWF.Core.Serializers;
-using YetaWF.Core.Support;
-using YetaWF.Core.Views.Shared;
 using YetaWF.DataProvider;
 #if MVC6
+using YetaWF.Core.Support;
 #else
 using System.Web.Mvc;
 #endif
@@ -95,7 +94,7 @@ namespace YetaWF.Modules.PageEar.Modules {
         public int LargeSize { get; set; }
 
         [Category("General"), Caption("Url"), Description("The url where the user is directed when clicking on the page ear")]
-        [UIHint("Url"), AdditionalMetadata("UrlType", UrlHelperEx.UrlTypeEnum.Local | UrlHelperEx.UrlTypeEnum.Remote), UrlValidation(UrlValidationAttribute.SchemaEnum.Any, UrlHelperEx.UrlTypeEnum.Local | UrlHelperEx.UrlTypeEnum.Remote)]
+        [UIHint("Url"), AdditionalMetadata("UrlType", UrlTypeEnum.Local | UrlTypeEnum.Remote), UrlValidation(UrlValidationAttribute.SchemaEnum.Any, UrlTypeEnum.Local | UrlTypeEnum.Remote)]
         [StringLength(Globals.MaxUrl), Required, Trim]
         public string ClickUrl { get; set; }
 

@@ -30,6 +30,7 @@ namespace YetaWF.Modules.Caching.DataProvider {
     /// it is known that a new object is available the data is retrieved.
     /// This is equivalent to StaticObjectSingleDataProvider on a single-instance site.
     /// </summary>
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1063:ImplementIDisposableCorrectly")]
     public class StaticObjectMultiSQLDataProvider : DataProviderImpl, ICacheDataProvider {
 
         public static ICacheDataProvider GetProvider() {
@@ -105,10 +106,10 @@ namespace YetaWF.Modules.Caching.DataProvider {
                 if (sharedInfo.Created != cachedObj.Created) {
                     // shared cached version is different, retrieve and save locally
                     SharedCacheObject sharedCacheObj = await DataProvider.GetAsync(key);
-                    if (sharedCacheObj == null) { 
+                    if (sharedCacheObj == null) {
                         // this shouldn't happen, we just got the shared version
                     } else {
-                        data = (TYPE)new GeneralFormatter().Deserialize(sharedCacheObj.Value);
+                        data = new GeneralFormatter().Deserialize<TYPE>(sharedCacheObj.Value);
                         sharedInfo = sharedCacheObj;
                     }
                     cachedObj = new StaticCacheObject {
@@ -147,7 +148,7 @@ namespace YetaWF.Modules.Caching.DataProvider {
             // We're adding a new version
             await AddAsync(key, default(TYPE));
         }
-        
+
         // IInstallableModel
 
         public new Task<DataProviderExportChunk> ExportChunkAsync(int chunk, SerializableList<SerializableFile> fileList) {

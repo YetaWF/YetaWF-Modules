@@ -1,1 +1,1 @@
-﻿pagecontrol.js
+﻿PageControl.ts

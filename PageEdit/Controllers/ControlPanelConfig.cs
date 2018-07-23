@@ -7,7 +7,6 @@ using YetaWF.Core.Localize;
 using YetaWF.Core.Models;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Support;
-using YetaWF.Core.Views.Shared;
 using YetaWF.Modules.PageEdit.DataProvider;
 using YetaWF.Core.Serializers;
 using YetaWF.Core.DataProvider.Attributes;
@@ -28,7 +27,7 @@ namespace YetaWF.Modules.PageEdit.Controllers {
         public class Model {
 
             [Caption("W3C Validation"), Description("The Url used to validate the current page using a W3C Validation service - Use {0} where the Url is inserted - If no Url is defined, the Control Panel will not display a W3C Validation link")]
-            [UIHint("Url"), AdditionalMetadata("UrlType", UrlHelperEx.UrlTypeEnum.Remote), UrlValidation(UrlValidationAttribute.SchemaEnum.Any, UrlHelperEx.UrlTypeEnum.Remote)]
+            [UIHint("Url"), AdditionalMetadata("UrlType", UrlTypeEnum.Remote), UrlValidation(UrlValidationAttribute.SchemaEnum.Any, UrlTypeEnum.Remote)]
             [StringLength(Globals.MaxUrl), Trim]
             public string W3CUrl { get; set; }
 

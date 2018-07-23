@@ -1,12 +1,12 @@
 /* Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Dashboard#License */
 
 using YetaWF.Core.Controllers;
-using YetaWF.Core.Menus;
 using YetaWF.Core.Models;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Modules;
 using YetaWF.Modules.Dashboard.Modules;
 using System.Threading.Tasks;
+using YetaWF.Core.Components;
 #if MVC6
 using Microsoft.AspNetCore.Mvc;
 #else
@@ -16,7 +16,6 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using YetaWF.Core.DataProvider;
-using YetaWF.Core.Views.Shared;
 #endif
 
 namespace YetaWF.Modules.Dashboard.Controllers {
@@ -73,7 +72,7 @@ namespace YetaWF.Modules.Dashboard.Controllers {
             HttpModuleCollection httpModuleCollections = httpApps.Modules;
             List<BrowseItem> items = (from k in httpModuleCollections.AllKeys select new BrowseItem(Module, k)).ToList();
             DataProviderGetRecords<BrowseItem> recs = DataProviderImpl<BrowseItem>.GetRecords(items, skip, take, sort, filters);
-            GridHelper.SaveSettings(skip, take, sort, filters, settingsModuleGuid);
+            Grid.SaveSettings(skip, take, sort, filters, settingsModuleGuid);
             return await GridPartialViewAsync(new DataSourceResult {
                 Data = recs.Data.ToList<object>(),
                 Total = recs.Total

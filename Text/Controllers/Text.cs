@@ -24,7 +24,7 @@ namespace YetaWF.Modules.Text.Controllers {
             public string Url { get; set; }
         }
         public class TextModelDisplay {
-            [UIHint("TextArea"), AdditionalMetadata("Encode", false)]
+            [UIHint("TextArea"), AdditionalMetadata("Encode", false), ReadOnly]
             public string Contents { get; set; }
         }
 

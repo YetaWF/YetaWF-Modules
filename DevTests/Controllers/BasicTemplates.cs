@@ -7,12 +7,12 @@ using YetaWF.Core.Localize;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Support;
 using YetaWF.Core.Upload;
-using YetaWF.Core.Views.Shared;
 using YetaWF.Modules.DevTests.Modules;
 using YetaWF.Core.Models;
 using YetaWF.Core.SendEmail;
 using System.Threading.Tasks;
 using YetaWF.Core.IO;
+using YetaWF.Core.Components;
 #if MVC6
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -44,7 +44,7 @@ namespace YetaWF.Modules.DevTests.Controllers {
             public decimal? Currency { get; set; }
 
             [Category("Core"), Caption("CurrencyISO4217"), Description("CurrencyISO4217 (Required)")]
-            [UIHint("CurrencyISO4217"), StringLength(CurrencyISO4217Helper.Currency.MaxId), Trim, Required]
+            [UIHint("CurrencyISO4217"), StringLength(YetaWF.Core.Components.CurrencyISO4217.Currency.MaxId), Trim, Required]
             public string CurrencyISO4217 { get; set; }
 
             [Category("Core"), Caption("Decimal"), Description("Decimal (Required)")]
@@ -99,8 +99,8 @@ namespace YetaWF.Modules.DevTests.Controllers {
             [UIHint("IntValue6"), Required]
             public int IntValue6 { get; set; }
 
-            [Category("Core"), Caption("JQueryUISkin"), Description("JQueryUISkin (Required)")]
-            [UIHint("JQueryUISkin"), AdditionalMetadata("NoDefault", false), Required]
+            [Category("Core"), Caption("jQueryUISkin"), Description("JQueryUISkin (Required)")]
+            [UIHint("jQueryUISkin"), AdditionalMetadata("NoDefault", false), Required]
             public string JQueryUISkin { get; set; }
 
             [Category("Core"), Caption("KendoUISkin"), Description("KendoUISkin (Required)")]
@@ -115,26 +115,6 @@ namespace YetaWF.Modules.DevTests.Controllers {
             [UIHint("LongValue"), Required]
             public long LongValue { get; set; }
 
-            [Category("Core"), Caption("MultiString"), Description("MultiString (Required)")]
-            [UIHint("MultiString"), StringLength(200), Required]
-            public MultiString MultiString { get; set; }
-
-            [Category("Core"), Caption("MultiString10"), Description("MultiString10 (Required)")]
-            [UIHint("MultiString10"), StringLength(10), Required]
-            public MultiString MultiString10 { get; set; }
-
-            [Category("Core"), Caption("MultiString20"), Description("MultiString20 (Required)")]
-            [UIHint("MultiString20"), StringLength(20), Required]
-            public MultiString MultiString20 { get; set; }
-
-            [Category("Core"), Caption("MultiString40"), Description("MultiString40 (Required)")]
-            [UIHint("MultiString40"), StringLength(410), Required]
-            public MultiString MultiString40 { get; set; }
-
-            [Category("Core"), Caption("MultiString80"), Description("MultiString80 (Required)")]
-            [UIHint("MultiString80"), StringLength(80), Required]
-            public MultiString MultiString80 { get; set; }
-
             [Category("Core"), Caption("PageSelection"), Description("PageSelection (Required)")]
             [UIHint("PageSelection"), AdditionalMetadata("New", true), Required]
             public Guid PageSelection { get; set; }
@@ -145,7 +125,7 @@ namespace YetaWF.Modules.DevTests.Controllers {
             public List<string> PaneSelection_List { get; set; }
 
             [Category("Core"), Caption("Password20"), Description("Password20 (Required)")]
-            [UIHint("Password20"), Required]
+            [UIHint("Password20"), StringLength(20), Required]
             public string Password20 { get; set; }
 
             [Category("Core"), Caption("SMTPServer"), Description("SMTPServer (Required)")]
@@ -181,12 +161,6 @@ namespace YetaWF.Modules.DevTests.Controllers {
             public string USState { get; set; }
 
             public EditModel() {
-                MultiString = new MultiString();
-                MultiString10 = new MultiString();
-                MultiString20 = new MultiString();
-                MultiString40 = new MultiString();
-                MultiString80 = new MultiString();
-
                 SMTPServer = new SMTPServer();
             }
             public void UpdateData(BasicTemplatesModule module) {
@@ -255,7 +229,7 @@ namespace YetaWF.Modules.DevTests.Controllers {
             if (success) {
                 // Upload control considers Json result a success
                 ScriptBuilder sb = new ScriptBuilder();
-                sb.Append("{{ \"result\": \"Y_Confirm(\\\"{0}\\\", null, function() {{ /*add some javascript like  Y_ReloadPage(true); */ }} ); \" }}",
+                sb.Append("{{ \"result\": \"$YetaWF.confirm(\\\"{0}\\\", null, function() {{ /*add some javascript like  $YetaWF.reloadPage(true); */ }} ); \" }}",
                     YetaWFManager.JserEncode(YetaWFManager.JserEncode(msg))
                 );
                 return new YJsonResult { Data = sb.ToString() };

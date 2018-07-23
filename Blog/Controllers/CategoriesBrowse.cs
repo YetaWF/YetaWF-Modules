@@ -9,16 +9,15 @@ using YetaWF.Core.Addons;
 using YetaWF.Core.Controllers;
 using YetaWF.Core.DataProvider;
 using YetaWF.Core.Localize;
-using YetaWF.Core.Menus;
 using YetaWF.Core.Models;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Modules;
 using YetaWF.Core.Support;
-using YetaWF.Core.Views.Shared;
 using YetaWF.Modules.Blog.DataProvider;
 using YetaWF.Modules.Blog.Modules;
 using YetaWF.Modules.Blog.Scheduler;
 using YetaWF.Core.IO;
+using YetaWF.Core.Components;
 #if MVC6
 using Microsoft.AspNetCore.Mvc;
 #else
@@ -115,7 +114,7 @@ namespace YetaWF.Modules.Blog.Controllers {
         public async Task<ActionResult> CategoriesBrowse_GridData(int skip, int take, List<DataProviderSortInfo> sort, List<DataProviderFilterInfo> filters, Guid settingsModuleGuid) {
             using (BlogCategoryDataProvider dataProvider = new BlogCategoryDataProvider()) {
                 DataProviderGetRecords<BlogCategory> browseItems = await dataProvider.GetItemsAsync(skip, take, sort, filters);
-                GridHelper.SaveSettings(skip, take, sort, filters, settingsModuleGuid);
+                Grid.SaveSettings(skip, take, sort, filters, settingsModuleGuid);
                 return await GridPartialViewAsync(new DataSourceResult {
                     Data = (from s in browseItems.Data select new BrowseItem(Module, s)).ToList<object>(),
                     Total = browseItems.Total

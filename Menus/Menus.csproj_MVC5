@@ -82,9 +82,13 @@
     <Compile Include="Modules\MainMenu.cs" />
     <Compile Include="Modules\MenuEdit.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ViewsCode\Shared\MenuHelper.cs" />
+    <Compile Include="Views\HTML\MenuEdit.cs" />
+    <Compile Include="Views\HTML\Menu.cs" />
+    <Compile Include="Views\HTML\MainMenu.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Addons\_Addons\jstree.com.jstree\filelistCSS.txt" />
+    <Content Include="Addons\_Addons\jstree.com.jstree\filelistJS.txt" />
     <Content Include="Addons\_Addons\MenuEdit\filelistJS.txt" />
     <Content Include="Addons\_Main\filelistCSS.txt" />
     <None Include="Addons\_Main\menu.scss" />
@@ -116,15 +120,12 @@
       <Project>{6a90eab3-a9e4-4a2c-90d9-145859790c46}</Project>
       <Name>SQL</Name>
     </ProjectReference>
+    <ProjectReference Include="..\ComponentsHTML\ComponentsHTML.csproj">
+      <Project>{AB7BFD23-57E8-40A6-85EA-9D4B3206075F}</Project>
+      <Name>ComponentsHTML</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\YetaWF_Menus_MenuEdit.cshtml" />
-    <Content Include="Views\YetaWF_Menus_MenuEdit_Partial.cshtml" />
-    <Content Include="Views\YetaWF_Menus_MainMenu.cshtml" />
-    <Content Include="Views\Shared\DisplayTemplates\YetaWF_Menus_Menu.cshtml">
-      <LastGenOutput>YetaWF_Menus_Menu.generated.cs</LastGenOutput>
-    </Content>
-    <Content Include="Views\YetaWF_Menus_Menu.cshtml" />
     <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>

@@ -254,13 +254,13 @@ YetaWF_MenuEdit.LoadTree = function (treeId, detailsId, data, newEntry) {
         if (YetaWF_MultiString.HasChanged($("div[data-name='ModAction.MenuText']", $details), dataItem.MenuText)) return true;
         if (YetaWF_MultiString.HasChanged($("div[data-name='ModAction.LinkText']", $details), dataItem.LinkText)) return true;
         val = $("input[name='ModAction.ImageUrlFinal']", $details).val();
-        if (!StringYCompare(dataItem.ImageUrlFinal, val)) return true;
+        if (!$YetaWF.stringCompare(dataItem.ImageUrlFinal, val)) return true;
         if (YetaWF_MultiString.HasChanged($("div[data-name='ModAction.Tooltip']", $details), dataItem.Tooltip)) return true;
         if (YetaWF_MultiString.HasChanged($("div[data-name='ModAction.Legend']", $details), dataItem.Legend)) return true;
         val = $("input:checkbox[name='ModAction.Enabled']", $details).prop('checked');
         if (dataItem.Enabled != val) return true;
         val = $("input[name='ModAction.CssClass']", $details).val();
-        if (!StringYCompare(dataItem.CssClass, val)) return true;
+        if (!$YetaWF.stringCompare(dataItem.CssClass, val)) return true;
         val = $("select[name='ModAction.Style']", $details).val();
         if (dataItem.Style != val) return true;
         val = $("select[name='ModAction.Mode']", $details).val();
@@ -445,7 +445,7 @@ YetaWF_MenuEdit.LoadTree = function (treeId, detailsId, data, newEntry) {
             var dataItem = treefuncs.GetDataItem(tree, currentNode);
             if (HasChanged(dataItem)) {
                 if (e) e.preventDefault();// don't continue with selection change
-                Y_Alert(YLocs.YetaWF_Menus.ChangedEntry);
+                $YetaWF.alert(YLocs.YetaWF_Menus.ChangedEntry);
                 return false;
             }
         }
@@ -455,7 +455,8 @@ YetaWF_MenuEdit.LoadTree = function (treeId, detailsId, data, newEntry) {
 
     function SendEntireMenu(tree)
     {
-        var $form = YetaWF_Forms.getForm($details);
+        var form = $YetaWF.Forms.getForm($details[0]);
+        var $form = $(form);
 
         var ajaxurl = $details.attr('data-ajaxurl');
         if (ajaxurl == undefined) throw "Can't locate ajax url to validate and add user name";/*DEBUG*/
@@ -467,7 +468,7 @@ YetaWF_MenuEdit.LoadTree = function (treeId, detailsId, data, newEntry) {
         var postData = "EntireMenu=" + encodeURIComponent(JSON.stringify(treefuncs.GetData(tree)))
                        + "&menuGuid=" + encodeURIComponent(menuGuid)
                        + "&menuVersion=" + encodeURIComponent(menuVersion)
-                       + YetaWF_Forms.getFormInfo($form).QS;
+                       + $YetaWF.Forms.getFormInfo(form).QS;
         $.ajax({
             url: ajaxurl,
             data: postData, cache: false, type: 'POST',
@@ -487,17 +488,17 @@ YetaWF_MenuEdit.LoadTree = function (treeId, detailsId, data, newEntry) {
                 $('input[name="MenuVersion"]', $form).val(newVersion);
             },
             error: function (jqXHR, textStatus, errorThrown) {
-                Y_Alert(YLocs.Forms.AjaxError.format(jqXHR.status, jqXHR.statusText), YLocs.Forms.AjaxErrorTitle);
+                $YetaWF.alert(YLocs.Forms.AjaxError.format(jqXHR.status, jqXHR.statusText), YLocs.Forms.AjaxErrorTitle);
             }
         });
     }
 
     function SendOneEntry(tree, node) {
 
-        var $form = YetaWF_Forms.getForm($details);
+        var form = $YetaWF.Forms.getForm($details[0]);
         var useValidation = !treefuncs.IsRootNode(tree, node);
         var extraData = "ValidateCurrent=" + JSON.stringify(useValidation);
-        YetaWF_Forms.submit($form, useValidation, extraData,
+        $YetaWF.Forms.submit(form, useValidation, extraData,
             function (hasErrors) {
                 if (!useValidation || !hasErrors) {
                     var dataItem = treefuncs.GetDataItem(tree, node);
@@ -612,9 +613,9 @@ YetaWF_MenuEdit.LoadTree = function (treeId, detailsId, data, newEntry) {
         $("input[name='t_reset']", $details).on("click", function () {
             var node = treefuncs.GetSelectedNode(tree);
             if (!treefuncs.ValidNode(tree, node))
-                Y_Alert(YLocs.YetaWF_Menus.NoMenuEntry);
+                $YetaWF.alert(YLocs.YetaWF_Menus.NoMenuEntry);
             else if (treefuncs.IsRootNode(tree, node))
-                Y_Alert(YLocs.YetaWF_Menus.NoResetMenu);
+                $YetaWF.alert(YLocs.YetaWF_Menus.NoResetMenu);
             else {
                 CondEnable(tree, node);
                 currentNode = node;
@@ -625,7 +626,7 @@ YetaWF_MenuEdit.LoadTree = function (treeId, detailsId, data, newEntry) {
         $("input[name='t_add']", $details).on("click", function () {
             var node = treefuncs.GetSelectedNode(tree);
             if (!treefuncs.ValidNode(tree, node)) {
-                Y_Alert(YLocs.YetaWF_Menus.NoMenuEntry);
+                $YetaWF.alert(YLocs.YetaWF_Menus.NoMenuEntry);
                 return;
             }
             PrepareNewEntry(tree, null, function () {
@@ -641,9 +642,9 @@ YetaWF_MenuEdit.LoadTree = function (treeId, detailsId, data, newEntry) {
         $("input[name='t_delete']", $details).on("click", function () {
             var node = treefuncs.GetSelectedNode(tree);
             if (!treefuncs.ValidNode(tree, node))
-                Y_Alert(YLocs.YetaWF_Menus.NoMenuEntry);
+                $YetaWF.alert(YLocs.YetaWF_Menus.NoMenuEntry);
             else if (treefuncs.IsRootNode(tree, node))
-                Y_Alert(YLocs.YetaWF_Menus.NoRemoveMenu);
+                $YetaWF.alert(YLocs.YetaWF_Menus.NoRemoveMenu);
             else {
                 var nextNode = treefuncs.GetNextNode(tree, node);
                 treefuncs.DeleteNode(tree, node);

@@ -235,6 +235,14 @@ namespace YetaWF.Modules.Packages.Modules {
                 PleaseWaitText = this.__ResStr("localizePlsWait", "Updating default localization resources ({0})...", MultiString.DefaultLanguage),
             };
         }
+        public async Task<ModuleAction> GetAction_LocalizeAllPackagesDataAsync() {
+            ModuleDefinition modLocalize = await ModuleDefinition.LoadAsync(Manager.CurrentSite.PackageLocalizationServices, AllowNone: true);
+            if (modLocalize == null) return null;
+            ModuleAction action = await modLocalize.GetModuleActionAsync("LocalizeAllPackagesData");
+            if (action == null) return null;
+            action.Location = ModuleAction.ActionLocationEnum.ModuleLinks;
+            return action;
+        }
         public ModuleAction GetAction_RemovePackage(Package package) {
             if (!package.IsDataProviderPackage && !package.IsModulePackage && !package.IsSkinPackage) return null;
             if (!IsAuthorized("Installs")) return null;
@@ -251,6 +259,13 @@ namespace YetaWF.Modules.Packages.Modules {
                 ConfirmationText = this.__ResStr("removeConfirm", "Are you sure you want to remove this package?"),
                 Category = ModuleAction.ActionCategoryEnum.Significant,
             };
+        }
+        public async Task<ModuleAction> GetAction_CreateAllInstalledLocalizationsAsync() {
+            if (Manager.Deployed) return null; // can't do this on a deployed site
+            ModuleDefinition modLocalize = await ModuleDefinition.LoadAsync(Manager.CurrentSite.PackageLocalizationServices, AllowNone: true);
+            if (modLocalize == null)
+                throw new InternalError("No localization services available - no module has been defined");
+            return await modLocalize.GetModuleActionAsync("CreateAllInstalledLocalizations");
         }
     }
 }

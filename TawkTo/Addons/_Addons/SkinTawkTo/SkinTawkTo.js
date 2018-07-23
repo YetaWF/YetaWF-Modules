@@ -1,8 +1,10 @@
+"use strict";
 /* Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/TawkTo#License */
 // If this javascript snippet is included, that means we're displaying the chat.
+// tslint:disable-next-line:variable-name
 var Tawk_API;
-var ActiveEngage_Conversation;
-(function (ActiveEngage_Conversation) {
+var YetaWF_TawkTo;
+(function (YetaWF_TawkTo) {
     var SkinTawkToModule = /** @class */ (function () {
         function SkinTawkToModule() {
         }
@@ -11,12 +13,12 @@ var ActiveEngage_Conversation;
          */
         SkinTawkToModule.prototype.init = function () {
             var tawkto = this;
-            YetaWF_Basics.RegisterContentChange(function (event, addonGuid, on) {
+            $YetaWF.registerContentChange(function (addonGuid, on) {
                 if (addonGuid === SkinTawkToModule.MODULEGUID) {
                     SkinTawkToModule.on = on;
                 }
             });
-            YetaWF_Basics.RegisterNewPage(function (event, url) {
+            $YetaWF.registerNewPage(function (url) {
                 tawkto.showInvite(SkinTawkToModule.on);
                 if (SkinTawkToModule.on) {
                     // Functionality not available in Tawk.to to record a new page
@@ -48,7 +50,7 @@ var ActiveEngage_Conversation;
                         var csses = inclCss.split(" ");
                         for (var _i = 0, csses_1 = csses; _i < csses_1.length; _i++) {
                             var css = csses_1[_i];
-                            if (YetaWF_Basics.elementHasClass(body, css)) {
+                            if ($YetaWF.elementHasClass(body, css)) {
                                 invite = true;
                                 break;
                             }
@@ -60,7 +62,7 @@ var ActiveEngage_Conversation;
                     csses = exclCss.split(" ");
                     for (var _a = 0, csses_2 = csses; _a < csses_2.length; _a++) {
                         css = csses_2[_a];
-                        if (YetaWF_Basics.elementHasClass(body, css)) {
+                        if ($YetaWF.elementHasClass(body, css)) {
                             invite = false;
                             break;
                         }
@@ -84,6 +86,6 @@ var ActiveEngage_Conversation;
     }());
     var tawkto = new SkinTawkToModule();
     tawkto.init();
-})(ActiveEngage_Conversation || (ActiveEngage_Conversation = {}));
+})(YetaWF_TawkTo || (YetaWF_TawkTo = {}));
 
 //# sourceMappingURL=SkinTawkTo.js.map

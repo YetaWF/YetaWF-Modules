@@ -1,0 +1,1 @@
+\node_modules\swfobject-npm\swfobject\swfobject.js,nominify,bundle

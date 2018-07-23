@@ -9,7 +9,6 @@ using YetaWF.Core.Models;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Serializers;
 using YetaWF.Core.Support;
-using YetaWF.Core.Views.Shared;
 using YetaWF.Modules.BootstrapCarousel.Support;
 #if MVC6
 #else
@@ -45,11 +44,12 @@ namespace YetaWF.Modules.BootstrapCarousel.Models {
 
             [AdditionalMetadata("ImageType", ImageSupport.ImageType), AdditionalMetadata("Width", 0), AdditionalMetadata("Height", 0)]
             [AdditionalMetadata("File", true)]
+            [UIHint("Image")]
             [DontSave] // Image with metadata for display rendering only
             public string ImageDisplay { get { return Image; } }
 
             [Caption("Url"), Description("The optional Url visited when the image is clicked")]
-            [UIHint("Url"), AdditionalMetadata("UrlType", UrlHelperEx.UrlTypeEnum.Local | UrlHelperEx.UrlTypeEnum.Remote), UrlValidation(UrlValidationAttribute.SchemaEnum.Any, UrlHelperEx.UrlTypeEnum.Local | UrlHelperEx.UrlTypeEnum.Remote)]
+            [UIHint("Url"), AdditionalMetadata("UrlType", UrlTypeEnum.Local | UrlTypeEnum.Remote), UrlValidation(UrlValidationAttribute.SchemaEnum.Any, UrlTypeEnum.Local | UrlTypeEnum.Remote)]
             [StringLength(Globals.MaxUrl), Trim]
             public string Url { get; set; }
 

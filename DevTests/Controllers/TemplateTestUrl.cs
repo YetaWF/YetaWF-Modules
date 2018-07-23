@@ -4,7 +4,6 @@ using YetaWF.Core;
 using YetaWF.Core.Controllers;
 using YetaWF.Core.Localize;
 using YetaWF.Core.Models.Attributes;
-using YetaWF.Core.Views.Shared;
 #if MVC6
 using Microsoft.AspNetCore.Mvc;
 using YetaWF.Core.Support;
@@ -22,12 +21,12 @@ namespace YetaWF.Modules.DevTests.Controllers {
         public class EditModel {
 
             [Caption("Url"), Description("Url")]
-            [UIHint("Url"), AdditionalMetadata("UrlType", UrlHelperEx.UrlTypeEnum.Local | UrlHelperEx.UrlTypeEnum.Remote), UrlValidation(UrlValidationAttribute.SchemaEnum.Any, UrlHelperEx.UrlTypeEnum.Local | UrlHelperEx.UrlTypeEnum.Remote)]
+            [UIHint("Url"), AdditionalMetadata("UrlType", UrlTypeEnum.Local | UrlTypeEnum.Remote), UrlValidation(UrlValidationAttribute.SchemaEnum.Any, UrlTypeEnum.Local | UrlTypeEnum.Remote)]
             [StringLength(Globals.MaxUrl), Required, Trim]
             public string Url { get; set; }
 
             [Caption("Local Url"), Description("Local Url")]
-            [UIHint("Url"), AdditionalMetadata("UrlType", UrlHelperEx.UrlTypeEnum.Local), UrlValidation(UrlValidationAttribute.SchemaEnum.Any, UrlHelperEx.UrlTypeEnum.Local)]
+            [UIHint("Url"), AdditionalMetadata("UrlType", UrlTypeEnum.Local), UrlValidation(UrlValidationAttribute.SchemaEnum.Any, UrlTypeEnum.Local)]
             [StringLength(Globals.MaxUrl), Required, Trim]
             public string LocalUrl { get; set; }
 
@@ -49,7 +48,7 @@ namespace YetaWF.Modules.DevTests.Controllers {
             public string RORemoteUrl { get; set; }
 
             [Caption("New Url"), Description("New Url")]
-            [UIHint("Text80"), StringLength(Globals.MaxUrl), UrlValidation(urlType: UrlHelperEx.UrlTypeEnum.New), Required, Trim]
+            [UIHint("Text80"), StringLength(Globals.MaxUrl), UrlValidation(urlType: UrlTypeEnum.New), Required, Trim]
             public string NewUrl { get; set; }
 
             public EditModel() {

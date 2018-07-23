@@ -8,7 +8,6 @@ using YetaWF.Core.Models;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Modules.Blog.DataProvider;
 using YetaWF.Core;
-using YetaWF.Core.Views.Shared;
 #if MVC6
 using Microsoft.AspNetCore.Mvc;
 using YetaWF.Core.Support;
@@ -42,7 +41,7 @@ namespace YetaWF.Modules.Blog.Controllers {
 
             [Caption("Author's Url"), Description("The optional Url linking to the author's information")]
             [UIHint("Url"), StringLength(Globals.MaxUrl), Trim]
-            [AdditionalMetadata("UrlType", UrlHelperEx.UrlTypeEnum.Local | UrlHelperEx.UrlTypeEnum.Remote), UrlValidation(UrlValidationAttribute.SchemaEnum.Any, UrlHelperEx.UrlTypeEnum.Local | UrlHelperEx.UrlTypeEnum.Remote)]
+            [AdditionalMetadata("UrlType", UrlTypeEnum.Local | UrlTypeEnum.Remote), UrlValidation(UrlValidationAttribute.SchemaEnum.Any, UrlTypeEnum.Local | UrlTypeEnum.Remote)]
             public string AuthorUrl { get; set; }
 
             [Caption("Allow Comments"), Description("Defines whether comments can be entered for this blog entry")]

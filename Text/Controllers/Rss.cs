@@ -9,8 +9,8 @@ using YetaWF.Core.Localize;
 using YetaWF.Core.Modules;
 using YetaWF.Core.Support;
 using YetaWF.Core.Support.Rss;
-using YetaWF.Core.Views.Shared;
 using YetaWF.Modules.Text.Modules;
+using YetaWF.Core.Components;
 #if MVC6
 using Microsoft.AspNetCore.Mvc;
 #else
@@ -42,7 +42,7 @@ namespace YetaWF.Modules.Text.Controllers {
             items.Add(sItem);
 
             if (mod.FeedImage != null)
-                feed.ImageUrl = new Uri(Manager.CurrentSite.MakeUrl(ImageHelper.FormatUrl(YetaWF.Core.Modules.ModuleImageSupport.ImageType, null, mod.FeedImage, CacheBuster:mod.DateUpdated.Ticks.ToString())));
+                feed.ImageUrl = new Uri(Manager.CurrentSite.MakeUrl(ImageHTML.FormatUrl(YetaWF.Core.Modules.ModuleImageSupport.ImageType, null, mod.FeedImage, CacheBuster:mod.DateUpdated.Ticks.ToString())));
             feed.LastUpdatedTime = mod.FeedUpdateDate ?? DateTime.MinValue;
 
             return new RssResult(feed);

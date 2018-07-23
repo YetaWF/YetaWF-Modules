@@ -13,7 +13,6 @@ using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Modules;
 using YetaWF.Core.Serializers;
 using YetaWF.Core.Support;
-using YetaWF.Core.Views.Shared;
 using YetaWF.DataProvider;
 using YetaWF.Modules.Text.Controllers;
 using YetaWF.Core.Search;
@@ -65,12 +64,12 @@ namespace YetaWF.Modules.Text.Modules {
         public string FeedSummary { get; set; }
 
         [Category("Rss"), Caption("Feed Main URL"), Description("The optional Rss feed's main URL")]
-        [UIHint("Url"), AdditionalMetadata("UrlType", UrlHelperEx.UrlTypeEnum.Local | UrlHelperEx.UrlTypeEnum.Remote), UrlValidation(UrlValidationAttribute.SchemaEnum.Any, UrlHelperEx.UrlTypeEnum.Local | UrlHelperEx.UrlTypeEnum.Remote)]
+        [UIHint("Url"), AdditionalMetadata("UrlType", UrlTypeEnum.Local | UrlTypeEnum.Remote), UrlValidation(UrlValidationAttribute.SchemaEnum.Any, UrlTypeEnum.Local | UrlTypeEnum.Remote)]
         [StringLength(Globals.MaxUrl), Trim]
         public string FeedMainUrl { get; set; }
 
         [Category("Rss"), Caption("Feed Detail URL"), Description("The optional Rss feed's detail page for this Text module")]
-        [UIHint("Url"), AdditionalMetadata("UrlType", UrlHelperEx.UrlTypeEnum.Local), UrlValidation(UrlValidationAttribute.SchemaEnum.Any, UrlHelperEx.UrlTypeEnum.Local)]
+        [UIHint("Url"), AdditionalMetadata("UrlType", UrlTypeEnum.Local), UrlValidation(UrlValidationAttribute.SchemaEnum.Any, UrlTypeEnum.Local)]
         [StringLength(Globals.MaxUrl), Trim]
         public string FeedDetailUrl { get; set; }
 

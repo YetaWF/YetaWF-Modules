@@ -1,9 +1,9 @@
-﻿/* Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Licensing */
+﻿/* Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Basics#License */
 
 // If this javascript snippet is included, that means we're displaying the alert.
 // The alert is displayed until dismissed or if the page doesn't reference this module (dynamic content).
 
-namespace YetaWF_Basics_Mods { // nonstandard namespace to avoid conflict with core YetaWF_Basics
+namespace YetaWF_Basics {
 
     class AlertDisplayModule {
 
@@ -18,11 +18,11 @@ namespace YetaWF_Basics_Mods { // nonstandard namespace to avoid conflict with c
         init(): void {
             document.addEventListener("click", this.handleClick);
 
-            YetaWF_Basics.addWhenReady(function (section: HTMLElement): void {
+            $YetaWF.addWhenReady((section: HTMLElement): void => {
                 alert.initSection(section);
             });
 
-            YetaWF_Basics.RegisterContentChange(function (event:Event, addonGuid:string, on:boolean):void {
+            $YetaWF.registerContentChange((addonGuid:string, on:boolean):void => {
                 if (addonGuid === AlertDisplayModule.MODULEGUID) {
                     AlertDisplayModule.on = on;
                 }
@@ -46,7 +46,7 @@ namespace YetaWF_Basics_Mods { // nonstandard namespace to avoid conflict with c
          * @param event
          */
         private handleClick(event: MouseEvent): void {
-            if (!YetaWF_Basics.elementMatches(event.srcElement, ".YetaWF_Basics_AlertDisplay .t_close img")) return;
+            if (!$YetaWF.elementMatches(event.target as HTMLElement, ".YetaWF_Basics_AlertDisplay .t_close img")) return;
 
             AlertDisplayModule.dismissed = true;
 

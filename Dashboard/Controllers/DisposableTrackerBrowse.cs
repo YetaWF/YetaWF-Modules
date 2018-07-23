@@ -5,14 +5,13 @@ using System.Collections.Generic;
 using System.Linq;
 using YetaWF.Core.Controllers;
 using YetaWF.Core.DataProvider;
-using YetaWF.Core.Menus;
 using YetaWF.Core.Models;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Modules;
 using YetaWF.Core.Support;
-using YetaWF.Core.Views.Shared;
 using YetaWF.Modules.Dashboard.Modules;
 using System.Threading.Tasks;
+using YetaWF.Core.Components;
 #if MVC6
 using Microsoft.AspNetCore.Mvc;
 #else
@@ -74,7 +73,7 @@ namespace YetaWF.Modules.Dashboard.Controllers {
         public async Task<ActionResult> DisposableTrackerBrowse_GridData(int skip, int take, List<DataProviderSortInfo> sort, List<DataProviderFilterInfo> filters, Guid settingsModuleGuid) {
             List<BrowseItem> items = (from k in DisposableTracker.GetDisposableObjects() select new BrowseItem(Module, k)).ToList();
             DataProviderGetRecords<BrowseItem> recs = DataProviderImpl<BrowseItem>.GetRecords(items, skip, take, sort, filters);
-            GridHelper.SaveSettings(skip, take, sort, filters, settingsModuleGuid);
+            Grid.SaveSettings(skip, take, sort, filters, settingsModuleGuid);
             return await GridPartialViewAsync(new DataSourceResult {
                 Data = recs.Data.ToList<object>(),
                 Total = recs.Total

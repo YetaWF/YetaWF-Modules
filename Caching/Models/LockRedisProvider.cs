@@ -1,4 +1,4 @@
-/* Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/FileSystem#License */
+/* Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Caching#License */
 
 using StackExchange.Redis;
 using System;
@@ -112,11 +112,11 @@ namespace YetaWF.Modules.Caching.DataProvider {
         }
 
         /// <summary>
-        /// Lock a key by name until disposed. 
+        /// Lock a key by name until disposed.
         /// </summary>
         public async Task<ILockObject> LockResourceAsync(string key) {
             // If we're running in a single instance, a simple lock by name is sufficient.
-            // On multi instances, we need a locking implementation using a lock file. This is somewhat expensive. 
+            // On multi instances, we need a locking implementation using a lock file. This is somewhat expensive.
             MultiLockObject lockObject = new MultiLockObject(key);
             await lockObject.LockAsync();
             return (ILockObject)lockObject;

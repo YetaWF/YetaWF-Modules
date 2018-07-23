@@ -2,19 +2,14 @@
 
 using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Xml;
+using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
-using YetaWF.Core.Modules;
 using YetaWF.Core.Pages;
 using YetaWF.Core.Support;
-using YetaWF.Core.IO;
-using System.Text;
-using System.Linq;
 #if MVC6
 using System.Net;
 #else
-using System.Web.Security.AntiXss;
 #endif
 
 namespace YetaWF.Modules.Pages.Scheduler {
@@ -37,15 +32,12 @@ namespace YetaWF.Modules.Pages.Scheduler {
             List<string> pages = new List<string>();
             foreach (Guid guid in pageGuids) {
                 PageDefinition page = await PageDefinition.LoadPageDefinitionAsync(guid);
-                if (page != null) {
+                if (page != null)
                     pages.Add(page.EvaluatedCanonicalUrl);
-                }
             }
             pages = pages.OrderBy(s => s).ToList();
-            foreach (string page in pages) {
-                string url = Manager.CurrentSite.MakeFullUrl(page);
-                sb.AppendLine($"{url}");
-            }
+            foreach (string page in pages)
+                sb.AppendLine(Manager.CurrentSite.MakeFullUrl(page));
             return sb.ToString();
         }
     }

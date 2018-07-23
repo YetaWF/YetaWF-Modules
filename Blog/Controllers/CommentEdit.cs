@@ -50,7 +50,7 @@ namespace YetaWF.Modules.Blog.Controllers {
             public bool ShowGravatar { get; set; }
 
             [Caption("Website"), Description("The author's optional website")]
-            [UIHint("Url"), StringLength(Globals.MaxUrl), UrlValidation(UrlValidationAttribute.SchemaEnum.Any, Core.Views.Shared.UrlHelperEx.UrlTypeEnum.Remote), Trim]
+            [UIHint("Url"), StringLength(Globals.MaxUrl), UrlValidation(UrlValidationAttribute.SchemaEnum.Any, UrlTypeEnum.Remote), Trim]
             public string Website { get; set; }
 
             [Caption("Approved"), Description("Defines whether the comment has been approved for public display")]

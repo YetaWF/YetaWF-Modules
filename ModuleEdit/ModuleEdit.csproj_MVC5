@@ -71,16 +71,17 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Components\HTML\AllowedRoles.cs" />
+    <Compile Include="Components\HTML\AllowedUsers.cs" />
     <Compile Include="Startup\Info.cs" />
     <Compile Include="Startup\AreaRegistration.cs" />
     <Compile Include="Controllers\ModuleEdit.cs" />
     <Compile Include="Controllers\ModuleControl.cs" />
-    <Compile Include="Controllers\Shared\SharedSupport.cs" />
+    <Compile Include="Controllers\Support\AllowedUsers.cs" />
     <Compile Include="Modules\ModuleEdit.cs" />
     <Compile Include="Modules\ModuleControl.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ViewsCode\Shared\RolesHelper.cs" />
-    <Compile Include="ViewsCode\Shared\UsersHelper.cs" />
+    <Compile Include="Views\HTML\ModuleEdit.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Addons\_Main\Icons\ExportModule.png" />
@@ -91,15 +92,11 @@
     <Content Include="Addons\_Main\Icons\MoveUp.png" />
     <Content Include="Addons\_Templates\AllowedUsers\allowedusers.css" />
     <Content Include="Addons\_Templates\AllowedUsers\filelistCSS.txt" />
-    <Content Include="Views\Shared\EditorTemplates\YetaWF_ModuleEdit_AllowedRoles.cshtml">
-      <SubType>Code</SubType>
-    </Content>
-    <Content Include="Views\Shared\EditorTemplates\YetaWF_ModuleEdit_AllowedUsers.cshtml" />
+    <Content Include="Addons\_Templates\AllowedUsers\filelistJS.txt" />
+    <Content Include="Addons\_Templates\AllowedUsers\AllowedUsers.js" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Addons\_Main\Grids\" />
     <Folder Include="Models\" />
-    <Folder Include="Views\Shared\DisplayTemplates\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\CoreComponents\Core\Core.csproj">
@@ -110,10 +107,17 @@
       <Project>{348f2a6b-57f5-47a3-8a46-3f44529acd83}</Project>
       <Name>ModuleDefinition</Name>
     </ProjectReference>
+    <ProjectReference Include="..\ComponentsHTML\ComponentsHTML.csproj">
+      <Project>{AB7BFD23-57E8-40A6-85EA-9D4B3206075F}</Project>
+      <Name>ComponentsHTML</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Identity\Identity.csproj">
+      <Project>{86178F8E-67E8-4D3D-9800-65C88D0B5849}</Project>
+      <Name>Identity</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\YetaWF_ModuleEdit_ModuleEdit.cshtml" />
-    <Content Include="Views\YetaWF_ModuleEdit_ModuleEdit_Partial.cshtml" />
+    <None Include="Addons\_Main\Grids\AllowedUsersEditComponent.GridAllEntry" />
     <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>

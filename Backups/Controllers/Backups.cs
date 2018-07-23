@@ -9,16 +9,15 @@ using YetaWF.Core.Addons;
 using YetaWF.Core.Controllers;
 using YetaWF.Core.DataProvider;
 using YetaWF.Core.Localize;
-using YetaWF.Core.Menus;
 using YetaWF.Core.Models;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Modules;
 using YetaWF.Core.Packages;
 using YetaWF.Core.Support;
-using YetaWF.Core.Views.Shared;
 using YetaWF.Modules.Backups.DataProvider;
 using YetaWF.Modules.Backups.Modules;
 using YetaWF.Core.IO;
+using YetaWF.Core.Components;
 #if MVC6
 using Microsoft.AspNetCore.Mvc;
 #else
@@ -52,7 +51,7 @@ namespace YetaWF.Modules.Backups.Controllers {
             public DateTime Created { get; set; }
 
             [Caption("Size"), Description("The file size of the site backup")]
-            [UIHint("FileSize"), ReadOnly]
+            [UIHint("FileFolderSize"), ReadOnly]
             public long Size { get; set; }
 
             [Caption("Full File Name"), Description("The site backup file name")]
@@ -89,7 +88,7 @@ namespace YetaWF.Modules.Backups.Controllers {
         public async Task<ActionResult> Backups_GridData(int skip, int take, List<DataProviderSortInfo> sort, List<DataProviderFilterInfo> filters, Guid settingsModuleGuid) {
             using (BackupsDataProvider dataProvider = new BackupsDataProvider()) {
                 DataProviderGetRecords<BackupEntry> backups = await dataProvider.GetBackupsAsync(skip, take, sort, filters);
-                GridHelper.SaveSettings(skip, take, sort, filters, settingsModuleGuid);
+                Grid.SaveSettings(skip, take, sort, filters, settingsModuleGuid);
                 return await GridPartialViewAsync(
                     new DataSourceResult {
                         Data = (from b in backups.Data select new BackupModel(Module, b)).ToList<object>(),

@@ -24,4 +24,4 @@ using YetaWF.PackageAttributes;
     "https://YetaWF.com/Documentation/YetaWF/BootstrapCarousel#Release%20Notice",
     "https://YetaWF.com/Documentation/YetaWF/BootstrapCarousel#License")]
 
-[assembly: PublicPartialViews]
+[assembly: RequiresPackage("YetaWF.ComponentsHTML")]

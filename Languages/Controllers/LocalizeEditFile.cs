@@ -6,9 +6,9 @@ using YetaWF.Core.Models;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Packages;
 using YetaWF.Core.Serializers;
+using YetaWF.Core.Support;
 #if MVC6
 using Microsoft.AspNetCore.Mvc;
-using YetaWF.Core.Support;
 #else
 using System.Web.Mvc;
 #endif
@@ -40,11 +40,11 @@ namespace YetaWF.Modules.Languages.Controllers {
             [UIHint("YetaWF_Languages_LocalizeStrings"), SuppressIfEqual("StringCount", 0)]
             public SerializableList<LocalizationData.StringData> Strings { get; set; }
 
-            [Caption("Custom"), Description("Defines whether localization strings are saved as customizations (in ./AddonsCustom) or as package installed resources (./Addons) - Only non US-English resources can be saved as package installed resources")]
+            [Caption("Custom"), Description("Defines whether localization strings are saved as customizations (in ./LocalizationCustom) or as package installed resources (./Localization) - Only non US-English resources can be saved as package installed resources")]
             [UIHint("Boolean"), SuppressIfEqual("ForceCustom", true)]
             public bool Custom { get; set; }
 
-            [Caption("Custom"), Description("Defines whether localization strings are saved as customizations (in ./AddonsCustom) or as package installed resources (./Addons) - Only non US-English resources can be saved as package installed resources")]
+            [Caption("Custom"), Description("Defines whether localization strings are saved as customizations (in ./LocalizationCustom) or as package installed resources (./Localization) - Only non US-English resources can be saved as package installed resources")]
             [UIHint("Boolean"), SuppressIfEqual("ForceCustom", false), ReadOnly]
             public bool CustomRO { get; set; }
 
@@ -90,13 +90,16 @@ namespace YetaWF.Modules.Languages.Controllers {
                 data = LocalizationSupport.Load(package, typeName, LocalizationSupport.Location.DefaultResources);
                 custom = false;
             }
+            if (data == null)
+                throw new InternalError($"No localization data available for package {package.Name}");
+
             if (MultiString.ActiveLanguage == MultiString.DefaultLanguage)
                 custom = true;
 #if !DEBUG
             forceCustom = true;
 #endif
             EditModel model = new EditModel {
-            PackageName = packageName,
+                PackageName = packageName,
                 TypeName = typeName,
                 Custom = forceCustom || custom,
                 CustomRO = forceCustom || custom,
@@ -116,19 +119,23 @@ namespace YetaWF.Modules.Languages.Controllers {
             Package package = Package.GetPackageFromPackageName(model.PackageName);
             LocalizationData data = null;
             if (RestoreDefaults) {
+                data = LocalizationSupport.Load(package, model.TypeName, LocalizationSupport.Location.DefaultResources);
+
+                LocalizationSupport.SaveAsync(package, model.TypeName, LocalizationSupport.Location.InstalledResources, null);// delete it
+                LocalizationSupport.SaveAsync(package, model.TypeName, LocalizationSupport.Location.CustomResources, null);// delete it
+
                 ModelState.Clear();
-                model = new EditModel {
+                EditModel newModel = new EditModel {
                     PackageName = model.PackageName,
                     TypeName = model.TypeName,
                     Custom = model.ForceCustom || model.Custom,
                     CustomRO = model.ForceCustom || model.Custom,
-                    CurrentLanguage = model.HiddenCurrentLanguage,
+                    CurrentLanguage = MultiString.ActiveLanguage,
+                    HiddenCurrentLanguage = MultiString.ActiveLanguage,
+                    ForceCustom = model.ForceCustom,
                 };
-                data = LocalizationSupport.Load(package, model.TypeName, LocalizationSupport.Location.DefaultResources);
-                model.SetData(data); // and all the data back into model for final display
-                LocalizationSupport.SaveAsync(package, model.TypeName, LocalizationSupport.Location.InstalledResources, null);// delete it
-                LocalizationSupport.SaveAsync(package, model.TypeName, LocalizationSupport.Location.CustomResources, null);// delete it
-                return FormProcessed(model, this.__ResStr("okReset", "Localization resource default restored - The localization file has been removed - If you click Save or Apply, a new custom/installed addon file will be created. To keep the defaults only, simply close this form"), OnClose: OnCloseEnum.UpdateInPlace, OnPopupClose: OnPopupCloseEnum.UpdateInPlace);
+                newModel.SetData(data); // and all the data back into model for final display
+                return FormProcessed(newModel, this.__ResStr("okReset", "Localization resource default restored - The localization file has been removed - If you click Save or Apply, a new custom/installed addon file will be created. To keep the defaults only, simply close this form"), OnClose: OnCloseEnum.UpdateInPlace, OnPopupClose: OnPopupCloseEnum.UpdateInPlace);
             } else {
                 if (!ModelState.IsValid)
                     return PartialView(model);

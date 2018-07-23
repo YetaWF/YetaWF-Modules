@@ -10,16 +10,14 @@ using YetaWF.Core.Localize;
 using YetaWF.Core.Models;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Support;
-using YetaWF.Core.Views.Shared;
 using YetaWF.Modules.Identity.DataProvider;
 using YetaWF.Modules.Identity.Models;
 using YetaWF.Modules.Identity.Modules;
 using YetaWF.Modules.Identity.Support;
+using YetaWF.Core.Components;
 #if MVC6
 using Microsoft.AspNetCore.Mvc;
 #else
-using Microsoft.Owin.Security;
-using System.Web;
 using System.Web.Mvc;
 #endif
 

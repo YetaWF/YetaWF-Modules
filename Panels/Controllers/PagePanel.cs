@@ -15,10 +15,10 @@ using YetaWF.Core.Packages;
 using YetaWF.Core.Pages;
 using YetaWF.Core.Serializers;
 using YetaWF.Core.Support;
-using YetaWF.Core.Views.Shared;
 using YetaWF.Modules.Panels.Models;
 using YetaWF.Modules.Panels.Modules;
-using YetaWF.Modules.Panels.Views.Shared;
+using YetaWF.Core.Components;
+using YetaWF.Modules.Panels.Components;
 #if MVC6
 using Microsoft.AspNetCore.Mvc;
 #else
@@ -34,6 +34,7 @@ namespace YetaWF.Modules.Panels.Controllers {
         [Trim]
         public class ModelDisplay {
 
+            [UIHint("YetaWF_Panels_PagePanelInfo")]
             public PagePanelInfo PanelInfo { get; set; }
 
             public ModelDisplay() {
@@ -193,7 +194,7 @@ namespace YetaWF.Modules.Panels.Controllers {
                     size = 16;
                     break;
             }
-            return ImageHelper.FormatUrl(type, null, image, size, size, Stretch: true);
+            return ImageHTML.FormatUrl(type, null, image, size, size, Stretch: true);
         }
 
         // Panel Cache
@@ -236,11 +237,11 @@ namespace YetaWF.Modules.Panels.Controllers {
         [ExcludeDemoMode]
         public async Task<ActionResult> AddPage(string prefix, int newRecNumber, string newValue) {
             // Validation
-            UrlValidationAttribute attr = new UrlValidationAttribute(UrlValidationAttribute.SchemaEnum.Any, UrlHelperEx.UrlTypeEnum.Local);
+            UrlValidationAttribute attr = new UrlValidationAttribute(UrlValidationAttribute.SchemaEnum.Any, UrlTypeEnum.Local);
             if (!attr.IsValid(newValue))
                 throw new Error(attr.ErrorMessage);
             // add new grid record
-            ListOfLocalPagesHelper.GridEntryEdit entry = (ListOfLocalPagesHelper.GridEntryEdit)Activator.CreateInstance(typeof(ListOfLocalPagesHelper.GridEntryEdit));
+            ListOfLocalPagesEditComponent.GridEntryEdit entry = (ListOfLocalPagesEditComponent.GridEntryEdit)Activator.CreateInstance(typeof(ListOfLocalPagesEditComponent.GridEntryEdit));
             entry.UrlDisplay = newValue;
             return await GridPartialViewAsync(new GridDefinition.GridEntryDefinition(prefix, newRecNumber, entry));
         }

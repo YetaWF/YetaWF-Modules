@@ -17,7 +17,7 @@ namespace YetaWF.Modules.DevTests.Controllers {
 
         public TemplateScrollerModuleController() { }
 
-        public class Item {
+        public class ScrollerItem {
             [UIHint("Image")]
             public string Image { get; set; }
             [UIHint("String")]
@@ -32,10 +32,10 @@ namespace YetaWF.Modules.DevTests.Controllers {
             // The Scroller template is a core template implementing the overall Scroller
             // The AdditionalMetadata describes the user-defined template used for each item in the Scroller
             [UIHint("Scroller"), ReadOnly, AdditionalMetadata("Template", "YetaWF_DevTests_ScrollerItem")]
-            public List<Item> Items { get; set; }
+            public List<ScrollerItem> Items { get; set; }
 
             public Model() {
-                Items = new List<Item>();
+                Items = new List<ScrollerItem>();
             }
         }
 
@@ -45,7 +45,7 @@ namespace YetaWF.Modules.DevTests.Controllers {
             string addonUrl = VersionManager.GetAddOnPackageUrl(AreaRegistration.CurrentPackage.Domain, AreaRegistration.CurrentPackage.Product);
             // generate some random data for the scroller items
             for (int index = 0 ; index < 12 ; ++index) {
-                model.Items.Add(new Item {
+                model.Items.Add(new ScrollerItem {
                     Image = Manager.GetCDNUrl(string.Format("{0}Images/Image{1}.png", addonUrl, index)),
                     Title = string.Format("Item {0}", index),
                     Summary = string.Format("Summary for item {0} - Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. ", index),

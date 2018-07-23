@@ -3,12 +3,12 @@
 using System;
 using YetaWF.Core.Controllers;
 using YetaWF.Core.Localize;
-using YetaWF.Core.Menus;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Modules;
 using YetaWF.Core.Support;
 using YetaWF.Modules.Menus.Modules;
 using System.Threading.Tasks;
+using YetaWF.Core.Components;
 #if MVC6
 using Microsoft.AspNetCore.Mvc;
 #else
@@ -51,7 +51,7 @@ namespace YetaWF.Modules.Menus.Controllers {
                 }
             };
             MenuEditModel model = new MenuEditModel {
-                MenuJSON = newMenu.SerializeToJSON(),
+                MenuJSON = YetaWFManager.JsonSerialize(newMenu),
                 NewEntryJSON = YetaWFManager.JsonSerialize(new ModuleAction(Module) { Url = this.__ResStr("newUrl", "(new)") }),
 
                 MenuGuid = menuGuid,

@@ -65,7 +65,7 @@ namespace YetaWF.Modules.Scheduler.Controllers {
             public DateTime Next { get; set; }
 
             [Caption("RunTime"), Description("The duration of the last occurrence of this scheduler item (hh:mm:ss)")]
-            [UIHint("YetaWF_Scheduler_TimeSpan"), ReadOnly]
+            [UIHint("TimeSpan"), ReadOnly]
             public TimeSpan RunTime { get; set; }
 
             [Caption("Errors"), Description("The errors that occurred during the scheduler item's last run")]

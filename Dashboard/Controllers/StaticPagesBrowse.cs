@@ -5,17 +5,16 @@ using System.Collections.Generic;
 using System.Linq;
 using YetaWF.Core.Controllers;
 using YetaWF.Core.DataProvider;
-using YetaWF.Core.Menus;
 using YetaWF.Core.Models;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Modules;
 using YetaWF.Core.Support.StaticPages;
-using YetaWF.Core.Views.Shared;
 using YetaWF.Modules.Dashboard.Modules;
-using YetaWF.Core.Support;
 using System.Threading.Tasks;
+using YetaWF.Core.Components;
 #if MVC6
 using Microsoft.AspNetCore.Mvc;
+using YetaWF.Core.Support;
 #else
 using System.Web.Mvc;
 #endif
@@ -83,7 +82,7 @@ namespace YetaWF.Modules.Dashboard.Controllers {
             List<BrowseItem> items = (from k in await Manager.StaticPageManager.GetSiteStaticPagesAsync() select new BrowseItem(Module, k)).ToList();
             int total = items.Count;
             DataProviderGetRecords<BrowseItem> recs = DataProviderImpl<BrowseItem>.GetRecords(items, skip, take, sort, filters);
-            GridHelper.SaveSettings(skip, take, sort, filters, settingsModuleGuid);
+            Grid.SaveSettings(skip, take, sort, filters, settingsModuleGuid);
             return await GridPartialViewAsync(new DataSourceResult {
                 Data = recs.Data.ToList<object>(),
                 Total = total

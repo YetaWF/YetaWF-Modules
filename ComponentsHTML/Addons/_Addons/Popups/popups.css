@@ -1,0 +1,17 @@
+/* Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/ComponentsHTML#License */
+
+/* POPUP */
+/* POPUP */
+/* POPUP */
+
+.k-window-title { /* popup title */
+    font-size:110%;
+    font-weight:bolder;
+}
+
+@media print {
+    .k-widget.k-window { /* Don't show popups for print/print preview */
+        display: none;
+    }
+}
+

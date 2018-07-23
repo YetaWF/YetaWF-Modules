@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿/* Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Languages#License */
+
+using System.Collections.Generic;
 using System.IO;
 using System.Net;
 using System.Text;
@@ -57,6 +59,8 @@ namespace YetaWF.Modules.Languages.Controllers.Support {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2202:Do not dispose objects multiple times", Justification = "Don't care")]
         public async Task<List<string>> TranslateAsync(string from, string to, List<string> strings) {
 
+            if (strings.Count == 0) return new List<string>();
+
             if (_token == null) {
                 MSAuthentication auth = new MSAuthentication(_clientId);
                 _token = await auth.GetAccessTokenAsync();
@@ -69,7 +73,7 @@ namespace YetaWF.Modules.Languages.Controllers.Support {
                              "<AppId />" +
                              "<From>{0}</From>" +
                              "<Options>" +
-                                " <Category xmlns=\"http://schemas.datacontract.org/2004/07/Microsoft.MT.Web.Service.V2\" />" +
+                                 "<Category xmlns=\"http://schemas.datacontract.org/2004/07/Microsoft.MT.Web.Service.V2\" />" +
                                  "<ContentType xmlns=\"http://schemas.datacontract.org/2004/07/Microsoft.MT.Web.Service.V2\">text/plain</ContentType>" +
                                  "<ReservedFlags xmlns=\"http://schemas.datacontract.org/2004/07/Microsoft.MT.Web.Service.V2\" />" +
                                  "<State xmlns=\"http://schemas.datacontract.org/2004/07/Microsoft.MT.Web.Service.V2\" />" +

@@ -8,10 +8,10 @@ using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Packages;
 using YetaWF.Core.Support;
 using YetaWF.Core.Upload;
-using YetaWF.Core.Views.Shared;
 using YetaWF.Modules.Packages.Modules;
 using System.Threading.Tasks;
 using YetaWF.Core.IO;
+using YetaWF.Core.Components;
 #if MVC6
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -27,7 +27,7 @@ namespace YetaWF.Modules.Packages.Controllers {
         [Header("Provide a remote or local ZIP file to import a binary or source code package.")]
         public class ImportModel {
             [Category("Remote ZIP File"), Caption("ZIP File"), Description("Enter the Url of a ZIP file to download - Used to import a package (binary or source code package)")]
-            [UIHint("Url"), AdditionalMetadata("UrlType", UrlHelperEx.UrlTypeEnum.Remote), StringLength(Globals.MaxUrl), UrlValidation, Required, Trim]
+            [UIHint("Url"), AdditionalMetadata("UrlType", UrlTypeEnum.Remote), StringLength(Globals.MaxUrl), UrlValidation, Required, Trim]
             public string RemoteFile { get; set; }
 
             [Category("Remote ZIP File"), Caption("Submit"), Description("Click to download and install the package")]
@@ -126,7 +126,7 @@ namespace YetaWF.Modules.Packages.Controllers {
             if (success) {
                 // Upload control considers Json result a success
                 ScriptBuilder sb = new ScriptBuilder();
-                sb.Append("{{ \"result\": \"Y_Confirm(\\\"{0}\\\", null, function() {{ Y_ReloadPage(true); }} ); \" }}",
+                sb.Append("{{ \"result\": \"$YetaWF.confirm(\\\"{0}\\\", null, function() {{ $YetaWF.reloadPage(true); }} ); \" }}",
                     YetaWFManager.JserEncode(YetaWFManager.JserEncode(msg))
                 );
                 //System.Web.HttpRuntime.UnloadAppDomain();

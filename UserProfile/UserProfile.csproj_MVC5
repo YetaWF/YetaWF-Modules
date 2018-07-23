@@ -96,7 +96,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Addons\_Main\Icons\" />
+    <Folder Include="Addons\_Main\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Addons\_SiteTemplates\YetaWF_UserProfile.txt" />

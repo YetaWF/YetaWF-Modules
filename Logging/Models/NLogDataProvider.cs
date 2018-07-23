@@ -3,6 +3,7 @@
 using NLog;
 using NLog.Config;
 using NLog.Targets;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
@@ -187,6 +188,9 @@ namespace YetaWF.Modules.Logging.DataProvider.NLogProvider {
         }
         public override async Task<int> RemoveItemsAsync(List<DataProviderFilterInfo> filters) {
             return await DataProvider.RemoveRecordsAsync(filters);
+        }
+        public Task LocalizeModelAsync(string language, Func<string, bool> isHtml, Func<List<string>, Task<List<string>>> translateStringsAsync, Func<string, Task<string>> translateComplexStringAsync) {
+            return Task.CompletedTask;
         }
 
         public override string LoggerName { get { return "NLog (synchronous and asynchronous I/O configurable using NLog.config)"; } }

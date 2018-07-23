@@ -1,0 +1,8 @@
+/* Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/ComponentsHTML#License */
+
+.yt_moduleaction {
+    display:inline;
+}
+.yt_moduleaction a img {
+    margin-right: .5ch;
+}

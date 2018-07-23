@@ -7,4 +7,4 @@ Dist/js/shBrushJscript.js,bundle
 Dist/js/shBrushSql.js,bundle
 Dist/js/shBrushVb.js,bundle
 
-Init.js,bundle
+Init.ts,bundle

@@ -6,15 +6,14 @@ using YetaWF.Core;
 using YetaWF.Core.DataProvider.Attributes;
 using YetaWF.Core.IO;
 using YetaWF.Core.Localize;
-using YetaWF.Core.Menus;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Modules;
 using YetaWF.Core.Serializers;
 using YetaWF.Core.Support;
-using YetaWF.Core.Views.Shared;
 using YetaWF.DataProvider;
 using YetaWF.Modules.Menus.DataProvider;
-using YetaWF.Modules.Menus.Views.Shared;
+using YetaWF.Core.Components;
+using YetaWF.Modules.ComponentsHTML.Components;
 #if MVC6
 #else
 using System.Web.Mvc;
@@ -37,8 +36,8 @@ namespace YetaWF.Modules.Menus.Modules {
             Menu = null;
 #pragma warning restore 0618 // Type or member is obsolete
             MenuVersion = 0;
-            Direction = MenuHelper.DirectionEnum.Bottom;
-            Orientation = MenuHelper.OrientationEnum.Horizontal;
+            Direction = MenuComponentBase.DirectionEnum.Bottom;
+            Orientation = MenuComponentBase.OrientationEnum.Horizontal;
             HoverDelay = 500;
             ShowTitle = false;
             WantSearch = false;
@@ -104,7 +103,7 @@ namespace YetaWF.Modules.Menus.Modules {
         }
 
         [Category("General"), Caption("Edit Url"), Description("The Url used to edit this menu - If omitted, a default page is generated")]
-        [UIHint("Url"), AdditionalMetadata("UrlType", UrlHelperEx.UrlTypeEnum.Local), UrlValidation(UrlValidationAttribute.SchemaEnum.Any, UrlHelperEx.UrlTypeEnum.Local), StringLength(Globals.MaxUrl), Trim]
+        [UIHint("Url"), AdditionalMetadata("UrlType", UrlTypeEnum.Local), UrlValidation(UrlValidationAttribute.SchemaEnum.Any, UrlTypeEnum.Local), StringLength(Globals.MaxUrl), Trim]
         public string EditUrl { get; set; }
 
         [Category("General"), Caption("<LI> Css Class"), Description("The optional Css class added to every <LI> tag in the menu")]
@@ -113,11 +112,11 @@ namespace YetaWF.Modules.Menus.Modules {
 
         [Category("General"), Caption("Opening Direction"), Description("The direction in which submenus open - Ignored for Bootstrap menus")]
         [UIHint("Enum")]
-        public MenuHelper.DirectionEnum Direction { get; set; }
+        public MenuComponentBase.DirectionEnum Direction { get; set; }
 
         [Category("General"), Caption("Orientation"), Description("The basic orientation of the menu - Ignored for Bootstrap menus")]
         [UIHint("Enum")]
-        public MenuHelper.OrientationEnum Orientation { get; set; }
+        public MenuComponentBase.OrientationEnum Orientation { get; set; }
 
         [Category("General"), Caption("Hover Delay"), Description("Specifies the delay (in milliseconds) before the menu is opened/closed - Used to avoid accidental closure on leaving - Ignored for Bootstrap menus")]
         [UIHint("IntValue4"), Required, Range(0, 10000)]

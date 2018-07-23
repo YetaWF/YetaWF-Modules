@@ -91,6 +91,13 @@
     <Compile Include="Modules\SearchResults.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Scheduler\Search.cs" />
+    <Compile Include="Views\HTML\SearchUnavailable_Result.cs" />
+    <Compile Include="Views\HTML\SearchUnavailable_Input.cs" />
+    <Compile Include="Views\HTML\SearchUnavailable_Edit.cs" />
+    <Compile Include="Views\HTML\SearchUnavailable_Browse.cs" />
+    <Compile Include="Views\HTML\SearchResults.cs" />
+    <Compile Include="Views\HTML\SearchInput.cs" />
+    <Compile Include="Views\HTML\SearchControl.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Addons\_Main\filelistCSS.txt" />
@@ -114,14 +121,6 @@
     <None Include="Addons\_Main\Grids\SearchBrowseModuleController.BrowseItem" />
     <None Include="app.config" />
     <None Include="packages.config" />
-    <None Include="Views\YetaWF_Search_SearchControl.cshtml" />
-    <None Include="Views\YetaWF_Search_SearchInput.cshtml" />
-    <None Include="Views\YetaWF_Search_SearchInput_Partial.cshtml" />
-    <None Include="Views\YetaWF_Search_SearchResults.cshtml" />
-    <None Include="Views\YetaWF_Search_SearchUnavailable_Browse.cshtml" />
-    <None Include="Views\YetaWF_Search_SearchUnavailable_Results.cshtml" />
-    <None Include="Views\YetaWF_Search_SearchUnavailable_Edit.cshtml" />
-    <None Include="Views\YetaWF_Search_SearchUnavailable_Input.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\CoreComponents\Core\Core.csproj">
@@ -139,6 +138,10 @@
     <ProjectReference Include="..\..\..\DataProvider\SQL\SQL.csproj">
       <Project>{6a90eab3-a9e4-4a2c-90d9-145859790c46}</Project>
       <Name>SQL</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ComponentsHTML\ComponentsHTML.csproj">
+      <Project>{ab7bfd23-57e8-40a6-85ea-9d4b3206075f}</Project>
+      <Name>ComponentsHTML</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup />

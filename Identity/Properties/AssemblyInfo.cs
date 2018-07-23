@@ -26,7 +26,7 @@ using YetaWF.Core.Packages;
     "https://yetawf.com/Documentation/YetaWF/Identity#Release%20Notice",
     "https://yetawf.com/Documentation/YetaWF/Identity#License")]
 
-[assembly: PublicPartialViews]
+[assembly: RequiresPackage("YetaWF.ComponentsHTML")]
 
 [assembly: ServiceLevel(ServiceLevelEnum.LowLevelServiceProvider)]
 

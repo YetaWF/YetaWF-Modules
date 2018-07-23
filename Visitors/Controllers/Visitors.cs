@@ -6,14 +6,13 @@ using System.Linq;
 using System.Threading.Tasks;
 using YetaWF.Core.Controllers;
 using YetaWF.Core.DataProvider;
-using YetaWF.Core.Menus;
 using YetaWF.Core.Models;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Modules;
-using YetaWF.Core.Views.Shared;
 using YetaWF.Modules.Visitors.DataProvider;
 using YetaWF.Modules.Visitors.Modules;
 using YetaWF.Modules.Visitors.Scheduler;
+using YetaWF.Core.Components;
 #if MVC6
 using Microsoft.AspNetCore.Mvc;
 #else
@@ -117,7 +116,7 @@ namespace YetaWF.Modules.Visitors.Controllers {
         public async Task<ActionResult> Visitors_GridData(int skip, int take, List<DataProviderSortInfo> sort, List<DataProviderFilterInfo> filters, Guid settingsModuleGuid) {
             using (VisitorEntryDataProvider dataProvider = new VisitorEntryDataProvider()) {
                 DataProviderGetRecords<VisitorEntry> browseItems = await dataProvider.GetItemsAsync(skip, take, sort, filters);
-                GridHelper.SaveSettings(skip, take, sort, filters, settingsModuleGuid);
+                Grid.SaveSettings(skip, take, sort, filters, settingsModuleGuid);
                 return await GridPartialViewAsync(new DataSourceResult {
                     Data = (from s in browseItems.Data select new BrowseItem(Module, s)).ToList<object>(),
                     Total = browseItems.Total

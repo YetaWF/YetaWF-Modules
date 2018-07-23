@@ -8,9 +8,9 @@ using YetaWF.Core.DataProvider;
 using YetaWF.Core.Localize;
 using YetaWF.Core.Models;
 using YetaWF.Core.Models.Attributes;
-using YetaWF.Core.Views.Shared;
 using YetaWF.Core.Support;
 using System.Threading.Tasks;
+using YetaWF.Core.Components;
 #if MVC6
 using Microsoft.AspNetCore.Mvc;
 #else
@@ -31,14 +31,14 @@ namespace YetaWF.Modules.Dashboard.Controllers {
             [UIHint("String"), ReadOnly]
             public string Value { get; set; }
             [Caption("Size"), Description("The size of the value (if available)")]
-            [UIHint("FileSize"), ReadOnly]
+            [UIHint("FileFolderSize"), ReadOnly]
             public long Size { get; set; }
         }
 
         public class DisplayModel {
 
             [Caption("Total Size"), Description("The approximate size of all SessionState items")]
-            [UIHint("FileSize"), ReadOnly]
+            [UIHint("FileFolderSize"), ReadOnly]
             public long TotalSize { get; set; }
 
             [Caption("SessionState Items"), Description("The SessionState keys and the values (either the data type or the first 100 bytes of data are shown)")]
@@ -71,7 +71,7 @@ namespace YetaWF.Modules.Dashboard.Controllers {
             foreach (BrowseItem item in items.Data)
                 item.Value = item.Value.PadRight(100, ' ').Substring(0, 100).TrimEnd();
 
-            GridHelper.SaveSettings(skip, take, sort, filters, settingsModuleGuid);
+            Grid.SaveSettings(skip, take, sort, filters, settingsModuleGuid);
             return await GridPartialViewAsync(new DataSourceResult {
                 Data = items.Data.ToList<object>(),
                 Total = items.Total,

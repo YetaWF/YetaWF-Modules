@@ -32,6 +32,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Components\HTML\SlideShow.cs" />
     <Compile Include="Controllers\CarouselDisplay.cs" />
     <Compile Include="Models\CarouselInfo.cs" />
     <Compile Include="Modules\CarouselDisplay.cs" />
@@ -39,7 +40,7 @@
     <Compile Include="Startup\AreaRegistration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Support\ImageSupport.cs" />
-    <Compile Include="ViewsCode\Shared\SlideShowHelper.cs" />
+    <Compile Include="Views\HTML\CarouselDisplay.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Addons\_Main\filelistJS.txt" />
@@ -51,11 +52,7 @@
     <Content Include="Addons\_Templates\SlideShow\SlideShow.css" />
     <Content Include="Addons\_Templates\SlideShow\SlideShow.js" />
     <Content Include="Addons\_SiteTemplates\YetaWF_BootstrapCarousel.txt" />
-    <Content Include="Views\Shared\EditorTemplates\YetaWF_BootstrapCarousel_SlideShow.cshtml" />
     <None Include="app.config" />
-    <None Include="Views\Shared\DisplayTemplates\YetaWF_BootstrapCarousel_SlideShow.cshtml" />
-    <None Include="Views\YetaWF_BootstrapCarousel_CarouselDisplay.cshtml" />
-    <None Include="Views\YetaWF_BootstrapCarousel_CarouselDisplay_Partial.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
@@ -72,6 +69,10 @@
     <ProjectReference Include="..\..\..\DataProvider\ModuleDefinition\ModuleDefinition.csproj">
       <Project>{348F2A6B-57F5-47A3-8A46-3F44529ACD83}</Project>
       <Name>ModuleDefinition</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ComponentsHTML\ComponentsHTML.csproj">
+      <Project>{AB7BFD23-57E8-40A6-85EA-9D4B3206075F}</Project>
+      <Name>ComponentsHTML</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

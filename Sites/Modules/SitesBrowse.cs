@@ -5,13 +5,12 @@ using System.Threading.Tasks;
 using YetaWF.Core;
 using YetaWF.Core.IO;
 using YetaWF.Core.Localize;
-using YetaWF.Core.Menus;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Modules;
 using YetaWF.Core.Serializers;
 using YetaWF.Core.Site;
-using YetaWF.Core.Views.Shared;
 using YetaWF.DataProvider;
+using YetaWF.Core.Components;
 #if MVC6
 using YetaWF.Core.Support;
 #else
@@ -36,7 +35,7 @@ namespace YetaWF.Modules.Sites.Modules {
         public override IModuleDefinitionIO GetDataProvider() { return new SitesBrowseModuleDataProvider(); }
 
         [Category("General"), Caption("Add URL"), Description("The URL to add a new web site - if omitted, a default page is generated")]
-        [UIHint("Url"), AdditionalMetadata("UrlType", UrlHelperEx.UrlTypeEnum.Local), UrlValidation(UrlValidationAttribute.SchemaEnum.Any, UrlHelperEx.UrlTypeEnum.Local), StringLength(Globals.MaxUrl), Trim]
+        [UIHint("Url"), AdditionalMetadata("UrlType", UrlTypeEnum.Local), UrlValidation(UrlValidationAttribute.SchemaEnum.Any, UrlTypeEnum.Local), StringLength(Globals.MaxUrl), Trim]
         public string AddUrl { get; set; }
 
         public override SerializableList<AllowedRole> DefaultAllowedRoles { get { return SuperuserLevel_DefaultAllowedRoles; } }

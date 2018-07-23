@@ -19,10 +19,10 @@ using System.Web.Mvc;
 namespace YetaWF.Modules.ModuleEdit.Controllers {
 
     public class ModuleEditModuleController : ControllerImpl<YetaWF.Modules.ModuleEdit.Modules.ModuleEditModule> {
-        
+
         public class ModuleEditModel {
 
-            [UIHint("PropertyListTabbed"), Trim]
+            [UIHint("PropertyList")]
             public ModuleDefinition Module { get; set; }
 
             [UIHint("Hidden")]
@@ -58,14 +58,15 @@ namespace YetaWF.Modules.ModuleEdit.Controllers {
         public async Task<ActionResult> ModuleEdit_Partial(ModuleEditModel model) {
             if (model.ModuleGuid == Guid.Empty)
                 throw new InternalError("No moduleGuid provided");
-            await model.UpdateDataAsync();
+
             // we need to find the real type of the module for data binding
             ModuleDefinition origModule = await ModuleDefinition.LoadAsync(model.ModuleGuid);
             await ObjectSupport.HandlePropertyAsync<List<PageDefinition>>(nameof(ModuleDefinition.Pages), nameof(ModuleDefinition.__GetPagesAsync), origModule);
             if (!origModule.IsAuthorized(ModuleDefinition.RoleDefinition.Edit))
                 return NotAuthorized();
 
-            model.Module = (ModuleDefinition)await GetObjectFromModelAsync(origModule.GetType(), "Module");
+            model.Module = (ModuleDefinition)await GetObjectFromModelAsync(origModule.GetType(), nameof(model.Module));
+            await model.UpdateDataAsync();
             Manager.CurrentModuleEdited = model.Module;
 
             ObjectSupport.CopyData(origModule, model.Module, ReadOnly: true); // update read only properties in model in case there is an error
