@@ -27,6 +27,8 @@ namespace YetaWF.Modules.Identity.Components {
 
     public abstract class UserIdComponentBase : YetaWFComponent {
 
+        protected static string __ResStr(string name, string defaultValue, params object[] parms) { return ResourceAccess.GetResourceString(typeof(UserIdComponentBase), name, defaultValue, parms); }
+
         public const string TemplateName = "UserId";
 
         public override Package GetPackage() { return Controllers.AreaRegistration.CurrentPackage; }
@@ -115,7 +117,7 @@ namespace YetaWF.Modules.Identity.Components {
             public GridEdit(UserDefinitionDataProvider userDP, int userId) {
                 UserDefinition user = YetaWFManager.Syncify(() => userDP.GetItemByUserIdAsync(userId));
                 if (user == null) {
-                    UserName = this.__ResStr("unknownUser", "({0})", userId);
+                    UserName = __ResStr("unknownUser", "({0})", userId);
                 } else {
                     UserName = user.UserName;
                 }
@@ -176,7 +178,7 @@ namespace YetaWF.Modules.Identity.Components {
             using (UserDefinitionDataProvider userDP = new UserDefinitionDataProvider()) {
                 UserDefinition user = await userDP.GetItemByUserIdAsync(model);
                 if (user == null)
-                    ui.UserName = this.__ResStr("noUser", "(none)");
+                    ui.UserName = __ResStr("noUser", "(none)");
                 else
                     ui.UserName = user.UserName;
             }
@@ -185,11 +187,11 @@ namespace YetaWF.Modules.Identity.Components {
                 string hiddenId = UniqueId();
                 string allId = UniqueId();
                 string nameId = UniqueId();
-                string noUser = this.__ResStr("noUser", "(none)");
+                string noUser = __ResStr("noUser", "(none)");
 
                 SkinImages skinImages = new SkinImages();
                 string imageUrl = await skinImages.FindIcon_TemplateAsync("#RemoveLight", Package, "UserId");
-                YTagBuilder tagImg = ImageHTML.BuildKnownImageYTag(imageUrl, title: this.__ResStr("ttClear", "Clear the current selection"), alt: this.__ResStr("altClear", "Clear the current selection"));
+                YTagBuilder tagImg = ImageHTML.BuildKnownImageYTag(imageUrl, title: __ResStr("ttClear", "Clear the current selection"), alt: __ResStr("altClear", "Clear the current selection"));
                 tagImg.AddCssClass("t_clear");
 
                 bool header = PropData.GetAdditionalAttributeValue("Header", true);
@@ -239,7 +241,7 @@ namespace YetaWF.Modules.Identity.Components {
                         Value = u.UserId,
                     }).ToList();
                     list.Insert(0, new SelectionItem<int> {
-                        Text = this.__ResStr("select", "(select)"),
+                        Text = __ResStr("select", "(select)"),
                         Value = 0,
                     });
                     hb.Append(await DropDownListIntComponent.RenderDropDownListAsync(this, model, list, null));

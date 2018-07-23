@@ -14,6 +14,8 @@ namespace YetaWF.Modules.Identity.Components {
 
     public abstract class EmailComponentBase : YetaWFComponent {
 
+        protected static string __ResStr(string name, string defaultValue, params object[] parms) { return ResourceAccess.GetResourceString(typeof(EmailComponentBase), name, defaultValue, parms); }
+
         public const string TemplateName = "Email";
 
         public override Package GetPackage() { return Controllers.AreaRegistration.CurrentPackage; }
@@ -48,7 +50,7 @@ namespace YetaWF.Modules.Identity.Components {
                         actionLoginAs = await modLogin.GetAction_LoginAsAsync(user.UserId, userName);
                     }
                 } else
-                    userName = this.__ResStr("noEmail", "(not specified)");
+                    userName = __ResStr("noEmail", "(not specified)");
                 tag.SetInnerText(userName);
             }
             hb.Append(tag.ToString(YTagRenderMode.Normal));

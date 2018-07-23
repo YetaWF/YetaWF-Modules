@@ -16,6 +16,8 @@ namespace YetaWF.Modules.Identity.Components {
 
     public abstract class RoleIdComponent : YetaWFComponent {
 
+        protected static string __ResStr(string name, string defaultValue, params object[] parms) { return ResourceAccess.GetResourceString(typeof(RoleIdComponent), name, defaultValue, parms); }
+
         public const string TemplateName = "RoleId";
 
         public override Package GetPackage() { return Controllers.AreaRegistration.CurrentPackage; }
@@ -58,7 +60,7 @@ namespace YetaWF.Modules.Identity.Components {
 
             bool showDefault = PropData.GetAdditionalAttributeValue("ShowDefault", true);
             if (model == 0 || showDefault)
-                list.Insert(0, new SelectionItem<int> { Text = this.__ResStr("select", "(none)"), Value = 0 });
+                list.Insert(0, new SelectionItem<int> { Text = __ResStr("select", "(none)"), Value = 0 });
 
             return await DropDownListIntComponent.RenderDropDownListAsync(this, model, list, "yt_yetawf_identity_roleid");
         }

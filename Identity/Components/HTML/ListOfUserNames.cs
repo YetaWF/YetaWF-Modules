@@ -20,6 +20,8 @@ namespace YetaWF.Modules.Identity.Components {
 
     public abstract class ListOfUserNamesComponentBase : YetaWFComponent {
 
+        protected static string __ResStr(string name, string defaultValue, params object[] parms) { return ResourceAccess.GetResourceString(typeof(ListOfUserNamesComponentBase), name, defaultValue, parms); }
+
         public const string TemplateName = "ListOfUserNames";
 
         public override Package GetPackage() { return Controllers.AreaRegistration.CurrentPackage; }
@@ -40,7 +42,7 @@ namespace YetaWF.Modules.Identity.Components {
 
             public GridDisplay(UserDefinitionDataProvider userDP, UserDefinition user, int userId) {
                 if (user == null) {
-                    UserName = this.__ResStr("noUser", "({0})", userId);
+                    UserName = __ResStr("noUser", "({0})", userId);
                 } else {
                     ObjectSupport.CopyData(user, this);
                 }
@@ -120,7 +122,7 @@ namespace YetaWF.Modules.Identity.Components {
             public GridEdit(UserDefinitionDataProvider userDP, int userId) {
                 UserDefinition user = YetaWFManager.Syncify(() => userDP.GetItemByUserIdAsync(userId));
                 if (user == null) {
-                    UserName = this.__ResStr("noUser", "({0})", userId);
+                    UserName = __ResStr("noUser", "({0})", userId);
                 } else {
                     UserName = user.UserName;
                 }
@@ -152,9 +154,9 @@ namespace YetaWF.Modules.Identity.Components {
             hb.Append($@"
 <div class='yt_listofusernames t_edit' id='{DivId}'>
     <div class='yt_grid_addordelete' id='{tmpltId}'
-        data-dupmsg='{this.__ResStr("dupmsg", "User name {0} has already been added")}'
-        data-addedmsg='{this.__ResStr("addedmsg", "User name {0} has been added")}'
-        data-remmsg='{this.__ResStr("remmsg", "User name {0} has been removed")}'>");
+        data-dupmsg='{__ResStr("dupmsg", "User name {0} has already been added")}'
+        data-addedmsg='{__ResStr("addedmsg", "User name {0} has been added")}'
+        data-remmsg='{__ResStr("remmsg", "User name {0} has been removed")}'>");
 
             List<GridEdit> list = new List<GridEdit>();
             using (UserDefinitionDataProvider userDP = new DataProvider.UserDefinitionDataProvider()) {
@@ -202,10 +204,10 @@ namespace YetaWF.Modules.Identity.Components {
 
             hb.Append($@"
     <div id='{DivId}_coll'>
-        {await ModuleActionHelper.BuiltIn_ExpandAction(this.__ResStr("lblFindUsers", "Find Users"), this.__ResStr("ttFindUsers", "Expand to find user names available on this site")).RenderAsNormalLinkAsync() }
+        {await ModuleActionHelper.BuiltIn_ExpandAction(__ResStr("lblFindUsers", "Find Users"), __ResStr("ttFindUsers", "Expand to find user names available on this site")).RenderAsNormalLinkAsync() }
     </div>
     <div id='{DivId}_exp' style='display:none'>
-        {await ModuleActionHelper.BuiltIn_CollapseAction(this.__ResStr("lblAllUserNames", "All User Names"), this.__ResStr("ttAllUserNames", "Shows all user names available on this site - Select a user name to update the text box above, so the user name can be added to the list of user names - Click to close")).RenderAsNormalLinkAsync() }");
+        {await ModuleActionHelper.BuiltIn_CollapseAction(__ResStr("lblAllUserNames", "All User Names"), __ResStr("ttAllUserNames", "Shows all user names available on this site - Select a user name to update the text box above, so the user name can be added to the list of user names - Click to close")).RenderAsNormalLinkAsync() }");
 
             grid = new GridModel() {
                 GridDef = new GridDefinition() {

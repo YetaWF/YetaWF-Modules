@@ -16,6 +16,8 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
     public abstract class PageSelectionComponentBase : YetaWFComponent {
 
+        protected static string __ResStr(string name, string defaultValue, params object[] parms) { return ResourceAccess.GetResourceString(typeof(PageSelectionComponentBase), name, defaultValue, parms); }
+
         public const string TemplateName = "PageSelection";
 
         public override Package GetPackage() { return Controllers.AreaRegistration.CurrentPackage; }
@@ -35,7 +37,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             if (model != null) {
                 PageDefinition page = await PageDefinition.LoadPageDefinitionAsync((Guid)model);
                 if (page == null)
-                    hb.Append(this.__ResStr("notFound", "(Page not found - {0})", model.ToString()));
+                    hb.Append(__ResStr("notFound", "(Page not found - {0})", model.ToString()));
                 else
                     hb.Append(HE(page.Url));
             }
@@ -61,7 +63,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                         Text = p.Url,
                         Value = p.PageGuid.ToString(),
                     }).ToList<SelectionItem<string>>();
-            list.Insert(0, new SelectionItem<string> { Text = this.__ResStr("select", "(select)"), Value = null });
+            list.Insert(0, new SelectionItem<string> { Text = __ResStr("select", "(select)"), Value = null });
 
             YHtmlString ddList = await DropDownListComponent.RenderDropDownListAsync(this, (model ?? Guid.Empty).ToString(), list, "yt_pageselection");
 
@@ -75,12 +77,12 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             tag.MergeAttribute("href", (page != null ? page.EvaluatedCanonicalUrl : ""));
             tag.MergeAttribute("target", "_blank");
             tag.MergeAttribute("rel", "nofollow noopener noreferrer");
-            tag.Attributes.Add(Basics.CssTooltip, this.__ResStr("linkTT", "Click to preview the page in a new window - not all pages can be displayed correctly and may require additional parameters"));
+            tag.Attributes.Add(Basics.CssTooltip, __ResStr("linkTT", "Click to preview the page in a new window - not all pages can be displayed correctly and may require additional parameters"));
 
             // image
             SkinImages skinImages = new SkinImages();
             string imageUrl = await skinImages.FindIcon_TemplateAsync("PagePreview.png", Package, TemplateName);
-            YTagBuilder tagImg = ImageHTML.BuildKnownImageYTag(imageUrl, alt: this.__ResStr("linkAlt", "Preview"));
+            YTagBuilder tagImg = ImageHTML.BuildKnownImageYTag(imageUrl, alt: __ResStr("linkAlt", "Preview"));
 
             tag.InnerHtml = tag.InnerHtml + tagImg.ToString(YTagRenderMode.StartTag);
             string linkTag = tag.ToString(YTagRenderMode.Normal);

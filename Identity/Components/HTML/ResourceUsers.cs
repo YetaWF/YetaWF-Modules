@@ -15,11 +15,12 @@ using YetaWF.Core.Support;
 using YetaWF.Modules.ComponentsHTML.Components;
 using YetaWF.Modules.Identity.Controllers;
 using YetaWF.Modules.Identity.DataProvider;
-using YetaWF.Modules.Identity.Support;
 
 namespace YetaWF.Modules.Identity.Components {
 
     public abstract class ResourceUsersComponentBase : YetaWFComponent {
+
+        protected static string __ResStr(string name, string defaultValue, params object[] parms) { return ResourceAccess.GetResourceString(typeof(ResourceUsersComponentBase), name, defaultValue, parms); }
 
         public const string TemplateName = "ResourceUsers";
 
@@ -132,9 +133,9 @@ namespace YetaWF.Modules.Identity.Components {
             hb.Append($@"
 <div class='yt_yetawf_identity_resourceusers t_edit' id='{DivId}'>
     <div class='yt_grid_addordelete' id='{tmpltId}'
-        data-dupmsg='{this.__ResStr("dupmsg", "User {0} has already been added")}'
-        data-addedmsg='{this.__ResStr("addedmsg", "User {0} has been added")}'
-        data-remmsg='{this.__ResStr("remmsg", "User {0} has been removed")}'>");
+        data-dupmsg='{__ResStr("dupmsg", "User {0} has already been added")}'
+        data-addedmsg='{__ResStr("addedmsg", "User {0} has been added")}'
+        data-remmsg='{__ResStr("remmsg", "User {0} has been removed")}'>");
 
             List<GridAllowedUser> users = new List<GridAllowedUser>();
             if (model != null) {
@@ -184,10 +185,10 @@ namespace YetaWF.Modules.Identity.Components {
 
             hb.Append($@"
     <div id='{DivId}_coll'>
-        {await ModuleActionHelper.BuiltIn_ExpandAction(this.__ResStr("lblFindUsers", "Find Users"), this.__ResStr("ttFindUsers", "Expand to find user names available on this site")).RenderAsNormalLinkAsync() }
+        {await ModuleActionHelper.BuiltIn_ExpandAction(__ResStr("lblFindUsers", "Find Users"), __ResStr("ttFindUsers", "Expand to find user names available on this site")).RenderAsNormalLinkAsync() }
     </div>
     <div id='{DivId}_exp' style='display:none'>
-        {await ModuleActionHelper.BuiltIn_CollapseAction(this.__ResStr("lblAllUserNames", "All User Names"), this.__ResStr("ttAllUserNames", "Shows all user names available on this site - Select a user name to update the text box above, so the user name can be added to the list of user names - Click to close")).RenderAsNormalLinkAsync() }");
+        {await ModuleActionHelper.BuiltIn_CollapseAction(__ResStr("lblAllUserNames", "All User Names"), __ResStr("ttAllUserNames", "Shows all user names available on this site - Select a user name to update the text box above, so the user name can be added to the list of user names - Click to close")).RenderAsNormalLinkAsync() }");
 
             grid = new GridModel() {
                 GridDef = new GridDefinition() {

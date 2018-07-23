@@ -16,6 +16,8 @@ namespace YetaWF.Modules.Identity.Components {
 
     public abstract class LoginUsersComponentBase : YetaWFComponent {
 
+        protected static string __ResStr(string name, string defaultValue, params object[] parms) { return ResourceAccess.GetResourceString(typeof(LoginUsersComponentBase), name, defaultValue, parms); }
+
         public const string TemplateName = "LoginUsers";
 
         public override Package GetPackage() { return Controllers.AreaRegistration.CurrentPackage; }
@@ -45,7 +47,7 @@ namespace YetaWF.Modules.Identity.Components {
                     if (user != null) {
                         list.Add(new SelectionItem<int> {
                             Text = user.UserName,
-                            Tooltip = this.__ResStr("selUser", "Select to log in as {0}", user.UserName),
+                            Tooltip = __ResStr("selUser", "Select to log in as {0}", user.UserName),
                             Value = user.UserId,
                         });
                     }
@@ -61,15 +63,15 @@ namespace YetaWF.Modules.Identity.Components {
                     if ((from l in list where l.Value == user.UserId select l).FirstOrDefault() == null) {
                         list.Insert(0, new SelectionItem<int> {
                             Text = user.UserName,
-                            Tooltip = this.__ResStr("selUser", "Select to log in as {0}", user.UserName),
+                            Tooltip = __ResStr("selUser", "Select to log in as {0}", user.UserName),
                             Value = user.UserId,
                         });
                     }
                 }
             }
             list.Insert(0, new SelectionItem<int> {
-                Text = this.__ResStr("noUser", "(none)"),
-                Tooltip = this.__ResStr("selLogoff", "Select to log off"),
+                Text = __ResStr("noUser", "(none)"),
+                Tooltip = __ResStr("selLogoff", "Select to log off"),
                 Value = 0,
             });
             return await DropDownListIntComponent.RenderDropDownListAsync(this, model, list, "yt_yetawf_identity_loginusers");
