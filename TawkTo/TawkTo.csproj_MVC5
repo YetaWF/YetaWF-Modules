@@ -118,7 +118,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <TypeScriptCompile Include="Addons\_Addons\SkinTawkTo\SkinTawkTo.tsx" />
+    <TypeScriptCompile Include="Addons\_Addons\SkinTawkTo\SkinTawkTo.ts" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
