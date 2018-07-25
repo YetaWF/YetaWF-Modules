@@ -26,7 +26,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
     {await HtmlHelper.ForEditContainerAsync(model, "PropertyList")}
 </div>
 <script>
-    YetaWF_SMTPServer.init('{DivId}');
+    new YetaWF_ComponentsHTML.SMTPServer('{DivId}');
 </script>");
                 return hb.ToYHtmlString();
             }

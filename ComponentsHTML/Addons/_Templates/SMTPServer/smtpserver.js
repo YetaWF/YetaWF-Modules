@@ -1,61 +1,89 @@
+"use strict";
 /* Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/ComponentsHTML#License */
-
-var YetaWF_SMTPServer = {};
-
-YetaWF_SMTPServer.init = function (id) {
-    'use strict';
-
-    var $control = $('#' + id);
-    if ($control.length != 1) throw "SMTPServer control invalid";/*DEBUG*/
-
-    var $server = $('input[name$=".Server"]', $control);
-    if ($server.length != 1) throw "Server invalid";/*DEBUG*/
-    var $auth = $('select[name$=".Authentication"]', $control);
-    if ($auth.length != 1) throw "Authentication invalid";/*DEBUG*/
-    var $button = $('.t_sendtestemail a', $control);
-    if ($button.length != 1) throw "Button invalid";/*DEBUG*/
-
-    function showFields(showAll) {
-        if (showAll) $('.t_row.t_port', $control).removeAttr("disabled"); else $('.t_row.t_port', $control).attr("disabled", "disabled");
-        if (showAll) $('.t_row.t_authentication', $control).removeAttr("disabled"); else $('.t_row.t_authentication', $control).attr("disabled", "disabled");
-        if (showAll) $('.t_row.t_username', $control).removeAttr("disabled"); else $('.t_row.t_username', $control).attr("disabled", "disabled");
-        if (showAll) $('.t_row.t_password', $control).removeAttr("disabled"); else $('.t_row.t_password', $control).attr("disabled", "disabled");
-        if (showAll) $('.t_row.t_ssl', $control).removeAttr("disabled"); else $('.t_row.t_ssl', $control).attr("disabled", "disabled");
-        if (showAll) $button.button("enable"); else $button.button("disable");
-        if (!showAll) {
-            $('input[name$=".Port"]', $control).val('25');
+var YetaWF_ComponentsHTML;
+(function (YetaWF_ComponentsHTML) {
+    var SMTPServer = /** @class */ (function () {
+        function SMTPServer(id) {
+            var _this = this;
+            this.Control = $YetaWF.getElementById(id);
+            this.Server = $YetaWF.getElement1BySelector("input[name$='.Server']", [this.Control]);
+            this.Port = $YetaWF.getElement1BySelector("input[name$='.Port']", [this.Control]);
+            this.Auth = $YetaWF.getElement1BySelector("select[name$='.Authentication']", [this.Control]);
+            this.Button = $YetaWF.getElement1BySelector(".t_sendtestemail a", [this.Control]);
+            $YetaWF.registerEventHandler(this.Server, "change", null, function (ev) {
+                _this.showFields(_this.hasServerValue());
+                return true;
+            });
+            $YetaWF.registerEventHandler(this.Server, "keyup", null, function (ev) {
+                _this.showFields(_this.hasServerValue());
+                return true;
+            });
+            $YetaWF.registerEventHandler(this.Server, "keydown", null, function (ev) {
+                _this.showFields(_this.hasServerValue());
+                return true;
+            });
+            $YetaWF.registerEventHandler(this.Auth, "change", null, function (ev) {
+                _this.showFields(_this.hasServerValue());
+                return true;
+            });
+            $YetaWF.registerEventHandler(this.Auth, "select", null, function (ev) {
+                _this.showFields(_this.hasServerValue());
+                return true;
+            });
+            $YetaWF.registerEventHandler(this.Auth, "keyup", null, function (ev) {
+                _this.showFields(_this.hasServerValue());
+                return true;
+            });
+            $YetaWF.registerEventHandler(this.Auth, "keydown", null, function (ev) {
+                _this.showFields(_this.hasServerValue());
+                return true;
+            });
+            $YetaWF.registerEventHandler(this.Button, "click", null, function (ev) {
+                var uri = new YetaWF.Url();
+                uri.parse(_this.Button.href);
+                uri.removeSearch("Server");
+                uri.removeSearch("Port");
+                uri.removeSearch("Authentication");
+                uri.removeSearch("UserName");
+                uri.removeSearch("Password");
+                uri.removeSearch("SSL");
+                uri.addSearch("Server", _this.Server.value);
+                var port = _this.Port.value;
+                if (port.trim() === "") {
+                    port = "25";
+                    _this.Port.value = port;
+                }
+                uri.addSearch("Port", port);
+                uri.addSearch("Authentication", _this.Auth.value);
+                var userName = $YetaWF.getElement1BySelector("input[name$='.UserName']");
+                uri.addSearch("UserName", userName.value);
+                var password = $YetaWF.getElement1BySelector("input[name$='.Password']");
+                uri.addSearch("Password", password.value);
+                var ssl = $YetaWF.getElement1BySelector("input[name$='.SSL']");
+                uri.addSearch("SSL", ssl.checked ? "true" : "false");
+                _this.Button.href = uri.toUrl();
+                return true;
+            });
+            $YetaWF.addWhenReady(function (tag) {
+                if ($YetaWF.elementHas(tag, _this.Server))
+                    _this.showFields(_this.hasServerValue());
+            });
         }
-    }
+        SMTPServer.prototype.hasServerValue = function () {
+            return this.Server.value.trim().length > 0;
+        };
+        SMTPServer.prototype.showFields = function (showAll) {
+            var disp = showAll ? "" : "none";
+            $YetaWF.getElement1BySelector(".t_row.t_port", [this.Control]).style.display = disp;
+            $YetaWF.getElement1BySelector(".t_row.t_authentication", [this.Control]).style.display = disp;
+            $YetaWF.getElement1BySelector(".t_row.t_username", [this.Control]).style.display = disp;
+            $YetaWF.getElement1BySelector(".t_row.t_password", [this.Control]).style.display = disp;
+            $YetaWF.getElement1BySelector(".t_row.t_ssl", [this.Control]).style.display = disp;
+            $YetaWF.getElement1BySelector(".t_row.t_sendtestemail", [this.Control]).style.display = disp;
+        };
+        return SMTPServer;
+    }());
+    YetaWF_ComponentsHTML.SMTPServer = SMTPServer;
+})(YetaWF_ComponentsHTML || (YetaWF_ComponentsHTML = {}));
 
-    $server.on('change keyup keydown', function () {
-        showFields($server.val().trim().length != 0);
-    })
-    $auth.on('change select keyup keydown', function () {
-        showFields($server.val().trim().length != 0);
-    })
-
-    $button.on('click', function () {
-        var uri = $button.uri();
-        uri.removeSearch('Server');
-        uri.removeSearch('Port');
-        uri.removeSearch('Authentication');
-        uri.removeSearch('UserName');
-        uri.removeSearch('Password');
-        uri.removeSearch('SSL');
-
-        uri.addSearch('Server', $server.val());
-        var port = $('input[name$=".Port"]', $control).val();
-        if (port.trim() == '') { port = 25; $('input[name$=".Port"]', $control).val(25); }
-        uri.addSearch('Port', port);
-        uri.addSearch('Authentication', $auth.val());
-        uri.addSearch('UserName', $('input[name$=".UserName"]', $control).val());
-        uri.addSearch('Password', $('input[name$=".Password"]', $control).val());
-        uri.addSearch('SSL', $('input[name$=".SSL"]', $control).is(':checked'));
-    });
-
-    $YetaWF.addWhenReady(function (tag) {
-        if ($(tag).has($server)) {
-            showFields($server.val().trim().length != 0);
-        }
-    });
-};
+//# sourceMappingURL=SMTPServer.js.map
