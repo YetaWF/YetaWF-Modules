@@ -37,7 +37,7 @@ namespace YetaWF.Modules.Identity.Controllers {
         [AllowPost]
         [ConditionalAntiForgeryToken]
         //[ExcludeDemoMode]
-        public ActionResult ExternalLogin(string provider, string returnUrl) {
+        public ActionResult ExternalLogin_Partial(string provider, string returnUrl) {
             AllowJavascriptResult = false;
             // Request a redirect to the external login provider
             if (Manager.IsDemo)
