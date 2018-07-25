@@ -148,12 +148,19 @@ YetaWF_Grid.modifySend = function ($grid, settingsModuleGuid, options, xhr, sett
 // modify received data to add page information
 YetaWF_Grid.modifyReceive = function ($grid, options, data, status, xhr) {
     'use strict';
+    if (typeof data === "string" && data.startsWith(YConfigs.Basics.AjaxJavascriptErrorReturn)) {
+        var script = data.substring(YConfigs.Basics.AjaxJavascriptErrorReturn.length);
+        // tslint:disable-next-line:no-eval
+        eval(script);
+        return false;
+    }
     var totalRecs = data.records;
     var startingRec = options.startingRecord;
     if (startingRec >= totalRecs) startingRec = totalRecs - 1;
     if (startingRec < 0) startingRec = 0;
     data['total'] = Math.ceil(totalRecs / options.requestedRecords);// total pages
     data['page'] = Math.floor(startingRec / options.requestedRecords) + 1;
+    return true;
 };
 // some error occurred during ajax
 YetaWF_Grid.loadError = function ($grid, xhr, status, error) {

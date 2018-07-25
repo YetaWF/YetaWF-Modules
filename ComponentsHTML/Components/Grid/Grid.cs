@@ -128,7 +128,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                     return YetaWF_Grid.modifySend($grid, {YetaWFManager.JsonSerialize(model.SettingsModuleGuid.ToString())}, options, xhr, settings);
             }},
             beforeProcessing: function(data,status,xhr) {{
-                YetaWF_Grid.modifyReceive($grid, options, data,status,xhr);
+                return YetaWF_Grid.modifyReceive($grid, options, data,status,xhr);
             }},
             loadError: function(xhr,status,error) {{
                 YetaWF_Grid.loadError($grid,xhr,status,error)

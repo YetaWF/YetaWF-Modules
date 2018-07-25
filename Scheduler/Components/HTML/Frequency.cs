@@ -1,11 +1,8 @@
 ﻿/* Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Scheduler#License */
 
-using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using YetaWF.Core.Components;
 using YetaWF.Core.Localize;
-using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Packages;
 using YetaWF.Core.Scheduler;
 using YetaWF.Core.Support;
@@ -14,6 +11,8 @@ using YetaWF.Modules.ComponentsHTML.Components;
 namespace YetaWF.Modules.Scheduler.Components {
 
     public abstract class FrequencyComponentBase : YetaWFComponent {
+
+        protected static string __ResStr(string name, string defaultValue, params object[] parms) { return ResourceAccess.GetResourceString(typeof(FrequencyComponentBase), name, defaultValue, parms); }
 
         public const string TemplateName = "Frequency";
 
@@ -30,10 +29,10 @@ namespace YetaWF.Modules.Scheduler.Components {
 
             hb.Append($@"
 <div class='yt_yetawf_scheduler_frequency t_display'>
-    {this.__ResStr("every", "Every ")}
+    {__ResStr("every", "Every ")}
     {await HtmlHelper.ForDisplayAsync(model, nameof(model.Value))}
     {await HtmlHelper.ForDisplayAsync(model, nameof(model.TimeUnits))}
-    {this.__ResStr("everyPost", "")}
+    {__ResStr("everyPost", "")}
 </div>");
 
             return hb.ToYHtmlString();
@@ -51,10 +50,10 @@ namespace YetaWF.Modules.Scheduler.Components {
 
                 hb.Append($@"
 <div class='yt_yetawf_scheduler_frequency t_edit'>
-    {this.__ResStr("every", "Every ")}
+    {__ResStr("every", "Every ")}
     {await HtmlHelper.ForEditAsync(model, nameof(model.Value))}{ValidationMessage(nameof(model.Value))}
     {await HtmlHelper.ForEditAsync(model, nameof(model.TimeUnits))}{ValidationMessage(nameof(model.TimeUnits))}
-    {this.__ResStr("everyPost", "")}
+    {__ResStr("everyPost", "")}
 </div>");
             }
             return hb.ToYHtmlString();

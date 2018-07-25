@@ -130,7 +130,7 @@ namespace YetaWF.Modules.Blog.Controllers {
                     case UpdateStatusEnum.OK:
                         break;
                 }
-                return FormProcessed(model, this.__ResStr("okSaved", "Comment saved"), OnPopupClose: OnPopupCloseEnum.ReloadParentPage, OnClose: OnCloseEnum.ReloadPage);
+                return FormProcessed(model, this.__ResStr("okSaved", "Comment saved"));
             }
         }
     }

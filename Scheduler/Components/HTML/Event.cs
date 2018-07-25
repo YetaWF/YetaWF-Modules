@@ -15,6 +15,8 @@ namespace YetaWF.Modules.Scheduler.Components {
 
     public abstract class EventComponentBase : YetaWFComponent {
 
+        protected static string __ResStr(string name, string defaultValue, params object[] parms) { return ResourceAccess.GetResourceString(typeof(EventComponentBase), name, defaultValue, parms); }
+
         public const string TemplateName = "Event";
 
         public override Package GetPackage() { return Controllers.AreaRegistration.CurrentPackage; }
@@ -83,7 +85,7 @@ namespace YetaWF.Modules.Scheduler.Components {
                     });
                 }
             }
-            if (list.Count == 0) throw new Error(this.__ResStr("noEvents", "No events are available"));
+            if (list.Count == 0) throw new Error(__ResStr("noEvents", "No events are available"));
 
             string select = null;
             if (model != null)
