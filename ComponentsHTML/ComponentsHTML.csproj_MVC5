@@ -302,8 +302,8 @@
     <Content Include="Addons\_Templates\Scroller\scroller.js" />
     <Content Include="Addons\_Templates\SMTPServer\filelistCSS.txt" />
     <Content Include="Addons\_Templates\SMTPServer\filelistJS.txt" />
-    <Content Include="Addons\_Templates\SMTPServer\smtpserver.css" />
-    <Content Include="Addons\_Templates\SMTPServer\smtpserver.js" />
+    <Content Include="Addons\_Templates\SMTPServer\SMTPServer.css" />
+    <TypeScriptCompile Include="Addons\_Templates\SMTPServer\SMTPServer.ts" />
     <Content Include="Addons\_Templates\TextArea\filelistCSS.txt" />
     <Content Include="Addons\_Templates\TextArea\filelistJS.txt" />
     <Content Include="Addons\_Templates\TextArea\Images\toolbarImg.png" />
