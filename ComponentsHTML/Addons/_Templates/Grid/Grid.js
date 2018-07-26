@@ -164,7 +164,15 @@ YetaWF_Grid.modifyReceive = function ($grid, options, data, status, xhr) {
 };
 // some error occurred during ajax
 YetaWF_Grid.loadError = function ($grid, xhr, status, error) {
-    $YetaWF.processAjaxReturn(xhr.responseText, status, xhr);
+    var data = xhr.responseText;
+    if (data.startsWith(YConfigs.Basics.AjaxJavascriptErrorReturn)) {
+        var script = data.substring(YConfigs.Basics.AjaxJavascriptErrorReturn.length);
+        // tslint:disable-next-line:no-eval
+        eval(script);
+        $grid.trigger('YetaWF_Grid_LoadError');
+        return;
+    }
+    $YetaWF.processAjaxReturn(data, status, xhr);
     $grid.trigger('YetaWF_Grid_LoadError');
 }
 
