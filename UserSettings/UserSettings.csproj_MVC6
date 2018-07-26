@@ -18,10 +18,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="ViewsCode\Shared\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\..\..\CoreComponents\Core\Core.csproj" />
     <ProjectReference Include="..\..\..\DataProvider\ModuleDefinition\ModuleDefinition.csproj" />
   </ItemGroup>
@@ -31,8 +27,14 @@
     <None Remove="**\*.cshtml_MVC6" />
     <!-- TODO: Review for final release - this is a workaround for slow solution load -->
     <Compile Remove="node_modules\**" />
+    <Compile Remove="ViewsCode\**" />
     <Content Remove="node_modules\**" />
-    <None Remove="node_modules\**" /><EmbeddedResource Remove="node_modules\**" />
+    <None Remove="node_modules\**" />
+    <None Remove="ViewsCode\**" /><EmbeddedResource Remove="node_modules\**" /><EmbeddedResource Remove="ViewsCode\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Addons\_Main\" />
   </ItemGroup>
 
 </Project>
