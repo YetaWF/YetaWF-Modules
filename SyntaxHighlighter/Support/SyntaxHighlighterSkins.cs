@@ -31,7 +31,7 @@ namespace YetaWF.Modules.SyntaxHighlighter.Support {
 
         private async Task LoadSyntaxHighlighterThemesAsync() {
             Package package = AreaRegistration.CurrentPackage;
-            string url = VersionManager.GetAddOnNamedUrl(package.Domain, package.Product, "SkinSyntaxHighlighter");
+            string url = VersionManager.GetAddOnNamedUrl(package.AreaName, "SkinSyntaxHighlighter");
             string customUrl = VersionManager.GetCustomUrlFromUrl(url);
             string path = YetaWFManager.UrlToPhysical(url);
             string customPath = YetaWFManager.UrlToPhysical(customUrl);

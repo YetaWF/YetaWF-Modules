@@ -25,7 +25,7 @@ namespace YetaWF.Modules.ImageRepository.Components {
         public override ComponentType GetComponentType() { return ComponentType.Edit; }
 
         public override async Task IncludeAsync() {
-            await Manager.AddOnManager.AddAddOnNamedAsync("YetaWF", "ComponentsHTML", "google.com.swfobject");
+            await Manager.AddOnManager.AddAddOnNamedAsync("YetaWF_ComponentsHTML", "google.com.swfobject");
             await base.IncludeAsync();
         }
 

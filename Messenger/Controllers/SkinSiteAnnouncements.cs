@@ -20,7 +20,7 @@ namespace YetaWF.Modules.Messenger.Controllers {
         public async Task<ActionResult> SkinSiteAnnouncements() {
             await Signalr.UseAsync();
             Package currentPackage = AreaRegistration.CurrentPackage;
-            await Manager.AddOnManager.AddAddOnNamedAsync(currentPackage.Domain, currentPackage.Product, "SkinSiteAnnouncements");
+            await Manager.AddOnManager.AddAddOnNamedAsync(currentPackage.AreaName, "SkinSiteAnnouncements");
             return new EmptyResult();
         }
     }

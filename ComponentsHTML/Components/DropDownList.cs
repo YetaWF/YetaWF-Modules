@@ -37,7 +37,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                 await KendoUICore.AddFileAsync("kendo.virtuallist.min.js");
                 await KendoUICore.AddFileAsync("kendo.dropdownlist.min.js");
             }
-            await Manager.AddOnManager.AddTemplateAsync(Controllers.AreaRegistration.CurrentPackage.Domain, Controllers.AreaRegistration.CurrentPackage.Product, "DropDownList");
+            await Manager.AddOnManager.AddTemplateAsync(Controllers.AreaRegistration.CurrentPackage.AreaName, "DropDownList");
         }
         public Task<YHtmlString> RenderAsync(TYPE model) {
 

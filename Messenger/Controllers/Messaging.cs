@@ -54,7 +54,7 @@ namespace YetaWF.Modules.Messenger.Controllers {
         public async Task<ActionResult> Messaging() {
             await Signalr.UseAsync();
             Package currentPackage = AreaRegistration.CurrentPackage;
-            await Manager.AddOnManager.AddAddOnNamedAsync(currentPackage.Domain, currentPackage.Product, "Messaging");
+            await Manager.AddOnManager.AddAddOnNamedAsync(currentPackage.AreaName, "Messaging");
             EditModel model = new EditModel { };
             return View(model);
         }

@@ -66,7 +66,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             hb.Append(tag.ToString(YTagRenderMode.StartTag));
 
             if (copy) {
-                await Manager.AddOnManager.AddAddOnNamedAsync(Package.Domain, Package.Product, "clipboardjs.com.clipboard");// add clipboard support
+                await Manager.AddOnManager.AddAddOnNamedAsync(Package.AreaName, "clipboardjs.com.clipboard");// add clipboard support
                 SkinImages skinImages = new SkinImages();
                 string imageUrl = await skinImages.FindIcon_TemplateAsync("Copy.png", Package, "Text");
                 YTagBuilder tagImg = ImageHTML.BuildKnownImageYTag(imageUrl, title: __ResStr("ttCopy", "Copy to Clipboard"), alt: __ResStr("altCopy", "Copy to Clipboard"));
@@ -87,7 +87,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
         public static async Task IncludeExplicitAsync() { // this component is reusable so we need to explicitly include all js/css
             await KendoUICore.AddFileAsync("kendo.maskedtextbox.min.js");
-            await Manager.AddOnManager.AddTemplateAsync(Controllers.AreaRegistration.CurrentPackage.Domain, Controllers.AreaRegistration.CurrentPackage.Product, "Text");
+            await Manager.AddOnManager.AddTemplateAsync(Controllers.AreaRegistration.CurrentPackage.AreaName, "Text");
         }
         public async Task<YHtmlString> RenderAsync(string model) {
             return await RenderTextAsync(this, model, TemplateClass);
@@ -139,7 +139,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             hb.Append(tag.ToString(YTagRenderMode.StartTag));
 
             if (copy) {
-                await Manager.AddOnManager.AddAddOnNamedAsync(component.Package.Domain, component.Package.Product, "clipboardjs.com.clipboard");// add clipboard support
+                await Manager.AddOnManager.AddAddOnNamedAsync(component.Package.AreaName, "clipboardjs.com.clipboard");// add clipboard support
                 SkinImages skinImages = new SkinImages();
                 string imageUrl = await skinImages.FindIcon_TemplateAsync("Copy.png", component.Package, "Text");
                 YTagBuilder tagImg = ImageHTML.BuildKnownImageYTag(imageUrl, title: __ResStr("ttCopy", "Copy to Clipboard"), alt: __ResStr("altCopy", "Copy to Clipboard"));

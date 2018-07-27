@@ -42,7 +42,7 @@ namespace YetaWF.Modules.DevTests.Controllers {
         [AllowGet]
         public ActionResult TemplateScroller() {
             Model model = new Model { };
-            string addonUrl = VersionManager.GetAddOnPackageUrl(AreaRegistration.CurrentPackage.Domain, AreaRegistration.CurrentPackage.Product);
+            string addonUrl = VersionManager.GetAddOnPackageUrl(AreaRegistration.CurrentPackage.AreaName);
             // generate some random data for the scroller items
             for (int index = 0 ; index < 12 ; ++index) {
                 model.Items.Add(new ScrollerItem {

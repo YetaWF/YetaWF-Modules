@@ -23,7 +23,7 @@ namespace YetaWF.Modules.Basics.Views {
 
             HtmlBuilder hb = new HtmlBuilder();
 
-            string rootUrl = VersionManager.GetAddOnPackageUrl(Package.Domain, Package.Product);
+            string rootUrl = VersionManager.GetAddOnPackageUrl(Package.AreaName);
             string closeUrl = Manager.GetCDNUrl(System.IO.Path.Combine(rootUrl, "Icons", "Close.png"));
 
             if (model.MessageHandling == DataProvider.AlertConfig.MessageHandlingEnum.DisplayUntilOff) {

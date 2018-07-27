@@ -19,7 +19,7 @@ namespace YetaWF.Modules.ComponentsHTML.Addons {
 
             //scripts.AddLocalization(areaName, "something", this.__ResStrxxx("something", "something"));
 
-            scripts.AddConfigOption(areaName, "LoaderGif", manager.GetCDNUrl(manager.AddOnManager.GetAddOnNamedUrl(package.Domain, package.Product, "no-margin-for-errors.com.prettyLoader") + "images/prettyLoader/ajax-loader.gif"));
+            scripts.AddConfigOption(areaName, "LoaderGif", manager.GetCDNUrl(manager.AddOnManager.GetAddOnNamedUrl(package.AreaName, "no-margin-for-errors.com.prettyLoader") + "images/prettyLoader/ajax-loader.gif"));
 
             return Task.CompletedTask;
         }

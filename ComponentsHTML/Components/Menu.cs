@@ -113,7 +113,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             if (style == MenuStyleEnum.Bootstrap) {
                 string menu = (await CoreRendering.RenderMenuAsync(model.MenuList, DivId, null, RenderEngine: YetaWF.Core.Modules.ModuleAction.RenderEngineEnum.BootstrapSmartMenu, HtmlHelper: HtmlHelper)).ToString();
                 if (!string.IsNullOrWhiteSpace(menu)) {
-                    await Manager.AddOnManager.AddAddOnNamedAsync(Package.Domain, Package.Product, "github.com.vadikom.smartmenus"); // multilevel navbar
+                    await Manager.AddOnManager.AddAddOnNamedAsync(Package.AreaName, "github.com.vadikom.smartmenus"); // multilevel navbar
                     hb.Append(menu);
                 }
             } else {

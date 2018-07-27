@@ -28,7 +28,7 @@ namespace YetaWF.Modules.Messenger {
 
         public static async Task UseAsync() {
             Package package = YetaWF.Modules.Messenger.Controllers.AreaRegistration.CurrentPackage;
-            await YetaWFManager.Manager.AddOnManager.AddAddOnNamedAsync(package.Domain, package.Product, "github.com.signalr.signalr");
+            await YetaWFManager.Manager.AddOnManager.AddAddOnNamedAsync(package.AreaName, "github.com.signalr.signalr");
             YetaWFManager.Manager.ScriptManager.AddConfigOption(package.Domain, "SignalRUrl", SignalRUrl);
         }
 

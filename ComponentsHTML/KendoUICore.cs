@@ -20,7 +20,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             if (Manager.IsPostRequest) return;// can't add this while processing a post request
             if (Manager.CurrentSite.CanUseCDNComponents) return;// already included
             if (_kendoAddon == null)
-                _kendoAddon = VersionManager.FindAddOnNamedVersion(AreaRegistration.CurrentPackage.Domain, AreaRegistration.CurrentPackage.Product, "telerik.com.Kendo_UI_Core");
+                _kendoAddon = VersionManager.FindAddOnNamedVersion(AreaRegistration.CurrentPackage.AreaName, "telerik.com.Kendo_UI_Core");
             string productJsUrl = _kendoAddon.GetAddOnJsUrl();
             string url = productJsUrl + file;
             await Manager.ScriptManager.AddAsync(url);

@@ -95,7 +95,7 @@ namespace YetaWF.Modules.Identity.Controllers {
                         CssClass = "t_" + provider.InternalName.ToLower(),
                     });
                     YetaWF.Core.Packages.Package package = AreaRegistration.CurrentPackage;
-                    string url = VersionManager.GetAddOnPackageUrl(package.Domain, package.Product);
+                    string url = VersionManager.GetAddOnPackageUrl(package.AreaName);
                     model.Images.Add(Manager.GetCDNUrl(string.Format("{0}Icons/LoginProviders/{1}.png", url, provider.InternalName)));
                 }
             }

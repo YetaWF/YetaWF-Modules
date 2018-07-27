@@ -27,7 +27,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         public override ComponentType GetComponentType() { return ComponentType.Display; }
 
         public override async Task IncludeAsync() {
-            await Manager.AddOnManager.AddAddOnNamedAsync(Package.Domain, Package.Product, "github.com.free-jqgrid.jqgrid");
+            await Manager.AddOnManager.AddAddOnNamedAsync(Package.AreaName, "github.com.free-jqgrid.jqgrid");
             await base.IncludeAsync();
         }
 

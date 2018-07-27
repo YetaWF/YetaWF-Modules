@@ -55,7 +55,7 @@ namespace YetaWF.Modules.PageEdit.Views {
             if (model.EditAuthorized) {
                 hb.Append($@"
     {PropertyListComponentBase.RenderTabPaneStart(DivId, panel, "t_addNewPage")}
-        {await HtmlHelper.ForViewAsync($"{Package.Domain}_{Package.Product}_AddNewPage", module, model.AddNewPageModel)}
+        {await HtmlHelper.ForViewAsync($"{Package.AreaName}_AddNewPage", module, model.AddNewPageModel)}
     {PropertyListComponentBase.RenderTabPaneEnd(DivId, panel)}");
                 ++panel;
             }
@@ -65,38 +65,38 @@ namespace YetaWF.Modules.PageEdit.Views {
 
                     hb.Append($@"
     {PropertyListComponentBase.RenderTabPaneStart(DivId, panel, "t_addNewMod")}
-        {await HtmlHelper.ForViewAsync($"{Package.Domain}_{Package.Product}_AddNewModule", module, model.AddNewModel)}
+        {await HtmlHelper.ForViewAsync($"{Package.AreaName}_AddNewModule", module, model.AddNewModel)}
     {PropertyListComponentBase.RenderTabPaneEnd(DivId, panel)}");
                 ++panel;
 
                     hb.Append($@"
     {PropertyListComponentBase.RenderTabPaneStart(DivId, panel, "t_addExistingMod")}
-        {await HtmlHelper.ForViewAsync($"{Package.Domain}_{Package.Product}_AddExistingModule", module, model.AddExistingModel)}
+        {await HtmlHelper.ForViewAsync($"{Package.AreaName}_AddExistingModule", module, model.AddExistingModel)}
     {PropertyListComponentBase.RenderTabPaneEnd(DivId, panel)}");
                     ++panel;
 
                     hb.Append($@"
     {PropertyListComponentBase.RenderTabPaneStart(DivId, panel, "t_importPage")}
-        {await HtmlHelper.ForViewAsync($"{Package.Domain}_{Package.Product}_ImportPage", module, model.ImportPageModel)}
+        {await HtmlHelper.ForViewAsync($"{Package.AreaName}_ImportPage", module, model.ImportPageModel)}
     {PropertyListComponentBase.RenderTabPaneEnd(DivId, panel)}");
                     ++panel;
 
                     hb.Append($@"
     {PropertyListComponentBase.RenderTabPaneStart(DivId, panel, "t_importMod")}
-        {await HtmlHelper.ForViewAsync($"{Package.Domain}_{Package.Product}_ImportModule", module, model.ImportModuleModel)}
+        {await HtmlHelper.ForViewAsync($"{Package.AreaName}_ImportModule", module, model.ImportModuleModel)}
     {PropertyListComponentBase.RenderTabPaneEnd(DivId, panel)}");
                     ++panel;
 
                     hb.Append($@"
     {PropertyListComponentBase.RenderTabPaneStart(DivId, panel, "t_addSkins")}
-        {await HtmlHelper.ForViewAsync($"{Package.Domain}_{Package.Product}_SkinSelection", module, model.SkinSelectionModel)}
+        {await HtmlHelper.ForViewAsync($"{Package.AreaName}_SkinSelection", module, model.SkinSelectionModel)}
     {PropertyListComponentBase.RenderTabPaneEnd(DivId, panel)}");
                     ++panel;
                 }
 
                 hb.Append($@"
     {PropertyListComponentBase.RenderTabPaneStart(DivId, panel, "t_Login")}
-        {await HtmlHelper.ForViewAsync($"{Package.Domain}_{Package.Product}_LoginSiteSelection", module, model.LoginSiteSelectionModel)}
+        {await HtmlHelper.ForViewAsync($"{Package.AreaName}_LoginSiteSelection", module, model.LoginSiteSelectionModel)}
     {PropertyListComponentBase.RenderTabPaneEnd(DivId, panel)}");
                 ++panel;
             }

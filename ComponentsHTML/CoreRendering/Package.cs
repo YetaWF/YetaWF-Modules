@@ -14,12 +14,12 @@ namespace YetaWF.Modules.ComponentsHTML {
         }
 
         public async Task AddStandardAddOnsAsync() {
-            await Manager.AddOnManager.AddAddOnNamedAsync(Package.Domain, Package.Product, "jquery");
-            await Manager.AddOnManager.AddAddOnNamedAsync(Package.Domain, Package.Product, "jqueryui");
-            await Manager.AddOnManager.AddAddOnNamedAsync(Package.Domain, Package.Product, "necolas.github.io.normalize");
-            await Manager.AddOnManager.AddAddOnNamedAsync(Package.Domain, Package.Product, "no-margin-for-errors.com.prettyLoader");
+            await Manager.AddOnManager.AddAddOnNamedAsync(Package.AreaName, "jquery");
+            await Manager.AddOnManager.AddAddOnNamedAsync(Package.AreaName, "jqueryui");
+            await Manager.AddOnManager.AddAddOnNamedAsync(Package.AreaName, "necolas.github.io.normalize");
+            await Manager.AddOnManager.AddAddOnNamedAsync(Package.AreaName, "no-margin-for-errors.com.prettyLoader");
 
-            await Manager.AddOnManager.AddAddOnNamedAsync("YetaWF", "Core", "Basics");
+            await Manager.AddOnManager.AddAddOnNamedAsync("YetaWF_Core", "Basics");
             if (Manager.IsInPopup)
                 await AddPopupsAddOnsAsync();
         }
@@ -33,25 +33,25 @@ namespace YetaWF.Modules.ComponentsHTML {
             if (string.IsNullOrWhiteSpace(skin))
                 skin = Manager.CurrentSite.jQueryUISkin;
             string jqueryUIFolder = await skinAccess.FindJQueryUISkinAsync(skin);
-            await Manager.AddOnManager.AddAddOnNamedAsync(Package.Domain, Package.Product, "jqueryui-themes", jqueryUIFolder);
+            await Manager.AddOnManager.AddAddOnNamedAsync(Package.AreaName, "jqueryui-themes", jqueryUIFolder);
 
             // Find Kendo UI theme
             skin = Manager.CurrentPage.KendoUISkin;
             if (string.IsNullOrWhiteSpace(skin))
                 skin = Manager.CurrentSite.KendoUISkin;
             string kendoUITheme = await skinAccess.FindKendoUISkinAsync(skin);
-            await Manager.AddOnManager.AddAddOnNamedAsync(Package.Domain, Package.Product, "telerik.com.Kendo_UI_Core", kendoUITheme);
+            await Manager.AddOnManager.AddAddOnNamedAsync(Package.AreaName, "telerik.com.Kendo_UI_Core", kendoUITheme);
         }
 
         public async Task AddFormsAddOnsAsync() {
-            await Manager.AddOnManager.AddAddOnNamedAsync(Package.Domain, Package.Product, "bassistance.de.jquery-validation");
-            await Manager.AddOnManager.AddAddOnNamedAsync(Package.Domain, Package.Product, "microsoft.com.jquery_unobtrusive_validation");
-            await Manager.AddOnManager.AddAddOnNamedAsync(Package.Domain, Package.Product, "gist.github.com_remi_957732.jquery_validate_hooks");
+            await Manager.AddOnManager.AddAddOnNamedAsync(Package.AreaName, "bassistance.de.jquery-validation");
+            await Manager.AddOnManager.AddAddOnNamedAsync(Package.AreaName, "microsoft.com.jquery_unobtrusive_validation");
+            await Manager.AddOnManager.AddAddOnNamedAsync(Package.AreaName, "gist.github.com_remi_957732.jquery_validate_hooks");
         }
 
         public async Task AddPopupsAddOnsAsync() {
-            await Manager.AddOnManager.AddAddOnNamedAsync("YetaWF", "Core", "Popups");
-            await Manager.AddOnManager.AddAddOnNamedAsync(Package.Domain, Package.Product, "Popups");
+            await Manager.AddOnManager.AddAddOnNamedAsync("YetaWF_Core", "Popups");
+            await Manager.AddOnManager.AddAddOnNamedAsync(Package.AreaName, "Popups");
         }
     }
 }

@@ -26,10 +26,10 @@ namespace YetaWF.Modules.SyntaxHighlighter.Controllers {
             Package package = AreaRegistration.CurrentPackage;
             SkinAccess skinAccess = new SkinAccess();
             string theme = skinAccess.FindSyntaxHighlighterSkin(config.SyntaxHighlighterSkin);
-            await Manager.AddOnManager.AddAddOnNamedAsync(package.Domain, package.Product, "SkinSyntaxHighlighter", theme);
+            await Manager.AddOnManager.AddAddOnNamedAsync(package.AreaName, "SkinSyntaxHighlighter", theme);
 
             // add client-side init
-            string url = VersionManager.GetAddOnNamedUrl(package.Domain, package.Product, "SkinSyntaxHighlighter");
+            string url = VersionManager.GetAddOnNamedUrl(package.AreaName, "SkinSyntaxHighlighter");
             Manager.ScriptManager.AddLast("AlexGorbatchevCom_SyntaxHighlighter", "YetaWF_SyntaxHighlighter.AlexGorbatchevCom.init('" + url + "');");
 
             return new EmptyResult();

@@ -51,8 +51,8 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         protected async Task<string> RenderBeginFormAsync(object HtmlAttributes = null, bool SaveReturnUrl = false, bool ValidateImmediately = false, string ActionName = null, string ControllerName = null, bool Pure = false) {
 
             await YetaWFCoreRendering.Render.AddFormsAddOnsAsync();
-            await Manager.AddOnManager.AddAddOnNamedAsync("YetaWF", "Core", "Forms");// standard css, validation strings
-            await Manager.AddOnManager.AddAddOnNamedAsync("YetaWF", "ComponentsHTML", "Forms");
+            await Manager.AddOnManager.AddAddOnNamedAsync("YetaWF_Core", "Forms");// standard css, validation strings
+            await Manager.AddOnManager.AddAddOnNamedAsync("YetaWF_ComponentsHTML", "Forms");
 
             Manager.NextUniqueIdPrefix();
 

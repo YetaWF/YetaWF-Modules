@@ -48,7 +48,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         /// Include required JavaScript, Css files for this component.
         /// </summary>
         public virtual async Task IncludeAsync() {
-            await Manager.AddOnManager.AddTemplateAsync(Package.Domain, Package.Product, GetTemplateName());
+            await Manager.AddOnManager.AddTemplateAsync(Package.AreaName, GetTemplateName());
         }
 
         public string MakeId(YTagBuilder tag) {

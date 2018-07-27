@@ -62,9 +62,9 @@ namespace YetaWF.Modules.ComponentsHTML {
                 //await Manager.ScriptManager.AddKendoUICoreJsFile("kendo.popup.min.js"); // is now a prereq of kendo.window (2017.2.621)
                 await KendoUICore.AddFileAsync("kendo.menu.min.js");
 
-                await Manager.AddOnManager.AddAddOnNamedAsync(Package.Domain, Package.Product, "ModuleMenu"); // module menu support
-                await Manager.AddOnManager.AddAddOnNamedAsync(Package.Domain, Package.Product, "Modules");// various module support
-                await Manager.AddOnManager.AddAddOnNamedAsync(Package.Domain, Package.Product, "jquery-color");// for color change when entering module edit menu
+                await Manager.AddOnManager.AddAddOnNamedAsync(Package.AreaName, "ModuleMenu"); // module menu support
+                await Manager.AddOnManager.AddAddOnNamedAsync(Package.AreaName, "Modules");// various module support
+                await Manager.AddOnManager.AddAddOnNamedAsync(Package.AreaName, "jquery-color");// for color change when entering module edit menu
 
                 // <div class= >
                 YTagBuilder divTag = new YTagBuilder("div");
