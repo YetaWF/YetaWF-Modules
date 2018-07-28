@@ -127,7 +127,20 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                         sb.Append(":All;True:Yes;False:No");
                         sb.Append("'},");
                     } else if (prop.PropInfo.PropertyType == typeof(int) || prop.PropInfo.PropertyType == typeof(int?) || prop.PropInfo.PropertyType == typeof(long) || prop.PropInfo.PropertyType == typeof(long?)) {
-                        sb.Append("stype:'text',searchoptions:{sopt:['ge','gt','le','lt','eq','ne']},searchrules:{integer:true},");
+                        List<SelectionItem<int>> entries = await YetaWFComponentExtender.GetValueListFromUIHintAsync(prop.UIHint);
+                        if (entries == null) {
+                            // regular int/long
+                            sb.Append("stype:'text',searchoptions:{sopt:['ge','gt','le','lt','eq','ne']},searchrules:{integer:true},");
+                        } else {
+                            // this is a dynamic enumerated value
+                            sb.Append($"stype:'select',searchoptions:{{sopt:['eq','ne'],value:':{__ResStr("noSel", "(no selection)")}");
+                            foreach (SelectionItem<int> entry in entries) {
+                                string capt = YetaWFManager.JsonSerialize(entry.Text.ToString());
+                                capt = capt.Substring(1, capt.Length - 2);
+                                sb.Append(";{0}:{1}", (int)entry.Value, capt);
+                            }
+                            sb.Append("'},");
+                        }
                     } else if (prop.PropInfo.PropertyType == typeof(decimal) || prop.PropInfo.PropertyType == typeof(decimal?)) {
                         sb.Append("stype:'text',searchoptions:{sopt:['ge','gt','le','lt','eq','ne']},searchrules:{integer:true},");
                     } else if (prop.PropInfo.PropertyType == typeof(DateTime) || prop.PropInfo.PropertyType == typeof(DateTime?)) {
