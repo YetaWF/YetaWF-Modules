@@ -1,0 +1,6 @@
+@charset "UTF-8";
+/* Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/ComponentsHTML#License */
+div.yt_time {
+  display: inline; }
+  div.yt_time .k-timepicker {
+    width: 14ch; }

@@ -43,6 +43,18 @@ namespace YetaWF.Modules.DevTests.Controllers {
             [UIHint("Date"), ReadOnly]
             public DateTime DateRO { get; set; }
 
+            [Caption("Time (Required)"), Description("Time (Required)")]
+            [UIHint("Time"), Required]
+            public DateTime TimeReq { get; set; }
+
+            [Caption("Time"), Description("Time")]
+            [UIHint("Time")]
+            public DateTime? TimeOpt { get; set; }
+
+            [Caption("Time (Read/Only)"), Description("Time (Read/only)")]
+            [UIHint("Time"), ReadOnly]
+            public DateTime TimeRO { get; set; }
+
             [Caption("Timespan (Required)"), Description("Timespan (Required)")]
             [UIHint("TimeSpan"), Required]
             public TimeSpan TimeSpanReq { get; set; }
@@ -66,6 +78,9 @@ namespace YetaWF.Modules.DevTests.Controllers {
                 DateReq = DateTime.UtcNow;
                 DateOpt = DateTime.UtcNow;
                 DateRO = DateTime.UtcNow;
+                TimeReq = DateTime.UtcNow;
+                TimeOpt = DateTime.UtcNow;
+                TimeRO = DateTime.UtcNow;
                 TimeSpanRO = new TimeSpan(3, 13, 25, 11, 933);
                 TimeSpanHMSRO = new TimeSpan(0, 13, 25, 11, 933);
             }
