@@ -110,11 +110,12 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             }
             // add some default validations
             if (PropData.PropInfo.PropertyType == typeof(DateTime) || PropData.PropInfo.PropertyType == typeof(DateTime?)) {
-                tagBuilder.Attributes["data-val-date"] = __ResStr("valDate", "Please enter a valid date for field '{0}'", PropData.GetCaption(Container));
-            }
-            if (PropData.PropInfo.PropertyType == typeof(int) || PropData.PropInfo.PropertyType == typeof(int?) ||
+                tagBuilder.Attributes["data-val-date"] = __ResStr("valDate", "Please enter a valid value for field '{0}'", PropData.GetCaption(Container));
+                tagBuilder.MergeAttribute("data-val", "true");
+            } else if (PropData.PropInfo.PropertyType == typeof(int) || PropData.PropInfo.PropertyType == typeof(int?) ||
                     PropData.PropInfo.PropertyType == typeof(long) || PropData.PropInfo.PropertyType == typeof(long?)) {
                 tagBuilder.Attributes["data-val-number"] = __ResStr("valNumber", "Please enter a valid number for field '{0}'", PropData.GetCaption(Container));
+                tagBuilder.MergeAttribute("data-val", "true");
             }
         }
         protected YHtmlString ValidationMessage(string fieldName) {

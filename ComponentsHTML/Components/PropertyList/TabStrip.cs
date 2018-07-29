@@ -17,7 +17,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         }
         public static YHtmlString RenderTabPaneStart(string controlId, int panel, string cssClass = "") {
             if (!string.IsNullOrWhiteSpace(cssClass)) cssClass = " " + cssClass;
-            return new YHtmlString($"<div class='t_table t_cat t_tabpanel{cssClass}' data-tab='{controlId}_tab{panel}' id='{controlId}_tab{panel}'>");
+            return new YHtmlString($"<div class='t_table t_cat t_tabpanel{cssClass}' data-tab='{panel}' id='{controlId}_tab{panel}'>");
         }
         public static YHtmlString RenderTabPaneEnd(string controlId, int panel) {
             return new YHtmlString("</div>");

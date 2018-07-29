@@ -10,7 +10,7 @@
 
 // Make sure all hidden fields are NOT ignored
 $.validator.setDefaults({
-    ignore: '.yNoValidate', // don't ignore hidden fields - ignore fields with .yNoValidate class
+    ignore: '.' + YConfigs.Forms.CssFormNoValidate, // don't ignore hidden fields - ignore fields with no validate class
     onsubmit: false         // don't validate on submit, we want to see the submit event and validate things ourselves
 });
 $.validator.unobtrusive.options = {
@@ -22,7 +22,7 @@ $.validator.unobtrusive.options = {
 // SELECTIONREQUIRED
 
 $.validator.addMethod('selectionrequired', function (value, element, parameters) {
-    if ($(element).hasClass('yNoValidate')) return true;
+    if ($(element).hasClass(YConfigs.Forms.CssFormNoValidate)) return true;
     if (value == undefined || value == null || value.trim().length == 0 || value.trim() == "0") return false;
     return true;
 });
@@ -39,7 +39,7 @@ $.validator.unobtrusive.adapters.add('selectionrequired', [YConfigs.Forms.Condit
 $.validator.addMethod('requiredif', function (value, element, parameters) {
     'use strict';
 
-    if ($(element).hasClass('yNoValidate')) return true;
+    if ($(element).hasClass(YConfigs.Forms.CssFormNoValidate)) return true;
 
     // get the target value (as a string)
     var conditionvalue = parameters['targetvalue'];
@@ -103,7 +103,7 @@ $.validator.unobtrusive.adapters.add('requiredif', [YConfigs.Forms.ConditionProp
 $.validator.addMethod('requiredifnot', function (value, element, parameters) {
     'use strict';
 
-    if ($(element).hasClass('yNoValidate')) return true;
+    if ($(element).hasClass(YConfigs.Forms.CssFormNoValidate)) return true;
 
     // get the target value (as a string,
     // as that's what the actual value will be)
@@ -162,7 +162,7 @@ $.validator.unobtrusive.adapters.add('requiredifnot', [YConfigs.Forms.ConditionP
 $.validator.addMethod('requiredifinrange', function (value, element, parameters) {
     'use strict';
 
-    if ($(element).hasClass('yNoValidate')) return true;
+    if ($(element).hasClass(YConfigs.Forms.CssFormNoValidate)) return true;
 
     // get the target value (as a int as that's what the actual value will be)
     var conditionvaluelow = parseInt(parameters['targetvaluelow'], 10);
@@ -212,7 +212,7 @@ $.validator.unobtrusive.adapters.add('requiredifinrange', [YConfigs.Forms.Condit
 $.validator.addMethod('requiredifsupplied', function (value, element, parameters) {
     'use strict';
 
-    if ($(element).hasClass('yNoValidate')) return true;
+    if ($(element).hasClass(YConfigs.Forms.CssFormNoValidate)) return true;
 
     // Get value of the target control - we can't use its Id because it could be non-unique, not predictable
     // use the name attribute instead
@@ -255,7 +255,7 @@ $.validator.unobtrusive.adapters.add('requiredifsupplied', [YConfigs.Forms.Condi
 $.validator.addMethod('sameas', function (value, element, parameters) {
     'use strict';
 
-    if ($(element).hasClass('yNoValidate')) return true;
+    if ($(element).hasClass(YConfigs.Forms.CssFormNoValidate)) return true;
 
     // Get value of the target control - we can't use its Id because it could be non-unique, not predictable
     // use the name attribute instead
@@ -298,7 +298,7 @@ $.validator.addMethod('listnoduplicates', function (value, element, parameters) 
     'use strict';
 
     var $element = $(element);
-    if ($element.hasClass('yNoValidate')) return true;
+    if ($element.hasClass(YConfigs.Forms.CssFormNoValidate)) return true;
 
     // Lists are always in a grid. Because field names can be duplicates (occurs due to add/delete) we can use the element name for comparisons
     // instead we locate the jqgrid record id

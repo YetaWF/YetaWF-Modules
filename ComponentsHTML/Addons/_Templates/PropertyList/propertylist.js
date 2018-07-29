@@ -32,9 +32,9 @@ YetaWF_PropertyList.init = function (divId, controlData, inPartialView) {
                     $YetaWF.processActivateDivs([$row[0]]);
                 }
                 if (found)
-                    $('input,select,textarea', $row).removeClass('yNoValidate');
+                    $('input,select,textarea', $row).removeClass(YConfigs.Forms.CssFormNoValidate);
                 else
-                    $('input,select,textarea', $row).addClass('yNoValidate');
+                    $('input,select,textarea', $row).addClass(YConfigs.Forms.CssFormNoValidate);
             }
         });
     }

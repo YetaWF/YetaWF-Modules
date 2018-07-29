@@ -472,8 +472,8 @@ YetaWF_Grid.setAddButtonStatus = function ($elem) {
     }
     // mark input field as not to be validated
     var $inp = $('input[name$=".NewValue"]', $ctrl);
-    if (!$inp.hasClass('yNoValidate'))
-        $inp.addClass('yNoValidate');
+    if (!$inp.hasClass(YConfigs.Forms.CssFormNoValidate))
+        $inp.addClass(YConfigs.Forms.CssFormNoValidate);
 };
 _YetaWF_Grid.isDuplicate = function ($grid, value) {
     value = value.trim().toUpperCase();

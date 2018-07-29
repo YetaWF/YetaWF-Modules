@@ -4,6 +4,8 @@ using System;
 using YetaWF.Core.Controllers;
 using YetaWF.Core.Localize;
 using YetaWF.Core.Models.Attributes;
+using YetaWF.Core.Components;
+using YetaWF.Core.Serializers;
 #if MVC6
 using Microsoft.AspNetCore.Mvc;
 #else
@@ -19,35 +21,35 @@ namespace YetaWF.Modules.DevTests.Controllers {
         [Trim]
         public class Model {
 
-            [Caption("Date/Time (Required)"), Description("Date/Time (Required)")]
+            [Category("Date/Time"), Caption("Date/Time (Required)"), Description("Date/Time (Required)")]
             [UIHint("DateTime"), Required]
             public DateTime DateTimeReq { get; set; }
 
-            [Caption("Date/Time"), Description("Date/Time")]
+            [Category("Date/Time"), Caption("Date/Time"), Description("Date/Time")]
             [UIHint("DateTime")]
             public DateTime? DateTimeOpt { get; set; }
 
-            [Caption("Date/Time (Read/Only)"), Description("Date/Time (Read/only)")]
+            [Category("Date/Time"), Caption("Date/Time (Read/Only)"), Description("Date/Time (Read/only)")]
             [UIHint("DateTime"), ReadOnly]
             public DateTime DateTimeRO { get; set; }
 
-            [Caption("Date (Required)"), Description("Date (Required)")]
+            [Category("Date/Time"), Caption("Date (Required)"), Description("Date (Required)")]
             [UIHint("Date"), Required]
             public DateTime DateReq { get; set; }
 
-            [Caption("Date"), Description("Date/Time")]
+            [Category("Date/Time"), Caption("Date"), Description("Date/Time")]
             [UIHint("Date")]
             public DateTime? DateOpt { get; set; }
 
-            [Caption("Date (Read/Only)"), Description("Date/Time (Read/only)")]
+            [Category("Date/Time"), Caption("Date (Read/Only)"), Description("Date/Time (Read/only)")]
             [UIHint("Date"), ReadOnly]
             public DateTime DateRO { get; set; }
 
-            [Caption("Time (Required)"), Description("Time (Required)")]
+            [Category("Date/Time"), Caption("Time (Required)"), Description("Time (Required)")]
             [UIHint("Time"), Required]
             public DateTime TimeReq { get; set; }
 
-            [Caption("Time"), Description("Time")]
+            [Category("Date/Time"), Caption("Time"), Description("Time")]
             [UIHint("Time")]
             public DateTime? TimeOpt { get; set; }
 
@@ -55,21 +57,45 @@ namespace YetaWF.Modules.DevTests.Controllers {
             [UIHint("Time"), ReadOnly]
             public DateTime TimeRO { get; set; }
 
-            [Caption("Timespan (Required)"), Description("Timespan (Required)")]
+            [Category("TimeSpan"), Caption("Timespan (Required)"), Description("Timespan (Required)")]
             [UIHint("TimeSpan"), Required]
             public TimeSpan TimeSpanReq { get; set; }
 
-            [Caption("Timespan"), Description("Timespan")]
+            [Category("TimeSpan"), Caption("Timespan"), Description("Timespan")]
             [UIHint("TimeSpan")]
             public TimeSpan TimeSpanOpt { get; set; }
 
-            [Caption("Timespan (Read/Only)"), Description("Timespan (Read/only)")]
+            [Category("TimeSpan"), Caption("Timespan (Read/Only)"), Description("Timespan (Read/only)")]
             [UIHint("TimeSpan"), ReadOnly]
             public TimeSpan TimeSpanRO { get; set; }
 
-            [Caption("Timespan (Read/Only)"), Description("Timespan (Read/only)")]
+            [Category("TimeSpan"), Caption("Timespan (Read/Only)"), Description("Timespan (Read/only)")]
             [UIHint("TimeSpan"), ReadOnly]
             public TimeSpan TimeSpanHMSRO { get; set; }
+
+            [Category("Hours"), Caption("Mondays"), Description("Select the hours")]
+            [UIHint("DayTimeRange"), Required]
+            public DayTimeRange Mondays { get { return OpeningHours.Days[(int)DayOfWeek.Monday]; } set { OpeningHours.Days[(int)DayOfWeek.Monday] = value; } }
+            [Category("Hours"), Caption("Tuesdays"), Description("Select the hours")]
+            [UIHint("DayTimeRange"), Required]
+            public DayTimeRange Tuesdays { get { return OpeningHours.Days[(int)DayOfWeek.Tuesday]; } set { OpeningHours.Days[(int)DayOfWeek.Tuesday] = value; } }
+            [Category("Hours"), Caption("Wednesdays"), Description("Select the hours")]
+            [UIHint("DayTimeRange"), Required]
+            public DayTimeRange Wednesdays { get { return OpeningHours.Days[(int)DayOfWeek.Wednesday]; } set { OpeningHours.Days[(int)DayOfWeek.Wednesday] = value; } }
+            [Category("Hours"), Caption("Thursdays"), Description("Select the hours")]
+            [UIHint("DayTimeRange"), Required]
+            public DayTimeRange Thursdays { get { return OpeningHours.Days[(int)DayOfWeek.Thursday]; } set { OpeningHours.Days[(int)DayOfWeek.Thursday] = value; } }
+            [Category("Hours"), Caption("Fridays"), Description("Select the hours")]
+            [UIHint("DayTimeRange"), Required]
+            public DayTimeRange Fridays { get { return OpeningHours.Days[(int)DayOfWeek.Friday]; } set { OpeningHours.Days[(int)DayOfWeek.Friday] = value; } }
+            [Category("Hours"), Caption("Saturdays"), Description("Select the hours")]
+            [UIHint("DayTimeRange"), Required]
+            public DayTimeRange Saturdays { get { return OpeningHours.Days[(int)DayOfWeek.Saturday]; } set { OpeningHours.Days[(int)DayOfWeek.Saturday] = value; } }
+            [Category("Hours"), Caption("Sundays"), Description("Select the hours")]
+            [UIHint("DayTimeRange"), Required]
+            public DayTimeRange Sundays { get { return OpeningHours.Days[(int)DayOfWeek.Sunday]; } set { OpeningHours.Days[(int)DayOfWeek.Sunday] = value; } }
+
+            public WeeklyHours OpeningHours { get; set; }
 
             public Model() {
                 DateTimeReq = DateTime.UtcNow;
@@ -83,12 +109,22 @@ namespace YetaWF.Modules.DevTests.Controllers {
                 TimeRO = DateTime.UtcNow;
                 TimeSpanRO = new TimeSpan(3, 13, 25, 11, 933);
                 TimeSpanHMSRO = new TimeSpan(0, 13, 25, 11, 933);
+                OpeningHours = new WeeklyHours();
             }
         }
 
         [AllowGet]
         public ActionResult TemplateDateTime() {
             Model model = new Model { };
+            model.OpeningHours.Days = new SerializableList<DayTimeRange> {
+                DayTimeRange.GetClosedDay(), // Sunday
+                DayTimeRange.GetWorkDay(), // Monday
+                DayTimeRange.GetWorkDay(),
+                DayTimeRange.GetWorkDay(),
+                DayTimeRange.GetWorkDay(),
+                DayTimeRange.GetWorkDay(),
+                DayTimeRange.GetClosedDay(),// Saturday
+            };
             return View(model);
         }
 
