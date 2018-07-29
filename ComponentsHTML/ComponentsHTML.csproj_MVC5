@@ -36,8 +36,11 @@
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Components\Time.cs" />
+    <Compile Include="Components\DayTimeRange.cs" />
     <Compile Include="CoreRendering\View.cs" />
     <Compile Include="KendoUICore.cs" />
+    <Compile Include="Startup\Templates\Time.cs" />
     <Compile Include="View.cs" />
     <Compile Include="Components\FormButton.cs" />
     <Compile Include="Components\PageDefinitions.cs" />
@@ -220,6 +223,12 @@
     <Content Include="Addons\_Templates\Currency\Currency.css" />
     <Content Include="Addons\_Templates\Currency\filelistCSS.txt" />
     <Content Include="Addons\_Templates\Currency\filelistJS.txt" />
+    <None Include="Addons\_Templates\Time\Time.scss" />
+    <None Include="Addons\_Templates\DayTimeRange\DayTimeRange.scss" />
+    <Content Include="Addons\_Templates\DayTimeRange\filelistCSS.txt" />
+    <Content Include="Addons\_Templates\DayTimeRange\filelistJS.txt" />
+    <Content Include="Addons\_Templates\Time\filelistCSS.txt" />
+    <Content Include="Addons\_Templates\Time\filelistJS.txt" />
     <Content Include="Addons\_Templates\DateTime\DateTime.css" />
     <Content Include="Addons\_Templates\DateTime\filelistCSS.txt" />
     <Content Include="Addons\_Templates\DateTime\filelistJS.txt" />
@@ -303,6 +312,8 @@
     <Content Include="Addons\_Templates\SMTPServer\filelistCSS.txt" />
     <Content Include="Addons\_Templates\SMTPServer\filelistJS.txt" />
     <Content Include="Addons\_Templates\SMTPServer\SMTPServer.css" />
+    <TypeScriptCompile Include="Addons\_Templates\DayTimeRange\DayTimeRange.ts" />
+    <TypeScriptCompile Include="Addons\_Templates\Time\Time.tsx" />
     <TypeScriptCompile Include="Addons\_Templates\SMTPServer\SMTPServer.ts" />
     <Content Include="Addons\_Templates\TextArea\filelistCSS.txt" />
     <Content Include="Addons\_Templates\TextArea\filelistJS.txt" />

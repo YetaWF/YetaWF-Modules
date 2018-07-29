@@ -50,24 +50,32 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             ScriptBuilder sb = new ScriptBuilder();
 
             foreach (PropertyListEntry property in properties) {
-                bool labelDone = false;
-                YHtmlString shtmlDisp = null;
+                bool haveValue = false;
+                YHtmlString shtml = null;
                 if (property.Restricted) {
-                    shtmlDisp = new YHtmlString(__ResStr("demo", "This property is not available in Demo Mode"));
+                    shtml = new YHtmlString(__ResStr("demo", "This property is not available in Demo Mode"));
+                    haveValue = true;
                 } else if (readOnly || !property.Editable) {
-                    shtmlDisp = new YHtmlString((await HtmlHelper.ForDisplayAsync(model, property.Name)).ToString());
-                    string s = shtmlDisp.ToString().Trim();
+                    shtml = new YHtmlString((await HtmlHelper.ForDisplayAsync(model, property.Name)).ToString());
+                    string s = shtml.ToString().Trim();
                     if (string.IsNullOrWhiteSpace(s)) {
                         if (property.SuppressEmpty)
                             continue;
-                        shtmlDisp = new YHtmlString("&nbsp;");
-                    }
+                        shtml = new YHtmlString("&nbsp;");
+                    } else
+                        haveValue = true;
+                } else {
+                    shtml = new YHtmlString(await HtmlHelper.ForEditAsync(model, property.Name));
+                    haveValue = true;
                 }
+
                 hb.Append("<div class='t_row t_{0}'>", property.Name.ToLower());
+
+                bool labelDone = false;
                 if (!string.IsNullOrWhiteSpace(property.TextAbove)) {
-                    labelDone = true;
                     YHtmlString hs = new YHtmlString((await HtmlHelper.ForLabelAsync(model, property.Name, ShowVariable: showVariables, SuppressIfEmpty: true)).ToString());
-                    if (hs != HtmlStringExtender.Empty) {
+                    if (!string.IsNullOrWhiteSpace(hs.ToString())) {
+                        labelDone = true;
                         hb.Append("<div class='t_labels'>");
                         hb.Append(hs);
                         hb.Append("</div>");
@@ -79,41 +87,47 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                         hb.Append(YetaWFManager.HtmlEncode(property.TextAbove));
                     hb.Append("</div>");
                 }
-                if (labelDone) {
-                    hb.Append("<div class='t_labels t_fillerabove'>&nbsp;</div>");
-                } else {
-                    YHtmlString hs = new YHtmlString((await HtmlHelper.ForLabelAsync(model, property.Name, ShowVariable: showVariables, SuppressIfEmpty: true)).ToString());
-                    if (hs != HtmlStringExtender.Empty) {
-                        hb.Append("<div class='t_labels'>");
-                        hb.Append(hs);
+                if (haveValue || string.IsNullOrWhiteSpace(property.TextAbove)) {
+                    if (labelDone) {
+                        hb.Append("<div class='t_labels t_fillerabove'>&nbsp;</div>");
+                    } else {
+                        YHtmlString hs = new YHtmlString((await HtmlHelper.ForLabelAsync(model, property.Name, ShowVariable: showVariables, SuppressIfEmpty: true)).ToString());
+                        if (!string.IsNullOrWhiteSpace(hs.ToString())) {
+                            hb.Append("<div class='t_labels'>");
+                            hb.Append(hs);
+                            hb.Append("</div>");
+                            labelDone = true;
+                        }
+                    }
+                    if (!readOnly && property.Editable && !property.Restricted) {
+                        string cls = "t_vals" + (!focusSet ? " focusonme" : "");
+                        switch (property.SubmitType) {
+                            default:
+                            case SubmitFormOnChangeAttribute.SubmitTypeEnum.None:
+                                break;
+                            case SubmitFormOnChangeAttribute.SubmitTypeEnum.Submit:
+                                cls += " ysubmitonchange";
+                                break;
+                            case SubmitFormOnChangeAttribute.SubmitTypeEnum.Apply:
+                                cls += " yapplyonchange";
+                                break;
+                        }
+                        focusSet = true;
+                        hb.Append("<div class='{0}'>", cls);
+                        hb.Append(shtml);
+                        hb.Append(ValidationMessage(property.Name));
+                        hb.Append("</div>");
+                    } else {
+                        hb.Append("<div class='t_vals t_val'>");
+                        hb.Append(shtml);
                         hb.Append("</div>");
                     }
                 }
-                if (!readOnly && property.Editable && !property.Restricted) {
-                    string cls = "t_vals" + (!focusSet ? " focusonme" : "");
-                    switch (property.SubmitType) {
-                        default:
-                        case SubmitFormOnChangeAttribute.SubmitTypeEnum.None:
-                            break;
-                        case SubmitFormOnChangeAttribute.SubmitTypeEnum.Submit:
-                            cls += " ysubmitonchange";
-                            break;
-                        case SubmitFormOnChangeAttribute.SubmitTypeEnum.Apply:
-                            cls += " yapplyonchange";
-                            break;
-                    }
-                    focusSet = true;
-                    hb.Append("<div class='{0}'>", cls);
-                    hb.Append(await HtmlHelper.ForEditAsync(model, property.Name));
-                    hb.Append(ValidationMessage(property.Name));
-                    hb.Append("</div>");
-                } else {
-                    hb.Append("<div class='t_vals t_val'>");
-                    hb.Append(shtmlDisp);
-                    hb.Append("</div>");
-                }
+
                 if (!string.IsNullOrWhiteSpace(property.TextBelow)) {
-                    hb.Append("<div class='t_labels t_fillerbelow'>&nbsp;</div>");
+                    if (labelDone)
+                        hb.Append("<div class='t_labels t_fillerbelow'>&nbsp;</div>");
+
                     hb.Append("<div class='t_vals t_textbelow'>");
                     if (property.TextBelow.StartsWith("-"))
                         hb.Append(property.TextBelow.Substring(1));
@@ -121,6 +135,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                         hb.Append(YetaWFManager.HtmlEncode(property.TextBelow));
                     hb.Append("</div>");
                 }
+
                 hb.Append("</div>");
             }
             return hb.ToYHtmlString();

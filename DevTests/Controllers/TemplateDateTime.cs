@@ -116,15 +116,7 @@ namespace YetaWF.Modules.DevTests.Controllers {
         [AllowGet]
         public ActionResult TemplateDateTime() {
             Model model = new Model { };
-            model.OpeningHours.Days = new SerializableList<DayTimeRange> {
-                DayTimeRange.GetClosedDay(), // Sunday
-                DayTimeRange.GetWorkDay(), // Monday
-                DayTimeRange.GetWorkDay(),
-                DayTimeRange.GetWorkDay(),
-                DayTimeRange.GetWorkDay(),
-                DayTimeRange.GetWorkDay(),
-                DayTimeRange.GetClosedDay(),// Saturday
-            };
+            model.OpeningHours = WeeklyHours.WorkWeek;
             return View(model);
         }
 
