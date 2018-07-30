@@ -24,24 +24,25 @@ namespace YetaWF_PageEdit {
 
                 const fadeTime = 250;
 
-                const mod = $YetaWF.getElementById(YConfigs.YetaWF_PageEdit.PageControlMod);
-
-                // Page icon
-                const pagebutton = $YetaWF.getElementById("yPageControlButton");
-                $YetaWF.registerEventHandler(pagebutton, "click", null, (ev: MouseEvent): boolean => {
-                    if ($YetaWF.isVisible(mod)) {
-                        YVolatile.Basics.PageControlVisible = false;
-                        ComponentsHTML.fadeOut(mod, fadeTime);
-                    } else {
-                        YVolatile.Basics.PageControlVisible = true;
-                        ComponentsHTML.fadeIn(mod, fadeTime);
+                const mod = $YetaWF.getElementByIdCond(YConfigs.YetaWF_PageEdit.PageControlMod);
+                if (mod) {
+                    // Page icon
+                    const pagebutton = $YetaWF.getElementById("yPageControlButton");
+                    $YetaWF.registerEventHandler(pagebutton, "click", null, (ev: MouseEvent): boolean => {
+                        if ($YetaWF.isVisible(mod)) {
+                            YVolatile.Basics.PageControlVisible = false;
+                            ComponentsHTML.fadeOut(mod, fadeTime);
+                        } else {
+                            YVolatile.Basics.PageControlVisible = true;
+                            ComponentsHTML.fadeIn(mod, fadeTime);
+                        }
+                        return false;
+                    });
+                    // on page load, show control panel if wanted
+                    if (YVolatile.Basics.PageControlVisible) {
+                        mod.style.display = "block";
+                        ComponentsHTML.processPropertyListVisible(mod);
                     }
-                    return false;
-                });
-                // on page load, show control panel if wanted
-                if (YVolatile.Basics.PageControlVisible) {
-                    mod.style.display = "block";
-                    ComponentsHTML.processPropertyListVisible(mod);
                 }
             });
 
@@ -53,18 +54,19 @@ namespace YetaWF_PageEdit {
                 // disregards tag as this callback is used when a page or page content has been rendered
                 // Page Settings
 
-                const pagebutton = $YetaWF.getElementById("yPageControlButton");
-                if (YVolatile.Basics.TemporaryPage) {
-                    if (YVolatile.Basics.PageControlVisible) {
-                        const mod = $YetaWF.getElementById(YConfigs.YetaWF_PageEdit.PageControlMod);
-                        YVolatile.Basics.PageControlVisible = false;
-                        mod.style.display = "none";
+                const pagebutton = $YetaWF.getElementByIdCond("yPageControlButton");
+                if (pagebutton) {
+                    if (YVolatile.Basics.TemporaryPage) {
+                        if (YVolatile.Basics.PageControlVisible) {
+                            const mod = $YetaWF.getElementById(YConfigs.YetaWF_PageEdit.PageControlMod);
+                            YVolatile.Basics.PageControlVisible = false;
+                            mod.style.display = "none";
+                        }
+                        pagebutton.style.display = "none";
+                    } else {
+                        pagebutton.style.display = "block";
                     }
-                    pagebutton.style.display = "none";
-                } else {
-                    pagebutton.style.display = "block";
                 }
-
                 if (!$YetaWF.isInPopup()) {
                     const ps = $YetaWF.getElement1BySelectorCond(".YetaWF_PageEdit_PageControl a[data-name='PageSettings']") as HTMLAnchorElement | null;
                     if (ps) {

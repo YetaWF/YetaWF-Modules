@@ -122,6 +122,9 @@ $(document).on('change', ".ysubmitonchange .k-dropdown select.yt_dropdownlist_ba
 $(document).on('change', ".yapplyonchange .k-dropdown select.yt_dropdownlist_base", function (ev) {
     $YetaWF.Forms.applyOnChange(ev.target);
 });
+$(document).on('change', ".yreloadonchange .k-dropdown select.yt_dropdownlist_base", function (ev) {
+    $YetaWF.Forms.reloadOnChange(ev.target);
+});
 
 // A <div> is being emptied. Destroy all date/time pickers the <div> may contain.
 $YetaWF.addClearDiv(function (tag) {

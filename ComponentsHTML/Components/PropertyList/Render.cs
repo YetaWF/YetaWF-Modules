@@ -111,6 +111,9 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                             case SubmitFormOnChangeAttribute.SubmitTypeEnum.Apply:
                                 cls += " yapplyonchange";
                                 break;
+                            case SubmitFormOnChangeAttribute.SubmitTypeEnum.Reload:
+                                cls += " yreloadonchange";
+                                break;
                         }
                         focusSet = true;
                         hb.Append("<div class='{0}'>", cls);

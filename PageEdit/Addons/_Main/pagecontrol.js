@@ -8,24 +8,26 @@ var YetaWF_PageEdit;
         PageControlModule.prototype.init = function () {
             $YetaWF.addWhenReadyOnce(function () {
                 var fadeTime = 250;
-                var mod = $YetaWF.getElementById(YConfigs.YetaWF_PageEdit.PageControlMod);
-                // Page icon
-                var pagebutton = $YetaWF.getElementById("yPageControlButton");
-                $YetaWF.registerEventHandler(pagebutton, "click", null, function (ev) {
-                    if ($YetaWF.isVisible(mod)) {
-                        YVolatile.Basics.PageControlVisible = false;
-                        ComponentsHTML.fadeOut(mod, fadeTime);
+                var mod = $YetaWF.getElementByIdCond(YConfigs.YetaWF_PageEdit.PageControlMod);
+                if (mod) {
+                    // Page icon
+                    var pagebutton = $YetaWF.getElementById("yPageControlButton");
+                    $YetaWF.registerEventHandler(pagebutton, "click", null, function (ev) {
+                        if ($YetaWF.isVisible(mod)) {
+                            YVolatile.Basics.PageControlVisible = false;
+                            ComponentsHTML.fadeOut(mod, fadeTime);
+                        }
+                        else {
+                            YVolatile.Basics.PageControlVisible = true;
+                            ComponentsHTML.fadeIn(mod, fadeTime);
+                        }
+                        return false;
+                    });
+                    // on page load, show control panel if wanted
+                    if (YVolatile.Basics.PageControlVisible) {
+                        mod.style.display = "block";
+                        ComponentsHTML.processPropertyListVisible(mod);
                     }
-                    else {
-                        YVolatile.Basics.PageControlVisible = true;
-                        ComponentsHTML.fadeIn(mod, fadeTime);
-                    }
-                    return false;
-                });
-                // on page load, show control panel if wanted
-                if (YVolatile.Basics.PageControlVisible) {
-                    mod.style.display = "block";
-                    ComponentsHTML.processPropertyListVisible(mod);
                 }
             });
             // handle Page Settings, Remove Current Page, W3C Validation - this is needed in case we're in a unified page set
@@ -35,17 +37,19 @@ var YetaWF_PageEdit;
             $YetaWF.addWhenReady(function (tag) {
                 // disregards tag as this callback is used when a page or page content has been rendered
                 // Page Settings
-                var pagebutton = $YetaWF.getElementById("yPageControlButton");
-                if (YVolatile.Basics.TemporaryPage) {
-                    if (YVolatile.Basics.PageControlVisible) {
-                        var mod = $YetaWF.getElementById(YConfigs.YetaWF_PageEdit.PageControlMod);
-                        YVolatile.Basics.PageControlVisible = false;
-                        mod.style.display = "none";
+                var pagebutton = $YetaWF.getElementByIdCond("yPageControlButton");
+                if (pagebutton) {
+                    if (YVolatile.Basics.TemporaryPage) {
+                        if (YVolatile.Basics.PageControlVisible) {
+                            var mod = $YetaWF.getElementById(YConfigs.YetaWF_PageEdit.PageControlMod);
+                            YVolatile.Basics.PageControlVisible = false;
+                            mod.style.display = "none";
+                        }
+                        pagebutton.style.display = "none";
                     }
-                    pagebutton.style.display = "none";
-                }
-                else {
-                    pagebutton.style.display = "block";
+                    else {
+                        pagebutton.style.display = "block";
+                    }
                 }
                 if (!$YetaWF.isInPopup()) {
                     var ps = $YetaWF.getElement1BySelectorCond(".YetaWF_PageEdit_PageControl a[data-name='PageSettings']");
