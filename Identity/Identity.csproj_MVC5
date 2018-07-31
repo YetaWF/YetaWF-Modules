@@ -139,6 +139,7 @@
     <Compile Include="Components\HTML\Email.cs" />
     <Compile Include="Controllers\ForgotPassword.cs" />
     <Compile Include="Controllers\LoginTwoStep.cs" />
+    <Compile Include="Controllers\NeedNewPasswordDisplay.cs" />
     <Compile Include="Controllers\Need2FADisplay.cs" />
     <Compile Include="Controllers\SelectTwoStepSetup.cs" />
     <Compile Include="Controllers\SelectTwoStepAuth.cs" />
@@ -151,12 +152,14 @@
     <Compile Include="Models\SQLDataProvider.cs" />
     <Compile Include="Models\UserLoginInfoDataProvider.cs" />
     <Compile Include="Modules\ForgotPassword.cs" />
+    <Compile Include="Modules\NeedNewPasswordDisplay.cs" />
     <Compile Include="Modules\Need2FADisplay.cs" />
     <Compile Include="Modules\SelectTwoStepSetup.cs" />
     <Compile Include="Modules\SelectTwoStepAuth.cs" />
     <Compile Include="Modules\TemplateListOfUserNamesModule.cs" />
     <Compile Include="Modules\TemplateRolesSelectorModule.cs" />
     <Compile Include="Modules\TemplateUserIdModule.cs" />
+    <Compile Include="Scheduler\PasswordExpiration.cs" />
     <Compile Include="Startup\AreaRegistration.cs" />
     <Compile Include="Startup\AttributeAuthorizationHandler.cs" />
     <Compile Include="Startup\Info.cs" />
@@ -229,6 +232,7 @@
     <Compile Include="Modules\Login.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Views\HTML\AuthorizationBrowse.cs" />
+    <Compile Include="Views\HTML\NeedNewPasswordDisplay.cs" />
     <Compile Include="Views\HTML\TwoStepDone.cs" />
     <Compile Include="Views\HTML\SetupExternalAccount.cs" />
     <Compile Include="Views\HTML\SelectTwoStepSetup.cs" />
@@ -242,6 +246,7 @@
     <Compile Include="Views\HTML\ForgotPassword.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Addons\_Addons\NeedNewPasswordDisplay\NeedNewPasswordDisplay.scss" />
     <None Include="Addons\_Main\Grids\ListOfUserNamesEditComponent.GridAllEntry" />
     <None Include="Addons\_Main\Grids\ListOfUserNamesDisplayComponent.GridDisplay" />
     <None Include="Addons\_Main\Grids\ListOfUserNamesEditComponent.GridEdit" />
@@ -253,6 +258,7 @@
     <None Include="Addons\_Templates\ListOfUserNames\ListOfUserNames.scss" />
     <None Include="Addons\_Main\SelectTwoStepSetup.scss" />
     <None Include="Addons\_Addons\Need2FADisplay\Need2FADisplay.scss" />
+    <None Include="Addons\_Addons\NeedNewPasswordDisplay\filelistCSS.txt" />
     <Content Include="Addons\_Addons\Need2FADisplay\Need2FADisplay.js" />
     <None Include="Addons\_Addons\Need2FADisplay\filelistCSS.txt" />
     <None Include="Addons\_Addons\Need2FADisplay\filelistJS.txt" />
