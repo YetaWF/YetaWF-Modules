@@ -44,6 +44,10 @@ namespace YetaWF.Modules.Identity.Controllers {
             [UIHint("TimeSpan"), Required]
             public TimeSpan SecurityStampValidationInterval { get; set; }
 
+            [Caption("Password Renewal"), Description("The time after which a user must change the password - Set to 0 to allow passwords to remain valid indefinitely")]
+            [UIHint("TimeSpan"), Required]
+            public TimeSpan PasswordRenewal { get; set; }
+
             [Caption("Facebook"), Description("Provides a link to Facebook to set up authentication for your sites")]
             [UIHint("Url"), ReadOnly]
             public string FacebookUrl { get; set; }
@@ -102,6 +106,8 @@ namespace YetaWF.Modules.Identity.Controllers {
             model.ExpireTimeSpan = new TimeSpan(ticks);
             ticks = WebConfigHelper.GetValue<long>(Module.AreaName, "OWin:SecurityStampValidationInterval", new TimeSpan(0, 30, 0).Ticks); // 30 minutes
             model.SecurityStampValidationInterval = new TimeSpan(ticks);
+            ticks = WebConfigHelper.GetValue<long>(Module.AreaName, "PasswordRenewal", new TimeSpan(0, 0, 0).Ticks); // 0  = indefinitely
+            model.PasswordRenewal = new TimeSpan(ticks);
 
             model.MicrosoftPublic = WebConfigHelper.GetValue<string>(Module.AreaName, "MicrosoftAccount:Public");
             model.MicrosoftPrivate = WebConfigHelper.GetValue<string>(Module.AreaName, "MicrosoftAccount:Private");
@@ -132,6 +138,7 @@ namespace YetaWF.Modules.Identity.Controllers {
             WebConfigHelper.SetValue<bool>(Module.AreaName, "OWin:SlidingExpiration", model.SlidingExpiration);
             WebConfigHelper.SetValue<long>(Module.AreaName, "OWin:ExpireTimeSpan", model.ExpireTimeSpan.Ticks);
             WebConfigHelper.SetValue<long>(Module.AreaName, "OWin:SecurityStampValidationInterval", model.SecurityStampValidationInterval.Ticks);
+            WebConfigHelper.SetValue<long>(Module.AreaName, "PasswordRenewal", model.PasswordRenewal.Ticks);
 
             WebConfigHelper.SetValue<string>(Module.AreaName, "MicrosoftAccount:Public", model.MicrosoftPublic);
             WebConfigHelper.SetValue<string>(Module.AreaName, "MicrosoftAccount:Private", model.MicrosoftPrivate);

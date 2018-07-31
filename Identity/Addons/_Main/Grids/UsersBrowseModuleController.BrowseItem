@@ -3,6 +3,7 @@ UserName            sort filter [Globals.ChUserName] defaultSort asc
 Email               sort filter [Globals.ChEmail]
 UserId              right filter sort 10
 UserStatus          sort filter 20
+NeedsNewPassword    sort filter [Globals.ChBoolean] center
 VerificationCode    sort filter 40
 RegistrationIP      sort filter [Globals.MaxIP]
 Created             sort filter [Globals.ChDateTime]

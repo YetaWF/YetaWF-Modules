@@ -71,6 +71,10 @@ namespace YetaWF.Modules.Identity.Controllers {
             [UIHint("Enum"), ReadOnly]
             public UserStatusEnum UserStatus { get; set; }
 
+            [Caption("New Password"), Description("Defines whether the user must change the password")]
+            [UIHint("Boolean"), ReadOnly]
+            public bool NeedsNewPassword { get; set; }
+
             [Caption("Verification Code"), Description("The verification code to verify the user")]
             [UIHint("String"), ReadOnly]
             public string VerificationCode { get; set; }
@@ -189,7 +193,7 @@ namespace YetaWF.Modules.Identity.Controllers {
                 return Reload(null, Reload: ReloadEnum.ModuleParts, PopupText: this.__ResStr("rejectionSent", "Rejection email sent to user {0}.", user.Email));
             }
         }
-        
+
         [AllowPost]
         [Permission("SendEmails")]
         [ExcludeDemoMode]

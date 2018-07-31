@@ -50,8 +50,10 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                     } else {
                         output = (await htmlHelper.ForDisplayComponentAsync(model, prop.Name, prop.Value, prop.UIHint)).ToString();
                     }
-                    output = output.Trim(new char[] { '\r', '\n' }); // templates can generate a lot of extra \r\n which breaks filtering
-                    if (string.IsNullOrWhiteSpace(output)) { output = "&nbsp;"; }
+                    if (!string.IsNullOrWhiteSpace(output))
+                        output = output.Trim(new char[] { '\r', '\n' }); // templates can generate a lot of extra \r\n which breaks filtering
+                    if (string.IsNullOrWhiteSpace(output))
+                        output = "&nbsp;";
 
                     if (!readOnly && prop.Editable && hiddenProps != null) {
                         // list hidden properties with the first editable field

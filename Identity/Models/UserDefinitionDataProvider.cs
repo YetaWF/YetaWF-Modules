@@ -86,6 +86,9 @@ namespace YetaWF.Modules.Identity.DataProvider {
         public string LastActivityIP { get; set; }
 
         [Data_NewValue("(0)")]
+        public bool NeedsNewPassword { get; set; }
+
+        [Data_NewValue("(0)")]
         public int LoginFailures { get; set; }
 
         [StringLength(60)] // max length is really a guid, leave some extra

@@ -46,6 +46,10 @@ namespace YetaWF.Modules.Identity.Controllers {
             [UIHint("Enum"), Required]
             public UserStatusEnum UserStatus { get; set; }
 
+            [Caption("New Password"), Description("Defines whether the user must change the password")]
+            [UIHint("Boolean")]
+            public bool NeedsNewPassword { get; set; }
+
             [Caption("Roles"), Description("The user's roles")]
             [UIHint("YetaWF_Identity_UserRoles")]
             public SerializableList<Role> RolesList { get; set; }

@@ -160,6 +160,9 @@ namespace YetaWF.Modules.Identity.DataProvider {
                         }
                     }
                 }
+                // Check whether the user needs to change the password
+                Manager.NeedNewPassword = user.NeedsNewPassword;
+
                 // user good to go
                 Manager.UserName = user.UserName;
                 Manager.UserEmail = user.Email;
@@ -392,6 +395,14 @@ namespace YetaWF.Modules.Identity.DataProvider {
                 LoginConfigData config = await LoginConfigDataProvider.GetConfigAsync();
                 return config.MaxLoginFailures != 0 && user.LoginFailures >= config.MaxLoginFailures;
             }
+        }
+
+        public void ShowNeedNewPassword() {
+            Manager.AddOnManager.AddExplicitlyInvokedModules(
+                new SerializableList<ModuleDefinition.ReferencedModule> {
+                    new ModuleDefinition.ReferencedModule { ModuleGuid = ModuleDefinition.GetPermanentGuid(typeof(NeedNewPasswordDisplayModule)) }
+                }
+            );
         }
 
         public async Task LogoffAsync() {

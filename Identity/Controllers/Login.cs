@@ -333,7 +333,7 @@ namespace YetaWF.Modules.Identity.Controllers {
         // User logoff
         internal static
 #if MVC6
-                async 
+                async
 #endif
                 Task UserLogoffAsync() {
             Manager.EditMode = false;

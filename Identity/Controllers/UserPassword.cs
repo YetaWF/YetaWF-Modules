@@ -154,6 +154,10 @@ namespace YetaWF.Modules.Identity.Controllers {
             LoginConfigData config = await LoginConfigDataProvider.GetConfigAsync();
             user.LastPasswordChangedDate = DateTime.UtcNow;
             user.PasswordChangeIP = Manager.UserHostAddress;
+            bool forceReload = false;
+            if (user.NeedsNewPassword)
+                forceReload = true; // we need to reload the page to get rid of the warning from NeedPasswordDisplay
+            user.NeedsNewPassword = false;
             if (config.SavePlainTextPassword)
                 user.PasswordPlainText = model.NewPassword;
 
@@ -177,7 +181,7 @@ namespace YetaWF.Modules.Identity.Controllers {
             // logoff/logon for any side effects in identity (like SecurityStamp update/cookies)
             await LoginModuleController.UserLoginAsync(user);
 
-            return FormProcessed(model, this.__ResStr("okSaved", "Your new password has been saved"));
+            return FormProcessed(model, this.__ResStr("okSaved", "Your new password has been saved"), ForceRedirect: forceReload);
         }
     }
 }
