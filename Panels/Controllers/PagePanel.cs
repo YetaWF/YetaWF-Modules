@@ -28,7 +28,7 @@ using System.Web.Mvc;
 namespace YetaWF.Modules.Panels.Controllers {
 
     public class PagePanelModuleController : ControllerImpl<YetaWF.Modules.Panels.Modules.PagePanelModule> {
-        
+
         public PagePanelModuleController() { }
 
         [Trim]
@@ -119,7 +119,7 @@ namespace YetaWF.Modules.Panels.Controllers {
             await Module.SaveAsync();
             model.PageList = Module.PageList;
             ClearCache(Module.ModuleGuid);
-            if (Manager.RequestForm[Globals.Link_SubmitIsApply] == null) {
+            if (IsApply) {
                 Manager.EditMode = false;
                 return Redirect(model.Url, SetCurrentEditMode: true);
             }

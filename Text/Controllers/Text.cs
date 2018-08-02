@@ -53,7 +53,7 @@ namespace YetaWF.Modules.Text.Controllers {
         public async Task<ActionResult> Text_Partial(TextModel model) {
             Module.Contents = model.Contents;
             await Module.SaveAsync();
-            if (Manager.RequestForm[Globals.Link_SubmitIsApply] != null) {
+            if (IsApply) {
                 return FormProcessed(model, "Contents saved", OnClose: OnCloseEnum.Nothing, OnPopupClose: OnPopupCloseEnum.ReloadModule, OnApply: OnApplyEnum.ReloadModule);
             } else {
                 if (Manager.IsInPopup) throw new InternalError("Save & Display not available in a popup window");

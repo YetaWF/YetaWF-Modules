@@ -194,7 +194,7 @@ namespace YetaWF.Modules.UserProfile.Controllers {
                 // in case of apply, we're just updating the form with new fields - we chose a postback when switching
                 // the country as potentially many different address formats could be supported which could overwhelm client side processing
                 // so we only provide the fields for one country to the form.
-                if (Manager.RequestForm[Globals.Link_SubmitIsApply] != null) {
+                if (IsApply) {
                     ModelState.Clear();
                     return PartialView(model);
                 }

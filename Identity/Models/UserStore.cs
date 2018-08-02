@@ -188,7 +188,7 @@ namespace YetaWF.Modules.Identity.Models {
         public async Task AddLoginAsync(UserDefinition user, UserLoginInfo login)
 #endif
         {
-            using (UserLoginInfoDataProvider logInfoDP = new DataProvider.UserLoginInfoDataProvider()) {
+            using (UserLoginInfoDataProvider logInfoDP = new DataProvider.UserLoginInfoDataProvider(CurrentSiteIdentity)) {
                 await logInfoDP.AddItemAsync(user.UserId, login.LoginProvider, login.ProviderKey);
             }
 

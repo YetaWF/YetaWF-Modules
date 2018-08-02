@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using YetaWF.Core.Audit;
+using YetaWF.Core.Components;
 using YetaWF.Core.DataProvider;
 using YetaWF.Core.Identity;
 using YetaWF.Core.Localize;
@@ -14,11 +15,13 @@ using YetaWF.Core.Serializers;
 using YetaWF.Core.Site;
 using YetaWF.Core.Support;
 using YetaWF.Modules.Identity.Controllers;
+using YetaWF.Modules.Identity.Models;
 using YetaWF.Modules.Identity.Modules;
 
 namespace YetaWF.Modules.Identity.DataProvider {
 
     public class ResourceAccessDataProvider : IInitializeApplicationStartup, IResource {
+
         protected YetaWFManager Manager { get { return YetaWFManager.Manager; } }
 
         // STARTUP
@@ -312,6 +315,73 @@ namespace YetaWF.Modules.Identity.DataProvider {
                             throw new InternalError("Unexpected status {0} updating user account in RemoveRoleFromUser", status);
                     }
                 }
+            }
+        }
+        public async Task<List<SelectionItem<string>>> GetUserRolesAsync(int userId) {
+            using (UserDefinitionDataProvider userDP = new UserDefinitionDataProvider()) {
+                List<SelectionItem<string>> list = new List<SelectionItem<string>>();
+                UserDefinition user = await userDP.GetItemByUserIdAsync(userId);
+                if (user != null) {
+                    using (RoleDefinitionDataProvider roleDP = new RoleDefinitionDataProvider()) {
+                        List<RoleDefinition> allRoles = roleDP.GetAllRoles();
+                        foreach (Role r in user.RolesList) {
+                            RoleDefinition roleDef = (from a in allRoles where a.RoleId == r.RoleId select a).FirstOrDefault();
+                            if (roleDef != null)
+                                list.Add(new SelectionItem<string> { Text = roleDef.Name, Tooltip = roleDef.Description, Value = roleDef.Id });
+                        }
+                    }
+                }
+                return list;
+            }
+        }
+
+        public async Task<AddUserInfo> AddUserAsync(string name, string email, string password) {
+
+            AddUserInfo info = new AddUserInfo();
+            LoginConfigData config = await LoginConfigDataProvider.GetConfigAsync();
+
+            UserDefinition user = new UserDefinition();
+            user.UserName = name;
+            user.Email = email;
+            if (config.SavePlainTextPassword)
+                user.PasswordPlainText = password;
+
+            if (config.RegistrationType == RegistrationTypeEnum.NameAndEmail) {
+                using (UserDefinitionDataProvider dataProvider = new UserDefinitionDataProvider()) {
+                    // Email == user.Email
+                    List<DataProviderFilterInfo> filters = new List<DataProviderFilterInfo> {
+                        new DataProviderFilterInfo {
+                            Field = "Email", Operator = "==", Value = user.Email,
+                        },
+                    };
+                    UserDefinition userExists = await dataProvider.GetItemAsync(filters);
+                    if (userExists != null && user.UserName != userExists.Email) {
+                        info.ErrorType = AddUserInfo.ErrorTypeEnum.Email;
+                        info.Errors.Add(this.__ResStr("emailUsed", "An account with email address {0} already exists.", user.Email));
+                        return info;
+                    }
+                }
+            }
+            user.UserStatus = UserStatusEnum.Approved;
+
+            // create user
+            var result = await Managers.GetUserManager().CreateAsync(user, password);
+            if (!result.Succeeded) {
+                info.ErrorType = AddUserInfo.ErrorTypeEnum.Name;
+                info.Errors.AddRange(result.Errors);
+                return info;
+            }
+
+            info.ErrorType = AddUserInfo.ErrorTypeEnum.None;
+            info.UserId = user.UserId;
+            return info;
+        }
+        public async Task<bool> RemoveUserAsync(int userId) {
+            using (UserDefinitionDataProvider userDP = new UserDefinitionDataProvider()) {
+                UserDefinition user = await userDP.GetItemByUserIdAsync(userId);
+                if (user == null)
+                    return false;
+                return await userDP.RemoveItemAsync(user.UserName);
             }
         }
 

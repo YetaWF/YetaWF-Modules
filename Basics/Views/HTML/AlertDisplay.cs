@@ -32,7 +32,7 @@ namespace YetaWF.Modules.Basics.Views {
 
                 hb.Append($@"
     <div class='t_close' data-ajaxurl='{YetaWFManager.HtmlAttributeEncode(ajaxUrl)}'>
-        <img src='{YetaWFManager.HtmlAttributeEncode(closeUrl)}' alt='{YetaWFManager.HtmlAttributeEncode(this.__ResStr("clsButtonAlt", "Close Button"))}' title='{YetaWFManager.HtmlAttributeEncode(this.__ResStr("clsButtonTT", "Click to close alert"))}' />
+        <img src='{YetaWFManager.HtmlAttributeEncode(closeUrl)}' alt='{HAE(this.__ResStr("clsButtonAlt", "Close Button"))}' title='{HAE(this.__ResStr("clsButtonTT", "Click to close alert"))}' />
     </div>");
 
             }

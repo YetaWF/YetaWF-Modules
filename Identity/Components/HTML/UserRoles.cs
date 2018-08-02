@@ -69,7 +69,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                                         RoleId = r.RoleId,
                                         Name = r.Name,
                                         Description = r.Description,
-                                        InRole = superuserRole == r.RoleId || (model != null && model.Contains(new Role { RoleId = r.RoleId }, new RoleComparer())),
+                                        InRole = model != null && model.Contains(new Role { RoleId = r.RoleId }, new RoleComparer()),
                                         __editable = (superuserRole != r.RoleId) // we disable the superuser entry
                                     }).ToList<GridEntry>();
 
