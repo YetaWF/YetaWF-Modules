@@ -61,6 +61,8 @@ namespace YetaWF.Modules.Identity.Controllers {
         public async Task<ActionResult> ExternalLoginCallback(string returnUrl = null)
 #endif
         {
+            returnUrl = Helper.GetSafeReturnUrl(returnUrl);
+
             AllowJavascriptResult = false;
             ExternalLoginInfo loginInfo;
 #if MVC6

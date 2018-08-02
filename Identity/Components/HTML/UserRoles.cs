@@ -60,17 +60,18 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
             HtmlBuilder hb = new HtmlBuilder();
 
-            hb.Append($"<div class='yt_yetawf_identity_UserRoles t_edit'>");
+            hb.Append($"<div class='yt_yetawf_identity_userroles t_edit'>");
 
             List<RoleInfo> allRoles = Resource.ResourceAccess.GetDefaultRoleList();
             int superuserRole = Resource.ResourceAccess.GetSuperuserRoleId();
+            int userRole = Resource.ResourceAccess.GetUserRoleId();
             List<GridEntry> roles = (from r in allRoles orderby r.Name
                                     select new GridEntry {
                                         RoleId = r.RoleId,
                                         Name = r.Name,
                                         Description = r.Description,
-                                        InRole = model != null && model.Contains(new Role { RoleId = r.RoleId }, new RoleComparer()),
-                                        __editable = (superuserRole != r.RoleId) // we disable the superuser entry
+                                        InRole = userRole == r.RoleId || (model != null && model.Contains(new Role { RoleId = r.RoleId }, new RoleComparer())),
+                                        __editable = (userRole != r.RoleId) // we disable the user entry
                                     }).ToList<GridEntry>();
 
             bool header = PropData.GetAdditionalAttributeValue("Header", true);
