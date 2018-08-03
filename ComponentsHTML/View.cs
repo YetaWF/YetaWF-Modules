@@ -53,6 +53,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             await YetaWFCoreRendering.Render.AddFormsAddOnsAsync();
             await Manager.AddOnManager.AddAddOnNamedAsync("YetaWF_Core", "Forms");// standard css, validation strings
             await Manager.AddOnManager.AddAddOnNamedAsync("YetaWF_ComponentsHTML", "Forms");
+            Manager.ScriptManager.AddLast("$YetaWF.Forms", "$YetaWF.Forms;");// need to evaluate for side effect to initialize forms
 
             Manager.NextUniqueIdPrefix();
 
