@@ -7,7 +7,14 @@ YetaWF_TemplateDropDownList.initOne = function ($this) {
     var w = $this.width();
     if (w > 0 && $this.attr("data-needinit") !== undefined) {
         $this.removeAttr("data-needinit");
-        $this.kendoDropDownList({});
+        $this.kendoDropDownList({
+            change: function (e) {
+                var value = this.value();
+                var event = document.createEvent('Event');
+                event.initEvent("dropdownlist_change", false, true);
+                this.element[0].dispatchEvent(event);
+            }
+        });
         var avgw = $this.attr("data-charavgw");
         if (!avgw) throw "dropdowlist without avg char width";/*DEBUG*/
         $this.closest('.k-widget.yt_dropdownlist,.k-widget.yt_dropdownlist_base,.k-widget.yt_enum').width(w + 3 * avgw);
@@ -28,7 +35,8 @@ YetaWF_TemplateDropDownList.Enable = function ($control, enabled) {
 }
 // Update a dropdownlist object
 // $control refers to the <div class="yt_dropdownlist...">
-YetaWF_TemplateDropDownList.Update = function ($control, value) {
+YetaWF_TemplateDropDownList.Update = function (control, value) {
+    var $control = $(control);
     if ($control.attr("data-needinit") !== undefined)
         $control.val(value);
     else {

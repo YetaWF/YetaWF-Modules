@@ -26,8 +26,7 @@ var YetaWF_ComponentsHTML;
         DateComponent.prototype.setHidden = function (hidden, dateVal) {
             var s = "";
             if (dateVal != null) {
-                var utcDate = new Date(Date.UTC(dateVal.getFullYear(), dateVal.getMonth(), dateVal.getDate(), 0, 0, 0));
-                s = utcDate.toUTCString();
+                s = dateVal.toUTCString();
             }
             hidden.setAttribute("value", s);
         };

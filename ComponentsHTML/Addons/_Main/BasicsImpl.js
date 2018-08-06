@@ -198,7 +198,7 @@ var YetaWF_ComponentsHTML;
             popup.destroy();
         };
         /**
-         * Closes any open overlays, menus, dropdownlists, etc. (Popup windows are not handled and are explicitly closed using $YetaWF.Popups)
+         * Closes any open overlays, menus, dropdownlists, tooltips, etc. (Popup windows are not handled and are explicitly closed using $YetaWF.Popups)
          */
         BasicsImpl.prototype.closeOverlays = function () {
             // Close open bootstrap nav menus (if any) by clicking on the page
@@ -214,6 +214,8 @@ var YetaWF_ComponentsHTML;
                 $(".YetaWF_Menus").collapse("hide");
             }
             catch (e) { }
+            // tooltips
+            YetaWF_ComponentsHTML.Tooltips.removeTooltips();
         };
         return BasicsImpl;
     }());

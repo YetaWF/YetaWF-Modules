@@ -1,5 +1,6 @@
 ﻿/* Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/ComponentsHTML#License */
 
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using YetaWF.Core.Packages;
 using YetaWF.Core.Skins;
@@ -22,6 +23,7 @@ namespace YetaWF.Modules.ComponentsHTML {
             await Manager.AddOnManager.AddAddOnNamedAsync("YetaWF_Core", "Basics");
             if (Manager.IsInPopup)
                 await AddPopupsAddOnsAsync();
+            await Manager.AddOnManager.AddPackageAsync(Package, new List<Package>());
         }
 
         public async Task AddSkinAddOnsAsync() {

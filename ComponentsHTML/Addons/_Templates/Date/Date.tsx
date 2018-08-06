@@ -26,8 +26,7 @@ namespace YetaWF_ComponentsHTML {
         private setHidden(hidden: HTMLElement, dateVal: Date): void {
             var s: string = "";
             if (dateVal != null) {
-                var utcDate: Date = new Date(Date.UTC(dateVal.getFullYear(), dateVal.getMonth(), dateVal.getDate(), 0, 0, 0));
-                s = utcDate.toUTCString();
+                s = dateVal.toUTCString();
             }
             hidden.setAttribute("value", s);
         }

@@ -11,6 +11,8 @@ namespace YetaWF_ComponentsHTML {
     }
 }
 
+declare var YetaWF_TemplateDropDownList: any; // TODO: Temporary, use until we fix dropdown
+
 interface Event {
     __YetaWF: boolean; // we add this to a jquery Event to signal that we already translated it to native
 }

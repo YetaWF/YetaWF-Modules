@@ -209,7 +209,7 @@ namespace YetaWF_ComponentsHTML {
             popup.destroy();
         }
         /**
-         * Closes any open overlays, menus, dropdownlists, etc. (Popup windows are not handled and are explicitly closed using $YetaWF.Popups)
+         * Closes any open overlays, menus, dropdownlists, tooltips, etc. (Popup windows are not handled and are explicitly closed using $YetaWF.Popups)
          */
         public closeOverlays(): void {
 
@@ -225,6 +225,9 @@ namespace YetaWF_ComponentsHTML {
             try {
                 ($(".YetaWF_Menus") as any).collapse("hide");
             } catch (e) { }
+
+            // tooltips
+            YetaWF_ComponentsHTML.Tooltips.removeTooltips();
         }
     }
 }

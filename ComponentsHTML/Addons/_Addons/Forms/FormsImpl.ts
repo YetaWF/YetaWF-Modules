@@ -130,7 +130,6 @@ namespace YetaWF_ComponentsHTML {
             if (errField) {
                 // find out which tab panel we're on
                 var ttabpanel = $YetaWF.elementClosest(errField, "div.t_tabpanel");
-                if (!ttabpanel) throw "We found a validation error in a tab control, but we couldn't find the tab panel.";/*DEBUG*/
                 var panel = ttabpanel.getAttribute("data-tab") as number | null;
                 if (!panel) throw "We found a panel in a tab control without panel number (data-tab attribute).";/*DEBUG*/
                 // get the tab entry

@@ -32,7 +32,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                 tag.AddCssClass("yt_datetime");
                 tag.AddCssClass("t_display");
                 FieldSetup(tag, FieldType.Anonymous);
-                tag.SetInnerText(YetaWF.Core.Localize.Formatting.FormatDateTime(model));
+                tag.SetInnerText(YetaWF.Core.Localize.Formatting.FormatDate(model));
                 hb.Append(tag.ToString(YTagRenderMode.Normal));
             }
             return Task.FromResult(hb.ToYHtmlString());
@@ -78,7 +78,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                 }
 
                 if (model != null)
-                    tag.MergeAttribute("value", Formatting.FormatDate((DateTime)model));// shows date using user's timezone
+                    tag.MergeAttribute("value", Formatting.FormatDateTime((DateTime)model));// shows date using user's timezone
                 hb.Append(tag.ToString(YTagRenderMode.SelfClosing));
 
             hb.Append($"</div>");

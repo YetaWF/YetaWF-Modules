@@ -72,8 +72,8 @@ $.validator.addMethod("daytimerangeto", function (value, element, parameters) {
     if ($YetaWF.elementHasClass(element, YConfigs.Forms.CssFormNoValidate))
         return true;
     var elem = element;
-    var isRange1 = $YetaWF.elementClosest(elem, ".t_to") != null;
-    var control = $YetaWF.elementClosest(elem, ".yt_daytimerange");
+    var isRange1 = $YetaWF.elementClosestCond(elem, ".t_to") != null;
+    var control = $YetaWF.elementClosestCond(elem, ".yt_daytimerange");
     if (control == null)
         return false;
     var fromRange;
@@ -98,7 +98,7 @@ $.validator.addMethod("daytimerangefrom2", function (value, element, parameters)
     if ($YetaWF.elementHasClass(element, YConfigs.Forms.CssFormNoValidate))
         return true;
     var elem = element;
-    var control = $YetaWF.elementClosest(elem, ".yt_daytimerange");
+    var control = $YetaWF.elementClosestCond(elem, ".yt_daytimerange");
     if (control == null)
         return false;
     var endRange1 = $YetaWF.getElement1BySelector("input[name$='.End']", [control]);
