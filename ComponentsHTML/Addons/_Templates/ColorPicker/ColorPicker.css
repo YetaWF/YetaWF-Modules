@@ -1,0 +1,8 @@
+/* ColorPicker */
+.yt_colorpicker.t_display {
+  border-radius: 4px;
+  min-width: 16px;
+  min-height: 16px; }
+
+.ui-jqgrid .yt_colorpicker.t_display {
+  margin: auto; }

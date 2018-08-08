@@ -69,6 +69,7 @@
   <ItemGroup>
     <Compile Include="Components\HTML\ListOfEmailAddresses.cs" />
     <Compile Include="Components\HTML\ScrollerItem.cs" />
+    <Compile Include="Controllers\TemplateColorPicker.cs" />
     <Compile Include="Controllers\TemplateMultiString.cs" />
     <Compile Include="Controllers\BasicTemplates.cs" />
     <Compile Include="Controllers\SMSProcessorStatus.cs" />
@@ -80,6 +81,7 @@
     <Compile Include="Controllers\TemplateTimeZone.cs" />
     <Compile Include="Controllers\SMSTest.cs" />
     <Compile Include="Controllers\TestEscapes.cs" />
+    <Compile Include="Modules\TemplateColorPickerModule.cs" />
     <Compile Include="Modules\TemplateMultiString.cs" />
     <Compile Include="Modules\BasicTemplates.cs" />
     <Compile Include="Modules\SMSProcessorStatus.cs" />
@@ -125,6 +127,10 @@
     <ProjectReference Include="..\..\..\DataProvider\ModuleDefinition\ModuleDefinition.csproj">
       <Project>{348F2A6B-57F5-47A3-8A46-3F44529ACD83}</Project>
       <Name>ModuleDefinition</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\DataProvider\SQL\SQL.csproj">
+      <Project>{6A90EAB3-A9E4-4A2C-90D9-145859790C46}</Project>
+      <Name>SQL</Name>
     </ProjectReference>
     <ProjectReference Include="..\ComponentsHTML\ComponentsHTML.csproj">
       <Project>{AB7BFD23-57E8-40A6-85EA-9D4B3206075F}</Project>

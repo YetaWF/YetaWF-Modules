@@ -1,0 +1,15 @@
+/* Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/ComponentsHTML#License */
+
+.yt_colorpicker {
+    &.t_display {
+        border-radius:4px;
+        min-width:16px;
+        min-height:16px;
+    }
+}
+
+.ui-jqgrid { // center the color picker within grid cells
+    .yt_colorpicker.t_display {
+        margin:auto;
+    }
+}

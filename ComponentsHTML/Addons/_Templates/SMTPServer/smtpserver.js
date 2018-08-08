@@ -85,5 +85,3 @@ var YetaWF_ComponentsHTML;
     }());
     YetaWF_ComponentsHTML.SMTPServer = SMTPServer;
 })(YetaWF_ComponentsHTML || (YetaWF_ComponentsHTML = {}));
-
-//# sourceMappingURL=SMTPServer.js.map

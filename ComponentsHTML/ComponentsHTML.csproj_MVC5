@@ -36,6 +36,7 @@
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Components\ColorPicker.cs" />
     <Compile Include="Components\Time.cs" />
     <Compile Include="Components\DayTimeRange.cs" />
     <Compile Include="CoreRendering\View.cs" />
@@ -220,6 +221,8 @@
     <Content Include="Addons\_Templates\ActionIcons\ActionIcons.js" />
     <Content Include="Addons\_Templates\ActionIcons\filelistCSS.txt" />
     <Content Include="Addons\_Templates\ActionIcons\filelistJS.txt" />
+    <Content Include="Addons\_Templates\ColorPicker\filelistCSS.txt" />
+    <Content Include="Addons\_Templates\ColorPicker\filelistJS.txt" />
     <Content Include="Addons\_Templates\Currency\Currency.css" />
     <Content Include="Addons\_Templates\Currency\filelistCSS.txt" />
     <Content Include="Addons\_Templates\Currency\filelistJS.txt" />
@@ -312,6 +315,8 @@
     <Content Include="Addons\_Templates\SMTPServer\filelistCSS.txt" />
     <Content Include="Addons\_Templates\SMTPServer\filelistJS.txt" />
     <Content Include="Addons\_Templates\SMTPServer\SMTPServer.css" />
+    <None Include="Addons\_Templates\ColorPicker\ColorPicker.scss" />
+    <TypeScriptCompile Include="Addons\_Templates\ColorPicker\ColorPicker.ts" />
     <TypeScriptCompile Include="Addons\_Templates\DayTimeRange\DayTimeRange.ts" />
     <TypeScriptCompile Include="Addons\_Templates\Time\Time.tsx" />
     <TypeScriptCompile Include="Addons\_Templates\SMTPServer\SMTPServer.ts" />

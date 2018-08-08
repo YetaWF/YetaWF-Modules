@@ -12,3 +12,10 @@ Administrator /Tests/Templates/MultiString
     -
     YetaWF.DevTests, YetaWF.Modules.DevTests.Modules.TestMultiStringModule
 
+Administrator /Tests/Templates/ColorPicker
+    Title=ColorPicker
+    Description=Test page for ColorPicker template
+    -
+    -
+    YetaWF.DevTests, YetaWF.Modules.DevTests.Modules.TemplateColorPickerModule
+
