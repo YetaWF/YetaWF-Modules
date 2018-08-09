@@ -82,7 +82,7 @@ namespace YetaWF.Modules.Blog.Controllers.Support {
             string Message = System.Convert.ToBase64String(userDataAsBytes);
 
             // Get the proper timestamp
-            TimeSpan ts = (DateTime.UtcNow - new DateTime(1970, 1, 1, 0, 0, 0));
+            TimeSpan ts = (DateTime.UtcNow - new DateTime(1970, 1, 1, 0, 0, 0));//$$$local/utc
             string Timestamp = Convert.ToInt32(ts.TotalSeconds).ToString();
 
             // Convert the message + timestamp to bytes
