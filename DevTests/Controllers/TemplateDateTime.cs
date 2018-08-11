@@ -53,9 +53,21 @@ namespace YetaWF.Modules.DevTests.Controllers {
             [UIHint("Time")]
             public DateTime? TimeOpt { get; set; }
 
-            [Caption("Time (Read/Only)"), Description("Time (Read/only)")]
+            [Category("Date/Time"), Caption("Time (Read/Only)"), Description("Time (Read/only)")]
             [UIHint("Time"), ReadOnly]
             public DateTime TimeRO { get; set; }
+
+            [Category("Date/Time"), Caption("Time Of Day (Required)"), Description("Time Of Day (Required)")]
+            [UIHint("TimeOfDay"), Required]
+            public TimeOfDay TimeOfDayReq { get; set; }
+
+            [Category("Date/Time"), Caption("Time Of Day (Required)"), Description("Time Of Day")]
+            [UIHint("TimeOfDay")]
+            public TimeOfDay TimeOfDay { get; set; }
+
+            [Category("Date/Time"), Caption("Time Of Day (Read/Only)"), Description("Time Of Day (Read/Only)")]
+            [UIHint("TimeOfDay"), ReadOnly]
+            public TimeOfDay TimeOfDayRO { get; set; }
 
             [Category("TimeSpan"), Caption("Timespan (Required)"), Description("Timespan (Required)")]
             [UIHint("TimeSpan"), Required]
@@ -107,6 +119,9 @@ namespace YetaWF.Modules.DevTests.Controllers {
                 TimeReq = DateTime.UtcNow;
                 TimeOpt = DateTime.UtcNow;
                 TimeRO = DateTime.UtcNow;
+                TimeOfDayReq = new TimeOfDay(9, 0, 0);
+                TimeOfDay = new TimeOfDay(9, 0, 0);
+                TimeOfDayRO = new TimeOfDay(9, 0, 0);
                 TimeSpanRO = new TimeSpan(3, 13, 25, 11, 933);
                 TimeSpanHMSRO = new TimeSpan(0, 13, 25, 11, 933);
                 OpeningHours = new WeeklyHours();

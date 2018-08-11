@@ -9,35 +9,33 @@ using YetaWF.Core.Support;
 
 namespace YetaWF.Modules.ComponentsHTML.Components {
 
-    public abstract class TimeComponentBase : YetaWFComponent {
+    public abstract class TimeOfDayComponentBase : YetaWFComponent {
 
-        public const string TemplateName = "Time";
+        public const string TemplateName = "TimeOfDay";
 
         public override Package GetPackage() { return Controllers.AreaRegistration.CurrentPackage; }
         public override string GetTemplateName() { return TemplateName; }
     }
 
-    public class TimeDisplayComponent : TimeComponentBase, IYetaWFComponent<DateTime?> {
+    public class TimeOfDayDisplayComponent : TimeOfDayComponentBase, IYetaWFComponent<TimeOfDay> {
 
         public override ComponentType GetComponentType() { return ComponentType.Display; }
 
-        public async Task<YHtmlString> RenderAsync(DateTime model) {
-            return await RenderAsync((DateTime?)model);
-        }
-        public Task<YHtmlString> RenderAsync(DateTime? model) {
+        public Task<YHtmlString> RenderAsync(TimeOfDay model) {
             HtmlBuilder hb = new HtmlBuilder();
-            if (model != null && (DateTime)model > DateTime.MinValue && (DateTime)model < DateTime.MaxValue) {
+            if (model != null) {
                 YTagBuilder tag = new YTagBuilder("div");
-                tag.AddCssClass("yt_time");
+                tag.AddCssClass("yt_timeofday");
                 tag.AddCssClass("t_display");
                 FieldSetup(tag, FieldType.Anonymous);
-                tag.SetInnerText(YetaWF.Core.Localize.Formatting.FormatTime(model));
+                DateTime dt = model.AsDateTime();
+                tag.SetInnerText(Formatting.FormatTime(dt));
                 hb.Append(tag.ToString(YTagRenderMode.Normal));
             }
             return Task.FromResult(hb.ToYHtmlString());
         }
     }
-    public class TimeEditComponent : TimeComponentBase, IYetaWFComponent<DateTime>, IYetaWFComponent<DateTime?> {
+    public class TimeOfDayEditComponent : TimeOfDayComponentBase, IYetaWFComponent<TimeOfDay> {
 
         public override ComponentType GetComponentType() { return ComponentType.Edit; }
 
@@ -48,23 +46,23 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             await KendoUICore.AddFileAsync("kendo.datetimepicker.min.js");
             await base.IncludeAsync();
         }
-        public async Task<YHtmlString> RenderAsync(DateTime model) {
-            return await RenderAsync((DateTime?) model);
-        }
-        public async Task<YHtmlString> RenderAsync(DateTime? model) {
+        public async Task<YHtmlString> RenderAsync(TimeOfDay model) {
+
             HtmlBuilder hb = new HtmlBuilder();
 
-            hb.Append($"<div id='{ControlId}' class='yt_time t_edit'>");
+            hb.Append($"<div id='{ControlId}' class='yt_timeofday t_edit'>");
 
             hb.Append(await HtmlHelper.ForEditComponentAsync(Container, PropertyName, null, "Hidden", HtmlAttributes: HtmlAttributes, Validation: Validation));
 
             YTagBuilder tag = new YTagBuilder("input");
-                FieldSetup(tag, FieldType.Anonymous);
-                tag.Attributes.Add("name", "dtpicker");
+            FieldSetup(tag, FieldType.Anonymous);
+            tag.Attributes.Add("name", "dtpicker");
 
-                if (model != null)
-                    tag.MergeAttribute("value", Formatting.FormatTime((DateTime)model));// shows time
-                hb.Append(tag.ToString(YTagRenderMode.SelfClosing));
+            if (model != null) {
+                DateTime dt = model.AsDateTime();
+                tag.MergeAttribute("value", Formatting.FormatTime(dt));
+            }
+            hb.Append(tag.ToString(YTagRenderMode.SelfClosing));
 
             hb.Append($"</div>");
 

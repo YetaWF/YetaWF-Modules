@@ -36,9 +36,9 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                 string s = null;
                 if (model.Start != null && model.End != null) {
                     if (model.Start2 != null && model.End2 != null) {
-                        s = __ResStr("time2", "{0} - {1}, {2} - {3} ", Formatting.FormatTime(model.Start), Formatting.FormatTime(model.End), Formatting.FormatTime(model.Start2), Formatting.FormatTime(model.End2));
+                        s = __ResStr("time2", "{0} - {1}, {2} - {3} ", Formatting.FormatTime(model.GetStart()), Formatting.FormatTime(model.GetEnd()), Formatting.FormatTime(model.GetStart2()), Formatting.FormatTime(model.GetEnd2()));
                     } else {
-                        s = __ResStr("time1", "{0} - {1}", Formatting.FormatTime(model.Start), Formatting.FormatTime(model.End));
+                        s = __ResStr("time1", "{0} - {1}", Formatting.FormatTime(model.GetStart()), Formatting.FormatTime(model.GetEnd()));
                     }
                 } else
                     s = __ResStr("time0", "");
@@ -57,12 +57,12 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                 if (model.Start != null && model.End != null) {
                     Closed = false;
                     if (model.Start2 != null && model.End2 != null) {
-                        Start2 = (DateTime)model.Start2;
-                        End2 = (DateTime)model.End2;
+                        Start2 = model.GetStart2();
+                        End2 = model.GetEnd2();
                         Additional = true;
                     }
-                    Start = (DateTime)model.Start;
-                    End = (DateTime)model.End;
+                    Start = model.GetStart();
+                    End = model.GetEnd();
                 }
             }
 
