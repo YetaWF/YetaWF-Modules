@@ -51,7 +51,7 @@ namespace YetaWF.Modules.BootstrapCarousel.Components {
             foreach (CarouselInfo.CarouselItem slide in model.Slides) {
                 hb.Append($@"<div class='carousel-item{(index == 0 ? " active" : "")}'>");
 
-                using (Manager.StartNestedComponent($"{FieldName}[{index}]")) {
+                using (Manager.StartNestedComponent($"{FieldNamePrefix}.{nameof(model.Slides)}[{index}]")) {
 
                     if (!string.IsNullOrWhiteSpace(slide.Url)) {
                         hb.Append($@"<a href='{YetaWFManager.HtmlAttributeEncode(Manager.CurrentSite.MakeUrl(slide.Url))}' target='_blank' rel='noopener noreferrer' class='{YetaWF.Core.Addons.Basics.CssNoTooltip}'>");
@@ -108,8 +108,7 @@ namespace YetaWF.Modules.BootstrapCarousel.Components {
             int tabEntry = 0;
             foreach (CarouselInfo.CarouselItem slide in model.Slides) {
                 hb.Append(PropertyListComponentBase.RenderTabPaneStart(DivId, tabEntry, "t_slide"));
-                hb.Append($@"<input type='hidden' value='{tabEntry}'");
-                using (Manager.StartNestedComponent($"{FieldName}[{tabEntry}]")) {
+                using (Manager.StartNestedComponent($"{FieldNamePrefix}.{nameof(model.Slides)}[{tabEntry}]")) {
                     hb.Append(await HtmlHelper.ForEditContainerAsync(slide, "PropertyList"));
                 }
                 hb.Append(PropertyListComponentBase.RenderTabPaneEnd(DivId, tabEntry));
@@ -121,11 +120,11 @@ namespace YetaWF.Modules.BootstrapCarousel.Components {
 </div>
     <div class='t_buttons'>
         <input type='button' class='t_apply' value='{YetaWFManager.HtmlAttributeEncode(this.__ResStr("btnApply", "Apply"))}' title='{YetaWFManager.HtmlAttributeEncode(this.__ResStr("txtApply", "Click to apply the current changes"))}' />
-        <input type='button' class='t_apply' value='{YetaWFManager.HtmlAttributeEncode(this.__ResStr("btnUp", "<<"))}' title='{YetaWFManager.HtmlAttributeEncode(this.__ResStr("txtUp", "Click to move the current image"))}' />
-        <input type='button' class='t_apply' value='{YetaWFManager.HtmlAttributeEncode(this.__ResStr("btnDown", ">>"))}' title='{YetaWFManager.HtmlAttributeEncode(this.__ResStr("txtDown", "Click move the current image"))}' />
-        <input type='button' class='t_apply' value='{YetaWFManager.HtmlAttributeEncode(this.__ResStr("btnIns", "Insert"))}' title='{YetaWFManager.HtmlAttributeEncode(this.__ResStr("txtIns", "Click to insert a new image before the current image"))}' />
-        <input type='button' class='t_apply' value='{YetaWFManager.HtmlAttributeEncode(this.__ResStr("btnAdd", "Add"))}' title='{YetaWFManager.HtmlAttributeEncode(this.__ResStr("txtAdd", "Click to add a new image after the current image"))}' />
-        <input type='button' class='t_apply' value='{YetaWFManager.HtmlAttributeEncode(this.__ResStr("btnDelete", "Remove"))}' title='{YetaWFManager.HtmlAttributeEncode(this.__ResStr("txtDelete", "Click to remove the current image"))}' />
+        <input type='button' class='t_up' value='{YetaWFManager.HtmlAttributeEncode(this.__ResStr("btnUp", "<<"))}' title='{YetaWFManager.HtmlAttributeEncode(this.__ResStr("txtUp", "Click to move the current image"))}' />
+        <input type='button' class='t_down' value='{YetaWFManager.HtmlAttributeEncode(this.__ResStr("btnDown", ">>"))}' title='{YetaWFManager.HtmlAttributeEncode(this.__ResStr("txtDown", "Click move the current image"))}' />
+        <input type='button' class='t_ins' value='{YetaWFManager.HtmlAttributeEncode(this.__ResStr("btnIns", "Insert"))}' title='{YetaWFManager.HtmlAttributeEncode(this.__ResStr("txtIns", "Click to insert a new image before the current image"))}' />
+        <input type='button' class='t_add' value='{YetaWFManager.HtmlAttributeEncode(this.__ResStr("btnAdd", "Add"))}' title='{YetaWFManager.HtmlAttributeEncode(this.__ResStr("txtAdd", "Click to add a new image after the current image"))}' />
+        <input type='button' class='t_delete' value='{YetaWFManager.HtmlAttributeEncode(this.__ResStr("btnDelete", "Remove"))}' title='{YetaWFManager.HtmlAttributeEncode(this.__ResStr("txtDelete", "Click to remove the current image"))}' />
     </div>
 </div>
 <script>

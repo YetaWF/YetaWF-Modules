@@ -42,7 +42,7 @@ namespace YetaWF.Modules.BootstrapCarousel.Controllers {
             Module.SlideShow = model.SlideShow;
             await Module.SaveAsync();
             model.SlideShow = Module.SlideShow;
-            return FormProcessed(model);
+            return FormProcessed(model, OnClose: OnCloseEnum.UpdateInPlace, OnPopupClose: OnPopupCloseEnum.UpdateInPlace);
         }
     }
 }

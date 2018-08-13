@@ -36,7 +36,12 @@ namespace YetaWF.Modules.BootstrapCarousel.Views {
         public async Task<YHtmlString> RenderPartialViewAsync(CarouselDisplayModule module, CarouselDisplayModuleController.Model model) {
 
             HtmlBuilder hb = new HtmlBuilder();
-            hb.Append(await HtmlHelper.ForEditAsync(model, nameof(model.SlideShow)));
+
+            using (Manager.StartNestedComponent($"{nameof(model.SlideShow)}")) {
+
+                hb.Append(await HtmlHelper.ForEditAsync(model, nameof(model.SlideShow)));
+
+            }
             return hb.ToYHtmlString();
 
         }
