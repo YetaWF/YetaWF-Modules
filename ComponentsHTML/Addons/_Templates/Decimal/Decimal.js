@@ -32,7 +32,7 @@ var YetaWF_ComponentsHTML;
         new DecimalComponent().initSection(section);
     });
     // A <div> is being emptied. Destroy all kendoNumericTextBox the <div> may contain.
-    $YetaWF.addClearDiv(function (tag) {
+    $YetaWF.registerClearDiv(function (tag) {
         var list = $YetaWF.getElementsBySelector("input.yt_decimal.t_edit", [tag]);
         for (var _i = 0, list_2 = list; _i < list_2.length; _i++) {
             var el = list_2[_i];

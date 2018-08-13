@@ -116,7 +116,7 @@ var YetaWF_ComponentsHTML;
     }());
     YetaWF_ComponentsHTML.TimeComponent = TimeComponent;
     // A <div> is being emptied. Destroy all time pickers the <div> may contain.
-    $YetaWF.addClearDiv(function (tag) {
+    $YetaWF.registerClearDiv(function (tag) {
         var list = $YetaWF.getElementsBySelector(".yt_time.t_edit input[name=\"dtpicker\"]", [tag]);
         for (var _i = 0, list_1 = list; _i < list_1.length; _i++) {
             var el = list_1[_i];

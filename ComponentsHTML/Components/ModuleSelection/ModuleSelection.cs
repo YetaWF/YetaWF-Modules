@@ -153,32 +153,43 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             using (Manager.StartNestedComponent(FieldName)) {
 
                 if (newMods) {
-                    hb.Append(await HtmlHelper.ForDisplayAsync(uiNew, nameof(uiNew.AjaxUrl), HtmlAttributes: new { @class = Forms.CssFormNoSubmit }));
+
                     hb.Append($@"
-    <div class='t_packages'>");
-                    hb.Append(await HtmlHelper.ForLabelAsync(uiNew, nameof(uiNew.Package)));
-                    hb.Append(await HtmlHelper.ForEditAsync(uiNew, nameof(uiNew.Package)));
+    {await HtmlHelper.ForDisplayAsync(uiNew, nameof(uiNew.AjaxUrl), HtmlAttributes: new { @class = Forms.CssFormNoSubmit })}
+    <div class='t_packages'>
+        {await HtmlHelper.ForLabelAsync(uiNew, nameof(uiNew.Package))}
+        {await HtmlHelper.ForEditAsync(uiNew, nameof(uiNew.Package))}
+    </div>");
+
                 } else {
-                    hb.Append(await HtmlHelper.ForDisplayAsync(uiExisting, nameof(uiExisting.AjaxUrl), HtmlAttributes: new { @class = Forms.CssFormNoSubmit }));
-                    hb.Append(await HtmlHelper.ForDisplayAsync(uiExisting, nameof(uiExisting.AjaxUrlComplete), HtmlAttributes: new { @class = Forms.CssFormNoSubmit }));
+
                     hb.Append($@"
-    <div class='t_packages'>");
-                    hb.Append(await HtmlHelper.ForLabelAsync(uiExisting, nameof(uiExisting.Package)));
-                    hb.Append(await HtmlHelper.ForEditAsync(uiExisting, nameof(uiExisting.Package)));
+
+    {await HtmlHelper.ForDisplayAsync(uiExisting, nameof(uiExisting.AjaxUrl), HtmlAttributes: new { @class = Forms.CssFormNoSubmit })}
+    {await HtmlHelper.ForDisplayAsync(uiExisting, nameof(uiExisting.AjaxUrlComplete), HtmlAttributes: new { @class = Forms.CssFormNoSubmit })}
+    <div class='t_packages'>
+        {await HtmlHelper.ForLabelAsync(uiExisting, nameof(uiExisting.Package))}
+        {await HtmlHelper.ForEditAsync(uiExisting, nameof(uiExisting.Package))}
+    </div>");
                 }
 
             }
 
             hb.Append($@"
-    </div>
     <div class='t_select'>");
 
             if (newMods) {
-                hb.Append(await HtmlHelper.ForLabelAsync(uiNew, nameof(uiNew.Module)));
-                hb.Append(await HtmlHelper.ForEditComponentAsync(Container, PropertyName, model, "ModuleSelectionModuleNew", HtmlAttributes: HtmlAttributes, Validation: Validation));
+
+                hb.Append($@"
+        {await HtmlHelper.ForLabelAsync(uiNew, nameof(uiNew.Module))}
+        {await HtmlHelper.ForEditComponentAsync(Container, PropertyName, model, "ModuleSelectionModuleNew", HtmlAttributes: HtmlAttributes, Validation: Validation)}");
+
             } else {
-                hb.Append(await HtmlHelper.ForLabelAsync(uiExisting, nameof(uiExisting.Module)));
-                hb.Append(await HtmlHelper.ForEditComponentAsync(Container, PropertyName, model, "ModuleSelectionModuleExisting", HtmlAttributes: HtmlAttributes, Validation: Validation));
+
+                hb.Append($@"
+        {await HtmlHelper.ForLabelAsync(uiExisting, nameof(uiExisting.Module))}
+        {await HtmlHelper.ForEditComponentAsync(Container, PropertyName, model, "ModuleSelectionModuleExisting", HtmlAttributes: HtmlAttributes, Validation: Validation)}");
+
             }
 
             hb.Append($@"

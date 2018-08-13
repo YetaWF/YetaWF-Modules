@@ -84,7 +84,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             hb.Append($"</div>");
 
             ScriptBuilder sb = new ScriptBuilder();
-            sb.Append($@"(new YetaWF_ComponentsHTML.DateComponent()).init('{ControlId}');");
+            sb.Append($@"new YetaWF_ComponentsHTML.DateEditComponent('{ControlId}');");
 
             hb.Append(Manager.ScriptManager.AddNow(sb.ToString()).ToString());
 
@@ -92,7 +92,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         }
         public async Task<string> RenderJavascriptAsync(string gridId, string elemVarName) {
             await IncludeAsync();
-            return string.Format("(new YetaWF_ComponentsHTML.DateComponent()).renderjqGridFilter('{0}', {1});", gridId, elemVarName);
+            return string.Format($"new YetaWF_ComponentsHTML.DateGridComponent('{gridId}', {elemVarName});");
         }
     }
 }

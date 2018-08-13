@@ -66,7 +66,7 @@ $YetaWF.registerNewPage(function(url) {
     _YetaWF_TemplateActionIcons.closeMenus();
 });
 // A <div> is being emptied. Destroy all actionicons the <div> may contain.
-$YetaWF.addClearDiv(function (tag) {
+$YetaWF.registerClearDiv(function (tag) {
     //var list = tag.querySelectorAll("button.yt_actionicons");
     //var len = list.length;
     //for (var i = 0; i < len; ++i) {

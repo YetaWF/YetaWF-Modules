@@ -79,7 +79,7 @@ $YetaWF.registerPanelSwitched(function (panel) {
 });
 
 // A <div> is being emptied. Destroy all panels the <div> may contain.
-$YetaWF.addClearDiv(function (tag) {
+$YetaWF.registerClearDiv(function (tag) {
     // tabs
     var list = tag.querySelectorAll(".yt_panels_panelinfo .t_panels.t_acctabs");
     var len = list.length;

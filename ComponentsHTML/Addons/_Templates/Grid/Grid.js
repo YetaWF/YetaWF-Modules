@@ -500,17 +500,15 @@ _YetaWF_Grid.isDuplicate = function ($grid, value) {
 // page has completely loaded, so we need to set it again. By then, jqgrid has added extra layers so we can't just
 // take $grid.parent()'s width.
 // For other cases (outside float div) this does no harm and resizes to the current size.
-$YetaWF.registerActivateDivs(function (divs) {
-    for (var i in divs) {
-        var $grids = $('.yt_grid', $(divs[i]));
-        $grids.each(function () {
-            var $grid = $(this);
-            var $realGrid = $grid.closest('.ui-jqgrid');
-            var width = $realGrid.parent().width();
-            $grid.jqGrid('setGridWidth', width, false);
-            //$grid.trigger('reloadGrid'); // reload removed for panels (removal test case: dashboard)
-        });
-    }
+$YetaWF.registerActivateDiv(function (div) {
+    var $grids = $('.yt_grid', $(div));
+    $grids.each(function () {
+        var $grid = $(this);
+        var $realGrid = $grid.closest('.ui-jqgrid');
+        var width = $realGrid.parent().width();
+        $grid.jqGrid('setGridWidth', width, false);
+        //$grid.trigger('reloadGrid'); // reload removed for panels (removal test case: dashboard)
+    });
 });
 // If the browser window changes, it's possible that the grid's parent element is resized, so we're updating the grid width to match
 $(window).on('resize', function () {
@@ -675,7 +673,7 @@ $(document).on('click', '.yt_grid_addordelete input[name="btnAdd"]', function ()
     });
 });
 
-$YetaWF.addClearDiv(function (tag) {
+$YetaWF.registerClearDiv(function (tag) {
     var list = tag.querySelectorAll("table.yt_grid");
     var len = list.length;
     for (var i = 0; i < len; ++i) {

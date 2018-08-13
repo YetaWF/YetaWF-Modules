@@ -27,7 +27,7 @@ namespace YetaWF_ComponentsHTML {
         new DecimalComponent().initSection(section);
     });
     // A <div> is being emptied. Destroy all kendoNumericTextBox the <div> may contain.
-    $YetaWF.addClearDiv((tag: HTMLElement): void => {
+    $YetaWF.registerClearDiv((tag: HTMLElement): void => {
         var list: HTMLElement[] = $YetaWF.getElementsBySelector("input.yt_decimal.t_edit", [tag]);
         for (let el of list) {
             var numTextBox: kendo.ui.NumericTextBox = $(el).data("kendoNumericTextBox");

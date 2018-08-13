@@ -73,8 +73,8 @@ YetaWF_PropertyList.tabInitjQuery = function (id, activeTab, activeTabId) {
         active: activeTab,
         activate: function(ev,ui) {
             if (ui.newPanel != undefined) {
-                $YetaWF.processActivateDivs([ui.newPanel]);
-                $YetaWF.processPanelSwitched(ui.newPanel);
+                $YetaWF.processActivateDivs([ui.newPanel[0]]);
+                $YetaWF.processPanelSwitched(ui.newPanel[0]);
                 if (activeTabId)
                     $('#{0}'.format(activeTabId)).val((ui.newTab.length > 0) ? ui.newTab.attr('data-tab') : -1);
             }
@@ -94,8 +94,8 @@ YetaWF_PropertyList.tabInitKendo = function (id, activeTab, activeTabId) {
         animation: false,
         activate: function(ev) {
             if (ev.contentElement != undefined) {
-                $YetaWF.processActivateDivs([ev.contentElement]);
-                $YetaWF.processPanelSwitched(ev.contentElement);
+                $YetaWF.processActivateDivs([ev.contentElement[0]]);
+                $YetaWF.processPanelSwitched(ev.contentElement[0]);
                 if (activeTabId)
                     $('#{0}'.format(activeTabId)).val($(ev.item).attr('data-tab'));
             }
@@ -103,7 +103,7 @@ YetaWF_PropertyList.tabInitKendo = function (id, activeTab, activeTabId) {
     }).data('kendoTabStrip');
 };
 
-$YetaWF.addClearDiv(function (tag) {
+$YetaWF.registerClearDiv(function (tag) {
     var list = tag.querySelectorAll(".yt_propertylisttabbed.t_jquery");
     var len = list.length;
     for (var i = 0; i < len; ++i) {

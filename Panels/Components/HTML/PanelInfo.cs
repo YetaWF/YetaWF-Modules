@@ -103,7 +103,7 @@ namespace YetaWF.Modules.Panels.Components {
             collapsible: true,
             heightStyle: 'content',
             activate: function (ev, ui) {{
-                $YetaWF.processActivateDivs([ui.newPanel]);
+                $YetaWF.processActivateDivs([ui.newPanel[0]]);
             }}
         }});
     </script>");
@@ -151,7 +151,7 @@ namespace YetaWF.Modules.Panels.Components {
         $('#{DivId}').kendoPanelBar({{
             expandMode: 'single',
             activate: function(ev) {{
-                $YetaWF.processActivateDivs([ev.item]);
+                $YetaWF.processActivateDivs([ev.item[0]]);
             }}
         }});
         var $panelBar = $('#{DivId}').kendoPanelBar().data('kendoPanelBar');

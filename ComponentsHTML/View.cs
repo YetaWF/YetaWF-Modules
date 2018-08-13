@@ -48,7 +48,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             return new JSDocumentReady(hb);
         }
 
-        protected async Task<string> RenderBeginFormAsync(object HtmlAttributes = null, bool SaveReturnUrl = false, bool ValidateImmediately = false, string ActionName = null, string ControllerName = null, bool Pure = false) {
+        protected async Task<string> RenderBeginFormAsync(object HtmlAttributes = null, bool SaveReturnUrl = false, bool ValidateImmediately = false, string ActionName = null, string ControllerName = null, bool Pure = false, string Method = "post") {
 
             await YetaWFCoreRendering.Render.AddFormsAddOnsAsync();
             await Manager.AddOnManager.AddAddOnNamedAsync("YetaWF_Core", "Forms");// standard css, validation strings
@@ -87,7 +87,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             formAction = UrlHelper.GenerateUrl(null /* routeName */, ActionName, ControllerName, null, HtmlHelper.RouteCollection, HtmlHelper.ViewContext.RequestContext, true /* includeImplicitMvcValues */);
 #endif
             tagBuilder.MergeAttribute("action", formAction, true);
-            tagBuilder.MergeAttribute("method", "post", true);
+            tagBuilder.MergeAttribute("method", Method, true);
 
             return tagBuilder.ToString(YTagRenderMode.StartTag);
         }

@@ -30,6 +30,7 @@ YetaWF_ModuleSelection.UpdateComplete = function ($control, modGuid) {
 
     var data = { 'modGuid': modGuid };
     // get a new list of modules
+    debugger;
     YetaWF_TemplateDropDownList.AjaxUpdate($select, data, ajaxurl,
         function (data) { // success
             var $packages = _YetaWF_ModuleSelection.getPackages($control);

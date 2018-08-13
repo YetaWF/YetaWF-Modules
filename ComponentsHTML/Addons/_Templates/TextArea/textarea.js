@@ -31,19 +31,17 @@ if (typeof CKEDITOR !== 'undefined') { // CKEDITOR is only defined when an edita
 // page has completely loaded, so we need to set it again.
 // For other cases (outside float div) this does no harm and resizes to the current size.
 
-$YetaWF.registerActivateDivs(function (divs) {
-    for (var i in divs) {
-        var $ckeds = $('.yt_textarea.t_edit', $(divs[i]));
-        $ckeds.each(function () {
-            var $cked = $(this);
-            var ckEd = CKEDITOR.instances[$cked[0].id];
-            ckEd.resize('100%', $cked.attr('data-height'), true);
-        });
-    }
+$YetaWF.registerActivateDiv(function (div) {
+    var $ckeds = $('.yt_textarea.t_edit', $(div));
+    $ckeds.each(function () {
+        var $cked = $(this);
+        var ckEd = CKEDITOR.instances[$cked[0].id];
+        ckEd.resize('100%', $cked.attr('data-height'), true);
+    });
 });
 
 // A <div> is being emptied. Destroy all ckeditors the <div> may contain.
-$YetaWF.addClearDiv(function (tag) {
+$YetaWF.registerClearDiv(function (tag) {
     var list = tag.querySelectorAll("textarea.yt_textarea");
     var len = list.length;
     for (var i = 0; i < len; ++i) {

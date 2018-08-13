@@ -62,7 +62,6 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             string id = null;
             if (useKendo) {
                 id = component.MakeId(tag);
-                tag.Attributes.Add("data-needinit", "");
                 tag.Attributes.Add("data-charavgw", Manager.CharWidthAvg.ToString());
             } else
                 tag.AddCssClass("t_native");
@@ -104,8 +103,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                 if (!haveDesc) // if we don't have any descriptions, clear the tooltip array
                     sb = new ScriptBuilder();
                 ScriptBuilder newSb = new ScriptBuilder();
-                newSb.Append("$('#{0}').data('tooltips', [{1}]);", id, sb.ToString());
-                newSb.Append("YetaWF_TemplateDropDownList.initOne($('#{0}'));", id);
+                newSb.Append($"new YetaWF_ComponentsHTML.DropDownListEditComponent('{id}', [{sb.ToString()}]);");
                 sb = newSb;
             }
 
@@ -126,10 +124,10 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         /// <returns>A JSON object containing data and tooltips to update the contents of a dropdownlist.</returns>
         public static YHtmlString RenderDataSource(List<SelectionItem<TYPE>> list, string extraData) {
             ScriptBuilder sb = new ScriptBuilder();
-            sb.Append(Basics.AjaxJavascriptReturn);
+            sb.Append(Basics.AjaxJSONReturn);
             sb.Append(@"{""data"":[");
             foreach (SelectionItem<TYPE> item in list) {
-                sb.Append(@"{{""t"":{0},""v"":{1}}},", YetaWFManager.JsonSerialize(item.Text.ToString()), YetaWFManager.JsonSerialize(item.Value?.ToString()));
+                sb.Append(@"{{""t"":{0},""v"":{1}}},", YetaWFManager.JsonSerialize(item.Text.ToString()), YetaWFManager.JsonSerialize(item.Value != null ? item.Value.ToString() : ""));
             }
             if (list.Count > 0)
                 sb.RemoveLast();

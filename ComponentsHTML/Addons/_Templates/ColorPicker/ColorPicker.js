@@ -10,7 +10,7 @@ var YetaWF_ComponentsHTML;
     }());
     YetaWF_ComponentsHTML.ColorPickerComponent = ColorPickerComponent;
     // A <div> is being emptied. Destroy all color pickers the <div> may contain.
-    $YetaWF.addClearDiv(function (tag) {
+    $YetaWF.registerClearDiv(function (tag) {
         var list = $YetaWF.getElementsBySelector(".yt_colorpicker.t_edit", [tag]);
         for (var _i = 0, list_1 = list; _i < list_1.length; _i++) {
             var el = list_1[_i];

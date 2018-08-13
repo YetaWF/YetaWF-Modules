@@ -126,7 +126,7 @@ namespace YetaWF_ComponentsHTML {
     }
 
     // A <div> is being emptied. Destroy all date/time pickers the <div> may contain.
-    $YetaWF.addClearDiv((tag: HTMLElement): void => {
+    $YetaWF.registerClearDiv((tag: HTMLElement): void => {
         var list: HTMLElement[] = $YetaWF.getElementsBySelector(".yt_datetime.t_edit input[name=\"dtpicker\"]", [tag]);
         for (let el of list) {
             var datepicker: kendo.ui.DateTimePicker = $(el).data("kendoDateTimePicker");
