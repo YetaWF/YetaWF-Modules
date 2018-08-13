@@ -124,13 +124,13 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                 if ((type & UrlTypeEnum.Local) != 0) {
                     hb.Append($@"
     <div class='t_local'>
-        { await HtmlHelper.ForEditAsync(ui, nameof(ui._Local), Validation: false) }
+        {await HtmlHelper.ForEditAsync(ui, nameof(ui._Local), Validation: false)}
     </div>");
                 }
                 if ((type & UrlTypeEnum.Remote) != 0) {
                     hb.Append($@"
     <div class='t_remote'>
-        { await HtmlHelper.ForEditAsync(ui, nameof(ui._Remote), Validation: false) }
+        {await HtmlHelper.ForEditAsync(ui, nameof(ui._Remote), Validation: false)}
     </div>");
                 }
             }

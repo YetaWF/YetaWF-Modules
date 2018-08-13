@@ -4,11 +4,6 @@ var YetaWF_TemplateDropDownList = {};
 
 /* LEGACY COMPATIBILITY ONLY */
 
-YetaWF_TemplateDropDownList.initOne = function ($this) {
-    if ($control.length > 1) throw "too many controls";
-    if ($control.length == 0) return;
-    YetaWF_ComponentsHTML.DropDownListEditComponent.getControlFromTag($control[0]).updateWidth();
-}
 // Enable a dropdownlist object
 // $control refers to the <div class="yt_dropdownlist...">
 YetaWF_TemplateDropDownList.Enable = function ($control, enabled) {

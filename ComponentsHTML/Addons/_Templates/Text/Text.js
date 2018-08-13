@@ -24,7 +24,7 @@ YetaWF_TemplateText.init = function (tag) {
 
     function initClip() {
         if (_YetaWF_TemplateText.clip == null && $('.yt_text_copy').length > 0) {
-            _YetaWF_TemplateText.clip = new Clipboard('.yt_text_copy', {
+            _YetaWF_TemplateText.clip = new ClipboardJS('.yt_text_copy', {
                 target: function (trigger) {
                     return trigger.previousElementSibling;
                 },

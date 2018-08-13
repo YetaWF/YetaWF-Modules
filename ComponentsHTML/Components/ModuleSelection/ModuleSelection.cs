@@ -22,9 +22,11 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         public override Package GetPackage() { return Controllers.AreaRegistration.CurrentPackage; }
         public override string GetTemplateName() { return TemplateName; }
 
-        protected async Task<string> GetModuleLink(Guid? model) {
+        protected async Task<string> GetModuleLink(Guid? model, bool force = false) {
 
-            if (model == null || model == Guid.Empty) return "";
+            if (!force) {
+                if (model == null || model == Guid.Empty) return "";
+            }
             YTagBuilder tag = new YTagBuilder("a");
 
             tag.MergeAttribute("href", ModuleDefinition.GetModulePermanentUrl((Guid)model));
@@ -195,7 +197,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             hb.Append($@"
     </div>
     <div class='t_link'>
-        {await GetModuleLink(model)}
+        {await GetModuleLink(model, force: true)}
     </div>
     <div class='t_description'>
     </div>

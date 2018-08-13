@@ -4,15 +4,13 @@ using System.Threading.Tasks;
 using YetaWF.Core.Controllers;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Modules.Panels.Models;
-using YetaWF.Core.Models;
 #if MVC6
 using Microsoft.AspNetCore.Mvc;
 #else
 using System.Web.Mvc;
 #endif
 
-namespace YetaWF.Modules.Panels.Controllers
-{
+namespace YetaWF.Modules.Panels.Controllers {
 
     public class ModulePanelModuleController : ControllerImpl<YetaWF.Modules.Panels.Modules.ModulePanelModule> {
 
@@ -43,7 +41,7 @@ namespace YetaWF.Modules.Panels.Controllers
             Module.PanelInfo = model.PanelInfo;
             await Module.SaveAsync();
             model.PanelInfo = Module.PanelInfo;
-            return FormProcessed(model);
+            return FormProcessed(model, OnClose: OnCloseEnum.UpdateInPlace, OnPopupClose: OnPopupCloseEnum.UpdateInPlace);
         }
     }
 }

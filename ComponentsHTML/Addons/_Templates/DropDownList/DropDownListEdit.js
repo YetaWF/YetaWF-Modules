@@ -134,13 +134,13 @@ var YetaWF_ComponentsHTML;
         };
         DropDownListEditComponent.getControlFromTag = function (elem) { return _super.getControlBaseFromTag.call(this, elem, DropDownListEditComponent.SELECTOR); };
         DropDownListEditComponent.getControlFromSelector = function (selector, tags) { return _super.getControlBaseFromSelector.call(this, selector, DropDownListEditComponent.SELECTOR, tags); };
-        DropDownListEditComponent.SELECTOR = ".yt_dropdownlist_base.t_edit";
+        DropDownListEditComponent.SELECTOR = "select.yt_dropdownlist_base.t_edit.t_kendo";
         return DropDownListEditComponent;
     }(YetaWF.ComponentBase));
     YetaWF_ComponentsHTML.DropDownListEditComponent = DropDownListEditComponent;
     // We need to delay initialization until divs become visible so we can calculate the dropdown width
     $YetaWF.registerActivateDiv(function (tag) {
-        var ctls = $YetaWF.getElementsBySelector("select.yt_dropdownlist_base", [tag]);
+        var ctls = $YetaWF.getElementsBySelector(DropDownListEditComponent.SELECTOR, [tag]);
         for (var _i = 0, ctls_1 = ctls; _i < ctls_1.length; _i++) {
             var ctl = ctls_1[_i];
             var control = DropDownListEditComponent.getControlFromTag(ctl);
@@ -149,7 +149,7 @@ var YetaWF_ComponentsHTML;
     });
     // A <div> is being emptied. Destroy all dropdownlists the <div> may contain.
     $YetaWF.registerClearDiv(function (tag) {
-        YetaWF.ComponentBase.clearDiv(tag, "select.yt_dropdownlist_base.t_edit", function (control) {
+        YetaWF.ComponentBase.clearDiv(tag, DropDownListEditComponent.SELECTOR, function (control) {
             control.destroy();
         });
     });

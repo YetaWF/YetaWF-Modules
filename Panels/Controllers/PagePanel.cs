@@ -120,11 +120,11 @@ namespace YetaWF.Modules.Panels.Controllers {
             model.PageList = Module.PageList;
             ClearCache(Module.ModuleGuid);
             if (IsApply) {
-                Manager.EditMode = false;
-                return Redirect(model.Url, SetCurrentEditMode: true);
+                Module.DefaultViewName = ModuleDefinition.StandardViews.EditApply;
+                return FormProcessed(model, OnClose: OnCloseEnum.ReloadPage, OnPopupClose: OnPopupCloseEnum.ReloadParentPage);
             }
-            Module.DefaultViewName = ModuleDefinition.StandardViews.EditApply;
-            return FormProcessed(model, OnClose:OnCloseEnum.ReloadPage, OnPopupClose: OnPopupCloseEnum.ReloadParentPage);
+            Manager.EditMode = false;
+            return Redirect(model.Url, SetCurrentEditMode: true);
         }
 
         private async Task<List<PagePanelInfo.PanelEntry>> GetPanelsAsync() {

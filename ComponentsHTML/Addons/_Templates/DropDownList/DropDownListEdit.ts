@@ -9,7 +9,7 @@ namespace YetaWF_ComponentsHTML {
 
     export class DropDownListEditComponent extends YetaWF.ComponentBase<HTMLSelectElement> {
 
-        public static readonly SELECTOR: string = ".yt_dropdownlist_base.t_edit";
+        public static readonly SELECTOR: string = "select.yt_dropdownlist_base.t_edit.t_kendo";
 
         KendoDropDownList: kendo.ui.DropDownList | null = null;
         ToolTips: string[] | null = null;
@@ -134,7 +134,7 @@ namespace YetaWF_ComponentsHTML {
 
     // We need to delay initialization until divs become visible so we can calculate the dropdown width
     $YetaWF.registerActivateDiv((tag: HTMLElement): void => {
-        var ctls = $YetaWF.getElementsBySelector("select.yt_dropdownlist_base", [tag]);
+        var ctls = $YetaWF.getElementsBySelector(DropDownListEditComponent.SELECTOR, [tag]);
         for (let ctl of ctls) {
             var control = DropDownListEditComponent.getControlFromTag(ctl);
             control.updateWidth();
@@ -143,7 +143,7 @@ namespace YetaWF_ComponentsHTML {
 
     // A <div> is being emptied. Destroy all dropdownlists the <div> may contain.
     $YetaWF.registerClearDiv((tag: HTMLElement): void => {
-        YetaWF.ComponentBase.clearDiv<DropDownListEditComponent>(tag, "select.yt_dropdownlist_base.t_edit", (control: DropDownListEditComponent): void => {
+        YetaWF.ComponentBase.clearDiv<DropDownListEditComponent>(tag, DropDownListEditComponent.SELECTOR, (control: DropDownListEditComponent): void => {
             control.destroy();
         });
     });

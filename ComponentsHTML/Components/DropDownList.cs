@@ -63,6 +63,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             if (useKendo) {
                 id = component.MakeId(tag);
                 tag.Attributes.Add("data-charavgw", Manager.CharWidthAvg.ToString());
+                tag.AddCssClass("t_kendo");
             } else
                 tag.AddCssClass("t_native");
 
@@ -110,8 +111,13 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             tag.InnerHtml = tagHtml.ToString();
 
             HtmlBuilder hb = new HtmlBuilder();
-            hb.Append(tag.ToString(YTagRenderMode.Normal));
-            Manager.ScriptManager.AddLast(sb.ToString());
+
+            hb.Append($@"
+{tag.ToString(YTagRenderMode.Normal)}
+<script>
+    {sb.ToString()}
+</script>");
+
             return hb.ToYHtmlString();
         }
 
