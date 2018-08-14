@@ -10,6 +10,7 @@ var YetaWF_ComponentsHTML;
             this.Additional = $YetaWF.getElement1BySelector("input[name$='.Additional']", [this.Control]);
             this.AddDiv = $YetaWF.getElement1BySelector(".t_add", [this.Control]);
             this.Closed = $YetaWF.getElement1BySelector("input[name$='.Closed']", [this.Control]);
+            this.ClosedDiv = $YetaWF.getElement1BySelector(".t_closed", [this.Control]);
             this.StartDiv = $YetaWF.getElement1BySelector(".t_from", [this.Control]);
             this.EndDiv = $YetaWF.getElement1BySelector(".t_to", [this.Control]);
             this.Start2Div = $YetaWF.getElement1BySelector(".t_from2", [this.Control]);
@@ -51,12 +52,14 @@ var YetaWF_ComponentsHTML;
                     this.End2Div.style.display = "";
                     $YetaWF.elementRemoveClasses(this.Start2, this.NoSubmit);
                     $YetaWF.elementRemoveClasses(this.End2, this.NoSubmit);
+                    this.ClosedDiv.style.display = "none";
                 }
                 else {
                     this.Start2Div.style.display = "none";
                     this.End2Div.style.display = "none";
                     $YetaWF.elementAddClasses(this.Start2, this.NoSubmit);
                     $YetaWF.elementAddClasses(this.End2, this.NoSubmit);
+                    this.ClosedDiv.style.display = "";
                 }
             }
         };

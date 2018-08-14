@@ -75,22 +75,28 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             [DayTimeRangeToValidation, Required]
             public DateTime End { get; set; }
 
-            [Caption("From"), Description("Number of minutes")]
+            [Caption("From"), Description("Starting time")]
             [UIHint("Time")]
             [DayTimeRangeFrom2Validation, RequiredIf("Additional", true)]
             public DateTime Start2 { get; set; }
-            [Caption("To"), Description("Number of seconds")]
+            [Caption("To"), Description("Ending time")]
             [UIHint("Time")]
             [DayTimeRangeToValidation, RequiredIf("Additional", true)]
             public DateTime End2 { get; set; }
 
-            [Caption("Additional"), Description("Select to enable an additional time range - This is usually used when closed for lunch")]
+            [ResourceRedirect(nameof(AdditionalFieldCaption), nameof(AdditionalFieldDescription))]
             [UIHint("Boolean")]
             public bool Additional { get; set; }
 
-            [Caption("Closed"), Description("Select to indicate when closed all day")]
+            public string AdditionalFieldCaption { get; set; }
+            public string AdditionalFieldDescription { get; set; }
+
+            [ResourceRedirect(nameof(ClosedFieldCaption), nameof(ClosedFieldDescription))]
             [UIHint("Boolean")]
             public bool Closed { get; set; }
+
+            public string ClosedFieldCaption { get; set; }
+            public string ClosedFieldDescription { get; set; }
         }
 
         public override ComponentType GetComponentType() { return ComponentType.Edit; }
@@ -100,6 +106,10 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             HtmlBuilder hb = new HtmlBuilder();
 
             DayTimeRangeUI ts = new DayTimeRangeUI(model??new DayTimeRange());
+            ts.ClosedFieldCaption = model.ClosedFieldCaption ?? __ResStr("closed", "Closed");
+            ts.ClosedFieldDescription = model.ClosedFieldDescription ?? __ResStr("closedDesc", "Select to indicate when closed all day");
+            ts.AdditionalFieldCaption = model.AdditionalFieldCaption ?? __ResStr("additional", "Additional");
+            ts.AdditionalFieldDescription = model.AdditionalFieldDescription ?? __ResStr("additionalDesc", "Select to enable an additional time range");
 
             hb.Append($"<div id='{ControlId}' class='yt_daytimerange t_edit'>");
 

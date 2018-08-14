@@ -9,7 +9,7 @@
     if (YVolatile.Skin.Bootstrap && YVolatile.Skin.BootstrapButtons) {
         if (Y_YetaWFBootstrap_Fixup != true)
             throw "Bootstrap fixup not used"
-        // we're highjacking the button() function implemented by JQUERY so we can support button('enable'/'disable'); to be source compatible with
+        // we're hijacking the button() function implemented by JQUERY so we can support button('enable'/'disable'); to be source compatible with
         // code assuming jquery-ui buttons even if Bootstrap buttons are used
         var jqbutton = $.fn.button
         $.fn.button = function (arg1, arg2, arg3) {

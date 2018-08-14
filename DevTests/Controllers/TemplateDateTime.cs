@@ -85,28 +85,9 @@ namespace YetaWF.Modules.DevTests.Controllers {
             [UIHint("TimeSpan"), ReadOnly]
             public TimeSpan TimeSpanHMSRO { get; set; }
 
-            [Category("Hours"), Caption("Mondays"), Description("Select the hours")]
-            [UIHint("DayTimeRange"), Required]
-            public DayTimeRange Mondays { get { return OpeningHours.Days[(int)DayOfWeek.Monday]; } set { OpeningHours.Days[(int)DayOfWeek.Monday] = value; } }
-            [Category("Hours"), Caption("Tuesdays"), Description("Select the hours")]
-            [UIHint("DayTimeRange"), Required]
-            public DayTimeRange Tuesdays { get { return OpeningHours.Days[(int)DayOfWeek.Tuesday]; } set { OpeningHours.Days[(int)DayOfWeek.Tuesday] = value; } }
-            [Category("Hours"), Caption("Wednesdays"), Description("Select the hours")]
-            [UIHint("DayTimeRange"), Required]
-            public DayTimeRange Wednesdays { get { return OpeningHours.Days[(int)DayOfWeek.Wednesday]; } set { OpeningHours.Days[(int)DayOfWeek.Wednesday] = value; } }
-            [Category("Hours"), Caption("Thursdays"), Description("Select the hours")]
-            [UIHint("DayTimeRange"), Required]
-            public DayTimeRange Thursdays { get { return OpeningHours.Days[(int)DayOfWeek.Thursday]; } set { OpeningHours.Days[(int)DayOfWeek.Thursday] = value; } }
-            [Category("Hours"), Caption("Fridays"), Description("Select the hours")]
-            [UIHint("DayTimeRange"), Required]
-            public DayTimeRange Fridays { get { return OpeningHours.Days[(int)DayOfWeek.Friday]; } set { OpeningHours.Days[(int)DayOfWeek.Friday] = value; } }
-            [Category("Hours"), Caption("Saturdays"), Description("Select the hours")]
-            [UIHint("DayTimeRange"), Required]
-            public DayTimeRange Saturdays { get { return OpeningHours.Days[(int)DayOfWeek.Saturday]; } set { OpeningHours.Days[(int)DayOfWeek.Saturday] = value; } }
-            [Category("Hours"), Caption("Sundays"), Description("Select the hours")]
-            [UIHint("DayTimeRange"), Required]
-            public DayTimeRange Sundays { get { return OpeningHours.Days[(int)DayOfWeek.Sunday]; } set { OpeningHours.Days[(int)DayOfWeek.Sunday] = value; } }
-
+            [TextAbove("Weekly Hours")]
+            [Category("Hours"), Caption(""), Description("")]
+            [UIHint("WeeklyHours")]
             public WeeklyHours OpeningHours { get; set; }
 
             public Model() {
