@@ -65,8 +65,8 @@ var YetaWF_ComponentsHTML;
     YetaWF_ComponentsHTML.DayTimeRangeComponent = DayTimeRangeComponent;
 })(YetaWF_ComponentsHTML || (YetaWF_ComponentsHTML = {}));
 $.validator.unobtrusive.adapters.add("daytimerangeto", function (options) {
-    options.rules['daytimerangeto'] = {};
-    options.messages['daytimerangeto'] = options.message;
+    options.rules["daytimerangeto"] = {};
+    options.messages["daytimerangeto"] = options.message;
 });
 $.validator.addMethod("daytimerangeto", function (value, element, parameters) {
     if ($YetaWF.elementHasClass(element, YConfigs.Forms.CssFormNoValidate))
@@ -91,8 +91,8 @@ $.validator.addMethod("daytimerangeto", function (value, element, parameters) {
     return false;
 });
 $.validator.unobtrusive.adapters.add("daytimerangefrom2", function (options) {
-    options.rules['daytimerangefrom2'] = {};
-    options.messages['daytimerangefrom2'] = options.message;
+    options.rules["daytimerangefrom2"] = {};
+    options.messages["daytimerangefrom2"] = options.message;
 });
 $.validator.addMethod("daytimerangefrom2", function (value, element, parameters) {
     if ($YetaWF.elementHasClass(element, YConfigs.Forms.CssFormNoValidate))

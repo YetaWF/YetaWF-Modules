@@ -42,7 +42,7 @@ namespace YetaWF_ComponentsHTML {
                         thisObj.setHiddenValue(val);
                     FormsSupport.validateElement(this.Hidden);
 
-                    var event = document.createEvent('Event');
+                    var event = document.createEvent("Event");
                     event.initEvent("date_change", false, true);
                     this.Control.dispatchEvent(event);
                 }
@@ -74,13 +74,13 @@ namespace YetaWF_ComponentsHTML {
             return this.DatePicker.value;
         }
 
-        public clear() {
-            this.KendoDatePicker.value('');
+        public clear(): void {
+            this.KendoDatePicker.value("");
         }
-        public enable(enabled: boolean) {
+        public enable(enabled: boolean): void {
             this.KendoDatePicker.enable(enabled);
         }
-        public destroy() {
+        public destroy(): void {
             this.KendoDatePicker.destroy();
             $YetaWF.removeObjectDataById(this.Control.id);
         }

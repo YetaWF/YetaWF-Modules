@@ -23,13 +23,14 @@ namespace YetaWF_ComponentsHTML {
             this.updateWidth();
         }
 
-        public updateWidth() {
+        public updateWidth(): void {
             var w = this.Control.clientWidth;
             if (w > 0 && this.KendoDropDownList == null) {
                 var thisObj = this;
                 $(this.Control).kendoDropDownList({
-                    change: function (e) {
-                        var event = document.createEvent('Event');
+                    // tslint:disable-next-line:only-arrow-functions
+                    change: function (): void {
+                        var event = document.createEvent("Event");
                         event.initEvent("dropdownlist_change", true, true);
                         thisObj.Control.dispatchEvent(event);
                         FormsSupport.validateElement(thisObj.Control);
@@ -62,21 +63,21 @@ namespace YetaWF_ComponentsHTML {
             if (index < 0 || index >= this.ToolTips.length) return null;
             return this.ToolTips[index];
         }
-        public clear() {
+        public clear(): void {
             if (this.KendoDropDownList == null) {
                 this.Control.selectedIndex = 0;
             } else {
                 this.KendoDropDownList.select(0);
             }
         }
-        public enable(enabled: boolean) {
+        public enable(enabled: boolean): void {
             if (this.KendoDropDownList == null) {
                 $YetaWF.elementEnableToggle(this.Control, enabled);
             } else {
                 this.KendoDropDownList.enable(enabled);
             }
         }
-        public destroy() {
+        public destroy(): void {
             if (this.KendoDropDownList)
                 this.KendoDropDownList.destroy();
             $YetaWF.removeObjectDataById(this.Control.id);
@@ -98,8 +99,9 @@ namespace YetaWF_ComponentsHTML {
                             dataTextField: "t",
                             dataValueField: "v",
                             dataSource: data.data,
-                            change: function (e) {
-                                var event = document.createEvent('Event');
+                            // tslint:disable-next-line:only-arrow-functions
+                            change: function (): void {
+                                var event = document.createEvent("Event");
                                 event.initEvent("dropdownlist_change", true, true);
                                 thisObj.Control.dispatchEvent(event);
                                 FormsSupport.validateElement(thisObj.Control);
@@ -112,8 +114,8 @@ namespace YetaWF_ComponentsHTML {
                             onSuccess(data);
                         } else {
                             this.value = "";
-                            $(this.Control).trigger('change');
-                            var event = document.createEvent('Event');
+                            $(this.Control).trigger("change");
+                            var event = document.createEvent("Event");
                             event.initEvent("dropdownlist_change", true, true);
                             this.Control.dispatchEvent(event);
                         }

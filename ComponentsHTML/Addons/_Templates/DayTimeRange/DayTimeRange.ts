@@ -44,7 +44,7 @@ namespace YetaWF_ComponentsHTML {
             });
         }
 
-        private NoSubmit = `${YConfigs.Forms.CssFormNoSubmit} ${YConfigs.Forms.CssFormNoValidate}`;
+        private NoSubmit: string = `${YConfigs.Forms.CssFormNoSubmit} ${YConfigs.Forms.CssFormNoValidate}`;
 
         private toggleRanges(): void {
             if (this.Closed.checked) {
@@ -79,9 +79,9 @@ namespace YetaWF_ComponentsHTML {
     }
 }
 
-$.validator.unobtrusive.adapters.add("daytimerangeto", function (options) {
-    options.rules['daytimerangeto'] = {};
-    options.messages['daytimerangeto'] = options.message;
+$.validator.unobtrusive.adapters.add("daytimerangeto", (options: any): void => {
+    options.rules["daytimerangeto"] = {};
+    options.messages["daytimerangeto"] = options.message;
 });
 
 $.validator.addMethod("daytimerangeto", (value: any, element: HTMLElement, parameters: any): boolean => {
@@ -107,9 +107,9 @@ $.validator.addMethod("daytimerangeto", (value: any, element: HTMLElement, param
     return false;
 });
 
-$.validator.unobtrusive.adapters.add("daytimerangefrom2", function (options) {
-    options.rules['daytimerangefrom2'] = {};
-    options.messages['daytimerangefrom2'] = options.message;
+$.validator.unobtrusive.adapters.add("daytimerangefrom2", (options: any): void => {
+    options.rules["daytimerangefrom2"] = {};
+    options.messages["daytimerangefrom2"] = options.message;
 });
 
 $.validator.addMethod("daytimerangefrom2", (value: any, element: HTMLElement, parameters: any): boolean => {

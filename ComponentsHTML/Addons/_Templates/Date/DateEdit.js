@@ -41,7 +41,7 @@ var YetaWF_ComponentsHTML;
                     else
                         thisObj.setHiddenValue(val);
                     FormsSupport.validateElement(_this.Hidden);
-                    var event = document.createEvent('Event');
+                    var event = document.createEvent("Event");
                     event.initEvent("date_change", false, true);
                     _this.Control.dispatchEvent(event);
                 }
@@ -75,7 +75,7 @@ var YetaWF_ComponentsHTML;
             configurable: true
         });
         DateEditComponent.prototype.clear = function () {
-            this.KendoDatePicker.value('');
+            this.KendoDatePicker.value("");
         };
         DateEditComponent.prototype.enable = function (enabled) {
             this.KendoDatePicker.enable(enabled);

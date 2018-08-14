@@ -175,7 +175,7 @@ namespace YetaWF.Modules.Panels.Components {
             using (DocumentReady(hb, DivId)) {
         hb.Append($@"
     $('#{tmpltId}_list').jqGrid('sortableRows', {{ connectWith: '#{tmpltId}_list' }});
-    YetaWF_Pages_ListOfLocalPages.init($('#{tmpltId}'), $('#{tmpltId}_list'), $('#{DivId}_listall'), $('#{tmpltId} .yt_url.t_edit[data-name$=\'.NewValue\']'));
+    YetaWF_Panels_ListOfLocalPages.init($('#{tmpltId}'), $('#{tmpltId}_list'), $('#{DivId}_listall'), $('#{tmpltId} .yt_url.t_edit[data-name$=\'.NewValue\']'));
 ");
             }
 

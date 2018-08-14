@@ -28,8 +28,9 @@ var YetaWF_ComponentsHTML;
             if (w > 0 && this.KendoDropDownList == null) {
                 var thisObj = this;
                 $(this.Control).kendoDropDownList({
-                    change: function (e) {
-                        var event = document.createEvent('Event');
+                    // tslint:disable-next-line:only-arrow-functions
+                    change: function () {
+                        var event = document.createEvent("Event");
                         event.initEvent("dropdownlist_change", true, true);
                         thisObj.Control.dispatchEvent(event);
                         FormsSupport.validateElement(thisObj.Control);
@@ -103,8 +104,9 @@ var YetaWF_ComponentsHTML;
                             dataTextField: "t",
                             dataValueField: "v",
                             dataSource: data.data,
-                            change: function (e) {
-                                var event = document.createEvent('Event');
+                            // tslint:disable-next-line:only-arrow-functions
+                            change: function () {
+                                var event = document.createEvent("Event");
                                 event.initEvent("dropdownlist_change", true, true);
                                 thisObj.Control.dispatchEvent(event);
                                 FormsSupport.validateElement(thisObj.Control);
@@ -117,8 +119,8 @@ var YetaWF_ComponentsHTML;
                         }
                         else {
                             _this.value = "";
-                            $(_this.Control).trigger('change');
-                            var event = document.createEvent('Event');
+                            $(_this.Control).trigger("change");
+                            var event = document.createEvent("Event");
                             event.initEvent("dropdownlist_change", true, true);
                             _this.Control.dispatchEvent(event);
                         }

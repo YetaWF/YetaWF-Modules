@@ -4,6 +4,14 @@ div.yt_daytimerange {
     display:inline;
     .t_from, .t_to, .t_from2, .t_to2, .t_add, .t_closed {
         display:inline-block;
+        label {
+            padding-right:1ch;
+        }
+    }
+    .t_to, .t_to2 {
+        label {
+            padding-left:1ch;
+        }
     }
     .t_to, .t_to2, .t_add, .t_closed {
         display:inline-block;

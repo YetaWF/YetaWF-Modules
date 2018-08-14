@@ -29,7 +29,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             }
             YTagBuilder tag = new YTagBuilder("a");
 
-            tag.MergeAttribute("href", ModuleDefinition.GetModulePermanentUrl((Guid)model));
+            tag.MergeAttribute("href", ModuleDefinition.GetModulePermanentUrl(model ?? Guid.Empty));
             tag.MergeAttribute("target", "_blank");
             tag.MergeAttribute("rel", "nofollow noopener noreferrer");
             tag.Attributes.Add(Basics.CssTooltip, __ResStr("linkTT", "Click to preview the module in a new window - not all modules can be displayed correctly and may require additional parameters"));
