@@ -66,7 +66,7 @@ var YetaWF_ComponentsHTML;
                         var target = $this[0].target;
                         if (target === "_blank") {
                             var uri = $YetaWF.parseUrl(href);
-                            return $YetaWF.htmlEscape(YLocs.Basics.OpenNewWindowTT.format(uri.getDomain()));
+                            return $YetaWF.htmlEscape(YLocs.Basics.OpenNewWindowTT.format(uri.getHostName()));
                         }
                     }
                     return null;

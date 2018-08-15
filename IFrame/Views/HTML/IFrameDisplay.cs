@@ -26,7 +26,7 @@ namespace YetaWF.Modules.IFrame.Views {
 
                 hb.Append($@"
 <p class='yDivWarning'>
-    {HE(this.__ResStr("editMode", "Url contents({ 0}) not shown in Site Edit Mode", module.Url))}
+    {HE(this.__ResStr("editMode", "Url contents({0}) not shown in Site Edit Mode", module.Url))}
 </p>");
 
             } else {

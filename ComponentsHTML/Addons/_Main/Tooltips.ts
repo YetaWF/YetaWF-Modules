@@ -62,7 +62,7 @@ namespace YetaWF_ComponentsHTML {
                         const target = ($this[0] as HTMLAnchorElement).target;
                         if (target === "_blank") {
                             const uri = $YetaWF.parseUrl(href);
-                            return $YetaWF.htmlEscape(YLocs.Basics.OpenNewWindowTT.format(uri.getDomain()));
+                            return $YetaWF.htmlEscape(YLocs.Basics.OpenNewWindowTT.format(uri.getHostName()));
                         }
                     }
                     return null;
