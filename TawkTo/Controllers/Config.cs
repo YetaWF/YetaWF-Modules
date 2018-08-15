@@ -24,14 +24,14 @@ namespace YetaWF.Modules.TawkTo.Controllers {
 
             [TextBelow("The Site ID can be obtained from your Tawk.to dashboard (Administration > Property Settings)")]
             [Caption("Site ID"), Description("Defines the account used for the chat window - The Site ID can be obtained from your Tawk.to dashboard (Administration > Property Settings)")]
-            [UIHint("Text80"), StringLength(ConfigData.MaxAccount), Required]
+            [UIHint("Text80"), StringLength(ConfigData.MaxAccount), Trim]
             [HelpLink("https://dashboard.tawk.to")]
             [ExcludeDemoMode]
             public string Account { get; set; }
 
             [TextBelow("The API Key can be obtained from your Tawk.to dashboard (Administration > Property Settings)")]
             [Caption("API Key"), Description("Defines the API Key used for the chat window - The API Key can be obtained from your Tawk.to dashboard (Administration > Property Settings)")]
-            [UIHint("Text80"), StringLength(ConfigData.MaxAPIKey), Required]
+            [UIHint("Text80"), StringLength(ConfigData.MaxAPIKey), RequiredIfSupplied(nameof(Account)), Trim]
             [HelpLink("https://dashboard.tawk.to")]
             [ExcludeDemoMode]
             public string APIKey { get; set; }
@@ -41,11 +41,11 @@ namespace YetaWF.Modules.TawkTo.Controllers {
             public string Description { get; set; }
 
             [Caption("Page Css (Exclude)"), Description("Defines the Css classes (space separated) for pages where the Tawk.to chat window is not shown - Pages can be prevented from showing the chat invitation by specifying their Css class found on the <body> tag - If no Css class is specified, all pages show the chat invitation")]
-            [UIHint("Text80"), StringLength(ConfigData.MaxCss)]
+            [UIHint("Text80"), StringLength(ConfigData.MaxCss), Trim]
             public string ExcludedPagesCss { get; set; }
 
             [Caption("Page Css (Include)"), Description("Defines the Css classes (space separated) for pages where the Tawk.to chat window is shown - Only pages with one of the defined Css classes will display the chat invitation - If no Css class is specified, all pages show the chat invitation")]
-            [UIHint("Text80"), StringLength(ConfigData.MaxCss)]
+            [UIHint("Text80"), StringLength(ConfigData.MaxCss), Trim]
             public string IncludedPagesCss { get; set; }
 
             public ConfigData GetData(ConfigData data) {

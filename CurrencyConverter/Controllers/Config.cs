@@ -23,7 +23,7 @@ namespace YetaWF.Modules.CurrencyConverter.Controllers {
         public class Model {
 
             [Caption("App ID"), Description("App ID used by openexchangerates.org to identify your account - an account is needed to retrieve currency exchange rates - This account is used for all sites within this YetaWF instance")]
-            [UIHint("Text40"), StringLength(ConfigData.MaxAppID), Required, Trim]
+            [UIHint("Text40"), StringLength(ConfigData.MaxAppID), Trim]
             [ExcludeDemoMode]
             public string AppID { get; set; }
 

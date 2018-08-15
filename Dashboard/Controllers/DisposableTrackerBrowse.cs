@@ -35,7 +35,7 @@ namespace YetaWF.Modules.Dashboard.Controllers {
 
             [Caption("Type"), Description("The object type of the disposable object that is currently in use")]
             [UIHint("String"), ReadOnly]
-            public object DisposableObject { get; set; }
+            public string DisposableObject { get; set; }
             [Caption("Time"), Description("The time the object was created")]
             [UIHint("DateTime"), ReadOnly]
             public DateTime Created { get; set; }
