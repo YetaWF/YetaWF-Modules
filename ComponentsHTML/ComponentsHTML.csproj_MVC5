@@ -37,6 +37,8 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Components\ColorPicker.cs" />
+    <Compile Include="Components\WeeklyHours.cs" />
+    <Compile Include="Components\TimeOfDay.cs" />
     <Compile Include="Components\Time.cs" />
     <Compile Include="Components\DayTimeRange.cs" />
     <Compile Include="CoreRendering\View.cs" />
@@ -226,8 +228,10 @@
     <Content Include="Addons\_Templates\Currency\Currency.css" />
     <Content Include="Addons\_Templates\Currency\filelistCSS.txt" />
     <Content Include="Addons\_Templates\Currency\filelistJS.txt" />
+    <None Include="Addons\_Templates\WeeklyHours\WeeklyHours.scss" />
     <None Include="Addons\_Templates\Time\Time.scss" />
     <None Include="Addons\_Templates\DayTimeRange\DayTimeRange.scss" />
+    <Content Include="Addons\_Templates\WeeklyHours\filelistCSS.txt" />
     <Content Include="Addons\_Templates\DayTimeRange\filelistCSS.txt" />
     <Content Include="Addons\_Templates\DayTimeRange\filelistJS.txt" />
     <Content Include="Addons\_Templates\Time\filelistCSS.txt" />
@@ -318,6 +322,7 @@
     <None Include="Addons\_Templates\ColorPicker\ColorPicker.scss" />
     <TypeScriptCompile Include="Addons\_Templates\ColorPicker\ColorPicker.ts" />
     <TypeScriptCompile Include="Addons\_Templates\DayTimeRange\DayTimeRange.ts" />
+    <TypeScriptCompile Include="Addons\_Templates\DropDownList\DropDownListEdit.ts" />
     <TypeScriptCompile Include="Addons\_Templates\Time\Time.tsx" />
     <TypeScriptCompile Include="Addons\_Templates\SMTPServer\SMTPServer.ts" />
     <Content Include="Addons\_Templates\TextArea\filelistCSS.txt" />
@@ -386,7 +391,7 @@
     <TypeScriptCompile Include="Addons\_Main\FormsSupport.ts" />
     <TypeScriptCompile Include="Addons\_Templates\Currency\Currency.tsx" />
     <TypeScriptCompile Include="Addons\_Templates\DateTime\DateTime.tsx" />
-    <TypeScriptCompile Include="Addons\_Templates\Date\Date.tsx" />
+    <TypeScriptCompile Include="Addons\_Templates\Date\DateEdit.tsx" />
     <TypeScriptCompile Include="Addons\_Templates\Decimal\Decimal.tsx" />
   </ItemGroup>
   <ItemGroup />
