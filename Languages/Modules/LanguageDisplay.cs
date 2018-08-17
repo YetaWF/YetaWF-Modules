@@ -26,7 +26,7 @@ namespace YetaWF.Modules.Languages.Modules {
 
         public override IModuleDefinitionIO GetDataProvider() { return new LanguageDisplayModuleDataProvider(); }
 
-        public override SerializableList<AllowedRole> DefaultAllowedRoles { get { return SuperuserLevel_DefaultAllowedRoles; } }
+        public override SerializableList<AllowedRole> DefaultAllowedRoles { get { return AdministratorLevel_DefaultAllowedRoles; } }
 
         public ModuleAction GetAction_Display(string url, string id) {
             return new ModuleAction(this) {
