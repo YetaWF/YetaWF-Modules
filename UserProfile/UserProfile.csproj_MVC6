@@ -3,7 +3,7 @@
   <PropertyGroup>
     <Version>4.0.0.0</Version>
     <TargetFramework>netcoreapp2.0</TargetFramework>
-    
+
     <DefineConstants>$(DefineConstants);MVC6;NETCOREAPP</DefineConstants>
     <AssemblyName>YetaWF.UserProfile</AssemblyName>
     <PackageId>UserProfile</PackageId>
@@ -27,10 +27,9 @@
     <None Remove="**\*.cshtml_MVC6" />
     <!-- TODO: Review for final release - this is a workaround for slow solution load -->
     <Compile Remove="node_modules\**" />
-    <Compile Remove="ViewsCode\**" />
     <Content Remove="node_modules\**" />
     <None Remove="node_modules\**" />
-    <None Remove="ViewsCode\**" /><EmbeddedResource Remove="node_modules\**" /><EmbeddedResource Remove="ViewsCode\**" />
+    <EmbeddedResource Remove="node_modules\**" />
   </ItemGroup>
 
 </Project>
