@@ -90,9 +90,10 @@ var YetaWF_ComponentsHTML;
         };
         DropDownListEditComponent.prototype.ajaxUpdate = function (data, ajaxUrl, onSuccess, onFailure) {
             var _this = this;
+            var uri = $YetaWF.parseUrl(ajaxUrl);
+            uri.addSearchSimpleObject(data);
             var request = new XMLHttpRequest();
-            request.open("POST", ajaxUrl);
-            request.setRequestHeader("Content-Type", "application/json");
+            request.open("POST", uri.toUrl());
             request.setRequestHeader("X-Requested-With", "XMLHttpRequest");
             request.onreadystatechange = function (ev) {
                 if (request.readyState === 4 /*DONE*/) {
@@ -132,7 +133,7 @@ var YetaWF_ComponentsHTML;
                     }
                 }
             };
-            request.send(JSON.stringify(data));
+            request.send();
         };
         DropDownListEditComponent.getControlFromTag = function (elem) { return _super.getControlBaseFromTag.call(this, elem, DropDownListEditComponent.SELECTOR); };
         DropDownListEditComponent.getControlFromSelector = function (selector, tags) { return _super.getControlBaseFromSelector.call(this, selector, DropDownListEditComponent.SELECTOR, tags); };

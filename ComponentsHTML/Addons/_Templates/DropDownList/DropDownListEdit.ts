@@ -84,9 +84,12 @@ namespace YetaWF_ComponentsHTML {
         }
 
         public ajaxUpdate(data: any, ajaxUrl: string, onSuccess?: (data: any) => void, onFailure?: (result: string) => void): void {
+
+            var uri = $YetaWF.parseUrl(ajaxUrl);
+            uri.addSearchSimpleObject(data);
+
             var request: XMLHttpRequest = new XMLHttpRequest();
-            request.open("POST", ajaxUrl);
-            request.setRequestHeader("Content-Type", "application/json");
+            request.open("POST", uri.toUrl());
             request.setRequestHeader("X-Requested-With", "XMLHttpRequest");
             request.onreadystatechange = (ev: Event): any => {
                 if (request.readyState === 4 /*DONE*/) {
@@ -127,7 +130,7 @@ namespace YetaWF_ComponentsHTML {
                     }
                 }
             };
-            request.send(JSON.stringify(data));
+            request.send();
         }
 
         public static getControlFromTag(elem: HTMLElement): DropDownListEditComponent { return super.getControlBaseFromTag<DropDownListEditComponent>(elem, DropDownListEditComponent.SELECTOR); }

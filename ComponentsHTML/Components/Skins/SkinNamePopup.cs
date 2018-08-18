@@ -42,7 +42,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
         public async Task<YHtmlString> RenderAsync(string model) {
 
-            // get all available page skins for this collection
+            // get all available popup skins for this collection
             SkinAccess skinAccess = new SkinAccess();
             string collection = GetSiblingProperty<string>($"{PropertyName}_Collection");
             PageSkinList skinList = skinAccess.GetAllPopupSkins(collection);
@@ -56,7 +56,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         }
         internal static YHtmlString RenderReplacementSkinsForCollection(string skinCollection) {
             SkinAccess skinAccess = new SkinAccess();
-            PageSkinList skinList = skinAccess.GetAllPageSkins(skinCollection);
+            PageSkinList skinList = skinAccess.GetAllPopupSkins(skinCollection);
             List<SelectionItem<string>> list = (from skin in skinList orderby skin.Description select new SelectionItem<string>() {
                 Text = skin.Name,
                 Tooltip = skin.Description,
