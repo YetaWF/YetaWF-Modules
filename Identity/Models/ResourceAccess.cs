@@ -368,8 +368,14 @@ namespace YetaWF.Modules.Identity.DataProvider {
             var result = await Managers.GetUserManager().CreateAsync(user, password);
             if (!result.Succeeded) {
                 info.ErrorType = AddUserInfo.ErrorTypeEnum.Name;
-                info.Errors.AddRange(result.Errors);
-                return info;
+                foreach (var error in result.Errors) {
+#if MVC6
+                    info.Errors.Add(error.Description);
+#else
+                    info.Errors.Add(error);
+#endif
+                    return info;
+                }
             }
 
             info.ErrorType = AddUserInfo.ErrorTypeEnum.None;
