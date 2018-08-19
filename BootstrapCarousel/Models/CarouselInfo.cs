@@ -76,8 +76,6 @@ namespace YetaWF.Modules.BootstrapCarousel.Models {
         public CarouselInfo() {
             Slides = new SerializableList<CarouselItem> {
                 new CarouselItem { Image = "(None)", },
-                new CarouselItem { Image = "(None)", },
-                new CarouselItem { Image = "(None)", },
             };
             Interval = 5000;
             Pause = true;
