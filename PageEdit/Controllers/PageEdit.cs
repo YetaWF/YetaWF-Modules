@@ -17,6 +17,8 @@ using YetaWF.Core.Skins;
 using YetaWF.Core.Support;
 using YetaWF.Core.Components;
 using YetaWF.Core.DataProvider.Attributes;
+using YetaWF.Core.Addons;
+using YetaWF.Core.Identity;
 #if MVC6
 using Microsoft.AspNetCore.Mvc;
 #else
@@ -263,16 +265,15 @@ namespace YetaWF.Modules.PageEdit.Controllers {
         }
 
         [AllowGet]
+        [ResourceAuthorize(CoreInfo.Resource_PageSettings)]
         public async Task<ActionResult> PageEdit(Guid pageGuid) {
+
             if (pageGuid == Guid.Empty)
                 throw new InternalError("No pageGuid provided");
 
             PageDefinition page = await PageDefinition.LoadAsync(pageGuid);
             if (page == null)
                 throw new Error(this.__ResStr("notFound", "Page {0} doesn't exist", pageGuid));
-
-            if (!page.IsAuthorized_Edit())
-                return NotAuthorized();
 
             EditModel model = new EditModel() {
                 PageGuid = pageGuid
@@ -286,13 +287,11 @@ namespace YetaWF.Modules.PageEdit.Controllers {
         [AllowPost]
         [ConditionalAntiForgeryToken]
         [ExcludeDemoMode]
+        [ResourceAuthorize(CoreInfo.Resource_PageSettings)]
         public async Task<ActionResult> PageEdit_Partial(EditModel model) {
             PageDefinition page = await PageDefinition.LoadAsync(model.PageGuid);
             if (page == null)
                 ModelState.AddModelError("Key", this.__ResStr("alreadyDeleted", "This page has been removed and can no longer be updated."));
-
-            if (!page.IsAuthorized_Edit())
-                return NotAuthorized();
 
             await model.UpdateDataAsync(page);
             ObjectSupport.CopyData(page, model.Page, ReadOnly: true); // update read only properties in model in case there is an error

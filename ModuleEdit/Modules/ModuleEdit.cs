@@ -9,6 +9,8 @@ using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Modules;
 using YetaWF.Core.Support;
 using YetaWF.DataProvider;
+using YetaWF.Core.Identity;
+using YetaWF.Core.Addons;
 #if MVC6
 #else
 using System.Web.Routing;
@@ -37,7 +39,8 @@ namespace YetaWF.Modules.ModuleEdit.Modules {
             ModuleDefinition editMod = await ModuleDefinition.LoadAsync(editGuid, AllowNone: true);
             if (editMod == null) return null;
             if (!editMod.ModuleHasSettings) return null;
-            if (!editMod.IsAuthorized(RoleDefinition.Edit)) return null;
+            if (!await Resource.ResourceAccess.IsResourceAuthorizedAsync(CoreInfo.Resource_ModuleSettings))
+                return null;
             return new ModuleAction(this) {
                 Url = ModulePermanentUrl,
                 QueryArgs = new { ModuleGuid = editGuid },

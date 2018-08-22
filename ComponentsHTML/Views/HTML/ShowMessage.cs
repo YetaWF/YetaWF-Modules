@@ -11,21 +11,23 @@ using YetaWF.Modules.ComponentsHTML.Controllers;
 
 namespace YetaWF.Modules.ComponentsHTML.Views {
 
-    public class ShowMessageView : YetaWFView, IYetaWFView<ModuleDefinition, string> {
+    public class ShowMessageView : YetaWFView, IYetaWFView<ModuleDefinition, object> {
 
         public const string ViewName = "ShowMessage";
 
         public override Package GetPackage() { return AreaRegistration.CurrentPackage; }
         public override string GetViewName() { return ViewName; }
 
-        public Task<YHtmlString> RenderViewAsync(ModuleDefinition module, string model) {
+        public Task<YHtmlString> RenderViewAsync(ModuleDefinition module, object model) {
 
             HtmlBuilder hb = new HtmlBuilder();
 
-            if (!string.IsNullOrWhiteSpace(model)) {
+            string message = model != null ? model.ToString() : "";
+
+            if (!string.IsNullOrWhiteSpace(message)) {
                  hb.Append($@"
 <div class='{YetaWFManager.HtmlEncode(Globals.CssDivAlert)}'>
-    {YetaWFManager.HtmlEncode(model)}
+    {YetaWFManager.HtmlEncode(message)}
 </div>");
             }
             return Task.FromResult(hb.ToYHtmlString());

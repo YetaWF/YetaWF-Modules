@@ -11,6 +11,8 @@ using YetaWF.Core.Pages;
 using YetaWF.Core.Support;
 using YetaWF.DataProvider;
 using YetaWF.Modules.PageEdit.Controllers;
+using YetaWF.Core.Identity;
+using YetaWF.Core.Addons;
 #if MVC6
 using Microsoft.AspNetCore.Routing;
 #else
@@ -35,14 +37,15 @@ namespace YetaWF.Modules.PageEdit.Modules {
 
         public override bool ShowModuleMenu { get { return false; } }
 
-        public ModuleAction GetAction_Edit(string url, Guid? pageGuid = null) {
+        public async Task<ModuleAction> GetAction_EditAsync(string url, Guid? pageGuid = null) {
             Guid guid;
             if (pageGuid == null) {
                 if (Manager.CurrentPage == null) return null;
-                if (!Manager.CurrentPage.IsAuthorized_Edit()) return null;
+                if (!await Resource.ResourceAccess.IsResourceAuthorizedAsync(CoreInfo.Resource_PageSettings))
+                    return null;
                 guid = Manager.CurrentPage.PageGuid;
             } else {
-                guid = (Guid) pageGuid;
+                guid = (Guid)pageGuid;
             }
             return new ModuleAction(this) {
                 Url = string.IsNullOrWhiteSpace(url) ? ModulePermanentUrl : url,

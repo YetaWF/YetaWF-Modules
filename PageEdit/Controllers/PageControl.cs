@@ -23,6 +23,7 @@ using YetaWF.Modules.PageEdit.DataProvider;
 using YetaWF.Modules.PageEdit.Modules;
 using YetaWF.Core.IO;
 using YetaWF.Core.Components;
+using YetaWF.Core.Addons;
 #if MVC6
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Http;
@@ -314,7 +315,9 @@ namespace YetaWF.Modules.PageEdit.Controllers {
         [AllowPost]
         [ConditionalAntiForgeryToken]
         [ExcludeDemoMode]
+        [ResourceAuthorize(CoreInfo.Resource_PageAdd)]
         public async Task<ActionResult> AddNewPage_Partial(AddNewPageModel model) {
+
             if (!ModelState.IsValid)
                 return PartialView(model);
 
@@ -328,8 +331,6 @@ namespace YetaWF.Modules.PageEdit.Controllers {
                 ModelState.AddModelError("Url", newPage.Message);
                 return PartialView(model);
             }
-            if (!page.IsAuthorized_Edit())
-                return NotAuthorized();
 
             await page.SaveAsync();
             return FormProcessed(model, this.__ResStr("okNewPage", "New page created"), NextPage: page.EvaluatedCanonicalUrl);
@@ -338,12 +339,11 @@ namespace YetaWF.Modules.PageEdit.Controllers {
         [AllowPost]
         [ConditionalAntiForgeryToken]
         [ExcludeDemoMode]
+        [ResourceAuthorize(CoreInfo.Resource_ModuleNewAdd)]
         public async Task<ActionResult> AddNewModule_Partial(AddNewModuleModel model) {
             PageDefinition page = await PageDefinition.LoadAsync(model.CurrentPageGuid);
             if (page == null)
                 throw new Error("Can't edit this page");
-            if (!page.IsAuthorized_Edit())
-                return NotAuthorized();
             await model.AddDataAsync(page);
             if (!ModelState.IsValid)
                 return PartialView(model);
@@ -359,12 +359,11 @@ namespace YetaWF.Modules.PageEdit.Controllers {
         [AllowPost]
         [ConditionalAntiForgeryToken]
         [ExcludeDemoMode]
+        [ResourceAuthorize(CoreInfo.Resource_ModuleExistingAdd)]
         public async Task<ActionResult> AddExistingModule_Partial(AddExistingModel model) {
             PageDefinition page = await PageDefinition.LoadAsync(model.CurrentPageGuid);
             if (page == null)
                 throw new Error("Can't edit this page");
-            if (!page.IsAuthorized_Edit())
-                return NotAuthorized();
             await model.AddDataAsync(page);
 
             if (!ModelState.IsValid)
@@ -379,6 +378,7 @@ namespace YetaWF.Modules.PageEdit.Controllers {
         [AllowPost]
         [ConditionalAntiForgeryToken]
         [ExcludeDemoMode]
+        [ResourceAuthorize(CoreInfo.Resource_SiteSkins)]
         public async Task<ActionResult> SkinSelection_Partial(SkinSelectionModel model) {
 
             if (!ModelState.IsValid)
@@ -406,6 +406,7 @@ namespace YetaWF.Modules.PageEdit.Controllers {
 
         [AllowPost]
         [ExcludeDemoMode]
+        [ResourceAuthorize(CoreInfo.Resource_ModuleImport)]
 #if MVC6
         public async Task<ActionResult> ImportModule(IFormFile __filename, ImportModuleModel model)
 #else
@@ -447,6 +448,7 @@ namespace YetaWF.Modules.PageEdit.Controllers {
         }
         [AllowPost]
         [ExcludeDemoMode]
+        [ResourceAuthorize(CoreInfo.Resource_PageImport)]
 #if MVC6
         public async Task<ActionResult> ImportPage(IFormFile __filename, ImportPageModel model)
 #else
@@ -492,6 +494,12 @@ namespace YetaWF.Modules.PageEdit.Controllers {
         [ConditionalAntiForgeryToken]
         [ExcludeDemoMode]
         public async Task<ActionResult> LoginSiteSelection_Partial(LoginSiteSelectionModel model) {
+
+            if (Manager.Deployed) {
+                if (await Resource.ResourceAccess.IsResourceAuthorizedAsync(CoreInfo.Resource_OtherUserLogin))
+                    return NotAuthorized();
+            }
+
             if (!ModelState.IsValid) {
                 await model.AddDataAsync();
                 return PartialView(model);
@@ -513,6 +521,12 @@ namespace YetaWF.Modules.PageEdit.Controllers {
             Manager.PageControlShown = false;
             return Redirect(nextPage, ForceRedirect: true, SetCurrentControlPanelMode: true);
         }
+        [ResourceAuthorize(CoreInfo.Resource_PageExport)]
+        public async Task<ActionResult> ExportPage(Guid pageGuid, long cookieToReturn) {
+            PageDefinition page = await PageDefinition.LoadAsync(pageGuid);
+            YetaWFZipFile zipFile = await page.ExportAsync();
+            return new ZippedFileResult(zipFile, cookieToReturn);
+        }
 
         // if you have permission to view the pagecontrol module, you can switch modes
         public ActionResult SwitchToEdit() {
@@ -525,11 +539,6 @@ namespace YetaWF.Modules.PageEdit.Controllers {
             Manager.PageControlShown = false;
             Manager.EditMode = false;
             return Redirect(Manager.ReturnToUrl, SetCurrentEditMode: true, SetCurrentControlPanelMode: true);
-        }
-        public async Task<ActionResult> ExportPage(Guid pageGuid, long cookieToReturn) {
-            PageDefinition page = await PageDefinition.LoadAsync(pageGuid);
-            YetaWFZipFile zipFile = await page.ExportAsync();
-            return new ZippedFileResult(zipFile, cookieToReturn);
         }
     }
 }

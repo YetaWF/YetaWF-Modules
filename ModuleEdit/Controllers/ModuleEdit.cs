@@ -10,6 +10,8 @@ using YetaWF.Core.Modules;
 using YetaWF.Core.Support;
 using System.Collections.Generic;
 using YetaWF.Core.Pages;
+using YetaWF.Core.Identity;
+using YetaWF.Core.Addons;
 #if MVC6
 using Microsoft.AspNetCore.Mvc;
 #else
@@ -34,14 +36,12 @@ namespace YetaWF.Modules.ModuleEdit.Controllers {
         }
 
         [AllowGet]
+        [ResourceAuthorize(CoreInfo.Resource_ModuleSettings)]
         public async Task<ActionResult> ModuleEdit(Guid moduleGuid) {
             if (moduleGuid == Guid.Empty)
                 throw new InternalError("No moduleGuid provided");
 
             ModuleDefinition module = await ModuleDefinition.LoadAsync(moduleGuid);
-            if (!module.IsAuthorized(ModuleDefinition.RoleDefinition.Edit))
-                return NotAuthorized();
-
             ModuleEditModel model = new ModuleEditModel() {
                 Module = module,
                 ModuleGuid = moduleGuid,
@@ -55,6 +55,7 @@ namespace YetaWF.Modules.ModuleEdit.Controllers {
         [AllowPost]
         [ConditionalAntiForgeryToken]
         [ExcludeDemoMode]
+        [ResourceAuthorize(CoreInfo.Resource_ModuleSettings)]
         public async Task<ActionResult> ModuleEdit_Partial(ModuleEditModel model) {
             if (model.ModuleGuid == Guid.Empty)
                 throw new InternalError("No moduleGuid provided");
@@ -62,8 +63,6 @@ namespace YetaWF.Modules.ModuleEdit.Controllers {
             // we need to find the real type of the module for data binding
             ModuleDefinition origModule = await ModuleDefinition.LoadAsync(model.ModuleGuid);
             await ObjectSupport.HandlePropertyAsync<List<PageDefinition>>(nameof(ModuleDefinition.Pages), nameof(ModuleDefinition.__GetPagesAsync), origModule);
-            if (!origModule.IsAuthorized(ModuleDefinition.RoleDefinition.Edit))
-                return NotAuthorized();
 
             model.Module = (ModuleDefinition)await GetObjectFromModelAsync(origModule.GetType(), nameof(model.Module));
             await model.UpdateDataAsync();

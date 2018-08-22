@@ -213,11 +213,8 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                 hb.Append($@"
         var $mod = $grid.closest('.yModule');
         if ($mod.length != 1) throw 'Can\'t find containing module';
-        $YetaWF.reloadInfo.push({{
-            module: $mod[0],
-            callback: function() {{
-                $grid.trigger('reloadGrid');
-            }}
+        $YetaWF.registerModuleRefresh($mod[0], function() {{
+            $grid.trigger('reloadGrid');
         }});");
             }
 

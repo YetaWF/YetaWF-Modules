@@ -4,6 +4,7 @@ using System;
 using System.Threading.Tasks;
 using YetaWF.Core.Addons;
 using YetaWF.Core.Components;
+using YetaWF.Core.Identity;
 using YetaWF.Core.IO;
 using YetaWF.Core.Localize;
 using YetaWF.Core.Models.Attributes;
@@ -49,15 +50,15 @@ namespace YetaWF.Modules.PageEdit.Modules {
             MenuList menuList = new MenuList();
 
             PageEditModule modEdit = new PageEditModule();
-            menuList.New(modEdit.GetAction_Edit(null), location);
-            menuList.New(await this.GetAction_ExportPageAsync(null), location);
+            menuList.New(await modEdit.GetAction_EditAsync(null), location);
+            menuList.New(await GetAction_ExportPageAsync(null), location);
             menuList.New(await modEdit.GetAction_RemoveAsync(null), location);
 
-            menuList.New(this.GetAction_SwitchToView(), location);
-            menuList.New(this.GetAction_SwitchToEdit(), location);
+            menuList.New(GetAction_SwitchToView(), location);
+            menuList.New(GetAction_SwitchToEdit(), location);
 
-            menuList.New(await this.GetAction_W3CValidationAsync(), location);
-            menuList.New(await this.GetAction_RestartSite(), location);
+            menuList.New(await GetAction_W3CValidationAsync(), location);
+            menuList.New(await GetAction_RestartSite(), location);
 
             menuList.AddRange(baseMenuList);
             return menuList;
@@ -113,7 +114,7 @@ namespace YetaWF.Modules.PageEdit.Modules {
                 page = await PageDefinition.LoadAsync(guid);
             }
             if (page == null) return null;
-            if (!page.IsAuthorized_Edit()) return null;
+            if (!await Resource.ResourceAccess.IsResourceAuthorizedAsync(CoreInfo.Resource_PageExport)) return null;
             return new ModuleAction(this) {
                 Url = YetaWFManager.UrlFor(typeof(PageControlModuleController), nameof(PageControlModuleController.ExportPage)),
                 QueryArgs = new { PageGuid = guid },

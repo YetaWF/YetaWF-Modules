@@ -9,6 +9,9 @@ using YetaWF.Core.Modules;
 using YetaWF.Core.Pages;
 using YetaWF.Core.Support;
 using YetaWF.Core.Support.Zip;
+using YetaWF.Modules.ModuleEdit.Modules;
+using YetaWF.Core.Identity;
+using YetaWF.Core.Addons;
 #if MVC6
 using Microsoft.AspNetCore.Mvc;
 #else
@@ -109,7 +112,7 @@ namespace YetaWF.Modules.ModuleEdit.Controllers {
             return page;
         }
 
-        [Permission("Exports")]
+        [ResourceAuthorize(CoreInfo.Resource_ModuleExport)]
         public async Task<ActionResult> ExportModuleData(Guid moduleGuid, long cookieToReturn) {
             ModuleDefinition mod = await ModuleDefinition.LoadAsync(moduleGuid);
             YetaWFZipFile zipFile = await mod.ExportDataAsync();

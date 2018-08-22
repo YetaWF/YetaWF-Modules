@@ -21,9 +21,11 @@ namespace YetaWF.Modules.PageEdit.DataProvider {
         public int Id { get; set; }
 
         [StringLength(Globals.MaxUrl)]
+        [RequiresPageReload]
         public string W3CUrl { get; set; }
 
         [Data_Binary]
+        [RequiresPageReload]
         public SerializableList<User> Users { get; set; }
 
         public ControlPanelConfigData() {

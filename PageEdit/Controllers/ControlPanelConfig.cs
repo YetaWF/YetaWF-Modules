@@ -63,13 +63,25 @@ namespace YetaWF.Modules.PageEdit.Controllers {
         [ExcludeDemoMode]
         public async Task<ActionResult> ControlPanelConfig_Partial(Model model) {
             using (ControlPanelConfigDataProvider dataProvider = new ControlPanelConfigDataProvider()) {
-                ControlPanelConfigData data = await dataProvider.GetItemAsync();// get the original item
+                ControlPanelConfigData origConfig = await dataProvider.GetItemAsync();// get the original item
                 if (!ModelState.IsValid)
                     return PartialView(model);
-                data = model.GetData(data); // merge new data into original
-                model.SetData(data); // and all the data back into model for final display
-                await dataProvider.UpdateConfigAsync(data);
-                return FormProcessed(model, this.__ResStr("okSaved", "Control Panel settings saved"), NextPage: Manager.ReturnToUrl);
+                ControlPanelConfigData config = await dataProvider.GetItemAsync();
+                config = model.GetData(config); // merge new data into config
+                model.SetData(config); // and all the data back into model for final display
+
+                await dataProvider.UpdateConfigAsync(config);
+
+                ObjectSupport.ModelDisposition modelDisp = ObjectSupport.EvaluateModelChanges(origConfig, config);
+                switch (modelDisp) {
+                    default:
+                    case ObjectSupport.ModelDisposition.None:
+                        return FormProcessed(model, this.__ResStr("okSaved", "Control Panel settings saved"));
+                    case ObjectSupport.ModelDisposition.PageReload:
+                        return FormProcessed(model, this.__ResStr("okSaved", "Control Panel settings saved"), OnClose: OnCloseEnum.ReloadPage, OnPopupClose: OnPopupCloseEnum.ReloadParentPage, ForceRedirect: true);
+                    case ObjectSupport.ModelDisposition.SiteRestart:
+                        return FormProcessed(model, this.__ResStr("okSavedRestart", "Control Panel settings saved - These settings won't take effect until the site is restarted"));
+                }
             }
         }
     }

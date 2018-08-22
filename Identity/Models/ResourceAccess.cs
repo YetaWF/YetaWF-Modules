@@ -77,7 +77,7 @@ namespace YetaWF.Modules.Identity.DataProvider {
 #if DEBUG
                     throw new InternalError("Resource {0} doesn't exist", resourceName);
 #else
-                return false;// not authorized, there is no such resource
+                    return false;// not authorized, there is no such resource
 #endif
                 }
                 RoleComparer roleComp = new RoleComparer();

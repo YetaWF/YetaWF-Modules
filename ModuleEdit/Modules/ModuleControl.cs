@@ -15,6 +15,7 @@ using YetaWF.Core.Support;
 using YetaWF.DataProvider;
 using YetaWF.Modules.ModuleEdit.Controllers;
 using System.Threading.Tasks;
+using YetaWF.Core.Identity;
 #if MVC6
 using Microsoft.AspNetCore.Routing;
 #else
@@ -46,19 +47,10 @@ namespace YetaWF.Modules.ModuleEdit.Modules {
         public override bool ModuleHasSettings { get { return false; } }
 
         public override SerializableList<AllowedRole> DefaultAllowedRoles { get { return AdministratorLevel_DefaultAllowedRoles; } }
-        public override List<RoleDefinition> ExtraRoles {
-            get {
-                return new List<RoleDefinition>() {
-                    new RoleDefinition("Exports",
-                        this.__ResStr("roleExportsC", "Export Module Data"), this.__ResStr("roleExports", "The role has permission to export module data"),
-                        this.__ResStr("userExportsC", "Export Module Data"), this.__ResStr("userExports", "The user has permission to export module data")),
-                };
-            }
-        }
 
         public async Task<ModuleAction> GetAction_ExportModuleAsync(ModuleDefinition mod) {
             if (!mod.ModuleHasSettings) return null;
-            if (!mod.IsAuthorized(RoleDefinition.Edit)) return null;
+            if (!await Resource.ResourceAccess.IsResourceAuthorizedAsync(CoreInfo.Resource_ModuleExport)) return null;
             return new ModuleAction(this) {
                 Url = YetaWFManager.UrlFor(typeof(ModuleControlModuleController), nameof(ModuleControlModuleController.ExportModuleData)),
                 QueryArgs = new { ModuleGuid = mod.ModuleGuid },
