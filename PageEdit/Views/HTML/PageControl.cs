@@ -39,8 +39,8 @@ namespace YetaWF.Modules.PageEdit.Views {
                 canModuleExistingAdd = await Resource.ResourceAccess.IsResourceAuthorizedAsync(CoreInfo.Resource_ModuleExistingAdd);
                 canModuleNewAdd = await Resource.ResourceAccess.IsResourceAuthorizedAsync(CoreInfo.Resource_ModuleNewAdd);
                 canChangeSiteSkins = await Resource.ResourceAccess.IsResourceAuthorizedAsync(CoreInfo.Resource_SiteSkins);
-                canOtherUserLogin = !Manager.Deployed || await Resource.ResourceAccess.IsResourceAuthorizedAsync(CoreInfo.Resource_OtherUserLogin);
             }
+            canOtherUserLogin = !Manager.Deployed || await Resource.ResourceAccess.IsResourceAuthorizedAsync(CoreInfo.Resource_OtherUserLogin);
 
             hb.Append($@"
 <div id='{DivId}'>
@@ -76,10 +76,10 @@ namespace YetaWF.Modules.PageEdit.Views {
                         ++tabEntry;
                     }
                 }
-                if (canOtherUserLogin) {
-                    hb.Append(PropertyListComponentBase.RenderTabEntry(DivId, this.__ResStr("tabLogin", "Login"), this.__ResStr("tabLoginTT", "Change site or log in as another user"), tabEntry));
-                    ++tabEntry;
-                }
+            }
+            if (canOtherUserLogin) {
+                hb.Append(PropertyListComponentBase.RenderTabEntry(DivId, this.__ResStr("tabLogin", "Login"), this.__ResStr("tabLoginTT", "Change site or log in as another user"), tabEntry));
+                ++tabEntry;
             }
             hb.Append($@"
     {PropertyListComponentBase.RenderTabStripEnd(DivId)}");
