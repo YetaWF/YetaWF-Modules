@@ -25,7 +25,7 @@ namespace YetaWF.Modules.SyntaxHighlighter.Modules {
             WantSearch = false;
             Invokable = true;
             InvokeInPopup = true;
-            InvokeInAjax = true;
+            InvokeInAjax = false;
         }
 
         public override IModuleDefinitionIO GetDataProvider() { return new SkinHighlightJSModuleDataProvider(); }
