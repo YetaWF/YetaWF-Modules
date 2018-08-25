@@ -22,7 +22,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             YTagBuilder tag = new YTagBuilder("input");
             FieldSetup(tag, FieldType.Normal);
             tag.MergeAttribute("type", "hidden");
-            tag.MergeAttribute("value", YetaWFManager.HtmlAttributeEncode(model == null ? "" : model.ToString()));
+            tag.MergeAttribute("value", model == null ? "" : model.ToString());
             return Task.FromResult(tag.ToYHtmlString(YTagRenderMode.StartTag));
         }
     }
@@ -34,7 +34,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             YTagBuilder tag = new YTagBuilder("input");
             FieldSetup(tag, Validation ? FieldType.Validated : FieldType.Normal);
             tag.MergeAttribute("type", "hidden");
-            tag.MergeAttribute("value", YetaWFManager.HtmlAttributeEncode(model == null ? "" : model.ToString()));
+            tag.MergeAttribute("value", model == null ? "" : model.ToString());
             return Task.FromResult(tag.ToYHtmlString(YTagRenderMode.StartTag));
         }
     }
