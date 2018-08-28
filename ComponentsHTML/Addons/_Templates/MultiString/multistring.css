@@ -13,10 +13,10 @@ div.yt_multistring input[type="text"].t_text20 {
 }
 div.yt_multistring input[type="text"].t_text,
 div.yt_multistring input[type="text"].t_text40 {
-    width: 44ch;
+    width: 38ch;
 }
 div.yt_multistring input[type="text"].t_text80 {
-    width: 84ch;
+    width: 62ch;
 }
 div.yt_multistring select {
     width: auto;

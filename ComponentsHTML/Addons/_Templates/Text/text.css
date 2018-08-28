@@ -11,11 +11,11 @@ input[type="text"].yt_text20 {
 input[type="text"].yt_text,
 input[type="text"].yt_text40 {
     max-width:100%;
-    width: 45ch;
+    width: 38ch;
 }
 input[type="text"].yt_text80 {
     max-width:100%;
-    width: 64ch;
+    width: 62ch;
 }
 .yt_text_copy {
     margin-left:.5ch;
