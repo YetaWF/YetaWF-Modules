@@ -19,7 +19,7 @@ namespace YetaWF_PageEdit {
     class PageControlModule {
 
         private Module: HTMLElement|null = null;
-        private readonly FadeTime = 250;
+        private readonly FadeTime: number = 250;
 
         public init(): void {
 
