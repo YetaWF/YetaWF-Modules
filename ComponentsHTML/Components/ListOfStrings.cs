@@ -30,12 +30,14 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 <div class='yt_listofstrings t_display'>");
 
             bool first = true;
-            foreach (var s in model) {
-                if (first)
-                    first = false;
-                else
-                    hb.Append(delim);
-                hb.Append(YetaWFManager.HtmlEncode(s));
+            if (model != null) {
+                foreach (var s in model) {
+                    if (first)
+                        first = false;
+                    else
+                        hb.Append(delim);
+                    hb.Append(YetaWFManager.HtmlEncode(s));
+                }
             }
             hb.Append(@"
 </div>");
