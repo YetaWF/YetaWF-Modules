@@ -391,6 +391,12 @@ YetaWF_Grid.gridComplete = function ($grid, gridId) {
         });
         YetaWF_ComponentsHTML.Buttons.init($grid);
     }
+
+    // call ready handlers for grid contents
+    var tbl = $grid[0];
+    $YetaWF.processAllReady([tbl]);
+    $YetaWF.processAllReadyOnce([tbl]);
+
     // highlight data rows with the __highlight property set to true
     $('tr.yHighlightGridRow', $grid).removeClass('yHighlightGridRow'); // remove all highlights
     $('tr td div.yHighlightGridRow', $grid).closest('tr').addClass('yHighlightGridRow');// add highlight to selected rows

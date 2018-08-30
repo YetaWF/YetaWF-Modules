@@ -65,11 +65,13 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                 tag.SetInnerText(text);
 
                 // image
-                SkinImages skinImages = new SkinImages();
-                string imageUrl = await skinImages.FindIcon_TemplateAsync("UrlRemote.png", Package, "Url");
-                YTagBuilder tagImg = ImageHTML.BuildKnownImageYTag(imageUrl, alt: __ResStr("altText", "Remote Url"));
+                if (PropData.GetAdditionalAttributeValue("ShowImage", true)) {
+                    SkinImages skinImages = new SkinImages();
+                    string imageUrl = await skinImages.FindIcon_TemplateAsync("UrlRemote.png", Package, "Url");
+                    YTagBuilder tagImg = ImageHTML.BuildKnownImageYTag(imageUrl, alt: __ResStr("altText", "Remote Url"));
 
-                tag.InnerHtml = tag.InnerHtml + tagImg.ToString(YTagRenderMode.StartTag);
+                    tag.InnerHtml = tag.InnerHtml + tagImg.ToString(YTagRenderMode.StartTag);
+                }
                 hb.Append(tag.ToString(YTagRenderMode.Normal));
             }
             hb.Append("</div>");
