@@ -30,7 +30,7 @@ var YetaWF_PageEdit;
             // when a new page becomes active, update the module actions reflecting the new page/url
             // also update all hidden fields with the new current page guid
             $YetaWF.addWhenReady(function (tag) {
-                if ($YetaWF.isInPopup) {
+                if ($YetaWF.isInPopup()) {
                     if (YVolatile.Basics.PageControlVisible) {
                         YVolatile.Basics.PageControlVisible = false;
                         _this.toggleControlPanel();

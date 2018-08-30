@@ -49,7 +49,7 @@ namespace YetaWF_PageEdit {
             // also update all hidden fields with the new current page guid
             $YetaWF.addWhenReady((tag: HTMLElement): void => {
 
-                if ($YetaWF.isInPopup) {
+                if ($YetaWF.isInPopup()) {
                     if (YVolatile.Basics.PageControlVisible) {
                         YVolatile.Basics.PageControlVisible = false;
                         this.toggleControlPanel();
