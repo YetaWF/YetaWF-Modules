@@ -1,5 +1,5 @@
 "use strict";
-/* Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/PageEdit#License */
+/* Copyright � 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/PageEdit#License */
 var YetaWF_PageEdit;
 (function (YetaWF_PageEdit) {
     var PageControlModule = /** @class */ (function () {
@@ -101,3 +101,5 @@ var YetaWF_PageEdit;
     var pageEdit = new PageControlModule();
     pageEdit.init();
 })(YetaWF_PageEdit || (YetaWF_PageEdit = {}));
+
+//# sourceMappingURL=PageControl.js.map
