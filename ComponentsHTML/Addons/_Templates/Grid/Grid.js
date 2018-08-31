@@ -408,7 +408,7 @@ YetaWF_Grid.gridComplete = function ($grid, gridId) {
     // inspired by http://www.trirand.com/blog/?page_id=393/feature-request/rowlist-all-results
     var $gbox = $('#gbox_{0}'.format(gridId));
     if ($gbox.length != 1) throw "Can't find main grid";/*DEBUG*/
-    $("option[value={0}]".format(YConfigs.YetaWF_ComponentsHTML.allRecords), $gbox).text(YLocs.YetaWF_ComponentsHTML.allRecords);
+    $("option[value='{0}']".format(YConfigs.YetaWF_ComponentsHTML.allRecords), $gbox).text(YLocs.YetaWF_ComponentsHTML.allRecords);
     // restart validation for new data exposed (by paging)
     $YetaWF.Forms.updateValidation($grid[0]);
 };

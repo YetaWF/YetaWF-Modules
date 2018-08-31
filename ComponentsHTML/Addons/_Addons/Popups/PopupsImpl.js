@@ -44,6 +44,7 @@ var YetaWF_ComponentsHTML;
             // we're already in a popup
             if ($YetaWF.isInPopup())
                 PopupsImpl.closeDynamicPopup();
+            YVolatile.Basics.IsInPopup = true; // we're in a popup
             // insert <div id="ypopup" class='yPopupDyn'></div> at top of page for the popup window
             // this is automatically removed when destroy() is called
             $("body").prepend("<div id='ypopup' class='yPopupDyn'></div>");
@@ -91,7 +92,6 @@ var YetaWF_ComponentsHTML;
             // mark that a popup is active
             document.expando = true;
             document.YPopupWindowActive = popup;
-            YVolatile.Basics.IsInPopup = true; // we're in a popup
             $YetaWF.setCondense($popupwin[0], YVolatile.Skin.PopupWidth);
             return $popupwin[0];
         };
@@ -121,6 +121,7 @@ var YetaWF_ComponentsHTML;
                 iframeDomElement.src = url;
                 return;
             }
+            YVolatile.Basics.IsInPopup = true; // we're in a popup
             // insert <div id="ypopup"></div> at top of page for the popup window
             // this is automatically removed when destroy() is called
             $("body").prepend("<div id='ypopup'></div>");
@@ -169,7 +170,6 @@ var YetaWF_ComponentsHTML;
             // mark that a popup is active
             document.expando = true;
             document.YPopupWindowActive = popup;
-            YVolatile.Basics.IsInPopup = true; // we're in a popup
         };
         return PopupsImpl;
     }());
