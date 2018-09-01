@@ -172,7 +172,7 @@ namespace YetaWF.Modules.Identity.DataProvider {
         public int GetRoleId(string roleName) {
             if (roleName == Globals.Role_Superuser)
                 return RoleDefinitionDataProvider.SuperUserId;
-            List<RoleDefinition> roles = GetAllUserRoles();
+            List<RoleDefinition> roles = GetAllRoles();
             RoleDefinition role = (from RoleDefinition r in roles where r.Name == roleName select r).FirstOrDefault();
             if (role == null) throw new InternalError($"Required role {roleName} not found");
             return role.RoleId;
@@ -192,7 +192,7 @@ namespace YetaWF.Modules.Identity.DataProvider {
         }
 
         /// <summary>
-        /// Retrieve all roles except user and anonymous. 
+        /// Retrieve all roles except user and anonymous.
         /// </summary>
         /// <remarks>
         /// This method is cached and deliberately does not use async/await to simplify usage
