@@ -44,3 +44,14 @@
     background: url('images/arrows.png') no-repeat scroll -48px 0px transparent;
     cursor: pointer;
 }
+/* Print */
+
+@media print {
+    .yt_scroller .t_left,
+    .yt_scroller .t_right {
+        display: none;
+    }
+}
+
+
+
