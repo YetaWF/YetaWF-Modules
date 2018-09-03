@@ -36,7 +36,7 @@ namespace YetaWF.Modules.DevTests.Views {
 
                     hb.Append($@"
 <div class='{Globals.CssDivAlert}'>
-    {YetaWFManager.HtmlEncode(this.__ResStr("testMode", "The {0} SMS processor is in TEST/Sandbox mode - messages are simulated.", model.ProcessorName))}
+    {YetaWFManager.HtmlEncode(this.__ResStr("testMode", "The {0} SMS processor is in TEST/Sandbox mode.", model.ProcessorName))}
 </div>");
 
                 }
