@@ -75,13 +75,11 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Controllers\SitesBrowse.cs" />
-    <Compile Include="Controllers\SiteSelector.cs" />
     <Compile Include="Modules\ConfirmRemoval.cs" />
     <Compile Include="Modules\SiteAdd.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Modules\SitesBrowse.cs" />
-    <Compile Include="Modules\SiteSelector.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -91,9 +89,6 @@
     <None Include="Addons\_Main\Sites.css" />
     <None Include="app.config" />
     <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Addons\_Main\SiteSelector.css" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Addons\_Main\Grids\SitesBrowseModuleController.BrowseItem" />
@@ -110,6 +105,10 @@
     <ProjectReference Include="..\..\..\DataProvider\ModuleDefinition\ModuleDefinition.csproj">
       <Project>{348F2A6B-57F5-47A3-8A46-3F44529ACD83}</Project>
       <Name>ModuleDefinition</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Packages\Packages.csproj">
+      <Project>{60C5B361-6A9C-4215-B3A1-A09A2BF2C14D}</Project>
+      <Name>Packages</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
