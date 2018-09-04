@@ -1,6 +1,7 @@
 ﻿/* Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Identity#License */
 
 using System.Threading.Tasks;
+using YetaWF.Core;
 using YetaWF.Core.Components;
 using YetaWF.Core.Localize;
 using YetaWF.Core.Packages;
@@ -39,7 +40,7 @@ namespace YetaWF.Modules.Identity.Views {
 
                 if (Manager.IsLocalHost) {
                     hb.Append($@"
-    <div class='{HAE(@YetaWF.Core.Globals.CssDivWarning)}'>
+    <div class='{Globals.CssDivWarning}'>
         {HE(this.__ResStr("localOnly", "External login providers may not work when your site uses Localhost."))}
     </div>");
                 }

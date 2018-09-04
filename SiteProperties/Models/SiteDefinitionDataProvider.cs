@@ -29,8 +29,9 @@ namespace YetaWF.Modules.SiteProperties.Models {
             SiteDefinition.RemoveSiteDefinitionAsync = RemoveSiteDefinitionAsync;
             SiteDefinition.GetSitesAsync = GetItemsAsync;
             SiteDefinition.LoadStaticSiteDefinitionAsync = LoadStaticSiteDefinitionAsync;
+            SiteDefinition.LoadTestSiteDefinitionAsync = LoadTestSiteDefinitionAsync;
 
-            await LoadStaticSitesCacheAsync();
+            await LoadSitesCacheAsync();
         }
 
         // IMPLEMENTATION
@@ -43,6 +44,7 @@ namespace YetaWF.Modules.SiteProperties.Models {
 
         static SiteDefinitionDataProvider() {
             SiteCache = new Dictionary<string, SiteDefinition>();
+            TestSiteCache = new Dictionary<string, SiteDefinition>();
         }
 
         public SiteDefinitionDataProvider() : base(0) { SetDataProvider(CreateDataProvider()); }
@@ -59,17 +61,22 @@ namespace YetaWF.Modules.SiteProperties.Models {
         // API
 
         static private Dictionary<string, SiteDefinition> SiteCache { get; set; }
-        static private Dictionary<string, string> StaticSiteCache { get; set; }
+        static private Dictionary<string, SiteDefinition> StaticSiteCache { get; set; }
+        static private Dictionary<string, SiteDefinition> TestSiteCache { get; set; }
 
-        private async Task LoadStaticSitesCacheAsync() {
-            StaticSiteCache = new Dictionary<string, string>();
+        private async Task LoadSitesCacheAsync() {
+            StaticSiteCache = new Dictionary<string, SiteDefinition>();
             if (SiteDefinition.INITIAL_INSTALL) return;
             DataProviderGetRecords<SiteDefinition> sites = await GetItemsAsync(0, 0, null, null);
-            foreach (SiteDefinition site in sites.Data)
+            foreach (SiteDefinition site in sites.Data) {
+                site.OriginalSiteDomain = site.SiteDomain;
                 if (!string.IsNullOrWhiteSpace(site.StaticDomain) && !StaticSiteCache.ContainsKey(site.StaticDomain.ToLower()))
-                    StaticSiteCache.Add(site.StaticDomain.ToLower(), site.SiteDomain);
+                    StaticSiteCache.Add(site.StaticDomain.ToLower(), site);
+                SiteCache.Add(site.SiteDomain.ToLower(), site);
+                if (!string.IsNullOrWhiteSpace(site.SiteTestDomain))
+                    TestSiteCache.Add(site.SiteTestDomain.ToLower(), site);
+            }
         }
-
 
         /// <summary>
         /// Load the site definition for the current site
@@ -80,20 +87,9 @@ namespace YetaWF.Modules.SiteProperties.Models {
                 SiteDefinition site;
                 if (siteDomain == null || string.Compare(siteDomain, "Localhost", true) == 0)
                     siteDomain = YetaWFManager.DefaultSiteName;
-                if (SiteCache.TryGetValue(siteDomain.ToLower(), out site))
-                    return site;
-                using (await lockObject.LockAsync()) { // protect SiteCache locally
-                    if (SiteCache.TryGetValue(siteDomain.ToLower(), out site)) // try again within lock
-                        return site;
-                    site = await DataProvider.GetAsync(siteDomain);
-                    if (site == null)
-                        return null;
-                    site.OriginalSiteDomain = site.SiteDomain;
-                    AddLockedStatus(site);
-                    SiteCache.Remove(site.SiteDomain.ToLower());
-                    SiteCache.Add(site.SiteDomain.ToLower(), site);
-                    return site;
-                }
+                if (!SiteCache.TryGetValue(siteDomain.ToLower(), out site))
+                    return null;
+                return site;
             }
             return null;
         }
@@ -104,13 +100,23 @@ namespace YetaWF.Modules.SiteProperties.Models {
         /// </summary>
         /// <param name="staticDomain">The domain name.</param>
         /// <returns></returns>
-        public async Task<SiteDefinition> LoadStaticSiteDefinitionAsync(string staticDomain) {
-            string domain;
-            if (StaticSiteCache.TryGetValue(staticDomain.ToLower(), out domain)) {
-                SiteDefinition site = await LoadSiteDefinitionAsync(domain);
-                return site;
-            }
-            return null;
+        public Task<SiteDefinition> LoadStaticSiteDefinitionAsync(string staticDomain) {
+            SiteDefinition site;
+            if (StaticSiteCache.TryGetValue(staticDomain.ToLower(), out site))
+                return Task.FromResult(site);
+            return Task.FromResult<SiteDefinition>(null);
+        }
+
+        /// <summary>
+        /// Load a site definition for a test site domain.
+        /// </summary>
+        /// <param name="testDomain">The domain name.</param>
+        /// <returns></returns>
+        public Task<SiteDefinition> LoadTestSiteDefinitionAsync(string testDomain) {
+            SiteDefinition site;
+            if (TestSiteCache.TryGetValue(testDomain.ToLower(), out site))
+                return Task.FromResult(site);
+            return Task.FromResult<SiteDefinition>(null);
         }
 
         /// <summary>
@@ -121,7 +127,6 @@ namespace YetaWF.Modules.SiteProperties.Models {
             SiteDefinition origSite = YetaWF.Core.Audit.Auditing.Active ? await LoadSiteDefinitionAsync(site.OriginalSiteDomain) : null;
 
             using (await lockObject.LockAsync()) { // protect SiteCache locally
-                SiteCache.Remove(site.SiteDomain.ToLower());
                 AddLockedStatus(site);
                 CleanData(site);
                 await SaveImagesAsync(ModuleDefinition.GetPermanentGuid(typeof(SitePropertiesModule)), site);
@@ -194,6 +199,11 @@ namespace YetaWF.Modules.SiteProperties.Models {
 
                 // remove all saved data
                 SiteCache.Remove(site.SiteDomain.ToLower());
+                if (!string.IsNullOrWhiteSpace(site.StaticDomain))
+                    StaticSiteCache.Remove(site.StaticDomain.ToLower());
+                if (!string.IsNullOrWhiteSpace(site.SiteTestDomain))
+                    TestSiteCache.Remove(site.SiteTestDomain.ToLower());
+
                 await Package.RemoveSiteDataAsync(Manager.SiteFolder);
                 await DataProvider.RemoveAsync(site.SiteDomain);// remove domain
             }
