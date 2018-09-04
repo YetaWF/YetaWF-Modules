@@ -144,16 +144,16 @@
     <Compile Include="Startup\Templates\MultiString.cs" />
     <Compile Include="Startup\Templates\RecaptchaV2.cs" />
     <Compile Include="Startup\Templates\Text.cs" />
-    <Compile Include="Views\HTML\Display.cs" />
     <Compile Include="Views\HTML\Add.cs" />
-    <Compile Include="Views\HTML\ShowMessage.cs" />
+    <Compile Include="Views\HTML\Browse.cs" />
+    <Compile Include="Views\HTML\Display.cs" />
+    <Compile Include="Views\HTML\Edit.cs" />
+    <Compile Include="Views\HTML\EditApply.cs" />
     <Compile Include="Views\HTML\GridData.cs" />
     <Compile Include="Views\HTML\GridEntry.cs" />
     <Compile Include="Views\HTML\PropertyListDisplay.cs" />
     <Compile Include="Views\HTML\PropertyListEdit.cs" />
-    <Compile Include="Views\HTML\EditApply.cs" />
-    <Compile Include="Views\HTML\Edit.cs" />
-    <Compile Include="Views\HTML\Browse.cs" />
+    <Compile Include="Views\HTML\ShowMessage.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Addons\_Addons\bassistance.de.jquery-validation\FilelistJS.txt" />
