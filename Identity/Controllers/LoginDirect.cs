@@ -30,11 +30,9 @@ namespace YetaWF.Modules.Identity.Controllers {
         /// <summary>
         /// Log off
         /// </summary>
-        public async Task<ActionResult> Logoff(string nextUrl, bool resetForcedDomain = true) {
+        public async Task<ActionResult> Logoff(string nextUrl) {
             Manager.SetSuperUserRole(false);// explicit logoff clears superuser state
             await LoginModuleController.UserLogoffAsync();
-            if (resetForcedDomain)
-                YetaWFManager.SetRequestedDomain(null);
             LoginConfigData config = await LoginConfigDataProvider.GetConfigAsync();
             string url = nextUrl;
             if (string.IsNullOrWhiteSpace(url))
