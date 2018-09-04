@@ -73,7 +73,7 @@ namespace YetaWF.Modules.SiteProperties.Models {
                 if (!string.IsNullOrWhiteSpace(site.StaticDomain) && !StaticSiteCache.ContainsKey(site.StaticDomain.ToLower()))
                     StaticSiteCache.Add(site.StaticDomain.ToLower(), site);
                 SiteCache.Add(site.SiteDomain.ToLower(), site);
-                if (!string.IsNullOrWhiteSpace(site.SiteTestDomain))
+                if (!string.IsNullOrWhiteSpace(site.SiteTestDomain) && !TestSiteCache.ContainsKey(site.SiteTestDomain.ToLower()))
                     TestSiteCache.Add(site.SiteTestDomain.ToLower(), site);
             }
         }
@@ -127,6 +127,18 @@ namespace YetaWF.Modules.SiteProperties.Models {
             SiteDefinition origSite = YetaWF.Core.Audit.Auditing.Active ? await LoadSiteDefinitionAsync(site.OriginalSiteDomain) : null;
 
             using (await lockObject.LockAsync()) { // protect SiteCache locally
+
+                SiteCache.Remove(site.SiteDomain.ToLower());
+                if (!string.IsNullOrWhiteSpace(site.StaticDomain))
+                    StaticSiteCache.Remove(site.StaticDomain.ToLower());
+                if (!string.IsNullOrWhiteSpace(site.SiteTestDomain))
+                    TestSiteCache.Remove(site.SiteTestDomain.ToLower());
+                SiteCache.Add(site.SiteDomain.ToLower(), site);
+                if (!string.IsNullOrWhiteSpace(site.StaticDomain))
+                    StaticSiteCache.Add(site.StaticDomain.ToLower(), site);
+                if (!string.IsNullOrWhiteSpace(site.SiteTestDomain))
+                    TestSiteCache.Add(site.SiteTestDomain.ToLower(), site);
+
                 AddLockedStatus(site);
                 CleanData(site);
                 await SaveImagesAsync(ModuleDefinition.GetPermanentGuid(typeof(SitePropertiesModule)), site);
@@ -191,11 +203,6 @@ namespace YetaWF.Modules.SiteProperties.Models {
                 throw new Error(this.__ResStr("cantDeleteDefault", "The default site of a YetaWF instance cannot be removed"));
 
             using (await lockObject.LockAsync()) { // protect SiteCache locally
-                LocalizationSupport localizationSupport = new LocalizationSupport();
-                await localizationSupport.SetUseLocalizationResourcesAsync(false);// turn off use of localization resources - things are about to be removed
-
-                // turn off logging - things are about to be removed
-                YetaWF.Core.Log.Logging.TerminateLogging();
 
                 // remove all saved data
                 SiteCache.Remove(site.SiteDomain.ToLower());

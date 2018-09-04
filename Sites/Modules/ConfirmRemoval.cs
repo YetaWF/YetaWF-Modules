@@ -40,7 +40,7 @@ namespace YetaWF.Modules.Sites.Modules {
             string siteName = site.SiteDomain;
             return new ModuleAction(this) {
                 Url = string.IsNullOrWhiteSpace(url) ? ModulePermanentUrl : url,
-                QueryArgsDict = new QueryHelper(new QueryDictionary { { Globals.Link_ForceSite, site.SiteDomain } }),
+                QueryArgs = new { SiteDomain = site.SiteDomain },
                 Image = "#Remove",
                 NeedsModuleContext = true,
                 Style = ModuleAction.ActionStyleEnum.Normal,

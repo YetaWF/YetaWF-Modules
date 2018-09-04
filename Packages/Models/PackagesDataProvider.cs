@@ -29,7 +29,6 @@ namespace YetaWF.Modules.Packages.DataProvider {
 
         public Task InitializeApplicationStartupAsync() {
             BuiltinCommands.Add("/$initall", CoreInfo.Resource_BuiltinCommands, InitAllAsync);
-            BuiltinCommands.Add("/$initnew", CoreInfo.Resource_BuiltinCommands, InitNewAsync);
             BuiltinCommands.Add("/$restart", CoreInfo.Resource_BuiltinCommands, RestartSiteAsync);
             BuiltinCommands.Add("/$initpackage", CoreInfo.Resource_BuiltinCommands, InitPackageAsync);
             BuiltinCommands.Add("/$importdata", CoreInfo.Resource_BuiltinCommands, ImportDataAsync);
@@ -177,19 +176,17 @@ namespace YetaWF.Modules.Packages.DataProvider {
         /// Builds the current site (an additional site) using the new site template
         /// </summary>
         /// <param name="template"></param>
-        public async Task InitNewAsync(QueryHelper qs) {
+        public async Task InitNewAsync(bool data = false) {
 
             if (YetaWF.Core.Support.Startup.MultiInstance) throw new InternalError("Building a new site is not possible when distributed caching is enabled");
 
-            if (qs["From"] == "Data") {
+            if (data) {
                 await BuildSiteUsingDataAsync(false);
                 await BuildSiteUsingTemplateAsync(Path.Combine(DataFolderName, "Add Site.txt"));
-            } else { //if (qs["From"] == "Template") {
+            } else {
                 await BuildSiteUsingTemplateAsync("NewSite.txt");
-                //BuildSiteUsingTemplate("Custom Site (Additional Sites).txt");
             }
-            // Cache is now invalid so we'll just restart
-            Manager.RestartSite(Manager.CurrentSite.MakeUrl(ForceDomain: Manager.CurrentSite.SiteDomain));
+            // Cache is now invalid so we need to restart
         }
 
         private async Task InstallPackagesAsync() {
@@ -286,7 +283,7 @@ namespace YetaWF.Modules.Packages.DataProvider {
         /// Installs all models for the specified package
         /// </summary>
         public async Task InitPackageAsync(QueryHelper qs) {
-            
+
             if (YetaWF.Core.Support.Startup.MultiInstance) throw new InternalError("Installing new packagesis not possible when distributed caching is enabled");
 
             string packageName = qs["Package"];

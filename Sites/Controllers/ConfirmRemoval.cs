@@ -5,6 +5,8 @@ using YetaWF.Core.Controllers;
 using YetaWF.Core.Localize;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Site;
+using YetaWF.Core.Support;
+using System;
 #if MVC6
 using Microsoft.AspNetCore.Mvc;
 #else
@@ -24,6 +26,9 @@ namespace YetaWF.Modules.Sites.Controllers {
 
             [Caption("Site"), Description("The domain name of the site to remove")]
             [UIHint("String"), ReadOnly]
+            public string SiteDomainDisplay { get; set; }
+
+            [UIHint("Hidden")]
             public string SiteDomain { get; set; }
 
             public EditModel() { }
@@ -32,7 +37,8 @@ namespace YetaWF.Modules.Sites.Controllers {
         [AllowGet]
         public ActionResult ConfirmRemoval(string siteDomain) {
             EditModel model = new EditModel {};
-            model.SiteDomain = Manager.CurrentSite.SiteDomain;
+            model.SiteDomainDisplay = siteDomain;
+            model.SiteDomain = siteDomain;
             return View(model);
         }
 
@@ -40,14 +46,29 @@ namespace YetaWF.Modules.Sites.Controllers {
         [ConditionalAntiForgeryToken]
         [ExcludeDemoMode]
         public async Task<ActionResult> ConfirmRemoval_Partial(EditModel model) {
+            model.SiteDomainDisplay = model.SiteDomain;
             if (!ModelState.IsValid)
                 return PartialView(model);
-            string siteName = Manager.CurrentSite.SiteDomain;
-            SiteDefinition site = await SiteDefinition.LoadSiteDefinitionAsync(null);//load the default site
-            string nextPage = Manager.CurrentSite.MakeUrl(RealDomain: site.SiteDomain);
 
-            await Manager.CurrentSite.RemoveAsync();
-            return FormProcessed(null, this.__ResStr("okRemoved", "Site \"{0}\" has been removed(+nl)(+nl)The site is now restarting", siteName),
+            SiteDefinition site = await SiteDefinition.LoadSiteDefinitionAsync(model.SiteDomain);
+            if (site == null)
+                throw new InternalError($"Site {site.SiteDomain} not found");
+
+            SiteDefinition currentSite = Manager.CurrentSite;
+            Manager.CurrentSite = site;
+            try {
+                await Manager.CurrentSite.RemoveAsync();
+            } catch (Exception) {
+                throw;
+            } finally {
+                Manager.CurrentSite = currentSite;
+            }
+
+            string nextPage = Manager.CurrentSite.MakeUrl(RealDomain: Manager.CurrentSite.SiteDomain);
+
+            Manager.RestartSite();
+
+            return FormProcessed(null, this.__ResStr("okRemoved", "Site \"{0}\" has been removed(+nl)(+nl)The site is now restarting", model.SiteDomain),
                 NextPage: nextPage);
         }
     }

@@ -1,11 +1,13 @@
 /* Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Sites#License */
 
+using System;
 using System.Threading.Tasks;
 using YetaWF.Core.Controllers;
 using YetaWF.Core.Localize;
 using YetaWF.Core.Models;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Site;
+using YetaWF.Modules.Packages.DataProvider;
 #if MVC6
 using Microsoft.AspNetCore.Mvc;
 #else
@@ -43,18 +45,36 @@ namespace YetaWF.Modules.Sites.Controllers {
             return View(model);
         }
 
-
         [AllowPost]
         [ConditionalAntiForgeryToken]
         [ExcludeDemoMode]
         public async Task<ActionResult> SiteAdd_Partial(AddModel model) {
             if (!ModelState.IsValid)
                 return PartialView(model);
+
+            SiteDefinition currentSite = Manager.CurrentSite;
+
             SiteDefinition newSite = model.GetData();
             await newSite.AddNewAsync();
-            string newUrl = newSite.MakeUrl("/$initnew?From=Data", ForceDomain: newSite.SiteDomain); // This builds the new site (supported by YetaWF.Packages as a builtin command)
+
+            Manager.CurrentSite = newSite;
+            try {
+                PackagesDataProvider packagesDP = new PackagesDataProvider();
+                await packagesDP.InitNewAsync(true);
+            } catch (Exception) {
+                throw;
+            } finally {
+                Manager.CurrentSite = currentSite;
+            }
+
+            //$$$ string newUrl = newSite.MakeUrl("/$initnew?From=Data", ForceDomain: newSite.SiteDomain); // This builds the new site (supported by YetaWF.Packages as a builtin command)
+
+            string nextPage = Manager.CurrentSite.MakeUrl(RealDomain: Manager.CurrentSite.SiteDomain);
+
+            Manager.RestartSite();
+
             return FormProcessed(model, this.__ResStr("okSaved", "New site \"{0}\" created - Click OK to populate the new site with the current site template.(+nl)(+nl)IMPORTANT: This site is not accessible by its Url until the domain \"{0}\" is defined in IIS and in the hosts file.", newSite.SiteDomain),
-                NextPage: newUrl);
+                NextPage: nextPage);
         }
     }
 }
