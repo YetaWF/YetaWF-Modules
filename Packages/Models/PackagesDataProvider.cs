@@ -182,7 +182,7 @@ namespace YetaWF.Modules.Packages.DataProvider {
 
             if (data) {
                 await BuildSiteUsingDataAsync(false);
-                await BuildSiteUsingTemplateAsync(Path.Combine(DataFolderName, "Add Site.txt"));
+                await BuildSiteUsingTemplateAsync(Path.Combine(DataFolderName, "Add Additional Site.txt"));
             } else {
                 await BuildSiteUsingTemplateAsync("NewSite.txt");
             }
@@ -279,6 +279,7 @@ namespace YetaWF.Modules.Packages.DataProvider {
         //        }
         //    }
         //}
+
         /// <summary>
         /// Installs all models for the specified package
         /// </summary>
