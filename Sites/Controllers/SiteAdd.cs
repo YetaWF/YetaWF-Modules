@@ -67,8 +67,6 @@ namespace YetaWF.Modules.Sites.Controllers {
                 Manager.CurrentSite = currentSite;
             }
 
-            //$$$ string newUrl = newSite.MakeUrl("/$initnew?From=Data", ForceDomain: newSite.SiteDomain); // This builds the new site (supported by YetaWF.Packages as a builtin command)
-
             string nextPage = Manager.CurrentSite.MakeUrl(RealDomain: Manager.CurrentSite.SiteDomain);
 
             Manager.RestartSite();
