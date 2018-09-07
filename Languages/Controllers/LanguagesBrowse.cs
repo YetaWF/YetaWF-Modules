@@ -68,7 +68,7 @@ namespace YetaWF.Modules.Languages.Controllers {
         public ActionResult LanguagesBrowse() {
             BrowseModel model = new BrowseModel { };
             model.GridDef = new GridDefinition {
-                AjaxUrl = GetActionUrl("LanguagesBrowse_GridData"),
+                AjaxUrl = GetActionUrl(nameof(LanguagesBrowse_GridData)),
                 ModuleGuid = Module.ModuleGuid,
                 RecordType = typeof(BrowseItem),
                 SettingsModuleGuid = Module.PermanentGuid,
