@@ -27,8 +27,8 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         }
         public Task<YHtmlString> RenderAsync(long? model) {
             HtmlBuilder hb = new HtmlBuilder();
-            model = model ?? 0;
-            hb.Append($@"<div class='yt_longvalue t_display'>{HE(model.ToString())}</div>");
+            string val = model != null ? model.ToString() : "";
+            hb.Append($@"<div class='yt_longvalue t_display'>{HE(val)}</div>");
             return Task.FromResult(hb.ToYHtmlString());
         }
     }
@@ -40,10 +40,10 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             return await RenderAsync((long?) model);
         }
         public async Task<YHtmlString> RenderAsync(long? model) {
-            model = model ?? 0;
+            string val = model != null ? model.ToString() : "";
             HtmlAttributes.Add("class", "yt_text20");
             HtmlAttributes.Add("maxlength", "30");
-            return await TextEditComponent.RenderTextAsync(this, model.ToString(), "yt_longvalue");
+            return await TextEditComponent.RenderTextAsync(this, val, "yt_longvalue");
         }
     }
 }

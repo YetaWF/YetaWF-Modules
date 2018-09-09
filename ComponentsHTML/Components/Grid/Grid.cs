@@ -90,7 +90,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
             hb.Append($@"
         var $grid = $('#{model.Id}');
-        var emptyDiv = {YetaWFManager.JsonSerialize($"<div id='{idEmpty}' class='t_emptydiv'>{model.NoRecordsText}</div>")};
+        var emptyDiv = {YetaWFManager.JsonSerialize($"<div id='{idEmpty}' class='t_emptydiv'>{HE(model.NoRecordsText)}</div>")};
         var options = {{
             colNames: [ {await RenderColNamesAsync(model)} ],
             colModel: [ {colModelInfo.Data} ],

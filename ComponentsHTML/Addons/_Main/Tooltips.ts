@@ -11,7 +11,7 @@ namespace YetaWF_ComponentsHTML {
             const a1 = YVolatile.Basics.CssNoTooltips;
             const a2 = YConfigs.Basics.CssTooltip;
             const a3 = YConfigs.Basics.CssTooltipSpan;
-            const selectors = `img:not("${a1}"),label,input:not(".ui-button-disabled"),a:not("${a1},.ui-button-disabled"),i,.ui-jqgrid span[${a2}],span[${a3}],li[${a2}],div[${a2}]`;
+            const selectors = `img:not("${a1}"),label,input:not(".ui-button-disabled"),a:not("${a1},.ui-button-disabled"),i,.ui-jqgrid span[${a2}],th[${a2}],span[${a3}],li[${a2}],div[${a2}]`;
             const ddsel = ".k-list-container.k-popup li[data-offset-index]";
             $("body").tooltip({
                 items: (selectors + "," + ddsel),

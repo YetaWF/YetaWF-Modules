@@ -17,26 +17,28 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         public override string GetTemplateName() { return TemplateName; }
     }
 
-    //public class DecimalDisplayComponent : DecimalComponent, IYetaWFComponent<Decimal?> {
+    public class DecimalDisplayComponent : DecimalComponent, IYetaWFComponent<Decimal?> {
 
-    //    public override ComponentType GetComponentType() { return ComponentType.Display; }
+        public override ComponentType GetComponentType() { return ComponentType.Display; }
 
-    //    public async Task<YHtmlString> RenderAsync(Decimal model) {
-    //        return await RenderAsync((Decimal?)model);
-    //    }
-    //    public Task<YHtmlString> RenderAsync(Decimal? model) {
-    //        HtmlBuilder hb = new HtmlBuilder();
-    //        if (model != null && (Decimal)model > Decimal.MinValue && (Decimal)model < Decimal.MaxValue) {
-    //            YTagBuilder tag = new YTagBuilder("div");
-    //            tag.AddCssClass("yt_decimal");
-    //            tag.AddCssClass("t_display");
-    //            FieldSetup(tag, FieldType.Anonymous);
-    //            tag.SetInnerText(YetaWF.Core.Localize.Formatting.FormatDecimal(model));
-    //            hb.Append(tag.ToString(YTagRenderMode.Normal));
-    //        }
-    //        return Task.FromResult(hb.ToYHtmlString());
-    //    }
-    //}
+        public async Task<YHtmlString> RenderAsync(Decimal model) {
+            return await RenderAsync((Decimal?)model);
+        }
+        public Task<YHtmlString> RenderAsync(Decimal? model) {
+            HtmlBuilder hb = new HtmlBuilder();
+            if (model != null && (Decimal)model > Decimal.MinValue && (Decimal)model < Decimal.MaxValue) {
+                YTagBuilder tag = new YTagBuilder("div");
+                tag.AddCssClass("yt_decimal");
+                tag.AddCssClass("t_display");
+                FieldSetup(tag, FieldType.Anonymous);
+                if (model != null)
+                    tag.SetInnerText(((decimal)model).ToString("0.00"));
+                hb.Append(tag.ToString(YTagRenderMode.Normal));
+            }
+            return Task.FromResult(hb.ToYHtmlString());
+        }
+    }
+
     public class DecimalEditComponent : DecimalComponent, IYetaWFComponent<Decimal>, IYetaWFComponent<Decimal?> {
 
         public override ComponentType GetComponentType() { return ComponentType.Edit; }
