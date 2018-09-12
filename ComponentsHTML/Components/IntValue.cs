@@ -63,29 +63,38 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         }
         public Task<YHtmlString> RenderAsync(int? model) {
 
+            HtmlBuilder hb = new HtmlBuilder();
+
             YTagBuilder tag = new YTagBuilder("input");
+            string id = MakeId(tag);
             tag.AddCssClass(TemplateClass);
             tag.AddCssClass("t_edit");
+            tag.AddCssClass("yt_intvalue_base");
             FieldSetup(tag, Validation ? FieldType.Validated : FieldType.Normal);
 
             tag.MergeAttribute("maxlength", "20");
 
-            // handle min/max
-            RangeAttribute rangeAttr = PropData.TryGetAttribute<RangeAttribute>();
-            if (rangeAttr != null) {
-                tag.MergeAttribute("data-min", ((int)rangeAttr.Minimum).ToString("D"));
-                tag.MergeAttribute("data-max", ((int)rangeAttr.Maximum).ToString("D"));
-            }
-            string noEntry = PropData.GetAdditionalAttributeValue<string>("NoEntry", null);
-            if (!string.IsNullOrWhiteSpace(noEntry))
-                tag.MergeAttribute("data-noentry", noEntry);
-            int step = PropData.GetAdditionalAttributeValue<int>("Step", 1);
-            tag.MergeAttribute("data-step", step.ToString());
-
             if (model != null)
                 tag.MergeAttribute("value", ((int)model).ToString());
 
-            return Task.FromResult(tag.ToYHtmlString(YTagRenderMode.SelfClosing));
+            // handle min/max
+            int min = 0, max = 999999999;
+            RangeAttribute rangeAttr = PropData.TryGetAttribute<RangeAttribute>();
+            if (rangeAttr != null) {
+                min = (int)rangeAttr.Minimum;
+                max = (int)rangeAttr.Maximum;
+            }
+            string noEntry = PropData.GetAdditionalAttributeValue<string>("NoEntry", null);
+            int step = PropData.GetAdditionalAttributeValue<int>("Step", 1);
+
+            hb.Append($@"
+{tag.ToString(YTagRenderMode.SelfClosing)}
+<script>
+new YetaWF_ComponentsHTML.IntValueEditComponent('{id}', {{ Min: {min}, Max: {max}, Step: {step}, NoEntryText: '{JE(noEntry??"")}' }});
+</script>
+");
+
+            return Task.FromResult(hb.ToYHtmlString());
         }
     }
 }

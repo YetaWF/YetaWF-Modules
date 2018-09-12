@@ -26,7 +26,9 @@ namespace YetaWF.Modules.ComponentsHTML {
         {
             return RenderMenuAsync(menu, id, cssClass, RenderEngine: ModuleAction.RenderEngineEnum.BootstrapSmartMenu, HtmlHelper: HtmlHelper);
         }
-        public static async Task<YHtmlString> RenderMenuAsync(MenuList menu, string id = null, string cssClass = null, ModuleAction.RenderEngineEnum RenderEngine = ModuleAction.RenderEngineEnum.JqueryMenu,
+        public static async Task<YHtmlString> RenderMenuAsync(MenuList menu, string id = null, string cssClass = null,
+            ModuleAction.RenderEngineEnum RenderEngine = ModuleAction.RenderEngineEnum.JqueryMenu,
+            bool Hidden = false,
 #if MVC6
             IHtmlHelper HtmlHelper = null
 #else
@@ -46,6 +48,8 @@ namespace YetaWF.Modules.ComponentsHTML {
 
             // <ul class= style= >
             YTagBuilder ulTag = new YTagBuilder("ul");
+            if (Hidden)
+                ulTag.Attributes.Add("style", "display:none");
             if (!string.IsNullOrWhiteSpace(cssClass))
                 ulTag.AddCssClass(Manager.AddOnManager.CheckInvokedCssModule(cssClass));
             ulTag.AddCssClass(string.Format("t_lvl{0}", level));

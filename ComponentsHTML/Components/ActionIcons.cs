@@ -48,7 +48,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                     string idMenu = id + "_menu";
                     hb.Append("<button id=\"{0}\" type=\"button\" class=\"yt_actionicons\">{1}<span class=\"k-icon k-i-arrow-60-down\"></span></button>",
                         idButton, this.__ResStr("dropdownText", "Manage"));
-                    hb.Append(await CoreRendering.RenderMenuAsync(model, idMenu, Globals.CssGridActionMenu, HtmlHelper: HtmlHelper));
+                    hb.Append(await CoreRendering.RenderMenuAsync(model, idMenu, Globals.CssGridActionMenu, HtmlHelper: HtmlHelper, Hidden: true));
 
                     ScriptBuilder sb = new ScriptBuilder();
                     sb.Append($"YetaWF_TemplateActionIcons.initMenu('{id}', $('#{idButton}'), $('#{idMenu}'));");
