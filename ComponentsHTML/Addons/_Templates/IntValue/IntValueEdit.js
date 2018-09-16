@@ -34,7 +34,7 @@ var YetaWF_ComponentsHTML;
         }
         Object.defineProperty(IntValueEditComponent.prototype, "value", {
             get: function () {
-                return parseInt(this.Control.value);
+                return parseInt(this.Control.value, 10);
             },
             set: function (val) {
                 if (this.kendoNumericTextBox == null) {
@@ -70,6 +70,7 @@ var YetaWF_ComponentsHTML;
         };
         IntValueEditComponent.getControlFromTag = function (elem) { return _super.getControlBaseFromTag.call(this, elem, IntValueEditComponent.SELECTOR); };
         IntValueEditComponent.getControlFromSelector = function (selector, tags) { return _super.getControlBaseFromSelector.call(this, selector, IntValueEditComponent.SELECTOR, tags); };
+        IntValueEditComponent.getControlById = function (id) { return _super.getControlBaseById.call(this, id, IntValueEditComponent.SELECTOR); };
         IntValueEditComponent.SELECTOR = "input.yt_intvalue_base.t_edit.k-input[name]";
         return IntValueEditComponent;
     }(YetaWF.ComponentBase));

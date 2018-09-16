@@ -52,6 +52,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             await IncludeExplicitAsync();
 
             bool useKendo = !Manager.IsRenderingGrid;
+            bool adjustWidth = false;
 
             YTagBuilder tag = new YTagBuilder("select");
             if (!string.IsNullOrWhiteSpace(cssClass))
@@ -64,6 +65,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                 id = component.MakeId(tag);
                 tag.Attributes.Add("data-charavgw", Manager.CharWidthAvg.ToString());
                 tag.AddCssClass("t_kendo");
+                adjustWidth = component.PropData.GetAdditionalAttributeValue("AdjustWidth", true);
             } else
                 tag.AddCssClass("t_native");
 
@@ -104,7 +106,10 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                 if (!haveDesc) // if we don't have any descriptions, clear the tooltip array
                     sb = new ScriptBuilder();
                 ScriptBuilder newSb = new ScriptBuilder();
-                newSb.Append($"new YetaWF_ComponentsHTML.DropDownListEditComponent('{id}', [{sb.ToString()}]);");
+                newSb.Append($@"new YetaWF_ComponentsHTML.DropDownListEditComponent('{id}', {{
+                    ToolTips: [{sb.ToString()}],
+                    AdjustWidth: {JE(adjustWidth)}
+                }});");
                 sb = newSb;
             }
 
@@ -113,11 +118,14 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             HtmlBuilder hb = new HtmlBuilder();
 
             hb.Append($@"
-{tag.ToString(YTagRenderMode.Normal)}
+{tag.ToString(YTagRenderMode.Normal)}");
+
+            if (sb.Length > 0) {
+                hb.Append($@"
 <script>
     {sb.ToString()}
 </script>");
-
+            }
             return hb.ToYHtmlString();
         }
 

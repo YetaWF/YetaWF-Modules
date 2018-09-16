@@ -58,17 +58,25 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             tag.AddCssClass("yt_decimal");
             tag.AddCssClass("t_edit");
             FieldSetup(tag, Validation ? FieldType.Validated : FieldType.Normal);
+            string id = MakeId(tag);
 
             // handle min/max
+            float min = 0, max = 99999999.99F;
             RangeAttribute rangeAttr = PropData.TryGetAttribute<RangeAttribute>();
             if (rangeAttr != null) {
-                tag.MergeAttribute("data-min", ((double)rangeAttr.Minimum).ToString("0.000"));
-                tag.MergeAttribute("data-min", ((double)rangeAttr.Maximum).ToString("0.000"));
+                min = (float)rangeAttr.Minimum;
+                max = (float)rangeAttr.Maximum;
             }
             if (model != null)
                 tag.MergeAttribute("value", ((decimal)model).ToString("0.00"));
 
-            return Task.FromResult(tag.ToYHtmlString(YTagRenderMode.SelfClosing));
+            hb.Append($@"
+{tag.ToString(YTagRenderMode.SelfClosing)}
+<script>
+new YetaWF_ComponentsHTML.DecimalEditComponent('{id}', {{ Min: {min}, Max: {max} }});
+</script>
+");
+            return Task.FromResult(hb.ToYHtmlString());
         }
     }
 }

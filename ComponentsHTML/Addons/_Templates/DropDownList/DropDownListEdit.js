@@ -17,11 +17,10 @@ var YetaWF_ComponentsHTML;
 (function (YetaWF_ComponentsHTML) {
     var DropDownListEditComponent = /** @class */ (function (_super) {
         __extends(DropDownListEditComponent, _super);
-        function DropDownListEditComponent(controlId, toolTips) {
+        function DropDownListEditComponent(controlId, setup) {
             var _this = _super.call(this, controlId) || this;
             _this.KendoDropDownList = null;
-            _this.ToolTips = null;
-            _this.ToolTips = toolTips;
+            _this.Setup = setup;
             $YetaWF.addObjectDataById(controlId, _this);
             _this.updateWidth();
             return _this;
@@ -31,6 +30,7 @@ var YetaWF_ComponentsHTML;
             if (w > 0 && this.KendoDropDownList == null) {
                 var thisObj = this;
                 $(this.Control).kendoDropDownList({
+                    autoWidth: true,
                     // tslint:disable-next-line:only-arrow-functions
                     change: function () {
                         var event = document.createEvent("Event");
@@ -40,9 +40,11 @@ var YetaWF_ComponentsHTML;
                     }
                 });
                 this.KendoDropDownList = $(this.Control).data("kendoDropDownList");
-                var avgw = Number($YetaWF.getAttribute(this.Control, "data-charavgw"));
-                var container = $YetaWF.elementClosest(this.Control, ".k-widget.yt_dropdownlist,.k-widget.yt_dropdownlist_base,.k-widget.yt_enum");
-                $(container).width(w + 3 * avgw);
+                if (this.Setup.AdjustWidth) {
+                    var avgw = Number($YetaWF.getAttribute(this.Control, "data-charavgw"));
+                    var container = $YetaWF.elementClosest(this.Control, ".k-widget.yt_dropdownlist,.k-widget.yt_dropdownlist_base,.k-widget.yt_enum");
+                    $(container).width(w + 3 * avgw);
+                }
             }
         };
         Object.defineProperty(DropDownListEditComponent.prototype, "value", {
@@ -64,11 +66,11 @@ var YetaWF_ComponentsHTML;
         });
         // retrieve the tooltip for the nth item (index) in the dropdown list
         DropDownListEditComponent.prototype.getToolTip = function (index) {
-            if (!this.ToolTips)
+            if (!this.Setup.ToolTips)
                 return null;
-            if (index < 0 || index >= this.ToolTips.length)
+            if (index < 0 || index >= this.Setup.ToolTips.length)
                 return null;
-            return this.ToolTips[index];
+            return this.Setup.ToolTips[index];
         };
         DropDownListEditComponent.prototype.clear = function () {
             if (this.KendoDropDownList == null) {
@@ -108,6 +110,7 @@ var YetaWF_ComponentsHTML;
                             dataTextField: "t",
                             dataValueField: "v",
                             dataSource: data.data,
+                            autoWidth: true,
                             // tslint:disable-next-line:only-arrow-functions
                             change: function () {
                                 var event = document.createEvent("Event");
@@ -116,7 +119,7 @@ var YetaWF_ComponentsHTML;
                                 FormsSupport.validateElement(thisObj.Control);
                             }
                         });
-                        _this.ToolTips = data.tooltips;
+                        _this.Setup.ToolTips = data.tooltips;
                         _this.KendoDropDownList = $(_this.Control).data("kendoDropDownList");
                         if (onSuccess) {
                             onSuccess(data);
@@ -139,7 +142,8 @@ var YetaWF_ComponentsHTML;
             request.send();
         };
         DropDownListEditComponent.getControlFromTag = function (elem) { return _super.getControlBaseFromTag.call(this, elem, DropDownListEditComponent.SELECTOR); };
-        DropDownListEditComponent.getControlFromSelector = function (selector, tags) { return _super.getControlBaseFromSelector.call(this, selector, DropDownListEditComponent.SELECTOR, tags); };
+        DropDownListEditComponent.getControlFromSelector = function (selector, tags) { return _super.getControlBaseFromSelector.call(this, selector || DropDownListEditComponent.SELECTOR, DropDownListEditComponent.SELECTOR, tags); };
+        DropDownListEditComponent.getControlById = function (id) { return _super.getControlBaseById.call(this, id, DropDownListEditComponent.SELECTOR); };
         DropDownListEditComponent.SELECTOR = "select.yt_dropdownlist_base.t_edit.t_kendo";
         return DropDownListEditComponent;
     }(YetaWF.ComponentBase));

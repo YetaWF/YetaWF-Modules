@@ -2,6 +2,11 @@
 
 namespace YetaWF_ComponentsHTML {
 
+    interface DropDownListEditSetup {
+        ToolTips: string[] | null;
+        AdjustWidth: boolean;
+    }
+
     interface AjaxData {
         data: kendo.data.DataSource;
         tooltips: string[] | null;
@@ -11,12 +16,12 @@ namespace YetaWF_ComponentsHTML {
 
         public static readonly SELECTOR: string = "select.yt_dropdownlist_base.t_edit.t_kendo";
 
-        KendoDropDownList: kendo.ui.DropDownList | null = null;
-        ToolTips: string[] | null = null;
+        private Setup: DropDownListEditSetup;
+        private KendoDropDownList: kendo.ui.DropDownList | null = null;
 
-        constructor(controlId: string, toolTips: string[] | null) {
+        constructor(controlId: string, setup: DropDownListEditSetup) {
             super(controlId);
-            this.ToolTips = toolTips;
+            this.Setup = setup;
 
             $YetaWF.addObjectDataById(controlId, this);
 
@@ -28,6 +33,7 @@ namespace YetaWF_ComponentsHTML {
             if (w > 0 && this.KendoDropDownList == null) {
                 var thisObj = this;
                 $(this.Control).kendoDropDownList({
+                    autoWidth: true,
                     // tslint:disable-next-line:only-arrow-functions
                     change: function (): void {
                         var event = document.createEvent("Event");
@@ -37,10 +43,12 @@ namespace YetaWF_ComponentsHTML {
                     }
                 });
                 this.KendoDropDownList = $(this.Control).data("kendoDropDownList");
-                var avgw = Number($YetaWF.getAttribute(this.Control, "data-charavgw"));
 
-                var container = $YetaWF.elementClosest(this.Control, ".k-widget.yt_dropdownlist,.k-widget.yt_dropdownlist_base,.k-widget.yt_enum");
-                $(container).width(w + 3 * avgw);
+                if (this.Setup.AdjustWidth) {
+                    var avgw = Number($YetaWF.getAttribute(this.Control, "data-charavgw"));
+                    var container = $YetaWF.elementClosest(this.Control, ".k-widget.yt_dropdownlist,.k-widget.yt_dropdownlist_base,.k-widget.yt_enum");
+                    $(container).width(w + 3 * avgw);
+                }
             }
         }
 
@@ -59,9 +67,9 @@ namespace YetaWF_ComponentsHTML {
 
         // retrieve the tooltip for the nth item (index) in the dropdown list
         public getToolTip(index: number): string | null {
-            if (!this.ToolTips) return null;
-            if (index < 0 || index >= this.ToolTips.length) return null;
-            return this.ToolTips[index];
+            if (!this.Setup.ToolTips) return null;
+            if (index < 0 || index >= this.Setup.ToolTips.length) return null;
+            return this.Setup.ToolTips[index];
         }
         public clear(): void {
             if (this.KendoDropDownList == null) {
@@ -102,6 +110,7 @@ namespace YetaWF_ComponentsHTML {
                             dataTextField: "t",
                             dataValueField: "v",
                             dataSource: data.data,
+                            autoWidth: true,
                             // tslint:disable-next-line:only-arrow-functions
                             change: function (): void {
                                 var event = document.createEvent("Event");
@@ -110,7 +119,7 @@ namespace YetaWF_ComponentsHTML {
                                 FormsSupport.validateElement(thisObj.Control);
                             }
                         });
-                        this.ToolTips = data.tooltips;
+                        this.Setup.ToolTips = data.tooltips;
                         this.KendoDropDownList = $(this.Control).data("kendoDropDownList");
 
                         if (onSuccess) {
@@ -134,7 +143,8 @@ namespace YetaWF_ComponentsHTML {
         }
 
         public static getControlFromTag(elem: HTMLElement): DropDownListEditComponent { return super.getControlBaseFromTag<DropDownListEditComponent>(elem, DropDownListEditComponent.SELECTOR); }
-        public static getControlFromSelector(selector: string, tags: HTMLElement[]): DropDownListEditComponent { return super.getControlBaseFromSelector<DropDownListEditComponent>(selector, DropDownListEditComponent.SELECTOR, tags); }
+        public static getControlFromSelector(selector: string | null, tags: HTMLElement[]): DropDownListEditComponent { return super.getControlBaseFromSelector<DropDownListEditComponent>(selector || DropDownListEditComponent.SELECTOR, DropDownListEditComponent.SELECTOR, tags); }
+        public static getControlById(id: string): DropDownListEditComponent { return super.getControlBaseById<DropDownListEditComponent>(id, DropDownListEditComponent.SELECTOR); }
     }
 
     // We need to delay initialization until divs become visible so we can calculate the dropdown width

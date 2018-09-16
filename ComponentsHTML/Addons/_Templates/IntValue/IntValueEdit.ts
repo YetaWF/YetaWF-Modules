@@ -32,7 +32,7 @@ namespace YetaWF_ComponentsHTML {
         }
 
         get value(): number {
-            return parseInt(this.Control.value);
+            return parseInt(this.Control.value, 10);
         }
         set value(val: number) {
             if (this.kendoNumericTextBox == null) {
@@ -63,6 +63,7 @@ namespace YetaWF_ComponentsHTML {
 
         public static getControlFromTag(elem: HTMLElement): IntValueEditComponent { return super.getControlBaseFromTag<IntValueEditComponent>(elem, IntValueEditComponent.SELECTOR); }
         public static getControlFromSelector(selector: string, tags: HTMLElement[]): IntValueEditComponent { return super.getControlBaseFromSelector<IntValueEditComponent>(selector, IntValueEditComponent.SELECTOR, tags); }
+        public static getControlById(id: string): IntValueEditComponent { return super.getControlBaseById<IntValueEditComponent>(id, IntValueEditComponent.SELECTOR); }
     }
 
     // A <div> is being emptied. Destroy all IntValues the <div> may contain.

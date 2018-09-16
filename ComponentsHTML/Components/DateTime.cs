@@ -42,6 +42,11 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
         public override ComponentType GetComponentType() { return ComponentType.Edit; }
 
+        public class DateTimeSetup {
+            public DateTime Min { get; set; }
+            public DateTime Max { get; set; }
+        }
+
         public override async Task IncludeAsync() {
             await KendoUICore.AddFileAsync("kendo.calendar.min.js");
             //await KendoUICore.AddFileAsync("kendo.popup.min.js"); // is now a prereq of kendo.window (2017.2.621)
@@ -54,6 +59,9 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             return await RenderAsync((DateTime?) model);
         }
         public async Task<YHtmlString> RenderAsync(DateTime? model) {
+
+            UseSuppliedIdAsControlId();
+
             HtmlBuilder hb = new HtmlBuilder();
 
             hb.Append($"<div id='{ControlId}' class='yt_datetime t_edit'>");
@@ -61,37 +69,35 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             hb.Append(await HtmlHelper.ForEditComponentAsync(Container, PropertyName, null, "Hidden", HtmlAttributes: HtmlAttributes, Validation: Validation));
 
             YTagBuilder tag = new YTagBuilder("input");
-                FieldSetup(tag, FieldType.Anonymous);
-                tag.Attributes.Add("name", "dtpicker");
+            FieldSetup(tag, FieldType.Anonymous);
+            tag.Attributes.Add("name", "dtpicker");
 
-                // handle min/max date
-                MinimumDateAttribute minAttr = PropData.TryGetAttribute<MinimumDateAttribute>();
-                MaximumDateAttribute maxAttr = PropData.TryGetAttribute<MaximumDateAttribute>();
-                if (minAttr != null) {
-                    tag.MergeAttribute("data-min-y", minAttr.MinDate.Year.ToString());
-                    tag.MergeAttribute("data-min-m", minAttr.MinDate.Month.ToString());
-                    tag.MergeAttribute("data-min-d", minAttr.MinDate.Day.ToString());
-                }
-                if (maxAttr != null) {
-                    tag.MergeAttribute("data-max-y", maxAttr.MaxDate.Year.ToString());
-                    tag.MergeAttribute("data-max-m", maxAttr.MaxDate.Month.ToString());
-                    tag.MergeAttribute("data-max-d", maxAttr.MaxDate.Day.ToString());
-                }
+            // handle min/max date
+            DateTimeSetup setup = new DateTimeSetup {
+                Min = new DateTime(1900, 1, 1),
+                Max = new DateTime(2199, 12, 31),
+            };
+            MinimumDateAttribute minAttr = PropData.TryGetAttribute<MinimumDateAttribute>();
+            if (minAttr != null)
+                setup.Min = minAttr.MinDate;
+            MaximumDateAttribute maxAttr = PropData.TryGetAttribute<MaximumDateAttribute>();
+            if (maxAttr != null)
+                setup.Max = maxAttr.MaxDate;
 
-                if (model != null)
-                    tag.MergeAttribute("value", Formatting.FormatDateTime((DateTime)model));// shows date using user's timezone
-                hb.Append(tag.ToString(YTagRenderMode.SelfClosing));
+            if (model != null)
+                tag.MergeAttribute("value", Formatting.FormatDateTime((DateTime)model));// shows date using user's timezone
+            hb.Append(tag.ToString(YTagRenderMode.SelfClosing));
 
             hb.Append($"</div>");
 
-            ScriptBuilder sb = new ScriptBuilder();
-            sb.Append($@"(new YetaWF_ComponentsHTML.DateTimeComponent()).init('{ControlId}');");
-
-            hb.Append(Manager.ScriptManager.AddNow(sb.ToString()).ToString());
+            hb.Append($@"
+<script>
+new YetaWF_ComponentsHTML.DateTimeEditComponent('{ControlId}', {YetaWFManager.JsonSerialize(setup)});
+</script>");
 
             return hb.ToYHtmlString();
         }
-        public async Task<string> RenderJavascriptAsync(string gridId, string elemVarName) {
+        public async Task<string> RenderJavascriptAsync(string gridId, string elemVarName) { //$$$ remove
             await IncludeAsync();
             return string.Format("(new YetaWF_ComponentsHTML.DateTimeComponent()).renderjqGridFilter('{0}', {1});", gridId, elemVarName);
         }

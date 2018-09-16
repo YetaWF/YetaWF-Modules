@@ -300,7 +300,7 @@ $.validator.addMethod('listnoduplicates', function (value, element, parameters) 
     var $element = $(element);
     if ($element.hasClass(YConfigs.Forms.CssFormNoValidate)) return true;
 
-    // Lists are always in a grid. Because field names can be duplicates (occurs due to add/delete) we can use the element name for comparisons
+    // Lists are always in a grid. Because field names can be duplicates (occurs due to add/delete) we can't use the element name for comparisons
     // instead we locate the jqgrid record id
     // verify we're in a grid control
     var $grid = $element.closest('.yt_grid');/*DEBUG*/
