@@ -2,7 +2,7 @@
 
 var YetaWF_PageEdit_AllowedUsers = {};
 
-YetaWF_PageEdit_AllowedUsers.init = function ($divid, $list, $listAll, $userName) {
+YetaWF_PageEdit_AllowedUsers.init = function ($listAll, $userName) {
     $listAll.on('jqGridSelectRow', function (e, rowid) {
         var $grid = $(this);
         var name = $grid.jqGrid('getCell', rowid, 'RawUserName');
