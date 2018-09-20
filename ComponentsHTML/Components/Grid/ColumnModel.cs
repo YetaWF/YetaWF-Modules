@@ -145,10 +145,10 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                         sb.Append("stype:'text',searchoptions:{sopt:['ge','gt','le','lt','eq','ne']},searchrules:{integer:true},");
                     } else if (prop.PropInfo.PropertyType == typeof(DateTime) || prop.PropInfo.PropertyType == typeof(DateTime?)) {
                         sb.Append("searchoptions:{sopt:['ge','le'],dataInit: function(elem) {");
-                        if (prop.UIHint == "DateTime") {
+                        if (prop.UIHint == "DateTime") {///$$$$$
                             DateTimeEditComponent dateTimeComp = new Components.DateTimeEditComponent();
                             sb.Append(await dateTimeComp.RenderJavascriptAsync(gridDef.Id, "elem"));
-                        } else if (prop.UIHint == "Date") {
+                        } else if (prop.UIHint == "Date") {///$$$$$
                             DateEditComponent dateTimeComp = new Components.DateEditComponent();
                             sb.Append(await dateTimeComp.RenderJavascriptAsync(gridDef.Id, "elem"));
                         } else {

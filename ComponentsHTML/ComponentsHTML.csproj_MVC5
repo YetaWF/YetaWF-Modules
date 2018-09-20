@@ -270,8 +270,7 @@
     <Content Include="Addons\_Templates\Image\Images\NoImage.png" />
     <Content Include="Addons\_Templates\IntValue\filelistCSS.txt" />
     <Content Include="Addons\_Templates\IntValue\filelistJS.txt" />
-    <Content Include="Addons\_Templates\IntValue\intvalue.css" />
-    <Content Include="Addons\_Templates\IntValue\IntValue.js" />
+    <None Include="Addons\_Templates\IntValue\IntValue.scss" />
     <Content Include="Addons\_Templates\JQueryUISkin\filelistCSS.txt" />
     <Content Include="Addons\_Templates\JQueryUISkin\JQueryUISkin.css" />
     <Content Include="Addons\_Templates\KendoUISkin\filelistCSS.txt" />
@@ -321,8 +320,10 @@
     <Content Include="Addons\_Templates\SMTPServer\SMTPServer.css" />
     <None Include="Addons\_Templates\ColorPicker\ColorPicker.scss" />
     <TypeScriptCompile Include="Addons\_Templates\ColorPicker\ColorPicker.ts" />
+    <TypeScriptCompile Include="Addons\_Templates\Date\DateEdit.ts" />
     <TypeScriptCompile Include="Addons\_Templates\DayTimeRange\DayTimeRange.ts" />
     <TypeScriptCompile Include="Addons\_Templates\DropDownList\DropDownListEdit.ts" />
+    <TypeScriptCompile Include="Addons\_Templates\IntValue\IntValueEdit.ts" />
     <TypeScriptCompile Include="Addons\_Templates\Time\Time.tsx" />
     <TypeScriptCompile Include="Addons\_Templates\SMTPServer\SMTPServer.ts" />
     <Content Include="Addons\_Templates\TextArea\filelistCSS.txt" />
@@ -390,9 +391,8 @@
     <TypeScriptCompile Include="Addons\_Main\Buttons.ts" />
     <TypeScriptCompile Include="Addons\_Main\FormsSupport.ts" />
     <TypeScriptCompile Include="Addons\_Templates\Currency\Currency.tsx" />
-    <TypeScriptCompile Include="Addons\_Templates\DateTime\DateTime.tsx" />
-    <TypeScriptCompile Include="Addons\_Templates\Date\DateEdit.tsx" />
-    <TypeScriptCompile Include="Addons\_Templates\Decimal\Decimal.tsx" />
+    <TypeScriptCompile Include="Addons\_Templates\DateTime\DateTimeEdit.ts" />
+    <TypeScriptCompile Include="Addons\_Templates\Decimal\DecimalEdit.ts" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
