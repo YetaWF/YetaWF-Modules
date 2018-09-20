@@ -393,9 +393,10 @@ YetaWF_Grid.gridComplete = function ($grid, gridId) {
     }
 
     // call ready handlers for grid contents
-    var tbl = $grid[0];
-    $YetaWF.processAllReady([tbl]);
-    $YetaWF.processAllReadyOnce([tbl]);
+    //$$$$ this does work, it's in the wrong place
+    //var tbl = $grid[0];
+    //$YetaWF.processAllReady([tbl]);
+    //$YetaWF.processAllReadyOnce([tbl]);
 
     // highlight data rows with the __highlight property set to true
     $('tr.yHighlightGridRow', $grid).removeClass('yHighlightGridRow'); // remove all highlights

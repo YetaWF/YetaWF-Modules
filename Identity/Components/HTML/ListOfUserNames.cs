@@ -224,16 +224,10 @@ namespace YetaWF.Modules.Identity.Components {
     </div>
 </div>
 <script>
-    $YetaWF.expandCollapseHandling('{DivId}', '{DivId}_coll', '{DivId}_exp');");
-
-            using (DocumentReady(hb, DivId)) {
-        hb.Append($@"
-    $('#{tmpltId}_list').jqGrid('sortableRows', {{ connectWith: '#{tmpltId}_list' }});
-    YetaWF_Identity_ListOfUserNames.init($('#{tmpltId}'), $('#{tmpltId}_list'), $('#{DivId}_listall'), $('#{tmpltId} .t_edit[name$=\'.NewValue\']'));
-");
-            }
-
-            hb.Append($@"
+    $YetaWF.expandCollapseHandling('{DivId}', '{DivId}_coll', '{DivId}_exp');
+    {BeginDocumentReady(DivId)}
+        YetaWF_Identity_ListOfUserNames.init($('#{DivId}_listall'), $('#{tmpltId} .t_edit[name$=\'.NewValue\']'));
+    {EndDocumentReady()}
 </script>");
             return hb.ToYHtmlString();
         }

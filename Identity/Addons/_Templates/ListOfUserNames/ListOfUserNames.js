@@ -2,7 +2,7 @@
 
 var YetaWF_Identity_ListOfUserNames = {};
 
-YetaWF_Identity_ListOfUserNames.init = function ($divid, $list, $listAll, $userName) {
+YetaWF_Identity_ListOfUserNames.init = function ($listAll, $userName) {
     $listAll.on('jqGridSelectRow', function (e, rowid) {
         var $grid = $(this);
         var name = $grid.jqGrid('getCell', rowid, 'RawUserName');
