@@ -117,6 +117,7 @@ namespace YetaWF.Modules.Panels.Components {
             };
             GridModel grid = new GridModel() {
                 GridDef = new GridDefinition() {
+                    Id = tmpltId + "_list",
                     RecordType = typeof(GridEntryEdit),
                     Data = data,
                     SupportReload = false,
