@@ -109,32 +109,39 @@ namespace YetaWF.Modules.Scheduler.Controllers {
         }
 
         public class SchedulerBrowseModel {
-            [UIHint("Grid")]
-            public GridDefinition GridDef { get; set; }
+            [UIHint("Softelvdm_Grid_Grid2"), ReadOnly]
+            public Grid2Definition GridDef { get; set; }
+        }
+        private Grid2Definition GetGridModel() {
+            return new Grid2Definition {
+                ModuleGuid = Module.ModuleGuid,
+                SettingsModuleGuid = Module.PermanentGuid,
+                RecordType = typeof(SchedulerItem),
+                AjaxUrl = GetActionUrl(nameof(SchedulerBrowse_GridData)),
+                DirectDataAsync = async (int skip, int take, List<DataProviderSortInfo> sort, List<DataProviderFilterInfo> filters) => {
+                    using (SchedulerDataProvider dataProvider = new SchedulerDataProvider()) {
+                        DataProviderGetRecords<SchedulerItemData> schedulerItems = await dataProvider.GetItemsAsync(skip, take, sort, filters);
+                        return new DataSourceResult {
+                            Data = (from s in schedulerItems.Data select new SchedulerItem(Module, s)).ToList<object>(),
+                            Total = schedulerItems.Total
+                        };
+                    }
+                },
+            };
         }
 
         [AllowGet]
         public ActionResult SchedulerBrowse() {
-            SchedulerBrowseModel model = new SchedulerBrowseModel { };
-            model.GridDef = new GridDefinition {
-                AjaxUrl = GetActionUrl("SchedulerBrowse_GridData"),
-                ModuleGuid = Module.ModuleGuid,
-                RecordType = typeof(SchedulerItem),
-                SettingsModuleGuid = Module.PermanentGuid,
+            SchedulerBrowseModel model = new SchedulerBrowseModel {
+                GridDef = GetGridModel()
             };
             return View(model);
         }
 
         [AllowPost]
-        public async Task<ActionResult> SchedulerBrowse_GridData(int skip, int take, List<DataProviderSortInfo> sort, List<DataProviderFilterInfo> filters, Guid settingsModuleGuid) {
-            using (SchedulerDataProvider dataProvider = new SchedulerDataProvider()) {
-                DataProviderGetRecords<SchedulerItemData> schedulerItems = await dataProvider.GetItemsAsync(skip, take, sort, filters);
-                Grid.SaveSettings(skip, take, sort, filters, settingsModuleGuid);
-                return await GridPartialViewAsync(new DataSourceResult {
-                    Data = (from s in schedulerItems.Data select new SchedulerItem(Module, s)).ToList<object>(),
-                    Total = schedulerItems.Total
-                });
-            }
+        [ConditionalAntiForgeryToken]
+        public async Task<ActionResult> SchedulerBrowse_GridData(string fieldPrefix, int skip, int take, List<DataProviderSortInfo> sorts, List<DataProviderFilterInfo> filters) {
+            return await Grid2PartialViewAsync(GetGridModel(), fieldPrefix, skip, take, sorts, filters);
         }
 
         [AllowPost]

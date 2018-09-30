@@ -45,7 +45,7 @@ namespace YetaWF.Modules.Dashboard.Controllers {
             [UIHint("ListOfStrings"), AdditionalMetadata("Delimiter", "<br/>"), ReadOnly]
             public List<string> FileNames { get; set; }
 
-            private StaticPagesBrowseModule Module { get; set; }
+            public StaticPagesBrowseModule Module { get; set; }
 
             public BrowseItem(StaticPagesBrowseModule module, StaticPageManager.PageEntry data) {
                 Module = module;
@@ -57,36 +57,54 @@ namespace YetaWF.Modules.Dashboard.Controllers {
                     data.FileNamePopupHttps ?? "-",
                 };
             }
+            public BrowseItem() { }
         }
 
         public class BrowseModel {
-            [UIHint("Grid")]
-            public GridDefinition GridDef { get; set; }
+            [UIHint("Softelvdm_Grid_Grid2"), ReadOnly]
+            public Grid2Definition GridDef { get; set; }
+        }
+        private Grid2Definition GetGridModel() {
+            return new Grid2Definition {
+                InitialPageSize = 20,
+                ModuleGuid = Module.ModuleGuid,
+                SettingsModuleGuid = Module.PermanentGuid,
+                RecordType = typeof(BrowseItem),
+                AjaxUrl = GetActionUrl(nameof(StaticPagesBrowse_GridData)),
+                SortFilterStaticData = (List<object> data, int skip, int take, List<DataProviderSortInfo> sorts, List<DataProviderFilterInfo> filters) => {
+                    DataProviderGetRecords<BrowseItem> recs = DataProviderImpl<BrowseItem>.GetRecords(data, skip, take, sorts, filters);
+                    foreach (BrowseItem r in recs.Data)
+                        r.Module = Module;
+                    return new DataSourceResult {
+                        Data = recs.Data.ToList<object>(),
+                        Total = recs.Total,
+                    };
+                },
+                DirectDataAsync = async (int skip, int take, List<DataProviderSortInfo> sort, List<DataProviderFilterInfo> filters) => {
+                    List<BrowseItem> items = (from k in await Manager.StaticPageManager.GetSiteStaticPagesAsync() select new BrowseItem(Module, k)).ToList();
+                    int total = items.Count;
+                    DataProviderGetRecords<BrowseItem> recs = DataProviderImpl<BrowseItem>.GetRecords(items, skip, take, sort, filters);
+                    DataSourceResult data = new DataSourceResult {
+                        Data = recs.Data.ToList<object>(),
+                        Total = total
+                    };
+                    return data;
+                },
+            };
         }
 
         [AllowGet]
         public ActionResult StaticPagesBrowse() {
-            BrowseModel model = new BrowseModel { };
-            model.GridDef = new GridDefinition {
-                AjaxUrl = GetActionUrl("StaticPagesBrowse_GridData"),
-                ModuleGuid = Module.ModuleGuid,
-                RecordType = typeof(BrowseItem),
-                SettingsModuleGuid = Module.PermanentGuid,
+            BrowseModel model = new BrowseModel {
+                GridDef = GetGridModel()
             };
             return View(model);
         }
 
         [AllowPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> StaticPagesBrowse_GridData(int skip, int take, List<DataProviderSortInfo> sort, List<DataProviderFilterInfo> filters, Guid settingsModuleGuid) {
-            List<BrowseItem> items = (from k in await Manager.StaticPageManager.GetSiteStaticPagesAsync() select new BrowseItem(Module, k)).ToList();
-            int total = items.Count;
-            DataProviderGetRecords<BrowseItem> recs = DataProviderImpl<BrowseItem>.GetRecords(items, skip, take, sort, filters);
-            Grid.SaveSettings(skip, take, sort, filters, settingsModuleGuid);
-            return await GridPartialViewAsync(new DataSourceResult {
-                Data = recs.Data.ToList<object>(),
-                Total = total
-            });
+        public async Task<ActionResult> StaticPagesBrowse_GridData(string data, string fieldPrefix, int skip, int take, List<DataProviderSortInfo> sorts, List<DataProviderFilterInfo> filters) {
+            return await Grid2PartialViewAsync<BrowseItem>(GetGridModel(), data, fieldPrefix, skip, take, sorts, filters);
         }
 
         [AllowPost]

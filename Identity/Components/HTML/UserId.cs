@@ -53,7 +53,7 @@ namespace YetaWF.Modules.Identity.Components {
             HtmlBuilder hb = new HtmlBuilder();
 
             YTagBuilder tag = new YTagBuilder("span");
-            tag.AddCssClass("yt_yetawf_identity_useridt_display");
+            tag.AddCssClass("yt_yetawf_identity_userid");
             tag.AddCssClass("t_display");
             FieldSetup(tag, FieldType.Anonymous);
 
@@ -88,57 +88,26 @@ namespace YetaWF.Modules.Identity.Components {
 
         public override ComponentType GetComponentType() { return ComponentType.Edit; }
 
-        public class NewModel {
-            [Caption("User Name"), Description("Please enter a new user name and click Add")]
-            [UIHint("Text80"), StringLength(80), Trim]
-            public string NewValue { get; set; }
+        public class UserIdSetup {
+            public string GridAllId { get; internal set; }
+            public string HiddenId { get; internal set; }
+            public string NameId { get; internal set; }
+            public string NoUser { get; internal set; }
         }
-        [Trim]
-        public class GridEdit {
 
-            public GridEdit() { }
-
-            [Caption("Delete"), Description("Click to remove this user name from the list")]
-            [UIHint("GridDeleteEntry")]
-            public int DeleteMe { get; set; }
-
-            [Caption("User Name"), Description("Shows all defined user names")]
-            [UIHint("Text80"), StringLength(Globals.MaxUser), UserNameValidation, ListNoDuplicates, Required, Trim]
-            public string UserName { get; set; }
-
-            [UIHint("Hidden"), Required, Trim]
-            public string __Value { get; set; }
-
-            [UIHint("Raw"), ReadOnly]
-            public string __TextKey { get { return __Value; } }
-            [UIHint("Raw"), ReadOnly]
-            public string __TextDisplay { get { return UserName; } }
-
-            public GridEdit(UserDefinitionDataProvider userDP, int userId) {
-                UserDefinition user = YetaWFManager.Syncify(() => userDP.GetItemByUserIdAsync(userId));
-                if (user == null) {
-                    UserName = __ResStr("unknownUser", "({0})", userId);
-                } else {
-                    UserName = user.UserName;
-                }
-                __Value = userId.ToString();
-            }
-        }
         public class UserIdUI {
-            [UIHint("Hidden")]
+            [UIHint("Hidden"), ReadOnly]
             public int UserId { get; set; }
 
-            [UIHint("Text40"), StringLength(Globals.MaxUser), AdditionalMetadata("Copy", true), AdditionalMetadata("ReadOnly", true)]
+            [UIHint("Text40"), ReadOnly, StringLength(Globals.MaxUser), AdditionalMetadata("Copy", true), AdditionalMetadata("ReadOnly", true)]
             public string UserName { get; set; }
 
             [Caption("All Users"), Description("Shows all users - Select a user to update the user shown above")]
-            [UIHint("Grid"), ReadOnly]
-            public GridDefinition AllUsers { get; set; }
+            [UIHint("Softelvdm_Grid_Grid2"), ReadOnly]
+            public Grid2Definition AllUsers { get; set; }
         }
-        [Trim]
-        public class GridAllEntry {
 
-            public GridAllEntry() { }
+        public class AllEntry {
 
             [Caption("Name"), Description("Displays the user's name")]
             [UIHint("String"), ReadOnly]
@@ -148,40 +117,43 @@ namespace YetaWF.Modules.Identity.Components {
             [UIHint("YetaWF_Identity_Email"), ReadOnly]
             public string Email { get; set; }
 
-            [Caption("Used Id"), Description("Displays the user's internal Id")]
-            [UIHint("IntValue"), ReadOnly]
-            public int UserId { get; set; }
-
             [Caption("Status"), Description("The user's current account status")]
             [UIHint("Enum"), ReadOnly]
             public UserStatusEnum UserStatus { get; set; }
 
-            [UIHint("Raw"), ReadOnly]
-            public string RawUserId { get { return UserId.ToString(); } }
-            [UIHint("Raw"), ReadOnly]
-            public string RawUserName { get { return UserName; } }
+            [Caption("Used Id"), Description("Displays the user's internal Id")]
+            [UIHint("IntValue"), ReadOnly]
+            public int UserIdDisplay { get; set; }
 
-            public GridAllEntry(UserDefinition user) {
+            [UIHint("Hidden")]
+            public int UserId { get; set; }
+
+            public AllEntry(UserDefinition user) {
                 ObjectSupport.CopyData(user, this);
             }
+        }
+        internal static Grid2Definition GetGridAllUsersModel(bool header) {
+            return new Grid2Definition() {
+                RecordType = typeof(AllEntry),
+                InitialPageSize = 10,
+                ShowHeader = header,
+                AjaxUrl = YetaWFManager.UrlFor(typeof(UserIdController), nameof(UserIdController.UsersBrowse_GridData)),
+                DirectDataAsync = async (int skip, int take, List<DataProviderSortInfo> sorts, List<DataProviderFilterInfo> filters) => {
+                    using (UserDefinitionDataProvider dataProvider = new UserDefinitionDataProvider()) {
+                        DataProviderGetRecords<UserDefinition> browseItems = await dataProvider.GetItemsAsync(skip, take, sorts, filters);
+                        return new DataSourceResult {
+                            Data = (from s in browseItems.Data select new AllEntry(s)).ToList<object>(),
+                            Total = browseItems.Total
+                        };
+                    }
+                },
+            };
         }
         public async Task<YHtmlString> RenderAsync(int model) {
 
             HtmlBuilder hb = new HtmlBuilder();
 
             string type = PropData.GetAdditionalAttributeValue<string>("Force", null);
-
-            UserIdUI ui = new UserIdUI {
-                UserId = model,
-            };
-
-            using (UserDefinitionDataProvider userDP = new UserDefinitionDataProvider()) {
-                UserDefinition user = await userDP.GetItemByUserIdAsync(model);
-                if (user == null)
-                    ui.UserName = __ResStr("noUser", "(none)");
-                else
-                    ui.UserName = user.UserName;
-            }
 
             if (type == "Grid" || (await IsLargeUserBaseAsync() && type != "DropDown")) {
                 string hiddenId = UniqueId();
@@ -195,13 +167,20 @@ namespace YetaWF.Modules.Identity.Components {
                 tagImg.AddCssClass("t_clear");
 
                 bool header = PropData.GetAdditionalAttributeValue("Header", true);
-                ui.AllUsers = new GridDefinition() {
-                    AjaxUrl = YetaWFManager.UrlFor(typeof(UserIdController), nameof(UserIdController.UsersBrowse_GridData)),
-                    Id = allId,
-                    RecordType = typeof(GridAllEntry),
-                    ShowHeader = header
-                };
 
+                UserIdUI ui = new UserIdUI {
+                    UserId = model,
+                };
+                using (UserDefinitionDataProvider userDP = new UserDefinitionDataProvider()) {
+                    UserDefinition user = await userDP.GetItemByUserIdAsync(model);
+                    if (user == null)
+                        ui.UserName = __ResStr("noUser", "(none)");
+                    else
+                        ui.UserName = user.UserName;
+                }
+
+                ui.AllUsers = GetGridAllUsersModel(header);
+                ui.AllUsers.Id = allId;
 
                 hb.Append($@"
 <div class='yt_yetawf_identity_userid t_large t_edit' id='{DivId}'>
@@ -211,7 +190,7 @@ namespace YetaWF.Modules.Identity.Components {
 
                     hb.Append($@"
     <div class='t_name'>
-        {await HtmlHelper.ForEditAsync(ui, nameof(ui.UserName),HtmlAttributes: new { id = nameId, data_nouser = noUser })}
+        {await HtmlHelper.ForDisplayAsync(ui, nameof(ui.UserName), HtmlAttributes: new { id = nameId })}
         {tagImg.ToString(YTagRenderMode.StartTag)}
     </div>
     {await HtmlHelper.ForLabelAsync(ui, nameof(ui.AllUsers))}
@@ -219,14 +198,20 @@ namespace YetaWF.Modules.Identity.Components {
 
                 }
                 hb.Append($@"
-</div>
-<script>");
-                using (DocumentReady(hb, DivId)) {
-                    hb.Append($@"
-    YetaWF_Identity_UserId.init($('#{DivId}'), $('#{hiddenId}'), $('#{nameId}'), $('#{allId}'));");
-                }
+</div>");
+
+                UserIdSetup setup = new UserIdSetup {
+                    GridAllId = ui.AllUsers.Id,
+                    HiddenId = hiddenId,
+                    NameId = nameId,
+                    NoUser = noUser,
+                };
+
                 hb.Append($@"
+<script>
+    new YetaWF_Identity.UserIdEditComponent('{DivId}', {YetaWFManager.JsonSerialize(setup)});
 </script>");
+
             } else {
 
                 hb.Append($@"

@@ -4,14 +4,15 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using YetaWF.Core.Components;
 using YetaWF.Core.Controllers;
 using YetaWF.Core.DataProvider;
 using YetaWF.Core.Models;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Modules;
+using YetaWF.Core.Support;
 using YetaWF.Modules.Blog.DataProvider;
 using YetaWF.Modules.Blog.Modules;
-using YetaWF.Core.Components;
 #if MVC6
 using Microsoft.AspNetCore.Mvc;
 #else
@@ -97,40 +98,47 @@ namespace YetaWF.Modules.Blog.Controllers {
         }
 
         public class BrowseModel {
-            [UIHint("Grid")]
-            public GridDefinition GridDef { get; set; }
+            [UIHint("Softelvdm_Grid_Grid2")]
+            public Grid2Definition GridDef { get; set; }
+        }
+
+        private Grid2Definition GetGridModel(int blogCategory) {
+            return new Grid2Definition {
+                ModuleGuid = Module.ModuleGuid,
+                SettingsModuleGuid = Module.PermanentGuid,
+                RecordType = typeof(BrowseItem),
+                AjaxUrl = GetActionUrl(nameof(EntriesBrowse_GridData)),
+                ExtraData = new BrowseItem.ExtraData { BlogCategory = blogCategory },
+                DirectDataAsync = async (int skip, int take, List<DataProviderSortInfo> sort, List<DataProviderFilterInfo> filters) => {
+                    // filter by category
+                    if (blogCategory != 0) {
+                        filters = DataProviderFilterInfo.Join(filters, new DataProviderFilterInfo { Field = "CategoryIdentity", Operator = "==", Value = blogCategory, });
+                    }
+                    using (BlogEntryDataProvider entryDP = new BlogEntryDataProvider()) {
+                        using (BlogCategoryDataProvider categoryDP = new BlogCategoryDataProvider()) {
+                            DataProviderGetRecords<BlogEntry> browseItems = await entryDP.GetItemsAsync(skip, take, sort, filters);
+                            return new DataSourceResult {
+                                Data = (from s in browseItems.Data select new BrowseItem(Module, categoryDP, s)).ToList<object>(),
+                                Total = browseItems.Total
+                            };
+                        }
+                    }
+                },
+            };
         }
 
         [AllowGet]
         public ActionResult EntriesBrowse(int blogCategory = 0) {
-            BrowseModel model = new BrowseModel { };
-            model.GridDef = new GridDefinition {
-                AjaxUrl = GetActionUrl("EntriesBrowse_GridData"),
-                ModuleGuid = Module.ModuleGuid,
-                RecordType = typeof(BrowseItem),
-                SettingsModuleGuid = Module.PermanentGuid,
-                ExtraData = new BrowseItem.ExtraData { BlogCategory = blogCategory },
+            BrowseModel model = new BrowseModel {
+                GridDef = GetGridModel(blogCategory)
             };
             return View(model);
         }
 
         [AllowPost]
         [ConditionalAntiForgeryToken]
-        public async Task<ActionResult> EntriesBrowse_GridData(int skip, int take, List<DataProviderSortInfo> sort, List<DataProviderFilterInfo> filters, Guid settingsModuleGuid, int blogCategory) {
-            // filter by category
-            if (blogCategory != 0) {
-                filters = DataProviderFilterInfo.Join(filters, new DataProviderFilterInfo { Field = "CategoryIdentity", Operator = "==", Value = blogCategory, });
-            }
-            using (BlogEntryDataProvider entryDP = new BlogEntryDataProvider()) {
-                using (BlogCategoryDataProvider categoryDP = new BlogCategoryDataProvider()) {
-                    DataProviderGetRecords<BlogEntry> browseItems = await entryDP.GetItemsAsync(skip, take, sort, filters);
-                    Grid.SaveSettings(skip, take, sort, filters, settingsModuleGuid);
-                    return await GridPartialViewAsync(new DataSourceResult {
-                        Data = (from s in browseItems.Data select new BrowseItem(Module, categoryDP, s)).ToList<object>(),
-                        Total = browseItems.Total
-                    });
-                }
-            }
+        public async Task<ActionResult> EntriesBrowse_GridData(string fieldPrefix, int skip, int take, List<DataProviderSortInfo> sorts, List<DataProviderFilterInfo> filters, int blogCategory) {
+            return await Grid2PartialViewAsync(GetGridModel(blogCategory), fieldPrefix, skip, take, sorts, filters);
         }
 
         [AllowPost]

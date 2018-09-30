@@ -10,6 +10,8 @@ using YetaWF.Core.Modules;
 using YetaWF.Modules.Dashboard.Modules;
 using YetaWF.Core;
 using YetaWF.Core.Components;
+using YetaWF.Core.DataProvider;
+using System.Threading.Tasks;
 #if MVC6
 using Microsoft.AspNetCore.Mvc;
 #else
@@ -35,8 +37,6 @@ namespace YetaWF.Modules.Dashboard.Controllers {
                 }
             }
 
-            public string AddonKey { get; set; }
-
             [Caption("Type"), Description("The AddOn type")]
             [UIHint("Enum"), ReadOnly]
             public VersionManager.AddOnType Type { get; set; }
@@ -56,12 +56,16 @@ namespace YetaWF.Modules.Dashboard.Controllers {
             [UIHint("String"), ReadOnly]
             public string Url { get; set; }
 
-            private AddonsBrowseModule Module { get; set; }
+            public AddonsBrowseModule Module { get; set; }
+
+            [UIHint("Hidden"), ReadOnly]
+            public string AddonKey { get; set; }
 
             public BrowseItem(AddonsBrowseModule module, VersionManager.AddOnProduct data) {
                 Module = module;
                 ObjectSupport.CopyData(data, this);
             }
+            public BrowseItem() { }
         }
 
         public class BrowseModel {
@@ -83,31 +87,51 @@ namespace YetaWF.Modules.Dashboard.Controllers {
             public string BowerComponentsUrl { get; set; }
 
             [Caption("Installed AddOns"), Description("Displays all installed AddOns")]
-            [UIHint("Grid"), ReadOnly]
-            public GridDefinition GridDef { get; set; }
+            [UIHint("Softelvdm_Grid_Grid2"), ReadOnly]
+            public Grid2Definition GridDef { get; set; }
+        }
+        private Grid2Definition GetGridModel() {
+            return new Grid2Definition {
+                InitialPageSize = 20,
+                ModuleGuid = Module.ModuleGuid,
+                SettingsModuleGuid = Module.PermanentGuid,
+                RecordType = typeof(BrowseItem),
+                AjaxUrl = GetActionUrl(nameof(AddonsBrowse_GridData)),
+                SortFilterStaticData = (List<object> data, int skip, int take, List<DataProviderSortInfo> sorts, List<DataProviderFilterInfo> filters) => {
+                    DataProviderGetRecords<BrowseItem> recs = DataProviderImpl<BrowseItem>.GetRecords(data, skip, take, sorts, filters);
+                    foreach (BrowseItem r in recs.Data)
+                        r.Module = Module;
+                    return new DataSourceResult {
+                        Data = recs.Data.ToList<object>(),
+                        Total = recs.Total,
+                    };
+                },
+                DirectDataAsync = (int skip, int take, List<DataProviderSortInfo> sort, List<DataProviderFilterInfo> filters) => {
+                    List<VersionManager.AddOnProduct> list = VersionManager.GetAvailableAddOns();
+                    DataSourceResult data = new DataSourceResult {
+                        Data = (from l in list select new BrowseItem(Module, l)).ToList<object>(),
+                        Total = list.Count,
+                    };
+                    return Task.FromResult(data);
+                },
+            };
         }
 
         [AllowGet]
         public ActionResult AddonsBrowse() {
-
-            List<VersionManager.AddOnProduct> list = VersionManager.GetAvailableAddOns();
-            DataSourceResult data = new DataSourceResult {
-                Data = (from l in list select new BrowseItem(Module, l)).ToList<object>(),
-                Total = list.Count,
-            };
             BrowseModel model = new BrowseModel {
                 AddOnsUrl = VersionManager.AddOnsUrl,
                 AddOnsCustomUrl = VersionManager.AddOnsCustomUrl,
                 NodeModulesUrl = Globals.NodeModulesUrl,
                 BowerComponentsUrl = Globals.BowerComponentsUrl,
-            };
-            model.GridDef = new GridDefinition {
-                SupportReload = false,
-                Data = data,
-                RecordType = typeof(BrowseItem),
-                InitialPageSize = 20,
+                GridDef = GetGridModel()
             };
             return View(model);
+        }
+        [AllowPost]
+        [ConditionalAntiForgeryToken]
+        public async Task<ActionResult> AddonsBrowse_GridData(string data, string fieldPrefix, int skip, int take, List<DataProviderSortInfo> sorts, List<DataProviderFilterInfo> filters) {
+            return await Grid2PartialViewAsync<BrowseItem>(GetGridModel(), data, fieldPrefix, skip, take, sorts, filters);
         }
     }
 }

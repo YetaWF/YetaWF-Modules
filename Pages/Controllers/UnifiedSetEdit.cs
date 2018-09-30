@@ -142,7 +142,7 @@ namespace YetaWF.Modules.Pages.Controllers {
             if (!attr.IsValid(newValue))
                 throw new Error(attr.ErrorMessage);
             // add new grid record
-            ListOfLocalPagesEditComponent.GridEntryEdit entry = (ListOfLocalPagesEditComponent.GridEntryEdit)Activator.CreateInstance(typeof(ListOfLocalPagesEditComponent.GridEntryEdit));
+            ListOfLocalPagesEditComponent.Entry entry = (ListOfLocalPagesEditComponent.Entry)Activator.CreateInstance(typeof(ListOfLocalPagesEditComponent.Entry));
             entry.Url = newValue;
             return await GridPartialViewAsync(new GridDefinition.GridEntryDefinition(prefix, newRecNumber, entry));
         }

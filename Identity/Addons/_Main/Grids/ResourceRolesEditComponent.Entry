@@ -1,0 +1,5 @@
+﻿InRole              onlysubmitwhenchecked [Globals.ChBoolean] center sort
+Name                25 sort defaultsort asc
+Description         60
+DisplayRoleId       right [Globals.ChIntValue] sort internal
+RoleId              hidden

@@ -137,37 +137,44 @@ namespace YetaWF.Modules.Pages.Controllers {
         }
 
         public class PagesBrowseModel {
-            [UIHint("Grid")]
-            public GridDefinition GridDef { get; set; }
+            [UIHint("Softelvdm_Grid_Grid2"), ReadOnly]
+            public Grid2Definition GridDef { get; set; }
+        }
+        private Grid2Definition GetGridModel() {
+            return new Grid2Definition {
+                ModuleGuid = Module.ModuleGuid,
+                SettingsModuleGuid = Module.PermanentGuid,
+                RecordType = typeof(PageItem),
+                AjaxUrl = GetActionUrl(nameof(PagesBrowse_GridData)),
+                DirectDataAsync = async (int skip, int take, List<DataProviderSortInfo> sort, List<DataProviderFilterInfo> filters) => {
+                    // page editing services
+                    ModuleDefinition pageSettings = await ModuleDefinition.LoadAsync(Manager.CurrentSite.PageEditingServices, AllowNone: true);
+                    //if (pageSettings == null)
+                    //    throw new InternalError("No page edit services available - no module has been defined in Site Properties");
+
+                    using (PageDefinitionDataProvider dataProvider = new PageDefinitionDataProvider()) {
+                        DataProviderGetRecords<PageDefinition> pages = await dataProvider.GetItemsAsync(skip, take, sort, filters);
+                        return new DataSourceResult {
+                            Data = (from s in pages.Data select new PageItem(Module, s, pageSettings)).ToList<object>(),
+                            Total = pages.Total
+                        };
+                    }
+                },
+            };
         }
 
         [AllowGet]
         public ActionResult PagesBrowse() {
-            PagesBrowseModel model = new PagesBrowseModel { };
-            model.GridDef = new GridDefinition {
-                AjaxUrl = GetActionUrl("PagesBrowse_GridData"),
-                ModuleGuid = Module.ModuleGuid,
-                RecordType = typeof(PageItem),
-                SettingsModuleGuid = Module.PermanentGuid,
+            PagesBrowseModel model = new PagesBrowseModel {
+                GridDef = GetGridModel()
             };
             return View(model);
         }
 
         [AllowPost]
-        public async Task<ActionResult> PagesBrowse_GridData(int skip, int take, List<DataProviderSortInfo> sort, List<DataProviderFilterInfo> filters, Guid settingsModuleGuid) {
-            // page editing services
-            ModuleDefinition pageSettings = await ModuleDefinition.LoadAsync(Manager.CurrentSite.PageEditingServices, AllowNone: true);
-            //if (pageSettings == null)
-            //    throw new InternalError("No page edit services available - no module has been defined in Site Properties");
-
-            using (PageDefinitionDataProvider dataProvider = new PageDefinitionDataProvider()) {
-                DataProviderGetRecords<PageDefinition> pages = await dataProvider.GetItemsAsync(skip, take, sort, filters);
-                Grid.SaveSettings(skip, take, sort, filters, settingsModuleGuid);
-                return await GridPartialViewAsync(new DataSourceResult {
-                    Data = (from s in pages.Data select new PageItem(Module, s, pageSettings)).ToList<object>(),
-                    Total = pages.Total
-                });
-            }
+        [ConditionalAntiForgeryToken]
+        public async Task<ActionResult> PagesBrowse_GridData(string fieldPrefix, int skip, int take, List<DataProviderSortInfo> sorts, List<DataProviderFilterInfo> filters) {
+            return await Grid2PartialViewAsync(GetGridModel(), fieldPrefix, skip, take, sorts, filters);
         }
 
         [AllowPost]

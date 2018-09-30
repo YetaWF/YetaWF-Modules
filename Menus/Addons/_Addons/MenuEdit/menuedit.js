@@ -553,7 +553,7 @@ YetaWF_MenuEdit.LoadTree = function (treeId, detailsId, data, newEntry) {
                 dots: false,
             },
             check_callback: function (operation, node, node_parent, node_position, more) {
-                console.log(operation + ' ' + node_parent.id + ' ' + node.id + ' ' + node_position);
+                //console.log(operation + ' ' + node_parent.id + ' ' + node.id + ' ' + node_position);
                 if (operation == 'move_node') {
                     if (node_parent.id == "#")
                         return false;

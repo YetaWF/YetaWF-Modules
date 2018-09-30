@@ -1,20 +1,18 @@
 ﻿/* Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/ModuleEdit#License */
 
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
-using YetaWF.Core.Components;
 using YetaWF.Core.Controllers;
 using YetaWF.Core.DataProvider;
 using YetaWF.Core.Identity;
 using YetaWF.Core.Localize;
-using YetaWF.Core.Models;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Modules;
 using YetaWF.Core.Support;
-using YetaWF.Modules.Identity.DataProvider;
 using YetaWF.Modules.ModuleEdit.Components;
+using System.Linq;
+using System;
+using YetaWF.Core.Models;
 #if MVC6
 using Microsoft.AspNetCore.Mvc;
 #else
@@ -30,41 +28,43 @@ namespace YetaWF.Modules.ModuleEdit.Controllers {
         [AllowPost]
         [ConditionalAntiForgeryToken]
         [ExcludeDemoMode]
-        public async Task<ActionResult> AddUserToModule(string prefix, int newRecNumber, string newValue, Guid editGuid) {
-
-            if (string.IsNullOrWhiteSpace(newValue))
+        public async Task<ActionResult> AddUserToModule(string data, string fieldPrefix, string newUser, Guid editGuid) {
+            // validate
+            if (string.IsNullOrWhiteSpace(newUser))
                 throw new Error(this.__ResStr("noParm", "No user name specified"));
-            if (editGuid == Guid.Empty)
-                throw new InternalError("No module being edited");
-
-            int userId = await Resource.ResourceAccess.GetUserIdAsync(newValue);
+            int userId = await Resource.ResourceAccess.GetUserIdAsync(newUser);
             if (userId == 0)
-                throw new Error(this.__ResStr("noUser", "User {0} doesn't exist", newValue));
+                throw new Error(this.__ResStr("noUser", "User {0} doesn't exist.", newUser));
+            string userName = await Resource.ResourceAccess.GetUserNameAsync(userId);
 
-            // get the type of the grid record from the module being edited by checking its
-            // AllowedUsers property [AdditionalMetadata("GridEntry", typeof(GridAllowedUserEntry))]
-            ModuleDefinition editMod = await ModuleDefinition.LoadAsync(editGuid);
-            PropertyData propData = ObjectSupport.GetPropertyData(editMod.GetType(), nameof(ModuleDefinition.AllowedUsers));
-            Type gridEntryType = propData.GetAdditionalAttributeValue<Type>("GridEntry");
+            // check duplicate
+            List<ModuleDefinition.GridAllowedUser> list = YetaWFManager.JsonDeserialize<List<ModuleDefinition.GridAllowedUser>>(data);
+            if ((from l in list where l.UserId == userId select l).FirstOrDefault() != null)
+                throw new Error(this.__ResStr("dupUser", "User {0} has already been added", newUser));
 
-            // add new grid record
-            ModuleDefinition.GridAllowedUser userEntry = (ModuleDefinition.GridAllowedUser)Activator.CreateInstance(gridEntryType);
-            await userEntry.SetUserAsync(userId);
-            GridDefinition.GridEntryDefinition gridEntryDef = new GridDefinition.GridEntryDefinition(prefix, newRecNumber, userEntry);
-            return await GridPartialViewAsync(gridEntryDef);
+            // render
+            ModuleDefinition.GridAllowedUser entry = new ModuleDefinition.GridAllowedUser {
+                DisplayUserId = userId,
+                UserId = userId,
+                View = ModuleDefinition.AllowedEnum.Yes,
+                DisplayUserName = userName
+            };
+            return await Grid2RecordViewAsync(await AllowedUsersEditComponent.Grid2RecordAsync(fieldPrefix, entry, editGuid));
         }
+
         [AllowPost]
         [ConditionalAntiForgeryToken]
         [ResourceAuthorize(YetaWF.Modules.Identity.Addons.Info.Resource_AllowListOfUserNamesAjax)]
-        public async Task<ActionResult> AllowedUsersBrowse_GridData(int skip, int take, List<DataProviderSortInfo> sort, List<DataProviderFilterInfo> filters /*, Guid settingsModuleGuid - not available in templates */) {
-            using (UserDefinitionDataProvider userDP = new UserDefinitionDataProvider()) {
-                DataProviderGetRecords<UserDefinition> browseItems = await userDP.GetItemsAsync(skip, take, sort, filters);
-                //Grid.SaveSettings(skip, take, sort, filters, settingsModuleGuid);
-                return await GridPartialViewAsync(new DataSourceResult {
-                    Data = (from s in browseItems.Data select new AllowedUsersEditComponent.GridAllEntry(s)).ToList<object>(),
-                    Total = browseItems.Total
-                });
-            }
+        public async Task<ActionResult> AllowedUsersBrowse_GridData(string fieldPrefix, int skip, int take, List<DataProviderSortInfo> sorts, List<DataProviderFilterInfo> filters) {
+            return await Grid2PartialViewAsync(AllowedUsersEditComponent.GetGridAllUsersModel(), fieldPrefix, skip, take, sorts, filters);
+        }
+        [AllowPost]
+        [ConditionalAntiForgeryToken]
+        public async Task<ActionResult> AllowedUsersEdit_SortFilter(string data, string fieldPrefix, int skip, int take, List<DataProviderSortInfo> sorts, List<DataProviderFilterInfo> filters, Guid editGuid) {
+            Grid2Definition gridModel = AllowedUsersEditComponent.GetGridModel(false);
+            ModuleDefinition module = await ModuleDefinition.LoadAsync(editGuid);
+            gridModel.ResourceRedirect = module;
+            return await Grid2PartialViewAsync<ModuleDefinition.GridAllowedUser>(gridModel, data, fieldPrefix, skip, take, sorts, filters);
         }
     }
 }

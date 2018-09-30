@@ -9,6 +9,7 @@ using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Support;
 using System.Threading.Tasks;
 using YetaWF.Modules.Pages.Components;
+using System.Linq;
 #if MVC6
 using Microsoft.AspNetCore.Mvc;
 #else
@@ -62,15 +63,19 @@ namespace YetaWF.Modules.Pages.Controllers {
         [AllowPost]
         [ConditionalAntiForgeryToken]
         [ExcludeDemoMode]
-        public async Task<ActionResult> AddPage(string prefix, int newRecNumber, string newValue) {
+        public async Task<ActionResult> AddPage(string data, string fieldPrefix, string newUrl) {
             // Validation
             UrlValidationAttribute attr = new UrlValidationAttribute(UrlValidationAttribute.SchemaEnum.Any, UrlTypeEnum.Local);
-            if (!attr.IsValid(newValue))
+            if (!attr.IsValid(newUrl))
                 throw new Error(attr.ErrorMessage);
+            List<ListOfLocalPagesEditComponent.Entry> list = YetaWFManager.JsonDeserialize<List<ListOfLocalPagesEditComponent.Entry>>(data);
+            if ((from l in list where l.Url.ToLower() == newUrl.ToLower() select l).FirstOrDefault() != null)
+                throw new Error(this.__ResStr("dupUrl", "Page {0} has already been added", newUrl));
             // add new grid record
-            ListOfLocalPagesEditComponent.GridEntryEdit entry = (ListOfLocalPagesEditComponent.GridEntryEdit)Activator.CreateInstance(typeof(ListOfLocalPagesEditComponent.GridEntryEdit));
-            entry.Url = newValue;
-            return await GridPartialViewAsync(new GridDefinition.GridEntryDefinition(prefix, newRecNumber, entry));
+            ListOfLocalPagesEditComponent.Entry entry = new ListOfLocalPagesEditComponent.Entry {
+                Url = newUrl,
+            };
+            return await Grid2RecordViewAsync(await ListOfLocalPagesEditComponent.Grid2RecordAsync(fieldPrefix, entry));
         }
     }
 }

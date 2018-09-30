@@ -68,34 +68,39 @@ namespace YetaWF.Modules.Backups.Controllers {
         }
 
         public class BackupsModel {
-            [UIHint("Grid")]
-            public GridDefinition GridDef { get; set; }
+            [UIHint("Softelvdm_Grid_Grid2")]
+            public Grid2Definition GridDef { get; set; }
+        }
+
+        private Grid2Definition GetGridModel() {
+            return new Grid2Definition {
+                ModuleGuid = Module.ModuleGuid,
+                SettingsModuleGuid = Module.PermanentGuid,
+                RecordType = typeof(BackupModel),
+                AjaxUrl = GetActionUrl(nameof(Backups_GridData)),
+                DirectDataAsync = async (int skip, int take, List<DataProviderSortInfo> sort, List<DataProviderFilterInfo> filters) => {
+                    using (BackupsDataProvider dataProvider = new BackupsDataProvider()) {
+                        DataProviderGetRecords<BackupEntry> backups = await dataProvider.GetBackupsAsync(skip, take, sort, filters);
+                        return new DataSourceResult {
+                            Data = (from b in backups.Data select new BackupModel(Module, b)).ToList<object>(),
+                            Total = backups.Total
+                        };
+                    }
+                },
+            };
         }
 
         [AllowGet]
         public ActionResult Backups() {
-            BackupsModel model = new BackupsModel {};
-            model.GridDef = new GridDefinition {
-                AjaxUrl = GetActionUrl("Backups_GridData"),
-                ModuleGuid = Module.ModuleGuid,
-                RecordType = typeof(BackupModel),
-                SettingsModuleGuid = Module.PermanentGuid,
+            BackupsModel model = new BackupsModel {
+                GridDef = GetGridModel()
             };
             return View(model);
         }
 
         [AllowPost]
-        public async Task<ActionResult> Backups_GridData(int skip, int take, List<DataProviderSortInfo> sort, List<DataProviderFilterInfo> filters, Guid settingsModuleGuid) {
-            using (BackupsDataProvider dataProvider = new BackupsDataProvider()) {
-                DataProviderGetRecords<BackupEntry> backups = await dataProvider.GetBackupsAsync(skip, take, sort, filters);
-                Grid.SaveSettings(skip, take, sort, filters, settingsModuleGuid);
-                return await GridPartialViewAsync(
-                    new DataSourceResult {
-                        Data = (from b in backups.Data select new BackupModel(Module, b)).ToList<object>(),
-                        Total = backups.Total
-                    }
-                );
-            }
+        public async Task<ActionResult> Backups_GridData(string fieldPrefix, int skip, int take, List<DataProviderSortInfo> sorts, List<DataProviderFilterInfo> filters) {
+            return await Grid2PartialViewAsync(GetGridModel(), fieldPrefix, skip, take, sorts, filters);
         }
 
         [AllowPost]

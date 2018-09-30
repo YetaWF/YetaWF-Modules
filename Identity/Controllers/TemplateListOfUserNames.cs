@@ -1,11 +1,9 @@
 /* Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Identity#License */
 
-using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using YetaWF.Core.Controllers;
 using YetaWF.Core.Localize;
-using YetaWF.Core.Models;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Support;
 using YetaWF.Modules.Identity.DataProvider;
@@ -28,7 +26,7 @@ namespace YetaWF.Modules.Identity.Controllers {
         public class Model {
 
             [Caption("User Names (Required)"), Description("List of User Names (Required)")]
-            [UIHint("YetaWF_Identity_ListOfUserNames"), ListNoDuplicates, Required, Trim]
+            [UIHint("YetaWF_Identity_ListOfUserNames"), ListNoDuplicates/*$$$$ no int support */, Required, Trim]
             public List<int> Prop1Req { get; set; }
             public string Prop1Req_AjaxUrl { get { return YetaWFManager.UrlFor(typeof(TemplateListOfUserNamesModuleController), nameof(AddUserName)); } }
 
@@ -85,16 +83,19 @@ namespace YetaWF.Modules.Identity.Controllers {
         [AllowPost]
         [ConditionalAntiForgeryToken]
         [ExcludeDemoMode]
-        public async Task<ActionResult> AddUserName(string prefix, int newRecNumber, string newValue) {
+        public async Task<ActionResult> AddUserName(string data, string fieldPrefix, string newUser) {
             using (UserDefinitionDataProvider userDP = new DataProvider.UserDefinitionDataProvider()) {
-                UserDefinition user = await userDP.GetItemAsync(newValue);
+                UserDefinition user = await userDP.GetItemAsync(newUser);
                 if (user == null)
-                    throw new Error(this.__ResStr("noUser", "User {0} not found", newValue));
-                ListOfUserNamesEditComponent.GridEdit entry = new ListOfUserNamesEditComponent.GridEdit {
-                    UserName = newValue,
-                    __Value = user.UserId.ToString(),
+                    throw new Error(this.__ResStr("noUser", "User {0} not found", newUser));
+                List<ListOfUserNamesEditComponent.Entry> list = YetaWFManager.JsonDeserialize<List<ListOfUserNamesEditComponent.Entry>>(data);
+                if ((from l in list where l.UserId == user.UserId select l).FirstOrDefault() != null)
+                    throw new Error(this.__ResStr("dupUser", "User {0} has already been added", newUser));
+                ListOfUserNamesEditComponent.Entry entry = new ListOfUserNamesEditComponent.Entry {
+                    UserName = newUser,
+                    UserId = user.UserId,
                 };
-                return await GridPartialViewAsync(new GridDefinition.GridEntryDefinition(prefix, newRecNumber, entry));
+                return await Grid2RecordViewAsync(await ListOfUserNamesEditComponent.Grid2RecordAsync(fieldPrefix, entry));
             }
         }
     }

@@ -69,34 +69,39 @@ namespace YetaWF.Modules.Sites.Controllers {
         }
 
         public class BrowseModel {
-            [UIHint("Grid")]
-            public GridDefinition GridDef { get; set; }
+            [UIHint("Softelvdm_Grid_Grid2"), ReadOnly]
+            public Grid2Definition GridDef { get; set; }
         }
+        private Grid2Definition GetGridModel() {
+            return new Grid2Definition {
+                ModuleGuid = Module.ModuleGuid,
+                SettingsModuleGuid = Module.PermanentGuid,
+                RecordType = typeof(BrowseItem),
+                AjaxUrl = GetActionUrl(nameof(SitesBrowse_GridData)),
+                DirectDataAsync = async (int skip, int take, List<DataProviderSortInfo> sort, List<DataProviderFilterInfo> filters) => {
+                    ModuleDefinition siteEditModule = await ModuleDefinition.LoadAsync(new Guid("522296A0-B03B-49b7-B849-AB4149466E0D"));
+                    ConfirmRemovalModule confirmModule = new ConfirmRemovalModule();
 
+                    DataProviderGetRecords<SiteDefinition> info = await SiteDefinition.GetSitesAsync(skip, take, sort, filters);
+                    return new DataSourceResult {
+                        Data = (from s in info.Data select new BrowseItem(Module, siteEditModule, confirmModule, s)).ToList<object>(),
+                        Total = info.Total
+                    };
+                },
+            };
+        }
         [AllowGet]
         public ActionResult SitesBrowse() {
-            BrowseModel model = new BrowseModel { };
-            model.GridDef = new GridDefinition {
-                AjaxUrl = GetActionUrl("SitesBrowse_GridData"),
-                ModuleGuid = Module.ModuleGuid,
-                RecordType = typeof(BrowseItem),
-                SettingsModuleGuid = Module.PermanentGuid,
+            BrowseModel model = new BrowseModel {
+                GridDef = GetGridModel()
             };
             return View(model);
         }
 
         [AllowPost]
         [ConditionalAntiForgeryToken]
-        public async Task<ActionResult> SitesBrowse_GridData(int skip, int take, List<DataProviderSortInfo> sort, List<DataProviderFilterInfo> filters, Guid settingsModuleGuid) {
-            ModuleDefinition siteEditModule = await ModuleDefinition.LoadAsync(new Guid("522296A0-B03B-49b7-B849-AB4149466E0D"));
-            ConfirmRemovalModule confirmModule = new ConfirmRemovalModule();
-
-            DataProviderGetRecords<SiteDefinition> info = await SiteDefinition.GetSitesAsync(skip, take, sort, filters);
-            Grid.SaveSettings(skip, take, sort, filters, settingsModuleGuid);
-            return await GridPartialViewAsync(new DataSourceResult {
-                Data = (from s in info.Data select new BrowseItem(Module, siteEditModule, confirmModule, s)).ToList<object>(),
-                Total = info.Total
-            });
+        public async Task<ActionResult> SitesBrowse_GridData(string fieldPrefix, int skip, int take, List<DataProviderSortInfo> sorts, List<DataProviderFilterInfo> filters) {
+            return await Grid2PartialViewAsync(GetGridModel(), fieldPrefix, skip, take, sorts, filters);
         }
     }
 }

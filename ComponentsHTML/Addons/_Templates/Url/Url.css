@@ -1,5 +1,10 @@
 @charset "UTF-8";
 /* Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/ComponentsHTML#License */
+div.yt_url.t_display {
+  display: inline; }
+  div.yt_url.t_display a img {
+    margin-left: .5ch; }
+
 div.yt_url.t_edit {
   display: inline-block; }
   div.yt_url.t_edit .t_select {
@@ -12,8 +17,3 @@ div.yt_url.t_edit {
     display: inline-block; }
   div.yt_url.t_edit input[type="text"] {
     width: 50ch; }
-
-div.yt_url.t_display {
-  display: inline; }
-  div.yt_url.t_display a img {
-    margin-left: .5ch; }

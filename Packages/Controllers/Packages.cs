@@ -26,10 +26,6 @@ namespace YetaWF.Modules.Packages.Controllers {
 
     public class PackagesModuleController : ControllerImpl<YetaWF.Modules.Packages.Modules.PackagesModule> {
 
-        public class PackagesModel {
-            [UIHint("Grid")]
-            public GridDefinition GridDef { get; set; }
-        }
         public class PackageModel {
 
             [Caption("Actions"), Description("The available actions")]
@@ -95,30 +91,41 @@ namespace YetaWF.Modules.Packages.Controllers {
             Package Package;
             ModuleDefinition ModLocalize; //localization services
         }
+        public class PackagesModel {
+            [UIHint("Softelvdm_Grid_Grid2"), ReadOnly]
+            public Grid2Definition GridDef { get; set; }
+        }
+        private Grid2Definition GetGridModel() {
+            return new Grid2Definition {
+                ModuleGuid = Module.ModuleGuid,
+                SettingsModuleGuid = Module.PermanentGuid,
+                RecordType = typeof(PackageModel),
+                AjaxUrl = GetActionUrl(nameof(Packages_GridData)),
+                DirectDataAsync = async (int skip, int take, List<DataProviderSortInfo> sort, List<DataProviderFilterInfo> filters) => {
+                    ModuleDefinition modLocalize = await ModuleDefinition.LoadAsync(Manager.CurrentSite.PackageLocalizationServices, AllowNone: true);
+                    if (modLocalize == null)
+                        throw new InternalError("No localization services available - no module has been defined");
+                    DataProviderGetRecords<Package> packages = Package.GetAvailablePackages(skip, take, sort, filters);
+                    return new DataSourceResult {
+                        Data = (from p in packages.Data select new PackageModel(Module, modLocalize, p)).ToList<object>(),
+                        Total = packages.Total
+                    };
+                },
+            };
+        }
 
         [AllowGet]
         public ActionResult Packages() {
-            PackagesModel model = new PackagesModel {};
-            model.GridDef = new GridDefinition {
-                AjaxUrl = GetActionUrl("Packages_GridData"),
-                ModuleGuid = Module.ModuleGuid,
-                RecordType = typeof(PackageModel),
-                SettingsModuleGuid = Module.PermanentGuid,
+            PackagesModel model = new PackagesModel {
+                GridDef = GetGridModel()
             };
             return View(model);
         }
 
         [AllowPost]
-        public async Task<ActionResult> Packages_GridData(int skip, int take, List<DataProviderSortInfo> sort, List<DataProviderFilterInfo> filters, Guid settingsModuleGuid) {
-            ModuleDefinition modLocalize = await ModuleDefinition.LoadAsync(Manager.CurrentSite.PackageLocalizationServices, AllowNone: true);
-            if (modLocalize == null)
-                throw new InternalError("No localization services available - no module has been defined");
-            DataProviderGetRecords<Package> packages = Package.GetAvailablePackages(skip, take, sort, filters);
-            Grid.SaveSettings(skip, take, sort, filters, settingsModuleGuid);
-            return await GridPartialViewAsync(new DataSourceResult {
-                Data = (from p in packages.Data select new PackageModel(Module, modLocalize, p)).ToList<object>(),
-                Total = packages.Total
-            });
+        [ConditionalAntiForgeryToken]
+        public async Task<ActionResult> Packages_GridData(string fieldPrefix, int skip, int take, List<DataProviderSortInfo> sorts, List<DataProviderFilterInfo> filters) {
+            return await Grid2PartialViewAsync(GetGridModel(), fieldPrefix, skip, take, sorts, filters);
         }
 
         [Permission("Imports")]

@@ -89,6 +89,7 @@ namespace YetaWF.Modules.Dashboard.Controllers {
                 Changes = Changes?.Replace(",", ", ");
                 Changes = Changes.TruncateWithEllipse(100);
             }
+            public BrowseItem() { }
         }
 
         public class BrowseModel {
@@ -106,9 +107,26 @@ namespace YetaWF.Modules.Dashboard.Controllers {
             public bool AuditingActive { get { return YetaWF.Core.Audit.Auditing.Active; } }
 
             [Caption(""), Description("")] // empty entries required so property is shown in property list (but with a suppressed label)
-            [UIHint("Grid"), ReadOnly]
+            [UIHint("Softelvdm_Grid_Grid2"), ReadOnly]
             [SuppressIfEqual("AuditingActive", false)]
-            public GridDefinition GridDef { get; set; }
+            public Grid2Definition GridDef { get; set; }
+        }
+        private Grid2Definition GetGridModel() {
+            return new Grid2Definition {
+                ModuleGuid = Module.ModuleGuid,
+                SettingsModuleGuid = Module.PermanentGuid,
+                RecordType = typeof(BrowseItem),
+                AjaxUrl = GetActionUrl(nameof(AuditRecords_GridData)),
+                DirectDataAsync = async (int skip, int take, List<DataProviderSortInfo> sort, List<DataProviderFilterInfo> filters) => {
+                    using (AuditInfoDataProvider dataProvider = new AuditInfoDataProvider()) {
+                        DataProviderGetRecords<AuditInfo> browseItems = await dataProvider.GetItemsAsync(skip, take, sort, filters);
+                        return new DataSourceResult {
+                            Data = (from s in browseItems.Data select new BrowseItem(Module, s)).ToList<object>(),
+                            Total = browseItems.Total
+                        };
+                    }
+                },
+            };
         }
 
         [AllowGet]
@@ -117,12 +135,7 @@ namespace YetaWF.Modules.Dashboard.Controllers {
                 BrowseModel model = new BrowseModel {
                     RestartPending = YetaWF.Core.Support.Startup.RestartPending || (YetaWF.Core.Audit.Auditing.Active ? await YetaWF.Core.Audit.Auditing.AuditProvider.HasPendingRestartAsync() : false),
                     LastRestart = YetaWF.Core.Support.Startup.MultiInstanceStartTime,
-                };
-                model.GridDef = new GridDefinition {
-                    AjaxUrl = GetActionUrl("AuditRecords_GridData"),
-                    ModuleGuid = Module.ModuleGuid,
-                    RecordType = typeof(BrowseItem),
-                    SettingsModuleGuid = Module.PermanentGuid,
+                    GridDef = GetGridModel()
                 };
                 return View(model);
             }
@@ -130,15 +143,8 @@ namespace YetaWF.Modules.Dashboard.Controllers {
 
         [AllowPost]
         [ConditionalAntiForgeryToken]
-        public async Task<ActionResult> AuditRecords_GridData(int skip, int take, List<DataProviderSortInfo> sort, List<DataProviderFilterInfo> filters, Guid settingsModuleGuid) {
-            using (AuditInfoDataProvider dataProvider = new AuditInfoDataProvider()) {
-                DataProviderGetRecords<AuditInfo> browseItems = await dataProvider.GetItemsAsync(skip, take, sort, filters);
-                Grid.SaveSettings(skip, take, sort, filters, settingsModuleGuid);
-                return await GridPartialViewAsync(new DataSourceResult {
-                    Data = (from s in browseItems.Data select new BrowseItem(Module, s)).ToList<object>(),
-                    Total = browseItems.Total
-                });
-            }
+        public async Task<ActionResult> AuditRecords_GridData(string data, string fieldPrefix, int skip, int take, List<DataProviderSortInfo> sorts, List<DataProviderFilterInfo> filters) {
+            return await Grid2PartialViewAsync(GetGridModel(), fieldPrefix, skip, take, sorts, filters);
         }
 
         [AllowPost]

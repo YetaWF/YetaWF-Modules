@@ -1,6 +1,5 @@
 /* Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Identity#License */
 
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -65,33 +64,38 @@ namespace YetaWF.Modules.Identity.Controllers {
         }
 
         public class BrowseModel {
-            [UIHint("Grid")]
-            public GridDefinition GridDef { get; set; }
+            [UIHint("Softelvdm_Grid_Grid2"), ReadOnly]
+            public Grid2Definition GridDef { get; set; }
         }
-
+        private Grid2Definition GetGridModel() {
+            return new Grid2Definition {
+                ModuleGuid = Module.ModuleGuid,
+                SettingsModuleGuid = Module.PermanentGuid,
+                RecordType = typeof(BrowseItem),
+                AjaxUrl = GetActionUrl(nameof(RolesBrowse_GridData)),
+                DirectDataAsync = async (int skip, int take, List<DataProviderSortInfo> sort, List<DataProviderFilterInfo> filters) => {
+                    using (RoleDefinitionDataProvider dataProvider = new RoleDefinitionDataProvider()) {
+                        DataProviderGetRecords<RoleDefinition> browseItems = await dataProvider.GetItemsAsync(skip, take, sort, filters);
+                        return new DataSourceResult {
+                            Data = (from s in browseItems.Data select new BrowseItem(Module, s)).ToList<object>(),
+                            Total = browseItems.Total
+                        };
+                    }
+                },
+            };
+        }
         [AllowGet]
         public ActionResult RolesBrowse() {
-            BrowseModel model = new BrowseModel { };
-            model.GridDef = new GridDefinition {
-                AjaxUrl = GetActionUrl("RolesBrowse_GridData"),
-                ModuleGuid = Module.ModuleGuid,
-                RecordType = typeof(BrowseItem),
-                SettingsModuleGuid = Module.PermanentGuid,
+            BrowseModel model = new BrowseModel {
+                GridDef = GetGridModel()
             };
             return View(model);
         }
 
         [AllowPost]
         [ConditionalAntiForgeryToken]
-        public async Task<ActionResult> RolesBrowse_GridData(int skip, int take, List<DataProviderSortInfo> sort, List<DataProviderFilterInfo> filters, Guid settingsModuleGuid) {
-            using (RoleDefinitionDataProvider dataProvider = new RoleDefinitionDataProvider()) {
-                DataProviderGetRecords<RoleDefinition> browseItems = await dataProvider.GetItemsAsync(skip, take, sort, filters);
-                Grid.SaveSettings(skip, take, sort, filters, settingsModuleGuid);
-                return await GridPartialViewAsync(new DataSourceResult {
-                    Data = (from s in browseItems.Data select new BrowseItem(Module, s)).ToList<object>(),
-                    Total = browseItems.Total
-                });
-            }
+        public async Task<ActionResult> RolesBrowse_GridData(string fieldPrefix, int skip, int take, List<DataProviderSortInfo> sorts, List<DataProviderFilterInfo> filters) {
+            return await Grid2PartialViewAsync(GetGridModel(), fieldPrefix, skip, take, sorts, filters);
         }
 
         [AllowPost]

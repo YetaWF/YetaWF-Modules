@@ -43,41 +43,57 @@ namespace YetaWF.Modules.Dashboard.Controllers {
             [UIHint("String"), ReadOnly]
             public string CallStack { get; set; }
 
-            private DisposableTrackerBrowseModule Module { get; set; }
+            public DisposableTrackerBrowseModule Module { get; set; }
 
             public BrowseItem(DisposableTrackerBrowseModule module, TrackedEntry data) {
                 Module = module;
                 ObjectSupport.CopyData(data, this);
             }
+            public BrowseItem() { }
         }
-
         public class BrowseModel {
-            [UIHint("Grid")]
-            public GridDefinition GridDef { get; set; }
+            [UIHint("Softelvdm_Grid_Grid2"), ReadOnly]
+            public Grid2Definition GridDef { get; set; }
+        }
+        private Grid2Definition GetGridModel() {
+            return new Grid2Definition {
+                InitialPageSize = 20,
+                ModuleGuid = Module.ModuleGuid,
+                SettingsModuleGuid = Module.PermanentGuid,
+                RecordType = typeof(BrowseItem),
+                AjaxUrl = GetActionUrl(nameof(DisposableTrackerBrowse_GridData)),
+                SortFilterStaticData = (List<object> data, int skip, int take, List<DataProviderSortInfo> sorts, List<DataProviderFilterInfo> filters) => {
+                    DataProviderGetRecords<BrowseItem> recs = DataProviderImpl<BrowseItem>.GetRecords(data, skip, take, sorts, filters);
+                    foreach (BrowseItem r in recs.Data)
+                        r.Module = Module;
+                    return new DataSourceResult {
+                        Data = recs.Data.ToList<object>(),
+                        Total = recs.Total,
+                    };
+                },
+                DirectDataAsync = (int skip, int take, List<DataProviderSortInfo> sort, List<DataProviderFilterInfo> filters) => {
+                    List<BrowseItem> items = (from k in DisposableTracker.GetDisposableObjects() select new BrowseItem(Module, k)).ToList();
+                    DataProviderGetRecords<BrowseItem> recs = DataProviderImpl<BrowseItem>.GetRecords(items, skip, take, sort, filters);
+                    DataSourceResult data = new DataSourceResult {
+                        Data = recs.Data.ToList<object>(),
+                        Total = recs.Total
+                    };
+                    return Task.FromResult(data);
+                },
+            };
         }
 
         [AllowGet]
         public ActionResult DisposableTrackerBrowse() {
-            BrowseModel model = new BrowseModel { };
-            model.GridDef = new GridDefinition {
-                AjaxUrl = GetActionUrl("DisposableTrackerBrowse_GridData"),
-                ModuleGuid = Module.ModuleGuid,
-                RecordType = typeof(BrowseItem),
-                SettingsModuleGuid = Module.PermanentGuid,
+            BrowseModel model = new BrowseModel {
+                GridDef = GetGridModel()
             };
             return View(model);
         }
-
         [AllowPost]
         [ConditionalAntiForgeryToken]
-        public async Task<ActionResult> DisposableTrackerBrowse_GridData(int skip, int take, List<DataProviderSortInfo> sort, List<DataProviderFilterInfo> filters, Guid settingsModuleGuid) {
-            List<BrowseItem> items = (from k in DisposableTracker.GetDisposableObjects() select new BrowseItem(Module, k)).ToList();
-            DataProviderGetRecords<BrowseItem> recs = DataProviderImpl<BrowseItem>.GetRecords(items, skip, take, sort, filters);
-            Grid.SaveSettings(skip, take, sort, filters, settingsModuleGuid);
-            return await GridPartialViewAsync(new DataSourceResult {
-                Data = recs.Data.ToList<object>(),
-                Total = recs.Total
-            });
+        public async Task<ActionResult> DisposableTrackerBrowse_GridData(string data, string fieldPrefix, int skip, int take, List<DataProviderSortInfo> sorts, List<DataProviderFilterInfo> filters) {
+            return await Grid2PartialViewAsync<BrowseItem>(GetGridModel(), data, fieldPrefix, skip, take, sorts, filters);
         }
     }
 }

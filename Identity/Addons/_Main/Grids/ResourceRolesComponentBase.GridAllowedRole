@@ -1,6 +1,0 @@
-﻿__editable          hidden onlysubmitwhenchecked
-InRole              icons 1 onlysubmitwhenchecked
-Name                25 sort defaultsort asc
-Description         40
-DisplayRoleId       right [Globals.ChIntValue] sort
-RoleId              hidden

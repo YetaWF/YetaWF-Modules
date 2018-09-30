@@ -42,23 +42,44 @@ namespace YetaWF.Modules.Dashboard.Controllers {
             public long TotalSize { get; set; }
 
             [Caption("SessionState Items"), Description("The SessionState keys and the values (either the data type or the first 100 bytes of data are shown)")]
-            [UIHint("Grid"), ReadOnly]
-            public GridDefinition GridDef { get; set; }
+            [UIHint("Softelvdm_Grid_Grid2"), ReadOnly]
+            public Grid2Definition GridDef { get; set; }
 
             public void SetData(SessionState session) { }
+        }
+        private Grid2Definition GetGridModel() {
+            return new Grid2Definition {
+                ModuleGuid = Module.ModuleGuid,
+                SettingsModuleGuid = Module.PermanentGuid,
+                RecordType = typeof(BrowseItem),
+                AjaxUrl = GetActionUrl(nameof(SessionInfo_GridData)),
+                SortFilterStaticData = (List<object> data, int skip, int take, List<DataProviderSortInfo> sorts, List<DataProviderFilterInfo> filters) => {
+                    DataProviderGetRecords<BrowseItem> recs = DataProviderImpl<BrowseItem>.GetRecords(data, skip, take, sorts, filters);
+                    return new DataSourceResult {
+                        Data = recs.Data.ToList<object>(),
+                        Total = recs.Total,
+                    };
+                },
+                DirectDataAsync = (int skip, int take, List<DataProviderSortInfo> sort, List<DataProviderFilterInfo> filters) => {
+                    DataProviderGetRecords<BrowseItem> items = DataProviderImpl<BrowseItem>.GetRecords(GetAllItems(), skip, take, sort, filters);
+                    foreach (BrowseItem item in items.Data)
+                        item.Value = item.Value.PadRight(100, ' ').Substring(0, 100).TrimEnd();
+
+                    DataSourceResult data = new DataSourceResult {
+                        Data = items.Data.ToList<object>(),
+                        Total = items.Total,
+                    };
+                    return Task.FromResult(data);
+                },
+            };
         }
 
         [AllowGet]
         public ActionResult SessionInfo() {
             DisplayModel model = new DisplayModel();
             model.SetData(Manager.CurrentSession);
-            model.GridDef = new GridDefinition {
-                AjaxUrl = GetActionUrl("SessionInfo_GridData"),
-                ModuleGuid = Module.ModuleGuid,
-                RecordType = typeof(BrowseItem),
-                SettingsModuleGuid = Module.PermanentGuid,
-                SupportReload = false,
-            };
+            model.GridDef = GetGridModel();
+
             List<BrowseItem> items = GetAllItems();
             model.TotalSize = items.Sum(m => m.Size);
             return View(model);
@@ -66,16 +87,8 @@ namespace YetaWF.Modules.Dashboard.Controllers {
 
         [AllowPost]
         [ConditionalAntiForgeryToken]
-        public async Task<ActionResult> SessionInfo_GridData(int skip, int take, List<DataProviderSortInfo> sort, List<DataProviderFilterInfo> filters, Guid settingsModuleGuid) {
-            DataProviderGetRecords<BrowseItem> items = DataProviderImpl<BrowseItem>.GetRecords(GetAllItems(), skip, take, sort, filters);
-            foreach (BrowseItem item in items.Data)
-                item.Value = item.Value.PadRight(100, ' ').Substring(0, 100).TrimEnd();
-
-            Grid.SaveSettings(skip, take, sort, filters, settingsModuleGuid);
-            return await GridPartialViewAsync(new DataSourceResult {
-                Data = items.Data.ToList<object>(),
-                Total = items.Total,
-            });
+        public async Task<ActionResult> SessionInfo_GridData(string data, string fieldPrefix, int skip, int take, List<DataProviderSortInfo> sorts, List<DataProviderFilterInfo> filters) {
+            return await Grid2PartialViewAsync<BrowseItem>(GetGridModel(), data, fieldPrefix, skip, take, sorts, filters);
         }
 
         private List<BrowseItem> GetAllItems() {

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using YetaWF.Core.Components;
+using YetaWF.Core.DataProvider;
 using YetaWF.Core.Identity;
 using YetaWF.Core.Models;
 using YetaWF.Core.Models.Attributes;
@@ -29,10 +30,6 @@ namespace YetaWF.Modules.PageEdit.Components {
 
         public class GridAllowedRole {
 
-            [DontSave]
-            [UIHint("Boolean")]
-            public bool __editable { get; set; }
-
             [Caption("Role"), Description("Role Description")]
             [UIHint("StringTT"), ReadOnly]
             public StringTT RoleName { get; set; }
@@ -49,10 +46,27 @@ namespace YetaWF.Modules.PageEdit.Components {
             [UIHint("Enum")]
             public PageDefinition.AllowedEnum Remove { get; set; }
 
-            [UIHint("IntValue")]
+            [UIHint("Hidden")]
             public int RoleId { get; set; }
 
+            public bool __editable { get; set; }
+
             public GridAllowedRole() { __editable = true; }
+        }
+
+        private Grid2Definition GetGridModel(bool header) {
+
+            return new Grid2Definition {
+                RecordType = typeof(GridAllowedRole),
+                ShowHeader = header,
+                SortFilterStaticData = (List<object> data, int skip, int take, List<DataProviderSortInfo> sorts, List<DataProviderFilterInfo> filters) => {
+                    DataProviderGetRecords<GridAllowedRole> recs = DataProviderImpl<GridAllowedRole>.GetRecords(data, skip, take, sorts, filters);
+                    return new DataSourceResult {
+                        Data = recs.Data.ToList<object>(),
+                        Total = recs.Total,
+                    };
+                },
+            };
         }
 
         private List<GridAllowedRole> GetGridAllowedRoleFromAllowedRoleList(SerializableList<PageDefinition.AllowedRole> allowedRoles) {
@@ -76,31 +90,25 @@ namespace YetaWF.Modules.PageEdit.Components {
 
             HtmlBuilder hb = new HtmlBuilder();
 
-            hb.Append($"<div class='yt_yetawf_pageedit_allowedroles t_edit'>");
-
-            List<GridAllowedRole> list = GetGridAllowedRoleFromAllowedRoleList(model);
-
             bool header = PropData.GetAdditionalAttributeValue("Header", true);
 
-            DataSourceResult data = new DataSourceResult {
-                Data = list.ToList<object>(),
-                Total = list.Count,
+            Grid2Model grid = new Grid2Model() {
+                GridDef = GetGridModel(header)
             };
-            GridModel grid = new GridModel() {
-                GridDef = new GridDefinition() {
-                    RecordType = typeof(GridAllowedRole),
-                    Data = data,
-                    SupportReload = false,
-                    PageSizes = new List<int>(),
-                    InitialPageSize = 10,
-                    ShowHeader = header,
-                    ReadOnly = false,
-                }
+            grid.GridDef.DirectDataAsync = (int skip, int take, List<DataProviderSortInfo> sorts, List<DataProviderFilterInfo> filters) => {
+                List<GridAllowedRole> list = GetGridAllowedRoleFromAllowedRoleList(model);
+                DataSourceResult data = new DataSourceResult {
+                    Data = list.ToList<object>(),
+                    Total = list.Count,
+                };
+                return Task.FromResult(data);
             };
 
-            hb.Append(await HtmlHelper.ForDisplayAsAsync(Container, PropertyName, FieldName, grid, nameof(grid.GridDef), grid.GridDef, "Grid", HtmlAttributes: HtmlAttributes));
+            hb.Append($@"
+<div class='yt_yetawf_pageedit_allowedroles t_display'>
+    {await HtmlHelper.ForDisplayAsAsync(Container, PropertyName, FieldName, grid, nameof(grid.GridDef), grid.GridDef, "Softelvdm_Grid_Grid2", HtmlAttributes: HtmlAttributes)}
+</div>");
 
-            hb.Append($"</div>");
             return hb.ToYHtmlString();
         }
     }

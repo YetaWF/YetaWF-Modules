@@ -1,13 +1,12 @@
 ﻿/* Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/ModuleEdit#License */
 
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using YetaWF.Core.Components;
+using YetaWF.Core.DataProvider;
 using YetaWF.Core.Identity;
 using YetaWF.Core.Models;
-using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Modules;
 using YetaWF.Core.Packages;
 using YetaWF.Core.Serializers;
@@ -28,14 +27,29 @@ namespace YetaWF.Modules.ModuleEdit.Components {
 
         public override ComponentType GetComponentType() { return ComponentType.Edit; }
 
-        private List<ModuleDefinition.GridAllowedRole> GetGridAllowedRoleFromAllowedRoleList(SerializableList<ModuleDefinition.AllowedRole> allowedRoles, Type gridEntryType) {
+        private Grid2Definition GetGridModel(bool header) {
+
+            return new Grid2Definition {
+                RecordType = typeof(ModuleDefinition.GridAllowedRole),
+                ShowHeader = header,
+                SortFilterStaticData = (List<object> data, int skip, int take, List<DataProviderSortInfo> sorts, List<DataProviderFilterInfo> filters) => {
+                    DataProviderGetRecords<ModuleDefinition.GridAllowedRole> recs = DataProviderImpl<ModuleDefinition.GridAllowedRole>.GetRecords(data, skip, take, sorts, filters);
+                    return new DataSourceResult {
+                        Data = recs.Data.ToList<object>(),
+                        Total = recs.Total,
+                    };
+                },
+            };
+        }
+
+        private List<ModuleDefinition.GridAllowedRole> GetGridAllowedRoleFromAllowedRoleList(SerializableList<ModuleDefinition.AllowedRole> allowedRoles) {
 
             List<RoleInfo> list = Resource.ResourceAccess.GetDefaultRoleList();
             List<ModuleDefinition.GridAllowedRole> roles = new List<ModuleDefinition.GridAllowedRole>();
 
             foreach (RoleInfo r in list) {
                 // we have to create a more derived type here to get all the "extra" fields
-                ModuleDefinition.GridAllowedRole gridRole = (ModuleDefinition.GridAllowedRole)Activator.CreateInstance(gridEntryType);
+                ModuleDefinition.GridAllowedRole gridRole = new ModuleDefinition.GridAllowedRole();
                 gridRole.RoleId = r.RoleId;
                 gridRole.RoleName = new StringTT { Text = r.Name, Tooltip = r.Description };
                 roles.Add(gridRole);
@@ -62,36 +76,26 @@ namespace YetaWF.Modules.ModuleEdit.Components {
 
             HtmlBuilder hb = new HtmlBuilder();
 
-            Type gridEntryType = PropData.GetAdditionalAttributeValue<Type>("GridEntry", null);
-            if (gridEntryType == null)
-                gridEntryType = typeof(ModuleDefinition.GridAllowedRole);
-
-            hb.Append($"<div class='yt_yetawf_moduleedit_allowedroles t_edit'>");
-
             bool header = PropData.GetAdditionalAttributeValue("Header", true);
 
-            List<ModuleDefinition.GridAllowedRole> list = GetGridAllowedRoleFromAllowedRoleList(model, gridEntryType);
-
-            DataSourceResult data = new DataSourceResult {
-                Data = list.ToList<object>(),
-                Total = list.Count,
+            Grid2Model grid = new Grid2Model() {
+                GridDef = GetGridModel(header)
             };
-            GridModel grid = new GridModel() {
-                GridDef = new GridDefinition() {
-                    RecordType = gridEntryType,
-                    Data = data,
-                    SupportReload = false,
-                    PageSizes = new List<int>(),
-                    InitialPageSize = 10,
-                    ShowHeader = header,
-                    ReadOnly = false,
-                    ResourceRedirect = Manager.CurrentModuleEdited,
-                }
+            grid.GridDef.ResourceRedirect = Manager.CurrentModuleEdited;
+            grid.GridDef.DirectDataAsync = (int skip, int take, List<DataProviderSortInfo> sorts, List<DataProviderFilterInfo> filters) => {
+                List<ModuleDefinition.GridAllowedRole> list = GetGridAllowedRoleFromAllowedRoleList(model);
+                DataSourceResult data = new DataSourceResult {
+                    Data = list.ToList<object>(),
+                    Total = list.Count,
+                };
+                return Task.FromResult(data);
             };
 
-            hb.Append(await HtmlHelper.ForDisplayAsAsync(Container, PropertyName, FieldName, grid, nameof(grid.GridDef), grid.GridDef, "Grid", HtmlAttributes: HtmlAttributes));
+            hb.Append($@"
+<div class='yt_yetawf_moduleedit_allowedroles t_display'>
+    {await HtmlHelper.ForDisplayAsAsync(Container, PropertyName, FieldName, grid, nameof(grid.GridDef), grid.GridDef, "Softelvdm_Grid_Grid2", HtmlAttributes: HtmlAttributes)}
+</div>");
 
-            hb.Append($"</div>");
             return hb.ToYHtmlString();
         }
     }

@@ -78,10 +78,28 @@ namespace YetaWF.Modules.Scheduler.Controllers {
         }
 
         public class BrowseModel {
-            [UIHint("Grid")]
-            public GridDefinition GridDef { get; set; }
+            [UIHint("Softelvdm_Grid_Grid2"), ReadOnly]
+            public Grid2Definition GridDef { get; set; }
             public bool LogAvailable { get; set; }
             public bool BrowsingSupported { get; set; }
+        }
+        private Grid2Definition GetGridModel() {
+            return new Grid2Definition {
+                ModuleGuid = Module.ModuleGuid,
+                SettingsModuleGuid = Module.PermanentGuid,
+                RecordType = typeof(BrowseItem),
+                InitialPageSize = 20,
+                AjaxUrl = GetActionUrl(nameof(LogBrowse_GridData)),
+                DirectDataAsync = async (int skip, int take, List<DataProviderSortInfo> sort, List<DataProviderFilterInfo> filters) => {
+                    using (LogDataProvider logDP = new LogDataProvider()) {
+                        DataProviderGetRecords<LogData> browseItems = await logDP.GetItemsAsync(skip, take, sort, filters);
+                        return new DataSourceResult {
+                            Data = (from s in browseItems.Data select new BrowseItem(Module, s)).ToList<object>(),
+                            Total = browseItems.Total
+                        };
+                    }
+                },
+            };
         }
 
         [AllowGet]
@@ -91,30 +109,16 @@ namespace YetaWF.Modules.Scheduler.Controllers {
                     LogAvailable = await logDP.IsInstalledAsync(),
                     BrowsingSupported = logDP.CanBrowse,
                 };
-                if (logDP.CanBrowse) {
-                    model.GridDef = new GridDefinition {
-                        AjaxUrl = GetActionUrl("LogBrowse_GridData"),
-                        ModuleGuid = Module.ModuleGuid,
-                        RecordType = typeof(BrowseItem),
-                        SettingsModuleGuid = Module.PermanentGuid,
-                        InitialPageSize = 20,
-                    };
-                }
+                if (logDP.CanBrowse)
+                    model.GridDef = GetGridModel();
                 return View(model);
             }
         }
 
         [AllowPost]
         [ConditionalAntiForgeryToken]
-        public async Task<ActionResult> LogBrowse_GridData(int skip, int take, List<DataProviderSortInfo> sort, List<DataProviderFilterInfo> filters, Guid settingsModuleGuid) {
-            using (LogDataProvider logDP = new LogDataProvider()) {
-                DataProviderGetRecords<LogData> browseItems = await logDP.GetItemsAsync(skip, take, sort, filters);
-                Grid.SaveSettings(skip, take, sort, filters, settingsModuleGuid);
-                return await GridPartialViewAsync(new DataSourceResult {
-                    Data = (from s in browseItems.Data select new BrowseItem(Module, s)).ToList<object>(),
-                    Total = browseItems.Total
-                });
-            }
+        public async Task<ActionResult> LogBrowse_GridData(string fieldPrefix, int skip, int take, List<DataProviderSortInfo> sorts, List<DataProviderFilterInfo> filters) {
+            return await Grid2PartialViewAsync(GetGridModel(), fieldPrefix, skip, take, sorts, filters);
         }
 
         [AllowPost]

@@ -82,6 +82,9 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
         public override ComponentType GetComponentType() { return ComponentType.Edit; }
 
+        public class UrlEditSetup {
+            public UrlTypeEnum Type { get; set; }
+        }
         public class UrlUI {
 
             [UIHint("Hidden")]
@@ -110,11 +113,10 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 <div id='{ControlId}' class='yt_url t_edit' data-name='{FieldName}'>");
 
             YTagBuilder tag = new YTagBuilder("input");
-            tag.AddCssClass("t_edit");
+            tag.AddCssClass("t_hidden");
             tag.Attributes["type"] = "hidden";
             FieldSetup(tag, FieldType.Validated);
             tag.MergeAttribute("value", model);
-
             hb.Append(tag.ToString(YTagRenderMode.Normal));
 
             using (Manager.StartNestedComponent(FieldName)) {
@@ -151,13 +153,17 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             tag.InnerHtml = tag.InnerHtml + tagImg.ToString(YTagRenderMode.StartTag);
             string link = tag.ToString(YTagRenderMode.Normal);
 
+            UrlEditSetup setup = new UrlEditSetup {
+                Type = type
+            };
+
             hb.Append($@"
     <div class='t_link'>
         {link}
     </div>
 </div>
 <script>
-    YetaWF_Url.init('{ControlId}');
+    new YetaWF_ComponentsHTML.UrlEditComponent('{ControlId}', {YetaWFManager.JsonSerialize(setup)});
 </script>");
             return hb.ToYHtmlString();
         }

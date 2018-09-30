@@ -53,7 +53,6 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             YTagBuilder tag = new YTagBuilder("input");
             tag.AddCssClass(TemplateClass);
             tag.AddCssClass("t_display");
-            tag.MergeAttribute("disabled", "disabled");
             FieldSetup(tag, FieldType.Anonymous);
 
             tag.MergeAttribute("type", "text");

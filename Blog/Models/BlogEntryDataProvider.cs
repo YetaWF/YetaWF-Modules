@@ -157,6 +157,9 @@ namespace YetaWF.Modules.Blog.DataProvider {
         [Data_CalculatedProperty]
         public int Comments { get; set; }
 
+        [Data_DontSave]
+        public MultiString Category { get; set; }
+
         public async Task<MultiString> GetCategoryAsync() {
             using (BlogCategoryDataProvider categoryDP = new BlogCategoryDataProvider()) {
                 BlogCategory blogCategory = await categoryDP.GetItemAsync(CategoryIdentity);
@@ -202,6 +205,8 @@ namespace YetaWF.Modules.Blog.DataProvider {
         public async Task<BlogEntry> GetItemAsync(int blogEntry) {
             BlogEntry data = await DataProvider.GetAsync(blogEntry);
             if (data == null) return null;
+            // TODO: This could be optimized for SQL using joins %%%%%%%%%%%%%%%%%%%
+            await ObjectSupport.HandlePropertyAsync<MultiString>("Category", "GetCategoryAsync", data);
             data.Identity = blogEntry;
             return data;
         }
@@ -221,8 +226,12 @@ namespace YetaWF.Modules.Blog.DataProvider {
             }
             return true;
         }
-        public Task<DataProviderGetRecords<BlogEntry>> GetItemsAsync(int skip, int take, List<DataProviderSortInfo> sort, List<DataProviderFilterInfo> filters) {
-            return DataProvider.GetRecordsAsync(skip, take, sort, filters);
+        public async Task<DataProviderGetRecords<BlogEntry>> GetItemsAsync(int skip, int take, List<DataProviderSortInfo> sort, List<DataProviderFilterInfo> filters) {
+            DataProviderGetRecords<BlogEntry> recs = await DataProvider.GetRecordsAsync(skip, take, sort, filters);
+            // TODO: This could be optimized for SQL using joins %%%%%%%%%%%%%%%%%%%
+            foreach (BlogEntry blogEntry in recs.Data)
+                await ObjectSupport.HandlePropertyAsync<MultiString>("Category", "GetCategoryAsync", blogEntry);
+            return recs;
         }
         public async Task<bool> RemoveEntriesAsync(int categoryIdentity) {
             // TODO: This could be optimized for SQL using joins %%%%%%%%%%%%%%%%%%%
@@ -237,7 +246,7 @@ namespace YetaWF.Modules.Blog.DataProvider {
             }
             return true;
         }
-    
+
         // ISEARCHDYNAMICURLS
         // ISEARCHDYNAMICURLS
         // ISEARCHDYNAMICURLS

@@ -9,6 +9,7 @@ using YetaWF.Core.Support;
 using YetaWF.Core;
 using System.Threading.Tasks;
 using YetaWF.Modules.DevTests.Components;
+using System.Linq;
 #if MVC6
 using Microsoft.AspNetCore.Mvc;
 #else
@@ -62,14 +63,19 @@ namespace YetaWF.Modules.DevTests.Controllers {
         [AllowPost]
         [ConditionalAntiForgeryToken]
         [ExcludeDemoMode]
-        public async Task<ActionResult> AddEmailAddressHTML(string prefix, int newRecNumber, string newValue) {
+        public async Task<ActionResult> AddEmailAddressHTML(string data, string fieldPrefix, string newEmailAddress) {
             // Validation
             EmailValidationAttribute attr = new EmailValidationAttribute();
-            if (!attr.IsValid(newValue))
+            if (!attr.IsValid(newEmailAddress))
                 throw new Error(attr.ErrorMessage);
+            List<ListOfEmailAddressesEditComponent.Entry> list = YetaWFManager.JsonDeserialize<List<ListOfEmailAddressesEditComponent.Entry>>(data);
+            if ((from l in list where l.EmailAddress.ToLower() == newEmailAddress.ToLower() select l).FirstOrDefault() != null)
+                throw new Error(this.__ResStr("dupEmail", "Email address {0} has already been added", newEmailAddress));
             // add new grid record
-            ListOfEmailAddressesEditComponent.GridEdit entry = new ListOfEmailAddressesEditComponent.GridEdit(newValue);
-            return await GridPartialViewAsync(new GridDefinition.GridEntryDefinition(prefix, newRecNumber, entry));
+            ListOfEmailAddressesEditComponent.Entry entry = new ListOfEmailAddressesEditComponent.Entry {
+                EmailAddress = newEmailAddress,
+            };
+            return await Grid2RecordViewAsync(await ListOfEmailAddressesEditComponent.Grid2RecordAsync(fieldPrefix, entry));
         }
     }
 }

@@ -4,12 +4,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using YetaWF.Core.Components;
+using YetaWF.Core.DataProvider;
 using YetaWF.Core.Identity;
 using YetaWF.Core.Models;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Packages;
 using YetaWF.Core.Serializers;
 using YetaWF.Core.Support;
+using YetaWF.Modules.Identity.Controllers;
 
 namespace YetaWF.Modules.ComponentsHTML.Components {
 
@@ -25,11 +27,11 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
         public override ComponentType GetComponentType() { return ComponentType.Display; }
 
-        public class GridDisplay {
+        public class Entry {
 
             [Caption("Use"), Description("Checkbox indicates selection")]
-            [UIHint("Boolean")]
-            public bool ForceTwoStep { get { return true; } }
+            [UIHint("Boolean"), ReadOnly]
+            public bool Used { get { return true; } }
 
             [Caption("Name"), Description("Role Name")]
             [UIHint("String"), ReadOnly]
@@ -39,61 +41,59 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             [UIHint("String"), ReadOnly]
             public string Description { get; set; }
 
-            [UIHint("IntValue"), ReadOnly]
-            public int RoleId {
-                get {
-                    return roleId;
-                }
-                set {
-                    roleId = value;
-                }
-            }
-            private int roleId;
-
-            public GridDisplay() { }
+            public Entry() { }
+        }
+        internal static Grid2Definition GetGridModel(bool header, bool? filter) {
+            return new Grid2Definition() {
+                RecordType = typeof(Entry),
+                InitialPageSize = 10,
+                ShowHeader = header,
+                ShowFilter = filter,
+                AjaxUrl = YetaWFManager.UrlFor(typeof(RolesSelectorController), nameof(RolesSelectorController.RolesSelectorDisplay_SortFilter)),
+                SortFilterStaticData = (List<object> data, int skip, int take, List<DataProviderSortInfo> sorts, List<DataProviderFilterInfo> filters) => {
+                    DataProviderGetRecords<Entry> recs = DataProviderImpl<Entry>.GetRecords(data, skip, take, sorts, filters);
+                    return new DataSourceResult {
+                        Data = recs.Data.ToList<object>(),
+                        Total = recs.Total,
+                    };
+                },
+            };
         }
 
         public async Task<YHtmlString> RenderAsync(SerializableList<Role> model) {
 
             HtmlBuilder hb = new HtmlBuilder();
 
-            hb.Append($"<div class='yt_yetawf_identity_rolesselector t_edit'>");
-
+            bool header = PropData.GetAdditionalAttributeValue("Header", true);
             bool exclude2FA = PropData.GetAdditionalAttributeValue("ExcludeUser2FA", false);
             bool? showFilter = PropData.GetAdditionalAttributeValue<bool?>("ShowFilter", null);
-            List<RoleInfo> allRoles = Resource.ResourceAccess.GetDefaultRoleList(Exclude2FA: exclude2FA);
-            int anonymousRole = Resource.ResourceAccess.GetAnonymousRoleId();
-            List<GridDisplay> roles = (from r in allRoles
-                                       orderby r.Name
-                                       where r.RoleId != anonymousRole &&
-                                           model.Contains(new Role { RoleId = r.RoleId }, new RoleComparer())
-                                       select new GridDisplay {
-                                           RoleId = r.RoleId,
-                                           Name = r.Name,
-                                           Description = r.Description,
-                                       }).ToList<GridDisplay>();
 
-            bool header = PropData.GetAdditionalAttributeValue("Header", true);
-            DataSourceResult data = new DataSourceResult {
-                Data = roles.ToList<object>(),
-                Total = roles.Count,
+            Grid2Model grid = new Grid2Model() {
+                GridDef = GetGridModel(header, showFilter)
             };
-            GridModel grid = new GridModel() {
-                GridDef = new GridDefinition() {
-                    RecordType = typeof(GridDisplay),
-                    Data = data,
-                    SupportReload = false,
-                    PageSizes = new List<int>(),
-                    InitialPageSize = 10,
-                    ShowHeader = header,
-                    ReadOnly = true,
-                    ShowFilter = showFilter,
-                }
+            grid.GridDef.DirectDataAsync = (int skip, int take, List<DataProviderSortInfo> sorts, List<DataProviderFilterInfo> filters) => {
+                List<RoleInfo> allRoles = Resource.ResourceAccess.GetDefaultRoleList(Exclude2FA: exclude2FA);
+                int anonymousRole = Resource.ResourceAccess.GetAnonymousRoleId();
+                List<Entry> roles = (from r in allRoles
+                                     orderby r.Name
+                                     where r.RoleId != anonymousRole &&
+                                         model.Contains(new Role { RoleId = r.RoleId }, new RoleComparer())
+                                     select new Entry {
+                                         Name = r.Name,
+                                         Description = r.Description,
+                                     }).ToList<Entry>();
+
+                DataSourceResult data = new DataSourceResult {
+                    Data = roles.ToList<object>(),
+                    Total = roles.Count,
+                };
+                return Task.FromResult(data);
             };
 
-            hb.Append(await HtmlHelper.ForDisplayAsAsync(Container, PropertyName, FieldName, grid, nameof(grid.GridDef), grid.GridDef, "Grid", HtmlAttributes: HtmlAttributes));
-
-            hb.Append($"</div>");
+            hb.Append($@"
+<div class='yt_yetawf_identity_rolesselector t_display'>
+    {await HtmlHelper.ForDisplayAsAsync(Container, PropertyName, FieldName, grid, nameof(grid.GridDef), grid.GridDef, "Softelvdm_Grid_Grid2", HtmlAttributes: HtmlAttributes)}
+</div>");
             return hb.ToYHtmlString();
         }
     }
@@ -101,11 +101,11 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
         public override ComponentType GetComponentType() { return ComponentType.Edit; }
 
-        public class GridEdit {
+        public class Entry {
 
             [Caption("Use"), Description("Click checkbox to select")]
             [UIHint("Boolean")]
-            public bool ForceTwoStep { get; set; }
+            public bool Used { get; set; }
 
             [Caption("Name"), Description("Role Name")]
             [UIHint("String"), ReadOnly]
@@ -115,61 +115,64 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             [UIHint("String"), ReadOnly]
             public string Description { get; set; }
 
-            [UIHint("IntValue"), ReadOnly]
-            public int RoleId {
-                get {
-                    return roleId;
-                }
-                set {
-                    roleId = value;
-                }
-            }
-            private int roleId;
+            [UIHint("Hidden"), ReadOnly]
+            public int RoleId { get; set; }
 
-            public GridEdit() { }
+            public Entry() { }
         }
+        internal static Grid2Definition GetGridModel(bool header, bool? filter) {
+            return new Grid2Definition() {
+                RecordType = typeof(Entry),
+                InitialPageSize = 10,
+                ShowHeader = header,
+                ShowFilter = filter,
+                AjaxUrl = YetaWFManager.UrlFor(typeof(RolesSelectorController), nameof(RolesSelectorController.RolesSelectorEdit_SortFilter)),
+                SortFilterStaticData = (List<object> data, int skip, int take, List<DataProviderSortInfo> sorts, List<DataProviderFilterInfo> filters) => {
+                    DataProviderGetRecords<Entry> recs = DataProviderImpl<Entry>.GetRecords(data, skip, take, sorts, filters);
+                    return new DataSourceResult {
+                        Data = recs.Data.ToList<object>(),
+                        Total = recs.Total,
+                    };
+                },
+            };
+        }
+
         public async Task<YHtmlString> RenderAsync(SerializableList<Role> model) {
 
             HtmlBuilder hb = new HtmlBuilder();
 
-            hb.Append($"<div class='yt_yetawf_identity_rolesselector t_edit'>");
-
+            bool header = PropData.GetAdditionalAttributeValue("Header", true);
             bool exclude2FA = PropData.GetAdditionalAttributeValue("ExcludeUser2FA", false);
             bool? showFilter = PropData.GetAdditionalAttributeValue<bool?>("ShowFilter", null);
-            List<RoleInfo> allRoles = Resource.ResourceAccess.GetDefaultRoleList(Exclude2FA: exclude2FA);
-            int anonymousRole = Resource.ResourceAccess.GetAnonymousRoleId();
-            List<GridEdit> roles = (from r in allRoles
-                                    orderby r.Name
-                                    where r.RoleId != anonymousRole
-                                    select new GridEdit {
-                                        RoleId = r.RoleId,
-                                        Name = r.Name,
-                                        Description = r.Description,
-                                        ForceTwoStep = model.Contains(new Role { RoleId = r.RoleId }, new RoleComparer())
-                                    }).ToList<GridEdit>();
 
-            bool header = PropData.GetAdditionalAttributeValue("Header", true);
-
-            DataSourceResult data = new DataSourceResult {
-                Data = roles.ToList<object>(),
-                Total = roles.Count,
+            Grid2Model grid = new Grid2Model() {
+                GridDef = GetGridModel(header, showFilter)
             };
-            GridModel grid = new GridModel() {
-                GridDef = new GridDefinition() {
-                    RecordType = typeof(GridEdit),
-                    Data = data,
-                    SupportReload = false,
-                    PageSizes = new List<int>(),
-                    InitialPageSize = 10,
-                    ShowHeader = header,
-                    ReadOnly = false,
-                    ShowFilter = showFilter,
-                }
+            grid.GridDef.DirectDataAsync = (int skip, int take, List<DataProviderSortInfo> sorts, List<DataProviderFilterInfo> filters) => {
+                List<RoleInfo> allRoles = Resource.ResourceAccess.GetDefaultRoleList(Exclude2FA: exclude2FA);
+                int anonymousRole = Resource.ResourceAccess.GetAnonymousRoleId();
+                List<Entry> roles = (from r in allRoles
+                                     orderby r.Name
+                                     where r.RoleId != anonymousRole
+                                     select new Entry {
+                                         RoleId = r.RoleId,
+                                         Name = r.Name,
+                                         Description = r.Description,
+                                         Used = model.Contains(new Role { RoleId = r.RoleId }, new RoleComparer())
+                                     }).ToList<Entry>();
+
+                DataSourceResult data = new DataSourceResult {
+                    Data = roles.ToList<object>(),
+                    Total = roles.Count,
+                };
+                return Task.FromResult(data);
             };
 
-            hb.Append(await HtmlHelper.ForDisplayAsAsync(Container, PropertyName, FieldName, grid, nameof(grid.GridDef), grid.GridDef, "Grid", HtmlAttributes: HtmlAttributes));
+            hb.Append($@"
+<div class='yt_yetawf_identity_rolesselector t_edit' id='{DivId}'>
+    {await HtmlHelper.ForDisplayAsAsync(Container, PropertyName, FieldName, grid, nameof(grid.GridDef), grid.GridDef, "Softelvdm_Grid_Grid2", HtmlAttributes: HtmlAttributes)}
+</div>");
 
-            hb.Append($"</div>");
             return hb.ToYHtmlString();
         }
     }

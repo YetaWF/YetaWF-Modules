@@ -12,4 +12,3 @@ SiteSpecific        sort filter center [Globals.ChBoolean]
 Frequency           sort 15
 RunTime             sort 15
 Event               100
-__highlight         hidden

@@ -1,0 +1,6 @@
+﻿UserName            sort filter [Globals.ChUserName] defaultSort asc
+Email               sort filter [Globals.ChEmail]
+UserStatus          sort filter 20
+UserIdDisplay       right filter sort 10 internal
+UserId              hidden
+

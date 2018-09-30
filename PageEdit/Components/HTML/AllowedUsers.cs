@@ -5,6 +5,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using YetaWF.Core;
 using YetaWF.Core.Components;
+using YetaWF.Core.Controllers;
+using YetaWF.Core.DataProvider;
 using YetaWF.Core.Identity;
 using YetaWF.Core.Localize;
 using YetaWF.Core.Models;
@@ -22,6 +24,8 @@ namespace YetaWF.Modules.PageEdit.Components {
 
     public abstract class AllowedUsersComponentBase : YetaWFComponent {
 
+        protected static string __ResStr(string name, string defaultValue, params object[] parms) { return ResourceAccess.GetResourceString(typeof(AllowedUsersComponentBase), name, defaultValue, parms); }
+
         public const string TemplateName = "AllowedUsers";
 
         public override Package GetPackage() { return Controllers.AreaRegistration.CurrentPackage; }
@@ -32,13 +36,22 @@ namespace YetaWF.Modules.PageEdit.Components {
 
         public override ComponentType GetComponentType() { return ComponentType.Edit; }
 
+        public class AllowedUsersSetup {
+            public string GridId { get; set; }
+            public string AddUrl { get; set; }
+            public string GridAllId { get; internal set; }
+        }
+        public class NewModel {
+            [Caption("New User"), Description("Enter a new user name and click Add")]
+            [UIHint("Text40"), StringLength(Globals.MaxUser), Trim]
+            public string NewValue { get; set; }
+        }
+
         public class GridAllowedUser {
 
-            protected YetaWFManager Manager { get { return YetaWFManager.Manager; } }
-
             [Caption("Delete"), Description("Click to delete a user")]
-            [UIHint("GridDeleteEntry")]
-            public int DeleteMe { get; set; }
+            [UIHint("Softelvdm_Grid_Grid2DeleteEntry"), ReadOnly]
+            public int Delete { get; set; }
 
             [Caption("User"), Description("User Description")]
             [UIHint("YetaWF_Identity_UserId"), ReadOnly]
@@ -56,9 +69,9 @@ namespace YetaWF.Modules.PageEdit.Components {
             [UIHint("Enum")]
             public PageDefinition.AllowedEnum Remove { get; set; }
 
-            [UIHint("RawInt"), ReadOnly]
+            [UIHint("Hidden"), ReadOnly]
             public int UserId { get; set; }
-            [UIHint("Raw"), ReadOnly]
+            [UIHint("Hidden"), ReadOnly]
             public string UserName { get; set; }
 
             public GridAllowedUser(PageDefinition.AllowedUser allowedUser, string userName) {
@@ -71,119 +84,130 @@ namespace YetaWF.Modules.PageEdit.Components {
                 UserName = userName;
                 View = PageDefinition.AllowedEnum.Yes;
             }
+            public GridAllowedUser() { }
         }
-        public class NewModel {
-            [Caption("New User"), Description("Enter a new user name and click Add")]
-            [UIHint("Text40"), StringLength(Globals.MaxUser), Trim]
-            public string NewValue { get; set; }
-        }
-        [Trim]
-        public class GridAllEntry {
 
-            public GridAllEntry() { }
+            public class AllEntry {
 
             [Caption("User"), Description("User Name")]
             [UIHint("String"), ReadOnly]
             public string UserName { get; set; }
 
-            [UIHint("Raw"), ReadOnly]
-            public string RawUserName { get { return UserName; } }
-
-            public GridAllEntry(UserDefinition user) {
+            public AllEntry(UserDefinition user) {
                 ObjectSupport.CopyData(user, this);
             }
         }
+        internal static Grid2Definition GetGridModel(bool header) {
+            return new Grid2Definition() {
+                RecordType = typeof(GridAllowedUser),
+                PageSizes = new List<int>(),
+                ShowHeader = header,
+                AjaxUrl = YetaWFManager.UrlFor(typeof(AllowedUsersController), nameof(AllowedUsersController.AllowedUsersEdit_SortFilter)),
+                SortFilterStaticData = (List<object> data, int skip, int take, List<DataProviderSortInfo> sorts, List<DataProviderFilterInfo> filters) => {
+                    DataProviderGetRecords<GridAllowedUser> recs = DataProviderImpl<GridAllowedUser>.GetRecords(data, skip, take, sorts, filters);
+                    return new DataSourceResult {
+                        Data = recs.Data.ToList<object>(),
+                        Total = recs.Total,
+                    };
+                },
+                DeletedMessage = __ResStr("removeMsg", "User {0} has been removed"),
+                DeleteConfirmationMessage = __ResStr("confimMsg", "Are you sure you want to remove user {0}?"),
+                DeletedColumnDisplay = nameof(GridAllowedUser.UserName),
+            };
+        }
+        internal static Grid2Definition GetGridAllUsersModel() {
+            return new Grid2Definition() {
+                RecordType = typeof(AllEntry),
+                InitialPageSize = 10,
+                AjaxUrl = YetaWFManager.UrlFor(typeof(AllowedUsersController), nameof(AllowedUsersController.AllowedUsersBrowse_GridData)),
+                DirectDataAsync = async (int skip, int take, List<DataProviderSortInfo> sort, List<DataProviderFilterInfo> filters) => {
+                    using (UserDefinitionDataProvider userDP = new UserDefinitionDataProvider()) {
+                        DataProviderGetRecords<UserDefinition> browseItems = await userDP.GetItemsAsync(skip, take, sort, filters);
+                        return new DataSourceResult {
+                            Data = (from s in browseItems.Data select new AllowedUsersEditComponent.AllEntry(s)).ToList<object>(),
+                            Total = browseItems.Total
+                        };
+                    }
+                },
+            };
+        }
+
         public async Task<YHtmlString> RenderAsync(SerializableList<PageDefinition.AllowedUser> model) {
 
             HtmlBuilder hb = new HtmlBuilder();
 
-            string tmpltId = UniqueId();
+            bool header = PropData.GetAdditionalAttributeValue("Header", true);
+
+            Grid2Model grid = new Grid2Model() {
+                GridDef = GetGridModel(header)
+            };
+            grid.GridDef.DirectDataAsync = async (int skip, int take, List<DataProviderSortInfo> sorts, List<DataProviderFilterInfo> filters) => {
+                List<GridAllowedUser> list;
+                if (model != null) {
+                    list = new List<GridAllowedUser>();
+                    foreach (PageDefinition.AllowedUser allowedUser in model) {
+                        string userName = await Resource.ResourceAccess.GetUserNameAsync(allowedUser.UserId);
+                        list.Add(new GridAllowedUser(allowedUser, userName));
+                    }
+                } else
+                    list = new List<GridAllowedUser>();
+                DataSourceResult data = new DataSourceResult {
+                    Data = list.ToList<object>(),
+                    Total = list.Count,
+                };
+                return data;
+            };
 
             hb.Append($@"
 <div class='yt_yetawf_pageedit_allowedusers t_edit' id='{DivId}'>
-    <div class='yt_grid_addordelete' id='{tmpltId}'
-        data-dupmsg='{this.__ResStr("dupmsg", "User {0} has already been added")}'
-        data-addedmsg='{this.__ResStr("addedmsg", "User {0} has been added")}'
-        data-remmsg='{this.__ResStr("remmsg", "User {0} has been removed")}'>");
-
-            List<GridAllowedUser> list;
-            if (model != null) {
-                list = new List<GridAllowedUser>();
-                foreach (PageDefinition.AllowedUser allowedUser in model) {
-                    string userName = await Resource.ResourceAccess.GetUserNameAsync(allowedUser.UserId);
-                    list.Add(new GridAllowedUser(allowedUser, userName));
-                }
-            } else
-                list = new List<GridAllowedUser>();
-
-            bool header = PropData.GetAdditionalAttributeValue("Header", true);
-
-            DataSourceResult data = new DataSourceResult {
-                Data = list.ToList<object>(),
-                Total = list.Count,
-            };
-            GridModel grid = new GridModel() {
-                GridDef = new GridDefinition() {
-                    RecordType = typeof(GridAllowedUser),
-                    Data = data,
-                    SupportReload = false,
-                    PageSizes = new List<int>(),
-                    InitialPageSize = 5,
-                    ShowHeader = header,
-                    ReadOnly = false,
-                    CanAddOrDelete = true,
-                    DeleteProperty = "UserId",
-                    DisplayProperty = "UserName"
-                }
-            };
-
-            hb.Append(await HtmlHelper.ForDisplayAsAsync(Container, PropertyName, FieldName, grid, nameof(grid.GridDef), grid.GridDef, "Grid", HtmlAttributes: HtmlAttributes));
+    {await HtmlHelper.ForDisplayAsAsync(Container, PropertyName, FieldName, grid, nameof(grid.GridDef), grid.GridDef, "Softelvdm_Grid_Grid2", HtmlAttributes: HtmlAttributes)}");
 
             using (Manager.StartNestedComponent(FieldName)) {
 
-                string ajaxUrl = YetaWFManager.UrlFor(typeof(AllowedUsersController), nameof(AllowedUsersController.AddUserToPage));
-
                 NewModel newModel = new NewModel();
-                hb.Append("<div class='t_newvalue'>");
-                hb.Append(await HtmlHelper.ForLabelAsync(newModel, nameof(newModel.NewValue)));
-                hb.Append(await HtmlHelper.ForEditAsync(newModel, nameof(newModel.NewValue)));
-                hb.Append("<input name='btnAdd' type='button' value='Add' data-ajaxurl='{0}' />", YetaWFManager.HtmlAttributeEncode(ajaxUrl));
-                hb.Append("</div>");
+                hb.Append($@"
+    <div class='t_newvalue'>
+        {await HtmlHelper.ForLabelAsync(newModel, nameof(newModel.NewValue))}
+        {await HtmlHelper.ForEditAsync(newModel, nameof(newModel.NewValue))}
+        <input name='btnAdd' type='button' value='Add' disabled='disabled' />
+    </div>");
+
             }
 
-            hb.Append(@"
-    </div>");
+            Grid2Model gridAll = new Grid2Model() {
+                GridDef = GetGridAllUsersModel()
+            };
+            AllowedUsersSetup setup = new AllowedUsersSetup {
+                AddUrl = YetaWFManager.UrlFor(typeof(AllowedUsersController), nameof(AllowedUsersController.AddUserToPage)),
+                GridId = grid.GridDef.Id,
+                GridAllId = gridAll.GridDef.Id
+            };
 
             hb.Append($@"
     <div id='{DivId}_coll'>
-        {await ModuleActionHelper.BuiltIn_ExpandAction(this.__ResStr("lblFindUsers", "Find Users"), this.__ResStr("ttFindUsers", "Expand to find user names available on this site")).RenderAsNormalLinkAsync() }
+        {await ModuleActionHelper.BuiltIn_ExpandAction(__ResStr("lblFindUsers", "Find Users"), __ResStr("ttFindUsers", "Expand to find user names available on this site")).RenderAsNormalLinkAsync() }
     </div>
     <div id='{DivId}_exp' style='display:none'>
-        {await ModuleActionHelper.BuiltIn_CollapseAction(this.__ResStr("lblAllUserNames", "All User Names"), this.__ResStr("ttAllUserNames", "Shows all user names available on this site - Select a user name to update the text box above, so the user name can be added to the list of user names - Click to close")).RenderAsNormalLinkAsync() }");
-
-            grid = new GridModel() {
-                GridDef = new GridDefinition() {
-                    AjaxUrl = YetaWFManager.UrlFor(typeof(AllowedUsersController), nameof(AllowedUsersController.AllowedUsersBrowse_GridData)),
-                    Id = DivId + "_listall",
-                    RecordType = typeof(GridAllEntry),
-                    ShowHeader = true,
-                }
-            };
-
-            hb.Append(await HtmlHelper.ForDisplayAsAsync(Container, PropertyName, FieldName, grid, nameof(grid.GridDef), grid.GridDef, "Grid"));
-
-            hb.Append($@"
+        {await ModuleActionHelper.BuiltIn_CollapseAction(__ResStr("lblAllUserNames", "All User Names"), __ResStr("ttAllUserNames", "Shows all user names available on this site - Select a user name to update the text box above, so the user name can be added to the list of user names - Click to close")).RenderAsNormalLinkAsync() }
+        {await HtmlHelper.ForDisplayAsAsync(Container, PropertyName, FieldName, gridAll, nameof(gridAll.GridDef), gridAll.GridDef, "Softelvdm_Grid_Grid2")}
     </div>
 </div>
 <script>
     $YetaWF.expandCollapseHandling('{DivId}', '{DivId}_coll', '{DivId}_exp');
-    $('#{tmpltId}_list').jqGrid('sortableRows', {{ connectWith: '#{tmpltId}_list' }});
-    {BeginDocumentReady(DivId)}
-        YetaWF_PageEdit_AllowedUsers.init($('#{DivId}_listall'), $('#{tmpltId} .t_edit[name$=\'.NewValue\']'));
-    {EndDocumentReady()}
+    new YetaWF_PageEdit.AllowedUsersEditComponent('{DivId}', {YetaWFManager.JsonSerialize(setup)});
 </script>");
 
             return hb.ToYHtmlString();
+        }
+        public static async Task<Grid2RecordData> Grid2RecordAsync(string fieldPrefix, object model) {
+            // handle async properties
+            await YetaWFController.HandlePropertiesAsync(model);
+            Grid2RecordData record = new Grid2RecordData() {
+                GridDef = GetGridModel(false),
+                Data = model,
+                FieldPrefix = fieldPrefix,
+            };
+            return record;
         }
     }
 }

@@ -6,12 +6,14 @@ using System.Linq;
 using System.Threading.Tasks;
 using YetaWF.Core.Addons;
 using YetaWF.Core.Components;
+using YetaWF.Core.DataProvider;
 using YetaWF.Core.Models;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Modules;
 using YetaWF.Core.Packages;
 using YetaWF.Core.Serializers;
 using YetaWF.Core.Support;
+using YetaWF.Modules.ComponentsHTML.Controllers;
 
 namespace YetaWF.Modules.ComponentsHTML.Components {
 
@@ -27,7 +29,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
         public override ComponentType GetComponentType() { return ComponentType.Display; }
 
-        public class GridDisplay {
+        public class Entry {
 
             [Caption("Name"), Description("Module Name")]
             [UIHint("String"), ReadOnly]
@@ -41,52 +43,62 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             [UIHint("String"), ReadOnly]
             public string PermanentName { get; set; }
         }
-        protected async Task<DataSourceResult> GetDataSourceResultAsync(SerializableList<ModuleDefinition.ReferencedModule> model) {
-
-            List<AddOnManager.Module> allMods = Manager.AddOnManager.GetUniqueInvokedCssModules();
-
-            List<GridDisplay> mods = new List<GridDisplay>();
-            foreach (AddOnManager.Module allMod in allMods) {
-                if ((from m in model where m.ModuleGuid == allMod.ModuleGuid select m).FirstOrDefault() != null) {
-                    ModuleDefinition modDef = await ModuleDefinition.CreateUniqueModuleAsync(allMod.ModuleType);
-                    if (modDef != null) {
-                        mods.Add(new GridDisplay {
-                            Name = modDef.Name,
-                            Description = modDef.Description,
-                            PermanentName = modDef.PermanentModuleName,
-                        });
-                    }
-                }
-            }
-            DataSourceResult data = new DataSourceResult {
-                Data = mods.ToList<object>(),
-                Total = mods.Count,
+        internal static Grid2Definition GetGridModel(bool header) {
+            return new Grid2Definition() {
+                RecordType = typeof(Entry),
+                InitialPageSize = 10,
+                ShowHeader = header,
+                AjaxUrl = YetaWFManager.UrlFor(typeof(ReferencedModulesController), nameof(ReferencedModulesController.ReferencedModulesDisplay_SortFilter)),
+                SortFilterStaticData = (List<object> data, int skip, int take, List<DataProviderSortInfo> sorts, List<DataProviderFilterInfo> filters) => {
+                    DataProviderGetRecords<Entry> recs = DataProviderImpl<Entry>.GetRecords(data, skip, take, sorts, filters);
+                    return new DataSourceResult {
+                        Data = recs.Data.ToList<object>(),
+                        Total = recs.Total,
+                    };
+                },
             };
-            return data;
         }
+
         public async Task<YHtmlString> RenderAsync(SerializableList<ModuleDefinition.ReferencedModule> model) {
 
             HtmlBuilder hb = new HtmlBuilder();
 
-            hb.Append($"<div class='yt_invokedmodules t_display'>");
+            if (model == null)
+                model = new SerializableList<ModuleDefinition.ReferencedModule>();
 
             bool header = PropData.GetAdditionalAttributeValue("Header", true);
 
-            GridModel grid = new GridModel() {
-                GridDef = new GridDefinition() {
-                    RecordType = typeof(GridDisplay),
-                    Data = await GetDataSourceResultAsync(model),
-                    SupportReload = false,
-                    PageSizes = new List<int>(),
-                    InitialPageSize = 10,
-                    ShowHeader = header,
-                    ReadOnly = true,
+            Grid2Model grid = new Grid2Model() {
+                GridDef = GetGridModel(header)
+            };
+            grid.GridDef.DirectDataAsync = async (int skip, int take, List<DataProviderSortInfo> sorts, List<DataProviderFilterInfo> filters) => {
+                List<AddOnManager.Module> allMods = Manager.AddOnManager.GetUniqueInvokedCssModules();
+
+                List<Entry> mods = new List<Entry>();
+                foreach (AddOnManager.Module allMod in allMods) {
+                    if ((from m in model where m.ModuleGuid == allMod.ModuleGuid select m).FirstOrDefault() != null) {
+                        ModuleDefinition modDef = await ModuleDefinition.CreateUniqueModuleAsync(allMod.ModuleType);
+                        if (modDef != null) {
+                            mods.Add(new Entry {
+                                Name = modDef.Name,
+                                Description = modDef.Description,
+                                PermanentName = modDef.PermanentModuleName,
+                            });
+                        }
+                    }
                 }
+                DataSourceResult data = new DataSourceResult {
+                    Data = mods.ToList<object>(),
+                    Total = mods.Count,
+                };
+                return data;
             };
 
-            hb.Append(await HtmlHelper.ForDisplayAsAsync(Container, PropertyName, FieldName, grid, nameof(grid.GridDef), grid.GridDef, "Grid", HtmlAttributes: HtmlAttributes));
+            hb.Append($@"
+<div class='yt_invokedmodules t_display'>
+    {await HtmlHelper.ForDisplayAsAsync(Container, PropertyName, FieldName, grid, nameof(grid.GridDef), grid.GridDef, "Softelvdm_Grid_Grid2", HtmlAttributes: HtmlAttributes)}
+</div>");
 
-            hb.Append($"</div>");
             return hb.ToYHtmlString();
         }
     }
@@ -94,7 +106,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
         public override ComponentType GetComponentType() { return ComponentType.Edit; }
 
-        public class GridEdit {
+        public class Entry {
 
             [Caption("Use"), Description("Select to include this module")]
             [UIHint("Boolean")]
@@ -112,56 +124,65 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             [UIHint("String"), ReadOnly]
             public string PermanentName { get; set; }
 
-            [Caption("Guid"), Description("Module Guid")]
-            [UIHint("Guid"), ReadOnly]
-            public Guid ModuleGuid { get; set; } // this name must match the name used in the class ReferencedModule
+            [UIHint("Hidden"), ReadOnly]
+            public Guid ModuleGuid { get; set; }
         }
-        protected async Task<DataSourceResult> GetDataSourceResultAsync(SerializableList<ModuleDefinition.ReferencedModule> model) {
-
-            List<AddOnManager.Module> allMods = Manager.AddOnManager.GetUniqueInvokedCssModules();
-
-            List<GridEdit> mods = new List<GridEdit>();
-            foreach (AddOnManager.Module allMod in allMods) {
-                ModuleDefinition modDef = await ModuleDefinition.CreateUniqueModuleAsync(allMod.ModuleType);
-                if (modDef != null) {
-                    mods.Add(new GridEdit {
-                        Name = modDef.Name,
-                        Description = modDef.Description,
-                        PermanentName = modDef.PermanentModuleName,
-                        ModuleGuid = modDef.ModuleGuid,
-                        UsesModule = (from m in model where m.ModuleGuid == allMod.ModuleGuid select m).FirstOrDefault() != null
-                    });
-                }
-            }
-            DataSourceResult data = new DataSourceResult {
-                Data = mods.ToList<object>(),
-                Total = mods.Count,
+        internal static Grid2Definition GetGridModel(bool header) {
+            return new Grid2Definition() {
+                RecordType = typeof(Entry),
+                InitialPageSize = 10,
+                ShowHeader = header,
+                AjaxUrl = YetaWFManager.UrlFor(typeof(ReferencedModulesController), nameof(ReferencedModulesController.ReferencedModulesEdit_SortFilter)),
+                SortFilterStaticData = (List<object> data, int skip, int take, List<DataProviderSortInfo> sorts, List<DataProviderFilterInfo> filters) => {
+                    DataProviderGetRecords<Entry> recs = DataProviderImpl<Entry>.GetRecords(data, skip, take, sorts, filters);
+                    return new DataSourceResult {
+                        Data = recs.Data.ToList<object>(),
+                        Total = recs.Total,
+                    };
+                },
             };
-            return data;
         }
+
         public async Task<YHtmlString> RenderAsync(SerializableList<ModuleDefinition.ReferencedModule> model) {
 
             HtmlBuilder hb = new HtmlBuilder();
 
-            hb.Append($"<div class='yt_invokedmodules t_edit'>");
+            if (model == null)
+                model = new SerializableList<ModuleDefinition.ReferencedModule>();
 
             bool header = PropData.GetAdditionalAttributeValue("Header", true);
 
-            GridModel grid = new GridModel() {
-                GridDef = new GridDefinition() {
-                    RecordType = typeof(GridEdit),
-                    Data = await GetDataSourceResultAsync(model),
-                    SupportReload = false,
-                    PageSizes = new List<int>(),
-                    InitialPageSize = 10,
-                    ShowHeader = header,
-                    ReadOnly = false,
+            Grid2Model grid = new Grid2Model() {
+                GridDef = GetGridModel(header)
+            };
+            grid.GridDef.DirectDataAsync = async (int skip, int take, List<DataProviderSortInfo> sorts, List<DataProviderFilterInfo> filters) => {
+                List<AddOnManager.Module> allMods = Manager.AddOnManager.GetUniqueInvokedCssModules();
+
+                List<Entry> mods = new List<Entry>();
+                foreach (AddOnManager.Module allMod in allMods) {
+                    ModuleDefinition modDef = await ModuleDefinition.CreateUniqueModuleAsync(allMod.ModuleType);
+                    if (modDef != null) {
+                        mods.Add(new Entry {
+                            Name = modDef.Name,
+                            Description = modDef.Description,
+                            PermanentName = modDef.PermanentModuleName,
+                            ModuleGuid = modDef.ModuleGuid,
+                            UsesModule = (from m in model where m.ModuleGuid == allMod.ModuleGuid select m).FirstOrDefault() != null
+                        });
+                    }
                 }
+                DataSourceResult data = new DataSourceResult {
+                    Data = mods.ToList<object>(),
+                    Total = mods.Count,
+                };
+                return data;
             };
 
-            hb.Append(await HtmlHelper.ForDisplayAsAsync(Container, PropertyName, FieldName, grid, nameof(grid.GridDef), grid.GridDef, "Grid", HtmlAttributes: HtmlAttributes));
+            hb.Append($@"
+<div class='yt_invokedmodules t_edit' id='{DivId}'>
+    {await HtmlHelper.ForDisplayAsAsync(Container, PropertyName, FieldName, grid, nameof(grid.GridDef), grid.GridDef, "Softelvdm_Grid_Grid2", HtmlAttributes: HtmlAttributes)}
+</div>");
 
-            hb.Append($"</div>");
             return hb.ToYHtmlString();
         }
     }

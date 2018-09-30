@@ -50,14 +50,39 @@ namespace YetaWF.Modules.Dashboard.Controllers {
             public long TotalSize { get; set; }
 
             [Caption("Cached Items"), Description("The cache keys and the values (either the data type or the first 100 bytes of data are shown)")]
-            [UIHint("Grid"), ReadOnly]
-            public GridDefinition GridDef { get; set; }
+            [UIHint("Softelvdm_Grid_Grid2"), ReadOnly]
+            public Grid2Definition GridDef { get; set; }
 #if MVC6
 #else
             public void SetData(System.Web.Caching.Cache data) {
                 ObjectSupport.CopyData(data, this);
             }
 #endif
+        }
+        private Grid2Definition GetGridModel() {
+            return new Grid2Definition {
+                ModuleGuid = Module.ModuleGuid,
+                SettingsModuleGuid = Module.PermanentGuid,
+                RecordType = typeof(BrowseItem),
+                AjaxUrl = GetActionUrl(nameof(CacheInfo_GridData)),
+                SortFilterStaticData = (List<object> data, int skip, int take, List<DataProviderSortInfo> sorts, List<DataProviderFilterInfo> filters) => {
+                    DataProviderGetRecords<BrowseItem> recs = DataProviderImpl<BrowseItem>.GetRecords(data, skip, take, sorts, filters);
+                    return new DataSourceResult {
+                        Data = recs.Data.ToList<object>(),
+                        Total = recs.Total,
+                    };
+                },
+                DirectDataAsync = (int skip, int take, List<DataProviderSortInfo> sort, List<DataProviderFilterInfo> filters) => {
+                    DataProviderGetRecords<BrowseItem> items = DataProviderImpl<BrowseItem>.GetRecords(GetAllItems(), skip, take, sort, filters);
+                    foreach (BrowseItem item in items.Data)
+                        item.Value = item.Value.TruncateWithEllipse(100);
+                    DataSourceResult data = new DataSourceResult {
+                        Data = items.Data.ToList<object>(),
+                        Total = items.Total,
+                    };
+                    return Task.FromResult(data);
+                },
+            };
         }
 
         [AllowGet]
@@ -66,34 +91,20 @@ namespace YetaWF.Modules.Dashboard.Controllers {
 #if MVC6
 #else
             model.SetData(System.Web.HttpRuntime.Cache);
-            model.GridDef = new GridDefinition {
-                AjaxUrl = GetActionUrl("CacheInfo_GridData"),
-                ModuleGuid = Module.ModuleGuid,
-                RecordType = typeof(BrowseItem),
-                SettingsModuleGuid = Module.PermanentGuid,
-                SupportReload = false,
-            };
+            model.GridDef = GetGridModel();
+
             List<BrowseItem> items = GetAllItems();
             model.TotalSize = items.Sum(m => m.Size);
 #endif
             return View(model);
         }
 
-
 #if MVC6
 #else
         [AllowPost]
         [ConditionalAntiForgeryToken]
-        public async Task<ActionResult> CacheInfo_GridData(int skip, int take, List<DataProviderSortInfo> sort, List<DataProviderFilterInfo> filters, Guid settingsModuleGuid) {
-            DataProviderGetRecords<BrowseItem> items = DataProviderImpl<BrowseItem>.GetRecords(GetAllItems(), skip, take, sort, filters);
-            foreach (BrowseItem item in items.Data)
-                item.Value = item.Value.TruncateWithEllipse(100);
-
-            Grid.SaveSettings(skip, take, sort, filters, settingsModuleGuid);
-            return await GridPartialViewAsync(new DataSourceResult {
-                Data = items.Data.ToList<object>(),
-                Total = items.Total,
-            });
+        public async Task<ActionResult> CacheInfo_GridData(string data, string fieldPrefix, int skip, int take, List<DataProviderSortInfo> sorts, List<DataProviderFilterInfo> filters) {
+            return await Grid2PartialViewAsync<BrowseItem>(GetGridModel(), data, fieldPrefix, skip, take, sorts, filters);
         }
 
         private List<BrowseItem> GetAllItems() {

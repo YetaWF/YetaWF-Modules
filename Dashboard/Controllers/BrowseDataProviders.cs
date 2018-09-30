@@ -39,33 +39,40 @@ namespace YetaWF.Modules.Dashboard.Controllers {
 
         public class BrowseModel {
             [Caption(""), Description("")] // empty entries required so property is shown in property list (but with a suppressed label)
-            [UIHint("Grid"), ReadOnly]
-            public GridDefinition GridDef { get; set; }
+            [UIHint("Softelvdm_Grid_Grid2"), ReadOnly]
+            public Grid2Definition GridDef { get; set; }
+        }
+        private Grid2Definition GetGridModel() {
+            return new Grid2Definition {
+                ModuleGuid = Module.ModuleGuid,
+                SettingsModuleGuid = Module.PermanentGuid,
+                RecordType = typeof(BrowseItem),
+                AjaxUrl = GetActionUrl(nameof(BrowseDataProviders_GridData)),
+                DirectDataAsync = (int skip, int take, List<DataProviderSortInfo> sort, List<DataProviderFilterInfo> filters) => {
+                    using (DataProviderInfoDataProvider dataProvider = new DataProviderInfoDataProvider()) {
+                        DataProviderGetRecords<DataProviderInfo> browseItems = dataProvider.GetItems(skip, take, sort, filters);
+                        DataSourceResult data = new DataSourceResult {
+                            Data = (from s in browseItems.Data select new BrowseItem(s)).ToList<object>(),
+                            Total = browseItems.Total
+                        };
+                        return Task.FromResult(data);
+                    }
+                },
+            };
         }
 
         [AllowGet]
         public ActionResult BrowseDataProviders() {
-            BrowseModel model = new BrowseModel { };
-            model.GridDef = new GridDefinition {
-                AjaxUrl = GetActionUrl("BrowseDataProviders_GridData"),
-                ModuleGuid = Module.ModuleGuid,
-                RecordType = typeof(BrowseItem),
-                SettingsModuleGuid = Module.PermanentGuid,
+            BrowseModel model = new BrowseModel {
+                GridDef = GetGridModel()
             };
             return View(model);
         }
 
         [AllowPost]
         [ConditionalAntiForgeryToken]
-        public async Task<ActionResult> BrowseDataProviders_GridData(int skip, int take, List<DataProviderSortInfo> sort, List<DataProviderFilterInfo> filters, Guid settingsModuleGuid) {
-            using (DataProviderInfoDataProvider dataProvider = new DataProviderInfoDataProvider()) {
-                DataProviderGetRecords<DataProviderInfo> browseItems = dataProvider.GetItems(skip, take, sort, filters);
-                Grid.SaveSettings(skip, take, sort, filters, settingsModuleGuid);
-                return await GridPartialViewAsync(new DataSourceResult {
-                    Data = (from s in browseItems.Data select new BrowseItem(s)).ToList<object>(),
-                    Total = browseItems.Total
-                });
-            }
+        public async Task<ActionResult> BrowseDataProviders_GridData(string fieldPrefix, int skip, int take, List<DataProviderSortInfo> sorts, List<DataProviderFilterInfo> filters) {
+            return await Grid2PartialViewAsync(GetGridModel(), fieldPrefix, skip, take, sorts, filters);
         }
     }
 }

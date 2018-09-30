@@ -34,6 +34,10 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             [UIHint("Grid")]
             public GridDefinition GridDef { get; set; }
         }
+        public class Grid2Model {
+            [UIHint("Softelvdm_Grid_Grid2")]//$$
+            public Grid2Definition GridDef { get; set; }
+        }
 
         /// <summary>
         /// Include required JavaScript, Css files when displaying a component, for all components in this package.

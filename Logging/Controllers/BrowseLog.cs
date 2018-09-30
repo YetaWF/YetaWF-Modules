@@ -107,11 +107,31 @@ namespace YetaWF.Modules.Logging.Controllers {
         }
 
         public class BrowseModel {
-            [UIHint("Grid")]
-            public GridDefinition GridDef { get; set; }
+            [UIHint("Softelvdm_Grid_Grid2"), ReadOnly]
+            public Grid2Definition GridDef { get; set; }
             public bool LogAvailable { get; set; }
             public bool BrowsingSupported { get; set; }
             public string LoggerName { get; set; }
+        }
+        private Grid2Definition GetGridModel() {
+            return new Grid2Definition {
+                ModuleGuid = Module.ModuleGuid,
+                SettingsModuleGuid = Module.PermanentGuid,
+                PageSizes = new List<int>() { 5, 10, 20, 50 },
+                RecordType = typeof(BrowseItem),
+                AjaxUrl = GetActionUrl(nameof(BrowseLog_GridData)),
+                DirectDataAsync = async (int skip, int take, List<DataProviderSortInfo> sort, List<DataProviderFilterInfo> filters) => {
+                    FlushLog();
+                    Grid.UpdateAlternateSortColumn(sort, filters, "UserId", "UserName");
+                    using (LogRecordDataProvider dataProvider = LogRecordDataProvider.GetLogRecordDataProvider()) {
+                        DataProviderGetRecords<LogRecord> browseItems = await dataProvider.GetItemsAsync(skip, take, sort, filters);
+                        return new DataSourceResult {
+                            Data = (from s in browseItems.Data select new BrowseItem(Module, s)).ToList<object>(),
+                            Total = browseItems.Total
+                        };
+                    }
+                },
+            };
         }
 
         [AllowGet]
@@ -124,16 +144,8 @@ namespace YetaWF.Modules.Logging.Controllers {
                     BrowsingSupported = dataProvider.CanBrowse,
                     LoggerName = dataProvider.LoggerName,
                 };
-                if (dataProvider.CanBrowse) {
-                    model.GridDef = new GridDefinition {
-                        AjaxUrl = GetActionUrl("BrowseLog_GridData"),
-                        ModuleGuid = Module.ModuleGuid,
-                        RecordType = typeof(BrowseItem),
-                        SettingsModuleGuid = Module.PermanentGuid,
-                        PageSizes = new List<int>() { 5, 10, 20, 50 },
-
-                    };
-                }
+                if (dataProvider.CanBrowse)
+                    model.GridDef = GetGridModel();
                 return View(model);
             }
         }
@@ -143,17 +155,9 @@ namespace YetaWF.Modules.Logging.Controllers {
         }
 
         [AllowPost]
-        public async Task<ActionResult> BrowseLog_GridData(int skip, int take, List<DataProviderSortInfo> sort, List<DataProviderFilterInfo> filters, Guid settingsModuleGuid) {
-            FlushLog();
-            Grid.UpdateAlternateSortColumn(sort, filters, "UserId", "UserName");
-            using (LogRecordDataProvider dataProvider = LogRecordDataProvider.GetLogRecordDataProvider()) {
-                DataProviderGetRecords<LogRecord> browseItems = await dataProvider.GetItemsAsync(skip, take, sort, filters);
-                Grid.SaveSettings(skip, take, sort, filters, settingsModuleGuid);
-                return await GridPartialViewAsync(new DataSourceResult {
-                    Data = (from s in browseItems.Data select new BrowseItem(Module, s)).ToList<object>(),
-                    Total = browseItems.Total
-                });
-            }
+        [ConditionalAntiForgeryToken]
+        public async Task<ActionResult> BrowseLog_GridData(string fieldPrefix, int skip, int take, List<DataProviderSortInfo> sorts, List<DataProviderFilterInfo> filters) {
+            return await Grid2PartialViewAsync(GetGridModel(), fieldPrefix, skip, take, sorts, filters);
         }
 
         [AllowPost]

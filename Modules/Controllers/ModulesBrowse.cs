@@ -103,47 +103,53 @@ namespace YetaWF.Modules.Modules.Controllers {
         }
 
         public class BrowseModel {
-            [UIHint("Grid")]
-            public GridDefinition GridDef { get; set; }
+            [UIHint("Softelvdm_Grid_Grid2"), ReadOnly]
+            public Grid2Definition GridDef { get; set; }
+        }
+        private Grid2Definition GetGridModel() {
+            return new Grid2Definition {
+                ModuleGuid = Module.ModuleGuid,
+                SettingsModuleGuid = Module.PermanentGuid,
+                RecordType = typeof(BrowseItem),
+                AjaxUrl = GetActionUrl(nameof(ModulesBrowse_GridData)),
+                DirectDataAsync = async (int skip, int take, List<DataProviderSortInfo> sort, List<DataProviderFilterInfo> filters) => {
+                    // module settings services
+                    ModuleDefinition modSettings = await ModuleDefinition.LoadAsync(Manager.CurrentSite.ModuleEditingServices, AllowNone: true);
+                    //if (modSettings == null)
+                    //    throw new InternalError("No module edit settings services available - no module has been defined");
+
+                    ModuleDefinition.ModuleBrowseInfo info = new ModuleDefinition.ModuleBrowseInfo() {
+                        Skip = skip,
+                        Take = take,
+                        Sort = sort,
+                        Filters = filters,
+                    };
+                    await ModuleDefinition.GetModulesAsync(info);
+                    List<BrowseItem> list = new List<BrowseItem>();
+                    foreach (ModuleDefinition s in info.Modules) {
+                        int useCount = (await s.__GetPagesAsync()).Count;
+                        list.Add(new BrowseItem(Module, modSettings, s, useCount));
+                    }
+                    return new DataSourceResult {
+                        Data = list.ToList<object>(),
+                        Total = info.Total
+                    };
+                },
+            };
         }
 
         [AllowGet]
         public ActionResult ModulesBrowse() {
-            BrowseModel model = new BrowseModel { };
-            model.GridDef = new GridDefinition {
-                AjaxUrl = GetActionUrl("ModulesBrowse_GridData"),
-                ModuleGuid = Module.ModuleGuid,
-                RecordType = typeof(BrowseItem),
-                SettingsModuleGuid = Module.PermanentGuid,
+            BrowseModel model = new BrowseModel {
+                GridDef = GetGridModel()
             };
             return View(model);
         }
 
         [AllowPost]
         [ConditionalAntiForgeryToken]
-        public async Task<ActionResult> ModulesBrowse_GridData(int skip, int take, List<DataProviderSortInfo> sort, List<DataProviderFilterInfo> filters, Guid settingsModuleGuid) {
-            // module settings services
-            ModuleDefinition modSettings = await ModuleDefinition.LoadAsync(Manager.CurrentSite.ModuleEditingServices, AllowNone: true);
-            //if (modSettings == null)
-            //    throw new InternalError("No module edit settings services available - no module has been defined");
-
-            ModuleDefinition.ModuleBrowseInfo info = new ModuleDefinition.ModuleBrowseInfo() {
-                Skip = skip,
-                Take = take,
-                Sort = sort,
-                Filters = filters,
-            };
-            await ModuleDefinition.GetModulesAsync(info);
-            Grid.SaveSettings(skip, take, sort, filters, settingsModuleGuid);
-            List<BrowseItem> list = new List<BrowseItem>();
-            foreach (ModuleDefinition s in info.Modules) {
-                int useCount = (await s.__GetPagesAsync()).Count;
-                list.Add(new BrowseItem(Module, modSettings, s, useCount));
-            }
-            return await GridPartialViewAsync(new DataSourceResult {
-                Data = list.ToList<object>(),
-                Total = info.Total
-            });
+        public async Task<ActionResult> ModulesBrowse_GridData(string fieldPrefix, int skip, int take, List<DataProviderSortInfo> sorts, List<DataProviderFilterInfo> filters) {
+            return await Grid2PartialViewAsync(GetGridModel(), fieldPrefix, skip, take, sorts, filters);
         }
 
         [AllowPost]

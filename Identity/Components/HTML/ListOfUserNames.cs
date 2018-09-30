@@ -3,8 +3,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using YetaWF.Core;
 using YetaWF.Core.Components;
+using YetaWF.Core.Controllers;
+using YetaWF.Core.DataProvider;
 using YetaWF.Core.Localize;
 using YetaWF.Core.Models;
 using YetaWF.Core.Models.Attributes;
@@ -14,7 +15,6 @@ using YetaWF.Core.Support;
 using YetaWF.Modules.ComponentsHTML.Components;
 using YetaWF.Modules.Identity.Controllers;
 using YetaWF.Modules.Identity.DataProvider;
-using YetaWF.Modules.Identity.Support;
 
 namespace YetaWF.Modules.Identity.Components {
 
@@ -32,204 +32,234 @@ namespace YetaWF.Modules.Identity.Components {
 
         public override ComponentType GetComponentType() { return ComponentType.Display; }
 
-        public class GridDisplay {
+        public class Entry {
+
             [Caption("User Names"), Description("Shows all defined user names")]
             [UIHint("String"), ReadOnly]
             public string UserName { get; set; }
 
-            [UIHint("Raw"), ReadOnly]
-            public int UserId { get; set; }
-
-            public GridDisplay(UserDefinitionDataProvider userDP, UserDefinition user, int userId) {
-                if (user == null) {
-                    UserName = __ResStr("noUser", "({0})", userId);
-                } else {
-                    ObjectSupport.CopyData(user, this);
-                }
-                UserId = userId;
+            public Entry(string userName) {
+                UserName = userName;
             }
         }
+        internal static Grid2Definition GetGridModel(bool header) {
+            return new Grid2Definition() {
+                RecordType = typeof(Entry),
+                InitialPageSize = 10,
+                ShowHeader = header,
+                AjaxUrl = YetaWFManager.UrlFor(typeof(ListOfUserNamesController), nameof(ListOfUserNamesController.ListOfUserNamesDisplay_SortFilter)),
+                SortFilterStaticData = (List<object> data, int skip, int take, List<DataProviderSortInfo> sorts, List<DataProviderFilterInfo> filters) => {
+                    DataProviderGetRecords<Entry> recs = DataProviderImpl<Entry>.GetRecords(data, skip, take, sorts, filters);
+                    return new DataSourceResult {
+                        Data = recs.Data.ToList<object>(),
+                        Total = recs.Total,
+                    };
+                },
+            };
+        }
+
         public async Task<YHtmlString> RenderAsync(List<int> model) {
 
             HtmlBuilder hb = new HtmlBuilder();
 
-            hb.Append($"<div class='yt_listofusernames t_display'>");
-
             bool header = PropData.GetAdditionalAttributeValue("Header", true);
 
-            List<GridDisplay> list = new List<GridDisplay>();
-            using (UserDefinitionDataProvider userDP = new DataProvider.UserDefinitionDataProvider()) {
-                if (model != null) {
-                    foreach (int userId in model) {
-                        UserDefinition user = await userDP.GetItemByUserIdAsync(userId);
-                        list.Add(new GridDisplay(userDP, user, userId));
+            Grid2Model grid = new Grid2Model() {
+                GridDef = GetGridModel(header)
+            };
+            grid.GridDef.DirectDataAsync = async (int skip, int take, List<DataProviderSortInfo> sorts, List<DataProviderFilterInfo> filters) => {
+                List<Entry> list = new List<Entry>();
+                using (UserDefinitionDataProvider userDP = new UserDefinitionDataProvider()) {
+                    if (model != null) {
+                        foreach (var userId in model) {
+                            UserDefinition user = await userDP.GetItemByUserIdAsync(userId);
+                            string userName;
+                            if (user == null)
+                                userName = __ResStr("noUser", "({0})", userId);
+                            else
+                                userName = user.UserName;
+                            list.Add(new Entry(userName));
+                        }
                     }
                 }
-            }
-
-            DataSourceResult data = new DataSourceResult {
-                Data = list.ToList<object>(),
-                Total = list.Count,
-            };
-            GridModel grid = new GridModel() {
-                GridDef = new GridDefinition() {
-                    RecordType = typeof(GridDisplay),
-                    Data = data,
-                    SupportReload = false,
-                    PageSizes = new List<int>(),
-                    InitialPageSize = 10,
-                    ShowHeader = header,
-                    ReadOnly = true,
-                }
+                return new DataSourceResult {
+                    Data = list.ToList<object>(),
+                    Total = list.Count
+                };
             };
 
-            hb.Append(await HtmlHelper.ForDisplayAsAsync(Container, PropertyName, FieldName, grid, nameof(grid.GridDef), grid.GridDef, "Grid", HtmlAttributes: HtmlAttributes));
+            hb.Append($@"
+<div class='yt_listofusernames t_display'>
+    {await HtmlHelper.ForDisplayAsAsync(Container, PropertyName, FieldName, grid, nameof(grid.GridDef), grid.GridDef, "Softelvdm_Grid_Grid2", HtmlAttributes: HtmlAttributes)}
+</div>");
 
-            hb.Append($"</div>");
             return hb.ToYHtmlString();
         }
     }
+
     public class ListOfUserNamesEditComponent : ListOfUserNamesComponentBase, IYetaWFComponent<List<int>> {
 
         public override ComponentType GetComponentType() { return ComponentType.Edit; }
 
+        public class ListOfUserNamesSetup {
+            public string GridId { get; set; }
+            public string AddUrl { get; set; }
+            public string GridAllId { get; internal set; }
+        }
         public class NewModel {
             [Caption("User Name"), Description("Please enter a new user name and click Add")]
             [UIHint("Text80"), StringLength(80), Trim]
             public string NewValue { get; set; }
         }
-        [Trim]
-        public class GridEdit {
 
-            public GridEdit() { }
+        public class Entry {
 
             [Caption("Delete"), Description("Click to remove this user name from the list")]
-            [UIHint("GridDeleteEntry")]
-            public int DeleteMe { get; set; }
+            [UIHint("Softelvdm_Grid_Grid2DeleteEntry"), ReadOnly]
+            public int Delete { get; set; }
 
             [Caption("User Name"), Description("Shows all defined user names")]
-            [UIHint("Text80"), StringLength(Globals.MaxUser), UserNameValidation, ListNoDuplicates, Required, Trim]
+            [UIHint("String"), ReadOnly]
             public string UserName { get; set; }
 
-            [UIHint("Hidden"), Required, Trim]
-            public string __Value { get; set; }
+            [UIHint("Softelvdm_Grid_Grid2Value"), ReadOnly]
+            public int UserId { get; set; }
 
-            [UIHint("Raw"), ReadOnly]
-            public string __TextKey { get { return __Value; } }
-            [UIHint("Raw"), ReadOnly]
-            public string __TextDisplay { get { return UserName; } }
-
-            public GridEdit(UserDefinitionDataProvider userDP, int userId) {
-                UserDefinition user = YetaWFManager.Syncify(() => userDP.GetItemByUserIdAsync(userId));
-                if (user == null) {
-                    UserName = __ResStr("noUser", "({0})", userId);
-                } else {
-                    UserName = user.UserName;
-                }
-                __Value = userId.ToString();
+            public Entry(int userId, string userName) {
+                UserId = userId;
+                UserName = userName;
             }
+            public Entry() { }
         }
-        [Trim]
-        public class GridAllEntry {
 
-            public GridAllEntry() { }
+        public class AllEntry {
+
+            public AllEntry() { }
 
             [Caption("User Name"), Description("Defines the user name")]
             [UIHint("String"), ReadOnly]
             public string UserName { get; set; }
 
-            [UIHint("Raw"), ReadOnly]
-            public string RawUserName { get { return UserName; } }
-
-            public GridAllEntry(UserDefinition user) {
+            public AllEntry(UserDefinition user) {
                 ObjectSupport.CopyData(user, this);
             }
         }
+
+        internal static Grid2Definition GetGridModel(bool header) {
+            return new Grid2Definition() {
+                RecordType = typeof(Entry),
+                InitialPageSize = 10,
+                ShowHeader = header,
+                AjaxUrl = YetaWFManager.UrlFor(typeof(ListOfUserNamesController), nameof(ListOfUserNamesController.ListOfUserNamesEdit_SortFilter)),
+                SortFilterStaticData = (List<object> data, int skip, int take, List<DataProviderSortInfo> sorts, List<DataProviderFilterInfo> filters) => {
+                    DataProviderGetRecords<Entry> recs = DataProviderImpl<Entry>.GetRecords(data, skip, take, sorts, filters);
+                    return new DataSourceResult {
+                        Data = recs.Data.ToList<object>(),
+                        Total = recs.Total,
+                    };
+                },
+                DeletedMessage = __ResStr("removeMsg", "User name {0} has been removed"),
+                DeleteConfirmationMessage = __ResStr("confimMsg", "Are you sure you want to remove user name {0}?"),
+                DeletedColumnDisplay = nameof(Entry.UserName),
+            };
+        }
+        internal static Grid2Definition GetGridAllUsersModel() {
+            return new Grid2Definition() {
+                RecordType = typeof(AllEntry),
+                InitialPageSize = 10,
+                AjaxUrl = YetaWFManager.UrlFor(typeof(ListOfUserNamesController), nameof(ListOfUserNamesController.ListOfUserNamesBrowse_GridData)),
+                DirectDataAsync = async (int skip, int take, List<DataProviderSortInfo> sort, List<DataProviderFilterInfo> filters) => {
+                    using (UserDefinitionDataProvider userDP = new UserDefinitionDataProvider()) {
+                        DataProviderGetRecords<UserDefinition> browseItems = await userDP.GetItemsAsync(skip, take, sort, filters);
+                        return new DataSourceResult {
+                            Data = (from s in browseItems.Data select new ListOfUserNamesEditComponent.AllEntry(s)).ToList<object>(),
+                            Total = browseItems.Total
+                        };
+                    }
+                },
+            };
+        }
+
         public async Task<YHtmlString> RenderAsync(List<int> model) {
 
             HtmlBuilder hb = new HtmlBuilder();
 
-            string tmpltId = UniqueId();
+            bool header = PropData.GetAdditionalAttributeValue("Header", true);
+
+            Grid2Model grid = new Grid2Model() {
+                GridDef = GetGridModel(header)
+            };
+            grid.GridDef.DirectDataAsync = async (int skip, int take, List<DataProviderSortInfo> sorts, List<DataProviderFilterInfo> filters) => {
+                List<Entry> list = new List<Entry>();
+                using (UserDefinitionDataProvider userDP = new UserDefinitionDataProvider()) {
+                    if (model != null) {
+                        foreach (var userId in model) {
+                            UserDefinition user = await userDP.GetItemByUserIdAsync(userId);
+                            string userName;
+                            if (user == null)
+                                userName = __ResStr("noUser", "({0})", userId);
+                            else
+                                userName = user.UserName;
+                            list.Add(new Entry(userId, userName));
+                        }
+                    }
+                }
+                return new DataSourceResult {
+                    Data = list.ToList<object>(),
+                    Total = list.Count
+                };
+            };
 
             hb.Append($@"
 <div class='yt_listofusernames t_edit' id='{DivId}'>
-    <div class='yt_grid_addordelete' id='{tmpltId}'
-        data-dupmsg='{__ResStr("dupmsg", "User name {0} has already been added")}'
-        data-addedmsg='{__ResStr("addedmsg", "User name {0} has been added")}'
-        data-remmsg='{__ResStr("remmsg", "User name {0} has been removed")}'>");
-
-            List<GridEdit> list = new List<GridEdit>();
-            using (UserDefinitionDataProvider userDP = new DataProvider.UserDefinitionDataProvider()) {
-                if (model != null)
-                    list = (from u in model select new GridEdit(userDP, u)).ToList();
-            }
-
-            bool header = PropData.GetAdditionalAttributeValue("Header", true);
-
-            DataSourceResult data = new DataSourceResult {
-                Data = list.ToList<object>(),
-                Total = list.Count,
-            };
-            GridModel grid = new GridModel() {
-                GridDef = new GridDefinition() {
-                    RecordType = typeof(GridEdit),
-                    Data = data,
-                    SupportReload = false,
-                    PageSizes = new List<int>(),
-                    InitialPageSize = 10,
-                    ShowHeader = header,
-                    ReadOnly = false,
-                    CanAddOrDelete = true,
-                    DeleteProperty = "__TextKey",
-                    DisplayProperty = "__TextDisplay"
-                }
-            };
-
-            hb.Append(await HtmlHelper.ForDisplayAsAsync(Container, PropertyName, FieldName, grid, nameof(grid.GridDef), grid.GridDef, "Grid", HtmlAttributes: HtmlAttributes));
+    {await HtmlHelper.ForDisplayAsAsync(Container, PropertyName, FieldName, grid, nameof(grid.GridDef), grid.GridDef, "Softelvdm_Grid_Grid2", HtmlAttributes: HtmlAttributes)}");
 
             using (Manager.StartNestedComponent(FieldName)) {
 
-                string ajaxUrl = GetSiblingProperty<string>($"{PropertyName}_AjaxUrl");
-
                 NewModel newModel = new NewModel();
-                hb.Append("<div class='t_newvalue'>");
-                hb.Append(await HtmlHelper.ForLabelAsync(newModel, nameof(newModel.NewValue)));
-                hb.Append(await HtmlHelper.ForEditAsync(newModel, nameof(newModel.NewValue)));
-                hb.Append("<input name='btnAdd' type='button' value='Add' data-ajaxurl='{0}' />", YetaWFManager.HtmlAttributeEncode(ajaxUrl));
-                hb.Append("</div>");
+                hb.Append($@"
+    <div class='t_newvalue'>
+        {await HtmlHelper.ForLabelAsync(newModel, nameof(newModel.NewValue))}
+        {await HtmlHelper.ForEditAsync(newModel, nameof(newModel.NewValue))}
+        <input name='btnAdd' type='button' value='Add' disabled='disabled' />
+    </div>");
+
             }
 
-            hb.Append(@"
-    </div>");
+            Grid2Model gridAll = new Grid2Model() {
+                GridDef = GetGridAllUsersModel()
+            };
+            ListOfUserNamesSetup setup = new ListOfUserNamesSetup {
+                AddUrl = GetSiblingProperty<string>($"{PropertyName}_AjaxUrl"),
+                GridId = grid.GridDef.Id,
+                GridAllId = gridAll.GridDef.Id
+            };
 
             hb.Append($@"
     <div id='{DivId}_coll'>
         {await ModuleActionHelper.BuiltIn_ExpandAction(__ResStr("lblFindUsers", "Find Users"), __ResStr("ttFindUsers", "Expand to find user names available on this site")).RenderAsNormalLinkAsync() }
     </div>
     <div id='{DivId}_exp' style='display:none'>
-        {await ModuleActionHelper.BuiltIn_CollapseAction(__ResStr("lblAllUserNames", "All User Names"), __ResStr("ttAllUserNames", "Shows all user names available on this site - Select a user name to update the text box above, so the user name can be added to the list of user names - Click to close")).RenderAsNormalLinkAsync() }");
-
-            grid = new GridModel() {
-                GridDef = new GridDefinition() {
-                    AjaxUrl = YetaWFManager.UrlFor(typeof(ListOfUserNamesController), nameof(ListOfUserNamesController.ListOfUserNamesBrowse_GridData)),
-                    Id = DivId + "_listall",
-                    RecordType = typeof(GridAllEntry),
-                    ShowHeader = true,
-                }
-            };
-
-            hb.Append(await HtmlHelper.ForDisplayAsAsync(Container, PropertyName, FieldName, grid, nameof(grid.GridDef), grid.GridDef, "Grid"));
-
-            hb.Append($@"
+        {await ModuleActionHelper.BuiltIn_CollapseAction(__ResStr("lblAllUserNames", "All User Names"), __ResStr("ttAllUserNames", "Shows all user names available on this site - Select a user name to update the text box above, so the user name can be added to the list of user names - Click to close")).RenderAsNormalLinkAsync() }
+        {await HtmlHelper.ForDisplayAsAsync(Container, PropertyName, FieldName, gridAll, nameof(gridAll.GridDef), gridAll.GridDef, "Softelvdm_Grid_Grid2")}
     </div>
 </div>
 <script>
     $YetaWF.expandCollapseHandling('{DivId}', '{DivId}_coll', '{DivId}_exp');
-    {BeginDocumentReady(DivId)}
-        YetaWF_Identity_ListOfUserNames.init($('#{DivId}_listall'), $('#{tmpltId} .t_edit[name$=\'.NewValue\']'));
-    {EndDocumentReady()}
+    new YetaWF_Identity.ListOfUserNamesEditComponent('{DivId}', {YetaWFManager.JsonSerialize(setup)});
 </script>");
+
             return hb.ToYHtmlString();
+        }
+        public static async Task<Grid2RecordData> Grid2RecordAsync(string fieldPrefix, object model) {
+            // handle async properties
+            await YetaWFController.HandlePropertiesAsync(model);
+            Grid2RecordData record = new Grid2RecordData() {
+                GridDef = GetGridModel(false),
+                Data = model,
+                FieldPrefix = fieldPrefix,
+            };
+            return record;
         }
     }
 }

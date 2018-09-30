@@ -3,14 +3,11 @@
 using YetaWF.Core.Controllers;
 using YetaWF.Core.Models;
 using YetaWF.Core.Models.Attributes;
-using YetaWF.Core.Modules;
-using YetaWF.Modules.Dashboard.Modules;
 using System.Threading.Tasks;
 using YetaWF.Core.Components;
 #if MVC6
 using Microsoft.AspNetCore.Mvc;
 #else
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -24,41 +21,53 @@ namespace YetaWF.Modules.Dashboard.Controllers {
 
         public class BrowseItem {
 
-            [Caption("Actions"), Description("The available actions")]
-            [UIHint("ActionIcons"), ReadOnly]
-            public MenuList Commands {
-                get {
-                    MenuList actions = new MenuList() { RenderMode = ModuleAction.RenderModeEnum.IconsOnly };
-                    return actions;
-                }
-            }
             [Caption("Module"), Description("The module name")]
             [UIHint("String"), ReadOnly]
             public string Name { get; set; }
 
-            private HttpModulesBrowseModule Module { get; set; }
-
-            public BrowseItem(HttpModulesBrowseModule module, string name) {
-                Module = module;
+            public BrowseItem(string name) {
                 Name = name;
             }
+            public BrowseItem() { }
         }
 
         public class BrowseModel {
-            [UIHint("Grid")]
-            public GridDefinition GridDef { get; set; }
+            [UIHint("Softelvdm_Grid_Grid2"), ReadOnly]
+            public Grid2Definition GridDef { get; set; }
         }
+        private Grid2Definition GetGridModel() {
+            return new Grid2Definition {
+                ModuleGuid = Module.ModuleGuid,
+                SettingsModuleGuid = Module.PermanentGuid,
+                RecordType = typeof(BrowseItem),
+                AjaxUrl = GetActionUrl(nameof(HttpModulesBrowse_GridData)),
+                SortFilterStaticData = (List<object> data, int skip, int take, List<DataProviderSortInfo> sorts, List<DataProviderFilterInfo> filters) => {
+                    DataProviderGetRecords<BrowseItem> recs = DataProviderImpl<BrowseItem>.GetRecords(data, skip, take, sorts, filters);
+                    return new DataSourceResult {
+                        Data = recs.Data.ToList<object>(),
+                        Total = recs.Total,
+                    };
+                },
+                DirectDataAsync = (int skip, int take, List<DataProviderSortInfo> sort, List<DataProviderFilterInfo> filters) => {
+                    HttpApplication httpApps = HttpContext.ApplicationInstance;
+                    HttpModuleCollection httpModuleCollections = httpApps.Modules;
+                    List<BrowseItem> items = (from k in httpModuleCollections.AllKeys select new BrowseItem(k)).ToList();
+                    DataProviderGetRecords<BrowseItem> recs = DataProviderImpl<BrowseItem>.GetRecords(items, skip, take, sort, filters);
+                    DataSourceResult data = new DataSourceResult {
+                        Data = recs.Data.ToList<object>(),
+                        Total = recs.Total
+                    };
+                    return Task.FromResult(data);
+                },
+            };
+        }
+
         [AllowGet]
         public ActionResult HttpModulesBrowse() {
             BrowseModel model = new BrowseModel { };
 #if MVC6
 #else
-            model.GridDef = new GridDefinition {
-                AjaxUrl = GetActionUrl("HttpModulesBrowse_GridData"),
-                ModuleGuid = Module.ModuleGuid,
-                RecordType = typeof(BrowseItem),
-                SettingsModuleGuid = Module.PermanentGuid,
-            };
+            model.GridDef = GetGridModel();
 #endif
             return View(model);
         }
@@ -67,16 +76,8 @@ namespace YetaWF.Modules.Dashboard.Controllers {
 #else
         [AllowPost]
         [ConditionalAntiForgeryToken]
-        public async Task<ActionResult> HttpModulesBrowse_GridData(int skip, int take, List<DataProviderSortInfo> sort, List<DataProviderFilterInfo> filters, Guid settingsModuleGuid) {
-            HttpApplication httpApps = HttpContext.ApplicationInstance;
-            HttpModuleCollection httpModuleCollections = httpApps.Modules;
-            List<BrowseItem> items = (from k in httpModuleCollections.AllKeys select new BrowseItem(Module, k)).ToList();
-            DataProviderGetRecords<BrowseItem> recs = DataProviderImpl<BrowseItem>.GetRecords(items, skip, take, sort, filters);
-            Grid.SaveSettings(skip, take, sort, filters, settingsModuleGuid);
-            return await GridPartialViewAsync(new DataSourceResult {
-                Data = recs.Data.ToList<object>(),
-                Total = recs.Total
-            });
+        public async Task<ActionResult> HttpModulesBrowse_GridData(string data, string fieldPrefix, int skip, int take, List<DataProviderSortInfo> sorts, List<DataProviderFilterInfo> filters) {
+            return await Grid2PartialViewAsync<BrowseItem>(GetGridModel(), data, fieldPrefix, skip, take, sorts, filters);
         }
 #endif
     }

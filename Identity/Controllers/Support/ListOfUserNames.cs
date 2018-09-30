@@ -1,15 +1,12 @@
 ﻿/* Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Identity#License */
 
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
-using YetaWF.Core.Components;
 using YetaWF.Core.Controllers;
 using YetaWF.Core.DataProvider;
 using YetaWF.Core.Identity;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Modules.Identity.Addons;
-using YetaWF.Modules.Identity.DataProvider;
 using YetaWF.Modules.Identity.Components;
 #if MVC6
 using Microsoft.AspNetCore.Mvc;
@@ -23,16 +20,20 @@ namespace YetaWF.Modules.Identity.Controllers {
 
         [AllowPost]
         [ConditionalAntiForgeryToken]
+        public async Task<ActionResult> ListOfUserNamesDisplay_SortFilter(string data, string fieldPrefix, int skip, int take, List<DataProviderSortInfo> sorts, List<DataProviderFilterInfo> filters) {
+            return await Grid2PartialViewAsync<ListOfUserNamesDisplayComponent.Entry>(ListOfUserNamesDisplayComponent.GetGridModel(false), data, fieldPrefix, skip, take, sorts, filters);
+        }
+        [AllowPost]
+        [ConditionalAntiForgeryToken]
+        public async Task<ActionResult> ListOfUserNamesEdit_SortFilter(string data, string fieldPrefix, int skip, int take, List<DataProviderSortInfo> sorts, List<DataProviderFilterInfo> filters) {
+            return await Grid2PartialViewAsync<ListOfUserNamesEditComponent.Entry>(ListOfUserNamesEditComponent.GetGridModel(false), data, fieldPrefix, skip, take, sorts, filters);
+        }
+
+        [AllowPost]
+        [ConditionalAntiForgeryToken]
         [ResourceAuthorize(Info.Resource_AllowListOfUserNamesAjax)]
-        public async Task<ActionResult> ListOfUserNamesBrowse_GridData(int skip, int take, List<DataProviderSortInfo> sort, List<DataProviderFilterInfo> filters /*, Guid settingsModuleGuid - not available in templates */) {
-            using (UserDefinitionDataProvider userDP = new UserDefinitionDataProvider()) {
-                DataProviderGetRecords<UserDefinition> browseItems = await userDP.GetItemsAsync(skip, take, sort, filters);
-                //Grid.SaveSettings(skip, take, sort, filters, settingsModuleGuid);
-                return await GridPartialViewAsync(new DataSourceResult {
-                    Data = (from s in browseItems.Data select new ListOfUserNamesEditComponent.GridAllEntry(s)).ToList<object>(),
-                    Total = browseItems.Total
-                });
-            }
+        public async Task<ActionResult> ListOfUserNamesBrowse_GridData(string fieldPrefix, int skip, int take, List<DataProviderSortInfo> sorts, List<DataProviderFilterInfo> filters) {
+            return await Grid2PartialViewAsync(ListOfUserNamesEditComponent.GetGridAllUsersModel(), fieldPrefix, skip, take, sorts, filters);
         }
     }
 }

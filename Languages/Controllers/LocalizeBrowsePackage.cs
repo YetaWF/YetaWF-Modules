@@ -63,23 +63,36 @@ namespace YetaWF.Modules.Languages.Controllers {
         }
 
         public class BrowseModel {
-            [UIHint("Grid")]
-            public GridDefinition GridDef { get; set; }
+            [UIHint("Softelvdm_Grid_Grid2"), ReadOnly]
+            public Grid2Definition GridDef { get; set; }
+
             public class ExtraData {
                 public string PackageName { get; set; }
             }
+        }
+        private Grid2Definition GetGridModel(Package package) {
+            return new Grid2Definition {
+                ModuleGuid = Module.ModuleGuid,
+                SettingsModuleGuid = Module.PermanentGuid,
+                RecordType = typeof(BrowseItem),
+                AjaxUrl = GetActionUrl(nameof(LocalizeBrowsePackage_GridData)),
+                ExtraData = new BrowseModel.ExtraData { PackageName = package.Name },
+                DirectDataAsync = async (int skip, int take, List<DataProviderSortInfo> sort, List<DataProviderFilterInfo> filters) => {
+                    List<LocalizeFile> files = (from s in await LocalizationSupport.GetFilesAsync(package, MultiString.DefaultLanguage, false) select new LocalizeFile { FileName = Path.GetFileName(s) }).ToList();
+                    DataProviderGetRecords<LocalizeFile> recs = DataProviderImpl<LocalizeFile>.GetRecords(files, skip, take, sort, filters);
+                    return new DataSourceResult {
+                        Data = (from s in recs.Data select new BrowseItem(Module, package.Name, s.FileName)).ToList<object>(),
+                        Total = recs.Total
+                    };
+                },
+            };
         }
 
         [AllowGet]
         public ActionResult LocalizeBrowsePackage(string packageName) {
             Package package = Package.GetPackageFromPackageName(packageName);
-            BrowseModel model = new BrowseModel { };
-            model.GridDef = new GridDefinition {
-                AjaxUrl = GetActionUrl("LocalizeBrowsePackage_GridData"),
-                ModuleGuid = Module.ModuleGuid,
-                RecordType = typeof(BrowseItem),
-                SettingsModuleGuid = Module.PermanentGuid,
-                ExtraData = new BrowseModel.ExtraData { PackageName = packageName },
+            BrowseModel model = new BrowseModel {
+                GridDef = GetGridModel(package)
             };
             Module.Title = this.__ResStr("modTitle", "Localization Resources - Package {0}", package.Name);
             return View(model);
@@ -91,15 +104,9 @@ namespace YetaWF.Modules.Languages.Controllers {
 
         [AllowPost]
         [ConditionalAntiForgeryToken]
-        public async Task<ActionResult> LocalizeBrowsePackage_GridData(int skip, int take, List<DataProviderSortInfo> sort, List<DataProviderFilterInfo> filters, Guid settingsModuleGuid, string packageName) {
+        public async Task<ActionResult> LocalizeBrowsePackage_GridData(string fieldPrefix, int skip, int take, List<DataProviderSortInfo> sorts, List<DataProviderFilterInfo> filters, string packageName) {
             Package package = Package.GetPackageFromPackageName(packageName);
-            List<LocalizeFile> files = (from s in await LocalizationSupport.GetFilesAsync(package, MultiString.DefaultLanguage, false) select new LocalizeFile { FileName = Path.GetFileName(s) }).ToList();
-            DataProviderGetRecords<LocalizeFile> recs = DataProviderImpl<LocalizeFile>.GetRecords(files, skip, take, sort, filters);
-            Grid.SaveSettings(skip, take, sort, filters, settingsModuleGuid);
-            return await GridPartialViewAsync(new DataSourceResult {
-                Data = (from s in recs.Data select new BrowseItem(Module, packageName, s.FileName)).ToList<object>(),
-                Total = recs.Total
-            });
+            return await Grid2PartialViewAsync(GetGridModel(package), fieldPrefix, skip, take, sorts, filters);
         }
 
         [AllowPost]

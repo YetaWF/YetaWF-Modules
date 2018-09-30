@@ -5,10 +5,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
-using YetaWF.Core;
 using YetaWF.Core.Controllers;
 using YetaWF.Core.IO;
-using YetaWF.Core.Models;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Modules;
 using YetaWF.Core.Packages;
@@ -19,6 +17,7 @@ using YetaWF.Modules.Panels.Models;
 using YetaWF.Modules.Panels.Modules;
 using YetaWF.Core.Components;
 using YetaWF.Modules.Panels.Components;
+using YetaWF.Core.Localize;
 #if MVC6
 using Microsoft.AspNetCore.Mvc;
 #else
@@ -235,15 +234,20 @@ namespace YetaWF.Modules.Panels.Controllers {
         [AllowPost]
         [ConditionalAntiForgeryToken]
         [ExcludeDemoMode]
-        public async Task<ActionResult> AddPage(string prefix, int newRecNumber, string newValue) {
+        public async Task<ActionResult> AddPage(string data, string fieldPrefix, string newUrl) {
             // Validation
             UrlValidationAttribute attr = new UrlValidationAttribute(UrlValidationAttribute.SchemaEnum.Any, UrlTypeEnum.Local);
-            if (!attr.IsValid(newValue))
+            if (!attr.IsValid(newUrl))
                 throw new Error(attr.ErrorMessage);
+            List<ListOfLocalPagesEditComponent.Entry> list = YetaWFManager.JsonDeserialize<List<ListOfLocalPagesEditComponent.Entry>>(data);
+            if ((from l in list where l.Url.ToLower() == newUrl.ToLower() select l).FirstOrDefault() != null)
+                throw new Error(this.__ResStr("dupUrl", "Page {0} has already been added", newUrl));
             // add new grid record
-            ListOfLocalPagesEditComponent.GridEntryEdit entry = (ListOfLocalPagesEditComponent.GridEntryEdit)Activator.CreateInstance(typeof(ListOfLocalPagesEditComponent.GridEntryEdit));
-            entry.UrlDisplay = newValue;
-            return await GridPartialViewAsync(new GridDefinition.GridEntryDefinition(prefix, newRecNumber, entry));
+            ListOfLocalPagesEditComponent.Entry entry = new ListOfLocalPagesEditComponent.Entry {
+                Url = newUrl,
+            };
+            return await Grid2RecordViewAsync(await ListOfLocalPagesEditComponent.Grid2RecordAsync(fieldPrefix, entry));
         }
+
     }
 }

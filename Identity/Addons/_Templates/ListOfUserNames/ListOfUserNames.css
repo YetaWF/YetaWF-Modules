@@ -1,7 +1,7 @@
 @charset "UTF-8";
 /* Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Identity#License */
-.yt_listofusernames.t_edit .yt_grid_addordelete {
-  padding-bottom: .5em; }
+.yt_listofusernames.t_edit > .t_newvalue {
+  padding-top: .5em; }
 
 .yt_listofusernames.t_edit .y_act_normlink[data-name="Collapse"] {
   margin-bottom: .5em;
