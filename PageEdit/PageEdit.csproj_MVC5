@@ -111,12 +111,12 @@
     <Content Include="Addons\_Main\pagecontrol.css" />
     <TypeScriptCompile Include="Addons\_Main\PageControl.ts" />
     <Content Include="Addons\_SiteTemplates\YetaWF_PageEdit.1.0.3.txt" />
-    <Content Include="Addons\_Templates\AllowedUsers\AllowedUsers.js" />
     <Content Include="Addons\_Templates\AllowedUsers\filelistJS.txt" />
-    <Content Include="Addons\_Templates\AllowedUsers\allowedusers.css" />
+    <None Include="Addons\_Templates\AllowedUsers\AllowedUsers.scss" />
     <Content Include="Addons\_Templates\AllowedUsers\filelistCSS.txt" />
     <Content Include="Addons\_Templates\AllowedRoles\filelistCSS.txt" />
-    <Content Include="Addons\_Templates\AllowedRoles\allowedroles.css" />
+    <None Include="Addons\_Templates\AllowedRoles\AllowedRoles.scss" />
+    <TypeScriptCompile Include="Addons\_Templates\AllowedUsers\AllowedUsersEdit.ts" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
@@ -146,7 +146,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Addons\_Main\Grids\AllowedUsersEditComponent.GridAllEntry" />
+    <None Include="Addons\_Main\Grids\AllowedUsersEditComponent.AllEntry" />
     <None Include="Addons\_Main\Grids\AllowedUsersEditComponent.GridAllowedUser" />
     <None Include="Addons\_Main\Grids\AllowedRolesEditComponent.GridAllowedRole" />
     <None Include="app.config" />

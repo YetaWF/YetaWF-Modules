@@ -41,6 +41,8 @@
     <Compile Include="Components\TimeOfDay.cs" />
     <Compile Include="Components\Time.cs" />
     <Compile Include="Components\DayTimeRange.cs" />
+    <Compile Include="Controllers\Support\ReferencedModules.cs" />
+    <Compile Include="Controllers\Support\PageDefinitions.cs" />
     <Compile Include="CoreRendering\View.cs" />
     <Compile Include="KendoUICore.cs" />
     <Compile Include="Startup\Templates\Time.cs" />
@@ -231,6 +233,7 @@
     <None Include="Addons\_Templates\WeeklyHours\WeeklyHours.scss" />
     <None Include="Addons\_Templates\Time\Time.scss" />
     <None Include="Addons\_Templates\DayTimeRange\DayTimeRange.scss" />
+    <Content Include="Addons\_Templates\Url\UrlLegacy.js" />
     <Content Include="Addons\_Templates\WeeklyHours\filelistCSS.txt" />
     <Content Include="Addons\_Templates\DayTimeRange\filelistCSS.txt" />
     <Content Include="Addons\_Templates\DayTimeRange\filelistJS.txt" />
@@ -345,13 +348,13 @@
     <Content Include="Addons\_Templates\Url\filelistCSS.txt" />
     <Content Include="Addons\_Templates\Url\filelistJS.txt" />
     <Content Include="Addons\_Templates\Url\Icons\UrlRemote.png" />
-    <Content Include="Addons\_Templates\Url\Url.js" />
+    <TypeScriptCompile Include="Addons\_Templates\Url\UrlEdit.ts" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Addons\_Addons\no-margin-for-errors.com.prettyloader\README" />
-    <None Include="Addons\_Main\Grids\PageDefinitionsDisplayComponent.GridDisplay" />
-    <None Include="Addons\_Main\Grids\ReferencedModulesDisplayComponent.GridDisplay" />
-    <None Include="Addons\_Main\Grids\ReferencedModulesEditComponent.GridEdit" />
+    <None Include="Addons\_Main\Grids\PageDefinitionsDisplayComponent.Entry" />
+    <None Include="Addons\_Main\Grids\ReferencedModulesDisplayComponent.Entry" />
+    <None Include="Addons\_Main\Grids\ReferencedModulesEditComponent.Entry" />
     <None Include="Addons\_Templates\ModuleSelection\ModuleSelection.scss" />
     <None Include="Addons\_Templates\PropertyList\propertylist.scss" />
     <None Include="Addons\_Templates\Url\Url.scss" />

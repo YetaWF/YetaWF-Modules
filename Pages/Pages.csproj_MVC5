@@ -97,7 +97,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Views\HTML\SkinScrollToTop.cs" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <TypeScriptCompile Include="Addons\_Templates\ListOfLocalPages\ListOfLocalPagesEdit.ts" />
+  </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\CoreComponents\Core\Core.csproj">
       <Project>{71acc7ac-2622-4127-b925-d058c01a39e5}</Project>
@@ -129,17 +131,18 @@
     <Content Include="Addons\_Addons\SkinScrollToTop\filelistJS.txt" />
     <Content Include="Addons\_Addons\SkinScrollToTop\markgoodyear.com ScrollUp\jquery.scrollUp.js" />
     <Content Include="Addons\_SiteTemplates\YetaWF_Pages.2.0.3.txt" />
-    <None Include="Addons\_Main\Grids\ListOfLocalPagesEditComponent.GridAllEntry" />
-    <None Include="Addons\_Main\Grids\ListOfLocalPagesDisplayComponent.GridEntryDisplay" />
-    <None Include="Addons\_Main\Grids\ListOfLocalPagesEditComponent.GridEntryEdit" />
+    <None Include="Addons\_Main\Grids\ListOfLocalPagesEditComponent.AllEntry" />
+    <None Include="Addons\_Main\Grids\ListOfLocalPagesDisplayComponent.Entry" />
+    <None Include="Addons\_Main\Grids\ListOfLocalPagesEditComponent.Entry" />
     <None Include="Addons\_Main\Grids\UnifiedSetsBrowseModuleController.BrowseItem" />
     <Content Include="Addons\_Addons\SkinScrollToTop\SkinScrollToTop.css" />
     <Content Include="Addons\_Templates\ListOfLocalPages\filelistCSS.txt" />
     <Content Include="Addons\_Templates\ListOfLocalPages\filelistJS.txt" />
     <None Include="Addons\_Templates\ListOfLocalPages\ListOfLocalPages.scss" />
-    <Content Include="Addons\_Templates\ListOfLocalPages\ListOfLocalPages.js" />
     <None Include="app.config" />
     <None Include="packages.config" />
+    <None Include="tsconfig.json" />
+    <None Include="tslint.json" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

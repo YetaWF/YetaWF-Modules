@@ -60,11 +60,10 @@
     <Content Include="Addons\_SiteTemplates\YetaWF_Panels.txt" />
     <Content Include="Addons\_Templates\ListOfLocalPages\filelistCSS.txt" />
     <Content Include="Addons\_Templates\ListOfLocalPages\filelistJS.txt" />
-    <Content Include="Addons\_Templates\ListOfLocalPages\ListOfLocalPages.js" />
     <Content Include="Addons\_Templates\PagePanelInfo\filelistCSS.txt" />
     <Content Include="Addons\_Templates\PagePanelInfo\filelistJS.txt" />
-    <None Include="Addons\_Main\Grids\ListOfLocalPagesEditComponent.GridAllEntry" />
-    <None Include="Addons\_Main\Grids\ListOfLocalPagesEditComponent.GridEntryEdit" />
+    <None Include="Addons\_Main\Grids\ListOfLocalPagesEditComponent.AllEntry" />
+    <None Include="Addons\_Main\Grids\ListOfLocalPagesEditComponent.Entry" />
     <None Include="Addons\_Templates\ListOfLocalPages\ListOfLocalPages.scss" />
     <None Include="Addons\_Templates\PagePanelInfo\PagePanelInfo.scss" />
     <Content Include="Addons\_Templates\PagePanelInfo\PagePanelInfo.js" />
@@ -72,6 +71,8 @@
     <Content Include="Addons\_Templates\PanelInfo\filelistJS.txt" />
     <Content Include="Addons\_Templates\PanelInfo\PanelInfo.css" />
     <Content Include="Addons\_Templates\PanelInfo\PanelInfo.js" />
+    <None Include="tsconfig.json" />
+    <None Include="tslint.json" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
@@ -125,7 +126,9 @@
       <Private>True</Private>
     </Reference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <TypeScriptCompile Include="Addons\_Templates\ListOfLocalPages\ListOfLocalPagesEdit.ts" />
+  </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />

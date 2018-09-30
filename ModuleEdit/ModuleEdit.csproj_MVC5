@@ -90,10 +90,11 @@
     <Content Include="Addons\_Main\Icons\MoveTop.png" />
     <Content Include="Addons\_Main\Icons\MoveToPane.png" />
     <Content Include="Addons\_Main\Icons\MoveUp.png" />
-    <Content Include="Addons\_Templates\AllowedUsers\allowedusers.css" />
+    <None Include="Addons\_Templates\AllowedUsers\AllowedUsers.scss" />
     <Content Include="Addons\_Templates\AllowedUsers\filelistCSS.txt" />
     <Content Include="Addons\_Templates\AllowedUsers\filelistJS.txt" />
-    <Content Include="Addons\_Templates\AllowedUsers\AllowedUsers.js" />
+    <None Include="tsconfig.json" />
+    <None Include="tslint.json" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Models\" />
@@ -117,9 +118,12 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Addons\_Main\Grids\AllowedUsersEditComponent.GridAllEntry" />
+    <None Include="Addons\_Main\Grids\AllowedUsersEditComponent.AllEntry" />
     <None Include="app.config" />
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <TypeScriptCompile Include="Addons\_Templates\AllowedUsers\AllowedUsersEdit.ts" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

@@ -128,13 +128,13 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Components\HTML\ListOfUserNames.cs" />
     <Compile Include="Components\HTML\RoleId.cs" />
     <Compile Include="Components\HTML\UserRoles.cs" />
     <Compile Include="Components\HTML\RolesSelector.cs" />
     <Compile Include="Components\HTML\ResourceUsers.cs" />
     <Compile Include="Components\HTML\ResourceRoles.cs" />
     <Compile Include="Components\HTML\UserId.cs" />
-    <Compile Include="Components\HTML\ListOfUserNames.cs" />
     <Compile Include="Components\HTML\LoginUsers.cs" />
     <Compile Include="Components\HTML\Email.cs" />
     <Compile Include="Controllers\ForgotPassword.cs" />
@@ -144,7 +144,10 @@
     <Compile Include="Controllers\SelectTwoStepSetup.cs" />
     <Compile Include="Controllers\SelectTwoStepAuth.cs" />
     <Compile Include="Controllers\Support\ListOfUserNames.cs" />
-    <Compile Include="Controllers\Support\UserIdHelper.cs" />
+    <Compile Include="Controllers\Support\UserRoles.cs" />
+    <Compile Include="Controllers\Support\ResourceRoles.cs" />
+    <Compile Include="Controllers\Support\RolesSelector.cs" />
+    <Compile Include="Controllers\Support\UserId.cs" />
     <Compile Include="Controllers\TemplateListOfUserNames.cs" />
     <Compile Include="Controllers\TemplateRolesSelector.cs" />
     <Compile Include="Controllers\TemplateUserId.cs" />
@@ -247,14 +250,16 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Addons\_Addons\NeedNewPasswordDisplay\NeedNewPasswordDisplay.scss" />
-    <None Include="Addons\_Main\Grids\ListOfUserNamesEditComponent.GridAllEntry" />
-    <None Include="Addons\_Main\Grids\ListOfUserNamesDisplayComponent.GridDisplay" />
-    <None Include="Addons\_Main\Grids\ListOfUserNamesEditComponent.GridEdit" />
-    <None Include="Addons\_Main\Grids\ResourceUsersEditComponent.GridAllEntry" />
-    <None Include="Addons\_Main\Grids\UserIdEditComponent.GridAllEntry" />
-    <None Include="Addons\_Main\Grids\RolesSelectorDisplayComponent.GridDisplay" />
-    <None Include="Addons\_Main\Grids\RolesSelectorEditComponent.GridEdit" />
-    <None Include="Addons\_Main\Grids\UserRolesComponentBase.GridEntry" />
+    <None Include="Addons\_Main\Grids\ListOfUserNamesEditComponent.Entry" />
+    <None Include="Addons\_Main\Grids\ListOfUserNamesEditComponent.AllEntry" />
+    <None Include="Addons\_Main\Grids\ListOfUserNamesDisplayComponent.Entry" />
+    <None Include="Addons\_Main\Grids\ResourceRolesDisplayComponent.Entry" />
+    <None Include="Addons\_Main\Grids\ResourceUsersEditComponent.AllEntry" />
+    <None Include="Addons\_Main\Grids\UserIdEditComponent.AllEntry" />
+    <None Include="Addons\_Main\Grids\RolesSelectorDisplayComponent.Entry" />
+    <None Include="Addons\_Main\Grids\RolesSelectorEditComponent.Entry" />
+    <None Include="Addons\_Main\Grids\UserRolesEditComponent.Entry" />
+    <None Include="Addons\_Main\Grids\UserRolesDisplayComponent.Entry" />
     <None Include="Addons\_Templates\ListOfUserNames\ListOfUserNames.scss" />
     <None Include="Addons\_Main\SelectTwoStepSetup.scss" />
     <None Include="Addons\_Addons\Need2FADisplay\Need2FADisplay.scss" />
@@ -275,16 +280,15 @@
     <Content Include="Addons\_SiteTemplates\YetaWF_Identity.1.0.5.txt" />
     <Content Include="Addons\_Templates\ListOfUserNames\filelistCSS.txt" />
     <Content Include="Addons\_Templates\ListOfUserNames\filelistJS.txt" />
-    <Content Include="Addons\_Templates\ListOfUserNames\ListOfUserNames.js" />
     <Content Include="Addons\_Templates\ResourceUsers\filelistJS.txt" />
-    <Content Include="Addons\_Templates\ResourceUsers\ResourceUsers.js" />
     <Content Include="Addons\_Templates\UserId\filelistCSS.txt" />
     <Content Include="Addons\_Templates\UserId\filelistJS.txt" />
-    <Content Include="Addons\_Templates\UserId\UserId.js" />
     <Content Include="Addons\_Templates\UserId\UserId.css" />
     <Content Include="Addons\_Templates\RoleId\filelistCSS.txt" />
     <Content Include="Addons\_Templates\RoleId\RoleId.css" />
     <None Include="app.config" />
+    <None Include="tsconfig.json" />
+    <None Include="tslint.json" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\CoreComponents\Core\Core.csproj">
@@ -302,6 +306,10 @@
     <ProjectReference Include="..\..\..\DataProvider\SQL\SQL.csproj">
       <Project>{6a90eab3-a9e4-4a2c-90d9-145859790c46}</Project>
       <Name>SQL</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Softelvdm\Grid\Grid.csproj">
+      <Project>{8167cfd2-c76f-4004-be2a-2d1a09ebbbff}</Project>
+      <Name>Grid</Name>
     </ProjectReference>
     <ProjectReference Include="..\ComponentsHTML\ComponentsHTML.csproj">
       <Project>{AB7BFD23-57E8-40A6-85EA-9D4B3206075F}</Project>
@@ -331,7 +339,7 @@
     <Content Include="Addons\_Templates\IdentityUsers\filelistCSS.txt" />
     <Content Include="Addons\_Templates\IdentityUsers\Users.css" />
     <Content Include="Addons\_Templates\ResourceUsers\filelistCSS.txt" />
-    <Content Include="Addons\_Templates\ResourceUsers\ResourceUsers.css" />
+    <None Include="Addons\_Templates\ResourceUsers\ResourceUsers.scss" />
     <Content Include="Addons\_Templates\UserRoles\filelistCSS.txt" />
     <Content Include="Addons\_Templates\UserRoles\Roles.css" />
   </ItemGroup>
@@ -341,12 +349,16 @@
     </Content>
     <Content Include="Addons\_Main\Grids\AuthorizationBrowseModuleController.BrowseItem" />
     <Content Include="Addons\_Main\Grids\RolesBrowseModuleController.BrowseItem" />
-    <Content Include="Addons\_Main\Grids\ResourceRolesComponentBase.GridAllowedRole" />
+    <None Include="Addons\_Main\Grids\ResourceRolesEditComponent.Entry" />
     <Content Include="Addons\_Main\Grids\UsersBrowseModuleController.BrowseItem" />
-    <Content Include="Addons\_Main\Grids\ResourceUsersEditComponent.GridAllowedUser" />
-    <None Include="Addons\_Main\Grids\ResourceUsersDisplayComponent.GridAllowedUser" />
+    <None Include="Addons\_Main\Grids\ResourceUsersEditComponent.Entry" />
+    <None Include="Addons\_Main\Grids\ResourceUsersDisplayComponent.Entry" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <TypeScriptCompile Include="Addons\_Templates\ListOfUserNames\ListOfUserNamesEdit.ts" />
+    <TypeScriptCompile Include="Addons\_Templates\ResourceUsers\ResourceUsersEdit.ts" />
+    <TypeScriptCompile Include="Addons\_Templates\UserId\UserIdEdit.ts" />
+  </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
