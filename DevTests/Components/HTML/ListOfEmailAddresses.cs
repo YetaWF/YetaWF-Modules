@@ -39,8 +39,8 @@ namespace YetaWF.Modules.DevTests.Components {
                 EmailAddress = text;
             }
         }
-        internal static Grid2Definition GetGridModel(bool header) {
-            return new Grid2Definition() {
+        internal static GridDefinition GetGridModel(bool header) {
+            return new GridDefinition() {
                 RecordType = typeof(Entry),
                 InitialPageSize = 5,
                 PageSizes = new List<int> { 5, 10, 20 },
@@ -61,7 +61,7 @@ namespace YetaWF.Modules.DevTests.Components {
 
             bool header = PropData.GetAdditionalAttributeValue("Header", true);
 
-            Grid2Model grid = new Grid2Model() {
+            GridModel grid = new GridModel() {
                 GridDef = GetGridModel(header)
             };
             grid.GridDef.DirectDataAsync = (int skip, int take, List<DataProviderSortInfo> sorts, List<DataProviderFilterInfo> filters) => {
@@ -76,7 +76,7 @@ namespace YetaWF.Modules.DevTests.Components {
 
             hb.Append($@"
 <div class='yt_listofemailaddresses t_display'>
-    {await HtmlHelper.ForDisplayAsAsync(Container, PropertyName, FieldName, grid, nameof(grid.GridDef), grid.GridDef, "Softelvdm_Grid_Grid2", HtmlAttributes: HtmlAttributes)}
+    {await HtmlHelper.ForDisplayAsAsync(Container, PropertyName, FieldName, grid, nameof(grid.GridDef), grid.GridDef, "Grid", HtmlAttributes: HtmlAttributes)}
 </div>");
 
             return hb.ToYHtmlString();
@@ -100,14 +100,14 @@ namespace YetaWF.Modules.DevTests.Components {
         public class Entry {
 
             [Caption("Delete"), Description("Click to remove this email address from the list")]
-            [UIHint("Softelvdm_Grid_Grid2DeleteEntry"), ReadOnly]
+            [UIHint("GridDeleteEntry"), ReadOnly]
             public int Delete { get; set; }
 
             [Caption("Email Address"), Description("Shows all defined email addresses")]
             [UIHint("String"), ReadOnly]
             public string EmailAddress { get; set; }
 
-            [UIHint("Softelvdm_Grid_Grid2Value"), ReadOnly]
+            [UIHint("GridValue"), ReadOnly]
             public string Value { get { return EmailAddress; } }
 
             public Entry(string text) {
@@ -115,8 +115,8 @@ namespace YetaWF.Modules.DevTests.Components {
             }
             public Entry() { }
         }
-        internal static Grid2Definition GetGridModel(bool header) {
-            return new Grid2Definition() {
+        internal static GridDefinition GetGridModel(bool header) {
+            return new GridDefinition() {
                 RecordType = typeof(Entry),
                 InitialPageSize = 5,
                 PageSizes = new List<int> { 5, 10, 20 },
@@ -141,7 +141,7 @@ namespace YetaWF.Modules.DevTests.Components {
 
             bool header = PropData.GetAdditionalAttributeValue("Header", true);
 
-            Grid2Model grid = new Grid2Model() {
+            GridModel grid = new GridModel() {
                 GridDef = GetGridModel(header)
             };
             grid.GridDef.DirectDataAsync = (int skip, int take, List<DataProviderSortInfo> sorts, List<DataProviderFilterInfo> filters) => {
@@ -156,7 +156,7 @@ namespace YetaWF.Modules.DevTests.Components {
 
             hb.Append($@"
 <div class='yt_listofemailaddresses t_edit' id='{DivId}'>
-    {await HtmlHelper.ForDisplayAsAsync(Container, PropertyName, FieldName, grid, nameof(grid.GridDef), grid.GridDef, "Softelvdm_Grid_Grid2", HtmlAttributes: HtmlAttributes)}");
+    {await HtmlHelper.ForDisplayAsAsync(Container, PropertyName, FieldName, grid, nameof(grid.GridDef), grid.GridDef, "Grid", HtmlAttributes: HtmlAttributes)}");
 
             using (Manager.StartNestedComponent(FieldName)) {
 
@@ -183,10 +183,10 @@ namespace YetaWF.Modules.DevTests.Components {
 
             return hb.ToYHtmlString();
         }
-        public static async Task<Grid2RecordData> Grid2RecordAsync(string fieldPrefix, object model) {
+        public static async Task<GridRecordData> GridRecordAsync(string fieldPrefix, object model) {
             // handle async properties
             await YetaWFController.HandlePropertiesAsync(model);
-            Grid2RecordData record = new Grid2RecordData() {
+            GridRecordData record = new GridRecordData() {
                 GridDef = GetGridModel(false),
                 Data = model,
                 FieldPrefix = fieldPrefix,

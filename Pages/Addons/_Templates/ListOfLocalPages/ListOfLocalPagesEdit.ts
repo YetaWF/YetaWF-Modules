@@ -15,8 +15,8 @@ namespace YetaWF_Pages {
     export class ListOfLocalPagesEditComponent extends YetaWF.ComponentBase<HTMLDivElement> {
 
         private Setup: ListOfLocalPagesSetup;
-        private Grid: Softelvdm_Grid.Grid;
-        private GridAll: Softelvdm_Grid.Grid;
+        private Grid: YetaWF_ComponentsHTML.Grid;
+        private GridAll: YetaWF_ComponentsHTML.Grid;
         private buttonAdd: HTMLInputElement;
         private selectUrl: YetaWF_ComponentsHTML.UrlEditComponent;
         private ReloadInProgress: boolean = false;
@@ -26,8 +26,8 @@ namespace YetaWF_Pages {
             super(controlId);
             this.Setup = setup;
 
-            this.Grid = Softelvdm_Grid.Grid.getControlById(this.Setup.GridId);
-            this.GridAll = Softelvdm_Grid.Grid.getControlById(this.Setup.GridAllId);
+            this.Grid = YetaWF_ComponentsHTML.Grid.getControlById(this.Setup.GridId);
+            this.GridAll = YetaWF_ComponentsHTML.Grid.getControlById(this.Setup.GridAllId);
             this.buttonAdd = $YetaWF.getElement1BySelector("input[name='btnAdd']", [this.Control]) as HTMLInputElement;
             this.selectUrl = YetaWF_ComponentsHTML.UrlEditComponent.getControlFromSelector("[name$='.NewValue']", [this.Control]);
 

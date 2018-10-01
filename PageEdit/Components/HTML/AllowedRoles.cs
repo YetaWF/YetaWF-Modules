@@ -54,9 +54,9 @@ namespace YetaWF.Modules.PageEdit.Components {
             public GridAllowedRole() { __editable = true; }
         }
 
-        private Grid2Definition GetGridModel(bool header) {
+        private GridDefinition GetGridModel(bool header) {
 
-            return new Grid2Definition {
+            return new GridDefinition {
                 RecordType = typeof(GridAllowedRole),
                 ShowHeader = header,
                 SortFilterStaticData = (List<object> data, int skip, int take, List<DataProviderSortInfo> sorts, List<DataProviderFilterInfo> filters) => {
@@ -92,7 +92,7 @@ namespace YetaWF.Modules.PageEdit.Components {
 
             bool header = PropData.GetAdditionalAttributeValue("Header", true);
 
-            Grid2Model grid = new Grid2Model() {
+            GridModel grid = new GridModel() {
                 GridDef = GetGridModel(header)
             };
             grid.GridDef.DirectDataAsync = (int skip, int take, List<DataProviderSortInfo> sorts, List<DataProviderFilterInfo> filters) => {
@@ -106,7 +106,7 @@ namespace YetaWF.Modules.PageEdit.Components {
 
             hb.Append($@"
 <div class='yt_yetawf_pageedit_allowedroles t_display'>
-    {await HtmlHelper.ForDisplayAsAsync(Container, PropertyName, FieldName, grid, nameof(grid.GridDef), grid.GridDef, "Softelvdm_Grid_Grid2", HtmlAttributes: HtmlAttributes)}
+    {await HtmlHelper.ForDisplayAsAsync(Container, PropertyName, FieldName, grid, nameof(grid.GridDef), grid.GridDef, "Grid", HtmlAttributes: HtmlAttributes)}
 </div>");
 
             return hb.ToYHtmlString();

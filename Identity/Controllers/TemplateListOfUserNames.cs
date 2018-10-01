@@ -95,7 +95,7 @@ namespace YetaWF.Modules.Identity.Controllers {
                     UserName = newUser,
                     UserId = user.UserId,
                 };
-                return await Grid2RecordViewAsync(await ListOfUserNamesEditComponent.Grid2RecordAsync(fieldPrefix, entry));
+                return await GridRecordViewAsync(await ListOfUserNamesEditComponent.GridRecordAsync(fieldPrefix, entry));
             }
         }
     }

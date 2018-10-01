@@ -22,7 +22,7 @@ var YetaWF_DevTests;
             _this.ReloadInProgress = false;
             _this.AddCounter = 0;
             _this.Setup = setup;
-            _this.Grid = Softelvdm_Grid.Grid.getControlById(_this.Setup.GridId);
+            _this.Grid = YetaWF_ComponentsHTML.Grid.getControlById(_this.Setup.GridId);
             _this.buttonAdd = $YetaWF.getElement1BySelector("input[name='btnAdd']", [_this.Control]);
             _this.inputEmail = $YetaWF.getElement1BySelector("input[name$='.NewValue']", [_this.Control]);
             $YetaWF.registerEventHandler(_this.buttonAdd, "click", null, function (ev) {

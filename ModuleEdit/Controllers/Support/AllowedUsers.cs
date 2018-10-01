@@ -49,22 +49,22 @@ namespace YetaWF.Modules.ModuleEdit.Controllers {
                 View = ModuleDefinition.AllowedEnum.Yes,
                 DisplayUserName = userName
             };
-            return await Grid2RecordViewAsync(await AllowedUsersEditComponent.Grid2RecordAsync(fieldPrefix, entry, editGuid));
+            return await GridRecordViewAsync(await AllowedUsersEditComponent.GridRecordAsync(fieldPrefix, entry, editGuid));
         }
 
         [AllowPost]
         [ConditionalAntiForgeryToken]
         [ResourceAuthorize(YetaWF.Modules.Identity.Addons.Info.Resource_AllowListOfUserNamesAjax)]
         public async Task<ActionResult> AllowedUsersBrowse_GridData(string fieldPrefix, int skip, int take, List<DataProviderSortInfo> sorts, List<DataProviderFilterInfo> filters) {
-            return await Grid2PartialViewAsync(AllowedUsersEditComponent.GetGridAllUsersModel(), fieldPrefix, skip, take, sorts, filters);
+            return await GridPartialViewAsync(AllowedUsersEditComponent.GetGridAllUsersModel(), fieldPrefix, skip, take, sorts, filters);
         }
         [AllowPost]
         [ConditionalAntiForgeryToken]
         public async Task<ActionResult> AllowedUsersEdit_SortFilter(string data, string fieldPrefix, int skip, int take, List<DataProviderSortInfo> sorts, List<DataProviderFilterInfo> filters, Guid editGuid) {
-            Grid2Definition gridModel = AllowedUsersEditComponent.GetGridModel(false);
+            GridDefinition gridModel = AllowedUsersEditComponent.GetGridModel(false);
             ModuleDefinition module = await ModuleDefinition.LoadAsync(editGuid);
             gridModel.ResourceRedirect = module;
-            return await Grid2PartialViewAsync<ModuleDefinition.GridAllowedUser>(gridModel, data, fieldPrefix, skip, take, sorts, filters);
+            return await GridPartialViewAsync<ModuleDefinition.GridAllowedUser>(gridModel, data, fieldPrefix, skip, take, sorts, filters);
         }
     }
 }

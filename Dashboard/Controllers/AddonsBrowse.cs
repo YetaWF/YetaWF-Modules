@@ -87,11 +87,11 @@ namespace YetaWF.Modules.Dashboard.Controllers {
             public string BowerComponentsUrl { get; set; }
 
             [Caption("Installed AddOns"), Description("Displays all installed AddOns")]
-            [UIHint("Softelvdm_Grid_Grid2"), ReadOnly]
-            public Grid2Definition GridDef { get; set; }
+            [UIHint("Grid"), ReadOnly]
+            public GridDefinition GridDef { get; set; }
         }
-        private Grid2Definition GetGridModel() {
-            return new Grid2Definition {
+        private GridDefinition GetGridModel() {
+            return new GridDefinition {
                 InitialPageSize = 20,
                 ModuleGuid = Module.ModuleGuid,
                 SettingsModuleGuid = Module.PermanentGuid,
@@ -131,7 +131,7 @@ namespace YetaWF.Modules.Dashboard.Controllers {
         [AllowPost]
         [ConditionalAntiForgeryToken]
         public async Task<ActionResult> AddonsBrowse_GridData(string data, string fieldPrefix, int skip, int take, List<DataProviderSortInfo> sorts, List<DataProviderFilterInfo> filters) {
-            return await Grid2PartialViewAsync<BrowseItem>(GetGridModel(), data, fieldPrefix, skip, take, sorts, filters);
+            return await GridPartialViewAsync<BrowseItem>(GetGridModel(), data, fieldPrefix, skip, take, sorts, filters);
         }
     }
 }

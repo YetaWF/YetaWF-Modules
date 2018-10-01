@@ -49,8 +49,8 @@ namespace YetaWF.Modules.Pages.Components {
                 Url = url;
             }
         }
-        internal static Grid2Definition GetGridModel(bool header) {
-            return new Grid2Definition() {
+        internal static GridDefinition GetGridModel(bool header) {
+            return new GridDefinition() {
                 RecordType = typeof(Entry),
                 InitialPageSize = 20,
                 ShowHeader = header,
@@ -71,7 +71,7 @@ namespace YetaWF.Modules.Pages.Components {
 
             bool header = PropData.GetAdditionalAttributeValue("Header", true);
 
-            Grid2Model grid = new Grid2Model() {
+            GridModel grid = new GridModel() {
                 GridDef = GetGridModel(header)
             };
             grid.GridDef.DirectDataAsync = (int skip, int take, List<DataProviderSortInfo> sorts, List<DataProviderFilterInfo> filters) => {
@@ -85,7 +85,7 @@ namespace YetaWF.Modules.Pages.Components {
 
             hb.Append($@"
 <div class='yt_listoflocalpages t_display'>
-    {await HtmlHelper.ForDisplayAsAsync(Container, PropertyName, FieldName, grid, nameof(grid.GridDef), grid.GridDef, "Softelvdm_Grid_Grid2", HtmlAttributes: HtmlAttributes)}
+    {await HtmlHelper.ForDisplayAsAsync(Container, PropertyName, FieldName, grid, nameof(grid.GridDef), grid.GridDef, "Grid", HtmlAttributes: HtmlAttributes)}
 </div>");
 
             return hb.ToYHtmlString();
@@ -110,14 +110,14 @@ namespace YetaWF.Modules.Pages.Components {
         public class Entry {
 
             [Caption("Delete"), Description("Click to remove this page from the list")]
-            [UIHint("Softelvdm_Grid_Grid2DeleteEntry"), ReadOnly]
+            [UIHint("GridDeleteEntry"), ReadOnly]
             public int Delete { get; set; }
 
             [Caption("Page"), Description("Shows all pages")]
             [UIHint("Url"), ReadOnly]
             public string Url { get; set; }
 
-            [UIHint("Softelvdm_Grid_Grid2Value"), ReadOnly]
+            [UIHint("GridValue"), ReadOnly]
             public string Value { get { return Url; } }
 
             public Entry(string url) {
@@ -147,8 +147,8 @@ namespace YetaWF.Modules.Pages.Components {
             }
         }
 
-        internal static Grid2Definition GetGridModel(bool header) {
-            return new Grid2Definition() {
+        internal static GridDefinition GetGridModel(bool header) {
+            return new GridDefinition() {
                 RecordType = typeof(Entry),
                 InitialPageSize = 0,
                 ShowHeader = header,
@@ -165,8 +165,8 @@ namespace YetaWF.Modules.Pages.Components {
                 DeletedColumnDisplay = nameof(Entry.Url),
             };
         }
-        internal static Grid2Definition GetGridAllUsersModel() {
-            return new Grid2Definition() {
+        internal static GridDefinition GetGridAllUsersModel() {
+            return new GridDefinition() {
                 RecordType = typeof(AllEntry),
                 InitialPageSize = 10,
                 AjaxUrl = YetaWFManager.UrlFor(typeof(ListOfLocalPagesController), nameof(ListOfLocalPagesController.ListOfLocalPagesBrowse_GridData)),
@@ -188,7 +188,7 @@ namespace YetaWF.Modules.Pages.Components {
 
             bool header = PropData.GetAdditionalAttributeValue("Header", true);
 
-            Grid2Model grid = new Grid2Model() {
+            GridModel grid = new GridModel() {
                 GridDef = GetGridModel(header)
             };
             grid.GridDef.DirectDataAsync = (int skip, int take, List<DataProviderSortInfo> sorts, List<DataProviderFilterInfo> filters) => {
@@ -202,7 +202,7 @@ namespace YetaWF.Modules.Pages.Components {
 
             hb.Append($@"
 <div class='yt_listoflocalpages t_edit' id='{DivId}'>
-    {await HtmlHelper.ForDisplayAsAsync(Container, PropertyName, FieldName, grid, nameof(grid.GridDef), grid.GridDef, "Softelvdm_Grid_Grid2", HtmlAttributes: HtmlAttributes)}");
+    {await HtmlHelper.ForDisplayAsAsync(Container, PropertyName, FieldName, grid, nameof(grid.GridDef), grid.GridDef, "Grid", HtmlAttributes: HtmlAttributes)}");
 
             using (Manager.StartNestedComponent(FieldName)) {
 
@@ -216,7 +216,7 @@ namespace YetaWF.Modules.Pages.Components {
 
             }
 
-            Grid2Model gridAll = new Grid2Model() {
+            GridModel gridAll = new GridModel() {
                 GridDef = GetGridAllUsersModel()
             };
             ListOfLocalPagesSetup setup = new ListOfLocalPagesSetup {
@@ -231,7 +231,7 @@ namespace YetaWF.Modules.Pages.Components {
     </div>
     <div id='{DivId}_exp' style='display:none'>
         {await ModuleActionHelper.BuiltIn_CollapseAction(__ResStr("lblAllPages", "All Pages"), __ResStr("ttAllPages", "Shows all designed pages available in the site - Select a page to update the dropdown list above, so the page can be added to the list of pages")).RenderAsNormalLinkAsync() }
-        {await HtmlHelper.ForDisplayAsAsync(Container, PropertyName, FieldName, gridAll, nameof(gridAll.GridDef), gridAll.GridDef, "Softelvdm_Grid_Grid2")}
+        {await HtmlHelper.ForDisplayAsAsync(Container, PropertyName, FieldName, gridAll, nameof(gridAll.GridDef), gridAll.GridDef, "Grid")}
     </div>
 </div>
 <script>
@@ -241,10 +241,10 @@ namespace YetaWF.Modules.Pages.Components {
 
             return hb.ToYHtmlString();
         }
-        public static async Task<Grid2RecordData> Grid2RecordAsync(string fieldPrefix, object model) {
+        public static async Task<GridRecordData> GridRecordAsync(string fieldPrefix, object model) {
             // handle async properties
             await YetaWFController.HandlePropertiesAsync(model);
-            Grid2RecordData record = new Grid2RecordData() {
+            GridRecordData record = new GridRecordData() {
                 GridDef = GetGridModel(false),
                 Data = model,
                 FieldPrefix = fieldPrefix,

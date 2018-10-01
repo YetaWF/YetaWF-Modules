@@ -14,7 +14,7 @@ namespace YetaWF_DevTests {
     export class ListOfEmailAddressesEditComponent extends YetaWF.ComponentBase<HTMLDivElement> {
 
         private Setup: ListOfEmailAddressesSetup;
-        private Grid: Softelvdm_Grid.Grid;
+        private Grid: YetaWF_ComponentsHTML.Grid;
         private buttonAdd: HTMLInputElement;
         private inputEmail: HTMLInputElement;
         private ReloadInProgress: boolean = false;
@@ -24,7 +24,7 @@ namespace YetaWF_DevTests {
             super(controlId);
             this.Setup = setup;
 
-            this.Grid = Softelvdm_Grid.Grid.getControlById(this.Setup.GridId);
+            this.Grid = YetaWF_ComponentsHTML.Grid.getControlById(this.Setup.GridId);
             this.buttonAdd = $YetaWF.getElement1BySelector("input[name='btnAdd']", [this.Control]) as HTMLInputElement;
             this.inputEmail = $YetaWF.getElement1BySelector("input[name$='.NewValue']", [this.Control]) as HTMLInputElement;
 

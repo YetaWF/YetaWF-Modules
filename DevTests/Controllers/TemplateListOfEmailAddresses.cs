@@ -75,7 +75,7 @@ namespace YetaWF.Modules.DevTests.Controllers {
             ListOfEmailAddressesEditComponent.Entry entry = new ListOfEmailAddressesEditComponent.Entry {
                 EmailAddress = newEmailAddress,
             };
-            return await Grid2RecordViewAsync(await ListOfEmailAddressesEditComponent.Grid2RecordAsync(fieldPrefix, entry));
+            return await GridRecordViewAsync(await ListOfEmailAddressesEditComponent.GridRecordAsync(fieldPrefix, entry));
         }
     }
 }

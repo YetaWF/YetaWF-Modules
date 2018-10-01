@@ -98,12 +98,12 @@ namespace YetaWF.Modules.Blog.Controllers {
         }
 
         public class BrowseModel {
-            [UIHint("Softelvdm_Grid_Grid2")]
-            public Grid2Definition GridDef { get; set; }
+            [UIHint("Grid")]
+            public GridDefinition GridDef { get; set; }
         }
 
-        private Grid2Definition GetGridModel(int blogCategory) {
-            return new Grid2Definition {
+        private GridDefinition GetGridModel(int blogCategory) {
+            return new GridDefinition {
                 ModuleGuid = Module.ModuleGuid,
                 SettingsModuleGuid = Module.PermanentGuid,
                 RecordType = typeof(BrowseItem),
@@ -138,7 +138,7 @@ namespace YetaWF.Modules.Blog.Controllers {
         [AllowPost]
         [ConditionalAntiForgeryToken]
         public async Task<ActionResult> EntriesBrowse_GridData(string fieldPrefix, int skip, int take, List<DataProviderSortInfo> sorts, List<DataProviderFilterInfo> filters, int blogCategory) {
-            return await Grid2PartialViewAsync(GetGridModel(blogCategory), fieldPrefix, skip, take, sorts, filters);
+            return await GridPartialViewAsync(GetGridModel(blogCategory), fieldPrefix, skip, take, sorts, filters);
         }
 
         [AllowPost]

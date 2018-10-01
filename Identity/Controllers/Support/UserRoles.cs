@@ -19,12 +19,12 @@ namespace YetaWF.Modules.Identity.Controllers {
         [AllowPost]
         [ConditionalAntiForgeryToken]
         public async Task<ActionResult> UserRolesDisplay_SortFilter(string data, string fieldPrefix, int skip, int take, List<DataProviderSortInfo> sorts, List<DataProviderFilterInfo> filters) {
-            return await Grid2PartialViewAsync<UserRolesDisplayComponent.Entry>(UserRolesDisplayComponent.GetGridModel(false), data, fieldPrefix, skip, take, sorts, filters);
+            return await GridPartialViewAsync<UserRolesDisplayComponent.Entry>(UserRolesDisplayComponent.GetGridModel(false), data, fieldPrefix, skip, take, sorts, filters);
         }
         [AllowPost]
         [ConditionalAntiForgeryToken]
         public async Task<ActionResult> UserRolesEdit_SortFilter(string data, string fieldPrefix, int skip, int take, List<DataProviderSortInfo> sorts, List<DataProviderFilterInfo> filters) {
-            return await Grid2PartialViewAsync<UserRolesEditComponent.Entry>(UserRolesEditComponent.GetGridModel(false), data, fieldPrefix, skip, take, sorts, filters);
+            return await GridPartialViewAsync<UserRolesEditComponent.Entry>(UserRolesEditComponent.GetGridModel(false), data, fieldPrefix, skip, take, sorts, filters);
         }
     }
 }

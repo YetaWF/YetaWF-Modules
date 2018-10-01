@@ -45,8 +45,8 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                 ObjectSupport.CopyData(m, this);
             }
         }
-        internal static Grid2Definition GetGridModel(bool header) {
-            return new Grid2Definition() {
+        internal static GridDefinition GetGridModel(bool header) {
+            return new GridDefinition() {
                 RecordType = typeof(Entry),
                 InitialPageSize = 10,
                 ShowHeader = header,
@@ -67,7 +67,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
             bool header = PropData.GetAdditionalAttributeValue("Header", true);
 
-            Grid2Model grid = new Grid2Model() {
+            GridModel grid = new GridModel() {
                 GridDef = GetGridModel(header)
             };
             grid.GridDef.DirectDataAsync = (int skip, int take, List<DataProviderSortInfo> sorts, List<DataProviderFilterInfo> filters) => {
@@ -80,7 +80,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
             hb.Append($@"
 <div class='yt_pagedefinitions t_display'>
-    {await HtmlHelper.ForDisplayAsAsync(Container, PropertyName, FieldName, grid, nameof(grid.GridDef), grid.GridDef, "Softelvdm_Grid_Grid2", HtmlAttributes: HtmlAttributes)}
+    {await HtmlHelper.ForDisplayAsAsync(Container, PropertyName, FieldName, grid, nameof(grid.GridDef), grid.GridDef, "Grid", HtmlAttributes: HtmlAttributes)}
 </div>");
 
             return hb.ToYHtmlString();

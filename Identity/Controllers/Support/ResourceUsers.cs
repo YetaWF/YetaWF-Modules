@@ -26,12 +26,12 @@ namespace YetaWF.Modules.Identity.Controllers {
         [AllowPost]
         [ConditionalAntiForgeryToken]
         public async Task<ActionResult> ResourceUsersDisplay_SortFilter(string data, string fieldPrefix, int skip, int take, List<DataProviderSortInfo> sorts, List<DataProviderFilterInfo> filters) {
-            return await Grid2PartialViewAsync<ResourceUsersDisplayComponent.Entry>(ResourceUsersDisplayComponent.GetGridModel(false), data, fieldPrefix, skip, take, sorts, filters);
+            return await GridPartialViewAsync<ResourceUsersDisplayComponent.Entry>(ResourceUsersDisplayComponent.GetGridModel(false), data, fieldPrefix, skip, take, sorts, filters);
         }
         [AllowPost]
         [ConditionalAntiForgeryToken]
         public async Task<ActionResult> ResourceUsersEdit_SortFilter(string data, string fieldPrefix, int skip, int take, List<DataProviderSortInfo> sorts, List<DataProviderFilterInfo> filters) {
-            return await Grid2PartialViewAsync<ResourceUsersEditComponent.Entry>(ResourceUsersEditComponent.GetGridModel(false), data, fieldPrefix, skip, take, sorts, filters);
+            return await GridPartialViewAsync<ResourceUsersEditComponent.Entry>(ResourceUsersEditComponent.GetGridModel(false), data, fieldPrefix, skip, take, sorts, filters);
         }
         [AllowPost]
         [ConditionalAntiForgeryToken]
@@ -50,14 +50,14 @@ namespace YetaWF.Modules.Identity.Controllers {
                 throw new Error(this.__ResStr("dupUser", "User {0} has already been added", newUser));
             // render
             ResourceUsersEditComponent.Entry entry = new ResourceUsersEditComponent.Entry(userId, userName);
-            return await Grid2RecordViewAsync(await ResourceUsersEditComponent.Grid2RecordAsync(fieldPrefix, entry));
+            return await GridRecordViewAsync(await ResourceUsersEditComponent.GridRecordAsync(fieldPrefix, entry));
         }
 
         [AllowPost]
         [ConditionalAntiForgeryToken]
         [ResourceAuthorize(Info.Resource_AllowListOfUserNamesAjax)]
         public async Task<ActionResult> ResourceUsersBrowse_GridData(string fieldPrefix, int skip, int take, List<DataProviderSortInfo> sorts, List<DataProviderFilterInfo> filters) {
-            return await Grid2PartialViewAsync(ResourceUsersEditComponent.GetGridAllUsersModel(), fieldPrefix, skip, take, sorts, filters);
+            return await GridPartialViewAsync(ResourceUsersEditComponent.GetGridAllUsersModel(), fieldPrefix, skip, take, sorts, filters);
         }
     }
 }

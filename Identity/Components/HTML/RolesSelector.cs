@@ -43,8 +43,8 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
             public Entry() { }
         }
-        internal static Grid2Definition GetGridModel(bool header, bool? filter) {
-            return new Grid2Definition() {
+        internal static GridDefinition GetGridModel(bool header, bool? filter) {
+            return new GridDefinition() {
                 RecordType = typeof(Entry),
                 InitialPageSize = 10,
                 ShowHeader = header,
@@ -68,7 +68,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             bool exclude2FA = PropData.GetAdditionalAttributeValue("ExcludeUser2FA", false);
             bool? showFilter = PropData.GetAdditionalAttributeValue<bool?>("ShowFilter", null);
 
-            Grid2Model grid = new Grid2Model() {
+            GridModel grid = new GridModel() {
                 GridDef = GetGridModel(header, showFilter)
             };
             grid.GridDef.DirectDataAsync = (int skip, int take, List<DataProviderSortInfo> sorts, List<DataProviderFilterInfo> filters) => {
@@ -92,7 +92,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
             hb.Append($@"
 <div class='yt_yetawf_identity_rolesselector t_display'>
-    {await HtmlHelper.ForDisplayAsAsync(Container, PropertyName, FieldName, grid, nameof(grid.GridDef), grid.GridDef, "Softelvdm_Grid_Grid2", HtmlAttributes: HtmlAttributes)}
+    {await HtmlHelper.ForDisplayAsAsync(Container, PropertyName, FieldName, grid, nameof(grid.GridDef), grid.GridDef, "Grid", HtmlAttributes: HtmlAttributes)}
 </div>");
             return hb.ToYHtmlString();
         }
@@ -120,8 +120,8 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
             public Entry() { }
         }
-        internal static Grid2Definition GetGridModel(bool header, bool? filter) {
-            return new Grid2Definition() {
+        internal static GridDefinition GetGridModel(bool header, bool? filter) {
+            return new GridDefinition() {
                 RecordType = typeof(Entry),
                 InitialPageSize = 10,
                 ShowHeader = header,
@@ -145,7 +145,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             bool exclude2FA = PropData.GetAdditionalAttributeValue("ExcludeUser2FA", false);
             bool? showFilter = PropData.GetAdditionalAttributeValue<bool?>("ShowFilter", null);
 
-            Grid2Model grid = new Grid2Model() {
+            GridModel grid = new GridModel() {
                 GridDef = GetGridModel(header, showFilter)
             };
             grid.GridDef.DirectDataAsync = (int skip, int take, List<DataProviderSortInfo> sorts, List<DataProviderFilterInfo> filters) => {
@@ -170,7 +170,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
             hb.Append($@"
 <div class='yt_yetawf_identity_rolesselector t_edit' id='{DivId}'>
-    {await HtmlHelper.ForDisplayAsAsync(Container, PropertyName, FieldName, grid, nameof(grid.GridDef), grid.GridDef, "Softelvdm_Grid_Grid2", HtmlAttributes: HtmlAttributes)}
+    {await HtmlHelper.ForDisplayAsAsync(Container, PropertyName, FieldName, grid, nameof(grid.GridDef), grid.GridDef, "Grid", HtmlAttributes: HtmlAttributes)}
 </div>");
 
             return hb.ToYHtmlString();

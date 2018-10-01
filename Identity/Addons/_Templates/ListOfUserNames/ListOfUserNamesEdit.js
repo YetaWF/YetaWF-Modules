@@ -22,8 +22,8 @@ var YetaWF_Identity;
             _this.ReloadInProgress = false;
             _this.AddCounter = 0;
             _this.Setup = setup;
-            _this.Grid = Softelvdm_Grid.Grid.getControlById(_this.Setup.GridId);
-            _this.GridAll = Softelvdm_Grid.Grid.getControlById(_this.Setup.GridAllId);
+            _this.Grid = YetaWF_ComponentsHTML.Grid.getControlById(_this.Setup.GridId);
+            _this.GridAll = YetaWF_ComponentsHTML.Grid.getControlById(_this.Setup.GridAllId);
             _this.buttonAdd = $YetaWF.getElement1BySelector("input[name='btnAdd']", [_this.Control]);
             _this.inputUserName = $YetaWF.getElement1BySelector("input[name$='.NewValue']", [_this.Control]);
             $YetaWF.registerEventHandler(_this.buttonAdd, "click", null, function (ev) {

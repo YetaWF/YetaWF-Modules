@@ -42,8 +42,8 @@ namespace YetaWF.Modules.Identity.Components {
                 UserName = userName;
             }
         }
-        internal static Grid2Definition GetGridModel(bool header) {
-            return new Grid2Definition() {
+        internal static GridDefinition GetGridModel(bool header) {
+            return new GridDefinition() {
                 RecordType = typeof(Entry),
                 InitialPageSize = 10,
                 ShowHeader = header,
@@ -64,7 +64,7 @@ namespace YetaWF.Modules.Identity.Components {
 
             bool header = PropData.GetAdditionalAttributeValue("Header", true);
 
-            Grid2Model grid = new Grid2Model() {
+            GridModel grid = new GridModel() {
                 GridDef = GetGridModel(header)
             };
             grid.GridDef.DirectDataAsync = async (int skip, int take, List<DataProviderSortInfo> sorts, List<DataProviderFilterInfo> filters) => {
@@ -90,7 +90,7 @@ namespace YetaWF.Modules.Identity.Components {
 
             hb.Append($@"
 <div class='yt_listofusernames t_display'>
-    {await HtmlHelper.ForDisplayAsAsync(Container, PropertyName, FieldName, grid, nameof(grid.GridDef), grid.GridDef, "Softelvdm_Grid_Grid2", HtmlAttributes: HtmlAttributes)}
+    {await HtmlHelper.ForDisplayAsAsync(Container, PropertyName, FieldName, grid, nameof(grid.GridDef), grid.GridDef, "Grid", HtmlAttributes: HtmlAttributes)}
 </div>");
 
             return hb.ToYHtmlString();
@@ -115,14 +115,14 @@ namespace YetaWF.Modules.Identity.Components {
         public class Entry {
 
             [Caption("Delete"), Description("Click to remove this user name from the list")]
-            [UIHint("Softelvdm_Grid_Grid2DeleteEntry"), ReadOnly]
+            [UIHint("GridDeleteEntry"), ReadOnly]
             public int Delete { get; set; }
 
             [Caption("User Name"), Description("Shows all defined user names")]
             [UIHint("String"), ReadOnly]
             public string UserName { get; set; }
 
-            [UIHint("Softelvdm_Grid_Grid2Value"), ReadOnly]
+            [UIHint("GridValue"), ReadOnly]
             public int UserId { get; set; }
 
             public Entry(int userId, string userName) {
@@ -145,8 +145,8 @@ namespace YetaWF.Modules.Identity.Components {
             }
         }
 
-        internal static Grid2Definition GetGridModel(bool header) {
-            return new Grid2Definition() {
+        internal static GridDefinition GetGridModel(bool header) {
+            return new GridDefinition() {
                 RecordType = typeof(Entry),
                 InitialPageSize = 10,
                 ShowHeader = header,
@@ -163,8 +163,8 @@ namespace YetaWF.Modules.Identity.Components {
                 DeletedColumnDisplay = nameof(Entry.UserName),
             };
         }
-        internal static Grid2Definition GetGridAllUsersModel() {
-            return new Grid2Definition() {
+        internal static GridDefinition GetGridAllUsersModel() {
+            return new GridDefinition() {
                 RecordType = typeof(AllEntry),
                 InitialPageSize = 10,
                 AjaxUrl = YetaWFManager.UrlFor(typeof(ListOfUserNamesController), nameof(ListOfUserNamesController.ListOfUserNamesBrowse_GridData)),
@@ -186,7 +186,7 @@ namespace YetaWF.Modules.Identity.Components {
 
             bool header = PropData.GetAdditionalAttributeValue("Header", true);
 
-            Grid2Model grid = new Grid2Model() {
+            GridModel grid = new GridModel() {
                 GridDef = GetGridModel(header)
             };
             grid.GridDef.DirectDataAsync = async (int skip, int take, List<DataProviderSortInfo> sorts, List<DataProviderFilterInfo> filters) => {
@@ -212,7 +212,7 @@ namespace YetaWF.Modules.Identity.Components {
 
             hb.Append($@"
 <div class='yt_listofusernames t_edit' id='{DivId}'>
-    {await HtmlHelper.ForDisplayAsAsync(Container, PropertyName, FieldName, grid, nameof(grid.GridDef), grid.GridDef, "Softelvdm_Grid_Grid2", HtmlAttributes: HtmlAttributes)}");
+    {await HtmlHelper.ForDisplayAsAsync(Container, PropertyName, FieldName, grid, nameof(grid.GridDef), grid.GridDef, "Grid", HtmlAttributes: HtmlAttributes)}");
 
             using (Manager.StartNestedComponent(FieldName)) {
 
@@ -226,7 +226,7 @@ namespace YetaWF.Modules.Identity.Components {
 
             }
 
-            Grid2Model gridAll = new Grid2Model() {
+            GridModel gridAll = new GridModel() {
                 GridDef = GetGridAllUsersModel()
             };
             ListOfUserNamesSetup setup = new ListOfUserNamesSetup {
@@ -241,7 +241,7 @@ namespace YetaWF.Modules.Identity.Components {
     </div>
     <div id='{DivId}_exp' style='display:none'>
         {await ModuleActionHelper.BuiltIn_CollapseAction(__ResStr("lblAllUserNames", "All User Names"), __ResStr("ttAllUserNames", "Shows all user names available on this site - Select a user name to update the text box above, so the user name can be added to the list of user names - Click to close")).RenderAsNormalLinkAsync() }
-        {await HtmlHelper.ForDisplayAsAsync(Container, PropertyName, FieldName, gridAll, nameof(gridAll.GridDef), gridAll.GridDef, "Softelvdm_Grid_Grid2")}
+        {await HtmlHelper.ForDisplayAsAsync(Container, PropertyName, FieldName, gridAll, nameof(gridAll.GridDef), gridAll.GridDef, "Grid")}
     </div>
 </div>
 <script>
@@ -251,10 +251,10 @@ namespace YetaWF.Modules.Identity.Components {
 
             return hb.ToYHtmlString();
         }
-        public static async Task<Grid2RecordData> Grid2RecordAsync(string fieldPrefix, object model) {
+        public static async Task<GridRecordData> GridRecordAsync(string fieldPrefix, object model) {
             // handle async properties
             await YetaWFController.HandlePropertiesAsync(model);
-            Grid2RecordData record = new Grid2RecordData() {
+            GridRecordData record = new GridRecordData() {
                 GridDef = GetGridModel(false),
                 Data = model,
                 FieldPrefix = fieldPrefix,

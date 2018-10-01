@@ -111,7 +111,7 @@ namespace YetaWF.Modules.Pages.Controllers {
                 throw new Error(this.__ResStr("dupUrl", "Url {0} has already been added", newUrl));
             // add new grid record
             ListOfLocalPagesEditComponent.Entry entry = new ListOfLocalPagesEditComponent.Entry(newUrl);
-            return await Grid2RecordViewAsync(await ListOfLocalPagesEditComponent.Grid2RecordAsync(fieldPrefix, entry));
+            return await GridRecordViewAsync(await ListOfLocalPagesEditComponent.GridRecordAsync(fieldPrefix, entry));
         }
     }
 }

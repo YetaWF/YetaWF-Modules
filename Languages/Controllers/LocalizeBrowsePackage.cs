@@ -63,15 +63,15 @@ namespace YetaWF.Modules.Languages.Controllers {
         }
 
         public class BrowseModel {
-            [UIHint("Softelvdm_Grid_Grid2"), ReadOnly]
-            public Grid2Definition GridDef { get; set; }
+            [UIHint("Grid"), ReadOnly]
+            public GridDefinition GridDef { get; set; }
 
             public class ExtraData {
                 public string PackageName { get; set; }
             }
         }
-        private Grid2Definition GetGridModel(Package package) {
-            return new Grid2Definition {
+        private GridDefinition GetGridModel(Package package) {
+            return new GridDefinition {
                 ModuleGuid = Module.ModuleGuid,
                 SettingsModuleGuid = Module.PermanentGuid,
                 RecordType = typeof(BrowseItem),
@@ -106,7 +106,7 @@ namespace YetaWF.Modules.Languages.Controllers {
         [ConditionalAntiForgeryToken]
         public async Task<ActionResult> LocalizeBrowsePackage_GridData(string fieldPrefix, int skip, int take, List<DataProviderSortInfo> sorts, List<DataProviderFilterInfo> filters, string packageName) {
             Package package = Package.GetPackageFromPackageName(packageName);
-            return await Grid2PartialViewAsync(GetGridModel(package), fieldPrefix, skip, take, sorts, filters);
+            return await GridPartialViewAsync(GetGridModel(package), fieldPrefix, skip, take, sorts, filters);
         }
 
         [AllowPost]

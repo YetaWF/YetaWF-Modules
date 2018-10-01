@@ -103,8 +103,8 @@ namespace YetaWF.Modules.Identity.Components {
             public string UserName { get; set; }
 
             [Caption("All Users"), Description("Shows all users - Select a user to update the user shown above")]
-            [UIHint("Softelvdm_Grid_Grid2"), ReadOnly]
-            public Grid2Definition AllUsers { get; set; }
+            [UIHint("Grid"), ReadOnly]
+            public GridDefinition AllUsers { get; set; }
         }
 
         public class AllEntry {
@@ -132,8 +132,8 @@ namespace YetaWF.Modules.Identity.Components {
                 ObjectSupport.CopyData(user, this);
             }
         }
-        internal static Grid2Definition GetGridAllUsersModel(bool header) {
-            return new Grid2Definition() {
+        internal static GridDefinition GetGridAllUsersModel(bool header) {
+            return new GridDefinition() {
                 RecordType = typeof(AllEntry),
                 InitialPageSize = 10,
                 ShowHeader = header,

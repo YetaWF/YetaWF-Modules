@@ -1,0 +1,128 @@
+/* Grid */
+.yt_grid {
+  position: relative;
+  font-weight: normal; }
+  .yt_grid .tg_table {
+    overflow-x: auto; }
+  .yt_grid table {
+    border-collapse: collapse;
+    box-sizing: border-box;
+    table-layout: fixed; }
+    .yt_grid table tr.tg_filter .tg_fentry {
+      display: table;
+      width: 100%; }
+    .yt_grid table tr.tg_filter .tg_fctrls {
+      display: table-cell;
+      width: 100%; }
+      .yt_grid table tr.tg_filter .tg_fctrls .yt_text_base,
+      .yt_grid table tr.tg_filter .tg_fctrls .k-widget {
+        /* kendo ui controls */
+        width: 100%; }
+      .yt_grid table tr.tg_filter .tg_fctrls select {
+        width: 100%; }
+    .yt_grid table tr.tg_filter .tg_fclear, .yt_grid table tr.tg_filter .tg_fmenu {
+      display: inline-block;
+      font-size: 8px;
+      margin: 2px 2px 2px 2px;
+      padding: 2px 2px 2px 2px; }
+    .yt_grid table tr {
+      /* highlighted row (with bool __highlight property) */ }
+      .yt_grid table tr.yHighlightGridRow td {
+        background-color: silver; }
+      .yt_grid table tr.yLowlightGridRow td {
+        background-color: ghostwhite; }
+    .yt_grid table th {
+      overflow: hidden;
+      white-space: nowrap;
+      font-size: 11px;
+      font-weight: normal;
+      border-width: 1px;
+      border-style: solid;
+      border-color: inherit;
+      padding: 2px 4px 2px 4px; }
+    .yt_grid table .tg_header th {
+      position: relative;
+      -webkit-user-select: none;
+      /* Safari 3.1+ */
+      -moz-user-select: none;
+      /* Firefox 2+ */
+      -ms-user-select: none;
+      /* IE 10+ */
+      user-select: none;
+      /* Standard syntax */ }
+      .yt_grid table .tg_header th span {
+        cursor: default; }
+      .yt_grid table .tg_header th .tg_resize {
+        position: absolute;
+        width: 4px;
+        height: 100%;
+        right: 0;
+        top: 0;
+        cursor: col-resize;
+        user-select: none;
+        overflow: hidden; }
+      .yt_grid table .tg_header th .tg_sorticon {
+        position: relative;
+        font-size: 12px; }
+        .yt_grid table .tg_header th .tg_sorticon .tg_sortasc, .yt_grid table .tg_header th .tg_sorticon .tg_sortdesc {
+          position: relative;
+          display: none;
+          padding-left: 5px; }
+          .yt_grid table .tg_header th .tg_sorticon .tg_sortasc.tg_active, .yt_grid table .tg_header th .tg_sorticon .tg_sortdesc.tg_active {
+            display: inline-block; }
+        .yt_grid table .tg_header th .tg_sorticon .tg_sortasc {
+          top: 3px; }
+        .yt_grid table .tg_header th .tg_sorticon .tg_sortdesc {
+          top: -3px; }
+    .yt_grid table td {
+      overflow: hidden;
+      font-size: 11px;
+      padding: 2px 2px 2px 2px;
+      border-width: 1px;
+      border-style: solid;
+      border-color: inherit; }
+      .yt_grid table td .tg_emptydiv {
+        padding: 2em 0 2em 2ch; }
+    .yt_grid table th.tg_left, .yt_grid table td.tg_left {
+      text-align: left; }
+    .yt_grid table th.tg_center, .yt_grid table td.tg_center {
+      text-align: center; }
+    .yt_grid table th.tg_right, .yt_grid table td.tg_right {
+      text-align: right; }
+  .yt_grid .tg_pager {
+    font-size: 11px;
+    -webkit-user-select: none;
+    /* Safari 3.1+ */
+    -moz-user-select: none;
+    /* Firefox 2+ */
+    -ms-user-select: none;
+    /* IE 10+ */
+    user-select: none;
+    /* Standard syntax */ }
+    .yt_grid .tg_pager .tg_reload, .yt_grid .tg_pager .tg_search, .yt_grid .tg_pager .tg_pgtop, .yt_grid .tg_pager .tg_pgnext, .yt_grid .tg_pager .tg_pgprev, .yt_grid .tg_pager .tg_pgbottom {
+      display: inline-block;
+      margin: 3px 3px 3px 3px; }
+      .yt_grid .tg_pager .tg_reload .fas, .yt_grid .tg_pager .tg_search .fas, .yt_grid .tg_pager .tg_pgtop .fas, .yt_grid .tg_pager .tg_pgnext .fas, .yt_grid .tg_pager .tg_pgprev .fas, .yt_grid .tg_pager .tg_pgbottom .fas {
+        font-size: 8px;
+        padding: 2px 4px 2px 4px; }
+    .yt_grid .tg_pager .tg_pgbtns, .yt_grid .tg_pager .tg_pgctl, .yt_grid .tg_pager .tg_pgnum, .yt_grid .tg_pager .tg_pgsel, .yt_grid .tg_pager .tg_totals {
+      display: inline-block;
+      font-size: 11px;
+      margin: 3px 3px 3px 3px; }
+    .yt_grid .tg_pager .tg_pgbtns, .yt_grid .tg_pager .tg_pgctl, .yt_grid .tg_pager .tg_pgsel {
+      margin-right: 4ch; }
+    .yt_grid .tg_pager label {
+      padding: 0 2px 0 2px; }
+  .yt_grid .tg_button {
+    cursor: pointer; }
+    .yt_grid .tg_button:disabled {
+      cursor: default; }
+
+.yt_grid_menus ul.k-menu {
+  position: absolute;
+  font-size: 10px; }
+  .yt_grid_menus ul.k-menu .t_fmenuicon {
+    display: inline-block;
+    width: 4ch; }
+  .yt_grid_menus ul.k-menu .t_fmenutext {
+    display: inline-block; }

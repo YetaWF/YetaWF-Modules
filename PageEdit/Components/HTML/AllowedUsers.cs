@@ -50,7 +50,7 @@ namespace YetaWF.Modules.PageEdit.Components {
         public class GridAllowedUser {
 
             [Caption("Delete"), Description("Click to delete a user")]
-            [UIHint("Softelvdm_Grid_Grid2DeleteEntry"), ReadOnly]
+            [UIHint("GridDeleteEntry"), ReadOnly]
             public int Delete { get; set; }
 
             [Caption("User"), Description("User Description")]
@@ -97,8 +97,8 @@ namespace YetaWF.Modules.PageEdit.Components {
                 ObjectSupport.CopyData(user, this);
             }
         }
-        internal static Grid2Definition GetGridModel(bool header) {
-            return new Grid2Definition() {
+        internal static GridDefinition GetGridModel(bool header) {
+            return new GridDefinition() {
                 RecordType = typeof(GridAllowedUser),
                 PageSizes = new List<int>(),
                 ShowHeader = header,
@@ -115,8 +115,8 @@ namespace YetaWF.Modules.PageEdit.Components {
                 DeletedColumnDisplay = nameof(GridAllowedUser.UserName),
             };
         }
-        internal static Grid2Definition GetGridAllUsersModel() {
-            return new Grid2Definition() {
+        internal static GridDefinition GetGridAllUsersModel() {
+            return new GridDefinition() {
                 RecordType = typeof(AllEntry),
                 InitialPageSize = 10,
                 AjaxUrl = YetaWFManager.UrlFor(typeof(AllowedUsersController), nameof(AllowedUsersController.AllowedUsersBrowse_GridData)),
@@ -138,7 +138,7 @@ namespace YetaWF.Modules.PageEdit.Components {
 
             bool header = PropData.GetAdditionalAttributeValue("Header", true);
 
-            Grid2Model grid = new Grid2Model() {
+            GridModel grid = new GridModel() {
                 GridDef = GetGridModel(header)
             };
             grid.GridDef.DirectDataAsync = async (int skip, int take, List<DataProviderSortInfo> sorts, List<DataProviderFilterInfo> filters) => {
@@ -160,7 +160,7 @@ namespace YetaWF.Modules.PageEdit.Components {
 
             hb.Append($@"
 <div class='yt_yetawf_pageedit_allowedusers t_edit' id='{DivId}'>
-    {await HtmlHelper.ForDisplayAsAsync(Container, PropertyName, FieldName, grid, nameof(grid.GridDef), grid.GridDef, "Softelvdm_Grid_Grid2", HtmlAttributes: HtmlAttributes)}");
+    {await HtmlHelper.ForDisplayAsAsync(Container, PropertyName, FieldName, grid, nameof(grid.GridDef), grid.GridDef, "Grid", HtmlAttributes: HtmlAttributes)}");
 
             using (Manager.StartNestedComponent(FieldName)) {
 
@@ -174,7 +174,7 @@ namespace YetaWF.Modules.PageEdit.Components {
 
             }
 
-            Grid2Model gridAll = new Grid2Model() {
+            GridModel gridAll = new GridModel() {
                 GridDef = GetGridAllUsersModel()
             };
             AllowedUsersSetup setup = new AllowedUsersSetup {
@@ -189,7 +189,7 @@ namespace YetaWF.Modules.PageEdit.Components {
     </div>
     <div id='{DivId}_exp' style='display:none'>
         {await ModuleActionHelper.BuiltIn_CollapseAction(__ResStr("lblAllUserNames", "All User Names"), __ResStr("ttAllUserNames", "Shows all user names available on this site - Select a user name to update the text box above, so the user name can be added to the list of user names - Click to close")).RenderAsNormalLinkAsync() }
-        {await HtmlHelper.ForDisplayAsAsync(Container, PropertyName, FieldName, gridAll, nameof(gridAll.GridDef), gridAll.GridDef, "Softelvdm_Grid_Grid2")}
+        {await HtmlHelper.ForDisplayAsAsync(Container, PropertyName, FieldName, gridAll, nameof(gridAll.GridDef), gridAll.GridDef, "Grid")}
     </div>
 </div>
 <script>
@@ -199,10 +199,10 @@ namespace YetaWF.Modules.PageEdit.Components {
 
             return hb.ToYHtmlString();
         }
-        public static async Task<Grid2RecordData> Grid2RecordAsync(string fieldPrefix, object model) {
+        public static async Task<GridRecordData> GridRecordAsync(string fieldPrefix, object model) {
             // handle async properties
             await YetaWFController.HandlePropertiesAsync(model);
-            Grid2RecordData record = new Grid2RecordData() {
+            GridRecordData record = new GridRecordData() {
                 GridDef = GetGridModel(false),
                 Data = model,
                 FieldPrefix = fieldPrefix,

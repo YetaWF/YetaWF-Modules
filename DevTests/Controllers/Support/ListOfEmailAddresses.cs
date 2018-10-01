@@ -19,12 +19,12 @@ namespace YetaWF.Modules.DevTests.Controllers {
         [AllowPost]
         [ConditionalAntiForgeryToken]
         public async Task<ActionResult> ListOfEmailAddressesDisplay_SortFilter(string data, string fieldPrefix, int skip, int take, List<DataProviderSortInfo> sorts, List<DataProviderFilterInfo> filters) {
-            return await Grid2PartialViewAsync<ListOfEmailAddressesDisplayComponent.Entry>(ListOfEmailAddressesDisplayComponent.GetGridModel(false), data, fieldPrefix, skip, take, sorts, filters);
+            return await GridPartialViewAsync<ListOfEmailAddressesDisplayComponent.Entry>(ListOfEmailAddressesDisplayComponent.GetGridModel(false), data, fieldPrefix, skip, take, sorts, filters);
         }
         [AllowPost]
         [ConditionalAntiForgeryToken]
         public async Task<ActionResult> ListOfEmailAddressesEdit_SortFilter(string data, string fieldPrefix, int skip, int take, List<DataProviderSortInfo> sorts, List<DataProviderFilterInfo> filters) {
-            return await Grid2PartialViewAsync<ListOfEmailAddressesEditComponent.Entry>(ListOfEmailAddressesEditComponent.GetGridModel(false), data, fieldPrefix, skip, take, sorts, filters);
+            return await GridPartialViewAsync<ListOfEmailAddressesEditComponent.Entry>(ListOfEmailAddressesEditComponent.GetGridModel(false), data, fieldPrefix, skip, take, sorts, filters);
         }
     }
 }

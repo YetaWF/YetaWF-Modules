@@ -22,7 +22,7 @@ namespace YetaWF.Modules.Identity.Controllers {
         [ConditionalAntiForgeryToken]
         [ResourceAuthorize(Info.Resource_AllowUserIdAjax)]
         public async Task<ActionResult> UsersBrowse_GridData(string fieldPrefix, int skip, int take, List<DataProviderSortInfo> sorts, List<DataProviderFilterInfo> filters) {
-            return await Grid2PartialViewAsync(UserIdEditComponent.GetGridAllUsersModel(false), fieldPrefix, skip, take, sorts, filters);
+            return await GridPartialViewAsync(UserIdEditComponent.GetGridAllUsersModel(false), fieldPrefix, skip, take, sorts, filters);
         }
     }
 }

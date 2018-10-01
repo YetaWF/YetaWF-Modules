@@ -15,8 +15,8 @@ namespace YetaWF_ModuleEdit {
     export class AllowedUsersEditComponent extends YetaWF.ComponentBase<HTMLDivElement> {
 
         private Setup: AllowedUsersSetup;
-        private Grid: Softelvdm_Grid.Grid;
-        private GridAll: Softelvdm_Grid.Grid;
+        private Grid: YetaWF_ComponentsHTML.Grid;
+        private GridAll: YetaWF_ComponentsHTML.Grid;
         private buttonAdd: HTMLInputElement;
         private inputUserName: HTMLInputElement;
         private ReloadInProgress: boolean = false;
@@ -26,8 +26,8 @@ namespace YetaWF_ModuleEdit {
             super(controlId);
             this.Setup = setup;
 
-            this.Grid = Softelvdm_Grid.Grid.getControlById(this.Setup.GridId);
-            this.GridAll = Softelvdm_Grid.Grid.getControlById(this.Setup.GridAllId);
+            this.Grid = YetaWF_ComponentsHTML.Grid.getControlById(this.Setup.GridId);
+            this.GridAll = YetaWF_ComponentsHTML.Grid.getControlById(this.Setup.GridAllId);
             this.buttonAdd = $YetaWF.getElement1BySelector("input[name='btnAdd']", [this.Control]) as HTMLInputElement;
             this.inputUserName = $YetaWF.getElement1BySelector("input[name$='.NewValue']", [this.Control]) as HTMLInputElement;
 

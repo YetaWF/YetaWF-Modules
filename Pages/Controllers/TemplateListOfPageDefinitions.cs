@@ -75,7 +75,7 @@ namespace YetaWF.Modules.Pages.Controllers {
             ListOfLocalPagesEditComponent.Entry entry = new ListOfLocalPagesEditComponent.Entry {
                 Url = newUrl,
             };
-            return await Grid2RecordViewAsync(await ListOfLocalPagesEditComponent.Grid2RecordAsync(fieldPrefix, entry));
+            return await GridRecordViewAsync(await ListOfLocalPagesEditComponent.GridRecordAsync(fieldPrefix, entry));
         }
     }
 }

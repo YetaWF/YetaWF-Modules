@@ -20,7 +20,7 @@ var YetaWF_Identity;
         function UserIdEditComponent(controlId, setup) {
             var _this = _super.call(this, controlId) || this;
             _this.Setup = setup;
-            _this.GridAll = Softelvdm_Grid.Grid.getControlById(_this.Setup.GridAllId);
+            _this.GridAll = YetaWF_ComponentsHTML.Grid.getControlById(_this.Setup.GridAllId);
             _this.inputHidden = $YetaWF.getElementById(_this.Setup.HiddenId);
             _this.inputName = $YetaWF.getElementById(_this.Setup.NameId);
             _this.buttonClear = $YetaWF.getElement1BySelector(".t_clear", [_this.Control]);

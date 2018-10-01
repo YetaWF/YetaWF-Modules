@@ -107,12 +107,12 @@ namespace YetaWF.Modules.Dashboard.Controllers {
             public bool AuditingActive { get { return YetaWF.Core.Audit.Auditing.Active; } }
 
             [Caption(""), Description("")] // empty entries required so property is shown in property list (but with a suppressed label)
-            [UIHint("Softelvdm_Grid_Grid2"), ReadOnly]
+            [UIHint("Grid"), ReadOnly]
             [SuppressIfEqual("AuditingActive", false)]
-            public Grid2Definition GridDef { get; set; }
+            public GridDefinition GridDef { get; set; }
         }
-        private Grid2Definition GetGridModel() {
-            return new Grid2Definition {
+        private GridDefinition GetGridModel() {
+            return new GridDefinition {
                 ModuleGuid = Module.ModuleGuid,
                 SettingsModuleGuid = Module.PermanentGuid,
                 RecordType = typeof(BrowseItem),
@@ -144,7 +144,7 @@ namespace YetaWF.Modules.Dashboard.Controllers {
         [AllowPost]
         [ConditionalAntiForgeryToken]
         public async Task<ActionResult> AuditRecords_GridData(string data, string fieldPrefix, int skip, int take, List<DataProviderSortInfo> sorts, List<DataProviderFilterInfo> filters) {
-            return await Grid2PartialViewAsync(GetGridModel(), fieldPrefix, skip, take, sorts, filters);
+            return await GridPartialViewAsync(GetGridModel(), fieldPrefix, skip, take, sorts, filters);
         }
 
         [AllowPost]

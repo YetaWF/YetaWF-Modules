@@ -50,8 +50,8 @@ namespace YetaWF.Modules.Dashboard.Controllers {
             public long TotalSize { get; set; }
 
             [Caption("Cached Items"), Description("The cache keys and the values (either the data type or the first 100 bytes of data are shown)")]
-            [UIHint("Softelvdm_Grid_Grid2"), ReadOnly]
-            public Grid2Definition GridDef { get; set; }
+            [UIHint("Grid"), ReadOnly]
+            public GridDefinition GridDef { get; set; }
 #if MVC6
 #else
             public void SetData(System.Web.Caching.Cache data) {
@@ -59,8 +59,8 @@ namespace YetaWF.Modules.Dashboard.Controllers {
             }
 #endif
         }
-        private Grid2Definition GetGridModel() {
-            return new Grid2Definition {
+        private GridDefinition GetGridModel() {
+            return new GridDefinition {
                 ModuleGuid = Module.ModuleGuid,
                 SettingsModuleGuid = Module.PermanentGuid,
                 RecordType = typeof(BrowseItem),
@@ -104,7 +104,7 @@ namespace YetaWF.Modules.Dashboard.Controllers {
         [AllowPost]
         [ConditionalAntiForgeryToken]
         public async Task<ActionResult> CacheInfo_GridData(string data, string fieldPrefix, int skip, int take, List<DataProviderSortInfo> sorts, List<DataProviderFilterInfo> filters) {
-            return await Grid2PartialViewAsync<BrowseItem>(GetGridModel(), data, fieldPrefix, skip, take, sorts, filters);
+            return await GridPartialViewAsync<BrowseItem>(GetGridModel(), data, fieldPrefix, skip, take, sorts, filters);
         }
 
         private List<BrowseItem> GetAllItems() {

@@ -12,7 +12,7 @@ namespace YetaWF_Identity {
     export class UserIdEditComponent extends YetaWF.ComponentBase<HTMLDivElement> {
 
         private Setup: UserIdSetup;
-        private GridAll: Softelvdm_Grid.Grid;
+        private GridAll: YetaWF_ComponentsHTML.Grid;
         private buttonClear: HTMLImageElement;
         private inputHidden: HTMLInputElement;
         private inputName: HTMLInputElement;
@@ -21,7 +21,7 @@ namespace YetaWF_Identity {
             super(controlId);
             this.Setup = setup;
 
-            this.GridAll = Softelvdm_Grid.Grid.getControlById(this.Setup.GridAllId);
+            this.GridAll = YetaWF_ComponentsHTML.Grid.getControlById(this.Setup.GridAllId);
             this.inputHidden = $YetaWF.getElementById(this.Setup.HiddenId) as HTMLInputElement;
             this.inputName = $YetaWF.getElementById(this.Setup.NameId) as HTMLInputElement;
             this.buttonClear = $YetaWF.getElement1BySelector(".t_clear", [this.Control]) as HTMLImageElement;
