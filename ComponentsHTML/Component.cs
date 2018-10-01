@@ -30,10 +30,6 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             Anonymous, // no name - no validation
             Validated, // with name, validated
         }
-        public class GridModel {
-            [UIHint("Grid")]
-            public GridDefinition GridDef { get; set; }
-        }
         public class Grid2Model {
             [UIHint("Softelvdm_Grid_Grid2")]//$$
             public Grid2Definition GridDef { get; set; }

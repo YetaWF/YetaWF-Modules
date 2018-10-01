@@ -19,7 +19,7 @@ namespace YetaWF.Modules.ComponentsHTML.Controllers {
         [AllowPost]
         [ConditionalAntiForgeryToken]
         public async Task<ActionResult> ReferencedModulesDisplay_SortFilter(string data, string fieldPrefix, int skip, int take, List<DataProviderSortInfo> sorts, List<DataProviderFilterInfo> filters) {
-            return await Grid2PartialViewAsync<ReferencedModulesDisplayComponent.Entry>(PageDefinitionsDisplayComponent.GetGridModel(false), data, fieldPrefix, skip, take, sorts, filters);
+            return await Grid2PartialViewAsync<ReferencedModulesDisplayComponent.Entry>(ReferencedModulesDisplayComponent.GetGridModel(false), data, fieldPrefix, skip, take, sorts, filters);
         }
         [AllowPost]
         [ConditionalAntiForgeryToken]
