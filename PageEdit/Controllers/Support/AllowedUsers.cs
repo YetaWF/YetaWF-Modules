@@ -3,15 +3,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using YetaWF.Core.Components;
 using YetaWF.Core.Controllers;
 using YetaWF.Core.DataProvider;
 using YetaWF.Core.Identity;
 using YetaWF.Core.Localize;
-using YetaWF.Core.Models;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Support;
-using YetaWF.Modules.Identity.DataProvider;
 using YetaWF.Modules.PageEdit.Components;
 #if MVC6
 using Microsoft.AspNetCore.Mvc;
@@ -47,19 +44,6 @@ namespace YetaWF.Modules.PageEdit.Controllers {
             return await Grid2RecordViewAsync(await AllowedUsersEditComponent.Grid2RecordAsync(fieldPrefix, userEntry));
         }
 
-        [AllowPost]
-        [ConditionalAntiForgeryToken]
-        [ResourceAuthorize(YetaWF.Modules.Identity.Addons.Info.Resource_AllowListOfUserNamesAjax)]
-        public async Task<ActionResult> AllowedUsersBrowse_GridData(int skip, int take, List<DataProviderSortInfo> sort, List<DataProviderFilterInfo> filters /*, Guid settingsModuleGuid - not available in templates */) {
-            using (UserDefinitionDataProvider userDP = new UserDefinitionDataProvider()) {
-                DataProviderGetRecords<UserDefinition> browseItems = await userDP.GetItemsAsync(skip, take, sort, filters);
-                //Grid.SaveSettings(skip, take, sort, filters, settingsModuleGuid);
-                return await GridPartialViewAsync(new DataSourceResult {
-                    Data = (from s in browseItems.Data select new AllowedUsersEditComponent.AllEntry(s)).ToList<object>(),
-                    Total = browseItems.Total
-                });
-            }
-        }
         [AllowPost]
         [ConditionalAntiForgeryToken]
         [ResourceAuthorize(YetaWF.Modules.Identity.Addons.Info.Resource_AllowListOfUserNamesAjax)]

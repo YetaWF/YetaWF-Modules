@@ -9,7 +9,7 @@ using YetaWF.Core.Models;
 using YetaWF.Core.Packages;
 using YetaWF.Core.Support;
 
-namespace YetaWF.Modules.ComponentsHTML.Components {
+namespace YetaWF.Modules.ComponentsHTML.Components { // $$$$ remove
 
     public class GridDataContainer : YetaWFComponent, IYetaWFContainer<DataSourceResult> {
 

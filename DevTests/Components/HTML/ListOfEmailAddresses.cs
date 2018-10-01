@@ -99,8 +99,6 @@ namespace YetaWF.Modules.DevTests.Components {
 
         public class Entry {
 
-            public Entry() { }
-
             [Caption("Delete"), Description("Click to remove this email address from the list")]
             [UIHint("Softelvdm_Grid_Grid2DeleteEntry"), ReadOnly]
             public int Delete { get; set; }
@@ -115,6 +113,7 @@ namespace YetaWF.Modules.DevTests.Components {
             public Entry(string text) {
                 EmailAddress = text;
             }
+            public Entry() { }
         }
         internal static Grid2Definition GetGridModel(bool header) {
             return new Grid2Definition() {
@@ -145,7 +144,6 @@ namespace YetaWF.Modules.DevTests.Components {
             Grid2Model grid = new Grid2Model() {
                 GridDef = GetGridModel(header)
             };
-
             grid.GridDef.DirectDataAsync = (int skip, int take, List<DataProviderSortInfo> sorts, List<DataProviderFilterInfo> filters) => {
                 List<Entry> list = new List<Entry>();
                 if (model != null)

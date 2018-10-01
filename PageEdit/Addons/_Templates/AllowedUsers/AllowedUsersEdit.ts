@@ -64,6 +64,7 @@ namespace YetaWF_PageEdit {
 
                 return false;
             });
+            $YetaWF.handleInputReturnKeyForButton(this.inputUserName, this.buttonAdd);
             $YetaWF.registerMultipleEventHandlers(this.inputUserName, ["input", "change", "click", "keyup", "paste"], null, (ev: Event): boolean => { this.toggleButton(); return true; });
 
             this.GridAll.Control.addEventListener("grid_selectionchange", (evt: Event): void => {

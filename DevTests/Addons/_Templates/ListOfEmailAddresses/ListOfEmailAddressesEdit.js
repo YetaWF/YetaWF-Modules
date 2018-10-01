@@ -57,6 +57,7 @@ var YetaWF_DevTests;
                 request.send(uri.toFormData());
                 return false;
             });
+            $YetaWF.handleInputReturnKeyForButton(_this.inputEmail, _this.buttonAdd);
             $YetaWF.registerMultipleEventHandlers(_this.inputEmail, ["input", "change", "click", "keyup", "paste"], null, function (ev) { _this.toggleButton(); return true; });
             return _this;
         }
