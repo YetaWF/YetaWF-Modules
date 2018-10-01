@@ -167,6 +167,10 @@ namespace YetaWF_ComponentsHTML {
                         this.reload(this.Setup.Page);
                     return false;
                 });
+                var mod = $YetaWF.getModuleFromTag(this.Control);
+                $YetaWF.registerModuleRefresh(mod, (mod: HTMLElement): void => {
+                    this.reload(this.Setup.Page);
+                });
             }
             // Nav buttons
             if (this.BtnTop) {

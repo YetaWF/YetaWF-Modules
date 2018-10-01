@@ -724,16 +724,16 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             switch (filterOp) {
                 case GridColumnInfo.FilterOptionEnum.Equal: return __ResStr("f_equals", "Equal");
                 case GridColumnInfo.FilterOptionEnum.GreaterEqual: return __ResStr("f_ge", "Greater or equal");
-                case GridColumnInfo.FilterOptionEnum.GreaterThan: return __ResStr("f_equals", "Greater");
-                case GridColumnInfo.FilterOptionEnum.LessEqual: return __ResStr("f_equals", "Less or equal");
-                case GridColumnInfo.FilterOptionEnum.LessThan: return __ResStr("f_equals", "Less");
-                case GridColumnInfo.FilterOptionEnum.NotEqual: return __ResStr("f_equals", "Not equal");
-                case GridColumnInfo.FilterOptionEnum.StartsWith: return __ResStr("f_equals", "Begins with");
-                case GridColumnInfo.FilterOptionEnum.NotStartsWith: return __ResStr("f_equals", "Does not begin with");
-                case GridColumnInfo.FilterOptionEnum.Contains: return __ResStr("f_equals", "Contains");
-                case GridColumnInfo.FilterOptionEnum.NotContains: return __ResStr("f_equals", "Does not contain");
-                case GridColumnInfo.FilterOptionEnum.Endswith: return __ResStr("f_equals", "Ends with");
-                case GridColumnInfo.FilterOptionEnum.NotEndswith: return __ResStr("f_equals", "Does not end with");
+                case GridColumnInfo.FilterOptionEnum.GreaterThan: return __ResStr("f_g", "Greater");
+                case GridColumnInfo.FilterOptionEnum.LessEqual: return __ResStr("f_le", "Less or equal");
+                case GridColumnInfo.FilterOptionEnum.LessThan: return __ResStr("f_l", "Less");
+                case GridColumnInfo.FilterOptionEnum.NotEqual: return __ResStr("f_ne", "Not equal");
+                case GridColumnInfo.FilterOptionEnum.StartsWith: return __ResStr("f_bw", "Begins with");
+                case GridColumnInfo.FilterOptionEnum.NotStartsWith: return __ResStr("f_nbw", "Does not begin with");
+                case GridColumnInfo.FilterOptionEnum.Contains: return __ResStr("f_contains", "Contains");
+                case GridColumnInfo.FilterOptionEnum.NotContains: return __ResStr("f_ncontains", "Does not contain");
+                case GridColumnInfo.FilterOptionEnum.Endswith: return __ResStr("f_endswith", "Ends with");
+                case GridColumnInfo.FilterOptionEnum.NotEndswith: return __ResStr("f_nendswith", "Does not end with");
             }
             throw new InternalError($"Unexpected filter op {filterOp}");
         }
@@ -968,7 +968,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             if (!gridModel.IsStatic && gridModel.SupportReload)
                 reloadHTML = $@"<div class='tg_reload{buttonCss}' {Basics.CssTooltip}='{HAE(__ResStr("btnTop", "Reload the current page"))}'><span class='fas fa-sync-alt'></span></div>";
             if (setup.CanFilter)
-                searchHTML = $@"<div class='tg_search{buttonCss}' {Basics.CssTooltip}='{HAE(__ResStr("btnTop", "Turn the search bar on or off"))}'><span class='fas fa-search'></span></div>";
+                searchHTML = $@"<div class='tg_search{buttonCss}' {Basics.CssTooltip}='{HAE(__ResStr("btnFilter", "Turn the search bar on or off"))}'><span class='fas fa-search'></span></div>";
 
             if (!string.IsNullOrEmpty(reloadHTML) || !string.IsNullOrEmpty(searchHTML)) {
                 hb.Append($@"
@@ -979,10 +979,10 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
             if (setup.PageSize != 0) { //$$$ model.CanAddOrDelete || pageSize < model.Data.Data.Count)) {
 
-                string topHTML = $@"<div class='tg_pgtop{buttonCss}' {Basics.CssTooltip}='{HAE(__ResStr("btnTop", "Go to the first page"))}'><span class='fas fa-fast-backward'></span></div>";
+                string topHTML = $@"<div class='tg_pgtop{buttonCss}' {Basics.CssTooltip}='{HAE(__ResStr("btnFirst", "Go to the first page"))}'><span class='fas fa-fast-backward'></span></div>";
                 string prevHTML = $@"<div class='tg_pgprev{buttonCss}' {Basics.CssTooltip}='{HAE(__ResStr("btnPrev", "Go to the previous page"))}'><span class='fas fa-backward'></span></div>";
                 string nextHTML = $@"<div class='tg_pgnext{buttonCss}' {Basics.CssTooltip}='{HAE(__ResStr("btnNext", "Go to the next page"))}'><span class='fas fa-forward'></span></div>";
-                string bottomHTML = $@"<div class='tg_pgbottom{buttonCss}' {Basics.CssTooltip}='{HAE(__ResStr("btnBottom", "Go to the last page"))}'><span class='fas fa-fast-forward'></span></div>";
+                string bottomHTML = $@"<div class='tg_pgbottom{buttonCss}' {Basics.CssTooltip}='{HAE(__ResStr("btnLast", "Go to the last page"))}'><span class='fas fa-fast-forward'></span></div>";
 
                 hb.Append($@"
     <div class='tg_pgctl'>

@@ -71,6 +71,8 @@
     <Compile Include="Components\HTML\ScrollerItem.cs" />
     <Compile Include="Controllers\Support\ListOfEmailAddresses.cs" />
     <Compile Include="Controllers\TemplateColorPicker.cs" />
+    <Compile Include="Controllers\TemplateGrid.cs" />
+    <Compile Include="Controllers\TemplateGridAjax.cs" />
     <Compile Include="Controllers\TemplateMultiString.cs" />
     <Compile Include="Controllers\BasicTemplates.cs" />
     <Compile Include="Controllers\SMSProcessorStatus.cs" />
@@ -83,6 +85,8 @@
     <Compile Include="Controllers\SMSTest.cs" />
     <Compile Include="Controllers\TestEscapes.cs" />
     <Compile Include="Modules\TemplateColorPickerModule.cs" />
+    <Compile Include="Modules\TemplateGridAjaxModule.cs" />
+    <Compile Include="Modules\TemplateGridModule.cs" />
     <Compile Include="Modules\TemplateMultiString.cs" />
     <Compile Include="Modules\BasicTemplates.cs" />
     <Compile Include="Modules\SMSProcessorStatus.cs" />
@@ -112,6 +116,7 @@
   <ItemGroup>
     <None Include="Addons\_Main\Grids\ListOfEmailAddressesDisplayComponent.Entry" />
     <None Include="Addons\_Main\Grids\ListOfEmailAddressesEditComponent.Entry" />
+    <Content Include="Addons\_SiteTemplates\YetaWF_DevTests.4.1.0.txt" />
     <Content Include="Addons\_SiteTemplates\YetaWF_DevTests.4.0.0.txt" />
     <None Include="Addons\_Templates\ListOfEmailAddresses\ListOfEmailAddresses.scss" />
     <None Include="app.config" />

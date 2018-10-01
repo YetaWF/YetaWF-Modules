@@ -112,6 +112,10 @@ var YetaWF_ComponentsHTML;
                         _this.reload(_this.Setup.Page);
                     return false;
                 });
+                var mod = $YetaWF.getModuleFromTag(_this.Control);
+                $YetaWF.registerModuleRefresh(mod, function (mod) {
+                    _this.reload(_this.Setup.Page);
+                });
             }
             // Nav buttons
             if (_this.BtnTop) {

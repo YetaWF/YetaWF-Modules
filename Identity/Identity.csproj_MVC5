@@ -307,10 +307,6 @@
       <Project>{6a90eab3-a9e4-4a2c-90d9-145859790c46}</Project>
       <Name>SQL</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Softelvdm\Grid\Grid.csproj">
-      <Project>{8167cfd2-c76f-4004-be2a-2d1a09ebbbff}</Project>
-      <Name>Grid</Name>
-    </ProjectReference>
     <ProjectReference Include="..\ComponentsHTML\ComponentsHTML.csproj">
       <Project>{AB7BFD23-57E8-40A6-85EA-9D4B3206075F}</Project>
       <Name>ComponentsHTML</Name>

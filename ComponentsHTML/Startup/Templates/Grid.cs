@@ -18,8 +18,8 @@ namespace YetaWF.Modules.ComponentsHTML.Addons.Templates {
 
             //scripts.AddConfigOption(areaName, "something", Something);
 
-            scripts.AddLocalization(areaName, "GridTotalNone", this.__ResStr("gridTotals", "No items"));
-            scripts.AddLocalization(areaName, "GridTotal0", this.__ResStr("gridTotals", "None of {0} items"));
+            scripts.AddLocalization(areaName, "GridTotalNone", this.__ResStr("gridTotalNone", "No items"));
+            scripts.AddLocalization(areaName, "GridTotal0", this.__ResStr("gridTotal0", "None of {0} items"));
             scripts.AddLocalization(areaName, "GridTotals", this.__ResStr("gridTotals", "{0} - {1} of {2} items"));
 
             return Task.CompletedTask;

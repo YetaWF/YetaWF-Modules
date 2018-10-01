@@ -37,6 +37,11 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Components\ColorPicker.cs" />
+    <Compile Include="Components\Grid\Grid.cs" />
+    <Compile Include="Components\Grid\GridDeleteEntry.cs" />
+    <Compile Include="Components\Grid\GridPartialData.cs" />
+    <Compile Include="Components\Grid\GridRecord.cs" />
+    <Compile Include="Components\Grid\GridValue.cs" />
     <Compile Include="Components\WeeklyHours.cs" />
     <Compile Include="Components\TimeOfDay.cs" />
     <Compile Include="Components\Time.cs" />
@@ -45,6 +50,7 @@
     <Compile Include="Controllers\Support\PageDefinitions.cs" />
     <Compile Include="CoreRendering\View.cs" />
     <Compile Include="KendoUICore.cs" />
+    <Compile Include="Startup\Templates\Grid.cs" />
     <Compile Include="Startup\Templates\Time.cs" />
     <Compile Include="View.cs" />
     <Compile Include="Components\FormButton.cs" />
@@ -61,9 +67,7 @@
     <Compile Include="Components\StringTT.cs" />
     <Compile Include="Components\FloatValue.cs" />
     <Compile Include="Components\IPAddress.cs" />
-    <Compile Include="Components\Grid\GridDataOneRecord.cs" />
     <Compile Include="Components\Raw.cs" />
-    <Compile Include="Components\Grid\GridDeleteEntry.cs" />
     <Compile Include="Components\ReferencedModules.cs" />
     <Compile Include="Components\ModuleSelection\ModuleSelectionModuleExisting.cs" />
     <Compile Include="Components\ModuleSelection\ModuleSelectionModuleNew.cs" />
@@ -73,12 +77,6 @@
     <Compile Include="Components\Scroller.cs" />
     <Compile Include="Components\TimeZone.cs" />
     <Compile Include="Components\Skins\ModuleSkinName.cs" />
-    <Compile Include="Components\Grid\ColumnModel.cs" />
-    <Compile Include="Components\Grid\GridData.cs" />
-    <Compile Include="Components\Grid\Helpers.cs" />
-    <Compile Include="Components\Grid\RenderRecords.cs" />
-    <Compile Include="Components\Grid\Grid.cs" />
-    <Compile Include="Components\Grid\RenderOneRecord.cs" />
     <Compile Include="Components\BootstrapSkin.cs" />
     <Compile Include="Components\Email.cs" />
     <Compile Include="Components\Skins\ModuleSkins.cs" />
@@ -142,7 +140,6 @@
     <Compile Include="Startup\Templates\Date.cs" />
     <Compile Include="Startup\Templates\DateTime.cs" />
     <Compile Include="Startup\Templates\FileUpload1.cs" />
-    <Compile Include="Startup\Templates\Grid.cs" />
     <Compile Include="Startup\Templates\MultiString.cs" />
     <Compile Include="Startup\Templates\RecaptchaV2.cs" />
     <Compile Include="Startup\Templates\Text.cs" />
@@ -152,7 +149,7 @@
     <Compile Include="Views\HTML\Edit.cs" />
     <Compile Include="Views\HTML\EditApply.cs" />
     <Compile Include="Views\HTML\GridData.cs" />
-    <Compile Include="Views\HTML\GridEntry.cs" />
+    <Compile Include="Views\HTML\GridRecord.cs" />
     <Compile Include="Views\HTML\PropertyListDisplay.cs" />
     <Compile Include="Views\HTML\PropertyListEdit.cs" />
     <Compile Include="Views\HTML\ShowMessage.cs" />
@@ -169,6 +166,8 @@
     <Content Include="Addons\_Addons\ckeditor\__CUSTOM_FILES\sourceonly_config.js" />
     <Content Include="Addons\_Addons\ckeditor\__CUSTOM_FILES\sourceonly_ro_config.js" />
     <Content Include="Addons\_Addons\clipboardjs.com.clipboard\filelistJS.txt" />
+    <Content Include="Addons\_Templates\Grid\filelistCSS.txt" />
+    <Content Include="Addons\_Templates\Grid\filelistJS.txt" />
     <TypeScriptCompile Include="Addons\_Addons\Popups\PopupsImpl.ts" />
     <TypeScriptCompile Include="Addons\_Addons\Popups\PopupsSupport.ts" />
     <TypeScriptCompile Include="Addons\_Main\BasicsImpl.ts" />
@@ -182,8 +181,6 @@
     <Content Include="Addons\_Addons\github.com.danielm.uploader\filelistCSS.txt" />
     <Content Include="Addons\_Addons\github.com.danielm.uploader\filelistJS.txt" />
     <Content Include="Addons\_Addons\github.com.danielm.uploader\src\dmuploader.js" />
-    <Content Include="Addons\_Addons\github.com.free-jqgrid.jqgrid\FilelistCSS.txt" />
-    <Content Include="Addons\_Addons\github.com.free-jqgrid.jqgrid\FilelistJS.txt" />
     <Content Include="Addons\_Addons\github.com.vadikom.smartmenus\filelistCSS.txt" />
     <Content Include="Addons\_Addons\github.com.vadikom.smartmenus\filelistJS.txt" />
     <Content Include="Addons\_Addons\google.com.swfobject\filelistJS.txt" />
@@ -220,6 +217,7 @@
     <Content Include="Addons\_Main\ComponentsHTML.css" />
     <Content Include="Addons\_Main\PrettyLoader.js" />
     <TypeScriptCompile Include="Addons\_Main\ComponentsHTML.ts" />
+    <TypeScriptCompile Include="Addons\_Main\Grid.ts" />
     <TypeScriptCompile Include="Addons\_Main\Tooltips.ts" />
     <Content Include="Addons\_Templates\ActionIcons\ActionIcons.css" />
     <Content Include="Addons\_Templates\ActionIcons\ActionIcons.js" />
@@ -230,6 +228,8 @@
     <Content Include="Addons\_Templates\Currency\Currency.css" />
     <Content Include="Addons\_Templates\Currency\filelistCSS.txt" />
     <Content Include="Addons\_Templates\Currency\filelistJS.txt" />
+    <None Include="Addons\_Main\Grids\TemplateGridAjaxModuleController.BrowseItem" />
+    <None Include="Addons\_Main\Grids\TemplateGridModuleController.BrowseItem" />
     <None Include="Addons\_Templates\WeeklyHours\WeeklyHours.scss" />
     <None Include="Addons\_Templates\Time\Time.scss" />
     <None Include="Addons\_Templates\DayTimeRange\DayTimeRange.scss" />
@@ -260,10 +260,6 @@
     <Content Include="Addons\_Templates\FileUpload1\filelistJS.txt" />
     <Content Include="Addons\_Templates\FileUpload1\fileupload1.css" />
     <Content Include="Addons\_Templates\FileUpload1\fileupload1.js" />
-    <Content Include="Addons\_Templates\Grid\filelistCSS.txt" />
-    <Content Include="Addons\_Templates\Grid\filelistJS.txt" />
-    <Content Include="Addons\_Templates\Grid\Grid.css" />
-    <Content Include="Addons\_Templates\Grid\Grid.js" />
     <Content Include="Addons\_Templates\Guid\filelistCSS.txt" />
     <Content Include="Addons\_Templates\Guid\Guid.css" />
     <Content Include="Addons\_Templates\Image\filelistCSS.txt" />
@@ -349,6 +345,7 @@
     <Content Include="Addons\_Templates\Url\filelistJS.txt" />
     <Content Include="Addons\_Templates\Url\Icons\UrlRemote.png" />
     <TypeScriptCompile Include="Addons\_Templates\Url\UrlEdit.ts" />
+    <TypeScriptCompile Include="Addons\_Templates\Grid\Grid.ts" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Addons\_Addons\no-margin-for-errors.com.prettyloader\README" />
@@ -360,6 +357,7 @@
     <None Include="Addons\_Templates\Url\Url.scss" />
     <None Include="app.config" />
     <None Include="app.config_MVC5" />
+    <None Include="Addons\_Templates\Grid\Grid.scss" />
     <None Include="packages.config" />
     <None Include="packages.config_MVC5" />
     <None Include="tsconfig.json" />
@@ -373,6 +371,10 @@
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\..\..\packages\Newtonsoft.Json.11.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Drawing" />
