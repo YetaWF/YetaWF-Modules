@@ -97,9 +97,5 @@ new YetaWF_ComponentsHTML.DateTimeEditComponent('{ControlId}', {YetaWFManager.Js
 
             return hb.ToYHtmlString();
         }
-        public async Task<string> RenderJavascriptAsync(string gridId, string elemVarName) { //$$$ remove
-            await IncludeAsync();
-            return string.Format("(new YetaWF_ComponentsHTML.DateTimeComponent()).renderjqGridFilter('{0}', {1});", gridId, elemVarName);
-        }
     }
 }

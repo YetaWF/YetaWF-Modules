@@ -97,7 +97,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
             HtmlBuilder hb = new HtmlBuilder();
 
-            bool useKendo = !Manager.IsRenderingGrid;
+            bool useKendo = true;
 
             YTagBuilder tag = new YTagBuilder("input");
             if (!string.IsNullOrWhiteSpace(templateCssClass))

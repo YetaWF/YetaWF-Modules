@@ -295,42 +295,8 @@ $.validator.unobtrusive.adapters.add('sameas', [YConfigs.Forms.ConditionProperty
 // LISTNODUPLICATES
 
 $.validator.addMethod('listnoduplicates', function (value, element, parameters) {
-    'use strict';
-
-    var $element = $(element);
-    if ($element.hasClass(YConfigs.Forms.CssFormNoValidate)) return true;
-
-    // Lists are always in a grid. Because field names can be duplicates (occurs due to add/delete) we can't use the element name for comparisons
-    // instead we locate the jqgrid record id
-    // verify we're in a grid control
-    var $grid = $element.closest('.yt_grid');/*DEBUG*/ //$$$$$$$$$$$$$$
-    if ($grid.length != 1) throw "Can't find grid control";/*DEBUG*/
-
-    function getRowId($element) {
-        // get the closest row (it has the record id)
-        var $row = $element.closest('tr');
-        if ($row.length != 1) throw "Can't find grid row";/*DEBUG*/
-        var id = $row.attr("id");// record id (0..n)
-        if (id == undefined) throw "Can't find record id";/*DEBUG*/
-        return id;
-    }
-    var index = getRowId($element);// get the index of the element we're checking
-
-    // extract the field name (usually fieldname[x].__name)
-    var re1 = new RegExp(new RegExp('([a-z0-9]+\\[)([0-9]+)(\\].*)', 'i'));
-    var result = element.name.match(re1);
-    if (result == null) return false;
-    value = value.trim().toUpperCase(); // value to find
-
-    // find all matching fields with indexed names
-    var $set = $('input[name^="{0}"]'.format(result[1])).filter('[name$="{0}"]'.format(result[3]));
-
-    for (var i = 0 ; i < $set.length ; ++i) {
-        if (getRowId($set.eq(i)) != index) {
-            if ($set.eq(i).val().trim().toUpperCase() == value)
-                return false;// duplicate found
-        }
-    }
+    // this is not currently needed - server-side validation verifies during add of new records
+    //return false;// duplicate found
     return true;
 });
 

@@ -8,6 +8,7 @@ using YetaWF.Core.DataProvider;
 using YetaWF.Core.Modules;
 using System.Linq;
 using System;
+using YetaWF.Modules.DevTests.Modules;
 #if MVC6
 using Microsoft.AspNetCore.Mvc;
 #else
@@ -28,9 +29,10 @@ namespace YetaWF.Modules.DevTests.Controllers {
                 get {
                     MenuList actions = new MenuList() { RenderMode = ModuleAction.RenderModeEnum.IconsOnly };
 
-                    //$$$$ LanguageDisplayModule dispMod = new LanguageDisplayModule();
-                    //actions.New(dispMod.GetAction_Display(null, "en-US"), ModuleAction.ActionLocationEnum.GridLinks);
-                    //actions.New(dispMod.GetAction_Display(null, "en-US"), ModuleAction.ActionLocationEnum.GridLinks);
+                    TemplateGridModule gridMod = new TemplateGridModule();
+                    TemplateGridAjaxModule gridAjaxMod = new TemplateGridAjaxModule();
+                    actions.New(gridMod.GetAction_Display(null), ModuleAction.ActionLocationEnum.GridLinks);
+                    actions.New(gridAjaxMod.GetAction_Display(null), ModuleAction.ActionLocationEnum.GridLinks);
 
                     return actions;
                 }

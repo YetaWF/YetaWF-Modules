@@ -64,8 +64,8 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             float min = 0, max = 99999999.99F;
             RangeAttribute rangeAttr = PropData.TryGetAttribute<RangeAttribute>();
             if (rangeAttr != null) {
-                min = (float)rangeAttr.Minimum;
-                max = (float)rangeAttr.Maximum;
+                min = Convert.ToSingle(rangeAttr.Minimum);
+                max = Convert.ToSingle(rangeAttr.Maximum);
             }
             if (model != null)
                 tag.MergeAttribute("value", ((decimal)model).ToString("0.00"));

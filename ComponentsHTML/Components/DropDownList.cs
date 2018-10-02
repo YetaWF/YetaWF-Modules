@@ -25,7 +25,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             TemplateName = templateName;
         }
         public static async Task IncludeExplicitAsync() { // this component is reusable so we need to explicitly include all js/css
-            bool useKendo = !Manager.IsRenderingGrid;
+            bool useKendo = true;
             if (useKendo) {
                 await KendoUICore.AddFileAsync("kendo.data.min.js");
                 // await KendoUICore.AddFileAsync("kendo.popup.min.js"); // is now a prereq of kendo.window (2017.2.621)
@@ -51,7 +51,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
             await IncludeExplicitAsync();
 
-            bool useKendo = !Manager.IsRenderingGrid;
+            bool useKendo = true;
             bool adjustWidth = false;
 
             YTagBuilder tag = new YTagBuilder("select");

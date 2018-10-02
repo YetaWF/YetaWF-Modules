@@ -31,8 +31,6 @@ namespace YetaWF.Modules.ComponentsHTML.Components
 
             ScriptBuilder sb = new ScriptBuilder();
 
-            //$$Manager.RenderingGridCount = Manager.RenderingGridCount + 1;
-
             ObjectSupport.ReadGridDictionaryInfo dictInfo = await YetaWF.Core.Components.Grid.LoadGridColumnDefinitionsAsync(model.GridDef.RecordType);
 
             // render all records
@@ -60,8 +58,6 @@ namespace YetaWF.Modules.ComponentsHTML.Components
             };
 
             sb.Append(YetaWFManager.JsonSerialize(result));
-
-            //$$Manager.RenderingGridCount = Manager.RenderingGridCount - 1;
 
             return sb.ToYHtmlString();
         }

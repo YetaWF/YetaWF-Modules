@@ -7,9 +7,9 @@ using YetaWF.Core.Support;
 
 namespace YetaWF.Modules.ComponentsHTML.Components
 {
-
-
-    //$$$REMOVE?
+    /// <summary>
+    /// A hidden field that this rendered without field name, usually used for lists which require just fieldprefix[index] without .fieldname
+    /// </summary>
     public abstract class GridValueComponentBase : YetaWFComponent {
         public const string TemplateName = "GridValue";
         public override Package GetPackage() { return Controllers.AreaRegistration.CurrentPackage; }

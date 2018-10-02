@@ -96,9 +96,5 @@ new YetaWF_ComponentsHTML.DateEditComponent('{ControlId}', {YetaWFManager.JsonSe
 
             return hb.ToYHtmlString();
         }
-        public async Task<string> RenderJavascriptAsync(string gridId, string elemVarName) {//$$$$ remove
-            await IncludeAsync();
-            return string.Format($"new YetaWF_ComponentsHTML.DateGridComponent('{gridId}', {elemVarName});");
-        }
     }
 }

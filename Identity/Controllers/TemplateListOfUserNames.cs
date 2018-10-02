@@ -26,7 +26,7 @@ namespace YetaWF.Modules.Identity.Controllers {
         public class Model {
 
             [Caption("User Names (Required)"), Description("List of User Names (Required)")]
-            [UIHint("YetaWF_Identity_ListOfUserNames"), ListNoDuplicates/*$$$$ no int support */, Required, Trim]
+            [UIHint("YetaWF_Identity_ListOfUserNames"), ListNoDuplicates, Required, Trim]
             public List<int> Prop1Req { get; set; }
             public string Prop1Req_AjaxUrl { get { return YetaWFManager.UrlFor(typeof(TemplateListOfUserNamesModuleController), nameof(AddUserName)); } }
 

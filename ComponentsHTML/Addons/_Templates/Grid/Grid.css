@@ -26,10 +26,11 @@
       margin: 2px 2px 2px 2px;
       padding: 2px 2px 2px 2px; }
     .yt_grid table tr {
-      /* highlighted row (with bool __highlight property) */ }
-      .yt_grid table tr.yHighlightGridRow td {
+      /* highlighted row (with bool __highlight property) */
+      /* lowlighted row (with bool __lowlight property) */ }
+      .yt_grid table tr.tg_highlight td {
         background-color: silver; }
-      .yt_grid table tr.yLowlightGridRow td {
+      .yt_grid table tr.tg_lowlight td {
         background-color: ghostwhite; }
     .yt_grid table th {
       overflow: hidden;

@@ -109,8 +109,6 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                 model.DropdownActionWidth = GetDropdownActionWidthInChars();
             buttonCss = model.UseSkinFormatting ? " ui-corner-all ui-pg-button ui-state-default tg_button" : " tg_button";
 
-            //$$ Manager.RenderingGridCount = Manager.RenderingGridCount + 1;
-
             string idEmpty = UniqueId();
 
             ObjectSupport.ReadGridDictionaryInfo dictInfo = await YetaWF.Core.Components.Grid.LoadGridColumnDefinitionsAsync(model);
@@ -183,7 +181,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             if (model.IsStatic) {
                 DataSourceResult ds = await model.DirectDataAsync(0, int.MaxValue, null, null);
                 setup.StaticData = ds.Data;
-                if (model.SortFilterStaticData != null) {
+                if (model.SortFilterStaticData != null && model.SortFilterStaticData != GridDefinition.DontSortFilter) {
                     DataSourceResult dsPart = model.SortFilterStaticData?.Invoke(setup.StaticData, 0, int.MaxValue, sorts, filters);
                     data = dsPart;
                     data.Total = ds.Total;
@@ -223,11 +221,10 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                     break;
             }
 
-            //$$$$ data-charavgw needed?
             hb.Append($@"
 <div id='{model.Id}' class='yt_grid t_display{noSubmitClass}'>
     <div class='tg_table{(model.UseSkinFormatting ? " ui-corner-top ui-widget ui-widget-content" : "")}'>
-        <table data-charavgw={Manager.CharWidthAvg} role='presentation'{cssTableStyle}>
+        <table role='presentation'{cssTableStyle}>
             {setup.HeaderHTML}
             <tbody>
 {tableHTML}
@@ -251,8 +248,6 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 <script>
     new YetaWF_ComponentsHTML.Grid('{model.Id}', {JsonConvert.SerializeObject(setup, new JsonSerializerSettings { StringEscapeHandling = StringEscapeHandling.EscapeHtml })});
 </script>");
-
-            //$$$ Manager.RenderingGridCount = Manager.RenderingGridCount - 1;
 
             return hb.ToYHtmlString();
         }
@@ -838,9 +833,9 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
                 string lightCss = "";
                 if (highlight)
-                    lightCss = "yHighlightGridRow";//$$$$
+                    lightCss = "tg_highlight";
                 else if (lowlight)
-                    lightCss = "yLowlightGridRow";//$$$$
+                    lightCss = "tg_lowlight";
 
                 // collect hidden fields
                 foreach (string colName in dictInfo.ColumnInfo.Keys) {
@@ -977,7 +972,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
     </div>");
             }
 
-            if (setup.PageSize != 0) { //$$$ model.CanAddOrDelete || pageSize < model.Data.Data.Count)) {
+            if (setup.PageSize != 0) {
 
                 string topHTML = $@"<div class='tg_pgtop{buttonCss}' {Basics.CssTooltip}='{HAE(__ResStr("btnFirst", "Go to the first page"))}'><span class='fas fa-fast-backward'></span></div>";
                 string prevHTML = $@"<div class='tg_pgprev{buttonCss}' {Basics.CssTooltip}='{HAE(__ResStr("btnPrev", "Go to the previous page"))}'><span class='fas fa-backward'></span></div>";

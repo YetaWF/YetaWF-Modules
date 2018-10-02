@@ -24,5 +24,21 @@ namespace YetaWF.Modules.DevTests.Modules {
         public override IModuleDefinitionIO GetDataProvider() { return new TemplateGridModuleDataProvider(); }
 
         public override SerializableList<AllowedRole> DefaultAllowedRoles { get { return AdministratorLevel_DefaultAllowedRoles; } }
+
+        public ModuleAction GetAction_Display(string url) {
+            return new ModuleAction(this) {
+                Url = string.IsNullOrWhiteSpace(url) ? ModulePermanentUrl : url,
+                Image = "#Display",
+                LinkText = this.__ResStr("displayLink", "Grid (Static Data)"),
+                MenuText = this.__ResStr("displayText", "Grid (Static Data)"),
+                Tooltip = this.__ResStr("displayTooltip", "Display a sample grid"),
+                Legend = this.__ResStr("displayLegend", "Displays a sample grid"),
+                Style = ModuleAction.ActionStyleEnum.Normal,
+                Category = ModuleAction.ActionCategoryEnum.Read,
+                Mode = ModuleAction.ActionModeEnum.Any,
+                Location = ModuleAction.ActionLocationEnum.ModuleLinks | ModuleAction.ActionLocationEnum.ModuleMenu,
+                SaveReturnUrl = true,
+            };
+        }
     }
 }

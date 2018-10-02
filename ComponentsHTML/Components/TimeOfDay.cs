@@ -73,9 +73,5 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
             return hb.ToYHtmlString();
         }
-        public async Task<string> RenderJavascriptAsync(string gridId, string elemVarName) {
-            await IncludeAsync();
-            return string.Format("(new YetaWF_ComponentsHTML.TimeComponent()).renderjqGridFilter('{0}', {1});", gridId, elemVarName);
-        }
     }
 }

@@ -58,10 +58,11 @@ $smbuttonhorzmargin: 2px;
         }
         tr {
             /* highlighted row (with bool __highlight property) */
-            &.yHighlightGridRow td {
+            &.tg_highlight td {
                 background-color: silver;
             }
-            &.yLowlightGridRow td {
+            /* lowlighted row (with bool __lowlight property) */
+            &.tg_lowlight td {
                 background-color: ghostwhite;
             }
         }
