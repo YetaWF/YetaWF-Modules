@@ -118,6 +118,8 @@
     <None Include="Addons\_Main\Grids\ListOfEmailAddressesEditComponent.Entry" />
     <Content Include="Addons\_SiteTemplates\YetaWF_DevTests.4.1.0.txt" />
     <Content Include="Addons\_SiteTemplates\YetaWF_DevTests.4.0.0.txt" />
+    <None Include="Addons\_Main\Grids\TemplateGridAjaxModuleController.BrowseItem" />
+    <None Include="Addons\_Main\Grids\TemplateGridModuleController.BrowseItem" />
     <None Include="Addons\_Templates\ListOfEmailAddresses\ListOfEmailAddresses.scss" />
     <None Include="app.config" />
     <None Include="packages.config" />

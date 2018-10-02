@@ -228,8 +228,6 @@
     <Content Include="Addons\_Templates\Currency\Currency.css" />
     <Content Include="Addons\_Templates\Currency\filelistCSS.txt" />
     <Content Include="Addons\_Templates\Currency\filelistJS.txt" />
-    <None Include="Addons\_Main\Grids\TemplateGridAjaxModuleController.BrowseItem" />
-    <None Include="Addons\_Main\Grids\TemplateGridModuleController.BrowseItem" />
     <None Include="Addons\_Templates\WeeklyHours\WeeklyHours.scss" />
     <None Include="Addons\_Templates\Time\Time.scss" />
     <None Include="Addons\_Templates\DayTimeRange\DayTimeRange.scss" />
