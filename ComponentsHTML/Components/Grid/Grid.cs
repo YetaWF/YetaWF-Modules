@@ -243,8 +243,19 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                 }
             }
 
+            // loading
+            if (!model.IsStatic) {
+                hb.Append($@"
+    <div id='{model.Id}_Loading' style='display:none' class='tg_loading{(model.UseSkinFormatting ? " ui-state-default" : "")}'>
+        <div class='t_text'>{__ResStr("loading", "Loading ...")}</div>
+    </div>");
+            }
+
             hb.Append($@"
-</div>
+</div>");
+
+
+            hb.Append($@"
 <script>
     new YetaWF_ComponentsHTML.Grid('{model.Id}', {JsonConvert.SerializeObject(setup, new JsonSerializerSettings { StringEscapeHandling = StringEscapeHandling.EscapeHtml })});
 </script>");

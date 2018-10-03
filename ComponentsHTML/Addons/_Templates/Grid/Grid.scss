@@ -23,118 +23,118 @@ $smbuttonhorzmargin: 2px;
 .yt_grid {
     position:relative;
     font-weight:normal;
-    .tg_table {
+    .tg_table.ui-widget {  // jquery-ui rendering
         overflow-x:auto;
-    }
-    table {
-        border-collapse:collapse;
-        box-sizing: border-box;
-        table-layout: fixed;
-        tr.tg_header, th.tg_header {
+        table {
+            border-collapse:collapse;
+            box-sizing: border-box;
+            table-layout: fixed;
+            tr.tg_header, th.tg_header {
 
-        }
-        tr.tg_filter {
-            .tg_fentry {
-                display: table;
-                width:100%;
             }
-            .tg_fctrls {
-                display: table-cell;
-                width:100%;
-                .yt_text_base,
-                .k-widget { /* kendo ui controls */
+            tr.tg_filter {
+                .tg_fentry {
+                    display: table;
                     width:100%;
                 }
-                select {
+                .tg_fctrls {
+                    display: table-cell;
                     width:100%;
-                }
-            }
-            .tg_fclear, .tg_fmenu {
-                display:inline-block;
-                font-size:$buttonfontsize;
-                margin:$smbuttonvertmargin $smbuttonhorzmargin $smbuttonvertmargin $smbuttonhorzmargin;
-                padding:$smbuttonvertpadding $smbuttonhorzpadding $smbuttonvertpadding $smbuttonhorzpadding;
-            }
-        }
-        tr {
-            /* highlighted row (with bool __highlight property) */
-            &.tg_highlight td {
-                background-color: silver;
-            }
-            /* lowlighted row (with bool __lowlight property) */
-            &.tg_lowlight td {
-                background-color: ghostwhite;
-            }
-        }
-        th {
-           overflow:hidden;
-            white-space:nowrap;
-            font-size:$fontsize;
-            font-weight:normal;
-            border-width:1px;
-            border-style:solid;
-            border-color:inherit;
-            padding:$headerverticalpadding $headerhorzpadding $headerverticalpadding $headerhorzpadding;
-        }
-        .tg_header th {
-            position: relative;
-            span {
-                cursor:default;
-            }
-            .tg_resize {
-                position:absolute;
-                width:4px;
-                height:100%;
-                right:0;
-                top:0;
-                cursor:col-resize;
-                user-select: none;
-                overflow: hidden;
-            }
-            .tg_sorticon {
-                position:relative;
-                font-size: $fontsizesort;
-                .tg_sortasc, .tg_sortdesc {
-                    position:relative;
-                    display:none;
-                    padding-left:5px;
-                    &.tg_active {
-                        display:inline-block;
+                    .yt_text_base,
+                    .k-widget { /* kendo ui controls */
+                        width:100%;
+                    }
+                    select {
+                        width:100%;
                     }
                 }
-                .tg_sortasc {
-                    top:$fontsizesort/4;
-                }
-                .tg_sortdesc {
-                    top:-$fontsizesort/4;
+                .tg_fclear, .tg_fmenu {
+                    display:inline-block;
+                    font-size:$buttonfontsize;
+                    margin:$smbuttonvertmargin $smbuttonhorzmargin $smbuttonvertmargin $smbuttonhorzmargin;
+                    padding:$smbuttonvertpadding $smbuttonhorzpadding $smbuttonvertpadding $smbuttonhorzpadding;
                 }
             }
-            -webkit-user-select: none; /* Safari 3.1+ */
-            -moz-user-select: none; /* Firefox 2+ */
-            -ms-user-select: none; /* IE 10+ */
-            user-select: none; /* Standard syntax */
-        }
-        td {
-            overflow:hidden;
-            font-size:$fontsize;
-            padding:$cellverticalpadding $cellhorzpadding $cellverticalpadding $cellhorzpadding;
-            border-width:1px;
-            border-style:solid;
-            border-color:inherit;
+            tr {
+                /* highlighted row (with bool __highlight property) */
+                &.tg_highlight td {
+                    background-color: silver;
+                }
+                /* lowlighted row (with bool __lowlight property) */
+                &.tg_lowlight td {
+                    background-color: ghostwhite;
+                }
+            }
+            th {
+               overflow:hidden;
+                white-space:nowrap;
+                font-size:$fontsize;
+                font-weight:normal;
+                border-width:1px;
+                border-style:solid;
+                border-color:inherit;
+                padding:$headerverticalpadding $headerhorzpadding $headerverticalpadding $headerhorzpadding;
+            }
+            .tg_header th {
+                position: relative;
+                span {
+                    cursor:default;
+                }
+                .tg_resize {
+                    position:absolute;
+                    width:4px;
+                    height:100%;
+                    right:0;
+                    top:0;
+                    cursor:col-resize;
+                    user-select: none;
+                    overflow: hidden;
+                }
+                .tg_sorticon {
+                    position:relative;
+                    font-size: $fontsizesort;
+                    .tg_sortasc, .tg_sortdesc {
+                        position:relative;
+                        display:none;
+                        padding-left:5px;
+                        &.tg_active {
+                            display:inline-block;
+                        }
+                    }
+                    .tg_sortasc {
+                        top:$fontsizesort/4;
+                    }
+                    .tg_sortdesc {
+                        top:-$fontsizesort/4;
+                    }
+                }
+                -webkit-user-select: none; /* Safari 3.1+ */
+                -moz-user-select: none; /* Firefox 2+ */
+                -ms-user-select: none; /* IE 10+ */
+                user-select: none; /* Standard syntax */
+            }
+            td {
+                overflow:hidden;
+                font-size:$fontsize;
+                padding:$cellverticalpadding $cellhorzpadding $cellverticalpadding $cellhorzpadding;
+                border-width:1px;
+                border-style:solid;
+                border-color:inherit;
 
-            .tg_emptydiv {
-                padding:2em 0 2em 2ch;
+                .tg_emptydiv {
+                    padding:2em 0 2em 2ch;
+                }
             }
-        }
-        th, td {
-            &.tg_left {
-                text-align:left;
-            }
-            &.tg_center {
-                text-align:center;
-            }
-            &.tg_right {
-                text-align:right;
+            th, td {
+                &.tg_left {
+                    text-align:left;
+                }
+                &.tg_center {
+                    text-align:center;
+                }
+                &.tg_right {
+                    text-align:right;
+                }
             }
         }
     }
@@ -168,6 +168,24 @@ $smbuttonhorzmargin: 2px;
         cursor: pointer;
         &:disabled {
             cursor: default;
+        }
+    }
+    .tg_loading {
+        position:absolute;
+        left:0; right: 0; top: 0; bottom: 0;
+        background: rgba(255, 255, 255, 0.5);
+        .t_text {
+            margin:auto;
+            width:25ch;
+            background-color:white;
+            color:black;
+            text-align:center;
+            border-radius:10px;
+            border: solid 1px #eee;
+
+            position: relative;
+            top: 50%;
+            transform: translateY(-50%);
         }
     }
 }

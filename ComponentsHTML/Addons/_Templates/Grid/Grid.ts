@@ -106,6 +106,7 @@ namespace YetaWF_ComponentsHTML {
         private ColumnResizeBar: HTMLElement | null = null;
         private ColumnResizeHeader: HTMLTableHeaderCellElement | null = null;
         private TBody: HTMLElement;
+        private LoadingDiv: HTMLDivElement | null = null;
         private static CurrentControl: Grid | null = null;// current control during grid resize
         private SubmitCheckCol: number = -1;// column with checkbox determining whether to submit record
         private reloadInProgress: boolean = false;
@@ -172,6 +173,8 @@ namespace YetaWF_ComponentsHTML {
                     this.reload(this.Setup.Page);
                 });
             }
+            if (!this.Setup.StaticData)
+                this.LoadingDiv = $YetaWF.getElement1BySelectorCond(".tg_loading", [this.Control]) as HTMLDivElement;
             // Nav buttons
             if (this.BtnTop) {
                 $YetaWF.registerEventHandler(this.BtnTop, "click", null, (ev: MouseEvent): boolean => {
@@ -503,11 +506,11 @@ namespace YetaWF_ComponentsHTML {
         }
 
         // reloading
-        private reload(page: number, newPageSize?: number, override?: OverrideColumnFilter, sort?: boolean, done?: () => void): void {
+        private reload(page: number, newPageSize?: number, overrideColFilter?: OverrideColumnFilter, overrideExtraData?: any|null|undefined, sort?: boolean, done?: () => void): void {
 
             if (!this.reloadInProgress) {
-                this.reloadInProgress = true;
-                $YetaWF.setLoading(true);
+
+                this.setReloading(true);
 
                 if (this.Setup.StaticData && !sort) {
                     // show/hide selected rows
@@ -531,8 +534,7 @@ namespace YetaWF_ComponentsHTML {
                     if (this.InputPage)
                         this.InputPage.value = this.Setup.Page + 1;
                     this.updateStatus();
-                    this.reloadInProgress = false;
-                    $YetaWF.setLoading(false);
+                    this.setReloading(false);
                 } else {
                     // fetch data from servers
                     var uri = $YetaWF.parseUrl(this.Setup.AjaxUrl);
@@ -557,8 +559,8 @@ namespace YetaWF_ComponentsHTML {
                         var val = this.getColSortValue(colIndex);
                         if (val !== null && val !== "") {
                             var oper = col.FilterOp;
-                            if (override && override.ColIndex === colIndex)
-                                oper = override.FilterOp;
+                            if (overrideColFilter && overrideColFilter.ColIndex === colIndex)
+                                oper = overrideColFilter.FilterOp;
                             if (oper != null) {
                                 uri.addSearch(`filters[${fcount}].field`, col.Name);
                                 uri.addSearch(`filters[${fcount}].operator`, this.GetFilterOpString(oper));
@@ -579,8 +581,7 @@ namespace YetaWF_ComponentsHTML {
                     request.setRequestHeader("X-Requested-With", "XMLHttpRequest");
                     request.onreadystatechange = (ev: Event): any => {
                         if (request.readyState === 4 /*DONE*/) {
-                            this.reloadInProgress = false;
-                            $YetaWF.setLoading(false);
+                            this.setReloading(false);
                             $YetaWF.processAjaxReturn(request.responseText, request.statusText, request, undefined, undefined, (result: string) => {
                                 var partial: GridPartialResult = JSON.parse(request.responseText);
                                 $YetaWF.processClearDiv(this.TBody);
@@ -606,6 +607,16 @@ namespace YetaWF_ComponentsHTML {
                     var data = uri.toFormData();
                     request.send(data);
                 }
+            }
+        }
+        private setReloading(on: boolean): void {
+            this.reloadInProgress = on;
+            $YetaWF.setLoading(on);
+            if (this.LoadingDiv) {
+                if (on)
+                    this.LoadingDiv.setAttribute("style", "");
+                else
+                    this.LoadingDiv.setAttribute("style", "display:none");
             }
         }
         private updateStatus(): void {
@@ -664,11 +675,11 @@ namespace YetaWF_ComponentsHTML {
             // update column structure
             var sel = Number($YetaWF.getAttribute(menuElem, "data-sel"));
             // new filter
-            var override: OverrideColumnFilter = {
+            var overrideColFilter: OverrideColumnFilter = {
                 ColIndex: colIndex,
                 FilterOp: sel
             };
-            this.reload(this.Setup.Page, undefined, override, undefined, () => {
+            this.reload(this.Setup.Page, undefined, overrideColFilter, undefined, undefined, () => {
                 // clear all highlights
                 var ulElem = $YetaWF.elementClosest(menuElem, "ul");
                 this.clearFilterMenuHighlights(ulElem);
@@ -925,6 +936,20 @@ namespace YetaWF_ComponentsHTML {
             if (this.Setup.StaticData) throw "Ajax grids only";
             if (index < 0 || index >= this.TBody.children.length) throw `Index ${index} out of bounds`;
             return this.TBody.children[index] as HTMLTableRowElement;
+        }
+        /**
+         * Reloads the grid in its entirety using the provided extradata. The extradata is only saved in the grid if reloading is successful.
+         * The callback is called if the grid is successfully reloaded.
+         */
+        public ReloadAll(overrideExtraData?: any, successful?: () => void): void {
+            if (this.Setup.StaticData) throw "Ajax grids only";
+            this.reload(0, undefined, undefined, undefined, overrideExtraData, (): void => {
+                // successful
+                if (overrideExtraData)
+                    this.Setup.ExtraData = overrideExtraData;
+                if (successful)
+                    successful();
+            });
         }
     }
 

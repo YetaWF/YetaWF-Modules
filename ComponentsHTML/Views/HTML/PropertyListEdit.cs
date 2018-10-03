@@ -27,6 +27,7 @@ namespace YetaWF.Modules.ComponentsHTML.Views {
 {await RenderBeginFormAsync(ActionName: actionName)}
     {await PartialForm(async () => await RenderPartialViewAsync(module, model))}
 {await RenderEndFormAsync()}");
+
             return hb.ToYHtmlString();
         }
 

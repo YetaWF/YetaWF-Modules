@@ -60,6 +60,7 @@ var YetaWF_ComponentsHTML;
             _this.SelectPageSize = null;
             _this.ColumnResizeBar = null;
             _this.ColumnResizeHeader = null;
+            _this.LoadingDiv = null;
             _this.SubmitCheckCol = -1; // column with checkbox determining whether to submit record
             _this.reloadInProgress = false;
             $YetaWF.addObjectDataById(controlId, _this);
@@ -117,6 +118,8 @@ var YetaWF_ComponentsHTML;
                     _this.reload(_this.Setup.Page);
                 });
             }
+            if (!_this.Setup.StaticData)
+                _this.LoadingDiv = $YetaWF.getElement1BySelectorCond(".tg_loading", [_this.Control]);
             // Nav buttons
             if (_this.BtnTop) {
                 $YetaWF.registerEventHandler(_this.BtnTop, "click", null, function (ev) {
@@ -461,11 +464,10 @@ var YetaWF_ComponentsHTML;
             return false;
         };
         // reloading
-        Grid.prototype.reload = function (page, newPageSize, override, sort, done) {
+        Grid.prototype.reload = function (page, newPageSize, overrideColFilter, overrideExtraData, sort, done) {
             var _this = this;
             if (!this.reloadInProgress) {
-                this.reloadInProgress = true;
-                $YetaWF.setLoading(true);
+                this.setReloading(true);
                 if (this.Setup.StaticData && !sort) {
                     // show/hide selected rows
                     if (this.Setup.PageSize > 0) {
@@ -489,8 +491,7 @@ var YetaWF_ComponentsHTML;
                     if (this.InputPage)
                         this.InputPage.value = this.Setup.Page + 1;
                     this.updateStatus();
-                    this.reloadInProgress = false;
-                    $YetaWF.setLoading(false);
+                    this.setReloading(false);
                 }
                 else {
                     // fetch data from servers
@@ -517,8 +518,8 @@ var YetaWF_ComponentsHTML;
                         var val = this.getColSortValue(colIndex);
                         if (val !== null && val !== "") {
                             var oper = col_2.FilterOp;
-                            if (override && override.ColIndex === colIndex)
-                                oper = override.FilterOp;
+                            if (overrideColFilter && overrideColFilter.ColIndex === colIndex)
+                                oper = overrideColFilter.FilterOp;
                             if (oper != null) {
                                 uri.addSearch("filters[" + fcount + "].field", col_2.Name);
                                 uri.addSearch("filters[" + fcount + "].operator", this.GetFilterOpString(oper));
@@ -537,8 +538,7 @@ var YetaWF_ComponentsHTML;
                     request.setRequestHeader("X-Requested-With", "XMLHttpRequest");
                     request.onreadystatechange = function (ev) {
                         if (request.readyState === 4 /*DONE*/) {
-                            _this.reloadInProgress = false;
-                            $YetaWF.setLoading(false);
+                            _this.setReloading(false);
                             $YetaWF.processAjaxReturn(request.responseText, request.statusText, request, undefined, undefined, function (result) {
                                 var partial = JSON.parse(request.responseText);
                                 $YetaWF.processClearDiv(_this.TBody);
@@ -564,6 +564,16 @@ var YetaWF_ComponentsHTML;
                     var data = uri.toFormData();
                     request.send(data);
                 }
+            }
+        };
+        Grid.prototype.setReloading = function (on) {
+            this.reloadInProgress = on;
+            $YetaWF.setLoading(on);
+            if (this.LoadingDiv) {
+                if (on)
+                    this.LoadingDiv.setAttribute("style", "");
+                else
+                    this.LoadingDiv.setAttribute("style", "display:none");
             }
         };
         Grid.prototype.updateStatus = function () {
@@ -629,11 +639,11 @@ var YetaWF_ComponentsHTML;
             // update column structure
             var sel = Number($YetaWF.getAttribute(menuElem, "data-sel"));
             // new filter
-            var override = {
+            var overrideColFilter = {
                 ColIndex: colIndex,
                 FilterOp: sel
             };
-            this.reload(this.Setup.Page, undefined, override, undefined, function () {
+            this.reload(this.Setup.Page, undefined, overrideColFilter, undefined, undefined, function () {
                 // clear all highlights
                 var ulElem = $YetaWF.elementClosest(menuElem, "ul");
                 _this.clearFilterMenuHighlights(ulElem);
@@ -912,6 +922,22 @@ var YetaWF_ComponentsHTML;
             if (index < 0 || index >= this.TBody.children.length)
                 throw "Index " + index + " out of bounds";
             return this.TBody.children[index];
+        };
+        /**
+         * Reloads the grid in its entirety using the provided extradata. The extradata is only saved in the grid if reloading is successful.
+         * The callback is called if the grid is successfully reloaded.
+         */
+        Grid.prototype.ReloadAll = function (overrideExtraData, successful) {
+            var _this = this;
+            if (this.Setup.StaticData)
+                throw "Ajax grids only";
+            this.reload(0, undefined, undefined, undefined, overrideExtraData, function () {
+                // successful
+                if (overrideExtraData)
+                    _this.Setup.ExtraData = overrideExtraData;
+                if (successful)
+                    successful();
+            });
         };
         Grid.SELECTOR = ".yt_grid";
         Grid.CurrentControl = null; // current control during grid resize
