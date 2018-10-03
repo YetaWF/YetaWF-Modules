@@ -1,4 +1,4 @@
-/* Grid */
+/* Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/ComponentsHTML#License */
 
 // Kendo UI menu use
 

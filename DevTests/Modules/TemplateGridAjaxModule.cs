@@ -1,3 +1,5 @@
+/* Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/DevTests#License */
+
 using System;
 using YetaWF.Core.IO;
 using YetaWF.Core.Localize;
