@@ -464,9 +464,9 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                             if (entries == null) {
                                 // regular int/long
                                 filterOpts = new List<GridColumnInfo.FilterOptionEnum> {
-                                GridColumnInfo.FilterOptionEnum.GreaterEqual, GridColumnInfo.FilterOptionEnum.GreaterThan, GridColumnInfo.FilterOptionEnum.LessEqual, GridColumnInfo.FilterOptionEnum.LessThan,
-                                GridColumnInfo.FilterOptionEnum.Equal, GridColumnInfo.FilterOptionEnum.NotEqual
-                            };
+                                    GridColumnInfo.FilterOptionEnum.GreaterEqual, GridColumnInfo.FilterOptionEnum.GreaterThan, GridColumnInfo.FilterOptionEnum.LessEqual, GridColumnInfo.FilterOptionEnum.LessThan,
+                                    GridColumnInfo.FilterOptionEnum.Equal, GridColumnInfo.FilterOptionEnum.NotEqual
+                                };
                                 filterType = "long";
                                 FilterLongUI filterUI = new FilterLongUI();
                                 if (filterOp != null)
@@ -483,8 +483,8 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                             } else {
                                 // this is a dynamic enumerated value
                                 filterOpts = new List<GridColumnInfo.FilterOptionEnum> {
-                                GridColumnInfo.FilterOptionEnum.Equal, GridColumnInfo.FilterOptionEnum.NotEqual
-                            };
+                                    GridColumnInfo.FilterOptionEnum.Equal, GridColumnInfo.FilterOptionEnum.NotEqual
+                                };
                                 filterType = "dynenum"; //$$ GetSelectionListAsync
                                 entries.Insert(0, new SelectionItem<int> {
                                     Value = 0,
@@ -508,7 +508,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                             filterOpts = new List<GridColumnInfo.FilterOptionEnum> {
                                 GridColumnInfo.FilterOptionEnum.GreaterEqual, GridColumnInfo.FilterOptionEnum.GreaterThan, GridColumnInfo.FilterOptionEnum.LessEqual, GridColumnInfo.FilterOptionEnum.LessThan,
                                 GridColumnInfo.FilterOptionEnum.Equal, GridColumnInfo.FilterOptionEnum.NotEqual
-                        };
+                            };
                             filterType = "decimal";
                             FilterDecimalUI filterUI = new FilterDecimalUI();
                             if (filterOp != null)
@@ -525,8 +525,8 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                         } else if (prop.PropInfo.PropertyType == typeof(DateTime) || prop.PropInfo.PropertyType == typeof(DateTime?)) {
 
                             filterOpts = new List<GridColumnInfo.FilterOptionEnum> {
-                            GridColumnInfo.FilterOptionEnum.GreaterEqual, GridColumnInfo.FilterOptionEnum.LessEqual,
-                        };
+                                GridColumnInfo.FilterOptionEnum.GreaterEqual, GridColumnInfo.FilterOptionEnum.LessEqual,
+                            };
 
                             if (prop.UIHint == "DateTime") {
                                 filterType = "datetime";
@@ -567,8 +567,8 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                         } else if (prop.PropInfo.PropertyType == typeof(Guid) || prop.PropInfo.PropertyType == typeof(Guid?)) {
 
                             filterOpts = new List<GridColumnInfo.FilterOptionEnum> {
-                            GridColumnInfo.FilterOptionEnum.Contains, GridColumnInfo.FilterOptionEnum.StartsWith, GridColumnInfo.FilterOptionEnum.Endswith
-                        };
+                                GridColumnInfo.FilterOptionEnum.Contains, GridColumnInfo.FilterOptionEnum.StartsWith, GridColumnInfo.FilterOptionEnum.Endswith
+                            };
                             filterType = "guid";
                             FilterGuidUI filterUI = new FilterGuidUI {
                                 Value = (filterOp != null) ? filterValue : null,

@@ -93,7 +93,7 @@ namespace YetaWF.Modules.Blog.Controllers {
         }
 
         public class BrowseModel {
-            [UIHint("Grid")]
+            [UIHint("Grid"), ReadOnly]
             public GridDefinition GridDef { get; set; }
         }
 

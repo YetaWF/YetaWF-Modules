@@ -68,7 +68,7 @@ namespace YetaWF.Modules.Backups.Controllers {
         }
 
         public class BackupsModel {
-            [UIHint("Grid")]
+            [UIHint("Grid"), ReadOnly]
             public GridDefinition GridDef { get; set; }
         }
 

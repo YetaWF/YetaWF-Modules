@@ -31,7 +31,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             Validated, // with name, validated
         }
         public class GridModel {
-            [UIHint("Grid")]
+            [UIHint("Grid"), ReadOnly]
             public GridDefinition GridDef { get; set; }
         }
 
