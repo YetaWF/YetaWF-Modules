@@ -23,15 +23,12 @@ $smbuttonhorzmargin: 2px;
 .yt_grid {
     position:relative;
     font-weight:normal;
-    .tg_table.ui-widget {  // jquery-ui rendering
+    .tg_table {  // general rendering
         overflow-x:auto;
         table {
             border-collapse:collapse;
             box-sizing: border-box;
             table-layout: fixed;
-            tr.tg_header, th.tg_header {
-
-            }
             tr.tg_filter {
                 .tg_fentry {
                     display: table;
@@ -66,13 +63,9 @@ $smbuttonhorzmargin: 2px;
                 }
             }
             th {
-               overflow:hidden;
+                overflow:hidden;
                 white-space:nowrap;
                 font-size:$fontsize;
-                font-weight:normal;
-                border-width:1px;
-                border-style:solid;
-                border-color:inherit;
                 padding:$headerverticalpadding $headerhorzpadding $headerverticalpadding $headerhorzpadding;
             }
             .tg_header th {
@@ -117,10 +110,6 @@ $smbuttonhorzmargin: 2px;
                 overflow:hidden;
                 font-size:$fontsize;
                 padding:$cellverticalpadding $cellhorzpadding $cellverticalpadding $cellhorzpadding;
-                border-width:1px;
-                border-style:solid;
-                border-color:inherit;
-
                 .tg_emptydiv {
                     padding:2em 0 2em 2ch;
                 }
@@ -199,4 +188,22 @@ $smbuttonhorzmargin: 2px;
     .t_fmenutext {
         display:inline-block;
     }
+}
+.yt_grid.tg_skin { /* Skin dependent formatting */
+    .tg_table.ui-widget {  // jquery-ui rendering
+        table {
+            th {
+                border-width:1px;
+                border-style:solid;
+                border-color:inherit;
+            }
+            td {
+                border-width:1px;
+                border-style:solid;
+                border-color:inherit;
+            }
+        }
+    }
+}
+.yt_grid.tg_noskin { /* Not skin dependent formatting, usually module specific */
 }

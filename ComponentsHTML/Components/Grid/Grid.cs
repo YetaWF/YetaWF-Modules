@@ -222,7 +222,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             }
 
             hb.Append($@"
-<div id='{model.Id}' class='yt_grid t_display{noSubmitClass}'>
+<div id='{model.Id}' class='yt_grid t_display{noSubmitClass} {(model.UseSkinFormatting ? "tg_skin" : "tg_noskin")}'>
     <div class='tg_table{(model.UseSkinFormatting ? " ui-corner-top ui-widget ui-widget-content" : "")}'>
         <table role='presentation'{cssTableStyle}>
             {setup.HeaderHTML}
@@ -585,8 +585,8 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                         } else if (prop.PropInfo.PropertyType.IsEnum) {
 
                             filterOpts = new List<GridColumnInfo.FilterOptionEnum> {
-                            GridColumnInfo.FilterOptionEnum.Equal, GridColumnInfo.FilterOptionEnum.NotEqual
-                        };
+                                GridColumnInfo.FilterOptionEnum.Equal, GridColumnInfo.FilterOptionEnum.NotEqual
+                            };
                             filterType = "enum";
                             EnumData enumData = ObjectSupport.GetEnumData(prop.PropInfo.PropertyType);
 
