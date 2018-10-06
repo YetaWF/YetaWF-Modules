@@ -30,43 +30,48 @@ namespace YetaWF.Modules.BootstrapCarousel.Components {
 <div id='{ControlId}' class='yt_bootstrapcarousel_slideshow t_display carousel slide' data-ride='carousel' data-interval='{model.Interval}' 
             data-wrap='{(model.Wrap ? "true" : "false")}' data-pause='{(model.Pause ? "hover" : "false")}' data-keyboard='{(model.Keyboard ? "true" : "false")}'>
     <!-- Indicators -->
-    <ol class='carousel-indicators'>
-");
+    <ol class='carousel-indicators'>");
 
             int index = 0;
             foreach(CarouselInfo.CarouselItem slide in model.Slides) {
                 if (index == 0)
-                    hb.Append($@"<li data-target='#{ControlId}' data-slide-to='{index}' class='active'></li>");
+                    hb.Append($@"
+        <li data-target='#{ControlId}' data-slide-to='{index}' class='active'></li>");
                 else
-                    hb.Append($@"<li data-target='#{ControlId}' data-slide-to='{index}'></li>");
+                    hb.Append($@"
+        <li data-target='#{ControlId}' data-slide-to='{index}'></li>");
                 ++index;
             }
             hb.Append($@"
     </ol>
     <!-- Wrapper for slides -->
-    <div class='carousel-inner' role='listbox'>
-");
+    <div class='carousel-inner' role='listbox'>");
 
             index = 0;
             foreach (CarouselInfo.CarouselItem slide in model.Slides) {
-                hb.Append($@"<div class='carousel-item{(index == 0 ? " active" : "")}'>");
+                hb.Append($@"
+        <div class='carousel-item{(index == 0 ? " active" : "")}'>");
 
                 using (Manager.StartNestedComponent($"{FieldNamePrefix}.{nameof(model.Slides)}[{index}]")) {
 
                     if (!string.IsNullOrWhiteSpace(slide.Url)) {
-                        hb.Append($@"<a href='{YetaWFManager.HtmlAttributeEncode(Manager.CurrentSite.MakeUrl(slide.Url))}' target='_blank' rel='noopener noreferrer' class='{YetaWF.Core.Addons.Basics.CssNoTooltip}'>");
-                        hb.Append(await HtmlHelper.ForDisplayAsync(slide, nameof(CarouselInfo.CarouselItem.ImageDisplay)));
-                        hb.Append($@"</a>");
+                        hb.Append($@"
+            <a href='{HAE(Manager.CurrentSite.MakeUrl(slide.Url))}' target='_blank' rel='noopener noreferrer' class='{YetaWF.Core.Addons.Basics.CssNoTooltip}'>
+                {await HtmlHelper.ForDisplayAsync(slide, nameof(CarouselInfo.CarouselItem.ImageDisplay))}
+            </a>");
                     } else {
                         hb.Append(await HtmlHelper.ForDisplayAsync(slide, nameof(CarouselInfo.CarouselItem.ImageDisplay)));
                     }
                 }
                 if (!string.IsNullOrWhiteSpace(slide.CompleteCaption.ToString())) {
-                    hb.Append($@"<div class='carousel-caption'>
-                        {YetaWFManager.HtmlEncode(slide.CompleteCaption.ToString())}
-                    </div>");
+                    hb.Append($@"
+            <div class='carousel-caption'>
+                {YetaWFManager.HtmlEncode(slide.CompleteCaption.ToString())}
+            </div>");
                 }
-                hb.Append("</div>");
+                hb.Append(@"
+        </div>");
+
                 ++index;
             }
             hb.Append($@"
@@ -98,8 +103,8 @@ namespace YetaWF.Modules.BootstrapCarousel.Components {
 <div id='{ControlId}' class='yt_bootstrapcarousel_slideshow t_edit'>
     {(await HtmlHelper.ForEditContainerAsync(model, "PropertyList")).ToString()}
     <div class='t_slides' id='{DivId}'>
-        {PropertyListComponentBase.RenderTabStripStart(DivId)}
-");
+        {PropertyListComponentBase.RenderTabStripStart(DivId)}");
+
             for (int i = 0 ; i <= model.Slides.Count-1 ; ++i ) {
                 hb.Append(PropertyListComponentBase.RenderTabEntry(DivId, this.__ResStr("tab", "Image {0}", i+1), null, i));
             }
@@ -119,12 +124,12 @@ namespace YetaWF.Modules.BootstrapCarousel.Components {
             hb.Append($@"
 </div>
     <div class='t_buttons'>
-        <input type='button' class='t_apply' value='{YetaWFManager.HtmlAttributeEncode(this.__ResStr("btnApply", "Apply"))}' title='{YetaWFManager.HtmlAttributeEncode(this.__ResStr("txtApply", "Click to apply the current changes"))}' />
-        <input type='button' class='t_up' value='{YetaWFManager.HtmlAttributeEncode(this.__ResStr("btnUp", "<<"))}' title='{YetaWFManager.HtmlAttributeEncode(this.__ResStr("txtUp", "Click to move the current image"))}' />
-        <input type='button' class='t_down' value='{YetaWFManager.HtmlAttributeEncode(this.__ResStr("btnDown", ">>"))}' title='{YetaWFManager.HtmlAttributeEncode(this.__ResStr("txtDown", "Click move the current image"))}' />
-        <input type='button' class='t_ins' value='{YetaWFManager.HtmlAttributeEncode(this.__ResStr("btnIns", "Insert"))}' title='{YetaWFManager.HtmlAttributeEncode(this.__ResStr("txtIns", "Click to insert a new image before the current image"))}' />
-        <input type='button' class='t_add' value='{YetaWFManager.HtmlAttributeEncode(this.__ResStr("btnAdd", "Add"))}' title='{YetaWFManager.HtmlAttributeEncode(this.__ResStr("txtAdd", "Click to add a new image after the current image"))}' />
-        <input type='button' class='t_delete' value='{YetaWFManager.HtmlAttributeEncode(this.__ResStr("btnDelete", "Remove"))}' title='{YetaWFManager.HtmlAttributeEncode(this.__ResStr("txtDelete", "Click to remove the current image"))}' />
+        <input type='button' class='t_apply' value='{HAE(this.__ResStr("btnApply", "Apply"))}' title='{HAE(this.__ResStr("txtApply", "Click to apply the current changes"))}' />
+        <input type='button' class='t_up' value='{HAE(this.__ResStr("btnUp", "<<"))}' title='{HAE(this.__ResStr("txtUp", "Click to move the current image"))}' />
+        <input type='button' class='t_down' value='{HAE(this.__ResStr("btnDown", ">>"))}' title='{HAE(this.__ResStr("txtDown", "Click move the current image"))}' />
+        <input type='button' class='t_ins' value='{HAE(this.__ResStr("btnIns", "Insert"))}' title='{HAE(this.__ResStr("txtIns", "Click to insert a new image before the current image"))}' />
+        <input type='button' class='t_add' value='{HAE(this.__ResStr("btnAdd", "Add"))}' title='{HAE(this.__ResStr("txtAdd", "Click to add a new image after the current image"))}' />
+        <input type='button' class='t_delete' value='{HAE(this.__ResStr("btnDelete", "Remove"))}' title='{HAE(this.__ResStr("txtDelete", "Click to remove the current image"))}' />
     </div>
 </div>
 <script>
