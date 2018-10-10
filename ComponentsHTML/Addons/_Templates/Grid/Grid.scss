@@ -193,14 +193,14 @@ $smbuttonhorzmargin: 2px;
     .tg_table.ui-widget {  // jquery-ui rendering
         table {
             th {
-                border-width:1px;
-                border-style:solid;
-                border-color:inherit;
+                border-right-width:1px;
+                border-right-style:solid;
+                border-right-color:inherit;
             }
             td {
-                border-width:1px;
-                border-style:solid;
-                border-color:inherit;
+                border-right-width:1px;
+                border-right-style:solid;
+                border-right-color:inherit;
             }
         }
     }

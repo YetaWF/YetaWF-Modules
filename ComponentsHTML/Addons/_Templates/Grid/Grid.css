@@ -143,13 +143,13 @@
 .yt_grid.tg_skin {
   /* Skin dependent formatting */ }
   .yt_grid.tg_skin .tg_table.ui-widget table th {
-    border-width: 1px;
-    border-style: solid;
-    border-color: inherit; }
+    border-right-width: 1px;
+    border-right-style: solid;
+    border-right-color: inherit; }
   .yt_grid.tg_skin .tg_table.ui-widget table td {
-    border-width: 1px;
-    border-style: solid;
-    border-color: inherit; }
+    border-right-width: 1px;
+    border-right-style: solid;
+    border-right-color: inherit; }
 
 .yt_grid.tg_noskin {
   /* Not skin dependent formatting, usually module specific */ }

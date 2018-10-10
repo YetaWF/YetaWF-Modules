@@ -509,13 +509,15 @@ namespace YetaWF.Modules.PageEdit.Controllers {
             if (Manager.CurrentSite.SiteDomain != model.SiteDomain) {
                 nextPage = Manager.CurrentSite.MakeFullUrl(RealDomain: model.SiteDomain, SecurityType: Core.Pages.PageDefinition.PageSecurityType.httpOnly);
             } else { /* if (model.UserId != Manager.UserId) */
+                //if (model.SuperuserStillActive != null && !(bool)model.SuperuserStillActive)
+                Manager.SetSuperUserRole(false);
                 int userId = model.UserId;
                 if (userId == 0)
                     await Resource.ResourceAccess.LogoffAsync();
                 else
                     await Resource.ResourceAccess.LoginAsAsync(userId);
-                if (model.SuperuserStillActive != null && !(bool)model.SuperuserStillActive)
-                    Manager.SetSuperUserRole(false);
+                //if (model.SuperuserStillActive != null && !(bool)model.SuperuserStillActive)
+                //  Manager.SetSuperUserRole(false);
                 nextPage = Manager.ReturnToUrl;
             }
             Manager.PageControlShown = false;

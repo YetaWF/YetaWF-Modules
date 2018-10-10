@@ -113,7 +113,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
             ObjectSupport.ReadGridDictionaryInfo dictInfo = await YetaWF.Core.Components.Grid.LoadGridColumnDefinitionsAsync(model);
 
-            YetaWF.Core.Components.Grid.GridSavedSettings gridSavedSettings = null;
+            YetaWF.Core.Components.Grid.GridSavedSettings gridSavedSettings;
             int pageSize = model.InitialPageSize;
             int initialPage = 0;
             int page = 0;
@@ -123,15 +123,10 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                 initialPage = gridSavedSettings.CurrentPage - 1;
                 page = gridSavedSettings.CurrentPage - 1;
             } else {
-                if (!string.IsNullOrWhiteSpace(dictInfo.SortColumn) && dictInfo.SortBy != GridDefinition.SortBy.NotSpecified) {
-                    gridSavedSettings = new YetaWF.Core.Components.Grid.GridSavedSettings {
-                        CurrentPage = 1,
-                        PageSize = pageSize,
-                    };
-                    gridSavedSettings.Columns.Add(dictInfo.SortColumn, new GridDefinition.ColumnInfo {
-                        Sort = dictInfo.SortBy
-                    });
-                }
+                gridSavedSettings = new YetaWF.Core.Components.Grid.GridSavedSettings {
+                    CurrentPage = 1,
+                    PageSize = pageSize,
+                };
             }
 
             GridSetup setup = new GridSetup() {
@@ -154,28 +149,28 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                 DeletedColumnDisplay = model.DeletedColumnDisplay,
             };
 
-            // Headers
-            await GetHeadersAsync(model, dictInfo, setup, gridSavedSettings);
-
             // Data
             if (model.DirectDataAsync == null)
                 throw new InternalError($"{nameof(model.DirectDataAsync)} not set in {nameof(GridDefinition)} model");
 
-            List<DataProviderSortInfo> sorts = null;
-            List<DataProviderFilterInfo> filters = null;
-            if (gridSavedSettings != null) {
-                sorts = gridSavedSettings.GetSortInfo();
-                filters = gridSavedSettings.GetFilterInfo();
-            } else {
-                if (dictInfo.SortBy != GridDefinition.SortBy.NotSpecified) {
-                    sorts = new List<DataProviderSortInfo> {
-                        new DataProviderSortInfo {
-                            Field = dictInfo.SortColumn,
-                            Order = dictInfo.SortBy == GridDefinition.SortBy.Descending ? DataProviderSortInfo.SortDirection.Descending : DataProviderSortInfo.SortDirection.Ascending,
-                        }
-                    };
+            List<DataProviderSortInfo> sorts = gridSavedSettings.GetSortInfo();
+            List<DataProviderFilterInfo> filters = gridSavedSettings.GetFilterInfo();
+            // add default sort if no sort provided
+            if (sorts == null && !string.IsNullOrWhiteSpace(dictInfo.SortColumn)) {
+                // update sort column in saved settings.
+                GridDefinition.ColumnInfo sortCol = null;
+                if (gridSavedSettings.Columns.ContainsKey(dictInfo.SortColumn)) {
+                    sortCol = gridSavedSettings.Columns[dictInfo.SortColumn];
+                } else {
+                    sortCol = new GridDefinition.ColumnInfo();
+                    gridSavedSettings.Columns.Add(dictInfo.SortColumn, sortCol);
                 }
+                sortCol.Sort = dictInfo.SortBy;
+                sorts = gridSavedSettings.GetSortInfo();
             }
+
+            // Headers
+            await GetHeadersAsync(model, dictInfo, setup, gridSavedSettings);
 
             DataSourceResult data;
             if (model.IsStatic) {
@@ -358,7 +353,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                     width = gridCol.PixWidth;
 
                 GridDefinition.SortBy sort = GridDefinition.SortBy.NotSpecified;
-                if (gridSavedSettings != null && gridSavedSettings.Columns.ContainsKey(prop.Name)) {
+                if (gridSavedSettings.Columns.ContainsKey(prop.Name)) {
                     GridDefinition.ColumnInfo columnInfo = gridSavedSettings.Columns[prop.Name];
                     if (columnInfo.Width >= 0)
                         width = columnInfo.Width; // override calculated width
@@ -429,7 +424,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
                     if (gridCol.FilterOptions.Count > 0) {
 
-                        if (gridSavedSettings != null && gridSavedSettings.Columns.ContainsKey(prop.Name)) {
+                        if (gridSavedSettings.Columns.ContainsKey(prop.Name)) {
                             GridDefinition.ColumnInfo columnInfo = gridSavedSettings.Columns[prop.Name];
                             if (!string.IsNullOrWhiteSpace(columnInfo.FilterOperator)) {
                                 filterOp = GetFilterOptionEnum(columnInfo.FilterOperator);
@@ -469,9 +464,12 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                                 };
                                 filterType = "long";
                                 FilterLongUI filterUI = new FilterLongUI();
-                                if (filterOp != null)
-                                    filterUI.Value = Convert.ToInt64(filterValue);
-                                filterOp = filterOp ?? GridColumnInfo.FilterOptionEnum.GreaterEqual;
+                                if (filterOp != null) {
+                                    try {
+                                        filterUI.Value = Convert.ToInt64(filterValue);
+                                    } catch (Exception) { }
+                                }
+                            filterOp = filterOp ?? GridColumnInfo.FilterOptionEnum.GreaterEqual;
 
                                 filterhb.Append($@"
                 <div class='tg_fmenu{buttonCss}' {Basics.CssTooltip}='{HAE(searchToolTip)}'><span>{HE(GetFilterIcon(filterOp))}</span></div>
@@ -511,8 +509,11 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                             };
                             filterType = "decimal";
                             FilterDecimalUI filterUI = new FilterDecimalUI();
-                            if (filterOp != null)
-                                filterUI.Value = Convert.ToDecimal(filterValue);
+                            if (filterOp != null) {
+                                try {
+                                    filterUI.Value = Convert.ToDecimal(filterValue);
+                                } catch (Exception) { }
+                            }
                             filterOp = filterOp ?? GridColumnInfo.FilterOptionEnum.GreaterEqual;
 
                             filterhb.Append($@"
@@ -532,8 +533,10 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                                 filterType = "datetime";
                                 FilterDateTimeUI filterUI = new FilterDateTimeUI();
                                 if (filterOp != null) {
-                                    DateTime dt = Convert.ToDateTime(filterValue);
-                                    filterUI.Value = YetaWF.Core.Localize.Formatting.GetUtcDateTime(dt);
+                                    try {
+                                        DateTime dt = Convert.ToDateTime(filterValue);
+                                        filterUI.Value = YetaWF.Core.Localize.Formatting.GetUtcDateTime(dt);
+                                    } catch (Exception) { }
                                 }
                                 filterOp = filterOp ?? GridColumnInfo.FilterOptionEnum.GreaterEqual;
 
@@ -548,8 +551,10 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                                 filterType = "date";
                                 FilterDateUI filterUI = new FilterDateUI();
                                 if (filterOp != null) {
-                                    DateTime dt = Convert.ToDateTime(filterValue);
-                                    filterUI.Value = YetaWF.Core.Localize.Formatting.GetUtcDateTime(dt).Date;
+                                    try {
+                                        DateTime dt = Convert.ToDateTime(filterValue);
+                                        filterUI.Value = YetaWF.Core.Localize.Formatting.GetUtcDateTime(dt).Date;
+                                    } catch (Exception) { }
                                 }
                                 filterOp = filterOp ?? GridColumnInfo.FilterOptionEnum.GreaterEqual;
 

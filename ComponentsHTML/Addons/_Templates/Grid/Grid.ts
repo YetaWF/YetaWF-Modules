@@ -230,7 +230,7 @@ namespace YetaWF_ComponentsHTML {
             if (this.SelectPageSize) {
                 this.SelectPageSize.Control.addEventListener("dropdownlist_change", (evt: Event): void => {
                     if (this.SelectPageSize)
-                        this.reload(this.Setup.Page, Number(this.SelectPageSize.value));
+                        this.reload(0, Number(this.SelectPageSize.value));
                 });
             }
             // Column resizing
@@ -261,7 +261,7 @@ namespace YetaWF_ComponentsHTML {
                             } else {
                                 this.setSortOrder(col, colIndex, SortByEnum.Descending);
                             }
-                            this.reload(this.Setup.Page, undefined, undefined, true);
+                            this.reload(0, undefined, undefined, true);
                         }
                     }
                     return false;
@@ -293,7 +293,7 @@ namespace YetaWF_ComponentsHTML {
                     var head = $YetaWF.elementClosest(ev.__YetaWFElem, "th");
                     var colIndex = Array.prototype.indexOf.call(filter.children, head);
                     this.clearColSortValue(colIndex);
-                    this.reload(this.Setup.Page);
+                    this.reload(0);
                     return false;
                 });
                 $YetaWF.registerEventHandlerBody("mousedown", null, (ev: MouseEvent): boolean => {
@@ -679,7 +679,7 @@ namespace YetaWF_ComponentsHTML {
                 ColIndex: colIndex,
                 FilterOp: sel
             };
-            this.reload(this.Setup.Page, undefined, overrideColFilter, undefined, undefined, () => {
+            this.reload(0, undefined, overrideColFilter, undefined, undefined, () => {
                 // clear all highlights
                 var ulElem = $YetaWF.elementClosest(menuElem, "ul");
                 this.clearFilterMenuHighlights(ulElem);
@@ -711,7 +711,7 @@ namespace YetaWF_ComponentsHTML {
                     case "enum":
                         // handle selection change
                         $YetaWF.registerCustomEventHandlerDocument("dropdownlist_change", `#${col.FilterId}`, (ev: Event): boolean => {
-                            this.reload(this.Setup.Page);
+                            this.reload(0);
                             return false;
                         });
                         break;
@@ -725,7 +725,7 @@ namespace YetaWF_ComponentsHTML {
                         var elem = $YetaWF.getElementById(col.FilterId);
                         $YetaWF.registerEventHandler(elem, "keydown", null, (ev: KeyboardEvent): boolean => {
                             if (ev.keyCode === 13) { // Return
-                                this.reload(this.Setup.Page);
+                                this.reload(0);
                                 return false;
                             }
                             return true;

@@ -175,7 +175,7 @@ var YetaWF_ComponentsHTML;
             if (_this.SelectPageSize) {
                 _this.SelectPageSize.Control.addEventListener("dropdownlist_change", function (evt) {
                     if (_this.SelectPageSize)
-                        _this.reload(_this.Setup.Page, Number(_this.SelectPageSize.value));
+                        _this.reload(0, Number(_this.SelectPageSize.value));
                 });
             }
             // Column resizing
@@ -209,7 +209,7 @@ var YetaWF_ComponentsHTML;
                             else {
                                 _this.setSortOrder(col, colIndex, SortByEnum.Descending);
                             }
-                            _this.reload(_this.Setup.Page, undefined, undefined, true);
+                            _this.reload(0, undefined, undefined, true);
                         }
                     }
                     return false;
@@ -241,7 +241,7 @@ var YetaWF_ComponentsHTML;
                     var head = $YetaWF.elementClosest(ev.__YetaWFElem, "th");
                     var colIndex = Array.prototype.indexOf.call(filter.children, head);
                     _this.clearColSortValue(colIndex);
-                    _this.reload(_this.Setup.Page);
+                    _this.reload(0);
                     return false;
                 });
                 $YetaWF.registerEventHandlerBody("mousedown", null, function (ev) {
@@ -643,7 +643,7 @@ var YetaWF_ComponentsHTML;
                 ColIndex: colIndex,
                 FilterOp: sel
             };
-            this.reload(this.Setup.Page, undefined, overrideColFilter, undefined, undefined, function () {
+            this.reload(0, undefined, overrideColFilter, undefined, undefined, function () {
                 // clear all highlights
                 var ulElem = $YetaWF.elementClosest(menuElem, "ul");
                 _this.clearFilterMenuHighlights(ulElem);
@@ -677,7 +677,7 @@ var YetaWF_ComponentsHTML;
                     case "enum":
                         // handle selection change
                         $YetaWF.registerCustomEventHandlerDocument("dropdownlist_change", "#" + col.FilterId, function (ev) {
-                            _this.reload(_this.Setup.Page);
+                            _this.reload(0);
                             return false;
                         });
                         break;
@@ -691,7 +691,7 @@ var YetaWF_ComponentsHTML;
                         var elem = $YetaWF.getElementById(col.FilterId);
                         $YetaWF.registerEventHandler(elem, "keydown", null, function (ev) {
                             if (ev.keyCode === 13) { // Return
-                                _this.reload(_this.Setup.Page);
+                                _this.reload(0);
                                 return false;
                             }
                             return true;
