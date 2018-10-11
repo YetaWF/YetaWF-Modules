@@ -4,6 +4,7 @@ namespace YetaWF_ComponentsHTML {
 
     interface UrlEditSetup {
         Type: UrlTypeEnum;
+        Url: string;
     }
     enum UrlTypeEnum {//flags
         Local = 1, // Local Url starting with /
@@ -42,7 +43,10 @@ namespace YetaWF_ComponentsHTML {
             }
             this.aLink = $YetaWF.getElement1BySelector(".t_link a", [this.Control]) as HTMLAnchorElement;
 
-            this.updateStatus();
+            this.value = this.Setup.Url;
+
+            if (!this.inputUrl || !this.selectPage)
+                this.selectType.enable(false);
 
             this.selectType.Control.addEventListener("dropdownlist_change", (evt: Event): void => {
                 this.updateStatus();

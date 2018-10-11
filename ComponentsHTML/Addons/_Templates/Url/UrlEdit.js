@@ -43,7 +43,9 @@ var YetaWF_ComponentsHTML;
                 _this.divRemote = $YetaWF.getElement1BySelector(".t_remote", [_this.Control]);
             }
             _this.aLink = $YetaWF.getElement1BySelector(".t_link a", [_this.Control]);
-            _this.updateStatus();
+            _this.value = _this.Setup.Url;
+            if (!_this.inputUrl || !_this.selectPage)
+                _this.selectType.enable(false);
             _this.selectType.Control.addEventListener("dropdownlist_change", function (evt) {
                 _this.updateStatus();
             });

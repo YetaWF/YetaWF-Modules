@@ -25,6 +25,11 @@ namespace YetaWF.Modules.DevTests.Controllers {
             [StringLength(Globals.MaxUrl), Required, Trim]
             public string Url { get; set; }
 
+            [Caption("Url"), Description("Url")]
+            [UIHint("Url"), AdditionalMetadata("UrlType", UrlTypeEnum.Local | UrlTypeEnum.Remote), UrlValidation(UrlValidationAttribute.SchemaEnum.Any, UrlTypeEnum.Local | UrlTypeEnum.Remote)]
+            [StringLength(Globals.MaxUrl), Required, Trim]
+            public string Url2 { get; set; }
+
             [Caption("Local Url"), Description("Local Url")]
             [UIHint("Url"), AdditionalMetadata("UrlType", UrlTypeEnum.Local), UrlValidation(UrlValidationAttribute.SchemaEnum.Any, UrlTypeEnum.Local)]
             [StringLength(Globals.MaxUrl), Required, Trim]
@@ -60,7 +65,12 @@ namespace YetaWF.Modules.DevTests.Controllers {
 
         [AllowGet]
         public ActionResult TemplateTestUrl() {
-            EditModel model = new EditModel { };
+            EditModel model = new EditModel {
+                Url = "/Tests/Text",
+                Url2 = "https://softelvdm.com",
+                LocalUrl = "/Tests/Text",
+                RemoteUrl = "https://softelvdm.com",
+            };
             return View(model);
         }
 

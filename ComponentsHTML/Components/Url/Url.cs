@@ -84,6 +84,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
         public class UrlEditSetup {
             public UrlTypeEnum Type { get; set; }
+            public string Url { get; set; }
         }
         public class UrlUI {
 
@@ -107,6 +108,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             UrlUI ui = new UrlUI {
                 UrlType = type,
                 _Local = model,
+                _Remote = model,
             };
 
             hb.Append($@"
@@ -154,7 +156,8 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             string link = tag.ToString(YTagRenderMode.Normal);
 
             UrlEditSetup setup = new UrlEditSetup {
-                Type = type
+                Type = type,
+                Url = model,
             };
 
             hb.Append($@"
