@@ -68,7 +68,7 @@ namespace YetaWF.Modules.Blog.Components {
                         });
                     } else if (showSelect) {
                         list.Insert(0, new SelectionItem<int> {
-                            Text = this.__ResStr("select", "(Select)"),
+                            Text = this.__ResStr("select", "(select)"),
                             Tooltip = this.__ResStr("selectTT", "Please select one of the available blog categories"),
                             Value = 0,
                         });
