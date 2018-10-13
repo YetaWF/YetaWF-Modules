@@ -33,6 +33,7 @@ namespace YetaWF_Identity {
             });
             this.GridAll.Control.addEventListener("grid_selectionchange", (evt: Event): void => {
                 var index = this.GridAll.SelectedIndex();
+                if (index < 0) return;
                 var tr = this.GridAll.GetTR(index);
                 var tdName = tr.children[0] as HTMLTableCellElement;
                 var inputUserId = $YetaWF.getElement1BySelector("input[name$='.UserId']", [tdName]) as HTMLInputElement;

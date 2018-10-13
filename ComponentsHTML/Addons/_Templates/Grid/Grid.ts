@@ -13,6 +13,7 @@ namespace YetaWF_ComponentsHTML {
     interface GridSetup {
         CanSort: boolean;
         CanFilter: boolean;
+        CanReorder: boolean;
         ShowPager: boolean;
         FieldName: string;
         AjaxUrl: string;
@@ -30,6 +31,7 @@ namespace YetaWF_ComponentsHTML {
         HighlightCss: string;
         DisabledCss: string;
         RowHighlightCss: string;
+        RowDragDropHighlightCss: string;
         SortActiveCss: string;
         SettingsModuleGuid: string;
 
@@ -110,6 +112,8 @@ namespace YetaWF_ComponentsHTML {
         private static CurrentControl: Grid | null = null;// current control during grid resize
         private SubmitCheckCol: number = -1;// column with checkbox determining whether to submit record
         private reloadInProgress: boolean = false;
+        private reorderingInProgress: boolean = false;
+        private reorderingRowElement: HTMLTableRowElement | null = null;
 
         constructor(controlId: string, setup: GridSetup) {
             super(controlId);
@@ -341,8 +345,19 @@ namespace YetaWF_ComponentsHTML {
                 });
             }
             // Selection
-            $YetaWF.registerEventHandler(this.TBody, "mousedown", "tr", (ev: MouseEvent): boolean => {
+            $YetaWF.registerEventHandler(this.TBody, "mousedown", "tr:not(.tg_emptytr)", (ev: MouseEvent): boolean => {
                 var trs = $YetaWF.getElementsBySelector("tr:not(.tg_emptytr)", [this.TBody]);
+                if ($YetaWF.elementHasClass(ev.__YetaWFElem, this.Setup.RowHighlightCss)) {
+                    if (this.Setup.CanReorder && this.Setup.StaticData && this.Setup.StaticData.length > 1) {
+                        // reordering
+                        this.reorderingRowElement = ev.__YetaWFElem as HTMLTableRowElement;
+                        this.reorderingInProgress = true;
+                        //console.log("Reordering starting");
+                        $YetaWF.elementToggleClass(this.reorderingRowElement, this.Setup.RowHighlightCss, false);
+                        $YetaWF.elementToggleClass(this.reorderingRowElement, this.Setup.RowDragDropHighlightCss, true);
+                    }
+                    return false;
+                }
                 for (let tr of trs)
                     $YetaWF.elementToggleClass(tr, this.Setup.RowHighlightCss, false);
                 $YetaWF.elementToggleClass(ev.__YetaWFElem, this.Setup.RowHighlightCss, true);
@@ -350,8 +365,50 @@ namespace YetaWF_ComponentsHTML {
                 var event = document.createEvent("Event");
                 event.initEvent("grid_selectionchange", true, true);
                 this.Control.dispatchEvent(event);
+                return false;
+            });
+            // Drag & drop
+            $YetaWF.registerEventHandlerBody("mousemove", null, (ev: MouseEvent): boolean => {
+                if (this.reorderingInProgress) {
+
+                    //console.log("Reordering...")
+
+                    var rect = this.TBody.getBoundingClientRect();
+                    if (ev.clientX < rect.left || ev.clientX > rect.left + rect.width ||
+                        ev.clientY < rect.top || ev.clientY > rect.top + rect.height) {
+
+                        this.cancelDragDrop();
+                        return true;
+                    }
+                    var sel = this.SelectedIndex();
+                    if (sel < 0) {
+                        this.cancelDragDrop();
+                        return true;
+                    }
+
+                    var insert = this.HitTestInsert(ev.clientX, ev.clientY);
+                    //console.log(`insert = ${insert}  sel = ${sel}`);
+                    if (insert == sel || insert == sel + 1)
+                        return true;// nothing to move
+
+                    this.moveRawRecord(sel, insert);
+                }
                 return true;
             });
+            $YetaWF.registerEventHandler(this.TBody, "mouseup", null, (ev: MouseEvent): boolean => {
+                if (this.reorderingInProgress) {
+
+                    this.doneDragDrop();
+
+                }
+                return true;
+            });
+
+            //$YetaWF.registerEventHandler(this.TBody, "mouseout", null, (ev: MouseEvent): boolean => {
+            //    if (this.reorderingInProgress && (ev.__YetaWFElem != this.TBody || $YetaWF.elementClosestCond(ev.target as HTMLElement, "tbody") != this.TBody)) {
+            //    }
+            //    return true;
+            //});
             // OnlySubmitWhenChecked
             if (this.Setup.StaticData && this.Setup.NoSubmitContents) {
                 this.SubmitCheckCol = this.getSubmitCheckCol();
@@ -377,6 +434,33 @@ namespace YetaWF_ComponentsHTML {
                     userdata: this
                 });
             }
+        }
+        // Drag&drop
+        private cancelDragDrop(): void {
+            if (this.reorderingRowElement) {
+                $YetaWF.elementToggleClass(this.reorderingRowElement, this.Setup.RowHighlightCss, true);
+                $YetaWF.elementToggleClass(this.reorderingRowElement, this.Setup.RowDragDropHighlightCss, false);
+                this.reorderingRowElement = null;
+            }
+            this.reorderingInProgress = false;
+            //console.log("Reordering canceled - left boundary")
+
+            var event = document.createEvent("Event");
+            event.initEvent("grid_dragdropcancel", true, true);
+            this.Control.dispatchEvent(event);
+        }
+        private doneDragDrop(): void {
+            if (this.reorderingRowElement) {
+                $YetaWF.elementToggleClass(this.reorderingRowElement, this.Setup.RowHighlightCss, true);
+                $YetaWF.elementToggleClass(this.reorderingRowElement, this.Setup.RowDragDropHighlightCss, false);
+                this.reorderingRowElement = null;
+            }
+            this.reorderingInProgress = false;
+            //console.log("Reordering ended")
+
+            var event = document.createEvent("Event");
+            event.initEvent("grid_dragdropdone", true, true);
+            this.Control.dispatchEvent(event);
         }
         // OnlySubmitWhenChecked
         private setInitialSubmitStatus(): void {
@@ -859,6 +943,18 @@ namespace YetaWF_ComponentsHTML {
                 }
             }
         }
+        private resequence(): void {
+            // resequence origin
+            var trs = $YetaWF.getElementsBySelector("tr[data-origin]", [this.TBody]) as HTMLTableRowElement[];
+            var index = 0;
+            for (let tr of trs) {
+                var orig = Number($YetaWF.getAttribute(tr, "data-origin"));
+                $YetaWF.setAttribute(tr, "data-origin", index.toString());
+                // update all indexes for input/select fields to match record origin (TODO: check whether we should only update last index in field)
+                this.renumberFields(tr, orig, index);
+                ++index;
+            }
+        }
         private renumberFields(tr: HTMLTableRowElement, origNum: Number, newNum: Number) : void {
             var inps = $YetaWF.getElementsBySelector("input[name],select[name]", [tr]);
             for (let inp of inps) {
@@ -922,10 +1018,45 @@ namespace YetaWF_ComponentsHTML {
             this.reload(Math.max(0, this.Setup.Pages - 1));
             this.updateStatus();
         }
+        private moveRawRecord(sel: number, index: number): void { // tr index (not data-origin index)
+            if (!this.Setup.StaticData) throw "Static grids only";
+            if (sel < 0 || sel >= this.Setup.StaticData.length) throw `Index sel=${sel} out of bounds`;
+            if (index < 0 || index > this.Setup.StaticData.length) throw `Index index=${index} out of bounds`;
+            if (index == sel || index == sel + 1) return;// nothing to move
+
+            var trs = $YetaWF.getElementsBySelector("tr:not(.tg_emptytr)", [this.TBody]) as HTMLTableRowElement[];
+            var selTr = trs[sel];
+            // remove the static data record
+            var data = this.Setup.StaticData[sel];
+            this.Setup.StaticData.splice(sel, 1);
+            // remove the table row element
+            this.TBody.removeChild(selTr);
+            // insert the static data record at the new position
+            if (index > sel)--index;
+            if (index >= this.Setup.StaticData.length) {
+                this.Setup.StaticData.push(data);
+                this.TBody.appendChild(selTr);
+            } else {
+                this.Setup.StaticData.splice(index, 0, data);
+                this.TBody.insertBefore(selTr, this.TBody.children[index+1]); // take tg_empty into account
+            }
+            this.resequence();
+            this.updatePage();
+            this.updateStatus();
+        }
         public SelectedIndex(): number {
-            var sel = $YetaWF.getElement1BySelector(`tr.${this.Setup.RowHighlightCss}`, [this.TBody]);
-            var rowIndex = Array.prototype.indexOf.call(this.TBody.children, sel);
+            var sel = $YetaWF.getElement1BySelectorCond(`tr.${this.Setup.RowHighlightCss},tr.${this.Setup.RowDragDropHighlightCss}`, [this.TBody]);
+            if (sel == null) return -1;
+            var trs = $YetaWF.getElementsBySelector("tr:not(.tg_emptytr)", [this.TBody]) as HTMLTableRowElement[];
+            var rowIndex = Array.prototype.indexOf.call(trs, sel);
             return rowIndex;
+        }
+        public ClearSelection(): void {
+            var sel = $YetaWF.getElement1BySelectorCond(`tr.${this.Setup.RowHighlightCss},tr.${this.Setup.RowDragDropHighlightCss}`, [this.TBody]);
+            if (sel) {
+                $YetaWF.elementToggleClass(sel, this.Setup.RowHighlightCss, false);
+                $YetaWF.elementToggleClass(sel, this.Setup.RowDragDropHighlightCss, false);
+            }
         }
         public GetRecord(index: number): any {
             if (!this.Setup.StaticData) throw "Static grids only";
@@ -936,6 +1067,40 @@ namespace YetaWF_ComponentsHTML {
             if (this.Setup.StaticData) throw "Ajax grids only";
             if (index < 0 || index >= this.TBody.children.length) throw `Index ${index} out of bounds`;
             return this.TBody.children[index] as HTMLTableRowElement;
+        }
+        public HitTest(x: number, y: number): number {
+            if (!this.Setup.StaticData) throw "Static grids only";
+            var trs = $YetaWF.getElementsBySelector("tr:not(.tg_emptytr)", [this.TBody]) as HTMLTableRowElement[];
+            var index = 0;
+            for (let tr of trs) {
+                var rect = tr.getBoundingClientRect();
+                if (x < rect.left || x > rect.left + rect.width)
+                    return -1;
+                if (y < rect.top)
+                    return -1;
+                if (y < rect.top + rect.height)
+                    return index;
+                ++index;
+            }
+            return -1;
+        }
+        public HitTestInsert(x: number, y: number): number {
+            if (!this.Setup.StaticData) throw "Static grids only";
+            var trs = $YetaWF.getElementsBySelector("tr:not(.tg_emptytr)", [this.TBody]) as HTMLTableRowElement[];
+            var index = 0;
+            for (let tr of trs) {
+                var rect = tr.getBoundingClientRect();
+                if (x < rect.left || x > rect.left + rect.width)
+                    return -1;
+                if (y < rect.top)
+                    return -1;
+                if (y < rect.top + rect.height/2)
+                    return index;
+                ++index;
+                if (y < rect.top + rect.height)
+                    return index;
+            }
+            return -1;
         }
         /**
          * Reloads the grid in its entirety using the provided extradata. The extradata is only saved in the grid if reloading is successful.

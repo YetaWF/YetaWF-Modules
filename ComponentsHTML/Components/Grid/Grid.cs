@@ -37,6 +37,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
     public class GridSetup {
         public bool CanSort { get; internal set; }
         public bool CanFilter { get; internal set; }
+        public bool CanReorder { get; internal set; }
         public bool ShowPager { get; internal set; }
         public string FieldName { get; set; }
         public string AjaxUrl { get; set; }
@@ -55,6 +56,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         public string HighlightCss { get; set; }
         public string DisabledCss { get; set; }
         public string RowHighlightCss { get; set; }
+        public string RowDragDropHighlightCss { get; set; }
         public string SortActiveCss { get; set; }
         public Guid? SettingsModuleGuid { get; set; }
 
@@ -113,6 +115,11 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
             ObjectSupport.ReadGridDictionaryInfo dictInfo = await YetaWF.Core.Components.Grid.LoadGridColumnDefinitionsAsync(model);
 
+            if (model.Reorderable) {
+                if (model.InitialPageSize != 0 || !model.IsStatic)
+                    throw new InternalError("Unsupported options used for reorderable grid");
+            }
+
             YetaWF.Core.Components.Grid.GridSavedSettings gridSavedSettings;
             int pageSize = model.InitialPageSize;
             int initialPage = 0;
@@ -141,12 +148,14 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                 HighlightCss = model.UseSkinFormatting ? "ui-state-highlight" : "tg_highlight",
                 DisabledCss = model.UseSkinFormatting ? "ui-state-disabled" : "tg_disabled",
                 RowHighlightCss = model.UseSkinFormatting ? "ui-state-highlight" : "tg_highlight",
+                RowDragDropHighlightCss = model.UseSkinFormatting ? "ui-state-active" : "tg_dragdrophighlight",
                 SortActiveCss = "tg_active",
                 SettingsModuleGuid = model.SettingsModuleGuid,
                 SaveSettingsColumnWidthsUrl = YetaWFManager.UrlFor(typeof(YetaWF.Core.Controllers.GridSaveSettingsController), nameof(YetaWF.Core.Controllers.GridSaveSettingsController.GridSaveColumnWidths)),
                 DeletedMessage = model.DeletedMessage,
                 DeleteConfirmationMessage = model.DeleteConfirmationMessage != null && UserSettings.GetProperty<bool>("ConfirmDelete") ? model.DeleteConfirmationMessage : null,
                 DeletedColumnDisplay = model.DeletedColumnDisplay,
+                CanReorder = model.Reorderable,
             };
 
             // Data
@@ -783,6 +792,23 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
             HtmlBuilder hb = new HtmlBuilder();
 
+            if (data.Total == 0 || model.IsStatic) {
+
+                string styleCss = "";
+                if (data.Total > 0)
+                    styleCss = "style='display:none'";
+
+                hb.Append($@"
+<tr role='row'{styleCss} class='tg_emptytr{(model.UseSkinFormatting ? " ui-widget-content" : "")}'>
+    <td role='gridcell' colspan='{dictInfo.ColumnInfo.Count}'>
+        <div class='tg_emptydiv'>
+            {HE(model.NoRecordsText)}
+        </div>
+    </td>
+</tr>");
+
+            }
+
             if (data.Total > 0) {
 
                 int recordCount = 0;
@@ -802,23 +828,6 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                     hb.Append(await RenderRecordHTMLAsync(htmlHelper, model, dictInfo, fieldPrefix, record, recordCount, origin, hide));
                     ++recordCount;
                 }
-            }
-
-            if (data.Total == 0 || model.IsStatic) {
-
-                string styleCss = "";
-                if (data.Total > 0)
-                    styleCss = "style='display:none'";
-
-                hb.Append($@"
-<tr role='row'{styleCss} class='tg_emptytr {(model.UseSkinFormatting ? " ui-widget-content" : "")}'>
-    <td role='gridcell' colspan='{dictInfo.ColumnInfo.Count}'>
-        <div class='tg_emptydiv'>
-            {HE(model.NoRecordsText)}
-        </div>
-    </td>
-</tr>");
-
             }
 
             return hb.ToString();

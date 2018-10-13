@@ -70,6 +70,7 @@ namespace YetaWF_Panels {
             });
             this.GridAll.Control.addEventListener("grid_selectionchange", (evt: Event): void => {
                 var index = this.GridAll.SelectedIndex();
+                if (index < 0) return;
                 var td = $YetaWF.getElement1BySelector("td", [this.GridAll.GetTR(index)]);
                 var url = td.innerText.trim();
                 this.selectUrl.value = url;

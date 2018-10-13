@@ -60,6 +60,8 @@ var YetaWF_Identity;
             $YetaWF.registerMultipleEventHandlers(_this.inputUserName, ["input", "change", "click", "keyup", "paste"], null, function (ev) { _this.toggleButton(); return true; });
             _this.GridAll.Control.addEventListener("grid_selectionchange", function (evt) {
                 var index = _this.GridAll.SelectedIndex();
+                if (index < 0)
+                    return;
                 var td = $YetaWF.getElement1BySelector("td", [_this.GridAll.GetTR(index)]);
                 var name = td.innerText.trim();
                 _this.inputUserName.value = name;

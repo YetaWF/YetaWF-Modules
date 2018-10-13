@@ -63,6 +63,8 @@ var YetaWF_ComponentsHTML;
             _this.LoadingDiv = null;
             _this.SubmitCheckCol = -1; // column with checkbox determining whether to submit record
             _this.reloadInProgress = false;
+            _this.reorderingInProgress = false;
+            _this.reorderingRowElement = null;
             $YetaWF.addObjectDataById(controlId, _this);
             _this.Setup = setup;
             _this.TBody = $YetaWF.getElement1BySelector("tbody", [_this.Control]);
@@ -291,8 +293,19 @@ var YetaWF_ComponentsHTML;
                 });
             }
             // Selection
-            $YetaWF.registerEventHandler(_this.TBody, "mousedown", "tr", function (ev) {
+            $YetaWF.registerEventHandler(_this.TBody, "mousedown", "tr:not(.tg_emptytr)", function (ev) {
                 var trs = $YetaWF.getElementsBySelector("tr:not(.tg_emptytr)", [_this.TBody]);
+                if ($YetaWF.elementHasClass(ev.__YetaWFElem, _this.Setup.RowHighlightCss)) {
+                    if (_this.Setup.CanReorder && _this.Setup.StaticData && _this.Setup.StaticData.length > 1) {
+                        // reordering
+                        _this.reorderingRowElement = ev.__YetaWFElem;
+                        _this.reorderingInProgress = true;
+                        //console.log("Reordering starting");
+                        $YetaWF.elementToggleClass(_this.reorderingRowElement, _this.Setup.RowHighlightCss, false);
+                        $YetaWF.elementToggleClass(_this.reorderingRowElement, _this.Setup.RowDragDropHighlightCss, true);
+                    }
+                    return false;
+                }
                 for (var _i = 0, trs_1 = trs; _i < trs_1.length; _i++) {
                     var tr = trs_1[_i];
                     $YetaWF.elementToggleClass(tr, _this.Setup.RowHighlightCss, false);
@@ -301,8 +314,42 @@ var YetaWF_ComponentsHTML;
                 var event = document.createEvent("Event");
                 event.initEvent("grid_selectionchange", true, true);
                 _this.Control.dispatchEvent(event);
+                return false;
+            });
+            // Drag & drop
+            $YetaWF.registerEventHandlerBody("mousemove", null, function (ev) {
+                if (_this.reorderingInProgress) {
+                    //console.log("Reordering...")
+                    var rect = _this.TBody.getBoundingClientRect();
+                    if (ev.clientX < rect.left || ev.clientX > rect.left + rect.width ||
+                        ev.clientY < rect.top || ev.clientY > rect.top + rect.height) {
+                        _this.cancelDragDrop();
+                        return true;
+                    }
+                    var sel = _this.SelectedIndex();
+                    if (sel < 0) {
+                        _this.cancelDragDrop();
+                        return true;
+                    }
+                    var insert = _this.HitTestInsert(ev.clientX, ev.clientY);
+                    //console.log(`insert = ${insert}  sel = ${sel}`);
+                    if (insert == sel || insert == sel + 1)
+                        return true; // nothing to move
+                    _this.moveRawRecord(sel, insert);
+                }
                 return true;
             });
+            $YetaWF.registerEventHandler(_this.TBody, "mouseup", null, function (ev) {
+                if (_this.reorderingInProgress) {
+                    _this.doneDragDrop();
+                }
+                return true;
+            });
+            //$YetaWF.registerEventHandler(this.TBody, "mouseout", null, (ev: MouseEvent): boolean => {
+            //    if (this.reorderingInProgress && (ev.__YetaWFElem != this.TBody || $YetaWF.elementClosestCond(ev.target as HTMLElement, "tbody") != this.TBody)) {
+            //    }
+            //    return true;
+            //});
             // OnlySubmitWhenChecked
             if (_this.Setup.StaticData && _this.Setup.NoSubmitContents) {
                 _this.SubmitCheckCol = _this.getSubmitCheckCol();
@@ -331,6 +378,31 @@ var YetaWF_ComponentsHTML;
             }
             return _this;
         }
+        // Drag&drop
+        Grid.prototype.cancelDragDrop = function () {
+            if (this.reorderingRowElement) {
+                $YetaWF.elementToggleClass(this.reorderingRowElement, this.Setup.RowHighlightCss, true);
+                $YetaWF.elementToggleClass(this.reorderingRowElement, this.Setup.RowDragDropHighlightCss, false);
+                this.reorderingRowElement = null;
+            }
+            this.reorderingInProgress = false;
+            //console.log("Reordering canceled - left boundary")
+            var event = document.createEvent("Event");
+            event.initEvent("grid_dragdropcancel", true, true);
+            this.Control.dispatchEvent(event);
+        };
+        Grid.prototype.doneDragDrop = function () {
+            if (this.reorderingRowElement) {
+                $YetaWF.elementToggleClass(this.reorderingRowElement, this.Setup.RowHighlightCss, true);
+                $YetaWF.elementToggleClass(this.reorderingRowElement, this.Setup.RowDragDropHighlightCss, false);
+                this.reorderingRowElement = null;
+            }
+            this.reorderingInProgress = false;
+            //console.log("Reordering ended")
+            var event = document.createEvent("Event");
+            event.initEvent("grid_dragdropdone", true, true);
+            this.Control.dispatchEvent(event);
+        };
         // OnlySubmitWhenChecked
         Grid.prototype.setInitialSubmitStatus = function () {
             if (!this.Setup.StaticData || !this.Setup.NoSubmitContents)
@@ -825,6 +897,19 @@ var YetaWF_ComponentsHTML;
                 }
             }
         };
+        Grid.prototype.resequence = function () {
+            // resequence origin
+            var trs = $YetaWF.getElementsBySelector("tr[data-origin]", [this.TBody]);
+            var index = 0;
+            for (var _i = 0, trs_5 = trs; _i < trs_5.length; _i++) {
+                var tr = trs_5[_i];
+                var orig = Number($YetaWF.getAttribute(tr, "data-origin"));
+                $YetaWF.setAttribute(tr, "data-origin", index.toString());
+                // update all indexes for input/select fields to match record origin (TODO: check whether we should only update last index in field)
+                this.renumberFields(tr, orig, index);
+                ++index;
+            }
+        };
         Grid.prototype.renumberFields = function (tr, origNum, newNum) {
             var inps = $YetaWF.getElementsBySelector("input[name],select[name]", [tr]);
             for (var _i = 0, inps_1 = inps; _i < inps_1.length; _i++) {
@@ -904,10 +989,51 @@ var YetaWF_ComponentsHTML;
             this.reload(Math.max(0, this.Setup.Pages - 1));
             this.updateStatus();
         };
+        Grid.prototype.moveRawRecord = function (sel, index) {
+            if (!this.Setup.StaticData)
+                throw "Static grids only";
+            if (sel < 0 || sel >= this.Setup.StaticData.length)
+                throw "Index sel=" + sel + " out of bounds";
+            if (index < 0 || index > this.Setup.StaticData.length)
+                throw "Index index=" + index + " out of bounds";
+            if (index == sel || index == sel + 1)
+                return; // nothing to move
+            var trs = $YetaWF.getElementsBySelector("tr:not(.tg_emptytr)", [this.TBody]);
+            var selTr = trs[sel];
+            // remove the static data record
+            var data = this.Setup.StaticData[sel];
+            this.Setup.StaticData.splice(sel, 1);
+            // remove the table row element
+            this.TBody.removeChild(selTr);
+            // insert the static data record at the new position
+            if (index > sel)
+                --index;
+            if (index >= this.Setup.StaticData.length) {
+                this.Setup.StaticData.push(data);
+                this.TBody.appendChild(selTr);
+            }
+            else {
+                this.Setup.StaticData.splice(index, 0, data);
+                this.TBody.insertBefore(selTr, this.TBody.children[index + 1]); // take tg_empty into account
+            }
+            this.resequence();
+            this.updatePage();
+            this.updateStatus();
+        };
         Grid.prototype.SelectedIndex = function () {
-            var sel = $YetaWF.getElement1BySelector("tr." + this.Setup.RowHighlightCss, [this.TBody]);
-            var rowIndex = Array.prototype.indexOf.call(this.TBody.children, sel);
+            var sel = $YetaWF.getElement1BySelectorCond("tr." + this.Setup.RowHighlightCss + ",tr." + this.Setup.RowDragDropHighlightCss, [this.TBody]);
+            if (sel == null)
+                return -1;
+            var trs = $YetaWF.getElementsBySelector("tr:not(.tg_emptytr)", [this.TBody]);
+            var rowIndex = Array.prototype.indexOf.call(trs, sel);
             return rowIndex;
+        };
+        Grid.prototype.ClearSelection = function () {
+            var sel = $YetaWF.getElement1BySelectorCond("tr." + this.Setup.RowHighlightCss + ",tr." + this.Setup.RowDragDropHighlightCss, [this.TBody]);
+            if (sel) {
+                $YetaWF.elementToggleClass(sel, this.Setup.RowHighlightCss, false);
+                $YetaWF.elementToggleClass(sel, this.Setup.RowDragDropHighlightCss, false);
+            }
         };
         Grid.prototype.GetRecord = function (index) {
             if (!this.Setup.StaticData)
@@ -922,6 +1048,44 @@ var YetaWF_ComponentsHTML;
             if (index < 0 || index >= this.TBody.children.length)
                 throw "Index " + index + " out of bounds";
             return this.TBody.children[index];
+        };
+        Grid.prototype.HitTest = function (x, y) {
+            if (!this.Setup.StaticData)
+                throw "Static grids only";
+            var trs = $YetaWF.getElementsBySelector("tr:not(.tg_emptytr)", [this.TBody]);
+            var index = 0;
+            for (var _i = 0, trs_6 = trs; _i < trs_6.length; _i++) {
+                var tr = trs_6[_i];
+                var rect = tr.getBoundingClientRect();
+                if (x < rect.left || x > rect.left + rect.width)
+                    return -1;
+                if (y < rect.top)
+                    return -1;
+                if (y < rect.top + rect.height)
+                    return index;
+                ++index;
+            }
+            return -1;
+        };
+        Grid.prototype.HitTestInsert = function (x, y) {
+            if (!this.Setup.StaticData)
+                throw "Static grids only";
+            var trs = $YetaWF.getElementsBySelector("tr:not(.tg_emptytr)", [this.TBody]);
+            var index = 0;
+            for (var _i = 0, trs_7 = trs; _i < trs_7.length; _i++) {
+                var tr = trs_7[_i];
+                var rect = tr.getBoundingClientRect();
+                if (x < rect.left || x > rect.left + rect.width)
+                    return -1;
+                if (y < rect.top)
+                    return -1;
+                if (y < rect.top + rect.height / 2)
+                    return index;
+                ++index;
+                if (y < rect.top + rect.height)
+                    return index;
+            }
+            return -1;
         };
         /**
          * Reloads the grid in its entirety using the provided extradata. The extradata is only saved in the grid if reloading is successful.

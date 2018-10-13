@@ -31,6 +31,8 @@ var YetaWF_Identity;
             });
             _this.GridAll.Control.addEventListener("grid_selectionchange", function (evt) {
                 var index = _this.GridAll.SelectedIndex();
+                if (index < 0)
+                    return;
                 var tr = _this.GridAll.GetTR(index);
                 var tdName = tr.children[0];
                 var inputUserId = $YetaWF.getElement1BySelector("input[name$='.UserId']", [tdName]);

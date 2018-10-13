@@ -68,6 +68,7 @@ namespace YetaWF_Identity {
 
             this.GridAll.Control.addEventListener("grid_selectionchange", (evt: Event): void => {
                 var index = this.GridAll.SelectedIndex();
+                if (index < 0) return;
                 var td = $YetaWF.getElement1BySelector("td", [this.GridAll.GetTR(index)]);
                 var name = td.innerText.trim();
                 this.inputUserName.value = name;

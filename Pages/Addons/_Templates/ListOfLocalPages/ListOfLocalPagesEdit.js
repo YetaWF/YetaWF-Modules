@@ -62,6 +62,8 @@ var YetaWF_Pages;
             });
             _this.GridAll.Control.addEventListener("grid_selectionchange", function (evt) {
                 var index = _this.GridAll.SelectedIndex();
+                if (index < 0)
+                    return;
                 var td = $YetaWF.getElement1BySelector("td", [_this.GridAll.GetTR(index)]);
                 var url = td.innerText.trim();
                 _this.selectUrl.value = url;

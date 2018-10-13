@@ -101,6 +101,7 @@ namespace YetaWF.Modules.Panels.Components {
         }
         internal static GridDefinition GetGridModel(bool header) {
             return new GridDefinition() {
+                Reorderable = true,
                 RecordType = typeof(Entry),
                 InitialPageSize = 0,
                 ShowHeader = header,
