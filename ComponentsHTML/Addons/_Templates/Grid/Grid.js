@@ -211,7 +211,7 @@ var YetaWF_ComponentsHTML;
                             else {
                                 _this.setSortOrder(col, colIndex, SortByEnum.Descending);
                             }
-                            _this.reload(0, undefined, undefined, true);
+                            _this.reload(0, undefined, undefined, undefined, true);
                         }
                     }
                     return false;
@@ -1095,7 +1095,7 @@ var YetaWF_ComponentsHTML;
             var _this = this;
             if (this.Setup.StaticData)
                 throw "Ajax grids only";
-            this.reload(0, undefined, undefined, undefined, overrideExtraData, function () {
+            this.reload(0, undefined, undefined, overrideExtraData, false, function () {
                 // successful
                 if (overrideExtraData)
                     _this.Setup.ExtraData = overrideExtraData;

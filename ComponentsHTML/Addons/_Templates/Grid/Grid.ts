@@ -265,7 +265,7 @@ namespace YetaWF_ComponentsHTML {
                             } else {
                                 this.setSortOrder(col, colIndex, SortByEnum.Descending);
                             }
-                            this.reload(0, undefined, undefined, true);
+                            this.reload(0, undefined, undefined, undefined, true);
                         }
                     }
                     return false;
@@ -1108,7 +1108,7 @@ namespace YetaWF_ComponentsHTML {
          */
         public ReloadAll(overrideExtraData?: any, successful?: () => void): void {
             if (this.Setup.StaticData) throw "Ajax grids only";
-            this.reload(0, undefined, undefined, undefined, overrideExtraData, (): void => {
+            this.reload(0, undefined, undefined, overrideExtraData, false, (): void => {
                 // successful
                 if (overrideExtraData)
                     this.Setup.ExtraData = overrideExtraData;
