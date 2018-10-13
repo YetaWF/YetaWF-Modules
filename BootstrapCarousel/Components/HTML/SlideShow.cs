@@ -27,7 +27,7 @@ namespace YetaWF.Modules.BootstrapCarousel.Components {
             HtmlBuilder hb = new HtmlBuilder();
 
             hb.Append($@"
-<div id='{ControlId}' class='yt_bootstrapcarousel_slideshow t_display carousel slide' data-ride='carousel' data-interval='{model.Interval}' 
+<div id='{ControlId}' class='yt_bootstrapcarousel_slideshow t_display carousel slide' data-interval='{model.Interval}' 
             data-wrap='{(model.Wrap ? "true" : "false")}' data-pause='{(model.Pause ? "hover" : "false")}' data-keyboard='{(model.Keyboard ? "true" : "false")}'>
     <!-- Indicators -->
     <ol class='carousel-indicators'>");
@@ -85,7 +85,10 @@ namespace YetaWF.Modules.BootstrapCarousel.Components {
         <span class='carousel-control-next-icon' aria-hidden='true'></span>
         <span class='sr-only'>Next</span>
     </a>
-</div>");
+</div>
+<script>
+    $('#{ControlId}').carousel();
+</script>");
 
             return hb.ToYHtmlString();
         }
