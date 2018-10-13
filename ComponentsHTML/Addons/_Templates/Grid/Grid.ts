@@ -388,7 +388,7 @@ namespace YetaWF_ComponentsHTML {
 
                     var insert = this.HitTestInsert(ev.clientX, ev.clientY);
                     //console.log(`insert = ${insert}  sel = ${sel}`);
-                    if (insert == sel || insert == sel + 1)
+                    if (insert === sel || insert === sel + 1)
                         return true;// nothing to move
 
                     this.moveRawRecord(sel, insert);
@@ -1022,7 +1022,7 @@ namespace YetaWF_ComponentsHTML {
             if (!this.Setup.StaticData) throw "Static grids only";
             if (sel < 0 || sel >= this.Setup.StaticData.length) throw `Index sel=${sel} out of bounds`;
             if (index < 0 || index > this.Setup.StaticData.length) throw `Index index=${index} out of bounds`;
-            if (index == sel || index == sel + 1) return;// nothing to move
+            if (index === sel || index === sel + 1) return;// nothing to move
 
             var trs = $YetaWF.getElementsBySelector("tr:not(.tg_emptytr)", [this.TBody]) as HTMLTableRowElement[];
             var selTr = trs[sel];
