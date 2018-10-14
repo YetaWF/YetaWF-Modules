@@ -57,7 +57,7 @@ namespace YetaWF_ComponentsHTML {
         private setHidden(dateVal: Date | null): void {
             var s: string = "";
             if (dateVal != null)
-                s = dateVal.toUTCString();
+                s = dateVal.toISOString();
             this.Hidden.setAttribute("value", s);
         }
         private setHiddenText(dateVal: string | null): void {

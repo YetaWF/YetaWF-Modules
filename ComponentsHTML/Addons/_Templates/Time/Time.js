@@ -26,7 +26,7 @@ var YetaWF_ComponentsHTML;
         TimeComponent.prototype.setHidden = function (hidden, dateVal) {
             var s = "";
             if (dateVal != null) {
-                s = dateVal.toUTCString();
+                s = dateVal.toISOString();
             }
             hidden.setAttribute("value", s);
         };
@@ -98,7 +98,7 @@ var YetaWF_ComponentsHTML;
                     var val = kdPicker.value();
                     var s = "";
                     if (val !== null) {
-                        s = val.toUTCString();
+                        s = val.toISOString();
                     }
                     elem.setAttribute("value", s);
                 }

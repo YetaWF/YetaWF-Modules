@@ -26,7 +26,7 @@ namespace YetaWF_ComponentsHTML {
         private setHidden(hidden: HTMLElement, dateVal: Date): void {
             var s: string = "";
             if (dateVal != null) {
-                s = dateVal.toUTCString();
+                s = dateVal.toISOString();
             }
             hidden.setAttribute("value", s);
         }
@@ -101,7 +101,7 @@ namespace YetaWF_ComponentsHTML {
                     var val: Date = kdPicker.value();
                     var s: string = "";
                     if (val !== null) {
-                        s = val.toUTCString();
+                        s = val.toISOString();
                     }
                     elem.setAttribute("value", s);
                 }

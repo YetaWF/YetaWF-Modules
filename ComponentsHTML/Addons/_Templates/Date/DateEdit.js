@@ -52,7 +52,7 @@ var YetaWF_ComponentsHTML;
         DateEditComponent.prototype.setHidden = function (dateVal) {
             var s = "";
             if (dateVal != null)
-                s = dateVal.toUTCString();
+                s = dateVal.toISOString();
             this.Hidden.setAttribute("value", s);
         };
         DateEditComponent.prototype.setHiddenText = function (dateVal) {
