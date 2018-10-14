@@ -55,6 +55,7 @@
 .yModuleMenuEditIcon {
     position: absolute;
     z-index:1500;
+    text-align:left;/* in case module has a different default */
 }
 
 @media print {

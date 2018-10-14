@@ -6,7 +6,7 @@
   .yt_grid .tg_table {
     overflow-x: auto; }
     .yt_grid .tg_table table {
-      border-collapse: collapse;
+      border-collapse: separate;
       box-sizing: border-box;
       table-layout: fixed; }
       .yt_grid .tg_table table tr.tg_filter .tg_fentry {
@@ -142,14 +142,26 @@
 
 .yt_grid.tg_skin {
   /* Skin dependent formatting */ }
+  .yt_grid.tg_skin .tg_table.ui-widget table tr {
+    border-width: 0;
+    border-style: none; }
   .yt_grid.tg_skin .tg_table.ui-widget table th {
+    font-weight: inherit;
+    border-width: 0;
+    border-style: none;
+    border-color: inherit;
     border-right-width: 1px;
     border-right-style: solid;
-    border-right-color: inherit; }
+    border-bottom-width: 1px;
+    border-bottom-style: solid; }
   .yt_grid.tg_skin .tg_table.ui-widget table td {
+    border-color: inherit;
     border-right-width: 1px;
     border-right-style: solid;
-    border-right-color: inherit; }
+    border-bottom-width: 1px;
+    border-bottom-style: solid; }
+  .yt_grid.tg_skin .tg_pager {
+    border-top-style: none; }
 
 .yt_grid.tg_noskin {
   /* Not skin dependent formatting, usually module specific */ }

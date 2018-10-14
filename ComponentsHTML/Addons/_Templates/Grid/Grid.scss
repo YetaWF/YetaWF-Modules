@@ -26,7 +26,7 @@ $smbuttonhorzmargin: 2px;
     .tg_table {  // general rendering
         overflow-x:auto;
         table {
-            border-collapse:collapse;
+            border-collapse:separate;
             box-sizing: border-box;
             table-layout: fixed;
             tr.tg_filter {
@@ -192,17 +192,32 @@ $smbuttonhorzmargin: 2px;
 .yt_grid.tg_skin { /* Skin dependent formatting */
     .tg_table.ui-widget {  // jquery-ui rendering
         table {
+            tr {
+                border-width:0;
+                border-style:none;
+            }
             th {
+                font-weight:inherit;
+                border-width:0;
+                border-style:none;
+                border-color:inherit;
+
                 border-right-width:1px;
                 border-right-style:solid;
-                border-right-color:inherit;
+                border-bottom-width:1px;
+                border-bottom-style:solid;
             }
             td {
+                border-color:inherit;
                 border-right-width:1px;
                 border-right-style:solid;
-                border-right-color:inherit;
+                border-bottom-width:1px;
+                border-bottom-style:solid;
             }
         }
+    }
+    .tg_pager {
+        border-top-style:none;
     }
 }
 .yt_grid.tg_noskin { /* Not skin dependent formatting, usually module specific */
