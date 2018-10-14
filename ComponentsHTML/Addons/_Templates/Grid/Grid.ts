@@ -580,6 +580,7 @@ namespace YetaWF_ComponentsHTML {
                     request.open("POST", currentControl.Setup.SaveSettingsColumnWidthsUrl, true);
                     request.setRequestHeader("Content-Type", "application/json");
                     request.setRequestHeader("X-Requested-With", "XMLHttpRequest");
+                    //request.overrideMimeType("application/text");// would help firefox understand this isn't xml, but it's not standard, oh well
                     request.send(JSON.stringify(options));
                 }
                 currentControl.ColumnResizeBar = null;
