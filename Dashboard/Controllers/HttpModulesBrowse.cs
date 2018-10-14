@@ -35,6 +35,8 @@ namespace YetaWF.Modules.Dashboard.Controllers {
             [UIHint("Grid"), ReadOnly]
             public GridDefinition GridDef { get; set; }
         }
+#if MVC6
+#else
         private GridDefinition GetGridModel() {
             return new GridDefinition {
                 ModuleGuid = Module.ModuleGuid,
@@ -61,6 +63,7 @@ namespace YetaWF.Modules.Dashboard.Controllers {
                 },
             };
         }
+#endif
 
         [AllowGet]
         public ActionResult HttpModulesBrowse() {

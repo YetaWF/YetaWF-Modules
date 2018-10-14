@@ -16,6 +16,7 @@ using YetaWF.Core.Controllers;
 using YetaWF.Core.DataProvider;
 using Newtonsoft.Json.Serialization;
 #if MVC6
+using Microsoft.AspNetCore.Mvc.Rendering;
 #else
 using System.Web.Mvc;
 #endif
