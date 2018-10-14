@@ -496,7 +496,7 @@ namespace YetaWF.Modules.PageEdit.Controllers {
         public async Task<ActionResult> LoginSiteSelection_Partial(LoginSiteSelectionModel model) {
 
             if (Manager.Deployed) {
-                if (await Resource.ResourceAccess.IsResourceAuthorizedAsync(CoreInfo.Resource_OtherUserLogin))
+                if (!await Resource.ResourceAccess.IsResourceAuthorizedAsync(CoreInfo.Resource_OtherUserLogin))
                     return NotAuthorized();
             }
 
