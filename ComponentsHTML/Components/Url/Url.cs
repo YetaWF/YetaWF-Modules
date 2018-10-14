@@ -119,7 +119,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             tag.Attributes["type"] = "hidden";
             FieldSetup(tag, FieldType.Validated);
             tag.MergeAttribute("value", model);
-            hb.Append(tag.ToString(YTagRenderMode.Normal));
+            hb.Append(tag.ToString(YTagRenderMode.StartTag));
 
             using (Manager.StartNestedComponent(FieldName)) {
 

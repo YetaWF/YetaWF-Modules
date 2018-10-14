@@ -86,7 +86,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
             if (model != null)
                 tag.MergeAttribute("value", Formatting.FormatDateTime((DateTime)model));// shows date using user's timezone
-            hb.Append(tag.ToString(YTagRenderMode.SelfClosing));
+            hb.Append(tag.ToString(YTagRenderMode.StartTag));
 
             hb.Append($"</div>");
 

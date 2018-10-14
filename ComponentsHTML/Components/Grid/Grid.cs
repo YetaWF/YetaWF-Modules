@@ -797,7 +797,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
                 string styleCss = "";
                 if (data.Total > 0)
-                    styleCss = "style='display:none'";
+                    styleCss = " style='display:none'";
 
                 hb.Append($@"
 <tr role='row'{styleCss} class='tg_emptytr{(model.UseSkinFormatting ? " ui-widget-content" : "")}'>

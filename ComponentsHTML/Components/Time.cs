@@ -59,12 +59,12 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             hb.Append(await HtmlHelper.ForEditComponentAsync(Container, PropertyName, null, "Hidden", HtmlAttributes: HtmlAttributes, Validation: Validation));
 
             YTagBuilder tag = new YTagBuilder("input");
-                FieldSetup(tag, FieldType.Anonymous);
-                tag.Attributes.Add("name", "dtpicker");
+            FieldSetup(tag, FieldType.Anonymous);
+            tag.Attributes.Add("name", "dtpicker");
 
-                if (model != null)
-                    tag.MergeAttribute("value", Formatting.FormatTime((DateTime)model));// shows time
-                hb.Append(tag.ToString(YTagRenderMode.SelfClosing));
+            if (model != null)
+                tag.MergeAttribute("value", Formatting.FormatTime((DateTime)model));// shows time
+            hb.Append(tag.ToString(YTagRenderMode.StartTag));
 
             hb.Append($"</div>");
 

@@ -71,7 +71,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                 tag.MergeAttribute("value", ((decimal)model).ToString("0.00"));
 
             hb.Append($@"
-{tag.ToString(YTagRenderMode.SelfClosing)}
+{tag.ToString(YTagRenderMode.StartTag)}
 <script>
 new YetaWF_ComponentsHTML.DecimalEditComponent('{id}', {{ Min: {min}, Max: {max} }});
 </script>

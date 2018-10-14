@@ -63,7 +63,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             if (model != null)
                 tag.MergeAttribute("value", Formatting.FormatAmount((decimal)model));
 
-            return Task.FromResult(tag.ToYHtmlString(YTagRenderMode.SelfClosing));
+            return Task.FromResult(tag.ToYHtmlString(YTagRenderMode.StartTag));
         }
     }
 }

@@ -62,7 +62,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                 DateTime dt = model.AsDateTime();
                 tag.MergeAttribute("value", Formatting.FormatTime(dt));
             }
-            hb.Append(tag.ToString(YTagRenderMode.SelfClosing));
+            hb.Append(tag.ToString(YTagRenderMode.StartTag));
 
             hb.Append($"</div>");
 

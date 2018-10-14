@@ -69,7 +69,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             tag.MergeAttribute("id", ControlId);
             if (model != null)
                 tag.MergeAttribute("value", model);
-            hb.Append(tag.ToString(YTagRenderMode.SelfClosing));
+            hb.Append(tag.ToString(YTagRenderMode.StartTag));
 
             ScriptBuilder sb = new ScriptBuilder();
             sb.Append($@"(new YetaWF_ComponentsHTML.ColorPickerComponent('{ControlId}', {{
