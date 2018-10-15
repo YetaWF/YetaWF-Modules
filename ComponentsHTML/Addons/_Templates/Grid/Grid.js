@@ -303,8 +303,9 @@ var YetaWF_ComponentsHTML;
                         //console.log("Reordering starting");
                         $YetaWF.elementToggleClass(_this.reorderingRowElement, _this.Setup.RowHighlightCss, false);
                         $YetaWF.elementToggleClass(_this.reorderingRowElement, _this.Setup.RowDragDropHighlightCss, true);
+                        return false;
                     }
-                    return false;
+                    return true;
                 }
                 for (var _i = 0, trs_1 = trs; _i < trs_1.length; _i++) {
                     var tr = trs_1[_i];
@@ -314,7 +315,7 @@ var YetaWF_ComponentsHTML;
                 var event = document.createEvent("Event");
                 event.initEvent("grid_selectionchange", true, true);
                 _this.Control.dispatchEvent(event);
-                return false;
+                return true;
             });
             // Drag & drop
             $YetaWF.registerEventHandlerBody("mousemove", null, function (ev) {
@@ -345,11 +346,6 @@ var YetaWF_ComponentsHTML;
                 }
                 return true;
             });
-            //$YetaWF.registerEventHandler(this.TBody, "mouseout", null, (ev: MouseEvent): boolean => {
-            //    if (this.reorderingInProgress && (ev.__YetaWFElem != this.TBody || $YetaWF.elementClosestCond(ev.target as HTMLElement, "tbody") != this.TBody)) {
-            //    }
-            //    return true;
-            //});
             // OnlySubmitWhenChecked
             if (_this.Setup.StaticData && _this.Setup.NoSubmitContents) {
                 _this.SubmitCheckCol = _this.getSubmitCheckCol();

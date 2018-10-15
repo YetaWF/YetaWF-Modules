@@ -355,8 +355,9 @@ namespace YetaWF_ComponentsHTML {
                         //console.log("Reordering starting");
                         $YetaWF.elementToggleClass(this.reorderingRowElement, this.Setup.RowHighlightCss, false);
                         $YetaWF.elementToggleClass(this.reorderingRowElement, this.Setup.RowDragDropHighlightCss, true);
+                        return false;
                     }
-                    return false;
+                    return true;
                 }
                 for (let tr of trs)
                     $YetaWF.elementToggleClass(tr, this.Setup.RowHighlightCss, false);
@@ -365,7 +366,7 @@ namespace YetaWF_ComponentsHTML {
                 var event = document.createEvent("Event");
                 event.initEvent("grid_selectionchange", true, true);
                 this.Control.dispatchEvent(event);
-                return false;
+                return true;
             });
             // Drag & drop
             $YetaWF.registerEventHandlerBody("mousemove", null, (ev: MouseEvent): boolean => {
@@ -403,12 +404,6 @@ namespace YetaWF_ComponentsHTML {
                 }
                 return true;
             });
-
-            //$YetaWF.registerEventHandler(this.TBody, "mouseout", null, (ev: MouseEvent): boolean => {
-            //    if (this.reorderingInProgress && (ev.__YetaWFElem != this.TBody || $YetaWF.elementClosestCond(ev.target as HTMLElement, "tbody") != this.TBody)) {
-            //    }
-            //    return true;
-            //});
             // OnlySubmitWhenChecked
             if (this.Setup.StaticData && this.Setup.NoSubmitContents) {
                 this.SubmitCheckCol = this.getSubmitCheckCol();
