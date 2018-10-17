@@ -1,33 +1,37 @@
 /* Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/CurrencyConverter#License */
 
-.YetaWF_CurrencyConverter_CurrencyConverter .t_button {
-    padding: 1em 0 1em 0;
-}
+.YetaWF_CurrencyConverter_CurrencyConverter {
 
-.YetaWF_CurrencyConverter_CurrencyConverter .t_result_from,
-.YetaWF_CurrencyConverter_CurrencyConverter .t_result_to,
-.YetaWF_CurrencyConverter_CurrencyConverter .t_result_is {
-    font-size:medium;
-    font-weight:bold;
-}
-.YetaWF_CurrencyConverter_CurrencyConverter .t_result_is  {
-    visibility:hidden; /* in order to reserve the space */
-    padding: 0 1ch 0 1ch;
-}
+    .t_button {
+        padding: 1em 0 1em 0;
+    }
 
-.YetaWF_CurrencyConverter_CurrencyConverter .t_disclaimer {
-    font-size:x-small;
-    line-height: 90%;
-    padding-top:1em;
-}
+    .t_result_from,
+    .t_result_to,
+    .t_result_is {
+        font-size:medium;
+        font-weight:bold;
+    }
+    .t_result_is  {
+        visibility:hidden; /* in order to reserve the space */
+        padding: 0 1ch 0 1ch;
+    }
 
-.YetaWF_CurrencyConverter_CurrencyConverter .t_result_from,
-.YetaWF_CurrencyConverter_CurrencyConverter .t_result_is,
-.YetaWF_CurrencyConverter_CurrencyConverter .t_result_to
- {
-    float:left;
-}
+    .t_disclaimer {
+        font-size:x-small;
+        line-height: 90%;
+        padding-top:1em;
+    }
 
-.YetaWF_CurrencyConverter_CurrencyConverter .t_disclaimer {
-    clear:both;
+    .t_result_from,
+    .t_result_is,
+    .t_result_to
+     {
+        float:left;
+    }
+
+    .t_disclaimer {
+        clear:both;
+    }
+
 }
