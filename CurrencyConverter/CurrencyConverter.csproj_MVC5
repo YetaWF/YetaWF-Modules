@@ -83,11 +83,15 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Addons\_Main\currencyconverter.css" />
-    <Content Include="Addons\_Main\currencyconverter.js" />
-    <Content Include="Addons\_Main\filelistCSS.txt" />
-    <Content Include="Addons\_Main\filelistJS.txt" />
+    <None Include="Addons\_Addons\CurrencyConverterModule\CurrencyConverter.scss" />
+    <None Include="tsconfig.json" />
+    <None Include="tslint.json" />
+    <TypeScriptCompile Include="Addons\_Addons\CurrencyConverterModule\CurrencyConverter.ts" />
+    <Content Include="Addons\_Addons\CurrencyConverterModule\filelistCSS.txt" />
+    <Content Include="Addons\_Addons\CurrencyConverterModule\filelistJS.txt" />
+    <None Include="Addons\_Main\filelistJS.txt" />
     <Content Include="Addons\_Main\Icons\CurrencyConverter.png" />
+    <TypeScriptCompile Include="Addons\_Main\CurrencyConverter.ts" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
