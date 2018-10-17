@@ -45,14 +45,16 @@
   <ItemGroup>
     <None Include="Addons\_Main\filelistJS.txt" />
     <None Include="Addons\_Main\filelistCSS.txt" />
-    <None Include="Addons\_Main\BootstrapCarousel.js" />
     <None Include="Addons\_Main\BootstrapCarousel.css" />
     <Content Include="Addons\_Templates\SlideShow\filelistCSS.txt" />
     <Content Include="Addons\_Templates\SlideShow\filelistJS.txt" />
-    <Content Include="Addons\_Templates\SlideShow\SlideShow.css" />
-    <Content Include="Addons\_Templates\SlideShow\SlideShow.js" />
+    <None Include="Addons\_Templates\SlideShow\SlideShow.scss" />
+    <TypeScriptCompile Include="Addons\_Main\BootstrapCarousel.ts" />
+    <TypeScriptCompile Include="Addons\_Templates\SlideShow\SlideShow.ts" />
     <Content Include="Addons\_SiteTemplates\YetaWF_BootstrapCarousel.txt" />
     <None Include="app.config" />
+    <None Include="tsconfig.json" />
+    <None Include="tslint.json" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />

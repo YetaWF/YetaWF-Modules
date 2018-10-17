@@ -121,6 +121,7 @@ namespace YetaWF.Modules.BootstrapCarousel.Models {
                 case CarouselAction.Apply:
                     if (modelIsValid)
                         processed = true;
+                    _ActiveTab = slideIndex;
                     break;
                 case CarouselAction.Insert:
                     if (modelIsValid) {

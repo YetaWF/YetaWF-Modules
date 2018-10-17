@@ -122,10 +122,10 @@ namespace YetaWF.Modules.BootstrapCarousel.Components {
                 hb.Append(PropertyListComponentBase.RenderTabPaneEnd(DivId, tabEntry));
                 ++tabEntry;
             }
-            hb.Append(await PropertyListComponentBase.RenderTabInitAsync(DivId, model));
 
             hb.Append($@"
-</div>
+    </div>
+    {await PropertyListComponentBase.RenderTabInitAsync(DivId, model)}
     <div class='t_buttons'>
         <input type='button' class='t_apply' value='{HAE(this.__ResStr("btnApply", "Apply"))}' title='{HAE(this.__ResStr("txtApply", "Click to apply the current changes"))}' />
         <input type='button' class='t_up' value='{HAE(this.__ResStr("btnUp", "<<"))}' title='{HAE(this.__ResStr("txtUp", "Click to move the current image"))}' />
@@ -136,7 +136,7 @@ namespace YetaWF.Modules.BootstrapCarousel.Components {
     </div>
 </div>
 <script>
-    YetaWF_BootstrapCarousel.init('{ControlId}');
+    new YetaWF_BootstrapCarousel.SlideShowEdit('{ControlId}');
 </script>");
 
             return hb.ToYHtmlString();

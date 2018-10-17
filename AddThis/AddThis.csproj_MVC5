@@ -80,10 +80,12 @@
     <Compile Include="Views\HTML\SharingSidebar.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Addons\_Main\filelistJS.txt" />
-    <None Include="Addons\_Main\filelistCSS.txt" />
-    <None Include="Addons\_Main\AddThis.js" />
-    <None Include="Addons\_Main\AddThis.css" />
+    <None Include="Addons\_Addons\SharingSidebarModule\filelistJS.txt" />
+    <None Include="Addons\_Addons\SharingSidebarModule\filelistCSS.txt" />
+    <None Include="tsconfig.json" />
+    <None Include="tslint.json" />
+    <TypeScriptCompile Include="Addons\_Addons\SharingSidebarModule\AddThis.ts" />
+    <None Include="Addons\_Addons\SharingSidebarModule\AddThis.scss" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

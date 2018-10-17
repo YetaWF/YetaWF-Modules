@@ -20,6 +20,7 @@ namespace YetaWF.Modules.BootstrapCarousel.Addons.Templates {
             ScriptManager scripts = manager.ScriptManager;
             string areaName = AreaRegistration.CurrentPackage.AreaName;
 
+            scripts.AddConfigOption(areaName, "Action_Apply", CarouselInfo.CarouselAction.Apply);
             scripts.AddConfigOption(areaName, "Action_MoveLeft", CarouselInfo.CarouselAction.MoveLeft);
             scripts.AddConfigOption(areaName, "Action_MoveRight", CarouselInfo.CarouselAction.MoveRight);
             scripts.AddConfigOption(areaName, "Action_Add", CarouselInfo.CarouselAction.Add);

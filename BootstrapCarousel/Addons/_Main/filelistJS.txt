@@ -1,1 +1,1 @@
-﻿BootstrapCarousel.js
+﻿BootstrapCarousel.ts
