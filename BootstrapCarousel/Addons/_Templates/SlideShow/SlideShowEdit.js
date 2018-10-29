@@ -58,7 +58,6 @@ var YetaWF_BootstrapCarousel;
             _this.updateButtons();
             return _this;
         }
-        ;
         SlideShowEdit.prototype.getActiveTab = function () {
             return $YetaWF.getElement1BySelector("input[name$='_ActiveTab']", [this.Control]);
         };
@@ -74,13 +73,12 @@ var YetaWF_BootstrapCarousel;
             var panelIndex = this.getPanelIndex();
             var panelCount = this.getPanelCount();
             // disable the << button if the active tab is the first one
-            $YetaWF.elementEnableToggle(this.buttonUp, panelIndex != 0);
+            $YetaWF.elementEnableToggle(this.buttonUp, panelIndex !== 0);
             // disable the >> button if the last panel is active
             $YetaWF.elementEnableToggle(this.buttonDown, panelIndex < panelCount - 1);
             // disable if there is only one panel
             $YetaWF.elementEnableToggle(this.buttonDelete, panelCount > 1);
         };
-        ;
         SlideShowEdit.prototype.updateActiveTab = function (panel) {
             // TODO: This needs to be moved into the tab control
             var activeTab = $YetaWF.getElement1BySelector("input[name$='_ActiveTab']", [this.Control]);

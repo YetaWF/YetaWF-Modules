@@ -15,9 +15,9 @@ namespace YetaWF_CurrencyConverter {
     }
 
     class Converter {
-        public static findrate(code): Rate {
+        public static findrate(code: string): Rate {
             for (let rate of YetaWF_CurrencyConverter_Rates) {
-                if (rate.Code == code) return rate;
+                if (rate.Code === code) return rate;
             }
             throw "Country code " + code + " is not available";/*DEBUG*/
         }
@@ -32,18 +32,18 @@ namespace YetaWF_CurrencyConverter {
         var fromSelect = $YetaWF.getElement1BySelector("select[name='FromCountry']", [divConverter]) as HTMLSelectElement;
         var toSelect = $YetaWF.getElement1BySelector("select[name='ToCountry']", [divConverter]) as HTMLSelectElement;
         var amountInput = $YetaWF.getElement1BySelector("input[name='Amount']", [divConverter]) as HTMLInputElement;
-        var result_from = $YetaWF.getElement1BySelector(".t_result_from", [divConverter]) as HTMLDivElement;
-        var result_to = $YetaWF.getElement1BySelector(".t_result_to", [divConverter]) as HTMLDivElement;
-        var result_is = $YetaWF.getElement1BySelector(".t_result_is", [divConverter]) as HTMLDivElement;
+        var resultFrom = $YetaWF.getElement1BySelector(".t_result_from", [divConverter]) as HTMLDivElement;
+        var resultTo = $YetaWF.getElement1BySelector(".t_result_to", [divConverter]) as HTMLDivElement;
+        var resultIs = $YetaWF.getElement1BySelector(".t_result_is", [divConverter]) as HTMLDivElement;
 
         var fromRate = Converter.findrate(fromSelect.value);
         var toRate = Converter.findrate(toSelect.value);
 
         var amount = Number(amountInput.value) * toRate.Rate / fromRate.Rate;
-        result_from.innerText = YLocs.YetaWF_CurrencyConverter.FmtResult.format(amountInput.value, fromRate.Code, fromSelect.options[fromSelect.selectedIndex].innerText);
-        result_to.innerText = YLocs.YetaWF_CurrencyConverter.FmtResult.format(amount.toFixed(2), toRate.Code, toSelect.options[toSelect.selectedIndex].innerText);
+        resultFrom.innerText = YLocs.YetaWF_CurrencyConverter.FmtResult.format(amountInput.value, fromRate.Code, fromSelect.options[fromSelect.selectedIndex].innerText);
+        resultTo.innerText = YLocs.YetaWF_CurrencyConverter.FmtResult.format(amount.toFixed(2), toRate.Code, toSelect.options[toSelect.selectedIndex].innerText);
 
-        result_is.style.visibility = "visible";
+        resultIs.style.visibility = "visible";
 
         return false;
     });

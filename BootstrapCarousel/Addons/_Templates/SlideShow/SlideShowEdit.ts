@@ -18,13 +18,13 @@ namespace YetaWF_BootstrapCarousel {
     export class SlideShowEdit extends YetaWF.ComponentBase<HTMLElement> {
 
         public static readonly SELECTOR: string = ".yt_bootstrapcarousel_slideshow";
-        private static readonly TEMPLATENAME = "YetaWF_BootstrapCarousel_SlideShow";
+        private static readonly TEMPLATENAME: string = "YetaWF_BootstrapCarousel_SlideShow";
 
         private buttonUp: HTMLElement;
         private buttonDown: HTMLElement;
         private buttonDelete: HTMLElement;
 
-        constructor(controlId) {
+        constructor(controlId:string) {
             super(controlId);
             $YetaWF.addObjectDataById(controlId, this);
 
@@ -66,7 +66,7 @@ namespace YetaWF_BootstrapCarousel {
             });
 
             this.updateButtons();
-        };
+        }
 
         private getActiveTab(): HTMLInputElement {
             return $YetaWF.getElement1BySelector("input[name$='_ActiveTab']", [this.Control]) as HTMLInputElement;
@@ -86,14 +86,14 @@ namespace YetaWF_BootstrapCarousel {
             var panelCount = this.getPanelCount();
 
             // disable the << button if the active tab is the first one
-            $YetaWF.elementEnableToggle(this.buttonUp, panelIndex != 0);
+            $YetaWF.elementEnableToggle(this.buttonUp, panelIndex !== 0);
             // disable the >> button if the last panel is active
             $YetaWF.elementEnableToggle(this.buttonDown, panelIndex < panelCount - 1);
             // disable if there is only one panel
             $YetaWF.elementEnableToggle(this.buttonDelete, panelCount > 1);
-        };
+        }
 
-        public updateActiveTab(panel: HTMLElement) {
+        public updateActiveTab(panel: HTMLElement): void {
 
             // TODO: This needs to be moved into the tab control
             var activeTab = $YetaWF.getElement1BySelector("input[name$='_ActiveTab']", [this.Control]) as HTMLInputElement;
