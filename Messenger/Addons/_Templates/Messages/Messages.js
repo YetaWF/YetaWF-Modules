@@ -1,12 +1,11 @@
 "use strict";
 /* Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Messenger#License */
-var YetaWF_Basics, htmlAttrEscape;
 var YetaWF_Messenger;
 (function (YetaWF_Messenger) {
     var MessagesTemplate = /** @class */ (function () {
         function MessagesTemplate(divId, fromUser, toUser) {
             this.divId = "";
-            this.fromUser = "";
+            //private fromUser: string = "";
             this.toUser = "";
             this.init(divId, fromUser, toUser);
         }
@@ -16,7 +15,7 @@ var YetaWF_Messenger;
         MessagesTemplate.prototype.init = function (divId, fromUser, toUser) {
             var _this = this;
             this.divId = divId;
-            this.fromUser = fromUser;
+            //this.fromUser = fromUser;
             this.toUser = toUser;
             $(document).on("YetaWF_Messenger_Messaging_Message", function (event, o) { return _this.handleMessage(o.key, o.from, o.messageText, o.sent); });
             $(document).on("YetaWF_Messenger_Messaging_MessageSent", function (event, o) { return _this.handleMessageSent(o.key, o.to, o.messageText, o.sent); });
@@ -29,8 +28,8 @@ var YetaWF_Messenger;
         MessagesTemplate.prototype.handleMessage = function (key, from, messageText, sent) {
             if (from === this.toUser) {
                 var line = "<div class=\"t_otheruser t_seen\" data-key=\"" + key + "\">" +
-                    ("<div class=\"t_sent\">" + YetaWF_Basics.htmlAttrEscape(sent) + "</div>") +
-                    ("<div class=\"t_text\">" + YetaWF_Basics.htmlAttrEscape(messageText) + "</div>") +
+                    ("<div class=\"t_sent\">" + $YetaWF.htmlAttrEscape(sent) + "</div>") +
+                    ("<div class=\"t_text\">" + $YetaWF.htmlAttrEscape(messageText) + "</div>") +
                     "</div>";
                 $("#" + this.divId + " .t_messagearea .t_last").before(line);
                 this.scrollMessageArea();
@@ -40,8 +39,8 @@ var YetaWF_Messenger;
         MessagesTemplate.prototype.handleMessageSent = function (key, to, messageText, sent) {
             if (to === this.toUser) {
                 var line = "<div class=\"t_thisuser t_notseen\" data-key=\"" + key + "\">" +
-                    ("<div class=\"t_sent\"><img alt=\"" + YetaWF_Basics.htmlAttrEscape(YLocs.YetaWF_Messenger.notSeen) + "\" title=\"" + YetaWF_Basics.htmlAttrEscape(YLocs.YetaWF_Messenger.notSeen) + "\" src=\"" + YetaWF_Basics.htmlAttrEscape(YConfigs.YetaWF_Messenger.msgNotSeenIcon) + "\">" + sent + "</div>") +
-                    ("<div class=\"t_text\">" + YetaWF_Basics.htmlAttrEscape(messageText) + "</div>") +
+                    ("<div class=\"t_sent\"><img alt=\"" + $YetaWF.htmlAttrEscape(YLocs.YetaWF_Messenger.notSeen) + "\" title=\"" + $YetaWF.htmlAttrEscape(YLocs.YetaWF_Messenger.notSeen) + "\" src=\"" + $YetaWF.htmlAttrEscape(YConfigs.YetaWF_Messenger.msgNotSeenIcon) + "\">" + sent + "</div>") +
+                    ("<div class=\"t_text\">" + $YetaWF.htmlAttrEscape(messageText) + "</div>") +
                     "</div>";
                 $("#" + this.divId + " .t_messagearea .t_last").before(line);
                 this.scrollMessageArea();
@@ -58,12 +57,11 @@ var YetaWF_Messenger;
                 this.markAllMessagesSeen(to);
             }
         };
-        MessagesTemplate.prototype.markMessageSeen = function (key, to) {
-            var $msgArea = $("#" + this.divId);
-            if ($msgArea.length === 0)
-                throw "Div " + this.divId + " not found"; /*DEBUG*/
-            $("div.t_notseen[data-key=" + key + "] img", $msgArea).remove();
-        };
+        //private markMessageSeen(key: number, to: string): void {
+        //    var $msgArea: JQuery<HTMLElement> = $(`#${this.divId}`);
+        //    if ($msgArea.length === 0) throw `Div ${this.divId} not found`;/*DEBUG*/
+        //    $(`div.t_notseen[data-key=${key}] img`, $msgArea).remove();
+        //}
         MessagesTemplate.prototype.markAllMessagesSeen = function (to) {
             var $msgArea = $("#" + this.divId);
             if ($msgArea.length === 0)
@@ -85,3 +83,5 @@ var YetaWF_Messenger;
     }());
     YetaWF_Messenger.MessagesTemplate = MessagesTemplate;
 })(YetaWF_Messenger || (YetaWF_Messenger = {}));
+
+//# sourceMappingURL=Messages.js.map

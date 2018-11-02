@@ -1,13 +1,18 @@
 ﻿/* Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Messenger#License */
 
-var $YetaWF.htmlAttrEscape: any;
-
 namespace YetaWF_Messenger {
+
+    export interface IPackageLocs {
+        notSeen: string;
+    }
+    export interface IPackageConfigs {
+        msgNotSeenIcon: string;
+    }
 
     export class MessagesTemplate {
 
         private divId: string = "";
-        private fromUser: string = "";
+        //private fromUser: string = "";
         private toUser: string = "";
 
         constructor(divId: string, fromUser: string, toUser: string) {
@@ -20,7 +25,7 @@ namespace YetaWF_Messenger {
         private init(divId: string, fromUser: string, toUser: string): void {
 
             this.divId = divId;
-            this.fromUser = fromUser;
+            //this.fromUser = fromUser;
             this.toUser = toUser;
 
             $(document).on("YetaWF_Messenger_Messaging_Message", (event: any, o: any) => this.handleMessage(o.key, o.from, o.messageText, o.sent));
@@ -64,11 +69,11 @@ namespace YetaWF_Messenger {
                 this.markAllMessagesSeen(to);
             }
         }
-        private markMessageSeen(key: number, to: string): void {
-            var $msgArea: JQuery<HTMLElement> = $(`#${this.divId}`);
-            if ($msgArea.length === 0) throw `Div ${this.divId} not found`;/*DEBUG*/
-            $(`div.t_notseen[data-key=${key}] img`, $msgArea).remove();
-        }
+        //private markMessageSeen(key: number, to: string): void {
+        //    var $msgArea: JQuery<HTMLElement> = $(`#${this.divId}`);
+        //    if ($msgArea.length === 0) throw `Div ${this.divId} not found`;/*DEBUG*/
+        //    $(`div.t_notseen[data-key=${key}] img`, $msgArea).remove();
+        //}
         private markAllMessagesSeen(to: string): void {
             var $msgArea: JQuery<HTMLElement> = $(`#${this.divId}`);
             if ($msgArea.length === 0) throw `Div ${this.divId} not found`;/*DEBUG*/

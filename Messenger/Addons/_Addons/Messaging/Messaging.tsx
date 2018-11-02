@@ -4,18 +4,27 @@ var CKEDITOR: any;
 
 namespace YetaWF_Messenger {
 
+    export interface IPackageLocs {
+        msgOnlineTT: string;
+        msgOfflineTT: string;
+    }
+    export interface IPackageConfigs {
+        msgOnlineIcon: string;
+        msgOfflineIcon: string;
+    }
+
     export class MessagingModule {
 
         private idForm: string;
-        private idSend: string;
-        private idCancel: string;
+        //private idSend: string;
+        //private idCancel: string;
 
         constructor(idForm: string, idSend: string, idCancel: string, offlineImage: string, onlineImage: string) {
             this.idForm = idForm;
-            this.idSend = idSend;
-            this.idCancel = idCancel;
+            //this.idSend = idSend;
+            //this.idCancel = idCancel;
 
-            var selToUser: HTMLSelectElement = this.getSelToUserTest();
+            //var selToUser: HTMLSelectElement = this.getSelToUserTest();
             $(`#${this.idForm}`).on("change", "select[name='ToUserId']", () => this.onUserSelect());
 
             var btnSend: HTMLButtonElement = this.getBtnSendTest();
@@ -72,7 +81,7 @@ namespace YetaWF_Messenger {
         private onClickSend(event: Event): void {
 
             var editMsg: HTMLTextAreaElement = this.getEditMsgTest();
-            var btnSend: HTMLButtonElement = this.getBtnSendTest();
+            //var btnSend: HTMLButtonElement = this.getBtnSendTest();
             var user: string | null = this.getSelToUserValue();
             if (!user) return;
 
@@ -111,8 +120,8 @@ namespace YetaWF_Messenger {
             var user: string | null = this.getSelToUserValue();
             if (user && user.length > 0) {
                 YetaWF_Messenger.SkinMessagingModule.singleton.isUserOnline(user)
-                    .done((online) => this.isUserOnlineDone(online))
-                    .fail(() => this.isUserOnlineDone(false));
+                    .done((online:boolean):void => this.isUserOnlineDone(online))
+                    .fail(():void => this.isUserOnlineDone(false));
             } else {
                 this.isUserOnlineDone(false);
             }

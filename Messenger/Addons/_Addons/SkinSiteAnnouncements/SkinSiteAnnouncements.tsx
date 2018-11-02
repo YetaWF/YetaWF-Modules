@@ -26,11 +26,11 @@ namespace YetaWF_Messenger {
             var $$: any = $;
             var connection: any = $$.hubConnection(YConfigs.YetaWF_Messenger.SignalRUrl, { useDefaultPath: false });
             var hubProxy: any = connection.createHubProxy("YetaWF_Messenger_SiteAnnouncement");
-            hubProxy.on("message", function (content: string, title: string): void {
+            hubProxy.on("message", (content: string, title: string): void => {
                 if (SkinSiteAnnouncementsModule.on)
-                    $YetaWF.alert(content, title, null, { encoded: true });
+                    $YetaWF.alert(content, title, undefined, { encoded: true });
             });
-            connection.start().done(function (): void { /*empty*/ });
+            connection.start().done((): void => { /*empty*/ });
         }
     }
 

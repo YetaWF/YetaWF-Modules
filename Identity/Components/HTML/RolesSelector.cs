@@ -145,6 +145,9 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             bool exclude2FA = PropData.GetAdditionalAttributeValue("ExcludeUser2FA", false);
             bool? showFilter = PropData.GetAdditionalAttributeValue<bool?>("ShowFilter", null);
 
+            if (model == null)
+                model = new SerializableList<Role>();
+
             GridModel grid = new GridModel() {
                 GridDef = GetGridModel(header, showFilter)
             };

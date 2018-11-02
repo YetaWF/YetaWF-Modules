@@ -21,21 +21,21 @@ namespace YetaWF_Messenger {
             var $$: any = $;
             this.connection = $$.hubConnection(YConfigs.YetaWF_Messenger.SignalRUrl, { useDefaultPath: false });
             this.tempProxy = this.connection.createHubProxy("YetaWF_Messenger_Messaging");
-            this.tempProxy.on("dummy", function (): void { /* empty */ });
+            this.tempProxy.on("dummy", ():void => { /* empty */ });
 
             this.connection.start().done(() => this.onConnectionStarted());
         }
 
-        private onConnectionStarted(): void {
+        private onConnectionStarted():void {
             this.hubProxy = this.tempProxy;
 
-            this.hubProxy.on("message", (key: number, from: string, message: string, sent: string) => this.handleMessage(key, from, message, sent));
-            this.hubProxy.on("messageSent", (key: number, to: string, message: string, sent: string) => this.handleMessageSent(key, to, message, sent));
-            this.hubProxy.on("messageSeen", (key: number, to: string) => this.handleMessageSeen(key, to));
-            this.hubProxy.on("allMessagesSeen", (to: string) => this.handleAllMessagesSeen(to));
-            this.hubProxy.on("notifyException", (message: string) => this.handleNotifyException(message));
-            this.hubProxy.on("userConnect", (user: string) => this.handleUserConnect(user));
-            this.hubProxy.on("userDisconnect", (user: string) => this.handleUserDisconnect(user));
+            this.hubProxy.on("message", (key: number, from: string, message: string, sent: string): void => this.handleMessage(key, from, message, sent));
+            this.hubProxy.on("messageSent", (key: number, to: string, message: string, sent: string):void => this.handleMessageSent(key, to, message, sent));
+            this.hubProxy.on("messageSeen", (key: number, to: string): void => this.handleMessageSeen(key, to));
+            this.hubProxy.on("allMessagesSeen", (to: string): void => this.handleAllMessagesSeen(to));
+            this.hubProxy.on("notifyException", (message: string): void => this.handleNotifyException(message));
+            this.hubProxy.on("userConnect", (user: string): void => this.handleUserConnect(user));
+            this.hubProxy.on("userDisconnect", (user: string): void => this.handleUserDisconnect(user));
         }
 
         // Incoming message handlers

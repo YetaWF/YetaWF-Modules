@@ -4,12 +4,14 @@ var CKEDITOR;
 var YetaWF_Messenger;
 (function (YetaWF_Messenger) {
     var MessagingModule = /** @class */ (function () {
+        //private idSend: string;
+        //private idCancel: string;
         function MessagingModule(idForm, idSend, idCancel, offlineImage, onlineImage) {
             var _this = this;
             this.idForm = idForm;
-            this.idSend = idSend;
-            this.idCancel = idCancel;
-            var selToUser = this.getSelToUserTest();
+            //this.idSend = idSend;
+            //this.idCancel = idCancel;
+            //var selToUser: HTMLSelectElement = this.getSelToUserTest();
             $("#" + this.idForm).on("change", "select[name='ToUserId']", function () { return _this.onUserSelect(); });
             var btnSend = this.getBtnSendTest();
             btnSend.addEventListener("click", function (ev) { return _this.onClickSend(ev); }, false);
@@ -66,7 +68,7 @@ var YetaWF_Messenger;
         };
         MessagingModule.prototype.onClickSend = function (event) {
             var editMsg = this.getEditMsgTest();
-            var btnSend = this.getBtnSendTest();
+            //var btnSend: HTMLButtonElement = this.getBtnSendTest();
             var user = this.getSelToUserValue();
             if (!user)
                 return;
@@ -141,3 +143,5 @@ var YetaWF_Messenger;
     }());
     YetaWF_Messenger.MessagingModule = MessagingModule;
 })(YetaWF_Messenger || (YetaWF_Messenger = {}));
+
+//# sourceMappingURL=Messaging.js.map

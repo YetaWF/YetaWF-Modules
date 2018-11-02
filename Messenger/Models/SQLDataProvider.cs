@@ -17,13 +17,13 @@ namespace YetaWF.Modules.Messenger.DataProvider.SQL {
         class ConfigDataProvider : SQLSimpleObject<int, ConfigData> {
             public ConfigDataProvider(Dictionary<string, object> options) : base(options) { }
         }
-        class ConnectionDataProvider : SQLSimpleObject<int, ConfigData> {
+        class ConnectionDataProvider : SQLSimpleObject<string, Connection> {
             public ConnectionDataProvider(Dictionary<string, object> options) : base(options) { }
         }
-        class MessagingDataProvider : SQLSimple2IdentityObject<int, object, Message> {
+        class MessagingDataProvider : SQLSimpleIdentityObject<int, Message> {
             public MessagingDataProvider(Dictionary<string, object> options) : base(options) { }
         }
-        class SiteAccouncementDataProvider : SQLSimple2IdentityObject<int, object, Message> {
+        class SiteAccouncementDataProvider : SQLSimpleIdentityObject<int, SiteAccouncement> {
             public SiteAccouncementDataProvider(Dictionary<string, object> options) : base(options) { }
         }
     }

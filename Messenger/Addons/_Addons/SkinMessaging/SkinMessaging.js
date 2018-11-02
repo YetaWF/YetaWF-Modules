@@ -57,7 +57,7 @@ var YetaWF_Messenger;
             });
         };
         SkinMessagingModule.prototype.handleNotifyException = function (message) {
-            YetaWF_Basics.alert(message, "Messages Error");
+            $YetaWF.alert(message, "Messages Error");
         };
         SkinMessagingModule.prototype.handleUserConnect = function (user) {
             $(document).trigger("YetaWF_Messenger_Messaging_UserConnect", {
@@ -90,3 +90,5 @@ var YetaWF_Messenger;
     YetaWF_Messenger.SkinMessagingModule = SkinMessagingModule;
 })(YetaWF_Messenger || (YetaWF_Messenger = {}));
 YetaWF_Messenger.SkinMessagingModule.singleton = new YetaWF_Messenger.SkinMessagingModule();
+
+//# sourceMappingURL=SkinMessaging.js.map
