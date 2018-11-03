@@ -18,6 +18,10 @@ namespace YetaWF.Modules.Identity.Models {
         // Gets the site specific UserManager instance (permanent)
         public static UserManager<UserDefinition> GetUserManager() {
 
+#if MVC6
+            return (UserManager<UserDefinition>)YetaWFManager.ServiceProvider.GetService(typeof(UserManager<UserDefinition>));
+#else
+
             // See if we already have it
             UserManager<UserDefinition> userManager;
             if (PermanentManager.TryGetObject<UserManager<UserDefinition>>(out userManager))
@@ -29,17 +33,15 @@ namespace YetaWF.Modules.Identity.Models {
                     return userManager;
 
                 // create a new instance
-#if MVC6
-                userManager = (UserManager<UserDefinition>)YetaWFManager.ServiceProvider.GetService(typeof(UserManager<UserDefinition>));
-#else
                 UserStore userStore = new UserStore(Manager.CurrentSite.Identity, 1.0f);
                 PermanentManager.AddObject<UserStore>(userStore);
                 userManager = new UserManager<UserDefinition>(userStore);
                 userManager.UserValidator = new UserValidator<UserDefinition>(userManager) { AllowOnlyAlphanumericUserNames = false };
-#endif
+
                 PermanentManager.AddObject<UserManager<UserDefinition>>(userManager);
                 return userManager;
             }
+#endif
         }
     }
 }
