@@ -35,7 +35,7 @@ namespace YetaWF.Modules.Feedback.Modules {
         public string DefaultSubject { get; set; }
 
         [Category("General"), Caption("Default Message"), Description("The optional default message when new feedback is entered")]
-        [UIHint("TextArea"), AdditionalMetadata("SourceOnly", true), StringLength(FeedbackData.MaxMessage), Trim]
+        [UIHint("TextAreaSourceOnly"), StringLength(FeedbackData.MaxMessage), Trim]
         public string DefaultMessage { get; set; }
 
         public override SerializableList<AllowedRole> DefaultAllowedRoles { get { return AdministratorLevel_DefaultAllowedRoles; } }

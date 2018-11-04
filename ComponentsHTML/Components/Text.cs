@@ -53,6 +53,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             YTagBuilder tag = new YTagBuilder("input");
             tag.AddCssClass(TemplateClass);
             tag.AddCssClass("t_display");
+            tag.AddCssClass("k-state-disabled"); // USE KENDO style
             FieldSetup(tag, FieldType.Anonymous);
 
             tag.MergeAttribute("type", "text");

@@ -18,3 +18,11 @@ Administrator /Tests/Templates/Grid
     -
     -
     YetaWF.DevTests, YetaWF.Modules.DevTests.Modules.TemplateGridModule
+
+Administrator /Tests/Templates/TextAreaSourceOnly
+    Title=TextAreaSourceOnly
+    Description=Test page for TextAreaSourceOnly template
+    -
+    -
+    YetaWF.DevTests, YetaWF.Modules.DevTests.Modules.TemplateTextAreaSourceOnlyModule
+

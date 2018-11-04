@@ -28,7 +28,7 @@ namespace YetaWF.Modules.DevTests.Controllers {
             public string PhoneNumber { get; set; }
 
             [Caption("Text"), Description("The text message to send")]
-            [UIHint("TextArea"), AdditionalMetadata("SourceOnly", true), StringLength(SendSMS.MaxMessageLength), Required]
+            [UIHint("TextAreaSourceOnly"), StringLength(SendSMS.MaxMessageLength), Required]
             public string Text { get; set; }
 
             public Model() { }

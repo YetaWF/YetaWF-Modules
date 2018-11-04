@@ -172,26 +172,26 @@ namespace YetaWF.Modules.PageEdit.Controllers {
 
             [Category("Addons"), Caption("Analytics"), Description("Add analytics Javascript code (for example, the Universal Analytics tracking code used by Google Analytics or the code used by Clicky) - Any code that should be added at the end of the HTML page can be added here including <script></script> tags - If omitted, the site defined analytics code is used (Site Settings)")]
             [TextAbove("Analytics code is only available in deployed production sites and is ignored in debug builds (not marked deployed).")]
-            [UIHint("TextArea"), AdditionalMetadata("SourceOnly", true), StringLength(SiteDefinition.MaxAnalytics), Trim]
+            [UIHint("TextAreaSourceOnly"), StringLength(SiteDefinition.MaxAnalytics), Trim]
             public string Analytics { get; set; }
             [Category("Addons"), Caption("Analytics (Content)"), Description("Add analytics Javascript code that should be executed when a new page becomes active in an active Unified Page Set - Do not include <script></script> tags - Use <<Url>> to substitute the actual Url - If omitted, the site defined analytics code is used (Site Settings)")]
-            [UIHint("TextArea"), AdditionalMetadata("SourceOnly", true), StringLength(SiteDefinition.MaxAnalytics), Trim]
+            [UIHint("TextAreaSourceOnly"), StringLength(SiteDefinition.MaxAnalytics), Trim]
             public string AnalyticsContent { get; set; }
 
             [Category("Meta"), Caption("Meta Tags"), Description("Defines <meta> tags that are added to the page - If specified, this replaces the site meta tags defined using the PageMetaTags property (Site Settings)")]
-            [UIHint("TextArea"), AdditionalMetadata("SourceOnly", true), StringLength(SiteDefinition.MaxMeta), Trim]
+            [UIHint("TextAreaSourceOnly"), StringLength(SiteDefinition.MaxMeta), Trim]
             public string PageMetaTags { get; set; }
 
             [Category("Addons"), Caption("<HEAD>"), Description("Any tags that should be added to the <HEAD> tag of each page can be added here")]
-            [UIHint("TextArea"), AdditionalMetadata("SourceOnly", true), StringLength(SiteDefinition.MaxHead), Trim]
+            [UIHint("TextAreaSourceOnly"), StringLength(SiteDefinition.MaxHead), Trim]
             public string ExtraHead { get; set; }
 
             [Category("Addons"), Caption("<BODY> Top"), Description("Any tags that should be added to the top of the <BODY> tag of each page can be added here")]
-            [UIHint("TextArea"), AdditionalMetadata("SourceOnly", true), StringLength(SiteDefinition.MaxBodyTop), Trim]
+            [UIHint("TextAreaSourceOnly"), StringLength(SiteDefinition.MaxBodyTop), Trim]
             public string ExtraBodyTop { get; set; }
 
             [Category("Addons"), Caption("<BODY> Bottom"), Description("Any tags that should be added to the bottom of the <BODY> tag of each page can be added here")]
-            [UIHint("TextArea"), AdditionalMetadata("SourceOnly", true), StringLength(SiteDefinition.MaxBodyBottom), Trim]
+            [UIHint("TextAreaSourceOnly"), StringLength(SiteDefinition.MaxBodyBottom), Trim]
             public string ExtraBodyBottom { get; set; }
 
             [Category("Meta"), Caption("SiteMap Priority"), Description("Defines the page priority used for the site map")]

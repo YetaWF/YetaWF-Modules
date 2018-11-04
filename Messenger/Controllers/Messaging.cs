@@ -38,7 +38,7 @@ namespace YetaWF.Modules.Messenger.Controllers {
             public int MaxMessages { get; set; }
 
             [Caption("New Message"), Description("Defines the message to send to the user")]
-            [UIHint("TextArea"), AdditionalMetadata("SourceOnly", true), AdditionalMetadata("EmHeight", 3), StringLength(Message.MaxMessageText)]
+            [UIHint("TextAreaSourceOnly"), AdditionalMetadata("EmHeight", 3), StringLength(Message.MaxMessageText)]
             public string MessageText { get; set; }
 
             public string OnlineImage { get; set; }

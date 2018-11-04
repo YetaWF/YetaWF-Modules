@@ -18,11 +18,11 @@ namespace YetaWF.Modules.Security.Controllers {
 
         public class Model {
             [Caption("Public Key"), Description("The public key")]
-            [UIHint("TextArea"), AdditionalMetadata("SourceOnly", true)]
+            [UIHint("TextAreaSourceOnly"), StringLength(0)]
             public string PublicKey { get; set; }
 
             [Caption("Private Key"), Description("The private key")]
-            [UIHint("TextArea"), AdditionalMetadata("SourceOnly", true)]
+            [UIHint("TextAreaSourceOnly"), StringLength(0)]
             public string PrivateKey { get; set; }
         }
 

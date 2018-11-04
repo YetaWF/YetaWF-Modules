@@ -23,8 +23,7 @@ namespace YetaWF.Modules.AddThis.Controllers {
         public class Model {
 
             [Category("General"), Caption("Javascript Code"), Description("The code for the Sharing Sidebar, obtained from your AddThis Dashboard"), HelpLink("https://www.addthis.com/dashboard")]
-            [UIHint("TextArea"), AdditionalMetadata("SourceOnly", true)]
-            [StringLength(ConfigData.MaxCode)]
+            [UIHint("TextAreaSourceOnly"), StringLength(ConfigData.MaxCode)]
             public string Code { get; set; }
 
             public ConfigData GetData(ConfigData data) {

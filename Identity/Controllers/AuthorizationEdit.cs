@@ -30,7 +30,7 @@ namespace YetaWF.Modules.Identity.Controllers {
             public string ResourceName { get; set; }
 
             [Caption("Resource Description"), Description("The permissions granted if a user or role has access to this resource")]
-            [UIHint("TextArea"), AdditionalMetadata("SourceOnly", true), StringLength(Authorization.MaxResourceDescription)]
+            [UIHint("TextAreaSourceOnly"), StringLength(Authorization.MaxResourceDescription)]
             public string ResourceDescription { get; set; }
 
             [Caption("Allowed Roles"), Description("The roles that are permitted to access this resource")]
