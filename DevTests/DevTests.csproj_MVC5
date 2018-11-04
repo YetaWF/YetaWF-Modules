@@ -81,6 +81,7 @@
     <Compile Include="Controllers\TemplateRecaptchaV2.cs" />
     <Compile Include="Controllers\TemplateScroller.cs" />
     <Compile Include="Controllers\TemplateSkin.cs" />
+    <Compile Include="Controllers\TemplateTextAreaSourceOnly.cs" />
     <Compile Include="Controllers\TemplateTimeZone.cs" />
     <Compile Include="Controllers\SMSTest.cs" />
     <Compile Include="Controllers\TestEscapes.cs" />
@@ -95,6 +96,7 @@
     <Compile Include="Modules\TemplateRecaptchaV2Module.cs" />
     <Compile Include="Modules\TemplateScrollerModule.cs" />
     <Compile Include="Modules\TemplateSkinModule.cs" />
+    <Compile Include="Modules\TemplateTextAreaSourceOnlyModule.cs" />
     <Compile Include="Modules\TemplateTimeZoneModule.cs" />
     <Compile Include="Modules\SMSTestModule.cs" />
     <Compile Include="Modules\TestEscapes.cs" />
