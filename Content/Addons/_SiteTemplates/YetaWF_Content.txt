@@ -1,0 +1,13 @@
+###
+### Content Package
+###
+
+::PAGE-SECTION::
+
+Administrator /Tests/Content
+    Title=Content
+    Description=Sample page with Content modules
+    -
+    -
+    YetaWF.Content, YetaWF.Modules.Content.Modules.ContentModule
+        CompleteContents = "This is a test module"
