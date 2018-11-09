@@ -1,6 +1,5 @@
 ﻿/* Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/ComponentsHTML#License */
 
-using System;
 using System.Threading.Tasks;
 using YetaWF.Core.Components;
 using YetaWF.Core.Packages;
@@ -18,6 +17,12 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
     public class FileUpload1EditComponent : FileUpload1Component, IYetaWFComponent<FileUpload1>, IYetaWFContainer<FileUpload1> {
 
+        public class Setup {
+            public string SaveUrl { get; set; }
+            public string RemoveUrl { get; set; }
+            public bool SerializeForm { get; set; }// serialize all form data when uploading a file
+        }
+
         public override ComponentType GetComponentType() { return ComponentType.Edit; }
 
         public override async Task IncludeAsync() {
@@ -28,20 +33,27 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             return RenderContainerAsync(model);
         }
         public Task<YHtmlString> RenderContainerAsync(FileUpload1 model) {
+
+            UseSuppliedIdAsControlId();
+                
             HtmlBuilder hb = new HtmlBuilder();
 
-            hb.Append($@"
-                <div class='yt_fileupload1' id='{ControlId}' 
-                        data-saveurl='{YetaWFManager.HtmlAttributeEncode(model.SaveURL)}' data-removeurl='{YetaWFManager.HtmlAttributeEncode(model.RemoveURL)}'>
-                    <input type='button' class='t_upload' value='{YetaWFManager.HtmlAttributeEncode(model.SelectButtonText)}' title='{YetaWFManager.HtmlAttributeEncode(model.SelectButtonTooltip)}' />
-                    <div class='t_drop'>{YetaWFManager.HtmlAttributeEncode(model.DropFilesText)}</div>
-                    <div class='t_progressbar'></div>
-                    <input type='file' name='__filename' class='t_filename' style='display:none' />
-                </div>
+            Setup setup = new Setup {
+                SaveUrl = model.SaveURL,
+                RemoveUrl = model.RemoveURL,
+                SerializeForm = model.SerializeForm,
+            };
 
-                <script>
-                    YetaWF_FileUpload1.init('{ControlId}', {YetaWFManager.JsonSerialize(model.SerializeForm)});
-                </script>");
+            hb.Append($@"
+<div class='yt_fileupload1' id='{ControlId}' data-saveurl='{HAE(model.SaveURL)}' data-removeurl='{HAE(model.RemoveURL)}'>
+    <input type='button' class='t_upload' value='{HAE(model.SelectButtonText)}' title='{HAE(model.SelectButtonTooltip)}' />
+    <div class='t_drop'>{HAE(model.DropFilesText)}</div>
+    <div class='t_progressbar'></div>
+    <input type='file' name='__filename' class='t_filename' style='display:none' />
+</div>
+<script>
+    new YetaWF_ComponentsHTML.FileUpload1Component('{ControlId}', {YetaWFManager.JsonSerialize(setup)});
+</script>");
 
             return Task.FromResult(hb.ToYHtmlString());
         }
