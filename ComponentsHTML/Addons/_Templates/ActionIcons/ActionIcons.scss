@@ -1,0 +1,57 @@
+/* Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/ComponentsHTML#License */
+
+/* action menu in grids */
+.yGridActionMenu {
+    z-index:50000;
+    font-size:11px;
+    position:absolute;
+}
+
+/* one action link should never break into two lines */
+.yaction-link {
+    white-space:nowrap;
+    h1 &,
+    h2 &,
+    h3 &,
+    h4 &,
+    h5 & {
+        white-space:normal;
+    }
+}
+
+/* align the module action links and grid action up next to each other */
+.yActionIcons, .yModuleLinks {
+    margin:0;
+    padding:0;
+    list-style-type: none;
+    li {
+        display:inline-block;
+    }
+}
+
+/* a bit of extra space above the module action links */
+.yModuleLinks {
+    margin-top:.5em;
+    .yaction-link {
+        img {/* a bit of extra space around the image in a module action link */
+            margin-right:1ch;
+        }
+        margin-right:1ch;
+    }
+}
+.yModuleTitle {
+    .yModuleLinks {
+        margin-top:2em;
+        margin-right:1ch;
+        .yaction-link {
+            img {
+                margin-right:0;
+                margin-left:.5ch;
+            }
+            margin-right:0;
+        }
+    }
+    .yModuleLinksContainer {
+        margin-right:1ch;
+    }
+}

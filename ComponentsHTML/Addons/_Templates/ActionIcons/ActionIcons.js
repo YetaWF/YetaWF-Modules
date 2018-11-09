@@ -1,86 +1,118 @@
+"use strict";
 /* Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/ComponentsHTML#License */
-
-var YetaWF_TemplateActionIcons = {};
-var _YetaWF_TemplateActionIcons = {};
-
-_YetaWF_TemplateActionIcons.menusOpen = 0;
-
-_YetaWF_TemplateActionIcons.openMenu = function ($idButton, $idMenu) {
-    _YetaWF_TemplateActionIcons.closeMenus();
-    $idMenu.appendTo($('body'));
-    $idMenu.show();
-    ++_YetaWF_TemplateActionIcons.menusOpen;
-    $idMenu.position({
-        my: "left top",
-        at: "left bottom",
-        of: $idButton,
-        collision: "flip"
-    })
-};
-_YetaWF_TemplateActionIcons.closeMenus = function () {
-    // find all action menus after grid (there really should only be one)
-    if (_YetaWF_TemplateActionIcons.menusOpen == 0) return;
-    _YetaWF_TemplateActionIcons.menusOpen = 0;
-    var $menus = $('.yGridActionMenu');
-    if ($menus.length == 0) return;
-    $menus.each(function () {
-        var $menu = $(this);
-        $menu.hide();
-        var idButton = $menu.attr('id').replace('_menu', '_btn');
-        var $idButton = $('#' + idButton);
-        if ($idButton.length > 0) // there can be a case without button if we switched to a new page
-            $menu.appendTo($idButton.parent());
-    });
-};
-
-YetaWF_TemplateActionIcons.initMenu = function (id, $idButton, $idMenu) {
-    $idButton.kendoButton().on('click', function (ev) {
-        var vis = $idMenu.is(':visible');
-        _YetaWF_TemplateActionIcons.closeMenus();
-        if (!vis)
-            _YetaWF_TemplateActionIcons.openMenu($idButton, $idMenu);
-        ev.preventDefault();
-        return false;
-    });
-    $idMenu.kendoMenu({
-        orientation: "vertical"
-    }).hide();
-};
-// Handle clicks elsewhere so we can close the menus
-$(document).on('click mousedown', function (ev) {
-    if (ev.which != 1) return;
-    if (_YetaWF_TemplateActionIcons.menusOpen > 0) {
-        // delay closing to handle the event
-        setTimeout(function () {
-            _YetaWF_TemplateActionIcons.closeMenus();
-        }, 300);
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = function (d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+        return extendStatics(d, b);
     }
-});
-// Handle Escape key to close any open menus
-$(document).on('keydown', function (ev) {
-    if (ev.which != 27) return;
-    _YetaWF_TemplateActionIcons.closeMenus();
-});
-// last chance - handle a new page (UPS) and close open menus
-$YetaWF.registerNewPage(function(url) {
-    _YetaWF_TemplateActionIcons.closeMenus();
-});
-// A <div> is being emptied. Destroy all actionicons the <div> may contain.
-$YetaWF.registerClearDiv(function (tag) {
-    //var list = tag.querySelectorAll("button.yt_actionicons");
-    //var len = list.length;
-    //for (var i = 0; i < len; ++i) {
-    //    var el = list[i];
-    //    var button = $(el).data("kendoButton");
-    //    if (!button) throw "No kendo object found";/*DEBUG*/
-    //    button.destroy();
-    //}
-    var list = tag.querySelectorAll("ul.yGridActionMenu");
-    var len = list.length;
-    for (var i = 0; i < len; ++i) {
-        var el = list[i];
-        var menu = $(el).data("kendoMenu");
-        if (!menu) throw "No kendo object found";/*DEBUG*/
-        menu.destroy();
-    }
-});
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+var YetaWF_ComponentsHTML;
+(function (YetaWF_ComponentsHTML) {
+    var ActionIconsComponent = /** @class */ (function (_super) {
+        __extends(ActionIconsComponent, _super);
+        function ActionIconsComponent(controlId, setup) {
+            var _this = _super.call(this, controlId) || this;
+            _this.MenuControl = $YetaWF.getElementById(setup.MenuId);
+            var $btn = $(_this.Control).kendoButton();
+            $btn.on("click", function (ev) {
+                var vis = $YetaWF.isVisible(_this.MenuControl);
+                ActionIconsComponent.closeMenus();
+                if (!vis)
+                    _this.openMenu();
+                ev.preventDefault();
+                return false;
+            });
+            $(_this.MenuControl).kendoMenu({
+                orientation: "vertical"
+            }).hide();
+            return _this;
+        }
+        ActionIconsComponent.prototype.openMenu = function () {
+            ActionIconsComponent.closeMenus();
+            var $idMenu = $(this.MenuControl);
+            $idMenu.appendTo($("body"));
+            $idMenu.show();
+            ++ActionIconsComponent.menusOpen;
+            $idMenu.position({
+                my: "left top",
+                at: "left bottom",
+                of: $(this.Control),
+                collision: "flip"
+            });
+        };
+        ActionIconsComponent.closeMenus = function () {
+            // find all action menus after grid (there really should only be one)
+            var menus = $YetaWF.getElementsBySelector(".yGridActionMenu");
+            ActionIconsComponent.closeMenusGiven(menus);
+        };
+        ActionIconsComponent.closeMenusGiven = function (menus) {
+            ActionIconsComponent.menusOpen = 0;
+            for (var _i = 0, menus_1 = menus; _i < menus_1.length; _i++) {
+                var menu = menus_1[_i];
+                $(menu).hide();
+                var idButton = $YetaWF.getAttribute(menu, "id").replace("_menu", "_btn");
+                var button = $YetaWF.getElementByIdCond(idButton);
+                if (button) { // there can be a case without button if we switched to a new page
+                    $(menu).appendTo(button.parentElement);
+                }
+            }
+        };
+        ActionIconsComponent.menusOpen = 0;
+        return ActionIconsComponent;
+    }(YetaWF.ComponentBase));
+    YetaWF_ComponentsHTML.ActionIconsComponent = ActionIconsComponent;
+    // Handle clicks elsewhere so we can close the menus
+    $YetaWF.registerMultipleEventHandlersBody(["click", "mousedown"], null, function (ev) {
+        var e = ev;
+        if (e.which !== 1)
+            return true;
+        if (ActionIconsComponent.menusOpen > 0) {
+            var menus = $YetaWF.getElementsBySelector(".yGridActionMenu"); // get all action menus
+            menus = $YetaWF.limitToVisibleOnly(menus);
+            // delay closing to handle the event
+            setTimeout(function () {
+                ActionIconsComponent.closeMenusGiven(menus);
+            }, 300);
+        }
+        return true;
+    });
+    // Handle Escape key to close any open menus
+    $YetaWF.registerEventHandlerBody("keydown", null, function (ev) {
+        if (ev.which !== 27)
+            return true;
+        ActionIconsComponent.closeMenus();
+        return true;
+    });
+    // last chance - handle a new page (UPS) and close open menus
+    $YetaWF.registerNewPage(function (url) {
+        ActionIconsComponent.closeMenus();
+    });
+    // A <div> is being emptied. Destroy all actionicons the <div> may contain.
+    $YetaWF.registerClearDiv(function (tag) {
+        //var list = tag.querySelectorAll("button.yt_actionicons");
+        //var len = list.length;
+        //for (var i = 0; i < len; ++i) {
+        //    var el = list[i];
+        //    var button = $(el).data("kendoButton");
+        //    if (!button) throw "No kendo object found";/*DEBUG*/
+        //    button.destroy();
+        //}
+        var list = $YetaWF.getElementsBySelector("ul.yGridActionMenu", [tag]);
+        for (var _i = 0, list_1 = list; _i < list_1.length; _i++) {
+            var el = list_1[_i];
+            var menu = $(el).data("kendoMenu");
+            if (!menu)
+                throw "No kendo object found"; /*DEBUG*/
+            menu.destroy();
+        }
+    });
+})(YetaWF_ComponentsHTML || (YetaWF_ComponentsHTML = {}));
+
+//# sourceMappingURL=ActionIcons.js.map

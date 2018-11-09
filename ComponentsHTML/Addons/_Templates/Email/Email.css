@@ -1,5 +1,4 @@
+@charset "UTF-8";
 /* Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/ComponentsHTML#License */
-
 input.yt_email.t_edit {
-    width:45ch;
-}
+  width: 45ch; }

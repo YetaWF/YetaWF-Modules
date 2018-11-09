@@ -1,1 +1,1 @@
-﻿KendoUISkin.css
+﻿KendoUISkin.scss
