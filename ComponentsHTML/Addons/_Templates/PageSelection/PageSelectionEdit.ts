@@ -7,7 +7,7 @@ namespace YetaWF_ComponentsHTML {
 
     export class PageSelectionEditComponent extends YetaWF.ComponentBaseDataImpl {
 
-        public static readonly SELECTOR: string = ".yt_pageselection.t_edit";
+        public static readonly SELECTOR: string = "div.yt_pageselection.t_edit";
 
         private SelectPage: YetaWF_ComponentsHTML.DropDownListEditComponent;
         private APage: HTMLAnchorElement;

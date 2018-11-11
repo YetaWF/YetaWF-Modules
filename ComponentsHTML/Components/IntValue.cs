@@ -90,7 +90,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             hb.Append($@"
 {tag.ToString(YTagRenderMode.StartTag)}
 <script>
-new YetaWF_ComponentsHTML.IntValueEditComponent('{id}', {{ Min: {min}, Max: {max}, Step: {step}, NoEntryText: '{JE(noEntry??"")}' }});
+    new YetaWF_ComponentsHTML.IntValueEditComponent('{id}', {{ Min: {min}, Max: {max}, Step: {step}, NoEntryText: '{JE(noEntry??"")}' }});
 </script>
 ");
 

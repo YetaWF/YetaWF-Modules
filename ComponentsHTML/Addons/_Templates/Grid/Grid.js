@@ -77,7 +77,7 @@ var YetaWF_ComponentsHTML;
                 _this.BtnBottom = $YetaWF.getElement1BySelectorCond(".tg_pgbottom", [_this.Control]);
                 _this.PagerTotals = $YetaWF.getElement1BySelectorCond(".tg_totals", [_this.Control]);
                 if (_this.Setup.PageSize) {
-                    _this.InputPage = YetaWF_ComponentsHTML.IntValueEditComponent.getControlFromSelector("input[name$='.__Page']", [_this.Control]);
+                    _this.InputPage = YetaWF.ComponentBaseDataImpl.getControlFromSelector("input[name$='.__Page']", YetaWF_ComponentsHTML.IntValueEditComponent.SELECTOR, [_this.Control]);
                     _this.SelectPageSize = YetaWF_ComponentsHTML.DropDownListEditComponent.getControlFromSelector("select[name$='.__PageSelection']", [_this.Control]);
                 }
             }

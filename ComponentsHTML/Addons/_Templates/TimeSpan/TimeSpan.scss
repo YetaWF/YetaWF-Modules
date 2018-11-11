@@ -1,0 +1,20 @@
+/* Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/ComponentsHTML#License */
+
+div.yt_timespan.t_edit {
+
+    display:inline;
+
+    div.t_days,
+    div.t_hours,
+    div.t_minutes,
+    div.t_seconds {
+        display:inline;
+        padding-right:1ch;
+    }
+
+    label {
+        padding-right:1ch;
+    }
+}
+
+

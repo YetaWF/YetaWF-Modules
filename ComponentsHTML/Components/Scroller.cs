@@ -28,7 +28,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
 
             hb.Append($@"
-<div class='yt_scroller t_display'>
+<div id='{DivId}' class='yt_scroller t_display'>
     <a class='t_left' href='javascript:void(0)'></a>
     <div class='t_scrollarea'>
         <div class='t_items'>");
@@ -45,7 +45,9 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
     </div>
     <a class='t_right' href='javascript:void(0)'></a>
 </div>
-");
+<script>
+    new YetaWF_ComponentsHTML.ScrollerComponent('{DivId}');
+</script>");
 
             return hb.ToYHtmlString();
         }

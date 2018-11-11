@@ -1,18 +1,27 @@
-"use strict";
 /* Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/ComponentsHTML#License */
-var YetaWF_ComponentsHTML;
-(function (YetaWF_ComponentsHTML) {
-    var RecaptchaV2 = /** @class */ (function () {
-        function RecaptchaV2() {
-        }
-        RecaptchaV2.recaptchaInit = function (id) {
+
+declare var grecaptcha: any;
+
+namespace YetaWF_ComponentsHTML {
+
+    export interface IPackageConfigs {
+        SiteKey: string;
+        Theme: string;
+        Size: string;
+    }
+
+    export class RecaptchaV2 {
+
+        public static recaptchaInit(id: string) {
             var recaptcha = $YetaWF.getElementById(id);
             RecaptchaV2.onLoad(recaptcha);
-        };
-        RecaptchaV2.onLoad = function (tag) {
+        }
+
+        public static onLoad(tag: HTMLElement): void {
+
             if (typeof grecaptcha === 'undefined' || !grecaptcha.render) {
                 // keep trying until grecaptcha is available
-                setTimeout(function () {
+                setTimeout((): void => {
                     RecaptchaV2.onLoad(tag);
                 }, 100);
                 return;
@@ -22,10 +31,6 @@ var YetaWF_ComponentsHTML;
                 'theme': YConfigs.YetaWF_ComponentsHTML.Theme,
                 'size': YConfigs.YetaWF_ComponentsHTML.Size,
             });
-        };
-        return RecaptchaV2;
-    }());
-    YetaWF_ComponentsHTML.RecaptchaV2 = RecaptchaV2;
-})(YetaWF_ComponentsHTML || (YetaWF_ComponentsHTML = {}));
-
-//# sourceMappingURL=recaptchav2.js.map
+        }
+    }
+}

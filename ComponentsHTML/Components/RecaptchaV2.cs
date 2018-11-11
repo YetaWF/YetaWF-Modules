@@ -31,6 +31,11 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         }});
     }}
 </script>");
+            } else {
+                hb.Append($@"
+<script>
+    new YetaWF_ComponentsHTML.RecaptchaV2.recaptchaInit('{DivId}');
+</script>");
             }
             return hb.ToYHtmlString();
         }

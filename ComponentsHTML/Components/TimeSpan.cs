@@ -70,37 +70,37 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
             TimeSpanUI ts = new TimeSpanUI(model??new TimeSpan());
 
-            hb.Append($"<div id='{ControlId}' class='yt_timespan t_edit'>");
+            hb.Append($@"
+<div id='{ControlId}' class='yt_timespan t_edit'>");
 
             hb.Append(await HtmlHelper.ForEditComponentAsync(Container, PropertyName, model.ToString(), "Hidden", HtmlAttributes: HtmlAttributes, Validation: Validation));
 
             using (Manager.StartNestedComponent(FieldName)) {
 
                 hb.Append($@"
-<div class='t_days'>
-    {await HtmlHelper.ForLabelAsync(ts, nameof(TimeSpanUI.Days))}
-    {await HtmlHelper.ForEditAsync(ts, nameof(TimeSpanUI.Days))}{ValidationMessage(nameof(TimeSpanUI.Days))}
-</div>
-<div class='t_hours'>
-    {await HtmlHelper.ForLabelAsync(ts, nameof(TimeSpanUI.Hours))}
-    {await HtmlHelper.ForEditAsync(ts, nameof(TimeSpanUI.Hours))}{ValidationMessage(nameof(TimeSpanUI.Hours))}
-</div>
-<div class='t_minutes'>
-    {await HtmlHelper.ForLabelAsync(ts, nameof(TimeSpanUI.Minutes))}
-    {await HtmlHelper.ForEditAsync(ts, nameof(TimeSpanUI.Minutes))}{ValidationMessage(nameof(TimeSpanUI.Minutes))}
-</div>
-<div class='t_seconds'>
-    {await HtmlHelper.ForLabelAsync(ts, nameof(TimeSpanUI.Seconds))}
-    {await HtmlHelper.ForEditAsync(ts, nameof(TimeSpanUI.Seconds))}{ValidationMessage(nameof(TimeSpanUI.Seconds))}
-</div>");
+    <div class='t_days'>
+        {await HtmlHelper.ForLabelAsync(ts, nameof(TimeSpanUI.Days))}
+        {await HtmlHelper.ForEditAsync(ts, nameof(TimeSpanUI.Days))}{ValidationMessage(nameof(TimeSpanUI.Days))}
+    </div>
+    <div class='t_hours'>
+        {await HtmlHelper.ForLabelAsync(ts, nameof(TimeSpanUI.Hours))}
+        {await HtmlHelper.ForEditAsync(ts, nameof(TimeSpanUI.Hours))}{ValidationMessage(nameof(TimeSpanUI.Hours))}
+    </div>
+    <div class='t_minutes'>
+        {await HtmlHelper.ForLabelAsync(ts, nameof(TimeSpanUI.Minutes))}
+        {await HtmlHelper.ForEditAsync(ts, nameof(TimeSpanUI.Minutes))}{ValidationMessage(nameof(TimeSpanUI.Minutes))}
+    </div>
+    <div class='t_seconds'>
+        {await HtmlHelper.ForLabelAsync(ts, nameof(TimeSpanUI.Seconds))}
+        {await HtmlHelper.ForEditAsync(ts, nameof(TimeSpanUI.Seconds))}{ValidationMessage(nameof(TimeSpanUI.Seconds))}
+    </div>");
 
             }
-            hb.Append($"</div>");
-
-            ScriptBuilder sb = new ScriptBuilder();
-            sb.Append($@"YetaWF_TimeSpan.init('{ControlId}');");
-
-            hb.Append(Manager.ScriptManager.AddNow(sb.ToString()).ToString());
+            hb.Append($@"
+</div>
+<script>
+    new YetaWF_ComponentsHTML.TimeSpanEditComponent('{ControlId}');
+</script>");
 
             return hb.ToYHtmlString();
         }

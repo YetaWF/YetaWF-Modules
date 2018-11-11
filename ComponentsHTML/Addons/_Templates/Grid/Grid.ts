@@ -132,7 +132,7 @@ namespace YetaWF_ComponentsHTML {
                 this.BtnBottom = $YetaWF.getElement1BySelectorCond(".tg_pgbottom", [this.Control]) as HTMLDivElement | null;
                 this.PagerTotals = $YetaWF.getElement1BySelectorCond(".tg_totals", [this.Control]) as HTMLDivElement | null;
                 if (this.Setup.PageSize) {
-                    this.InputPage = YetaWF_ComponentsHTML.IntValueEditComponent.getControlFromSelector("input[name$='.__Page']", [this.Control]);
+                    this.InputPage = YetaWF.ComponentBaseDataImpl.getControlFromSelector<IntValueEditComponent>("input[name$='.__Page']", IntValueEditComponent.SELECTOR, [this.Control]);
                     this.SelectPageSize = YetaWF_ComponentsHTML.DropDownListEditComponent.getControlFromSelector("select[name$='.__PageSelection']", [this.Control]);
                 }
             }

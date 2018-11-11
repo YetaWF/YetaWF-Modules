@@ -163,40 +163,40 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             hb.Append(tag.ToString(YTagRenderMode.Normal));
 
             hb.Append($@"
-                <script>
-                    CKEDITOR.replace('{ControlId}', {{
-                    customConfig: '{Manager.GetCDNUrl(url)}',
-                        height: '{pixHeight}px',
-                        allowedContent: {(restrictedHtml ? "false" : "true")},");
+<script>
+    CKEDITOR.replace('{ControlId}', {{
+    customConfig: '{Manager.GetCDNUrl(url)}',
+        height: '{pixHeight}px',
+        allowedContent: {(restrictedHtml ? "false" : "true")},");
 
             if (!string.IsNullOrWhiteSpace(filebrowserImageBrowseUrl)) {
                 hb.Append($@"
-                    filebrowserImageBrowseUrl: '{YetaWFManager.JserEncode(filebrowserImageBrowseUrl)}',
-                    filebrowserImageBrowseLinkUrl: '{YetaWFManager.JserEncode(filebrowserImageBrowseUrl)}',");
+        filebrowserImageBrowseUrl: '{YetaWFManager.JserEncode(filebrowserImageBrowseUrl)}',
+        filebrowserImageBrowseLinkUrl: '{YetaWFManager.JserEncode(filebrowserImageBrowseUrl)}',");
             }
             if (!string.IsNullOrWhiteSpace(filebrowserFlashBrowseUrl)) {
                 hb.Append($@"
-                    filebrowserFlashBrowseUrl: '{YetaWFManager.JserEncode(filebrowserFlashBrowseUrl)}',");
+        filebrowserFlashBrowseUrl: '{YetaWFManager.JserEncode(filebrowserFlashBrowseUrl)}',");
             }
             if (!string.IsNullOrWhiteSpace(filebrowserFlashBrowseUrl)) {
                 hb.Append($@"
-                    filebrowserBrowseUrl: '{YetaWFManager.JserEncode(filebrowserPageBrowseUrl)}',");
+        filebrowserBrowseUrl: '{YetaWFManager.JserEncode(filebrowserPageBrowseUrl)}',");
             }
             hb.Append($@"
-                filebrowserWindowFeatures: 'modal=yes,location=no,menubar=no,toolbar=no,dependent=yes,minimizable=no,alwaysRaised=yes,resizable=yes,scrollbars=yes'
-            }});
-            // save data in the textarea field when the form is submitted
-            $YetaWF.Forms.addPreSubmitHandler({(Manager.InPartialView? 1 : 0)}, {{
-                form: $YetaWF.Forms.getForm($YetaWF.getElementById('{ControlId}')),
-                callback: function(entry) {{
-                    var $ctl = $('#{ControlId}');
-                    var ckEd = CKEDITOR.instances['{ControlId}'];
-                    var data = ckEd.getData();
-                    $ctl.val(data);
-                    //return $ctl[0].name + '&' + encodeURI(data);
-                }}
-            }});
-            </script>");
+        filebrowserWindowFeatures: 'modal=yes,location=no,menubar=no,toolbar=no,dependent=yes,minimizable=no,alwaysRaised=yes,resizable=yes,scrollbars=yes'
+    }});
+    // save data in the textarea field when the form is submitted
+    $YetaWF.Forms.addPreSubmitHandler({(Manager.InPartialView? 1 : 0)}, {{
+        form: $YetaWF.Forms.getForm($YetaWF.getElementById('{ControlId}')),
+        callback: function(entry) {{
+            var $ctl = $('#{ControlId}');
+            var ckEd = CKEDITOR.instances['{ControlId}'];
+            var data = ckEd.getData();
+            $ctl.val(data);
+            //return $ctl[0].name + '&' + encodeURI(data);
+        }}
+    }});
+</script>");
 
             return hb.ToYHtmlString();
         }

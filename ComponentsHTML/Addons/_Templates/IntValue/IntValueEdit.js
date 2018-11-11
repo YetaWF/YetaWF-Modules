@@ -20,25 +20,31 @@ var YetaWF_ComponentsHTML;
         function IntValueEditComponent(controlId, setup) {
             var _this = _super.call(this, controlId) || this;
             _this.kendoNumericTextBox = null;
-            $YetaWF.addObjectDataById(controlId, _this);
-            $(_this.Control).kendoNumericTextBox({
+            _this.InputControl = _this.Control;
+            $(_this.InputControl).kendoNumericTextBox({
                 decimals: 0, format: "n0",
                 min: setup.Min, max: setup.Max,
                 placeholder: setup.NoEntryText,
                 step: setup.Step,
                 downArrowText: "",
-                upArrowText: ""
+                upArrowText: "",
+                change: function (e) {
+                    var event = document.createEvent("Event");
+                    event.initEvent("intvalue_change", true, true);
+                    _this.Control.dispatchEvent(event);
+                    FormsSupport.validateElement(_this.Control);
+                }
             });
-            _this.kendoNumericTextBox = $(_this.Control).data("kendoNumericTextBox");
+            _this.kendoNumericTextBox = $(_this.InputControl).data("kendoNumericTextBox");
             return _this;
         }
         Object.defineProperty(IntValueEditComponent.prototype, "value", {
             get: function () {
-                return parseInt(this.Control.value, 10);
+                return parseInt(this.InputControl.value, 10);
             },
             set: function (val) {
                 if (this.kendoNumericTextBox == null) {
-                    this.Control.value = val.toString();
+                    this.InputControl.value = val.toString();
                 }
                 else {
                     this.kendoNumericTextBox.value(val);
@@ -49,7 +55,7 @@ var YetaWF_ComponentsHTML;
         });
         IntValueEditComponent.prototype.clear = function () {
             if (this.kendoNumericTextBox == null) {
-                this.Control.value = "";
+                this.InputControl.value = "";
             }
             else {
                 this.kendoNumericTextBox.value("");
@@ -57,28 +63,21 @@ var YetaWF_ComponentsHTML;
         };
         IntValueEditComponent.prototype.enable = function (enabled) {
             if (this.kendoNumericTextBox == null) {
-                $YetaWF.elementEnableToggle(this.Control, enabled);
+                $YetaWF.elementEnableToggle(this.InputControl, enabled);
             }
             else {
                 this.kendoNumericTextBox.enable(enabled);
             }
         };
-        IntValueEditComponent.prototype.destroy = function () {
-            if (this.kendoNumericTextBox)
-                this.kendoNumericTextBox.destroy();
-            $YetaWF.removeObjectDataById(this.Control.id);
-        };
-        IntValueEditComponent.getControlFromTag = function (elem) { return _super.getControlBaseFromTag.call(this, elem, IntValueEditComponent.SELECTOR); };
-        IntValueEditComponent.getControlFromSelector = function (selector, tags) { return _super.getControlBaseFromSelector.call(this, selector, IntValueEditComponent.SELECTOR, tags); };
-        IntValueEditComponent.getControlById = function (id) { return _super.getControlBaseById.call(this, id, IntValueEditComponent.SELECTOR); };
         IntValueEditComponent.SELECTOR = "input.yt_intvalue_base.t_edit.k-input[name]";
         return IntValueEditComponent;
-    }(YetaWF.ComponentBase));
+    }(YetaWF.ComponentBaseDataImpl));
     YetaWF_ComponentsHTML.IntValueEditComponent = IntValueEditComponent;
     // A <div> is being emptied. Destroy all IntValues the <div> may contain.
     $YetaWF.registerClearDiv(function (tag) {
-        YetaWF.ComponentBase.clearDiv(tag, IntValueEditComponent.SELECTOR, function (control) {
-            control.destroy();
+        IntValueEditComponent.clearDiv(tag, IntValueEditComponent.SELECTOR, function (control) {
+            if (control.kendoNumericTextBox)
+                control.kendoNumericTextBox.destroy();
         });
     });
 })(YetaWF_ComponentsHTML || (YetaWF_ComponentsHTML = {}));

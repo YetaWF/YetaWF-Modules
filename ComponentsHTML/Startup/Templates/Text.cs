@@ -5,6 +5,7 @@ using YetaWF.Core.Addons;
 using YetaWF.Core.Localize;
 using YetaWF.Core.Pages;
 using YetaWF.Core.Support;
+using YetaWF.Modules.ComponentsHTML.Controllers;
 
 namespace YetaWF.Modules.ComponentsHTML.Addons.Templates {
 
@@ -14,7 +15,8 @@ namespace YetaWF.Modules.ComponentsHTML.Addons.Templates {
 
             ScriptManager scripts = manager.ScriptManager;
 
-            scripts.AddLocalization("Text", "CopyToClip", this.__ResStr("copyToClip", "Copied to clipboard"));
+            string area = AreaRegistration.CurrentPackage.AreaName;
+            scripts.AddLocalization(area, "CopyToClip", this.__ResStr("copyToClip", "Copied to clipboard"));
 
             return Task.CompletedTask;
         }

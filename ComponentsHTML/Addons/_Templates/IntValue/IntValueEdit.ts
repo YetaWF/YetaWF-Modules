@@ -9,67 +9,66 @@ namespace YetaWF_ComponentsHTML {
         NoEntryText: string;
     }
 
-    export class IntValueEditComponent extends YetaWF.ComponentBase<HTMLInputElement> {
+    export class IntValueEditComponent extends YetaWF.ComponentBaseDataImpl {
 
         public static readonly SELECTOR: string = "input.yt_intvalue_base.t_edit.k-input[name]";
 
-        kendoNumericTextBox: kendo.ui.NumericTextBox | null = null;
+        private InputControl: HTMLInputElement;
+
+        public readonly kendoNumericTextBox: kendo.ui.NumericTextBox | null = null;
 
         constructor(controlId: string, setup: IntValueSetup) {
             super(controlId);
+            this.InputControl = this.Control as HTMLInputElement;
 
-            $YetaWF.addObjectDataById(controlId, this);
-
-            $(this.Control).kendoNumericTextBox({
+            $(this.InputControl).kendoNumericTextBox({
                 decimals: 0, format: "n0",
                 min: setup.Min, max: setup.Max,
                 placeholder: setup.NoEntryText,
                 step: setup.Step,
                 downArrowText: "",
-                upArrowText: ""
+                upArrowText: "",
+                change: (e: kendo.ui.NumericTextBoxChangeEvent): void => {
+                    var event = document.createEvent("Event");
+                    event.initEvent("intvalue_change", true, true);
+                    this.Control.dispatchEvent(event);
+                    FormsSupport.validateElement(this.Control);
+                }
             });
-            this.kendoNumericTextBox = $(this.Control).data("kendoNumericTextBox");
+            this.kendoNumericTextBox = $(this.InputControl).data("kendoNumericTextBox");
         }
 
         get value(): number {
-            return parseInt(this.Control.value, 10);
+            return parseInt(this.InputControl.value, 10);
         }
         set value(val: number) {
             if (this.kendoNumericTextBox == null) {
-                this.Control.value = val.toString();
+                this.InputControl.value = val.toString();
             } else {
                 this.kendoNumericTextBox.value(val);
             }
         }
         public clear(): void {
             if (this.kendoNumericTextBox == null) {
-                this.Control.value = "";
+                this.InputControl.value = "";
             } else {
                 this.kendoNumericTextBox.value("");
             }
         }
         public enable(enabled: boolean): void {
             if (this.kendoNumericTextBox == null) {
-                $YetaWF.elementEnableToggle(this.Control, enabled);
+                $YetaWF.elementEnableToggle(this.InputControl, enabled);
             } else {
                 this.kendoNumericTextBox.enable(enabled);
             }
         }
-        public destroy(): void {
-            if (this.kendoNumericTextBox)
-                this.kendoNumericTextBox.destroy();
-            $YetaWF.removeObjectDataById(this.Control.id);
-        }
-
-        public static getControlFromTag(elem: HTMLElement): IntValueEditComponent { return super.getControlBaseFromTag<IntValueEditComponent>(elem, IntValueEditComponent.SELECTOR); }
-        public static getControlFromSelector(selector: string, tags: HTMLElement[]): IntValueEditComponent { return super.getControlBaseFromSelector<IntValueEditComponent>(selector, IntValueEditComponent.SELECTOR, tags); }
-        public static getControlById(id: string): IntValueEditComponent { return super.getControlBaseById<IntValueEditComponent>(id, IntValueEditComponent.SELECTOR); }
     }
 
     // A <div> is being emptied. Destroy all IntValues the <div> may contain.
     $YetaWF.registerClearDiv((tag: HTMLElement): void => {
-        YetaWF.ComponentBase.clearDiv<IntValueEditComponent>(tag, IntValueEditComponent.SELECTOR, (control: IntValueEditComponent): void => {
-            control.destroy();
+        IntValueEditComponent.clearDiv<IntValueEditComponent>(tag, IntValueEditComponent.SELECTOR, (control: IntValueEditComponent): void => {
+            if (control.kendoNumericTextBox)
+                control.kendoNumericTextBox.destroy();
         });
     });
 }

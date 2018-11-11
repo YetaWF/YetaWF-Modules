@@ -86,7 +86,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         }
 
         public static async Task IncludeExplicitAsync() { // this component is reusable so we need to explicitly include all js/css
-            await KendoUICore.AddFileAsync("kendo.maskedtextbox.min.js");
+            await KendoUICore.AddFileAsync("kendo.maskedtextbox.min.js");//$$$$
             await Manager.AddOnManager.AddTemplateAsync(Controllers.AreaRegistration.CurrentPackage.AreaName, "Text");
         }
         public async Task<YHtmlString> RenderAsync(string model) {
@@ -98,12 +98,12 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
             HtmlBuilder hb = new HtmlBuilder();
 
-            bool useKendo = true;
-
             YTagBuilder tag = new YTagBuilder("input");
             if (!string.IsNullOrWhiteSpace(templateCssClass))
                 tag.AddCssClass(templateCssClass);
             tag.AddCssClass("yt_text_base");
+            // adding k-textbox to the control makes it look like a kendo maskedtext box without the overhead of actually calling kendoMaskedTextBox
+            tag.AddCssClass("k-textbox");
             tag.AddCssClass("t_edit");
             component.FieldSetup(tag, component.Validation ? FieldType.Validated : FieldType.Normal);
             //string id = null;
@@ -133,10 +133,8 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             tag.MergeAttribute("type", "text");
             tag.MergeAttribute("value", model ?? "");
             tag.MergeAttribute("autocomplete", "on");
-            if (!useKendo)
-                tag.AddCssClass("ybrowsercontrols");
 
-            hb.Append(tag.ToString(YTagRenderMode.StartTag));
+            hb.Append($@"{tag.ToString(YTagRenderMode.StartTag)}");
 
             if (copy) {
                 await Manager.AddOnManager.AddAddOnNamedAsync(component.Package.AreaName, "clipboardjs.com.clipboard");// add clipboard support
