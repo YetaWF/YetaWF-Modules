@@ -1,1 +1,2 @@
-﻿ModuleSelection.js
+﻿ModuleSelectionEdit.ts
+ModuleSelectionLegacy.js

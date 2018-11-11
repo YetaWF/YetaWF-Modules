@@ -101,28 +101,21 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         public override ComponentType GetComponentType() { return ComponentType.Edit; }
 
         public class ModuleSelectionUINew {
-
-            [UIHint("Hidden")]
-            public string AjaxUrl { get; set; }
-            [UIHint("Hidden")]
-            public string AjaxUrlComplete { get; set; }
-
             [UIHint("ModuleSelectionPackageNew"), Caption("Packages"), Description("Select one of the installed packages to list all available modules for the package")]
             public Guid? Package { get; set; }
             [Caption("Module"), Description("Select one of the available modules")]
             public Guid? Module { get; set; }
         }
         public class ModuleSelectionUIExisting {
-
-            [UIHint("Hidden")]
-            public string AjaxUrl { get; set; }
-            [UIHint("Hidden")]
-            public string AjaxUrlComplete { get; set; }
-
             [UIHint("ModuleSelectionPackageExisting"), Caption("Packages"), Description("Select one of the installed packages to list all available modules for the package")]
             public Guid? Package { get; set; }
             [Caption("Module"), Description("Select one of the available modules")]
             public Guid? Module { get; set; }
+        }
+
+        public class Setup {
+            public string AjaxUrl { get; set; }
+            public string AjaxUrlComplete { get; set; }
         }
 
         public async Task<YHtmlString> RenderAsync(Guid? model) {
@@ -135,29 +128,28 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             ModuleSelectionUIExisting uiExisting = null;
             if (newMods) {
                 uiNew = new ModuleSelectionUINew {
-                    AjaxUrl = YetaWFManager.UrlFor(typeof(ModuleSelectionController), newMods ? nameof(ModuleSelectionController.GetPackageModulesNew) : nameof(ModuleSelectionController.GetPackageModulesDesigned)),
-                    AjaxUrlComplete = YetaWFManager.UrlFor(typeof(ModuleSelectionController), nameof(ModuleSelectionController.GetPackageModulesDesignedFromGuid)),
                     Package = model,
                     Module = model,
                 };
             } else {
                 uiExisting = new ModuleSelectionUIExisting {
-                    AjaxUrl = YetaWFManager.UrlFor(typeof(ModuleSelectionController), newMods ? nameof(ModuleSelectionController.GetPackageModulesNew) : nameof(ModuleSelectionController.GetPackageModulesDesigned)),
-                    AjaxUrlComplete = YetaWFManager.UrlFor(typeof(ModuleSelectionController), nameof(ModuleSelectionController.GetPackageModulesDesignedFromGuid)),
                     Package = model,
                     Module = model,
                 };
             }
+            Setup setup = new Setup {
+                AjaxUrl = YetaWFManager.UrlFor(typeof(ModuleSelectionController), newMods ? nameof(ModuleSelectionController.GetPackageModulesNew) : nameof(ModuleSelectionController.GetPackageModulesDesigned)),
+                AjaxUrlComplete = YetaWFManager.UrlFor(typeof(ModuleSelectionController), nameof(ModuleSelectionController.GetPackageModulesDesignedFromGuid)),
+            };
 
             hb.Append($@"
-<div id='{DivId}' class='yt_moduleselection t_edit' data-name='{FieldName}'>");
+<div id='{DivId}' class='yt_moduleselection t_edit'>");
 
             using (Manager.StartNestedComponent(FieldName)) {
 
                 if (newMods) {
 
                     hb.Append($@"
-    {await HtmlHelper.ForDisplayAsync(uiNew, nameof(uiNew.AjaxUrl), HtmlAttributes: new { @class = Forms.CssFormNoSubmit })}
     <div class='t_packages'>
         {await HtmlHelper.ForLabelAsync(uiNew, nameof(uiNew.Package))}
         {await HtmlHelper.ForEditAsync(uiNew, nameof(uiNew.Package))}
@@ -167,8 +159,6 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
                     hb.Append($@"
 
-    {await HtmlHelper.ForDisplayAsync(uiExisting, nameof(uiExisting.AjaxUrl), HtmlAttributes: new { @class = Forms.CssFormNoSubmit })}
-    {await HtmlHelper.ForDisplayAsync(uiExisting, nameof(uiExisting.AjaxUrlComplete), HtmlAttributes: new { @class = Forms.CssFormNoSubmit })}
     <div class='t_packages'>
         {await HtmlHelper.ForLabelAsync(uiExisting, nameof(uiExisting.Package))}
         {await HtmlHelper.ForEditAsync(uiExisting, nameof(uiExisting.Package))}
@@ -203,9 +193,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
     </div>
 </div>
 <script>
-    {BeginDocumentReady(DivId)}
-        YetaWF_ModuleSelection.init('{DivId}');
-    {EndDocumentReady()}
+    new YetaWF_ComponentsHTML.ModuleSelectionComponent('{DivId}', {YetaWFManager.JsonSerialize(setup)});
 </script>");
 
             return hb.ToYHtmlString();

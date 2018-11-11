@@ -1,1 +1,1 @@
-﻿SMTPSserver.scss
+﻿SMTPServer.scss

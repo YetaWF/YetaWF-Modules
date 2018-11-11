@@ -10,7 +10,6 @@ namespace YetaWF_ComponentsHTML {
 
         private static readonly CLEAREDFILE = '(CLEARED)';
 
-
         private Setup: ImageEditSetup;
         private UploadControl: FileUpload1Component;
         private PreviewImg: HTMLImageElement;

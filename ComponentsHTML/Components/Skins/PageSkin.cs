@@ -64,9 +64,6 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         public override ComponentType GetComponentType() { return ComponentType.Edit; }
 
         public class PageSkinUI {
-            [UIHint("Hidden")]
-            public string AjaxUrl { get; set; }
-
             [Caption("Skin Collection"), Description("The name of the skin collection")]
             [StringLength(SkinDefinition.MaxCollection)]
             [UIHint("SkinCollection")]
@@ -77,22 +74,26 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             public string FileName { get; set; } // may be null for site default
             public string FileName_Collection { get { return Collection; } }
         }
-
+        public class Setup {
+            public string AjaxUrl { get; set; }
+        }
         public async Task<YHtmlString> RenderAsync(SkinDefinition model) {
 
             HtmlBuilder hb = new HtmlBuilder();
 
             PageSkinUI ps = new PageSkinUI {
-                AjaxUrl = YetaWFManager.UrlFor(typeof(SkinController), nameof(SkinController.GetPageSkins)),
                 Collection = model.Collection,
                 FileName = model.FileName,
+            };
+
+            Setup setup = new Setup {
+                AjaxUrl = YetaWFManager.UrlFor(typeof(SkinController), nameof(SkinController.GetPageSkins)),
             };
 
             using (Manager.StartNestedComponent(FieldName)) {
 
                 hb.Append($@"
 <div id='{ControlId}' class='yt_pageskin t_edit'>
-    {(await HtmlHelper.ForDisplayAsync(ps, nameof(ps.AjaxUrl))).ToString()}
     <div class='t_collection'>
         {await HtmlHelper.ForLabelAsync(ps, nameof(ps.Collection))}
         {await HtmlHelper.ForEditAsync(ps, nameof(ps.Collection))}
@@ -103,7 +104,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
     </div>
 </div>
 <script>
-    YetaWF_Template_PageSkin.pageInit('{ControlId}');
+    new YetaWF_ComponentsHTML.PageSkinEditComponent('{ControlId}', {YetaWFManager.JsonSerialize(setup)});
 </script>");
 
             }

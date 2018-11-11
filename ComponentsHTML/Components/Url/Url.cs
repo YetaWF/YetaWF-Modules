@@ -112,7 +112,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             };
 
             hb.Append($@"
-<div id='{ControlId}' class='yt_url t_edit' data-name='{FieldName}'>");
+<div id='{ControlId}' class='yt_url t_edit'>");
 
             YTagBuilder tag = new YTagBuilder("input");
             tag.AddCssClass("t_hidden");

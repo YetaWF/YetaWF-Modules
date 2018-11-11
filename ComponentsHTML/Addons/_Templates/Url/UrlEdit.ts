@@ -10,7 +10,7 @@ namespace YetaWF_ComponentsHTML {
         Local = 1, // Local Url starting with /
         Remote = 2, // Remote Url http:// https:// or /
     }
-    export class UrlEditComponent extends YetaWF.ComponentBase<HTMLDivElement> {
+    export class UrlEditComponent extends YetaWF.ComponentBaseDataImpl {
 
         public static readonly SELECTOR: string = ".yt_url.t_edit";
 
@@ -26,8 +26,6 @@ namespace YetaWF_ComponentsHTML {
         constructor(controlId: string, setup: UrlEditSetup) {
             super(controlId);
             this.Setup = setup;
-
-            $YetaWF.addObjectDataById(controlId, this);
 
             this.inputHidden = $YetaWF.getElement1BySelector(".t_hidden", [this.Control]) as HTMLInputElement;
             this.selectType = YetaWF_ComponentsHTML.DropDownListEditComponent.getControlFromSelector("select.yt_urltype", [this.Control]);
@@ -152,21 +150,11 @@ namespace YetaWF_ComponentsHTML {
             if (this.inputUrl)
                 $YetaWF.elementEnableToggle(this.inputUrl, enabled);
         }
-
-        public static getControlFromTag(elem: HTMLElement): UrlEditComponent { return super.getControlBaseFromTag<UrlEditComponent>(elem, UrlEditComponent.SELECTOR); }
-        public static getControlFromSelector(selector: string | null, tags: HTMLElement[]): UrlEditComponent { return super.getControlBaseFromSelector<UrlEditComponent>(selector || UrlEditComponent.SELECTOR, UrlEditComponent.SELECTOR, tags); }
-        public static getControlById(id: string): UrlEditComponent { return super.getControlBaseById<UrlEditComponent>(id, UrlEditComponent.SELECTOR); }
-
-        public destroy(): void {
-            $YetaWF.removeObjectDataById(this.Control.id);
-        }
     }
 
     // A <div> is being emptied. Destroy all controls the <div> may contain.
     $YetaWF.registerClearDiv((tag: HTMLElement): void => {
-        YetaWF.ComponentBase.clearDiv<UrlEditComponent>(tag, UrlEditComponent.SELECTOR, (control: UrlEditComponent): void => {
-            control.destroy();
-        });
+        UrlEditComponent.clearDiv(tag, UrlEditComponent.SELECTOR);
     });
 }
 

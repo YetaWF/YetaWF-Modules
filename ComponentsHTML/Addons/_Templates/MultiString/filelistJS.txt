@@ -1,1 +1,2 @@
-﻿multistring.js
+﻿MultiStringEdit.ts
+MultiStringLegacy.js

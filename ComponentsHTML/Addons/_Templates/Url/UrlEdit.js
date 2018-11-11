@@ -29,7 +29,6 @@ var YetaWF_ComponentsHTML;
             _this.divLocal = null;
             _this.divRemote = null;
             _this.Setup = setup;
-            $YetaWF.addObjectDataById(controlId, _this);
             _this.inputHidden = $YetaWF.getElement1BySelector(".t_hidden", [_this.Control]);
             _this.selectType = YetaWF_ComponentsHTML.DropDownListEditComponent.getControlFromSelector("select.yt_urltype", [_this.Control]);
             // tslint:disable-next-line:no-bitwise
@@ -154,21 +153,13 @@ var YetaWF_ComponentsHTML;
             if (this.inputUrl)
                 $YetaWF.elementEnableToggle(this.inputUrl, enabled);
         };
-        UrlEditComponent.getControlFromTag = function (elem) { return _super.getControlBaseFromTag.call(this, elem, UrlEditComponent.SELECTOR); };
-        UrlEditComponent.getControlFromSelector = function (selector, tags) { return _super.getControlBaseFromSelector.call(this, selector || UrlEditComponent.SELECTOR, UrlEditComponent.SELECTOR, tags); };
-        UrlEditComponent.getControlById = function (id) { return _super.getControlBaseById.call(this, id, UrlEditComponent.SELECTOR); };
-        UrlEditComponent.prototype.destroy = function () {
-            $YetaWF.removeObjectDataById(this.Control.id);
-        };
         UrlEditComponent.SELECTOR = ".yt_url.t_edit";
         return UrlEditComponent;
-    }(YetaWF.ComponentBase));
+    }(YetaWF.ComponentBaseDataImpl));
     YetaWF_ComponentsHTML.UrlEditComponent = UrlEditComponent;
     // A <div> is being emptied. Destroy all controls the <div> may contain.
     $YetaWF.registerClearDiv(function (tag) {
-        YetaWF.ComponentBase.clearDiv(tag, UrlEditComponent.SELECTOR, function (control) {
-            control.destroy();
-        });
+        UrlEditComponent.clearDiv(tag, UrlEditComponent.SELECTOR);
     });
 })(YetaWF_ComponentsHTML || (YetaWF_ComponentsHTML = {}));
 

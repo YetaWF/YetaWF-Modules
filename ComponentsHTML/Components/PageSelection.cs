@@ -99,7 +99,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
     </div>
 </div>
 <script>
-    YetaWF_PageSelection.init('{DivId}');
+    new YetaWF_ComponentsHTML.PageSelectionEditComponent('{DivId}');
 </script>");
 
             return hb.ToYHtmlString();

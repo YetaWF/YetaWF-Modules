@@ -101,13 +101,13 @@ YetaWF_MenuEdit.LoadTree = function (treeId, detailsId, data, newEntry) {
                 default:
                     throw "Invalid entry type {0}".format(entry);/*DEBUG*/
                 case MenuEntryType_Entry:
-                    YetaWF_Url.Enable($("div[data-name='ModAction.Url']", $details), true);
-                    YetaWF_ModuleSelection.Enable($("div[data-name='ModAction.SubModule']", $details), true);
-                    YetaWF_MultiString.Enable($("div[data-name='ModAction.MenuText']", $details), true);
-                    YetaWF_MultiString.Enable($("div[data-name='ModAction.LinkText']", $details), true);
+                    YetaWF_Url.Enable($("input[name='ModAction.Url']", $details), true);
+                    YetaWF_ModuleSelection.Enable($("select[name='ModAction.SubModule']", $details), true);
+                    YetaWF_MultiString.Enable($("input[name='ModAction.MenuText']", $details), true);
+                    YetaWF_MultiString.Enable($("input[name='ModAction.LinkText']", $details), true);
                     $("input[name='ModAction.ImageUrlFinal']", $details).removeAttr('disabled');
-                    YetaWF_MultiString.Enable($("div[data-name='ModAction.Tooltip']", $details), true);
-                    YetaWF_MultiString.Enable($("div[data-name='ModAction.Legend']", $details), true);
+                    YetaWF_MultiString.Enable($("input[name='ModAction.Tooltip']", $details), true);
+                    YetaWF_MultiString.Enable($("input[name='ModAction.Legend']", $details), true);
                     $("input:checkbox[name='ModAction.Enabled']", $details).removeAttr('disabled');
                     $("input[name='ModAction.CssClass']", $details).removeAttr('disabled');
                     YetaWF_TemplateDropDownList.Enable($("select[name='ModAction.Style']", $details), true);
@@ -115,21 +115,21 @@ YetaWF_MenuEdit.LoadTree = function (treeId, detailsId, data, newEntry) {
                     YetaWF_TemplateDropDownList.Enable($("select[name='ModAction.Category']", $details), true);
                     YetaWF_TemplateDropDownList.Enable($("select[name='ModAction.LimitToRole']", $details), true);
                     $("input:checkbox[name='ModAction.AuthorizationIgnore']", $details).removeAttr('disabled');
-                    YetaWF_MultiString.Enable($("div[data-name='ModAction.ConfirmationText']", $details), true);
-                    YetaWF_MultiString.Enable($("div[data-name='ModAction.PleaseWaitText']", $details), true);
+                    YetaWF_MultiString.Enable($("input[name='ModAction.ConfirmationText']", $details), true);
+                    YetaWF_MultiString.Enable($("input[name='ModAction.PleaseWaitText']", $details), true);
                     $("input:checkbox[name='ModAction.SaveReturnUrl']", $details).removeAttr('disabled');
                     $("input:checkbox[name='ModAction.AddToOriginList']", $details).removeAttr('disabled');
                     $("input:checkbox[name='ModAction.NeedsModuleContext']", $details).removeAttr('disabled');
                     $("input:checkbox[name='ModAction.DontFollow']", $details).removeAttr('disabled');
                     break;
                 case MenuEntryType_Parent:
-                    YetaWF_Url.Enable($("div[data-name='ModAction.Url']", $details), false);
-                    YetaWF_ModuleSelection.Enable($("div[data-name='ModAction.SubModule']", $details), false);
-                    YetaWF_MultiString.Enable($("div[data-name='ModAction.MenuText']", $details), true);
-                    YetaWF_MultiString.Enable($("div[data-name='ModAction.LinkText']", $details), true);
+                    YetaWF_Url.Enable($("input[name='ModAction.Url']", $details), false);
+                    YetaWF_ModuleSelection.Enable($("select[name='ModAction.SubModule']", $details), false);
+                    YetaWF_MultiString.Enable($("input[name='ModAction.MenuText']", $details), true);
+                    YetaWF_MultiString.Enable($("input[name='ModAction.LinkText']", $details), true);
                     $("input[name='ModAction.ImageUrlFinal']", $details).removeAttr('disabled');
-                    YetaWF_MultiString.Enable($("div[data-name='ModAction.Tooltip']", $details), true);
-                    YetaWF_MultiString.Enable($("div[data-name='ModAction.Legend']", $details), true);
+                    YetaWF_MultiString.Enable($("input[name='ModAction.Tooltip']", $details), true);
+                    YetaWF_MultiString.Enable($("input[name='ModAction.Legend']", $details), true);
                     $("input:checkbox[name='ModAction.Enabled']", $details).removeAttr('disabled');
                     $("input[name='ModAction.CssClass']", $details).removeAttr('disabled');
                     YetaWF_TemplateDropDownList.Enable($("select[name='ModAction.Style']", $details), true);
@@ -137,21 +137,21 @@ YetaWF_MenuEdit.LoadTree = function (treeId, detailsId, data, newEntry) {
                     YetaWF_TemplateDropDownList.Enable($("select[name='ModAction.Category']", $details), true);
                     YetaWF_TemplateDropDownList.Enable($("select[name='ModAction.LimitToRole']", $details), true);
                     $("input:checkbox[name='ModAction.AuthorizationIgnore']", $details).attr('disabled', 'disabled');
-                    YetaWF_MultiString.Enable($("div[data-name='ModAction.ConfirmationText']", $details), false);
-                    YetaWF_MultiString.Enable($("div[data-name='ModAction.PleaseWaitText']", $details), false);
+                    YetaWF_MultiString.Enable($("input[name='ModAction.ConfirmationText']", $details), false);
+                    YetaWF_MultiString.Enable($("input[name='ModAction.PleaseWaitText']", $details), false);
                     $("input:checkbox[name='ModAction.SaveReturnUrl']", $details).attr('disabled', 'disabled');
                     $("input:checkbox[name='ModAction.AddToOriginList']", $details).attr('disabled', 'disabled');
                     $("input:checkbox[name='ModAction.NeedsModuleContext']", $details).attr('disabled', 'disabled');
                     $("input:checkbox[name='ModAction.DontFollow']", $details).attr('disabled', 'disabled');
                     break;
                 case MenuEntryType_Separator:
-                    YetaWF_Url.Enable($("div[data-name='ModAction.Url']", $details), false);
-                    YetaWF_ModuleSelection.Enable($("div[data-name='ModAction.SubModule']", $details), false);
-                    YetaWF_MultiString.Enable($("div[data-name='ModAction.MenuText']", $details), false);
-                    YetaWF_MultiString.Enable($("div[data-name='ModAction.LinkText']", $details), false);
+                    YetaWF_Url.Enable($("input[name='ModAction.Url']", $details), false);
+                    YetaWF_ModuleSelection.Enable($("select[name='ModAction.SubModule']", $details), false);
+                    YetaWF_MultiString.Enable($("input[name='ModAction.MenuText']", $details), false);
+                    YetaWF_MultiString.Enable($("input[name='ModAction.LinkText']", $details), false);
                     $("input[name='ModAction.ImageUrlFinal']", $details).attr('disabled', 'disabled');
-                    YetaWF_MultiString.Enable($("div[data-name='ModAction.Tooltip']", $details), false);
-                    YetaWF_MultiString.Enable($("div[data-name='ModAction.Legend']", $details), false);
+                    YetaWF_MultiString.Enable($("input[name='ModAction.Tooltip']", $details), false);
+                    YetaWF_MultiString.Enable($("input[name='ModAction.Legend']", $details), false);
                     $("input:checkbox[name='ModAction.Enabled']", $details).attr('disabled', 'disabled');
                     $("input[name='ModAction.CssClass']", $details).attr('disabled', 'disabled');
                     YetaWF_TemplateDropDownList.Enable($("select[name='ModAction.Style']", $details), false);
@@ -159,8 +159,8 @@ YetaWF_MenuEdit.LoadTree = function (treeId, detailsId, data, newEntry) {
                     YetaWF_TemplateDropDownList.Enable($("select[name='ModAction.Category']", $details), false);
                     YetaWF_TemplateDropDownList.Enable($("select[name='ModAction.LimitToRole']", $details), false);
                     $("input:checkbox[name='ModAction.AuthorizationIgnore']", $details).attr('disabled', 'disabled');
-                    YetaWF_MultiString.Enable($("div[data-name='ModAction.ConfirmationText']", $details), false);
-                    YetaWF_MultiString.Enable($("div[data-name='ModAction.PleaseWaitText']", $details), false);
+                    YetaWF_MultiString.Enable($("input[name='ModAction.ConfirmationText']", $details), false);
+                    YetaWF_MultiString.Enable($("input[name='ModAction.PleaseWaitText']", $details), false);
                     $("input:checkbox[name='ModAction.SaveReturnUrl']", $details).attr('disabled', 'disabled');
                     $("input:checkbox[name='ModAction.AddToOriginList']", $details).attr('disabled', 'disabled');
                     $("input:checkbox[name='ModAction.NeedsModuleContext']", $details).attr('disabled', 'disabled');
@@ -169,13 +169,13 @@ YetaWF_MenuEdit.LoadTree = function (treeId, detailsId, data, newEntry) {
             }
         } else {
             YetaWF_TemplateDropDownList.Enable($("select[name='ModAction.EntryType']", $details), false);
-            YetaWF_Url.Enable($("div[data-name='ModAction.Url']", $details), false);
-            YetaWF_ModuleSelection.Enable($("div[data-name='ModAction.SubModule']", $details), false);
-            YetaWF_MultiString.Enable($("div[data-name='ModAction.MenuText']", $details), false);
-            YetaWF_MultiString.Enable($("div[data-name='ModAction.LinkText']", $details), false);
+            YetaWF_Url.Enable($("input[name='ModAction.Url']", $details), false);
+            YetaWF_ModuleSelection.Enable($("select[name='ModAction.SubModule']", $details), false);
+            YetaWF_MultiString.Enable($("input[name='ModAction.MenuText']", $details), false);
+            YetaWF_MultiString.Enable($("input[name='ModAction.LinkText']", $details), false);
             $("input[name='ModAction.ImageUrlFinal']", $details).attr('disabled', 'disabled');
-            YetaWF_MultiString.Enable($("div[data-name='ModAction.Tooltip']", $details), false);
-            YetaWF_MultiString.Enable($("div[data-name='ModAction.Legend']", $details), false);
+            YetaWF_MultiString.Enable($("input[name='ModAction.Tooltip']", $details), false);
+            YetaWF_MultiString.Enable($("input[name='ModAction.Legend']", $details), false);
             $("input:checkbox[name='ModAction.Enabled']", $details).attr('disabled', 'disabled');
             $("input[name='ModAction.CssClass']", $details).attr('disabled', 'disabled');
             YetaWF_TemplateDropDownList.Enable($("select[name='ModAction.Style']", $details), false);
@@ -183,8 +183,8 @@ YetaWF_MenuEdit.LoadTree = function (treeId, detailsId, data, newEntry) {
             YetaWF_TemplateDropDownList.Enable($("select[name='ModAction.Category']", $details), false);
             YetaWF_TemplateDropDownList.Enable($("select[name='ModAction.LimitToRole']", $details), false);
             $("input:checkbox[name='ModAction.AuthorizationIgnore']", $details).attr('disabled', 'disabled');
-            YetaWF_MultiString.Enable($("div[data-name='ModAction.ConfirmationText']", $details), false);
-            YetaWF_MultiString.Enable($("div[data-name='ModAction.PleaseWaitText']", $details), false);
+            YetaWF_MultiString.Enable($("input[name='ModAction.ConfirmationText']", $details), false);
+            YetaWF_MultiString.Enable($("input[name='ModAction.PleaseWaitText']", $details), false);
             $("input:checkbox[name='ModAction.SaveReturnUrl']", $details).attr('disabled', 'disabled');
             $("input:checkbox[name='ModAction.AddToOriginList']", $details).attr('disabled', 'disabled');
             $("input:checkbox[name='ModAction.NeedsModuleContext']", $details).attr('disabled', 'disabled');
@@ -194,13 +194,13 @@ YetaWF_MenuEdit.LoadTree = function (treeId, detailsId, data, newEntry) {
     function UpdateFields(dataItem) {
         YetaWF_TemplateDropDownList.Update($("select[name='ModAction.EntryType']", $details), dataItem.EntryType);
         $("input[name='ModAction._Text']", $details).val(dataItem._Text);
-        YetaWF_Url.Update($("div[data-name='ModAction.Url']", $details), dataItem.Url, true);
-        YetaWF_ModuleSelection.UpdateComplete($("div[data-name='ModAction.SubModule']", $details), dataItem.SubModule);
-        YetaWF_MultiString.Update($("div[data-name='ModAction.MenuText']", $details), dataItem.MenuText);
-        YetaWF_MultiString.Update($("div[data-name='ModAction.LinkText']", $details), dataItem.LinkText);
+        YetaWF_Url.Update($("input[name='ModAction.Url']", $details), dataItem.Url, true);
+        YetaWF_ModuleSelection.UpdateComplete($("select[name='ModAction.SubModule']", $details), dataItem.SubModule);
+        YetaWF_MultiString.Update($("input[name='ModAction.MenuText']", $details), dataItem.MenuText);
+        YetaWF_MultiString.Update($("input[name='ModAction.LinkText']", $details), dataItem.LinkText);
         $("input[name='ModAction.ImageUrlFinal']", $details).val(dataItem.ImageUrlFinal);
-        YetaWF_MultiString.Update($("div[data-name='ModAction.Tooltip']", $details), dataItem.Tooltip);
-        YetaWF_MultiString.Update($("div[data-name='ModAction.Legend']", $details), dataItem.Legend);
+        YetaWF_MultiString.Update($("input[name='ModAction.Tooltip']", $details), dataItem.Tooltip);
+        YetaWF_MultiString.Update($("input[name='ModAction.Legend']", $details), dataItem.Legend);
         $("input:checkbox[name='ModAction.Enabled']", $details).prop('checked', dataItem.Enabled);
         $("input[name='ModAction.CssClass']", $details).val(dataItem.CssClass);
         YetaWF_TemplateDropDownList.Update($("select[name='ModAction.Style']", $details), dataItem.Style);
@@ -208,8 +208,8 @@ YetaWF_MenuEdit.LoadTree = function (treeId, detailsId, data, newEntry) {
         YetaWF_TemplateDropDownList.Update($("select[name='ModAction.Category']", $details), dataItem.Category);
         YetaWF_TemplateDropDownList.Update($("select[name='ModAction.LimitToRole']", $details), dataItem.LimitToRole);
         $("input:checkbox[name='ModAction.AuthorizationIgnore']", $details).prop('checked', dataItem.AuthorizationIgnore);
-        YetaWF_MultiString.Update($("div[data-name='ModAction.ConfirmationText']", $details), dataItem.ConfirmationText);
-        YetaWF_MultiString.Update($("div[data-name='ModAction.PleaseWaitText']", $details), dataItem.PleaseWaitText);
+        YetaWF_MultiString.Update($("input[name='ModAction.ConfirmationText']", $details), dataItem.ConfirmationText);
+        YetaWF_MultiString.Update($("input[name='ModAction.PleaseWaitText']", $details), dataItem.PleaseWaitText);
         $("input:checkbox[name='ModAction.SaveReturnUrl']", $details).prop('checked', dataItem.SaveReturnUrl);
         $("input:checkbox[name='ModAction.AddToOriginList']", $details).prop('checked', dataItem.AddToOriginList);
         $("input:checkbox[name='ModAction.NeedsModuleContext']", $details).prop('checked', dataItem.NeedsModuleContext);
@@ -221,13 +221,13 @@ YetaWF_MenuEdit.LoadTree = function (treeId, detailsId, data, newEntry) {
 
         YetaWF_TemplateDropDownList.Update($("select[name='ModAction.EntryType']", $details), MenuEntryType_Entry);
         $("input[name='ModAction._Text']", $details).val('');
-        YetaWF_Url.Clear($("div[data-name='ModAction.Url']", $details));
-        YetaWF_ModuleSelection.Clear($("div[data-name='ModAction.SubModule']", $details));
-        YetaWF_MultiString.Clear($("div[data-name='ModAction.MenuText']", $details));
-        YetaWF_MultiString.Clear($("div[data-name='ModAction.LinkText']", $details));
+        YetaWF_Url.Clear($("input[name='ModAction.Url']", $details));
+        YetaWF_ModuleSelection.Clear($("select[name='ModAction.SubModule']", $details));
+        YetaWF_MultiString.Clear($("input[name='ModAction.MenuText']", $details));
+        YetaWF_MultiString.Clear($("input[name='ModAction.LinkText']", $details));
         $("input[name='ModAction.ImageUrlFinal']", $details).val('');
-        YetaWF_MultiString.Clear($("div[data-name='ModAction.Tooltip']", $details));
-        YetaWF_MultiString.Clear($("div[data-name='ModAction.Legend']", $details));
+        YetaWF_MultiString.Clear($("input[name='ModAction.Tooltip']", $details));
+        YetaWF_MultiString.Clear($("input[name='ModAction.Legend']", $details));
         $("input:checkbox[name='ModAction.Enabled']", $details).prop('checked', false);
         $("input[name='ModAction.CssClass']", $details).val('');
         YetaWF_TemplateDropDownList.Clear($("select[name='ModAction.Style']", $details));
@@ -235,8 +235,8 @@ YetaWF_MenuEdit.LoadTree = function (treeId, detailsId, data, newEntry) {
         YetaWF_TemplateDropDownList.Clear($("select[name='ModAction.Category']", $details));
         YetaWF_TemplateDropDownList.Clear($("select[name='ModAction.LimitToRole']", $details));
         $("input:checkbox[name='ModAction.AuthorizationIgnore']", $details).prop('checked', false);
-        YetaWF_MultiString.Clear($("div[data-name='ModAction.ConfirmationText']", $details));
-        YetaWF_MultiString.Clear($("div[data-name='ModAction.PleaseWaitText']", $details));
+        YetaWF_MultiString.Clear($("input[name='ModAction.ConfirmationText']", $details));
+        YetaWF_MultiString.Clear($("input[name='ModAction.PleaseWaitText']", $details));
         $("input:checkbox[name='ModAction.SaveReturnUrl']", $details).prop('checked', false);
         $("input:checkbox[name='ModAction.AddToOriginList']", $details).prop('checked', false);
         $("input:checkbox[name='ModAction.NeedsModuleContext']", $details).prop('checked', false);
@@ -249,14 +249,14 @@ YetaWF_MenuEdit.LoadTree = function (treeId, detailsId, data, newEntry) {
         var entry = $("select[name='ModAction.EntryType']", $details).val();
         if (dataItem.EntryType != entry) return true;
 
-        if (YetaWF_Url.HasChanged($("div[data-name='ModAction.Url']", $details), dataItem.Url)) return true;
-        if (YetaWF_ModuleSelection.HasChanged($("div[data-name='ModAction.SubModule']", $details), dataItem.SubModule)) return true;
-        if (YetaWF_MultiString.HasChanged($("div[data-name='ModAction.MenuText']", $details), dataItem.MenuText)) return true;
-        if (YetaWF_MultiString.HasChanged($("div[data-name='ModAction.LinkText']", $details), dataItem.LinkText)) return true;
+        if (YetaWF_Url.HasChanged($("input[name='ModAction.Url']", $details), dataItem.Url)) return true;
+        if (YetaWF_ModuleSelection.HasChanged($("select[name='ModAction.SubModule']", $details), dataItem.SubModule)) return true;
+        if (YetaWF_MultiString.HasChanged($("input[name='ModAction.MenuText']", $details), dataItem.MenuText)) return true;
+        if (YetaWF_MultiString.HasChanged($("input[name='ModAction.LinkText']", $details), dataItem.LinkText)) return true;
         val = $("input[name='ModAction.ImageUrlFinal']", $details).val();
         if (!$YetaWF.stringCompare(dataItem.ImageUrlFinal, val)) return true;
-        if (YetaWF_MultiString.HasChanged($("div[data-name='ModAction.Tooltip']", $details), dataItem.Tooltip)) return true;
-        if (YetaWF_MultiString.HasChanged($("div[data-name='ModAction.Legend']", $details), dataItem.Legend)) return true;
+        if (YetaWF_MultiString.HasChanged($("input[name='ModAction.Tooltip']", $details), dataItem.Tooltip)) return true;
+        if (YetaWF_MultiString.HasChanged($("input[name='ModAction.Legend']", $details), dataItem.Legend)) return true;
         val = $("input:checkbox[name='ModAction.Enabled']", $details).prop('checked');
         if (dataItem.Enabled != val) return true;
         val = $("input[name='ModAction.CssClass']", $details).val();
@@ -271,8 +271,8 @@ YetaWF_MenuEdit.LoadTree = function (treeId, detailsId, data, newEntry) {
         if (dataItem.LimitToRole != val) return true;
         val = $("input:checkbox[name='ModAction.AuthorizationIgnore']", $details).prop('checked');
         if (dataItem.AuthorizationIgnore != val) return true;
-        if (YetaWF_MultiString.HasChanged($("div[data-name='ModAction.ConfirmationText']", $details), dataItem.ConfirmationText)) return true;
-        if (YetaWF_MultiString.HasChanged($("div[data-name='ModAction.PleaseWaitText']", $details), dataItem.PleaseWaitText)) return true;
+        if (YetaWF_MultiString.HasChanged($("input[name='ModAction.ConfirmationText']", $details), dataItem.ConfirmationText)) return true;
+        if (YetaWF_MultiString.HasChanged($("input[name='ModAction.PleaseWaitText']", $details), dataItem.PleaseWaitText)) return true;
         val = $("input:checkbox[name='ModAction.SaveReturnUrl']", $details).prop('checked');
         if (dataItem.SaveReturnUrl != val) return true;
         val = $("input:checkbox[name='ModAction.AddToOriginList']", $details).prop('checked');
@@ -297,13 +297,13 @@ YetaWF_MenuEdit.LoadTree = function (treeId, detailsId, data, newEntry) {
                 break;
             case MenuEntryType_Parent:
                 dataItem.Separator = false;
-                YetaWF_Url.Clear($("div[data-name='ModAction.Url']", $details));
-                YetaWF_ModuleSelection.Clear($("div[data-name='ModAction.SubModule']", $details));
+                YetaWF_Url.Clear($("input[name='ModAction.Url']", $details));
+                YetaWF_ModuleSelection.Clear($("select[name='ModAction.SubModule']", $details));
                 $("select[name='ModAction.Style']", $details).prop('selectedIndex', 0);
                 $("select[name='ModAction.Mode']", $details).prop('selectedIndex', 0);
                 $("select[name='ModAction.Category']", $details).prop('selectedIndex', 0);
-                YetaWF_MultiString.Clear($("div[data-name='ModAction.ConfirmationText']", $details));
-                YetaWF_MultiString.Clear($("div[data-name='ModAction.PleaseWaitText']", $details));
+                YetaWF_MultiString.Clear($("input[name='ModAction.ConfirmationText']", $details));
+                YetaWF_MultiString.Clear($("input[name='ModAction.PleaseWaitText']", $details));
                 $("input:checkbox[name='ModAction.SaveReturnUrl']", $details).prop('checked', false);
                 $("input:checkbox[name='ModAction.AddToOriginList']", $details).prop('checked', false);
                 $("input:checkbox[name='ModAction.NeedsModuleContext']", $details).prop('checked', false);
@@ -311,13 +311,13 @@ YetaWF_MenuEdit.LoadTree = function (treeId, detailsId, data, newEntry) {
                 break;
             case MenuEntryType_Separator:
                 dataItem.Separator = true;
-                YetaWF_Url.Clear($("div[data-name='ModAction.Url']", $details));
-                YetaWF_ModuleSelection.Clear($("div[data-name='ModAction.SubModule']", $details));
-                YetaWF_MultiString.Clear($("div[data-name='ModAction.MenuText']", $details));
-                YetaWF_MultiString.Clear($("div[data-name='ModAction.LinkText']", $details));
+                YetaWF_Url.Clear($("input[name='ModAction.Url']", $details));
+                YetaWF_ModuleSelection.Clear($("select[name='ModAction.SubModule']", $details));
+                YetaWF_MultiString.Clear($("input[name='ModAction.MenuText']", $details));
+                YetaWF_MultiString.Clear($("input[name='ModAction.LinkText']", $details));
                 $("input[name='ModAction.ImageUrlFinal']", $details).val('');
-                YetaWF_MultiString.Clear($("div[data-name='ModAction.Tooltip']", $details));
-                YetaWF_MultiString.Clear($("div[data-name='ModAction.Legend']", $details));
+                YetaWF_MultiString.Clear($("input[name='ModAction.Tooltip']", $details));
+                YetaWF_MultiString.Clear($("input[name='ModAction.Legend']", $details));
                 $("input:checkbox[name='ModAction.Enabled']", $details).prop('checked', false);
                 $("input[name='ModAction.CssClass']", $details).val('');
                 $("select[name='ModAction.Style']", $details).prop('selectedIndex', 0);
@@ -325,8 +325,8 @@ YetaWF_MenuEdit.LoadTree = function (treeId, detailsId, data, newEntry) {
                 $("select[name='ModAction.Category']", $details).prop('selectedIndex', 0);
                 $("select[name='ModAction.LimitToRole']", $details).prop('selectedIndex', 0);
                 $("input:checkbox[name='ModAction.AuthorizationIgnore']", $details).prop('checked', false);
-                YetaWF_MultiString.Clear($("div[data-name='ModAction.ConfirmationText']", $details));
-                YetaWF_MultiString.Clear($("div[data-name='ModAction.PleaseWaitText']", $details));
+                YetaWF_MultiString.Clear($("input[name='ModAction.ConfirmationText']", $details));
+                YetaWF_MultiString.Clear($("input[name='ModAction.PleaseWaitText']", $details));
                 $("input:checkbox[name='ModAction.SaveReturnUrl']", $details).prop('checked', false);
                 $("input:checkbox[name='ModAction.AddToOriginList']", $details).prop('checked', false);
                 $("input:checkbox[name='ModAction.NeedsModuleContext']", $details).prop('checked', false);
@@ -335,13 +335,13 @@ YetaWF_MenuEdit.LoadTree = function (treeId, detailsId, data, newEntry) {
         }
 
         // Save fields in tree when they change
-        dataItem.Url = YetaWF_Url.Retrieve($("div[data-name='ModAction.Url']", $details));
-        dataItem.SubModule = YetaWF_ModuleSelection.Retrieve($("div[data-name='ModAction.SubModule']", $details));
-        YetaWF_MultiString.Retrieve($("div[data-name='ModAction.MenuText']", $details), dataItem.MenuText);
-        YetaWF_MultiString.Retrieve($("div[data-name='ModAction.LinkText']", $details), dataItem.LinkText);
+        dataItem.Url = YetaWF_Url.Retrieve($("input[name='ModAction.Url']", $details));
+        dataItem.SubModule = YetaWF_ModuleSelection.Retrieve($("select[name='ModAction.SubModule']", $details));
+        YetaWF_MultiString.Retrieve($("input[name='ModAction.MenuText']", $details), dataItem.MenuText);
+        YetaWF_MultiString.Retrieve($("input[name='ModAction.LinkText']", $details), dataItem.LinkText);
         dataItem.ImageUrlFinal = $("input[name='ModAction.ImageUrlFinal']", $details).val();
-        YetaWF_MultiString.Retrieve($("div[data-name='ModAction.Tooltip']", $details), dataItem.Tooltip);
-        YetaWF_MultiString.Retrieve($("div[data-name='ModAction.Legend']", $details), dataItem.Legend);
+        YetaWF_MultiString.Retrieve($("input[name='ModAction.Tooltip']", $details), dataItem.Tooltip);
+        YetaWF_MultiString.Retrieve($("input[name='ModAction.Legend']", $details), dataItem.Legend);
         dataItem.Enabled = $("input:checkbox[name='ModAction.Enabled']", $details).prop('checked');
         dataItem.CssClass = $("input[name='ModAction.CssClass']", $details).val();
         dataItem.Style = $("select[name='ModAction.Style']", $details).val();
@@ -349,8 +349,8 @@ YetaWF_MenuEdit.LoadTree = function (treeId, detailsId, data, newEntry) {
         dataItem.Category = $("select[name='ModAction.Category']", $details).val();
         dataItem.LimitToRole = $("select[name='ModAction.LimitToRole']", $details).val();
         dataItem.AuthorizationIgnore = $("input:checkbox[name='ModAction.AuthorizationIgnore']", $details).prop('checked');
-        YetaWF_MultiString.Retrieve($("div[data-name='ModAction.ConfirmationText']", $details), dataItem.ConfirmationText);
-        YetaWF_MultiString.Retrieve($("div[data-name='ModAction.PleaseWaitText']", $details), dataItem.PleaseWaitText);
+        YetaWF_MultiString.Retrieve($("input[name='ModAction.ConfirmationText']", $details), dataItem.ConfirmationText);
+        YetaWF_MultiString.Retrieve($("input[name='ModAction.PleaseWaitText']", $details), dataItem.PleaseWaitText);
         dataItem.SaveReturnUrl = $("input:checkbox[name='ModAction.SaveReturnUrl']", $details).prop('checked');
         dataItem.AddToOriginList = $("input:checkbox[name='ModAction.AddToOriginList']", $details).prop('checked');
         dataItem.NeedsModuleContext = $("input:checkbox[name='ModAction.NeedsModuleContext']", $details).prop('checked');
@@ -362,7 +362,7 @@ YetaWF_MenuEdit.LoadTree = function (treeId, detailsId, data, newEntry) {
                 throw "Invalid entry type {0}".format(entry);/*DEBUG*/
             case MenuEntryType_Entry:
             case MenuEntryType_Parent:
-                dataItem.text = dataItem._Text = YetaWF_MultiString.getDefaultValue($("div[data-name='ModAction.MenuText']"));
+                dataItem.text = dataItem._Text = YetaWF_MultiString.getDefaultValue($("input[name='ModAction.MenuText']"));
                 break;
             case MenuEntryType_Separator:
                 dataItem.text = dataItem._Text = YLocs.YetaWF_Menus.Separator;

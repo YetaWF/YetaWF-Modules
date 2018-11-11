@@ -64,6 +64,15 @@ var YetaWF_ComponentsHTML;
             enumerable: true,
             configurable: true
         });
+        Object.defineProperty(DropDownListEditComponent.prototype, "selectedIndex", {
+            get: function () {
+                if (this.KendoDropDownList == null)
+                    return -1;
+                return this.KendoDropDownList.select();
+            },
+            enumerable: true,
+            configurable: true
+        });
         // retrieve the tooltip for the nth item (index) in the dropdown list
         DropDownListEditComponent.prototype.getToolTip = function (index) {
             if (!this.Setup.ToolTips)

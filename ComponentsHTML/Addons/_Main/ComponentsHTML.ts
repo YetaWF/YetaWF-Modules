@@ -4,12 +4,19 @@ namespace YetaWF {
     export interface IVolatile {
         YetaWF_ComponentsHTML: YetaWF_ComponentsHTML.IPackageVolatiles;
     }
+    export interface IConfigs {
+        YetaWF_ComponentsHTML: YetaWF_ComponentsHTML.IPackageConfigs;
+    }
 }
 namespace YetaWF_ComponentsHTML {
     export interface IPackageVolatiles {
 
     }
+    export interface IPackageConfigs {
+
+    }
 }
+
 
 declare var YetaWF_TemplateDropDownList: any; // TODO: Temporary, use until we fix dropdown
 

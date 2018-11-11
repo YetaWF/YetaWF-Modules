@@ -29,7 +29,7 @@ namespace YetaWF_Pages {
             this.Grid = YetaWF_ComponentsHTML.Grid.getControlById(this.Setup.GridId);
             this.GridAll = YetaWF_ComponentsHTML.Grid.getControlById(this.Setup.GridAllId);
             this.buttonAdd = $YetaWF.getElement1BySelector("input[name='btnAdd']", [this.Control]) as HTMLInputElement;
-            this.selectUrl = YetaWF_ComponentsHTML.UrlEditComponent.getControlFromSelector("[name$='.NewValue']", [this.Control]);
+            this.selectUrl = YetaWF_ComponentsHTML.UrlEditComponent.getControlFromSelector("[name$='.NewValue']", YetaWF_ComponentsHTML.UrlEditComponent.SELECTOR, [this.Control]);
 
             $YetaWF.registerEventHandler(this.buttonAdd, "click", null, (ev: MouseEvent): boolean => {
 

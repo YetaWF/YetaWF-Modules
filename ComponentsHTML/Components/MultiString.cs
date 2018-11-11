@@ -61,11 +61,14 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
         public override ComponentType GetComponentType() { return ComponentType.Edit; }
 
+        //public class Setup {
+        //    public string Name { get; set; }
+        //}
+
         public MultiStringEditComponentBase(string templateName, string extraClass) {
             TemplateName = templateName;
             ExtraClass = extraClass;
         }
-
         public async Task<YHtmlString> RenderAsync(MultiString model) {
             return await RenderMultiStringAsync(this, model, ExtraClass);
         }
@@ -73,30 +76,16 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
             HtmlBuilder hb = new HtmlBuilder();
 
-            // <div class="yt_multistring t_edit" data-name="@Html.FieldName("")" id="@DivId" class="@Html.GetErrorClass("")" ...validation...>
-            YTagBuilder tagDiv = new YTagBuilder("div");
-            tagDiv.AddCssClass("yt_multistring");
-            tagDiv.AddCssClass("t_edit");
-            tagDiv.AddCssClass("y_inline");
-            tagDiv.Attributes["data-name"] = component.FieldName;
-            tagDiv.Attributes["id"] = component.DivId;
+            hb.Append($@"
+<div class='yt_multistring t_edit y_inline' id='{component.DivId}'>");
 
             // use hidden input fields for each language available
             int counter = 0;
             foreach (var lang in MultiString.Languages) {
-                YTagBuilder tag = new YTagBuilder("input");
-                tag.MergeAttribute("type", "hidden");
-                string n = string.Format("{0}[{1}].key", component.FieldName, counter);
-                tag.MergeAttribute("name", n, true);
-                tag.MergeAttribute("value", lang.Id);
-                hb.Append(tag.ToString(YTagRenderMode.StartTag));
 
-                tag = new YTagBuilder("input");
-                tag.MergeAttribute("type", "hidden");
-                n = string.Format("{0}[{1}].value", component.FieldName, counter);
-                tag.MergeAttribute("name", n, true);
-                tag.MergeAttribute("value", model[lang.Id]);
-                hb.Append(tag.ToString(YTagRenderMode.StartTag));
+                hb.Append($@"
+    <input type='hidden' name='{component.FieldName}[{counter}].key' value='{lang.Id}'>
+    <input type='hidden' name='{component.FieldName}[{counter}].value' value='{model[lang.Id]}'>");
 
                 ++counter;
             }
@@ -132,8 +121,18 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                     htmlAttr.Add("disabled", "disabled");
                 hb.Append(await component.HtmlHelper.ForEditAsync(msUI, nameof(MultiStringUI.Language), HtmlAttributes: htmlAttr, Validation: false));
             }
-            tagDiv.InnerHtml = hb.ToString();
-            return tagDiv.ToYHtmlString(YTagRenderMode.Normal);
+
+            //Setup setup = new Setup {
+            //    Name = component.FieldName,
+            //};
+
+            hb.Append($@"
+</div>
+<script>
+    new YetaWF_ComponentsHTML.MultiStringEditComponent('{component.DivId}');
+</script>");
+
+            return hb.ToYHtmlString();
         }
     }
 }

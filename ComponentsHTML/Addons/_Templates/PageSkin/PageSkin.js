@@ -1,36 +1,41 @@
+"use strict";
 /* Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/ComponentsHTML#License */
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = function (d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+        return extendStatics(d, b);
+    }
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+var YetaWF_ComponentsHTML;
+(function (YetaWF_ComponentsHTML) {
+    var PageSkinEditComponent = /** @class */ (function (_super) {
+        __extends(PageSkinEditComponent, _super);
+        function PageSkinEditComponent(controlId, setup) {
+            var _this = _super.call(this, controlId) || this;
+            _this.Setup = setup;
+            _this.SelectCollection = YetaWF_ComponentsHTML.DropDownListEditComponent.getControlFromSelector("select[name$='.Collection']", [_this.Control]);
+            _this.SelectFile = YetaWF_ComponentsHTML.DropDownListEditComponent.getControlFromSelector("select[name$='.FileName']", [_this.Control]);
+            _this.SelectCollection.Control.addEventListener("dropdownlist_change", function (evt) {
+                var data = { SkinCollection: _this.SelectCollection.value };
+                _this.SelectFile.ajaxUpdate(data, _this.Setup.AjaxUrl);
+            });
+            return _this;
+        }
+        PageSkinEditComponent.SELECTOR = ".yt_pageskin.t_edit, .yt_popupskin.t_edit";
+        return PageSkinEditComponent;
+    }(YetaWF.ComponentBaseDataImpl));
+    YetaWF_ComponentsHTML.PageSkinEditComponent = PageSkinEditComponent;
+    // A <div> is being emptied. Destroy all controls the <div> may contain.
+    $YetaWF.registerClearDiv(function (tag) {
+        PageSkinEditComponent.clearDiv(tag, PageSkinEditComponent.SELECTOR);
+    });
+})(YetaWF_ComponentsHTML || (YetaWF_ComponentsHTML = {}));
 
-/* Page Skin */
-
-var YetaWF_Template_PageSkin = {};
-var _YetaWF_Template_PageSkin = {};
-
-_YetaWF_Template_PageSkin.FallbackPageFileName = "Default.cshtml";
-_YetaWF_Template_PageSkin.FallbackPopupFileName = "Popup.cshtml";
-
-YetaWF_Template_PageSkin.pageInit = function (id, collection) { };
-YetaWF_Template_PageSkin.popupInit = function (id, collection) { };
-
-$(document).on('change', '.yt_pageskin .t_collection select, .yt_popupskin .t_collection select', function (event) {
-
-    'use strict';
-
-    var $this = $(this);
-
-    var $ctl = $this.closest('.yt_pageskin,.yt_popupskin');
-    if ($ctl.length != 1) throw "Couldn't find skin control";/*DEBUG*/
-    var $coll = $('select[name$=".Collection"]', $ctl);
-    if ($coll.length != 1) throw "Couldn't find skin collection control";/*DEBUG*/
-    var $filename = $('select[name$=".FileName"]', $ctl);
-    if ($filename.length != 1) throw "Couldn't find filename control";/*DEBUG*/
-    var popup = $ctl.hasClass('yt_popupskin');
-
-    var ajaxurl = $('input[name$=".AjaxUrl"]', $ctl).val();
-    if (ajaxurl == "") throw "Couldn't find ajax url";/*DEBUG*/
-
-    var data = { 'skinCollection': $(this).val() };
-    // get a new list of skins
-    YetaWF_TemplateDropDownList.AjaxUpdate($filename, data, ajaxurl);
-});
-
-
+//# sourceMappingURL=PageSkin.js.map

@@ -64,6 +64,10 @@ namespace YetaWF_ComponentsHTML {
                     this.KendoDropDownList.select(0);
             }
         }
+        get selectedIndex(): number {
+            if (this.KendoDropDownList == null) return -1;
+            return this.KendoDropDownList.select();
+        }
 
         // retrieve the tooltip for the nth item (index) in the dropdown list
         public getToolTip(index: number): string | null {
