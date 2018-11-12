@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using YetaWF.Core.Components;
 using YetaWF.Core.Localize;
@@ -88,9 +89,10 @@ namespace YetaWF.Modules.Scheduler.Components {
             if (list.Count == 0) throw new Error(__ResStr("noEvents", "No events are available"));
 
             string select = null;
-            if (model != null)
+            if (model != null) {
                 select = model.Name + "," + model.ImplementingType + "," + model.ImplementingAssembly;
-
+                model.EventBuiltinDescription = (from l in list where @select == l.Value select l.Tooltip).FirstOrDefault();
+            }
             EventUI eventUI = new EventUI {
                 DropDown = select,
                 DropDown_List= list,
@@ -99,7 +101,7 @@ namespace YetaWF.Modules.Scheduler.Components {
             using (Manager.StartNestedComponent(FieldName)) {
 
                 hb.Append($@"
-<div class='yt_yetawf_scheduler_event t_edit'>
+<div id='{ControlId}' class='yt_yetawf_scheduler_event t_edit'>
     <div class='t_event'>
         {await HtmlHelper.ForEditAsync(eventUI, nameof(eventUI.DropDown))}
         {await HtmlHelper.ForEditAsync(model, nameof(model.Name))}
@@ -112,7 +114,7 @@ namespace YetaWF.Modules.Scheduler.Components {
                 {await HtmlHelper.ForLabelAsync(model, nameof(model.ImplementingAssembly))}
             </div>
             <div class='t_vals'>
-                <span class't_implasm'>{YetaWFManager.HtmlEncode(model.ImplementingAssembly)}</span>
+                <span class='t_implasm'>{YetaWFManager.HtmlEncode(model.ImplementingAssembly)}</span>
             </div>
         </div>
         <div class='t_row t_implementingtype'>
@@ -132,7 +134,10 @@ namespace YetaWF.Modules.Scheduler.Components {
             </div>
         </div>
     </div>
-</div>");
+</div>
+<script>
+    new YetaWF_Scheduler.EventEditComponent('{ControlId}');
+</script>");
             }
 
             return hb.ToYHtmlString();

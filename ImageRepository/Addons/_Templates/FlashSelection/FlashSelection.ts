@@ -52,7 +52,7 @@ namespace YetaWF_ImageRepository {
 
                 if ($YetaWF.isLoading) return false;
                 $YetaWF.setLoading(true);
-                
+
                 var uri = $YetaWF.parseUrl(this.RemoveButton.href);
                 uri.removeSearch("Name");
                 uri.addSearch("Name", this.Hidden.value);
@@ -70,14 +70,17 @@ namespace YetaWF_ImageRepository {
 
                             if (result.startsWith(YConfigs.Basics.AjaxJavascriptReturn)) {
                                 var script = result.substring(YConfigs.Basics.AjaxJavascriptReturn.length);
+                                // tslint:disable-next-line:no-eval
                                 eval(script);
                                 return;
                             } else if (result.startsWith(YConfigs.Basics.AjaxJavascriptErrorReturn)) {
                                 var script = result.substring(YConfigs.Basics.AjaxJavascriptErrorReturn.length);
+                                // tslint:disable-next-line:no-eval
                                 eval(script);
                                 return;
                             }
-                            var resp: YetaWF_ComponentsHTML.FileUploadRemoveResponse = JSON.parse(result); 
+                            var resp: YetaWF_ComponentsHTML.FileUploadRemoveResponse = JSON.parse(result);
+                            // tslint:disable-next-line:no-eval
                             eval(resp.Result);
 
                             this.List.innerHTML = resp.List;

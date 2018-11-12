@@ -53,15 +53,18 @@ var YetaWF_ImageRepository;
                             $YetaWF.setLoading(false);
                             if (result.startsWith(YConfigs.Basics.AjaxJavascriptReturn)) {
                                 var script = result.substring(YConfigs.Basics.AjaxJavascriptReturn.length);
+                                // tslint:disable-next-line:no-eval
                                 eval(script);
                                 return;
                             }
                             else if (result.startsWith(YConfigs.Basics.AjaxJavascriptErrorReturn)) {
                                 var script = result.substring(YConfigs.Basics.AjaxJavascriptErrorReturn.length);
+                                // tslint:disable-next-line:no-eval
                                 eval(script);
                                 return;
                             }
                             var resp = JSON.parse(result);
+                            // tslint:disable-next-line:no-eval
                             eval(resp.Result);
                             _this.List.innerHTML = resp.List;
                             _this.clearFileName();

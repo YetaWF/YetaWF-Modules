@@ -8,22 +8,22 @@ var YetaWF_ComponentsHTML;
             // LOADING
             // LOADING
             // LOADING
-            this._loading = false;
+            this.loading = false;
         }
         Object.defineProperty(BasicsImpl.prototype, "isLoading", {
             get: function () {
-                return this._loading;
+                return this.loading;
             },
             enumerable: true,
             configurable: true
         });
         BasicsImpl.prototype.setLoading = function (on) {
             if (on !== false) {
-                this._loading = true;
+                this.loading = true;
                 $.prettyLoader.show();
             }
             else {
-                this._loading = false;
+                this.loading = false;
                 $.prettyLoader.hide();
             }
         };

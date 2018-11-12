@@ -166,10 +166,10 @@ namespace YetaWF_ComponentsHTML {
             });
         }
 
-        public SetSuccessfullUpload(callback: (data: FileUploadResponse) => void) {
+        public SetSuccessfullUpload(callback: (data: FileUploadResponse) => void): void {
             this.SuccessfullUploadCallback = callback;
         }
-        public SetGetFileName(callback: () => string) {
+        public SetGetFileName(callback: () => string): void {
             this.GetFileNameCallback = callback;
         }
 
