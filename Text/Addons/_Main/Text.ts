@@ -1,10 +1,10 @@
-"use strict";
 /* Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Text#License */
-var YetaWF_Text;
-(function (YetaWF_Text) {
-    $YetaWF.registerEventHandlerBody("click", ".YetaWF_Text .FAQ_Q", function (ev) {
+
+namespace YetaWF_Text {
+
+    $YetaWF.registerEventHandlerBody("click", ".YetaWF_Text .FAQ_Q", (ev: MouseEvent): boolean => {
         var elem = ev.__YetaWFElem;
-        for (elem = elem.nextElementSibling; elem; elem = elem.nextElementSibling) {
+        for (elem = elem.nextElementSibling as HTMLElement; elem; elem = elem.nextElementSibling as HTMLElement) {
             if ($YetaWF.elementHasClass(elem, "FAQ_A")) {
                 if (elem.style.display === "" || elem.style.display === "none")
                     elem.style.display = "block";
@@ -15,6 +15,5 @@ var YetaWF_Text;
         }
         return false;
     });
-})(YetaWF_Text || (YetaWF_Text = {}));
 
-//# sourceMappingURL=Text.js.map
+}

@@ -122,7 +122,7 @@ namespace YetaWF.Modules.Menus.Modules {
         [UIHint("IntValue4"), Required, Range(0, 10000)]
         public int HoverDelay { get; set; }
 
-        [Category("General"), Caption("Show Path"), Description("Mark entries that partially or completely match the current page's Url as active (highlight)")]
+        [Category("General"), Caption("Show Path"), Description("!!!Currently Broken!!! - Mark entries that partially or completely match the current page's Url as active (highlight)")]
         [UIHint("Boolean")]
         public bool ShowPath { get; set; }
 

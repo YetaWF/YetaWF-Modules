@@ -83,10 +83,8 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Addons\_Main\filelistJS.txt" />
     <None Include="Addons\_Main\filelistCSS.txt" />
-    <None Include="Addons\_Main\Sites.js" />
-    <None Include="Addons\_Main\Sites.css" />
+    <None Include="Addons\_Main\Sites.scss" />
     <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>

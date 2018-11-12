@@ -108,7 +108,7 @@
     <Content Include="Addons\_Main\Icons\Info.png" />
     <Content Include="Addons\_Main\Icons\Support.png" />
     <Content Include="Addons\_Main\Icons\UninstallPackageModels.png" />
-    <Content Include="Addons\_Main\packages.css" />
+    <None Include="Addons\_Main\packages.scss" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

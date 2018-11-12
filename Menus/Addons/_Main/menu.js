@@ -1,5 +1,7 @@
 /* Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Menus#License */
 
+// THIS DOES NOT WORK!!!
+
 var YetaWF_Menu = {};
 
 YetaWF_Menu.init = function (menuId) {

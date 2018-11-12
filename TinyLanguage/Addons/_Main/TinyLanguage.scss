@@ -1,0 +1,13 @@
+/* Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/TinyLanguage#License */
+
+.yModule.YetaWF_TinyLanguage {
+    .t_labels {
+        width: auto;
+        padding-top: 0.1em;
+        padding-right: 1ch;
+    }
+    .yt_propertylist .t_row {/* no padding on last (and olny row) */
+        padding-bottom:0;
+    }
+}
+

@@ -1,1 +1,1 @@
-﻿TinyLanguage.css
+﻿TinyLanguage.scss

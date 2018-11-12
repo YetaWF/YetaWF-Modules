@@ -76,7 +76,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Addons\_Main\filelistCSS.txt" />
-    <Content Include="Addons\_Main\TinyLanguage.css" />
+    <None Include="Addons\_Main\TinyLanguage.scss" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

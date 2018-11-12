@@ -80,7 +80,9 @@
   <ItemGroup>
     <None Include="Addons\_Main\filelistCSS.txt" />
     <None Include="Addons\_Main\filelistJS.txt" />
-    <Content Include="Addons\_Main\text.js" />
+    <None Include="tsconfig.json" />
+    <None Include="tslint.json" />
+    <TypeScriptCompile Include="Addons\_Main\Text.ts" />
     <Content Include="Addons\_Main\Icons\RssFeed.png" />
     <None Include="Addons\_Main\text.scss" />
     <None Include="app.config" />

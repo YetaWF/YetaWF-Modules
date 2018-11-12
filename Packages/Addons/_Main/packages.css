@@ -1,13 +1,11 @@
+@charset "UTF-8";
 /* Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Packages#License */
+.YetaWF_Packages_Import .yt_propertylisttabbed .t_labels {
+  /* Don't show any labels */
+  display: none; }
 
-.YetaWF_Packages_Import .yt_propertylisttabbed .t_labels { /* Don't show any labels */
-    display:none;
-}
-.YetaWF_ImportData .t_description
-{
-    margin:1em 0em 1em 0em;
-}
-.YetaWF_Import .t_description
-{
-    margin:1em 0em 1em 0em;
-}
+.YetaWF_ImportData .t_description {
+  margin: 1em 0em 1em 0em; }
+
+.YetaWF_Import .t_description {
+  margin: 1em 0em 1em 0em; }
