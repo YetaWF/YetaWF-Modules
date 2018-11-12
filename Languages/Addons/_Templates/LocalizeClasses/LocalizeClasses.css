@@ -1,21 +1,19 @@
+@charset "UTF-8";
 /* Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Languages#License */
-
 .yt_yetawf_languages_localizeclasses .t_links {
-    margin-bottom:1em;
-}
+  margin-bottom: 1em; }
+
 .yt_yetawf_languages_localizeclasses .t_classname {
-    padding-top :1em;
-    padding-bottom :1em;
-}
+  padding-top: 1em;
+  padding-bottom: 1em; }
+
 .yt_yetawf_languages_localizeclasses .t_classname a {
-    text-decoration:none;
-    font-weight: bold;
-}
+  text-decoration: none;
+  font-weight: bold; }
 
 .yt_yetawf_languages_localizeclasses div.t_name,
 .yt_yetawf_languages_localizeclasses div.t_propvars {
-    float: left;
-}
-.yt_yetawf_languages_localizeclasses div.t_name  {
-    width: 30ch;
-}
+  float: left; }
+
+.yt_yetawf_languages_localizeclasses div.t_name {
+  width: 30ch; }

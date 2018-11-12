@@ -173,7 +173,7 @@
     <Content Include="Addons\_Templates\ListOfEmailAddresses\filelistCSS.txt" />
     <Content Include="Addons\_Templates\ListOfEmailAddresses\filelistJS.txt" />
     <Content Include="Addons\_Templates\ScrollerItem\filelistCSS.txt" />
-    <Content Include="Addons\_Templates\ScrollerItem\ScrollerItem.css" />
+    <None Include="Addons\_Templates\ScrollerItem\ScrollerItem.scss" />
   </ItemGroup>
   <ItemGroup>
     <TypeScriptCompile Include="Addons\_Templates\ListOfEmailAddresses\ListOfEmailAddressesEdit.ts" />

@@ -1,0 +1,20 @@
+/* Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/ImageRepository#License */
+
+.yt_imagerepository_imageselection {
+    .t_list {
+        float: left;
+        margin-right:2ch;
+    }
+    .t_list select {
+        width: 30ch;
+    }
+    .t_haveimage,
+    .t_uploadarea {
+        padding-top: .5em;
+        clear:both;
+    }
+    .t_haveimage .yt_moduleaction {
+        display:inline;
+        padding-right:1ch;
+    }
+}

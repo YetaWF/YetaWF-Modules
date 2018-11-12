@@ -94,12 +94,12 @@
     <Content Include="Addons\_Main\Icons\ClearImage.png" />
     <Content Include="Addons\_Templates\FlashSelection\filelistCSS.txt" />
     <Content Include="Addons\_Templates\FlashSelection\filelistJS.txt" />
-    <Content Include="Addons\_Templates\FlashSelection\flashselection.css" />
-    <Content Include="Addons\_Templates\FlashSelection\flashselection.js" />
+    <None Include="Addons\_Templates\FlashSelection\FlashSelection.scss" />
+    <Content Include="Addons\_Templates\FlashSelection\FlashSelection.js" />
     <Content Include="Addons\_Templates\ImageSelection\filelistCSS.txt" />
     <Content Include="Addons\_Templates\ImageSelection\filelistJS.txt" />
-    <Content Include="Addons\_Templates\ImageSelection\imageselection.css" />
-    <Content Include="Addons\_Templates\ImageSelection\imageselection.js" />
+    <None Include="Addons\_Templates\ImageSelection\ImageSelection.scss" />
+    <Content Include="Addons\_Templates\ImageSelection\ImageSelection.js" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

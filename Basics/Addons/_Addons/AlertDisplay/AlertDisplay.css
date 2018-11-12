@@ -1,37 +1,31 @@
+@charset "UTF-8";
 /* Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Basics#License */
-
 .YetaWF_Basics_AlertDisplay {
-    position: fixed;
-    left: 0px;
-    top: 0px;
-    right: 0px;
-    border: 1px solid #ff0000;
-    background-color: #e26363;
-    padding: 1em;
-    margin: 1em;
-    border-radius: 10px;
-    color: #ffffff;
-    z-index: 10000;
-}
-.YetaWF_Basics_AlertDisplay .t_close img {
+  position: fixed;
+  left: 0px;
+  top: 0px;
+  right: 0px;
+  border: 1px solid #ff0000;
+  background-color: #e26363;
+  padding: 1em;
+  margin: 1em;
+  border-radius: 10px;
+  color: #ffffff;
+  z-index: 10000; }
+  .YetaWF_Basics_AlertDisplay .t_close img {
     margin: 5px;
-    margin-right:1em;
+    margin-right: 1em;
     padding: 3px;
     border-radius: 3px;
-    background-color: #ffffff;
-}
-.YetaWF_Basics_AlertDisplay .t_close img:hover {
-    background-color: #cccccc;
-}
-.YetaWF_Basics_AlertDisplay .t_close {
-    display:inline-block;
-    vertical-align:top;
-}
-.YetaWF_Basics_AlertDisplay .t_message {
-    width:90%;
-    display:inline-block;
-    vertical-align:top;
-}
-.YetaWF_Basics_AlertDisplay .t_message a {
-    color:white;
-}
+    background-color: #ffffff; }
+  .YetaWF_Basics_AlertDisplay .t_close img:hover {
+    background-color: #cccccc; }
+  .YetaWF_Basics_AlertDisplay .t_close {
+    display: inline-block;
+    vertical-align: top; }
+  .YetaWF_Basics_AlertDisplay .t_message {
+    width: 90%;
+    display: inline-block;
+    vertical-align: top; }
+  .YetaWF_Basics_AlertDisplay .t_message a {
+    color: white; }

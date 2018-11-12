@@ -1,1 +1,1 @@
-﻿MailToObfuscator.js
+﻿MailToObfuscator.ts

@@ -104,7 +104,6 @@
     <None Include="Addons\_Main\Grids\AuditRecordsModuleController.BrowseItem" />
     <None Include="Addons\_Main\filelistJS.txt" />
     <None Include="Addons\_Main\filelistCSS.txt" />
-    <None Include="Addons\_Main\Dashboard.js" />
     <None Include="Addons\_Main\Dashboard.scss" />
     <None Include="Addons\_Main\Grids\AddonsBrowseModuleController.BrowseItem" />
     <None Include="Addons\_Main\Grids\HttpModulesBrowseModuleController.BrowseItem" />
@@ -164,6 +163,9 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Addons\_Main\Icons\" />
+  </ItemGroup>
+  <ItemGroup>
+    <TypeScriptCompile Include="Addons\_Main\Dashboard.ts" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

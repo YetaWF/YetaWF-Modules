@@ -93,7 +93,7 @@
   <ItemGroup>
     <None Include="Addons\_Addons\MailToObfuscator\filelistJS.txt" />
     <None Include="Addons\_Addons\AlertDisplay\filelistCSS.txt" />
-    <Content Include="Addons\_Addons\AlertDisplay\AlertDisplay.css" />
+    <None Include="Addons\_Addons\AlertDisplay\AlertDisplay.scss" />
     <None Include="Addons\_Addons\AlertDisplay\filelistJS.txt" />
     <Content Include="Addons\_Addons\Images\Alert Large.png" />
     <Content Include="Addons\_Addons\Images\Alert.png" />
@@ -132,7 +132,7 @@
     <Content Include="Addons\_SiteTemplates\YetaWF_Basics.1.0.3.txt" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Addons\_Addons\MailToObfuscator\MailToObfuscator.js" />
+    <TypeScriptCompile Include="Addons\_Addons\MailToObfuscator\MailToObfuscator.ts" />
     <None Include="app.config" />
     <None Include="packages.config" />
     <None Include="tsconfig.json" />

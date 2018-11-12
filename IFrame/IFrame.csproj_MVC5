@@ -40,10 +40,6 @@
     <Compile Include="Views\HTML\IFrameDisplay.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Addons\_Main\filelistJS.txt" />
-    <None Include="Addons\_Main\filelistCSS.txt" />
-    <None Include="Addons\_Main\IFrame.js" />
-    <None Include="Addons\_Main\IFrame.css" />
     <None Include="app.config" />
   </ItemGroup>
   <ItemGroup>
@@ -96,6 +92,9 @@
       <HintPath>..\..\..\packages\Microsoft.AspNet.WebPages.3.2.6\lib\net45\System.Web.WebPages.Razor.dll</HintPath>
       <Private>True</Private>
     </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Addons\_Main\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

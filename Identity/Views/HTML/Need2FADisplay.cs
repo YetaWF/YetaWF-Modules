@@ -28,9 +28,9 @@ namespace YetaWF.Modules.Identity.Views {
     {await model.SetupAction.RenderAsLinkAsync()}
 </div>
 <script>
- $('#{module.ModuleHtmlId}').prependTo('body');
-</script>
-");
+    var mod = $YetaWF.getElementById('{module.ModuleHtmlId}');
+    document.body.insertBefore(mod, document.body.firstChild);
+</script>");
 
             return hb.ToYHtmlString();
         }

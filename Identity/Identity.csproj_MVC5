@@ -264,16 +264,14 @@
     <None Include="Addons\_Main\SelectTwoStepSetup.scss" />
     <None Include="Addons\_Addons\Need2FADisplay\Need2FADisplay.scss" />
     <None Include="Addons\_Addons\NeedNewPasswordDisplay\filelistCSS.txt" />
-    <Content Include="Addons\_Addons\Need2FADisplay\Need2FADisplay.js" />
     <None Include="Addons\_Addons\Need2FADisplay\filelistCSS.txt" />
-    <None Include="Addons\_Addons\Need2FADisplay\filelistJS.txt" />
     <Content Include="Addons\_Main\Icons\LoginProviders\Facebook.png" />
     <Content Include="Addons\_Main\Icons\LoginProviders\Google.png" />
     <Content Include="Addons\_Main\Icons\LoginProviders\Microsoft.png" />
     <Content Include="Addons\_Main\Icons\LoginProviders\Twitter.png" />
     <Content Include="Addons\_Main\Images\Identity Large.png" />
     <Content Include="Addons\_Main\Images\Identity.png" />
-    <Content Include="Addons\_Main\Login.css" />
+    <None Include="Addons\_Main\Login.scss" />
     <Content Include="Addons\_SiteTemplates\YetaWF_Identity.2.8.0.txt" />
     <Content Include="Addons\_SiteTemplates\YetaWF_Identity.2.5.1.txt" />
     <Content Include="Addons\_SiteTemplates\YetaWF_Identity.2.0.1.txt" />
@@ -329,7 +327,7 @@
     <Content Include="Addons\_Main\Icons\Register.png" />
     <Content Include="Addons\_Main\Icons\RejectedEmail.png" />
     <Content Include="Addons\_Main\Icons\VerificationEmail.png" />
-    <Content Include="Addons\_Main\LoginSelector.css" />
+    <None Include="Addons\_Main\LoginSelector.scss" />
     <Content Include="Addons\_Templates\IdentityRoles\filelistCSS.txt" />
     <Content Include="Addons\_Templates\IdentityRoles\Roles.css" />
     <Content Include="Addons\_Templates\IdentityUsers\filelistCSS.txt" />

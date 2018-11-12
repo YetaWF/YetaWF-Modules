@@ -77,8 +77,10 @@
     <Compile Include="Views\Html\Feed.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Addons\_Main\Feed.css" />
-    <Content Include="Addons\_Main\Feed.js" />
+    <None Include="Addons\_Main\Feed.scss" />
+    <None Include="tsconfig.json" />
+    <None Include="tslint.json" />
+    <TypeScriptCompile Include="Addons\_Main\Feed.ts" />
     <Content Include="Addons\_Main\filelistCSS.txt" />
     <Content Include="Addons\_Main\filelistJS.txt" />
     <Content Include="Addons\_Main\Icons\Feed.png" />

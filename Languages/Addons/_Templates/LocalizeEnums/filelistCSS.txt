@@ -1,1 +1,1 @@
-﻿LocalizeEnums.css
+﻿LocalizeEnums.scss

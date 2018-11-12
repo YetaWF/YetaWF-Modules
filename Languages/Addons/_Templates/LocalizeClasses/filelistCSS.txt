@@ -1,1 +1,1 @@
-﻿LocalizeClasses.css
+﻿LocalizeClasses.scss

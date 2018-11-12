@@ -130,11 +130,11 @@
     <Content Include="Addons\_Main\Images\Localization Large.png" />
     <Content Include="Addons\_Main\Images\Localization.png" />
     <Content Include="Addons\_Templates\LocalizeClasses\filelistCSS.txt" />
-    <Content Include="Addons\_Templates\LocalizeClasses\LocalizeClasses.css" />
+    <None Include="Addons\_Templates\LocalizeClasses\LocalizeClasses.scss" />
     <Content Include="Addons\_Templates\LocalizeEnums\filelistCSS.txt" />
-    <Content Include="Addons\_Templates\LocalizeEnums\LocalizeEnums.css" />
+    <None Include="Addons\_Templates\LocalizeEnums\LocalizeEnums.scss" />
     <Content Include="Addons\_Templates\LocalizeStrings\filelistCSS.txt" />
-    <Content Include="Addons\_Templates\LocalizeStrings\LocalizeStrings.css" />
+    <None Include="Addons\_Templates\LocalizeStrings\LocalizeStrings.scss" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Addons\_Main\Grids\LanguagesBrowseModuleController.BrowseItem" />

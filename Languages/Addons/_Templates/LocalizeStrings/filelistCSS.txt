@@ -1,1 +1,1 @@
-﻿LocalizeStrings.css
+﻿LocalizeStrings.scss

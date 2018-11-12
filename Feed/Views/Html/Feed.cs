@@ -19,13 +19,17 @@ namespace YetaWF.Modules.Feed.Views {
         public override Package GetPackage() { return AreaRegistration.CurrentPackage; }
         public override string GetViewName() { return ViewName; }
 
+        public class Setup {
+            public int Interval { get; set; }
+        }
+
         public Task<YHtmlString> RenderViewAsync(FeedModule module, FeedModuleController.DisplayModel model) {
 
             HtmlBuilder hb = new HtmlBuilder();
 
             hb.Append($@"
 <div id='{DivId}' class='t_news'>
-    <div class='t_header' data-entry='0'>");
+    <div class='t_header'>");
 
             if (model.Url != null) {
 
@@ -71,10 +75,14 @@ namespace YetaWF.Modules.Feed.Views {
         </div>");
             }
 
+            Setup setup = new Setup {
+                Interval = module.Interval * 1000,
+            };
+
             hb.Append($@"
 </div>
 <script>
-    YetaWF_Feed.init('{DivId}', {module.Interval * 1000});
+    new YetaWF_Feed.Feed('{DivId}', {YetaWFManager.JsonSerialize(setup)});
 </script>");
 
             return Task.FromResult(hb.ToYHtmlString());

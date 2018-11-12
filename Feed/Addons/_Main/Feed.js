@@ -1,58 +1,51 @@
-/* Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Feed#License */
-
-var YetaWF_Feed = {};
-
-YetaWF_Feed.init = function (divId, interval) {
-    'use strict';
-
-    var $div = $('#' + divId);
-    if ($div.length == 0) throw "no news div specified";/*DEBUG*/
-
-    var entryTimer = undefined;
-
-    function changeEntry() {
-
-        // get the header entry
-        var $headerentry = $('.t_headerentry', $div);
-        if ($headerentry.length == 0) return;
-
-        // get entry number to display
-        var num = $('.t_header', $div).attr('data-entry');
-
-        var $entry = $('.t_entry a', $div).eq(num);
-        if ($entry.length == 0) {
-            num = 0;
-            $entry = $('.t_entry a', $div).eq(0);
-            if ($entry.length == 0)
-                return;
+"use strict";
+/* Copyright ï¿½ 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Feed#License */
+var YetaWF_Feed;
+(function (YetaWF_Feed) {
+    var Feed = /** @class */ (function () {
+        function Feed(divId, setup) {
+            var _this = this;
+            this.NextEntry = 0;
+            this.EntryTimer = null;
+            this.Div = $YetaWF.getElementById(divId);
+            this.DivHeader = $YetaWF.getElement1BySelector(".t_headerentry", [this.Div]);
+            this.Entries = $YetaWF.getElementsBySelector(".t_entry a", [this.Div]);
+            this.changeEntry();
+            if (setup.Interval)
+                this.EntryTimer = setInterval(function () { _this.changeEntry(); }, setup.Interval);
+            // change all a tags to open a new window
+            var elems = $YetaWF.getElementsBySelector("a", [this.Div]);
+            for (var _i = 0, elems_1 = elems; _i < elems_1.length; _i++) {
+                var elem = elems_1[_i];
+                $YetaWF.setAttribute(elem, "target", "_blank");
+                $YetaWF.setAttribute(elem, "rel", "noopener noreferrer");
+            }
+            // Listen for events that the page is changing
+            $YetaWF.registerPageChange(function () {
+                // when the page is removed, we need to clean up
+                if (_this.EntryTimer) {
+                    clearInterval(_this.EntryTimer);
+                    _this.EntryTimer = null;
+                }
+            });
         }
+        Feed.prototype.changeEntry = function () {
+            var entry = this.Entries[this.NextEntry];
+            var newsEntry = "<a class='t_title' href='" + entry.href + "' target='_blank' rel='noopener noreferrer'>" + entry.innerText + "</a>";
+            var text = $YetaWF.getAttributeCond(entry, "data-text") || "";
+            newsEntry += "<div class='t_text'>" + text + "</div>";
+            var author = $YetaWF.getAttributeCond(entry, "data-author") || "";
+            newsEntry += "<div class='t_author'>" + author + "</div>";
+            var formattedDate = $YetaWF.getAttributeCond(entry, "data-publishedDate") || "";
+            newsEntry += "<div class='t_date'>" + formattedDate + "</div>";
+            this.DivHeader.innerHTML = newsEntry;
+            ++this.NextEntry;
+            if (this.NextEntry >= this.Entries.length)
+                this.NextEntry = 0;
+        };
+        return Feed;
+    }());
+    YetaWF_Feed.Feed = Feed;
+})(YetaWF_Feed || (YetaWF_Feed = {}));
 
-        var formattedDate = $entry.attr('data-publishedDate');
-
-        var newsEntry = "<a class='t_title' href='{0}' target='_blank' rel='noopener noreferrer'>{1}</a>".format($entry.attr('href'), $entry.text());
-        newsEntry += "<div class='t_text'>{0}</div>".format($entry.attr('data-text'));
-        var author = $entry.attr('data-author');
-        newsEntry += "<div class='t_author'>{0}</div>".format(author);
-        newsEntry += "<div class='t_date'>{0}</div>".format(formattedDate);
-
-        $headerentry.html(newsEntry);
-        // save next entry #
-        $('.t_header', $div).attr('data-entry', ++num);
-        $('a', $div).attr("target", "_blank"); // change all a tags to open a new window
-        $('a', $div).attr("rel", "noopener noreferrer");
-    }
-
-    changeEntry();
-    if (interval > 0)
-        entryTimer = setInterval(changeEntry, interval);
-
-    // Listen for events that the page is changing
-    $YetaWF.registerPageChange(function () {
-        // when the page is removed, we need to clean up
-        if (entryTimer !== undefined) {
-            clearInterval(entryTimer);
-            entryTimer = undefined;
-        }
-    });
-};
-
+//# sourceMappingURL=Feed.js.map
