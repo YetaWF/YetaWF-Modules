@@ -91,7 +91,7 @@ var YetaWF_ComponentsHTML;
             if (!this.hasValue)
                 return false;
             var modGuid = this.SelectModule.value;
-            return modGuid != data;
+            return modGuid !== data;
         };
         /**
          * Load object with data. Selects the correct package in the dropdownlist and selects the module (the package is detected using ajax).
@@ -99,7 +99,7 @@ var YetaWF_ComponentsHTML;
         ModuleSelectionComponent.prototype.updateComplete = function (modGuid) {
             var _this = this;
             if (modGuid !== undefined && modGuid !== null && modGuid.length > 0 && modGuid !== "00000000-0000-0000-0000-000000000000") {
-                var data = { 'modGuid': modGuid };
+                var data = { "modGuid": modGuid };
                 this.SelectModule.ajaxUpdate(data, this.Setup.AjaxUrlComplete, function (data) {
                     _this.SelectPackage.value = data.extra;
                     _this.SelectModule.value = modGuid;

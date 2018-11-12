@@ -40,8 +40,8 @@ var YetaWF_ComponentsHTML;
         }
         // API
         ScrollerComponent.prototype.updateButtons = function () {
-            this.ElemLeft.style.backgroundPosition = this.Panel == 0 ? "0px 0px" : "0px -48px";
-            $YetaWF.elementEnableToggle(this.ElemLeft, this.Panel != 0);
+            this.ElemLeft.style.backgroundPosition = this.Panel === 0 ? "0px 0px" : "0px -48px";
+            $YetaWF.elementEnableToggle(this.ElemLeft, this.Panel !== 0);
             var controlRect = this.Control.getBoundingClientRect();
             var width = controlRect.width;
             var itemRect = $YetaWF.getElement1BySelector(".t_item", [this.Control]).getBoundingClientRect();

@@ -97,4 +97,4 @@ namespace YetaWF_ComponentsHTML {
     }
 }
 
-var ComponentsHTML = new YetaWF_ComponentsHTML.ComponentsHTML();
+var ComponentsHTMLHelper = new YetaWF_ComponentsHTML.ComponentsHTML();

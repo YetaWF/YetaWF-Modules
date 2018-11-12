@@ -12,14 +12,14 @@ namespace YetaWF_ComponentsHTML {
 
     export class RecaptchaV2 {
 
-        public static recaptchaInit(id: string) {
+        public static recaptchaInit(id: string): void {
             var recaptcha = $YetaWF.getElementById(id);
             RecaptchaV2.onLoad(recaptcha);
         }
 
         public static onLoad(tag: HTMLElement): void {
 
-            if (typeof grecaptcha === 'undefined' || !grecaptcha.render) {
+            if (typeof grecaptcha === "undefined" || !grecaptcha.render) {
                 // keep trying until grecaptcha is available
                 setTimeout((): void => {
                     RecaptchaV2.onLoad(tag);
@@ -27,9 +27,9 @@ namespace YetaWF_ComponentsHTML {
                 return;
             }
             grecaptcha.render(tag, {
-                'sitekey': YConfigs.YetaWF_ComponentsHTML.SiteKey,
-                'theme': YConfigs.YetaWF_ComponentsHTML.Theme,
-                'size': YConfigs.YetaWF_ComponentsHTML.Size,
+                "sitekey": YConfigs.YetaWF_ComponentsHTML.SiteKey,
+                "theme": YConfigs.YetaWF_ComponentsHTML.Theme,
+                "size": YConfigs.YetaWF_ComponentsHTML.Size,
             });
         }
     }

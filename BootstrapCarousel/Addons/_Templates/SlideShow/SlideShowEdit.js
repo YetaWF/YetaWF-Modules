@@ -80,14 +80,14 @@ var YetaWF_BootstrapCarousel;
             $YetaWF.elementEnableToggle(this.buttonDelete, panelCount > 1);
         };
         SlideShowEdit.prototype.updateActiveTab = function (panel) {
-            // TODO: This needs to be moved into the tab control
+            // TODO:$$$ This needs to be moved into the tab control
             var activeTab = $YetaWF.getElement1BySelector("input[name$='_ActiveTab']", [this.Control]);
             activeTab.value = $YetaWF.getAttribute(panel, "data-tab");
             this.updateButtons();
         };
         SlideShowEdit.prototype.destroy = function () { $YetaWF.removeObjectDataById(this.Control.id); };
-        SlideShowEdit.getControlFromTagCond = function (elem) { return _super.getControlBaseFromTag.call(this, elem, SlideShowEdit.SELECTOR); };
-        SlideShowEdit.SELECTOR = ".yt_bootstrapcarousel_slideshow";
+        SlideShowEdit.getControlFromTagCond = function (elem) { return _super.getControlBaseFromTagCond.call(this, elem, SlideShowEdit.SELECTOR); };
+        SlideShowEdit.SELECTOR = ".yt_bootstrapcarousel_slideshow.t_edit";
         SlideShowEdit.TEMPLATENAME = "YetaWF_BootstrapCarousel_SlideShow";
         return SlideShowEdit;
     }(YetaWF.ComponentBase));

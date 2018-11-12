@@ -32,7 +32,7 @@ namespace YetaWF_ComponentsHTML {
                 var sel = this.SelectLang.selectedIndex;
                 var hid = $YetaWF.getElement1BySelector(`input[name$='[${sel}].value']`, [this.Control]) as HTMLInputElement;
                 var newText = hid.value;
-                if (newText.length == 0 && sel > 0) {
+                if (newText.length === 0 && sel > 0) {
                     var hid0 = $YetaWF.getElement1BySelector("input[name$='[0].value']", [this.Control]) as HTMLInputElement;
                     newText = hid0.value;
                     hid.value = newText;
@@ -46,16 +46,16 @@ namespace YetaWF_ComponentsHTML {
                 var newText = this.InputText.value;
                 var hid = $YetaWF.getElement1BySelector(`input[name$='[${sel}].value']`, [this.Control]) as HTMLInputElement;
                 hid.value = newText;
-                if (sel == 0)
+                if (sel === 0)
                     this.SelectLang.enable(newText.length > 0);
                 return false;
             });
             $YetaWF.registerEventHandler(this.InputText, "blur", null, (ev: Event): boolean => {
                 var sel = this.SelectLang.selectedIndex;
-                if (sel == 0) {
+                if (sel === 0) {
                     var hid0 = $YetaWF.getElement1BySelector("input[name$='[0].value']", [this.Control]) as HTMLInputElement;
                     var text = hid0.value;
-                    if (text.length == 0) {
+                    if (text.length === 0) {
                         // the default text was cleared, clear all languages
                         var count = YLocs.YetaWF_ComponentsHTML.Languages.length;
                         for (var index = 0; index < count; ++index) {
@@ -135,7 +135,7 @@ namespace YetaWF_ComponentsHTML {
                     throw "No language data";
                 var hid = $YetaWF.getElement1BySelector(`input[name$='[${index}].value']`, [this.Control]) as HTMLInputElement;
                 hid.value = s;
-                if (index == 0)
+                if (index === 0)
                     this.InputText.value = s;
             }
             this.SelectLang.clear();

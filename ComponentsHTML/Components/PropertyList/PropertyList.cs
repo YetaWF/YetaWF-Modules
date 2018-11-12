@@ -61,9 +61,11 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             RenderHeader(hb, classData);
 
             string divId = Manager.UniqueId();
-            hb.Append("<div id='{0}' class='yt_propertylisttabbed {1}'>", divId, readOnly ? "t_display" : "t_edit");
+            hb.Append($@"
+<div id='{divId}' class='yt_propertylisttabbed {(readOnly ? "t_display" : "t_edit")}'>");
 
             hb.Append(await RenderHiddenAsync(model));
+
             bool showVariables = YetaWF.Core.Localize.UserSettings.GetProperty<bool>("ShowVariables");
 
             // tabstrip
@@ -87,17 +89,19 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                 ++panel;
             }
 
-            hb.Append("</div>");
-            hb.Append(await RenderTabInitAsync(divId, model));
+            hb.Append($@"
+</div>
+{await RenderTabInitAsync(divId, model)}");
 
             RenderFooter(hb, classData);
 
             if (!readOnly) {
-                string script = GetControlSets(model, divId);
-                if (!string.IsNullOrWhiteSpace(script)) {
-                    ScriptBuilder sb = new ScriptBuilder();
-                    sb.Append("YetaWF_PropertyList.init('{0}', {1}, {2});", divId, script, Manager.InPartialView ? 1 : 0);
-                    Manager.ScriptManager.AddLastDocumentReady(sb);
+                ControlData cd = GetControlSets(model, divId);
+                if (cd != null) {
+                    hb.Append($@"
+<script>
+    new YetaWF_ComponentsHTML.PropertyListComponent('{divId}', {YetaWFManager.JsonSerialize(cd)});
+</script>");
                 }
             }
             return hb.ToYHtmlString();
@@ -111,14 +115,16 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             RenderHeader(hb, classData);
 
             hb.Append(await RenderHiddenAsync(model));
+
             bool showVariables = YetaWF.Core.Localize.UserSettings.GetProperty<bool>("ShowVariables");
 
             // property table
             HtmlBuilder hbProps = new HtmlBuilder();
             string divId = Manager.UniqueId();
-            hbProps.Append("<div id='{0}' class='yt_propertylist t_table {1}'>", divId, ReadOnly ? "t_display" : "t_edit");
-            hbProps.Append(await RenderListAsync(model, null, showVariables, ReadOnly));
-            hbProps.Append("</div>");
+            hbProps.Append($@"
+<div id='{divId}' class='yt_propertylist t_table {(ReadOnly ? "t_display" : "t_edit")}'>
+   {await RenderListAsync(model, null, showVariables, ReadOnly)}
+</div>");
 
             if (!string.IsNullOrWhiteSpace(classData.Legend)) {
                 YTagBuilder tagFieldSet = new YTagBuilder("fieldset");
@@ -132,11 +138,12 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             RenderFooter(hb, classData);
 
             if (!ReadOnly) {
-                string script = GetControlSets(model, divId);
-                if (!string.IsNullOrWhiteSpace(script)) {
-                    ScriptBuilder sb = new ScriptBuilder();
-                    sb.Append("YetaWF_PropertyList.init('{0}', {1}, {2});", divId, script, Manager.InPartialView ? 1 : 0);
-                    Manager.ScriptManager.AddLastDocumentReady(sb);
+                ControlData cd = GetControlSets(model, divId);
+                if (cd != null) {
+                    hb.Append($@"
+<script>
+    new YetaWF_ComponentsHTML.PropertyListComponent('{divId}', {YetaWFManager.JsonSerialize(cd)});
+</script>");
                 }
             }
 

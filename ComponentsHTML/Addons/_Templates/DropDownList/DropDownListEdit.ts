@@ -90,8 +90,11 @@ namespace YetaWF_ComponentsHTML {
             }
         }
         public destroy(): void {
-            if (this.KendoDropDownList)
-                this.KendoDropDownList.destroy();
+            try {
+                if (this.KendoDropDownList)
+                    this.KendoDropDownList.destroy();
+            } catch(e) { }
+            this.KendoDropDownList = null;
             $YetaWF.removeObjectDataById(this.Control.id);
         }
 

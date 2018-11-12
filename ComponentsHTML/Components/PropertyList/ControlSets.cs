@@ -8,46 +8,63 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
     public abstract partial class PropertyListComponentBase {
 
+        public class ControlData {
+            public string Id { get; set; }
+
+            public List<string> Controls { get; set; }
+            public List<Dependent> Dependents { get; set; }
+
+            public ControlData() {
+                Dependents = new List<Dependent>();
+            }
+        }
+        public class Dependent {
+            public string Prop { get; set; } // Name of property
+            public string ControlProp { get; set; } // name of controlling property (ProcIf)
+            public bool Disable { get; set; } // defines wheter the control is disabled instead of hidden
+            public List<int> IntValues { get; set; }
+
+            public Dependent () {
+                IntValues = new List<int>();
+            }
+        }
+
+
         /// <summary>
         /// Generate the control sets based on a model's ProcessIf attributes.
         /// </summary>
         /// <param name="model">The model for which the control set is generated.</param>
         /// <param name="id">The HTML id of the property list.</param>
         /// <returns>The data used client-side to show/hide properties and to enable/disable validation.</returns>
-        public string GetControlSets(object model, string id) {
+        public ControlData GetControlSets(object model, string id) {
 
-            List<PropertyListEntry> properties = GetPropertiesByCategory(model, null);
-            ScriptBuilder sb = new ScriptBuilder();
+            ControlData cd = new ControlData();
             List<string> selectionControls = new List<string>();
 
-            sb.Append("{");
-            sb.Append("'Id':{0},", YetaWFManager.JsonSerialize(id));
-            sb.Append("'Dependents':[");
+            List<PropertyListEntry> properties = GetPropertiesByCategory(model, null);
             foreach (PropertyListEntry property in properties) {
                 if (property.ProcIfAttr != null) {
                     if (!selectionControls.Contains(property.ProcIfAttr.Name))
                         selectionControls.Add(property.ProcIfAttr.Name);
-                    sb.Append("{");
-                    sb.Append("'Prop':{0},'ControlProp':{1},'Disable':{2},'Values':[",
-                        YetaWFManager.JsonSerialize(property.Name), YetaWFManager.JsonSerialize(property.ProcIfAttr.Name), property.ProcIfAttr.Disable ? 1 : 0);
+                    Dependent dep = new Dependent {
+                        Prop = property.Name,
+                        ControlProp = property.ProcIfAttr.Name,
+                        Disable = property.ProcIfAttr.Disable,
+                    };
                     foreach (object obj in property.ProcIfAttr.Objects) {
                         int i = Convert.ToInt32(obj);
-                        sb.Append("{0},", i);
+                        dep.IntValues.Add(i);
                     }
-                    sb.Append("]},");
+                    cd.Dependents.Add(dep);
                 }
             }
-            sb.Append("],");
 
             if (selectionControls.Count == 0) return null;
 
-            sb.Append("'Controls':[");
-            foreach (string selectionControl in selectionControls) {
-                sb.Append("{0},", YetaWFManager.JsonSerialize(selectionControl));
-            }
-            sb.Append("],");
-            sb.Append("}");
-            return sb.ToString();
+            cd.Controls = selectionControls;
+            cd.Id = id;
+
+            return cd;
         }
     }
 }

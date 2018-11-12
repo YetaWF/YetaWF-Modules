@@ -29,7 +29,7 @@ var YetaWF_ComponentsHTML;
                 var sel = _this.SelectLang.selectedIndex;
                 var hid = $YetaWF.getElement1BySelector("input[name$='[" + sel + "].value']", [_this.Control]);
                 var newText = hid.value;
-                if (newText.length == 0 && sel > 0) {
+                if (newText.length === 0 && sel > 0) {
                     var hid0 = $YetaWF.getElement1BySelector("input[name$='[0].value']", [_this.Control]);
                     newText = hid0.value;
                     hid.value = newText;
@@ -42,16 +42,16 @@ var YetaWF_ComponentsHTML;
                 var newText = _this.InputText.value;
                 var hid = $YetaWF.getElement1BySelector("input[name$='[" + sel + "].value']", [_this.Control]);
                 hid.value = newText;
-                if (sel == 0)
+                if (sel === 0)
                     _this.SelectLang.enable(newText.length > 0);
                 return false;
             });
             $YetaWF.registerEventHandler(_this.InputText, "blur", null, function (ev) {
                 var sel = _this.SelectLang.selectedIndex;
-                if (sel == 0) {
+                if (sel === 0) {
                     var hid0 = $YetaWF.getElement1BySelector("input[name$='[0].value']", [_this.Control]);
                     var text = hid0.value;
-                    if (text.length == 0) {
+                    if (text.length === 0) {
                         // the default text was cleared, clear all languages
                         var count = YLocs.YetaWF_ComponentsHTML.Languages.length;
                         for (var index = 0; index < count; ++index) {
@@ -135,7 +135,7 @@ var YetaWF_ComponentsHTML;
                     throw "No language data";
                 var hid = $YetaWF.getElement1BySelector("input[name$='[" + index + "].value']", [this.Control]);
                 hid.value = s;
-                if (index == 0)
+                if (index === 0)
                     this.InputText.value = s;
             }
             this.SelectLang.clear();

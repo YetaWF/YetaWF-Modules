@@ -37,10 +37,10 @@ namespace YetaWF_ComponentsHTML {
 
         // API
 
-        public updateButtons() {
+        public updateButtons(): void {
 
-            this.ElemLeft.style.backgroundPosition = this.Panel == 0 ? "0px 0px" : "0px -48px";
-            $YetaWF.elementEnableToggle(this.ElemLeft, this.Panel != 0);
+            this.ElemLeft.style.backgroundPosition = this.Panel === 0 ? "0px 0px" : "0px -48px";
+            $YetaWF.elementEnableToggle(this.ElemLeft, this.Panel !== 0);
 
             var controlRect = this.Control.getBoundingClientRect();
             var width = controlRect.width;
@@ -52,8 +52,8 @@ namespace YetaWF_ComponentsHTML {
             this.ElemRight.style.backgroundPosition = this.Panel + skip < this.Panels ? "-48px -48px" : "-48px 0px";
             $YetaWF.elementEnableToggle(this.ElemRight, this.Panel + skip < this.Panels);
         }
-        public scroll(direction: number) {
-            
+        public scroll(direction: number): void {
+
             var controlRect = this.Control.getBoundingClientRect();
             var width = controlRect.width;
 
@@ -68,7 +68,7 @@ namespace YetaWF_ComponentsHTML {
             if (this.Panel >= this.Panels) this.Panel = this.Panels - skip;
             if (this.Panel < 0) this.Panel = 0;
 
-            this.updateButtons()
+            this.updateButtons();
 
             var offs = this.Panel * itemwidth;
             this.DivItems.style.transition = "all 250ms";

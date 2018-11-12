@@ -98,8 +98,12 @@ var YetaWF_ComponentsHTML;
             }
         };
         DropDownListEditComponent.prototype.destroy = function () {
-            if (this.KendoDropDownList)
-                this.KendoDropDownList.destroy();
+            try {
+                if (this.KendoDropDownList)
+                    this.KendoDropDownList.destroy();
+            }
+            catch (e) { }
+            this.KendoDropDownList = null;
             $YetaWF.removeObjectDataById(this.Control.id);
         };
         DropDownListEditComponent.prototype.ajaxUpdate = function (data, ajaxUrl, onSuccess, onFailure) {

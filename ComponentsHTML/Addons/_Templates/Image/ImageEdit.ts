@@ -8,7 +8,7 @@ namespace YetaWF_ComponentsHTML {
 
     export class ImageEditComponent extends YetaWF.ComponentBase<HTMLDivElement> {
 
-        private static readonly CLEAREDFILE = '(CLEARED)';
+        private static readonly CLEAREDFILE: string = "(CLEARED)";
 
         private Setup: ImageEditSetup;
         private UploadControl: FileUpload1Component;

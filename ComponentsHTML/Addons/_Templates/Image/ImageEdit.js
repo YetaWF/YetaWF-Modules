@@ -56,7 +56,7 @@ var YetaWF_ComponentsHTML;
             currUri.addSearch("Name", name);
             this.PreviewImg.src = currUri.toUrl();
         };
-        ImageEditComponent.CLEAREDFILE = '(CLEARED)';
+        ImageEditComponent.CLEAREDFILE = "(CLEARED)";
         return ImageEditComponent;
     }(YetaWF.ComponentBase));
     YetaWF_ComponentsHTML.ImageEditComponent = ImageEditComponent;

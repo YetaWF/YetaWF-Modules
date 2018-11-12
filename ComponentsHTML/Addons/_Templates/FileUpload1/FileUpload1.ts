@@ -140,8 +140,8 @@ namespace YetaWF_ComponentsHTML {
         public RemoveFile = (name: string): void => {
             $.ajax({
                 url: this.Setup.RemoveUrl,
-                type: 'post',
-                data: '__internalName=' + encodeURIComponent(name) + '&__filename=' + encodeURIComponent(name),
+                type: "post",
+                data: "__internalName=" + encodeURIComponent(name) + "&__filename=" + encodeURIComponent(name),
                 success: (result: any, textStatus: string, jqXHR: JQueryXHR): void => { },
                 error: (jqXHR: JQueryXHR, textStatus: string, errorThrown: any): void => {
                     $YetaWF.alert(YLocs.Forms.AjaxError.format(jqXHR.status, jqXHR.statusText), YLocs.Forms.AjaxErrorTitle);

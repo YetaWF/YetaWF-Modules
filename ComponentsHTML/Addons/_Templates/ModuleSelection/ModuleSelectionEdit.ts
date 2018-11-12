@@ -16,8 +16,8 @@ namespace YetaWF_ComponentsHTML {
         private SelectModule: YetaWF_ComponentsHTML.DropDownListEditComponent;
         private DivDescription: HTMLDivElement;
         private DivLink: HTMLDivElement;
-        private ALink: HTMLAnchorElement; 
-         
+        private ALink: HTMLAnchorElement;
+
         constructor(controlId: string, setup: Setup) {
             super(controlId);
             this.Setup = setup;
@@ -86,7 +86,7 @@ namespace YetaWF_ComponentsHTML {
         public hasChanged(data: string): boolean {
             if (!this.hasValue) return false;
             var modGuid = this.SelectModule.value;
-            return modGuid != data;
+            return modGuid !== data;
         }
         /**
          * Load object with data. Selects the correct package in the dropdownlist and selects the module (the package is detected using ajax).
@@ -95,7 +95,7 @@ namespace YetaWF_ComponentsHTML {
 
             if (modGuid !== undefined && modGuid !== null && modGuid.length > 0 && modGuid !== "00000000-0000-0000-0000-000000000000") {
 
-                var data = { 'modGuid': modGuid };
+                var data = { "modGuid": modGuid };
                 this.SelectModule.ajaxUpdate(data, this.Setup.AjaxUrlComplete,
                     (data: any): void => {
                         this.SelectPackage.value = data.extra;

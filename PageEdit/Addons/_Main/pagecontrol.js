@@ -21,7 +21,7 @@ var YetaWF_PageEdit;
                     // on page load, show control panel if wanted
                     if (YVolatile.Basics.PageControlVisible) {
                         _this.Module.style.display = "block";
-                        ComponentsHTML.processPropertyListVisible(_this.Module);
+                        ComponentsHTMLHelper.processPropertyListVisible(_this.Module);
                     }
                 }
             });
@@ -89,11 +89,11 @@ var YetaWF_PageEdit;
                 return;
             if ($YetaWF.isVisible(this.Module)) {
                 YVolatile.Basics.PageControlVisible = false;
-                ComponentsHTML.fadeOut(this.Module, this.FadeTime);
+                ComponentsHTMLHelper.fadeOut(this.Module, this.FadeTime);
             }
             else {
                 YVolatile.Basics.PageControlVisible = true;
-                ComponentsHTML.fadeIn(this.Module, this.FadeTime);
+                ComponentsHTMLHelper.fadeIn(this.Module, this.FadeTime);
             }
         };
         return PageControlModule;

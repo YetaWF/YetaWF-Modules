@@ -12,15 +12,15 @@ var YetaWF_ComponentsHTML;
     // Need to wait for the ckeditor instance to finish initialization
     // because CKEDITOR.instances.editor.commands is an empty object
     // if you try to use it immediately after CKEDITOR.replace('editor');
-    if (typeof CKEDITOR !== 'undefined') { // CKEDITOR is only defined when an editable textarea is used
-        CKEDITOR.on('instanceReady', function (ev) {
+    if (typeof CKEDITOR !== "undefined") { // CKEDITOR is only defined when an editable textarea is used
+        CKEDITOR.on("instanceReady", function (ev) {
             // Replace the old save's exec function with the new one
             if (ev.editor.commands.save) {
                 // Create a new command with the desired exec function
                 var overridecmd = new CKEDITOR.command(ev.editor, {
                     exec: function (editor) {
-                        var $form = $(editor.element.$).closest('form.' + YConfigs.Forms.CssFormAjax);
-                        if ($form.length != 1)
+                        var $form = $(editor.element.$).closest("form." + YConfigs.Forms.CssFormAjax);
+                        if ($form.length !== 1)
                             throw "Couldn't find form"; /*DEBUG*/
                         $YetaWF.Forms.submit($form[0], false);
                     }
@@ -38,7 +38,7 @@ var YetaWF_ComponentsHTML;
         for (var _i = 0, ckeds_1 = ckeds; _i < ckeds_1.length; _i++) {
             var cked = ckeds_1[_i];
             var ck = CKEDITOR.instances[cked.id];
-            ck.resize('100%', $YetaWF.getAttribute(cked, "data-height"), true);
+            ck.resize("100%", $YetaWF.getAttribute(cked, "data-height"), true);
         }
     });
     // A <div> is being emptied. Destroy all ckeditors the <div> may contain.

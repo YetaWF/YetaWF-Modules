@@ -24,8 +24,8 @@ var YetaWF_ComponentsHTML;
             _this.RemoveFile = function (name) {
                 $.ajax({
                     url: _this.Setup.RemoveUrl,
-                    type: 'post',
-                    data: '__internalName=' + encodeURIComponent(name) + '&__filename=' + encodeURIComponent(name),
+                    type: "post",
+                    data: "__internalName=" + encodeURIComponent(name) + "&__filename=" + encodeURIComponent(name),
                     success: function (result, textStatus, jqXHR) { },
                     error: function (jqXHR, textStatus, errorThrown) {
                         $YetaWF.alert(YLocs.Forms.AjaxError.format(jqXHR.status, jqXHR.statusText), YLocs.Forms.AjaxErrorTitle);

@@ -16,10 +16,10 @@ namespace YetaWF_ComponentsHTML {
 
             if (TextEditComponent.clip != null) return;
             var elems = $YetaWF.getElementsBySelector(".yt_text_copy", [tag]);
-            if (elems.length == 0) return;
+            if (elems.length === 0) return;
 
             TextEditComponent.clip = new ClipboardJS(".yt_text_copy", {
-                target: (trigger: HTMLElement) => {
+                target: (trigger: HTMLElement):Element|null => {
                     return trigger.previousElementSibling;
                 },
             });

@@ -37,7 +37,7 @@ namespace YetaWF_ComponentsHTML {
                 this.updateValue();
             });
         }
-        private updateValue() {
+        private updateValue(): void {
             this.Hidden.value = `${this.InputDays.value}.${this.InputHours.value}:${this.InputMins.value}:${this.InputSecs.value}`;
         }
     }
