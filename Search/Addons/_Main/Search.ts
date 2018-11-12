@@ -1,25 +1,41 @@
-"use strict";
-/* Copyright ï¿½ 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Search#License */
-var YetaWF_Search;
-(function (YetaWF_Search) {
-    var Search = /** @class */ (function () {
-        function Search() {
-        }
-        Search.highlightSearch = function () {
-            $(".yModule").removeHighlight();
-            if (YVolatile.Basics.EditModeActive)
-                return; // never in edit mode
+/* Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Search#License */
+
+namespace YetaWF {
+    export interface IVolatile {
+        YetaWF_Search: YetaWF_Search.IPackageVolatiles;
+    }
+    export interface IConfigs {
+        YetaWF_Search: YetaWF_Search.IPackageConfigs;
+    }
+}
+
+namespace YetaWF_Search {
+
+    export interface IPackageVolatiles {
+        HighLight: boolean;
+    }
+    export interface IPackageConfigs {
+        UrlArg: string;
+    }
+
+    export class Search {
+
+        public static on: boolean = true;
+
+        public static highlightSearch(): void {
+            ($(".yModule") as any).removeHighlight();
+            if (YVolatile.Basics.EditModeActive) return; // never in edit mode
+
             var offButton = $YetaWF.getElement1BySelector(".YetaWF_Search_SearchControl a[data-name='Off']");
-            if (offButton.style.display === "none")
-                return;
+            if (offButton.style.display === "none") return;
+
             var uri = $YetaWF.parseUrl(window.location.href);
             var kwdsString = uri.getSearch(YConfigs.YetaWF_Search.UrlArg);
-            if (kwdsString.length === 0)
-                return;
+            if (kwdsString.length === 0) return;
             var kwds = kwdsString.split(",");
-            $(".yPane .yModule").highlight(kwds);
-        };
-        Search.setButtons = function () {
+            ($(".yPane .yModule") as any).highlight(kwds);
+        }
+        public static setButtons(): void {
             var onButton = $YetaWF.getElement1BySelector(".YetaWF_Search_SearchControl a[data-name='On']");
             var offButton = $YetaWF.getElement1BySelector(".YetaWF_Search_SearchControl a[data-name='Off']");
             if (Search.on) {
@@ -27,8 +43,7 @@ var YetaWF_Search;
                     if (YVolatile.YetaWF_Search && YVolatile.YetaWF_Search.HighLight) {
                         offButton.style.display = "";
                         onButton.style.display = "none";
-                    }
-                    else {
+                    } else {
                         offButton.style.display = "none";
                         onButton.style.display = "";
                     }
@@ -37,16 +52,14 @@ var YetaWF_Search;
             }
             onButton.style.display = "none";
             offButton.style.display = "none";
-        };
-        Search.on = true;
-        return Search;
-    }());
-    YetaWF_Search.Search = Search;
+        }
+    }
+
     // Form postback - highlight new stuff
     if ($YetaWF.FormsAvailable()) {
-        $YetaWF.Forms.addPostSubmitHandler(false /*!InPartialView*/, {
+        $YetaWF.Forms.addPostSubmitHandler(false/*!InPartialView*/, {
             form: null,
-            callback: function (entry) {
+            callback: (entry: YetaWF.SubmitHandlerEntry):void => {
                 Search.setButtons();
                 Search.highlightSearch();
             },
@@ -54,17 +67,19 @@ var YetaWF_Search;
         });
     }
     // page or page content update - highlight new stuff
-    $YetaWF.addWhenReady(function (tag) {
+    $YetaWF.addWhenReady((tag: HTMLElement): void => {
         Search.setButtons();
         Search.highlightSearch();
     });
     // Handles events turning the addon on/off (used for dynamic content)
-    $YetaWF.registerContentChange(function (addonGuid, on) {
+    $YetaWF.registerContentChange((addonGuid: string, on: boolean): void => {
         if (addonGuid === "f7202e79-30bc-43ea-8d7a-12218785207b") {
             Search.on = on;
         }
     });
-    $YetaWF.registerEventHandlerBody("click", ".YetaWF_Search_SearchControl a[data-name='On']", function (ev) {
+
+    $YetaWF.registerEventHandlerBody("click", ".YetaWF_Search_SearchControl a[data-name='On']", (ev: MouseEvent): boolean => {
+
         var onButton = $YetaWF.getElement1BySelector(".YetaWF_Search_SearchControl a[data-name='On']");
         var offButton = $YetaWF.getElement1BySelector(".YetaWF_Search_SearchControl a[data-name='Off']");
         onButton.style.display = "none";
@@ -74,24 +89,24 @@ var YetaWF_Search;
         $.ajax({
             "url": "/YetaWF_Search/SearchControlModule/Switch",
             "type": "post",
-            "data": "Value=true&" + YConfigs.Basics.ModuleGuid + "=" + encodeURIComponent($YetaWF.getModuleGuidFromTag(onButton))
+            "data": `Value=true&${YConfigs.Basics.ModuleGuid}=${encodeURIComponent($YetaWF.getModuleGuidFromTag(onButton))}`
         });
         return false;
     });
-    $YetaWF.registerEventHandlerBody("click", ".YetaWF_Search_SearchControl a[data-name='Off']", function (ev) {
+    $YetaWF.registerEventHandlerBody("click", ".YetaWF_Search_SearchControl a[data-name='Off']", (ev: MouseEvent): boolean => {
+
         var onButton = $YetaWF.getElement1BySelector(".YetaWF_Search_SearchControl a[data-name='On']");
         var offButton = $YetaWF.getElement1BySelector(".YetaWF_Search_SearchControl a[data-name='Off']");
         offButton.style.display = "none";
         onButton.style.display = "";
-        $(".yModule").removeHighlight();
+
+        ($(".yModule") as any).removeHighlight();
         YVolatile.YetaWF_Search.HighLight = false;
         $.ajax({
             "url": "/YetaWF_Search/SearchControlModule/Switch",
             "type": "post",
-            "data": "Value=false&" + YConfigs.Basics.ModuleGuid + "=" + encodeURIComponent($YetaWF.getModuleGuidFromTag(offButton))
+            "data": `Value=false&${YConfigs.Basics.ModuleGuid}=${encodeURIComponent($YetaWF.getModuleGuidFromTag(offButton))}`
         });
         return false;
     });
-})(YetaWF_Search || (YetaWF_Search = {}));
-
-//# sourceMappingURL=Search.js.map
+}

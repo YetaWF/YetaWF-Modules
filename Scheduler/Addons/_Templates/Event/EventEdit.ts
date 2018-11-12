@@ -2,7 +2,7 @@
 
 namespace YetaWF_Scheduler {
 
-    export class EventEditComponent { 
+    export class EventEditComponent {
 
         private Control: HTMLElement;
         private DropDown: YetaWF_ComponentsHTML.DropDownListEditComponent;

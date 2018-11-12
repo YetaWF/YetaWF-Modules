@@ -1,34 +1,32 @@
+@charset "UTF-8";
 /* Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Search#License */
-
 /* highlighted search terms */
-.highlight { background-color: yellow }
+.highlight {
+  background-color: yellow; }
 
 /* The search control module */
-.yModule.YetaWF_Search_SearchControl  {
-    position: fixed;
-    right: 0px;
-    top: 12em;
-}
+.yModule.YetaWF_Search_SearchControl {
+  position: fixed;
+  right: 0px;
+  top: 12em; }
+
 .YetaWF_Search_SearchResults .t_summary {
-    margin-top:1em;
-}
+  margin-top: 1em; }
+
 .YetaWF_Search_SearchResults .t_list {
-    margin-top:1em;
-}
+  margin-top: 1em; }
+
 .YetaWF_Search_SearchResults .t_entry {
-    margin-bottom:.5em;
-}
+  margin-bottom: .5em; }
+
 .YetaWF_Search_SearchResults .t_url {
-    font-size:smaller;
-}
+  font-size: smaller; }
+
 .YetaWF_Search_SearchResults .t_updated {
-    font-size:smaller;
-    display:inline;
-}
+  font-size: smaller;
+  display: inline; }
 
 /* Hide on smaller devices */
-@media screen and (max-width: 1400px ) {
-    .YetaWF_Search_SearchControl {
-        display: none;
-    }
-}
+@media screen and (max-width: 1400px) {
+  .YetaWF_Search_SearchControl {
+    display: none; } }

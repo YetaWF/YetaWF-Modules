@@ -508,7 +508,7 @@ namespace YetaWF_ComponentsHTML {
             }
             div += "</div>";
             if (row > 0)
-                entry.form.insertAdjacentHTML("beforeend", div);
+                (entry.form as HTMLElement).insertAdjacentHTML("beforeend", div);
         }
         // sorting
         private clearSorts(): void {
