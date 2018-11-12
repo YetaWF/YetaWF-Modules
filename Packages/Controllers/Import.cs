@@ -124,14 +124,12 @@ namespace YetaWF.Modules.Packages.Controllers {
             string msg = FormatMessage(success, errorList, __filename.FileName);
 
             if (success) {
-                // Upload control considers Json result a success
-                ScriptBuilder sb = new ScriptBuilder();
-                sb.Append("{{ \"result\": \"$YetaWF.confirm(\\\"{0}\\\", null, function() {{ $YetaWF.reloadPage(true); }} ); \" }}",
-                    YetaWFManager.JserEncode(YetaWFManager.JserEncode(msg))
-                );
+                UploadResponse resp = new UploadResponse {
+                    Result = $"$YetaWF.confirm('{YetaWFManager.JserEncode(msg)}', null, function() {{ $YetaWF.reloadPage(true); }} );",
+                };
                 //System.Web.HttpRuntime.UnloadAppDomain();
                 //System.Web.HttpContext.Current.Response.Redirect("/");
-                return new YJsonResult { Data = sb.ToString() };
+                return new YJsonResult { Data = resp };
             } else {
                 // Anything else is a failure
                 throw new Error(msg);
@@ -142,7 +140,8 @@ namespace YetaWF.Modules.Packages.Controllers {
         [ExcludeDemoMode]
         public ActionResult RemovePackage(string filename) {
             // there is nothing to remove because we already imported the file
-            return new EmptyResult();
+            UploadRemoveResponse resp = new UploadRemoveResponse();
+            return new YJsonResult { Data = resp };
         }
     }
 }

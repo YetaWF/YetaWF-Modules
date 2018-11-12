@@ -20,18 +20,8 @@ var YetaWF_ComponentsHTML;
         function FileUpload1Component(controlId, setup) {
             var _this = _super.call(this, controlId) || this;
             _this.$divProgressbar = null;
-            // API
-            _this.RemoveFile = function (name) {
-                $.ajax({
-                    url: _this.Setup.RemoveUrl,
-                    type: "post",
-                    data: "__internalName=" + encodeURIComponent(name) + "&__filename=" + encodeURIComponent(name),
-                    success: function (result, textStatus, jqXHR) { },
-                    error: function (jqXHR, textStatus, errorThrown) {
-                        $YetaWF.alert(YLocs.Forms.AjaxError.format(jqXHR.status, jqXHR.statusText), YLocs.Forms.AjaxErrorTitle);
-                    }
-                });
-            };
+            _this.SuccessfullUploadCallback = null;
+            _this.GetFileNameCallback = null;
             _this.Setup = setup;
             $YetaWF.addObjectDataById(controlId, _this);
             _this.inputFileName = $YetaWF.getElement1BySelector("input.t_filename", [_this.Control]);
@@ -51,7 +41,7 @@ var YetaWF_ComponentsHTML;
                 return false;
             });
             // Uploader control
-            $(_this.$Control).dmUploader({
+            _this.$Control.dmUploader({
                 url: _this.Setup.SaveUrl,
                 //dataType: 'json',  //don't use otherwise response is not recognized in case of errors
                 //allowedTypes: '*',
@@ -62,8 +52,8 @@ var YetaWF_ComponentsHTML;
                     $YetaWF.setLoading(true);
                 },
                 onExtraData: function (id, data) {
-                    if (_this.$Control.data().getFileName !== undefined) {
-                        var filename = _this.$Control.data().getFileName();
+                    if (_this.GetFileNameCallback) {
+                        var filename = _this.GetFileNameCallback();
                         data.append("__lastInternalName", filename); // the previous real filename of the file to remove
                     }
                     if (_this.Setup.SerializeForm) {
@@ -112,30 +102,48 @@ var YetaWF_ComponentsHTML;
                     //    "attributes": "233 x 123 (w x h)"
                     //}
                     $YetaWF.setLoading(false);
-                    if (data.startsWith(YConfigs.Basics.AjaxJavascriptReturn)) {
-                        var script = data.substring(YConfigs.Basics.AjaxJavascriptReturn.length);
-                        // tslint:disable-next-line:no-eval
-                        eval(script);
-                        return;
-                    }
-                    if (data.startsWith(YConfigs.Basics.AjaxJavascriptErrorReturn)) {
-                        var script = data.substring(YConfigs.Basics.AjaxJavascriptErrorReturn.length);
-                        // tslint:disable-next-line:no-eval
-                        eval(script);
-                        return;
+                    if (typeof data === "string") {
+                        if (data.startsWith(YConfigs.Basics.AjaxJavascriptReturn)) {
+                            var script = data.substring(YConfigs.Basics.AjaxJavascriptReturn.length);
+                            // tslint:disable-next-line:no-eval
+                            eval(script);
+                            return;
+                        }
+                        if (data.startsWith(YConfigs.Basics.AjaxJavascriptErrorReturn)) {
+                            var script = data.substring(YConfigs.Basics.AjaxJavascriptErrorReturn.length);
+                            // tslint:disable-next-line:no-eval
+                            eval(script);
+                            return;
+                        }
+                        throw "Unexpected return value " + data;
                     }
                     // result has quotes around it
-                    var js = JSON.parse(data);
+                    if (_this.SuccessfullUploadCallback)
+                        _this.SuccessfullUploadCallback(data);
                     // tslint:disable-next-line:no-eval
-                    eval(js.result);
-                    if (_this.$Control.data().successfullUpload !== undefined)
-                        _this.$Control.data().successfullUpload(js);
-                    //if ($control.data().setAttributes != undefined)
-                    //    filename = $control.data().setAttributes('');
+                    eval(data.Result);
                 },
             });
             return _this;
         }
+        // API
+        FileUpload1Component.prototype.RemoveFile = function (name) {
+            $.ajax({
+                url: this.Setup.RemoveUrl,
+                type: "post",
+                data: "__internalName=" + encodeURIComponent(name) + "&__filename=" + encodeURIComponent(name),
+                success: function (result, textStatus, jqXHR) { },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    $YetaWF.alert(YLocs.Forms.AjaxError.format(jqXHR.status, jqXHR.statusText), YLocs.Forms.AjaxErrorTitle);
+                }
+            });
+        };
+        FileUpload1Component.prototype.SetSuccessfullUpload = function (callback) {
+            this.SuccessfullUploadCallback = callback;
+        };
+        FileUpload1Component.prototype.SetGetFileName = function (callback) {
+            this.GetFileNameCallback = callback;
+        };
         FileUpload1Component.prototype.destroy = function () {
             $YetaWF.removeObjectDataById(this.Control.id);
         };

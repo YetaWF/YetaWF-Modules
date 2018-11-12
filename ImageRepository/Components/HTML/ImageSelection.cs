@@ -37,16 +37,18 @@ namespace YetaWF.Modules.ImageRepository.Components {
         <div class='t_list'>
             <select class='t_native' name='List' size='10' style='height:{info.PreviewHeight}px'>");
 
-            foreach(var f in info.GetFilesAsync().Result) {
-                string name = f.RemoveStartingAt(YetaWF.Core.Image.ImageSupport.ImageSeparator);
-                hb.Append($@"<option title = '{YetaWFManager.HtmlAttributeEncode(name)}' value='{YetaWFManager.HtmlAttributeEncode(f)}'>{YetaWFManager.HtmlEncode(name)}</option>");
+            string modelPlain = model?.RemoveStartingAt(YetaWF.Core.Image.ImageSupport.ImageSeparator);
+            foreach (var f in await info.GetFilesAsync()) {
+                string fPlain = f.RemoveStartingAt(YetaWF.Core.Image.ImageSupport.ImageSeparator);
+                string sel = fPlain == modelPlain ? " selected" : "";
+                hb.Append($@"<option title='{HAE(fPlain)}' value='{HAE(f)}' {sel}>{HE(fPlain)}</option>");
             }
 
             hb.Append($@"
             </select>
         </div>
         <div class='t_preview'>
-            <img src='{YetaWFManager.HtmlAttributeEncode(info.MakeImageUrl(model, info.PreviewWidth, info.PreviewHeight))}' alt='{__ResStr("preview", "Image Preview")}' />
+            <img src='{HAE(info.MakeImageUrl(model, info.PreviewWidth, info.PreviewHeight))}' alt='{__ResStr("preview", "Image Preview")}' />
         </div>
     </div>
     <div class='t_haveimage' {(string.IsNullOrWhiteSpace(model) ? "style='display:none'" : "")}>
@@ -58,7 +60,7 @@ namespace YetaWF.Modules.ImageRepository.Components {
     </div>
 </div>
 <script>
-    YetaWF_ImageRepository.initSelection('{ControlId}');
+    new YetaWF_ImageRepository.ImageRepository('{ControlId}');
 </script>");
 
             return hb.ToYHtmlString();

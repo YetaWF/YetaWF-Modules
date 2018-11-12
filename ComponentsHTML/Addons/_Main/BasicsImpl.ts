@@ -10,10 +10,18 @@ namespace YetaWF_ComponentsHTML {
         // LOADING
         // LOADING
 
+        private _loading: boolean = false;
+
+        public get isLoading(): boolean {
+            return this._loading;
+        }
+
         public setLoading(on?: boolean): void {
             if (on !== false) {
+                this._loading = true;
                 ($ as any).prettyLoader.show();
             } else {
+                this._loading = false;
                 ($ as any).prettyLoader.hide();
             }
         }

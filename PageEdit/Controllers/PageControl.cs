@@ -426,25 +426,23 @@ namespace YetaWF.Modules.PageEdit.Controllers {
                 sbErr.Append(errorList, LeadingNL: true);
                 errs = sbErr.ToString();
             }
-            ScriptBuilder sb = new ScriptBuilder();
             if (success) {
-                // Upload control considers Json result a success
-                sb.Append("{{ \"result\": \"$YetaWF.confirm(\\\"{0}\\\", null, function() {{ $YetaWF.reloadPage(true); }} ); \" }}",
-                    YetaWFManager.JserEncode(YetaWFManager.JserEncode(this.__ResStr("imported", "\"{0}\" successfully imported(+nl)", __filename.FileName) + errs))
-                );
-                return new YJsonResult { Data = sb.ToString() };
+                string msg = this.__ResStr("imported", "\"{0}\" successfully imported(+nl)", __filename.FileName) + errs;
+                UploadResponse resp = new UploadResponse {
+                    Result = $"$YetaWF.confirm('{YetaWFManager.JserEncode(msg)}', null, function() {{ $YetaWF.reloadPage(true); }} );",
+                };
+                return new YJsonResult { Data = resp };
             } else {
                 // Anything else is a failure
-                sb.Append(this.__ResStr("cantImport", "Can't import {0}:(+nl)"), __filename.FileName);
-                sb.Append(errs);
-                throw new Error(sb.ToString());
+                throw new Error(this.__ResStr("cantImport", "Can't import {0}:(+nl)", __filename.FileName) + errs);
             }
         }
         [AllowPost]
         [ExcludeDemoMode]
         public ActionResult RemoveModule(string filename) {
             // there is nothing to remove because we already imported the file
-            return new EmptyResult();
+            UploadRemoveResponse resp = new UploadRemoveResponse();
+            return new YJsonResult { Data = resp };
         }
         [AllowPost]
         [ExcludeDemoMode]
@@ -468,26 +466,23 @@ namespace YetaWF.Modules.PageEdit.Controllers {
                 sbErr.Append(errorList, LeadingNL: true);
                 errs = sbErr.ToString();
             }
-            ScriptBuilder sb = new ScriptBuilder();
             if (info.Success) {
-                // Upload control considers Json result a success
-                sb.Append("{{ \"result\": \"$YetaWF.confirm(\\\"{0}\\\", null, function() {{ window.location.assign(\\\"{1}\\\"); }} ); \" }}",
-                    YetaWFManager.JserEncode(YetaWFManager.JserEncode(this.__ResStr("imported", "\"{0}\" successfully imported(+nl)", __filename.FileName) + errs)),
-                    YetaWFManager.JserEncode(info.Url)
-                );
-                return new YJsonResult { Data = sb.ToString() };
+                string msg = this.__ResStr("imported", "\"{0}\" successfully imported(+nl)", __filename.FileName) + errs;
+                UploadResponse resp = new UploadResponse {
+                    Result = $"$YetaWF.confirm('{YetaWFManager.JserEncode(msg)}', null, function() {{ window.location.assign('{YetaWFManager.JserEncode(info.Url)}'); }} );",
+                };
+                return new YJsonResult { Data = resp };
             } else {
                 // Anything else is a failure
-                sb.Append(this.__ResStr("cantImport", "Can't import {0}:(+nl)"), __filename.FileName);
-                sb.Append(errs);
-                throw new Error(sb.ToString());
+                throw new Error(this.__ResStr("cantImport", "Can't import {0}:(+nl)", __filename.FileName) + errs);
             }
         }
         [AllowPost]
         [ExcludeDemoMode]
         public ActionResult RemovePage(string filename) {
             // there is nothing to remove because we already imported the file
-            return new EmptyResult();
+            UploadRemoveResponse resp = new UploadRemoveResponse();
+            return new YJsonResult { Data = resp };
         }
 
         [AllowPost]

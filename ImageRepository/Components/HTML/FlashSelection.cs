@@ -43,9 +43,11 @@ namespace YetaWF.Modules.ImageRepository.Components {
         <div class='t_list'>
             <select class='t_native' name='List' size='10' style='height:{info.PreviewHeight}px'>");
 
-            foreach(var f in info.GetFilesAsync().Result) {
-                string name = f.RemoveStartingAt(YetaWF.Core.Image.ImageSupport.ImageSeparator);
-                hb.Append($@"<option title = '{YetaWFManager.HtmlAttributeEncode(name)}' value='{YetaWFManager.HtmlAttributeEncode(f)}'>{YetaWFManager.HtmlEncode(name)}</option>");
+            string modelPlain = model?.RemoveStartingAt(YetaWF.Core.Image.ImageSupport.ImageSeparator);
+            foreach (var f in await info.GetFilesAsync()) {
+                string fPlain = f.RemoveStartingAt(YetaWF.Core.Image.ImageSupport.ImageSeparator);
+                string sel = fPlain == modelPlain ? " selected" : "";
+                hb.Append($@"<option title='{HAE(fPlain)}' value='{HAE(f)}' {sel}>{HE(fPlain)}</option>");
             }
 
             hb.Append($@"
@@ -53,7 +55,7 @@ namespace YetaWF.Modules.ImageRepository.Components {
         </div>
         <div class='t_preview'>
             <div id='{objId}'>
-                <p>{YetaWFManager.HtmlEncode(__ResStr("noFlash", "Flash Not Installed"))}</p>
+                <p>{HE(__ResStr("noFlash", "Flash Not Installed"))}</p>
             </div>
             <script>
                 {BeginDocumentReady()}
@@ -72,7 +74,7 @@ namespace YetaWF.Modules.ImageRepository.Components {
     </div>
 </div>
 <script>
-    YetaWF_FlashImageRepository.initSelection('{ControlId}');
+    new YetaWF_ImageRepository.FlashRepository('{ControlId}');
 </script>");
 
             return hb.ToYHtmlString();

@@ -16,6 +16,19 @@ namespace YetaWF_ComponentsHTML {
         SerializeForm: boolean;
     }
 
+    export interface FileUploadResponse {
+        Result: string;
+        FileName: string;
+        FileNamePlain: string;
+        RealFileName: string;
+        Attributes: string;
+        List: string;
+    }
+    export interface FileUploadRemoveResponse {
+        Result: string;
+        List: string;
+    }
+
     export class FileUpload1Component extends YetaWF.ComponentBase<HTMLButtonElement> {
 
         public static readonly SELECTOR: string = ".yt_fileupload1";
@@ -25,6 +38,9 @@ namespace YetaWF_ComponentsHTML {
         private inputFileName: HTMLInputElement;
         private divProgressbar: HTMLDivElement;
         private $divProgressbar: JQuery<HTMLElement> | null = null;
+
+        private SuccessfullUploadCallback: ((data: FileUploadResponse) => void) | null = null;
+        private GetFileNameCallback: (() => string) | null = null;
 
         constructor(controlId: string, setup: FileUpload1Setup) {
             super(controlId);
@@ -52,7 +68,7 @@ namespace YetaWF_ComponentsHTML {
             });
 
             // Uploader control
-            ($(this.$Control) as any).dmUploader({
+            (this.$Control as any).dmUploader({
                 url: this.Setup.SaveUrl,
                 //dataType: 'json',  //don't use otherwise response is not recognized in case of errors
                 //allowedTypes: '*',
@@ -63,8 +79,8 @@ namespace YetaWF_ComponentsHTML {
                     $YetaWF.setLoading(true);
                 },
                 onExtraData: (id: string, data: any): void => {
-                    if (this.$Control.data().getFileName !== undefined) {
-                        var filename = this.$Control.data().getFileName();
+                    if (this.GetFileNameCallback) {
+                        var filename = this.GetFileNameCallback();
                         data.append("__lastInternalName", filename);// the previous real filename of the file to remove
                     }
                     if (this.Setup.SerializeForm) {
@@ -112,32 +128,33 @@ namespace YetaWF_ComponentsHTML {
                     //    "attributes": "233 x 123 (w x h)"
                     //}
                     $YetaWF.setLoading(false);
-                    if (data.startsWith(YConfigs.Basics.AjaxJavascriptReturn)) {
-                        var script = data.substring(YConfigs.Basics.AjaxJavascriptReturn.length);
-                        // tslint:disable-next-line:no-eval
-                        eval(script);
-                        return;
-                    }
-                    if (data.startsWith(YConfigs.Basics.AjaxJavascriptErrorReturn)) {
-                        var script = data.substring(YConfigs.Basics.AjaxJavascriptErrorReturn.length);
-                        // tslint:disable-next-line:no-eval
-                        eval(script);
-                        return;
+                    if (typeof data === "string") {
+                        if (data.startsWith(YConfigs.Basics.AjaxJavascriptReturn)) {
+                            var script = data.substring(YConfigs.Basics.AjaxJavascriptReturn.length);
+                            // tslint:disable-next-line:no-eval
+                            eval(script);
+                            return;
+                        }
+                        if (data.startsWith(YConfigs.Basics.AjaxJavascriptErrorReturn)) {
+                            var script = data.substring(YConfigs.Basics.AjaxJavascriptErrorReturn.length);
+                            // tslint:disable-next-line:no-eval
+                            eval(script);
+                            return;
+                        }
+                        throw `Unexpected return value ${data}`;
                     }
                     // result has quotes around it
-                    var js = JSON.parse(data);
+                    if (this.SuccessfullUploadCallback)
+                        this.SuccessfullUploadCallback(data);
+
                     // tslint:disable-next-line:no-eval
-                    eval(js.result);
-                    if (this.$Control.data().successfullUpload !== undefined)
-                        this.$Control.data().successfullUpload(js);
-                    //if ($control.data().setAttributes != undefined)
-                    //    filename = $control.data().setAttributes('');
+                    eval(data.Result);
                 },
             });
         }
 
         // API
-        public RemoveFile = (name: string): void => {
+        public RemoveFile(name: string): void {
             $.ajax({
                 url: this.Setup.RemoveUrl,
                 type: "post",
@@ -147,6 +164,13 @@ namespace YetaWF_ComponentsHTML {
                     $YetaWF.alert(YLocs.Forms.AjaxError.format(jqXHR.status, jqXHR.statusText), YLocs.Forms.AjaxErrorTitle);
                 }
             });
+        }
+
+        public SetSuccessfullUpload(callback: (data: FileUploadResponse) => void) {
+            this.SuccessfullUploadCallback = callback;
+        }
+        public SetGetFileName(callback: () => string) {
+            this.GetFileNameCallback = callback;
         }
 
         public destroy(): void {

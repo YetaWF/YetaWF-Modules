@@ -95,11 +95,13 @@
     <Content Include="Addons\_Templates\FlashSelection\filelistCSS.txt" />
     <Content Include="Addons\_Templates\FlashSelection\filelistJS.txt" />
     <None Include="Addons\_Templates\FlashSelection\FlashSelection.scss" />
-    <Content Include="Addons\_Templates\FlashSelection\FlashSelection.js" />
     <Content Include="Addons\_Templates\ImageSelection\filelistCSS.txt" />
     <Content Include="Addons\_Templates\ImageSelection\filelistJS.txt" />
     <None Include="Addons\_Templates\ImageSelection\ImageSelection.scss" />
-    <Content Include="Addons\_Templates\ImageSelection\ImageSelection.js" />
+    <None Include="tsconfig.json" />
+    <None Include="tslint.json" />
+    <TypeScriptCompile Include="Addons\_Templates\FlashSelection\FlashSelection.ts" />
+    <TypeScriptCompile Include="Addons\_Templates\ImageSelection\ImageSelection.ts" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

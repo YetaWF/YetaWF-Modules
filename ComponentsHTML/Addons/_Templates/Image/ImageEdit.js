@@ -27,14 +27,12 @@ var YetaWF_ComponentsHTML;
             if (_this.HiddenInput.value === ImageEditComponent.CLEAREDFILE)
                 _this.HiddenInput.value = "";
             // set upload control settings
-            $(_this.UploadControl).data({
-                getFileName: function () { return _this.HiddenInput.value; },
-                successfullUpload: function (js) {
-                    _this.HiddenInput.value = js.filename;
-                    _this.setPreview(js.filename);
-                    _this.HaveImageDiv.style.display = js.filename.length > 0 ? "block" : "none";
-                }
+            _this.UploadControl.SetSuccessfullUpload(function (data) {
+                _this.HiddenInput.value = data.FileName;
+                _this.setPreview(data.FileName);
+                _this.HaveImageDiv.style.display = data.FileName.length > 0 ? "block" : "none";
             });
+            _this.UploadControl.SetGetFileName(function () { return _this.HiddenInput.value; });
             // handle the clear button
             $YetaWF.registerEventHandler(_this.Control, "click", "input.t_clear", function (ev) {
                 _this.UploadControl.RemoveFile(_this.HiddenInput.value);

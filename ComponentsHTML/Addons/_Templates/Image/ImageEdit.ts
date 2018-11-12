@@ -29,14 +29,12 @@ namespace YetaWF_ComponentsHTML {
                 this.HiddenInput.value = "";
 
             // set upload control settings
-            $(this.UploadControl).data({
-                getFileName: (): string => { return this.HiddenInput.value; },
-                successfullUpload: (js: any): void => {
-                    this.HiddenInput.value = js.filename;
-                    this.setPreview(js.filename);
-                    this.HaveImageDiv.style.display = js.filename.length > 0 ? "block" : "none";
-                }
+            this.UploadControl.SetSuccessfullUpload((data: FileUploadResponse): void => {
+                this.HiddenInput.value = data.FileName;
+                this.setPreview(data.FileName);
+                this.HaveImageDiv.style.display = data.FileName.length > 0 ? "block" : "none";
             });
+            this.UploadControl.SetGetFileName((): string => { return this.HiddenInput.value; });
 
             // handle the clear button
             $YetaWF.registerEventHandler(this.Control, "click", "input.t_clear", (ev: MouseEvent):boolean => {

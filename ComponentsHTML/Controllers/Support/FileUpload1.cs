@@ -10,6 +10,7 @@ using YetaWF.Core.Support;
 using YetaWF.Core.Upload;
 using System.Threading.Tasks;
 using YetaWF.Core.Controllers;
+using YetaWF.Core.Components;
 #if MVC6
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Http;
@@ -45,16 +46,15 @@ namespace YetaWF.Modules.ComponentsHTML.Controllers {
 
             Size size = await ImageSupport.GetImageSizeAsync(tempName);
 
-            ScriptBuilder sb = new ScriptBuilder();
-            // Upload control considers Json result a success. result has a function to execute, newName has the file name
-            sb.Append("{\n");
-            sb.Append("  \"result\":");
-            sb.Append("      \"$YetaWF.confirm(\\\"{0}\\\");\",", this.__ResStr("saveImageOK", "Image \\\\\\\"{0}\\\\\\\" successfully uploaded", YetaWFManager.JserEncode(__filename.FileName)));
-            sb.Append("  \"filename\": \"{0}\",\n", YetaWFManager.JserEncode(tempName));
-            sb.Append("  \"realFilename\": \"{0}\",\n", YetaWFManager.JserEncode(__filename.FileName));
-            sb.Append("  \"attributes\": \"{0}\"\n", this.__ResStr("imgAttr", "{0} x {1} (w x h)", size.Width, size.Height));
-            sb.Append("}");
-            return new YJsonResult { Data = sb.ToString() };
+            UploadResponse resp = new UploadResponse {
+                Result = $"$YetaWF.confirm('{YetaWFManager.JserEncode(this.__ResStr("saveImageOK", "Image \"{0}\" successfully uploaded", __filename.FileName))}');",
+                FileName = tempName,
+                FileNamePlain = tempName,
+                RealFileName = __filename.FileName,
+                Attributes = this.__ResStr("imgAttr", "{0} x {1} (w x h)", size.Width, size.Height),
+            };
+
+            return new YJsonResult { Data = resp };
         }
 
         /// <summary>
@@ -68,7 +68,8 @@ namespace YetaWF.Modules.ComponentsHTML.Controllers {
         public async Task<ActionResult> RemoveImage(string __filename, string __internalName) {
             FileUpload upload = new FileUpload();
             await upload.RemoveTempFileAsync(__internalName);
-            return new EmptyResult();
+            UploadRemoveResponse resp = new UploadRemoveResponse();
+            return new YJsonResult { Data = resp };
         }
     }
 }

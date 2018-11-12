@@ -207,6 +207,15 @@ namespace YetaWF.Modules.DevTests.Controllers {
 
         // FileUpload1
 
+        public class UploadResponse {
+            public string Result { get; set; }
+            public string FileName { get; set; }
+            public string FileNamePlain { get; set; }
+            public string RealFileName { get; set; }
+            public string Attributes { get; set; }
+            public string List { get; set; }
+        }
+
         [AllowPost]
         [ExcludeDemoMode]
 #if MVC6
@@ -227,12 +236,10 @@ namespace YetaWF.Modules.DevTests.Controllers {
             string msg = this.__ResStr("uploadSuccess", "File {0} successfully uploaded", __filename.FileName);
 
             if (success) {
-                // Upload control considers Json result a success
-                ScriptBuilder sb = new ScriptBuilder();
-                sb.Append("{{ \"result\": \"$YetaWF.confirm(\\\"{0}\\\", null, function() {{ /*add some javascript like  $YetaWF.reloadPage(true); */ }} ); \" }}",
-                    YetaWFManager.JserEncode(YetaWFManager.JserEncode(msg))
-                );
-                return new YJsonResult { Data = sb.ToString() };
+                UploadResponse resp = new UploadResponse {
+                    Result = $"$YetaWF.confirm('{YetaWFManager.JserEncode(msg)}', null, function() {{ /*add some javascript like  $YetaWF.reloadPage(true); */ }} );",
+                };
+                return new YJsonResult { Data = resp };
             } else {
                 // Anything else is a failure
                 throw new Error(msg);

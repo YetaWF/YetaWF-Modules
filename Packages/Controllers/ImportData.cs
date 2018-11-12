@@ -60,18 +60,16 @@ namespace YetaWF.Modules.Packages.Controllers {
                 sbErr.Append(errorList, LeadingNL: true);
                 errs = sbErr.ToString();
             }
-            ScriptBuilder sb = new ScriptBuilder();
+
             if (success) {
-                // Upload control considers Json result a success
-                sb.Append("{{ \"result\": \"$YetaWF.confirm(\\\"{0}\\\", null, function() {{ $YetaWF.reloadPage(true); }} ); \" }}",
-                    YetaWFManager.JserEncode(YetaWFManager.JserEncode(this.__ResStr("importedData", "\"{0}\" successfully imported - These settings won't take effect until the site is restarted(+nl)", __filename.FileName) + errs))
-                );
-                return new YJsonResult { Data = sb.ToString() };
+                string msg = this.__ResStr("importedData", "\"{0}\" successfully imported - These settings won't take effect until the site is restarted(+nl)", __filename.FileName) + errs;
+                UploadResponse resp = new UploadResponse {
+                    Result = $"$YetaWF.confirm('{YetaWFManager.JserEncode(msg)}', null, function() {{ $YetaWF.reloadPage(true); }} );",
+                };
+                return new YJsonResult { Data = resp };
             } else {
                 // Anything else is a failure
-                sb.Append(this.__ResStr("cantImportData", "Can't import {0}:(+nl)"), __filename.FileName);
-                sb.Append(errs);
-                throw new Error(sb.ToString());
+                throw new Error(this.__ResStr("cantImportData", "Can't import {0}:(+nl)", __filename.FileName) + errs);
             }
         }
         [AllowPost]
@@ -79,7 +77,8 @@ namespace YetaWF.Modules.Packages.Controllers {
         [ExcludeDemoMode]
         public ActionResult RemovePackageData(string filename) {
             // there is nothing to remove because we already imported the file
-            return new EmptyResult();
+            UploadRemoveResponse resp = new UploadRemoveResponse();
+            return new YJsonResult { Data = resp };
         }
     }
 }

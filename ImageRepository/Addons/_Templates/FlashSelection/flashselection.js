@@ -1,134 +1,115 @@
+"use strict";
 /* Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/ImageRepository#License */
-
-var YetaWF_FlashImageRepository = {};
-
-YetaWF_FlashImageRepository.initSelection = function (divId) {
-
-    var $control = $('#' + divId);
-    if ($control.length != 1) throw "div not found";/*DEBUG*/
-
-    var $hidden = $('input[type="hidden"]', $control);
-    if ($hidden.length != 1) throw "hidden field not found";/*DEBUG*/
-
-    var $list = $('select[name="List"]', $control);
-    if ($list.length != 1) throw "list not found";/*DEBUG*/
-
-    var $buttons = $('.t_haveflash', $buttons);
-    if ($buttons.length != 1) throw "button area not found";/*DEBUG*/
-
-    // set the preview flash image
-    function setPreview(name) {
-
-        $buttons.toggle(name != null && name.length > 0);
-
-        var $param = $('.t_preview param[name="movie"]', $control);
-        var $embed = $('.t_preview embed', $control);
-
-        var $obj = $('.t_preview object', $control);
-        if ($obj.length == 1) {
-
-            // change object data= (if present)
-            if ($obj.attr('data') != undefined) {
-                var val = $obj.attr('data');
-                var currUri = $YetaWF.parseUrl(val);
-                currUri.removeSearch("Name");
-                currUri.addSearch("Name", name);
-                $obj.attr('data', currUri.toUrl());
+var YetaWF_ImageRepository;
+(function (YetaWF_ImageRepository) {
+    var FlashRepository = /** @class */ (function () {
+        function FlashRepository(divId) {
+            var _this = this;
+            this.Control = $YetaWF.getElementById(divId);
+            this.Hidden = $YetaWF.getElement1BySelector("input[type='hidden']", [this.Control]);
+            this.List = $YetaWF.getElement1BySelector("select[name='List']", [this.Control]);
+            this.ButtonDiv = $YetaWF.getElement1BySelector(".t_haveflash", [this.Control]);
+            this.ClearButton = $YetaWF.getElement1BySelector("a[data-name='Clear']", [this.Control]);
+            this.RemoveButton = $YetaWF.getElement1BySelector("a[data-name='Remove']", [this.Control]);
+            // show initial selection (if any)
+            this.List.value = this.Hidden.value;
+            this.setPreview(this.List.value);
+            this.UploadControl = YetaWF.ComponentBaseDataImpl.getControlFromSelectorCond(".yt_fileupload1", YetaWF_ComponentsHTML.FileUpload1Component.SELECTOR, [this.Control]);
+            if (this.UploadControl) {
+                this.UploadControl.SetSuccessfullUpload(function (response) {
+                    _this.Hidden.value = response.FileName;
+                    _this.List.innerHTML = response.List;
+                    _this.List.value = response.FileName;
+                    _this.setPreview(response.FileName);
+                });
             }
-            // change param movie (if present)
-            if ($param.length > 0) {
-                var val = $param.attr('value');
-                var currUri = $YetaWF.parseUrl(val);
-                currUri.removeSearch("Name");
-                currUri.addSearch("Name", name);
-                $param.attr('value', currUri.toUrl());
-            }
-            // change embed (if present)
-            if ($embed.length > 0) {
-                var src = $embed.attr('src');
-                currUri = $YetaWF.parseUrl(src);
-                currUri.removeSearch("Name");
-                currUri.addSearch("Name", name);
-                $embed.attr('src', currUri.toUrl());
-            }
-            var s = $obj[0].outerHTML;
-            $obj.replaceWith(s);// replace entire object to make flash recognize the image change
+            // user changed the selected image
+            $YetaWF.registerEventHandler(this.List, "change", null, function (ev) {
+                _this.Hidden.value = _this.List.value;
+                _this.setPreview(_this.List.value);
+                return false;
+            });
+            $YetaWF.registerEventHandler(this.ClearButton, "click", null, function (ev) {
+                _this.clearFileName();
+                return false;
+            });
+            $YetaWF.registerEventHandler(this.RemoveButton, "click", null, function (ev) {
+                // get url to remove the file
+                if ($YetaWF.isLoading)
+                    return false;
+                $YetaWF.setLoading(true);
+                var uri = $YetaWF.parseUrl(_this.RemoveButton.href);
+                uri.removeSearch("Name");
+                uri.addSearch("Name", _this.Hidden.value);
+                var request = new XMLHttpRequest();
+                request.open("POST", uri.toUrl(), true);
+                request.setRequestHeader("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
+                request.setRequestHeader("X-Requested-With", "XMLHttpRequest");
+                request.onreadystatechange = function (ev) {
+                    if (request.readyState === 4 /*DONE*/) {
+                        $YetaWF.setLoading(false);
+                        $YetaWF.processAjaxReturn(request.responseText, request.statusText, request, undefined, undefined, function (result) {
+                            $YetaWF.setLoading(false);
+                            if (result.startsWith(YConfigs.Basics.AjaxJavascriptReturn)) {
+                                var script = result.substring(YConfigs.Basics.AjaxJavascriptReturn.length);
+                                eval(script);
+                                return;
+                            }
+                            else if (result.startsWith(YConfigs.Basics.AjaxJavascriptErrorReturn)) {
+                                var script = result.substring(YConfigs.Basics.AjaxJavascriptErrorReturn.length);
+                                eval(script);
+                                return;
+                            }
+                            var resp = JSON.parse(result);
+                            eval(resp.Result);
+                            _this.List.innerHTML = resp.List;
+                            _this.clearFileName();
+                        });
+                    }
+                };
+                request.send();
+                return false;
+            });
         }
-    }
-    function clearFileName() {
-        $hidden.val('');
-        $list.val('');
-        setPreview('');
-        $('.t_haveflash', $control).toggle(false);
-    }
-    function successfullUpload(js) {
-        $hidden.val(js.filename);
-        $list.html(js.list);
-        $list.val(js.filename);
-        setPreview(js.filename);
-        $('.t_haveflash', $control).toggle(js.filename.length > 0);
-    }
-    // set upload control settings (optional)
-    var $upload = $('.yt_fileupload1', $control);
-    if ($upload.length == 1) {
-        $upload.data({
-            getFileName: undefined, // we handle deleting the file
-            successfullUpload: successfullUpload,
-        });
-    }
-    // handle the clear button
-    $('#' + divId + ' a[data-name="Clear"]').click(function (e) {
-        e.preventDefault();
-        clearFileName();
-        return false;
-    });
-    // handle the remove button
-    $('#' + divId + ' a[data-name="Remove"]').click(function (e) {
-        e.preventDefault();
-        var $this = $(this);
-
-        // get url to remove the file
-        var href = $this.attr('href');
-        var uri = $YetaWF.parseUrl(href);
-        uri.removeSearch("Name");
-        uri.addSearch("Name", $hidden.val());
-
-        $.ajax({
-            url: uri.toUrl(),
-            type: 'post',
-            success: function (result, textStatus, jqXHR) {
-                if (result.startsWith(YConfigs.Basics.AjaxJavascriptReturn)) {
-                    var script = result.substring(YConfigs.Basics.AjaxJavascriptReturn.length);
-                    eval(script);
-                    return;
-                } else if (result.startsWith(YConfigs.Basics.AjaxJavascriptErrorReturn)) {
-                    var script = result.substring(YConfigs.Basics.AjaxJavascriptErrorReturn.length);
-                    eval(script);
-                    return;
+        FlashRepository.prototype.setPreview = function (name) {
+            this.ButtonDiv.style.display = (name && name.length > 0) ? "" : "none";
+            var param = $YetaWF.getElement1BySelectorCond(".t_preview param[name='movie']", [this.Control]);
+            var embed = $YetaWF.getElement1BySelectorCond(".t_preview embed", [this.Control]);
+            var obj = $YetaWF.getElement1BySelectorCond(".t_preview object", [this.Control]);
+            if (obj) {
+                // change object data= (if present)
+                if (obj && obj.data) {
+                    var currUri = $YetaWF.parseUrl(obj.data);
+                    currUri.removeSearch("Name");
+                    currUri.addSearch("Name", name);
+                    obj.data = currUri.toUrl();
                 }
-                var js = JSON.parse(result);
-                eval(js.result);
-                $list.html(js.list);
-                clearFileName();
-                return false;
-            },
-            error: function (jqXHR, textStatus, errorThrown) {
-                $YetaWF.alert(YLocs.Forms.AjaxError.format(jqXHR.status, jqXHR.statusText), YLocs.Forms.AjaxErrorTitle);
-                return false;
+                // change param movie (if present)
+                if (param && param.value) {
+                    var currUri = $YetaWF.parseUrl(param.value);
+                    currUri.removeSearch("Name");
+                    currUri.addSearch("Name", name);
+                    param.value = currUri.toUrl();
+                }
+                // change embed (if present)
+                if (embed && embed.src) {
+                    currUri = $YetaWF.parseUrl(embed.src);
+                    currUri.removeSearch("Name");
+                    currUri.addSearch("Name", name);
+                    embed.src = currUri.toUrl();
+                }
+                var s = obj.outerHTML;
+                obj.outerHTML = s; // replace entire object to make flash recognize the image change
             }
-        });
-        return false;
-    });
+        };
+        FlashRepository.prototype.clearFileName = function () {
+            this.Hidden.value = "";
+            this.List.value = "";
+            this.setPreview(null);
+        };
+        return FlashRepository;
+    }());
+    YetaWF_ImageRepository.FlashRepository = FlashRepository;
+})(YetaWF_ImageRepository || (YetaWF_ImageRepository = {}));
 
-    // user changed the selected flash image
-    $('#' + divId + ' select[name="List"]').change(function () {
-        var $this = $(this);
-        var name = $this.val();
-        setPreview(name);
-        $hidden.val(name);
-    });
-    // show initial selection (if any)
-    $list.val($hidden.val());
-    $list.trigger('change');
-};
-
+//# sourceMappingURL=FlashSelection.js.map

@@ -5,15 +5,25 @@ var YetaWF_ComponentsHTML;
 (function (YetaWF_ComponentsHTML) {
     var BasicsImpl = /** @class */ (function () {
         function BasicsImpl() {
+            // LOADING
+            // LOADING
+            // LOADING
+            this._loading = false;
         }
-        // LOADING
-        // LOADING
-        // LOADING
+        Object.defineProperty(BasicsImpl.prototype, "isLoading", {
+            get: function () {
+                return this._loading;
+            },
+            enumerable: true,
+            configurable: true
+        });
         BasicsImpl.prototype.setLoading = function (on) {
             if (on !== false) {
+                this._loading = true;
                 $.prettyLoader.show();
             }
             else {
+                this._loading = false;
                 $.prettyLoader.hide();
             }
         };
