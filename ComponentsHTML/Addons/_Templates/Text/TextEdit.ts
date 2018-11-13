@@ -8,7 +8,7 @@ namespace YetaWF_ComponentsHTML {
         CopyToClip: string;
     }
 
-    export class TextEditComponent extends YetaWF.ComponentBaseDataImpl {
+    export class TextEditComponent {
 
         public static clip: any = null;
 

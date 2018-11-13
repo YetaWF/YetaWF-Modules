@@ -1,1 +1,1 @@
-﻿PanelInfo.css
+﻿PanelInfo.scss

@@ -99,7 +99,7 @@
     <Compile Include="Views\HTML\LogBrowse.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Addons\_Templates\Event\event.js" />
+    <TypeScriptCompile Include="Addons\_Templates\Event\EventEdit.ts" />
     <Content Include="Addons\_Templates\Event\filelistCSS.txt" />
     <Content Include="Addons\_Templates\Event\filelistJS.txt" />
     <Content Include="Addons\_Main\Icons\Download.png" />
@@ -132,11 +132,13 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Addons\_SiteTemplates\YetaWF_Scheduler.2.0.1.txt" />
-    <Content Include="Addons\_Templates\Event\Event.css" />
+    <None Include="Addons\_Templates\Event\Event.scss" />
     <Content Include="Addons\_Main\Grids\SchedulerBrowseModuleController.SchedulerItem" />
     <None Include="Addons\_Main\Grids\LogBrowseModuleController.BrowseItem" />
     <None Include="app.config" />
     <None Include="packages.config" />
+    <None Include="tsconfig.json" />
+    <None Include="tslint.json" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

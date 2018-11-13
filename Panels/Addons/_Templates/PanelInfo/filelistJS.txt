@@ -1,1 +1,1 @@
-﻿PanelInfo.js
+﻿PanelInfoEdit.ts

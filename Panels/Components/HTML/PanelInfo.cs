@@ -203,10 +203,8 @@ namespace YetaWF.Modules.Panels.Components {
                 ++tabEntry;
             }
             hb.Append($@"
-    </div>");
-
-            hb.Append(await PropertyListComponentBase.RenderTabInitAsync(DivId, model));
-            hb.Append($@"
+    </div>
+    {await PropertyListComponentBase.RenderTabInitAsync(DivId, model)}
     <div class='t_buttons'>
         <input type='button' class='t_apply' value='{this.__ResStr("btnApply", "Apply")}' title='{this.__ResStr("txtApply", "Click to apply the current changes")}' />
         <input type='button' class='t_up' value='{this.__ResStr("btnUp", "<<")}' title='{this.__ResStr("txtUp", "Click to move the current panel")}' />
@@ -216,14 +214,10 @@ namespace YetaWF.Modules.Panels.Components {
         <input type='button' class='t_delete' value='{this.__ResStr("btnDelete", "Remove")}' title='{this.__ResStr("txtDelete", "Click to remove the current panel")}' />
     </div>
 </div>
-<script>");
+<script>
+    new YetaWF_Panels.PanelInfoEditComponent('{ControlId}');
+</script>");
 
-            using (DocumentReady(hb, ControlId)) {
-                hb.Append($@"YetaWF_Panels.init('{ControlId}');");
-            }
-            hb.Append($@"
-</script>
-");
             return hb.ToYHtmlString();
         }
     }

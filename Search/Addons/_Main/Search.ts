@@ -36,7 +36,8 @@ namespace YetaWF_Search {
             ($(".yPane .yModule") as any).highlight(kwds);
         }
         public static setButtons(): void {
-            var onButton = $YetaWF.getElement1BySelector(".YetaWF_Search_SearchControl a[data-name='On']");
+            var onButton = $YetaWF.getElement1BySelectorCond(".YetaWF_Search_SearchControl a[data-name='On']");
+            if (!onButton) return;
             var offButton = $YetaWF.getElement1BySelector(".YetaWF_Search_SearchControl a[data-name='Off']");
             if (Search.on) {
                 if ($YetaWF.parseUrl(window.location.href).hasSearch(YConfigs.YetaWF_Search.UrlArg)) {

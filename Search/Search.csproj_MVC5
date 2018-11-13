@@ -110,8 +110,10 @@
     <Content Include="Addons\_Main\Icons\SearchResults.png" />
     <Content Include="Addons\_Main\Images\Search Large.png" />
     <Content Include="Addons\_Main\Images\Search.png" />
-    <Content Include="Addons\_Main\search.css" />
-    <Content Include="Addons\_Main\search.js" />
+    <None Include="Addons\_Main\Search.scss" />
+    <None Include="tsconfig.json" />
+    <None Include="tslint.json" />
+    <TypeScriptCompile Include="Addons\_Main\Search.ts" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Addons\_SiteTemplates\YetaWF_Search.2.0.2.txt" />
