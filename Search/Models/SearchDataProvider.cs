@@ -168,7 +168,7 @@ namespace YetaWF.Modules.Search.DataProvider {
                 return new DataProviderGetRecords<SearchData>();
             using (SearchDataUrlDataProvider searchUrlDP = new SearchDataUrlDataProvider()) {
                 List<JoinData> joins = new List<JoinData> {
-                    new JoinData {MainDP = this, JoinDP= searchUrlDP, MainColumn = "SearchDataUrlId", JoinColumn = "SearchDataUrlId" },
+                    new JoinData {MainDP = this, JoinDP = searchUrlDP, MainColumn = nameof(SearchData.SearchDataUrlId), JoinColumn = nameof(SearchDataUrl.SearchDataUrlId) },
                 };
                 return await DataProvider.GetRecordsAsync(skip, take, sort, filters, Joins: joins);
             }
