@@ -35,7 +35,7 @@ namespace YetaWF_Panels {
         private Apply: HTMLInputElement;
         private Insert: HTMLInputElement;
         private Add: HTMLInputElement;
-        
+
         constructor(controlId: string) {
             super(controlId);
 
