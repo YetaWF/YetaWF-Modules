@@ -2,7 +2,8 @@
 
 using System;
 using System.Collections.Generic;
-using YetaWF.Core.Support;
+using System.Linq;
+using YetaWF.Core.Models.Attributes;
 
 namespace YetaWF.Modules.ComponentsHTML.Components {
 
@@ -19,19 +20,31 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             }
         }
         public class Dependent {
+
             public string Prop { get; set; } // Name of property
-            public string ControlProp { get; set; } // name of controlling property (ProcIf)
-            public bool Disable { get; set; } // defines wheter the control is disabled instead of hidden
-            public List<int> IntValues { get; set; }
+            public bool Disable { get; set; } // defines whether the control is disabled instead of hidden
+
+            public List<ValueEntry> Values { get; set; }
 
             public Dependent () {
-                IntValues = new List<int>();
+                Values = new List<ValueEntry>();
+            }
+
+            public class ValueEntry {
+                public string ControlProp { get; set; } // name of controlling property
+                public enum ValueTypeEnum {
+                    EqualIntValue = 0,
+                    EqualNull = 100,
+                    EqualNonNull = 101,
+                }
+                public ValueTypeEnum ValueType { get; set; }
+                public object ValueObject { get; set; }
             }
         }
 
 
         /// <summary>
-        /// Generate the control sets based on a model's ProcessIf attributes.
+        /// Generate the control sets based on a model's ProcessIfxxx attributes.
         /// </summary>
         /// <param name="model">The model for which the control set is generated.</param>
         /// <param name="id">The HTML id of the property list.</param>
@@ -43,19 +56,43 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
             List<PropertyListEntry> properties = GetPropertiesByCategory(model, null);
             foreach (PropertyListEntry property in properties) {
-                if (property.ProcIfAttr != null) {
-                    if (!selectionControls.Contains(property.ProcIfAttr.Name))
-                        selectionControls.Add(property.ProcIfAttr.Name);
-                    Dependent dep = new Dependent {
-                        Prop = property.Name,
-                        ControlProp = property.ProcIfAttr.Name,
-                        Disable = property.ProcIfAttr.Disable,
-                    };
-                    foreach (object obj in property.ProcIfAttr.Objects) {
-                        int i = Convert.ToInt32(obj);
-                        dep.IntValues.Add(i);
+                if (property.ProcIfAttrs != null) {
+                    foreach (ProcessIfAttribute procIfAttr in property.ProcIfAttrs) {
+                        if (!selectionControls.Contains(procIfAttr.Name))
+                            selectionControls.Add(procIfAttr.Name);
+                        Dependent dep = FindDependent(cd, property.Name);
+                        dep.Disable = procIfAttr.Disable;
+                        List<int> intValues = new List<int>();
+                        foreach (object obj in procIfAttr.Objects) {
+                            int val = Convert.ToInt32(obj);
+                            intValues.Add(val);
+                        }
+                        dep.Values.Add(new Dependent.ValueEntry {
+                            ControlProp = procIfAttr.Name,
+                            ValueType = Dependent.ValueEntry.ValueTypeEnum.EqualIntValue,
+                            ValueObject = intValues,
+                        });
                     }
-                    cd.Dependents.Add(dep);
+                    foreach (ProcessIfSuppliedAttribute procIfSuppliedAttr in property.ProcIfSuppliedAttrs) {
+                        if (!selectionControls.Contains(procIfSuppliedAttr.Name))
+                            selectionControls.Add(procIfSuppliedAttr.Name);
+                        Dependent dep = FindDependent(cd, property.Name);
+                        dep.Disable = procIfSuppliedAttr.Disable;
+                        dep.Values.Add(new Dependent.ValueEntry {
+                            ControlProp = procIfSuppliedAttr.Name,
+                            ValueType = Dependent.ValueEntry.ValueTypeEnum.EqualNonNull,
+                        });
+                    }
+                    foreach (ProcessIfNotSuppliedAttribute procIfNotSuppliedAttr in property.ProcIfNotSuppliedAttrs) {
+                        if (!selectionControls.Contains(procIfNotSuppliedAttr.Name))
+                            selectionControls.Add(procIfNotSuppliedAttr.Name);
+                        Dependent dep = FindDependent(cd, property.Name);
+                        dep.Disable = procIfNotSuppliedAttr.Disable;
+                        dep.Values.Add(new Dependent.ValueEntry {
+                            ControlProp = procIfNotSuppliedAttr.Name,
+                            ValueType = Dependent.ValueEntry.ValueTypeEnum.EqualNull,
+                        });
+                    }
                 }
             }
 
@@ -65,6 +102,17 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             cd.Id = id;
 
             return cd;
+        }
+
+        private Dependent FindDependent(ControlData cd, string name) {
+            Dependent dep = (from d in cd.Dependents where d.Prop == name select d).FirstOrDefault();
+            if (dep == null) {
+                dep = new Dependent {
+                    Prop = name,
+                };
+                cd.Dependents.Add(dep);
+            }
+            return dep;
         }
     }
 }

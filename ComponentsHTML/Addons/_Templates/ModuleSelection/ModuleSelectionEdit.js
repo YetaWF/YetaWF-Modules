@@ -123,5 +123,3 @@ var YetaWF_ComponentsHTML;
         ModuleSelectionComponent.clearDiv(tag, ModuleSelectionComponent.SELECTOR);
     });
 })(YetaWF_ComponentsHTML || (YetaWF_ComponentsHTML = {}));
-
-//# sourceMappingURL=ModuleSelectionEdit.js.map

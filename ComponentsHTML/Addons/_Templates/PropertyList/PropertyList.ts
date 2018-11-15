@@ -4,103 +4,183 @@ namespace YetaWF_ComponentsHTML {
 
     interface ControlData {
         Id: string; // id of the property list div
-        Dependents: Dependent[];
         Controls: string[];
+        Dependents: Dependent[];
     }
     interface Dependent {
         Prop: string; // Name of property
-        ControlProp: string; // name of controlling property (ProcIf)
         Disable: boolean; // defines wheter the control is disabled instead of hidden
-        IntValues: number[];
+
+        Values: ValueEntry[];
+    }
+    interface ValueEntry {
+        ControlProp: string; // name of controlling property (ProcIf)
+        ValueType: ValueTypeEnum;
+        ValueObject: any;
+    }
+    enum ValueTypeEnum {
+        EqualIntValue = 0,
+        EqualNull = 100,
+        EqualNonNull = 101,
+    }
+
+    interface ControlItem {
+        Name: string;
+        ControlType: ControlTypeEnum;
+        Object: DropDownListEditComponent | HTMLInputElement | HTMLSelectElement;
+    }
+    enum ControlTypeEnum {
+        Input = 0,
+        Select = 1,
+        KendoSelect = 2,
     }
 
     export class PropertyListComponent {
 
         private Control: HTMLDivElement;
         private ControlData: ControlData;
+        private ControllingControls: ControlItem[] = [];
 
         constructor(controlId: string, controlData: ControlData) {
+
             this.Control = $YetaWF.getElementById(controlId) as HTMLDivElement;
             this.ControlData = controlData;
 
             // Handle change events
             var controlData = this.ControlData;
             for (let control of controlData.Controls) {
-                var elemSel = $YetaWF.getElement1BySelectorCond(`.t_row.t_${control.toLowerCase()} select[name$='${control}']`, [this.Control]) as HTMLSelectElement | null;
-                if (elemSel) {
-                    $YetaWF.registerEventHandler(elemSel, "change", null, (ev: Event): boolean => {
-                        if (!elemSel) return true;
-                        this.changeSelect(elemSel);
-                        return false;
-                    });
-                    elemSel.addEventListener("dropdownlist_change", (evt: Event): void => {
-                        if (!elemSel) return;
-                        this.changeSelect(elemSel);
-                    });
-                }
-                var elemInp = $YetaWF.getElement1BySelectorCond(`.t_row.t_${control.toLowerCase()} input[name$='${control}']`, [this.Control]) as HTMLInputElement | null;
-                if (elemInp) {
-                    $YetaWF.registerEventHandler(elemInp, "change", null, (ev: Event): boolean => {
-                        if (!elemInp) return true;
-                        this.changeInput(elemInp);
-                        return false;
-                    });
+                var controlItem = this.getControlItem(control);
+                this.ControllingControls.push(controlItem);
+                switch (controlItem.ControlType) {
+                    case ControlTypeEnum.Input:
+                        $YetaWF.registerMultipleEventHandlers((controlItem.Object as HTMLInputElement), ["change", "input"], null, (ev: Event): boolean => {
+                            this.update();
+                            return false;
+                        });
+                        break;
+                    case ControlTypeEnum.Select:
+                        $YetaWF.registerEventHandler((controlItem.Object as HTMLSelectElement), "change", null, (ev: Event): boolean => {
+                            this.update();
+                            return false;
+                        });
+                        break;
+                    case ControlTypeEnum.KendoSelect:
+                        (controlItem.Object as DropDownListEditComponent).Control.addEventListener("dropdownlist_change", (evt: Event): void => {
+                            this.update();
+                        });
+                        break;
                 }
             }
 
             // Initialize initial form
-            for (let control of controlData.Controls) {
-                var elemSel = $YetaWF.getElement1BySelectorCond(`.t_row.t_${control.toLowerCase()} select[name$='${control}']`, [this.Control]) as HTMLSelectElement | null;
-                if (elemSel)
-                    this.changeSelect(elemSel);
-                var elemInp = $YetaWF.getElement1BySelectorCond(`.t_row.t_${control.toLowerCase()} input[name$='${control}']`, [this.Control]) as HTMLInputElement | null;
-                if (elemInp)
-                    this.changeInput(elemInp);
-            }
+            this.update();
         }
-        private changeSelect(elem: HTMLSelectElement): void {
-            var name = $YetaWF.getAttribute(elem, "name"); // name of controlling item (an enum)
-            this.update(name, elem.value);
-        }
-        private changeInput(elem: HTMLInputElement): void {
-            var name = $YetaWF.getAttribute(elem, "name"); // name of controlling item (an enum)
-            var value = elem.value;
-            if (elem.type.toLowerCase() === "checkbox") {
-                value = elem.checked ? "1" : "0";
-            }
-            this.update(name, value);
-        }
-        private update(name: string, value: string): void {
 
+        private getControlItem(control: string): ControlItem {
+            var elemSel = $YetaWF.getElement1BySelectorCond(`.t_row.t_${control.toLowerCase()} select[name$='${control}']`, [this.Control]) as HTMLSelectElement | null;
+            if (elemSel) {
+                var kendoSelect = YetaWF.ComponentBaseDataImpl.getControlFromTagCond<DropDownListEditComponent>(elemSel, DropDownListEditComponent.SELECTOR);
+                if (kendoSelect) {
+                    // Kendo
+                    return { Name: control, ControlType: ControlTypeEnum.KendoSelect, Object: kendoSelect };
+                } else {
+                    // Native
+                    return { Name: control, ControlType: ControlTypeEnum.Select, Object: elemSel };
+                }
+            } else {
+                var elemInp = $YetaWF.getElement1BySelectorCond(`.t_row.t_${control.toLowerCase()} input[name$='${control}']`, [this.Control]) as HTMLInputElement | null;
+                if (elemInp) {
+                    return { Name: control, ControlType: ControlTypeEnum.Input, Object: elemInp };
+                }
+            }
+            throw `No control found for ${control}`;
+        }
+
+        /**
+         * Update all dependent fields.
+         */ 
+        private update(): void {
+
+            var found = false;
+
+            // for each dependent, verify that all it's conditions are true
             var deps = this.ControlData.Dependents;
             for (let dep of deps) {
-                if (name === dep.ControlProp || name.endsWith("." + dep.ControlProp)) { // this entry is for the controlling item?
-                    var row = $YetaWF.getElement1BySelector(`.t_row.t_${dep.Prop.toLowerCase()}`, [this.Control]);// the propertylist row affected
-                    var intValue = Number(value);
-                    var found = false;
-                    for (let v of dep.IntValues) {
-                        if (v === intValue) {
-                            found = true;
+
+                var depRow = $YetaWF.getElement1BySelector(`.t_row.t_${dep.Prop.toLowerCase()}`, [this.Control]);// the propertylist row affected
+
+                var valid = true; // we assume valid unless we find a non-matching entry
+
+                for (let value of dep.Values) {
+
+                    // get the controlling control's value
+                    var ctrlIndex = this.ControlData.Controls.indexOf(value.ControlProp);
+                    if (ctrlIndex < 0)
+                        throw `Dependent ${dep.Prop} references controlling control ${value.ControlProp} which doesn't exist`;
+                    var controlItem = this.ControllingControls[ctrlIndex];
+
+                    var controlValue;
+                    switch (controlItem.ControlType) {
+                        case ControlTypeEnum.Input:
+                            var inputElem = controlItem.Object as HTMLInputElement; 
+                            if (inputElem.type.toLowerCase() === "checkbox") {
+                                controlValue = inputElem.checked ? "1" : "0";
+                            } else {
+                                controlValue = inputElem.value;
+                            }
                             break;
-                        }
+                        case ControlTypeEnum.Select:
+                            controlValue = (controlItem.Object as HTMLSelectElement).value;
+                            break;
+                        case ControlTypeEnum.KendoSelect:
+                            controlValue = (controlItem.Object as DropDownListEditComponent).value;
+                            break;
                     }
-                    if (dep.Disable) {
-                        $YetaWF.elementEnableToggle(row, found);
-                    } else {
-                        if (found)
-                            row.style.display = "";
-                        else
-                            row.style.display = "none";
-                        $YetaWF.processActivateDivs([row]);// init any controls that just became visible
+
+                    // test condition
+                    switch (value.ValueType) {
+                        case ValueTypeEnum.EqualIntValue:
+                            // need one matching value
+                            var intValues = value.ValueObject as number[];
+                            var found = false;
+                            for (let intValue of intValues) {
+                                if (intValue == controlValue) {
+                                    found = true;
+                                    break;
+                                }
+                            }
+                            if (!found)
+                                valid = false;
+                            break;
+                        case ValueTypeEnum.EqualNonNull:
+                            if (!controlValue || controlValue.length == 0)
+                                valid = false;
+                            break;
+                        case ValueTypeEnum.EqualNull:
+                            if (controlValue)
+                                valid = false;
+                            break;
                     }
-                    var affected = $YetaWF.getElementsBySelector("input,select,textarea", [row]);
-                    if (found) {
-                        for (let e of affected)
-                            $YetaWF.elementRemoveClass(e, YConfigs.Forms.CssFormNoValidate);
-                    } else {
-                        for (let e of affected)
-                            $YetaWF.elementAddClass(e, YConfigs.Forms.CssFormNoValidate);
-                    }
+                    if (!valid)
+                        break;
+                }
+
+                if (dep.Disable) {
+                    $YetaWF.elementEnableToggle(depRow, valid);
+                } else {
+                    if (valid) {
+                        depRow.style.display = "";
+                        $YetaWF.processActivateDivs([depRow]);// init any controls that just became visible
+                    } else
+                        depRow.style.display = "none";
+                }
+                var affected = $YetaWF.getElementsBySelector("input,select,textarea", [depRow]);
+                if (valid) {
+                    for (let e of affected)
+                        $YetaWF.elementRemoveClass(e, YConfigs.Forms.CssFormNoValidate);
+                } else {
+                    for (let e of affected)
+                        $YetaWF.elementAddClass(e, YConfigs.Forms.CssFormNoValidate);
                 }
             }
         }

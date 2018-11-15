@@ -2,99 +2,160 @@
 /* Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/ComponentsHTML#License */
 var YetaWF_ComponentsHTML;
 (function (YetaWF_ComponentsHTML) {
+    var ValueTypeEnum;
+    (function (ValueTypeEnum) {
+        ValueTypeEnum[ValueTypeEnum["EqualIntValue"] = 0] = "EqualIntValue";
+        ValueTypeEnum[ValueTypeEnum["EqualNull"] = 100] = "EqualNull";
+        ValueTypeEnum[ValueTypeEnum["EqualNonNull"] = 101] = "EqualNonNull";
+    })(ValueTypeEnum || (ValueTypeEnum = {}));
+    var ControlTypeEnum;
+    (function (ControlTypeEnum) {
+        ControlTypeEnum[ControlTypeEnum["Input"] = 0] = "Input";
+        ControlTypeEnum[ControlTypeEnum["Select"] = 1] = "Select";
+        ControlTypeEnum[ControlTypeEnum["KendoSelect"] = 2] = "KendoSelect";
+    })(ControlTypeEnum || (ControlTypeEnum = {}));
     var PropertyListComponent = /** @class */ (function () {
         function PropertyListComponent(controlId, controlData) {
             var _this = this;
+            this.ControllingControls = [];
             this.Control = $YetaWF.getElementById(controlId);
             this.ControlData = controlData;
             // Handle change events
             var controlData = this.ControlData;
             for (var _i = 0, _a = controlData.Controls; _i < _a.length; _i++) {
                 var control = _a[_i];
-                var elemSel = $YetaWF.getElement1BySelectorCond(".t_row.t_" + control.toLowerCase() + " select[name$='" + control + "']", [this.Control]);
-                if (elemSel) {
-                    $YetaWF.registerEventHandler(elemSel, "change", null, function (ev) {
-                        if (!elemSel)
-                            return true;
-                        _this.changeSelect(elemSel);
-                        return false;
-                    });
-                    elemSel.addEventListener("dropdownlist_change", function (evt) {
-                        if (!elemSel)
-                            return;
-                        _this.changeSelect(elemSel);
-                    });
-                }
-                var elemInp = $YetaWF.getElement1BySelectorCond(".t_row.t_" + control.toLowerCase() + " input[name$='" + control + "']", [this.Control]);
-                if (elemInp) {
-                    $YetaWF.registerEventHandler(elemInp, "change", null, function (ev) {
-                        if (!elemInp)
-                            return true;
-                        _this.changeInput(elemInp);
-                        return false;
-                    });
+                var controlItem = this.getControlItem(control);
+                this.ControllingControls.push(controlItem);
+                switch (controlItem.ControlType) {
+                    case ControlTypeEnum.Input:
+                        $YetaWF.registerMultipleEventHandlers(controlItem.Object, ["change", "input"], null, function (ev) {
+                            _this.update();
+                            return false;
+                        });
+                        break;
+                    case ControlTypeEnum.Select:
+                        $YetaWF.registerEventHandler(controlItem.Object, "change", null, function (ev) {
+                            _this.update();
+                            return false;
+                        });
+                        break;
+                    case ControlTypeEnum.KendoSelect:
+                        controlItem.Object.Control.addEventListener("dropdownlist_change", function (evt) {
+                            _this.update();
+                        });
+                        break;
                 }
             }
             // Initialize initial form
-            for (var _b = 0, _c = controlData.Controls; _b < _c.length; _b++) {
-                var control = _c[_b];
-                var elemSel = $YetaWF.getElement1BySelectorCond(".t_row.t_" + control.toLowerCase() + " select[name$='" + control + "']", [this.Control]);
-                if (elemSel)
-                    this.changeSelect(elemSel);
-                var elemInp = $YetaWF.getElement1BySelectorCond(".t_row.t_" + control.toLowerCase() + " input[name$='" + control + "']", [this.Control]);
-                if (elemInp)
-                    this.changeInput(elemInp);
-            }
+            this.update();
         }
-        PropertyListComponent.prototype.changeSelect = function (elem) {
-            var name = $YetaWF.getAttribute(elem, "name"); // name of controlling item (an enum)
-            this.update(name, elem.value);
-        };
-        PropertyListComponent.prototype.changeInput = function (elem) {
-            var name = $YetaWF.getAttribute(elem, "name"); // name of controlling item (an enum)
-            var value = elem.value;
-            if (elem.type.toLowerCase() === "checkbox") {
-                value = elem.checked ? "1" : "0";
+        PropertyListComponent.prototype.getControlItem = function (control) {
+            var elemSel = $YetaWF.getElement1BySelectorCond(".t_row.t_" + control.toLowerCase() + " select[name$='" + control + "']", [this.Control]);
+            if (elemSel) {
+                var kendoSelect = YetaWF.ComponentBaseDataImpl.getControlFromTagCond(elemSel, YetaWF_ComponentsHTML.DropDownListEditComponent.SELECTOR);
+                if (kendoSelect) {
+                    // Kendo
+                    return { Name: control, ControlType: ControlTypeEnum.KendoSelect, Object: kendoSelect };
+                }
+                else {
+                    // Native
+                    return { Name: control, ControlType: ControlTypeEnum.Select, Object: elemSel };
+                }
             }
-            this.update(name, value);
+            else {
+                var elemInp = $YetaWF.getElement1BySelectorCond(".t_row.t_" + control.toLowerCase() + " input[name$='" + control + "']", [this.Control]);
+                if (elemInp) {
+                    return { Name: control, ControlType: ControlTypeEnum.Input, Object: elemInp };
+                }
+            }
+            throw "No control found for " + control;
         };
-        PropertyListComponent.prototype.update = function (name, value) {
+        /**
+         * Update all dependent fields.
+         */
+        PropertyListComponent.prototype.update = function () {
+            var found = false;
+            // for each dependent, verify that all it's conditions are true
             var deps = this.ControlData.Dependents;
             for (var _i = 0, deps_1 = deps; _i < deps_1.length; _i++) {
                 var dep = deps_1[_i];
-                if (name === dep.ControlProp || name.endsWith("." + dep.ControlProp)) { // this entry is for the controlling item?
-                    var row = $YetaWF.getElement1BySelector(".t_row.t_" + dep.Prop.toLowerCase(), [this.Control]); // the propertylist row affected
-                    var intValue = Number(value);
-                    var found = false;
-                    for (var _a = 0, _b = dep.IntValues; _a < _b.length; _a++) {
-                        var v = _b[_a];
-                        if (v === intValue) {
-                            found = true;
+                var depRow = $YetaWF.getElement1BySelector(".t_row.t_" + dep.Prop.toLowerCase(), [this.Control]); // the propertylist row affected
+                var valid = true; // we assume valid unless we find a non-matching entry
+                for (var _a = 0, _b = dep.Values; _a < _b.length; _a++) {
+                    var value = _b[_a];
+                    // get the controlling control's value
+                    var ctrlIndex = this.ControlData.Controls.indexOf(value.ControlProp);
+                    if (ctrlIndex < 0)
+                        throw "Dependent " + dep.Prop + " references controlling control " + value.ControlProp + " which doesn't exist";
+                    var controlItem = this.ControllingControls[ctrlIndex];
+                    var controlValue;
+                    switch (controlItem.ControlType) {
+                        case ControlTypeEnum.Input:
+                            var inputElem = controlItem.Object;
+                            if (inputElem.type.toLowerCase() === "checkbox") {
+                                controlValue = inputElem.checked ? "1" : "0";
+                            }
+                            else {
+                                controlValue = inputElem.value;
+                            }
                             break;
-                        }
+                        case ControlTypeEnum.Select:
+                            controlValue = controlItem.Object.value;
+                            break;
+                        case ControlTypeEnum.KendoSelect:
+                            controlValue = controlItem.Object.value;
+                            break;
                     }
-                    if (dep.Disable) {
-                        $YetaWF.elementEnableToggle(row, found);
+                    // test condition
+                    switch (value.ValueType) {
+                        case ValueTypeEnum.EqualIntValue:
+                            // need one matching value
+                            var intValues = value.ValueObject;
+                            var found = false;
+                            for (var _c = 0, intValues_1 = intValues; _c < intValues_1.length; _c++) {
+                                var intValue = intValues_1[_c];
+                                if (intValue == controlValue) {
+                                    found = true;
+                                    break;
+                                }
+                            }
+                            if (!found)
+                                valid = false;
+                            break;
+                        case ValueTypeEnum.EqualNonNull:
+                            if (!controlValue || controlValue.length == 0)
+                                valid = false;
+                            break;
+                        case ValueTypeEnum.EqualNull:
+                            if (controlValue)
+                                valid = false;
+                            break;
                     }
-                    else {
-                        if (found)
-                            row.style.display = "";
-                        else
-                            row.style.display = "none";
-                        $YetaWF.processActivateDivs([row]); // init any controls that just became visible
+                    if (!valid)
+                        break;
+                }
+                if (dep.Disable) {
+                    $YetaWF.elementEnableToggle(depRow, valid);
+                }
+                else {
+                    if (valid) {
+                        depRow.style.display = "";
+                        $YetaWF.processActivateDivs([depRow]); // init any controls that just became visible
                     }
-                    var affected = $YetaWF.getElementsBySelector("input,select,textarea", [row]);
-                    if (found) {
-                        for (var _c = 0, affected_1 = affected; _c < affected_1.length; _c++) {
-                            var e = affected_1[_c];
-                            $YetaWF.elementRemoveClass(e, YConfigs.Forms.CssFormNoValidate);
-                        }
+                    else
+                        depRow.style.display = "none";
+                }
+                var affected = $YetaWF.getElementsBySelector("input,select,textarea", [depRow]);
+                if (valid) {
+                    for (var _d = 0, affected_1 = affected; _d < affected_1.length; _d++) {
+                        var e = affected_1[_d];
+                        $YetaWF.elementRemoveClass(e, YConfigs.Forms.CssFormNoValidate);
                     }
-                    else {
-                        for (var _d = 0, affected_2 = affected; _d < affected_2.length; _d++) {
-                            var e = affected_2[_d];
-                            $YetaWF.elementAddClass(e, YConfigs.Forms.CssFormNoValidate);
-                        }
+                }
+                else {
+                    for (var _e = 0, affected_2 = affected; _e < affected_2.length; _e++) {
+                        var e = affected_2[_e];
+                        $YetaWF.elementAddClass(e, YConfigs.Forms.CssFormNoValidate);
                     }
                 }
             }
@@ -197,5 +258,3 @@ var YetaWF_ComponentsHTML;
         }
     });
 })(YetaWF_ComponentsHTML || (YetaWF_ComponentsHTML = {}));
-
-//# sourceMappingURL=PropertyList.js.map
