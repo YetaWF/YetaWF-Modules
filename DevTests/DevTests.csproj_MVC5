@@ -71,6 +71,7 @@
     <Compile Include="Components\HTML\ScrollerItem.cs" />
     <Compile Include="Controllers\Support\ListOfEmailAddresses.cs" />
     <Compile Include="Controllers\TemplateColorPicker.cs" />
+    <Compile Include="Controllers\TemplateTree.cs" />
     <Compile Include="Controllers\TemplateGrid.cs" />
     <Compile Include="Controllers\TemplateGridAjax.cs" />
     <Compile Include="Controllers\TemplateMultiString.cs" />
@@ -87,6 +88,7 @@
     <Compile Include="Controllers\TestEscapes.cs" />
     <Compile Include="Modules\TemplateColorPickerModule.cs" />
     <Compile Include="Modules\TemplateGridAjaxModule.cs" />
+    <Compile Include="Modules\TemplateTreeModule.cs" />
     <Compile Include="Modules\TemplateGridModule.cs" />
     <Compile Include="Modules\TemplateMultiString.cs" />
     <Compile Include="Modules\BasicTemplates.cs" />

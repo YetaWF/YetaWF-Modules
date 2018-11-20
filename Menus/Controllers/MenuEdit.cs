@@ -9,6 +9,7 @@ using YetaWF.Core.Support;
 using YetaWF.Modules.Menus.Modules;
 using System.Threading.Tasks;
 using YetaWF.Core.Components;
+using YetaWF.Core.Models;
 #if MVC6
 using Microsoft.AspNetCore.Mvc;
 #else
@@ -20,20 +21,29 @@ namespace YetaWF.Modules.Menus.Controllers {
     public class MenuEditModuleController : ControllerImpl<YetaWF.Modules.Menus.Modules.MenuEditModule> {
 
         public class MenuEditModel {
-            public string NewEntryJSON { get; set; } // JSON for one new menu entry (used client-side)
-            public string MenuJSON { get; set; } // this is the JSON string we send to the client for the entire menu
+
+            public ModuleAction NewEntry { get; set; } // one new menu entry (used client-side)
+
+            [UIHint("Tree")]
+            public MenuList Menu { get; set; } // this is the JSON string we send to the client for the entire menu
+            public TreeDefinition Menu_TreeDefinition { get; set; }
 
             [UIHint("Hidden")]
             public Guid MenuGuid { get; set; }
             [UIHint("Hidden")]
             public long MenuVersion { get; set; }
-            [UIHint("Hidden")]
-            public int ActiveEntry { get; set; } // this is the active entry being edited (0 if new)
-            [UIHint("Hidden")]
-            public int NewAfter { get; set; } // new entry is added after this Id as child item (0 if not a new item)
 
             [UIHint("PropertyList")]
             public ModuleAction ModAction { get; set; }
+
+            public MenuEditModel() {
+                Menu_TreeDefinition = new TreeDefinition {
+                    RecordType = typeof(ModuleAction),
+                    ShowHeader = false,
+                    DragDrop = true,
+                    UseSkinFormatting = true,
+                };
+            }
         }
 
         [AllowGet]
@@ -44,21 +54,13 @@ namespace YetaWF.Modules.Menus.Controllers {
 
             MenuList origMenu = await modMenu.GetMenuAsync();
 
-            MenuList newMenu = new MenuList {
-                new ModuleAction(Module) {
-                     MenuText = this.__ResStr("menuRoot", "Menu"),
-                     SubMenu =  origMenu,
-                }
-            };
             MenuEditModel model = new MenuEditModel {
-                MenuJSON = YetaWFManager.JsonSerialize(newMenu),
-                NewEntryJSON = YetaWFManager.JsonSerialize(new ModuleAction(Module) { Url = this.__ResStr("newUrl", "(new)") }),
+                Menu = origMenu,
+                NewEntry = new ModuleAction(Module) { Url = this.__ResStr("newUrl", "(new)") },
 
                 MenuGuid = menuGuid,
                 ModAction = new ModuleAction(Module),
                 MenuVersion = modMenu.MenuVersion,
-                ActiveEntry = 0,
-                NewAfter = 0,
             };
             return View(model);
         }
@@ -66,11 +68,10 @@ namespace YetaWF.Modules.Menus.Controllers {
         [AllowPost]
         [ExcludeDemoMode]
         public async Task<ActionResult> MenuEdit_Partial(MenuEditModel model, bool ValidateCurrent) {
+
             MenuModule modMenu = (MenuModule) await ModuleDefinition.LoadAsync(model.MenuGuid);
             if (modMenu == null)
                 throw new InternalError("Can't find menu module {0}", model.MenuGuid);
-
-            MenuList origMenu = await modMenu.GetMenuAsync();
 
             if (model.MenuVersion != modMenu.MenuVersion)
                 throw new Error(this.__ResStr("menuChanged", "The menu has been changed by someone else - Your changes can't be saved - Please refresh the current page before proceeding"));
@@ -80,13 +81,11 @@ namespace YetaWF.Modules.Menus.Controllers {
             if (!ModelState.IsValid)
                 return PartialView(model);
 
-            MenuList menu = origMenu;
-            menu.MergeNewAction(model.ActiveEntry, model.NewAfter, model.ModAction);
-            await modMenu.SaveMenuAsync(menu);
-
-            model.MenuVersion = modMenu.MenuVersion;
-
             return PartialView(model);
+        }
+
+        public class EntireMenuResult {
+            public long NewVersion { get; set; }
         }
 
         [AllowPost]
@@ -100,10 +99,13 @@ namespace YetaWF.Modules.Menus.Controllers {
 
             MenuList origMenu = await modMenu.GetMenuAsync();
             MenuList menu = MenuList.DeserializeFromJSON(entireMenu, Original: origMenu);
-            MenuList newMenu = new MenuList(menu[0].SubMenu);
-            await modMenu.SaveMenuAsync(newMenu);
+            await modMenu.SaveMenuAsync(menu);
 
-            return new YJsonResult() { Data = modMenu.MenuVersion };
+            return new YJsonResult() {
+                Data = new EntireMenuResult {
+                    NewVersion = modMenu.MenuVersion
+                }
+            };
         }
     }
 }

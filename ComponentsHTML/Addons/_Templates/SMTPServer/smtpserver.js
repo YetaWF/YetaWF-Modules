@@ -10,14 +10,6 @@ var YetaWF_ComponentsHTML;
             this.Port = $YetaWF.getElement1BySelector("input[name$='.Port']", [this.Control]);
             this.Auth = $YetaWF.getElement1BySelector("select[name$='.Authentication']", [this.Control]);
             this.Button = $YetaWF.getElement1BySelector(".t_sendtestemail a", [this.Control]);
-            //$YetaWF.registerMultipleEventHandlers(this.Server, ["change", "keyup", "keydown"], null, (ev: Event): boolean => {
-            //    this.showFields(this.hasServerValue());
-            //    return true;
-            //});
-            //$YetaWF.registerMultipleEventHandlers(this.Auth, ["change", "select", "keyup", "keydown"], null, (ev: Event): boolean => {
-            //    this.showFields(this.hasServerValue());
-            //    return true;
-            //});
             $YetaWF.registerEventHandler(this.Button, "click", null, function (ev) {
                 var uri = new YetaWF.Url();
                 uri.parse(_this.Button.href);
@@ -44,12 +36,10 @@ var YetaWF_ComponentsHTML;
                 _this.Button.href = uri.toUrl();
                 return true;
             });
-            //$YetaWF.addWhenReady((tag: HTMLElement) : void => {
-            //    if ($YetaWF.elementHas(tag, this.Server))
-            //        this.showFields(this.hasServerValue());
-            //});
         }
         return SMTPServer;
     }());
     YetaWF_ComponentsHTML.SMTPServer = SMTPServer;
 })(YetaWF_ComponentsHTML || (YetaWF_ComponentsHTML = {}));
+
+//# sourceMappingURL=SMTPServer.js.map

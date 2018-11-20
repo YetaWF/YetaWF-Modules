@@ -98,7 +98,7 @@ namespace YetaWF_ComponentsHTML {
 
         /**
          * Update all dependent fields.
-         */ 
+         */
         private update(): void {
 
             var found = false;
@@ -122,7 +122,7 @@ namespace YetaWF_ComponentsHTML {
                     var controlValue;
                     switch (controlItem.ControlType) {
                         case ControlTypeEnum.Input:
-                            var inputElem = controlItem.Object as HTMLInputElement; 
+                            var inputElem = controlItem.Object as HTMLInputElement;
                             if (inputElem.type.toLowerCase() === "checkbox") {
                                 controlValue = inputElem.checked ? "1" : "0";
                             } else {
@@ -144,7 +144,7 @@ namespace YetaWF_ComponentsHTML {
                             var intValues = value.ValueObject as number[];
                             var found = false;
                             for (let intValue of intValues) {
-                                if (intValue == controlValue) {
+                                if (intValue === controlValue) {
                                     found = true;
                                     break;
                                 }
@@ -153,7 +153,7 @@ namespace YetaWF_ComponentsHTML {
                                 valid = false;
                             break;
                         case ValueTypeEnum.EqualNonNull:
-                            if (!controlValue || controlValue.length == 0)
+                            if (!controlValue || controlValue.length === 0)
                                 valid = false;
                             break;
                         case ValueTypeEnum.EqualNull:

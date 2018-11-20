@@ -193,7 +193,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
     </div>
 </div>
 <script>
-    new YetaWF_ComponentsHTML.ModuleSelectionComponent('{DivId}', {YetaWFManager.JsonSerialize(setup)});
+    new YetaWF_ComponentsHTML.ModuleSelectionEditComponent('{DivId}', {YetaWFManager.JsonSerialize(setup)});
 </script>");
 
             return hb.ToYHtmlString();

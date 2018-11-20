@@ -86,42 +86,66 @@ var YetaWF_ComponentsHTML;
             enumerable: true,
             configurable: true
         });
+        Object.defineProperty(MultiStringEditComponent.prototype, "value", {
+            get: function () {
+                var data = {};
+                var newText = this.InputText.value;
+                var sel = this.SelectLang.selectedIndex;
+                var hid = $YetaWF.getElement1BySelector("input[name$='[" + sel + "].value']", [this.Control]);
+                hid.value = newText;
+                var count = YLocs.YetaWF_ComponentsHTML.Languages.length;
+                for (var index = 0; index < count; ++index) {
+                    hid = $YetaWF.getElement1BySelector("input[name$='[" + index + "].value']", [this.Control]);
+                    var langText = hid.value;
+                    if (langText === "")
+                        langText = newText;
+                    var lang = YLocs.YetaWF_ComponentsHTML.Languages[index];
+                    data[lang] = langText;
+                }
+                return data;
+            },
+            set: function (data) {
+                var textDefault = this.findLanguageText(data, YLocs.YetaWF_ComponentsHTML.Languages[0]);
+                var count = YLocs.YetaWF_ComponentsHTML.Languages.length;
+                for (var index = 0; index < count; ++index) {
+                    var s = "";
+                    var lang = YLocs.YetaWF_ComponentsHTML.Languages[index];
+                    var text = this.findLanguageText(data, lang);
+                    if (text)
+                        s = text;
+                    else if (textDefault)
+                        s = textDefault; // use default for languages w/o data
+                    var hid = $YetaWF.getElement1BySelector("input[name$='[" + index + "].value']", [this.Control]);
+                    hid.value = s;
+                    if (index === 0) //$$$$ ???
+                        this.InputText.value = s;
+                }
+                this.SelectLang.clear();
+            },
+            enumerable: true,
+            configurable: true
+        });
         MultiStringEditComponent.prototype.hasChanged = function (data) {
             var text = this.InputText.value;
             var count = YLocs.YetaWF_ComponentsHTML.Languages.length;
             for (var index = 0; index < count; ++index) {
                 var hid = $YetaWF.getElement1BySelector("input[name$='[" + index + "].value']", [this.Control]);
                 var langText = hid.value;
-                if (langText.trim() === "")
+                if (langText === "")
                     langText = text;
                 var lang = YLocs.YetaWF_ComponentsHTML.Languages[index];
-                if (data[lang] != null && !$YetaWF.stringCompare(data[lang], langText))
+                var ms = this.findLanguageText(data, lang);
+                if (!$YetaWF.stringCompare(ms, langText))
                     return true;
             }
             return false;
         };
-        MultiStringEditComponent.prototype.retrieveData = function (data) {
-            var newText = this.InputText.value;
-            var sel = this.SelectLang.selectedIndex;
-            var hid = $YetaWF.getElement1BySelector("input[name$='[" + sel + "].value']", [this.Control]);
-            hid.value = newText;
-            // now check whether it actually changed
-            // if nothing is specified for a language, save what is entered in the text box
-            var changed = false;
-            var count = YLocs.YetaWF_ComponentsHTML.Languages.length;
-            for (var index = 0; index < count; ++index) {
-                hid = $YetaWF.getElement1BySelector("input[name$='[" + index + "].value']", [this.Control]);
-                var langText = hid.value.trim();
-                if (langText === "")
-                    langText = newText;
-                var lang = YLocs.YetaWF_ComponentsHTML.Languages[index];
-                if (!$YetaWF.stringCompare(data[lang], langText)) {
-                    changed = true;
-                    data[lang] = langText;
-                }
-            }
-            return changed;
+        MultiStringEditComponent.prototype.findLanguageText = function (data, lang) {
+            if (!data.hasOwnProperty(lang))
+                return null;
+            return data[lang];
         };
+        //$$$$ remove, use set value() instead
         MultiStringEditComponent.prototype.update = function (data) {
             var count = YLocs.YetaWF_ComponentsHTML.Languages.length;
             for (var index = 0; index < count; ++index) {
@@ -151,3 +175,5 @@ var YetaWF_ComponentsHTML;
         MultiStringEditComponent.clearDiv(tag, MultiStringEditComponent.SELECTOR);
     });
 })(YetaWF_ComponentsHTML || (YetaWF_ComponentsHTML = {}));
+
+//# sourceMappingURL=MultiStringEdit.js.map

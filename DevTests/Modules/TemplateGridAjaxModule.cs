@@ -21,6 +21,7 @@ namespace YetaWF.Modules.DevTests.Modules {
             Name = this.__ResStr("modName", "Template Test - Grid (Ajax)");
             Description = this.__ResStr("modSummary", "Grid (Ajax) test template");
             DefaultViewName = StandardViews.Display;
+            UsePartialFormCss = false;
         }
 
         public override IModuleDefinitionIO GetDataProvider() { return new TemplateGridAjaxModuleDataProvider(); }

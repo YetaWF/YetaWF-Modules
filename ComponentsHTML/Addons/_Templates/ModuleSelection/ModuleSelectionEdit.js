@@ -15,9 +15,9 @@ var __extends = (this && this.__extends) || (function () {
 })();
 var YetaWF_ComponentsHTML;
 (function (YetaWF_ComponentsHTML) {
-    var ModuleSelectionComponent = /** @class */ (function (_super) {
-        __extends(ModuleSelectionComponent, _super);
-        function ModuleSelectionComponent(controlId, setup) {
+    var ModuleSelectionEditComponent = /** @class */ (function (_super) {
+        __extends(ModuleSelectionEditComponent, _super);
+        function ModuleSelectionEditComponent(controlId, setup) {
             var _this = _super.call(this, controlId) || this;
             _this.Setup = setup;
             _this.SelectPackage = YetaWF_ComponentsHTML.DropDownListEditComponent.getControlFromSelector(".t_packages select", [_this.Control]);
@@ -35,7 +35,7 @@ var YetaWF_ComponentsHTML;
             });
             return _this;
         }
-        ModuleSelectionComponent.prototype.showDescription = function () {
+        ModuleSelectionEditComponent.prototype.showDescription = function () {
             var modGuid = this.SelectModule.value;
             if (this.hasValue) {
                 this.ALink.href = "/!Mod/" + modGuid; // Globals.ModuleUrl
@@ -49,10 +49,10 @@ var YetaWF_ComponentsHTML;
                 this.DivDescription.textContent = "";
             }
         };
-        ModuleSelectionComponent.prototype.getDescriptionText = function () {
+        ModuleSelectionEditComponent.prototype.getDescriptionText = function () {
             return this.SelectModule.getToolTip(this.SelectModule.selectedIndex);
         };
-        Object.defineProperty(ModuleSelectionComponent.prototype, "hasValue", {
+        Object.defineProperty(ModuleSelectionEditComponent.prototype, "hasValue", {
             // API
             get: function () {
                 var modGuid = this.SelectModule.value;
@@ -61,14 +61,14 @@ var YetaWF_ComponentsHTML;
             enumerable: true,
             configurable: true
         });
-        Object.defineProperty(ModuleSelectionComponent.prototype, "value", {
+        Object.defineProperty(ModuleSelectionEditComponent.prototype, "value", {
             get: function () {
                 return this.SelectModule.value;
             },
             enumerable: true,
             configurable: true
         });
-        ModuleSelectionComponent.prototype.enable = function (enabled) {
+        ModuleSelectionEditComponent.prototype.enable = function (enabled) {
             this.SelectPackage.enable(enabled);
             this.SelectModule.enable(enabled);
             if (enabled && this.hasValue) {
@@ -80,14 +80,12 @@ var YetaWF_ComponentsHTML;
                 this.DivDescription.style.display = "none";
             }
         };
-        ModuleSelectionComponent.prototype.clear = function () {
+        ModuleSelectionEditComponent.prototype.clear = function () {
             this.SelectPackage.value = "";
             this.SelectModule.value = "";
-            this.ALink.style.display = "none";
-            this.DivDescription.style.display = "none";
-            this.DivDescription.textContent = "";
+            this.showDescription();
         };
-        ModuleSelectionComponent.prototype.hasChanged = function (data) {
+        ModuleSelectionEditComponent.prototype.hasChanged = function (data) {
             if (!this.hasValue)
                 return false;
             var modGuid = this.SelectModule.value;
@@ -96,7 +94,7 @@ var YetaWF_ComponentsHTML;
         /**
          * Load object with data. Selects the correct package in the dropdownlist and selects the module (the package is detected using ajax).
          */
-        ModuleSelectionComponent.prototype.updateComplete = function (modGuid) {
+        ModuleSelectionEditComponent.prototype.updateComplete = function (modGuid) {
             var _this = this;
             if (modGuid !== undefined && modGuid !== null && modGuid.length > 0 && modGuid !== "00000000-0000-0000-0000-000000000000") {
                 var data = { "modGuid": modGuid };
@@ -114,12 +112,14 @@ var YetaWF_ComponentsHTML;
                 this.clear();
             }
         };
-        ModuleSelectionComponent.SELECTOR = ".yt_moduleselection.t_edit";
-        return ModuleSelectionComponent;
+        ModuleSelectionEditComponent.SELECTOR = ".yt_moduleselection.t_edit";
+        return ModuleSelectionEditComponent;
     }(YetaWF.ComponentBaseDataImpl));
-    YetaWF_ComponentsHTML.ModuleSelectionComponent = ModuleSelectionComponent;
+    YetaWF_ComponentsHTML.ModuleSelectionEditComponent = ModuleSelectionEditComponent;
     // A <div> is being emptied. Destroy all controls the <div> may contain.
     $YetaWF.registerClearDiv(function (tag) {
-        ModuleSelectionComponent.clearDiv(tag, ModuleSelectionComponent.SELECTOR);
+        ModuleSelectionEditComponent.clearDiv(tag, ModuleSelectionEditComponent.SELECTOR);
     });
 })(YetaWF_ComponentsHTML || (YetaWF_ComponentsHTML = {}));
+
+//# sourceMappingURL=ModuleSelectionEdit.js.map

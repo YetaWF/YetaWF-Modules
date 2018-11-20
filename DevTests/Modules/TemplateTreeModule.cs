@@ -10,21 +10,21 @@ using YetaWF.DataProvider;
 
 namespace YetaWF.Modules.DevTests.Modules {
 
-    public class TemplateGridModuleDataProvider : ModuleDefinitionDataProvider<Guid, TemplateGridModule>, IInstallableModel { }
+    public class TemplateTreeModuleDataProvider : ModuleDefinitionDataProvider<Guid, TemplateTreeModule>, IInstallableModel { }
 
-    [ModuleGuid("{8AA52B9A-7C5B-475d-8353-9D875CD75678}")]
+    [ModuleGuid("{A1952569-E77D-40fb-8C4A-2A1412EB03E2}")]
     [UniqueModule(UniqueModuleStyle.NonUnique)]
-    public class TemplateGridModule : ModuleDefinition {
+    public class TemplateTreeModule : ModuleDefinition {
 
-        public TemplateGridModule() {
-            Title = this.__ResStr("modTitle", "Grid (Static) Test Template");
-            Name = this.__ResStr("modName", "Template Test - Grid (Static)");
-            Description = this.__ResStr("modSummary", "Grid (Static) test template");
+        public TemplateTreeModule() {
+            Title = this.__ResStr("modTitle", "Tree (Static) Test Template");
+            Name = this.__ResStr("modName", "Template Test - Tree (Static)");
+            Description = this.__ResStr("modSummary", "Tree (Static) test template");
             DefaultViewName = StandardViews.Display;
             UsePartialFormCss = false;
         }
 
-        public override IModuleDefinitionIO GetDataProvider() { return new TemplateGridModuleDataProvider(); }
+        public override IModuleDefinitionIO GetDataProvider() { return new TemplateTreeModuleDataProvider(); }
 
         public override SerializableList<AllowedRole> DefaultAllowedRoles { get { return AdministratorLevel_DefaultAllowedRoles; } }
 
@@ -32,10 +32,10 @@ namespace YetaWF.Modules.DevTests.Modules {
             return new ModuleAction(this) {
                 Url = string.IsNullOrWhiteSpace(url) ? ModulePermanentUrl : url,
                 Image = "#Display",
-                LinkText = this.__ResStr("displayLink", "Grid (Static Data)"),
-                MenuText = this.__ResStr("displayText", "Grid (Static Data)"),
-                Tooltip = this.__ResStr("displayTooltip", "Display a sample grid"),
-                Legend = this.__ResStr("displayLegend", "Displays a sample grid"),
+                LinkText = this.__ResStr("displayLink", "Tree (Static Data)"),
+                MenuText = this.__ResStr("displayText", "Tree (Static Data)"),
+                Tooltip = this.__ResStr("displayTooltip", "Display a sample tree"),
+                Legend = this.__ResStr("displayLegend", "Displays a sample tree"),
                 Style = ModuleAction.ActionStyleEnum.Normal,
                 Category = ModuleAction.ActionCategoryEnum.Read,
                 Mode = ModuleAction.ActionModeEnum.Any,

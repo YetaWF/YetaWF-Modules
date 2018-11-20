@@ -7,7 +7,7 @@ namespace YetaWF_ComponentsHTML {
         AjaxUrlComplete: string;
     }
 
-    export class ModuleSelectionComponent extends YetaWF.ComponentBaseDataImpl {
+    export class ModuleSelectionEditComponent extends YetaWF.ComponentBaseDataImpl {
 
         public static SELECTOR: string = ".yt_moduleselection.t_edit";
 
@@ -79,9 +79,7 @@ namespace YetaWF_ComponentsHTML {
         public clear(): void {
             this.SelectPackage.value = "";
             this.SelectModule.value = "";
-            this.ALink.style.display = "none";
-            this.DivDescription.style.display = "none";
-            this.DivDescription.textContent = "";
+            this.showDescription();
         }
         public hasChanged(data: string): boolean {
             if (!this.hasValue) return false;
@@ -115,7 +113,7 @@ namespace YetaWF_ComponentsHTML {
     }
     // A <div> is being emptied. Destroy all controls the <div> may contain.
     $YetaWF.registerClearDiv((tag: HTMLElement): void => {
-        ModuleSelectionComponent.clearDiv<ModuleSelectionComponent>(tag, ModuleSelectionComponent.SELECTOR);
+        ModuleSelectionEditComponent.clearDiv<ModuleSelectionEditComponent>(tag, ModuleSelectionEditComponent.SELECTOR);
     });
 }
 

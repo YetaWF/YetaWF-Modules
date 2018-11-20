@@ -53,3 +53,5 @@ var YetaWF_ComponentsHTML;
         PageSelectionEditComponent.clearDiv(tag, PageSelectionEditComponent.SELECTOR);
     });
 })(YetaWF_ComponentsHTML || (YetaWF_ComponentsHTML = {}));
+
+//# sourceMappingURL=PageSelectionEdit.js.map

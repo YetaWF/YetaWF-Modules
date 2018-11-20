@@ -161,3 +161,5 @@ var YetaWF_ComponentsHTML;
         });
     });
 })(YetaWF_ComponentsHTML || (YetaWF_ComponentsHTML = {}));
+
+//# sourceMappingURL=FileUpload1.js.map

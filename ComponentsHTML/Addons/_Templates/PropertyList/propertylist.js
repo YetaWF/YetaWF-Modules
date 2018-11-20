@@ -114,7 +114,7 @@ var YetaWF_ComponentsHTML;
                             var found = false;
                             for (var _c = 0, intValues_1 = intValues; _c < intValues_1.length; _c++) {
                                 var intValue = intValues_1[_c];
-                                if (intValue == controlValue) {
+                                if (intValue === controlValue) {
                                     found = true;
                                     break;
                                 }
@@ -123,7 +123,7 @@ var YetaWF_ComponentsHTML;
                                 valid = false;
                             break;
                         case ValueTypeEnum.EqualNonNull:
-                            if (!controlValue || controlValue.length == 0)
+                            if (!controlValue || controlValue.length === 0)
                                 valid = false;
                             break;
                         case ValueTypeEnum.EqualNull:
@@ -258,3 +258,5 @@ var YetaWF_ComponentsHTML;
         }
     });
 })(YetaWF_ComponentsHTML || (YetaWF_ComponentsHTML = {}));
+
+//# sourceMappingURL=PropertyList.js.map

@@ -1,0 +1,93 @@
+@charset "UTF-8";
+/* Copyright � 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/ComponentsHTML#License */
+.yt_tree {
+  position: relative;
+  width: 100%;
+  height: inherit;
+  font-weight: normal;
+  box-sizing: border-box;
+  overflow: auto; }
+  .yt_tree .tg_header {
+    overflow: hidden;
+    white-space: nowrap;
+    font-size: 11px;
+    border: 0;
+    padding: 2px 4px 2px 4px;
+    -webkit-user-select: none;
+       -moz-user-select: none;
+        -ms-user-select: none;
+            user-select: none;
+    /* Standard syntax */ }
+    .yt_tree .tg_header span {
+      cursor: default; }
+  .yt_tree .tg_root {
+    margin: 0; }
+  .yt_tree ul {
+    padding: 0;
+    margin: 0; }
+  .yt_tree ul ul {
+    margin: 0 0 0 24px; }
+  .yt_tree li {
+    font-size: 11px;
+    padding: 0;
+    list-style-type: none;
+    white-space: nowrap; }
+    .yt_tree li a {
+      position: relative;
+      line-height: 24px;
+      height: 24px;
+      vertical-align: top;
+      white-space: nowrap; }
+      .yt_tree li a .t_ddpos {
+        position: absolute;
+        left: -24px;
+        width: 24px;
+        height: 24px;
+        background: url(images.png) -96px 0px no-repeat; }
+        .yt_tree li a .t_ddpos.t_on {
+          top: 0; }
+        .yt_tree li a .t_ddpos.t_before {
+          top: -12px; }
+        .yt_tree li a .t_ddpos.t_after {
+          top: 12px; }
+    .yt_tree li a, .yt_tree li a:link, .yt_tree li a:visited, .yt_tree li a:hover, .yt_tree li a:active, .yt_tree li a:focus {
+      text-decoration: none;
+      color: inherit;
+      outline: none; }
+    .yt_tree li .t_icdown, .yt_tree li .t_icright, .yt_tree li .t_caretempty {
+      display: inline-block;
+      width: 24px;
+      height: 24px;
+      margin-left: 6px;
+      margin-right: 0px; }
+    .yt_tree li .t_icfolder, .yt_tree li .t_icfile, .yt_tree li .t_icempty {
+      display: inline-block;
+      width: 24px;
+      height: 24px;
+      margin-left: 0px;
+      margin-right: 5px; }
+    .yt_tree li .t_icdown {
+      background: url(images.png) -24px 0px no-repeat; }
+    .yt_tree li .t_icright {
+      background: url(images.png) 0px 0px no-repeat; }
+    .yt_tree li .t_icfolder {
+      background: url(images.png) -48px 0px no-repeat; }
+    .yt_tree li .t_icfile {
+      background: url(images.png) -72px 0px no-repeat; }
+  .yt_tree .t_empty {
+    width: 24px;
+    height: 24px;
+    display: inline-block; }
+  .yt_tree .t_entry {
+    padding: 0 2px 0 2px;
+    display: inline-block; }
+    .yt_tree .t_entry.t_select {
+      background-color: #beebff;
+      border-radius: 2px;
+      box-shadow: inset 0 0 1px #999; }
+
+.yt_tree.tg_skin {
+  /* Skin dependent formatting */ }
+
+.yt_tree.tg_noskin {
+  /* Not skin dependent formatting, usually module specific */ }

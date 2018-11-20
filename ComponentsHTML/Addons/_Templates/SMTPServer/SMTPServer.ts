@@ -19,15 +19,6 @@ namespace YetaWF_ComponentsHTML {
             this.Auth = $YetaWF.getElement1BySelector("select[name$='.Authentication']", [this.Control]) as HTMLSelectElement;
             this.Button = $YetaWF.getElement1BySelector(".t_sendtestemail a", [this.Control]) as HTMLAnchorElement;
 
-            //$YetaWF.registerMultipleEventHandlers(this.Server, ["change", "keyup", "keydown"], null, (ev: Event): boolean => {
-            //    this.showFields(this.hasServerValue());
-            //    return true;
-            //});
-            //$YetaWF.registerMultipleEventHandlers(this.Auth, ["change", "select", "keyup", "keydown"], null, (ev: Event): boolean => {
-            //    this.showFields(this.hasServerValue());
-            //    return true;
-            //});
-
             $YetaWF.registerEventHandler(this.Button, "click", null, (ev: Event): boolean => {
                 var uri = new YetaWF.Url();
                 uri.parse(this.Button.href);
@@ -55,25 +46,6 @@ namespace YetaWF_ComponentsHTML {
                 this.Button.href = uri.toUrl();
                 return true;
             });
-
-            //$YetaWF.addWhenReady((tag: HTMLElement) : void => {
-            //    if ($YetaWF.elementHas(tag, this.Server))
-            //        this.showFields(this.hasServerValue());
-            //});
         }
-
-        //private hasServerValue(): boolean {
-        //    return this.Server.value.trim().length > 0;
-        //}
-
-        //private showFields(showAll: boolean): void {
-        //    var disp = showAll ? "" : "none";
-        //    $YetaWF.getElement1BySelector(".t_row.t_port", [this.Control]).style.display = disp;
-        //    $YetaWF.getElement1BySelector(".t_row.t_authentication", [this.Control]).style.display = disp;
-        //    $YetaWF.getElement1BySelector(".t_row.t_username", [this.Control]).style.display = disp;
-        //    $YetaWF.getElement1BySelector(".t_row.t_password", [this.Control]).style.display = disp;
-        //    $YetaWF.getElement1BySelector(".t_row.t_ssl", [this.Control]).style.display = disp;
-        //    $YetaWF.getElement1BySelector(".t_row.t_sendtestemail", [this.Control]).style.display = disp;
-        //}
     }
 }

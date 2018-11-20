@@ -37,6 +37,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Components\ColorPicker.cs" />
+    <Compile Include="Components\Tree.cs" />
     <Compile Include="Components\Grid\Grid.cs" />
     <Compile Include="Components\Grid\GridDeleteEntry.cs" />
     <Compile Include="Components\Grid\GridPartialData.cs" />
@@ -167,6 +168,8 @@
     <Content Include="Addons\_Addons\ckeditor\__CUSTOM_FILES\sourceonly_config.js" />
     <Content Include="Addons\_Addons\ckeditor\__CUSTOM_FILES\sourceonly_ro_config.js" />
     <Content Include="Addons\_Addons\clipboardjs.com.clipboard\filelistJS.txt" />
+    <Content Include="Addons\_Templates\Tree\filelistCSS.txt" />
+    <Content Include="Addons\_Templates\Tree\filelistJS.txt" />
     <Content Include="Addons\_Templates\Grid\filelistCSS.txt" />
     <Content Include="Addons\_Templates\Grid\filelistJS.txt" />
     <TypeScriptCompile Include="Addons\_Addons\Popups\PopupsImpl.ts" />
@@ -229,9 +232,11 @@
     <None Include="Addons\_Templates\Currency\Currency.scss" />
     <Content Include="Addons\_Templates\Currency\filelistCSS.txt" />
     <Content Include="Addons\_Templates\Currency\filelistJS.txt" />
+    <None Include="Addons\_Templates\Tree\Tree.scss" />
     <None Include="Addons\_Templates\WeeklyHours\WeeklyHours.scss" />
     <None Include="Addons\_Templates\Time\Time.scss" />
     <None Include="Addons\_Templates\DayTimeRange\DayTimeRange.scss" />
+    <TypeScriptCompile Include="Addons\_Templates\Tree\Tree.ts" />
     <TypeScriptCompile Include="Addons\_Templates\ModuleSelection\ModuleSelectionEdit.ts" />
     <TypeScriptCompile Include="Addons\_Templates\MultiString\MultiStringEdit.ts" />
     <Content Include="Addons\_Templates\TextAreaSourceOnly\filelistCSS.txt" />
@@ -240,6 +245,7 @@
     <TypeScriptCompile Include="Addons\_Templates\PropertyList\PropertyList.ts" />
     <TypeScriptCompile Include="Addons\_Templates\TextAreaSourceOnly\TextAreaSourceOnly.ts" />
     <TypeScriptCompile Include="Addons\_Templates\Text\TextEdit.ts" />
+    <Content Include="Addons\_Templates\Tree\images.png" />
     <Content Include="Addons\_Templates\Url\UrlLegacy.js" />
     <Content Include="Addons\_Templates\WeeklyHours\filelistCSS.txt" />
     <Content Include="Addons\_Templates\DayTimeRange\filelistCSS.txt" />

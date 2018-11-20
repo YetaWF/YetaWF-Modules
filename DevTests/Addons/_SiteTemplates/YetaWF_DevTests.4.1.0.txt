@@ -26,3 +26,10 @@ Administrator /Tests/Templates/TextAreaSourceOnly
     -
     YetaWF.DevTests, YetaWF.Modules.DevTests.Modules.TemplateTextAreaSourceOnlyModule
 
+Administrator /Tests/Templates/Tree
+    Title=Tree
+    Description=Test page for Tree template
+    -
+    -
+    YetaWF.DevTests, YetaWF.Modules.DevTests.Modules.TemplateTreeModule
+

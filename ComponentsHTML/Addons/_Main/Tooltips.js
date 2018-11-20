@@ -90,3 +90,5 @@ $("body").on("mousedown", "a", function () {
     // Repro steps (without hack): right click on an a link (that COULD have a tooltip) and open a new tab/window. On return to this page we'll get a tooltip
     YetaWF_ComponentsHTML.Tooltips.removeTooltips();
 });
+
+//# sourceMappingURL=Tooltips.js.map
