@@ -144,7 +144,7 @@ namespace YetaWF_ComponentsHTML {
                             var intValues = value.ValueObject as number[];
                             var found = false;
                             for (let intValue of intValues) {
-                                if (intValue === controlValue) {
+                                if (intValue === Number(controlValue)) {
                                     found = true;
                                     break;
                                 }
