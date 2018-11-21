@@ -145,25 +145,6 @@ var YetaWF_ComponentsHTML;
                 return null;
             return data[lang];
         };
-        //$$$$ remove, use set value() instead
-        MultiStringEditComponent.prototype.update = function (data) {
-            var count = YLocs.YetaWF_ComponentsHTML.Languages.length;
-            for (var index = 0; index < count; ++index) {
-                var lang = YLocs.YetaWF_ComponentsHTML.Languages[index];
-                var s = "";
-                if (data.hasOwnProperty(lang))
-                    s = data[lang];
-                else if (data.hasOwnProperty(YLocs.YetaWF_ComponentsHTML.Languages[0]))
-                    s = data[lang] = data[YLocs.YetaWF_ComponentsHTML.Languages[0]]; // use default for languages w/o data
-                else
-                    throw "No language data";
-                var hid = $YetaWF.getElement1BySelector("input[name$='[" + index + "].value']", [this.Control]);
-                hid.value = s;
-                if (index === 0)
-                    this.InputText.value = s;
-            }
-            this.SelectLang.clear();
-        };
         MultiStringEditComponent.SELECTOR = ".yt_multistring.t_edit";
         return MultiStringEditComponent;
     }(YetaWF.ComponentBaseDataImpl));

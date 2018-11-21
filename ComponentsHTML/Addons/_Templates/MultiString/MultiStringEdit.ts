@@ -141,26 +141,6 @@ namespace YetaWF_ComponentsHTML {
             if (!data.hasOwnProperty(lang)) return null;
             return data[lang];
         }
-
-        //$$$$ remove, use set value() instead
-        public update(data: string[]): void {
-            var count = YLocs.YetaWF_ComponentsHTML.Languages.length;
-            for (var index = 0; index < count; ++index) {
-                var lang = YLocs.YetaWF_ComponentsHTML.Languages[index];
-                var s = "";
-                if (data.hasOwnProperty(lang))
-                    s = data[lang];
-                else if (data.hasOwnProperty(YLocs.YetaWF_ComponentsHTML.Languages[0]))
-                    s = data[lang] = data[YLocs.YetaWF_ComponentsHTML.Languages[0]];// use default for languages w/o data
-                else
-                    throw "No language data";
-                var hid = $YetaWF.getElement1BySelector(`input[name$='[${index}].value']`, [this.Control]) as HTMLInputElement;
-                hid.value = s;
-                if (index === 0)
-                    this.InputText.value = s;
-            }
-            this.SelectLang.clear();
-        }
     }
     if (YLocs.YetaWF_ComponentsHTML.Languages === undefined) throw "YLocs.YetaWF_ComponentsHTML.Languages missing";/*DEBUG*/
 
