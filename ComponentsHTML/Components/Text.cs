@@ -86,7 +86,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         }
 
         public static async Task IncludeExplicitAsync() { // this component is reusable so we need to explicitly include all js/css
-            await KendoUICore.AddFileAsync("kendo.maskedtextbox.min.js");//$$$$
+            //await KendoUICore.AddFileAsync("kendo.maskedtextbox.min.js");
             await Manager.AddOnManager.AddTemplateAsync(Controllers.AreaRegistration.CurrentPackage.AreaName, "Text");
         }
         public async Task<YHtmlString> RenderAsync(string model) {
