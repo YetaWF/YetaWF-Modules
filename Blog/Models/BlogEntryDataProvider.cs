@@ -179,6 +179,7 @@ namespace YetaWF.Modules.Blog.DataProvider {
             OpenForComments = true;
             CompleteSummary = new MultiString();
             CompleteText = new MultiString();
+            Category = new MultiString();
         }
         public static Guid FolderGuid { get { return ModuleDefinition.GetPermanentGuid(typeof(EntryDisplayModule)); } }
     }
