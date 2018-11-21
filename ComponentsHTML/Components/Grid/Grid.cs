@@ -829,6 +829,11 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                     hb.Append(await RenderRecordHTMLAsync(htmlHelper, model, dictInfo, fieldPrefix, record, recordCount, origin, hide));
                     ++recordCount;
                 }
+            } else {
+                if (!Manager.IsPostRequest) {
+                    // when initially rendering a grid with 0 records, we have to prepare for all templates
+                    await YetaWFComponentExtender.AddTemplatesForType(model.RecordType);
+                }
             }
 
             return hb.ToString();

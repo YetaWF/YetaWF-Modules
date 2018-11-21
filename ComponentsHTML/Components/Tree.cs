@@ -167,6 +167,9 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
                 hb.Append($@"
 </ul>");
+            } else {
+                // when initially rendering a tree with 0 records, we have to prepare for all templates
+                await YetaWFComponentExtender.AddTemplatesForType(treeModel.RecordType);
             }
 
             return hb.ToString();
