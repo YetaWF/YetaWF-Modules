@@ -112,7 +112,7 @@ namespace YetaWF.Modules.UserSettings.Controllers {
                 data = model.GetData(data); // merge new data into original
                 model.SetData(data); // and all the data back into model for final display
                 await dataProvider.UpdateItemAsync(data);
-                return FormProcessed(model, this.__ResStr("okSaved", "Your settings have been successfully saved"));
+                return FormProcessed(model, this.__ResStr("okSaved", "Your settings have been successfully saved"), ForceRedirect: true);
             }
         }
     }
