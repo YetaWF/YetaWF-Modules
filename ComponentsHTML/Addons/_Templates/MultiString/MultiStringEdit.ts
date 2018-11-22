@@ -123,15 +123,17 @@ namespace YetaWF_ComponentsHTML {
             this.SelectLang.clear();
         }
         public hasChanged(data: object): boolean {
-            var text = this.InputText.value;
+            var textDefault = this.findLanguageText(data, YLocs.YetaWF_ComponentsHTML.Languages[0]);
             var count = YLocs.YetaWF_ComponentsHTML.Languages.length;
             for (var index = 0; index < count; ++index) {
                 var hid = $YetaWF.getElement1BySelector(`input[name$='[${index}].value']`, [this.Control]) as HTMLInputElement;
                 var langText = hid.value;
                 if (langText === "")
-                    langText = text;
+                    langText = textDefault||"";
                 var lang = YLocs.YetaWF_ComponentsHTML.Languages[index];
                 var ms = this.findLanguageText(data, lang);
+                if (!ms)
+                    ms = textDefault;
                 if (!$YetaWF.stringCompare(ms, langText))
                     return true;
             }

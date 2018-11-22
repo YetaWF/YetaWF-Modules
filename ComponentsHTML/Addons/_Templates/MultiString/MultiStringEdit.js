@@ -126,15 +126,17 @@ var YetaWF_ComponentsHTML;
             configurable: true
         });
         MultiStringEditComponent.prototype.hasChanged = function (data) {
-            var text = this.InputText.value;
+            var textDefault = this.findLanguageText(data, YLocs.YetaWF_ComponentsHTML.Languages[0]);
             var count = YLocs.YetaWF_ComponentsHTML.Languages.length;
             for (var index = 0; index < count; ++index) {
                 var hid = $YetaWF.getElement1BySelector("input[name$='[" + index + "].value']", [this.Control]);
                 var langText = hid.value;
                 if (langText === "")
-                    langText = text;
+                    langText = textDefault || "";
                 var lang = YLocs.YetaWF_ComponentsHTML.Languages[index];
                 var ms = this.findLanguageText(data, lang);
+                if (!ms)
+                    ms = textDefault;
                 if (!$YetaWF.stringCompare(ms, langText))
                     return true;
             }
@@ -156,5 +158,3 @@ var YetaWF_ComponentsHTML;
         MultiStringEditComponent.clearDiv(tag, MultiStringEditComponent.SELECTOR);
     });
 })(YetaWF_ComponentsHTML || (YetaWF_ComponentsHTML = {}));
-
-//# sourceMappingURL=MultiStringEdit.js.map
