@@ -5,6 +5,8 @@ using YetaWF.Core.Support;
 using YetaWF.Core.Modules;
 using YetaWF.Core.Addons;
 #if MVC6
+using System.Text.Encodings.Web;
+using Microsoft.AspNetCore.Html;
 using Microsoft.AspNetCore.Mvc.Rendering;
 #else
 using System.Web.Mvc;
@@ -38,8 +40,17 @@ namespace YetaWF.Modules.ComponentsHTML {
             }
             hb.Append(tag.ToString(TagRenderMode.StartTag));
 
-            if (Manager.AntiForgeryTokenHTML == null)
+            if (Manager.AntiForgeryTokenHTML == null) {
+#if MVC6
+                using (System.IO.StringWriter writer = new System.IO.StringWriter()) {
+                    IHtmlContent ihtmlContent = htmlHelper.AntiForgeryToken();
+                    ihtmlContent.WriteTo(writer, HtmlEncoder.Default);
+                    Manager.AntiForgeryTokenHTML = writer.ToString();
+                }
+#else
                 Manager.AntiForgeryTokenHTML = htmlHelper.AntiForgeryToken().ToString();
+#endif
+            }
             hb.Append(Manager.AntiForgeryTokenHTML);
             hb.Append(htmlHelper.Hidden(Basics.ModuleGuid, module.ModuleGuid));
             hb.Append(htmlHelper.Hidden(Forms.UniqueIdPrefix, Manager.UniqueIdPrefix));
