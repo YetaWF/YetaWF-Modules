@@ -34,3 +34,5 @@ var YetaWF_ComponentsHTML;
     }());
     YetaWF_ComponentsHTML.TimeSpanEditComponent = TimeSpanEditComponent;
 })(YetaWF_ComponentsHTML || (YetaWF_ComponentsHTML = {}));
+
+//# sourceMappingURL=TimeSpan.js.map

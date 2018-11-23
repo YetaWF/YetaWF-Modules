@@ -38,7 +38,9 @@ namespace YetaWF.Modules.ComponentsHTML {
             }
             hb.Append(tag.ToString(TagRenderMode.StartTag));
 
-            hb.Append(htmlHelper.AntiForgeryToken());
+            if (Manager.AntiForgeryTokenHTML == null)
+                Manager.AntiForgeryTokenHTML = htmlHelper.AntiForgeryToken().ToString();
+            hb.Append(Manager.AntiForgeryTokenHTML);
             hb.Append(htmlHelper.Hidden(Basics.ModuleGuid, module.ModuleGuid));
             hb.Append(htmlHelper.Hidden(Forms.UniqueIdPrefix, Manager.UniqueIdPrefix));
 

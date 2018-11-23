@@ -246,7 +246,6 @@
     <TypeScriptCompile Include="Addons\_Templates\TextAreaSourceOnly\TextAreaSourceOnly.ts" />
     <TypeScriptCompile Include="Addons\_Templates\Text\TextEdit.ts" />
     <Content Include="Addons\_Templates\Tree\images.png" />
-    <Content Include="Addons\_Templates\Url\UrlLegacy.js" />
     <Content Include="Addons\_Templates\WeeklyHours\filelistCSS.txt" />
     <Content Include="Addons\_Templates\DayTimeRange\filelistCSS.txt" />
     <Content Include="Addons\_Templates\DayTimeRange\filelistJS.txt" />
@@ -299,13 +298,11 @@
     <Content Include="Addons\_Templates\ModuleSelection\filelistCSS.txt" />
     <Content Include="Addons\_Templates\ModuleSelection\filelistJS.txt" />
     <Content Include="Addons\_Templates\ModuleSelection\Icons\ModulePreview.png" />
-    <Content Include="Addons\_Templates\ModuleSelection\ModuleSelectionLegacy.js" />
     <Content Include="Addons\_Templates\ModuleSkins\filelistCSS.txt" />
     <None Include="Addons\_Templates\ModuleSkins\ModuleSkins.scss" />
     <Content Include="Addons\_Templates\MultiString\filelistCSS.txt" />
     <Content Include="Addons\_Templates\MultiString\filelistJS.txt" />
     <None Include="Addons\_Templates\MultiString\MultiString.scss" />
-    <Content Include="Addons\_Templates\MultiString\MultiStringLegacy.js" />
     <Content Include="Addons\_Templates\PageSelection\filelistCSS.txt" />
     <Content Include="Addons\_Templates\PageSelection\filelistJS.txt" />
     <Content Include="Addons\_Templates\PageSelection\Icons\PagePreview.png" />
