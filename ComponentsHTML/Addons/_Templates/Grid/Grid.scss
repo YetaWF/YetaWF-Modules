@@ -25,6 +25,14 @@ $smbuttonhorzmargin: 2px;
     font-weight:normal;
     .tg_table {  // general rendering
         overflow-x:auto;
+
+        input,
+        select,
+        textarea,
+        button { // Insures that jquery-ui doesn't override our font size for controls
+            font-size:$fontsize;
+        }
+
         table {
             border-collapse:separate;
             box-sizing: border-box;

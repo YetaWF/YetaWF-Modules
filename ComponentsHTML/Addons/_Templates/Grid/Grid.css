@@ -5,6 +5,11 @@
   font-weight: normal; }
   .yt_grid .tg_table {
     overflow-x: auto; }
+    .yt_grid .tg_table input,
+    .yt_grid .tg_table select,
+    .yt_grid .tg_table textarea,
+    .yt_grid .tg_table button {
+      font-size: 11px; }
     .yt_grid .tg_table table {
       border-collapse: separate;
       box-sizing: border-box;
