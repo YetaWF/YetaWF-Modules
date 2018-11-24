@@ -53,12 +53,6 @@
     <Compile Include="Startup\Info.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Addons\_Main\Caching.css" />
-    <Content Include="Addons\_Main\Caching.js" />
-    <Content Include="Addons\_Main\filelistCSS.txt" />
-    <Content Include="Addons\_Main\filelistJS.txt" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>
@@ -155,7 +149,9 @@
       <Private>True</Private>
     </Reference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Content Include="Addons\placeholder.txt" />
+  </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />

@@ -334,8 +334,6 @@
     <Content Include="Addons\_Templates\IdentityUsers\Users.css" />
     <Content Include="Addons\_Templates\ResourceUsers\filelistCSS.txt" />
     <None Include="Addons\_Templates\ResourceUsers\ResourceUsers.scss" />
-    <Content Include="Addons\_Templates\UserRoles\filelistCSS.txt" />
-    <Content Include="Addons\_Templates\UserRoles\Roles.css" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config">

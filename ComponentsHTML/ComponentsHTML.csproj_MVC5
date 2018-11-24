@@ -182,7 +182,6 @@
     <Content Include="Addons\_Addons\Forms\validation.js" />
     <Content Include="Addons\_Addons\gist.github.com_remi_957732.jquery_validate_hooks\filelistJS.txt" />
     <Content Include="Addons\_Addons\gist.github.com_remi_957732.jquery_validate_hooks\jquery.validate.hooks.js" />
-    <Content Include="Addons\_Addons\github.com.danielm.uploader\filelistCSS.txt" />
     <Content Include="Addons\_Addons\github.com.danielm.uploader\filelistJS.txt" />
     <Content Include="Addons\_Addons\github.com.danielm.uploader\src\dmuploader.js" />
     <Content Include="Addons\_Addons\github.com.vadikom.smartmenus\filelistCSS.txt" />
