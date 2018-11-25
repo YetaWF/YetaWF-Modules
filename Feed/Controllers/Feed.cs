@@ -100,6 +100,10 @@ namespace YetaWF.Modules.Feed.Controllers {
                 } else {
                     model = cacheInfo.Data;
                 }
+
+                if (model.Entries.Count == 0)
+                    return new EmptyResult();
+
                 return View(model);
             }
         }
