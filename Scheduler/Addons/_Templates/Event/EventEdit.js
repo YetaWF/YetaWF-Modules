@@ -6,7 +6,7 @@ var YetaWF_Scheduler;
         function EventEditComponent(controlId) {
             var _this = this;
             this.Control = $YetaWF.getElementById(controlId);
-            this.DropDown = YetaWF_ComponentsHTML.DropDownListEditComponent.getControlFromSelector("select[name$='.DropDown']", [this.Control]);
+            this.DropDown = YetaWF.ComponentBaseDataImpl.getControlFromSelector("select[name$='.DropDown']", YetaWF_ComponentsHTML.DropDownListEditComponent.SELECTOR, [this.Control]);
             this.Name = $YetaWF.getElement1BySelector("input[name$='.Name']", [this.Control]);
             this.ImplementingAssembly = $YetaWF.getElement1BySelector("input[name$='.ImplementingAssembly']", [this.Control]);
             this.ImplementingType = $YetaWF.getElement1BySelector("input[name$='.ImplementingType']", [this.Control]);

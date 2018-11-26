@@ -19,7 +19,6 @@ var YetaWF_ComponentsHTML;
         __extends(DateEditComponent, _super);
         function DateEditComponent(controlId, setup) {
             var _this = _super.call(this, controlId) || this;
-            $YetaWF.addObjectDataById(controlId, _this);
             _this.Hidden = $YetaWF.getElement1BySelector("input[type=\"hidden\"]", [_this.Control]);
             _this.Date = $YetaWF.getElement1BySelector("input[name=\"dtpicker\"]", [_this.Control]);
             $(_this.Date).kendoDatePicker({
@@ -83,23 +82,14 @@ var YetaWF_ComponentsHTML;
         DateEditComponent.prototype.enable = function (enabled) {
             this.kendoDatePicker.enable(enabled);
         };
-        DateEditComponent.prototype.destroy = function () {
-            this.kendoDatePicker.destroy();
-            $YetaWF.removeObjectDataById(this.Control.id);
-        };
-        DateEditComponent.getControlFromTag = function (elem) { return _super.getControlBaseFromTag.call(this, elem, DateEditComponent.SELECTOR); };
-        DateEditComponent.getControlFromSelector = function (selector, tags) { return _super.getControlBaseFromSelector.call(this, selector, DateEditComponent.SELECTOR, tags); };
-        DateEditComponent.getControlById = function (id) { return _super.getControlBaseById.call(this, id, DateEditComponent.SELECTOR); };
         DateEditComponent.SELECTOR = ".yt_date.t_edit";
         return DateEditComponent;
-    }(YetaWF.ComponentBase));
+    }(YetaWF.ComponentBaseDataImpl));
     YetaWF_ComponentsHTML.DateEditComponent = DateEditComponent;
     // A <div> is being emptied. Destroy all controls the <div> may contain.
     $YetaWF.registerClearDiv(function (tag) {
-        YetaWF.ComponentBase.clearDiv(tag, DateEditComponent.SELECTOR, function (control) {
-            control.destroy();
+        YetaWF.ComponentBaseDataImpl.clearDiv(tag, DateEditComponent.SELECTOR, function (control) {
+            control.kendoDatePicker.destroy();
         });
     });
 })(YetaWF_ComponentsHTML || (YetaWF_ComponentsHTML = {}));
-
-//# sourceMappingURL=DateEdit.js.map

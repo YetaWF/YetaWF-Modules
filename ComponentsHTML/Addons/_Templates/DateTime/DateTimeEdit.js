@@ -19,7 +19,6 @@ var YetaWF_ComponentsHTML;
         __extends(DateTimeEditComponent, _super);
         function DateTimeEditComponent(controlId, setup) {
             var _this = _super.call(this, controlId) || this;
-            $YetaWF.addObjectDataById(controlId, _this);
             _this.Hidden = $YetaWF.getElement1BySelector("input[type=\"hidden\"]", [_this.Control]);
             _this.Date = $YetaWF.getElement1BySelector("input[name=\"dtpicker\"]", [_this.Control]);
             $(_this.Date).kendoDateTimePicker({
@@ -83,23 +82,14 @@ var YetaWF_ComponentsHTML;
         DateTimeEditComponent.prototype.enable = function (enabled) {
             this.kendoDateTimePicker.enable(enabled);
         };
-        DateTimeEditComponent.prototype.destroy = function () {
-            this.kendoDateTimePicker.destroy();
-            $YetaWF.removeObjectDataById(this.Control.id);
-        };
-        DateTimeEditComponent.getControlFromTag = function (elem) { return _super.getControlBaseFromTag.call(this, elem, DateTimeEditComponent.SELECTOR); };
-        DateTimeEditComponent.getControlFromSelector = function (selector, tags) { return _super.getControlBaseFromSelector.call(this, selector, DateTimeEditComponent.SELECTOR, tags); };
-        DateTimeEditComponent.getControlById = function (id) { return _super.getControlBaseById.call(this, id, DateTimeEditComponent.SELECTOR); };
         DateTimeEditComponent.SELECTOR = ".yt_datetime.t_edit";
         return DateTimeEditComponent;
-    }(YetaWF.ComponentBase));
+    }(YetaWF.ComponentBaseDataImpl));
     YetaWF_ComponentsHTML.DateTimeEditComponent = DateTimeEditComponent;
     // A <div> is being emptied. Destroy all controls the <div> may contain.
     $YetaWF.registerClearDiv(function (tag) {
-        YetaWF.ComponentBase.clearDiv(tag, DateTimeEditComponent.SELECTOR, function (control) {
-            control.destroy();
+        YetaWF.ComponentBaseDataImpl.clearDiv(tag, DateTimeEditComponent.SELECTOR, function (control) {
+            control.kendoDateTimePicker.destroy();
         });
     });
 })(YetaWF_ComponentsHTML || (YetaWF_ComponentsHTML = {}));
-
-//# sourceMappingURL=DateTimeEdit.js.map

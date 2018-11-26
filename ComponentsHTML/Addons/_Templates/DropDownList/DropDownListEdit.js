@@ -21,7 +21,6 @@ var YetaWF_ComponentsHTML;
             var _this = _super.call(this, controlId) || this;
             _this.KendoDropDownList = null;
             _this.Setup = setup;
-            $YetaWF.addObjectDataById(controlId, _this);
             _this.updateWidth();
             return _this;
         }
@@ -97,21 +96,21 @@ var YetaWF_ComponentsHTML;
                 this.KendoDropDownList.enable(enabled);
             }
         };
-        DropDownListEditComponent.prototype.destroy = function () {
+        DropDownListEditComponent.prototype.internalDestroy = function () {
             try {
                 if (this.KendoDropDownList)
                     this.KendoDropDownList.destroy();
             }
             catch (e) { }
             this.KendoDropDownList = null;
-            $YetaWF.removeObjectDataById(this.Control.id);
         };
         DropDownListEditComponent.prototype.ajaxUpdate = function (data, ajaxUrl, onSuccess, onFailure) {
             var _this = this;
             var uri = $YetaWF.parseUrl(ajaxUrl);
             uri.addSearchSimpleObject(data);
             var request = new XMLHttpRequest();
-            request.open("POST", uri.toUrl());
+            request.open("POST", ajaxUrl);
+            request.setRequestHeader("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
             request.setRequestHeader("X-Requested-With", "XMLHttpRequest");
             request.onreadystatechange = function (ev) {
                 if (request.readyState === 4 /*DONE*/) {
@@ -152,28 +151,25 @@ var YetaWF_ComponentsHTML;
                     }
                 }
             };
-            request.send();
+            request.send(uri.toFormData());
         };
-        DropDownListEditComponent.getControlFromTag = function (elem) { return _super.getControlBaseFromTag.call(this, elem, DropDownListEditComponent.SELECTOR); };
-        DropDownListEditComponent.getControlFromSelector = function (selector, tags) { return _super.getControlBaseFromSelector.call(this, selector || DropDownListEditComponent.SELECTOR, DropDownListEditComponent.SELECTOR, tags); };
-        DropDownListEditComponent.getControlById = function (id) { return _super.getControlBaseById.call(this, id, DropDownListEditComponent.SELECTOR); };
         DropDownListEditComponent.SELECTOR = "select.yt_dropdownlist_base.t_edit.t_kendo";
         return DropDownListEditComponent;
-    }(YetaWF.ComponentBase));
+    }(YetaWF.ComponentBaseDataImpl));
     YetaWF_ComponentsHTML.DropDownListEditComponent = DropDownListEditComponent;
     // We need to delay initialization until divs become visible so we can calculate the dropdown width
     $YetaWF.registerActivateDiv(function (tag) {
         var ctls = $YetaWF.getElementsBySelector(DropDownListEditComponent.SELECTOR, [tag]);
         for (var _i = 0, ctls_1 = ctls; _i < ctls_1.length; _i++) {
             var ctl = ctls_1[_i];
-            var control = DropDownListEditComponent.getControlFromTag(ctl);
+            var control = YetaWF.ComponentBaseDataImpl.getControlFromTag(ctl, DropDownListEditComponent.SELECTOR);
             control.updateWidth();
         }
     });
     // A <div> is being emptied. Destroy all dropdownlists the <div> may contain.
     $YetaWF.registerClearDiv(function (tag) {
-        YetaWF.ComponentBase.clearDiv(tag, DropDownListEditComponent.SELECTOR, function (control) {
-            control.destroy();
+        YetaWF.ComponentBaseDataImpl.clearDiv(tag, DropDownListEditComponent.SELECTOR, function (control) {
+            control.internalDestroy();
         });
     });
     // handle submit/apply
@@ -190,5 +186,3 @@ var YetaWF_ComponentsHTML;
         return false;
     });
 })(YetaWF_ComponentsHTML || (YetaWF_ComponentsHTML = {}));
-
-//# sourceMappingURL=DropDownListEdit.js.map

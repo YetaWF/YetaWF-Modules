@@ -22,8 +22,8 @@ var YetaWF_Panels;
             _this.ReloadInProgress = false;
             _this.AddCounter = 0;
             _this.Setup = setup;
-            _this.Grid = YetaWF_ComponentsHTML.Grid.getControlById(_this.Setup.GridId);
-            _this.GridAll = YetaWF_ComponentsHTML.Grid.getControlById(_this.Setup.GridAllId);
+            _this.Grid = YetaWF.ComponentBaseDataImpl.getControlById(_this.Setup.GridId, YetaWF_ComponentsHTML.Grid.SELECTOR);
+            _this.GridAll = YetaWF.ComponentBaseDataImpl.getControlById(_this.Setup.GridAllId, YetaWF_ComponentsHTML.Grid.SELECTOR);
             _this.buttonAdd = $YetaWF.getElement1BySelector("input[name='btnAdd']", [_this.Control]);
             _this.selectUrl = YetaWF_ComponentsHTML.UrlEditComponent.getControlFromSelector("[name$='.NewValue']", YetaWF_ComponentsHTML.UrlEditComponent.SELECTOR, [_this.Control]);
             $YetaWF.registerEventHandler(_this.buttonAdd, "click", null, function (ev) {
@@ -77,7 +77,7 @@ var YetaWF_Panels;
             $YetaWF.elementEnableToggle(this.buttonAdd, s.length > 0);
         };
         return ListOfLocalPagesEditComponent;
-    }(YetaWF.ComponentBase));
+    }(YetaWF.ComponentBaseImpl));
     YetaWF_Panels.ListOfLocalPagesEditComponent = ListOfLocalPagesEditComponent;
 })(YetaWF_Panels || (YetaWF_Panels = {}));
 

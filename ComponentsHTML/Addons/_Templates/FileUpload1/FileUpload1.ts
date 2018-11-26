@@ -29,7 +29,7 @@ namespace YetaWF_ComponentsHTML {
         List: string;
     }
 
-    export class FileUpload1Component extends YetaWF.ComponentBase<HTMLButtonElement> {
+    export class FileUpload1Component extends YetaWF.ComponentBaseDataImpl {
 
         public static readonly SELECTOR: string = ".yt_fileupload1";
 
@@ -45,8 +45,6 @@ namespace YetaWF_ComponentsHTML {
         constructor(controlId: string, setup: FileUpload1Setup) {
             super(controlId);
             this.Setup = setup;
-
-            $YetaWF.addObjectDataById(controlId, this);
 
             this.inputFileName = $YetaWF.getElement1BySelector("input.t_filename", [this.Control]) as HTMLInputElement;
             this.divProgressbar = $YetaWF.getElement1BySelectorCond(".t_progressbar", [this.Control]) as HTMLDivElement;
@@ -172,21 +170,11 @@ namespace YetaWF_ComponentsHTML {
         public SetGetFileName(callback: () => string): void {
             this.GetFileNameCallback = callback;
         }
-
-        public destroy(): void {
-            $YetaWF.removeObjectDataById(this.Control.id);
-        }
-
-        public static getControlFromTag(elem: HTMLElement): FileUpload1Component { return super.getControlBaseFromTag<FileUpload1Component>(elem, FileUpload1Component.SELECTOR); }
-        public static getControlFromSelector(selector: string, tags: HTMLElement[]): FileUpload1Component { return super.getControlBaseFromSelector<FileUpload1Component>(selector, FileUpload1Component.SELECTOR, tags); }
-        public static getControlById(id: string): FileUpload1Component { return super.getControlBaseById<FileUpload1Component>(id, FileUpload1Component.SELECTOR); }
     }
 
     // A <div> is being emptied. Destroy all controls the <div> may contain.
     $YetaWF.registerClearDiv((tag: HTMLElement): void => {
-        YetaWF.ComponentBase.clearDiv<FileUpload1Component>(tag, FileUpload1Component.SELECTOR, (control: FileUpload1Component): void => {
-            control.destroy();
-        });
+        YetaWF.ComponentBaseDataImpl.clearDiv<FileUpload1Component>(tag, FileUpload1Component.SELECTOR);
     });
 }
 

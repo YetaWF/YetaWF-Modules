@@ -8,7 +8,7 @@ namespace YetaWF_ComponentsHTML {
         NoEntryText: string;
     }
 
-    export class DecimalEditComponent extends YetaWF.ComponentBase<HTMLInputElement> {
+    export class DecimalEditComponent extends YetaWF.ComponentBaseDataImpl {
 
         public static readonly SELECTOR: string = "input.yt_decimal.t_edit.k-input[name]";
 
@@ -16,8 +16,6 @@ namespace YetaWF_ComponentsHTML {
 
         constructor(controlId: string, setup: DecimalEditSetup) {
             super(controlId);
-
-            $YetaWF.addObjectDataById(controlId, this);
 
             $(this.Control).kendoNumericTextBox({
                 format: "0.00",
@@ -30,10 +28,10 @@ namespace YetaWF_ComponentsHTML {
         }
 
         get value(): number {
-            return parseFloat(this.Control.value);
+            return this.kendoNumericTextBox.value();
         }
         get valueText(): string  {
-            return this.Control.value;
+            return this.value.toString();
         }
         set value(val: number) {
             this.kendoNumericTextBox.value(val);
@@ -44,20 +42,12 @@ namespace YetaWF_ComponentsHTML {
         public enable(enabled: boolean): void {
             this.kendoNumericTextBox.enable(enabled);
         }
-        public destroy(): void {
-            this.kendoNumericTextBox.destroy();
-            $YetaWF.removeObjectDataById(this.Control.id);
-        }
-
-        public static getControlFromTag(elem: HTMLElement): DecimalEditComponent { return super.getControlBaseFromTag<DecimalEditComponent>(elem, DecimalEditComponent.SELECTOR); }
-        public static getControlFromSelector(selector: string, tags: HTMLElement[]): DecimalEditComponent { return super.getControlBaseFromSelector<DecimalEditComponent>(selector, DecimalEditComponent.SELECTOR, tags); }
-        public static getControlById(id: string): DecimalEditComponent { return super.getControlBaseById<DecimalEditComponent>(id, DecimalEditComponent.SELECTOR); }
     }
 
     // A <div> is being emptied. Destroy all controls the <div> may contain.
     $YetaWF.registerClearDiv((tag: HTMLElement): void => {
-        YetaWF.ComponentBase.clearDiv<DecimalEditComponent>(tag, DecimalEditComponent.SELECTOR, (control: DecimalEditComponent): void => {
-            control.destroy();
+        YetaWF.ComponentBaseDataImpl.clearDiv<DecimalEditComponent>(tag, DecimalEditComponent.SELECTOR, (control: DecimalEditComponent): void => {
+            control.kendoNumericTextBox.destroy();
         });
     });
 }

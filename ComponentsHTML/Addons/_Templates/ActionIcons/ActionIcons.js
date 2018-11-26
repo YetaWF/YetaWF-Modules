@@ -66,7 +66,7 @@ var YetaWF_ComponentsHTML;
         };
         ActionIconsComponent.menusOpen = 0;
         return ActionIconsComponent;
-    }(YetaWF.ComponentBase));
+    }(YetaWF.ComponentBaseImpl));
     YetaWF_ComponentsHTML.ActionIconsComponent = ActionIconsComponent;
     // Handle clicks elsewhere so we can close the menus
     $YetaWF.registerMultipleEventHandlersBody(["click", "mousedown"], null, function (ev) {
@@ -114,5 +114,3 @@ var YetaWF_ComponentsHTML;
         }
     });
 })(YetaWF_ComponentsHTML || (YetaWF_ComponentsHTML = {}));
-
-//# sourceMappingURL=ActionIcons.js.map

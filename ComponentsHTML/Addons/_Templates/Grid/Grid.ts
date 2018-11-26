@@ -89,7 +89,7 @@ namespace YetaWF_ComponentsHTML {
         No = 2
     }
 
-    export class Grid extends YetaWF.ComponentBase<HTMLElement> {
+    export class Grid extends YetaWF.ComponentBaseDataImpl {
 
         public static readonly SELECTOR: string = ".yt_grid";
 
@@ -117,7 +117,6 @@ namespace YetaWF_ComponentsHTML {
 
         constructor(controlId: string, setup: GridSetup) {
             super(controlId);
-            $YetaWF.addObjectDataById(controlId, this);
 
             this.Setup = setup;
 
@@ -133,7 +132,7 @@ namespace YetaWF_ComponentsHTML {
                 this.PagerTotals = $YetaWF.getElement1BySelectorCond(".tg_totals", [this.Control]) as HTMLDivElement | null;
                 if (this.Setup.PageSize) {
                     this.InputPage = YetaWF.ComponentBaseDataImpl.getControlFromSelector<IntValueEditComponent>("input[name$='.__Page']", IntValueEditComponent.SELECTOR, [this.Control]);
-                    this.SelectPageSize = YetaWF_ComponentsHTML.DropDownListEditComponent.getControlFromSelector("select[name$='.__PageSelection']", [this.Control]);
+                    this.SelectPageSize = YetaWF.ComponentBaseDataImpl.getControlFromSelector<DropDownListEditComponent>("select[name$='.__PageSelection']", DropDownListEditComponent.SELECTOR, [this.Control]);
                 }
             }
             this.FilterBar = $YetaWF.getElement1BySelectorCond(".tg_filter", [this.Control]) as HTMLDivElement | null;
@@ -779,7 +778,7 @@ namespace YetaWF_ComponentsHTML {
         public static menuSelected(menuElem: HTMLElement, colIndex: number): void {
             var popups = $YetaWF.elementClosest(menuElem, ".yt_grid_menus");
             var gridId = $YetaWF.getAttribute(popups, "data-grid");
-            var grid = Grid.getControlById(gridId);
+            var grid: Grid = YetaWF.ComponentBaseDataImpl.getControlById(gridId, YetaWF_ComponentsHTML.Grid.SELECTOR);
             grid.menuSelected(menuElem, colIndex);
         }
         private addDirectFilterHandlers(): void {
@@ -819,7 +818,7 @@ namespace YetaWF_ComponentsHTML {
                 case null:
                     return null;
                 case "bool":
-                    var dd: YetaWF_ComponentsHTML.DropDownListEditComponent = YetaWF_ComponentsHTML.DropDownListEditComponent.getControlById(col.FilterId);
+                    var dd: YetaWF_ComponentsHTML.DropDownListEditComponent = YetaWF.ComponentBaseDataImpl.getControlById(col.FilterId, DropDownListEditComponent.SELECTOR);
                     var boolVal: FilterBoolEnum = Number(dd.value);
                     switch (boolVal) {
                         default:
@@ -836,16 +835,16 @@ namespace YetaWF_ComponentsHTML {
                     //$$$$
                     return null;
                 case "decimal":
-                    var dec: YetaWF_ComponentsHTML.DecimalEditComponent = YetaWF_ComponentsHTML.DecimalEditComponent.getControlById(col.FilterId);
+                    var dec: YetaWF_ComponentsHTML.DecimalEditComponent = YetaWF.ComponentBaseDataImpl.getControlById(col.FilterId, DecimalEditComponent.SELECTOR);
                     return dec.valueText;
                 case "datetime":
-                    var datetime: YetaWF_ComponentsHTML.DateTimeEditComponent = YetaWF_ComponentsHTML.DateTimeEditComponent.getControlById(col.FilterId);
+                    var datetime: YetaWF_ComponentsHTML.DateTimeEditComponent = YetaWF.ComponentBaseDataImpl.getControlById(col.FilterId, DateTimeEditComponent.SELECTOR);
                     return datetime.valueText;
                 case "date":
-                    var date: YetaWF_ComponentsHTML.DateEditComponent = YetaWF_ComponentsHTML.DateEditComponent.getControlById(col.FilterId);
+                    var date: YetaWF_ComponentsHTML.DateEditComponent = YetaWF.ComponentBaseDataImpl.getControlById(col.FilterId, DateEditComponent.SELECTOR);
                     return date.valueText;
                 case "enum":
-                    var dd: YetaWF_ComponentsHTML.DropDownListEditComponent = YetaWF_ComponentsHTML.DropDownListEditComponent.getControlById(col.FilterId);
+                    var dd: YetaWF_ComponentsHTML.DropDownListEditComponent = YetaWF.ComponentBaseDataImpl.getControlById(col.FilterId, DropDownListEditComponent.SELECTOR);
                     if (dd.value === "-1")
                         return null;
                     return dd.value;
@@ -859,7 +858,7 @@ namespace YetaWF_ComponentsHTML {
                 case null:
                     break;
                 case "bool":
-                    var dd: YetaWF_ComponentsHTML.DropDownListEditComponent = YetaWF_ComponentsHTML.DropDownListEditComponent.getControlById(col.FilterId);
+                    var dd: YetaWF_ComponentsHTML.DropDownListEditComponent = YetaWF.ComponentBaseDataImpl.getControlById(col.FilterId, DropDownListEditComponent.SELECTOR);
                     dd.clear();
                     break;
                 case "long":
@@ -872,19 +871,19 @@ namespace YetaWF_ComponentsHTML {
                     //$$$$
                     break;
                 case "decimal":
-                    var dec: YetaWF_ComponentsHTML.DecimalEditComponent = YetaWF_ComponentsHTML.DecimalEditComponent.getControlById(col.FilterId);
+                    var dec: YetaWF_ComponentsHTML.DecimalEditComponent = YetaWF.ComponentBaseDataImpl.getControlById(col.FilterId, DecimalEditComponent.SELECTOR);
                     dec.clear();
                     break;
                 case "datetime":
-                    var datetime: YetaWF_ComponentsHTML.DateTimeEditComponent = YetaWF_ComponentsHTML.DateTimeEditComponent.getControlById(col.FilterId);
+                    var datetime: YetaWF_ComponentsHTML.DateTimeEditComponent = YetaWF.ComponentBaseDataImpl.getControlById(col.FilterId, DateTimeEditComponent.SELECTOR);
                     datetime.clear();
                     break;
                 case "date":
-                    var date: YetaWF_ComponentsHTML.DateEditComponent = YetaWF_ComponentsHTML.DateEditComponent.getControlById(col.FilterId);
+                    var date: YetaWF_ComponentsHTML.DateEditComponent = YetaWF.ComponentBaseDataImpl.getControlById(col.FilterId, DateEditComponent.SELECTOR);
                     date.clear();
                     break;
                 case "enum":
-                    var dd: YetaWF_ComponentsHTML.DropDownListEditComponent = YetaWF_ComponentsHTML.DropDownListEditComponent.getControlById(col.FilterId);
+                    var dd: YetaWF_ComponentsHTML.DropDownListEditComponent = YetaWF.ComponentBaseDataImpl.getControlById(col.FilterId, DropDownListEditComponent.SELECTOR);
                     dd.value = "-1";
                     break;
                 default:
@@ -960,7 +959,7 @@ namespace YetaWF_ComponentsHTML {
             }
         }
 
-        public destroy(): void {
+        public internalDestroy(): void {
             if (this.Setup.CanFilter) {
                 // close all menus
                 var menuDiv = $YetaWF.getElementById(`${this.ControlId}_menus`);
@@ -972,11 +971,7 @@ namespace YetaWF_ComponentsHTML {
                 // remove all menus
                 menuDiv.remove();
             }
-            $YetaWF.removeObjectDataById(this.Control.id);
         }
-        public static getControlFromTag(elem: HTMLElement): Grid { return super.getControlBaseFromTag<Grid>(elem, Grid.SELECTOR); }
-        public static getControlFromSelector(selector: string | null, tags: HTMLElement[]): Grid { return super.getControlBaseFromSelector<Grid>(selector || Grid.SELECTOR, Grid.SELECTOR, tags); }
-        public static getControlById(id: string): Grid { return super.getControlBaseById<Grid>(id, Grid.SELECTOR); }
 
         // API
         get FieldName(): string {
@@ -1116,9 +1111,9 @@ namespace YetaWF_ComponentsHTML {
 
     // A <div> is being emptied. Destroy all grids, menus the <div> may contain.
     $YetaWF.registerClearDiv((tag: HTMLElement): void => {
-        YetaWF.ComponentBase.clearDiv<Grid>(tag, Grid.SELECTOR, (grid: Grid): void => {
+        YetaWF.ComponentBaseDataImpl.clearDiv<Grid>(tag, Grid.SELECTOR, (grid: Grid): void => {
             // remove grid control
-            grid.destroy();
+            grid.internalDestroy();
         });
     });
 }

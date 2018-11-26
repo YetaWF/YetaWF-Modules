@@ -11,7 +11,7 @@ namespace YetaWF_DevTests {
         StaticData: string;
     }
 
-    export class ListOfEmailAddressesEditComponent extends YetaWF.ComponentBase<HTMLDivElement> {
+    export class ListOfEmailAddressesEditComponent extends YetaWF.ComponentBaseImpl {
 
         private Setup: ListOfEmailAddressesSetup;
         private Grid: YetaWF_ComponentsHTML.Grid;
@@ -24,7 +24,7 @@ namespace YetaWF_DevTests {
             super(controlId);
             this.Setup = setup;
 
-            this.Grid = YetaWF_ComponentsHTML.Grid.getControlById(this.Setup.GridId);
+            this.Grid = YetaWF.ComponentBaseDataImpl.getControlById(this.Setup.GridId, YetaWF_ComponentsHTML.Grid.SELECTOR);
             this.buttonAdd = $YetaWF.getElement1BySelector("input[name='btnAdd']", [this.Control]) as HTMLInputElement;
             this.inputEmail = $YetaWF.getElement1BySelector("input[name$='.NewValue']", [this.Control]) as HTMLInputElement;
 

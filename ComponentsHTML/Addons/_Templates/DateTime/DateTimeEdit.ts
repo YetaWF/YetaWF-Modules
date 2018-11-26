@@ -11,7 +11,7 @@ namespace YetaWF_ComponentsHTML {
         Max: Date;
     }
 
-    export class DateTimeEditComponent extends YetaWF.ComponentBase<HTMLInputElement> {
+    export class DateTimeEditComponent extends YetaWF.ComponentBaseDataImpl {
 
         public static readonly SELECTOR: string = ".yt_datetime.t_edit";
 
@@ -21,8 +21,6 @@ namespace YetaWF_ComponentsHTML {
 
         constructor(controlId: string, setup: DateTimeEditSetup) {
             super(controlId);
-
-            $YetaWF.addObjectDataById(controlId, this);
 
             this.Hidden = $YetaWF.getElement1BySelector("input[type=\"hidden\"]", [this.Control]) as HTMLInputElement;
             this.Date = $YetaWF.getElement1BySelector("input[name=\"dtpicker\"]", [this.Control]) as HTMLInputElement;
@@ -80,20 +78,12 @@ namespace YetaWF_ComponentsHTML {
         public enable(enabled: boolean): void {
             this.kendoDateTimePicker.enable(enabled);
         }
-        public destroy(): void {
-            this.kendoDateTimePicker.destroy();
-            $YetaWF.removeObjectDataById(this.Control.id);
-        }
-
-        public static getControlFromTag(elem: HTMLElement): DateTimeEditComponent { return super.getControlBaseFromTag<DateTimeEditComponent>(elem, DateTimeEditComponent.SELECTOR); }
-        public static getControlFromSelector(selector: string, tags: HTMLElement[]): DateTimeEditComponent { return super.getControlBaseFromSelector<DateTimeEditComponent>(selector, DateTimeEditComponent.SELECTOR, tags); }
-        public static getControlById(id: string): DateTimeEditComponent { return super.getControlBaseById<DateTimeEditComponent>(id, DateTimeEditComponent.SELECTOR); }
     }
 
     // A <div> is being emptied. Destroy all controls the <div> may contain.
     $YetaWF.registerClearDiv((tag: HTMLElement): void => {
-        YetaWF.ComponentBase.clearDiv<DateTimeEditComponent>(tag, DateTimeEditComponent.SELECTOR, (control: DateTimeEditComponent): void => {
-            control.destroy();
+        YetaWF.ComponentBaseDataImpl.clearDiv<DateTimeEditComponent>(tag, DateTimeEditComponent.SELECTOR, (control: DateTimeEditComponent): void => {
+            control.kendoDateTimePicker.destroy();
         });
     });
 }

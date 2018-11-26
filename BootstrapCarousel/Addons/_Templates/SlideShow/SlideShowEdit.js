@@ -19,7 +19,6 @@ var YetaWF_BootstrapCarousel;
         __extends(SlideShowEdit, _super);
         function SlideShowEdit(controlId) {
             var _this = _super.call(this, controlId) || this;
-            $YetaWF.addObjectDataById(controlId, _this);
             _this.buttonUp = $YetaWF.getElement1BySelector("input.t_up", [_this.Control]);
             _this.buttonDown = $YetaWF.getElement1BySelector("input.t_down", [_this.Control]);
             _this.buttonDelete = $YetaWF.getElement1BySelector("input.t_delete", [_this.Control]);
@@ -85,23 +84,19 @@ var YetaWF_BootstrapCarousel;
             activeTab.value = $YetaWF.getAttribute(panel, "data-tab");
             this.updateButtons();
         };
-        SlideShowEdit.prototype.destroy = function () { $YetaWF.removeObjectDataById(this.Control.id); };
-        SlideShowEdit.getControlFromTagCond = function (elem) { return _super.getControlBaseFromTagCond.call(this, elem, SlideShowEdit.SELECTOR); };
         SlideShowEdit.SELECTOR = ".yt_bootstrapcarousel_slideshow.t_edit";
         SlideShowEdit.TEMPLATENAME = "YetaWF_BootstrapCarousel_SlideShow";
         return SlideShowEdit;
-    }(YetaWF.ComponentBase));
+    }(YetaWF.ComponentBaseDataImpl));
     YetaWF_BootstrapCarousel.SlideShowEdit = SlideShowEdit;
     $YetaWF.registerPanelSwitched(function (panel) {
-        var ctrl = SlideShowEdit.getControlFromTagCond(panel);
+        var ctrl = YetaWF.ComponentBaseDataImpl.getControlFromTagCond(panel, SlideShowEdit.SELECTOR);
         if (ctrl != null)
             ctrl.updateActiveTab(panel);
     });
     // A <div> is being emptied. Destroy all controls the <div> may contain.
     $YetaWF.registerClearDiv(function (tag) {
-        YetaWF.ComponentBase.clearDiv(tag, SlideShowEdit.SELECTOR, function (control) {
-            control.destroy();
-        });
+        YetaWF.ComponentBaseDataImpl.clearDiv(tag, SlideShowEdit.SELECTOR);
     });
 })(YetaWF_BootstrapCarousel || (YetaWF_BootstrapCarousel = {}));
 

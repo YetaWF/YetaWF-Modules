@@ -6,7 +6,7 @@ namespace YetaWF_ComponentsHTML {
         UploadId: string;
     }
 
-    export class ImageEditComponent extends YetaWF.ComponentBase<HTMLDivElement> {
+    export class ImageEditComponent extends YetaWF.ComponentBaseImpl {
 
         private static readonly CLEAREDFILE: string = "(CLEARED)";
 
@@ -20,7 +20,7 @@ namespace YetaWF_ComponentsHTML {
             super(controlId);
             this.Setup = setup;
 
-            this.UploadControl = FileUpload1Component.getControlById(this.Setup.UploadId);
+            this.UploadControl = YetaWF.ComponentBaseDataImpl.getControlById(this.Setup.UploadId, FileUpload1Component.SELECTOR);
             this.PreviewImg = $YetaWF.getElement1BySelector(".t_preview", [this.Control]) as HTMLImageElement;
             this.HiddenInput = $YetaWF.getElement1BySelector("input[type='hidden']", [this.Control]) as HTMLInputElement;
             this.HaveImageDiv = $YetaWF.getElement1BySelector(".t_haveimage", [this.Control]) as HTMLDivElement;

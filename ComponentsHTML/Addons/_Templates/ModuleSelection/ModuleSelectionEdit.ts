@@ -22,8 +22,8 @@ namespace YetaWF_ComponentsHTML {
             super(controlId);
             this.Setup = setup;
 
-            this.SelectPackage = YetaWF_ComponentsHTML.DropDownListEditComponent.getControlFromSelector(".t_packages select", [this.Control]);
-            this.SelectModule = YetaWF_ComponentsHTML.DropDownListEditComponent.getControlFromSelector(".t_select select", [this.Control]);
+            this.SelectPackage = YetaWF.ComponentBaseDataImpl.getControlFromSelector(".t_packages select", DropDownListEditComponent.SELECTOR, [this.Control]);
+            this.SelectModule = YetaWF.ComponentBaseDataImpl.getControlFromSelector(".t_select select", DropDownListEditComponent.SELECTOR, [this.Control]);
             this.DivDescription = $YetaWF.getElement1BySelector(".t_description", [this.Control]) as HTMLDivElement;
             this.DivLink = $YetaWF.getElement1BySelector(".t_link", [this.Control]) as HTMLDivElement;
             this.ALink = $YetaWF.getElement1BySelector("a", [this.DivLink ]) as HTMLAnchorElement;

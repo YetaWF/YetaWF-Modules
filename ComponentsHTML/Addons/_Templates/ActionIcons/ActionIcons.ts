@@ -6,7 +6,7 @@ namespace YetaWF_ComponentsHTML {
         MenuId: string;
     }
 
-    export class ActionIconsComponent extends YetaWF.ComponentBase<HTMLButtonElement> {
+    export class ActionIconsComponent extends YetaWF.ComponentBaseImpl {
 
         private MenuControl: HTMLDivElement;
 

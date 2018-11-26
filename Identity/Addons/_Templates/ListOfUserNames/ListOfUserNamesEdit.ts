@@ -12,7 +12,7 @@ namespace YetaWF_Identity {
         StaticData: string;
     }
 
-    export class ListOfUserNamesEditComponent extends YetaWF.ComponentBase<HTMLDivElement> {
+    export class ListOfUserNamesEditComponent extends YetaWF.ComponentBaseImpl {
 
         private Setup: ListOfUserNamesSetup;
         private Grid: YetaWF_ComponentsHTML.Grid;
@@ -26,8 +26,8 @@ namespace YetaWF_Identity {
             super(controlId);
             this.Setup = setup;
 
-            this.Grid = YetaWF_ComponentsHTML.Grid.getControlById(this.Setup.GridId);
-            this.GridAll = YetaWF_ComponentsHTML.Grid.getControlById(this.Setup.GridAllId);
+            this.Grid = YetaWF.ComponentBaseDataImpl.getControlById(this.Setup.GridId, YetaWF_ComponentsHTML.Grid.SELECTOR);
+            this.GridAll = YetaWF.ComponentBaseDataImpl.getControlById(this.Setup.GridAllId, YetaWF_ComponentsHTML.Grid.SELECTOR);
             this.buttonAdd = $YetaWF.getElement1BySelector("input[name='btnAdd']", [this.Control]) as HTMLInputElement;
             this.inputUserName = $YetaWF.getElement1BySelector("input[name$='.NewValue']", [this.Control]) as HTMLInputElement;
 

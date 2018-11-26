@@ -20,8 +20,8 @@ var YetaWF_ComponentsHTML;
                         // this is a bit hairy - we save all the tooltips for a dropdown list in a variable
                         // named ..id.._tooltips. The popup/dropdown is named ..id..-list so we deduce the
                         // variable name from the popup/dropdown. This is going to break at some point...
-                        var ttindex = $this.attr("data-offset-index");
-                        if (ttindex === undefined)
+                        var ttindex = $YetaWF.getAttributeCond(this, "data-offset-index");
+                        if (!ttindex)
                             return null;
                         var $container = $this.closest(".k-list-container.k-popup");
                         if ($container.length !== 1)
@@ -30,8 +30,9 @@ var YetaWF_ComponentsHTML;
                         if (!id)
                             return null;
                         id = id.replace("-list", "");
-                        var tip = YetaWF_TemplateDropDownList.getTitleFromId(id, ttindex);
-                        if (tip == null)
+                        var dd = YetaWF.ComponentBaseDataImpl.getControlById(id, YetaWF_ComponentsHTML.DropDownListEditComponent.SELECTOR);
+                        var tip = dd.getToolTip(Number(ttindex));
+                        if (tip == null || tip.length === 0)
                             return null;
                         return $YetaWF.htmlEscape(tip);
                     }
@@ -90,5 +91,3 @@ $("body").on("mousedown", "a", function () {
     // Repro steps (without hack): right click on an a link (that COULD have a tooltip) and open a new tab/window. On return to this page we'll get a tooltip
     YetaWF_ComponentsHTML.Tooltips.removeTooltips();
 });
-
-//# sourceMappingURL=Tooltips.js.map

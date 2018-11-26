@@ -1,7 +1,5 @@
 ﻿/* Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/ComponentsHTML#License */
 
-declare var YetaWF_TemplateDropDownList: any;// %%%%%%%%%%%%%%%%%%% TODO: update once dropdown is ts
-
 namespace YetaWF_ComponentsHTML {
 
     export class Tooltips {
@@ -22,15 +20,16 @@ namespace YetaWF_ComponentsHTML {
                         // this is a bit hairy - we save all the tooltips for a dropdown list in a variable
                         // named ..id.._tooltips. The popup/dropdown is named ..id..-list so we deduce the
                         // variable name from the popup/dropdown. This is going to break at some point...
-                        const ttindex = $this.attr("data-offset-index");
-                        if (ttindex === undefined) return null;
+                        const ttindex = $YetaWF.getAttributeCond(this as HTMLElement, "data-offset-index");
+                        if (!ttindex) return null;
                         const $container = $this.closest(".k-list-container.k-popup");
                         if ($container.length !== 1) return null;
                         var id = $container.attr("id");
                         if (!id) return null;
                         id = id.replace("-list", "");
-                        const tip = YetaWF_TemplateDropDownList.getTitleFromId(id, ttindex);
-                        if (tip == null) return null;
+                        var dd: DropDownListEditComponent = YetaWF.ComponentBaseDataImpl.getControlById(id, DropDownListEditComponent.SELECTOR);
+                        let tip = dd.getToolTip(Number(ttindex));
+                        if (tip == null || tip.length === 0) return null;
                         return $YetaWF.htmlEscape(tip);
                     }
                     for (; ;) {

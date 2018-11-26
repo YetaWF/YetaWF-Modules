@@ -20,8 +20,8 @@ var YetaWF_ComponentsHTML;
         function ModuleSelectionEditComponent(controlId, setup) {
             var _this = _super.call(this, controlId) || this;
             _this.Setup = setup;
-            _this.SelectPackage = YetaWF_ComponentsHTML.DropDownListEditComponent.getControlFromSelector(".t_packages select", [_this.Control]);
-            _this.SelectModule = YetaWF_ComponentsHTML.DropDownListEditComponent.getControlFromSelector(".t_select select", [_this.Control]);
+            _this.SelectPackage = YetaWF.ComponentBaseDataImpl.getControlFromSelector(".t_packages select", YetaWF_ComponentsHTML.DropDownListEditComponent.SELECTOR, [_this.Control]);
+            _this.SelectModule = YetaWF.ComponentBaseDataImpl.getControlFromSelector(".t_select select", YetaWF_ComponentsHTML.DropDownListEditComponent.SELECTOR, [_this.Control]);
             _this.DivDescription = $YetaWF.getElement1BySelector(".t_description", [_this.Control]);
             _this.DivLink = $YetaWF.getElement1BySelector(".t_link", [_this.Control]);
             _this.ALink = $YetaWF.getElement1BySelector("a", [_this.DivLink]);
@@ -121,5 +121,3 @@ var YetaWF_ComponentsHTML;
         ModuleSelectionEditComponent.clearDiv(tag, ModuleSelectionEditComponent.SELECTOR);
     });
 })(YetaWF_ComponentsHTML || (YetaWF_ComponentsHTML = {}));
-
-//# sourceMappingURL=ModuleSelectionEdit.js.map

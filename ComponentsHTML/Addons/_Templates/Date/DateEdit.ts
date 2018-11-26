@@ -11,7 +11,7 @@ namespace YetaWF_ComponentsHTML {
         Max: Date;
     }
 
-    export class DateEditComponent extends YetaWF.ComponentBase<HTMLInputElement> {
+    export class DateEditComponent extends YetaWF.ComponentBaseDataImpl {
 
         public static readonly SELECTOR: string = ".yt_date.t_edit";
 
@@ -21,8 +21,6 @@ namespace YetaWF_ComponentsHTML {
 
         constructor(controlId: string, setup: DateEditSetup) {
             super(controlId);
-
-            $YetaWF.addObjectDataById(controlId, this);
 
             this.Hidden = $YetaWF.getElement1BySelector("input[type=\"hidden\"]", [this.Control]) as HTMLInputElement;
             this.Date = $YetaWF.getElement1BySelector("input[name=\"dtpicker\"]", [this.Control]) as HTMLInputElement;
@@ -80,20 +78,12 @@ namespace YetaWF_ComponentsHTML {
         public enable(enabled: boolean): void {
             this.kendoDatePicker.enable(enabled);
         }
-        public destroy(): void {
-            this.kendoDatePicker.destroy();
-            $YetaWF.removeObjectDataById(this.Control.id);
-        }
-
-        public static getControlFromTag(elem: HTMLElement): DateEditComponent { return super.getControlBaseFromTag<DateEditComponent>(elem, DateEditComponent.SELECTOR); }
-        public static getControlFromSelector(selector: string, tags: HTMLElement[]): DateEditComponent { return super.getControlBaseFromSelector<DateEditComponent>(selector, DateEditComponent.SELECTOR, tags); }
-        public static getControlById(id: string): DateEditComponent { return super.getControlBaseById<DateEditComponent>(id, DateEditComponent.SELECTOR); }
     }
 
     // A <div> is being emptied. Destroy all controls the <div> may contain.
     $YetaWF.registerClearDiv((tag: HTMLElement): void => {
-        YetaWF.ComponentBase.clearDiv<DateEditComponent>(tag, DateEditComponent.SELECTOR, (control: DateEditComponent): void => {
-            control.destroy();
+        YetaWF.ComponentBaseDataImpl.clearDiv<DateEditComponent>(tag, DateEditComponent.SELECTOR, (control: DateEditComponent): void => {
+            control.kendoDatePicker.destroy();
         });
     });
 }

@@ -12,7 +12,7 @@ namespace YetaWF_ComponentsHTML {
         tooltips: string[] | null;
     }
 
-    export class DropDownListEditComponent extends YetaWF.ComponentBase<HTMLSelectElement> {
+    export class DropDownListEditComponent extends YetaWF.ComponentBaseDataImpl {
 
         public static readonly SELECTOR: string = "select.yt_dropdownlist_base.t_edit.t_kendo";
 
@@ -22,8 +22,6 @@ namespace YetaWF_ComponentsHTML {
         constructor(controlId: string, setup: DropDownListEditSetup) {
             super(controlId);
             this.Setup = setup;
-
-            $YetaWF.addObjectDataById(controlId, this);
 
             this.updateWidth();
         }
@@ -53,11 +51,11 @@ namespace YetaWF_ComponentsHTML {
         }
 
         get value(): string {
-            return this.Control.value;
+            return (this.Control as HTMLSelectElement).value;
         }
         set value(val: string) {
             if (this.KendoDropDownList == null) {
-                this.Control.value = val;
+                (this.Control as HTMLSelectElement).value = val;
             } else {
                 this.KendoDropDownList.value(val);
                 if (this.KendoDropDownList.select() < 0)
@@ -77,7 +75,7 @@ namespace YetaWF_ComponentsHTML {
         }
         public clear(): void {
             if (this.KendoDropDownList == null) {
-                this.Control.selectedIndex = 0;
+                (this.Control as HTMLSelectElement).selectedIndex = 0;
             } else {
                 this.KendoDropDownList.select(0);
             }
@@ -89,13 +87,12 @@ namespace YetaWF_ComponentsHTML {
                 this.KendoDropDownList.enable(enabled);
             }
         }
-        public destroy(): void {
+        public internalDestroy(): void {
             try {
                 if (this.KendoDropDownList)
                     this.KendoDropDownList.destroy();
             } catch(e) { }
             this.KendoDropDownList = null;
-            $YetaWF.removeObjectDataById(this.Control.id);
         }
 
         public ajaxUpdate(data: any, ajaxUrl: string, onSuccess?: (data: any) => void, onFailure?: (result: string) => void): void {
@@ -104,7 +101,8 @@ namespace YetaWF_ComponentsHTML {
             uri.addSearchSimpleObject(data);
 
             var request: XMLHttpRequest = new XMLHttpRequest();
-            request.open("POST", uri.toUrl());
+            request.open("POST", ajaxUrl);
+            request.setRequestHeader("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
             request.setRequestHeader("X-Requested-With", "XMLHttpRequest");
             request.onreadystatechange = (ev: Event): any => {
                 if (request.readyState === 4 /*DONE*/) {
@@ -146,27 +144,23 @@ namespace YetaWF_ComponentsHTML {
                     }
                 }
             };
-            request.send();
+            request.send(uri.toFormData());
         }
-
-        public static getControlFromTag(elem: HTMLElement): DropDownListEditComponent { return super.getControlBaseFromTag<DropDownListEditComponent>(elem, DropDownListEditComponent.SELECTOR); }
-        public static getControlFromSelector(selector: string | null, tags: HTMLElement[]): DropDownListEditComponent { return super.getControlBaseFromSelector<DropDownListEditComponent>(selector || DropDownListEditComponent.SELECTOR, DropDownListEditComponent.SELECTOR, tags); }
-        public static getControlById(id: string): DropDownListEditComponent { return super.getControlBaseById<DropDownListEditComponent>(id, DropDownListEditComponent.SELECTOR); }
     }
 
     // We need to delay initialization until divs become visible so we can calculate the dropdown width
     $YetaWF.registerActivateDiv((tag: HTMLElement): void => {
         var ctls = $YetaWF.getElementsBySelector(DropDownListEditComponent.SELECTOR, [tag]);
         for (let ctl of ctls) {
-            var control = DropDownListEditComponent.getControlFromTag(ctl);
+            var control: DropDownListEditComponent = YetaWF.ComponentBaseDataImpl.getControlFromTag(ctl, DropDownListEditComponent.SELECTOR);
             control.updateWidth();
         }
     });
 
     // A <div> is being emptied. Destroy all dropdownlists the <div> may contain.
     $YetaWF.registerClearDiv((tag: HTMLElement): void => {
-        YetaWF.ComponentBase.clearDiv<DropDownListEditComponent>(tag, DropDownListEditComponent.SELECTOR, (control: DropDownListEditComponent): void => {
-            control.destroy();
+        YetaWF.ComponentBaseDataImpl.clearDiv<DropDownListEditComponent>(tag, DropDownListEditComponent.SELECTOR, (control: DropDownListEditComponent): void => {
+            control.internalDestroy();
         });
     });
 

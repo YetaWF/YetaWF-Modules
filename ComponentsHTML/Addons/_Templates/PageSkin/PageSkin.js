@@ -20,8 +20,8 @@ var YetaWF_ComponentsHTML;
         function PageSkinEditComponent(controlId, setup) {
             var _this = _super.call(this, controlId) || this;
             _this.Setup = setup;
-            _this.SelectCollection = YetaWF_ComponentsHTML.DropDownListEditComponent.getControlFromSelector("select[name$='.Collection']", [_this.Control]);
-            _this.SelectFile = YetaWF_ComponentsHTML.DropDownListEditComponent.getControlFromSelector("select[name$='.FileName']", [_this.Control]);
+            _this.SelectCollection = YetaWF.ComponentBaseDataImpl.getControlFromSelector("select[name$='.Collection']", YetaWF_ComponentsHTML.DropDownListEditComponent.SELECTOR, [_this.Control]);
+            _this.SelectFile = YetaWF.ComponentBaseDataImpl.getControlFromSelector("select[name$='.FileName']", YetaWF_ComponentsHTML.DropDownListEditComponent.SELECTOR, [_this.Control]);
             _this.SelectCollection.Control.addEventListener("dropdownlist_change", function (evt) {
                 var data = { SkinCollection: _this.SelectCollection.value };
                 _this.SelectFile.ajaxUpdate(data, _this.Setup.AjaxUrl);
@@ -37,5 +37,3 @@ var YetaWF_ComponentsHTML;
         PageSkinEditComponent.clearDiv(tag, PageSkinEditComponent.SELECTOR);
     });
 })(YetaWF_ComponentsHTML || (YetaWF_ComponentsHTML = {}));
-
-//# sourceMappingURL=PageSkin.js.map

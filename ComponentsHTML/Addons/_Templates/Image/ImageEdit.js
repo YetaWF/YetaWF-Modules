@@ -20,7 +20,7 @@ var YetaWF_ComponentsHTML;
         function ImageEditComponent(controlId, setup) {
             var _this = _super.call(this, controlId) || this;
             _this.Setup = setup;
-            _this.UploadControl = YetaWF_ComponentsHTML.FileUpload1Component.getControlById(_this.Setup.UploadId);
+            _this.UploadControl = YetaWF.ComponentBaseDataImpl.getControlById(_this.Setup.UploadId, YetaWF_ComponentsHTML.FileUpload1Component.SELECTOR);
             _this.PreviewImg = $YetaWF.getElement1BySelector(".t_preview", [_this.Control]);
             _this.HiddenInput = $YetaWF.getElement1BySelector("input[type='hidden']", [_this.Control]);
             _this.HaveImageDiv = $YetaWF.getElement1BySelector(".t_haveimage", [_this.Control]);
@@ -56,8 +56,6 @@ var YetaWF_ComponentsHTML;
         };
         ImageEditComponent.CLEAREDFILE = "(CLEARED)";
         return ImageEditComponent;
-    }(YetaWF.ComponentBase));
+    }(YetaWF.ComponentBaseImpl));
     YetaWF_ComponentsHTML.ImageEditComponent = ImageEditComponent;
 })(YetaWF_ComponentsHTML || (YetaWF_ComponentsHTML = {}));
-
-//# sourceMappingURL=ImageEdit.js.map

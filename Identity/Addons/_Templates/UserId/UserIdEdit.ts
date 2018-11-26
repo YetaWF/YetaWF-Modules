@@ -9,7 +9,7 @@ namespace YetaWF_Identity {
         NoUser: string;
     }
 
-    export class UserIdEditComponent extends YetaWF.ComponentBase<HTMLDivElement> {
+    export class UserIdEditComponent extends YetaWF.ComponentBaseImpl {
 
         private Setup: UserIdSetup;
         private GridAll: YetaWF_ComponentsHTML.Grid;
@@ -21,7 +21,7 @@ namespace YetaWF_Identity {
             super(controlId);
             this.Setup = setup;
 
-            this.GridAll = YetaWF_ComponentsHTML.Grid.getControlById(this.Setup.GridAllId);
+            this.GridAll = YetaWF.ComponentBaseDataImpl.getControlById(this.Setup.GridAllId, YetaWF_ComponentsHTML.Grid.SELECTOR);
             this.inputHidden = $YetaWF.getElementById(this.Setup.HiddenId) as HTMLInputElement;
             this.inputName = $YetaWF.getElementById(this.Setup.NameId) as HTMLInputElement;
             this.buttonClear = $YetaWF.getElement1BySelector(".t_clear", [this.Control]) as HTMLImageElement;

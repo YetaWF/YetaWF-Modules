@@ -22,8 +22,8 @@ var YetaWF_Identity;
             _this.ReloadInProgress = false;
             _this.AddCounter = 0;
             _this.Setup = setup;
-            _this.Grid = YetaWF_ComponentsHTML.Grid.getControlById(_this.Setup.GridId);
-            _this.GridAll = YetaWF_ComponentsHTML.Grid.getControlById(_this.Setup.GridAllId);
+            _this.Grid = YetaWF.ComponentBaseDataImpl.getControlById(_this.Setup.GridId, YetaWF_ComponentsHTML.Grid.SELECTOR);
+            _this.GridAll = YetaWF.ComponentBaseDataImpl.getControlById(_this.Setup.GridAllId, YetaWF_ComponentsHTML.Grid.SELECTOR);
             _this.buttonAdd = $YetaWF.getElement1BySelector("input[name='btnAdd']", [_this.Control]);
             _this.inputUserName = $YetaWF.getElement1BySelector("input[name$='.NewValue']", [_this.Control]);
             $YetaWF.registerEventHandler(_this.buttonAdd, "click", null, function (ev) {
@@ -76,7 +76,7 @@ var YetaWF_Identity;
             $YetaWF.elementEnableToggle(this.buttonAdd, s.length > 0);
         };
         return ListOfUserNamesEditComponent;
-    }(YetaWF.ComponentBase));
+    }(YetaWF.ComponentBaseImpl));
     YetaWF_Identity.ListOfUserNamesEditComponent = ListOfUserNamesEditComponent;
 })(YetaWF_Identity || (YetaWF_Identity = {}));
 

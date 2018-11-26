@@ -15,7 +15,7 @@ namespace YetaWF_Scheduler {
 
         constructor(controlId: string) {
             this.Control = $YetaWF.getElementById(controlId) as HTMLElement;
-            this.DropDown = YetaWF_ComponentsHTML.DropDownListEditComponent.getControlFromSelector("select[name$='.DropDown']", [this.Control]);
+            this.DropDown = YetaWF.ComponentBaseDataImpl.getControlFromSelector("select[name$='.DropDown']", YetaWF_ComponentsHTML.DropDownListEditComponent.SELECTOR, [this.Control]);
             this.Name = $YetaWF.getElement1BySelector("input[name$='.Name']", [this.Control]) as HTMLInputElement;
             this.ImplementingAssembly = $YetaWF.getElement1BySelector("input[name$='.ImplementingAssembly']", [this.Control]) as HTMLInputElement;
             this.ImplementingType = $YetaWF.getElement1BySelector("input[name$='.ImplementingType']", [this.Control]) as HTMLInputElement;

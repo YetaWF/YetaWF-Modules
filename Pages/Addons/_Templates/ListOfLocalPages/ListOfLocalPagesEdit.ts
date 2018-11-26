@@ -12,7 +12,7 @@ namespace YetaWF_Pages {
         StaticData: string;
     }
 
-    export class ListOfLocalPagesEditComponent extends YetaWF.ComponentBase<HTMLDivElement> {
+    export class ListOfLocalPagesEditComponent extends YetaWF.ComponentBaseImpl {
 
         private Setup: ListOfLocalPagesSetup;
         private Grid: YetaWF_ComponentsHTML.Grid;
@@ -26,10 +26,10 @@ namespace YetaWF_Pages {
             super(controlId);
             this.Setup = setup;
 
-            this.Grid = YetaWF_ComponentsHTML.Grid.getControlById(this.Setup.GridId);
-            this.GridAll = YetaWF_ComponentsHTML.Grid.getControlById(this.Setup.GridAllId);
+            this.Grid = YetaWF.ComponentBaseDataImpl.getControlById(this.Setup.GridId, YetaWF_ComponentsHTML.Grid.SELECTOR);
+            this.GridAll = YetaWF.ComponentBaseDataImpl.getControlById(this.Setup.GridAllId, YetaWF_ComponentsHTML.Grid.SELECTOR);
             this.buttonAdd = $YetaWF.getElement1BySelector("input[name='btnAdd']", [this.Control]) as HTMLInputElement;
-            this.selectUrl = YetaWF_ComponentsHTML.UrlEditComponent.getControlFromSelector("[name$='.NewValue']", YetaWF_ComponentsHTML.UrlEditComponent.SELECTOR, [this.Control]);
+            this.selectUrl = YetaWF.ComponentBaseDataImpl.getControlFromSelector("[name$='.NewValue']", YetaWF_ComponentsHTML.UrlEditComponent.SELECTOR, [this.Control]);
 
             $YetaWF.registerEventHandler(this.buttonAdd, "click", null, (ev: MouseEvent): boolean => {
 

@@ -22,7 +22,7 @@ var YetaWF_DevTests;
             _this.ReloadInProgress = false;
             _this.AddCounter = 0;
             _this.Setup = setup;
-            _this.Grid = YetaWF_ComponentsHTML.Grid.getControlById(_this.Setup.GridId);
+            _this.Grid = YetaWF.ComponentBaseDataImpl.getControlById(_this.Setup.GridId, YetaWF_ComponentsHTML.Grid.SELECTOR);
             _this.buttonAdd = $YetaWF.getElement1BySelector("input[name='btnAdd']", [_this.Control]);
             _this.inputEmail = $YetaWF.getElement1BySelector("input[name$='.NewValue']", [_this.Control]);
             $YetaWF.registerEventHandler(_this.buttonAdd, "click", null, function (ev) {
@@ -67,7 +67,7 @@ var YetaWF_DevTests;
             $YetaWF.elementEnableToggle(this.buttonAdd, s.length > 0);
         };
         return ListOfEmailAddressesEditComponent;
-    }(YetaWF.ComponentBase));
+    }(YetaWF.ComponentBaseImpl));
     YetaWF_DevTests.ListOfEmailAddressesEditComponent = ListOfEmailAddressesEditComponent;
 })(YetaWF_DevTests || (YetaWF_DevTests = {}));
 

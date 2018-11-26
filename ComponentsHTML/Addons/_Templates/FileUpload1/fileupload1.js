@@ -23,7 +23,6 @@ var YetaWF_ComponentsHTML;
             _this.SuccessfullUploadCallback = null;
             _this.GetFileNameCallback = null;
             _this.Setup = setup;
-            $YetaWF.addObjectDataById(controlId, _this);
             _this.inputFileName = $YetaWF.getElement1BySelector("input.t_filename", [_this.Control]);
             _this.divProgressbar = $YetaWF.getElement1BySelectorCond(".t_progressbar", [_this.Control]);
             if (_this.divProgressbar) {
@@ -144,22 +143,12 @@ var YetaWF_ComponentsHTML;
         FileUpload1Component.prototype.SetGetFileName = function (callback) {
             this.GetFileNameCallback = callback;
         };
-        FileUpload1Component.prototype.destroy = function () {
-            $YetaWF.removeObjectDataById(this.Control.id);
-        };
-        FileUpload1Component.getControlFromTag = function (elem) { return _super.getControlBaseFromTag.call(this, elem, FileUpload1Component.SELECTOR); };
-        FileUpload1Component.getControlFromSelector = function (selector, tags) { return _super.getControlBaseFromSelector.call(this, selector, FileUpload1Component.SELECTOR, tags); };
-        FileUpload1Component.getControlById = function (id) { return _super.getControlBaseById.call(this, id, FileUpload1Component.SELECTOR); };
         FileUpload1Component.SELECTOR = ".yt_fileupload1";
         return FileUpload1Component;
-    }(YetaWF.ComponentBase));
+    }(YetaWF.ComponentBaseDataImpl));
     YetaWF_ComponentsHTML.FileUpload1Component = FileUpload1Component;
     // A <div> is being emptied. Destroy all controls the <div> may contain.
     $YetaWF.registerClearDiv(function (tag) {
-        YetaWF.ComponentBase.clearDiv(tag, FileUpload1Component.SELECTOR, function (control) {
-            control.destroy();
-        });
+        YetaWF.ComponentBaseDataImpl.clearDiv(tag, FileUpload1Component.SELECTOR);
     });
 })(YetaWF_ComponentsHTML || (YetaWF_ComponentsHTML = {}));
-
-//# sourceMappingURL=FileUpload1.js.map

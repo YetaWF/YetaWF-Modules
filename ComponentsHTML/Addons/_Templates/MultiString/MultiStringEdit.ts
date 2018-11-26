@@ -24,7 +24,7 @@ namespace YetaWF_ComponentsHTML {
             super(controlId);
             //this.Setup = setup;
 
-            this.SelectLang = YetaWF_ComponentsHTML.DropDownListEditComponent.getControlFromSelector("select", [this.Control]);
+            this.SelectLang = YetaWF.ComponentBaseDataImpl.getControlFromSelector("select", DropDownListEditComponent.SELECTOR, [this.Control]);
             this.InputText = $YetaWF.getElement1BySelector("input.yt_multistring_text", [this.Control]) as HTMLInputElement;
 
             // selection change (put language specific text into text box)

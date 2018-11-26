@@ -17,9 +17,6 @@ namespace YetaWF_ComponentsHTML {
     }
 }
 
-
-declare var YetaWF_TemplateDropDownList: any; // TODO: Temporary, use until we fix dropdown
-
 namespace YetaWF_ComponentsHTML {
 
     export interface PropertyListVisibleEntry {

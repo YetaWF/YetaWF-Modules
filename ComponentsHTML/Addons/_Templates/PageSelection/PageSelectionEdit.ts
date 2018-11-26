@@ -17,7 +17,7 @@ namespace YetaWF_ComponentsHTML {
             super(controlId);
             //this.Setup = setup;
 
-            this.SelectPage = YetaWF_ComponentsHTML.DropDownListEditComponent.getControlFromSelector("select", [this.Control]);
+            this.SelectPage = YetaWF.ComponentBaseDataImpl.getControlFromSelector("select", DropDownListEditComponent.SELECTOR, [this.Control]);
             this.DivLink = $YetaWF.getElement1BySelector(".t_link", [this.Control]) as HTMLDivElement;
             this.APage = $YetaWF.getElement1BySelector("a", [this.DivLink]) as HTMLAnchorElement;
 

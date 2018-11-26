@@ -1,5 +1,5 @@
 "use strict";
-/* Copyright � 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/ComponentsHTML#License */
+/* Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/ComponentsHTML#License */
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = function (d, b) {
         extendStatics = Object.setPrototypeOf ||
@@ -65,7 +65,6 @@ var YetaWF_ComponentsHTML;
             _this.reloadInProgress = false;
             _this.reorderingInProgress = false;
             _this.reorderingRowElement = null;
-            $YetaWF.addObjectDataById(controlId, _this);
             _this.Setup = setup;
             _this.TBody = $YetaWF.getElement1BySelector("tbody", [_this.Control]);
             if (_this.Setup.ShowPager) {
@@ -78,7 +77,7 @@ var YetaWF_ComponentsHTML;
                 _this.PagerTotals = $YetaWF.getElement1BySelectorCond(".tg_totals", [_this.Control]);
                 if (_this.Setup.PageSize) {
                     _this.InputPage = YetaWF.ComponentBaseDataImpl.getControlFromSelector("input[name$='.__Page']", YetaWF_ComponentsHTML.IntValueEditComponent.SELECTOR, [_this.Control]);
-                    _this.SelectPageSize = YetaWF_ComponentsHTML.DropDownListEditComponent.getControlFromSelector("select[name$='.__PageSelection']", [_this.Control]);
+                    _this.SelectPageSize = YetaWF.ComponentBaseDataImpl.getControlFromSelector("select[name$='.__PageSelection']", YetaWF_ComponentsHTML.DropDownListEditComponent.SELECTOR, [_this.Control]);
                 }
             }
             _this.FilterBar = $YetaWF.getElement1BySelectorCond(".tg_filter", [_this.Control]);
@@ -732,7 +731,7 @@ var YetaWF_ComponentsHTML;
         Grid.menuSelected = function (menuElem, colIndex) {
             var popups = $YetaWF.elementClosest(menuElem, ".yt_grid_menus");
             var gridId = $YetaWF.getAttribute(popups, "data-grid");
-            var grid = Grid.getControlById(gridId);
+            var grid = YetaWF.ComponentBaseDataImpl.getControlById(gridId, YetaWF_ComponentsHTML.Grid.SELECTOR);
             grid.menuSelected(menuElem, colIndex);
         };
         Grid.prototype.addDirectFilterHandlers = function () {
@@ -774,7 +773,7 @@ var YetaWF_ComponentsHTML;
                 case null:
                     return null;
                 case "bool":
-                    var dd = YetaWF_ComponentsHTML.DropDownListEditComponent.getControlById(col.FilterId);
+                    var dd = YetaWF.ComponentBaseDataImpl.getControlById(col.FilterId, YetaWF_ComponentsHTML.DropDownListEditComponent.SELECTOR);
                     var boolVal = Number(dd.value);
                     switch (boolVal) {
                         default:
@@ -791,16 +790,16 @@ var YetaWF_ComponentsHTML;
                     //$$$$
                     return null;
                 case "decimal":
-                    var dec = YetaWF_ComponentsHTML.DecimalEditComponent.getControlById(col.FilterId);
+                    var dec = YetaWF.ComponentBaseDataImpl.getControlById(col.FilterId, YetaWF_ComponentsHTML.DecimalEditComponent.SELECTOR);
                     return dec.valueText;
                 case "datetime":
-                    var datetime = YetaWF_ComponentsHTML.DateTimeEditComponent.getControlById(col.FilterId);
+                    var datetime = YetaWF.ComponentBaseDataImpl.getControlById(col.FilterId, YetaWF_ComponentsHTML.DateTimeEditComponent.SELECTOR);
                     return datetime.valueText;
                 case "date":
-                    var date = YetaWF_ComponentsHTML.DateEditComponent.getControlById(col.FilterId);
+                    var date = YetaWF.ComponentBaseDataImpl.getControlById(col.FilterId, YetaWF_ComponentsHTML.DateEditComponent.SELECTOR);
                     return date.valueText;
                 case "enum":
-                    var dd = YetaWF_ComponentsHTML.DropDownListEditComponent.getControlById(col.FilterId);
+                    var dd = YetaWF.ComponentBaseDataImpl.getControlById(col.FilterId, YetaWF_ComponentsHTML.DropDownListEditComponent.SELECTOR);
                     if (dd.value === "-1")
                         return null;
                     return dd.value;
@@ -814,7 +813,7 @@ var YetaWF_ComponentsHTML;
                 case null:
                     break;
                 case "bool":
-                    var dd = YetaWF_ComponentsHTML.DropDownListEditComponent.getControlById(col.FilterId);
+                    var dd = YetaWF.ComponentBaseDataImpl.getControlById(col.FilterId, YetaWF_ComponentsHTML.DropDownListEditComponent.SELECTOR);
                     dd.clear();
                     break;
                 case "long":
@@ -827,19 +826,19 @@ var YetaWF_ComponentsHTML;
                     //$$$$
                     break;
                 case "decimal":
-                    var dec = YetaWF_ComponentsHTML.DecimalEditComponent.getControlById(col.FilterId);
+                    var dec = YetaWF.ComponentBaseDataImpl.getControlById(col.FilterId, YetaWF_ComponentsHTML.DecimalEditComponent.SELECTOR);
                     dec.clear();
                     break;
                 case "datetime":
-                    var datetime = YetaWF_ComponentsHTML.DateTimeEditComponent.getControlById(col.FilterId);
+                    var datetime = YetaWF.ComponentBaseDataImpl.getControlById(col.FilterId, YetaWF_ComponentsHTML.DateTimeEditComponent.SELECTOR);
                     datetime.clear();
                     break;
                 case "date":
-                    var date = YetaWF_ComponentsHTML.DateEditComponent.getControlById(col.FilterId);
+                    var date = YetaWF.ComponentBaseDataImpl.getControlById(col.FilterId, YetaWF_ComponentsHTML.DateEditComponent.SELECTOR);
                     date.clear();
                     break;
                 case "enum":
-                    var dd = YetaWF_ComponentsHTML.DropDownListEditComponent.getControlById(col.FilterId);
+                    var dd = YetaWF.ComponentBaseDataImpl.getControlById(col.FilterId, YetaWF_ComponentsHTML.DropDownListEditComponent.SELECTOR);
                     dd.value = "-1";
                     break;
                 default:
@@ -916,7 +915,7 @@ var YetaWF_ComponentsHTML;
                 $YetaWF.setAttribute(inp, "name", name);
             }
         };
-        Grid.prototype.destroy = function () {
+        Grid.prototype.internalDestroy = function () {
             if (this.Setup.CanFilter) {
                 // close all menus
                 var menuDiv = $YetaWF.getElementById(this.ControlId + "_menus");
@@ -929,11 +928,7 @@ var YetaWF_ComponentsHTML;
                 // remove all menus
                 menuDiv.remove();
             }
-            $YetaWF.removeObjectDataById(this.Control.id);
         };
-        Grid.getControlFromTag = function (elem) { return _super.getControlBaseFromTag.call(this, elem, Grid.SELECTOR); };
-        Grid.getControlFromSelector = function (selector, tags) { return _super.getControlBaseFromSelector.call(this, selector || Grid.SELECTOR, Grid.SELECTOR, tags); };
-        Grid.getControlById = function (id) { return _super.getControlBaseById.call(this, id, Grid.SELECTOR); };
         Object.defineProperty(Grid.prototype, "FieldName", {
             // API
             get: function () {
@@ -1103,15 +1098,13 @@ var YetaWF_ComponentsHTML;
         Grid.SELECTOR = ".yt_grid";
         Grid.CurrentControl = null; // current control during grid resize
         return Grid;
-    }(YetaWF.ComponentBase));
+    }(YetaWF.ComponentBaseDataImpl));
     YetaWF_ComponentsHTML.Grid = Grid;
     // A <div> is being emptied. Destroy all grids, menus the <div> may contain.
     $YetaWF.registerClearDiv(function (tag) {
-        YetaWF.ComponentBase.clearDiv(tag, Grid.SELECTOR, function (grid) {
+        YetaWF.ComponentBaseDataImpl.clearDiv(tag, Grid.SELECTOR, function (grid) {
             // remove grid control
-            grid.destroy();
+            grid.internalDestroy();
         });
     });
 })(YetaWF_ComponentsHTML || (YetaWF_ComponentsHTML = {}));
-
-//# sourceMappingURL=Grid.js.map

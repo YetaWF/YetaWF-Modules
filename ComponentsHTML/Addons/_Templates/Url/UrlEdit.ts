@@ -28,10 +28,11 @@ namespace YetaWF_ComponentsHTML {
             this.Setup = setup;
 
             this.inputHidden = $YetaWF.getElement1BySelector(".t_hidden", [this.Control]) as HTMLInputElement;
-            this.selectType = YetaWF_ComponentsHTML.DropDownListEditComponent.getControlFromSelector("select.yt_urltype", [this.Control]);
+
+            this.selectType = YetaWF.ComponentBaseDataImpl.getControlFromSelector("select.yt_urltype", DropDownListEditComponent.SELECTOR, [this.Control]);
             // tslint:disable-next-line:no-bitwise
             if (this.Setup.Type & UrlTypeEnum.Local) {
-                this.selectPage = YetaWF_ComponentsHTML.DropDownListEditComponent.getControlFromSelector("select.yt_urldesignedpage", [this.Control]);
+                this.selectPage = YetaWF.ComponentBaseDataImpl.getControlFromSelector<DropDownListEditComponent>("select.yt_urldesignedpage", DropDownListEditComponent.SELECTOR, [this.Control]);
                 this.divLocal = $YetaWF.getElement1BySelector(".t_local", [this.Control]) as HTMLDivElement;
             }
             // tslint:disable-next-line:no-bitwise
@@ -69,7 +70,7 @@ namespace YetaWF_ComponentsHTML {
                     if (this.divRemote)
                         this.divRemote.style.display = "none";
                     if (this.selectPage)
-                        this.inputHidden.value = this.selectPage.Control.value.trim();
+                        this.inputHidden.value = this.selectPage.value.trim();
                     break;
                 case UrlTypeEnum.Remote:
                     if (this.divLocal)

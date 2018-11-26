@@ -22,7 +22,7 @@ var YetaWF_ComponentsHTML;
         function MultiStringEditComponent(controlId /*, setup: Setup*/) {
             var _this = _super.call(this, controlId) || this;
             //this.Setup = setup;
-            _this.SelectLang = YetaWF_ComponentsHTML.DropDownListEditComponent.getControlFromSelector("select", [_this.Control]);
+            _this.SelectLang = YetaWF.ComponentBaseDataImpl.getControlFromSelector("select", YetaWF_ComponentsHTML.DropDownListEditComponent.SELECTOR, [_this.Control]);
             _this.InputText = $YetaWF.getElement1BySelector("input.yt_multistring_text", [_this.Control]);
             // selection change (put language specific text into text box)
             _this.SelectLang.Control.addEventListener("dropdownlist_change", function (evt) {
@@ -158,5 +158,3 @@ var YetaWF_ComponentsHTML;
         MultiStringEditComponent.clearDiv(tag, MultiStringEditComponent.SELECTOR);
     });
 })(YetaWF_ComponentsHTML || (YetaWF_ComponentsHTML = {}));
-
-//# sourceMappingURL=MultiStringEdit.js.map

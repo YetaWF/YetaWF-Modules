@@ -22,7 +22,7 @@ var YetaWF_ComponentsHTML;
         function PageSelectionEditComponent(controlId /*, setup: Setup*/) {
             var _this = _super.call(this, controlId) || this;
             //this.Setup = setup;
-            _this.SelectPage = YetaWF_ComponentsHTML.DropDownListEditComponent.getControlFromSelector("select", [_this.Control]);
+            _this.SelectPage = YetaWF.ComponentBaseDataImpl.getControlFromSelector("select", YetaWF_ComponentsHTML.DropDownListEditComponent.SELECTOR, [_this.Control]);
             _this.DivLink = $YetaWF.getElement1BySelector(".t_link", [_this.Control]);
             _this.APage = $YetaWF.getElement1BySelector("a", [_this.DivLink]);
             _this.SelectPage.Control.addEventListener("dropdownlist_change", function (evt) {
@@ -53,5 +53,3 @@ var YetaWF_ComponentsHTML;
         PageSelectionEditComponent.clearDiv(tag, PageSelectionEditComponent.SELECTOR);
     });
 })(YetaWF_ComponentsHTML || (YetaWF_ComponentsHTML = {}));
-
-//# sourceMappingURL=PageSelectionEdit.js.map

@@ -30,10 +30,10 @@ var YetaWF_ComponentsHTML;
             _this.divRemote = null;
             _this.Setup = setup;
             _this.inputHidden = $YetaWF.getElement1BySelector(".t_hidden", [_this.Control]);
-            _this.selectType = YetaWF_ComponentsHTML.DropDownListEditComponent.getControlFromSelector("select.yt_urltype", [_this.Control]);
+            _this.selectType = YetaWF.ComponentBaseDataImpl.getControlFromSelector("select.yt_urltype", YetaWF_ComponentsHTML.DropDownListEditComponent.SELECTOR, [_this.Control]);
             // tslint:disable-next-line:no-bitwise
             if (_this.Setup.Type & UrlTypeEnum.Local) {
-                _this.selectPage = YetaWF_ComponentsHTML.DropDownListEditComponent.getControlFromSelector("select.yt_urldesignedpage", [_this.Control]);
+                _this.selectPage = YetaWF.ComponentBaseDataImpl.getControlFromSelector("select.yt_urldesignedpage", YetaWF_ComponentsHTML.DropDownListEditComponent.SELECTOR, [_this.Control]);
                 _this.divLocal = $YetaWF.getElement1BySelector(".t_local", [_this.Control]);
             }
             // tslint:disable-next-line:no-bitwise
@@ -68,7 +68,7 @@ var YetaWF_ComponentsHTML;
                     if (this.divRemote)
                         this.divRemote.style.display = "none";
                     if (this.selectPage)
-                        this.inputHidden.value = this.selectPage.Control.value.trim();
+                        this.inputHidden.value = this.selectPage.value.trim();
                     break;
                 case UrlTypeEnum.Remote:
                     if (this.divLocal)
@@ -162,5 +162,3 @@ var YetaWF_ComponentsHTML;
         UrlEditComponent.clearDiv(tag, UrlEditComponent.SELECTOR);
     });
 })(YetaWF_ComponentsHTML || (YetaWF_ComponentsHTML = {}));
-
-//# sourceMappingURL=UrlEdit.js.map

@@ -24,7 +24,7 @@ namespace YetaWF_BootstrapCarousel {
         RemoveTitle: string;
     }
 
-    export class SlideShowEdit extends YetaWF.ComponentBase<HTMLElement> {
+    export class SlideShowEdit extends YetaWF.ComponentBaseDataImpl {
 
         public static readonly SELECTOR: string = ".yt_bootstrapcarousel_slideshow.t_edit";
         private static readonly TEMPLATENAME: string = "YetaWF_BootstrapCarousel_SlideShow";
@@ -33,9 +33,8 @@ namespace YetaWF_BootstrapCarousel {
         private buttonDown: HTMLElement;
         private buttonDelete: HTMLElement;
 
-        constructor(controlId:string) {
+        constructor(controlId: string) {
             super(controlId);
-            $YetaWF.addObjectDataById(controlId, this);
 
             this.buttonUp = $YetaWF.getElement1BySelector("input.t_up", [this.Control]);
             this.buttonDown = $YetaWF.getElement1BySelector("input.t_down", [this.Control]);
@@ -110,21 +109,16 @@ namespace YetaWF_BootstrapCarousel {
 
             this.updateButtons();
         }
-
-        public destroy(): void { $YetaWF.removeObjectDataById(this.Control.id); }
-        public static getControlFromTagCond(elem: HTMLElement): SlideShowEdit | null { return super.getControlBaseFromTagCond<SlideShowEdit>(elem, SlideShowEdit.SELECTOR); }
     }
 
     $YetaWF.registerPanelSwitched((panel: HTMLElement): void => {
-        var ctrl = SlideShowEdit.getControlFromTagCond(panel);
+        var ctrl = YetaWF.ComponentBaseDataImpl.getControlFromTagCond<SlideShowEdit>(panel, SlideShowEdit.SELECTOR);
         if (ctrl != null)
             ctrl.updateActiveTab(panel);
     });
 
     // A <div> is being emptied. Destroy all controls the <div> may contain.
     $YetaWF.registerClearDiv((tag: HTMLElement): void => {
-        YetaWF.ComponentBase.clearDiv<SlideShowEdit>(tag, SlideShowEdit.SELECTOR, (control: SlideShowEdit): void => {
-            control.destroy();
-        });
+        YetaWF.ComponentBaseDataImpl.clearDiv(tag, SlideShowEdit.SELECTOR);
     });
 }

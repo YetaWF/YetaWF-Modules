@@ -18,8 +18,8 @@ namespace YetaWF_ComponentsHTML {
             super(controlId);
             this.Setup = setup;
 
-            this.SelectCollection = YetaWF_ComponentsHTML.DropDownListEditComponent.getControlFromSelector("select[name$='.Collection']", [this.Control]);
-            this.SelectFile = YetaWF_ComponentsHTML.DropDownListEditComponent.getControlFromSelector("select[name$='.FileName']", [this.Control]);
+            this.SelectCollection = YetaWF.ComponentBaseDataImpl.getControlFromSelector("select[name$='.Collection']", DropDownListEditComponent.SELECTOR, [this.Control]);
+            this.SelectFile = YetaWF.ComponentBaseDataImpl.getControlFromSelector("select[name$='.FileName']", DropDownListEditComponent.SELECTOR, [this.Control]);
 
             this.SelectCollection.Control.addEventListener("dropdownlist_change", (evt: Event): void => {
                 var data = { SkinCollection: this.SelectCollection.value };
