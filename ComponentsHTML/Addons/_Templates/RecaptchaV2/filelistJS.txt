@@ -1,2 +1,2 @@
 ﻿https://www.google.com/recaptcha/api.js,async,defer
-RecaptchaV2.js
+RecaptchaV2.ts
