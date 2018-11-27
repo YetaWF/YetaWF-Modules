@@ -36,9 +36,6 @@ namespace YetaWF.Modules.Visitors.Controllers {
         [AllowPost]
         [ValidateAntiForgeryToken]
         public ActionResult TrackClick(string url) {
-            string origin = Manager.CurrentRequest.Headers["Origin"];
-            if (!string.IsNullOrWhiteSpace(origin))
-                return new EmptyResult();
             VisitorEntryDataProvider.AddVisitEntryUrlAsync(url, true); // no await, as in fire and forget
             return new EmptyResult();
         }
