@@ -262,7 +262,6 @@
     <Content Include="Addons\_Templates\Decimal\filelistCSS.txt" />
     <Content Include="Addons\_Templates\Decimal\filelistJS.txt" />
     <None Include="Addons\_Templates\DropDownList\dropdownlist.scss" />
-    <Content Include="Addons\_Templates\DropDownList\DropDownList.js" />
     <Content Include="Addons\_Templates\DropDownList\filelistCSS.txt" />
     <Content Include="Addons\_Templates\DropDownList\filelistJS.txt" />
     <None Include="Addons\_Templates\Email\Email.scss" />
@@ -285,7 +284,6 @@
     <None Include="Addons\_Templates\JQueryUISkin\JQueryUISkin.scss" />
     <Content Include="Addons\_Templates\KendoUISkin\filelistCSS.txt" />
     <None Include="Addons\_Templates\KendoUISkin\KendoUISkin.scss" />
-    <Content Include="Addons\_Templates\Label\Icons\HelpLink.png" />
     <Content Include="Addons\_Templates\ModuleActions\filelistCSS.txt" />
     <None Include="Addons\_Templates\ModuleActions\ModuleActions.scss" />
     <Content Include="Addons\_Templates\ModuleAction\filelistCSS.txt" />
