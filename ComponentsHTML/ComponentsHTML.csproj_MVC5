@@ -217,7 +217,7 @@
     <Content Include="Addons\_Addons\smartresize\SmartResize.js" />
     <Content Include="Addons\_Addons\telerik.com.Kendo_UI_Core\filelistCSS.txt" />
     <Content Include="Addons\_Addons\telerik.com.Kendo_UI_Core\filelistJS.txt" />
-    <Content Include="Addons\_Main\ComponentsHTML.css" />
+    <None Include="Addons\_Main\ComponentsHTML.scss" />
     <Content Include="Addons\_Main\PrettyLoader.js" />
     <TypeScriptCompile Include="Addons\_Main\ComponentsHTML.ts" />
     <TypeScriptCompile Include="Addons\_Main\Grid.ts" />
