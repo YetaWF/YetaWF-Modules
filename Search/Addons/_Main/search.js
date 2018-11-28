@@ -9,8 +9,8 @@ var YetaWF_Search;
             $(".yModule").removeHighlight();
             if (YVolatile.Basics.EditModeActive)
                 return; // never in edit mode
-            var offButton = $YetaWF.getElement1BySelector(".YetaWF_Search_SearchControl a[data-name='Off']");
-            if (offButton.style.display === "none")
+            var offButton = $YetaWF.getElement1BySelectorCond(".YetaWF_Search_SearchControl a[data-name='Off']");
+            if (!offButton || offButton.style.display === "none")
                 return;
             var uri = $YetaWF.parseUrl(window.location.href);
             var kwdsString = uri.getSearch(YConfigs.YetaWF_Search.UrlArg);
