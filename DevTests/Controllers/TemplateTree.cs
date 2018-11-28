@@ -42,6 +42,7 @@ namespace YetaWF.Modules.DevTests.Controllers {
 
             public Model() {
                 Entries_TreeDefinition = new TreeDefinition {
+                    DragDrop = true,
                     RecordType = typeof(EntryElement),
                     ShowHeader = true,
                     UseSkinFormatting = true,

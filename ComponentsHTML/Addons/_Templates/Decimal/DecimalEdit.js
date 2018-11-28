@@ -34,14 +34,17 @@ var YetaWF_ComponentsHTML;
                 return this.kendoNumericTextBox.value();
             },
             set: function (val) {
-                this.kendoNumericTextBox.value(val);
+                if (val == null)
+                    this.kendoNumericTextBox.value("");
+                else
+                    this.kendoNumericTextBox.value(val);
             },
             enumerable: true,
             configurable: true
         });
         Object.defineProperty(DecimalEditComponent.prototype, "valueText", {
             get: function () {
-                return this.value.toString();
+                return this.value ? this.value.toString() : "";
             },
             enumerable: true,
             configurable: true

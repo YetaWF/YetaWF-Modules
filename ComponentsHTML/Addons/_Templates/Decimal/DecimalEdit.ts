@@ -27,14 +27,17 @@ namespace YetaWF_ComponentsHTML {
             this.kendoNumericTextBox = $(this.Control).data("kendoNumericTextBox");
         }
 
-        get value(): number {
+        get value(): number | null {
             return this.kendoNumericTextBox.value();
         }
         get valueText(): string  {
-            return this.value.toString();
+            return this.value ? this.value.toString() : "";
         }
-        set value(val: number) {
-            this.kendoNumericTextBox.value(val);
+        set value(val: number | null) {
+            if (val == null)
+                this.kendoNumericTextBox.value("");
+            else
+                this.kendoNumericTextBox.value(val);
         }
         public clear(): void {
             this.kendoNumericTextBox.value("");
