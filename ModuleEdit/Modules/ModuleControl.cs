@@ -1,9 +1,10 @@
 ﻿/* Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/ModuleEdit#License */
 
 using System;
-using System.Collections.Generic;
+using System.Threading.Tasks;
 using YetaWF.Core;
 using YetaWF.Core.Addons;
+using YetaWF.Core.Identity;
 using YetaWF.Core.IO;
 using YetaWF.Core.Localize;
 using YetaWF.Core.Models.Attributes;
@@ -14,12 +15,9 @@ using YetaWF.Core.Serializers;
 using YetaWF.Core.Support;
 using YetaWF.DataProvider;
 using YetaWF.Modules.ModuleEdit.Controllers;
-using System.Threading.Tasks;
-using YetaWF.Core.Identity;
 #if MVC6
 using Microsoft.AspNetCore.Routing;
 #else
-using System.Web.Routing;
 #endif
 
 namespace YetaWF.Modules.ModuleEdit.Modules {
@@ -69,12 +67,12 @@ namespace YetaWF.Modules.ModuleEdit.Modules {
             };
         }
 
-        public async Task<ModuleAction> GetAction_HelpAsync(ModuleDefinition mod) {
+        public ModuleAction GetAction_Help(ModuleDefinition mod) {
             Package package = Package.GetCurrentPackage(mod);
             return new ModuleAction(this) {
                 Url = package.InfoLink,
                 QueryArgsDict = new QueryHelper(new QueryDictionary { { Globals.Link_NoEditMode, "y" }, { Globals.Link_NoPageControl, "y" } }),
-                Image = await CustomIconAsync("Help.png"),
+                Image = "#Help",
                 LinkText = this.__ResStr("modHelpLink", "Help"),
                 MenuText = this.__ResStr("modHelpMenu", "Help"),
                 Tooltip = this.__ResStr("modHelpTT", "Display help information for the package implementing this module"),

@@ -33,7 +33,7 @@
 .yModuleLinks {
     margin-top:.5em;
     .yaction-link {
-        img {/* a bit of extra space around the image in a module action link */
+        i, img {/* a bit of extra space around the image in a module action link */
             margin-right:1ch;
         }
         margin-right:1ch;
@@ -44,7 +44,7 @@
         margin-top:2em;
         margin-right:1ch;
         .yaction-link {
-            img {
+            i, img {
                 margin-right:0;
                 margin-left:.5ch;
             }

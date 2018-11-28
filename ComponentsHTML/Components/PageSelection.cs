@@ -82,9 +82,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             // image
             SkinImages skinImages = new SkinImages();
             string imageUrl = await skinImages.FindIcon_TemplateAsync("PagePreview.png", Package, TemplateName);
-            YTagBuilder tagImg = ImageHTML.BuildKnownImageYTag(imageUrl, alt: __ResStr("linkAlt", "Preview"));
-
-            tag.InnerHtml = tag.InnerHtml + tagImg.ToString(YTagRenderMode.StartTag);
+            tag.InnerHtml = tag.InnerHtml + ImageHTML.BuildKnownIcon(imageUrl, title: __ResStr("linkAlt", "Preview"));
             string linkTag = tag.ToString(YTagRenderMode.Normal);
 
             hb.Append($@"

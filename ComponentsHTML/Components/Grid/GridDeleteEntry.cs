@@ -22,18 +22,13 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
         public override ComponentType GetComponentType() { return ComponentType.Display; }
 
-        public async Task<YHtmlString> RenderAsync(object model) {
+        public Task<YHtmlString> RenderAsync(object model) {
 
             YTagBuilder tag = new YTagBuilder("span");
             FieldSetup(tag, FieldType.Anonymous);
+            tag.InnerHtml = ImageHTML.BuildKnownIcon("#RemoveLight", title: __ResStr("altRemove", "Remove"), name: "DeleteAction");
 
-            SkinImages skinImages = new SkinImages();
-            string imageUrl = await skinImages.FindIcon_PackageAsync("#RemoveLight", Package);
-            YTagBuilder tagImg = ImageHTML.BuildKnownImageYTag(imageUrl, alt: __ResStr("altRemove", "Remove"));
-            tagImg.Attributes.Add("name", "DeleteAction");
-            tag.InnerHtml = tagImg.ToString(YTagRenderMode.StartTag);
-
-            return tag.ToYHtmlString(YTagRenderMode.Normal);
+            return Task.FromResult(tag.ToYHtmlString(YTagRenderMode.Normal));
         }
     }
 }

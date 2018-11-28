@@ -11,12 +11,10 @@ using YetaWF.Core.Models;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Modules;
 using YetaWF.Core.Packages;
-using YetaWF.Core.Skins;
 using YetaWF.Core.Support;
 using YetaWF.Modules.ComponentsHTML.Components;
 using YetaWF.Modules.Identity.Controllers;
 using YetaWF.Modules.Identity.DataProvider;
-using YetaWF.Modules.Identity.Support;
 #if MVC6
 #else
 using System.Web.Mvc;
@@ -161,11 +159,6 @@ namespace YetaWF.Modules.Identity.Components {
                 string nameId = UniqueId();
                 string noUser = __ResStr("noUser", "(none)");
 
-                SkinImages skinImages = new SkinImages();
-                string imageUrl = await skinImages.FindIcon_TemplateAsync("#RemoveLight", Package, "UserId");
-                YTagBuilder tagImg = ImageHTML.BuildKnownImageYTag(imageUrl, title: __ResStr("ttClear", "Clear the current selection"), alt: __ResStr("altClear", "Clear the current selection"));
-                tagImg.AddCssClass("t_clear");
-
                 bool header = PropData.GetAdditionalAttributeValue("Header", true);
 
                 UserIdUI ui = new UserIdUI {
@@ -191,7 +184,7 @@ namespace YetaWF.Modules.Identity.Components {
                     hb.Append($@"
     <div class='t_name'>
         {await HtmlHelper.ForDisplayAsync(ui, nameof(ui.UserName), HtmlAttributes: new { id = nameId })}
-        {tagImg.ToString(YTagRenderMode.StartTag)}
+        {ImageHTML.BuildKnownIcon("#RemoveLight", title: __ResStr("ttClear", "Clear the current selection"), cssClass: "t_clear")}
     </div>
     {await HtmlHelper.ForLabelAsync(ui, nameof(ui.AllUsers))}
     {await HtmlHelper.ForDisplayAsync(ui, nameof(ui.AllUsers))}");

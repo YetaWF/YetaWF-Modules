@@ -72,10 +72,7 @@ namespace YetaWF.Modules.ComponentsHTML {
                 divTag.Attributes.Add("style", "display:none");
                 hb.Append(divTag.ToString(YTagRenderMode.StartTag));
 
-                SkinImages skinImages = new SkinImages();
-                string imageUrl = await skinImages.FindIcon_PackageAsync("#ModuleMenu", Package.GetCurrentPackage(this));
-                YTagBuilder tagImg = ImageHTML.BuildKnownImageYTag(imageUrl, alt: this.__ResStr("mmAlt", "Menu"));
-                hb.Append(tagImg.ToString(YTagRenderMode.StartTag));
+                hb.Append(ImageHTML.BuildKnownIcon("#ModuleMenu", title: this.__ResStr("mmAlt", "Menu")));
 
                 // <div>
                 YTagBuilder div2Tag = new YTagBuilder("div");
@@ -258,9 +255,8 @@ namespace YetaWF.Modules.ComponentsHTML {
             bool hasText = false, hasImg = false;
             string innerHtml = "";
             if (mode != RenderModeEnum.LinksOnly && !string.IsNullOrWhiteSpace(action.ImageUrlFinal)) {
-                YTagBuilder tagImg = ImageHTML.BuildKnownImageYTag(await action.GetImageUrlFinalAsync(), alt: mode == RenderModeEnum.NormalMenu ? action.MenuText : action.LinkText);
-                tagImg.AddCssClass(Basics.CssNoTooltip);
-                innerHtml += tagImg.ToString(YTagRenderMode.StartTag);
+                innerHtml += ImageHTML.BuildKnownIcon(action.ImageUrlFinal,
+                    title: mode == RenderModeEnum.NormalMenu ? action.MenuText : action.LinkText, cssClass: Basics.CssNoTooltip);
                 hasImg = true;
             }
             if (mode != RenderModeEnum.IconsOnly && mode != RenderModeEnum.ButtonIcon) {

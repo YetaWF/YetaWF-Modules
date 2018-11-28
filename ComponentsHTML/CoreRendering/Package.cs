@@ -21,6 +21,7 @@ namespace YetaWF.Modules.ComponentsHTML {
             await Manager.AddOnManager.AddAddOnNamedAsync(Package.AreaName, "no-margin-for-errors.com.prettyLoader");
 
             await Manager.AddOnManager.AddAddOnNamedAsync("YetaWF_Core", "Basics");
+            await Manager.AddOnManager.AddAddOnNamedAsync("YetaWF_Core", "Icons");
             if (Manager.IsInPopup)
                 await AddPopupsAddOnsAsync();
             await Manager.AddOnManager.AddPackageAsync(Package, new List<Package>());

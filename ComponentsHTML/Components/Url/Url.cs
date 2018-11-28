@@ -68,9 +68,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                 if (PropData.GetAdditionalAttributeValue("ShowImage", true)) {
                     SkinImages skinImages = new SkinImages();
                     string imageUrl = await skinImages.FindIcon_TemplateAsync("UrlRemote.png", Package, "Url");
-                    YTagBuilder tagImg = ImageHTML.BuildKnownImageYTag(imageUrl, alt: __ResStr("altText", "Remote Url"));
-
-                    tag.InnerHtml = tag.InnerHtml + tagImg.ToString(YTagRenderMode.StartTag);
+                    tag.InnerHtml = tag.InnerHtml + ImageHTML.BuildKnownIcon(imageUrl, title: __ResStr("altText", "Remote Url"));
                 }
                 hb.Append(tag.ToString(YTagRenderMode.Normal));
             }
@@ -150,9 +148,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             // image
             SkinImages skinImages = new SkinImages();
             string imageUrl = await skinImages.FindIcon_TemplateAsync("UrlRemote.png", Package, "Url");
-            YTagBuilder tagImg = ImageHTML.BuildKnownImageYTag(imageUrl, alt: __ResStr("altText", "Remote Url"));
-
-            tag.InnerHtml = tag.InnerHtml + tagImg.ToString(YTagRenderMode.StartTag);
+            tag.InnerHtml = tag.InnerHtml + ImageHTML.BuildKnownIcon(imageUrl, title: __ResStr("altText", "Remote Url"));
             string link = tag.ToString(YTagRenderMode.Normal);
 
             UrlEditSetup setup = new UrlEditSetup {

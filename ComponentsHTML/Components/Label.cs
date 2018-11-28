@@ -35,10 +35,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                 tagA.Attributes.Add("target", "_blank");
                 tagA.MergeAttribute("rel", "noopener noreferrer");
                 tagA.AddCssClass(Manager.AddOnManager.CheckInvokedCssModule("yt_extlabel_img"));
-                SkinImages skinImages = new SkinImages();
-                string imageUrl = await skinImages.FindIcon_TemplateAsync("HelpLink.png", Package, "Label");
-                YTagBuilder tagImg = ImageHTML.BuildKnownImageYTag(imageUrl, alt: this.__ResStr("altHelp", "Help"));
-                tagA.InnerHtml = tagImg.ToString(YTagRenderMode.StartTag);
+                tagA.InnerHtml = ImageHTML.BuildKnownIcon("#Help", title: this.__ResStr("altHelp", "Help"));
                 sb.Append(tagA.ToString(YTagRenderMode.Normal));
             }
 
