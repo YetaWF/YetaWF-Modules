@@ -52,6 +52,8 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
             YTagBuilder tag = new YTagBuilder("input");
             tag.AddCssClass(TemplateClass);
+            // adding k-textbox to the control makes it look like a kendo maskedtext box without the overhead of actually calling kendoMaskedTextBox
+            tag.AddCssClass("k-textbox");
             tag.AddCssClass("t_display");
             tag.AddCssClass("k-state-disabled"); // USE KENDO style
             FieldSetup(tag, FieldType.Anonymous);
