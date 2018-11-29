@@ -161,9 +161,7 @@
       <Name>ComponentsHTML</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Addons\_Main\Icons\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <TypeScriptCompile Include="Addons\_Main\Dashboard.ts" />
   </ItemGroup>

@@ -113,9 +113,7 @@
       <Name>ComponentsHTML</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Addons\_Main\Icons\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <Content Include="Addons\_Main\Images\AddThis Large.png" />
     <Content Include="Addons\_Main\Images\AddThis.png" />

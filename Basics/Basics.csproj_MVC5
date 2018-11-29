@@ -100,7 +100,6 @@
     <Content Include="Addons\_Addons\Images\hero-recaptcha-invisible.gif" />
     <Content Include="Addons\_Addons\Images\RecaptchaV2.png" />
     <Content Include="Addons\_Main\Icons\Close.png" />
-    <Content Include="Addons\_Main\Icons\ModuleSkinInfo.png" />
     <Content Include="Addons\_Main\Images\Backup.png" />
     <Content Include="Addons\_Main\Images\Configuration Large.png" />
     <Content Include="Addons\_Main\Images\Configuration.png" />
