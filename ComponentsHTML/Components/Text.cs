@@ -42,7 +42,8 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         }
 
         public override async Task IncludeAsync() {
-            await KendoUICore.AddFileAsync("kendo.maskedtextbox.min.js");
+            //await KendoUICore.AddFileAsync("kendo.maskedtextbox.min.js");
+            await Manager.AddOnManager.AddTemplateAsync(Controllers.AreaRegistration.CurrentPackage.AreaName, "Text");
         }
         public async Task<YHtmlString> RenderAsync(string model) {
             HtmlBuilder hb = new HtmlBuilder();

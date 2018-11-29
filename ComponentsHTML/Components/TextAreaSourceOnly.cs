@@ -3,13 +3,17 @@
 using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 using YetaWF.Core.Components;
+using YetaWF.Core.Localize;
 using YetaWF.Core.Models;
 using YetaWF.Core.Packages;
+using YetaWF.Core.Skins;
 using YetaWF.Core.Support;
 
 namespace YetaWF.Modules.ComponentsHTML.Components {
 
-    public abstract class TextAreaSourceOnlyComponent : YetaWFComponent {
+    public abstract class TextAreaSourceOnlyComponentBase : YetaWFComponent {
+
+        protected static string __ResStr(string name, string defaultValue, params object[] parms) { return ResourceAccess.GetResourceString(typeof(TextAreaSourceOnlyComponentBase), name, defaultValue, parms); }
 
         public const string TemplateName = "TextAreaSourceOnly";
 
@@ -17,17 +21,19 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         public override string GetTemplateName() { return TemplateName; }
     }
 
-    public class TextAreaSourceOnlyDisplayComponent : TextAreaSourceOnlyComponent, IYetaWFComponent<object> {
+    public class TextAreaSourceOnlyDisplayComponent : TextAreaSourceOnlyComponentBase, IYetaWFComponent<object> {
 
         public override ComponentType GetComponentType() { return ComponentType.Display; }
 
-        public Task<YHtmlString> RenderAsync(object model) {
+        public async Task<YHtmlString> RenderAsync(object model) {
 
             string text;
             if (model is MultiString)
                 text = (MultiString)model;
             else
                 text = (string)model;
+
+            bool copy = PropData.GetAdditionalAttributeValue<bool>("Copy", true);
 
             HtmlBuilder hb = new HtmlBuilder();
 
@@ -42,15 +48,24 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             FieldSetup(tag, FieldType.Anonymous);
             tag.Attributes.Add("id", ControlId);
             tag.Attributes.Add("rows", emHeight.ToString());
-            tag.Attributes.Add("disabled", "disabled");
+            if (copy)
+                tag.Attributes.Add("readonly", "readonly");
+            else
+                tag.Attributes.Add("disabled", "disabled");
             tag.SetInnerText(text);
 
             hb.Append(tag.ToHtmlString(YTagRenderMode.Normal));
+            if (copy) {
+                await Manager.AddOnManager.AddAddOnNamedAsync(Package.AreaName, "clipboardjs.com.clipboard");// add clipboard support
+                SkinImages skinImages = new SkinImages();
+                string imageUrl = await skinImages.FindIcon_TemplateAsync("Copy.png", Package, "TextAreaSourceOnly");
+                hb.Append(ImageHTML.BuildKnownIcon(imageUrl, title: __ResStr("ttCopy", "Copy to Clipboard"), cssClass: "yt_textareasourceonly_copy"));
+            }
 
-            return Task.FromResult(hb.ToYHtmlString());
+            return hb.ToYHtmlString();
         }
     }
-    public class TextAreaSourceOnlyEditComponent : TextAreaSourceOnlyComponent, IYetaWFComponent<object> {
+    public class TextAreaSourceOnlyEditComponent : TextAreaSourceOnlyComponentBase, IYetaWFComponent<object> {
 
         public override ComponentType GetComponentType() { return ComponentType.Edit; }
 
