@@ -168,6 +168,7 @@
     <Content Include="Addons\_Addons\ckeditor\__CUSTOM_FILES\sourceonly_config.js" />
     <Content Include="Addons\_Addons\ckeditor\__CUSTOM_FILES\sourceonly_ro_config.js" />
     <Content Include="Addons\_Addons\clipboardjs.com.clipboard\filelistJS.txt" />
+    <Content Include="Addons\_Main\IconCollection.png" />
     <Content Include="Addons\_Templates\Tree\filelistCSS.txt" />
     <Content Include="Addons\_Templates\Tree\filelistJS.txt" />
     <Content Include="Addons\_Templates\Grid\filelistCSS.txt" />
@@ -200,7 +201,6 @@
     <Content Include="Addons\_Addons\ModuleMenu\filelistJS.txt" />
     <Content Include="Addons\_Addons\ModuleMenu\ModuleMenu.js" />
     <Content Include="Addons\_Addons\Modules\filelistJS.txt" />
-    <Content Include="Addons\_Addons\Modules\images\ModuleMenuEditIcon.png" />
     <Content Include="Addons\_Addons\Modules\modules.js" />
     <Content Include="Addons\_Addons\necolas.github.io.normalize\filelistCSS.txt" />
     <Content Include="Addons\_Addons\no-margin-for-errors.com.prettyloader\css\prettyLoader.css" />
@@ -294,7 +294,6 @@
     <None Include="Addons\_Templates\ModuleEdit_AllowedUsers\moduleedit.scss" />
     <Content Include="Addons\_Templates\ModuleSelection\filelistCSS.txt" />
     <Content Include="Addons\_Templates\ModuleSelection\filelistJS.txt" />
-    <Content Include="Addons\_Templates\ModuleSelection\Icons\ModulePreview.png" />
     <Content Include="Addons\_Templates\ModuleSkins\filelistCSS.txt" />
     <None Include="Addons\_Templates\ModuleSkins\ModuleSkins.scss" />
     <Content Include="Addons\_Templates\MultiString\filelistCSS.txt" />
@@ -302,7 +301,6 @@
     <None Include="Addons\_Templates\MultiString\MultiString.scss" />
     <Content Include="Addons\_Templates\PageSelection\filelistCSS.txt" />
     <Content Include="Addons\_Templates\PageSelection\filelistJS.txt" />
-    <Content Include="Addons\_Templates\PageSelection\Icons\PagePreview.png" />
     <None Include="Addons\_Templates\PageSelection\PageSelection.scss" />
     <TypeScriptCompile Include="Addons\_Templates\PageSelection\PageSelectionEdit.ts" />
     <Content Include="Addons\_Templates\PageSkin\filelistCSS.txt" />
@@ -338,7 +336,6 @@
     <TypeScriptCompile Include="Addons\_Templates\TextArea\TextArea.ts" />
     <Content Include="Addons\_Templates\Text\filelistCSS.txt" />
     <Content Include="Addons\_Templates\Text\filelistJS.txt" />
-    <Content Include="Addons\_Templates\Text\Icons\Copy.png" />
     <None Include="Addons\_Templates\Text\Text.scss" />
     <Content Include="Addons\_Templates\TimeSpan\filelistCSS.txt" />
     <Content Include="Addons\_Templates\TimeSpan\filelistJS.txt" />
@@ -348,7 +345,6 @@
     <None Include="Addons\_Templates\TimeZone\TimeZone.scss" />
     <Content Include="Addons\_Templates\Url\filelistCSS.txt" />
     <Content Include="Addons\_Templates\Url\filelistJS.txt" />
-    <Content Include="Addons\_Templates\Url\Icons\UrlRemote.png" />
     <TypeScriptCompile Include="Addons\_Templates\Url\UrlEdit.ts" />
     <TypeScriptCompile Include="Addons\_Templates\Grid\Grid.ts" />
   </ItemGroup>
@@ -404,9 +400,7 @@
     <TypeScriptCompile Include="Addons\_Templates\DateTime\DateTimeEdit.ts" />
     <TypeScriptCompile Include="Addons\_Templates\Decimal\DecimalEdit.ts" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Addons\_Templates\TextAreaSourceOnly\Images\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />

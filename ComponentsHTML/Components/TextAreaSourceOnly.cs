@@ -8,6 +8,7 @@ using YetaWF.Core.Models;
 using YetaWF.Core.Packages;
 using YetaWF.Core.Skins;
 using YetaWF.Core.Support;
+using YetaWF.Modules.ComponentsHTML.Addons;
 
 namespace YetaWF.Modules.ComponentsHTML.Components {
 
@@ -57,9 +58,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             hb.Append(tag.ToHtmlString(YTagRenderMode.Normal));
             if (copy) {
                 await Manager.AddOnManager.AddAddOnNamedAsync(Package.AreaName, "clipboardjs.com.clipboard");// add clipboard support
-                SkinImages skinImages = new SkinImages();
-                string imageUrl = await skinImages.FindIcon_TemplateAsync("Copy.png", Package, "TextAreaSourceOnly");
-                hb.Append(ImageHTML.BuildKnownIcon(imageUrl, title: __ResStr("ttCopy", "Copy to Clipboard"), cssClass: "yt_textareasourceonly_copy"));
+                hb.Append(ImageHTML.BuildKnownIcon("#TextAreaSourceOnlyCopy", sprites: Info.PredefSpriteIcons, title: __ResStr("ttCopy", "Copy to Clipboard"), cssClass: "yt_textareasourceonly_copy"));
             }
 
             return hb.ToYHtmlString();

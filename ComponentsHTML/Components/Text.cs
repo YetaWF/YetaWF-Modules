@@ -7,6 +7,7 @@ using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Packages;
 using YetaWF.Core.Skins;
 using YetaWF.Core.Support;
+using YetaWF.Modules.ComponentsHTML.Addons;
 
 namespace YetaWF.Modules.ComponentsHTML.Components {
 
@@ -70,9 +71,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
             if (copy) {
                 await Manager.AddOnManager.AddAddOnNamedAsync(Package.AreaName, "clipboardjs.com.clipboard");// add clipboard support
-                SkinImages skinImages = new SkinImages();
-                string imageUrl = await skinImages.FindIcon_TemplateAsync("Copy.png", Package, "Text");
-                hb.Append(ImageHTML.BuildKnownIcon(imageUrl, title: __ResStr("ttCopy", "Copy to Clipboard"), cssClass: "yt_text_copy"));
+                hb.Append(ImageHTML.BuildKnownIcon("#TextCopy", sprites: Info.PredefSpriteIcons, title: __ResStr("ttCopy", "Copy to Clipboard"), cssClass: "yt_text_copy"));
             }
             return hb.ToYHtmlString();
         }
@@ -139,9 +138,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
             if (copy) {
                 await Manager.AddOnManager.AddAddOnNamedAsync(component.Package.AreaName, "clipboardjs.com.clipboard");// add clipboard support
-                SkinImages skinImages = new SkinImages();
-                string imageUrl = await skinImages.FindIcon_TemplateAsync("Copy.png", component.Package, "Text");
-                hb.Append(ImageHTML.BuildKnownIcon(imageUrl, title: __ResStr("ttCopy", "Copy to Clipboard"), cssClass: "yt_text_copy"));
+                hb.Append(ImageHTML.BuildKnownIcon("#TextCopy", sprites: Info.PredefSpriteIcons, title: __ResStr("ttCopy", "Copy to Clipboard"), cssClass: "yt_text_copy"));
             }
 
             //if (!string.IsNullOrWhiteSpace(mask)) {

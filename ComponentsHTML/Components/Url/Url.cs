@@ -5,8 +5,8 @@ using YetaWF.Core.Components;
 using YetaWF.Core.Localize;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Packages;
-using YetaWF.Core.Skins;
 using YetaWF.Core.Support;
+using YetaWF.Modules.ComponentsHTML.Addons;
 
 namespace YetaWF.Modules.ComponentsHTML.Components {
 
@@ -23,9 +23,9 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
         public override ComponentType GetComponentType() { return ComponentType.Display; }
 
-        public async Task<YHtmlString> RenderAsync(string model) {
+        public Task<YHtmlString> RenderAsync(string model) {
 
-            if (string.IsNullOrWhiteSpace(model)) return new YHtmlString("");
+            if (string.IsNullOrWhiteSpace(model)) return Task.FromResult(new YHtmlString(""));
 
             HtmlBuilder hb = new HtmlBuilder();
 
@@ -66,14 +66,12 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
                 // image
                 if (PropData.GetAdditionalAttributeValue("ShowImage", true)) {
-                    SkinImages skinImages = new SkinImages();
-                    string imageUrl = await skinImages.FindIcon_TemplateAsync("UrlRemote.png", Package, "Url");
-                    tag.InnerHtml = tag.InnerHtml + ImageHTML.BuildKnownIcon(imageUrl, title: __ResStr("altText", "Remote Url"));
+                    tag.InnerHtml = tag.InnerHtml + ImageHTML.BuildKnownIcon("#UrlRemote", sprites: Info.PredefSpriteIcons, title: __ResStr("altText", "Remote Url"));
                 }
                 hb.Append(tag.ToString(YTagRenderMode.Normal));
             }
             hb.Append("</div>");
-            return hb.ToYHtmlString();
+            return Task.FromResult(hb.ToYHtmlString());
         }
     }
     public class UrlEditComponent : UrlComponentBase, IYetaWFComponent<string> {
@@ -145,10 +143,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             tag.MergeAttribute("target", "_blank");
             tag.MergeAttribute("rel", "nofollow noopener noreferrer");
 
-            // image
-            SkinImages skinImages = new SkinImages();
-            string imageUrl = await skinImages.FindIcon_TemplateAsync("UrlRemote.png", Package, "Url");
-            tag.InnerHtml = tag.InnerHtml + ImageHTML.BuildKnownIcon(imageUrl, title: __ResStr("altText", "Remote Url"));
+            tag.InnerHtml = tag.InnerHtml + ImageHTML.BuildKnownIcon("#UrlRemote", sprites: Info.PredefSpriteIcons, title: __ResStr("altText", "Remote Url"));
             string link = tag.ToString(YTagRenderMode.Normal);
 
             UrlEditSetup setup = new UrlEditSetup {

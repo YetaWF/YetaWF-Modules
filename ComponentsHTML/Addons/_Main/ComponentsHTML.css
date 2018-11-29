@@ -1,5 +1,29 @@
 @charset "UTF-8";
 /* Copyright � 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/ComponentsHTML#License */
+/* Icon/sprite */
+i.yic.yic_componentshtml_modprev {
+  background: url(IconCollection.png) 0px 0px no-repeat; }
+
+i.yic.yic_componentshtml_pageprev {
+  background: url(IconCollection.png) 0px 0px no-repeat;
+  background-position-x: -16px; }
+
+i.yic.yic_componentshtml_textcopy {
+  background: url(IconCollection.png) 0px 0px no-repeat;
+  background-position-x: -32px; }
+
+i.yic.yic_componentshtml_textareasrccopy {
+  background: url(IconCollection.png) 0px 0px no-repeat;
+  background-position-x: -48px; }
+
+i.yic.yic_componentshtml_urlremote {
+  background: url(IconCollection.png) 0px 0px no-repeat;
+  background-position-x: -64px; }
+
+i.yic.yic_componentshtml_modmenuedit {
+  background: url(IconCollection.png) 0px 0px no-repeat;
+  background-position-y: -16px; }
+
 /* tooltip */
 .ui-tooltip.ui-widget {
   font-size: 12px;

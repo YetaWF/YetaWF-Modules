@@ -1,5 +1,37 @@
 /* Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/ComponentsHTML#License */
 
+/* Icon/sprite */
+
+i.yic {
+
+    $width: 16px;
+    $height: 16px;
+
+    &.yic_componentshtml_modprev {
+        background: url(IconCollection.png) 0px 0px no-repeat;
+    }
+    &.yic_componentshtml_pageprev {
+        background: url(IconCollection.png) 0px 0px no-repeat;
+        background-position-x: -1*$width;
+    }
+    &.yic_componentshtml_textcopy {
+        background: url(IconCollection.png) 0px 0px no-repeat;
+        background-position-x: -2*$width;
+    }
+    &.yic_componentshtml_textareasrccopy {
+        background: url(IconCollection.png) 0px 0px no-repeat;
+        background-position-x: -3*$width;
+    }
+    &.yic_componentshtml_urlremote {
+        background: url(IconCollection.png) 0px 0px no-repeat;
+        background-position-x: -4*$width;
+    }
+    &.yic_componentshtml_modmenuedit {
+        background: url(IconCollection.png) 0px 0px no-repeat;
+        background-position-y: -1*$height;
+    }
+}
+
 /* tooltip */
 .ui-tooltip.ui-widget {
     font-size:12px;

@@ -9,8 +9,8 @@ using YetaWF.Core.Components;
 using YetaWF.Core.Localize;
 using YetaWF.Core.Packages;
 using YetaWF.Core.Pages;
-using YetaWF.Core.Skins;
 using YetaWF.Core.Support;
+using YetaWF.Modules.ComponentsHTML.Addons;
 
 namespace YetaWF.Modules.ComponentsHTML.Components {
 
@@ -79,10 +79,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             tag.MergeAttribute("rel", "nofollow noopener noreferrer");
             tag.Attributes.Add(Basics.CssTooltip, __ResStr("linkTT", "Click to preview the page in a new window - not all pages can be displayed correctly and may require additional parameters"));
 
-            // image
-            SkinImages skinImages = new SkinImages();
-            string imageUrl = await skinImages.FindIcon_TemplateAsync("PagePreview.png", Package, TemplateName);
-            tag.InnerHtml = tag.InnerHtml + ImageHTML.BuildKnownIcon(imageUrl, title: __ResStr("linkAlt", "Preview"));
+            tag.InnerHtml = tag.InnerHtml + ImageHTML.BuildKnownIcon("#PagePreview", sprites: Info.PredefSpriteIcons, title: __ResStr("linkAlt", "Preview"));
             string linkTag = tag.ToString(YTagRenderMode.Normal);
 
             hb.Append($@"

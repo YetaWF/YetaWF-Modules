@@ -9,6 +9,7 @@ using YetaWF.Core.Modules;
 using YetaWF.Core.Packages;
 using YetaWF.Core.Skins;
 using YetaWF.Core.Support;
+using YetaWF.Modules.ComponentsHTML.Addons;
 using YetaWF.Modules.ComponentsHTML.Components;
 using static YetaWF.Core.Modules.ModuleAction;
 
@@ -72,7 +73,7 @@ namespace YetaWF.Modules.ComponentsHTML {
                 divTag.Attributes.Add("style", "display:none");
                 hb.Append(divTag.ToString(YTagRenderMode.StartTag));
 
-                hb.Append(ImageHTML.BuildKnownIcon("#ModuleMenu", title: this.__ResStr("mmAlt", "Menu")));
+                hb.Append(ImageHTML.BuildKnownIcon("#ModuleMenuEdit", sprites: Info.PredefSpriteIcons, title: this.__ResStr("mmAlt", "Menu")));
 
                 // <div>
                 YTagBuilder div2Tag = new YTagBuilder("div");

@@ -10,6 +10,7 @@ using YetaWF.Core.Modules;
 using YetaWF.Core.Packages;
 using YetaWF.Core.Skins;
 using YetaWF.Core.Support;
+using YetaWF.Modules.ComponentsHTML.Addons;
 using YetaWF.Modules.ComponentsHTML.Controllers;
 
 namespace YetaWF.Modules.ComponentsHTML.Components {
@@ -22,7 +23,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         public override Package GetPackage() { return Controllers.AreaRegistration.CurrentPackage; }
         public override string GetTemplateName() { return TemplateName; }
 
-        protected async Task<string> GetModuleLink(Guid? model, bool force = false) {
+        protected string GetModuleLink(Guid? model, bool force = false) {
 
             if (!force) {
                 if (model == null || model == Guid.Empty) return "";
@@ -34,10 +35,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             tag.MergeAttribute("rel", "nofollow noopener noreferrer");
             tag.Attributes.Add(Basics.CssTooltip, __ResStr("linkTT", "Click to preview the module in a new window - not all modules can be displayed correctly and may require additional parameters"));
 
-            // image
-            SkinImages skinImages = new SkinImages();
-            string imageUrl = await skinImages.FindIcon_TemplateAsync("ModulePreview.png", Package, "ModuleSelection");
-            tag.InnerHtml = tag.InnerHtml + ImageHTML.BuildKnownIcon(imageUrl, title: __ResStr("linkAlt", "Preview"));
+            tag.InnerHtml = tag.InnerHtml + ImageHTML.BuildKnownIcon("#ModulePreview", sprites: Info.PredefSpriteIcons, title: __ResStr("linkAlt", "Preview"));
             return tag.ToString(YTagRenderMode.Normal);
         }
     }
@@ -76,7 +74,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             if (mod != null) {
                 tag = new YTagBuilder("div");
                 tag.AddCssClass("t_link");
-                tag.InnerHtml = await GetModuleLink(model);
+                tag.InnerHtml = GetModuleLink(model);
                 hb.Append(tag.ToString(YTagRenderMode.Normal));
             }
 
@@ -185,7 +183,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             hb.Append($@"
     </div>
     <div class='t_link'>
-        {await GetModuleLink(model, force: true)}
+        {GetModuleLink(model, force: true)}
     </div>
     <div class='t_description'>
     </div>

@@ -1,5 +1,6 @@
 /* Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/ComponentsHTML#License */
 
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using YetaWF.Core.Addons;
 using YetaWF.Core.Packages;
@@ -10,6 +11,16 @@ using YetaWF.Modules.ComponentsHTML.Controllers;
 namespace YetaWF.Modules.ComponentsHTML.Addons {
 
     public class Info : IAddOnSupport {
+
+        //Sprites
+        public static Dictionary<string, string> PredefSpriteIcons = new Dictionary<string, string> {
+           { "#ModulePreview", "yic yic_componentshtml_modprev" },
+           { "#PagePreview", "yic yic_componentshtml_pageprev" },
+           { "#TextCopy", "yic yic_componentshtml_textcopy" },
+           { "#TextAreaSourceOnlyCopy", "yic yic_componentshtml_textareasrccopy" },
+           { "#UrlRemote", "yic yic_componentshtml_urlremote" },
+           { "#ModuleMenuEdit", "yic yic_componentshtml_modmenuedit" },
+        };
 
         public Task AddSupportAsync(YetaWFManager manager) {
 

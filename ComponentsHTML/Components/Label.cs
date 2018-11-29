@@ -16,7 +16,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         public override string GetTemplateName() { return TemplateName; }
         public override ComponentType GetComponentType() { return ComponentType.Display; }
 
-        public async Task<YHtmlString> RenderAsync(string model) {
+        public Task<YHtmlString> RenderAsync(string model) {
 
             HtmlBuilder sb = new HtmlBuilder();
 
@@ -39,7 +39,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                 sb.Append(tagA.ToString(YTagRenderMode.Normal));
             }
 
-            return sb.ToYHtmlString();
+            return Task.FromResult(sb.ToYHtmlString());
         }
     }
 }
