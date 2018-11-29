@@ -9,7 +9,7 @@ var YetaWF_ComponentsHTML;
             var a1 = YVolatile.Basics.CssNoTooltips;
             var a2 = YConfigs.Basics.CssTooltip;
             var a3 = YConfigs.Basics.CssTooltipSpan;
-            var selectors = "img:not(\"" + a1 + "\"),label,input:not(\".ui-button-disabled\"),a:not(\"" + a1 + ",.ui-button-disabled\"),i,.ui-jqgrid span[" + a2 + "],th[" + a2 + "],span[" + a3 + "],li[" + a2 + "],div[" + a2 + "]";
+            var selectors = "img:not(\"" + a1 + "\"),label,input:not(\".ui-button-disabled\"),a:not(\"" + a1 + ",.ui-button-disabled\"),i:not(\"" + a1 + "\"),.ui-jqgrid span[" + a2 + "],th[" + a2 + "],span[" + a3 + "],li[" + a2 + "],div[" + a2 + "]";
             var ddsel = ".k-list-container.k-popup li[data-offset-index]";
             $("body").tooltip({
                 items: (selectors + "," + ddsel),

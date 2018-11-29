@@ -66,7 +66,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
                 // image
                 if (PropData.GetAdditionalAttributeValue("ShowImage", true)) {
-                    tag.InnerHtml = tag.InnerHtml + ImageHTML.BuildKnownIcon("#UrlRemote", sprites: Info.PredefSpriteIcons, title: __ResStr("altText", "Remote Url"));
+                    tag.InnerHtml = tag.InnerHtml + ImageHTML.BuildKnownIcon("#UrlRemote", sprites: Info.PredefSpriteIcons);
                 }
                 hb.Append(tag.ToString(YTagRenderMode.Normal));
             }
@@ -143,7 +143,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             tag.MergeAttribute("target", "_blank");
             tag.MergeAttribute("rel", "nofollow noopener noreferrer");
 
-            tag.InnerHtml = tag.InnerHtml + ImageHTML.BuildKnownIcon("#UrlRemote", sprites: Info.PredefSpriteIcons, title: __ResStr("altText", "Remote Url"));
+            tag.InnerHtml = tag.InnerHtml + ImageHTML.BuildKnownIcon("#UrlRemote", sprites: Info.PredefSpriteIcons);
             string link = tag.ToString(YTagRenderMode.Normal);
 
             UrlEditSetup setup = new UrlEditSetup {

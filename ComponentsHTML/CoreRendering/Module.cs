@@ -73,7 +73,7 @@ namespace YetaWF.Modules.ComponentsHTML {
                 divTag.Attributes.Add("style", "display:none");
                 hb.Append(divTag.ToString(YTagRenderMode.StartTag));
 
-                hb.Append(ImageHTML.BuildKnownIcon("#ModuleMenuEdit", sprites: Info.PredefSpriteIcons, title: this.__ResStr("mmAlt", "Menu")));
+                hb.Append(ImageHTML.BuildKnownIcon("#ModuleMenuEdit", sprites: Info.PredefSpriteIcons, title: null /*no tooltip here as it's useless */));
 
                 // <div>
                 YTagBuilder div2Tag = new YTagBuilder("div");
@@ -256,8 +256,7 @@ namespace YetaWF.Modules.ComponentsHTML {
             bool hasText = false, hasImg = false;
             string innerHtml = "";
             if (mode != RenderModeEnum.LinksOnly && !string.IsNullOrWhiteSpace(action.ImageUrlFinal)) {
-                innerHtml += ImageHTML.BuildKnownIcon(action.ImageUrlFinal,
-                    title: mode == RenderModeEnum.NormalMenu ? action.MenuText : action.LinkText, cssClass: Basics.CssNoTooltip);
+                innerHtml += ImageHTML.BuildKnownIcon(action.ImageUrlFinal, cssClass: Basics.CssNoTooltip);
                 hasImg = true;
             }
             if (mode != RenderModeEnum.IconsOnly && mode != RenderModeEnum.ButtonIcon) {

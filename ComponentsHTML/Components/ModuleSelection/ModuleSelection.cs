@@ -35,7 +35,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             tag.MergeAttribute("rel", "nofollow noopener noreferrer");
             tag.Attributes.Add(Basics.CssTooltip, __ResStr("linkTT", "Click to preview the module in a new window - not all modules can be displayed correctly and may require additional parameters"));
 
-            tag.InnerHtml = tag.InnerHtml + ImageHTML.BuildKnownIcon("#ModulePreview", sprites: Info.PredefSpriteIcons, title: __ResStr("linkAlt", "Preview"));
+            tag.InnerHtml = tag.InnerHtml + ImageHTML.BuildKnownIcon("#ModulePreview", sprites: Info.PredefSpriteIcons);
             return tag.ToString(YTagRenderMode.Normal);
         }
     }
