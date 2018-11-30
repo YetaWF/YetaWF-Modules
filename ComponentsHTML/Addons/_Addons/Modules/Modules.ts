@@ -6,7 +6,7 @@ namespace YetaWF_ComponentsHTML {
 
         public static ClearInterval: number = 0;
 
-        private static readonly ClearTime = 1000;
+        private static readonly ClearTime: number = 1000;
 
         public static clearMenus(quick: boolean): void {
 

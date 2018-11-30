@@ -201,7 +201,7 @@
     <Content Include="Addons\_Addons\ModuleMenu\filelistJS.txt" />
     <Content Include="Addons\_Addons\ModuleMenu\ModuleMenu.js" />
     <Content Include="Addons\_Addons\Modules\filelistJS.txt" />
-    <Content Include="Addons\_Addons\Modules\modules.js" />
+    <TypeScriptCompile Include="Addons\_Addons\Modules\Modules.ts" />
     <Content Include="Addons\_Addons\necolas.github.io.normalize\filelistCSS.txt" />
     <Content Include="Addons\_Addons\no-margin-for-errors.com.prettyloader\css\prettyLoader.css" />
     <Content Include="Addons\_Addons\no-margin-for-errors.com.prettyloader\filelistCSS.txt" />

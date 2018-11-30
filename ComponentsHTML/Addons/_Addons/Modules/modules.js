@@ -96,5 +96,3 @@ var YetaWF_ComponentsHTML;
     YetaWF_ComponentsHTML.MenuHandler = MenuHandler;
     MenuHandler.registerMouseEnterHandlers();
 })(YetaWF_ComponentsHTML || (YetaWF_ComponentsHTML = {}));
-
-//# sourceMappingURL=Modules.js.map
