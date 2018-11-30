@@ -100,7 +100,7 @@ namespace YetaWF.Modules.ComponentsHTML {
         /// Render a module action.
         /// </summary>
         public static async Task<YHtmlString> RenderActionAsync(ModuleAction action, RenderModeEnum mode, string id,
-                RenderEngineEnum RenderEngine = RenderEngineEnum.JqueryMenu, int BootstrapSmartMenuLevel = 0, bool HasSubmenu = false) {
+                RenderEngineEnum RenderEngine = RenderEngineEnum.KendoMenu, int BootstrapSmartMenuLevel = 0, bool HasSubmenu = false) {
 
             // check if we're in the right mode
             if (!await action.RendersSomethingAsync()) return new YHtmlString("");
@@ -256,7 +256,11 @@ namespace YetaWF.Modules.ComponentsHTML {
             bool hasText = false, hasImg = false;
             string innerHtml = "";
             if (mode != RenderModeEnum.LinksOnly && !string.IsNullOrWhiteSpace(action.ImageUrlFinal)) {
-                innerHtml += ImageHTML.BuildKnownIcon(action.ImageUrlFinal, cssClass: Basics.CssNoTooltip);
+                if (RenderEngine == RenderEngineEnum.KendoMenu) {
+                    innerHtml += ImageHTML.BuildKnownIcon(action.ImageUrlFinal, cssClass: Basics.CssNoTooltip + " k-image"); // k-image is needed to align <i> and <img> correctly
+                } else {
+                    innerHtml += ImageHTML.BuildKnownIcon(action.ImageUrlFinal, cssClass: Basics.CssNoTooltip);
+                }
                 hasImg = true;
             }
             if (mode != RenderModeEnum.IconsOnly && mode != RenderModeEnum.ButtonIcon) {

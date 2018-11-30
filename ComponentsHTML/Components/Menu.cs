@@ -117,7 +117,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                     hb.Append(menu);
                 }
             } else {
-                string menu = (await CoreRendering.RenderMenuAsync(model.MenuList, DivId, model.CssClass, RenderEngine: YetaWF.Core.Modules.ModuleAction.RenderEngineEnum.JqueryMenu, HtmlHelper: HtmlHelper)).ToString();
+                string menu = (await CoreRendering.RenderMenuAsync(model.MenuList, DivId, model.CssClass, RenderEngine: YetaWF.Core.Modules.ModuleAction.RenderEngineEnum.KendoMenu, HtmlHelper: HtmlHelper)).ToString();
                 if (!string.IsNullOrWhiteSpace(menu)) {
                     //await KendoUICore.AddFileAsync("kendo.popup.min.js"); // is now a prereq of kendo.window (2017.2.621)
                     await KendoUICore.AddFileAsync("kendo.menu.min.js");
