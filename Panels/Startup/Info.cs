@@ -26,11 +26,11 @@ namespace YetaWF.Modules.Panels.Addons {
             scripts.AddConfigOption(areaName, "Action_Insert", PanelInfo.PanelAction.Insert);
             scripts.AddConfigOption(areaName, "Action_Remove", PanelInfo.PanelAction.Remove);
 
-            scripts.AddLocalization(areaName, "RemovePanelConfirm", this.__ResStr("removeConfirm", "Are you sure you want to remove this panel?"));
-            scripts.AddLocalization(areaName, "RemovePanelTitle", this.__ResStr("removeTitle", "Remove Panel"));
+            scripts.AddLocalization(areaName, "RemovePanelConfirm", this.__ResStr("removePanelConfirm", "Are you sure you want to remove this panel?"));
+            scripts.AddLocalization(areaName, "RemovePanelTitle", this.__ResStr("removePanelTitle", "Remove Panel"));
 
-            scripts.AddLocalization(areaName, "RemoveStepConfirm", this.__ResStr("removeConfirm", "Are you sure you want to remove this step?"));
-            scripts.AddLocalization(areaName, "RemoveStepTitle", this.__ResStr("removeTitle", "Remove Step"));
+            scripts.AddLocalization(areaName, "RemoveStepConfirm", this.__ResStr("removeStepConfirm", "Are you sure you want to remove this step?"));
+            scripts.AddLocalization(areaName, "RemoveStepTitle", this.__ResStr("removeStepTitle", "Remove Step"));
 
             return Task.CompletedTask;
         }

@@ -4,7 +4,7 @@ namespace YetaWF_Panels {
 
     export interface StepOptions {
         Name: string;
-        Url: string | null; // only used for enable calls to set Url to link to
+        Url?: string; // only used for enable calls to set Url to link to
     }
 
     export class StepInfoComponent extends YetaWF.ComponentBaseDataImpl {
@@ -15,7 +15,7 @@ namespace YetaWF_Panels {
             super(controlId);
         }
 
-        public static setActive(option: StepOptions) {
+        public static setActive(option: StepOptions): void {
             var stepCtrls = $YetaWF.getElementsBySelector(StepInfoComponent.SELECTOR);
             for (let stepCtrl of stepCtrls) {
                 var control = YetaWF.ComponentBaseDataImpl.getControlFromTag<StepInfoComponent>(stepCtrl, StepInfoComponent.SELECTOR);
@@ -23,7 +23,7 @@ namespace YetaWF_Panels {
                 control.activate(option);
             }
         }
-        public static setAllActive(names: string[]) {
+        public static setAllActive(names: string[]): void {
             var stepCtrls = $YetaWF.getElementsBySelector(StepInfoComponent.SELECTOR);
             for (let stepCtrl of stepCtrls) {
                 var control = YetaWF.ComponentBaseDataImpl.getControlFromTag<StepInfoComponent>(stepCtrl, StepInfoComponent.SELECTOR);
@@ -31,7 +31,7 @@ namespace YetaWF_Panels {
                 control.activateAll(names);
             }
         }
-        public static setLastActive(names: string[]) {
+        public static setLastActive(names: string[]): void {
             var stepCtrls = $YetaWF.getElementsBySelector(StepInfoComponent.SELECTOR);
             for (let stepCtrl of stepCtrls) {
                 var control = YetaWF.ComponentBaseDataImpl.getControlFromTag<StepInfoComponent>(stepCtrl, StepInfoComponent.SELECTOR);
@@ -39,18 +39,25 @@ namespace YetaWF_Panels {
                 control.activateLast(names);
             }
         }
-        public static setEnabled(options: StepOptions[]) {
+        public static setEnabled(options: StepOptions[]): void {
             var stepCtrls = $YetaWF.getElementsBySelector(StepInfoComponent.SELECTOR);
             for (let stepCtrl of stepCtrls) {
                 var control = YetaWF.ComponentBaseDataImpl.getControlFromTag<StepInfoComponent>(stepCtrl, StepInfoComponent.SELECTOR);
                 control.enable(options);
             }
         }
+        public static clearAll(): void {
+            var stepCtrls = $YetaWF.getElementsBySelector(StepInfoComponent.SELECTOR);
+            for (let stepCtrl of stepCtrls) {
+                var control = YetaWF.ComponentBaseDataImpl.getControlFromTag<StepInfoComponent>(stepCtrl, StepInfoComponent.SELECTOR);
+                control.clear();
+            }
+        }
 
         // API
 
         public clear(): void {
-            var steps = $YetaWF.getElementsBySelector(`a.t_step.t_active`) as HTMLAnchorElement[];
+            var steps = $YetaWF.getElementsBySelector(`a.t_step.t_active,a.t_step.t_enabled`) as HTMLAnchorElement[];
             for (let step of steps) {
                 $YetaWF.elementRemoveClass(step, "t_active");
                 $YetaWF.elementRemoveClass(step, "t_enabled");
@@ -66,8 +73,13 @@ namespace YetaWF_Panels {
         public activateAll(names: string[]): void {
             for (let name of names) {
                 var steps = $YetaWF.getElementsBySelector(`a[data-name^=${name}].t_step`, [this.Control]) as HTMLAnchorElement[];
+                var count = 0;
                 for (let step of steps) {
-                    $YetaWF.elementAddClass(step, "t_active");
+                    if (count >= steps.length - 1)
+                        $YetaWF.elementAddClass(step, "t_active");
+                    else
+                        $YetaWF.elementAddClass(step, "t_enabled");
+                    ++count;
                 }
             }
         }

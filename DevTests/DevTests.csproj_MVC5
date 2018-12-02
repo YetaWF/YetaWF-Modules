@@ -71,6 +71,7 @@
     <Compile Include="Components\HTML\ScrollerItem.cs" />
     <Compile Include="Controllers\Support\ListOfEmailAddresses.cs" />
     <Compile Include="Controllers\TemplateColorPicker.cs" />
+    <Compile Include="Controllers\TestSteps.cs" />
     <Compile Include="Controllers\TemplateTree.cs" />
     <Compile Include="Controllers\TemplateGrid.cs" />
     <Compile Include="Controllers\TemplateGridAjax.cs" />
@@ -88,6 +89,7 @@
     <Compile Include="Controllers\TestEscapes.cs" />
     <Compile Include="Modules\TemplateColorPickerModule.cs" />
     <Compile Include="Modules\TemplateGridAjaxModule.cs" />
+    <Compile Include="Modules\TestStepsModule.cs" />
     <Compile Include="Modules\TemplateTreeModule.cs" />
     <Compile Include="Modules\TemplateGridModule.cs" />
     <Compile Include="Modules\TemplateMultiString.cs" />
@@ -113,6 +115,7 @@
     <Compile Include="Modules\TemplateReferencedModulesModule.cs" />
     <Compile Include="Modules\TemplateTestUrl.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Views\HTML\TestSteps.cs" />
     <Compile Include="Views\HTML\TestEscapes.cs" />
     <Compile Include="Views\HTML\TemplateScroller.cs" />
     <Compile Include="Views\HTML\SMSProcessorStatus.cs" />
@@ -120,6 +123,7 @@
   <ItemGroup>
     <None Include="Addons\_Main\Grids\ListOfEmailAddressesDisplayComponent.Entry" />
     <None Include="Addons\_Main\Grids\ListOfEmailAddressesEditComponent.Entry" />
+    <None Include="Addons\_Addons\TestStepsModule\filelistJS.txt" />
     <Content Include="Addons\_SiteTemplates\YetaWF_DevTests.4.1.0.txt" />
     <Content Include="Addons\_SiteTemplates\YetaWF_DevTests.4.0.0.txt" />
     <None Include="Addons\_Main\Grids\TemplateGridAjaxModuleController.BrowseItem" />
@@ -172,12 +176,14 @@
     <Content Include="Addons\_Main\Images\image7.png" />
     <Content Include="Addons\_Main\Images\image8.png" />
     <Content Include="Addons\_Main\Images\image9.png" />
+    <Content Include="Addons\_SiteTemplates\YetaWF_DevTests.4.2.0.txt" />
     <Content Include="Addons\_Templates\ListOfEmailAddresses\filelistCSS.txt" />
     <Content Include="Addons\_Templates\ListOfEmailAddresses\filelistJS.txt" />
     <Content Include="Addons\_Templates\ScrollerItem\filelistCSS.txt" />
     <None Include="Addons\_Templates\ScrollerItem\ScrollerItem.scss" />
   </ItemGroup>
   <ItemGroup>
+    <TypeScriptCompile Include="Addons\_Addons\TestStepsModule\TestSteps.ts" />
     <TypeScriptCompile Include="Addons\_Templates\ListOfEmailAddresses\ListOfEmailAddressesEdit.ts" />
   </ItemGroup>
   <PropertyGroup>

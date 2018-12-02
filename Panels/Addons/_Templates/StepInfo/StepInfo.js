@@ -6,7 +6,7 @@ var __extends = (this && this.__extends) || (function () {
             ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
             function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
         return extendStatics(d, b);
-    };
+    }
     return function (d, b) {
         extendStatics(d, b);
         function __() { this.constructor = d; }
@@ -55,9 +55,17 @@ var YetaWF_Panels;
                 control.enable(options);
             }
         };
+        StepInfoComponent.clearAll = function () {
+            var stepCtrls = $YetaWF.getElementsBySelector(StepInfoComponent.SELECTOR);
+            for (var _i = 0, stepCtrls_5 = stepCtrls; _i < stepCtrls_5.length; _i++) {
+                var stepCtrl = stepCtrls_5[_i];
+                var control = YetaWF.ComponentBaseDataImpl.getControlFromTag(stepCtrl, StepInfoComponent.SELECTOR);
+                control.clear();
+            }
+        };
         // API
         StepInfoComponent.prototype.clear = function () {
-            var steps = $YetaWF.getElementsBySelector("a.t_step.t_active");
+            var steps = $YetaWF.getElementsBySelector("a.t_step.t_active,a.t_step.t_enabled");
             for (var _i = 0, steps_1 = steps; _i < steps_1.length; _i++) {
                 var step = steps_1[_i];
                 $YetaWF.elementRemoveClass(step, "t_active");
@@ -76,9 +84,14 @@ var YetaWF_Panels;
             for (var _i = 0, names_1 = names; _i < names_1.length; _i++) {
                 var name_1 = names_1[_i];
                 var steps = $YetaWF.getElementsBySelector("a[data-name^=" + name_1 + "].t_step", [this.Control]);
+                var count = 0;
                 for (var _a = 0, steps_3 = steps; _a < steps_3.length; _a++) {
                     var step = steps_3[_a];
-                    $YetaWF.elementAddClass(step, "t_active");
+                    if (count >= steps.length - 1)
+                        $YetaWF.elementAddClass(step, "t_active");
+                    else
+                        $YetaWF.elementAddClass(step, "t_enabled");
+                    ++count;
                 }
             }
         };
@@ -112,5 +125,3 @@ var YetaWF_Panels;
         StepInfoComponent.clearDiv(tag, StepInfoComponent.SELECTOR);
     });
 })(YetaWF_Panels || (YetaWF_Panels = {}));
-
-//# sourceMappingURL=StepInfo.js.map

@@ -1,0 +1,15 @@
+### Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/DevTests#License
+###
+### DevTests Package Upgrade
+###
+
+::PAGE-SECTION::
+
+Administrator /Tests/Steps
+    Title=Steps
+    Description=Test page for DisplaySteps module
+    -
+    -
+    YetaWF.Panels, YetaWF.Modules.Panels.Modules.DisplayStepsModule
+    YetaWF.DevTests, YetaWF.Modules.DevTests.Modules.TestStepsModule
+

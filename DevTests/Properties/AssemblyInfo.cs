@@ -26,3 +26,4 @@ using YetaWF.PackageAttributes;
 
 [assembly: RequiresPackage("YetaWF.ComponentsHTML")]
 [assembly: RequiresPackage("YetaWF.Identity")]
+[assembly: RequiresPackage("YetaWF.Panels")]
