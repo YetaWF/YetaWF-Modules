@@ -13,8 +13,8 @@ namespace YetaWF.Modules.DevTests.Controllers {
         public TestStepsModuleController() { }
 
         [Trim]
-        [Header(@"This test page is used to test the DisplaySteps module, which uses client-side code to activate/enable individual steps (usually sent by other modules on the same page). " +
-                "The individual stops can be edited in the DisplaySteps module by switching to Site Edit mode.")]
+        [Header(@"This test page is used to test the DisplaySteps module, which uses client-side code to activate/enable individual steps (using notifications usually sent by other modules on the same page). " +
+            "The individual steps can be edited in the DisplaySteps module by switching to Site Edit mode.")]
         public class Model { }
 
         [AllowGet]

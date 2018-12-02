@@ -6,7 +6,7 @@ var __extends = (this && this.__extends) || (function () {
             ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
             function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
         return extendStatics(d, b);
-    }
+    };
     return function (d, b) {
         extendStatics(d, b);
         function __() { this.constructor = d; }
@@ -80,3 +80,5 @@ var YetaWF_Panels;
     }(YetaWF.ComponentBaseImpl));
     YetaWF_Panels.ListOfLocalPagesEditComponent = ListOfLocalPagesEditComponent;
 })(YetaWF_Panels || (YetaWF_Panels = {}));
+
+//# sourceMappingURL=ListOfLocalPagesEdit.js.map
