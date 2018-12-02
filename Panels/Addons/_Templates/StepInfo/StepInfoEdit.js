@@ -15,9 +15,9 @@ var __extends = (this && this.__extends) || (function () {
 })();
 var YetaWF_Panels;
 (function (YetaWF_Panels) {
-    var PanelInfoEditComponent = /** @class */ (function (_super) {
-        __extends(PanelInfoEditComponent, _super);
-        function PanelInfoEditComponent(controlId) {
+    var StepInfoEditComponent = /** @class */ (function (_super) {
+        __extends(StepInfoEditComponent, _super);
+        function StepInfoEditComponent(controlId) {
             var _this = _super.call(this, controlId) || this;
             _this.Up = $YetaWF.getElement1BySelector("input.t_up", [_this.Control]);
             _this.Down = $YetaWF.getElement1BySelector("input.t_down", [_this.Control]);
@@ -28,59 +28,59 @@ var YetaWF_Panels;
             _this.updateButtons();
             // Apply button click
             $YetaWF.registerEventHandler(_this.Apply, "click", null, function (ev) {
-                $YetaWF.Forms.submitTemplate(_this.Control, true, PanelInfoEditComponent.TEMPLATENAME, YConfigs.YetaWF_Panels.Action_Apply, _this.getPanelIndex().toString());
+                $YetaWF.Forms.submitTemplate(_this.Control, true, StepInfoEditComponent.TEMPLATENAME, YConfigs.YetaWF_Panels.Action_Apply, _this.getPanelIndex().toString());
                 return false;
             });
             // << button click
             $YetaWF.registerEventHandler(_this.Up, "click", null, function (ev) {
-                $YetaWF.Forms.submitTemplate(_this.Control, true, PanelInfoEditComponent.TEMPLATENAME, YConfigs.YetaWF_Panels.Action_MoveLeft, _this.getPanelIndex().toString());
+                $YetaWF.Forms.submitTemplate(_this.Control, true, StepInfoEditComponent.TEMPLATENAME, YConfigs.YetaWF_Panels.Action_MoveLeft, _this.getPanelIndex().toString());
                 return false;
             });
             // >> button click
             $YetaWF.registerEventHandler(_this.Down, "click", null, function (ev) {
-                $YetaWF.Forms.submitTemplate(_this.Control, true, PanelInfoEditComponent.TEMPLATENAME, YConfigs.YetaWF_Panels.Action_MoveRight, _this.getPanelIndex().toString());
+                $YetaWF.Forms.submitTemplate(_this.Control, true, StepInfoEditComponent.TEMPLATENAME, YConfigs.YetaWF_Panels.Action_MoveRight, _this.getPanelIndex().toString());
                 return false;
             });
             // delete button click
             $YetaWF.registerEventHandler(_this.Delete, "click", null, function (ev) {
-                $YetaWF.alertYesNo(YLocs.YetaWF_Panels.RemovePanelConfirm, YLocs.YetaWF_Panels.RemovePanelTitle, function () {
-                    $YetaWF.Forms.submitTemplate(_this.Control, false, PanelInfoEditComponent.TEMPLATENAME, YConfigs.YetaWF_Panels.Action_Remove, _this.getPanelIndex().toString());
+                $YetaWF.alertYesNo(YLocs.YetaWF_Panels.RemoveStepConfirm, YLocs.YetaWF_Panels.RemoveStepTitle, function () {
+                    $YetaWF.Forms.submitTemplate(_this.Control, false, StepInfoEditComponent.TEMPLATENAME, YConfigs.YetaWF_Panels.Action_Remove, _this.getPanelIndex().toString());
                 });
                 return false;
             });
             // Insert button click
             $YetaWF.registerEventHandler(_this.Insert, "click", null, function (ev) {
-                $YetaWF.Forms.submitTemplate(_this.Control, true, PanelInfoEditComponent.TEMPLATENAME, YConfigs.YetaWF_Panels.Action_Insert, _this.getPanelIndex().toString());
+                $YetaWF.Forms.submitTemplate(_this.Control, true, StepInfoEditComponent.TEMPLATENAME, YConfigs.YetaWF_Panels.Action_Insert, _this.getPanelIndex().toString());
                 return false;
             });
             // Add button click
             $YetaWF.registerEventHandler(_this.Add, "click", null, function (ev) {
-                $YetaWF.Forms.submitTemplate(_this.Control, true, PanelInfoEditComponent.TEMPLATENAME, YConfigs.YetaWF_Panels.Action_Add, _this.getPanelIndex().toString());
+                $YetaWF.Forms.submitTemplate(_this.Control, true, StepInfoEditComponent.TEMPLATENAME, YConfigs.YetaWF_Panels.Action_Add, _this.getPanelIndex().toString());
                 return false;
             });
             return _this;
         }
-        PanelInfoEditComponent.prototype.getPanelIndex = function () {
+        StepInfoEditComponent.prototype.getPanelIndex = function () {
             var tabActive = $YetaWF.getElement1BySelector("input[name$='_ActiveTab']", [this.Control]);
             return Number(tabActive.value);
         };
-        PanelInfoEditComponent.prototype.getPanelCount = function () {
+        StepInfoEditComponent.prototype.getPanelCount = function () {
             var tabs = $YetaWF.getElementsBySelector(".t_tabstrip li", [this.Control]);
             return tabs.length;
         };
-        PanelInfoEditComponent.prototype.updateButtons = function () {
+        StepInfoEditComponent.prototype.updateButtons = function () {
             var panelIndex = this.getPanelIndex();
             $YetaWF.elementEnableToggle(this.Up, panelIndex !== 0);
             $YetaWF.elementEnableToggle(this.Down, panelIndex < this.getPanelCount() - 1);
             $YetaWF.elementEnableToggle(this.Delete, this.getPanelCount() > 1);
         };
-        PanelInfoEditComponent.SELECTOR = ".yt_panels_panelinfo.t_edit";
-        PanelInfoEditComponent.TEMPLATENAME = "YetaWF_Panels_PanelInfo";
-        return PanelInfoEditComponent;
+        StepInfoEditComponent.SELECTOR = ".yt_panels_stepinfo.t_edit";
+        StepInfoEditComponent.TEMPLATENAME = "YetaWF_Panels_StepInfo";
+        return StepInfoEditComponent;
     }(YetaWF.ComponentBaseDataImpl));
-    YetaWF_Panels.PanelInfoEditComponent = PanelInfoEditComponent;
+    YetaWF_Panels.StepInfoEditComponent = StepInfoEditComponent;
     $YetaWF.registerPanelSwitched(function (panel) {
-        var panelInfo = YetaWF.ComponentBaseDataImpl.getControlFromTagCond(panel, PanelInfoEditComponent.SELECTOR);
+        var panelInfo = YetaWF.ComponentBaseDataImpl.getControlFromTagCond(panel, StepInfoEditComponent.SELECTOR);
         if (!panelInfo)
             return;
         var tabActive = $YetaWF.getElement1BySelector("input[name$='_ActiveTab']", [panelInfo.Control]);
@@ -90,7 +90,7 @@ var YetaWF_Panels;
     // A <div> is being emptied. Destroy all panels the <div> may contain.
     $YetaWF.registerClearDiv(function (tag) {
         // tabs
-        var list = $YetaWF.getElementsBySelector(".yt_panels_panelinfo .t_panels.t_acctabs", [tag]);
+        var list = $YetaWF.getElementsBySelector(".yt_panels_stepinfo .t_panels.t_acctabs", [tag]);
         for (var _i = 0, list_1 = list; _i < list_1.length; _i++) {
             var el = list_1[_i];
             var tabs = $(el);
@@ -98,7 +98,7 @@ var YetaWF_Panels;
                 tabs.tabs("destroy");
         }
         // jquery ui accordion
-        var list = $YetaWF.getElementsBySelector(".yt_panels_panelinfo .t_panels.t_accjquery", [tag]);
+        var list = $YetaWF.getElementsBySelector(".yt_panels_stepinfo .t_panels.t_accjquery", [tag]);
         for (var _a = 0, list_2 = list; _a < list_2.length; _a++) {
             var el = list_2[_a];
             var accordion = $(el);
@@ -106,15 +106,15 @@ var YetaWF_Panels;
                 accordion.accordion("destroy");
         }
         // kendo accordion
-        var list = $YetaWF.getElementsBySelector(".yt_panels_panelinfo .t_panels.t_acckendo", [tag]);
+        var list = $YetaWF.getElementsBySelector(".yt_panels_stepinfo .t_panels.t_acckendo", [tag]);
         for (var _b = 0, list_3 = list; _b < list_3.length; _b++) {
             var el = list_3[_b];
             var panelBar = $(el).data("kendoPanelBar");
             if (panelBar)
                 panelBar.destroy();
         }
-        PanelInfoEditComponent.clearDiv(tag, PanelInfoEditComponent.SELECTOR);
+        StepInfoEditComponent.clearDiv(tag, StepInfoEditComponent.SELECTOR);
     });
 })(YetaWF_Panels || (YetaWF_Panels = {}));
 
-//# sourceMappingURL=PanelInfoEdit.js.map
+//# sourceMappingURL=StepInfoEdit.js.map

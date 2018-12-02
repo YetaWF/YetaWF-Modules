@@ -3,14 +3,14 @@
 namespace YetaWF_Panels {
 
     export interface IPackageLocs {
-        RemovePanelConfirm: string;
-        RemovePanelTitle: string;
+        RemoveStepConfirm: string;
+        RemoveStepTitle: string;
     }
 
-    export class PanelInfoEditComponent extends YetaWF.ComponentBaseDataImpl {
+    export class StepInfoEditComponent extends YetaWF.ComponentBaseDataImpl {
 
-        public static readonly SELECTOR: string = ".yt_panels_panelinfo.t_edit";
-        public static TEMPLATENAME: string = "YetaWF_Panels_PanelInfo";
+        public static readonly SELECTOR: string = ".yt_panels_stepinfo.t_edit";
+        public static TEMPLATENAME: string = "YetaWF_Panels_StepInfo";
 
         private Up: HTMLInputElement;
         private Down: HTMLInputElement;
@@ -33,34 +33,34 @@ namespace YetaWF_Panels {
 
             // Apply button click
             $YetaWF.registerEventHandler(this.Apply, "click", null, (ev: MouseEvent): boolean => {
-                $YetaWF.Forms.submitTemplate(this.Control, true, PanelInfoEditComponent.TEMPLATENAME, YConfigs.YetaWF_Panels.Action_Apply, this.getPanelIndex().toString());
+                $YetaWF.Forms.submitTemplate(this.Control, true, StepInfoEditComponent.TEMPLATENAME, YConfigs.YetaWF_Panels.Action_Apply, this.getPanelIndex().toString());
                 return false;
             });
             // << button click
             $YetaWF.registerEventHandler(this.Up, "click", null, (ev: MouseEvent): boolean => {
-                $YetaWF.Forms.submitTemplate(this.Control, true, PanelInfoEditComponent.TEMPLATENAME, YConfigs.YetaWF_Panels.Action_MoveLeft, this.getPanelIndex().toString());
+                $YetaWF.Forms.submitTemplate(this.Control, true, StepInfoEditComponent.TEMPLATENAME, YConfigs.YetaWF_Panels.Action_MoveLeft, this.getPanelIndex().toString());
                 return false;
             });
             // >> button click
             $YetaWF.registerEventHandler(this.Down, "click", null, (ev: MouseEvent): boolean => {
-                $YetaWF.Forms.submitTemplate(this.Control, true, PanelInfoEditComponent.TEMPLATENAME, YConfigs.YetaWF_Panels.Action_MoveRight, this.getPanelIndex().toString());
+                $YetaWF.Forms.submitTemplate(this.Control, true, StepInfoEditComponent.TEMPLATENAME, YConfigs.YetaWF_Panels.Action_MoveRight, this.getPanelIndex().toString());
                 return false;
             });
             // delete button click
             $YetaWF.registerEventHandler(this.Delete, "click", null, (ev: MouseEvent): boolean => {
-                $YetaWF.alertYesNo(YLocs.YetaWF_Panels.RemovePanelConfirm, YLocs.YetaWF_Panels.RemovePanelTitle, (): void => {
-                    $YetaWF.Forms.submitTemplate(this.Control, false, PanelInfoEditComponent.TEMPLATENAME, YConfigs.YetaWF_Panels.Action_Remove, this.getPanelIndex().toString());
+                $YetaWF.alertYesNo(YLocs.YetaWF_Panels.RemoveStepConfirm, YLocs.YetaWF_Panels.RemoveStepTitle, (): void => {
+                    $YetaWF.Forms.submitTemplate(this.Control, false, StepInfoEditComponent.TEMPLATENAME, YConfigs.YetaWF_Panels.Action_Remove, this.getPanelIndex().toString());
                 });
                 return false;
             });
             // Insert button click
             $YetaWF.registerEventHandler(this.Insert, "click", null, (ev: MouseEvent): boolean => {
-                $YetaWF.Forms.submitTemplate(this.Control, true, PanelInfoEditComponent.TEMPLATENAME, YConfigs.YetaWF_Panels.Action_Insert, this.getPanelIndex().toString());
+                $YetaWF.Forms.submitTemplate(this.Control, true, StepInfoEditComponent.TEMPLATENAME, YConfigs.YetaWF_Panels.Action_Insert, this.getPanelIndex().toString());
                 return false;
             });
             // Add button click
             $YetaWF.registerEventHandler(this.Add, "click", null, (ev: MouseEvent): boolean => {
-                $YetaWF.Forms.submitTemplate(this.Control, true, PanelInfoEditComponent.TEMPLATENAME, YConfigs.YetaWF_Panels.Action_Add, this.getPanelIndex().toString());
+                $YetaWF.Forms.submitTemplate(this.Control, true, StepInfoEditComponent.TEMPLATENAME, YConfigs.YetaWF_Panels.Action_Add, this.getPanelIndex().toString());
                 return false;
             });
         }
@@ -81,7 +81,7 @@ namespace YetaWF_Panels {
     }
 
     $YetaWF.registerPanelSwitched((panel: HTMLElement): void => {
-        var panelInfo = YetaWF.ComponentBaseDataImpl.getControlFromTagCond<PanelInfoEditComponent>(panel, PanelInfoEditComponent.SELECTOR);
+        var panelInfo = YetaWF.ComponentBaseDataImpl.getControlFromTagCond<StepInfoEditComponent>(panel, StepInfoEditComponent.SELECTOR);
         if (!panelInfo) return;
         var tabActive = $YetaWF.getElement1BySelector("input[name$='_ActiveTab']", [panelInfo.Control]) as HTMLInputElement;
         tabActive.value = $YetaWF.getAttribute(panel, "data-tab");
@@ -91,24 +91,24 @@ namespace YetaWF_Panels {
     // A <div> is being emptied. Destroy all panels the <div> may contain.
     $YetaWF.registerClearDiv((tag: HTMLElement): void => {
         // tabs
-        var list = $YetaWF.getElementsBySelector(".yt_panels_panelinfo .t_panels.t_acctabs", [tag]);
+        var list = $YetaWF.getElementsBySelector(".yt_panels_stepinfo .t_panels.t_acctabs", [tag]);
         for (let el of list) {
             var tabs = $(el);
             if (tabs) tabs.tabs("destroy");
         }
         // jquery ui accordion
-        var list = $YetaWF.getElementsBySelector(".yt_panels_panelinfo .t_panels.t_accjquery", [tag]);
+        var list = $YetaWF.getElementsBySelector(".yt_panels_stepinfo .t_panels.t_accjquery", [tag]);
         for (let el of list) {
             var accordion = $(el);
             if (accordion) accordion.accordion("destroy");
         }
         // kendo accordion
-        var list = $YetaWF.getElementsBySelector(".yt_panels_panelinfo .t_panels.t_acckendo", [tag]);
+        var list = $YetaWF.getElementsBySelector(".yt_panels_stepinfo .t_panels.t_acckendo", [tag]);
         for (let el of list) {
             var panelBar = $(el).data("kendoPanelBar");
             if (panelBar) panelBar.destroy();
         }
 
-        PanelInfoEditComponent.clearDiv(tag, PanelInfoEditComponent.SELECTOR);
+        StepInfoEditComponent.clearDiv(tag, StepInfoEditComponent.SELECTOR);
     });
 }

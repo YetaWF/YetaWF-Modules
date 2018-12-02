@@ -56,7 +56,7 @@ namespace YetaWF_ComponentsHTML {
         }
         private static onHandleModuleMouseEnter(ev: MouseEvent): boolean {
 
-            console.log("Entering module");
+            //console.log("Entering module");
 
             if (MenuHandler.ClearInterval)
                 clearInterval(MenuHandler.ClearInterval);
@@ -84,7 +84,7 @@ namespace YetaWF_ComponentsHTML {
         }
         private static onHandleModuleMouseLeave(ev: MouseEvent): boolean {
 
-            console.log("Exiting module");
+            //console.log("Exiting module");
 
             if (MenuHandler.ClearInterval)
                 clearInterval(MenuHandler.ClearInterval);
@@ -99,7 +99,7 @@ namespace YetaWF_ComponentsHTML {
         /** Show/hide menu as we're hovering over the edit icon */
         private static onHandleEditIconMouseEnter(ev: MouseEvent): boolean {
 
-            console.log("Entering edit icon");
+            //console.log("Entering edit icon");
 
             var modDiv = ev.__YetaWFElem as HTMLDivElement;
             // find the module's menu

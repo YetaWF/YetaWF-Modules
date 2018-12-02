@@ -1,0 +1,72 @@
+/* Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Panels#License */
+
+.yt_panels_stepinfo {
+
+    $bgcolor: rgb(177, 223, 187);
+    $bgcoloractive: rgb(92, 184, 92);
+
+    margin-top: 2em;
+
+    &.t_display {
+        background-color: $bgcolor;
+        overflow: hidden;
+        .t_step {
+            display: inline-block;
+            position:relative;
+            text-decoration:none;
+            padding: 20px 0px 20px 40px;
+            &.t_active, &.t_enabled {
+                background-color: $bgcoloractive;
+            }
+            .t_caption {
+                color: #fff;
+                font-size:15px;
+                font-weight: bold;
+                display:block;
+                user-select:none;
+            }
+            .t_description {
+                color: #fff;
+                font-size:13px;
+                font-weight: normal;
+                display:block;
+                user-select:none;
+            }
+        }
+        .t_step:first-child {
+            padding-left:20px;
+        }
+        .t_step:before {
+            content: " ";
+            position:absolute;
+            top:50%;
+            left:100%;
+            margin-top:-50px;
+            z-index:1;
+
+            margin-left:2px;
+            border-top: transparent solid 50px;
+            border-bottom: transparent solid 50px;
+            border-left: #ddd solid 30px;
+        }
+        .t_step:after {
+            content: " ";
+            position:absolute;
+            top:50%;
+            left:100%;
+            margin-top:-50px;
+            z-index:2;
+
+            border-top: transparent solid 50px;
+            border-bottom: transparent solid 50px;
+            border-left: $bgcolor solid 30px;
+        }
+        .t_step.t_active:after, .t_step.t_enabled:after {
+            border-left: $bgcoloractive solid 30px;
+        }
+    }
+
+    &.t_edit .t_buttons {
+        margin-top:.5em;
+    }
+}

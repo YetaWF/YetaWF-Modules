@@ -52,7 +52,7 @@ var YetaWF_ComponentsHTML;
             }
         };
         MenuHandler.onHandleModuleMouseEnter = function (ev) {
-            console.log("Entering module");
+            //console.log("Entering module");
             if (MenuHandler.ClearInterval)
                 clearInterval(MenuHandler.ClearInterval);
             MenuHandler.ClearInterval = 0;
@@ -72,7 +72,7 @@ var YetaWF_ComponentsHTML;
             return true;
         };
         MenuHandler.onHandleModuleMouseLeave = function (ev) {
-            console.log("Exiting module");
+            //console.log("Exiting module");
             if (MenuHandler.ClearInterval)
                 clearInterval(MenuHandler.ClearInterval);
             MenuHandler.ClearInterval = setInterval(function () { MenuHandler.clearMenus(false); }, MenuHandler.ClearTime);
@@ -82,7 +82,7 @@ var YetaWF_ComponentsHTML;
         };
         /** Show/hide menu as we're hovering over the edit icon */
         MenuHandler.onHandleEditIconMouseEnter = function (ev) {
-            console.log("Entering edit icon");
+            //console.log("Entering edit icon");
             var modDiv = ev.__YetaWFElem;
             // find the module's menu
             var menu = $YetaWF.getElement1BySelector(".yModuleMenu", [modDiv]);
@@ -96,3 +96,5 @@ var YetaWF_ComponentsHTML;
     YetaWF_ComponentsHTML.MenuHandler = MenuHandler;
     MenuHandler.registerMouseEnterHandlers();
 })(YetaWF_ComponentsHTML || (YetaWF_ComponentsHTML = {}));
+
+//# sourceMappingURL=Modules.js.map

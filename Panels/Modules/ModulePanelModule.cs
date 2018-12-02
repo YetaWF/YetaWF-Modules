@@ -40,7 +40,7 @@ namespace YetaWF.Modules.Panels.Modules {
         public PanelInfo PanelInfo { get; set; }
 
         public override Task ModuleSavingAsync() {
-            PanelInfo.Saving("PanelInfo", ModuleGuid); // update internal information
+            PanelInfo.Saving(nameof(PanelInfo), ModuleGuid); // update internal information
             return Task.CompletedTask;
         }
 

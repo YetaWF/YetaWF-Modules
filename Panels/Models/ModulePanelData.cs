@@ -65,9 +65,9 @@ namespace YetaWF.Modules.Panels.Models {
                 return _moduleDef;
             }
             private ModuleDefinition _moduleDef = null;
-            private static ModuleDefinition NoModule = new ModuleDefinition();
+            private static readonly ModuleDefinition NoModule = new ModuleDefinition();
 
-            public async Task<bool> IsAuthorizedAsync() { // this is used in *.cshtml
+            public async Task<bool> IsAuthorizedAsync() {
                 ModuleDefinition mod = await GetModuleAsync();
                 if (mod == null) return false;
                 return mod.IsAuthorized(null);
