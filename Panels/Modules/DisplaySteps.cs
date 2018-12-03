@@ -7,6 +7,11 @@ using YetaWF.Core.Modules;
 using YetaWF.Core.Serializers;
 using YetaWF.DataProvider;
 using YetaWF.Modules.Panels.Models;
+#if MVC6
+using Microsoft.AspNetCore.Mvc.ModelBinding;
+using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
+#else
+#endif
 
 namespace YetaWF.Modules.Panels.Modules {
 
