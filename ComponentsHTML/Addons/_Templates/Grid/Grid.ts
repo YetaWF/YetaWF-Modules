@@ -282,7 +282,7 @@ namespace YetaWF_ComponentsHTML {
                     else {
                         $YetaWF.closeOverlays();
                         $(ulElem).show();
-                        $(ulElem).position({
+                        $(ulElem).position({ //jQuery-ui use
                             my: "left top",
                             at: "left bottom",
                             of: $(ev.__YetaWFElem),

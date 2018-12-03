@@ -11,7 +11,7 @@ namespace YetaWF_ComponentsHTML {
             const a3 = YConfigs.Basics.CssTooltipSpan;
             const selectors = `img:not("${a1}"),label,input:not(".ui-button-disabled"),a:not("${a1},.ui-button-disabled"),i:not("${a1}"),.ui-jqgrid span[${a2}],th[${a2}],span[${a3}],li[${a2}],div[${a2}]`;
             const ddsel = ".k-list-container.k-popup li[data-offset-index]";
-            $("body").tooltip({
+            $("body").tooltip({ //jQuery-ui use
                 items: (selectors + "," + ddsel),
                 content: function (a: any, b: any, c: any) : string|null {
                     var $this = $(this as HTMLElement);

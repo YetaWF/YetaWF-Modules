@@ -15,15 +15,17 @@ namespace YetaWF.Modules.ComponentsHTML {
         }
 
         public async Task AddStandardAddOnsAsync() {
+            await Manager.AddOnManager.AddAddOnNamedAsync(Package.AreaName, "necolas.github.io.normalize");
             await Manager.AddOnManager.AddAddOnNamedAsync(Package.AreaName, "jquery");
             await Manager.AddOnManager.AddAddOnNamedAsync(Package.AreaName, "jqueryui");
-            await Manager.AddOnManager.AddAddOnNamedAsync(Package.AreaName, "necolas.github.io.normalize");
             await Manager.AddOnManager.AddAddOnNamedAsync(Package.AreaName, "no-margin-for-errors.com.prettyLoader");
 
             await Manager.AddOnManager.AddAddOnNamedAsync("YetaWF_Core", "Basics");
             await Manager.AddOnManager.AddAddOnNamedAsync("YetaWF_Core", "Icons");
+
             if (Manager.IsInPopup)
                 await AddPopupsAddOnsAsync();
+
             await Manager.AddOnManager.AddPackageAsync(Package, new List<Package>());
         }
 

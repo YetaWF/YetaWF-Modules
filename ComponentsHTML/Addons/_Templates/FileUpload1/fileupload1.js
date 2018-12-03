@@ -74,7 +74,7 @@ var YetaWF_ComponentsHTML;
                 onUploadProgress: function (id, percent) {
                     if (_this.$divProgressbar) {
                         _this.$divProgressbar.show();
-                        _this.$divProgressbar.progressbar("value", percent);
+                        _this.$divProgressbar.progressbar("value", percent); //jQuery-ui use
                     }
                 },
                 onUploadError: function (id, message) {

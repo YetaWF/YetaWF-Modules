@@ -188,7 +188,7 @@ namespace YetaWF_ComponentsHTML {
         public static tabInitjQuery(tabCtrlId: string, activeTab: number, activeTabId: string):void {
             var tabCtrl = $YetaWF.getElementById(tabCtrlId);
             $YetaWF.elementAddClass(tabCtrl, "t_jquery");
-            $(tabCtrl).tabs({
+            $(tabCtrl).tabs({ //jQuery-ui use
                 active: activeTab,
                 activate: (ev: Event, ui: JQueryUI.TabsActivationUIParams): void => {
                     if (ui.newPanel !== undefined) {

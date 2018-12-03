@@ -99,7 +99,7 @@ namespace YetaWF_ComponentsHTML {
                 onUploadProgress: (id: string, percent: string): void => {
                     if (this.$divProgressbar) {
                         this.$divProgressbar.show();
-                        this.$divProgressbar.progressbar("value", percent);
+                        this.$divProgressbar.progressbar("value", percent); //jQuery-ui use
                     }
                 },
                 onUploadError: (id: string, message: string): void => {

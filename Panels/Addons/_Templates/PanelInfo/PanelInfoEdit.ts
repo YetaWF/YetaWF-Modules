@@ -94,13 +94,13 @@ namespace YetaWF_Panels {
         var list = $YetaWF.getElementsBySelector(".yt_panels_panelinfo .t_panels.t_acctabs", [tag]);
         for (let el of list) {
             var tabs = $(el);
-            if (tabs) tabs.tabs("destroy");
+            if (tabs) tabs.tabs("destroy"); //jQuery-ui use
         }
         // jquery ui accordion
         var list = $YetaWF.getElementsBySelector(".yt_panels_panelinfo .t_panels.t_accjquery", [tag]);
         for (let el of list) {
             var accordion = $(el);
-            if (accordion) accordion.accordion("destroy");
+            if (accordion) accordion.accordion("destroy"); //jQuery-ui use
         }
         // kendo accordion
         var list = $YetaWF.getElementsBySelector(".yt_panels_panelinfo .t_panels.t_acckendo", [tag]);

@@ -10,14 +10,6 @@ using YetaWF.Core.Support;
 
 namespace YetaWF.Modules.ComponentsHTML.Components {
 
-    public abstract class PropertyListComponent : YetaWFComponent {
-
-        public const string TemplateName = "PropertyList";
-
-        public override Package GetPackage() { return Controllers.AreaRegistration.CurrentPackage; }
-        public override string GetTemplateName() { return TemplateName; }
-    }
-
     public partial class PropertyListDisplayComponent : PropertyListComponentBase, IYetaWFContainer<object>, IYetaWFComponent<object> {
 
         public override ComponentType GetComponentType() { return ComponentType.Display; }
@@ -46,7 +38,12 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             }
         }
     }
-    public abstract partial class PropertyListComponentBase : PropertyListComponent {
+    public abstract partial class PropertyListComponentBase : YetaWFComponent {
+
+        public const string TemplateName = "PropertyList";
+
+        public override Package GetPackage() { return Controllers.AreaRegistration.CurrentPackage; }
+        public override string GetTemplateName() { return TemplateName; }
 
         public async Task<YHtmlString> RenderPropertyListTabbedAsync(object model, bool readOnly) {
 

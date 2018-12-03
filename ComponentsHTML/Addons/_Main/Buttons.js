@@ -18,7 +18,7 @@ var YetaWF_ComponentsHTML;
                 $("a[" + YConfigs.Basics.CssAttrActionButton + "].y_jqueryui", $tag).button(); // action link as a button
             }
             else {
-                // jquery-ui
+                //jQuery-ui use
                 $("input[type=submit],input[type=button],input[type=reset],input[type=file],button", $tag).not(".y_bootstrap").button(); // beautify all buttons
                 $("a[" + YConfigs.Basics.CssAttrActionButton + "]", $tag).not(".y_bootstrap").button(); // action link as a button
                 // explicitly marked for bootstrap

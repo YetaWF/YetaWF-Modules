@@ -73,7 +73,7 @@ namespace YetaWF_ComponentsHTML {
             if (title === undefined)
                 title = YLocs.Basics.DefaultAlertTitle;
 
-            $dialog.dialog({
+            $dialog.dialog({ //jQuery-ui use
                 autoOpen: true,
                 modal: true,
                 width: YConfigs.Basics.DefaultAlertWaitWidth,
@@ -125,7 +125,7 @@ namespace YetaWF_ComponentsHTML {
             if (title === undefined)
                 title = YLocs.Basics.DefaultAlertYesNoTitle;
 
-            $dialog.dialog({
+            $dialog.dialog({ //jQuery-ui use
                 autoOpen: true,
                 modal: true,
                 width: YConfigs.Basics.DefaultAlertYesNoWidth,

@@ -38,7 +38,7 @@ namespace YetaWF_ComponentsHTML {
             $idMenu.appendTo($("body"));
             $idMenu.show();
             ++ActionIconsComponent.menusOpen;
-            $idMenu.position({
+            $idMenu.position({ //jQuery-ui use
                 my: "left top",
                 at: "left bottom",
                 of: $(this.Control),

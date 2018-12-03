@@ -95,7 +95,7 @@ var YetaWF_Panels;
             var el = list_1[_i];
             var tabs = $(el);
             if (tabs)
-                tabs.tabs("destroy");
+                tabs.tabs("destroy"); //jQuery-ui use
         }
         // jquery ui accordion
         var list = $YetaWF.getElementsBySelector(".yt_panels_stepinfo .t_panels.t_accjquery", [tag]);
@@ -103,7 +103,7 @@ var YetaWF_Panels;
             var el = list_2[_a];
             var accordion = $(el);
             if (accordion)
-                accordion.accordion("destroy");
+                accordion.accordion("destroy"); //jQuery-ui use
         }
         // kendo accordion
         var list = $YetaWF.getElementsBySelector(".yt_panels_stepinfo .t_panels.t_acckendo", [tag]);

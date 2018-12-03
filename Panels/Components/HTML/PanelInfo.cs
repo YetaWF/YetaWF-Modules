@@ -103,7 +103,8 @@ namespace YetaWF.Modules.Panels.Components {
             collapsible: true,
             heightStyle: 'content',
             activate: function (ev, ui) {{
-                $YetaWF.processActivateDivs([ui.newPanel[0]]);
+                if (ui.newPanel[0])
+                    $YetaWF.processActivateDivs([ui.newPanel[0]]);
             }}
         }});
     </script>");

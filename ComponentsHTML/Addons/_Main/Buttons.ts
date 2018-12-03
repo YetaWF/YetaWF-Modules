@@ -17,7 +17,7 @@ namespace YetaWF_ComponentsHTML {
                 $("input[type=submit].y_jqueryui,input[type=button].y_jqueryui,input[type=reset].y_jqueryui,input[type=file].y_jqueryui,button.y_jqueryui", $tag).button();
                 $("a[" + YConfigs.Basics.CssAttrActionButton + "].y_jqueryui", $tag).button(); // action link as a button
             } else {
-                // jquery-ui
+                //jQuery-ui use
                 $("input[type=submit],input[type=button],input[type=reset],input[type=file],button", $tag).not(".y_bootstrap").button(); // beautify all buttons
                 $("a[" + YConfigs.Basics.CssAttrActionButton + "]", $tag).not(".y_bootstrap").button(); // action link as a button
                 // explicitly marked for bootstrap
