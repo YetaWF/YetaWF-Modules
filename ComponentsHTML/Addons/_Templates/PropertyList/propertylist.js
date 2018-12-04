@@ -135,7 +135,7 @@ var YetaWF_ComponentsHTML;
                         break;
                 }
                 if (dep.Disable) {
-                    $YetaWF.elementEnableToggle(depRow, valid);
+                    $YetaWF.elementAndChildrenEnableToggle(depRow, valid);
                 }
                 else {
                     if (valid) {

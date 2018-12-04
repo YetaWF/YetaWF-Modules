@@ -9,7 +9,7 @@ namespace YetaWF_ComponentsHTML {
     }
     interface Dependent {
         Prop: string; // Name of property
-        Disable: boolean; // defines wheter the control is disabled instead of hidden
+        Disable: boolean; // defines whether the control is disabled instead of hidden
 
         Values: ValueEntry[];
     }
@@ -166,7 +166,7 @@ namespace YetaWF_ComponentsHTML {
                 }
 
                 if (dep.Disable) {
-                    $YetaWF.elementEnableToggle(depRow, valid);
+                    $YetaWF.elementAndChildrenEnableToggle(depRow, valid);
                 } else {
                     if (valid) {
                         depRow.style.display = "";

@@ -237,6 +237,32 @@ namespace YetaWF_ComponentsHTML {
             // tooltips
             YetaWF_ComponentsHTML.Tooltips.removeTooltips();
         }
+        /**
+         * Enable/disable an element.
+         * Some child items need some extra settings when disabled=disabled isn't enough.
+         * Also used to update visual styles to reflect the status.
+         */
+        public elementEnableToggle(elem: HTMLElement, enable: boolean) {
+            if (elem.tagName === "INPUT") {
+                if (enable)
+                    $YetaWF.elementRemoveClass(elem, "k-state-disabled");
+                else
+                    $YetaWF.elementAddClass(elem, "k-state-disabled");
+            } else if (elem.tagName === "SELECT") {
+                if (enable)
+                    $YetaWF.elementRemoveClass(elem, "k-state-disabled");
+                else
+                    $YetaWF.elementAddClass(elem, "k-state-disabled");
+            } else if (elem.tagName === "TEXTAREA") {
+                if (enable) {
+                    elem.removeAttribute("readonly");
+                    $YetaWF.elementRemoveClass(elem, "k-state-disabled");
+                } else {
+                    $YetaWF.setAttribute(elem, "readonly", "readonly");
+                    $YetaWF.elementAddClass(elem, "k-state-disabled");
+                }
+            }
+        }
     }
 }
 
