@@ -242,7 +242,7 @@ namespace YetaWF_ComponentsHTML {
          * Some child items need some extra settings when disabled=disabled isn't enough.
          * Also used to update visual styles to reflect the status.
          */
-        public elementEnableToggle(elem: HTMLElement, enable: boolean) {
+        public elementEnableToggle(elem: HTMLElement, enable: boolean): void {
             if (elem.tagName === "INPUT") {
                 if (enable)
                     $YetaWF.elementRemoveClass(elem, "k-state-disabled");
