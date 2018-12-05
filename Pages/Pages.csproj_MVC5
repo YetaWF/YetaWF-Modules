@@ -130,7 +130,6 @@
     <Content Include="Addons\_Addons\SkinScrollToTop\filelistCSS.txt" />
     <Content Include="Addons\_Addons\SkinScrollToTop\filelistJS.txt" />
     <Content Include="Addons\_Addons\SkinScrollToTop\markgoodyear.com ScrollUp\jquery.scrollUp.js" />
-    <Content Include="Addons\_SiteTemplates\YetaWF_Pages.2.0.3.txt" />
     <None Include="Addons\_Main\Grids\ListOfLocalPagesEditComponent.AllEntry" />
     <None Include="Addons\_Main\Grids\ListOfLocalPagesDisplayComponent.Entry" />
     <None Include="Addons\_Main\Grids\ListOfLocalPagesEditComponent.Entry" />

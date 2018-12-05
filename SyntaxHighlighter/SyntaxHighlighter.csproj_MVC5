@@ -185,7 +185,6 @@
     <Content Include="Addons\_Addons\SkinSyntaxHighlighter\themelistMVC5.txt" />
     <Content Include="Addons\_Addons\SkinSyntaxHighlighter\themelistMVC6.txt" />
     <Content Include="Addons\_Main\filelistJS.txt" />
-    <Content Include="Addons\_SiteTemplates\YetaWF_SyntaxHighlighter.2.5.2.txt" />
     <Content Include="Addons\_Templates\SyntaxHighlighter\filelistCSS.txt" />
     <None Include="Addons\_Templates\SyntaxHighlighter\SyntaxHighlighterSkin.scss" />
     <None Include="app.config" />

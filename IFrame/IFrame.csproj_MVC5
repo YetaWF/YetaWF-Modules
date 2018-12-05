@@ -43,7 +43,7 @@
     <None Include="app.config" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Addons\_SiteTemplates\YetaWF_IFrame.txt" />
+    <Content Include="Addons\placeholder.txt" />
     <Content Include="packages.config" />
   </ItemGroup>
   <ItemGroup>

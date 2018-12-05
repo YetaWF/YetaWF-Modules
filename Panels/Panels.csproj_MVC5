@@ -60,7 +60,6 @@
   <ItemGroup>
     <TypeScriptCompile Include="Addons\_Main\Panels.ts" />
     <Content Include="Addons\_Main\filelistJS.txt" />
-    <Content Include="Addons\_SiteTemplates\YetaWF_Panels.txt" />
     <Content Include="Addons\_Templates\ListOfLocalPages\filelistCSS.txt" />
     <Content Include="Addons\_Templates\ListOfLocalPages\filelistJS.txt" />
     <Content Include="Addons\_Templates\PagePanelInfo\filelistCSS.txt" />

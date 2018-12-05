@@ -130,10 +130,6 @@
     <Content Include="Addons\_Main\Images\Session.png" />
     <Content Include="Addons\_Main\Images\Static Large.jpg" />
     <Content Include="Addons\_Main\Images\Static.png" />
-    <Content Include="Addons\_SiteTemplates\YetaWF_Dashboard.1.1.1.txt" />
-    <Content Include="Addons\_SiteTemplates\YetaWF_Dashboard.1.0.9.txt" />
-    <Content Include="Addons\_SiteTemplates\YetaWF_Dashboard.1.0.3.txt" />
-    <Content Include="Addons\_SiteTemplates\YetaWF_Dashboard.3.0.0.txt" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Addons\_Main\Grids\SessionInfoModuleController.BrowseItem" />

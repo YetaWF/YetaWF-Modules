@@ -99,9 +99,6 @@
     <Content Include="Addons\_Main\Icons\People.png" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Addons\_SiteTemplates\YetaWF_Visitor.txt" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>

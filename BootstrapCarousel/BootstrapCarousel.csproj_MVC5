@@ -49,7 +49,6 @@
     <Content Include="Addons\_Templates\SlideShow\filelistJS.txt" />
     <None Include="Addons\_Templates\SlideShow\SlideShow.scss" />
     <TypeScriptCompile Include="Addons\_Templates\SlideShow\SlideShowEdit.ts" />
-    <Content Include="Addons\_SiteTemplates\YetaWF_BootstrapCarousel.txt" />
     <None Include="app.config" />
     <None Include="tsconfig.json" />
     <None Include="tslint.json" />

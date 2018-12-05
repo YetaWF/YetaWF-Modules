@@ -98,7 +98,6 @@
     <Content Include="Addons\_Main\Emails\Feedback Email.txt" />
     <Content Include="Addons\_Main\Images\Feeback Large.png" />
     <Content Include="Addons\_Main\Images\Feeback.png" />
-    <Content Include="Addons\_SiteTemplates\YetaWF_Feedback.2.7.0.txt" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Addons\_Main\Grids\FeedbackBrowseModuleController.BrowseItem" />

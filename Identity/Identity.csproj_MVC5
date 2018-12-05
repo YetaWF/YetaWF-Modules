@@ -272,10 +272,6 @@
     <Content Include="Addons\_Main\Images\Identity Large.png" />
     <Content Include="Addons\_Main\Images\Identity.png" />
     <None Include="Addons\_Main\Login.scss" />
-    <Content Include="Addons\_SiteTemplates\YetaWF_Identity.2.8.0.txt" />
-    <Content Include="Addons\_SiteTemplates\YetaWF_Identity.2.5.1.txt" />
-    <Content Include="Addons\_SiteTemplates\YetaWF_Identity.2.0.1.txt" />
-    <Content Include="Addons\_SiteTemplates\YetaWF_Identity.1.0.5.txt" />
     <Content Include="Addons\_Templates\ListOfUserNames\filelistCSS.txt" />
     <Content Include="Addons\_Templates\ListOfUserNames\filelistJS.txt" />
     <Content Include="Addons\_Templates\ResourceUsers\filelistJS.txt" />

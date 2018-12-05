@@ -124,10 +124,9 @@
     <None Include="Addons\_Main\Grids\ListOfEmailAddressesDisplayComponent.Entry" />
     <None Include="Addons\_Main\Grids\ListOfEmailAddressesEditComponent.Entry" />
     <None Include="Addons\_Addons\TestStepsModule\filelistJS.txt" />
-    <Content Include="Addons\_SiteTemplates\YetaWF_DevTests.4.1.0.txt" />
-    <Content Include="Addons\_SiteTemplates\YetaWF_DevTests.4.0.0.txt" />
     <None Include="Addons\_Main\Grids\TemplateGridAjaxModuleController.BrowseItem" />
     <None Include="Addons\_Main\Grids\TemplateGridModuleController.BrowseItem" />
+    <None Include="Addons\_SiteTemplates\4.2.0\Page Data - _Tests_Steps.zip" />
     <None Include="Addons\_Templates\ListOfEmailAddresses\ListOfEmailAddresses.scss" />
     <None Include="app.config" />
     <None Include="packages.config" />
@@ -176,7 +175,6 @@
     <Content Include="Addons\_Main\Images\image7.png" />
     <Content Include="Addons\_Main\Images\image8.png" />
     <Content Include="Addons\_Main\Images\image9.png" />
-    <Content Include="Addons\_SiteTemplates\YetaWF_DevTests.4.2.0.txt" />
     <Content Include="Addons\_Templates\ListOfEmailAddresses\filelistCSS.txt" />
     <Content Include="Addons\_Templates\ListOfEmailAddresses\filelistJS.txt" />
     <Content Include="Addons\_Templates\ScrollerItem\filelistCSS.txt" />

@@ -116,10 +116,6 @@
     <TypeScriptCompile Include="Addons\_Main\Search.ts" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Addons\_SiteTemplates\YetaWF_Search.2.0.2.txt" />
-    <Content Include="Addons\_SiteTemplates\YetaWF_Search.txt" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Addons\_Main\Grids\SearchBrowseModuleController.BrowseItem" />
     <None Include="app.config" />
     <None Include="packages.config" />

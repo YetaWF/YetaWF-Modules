@@ -127,8 +127,6 @@
     <Content Include="Addons\_Main\Images\UPS.png" />
     <Content Include="Addons\_Main\Images\Visitor Large.png" />
     <Content Include="Addons\_Main\Images\Visitor.png" />
-    <Content Include="Addons\_SiteTemplates\YetaWF_Basics.1.0.8.txt" />
-    <Content Include="Addons\_SiteTemplates\YetaWF_Basics.1.0.3.txt" />
   </ItemGroup>
   <ItemGroup>
     <TypeScriptCompile Include="Addons\_Addons\MailToObfuscator\MailToObfuscator.ts" />

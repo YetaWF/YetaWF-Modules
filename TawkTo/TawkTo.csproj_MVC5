@@ -54,7 +54,6 @@
     <Content Include="Addons\_Addons\SkinTawkTo\filelistJS.txt" />
     <Content Include="Addons\_Main\Images\tawky_big.png" />
     <TypeScriptCompile Include="Addons\_Main\TawkTo.ts" />
-    <Content Include="Addons\_SiteTemplates\YetaWF_TawkTo.txt" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

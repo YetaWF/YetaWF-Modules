@@ -110,7 +110,6 @@
     <Content Include="Addons\_Main\Images\ControlPanelLarge.png" />
     <None Include="Addons\_Main\pagecontrol.scss" />
     <TypeScriptCompile Include="Addons\_Main\PageControl.ts" />
-    <Content Include="Addons\_SiteTemplates\YetaWF_PageEdit.1.0.3.txt" />
     <Content Include="Addons\_Templates\AllowedUsers\filelistJS.txt" />
     <None Include="Addons\_Templates\AllowedUsers\AllowedUsers.scss" />
     <Content Include="Addons\_Templates\AllowedUsers\filelistCSS.txt" />

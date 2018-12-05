@@ -173,8 +173,6 @@
     <Content Include="Addons\_Main\Images\Blog.png" />
     <Content Include="Addons\_Main\Images\Disqus Large.png" />
     <Content Include="Addons\_Main\Images\Disqus.png" />
-    <Content Include="Addons\_SiteTemplates\YetaWF_Blog.1.0.8.txt" />
-    <Content Include="Addons\_SiteTemplates\YetaWF_Blog.txt" />
     <None Include="Addons\_Templates\Category\filelistCSS.txt" />
     <None Include="Addons\_Templates\Category\Category.scss" />
   </ItemGroup>

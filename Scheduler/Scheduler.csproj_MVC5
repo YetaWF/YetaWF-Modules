@@ -131,7 +131,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Addons\_SiteTemplates\YetaWF_Scheduler.2.0.1.txt" />
     <None Include="Addons\_Templates\Event\Event.scss" />
     <Content Include="Addons\_Main\Grids\SchedulerBrowseModuleController.SchedulerItem" />
     <None Include="Addons\_Main\Grids\LogBrowseModuleController.BrowseItem" />
