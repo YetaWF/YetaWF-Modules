@@ -341,7 +341,7 @@ namespace YetaWF.Modules.Packages.DataProvider {
                         if (varLine.Trim().EndsWith(")")) {// method call
                             varLine = varLine.Trim();
                             if (build)
-                                InvokeMethod(varLine, varLine, mod);
+                                await InvokeMethodAsync(varLine, varLine, mod);
                         } else if (sv.Length >= 2) { // variable assignment
                             if (build)
                                 AssignVariable(mod, sv[0].Trim(), sv[1].Trim());
@@ -419,7 +419,7 @@ namespace YetaWF.Modules.Packages.DataProvider {
                     string[] sv = varLine.Split(new char[] { '=' }, 2);
                     if (varLine.Trim().EndsWith(")")) {// method call
                         varLine = varLine.Trim();
-                        InvokeMethod(varLine, varLine, mod);
+                        await InvokeMethodAsync(varLine, varLine, mod);
                     } else if (sv.Length == 2) {// variable assignment
                         AssignVariable(mod, sv[0].Trim(), sv[1].Trim());
                     } else
@@ -737,14 +737,14 @@ namespace YetaWF.Modules.Packages.DataProvider {
                     if (string.IsNullOrWhiteSpace(asmtype)) throw TemplateError("Missing method call in expression \"{0}\"", origExpr);
                 expr = expr.Substring(1);
 
-                return InvokeMethod(expr, origExpr, obj);
+                return await InvokeMethodAsync(expr, origExpr, obj);
             } else {
                 // return as string
                 return expr;
             }
         }
 
-        private object InvokeMethod(string expr, string origExpr, object obj) {
+        private async Task<object> InvokeMethodAsync(string expr, string origExpr, object obj) {
             int i = expr.IndexOf('(');
             if (i < 0) throw TemplateError("Invalid method call (open parenthesis required) in expression \"{0}\"", origExpr);
             string methodName = expr.Substring(0, i);
@@ -798,7 +798,12 @@ namespace YetaWF.Modules.Packages.DataProvider {
             }
             object result;
             try {
-                result = mi.Invoke(obj, parmList.ToArray());
+                if (methodName.EndsWith("Async")) {
+                    Task<ModuleAction> res = (Task<ModuleAction>) mi.Invoke(obj, parmList.ToArray());
+                    result = await res;
+                } else {
+                    result = mi.Invoke(obj, parmList.ToArray());
+                }
             } catch (Exception exc) {
                 throw TemplateError("Can't call {0} in expression \"{1}\": {2}", methodName, origExpr, ErrorHandling.FormatExceptionMessage(exc));
             }
