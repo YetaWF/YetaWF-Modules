@@ -38,9 +38,8 @@ namespace YetaWF.Modules.ComponentsHTML {
                     tag.Attributes.Add("type", "button");
                     break;
                 case ButtonTypeEnum.Cancel:
-                case ButtonTypeEnum.ConditionalCancel:
-                    if (formButton.ButtonType == ButtonTypeEnum.ConditionalCancel && !Manager.IsInPopup && !Manager.HaveReturnToUrl) {
-                        // if we don't have anyplace to return to and we're not in a popup we don't need a cancel button
+                    if (!Manager.IsInPopup && !Manager.HaveReturnToUrl) {
+                        // if we don't have anyplace to return to and we're not in a popup so we don't need a cancel button
                         return new YHtmlString("");
                     }
                     if (string.IsNullOrWhiteSpace(text)) text = this.__ResStr("btnCancel", "Cancel");

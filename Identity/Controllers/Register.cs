@@ -194,12 +194,13 @@ namespace YetaWF.Modules.Identity.Controllers {
                 if (config.NotifyAdminNewUsers)
                     await emails.SendNewUserCreatedAsync(user);
                 await LoginModuleController.UserLoginAsync(user, config.PersistentLogin);
+                string nextUrl = string.IsNullOrWhiteSpace(Module.PostRegisterUrl) ? Manager.ReturnToUrl : Module.PostRegisterUrl;
                 if (model.CloseOnLogin)
                     return FormProcessed(model, this.__ResStr("okRegText", "Your new account has been successfully registered."), this.__ResStr("okRegTitle", "Welcome!"),
-                        OnClose: OnCloseEnum.CloseWindow, OnPopupClose: OnPopupCloseEnum.GotoNewPage, NextPage: Manager.ReturnToUrl, ForceRedirect: true);
+                        OnClose: OnCloseEnum.CloseWindow, OnPopupClose: OnPopupCloseEnum.GotoNewPage, NextPage: nextUrl, ForceRedirect: true);
                 else
                     return FormProcessed(model, this.__ResStr("okRegText", "Your new account has been successfully registered."), this.__ResStr("okRegTitle", "Welcome!"),
-                        NextPage: Manager.ReturnToUrl, ForceRedirect: true);
+                        NextPage: nextUrl, ForceRedirect: true);
             } else
                 throw new InternalError("badUserStatus", "Unexpected account status {0}", user.UserStatus);
         }

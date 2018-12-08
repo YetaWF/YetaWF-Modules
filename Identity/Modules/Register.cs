@@ -3,6 +3,7 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using YetaWF.Core;
 using YetaWF.Core.Components;
 using YetaWF.Core.DataProvider;
 using YetaWF.Core.IO;
@@ -52,6 +53,11 @@ namespace YetaWF.Modules.Identity.Modules {
                 };
             }
         }
+
+        [Category("General"), Caption("Post Login Url"), Description("Defines the page to display once the user is logged on - If omitted, the Url to return to is determined automatically")]
+        [UIHint("Url"), AdditionalMetadata("UrlType", UrlTypeEnum.Local | UrlTypeEnum.Remote), UrlValidation(UrlValidationAttribute.SchemaEnum.Any, UrlTypeEnum.Local | UrlTypeEnum.Remote)]
+        [StringLength(Globals.MaxUrl), Trim]
+        public string PostRegisterUrl { get; set; }
 
         public override async Task<MenuList> GetModuleMenuListAsync(ModuleAction.RenderModeEnum renderMode, ModuleAction.ActionLocationEnum location) {
             MenuList menuList = await base.GetModuleMenuListAsync(renderMode, location);

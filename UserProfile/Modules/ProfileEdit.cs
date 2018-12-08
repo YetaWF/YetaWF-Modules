@@ -1,11 +1,13 @@
 /* Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/UserProfile#License */
 
 using System;
+using YetaWF.Core;
 using YetaWF.Core.IO;
 using YetaWF.Core.Localize;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Modules;
 using YetaWF.Core.Serializers;
+using YetaWF.Core.Support;
 using YetaWF.DataProvider;
 
 namespace YetaWF.Modules.UserProfile.Modules {
@@ -26,6 +28,11 @@ namespace YetaWF.Modules.UserProfile.Modules {
         public override IModuleDefinitionIO GetDataProvider() { return new ProfileEditModuleDataProvider(); }
 
         public override SerializableList<AllowedRole> DefaultAllowedRoles { get { return AdministratorLevel_DefaultAllowedRoles; } }
+
+        [Category("General"), Caption("Post Save Url"), Description("Defines the page to display once the form is saved - If omitted, the Url to return to is determined automatically - This property is ignored when the module is displayed in a popup")]
+        [UIHint("Url"), AdditionalMetadata("UrlType", UrlTypeEnum.Local | UrlTypeEnum.Remote), UrlValidation(UrlValidationAttribute.SchemaEnum.Any, UrlTypeEnum.Local | UrlTypeEnum.Remote)]
+        [StringLength(Globals.MaxUrl), Trim]
+        public string PostSaveUrl { get; set; }
 
         public ModuleAction GetAction_Edit(string url) {
             return new ModuleAction(this) {
