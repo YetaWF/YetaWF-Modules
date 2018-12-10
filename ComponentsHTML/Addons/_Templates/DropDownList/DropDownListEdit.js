@@ -106,6 +106,7 @@ var YetaWF_ComponentsHTML;
         };
         DropDownListEditComponent.prototype.ajaxUpdate = function (data, ajaxUrl, onSuccess, onFailure) {
             var _this = this;
+            $YetaWF.setLoading(true);
             var uri = $YetaWF.parseUrl(ajaxUrl);
             uri.addSearchSimpleObject(data);
             var request = new XMLHttpRequest();

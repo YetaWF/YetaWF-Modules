@@ -54,7 +54,7 @@ var YetaWF_ComponentsHTML;
                 });
             }
             if (_this.inputUrl) {
-                $YetaWF.registerMultipleEventHandlers(_this.inputUrl, ["input", "change", "click", "keyup", "paste"], null, function (ev) { _this.updateStatus(); return true; });
+                $YetaWF.registerMultipleEventHandlers([_this.inputUrl], ["input", "change", "click", "keyup", "paste"], null, function (ev) { _this.updateStatus(); return true; });
             }
             return _this;
         }

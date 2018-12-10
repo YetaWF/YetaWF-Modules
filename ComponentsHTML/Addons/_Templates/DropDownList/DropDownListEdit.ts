@@ -97,6 +97,8 @@ namespace YetaWF_ComponentsHTML {
 
         public ajaxUpdate(data: any, ajaxUrl: string, onSuccess?: (data: any) => void, onFailure?: (result: string) => void): void {
 
+            $YetaWF.setLoading(true);
+
             var uri = $YetaWF.parseUrl(ajaxUrl);
             uri.addSearchSimpleObject(data);
 

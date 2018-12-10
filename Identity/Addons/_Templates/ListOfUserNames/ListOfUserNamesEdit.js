@@ -58,7 +58,7 @@ var YetaWF_Identity;
                 return false;
             });
             $YetaWF.handleInputReturnKeyForButton(_this.inputUserName, _this.buttonAdd);
-            $YetaWF.registerMultipleEventHandlers(_this.inputUserName, ["input", "change", "click", "keyup", "paste"], null, function (ev) { _this.toggleButton(); return true; });
+            $YetaWF.registerMultipleEventHandlers([_this.inputUserName], ["input", "change", "click", "keyup", "paste"], null, function (ev) { _this.toggleButton(); return true; });
             _this.GridAll.Control.addEventListener("grid_selectionchange", function (evt) {
                 var index = _this.GridAll.SelectedIndex();
                 if (index < 0)

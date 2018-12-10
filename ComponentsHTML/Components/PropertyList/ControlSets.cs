@@ -34,6 +34,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                 public string ControlProp { get; set; } // name of controlling property
                 public enum ValueTypeEnum {
                     EqualIntValue = 0,
+                    EqualStringValue = 1,
                     EqualNull = 100,
                     EqualNonNull = 101,
                 }
@@ -63,15 +64,29 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                         Dependent dep = FindDependent(cd, property.Name);
                         dep.Disable = procIfAttr.Disable;
                         List<int> intValues = new List<int>();
+                        List<string> stringValues = new List<string>();
                         foreach (object obj in procIfAttr.Objects) {
-                            int val = Convert.ToInt32(obj);
-                            intValues.Add(val);
+                            if (obj.GetType() == typeof(string)) {
+                                stringValues.Add((string)obj);
+                            } else {
+                                int val = Convert.ToInt32(obj);
+                                intValues.Add(val);
+                            }
                         }
-                        dep.Values.Add(new Dependent.ValueEntry {
-                            ControlProp = procIfAttr.Name,
-                            ValueType = Dependent.ValueEntry.ValueTypeEnum.EqualIntValue,
-                            ValueObject = intValues,
-                        });
+                        if (intValues.Count > 0) {
+                            dep.Values.Add(new Dependent.ValueEntry {
+                                ControlProp = procIfAttr.Name,
+                                ValueType = Dependent.ValueEntry.ValueTypeEnum.EqualIntValue,
+                                ValueObject = intValues,
+                            });
+                        }
+                        if (stringValues.Count > 0) {
+                            dep.Values.Add(new Dependent.ValueEntry {
+                                ControlProp = procIfAttr.Name,
+                                ValueType = Dependent.ValueEntry.ValueTypeEnum.EqualStringValue,
+                                ValueObject = stringValues,
+                            });
+                        }
                     }
                     foreach (ProcessIfSuppliedAttribute procIfSuppliedAttr in property.ProcIfSuppliedAttrs) {
                         if (!selectionControls.Contains(procIfSuppliedAttr.Name))

@@ -58,7 +58,7 @@ var YetaWF_DevTests;
                 return false;
             });
             $YetaWF.handleInputReturnKeyForButton(_this.inputEmail, _this.buttonAdd);
-            $YetaWF.registerMultipleEventHandlers(_this.inputEmail, ["input", "change", "click", "keyup", "paste"], null, function (ev) { _this.toggleButton(); return true; });
+            $YetaWF.registerMultipleEventHandlers([_this.inputEmail], ["input", "change", "click", "keyup", "paste"], null, function (ev) { _this.toggleButton(); return true; });
             return _this;
         }
         ListOfEmailAddressesEditComponent.prototype.toggleButton = function () {

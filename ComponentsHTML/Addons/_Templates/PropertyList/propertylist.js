@@ -5,6 +5,7 @@ var YetaWF_ComponentsHTML;
     var ValueTypeEnum;
     (function (ValueTypeEnum) {
         ValueTypeEnum[ValueTypeEnum["EqualIntValue"] = 0] = "EqualIntValue";
+        ValueTypeEnum[ValueTypeEnum["EqualStringValue"] = 1] = "EqualStringValue";
         ValueTypeEnum[ValueTypeEnum["EqualNull"] = 100] = "EqualNull";
         ValueTypeEnum[ValueTypeEnum["EqualNonNull"] = 101] = "EqualNonNull";
     })(ValueTypeEnum || (ValueTypeEnum = {}));
@@ -28,7 +29,7 @@ var YetaWF_ComponentsHTML;
                 this.ControllingControls.push(controlItem);
                 switch (controlItem.ControlType) {
                     case ControlTypeEnum.Input:
-                        $YetaWF.registerMultipleEventHandlers(controlItem.Object, ["change", "input"], null, function (ev) {
+                        $YetaWF.registerMultipleEventHandlers([controlItem.Object], ["change", "input"], null, function (ev) {
                             _this.update();
                             return false;
                         });
@@ -40,7 +41,7 @@ var YetaWF_ComponentsHTML;
                         });
                         break;
                     case ControlTypeEnum.KendoSelect:
-                        controlItem.Object.Control.addEventListener("dropdownlist_change", function (evt) {
+                        $YetaWF.registerCustomEventHandler(controlItem.Object, "dropdownlist_change", function (evt) {
                             _this.update();
                         });
                         break;
@@ -74,13 +75,12 @@ var YetaWF_ComponentsHTML;
          * Update all dependent fields.
          */
         PropertyListComponent.prototype.update = function () {
-            var found = false;
-            // for each dependent, verify that all it's conditions are true
+            // for each dependent, verify that all its conditions are true
             var deps = this.ControlData.Dependents;
             for (var _i = 0, deps_1 = deps; _i < deps_1.length; _i++) {
                 var dep = deps_1[_i];
                 var depRow = $YetaWF.getElement1BySelector(".t_row.t_" + dep.Prop.toLowerCase(), [this.Control]); // the propertylist row affected
-                var valid = true; // we assume valid unless we find a non-matching entry
+                var valid = false; // we assume not valid unless we find a matching entry
                 for (var _a = 0, _b = dep.Values; _a < _b.length; _a++) {
                     var value = _b[_a];
                     // get the controlling control's value
@@ -92,46 +92,76 @@ var YetaWF_ComponentsHTML;
                     switch (controlItem.ControlType) {
                         case ControlTypeEnum.Input:
                             var inputElem = controlItem.Object;
-                            if (inputElem.type.toLowerCase() === "checkbox") {
-                                controlValue = inputElem.checked ? "1" : "0";
-                            }
-                            else {
-                                controlValue = inputElem.value;
+                            var controlRow = $YetaWF.elementClosest(inputElem, ".t_row");
+                            if (controlRow.style.display === "") {
+                                if (inputElem.type.toLowerCase() === "checkbox") {
+                                    controlValue = inputElem.checked ? "1" : "0";
+                                }
+                                else {
+                                    controlValue = inputElem.value;
+                                }
+                                valid = true;
                             }
                             break;
                         case ControlTypeEnum.Select:
-                            controlValue = controlItem.Object.value;
+                            var selectElem = controlItem.Object;
+                            var controlRow = $YetaWF.elementClosest(selectElem, ".t_row");
+                            if (controlRow.style.display === "") {
+                                controlValue = selectElem.value;
+                                valid = true;
+                            }
                             break;
                         case ControlTypeEnum.KendoSelect:
-                            controlValue = controlItem.Object.value;
-                            break;
-                    }
-                    // test condition
-                    switch (value.ValueType) {
-                        case ValueTypeEnum.EqualIntValue:
-                            // need one matching value
-                            var intValues = value.ValueObject;
-                            var found = false;
-                            for (var _c = 0, intValues_1 = intValues; _c < intValues_1.length; _c++) {
-                                var intValue = intValues_1[_c];
-                                if (intValue === Number(controlValue)) {
-                                    found = true;
-                                    break;
-                                }
+                            var dropdownList = controlItem.Object;
+                            var controlRow = $YetaWF.elementClosest(dropdownList.Control, ".t_row");
+                            if (controlRow.style.display === "") {
+                                controlValue = dropdownList.value;
+                                valid = true;
                             }
-                            if (!found)
-                                valid = false;
-                            break;
-                        case ValueTypeEnum.EqualNonNull:
-                            if (!controlValue || controlValue.length === 0)
-                                valid = false;
-                            break;
-                        case ValueTypeEnum.EqualNull:
-                            if (controlValue)
-                                valid = false;
                             break;
                     }
-                    if (!valid)
+                    if (valid) {
+                        // test condition
+                        switch (value.ValueType) {
+                            case ValueTypeEnum.EqualIntValue:
+                                // need one matching value
+                                var intValues = value.ValueObject;
+                                var found = false;
+                                for (var _c = 0, intValues_1 = intValues; _c < intValues_1.length; _c++) {
+                                    var intValue = intValues_1[_c];
+                                    if (intValue === Number(controlValue)) {
+                                        found = true;
+                                        break;
+                                    }
+                                }
+                                if (!found)
+                                    valid = false;
+                                break;
+                            case ValueTypeEnum.EqualStringValue:
+                                // need one matching value
+                                var strValues = value.ValueObject;
+                                var found = false;
+                                for (var _d = 0, strValues_1 = strValues; _d < strValues_1.length; _d++) {
+                                    var strValue = strValues_1[_d];
+                                    if (strValue === controlValue) {
+                                        found = true;
+                                        break;
+                                    }
+                                }
+                                if (!found)
+                                    valid = false;
+                                break;
+                            case ValueTypeEnum.EqualNonNull:
+                                if (!controlValue || controlValue.length === 0)
+                                    valid = false;
+                                break;
+                            case ValueTypeEnum.EqualNull:
+                                if (controlValue)
+                                    valid = false;
+                                break;
+                        }
+                    }
+                    if (valid)
                         break;
                 }
                 if (dep.Disable) {
@@ -147,14 +177,14 @@ var YetaWF_ComponentsHTML;
                 }
                 var affected = $YetaWF.getElementsBySelector("input,select,textarea", [depRow]);
                 if (valid) {
-                    for (var _d = 0, affected_1 = affected; _d < affected_1.length; _d++) {
-                        var e = affected_1[_d];
+                    for (var _e = 0, affected_1 = affected; _e < affected_1.length; _e++) {
+                        var e = affected_1[_e];
                         $YetaWF.elementRemoveClass(e, YConfigs.Forms.CssFormNoValidate);
                     }
                 }
                 else {
-                    for (var _e = 0, affected_2 = affected; _e < affected_2.length; _e++) {
-                        var e = affected_2[_e];
+                    for (var _f = 0, affected_2 = affected; _f < affected_2.length; _f++) {
+                        var e = affected_2[_f];
                         $YetaWF.elementAddClass(e, YConfigs.Forms.CssFormNoValidate);
                     }
                 }

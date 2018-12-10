@@ -20,6 +20,7 @@ namespace YetaWF_ComponentsHTML {
     }
     enum ValueTypeEnum {
         EqualIntValue = 0,
+        EqualStringValue = 1,
         EqualNull = 100,
         EqualNonNull = 101,
     }
@@ -53,7 +54,7 @@ namespace YetaWF_ComponentsHTML {
                 this.ControllingControls.push(controlItem);
                 switch (controlItem.ControlType) {
                     case ControlTypeEnum.Input:
-                        $YetaWF.registerMultipleEventHandlers((controlItem.Object as HTMLInputElement), ["change", "input"], null, (ev: Event): boolean => {
+                        $YetaWF.registerMultipleEventHandlers([(controlItem.Object as HTMLInputElement)], ["change", "input"], null, (ev: Event): boolean => {
                             this.update();
                             return false;
                         });
@@ -65,7 +66,7 @@ namespace YetaWF_ComponentsHTML {
                         });
                         break;
                     case ControlTypeEnum.KendoSelect:
-                        (controlItem.Object as DropDownListEditComponent).Control.addEventListener("dropdownlist_change", (evt: Event): void => {
+                        $YetaWF.registerCustomEventHandler(controlItem.Object as DropDownListEditComponent, "dropdownlist_change", (evt: Event): void => {
                             this.update();
                         });
                         break;
@@ -101,15 +102,13 @@ namespace YetaWF_ComponentsHTML {
          */
         private update(): void {
 
-            var found = false;
-
-            // for each dependent, verify that all it's conditions are true
+            // for each dependent, verify that all its conditions are true
             var deps = this.ControlData.Dependents;
             for (let dep of deps) {
 
                 var depRow = $YetaWF.getElement1BySelector(`.t_row.t_${dep.Prop.toLowerCase()}`, [this.Control]);// the propertylist row affected
 
-                var valid = true; // we assume valid unless we find a non-matching entry
+                var valid = false; // we assume not valid unless we find a matching entry
 
                 for (let value of dep.Values) {
 
@@ -123,45 +122,74 @@ namespace YetaWF_ComponentsHTML {
                     switch (controlItem.ControlType) {
                         case ControlTypeEnum.Input:
                             var inputElem = controlItem.Object as HTMLInputElement;
-                            if (inputElem.type.toLowerCase() === "checkbox") {
-                                controlValue = inputElem.checked ? "1" : "0";
-                            } else {
-                                controlValue = inputElem.value;
+                            var controlRow = $YetaWF.elementClosest(inputElem, ".t_row");
+                            if (controlRow.style.display === "") {
+                                if (inputElem.type.toLowerCase() === "checkbox") {
+                                    controlValue = inputElem.checked ? "1" : "0";
+                                } else {
+                                    controlValue = inputElem.value;
+                                }
+                                valid = true;
                             }
                             break;
                         case ControlTypeEnum.Select:
-                            controlValue = (controlItem.Object as HTMLSelectElement).value;
+                            var selectElem = controlItem.Object as HTMLSelectElement;
+                            var controlRow = $YetaWF.elementClosest(selectElem, ".t_row");
+                            if (controlRow.style.display === "") {
+                                controlValue = selectElem.value;
+                                valid = true;
+                            }
                             break;
                         case ControlTypeEnum.KendoSelect:
-                            controlValue = (controlItem.Object as DropDownListEditComponent).value;
+                            var dropdownList = controlItem.Object as DropDownListEditComponent;
+                            var controlRow = $YetaWF.elementClosest(dropdownList.Control, ".t_row");
+                            if (controlRow.style.display === "") {
+                                controlValue = dropdownList.value;
+                                valid = true;
+                            }
                             break;
                     }
 
-                    // test condition
-                    switch (value.ValueType) {
-                        case ValueTypeEnum.EqualIntValue:
-                            // need one matching value
-                            var intValues = value.ValueObject as number[];
-                            var found = false;
-                            for (let intValue of intValues) {
-                                if (intValue === Number(controlValue)) {
-                                    found = true;
-                                    break;
+                    if (valid) {
+                        // test condition
+                        switch (value.ValueType) {
+                            case ValueTypeEnum.EqualIntValue:
+                                // need one matching value
+                                var intValues = value.ValueObject as number[];
+                                var found = false;
+                                for (let intValue of intValues) {
+                                    if (intValue === Number(controlValue)) {
+                                        found = true;
+                                        break;
+                                    }
                                 }
-                            }
-                            if (!found)
-                                valid = false;
-                            break;
-                        case ValueTypeEnum.EqualNonNull:
-                            if (!controlValue || controlValue.length === 0)
-                                valid = false;
-                            break;
-                        case ValueTypeEnum.EqualNull:
-                            if (controlValue)
-                                valid = false;
-                            break;
+                                if (!found)
+                                    valid = false;
+                                break;
+                            case ValueTypeEnum.EqualStringValue:
+                                // need one matching value
+                                var strValues = value.ValueObject as string[];
+                                var found = false;
+                                for (let strValue of strValues) {
+                                    if (strValue === controlValue) {
+                                        found = true;
+                                        break;
+                                    }
+                                }
+                                if (!found)
+                                    valid = false;
+                                break;
+                            case ValueTypeEnum.EqualNonNull:
+                                if (!controlValue || controlValue.length === 0)
+                                    valid = false;
+                                break;
+                            case ValueTypeEnum.EqualNull:
+                                if (controlValue)
+                                    valid = false;
+                                break;
+                        }
                     }
-                    if (!valid)
+                    if (valid)
                         break;
                 }
 

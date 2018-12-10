@@ -35,10 +35,12 @@
     max-width: 100%; }
   .yt_propertylist .yt_dropdownlist_base.yt_enum.t_edit,
   .yt_propertylist .yt_dropdownlist_base.yt_usstate.t_edit,
+  .yt_propertylist .yt_dropdownlist_base.yt_caprovince.t_edit,
   .yt_propertylist .yt_moduleselection.t_edit .yt_dropdownlist_base,
   .yt_propertylist .yt_pageselection.t_edit .yt_dropdownlist_base,
   .yt_propertylisttabbed .yt_dropdownlist_base.yt_enum.t_edit,
   .yt_propertylisttabbed .yt_dropdownlist_base.yt_usstate.t_edit,
+  .yt_propertylisttabbed .yt_dropdownlist_base.yt_caprovince.t_edit,
   .yt_propertylisttabbed .yt_moduleselection.t_edit .yt_dropdownlist_base,
   .yt_propertylisttabbed .yt_pageselection.t_edit .yt_dropdownlist_base {
     max-width: 100%; }

@@ -20,10 +20,10 @@ namespace YetaWF.Modules.ComponentsHTML.Controllers {
     public class SkinController : YetaWFController {
 
         /// <summary>
-        /// Returns &lt;option&gt; HTML to replace a select statement with page skins for the provided skin collection.
+        /// Returns JSON data to replace the dropdown contents with the provided skin collection.
         /// </summary>
         /// <param name="skinCollection">The name of the skin collection.</param>
-        /// <returns>&lt;option&gt; HTML to replace a select statement with page skins.
+        /// <returns>JSON data to replace the dropdown contents with the provided skin collection.
         ///
         /// Works in conjunction with client-side code and the PageSkin template.</returns>
         [AllowPost]
@@ -34,7 +34,7 @@ namespace YetaWF.Modules.ComponentsHTML.Controllers {
             return new YJsonResult { Data = sb.ToString() };
         }
         /// <summary>
-        /// Returns &lt;option&gt; HTML to replace a select statement with popup skins for the provided skin collection.
+        /// Returns JSON data to replace the dropdown contents with the provided skin collection.
         /// </summary>
         /// <param name="skinCollection">The name of the skin collection.</param>
         /// <returns>&lt;option&gt; HTML to replace a select statement with popup skins.

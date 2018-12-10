@@ -56,7 +56,7 @@ namespace YetaWF_ComponentsHTML {
                 });
             }
             if (this.inputUrl) {
-                $YetaWF.registerMultipleEventHandlers(this.inputUrl, ["input", "change", "click", "keyup", "paste"], null, (ev: Event): boolean => { this.updateStatus(); return true; });
+                $YetaWF.registerMultipleEventHandlers([this.inputUrl], ["input", "change", "click", "keyup", "paste"], null, (ev: Event): boolean => { this.updateStatus(); return true; });
             }
         }
 

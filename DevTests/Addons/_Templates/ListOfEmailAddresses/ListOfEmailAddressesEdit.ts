@@ -62,7 +62,7 @@ namespace YetaWF_DevTests {
                 return false;
             });
             $YetaWF.handleInputReturnKeyForButton(this.inputEmail, this.buttonAdd);
-            $YetaWF.registerMultipleEventHandlers(this.inputEmail, ["input", "change", "click", "keyup", "paste"], null, (ev: Event): boolean => { this.toggleButton(); return true; });
+            $YetaWF.registerMultipleEventHandlers([this.inputEmail], ["input", "change", "click", "keyup", "paste"], null, (ev: Event): boolean => { this.toggleButton(); return true; });
         }
         private toggleButton() : void {
             var s = this.inputEmail.value;
