@@ -208,10 +208,14 @@ namespace YetaWF.Modules.UserProfile.Controllers {
                     await userInfoDP.AddItemAsync(userInfo);
                 else
                     await userInfoDP.UpdateItemAsync(userInfo);
+
+                string msg = Module.SaveMessage;
+                if (string.IsNullOrWhiteSpace(msg))
+                    msg = this.__ResStr("okSaved", "Profile saved");
                 if (string.IsNullOrWhiteSpace(Module.PostSaveUrl))
-                    return FormProcessed(model, this.__ResStr("okSaved", "Profile saved"));
+                    return FormProcessed(model, msg);
                 else
-                    return FormProcessed(model, this.__ResStr("okSaved", "Profile saved"), OnClose: OnCloseEnum.GotoNewPage, NextPage: Module.PostSaveUrl);
+                    return FormProcessed(model, msg, OnClose: OnCloseEnum.GotoNewPage, NextPage: Module.PostSaveUrl);
             }
         }
     }

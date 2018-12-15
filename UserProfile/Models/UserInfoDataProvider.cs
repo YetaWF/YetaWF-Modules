@@ -63,9 +63,6 @@ namespace YetaWF.Modules.UserProfile.DataProvider {
         public string Telephone { get; set; }
 
         public string CityCombined { get { return CountryISO3166.CombineCityStateZip(Country, City, State, Zip); } }
-
-        [Data_DontSave]
-        public string Email { get; set; }
     }
 
     public class UserInfoDataProvider : DataProviderImpl, IInstallableModel, IRemoveUser {

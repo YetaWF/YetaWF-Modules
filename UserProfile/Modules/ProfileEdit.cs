@@ -34,6 +34,10 @@ namespace YetaWF.Modules.UserProfile.Modules {
         [StringLength(Globals.MaxUrl), Trim]
         public string PostSaveUrl { get; set; }
 
+        [Category("General"), Caption("Save Message"), Description("Defines the message displayed when the profile is successfully saved - If omitted, a default message is shown")]
+        [UIHint("Text80"), StringLength(ModuleDefinition.MaxTitle), Trim]
+        public string SaveMessage { get; set; }
+
         public ModuleAction GetAction_Edit(string url) {
             return new ModuleAction(this) {
                 Url = string.IsNullOrWhiteSpace(url) ? ModulePermanentUrl : url,

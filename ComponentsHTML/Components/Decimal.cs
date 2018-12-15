@@ -31,8 +31,9 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                 tag.AddCssClass("yt_decimal");
                 tag.AddCssClass("t_display");
                 FieldSetup(tag, FieldType.Anonymous);
+                string format = PropData.GetAdditionalAttributeValue("Format", "0.00");
                 if (model != null)
-                    tag.SetInnerText(((decimal)model).ToString("0.00"));
+                    tag.SetInnerText(((decimal)model).ToString(format));
                 hb.Append(tag.ToString(YTagRenderMode.Normal));
             }
             return Task.FromResult(hb.ToYHtmlString());
@@ -67,8 +68,9 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                 min = Convert.ToSingle(rangeAttr.Minimum);
                 max = Convert.ToSingle(rangeAttr.Maximum);
             }
+            string format = PropData.GetAdditionalAttributeValue("Format", "0.00");
             if (model != null)
-                tag.MergeAttribute("value", ((decimal)model).ToString("0.00"));
+                tag.MergeAttribute("value", ((decimal)model).ToString(format));
 
             hb.Append($@"
 {tag.ToString(YTagRenderMode.StartTag)}
