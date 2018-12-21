@@ -14,6 +14,7 @@ var YetaWF_ComponentsHTML;
         ControlTypeEnum[ControlTypeEnum["Input"] = 0] = "Input";
         ControlTypeEnum[ControlTypeEnum["Select"] = 1] = "Select";
         ControlTypeEnum[ControlTypeEnum["KendoSelect"] = 2] = "KendoSelect";
+        ControlTypeEnum[ControlTypeEnum["Hidden"] = 3] = "Hidden";
     })(ControlTypeEnum || (ControlTypeEnum = {}));
     var PropertyListComponent = /** @class */ (function () {
         function PropertyListComponent(controlId, controlData) {
@@ -45,6 +46,8 @@ var YetaWF_ComponentsHTML;
                             _this.update();
                         });
                         break;
+                    case ControlTypeEnum.Hidden:
+                        break;
                 }
             }
             // Initialize initial form
@@ -69,6 +72,11 @@ var YetaWF_ComponentsHTML;
                     return { Name: control, ControlType: ControlTypeEnum.Input, Object: elemInp };
                 }
             }
+            // try hidden field
+            var elemHid = $YetaWF.getElement1BySelectorCond("input[name$='" + control + "'][type='hidden']", [this.Control]);
+            if (elemHid) {
+                return { Name: control, ControlType: ControlTypeEnum.Hidden, Object: elemHid };
+            }
             throw "No control found for " + control;
         };
         /**
@@ -79,7 +87,9 @@ var YetaWF_ComponentsHTML;
             var deps = this.ControlData.Dependents;
             for (var _i = 0, deps_1 = deps; _i < deps_1.length; _i++) {
                 var dep = deps_1[_i];
-                var depRow = $YetaWF.getElement1BySelector(".t_row.t_" + dep.Prop.toLowerCase(), [this.Control]); // the propertylist row affected
+                var depRow = $YetaWF.getElement1BySelectorCond(".t_row.t_" + dep.Prop.toLowerCase(), [this.Control]); // the propertylist row affected
+                if (!depRow)
+                    continue;
                 var valid = false; // we assume not valid unless we find a matching entry
                 for (var _a = 0, _b = dep.Values; _a < _b.length; _a++) {
                     var value = _b[_a];
@@ -118,6 +128,11 @@ var YetaWF_ComponentsHTML;
                                 controlValue = dropdownList.value;
                                 valid = true;
                             }
+                            break;
+                        case ControlTypeEnum.Hidden:
+                            var inputElem = controlItem.Object;
+                            controlValue = inputElem.value;
+                            valid = true;
                             break;
                     }
                     if (valid) {

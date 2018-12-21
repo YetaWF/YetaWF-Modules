@@ -416,8 +416,8 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
                 // Render column header
                 hb.Append($@"
-        <th class='{alignCss} tg_c_{propName.ToLower()}{(gridDef.UseSkinFormatting ? " ui-state-default" : "")}'{cssWidth} {Basics.CssTooltip}='{HAE(description ?? "")}'>
-            {resizeHTML}<span>{HE(caption)}</span>{sortHtml}
+        <th class='{alignCss} tg_c_{propName.ToLower()}{(gridDef.UseSkinFormatting ? " ui-state-default" : "")}'{cssWidth}>
+            {resizeHTML}<span {Basics.CssTooltipSpan}='{HAE(description ?? "")}'>{HE(caption)}</span>{sortHtml}
         </th>");
 
                 List<GridColumnInfo.FilterOptionEnum> filterOpts = new List<GridColumnInfo.FilterOptionEnum>();

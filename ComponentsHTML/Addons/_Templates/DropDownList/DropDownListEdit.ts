@@ -29,15 +29,10 @@ namespace YetaWF_ComponentsHTML {
         public updateWidth(): void {
             var w = this.Control.clientWidth;
             if (w > 0 && this.KendoDropDownList == null) {
-                var thisObj = this;
                 $(this.Control).kendoDropDownList({
                     autoWidth: true,
-                    // tslint:disable-next-line:only-arrow-functions
-                    change: function (): void {
-                        var event = document.createEvent("Event");
-                        event.initEvent("dropdownlist_change", true, true);
-                        thisObj.Control.dispatchEvent(event);
-                        FormsSupport.validateElement(thisObj.Control);
+                    change: (): void => {
+                        this.sendChangeEvent();
                     }
                 });
                 this.KendoDropDownList = $(this.Control).data("kendoDropDownList");
@@ -87,6 +82,13 @@ namespace YetaWF_ComponentsHTML {
                 this.KendoDropDownList.enable(enabled);
             }
         }
+        public sendChangeEvent(): void {
+            $(this.Control).trigger("change");
+            var event = document.createEvent("Event");
+            event.initEvent("dropdownlist_change", true, true);
+            this.Control.dispatchEvent(event);
+            FormsSupport.validateElement(this.Control);
+        }
         public internalDestroy(): void {
             try {
                 if (this.KendoDropDownList)
@@ -112,18 +114,13 @@ namespace YetaWF_ComponentsHTML {
                     var retVal = $YetaWF.processAjaxReturn(request.responseText, request.statusText, request, this.Control, undefined, undefined, (data: AjaxData): void => {
 
                         // $(this.Control).val(null);
-                        var thisObj = this;
                         $(this.Control).kendoDropDownList({
                             dataTextField: "t",
                             dataValueField: "v",
                             dataSource: data.data,
                             autoWidth: true,
-                            // tslint:disable-next-line:only-arrow-functions
-                            change: function (): void {
-                                var event = document.createEvent("Event");
-                                event.initEvent("dropdownlist_change", true, true);
-                                thisObj.Control.dispatchEvent(event);
-                                FormsSupport.validateElement(thisObj.Control);
+                            change: (): void => {
+                                this.sendChangeEvent();
                             }
                         });
                         this.Setup.ToolTips = data.tooltips;
@@ -133,10 +130,7 @@ namespace YetaWF_ComponentsHTML {
                             onSuccess(data);
                         } else {
                             this.value = "";
-                            $(this.Control).trigger("change");
-                            var event = document.createEvent("Event");
-                            event.initEvent("dropdownlist_change", true, true);
-                            this.Control.dispatchEvent(event);
+                            this.sendChangeEvent();
                         }
                     });
                     if (!retVal) {

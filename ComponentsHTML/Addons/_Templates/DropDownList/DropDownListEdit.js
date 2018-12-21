@@ -25,17 +25,13 @@ var YetaWF_ComponentsHTML;
             return _this;
         }
         DropDownListEditComponent.prototype.updateWidth = function () {
+            var _this = this;
             var w = this.Control.clientWidth;
             if (w > 0 && this.KendoDropDownList == null) {
-                var thisObj = this;
                 $(this.Control).kendoDropDownList({
                     autoWidth: true,
-                    // tslint:disable-next-line:only-arrow-functions
                     change: function () {
-                        var event = document.createEvent("Event");
-                        event.initEvent("dropdownlist_change", true, true);
-                        thisObj.Control.dispatchEvent(event);
-                        FormsSupport.validateElement(thisObj.Control);
+                        _this.sendChangeEvent();
                     }
                 });
                 this.KendoDropDownList = $(this.Control).data("kendoDropDownList");
@@ -96,6 +92,13 @@ var YetaWF_ComponentsHTML;
                 this.KendoDropDownList.enable(enabled);
             }
         };
+        DropDownListEditComponent.prototype.sendChangeEvent = function () {
+            $(this.Control).trigger("change");
+            var event = document.createEvent("Event");
+            event.initEvent("dropdownlist_change", true, true);
+            this.Control.dispatchEvent(event);
+            FormsSupport.validateElement(this.Control);
+        };
         DropDownListEditComponent.prototype.internalDestroy = function () {
             try {
                 if (this.KendoDropDownList)
@@ -118,18 +121,13 @@ var YetaWF_ComponentsHTML;
                     $YetaWF.setLoading(false);
                     var retVal = $YetaWF.processAjaxReturn(request.responseText, request.statusText, request, _this.Control, undefined, undefined, function (data) {
                         // $(this.Control).val(null);
-                        var thisObj = _this;
                         $(_this.Control).kendoDropDownList({
                             dataTextField: "t",
                             dataValueField: "v",
                             dataSource: data.data,
                             autoWidth: true,
-                            // tslint:disable-next-line:only-arrow-functions
                             change: function () {
-                                var event = document.createEvent("Event");
-                                event.initEvent("dropdownlist_change", true, true);
-                                thisObj.Control.dispatchEvent(event);
-                                FormsSupport.validateElement(thisObj.Control);
+                                _this.sendChangeEvent();
                             }
                         });
                         _this.Setup.ToolTips = data.tooltips;
@@ -139,10 +137,7 @@ var YetaWF_ComponentsHTML;
                         }
                         else {
                             _this.value = "";
-                            $(_this.Control).trigger("change");
-                            var event = document.createEvent("Event");
-                            event.initEvent("dropdownlist_change", true, true);
-                            _this.Control.dispatchEvent(event);
+                            _this.sendChangeEvent();
                         }
                     });
                     if (!retVal) {

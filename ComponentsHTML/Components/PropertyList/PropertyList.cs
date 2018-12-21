@@ -111,8 +111,6 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             ClassData classData = ObjectSupport.GetClassData(modelType);
             RenderHeader(hb, classData);
 
-            hb.Append(await RenderHiddenAsync(model));
-
             bool showVariables = YetaWF.Core.Localize.UserSettings.GetProperty<bool>("ShowVariables");
 
             // property table
@@ -120,6 +118,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             string divId = Manager.UniqueId();
             hbProps.Append($@"
 <div id='{divId}' class='yt_propertylist t_table {(ReadOnly ? "t_display" : "t_edit")}'>
+   {await RenderHiddenAsync(model)}
    {await RenderListAsync(model, null, showVariables, ReadOnly)}
 </div>");
 
