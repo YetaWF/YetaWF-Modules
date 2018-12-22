@@ -1,6 +1,7 @@
 ﻿/* Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/ComponentsHTML#License */
 
 using System.Threading.Tasks;
+using YetaWF.Core.Addons;
 using YetaWF.Core.Components;
 using YetaWF.Core.Localize;
 using YetaWF.Core.Models.Attributes;
@@ -63,6 +64,10 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                 if (!TryGetSiblingProperty($"{PropertyName}_Text", out text))
                     text = model;
                 tag.SetInnerText(text);
+                string tooltip = null;
+                TryGetSiblingProperty($"{PropertyName}_ToolTip", out tooltip);
+                if (!string.IsNullOrWhiteSpace(tooltip))
+                    tag.MergeAttribute(Basics.CssTooltip, tooltip);
 
                 // image
                 if (PropData.GetAdditionalAttributeValue("ShowImage", true)) {
