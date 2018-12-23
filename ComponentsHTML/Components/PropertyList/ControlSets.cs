@@ -24,10 +24,12 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             public string Prop { get; set; } // Name of property
             public bool Disable { get; set; } // defines whether the control is disabled instead of hidden
 
-            public List<ValueEntry> Values { get; set; }
+            public List<ValueEntry> ProcessValues { get; set; } // If a matching entry is found the dependent property is processed
+            public List<ValueEntry> HideValues { get; set; } // If a matching entry is found the dependent property is hidden
 
             public Dependent () {
-                Values = new List<ValueEntry>();
+                ProcessValues = new List<ValueEntry>();
+                HideValues = new List<ValueEntry>();
             }
 
             public class ValueEntry {
@@ -35,6 +37,8 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                 public enum ValueTypeEnum {
                     EqualIntValue = 0,
                     EqualStringValue = 1,
+                    NotEqualIntValue = 10,
+                    NotEqualStringValue = 11,
                     EqualNull = 100,
                     EqualNonNull = 101,
                 }
@@ -57,6 +61,9 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
             List<PropertyListEntry> properties = GetPropertiesByCategory(model, null);
             foreach (PropertyListEntry property in properties) {
+
+                // Process
+
                 if (property.ProcIfAttrs != null) {
                     foreach (ProcessIfAttribute procIfAttr in property.ProcIfAttrs) {
                         if (!selectionControls.Contains(procIfAttr.Name))
@@ -74,37 +81,88 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                             }
                         }
                         if (intValues.Count > 0) {
-                            dep.Values.Add(new Dependent.ValueEntry {
+                            dep.ProcessValues.Add(new Dependent.ValueEntry {
                                 ControlProp = procIfAttr.Name,
                                 ValueType = Dependent.ValueEntry.ValueTypeEnum.EqualIntValue,
                                 ValueObject = intValues,
                             });
                         }
                         if (stringValues.Count > 0) {
-                            dep.Values.Add(new Dependent.ValueEntry {
+                            dep.ProcessValues.Add(new Dependent.ValueEntry {
                                 ControlProp = procIfAttr.Name,
                                 ValueType = Dependent.ValueEntry.ValueTypeEnum.EqualStringValue,
                                 ValueObject = stringValues,
                             });
                         }
                     }
+                }
+                if (property.ProcIfNotAttrs != null) {
+                    foreach (ProcessIfNotAttribute procIfNotAttr in property.ProcIfNotAttrs) {
+                        if (!selectionControls.Contains(procIfNotAttr.Name))
+                            selectionControls.Add(procIfNotAttr.Name);
+                        Dependent dep = FindDependent(cd, property.Name);
+                        dep.Disable = procIfNotAttr.Disable;
+                        List<int> intValues = new List<int>();
+                        List<string> stringValues = new List<string>();
+                        foreach (object obj in procIfNotAttr.Objects) {
+                            if (obj.GetType() == typeof(string)) {
+                                stringValues.Add((string)obj);
+                            } else {
+                                int val = Convert.ToInt32(obj);
+                                intValues.Add(val);
+                            }
+                        }
+                        if (intValues.Count > 0) {
+                            dep.ProcessValues.Add(new Dependent.ValueEntry {
+                                ControlProp = procIfNotAttr.Name,
+                                ValueType = Dependent.ValueEntry.ValueTypeEnum.NotEqualIntValue,
+                                ValueObject = intValues,
+                            });
+                        }
+                        if (stringValues.Count > 0) {
+                            dep.ProcessValues.Add(new Dependent.ValueEntry {
+                                ControlProp = procIfNotAttr.Name,
+                                ValueType = Dependent.ValueEntry.ValueTypeEnum.NotEqualStringValue,
+                                ValueObject = stringValues,
+                            });
+                        }
+                    }
+                }
+                if (property.ProcIfSuppliedAttrs != null) {
                     foreach (ProcessIfSuppliedAttribute procIfSuppliedAttr in property.ProcIfSuppliedAttrs) {
                         if (!selectionControls.Contains(procIfSuppliedAttr.Name))
                             selectionControls.Add(procIfSuppliedAttr.Name);
                         Dependent dep = FindDependent(cd, property.Name);
                         dep.Disable = procIfSuppliedAttr.Disable;
-                        dep.Values.Add(new Dependent.ValueEntry {
+                        dep.ProcessValues.Add(new Dependent.ValueEntry {
                             ControlProp = procIfSuppliedAttr.Name,
                             ValueType = Dependent.ValueEntry.ValueTypeEnum.EqualNonNull,
                         });
                     }
+                }
+                if (property.ProcIfNotSuppliedAttrs != null) {
                     foreach (ProcessIfNotSuppliedAttribute procIfNotSuppliedAttr in property.ProcIfNotSuppliedAttrs) {
                         if (!selectionControls.Contains(procIfNotSuppliedAttr.Name))
                             selectionControls.Add(procIfNotSuppliedAttr.Name);
                         Dependent dep = FindDependent(cd, property.Name);
                         dep.Disable = procIfNotSuppliedAttr.Disable;
-                        dep.Values.Add(new Dependent.ValueEntry {
+                        dep.ProcessValues.Add(new Dependent.ValueEntry {
                             ControlProp = procIfNotSuppliedAttr.Name,
+                            ValueType = Dependent.ValueEntry.ValueTypeEnum.EqualNull,
+                        });
+                    }
+                }
+
+                // Hide
+
+                if (property.HideIfNotSuppliedAttrs != null) {
+                    foreach (HideIfNotSuppliedAttribute hideIfNotSuppliedAttr in property.HideIfNotSuppliedAttrs) {
+                        if (!selectionControls.Contains(hideIfNotSuppliedAttr.Name))
+                            selectionControls.Add(hideIfNotSuppliedAttr.Name);
+                        Dependent dep = FindDependent(cd, property.Name);
+                        dep.Disable = hideIfNotSuppliedAttr.Disable;
+                        dep.HideValues.Add(new Dependent.ValueEntry {
+                            ControlProp = hideIfNotSuppliedAttr.Name,
                             ValueType = Dependent.ValueEntry.ValueTypeEnum.EqualNull,
                         });
                     }

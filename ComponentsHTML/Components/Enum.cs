@@ -52,14 +52,17 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         public override ComponentType GetComponentType() { return ComponentType.Edit; }
 
         public async Task<YHtmlString> RenderAsync(object model) {
+            bool showSelect = PropData.GetAdditionalAttributeValue("ShowSelect", false);
+            List<SelectionItem<int>> list = GetEnumSelectionList(model.GetType(), showSelect: showSelect);
+            return await DropDownListIntComponent.RenderDropDownListAsync(this, (int)model, list, "yt_enum");
+        }
 
+        public static List<SelectionItem<int>> GetEnumSelectionList(Type enumType, bool showSelect = false) {
             List<SelectionItem<int>> list = new List<SelectionItem<int>>();
 
-            Type enumType = model.GetType();
             EnumData enumData = ObjectSupport.GetEnumData(enumType);
             bool showValues = UserSettings.GetProperty<bool>("ShowEnumValue");
 
-            bool showSelect = PropData.GetAdditionalAttributeValue("ShowSelect", false);
             if (showSelect) {
                 list.Add(new SelectionItem<int> {
                     Text = __ResStr("enumSelect", "(select)"),
@@ -82,7 +85,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                     Tooltip = entry.Description,
                 });
             }
-            return await DropDownListIntComponent.RenderDropDownListAsync(this, (int)model, list, "yt_enum");
+            return list;
         }
     }
 }

@@ -14,15 +14,18 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         public class PropertyListEntry {
 
             public PropertyListEntry(string name, object value, string uiHint, bool editable, bool restricted, string textAbove, string textBelow, bool suppressEmpty,
-                    List<ProcessIfAttribute> procIfAttrs, List<ProcessIfSuppliedAttribute> procIfSuppliedAttrs, List<ProcessIfNotSuppliedAttribute> procIfNotSuppliedAttrs,
+                    List<ProcessIfAttribute> procIfAttrs, List<ProcessIfNotAttribute> procIfNotAttrs, List<ProcessIfSuppliedAttribute> procIfSuppliedAttrs, List<ProcessIfNotSuppliedAttribute> procIfNotSuppliedAttrs,
+                    List<HideIfNotSuppliedAttribute> hideIfNotSuppliedAttrs,
                     SubmitFormOnChangeAttribute.SubmitTypeEnum submit) {
                 Name = name; Value = value; Editable = editable;
                 Restricted = restricted;
                 TextAbove = textAbove; TextBelow = textBelow;
                 UIHint = uiHint;
                 ProcIfAttrs = procIfAttrs;
+                ProcIfNotAttrs = procIfNotAttrs;
                 ProcIfSuppliedAttrs = procIfSuppliedAttrs;
                 ProcIfNotSuppliedAttrs = procIfNotSuppliedAttrs;
+                HideIfNotSuppliedAttrs = hideIfNotSuppliedAttrs;
                 SuppressEmpty = suppressEmpty;
                 SubmitType = submit;
             }
@@ -36,8 +39,10 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             public bool SuppressEmpty { get; private set; }
             public SubmitFormOnChangeAttribute.SubmitTypeEnum SubmitType { get; private set; }
             public List<ProcessIfAttribute> ProcIfAttrs { get; set; }
+            public List<ProcessIfNotAttribute> ProcIfNotAttrs { get; set; }
             public List<ProcessIfSuppliedAttribute> ProcIfSuppliedAttrs { get; set; }
             public List<ProcessIfNotSuppliedAttribute> ProcIfNotSuppliedAttrs { get; set; }
+            public List<HideIfNotSuppliedAttribute> HideIfNotSuppliedAttrs { get; set; }
         };
 
         // returns all properties for an object that have a description, in sorted order
@@ -55,7 +60,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                 if (!prop.PropInfo.CanRead) continue;
                 if (prop.UIHint != "Hidden")
                     continue;
-                properties.Add(new PropertyListEntry(prop.Name, prop.GetPropertyValue<object>(obj), "Hidden", false, false, null, null, false, null, null, null, SubmitFormOnChangeAttribute.SubmitTypeEnum.None));
+                properties.Add(new PropertyListEntry(prop.Name, prop.GetPropertyValue<object>(obj), "Hidden", false, false, null, null, false, null, null, null, null, null, SubmitFormOnChangeAttribute.SubmitTypeEnum.None));
             }
             return properties;
         }
@@ -124,10 +129,14 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
                 List<ProcessIfAttribute> procIfAttrs = new List<ProcessIfAttribute>();
                 procIfAttrs = prop.TryGetAttributes<ProcessIfAttribute>();
+                List<ProcessIfNotAttribute> procIfNotAttrs = new List<ProcessIfNotAttribute>();
+                procIfNotAttrs = prop.TryGetAttributes<ProcessIfNotAttribute>();
                 List<ProcessIfSuppliedAttribute> procIfSuppliedAttrs = new List<ProcessIfSuppliedAttribute>();
                 procIfSuppliedAttrs = prop.TryGetAttributes<ProcessIfSuppliedAttribute>();
                 List<ProcessIfNotSuppliedAttribute> procIfNotSuppliedAttrs = new List<ProcessIfNotSuppliedAttribute>();
                 procIfNotSuppliedAttrs = prop.TryGetAttributes<ProcessIfNotSuppliedAttribute>();
+                List<HideIfNotSuppliedAttribute> hideIfNotSuppliedAttrs = new List<HideIfNotSuppliedAttribute>();
+                hideIfNotSuppliedAttrs = prop.TryGetAttributes<HideIfNotSuppliedAttribute>();
 
                 bool restricted = false;
                 if (Manager.IsDemo) {
@@ -136,8 +145,10 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                         restricted = true;
                 }
                 properties.Add(
-                    new PropertyListEntry(prop.Name, prop.GetPropertyValue<object>(obj), prop.UIHint, editable, restricted, prop.TextAbove, prop.TextBelow, 
-                        suppressEmptyAttr != null, procIfAttrs, procIfSuppliedAttrs, procIfNotSuppliedAttrs, submitFormOnChangeAttr != null ? submitFormOnChangeAttr.Value : SubmitFormOnChangeAttribute.SubmitTypeEnum.None)
+                    new PropertyListEntry(prop.Name, prop.GetPropertyValue<object>(obj), prop.UIHint, editable, restricted, prop.TextAbove, prop.TextBelow,
+                        suppressEmptyAttr != null, procIfAttrs, procIfNotAttrs, procIfSuppliedAttrs, procIfNotSuppliedAttrs,
+                        hideIfNotSuppliedAttrs,
+                        submitFormOnChangeAttr != null ? submitFormOnChangeAttr.Value : SubmitFormOnChangeAttribute.SubmitTypeEnum.None)
                 );
             }
             return properties;
