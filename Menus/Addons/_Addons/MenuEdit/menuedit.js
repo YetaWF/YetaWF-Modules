@@ -62,8 +62,8 @@ var YetaWF_Menus;
                     if (!hasErrors) {
                         _this.saveFields();
                         _this.Tree.setSelectText(_this.MenuText.defaultValue);
-                        _this.update();
                         _this.sendEntireMenu();
+                        _this.update();
                     }
                 });
                 return false;
@@ -85,8 +85,8 @@ var YetaWF_Menus;
                     _this.ActiveEntry = _this.Tree.getSelect();
                     _this.ActiveData = _this.Tree.getSelectData();
                     _this.ActiveNew = false;
-                    _this.update();
                     _this.sendEntireMenu();
+                    _this.update();
                 }
                 return false;
             });

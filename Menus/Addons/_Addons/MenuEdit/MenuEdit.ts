@@ -154,9 +154,9 @@ namespace YetaWF_Menus {
                     if (!hasErrors) {
                         this.saveFields();
                         this.Tree.setSelectText(this.MenuText.defaultValue);
-                        this.update();
 
                         this.sendEntireMenu();
+                        this.update();
                     }
                 });
                 return false;
@@ -177,9 +177,9 @@ namespace YetaWF_Menus {
                     this.ActiveEntry = this.Tree.getSelect();
                     this.ActiveData = this.Tree.getSelectData();
                     this.ActiveNew = false;
-                    this.update();
 
                     this.sendEntireMenu();
+                    this.update();
                 }
                 return false;
             });
