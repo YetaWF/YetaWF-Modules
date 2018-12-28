@@ -35,8 +35,8 @@ namespace YetaWF.Modules.Identity.Controllers {
     public class LoginModuleController : ControllerImpl<YetaWF.Modules.Identity.Modules.LoginModule> {
 
         [Trim]
-        [Header("-<p>You are entering an area of our web site, for which you need to register using your name/email address and password.</p>" +
-                "<p>If you are a new user, please register a new account now. If you already established an account earlier, please enter this information here and click \"Log In\".</p>")]
+        [Header("-<p>You are entering an area of our web site, for which you need to register using your name/email address and password. " +
+                "If you are a new user, please register a new account now. If you already established an account earlier, please enter this information here and click \"Log In\".</p>")]
         [Legend("Account Information")]
         public class LoginModel {
 
