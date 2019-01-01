@@ -66,7 +66,7 @@ namespace YetaWF.Modules.Identity.Controllers {
             [UIHint("Boolean")]
             public bool BccForgottenPassword { get; set; }
 
-            [TextAbove("Please select which roles require mandatory two-step authentication. The site Superuser can always access the site even if two-step authentication is required but has not yet be set up. Other users must set up two-step authentication before full access to the site is granted.")]
+            [TextAbove("Please select which roles require mandatory two-step authentication. The site Superuser can always access the site even if two-step authentication is required but has not yet been set up. Other users must set up two-step authentication before full access to the site is granted.")]
             [Category("Two-Step Auth"), Caption("Two-Step Authentication"), Description("Defines which roles require mandatory two-step authentication")]
             [UIHint("YetaWF_Identity_RolesSelector"), AdditionalMetadata("ExcludeUser2FA", true)]
             public SerializableList<Role> TwoStepAuth { get; set; }
