@@ -36,6 +36,8 @@
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Components\BooleanText.cs" />
+    <Compile Include="Components\CAProvince.cs" />
     <Compile Include="Components\ColorPicker.cs" />
     <Compile Include="Components\Tree.cs" />
     <Compile Include="Components\Grid\Grid.cs" />
@@ -169,6 +171,7 @@
     <Content Include="Addons\_Addons\ckeditor\__CUSTOM_FILES\sourceonly_ro_config.js" />
     <Content Include="Addons\_Addons\clipboardjs.com.clipboard\filelistJS.txt" />
     <Content Include="Addons\_Main\IconCollection.png" />
+    <Content Include="Addons\_Templates\BooleanText\filelistCSS.txt" />
     <Content Include="Addons\_Templates\Tree\filelistCSS.txt" />
     <Content Include="Addons\_Templates\Tree\filelistJS.txt" />
     <Content Include="Addons\_Templates\Grid\filelistCSS.txt" />
@@ -228,6 +231,7 @@
     <Content Include="Addons\_Templates\ActionIcons\filelistJS.txt" />
     <Content Include="Addons\_Templates\ColorPicker\filelistCSS.txt" />
     <Content Include="Addons\_Templates\ColorPicker\filelistJS.txt" />
+    <None Include="Addons\_Templates\BooleanText\BooleanText.scss" />
     <None Include="Addons\_Templates\Currency\Currency.scss" />
     <Content Include="Addons\_Templates\Currency\filelistCSS.txt" />
     <Content Include="Addons\_Templates\Currency\filelistJS.txt" />
