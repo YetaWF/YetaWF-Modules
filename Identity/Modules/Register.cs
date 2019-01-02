@@ -15,6 +15,10 @@ using YetaWF.Core.Support;
 using YetaWF.DataProvider;
 using YetaWF.Modules.Identity.Controllers;
 using YetaWF.Modules.Identity.DataProvider;
+#if MVC6
+#else
+using System.Web.Mvc;
+#endif
 
 namespace YetaWF.Modules.Identity.Modules {
 

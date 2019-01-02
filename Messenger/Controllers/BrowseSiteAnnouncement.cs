@@ -49,7 +49,7 @@ namespace YetaWF.Modules.Messenger.Controllers {
 
             private BrowseSiteAnnouncementModule Module { get; set; }
 
-            public BrowseItem(BrowseSiteAnnouncementModule module, SiteAccouncement data) {
+            public BrowseItem(BrowseSiteAnnouncementModule module, SiteAnnouncement data) {
                 Module = module;
                 ObjectSupport.CopyData(data, this);
             }
@@ -67,8 +67,8 @@ namespace YetaWF.Modules.Messenger.Controllers {
                 RecordType = typeof(BrowseItem),
                 AjaxUrl = GetActionUrl(nameof(BrowseSiteAnnouncement_GridData)),
                 DirectDataAsync = async (int skip, int take, List<DataProviderSortInfo> sort, List<DataProviderFilterInfo> filters) => {
-                    using (SiteAccouncementDataProvider dataProvider = new SiteAccouncementDataProvider()) {
-                        DataProviderGetRecords<SiteAccouncement> browseItems = await dataProvider.GetItemsAsync(skip, take, sort, filters);
+                    using (SiteAnnouncementDataProvider dataProvider = new SiteAnnouncementDataProvider()) {
+                        DataProviderGetRecords<SiteAnnouncement> browseItems = await dataProvider.GetItemsAsync(skip, take, sort, filters);
                         return new DataSourceResult {
                             Data = (from s in browseItems.Data select new BrowseItem(Module, s)).ToList<object>(),
                             Total = browseItems.Total

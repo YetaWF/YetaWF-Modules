@@ -4,11 +4,6 @@ var YetaWF_Messenger;
 (function (YetaWF_Messenger) {
     var SkinSiteAnnouncementsModule = /** @class */ (function () {
         function SkinSiteAnnouncementsModule() {
-        }
-        /**
-         * Initializes the module instance.
-         */
-        SkinSiteAnnouncementsModule.prototype.init = function () {
             $YetaWF.registerContentChange(function (addonGuid, on) {
                 if (addonGuid === SkinSiteAnnouncementsModule.MODULEGUID) {
                     SkinSiteAnnouncementsModule.on = on;
@@ -22,13 +17,10 @@ var YetaWF_Messenger;
                     $YetaWF.alert(content, title, undefined, { encoded: true });
             });
             connection.start().done(function () { });
-        };
+        }
         SkinSiteAnnouncementsModule.MODULEGUID = "54F6B691-B835-4568-90AA-AA9B308D4272";
         SkinSiteAnnouncementsModule.on = true;
         return SkinSiteAnnouncementsModule;
     }());
-    var announceMod = new SkinSiteAnnouncementsModule();
-    announceMod.init();
+    YetaWF_Messenger.SkinSiteAnnouncementsModule = SkinSiteAnnouncementsModule;
 })(YetaWF_Messenger || (YetaWF_Messenger = {}));
-
-//# sourceMappingURL=SkinSiteAnnouncements.js.map

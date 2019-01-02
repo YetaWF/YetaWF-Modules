@@ -11,6 +11,7 @@ using YetaWF.Core.Packages;
 using YetaWF.Core.Support;
 using YetaWF.Modules.Messenger.DataProvider;
 using YetaWF.Modules.Messenger.Components;
+using YetaWF.Core;
 #if MVC6
 using Microsoft.AspNetCore.Mvc;
 #else
@@ -52,7 +53,7 @@ namespace YetaWF.Modules.Messenger.Controllers {
 
         [AllowGet]
         public async Task<ActionResult> Messaging() {
-            await Signalr.UseAsync();
+            await SignalR.UseAsync();
             Package currentPackage = AreaRegistration.CurrentPackage;
             await Manager.AddOnManager.AddAddOnNamedAsync(currentPackage.AreaName, "Messaging");
             EditModel model = new EditModel { };

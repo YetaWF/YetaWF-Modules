@@ -8,10 +8,10 @@ using YetaWF.Core.Controllers;
 using YetaWF.Core.DataProvider;
 using YetaWF.Core.Identity;
 using YetaWF.Core.Localize;
-using YetaWF.Core.Packages;
 using YetaWF.Core.Site;
 using YetaWF.Core.Support;
 using YetaWF.Modules.Messenger.DataProvider;
+using YetaWF.Core;
 #if MVC6
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.AspNetCore.Mvc;
@@ -30,9 +30,10 @@ namespace YetaWF.Modules.Messenger.Controllers {
 
         [AllowGet]
         public async Task<ActionResult> SkinMessaging() {
-            await Signalr.UseAsync();
-            Package currentPackage = AreaRegistration.CurrentPackage;
-            await Manager.AddOnManager.AddAddOnNamedAsync(currentPackage.AreaName, "SkinMessaging");
+
+            await SignalR.UseAsync();
+            Manager.ScriptManager.AddLast($"{AreaRegistration.CurrentPackage.AreaName}_{Module.ClassName}", $"new YetaWF_Messenger.SkinMessagingModule('{YetaWFManager.JserEncode(Module.ModuleHtmlId)}');");
+
             return new EmptyResult();
         }
     }
@@ -41,7 +42,7 @@ namespace YetaWF.Modules.Messenger.Controllers {
 
         public async Task Send(string toUser, string message) {
 
-            YetaWFManager manager = await Signalr.SetupEnvironmentAsync();
+            YetaWFManager manager = await this.SetupSignalRAsync();
             using (MessagingDataProvider msgDP = new MessagingDataProvider()) {
                 if (manager.UserId == 0) throw new InternalError("No current user");
 
@@ -76,7 +77,7 @@ namespace YetaWF.Modules.Messenger.Controllers {
             }
         }
         public async Task<List<string>> GetOnlineUsers() {
-            YetaWFManager manager = await Signalr.SetupEnvironmentAsync();
+            YetaWFManager manager = await this.SetupSignalRAsync();
             using (ConnectionDataProvider connDP = new ConnectionDataProvider()) {
                 //%%%%%%%%%%%%%%%%%%% limit scope to friend users
                 List<DataProviderFilterInfo> filters = null;
@@ -89,14 +90,14 @@ namespace YetaWF.Modules.Messenger.Controllers {
             }
         }
         public async Task<bool> IsUserOnline(string user) {
-            YetaWFManager manager = await Signalr.SetupEnvironmentAsync();
+            YetaWFManager manager = await this.SetupSignalRAsync();
             using (ConnectionDataProvider connDP = new ConnectionDataProvider()) {
                 Connection conn = await connDP.GetEntryAsync(user);
                 return conn != null;
             }
         }
         public async Task MessageSeen(int key) {
-            YetaWFManager manager = await Signalr.SetupEnvironmentAsync();
+            YetaWFManager manager = await this.SetupSignalRAsync();
             if (manager.UserId == 0) throw new InternalError("No current user");
             using (MessagingDataProvider msgDP = new MessagingDataProvider()) {
                 Message msg = await msgDP.GetItemAsync(key);
@@ -114,7 +115,7 @@ namespace YetaWF.Modules.Messenger.Controllers {
             }
         }
         public async Task AllMessagesSeen(string fromUser) {
-            YetaWFManager manager = await Signalr.SetupEnvironmentAsync();
+            YetaWFManager manager = await this.SetupSignalRAsync();
             if (manager.UserId == 0) throw new InternalError("No current user");
 
             int fromUserId = await Resource.ResourceAccess.GetUserIdAsync(fromUser);

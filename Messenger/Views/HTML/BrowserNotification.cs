@@ -12,14 +12,14 @@ using YetaWF.Modules.Messenger.Modules;
 
 namespace YetaWF.Modules.Messenger.Views {
 
-    public class SiteAnnouncementView : YetaWFView, IYetaWFView2<SiteAnnouncementModule, SiteAnnouncementModuleController.AddModel> {
+    public class BrowserNotificationsView : YetaWFView, IYetaWFView2<BrowserNotificationsModule, BrowserNotificationsModuleController.Model> {
 
-        public const string ViewName = "SiteAnnouncement";
+        public const string ViewName = "BrowserNotifications";
 
         public override Package GetPackage() { return AreaRegistration.CurrentPackage; }
         public override string GetViewName() { return ViewName; }
 
-        public async Task<YHtmlString> RenderViewAsync(SiteAnnouncementModule module, SiteAnnouncementModuleController.AddModel model) {
+        public async Task<YHtmlString> RenderViewAsync(BrowserNotificationsModule module, BrowserNotificationsModuleController.Model model) {
 
             HtmlBuilder hb = new HtmlBuilder();
 
@@ -27,11 +27,11 @@ namespace YetaWF.Modules.Messenger.Views {
             string idSend = UniqueId();
             string idCancel = UniqueId();
 
-            if (!Manager.AddOnManager.HasModuleReference(ModuleDefinition.GetPermanentGuid(typeof(SkinSiteAnnouncementsModule)))) {
+            if (!Manager.AddOnManager.HasModuleReference(ModuleDefinition.GetPermanentGuid(typeof(SkinBrowserNotificationsModule)))) {
 
                 hb.Append($@"
 <div class='yDivAlert'>
-    {HE(this.__ResStr("noMsg", "Messaging services are not available (add a reference to the \"Site Announcements (Skin)\" module in Site Settings)."))}
+    {HE(this.__ResStr("noMsg", "Messaging services are not available (add a reference to the \"Web Browser Notifications (Skin)\" module in Site Settings)."))}
 </div>");
 
             } else {
@@ -40,7 +40,8 @@ namespace YetaWF.Modules.Messenger.Views {
 {await RenderBeginFormAsync()}
     {await PartialForm(async () => await RenderPartialViewAsync(module, model))}
     {await FormButtonsAsync(new FormButton[] {
-        new FormButton() { Text=this.__ResStr("btnSend", "Send"), ButtonType= ButtonTypeEnum.Submit, },
+        new FormButton() { Text=this.__ResStr("btnSend", "Send"), ButtonType= ButtonTypeEnum.Apply, },
+        new FormButton() { Text=this.__ResStr("btnSendClose", "Send & Close"), ButtonType= ButtonTypeEnum.Submit, },
         new FormButton() { ButtonType= ButtonTypeEnum.Cancel, },
     })}
 {await RenderEndFormAsync()}");
@@ -49,7 +50,7 @@ namespace YetaWF.Modules.Messenger.Views {
             return hb.ToYHtmlString();
         }
 
-        public async Task<YHtmlString> RenderPartialViewAsync(SiteAnnouncementModule module, SiteAnnouncementModuleController.AddModel model) {
+        public async Task<YHtmlString> RenderPartialViewAsync(BrowserNotificationsModule module, BrowserNotificationsModuleController.Model model) {
 
             HtmlBuilder hb = new HtmlBuilder();
             hb.Append(await HtmlHelper.ForEditContainerAsync(model, "PropertyList"));

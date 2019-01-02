@@ -29,6 +29,7 @@ namespace YetaWF.Modules.Messenger.Modules {
             Name = this.__ResStr("modName", "Site Announcements");
             Description = this.__ResStr("modSummary", "Displays and manages site announcements");
             DefaultViewName = StandardViews.PropertyListEdit;
+            UsePartialFormCss = false;
         }
 
         public override IModuleDefinitionIO GetDataProvider() { return new BrowseSiteAnnouncementModuleDataProvider(); }

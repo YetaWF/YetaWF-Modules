@@ -2,8 +2,9 @@
 
 using System.Threading.Tasks;
 using YetaWF.Core.Controllers;
-using YetaWF.Core.Packages;
 using YetaWF.Core.Support;
+using YetaWF.Core;
+using YetaWF.Modules.Messenger.Modules;
 #if MVC6
 using Microsoft.AspNetCore.Mvc;
 #else
@@ -18,9 +19,11 @@ namespace YetaWF.Modules.Messenger.Controllers {
 
         [AllowGet]
         public async Task<ActionResult> SkinSiteAnnouncements() {
-            await Signalr.UseAsync();
-            Package currentPackage = AreaRegistration.CurrentPackage;
-            await Manager.AddOnManager.AddAddOnNamedAsync(currentPackage.AreaName, "SkinSiteAnnouncements");
+
+            await SignalR.UseAsync();
+            await Manager.AddOnManager.AddAddOnNamedAsync(AreaRegistration.CurrentPackage.AreaName, nameof(SkinSiteAnnouncementsModule));
+            Manager.ScriptManager.AddLast($"{AreaRegistration.CurrentPackage.AreaName}_{Module.ClassName}", $"new YetaWF_Messenger.SkinSiteAnnouncementsModule('{YetaWFManager.JserEncode(Module.ModuleHtmlId)}');");
+
             return new EmptyResult();
         }
     }

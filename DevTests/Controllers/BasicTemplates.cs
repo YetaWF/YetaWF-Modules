@@ -35,6 +35,15 @@ namespace YetaWF.Modules.DevTests.Controllers {
             [UIHint("Boolean"), Required]
             public bool Boolean { get; set; }
 
+            [Category("Core"), Caption("BooleanText"), Description("BooleanText (Required)")]
+            [UIHint("BooleanText"), Required]
+            public bool BooleanText { get; set; }
+            public string BooleanText_Text { get; set; }
+
+            [Category("Core"), Caption("CAProvince"), Description("CAProvince (Required)")]
+            [UIHint("CAProvince"), Required]
+            public string CAProvince { get; set; }
+
             [Category("Core"), Caption("CountryISO3166"), Description("CountryISO3166 (Required)")]
             [UIHint("CountryISO3166"), StringLength(80), Trim, Required]
             public string Country { get; set; }
@@ -164,6 +173,8 @@ namespace YetaWF.Modules.DevTests.Controllers {
                 SMTPServer = new SMTPServer();
             }
             public void UpdateData(BasicTemplatesModule module) {
+                // BooleanText
+                BooleanText_Text = "Accept";
                 // DropDownList
                 DropDownList_List = new List<SelectionItem<string>> {
                     new SelectionItem<string> { Text= "(select)", Value = "", Tooltip = "No selection" },

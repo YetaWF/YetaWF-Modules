@@ -4,19 +4,13 @@ var YetaWF_Messenger;
 (function (YetaWF_Messenger) {
     var SkinMessagingModule = /** @class */ (function () {
         function SkinMessagingModule() {
-            this.init();
-        }
-        /**
-         * Initializes the module instance.
-         */
-        SkinMessagingModule.prototype.init = function () {
             var _this = this;
             var $$ = $;
-            this.connection = $$.hubConnection(YConfigs.YetaWF_Messenger.SignalRUrl, { useDefaultPath: false });
+            this.connection = $$.hubConnection(YConfigs.SignalR.Url, { useDefaultPath: false });
             this.tempProxy = this.connection.createHubProxy("YetaWF_Messenger_Messaging");
             this.tempProxy.on("dummy", function () { });
             this.connection.start().done(function () { return _this.onConnectionStarted(); });
-        };
+        }
         SkinMessagingModule.prototype.onConnectionStarted = function () {
             var _this = this;
             this.hubProxy = this.tempProxy;

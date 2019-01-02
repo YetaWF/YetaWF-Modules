@@ -12,14 +12,8 @@ namespace YetaWF_Messenger {
         private tempProxy: any;
 
         constructor() {
-            this.init();
-        }
-        /**
-         * Initializes the module instance.
-         */
-        private init(): void {
             var $$: any = $;
-            this.connection = $$.hubConnection(YConfigs.YetaWF_Messenger.SignalRUrl, { useDefaultPath: false });
+            this.connection = $$.hubConnection(YConfigs.SignalR.Url, { useDefaultPath: false });
             this.tempProxy = this.connection.createHubProxy("YetaWF_Messenger_Messaging");
             this.tempProxy.on("dummy", ():void => { /* empty */ });
 

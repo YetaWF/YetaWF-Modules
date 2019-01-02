@@ -10,16 +10,16 @@ using YetaWF.DataProvider;
 
 namespace YetaWF.Modules.Messenger.Modules {
 
-    public class SkinSignalrModuleDataProvider : ModuleDefinitionDataProvider<Guid, SkinSignalrModule>, IInstallableModel { }
+    public class SkinBrowserNotificationsModuleDataProvider : ModuleDefinitionDataProvider<Guid, SkinBrowserNotificationsModule>, IInstallableModel { }
 
-    [ModuleGuid("{F2C8660A-19DC-4001-B1E1-A02AA07AE39B}")]
+    [ModuleGuid("{9E074871-5C52-43af-8439-D14CB2FDA71D}")]
     [UniqueModule(UniqueModuleStyle.UniqueOnly)]
-    public class SkinSignalrModule : ModuleDefinition {
+    public class SkinBrowserNotificationsModule : ModuleDefinition {
 
-        public SkinSignalrModule() {
-            Title = this.__ResStr("modTitle", "Skin SignalR");
-            Name = this.__ResStr("modName", "SignalR (Skin)");
-            Description = this.__ResStr("modSummary", "Skin module used to activate SignalR");
+        public SkinBrowserNotificationsModule() {
+            Title = this.__ResStr("modTitle", "Skin Web Browser Notifications");
+            Name = this.__ResStr("modName", "Web Browser Notifications (Skin)");
+            Description = this.__ResStr("modSummary", "Skin module used to support web browser notifications");
             WantFocus = false;
             ShowTitle = false;
             WantSearch = false;
@@ -28,7 +28,7 @@ namespace YetaWF.Modules.Messenger.Modules {
             InvokeInAjax = false;
         }
 
-        public override IModuleDefinitionIO GetDataProvider() { return new SkinSignalrModuleDataProvider(); }
+        public override IModuleDefinitionIO GetDataProvider() { return new SkinBrowserNotificationsModuleDataProvider(); }
 
         public override SerializableList<AllowedRole> DefaultAllowedRoles { get { return AnonymousLevel_DefaultAllowedRoles; } }
     }

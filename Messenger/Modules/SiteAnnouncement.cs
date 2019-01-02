@@ -18,7 +18,7 @@ namespace YetaWF.Modules.Messenger.Modules
 
         public SiteAnnouncementModule() {
             Title = this.__ResStr("modTitle", "New Site Announcement");
-            Name = this.__ResStr("modName", "Sends a new site announcement to all users");
+            Name = this.__ResStr("modName", "Site Announcement");
             Description = this.__ResStr("modSummary", "Sends a new site announcement to all users");
         }
 

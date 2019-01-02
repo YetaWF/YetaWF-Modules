@@ -19,7 +19,7 @@ namespace YetaWF.Modules.Messenger.Modules {
         public SkinSiteAnnouncementsModule() {
             Title = this.__ResStr("modTitle", "Skin Site Announcements");
             Name = this.__ResStr("modName", "Site Announcements (Skin)");
-            Description = this.__ResStr("modSummary", "Skin module used to support Site Announcements");
+            Description = this.__ResStr("modSummary", "Skin module used to support site announcements");
             WantFocus = false;
             ShowTitle = false;
             WantSearch = false;
