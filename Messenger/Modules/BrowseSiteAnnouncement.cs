@@ -10,6 +10,7 @@ using YetaWF.Core.Modules;
 using YetaWF.Core.Serializers;
 using YetaWF.DataProvider;
 using YetaWF.Core.Components;
+using YetaWF.Core.Support;
 #if MVC6
 using Microsoft.AspNetCore.Mvc;
 #else

@@ -28,4 +28,4 @@ var YetaWF_ComponentsHTML;
     YetaWF_ComponentsHTML.RecaptchaV2 = RecaptchaV2;
 })(YetaWF_ComponentsHTML || (YetaWF_ComponentsHTML = {}));
 
-//# sourceMappingURL=RecaptchaV2.js.map
+//# sourceMappingURL=recaptchav2.js.map

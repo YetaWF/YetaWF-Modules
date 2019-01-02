@@ -1,2 +1,1 @@
-﻿MVC5 SkinSiteAnnouncementsMVC5.tsx
-# MVC6 SkinSiteAnnouncementsMVC6.tsx
+﻿SkinSiteAnnouncements.ts
