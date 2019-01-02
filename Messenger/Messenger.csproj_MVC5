@@ -144,9 +144,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <TypeScriptCompile Include="Addons\_Addons\SkinBrowserNotificationsModule\SkinBrowserNotificationsMVC5.tsx" />
+    <TypeScriptCompile Include="Addons\_Addons\SkinBrowserNotificationsModule\SkinBrowserNotifications.ts" />
+    <TypeScriptCompile Include="Addons\_Addons\SkinSiteAnnouncementsModule\SkinSiteAnnouncements.ts" />
     <TypeScriptCompile Include="Addons\_Main\Messenger.ts" />
-    <TypeScriptCompile Include="Addons\_Addons\SkinSiteAnnouncementsModule\SkinSiteAnnouncementsMVC5.tsx" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Addons\_Addons\SkinSiteAnnouncementsModule\filelistJS.txt" />
