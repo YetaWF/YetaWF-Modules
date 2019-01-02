@@ -1,5 +1,5 @@
 "use strict";
-/* Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/AddThis#License */
+/* Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/DevTests#License */
 var YetaWF_DevTests;
 (function (YetaWF_DevTests) {
     var TestStepsModule = /** @class */ (function () {
@@ -73,5 +73,3 @@ var YetaWF_DevTests;
     }());
     YetaWF_DevTests.TestStepsModule = TestStepsModule;
 })(YetaWF_DevTests || (YetaWF_DevTests = {}));
-
-//# sourceMappingURL=TestSteps.js.map
