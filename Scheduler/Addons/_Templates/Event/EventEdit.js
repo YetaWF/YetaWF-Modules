@@ -1,5 +1,5 @@
 "use strict";
-/* Copyright � 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Scheduler#License */
+/* Copyright � 2019 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Scheduler#License */
 var YetaWF_Scheduler;
 (function (YetaWF_Scheduler) {
     var EventEditComponent = /** @class */ (function () {

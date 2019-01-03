@@ -32,10 +32,9 @@ namespace YetaWF.Modules.Text.Views {
                 buttons.Add(new FormButton() { ButtonType = ButtonTypeEnum.Submit, Text = this.__ResStr("btnSave", "Save & Display"), Title = this.__ResStr("btnSaveTT", "Save all text and display the page in Site View mode") });
 
             hb.Append($@"
-{await RenderBeginFormAsync()}
+{await RenderBeginFormAsync(SaveReturnUrl:true)}
     {await PartialForm(async () => await RenderPartialViewAsync(module, model), UsePartialFormCss: false)}
     {await HtmlHelper.ForEditAsync(model, nameof(model.Contents))}
-    {await HtmlHelper.ForDisplayAsync(model, nameof(model.Url))}
     {await FormButtonsAsync(buttons)}
 {await RenderEndFormAsync()}");
             return hb.ToYHtmlString();

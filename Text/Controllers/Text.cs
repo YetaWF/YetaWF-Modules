@@ -20,8 +20,6 @@ namespace YetaWF.Modules.Text.Controllers {
             [UIHint("TextArea"), AdditionalMetadata("EmHeight", 25)]
             [AdditionalMetadata("TextAreaSave", true), AdditionalMetadata("ImageBrowse", true), AdditionalMetadata("FlashBrowse", true), AdditionalMetadata("PageBrowse", true)]
             public string Contents { get; set; }
-            [UIHint("Hidden")]
-            public string Url { get; set; }
         }
         public class TextModelDisplay {
             [UIHint("TextArea"), AdditionalMetadata("Encode", false), ReadOnly]
@@ -38,7 +36,6 @@ namespace YetaWF.Modules.Text.Controllers {
             if (Manager.EditMode && Module.EditOnPage && Module.IsAuthorized(ModuleDefinition.RoleDefinition.Edit)) {
                 TextModel model = new TextModel {
                     Contents = Module.Contents,
-                    Url = Manager.CurrentRequestUrl,
                 };
                 return View(model);
             } else {
@@ -58,7 +55,7 @@ namespace YetaWF.Modules.Text.Controllers {
             } else {
                 if (Manager.IsInPopup) throw new InternalError("Save & Display not available in a popup window");
                 Manager.EditMode = false;
-                return Redirect(model.Url, SetCurrentEditMode: true);
+                return Redirect(Manager.ReturnToUrl, SetCurrentEditMode: true);
             }
         }
     }

@@ -1,5 +1,5 @@
 "use strict";
-/* Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/TawkTo#License */
+/* Copyright © 2019 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/TawkTo#License */
 // If this javascript snippet is included, that means we're displaying the chat.
 // tslint:disable-next-line:variable-name
 var Tawk_API;

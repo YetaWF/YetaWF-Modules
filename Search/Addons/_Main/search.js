@@ -1,5 +1,5 @@
 "use strict";
-/* Copyright � 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Search#License */
+/* Copyright � 2019 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Search#License */
 var YetaWF_Search;
 (function (YetaWF_Search) {
     var Search = /** @class */ (function () {

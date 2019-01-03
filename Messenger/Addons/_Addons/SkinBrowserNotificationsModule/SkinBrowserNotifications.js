@@ -1,5 +1,5 @@
 "use strict";
-/* Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Messenger#License */
+/* Copyright © 2019 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Messenger#License */
 var YetaWF_Messenger;
 (function (YetaWF_Messenger) {
     var SkinBrowserNotificationsModule = /** @class */ (function () {

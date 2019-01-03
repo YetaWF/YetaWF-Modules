@@ -31,17 +31,10 @@ namespace YetaWF.Modules.Panels.Controllers {
         public PagePanelModuleController() { }
 
         [Trim]
-        public class ModelDisplay {
+        public class Model {
 
             [UIHint("YetaWF_Panels_PagePanelInfo")]
             public PagePanelInfo PanelInfo { get; set; }
-
-            public ModelDisplay() {
-                PanelInfo = new PagePanelInfo();
-            }
-        }
-        [Trim]
-        public class ModelEdit {
 
             [Caption("Pages"), Description("Defines the pages and their order as they are displayed in the Page Panel using their FavIcons and page description")]
             [UIHint("YetaWF_Panels_ListOfLocalPages")]
@@ -70,41 +63,38 @@ namespace YetaWF.Modules.Panels.Controllers {
             [CopyAttribute]
             public byte[] DefaultImage_Data { get; set; }
 
-            [UIHint("Hidden")]
-            public string Url { get; set; }
-
-            public ModelEdit() {
+            public Model() {
+                PanelInfo = new PagePanelInfo();
                 PageList = new SerializableList<LocalPage>();
             }
         }
         [AllowGet]
         public async Task<ActionResult> PagePanel() {
+            Model model;
             if (Manager.EditMode) {
-                ModelEdit model = new ModelEdit {
+                model = new Model {
                     PagePattern = Module.PagePattern,
                     PageList = Module.PageList,
-                    Url = Manager.CurrentRequestUrl,
                     UsePopup = Module.UsePopup,
                     Style = Module.Style,
                     DefaultImage = Module.DefaultImage,
                     DefaultImage_Data = Module.DefaultImage_Data
                 };
-                Module.DefaultViewName = ModuleDefinition.StandardViews.EditApply;
-                return View(model);
             } else {
-                ModelDisplay model = new ModelDisplay { };
-                model.PanelInfo = new Models.PagePanelInfo() {
-                    UsePopups = Module.UsePopup,
-                    Style = Module.Style,
-                    Panels = await GetPanelsAsync()
+                model = new Model {
+                    PanelInfo = new Models.PagePanelInfo() {
+                        UsePopups = Module.UsePopup,
+                        Style = Module.Style,
+                        Panels = await GetPanelsAsync()
+                    }
                 };
-                return View(model);
             }
+            return View(model);
         }
         [AllowPost]
         [ConditionalAntiForgeryToken]
         [ExcludeDemoMode]
-        public async Task<ActionResult> PagePanel_Partial(ModelEdit model) {
+        public async Task<ActionResult> PagePanel_Partial(Model model) {
             if (!ModelState.IsValid) {
                 Module.DefaultViewName = ModuleDefinition.StandardViews.EditApply;
                 return PartialView(model);
@@ -123,7 +113,7 @@ namespace YetaWF.Modules.Panels.Controllers {
                 return FormProcessed(model, OnClose: OnCloseEnum.ReloadPage, OnPopupClose: OnPopupCloseEnum.ReloadParentPage);
             }
             Manager.EditMode = false;
-            return Redirect(model.Url, SetCurrentEditMode: true);
+            return Redirect(Manager.ReturnToUrl, SetCurrentEditMode: true);
         }
 
         private async Task<List<PagePanelInfo.PanelEntry>> GetPanelsAsync() {
@@ -248,6 +238,5 @@ namespace YetaWF.Modules.Panels.Controllers {
             };
             return await GridRecordViewAsync(await ListOfLocalPagesEditComponent.GridRecordAsync(fieldPrefix, entry));
         }
-
     }
 }
