@@ -217,6 +217,8 @@ namespace YetaWF.Modules.Identity.Controllers {
                 user = null;
 #if MVC6
                 user = await Managers.GetUserManager().FindByNameAsync(model.UserName);
+                if (string.IsNullOrWhiteSpace(model.Password) || !await Managers.GetUserManager().CheckPasswordAsync(user, model.Password))
+                    user = null;
 #else
                 if (!string.IsNullOrWhiteSpace(model.Password))
                     user = await Managers.GetUserManager().FindAsync(model.UserName, model.Password);
