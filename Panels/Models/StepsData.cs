@@ -1,7 +1,6 @@
 ﻿/* Copyright © 2019 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Panels#License */
 
 using System;
-using System.Collections.Generic;
 using YetaWF.Core.DataProvider.Attributes;
 using YetaWF.Core.Localize;
 using YetaWF.Core.Models;

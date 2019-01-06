@@ -2,10 +2,7 @@
 
 using System.Threading.Tasks;
 using YetaWF.Core.Controllers;
-using YetaWF.Core.Localize;
-using YetaWF.Core.Models;
 using YetaWF.Core.Models.Attributes;
-using YetaWF.Core.Support;
 using YetaWF.Modules.Panels.Models;
 #if MVC6
 using Microsoft.AspNetCore.Mvc;
