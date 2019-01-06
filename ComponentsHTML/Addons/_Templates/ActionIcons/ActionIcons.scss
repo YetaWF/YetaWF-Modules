@@ -19,6 +19,14 @@
     }
 }
 
+.yt_grid .yActionIcons {
+    a img,
+    a i {
+        margin-left:.3ch;
+        margin-right:.3ch;
+    }
+}
+
 /* align the module action links and grid action up next to each other */
 .yActionIcons, .yModuleLinks {
     margin:0;

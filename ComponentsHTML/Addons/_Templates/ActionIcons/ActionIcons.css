@@ -16,6 +16,11 @@
   h5 .yaction-link {
     white-space: normal; }
 
+.yt_grid .yActionIcons a img,
+.yt_grid .yActionIcons a i {
+  margin-left: .3ch;
+  margin-right: .3ch; }
+
 /* align the module action links and grid action up next to each other */
 .yActionIcons, .yModuleLinks {
   margin: 0;
