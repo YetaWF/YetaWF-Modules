@@ -46,7 +46,21 @@ namespace YetaWF.Modules.TawkTo.Views {
         s1.charset='UTF-8';
         s1.setAttribute('crossorigin','*');
         s0.parentNode.insertBefore(s1,s0);
-    }})();
+    }})();");
+
+
+            hb.Append(@"
+    /* Hide widget when printing */
+    window.onbeforeprint = function () {
+        if (Tawk_API) {
+            Tawk_API.hideWidget();
+        }
+    };
+    window.onafterprint = function () {
+        if (Tawk_API) {
+            Tawk_API.showWidget();
+        }
+    };
 </script>");
 
             return Task.FromResult(hb.ToYHtmlString());
