@@ -15,6 +15,7 @@ using YetaWF.Modules.Identity.Models;
 using YetaWF.Modules.Identity.Modules;
 using YetaWF.Modules.Identity.Support;
 using YetaWF.Core.Components;
+using YetaWF.Core.Extensions;
 #if MVC6
 using Microsoft.AspNetCore.Mvc;
 #else
@@ -64,6 +65,9 @@ namespace YetaWF.Modules.Identity.Controllers {
             [UIHint("Hidden")]
             public bool CloseOnLogin { get; set; }
 
+            [UIHint("Hidden")]
+            public string QueryString { get; set; }
+
             public List<string> Images { get; set; }
             public List<FormButton> ExternalProviders { get; set; }
         }
@@ -80,6 +84,7 @@ namespace YetaWF.Modules.Identity.Controllers {
                 ShowCaptcha = config.Captcha,
                 Captcha = new RecaptchaV2Data(),
                 CloseOnLogin = closeOnLogin,
+                QueryString = Manager.RequestQueryString.ToQueryString(),
             };
 
             using (LoginConfigDataProvider logConfigDP = new LoginConfigDataProvider()) {
@@ -194,7 +199,15 @@ namespace YetaWF.Modules.Identity.Controllers {
                 if (config.NotifyAdminNewUsers)
                     await emails.SendNewUserCreatedAsync(user);
                 await LoginModuleController.UserLoginAsync(user, config.PersistentLogin);
-                string nextUrl = string.IsNullOrWhiteSpace(Module.PostRegisterUrl) ? Manager.ReturnToUrl : Module.PostRegisterUrl;
+                string nextUrl;
+                if (string.IsNullOrWhiteSpace(Module.PostRegisterUrl)) {
+                    nextUrl = Manager.ReturnToUrl;
+                } else {
+                    nextUrl = Module.PostRegisterUrl;
+                    if (Module.PostRegisterQueryString) {
+                        nextUrl += model.QueryString.AddQSSeparator() + model.QueryString;
+                    }
+                }
                 if (model.CloseOnLogin)
                     return FormProcessed(model, this.__ResStr("okRegText", "Your new account has been successfully registered."), this.__ResStr("okRegTitle", "Welcome!"),
                         OnClose: OnCloseEnum.CloseWindow, OnPopupClose: OnPopupCloseEnum.GotoNewPage, NextPage: nextUrl, ForceRedirect: true);

@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using YetaWF.Core;
 using YetaWF.Core.Components;
 using YetaWF.Core.DataProvider;
+using YetaWF.Core.DataProvider.Attributes;
 using YetaWF.Core.IO;
 using YetaWF.Core.Localize;
 using YetaWF.Core.Models.Attributes;
@@ -62,6 +63,11 @@ namespace YetaWF.Modules.Identity.Modules {
         [UIHint("Url"), AdditionalMetadata("UrlType", UrlTypeEnum.Local | UrlTypeEnum.Remote), UrlValidation(UrlValidationAttribute.SchemaEnum.Any, UrlTypeEnum.Local | UrlTypeEnum.Remote)]
         [StringLength(Globals.MaxUrl), Trim]
         public string PostRegisterUrl { get; set; }
+
+        [Category("General"), Caption("Post Login Query String"), Description("Defines whether the original query string is forwarded with the Post Login Url")]
+        [UIHint("Boolean"), ProcessIfSupplied(nameof(PostRegisterUrl))]
+        [Data_NewValue("(0)")]
+        public bool PostRegisterQueryString { get; set; }
 
         public override async Task<MenuList> GetModuleMenuListAsync(ModuleAction.RenderModeEnum renderMode, ModuleAction.ActionLocationEnum location) {
             MenuList menuList = await base.GetModuleMenuListAsync(renderMode, location);
