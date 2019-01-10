@@ -51,6 +51,8 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
             await IncludeExplicitAsync();
 
+            HtmlBuilder hb = new HtmlBuilder();
+
             bool useKendo = true;
             bool adjustWidth = false;
 
@@ -59,7 +61,31 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                 tag.AddCssClass(cssClass);
             tag.AddCssClass("t_edit");
             tag.AddCssClass("yt_dropdownlist_base");
-            component.FieldSetup(tag, component.Validation ? FieldType.Validated : FieldType.Normal);
+
+            bool disabled = false;
+            if (list.Count <= 1) {
+                if (component.PropData.GetAdditionalAttributeValue("Disable1OrLess", true))
+                    disabled = true;
+            }
+            if (disabled) {
+                component.FieldSetup(tag, FieldType.Anonymous);
+                tag.Attributes.Remove("disabled");
+                tag.Attributes.Add("disabled", "disabled");
+
+                if (list.Count > 0) {
+                    // disabled fields are not submitted so we dummy up a hidden field with the value
+                    YTagBuilder tagHidden = new YTagBuilder("input");
+                    tagHidden.Attributes.Add("type", "hidden");
+                    tagHidden.MergeAttribute("name", component.FieldName, false);
+                    SelectionItem<TYPE> sel = list.First();
+                    tagHidden.Attributes.Add("value", sel.Value.ToString());
+                    tagHidden.SetInnerText(sel.Text.ToString());
+                    hb.Append(tagHidden.ToString(YTagRenderMode.StartTag));
+                }
+            } else {
+                component.FieldSetup(tag, component.Validation ? FieldType.Validated : FieldType.Normal);
+            }
+
             string id = null;
             if (useKendo) {
                 id = component.MakeId(tag);
@@ -114,8 +140,6 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             }
 
             tag.InnerHtml = tagHtml.ToString();
-
-            HtmlBuilder hb = new HtmlBuilder();
 
             hb.Append($@"
 {tag.ToString(YTagRenderMode.Normal)}");

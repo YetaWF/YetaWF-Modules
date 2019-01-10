@@ -58,7 +58,7 @@ namespace YetaWF.Modules.PageEdit.Controllers {
             public MultiString ModuleTitle { get; set; }
 
             [Caption("New Module"), Description("The new module to be added")]
-            [UIHint("ModuleSelection"), AdditionalMetadata("New", true), Required]
+            [UIHint("ModuleSelection"), AdditionalMetadata("New", true), AdditionalMetadata("Disable1OrLess", false), Required]
             public Guid SelectedModule { get; set; }
 
             [Caption("Pane"), Description("The pane where the new module is added - in Edit Mode, all panes are visible, even empty panes")]
@@ -87,7 +87,7 @@ namespace YetaWF.Modules.PageEdit.Controllers {
             public Guid CurrentPageGuid { get; set; }
 
             [Caption("Existing Module"), Description("The name of the existing module to be added")]
-            [UIHint("ModuleSelection"), AdditionalMetadata("New", false), Required]
+            [UIHint("ModuleSelection"), AdditionalMetadata("New", false), AdditionalMetadata("Disable1OrLess", false), Required]
             public Guid ExistingModule { get; set; }
 
             [Caption("Pane"), Description("The pane where the existing module is added - in Edit Mode, all panes are visible, even empty panes")]
