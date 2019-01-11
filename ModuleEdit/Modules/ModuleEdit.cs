@@ -28,6 +28,7 @@ namespace YetaWF.Modules.ModuleEdit.Modules {
             Name = this.__ResStr("modName", "Module Edit");
             Title = this.__ResStr("modTitle", "Module Editing Features");
             Description = this.__ResStr("modSummary", "Editing features for modules");
+            UsePartialFormCss = false;
         }
 
         public override IModuleDefinitionIO GetDataProvider() { return new ModuleEditModuleDataProvider(); }

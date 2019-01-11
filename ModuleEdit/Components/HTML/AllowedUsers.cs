@@ -62,9 +62,10 @@ namespace YetaWF.Modules.ModuleEdit.Components {
         }
         internal static GridDefinition GetGridModel(bool header) {
             return new GridDefinition() {
+                SizeStyle = GridDefinition.SizeStyleEnum.SizeToFit,
                 ResourceRedirect = Manager.CurrentModuleEdited,
                 RecordType = typeof(ModuleDefinition.GridAllowedUser),
-                PageSizes = new List<int>(),
+                PageSizes = new List<int>() { 5, 10, 20 },
                 ShowHeader = header,
                 AjaxUrl = YetaWFManager.UrlFor(typeof(AllowedUsersController), nameof(AllowedUsersController.AllowedUsersEdit_SortFilter)),
                 SortFilterStaticData = (List<object> data, int skip, int take, List<DataProviderSortInfo> sorts, List<DataProviderFilterInfo> filters) => {
@@ -81,6 +82,7 @@ namespace YetaWF.Modules.ModuleEdit.Components {
         }
         internal static GridDefinition GetGridAllUsersModel() {
             return new GridDefinition() {
+                SizeStyle = GridDefinition.SizeStyleEnum.SizeToFit,
                 RecordType = typeof(AllEntry),
                 InitialPageSize = 10,
                 AjaxUrl = YetaWFManager.UrlFor(typeof(AllowedUsersController), nameof(AllowedUsersController.AllowedUsersBrowse_GridData)),

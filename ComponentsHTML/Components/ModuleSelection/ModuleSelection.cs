@@ -99,13 +99,13 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         public class ModuleSelectionUINew {
             [UIHint("ModuleSelectionPackageNew"), Caption("Packages"), Description("Select one of the installed packages to list all available modules for the package")]
             public Guid? Package { get; set; }
-            [Caption("Module"), Description("Select one of the available modules")]
+            [Caption("Module"), Description("Select one of the available modules"), AdditionalMetadata("Disable1OrLess", false)]
             public Guid? Module { get; set; }
         }
         public class ModuleSelectionUIExisting {
             [UIHint("ModuleSelectionPackageExisting"), Caption("Packages"), Description("Select one of the installed packages to list all available modules for the package")]
             public Guid? Package { get; set; }
-            [Caption("Module"), Description("Select one of the available modules")]
+            [Caption("Module"), Description("Select one of the available modules"), AdditionalMetadata("Disable1OrLess", false)]
             public Guid? Module { get; set; }
         }
 
@@ -170,13 +170,13 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
                 hb.Append($@"
         {await HtmlHelper.ForLabelAsync(uiNew, nameof(uiNew.Module))}
-        {await HtmlHelper.ForEditComponentAsync(Container, PropertyName, model, "ModuleSelectionModuleNew", HtmlAttributes: HtmlAttributes, Validation: Validation)}");
+        {await HtmlHelper.ForEditAsAsync(uiNew, nameof(uiNew.Module), FieldName, uiNew, nameof(uiNew.Module), model, "ModuleSelectionModuleNew", HtmlAttributes: HtmlAttributes)}");
 
             } else {
 
                 hb.Append($@"
         {await HtmlHelper.ForLabelAsync(uiExisting, nameof(uiExisting.Module))}
-        {await HtmlHelper.ForEditComponentAsync(Container, PropertyName, model, "ModuleSelectionModuleExisting", HtmlAttributes: HtmlAttributes, Validation: Validation)}");
+        {await HtmlHelper.ForEditAsAsync(uiExisting, nameof(uiExisting.Module), FieldName, uiExisting, nameof(uiExisting.Module), model, "ModuleSelectionModuleExisting", HtmlAttributes: HtmlAttributes)}");
 
             }
 

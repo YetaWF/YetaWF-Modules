@@ -78,7 +78,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                     tagHidden.Attributes.Add("type", "hidden");
                     tagHidden.MergeAttribute("name", component.FieldName, false);
                     SelectionItem<TYPE> sel = list.First();
-                    tagHidden.Attributes.Add("value", sel.Value.ToString());
+                    tagHidden.Attributes.Add("value", sel.Value?.ToString());
                     tagHidden.SetInnerText(sel.Text.ToString());
                     hb.Append(tagHidden.ToString(YTagRenderMode.StartTag));
                 }

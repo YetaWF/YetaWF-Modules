@@ -100,7 +100,7 @@ namespace YetaWF.Modules.PageEdit.Components {
         internal static GridDefinition GetGridModel(bool header) {
             return new GridDefinition() {
                 RecordType = typeof(GridAllowedUser),
-                PageSizes = new List<int>(),
+                PageSizes = new List<int>() { 5, 10, 20 },
                 ShowHeader = header,
                 AjaxUrl = YetaWFManager.UrlFor(typeof(AllowedUsersController), nameof(AllowedUsersController.AllowedUsersEdit_SortFilter)),
                 SortFilterStaticData = (List<object> data, int skip, int take, List<DataProviderSortInfo> sorts, List<DataProviderFilterInfo> filters) => {
