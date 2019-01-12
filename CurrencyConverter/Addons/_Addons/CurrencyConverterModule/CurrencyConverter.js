@@ -1,5 +1,5 @@
 "use strict";
-/* Copyright © 2019 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/CurrencyConverter#License */
+/* Copyright � 2019 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/CurrencyConverter#License */
 var YetaWF_CurrencyConverter;
 (function (YetaWF_CurrencyConverter) {
     var Converter = /** @class */ (function () {
@@ -33,3 +33,5 @@ var YetaWF_CurrencyConverter;
         return false;
     });
 })(YetaWF_CurrencyConverter || (YetaWF_CurrencyConverter = {}));
+
+//# sourceMappingURL=CurrencyConverter.js.map
