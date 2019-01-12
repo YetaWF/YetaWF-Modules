@@ -1,1 +1,1 @@
-﻿CurrencyConverter.ts
+﻿# dummy file so ExchangeRates.js doesn't cause an error in CopySite
