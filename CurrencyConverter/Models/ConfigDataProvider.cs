@@ -21,8 +21,12 @@ namespace YetaWF.Modules.CurrencyConverter.DataProvider {
         [StringLength(MaxAppID)]
         public string AppID { get; set; }
         public bool UseHttps { get; set; }
+        [Data_NewValue("(0)")]
+        public TimeSpan RefreshInterval { get; set; }
 
-        public ConfigData() { }
+        public ConfigData() {
+            RefreshInterval = new TimeSpan(24, 0, 0);
+        }
     }
 
     public class ConfigDataProvider : DataProviderImpl, IInstallableModel {
@@ -57,10 +61,11 @@ namespace YetaWF.Modules.CurrencyConverter.DataProvider {
             if (config == null) {
                 config = new ConfigData() {
                     Id = KEY,
-                    AppID = "",
-                    UseHttps = false,
                 };
                 await AddConfigAsync(config);
+            } else {
+                if (config.RefreshInterval.Ticks == 0) // default for old sites
+                    config.RefreshInterval = new TimeSpan(24, 0, 0);
             }
             return config;
         }

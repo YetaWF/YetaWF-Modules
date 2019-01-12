@@ -6,9 +6,7 @@ using YetaWF.Core.IO;
 using YetaWF.Core.Localize;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Modules;
-using YetaWF.Core.Packages;
 using YetaWF.Core.Serializers;
-using YetaWF.Core.Skins;
 using YetaWF.DataProvider;
 
 namespace YetaWF.Modules.CurrencyConverter.Modules {

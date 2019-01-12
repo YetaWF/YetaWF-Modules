@@ -35,7 +35,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
         public Task<YHtmlString> RenderAsync(object model) {
             YTagBuilder tag = new YTagBuilder("input");
-            FieldSetup(tag, FieldType.Normal);
+            FieldSetup(tag, Validation ? FieldType.Validated : FieldType.Normal);
             tag.MergeAttribute("type", "hidden");
             if (model != null && model.GetType().IsEnum) {
                 model = (int)model;

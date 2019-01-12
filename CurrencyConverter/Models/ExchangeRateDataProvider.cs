@@ -28,12 +28,6 @@ namespace YetaWF.Modules.CurrencyConverter.DataProvider {
     }
 
     public class ExchangeRateData {
-
-#if DEBUG
-        public static readonly TimeSpan ExpiresAfter = new TimeSpan(8, 0, 0); // 8 hours (1 month = ~180 requests max)
-#else
-        public static readonly TimeSpan ExpiresAfter = new TimeSpan(0, 5, 0); // 5 minutes (1 month = ~18000 requests max)
-#endif
         [Data_PrimaryKey]
         public int Key { get; set; }
 
@@ -68,10 +62,13 @@ namespace YetaWF.Modules.CurrencyConverter.DataProvider {
         // API
 
         public async Task<ExchangeRateData> GetItemAsync() {
+
+            ConfigData config = await ConfigDataProvider.GetConfigAsync();
+
             string jsFileName = GetJSFileName();
             using (ILockObject lockObject = await FileSystem.FileSystemProvider.LockResourceAsync(jsFileName)) {
                 ExchangeRateData data = await DataProvider.GetAsync(KEY);
-                if (data != null && data.SaveTime.Add(ExchangeRateData.ExpiresAfter) < DateTime.UtcNow)
+                if (data != null && data.SaveTime.Add(config.RefreshInterval) < DateTime.UtcNow)
                     data = null;
                 if (data != null && !await FileSystem.FileSystemProvider.FileExistsAsync(jsFileName))
                     data = null;

@@ -7,6 +7,8 @@ using YetaWF.Core.Models;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Support;
 using YetaWF.Modules.CurrencyConverter.DataProvider;
+using System;
+using YetaWF.Modules.CurrencyConverter.Modules;
 #if MVC6
 using Microsoft.AspNetCore.Mvc;
 #else
@@ -31,30 +33,32 @@ namespace YetaWF.Modules.CurrencyConverter.Controllers {
             [UIHint("Boolean")]
             public bool UseHttps { get; set; }
 
+            [Caption("Refresh Interval"), Description("Defines at which interval new currency rates are retrieved - Check the maximum allowed under your rate plan at openexchangerates.org")]
+            [UIHint("TimeSpan"), Required, TimeSpanRange("00.00:05:00", "30.00:00:00")]
+            public TimeSpan RefreshInterval { get; set; }
+
             [Category("General"), Caption("openexchangerates.org"), Description("Provides a link to openexchangerates.org to set up an account for all your sites within this YetaWF instance")]
             [UIHint("Url"), ReadOnly]
             public string OpenExchangeRatesUrl { get; set; }
 
-            public ConfigData GetData(ConfigData data) {
-                ObjectSupport.CopyData(this, data);
-                return data;
+            public ConfigData GetData(ConfigData config) {
+                ObjectSupport.CopyData(this, config);
+                return config;
             }
 
-            public void SetData(ConfigData data) {
-                ObjectSupport.CopyData(data, this);
+            public void SetData(ConfigData config) {
+                ObjectSupport.CopyData(config, this);
             }
             public Model() {
-                AppID = "";
-                UseHttps = false;
                 OpenExchangeRatesUrl = "http://openexchangerates.org/";
             }
         }
 
         [AllowGet]
         public async Task<ActionResult> Config() {
-            using (ConfigDataProvider dataProvider = new ConfigDataProvider()) {
+            using (ConfigDataProvider configDP = new ConfigDataProvider()) {
                 Model model = new Model { };
-                ConfigData data = await dataProvider.GetItemAsync();
+                ConfigData data = await configDP.GetItemAsync();
                 if (data == null)
                     throw new Error(this.__ResStr("notFound", "Currency converter configuration not found."));
                 model.SetData(data);
@@ -66,8 +70,8 @@ namespace YetaWF.Modules.CurrencyConverter.Controllers {
         [ConditionalAntiForgeryToken]
         [ExcludeDemoMode]
         public async Task<ActionResult> Config_Partial(Model model) {
-            using (ConfigDataProvider dataProvider = new ConfigDataProvider()) {
-                ConfigData data = await dataProvider.GetItemAsync();// get the original item
+            using (ConfigDataProvider configDP = new ConfigDataProvider()) {
+                ConfigData data = await configDP.GetItemAsync();// get the original item
                 if (data == null)
                     ModelState.AddModelError("Key", this.__ResStr("alreadyDeleted", "The currency converter configuration has been removed and can no longer be updated."));
 
@@ -77,7 +81,7 @@ namespace YetaWF.Modules.CurrencyConverter.Controllers {
                 data = model.GetData(data); // merge new data into original
                 model.SetData(data); // and all the data back into model for final display
 
-                await dataProvider.UpdateConfigAsync(data); // save updated item
+                await configDP.UpdateConfigAsync(data); // save updated item
                 return FormProcessed(model, this.__ResStr("okSaved", "Currency converter configuration saved"));
             }
         }
