@@ -67,7 +67,8 @@ var YetaWF_ComponentsHTML;
             $popupwin.kendoWindow({
                 actions: acts,
                 width: YVolatile.Skin.PopupWidth,
-                height: YVolatile.Skin.PopupHeight,
+                height: "auto",
+                maxHeight: YVolatile.Skin.PopupHeight,
                 draggable: true,
                 iframe: false,
                 modal: true,
