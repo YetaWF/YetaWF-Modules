@@ -30,7 +30,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         public class Entry {
 
             [Caption("Apply"), Description("The role applies to the user if selected")]
-            [UIHint("Boolean")]
+            [UIHint("Boolean"), ReadOnly]
             public bool InRole { get; set; }
 
             [Caption("Name"), Description("Role Name")]
