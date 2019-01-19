@@ -73,10 +73,11 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                         List<int> intValues = new List<int>();
                         List<string> stringValues = new List<string>();
                         foreach (object obj in procIfAttr.Objects) {
-                            if (obj.GetType() == typeof(string)) {
-                                stringValues.Add((string)obj);
+                            object o = ProcessIfBase.GetValueOfEntry(model, obj);
+                            if (o.GetType() == typeof(string)) {
+                                stringValues.Add((string)o);
                             } else {
-                                int val = Convert.ToInt32(obj);
+                                int val = Convert.ToInt32(o);
                                 intValues.Add(val);
                             }
                         }
@@ -105,10 +106,11 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                         List<int> intValues = new List<int>();
                         List<string> stringValues = new List<string>();
                         foreach (object obj in procIfNotAttr.Objects) {
-                            if (obj.GetType() == typeof(string)) {
-                                stringValues.Add((string)obj);
+                            object o = ProcessIfBase.GetValueOfEntry(model, obj);
+                            if (o.GetType() == typeof(string)) {
+                                stringValues.Add((string)o);
                             } else {
-                                int val = Convert.ToInt32(obj);
+                                int val = Convert.ToInt32(o);
                                 intValues.Add(val);
                             }
                         }
