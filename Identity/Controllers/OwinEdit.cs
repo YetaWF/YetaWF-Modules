@@ -56,7 +56,7 @@ namespace YetaWF.Modules.Identity.Controllers {
             [ExcludeDemoMode]
             public string FacebookPublic { get; set; }
             [Caption("Facebook App Secret"), Description("The App Secret for authentication using Facebook (defined in Facebook)")]
-            [UIHint("Text80"), RequiredIfSupplied("FacebookPublic"), StringLength(MaxKey), Trim]
+            [UIHint("Text80"), RequiredIfSuppliedAttribute("FacebookPublic"), StringLength(MaxKey), Trim]
             [ExcludeDemoMode]
             public string FacebookPrivate { get; set; }
 
@@ -68,7 +68,7 @@ namespace YetaWF.Modules.Identity.Controllers {
             [ExcludeDemoMode]
             public string GooglePublic { get; set; }
             [Caption("Google Client Secret"), Description("The Client Secret for authentication using Google (defined using Google)")]
-            [UIHint("Text80"), RequiredIfSupplied("GooglePublic"), StringLength(MaxKey), Trim]
+            [UIHint("Text80"), RequiredIfSuppliedAttribute("GooglePublic"), StringLength(MaxKey), Trim]
             [ExcludeDemoMode]
             public string GooglePrivate { get; set; }
 
@@ -80,7 +80,7 @@ namespace YetaWF.Modules.Identity.Controllers {
             [ExcludeDemoMode]
             public string MicrosoftPublic { get; set; }
             [Caption("Microsoft Private Key"), Description("The private key for authentication using Microsoft")]
-            [UIHint("Text80"), RequiredIfSupplied("MicrosoftPublic"), StringLength(MaxKey), Trim]
+            [UIHint("Text80"), RequiredIfSuppliedAttribute("MicrosoftPublic"), StringLength(MaxKey), Trim]
             [ExcludeDemoMode]
             public string MicrosoftPrivate { get; set; }
 
@@ -92,7 +92,7 @@ namespace YetaWF.Modules.Identity.Controllers {
             [ExcludeDemoMode]
             public string TwitterPublic { get; set; }
             [Caption("Twitter Consumer Secret"), Description("The Consumer Secret (API Secret) for authentication using Twitter (defined using Twitter)")]
-            [UIHint("Text80"), RequiredIfSupplied("TwitterPublic"), StringLength(MaxKey), Trim]
+            [UIHint("Text80"), RequiredIfSuppliedAttribute("TwitterPublic"), StringLength(MaxKey), Trim]
             [ExcludeDemoMode]
             public string TwitterPrivate { get; set; }
         }

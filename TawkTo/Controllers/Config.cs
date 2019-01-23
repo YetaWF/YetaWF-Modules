@@ -31,7 +31,7 @@ namespace YetaWF.Modules.TawkTo.Controllers {
 
             [TextBelow("The API Key can be obtained from your Tawk.to dashboard (Administration > Property Settings)")]
             [Caption("API Key"), Description("Defines the API Key used for the chat window - The API Key can be obtained from your Tawk.to dashboard (Administration > Property Settings)")]
-            [UIHint("Text80"), StringLength(ConfigData.MaxAPIKey), RequiredIfSupplied(nameof(Account)), Trim]
+            [UIHint("Text80"), StringLength(ConfigData.MaxAPIKey), RequiredIfSuppliedAttribute(nameof(Account)), Trim]
             [HelpLink("https://dashboard.tawk.to")]
             [ExcludeDemoMode]
             public string APIKey { get; set; }
