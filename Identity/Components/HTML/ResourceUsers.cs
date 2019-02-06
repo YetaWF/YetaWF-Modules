@@ -141,6 +141,7 @@ namespace YetaWF.Modules.Identity.Components {
 
         internal static GridDefinition GetGridModel(bool header) {
             return new GridDefinition() {
+                SizeStyle = GridDefinition.SizeStyleEnum.SizeToFit,
                 RecordType = typeof(Entry),
                 InitialPageSize = 10,
                 ShowHeader = header,
