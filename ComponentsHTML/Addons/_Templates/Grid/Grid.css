@@ -84,6 +84,8 @@
         padding: 2px 2px 2px 2px; }
         .yt_grid .tg_table table td .tg_emptydiv {
           padding: 2em 0 2em 2ch; }
+          .yt_grid .yt_grid .tg_table table td .tg_emptydiv {
+            padding: 0; }
       .yt_grid .tg_table table th.tg_left, .yt_grid .tg_table table td.tg_left {
         text-align: left; }
       .yt_grid .tg_table table th.tg_center, .yt_grid .tg_table table td.tg_center {
@@ -146,24 +148,27 @@
 
 .yt_grid.tg_skin {
   /* Skin dependent formatting */ }
-  .yt_grid.tg_skin .tg_table.ui-widget table tr {
+  .yt_grid.tg_skin .tg_table.ui-widget table tr.ui-widget-content,
+  .yt_grid.tg_skin .tg_table.ui-widget table tr.ui-state-default {
     border-width: 0;
     border-style: none; }
-  .yt_grid.tg_skin .tg_table.ui-widget table th {
-    font-weight: inherit;
-    border-width: 0;
-    border-style: none;
-    border-color: inherit;
-    border-right-width: 1px;
-    border-right-style: solid;
-    border-bottom-width: 1px;
-    border-bottom-style: solid; }
-  .yt_grid.tg_skin .tg_table.ui-widget table td {
-    border-color: inherit;
-    border-right-width: 1px;
-    border-right-style: solid;
-    border-bottom-width: 1px;
-    border-bottom-style: solid; }
+    .yt_grid.tg_skin .tg_table.ui-widget table tr.ui-widget-content > th,
+    .yt_grid.tg_skin .tg_table.ui-widget table tr.ui-state-default > th {
+      font-weight: inherit;
+      border-width: 0;
+      border-style: none;
+      border-color: inherit;
+      border-right-width: 1px;
+      border-right-style: solid;
+      border-bottom-width: 1px;
+      border-bottom-style: solid; }
+    .yt_grid.tg_skin .tg_table.ui-widget table tr.ui-widget-content > td,
+    .yt_grid.tg_skin .tg_table.ui-widget table tr.ui-state-default > td {
+      border-color: inherit;
+      border-right-width: 1px;
+      border-right-style: solid;
+      border-bottom-width: 1px;
+      border-bottom-style: solid; }
   .yt_grid.tg_skin .tg_pager {
     border-top-style: none; }
 

@@ -6,11 +6,13 @@ using System.Threading.Tasks;
 using YetaWF.Core.Components;
 using YetaWF.Core.Controllers;
 using YetaWF.Core.DataProvider;
+using YetaWF.Core.Identity;
 using YetaWF.Core.Localize;
 using YetaWF.Core.Models;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Modules;
 using YetaWF.Core.Packages;
+using YetaWF.Core.Serializers;
 using YetaWF.Core.Support;
 using YetaWF.Modules.ComponentsHTML.Components;
 using YetaWF.Modules.Identity.Controllers;
@@ -28,7 +30,7 @@ namespace YetaWF.Modules.Identity.Components {
         public override string GetTemplateName() { return TemplateName; }
     }
 
-    public class ListOfUserNamesDisplayComponent : ListOfUserNamesComponentBase, IYetaWFComponent<List<int>> {
+    public class ListOfUserNamesDisplayComponent : ListOfUserNamesComponentBase, IYetaWFComponent<SerializableList<User>> {
 
         public override ComponentType GetComponentType() { return ComponentType.Display; }
 
@@ -42,11 +44,15 @@ namespace YetaWF.Modules.Identity.Components {
                 UserName = userName;
             }
         }
-        internal static GridDefinition GetGridModel(bool header) {
+        internal static GridDefinition GetGridModel(bool header, bool pager, bool useSkin) {
             return new GridDefinition() {
+                SizeStyle = GridDefinition.SizeStyleEnum.SizeToFit,
+                HighlightOnClick = false,
                 RecordType = typeof(Entry),
                 InitialPageSize = 10,
                 ShowHeader = header,
+                ShowPager = pager,
+                UseSkinFormatting = useSkin,
                 AjaxUrl = YetaWFManager.UrlFor(typeof(ListOfUserNamesController), nameof(ListOfUserNamesController.ListOfUserNamesDisplay_SortFilter)),
                 SortFilterStaticData = (List<object> data, int skip, int take, List<DataProviderSortInfo> sorts, List<DataProviderFilterInfo> filters) => {
                     DataProviderGetRecords<Entry> recs = DataProviderImpl<Entry>.GetRecords(data, skip, take, sorts, filters);
@@ -58,26 +64,28 @@ namespace YetaWF.Modules.Identity.Components {
             };
         }
 
-        public async Task<YHtmlString> RenderAsync(List<int> model) {
+        public async Task<YHtmlString> RenderAsync(SerializableList<User> model) {
 
             HtmlBuilder hb = new HtmlBuilder();
 
             bool header = PropData.GetAdditionalAttributeValue("Header", true);
+            bool pager = PropData.GetAdditionalAttributeValue("Pager", true);
+            bool useSkin = PropData.GetAdditionalAttributeValue("UseSkinFormatting", true);
 
             GridModel grid = new GridModel() {
-                GridDef = GetGridModel(header)
+                GridDef = GetGridModel(header, pager, useSkin)
             };
             grid.GridDef.DirectDataAsync = async (int skip, int take, List<DataProviderSortInfo> sorts, List<DataProviderFilterInfo> filters) => {
                 List<Entry> list = new List<Entry>();
                 using (UserDefinitionDataProvider userDP = new UserDefinitionDataProvider()) {
                     if (model != null) {
-                        foreach (var userId in model) {
-                            UserDefinition user = await userDP.GetItemByUserIdAsync(userId);
+                        foreach (User user in model) {
+                            UserDefinition userDef = await userDP.GetItemByUserIdAsync(user.UserId);
                             string userName;
-                            if (user == null)
-                                userName = __ResStr("noUser", "({0})", userId);
+                            if (userDef == null)
+                                userName = __ResStr("noUser", "({0})", user.UserId);
                             else
-                                userName = user.UserName;
+                                userName = userDef.UserName;
                             list.Add(new Entry(userName));
                         }
                     }
@@ -97,7 +105,7 @@ namespace YetaWF.Modules.Identity.Components {
         }
     }
 
-    public class ListOfUserNamesEditComponent : ListOfUserNamesComponentBase, IYetaWFComponent<List<int>> {
+    public class ListOfUserNamesEditComponent : ListOfUserNamesComponentBase, IYetaWFComponent<SerializableList<User>> {
 
         public override ComponentType GetComponentType() { return ComponentType.Edit; }
 
@@ -122,7 +130,7 @@ namespace YetaWF.Modules.Identity.Components {
             [UIHint("String"), ReadOnly]
             public string UserName { get; set; }
 
-            [UIHint("GridValue"), ReadOnly]
+            [UIHint("Hidden"), ReadOnly]
             public int UserId { get; set; }
 
             public Entry(int userId, string userName) {
@@ -147,6 +155,7 @@ namespace YetaWF.Modules.Identity.Components {
 
         internal static GridDefinition GetGridModel(bool header) {
             return new GridDefinition() {
+                SizeStyle = GridDefinition.SizeStyleEnum.SizeToFit,
                 RecordType = typeof(Entry),
                 InitialPageSize = 10,
                 ShowHeader = header,
@@ -165,6 +174,7 @@ namespace YetaWF.Modules.Identity.Components {
         }
         internal static GridDefinition GetGridAllUsersModel() {
             return new GridDefinition() {
+                SizeStyle = GridDefinition.SizeStyleEnum.SizeToFit,
                 RecordType = typeof(AllEntry),
                 InitialPageSize = 10,
                 AjaxUrl = YetaWFManager.UrlFor(typeof(ListOfUserNamesController), nameof(ListOfUserNamesController.ListOfUserNamesBrowse_GridData)),
@@ -180,7 +190,7 @@ namespace YetaWF.Modules.Identity.Components {
             };
         }
 
-        public async Task<YHtmlString> RenderAsync(List<int> model) {
+        public async Task<YHtmlString> RenderAsync(SerializableList<User> model) {
 
             HtmlBuilder hb = new HtmlBuilder();
 
@@ -193,14 +203,14 @@ namespace YetaWF.Modules.Identity.Components {
                 List<Entry> list = new List<Entry>();
                 using (UserDefinitionDataProvider userDP = new UserDefinitionDataProvider()) {
                     if (model != null) {
-                        foreach (var userId in model) {
-                            UserDefinition user = await userDP.GetItemByUserIdAsync(userId);
+                        foreach (User user in model) {
+                            UserDefinition userDef = await userDP.GetItemByUserIdAsync(user.UserId);
                             string userName;
-                            if (user == null)
-                                userName = __ResStr("noUser", "({0})", userId);
+                            if (userDef == null)
+                                userName = __ResStr("noUser", "({0})", user.UserId);
                             else
-                                userName = user.UserName;
-                            list.Add(new Entry(userId, userName));
+                                userName = userDef.UserName;
+                            list.Add(new Entry(user.UserId, userName));
                         }
                     }
                 }
@@ -220,7 +230,7 @@ namespace YetaWF.Modules.Identity.Components {
                 hb.Append($@"
     <div class='t_newvalue'>
         {await HtmlHelper.ForLabelAsync(newModel, nameof(newModel.NewValue))}
-        {await HtmlHelper.ForEditAsync(newModel, nameof(newModel.NewValue))}
+        {await HtmlHelper.ForEditAsync(newModel, nameof(newModel.NewValue), Validation: false)}
         <input name='btnAdd' type='button' value='Add' disabled='disabled' />
     </div>");
 
@@ -230,7 +240,7 @@ namespace YetaWF.Modules.Identity.Components {
                 GridDef = GetGridAllUsersModel()
             };
             ListOfUserNamesSetup setup = new ListOfUserNamesSetup {
-                AddUrl = GetSiblingProperty<string>($"{PropertyName}_AjaxUrl"),
+                AddUrl = YetaWFManager.UrlFor(typeof(ListOfUserNamesController), nameof(ListOfUserNamesController.AddUserName)),
                 GridId = grid.GridDef.Id,
                 GridAllId = gridAll.GridDef.Id
             };

@@ -34,6 +34,7 @@ namespace YetaWF_ComponentsHTML {
         RowDragDropHighlightCss: string;
         SortActiveCss: string;
         SettingsModuleGuid: string;
+        HighlightOnClick: boolean;
 
         DeletedMessage: string;
         DeleteConfirmationMessage: string;
@@ -345,26 +346,40 @@ namespace YetaWF_ComponentsHTML {
             }
             // Selection
             $YetaWF.registerEventHandler(this.TBody, "mousedown", "tr:not(.tg_emptytr)", (ev: MouseEvent): boolean => {
-                var trs = $YetaWF.getElementsBySelector("tr:not(.tg_emptytr)", [this.TBody]);
-                if ($YetaWF.elementHasClass(ev.__YetaWFElem, this.Setup.RowHighlightCss)) {
-                    if (this.Setup.CanReorder && this.Setup.StaticData && this.Setup.StaticData.length > 1) {
-                        // reordering
-                        this.reorderingRowElement = ev.__YetaWFElem as HTMLTableRowElement;
-                        this.reorderingInProgress = true;
-                        //console.log("Reordering starting");
-                        $YetaWF.elementToggleClass(this.reorderingRowElement, this.Setup.RowHighlightCss, false);
-                        $YetaWF.elementToggleClass(this.reorderingRowElement, this.Setup.RowDragDropHighlightCss, true);
-                        return false;
+                var clickedElem = ev.__YetaWFElem;
+                if (this.Setup.HighlightOnClick) {
+                    if (clickedElem.parentElement != this.TBody) {
+                        // something in a row was clicked (nested grid), find the real row
+                        for (;;) {
+                            if (clickedElem.parentElement == null)
+                                return true;
+                            clickedElem = clickedElem.parentElement;
+                            if (clickedElem.tagName == "TR" && clickedElem.parentElement == this.TBody)
+                                break;
+                        }
                     }
-                    return true;
-                }
-                for (let tr of trs)
-                    $YetaWF.elementToggleClass(tr, this.Setup.RowHighlightCss, false);
-                $YetaWF.elementToggleClass(ev.__YetaWFElem, this.Setup.RowHighlightCss, true);
+                    if ($YetaWF.elementHasClass(clickedElem, this.Setup.RowHighlightCss)) {
+                        if (this.Setup.CanReorder && this.Setup.StaticData && this.Setup.StaticData.length > 1) {
+                            // reordering
+                            this.reorderingRowElement = clickedElem as HTMLTableRowElement;
+                            this.reorderingInProgress = true;
+                            //console.log("Reordering starting");
+                            $YetaWF.elementToggleClass(this.reorderingRowElement, this.Setup.RowHighlightCss, false);
+                            $YetaWF.elementToggleClass(this.reorderingRowElement, this.Setup.RowDragDropHighlightCss, true);
+                            return false;
+                        }
+                        return true;
+                    }
+                    var trs = $YetaWF.getElementsBySelector("tr:not(.tg_emptytr)", [this.TBody]);
+                    for (let tr of trs)
+                        $YetaWF.elementToggleClass(tr, this.Setup.RowHighlightCss, false);
+                    $YetaWF.elementToggleClass(clickedElem, this.Setup.RowHighlightCss, true);
 
-                var event = document.createEvent("Event");
-                event.initEvent("grid_selectionchange", true, true);
-                this.Control.dispatchEvent(event);
+                    var event = document.createEvent("Event");
+                    event.initEvent("grid_selectionchange", true, true);
+                    this.Control.dispatchEvent(event);
+                    return false;
+                }
                 return true;
             });
             // Drag & drop

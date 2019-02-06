@@ -160,6 +160,7 @@ namespace YetaWF.Modules.Identity.Components {
         }
         internal static GridDefinition GetGridAllUsersModel() {
             return new GridDefinition() {
+                SizeStyle = GridDefinition.SizeStyleEnum.SizeToFit,
                 RecordType = typeof(AllEntry),
                 InitialPageSize = 10,
                 AjaxUrl = YetaWFManager.UrlFor(typeof(ResourceUsersController), nameof(ResourceUsersController.ResourceUsersBrowse_GridData)),

@@ -60,6 +60,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         public string RowDragDropHighlightCss { get; set; }
         public string SortActiveCss { get; set; }
         public Guid? SettingsModuleGuid { get; set; }
+        public bool HighlightOnClick { get; set; }
 
         public string DeletedMessage { get; set; }
         public string DeleteConfirmationMessage { get; set; }
@@ -157,6 +158,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                 DeleteConfirmationMessage = model.DeleteConfirmationMessage != null && UserSettings.GetProperty<bool>("ConfirmDelete") ? model.DeleteConfirmationMessage : null,
                 DeletedColumnDisplay = model.DeletedColumnDisplay,
                 CanReorder = model.Reorderable,
+                HighlightOnClick = model.HighlightOnClick,
             };
 
             // Data
@@ -226,9 +228,10 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                     break;
             }
 
+            // add ui-corner-top for rounded edges
             hb.Append($@"
 <div id='{model.Id}' class='yt_grid t_display{noSubmitClass} {(model.UseSkinFormatting ? "tg_skin" : "tg_noskin")}'>
-    <div class='tg_table{(model.UseSkinFormatting ? " ui-corner-top ui-widget ui-widget-content" : "")}'>
+    <div class='tg_table{(model.UseSkinFormatting ? " ui-widget ui-widget-content" : "")}'>
         <table role='presentation'{cssTableStyle}>
             {setup.HeaderHTML}
             <tbody>
@@ -241,8 +244,9 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
                 using (Manager.StartNestedComponent(FieldName)) {
 
+                    // add ui-corner-bottom for rounded bottom edge
                     hb.Append($@"
-    <div id='{model.Id}_Pager' class='tg_pager{(model.UseSkinFormatting ? " ui-state-default ui-corner-bottom" : "")}'>
+    <div id='{model.Id}_Pager' class='tg_pager{(model.UseSkinFormatting ? " ui-state-default" : "")}'>
         {await RenderPagerAsync(model, data, gridSavedSettings, dictInfo, setup)}
     </div>");
                 }
@@ -316,8 +320,12 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             HtmlBuilder filterhb = new HtmlBuilder();
             HtmlBuilder hbFilterMenus = new HtmlBuilder();
 
+            string cssHead = "";
+            if (!gridDef.ShowHeader)
+                cssHead = " style='visibility:collapse'";
+
             hb.Append($@"
-<thead>
+<thead{cssHead}>
     <tr class='tg_header{(gridDef.UseSkinFormatting ? " ui-state-default" : "")}'>");
 
             int colIndex = 0;
@@ -801,7 +809,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
                 hb.Append($@"
 <tr role='row'{styleCss} class='tg_emptytr{(model.UseSkinFormatting ? " ui-widget-content" : "")}'>
-    <td role='gridcell' colspan='{dictInfo.ColumnInfo.Count}'>
+    <td role='gridcell' colspan='{dictInfo.VisibleColumns}'>
         <div class='tg_emptydiv'>
             {HE(model.NoRecordsText)}
         </div>

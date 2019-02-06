@@ -118,6 +118,9 @@ $smbuttonhorzmargin: 2px;
                 padding:$cellverticalpadding $cellhorzpadding $cellverticalpadding $cellhorzpadding;
                 .tg_emptydiv {
                     padding:2em 0 2em 2ch;
+                    .yt_grid & { // nested grid, no padding
+                        padding:0;
+                    }
                 }
             }
             th, td {
@@ -193,34 +196,37 @@ $smbuttonhorzmargin: 2px;
     }
 }
 .yt_grid.tg_skin { /* Skin dependent formatting */
-    .tg_table.ui-widget {  // jquery-ui rendering
+    .tg_table.ui-widget { // jquery-ui rendering
         table {
-            tr {
-                border-width:0;
-                border-style:none;
-            }
-            th {
-                font-weight:inherit;
-                border-width:0;
-                border-style:none;
-                border-color:inherit;
+            tr.ui-widget-content,
+            tr.ui-state-default {
+                border-width: 0;
+                border-style: none;
 
-                border-right-width:1px;
-                border-right-style:solid;
-                border-bottom-width:1px;
-                border-bottom-style:solid;
-            }
-            td {
-                border-color:inherit;
-                border-right-width:1px;
-                border-right-style:solid;
-                border-bottom-width:1px;
-                border-bottom-style:solid;
+                & > th {
+                    font-weight: inherit;
+                    border-width: 0;
+                    border-style: none;
+                    border-color: inherit;
+                    border-right-width: 1px;
+                    border-right-style: solid;
+                    border-bottom-width: 1px;
+                    border-bottom-style: solid;
+                }
+
+                & > td {
+                    border-color: inherit;
+                    border-right-width: 1px;
+                    border-right-style: solid;
+                    border-bottom-width: 1px;
+                    border-bottom-style: solid;
+                }
             }
         }
     }
+
     .tg_pager {
-        border-top-style:none;
+        border-top-style: none;
     }
 }
 .yt_grid.tg_noskin { /* Not skin dependent formatting, usually module specific */
