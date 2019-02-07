@@ -1,0 +1,9 @@
+Commands            icons 2
+Id                  internal sort filter 10
+Created             sort filter [Globals.ChDateTime] defaultSort desc
+Caller              sort filter [Globals.ChPhoneNumber]
+CallerCity          sort filter 20 left
+CallerState         sort filter 10 left
+CallerZip           sort filter 10 left
+CallerCountry       sort filter 20 left
+To                  sort filter [Globals.ChPhoneNumber]

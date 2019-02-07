@@ -1,0 +1,3 @@
+Commands            icons 1
+HolidayDate         sort filter [Globals.ChDate] defaultSort desc
+Description         sort filter 50

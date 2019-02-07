@@ -1,0 +1,4 @@
+﻿Delete              icons 1
+PhoneNumberDisplay  [Globals.ChPhoneNumber] sort defaultSort asc
+SendSMS             [Globals.ChBoolean] sort center
+PhoneNumber         hidden

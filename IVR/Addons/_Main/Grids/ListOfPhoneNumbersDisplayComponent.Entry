@@ -1,0 +1,2 @@
+﻿PhoneNumber         [Globals.ChPhoneNumber] sort defaultSort asc
+SendSMS             [Globals.ChBoolean] sort center

@@ -1,0 +1,7 @@
+Commands            icons 2
+Extension           sort filter 10 defaultSort asc
+Description         sort filter 40
+PhoneNumbers        30
+Users               40
+Created             sort filter [Globals.ChDateTime]
+Updated             sort filter [Globals.ChDateTime]

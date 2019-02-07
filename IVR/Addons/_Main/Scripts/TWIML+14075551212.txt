@@ -1,0 +1,126 @@
+﻿## Sample script - Change any of the <Say> tags.
+## This must be moved to the folder
+##   .\Website\wwwroot\AddonsCustom\(yourdomain.com)\Softelvdm\IVR\_Main\Scripts
+## and the filename must match the phone number being answered by this script. You can add multiple scripts if you have multiple phone numbers.
+## Check this for sample voices: https://www.twilio.com/console/voice/twiml/text-to-speech
+
+## Main entry point
+## Main entry point
+## Main entry point
+
+Main
+    <Response>
+        <Gather action="[Var,Url]?Request=GatherExtension&amp;ErrCount=[Var,ErrCount]&amp;Token=[Var,Token]" numDigits="3">
+            <Say voice="[Var,Voice]">Thank you for calling this awesome company.</Say>
+            <Pause/>
+            <Say voice="[Var,Voice]">If you know your party's extension, you may press it at any time. For sales press 1. For support press 2. For company information press 3.</Say>
+        </Gather>
+        <Redirect>[Var,Url]?Request=MainRestart&amp;ErrCount=[Var,ErrCountPlus1]&amp;Token=[Var,Token]</Redirect>
+    </Response>
+
+MainHoliday
+    <Response>
+        <Gather action="[Var,Url]?Request=GatherExtension&amp;ErrCount=[Var,ErrCount]&amp;Token=[Var,Token]" numDigits="3">
+            <Say voice="[Var,Voice]">Thank you for calling this awesome company. We are closed for the holiday.</Say>
+            <Pause/>
+            <Say voice="[Var,Voice]">If you know your party's extension, you may press it at any time. For sales press 1. For support press 2. For company information press 3.</Say>
+        </Gather>
+        <Redirect>[Var,Url]?Request=MainRestart&amp;ErrCount=[Var,ErrCountPlus1]&amp;Token=[Var,Token]</Redirect>
+    </Response>
+
+MainClosed
+    <Response>
+        <Gather action="[Var,Url]?Request=GatherExtension&amp;ErrCount=[Var,ErrCount]&amp;Token=[Var,Token]" numDigits="3">
+            <Say voice="[Var,Voice]">Thank you for calling this awesome company. The office is now closed. Our hours are 9 to 5, Monday through Friday.</Say>
+            <Pause/>
+            <Say voice="[Var,Voice]">If you know your party's extension, you may press it at any time. For sales press 1. For support press 2. For company information press 3.</Say>
+        </Gather>
+        <Redirect>[Var,Url]?Request=MainRestart&amp;ErrCount=[Var,ErrCountPlus1]&amp;Token=[Var,Token]</Redirect>
+    </Response>
+
+MainRestart
+    <Response>
+        <Gather action="[Var,Url]?Request=GatherExtension&amp;ErrCount=[Var,ErrCount]&amp;Token=[Var,Token]" numDigits="3">
+            <Say voice="[Var,Voice]">If you know your party's extension, you may press it at any time. For sales press 1. For support press 2. For company information press 3.</Say>
+        </Gather>
+        <Redirect>[Var,Url]?Request=MainRestart&amp;ErrCount=[Var,ErrCountPlus1]&amp;Token=[Var,Token]</Redirect>
+    </Response>
+
+MainGoodbye
+    <Response>
+        <Say voice="[Var,Voice]">Goodbye.</Say>
+        <Hangup />
+    </Response>
+
+## Handle extensions
+## Handle extensions
+## Handle extensions
+
+EnteredExtension
+    <Response>
+        <Say voice="[Var,Voice]">Please hold, while I transfer your call.</Say>
+        <Dial action="[Var,Url]?Request=AgentResponse&amp;Extension=[Var,Extension]&amp;Token=[Var,Token]">
+            REPEATABLENUMBERS <Number url="[Var,Url]?Request=CheckAgent&amp;Extension=[Var,Extension]&amp;Token=[Var,Token]">[Var,ExtensionNumber]</Number>
+        </Dial>
+        <Say voice="[Var,Voice]">Goodbye.</Say>
+        <Hangup/>
+    </Response>
+
+GatherExtension Digits 3
+    <Response>
+        <Say voice="[Var,Voice]">This awesome company, is located at somewhere nice.</Say>
+        <Say voice="[Var,Voice]">Visit us on the web at this awesome company dot com.</Say>
+        <Redirect>[Var,Url]?Request=MainRestart&amp;Token=[Var,Token]</Redirect>
+    </Response>
+
+## Catchall (invalid extension)
+GatherExtension
+    <Response>
+        <Redirect>[Var,Url]?Request=MainRestart&amp;ErrCount=[Var,ErrCountPlus1]&amp;Token=[Var,Token]</Redirect>
+    </Response>
+
+## Voice Mail Recording
+## Voice Mail Recording
+## Voice Mail Recording
+
+AgentResponse DialCallStatus completed
+    <Response>
+        <Hangup/>
+    </Response>
+
+AgentResponse
+    <Response>
+        <Say voice="[Var,Voice]">No one is available to answer your call. Please leave a message after the beep. Press the star key or simply hang up when done.</Say>
+        <Record action="[Var,Url]?Request=VoiceMailRecordingDone&amp;Extension=[Var,Extension]&amp;Token=[Var,Token]" />
+    </Response>
+
+VoiceMailRecordingDone
+    <Response>
+        <Say voice="[Var,Voice]">Thank you. Goodbye.</Say>
+        <Hangup />
+    </Response>
+    RECORDVOICEMAIL
+
+## Find Me (Extensions)
+## Find Me (Extensions)
+## Find Me (Extensions)
+
+CheckAgent
+    <Response>
+        <Gather numDigits="1" action="[Var,Url]?Request=GatherAgentResponse&amp;Extension=[Var,Extension]&amp;Token=[Var,Token]">
+            <Say voice="[Var,VoiceInternal]">I have a call for extension [Var,ExtensionSpaced] from [Var,CallerSpaced] in [Var,CallerCity], [Var,CallerCountry]. Press 1 to accept, 2 to reject.</Say>
+        </Gather>
+        <Hangup/>
+    </Response>
+
+GatherAgentResponse Digits 1
+    <Response>
+        <Say voice="[Var,VoiceInternal]">Caller connected.</Say>
+    </Response>
+
+GatherAgentResponse
+    <Response>
+        <Say voice="[Var,VoiceInternal]">Caller sent to voicemail for extension [Var,ExtensionName].</Say>
+        <Hangup/>
+    </Response>
+
