@@ -1,0 +1,18 @@
+﻿### Copyright © 2019 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/IVR#License
+###
+### YetaWF.IVR package install
+###
+
+::LINK-SECTION::
+
+/Admin/Config/IVR
+    IVR > Settings
+
+/Admin/IVR Extensions
+    IVR > Extensions
+
+/Admin/IVR Holidays
+    IVR > Holidays
+
+/User/VoiceMails
+    IVR > Voicemails
