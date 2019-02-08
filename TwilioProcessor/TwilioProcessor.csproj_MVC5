@@ -5,7 +5,7 @@
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{41E84FD4-66CF-4FD6-B62D-180B65B4B42E}</ProjectGuid>
+    <ProjectGuid>{BE293A6C-8F06-4B4C-8B88-65787F57F098}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Softelvdm.Modules.TwilioProcessor</RootNamespace>
@@ -43,7 +43,6 @@
     <Compile Include="Startup\Info.cs" />
     <Compile Include="Startup\AreaRegistration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Startup\Licensing.cs" />
     <Compile Include="Support\SendSMS.cs" />
   </ItemGroup>
   <ItemGroup>
