@@ -348,13 +348,13 @@ namespace YetaWF_ComponentsHTML {
             $YetaWF.registerEventHandler(this.TBody, "mousedown", "tr:not(.tg_emptytr)", (ev: MouseEvent): boolean => {
                 var clickedElem = ev.__YetaWFElem;
                 if (this.Setup.HighlightOnClick) {
-                    if (clickedElem.parentElement != this.TBody) {
+                    if (clickedElem.parentElement !== this.TBody) {
                         // something in a row was clicked (nested grid), find the real row
                         for (;;) {
                             if (clickedElem.parentElement == null)
                                 return true;
                             clickedElem = clickedElem.parentElement;
-                            if (clickedElem.tagName == "TR" && clickedElem.parentElement == this.TBody)
+                            if (clickedElem.tagName === "TR" && clickedElem.parentElement === this.TBody)
                                 break;
                         }
                     }
