@@ -114,6 +114,12 @@ namespace YetaWF.Modules.Identity.Controllers {
             public bool TwitterDefined { get { return ConfigData.DefinedTwitter; } }
 
             [Category("Urls")]
+            [Caption("Login Url"), Description("The Url where the user can login using an existing account")]
+            [UIHint("Url"), AdditionalMetadata("UrlType", UrlTypeEnum.Local | UrlTypeEnum.Remote), UrlValidation(UrlValidationAttribute.SchemaEnum.Any, UrlTypeEnum.Local | UrlTypeEnum.Remote)]
+            [StringLength(Globals.MaxUrl), Trim]
+            public string LoginUrl { get; set; }
+
+            [Category("Urls")]
             [Caption("Register Url"), Description("The Url where the user can register a new user account")]
             [UIHint("Url"), AdditionalMetadata("UrlType", UrlTypeEnum.Local | UrlTypeEnum.Remote), UrlValidation(UrlValidationAttribute.SchemaEnum.Any, UrlTypeEnum.Local | UrlTypeEnum.Remote)]
             [StringLength(Globals.MaxUrl), Trim]

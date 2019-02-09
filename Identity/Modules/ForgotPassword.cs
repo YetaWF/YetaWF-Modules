@@ -37,7 +37,7 @@ namespace YetaWF.Modules.Identity.Modules {
             bool closeOnLogin;
             Manager.TryGetUrlArg<bool>("CloseOnLogin", out closeOnLogin, false);
 
-            ModuleAction logAction = await loginMod.GetAction_LoginAsync(Manager.CurrentSite.LoginUrl, Force: true, CloseOnLogin: closeOnLogin);
+            ModuleAction logAction = await loginMod.GetAction_LoginAsync(config.LoginUrl, Force: true, CloseOnLogin: closeOnLogin);
             if (logAction != null)
                 logAction.AddToOriginList = false;
             menuList.New(logAction, location);

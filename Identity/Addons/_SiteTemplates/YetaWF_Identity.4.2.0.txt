@@ -1,0 +1,7 @@
+﻿
+
+::UNIQUE-MODULE-SECTION::
+
+YetaWF.Identity, YetaWF.Modules.Identity.Modules.LoginConfigModule
+    UpdateConfigProperty("LoginUrl", "/User/Login")
+

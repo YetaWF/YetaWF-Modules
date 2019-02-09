@@ -71,10 +71,11 @@ namespace YetaWF.Modules.Identity.Modules {
 
         public override async Task<MenuList> GetModuleMenuListAsync(ModuleAction.RenderModeEnum renderMode, ModuleAction.ActionLocationEnum location) {
             MenuList menuList = await base.GetModuleMenuListAsync(renderMode, location);
+            LoginConfigData config = await LoginConfigDataProvider.GetConfigAsync();
             LoginModule loginMod = (LoginModule) await ModuleDefinition.CreateUniqueModuleAsync(typeof(LoginModule));
             bool closeOnLogin;
             Manager.TryGetUrlArg<bool>("CloseOnLogin", out closeOnLogin, false);
-            ModuleAction logAction = await loginMod.GetAction_LoginAsync(Manager.CurrentSite.LoginUrl, Force: true, CloseOnLogin: closeOnLogin);
+            ModuleAction logAction = await loginMod.GetAction_LoginAsync(config.LoginUrl, Force: true, CloseOnLogin: closeOnLogin);
             if (logAction != null)
                 logAction.AddToOriginList = false;
             menuList.New(logAction, location);

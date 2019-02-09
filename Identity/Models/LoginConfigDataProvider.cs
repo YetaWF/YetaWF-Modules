@@ -46,6 +46,8 @@ namespace YetaWF.Modules.Identity.DataProvider {
         public bool BccForgottenPassword { get; set; }
         public bool PersistentLogin { get; set; }
         [StringLength(Globals.MaxUrl)]
+        public string LoginUrl { get; set; }
+        [StringLength(Globals.MaxUrl)]
         public string RegisterUrl { get; set; }
         [StringLength(Globals.MaxUrl)]
         public string TwoStepAuthUrl { get; set; }
