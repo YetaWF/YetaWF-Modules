@@ -295,13 +295,13 @@ var YetaWF_ComponentsHTML;
             $YetaWF.registerEventHandler(_this.TBody, "mousedown", "tr:not(.tg_emptytr)", function (ev) {
                 var clickedElem = ev.__YetaWFElem;
                 if (_this.Setup.HighlightOnClick) {
-                    if (clickedElem.parentElement != _this.TBody) {
+                    if (clickedElem.parentElement !== _this.TBody) {
                         // something in a row was clicked (nested grid), find the real row
                         for (;;) {
                             if (clickedElem.parentElement == null)
                                 return true;
                             clickedElem = clickedElem.parentElement;
-                            if (clickedElem.tagName == "TR" && clickedElem.parentElement == _this.TBody)
+                            if (clickedElem.tagName === "TR" && clickedElem.parentElement === _this.TBody)
                                 break;
                         }
                     }
