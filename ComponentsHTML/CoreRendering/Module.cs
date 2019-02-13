@@ -256,10 +256,11 @@ namespace YetaWF.Modules.ComponentsHTML {
             bool hasText = false, hasImg = false;
             string innerHtml = "";
             if (mode != RenderModeEnum.LinksOnly && !string.IsNullOrWhiteSpace(action.ImageUrlFinal)) {
+                string text = mode == RenderModeEnum.NormalMenu ? action.MenuText : action.LinkText;
                 if (RenderEngine == RenderEngineEnum.KendoMenu) {
-                    innerHtml += ImageHTML.BuildKnownIcon(action.ImageUrlFinal, cssClass: Basics.CssNoTooltip + " k-image"); // k-image is needed to align <i> and <img> correctly
+                    innerHtml += ImageHTML.BuildKnownIcon(action.ImageUrlFinal, alt: text, cssClass: Basics.CssNoTooltip + " k-image"); // k-image is needed to align <i> and <img> correctly
                 } else {
-                    innerHtml += ImageHTML.BuildKnownIcon(action.ImageUrlFinal, cssClass: Basics.CssNoTooltip);
+                    innerHtml += ImageHTML.BuildKnownIcon(action.ImageUrlFinal, alt: text, cssClass: Basics.CssNoTooltip);
                 }
                 hasImg = true;
             }
