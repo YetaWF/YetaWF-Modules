@@ -172,8 +172,7 @@ namespace YetaWF_ComponentsHTML {
                         this.reload(this.Setup.Page);
                     return false;
                 });
-                var mod = $YetaWF.getModuleFromTag(this.Control);
-                $YetaWF.registerModuleRefresh(mod, (mod: HTMLElement): void => {
+                $YetaWF.registerModuleRefresh(this.Control, (mod: HTMLElement): void => {
                     this.reload(this.Setup.Page);
                 });
             }
