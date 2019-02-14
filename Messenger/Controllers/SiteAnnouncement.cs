@@ -88,7 +88,7 @@ namespace YetaWF.Modules.Messenger.Controllers {
 
                     if (await siteAnnounceDP.IsInstalledAsync()) {
                         if (!await siteAnnounceDP.AddItemAsync(model.GetData())) {
-                            ModelState.AddModelError("Name", this.__ResStr("alreadyExists", "Message sent. New site announcement log record couldn't be added"));
+                            ModelState.AddModelError("Name", this.__ResStr("noLog", "Message sent. New site announcement log record couldn't be added"));
                             return PartialView(model);
                         }
                     }

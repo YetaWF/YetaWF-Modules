@@ -34,6 +34,8 @@ namespace YetaWF.Modules.Messenger.DataProvider {
 
     public class SiteAnnouncementDataProvider : DataProviderImpl, IInstallableModel {
 
+        public bool Usable { get { return DataProvider != null; } }
+
         // IMPLEMENTATION
         // IMPLEMENTATION
         // IMPLEMENTATION
@@ -56,6 +58,7 @@ namespace YetaWF.Modules.Messenger.DataProvider {
             return await DataProvider.GetByIdentityAsync(key);
         }
         public async Task<bool> AddItemAsync(SiteAnnouncement data) {
+            if (!Usable) return false;
             return await DataProvider.AddAsync(data);
         }
         public async Task<UpdateStatusEnum> UpdateItemAsync(SiteAnnouncement data) {

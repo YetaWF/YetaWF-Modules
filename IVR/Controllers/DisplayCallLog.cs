@@ -28,6 +28,7 @@ namespace Softelvdm.Modules.IVR.Controllers {
 
             [Caption("From"), Description("The caller's phone number")]
             [UIHint("Softelvdm_IVR_PhoneNumber"), ReadOnly]
+            [ExcludeDemoMode]
             public string Caller { get; set; }
             [Caption("From City"), Description("The caller's city (if available)")]
             [UIHint("String"), ReadOnly]

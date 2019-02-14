@@ -945,7 +945,9 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                         }
 
                         string output;
-                        if (recordEnabled && !prop.ReadOnly) {
+                        if (Manager.IsDemo && prop.HasAttribute(nameof(ExcludeDemoModeAttribute))) {
+                            output = __ResStr("demo", "(Demo - N/A)");
+                        } else if (recordEnabled && !prop.ReadOnly) {
                             output = (await htmlHelper.ForEditComponentAsync(record, colName, value, prop.UIHint)).ToString();
                             output += YetaWFComponent.ValidationMessage(htmlHelper, Manager.NestedComponentPrefix, colName).ToString();
                         } else {

@@ -37,6 +37,7 @@ namespace Softelvdm.Modules.IVR.Controllers {
 
             [Caption("From"), Description("The caller's phone number")]
             [UIHint("Softelvdm_IVR_PhoneNumber"), ReadOnly]
+            [ExcludeDemoMode]
             public string Caller { get; set; }
 
             [Caption("Duration"), Description("The duration of the voice mail message (in seconds)")]

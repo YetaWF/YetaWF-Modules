@@ -12,6 +12,7 @@ using YetaWF.Core.Modules;
 using YetaWF.Modules.Messenger.DataProvider;
 using YetaWF.Modules.Messenger.Modules;
 using YetaWF.Core.Components;
+using YetaWF.Modules.Messenger.Views;
 #if MVC6
 using Microsoft.AspNetCore.Mvc;
 #else
@@ -80,6 +81,10 @@ namespace YetaWF.Modules.Messenger.Controllers {
 
         [AllowGet]
         public ActionResult BrowseSiteAnnouncement() {
+            using (SiteAnnouncementDataProvider sitAnncDP = new SiteAnnouncementDataProvider()) {
+                if (!sitAnncDP.Usable)
+                    return View(SiteAnnouncementsUnavailableView.ViewName);
+            }
             BrowseModel model = new BrowseModel {
                 GridDef = GetGridModel()
             };

@@ -61,10 +61,12 @@ namespace Softelvdm.Modules.TwilioProcessor.Controllers {
 
             [Category("SMS"), Caption("Live SMS Number"), Description("The default live phone number for SMS associated with your Twilio account - Only purchased Twilio provided phone numbers can be used (see Twilio for details)")]
             [UIHint("Text20"), StringLength(Globals.MaxPhoneNumber), PhoneNumberUS, Trim]
+            [ExcludeDemoMode]
             public string LiveSMSNumber { get; set; }
 
             [Category("SMS"), Caption("Test SMS Number"), Description("The default test phone number for SMS associated with your Twilio account - Only Twilio provided test phone numbers can be used (see Twilio for details)")]
             [UIHint("Text20"), StringLength(Globals.MaxPhoneNumber), PhoneNumberUS, Trim]
+            [ExcludeDemoMode]
             public string TestSMSNumber { get; set; }
 
             [Category("SMS"), Caption("Delivery Receipts"), Description("Defines whether delivery receipts from Twilio are enabled - Delivery status is logged to the YetaWF log")]
