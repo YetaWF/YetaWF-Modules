@@ -47,11 +47,11 @@ namespace Softelvdm.Modules.IVR.Controllers {
             LogCall(request, extension);
 
             TwilioData twilioConfig = await TwilioConfigDataProvider.GetConfigCondAsync();
-            if (twilioConfig == null)
-                return RejectResult();
+            if (twilioConfig == null || !twilioConfig.IsConfigured())
+                return RejectResult();// Twilio is not configured
             string authToken = twilioConfig.TestMode ? twilioConfig.TestAuthToken : twilioConfig.LiveAuthToken;
             IVRConfig ivrConfig = await IVRConfigDataProvider.GetConfigCondAsync();
-            if (ivrConfig == null)
+            if (ivrConfig == null || string.IsNullOrWhiteSpace(ivrConfig.PublicKey) || string.IsNullOrWhiteSpace(ivrConfig.PrivateKey))
                 return RejectResult();
 
 #if !DEBUG

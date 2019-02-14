@@ -10,6 +10,7 @@ using YetaWF.Core.DataProvider.Attributes;
 using YetaWF.Core.IO;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Packages;
+using YetaWF.Core.Security;
 using YetaWF.Core.Support;
 
 namespace Softelvdm.Modules.IVR.DataProvider {
@@ -54,6 +55,7 @@ namespace Softelvdm.Modules.IVR.DataProvider {
 
         public IVRConfig() {
             MaxErrors = 3;
+            OpeningHours = WeeklyHours.WorkWeek;
         }
     }
 
@@ -96,6 +98,12 @@ namespace Softelvdm.Modules.IVR.DataProvider {
             IVRConfig config = await DataProvider.GetAsync(KEY);
             if (config == null) {
                 config = new IVRConfig();
+
+                string publicKey, privateKey;
+                RSACrypto.MakeNewKeys(out publicKey, out privateKey);
+                config.PrivateKey = privateKey;
+                config.PublicKey = publicKey;
+
                 await AddConfigAsync(config);
             }
             return config;

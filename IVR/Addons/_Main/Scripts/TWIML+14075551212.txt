@@ -68,7 +68,7 @@ EnteredExtension
 
 GatherExtension Digits 3
     <Response>
-        <Say voice="[Var,Voice]">This awesome company, is located at somewhere nice.</Say>
+        <Say voice="[Var,Voice]">This awesome company, is located somewhere nice.</Say>
         <Say voice="[Var,Voice]">Visit us on the web at this awesome company dot com.</Say>
         <Redirect>[Var,Url]?Request=MainRestart&amp;Token=[Var,Token]</Redirect>
     </Response>

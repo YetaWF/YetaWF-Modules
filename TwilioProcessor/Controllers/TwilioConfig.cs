@@ -42,17 +42,21 @@ namespace Softelvdm.Modules.TwilioProcessor.Controllers {
             [Category("Accounts"), Caption("Live Account Sid"), Description("The Live Account Sid is obtained from your Twilio account, defined in appsettings.json (applies to all sites in this YetaWF instance) and is used when Test Mode is disabled")]
             [UIHint("String"), ReadOnly]
             [HelpLink("https://www.twilio.com/")]
+            [ExcludeDemoMode]
             public string LiveAccountSid { get; set; }
             [Category("Accounts"), Caption("Live Auth Token"), Description("The Live Auth Token is obtained from your Twilio account, defined in appsettings.json (applies to all sites in this YetaWF instance) and is used when Test Mode is disabled")]
             [UIHint("String"), ReadOnly]
+            [ExcludeDemoMode]
             public string LiveAuthToken { get; set; }
 
             [Category("Accounts"), Caption("Test Account Sid"), Description("The Test Account Sid is obtained from your Twilio account, defined in appsettings.json (applies to all sites in this YetaWF instance) and is used when Test Mode is enabled")]
             [UIHint("String"), ReadOnly]
             [HelpLink("https://www.twilio.com/")]
+            [ExcludeDemoMode]
             public string TestAccountSid { get; set; }
             [Category("Accounts"), Caption("Test Auth Token"), Description("The Test Auth Token is obtained from your Twilio account, defined in appsettings.json (applies to all sites in this YetaWF instance) and is used when Test Mode is enabled")]
             [UIHint("String"), ReadOnly]
+            [ExcludeDemoMode]
             public string TestAuthToken { get; set; }
 
             [Category("SMS"), Caption("Live SMS Number"), Description("The default live phone number for SMS associated with your Twilio account - Only purchased Twilio provided phone numbers can be used (see Twilio for details)")]

@@ -28,17 +28,21 @@ namespace Softelvdm.Modules.IVR.Controllers {
             [Category("Accounts"), Caption("Live Account Sid"), Description("The Live Account Sid is obtained from your Twilio account, defined in appsettings.json (applies to all sites in this YetaWF instance) and is used when Test Mode is disabled")]
             [UIHint("String"), ReadOnly]
             [HelpLink("https://www.twilio.com/")]
+            [ExcludeDemoMode]
             public string LiveAccountSid { get; set; }
             [Category("Accounts"), Caption("Live Auth Token"), Description("The Live Auth Token is obtained from your Twilio account, defined in appsettings.json (applies to all sites in this YetaWF instance) and is used when Test Mode is disabled")]
             [UIHint("String"), ReadOnly]
+            [ExcludeDemoMode]
             public string LiveAuthToken { get; set; }
 
             [Category("Accounts"), Caption("Test Account Sid"), Description("The Test Account Sid is obtained from your Twilio account, defined in appsettings.json (applies to all sites in this YetaWF instance) and is used when Test Mode is enabled")]
             [UIHint("String"), ReadOnly]
             [HelpLink("https://www.twilio.com/")]
+            [ExcludeDemoMode]
             public string TestAccountSid { get; set; }
             [Category("Accounts"), Caption("Test Auth Token"), Description("The Test Auth Token is obtained from your Twilio account, defined in appsettings.json (applies to all sites in this YetaWF instance) and is used when Test Mode is enabled")]
             [UIHint("String"), ReadOnly]
+            [ExcludeDemoMode]
             public string TestAuthToken { get; set; }
 
             [Category("IVR"), Caption("Voice"), Description("Defines the Voice variable, which can be used to override the default voice - This voice is used for all messages to external users - If not specified, the default voice is used")]
@@ -77,10 +81,12 @@ namespace Softelvdm.Modules.IVR.Controllers {
 
             [Category("Security"), Caption("Public Key"), Description("The public key used to encrypt the token sent from the IVR to Twilio with POST requests, to be validated on return")]
             [UIHint("TextAreaSourceOnly"), StringLength(Globals.MaxPublicKey)]
+            [ExcludeDemoMode]
             public string PublicKey { get; set; }
 
             [Category("Security"), Caption("Private Key"), Description("The private key used to decrypt the token sent from the IVR - DO NOT SHARE THIS KEY!")]
             [UIHint("TextAreaSourceOnly"), StringLength(Globals.MaxPrivateKey)]
+            [ExcludeDemoMode]
             public string PrivateKey { get; set; }
 
             public IVRConfig GetData(IVRConfig data) {
