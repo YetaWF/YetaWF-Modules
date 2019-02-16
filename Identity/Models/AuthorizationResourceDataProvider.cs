@@ -21,7 +21,7 @@ namespace YetaWF.Modules.Identity.DataProvider {
         private static Dictionary<string, ResourceAttribute> AuthorizationResources { get; set; }
 
         /// <summary>
-        /// Visit all known assemblies and collect authorization resources
+        /// Visit all known assemblies and collect authorization resources.
         /// </summary>
         public Task InitializeApplicationStartupAsync() {
 

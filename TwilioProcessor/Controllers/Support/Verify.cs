@@ -7,6 +7,7 @@ using YetaWF.Core.Log;
 #if MVC6
 using Microsoft.AspNetCore.Http;
 #else
+using System.Web;
 #endif
 #if !DEBUG
 using System;
