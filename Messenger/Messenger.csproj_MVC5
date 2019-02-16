@@ -56,6 +56,7 @@
     <Compile Include="Startup\StartupSignalr.cs" />
     <Compile Include="Views\HTML\BrowserNotification.cs" />
     <Compile Include="Views\HTML\SiteAnnouncement.cs" />
+    <Compile Include="Views\HTML\SiteAnnouncementsUnavailable.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Addons\_Addons\SkinBrowserNotificationsModule\filelistJS.txt" />
