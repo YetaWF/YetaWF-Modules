@@ -33,6 +33,7 @@
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Controllers\Support\Verify.cs" />
     <Compile Include="Controllers\TwilioResponse.cs" />
     <Compile Include="Controllers\TwilioConfig.cs" />
     <Compile Include="Models\Attributes\PhoneNumberAttribute.cs" />
