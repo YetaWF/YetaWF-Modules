@@ -126,7 +126,6 @@
     <None Include="Addons\_Addons\TestStepsModule\filelistJS.txt" />
     <None Include="Addons\_Main\Grids\TemplateGridAjaxModuleController.BrowseItem" />
     <None Include="Addons\_Main\Grids\TemplateGridModuleController.BrowseItem" />
-    <None Include="Addons\_SiteTemplates\4.2.0\Page Data - _Tests_Steps.zip" />
     <None Include="Addons\_Templates\ListOfEmailAddresses\ListOfEmailAddresses.scss" />
     <None Include="app.config" />
     <None Include="packages.config" />
