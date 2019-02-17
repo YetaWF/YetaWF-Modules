@@ -73,10 +73,6 @@
       <Project>{6a90eab3-a9e4-4a2c-90d9-145859790c46}</Project>
       <Name>SQL</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\Tools\PackageVerificationAssembly\PackageVerificationAssembly.csproj">
-      <Project>{7ffe48ef-6645-46cf-a98c-11c24cd96820}</Project>
-      <Name>PackageVerificationAssembly</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Microsoft.CSharp" />
