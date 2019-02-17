@@ -25,12 +25,6 @@ namespace Softelvdm.Modules.TwilioProcessor.Controllers {
         [HeaderAttribute("In order to use Twilio services you need a Twilio account. It is possible to test the service with a free account.")]
         public class Model {
 
-            [Category("Accounts"), Caption("Documentation"), Description("Click the link to access documentation for the Softelvdm.TwilioProcessor package")]
-            [UIHint("Url"), ReadOnly]
-            [SuppressEmpty]
-            public string DocumentationUrl { get { return AreaRegistration.CurrentPackage.InfoLink; } }
-            public string DocumentationUrl_Text { get { return this.__ResStr("prodDoc", "Product Documentation"); } }
-
             [Category("Accounts"), Caption("Test Mode"), Description("Defines whether test mode or live mode is used - During development use test mode - This can only be set using AppSettings.json")]
             [UIHint("Boolean"), ReadOnly]
             public bool TestMode { get; set; }
