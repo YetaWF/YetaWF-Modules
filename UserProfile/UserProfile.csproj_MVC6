@@ -32,4 +32,8 @@
     <EmbeddedResource Remove="node_modules\**" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Addons\_Main\" />
+  </ItemGroup>
+
 </Project>
