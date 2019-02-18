@@ -38,8 +38,7 @@ namespace Softelvdm.Modules.TwilioProcessor.Controllers.Support {
             RequestValidator validator = new RequestValidator(authToken);
 
             Dictionary<string, string> dict = new Dictionary<string, string>();
-            List<string> keys = request.Form.Keys.ToList();
-            foreach (string key in keys) {
+            foreach (string key in request.Form.Keys) {
                 dict.Add(key, request.Form[key]);
             }
 
