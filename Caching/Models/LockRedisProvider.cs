@@ -27,7 +27,7 @@ namespace YetaWF.Modules.Caching.DataProvider {
         }
 
         public async Task InitializeFirstNodeStartupAsync() {
-            if (YetaWF.Modules.Caching.Startup.Application.LockProvider != YetaWF.Modules.Caching.Startup.Application.ReditCacheProvider) return;
+            if (YetaWF.Modules.Caching.Startup.Application.LockProvider != YetaWF.Modules.Caching.Startup.Application.RedisCacheProvider) return;
             // this is the first node, so clear all data
             IDatabase db = Redis.GetDatabase();
             if (YetaWFManager.IsSync()) {

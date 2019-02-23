@@ -17,7 +17,7 @@ namespace YetaWF.Modules.Caching.Startup {
         public static string LockProvider { get; private set; }
         public static string CacheProvider { get; private set; }
         public const string SQLCacheProvider = "sql";
-        public const string ReditCacheProvider = "redis";
+        public const string RedisCacheProvider = "redis";
 
         // Using a Redis server:
         // Start a Redis server using "docker run --name redis -d -p 6379:6379 redis".
@@ -37,7 +37,7 @@ namespace YetaWF.Modules.Caching.Startup {
                 YetaWF.Core.IO.Caching.GetLocalCacheProvider = LocalCacheObjectDataProvider.GetProvider;
 
                 CacheProvider = WebConfigHelper.GetValue(package.AreaName, "CacheProvider", "redis").ToLower();
-                if (CacheProvider == ReditCacheProvider) {
+                if (CacheProvider == RedisCacheProvider) {
                     string configString = WebConfigHelper.GetValue(package.AreaName, "RedisCacheConfig", DefaultRedisConfig);
                     await SharedCacheObjectRedisDataProvider.InitAsync(configString);
                     await StaticObjectMultiRedisDataProvider.InitAsync(configString);
@@ -56,7 +56,7 @@ namespace YetaWF.Modules.Caching.Startup {
                     await YetaWF.Core.IO.FileSystem.FileSystemProvider.CreateDirectoryAsync(GetRootFolder());
                     string rootFolder = WebConfigHelper.GetValue(package.AreaName, "LockFolder", Path.Combine(YetaWFManager.DataFolder, package.AreaName, "__LOCKS"));
                     YetaWF.Core.IO.Caching.LockProvider = new LockFileProvider(rootFolder);
-                } else if (LockProvider == ReditCacheProvider) {
+                } else if (LockProvider == RedisCacheProvider) {
                     string configString = WebConfigHelper.GetValue(package.AreaName, "RedisLockConfig", DefaultRedisConfig);
                     YetaWF.Core.IO.Caching.LockProvider = new LockRedisProvider(configString);
                 } else {
