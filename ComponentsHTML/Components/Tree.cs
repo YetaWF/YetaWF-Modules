@@ -53,6 +53,14 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
     public partial class TreeDisplayComponent : TreeComponentBase, IYetaWFComponent<object> {
 
+        public enum LinkTypeEnum {
+            Local = 0,
+            External = 1,
+        }
+
+        public const string IdProperty = "Id";
+        public const string LinkTypeProperty = "LinkType";
+        public const string UrlProperty = "Url";
         public const string DisplayProperty = "Text";
         public const string SubEntriesProperty = "SubEntries";
         public const string CollapsedProperty = "Collapsed";
@@ -87,14 +95,16 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                 RowDragDropHighlightCss = treeModel.UseSkinFormatting ? "ui-state-active" : "tg_dragdrophighlight",
             };
 
+            PropertyData linkTypeProp = ObjectSupport.TryGetPropertyData(treeModel.RecordType, LinkTypeProperty);
+            PropertyData urlProp = ObjectSupport.TryGetPropertyData(treeModel.RecordType, UrlProperty);
             PropertyData prop = ObjectSupport.GetPropertyData(treeModel.RecordType, DisplayProperty);
             PropertyData subEntriesProp = ObjectSupport.GetPropertyData(treeModel.RecordType, SubEntriesProperty);
             PropertyData collapsedProp = ObjectSupport.TryGetPropertyData(treeModel.RecordType, CollapsedProperty);
             PropertyData selectedProp = ObjectSupport.TryGetPropertyData(treeModel.RecordType, SelectedProperty);
 
             // Headers
-            string headerHTML = await GetHeaderAsync(treeModel, data, setup, prop, subEntriesProp);
-            string html = await RenderHTML(HtmlHelper, treeModel, data, setup, prop, subEntriesProp, collapsedProp, selectedProp, FieldName);
+            string headerHTML = await GetHeaderAsync(treeModel, data, setup, linkTypeProp, prop, urlProp, subEntriesProp);
+            string html = await RenderHTML(HtmlHelper, treeModel, data, setup, linkTypeProp, prop, urlProp, subEntriesProp, collapsedProp, selectedProp, FieldName);
 
             string dd = "";
             if (treeModel.DragDrop)
@@ -112,7 +122,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             return hb.ToYHtmlString();
         }
 
-        private Task<string> GetHeaderAsync(TreeDefinition treeDef, List<object> data, TreeSetup setup, PropertyData prop, PropertyData subEntriesProp) {
+        private Task<string> GetHeaderAsync(TreeDefinition treeDef, List<object> data, TreeSetup setup, PropertyData linkTypeProp, PropertyData prop, PropertyData urlProp, PropertyData subEntriesProp) {
 
             HtmlBuilder hb = new HtmlBuilder();
 
@@ -141,7 +151,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 #else
             HtmlHelper htmlHelper,
 #endif
-                TreeDefinition treeModel, List<object> data, TreeSetup setup, PropertyData prop, PropertyData subEntriesProp, PropertyData collapsedProp, PropertyData selectedProp, string fieldPrefix) {
+                TreeDefinition treeModel, List<object> data, TreeSetup setup, PropertyData linkTypeProp, PropertyData prop, PropertyData urlProp, PropertyData subEntriesProp, PropertyData collapsedProp, PropertyData selectedProp, string fieldPrefix) {
 
             HtmlBuilder hb = new HtmlBuilder();
 
@@ -162,7 +172,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 <ul class='tg_root'>");
 
                 foreach (object record in data) {
-                    hb.Append(await RenderRecordHTMLAsync(htmlHelper, treeModel, setup, prop, subEntriesProp, collapsedProp, selectedProp, record, 1, fieldPrefix));
+                    hb.Append(await RenderRecordHTMLAsync(htmlHelper, treeModel, setup, linkTypeProp, prop, urlProp, subEntriesProp, collapsedProp, selectedProp, record, 1, fieldPrefix));
                 }
 
                 hb.Append($@"
@@ -181,7 +191,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 #else
             HtmlHelper htmlHelper,
 #endif
-                TreeDefinition treeModel, TreeSetup setup, PropertyData prop, PropertyData subEntriesProp, PropertyData collapsedProp, PropertyData selectedProp, object record, int level, string fieldPrefix) {
+                TreeDefinition treeModel, TreeSetup setup, PropertyData linkTypeProp, PropertyData prop, PropertyData urlProp, PropertyData subEntriesProp, PropertyData collapsedProp, PropertyData selectedProp, object record, int level, string fieldPrefix) {
 
             HtmlBuilder hb = new HtmlBuilder();
 
@@ -223,23 +233,18 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                 if (selected)
                     selectedCss = " t_select";
 
-                // entry
-                string output = (await htmlHelper.ForDisplayComponentAsync(record, DisplayProperty, value, prop.UIHint)).ToString();
-                if (!string.IsNullOrWhiteSpace(output))
-                    output = output.Trim(new char[] { '\r', '\n' }); // templates can generate a lot of extra \r\n which breaks filtering
-                if (string.IsNullOrWhiteSpace(output))
-                    output = "&nbsp;";
-
                 string caret;
-
                 string icon;
-                if (ienum != null) {
+                if (ienum != null)
+                {
                     if (collapsed)
                         caret = "<i class='t_icright'></i>";
                     else
                         caret = "<i class='t_icdown'></i>";
                     icon = "<i class='t_icfolder'></i>";
-                } else {
+                }
+                else
+                {
                     caret = "<i class='t_icempty'></i>";
                     icon = "<i class='t_icfile'></i>";
                 }
@@ -248,10 +253,32 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                 if (treeModel.DragDrop)
                     dd = " draggable='true'";
 
+                // entry
+                LinkTypeEnum dt = LinkTypeEnum.Local;
+                if (linkTypeProp != null)
+                    dt = linkTypeProp.GetPropertyValue<LinkTypeEnum>(record);
+
+                string output;
+                switch (dt) {
+                    default:
+                    case LinkTypeEnum.Local:
+                        string t = (await htmlHelper.ForDisplayComponentAsync(record, DisplayProperty, value, prop.UIHint)).ToString();
+                        if (!string.IsNullOrWhiteSpace(t))
+                            t = t.Trim(new char[] { '\r', '\n' }); // templates can generate a lot of extra \r\n which breaks filtering
+                        if (string.IsNullOrWhiteSpace(t))
+                            t = "&nbsp;";
+                        output = $"<a class='t_entry{selectedCss}' href='#'{dd}>{t}</a>";
+                        break;
+                    case LinkTypeEnum.External:
+                        string url = urlProp.GetPropertyValue<string>(record);
+                        output = $"<a href='{YetaWFManager.UrlEncodePath(url)}' target='_blank' class=''>{(await htmlHelper.ForDisplayComponentAsync(record, DisplayProperty, value, prop.UIHint)).ToString()}</a>";
+                        break;
+                }
+
                 hb.Append($@"
  <li class='{lightCss}' data-record='{recordCount}'>
   {caret}
-  {icon}<a class='t_entry{selectedCss}' href='#'{dd}>{output}</a>");
+  {icon}{output}");
 
                 // sub entries
                 if (ienum != null) {
@@ -265,7 +292,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
  <ul{collapsedStyle}>");
 
                     for (int i = 0; ienumerator.MoveNext(); i++) {
-                        hb.Append(await RenderRecordHTMLAsync(htmlHelper, treeModel, setup, prop, subEntriesProp, collapsedProp, selectedProp, ienumerator.Current, level+1, fieldPrefix));
+                        hb.Append(await RenderRecordHTMLAsync(htmlHelper, treeModel, setup, linkTypeProp, prop, urlProp, subEntriesProp, collapsedProp, selectedProp, ienumerator.Current, level+1, fieldPrefix));
                     }
 
                     hb.Append($@"
@@ -290,7 +317,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                     List<string> propList = new List<string>();
                     List<PropertyData> props = ObjectSupport.GetPropertyData(type);
                     foreach (PropertyData prop in props) {
-                        if (prop.Name.StartsWith("__") || (prop.PropInfo.CanRead && prop.PropInfo.CanWrite && prop.Name != "SubEntries" && prop.Name != "Id" && prop.Name != "Collapsed")) {
+                        if (prop.Name.StartsWith("__") || (prop.PropInfo.CanRead && prop.PropInfo.CanWrite && prop.Name != SubEntriesProperty && prop.Name != IdProperty && prop.Name != CollapsedProperty)) {
                             propList.Add(prop.Name);
                         }
                     }
