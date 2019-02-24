@@ -30,14 +30,14 @@ LEFT JOIN {TableName} ON {UrlTableName}.[SearchDataUrlId] = {TableName}.[SearchD
 WHERE {TableName}.[SearchDataUrlId] IS NULL";
                     ISQLTableInfo info = (ISQLTableInfo)searchUrlDP.GetDataProvider();
                     sql = sql.Replace("{UrlTableName}", SQLBuilder.WrapBrackets(info.GetTableName()));
-                    await Direct_QueryAsync(GetTableName(), sql);
+                    await Direct_QueryAsync(sql);
                 }
             }
 
             public async Task MarkUpdatedAsync(int searchDataUrlId) {
                 string sql = $@"UPDATE {{TableName}} Set DateAdded = GETUTCDATE() WHERE [SearchDataUrlId] = {{UrlId}} AND {{__Site}}";
                 sql = sql.Replace("{UrlId}", searchDataUrlId.ToString());
-                await Direct_QueryAsync(GetTableName(), sql);
+                await Direct_QueryAsync(sql);
             }
         }
         class SearchResultDataProvider : SQLSimpleObject<int, SearchResult> {
