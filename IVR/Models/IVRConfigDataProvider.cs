@@ -11,6 +11,7 @@ using YetaWF.Core.IO;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Packages;
 using YetaWF.Core.Security;
+using YetaWF.Core.Serializers;
 using YetaWF.Core.Support;
 
 namespace Softelvdm.Modules.IVR.DataProvider {
@@ -34,6 +35,9 @@ namespace Softelvdm.Modules.IVR.DataProvider {
         [StringLength(Globals.MaxUrl)]
         public string TestVerificationProcessCallUrl { get; set; }
 
+        [Data_Binary]
+        public SerializableList<ExtensionPhoneNumber> NotificationNumbers { get; set; }
+
         [StringLength(Globals.MaxUrl)]
         public string DisplayVoiceMailUrl { get; set; }
 
@@ -56,6 +60,7 @@ namespace Softelvdm.Modules.IVR.DataProvider {
         public IVRConfig() {
             MaxErrors = 3;
             OpeningHours = WeeklyHours.WorkWeek;
+            NotificationNumbers = new SerializableList<ExtensionPhoneNumber>();
         }
     }
 

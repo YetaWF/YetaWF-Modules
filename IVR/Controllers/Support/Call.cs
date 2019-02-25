@@ -85,6 +85,16 @@ namespace Softelvdm.Modules.IVR.Controllers {
                     });
                 }
 
+                foreach (ExtensionPhoneNumber notifyNumber in ivrConfig.NotificationNumbers) {
+                    if (notifyNumber.SendSMS) {
+                        SendSMS sendSMS = new SendSMS();
+                        await sendSMS.SendMessageAsync(notifyNumber.PhoneNumber,
+                            this.__ResStr("notifySMS", "Incoming call received from {0} ({1}, {2}, {3}, {4}) - {5}",
+                            GetForm("Caller"), GetForm("CallerCity"), GetForm("CallerState"), GetForm("CallerZip"), GetForm("CallerCountry"), GetForm("To")),
+                            ThrowError: false);
+                    }
+                }
+
                 // determine main action to run
 
                 request = SECTION_MAIN;
