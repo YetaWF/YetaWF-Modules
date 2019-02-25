@@ -27,7 +27,9 @@ namespace YetaWF.Modules.CurrencyConverter.Components {
             using (ExchangeRateDataProvider dp = new ExchangeRateDataProvider()) {
                 ExchangeRateData data = await dp.GetItemAsync();
                 string currency = (from r in data.Rates where r.Code == model select r.CurrencyName).FirstOrDefault();
-                return new YHtmlString(HE(currency) ?? "&nbsp;");
+                if (string.IsNullOrEmpty(model))
+                    return new YHtmlString();
+                return new YHtmlString(HE(currency));
             }
         }
     }

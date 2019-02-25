@@ -64,6 +64,10 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                         height: '{pixHeight}px'
                     }});</script>");
             } else {
+
+                if (string.IsNullOrWhiteSpace(text))
+                    return new YHtmlString();
+
                 hb.Append(Globals.LazyHTMLOptimization);
 
                 YTagBuilder tag = new YTagBuilder("div");
@@ -73,17 +77,10 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
                 bool encode = PropData.GetAdditionalAttributeValue("Encode", true);
                 if (encode) {
-                    if (string.IsNullOrWhiteSpace(text))
-                        text = "&nbsp;"; //so the div is not empty
-                    else {
-                        tag.SetInnerText(text);
-                        text = tag.InnerHtml;
-                        text = text.Replace("\r\n", "<br/>");
-                        text = text.Replace("\n", "<br/>");
-                    }
-                } else {
-                    if (string.IsNullOrWhiteSpace(text))
-                        text = "&nbsp;"; //so the div is not empty
+                    tag.SetInnerText(text);
+                    text = tag.InnerHtml;
+                    text = text.Replace("\r\n", "<br/>");
+                    text = text.Replace("\n", "<br/>");
                 }
                 tag.InnerHtml = text;
 

@@ -28,10 +28,11 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
             HtmlBuilder hb = new HtmlBuilder();
 
-            hb.Append($@"<div class='yt_jqueryuiskin t_display'>
-                {(string.IsNullOrEmpty(model) ? "&nbsp;" : YetaWFManager.HtmlEncode(model))}
-            </div>");
-
+            if (!string.IsNullOrWhiteSpace(model)) {
+                hb.Append($@"<div class='yt_jqueryuiskin t_display'>
+                    {HE(model)}
+                </div>");
+            }
             return Task.FromResult(hb.ToYHtmlString());
         }
     }

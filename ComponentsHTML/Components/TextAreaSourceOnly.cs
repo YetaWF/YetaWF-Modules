@@ -34,6 +34,9 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             else
                 text = (string)model;
 
+            if (string.IsNullOrWhiteSpace(text))
+                return new YHtmlString();
+
             bool copy = PropData.GetAdditionalAttributeValue<bool>("Copy", true);
 
             HtmlBuilder hb = new HtmlBuilder();

@@ -28,8 +28,11 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
             HtmlBuilder hb = new HtmlBuilder();
 
+            if (string.IsNullOrWhiteSpace(model))
+                return Task.FromResult(new YHtmlString());
+
             hb.Append($@"<div class='yt_bootstrapskin t_display'>
-                {(string.IsNullOrEmpty(model) ? "&nbsp;" : YetaWFManager.HtmlEncode(model))}
+                {HE(model)}
             </div>");
 
             return Task.FromResult(hb.ToYHtmlString());

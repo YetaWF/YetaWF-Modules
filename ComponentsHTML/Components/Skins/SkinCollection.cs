@@ -35,7 +35,9 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                 if (useDefault)
                     desc = __ResStr("siteDef", "(Site Default)");
             }
-            return Task.FromResult(new YHtmlString(string.IsNullOrWhiteSpace(desc) ? "&nbsp;" : HE(desc)));
+            if (string.IsNullOrWhiteSpace(desc))
+                return Task.FromResult(new YHtmlString());
+            return Task.FromResult(new YHtmlString(HE(desc)));
         }
     }
 
