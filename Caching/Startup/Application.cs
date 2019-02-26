@@ -28,7 +28,7 @@ namespace YetaWF.Modules.Caching.Startup {
 
             Package package = YetaWF.Modules.Caching.Controllers.AreaRegistration.CurrentPackage;
 
-            // permanently created dataproviders (never disposed)
+            // permanently created data providers (never disposed)
             bool distributed = WebConfigHelper.GetValue<bool>(AreaRegistration.CurrentPackage.AreaName, Distributed, false);
 
             if (distributed) {
