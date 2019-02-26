@@ -78,7 +78,7 @@ namespace YetaWF.Modules.Languages.Controllers {
                 AjaxUrl = GetActionUrl(nameof(LocalizeBrowsePackage_GridData)),
                 ExtraData = new BrowseModel.ExtraData { PackageName = package.Name },
                 DirectDataAsync = async (int skip, int take, List<DataProviderSortInfo> sort, List<DataProviderFilterInfo> filters) => {
-                    List<LocalizeFile> files = (from s in await LocalizationSupport.GetFilesAsync(package, MultiString.DefaultLanguage, false) select new LocalizeFile { FileName = Path.GetFileName(s) }).ToList();
+                    List<LocalizeFile> files = (from s in await Localization.GetFilesAsync(package, MultiString.DefaultLanguage, false) select new LocalizeFile { FileName = Path.GetFileName(s) }).ToList();
                     DataProviderGetRecords<LocalizeFile> recs = DataProviderImpl<LocalizeFile>.GetRecords(files, skip, take, sort, filters);
                     return new DataSourceResult {
                         Data = (from s in recs.Data select new BrowseItem(Module, package.Name, s.FileName)).ToList<object>(),
@@ -115,7 +115,7 @@ namespace YetaWF.Modules.Languages.Controllers {
         public async Task<ActionResult> CreateCustomLocalization(string packageName, string language) {
             if (Manager.Deployed)
                 throw new InternalError("Can't localize packages on a deployed site");
-            await TranslatePackageAsync(packageName, language, LocalizationSupport.Location.CustomResources);
+            await TranslatePackageAsync(packageName, language, Localization.Location.CustomResources);
             return FormProcessed(null, popupText: this.__ResStr("custGenerated", "Custom localization resources successfully generated"), OnClose: OnCloseEnum.Nothing);
         }
 
@@ -125,7 +125,7 @@ namespace YetaWF.Modules.Languages.Controllers {
         public async Task<ActionResult> CreateInstalledLocalization(string packageName, string language) {
             if (Manager.Deployed)
                 throw new InternalError("Can't localize packages on a deployed site");
-            await TranslatePackageAsync(packageName, language, LocalizationSupport.Location.InstalledResources);
+            await TranslatePackageAsync(packageName, language, Localization.Location.InstalledResources);
             return FormProcessed(null, popupText: this.__ResStr("instGenerated", "Installed localization resources successfully generated"), OnClose: OnCloseEnum.Nothing);
         }
 
@@ -137,22 +137,22 @@ namespace YetaWF.Modules.Languages.Controllers {
                 throw new InternalError("Can't localize packages on a deployed site");
             foreach (Package package in Package.GetAvailablePackages()) {
                 if (package.IsCorePackage || package.IsModulePackage || package.IsSkinPackage)
-                    await TranslatePackageAsync(package.Name, language, LocalizationSupport.Location.InstalledResources);
+                    await TranslatePackageAsync(package.Name, language, Localization.Location.InstalledResources);
             }
             return FormProcessed(null, popupText: this.__ResStr("instGenerated", "Installed localization resources successfully generated"), OnClose: OnCloseEnum.Nothing);
         }
 
-        private async Task TranslatePackageAsync(string packageName, string language, LocalizationSupport.Location resourceType) {
+        private async Task TranslatePackageAsync(string packageName, string language, Localization.Location resourceType) {
             Package package = Package.GetPackageFromPackageName(packageName);
-            if (resourceType == LocalizationSupport.Location.InstalledResources && language == MultiString.DefaultLanguage)
+            if (resourceType == Localization.Location.InstalledResources && language == MultiString.DefaultLanguage)
                 throw new InternalError("Can't save installed resources using the default language {0}", MultiString.DefaultLanguage);
-            List<LocalizeFile> files = (from s in await LocalizationSupport.GetFilesAsync(package, MultiString.DefaultLanguage, false) select new LocalizeFile { FileName = Path.GetFileName(s) }).ToList();
+            List<LocalizeFile> files = (from s in await Localization.GetFilesAsync(package, MultiString.DefaultLanguage, false) select new LocalizeFile { FileName = Path.GetFileName(s) }).ToList();
 
             // Extract all strings into a list
             List<string> strings = new List<string>();
             List<LocalizationData> allData = new List<LocalizationData>();
             foreach (LocalizeFile file in files) {
-                LocalizationData data = LocalizationSupport.Load(package, file.FileName, LocalizationSupport.Location.DefaultResources);
+                LocalizationData data = Localization.Load(package, file.FileName, Localization.Location.DefaultResources);
                 allData.Add(data);
                 foreach (LocalizationData.ClassData cd in data.Classes) {
                     if (!string.IsNullOrWhiteSpace(cd.Header))
@@ -229,7 +229,7 @@ namespace YetaWF.Modules.Languages.Controllers {
                             ede.Description = strings[stringIndex++];
                     }
                 }
-                await LocalizationSupport.SaveAsync(package, files[index].FileName, resourceType, locData);
+                await Localization.SaveAsync(package, files[index].FileName, resourceType, locData);
 
                 ++index;
             }

@@ -7,6 +7,7 @@ using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Packages;
 using YetaWF.Core.Serializers;
 using YetaWF.Core.Support;
+using YetaWF.Core.IO;
 #if MVC6
 using Microsoft.AspNetCore.Mvc;
 #else
@@ -81,13 +82,13 @@ namespace YetaWF.Modules.Languages.Controllers {
             Package package = Package.GetPackageFromPackageName(packageName);
             bool custom = true;
             bool forceCustom = false;
-            LocalizationData data = LocalizationSupport.Load(package, typeName, LocalizationSupport.Location.CustomResources);
+            LocalizationData data = Localization.Load(package, typeName, Localization.Location.CustomResources);
             if (data == null) {
-                data = LocalizationSupport.Load(package, typeName, LocalizationSupport.Location.InstalledResources);
+                data = Localization.Load(package, typeName, Localization.Location.InstalledResources);
                 custom = false;
             }
             if (data == null) {
-                data = LocalizationSupport.Load(package, typeName, LocalizationSupport.Location.DefaultResources);
+                data = Localization.Load(package, typeName, Localization.Location.DefaultResources);
                 custom = false;
             }
             if (data == null)
@@ -119,10 +120,10 @@ namespace YetaWF.Modules.Languages.Controllers {
             Package package = Package.GetPackageFromPackageName(model.PackageName);
             LocalizationData data = null;
             if (RestoreDefaults) {
-                data = LocalizationSupport.Load(package, model.TypeName, LocalizationSupport.Location.DefaultResources);
+                data = Localization.Load(package, model.TypeName, Localization.Location.DefaultResources);
 
-                LocalizationSupport.SaveAsync(package, model.TypeName, LocalizationSupport.Location.InstalledResources, null);// delete it
-                LocalizationSupport.SaveAsync(package, model.TypeName, LocalizationSupport.Location.CustomResources, null);// delete it
+                Localization.SaveAsync(package, model.TypeName, Localization.Location.InstalledResources, null);// delete it
+                Localization.SaveAsync(package, model.TypeName, Localization.Location.CustomResources, null);// delete it
 
                 ModelState.Clear();
                 EditModel newModel = new EditModel {
@@ -139,11 +140,11 @@ namespace YetaWF.Modules.Languages.Controllers {
             } else {
                 if (!ModelState.IsValid)
                     return PartialView(model);
-                data = LocalizationSupport.Load(package, model.TypeName, LocalizationSupport.Location.CustomResources);
+                data = Localization.Load(package, model.TypeName, Localization.Location.CustomResources);
                 if (data == null)
-                    data = LocalizationSupport.Load(package, model.TypeName, LocalizationSupport.Location.InstalledResources);
+                    data = Localization.Load(package, model.TypeName, Localization.Location.InstalledResources);
                 if (data == null)
-                    data = LocalizationSupport.Load(package, model.TypeName, LocalizationSupport.Location.DefaultResources);
+                    data = Localization.Load(package, model.TypeName, Localization.Location.DefaultResources);
                 data = model.GetData(data); // merge new data into original
                 model.SetData(data); // and all the data back into model for final display
 
@@ -152,9 +153,9 @@ namespace YetaWF.Modules.Languages.Controllers {
                 model.CurrentLanguage = model.HiddenCurrentLanguage;
 
                 if (model.Custom)
-                    LocalizationSupport.SaveAsync(package, model.TypeName, LocalizationSupport.Location.CustomResources, data);
+                    Localization.SaveAsync(package, model.TypeName, Localization.Location.CustomResources, data);
                 else
-                    LocalizationSupport.SaveAsync(package, model.TypeName, LocalizationSupport.Location.InstalledResources, data);
+                    Localization.SaveAsync(package, model.TypeName, Localization.Location.InstalledResources, data);
 
                 return FormProcessed(model, this.__ResStr("okSaved", "Localization resource saved"), OnPopupClose: OnPopupCloseEnum.ReloadNothing);
             }
