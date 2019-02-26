@@ -13,6 +13,7 @@ using YetaWF.Core.Support;
 using YetaWF.Modules.Modules.Modules;
 using System.Threading.Tasks;
 using YetaWF.Core.Components;
+using YetaWF.Core.IO;
 #if MVC6
 using Microsoft.AspNetCore.Mvc;
 #else
@@ -118,13 +119,13 @@ namespace YetaWF.Modules.Modules.Controllers {
                     //if (modSettings == null)
                     //    throw new InternalError("No module edit settings services available - no module has been defined");
 
-                    ModuleDefinition.ModuleBrowseInfo info = new ModuleDefinition.ModuleBrowseInfo() {
+                    Module.ModuleBrowseInfo info = new Module.ModuleBrowseInfo() {
                         Skip = skip,
                         Take = take,
                         Sort = sort,
                         Filters = filters,
                     };
-                    await ModuleDefinition.GetModulesAsync(info);
+                    await YetaWF.Core.IO.Module.GetModulesAsync(info);
                     List<BrowseItem> list = new List<BrowseItem>();
                     foreach (ModuleDefinition s in info.Modules) {
                         int useCount = (await s.__GetPagesAsync()).Count;
@@ -156,7 +157,7 @@ namespace YetaWF.Modules.Modules.Controllers {
         [Permission("RemoveItems")]
         [ExcludeDemoMode]
         public async Task<ActionResult> Remove(Guid moduleGuid) {
-            if (!await ModuleDefinition.RemoveModuleDefinitionAsync(moduleGuid))
+            if (!await YetaWF.Core.IO.Module.RemoveModuleDefinitionAsync(moduleGuid))
                 throw new Error(this.__ResStr("errRemove", "The module could not be removed - It may already have been deleted"));
             return Reload(null, Reload: ReloadEnum.ModuleParts);
         }
@@ -164,8 +165,8 @@ namespace YetaWF.Modules.Modules.Controllers {
         [Permission("RestoreAuthorization")]
         [ExcludeDemoMode]
         public async Task<ActionResult> RestoreAuthorization() {
-            ModuleDefinition.ModuleBrowseInfo info = new ModuleDefinition.ModuleBrowseInfo();
-            await ModuleDefinition.GetModulesAsync(info);
+            YetaWF.Core.IO.Module.ModuleBrowseInfo info = new YetaWF.Core.IO.Module.ModuleBrowseInfo();
+            await YetaWF.Core.IO.Module.GetModulesAsync(info);
             foreach (ModuleDefinition genericMod in info.Modules) {
                 ModuleDefinition mod = await ModuleDefinition.LoadAsync(genericMod.ModuleGuid, AllowNone: true);
                 if (mod != null) {

@@ -52,7 +52,7 @@ namespace YetaWF.Modules.Menus.DataProvider {
             return await DataProvider.GetAsync(moduleGuid);
         }
         public async Task ReplaceItemAsync(MenuInfo data) {
-            using (ILockObject lockObject = await ModuleDefinition.LockModuleAsync(data.ModuleGuid)) {
+            using (ILockObject lockObject = await YetaWF.Core.IO.Module.LockModuleAsync(data.ModuleGuid)) {
                 await RemoveItemAsync(data.ModuleGuid);
                 await AddItemAsync(data);
                 await lockObject.UnlockAsync();
