@@ -14,7 +14,7 @@ namespace YetaWF.Modules.Caching.DataProvider {
     /// </summary>
     /// <remarks>
     /// Uses a Redis server for locking.</remarks>
-    public class LockRedisProvider : ILockProvider, IInitializeApplicationStartupFirstNodeOnly {
+    internal class LockRedisProvider : ILockProvider, IInitializeApplicationStartupFirstNodeOnly {
 
         private static ConnectionMultiplexer Redis { get; set; }
         private static Guid Id { get; set; }

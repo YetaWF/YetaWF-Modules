@@ -14,16 +14,38 @@ using YetaWF.Core.Support;
 
 namespace YetaWF.Modules.Caching.DataProvider {
 
+    /// <summary>
+    /// An instance of this class is instantiated during application startup and registers low-level data providers
+    /// providing file system I/O. All file I/O in YetaWF uses a low-level data provider for file and folder I/O.
+    /// Operating system APIs should not be used by applications for file and folder I/O.
+    /// </summary>
+    /// <remarks>
+    /// YetaWF offer a temporary and a permanent file system interface.
+    /// Files stored in the temporary file system are lost when the application restarts.
+    /// The permanent file system preserves files when the application restarts.
+    ///
+    /// The temporary and a permanent file systems support single- and multi-instance sites.
+    /// All nodes in a multi-instance site must use the same physical file system, shared between sites.
+    ///
+    /// Applications do not access these low-level data providers directly.
+    /// File system services provided by YetaWF.Core.IO.FileSystem, YetaWF.Core.IO.DataFilesProvider and YetaWF.Core.IO.FileIO&lt;TObj&gt; should be used instead.
+    /// </remarks>
     public class FileSystemDataProviderStartup : IExternalDataProvider {
 
+        /// <summary>
+        /// Constructor.
+        /// </summary>
         public FileSystemDataProviderStartup() { }
 
         // Registration
 
+        /// <summary>
+        /// Called by the framework to register external data providers that expose the YetaWF.Core.DataProvider.IExternalDataProvider interface.
+        /// </summary>
         public void Register() {
 
             // used so this is installed immediately
-            // permanently created dataproviders (never disposed)
+            // permanently created data providers (never disposed)
             Package package = YetaWF.Modules.Caching.Controllers.AreaRegistration.CurrentPackage;
             string permRootFolder = WebConfigHelper.GetValue(package.AreaName, "PermRootFolder", YetaWFManager.RootFolderWebProject);
             string tempRootFolder = WebConfigHelper.GetValue(package.AreaName, "TempRootFolder", YetaWFManager.RootFolderWebProject);
@@ -33,7 +55,7 @@ namespace YetaWF.Modules.Caching.DataProvider {
         }
     }
 
-    public class FileSystemDataProvider : IFileSystem {
+    internal class FileSystemDataProvider : IFileSystem {
 
         public string RootFolder { get; private set; }
         public bool Permanent { get; private set; }

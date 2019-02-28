@@ -9,7 +9,7 @@ using YetaWF.Core.Support;
 
 namespace YetaWF.Modules.Caching.DataProvider {
 
-    public class LockFileProvider : ILockProvider {
+    internal class LockFileProvider : ILockProvider {
 
         public static string RootFolder { get; private set; }
 

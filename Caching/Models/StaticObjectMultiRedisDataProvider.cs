@@ -17,7 +17,7 @@ namespace YetaWF.Modules.Caching.DataProvider {
     /// it is known that a new object is available the data is retrieved.
     /// This is equivalent to StaticObjectSingleDataProvider on a single-instance site.
     /// </summary>
-    public class StaticObjectMultiRedisDataProvider : ICacheDataProvider, IDisposable {
+    internal class StaticObjectMultiRedisDataProvider : ICacheDataProvider, IDisposable {
 
         public static ICacheDataProvider GetProvider() {
             return new StaticObjectMultiRedisDataProvider();

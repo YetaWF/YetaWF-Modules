@@ -14,7 +14,7 @@ using YetaWF.Core.Support.Serializers;
 
 namespace YetaWF.Modules.Caching.DataProvider {
 
-    public class SharedCacheVersion {
+    internal class SharedCacheVersion {
 
         public const int MaxKey = 200;
 
@@ -25,7 +25,7 @@ namespace YetaWF.Modules.Caching.DataProvider {
         public SharedCacheVersion() { }
     }
 
-    public class SharedCacheVersionSQLDataProvider : DataProviderImpl, IInitializeApplicationStartup, IInitializeApplicationStartupFirstNodeOnly {
+    internal class SharedCacheVersionSQLDataProvider : DataProviderImpl, IInitializeApplicationStartup, IInitializeApplicationStartupFirstNodeOnly {
 
         public static SharedCacheVersionSQLDataProvider SharedCacheVersionDP { get; private set; }
 
@@ -61,7 +61,7 @@ namespace YetaWF.Modules.Caching.DataProvider {
     /// <summary>
     /// The object as persisted in shared cache.
     /// </summary>
-    public class SharedCacheObject : SharedCacheVersion {
+    internal class SharedCacheObject : SharedCacheVersion {
 
         [Data_Binary]
         public byte[] Value { get; set; }
@@ -71,7 +71,7 @@ namespace YetaWF.Modules.Caching.DataProvider {
     /// <summary>
     /// The object as persisted in local cache, representing a local copy of the object in shared cache
     /// </summary>
-    public class LocalSharedCacheObject {
+    internal class LocalSharedCacheObject {
 
         public string Key { get; set; }
         public byte[] Value { get; set; }
@@ -86,7 +86,7 @@ namespace YetaWF.Modules.Caching.DataProvider {
     /// it is known that a new object is available, the data is retrieved.
     /// </summary>
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1063:ImplementIDisposableCorrectly")]
-    public class SharedCacheObjectSQLDataProvider : DataProviderImpl, ICacheDataProvider, IInstallableModel {
+    internal class SharedCacheObjectSQLDataProvider : DataProviderImpl, ICacheDataProvider, IInstallableModel {
 
         public static ICacheDataProvider GetProvider() {
             return new SharedCacheObjectSQLDataProvider();

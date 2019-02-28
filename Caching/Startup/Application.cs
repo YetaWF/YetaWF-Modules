@@ -9,21 +9,37 @@ using YetaWF.Modules.Caching.DataProvider;
 
 namespace YetaWF.Modules.Caching.Startup {
 
+    /// <summary>
+    /// An instance of this class is instantiated during application startup and registers all low-level data providers
+    /// for file and folder I/O, caching and locking.
+    /// </summary>
+    /// <remarks>
+    /// Depending on appsettings.json settings, low-level data providers for single- or multi-instance sites are used.
+    ///
+    /// Applications do not access these low-level data providers directly.
+    /// Caching and locking services provided by YetaWF.Core.IO.Caching and
+    /// file system services provided by YetaWF.Core.IO.FileSystem, YetaWF.Core.IO.DataFilesProvider and YetaWF.Core.IO.FileIO&lt;TObj&gt; should be used instead.
+    /// </remarks>
     public class Application : IInitializeApplicationStartup, IInitializeApplicationStartupFirstNodeOnly {
 
-        public const string Distributed = "Distributed";
-        public const string DefaultRedisConfig = "localhost:6379";
+        internal const string Distributed = "Distributed";
+        internal const string DefaultRedisConfig = "localhost:6379";
 
-        public static string LockProvider { get; private set; }
-        public static string CacheProvider { get; private set; }
-        public const string SQLCacheProvider = "sql";
-        public const string RedisCacheProvider = "redis";
+        internal static string LockProvider { get; private set; }
+        internal static string CacheProvider { get; private set; }
+        internal const string SQLCacheProvider = "sql";
+        internal const string RedisCacheProvider = "redis";
 
         // Using a Redis server:
         // Start a Redis server using "docker run --name redis -d -p 6379:6379 redis".
         // Run Redis CLI: docker run -it --link redis:redis --rm redis redis-cli -h redis -p 6379
         // Show all keys: KEYS *
         // Clear DB: FLUSHALL
+
+        /// <summary>
+        /// Called when any node of a (single- or multi-instance) site is starting up.
+        /// </summary>
+        /// <remarks>Installs low-level data providers for single- or multi-instance sites, based on appsettings.json settings.</remarks>
         public async Task InitializeApplicationStartupAsync() {
 
             Package package = YetaWF.Modules.Caching.Controllers.AreaRegistration.CurrentPackage;
@@ -53,8 +69,8 @@ namespace YetaWF.Modules.Caching.Startup {
                 LockProvider = WebConfigHelper.GetValue(package.AreaName, "LockProvider", "file").ToLower();
                 if (LockProvider == "file") {
                     // create the lock folder if it doesn't exists yet
-                    await YetaWF.Core.IO.FileSystem.FileSystemProvider.CreateDirectoryAsync(GetRootFolder());
-                    string rootFolder = WebConfigHelper.GetValue(package.AreaName, "LockFolder", Path.Combine(YetaWFManager.DataFolder, package.AreaName, "__LOCKS"));
+                    string rootFolder = GetRootFolder();
+                    await YetaWF.Core.IO.FileSystem.FileSystemProvider.CreateDirectoryAsync(rootFolder);
                     YetaWF.Core.IO.Caching.LockProvider = new LockFileProvider(rootFolder);
                 } else if (LockProvider == RedisCacheProvider) {
                     string configString = WebConfigHelper.GetValue(package.AreaName, "RedisLockConfig", DefaultRedisConfig);
@@ -71,6 +87,9 @@ namespace YetaWF.Modules.Caching.Startup {
                 YetaWF.Core.IO.Caching.LockProvider = new LockSingleProvider();
             }
         }
+        /// <summary>
+        /// Called when the first node of a multi-instance site is starting up.
+        /// </summary>
         public async Task InitializeFirstNodeStartupAsync() {
             if (LockProvider == "file") {
                 foreach (string file in await YetaWF.Core.IO.FileSystem.FileSystemProvider.GetFilesAsync(GetRootFolder())) {

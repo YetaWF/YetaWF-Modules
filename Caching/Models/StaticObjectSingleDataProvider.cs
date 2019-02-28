@@ -9,22 +9,22 @@ using YetaWF.Core.Support;
 namespace YetaWF.Modules.Caching.DataProvider {
 
     /// <summary>
-    /// A shared cache implementation in-memory ONLY for a single instance. (Really not shared).
-    /// This is intended as a way to preserve "static" in-memory data. This is equivalent to StaticObjectMultiDataProvider on a multi-instance site.
+    /// A shared cache implementation in-memory ONLY for a single instance (really not shared).
+    /// This is intended as a way to preserve "static" in-memory data. This is equivalent to the StaticObjectMultiDataProvider class on a multi-instance site.
     /// </summary>
-    public class StaticObjectSingleDataProvider : ICacheDataProvider {
+    internal class StaticObjectSingleDataProvider : ICacheDataProvider {
 
         public static ICacheDataProvider GetProvider() {
             return new StaticObjectSingleDataProvider();
         }
 
-        protected YetaWFManager Manager { get { return YetaWFManager.Manager; } }
-        protected bool HaveManager { get { return YetaWFManager.HaveManager; } }
+        public YetaWFManager Manager { get { return YetaWFManager.Manager; } }
+        public bool HaveManager { get { return YetaWFManager.HaveManager; } }
 
         private static Dictionary<string, object> StaticObjects = new Dictionary<string, object>();
         private static object _lockObject = new object();
 
-        protected StaticObjectSingleDataProvider() {
+        public StaticObjectSingleDataProvider() {
             DisposableTracker.AddObject(this);
         }
         public void Dispose() {

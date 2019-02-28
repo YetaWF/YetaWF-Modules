@@ -9,7 +9,7 @@ using YetaWF.Core.Support;
 
 namespace YetaWF.Modules.Caching.DataProvider {
 
-    public class LockSingleProvider : ILockProvider {
+    internal class LockSingleProvider : ILockProvider {
 
         public void Dispose() { Dispose(true); }
         protected virtual void Dispose(bool disposing) {

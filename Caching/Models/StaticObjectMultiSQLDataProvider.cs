@@ -14,7 +14,7 @@ namespace YetaWF.Modules.Caching.DataProvider {
     /// <summary>
     /// The object as persisted in shared cache.
     /// </summary>
-    public class StaticCacheObject {
+    internal class StaticCacheObject {
 
         public string Key { get; set; }
         public DateTime Created { get; set; }
@@ -31,7 +31,7 @@ namespace YetaWF.Modules.Caching.DataProvider {
     /// This is equivalent to StaticObjectSingleDataProvider on a single-instance site.
     /// </summary>
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1063:ImplementIDisposableCorrectly")]
-    public class StaticObjectMultiSQLDataProvider : DataProviderImpl, ICacheDataProvider {
+    internal class StaticObjectMultiSQLDataProvider : DataProviderImpl, ICacheDataProvider {
 
         public static ICacheDataProvider GetProvider() {
             return new StaticObjectMultiSQLDataProvider();
