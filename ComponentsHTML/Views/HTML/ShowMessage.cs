@@ -11,13 +11,31 @@ using YetaWF.Modules.ComponentsHTML.Controllers;
 
 namespace YetaWF.Modules.ComponentsHTML.Views {
 
+    /// <summary>
+    /// Implements a standard ShowMessage view.
+    /// </summary>
+    /// <remarks>The model (a message) is rendered as an alert div.</remarks>
     public class ShowMessageView : YetaWFView, IYetaWFView<ModuleDefinition, object> {
 
-        public const string ViewName = "ShowMessage";
+    internal const string ViewName = "ShowMessage";
 
+        /// <summary>
+        /// Returns the package implementing the view.
+        /// </summary>
+        /// <returns>Returns the package implementing the view.</returns>
         public override Package GetPackage() { return AreaRegistration.CurrentPackage; }
+        /// <summary>
+        /// Returns the name of the view.
+        /// </summary>
+        /// <returns>Returns the name of the view.</returns>
         public override string GetViewName() { return ViewName; }
 
+        /// <summary>
+        /// Renders the view.
+        /// </summary>
+        /// <param name="module">The module on behalf of which the view is rendered.</param>
+        /// <param name="model">The model being rendered by the view.</param>
+        /// <returns>The HTML representing the view.</returns>
         public Task<YHtmlString> RenderViewAsync(ModuleDefinition module, object model) {
 
             HtmlBuilder hb = new HtmlBuilder();

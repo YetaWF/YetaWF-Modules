@@ -11,7 +11,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
     public abstract partial class PropertyListComponentBase {
 
-        public class PropertyListEntry {
+        internal class PropertyListEntry {
 
             public PropertyListEntry(string name, object value, string uiHint, bool editable, bool restricted, string textAbove, string textBelow, bool suppressEmpty,
                     List<ProcessIfAttribute> procIfAttrs, List<ProcessIfNotAttribute> procIfNotAttrs, List<ProcessIfSuppliedAttribute> procIfSuppliedAttrs, List<ProcessIfNotSuppliedAttribute> procIfNotSuppliedAttrs,
@@ -53,7 +53,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                     select property;
         }
 
-        public static List<PropertyListEntry> GetHiddenProperties(object obj) {
+        internal static List<PropertyListEntry> GetHiddenProperties(object obj) {
             List<PropertyListEntry> properties = new List<PropertyListEntry>();
             List<PropertyData> props = ObjectSupport.GetPropertyData(obj.GetType());
             foreach (var prop in props) {
@@ -66,7 +66,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         }
 
         // Returns all categories implemented by this object - these are decorated with the [CategoryAttribute]
-        public List<string> GetCategories(object obj) {
+        internal List<string> GetCategories(object obj) {
 
             // get all properties that are shown
             List<PropertyData> props = GetProperties(obj.GetType()).ToList();
@@ -98,7 +98,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             }
             return categories;
         }
-        public List<PropertyListEntry> GetPropertiesByCategory(object obj, string category) {
+        internal List<PropertyListEntry> GetPropertiesByCategory(object obj, string category) {
 
             List<PropertyListEntry> properties = new List<PropertyListEntry>();
             Type objType = obj.GetType();

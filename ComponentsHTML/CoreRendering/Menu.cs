@@ -16,6 +16,14 @@ namespace YetaWF.Modules.ComponentsHTML {
 
     public partial class CoreRendering {
 
+        /// <summary>
+        /// Renders a complete menu.
+        /// </summary>
+        /// <param name="menu">The menu to render.</param>
+        /// <param name="id">The menu ID to generate.</param>
+        /// <param name="cssClass">The optional CSS classes to use for the menu.</param>
+        /// <param name="HtmlHelper">The HtmlHelper instance.</param>
+        /// <returns>Returns the complete menu as HTML.</returns>
         public Task<YHtmlString> RenderMenuListAsync(MenuList menu, string id = null, string cssClass = null,
 #if MVC6
             IHtmlHelper HtmlHelper = null
@@ -26,7 +34,7 @@ namespace YetaWF.Modules.ComponentsHTML {
         {
             return RenderMenuAsync(menu, id, cssClass, RenderEngine: ModuleAction.RenderEngineEnum.BootstrapSmartMenu, HtmlHelper: HtmlHelper);
         }
-        public static async Task<YHtmlString> RenderMenuAsync(MenuList menu, string id = null, string cssClass = null,
+        internal static async Task<YHtmlString> RenderMenuAsync(MenuList menu, string id = null, string cssClass = null,
             ModuleAction.RenderEngineEnum RenderEngine = ModuleAction.RenderEngineEnum.KendoMenu,
             bool Hidden = false,
 #if MVC6

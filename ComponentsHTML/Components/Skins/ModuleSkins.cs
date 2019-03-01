@@ -11,18 +11,41 @@ using YetaWF.Core.Support;
 
 namespace YetaWF.Modules.ComponentsHTML.Components {
 
+    /// <summary>
+    /// Base class for the ModuleSkins component implementation.
+    /// </summary>
     public abstract class ModuleSkinsComponentBase : YetaWFComponent {
 
-        public const string TemplateName = "ModuleSkins";
+        internal const string TemplateName = "ModuleSkins";
+
+        /// <summary>
+        /// Returns the package implementing the component.
+        /// </summary>
+        /// <returns>Returns the package implementing the component.</returns>
         public override Package GetPackage() { return Controllers.AreaRegistration.CurrentPackage; }
+        /// <summary>
+        /// Returns the component name.
+        /// </summary>
+        /// <returns>Returns the component name.</returns>
+        /// <remarks>Components in packages whose product name starts with "Component" use the exact name returned by GetTemplateName when used in UIHint attributes. These are considered core components.
+        /// Components in other packages use the package's area name as a prefix. E.g., the UserId component in the YetaWF.Identity package is named "YetaWF_Identity_UserId" when used in UIHint attributes.
+        ///
+        /// The GetTemplateName method returns the component name without area name prefix in all cases.</remarks>
         public override string GetTemplateName() { return TemplateName; }
     }
 
+    /// <summary>
+    /// Implementation of the ModuleSkins display component.
+    /// </summary>
     public class ModuleSkinsDisplayComponent : ModuleSkinsComponentBase, IYetaWFComponent<SerializableList<SkinDefinition>> {
 
+        /// <summary>
+        /// Returns the component type (edit/display).
+        /// </summary>
+        /// <returns>Returns the component type.</returns>
         public override ComponentType GetComponentType() { return ComponentType.Display; }
 
-        public class ModuleSkinUI {
+        internal class ModuleSkinUI {
 
             [UIHint("ModuleSkinName"), ResourceRedirect(nameof(FileNameCaption)), Description("The name of the skin collection")]
             public string FileName { get; set; } // may be null for site default
@@ -30,6 +53,11 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             public string FileNameCaption { get; set; }
         }
 
+        /// <summary>
+        /// Called by the framework when the component needs to be rendered as HTML.
+        /// </summary>
+        /// <param name="model">The model being rendered by the component.</param>
+        /// <returns>The component rendered as HTML.</returns>
         public async Task<YHtmlString> RenderAsync(SerializableList<SkinDefinition> model) {
 
             HtmlBuilder hb = new HtmlBuilder();
@@ -68,11 +96,19 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             return hb.ToYHtmlString();
         }
     }
+
+    /// <summary>
+    /// Implementation of the ModuleSkins edit component.
+    /// </summary>
     public class ModuleSkinsEditComponent : ModuleSkinsComponentBase, IYetaWFComponent<SerializableList<SkinDefinition>> {
 
+        /// <summary>
+        /// Returns the component type (edit/display).
+        /// </summary>
+        /// <returns>Returns the component type.</returns>
         public override ComponentType GetComponentType() { return ComponentType.Edit; }
 
-        public class ModuleSkinUI {
+        internal class ModuleSkinUI {
 
             [UIHint("Hidden")]
             public string Collection { get; set; }
@@ -83,6 +119,11 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             public string FileNameCaption { get; set; }
         }
 
+        /// <summary>
+        /// Called by the framework when the component needs to be rendered as HTML.
+        /// </summary>
+        /// <param name="model">The model being rendered by the component.</param>
+        /// <returns>The component rendered as HTML.</returns>
         public async Task<YHtmlString> RenderAsync(SerializableList<SkinDefinition> model) {
 
             HtmlBuilder hb = new HtmlBuilder();

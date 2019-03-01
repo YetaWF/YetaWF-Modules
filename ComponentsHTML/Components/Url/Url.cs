@@ -11,19 +11,47 @@ using YetaWF.Modules.ComponentsHTML.Addons;
 
 namespace YetaWF.Modules.ComponentsHTML.Components {
 
+    /// <summary>
+    /// Base class for the Url component implementation.
+    /// </summary>
     public abstract class UrlComponentBase : YetaWFComponent {
 
-        protected static string __ResStr(string name, string defaultValue, params object[] parms) { return ResourceAccess.GetResourceString(typeof(UrlComponentBase), name, defaultValue, parms); }
+        internal static string __ResStr(string name, string defaultValue, params object[] parms) { return ResourceAccess.GetResourceString(typeof(UrlComponentBase), name, defaultValue, parms); }
 
-        public const string TemplateName = "Url";
+        internal const string TemplateName = "Url";
+
+        /// <summary>
+        /// Returns the package implementing the component.
+        /// </summary>
+        /// <returns>Returns the package implementing the component.</returns>
         public override Package GetPackage() { return Controllers.AreaRegistration.CurrentPackage; }
+        /// <summary>
+        /// Returns the component name.
+        /// </summary>
+        /// <returns>Returns the component name.</returns>
+        /// <remarks>Components in packages whose product name starts with "Component" use the exact name returned by GetTemplateName when used in UIHint attributes. These are considered core components.
+        /// Components in other packages use the package's area name as a prefix. E.g., the UserId component in the YetaWF.Identity package is named "YetaWF_Identity_UserId" when used in UIHint attributes.
+        ///
+        /// The GetTemplateName method returns the component name without area name prefix in all cases.</remarks>
         public override string GetTemplateName() { return TemplateName; }
     }
 
+    /// <summary>
+    /// Implementation of the Url display component.
+    /// </summary>
     public class UrlDisplayComponent : UrlComponentBase, IYetaWFComponent<string> {
 
+        /// <summary>
+        /// Returns the component type (edit/display).
+        /// </summary>
+        /// <returns>Returns the component type.</returns>
         public override ComponentType GetComponentType() { return ComponentType.Display; }
 
+        /// <summary>
+        /// Called by the framework when the component needs to be rendered as HTML.
+        /// </summary>
+        /// <param name="model">The model being rendered by the component.</param>
+        /// <returns>The component rendered as HTML.</returns>
         public Task<YHtmlString> RenderAsync(string model) {
 
             if (string.IsNullOrWhiteSpace(model)) return Task.FromResult(new YHtmlString(""));
@@ -79,15 +107,23 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             return Task.FromResult(hb.ToYHtmlString());
         }
     }
+
+    /// <summary>
+    /// Implementation of the Url edit component.
+    /// </summary>
     public class UrlEditComponent : UrlComponentBase, IYetaWFComponent<string> {
 
+        /// <summary>
+        /// Returns the component type (edit/display).
+        /// </summary>
+        /// <returns>Returns the component type.</returns>
         public override ComponentType GetComponentType() { return ComponentType.Edit; }
 
-        public class UrlEditSetup {
+        internal class UrlEditSetup {
             public UrlTypeEnum Type { get; set; }
             public string Url { get; set; }
         }
-        public class UrlUI {
+        internal class UrlUI {
 
             [UIHint("Hidden")]
             public string Url { get; set; }
@@ -100,6 +136,11 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             public string _Remote { get; set; }
         }
 
+        /// <summary>
+        /// Called by the framework when the component needs to be rendered as HTML.
+        /// </summary>
+        /// <param name="model">The model being rendered by the component.</param>
+        /// <returns>The component rendered as HTML.</returns>
         public async Task<YHtmlString> RenderAsync(string model) {
 
             HtmlBuilder hb = new HtmlBuilder();

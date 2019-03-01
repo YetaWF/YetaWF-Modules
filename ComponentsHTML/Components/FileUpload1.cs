@@ -7,35 +7,70 @@ using YetaWF.Core.Support;
 
 namespace YetaWF.Modules.ComponentsHTML.Components {
 
-    public abstract class FileUpload1Component : YetaWFComponent {
+    /// <summary>
+    /// Base class for the FileUpload1 component implementation.
+    /// </summary>
+    public abstract class FileUpload1ComponentBase : YetaWFComponent {
 
-        public const string TemplateName = "FileUpload1";
+        internal const string TemplateName = "FileUpload1";
 
+        /// <summary>
+        /// Returns the package implementing the component.
+        /// </summary>
+        /// <returns>Returns the package implementing the component.</returns>
         public override Package GetPackage() { return Controllers.AreaRegistration.CurrentPackage; }
+        /// <summary>
+        /// Returns the component name.
+        /// </summary>
+        /// <returns>Returns the component name.</returns>
+        /// <remarks>Components in packages whose product name starts with "Component" use the exact name returned by GetTemplateName when used in UIHint attributes. These are considered core components.
+        /// Components in other packages use the package's area name as a prefix. E.g., the UserId component in the YetaWF.Identity package is named "YetaWF_Identity_UserId" when used in UIHint attributes.
+        ///
+        /// The GetTemplateName method returns the component name without area name prefix in all cases.</remarks>
         public override string GetTemplateName() { return TemplateName; }
     }
 
-    public class FileUpload1EditComponent : FileUpload1Component, IYetaWFComponent<FileUpload1>, IYetaWFContainer<FileUpload1> {
+    /// <summary>
+    /// Implementation of the FileUpload1 edit component.
+    /// </summary>
+    public class FileUpload1EditComponent : FileUpload1ComponentBase, IYetaWFComponent<FileUpload1>, IYetaWFContainer<FileUpload1> {
 
-        public class Setup {
+        internal class Setup {
             public string SaveUrl { get; set; }
             public string RemoveUrl { get; set; }
             public bool SerializeForm { get; set; }// serialize all form data when uploading a file
         }
 
+        /// <summary>
+        /// Returns the component type (edit/display).
+        /// </summary>
+        /// <returns>Returns the component type.</returns>
         public override ComponentType GetComponentType() { return ComponentType.Edit; }
 
+        /// <summary>
+        /// Called by the framework when the component is used so the component can add component specific addons.
+        /// </summary>
         public override async Task IncludeAsync() {
             await Manager.AddOnManager.AddAddOnNamedAsync(Package.AreaName, "github.com.danielm.uploader");
             await base.IncludeAsync();
         }
+        /// <summary>
+        /// Called by the framework when the component needs to be rendered as HTML.
+        /// </summary>
+        /// <param name="model">The model being rendered by the component.</param>
+        /// <returns>The component rendered as HTML.</returns>
         public Task<YHtmlString> RenderAsync(FileUpload1 model) {
             return RenderContainerAsync(model);
         }
+        /// <summary>
+        /// Called by the framework when the component needs to be rendered as HTML.
+        /// </summary>
+        /// <param name="model">The model being rendered by the component.</param>
+        /// <returns>The component rendered as HTML.</returns>
         public Task<YHtmlString> RenderContainerAsync(FileUpload1 model) {
 
             UseSuppliedIdAsControlId();
-                
+
             HtmlBuilder hb = new HtmlBuilder();
 
             Setup setup = new Setup {
@@ -57,6 +92,5 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
             return Task.FromResult(hb.ToYHtmlString());
         }
-
     }
 }

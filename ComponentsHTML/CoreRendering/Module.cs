@@ -17,12 +17,16 @@ namespace YetaWF.Modules.ComponentsHTML {
 
     public partial class CoreRendering {
 
-        protected static YetaWFManager Manager { get { return YetaWFManager.Manager; } }
-        protected static Package Package { get { return Controllers.AreaRegistration.CurrentPackage; } }
+        private static YetaWFManager Manager { get { return YetaWFManager.Manager; } }
+        private static Package Package { get { return Controllers.AreaRegistration.CurrentPackage; } }
 
         /// <summary>
-        /// Render module links.
+        /// Renders module links.
         /// </summary>
+        /// <param name="mod">The module for which the module links are rendered.</param>
+        /// <param name="renderMode">The module links' rendering mode.</param>
+        /// <param name="cssClass">The optional CSS classes to use for the module links.</param>
+        /// <returns>Returns the module links as HTML.</returns>
         public async Task<YHtmlString> RenderModuleLinksAsync(ModuleDefinition mod, ModuleAction.RenderModeEnum renderMode, string cssClass) {
 
             HtmlBuilder hb = new HtmlBuilder();
@@ -49,8 +53,10 @@ namespace YetaWF.Modules.ComponentsHTML {
         }
 
         /// <summary>
-        /// Render a module menu.
+        /// Renders a complete module menu.
         /// </summary>
+        /// <param name="mod">The module for which the module menu is rendered.</param>
+        /// <returns>Returns the complete module menu as HTML.</returns>
         public async Task<YHtmlString> RenderModuleMenuAsync(ModuleDefinition mod) {
 
             HtmlBuilder hb = new HtmlBuilder();
@@ -92,14 +98,18 @@ namespace YetaWF.Modules.ComponentsHTML {
             return hb.ToYHtmlString();
         }
 
+        /// <summary>
+        /// Renders a module action.
+        /// </summary>
+        /// <param name="action">The module action to render.</param>
+        /// <param name="mode">The module action's rendering mode.</param>
+        /// <param name="id">The ID to generate.</param>
+        /// <returns>Returns the module action as HTML.</returns>
         public async Task<YHtmlString> RenderModuleActionAsync(ModuleAction action, RenderModeEnum mode, string id) {
             return await RenderActionAsync(action, mode, id);
         }
 
-        /// <summary>
-        /// Render a module action.
-        /// </summary>
-        public static async Task<YHtmlString> RenderActionAsync(ModuleAction action, RenderModeEnum mode, string id,
+        internal static async Task<YHtmlString> RenderActionAsync(ModuleAction action, RenderModeEnum mode, string id,
                 RenderEngineEnum RenderEngine = RenderEngineEnum.KendoMenu, int BootstrapSmartMenuLevel = 0, bool HasSubmenu = false) {
 
             // check if we're in the right mode

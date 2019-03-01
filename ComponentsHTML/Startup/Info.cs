@@ -10,10 +10,14 @@ using YetaWF.Modules.ComponentsHTML.Controllers;
 
 namespace YetaWF.Modules.ComponentsHTML.Addons {
 
+    /// <summary>
+    /// Implements the YetaWF.Core.Addons.IAddOnSupport interface, which is called when the framework detects the use of the YetaWF.ComponentsHTML package.
+    /// The AddSupportAsync method is called so package specific configuration options and localizations can be added to the page.
+    /// </summary>
     public class Info : IAddOnSupport {
 
         //Sprites
-        public static Dictionary<string, string> PredefSpriteIcons = new Dictionary<string, string> {
+        internal static Dictionary<string, string> PredefSpriteIcons = new Dictionary<string, string> {
            { "#ModulePreview", "yic yic_componentshtml_modprev" },
            { "#PagePreview", "yic yic_componentshtml_pageprev" },
            { "#TextCopy", "yic yic_componentshtml_textcopy" },
@@ -22,13 +26,15 @@ namespace YetaWF.Modules.ComponentsHTML.Addons {
            { "#ModuleMenuEdit", "yic yic_componentshtml_modmenuedit" },
         };
 
+        /// <summary>
+        /// Called by the framework so the package can add package specific client-side configuration options and localizations to the page.
+        /// </summary>
+        /// <param name="manager">The YetaWF.Core.Support.Manager instance of current HTTP request.</param>
         public Task AddSupportAsync(YetaWFManager manager) {
 
             ScriptManager scripts = manager.ScriptManager;
             Package package = AreaRegistration.CurrentPackage;
             string areaName = AreaRegistration.CurrentPackage.AreaName;
-
-            //scripts.AddLocalization(areaName, "something", this.__ResStrxxx("something", "something"));
 
             scripts.AddConfigOption(areaName, "LoaderGif", manager.GetCDNUrl(manager.AddOnManager.GetAddOnNamedUrl(package.AreaName, "no-margin-for-errors.com.prettyLoader") + "images/prettyLoader/ajax-loader.gif"));
 

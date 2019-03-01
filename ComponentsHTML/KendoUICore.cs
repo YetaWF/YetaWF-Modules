@@ -7,15 +7,17 @@ using YetaWF.Modules.ComponentsHTML.Controllers;
 
 namespace YetaWF.Modules.ComponentsHTML.Components {
 
-    public class KendoUICore {
+    /// <summary>
+    /// This static class implements adding Kendo UI files to a page.
+    /// </summary>
+    public static class KendoUICore {
 
-        protected static YetaWFManager Manager { get { return YetaWFManager.Manager; } }
+        private static YetaWFManager Manager { get { return YetaWFManager.Manager; } }
 
         /// <summary>
-        /// Add a Kendo UI Core file.
+        /// Adds a named Kendo UI Core file.
         /// </summary>
-        /// <param name="file"></param>
-        /// <returns></returns>
+        /// <param name="file">The name of the Kendo UI file to add.</param>
         public static async Task AddFileAsync(string file) {
             if (Manager.IsPostRequest) return;// can't add this while processing a post request
             if (Manager.CurrentSite.CanUseCDNComponents) return;// already included
@@ -26,6 +28,5 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             await Manager.ScriptManager.AddAsync(url);
         }
         private static VersionManager.AddOnProduct _kendoAddon = null;
-
     }
 }

@@ -23,19 +23,34 @@ using System.Web.Mvc;
 
 namespace YetaWF.Modules.ComponentsHTML.Components {
 
+    /// <summary>
+    /// Base class for the Grid component implementation.
+    /// </summary>
     public abstract class GridComponentBase : YetaWFComponent {
 
-        public const int MIN_COL_WIDTH = 12;
+        internal const int MIN_COL_WIDTH = 12;
 
-        protected static string __ResStr(string name, string defaultValue, params object[] parms) { return ResourceAccess.GetResourceString(typeof(GridComponentBase), name, defaultValue, parms); }
+        internal static string __ResStr(string name, string defaultValue, params object[] parms) { return ResourceAccess.GetResourceString(typeof(GridComponentBase), name, defaultValue, parms); }
 
-        public const string TemplateName = "Grid";
+        internal const string TemplateName = "Grid";
 
+        /// <summary>
+        /// Returns the package implementing the component.
+        /// </summary>
+        /// <returns>Returns the package implementing the component.</returns>
         public override Package GetPackage() { return Controllers.AreaRegistration.CurrentPackage; }
+        /// <summary>
+        /// Returns the component name.
+        /// </summary>
+        /// <returns>Returns the component name.</returns>
+        /// <remarks>Components in packages whose product name starts with "Component" use the exact name returned by GetTemplateName when used in UIHint attributes. These are considered core components.
+        /// Components in other packages use the package's area name as a prefix. E.g., the UserId component in the YetaWF.Identity package is named "YetaWF_Identity_UserId" when used in UIHint attributes.
+        ///
+        /// The GetTemplateName method returns the component name without area name prefix in all cases.</remarks>
         public override string GetTemplateName() { return TemplateName; }
     }
 
-    public class GridSetup {
+    internal class GridSetup {
         public bool CanSort { get; internal set; }
         public bool CanFilter { get; internal set; }
         public bool CanReorder { get; internal set; }
@@ -78,7 +93,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         }
     }
 
-    public class GridColumnDefinition {
+    internal class GridColumnDefinition {
         public string Name { get; set; }
         public bool Sortable { get; set; }
         public GridDefinition.SortBy Sort { get; set; }
@@ -90,10 +105,20 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         public string MenuId { get; set; }
     }
 
+    /// <summary>
+    /// Implementation of the Grid display component.
+    /// </summary>
     public partial class GridDisplayComponent : GridComponentBase, IYetaWFComponent<GridDefinition> {
 
+        /// <summary>
+        /// Returns the component type (edit/display).
+        /// </summary>
+        /// <returns>Returns the component type.</returns>
         public override ComponentType GetComponentType() { return ComponentType.Display; }
 
+        /// <summary>
+        /// Called by the framework when the component is used so the component can add component specific addons.
+        /// </summary>
         public override async Task IncludeAsync() {
             await Manager.AddOnManager.AddAddOnNamedAsync(YetaWF.Core.Controllers.AreaRegistration.CurrentPackage.AreaName, "fontawesome.com.fontawesome");
             //await KendoUICore.AddFileAsync("kendo.popup.min.js"); // is now a prereq of kendo.window (2017.2.621)
@@ -103,6 +128,11 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
         private string buttonCss;
 
+        /// <summary>
+        /// Called by the framework when the component needs to be rendered as HTML.
+        /// </summary>
+        /// <param name="model">The model being rendered by the component.</param>
+        /// <returns>The component rendered as HTML.</returns>
         public async Task<YHtmlString> RenderAsync(GridDefinition model) {
 
             HtmlBuilder hb = new HtmlBuilder();
@@ -970,7 +1000,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             }
         }
 
-        public class PagerUI {
+        internal class PagerUI {
             [Caption("Page"), Description("Enter the page to show and hit the Return key to go to the page")]
             [UIHint("IntValue4")]
             public int __Page { get; set; }
@@ -1049,7 +1079,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
         // Custom serializer to minimize static data being transferred
 
-        public class GridEntryContractResolver : DefaultContractResolver {
+        internal class GridEntryContractResolver : DefaultContractResolver {
 
             public GridEntryContractResolver() { }
 
@@ -1068,7 +1098,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                 return properties;
             }
         }
-        public class StaticDataConverter : JsonConverter {
+        internal class StaticDataConverter : JsonConverter {
             public override bool CanConvert(Type objectType) {
                 return true;
             }

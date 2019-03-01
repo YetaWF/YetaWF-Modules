@@ -9,8 +9,16 @@ using YetaWF.Modules.ComponentsHTML.Controllers;
 
 namespace YetaWF.Modules.ComponentsHTML.Addons.Templates {
 
+    /// <summary>
+    /// Implements the YetaWF.Core.Addons.IAddOnSupport interface, which is called when the framework detects the use of the RecaptchaV2 component type.
+    /// The AddSupportAsync method is called so RecaptchaV2 component specific configuration options and localizations can be added to the page.
+    /// </summary>
     public class RecaptchaV2 : IAddOnSupport {
 
+        /// <summary>
+        /// Called by the framework so the component can add component specific client-side configuration options and localizations to the page.
+        /// </summary>
+        /// <param name="manager">The YetaWF.Core.Support.Manager instance of current HTTP request.</param>
         public async Task AddSupportAsync(YetaWFManager manager) {
 
             RecaptchaV2Config config = await RecaptchaV2Config.LoadRecaptchaV2ConfigAsync();

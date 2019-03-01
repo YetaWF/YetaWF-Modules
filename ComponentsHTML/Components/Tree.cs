@@ -21,19 +21,32 @@ using System.Web.Mvc;
 
 namespace YetaWF.Modules.ComponentsHTML.Components {
 
+    /// <summary>
+    /// Base class for the Tree component implementation.
+    /// </summary>
     public abstract class TreeComponentBase : YetaWFComponent {
 
-        public const int MIN_COL_WIDTH = 12;
+        internal static string __ResStr(string name, string defaultValue, params object[] parms) { return ResourceAccess.GetResourceString(typeof(TreeComponentBase), name, defaultValue, parms); }
 
-        protected static string __ResStr(string name, string defaultValue, params object[] parms) { return ResourceAccess.GetResourceString(typeof(TreeComponentBase), name, defaultValue, parms); }
+        internal const string TemplateName = "Tree";
 
-        public const string TemplateName = "Tree";
-
+        /// <summary>
+        /// Returns the package implementing the component.
+        /// </summary>
+        /// <returns>Returns the package implementing the component.</returns>
         public override Package GetPackage() { return Controllers.AreaRegistration.CurrentPackage; }
+        /// <summary>
+        /// Returns the component name.
+        /// </summary>
+        /// <returns>Returns the component name.</returns>
+        /// <remarks>Components in packages whose product name starts with "Component" use the exact name returned by GetTemplateName when used in UIHint attributes. These are considered core components.
+        /// Components in other packages use the package's area name as a prefix. E.g., the UserId component in the YetaWF.Identity package is named "YetaWF_Identity_UserId" when used in UIHint attributes.
+        ///
+        /// The GetTemplateName method returns the component name without area name prefix in all cases.</remarks>
         public override string GetTemplateName() { return TemplateName; }
     }
 
-    public class TreeSetup {
+    internal class TreeSetup {
 
         [JsonConverter(typeof(TreeDisplayComponent.StaticDataConverter))]
         public List<object> StaticData { get; internal set; }
@@ -51,27 +64,73 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         }
     }
 
+    /// <summary>
+    /// Implementation of the Tree display component.
+    /// </summary>
     public partial class TreeDisplayComponent : TreeComponentBase, IYetaWFComponent<object> {
 
+        /// <summary>
+        /// Defines the link type represented by a tree item.
+        /// </summary>
         public enum LinkTypeEnum {
+            /// <summary>
+            /// An entry which is handle using client-side processing. The target is not visible in the generated HTML for the tree item.
+            /// </summary>
             Local = 0,
+            /// <summary>
+            /// A link to an external URL.
+            /// An &lt;a&gt; tag is generated. The target is visible in the generated HTML for the tree item.
+            /// </summary>
             External = 1,
         }
 
+        /// <summary>
+        /// The name of the property in the Tree component's data model that is used as the item ID.
+        /// </summary>
         public const string IdProperty = "Id";
+        /// <summary>
+        /// The name of the property in the Tree component's data model that is used as the item's link type.
+        /// </summary>
         public const string LinkTypeProperty = "LinkType";
+        /// <summary>
+        /// The name of the property in the Tree component's data model that is used as the item's target URL when the link type is set to LinkTypeEnum.External.
+        /// </summary>
         public const string UrlProperty = "Url";
+        /// <summary>
+        /// The name of the property in the Tree component's data model that is used as the item's text when the link type is set to LinkTypeEnum.Local.
+        /// </summary>
         public const string DisplayProperty = "Text";
+        /// <summary>
+        /// The name of the property in the Tree component's data model that is used as an item's collection of subitems.
+        /// </summary>
         public const string SubEntriesProperty = "SubEntries";
+        /// <summary>
+        /// The name of the property in the Tree component's data model that is used to determine whether the item should be rendered collapsed (true) or expanded (false).
+        /// </summary>
         public const string CollapsedProperty = "Collapsed";
+        /// <summary>
+        /// The name of the property in the Tree component's data model that is used to determine whether the item should be rendered as initially selected.
+        /// </summary>
         public const string SelectedProperty = "Selected";
 
+        /// <summary>
+        /// Returns the component type (edit/display).
+        /// </summary>
+        /// <returns>Returns the component type.</returns>
         public override ComponentType GetComponentType() { return ComponentType.Display; }
 
+        /// <summary>
+        /// Called by the framework when the component is used so the component can add component specific addons.
+        /// </summary>
         public override async Task IncludeAsync() {
             await base.IncludeAsync();
         }
 
+        /// <summary>
+        /// Called by the framework when the component needs to be rendered as HTML.
+        /// </summary>
+        /// <param name="model">The model being rendered by the component.</param>
+        /// <returns>The component rendered as HTML.</returns>
         public async Task<YHtmlString> RenderAsync(object model) {
 
             HtmlBuilder hb = new HtmlBuilder();
@@ -307,7 +366,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
         // Custom serializer to minimize static data being transferred
 
-        public class TreeEntryContractResolver : DefaultContractResolver {
+        internal class TreeEntryContractResolver : DefaultContractResolver {
 
             public TreeEntryContractResolver() { }
 
@@ -326,7 +385,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                 return properties;
             }
         }
-        public class StaticDataConverter : JsonConverter {
+        internal class StaticDataConverter : JsonConverter {
             public override bool CanConvert(Type objectType) {
                 return true;
             }

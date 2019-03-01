@@ -8,59 +8,196 @@ using YetaWF.Core.Support;
 
 namespace YetaWF.Modules.ComponentsHTML.Components {
 
-    public class IntValue2DisplayComponent : IntValueDisplayComponentBase { public IntValue2DisplayComponent() : base("IntValue2", "yt_intvalue2") { } }
-    public class IntValue2EditComponent : IntValueEditComponentBase { public IntValue2EditComponent() : base("IntValue2", "yt_intvalue2") { } }
-    public class IntValue4DisplayComponent : IntValueDisplayComponentBase { public IntValue4DisplayComponent() : base("IntValue4", "yt_intvalue4") { } }
-    public class IntValue4EditComponent : IntValueEditComponentBase { public IntValue4EditComponent() : base("IntValue4", "yt_intvalue4") { } }
-    public class IntValue6DisplayComponent : IntValueDisplayComponentBase { public IntValue6DisplayComponent() : base("IntValue6", "yt_intvalue6") { } }
-    public class IntValue6EditComponent : IntValueEditComponentBase { public IntValue6EditComponent() : base("IntValue6", "yt_intvalue6") { } }
-    public class IntValueDisplayComponent : IntValueDisplayComponentBase { public IntValueDisplayComponent() : base("IntValue", "yt_intvalue") { } }
-    public class IntValueEditComponent : IntValueEditComponentBase { public IntValueEditComponent() : base("IntValue", "yt_intvalue") { } }
+    /// <summary>
+    /// Implementation of the IntValue2 display component.
+    /// </summary>
+    public class IntValue2DisplayComponent : IntValueDisplayComponentBase {
+        /// <summary>
+        /// Constructor.
+        /// </summary>
+        public IntValue2DisplayComponent() : base("IntValue2", "yt_intvalue2") { }
+    }
+    /// <summary>
+    /// Implementation of the IntValue2 edit component.
+    /// </summary>
+    public class IntValue2EditComponent : IntValueEditComponentBase {
+        /// <summary>
+        /// Constructor.
+        /// </summary>
+        public IntValue2EditComponent() : base("IntValue2", "yt_intvalue2") { }
+    }
+    /// <summary>
+    /// Implementation of the IntValue4 display component.
+    /// </summary>
+    public class IntValue4DisplayComponent : IntValueDisplayComponentBase {
+        /// <summary>
+        /// Constructor.
+        /// </summary>
+        public IntValue4DisplayComponent() : base("IntValue4", "yt_intvalue4") { }
+    }
+    /// <summary>
+    /// Implementation of the IntValue4 edit component.
+    /// </summary>
+    public class IntValue4EditComponent : IntValueEditComponentBase {
+        /// <summary>
+        /// Constructor.
+        /// </summary>
+        public IntValue4EditComponent() : base("IntValue4", "yt_intvalue4") { }
+    }
+    /// <summary>
+    /// Implementation of the IntValue6 display component.
+    /// </summary>
+    public class IntValue6DisplayComponent : IntValueDisplayComponentBase {
+        /// <summary>
+        /// Constructor.
+        /// </summary>
+        public IntValue6DisplayComponent() : base("IntValue6", "yt_intvalue6") { }
+    }
+    /// <summary>
+    /// Implementation of the IntValue6 edit component.
+    /// </summary>
+    public class IntValue6EditComponent : IntValueEditComponentBase {
+        /// <summary>
+        /// Constructor.
+        /// </summary>
+        public IntValue6EditComponent() : base("IntValue6", "yt_intvalue6") { }
+    }
+    /// <summary>
+    /// Implementation of the IntValue display component.
+    /// </summary>
+    public class IntValueDisplayComponent : IntValueDisplayComponentBase {
+        /// <summary>
+        /// Constructor.
+        /// </summary>
+        public IntValueDisplayComponent() : base("IntValue", "yt_intvalue") { }
+    }
+    /// <summary>
+    /// Implementation of the IntValue edit component.
+    /// </summary>
+    public class IntValueEditComponent : IntValueEditComponentBase {
+        /// <summary>
+        /// Constructor.
+        /// </summary>
+        public IntValueEditComponent() : base("IntValue", "yt_intvalue") { }
+    }
 
+    /// <summary>
+    /// Base class for the IntValue display component implementation.
+    /// </summary>
     public abstract class IntValueDisplayComponentBase : YetaWFComponent, IYetaWFComponent<int>, IYetaWFComponent<int?> {
 
+        /// <summary>
+        /// Returns the package implementing the component.
+        /// </summary>
+        /// <returns>Returns the package implementing the component.</returns>
         public override Package GetPackage() { return Controllers.AreaRegistration.CurrentPackage; }
+        /// <summary>
+        /// Returns the component name.
+        /// </summary>
+        /// <returns>Returns the component name.</returns>
+        /// <remarks>Components in packages whose product name starts with "Component" use the exact name returned by GetTemplateName when used in UIHint attributes. These are considered core components.
+        /// Components in other packages use the package's area name as a prefix. E.g., the UserId component in the YetaWF.Identity package is named "YetaWF_Identity_UserId" when used in UIHint attributes.
+        ///
+        /// The GetTemplateName method returns the component name without area name prefix in all cases.</remarks>
         public override string GetTemplateName() { return TemplateName; }
+
+        /// <summary>
+        /// Returns the component type (edit/display).
+        /// </summary>
+        /// <returns>Returns the component type.</returns>
         public override ComponentType GetComponentType() { return ComponentType.Display; }
 
-        public string TemplateName { get; set; }
-        public string TemplateClass { get; set; }
+        internal string TemplateName { get; set; }
+        internal string TemplateClass { get; set; }
 
+        /// <summary>
+        /// Constructor.
+        /// </summary>
+        /// <param name="templateName">The template name.</param>
+        /// <param name="templateClass">The CSS class representing the component.</param>
         public IntValueDisplayComponentBase(string templateName, string templateClass) {
             TemplateName = templateName;
             TemplateClass = templateClass;
         }
 
+        /// <summary>
+        /// Called by the framework when the component needs to be rendered as HTML.
+        /// </summary>
+        /// <param name="model">The model being rendered by the component.</param>
+        /// <returns>The component rendered as HTML.</returns>
         public async Task<YHtmlString> RenderAsync(int model) {
             return await RenderAsync((int?)model);
         }
+        /// <summary>
+        /// Called by the framework when the component needs to be rendered as HTML.
+        /// </summary>
+        /// <param name="model">The model being rendered by the component.</param>
+        /// <returns>The component rendered as HTML.</returns>
         public Task<YHtmlString> RenderAsync(int? model) {
             if (model == null) return Task.FromResult(new YHtmlString(""));
             return Task.FromResult(new YHtmlString(HE(model.ToString())));
         }
     }
+    /// <summary>
+    /// Base class for the IntValue edit component implementation.
+    /// </summary>
     public abstract class IntValueEditComponentBase : YetaWFComponent, IYetaWFComponent<int>, IYetaWFComponent<int?> {
 
+        /// <summary>
+        /// Returns the package implementing the component.
+        /// </summary>
+        /// <returns>Returns the package implementing the component.</returns>
         public override Package GetPackage() { return Controllers.AreaRegistration.CurrentPackage; }
+        /// <summary>
+        /// Returns the component name.
+        /// </summary>
+        /// <returns>Returns the component name.</returns>
+        /// <remarks>Components in packages whose product name starts with "Component" use the exact name returned by GetTemplateName when used in UIHint attributes. These are considered core components.
+        /// Components in other packages use the package's area name as a prefix. E.g., the UserId component in the YetaWF.Identity package is named "YetaWF_Identity_UserId" when used in UIHint attributes.
+        ///
+        /// The GetTemplateName method returns the component name without area name prefix in all cases.</remarks>
         public override string GetTemplateName() { return TemplateName; }
+
+        /// <summary>
+        /// Returns the component type (edit/display).
+        /// </summary>
+        /// <returns>Returns the component type.</returns>
         public override ComponentType GetComponentType() { return ComponentType.Edit; }
 
-        public string TemplateName { get; set; }
-        public string TemplateClass { get; set; }
+        internal string TemplateName { get; set; }
+        internal string TemplateClass { get; set; }
 
+        /// <summary>
+        /// Constructor.
+        /// </summary>
+        /// <param name="templateName">The template name.</param>
+        /// <param name="templateClass">The CSS class representing the component.</param>
         public IntValueEditComponentBase(string templateName, string templateClass) {
             TemplateName = templateName;
             TemplateClass = templateClass;
         }
 
+        /// <summary>
+        /// Called by the framework when the component is used so the component can add component specific addons.
+        /// </summary>
         public override async Task IncludeAsync() {
             await KendoUICore.AddFileAsync("kendo.userevents.min.js");
             await KendoUICore.AddFileAsync("kendo.numerictextbox.min.js");
             await base.IncludeAsync();
         }
+        /// <summary>
+        /// Called by the framework when the component needs to be rendered as HTML.
+        /// </summary>
+        /// <param name="model">The model being rendered by the component.</param>
+        /// <returns>The component rendered as HTML.</returns>
         public async Task<YHtmlString> RenderAsync(int model) {
             return await RenderAsync((int?) model);
         }
+        /// <summary>
+        /// Called by the framework when the component needs to be rendered as HTML.
+        /// </summary>
+        /// <param name="model">The model being rendered by the component.</param>
+        /// <returns>The component rendered as HTML.</returns>
         public Task<YHtmlString> RenderAsync(int? model) {
 
             HtmlBuilder hb = new HtmlBuilder();

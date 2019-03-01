@@ -17,6 +17,14 @@ namespace YetaWF.Modules.ComponentsHTML {
 
     public partial class CoreRendering {
 
+        /// <summary>
+        /// Renders a view.
+        /// </summary>
+        /// <param name="htmlHelper">The HtmlHelper instance.</param>
+        /// <param name="module">The module being rendered in the view.</param>
+        /// <param name="viewHtml">The current view contents to be wrapped in the view.</param>
+        /// <param name="UsePartialFormCss">Defines whether the partial form CSS should be used.</param>
+        /// <returns>Returns the complete view as HTML.</returns>
         public Task<YHtmlString> RenderViewAsync(
 #if MVC6
             IHtmlHelper htmlHelper,

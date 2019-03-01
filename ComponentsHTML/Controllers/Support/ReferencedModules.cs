@@ -14,13 +14,36 @@ using System.Web.Mvc;
 
 namespace YetaWF.Modules.ComponentsHTML.Controllers {
 
+    /// <summary>
+    /// Implements controllers used by the ReferencedModules component.
+    /// </summary>
     public class ReferencedModulesController : YetaWFController {
 
+        /// <summary>
+        /// Called by the client-side grid to sort/filter data in the grid used by the ReferencedModules display component.
+        /// </summary>
+        /// <param name="data">A string containing JSON with the grid data.</param>
+        /// <param name="fieldPrefix">The name prefix used for fields in the grid.</param>
+        /// <param name="skip">The number of records to skip (grid paging).</param>
+        /// <param name="take">The number of records to record.</param>
+        /// <param name="sorts">The sort criteria.</param>
+        /// <param name="filters">The filtering criteria.</param>
+        /// <returns>Returns a partial view with the grid data.</returns>
         [AllowPost]
         [ConditionalAntiForgeryToken]
         public async Task<ActionResult> ReferencedModulesDisplay_SortFilter(string data, string fieldPrefix, int skip, int take, List<DataProviderSortInfo> sorts, List<DataProviderFilterInfo> filters) {
             return await GridPartialViewAsync<ReferencedModulesDisplayComponent.Entry>(ReferencedModulesDisplayComponent.GetGridModel(false), data, fieldPrefix, skip, take, sorts, filters);
         }
+        /// <summary>
+        /// Called by the client-side grid to sort/filter data in the grid used by the ReferencedModules edit component.
+        /// </summary>
+        /// <param name="data">A string containing JSON with the grid data.</param>
+        /// <param name="fieldPrefix">The name prefix used for fields in the grid.</param>
+        /// <param name="skip">The number of records to skip (grid paging).</param>
+        /// <param name="take">The number of records to record.</param>
+        /// <param name="sorts">The sort criteria.</param>
+        /// <param name="filters">The filtering criteria.</param>
+        /// <returns>Returns a partial view with the grid data.</returns>
         [AllowPost]
         [ConditionalAntiForgeryToken]
         public async Task<ActionResult> ReferencedModulesEdit_SortFilter(string data, string fieldPrefix, int skip, int take, List<DataProviderSortInfo> sorts, List<DataProviderFilterInfo> filters) {

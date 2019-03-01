@@ -9,21 +9,53 @@ using YetaWF.Core.Support;
 
 namespace YetaWF.Modules.ComponentsHTML.Components {
 
-    public abstract class DecimalComponent : YetaWFComponent {
+    /// <summary>
+    /// Base class for the Decimal component implementation.
+    /// </summary>
+    public abstract class DecimalComponentBase : YetaWFComponent {
 
-        public const string TemplateName = "Decimal";
+        internal const string TemplateName = "Decimal";
 
+        /// <summary>
+        /// Returns the package implementing the component.
+        /// </summary>
+        /// <returns>Returns the package implementing the component.</returns>
         public override Package GetPackage() { return Controllers.AreaRegistration.CurrentPackage; }
+        /// <summary>
+        /// Returns the component name.
+        /// </summary>
+        /// <returns>Returns the component name.</returns>
+        /// <remarks>Components in packages whose product name starts with "Component" use the exact name returned by GetTemplateName when used in UIHint attributes. These are considered core components.
+        /// Components in other packages use the package's area name as a prefix. E.g., the UserId component in the YetaWF.Identity package is named "YetaWF_Identity_UserId" when used in UIHint attributes.
+        ///
+        /// The GetTemplateName method returns the component name without area name prefix in all cases.</remarks>
         public override string GetTemplateName() { return TemplateName; }
     }
 
-    public class DecimalDisplayComponent : DecimalComponent, IYetaWFComponent<Decimal?> {
+    /// <summary>
+    /// Implementation of the Decimal display component.
+    /// </summary>
+    public class DecimalDisplayComponent : DecimalComponentBase, IYetaWFComponent<Decimal?> {
 
+        /// <summary>
+        /// Returns the component type (edit/display).
+        /// </summary>
+        /// <returns>Returns the component type.</returns>
         public override ComponentType GetComponentType() { return ComponentType.Display; }
 
+        /// <summary>
+        /// Called by the framework when the component needs to be rendered as HTML.
+        /// </summary>
+        /// <param name="model">The model being rendered by the component.</param>
+        /// <returns>The component rendered as HTML.</returns>
         public async Task<YHtmlString> RenderAsync(Decimal model) {
             return await RenderAsync((Decimal?)model);
         }
+        /// <summary>
+        /// Called by the framework when the component needs to be rendered as HTML.
+        /// </summary>
+        /// <param name="model">The model being rendered by the component.</param>
+        /// <returns>The component rendered as HTML.</returns>
         public Task<YHtmlString> RenderAsync(Decimal? model) {
             HtmlBuilder hb = new HtmlBuilder();
             if (model != null && (Decimal)model > Decimal.MinValue && (Decimal)model < Decimal.MaxValue) {
@@ -40,18 +72,38 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         }
     }
 
-    public class DecimalEditComponent : DecimalComponent, IYetaWFComponent<Decimal>, IYetaWFComponent<Decimal?> {
+    /// <summary>
+    /// Implementation of the Decimal edit component.
+    /// </summary>
+    public class DecimalEditComponent : DecimalComponentBase, IYetaWFComponent<Decimal>, IYetaWFComponent<Decimal?> {
 
+        /// <summary>
+        /// Returns the component type (edit/display).
+        /// </summary>
+        /// <returns>Returns the component type.</returns>
         public override ComponentType GetComponentType() { return ComponentType.Edit; }
 
+        /// <summary>
+        /// Called by the framework when the component is used so the component can add component specific addons.
+        /// </summary>
         public override async Task IncludeAsync() {
             await KendoUICore.AddFileAsync("kendo.userevents.min.js");
             await KendoUICore.AddFileAsync("kendo.numerictextbox.min.js");
             await base.IncludeAsync();
         }
+        /// <summary>
+        /// Called by the framework when the component needs to be rendered as HTML.
+        /// </summary>
+        /// <param name="model">The model being rendered by the component.</param>
+        /// <returns>The component rendered as HTML.</returns>
         public async Task<YHtmlString> RenderAsync(Decimal model) {
             return await RenderAsync((Decimal?) model);
         }
+        /// <summary>
+        /// Called by the framework when the component needs to be rendered as HTML.
+        /// </summary>
+        /// <param name="model">The model being rendered by the component.</param>
+        /// <returns>The component rendered as HTML.</returns>
         public Task<YHtmlString> RenderAsync(Decimal? model) {
             HtmlBuilder hb = new HtmlBuilder();
 

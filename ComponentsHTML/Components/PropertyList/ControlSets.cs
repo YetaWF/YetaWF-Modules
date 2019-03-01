@@ -9,7 +9,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
     public abstract partial class PropertyListComponentBase {
 
-        public class ControlData {
+        internal class ControlData {
             public string Id { get; set; }
 
             public List<string> Controls { get; set; }
@@ -19,7 +19,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                 Dependents = new List<Dependent>();
             }
         }
-        public class Dependent {
+        internal class Dependent {
 
             public string Prop { get; set; } // Name of property
             public bool Disable { get; set; } // defines whether the control is disabled instead of hidden
@@ -54,7 +54,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         /// <param name="model">The model for which the control set is generated.</param>
         /// <param name="id">The HTML id of the property list.</param>
         /// <returns>The data used client-side to show/hide properties and to enable/disable validation.</returns>
-        public ControlData GetControlSets(object model, string id) {
+        internal ControlData GetControlSets(object model, string id) {
 
             ControlData cd = new ControlData();
             List<string> selectionControls = new List<string>();

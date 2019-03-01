@@ -10,6 +10,11 @@ namespace YetaWF.Modules.ComponentsHTML {
 
     public partial class CoreRendering {
 
+        /// <summary>
+        /// Renders a form button.
+        /// </summary>
+        /// <param name="formButton">The form button to render.</param>
+        /// <returns>Returns the rendered form button as HTML.</returns>
         public Task<YHtmlString> RenderFormButtonAsync(FormButton formButton) {
             return Task.FromResult(RenderFormButton(formButton));
         }
