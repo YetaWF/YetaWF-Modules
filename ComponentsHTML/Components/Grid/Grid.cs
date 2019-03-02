@@ -517,7 +517,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                                         filterUI.Value = Convert.ToInt64(filterValue);
                                     } catch (Exception) { }
                                 }
-                            filterOp = filterOp ?? GridColumnInfo.FilterOptionEnum.GreaterEqual;
+                                filterOp = filterOp ?? GridColumnInfo.FilterOptionEnum.GreaterEqual;
 
                                 filterhb.Append($@"
                 <div class='tg_fmenu{buttonCss}' {Basics.CssTooltip}='{HAE(searchToolTip)}'><span>{HE(GetFilterIcon(filterOp))}</span></div>
