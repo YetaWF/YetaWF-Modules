@@ -7,7 +7,6 @@ using YetaWF.Core.Components;
 using YetaWF.Core.Localize;
 using YetaWF.Core.Modules;
 using YetaWF.Core.Packages;
-using YetaWF.Core.Skins;
 using YetaWF.Core.Support;
 using YetaWF.Modules.ComponentsHTML.Addons;
 using YetaWF.Modules.ComponentsHTML.Components;
