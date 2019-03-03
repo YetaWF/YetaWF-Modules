@@ -31,7 +31,7 @@ namespace YetaWF.Modules.Languages.Controllers {
             public bool UseLocalizationResources { get; set; }
 
             [Caption("Failure Mode"), Description("Defines whether a missing localization resource string causes an exception (failure) or whether the built-in string is used instead")]
-            [TextBelow("This property is only used if 'Use Localization Resources' is selected. It is typically enabled for production systems and disabled for development/testing.")]
+            [TextBelow("This property is only used if 'Use Localization Resources' is selected. It is typically enabled for development/testing and disabled for production systems.")]
             [UIHint("Boolean")]
             public bool AbortOnFailure { get; set; }
 
