@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using YetaWF.Core.Components;
 using YetaWF.Core.Support;
 using YetaWF.Core.Addons;
+using YetaWF.Core.Pages;
 #if MVC6
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Routing;
@@ -122,8 +123,8 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             if (!Pure) {
                 string css = null;
                 if (Manager.CurrentSite.FormErrorsImmed)
-                    css = YetaWFManager.CombineCss(css, "yValidateImmediately");
-                css = YetaWFManager.CombineCss(css, Forms.CssFormAjax);
+                    css = CssManager.CombineCss(css, "yValidateImmediately");
+                css = CssManager.CombineCss(css, Forms.CssFormAjax);
                 rvd.Add("class", css);
             }
 

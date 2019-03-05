@@ -7,6 +7,7 @@ using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Support;
 using YetaWF.Modules.Menus.Modules;
 using YetaWF.Modules.ComponentsHTML.Components;
+using YetaWF.Core.Pages;
 #if MVC6
 using Microsoft.AspNetCore.Mvc;
 #else
@@ -21,7 +22,7 @@ namespace YetaWF.Modules.Menus.Controllers {
         public async Task<ActionResult> MainMenu() {
             // add some bootstrap specific classes
             if (Manager.SkinInfo.UsingBootstrap)
-                Module.CssClass = YetaWFManager.CombineCss(Module.CssClass, "navbar-collapse collapse");
+                Module.CssClass = CssManager.CombineCss(Module.CssClass, "navbar-collapse collapse");
             MenuModel model = new MenuModel {
                 Menu = new MenuComponentBase.MenuData {
                     MenuList = await GetEditMenu(Module),
