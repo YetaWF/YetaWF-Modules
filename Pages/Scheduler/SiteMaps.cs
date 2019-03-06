@@ -55,9 +55,10 @@ namespace YetaWF.Modules.Pages.Scheduler {
         public SiteMaps() { }
 
         /// <summary>
-        /// Create a site map for the current site.
+        /// Creates a site map for the current site.
         /// </summary>
         public async Task CreateAsync(bool slow = false) {
+
             string file = GetTempFile();
             await FileSystem.FileSystemProvider.DeleteFileAsync(file);
 

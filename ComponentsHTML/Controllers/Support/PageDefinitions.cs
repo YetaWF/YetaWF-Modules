@@ -24,10 +24,10 @@ namespace YetaWF.Modules.ComponentsHTML.Controllers {
         /// </summary>
         /// <param name="data">A string containing JSON with the grid data.</param>
         /// <param name="fieldPrefix">The name prefix used for fields in the grid.</param>
-        /// <param name="skip">The number of records to skip (grid paging).</param>
-        /// <param name="take">The number of records to record.</param>
-        /// <param name="sorts">The sort criteria.</param>
-        /// <param name="filters">The filtering criteria.</param>
+        /// <param name="skip">The number of records to skip (paging support).</param>
+        /// <param name="take">The number of records to retrieve (paging support). If more records are available they are dropped.</param>
+        /// <param name="sorts">A collection describing the sort order.</param>
+        /// <param name="filters">A collection describing the filtering criteria.</param>
         /// <returns>Returns a partial view with the grid data.</returns>
         [AllowPost]
         [ConditionalAntiForgeryToken]

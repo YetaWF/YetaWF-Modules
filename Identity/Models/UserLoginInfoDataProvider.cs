@@ -146,10 +146,10 @@ namespace YetaWF.Modules.Identity.DataProvider {
         /// <summary>
         /// Retrieves a list of login providers and keys
         /// </summary>
-        /// <param name="skip"></param>
-        /// <param name="take"></param>
-        /// <param name="sort"></param>
-        /// <param name="filters"></param>
+        /// <param name="skip">The number of records to skip (paging support).</param>
+        /// <param name="take">The number of records to retrieve (paging support). If more records are available they are dropped.</param>
+        /// <param name="sort">A collection describing the sort order.</param>
+        /// <param name="filters">A collection describing the filtering criteria.</param>
         /// <param name="total"></param>
         /// <returns></returns>
         public async Task<DataProviderGetRecords<LoginInfo>> GetItemsAsync(int skip, int take, List<DataProviderSortInfo> sort, List<DataProviderFilterInfo> filters) {
@@ -169,7 +169,7 @@ namespace YetaWF.Modules.Identity.DataProvider {
         /// <summary>
         /// Removes login provider and key info.
         /// </summary>
-        /// <param name="filters"></param>
+        /// <param name="filters">A collection describing the filtering criteria.</param>
         /// <returns></returns>
         public async Task<int> RemoveItemsAsync(List<DataProviderFilterInfo> filters) {
             return await DataProvider.RemoveRecordsAsync(filters);

@@ -17,6 +17,8 @@ namespace YetaWF.Modules.Caching.DataProvider {
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1063:ImplementIDisposableCorrectly")]
     internal class LocalCacheObjectDataProvider : DataProviderImpl, ICacheDataProvider {
 
+        private const string EmptyCachedObject = "Empty";
+
         public static ICacheDataProvider GetProvider() {
             return new LocalCacheObjectDataProvider();
         }
@@ -28,9 +30,9 @@ namespace YetaWF.Modules.Caching.DataProvider {
         public Task AddAsync<TYPE>(string key, TYPE data) {
             if (data == null) {
 #if MVC6
-                YetaWFManager.MemoryCache.Set<object>(key, YetaWF.Core.IO.Caching.EmptyCachedObject);
+                YetaWFManager.MemoryCache.Set<object>(key, EmptyCachedObject);
 #else
-                System.Web.HttpRuntime.Cache[key] = YetaWF.Core.IO.Caching.EmptyCachedObject;
+                System.Web.HttpRuntime.Cache[key] = EmptyCachedObject;
 #endif
             } else {
                 // we can't save the entire object, just the data that we actually marked as savable (Properties)
@@ -57,7 +59,7 @@ namespace YetaWF.Modules.Caching.DataProvider {
             data = System.Web.HttpRuntime.Cache[key];
 #endif
             if (data != null) {
-                if (data.GetType() == typeof(string) && (string)data == YetaWF.Core.IO.Caching.EmptyCachedObject) {
+                if (data.GetType() == typeof(string) && (string)data == EmptyCachedObject) {
                     return Task.FromResult(new GetObjectInfo<TYPE> {
                         Data = default(TYPE),
                         Success = true,
