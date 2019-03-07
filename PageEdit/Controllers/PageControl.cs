@@ -189,10 +189,14 @@ namespace YetaWF.Modules.PageEdit.Controllers {
             }
         }
         public class SkinSelectionModel {
-            [Category("Skin"), Caption("Default Bootstrap Skin"), Description("The default skin for overall page appearance and Bootstrap elements - individual pages can override the default skin")]
+            [Category("Skin"), Caption("Default Bootstrap Skin"), Description("The default skin for overall page appearance and Bootstrap elements (only supported for skins that support Bootswatch) - individual pages can override the default skin")]
             [HelpLink("https://www.bootstrapcdn.com/bootswatch/")]
             [UIHint("BootstrapSkin"), StringLength(SkinDefinition.MaxName), AdditionalMetadata("NoDefault", true), Trim]
             public string BootstrapSkin { get; set; }
+
+            [Category("Skin"), Caption(" "), Description("")]
+            [UIHint("String"), ReadOnly, SuppressEmpty]
+            public string BootstrapSkinDescription { get; set; }
 
             [Category("Skin"), Caption("Default jQuery UI Skin"), Description("The default skin for jQuery-UI elements (buttons, modal dialogs, etc.) - individual pages can override the default skin")]
             [HelpLink("http://jqueryui.com/themeroller/")]
@@ -204,11 +208,7 @@ namespace YetaWF.Modules.PageEdit.Controllers {
             [UIHint("KendoUISkin"), StringLength(SkinDefinition.MaxName), AdditionalMetadata("NoDefault", true), Trim]
             public string KendoUISkin { get; set; }
 
-            public SkinSelectionModel() {
-                BootstrapSkin = Manager.CurrentSite.BootstrapSkin;
-                jQueryUISkin = Manager.CurrentSite.jQueryUISkin;
-                KendoUISkin = Manager.CurrentSite.KendoUISkin;
-            }
+            public SkinSelectionModel() { }
         }
         [Trim]
         public class LoginSiteSelectionModel {
@@ -301,9 +301,17 @@ namespace YetaWF.Modules.PageEdit.Controllers {
                 ImportModuleModel = new ImportModuleModel() {
                     CurrentPageGuid = Manager.CurrentPage.PageGuid,
                 },
-                SkinSelectionModel = new SkinSelectionModel(),
+                SkinSelectionModel = new SkinSelectionModel {
+                    BootstrapSkin = Manager.CurrentSite.BootstrapSkin,
+                    jQueryUISkin = Manager.CurrentSite.jQueryUISkin,
+                    KendoUISkin = Manager.CurrentSite.KendoUISkin,
+                    BootstrapSkinDescription = (!Manager.SkinInfo.UsingBootstrap || !Manager.SkinInfo.UseDefaultBootstrap) ?
+                        this.__ResStr("noBootswatch", "The current page skin does not support selecting a default Bootstrap skin. The skin does not support Bootswatch, which is required for skin selection.") :
+                        null,
+                },
                 LoginSiteSelectionModel = new LoginSiteSelectionModel(),
             };
+
             await model.AddNewModel.AddDataAsync(page);
             await model.AddExistingModel.AddDataAsync(page);
             model.ImportPageModel.AddData(page, Module);
