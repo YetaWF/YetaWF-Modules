@@ -85,6 +85,14 @@ namespace Softelvdm.Modules.IVR.Controllers {
                     });
                 }
 
+                // check for blocked numbers
+                using (BlockedNumberDataProvider blockedDP = new BlockedNumberDataProvider()) {
+                    BlockedNumberEntry blockedEntry = await blockedDP.GetItemAsync(GetForm("From"));
+                    if (blockedEntry != null)
+                        return RejectResult();
+                }
+
+                // notify (new call)
                 foreach (ExtensionPhoneNumber notifyNumber in ivrConfig.NotificationNumbers) {
                     if (notifyNumber.SendSMS) {
                         SendSMS sendSMS = new SendSMS();
@@ -112,9 +120,9 @@ namespace Softelvdm.Modules.IVR.Controllers {
             if (!TryGetForm("CalledVia", out called))
                 called = GetForm("Called");
 
-            if (ivrConfig.MaxErrors != 0 && errCount >= ivrConfig.MaxErrors) {
+            if (ivrConfig.MaxErrors != 0 && errCount >= ivrConfig.MaxErrors)
                 request = SECTION_MAINGOODBYE;
-            }
+
             request = request.ToLower();
 
             using (ScriptDataProvider scriptDP = new ScriptDataProvider()) {

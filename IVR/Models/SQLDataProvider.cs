@@ -15,6 +15,7 @@ namespace Softelvdm.Modules.IVR.DataProvider.SQL {
             DataProviderImpl.RegisterExternalDataProvider(SQLBase.ExternalName, typeof(DataProvider.HolidayEntryDataProvider), typeof(HolidayEntryDataProvider));
             DataProviderImpl.RegisterExternalDataProvider(SQLBase.ExternalName, typeof(DataProvider.ExtensionEntryDataProvider), typeof(ExtensionEntryDataProvider));
             DataProviderImpl.RegisterExternalDataProvider(SQLBase.ExternalName, typeof(DataProvider.CallLogDataProvider), typeof(CallLogEntryDataProvider));
+            DataProviderImpl.RegisterExternalDataProvider(SQLBase.ExternalName, typeof(DataProvider.BlockedNumberDataProvider), typeof(BlockedNumberDataProvider));
         }
         class VoiceMailDataProvider : SQLSimpleIdentityObject<string, VoiceMailData> {
             public VoiceMailDataProvider(Dictionary<string, object> options) : base(options) { }
@@ -30,6 +31,9 @@ namespace Softelvdm.Modules.IVR.DataProvider.SQL {
         }
         class CallLogEntryDataProvider : SQLSimpleIdentityObject<int, CallLogEntry> {
             public CallLogEntryDataProvider(Dictionary<string, object> options) : base(options) { }
+        }
+        class BlockedNumberDataProvider : SQLSimpleIdentityObject<string, BlockedNumberEntry> {
+            public BlockedNumberDataProvider(Dictionary<string, object> options) : base(options) { }
         }
     }
 }
