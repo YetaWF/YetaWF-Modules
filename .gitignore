@@ -41,3 +41,4 @@ CurrencyConverter/Addons/_Main/ExchangeRates.js
 
 
 *.cshtml
+*.webp-gen
