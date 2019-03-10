@@ -17,9 +17,9 @@ namespace YetaWF.Modules.DevTests.Modules {
     public class TemplateListOfEmailAddressesModule : ModuleDefinition {
 
         public TemplateListOfEmailAddressesModule() {
-            Title = this.__ResStr("modTitle", "ListOfEmailAddresses Test Template");
-            Name = this.__ResStr("modName", "Template Test - ListOfEmailAddresses");
-            Description = this.__ResStr("modSummary", "ListOfEmailAddresses test template");
+            Title = this.__ResStr("modTitle", "ListOfEmailAddresses Test Component");
+            Name = this.__ResStr("modName", "Component Test - ListOfEmailAddresses");
+            Description = this.__ResStr("modSummary", "ListOfEmailAddresses test component");
             DefaultViewName = StandardViews.EditApply;
         }
 
@@ -33,8 +33,8 @@ namespace YetaWF.Modules.DevTests.Modules {
                 Image = "#Display",
                 LinkText = this.__ResStr("displayLink", "ListOfEmailAddresses"),
                 MenuText = this.__ResStr("displayText", "ListOfEmailAddresses"),
-                Tooltip = this.__ResStr("displayTooltip", "Display the ListOfEmailAddresses test template"),
-                Legend = this.__ResStr("displayLegend", "Displays the ListOfEmailAddresses test template"),
+                Tooltip = this.__ResStr("displayTooltip", "Display the ListOfEmailAddresses test component"),
+                Legend = this.__ResStr("displayLegend", "Displays the ListOfEmailAddresses test component"),
                 Style = ModuleAction.ActionStyleEnum.Normal,
                 Category = ModuleAction.ActionCategoryEnum.Read,
                 Mode = ModuleAction.ActionModeEnum.Any,

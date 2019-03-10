@@ -17,9 +17,9 @@ namespace YetaWF.Modules.DevTests.Modules {
     public class TemplateMultiStringModule : ModuleDefinition {
 
         public TemplateMultiStringModule() {
-            Title = this.__ResStr("modTitle", "MultiString Test Template");
-            Name = this.__ResStr("modName", "Template Test - MultiString");
-            Description = this.__ResStr("modSummary", "MultiString test template");
+            Title = this.__ResStr("modTitle", "MultiString Test Component");
+            Name = this.__ResStr("modName", "Component Test - MultiString");
+            Description = this.__ResStr("modSummary", "MultiString test component");
             DefaultViewName = StandardViews.EditApply;
         }
 

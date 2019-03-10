@@ -17,9 +17,9 @@ namespace YetaWF.Modules.ImageRepository.Modules {
     public class TemplateTestModule : ModuleDefinition {
 
         public TemplateTestModule() {
-            Title = this.__ResStr("modTitle", "Image Repository Template Test");
-            Name = this.__ResStr("modName", "Image Repository Template Test");
-            Description = this.__ResStr("modSummary", "Image Repository Template Test");
+            Title = this.__ResStr("modTitle", "Image Repository Component Test");
+            Name = this.__ResStr("modName", "Image Repository Component Test");
+            Description = this.__ResStr("modSummary", "Image Repository Component Test");
             WantSearch = false;
             DefaultViewName = StandardViews.EditApply;
         }

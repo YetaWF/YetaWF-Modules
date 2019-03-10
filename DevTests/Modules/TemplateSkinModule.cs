@@ -17,9 +17,9 @@ namespace YetaWF.Modules.DevTests.Modules {
     public class TemplateSkinModule : ModuleDefinition {
 
         public TemplateSkinModule() {
-            Title = this.__ResStr("modTitle", "Skin Selection Test Template");
-            Name = this.__ResStr("modName", "Template Test - Skin Selection");
-            Description = this.__ResStr("modSummary", "Skin selection test template");
+            Title = this.__ResStr("modTitle", "Skin Selection Test Component");
+            Name = this.__ResStr("modName", "Component Test - Skin Selection");
+            Description = this.__ResStr("modSummary", "Skin selection test component");
             DefaultViewName = StandardViews.EditApply;
         }
 

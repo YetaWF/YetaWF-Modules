@@ -17,9 +17,9 @@ namespace YetaWF.Modules.DevTests.Modules {
     public class TemplateGridAjaxModule : ModuleDefinition {
 
         public TemplateGridAjaxModule() {
-            Title = this.__ResStr("modTitle", "Grid (Ajax) Test Template");
-            Name = this.__ResStr("modName", "Template Test - Grid (Ajax)");
-            Description = this.__ResStr("modSummary", "Grid (Ajax) test template");
+            Title = this.__ResStr("modTitle", "Grid (Ajax) Test Component");
+            Name = this.__ResStr("modName", "Component Test - Grid (Ajax)");
+            Description = this.__ResStr("modSummary", "Grid (Ajax) test component");
             DefaultViewName = StandardViews.Display;
             UsePartialFormCss = false;
         }

@@ -17,9 +17,9 @@ namespace YetaWF.Modules.Identity.Modules {
     public class TemplateRolesSelectorModule : ModuleDefinition {
 
         public TemplateRolesSelectorModule() {
-            Title = this.__ResStr("modTitle", "RolesSelector Test Template");
-            Name = this.__ResStr("modName", "Template Test - RolesSelector");
-            Description = this.__ResStr("modSummary", "RolesSelector test template");
+            Title = this.__ResStr("modTitle", "RolesSelector Test Component");
+            Name = this.__ResStr("modName", "Component Test - RolesSelector");
+            Description = this.__ResStr("modSummary", "RolesSelector test component");
             DefaultViewName = StandardViews.EditApply;
         }
 

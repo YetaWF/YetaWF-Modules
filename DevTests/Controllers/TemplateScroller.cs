@@ -29,8 +29,8 @@ namespace YetaWF.Modules.DevTests.Controllers {
         [Trim]
         public class Model {
 
-            // The Scroller template is a core template implementing the overall Scroller
-            // The AdditionalMetadata describes the user-defined template used for each item in the Scroller
+            // The Scroller component is a core component implementing the overall Scroller
+            // The AdditionalMetadata describes the user-defined component used for each item in the Scroller
             [UIHint("Scroller"), ReadOnly, AdditionalMetadata("Template", "YetaWF_DevTests_ScrollerItem")]
             public List<ScrollerItem> Items { get; set; }
 

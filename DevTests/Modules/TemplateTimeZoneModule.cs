@@ -17,9 +17,9 @@ namespace YetaWF.Modules.DevTests.Modules {
     public class TemplateTimeZoneModule : ModuleDefinition {
 
         public TemplateTimeZoneModule() {
-            Title = this.__ResStr("modTitle", "TimeZone Test Template");
-            Name = this.__ResStr("modName", "Template Test - TimeZone");
-            Description = this.__ResStr("modSummary", "TimeZone test template");
+            Title = this.__ResStr("modTitle", "TimeZone Test Component");
+            Name = this.__ResStr("modName", "Component Test - TimeZone");
+            Description = this.__ResStr("modSummary", "TimeZone test component");
             DefaultViewName = StandardViews.EditApply;
         }
 

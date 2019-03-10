@@ -17,9 +17,9 @@ namespace YetaWF.Modules.DevTests.Modules {
     public class TemplateRecaptchaV2Module : ModuleDefinition {
 
         public TemplateRecaptchaV2Module() {
-            Title = this.__ResStr("modTitle", "RecaptchaV2 Test Template");
-            Name = this.__ResStr("modName", "Template Test - RecaptchaV2");
-            Description = this.__ResStr("modSummary", "RecaptchaV2 test template");
+            Title = this.__ResStr("modTitle", "RecaptchaV2 Test Component");
+            Name = this.__ResStr("modName", "Component Test - RecaptchaV2");
+            Description = this.__ResStr("modSummary", "RecaptchaV2 test component");
             DefaultViewName = StandardViews.EditApply;
         }
 
@@ -33,8 +33,8 @@ namespace YetaWF.Modules.DevTests.Modules {
                 Image = "#Display",
                 LinkText = this.__ResStr("displayLink", "RecaptchaV2"),
                 MenuText = this.__ResStr("displayText", "RecaptchaV2"),
-                Tooltip = this.__ResStr("displayTooltip", "Display the RecaptchaV2 test template"),
-                Legend = this.__ResStr("displayLegend", "Displays the RecaptchaV2 test template"),
+                Tooltip = this.__ResStr("displayTooltip", "Display the RecaptchaV2 test component"),
+                Legend = this.__ResStr("displayLegend", "Displays the RecaptchaV2 test component"),
                 Style = ModuleAction.ActionStyleEnum.Normal,
                 Category = ModuleAction.ActionCategoryEnum.Read,
                 Mode = ModuleAction.ActionModeEnum.Any,

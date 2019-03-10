@@ -17,9 +17,9 @@ namespace YetaWF.Modules.DevTests.Modules {
     public class TemplateGridModule : ModuleDefinition {
 
         public TemplateGridModule() {
-            Title = this.__ResStr("modTitle", "Grid (Static) Test Template");
-            Name = this.__ResStr("modName", "Template Test - Grid (Static)");
-            Description = this.__ResStr("modSummary", "Grid (Static) test template");
+            Title = this.__ResStr("modTitle", "Grid (Static) Test Component");
+            Name = this.__ResStr("modName", "Component Test - Grid (Static)");
+            Description = this.__ResStr("modSummary", "Grid (Static) test component");
             DefaultViewName = StandardViews.Display;
             UsePartialFormCss = false;
         }

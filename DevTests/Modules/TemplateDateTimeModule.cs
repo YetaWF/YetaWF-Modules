@@ -17,9 +17,9 @@ namespace YetaWF.Modules.DevTests.Modules {
     public class TemplateDateTimeModule : ModuleDefinition {
 
         public TemplateDateTimeModule() {
-            Title = this.__ResStr("modTitle", "DateTime Test Template");
-            Name = this.__ResStr("modName", "Template Test - DateTime");
-            Description = this.__ResStr("modSummary", "DateTime test template");
+            Title = this.__ResStr("modTitle", "DateTime Test Component");
+            Name = this.__ResStr("modName", "Component Test - DateTime");
+            Description = this.__ResStr("modSummary", "DateTime test component");
             DefaultViewName = StandardViews.EditApply;
         }
 

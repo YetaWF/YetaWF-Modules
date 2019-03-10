@@ -17,9 +17,9 @@ namespace YetaWF.Modules.Identity.Modules {
     public class TemplateListOfUserNamesModule : ModuleDefinition {
 
         public TemplateListOfUserNamesModule() {
-            Title = this.__ResStr("modTitle", "ListOfUserNames Test Template");
-            Name = this.__ResStr("modName", "Template Test - ListOfUserNames");
-            Description = this.__ResStr("modSummary", "ListOfUserNames test template");
+            Title = this.__ResStr("modTitle", "ListOfUserNames Test Component");
+            Name = this.__ResStr("modName", "Component Test - ListOfUserNames");
+            Description = this.__ResStr("modSummary", "ListOfUserNames test component");
             DefaultViewName = StandardViews.EditApply;
         }
 

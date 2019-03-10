@@ -17,9 +17,9 @@ namespace YetaWF.Modules.DevTests.Modules {
     public class TemplateModuleSelectionModule : ModuleDefinition {
 
         public TemplateModuleSelectionModule() {
-            Title = this.__ResStr("modTitle", "ModuleSelection Test Template");
-            Name = this.__ResStr("modName", "Template Test - ModuleSelection");
-            Description = this.__ResStr("modSummary", "ModuleSelection test template");
+            Title = this.__ResStr("modTitle", "ModuleSelection Test Component");
+            Name = this.__ResStr("modName", "Component Test - ModuleSelection");
+            Description = this.__ResStr("modSummary", "ModuleSelection test component");
             DefaultViewName = StandardViews.EditApply;
         }
 

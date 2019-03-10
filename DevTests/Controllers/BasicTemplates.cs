@@ -28,7 +28,7 @@ namespace YetaWF.Modules.DevTests.Controllers {
         public BasicTemplatesModuleController() { }
 
         [Trim]
-        [Header("YetaWF templates test - All fields are required, but some have default values which are acceptable so no warning will be shown. Some templates have their own test page (see Tests > Templates) so they are not included on this page.")]
+        [Header("YetaWF components test - All fields are required, but some have default values which are acceptable so no warning will be shown. Some components have their own test page (see Tests > Components) so they are not included on this page.")]
         public class EditModel {
 
             [Category("Core"), Caption("Boolean"), Description("Boolean (Required)")]

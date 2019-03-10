@@ -17,9 +17,9 @@ namespace YetaWF.Modules.DevTests.Modules {
     public class TemplateReferencedModulesModule : ModuleDefinition {
 
         public TemplateReferencedModulesModule() {
-            Title = this.__ResStr("modTitle", "ReferencedModules Test Template");
-            Name = this.__ResStr("modName", "Template Test - ReferencedModules");
-            Description = this.__ResStr("modSummary", "ReferencedModules test template");
+            Title = this.__ResStr("modTitle", "ReferencedModules Test Component");
+            Name = this.__ResStr("modName", "Component Test - ReferencedModules");
+            Description = this.__ResStr("modSummary", "ReferencedModules test component");
             DefaultViewName = StandardViews.EditApply;
         }
 

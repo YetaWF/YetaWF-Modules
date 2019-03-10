@@ -17,9 +17,9 @@ namespace YetaWF.Modules.DevTests.Modules {
     public class BasicTemplatesModule : ModuleDefinition {
 
         public BasicTemplatesModule() {
-            Title = this.__ResStr("modTitle", "Basic Templates Test");
-            Name = this.__ResStr("modName", "Basic Templates Test");
-            Description = this.__ResStr("modSummary", "Used to test all generally available templates");
+            Title = this.__ResStr("modTitle", "Basic Components Test");
+            Name = this.__ResStr("modName", "Basic Components Test");
+            Description = this.__ResStr("modSummary", "Used to test all generally available components");
             DefaultViewName = StandardViews.EditApply;
         }
 
@@ -31,10 +31,10 @@ namespace YetaWF.Modules.DevTests.Modules {
             return new ModuleAction(this) {
                 Url = string.IsNullOrWhiteSpace(url) ? ModulePermanentUrl : url,
                 Image = "#Display",
-                LinkText = this.__ResStr("editLink", "Basic Templates"),
-                MenuText = this.__ResStr("editText", "Basic Templates"),
-                Tooltip = this.__ResStr("editTooltip", "Used to test all generally available templates"),
-                Legend = this.__ResStr("editLegend", "Used to test all generally available templates"),
+                LinkText = this.__ResStr("editLink", "Basic Components"),
+                MenuText = this.__ResStr("editText", "Basic Components"),
+                Tooltip = this.__ResStr("editTooltip", "Used to test all generally available components"),
+                Legend = this.__ResStr("editLegend", "Used to test all generally available components"),
                 Style = ModuleAction.ActionStyleEnum.Normal,
                 Category = ModuleAction.ActionCategoryEnum.Update,
                 Mode = ModuleAction.ActionModeEnum.Any,
