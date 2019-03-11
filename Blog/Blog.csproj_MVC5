@@ -161,8 +161,11 @@
     <None Include="Addons\_Main\filelistCSS.txt" />
     <None Include="Addons\_Main\Blog.scss" />
     <None Include="app.config" />
+    <None Include="tsconfig.json" />
+    <None Include="tslint.json" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Addons\_Addons\DisqusLinks\filelistJS.txt" />
     <Content Include="Addons\_Main\Icons\RssFeed.png" />
   </ItemGroup>
   <ItemGroup>
@@ -198,7 +201,9 @@
       <Name>ComponentsHTML</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <TypeScriptCompile Include="Addons\_Addons\DisqusLinks\DisqusLinks.ts" />
+  </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
