@@ -51,6 +51,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         /// Called by the framework when the component is used so the component can add component specific addons.
         /// </summary>
         public override async Task IncludeAsync() {
+            await JqueryUICore.UseAsync();
             await Manager.AddOnManager.AddAddOnNamedAsync(Package.AreaName, "github.com.danielm.uploader");
             await base.IncludeAsync();
         }

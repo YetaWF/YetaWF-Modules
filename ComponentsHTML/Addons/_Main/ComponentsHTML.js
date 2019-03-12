@@ -4,11 +4,55 @@ var YetaWF_ComponentsHTML;
 (function (YetaWF_ComponentsHTML) {
     var ComponentsHTML = /** @class */ (function () {
         function ComponentsHTML() {
+            // Loader
+            // Loader
+            // Loader
             // PropertyListVisible
             // PropertyListVisible
             // PropertyListVisible
             this.PropertyListVisibleHandlers = [];
         }
+        ComponentsHTML.prototype.MUSTHAVE_JQUERYUI = function () {
+            if (!YVolatile.YetaWF_ComponentsHTML.jqueryUI)
+                throw "jquery-ui is required but has not been loaded";
+        };
+        ComponentsHTML.prototype.REQUIRES_JQUERYUI = function (run) {
+            if (!YVolatile.YetaWF_ComponentsHTML.jqueryUI) {
+                // tslint:disable-next-line:no-debugger
+                debugger;
+                YVolatile.YetaWF_ComponentsHTML.jqueryUI = true;
+                $YetaWF.ContentHandling.loadAddons([
+                    { AreaName: "YetaWF_ComponentsHTML", ShortName: "jqueryui", Argument1: null },
+                    { AreaName: "YetaWF_ComponentsHTML", ShortName: "jqueryui-themes", Argument1: YVolatile.YetaWF_ComponentsHTML.jqueryUITheme }
+                ], function () {
+                    console.log("Done");
+                    run();
+                });
+            }
+            else {
+                run();
+            }
+        };
+        ComponentsHTML.prototype.MUSTHAVE_KENDOUI = function () {
+            if (!YVolatile.YetaWF_ComponentsHTML.kendoUI)
+                throw "Kendo UI is required but has not been loaded";
+        };
+        ComponentsHTML.prototype.REQUIRES_KENDOUI = function (run) {
+            if (!YVolatile.YetaWF_ComponentsHTML.kendoUI) {
+                // tslint:disable-next-line:no-debugger
+                debugger;
+                YVolatile.YetaWF_ComponentsHTML.kendoUI = true;
+                $YetaWF.ContentHandling.loadAddons([
+                    { AreaName: "YetaWF_ComponentsHTML", ShortName: "telerik.com.Kendo_UI_Core", Argument1: YVolatile.YetaWF_ComponentsHTML.kendoUITheme }
+                ], function () {
+                    console.log("Done");
+                    run();
+                });
+            }
+            else {
+                run();
+            }
+        };
         /**
          * Register a callback to be called when a propertylist become visible.
          */

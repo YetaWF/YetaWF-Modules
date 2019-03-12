@@ -48,6 +48,14 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         public override ComponentType GetComponentType() { return ComponentType.Display; }
 
         /// <summary>
+        /// Called by the framework when the component is used so the component can add component specific addons.
+        /// </summary>
+        public override async Task IncludeAsync() {
+            await KendoUICore.UseAsync();// needed for css
+            await base.IncludeAsync();
+        }
+
+        /// <summary>
         /// Called by the framework when the component needs to be rendered as HTML.
         /// </summary>
         /// <param name="model">The model being rendered by the component.</param>

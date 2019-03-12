@@ -263,6 +263,7 @@ var YetaWF_ComponentsHTML;
             return row.style.display === "";
         };
         PropertyListComponent.tabInitjQuery = function (tabCtrlId, activeTab, activeTabId) {
+            ComponentsHTMLHelper.MUSTHAVE_JQUERYUI();
             var tabCtrl = $YetaWF.getElementById(tabCtrlId);
             $YetaWF.elementAddClass(tabCtrl, "t_jquery");
             $(tabCtrl).tabs({

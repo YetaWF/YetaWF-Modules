@@ -35,6 +35,7 @@ var YetaWF_ComponentsHTML;
             return _this;
         }
         ActionIconsComponent.prototype.openMenu = function () {
+            ComponentsHTMLHelper.MUSTHAVE_JQUERYUI();
             ActionIconsComponent.closeMenus();
             var $idMenu = $(this.MenuControl);
             $idMenu.appendTo($("body"));

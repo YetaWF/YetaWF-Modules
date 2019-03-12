@@ -97,6 +97,8 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             }
             if (Manager.CurrentSite.TabStyle == YetaWF.Core.Site.TabStyleEnum.JQuery) {
 
+                await JqueryUICore.UseAsync();
+
                 hb.Append($@"
     YetaWF_ComponentsHTML.PropertyListComponent.tabInitjQuery('{controlId}', {activeTab}, '{activeTabId}');");
 

@@ -46,6 +46,8 @@ namespace YetaWF_ComponentsHTML {
             super(controlId);
             this.Setup = setup;
 
+            ComponentsHTMLHelper.MUSTHAVE_JQUERYUI();
+
             this.inputFileName = $YetaWF.getElement1BySelector("input.t_filename", [this.Control]) as HTMLInputElement;
             this.divProgressbar = $YetaWF.getElement1BySelectorCond(".t_progressbar", [this.Control]) as HTMLDivElement;
             if (this.divProgressbar) {

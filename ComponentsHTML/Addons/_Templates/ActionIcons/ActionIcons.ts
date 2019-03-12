@@ -33,6 +33,7 @@ namespace YetaWF_ComponentsHTML {
         }
 
         private openMenu(): void {
+            ComponentsHTMLHelper.MUSTHAVE_JQUERYUI();
             ActionIconsComponent.closeMenus();
             var $idMenu = $(this.MenuControl);
             $idMenu.appendTo($("body"));

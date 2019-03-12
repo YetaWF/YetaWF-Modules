@@ -118,8 +118,9 @@ namespace YetaWF_ComponentsHTML {
 
         constructor(controlId: string, setup: GridSetup) {
             super(controlId);
-
             this.Setup = setup;
+
+            ComponentsHTMLHelper.MUSTHAVE_JQUERYUI();
 
             this.TBody = $YetaWF.getElement1BySelector("tbody", [this.Control]);
 

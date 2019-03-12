@@ -10,6 +10,20 @@ namespace YetaWF.Modules.ComponentsHTML {
 
     public partial class CoreRendering {
 
+        internal class ComponentsData {
+            public bool KendoUIUsed { get; set; }
+            public bool JqueryUIUsed { get; set; }
+        }
+
+        internal static ComponentsData GetComponentsData() {
+            ComponentsData cData = (ComponentsData)Manager.ComponentsData;
+            if (cData == null) {
+                cData = new ComponentsData();
+                Manager.ComponentsData = cData;
+            }
+            return cData;
+        }
+
         /// <summary>
         /// Returns the package that implements the YetaWF.Core.Components.IYetaWFCoreRendering interface.
         /// </summary>
@@ -23,7 +37,6 @@ namespace YetaWF.Modules.ComponentsHTML {
         public async Task AddStandardAddOnsAsync() {
             await Manager.AddOnManager.AddAddOnNamedAsync(Package.AreaName, "necolas.github.io.normalize");
             await Manager.AddOnManager.AddAddOnNamedAsync(Package.AreaName, "jquery");
-            await Manager.AddOnManager.AddAddOnNamedAsync(Package.AreaName, "jqueryui");
             await Manager.AddOnManager.AddAddOnNamedAsync(Package.AreaName, "no-margin-for-errors.com.prettyLoader");
 
             await Manager.AddOnManager.AddAddOnNamedAsync("YetaWF_Core", "Basics");
@@ -38,23 +51,27 @@ namespace YetaWF.Modules.ComponentsHTML {
         /// Adds any skin-specific addons for the current page that are required by the package rendering components and views.
         /// </summary>
         public async Task AddSkinAddOnsAsync() {
-
             SkinAccess skinAccess = new SkinAccess();
+            string skin;
 
-            // Find the jquery theme
-            string skin = Manager.CurrentPage.jQueryUISkin;
+            // add jqueryui theme folder in case we need to dynamically load jqueryui from the client
+            // Find the jquery theme+
+            skin = Manager.CurrentPage.jQueryUISkin;
             if (string.IsNullOrWhiteSpace(skin))
                 skin = Manager.CurrentSite.jQueryUISkin;
             string jqueryUIFolder = await skinAccess.FindJQueryUISkinAsync(skin);
-            await Manager.AddOnManager.AddAddOnNamedAsync(Package.AreaName, "jqueryui-themes", jqueryUIFolder);
+            Manager.ScriptManager.AddVolatileOption(AreaRegistration.CurrentPackage.AreaName, "jqueryUITheme", jqueryUIFolder);
 
-            // Find Kendo UI theme
+            // add kendoui theme folder in case we need to dynamically load kendoui from the client
+            // Find the kendo theme
+            skinAccess = new SkinAccess();
             skin = Manager.CurrentPage.KendoUISkin;
             if (string.IsNullOrWhiteSpace(skin))
                 skin = Manager.CurrentSite.KendoUISkin;
             string kendoUITheme = await skinAccess.FindKendoUISkinAsync(skin);
-            await Manager.AddOnManager.AddAddOnNamedAsync(Package.AreaName, "telerik.com.Kendo_UI_Core", kendoUITheme);
+            Manager.ScriptManager.AddVolatileOption(AreaRegistration.CurrentPackage.AreaName, "kendoUITheme", kendoUITheme);
         }
+
         /// <summary>
         /// Adds any form-specific addons for the current page that are required by the package rendering components and views.
         /// </summary>

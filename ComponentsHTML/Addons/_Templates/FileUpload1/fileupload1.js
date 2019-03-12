@@ -23,6 +23,7 @@ var YetaWF_ComponentsHTML;
             _this.SuccessfullUploadCallback = null;
             _this.GetFileNameCallback = null;
             _this.Setup = setup;
+            ComponentsHTMLHelper.MUSTHAVE_JQUERYUI();
             _this.inputFileName = $YetaWF.getElement1BySelector("input.t_filename", [_this.Control]);
             _this.divProgressbar = $YetaWF.getElement1BySelectorCond(".t_progressbar", [_this.Control]);
             if (_this.divProgressbar) {

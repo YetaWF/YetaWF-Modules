@@ -123,6 +123,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             await Manager.AddOnManager.AddAddOnNamedAsync(YetaWF.Core.Controllers.AreaRegistration.CurrentPackage.AreaName, "fontawesome.com.fontawesome");
             //await KendoUICore.AddFileAsync("kendo.popup.min.js"); // is now a prereq of kendo.window (2017.2.621)
             await KendoUICore.AddFileAsync("kendo.menu.min.js");
+            await JqueryUICore.UseAsync();
             await base.IncludeAsync();
         }
 

@@ -282,6 +282,7 @@ namespace YetaWF_ComponentsHTML {
         }
 
         public static tabInitjQuery(tabCtrlId: string, activeTab: number, activeTabId: string):void {
+            ComponentsHTMLHelper.MUSTHAVE_JQUERYUI();
             var tabCtrl = $YetaWF.getElementById(tabCtrlId);
             $YetaWF.elementAddClass(tabCtrl, "t_jquery");
             $(tabCtrl).tabs({ //jQuery-ui use

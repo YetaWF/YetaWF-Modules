@@ -66,6 +66,7 @@ var YetaWF_ComponentsHTML;
             _this.reorderingInProgress = false;
             _this.reorderingRowElement = null;
             _this.Setup = setup;
+            ComponentsHTMLHelper.MUSTHAVE_JQUERYUI();
             _this.TBody = $YetaWF.getElement1BySelector("tbody", [_this.Control]);
             if (_this.Setup.ShowPager) {
                 _this.BtnReload = $YetaWF.getElement1BySelectorCond(".tg_reload", [_this.Control]);

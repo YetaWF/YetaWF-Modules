@@ -54,6 +54,7 @@
     <Compile Include="Controllers\Support\ReferencedModules.cs" />
     <Compile Include="Controllers\Support\PageDefinitions.cs" />
     <Compile Include="CoreRendering\View.cs" />
+    <Compile Include="JqueryUI.cs" />
     <Compile Include="KendoUICore.cs" />
     <Compile Include="Startup\Templates\Grid.cs" />
     <Compile Include="Startup\Templates\Time.cs" />

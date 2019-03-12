@@ -10,7 +10,10 @@ namespace YetaWF {
 }
 namespace YetaWF_ComponentsHTML {
     export interface IPackageVolatiles {
-
+        jqueryUI: boolean; // defines whether jqueryui has been loaded
+        jqueryUITheme: string; // the theme in use
+        kendoUI: boolean; // defines whether kendoui has been loaded
+        kendoUITheme: string; // the theme in use
     }
     export interface IPackageConfigs {
 
@@ -24,6 +27,61 @@ namespace YetaWF_ComponentsHTML {
     }
 
     export class ComponentsHTML {
+
+        // Loader
+        // Loader
+        // Loader
+
+        public MUSTHAVE_JQUERYUI() : void {
+            if (!YVolatile.YetaWF_ComponentsHTML.jqueryUI)
+                throw `jquery-ui is required but has not been loaded`;
+        }
+
+        public REQUIRES_JQUERYUI(run:() => void): void {
+
+            if (!YVolatile.YetaWF_ComponentsHTML.jqueryUI) {
+
+                // tslint:disable-next-line:no-debugger
+                debugger;
+
+                YVolatile.YetaWF_ComponentsHTML.jqueryUI = true;
+
+                $YetaWF.ContentHandling.loadAddons([
+                    { AreaName: "YetaWF_ComponentsHTML", ShortName: "jqueryui", Argument1: null },
+                    { AreaName: "YetaWF_ComponentsHTML", ShortName: "jqueryui-themes", Argument1: YVolatile.YetaWF_ComponentsHTML.jqueryUITheme }
+                ], () => {
+                    console.log("Done");
+                    run();
+                });
+            } else {
+                run();
+            }
+        }
+
+        public MUSTHAVE_KENDOUI(): void {
+            if (!YVolatile.YetaWF_ComponentsHTML.kendoUI)
+                throw `Kendo UI is required but has not been loaded`;
+        }
+
+        public REQUIRES_KENDOUI(run: () => void): void {
+
+            if (!YVolatile.YetaWF_ComponentsHTML.kendoUI) {
+
+                // tslint:disable-next-line:no-debugger
+                debugger;
+
+                YVolatile.YetaWF_ComponentsHTML.kendoUI = true;
+
+                $YetaWF.ContentHandling.loadAddons([
+                    { AreaName: "YetaWF_ComponentsHTML", ShortName: "telerik.com.Kendo_UI_Core", Argument1: YVolatile.YetaWF_ComponentsHTML.kendoUITheme }
+                ], () => {
+                    console.log("Done");
+                    run();
+                });
+            } else {
+                run();
+            }
+        }
 
         // PropertyListVisible
         // PropertyListVisible

@@ -52,44 +52,48 @@ namespace YetaWF_ComponentsHTML {
          * Displays an alert message, usually in a popup.
          */
         public alert(message: string, title?: string, onOK?: () => void, options?: YetaWF.MessageOptions): void {
-            // check if we already have a popup (and close it)
-            this.closeAlert(onOK);
 
-            $("body").prepend("<div id='yalert'></div>");
-            const $dialog = $("#yalert");
+            ComponentsHTMLHelper.REQUIRES_JQUERYUI((): void => {
 
-            options = options || { encoded: false };
+                // check if we already have a popup (and close it)
+                this.closeAlert(onOK);
 
-            if (!options.encoded) {
-                // change \n to <br/>
-                $dialog.text(message);
-                var s = $dialog.html();
-                s = s.replace(/\(\+nl\)/g, "<br/>");
-                $dialog.html(s);
-            } else {
-                $dialog.html(message);
-            }
+                $("body").prepend("<div id='yalert'></div>");
+                const $dialog = $("#yalert");
 
-            if (title === undefined)
-                title = YLocs.Basics.DefaultAlertTitle;
+                options = options || { encoded: false };
 
-            $dialog.dialog({ //jQuery-ui use
-                autoOpen: true,
-                modal: true,
-                width: YConfigs.Basics.DefaultAlertWaitWidth,
-                height: YConfigs.Basics.DefaultAlertWaitHeight === 0 ? "auto" : YConfigs.Basics.DefaultAlertWaitHeight,
-                closeOnEscape: true,
-                closeText: YLocs.Basics.CloseButtonText,
-                close: (event: Event, ui: JQueryUI.DialogUIParams): void => this.closeAlert(onOK),
-                draggable: true,
-                resizable: false,
-                title: title,
-                buttons: [{
-                    text: YLocs.Basics.OKButtonText,
-                    click: (eventObject: JQueryEventObject): any => {
-                        $dialog.dialog("close");
-                    }
-                }]
+                if (!options.encoded) {
+                    // change \n to <br/>
+                    $dialog.text(message);
+                    var s = $dialog.html();
+                    s = s.replace(/\(\+nl\)/g, "<br/>");
+                    $dialog.html(s);
+                } else {
+                    $dialog.html(message);
+                }
+
+                if (title === undefined)
+                    title = YLocs.Basics.DefaultAlertTitle;
+
+                $dialog.dialog({ //jQuery-ui use
+                    autoOpen: true,
+                    modal: true,
+                    width: YConfigs.Basics.DefaultAlertWaitWidth,
+                    height: YConfigs.Basics.DefaultAlertWaitHeight === 0 ? "auto" : YConfigs.Basics.DefaultAlertWaitHeight,
+                    closeOnEscape: true,
+                    closeText: YLocs.Basics.CloseButtonText,
+                    close: (event: Event, ui: JQueryUI.DialogUIParams): void => this.closeAlert(onOK),
+                    draggable: true,
+                    resizable: false,
+                    title: title,
+                    buttons: [{
+                        text: YLocs.Basics.OKButtonText,
+                        click: (eventObject: JQueryEventObject): any => {
+                            $dialog.dialog("close");
+                        }
+                    }]
+                });
             });
         }
 
@@ -112,100 +116,108 @@ namespace YetaWF_ComponentsHTML {
          */
         public alertYesNo(message: string, title?: string, onYes?: () => void, onNo?: () => void, options?: YetaWF.MessageOptions): void {
 
-            const $body = $("body");
-            $body.prepend("<div id='yalert'></div>");
-            const $dialog = $("#yalert", $body);
+            ComponentsHTMLHelper.REQUIRES_JQUERYUI((): void => {
 
-            // change \n to <br/>
-            $dialog.text(message);
-            var s = $dialog.html();
-            s = s.replace(/\(\+nl\)/g, "<br/>");
-            $dialog.html(s);
+                const $body = $("body");
+                $body.prepend("<div id='yalert'></div>");
+                const $dialog = $("#yalert", $body);
 
-            if (title === undefined)
-                title = YLocs.Basics.DefaultAlertYesNoTitle;
+                // change \n to <br/>
+                $dialog.text(message);
+                var s = $dialog.html();
+                s = s.replace(/\(\+nl\)/g, "<br/>");
+                $dialog.html(s);
 
-            $dialog.dialog({ //jQuery-ui use
-                autoOpen: true,
-                modal: true,
-                width: YConfigs.Basics.DefaultAlertYesNoWidth,
-                height: YConfigs.Basics.DefaultAlertYesNoHeight === 0 ? "auto" : YConfigs.Basics.DefaultAlertYesNoHeight,
-                closeOnEscape: true,
-                closeText: YLocs.Basics.CloseButtonText,
-                close: (event: Event, ui: JQueryUI.DialogUIParams): void => {
-                    $dialog.dialog("destroy");
-                    $dialog.remove();
-                    if (onNo !== undefined)
-                        onNo();
-                },
-                draggable: true,
-                resizable: false,
-                title: title,
-                buttons: [
-                    {
-                        text: YLocs.Basics.YesButtonText,
-                        click: (eventObject: JQueryEventObject): any => {
-                            const endFunc = onYes;
-                            onYes = undefined;// clear this so close function doesn't try do call these
-                            onNo = undefined;
-                            $dialog.dialog("destroy");
-                            $dialog.remove();
-                            if (endFunc)
-                                endFunc();
-                        }
+                if (title === undefined)
+                    title = YLocs.Basics.DefaultAlertYesNoTitle;
+
+                $dialog.dialog({ //jQuery-ui use
+                    autoOpen: true,
+                    modal: true,
+                    width: YConfigs.Basics.DefaultAlertYesNoWidth,
+                    height: YConfigs.Basics.DefaultAlertYesNoHeight === 0 ? "auto" : YConfigs.Basics.DefaultAlertYesNoHeight,
+                    closeOnEscape: true,
+                    closeText: YLocs.Basics.CloseButtonText,
+                    close: (event: Event, ui: JQueryUI.DialogUIParams): void => {
+                        $dialog.dialog("destroy");
+                        $dialog.remove();
+                        if (onNo !== undefined)
+                            onNo();
                     },
-                    {
-                        text: YLocs.Basics.NoButtonText,
-                        click: (eventObject: JQueryEventObject): any => {
-                            const endFunc = onNo;
-                            onYes = undefined;// clear this so close function doesn't try do call these
-                            onNo = undefined;
-                            $dialog.dialog("destroy");
-                            $dialog.remove();
-                            if (endFunc)
-                                endFunc();
+                    draggable: true,
+                    resizable: false,
+                    title: title,
+                    buttons: [
+                        {
+                            text: YLocs.Basics.YesButtonText,
+                            click: (eventObject: JQueryEventObject): any => {
+                                const endFunc = onYes;
+                                onYes = undefined;// clear this so close function doesn't try do call these
+                                onNo = undefined;
+                                $dialog.dialog("destroy");
+                                $dialog.remove();
+                                if (endFunc)
+                                    endFunc();
+                            }
+                        },
+                        {
+                            text: YLocs.Basics.NoButtonText,
+                            click: (eventObject: JQueryEventObject): any => {
+                                const endFunc = onNo;
+                                onYes = undefined;// clear this so close function doesn't try do call these
+                                onNo = undefined;
+                                $dialog.dialog("destroy");
+                                $dialog.remove();
+                                if (endFunc)
+                                    endFunc();
+                            }
                         }
-                    }
-                ],
+                    ],
+                });
             });
         }
         /**
          * Displays a "Please Wait" message
          */
         public pleaseWait(message?: string, title?: string): void {
-            // insert <div id="yplwait"></div> at top of page for the window
-            // this is automatically removed when destroy() is called
-            $("body").prepend("<div id='yplwait'></div>");
-            const $popupwin = $("#yplwait");
-            var popup: kendo.ui.Window | null = null;
 
-            if (message === undefined)
-                message = YLocs.Basics.PleaseWaitText;
-            if (title === undefined)
-                title = YLocs.Basics.PleaseWaitTitle;
-            $popupwin.text(<string>message);
+            ComponentsHTMLHelper.REQUIRES_KENDOUI((): void => {
 
-            // Create the window
-            $popupwin.kendoWindow({
-                actions: [],
-                width: YConfigs.Basics.DefaultPleaseWaitWidth,
-                height: YConfigs.Basics.DefaultPleaseWaitHeight,
-                draggable: true,
-                iframe: true,
-                modal: true,
-                resizable: false,
-                title: $YetaWF.htmlEscape(title),
-                visible: false,
-                close: (event: kendo.ui.WindowCloseEvent): void => {
-                    var popup: kendo.ui.Window | null = $popupwin.data("kendoWindow");
-                    popup.destroy();
-                    popup = null;
-                },
+                // insert <div id="yplwait"></div> at top of page for the window
+                // this is automatically removed when destroy() is called
+                $("body").prepend("<div id='yplwait'></div>");
+                const $popupwin = $("#yplwait");
+                var popup: kendo.ui.Window | null = null;
+
+                if (message === undefined)
+                    message = YLocs.Basics.PleaseWaitText;
+                if (title === undefined)
+                    title = YLocs.Basics.PleaseWaitTitle;
+                $popupwin.text(<string>message);
+
+                // Create the window
+                $popupwin.kendoWindow({
+                    actions: [],
+                    width: YConfigs.Basics.DefaultPleaseWaitWidth,
+                    height: YConfigs.Basics.DefaultPleaseWaitHeight,
+                    draggable: true,
+                    iframe: true,
+                    modal: true,
+                    resizable: false,
+                    title: $YetaWF.htmlEscape(title),
+                    visible: false,
+                    close: (event: kendo.ui.WindowCloseEvent): void => {
+                        var popup: kendo.ui.Window | null = $popupwin.data("kendoWindow");
+                        popup.destroy();
+                        popup = null;
+                    },
+                });
+
+                // show and center the window
+                popup = $popupwin.data("kendoWindow");
+                popup.open().center();
+
             });
-
-            // show and center the window
-            popup = $popupwin.data("kendoWindow");
-            popup.open().center();
         }
         /**
          * Closes the "Please Wait" message (if any).

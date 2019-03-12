@@ -38,6 +38,9 @@ namespace YetaWF.Modules.ComponentsHTML.Addons {
 
             scripts.AddConfigOption(areaName, "LoaderGif", manager.GetCDNUrl(manager.AddOnManager.GetAddOnNamedUrl(package.AreaName, "no-margin-for-errors.com.prettyLoader") + "images/prettyLoader/ajax-loader.gif"));
 
+            scripts.AddVolatileOption(areaName, "jqueryUI", false); // jqueryui is not available by default
+            scripts.AddVolatileOption(areaName, "kendoUI", false); // kendoui is not available by default
+
             return Task.CompletedTask;
         }
     }
