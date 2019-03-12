@@ -33,25 +33,37 @@ i.yic {
 }
 
 /* tooltip */
-.ui-tooltip.ui-widget {
-    font-size:12px;
-    z-index:20000;
-    overflow:hidden;
 
+.yTooltip {
+    background: #FFF;
+    color: #555;
+
+    border-radius:4px;
+    border: solid 1px silver;
+    padding: 8px 10px;
+    font-size:12px;
+
+    box-shadow: 5px 5px lightgray;
+
+    position: absolute;
+    max-width:300px;
+
+    display:none;// so we can fade in
+    z-index:20000;
+
+    overflow:hidden;
     /* These are technically the same, but use both */
     overflow-wrap: break-word;
     word-wrap: break-word;
-
     /* This is the dangerous one in WebKit, as it breaks things wherever */
     /*word-break: break-all;*/
     /* Instead use this non-standard one: */
     word-break: break-word;
-
     /* Adds a hyphen where the word breaks, if supported (No Blink) */
     /*hyphens: auto;*/
 }
 @media print {
-    .ui-tooltip {
+    .yTooltip {
         display:none !important;
     }
 }

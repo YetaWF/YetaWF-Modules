@@ -2,87 +2,225 @@
 
 namespace YetaWF_ComponentsHTML {
 
+    /**
+     * Implements a stand-alone tooltip so we don't need jqueryui/bootstrap
+     */
     export class Tooltips {
 
-        public static init(): void {
+        private readonly TOOLTIPCLASS = "yTooltip";
+        private readonly TOOLTIPACTIVEELEMCLASS = "yTooltipActive";
+        private readonly fadeInTime: number = 200;
+        private readonly fadeOutTime: number = 200;
 
-            const a1 = YVolatile.Basics.CssNoTooltips;
+        private activeTooltipElem: HTMLElement | null = null;
+        private activeTooltip: HTMLElement | null = null;
+
+        private CancelObject: CancelableFadeInOut = { Canceled: false, Active: false };
+
+        public init(): void {
+
             const a2 = YConfigs.Basics.CssTooltip;
             const a3 = YConfigs.Basics.CssTooltipSpan;
-            const selectors = `img:not("${a1}"),label,input:not(".ui-button-disabled"),a:not("${a1},.ui-button-disabled"),i:not("${a1}"),.ui-jqgrid span[${a2}],th[${a2}],span[${a3}],li[${a2}],div[${a2}]`;
+            const noTooltips = this.getNoTooltipSelectors(YVolatile.Basics.CssNoTooltips);
+            const noTTImgSel = this.buildNoTT("img", noTooltips);
+            const noTTASel = this.buildNoTT("a", noTooltips);
+            const noTTISel = this.buildNoTT("i", noTooltips);
+            const noTTMisc = `.ui-jqgrid span[${a2}],th[${a2}],span[${a3}],li[${a2}],div[${a2}]`;
+
+            const selectors = `label,input:not(.ui-button-disabled),a:not(.ui-button-disabled),${noTTImgSel},${noTTASel},${noTTISel},${noTTMisc}`;
             const ddsel = ".k-list-container.k-popup li[data-offset-index]";
-            $("body").tooltip({ //jQuery-ui use
-                items: (selectors + "," + ddsel),
-                content: function (a: any, b: any, c: any) : string|null {
-                    var $this = $(this as HTMLElement);
-                    if ($this.is(ddsel)) {
-                        // dropdown list - find who owns this and get the matching tooltip
-                        // this is a bit hairy - we save all the tooltips for a dropdown list in a variable
-                        // named ..id.._tooltips. The popup/dropdown is named ..id..-list so we deduce the
-                        // variable name from the popup/dropdown. This is going to break at some point...
-                        const ttindex = $YetaWF.getAttributeCond(this as HTMLElement, "data-offset-index");
-                        if (!ttindex) return null;
-                        const $container = $this.closest(".k-list-container.k-popup");
-                        if ($container.length !== 1) return null;
-                        var id = $container.attr("id");
-                        if (!id) return null;
-                        id = id.replace("-list", "");
-                        var dd: DropDownListEditComponent = YetaWF.ComponentBaseDataImpl.getControlById(id, DropDownListEditComponent.SELECTOR);
-                        let tip = dd.getToolTip(Number(ttindex));
-                        if (tip == null || tip.length === 0) return null;
-                        return $YetaWF.htmlEscape(tip);
+
+            $YetaWF.registerMultipleEventHandlersBody(["mouseover", "click"], `${selectors}`, (ev: Event): boolean => {
+
+                var elem: HTMLElement | null = ev.__YetaWFElem;
+
+                for (; ;) {
+                    if (!elem)
+                        return true;
+                    if (ev.type !== "click" && elem === this.activeTooltipElem)
+                        return true;
+                    if (!$YetaWF.elementMatches(elem, ":hover") && $YetaWF.elementMatches(elem, ":focus"))
+                        return true;
+                    if ($YetaWF.getAttributeCond(elem, "disabled"))
+                        return true;
+                    var s = $YetaWF.getAttributeCond(elem, YConfigs.Basics.CssTooltip) || $YetaWF.getAttributeCond(elem, YConfigs.Basics.CssTooltipSpan) || $YetaWF.getAttributeCond(elem, "title");
+                    if (s) {
+                        this.showTooltip(elem, s);
+                        return true;
                     }
-                    for (; ;) {
-                        if (!$this.is(":hover") && $this.is(":focus"))
-                            return null;
-                        if ($this.attr("disabled") !== undefined)
-                            return null;
-                        var s: string | undefined = $this.attr(YConfigs.Basics.CssTooltip);
-                        if (s)
-                            return $YetaWF.htmlEscape(s);
-                        s = $this.attr(YConfigs.Basics.CssTooltipSpan as string);
-                        if (s)
-                            return $YetaWF.htmlEscape(s);
-                        s = $this.attr("title");
-                        if (s !== undefined)
-                            return $YetaWF.htmlEscape(s);
-                        if ($this[0].tagName !== "IMG" && $this[0].tagName !== "I")
-                            break;
-                        // we're in an IMG or I tag, find enclosing A (if any) and try again
-                        $this = $this.closest(`a:not("${YVolatile.Basics.CssNoTooltips}")`);
-                        if ($this.length === 0) return null;
-                        // if the a link is a menu, don't show a tooltip for the image because the tooltip would be in a bad location
-                        if ($this.closest(".k-menu").length > 0) return null;
+                    if (elem.tagName !== "IMG" && elem.tagName !== "I")
+                        break;
+                    // we're in an IMG or I tag, find enclosing A (if any) and try again
+                    elem = $YetaWF.elementClosestCond(elem, noTTASel);
+                    if (!elem)
+                        return true;
+                    // if the a link is a menu, don't show a tooltip for the image because the tooltip would be in a bad location
+                    if ($YetaWF.elementClosestCond(elem, ".k-menu"))
+                        return true;
+                }
+                // nothing so far, check <a> to external site
+                if (elem.tagName === "A") {
+                    const anchor = elem as HTMLAnchorElement;
+                    const href = anchor.href;
+                    if (href === undefined || href.startsWith("javascript") || href.startsWith("#") || href.startsWith("mailto:"))
+                        return true;
+                    if (anchor.target === "_blank") {
+                        const uri = $YetaWF.parseUrl(href);
+                        this.showTooltip(elem, YLocs.Basics.OpenNewWindowTT.format(uri.getHostName()));
+                        return true;
                     }
-                    if ($this[0].tagName === "A") {
-                        const href = ($this[0] as HTMLAnchorElement).href;
-                        if (href === undefined || href.startsWith("javascript") || href.startsWith("#") || href.startsWith("mailto:"))
-                            return null;
-                        const target = ($this[0] as HTMLAnchorElement).target;
-                        if (target === "_blank") {
-                            const uri = $YetaWF.parseUrl(href);
-                            return $YetaWF.htmlEscape(YLocs.Basics.OpenNewWindowTT.format(uri.getHostName()));
-                        }
+                }
+                return true;
+            });
+            $YetaWF.registerEventHandlerBody("mousedown", null, (ev: Event): boolean => {
+                this.removeTooltips();
+                return true;
+            });
+            $YetaWF.registerEventHandlerBody("mouseover", `${ddsel}`, (ev: MouseEvent): boolean => {
+
+                var elem: HTMLElement = ev.__YetaWFElem;
+
+                // dropdown list - find who owns this and get the matching tooltip
+                // this is a bit hairy - we save all the tooltips for a dropdown list in a variable
+                // named ..id.._tooltips. The popup/dropdown is named ..id..-list so we deduce the
+                // variable name from the popup/dropdown. This is going to break at some point...
+                const ttindex = $YetaWF.getAttributeCond(elem, "data-offset-index");
+                if (!ttindex)
+                    return true;
+                const container = $YetaWF.elementClosestCond(elem, ".k-list-container.k-popup");
+                if (!container)
+                    return true;
+                let id = container.id;
+                if (!id)
+                    return true;
+                id = id.replace("-list", "");
+                var dd: DropDownListEditComponent = YetaWF.ComponentBaseDataImpl.getControlById(id, DropDownListEditComponent.SELECTOR);
+                let tip = dd.getToolTip(Number(ttindex));
+                if (!tip)
+                    return true;
+                this.showTooltip(elem, tip);
+                return true;
+            });
+            $YetaWF.registerEventHandlerBody("mouseout", `.${this.TOOLTIPACTIVEELEMCLASS}`, (ev: MouseEvent): boolean => {
+                if (this.activeTooltip && this.activeTooltipElem && (ev.__YetaWFElem === this.activeTooltipElem && !this.activeTooltipElem.contains(ev.relatedTarget as HTMLElement))) {
+                    let elem = this.activeTooltip;
+                    if (ComponentsHTMLHelper.isActiveFadeInOut(this.CancelObject)) {
+                        ComponentsHTMLHelper.cancelFadeInOut(this.CancelObject);
+                        this.removeTooltips();
+                    } else {
+                        ComponentsHTMLHelper.fadeOut(this.activeTooltip, this.fadeOutTime, () => {
+                            if (elem === this.activeTooltip)
+                                this.removeTooltips();
+                        }, this.CancelObject);
                     }
-                    return null;
-                },
-                position: { my: "left top", at: "right bottom", collision: "flipfit" }
+                }
+                return true;
             });
         }
-        public static removeTooltips(): void {
-            $(".ui-tooltip").remove();
+        private getNoTooltipSelectors(noTooltips: string): string[] {
+            var sel: string[] = [];
+            var classes = noTooltips.split(" ");
+            for (const cls of classes) {
+                let c = cls.trim();
+                if (c.length > 0) {
+                    sel.push(c);
+                }
+            }
+            return sel;
+        }
+        private buildNoTT(sel: string, noTooltips: string[]): string {
+            var s = "";
+            for (const n of noTooltips) {
+                if (s.length)
+                    s += ",";
+                s += `${sel}:not(${n})`;
+            }
+            return s;
+        }
+
+        private showTooltip(elem: HTMLElement, text: string): void {
+
+            if (this.activeTooltipElem) {
+                if (elem === this.activeTooltipElem)
+                    return;
+                this.removeTooltips();
+            }
+
+            let title = $YetaWF.getAttributeCond(elem, "title");
+            if (title) {
+                $YetaWF.setAttribute(elem, YConfigs.Basics.CssTooltip, title);
+                elem.removeAttribute("title");
+            }
+
+            $YetaWF.elementAddClass(elem, this.TOOLTIPACTIVEELEMCLASS);
+            this.activeTooltipElem = elem;
+
+            var tooltip = document.createElement("div");
+            tooltip.className = this.TOOLTIPCLASS;
+            tooltip.appendChild(document.createTextNode(text));
+            $YetaWF.setAttribute(tooltip, "role", "tooltip");
+
+            var firstChild = document.body.firstChild;
+            if (!firstChild) return;
+            firstChild.parentElement!.insertBefore(tooltip, firstChild);
+
+            this.activeTooltip = tooltip;
+
+            var winHeight = (window.innerHeight || document!.documentElement!.clientHeight);
+            var winWidth = (window.innerWidth || document!.documentElement!.clientWidth);
+
+            var elemRect = elem.getBoundingClientRect();
+            var ttTop = elemRect.top + elemRect.height;
+            var ttLeft = elemRect.left + elemRect.width;
+
+            // briefly show tooltip so we get the width & height
+            tooltip.style.display = "block";
+            var tooltipRect = tooltip.getBoundingClientRect();
+            tooltip.style.display = "none";
+            var ttWidth = tooltipRect.width;
+            var ttHeight = tooltipRect.height;
+
+            // check if it fits below
+            if (elemRect.bottom + ttHeight <= winHeight) {
+                // all is well, it fits below
+            } else if (elemRect.top - ttHeight >= 0 || elemRect.top + elemRect.height < winHeight / 2) {
+                // flip to top
+                ttTop = elemRect.top - ttHeight;
+            } else {
+                // default to bottom - it just doesn't fit
+            }
+            // make it fit if it extends beyond right edge of window
+            if (ttLeft + ttWidth > winWidth) {
+                let diff = (ttLeft + ttWidth) - winWidth;
+                ttLeft -= diff
+                ttWidth += diff;
+            }
+
+            tooltip.setAttribute('style', `top:${window.pageYOffset + ttTop}px;left:${window.pageXOffset + ttLeft}px;width:${ttWidth}px`);
+            if (ComponentsHTMLHelper.isActiveFadeInOut(this.CancelObject)) {
+                ComponentsHTMLHelper.cancelFadeInOut(this.CancelObject);
+                tooltip.style.display = "block";
+                tooltip.style.opacity = "1";
+            } else {
+                ComponentsHTMLHelper.fadeIn(tooltip, this.fadeInTime, this.CancelObject);
+            }
+        }
+
+        // API
+
+        public removeTooltips(): void {
+            if (this.activeTooltip)
+                this.activeTooltip.remove();
+            if (this.activeTooltipElem)
+                $YetaWF.elementRemoveClass(this.activeTooltipElem, this.TOOLTIPACTIVEELEMCLASS);
+            this.activeTooltipElem = null;
+            this.activeTooltip = null;
         }
     }
 }
 
-$(document).ready(() => {
-    YetaWF_ComponentsHTML.Tooltips.init();
-});
+var ToolTipsHTMLHelper = new YetaWF_ComponentsHTML.Tooltips();
 
-$("body").on("mousedown", "a", () => {
-    // when we click on an <a> link, we don't want the next tooltip
-    // this may be a bug because after clicking an a link, the tooltip will be created (again?) so we want to suppress this
-    // Repro steps (without hack): right click on an a link (that COULD have a tooltip) and open a new tab/window. On return to this page we'll get a tooltip
-    YetaWF_ComponentsHTML.Tooltips.removeTooltips();
+$YetaWF.registerDocumentReady((): void => {
+    ToolTipsHTMLHelper.init();
 });
-

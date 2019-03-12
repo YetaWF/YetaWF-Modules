@@ -25,6 +25,10 @@ namespace YetaWF_ComponentsHTML {
     export interface PropertyListVisibleEntry {
         callback(tag: HTMLElement): void;
     }
+    export interface CancelableFadeInOut {
+        Active: boolean;
+        Canceled: boolean;
+    }
 
     export class ComponentsHTML {
 
@@ -108,45 +112,83 @@ namespace YetaWF_ComponentsHTML {
         // Fade in/out
         // Fade in/out
 
-        public fadeIn(elem: HTMLElement, ms: number) : void {
+        public cancelFadeInOut(cancelable: CancelableFadeInOut): void {
+            cancelable.Canceled = true;
+            cancelable.Active = false;
+        }
+        public isActiveFadeInOut(cancelable: CancelableFadeInOut): boolean {
+            return cancelable.Active;
+        }
+        private clearFadeInOut(cancelable?: CancelableFadeInOut): void {
+            if (cancelable) {
+                cancelable.Canceled = false;
+                cancelable.Active = false;
+            }
+        }
+
+        public fadeIn(elem: HTMLElement, ms: number, cancelable?: CancelableFadeInOut): void {
 
             elem.style.opacity = "0";
+            if (cancelable) {
+                cancelable.Canceled = false;
+                cancelable.Active = true;
+            }
 
             if (ms) {
                 var opacity = 0;
                 elem.style.display = "block";
                 this.processPropertyListVisible(elem);
                 const timer = setInterval(() => {
-                    opacity += 50 / ms;
+                    if (cancelable && cancelable.Canceled) {
+                        this.clearFadeInOut(cancelable);
+                        return;
+                    }
+                    opacity += 20 / ms;
                     if (opacity >= 1) {
                         clearInterval(timer);
                         opacity = 1;
+                        this.clearFadeInOut(cancelable);
                     }
                     elem.style.opacity = opacity.toString();
-                }, 50);
+                }, 20);
             } else {
                 elem.style.opacity = "1";
+                this.clearFadeInOut(cancelable);
             }
         }
 
-        public fadeOut(elem: HTMLElement, ms: number) : void {
+        public fadeOut(elem: HTMLElement, ms: number, done?: () => void, cancelable?: CancelableFadeInOut) : void {
 
             elem.style.opacity = "1";
+            if (cancelable) {
+                cancelable.Canceled = false;
+                cancelable.Active = true;
+            }
 
             if (ms) {
                 var opacity = 1;
                 const timer = setInterval(() => {
-                    opacity -= 50 / ms;
+                    if (cancelable && cancelable.Canceled) {
+                        this.clearFadeInOut(cancelable);
+                        return;
+                    }
+                    opacity -= 20 / ms;
                     if (opacity <= 0) {
                         clearInterval(timer);
                         opacity = 0;
                         elem.style.display = "none";
+                        this.clearFadeInOut(cancelable);
                         this.processPropertyListVisible(elem);
+                        if (done)
+                            done();
                     }
                     elem.style.opacity = opacity.toString();
-                }, 50);
+                }, 20);
             } else {
                 elem.style.opacity = "0";
+                this.clearFadeInOut(cancelable);
+                if (done)
+                    done();
             }
         }
     }

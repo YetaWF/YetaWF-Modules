@@ -71,43 +71,81 @@ var YetaWF_ComponentsHTML;
         // Fade in/out
         // Fade in/out
         // Fade in/out
-        ComponentsHTML.prototype.fadeIn = function (elem, ms) {
+        ComponentsHTML.prototype.cancelFadeInOut = function (cancelable) {
+            cancelable.Canceled = true;
+            cancelable.Active = false;
+        };
+        ComponentsHTML.prototype.isActiveFadeInOut = function (cancelable) {
+            return cancelable.Active;
+        };
+        ComponentsHTML.prototype.clearFadeInOut = function (cancelable) {
+            if (cancelable) {
+                cancelable.Canceled = false;
+                cancelable.Active = false;
+            }
+        };
+        ComponentsHTML.prototype.fadeIn = function (elem, ms, cancelable) {
+            var _this = this;
             elem.style.opacity = "0";
+            if (cancelable) {
+                cancelable.Canceled = false;
+                cancelable.Active = true;
+            }
             if (ms) {
                 var opacity = 0;
                 elem.style.display = "block";
                 this.processPropertyListVisible(elem);
                 var timer_1 = setInterval(function () {
-                    opacity += 50 / ms;
+                    if (cancelable && cancelable.Canceled) {
+                        _this.clearFadeInOut(cancelable);
+                        return;
+                    }
+                    opacity += 20 / ms;
                     if (opacity >= 1) {
                         clearInterval(timer_1);
                         opacity = 1;
+                        _this.clearFadeInOut(cancelable);
                     }
                     elem.style.opacity = opacity.toString();
-                }, 50);
+                }, 20);
             }
             else {
                 elem.style.opacity = "1";
+                this.clearFadeInOut(cancelable);
             }
         };
-        ComponentsHTML.prototype.fadeOut = function (elem, ms) {
+        ComponentsHTML.prototype.fadeOut = function (elem, ms, done, cancelable) {
             var _this = this;
             elem.style.opacity = "1";
+            if (cancelable) {
+                cancelable.Canceled = false;
+                cancelable.Active = true;
+            }
             if (ms) {
                 var opacity = 1;
                 var timer_2 = setInterval(function () {
-                    opacity -= 50 / ms;
+                    if (cancelable && cancelable.Canceled) {
+                        _this.clearFadeInOut(cancelable);
+                        return;
+                    }
+                    opacity -= 20 / ms;
                     if (opacity <= 0) {
                         clearInterval(timer_2);
                         opacity = 0;
                         elem.style.display = "none";
+                        _this.clearFadeInOut(cancelable);
                         _this.processPropertyListVisible(elem);
+                        if (done)
+                            done();
                     }
                     elem.style.opacity = opacity.toString();
-                }, 50);
+                }, 20);
             }
             else {
                 elem.style.opacity = "0";
+                this.clearFadeInOut(cancelable);
+                if (done)
+                    done();
             }
         };
         return ComponentsHTML;

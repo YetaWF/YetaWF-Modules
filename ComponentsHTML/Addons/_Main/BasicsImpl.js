@@ -231,7 +231,7 @@ var YetaWF_ComponentsHTML;
             }
             catch (e) { }
             // tooltips
-            YetaWF_ComponentsHTML.Tooltips.removeTooltips();
+            ToolTipsHTMLHelper.removeTooltips();
         };
         /**
          * Enable/disable an element.
