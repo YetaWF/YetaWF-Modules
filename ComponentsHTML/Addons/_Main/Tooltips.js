@@ -182,7 +182,7 @@ var YetaWF_ComponentsHTML;
                 ttLeft -= diff;
                 ttWidth += diff;
             }
-            tooltip.setAttribute('style', "top:" + (window.pageYOffset + ttTop) + "px;left:" + (window.pageXOffset + ttLeft) + "px;width:" + ttWidth + "px");
+            tooltip.setAttribute("style", "top:" + (window.pageYOffset + ttTop) + "px;left:" + (window.pageXOffset + ttLeft) + "px;width:" + ttWidth + "px");
             if (ComponentsHTMLHelper.isActiveFadeInOut(this.CancelObject)) {
                 ComponentsHTMLHelper.cancelFadeInOut(this.CancelObject);
                 tooltip.style.display = "block";

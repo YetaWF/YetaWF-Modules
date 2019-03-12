@@ -7,8 +7,8 @@ namespace YetaWF_ComponentsHTML {
      */
     export class Tooltips {
 
-        private readonly TOOLTIPCLASS = "yTooltip";
-        private readonly TOOLTIPACTIVEELEMCLASS = "yTooltipActive";
+        private readonly TOOLTIPCLASS: string = "yTooltip";
+        private readonly TOOLTIPACTIVEELEMCLASS: string = "yTooltipActive";
         private readonly fadeInTime: number = 200;
         private readonly fadeOutTime: number = 200;
 
@@ -192,11 +192,11 @@ namespace YetaWF_ComponentsHTML {
             // make it fit if it extends beyond right edge of window
             if (ttLeft + ttWidth > winWidth) {
                 let diff = (ttLeft + ttWidth) - winWidth;
-                ttLeft -= diff
+                ttLeft -= diff;
                 ttWidth += diff;
             }
 
-            tooltip.setAttribute('style', `top:${window.pageYOffset + ttTop}px;left:${window.pageXOffset + ttLeft}px;width:${ttWidth}px`);
+            tooltip.setAttribute("style", `top:${window.pageYOffset + ttTop}px;left:${window.pageXOffset + ttLeft}px;width:${ttWidth}px`);
             if (ComponentsHTMLHelper.isActiveFadeInOut(this.CancelObject)) {
                 ComponentsHTMLHelper.cancelFadeInOut(this.CancelObject);
                 tooltip.style.display = "block";
