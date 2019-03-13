@@ -6,7 +6,6 @@ using YetaWF.Modules.Blog.DataProvider;
 using YetaWF.Core.Support;
 #if MVC6
 using Microsoft.AspNetCore.Mvc;
-using YetaWF.Core.Support;
 #else
 using System.Web.Mvc;
 #endif

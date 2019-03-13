@@ -18,14 +18,11 @@ var YetaWF_ComponentsHTML;
         };
         ComponentsHTML.prototype.REQUIRES_JQUERYUI = function (run) {
             if (!YVolatile.YetaWF_ComponentsHTML.jqueryUI) {
-                // tslint:disable-next-line:no-debugger
-                debugger;
                 YVolatile.YetaWF_ComponentsHTML.jqueryUI = true;
                 $YetaWF.ContentHandling.loadAddons([
                     { AreaName: "YetaWF_ComponentsHTML", ShortName: "jqueryui", Argument1: null },
                     { AreaName: "YetaWF_ComponentsHTML", ShortName: "jqueryui-themes", Argument1: YVolatile.YetaWF_ComponentsHTML.jqueryUITheme }
                 ], function () {
-                    console.log("Done");
                     run();
                 });
             }
@@ -39,13 +36,10 @@ var YetaWF_ComponentsHTML;
         };
         ComponentsHTML.prototype.REQUIRES_KENDOUI = function (run) {
             if (!YVolatile.YetaWF_ComponentsHTML.kendoUI) {
-                // tslint:disable-next-line:no-debugger
-                debugger;
                 YVolatile.YetaWF_ComponentsHTML.kendoUI = true;
                 $YetaWF.ContentHandling.loadAddons([
                     { AreaName: "YetaWF_ComponentsHTML", ShortName: "telerik.com.Kendo_UI_Core", Argument1: YVolatile.YetaWF_ComponentsHTML.kendoUITheme }
                 ], function () {
-                    console.log("Done");
                     run();
                 });
             }
