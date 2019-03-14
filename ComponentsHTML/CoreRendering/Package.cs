@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using YetaWF.Core.Packages;
 using YetaWF.Core.Skins;
+using YetaWF.Modules.ComponentsHTML.Components;
 using YetaWF.Modules.ComponentsHTML.Controllers;
 
 namespace YetaWF.Modules.ComponentsHTML {
@@ -80,6 +81,9 @@ namespace YetaWF.Modules.ComponentsHTML {
             await Manager.AddOnManager.AddAddOnNamedAsync(Package.AreaName, "bassistance.de.jquery-validation");
             await Manager.AddOnManager.AddAddOnNamedAsync(Package.AreaName, "microsoft.com.jquery_unobtrusive_validation");
             await Manager.AddOnManager.AddAddOnNamedAsync(Package.AreaName, "gist.github.com_remi_957732.jquery_validate_hooks");
+            SkinAccess skinAccess = new SkinAccess();
+            if (!Manager.SkinInfo.UsingBootstrap || !Manager.SkinInfo.UsingBootstrapButtons)
+                await JqueryUICore.UseAsync(); // using jquery UI buttons
         }
         /// <summary>
         /// Adds any popup-specific addons for the current page that are required by the package rendering components and views.
