@@ -156,6 +156,8 @@ var YetaWF_ComponentsHTML;
             this.activeTooltip = tooltip;
             var winHeight = (window.innerHeight || document.documentElement.clientHeight);
             var winWidth = (window.innerWidth || document.documentElement.clientWidth);
+            var winXOffset = window.pageXOffset;
+            var winYOffset = window.pageYOffset;
             var elemRect = elem.getBoundingClientRect();
             var ttTop = elemRect.top + elemRect.height;
             var ttLeft = elemRect.left + elemRect.width;
@@ -177,12 +179,11 @@ var YetaWF_ComponentsHTML;
                 // default to bottom - it just doesn't fit
             }
             // make it fit if it extends beyond right edge of window
-            if (ttLeft + ttWidth > winWidth) {
-                var diff = (ttLeft + ttWidth) - winWidth;
+            if (ttLeft + ttWidth + 35 > winWidth) {
+                var diff = (ttLeft + ttWidth + 35) - winWidth;
                 ttLeft -= diff;
-                ttWidth += diff;
             }
-            tooltip.setAttribute("style", "top:" + (window.pageYOffset + ttTop) + "px;left:" + (window.pageXOffset + ttLeft) + "px;width:" + ttWidth + "px");
+            tooltip.setAttribute("style", "top:" + (winYOffset + ttTop) + "px;left:" + (winXOffset + ttLeft) + "px;width:" + ttWidth + "px");
             if (ComponentsHTMLHelper.isActiveFadeInOut(this.CancelObject)) {
                 ComponentsHTMLHelper.cancelFadeInOut(this.CancelObject);
                 tooltip.style.display = "block";
