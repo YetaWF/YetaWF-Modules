@@ -504,7 +504,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
                         } else if (prop.PropInfo.PropertyType == typeof(int) || prop.PropInfo.PropertyType == typeof(int?) || prop.PropInfo.PropertyType == typeof(long) || prop.PropInfo.PropertyType == typeof(long?)) {
 
-                            List<SelectionItem<int>> entries = await YetaWFComponentExtender.GetValueListFromUIHintAsync(prop.UIHint);
+                            List<SelectionItem<int>> entries = await YetaWFComponentExtender.GetSelectionListIntFromUIHintAsync(prop.UIHint);
                             if (entries == null) {
                                 // regular int/long
                                 filterOpts = new List<GridColumnInfo.FilterOptionEnum> {
@@ -532,7 +532,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                                 filterOpts = new List<GridColumnInfo.FilterOptionEnum> {
                                     GridColumnInfo.FilterOptionEnum.Equal, GridColumnInfo.FilterOptionEnum.NotEqual
                                 };
-                                filterType = "dynenum"; //$$ GetSelectionListAsync
+                                filterType = "dynenum"; //$$ GetSelectionListIntAsync
                                 entries.Insert(0, new SelectionItem<int> {
                                     Value = 0,
                                     Text = __ResStr("noSel", "(no selection)")
@@ -871,7 +871,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             } else {
                 if (!Manager.IsPostRequest) {
                     // when initially rendering a grid with 0 records, we have to prepare for all templates
-                    await YetaWFComponentExtender.AddTemplatesForType(model.RecordType);
+                    await YetaWFComponentExtender.AddComponentForType(model.RecordType);
                 }
             }
 
