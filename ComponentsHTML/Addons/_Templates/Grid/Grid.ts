@@ -803,6 +803,7 @@ namespace YetaWF_ComponentsHTML {
                         break;
                     case "bool":
                     case "enum":
+                    case "dynenum":
                         // handle selection change
                         $YetaWF.registerCustomEventHandlerDocument("dropdownlist_change", `#${col.FilterId}`, (ev: Event): boolean => {
                             this.reload(0);
@@ -847,8 +848,10 @@ namespace YetaWF_ComponentsHTML {
                     var edit = $YetaWF.getElementById(col.FilterId) as HTMLInputElement;
                     return edit.value;
                 case "dynenum":
-                    //$$$$
-                    return null;
+                    var dd: YetaWF_ComponentsHTML.DropDownListEditComponent = YetaWF.ComponentBaseDataImpl.getControlById(col.FilterId, DropDownListEditComponent.SELECTOR);
+                    if (dd.value === "-1")
+                        return null;
+                    return dd.value;
                 case "decimal":
                     var dec: YetaWF_ComponentsHTML.DecimalEditComponent = YetaWF.ComponentBaseDataImpl.getControlById(col.FilterId, DecimalEditComponent.SELECTOR);
                     return dec.valueText;
@@ -883,7 +886,8 @@ namespace YetaWF_ComponentsHTML {
                     edit.value = "";
                     break;
                 case "dynenum":
-                    //$$$$
+                    var dd: YetaWF_ComponentsHTML.DropDownListEditComponent = YetaWF.ComponentBaseDataImpl.getControlById(col.FilterId, DropDownListEditComponent.SELECTOR);
+                    dd.value = "-1";
                     break;
                 case "decimal":
                     var dec: YetaWF_ComponentsHTML.DecimalEditComponent = YetaWF.ComponentBaseDataImpl.getControlById(col.FilterId, DecimalEditComponent.SELECTOR);

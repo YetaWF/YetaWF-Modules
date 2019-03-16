@@ -532,9 +532,9 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                                 filterOpts = new List<GridColumnInfo.FilterOptionEnum> {
                                     GridColumnInfo.FilterOptionEnum.Equal, GridColumnInfo.FilterOptionEnum.NotEqual
                                 };
-                                filterType = "dynenum"; //$$ GetSelectionListIntAsync
+                                filterType = "dynenum";
                                 entries.Insert(0, new SelectionItem<int> {
-                                    Value = 0,
+                                    Value = -1,
                                     Text = __ResStr("noSel", "(no selection)")
                                 });
                                 FilterDynEnumUI filterUI = new FilterDynEnumUI {
