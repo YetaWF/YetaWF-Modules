@@ -78,22 +78,11 @@ var YetaWF_BootstrapCarousel;
             // disable if there is only one panel
             $YetaWF.elementEnableToggle(this.buttonDelete, panelCount > 1);
         };
-        SlideShowEdit.prototype.updateActiveTab = function (panel) {
-            // TODO:$$$ This needs to be moved into the tab control
-            var activeTab = $YetaWF.getElement1BySelector("input[name$='_ActiveTab']", [this.Control]);
-            activeTab.value = $YetaWF.getAttribute(panel, "data-tab");
-            this.updateButtons();
-        };
         SlideShowEdit.SELECTOR = ".yt_bootstrapcarousel_slideshow.t_edit";
         SlideShowEdit.TEMPLATENAME = "YetaWF_BootstrapCarousel_SlideShow";
         return SlideShowEdit;
     }(YetaWF.ComponentBaseDataImpl));
     YetaWF_BootstrapCarousel.SlideShowEdit = SlideShowEdit;
-    $YetaWF.registerPanelSwitched(function (panel) {
-        var ctrl = YetaWF.ComponentBaseDataImpl.getControlFromTagCond(panel, SlideShowEdit.SELECTOR);
-        if (ctrl != null)
-            ctrl.updateActiveTab(panel);
-    });
     // A <div> is being emptied. Destroy all controls the <div> may contain.
     $YetaWF.registerClearDiv(function (tag) {
         YetaWF.ComponentBaseDataImpl.clearDiv(tag, SlideShowEdit.SELECTOR);

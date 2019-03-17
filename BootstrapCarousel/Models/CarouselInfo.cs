@@ -159,6 +159,7 @@ namespace YetaWF.Modules.BootstrapCarousel.Models {
         }
         private void InsertSlide(int slideIndex) {
             Slides.Insert(slideIndex, new CarouselItem());
+            _ActiveTab = slideIndex;
         }
         private void AddSlide(int slideIndex) {
             Slides.Insert(slideIndex+1, new CarouselItem());
