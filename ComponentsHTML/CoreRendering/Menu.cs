@@ -34,6 +34,7 @@ namespace YetaWF.Modules.ComponentsHTML {
         {
             return RenderMenuAsync(menu, id, cssClass, RenderEngine: ModuleAction.RenderEngineEnum.BootstrapSmartMenu, HtmlHelper: HtmlHelper);
         }
+
         internal static async Task<YHtmlString> RenderMenuAsync(MenuList menu, string id = null, string cssClass = null,
             ModuleAction.RenderEngineEnum RenderEngine = ModuleAction.RenderEngineEnum.KendoMenu,
             bool Hidden = false,

@@ -61,6 +61,12 @@ namespace YetaWF.Modules.Menus.Controllers {
             return View(model);
         }
 
+        // Even with caching the main menu is a performance hit due to deserialization (turns out our Simple format is faster than JSON).
+        // Researched caching HTML which doesn't work due to missing side effect like CSS loading (megamenu) when menu is not rendered.
+        // Fortunately there is no performance hit when navigating within a UPS (SPA) or for static pages.
+        // The first full page load is also not a problem. It's mainly an issue when opening an additional tab in the browser (e.g., duplicate tab)
+        // or stress testing the site with full page loads.
+
         /// <summary>
         /// Builds the menu for the current user based on all available authorizations.
         /// </summary>
