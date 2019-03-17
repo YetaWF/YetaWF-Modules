@@ -65,7 +65,7 @@ $cellhorzpadding: 2px;
                 left: -$ddposwidth;
                 width:$entryheight;
                 height:$ddposwidth;
-                background: url(images.png) -96px 0px no-repeat; 
+                background: url(images.png) -96px 0px no-repeat;
                 &.t_on {
                     top:0;
                 }
@@ -97,16 +97,16 @@ $cellhorzpadding: 2px;
             margin-right: $folderrightmargin;
         }
         .t_icdown {
-            background: url(images.png) -24px 0px no-repeat; 
+            background: url(images.png) -24px 0px no-repeat;
         }
         .t_icright {
-            background: url(images.png) 0px 0px no-repeat; 
+            background: url(images.png) 0px 0px no-repeat;
         }
         .t_icfolder {
-            background: url(images.png) -48px 0px no-repeat; 
+            background: url(images.png) -48px 0px no-repeat;
         }
         .t_icfile {
-            background: url(images.png) -72px 0px no-repeat; 
+            background: url(images.png) -72px 0px no-repeat;
         }
     }
     .t_empty {
@@ -118,7 +118,7 @@ $cellhorzpadding: 2px;
         padding:0 $cellhorzpadding 0 $cellhorzpadding;
         display:inline-block;
         &.t_select {
-            background-color:#beebff;//$$$
+            background-color:#beebff;
             border-radius:2px;
             box-shadow: inset 0 0 1px #999;
         }
