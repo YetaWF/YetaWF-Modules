@@ -220,7 +220,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                 styleCss = " style='display:none'";
 
             hb.Append($@"
-<div class='tg_emptytr'{styleCss}'>
+<div class='tg_emptytr'{styleCss}>
     <div class='tg_emptydiv'>
         {HE(treeModel.NoRecordsText)}
     </div>
