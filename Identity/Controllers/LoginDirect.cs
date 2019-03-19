@@ -43,5 +43,14 @@ namespace YetaWF.Modules.Identity.Controllers {
             url = QueryHelper.AddRando(url); // to defeat client-side caching
             return Redirect(url);
         }
+        /// <summary>
+        /// Log off current user.
+        /// </summary>
+        [AllowPost]
+        public async Task<ActionResult> LogoffDirect() {
+            Manager.SetSuperUserRole(false);// explicit logoff clears superuser state
+            await LoginModuleController.UserLogoffAsync();
+            return new EmptyResult();
+        }
     }
 }

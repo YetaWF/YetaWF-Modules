@@ -12,7 +12,7 @@ var YetaWF_ComponentsHTML;
             this.InputDays = YetaWF.ComponentBaseDataImpl.getControlFromSelector("input[name$='Days']", YetaWF_ComponentsHTML.IntValueEditComponent.SELECTOR, [this.Control]);
             this.InputHours = YetaWF.ComponentBaseDataImpl.getControlFromSelector("input[name$='Hours']", YetaWF_ComponentsHTML.IntValueEditComponent.SELECTOR, [this.Control]);
             this.InputMins = YetaWF.ComponentBaseDataImpl.getControlFromSelector("input[name$='Minutes']", YetaWF_ComponentsHTML.IntValueEditComponent.SELECTOR, [this.Control]);
-            this.InputSecs = YetaWF.ComponentBaseDataImpl.getControlFromSelector("input[name$='Seconds']", YetaWF_ComponentsHTML.IntValueEditComponent.SELECTOR, [this.Control]);
+            this.InputSecs = YetaWF.ComponentBaseDataImpl.getControlFromSelectorCond("input[name$='Seconds']", YetaWF_ComponentsHTML.IntValueEditComponent.SELECTOR, [this.Control]);
             // capture changes in all edit controls
             this.InputDays.Control.addEventListener("intvalue_change", function (evt) {
                 _this.updateValue();
@@ -23,12 +23,19 @@ var YetaWF_ComponentsHTML;
             this.InputMins.Control.addEventListener("intvalue_change", function (evt) {
                 _this.updateValue();
             });
-            this.InputSecs.Control.addEventListener("intvalue_change", function (evt) {
-                _this.updateValue();
-            });
+            if (this.InputSecs) {
+                this.InputSecs.Control.addEventListener("intvalue_change", function (evt) {
+                    _this.updateValue();
+                });
+            }
         }
         TimeSpanEditComponent.prototype.updateValue = function () {
-            this.Hidden.value = this.InputDays.value + "." + this.InputHours.value + ":" + this.InputMins.value + ":" + this.InputSecs.value;
+            if (this.InputSecs) {
+                this.Hidden.value = this.InputDays.value + "." + this.InputHours.value + ":" + this.InputMins.value + ":" + this.InputSecs.value;
+            }
+            else {
+                this.Hidden.value = this.InputDays.value + "." + this.InputHours.value + ":" + this.InputMins.value;
+            }
         };
         return TimeSpanEditComponent;
     }());

@@ -174,3 +174,5 @@
 
 .yt_grid.tg_noskin {
   /* Not skin dependent formatting, usually module specific */ }
+  .yt_grid.tg_noskin .tg_table th, .yt_grid.tg_noskin .tg_table td {
+    font-size: 14px; }

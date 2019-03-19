@@ -230,4 +230,10 @@ $smbuttonhorzmargin: 2px;
     }
 }
 .yt_grid.tg_noskin { /* Not skin dependent formatting, usually module specific */
+    .tg_table {
+        th, td {
+            font-size:14px;
+        }
+    }
+
 }
