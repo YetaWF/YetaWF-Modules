@@ -70,6 +70,7 @@
   <ItemGroup>
     <Compile Include="Models\FeedbackDataProvider.cs" />
     <Compile Include="Models\FileDataProvider.cs" />
+    <Compile Include="Models\PostgreSQLDataProvider.cs" />
     <Compile Include="Models\SQLDataProvider.cs" />
     <Compile Include="Startup\Info.cs" />
     <Compile Include="Startup\AreaRegistration.cs" />
@@ -116,6 +117,10 @@
     <ProjectReference Include="..\..\..\DataProvider\ModuleDefinition\ModuleDefinition.csproj">
       <Project>{348F2A6B-57F5-47A3-8A46-3F44529ACD83}</Project>
       <Name>ModuleDefinition</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\DataProvider\PostgreSQL\PostgreSQL.csproj">
+      <Project>{3b509a72-ae1f-4aa1-9087-17c19b6cde51}</Project>
+      <Name>PostgreSQL</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\..\DataProvider\SQL\SQL.csproj">
       <Project>{6a90eab3-a9e4-4a2c-90d9-145859790c46}</Project>
