@@ -103,7 +103,7 @@ namespace YetaWF.Modules.Visitors.DataProvider {
             return await DataProvider.GetAsync(key);
         }
         public async Task<bool> AddItemAsync(VisitorEntry data) {
-            if (!Usable) return false;
+            if (!Usable || SiteIdentity == 0) return false;
             data.Referrer = data.Referrer.Truncate(Globals.MaxUrl);
             data.Url = data.Url.Truncate(Globals.MaxUrl);
             return await DataProvider.AddAsync(data);
