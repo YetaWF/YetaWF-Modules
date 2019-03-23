@@ -25,7 +25,7 @@ namespace YetaWF.Modules.Search.DataProvider {
 
         [Data_PrimaryKey, StringLength(Globals.MaxUrl)]
         public string PageUrl { get; set; }
-        [Data_NewValue("(0)")]
+        [Data_NewValue]
         public PageDefinition.PageSecurityType PageSecurity { get; set; }
 
         [StringLength(MaxTitle)]

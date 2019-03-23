@@ -64,7 +64,7 @@ namespace YetaWF.Modules.Blog.DataProvider {
         [StringLength(Globals.MaxEmail)]
         public string NotifyEmail { get; set; }
 
-        [Data_NewValue("(0)")]
+        [Data_NewValue]
         public bool NotifyNewComment { get; set; }
 
         public bool Feed { get; set; }

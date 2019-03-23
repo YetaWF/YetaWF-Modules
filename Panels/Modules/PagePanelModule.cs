@@ -63,7 +63,7 @@ namespace YetaWF.Modules.Panels.Modules {
         }
         [Category("General"), Caption("Style"), Description("Defines the appearance of page entries")]
         [UIHint("Enum")]
-        [Data_NewValue("(0)")]
+        [Data_NewValue]
         public PanelStyleEnum Style { get; set; }
 
         [Category("General"), Caption("Default Image"), Description("The default image used when a page doesn't define its own FavIcon")]

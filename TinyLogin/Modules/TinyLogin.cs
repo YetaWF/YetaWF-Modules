@@ -49,7 +49,7 @@ namespace YetaWF.Modules.TinyLogin.Modules {
         [UIHint("Boolean")]
         [Data_DontSave]
         public bool UsePopup { get { return !UseFullPage; } set { UseFullPage = !value; } }
-        [Data_NewValue("(0)")]
+        [Data_NewValue]
         public bool UseFullPage { get; set; }
 
         [Category("General"), Caption("Allow New Users"), Description("Allow registration of new users")]

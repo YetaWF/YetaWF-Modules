@@ -66,7 +66,7 @@ namespace YetaWF.Modules.Identity.Modules {
 
         [Category("General"), Caption("Post Login Query String"), Description("Defines whether the original query string is forwarded with the Post Login Url")]
         [UIHint("Boolean"), ProcessIfSupplied(nameof(PostRegisterUrl))]
-        [Data_NewValue("(0)")]
+        [Data_NewValue]
         public bool PostRegisterQueryString { get; set; }
 
         public override async Task<MenuList> GetModuleMenuListAsync(ModuleAction.RenderModeEnum renderMode, ModuleAction.ActionLocationEnum location) {

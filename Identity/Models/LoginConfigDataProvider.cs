@@ -40,9 +40,9 @@ namespace YetaWF.Modules.Identity.DataProvider {
         public bool ApproveNewUsers { get; set; }
         public bool NotifyAdminNewUsers { get; set; }
         public bool BccVerification { get; set; }
-        [Data_NewValue("(0)")]
+        [Data_NewValue]
         public int MaxLoginFailures { get; set; }
-        [Data_NewValue("(0)")]
+        [Data_NewValue]
         public bool BccForgottenPassword { get; set; }
         public bool PersistentLogin { get; set; }
         [StringLength(Globals.MaxUrl)]
@@ -66,13 +66,13 @@ namespace YetaWF.Modules.Identity.DataProvider {
         [Data_Binary]
         public SerializableList<Role> TwoStepAuth { get; set; }
 
-        [Data_NewValue("(0)")]
+        [Data_NewValue]
         public bool UseFacebook { get; set; }
-        [Data_NewValue("(0)")]
+        [Data_NewValue]
         public bool UseGoogle { get; set; }
-        [Data_NewValue("(0)")]
+        [Data_NewValue]
         public bool UseMicrosoft { get; set; }
-        [Data_NewValue("(0)")]
+        [Data_NewValue]
         public bool UseTwitter { get; set; }
 
         public bool DefinedFacebook {

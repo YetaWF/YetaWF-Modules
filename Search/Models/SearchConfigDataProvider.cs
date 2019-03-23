@@ -28,9 +28,9 @@ namespace YetaWF.Modules.Search.DataProvider {
         public string ResultsUrl { get; set; }
         [Range(1, 1000)]
         public int MaxResults { get; set; }
-        [Data_NewValue("(0)")]
+        [Data_NewValue]
         public bool ShowUrl { get; set; }
-        [Data_NewValue("(0)")]
+        [Data_NewValue]
         public bool ShowSummary { get; set; }
 
         public SearchConfigData() {

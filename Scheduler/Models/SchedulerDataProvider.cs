@@ -32,7 +32,7 @@ namespace YetaWF.Modules.Scheduler.DataProvider {
         public bool Startup { get; set; }
         public bool SiteSpecific { get; set; }
         public SchedulerFrequency Frequency { get; set; }
-        [Data_NewValue("(0)")]
+        [Data_NewValue]
         public TimeSpan TimeSpan { get; set; }
         public SchedulerEvent Event { get; set; }
 

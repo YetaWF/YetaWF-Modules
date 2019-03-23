@@ -58,7 +58,7 @@ namespace YetaWF.Modules.Pages.DataProvider {
         /// <summary>
         /// Defines whether popups are part of this Unified Page Set (used with SkinDynamicContent and DynamicContent only).
         /// </summary>
-        [Data_NewValue("(0)")]
+        [Data_NewValue]
         public bool Popups { get; set; }
 
         /// <summary>
