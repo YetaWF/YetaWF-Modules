@@ -25,7 +25,7 @@ namespace YetaWF.Modules.Dashboard.DataProvider {
         [Data_Index]
         public DateTime Created { get; set; }
         public int SiteIdentity { get; set; }
-        [Data_NewValue("(0)")]
+        [Data_NewValue]
         public int UserId { get; set; }
 
         [Data_Index]

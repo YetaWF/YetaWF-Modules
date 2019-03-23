@@ -21,7 +21,7 @@ namespace YetaWF.Modules.CurrencyConverter.DataProvider {
         [StringLength(MaxAppID)]
         public string AppID { get; set; }
         public bool UseHttps { get; set; }
-        [Data_NewValue("(0)")]
+        [Data_NewValue]
         public TimeSpan RefreshInterval { get; set; }
 
         public ConfigData() {

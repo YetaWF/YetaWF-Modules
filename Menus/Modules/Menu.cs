@@ -57,7 +57,7 @@ namespace YetaWF.Modules.Menus.Modules {
         [Obsolete("Do not use directly - use GetMenu()/SaveMenu() instead - preserved for data conversion (pre 1.1.1)")]
         public MenuList Menu { get; set; }
 
-        [Data_NewValue("(0)")]
+        [Data_NewValue]
         public long MenuVersion { get; set; }
 
         public void NewMenuVersion() { MenuVersion = MenuVersion+1; }

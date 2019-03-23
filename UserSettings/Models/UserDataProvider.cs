@@ -30,14 +30,14 @@ namespace YetaWF.Modules.UserSettings.DataProvider {
         [StringLength(MaxTimeZone)]
         public string TimeZone { get; set; }
         public Formatting.TimeFormatEnum TimeFormat { get; set; }
-        [Data_NewValue("(0)")]
+        [Data_NewValue]
         public Grid.GridActionsEnum GridActions { get; set; }
         [StringLength(LanguageData.MaxId)]
         public string LanguageId { get; set; }
         public bool ShowGridSearchToolbar { get; set; }
-        [Data_NewValue("(0)")]
+        [Data_NewValue]
         public bool ShowModuleOwnership { get; set; }
-        [Data_NewValue("(0)")]
+        [Data_NewValue]
         public bool ShowPageOwnership { get; set; }
         public bool ShowEnumValue { get; set; }
         public bool ShowVariables { get; set; }

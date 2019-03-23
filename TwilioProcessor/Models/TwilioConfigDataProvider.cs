@@ -39,9 +39,7 @@ namespace Softelvdm.Modules.TwilioProcessor.DataProvider {
         [StringLength(Globals.MaxPhoneNumber)]
         public string TestSMSNumber { get; set; }
 
-        [Data_NewValue("(0)")]
         public bool DeliveryReceipts { get; set; }
-        [Data_NewValue("(0)")]
         public bool UseHttps { get; set; }
 
         public bool IsSMSConfigured() {
