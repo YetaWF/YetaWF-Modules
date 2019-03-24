@@ -15,7 +15,7 @@ namespace YetaWF.Modules.Logging.DataProvider.SQL {
 
     public class SQLDataProvider : IExternalDataProvider {
         public void Register() {
-            // registration not used - log provider defined in appsettings
+            DataProviderImpl.RegisterExternalDataProvider(SQLBase.ExternalName, typeof(DataProvider.LogRecordDataProvider), typeof(LogRecordDataProvider));
         }
     }
 
@@ -101,7 +101,6 @@ namespace YetaWF.Modules.Logging.DataProvider.SQL {
             return await DataProvider.IsInstalledAsync();
         }
         public async Task<bool> InstallModelAsync(List<string> errorList) {
-            if (YetaWF.Core.Log.Logging.DefinedLoggerType != typeof(LogRecordDataProvider)) return true;
             if (YetaWF.Core.Support.Startup.MultiInstance) throw new InternalError("Installing new models is not possible when distributed caching is enabled");
             bool success = await DataProvider.InstallModelAsync(errorList);
             if (success)
@@ -109,7 +108,6 @@ namespace YetaWF.Modules.Logging.DataProvider.SQL {
             return success;
         }
         public async Task<bool> UninstallModelAsync(List<string> errorList) {
-            if (YetaWF.Core.Log.Logging.DefinedLoggerType != typeof(LogRecordDataProvider)) return true;
             if (YetaWF.Core.Support.Startup.MultiInstance) throw new InternalError("Uninstalling models is not possible when distributed caching is enabled");
             YetaWF.Core.Log.Logging.TerminateLogging();
             return await DataProvider.UninstallModelAsync(errorList);

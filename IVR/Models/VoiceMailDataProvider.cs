@@ -44,7 +44,6 @@ namespace Softelvdm.Modules.IVR.DataProvider {
         [StringLength(Globals.MaxUrl)]
         public string RecordingUrl { get; set; }
 
-        [Data_NewValue("(0)")]
         public bool Heard { get; set; }
 
         [StringLength(Globals.MaxPhoneNumber)]
