@@ -54,7 +54,6 @@ namespace Softelvdm.Modules.IVR.DataProvider {
         [Data_Binary]
         public WeeklyHours OpeningHours { get; set; }
 
-        [Data_NewValue("(0)")]
         public int MaxErrors { get; set; }
 
         public IVRConfig() {

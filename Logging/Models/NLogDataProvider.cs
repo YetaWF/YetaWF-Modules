@@ -26,7 +26,7 @@ namespace YetaWF.Modules.Logging.DataProvider.NLogProvider {
         private const string NLogSettingsFile = "nlog.config";
         private const string NLogMessageFormat = "NLogMessageFormat";
         private const string NLogMessageEvent = "NLogMessageEvent";
-        
+
         public static string MessageFormat { get; private set; }
         public static bool MessageEvent { get; private set; }
 
@@ -81,7 +81,7 @@ namespace YetaWF.Modules.Logging.DataProvider.NLogProvider {
         private SQLSimpleObject<int, LogRecord> _dataProvider;
 
         private SQLSimpleObject<int, LogRecord> CreateDataProvider() {
-            // can't use CurrentPackage as RegisterAllAreas has not yet been called 
+            // can't use CurrentPackage as RegisterAllAreas has not yet been called
             Package package = Package.GetPackageFromAssembly(GetType().Assembly);
             Dictionary<string, object> options = new Dictionary<string, object>() {
                 { "Package", package },
@@ -120,7 +120,7 @@ namespace YetaWF.Modules.Logging.DataProvider.NLogProvider {
         private SQLSimpleObject<int, LogRecord> _dataProvider;
 
         private SQLSimpleObject<int, LogRecord> CreateDataProvider() {
-            // can't use CurrentPackage as RegisterAllAreas has not yet been called 
+            // can't use CurrentPackage as RegisterAllAreas has not yet been called
             Package package = Package.GetPackageFromAssembly(GetType().Assembly);
 
             Dictionary<string, object> options = new Dictionary<string, object>() {

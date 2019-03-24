@@ -10,12 +10,13 @@ using YetaWF.Core.Log;
 using YetaWF.Core.Packages;
 using YetaWF.Core.Serializers;
 using YetaWF.Core.Support;
+using YetaWF.DataProvider;
 
 namespace YetaWF.Modules.Logging.DataProvider.File {
 
     public class FileDataProvider : IExternalDataProvider {
         public void Register() {
-            // registration not used - log provider defined in appsettings
+            DataProviderImpl.RegisterExternalDataProvider(FileDataProviderBase.ExternalName, typeof(DataProvider.LogRecordDataProvider), typeof(LogRecordDataProvider));
         }
     }
 
