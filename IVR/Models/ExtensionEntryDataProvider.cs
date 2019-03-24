@@ -20,7 +20,7 @@ namespace Softelvdm.Modules.IVR.DataProvider {
     public class ExtensionPhoneNumber {
         [StringLength(Globals.MaxPhoneNumber)]
         public string PhoneNumber { get; set; }
-        [Data_NewValue("(0)")]
+        [Data_NewValue]
         public bool SendSMS { get; set; }
     }
 
