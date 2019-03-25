@@ -8,7 +8,6 @@ using YetaWF.Core.Addons;
 using YetaWF.Core.Components;
 using YetaWF.Core.Localize;
 using YetaWF.Core.Models;
-using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Packages;
 using YetaWF.Core.Support;
 using Newtonsoft.Json;
@@ -24,6 +23,8 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
     /// <summary>
     /// Base class for the Tree component implementation.
     /// </summary>
+    /// <remarks>TODO: This needs to be revisited. Generating the tree hierarchy is quite expensive for large trees. This needs to lean more on the client side to do some of the work.
+    /// Since most trees are initially shown collapsed, a "render/populate as you go" approach would be better.</remarks>
     public abstract class TreeComponentBase : YetaWFComponent {
 
         internal static string __ResStr(string name, string defaultValue, params object[] parms) { return ResourceAccess.GetResourceString(typeof(TreeComponentBase), name, defaultValue, parms); }
