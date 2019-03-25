@@ -751,11 +751,14 @@ new YetaWF_ComponentsHTML.Grid('{model.Id}', {JsonConvert.SerializeObject(setup,
             }
             hb.Append("</ul>");
 
-            Manager.ScriptManager.AddLast($@"
-$('#{idMenu}').kendoMenu({{
-    orientation: 'vertical',
-    select: function(ev) {{ YetaWF_ComponentsHTML.Grid.menuSelected(ev.item, {colIndex}); }}
-}});");// JQuery/Kendo UI Use
+            // The <script> below is sent to client-side code where it is added, do not add to page server-side
+            hb.Append($@"
+<script>
+    $('#{idMenu}').kendoMenu({{
+        orientation: 'vertical',
+        select: function(ev) {{ YetaWF_ComponentsHTML.Grid.menuSelected(ev.item, {colIndex}); }}
+    }});
+</script>");// JQuery/Kendo UI Use
 
             return hb.ToString();
         }
