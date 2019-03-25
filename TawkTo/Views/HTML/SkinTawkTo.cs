@@ -20,50 +20,50 @@ namespace YetaWF.Modules.TawkTo.Views {
 
         public Task<YHtmlString> RenderViewAsync(SkinTawkToModule module, SkinTawkToModuleController.DisplayModel model) {
 
-            HtmlBuilder hb = new HtmlBuilder();
+            ScriptBuilder sb = new ScriptBuilder();
 
             ConfigData config = ConfigDataProvider.GetConfigAsync().Result;
 
-            hb.Append($@"
-<script>
-    // https://www.tawk.to/javascript-api/
-    var Tawk_API = Tawk_API || {{}}, Tawk_LoadStart = new Date();");
+            sb.Append($@"
+// https://www.tawk.to/javascript-api/
+var Tawk_API = Tawk_API || {{}}, Tawk_LoadStart = new Date();");
 
             if (Manager.HaveUser) {
-                hb.Append($@"
-    Tawk_API.visitor = {{
-        name: '{JE(Manager.UserName)}',
-        email: '{JE(Manager.UserEmail)}',
-        hash: '{JE(model.Hash)}'
-    }};");
+                sb.Append($@"
+Tawk_API.visitor = {{
+    name: '{JE(Manager.UserName)}',
+    email: '{JE(Manager.UserEmail)}',
+    hash: '{JE(model.Hash)}'
+}};");
             }
 
-            hb.Append($@"
-    (function() {{
-        var s1=document.createElement('script'),s0=document.getElementsByTagName('script')[0];
-        s1.async=true;
-        s1.src = '{JE(string.Format("https://embed.tawk.to/{0}/default", YetaWFManager.UrlEncodePath(config.Account)))}';
-        s1.charset='UTF-8';
-        s1.setAttribute('crossorigin','*');
-        s0.parentNode.insertBefore(s1,s0);
-    }})();");
+            sb.Append($@"
+(function() {{
+    var s1=document.createElement('script'),s0=document.getElementsByTagName('script')[0];
+    s1.async=true;
+    s1.src = '{JE(string.Format("https://embed.tawk.to/{0}/default", YetaWFManager.UrlEncodePath(config.Account)))}';
+    s1.charset='UTF-8';
+    s1.setAttribute('crossorigin','*');
+    s0.parentNode.insertBefore(s1,s0);
+}})();");
 
 
-            hb.Append(@"
-    /* Hide widget when printing */
-    window.onbeforeprint = function () {
-        if (Tawk_API) {
-            Tawk_API.hideWidget();
-        }
-    };
-    window.onafterprint = function () {
-        if (Tawk_API) {
-            Tawk_API.showWidget();
-        }
-    };
-</script>");
+            sb.Append(@"
+/* Hide widget when printing */
+window.onbeforeprint = function () {
+    if (Tawk_API) {
+        Tawk_API.hideWidget();
+    }
+};
+window.onafterprint = function () {
+    if (Tawk_API) {
+        Tawk_API.showWidget();
+    }
+};");
 
-            return Task.FromResult(hb.ToYHtmlString());
+            Manager.ScriptManager.AddLast(sb.ToString());
+
+            return Task.FromResult(new YHtmlString());
         }
     }
 }

@@ -19,13 +19,10 @@ namespace YetaWF.Modules.Pages.Views {
 
         public Task<YHtmlString> RenderViewAsync(SkinScrollToTopModule module, SkinScrollToTopModuleController.DisplayModel model) {
 
-            HtmlBuilder hb = new HtmlBuilder();
+            Manager.ScriptManager.AddLast($@"
+YetaWF_Pages_ScrollUp.init();");
 
-            hb.Append($@"
-<script>
-    YetaWF_Pages_ScrollUp.init();
-</script>");
-            return Task.FromResult(hb.ToYHtmlString());
+            return Task.FromResult(new YHtmlString());
         }
     }
 }

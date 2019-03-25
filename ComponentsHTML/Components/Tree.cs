@@ -174,10 +174,9 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 <div id='{treeModel.Id}' class='yt_tree t_display {(treeModel.UseSkinFormatting ? "tg_skin ui-corner-top ui-widget ui-widget-content" : "tg_noskin")}'{dd}>
     {headerHTML}
     {html}
-</div>
-<script>
-    new YetaWF_ComponentsHTML.TreeComponent('{treeModel.Id}', {JsonConvert.SerializeObject(setup, new JsonSerializerSettings { StringEscapeHandling = StringEscapeHandling.EscapeHtml })});
-</script>");
+</div>");
+
+            Manager.ScriptManager.AddLast($"new YetaWF_ComponentsHTML.TreeComponent('{treeModel.Id}', {JsonConvert.SerializeObject(setup, new JsonSerializerSettings { StringEscapeHandling = StringEscapeHandling.EscapeHtml })});");
 
             return hb.ToYHtmlString();
         }

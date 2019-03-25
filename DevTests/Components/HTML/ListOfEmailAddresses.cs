@@ -176,10 +176,9 @@ namespace YetaWF.Modules.DevTests.Components {
             };
 
             hb.Append($@"
-</div>
-<script>
-    new YetaWF_DevTests.ListOfEmailAddressesEditComponent('{DivId}', {YetaWFManager.JsonSerialize(setup)});
-</script>");
+</div>");
+
+            Manager.ScriptManager.AddLast($@"new YetaWF_DevTests.ListOfEmailAddressesEditComponent('{DivId}', {YetaWFManager.JsonSerialize(setup)});");
 
             return hb.ToYHtmlString();
         }

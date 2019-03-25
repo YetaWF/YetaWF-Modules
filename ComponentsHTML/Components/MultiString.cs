@@ -257,10 +257,9 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             //};
 
             hb.Append($@"
-</div>
-<script>
-    new YetaWF_ComponentsHTML.MultiStringEditComponent('{component.DivId}');
-</script>");
+</div>");
+
+            Manager.ScriptManager.AddLast($@"new YetaWF_ComponentsHTML.MultiStringEditComponent('{component.DivId}');");
 
             return hb.ToYHtmlString();
         }

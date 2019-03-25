@@ -57,12 +57,6 @@ namespace YetaWF.Modules.ImageRepository.Components {
             <div id='{objId}'>
                 <p>{HE(__ResStr("noFlash", "Flash Not Installed"))}</p>
             </div>
-            <script>
-                {BeginDocumentReady()}
-                    swfobject.embedSWF('{YetaWFManager.JserEncode(info.MakeFlashUrl(model))}', '{objId}', '{info.PreviewWidth}', '{info.PreviewHeight}', '9.0.0', false,
-                        null, {{ wmode: 'transparent', allowScriptAccess: 'true', quality:'high' }} );
-                {EndDocumentReady()}
-            </script>
         </div>
     </div>
     <div class='t_haveflash' {(string.IsNullOrWhiteSpace(model) ? "style='display:none'" : "")}>
@@ -72,10 +66,14 @@ namespace YetaWF.Modules.ImageRepository.Components {
     <div class='t_uploadarea'>
         {await HtmlHelper.ForEditAsync(info, nameof(info.FileUpload1))}
     </div>
-</div>
-<script>
-    new YetaWF_ImageRepository.FlashRepository('{ControlId}');
-</script>");
+</div>");
+
+            Manager.ScriptManager.AddLast($@"
+{BeginDocumentReady()}
+    swfobject.embedSWF('{YetaWFManager.JserEncode(info.MakeFlashUrl(model))}', '{objId}', '{info.PreviewWidth}', '{info.PreviewHeight}', '9.0.0', false,
+        null, {{ wmode: 'transparent', allowScriptAccess: 'true', quality:'high' }} );
+{EndDocumentReady()}
+new YetaWF_ImageRepository.FlashRepository('{ControlId}');");
 
             return hb.ToYHtmlString();
         }

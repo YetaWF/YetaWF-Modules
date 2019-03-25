@@ -126,7 +126,8 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                     apply: '{JE(__ResStr("apply", "Apply"))}'
                 }}
             }}));");
-            hb.Append(Manager.ScriptManager.AddNow(sb.ToString()).ToString());
+
+            Manager.ScriptManager.AddLast(sb.ToString());
 
             return Task.FromResult(hb.ToYHtmlString());
         }

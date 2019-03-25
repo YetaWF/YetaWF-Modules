@@ -225,11 +225,9 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             int step = PropData.GetAdditionalAttributeValue<int>("Step", 1);
 
             hb.Append($@"
-{tag.ToString(YTagRenderMode.StartTag)}
-<script>
-    new YetaWF_ComponentsHTML.IntValueEditComponent('{id}', {{ Min: {min}, Max: {max}, Step: {step}, NoEntryText: '{JE(noEntry??"")}' }});
-</script>
-");
+{tag.ToString(YTagRenderMode.StartTag)}");
+
+            Manager.ScriptManager.AddLast($@"new YetaWF_ComponentsHTML.IntValueEditComponent('{id}', {{ Min: {min}, Max: {max}, Step: {step}, NoEntryText: '{JE(noEntry??"")}' }});");
 
             return Task.FromResult(hb.ToYHtmlString());
         }

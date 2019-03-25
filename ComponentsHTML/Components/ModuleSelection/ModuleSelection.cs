@@ -231,10 +231,9 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
     </div>
     <div class='t_description'>
     </div>
-</div>
-<script>
-    new YetaWF_ComponentsHTML.ModuleSelectionEditComponent('{DivId}', {YetaWFManager.JsonSerialize(setup)});
-</script>");
+</div>");
+
+            Manager.ScriptManager.AddLast($@"new YetaWF_ComponentsHTML.ModuleSelectionEditComponent('{DivId}', {YetaWFManager.JsonSerialize(setup)});");
 
             return hb.ToYHtmlString();
         }

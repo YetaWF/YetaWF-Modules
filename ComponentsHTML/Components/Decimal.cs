@@ -125,11 +125,10 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                 tag.MergeAttribute("value", ((decimal)model).ToString(format));
 
             hb.Append($@"
-{tag.ToString(YTagRenderMode.StartTag)}
-<script>
-new YetaWF_ComponentsHTML.DecimalEditComponent('{id}', {{ Min: {min}, Max: {max} }});
-</script>
-");
+{tag.ToString(YTagRenderMode.StartTag)}");
+
+            Manager.ScriptManager.AddLast($@"new YetaWF_ComponentsHTML.DecimalEditComponent('{id}', {{ Min: {min}, Max: {max} }});");
+
             return Task.FromResult(hb.ToYHtmlString());
         }
     }

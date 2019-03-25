@@ -75,9 +75,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         /// </remarks>
         public static async Task<YHtmlString> RenderTabInitAsync(string controlId, object model) {
 
-            HtmlBuilder hb = new HtmlBuilder();
-            hb.Append($@"
-<script>");
+            ScriptBuilder sb = new ScriptBuilder();
 
             // About tab switching and registerPanelSwitched/processPanelSwitched
             // This event occurs even for the first tab, but event handlers may not yet be attached.
@@ -91,31 +89,30 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                 if (ObjectSupport.TryGetPropertyValue<int>(model, "_ActiveTab", out activeTab, 0)) {
                     // add a hidden field for _ActiveTab property
                     activeTabId = Manager.UniqueId();
-                    hb.Append($@"
-    $('#{controlId}').append(""<input name='_ActiveTab' type='hidden' value='{activeTab}' id='{activeTabId}' >"");");
+                    sb.Append($@"
+$('#{controlId}').append(""<input name='_ActiveTab' type='hidden' value='{activeTab}' id='{activeTabId}' >"");");
                 }
             }
             if (Manager.CurrentSite.TabStyle == YetaWF.Core.Site.TabStyleEnum.JQuery) {
 
                 await JqueryUICore.UseAsync();
 
-                hb.Append($@"
-    YetaWF_ComponentsHTML.PropertyListComponent.tabInitjQuery('{controlId}', {activeTab}, '{activeTabId}');");
+                sb.Append($@"
+YetaWF_ComponentsHTML.PropertyListComponent.tabInitjQuery('{controlId}', {activeTab}, '{activeTabId}');");
 
             } else if (Manager.CurrentSite.TabStyle == YetaWF.Core.Site.TabStyleEnum.Kendo) {
 
                 await KendoUICore.AddFileAsync("kendo.data.min.js");
                 await KendoUICore.AddFileAsync("kendo.tabstrip.min.js");
-                hb.Append($@"
-    YetaWF_ComponentsHTML.PropertyListComponent.tabInitKendo('{controlId}', {activeTab}, '{activeTabId}');");
+                sb.Append($@"
+YetaWF_ComponentsHTML.PropertyListComponent.tabInitKendo('{controlId}', {activeTab}, '{activeTabId}');");
 
             } else
                 throw new InternalError("Unknown tab control style");
 
-            hb.Append($@"
-</script>");
+            Manager.ScriptManager.AddLast(sb.ToString());
 
-            return hb.ToYHtmlString();
+            return new YHtmlString();
         }
     }
 }

@@ -210,12 +210,14 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                     hb.Append($@"
 <div class='yt_yetawf_menus_menu t_display' role='navigation'>
     {menu}
-</div>
-<script>
-    $('#{DivId}').kendoMenu({{
-        direction: '{model.GetDirection()}',
-        orientation: '{model.GetOrientation()}',
-        popupCollision: 'fit flip',");
+</div>");
+
+                    ScriptBuilder sb = new ScriptBuilder();
+                    sb.Append($@"
+$('#{DivId}').kendoMenu({{
+    direction: '{model.GetDirection()}',
+    orientation: '{model.GetOrientation()}',
+    popupCollision: 'fit flip',");
 
                     //if (Module.UseAnimation) {
                     //    @:  animation: {
@@ -224,18 +226,20 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                     //    @:  },
                     //},
 
-                    hb.Append($@"
-        hoverDelay: {model.HoverDelay}
-    }});");
+                    sb.Append($@"
+    hoverDelay: {model.HoverDelay}
+}});");
 
                     if (model.ShowPath) {
-                        using (DocumentReady(hb, DivId)) {
-                            hb.Append($@"
-    YetaWF_Menu.init('@DivId');");
-                        }
+
+                        sb.Append($@"
+{BeginDocumentReady(DivId)}
+    YetaWF_Menu.init('#{DivId}');
+{EndDocumentReady()}");
+
                     }
-                    hb.Append($@"
-</script>");
+
+                    Manager.ScriptManager.AddLast(sb.ToString());
                 }
             }
 

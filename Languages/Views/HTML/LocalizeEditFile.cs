@@ -46,15 +46,15 @@ namespace YetaWF.Modules.Languages.Views {
         new FormButton() { ButtonType= ButtonTypeEnum.Button, Text=this.__ResStr("btnReset", "Restore Defaults"), Title = this.__ResStr("btnResetTT", "Removes custom and installed localization resources for the current language (US-English default resources are never removed)"), Id = btnReset },
         new FormButton() { ButtonType= ButtonTypeEnum.Cancel, },
     })}
-{await RenderEndFormAsync()}
-<script>
-    $('#{btnReset}').on('click', function (e) {{
-        var form = $YetaWF.Forms.getForm(this);
-        $YetaWF.alertYesNo('{JE(this.__ResStr("confirmResetText","Are you sure you want to restore the default settings?"))}', null, function () {{
-             $YetaWF.Forms.submit(form, true, 'RestoreDefaults=true');
-        }});
+{await RenderEndFormAsync()}");
+
+            Manager.ScriptManager.AddLast($@"
+$('#{btnReset}').on('click', function (e) {{
+    var form = $YetaWF.Forms.getForm(this);
+    $YetaWF.alertYesNo('{JE(this.__ResStr("confirmResetText","Are you sure you want to restore the default settings?"))}', null, function () {{
+            $YetaWF.Forms.submit(form, true, 'RestoreDefaults=true');
     }});
-</script>");
+}});");
 
             return hb.ToYHtmlString();
         }

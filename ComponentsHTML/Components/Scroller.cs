@@ -71,10 +71,9 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         </div>
     </div>
     <a class='t_right' href='javascript:void(0)'></a>
-</div>
-<script>
-    new YetaWF_ComponentsHTML.ScrollerComponent('{DivId}');
-</script>");
+</div>");
+
+            Manager.ScriptManager.AddLast($@"new YetaWF_ComponentsHTML.ScrollerComponent('{DivId}');");
 
             return hb.ToYHtmlString();
         }

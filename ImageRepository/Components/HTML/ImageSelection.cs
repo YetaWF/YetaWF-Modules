@@ -58,10 +58,9 @@ namespace YetaWF.Modules.ImageRepository.Components {
     <div class='t_uploadarea'>
         {await HtmlHelper.ForEditAsync(info, nameof(info.FileUpload1))}
     </div>
-</div>
-<script>
-    new YetaWF_ImageRepository.ImageRepository('{ControlId}');
-</script>");
+</div>");
+
+            Manager.ScriptManager.AddLast($@"new YetaWF_ImageRepository.ImageRepository('{ControlId}');");
 
             return hb.ToYHtmlString();
         }

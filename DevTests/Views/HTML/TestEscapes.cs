@@ -37,9 +37,9 @@ namespace YetaWF.Modules.DevTests.Views {
         new FormButton() { ButtonType= ButtonTypeEnum.Submit, },
         new FormButton() { ButtonType= ButtonTypeEnum.Cancel, },
     })}
-{await RenderEndFormAsync()}
+{await RenderEndFormAsync()}");
 
-<script>
+            Manager.ScriptManager.AddLast($@"
     $('#{DivId}').on('click', 'input[name=""message""]', function () {{
         $YetaWF.message('TEST <A> &amp; & @ {0} TEST');
     }});
@@ -57,9 +57,7 @@ namespace YetaWF.Modules.DevTests.Views {
     }});
     $('#{DivId}').on('click', 'input[name=""pleaseWait""]', function () {{
         $YetaWF.pleaseWait('Reload page to continue\n\nTEST <A> &amp; & @ {{0}} TEST', 'TITLE <A> &amp; & @ {{0}} TEST');
-    }});
-</script>
-");
+    }});");
 
             return hb.ToYHtmlString();
         }

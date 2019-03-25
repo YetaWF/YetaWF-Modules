@@ -369,9 +369,7 @@ namespace YetaWF.Modules.Basics.Views {
 
 </div>");
 
-
-            hb.Append($@"
-<script>
+            Manager.ScriptManager.AddLast($@"
     var $list = $('#{DivId}');
     // The text is embedded in a <span> which allows us the get the exact width (instead of the div's 100%)
     var width = $('.t_row.t_characters .yt_textarea .t_chars', $list).width();
@@ -382,7 +380,6 @@ namespace YetaWF.Modules.Basics.Views {
     // calculate width/height and show in property list
     $('.t_row.t_width .t_vals', $list).text((width/(26+26+10)).toFixed(2));
     $('.t_row.t_height .t_vals', $list).text((height / 2).toFixed(2));
-</script>
 ");
 
             return hb.ToYHtmlString();

@@ -62,10 +62,9 @@ namespace YetaWF.Modules.Menus.Views {
             })}
         </div>
         <div class='y_cleardiv'></div>
-    </div>
-    <script>
-        new YetaWF_Menus.MenuEditView({YetaWFManager.JsonSerialize(setup)});
-    </script>");
+    </div>");
+
+            Manager.ScriptManager.AddLast($@"new YetaWF_Menus.MenuEditView({YetaWFManager.JsonSerialize(setup)});");
 
             return hb.ToYHtmlString();
         }

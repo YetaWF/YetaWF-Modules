@@ -201,10 +201,9 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 {tag.ToString(YTagRenderMode.Normal)}");
 
             if (sb.Length > 0) {
-                hb.Append($@"
-<script>
-    {sb.ToString()}
-</script>");
+
+                Manager.ScriptManager.AddLast(sb.ToString());
+
             }
             return hb.ToYHtmlString();
         }

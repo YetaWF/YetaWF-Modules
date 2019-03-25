@@ -147,10 +147,9 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
             }
             hb.Append($@"
-</div>
-<script>
-    new YetaWF_ComponentsHTML.TimeSpanEditComponent('{ControlId}');
-</script>");
+</div>");
+
+            Manager.ScriptManager.AddLast($"new YetaWF_ComponentsHTML.TimeSpanEditComponent('{ControlId}');");
 
             return hb.ToYHtmlString();
         }

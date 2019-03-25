@@ -85,10 +85,9 @@ namespace YetaWF.Modules.BootstrapCarousel.Components {
         <span class='carousel-control-next-icon' aria-hidden='true'></span>
         <span class='sr-only'>Next</span>
     </a>
-</div>
-<script>
-    $('#{ControlId}').carousel();
-</script>");
+</div>");
+
+            Manager.ScriptManager.AddLast($@"$('#{ControlId}').carousel();");
 
             return hb.ToYHtmlString();
         }
@@ -134,10 +133,9 @@ namespace YetaWF.Modules.BootstrapCarousel.Components {
         <input type='button' class='t_add' value='{HAE(this.__ResStr("btnAdd", "Add"))}' title='{HAE(this.__ResStr("txtAdd", "Click to add a new image after the current image"))}' />
         <input type='button' class='t_delete' value='{HAE(this.__ResStr("btnDelete", "Remove"))}' title='{HAE(this.__ResStr("txtDelete", "Click to remove the current image"))}' />
     </div>
-</div>
-<script>
-    new YetaWF_BootstrapCarousel.SlideShowEdit('{ControlId}');
-</script>");
+</div>");
+
+            Manager.ScriptManager.AddLast($@"new YetaWF_BootstrapCarousel.SlideShowEdit('{ControlId}');");
 
             return hb.ToYHtmlString();
         }

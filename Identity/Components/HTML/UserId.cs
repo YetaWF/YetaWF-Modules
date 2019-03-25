@@ -200,10 +200,7 @@ namespace YetaWF.Modules.Identity.Components {
                     NoUser = noUser,
                 };
 
-                hb.Append($@"
-<script>
-    new YetaWF_Identity.UserIdEditComponent('{DivId}', {YetaWFManager.JsonSerialize(setup)});
-</script>");
+                Manager.ScriptManager.AddLast($@"new YetaWF_Identity.UserIdEditComponent('{DivId}', {YetaWFManager.JsonSerialize(setup)});");
 
             } else {
 

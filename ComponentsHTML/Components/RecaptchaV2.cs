@@ -47,21 +47,17 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             hb.Append(await HtmlHelper.ForDisplayAsync(model, nameof(RecaptchaV2Data.VerifyPresence)));
 
             if (Manager.IsPostRequest) { // We only need to render the recaptcha for postbacks. The initial setup is done in recaptchav2.js in response to the onload function called by google api
-                hb.Append($@"
-<script>
-    if (typeof grecaptcha != 'undefined') {{
-        grecaptcha.render('{DivId}', {{
-            'sitekey': YConfigs.YetaWF_ComponentsHTML.SiteKey,
-            'theme': YConfigs.YetaWF_ComponentsHTML.Theme,
-            'size': YConfigs.YetaWF_ComponentsHTML.Size,
-        }});
-    }}
-</script>");
+
+                Manager.ScriptManager.AddLast($@"
+if (typeof grecaptcha != 'undefined') {{
+    grecaptcha.render('{DivId}', {{
+        'sitekey': YConfigs.YetaWF_ComponentsHTML.SiteKey,
+        'theme': YConfigs.YetaWF_ComponentsHTML.Theme,
+        'size': YConfigs.YetaWF_ComponentsHTML.Size,
+    }});
+}}");
             } else {
-                hb.Append($@"
-<script>
-    new YetaWF_ComponentsHTML.RecaptchaV2.recaptchaInit('{DivId}');
-</script>");
+                Manager.ScriptManager.AddLast($@"new YetaWF_ComponentsHTML.RecaptchaV2.recaptchaInit('{DivId}');");
             }
             return hb.ToYHtmlString();
         }

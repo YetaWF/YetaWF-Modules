@@ -86,10 +86,9 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
     <div class='t_drop'>{HAE(model.DropFilesText)}</div>
     <div class='t_progressbar'></div>
     <input type='file' name='__filename' class='t_filename' style='display:none' />
-</div>
-<script>
-    new YetaWF_ComponentsHTML.FileUpload1Component('{ControlId}', {YetaWFManager.JsonSerialize(setup)});
-</script>");
+</div>");
+
+            Manager.ScriptManager.AddLast($@"new YetaWF_ComponentsHTML.FileUpload1Component('{ControlId}', {YetaWFManager.JsonSerialize(setup)});");
 
             return Task.FromResult(hb.ToYHtmlString());
         }

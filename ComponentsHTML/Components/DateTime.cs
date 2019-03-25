@@ -143,10 +143,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
             hb.Append($"</div>");
 
-            hb.Append($@"
-<script>
-new YetaWF_ComponentsHTML.DateTimeEditComponent('{ControlId}', {YetaWFManager.JsonSerialize(setup)});
-</script>");
+            Manager.ScriptManager.AddLast($@"new YetaWF_ComponentsHTML.DateTimeEditComponent('{ControlId}', {YetaWFManager.JsonSerialize(setup)});");
 
             return hb.ToYHtmlString();
         }

@@ -49,10 +49,10 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                 hb.Append($@"
 <div id='{DivId}' class='yt_smtpserver t_edit'>
     {await HtmlHelper.ForEditContainerAsync(model, "PropertyList")}
-</div>
-<script>
-    new YetaWF_ComponentsHTML.SMTPServer('{DivId}');
-</script>");
+</div>");
+
+                Manager.ScriptManager.AddLast($@"new YetaWF_ComponentsHTML.SMTPServer('{DivId}');");
+
                 return hb.ToYHtmlString();
             }
         }

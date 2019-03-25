@@ -234,11 +234,11 @@ namespace YetaWF.Modules.Pages.Components {
         {await ModuleActionHelper.BuiltIn_CollapseAction(__ResStr("lblAllPages", "All Pages"), __ResStr("ttAllPages", "Shows all designed pages available in the site - Select a page to update the dropdown list above, so the page can be added to the list of pages")).RenderAsNormalLinkAsync() }
         {await HtmlHelper.ForDisplayAsAsync(Container, PropertyName, FieldName, gridAll, nameof(gridAll.GridDef), gridAll.GridDef, "Grid")}
     </div>
-</div>
-<script>
-    $YetaWF.expandCollapseHandling('{DivId}', '{DivId}_coll', '{DivId}_exp');
-    new YetaWF_Pages.ListOfLocalPagesEditComponent('{DivId}', {YetaWFManager.JsonSerialize(setup)});
-</script>");
+</div>");
+
+            Manager.ScriptManager.AddLast($@"
+$YetaWF.expandCollapseHandling('{DivId}', '{DivId}_coll', '{DivId}_exp');
+new YetaWF_Pages.ListOfLocalPagesEditComponent('{DivId}', {YetaWFManager.JsonSerialize(setup)});");
 
             return hb.ToYHtmlString();
         }

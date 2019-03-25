@@ -1,6 +1,5 @@
 ﻿/* Copyright © 2019 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/ComponentsHTML#License */
 
-using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using YetaWF.Core.Components;
@@ -25,70 +24,32 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
     public abstract class YetaWFView : YetaWFViewBase {
 
         /// <summary>
-        /// An instance of this class is returned by the DocumentReady method.
-        /// </summary>
-        /// <remarks>The DocumentReady object is used to generated HTML when the object is disposed.</remarks>
-        protected class JSDocumentReady : IDisposable {
-
-            /// <summary>
-            /// Constructor.
-            /// </summary>
-            /// <param name="hb">The HtmlBuilder instance used to generate HTML.</param>
-            /// <remarks>
-            /// The JSDocumentReady is never directly instantiated. A JSDocumentReady object is made available by calling the DocumentReady method.
-            ///
-            /// For debugging purposes, instances of this class are tracked using the DisposableTracker class.
-            /// </remarks>
-            public JSDocumentReady(HtmlBuilder hb) {
-                this.HB = hb;
-                DisposableTracker.AddObject(this);
-            }
-            /// <summary>
-            /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
-            /// </summary>
-            public void Dispose() { Dispose(true); }
-            /// <summary>
-            /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
-            /// </summary>
-            /// <param name="disposing">true to release the DisposableTracker reference count, false otherwise.</param>
-            protected virtual void Dispose(bool disposing) {
-                if (disposing) DisposableTracker.RemoveObject(this);
-                while (CloseParen > 0) {
-                    HB.Append("}");
-                    CloseParen = CloseParen - 1;
-                }
-                HB.Append("});");
-            }
-            //~JSDocumentReady() { Dispose(false); }
-            private HtmlBuilder HB { get; set; }
-            /// <summary>
-            /// Used to generate the specified number of closing parentheses.
-            /// </summary>
-            public int CloseParen { get; internal set; }
-        }
-        /// <summary>
-        /// Adds JavaScript code to execute code between DocumentReady and when the JSDocumentReady is disposed which is
+        /// Adds JavaScript code to execute code between BeginDocumentReady and EndDocumentReady which is
         /// executed once the page is fully loaded (see $YetaWF.addWhenReadyOnce, similar to $(document).ready()).
         /// </summary>
         /// <remarks>This pattern should not be used and will be discontinued.</remarks>
-        /// <param name="hb">The HtmlBuilder instance where the code is generated.</param>
         /// <param name="id">The ID of the HTML element.</param>
-        /// <returns>Returns a JSDocumentReady instance.</returns>
-        protected JSDocumentReady DocumentReady(HtmlBuilder hb, string id) {
-            hb.Append($@"$YetaWF.addWhenReadyOnce(function (tag) {{ if ($(tag).has('#{id}').length > 0) {{");
-            return new JSDocumentReady(hb) { CloseParen = 1 };
+        /// <returns>The Javascript code.</returns>
+        protected string BeginDocumentReady(string id = null) {
+            if (string.IsNullOrWhiteSpace(id)) {
+                DocCloseParen = 0;
+                return "$YetaWF.addWhenReadyOnce(function (tag) {";
+            } else {
+                DocCloseParen = 1;
+                return $@"$YetaWF.addWhenReadyOnce(function (tag) {{ if ($(tag).has('#{id}').length > 0) {{";
+            }
         }
         /// <summary>
-        /// Adds JavaScript code to execute code between DocumentReady and when the JSDocumentReady is disposed which is
-        /// executed once the page is fully loaded (see $YetaWF.addWhenReadyOnce, similar to $(document).ready()).
+        /// Ends a JavaScript code section started by BeginDocumentReady, which contains JavaScript code to execute once
+        /// the page is fully loaded (see $YetaWF.addWhenReadyOnce, similar to $(document).ready()).
         /// </summary>
         /// <remarks>This pattern should not be used and will be discontinued.</remarks>
-        /// <param name="hb">The HtmlBuilder instance where the code is generated.</param>
-        /// <returns>Returns a JSDocumentReady instance.</returns>
-        protected JSDocumentReady DocumentReady(HtmlBuilder hb) {
-            hb.Append("$YetaWF.addWhenReadyOnce(function (tag) {\n");
-            return new JSDocumentReady(hb);
+        /// <returns>The Javascript code.</returns>
+        protected string EndDocumentReady() {
+            return (DocCloseParen > 0 ? "}" : "") + "});";
         }
+        private int DocCloseParen;
+
         /// <summary>
         /// Renders the beginning &lt;form&gt; tag with the specified attributes.
         /// </summary>

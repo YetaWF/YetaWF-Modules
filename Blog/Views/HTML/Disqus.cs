@@ -23,8 +23,10 @@ namespace YetaWF.Modules.Blog.Views {
             HtmlBuilder hb = new HtmlBuilder();
 
             hb.Append($@"
-<div id='disqus_thread'></div>
-<script>
+<div id='disqus_thread'></div>");
+
+            ScriptBuilder sb = new ScriptBuilder();
+            sb.Append($@"
     var disqus_config = function () {{
         this.page.url = '{YetaWFManager.JserEncode(Manager.CurrentPage.EvaluatedCanonicalUrl)}';
         this.page.identifier = '{YetaWFManager.JserEncode(Manager.CurrentPage.PageGuid.ToString())}';
@@ -32,12 +34,12 @@ namespace YetaWF.Modules.Blog.Views {
         this.page.language = '{MultiString.ActiveLanguage.Substring(0, 2)}';");
 
             if (model.UseSSO && !string.IsNullOrWhiteSpace(model.AuthPayload)) {
-                hb.Append($@"
+                sb.Append($@"
         this.page.remote_auth_s3 = '{YetaWFManager.JserEncode(model.AuthPayload)}';
         this.page.api_key = '{YetaWFManager.JserEncode(model.PublicKey)}';");
             }
             if (model.UseSSO) {
-                hb.Append($@"
+                sb.Append($@"
         this.sso = {{
             name: '{YetaWFManager.JserEncode(Manager.CurrentSite.SiteDomain)}',
             //button: 'https://yetawf.com/images/samplenews.gif',
@@ -49,7 +51,7 @@ namespace YetaWF.Modules.Blog.Views {
         }};");
            }
 
-            hb.Append($@"
+            sb.Append($@"
     }};
     (function () {{
         var d = document, s = d.createElement('script');
@@ -58,6 +60,8 @@ namespace YetaWF.Modules.Blog.Views {
         (d.head || d.body).appendChild(s);
     }})();
 </script>");
+
+            Manager.ScriptManager.AddLast(sb.ToString());
 
             return Task.FromResult(hb.ToYHtmlString());
         }

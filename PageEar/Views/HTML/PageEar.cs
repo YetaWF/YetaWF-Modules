@@ -32,26 +32,24 @@ namespace YetaWF.Modules.PageEar.Views {
 
             if (module.AdImage_Data.Length > 0 && module.CoverImage_Data.Length > 0 && !string.IsNullOrWhiteSpace(module.ClickUrl)) {
 
-                hb.Append($@"
-<script>
-    $('body').peelback({{
-        adImage: '{JE(ImageHTML.FormatUrl(YetaWF.Core.Modules.ModuleImageSupport.ImageType, null, module.AdImage))}',
-        peelImage: '{JE(ImageHTML.FormatUrl(YetaWF.Core.Modules.ModuleImageSupport.ImageType, null, module.CoverImage))}',
-        clickURL: '{JE(module.ClickUrl)}',
-        smallSize: {module.SmallSize},
-        bigSize: {module.LargeSize},
-        autoAnimate: {(module.Animate ? "true" : "false")},
-        //gaTrack: true, //RFFU
-        //gaLabel: '#1 Stegosaurus',
-        debug: false
-    }});
+                Manager.ScriptManager.AddLast($@"
+$('body').peelback({{
+    adImage: '{JE(ImageHTML.FormatUrl(YetaWF.Core.Modules.ModuleImageSupport.ImageType, null, module.AdImage))}',
+    peelImage: '{JE(ImageHTML.FormatUrl(YetaWF.Core.Modules.ModuleImageSupport.ImageType, null, module.CoverImage))}',
+    clickURL: '{JE(module.ClickUrl)}',
+    smallSize: {module.SmallSize},
+    bigSize: {module.LargeSize},
+    autoAnimate: {(module.Animate ? "true" : "false")},
+    //gaTrack: true, //RFFU
+    //gaLabel: '#1 Stegosaurus',
+    debug: false
+}});
 
-    // Listen for events that the page is changing
-    $YetaWF.registerPageChange(function () {{
-        // when the page is removed, we need to clean up
-        $('#peelback').remove();
-    }});
-</script>");
+// Listen for events that the page is changing
+$YetaWF.registerPageChange(function () {{
+    // when the page is removed, we need to clean up
+    $('#peelback').remove();
+}});");
 
             }
             return Task.FromResult(hb.ToYHtmlString());

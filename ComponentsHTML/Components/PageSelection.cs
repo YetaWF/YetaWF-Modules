@@ -141,10 +141,9 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
     </div>
     <div class='t_description'>
     </div>
-</div>
-<script>
-    new YetaWF_ComponentsHTML.PageSelectionEditComponent('{DivId}');
-</script>");
+</div>");
+
+            Manager.ScriptManager.AddLast($@"new YetaWF_ComponentsHTML.PageSelectionEditComponent('{DivId}');");
 
             return hb.ToYHtmlString();
         }

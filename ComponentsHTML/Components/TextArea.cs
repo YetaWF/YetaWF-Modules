@@ -85,11 +85,12 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
                 hb.Append(tag.ToHtmlString(YTagRenderMode.Normal));
 
-                hb.Append($@"<script>
-                    CKEDITOR.replace('{ControlId}', {{
-                        customConfig: '{YetaWFManager.JserEncode(Manager.GetCDNUrl(url))}',
-                        height: '{pixHeight}px'
-                    }});</script>");
+                Manager.ScriptManager.AddLast($@"
+CKEDITOR.replace('{ControlId}', {{
+    customConfig: '{YetaWFManager.JserEncode(Manager.GetCDNUrl(url))}',
+    height: '{pixHeight}px'
+}});");
+
             } else {
 
                 if (string.IsNullOrWhiteSpace(text))
@@ -199,41 +200,42 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             tag.SetInnerText(text);
             hb.Append(tag.ToString(YTagRenderMode.Normal));
 
-            hb.Append($@"
-<script>
-    CKEDITOR.replace('{ControlId}', {{
-    customConfig: '{Manager.GetCDNUrl(url)}',
-        height: '{pixHeight}px',
-        allowedContent: {(restrictedHtml ? "false" : "true")},");
+            ScriptBuilder sb = new ScriptBuilder();
+            sb.Append($@"
+CKEDITOR.replace('{ControlId}', {{
+customConfig: '{Manager.GetCDNUrl(url)}',
+    height: '{pixHeight}px',
+    allowedContent: {(restrictedHtml ? "false" : "true")},");
 
             if (!string.IsNullOrWhiteSpace(filebrowserImageBrowseUrl)) {
-                hb.Append($@"
-        filebrowserImageBrowseUrl: '{YetaWFManager.JserEncode(filebrowserImageBrowseUrl)}',
-        filebrowserImageBrowseLinkUrl: '{YetaWFManager.JserEncode(filebrowserImageBrowseUrl)}',");
+                sb.Append($@"
+    filebrowserImageBrowseUrl: '{YetaWFManager.JserEncode(filebrowserImageBrowseUrl)}',
+    filebrowserImageBrowseLinkUrl: '{YetaWFManager.JserEncode(filebrowserImageBrowseUrl)}',");
             }
             if (!string.IsNullOrWhiteSpace(filebrowserFlashBrowseUrl)) {
-                hb.Append($@"
-        filebrowserFlashBrowseUrl: '{YetaWFManager.JserEncode(filebrowserFlashBrowseUrl)}',");
+                sb.Append($@"
+    filebrowserFlashBrowseUrl: '{YetaWFManager.JserEncode(filebrowserFlashBrowseUrl)}',");
             }
             if (!string.IsNullOrWhiteSpace(filebrowserFlashBrowseUrl)) {
-                hb.Append($@"
-        filebrowserBrowseUrl: '{YetaWFManager.JserEncode(filebrowserPageBrowseUrl)}',");
+                sb.Append($@"
+    filebrowserBrowseUrl: '{YetaWFManager.JserEncode(filebrowserPageBrowseUrl)}',");
             }
-            hb.Append($@"
-        filebrowserWindowFeatures: 'modal=yes,location=no,menubar=no,toolbar=no,dependent=yes,minimizable=no,alwaysRaised=yes,resizable=yes,scrollbars=yes'
-    }});
-    // save data in the textarea field when the form is submitted
-    $YetaWF.Forms.addPreSubmitHandler({(Manager.InPartialView? 1 : 0)}, {{
-        form: $YetaWF.Forms.getForm($YetaWF.getElementById('{ControlId}')),
-        callback: function(entry) {{
-            var $ctl = $('#{ControlId}');
-            var ckEd = CKEDITOR.instances['{ControlId}'];
-            var data = ckEd.getData();
-            $ctl.val(data);
-            //return $ctl[0].name + '&' + encodeURI(data);
-        }}
-    }});
-</script>");
+            sb.Append($@"
+    filebrowserWindowFeatures: 'modal=yes,location=no,menubar=no,toolbar=no,dependent=yes,minimizable=no,alwaysRaised=yes,resizable=yes,scrollbars=yes'
+}});
+// save data in the textarea field when the form is submitted
+$YetaWF.Forms.addPreSubmitHandler({(Manager.InPartialView ? 1 : 0)}, {{
+    form: $YetaWF.Forms.getForm($YetaWF.getElementById('{ControlId}')),
+    callback: function(entry) {{
+        var $ctl = $('#{ControlId}');
+        var ckEd = CKEDITOR.instances['{ControlId}'];
+        var data = ckEd.getData();
+        $ctl.val(data);
+        //return $ctl[0].name + '&' + encodeURI(data);
+    }}
+}});");
+
+            Manager.ScriptManager.AddLast(sb.ToString());
 
             return hb.ToYHtmlString();
         }
