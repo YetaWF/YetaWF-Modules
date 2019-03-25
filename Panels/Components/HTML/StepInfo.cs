@@ -50,10 +50,9 @@ namespace YetaWF.Modules.Panels.Components {
             }
 
             hb.Append($@"
-</div>
-<script>
-    new YetaWF_Panels.StepInfoComponent('{ControlId}');
-</script>");
+</div>");
+
+            Manager.ScriptManager.AddLast($@"new YetaWF_Panels.StepInfoComponent('{ControlId}');");
 
             return Task.FromResult(hb.ToYHtmlString());
         }
@@ -100,10 +99,9 @@ namespace YetaWF.Modules.Panels.Components {
         <input type='button' class='t_add' value='{this.__ResStr("btnAdd", "Add")}' title='{this.__ResStr("txtAdd", "Click to add a new step after the current step")}' />
         <input type='button' class='t_delete' value='{this.__ResStr("btnDelete", "Remove")}' title='{this.__ResStr("txtDelete", "Click to remove the current step")}' />
     </div>
-</div>
-<script>
-    new YetaWF_Panels.StepInfoEditComponent('{ControlId}');
-</script>");
+</div>");
+
+            Manager.ScriptManager.AddLast($@"new YetaWF_Panels.StepInfoEditComponent('{ControlId}');");
 
             return hb.ToYHtmlString();
         }

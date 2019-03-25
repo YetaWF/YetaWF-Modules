@@ -97,17 +97,17 @@ namespace YetaWF.Modules.Panels.Components {
                     }
                 }
                 hb.Append($@"
-    </div>
-    <script>
-        $('#{DivId}').accordion({{
-            collapsible: true,
-            heightStyle: 'content',
-            activate: function (ev, ui) {{
-                if (ui.newPanel[0])
-                    $YetaWF.processActivateDivs([ui.newPanel[0]]);
-            }}
-        }});
-    </script>");
+    </div>");
+
+                Manager.ScriptManager.AddLast($@"
+$('#{DivId}').accordion({{
+    collapsible: true,
+    heightStyle: 'content',
+    activate: function (ev, ui) {{
+        if (ui.newPanel[0])
+            $YetaWF.processActivateDivs([ui.newPanel[0]]);
+    }}
+}});");
 
             } else if (model.Style == PanelInfo.PanelStyleEnum.AccordionKendo) {
 
@@ -143,32 +143,29 @@ namespace YetaWF.Modules.Panels.Components {
                     }
                 }
                 hb.Append($@"
-    </ul>");
+    </ul>
+</div>");
 
                 await KendoUICore.AddFileAsync("kendo.data.min.js");
                 await KendoUICore.AddFileAsync("kendo.panelbar.min.js");
-                hb.Append($@"
-    <script>
-        $('#{DivId}').kendoPanelBar({{
-            expandMode: 'single',
-            activate: function(ev) {{
-                if (ev.item[0])
-                    $YetaWF.processActivateDivs([ev.item[0]]);
-            }}
-        }});
-        var $panelBar = $('#{DivId}').kendoPanelBar().data('kendoPanelBar');
-        $panelBar.select();
-    </script>");
+
+                Manager.ScriptManager.AddLast($@"
+$('#{DivId}').kendoPanelBar({{
+    expandMode: 'single',
+    activate: function(ev) {{
+        if (ev.item[0])
+            $YetaWF.processActivateDivs([ev.item[0]]);
+    }}
+}});
+var $panelBar = $('#{DivId}').kendoPanelBar().data('kendoPanelBar');
+$panelBar.select();");
+
             }
-            hb.Append($@"
-    <script>");
-            using (DocumentReady(hb, ControlId)) {
-                hb.Append($@"$YetaWF.processActivateDivs([$YetaWF.getElementById('{ControlId}')]);");
-            }
-            hb.Append($@"
-    </script>
-</div>
-");
+
+            Manager.ScriptManager.AddLast($@"
+{BeginDocumentReady(ControlId)}
+    $YetaWF.processActivateDivs([$YetaWF.getElementById('{ControlId}')]);
+{EndDocumentReady()} ");
 
             return hb.ToYHtmlString();
         }
@@ -215,10 +212,9 @@ namespace YetaWF.Modules.Panels.Components {
         <input type='button' class='t_add' value='{this.__ResStr("btnAdd", "Add")}' title='{this.__ResStr("txtAdd", "Click to add a new panel after the current panel")}' />
         <input type='button' class='t_delete' value='{this.__ResStr("btnDelete", "Remove")}' title='{this.__ResStr("txtDelete", "Click to remove the current panel")}' />
     </div>
-</div>
-<script>
-    new YetaWF_Panels.PanelInfoEditComponent('{ControlId}');
-</script>");
+</div>");
+
+            Manager.ScriptManager.AddLast($@"new YetaWF_Panels.PanelInfoEditComponent('{ControlId}');");
 
             return hb.ToYHtmlString();
         }

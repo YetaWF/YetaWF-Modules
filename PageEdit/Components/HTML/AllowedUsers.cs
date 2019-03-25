@@ -191,11 +191,11 @@ namespace YetaWF.Modules.PageEdit.Components {
         {await ModuleActionHelper.BuiltIn_CollapseAction(__ResStr("lblAllUserNames", "All User Names"), __ResStr("ttAllUserNames", "Shows all user names available on this site - Select a user name to update the text box above, so the user name can be added to the list of user names - Click to close")).RenderAsNormalLinkAsync() }
         {await HtmlHelper.ForDisplayAsAsync(Container, PropertyName, FieldName, gridAll, nameof(gridAll.GridDef), gridAll.GridDef, "Grid")}
     </div>
-</div>
-<script>
-    $YetaWF.expandCollapseHandling('{DivId}', '{DivId}_coll', '{DivId}_exp');
-    new YetaWF_PageEdit.AllowedUsersEditComponent('{DivId}', {YetaWFManager.JsonSerialize(setup)});
-</script>");
+</div>");
+
+            Manager.ScriptManager.AddLast($@"
+$YetaWF.expandCollapseHandling('{DivId}', '{DivId}_coll', '{DivId}_exp');
+new YetaWF_PageEdit.AllowedUsersEditComponent('{DivId}', {YetaWFManager.JsonSerialize(setup)});");
 
             return hb.ToYHtmlString();
         }

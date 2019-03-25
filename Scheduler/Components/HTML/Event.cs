@@ -134,10 +134,9 @@ namespace YetaWF.Modules.Scheduler.Components {
             </div>
         </div>
     </div>
-</div>
-<script>
-    new YetaWF_Scheduler.EventEditComponent('{ControlId}');
-</script>");
+</div>");
+
+                Manager.ScriptManager.AddLast($@"new YetaWF_Scheduler.EventEditComponent('{ControlId}');");
             }
 
             return hb.ToYHtmlString();

@@ -81,14 +81,13 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                     ActionIconsSetup setup = new ActionIconsSetup {
                         MenuId = ControlId + "_menu",
                     };
-                    hb.Append($@"
+                        hb.Append($@"
 <button id='{buttonId}' type='button' class='yt_actionicons'>
     {HE(__ResStr("dropdownText", "Manage"))}<span class='k-icon k-i-arrow-60-down'></span>
     {await CoreRendering.RenderMenuAsync(model, setup.MenuId, Globals.CssGridActionMenu, HtmlHelper: HtmlHelper, Hidden: true)}
-</button>
-<script>
-    new YetaWF_ComponentsHTML.ActionIconsComponent('{buttonId}', {YetaWFManager.JsonSerialize(setup)});
-</script>");
+</button>");
+
+                        Manager.ScriptManager.AddLast($@"new YetaWF_ComponentsHTML.ActionIconsComponent('{buttonId}', {YetaWFManager.JsonSerialize(setup)});");
                     break;
                 }
             }

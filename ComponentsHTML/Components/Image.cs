@@ -168,9 +168,9 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             HtmlBuilder hb = new HtmlBuilder();
             hb.Append($@"
 <div class='yt_image t_edit' id='{ControlId}'>
-    {(await HtmlHelper.ForEditComponentAsync(Container, PropertyName, model, "Hidden", Validation:true)).ToString()}
+    {(await HtmlHelper.ForEditComponentAsync(Container, PropertyName, model, "Hidden", Validation: true)).ToString()}
     <div class='t_image'>
-        {(await HtmlHelper.ForDisplayComponentAsync(Container, PropertyName, model, TemplateName, HtmlAttributes: new { alt = __ResStr("imgAlt", "Preview Image") } )).ToString()}
+        {(await HtmlHelper.ForDisplayComponentAsync(Container, PropertyName, model, TemplateName, HtmlAttributes: new { alt = __ResStr("imgAlt", "Preview Image") })).ToString()}
     </div>
     <div class='t_info'>
         {(await RenderImageAttributesAsync(model)).ToString()}
@@ -178,11 +178,10 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
     <div class='t_haveimage' {(string.IsNullOrWhiteSpace(model) ? "style='display:none'" : "")}>
         <input type='button' class='t_clear' value='{__ResStr("btnClear", "Clear")}' title='{__ResStr("txtClear", "Click to clear the current image")}' />
     </div>
-    {(await HtmlHelper.ForEditContainerAsync(setupUpload, "FileUpload1", HtmlAttributes:new { id = uploadId })).ToString()}
-</div>
-<script>
-    new YetaWF_ComponentsHTML.ImageEditComponent('{ControlId}', {YetaWFManager.JsonSerialize(setup)});
-</script>");
+    {(await HtmlHelper.ForEditContainerAsync(setupUpload, "FileUpload1", HtmlAttributes: new { id = uploadId })).ToString()}
+</div>");
+
+            Manager.ScriptManager.AddLast($@"new YetaWF_ComponentsHTML.ImageEditComponent('{ControlId}', {YetaWFManager.JsonSerialize(setup)});");
 
             return hb.ToYHtmlString();
         }

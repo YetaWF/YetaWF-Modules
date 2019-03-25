@@ -26,11 +26,11 @@ namespace YetaWF.Modules.Identity.Views {
 <div class='t_message'>
     {HE(this.__ResStr("need2FA", "Please set up Two-Step Authentication for full access to this site - "))}
     {await model.SetupAction.RenderAsLinkAsync()}
-</div>
-<script>
-    var mod = $YetaWF.getElementById('{module.ModuleHtmlId}');
-    document.body.insertBefore(mod, document.body.firstChild);
-</script>");
+</div>");
+
+            Manager.ScriptManager.AddLast($@"
+var mod = $YetaWF.getElementById('{module.ModuleHtmlId}');
+document.body.insertBefore(mod, document.body.firstChild);");
 
             return hb.ToYHtmlString();
         }

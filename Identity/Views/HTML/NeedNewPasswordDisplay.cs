@@ -26,11 +26,9 @@ namespace YetaWF.Modules.Identity.Views {
 <div class='t_message'>
     {HE(this.__ResStr("needNewPassword", "Please change your login password - "))}
     {await model.ChangePasswordAction.RenderAsLinkAsync()}
-</div>
-<script>
- $('#{module.ModuleHtmlId}').prependTo('body');
-</script>
-");
+</div>");
+
+            Manager.ScriptManager.AddLast($@"$('#{module.ModuleHtmlId}').prependTo('body');");
 
             return hb.ToYHtmlString();
         }

@@ -295,10 +295,8 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 </div>");
 
 
-            hb.Append($@"
-<script>
-    new YetaWF_ComponentsHTML.Grid('{model.Id}', {JsonConvert.SerializeObject(setup, new JsonSerializerSettings { StringEscapeHandling = StringEscapeHandling.EscapeHtml })});
-</script>");
+            Manager.ScriptManager.AddLast($@"
+new YetaWF_ComponentsHTML.Grid('{model.Id}', {JsonConvert.SerializeObject(setup, new JsonSerializerSettings { StringEscapeHandling = StringEscapeHandling.EscapeHtml })});");
 
             return hb.ToYHtmlString();
         }
@@ -752,13 +750,13 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                 hb.Append($"<li data-sel='{(int)option}'{liCss}><span class='t_fmenuicon'>{HE(icon)}</span><span class='t_fmenutext'>{HE(text)}</span></li>");
             }
             hb.Append("</ul>");
-            hb.Append($@"
-<script>
-    $('#{idMenu}').kendoMenu({{
-        orientation: 'vertical',
-        select: function(ev) {{ YetaWF_ComponentsHTML.Grid.menuSelected(ev.item, {colIndex}); }}
-    }});
-</script>");// JQuery/Kendo UI Use
+
+            Manager.ScriptManager.AddLast($@"
+$('#{idMenu}').kendoMenu({{
+    orientation: 'vertical',
+    select: function(ev) {{ YetaWF_ComponentsHTML.Grid.menuSelected(ev.item, {colIndex}); }}
+}});");// JQuery/Kendo UI Use
+
             return hb.ToString();
         }
 

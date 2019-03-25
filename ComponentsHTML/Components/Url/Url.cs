@@ -201,10 +201,10 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
     <div class='t_link'>
         {link}
     </div>
-</div>
-<script>
-    new YetaWF_ComponentsHTML.UrlEditComponent('{ControlId}', {YetaWFManager.JsonSerialize(setup)});
-</script>");
+</div>");
+
+            Manager.ScriptManager.AddLast($"new YetaWF_ComponentsHTML.UrlEditComponent('{ControlId}', {YetaWFManager.JsonSerialize(setup)});");
+
             return hb.ToYHtmlString();
         }
     }

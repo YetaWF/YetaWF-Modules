@@ -186,9 +186,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             }
             hb.Append($"</div>");
 
-            ScriptBuilder sb = new ScriptBuilder();
-            sb.Append($@"(new YetaWF_ComponentsHTML.DayTimeRangeComponent('{ControlId}'));");
-            hb.Append(Manager.ScriptManager.AddNow(sb.ToString()).ToString());
+            Manager.ScriptManager.AddLast($@"(new YetaWF_ComponentsHTML.DayTimeRangeComponent('{ControlId}'));");
 
             return hb.ToYHtmlString();
         }

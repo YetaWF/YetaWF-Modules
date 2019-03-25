@@ -144,10 +144,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             if (!readOnly) {
                 ControlData cd = GetControlSets(model, divId);
                 if (cd != null) {
-                    hb.Append($@"
-<script>
-    new YetaWF_ComponentsHTML.PropertyListComponent('{divId}', {YetaWFManager.JsonSerialize(cd)});
-</script>");
+                    Manager.ScriptManager.AddLast($@"new YetaWF_ComponentsHTML.PropertyListComponent('{divId}', {YetaWFManager.JsonSerialize(cd)});");
                 }
             }
             return hb.ToYHtmlString();
@@ -185,10 +182,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             if (!ReadOnly) {
                 ControlData cd = GetControlSets(model, divId);
                 if (cd != null) {
-                    hb.Append($@"
-<script>
-    new YetaWF_ComponentsHTML.PropertyListComponent('{divId}', {YetaWFManager.JsonSerialize(cd)});
-</script>");
+                    Manager.ScriptManager.AddLast($@"new YetaWF_ComponentsHTML.PropertyListComponent('{divId}', {YetaWFManager.JsonSerialize(cd)});");
                 }
             }
 

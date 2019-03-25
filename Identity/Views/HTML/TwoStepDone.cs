@@ -19,11 +19,9 @@ namespace YetaWF.Modules.Identity.Views {
 
         public Task<YHtmlString> RenderViewAsync(ModuleDefinition module, object model) {
 
-            HtmlBuilder hb = new HtmlBuilder();
+            Manager.ScriptManager.AddLast($@"window.close();");
 
-            hb.Append($@"<script>window.close();</script>");
-
-            return Task.FromResult(hb.ToYHtmlString());
+            return Task.FromResult(new YHtmlString());
         }
     }
 }

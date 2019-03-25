@@ -38,12 +38,12 @@ namespace YetaWF.Modules.DevTests.Views {
 <input type='button' value='step1' name='Step1' />
 <input type='button' value='step1-step2' name='Step12' />
 <input type='button' value='step1-step3' name='Step13' />
-<input type='button' value='step1-step4' name='Step14' />
-<script>
+<input type='button' value='step1-step4' name='Step14' />");
+
+            Manager.ScriptManager.AddLast($@"
 if (typeof YetaWF_Panels !== 'undefined' && YetaWF_Panels.StepInfoComponent) {{
     YetaWF_Panels.StepInfoComponent.setActive({{Name: 'YetaWF_DevTests_Step1'}});
-}}
-</script>");
+}}");
 
             return hb.ToYHtmlString();
         }
