@@ -62,7 +62,8 @@ namespace YetaWF.Modules.Menus.Views {
             })}
         </div>
         <div class='y_cleardiv'></div>
-    </div>");
+    </div>
+{await RenderEndFormAsync()}");
 
             Manager.ScriptManager.AddLast($@"new YetaWF_Menus.MenuEditView({YetaWFManager.JsonSerialize(setup)});");
 
