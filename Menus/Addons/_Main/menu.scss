@@ -29,6 +29,11 @@
     li.t_megamenu_content {
         padding: 10px 1ch 10px 1ch;
     }
+    li a.y_act_textimg {
+        i, img {
+            margin-right:.5ch;
+        }
+    }
 }
 
 @media screen and (max-width: 992px ) { /*@screen-md-min:*/
