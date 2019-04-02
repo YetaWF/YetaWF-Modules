@@ -109,6 +109,7 @@ namespace YetaWF_ComponentsHTML {
             return true;
         }
     }
-
-    MenuHandler.registerMouseEnterHandlers();
+    $YetaWF.registerDocumentReady((): void => {
+        MenuHandler.registerMouseEnterHandlers();
+    });
 }

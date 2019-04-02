@@ -8,5 +8,4 @@ var YetaWF_Core_jqueryui = {};
 +function ($) {
     'use strict';
     YetaWF_Core_jqueryui.button = $.fn.button;
-    YetaWF_Core_jqueryui.tooltip = $.fn.tooltip;
 }(jQuery);

@@ -4,7 +4,6 @@
     'use strict';
     // restore functions that may have been overwritten
     $.fn.button = YetaWF_Core_jqueryui.button;
-    $.fn.tooltip = YetaWF_Core_jqueryui.tooltip;
 
     if (YVolatile.Skin.Bootstrap && YVolatile.Skin.BootstrapButtons) {
         if (Y_YetaWFBootstrap_Fixup != true)

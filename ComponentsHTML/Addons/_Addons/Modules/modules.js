@@ -94,7 +94,9 @@ var YetaWF_ComponentsHTML;
         return MenuHandler;
     }());
     YetaWF_ComponentsHTML.MenuHandler = MenuHandler;
-    MenuHandler.registerMouseEnterHandlers();
+    $YetaWF.registerDocumentReady(function () {
+        MenuHandler.registerMouseEnterHandlers();
+    });
 })(YetaWF_ComponentsHTML || (YetaWF_ComponentsHTML = {}));
 
 //# sourceMappingURL=Modules.js.map
