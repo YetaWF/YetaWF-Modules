@@ -93,8 +93,8 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             tagBuilder.MergeAttributes(rvd, true);
             string formAction;
 #if MVC6
-            IServiceProvider services = HtmlHelper.ViewContext.HttpContext.RequestServices;
-            IUrlHelper urlHelper = services.GetRequiredService<IUrlHelperFactory>().GetUrlHelper(HtmlHelper.ViewContext);
+            System.IServiceProvider services = HtmlHelper.ActionContext.HttpContext.RequestServices;
+            IUrlHelper urlHelper = services.GetRequiredService<IUrlHelperFactory>().GetUrlHelper(HtmlHelper.ActionContext);
             formAction = urlHelper.Action(action: ActionName, controller: ControllerName);
 #else
             formAction = UrlHelper.GenerateUrl(null /* routeName */, ActionName, ControllerName, null, RouteTable.Routes, HtmlHelper.RequestContext, true /* includeImplicitMvcValues */);
