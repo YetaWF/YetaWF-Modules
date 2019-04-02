@@ -39,7 +39,7 @@ namespace YetaWF.Modules.ComponentsHTML.Views {
 
         HtmlBuilder hb = new HtmlBuilder();
 
-            string actionName = (string)HtmlHelper.RequestContext.RouteData.Values["action"];
+            string actionName = (string)HtmlHelper.RouteData.Values["action"];
 
             hb.Append($@"
 {await RenderBeginFormAsync(ActionName: actionName)}
