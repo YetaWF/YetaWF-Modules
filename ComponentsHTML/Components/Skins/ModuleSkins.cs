@@ -152,7 +152,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                     hb.Append(await HtmlHelper.ForDisplayAsync(ms, nameof(ms.Collection)));
                     hb.Append(await HtmlHelper.ForLabelAsync(ms, nameof(ms.FileName)));
                     hb.Append(await HtmlHelper.ForEditAsync(ms, nameof(ms.FileName)));
-                    ValidationMessage(HtmlHelper, FieldNamePrefix, nameof(ms.FileName));
+                    hb.Append(ValidationMessage(FieldNamePrefix, nameof(ms.FileName)));
                 }
 
                 index++;

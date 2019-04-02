@@ -56,7 +56,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             string collection = GetSiblingProperty<string>($"{PropertyName}_Collection");
             PageSkinList skinList = skinAccess.GetAllPageSkins(collection);
 
-            string desc = (from skin in skinList where skin.FileName == model select skin.Name).FirstOrDefault();
+            string desc = (from skin in skinList where skin.PageViewName == model select skin.Name).FirstOrDefault();
             if (desc == null)
                 desc = skinList.First().Description;
             if (string.IsNullOrWhiteSpace(desc))
@@ -90,7 +90,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             List<SelectionItem<string>> list = (from skin in skinList orderby skin.Description select new SelectionItem<string>() {
                 Text = skin.Name,
                 Tooltip = skin.Description,
-                Value = skin.FileName,
+                Value = skin.PageViewName,
             }).ToList();
             // display the skins in a drop down
             return await DropDownListComponent.RenderDropDownListAsync(this, model, list, "yt_skinname");
@@ -101,7 +101,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             List<SelectionItem<string>> list = (from skin in skinList orderby skin.Description select new SelectionItem<string>() {
                 Text = skin.Name,
                 Tooltip = skin.Description,
-                Value = skin.FileName,
+                Value = skin.PageViewName,
             }).ToList();
             // render a new dropdown list
             return DropDownListEditComponentBase<string>.RenderDataSource(list, null);

@@ -823,12 +823,7 @@ new YetaWF_ComponentsHTML.Grid('{model.Id}', {JsonConvert.SerializeObject(setup,
             return gridCol.FilterOptions.ToList();
         }
 
-        internal static async Task<string> RenderTableHTML(
-#if MVC6
-            IHtmlHelper htmlHelper,
-#else
-            HtmlHelper htmlHelper,
-#endif
+        internal static async Task<string> RenderTableHTML(YHtmlHelper htmlHelper,
                 GridDefinition model, DataSourceResult data, List<object> staticData, ObjectSupport.ReadGridDictionaryInfo dictInfo, string fieldPrefix, bool readOnly, int skip, int take) {
 
             HtmlBuilder hb = new HtmlBuilder();
@@ -879,12 +874,7 @@ new YetaWF_ComponentsHTML.Grid('{model.Id}', {JsonConvert.SerializeObject(setup,
             return hb.ToString();
         }
 
-        internal static async Task<string> RenderRecordHTMLAsync(
-#if MVC6
-            IHtmlHelper htmlHelper,
-#else
-            HtmlHelper htmlHelper,
-#endif
+        internal static async Task<string> RenderRecordHTMLAsync(YHtmlHelper htmlHelper,
                 GridDefinition gridModel, ObjectSupport.ReadGridDictionaryInfo dictInfo, string fieldPrefix, object record, int recordCount, int origin, bool hide) {
 
             HtmlBuilder hbHidden = new HtmlBuilder();
@@ -920,7 +910,7 @@ new YetaWF_ComponentsHTML.Grid('{model.Id}', {JsonConvert.SerializeObject(setup,
 
                         if (recordEnabled && !prop.ReadOnly) {
                             output = (await htmlHelper.ForEditComponentAsync(record, colName, value, prop.UIHint)).ToString();
-                            output += YetaWFComponent.ValidationMessage(htmlHelper, Manager.NestedComponentPrefix, colName).ToString();
+                            output += htmlHelper.ValidationMessage(Manager.NestedComponentPrefix, colName);
                         } else {
                             output = (await htmlHelper.ForDisplayComponentAsync(record, colName, value, prop.UIHint)).ToString();
                         }
@@ -981,7 +971,7 @@ new YetaWF_ComponentsHTML.Grid('{model.Id}', {JsonConvert.SerializeObject(setup,
                             output = __ResStr("demo", "(Demo - N/A)");
                         } else if (recordEnabled && !prop.ReadOnly) {
                             output = (await htmlHelper.ForEditComponentAsync(record, colName, value, prop.UIHint)).ToString();
-                            output += YetaWFComponent.ValidationMessage(htmlHelper, Manager.NestedComponentPrefix, colName).ToString();
+                            output += htmlHelper.ValidationMessage(Manager.NestedComponentPrefix, colName);
                         } else {
                             output = (await htmlHelper.ForDisplayComponentAsync(record, colName, value, prop.UIHint)).ToString();
                         }

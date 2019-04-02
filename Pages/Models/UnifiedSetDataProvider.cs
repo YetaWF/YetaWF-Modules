@@ -199,9 +199,16 @@ namespace YetaWF.Modules.Pages.DataProvider {
                     skinName = SkinAccess.FallbackPageFileName;
                 // find a unified page set that uses the matching skin
                 List<DataProviderFilterInfo> filters = null;
-                filters = DataProviderFilterInfo.Join(filters, new DataProviderFilterInfo { Field = "PageSkin.Collection", Operator = "==", Value = collectionName });
-                filters = DataProviderFilterInfo.Join(filters, new DataProviderFilterInfo { Field = "PageSkin.FileName", Operator = "==", Value = skinName });
-                filters = DataProviderFilterInfo.Join(filters, new DataProviderFilterInfo { Field = "UnifiedMode", Operator = "==", Value = PageDefinition.UnifiedModeEnum.SkinDynamicContent });
+                filters = DataProviderFilterInfo.Join(filters, new DataProviderFilterInfo { Field = $"{nameof(UnifiedSetData.PageSkin)}.{nameof(SkinDefinition.Collection)}", Operator = "==", Value = collectionName });
+                filters = DataProviderFilterInfo.Join(filters, new DataProviderFilterInfo { Field = nameof(UnifiedSetData.UnifiedMode), Operator = "==", Value = PageDefinition.UnifiedModeEnum.SkinDynamicContent });
+
+                List<DataProviderFilterInfo> subFilters = null;
+                // we need to check for Default and Default.cshtml in case we still have old data (pre razor removal)
+                subFilters = DataProviderFilterInfo.Join(subFilters, new DataProviderFilterInfo { Field = $"{nameof(UnifiedSetData.PageSkin)}.{nameof(SkinDefinition.FileName)}", Operator = "==", Value = skinName }, SimpleLogic: "||");
+                subFilters = DataProviderFilterInfo.Join(subFilters, new DataProviderFilterInfo { Field = $"{nameof(UnifiedSetData.PageSkin)}.{nameof(SkinDefinition.FileName)}", Operator = "==", Value = $"{skinName}.cshtml" }, SimpleLogic: "||" );
+
+                filters = DataProviderFilterInfo.Join(filters, new DataProviderFilterInfo { Logic = "&&", Filters = subFilters });
+
                 DataProviderGetRecords<UnifiedSetData> recs = await unifiedSetDP.GetItemsAsync(0, 1, null, filters);
                 unifiedSet = recs.Data.FirstOrDefault();
                 if (unifiedSet != null) {

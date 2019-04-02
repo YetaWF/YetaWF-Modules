@@ -123,13 +123,9 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 #else
             ModelState modelState;
 #endif
-            if (HtmlHelper.ViewData.ModelState.TryGetValue(FieldName, out modelState)) {
+            if (HtmlHelper.ModelState.TryGetValue(FieldName, out modelState)) {
                 if (modelState.Errors.Count > 0)
-#if MVC6
-                    return Microsoft.AspNetCore.Mvc.ViewFeatures.HtmlHelper.ValidationInputCssClassName;
-#else
-                    return HtmlHelper.ValidationInputCssClassName;
-#endif
+                    return "input-validation-error";
             }
             return null;
         }
@@ -154,34 +150,25 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         /// <returns>Returns the client-side validation message for the component with the specified field name.</returns>
         /// <remarks>
         /// </remarks>
-        protected YHtmlString ValidationMessage(string fieldName) {
+        protected string ValidationMessage(string fieldName) {
             // ValidationMessage is always called for a child component within the context of the PARENT
             // component, so we need to prefix the child component field name with the parent field name
             if (!IsContainerComponent)
                 fieldName = FieldName + "." + fieldName;
             if (!string.IsNullOrWhiteSpace(FieldNamePrefix))
                 fieldName = FieldNamePrefix + "." + fieldName;
-            return new YHtmlString(HtmlHelper.ValidationMessage(fieldName));
+            return HtmlHelper.BuildValidationMessage(fieldName);
         }
         /// <summary>
         /// Returns the client-side validation message for a component with the specified field name.
         /// </summary>
-        /// <param name="htmlHelper">The HtmlHelper instance.</param>
         /// <param name="containerFieldPrefix">The prefix used to build the final field name (for nested fields).</param>
         /// <param name="fieldName">The HTML field name.</param>
         /// <returns>Returns the client-side validation message for the component with the specified field name.</returns>
-        public static YHtmlString ValidationMessage(
-#if MVC6
-            IHtmlHelper htmlHelper,
-#else
-            HtmlHelper htmlHelper,
-#endif
-                 string containerFieldPrefix, string fieldName) {
+        protected string ValidationMessage(string containerFieldPrefix, string fieldName) {
             // ValidationMessage is always called for a child component within the context of the PARENT
             // component, so we need to prefix the child component field name with the parent field name
-            if (!string.IsNullOrEmpty(containerFieldPrefix))
-                fieldName = containerFieldPrefix + "." + fieldName;
-            return new YHtmlString(htmlHelper.ValidationMessage(fieldName));
+            return HtmlHelper.ValidationMessage(containerFieldPrefix, fieldName);
         }
 
         /// <summary>

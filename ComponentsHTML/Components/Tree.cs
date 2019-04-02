@@ -205,12 +205,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             return Task.FromResult(hb.ToString());
         }
 
-        internal static async Task<string> RenderHTML(
-#if MVC6
-            IHtmlHelper htmlHelper,
-#else
-            HtmlHelper htmlHelper,
-#endif
+        internal static async Task<string> RenderHTML(YHtmlHelper htmlHelper,
                 TreeDefinition treeModel, List<object> data, TreeSetup setup, PropertyData linkTypeProp, PropertyData prop, PropertyData urlProp, PropertyData subEntriesProp, PropertyData collapsedProp, PropertyData selectedProp, string fieldPrefix) {
 
             HtmlBuilder hb = new HtmlBuilder();
@@ -245,12 +240,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             return hb.ToString();
         }
 
-        internal static async Task<string> RenderRecordHTMLAsync(
-#if MVC6
-            IHtmlHelper htmlHelper,
-#else
-            HtmlHelper htmlHelper,
-#endif
+        internal static async Task<string> RenderRecordHTMLAsync(YHtmlHelper htmlHelper,
                 TreeDefinition treeModel, TreeSetup setup, PropertyData linkTypeProp, PropertyData prop, PropertyData urlProp, PropertyData subEntriesProp, PropertyData collapsedProp, PropertyData selectedProp, object record, int level, string fieldPrefix) {
 
             HtmlBuilder hb = new HtmlBuilder();

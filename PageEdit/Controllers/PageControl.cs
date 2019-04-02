@@ -73,9 +73,9 @@ namespace YetaWF.Modules.PageEdit.Controllers {
             public AddNewModuleModel() {
                 ModuleTitle = new MultiString();
             }
-            public async Task AddDataAsync(PageDefinition page) {
+            public void AddData(PageDefinition page) {
                 if (page != null) {
-                    SelectedPane_List = await page.GetPanesAsync();
+                    SelectedPane_List = page.GetPanes();
                 }
             }
         }
@@ -99,9 +99,9 @@ namespace YetaWF.Modules.PageEdit.Controllers {
             [UIHint("Enum"), Required]
             public Location ModuleLocation { get; set; }
 
-            public async Task AddDataAsync(PageDefinition page) {
+            public void AddData(PageDefinition page) {
                 if (page != null) {
-                    ExistingModulePane_List = await page.GetPanesAsync();
+                    ExistingModulePane_List = page.GetPanes();
                 }
             }
         }
@@ -145,7 +145,7 @@ namespace YetaWF.Modules.PageEdit.Controllers {
             [UIHint("FileUpload1"), Required]
             public FileUpload1 UploadFile { get; set; }
 
-            public async Task AddDataAsync(PageDefinition page, PageControlModule mod) {
+            public void AddData(PageDefinition page, PageControlModule mod) {
                 UploadFile = new FileUpload1 {
                     SelectButtonText = this.__ResStr("btnImport", "Import Module Data..."),
                     SaveURL = YetaWFManager.UrlFor(typeof(PageControlModuleController), nameof(PageControlModuleController.ImportModule), new { __ModuleGuid = mod.ModuleGuid }),
@@ -153,7 +153,7 @@ namespace YetaWF.Modules.PageEdit.Controllers {
                     SerializeForm = true,
                 };
                 if (page != null) {
-                    ModulePane_List = await page.GetPanesAsync();
+                    ModulePane_List = page.GetPanes();
                 }
             }
         }
@@ -312,10 +312,10 @@ namespace YetaWF.Modules.PageEdit.Controllers {
                 LoginSiteSelectionModel = new LoginSiteSelectionModel(),
             };
 
-            await model.AddNewModel.AddDataAsync(page);
-            await model.AddExistingModel.AddDataAsync(page);
+            model.AddNewModel.AddData(page);
+            model.AddExistingModel.AddData(page);
             model.ImportPageModel.AddData(page, Module);
-            await model.ImportModuleModel.AddDataAsync(page, Module);
+            model.ImportModuleModel.AddData(page, Module);
             await model.LoginSiteSelectionModel.AddDataAsync();
             return View(model);
         }
@@ -352,7 +352,7 @@ namespace YetaWF.Modules.PageEdit.Controllers {
             PageDefinition page = await PageDefinition.LoadAsync(model.CurrentPageGuid);
             if (page == null)
                 throw new Error("Can't edit this page");
-            await model.AddDataAsync(page);
+            model.AddData(page);
             if (!ModelState.IsValid)
                 return PartialView(model);
 
@@ -372,7 +372,7 @@ namespace YetaWF.Modules.PageEdit.Controllers {
             PageDefinition page = await PageDefinition.LoadAsync(model.CurrentPageGuid);
             if (page == null)
                 throw new Error("Can't edit this page");
-            await model.AddDataAsync(page);
+            model.AddData(page);
 
             if (!ModelState.IsValid)
                 return PartialView(model);

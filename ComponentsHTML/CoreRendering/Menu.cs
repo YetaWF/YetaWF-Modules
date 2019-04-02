@@ -24,26 +24,13 @@ namespace YetaWF.Modules.ComponentsHTML {
         /// <param name="cssClass">The optional CSS classes to use for the menu.</param>
         /// <param name="HtmlHelper">The HtmlHelper instance.</param>
         /// <returns>Returns the complete menu as HTML.</returns>
-        public Task<YHtmlString> RenderMenuListAsync(MenuList menu, string id = null, string cssClass = null,
-#if MVC6
-            IHtmlHelper HtmlHelper = null
-#else
-            HtmlHelper HtmlHelper = null
-#endif
-            )
+        public Task<YHtmlString> RenderMenuListAsync(MenuList menu, string id = null, string cssClass = null, YHtmlHelper HtmlHelper = null)
         {
             return RenderMenuAsync(menu, id, cssClass, RenderEngine: ModuleAction.RenderEngineEnum.BootstrapSmartMenu, HtmlHelper: HtmlHelper);
         }
 
         internal static async Task<YHtmlString> RenderMenuAsync(MenuList menu, string id = null, string cssClass = null,
-            ModuleAction.RenderEngineEnum RenderEngine = ModuleAction.RenderEngineEnum.KendoMenu,
-            bool Hidden = false,
-#if MVC6
-            IHtmlHelper HtmlHelper = null
-#else
-            HtmlHelper HtmlHelper = null
-#endif
-            )
+            ModuleAction.RenderEngineEnum RenderEngine = ModuleAction.RenderEngineEnum.KendoMenu, bool Hidden = false, YHtmlHelper HtmlHelper = null)
         {
 
             HtmlBuilder hb = new HtmlBuilder();
@@ -78,11 +65,8 @@ namespace YetaWF.Modules.ComponentsHTML {
 
             return hb.ToYHtmlString();
         }
-#if MVC6
-        internal static async Task<YHtmlString> RenderMenuAsync(IHtmlHelper htmlHelper, List<ModuleAction> subMenu, Guid? subGuid, string cssClass, ModuleAction.RenderModeEnum renderMode, ModuleAction.RenderEngineEnum renderEngine, int level) {
-#else
-        internal static async Task<YHtmlString> RenderMenuAsync(HtmlHelper htmlHelper, List<ModuleAction> subMenu, Guid? subGuid, string cssClass, ModuleAction.RenderModeEnum renderMode, ModuleAction.RenderEngineEnum renderEngine, int level) {
-#endif
+        internal static async Task<YHtmlString> RenderMenuAsync(YHtmlHelper htmlHelper, List<ModuleAction> subMenu, Guid? subGuid, string cssClass, ModuleAction.RenderModeEnum renderMode, ModuleAction.RenderEngineEnum renderEngine, int level) {
+
             HtmlBuilder hb = new HtmlBuilder();
 
             string menuContents = await RenderLIAsync(htmlHelper, subMenu, subGuid, renderMode, renderEngine, null, level);
@@ -109,11 +93,8 @@ namespace YetaWF.Modules.ComponentsHTML {
 
             return hb.ToYHtmlString();
         }
-#if MVC6
-        internal static async Task<string> RenderLIAsync(IHtmlHelper htmlHelper, List<ModuleAction> subMenu, Guid? subGuid, ModuleAction.RenderModeEnum renderMode, ModuleAction.RenderEngineEnum renderEngine, string liCss, int level) {
-#else
-        internal static async Task<string> RenderLIAsync(HtmlHelper htmlHelper, List<ModuleAction> subMenu, Guid? subGuid, ModuleAction.RenderModeEnum renderMode, ModuleAction.RenderEngineEnum renderEngine, string liCss, int level) {
-#endif
+
+        internal static async Task<string> RenderLIAsync(YHtmlHelper htmlHelper, List<ModuleAction> subMenu, Guid? subGuid, ModuleAction.RenderModeEnum renderMode, ModuleAction.RenderEngineEnum renderEngine, string liCss, int level) {
             HtmlBuilder hb = new HtmlBuilder();
 
             ++level;

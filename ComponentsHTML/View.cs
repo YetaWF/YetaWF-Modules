@@ -77,7 +77,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             if (string.IsNullOrWhiteSpace(ControllerName))
                 ControllerName = ModuleBase.Controller;
 
-            IDictionary<string, object> rvd = AnonymousObjectToHtmlAttributes(HtmlAttributes);
+            IDictionary<string, object> rvd = YHtmlHelper.AnonymousObjectToHtmlAttributes(HtmlAttributes);
             if (SaveReturnUrl)
                 rvd.Add(Basics.CssSaveReturnUrl, "");
 
@@ -97,7 +97,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             IUrlHelper urlHelper = services.GetRequiredService<IUrlHelperFactory>().GetUrlHelper(HtmlHelper.ViewContext);
             formAction = urlHelper.Action(action: ActionName, controller: ControllerName);
 #else
-            formAction = UrlHelper.GenerateUrl(null /* routeName */, ActionName, ControllerName, null, HtmlHelper.RouteCollection, HtmlHelper.ViewContext.RequestContext, true /* includeImplicitMvcValues */);
+            formAction = UrlHelper.GenerateUrl(null /* routeName */, ActionName, ControllerName, null, RouteTable.Routes, HtmlHelper.RequestContext, true /* includeImplicitMvcValues */);
 #endif
             tagBuilder.MergeAttribute("action", formAction, true);
             tagBuilder.MergeAttribute("method", Method, true);
@@ -111,14 +111,19 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         protected Task<string> RenderEndFormAsync() {
             return Task.FromResult("</form>");
         }
-        private IDictionary<string, object> AnonymousObjectToHtmlAttributes(object htmlAttributes) {
-            if (htmlAttributes as RouteValueDictionary != null) return (RouteValueDictionary)htmlAttributes;
-            if (htmlAttributes as Dictionary<string, object> != null) return (Dictionary<string, object>)htmlAttributes;
-#if MVC6
-            return Microsoft.AspNetCore.Mvc.ViewFeatures.HtmlHelper.AnonymousObjectToHtmlAttributes(htmlAttributes);
-#else
-            return HtmlHelper.AnonymousObjectToHtmlAttributes(htmlAttributes);
-#endif
+
+        /// <summary>
+        /// Returns the client-side validation message for a component with the specified field name.
+        /// </summary>
+        /// <param name="containerFieldPrefix">The prefix used to build the final field name (for nested fields).</param>
+        /// <param name="fieldName">The HTML field name.</param>
+        /// <returns>Returns the client-side validation message for the component with the specified field name.</returns>
+        protected string ValidationMessage(string containerFieldPrefix, string fieldName) {
+            // ValidationMessage is always called for a child component within the context of the PARENT
+            // component, so we need to prefix the child component field name with the parent field name
+            if (!string.IsNullOrEmpty(containerFieldPrefix))
+                fieldName = containerFieldPrefix + "." + fieldName;
+            return HtmlHelper.BuildValidationMessage(fieldName);
         }
     }
 }

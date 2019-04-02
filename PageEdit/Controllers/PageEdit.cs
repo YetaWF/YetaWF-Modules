@@ -107,7 +107,7 @@ namespace YetaWF.Modules.PageEdit.Controllers {
 
             public byte[] FavIcon_Data { get; set; }
 
-            [Category("Page"), Caption("Copyright"), Description("Defines an optional copyright notice displayed on the page, if supported by the skin used - If not defined, a default copyright notice may be defined in Site Properties")]
+            [Category("Page"), Caption("Copyright"), Description("Defines an optional copyright notice displayed on the page, if supported by the skin used - If not defined, a default copyright notice may be defined in Site Properties - Use <<Year>> for current year")]
             [UIHint("MultiString80"), StringLength(PageDefinition.MaxCopyright), Trim]
             public MultiString Copyright { get; set; }
 
@@ -229,11 +229,15 @@ namespace YetaWF.Modules.PageEdit.Controllers {
             [UIHint("ListOfStrings"), ReadOnly]
             public List<string> Panes { get; set; }
 
+            [Category("Variables"), Caption("Copyright"), Description("The Copyright property with evaluated substitutions")]
+            [UIHint("String"), ReadOnly]
+            public string CopyrightEvaluated { get; set; }
+
             public EditablePage() {
                 ReferencedModules = new SerializableList<ModuleDefinition.ReferencedModule>();
             }
-            public async Task UpdateDataAsync(PageDefinition page) {
-                this.Panes = await page.GetPanesAsync();
+            public void UpdateData(PageDefinition page) {
+                this.Panes = page.GetPanes();
             }
 
             [UIHint("Hidden")]
@@ -259,8 +263,8 @@ namespace YetaWF.Modules.PageEdit.Controllers {
             public void SetData(PageDefinition page) {
                 ObjectSupport.CopyData(page, this.Page);
             }
-            public async Task UpdateDataAsync(PageDefinition page) {
-                Page.Panes = await page.GetPanesAsync();
+            public void UpdateData(PageDefinition page) {
+                Page.Panes = page.GetPanes();
             }
         }
 
@@ -279,7 +283,7 @@ namespace YetaWF.Modules.PageEdit.Controllers {
                 PageGuid = pageGuid
             };
             model.SetData(page);
-            await model.UpdateDataAsync(page);
+            model.UpdateData(page);
             Module.Title = this.__ResStr("modEditTitle", "Page {0}", page.Url);
             return View(model);
         }
@@ -293,7 +297,7 @@ namespace YetaWF.Modules.PageEdit.Controllers {
             if (page == null)
                 ModelState.AddModelError("Key", this.__ResStr("alreadyDeleted", "This page has been removed and can no longer be updated."));
 
-            await model.UpdateDataAsync(page);
+            model.UpdateData(page);
             ObjectSupport.CopyData(page, model.Page, ReadOnly: true); // update read only properties in model in case there is an error
             model.Page.FavIcon_Data = page.FavIcon_Data; // copy favicon
             if (!ModelState.IsValid)
