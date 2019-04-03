@@ -97,10 +97,11 @@ namespace YetaWF.Modules.Logging.DataProvider.SQL {
         // IINSTALLABLEMODEL
 
         public override async Task<bool> IsInstalledAsync() {
-            if (YetaWF.Core.Log.Logging.DefinedLoggerType != typeof(LogRecordDataProvider)) return false;
+            if (YetaWF.Core.Log.Logging.DefinedLoggerType != typeof(LogRecordDataProvider) && YetaWF.Core.Log.Logging.DefinedLoggerType != typeof(NLogProvider.LogRecordDataProvider)) return false;
             return await DataProvider.IsInstalledAsync();
         }
         public async Task<bool> InstallModelAsync(List<string> errorList) {
+            if (YetaWF.Core.Log.Logging.DefinedLoggerType != typeof(LogRecordDataProvider) && YetaWF.Core.Log.Logging.DefinedLoggerType != typeof(NLogProvider.LogRecordDataProvider)) return true;
             if (YetaWF.Core.Support.Startup.MultiInstance) throw new InternalError("Installing new models is not possible when distributed caching is enabled");
             bool success = await DataProvider.InstallModelAsync(errorList);
             if (success)
@@ -108,6 +109,7 @@ namespace YetaWF.Modules.Logging.DataProvider.SQL {
             return success;
         }
         public async Task<bool> UninstallModelAsync(List<string> errorList) {
+            if (YetaWF.Core.Log.Logging.DefinedLoggerType != typeof(LogRecordDataProvider) && YetaWF.Core.Log.Logging.DefinedLoggerType != typeof(NLogProvider.LogRecordDataProvider)) return true;
             if (YetaWF.Core.Support.Startup.MultiInstance) throw new InternalError("Uninstalling models is not possible when distributed caching is enabled");
             YetaWF.Core.Log.Logging.TerminateLogging();
             return await DataProvider.UninstallModelAsync(errorList);

@@ -213,7 +213,7 @@ namespace YetaWF.Modules.Visitors.DataProvider {
         // IINSTALLABLEMODEL
 
         public new async Task<bool> IsInstalledAsync() {
-            if (DataProvider == null) return false;
+            if (!Usable) return false;
             return await DataProvider.IsInstalledAsync();
         }
         public new async Task<bool> InstallModelAsync(List<string> errorList) {
