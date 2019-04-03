@@ -136,6 +136,7 @@ namespace YetaWF.Modules.PageEdit.Modules {
         }
         public async Task<ModuleAction> GetAction_W3CValidationAsync() {
             if (Manager.CurrentPage == null) return null;
+            if (Manager.IsLocalHost) return null;
             ControlPanelConfigData config = await ControlPanelConfigDataProvider.GetConfigAsync();
             if (string.IsNullOrWhiteSpace(config.W3CUrl)) return null;
             if (!config.W3CUrl.Contains("{0}")) return null;
