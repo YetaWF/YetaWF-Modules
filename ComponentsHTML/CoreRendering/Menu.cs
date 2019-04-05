@@ -24,12 +24,12 @@ namespace YetaWF.Modules.ComponentsHTML {
         /// <param name="cssClass">The optional CSS classes to use for the menu.</param>
         /// <param name="HtmlHelper">The HtmlHelper instance.</param>
         /// <returns>Returns the complete menu as HTML.</returns>
-        public Task<YHtmlString> RenderMenuListAsync(MenuList menu, string id = null, string cssClass = null, YHtmlHelper HtmlHelper = null)
+        public Task<string> RenderMenuListAsync(MenuList menu, string id = null, string cssClass = null, YHtmlHelper HtmlHelper = null)
         {
             return RenderMenuAsync(menu, id, cssClass, RenderEngine: ModuleAction.RenderEngineEnum.BootstrapSmartMenu, HtmlHelper: HtmlHelper);
         }
 
-        internal static async Task<YHtmlString> RenderMenuAsync(MenuList menu, string id = null, string cssClass = null,
+        internal static async Task<string> RenderMenuAsync(MenuList menu, string id = null, string cssClass = null,
             ModuleAction.RenderEngineEnum RenderEngine = ModuleAction.RenderEngineEnum.KendoMenu, bool Hidden = false, YHtmlHelper HtmlHelper = null)
         {
 
@@ -37,10 +37,10 @@ namespace YetaWF.Modules.ComponentsHTML {
             int level = 0;
 
             if (menu.Count == 0)
-                return new YHtmlString("");
+                return null;
             string menuContents = await RenderLIAsync(HtmlHelper, menu, null, menu.RenderMode, RenderEngine, menu.LICssClass, level);
             if (string.IsNullOrWhiteSpace(menuContents))
-                return new YHtmlString("");
+                return null;
 
             // <ul class= style= >
             YTagBuilder ulTag = new YTagBuilder("ul");
@@ -63,14 +63,14 @@ namespace YetaWF.Modules.ComponentsHTML {
             // </ul>
             hb.Append(ulTag.ToString(YTagRenderMode.EndTag));
 
-            return hb.ToYHtmlString();
+            return hb.ToString();
         }
-        internal static async Task<YHtmlString> RenderMenuAsync(YHtmlHelper htmlHelper, List<ModuleAction> subMenu, Guid? subGuid, string cssClass, ModuleAction.RenderModeEnum renderMode, ModuleAction.RenderEngineEnum renderEngine, int level) {
+        internal static async Task<string> RenderMenuAsync(YHtmlHelper htmlHelper, List<ModuleAction> subMenu, Guid? subGuid, string cssClass, ModuleAction.RenderModeEnum renderMode, ModuleAction.RenderEngineEnum renderEngine, int level) {
 
             HtmlBuilder hb = new HtmlBuilder();
 
             string menuContents = await RenderLIAsync(htmlHelper, subMenu, subGuid, renderMode, renderEngine, null, level);
-            if (string.IsNullOrWhiteSpace(menuContents)) return new YHtmlString("");
+            if (string.IsNullOrWhiteSpace(menuContents)) return null;
 
             // <ul>
             TagBuilder ulTag = new TagBuilder("ul");
@@ -91,7 +91,7 @@ namespace YetaWF.Modules.ComponentsHTML {
             // </ul>
             hb.Append(ulTag.ToString(TagRenderMode.EndTag));
 
-            return hb.ToYHtmlString();
+            return hb.ToString();
         }
 
         internal static async Task<string> RenderLIAsync(YHtmlHelper htmlHelper, List<ModuleAction> subMenu, Guid? subGuid, ModuleAction.RenderModeEnum renderMode, ModuleAction.RenderEngineEnum renderEngine, string liCss, int level) {
@@ -135,7 +135,7 @@ namespace YetaWF.Modules.ComponentsHTML {
 
                         if (subModGuid != null || (menuEntry.SubMenu != null && menuEntry.SubMenu.Count > 0)) {
 
-                            subMenuContents = (await RenderMenuAsync(htmlHelper, menuEntry.SubMenu, subModGuid, menuEntry.CssClass, renderMode, renderEngine, level)).ToString();
+                            subMenuContents = await RenderMenuAsync(htmlHelper, menuEntry.SubMenu, subModGuid, menuEntry.CssClass, renderMode, renderEngine, level);
                             if (!string.IsNullOrWhiteSpace(subMenuContents)) {
                                 // <li>
                                 TagBuilder tag = new TagBuilder("li");
@@ -148,7 +148,7 @@ namespace YetaWF.Modules.ComponentsHTML {
                                 if (!string.IsNullOrWhiteSpace(liCss)) tag.AddCssClass(liCss);
                                 hb.Append(tag.ToString(TagRenderMode.StartTag));
 
-                                YHtmlString menuContents = await CoreRendering.RenderActionAsync(menuEntry, renderMode, null, RenderEngine: renderEngine, HasSubmenu: true, BootstrapSmartMenuLevel: level);
+                                string menuContents = await CoreRendering.RenderActionAsync(menuEntry, renderMode, null, RenderEngine: renderEngine, HasSubmenu: true, BootstrapSmartMenuLevel: level);
                                 hb.Append(menuContents);
 
                                 hb.Append("\n");
@@ -170,7 +170,7 @@ namespace YetaWF.Modules.ComponentsHTML {
                             }
                             hb.Append(tag.ToString(TagRenderMode.StartTag));
 
-                            YHtmlString menuContents = await CoreRendering.RenderActionAsync(menuEntry, renderMode, null, RenderEngine: renderEngine, BootstrapSmartMenuLevel: level);
+                            string menuContents = await CoreRendering.RenderActionAsync(menuEntry, renderMode, null, RenderEngine: renderEngine, BootstrapSmartMenuLevel: level);
                             hb.Append(menuContents);
 
                             hb.Append("</li>\n");

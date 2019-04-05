@@ -17,7 +17,7 @@ namespace YetaWF.Modules.SiteProperties.Views {
         public override Package GetPackage() { return AreaRegistration.CurrentPackage; }
         public override string GetViewName() { return ViewName; }
 
-        public async Task<YHtmlString> RenderViewAsync(SitePropertiesModule module, SitePropertiesModuleController.SitePropertiesModel model) {
+        public async Task<string> RenderViewAsync(SitePropertiesModule module, SitePropertiesModuleController.SitePropertiesModel model) {
 
             HtmlBuilder hb = new HtmlBuilder();
 
@@ -29,17 +29,17 @@ namespace YetaWF.Modules.SiteProperties.Views {
         new FormButton() { ButtonType= ButtonTypeEnum.Cancel, },
     })}
 {await RenderEndFormAsync()}");
-            return hb.ToYHtmlString();
+            return hb.ToString();
         }
 
-        public async Task<YHtmlString> RenderPartialViewAsync(SitePropertiesModule module, SitePropertiesModuleController.SitePropertiesModel model) {
+        public async Task<string> RenderPartialViewAsync(SitePropertiesModule module, SitePropertiesModuleController.SitePropertiesModel model) {
 
             HtmlBuilder hb = new HtmlBuilder();
 
             hb.Append($@"
 {await HtmlHelper.ForDisplayAsync(model, nameof(model.SiteHost))}
 {await HtmlHelper.ForEditAsync(model, nameof(model.Site))}");
-            return hb.ToYHtmlString();
+            return hb.ToString();
         }
     }
 }

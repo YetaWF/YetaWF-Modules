@@ -17,13 +17,13 @@ namespace YetaWF.Modules.DevTests.Views {
         public override Package GetPackage() { return AreaRegistration.CurrentPackage; }
         public override string GetViewName() { return ViewName; }
 
-        public async Task<YHtmlString> RenderViewAsync(TemplateScrollerModule module, TemplateScrollerModuleController.Model model) {
+        public async Task<string> RenderViewAsync(TemplateScrollerModule module, TemplateScrollerModuleController.Model model) {
 
             HtmlBuilder hb = new HtmlBuilder();
 
             hb.Append(await HtmlHelper.ForDisplayAsync(model, nameof(model.Items)));
 
-            return hb.ToYHtmlString();
+            return hb.ToString();
         }
     }
 }

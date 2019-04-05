@@ -26,7 +26,7 @@ namespace YetaWF.Modules.Identity.Components {
 
         public override ComponentType GetComponentType() { return ComponentType.Display; }
 
-        public async Task<YHtmlString> RenderAsync(string model) {
+        public async Task<string> RenderAsync(string model) {
 
             HtmlBuilder hb = new HtmlBuilder();
 
@@ -58,7 +58,7 @@ namespace YetaWF.Modules.Identity.Components {
                 hb.Append(await actionDisplay.RenderAsync(ModuleAction.RenderModeEnum.IconsOnly));
             if (actionLoginAs != null)
                 hb.Append(await actionLoginAs.RenderAsync(ModuleAction.RenderModeEnum.IconsOnly));
-            return hb.ToYHtmlString();
+            return hb.ToString();
         }
     }
 }

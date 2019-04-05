@@ -19,7 +19,7 @@ namespace YetaWF.Modules.CurrencyConverter.Views {
         public override Package GetPackage() { return AreaRegistration.CurrentPackage; }
         public override string GetViewName() { return ViewName; }
 
-        public async Task<YHtmlString> RenderViewAsync(CurrencyConverterModule module, CurrencyConverterModuleController.Model model) {
+        public async Task<string> RenderViewAsync(CurrencyConverterModule module, CurrencyConverterModuleController.Model model) {
 
             HtmlBuilder hb = new HtmlBuilder();
 
@@ -65,7 +65,7 @@ namespace YetaWF.Modules.CurrencyConverter.Views {
     </div>
 </div>");
 
-            return hb.ToYHtmlString();
+            return hb.ToString();
         }
     }
 }

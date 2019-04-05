@@ -58,7 +58,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         /// </summary>
         /// <param name="model">The model being rendered by the component.</param>
         /// <returns>The component rendered as HTML.</returns>
-        public async Task<YHtmlString> RenderAsync(SerializableList<SkinDefinition> model) {
+        public async Task<string> RenderAsync(SerializableList<SkinDefinition> model) {
 
             HtmlBuilder hb = new HtmlBuilder();
 
@@ -93,7 +93,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             hb.Append($@"
 </div>");
 
-            return hb.ToYHtmlString();
+            return hb.ToString();
         }
     }
 
@@ -124,7 +124,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         /// </summary>
         /// <param name="model">The model being rendered by the component.</param>
         /// <returns>The component rendered as HTML.</returns>
-        public async Task<YHtmlString> RenderAsync(SerializableList<SkinDefinition> model) {
+        public async Task<string> RenderAsync(SerializableList<SkinDefinition> model) {
 
             HtmlBuilder hb = new HtmlBuilder();
 
@@ -163,7 +163,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             hb.Append($@"
 </div>");
 
-            return hb.ToYHtmlString();
+            return hb.ToString();
         }
     }
 }

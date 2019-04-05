@@ -26,7 +26,7 @@ namespace YetaWF.Modules.Menus.Views {
             public ModuleAction NewEntry { get; set; }
         }
 
-        public async Task<YHtmlString> RenderViewAsync(MenuEditModule module, MenuEditModuleController.MenuEditModel model) {
+        public async Task<string> RenderViewAsync(MenuEditModule module, MenuEditModuleController.MenuEditModel model) {
 
             HtmlBuilder hb = new HtmlBuilder();
 
@@ -67,17 +67,17 @@ namespace YetaWF.Modules.Menus.Views {
 
             Manager.ScriptManager.AddLast($@"new YetaWF_Menus.MenuEditView({YetaWFManager.JsonSerialize(setup)});");
 
-            return hb.ToYHtmlString();
+            return hb.ToString();
         }
 
-        public async Task<YHtmlString> RenderPartialViewAsync(MenuEditModule module, MenuEditModuleController.MenuEditModel model) {
+        public async Task<string> RenderPartialViewAsync(MenuEditModule module, MenuEditModuleController.MenuEditModel model) {
 
             HtmlBuilder hb = new HtmlBuilder();
             hb.Append($@"
 {await HtmlHelper.ForEditAsync(model, nameof(model.MenuGuid))}
 {await HtmlHelper.ForEditAsync(model, nameof(model.MenuVersion))}
 {await HtmlHelper.ForEditAsync(model, nameof(model.ModAction))}");
-            return hb.ToYHtmlString();
+            return hb.ToString();
 
         }
     }

@@ -47,7 +47,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         /// </summary>
         /// <param name="model">The model being rendered by the component.</param>
         /// <returns>The component rendered as HTML.</returns>
-        public async Task<YHtmlString> RenderContainerAsync(GridRecordData model) {
+        public async Task<string> RenderContainerAsync(GridRecordData model) {
 
         ScriptBuilder sb = new ScriptBuilder();
 
@@ -62,7 +62,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             };
             sb.Append(YetaWFManager.JsonSerialize(result));
 
-            return sb.ToYHtmlString();
+            return sb.ToString();
         }
     }
 }

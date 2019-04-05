@@ -17,7 +17,7 @@ namespace YetaWF.Modules.Visitors.Views {
         public override Package GetPackage() { return AreaRegistration.CurrentPackage; }
         public override string GetViewName() { return ViewName; }
 
-        public async Task<YHtmlString> RenderViewAsync(SkinVisitorModule module, SkinVisitorModuleController.DisplayModel model) {
+        public async Task<string> RenderViewAsync(SkinVisitorModule module, SkinVisitorModuleController.DisplayModel model) {
 
             HtmlBuilder hb = new HtmlBuilder();
 
@@ -25,14 +25,14 @@ namespace YetaWF.Modules.Visitors.Views {
 {await RenderBeginFormAsync(HtmlAttributes: new { data_track = model.TrackClickUrl })}
     {await PartialForm(async () => await RenderPartialViewAsync(module, model), UsePartialFormCss: false)}
 {await RenderEndFormAsync()}");
-            return hb.ToYHtmlString();
+            return hb.ToString();
         }
 
-        public Task<YHtmlString> RenderPartialViewAsync(SkinVisitorModule module, SkinVisitorModuleController.DisplayModel model) {
+        public Task<string> RenderPartialViewAsync(SkinVisitorModule module, SkinVisitorModuleController.DisplayModel model) {
 
             HtmlBuilder hb = new HtmlBuilder();
             // This is used so we get antiforgery fields
-            return Task.FromResult(hb.ToYHtmlString());
+            return Task.FromResult(hb.ToString());
 
         }
     }

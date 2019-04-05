@@ -18,7 +18,7 @@ namespace YetaWF.Modules.IFrame.Views {
         public override Package GetPackage() { return AreaRegistration.CurrentPackage; }
         public override string GetViewName() { return ViewName; }
 
-        public Task<YHtmlString> RenderViewAsync(IFrameDisplayModule module, IFrameDisplayModuleController.DisplayModel model) {
+        public Task<string> RenderViewAsync(IFrameDisplayModule module, IFrameDisplayModuleController.DisplayModel model) {
 
             HtmlBuilder hb = new HtmlBuilder();
 
@@ -34,7 +34,7 @@ namespace YetaWF.Modules.IFrame.Views {
 <iframe src='{HAE(module.Url)}' style='border:none;{HAE(model.Style)}'></iframe>");
             }
 
-            return Task.FromResult(hb.ToYHtmlString());
+            return Task.FromResult(hb.ToString());
         }
     }
 }

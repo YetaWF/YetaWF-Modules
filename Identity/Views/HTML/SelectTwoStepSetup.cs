@@ -18,7 +18,7 @@ namespace YetaWF.Modules.Identity.Views {
         public override Package GetPackage() { return AreaRegistration.CurrentPackage; }
         public override string GetViewName() { return ViewName; }
 
-        public async Task<YHtmlString> RenderViewAsync(SelectTwoStepSetupModule module, SelectTwoStepSetupModuleController.EditModel model) {
+        public async Task<string> RenderViewAsync(SelectTwoStepSetupModule module, SelectTwoStepSetupModuleController.EditModel model) {
 
             HtmlBuilder hb = new HtmlBuilder();
 
@@ -49,7 +49,7 @@ namespace YetaWF.Modules.Identity.Views {
 
                 }
             }
-            return hb.ToYHtmlString();
+            return hb.ToString();
         }
     }
 }

@@ -17,7 +17,7 @@ namespace YetaWF.Modules.Identity.Views {
         public override Package GetPackage() { return AreaRegistration.CurrentPackage; }
         public override string GetViewName() { return ViewName; }
 
-        public async Task<YHtmlString> RenderViewAsync(LoginSelectorModule module, LoginSelectorModuleController.EditModel model) {
+        public async Task<string> RenderViewAsync(LoginSelectorModule module, LoginSelectorModuleController.EditModel model) {
 
             HtmlBuilder hb = new HtmlBuilder();
 
@@ -26,14 +26,14 @@ namespace YetaWF.Modules.Identity.Views {
     {await PartialForm(async () => await RenderPartialViewAsync(module, model))}
 {await RenderEndFormAsync()}");
 
-            return hb.ToYHtmlString();
+            return hb.ToString();
         }
 
-        public async Task<YHtmlString> RenderPartialViewAsync(LoginSelectorModule module, LoginSelectorModuleController.EditModel model) {
+        public async Task<string> RenderPartialViewAsync(LoginSelectorModule module, LoginSelectorModuleController.EditModel model) {
 
             HtmlBuilder hb = new HtmlBuilder();
             hb.Append(await HtmlHelper.ForEditContainerAsync(model, "PropertyList"));
-            return hb.ToYHtmlString();
+            return hb.ToString();
 
         }
     }

@@ -76,7 +76,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         /// </summary>
         /// <param name="model">The model being rendered by the component.</param>
         /// <returns>The component rendered as HTML.</returns>
-        public async Task<YHtmlString> RenderAsync(Guid? model) {
+        public async Task<string> RenderAsync(Guid? model) {
 
             HtmlBuilder hb = new HtmlBuilder();
 
@@ -120,7 +120,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
             hb.Append(@"
 </div>");
-            return hb.ToYHtmlString();
+            return hb.ToString();
         }
     }
 
@@ -158,7 +158,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         /// </summary>
         /// <param name="model">The model being rendered by the component.</param>
         /// <returns>The component rendered as HTML.</returns>
-        public async Task<YHtmlString> RenderAsync(Guid? model) {
+        public async Task<string> RenderAsync(Guid? model) {
 
             HtmlBuilder hb = new HtmlBuilder();
 
@@ -235,7 +235,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
             Manager.ScriptManager.AddLast($@"new YetaWF_ComponentsHTML.ModuleSelectionEditComponent('{DivId}', {YetaWFManager.JsonSerialize(setup)});");
 
-            return hb.ToYHtmlString();
+            return hb.ToString();
         }
     }
 }

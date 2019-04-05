@@ -19,7 +19,7 @@ namespace YetaWF.Modules.Languages.Views {
         public override Package GetPackage() { return AreaRegistration.CurrentPackage; }
         public override string GetViewName() { return ViewName; }
 
-        public async Task<YHtmlString> RenderViewAsync(LocalizeEditFileModule module, LocalizeEditFileModuleController.EditModel model) {
+        public async Task<string> RenderViewAsync(LocalizeEditFileModule module, LocalizeEditFileModuleController.EditModel model) {
 
             HtmlBuilder hb = new HtmlBuilder();
 
@@ -56,14 +56,14 @@ $('#{btnReset}').on('click', function (e) {{
     }});
 }});");
 
-            return hb.ToYHtmlString();
+            return hb.ToString();
         }
 
-        public async Task<YHtmlString> RenderPartialViewAsync(LocalizeEditFileModule module, LocalizeEditFileModuleController.EditModel model) {
+        public async Task<string> RenderPartialViewAsync(LocalizeEditFileModule module, LocalizeEditFileModuleController.EditModel model) {
 
             HtmlBuilder hb = new HtmlBuilder();
             hb.Append(await HtmlHelper.ForEditContainerAsync(model, "PropertyList"));
-            return hb.ToYHtmlString();
+            return hb.ToString();
 
         }
     }

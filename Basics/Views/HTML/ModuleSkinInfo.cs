@@ -18,7 +18,7 @@ namespace YetaWF.Modules.Basics.Views {
         public override Package GetPackage() { return AreaRegistration.CurrentPackage; }
         public override string GetViewName() { return ViewName; }
 
-        public async Task<YHtmlString> RenderViewAsync(ModuleSkinInfoModule module, ModuleSkinInfoModuleController.DisplayModel model) {
+        public async Task<string> RenderViewAsync(ModuleSkinInfoModule module, ModuleSkinInfoModuleController.DisplayModel model) {
 
             HtmlBuilder hb = new HtmlBuilder();
 
@@ -382,7 +382,7 @@ namespace YetaWF.Modules.Basics.Views {
     $('.t_row.t_height .t_vals', $list).text((height / 2).toFixed(2));
 ");
 
-            return hb.ToYHtmlString();
+            return hb.ToString();
         }
     }
 }

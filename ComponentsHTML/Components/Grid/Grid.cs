@@ -134,7 +134,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         /// </summary>
         /// <param name="model">The model being rendered by the component.</param>
         /// <returns>The component rendered as HTML.</returns>
-        public async Task<YHtmlString> RenderAsync(GridDefinition model) {
+        public async Task<string> RenderAsync(GridDefinition model) {
 
             HtmlBuilder hb = new HtmlBuilder();
 
@@ -298,7 +298,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             Manager.ScriptManager.AddLast($@"
 new YetaWF_ComponentsHTML.Grid('{model.Id}', {JsonConvert.SerializeObject(setup, new JsonSerializerSettings { StringEscapeHandling = StringEscapeHandling.EscapeHtml })});");
 
-            return hb.ToYHtmlString();
+            return hb.ToString();
         }
 
         private enum FilterBoolEnum {
@@ -909,10 +909,10 @@ new YetaWF_ComponentsHTML.Grid('{model.Id}', {JsonConvert.SerializeObject(setup,
                         string output;
 
                         if (recordEnabled && !prop.ReadOnly) {
-                            output = (await htmlHelper.ForEditComponentAsync(record, colName, value, prop.UIHint)).ToString();
+                            output = await htmlHelper.ForEditComponentAsync(record, colName, value, prop.UIHint);
                             output += htmlHelper.ValidationMessage(Manager.NestedComponentPrefix, colName);
                         } else {
-                            output = (await htmlHelper.ForDisplayComponentAsync(record, colName, value, prop.UIHint)).ToString();
+                            output = await htmlHelper.ForDisplayComponentAsync(record, colName, value, prop.UIHint);
                         }
                         if (!string.IsNullOrWhiteSpace(output))
                             output = output.Trim(new char[] { '\r', '\n' }); // templates can generate a lot of extra \r\n which breaks filtering
@@ -970,10 +970,10 @@ new YetaWF_ComponentsHTML.Grid('{model.Id}', {JsonConvert.SerializeObject(setup,
                         if (Manager.IsDemo && prop.HasAttribute(nameof(ExcludeDemoModeAttribute))) {
                             output = __ResStr("demo", "(Demo - N/A)");
                         } else if (recordEnabled && !prop.ReadOnly) {
-                            output = (await htmlHelper.ForEditComponentAsync(record, colName, value, prop.UIHint)).ToString();
+                            output = await htmlHelper.ForEditComponentAsync(record, colName, value, prop.UIHint);
                             output += htmlHelper.ValidationMessage(Manager.NestedComponentPrefix, colName);
                         } else {
-                            output = (await htmlHelper.ForDisplayComponentAsync(record, colName, value, prop.UIHint)).ToString();
+                            output = await htmlHelper.ForDisplayComponentAsync(record, colName, value, prop.UIHint);
                         }
                         if (!string.IsNullOrWhiteSpace(output))
                             output = output.Trim(new char[] { '\r', '\n' }); // templates can generate a lot of extra \r\n which breaks filtering

@@ -19,7 +19,7 @@ namespace YetaWF.Modules.DevTests.Views {
         public override Package GetPackage() { return AreaRegistration.CurrentPackage; }
         public override string GetViewName() { return ViewName; }
 
-        public Task<YHtmlString> RenderViewAsync(SMSProcessorStatusModule module, SMSProcessorStatusModuleController.DisplayModel model) {
+        public Task<string> RenderViewAsync(SMSProcessorStatusModule module, SMSProcessorStatusModuleController.DisplayModel model) {
 
             HtmlBuilder hb = new HtmlBuilder();
 
@@ -48,7 +48,7 @@ namespace YetaWF.Modules.DevTests.Views {
 </div>");
             }
 
-            return Task.FromResult(hb.ToYHtmlString());
+            return Task.FromResult(hb.ToString());
         }
     }
 }

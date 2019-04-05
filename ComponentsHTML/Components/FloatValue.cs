@@ -47,7 +47,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         /// </summary>
         /// <param name="model">The model being rendered by the component.</param>
         /// <returns>The component rendered as HTML.</returns>
-        public Task<YHtmlString> RenderAsync(Single? model) {
+        public Task<string> RenderAsync(Single? model) {
 
             HtmlBuilder hb = new HtmlBuilder();
             if (model != null) {
@@ -55,7 +55,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                     hb.Append(HE(model.ToString()));
                 }
             }
-            return Task.FromResult(hb.ToYHtmlString());
+            return Task.FromResult(hb.ToString());
         }
     }
 }

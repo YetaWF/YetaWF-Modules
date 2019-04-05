@@ -19,7 +19,7 @@ namespace YetaWF.Modules.Visitors.Views {
         public override Package GetPackage() { return AreaRegistration.CurrentPackage; }
         public override string GetViewName() { return ViewName; }
 
-        public Task<YHtmlString> RenderViewAsync(TinyVisitorsModule module, TinyVisitorsModuleController.DisplayModel model) {
+        public Task<string> RenderViewAsync(TinyVisitorsModule module, TinyVisitorsModuleController.DisplayModel model) {
 
             HtmlBuilder hb = new HtmlBuilder();
 
@@ -43,7 +43,7 @@ namespace YetaWF.Modules.Visitors.Views {
             hb.Append($@"
 </div>");
 
-            return Task.FromResult(hb.ToYHtmlString());
+            return Task.FromResult(hb.ToString());
         }
     }
 }

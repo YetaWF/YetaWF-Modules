@@ -40,7 +40,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         /// </summary>
         /// <param name="model">The model being rendered by the component.</param>
         /// <returns>The component rendered as HTML.</returns>
-        public Task<YHtmlString> RenderAsync(string model) {
+        public Task<string> RenderAsync(string model) {
 
             HtmlBuilder sb = new HtmlBuilder();
 
@@ -63,7 +63,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                 sb.Append(tagA.ToString(YTagRenderMode.Normal));
             }
 
-            return Task.FromResult(sb.ToYHtmlString());
+            return Task.FromResult(sb.ToString());
         }
     }
 }

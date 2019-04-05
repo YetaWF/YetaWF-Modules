@@ -18,7 +18,7 @@ namespace YetaWF.Modules.Identity.Views {
         public override Package GetPackage() { return AreaRegistration.CurrentPackage; }
         public override string GetViewName() { return ViewName; }
 
-        public async Task<YHtmlString> RenderViewAsync(ForgotPasswordModule module, ForgotPasswordModuleController.EditModel model) {
+        public async Task<string> RenderViewAsync(ForgotPasswordModule module, ForgotPasswordModuleController.EditModel model) {
 
             HtmlBuilder hb = new HtmlBuilder();
 
@@ -30,14 +30,14 @@ namespace YetaWF.Modules.Identity.Views {
         new FormButton() { ButtonType= ButtonTypeEnum.Cancel, },
     })}
 {await RenderEndFormAsync()}");
-            return hb.ToYHtmlString();
+            return hb.ToString();
         }
 
-        public async Task<YHtmlString> RenderPartialViewAsync(ForgotPasswordModule module, ForgotPasswordModuleController.EditModel model) {
+        public async Task<string> RenderPartialViewAsync(ForgotPasswordModule module, ForgotPasswordModuleController.EditModel model) {
 
             HtmlBuilder hb = new HtmlBuilder();
             hb.Append(await HtmlHelper.ForEditContainerAsync(model, "PropertyList"));
-            return hb.ToYHtmlString();
+            return hb.ToString();
 
         }
     }

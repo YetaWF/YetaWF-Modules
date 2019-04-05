@@ -29,7 +29,7 @@ namespace YetaWF.Modules.ImageRepository.Components {
             await base.IncludeAsync();
         }
 
-        public async Task<YHtmlString> RenderAsync(string model) {
+        public async Task<string> RenderAsync(string model) {
 
             HtmlBuilder hb = new HtmlBuilder();
 
@@ -75,7 +75,7 @@ namespace YetaWF.Modules.ImageRepository.Components {
 {EndDocumentReady()}
 new YetaWF_ImageRepository.FlashRepository('{ControlId}');");
 
-            return hb.ToYHtmlString();
+            return hb.ToString();
         }
     }
 }

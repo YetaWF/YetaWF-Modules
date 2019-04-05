@@ -61,7 +61,7 @@ namespace YetaWF.Modules.Identity.Components {
             };
         }
 
-        public async Task<YHtmlString> RenderAsync(List<User> model) {
+        public async Task<string> RenderAsync(List<User> model) {
 
             HtmlBuilder hb = new HtmlBuilder();
 
@@ -89,7 +89,7 @@ namespace YetaWF.Modules.Identity.Components {
     {await HtmlHelper.ForDisplayAsAsync(Container, PropertyName, FieldName, grid, nameof(grid.GridDef), grid.GridDef, "Grid", HtmlAttributes: HtmlAttributes)}
 </div>");
 
-            return hb.ToYHtmlString();
+            return hb.ToString();
         }
     }
     public class ResourceUsersEditComponent : ResourceUsersComponentBase, IYetaWFComponent<List<User>> {
@@ -175,7 +175,7 @@ namespace YetaWF.Modules.Identity.Components {
                 },
             };
         }
-        public async Task<YHtmlString> RenderAsync(List<User> model) {
+        public async Task<string> RenderAsync(List<User> model) {
 
             HtmlBuilder hb = new HtmlBuilder();
 
@@ -240,7 +240,7 @@ namespace YetaWF.Modules.Identity.Components {
 $YetaWF.expandCollapseHandling('{DivId}', '{DivId}_coll', '{DivId}_exp');
 new YetaWF_Identity.ResourceUsersEditComponent('{DivId}', {YetaWFManager.JsonSerialize(setup)});");
 
-            return hb.ToYHtmlString();
+            return hb.ToString();
         }
         public static async Task<GridRecordData> GridRecordAsync(string fieldPrefix, object model) {
             // handle async properties

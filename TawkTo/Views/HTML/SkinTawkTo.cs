@@ -18,7 +18,7 @@ namespace YetaWF.Modules.TawkTo.Views {
         public override Package GetPackage() { return AreaRegistration.CurrentPackage; }
         public override string GetViewName() { return ViewName; }
 
-        public Task<YHtmlString> RenderViewAsync(SkinTawkToModule module, SkinTawkToModuleController.DisplayModel model) {
+        public Task<string> RenderViewAsync(SkinTawkToModule module, SkinTawkToModuleController.DisplayModel model) {
 
             ScriptBuilder sb = new ScriptBuilder();
 
@@ -63,7 +63,7 @@ window.onafterprint = function () {
 
             Manager.ScriptManager.AddLast(sb.ToString());
 
-            return Task.FromResult(new YHtmlString());
+            return Task.FromResult<string>(null);
         }
     }
 }

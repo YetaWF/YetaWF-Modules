@@ -17,7 +17,7 @@ namespace YetaWF.Modules.BootstrapCarousel.Views {
         public override Package GetPackage() { return AreaRegistration.CurrentPackage; }
         public override string GetViewName() { return ViewName; }
 
-        public async Task<YHtmlString> RenderViewAsync(CarouselDisplayModule module, CarouselDisplayModuleController.Model model) {
+        public async Task<string> RenderViewAsync(CarouselDisplayModule module, CarouselDisplayModuleController.Model model) {
 
             HtmlBuilder hb = new HtmlBuilder();
 
@@ -30,10 +30,10 @@ namespace YetaWF.Modules.BootstrapCarousel.Views {
             } else {
                 hb.Append(await HtmlHelper.ForDisplayAsync(model, nameof(model.SlideShow)));
             }
-            return hb.ToYHtmlString();
+            return hb.ToString();
         }
 
-        public async Task<YHtmlString> RenderPartialViewAsync(CarouselDisplayModule module, CarouselDisplayModuleController.Model model) {
+        public async Task<string> RenderPartialViewAsync(CarouselDisplayModule module, CarouselDisplayModuleController.Model model) {
 
             HtmlBuilder hb = new HtmlBuilder();
 
@@ -42,7 +42,7 @@ namespace YetaWF.Modules.BootstrapCarousel.Views {
                 hb.Append(await HtmlHelper.ForEditAsync(model, nameof(model.SlideShow)));
 
             }
-            return hb.ToYHtmlString();
+            return hb.ToString();
 
         }
     }

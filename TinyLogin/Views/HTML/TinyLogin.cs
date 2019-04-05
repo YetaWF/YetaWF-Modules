@@ -18,7 +18,7 @@ namespace YetaWF.Modules.TinyLogin.Views {
         public override Package GetPackage() { return AreaRegistration.CurrentPackage; }
         public override string GetViewName() { return ViewName; }
 
-        public async Task<YHtmlString> RenderViewAsync(TinyLoginModule module, TinyLoginModuleController.TinyLoginModel model) {
+        public async Task<string> RenderViewAsync(TinyLoginModule module, TinyLoginModuleController.TinyLoginModel model) {
 
             HtmlBuilder hb = new HtmlBuilder();
 
@@ -53,7 +53,7 @@ namespace YetaWF.Modules.TinyLogin.Views {
 </div>");
             }
 
-            return hb.ToYHtmlString();
+            return hb.ToString();
         }
     }
 }

@@ -47,10 +47,10 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         /// </summary>
         /// <param name="model">The model being rendered by the component.</param>
         /// <returns>The component rendered as HTML.</returns>
-        public Task<YHtmlString> RenderAsync(StringTT model) {
+        public Task<string> RenderAsync(StringTT model) {
             return RenderStringTTAsync(this, model, null);
         }
-        internal static Task<YHtmlString> RenderStringTTAsync(YetaWFComponent component, StringTT model, string cssClass) {
+        internal static Task<string> RenderStringTTAsync(YetaWFComponent component, StringTT model, string cssClass) {
             HtmlBuilder hb = new HtmlBuilder();
 
             YTagBuilder tag = new YTagBuilder("span");
@@ -64,7 +64,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                 tag.Attributes.Add(Basics.CssTooltipSpan, model.Tooltip);
             if (!string.IsNullOrWhiteSpace(model.Text))
                 tag.SetInnerText(model.Text);
-            return Task.FromResult(tag.ToYHtmlString(YTagRenderMode.Normal));
+            return Task.FromResult(tag.ToString(YTagRenderMode.Normal));
         }
     }
 
@@ -79,13 +79,13 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         /// <param name="text">The text displayed.</param>
         /// <param name="tooltip">The tooltip.</param>
         /// <returns></returns>
-        public static YHtmlString ForStringTTDisplay(this YHtmlHelper htmlHelper, string text, string tooltip) {
+        public static string ForStringTTDisplay(this YHtmlHelper htmlHelper, string text, string tooltip) {
             YTagBuilder tag = new YTagBuilder("span");
             if (!string.IsNullOrWhiteSpace(tooltip))
                 tag.Attributes.Add(Basics.CssTooltipSpan, tooltip);
             if (!string.IsNullOrWhiteSpace(text))
                 tag.SetInnerText(text);
-            return tag.ToYHtmlString(YTagRenderMode.Normal);
+            return tag.ToString(YTagRenderMode.Normal);
         }
     }
 }

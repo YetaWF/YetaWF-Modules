@@ -22,14 +22,14 @@ namespace YetaWF.Modules.CurrencyConverter.Components {
 
         public override ComponentType GetComponentType() { return ComponentType.Display; }
 
-        public async Task<YHtmlString> RenderAsync(string model) {
+        public async Task<string> RenderAsync(string model) {
 
             using (ExchangeRateDataProvider dp = new ExchangeRateDataProvider()) {
                 ExchangeRateData data = await dp.GetItemAsync();
                 string currency = (from r in data.Rates where r.Code == model select r.CurrencyName).FirstOrDefault();
                 if (string.IsNullOrEmpty(model))
-                    return new YHtmlString();
-                return new YHtmlString(HE(currency));
+                    return null;
+                return HE(currency);
             }
         }
     }
@@ -37,7 +37,7 @@ namespace YetaWF.Modules.CurrencyConverter.Components {
 
         public override ComponentType GetComponentType() { return ComponentType.Edit; }
 
-        public async Task<YHtmlString> RenderAsync(string model) {
+        public async Task<string> RenderAsync(string model) {
 
             using (ExchangeRateDataProvider dp = new ExchangeRateDataProvider()) {
                 ExchangeRateData data = await dp.GetItemAsync();

@@ -17,7 +17,7 @@ namespace YetaWF.Modules.Blog.Views {
         public override Package GetPackage() { return AreaRegistration.CurrentPackage; }
         public override string GetViewName() { return ViewName; }
 
-        public Task<YHtmlString> RenderViewAsync(DisqusLinksModule module, DisqusLinksModuleController.DisplayModel model) {
+        public Task<string> RenderViewAsync(DisqusLinksModule module, DisqusLinksModuleController.DisplayModel model) {
 
             HtmlBuilder hb = new HtmlBuilder();
 
@@ -25,7 +25,7 @@ namespace YetaWF.Modules.Blog.Views {
 //            hb.Append($@"
 //<script id='dsq-count-scr' src='//{YetaWFManager.JserEncode(model.ShortName.ToLower())}.disqus.com/count.js' async></script>");
 
-            return Task.FromResult(hb.ToYHtmlString());
+            return Task.FromResult(hb.ToString());
         }
     }
 }

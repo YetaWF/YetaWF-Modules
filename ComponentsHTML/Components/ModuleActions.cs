@@ -42,7 +42,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         /// </summary>
         /// <param name="model">The model being rendered by the component.</param>
         /// <returns>The component rendered as HTML.</returns>
-        public async Task<YHtmlString> RenderAsync(List<ModuleAction> model) {
+        public async Task<string> RenderAsync(List<ModuleAction> model) {
 
             using (Manager.StartNestedComponent(FieldName)) {
 
@@ -62,7 +62,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                     hb.Append($@"
 </div>");
                 }
-                return hb.ToYHtmlString();
+                return hb.ToString();
             }
         }
     }

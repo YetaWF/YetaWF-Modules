@@ -17,7 +17,7 @@ namespace YetaWF.Modules.DevTests.Views {
         public override Package GetPackage() { return AreaRegistration.CurrentPackage; }
         public override string GetViewName() { return ViewName; }
 
-        public async Task<YHtmlString> RenderViewAsync(TestEscapesModule module, TestEscapesModuleController.EditModel model) {
+        public async Task<string> RenderViewAsync(TestEscapesModule module, TestEscapesModuleController.EditModel model) {
 
             HtmlBuilder hb = new HtmlBuilder();
 
@@ -59,14 +59,14 @@ namespace YetaWF.Modules.DevTests.Views {
         $YetaWF.pleaseWait('Reload page to continue\n\nTEST <A> &amp; & @ {{0}} TEST', 'TITLE <A> &amp; & @ {{0}} TEST');
     }});");
 
-            return hb.ToYHtmlString();
+            return hb.ToString();
         }
 
-        public async Task<YHtmlString> RenderPartialViewAsync(TestEscapesModule module, TestEscapesModuleController.EditModel model) {
+        public async Task<string> RenderPartialViewAsync(TestEscapesModule module, TestEscapesModuleController.EditModel model) {
 
             HtmlBuilder hb = new HtmlBuilder();
             hb.Append(await HtmlHelper.ForEditContainerAsync(model, "PropertyList"));
-            return hb.ToYHtmlString();
+            return hb.ToString();
 
         }
     }

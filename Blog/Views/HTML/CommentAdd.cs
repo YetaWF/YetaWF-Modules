@@ -18,7 +18,7 @@ namespace YetaWF.Modules.Blog.Views {
         public override Package GetPackage() { return AreaRegistration.CurrentPackage; }
         public override string GetViewName() { return ViewName; }
 
-        public async Task<YHtmlString> RenderViewAsync(CommentAddModule module, CommentAddModuleController.AddModel model) {
+        public async Task<string> RenderViewAsync(CommentAddModule module, CommentAddModuleController.AddModel model) {
 
             HtmlBuilder hb = new HtmlBuilder();
 
@@ -41,12 +41,12 @@ namespace YetaWF.Modules.Blog.Views {
 </div>");
             }
 
-            return hb.ToYHtmlString();
+            return hb.ToString();
         }
-        public async Task<YHtmlString> RenderPartialViewAsync(CommentAddModule module, CommentAddModuleController.AddModel model) {
+        public async Task<string> RenderPartialViewAsync(CommentAddModule module, CommentAddModuleController.AddModel model) {
             HtmlBuilder hb = new HtmlBuilder();
             hb.Append(await HtmlHelper.ForEditContainerAsync(model, "PropertyList"));
-            return hb.ToYHtmlString();
+            return hb.ToString();
         }
     }
 }

@@ -47,7 +47,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         /// </summary>
         /// <param name="model">The model being rendered by the component.</param>
         /// <returns>The component rendered as HTML.</returns>
-        public async Task<YHtmlString> RenderAsync(Guid? model) {
+        public async Task<string> RenderAsync(Guid? model) {
 
             string areaName = await GetAreaNameFromGuidAsync(true, model);
             model = model ?? Guid.Empty;
@@ -67,7 +67,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             return await DropDownListComponent.RenderDropDownListAsync(this, model.ToString(), list, "yt_moduleselectionmodulenew");
         }
 
-        internal static YHtmlString RenderReplacementPackageModulesNew(string areaName) {
+        internal static string RenderReplacementPackageModulesNew(string areaName) {
             List<SelectionItem<string>> list = new List<SelectionItem<string>>();
             if (!string.IsNullOrWhiteSpace(areaName)) {
                 list = (

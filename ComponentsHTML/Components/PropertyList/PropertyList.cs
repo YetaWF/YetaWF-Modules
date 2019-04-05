@@ -26,7 +26,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         /// </summary>
         /// <param name="model">The model being rendered by the component.</param>
         /// <returns>The component rendered as HTML.</returns>
-        public async Task<YHtmlString> RenderContainerAsync(object model) {
+        public async Task<string> RenderContainerAsync(object model) {
             return await RenderPropertyListTabbedAsync(model, true);
         }
         /// <summary>
@@ -34,7 +34,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         /// </summary>
         /// <param name="model">The model being rendered by the component.</param>
         /// <returns>The component rendered as HTML.</returns>
-        public async Task<YHtmlString> RenderAsync(object model) {
+        public async Task<string> RenderAsync(object model) {
             using (Manager.StartNestedComponent($"{FieldName}")) {
                 return await RenderPropertyListTabbedAsync(model, true);
             }
@@ -57,7 +57,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         /// </summary>
         /// <param name="model">The model being rendered by the component.</param>
         /// <returns>The component rendered as HTML.</returns>
-        public async Task<YHtmlString> RenderContainerAsync(object model) {
+        public async Task<string> RenderContainerAsync(object model) {
             return await RenderPropertyListTabbedAsync(model, false);
         }
         /// <summary>
@@ -65,7 +65,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         /// </summary>
         /// <param name="model">The model being rendered by the component.</param>
         /// <returns>The component rendered as HTML.</returns>
-        public async Task<YHtmlString> RenderAsync(object model) {
+        public async Task<string> RenderAsync(object model) {
             using (Manager.StartNestedComponent($"{FieldName}")) {
                 return await RenderPropertyListTabbedAsync(model, false);
             }
@@ -94,7 +94,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         /// The GetTemplateName method returns the component name without area name prefix in all cases.</remarks>
         public override string GetTemplateName() { return TemplateName; }
 
-        internal async Task<YHtmlString> RenderPropertyListTabbedAsync(object model, bool readOnly) {
+        internal async Task<string> RenderPropertyListTabbedAsync(object model, bool readOnly) {
 
             List<string> categories = GetCategories(model);
             if (categories.Count <= 1) // if there is only one tab, show as regular property list
@@ -147,10 +147,10 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                     Manager.ScriptManager.AddLast($@"new YetaWF_ComponentsHTML.PropertyListComponent('{divId}', {YetaWFManager.JsonSerialize(cd)});");
                 }
             }
-            return hb.ToYHtmlString();
+            return hb.ToString();
         }
 
-        internal async Task<YHtmlString> RenderPropertyListAsync(object model, bool ReadOnly) {
+        internal async Task<string> RenderPropertyListAsync(object model, bool ReadOnly) {
 
             HtmlBuilder hb = new HtmlBuilder();
             Type modelType = model.GetType();
@@ -175,7 +175,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                 tagFieldSet.InnerHtml = tagLegend.ToString(YTagRenderMode.Normal) + hbProps.ToString();
                 hb.Append(tagFieldSet.ToString(YTagRenderMode.Normal));
             } else {
-                hb.Append(hbProps.ToHtmlString());
+                hb.Append(hbProps.ToString());
             }
             RenderFooter(hb, classData);
 
@@ -186,7 +186,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                 }
             }
 
-            return hb.ToYHtmlString();
+            return hb.ToString();
         }
     }
 }

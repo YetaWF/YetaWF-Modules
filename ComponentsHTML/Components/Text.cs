@@ -161,7 +161,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         /// </summary>
         /// <param name="model">The model being rendered by the component.</param>
         /// <returns>The component rendered as HTML.</returns>
-        public async Task<YHtmlString> RenderAsync(string model) {
+        public async Task<string> RenderAsync(string model) {
             HtmlBuilder hb = new HtmlBuilder();
 
             bool copy = PropData.GetAdditionalAttributeValue<bool>("Copy", true);
@@ -188,7 +188,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                 await Manager.AddOnManager.AddAddOnNamedAsync(Package.AreaName, "clipboardjs.com.clipboard");// add clipboard support
                 hb.Append(ImageHTML.BuildKnownIcon("#TextCopy", sprites: Info.PredefSpriteIcons, title: __ResStr("ttCopy", "Copy to Clipboard"), cssClass: "yt_text_copy"));
             }
-            return hb.ToYHtmlString();
+            return hb.ToString();
         }
     }
 
@@ -226,10 +226,10 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         /// </summary>
         /// <param name="model">The model being rendered by the component.</param>
         /// <returns>The component rendered as HTML.</returns>
-        public async Task<YHtmlString> RenderAsync(string model) {
+        public async Task<string> RenderAsync(string model) {
             return await RenderTextAsync(this, model, TemplateClass);
         }
-        internal static async Task<YHtmlString> RenderTextAsync(YetaWFComponent component, string model, string templateCssClass) {
+        internal static async Task<string> RenderTextAsync(YetaWFComponent component, string model, string templateCssClass) {
 
             await IncludeExplicitAsync();
 
@@ -285,7 +285,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             //    sb.Append("$('#{0}').kendoMaskedTextBox({{ mask: '{1}' }});\n", id, YetaWFManager.JserEncode(mask));
             //    Manager.ScriptManager.AddLastDocumentReady(sb);
             //}
-            return hb.ToYHtmlString();
+            return hb.ToString();
         }
     }
 }

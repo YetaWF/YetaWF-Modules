@@ -39,7 +39,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
     //    public override ComponentType GetComponentType() { return ComponentType.Display; }
 
-    //    public Task<YHtmlString> RenderAsync(WeeklyHours model) {
+    //    public Task<string> RenderAsync(WeeklyHours model) {
     //        HtmlBuilder hb = new HtmlBuilder();
     //    }
     //}
@@ -127,7 +127,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         /// </summary>
         /// <param name="model">The model being rendered by the component.</param>
         /// <returns>The component rendered as HTML.</returns>
-        public async Task<YHtmlString> RenderAsync(WeeklyHours model) {
+        public async Task<string> RenderAsync(WeeklyHours model) {
 
             HtmlBuilder hb = new HtmlBuilder();
 
@@ -178,7 +178,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             hb.Append($@"
 </div>");
 
-            return hb.ToYHtmlString();
+            return hb.ToString();
         }
     }
 }

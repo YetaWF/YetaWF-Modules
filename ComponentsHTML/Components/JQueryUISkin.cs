@@ -52,7 +52,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         /// </summary>
         /// <param name="model">The model being rendered by the component.</param>
         /// <returns>The component rendered as HTML.</returns>
-        public Task<YHtmlString> RenderAsync(string model) {
+        public Task<string> RenderAsync(string model) {
 
             HtmlBuilder hb = new HtmlBuilder();
 
@@ -61,7 +61,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                     {HE(model)}
                 </div>");
             }
-            return Task.FromResult(hb.ToYHtmlString());
+            return Task.FromResult(hb.ToString());
         }
     }
 
@@ -81,7 +81,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         /// </summary>
         /// <param name="model">The model being rendered by the component.</param>
         /// <returns>The component rendered as HTML.</returns>
-        public async Task<YHtmlString> RenderAsync(string model) {
+        public async Task<string> RenderAsync(string model) {
 
             // get all available skins
             SkinAccess skinAccess = new SkinAccess();

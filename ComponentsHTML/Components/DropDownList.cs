@@ -87,7 +87,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         /// </summary>
         /// <param name="model">The model being rendered by the component.</param>
         /// <returns>The component rendered as HTML.</returns>
-        public Task<YHtmlString> RenderAsync(TYPE model) {
+        public Task<string> RenderAsync(TYPE model) {
 
             List<SelectionItem<TYPE>> list;
             if (!TryGetSiblingProperty($"{PropertyName}_List", out list))
@@ -103,7 +103,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         /// <param name="list">A collection of items to render.</param>
         /// <param name="cssClass">A CSS class to add to the &lt;select&gt; tag. May be null.</param>
         /// <returns></returns>
-        public static async Task<YHtmlString> RenderDropDownListAsync(YetaWFComponent component, TYPE model, List<SelectionItem<TYPE>> list, string cssClass) {
+        public static async Task<string> RenderDropDownListAsync(YetaWFComponent component, TYPE model, List<SelectionItem<TYPE>> list, string cssClass) {
 
             await IncludeExplicitAsync();
 
@@ -205,7 +205,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                 Manager.ScriptManager.AddLast(sb.ToString());
 
             }
-            return hb.ToYHtmlString();
+            return hb.ToString();
         }
 
         /// <summary>
@@ -214,7 +214,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         /// <param name="extraData">Optional data to be returned in JSON object as 'extra:' data.</param>
         /// <param name="list">A list of all items part of the DropDownList component.</param>
         /// <returns>A JSON object containing data and tooltips to update the contents of a dropdownlist.</returns>
-        public static YHtmlString RenderDataSource(List<SelectionItem<TYPE>> list, string extraData) {
+        public static string RenderDataSource(List<SelectionItem<TYPE>> list, string extraData) {
             ScriptBuilder sb = new ScriptBuilder();
             sb.Append(Basics.AjaxJSONReturn);
             sb.Append(@"{""data"":[");
@@ -236,7 +236,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                 sb.Append("{0}", YetaWFManager.JsonSerialize(extraData));
             }
             sb.Append("]}");
-            return sb.ToYHtmlString();
+            return sb.ToString();
         }
 
     }

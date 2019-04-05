@@ -98,7 +98,7 @@ namespace YetaWF.Modules.ModuleEdit.Components {
             };
         }
 
-        public async Task<YHtmlString> RenderAsync(SerializableList<ModuleDefinition.AllowedUser> model) {
+        public async Task<string> RenderAsync(SerializableList<ModuleDefinition.AllowedUser> model) {
 
             HtmlBuilder hb = new HtmlBuilder();
 
@@ -164,7 +164,7 @@ namespace YetaWF.Modules.ModuleEdit.Components {
 $YetaWF.expandCollapseHandling('{DivId}', '{DivId}_coll', '{DivId}_exp');
 new YetaWF_ModuleEdit.AllowedUsersEditComponent('{DivId}', {YetaWFManager.JsonSerialize(setup)});");
 
-            return hb.ToYHtmlString();
+            return hb.ToString();
         }
         public static async Task<GridRecordData> GridRecordAsync(string fieldPrefix, object model, Guid editGuid) {
             // handle async properties

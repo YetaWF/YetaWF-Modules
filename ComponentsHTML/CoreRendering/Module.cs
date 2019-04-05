@@ -26,13 +26,13 @@ namespace YetaWF.Modules.ComponentsHTML {
         /// <param name="renderMode">The module links' rendering mode.</param>
         /// <param name="cssClass">The optional CSS classes to use for the module links.</param>
         /// <returns>Returns the module links as HTML.</returns>
-        public async Task<YHtmlString> RenderModuleLinksAsync(ModuleDefinition mod, ModuleAction.RenderModeEnum renderMode, string cssClass) {
+        public async Task<string> RenderModuleLinksAsync(ModuleDefinition mod, ModuleAction.RenderModeEnum renderMode, string cssClass) {
 
             HtmlBuilder hb = new HtmlBuilder();
 
             MenuList moduleMenu = await mod.GetModuleMenuListAsync(renderMode, ModuleAction.ActionLocationEnum.ModuleLinks);
 
-            string menuContents = (await RenderMenuAsync(moduleMenu, null, Globals.CssModuleLinks)).ToString();
+            string menuContents = (await RenderMenuAsync(moduleMenu, null, Globals.CssModuleLinks));
             if (!string.IsNullOrWhiteSpace(menuContents)) {
 
                 await Manager.AddOnManager.AddTemplateFromUIHintAsync("ActionIcons"); // action icons
@@ -48,7 +48,7 @@ namespace YetaWF.Modules.ComponentsHTML {
                 // </div>
                 hb.Append(div2Tag.ToString(YTagRenderMode.EndTag));
             }
-            return hb.ToYHtmlString();
+            return hb.ToString();
         }
 
         /// <summary>
@@ -56,13 +56,13 @@ namespace YetaWF.Modules.ComponentsHTML {
         /// </summary>
         /// <param name="mod">The module for which the module menu is rendered.</param>
         /// <returns>Returns the complete module menu as HTML.</returns>
-        public async Task<YHtmlString> RenderModuleMenuAsync(ModuleDefinition mod) {
+        public async Task<string> RenderModuleMenuAsync(ModuleDefinition mod) {
 
             HtmlBuilder hb = new HtmlBuilder();
 
             MenuList moduleMenu = await mod.GetModuleMenuListAsync(ModuleAction.RenderModeEnum.NormalMenu, ModuleAction.ActionLocationEnum.ModuleMenu);
 
-            string menuContents = (await RenderMenuAsync(moduleMenu, null, Globals.CssModuleMenu)).ToString();
+            string menuContents = (await RenderMenuAsync(moduleMenu, null, Globals.CssModuleMenu));
             if (!string.IsNullOrWhiteSpace(menuContents)) {
 
                 //await Manager.ScriptManager.AddKendoUICoreJsFile("kendo.popup.min.js"); // is now a prereq of kendo.window (2017.2.621)
@@ -94,7 +94,7 @@ namespace YetaWF.Modules.ComponentsHTML {
                 // </div>
                 hb.Append(divTag.ToString(YTagRenderMode.EndTag));
             }
-            return hb.ToYHtmlString();
+            return hb.ToString();
         }
 
         /// <summary>
@@ -104,15 +104,15 @@ namespace YetaWF.Modules.ComponentsHTML {
         /// <param name="mode">The module action's rendering mode.</param>
         /// <param name="id">The ID to generate.</param>
         /// <returns>Returns the module action as HTML.</returns>
-        public async Task<YHtmlString> RenderModuleActionAsync(ModuleAction action, RenderModeEnum mode, string id) {
+        public async Task<string> RenderModuleActionAsync(ModuleAction action, RenderModeEnum mode, string id) {
             return await RenderActionAsync(action, mode, id);
         }
 
-        internal static async Task<YHtmlString> RenderActionAsync(ModuleAction action, RenderModeEnum mode, string id,
+        internal static async Task<string> RenderActionAsync(ModuleAction action, RenderModeEnum mode, string id,
                 RenderEngineEnum RenderEngine = RenderEngineEnum.KendoMenu, int BootstrapSmartMenuLevel = 0, bool HasSubmenu = false) {
 
             // check if we're in the right mode
-            if (!await action.RendersSomethingAsync()) return new YHtmlString("");
+            if (!await action.RendersSomethingAsync()) return null;
 
             await Manager.AddOnManager.AddTemplateFromUIHintAsync("ActionIcons");// this is needed because we're not used by templates
 
@@ -296,7 +296,7 @@ namespace YetaWF.Modules.ComponentsHTML {
             tag.AddCssClass(Globals.CssModuleNoPrint);
             tag.InnerHtml = innerHtml;
 
-            return tag.ToYHtmlString(YTagRenderMode.Normal);
+            return tag.ToString(YTagRenderMode.Normal);
         }
     }
 }

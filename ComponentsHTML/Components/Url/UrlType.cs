@@ -43,7 +43,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         /// </summary>
         /// <param name="model">The model being rendered by the component.</param>
         /// <returns>The component rendered as HTML.</returns>
-        public async Task<YHtmlString> RenderAsync(UrlTypeEnum model) {
+        public async Task<string> RenderAsync(UrlTypeEnum model) {
 
             List<SelectionItem<string>> items = new List<SelectionItem<string>>();
             if ((model & UrlTypeEnum.Local) != 0) {

@@ -23,7 +23,7 @@ namespace YetaWF.Modules.Feed.Views {
             public int Interval { get; set; }
         }
 
-        public Task<YHtmlString> RenderViewAsync(FeedModule module, FeedModuleController.DisplayModel model) {
+        public Task<string> RenderViewAsync(FeedModule module, FeedModuleController.DisplayModel model) {
 
             HtmlBuilder hb = new HtmlBuilder();
 
@@ -83,7 +83,7 @@ namespace YetaWF.Modules.Feed.Views {
 </div>");
             Manager.ScriptManager.AddLast($@"new YetaWF_Feed.Feed('{DivId}', {YetaWFManager.JsonSerialize(setup)});");
 
-            return Task.FromResult(hb.ToYHtmlString());
+            return Task.FromResult(hb.ToString());
         }
     }
 }

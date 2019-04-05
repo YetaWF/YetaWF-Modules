@@ -19,7 +19,7 @@ namespace YetaWF.Modules.Feedback.Views {
         public override Package GetPackage() { return AreaRegistration.CurrentPackage; }
         public override string GetViewName() { return ViewName; }
 
-        public async Task<YHtmlString> RenderViewAsync(FeedbackAddModule module, FeedbackAddModuleController.AddModel model) {
+        public async Task<string> RenderViewAsync(FeedbackAddModule module, FeedbackAddModuleController.AddModel model) {
 
             HtmlBuilder hb = new HtmlBuilder();
 
@@ -34,14 +34,14 @@ namespace YetaWF.Modules.Feedback.Views {
     {await PartialForm(async () => await RenderPartialViewAsync(module, model))}
     {await FormButtonsAsync(buttons)}
 {await RenderEndFormAsync()}");
-            return hb.ToYHtmlString();
+            return hb.ToString();
         }
 
-        public async Task<YHtmlString> RenderPartialViewAsync(FeedbackAddModule module, FeedbackAddModuleController.AddModel model) {
+        public async Task<string> RenderPartialViewAsync(FeedbackAddModule module, FeedbackAddModuleController.AddModel model) {
 
             HtmlBuilder hb = new HtmlBuilder();
             hb.Append(await HtmlHelper.ForEditContainerAsync(model, "PropertyList"));
-            return hb.ToYHtmlString();
+            return hb.ToString();
 
         }
     }

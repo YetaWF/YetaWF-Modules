@@ -81,7 +81,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         /// </summary>
         /// <param name="model">The model being rendered by the component.</param>
         /// <returns>The component rendered as HTML.</returns>
-        public Task<YHtmlString> RenderAsync(string model) {
+        public Task<string> RenderAsync(string model) {
 
             HtmlBuilder hb = new HtmlBuilder();
             hb.Append("<div class='yt_image t_display'>");
@@ -98,7 +98,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                 img.Attributes.Add("src", model);
                 if (!img.Attributes.ContainsKey("alt"))
                     img.Attributes.Add("alt", __ResStr("altImage", "Image"));
-                hb.Append(img.ToYHtmlString(YTagRenderMode.Normal));
+                hb.Append(img.ToString(YTagRenderMode.Normal));
 
             } else {
 
@@ -106,7 +106,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
                 bool showMissing = PropData.GetAdditionalAttributeValue("ShowMissing", true);
                 if (string.IsNullOrWhiteSpace(model) && !showMissing)
-                    return Task.FromResult(new YHtmlString(""));
+                    return Task.FromResult<string>(null);
 
                 string alt = null;
                 if (HtmlAttributes.ContainsKey("alt"))
@@ -121,13 +121,13 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                     link.MergeAttribute("target", "_blank");
                     link.MergeAttribute("rel", "noopener noreferrer");
                     link.InnerHtml = imgTag;
-                    hb.Append(link.ToYHtmlString(YTagRenderMode.Normal));
+                    hb.Append(link.ToString(YTagRenderMode.Normal));
                 } else
                     hb.Append(imgTag);
             }
 
             hb.Append("</div>");
-            return Task.FromResult(hb.ToYHtmlString());
+            return Task.FromResult(hb.ToString());
         }
     }
 
@@ -151,7 +151,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         /// </summary>
         /// <param name="model">The model being rendered by the component.</param>
         /// <returns>The component rendered as HTML.</returns>
-        public async Task<YHtmlString> RenderAsync(string model) {
+        public async Task<string> RenderAsync(string model) {
 
             // the upload control
             Core.Components.FileUpload1 setupUpload = new Core.Components.FileUpload1() {
@@ -168,22 +168,22 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             HtmlBuilder hb = new HtmlBuilder();
             hb.Append($@"
 <div class='yt_image t_edit' id='{ControlId}'>
-    {(await HtmlHelper.ForEditComponentAsync(Container, PropertyName, model, "Hidden", Validation: true)).ToString()}
+    {await HtmlHelper.ForEditComponentAsync(Container, PropertyName, model, "Hidden", Validation: true)}
     <div class='t_image'>
-        {(await HtmlHelper.ForDisplayComponentAsync(Container, PropertyName, model, TemplateName, HtmlAttributes: new { alt = __ResStr("imgAlt", "Preview Image") })).ToString()}
+        {await HtmlHelper.ForDisplayComponentAsync(Container, PropertyName, model, TemplateName, HtmlAttributes: new { alt = __ResStr("imgAlt", "Preview Image") })}
     </div>
     <div class='t_info'>
-        {(await RenderImageAttributesAsync(model)).ToString()}
+        {await RenderImageAttributesAsync(model)}
     </div>
     <div class='t_haveimage' {(string.IsNullOrWhiteSpace(model) ? "style='display:none'" : "")}>
         <input type='button' class='t_clear' value='{__ResStr("btnClear", "Clear")}' title='{__ResStr("txtClear", "Click to clear the current image")}' />
     </div>
-    {(await HtmlHelper.ForEditContainerAsync(setupUpload, "FileUpload1", HtmlAttributes: new { id = uploadId })).ToString()}
+    {await HtmlHelper.ForEditContainerAsync(setupUpload, "FileUpload1", HtmlAttributes: new { id = uploadId })}
 </div>");
 
             Manager.ScriptManager.AddLast($@"new YetaWF_ComponentsHTML.ImageEditComponent('{ControlId}', {YetaWFManager.JsonSerialize(setup)});");
 
-            return hb.ToYHtmlString();
+            return hb.ToString();
         }
     }
 }

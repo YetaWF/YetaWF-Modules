@@ -88,7 +88,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         /// </summary>
         /// <param name="model">The model being rendered by the component.</param>
         /// <returns>The component rendered as HTML.</returns>
-        public async Task<YHtmlString> RenderAsync(List<PageDefinition> model) {
+        public async Task<string> RenderAsync(List<PageDefinition> model) {
 
             HtmlBuilder hb = new HtmlBuilder();
 
@@ -110,7 +110,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
     {await HtmlHelper.ForDisplayAsAsync(Container, PropertyName, FieldName, grid, nameof(grid.GridDef), grid.GridDef, "Grid", HtmlAttributes: HtmlAttributes)}
 </div>");
 
-            return hb.ToYHtmlString();
+            return hb.ToString();
         }
     }
 }

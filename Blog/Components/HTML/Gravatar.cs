@@ -63,7 +63,7 @@ namespace YetaWF.Modules.Blog.Components {
 
         public override ComponentType GetComponentType() { return ComponentType.Display; }
 
-        public async Task<YHtmlString> RenderAsync(string model) {
+        public async Task<string> RenderAsync(string model) {
 
             HtmlBuilder hb = new HtmlBuilder();
 
@@ -79,7 +79,7 @@ namespace YetaWF.Modules.Blog.Components {
 
             hb.Append($@"</div>");
 
-            return hb.ToYHtmlString();
+            return hb.ToString();
         }
     }
 }

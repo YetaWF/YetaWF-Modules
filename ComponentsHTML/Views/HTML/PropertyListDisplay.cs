@@ -35,11 +35,11 @@ namespace YetaWF.Modules.ComponentsHTML.Views {
         /// <param name="module">The module on behalf of which the view is rendered.</param>
         /// <param name="model">The model being rendered by the view.</param>
         /// <returns>The HTML representing the view.</returns>
-        public async Task<YHtmlString> RenderViewAsync(ModuleDefinition module, object model) {
+        public async Task<string> RenderViewAsync(ModuleDefinition module, object model) {
 
             HtmlBuilder hb = new HtmlBuilder();
             hb.Append(await HtmlHelper.ForDisplayContainerAsync(model, "PropertyList"));
-            return hb.ToYHtmlString();
+            return hb.ToString();
         }
     }
 }

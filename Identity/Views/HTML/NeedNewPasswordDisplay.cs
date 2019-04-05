@@ -18,7 +18,7 @@ namespace YetaWF.Modules.Identity.Views {
         public override Package GetPackage() { return AreaRegistration.CurrentPackage; }
         public override string GetViewName() { return ViewName; }
 
-        public async Task<YHtmlString> RenderViewAsync(NeedNewPasswordDisplayModule module, NeedNewPasswordDisplayModuleController.DisplayModel model) {
+        public async Task<string> RenderViewAsync(NeedNewPasswordDisplayModule module, NeedNewPasswordDisplayModuleController.DisplayModel model) {
 
             HtmlBuilder hb = new HtmlBuilder();
 
@@ -30,7 +30,7 @@ namespace YetaWF.Modules.Identity.Views {
 
             Manager.ScriptManager.AddLast($@"$('#{module.ModuleHtmlId}').prependTo('body');");
 
-            return hb.ToYHtmlString();
+            return hb.ToString();
         }
     }
 }

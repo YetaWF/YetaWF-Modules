@@ -52,7 +52,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         /// </summary>
         /// <param name="model">The model being rendered by the component.</param>
         /// <returns>The component rendered as HTML.</returns>
-        public Task<YHtmlString> RenderAsync(string model) {
+        public Task<string> RenderAsync(string model) {
 
             YTagBuilder tag = new YTagBuilder("div");
             tag.AddCssClass("yt_timezone");
@@ -65,7 +65,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                 tag.SetInnerText(tzi.DisplayName);
                 tag.Attributes.Add("title", tzi.IsDaylightSavingTime(DateTime.Now/*need local time*/) ? tzi.DaylightName : tzi.StandardName);
             }
-            return Task.FromResult(tag.ToYHtmlString(YTagRenderMode.Normal));
+            return Task.FromResult(tag.ToString(YTagRenderMode.Normal));
         }
     }
 
@@ -85,7 +85,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         /// </summary>
         /// <param name="model">The model being rendered by the component.</param>
         /// <returns>The component rendered as HTML.</returns>
-        public async Task<YHtmlString> RenderAsync(string model) {
+        public async Task<string> RenderAsync(string model) {
 
             List<TimeZoneInfo> tzis = TimeZoneInfo.GetSystemTimeZones().ToList();
             DateTime dt = DateTime.Now;// Need local time

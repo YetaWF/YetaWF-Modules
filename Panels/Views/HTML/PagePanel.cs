@@ -17,7 +17,7 @@ namespace YetaWF.Modules.Panels.Views {
         public override Package GetPackage() { return AreaRegistration.CurrentPackage; }
         public override string GetViewName() { return ViewName; }
 
-        public async Task<YHtmlString> RenderViewAsync(PagePanelModule module, PagePanelModuleController.Model model) {
+        public async Task<string> RenderViewAsync(PagePanelModule module, PagePanelModuleController.Model model) {
 
             HtmlBuilder hb = new HtmlBuilder();
 
@@ -38,14 +38,14 @@ namespace YetaWF.Modules.Panels.Views {
                 hb.Append(await HtmlHelper.ForDisplayAsync(model, nameof(model.PanelInfo)));
 
             }
-            return hb.ToYHtmlString();
+            return hb.ToString();
         }
 
-        public async Task<YHtmlString> RenderPartialViewAsync(PagePanelModule module, PagePanelModuleController.Model model) {
+        public async Task<string> RenderPartialViewAsync(PagePanelModule module, PagePanelModuleController.Model model) {
 
             HtmlBuilder hb = new HtmlBuilder();
             hb.Append(await HtmlHelper.ForEditContainerAsync(model, "PropertyList"));
-            return hb.ToYHtmlString();
+            return hb.ToString();
 
         }
     }

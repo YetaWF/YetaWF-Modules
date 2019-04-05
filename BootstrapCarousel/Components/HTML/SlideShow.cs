@@ -22,7 +22,7 @@ namespace YetaWF.Modules.BootstrapCarousel.Components {
 
         public override ComponentType GetComponentType() { return ComponentType.Display; }
 
-        public async Task<YHtmlString> RenderAsync(CarouselInfo model) {
+        public async Task<string> RenderAsync(CarouselInfo model) {
 
             HtmlBuilder hb = new HtmlBuilder();
 
@@ -89,7 +89,7 @@ namespace YetaWF.Modules.BootstrapCarousel.Components {
 
             Manager.ScriptManager.AddLast($@"$('#{ControlId}').carousel();");
 
-            return hb.ToYHtmlString();
+            return hb.ToString();
         }
     }
 
@@ -97,13 +97,13 @@ namespace YetaWF.Modules.BootstrapCarousel.Components {
 
         public override ComponentType GetComponentType() { return ComponentType.Edit; }
 
-        public async Task<YHtmlString> RenderAsync(CarouselInfo model) {
+        public async Task<string> RenderAsync(CarouselInfo model) {
 
             HtmlBuilder hb = new HtmlBuilder();
 
             hb.Append($@"
 <div id='{ControlId}' class='yt_bootstrapcarousel_slideshow t_edit'>
-    {(await HtmlHelper.ForEditContainerAsync(model, "PropertyList")).ToString()}
+    {await HtmlHelper.ForEditContainerAsync(model, "PropertyList")}
     <div class='t_slides' id='{DivId}'>
         {PropertyListComponentBase.RenderTabStripStart(DivId)}");
 
@@ -137,7 +137,7 @@ namespace YetaWF.Modules.BootstrapCarousel.Components {
 
             Manager.ScriptManager.AddLast($@"new YetaWF_BootstrapCarousel.SlideShowEdit('{ControlId}');");
 
-            return hb.ToYHtmlString();
+            return hb.ToString();
         }
     }
 }

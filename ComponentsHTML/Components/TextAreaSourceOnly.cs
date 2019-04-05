@@ -60,7 +60,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         /// </summary>
         /// <param name="model">The model being rendered by the component.</param>
         /// <returns>The component rendered as HTML.</returns>
-        public async Task<YHtmlString> RenderAsync(object model) {
+        public async Task<string> RenderAsync(object model) {
 
             string text;
             if (model is MultiString)
@@ -69,7 +69,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                 text = (string)model;
 
             if (string.IsNullOrWhiteSpace(text))
-                return new YHtmlString();
+                return null;
 
             bool copy = PropData.GetAdditionalAttributeValue<bool>("Copy", true);
 
@@ -92,13 +92,13 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                 tag.Attributes.Add("disabled", "disabled");
             tag.SetInnerText(text);
 
-            hb.Append(tag.ToHtmlString(YTagRenderMode.Normal));
+            hb.Append(tag.ToString(YTagRenderMode.Normal));
             if (copy) {
                 await Manager.AddOnManager.AddAddOnNamedAsync(Package.AreaName, "clipboardjs.com.clipboard");// add clipboard support
                 hb.Append(ImageHTML.BuildKnownIcon("#TextAreaSourceOnlyCopy", sprites: Info.PredefSpriteIcons, title: __ResStr("ttCopy", "Copy to Clipboard"), cssClass: "yt_textareasourceonly_copy"));
             }
 
-            return hb.ToYHtmlString();
+            return hb.ToString();
         }
     }
 
@@ -118,7 +118,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         /// </summary>
         /// <param name="model">The model being rendered by the component.</param>
         /// <returns>The component rendered as HTML.</returns>
-        public Task<YHtmlString> RenderAsync(object model) {
+        public Task<string> RenderAsync(object model) {
 
             string text;
             if (model is MultiString)
@@ -158,7 +158,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             tag.SetInnerText(text);
             hb.Append(tag.ToString(YTagRenderMode.Normal));
 
-            return Task.FromResult(hb.ToYHtmlString());
+            return Task.FromResult(hb.ToString());
         }
     }
 }

@@ -18,7 +18,7 @@ namespace YetaWF.Modules.Identity.Views {
         public override Package GetPackage() { return AreaRegistration.CurrentPackage; }
         public override string GetViewName() { return ViewName; }
 
-        public async Task<YHtmlString> RenderViewAsync(Need2FADisplayModule module, Need2FADisplayModuleController.DisplayModel model) {
+        public async Task<string> RenderViewAsync(Need2FADisplayModule module, Need2FADisplayModuleController.DisplayModel model) {
 
             HtmlBuilder hb = new HtmlBuilder();
 
@@ -32,7 +32,7 @@ namespace YetaWF.Modules.Identity.Views {
 var mod = $YetaWF.getElementById('{module.ModuleHtmlId}');
 document.body.insertBefore(mod, document.body.firstChild);");
 
-            return hb.ToYHtmlString();
+            return hb.ToString();
         }
     }
 }

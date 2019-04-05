@@ -55,7 +55,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         /// </summary>
         /// <param name="model">The model being rendered by the component.</param>
         /// <returns>The component rendered as HTML.</returns>
-        public async Task<YHtmlString> RenderAsync(Guid model) {
+        public async Task<string> RenderAsync(Guid model) {
             return await RenderAsync((Guid?)model);
         }
         /// <summary>
@@ -63,7 +63,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         /// </summary>
         /// <param name="model">The model being rendered by the component.</param>
         /// <returns>The component rendered as HTML.</returns>
-        public async Task<YHtmlString> RenderAsync(Guid? model) {
+        public async Task<string> RenderAsync(Guid? model) {
             HtmlBuilder hb = new HtmlBuilder();
 
             if (model != null) {
@@ -73,7 +73,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                 else
                     hb.Append(HE(page.Url));
             }
-            return hb.ToYHtmlString();
+            return hb.ToString();
         }
     }
 
@@ -93,7 +93,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         /// </summary>
         /// <param name="model">The model being rendered by the component.</param>
         /// <returns>The component rendered as HTML.</returns>
-        public async Task<YHtmlString> RenderAsync(Guid model) {
+        public async Task<string> RenderAsync(Guid model) {
             return await RenderAsync((Guid?)model);
         }
         /// <summary>
@@ -101,7 +101,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         /// </summary>
         /// <param name="model">The model being rendered by the component.</param>
         /// <returns>The component rendered as HTML.</returns>
-        public async Task<YHtmlString> RenderAsync(Guid? model) {
+        public async Task<string> RenderAsync(Guid? model) {
             HtmlBuilder hb = new HtmlBuilder();
 
             // dropdown
@@ -114,7 +114,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                     }).ToList<SelectionItem<string>>();
             list.Insert(0, new SelectionItem<string> { Text = __ResStr("select", "(select)"), Value = null });
 
-            YHtmlString ddList = await DropDownListComponent.RenderDropDownListAsync(this, (model ?? Guid.Empty).ToString(), list, "yt_pageselection");
+            string ddList = await DropDownListComponent.RenderDropDownListAsync(this, (model ?? Guid.Empty).ToString(), list, "yt_pageselection");
 
             // link
             YTagBuilder tag = new YTagBuilder("a");
@@ -145,7 +145,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
             Manager.ScriptManager.AddLast($@"new YetaWF_ComponentsHTML.PageSelectionEditComponent('{DivId}');");
 
-            return hb.ToYHtmlString();
+            return hb.ToString();
         }
     }
 }

@@ -60,7 +60,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         /// </summary>
         /// <param name="model">The model being rendered by the component.</param>
         /// <returns>The component rendered as HTML.</returns>
-        public Task<YHtmlString> RenderAsync(FileUpload1 model) {
+        public Task<string> RenderAsync(FileUpload1 model) {
             return RenderContainerAsync(model);
         }
         /// <summary>
@@ -68,7 +68,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         /// </summary>
         /// <param name="model">The model being rendered by the component.</param>
         /// <returns>The component rendered as HTML.</returns>
-        public Task<YHtmlString> RenderContainerAsync(FileUpload1 model) {
+        public Task<string> RenderContainerAsync(FileUpload1 model) {
 
             UseSuppliedIdAsControlId();
 
@@ -90,7 +90,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
             Manager.ScriptManager.AddLast($@"new YetaWF_ComponentsHTML.FileUpload1Component('{ControlId}', {YetaWFManager.JsonSerialize(setup)});");
 
-            return Task.FromResult(hb.ToYHtmlString());
+            return Task.FromResult(hb.ToString());
         }
     }
 }

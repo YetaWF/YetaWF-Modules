@@ -48,7 +48,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         /// </summary>
         /// <param name="model">The model being rendered by the component.</param>
         /// <returns>The component rendered as HTML.</returns>
-        public Task<YHtmlString> RenderAsync(List<string> model) {
+        public Task<string> RenderAsync(List<string> model) {
             HtmlBuilder hb = new HtmlBuilder();
 
             string delim = PropData.GetAdditionalAttributeValue("Delimiter", ", ");
@@ -69,7 +69,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             hb.Append(@"
 </div>");
 
-            return Task.FromResult(hb.ToYHtmlString());
+            return Task.FromResult(hb.ToString());
         }
     }
 }

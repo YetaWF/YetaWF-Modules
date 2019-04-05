@@ -47,7 +47,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         /// </summary>
         /// <param name="model">The model being rendered by the component.</param>
         /// <returns>The component rendered as HTML.</returns>
-        public async Task<YHtmlString> RenderAsync(string model) {
+        public async Task<string> RenderAsync(string model) {
             HtmlAttributes.Add("class", "yt_urlremotepage");
             HtmlAttributes.Add("maxlength", Globals.MaxUrl);
             return await TextEditComponent.RenderTextAsync(this, model != null ? model : "", "yt_urlremotepage");

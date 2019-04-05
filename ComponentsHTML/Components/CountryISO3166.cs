@@ -43,7 +43,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         /// </summary>
         /// <param name="model">The model being rendered by the component.</param>
         /// <returns>The component rendered as HTML.</returns>
-        public async Task<YHtmlString> RenderAsync(string model) {
+        public async Task<string> RenderAsync(string model) {
 
             bool includeSiteCountry = PropData.GetAdditionalAttributeValue<bool>("SiteCountry", true);
             List<CountryISO3166.Country> countries = CountryISO3166.GetCountries(IncludeSiteCountry: includeSiteCountry);

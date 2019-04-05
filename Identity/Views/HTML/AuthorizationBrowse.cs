@@ -18,7 +18,7 @@ namespace YetaWF.Modules.Identity.Views {
         public override Package GetPackage() { return AreaRegistration.CurrentPackage; }
         public override string GetViewName() { return ViewName; }
 
-        public async Task<YHtmlString> RenderViewAsync(AuthorizationBrowseModule module, AuthorizationBrowseModuleController.BrowseModel model) {
+        public async Task<string> RenderViewAsync(AuthorizationBrowseModule module, AuthorizationBrowseModuleController.BrowseModel model) {
 
             HtmlBuilder hb = new HtmlBuilder();
 
@@ -26,15 +26,15 @@ namespace YetaWF.Modules.Identity.Views {
 {await RenderBeginFormAsync()}
     {await PartialForm(async () => await RenderPartialViewAsync(module, model))}
 {await RenderEndFormAsync()}");
-            return hb.ToYHtmlString();
+            return hb.ToString();
         }
 
-        public async Task<YHtmlString> RenderPartialViewAsync(AuthorizationBrowseModule module, AuthorizationBrowseModuleController.BrowseModel model) {
+        public async Task<string> RenderPartialViewAsync(AuthorizationBrowseModule module, AuthorizationBrowseModuleController.BrowseModel model) {
 
             HtmlBuilder hb = new HtmlBuilder();
             hb.Append(this.__ResStr("explain", "<p>Resources are predefined by modules and packages. If a resource is deleted that is defined by an existing package, it is restored to its default state.</p>"));
             hb.Append(await HtmlHelper.ForDisplayAsync(model, "GridDef"));
-            return hb.ToYHtmlString();
+            return hb.ToString();
 
         }
     }

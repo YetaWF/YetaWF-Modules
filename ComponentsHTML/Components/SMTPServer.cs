@@ -41,7 +41,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         /// </summary>
         /// <param name="model">The model being rendered by the component.</param>
         /// <returns>The component rendered as HTML.</returns>
-        public async Task<YHtmlString> RenderAsync(SMTPServer model) {
+        public async Task<string> RenderAsync(SMTPServer model) {
 
             using (Manager.StartNestedComponent(FieldName)) {
 
@@ -53,7 +53,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
                 Manager.ScriptManager.AddLast($@"new YetaWF_ComponentsHTML.SMTPServer('{DivId}');");
 
-                return hb.ToYHtmlString();
+                return hb.ToString();
             }
         }
     }

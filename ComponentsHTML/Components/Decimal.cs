@@ -48,7 +48,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         /// </summary>
         /// <param name="model">The model being rendered by the component.</param>
         /// <returns>The component rendered as HTML.</returns>
-        public async Task<YHtmlString> RenderAsync(Decimal model) {
+        public async Task<string> RenderAsync(Decimal model) {
             return await RenderAsync((Decimal?)model);
         }
         /// <summary>
@@ -56,7 +56,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         /// </summary>
         /// <param name="model">The model being rendered by the component.</param>
         /// <returns>The component rendered as HTML.</returns>
-        public Task<YHtmlString> RenderAsync(Decimal? model) {
+        public Task<string> RenderAsync(Decimal? model) {
             HtmlBuilder hb = new HtmlBuilder();
             if (model != null && (Decimal)model > Decimal.MinValue && (Decimal)model < Decimal.MaxValue) {
                 YTagBuilder tag = new YTagBuilder("div");
@@ -68,7 +68,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                     tag.SetInnerText(((decimal)model).ToString(format));
                 hb.Append(tag.ToString(YTagRenderMode.Normal));
             }
-            return Task.FromResult(hb.ToYHtmlString());
+            return Task.FromResult(hb.ToString());
         }
     }
 
@@ -96,7 +96,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         /// </summary>
         /// <param name="model">The model being rendered by the component.</param>
         /// <returns>The component rendered as HTML.</returns>
-        public async Task<YHtmlString> RenderAsync(Decimal model) {
+        public async Task<string> RenderAsync(Decimal model) {
             return await RenderAsync((Decimal?) model);
         }
         /// <summary>
@@ -104,7 +104,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         /// </summary>
         /// <param name="model">The model being rendered by the component.</param>
         /// <returns>The component rendered as HTML.</returns>
-        public Task<YHtmlString> RenderAsync(Decimal? model) {
+        public Task<string> RenderAsync(Decimal? model) {
             HtmlBuilder hb = new HtmlBuilder();
 
             YTagBuilder tag = new YTagBuilder("input");
@@ -129,7 +129,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
             Manager.ScriptManager.AddLast($@"new YetaWF_ComponentsHTML.DecimalEditComponent('{id}', {{ Min: {min}, Max: {max} }});");
 
-            return Task.FromResult(hb.ToYHtmlString());
+            return Task.FromResult(hb.ToString());
         }
     }
 }

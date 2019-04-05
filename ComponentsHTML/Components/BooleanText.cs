@@ -46,7 +46,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         /// </summary>
         /// <param name="model">The model being rendered by the component.</param>
         /// <returns>The component rendered as HTML.</returns>
-        public async Task<YHtmlString> RenderAsync(bool model) {
+        public async Task<string> RenderAsync(bool model) {
             return await RenderAsync((bool?)model);
         }
         /// <summary>
@@ -54,7 +54,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         /// </summary>
         /// <param name="model">The model being rendered by the component.</param>
         /// <returns>The component rendered as HTML.</returns>
-        public Task<YHtmlString> RenderAsync(bool? model) {
+        public Task<string> RenderAsync(bool? model) {
 
             YTagBuilder tag = new YTagBuilder("input");
             tag.AddCssClass("yt_booleantext");
@@ -67,9 +67,9 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
             string text;
             if (TryGetSiblingProperty($"{PropertyName}_Text", out text))
-                return Task.FromResult(new YHtmlString(tag.ToString(YTagRenderMode.StartTag) + HE(text)));
+                return Task.FromResult(tag.ToString(YTagRenderMode.StartTag) + HE(text));
             else
-                return Task.FromResult(tag.ToYHtmlString(YTagRenderMode.StartTag));
+                return Task.FromResult(tag.ToString(YTagRenderMode.StartTag));
         }
     }
     /// <summary>
@@ -88,7 +88,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         /// </summary>
         /// <param name="model">The model being rendered by the component.</param>
         /// <returns>The component rendered as HTML.</returns>
-        public async Task<YHtmlString> RenderAsync(bool model) {
+        public async Task<string> RenderAsync(bool model) {
             return await RenderAsync((bool?) model);
         }
         /// <summary>
@@ -96,7 +96,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         /// </summary>
         /// <param name="model">The model being rendered by the component.</param>
         /// <returns>The component rendered as HTML.</returns>
-        public Task<YHtmlString> RenderAsync(bool? model) {
+        public Task<string> RenderAsync(bool? model) {
 
             YTagBuilder tag = new YTagBuilder("input");
             tag.AddCssClass("yt_booleantext");
@@ -115,9 +115,9 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
             string text;
             if (TryGetSiblingProperty($"{PropertyName}_Text", out text))
-                return Task.FromResult(new YHtmlString(tag.ToString(YTagRenderMode.StartTag) + tagHidden.ToString(YTagRenderMode.StartTag) + HE(text)));
+                return Task.FromResult(tag.ToString(YTagRenderMode.StartTag) + tagHidden.ToString(YTagRenderMode.StartTag) + HE(text));
             else
-                return Task.FromResult(new YHtmlString(tag.ToYHtmlString(YTagRenderMode.StartTag) + tagHidden.ToString(YTagRenderMode.StartTag)));
+                return Task.FromResult(tag.ToString(YTagRenderMode.StartTag) + tagHidden.ToString(YTagRenderMode.StartTag));
         }
     }
 }

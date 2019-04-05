@@ -17,11 +17,11 @@ namespace YetaWF.Modules.Logging.Views {
         public override Package GetPackage() { return AreaRegistration.CurrentPackage; }
         public override string GetViewName() { return ViewName; }
 
-        public async Task<YHtmlString> RenderViewAsync(MainMenuModule module, MainMenuModuleController.MenuModel model) {
+        public async Task<string> RenderViewAsync(MainMenuModule module, MainMenuModuleController.MenuModel model) {
 
             HtmlBuilder hb = new HtmlBuilder();
             hb.Append($@"{await HtmlHelper.ForDisplayAsync(model, nameof(model.Menu))}");
-            return hb.ToYHtmlString();
+            return hb.ToString();
         }
     }
 }

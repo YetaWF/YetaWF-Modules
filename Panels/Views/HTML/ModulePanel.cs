@@ -17,7 +17,7 @@ namespace YetaWF.Modules.Panels.Views {
         public override Package GetPackage() { return AreaRegistration.CurrentPackage; }
         public override string GetViewName() { return ViewName; }
 
-        public async Task<YHtmlString> RenderViewAsync(ModulePanelModule module, ModulePanelModuleController.Model model) {
+        public async Task<string> RenderViewAsync(ModulePanelModule module, ModulePanelModuleController.Model model) {
 
             HtmlBuilder hb = new HtmlBuilder();
 
@@ -34,10 +34,10 @@ namespace YetaWF.Modules.Panels.Views {
 {await HtmlHelper.ForDisplayAsync(model, nameof(model.PanelInfo))}");
 
             }
-            return hb.ToYHtmlString();
+            return hb.ToString();
         }
 
-        public async Task<YHtmlString> RenderPartialViewAsync(ModulePanelModule module, ModulePanelModuleController.Model model) {
+        public async Task<string> RenderPartialViewAsync(ModulePanelModule module, ModulePanelModuleController.Model model) {
 
             HtmlBuilder hb = new HtmlBuilder();
             using (Manager.StartNestedComponent(nameof(model.PanelInfo))) {
@@ -45,7 +45,7 @@ namespace YetaWF.Modules.Panels.Views {
                 hb.Append(await HtmlHelper.ForEditAsync(model, nameof(model.PanelInfo)));
 
             }
-            return hb.ToYHtmlString();
+            return hb.ToString();
 
         }
     }

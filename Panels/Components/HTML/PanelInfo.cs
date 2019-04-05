@@ -22,7 +22,7 @@ namespace YetaWF.Modules.Panels.Components {
 
         public override ComponentType GetComponentType() { return ComponentType.Display; }
 
-        public async Task<YHtmlString> RenderAsync(PanelInfo model) {
+        public async Task<string> RenderAsync(PanelInfo model) {
 
             HtmlBuilder hb = new HtmlBuilder();
 
@@ -167,14 +167,14 @@ $panelBar.select();");
     $YetaWF.processActivateDivs([$YetaWF.getElementById('{ControlId}')]);
 {EndDocumentReady()} ");
 
-            return hb.ToYHtmlString();
+            return hb.ToString();
         }
     }
     public class ModulePanelInfoEditComponent : PanelInfoComponentBase, IYetaWFComponent<PanelInfo> {
 
         public override ComponentType GetComponentType() { return ComponentType.Edit; }
 
-        public async Task<YHtmlString> RenderAsync(PanelInfo model) {
+        public async Task<string> RenderAsync(PanelInfo model) {
 
             HtmlBuilder hb = new HtmlBuilder();
 
@@ -216,7 +216,7 @@ $panelBar.select();");
 
             Manager.ScriptManager.AddLast($@"new YetaWF_Panels.PanelInfoEditComponent('{ControlId}');");
 
-            return hb.ToYHtmlString();
+            return hb.ToString();
         }
     }
 }

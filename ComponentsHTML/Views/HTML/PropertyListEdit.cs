@@ -35,7 +35,7 @@ namespace YetaWF.Modules.ComponentsHTML.Views {
         /// <param name="module">The module on behalf of which the view is rendered.</param>
         /// <param name="model">The model being rendered by the view.</param>
         /// <returns>The HTML representing the view.</returns>
-        public async Task<YHtmlString> RenderViewAsync(ModuleDefinition module, object model) {
+        public async Task<string> RenderViewAsync(ModuleDefinition module, object model) {
 
             HtmlBuilder hb = new HtmlBuilder();
 
@@ -46,7 +46,7 @@ namespace YetaWF.Modules.ComponentsHTML.Views {
     {await PartialForm(async () => await RenderPartialViewAsync(module, model))}
 {await RenderEndFormAsync()}");
 
-            return hb.ToYHtmlString();
+            return hb.ToString();
         }
 
         /// <summary>
@@ -56,11 +56,11 @@ namespace YetaWF.Modules.ComponentsHTML.Views {
         /// <param name="module">The module on behalf of which the partial view is rendered.</param>
         /// <param name="model">The model being rendered by the partial view.</param>
         /// <returns>The HTML representing the partial view.</returns>
-        public async Task<YHtmlString> RenderPartialViewAsync(ModuleDefinition module, object model) {
+        public async Task<string> RenderPartialViewAsync(ModuleDefinition module, object model) {
 
             HtmlBuilder hb = new HtmlBuilder();
             hb.Append(await HtmlHelper.ForEditContainerAsync(model, "PropertyList"));
-            return hb.ToYHtmlString();
+            return hb.ToString();
 
         }
     }

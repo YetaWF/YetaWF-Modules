@@ -47,7 +47,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         /// </summary>
         /// <param name="model">The model being rendered by the component.</param>
         /// <returns>The component rendered as HTML.</returns>
-        public async Task<YHtmlString> RenderAsync(IEnumerable model) {
+        public async Task<string> RenderAsync(IEnumerable model) {
             HtmlBuilder hb = new HtmlBuilder();
 
             string uiHint = PropData.GetAdditionalAttributeValue<string>("Template");
@@ -63,7 +63,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             foreach (var item in model) {
                 YTagBuilder tag = new YTagBuilder("div");
                 tag.AddCssClass("t_item");
-                tag.InnerHtml = (await HtmlHelper.ForDisplayContainerAsync(item, uiHint)).ToString();
+                tag.InnerHtml = await HtmlHelper.ForDisplayContainerAsync(item, uiHint);
                 hb.Append(tag.ToString(YTagRenderMode.Normal));
             }
 
@@ -75,7 +75,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
             Manager.ScriptManager.AddLast($@"new YetaWF_ComponentsHTML.ScrollerComponent('{DivId}');");
 
-            return hb.ToYHtmlString();
+            return hb.ToString();
         }
     }
 }

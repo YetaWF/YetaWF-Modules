@@ -17,7 +17,7 @@ namespace YetaWF.Modules.DevTests.Views {
         public override Package GetPackage() { return AreaRegistration.CurrentPackage; }
         public override string GetViewName() { return ViewName; }
 
-        public async Task<YHtmlString> RenderViewAsync(TestStepsModule module, TestStepsModuleController.Model model) {
+        public async Task<string> RenderViewAsync(TestStepsModule module, TestStepsModuleController.Model model) {
 
             HtmlBuilder hb = new HtmlBuilder();
 
@@ -45,7 +45,7 @@ if (typeof YetaWF_Panels !== 'undefined' && YetaWF_Panels.StepInfoComponent) {{
     YetaWF_Panels.StepInfoComponent.setActive({{Name: 'YetaWF_DevTests_Step1'}});
 }}");
 
-            return hb.ToYHtmlString();
+            return hb.ToString();
         }
     }
 }

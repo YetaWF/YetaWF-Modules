@@ -49,13 +49,13 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         /// </summary>
         /// <param name="model">The model being rendered by the component.</param>
         /// <returns>The component rendered as HTML.</returns>
-        public Task<YHtmlString> RenderAsync(string model) {
+        public Task<string> RenderAsync(string model) {
 
             ModuleSkinList modSkins = GetSiblingProperty($"{PropertyName}_ModuleSkinList", new ModuleSkinList());
             string name = (from l in modSkins where l.Name == model select l.Name).FirstOrDefault();
             if (name == null)
                 name = modSkins.First().Name;
-            return Task.FromResult(new YHtmlString(HE(name)));
+            return Task.FromResult(HE(name));
         }
     }
 
@@ -75,7 +75,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         /// </summary>
         /// <param name="model">The model being rendered by the component.</param>
         /// <returns>The component rendered as HTML.</returns>
-        public async Task<YHtmlString> RenderAsync(string model) {
+        public async Task<string> RenderAsync(string model) {
 
             ModuleSkinList modSkins = GetSiblingProperty($"{PropertyName}_ModuleSkinList", new ModuleSkinList());
             List<SelectionItem<string>> list = (from l in modSkins select new SelectionItem<string>() {

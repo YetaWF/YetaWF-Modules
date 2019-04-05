@@ -19,7 +19,7 @@ namespace YetaWF.Modules.Logging.Views {
         public override Package GetPackage() { return AreaRegistration.CurrentPackage; }
         public override string GetViewName() { return ViewName; }
 
-        public async Task<YHtmlString> RenderViewAsync(BrowseLogModule module, BrowseLogModuleController.BrowseModel model) {
+        public async Task<string> RenderViewAsync(BrowseLogModule module, BrowseLogModuleController.BrowseModel model) {
 
             HtmlBuilder hb = new HtmlBuilder();
 
@@ -41,14 +41,14 @@ namespace YetaWF.Modules.Logging.Views {
     {HE(this.__ResStr("file", "Log browsing is not available. The following log provider is used: {0}", model.LoggerName))}
 </div>");
             }
-            return hb.ToYHtmlString();
+            return hb.ToString();
         }
 
-        public async Task<YHtmlString> RenderPartialViewAsync(BrowseLogModule module, BrowseLogModuleController.BrowseModel model) {
+        public async Task<string> RenderPartialViewAsync(BrowseLogModule module, BrowseLogModuleController.BrowseModel model) {
 
             HtmlBuilder hb = new HtmlBuilder();
             hb.Append(await HtmlHelper.ForDisplayAsync(model, nameof(model.GridDef)));
-            return hb.ToYHtmlString();
+            return hb.ToString();
 
         }
     }

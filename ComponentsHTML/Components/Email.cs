@@ -48,11 +48,11 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         /// </summary>
         /// <param name="model">The model being rendered by the component.</param>
         /// <returns>The component rendered as HTML.</returns>
-        public Task<YHtmlString> RenderAsync(string model) {
+        public Task<string> RenderAsync(string model) {
             HtmlBuilder hb = new HtmlBuilder();
             if (!string.IsNullOrWhiteSpace(model))
                 hb.Append($@"<div class='yt_email t_display'><a href='mailto: {YetaWFManager.HtmlAttributeEncode(model)}'>{YetaWFManager.HtmlEncode(model)}</a></div>");
-            return Task.FromResult(hb.ToYHtmlString());
+            return Task.FromResult(hb.ToString());
         }
     }
 
@@ -72,7 +72,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         /// </summary>
         /// <param name="model">The model being rendered by the component.</param>
         /// <returns>The component rendered as HTML.</returns>
-        public async Task<YHtmlString> RenderAsync(string model) {
+        public async Task<string> RenderAsync(string model) {
             HtmlAttributes.Add("class", "yt_text40");
             StringLengthAttribute lenAttr = PropData.TryGetAttribute<StringLengthAttribute>();
             if (lenAttr == null)

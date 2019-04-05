@@ -19,7 +19,7 @@ namespace YetaWF.Modules.PageEar.Views {
         public override Package GetPackage() { return AreaRegistration.CurrentPackage; }
         public override string GetViewName() { return ViewName; }
 
-        public Task<YHtmlString> RenderViewAsync(PageEarModule module, PageEarModuleController.Model model) {
+        public Task<string> RenderViewAsync(PageEarModule module, PageEarModuleController.Model model) {
 
             HtmlBuilder hb = new HtmlBuilder();
 
@@ -52,7 +52,7 @@ $YetaWF.registerPageChange(function () {{
 }});");
 
             }
-            return Task.FromResult(hb.ToYHtmlString());
+            return Task.FromResult(hb.ToString());
         }
     }
 }

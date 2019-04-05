@@ -23,7 +23,7 @@ namespace YetaWF.Modules.Scheduler.Components {
 
         public override ComponentType GetComponentType() { return ComponentType.Display; }
 
-        public async Task<YHtmlString> RenderAsync(SchedulerFrequency model) {
+        public async Task<string> RenderAsync(SchedulerFrequency model) {
 
             HtmlBuilder hb = new HtmlBuilder();
 
@@ -35,14 +35,14 @@ namespace YetaWF.Modules.Scheduler.Components {
     {__ResStr("everyPost", "")}
 </div>");
 
-            return hb.ToYHtmlString();
+            return hb.ToString();
         }
     }
     public class FrequencyEditComponent : FrequencyComponentBase, IYetaWFComponent<SchedulerFrequency> {
 
         public override ComponentType GetComponentType() { return ComponentType.Edit; }
 
-        public async Task<YHtmlString> RenderAsync(SchedulerFrequency model) {
+        public async Task<string> RenderAsync(SchedulerFrequency model) {
 
             HtmlBuilder hb = new HtmlBuilder();
 
@@ -56,7 +56,7 @@ namespace YetaWF.Modules.Scheduler.Components {
     {__ResStr("everyPost", "")}
 </div>");
             }
-            return hb.ToYHtmlString();
+            return hb.ToString();
         }
     }
 }

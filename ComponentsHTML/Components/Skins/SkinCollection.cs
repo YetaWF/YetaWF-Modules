@@ -52,7 +52,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         /// </summary>
         /// <param name="model">The model being rendered by the component.</param>
         /// <returns>The component rendered as HTML.</returns>
-        public Task<YHtmlString> RenderAsync(string model) {
+        public Task<string> RenderAsync(string model) {
 
             // get all available skins
             SkinAccess skinAccess = new SkinAccess();
@@ -64,8 +64,8 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                     desc = __ResStr("siteDef", "(Site Default)");
             }
             if (string.IsNullOrWhiteSpace(desc))
-                return Task.FromResult(new YHtmlString());
-            return Task.FromResult(new YHtmlString(HE(desc)));
+                return Task.FromResult<string>(null);
+            return Task.FromResult(HE(desc));
         }
     }
 
@@ -85,7 +85,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         /// </summary>
         /// <param name="model">The model being rendered by the component.</param>
         /// <returns>The component rendered as HTML.</returns>
-        public async Task<YHtmlString> RenderAsync(string model) {
+        public async Task<string> RenderAsync(string model) {
 
             // get all available skins
             SkinAccess skinAccess = new SkinAccess();

@@ -19,7 +19,7 @@ namespace YetaWF.Modules.Messenger.Views {
         public override Package GetPackage() { return AreaRegistration.CurrentPackage; }
         public override string GetViewName() { return ViewName; }
 
-        public Task<YHtmlString> RenderViewAsync(BrowseSiteAnnouncementModule module, object model) {
+        public Task<string> RenderViewAsync(BrowseSiteAnnouncementModule module, object model) {
 
             HtmlBuilder hb = new HtmlBuilder();
 
@@ -28,7 +28,7 @@ namespace YetaWF.Modules.Messenger.Views {
     {this.__ResStr("unavailable", "Site announcements log is not available - See <a href='https://yetawf.com/Documentation/YetaWF/Messenger' target='_blank' rel='noopener noreferrer'>https://yetawf.com/Documentation/YetaWF/Messenger</a> for additional information.")}
 </div>");
 
-            return Task.FromResult(hb.ToYHtmlString());
+            return Task.FromResult(hb.ToString());
         }
     }
 }

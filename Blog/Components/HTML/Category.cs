@@ -24,21 +24,21 @@ namespace YetaWF.Modules.Blog.Components {
 
         public override ComponentType GetComponentType() { return ComponentType.Display; }
 
-        public Task<YHtmlString> RenderAsync(string model) {
+        public Task<string> RenderAsync(string model) {
 
             HtmlBuilder hb = new HtmlBuilder();
 
             if (!string.IsNullOrEmpty(model))
                 hb.Append(YetaWFManager.HtmlEncode(model));
 
-            return Task.FromResult(hb.ToYHtmlString());
+            return Task.FromResult(hb.ToString());
         }
     }
     public class CategoryEditComponent : CategoryComponentBase, IYetaWFComponent<int> {
 
         public override ComponentType GetComponentType() { return ComponentType.Edit; }
 
-        public async Task<YHtmlString> RenderAsync(int model) {
+        public async Task<string> RenderAsync(int model) {
 
             using (BlogCategoryDataProvider categoryDP = new BlogCategoryDataProvider()) {
                 DataProviderGetRecords<BlogCategory> data = await categoryDP.GetItemsAsync(0, 0, null, null);

@@ -18,7 +18,7 @@ namespace YetaWF.Modules.Blog.Views {
         public override Package GetPackage() { return AreaRegistration.CurrentPackage; }
         public override string GetViewName() { return ViewName; }
 
-        public Task<YHtmlString> RenderViewAsync(DisqusModule module, DisqusModuleController.DisplayModel model) {
+        public Task<string> RenderViewAsync(DisqusModule module, DisqusModuleController.DisplayModel model) {
 
             HtmlBuilder hb = new HtmlBuilder();
 
@@ -63,7 +63,7 @@ namespace YetaWF.Modules.Blog.Views {
 
             Manager.ScriptManager.AddLast(sb.ToString());
 
-            return Task.FromResult(hb.ToYHtmlString());
+            return Task.FromResult(hb.ToString());
         }
     }
 }

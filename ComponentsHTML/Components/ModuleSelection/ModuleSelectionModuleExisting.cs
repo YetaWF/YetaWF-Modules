@@ -45,7 +45,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         /// </summary>
         /// <param name="model">The model being rendered by the component.</param>
         /// <returns>The component rendered as HTML.</returns>
-        public async Task<YHtmlString> RenderAsync(Guid? model) {
+        public async Task<string> RenderAsync(Guid? model) {
 
             model = model ?? Guid.Empty;
             string areaName = await ModuleSelectionModuleNewEditComponent.GetAreaNameFromGuidAsync(false, model);

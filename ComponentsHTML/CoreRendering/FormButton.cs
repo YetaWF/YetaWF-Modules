@@ -15,10 +15,10 @@ namespace YetaWF.Modules.ComponentsHTML {
         /// </summary>
         /// <param name="formButton">The form button to render.</param>
         /// <returns>Returns the rendered form button as HTML.</returns>
-        public Task<YHtmlString> RenderFormButtonAsync(FormButton formButton) {
+        public Task<string> RenderFormButtonAsync(FormButton formButton) {
             return Task.FromResult(RenderFormButton(formButton));
         }
-        private YHtmlString RenderFormButton(FormButton formButton) {
+        private string RenderFormButton(FormButton formButton) {
 
             YTagBuilder tag = new YTagBuilder("input");
 
@@ -28,7 +28,7 @@ namespace YetaWF.Modules.ComponentsHTML {
                 case ButtonTypeEnum.ConditionalSubmit:
                     if (formButton.ButtonType == ButtonTypeEnum.ConditionalSubmit && !Manager.IsInPopup && !Manager.HaveReturnToUrl) {
                         // if we don't have anyplace to return to and we're not in a popup we don't need a submit button
-                        return new YHtmlString("");
+                        return null;
                     }
                     if (string.IsNullOrWhiteSpace(text)) text = this.__ResStr("btnSave", "Save");
                     tag.Attributes.Add("type", "submit");
@@ -45,7 +45,7 @@ namespace YetaWF.Modules.ComponentsHTML {
                 case ButtonTypeEnum.Cancel:
                     if (!Manager.IsInPopup && !Manager.HaveReturnToUrl) {
                         // if we don't have anyplace to return to and we're not in a popup so we don't need a cancel button
-                        return new YHtmlString("");
+                        return null;
                     }
                     if (string.IsNullOrWhiteSpace(text)) text = this.__ResStr("btnCancel", "Cancel");
                     tag.Attributes.Add("type", "button");
@@ -64,7 +64,7 @@ namespace YetaWF.Modules.ComponentsHTML {
             if (!string.IsNullOrWhiteSpace(formButton.CssClass))
                 tag.AddCssClass(formButton.CssClass);
 
-            return tag.ToYHtmlString(YTagRenderMode.StartTag);
+            return tag.ToString(YTagRenderMode.StartTag);
         }
     }
 }

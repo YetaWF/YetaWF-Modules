@@ -17,7 +17,7 @@ namespace YetaWF.Modules.Search.Views {
         public override Package GetPackage() { return AreaRegistration.CurrentPackage; }
         public override string GetViewName() { return ViewName; }
 
-        public async Task<YHtmlString> RenderViewAsync(SearchInputModule module, SearchInputModuleController.Model model) {
+        public async Task<string> RenderViewAsync(SearchInputModule module, SearchInputModuleController.Model model) {
 
             HtmlBuilder hb = new HtmlBuilder();
 
@@ -28,14 +28,14 @@ namespace YetaWF.Modules.Search.Views {
         new FormButton() { ButtonType= ButtonTypeEnum.Submit, Text=module.SearchButtonText, Title=module.SearchButtonTT },
     })}
 {await RenderEndFormAsync()}");
-            return hb.ToYHtmlString();
+            return hb.ToString();
         }
 
-        public async Task<YHtmlString> RenderPartialViewAsync(SearchInputModule module, SearchInputModuleController.Model model) {
+        public async Task<string> RenderPartialViewAsync(SearchInputModule module, SearchInputModuleController.Model model) {
 
             HtmlBuilder hb = new HtmlBuilder();
             hb.Append(await HtmlHelper.ForEditContainerAsync(model, "PropertyList"));
-            return hb.ToYHtmlString();
+            return hb.ToString();
 
         }
     }

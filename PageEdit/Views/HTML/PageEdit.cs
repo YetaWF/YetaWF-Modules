@@ -17,7 +17,7 @@ namespace YetaWF.Modules.PageEdit.Views {
         public override Package GetPackage() { return AreaRegistration.CurrentPackage; }
         public override string GetViewName() { return ViewName; }
 
-        public async Task<YHtmlString> RenderViewAsync(PageEditModule module, PageEditModuleController.EditModel model) {
+        public async Task<string> RenderViewAsync(PageEditModule module, PageEditModuleController.EditModel model) {
 
             HtmlBuilder hb = new HtmlBuilder();
 
@@ -30,14 +30,14 @@ namespace YetaWF.Modules.PageEdit.Views {
         new FormButton() { ButtonType= ButtonTypeEnum.Cancel, },
     })}
 {await RenderEndFormAsync()}");
-            return hb.ToYHtmlString();
+            return hb.ToString();
         }
 
-        public async Task<YHtmlString> RenderPartialViewAsync(PageEditModule module, PageEditModuleController.EditModel model) {
+        public async Task<string> RenderPartialViewAsync(PageEditModule module, PageEditModuleController.EditModel model) {
 
             HtmlBuilder hb = new HtmlBuilder();
             hb.Append(await HtmlHelper.ForEditAsync(model, nameof(model.Page)));
-            return hb.ToYHtmlString();
+            return hb.ToString();
 
         }
     }

@@ -47,7 +47,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         /// </summary>
         /// <param name="model">The model being rendered by the component.</param>
         /// <returns>The component rendered as HTML.</returns>
-        public async Task<YHtmlString> RenderAsync(Guid model) {
+        public async Task<string> RenderAsync(Guid model) {
             return await RenderAsync((Guid?)model);
         }
         /// <summary>
@@ -55,12 +55,12 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         /// </summary>
         /// <param name="model">The model being rendered by the component.</param>
         /// <returns>The component rendered as HTML.</returns>
-        public Task<YHtmlString> RenderAsync(Guid? model) {
+        public Task<string> RenderAsync(Guid? model) {
             HtmlBuilder hb = new HtmlBuilder();
             if (model != null && model != Guid.Empty) {
                 hb.Append(HE(((Guid)model).ToString()));
             }
-            return Task.FromResult(hb.ToYHtmlString());
+            return Task.FromResult(hb.ToString());
         }
     }
 
@@ -80,7 +80,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         /// </summary>
         /// <param name="model">The model being rendered by the component.</param>
         /// <returns>The component rendered as HTML.</returns>
-        public async Task<YHtmlString> RenderAsync(Guid model) {
+        public async Task<string> RenderAsync(Guid model) {
             return await RenderAsync((Guid?) model);
         }
         /// <summary>
@@ -88,7 +88,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         /// </summary>
         /// <param name="model">The model being rendered by the component.</param>
         /// <returns>The component rendered as HTML.</returns>
-        public async Task<YHtmlString> RenderAsync(Guid? model) {
+        public async Task<string> RenderAsync(Guid? model) {
             HtmlAttributes.Add("class", "yt_text40");
             HtmlAttributes.Add("maxlength", "40");
             return await TextEditComponent.RenderTextAsync(this, model != null ? model.ToString() : "", "yt_guid");

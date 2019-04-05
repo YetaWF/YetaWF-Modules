@@ -21,7 +21,7 @@ namespace YetaWF.Modules.DevTests.Components {
 
         public override ComponentType GetComponentType() { return ComponentType.Display; }
 
-        public async Task<YHtmlString> RenderContainerAsync(TemplateScrollerModuleController.ScrollerItem model) {
+        public async Task<string> RenderContainerAsync(TemplateScrollerModuleController.ScrollerItem model) {
             HtmlBuilder hb = new HtmlBuilder();
 
             hb.Append($@"
@@ -32,7 +32,7 @@ namespace YetaWF.Modules.DevTests.Components {
     <div class='y_cleardiv'></div>
 </div>");
 
-            return hb.ToYHtmlString();
+            return hb.ToString();
         }
     }
 }

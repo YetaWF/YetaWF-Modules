@@ -65,7 +65,7 @@ namespace YetaWF.Modules.Pages.Components {
             };
         }
 
-        public async Task<YHtmlString> RenderAsync(List<string> model) {
+        public async Task<string> RenderAsync(List<string> model) {
 
             HtmlBuilder hb = new HtmlBuilder();
 
@@ -88,7 +88,7 @@ namespace YetaWF.Modules.Pages.Components {
     {await HtmlHelper.ForDisplayAsAsync(Container, PropertyName, FieldName, grid, nameof(grid.GridDef), grid.GridDef, "Grid", HtmlAttributes: HtmlAttributes)}
 </div>");
 
-            return hb.ToYHtmlString();
+            return hb.ToString();
         }
     }
 
@@ -183,7 +183,7 @@ namespace YetaWF.Modules.Pages.Components {
             };
         }
 
-        public async Task<YHtmlString> RenderAsync(List<string> model) {
+        public async Task<string> RenderAsync(List<string> model) {
 
             HtmlBuilder hb = new HtmlBuilder();
 
@@ -240,7 +240,7 @@ namespace YetaWF.Modules.Pages.Components {
 $YetaWF.expandCollapseHandling('{DivId}', '{DivId}_coll', '{DivId}_exp');
 new YetaWF_Pages.ListOfLocalPagesEditComponent('{DivId}', {YetaWFManager.JsonSerialize(setup)});");
 
-            return hb.ToYHtmlString();
+            return hb.ToString();
         }
         public static async Task<GridRecordData> GridRecordAsync(string fieldPrefix, object model) {
             // handle async properties

@@ -48,7 +48,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         /// </summary>
         /// <param name="model">The model being rendered by the component.</param>
         /// <returns>The component rendered as HTML.</returns>
-        public async Task<YHtmlString> RenderAsync(string model) {
+        public async Task<string> RenderAsync(string model) {
             HtmlBuilder hb = new HtmlBuilder();
             hb.Append(@"<div class='yt_ipaddress t_display'>");
 
@@ -70,7 +70,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                 }
             }
             hb.Append(@"</div>");
-            return hb.ToYHtmlString();
+            return hb.ToString();
         }
     }
 }

@@ -19,7 +19,7 @@ namespace YetaWF.Modules.Dashboard.Views {
         public override Package GetPackage() { return AreaRegistration.CurrentPackage; }
         public override string GetViewName() { return ViewName; }
 
-        public async Task<YHtmlString> RenderViewAsync(CacheInfoModule module, CacheInfoModuleController.DisplayModel model) {
+        public async Task<string> RenderViewAsync(CacheInfoModule module, CacheInfoModuleController.DisplayModel model) {
 
             HtmlBuilder hb = new HtmlBuilder();
 
@@ -40,14 +40,14 @@ namespace YetaWF.Modules.Dashboard.Views {
         {YetaWFManager.HtmlEncode(this.__ResStr("notAvail", "Information not available on ASP.NET Core MVC"))}
     </div>");
             }
-            return hb.ToYHtmlString();
+            return hb.ToString();
         }
 
-        public async Task<YHtmlString> RenderPartialViewAsync(CacheInfoModule module, CacheInfoModuleController.DisplayModel model) {
+        public async Task<string> RenderPartialViewAsync(CacheInfoModule module, CacheInfoModuleController.DisplayModel model) {
 
             HtmlBuilder hb = new HtmlBuilder();
             hb.Append(await HtmlHelper.ForDisplayContainerAsync(model, "PropertyList"));
-            return hb.ToYHtmlString();
+            return hb.ToString();
 
         }
     }

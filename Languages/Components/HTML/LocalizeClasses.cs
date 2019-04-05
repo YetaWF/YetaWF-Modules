@@ -70,7 +70,7 @@ namespace YetaWF.Modules.Languages.Components {
             public string NameFieldDescription { get; set; }
         }
 
-        public async Task<YHtmlString> RenderAsync(SerializableList<LocalizationData.ClassData> model) {
+        public async Task<string> RenderAsync(SerializableList<LocalizationData.ClassData> model) {
             HtmlBuilder hb = new HtmlBuilder();
 
             hb.Append($@"
@@ -197,7 +197,7 @@ namespace YetaWF.Modules.Languages.Components {
             hb.Append($@"
 </div>");
 
-            return hb.ToYHtmlString();
+            return hb.ToString();
         }
     }
 }

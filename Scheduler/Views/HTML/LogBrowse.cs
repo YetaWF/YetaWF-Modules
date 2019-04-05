@@ -19,7 +19,7 @@ namespace YetaWF.Modules.Scheduler.Views {
         public override Package GetPackage() { return AreaRegistration.CurrentPackage; }
         public override string GetViewName() { return ViewName; }
 
-        public async Task<YHtmlString> RenderViewAsync(LogBrowseModule module, LogBrowseModuleController.BrowseModel model) {
+        public async Task<string> RenderViewAsync(LogBrowseModule module, LogBrowseModuleController.BrowseModel model) {
 
             HtmlBuilder hb = new HtmlBuilder();
 
@@ -67,14 +67,14 @@ namespace YetaWF.Modules.Scheduler.Views {
 </div>");
             }
 
-            return hb.ToYHtmlString();
+            return hb.ToString();
         }
 
-        public async Task<YHtmlString> RenderPartialViewAsync(LogBrowseModule module, LogBrowseModuleController.BrowseModel model) {
+        public async Task<string> RenderPartialViewAsync(LogBrowseModule module, LogBrowseModuleController.BrowseModel model) {
 
             HtmlBuilder hb = new HtmlBuilder();
             hb.Append(await HtmlHelper.ForDisplayAsync(model, nameof(model.GridDef)));
-            return hb.ToYHtmlString();
+            return hb.ToString();
 
         }
     }

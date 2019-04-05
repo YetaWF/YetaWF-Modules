@@ -18,7 +18,7 @@ namespace YetaWF.Modules.Identity.Views {
         public override Package GetPackage() { return AreaRegistration.CurrentPackage; }
         public override string GetViewName() { return ViewName; }
 
-        public async Task<YHtmlString> RenderViewAsync(SetupExternalAccountModule module, SetupExternalAccountModuleController.SetupExternalAccountModel model) {
+        public async Task<string> RenderViewAsync(SetupExternalAccountModule module, SetupExternalAccountModuleController.SetupExternalAccountModel model) {
 
             HtmlBuilder hb = new HtmlBuilder();
 
@@ -31,10 +31,10 @@ namespace YetaWF.Modules.Identity.Views {
     })}
 {await RenderEndFormAsync()}");
 
-            return hb.ToYHtmlString();
+            return hb.ToString();
         }
 
-        public async Task<YHtmlString> RenderPartialViewAsync(SetupExternalAccountModule module, SetupExternalAccountModuleController.SetupExternalAccountModel model) {
+        public async Task<string> RenderPartialViewAsync(SetupExternalAccountModule module, SetupExternalAccountModuleController.SetupExternalAccountModel model) {
 
             HtmlBuilder hb = new HtmlBuilder();
             hb.Append($@"
@@ -43,7 +43,7 @@ namespace YetaWF.Modules.Identity.Views {
 </p>
 {await HtmlHelper.ForEditContainerAsync(model, "PropertyList")}");
 
-            return hb.ToYHtmlString();
+            return hb.ToString();
 
         }
     }

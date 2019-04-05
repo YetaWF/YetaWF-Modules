@@ -188,7 +188,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         /// </summary>
         /// <param name="model">The model being rendered by the component.</param>
         /// <returns>The component rendered as HTML.</returns>
-        public async Task<YHtmlString> RenderAsync(MenuComponentBase.MenuData model) {
+        public async Task<string> RenderAsync(MenuComponentBase.MenuData model) {
 
             HtmlBuilder hb = new HtmlBuilder();
 
@@ -197,13 +197,13 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                 style = Manager.SkinInfo.UsingBootstrap ? MenuStyleEnum.Bootstrap : MenuStyleEnum.Kendo;
 
             if (style == MenuStyleEnum.Bootstrap) {
-                string menu = (await CoreRendering.RenderMenuAsync(model.MenuList, DivId, null, RenderEngine: YetaWF.Core.Modules.ModuleAction.RenderEngineEnum.BootstrapSmartMenu, HtmlHelper: HtmlHelper)).ToString();
+                string menu = (await CoreRendering.RenderMenuAsync(model.MenuList, DivId, null, RenderEngine: YetaWF.Core.Modules.ModuleAction.RenderEngineEnum.BootstrapSmartMenu, HtmlHelper: HtmlHelper));
                 if (!string.IsNullOrWhiteSpace(menu)) {
                     await Manager.AddOnManager.AddAddOnNamedAsync(Package.AreaName, "github.com.vadikom.smartmenus"); // multilevel navbar
                     hb.Append(menu);
                 }
             } else {
-                string menu = (await CoreRendering.RenderMenuAsync(model.MenuList, DivId, model.CssClass, RenderEngine: YetaWF.Core.Modules.ModuleAction.RenderEngineEnum.KendoMenu, HtmlHelper: HtmlHelper)).ToString();
+                string menu = (await CoreRendering.RenderMenuAsync(model.MenuList, DivId, model.CssClass, RenderEngine: YetaWF.Core.Modules.ModuleAction.RenderEngineEnum.KendoMenu, HtmlHelper: HtmlHelper));
                 if (!string.IsNullOrWhiteSpace(menu)) {
                     //await KendoUICore.AddFileAsync("kendo.popup.min.js"); // is now a prereq of kendo.window (2017.2.621)
                     await KendoUICore.AddFileAsync("kendo.menu.min.js");
@@ -243,7 +243,7 @@ $('#{DivId}').kendoMenu({{
                 }
             }
 
-            return hb.ToYHtmlString();
+            return hb.ToString();
         }
     }
 }

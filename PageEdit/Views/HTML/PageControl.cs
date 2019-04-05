@@ -20,7 +20,7 @@ namespace YetaWF.Modules.PageEdit.Views {
         public override Package GetPackage() { return AreaRegistration.CurrentPackage; }
         public override string GetViewName() { return ViewName; }
 
-        public async Task<YHtmlString> RenderViewAsync(PageControlModule module, PageControlModuleController.PageControlModel model) {
+        public async Task<string> RenderViewAsync(PageControlModule module, PageControlModuleController.PageControlModel model) {
 
             HtmlBuilder hb = new HtmlBuilder();
 
@@ -85,7 +85,7 @@ namespace YetaWF.Modules.PageEdit.Views {
     {PropertyListComponentBase.RenderTabStripEnd(DivId)}");
 
             if (tabEntry == 0)
-                return new YHtmlString("&nbsp;");
+                return "&nbsp;";
 
             int panel = 0;
             if (canEdit) {
@@ -151,7 +151,7 @@ namespace YetaWF.Modules.PageEdit.Views {
 </div>
 {await PropertyListComponentBase.RenderTabInitAsync(DivId, null)}");
 
-            return hb.ToYHtmlString();
+            return hb.ToString();
         }
     }
 }

@@ -57,7 +57,7 @@ namespace YetaWF.Modules.Languages.Components {
         }
 
 
-        public async Task<YHtmlString> RenderAsync(SerializableList<LocalizationData.EnumData> model) {
+        public async Task<string> RenderAsync(SerializableList<LocalizationData.EnumData> model) {
             HtmlBuilder hb = new HtmlBuilder();
 
             hb.Append($@"
@@ -131,7 +131,7 @@ namespace YetaWF.Modules.Languages.Components {
             hb.Append($@"
 </div>");
 
-            return hb.ToYHtmlString();
+            return hb.ToString();
         }
     }
 }

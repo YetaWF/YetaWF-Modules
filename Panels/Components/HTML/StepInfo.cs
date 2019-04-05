@@ -22,7 +22,7 @@ namespace YetaWF.Modules.Panels.Components {
 
         public override ComponentType GetComponentType() { return ComponentType.Display; }
 
-        public Task<YHtmlString> RenderAsync(StepInfo model) {
+        public Task<string> RenderAsync(StepInfo model) {
 
             HtmlBuilder hb = new HtmlBuilder();
 
@@ -54,14 +54,14 @@ namespace YetaWF.Modules.Panels.Components {
 
             Manager.ScriptManager.AddLast($@"new YetaWF_Panels.StepInfoComponent('{ControlId}');");
 
-            return Task.FromResult(hb.ToYHtmlString());
+            return Task.FromResult(hb.ToString());
         }
     }
     public class ModuleStepInfoEditComponent : StepInfoComponentBase, IYetaWFComponent<StepInfo> {
 
         public override ComponentType GetComponentType() { return ComponentType.Edit; }
 
-        public async Task<YHtmlString> RenderAsync(StepInfo model) {
+        public async Task<string> RenderAsync(StepInfo model) {
 
             HtmlBuilder hb = new HtmlBuilder();
 
@@ -103,7 +103,7 @@ namespace YetaWF.Modules.Panels.Components {
 
             Manager.ScriptManager.AddLast($@"new YetaWF_Panels.StepInfoEditComponent('{ControlId}');");
 
-            return hb.ToYHtmlString();
+            return hb.ToString();
         }
     }
 }

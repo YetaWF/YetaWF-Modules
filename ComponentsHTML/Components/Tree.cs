@@ -133,7 +133,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         /// </summary>
         /// <param name="model">The model being rendered by the component.</param>
         /// <returns>The component rendered as HTML.</returns>
-        public async Task<YHtmlString> RenderAsync(object model) {
+        public async Task<string> RenderAsync(object model) {
 
             HtmlBuilder hb = new HtmlBuilder();
 
@@ -179,7 +179,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
             Manager.ScriptManager.AddLast($"new YetaWF_ComponentsHTML.TreeComponent('{treeModel.Id}', {JsonConvert.SerializeObject(setup, new JsonSerializerSettings { StringEscapeHandling = StringEscapeHandling.EscapeHtml })});");
 
-            return hb.ToYHtmlString();
+            return hb.ToString();
         }
 
         private Task<string> GetHeaderAsync(TreeDefinition treeDef, List<object> data, TreeSetup setup, PropertyData linkTypeProp, PropertyData prop, PropertyData urlProp, PropertyData subEntriesProp) {
@@ -312,7 +312,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                 switch (dt) {
                     default:
                     case LinkTypeEnum.Local:
-                        string t = (await htmlHelper.ForDisplayComponentAsync(record, DisplayProperty, value, prop.UIHint)).ToString();
+                        string t = await htmlHelper.ForDisplayComponentAsync(record, DisplayProperty, value, prop.UIHint);
                         if (!string.IsNullOrWhiteSpace(t))
                             t = t.Trim(new char[] { '\r', '\n' }); // templates can generate a lot of extra \r\n which breaks filtering
                         if (string.IsNullOrWhiteSpace(t))
@@ -321,7 +321,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                         break;
                     case LinkTypeEnum.External:
                         string url = urlProp.GetPropertyValue<string>(record);
-                        output = $"<a href='{YetaWFManager.UrlEncodePath(url)}' target='_blank' class=''>{(await htmlHelper.ForDisplayComponentAsync(record, DisplayProperty, value, prop.UIHint)).ToString()}</a>";
+                        output = $"<a href='{YetaWFManager.UrlEncodePath(url)}' target='_blank' class=''>{await htmlHelper.ForDisplayComponentAsync(record, DisplayProperty, value, prop.UIHint)}</a>";
                         break;
                 }
 

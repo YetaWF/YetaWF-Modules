@@ -49,7 +49,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         /// </summary>
         /// <param name="model">The model being rendered by the component.</param>
         /// <returns>The component rendered as HTML.</returns>
-        public async Task<YHtmlString> RenderAsync(object model) {
+        public async Task<string> RenderAsync(object model) {
 
             string text;
             if (model is MultiString)
@@ -83,7 +83,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                 tag.Attributes.Add("data-height", pixHeight.ToString());
                 tag.SetInnerText(text);
 
-                hb.Append(tag.ToHtmlString(YTagRenderMode.Normal));
+                hb.Append(tag.ToString(YTagRenderMode.Normal));
 
                 Manager.ScriptManager.AddLast($@"
 CKEDITOR.replace('{ControlId}', {{
@@ -94,7 +94,7 @@ CKEDITOR.replace('{ControlId}', {{
             } else {
 
                 if (string.IsNullOrWhiteSpace(text))
-                    return new YHtmlString();
+                    return null;
 
                 hb.Append(Globals.LazyHTMLOptimization);
 
@@ -115,7 +115,7 @@ CKEDITOR.replace('{ControlId}', {{
                 hb.Append(tag.ToString(YTagRenderMode.Normal));
                 hb.Append(Globals.LazyHTMLOptimizationEnd);
             }
-            return hb.ToYHtmlString();
+            return hb.ToString();
         }
     }
 
@@ -135,7 +135,7 @@ CKEDITOR.replace('{ControlId}', {{
         /// </summary>
         /// <param name="model">The model being rendered by the component.</param>
         /// <returns>The component rendered as HTML.</returns>
-        public async Task<YHtmlString> RenderAsync(object model) {
+        public async Task<string> RenderAsync(object model) {
 
             await Manager.AddOnManager.AddAddOnNamedAsync(Package.AreaName, "ckeditor");
             string addonUrl = Manager.AddOnManager.GetAddOnNamedUrl(Package.AreaName, "ckeditor") + "__CUSTOM_FILES/";
@@ -237,7 +237,7 @@ $YetaWF.Forms.addPreSubmitHandler({(Manager.InPartialView ? 1 : 0)}, {{
 
             Manager.ScriptManager.AddLast(sb.ToString());
 
-            return hb.ToYHtmlString();
+            return hb.ToString();
         }
     }
 }

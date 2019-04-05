@@ -55,7 +55,7 @@ namespace YetaWF.Modules.DevTests.Components {
                 },
             };
         }
-        public async Task<YHtmlString> RenderAsync(List<string> model) {
+        public async Task<string> RenderAsync(List<string> model) {
 
             HtmlBuilder hb = new HtmlBuilder();
 
@@ -79,7 +79,7 @@ namespace YetaWF.Modules.DevTests.Components {
     {await HtmlHelper.ForDisplayAsAsync(Container, PropertyName, FieldName, grid, nameof(grid.GridDef), grid.GridDef, "Grid", HtmlAttributes: HtmlAttributes)}
 </div>");
 
-            return hb.ToYHtmlString();
+            return hb.ToString();
         }
     }
     public class ListOfEmailAddressesEditComponent : ListOfEmailAddressesComponentBase, IYetaWFComponent<List<string>> {
@@ -135,7 +135,7 @@ namespace YetaWF.Modules.DevTests.Components {
             };
         }
 
-        public async Task<YHtmlString> RenderAsync(List<string> model) {
+        public async Task<string> RenderAsync(List<string> model) {
 
             HtmlBuilder hb = new HtmlBuilder();
 
@@ -180,7 +180,7 @@ namespace YetaWF.Modules.DevTests.Components {
 
             Manager.ScriptManager.AddLast($@"new YetaWF_DevTests.ListOfEmailAddressesEditComponent('{DivId}', {YetaWFManager.JsonSerialize(setup)});");
 
-            return hb.ToYHtmlString();
+            return hb.ToString();
         }
         public static async Task<GridRecordData> GridRecordAsync(string fieldPrefix, object model) {
             // handle async properties

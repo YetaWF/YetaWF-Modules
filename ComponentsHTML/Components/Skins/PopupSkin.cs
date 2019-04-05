@@ -61,7 +61,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         /// </summary>
         /// <param name="model">The model being rendered by the component.</param>
         /// <returns>The component rendered as HTML.</returns>
-        public async Task<YHtmlString> RenderAsync(SkinDefinition model) {
+        public async Task<string> RenderAsync(SkinDefinition model) {
 
             HtmlBuilder hb = new HtmlBuilder();
 
@@ -84,7 +84,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
     </div>
 </div>");
             }
-            return hb.ToYHtmlString();
+            return hb.ToString();
         }
     }
 
@@ -127,7 +127,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         /// </summary>
         /// <param name="model">The model being rendered by the component.</param>
         /// <returns>The component rendered as HTML.</returns>
-        public async Task<YHtmlString> RenderAsync(SkinDefinition model) {
+        public async Task<string> RenderAsync(SkinDefinition model) {
 
             HtmlBuilder hb = new HtmlBuilder();
 
@@ -157,7 +157,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                 Manager.ScriptManager.AddLast($@"new YetaWF_ComponentsHTML.PageSkinEditComponent('{ControlId}', {YetaWFManager.JsonSerialize(setup)});");
 
             }
-            return hb.ToYHtmlString();
+            return hb.ToString();
         }
     }
 }

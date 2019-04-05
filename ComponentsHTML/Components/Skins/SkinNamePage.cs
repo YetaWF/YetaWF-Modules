@@ -49,7 +49,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         /// </summary>
         /// <param name="model">The model being rendered by the component.</param>
         /// <returns>The component rendered as HTML.</returns>
-        public Task<YHtmlString> RenderAsync(string model) {
+        public Task<string> RenderAsync(string model) {
 
             // get all available page skins for this collection
             SkinAccess skinAccess = new SkinAccess();
@@ -60,8 +60,8 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             if (desc == null)
                 desc = skinList.First().Description;
             if (string.IsNullOrWhiteSpace(desc))
-                return Task.FromResult(new YHtmlString());
-            return Task.FromResult(new YHtmlString(HE(desc)));
+                return Task.FromResult<string>(null);
+            return Task.FromResult(HE(desc));
         }
     }
 
@@ -81,7 +81,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         /// </summary>
         /// <param name="model">The model being rendered by the component.</param>
         /// <returns>The component rendered as HTML.</returns>
-        public async Task<YHtmlString> RenderAsync(string model) {
+        public async Task<string> RenderAsync(string model) {
 
             // get all available page skins for this collection
             SkinAccess skinAccess = new SkinAccess();
@@ -95,7 +95,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             // display the skins in a drop down
             return await DropDownListComponent.RenderDropDownListAsync(this, model, list, "yt_skinname");
         }
-        internal static YHtmlString RenderReplacementSkinsForCollection(string skinCollection) {
+        internal static string RenderReplacementSkinsForCollection(string skinCollection) {
             SkinAccess skinAccess = new SkinAccess();
             PageSkinList skinList = skinAccess.GetAllPageSkins(skinCollection);
             List<SelectionItem<string>> list = (from skin in skinList orderby skin.Description select new SelectionItem<string>() {

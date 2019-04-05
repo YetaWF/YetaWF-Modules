@@ -19,7 +19,7 @@ namespace YetaWF.Modules.Visitors.Views {
         public override Package GetPackage() { return AreaRegistration.CurrentPackage; }
         public override string GetViewName() { return ViewName; }
 
-        public Task<YHtmlString> RenderViewAsync(VisitorsModule module, object model) {
+        public Task<string> RenderViewAsync(VisitorsModule module, object model) {
 
             HtmlBuilder hb = new HtmlBuilder();
 
@@ -28,7 +28,7 @@ namespace YetaWF.Modules.Visitors.Views {
     {this.__ResStr("unavailable", "Visitor information is not available - See <a href='https://yetawf.com/Documentation/YetaWF/Visitors' target='_blank' rel='noopener noreferrer'>https://yetawf.com/Documentation/YetaWF/Visitors</a> for additional information.")}
 </div>");
 
-            return Task.FromResult(hb.ToYHtmlString());
+            return Task.FromResult(hb.ToString());
         }
     }
 }

@@ -54,7 +54,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         /// </summary>
         /// <param name="model">The model being rendered by the component.</param>
         /// <returns>The component rendered as HTML.</returns>
-        public async Task<YHtmlString> RenderAsync(int model) {
+        public async Task<string> RenderAsync(int model) {
 
             if (Sites == null) {
                 Dictionary<int, StringTT> sites = new Dictionary<int, StringTT>();

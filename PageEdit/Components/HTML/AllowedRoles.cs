@@ -86,7 +86,7 @@ namespace YetaWF.Modules.PageEdit.Components {
             superuser.__editable = false;
             return roles;
         }
-        public async Task<YHtmlString> RenderAsync(SerializableList<PageDefinition.AllowedRole> model) {
+        public async Task<string> RenderAsync(SerializableList<PageDefinition.AllowedRole> model) {
 
             HtmlBuilder hb = new HtmlBuilder();
 
@@ -109,7 +109,7 @@ namespace YetaWF.Modules.PageEdit.Components {
     {await HtmlHelper.ForDisplayAsAsync(Container, PropertyName, FieldName, grid, nameof(grid.GridDef), grid.GridDef, "Grid", HtmlAttributes: HtmlAttributes)}
 </div>");
 
-            return hb.ToYHtmlString();
+            return hb.ToString();
         }
     }
 }

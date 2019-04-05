@@ -40,7 +40,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         /// </summary>
         /// <param name="model">The model being rendered by the component.</param>
         /// <returns>The component rendered as HTML.</returns>
-        public async Task<YHtmlString> RenderAsync(FormButton model) {
+        public async Task<string> RenderAsync(FormButton model) {
 
             return await model.RenderAsync();
 

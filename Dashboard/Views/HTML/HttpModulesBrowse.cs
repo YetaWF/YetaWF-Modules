@@ -19,7 +19,7 @@ namespace YetaWF.Modules.Dashboard.Views {
         public override Package GetPackage() { return AreaRegistration.CurrentPackage; }
         public override string GetViewName() { return ViewName; }
 
-        public async Task<YHtmlString> RenderViewAsync(HttpModulesBrowseModule module, HttpModulesBrowseModuleController.BrowseModel model) {
+        public async Task<string> RenderViewAsync(HttpModulesBrowseModule module, HttpModulesBrowseModuleController.BrowseModel model) {
 
             HtmlBuilder hb = new HtmlBuilder();
 
@@ -37,16 +37,16 @@ namespace YetaWF.Modules.Dashboard.Views {
     </div>");
             }
 
-            return hb.ToYHtmlString();
+            return hb.ToString();
         }
 
-        public async Task<YHtmlString> RenderPartialViewAsync(HttpModulesBrowseModule module, HttpModulesBrowseModuleController.BrowseModel model) {
+        public async Task<string> RenderPartialViewAsync(HttpModulesBrowseModule module, HttpModulesBrowseModuleController.BrowseModel model) {
 
             HtmlBuilder hb = new HtmlBuilder();
             hb.Append($@"
 {await HtmlHelper.ForDisplayAsync(model, nameof(model.GridDef))}");
 
-            return hb.ToYHtmlString();
+            return hb.ToString();
 
         }
     }

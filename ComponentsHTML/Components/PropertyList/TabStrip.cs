@@ -14,16 +14,16 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         /// </summary>
         /// <param name="controlId">The ID of the &gt;div&lt; owning this tab control.</param>
         /// <returns>Returns the starting portion of a tab strip as HTML.</returns>
-        public static YHtmlString RenderTabStripStart(string controlId) {
-            return new YHtmlString("<ul class='t_tabstrip'>");
+        public static string RenderTabStripStart(string controlId) {
+            return "<ul class='t_tabstrip'>";
         }
         /// <summary>
         /// Renders the ending portion of a tab strip used by the PropertyList component.
         /// </summary>
         /// <param name="controlId">The ID of the &gt;div&lt; owning this tab control.</param>
         /// <returns>Returns the ending portion of a tab strip as HTML.</returns>
-        public static YHtmlString RenderTabStripEnd(string controlId) {
-            return new YHtmlString("</ul>");
+        public static string RenderTabStripEnd(string controlId) {
+            return "</ul>";
         }
         /// <summary>
         /// Renders the starting portion of a tab pane used by the PropertyList component.
@@ -32,9 +32,9 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         /// <param name="panel">The zero-based panel index, one for each tab.</param>
         /// <param name="cssClass">The optional CSS class to add the the pane.</param>
         /// <returns>Returns the starting portion of a tab pane as HTML.</returns>
-        public static YHtmlString RenderTabPaneStart(string controlId, int panel, string cssClass = "") {
+        public static string RenderTabPaneStart(string controlId, int panel, string cssClass = "") {
             if (!string.IsNullOrWhiteSpace(cssClass)) cssClass = " " + cssClass;
-            return new YHtmlString($"<div class='t_table t_cat t_tabpanel{cssClass}' data-tab='{panel}' id='{controlId}_tab{panel}'>");
+            return $"<div class='t_table t_cat t_tabpanel{cssClass}' data-tab='{panel}' id='{controlId}_tab{panel}'>";
         }
         /// <summary>
         /// Renders the ending portion of a tab pane used by the PropertyList component.
@@ -42,8 +42,8 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         /// <param name="controlId">The ID of the &gt;div&lt; owning this tab control.</param>
         /// <param name="panel">The zero-based panel index, one for each tab.</param>
         /// <returns>Returns the ending portion of a tab pane as HTML.</returns>
-        public static YHtmlString RenderTabPaneEnd(string controlId, int panel) {
-            return new YHtmlString("</div>");
+        public static string RenderTabPaneEnd(string controlId, int panel) {
+            return "</div>";
         }
         /// <summary>
         /// Renders a tab entry used by the PropertyList component.
@@ -53,7 +53,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         /// <param name="label">The tab label.</param>
         /// <param name="tooltip">The tooltip for the tab.</param>
         /// <returns>Returns the tab entry as HTML.</returns>
-        public static YHtmlString RenderTabEntry(string controlId, string label, string tooltip, int count) {
+        public static string RenderTabEntry(string controlId, string label, string tooltip, int count) {
             HtmlBuilder hb = new HtmlBuilder();
             if (Manager.CurrentSite.TabStyle == YetaWF.Core.Site.TabStyleEnum.JQuery) {
                 string tabId = controlId + "_tab" + count.ToString();
@@ -61,7 +61,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             } else {
                 hb.Append("<li data-tab='{0}' {1}='{2}'>{3}</li>", count, Basics.CssTooltip, YetaWFManager.HtmlAttributeEncode(tooltip), YetaWFManager.HtmlEncode(label));
             }
-            return hb.ToYHtmlString();
+            return hb.ToString();
         }
         /// <summary>
         /// Renders HTML, JavaScript that initializes a tab control.
@@ -73,7 +73,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         /// If the provided <paramref name="model"/> has a property named _ActiveTab with a valid zero-based tab index, the
         /// specified tab is made the active tab.
         /// </remarks>
-        public static async Task<YHtmlString> RenderTabInitAsync(string controlId, object model) {
+        public static async Task<string> RenderTabInitAsync(string controlId, object model) {
 
             ScriptBuilder sb = new ScriptBuilder();
 
@@ -112,7 +112,7 @@ YetaWF_ComponentsHTML.PropertyListComponent.tabInitKendo('{controlId}', {activeT
 
             Manager.ScriptManager.AddLast(sb.ToString());
 
-            return new YHtmlString();
+            return null;
         }
     }
 }

@@ -46,7 +46,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         /// </summary>
         /// <param name="model">The model being rendered by the component.</param>
         /// <returns>The component rendered as HTML.</returns>
-        public async Task<YHtmlString> RenderAsync(long model) {
+        public async Task<string> RenderAsync(long model) {
             return await RenderAsync((long?)model);
         }
         /// <summary>
@@ -54,11 +54,11 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         /// </summary>
         /// <param name="model">The model being rendered by the component.</param>
         /// <returns>The component rendered as HTML.</returns>
-        public Task<YHtmlString> RenderAsync(long? model) {
+        public Task<string> RenderAsync(long? model) {
             HtmlBuilder hb = new HtmlBuilder();
             string val = model != null ? model.ToString() : "";
             hb.Append($@"<div class='yt_longvalue t_display'>{HE(val)}</div>");
-            return Task.FromResult(hb.ToYHtmlString());
+            return Task.FromResult(hb.ToString());
         }
     }
 
@@ -78,7 +78,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         /// </summary>
         /// <param name="model">The model being rendered by the component.</param>
         /// <returns>The component rendered as HTML.</returns>
-        public async Task<YHtmlString> RenderAsync(long model) {
+        public async Task<string> RenderAsync(long model) {
             return await RenderAsync((long?) model);
         }
         /// <summary>
@@ -86,7 +86,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         /// </summary>
         /// <param name="model">The model being rendered by the component.</param>
         /// <returns>The component rendered as HTML.</returns>
-        public async Task<YHtmlString> RenderAsync(long? model) {
+        public async Task<string> RenderAsync(long? model) {
             string val = model != null ? model.ToString() : "";
             HtmlAttributes.Add("class", "yt_text20");
             HtmlAttributes.Add("maxlength", "30");

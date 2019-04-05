@@ -47,7 +47,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         /// </summary>
         /// <param name="model">The model being rendered by the component.</param>
         /// <returns>The component rendered as HTML.</returns>
-        public async Task<YHtmlString> RenderAsync(Guid? model) {
+        public async Task<string> RenderAsync(Guid? model) {
 
             model = model ?? Guid.Empty;
             string areaName = await ModuleSelectionModuleNewEditComponent.GetAreaNameFromGuidAsync(false, model);
@@ -63,7 +63,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
             return await DropDownListComponent.RenderDropDownListAsync(this, areaName, list, "yt_moduleselectionpackageexisting");
         }
-        internal static async Task<YHtmlString> RenderReplacementPackageModulesDesignedAsync(string areaName) {
+        internal static async Task<string> RenderReplacementPackageModulesDesignedAsync(string areaName) {
             List<SelectionItem<string>> list = (
                 from module in await DesignedModules.LoadDesignedModulesAsync()
                 where module.AreaName == areaName
@@ -76,7 +76,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             list.Insert(0, new SelectionItem<string> { Text = __ResStr("none", "(none)"), Value = null });
             return DropDownListEditComponentBase<string>.RenderDataSource(list, areaName);
         }
-        internal static async Task<YHtmlString> RenderReplacementPackageModulesDesignedAsync(Guid modGuid) {
+        internal static async Task<string> RenderReplacementPackageModulesDesignedAsync(Guid modGuid) {
             string areaName = await ModuleSelectionModuleNewEditComponent.GetAreaNameFromGuidAsync(false, modGuid);
             List<SelectionItem<string>> list = (
                 from module in await DesignedModules.LoadDesignedModulesAsync()

@@ -46,7 +46,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         /// </summary>
         /// <param name="model">The model being rendered by the component.</param>
         /// <returns>The component rendered as HTML.</returns>
-        public async Task<YHtmlString> RenderAsync(bool model) {
+        public async Task<string> RenderAsync(bool model) {
             return await RenderAsync((bool?)model);
         }
         /// <summary>
@@ -54,7 +54,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         /// </summary>
         /// <param name="model">The model being rendered by the component.</param>
         /// <returns>The component rendered as HTML.</returns>
-        public Task<YHtmlString> RenderAsync(bool? model) {
+        public Task<string> RenderAsync(bool? model) {
 
             YTagBuilder tag = new YTagBuilder("input");
             tag.AddCssClass("yt_boolean");
@@ -64,7 +64,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             tag.Attributes.Add("disabled", "disabled");
             if (model != null && (bool)model)
                 tag.Attributes.Add("checked", "checked");
-            return Task.FromResult(tag.ToYHtmlString(YTagRenderMode.StartTag));
+            return Task.FromResult(tag.ToString(YTagRenderMode.StartTag));
 
         }
     }
@@ -84,7 +84,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         /// </summary>
         /// <param name="model">The model being rendered by the component.</param>
         /// <returns>The component rendered as HTML.</returns>
-        public async Task<YHtmlString> RenderAsync(bool model) {
+        public async Task<string> RenderAsync(bool model) {
             return await RenderAsync((bool?) model);
         }
         /// <summary>
@@ -92,7 +92,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         /// </summary>
         /// <param name="model">The model being rendered by the component.</param>
         /// <returns>The component rendered as HTML.</returns>
-        public Task<YHtmlString> RenderAsync(bool? model) {
+        public Task<string> RenderAsync(bool? model) {
 
             YTagBuilder tag = new YTagBuilder("input");
             tag.AddCssClass("yt_boolean");
@@ -109,7 +109,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             tagHidden.Attributes.Add("type", "hidden");
             tagHidden.Attributes.Add("value", "false");
 
-            return Task.FromResult(new YHtmlString(tag.ToYHtmlString(YTagRenderMode.StartTag) + tagHidden.ToString(YTagRenderMode.StartTag)));
+            return Task.FromResult(tag.ToString(YTagRenderMode.StartTag) + tagHidden.ToString(YTagRenderMode.StartTag));
         }
     }
 }

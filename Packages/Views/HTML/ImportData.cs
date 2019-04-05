@@ -18,7 +18,7 @@ namespace YetaWF.Modules.Packages.Views {
         public override Package GetPackage() { return AreaRegistration.CurrentPackage; }
         public override string GetViewName() { return ViewName; }
 
-        public async Task<YHtmlString> RenderViewAsync(ImportDataModule module, ImportDataModuleController.ImportDataModel model) {
+        public async Task<string> RenderViewAsync(ImportDataModule module, ImportDataModuleController.ImportDataModel model) {
 
             HtmlBuilder hb = new HtmlBuilder();
 
@@ -28,7 +28,7 @@ namespace YetaWF.Modules.Packages.Views {
 </div>
 {await HtmlHelper.ForEditAsync(model, nameof(model.UploadFile))}");
 
-            return hb.ToYHtmlString();
+            return hb.ToString();
         }
     }
 }

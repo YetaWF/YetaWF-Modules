@@ -58,7 +58,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         /// </summary>
         /// <param name="model">The model being rendered by the component.</param>
         /// <returns>The component rendered as HTML.</returns>
-        public async Task<YHtmlString> RenderAsync(MenuList model) {
+        public async Task<string> RenderAsync(MenuList model) {
 
             HtmlBuilder hb = new HtmlBuilder();
 
@@ -91,7 +91,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                     break;
                 }
             }
-            return hb.ToYHtmlString();
+            return hb.ToString();
         }
     }
 }

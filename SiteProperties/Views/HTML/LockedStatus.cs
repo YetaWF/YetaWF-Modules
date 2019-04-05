@@ -19,7 +19,7 @@ namespace YetaWF.Modules.SiteProperties.Views {
         public override Package GetPackage() { return AreaRegistration.CurrentPackage; }
         public override string GetViewName() { return ViewName; }
 
-        public Task<YHtmlString> RenderViewAsync(LockedStatusModule module, LockedStatusModuleController.Model model) {
+        public Task<string> RenderViewAsync(LockedStatusModule module, LockedStatusModuleController.Model model) {
 
             HtmlBuilder hb = new HtmlBuilder();
 
@@ -28,7 +28,7 @@ namespace YetaWF.Modules.SiteProperties.Views {
     {HE(this.__ResStr("locked", "Site is locked!"))}
 </div>");
 
-            return Task.FromResult(hb.ToYHtmlString());
+            return Task.FromResult(hb.ToString());
         }
     }
 }

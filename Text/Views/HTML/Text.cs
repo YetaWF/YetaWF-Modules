@@ -19,7 +19,7 @@ namespace YetaWF.Modules.Text.Views {
         public override Package GetPackage() { return AreaRegistration.CurrentPackage; }
         public override string GetViewName() { return ViewName; }
 
-        public async Task<YHtmlString> RenderViewAsync(TextModule module, TextModuleController.TextModel model) {
+        public async Task<string> RenderViewAsync(TextModule module, TextModuleController.TextModel model) {
 
             HtmlBuilder hb = new HtmlBuilder();
 
@@ -37,13 +37,13 @@ namespace YetaWF.Modules.Text.Views {
     {await HtmlHelper.ForEditAsync(model, nameof(model.Contents))}
     {await FormButtonsAsync(buttons)}
 {await RenderEndFormAsync()}");
-            return hb.ToYHtmlString();
+            return hb.ToString();
         }
 
-        public Task<YHtmlString> RenderPartialViewAsync(TextModule module, TextModuleController.TextModel model) {
+        public Task<string> RenderPartialViewAsync(TextModule module, TextModuleController.TextModel model) {
 
             HtmlBuilder hb = new HtmlBuilder();
-            return Task.FromResult(hb.ToYHtmlString());
+            return Task.FromResult(hb.ToString());
 
         }
     }

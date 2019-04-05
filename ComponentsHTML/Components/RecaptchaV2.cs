@@ -40,7 +40,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         /// </summary>
         /// <param name="model">The model being rendered by the component.</param>
         /// <returns>The component rendered as HTML.</returns>
-        public async Task<YHtmlString> RenderAsync(RecaptchaV2Data model) {
+        public async Task<string> RenderAsync(RecaptchaV2Data model) {
 
             HtmlBuilder hb = new HtmlBuilder();
             hb.Append($@"<div id='{DivId}' class='yt_recaptchav2'></div>");
@@ -59,7 +59,7 @@ if (typeof grecaptcha != 'undefined') {{
             } else {
                 Manager.ScriptManager.AddLast($@"new YetaWF_ComponentsHTML.RecaptchaV2.recaptchaInit('{DivId}');");
             }
-            return hb.ToYHtmlString();
+            return hb.ToString();
         }
     }
 }

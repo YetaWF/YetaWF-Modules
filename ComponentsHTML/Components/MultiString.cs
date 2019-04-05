@@ -155,12 +155,12 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         /// </summary>
         /// <param name="model">The model being rendered by the component.</param>
         /// <returns>The component rendered as HTML.</returns>
-        public Task<YHtmlString> RenderAsync(MultiString model) {
+        public Task<string> RenderAsync(MultiString model) {
         HtmlBuilder hb = new HtmlBuilder();
             if (model != null) {
                 hb.Append(HE(model.ToString()));
             }
-            return Task.FromResult(hb.ToYHtmlString());
+            return Task.FromResult(hb.ToString());
         }
     }
 
@@ -199,10 +199,10 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         /// </summary>
         /// <param name="model">The model being rendered by the component.</param>
         /// <returns>The component rendered as HTML.</returns>
-        public async Task<YHtmlString> RenderAsync(MultiString model) {
+        public async Task<string> RenderAsync(MultiString model) {
             return await RenderMultiStringAsync(this, model, ExtraClass);
         }
-        private static async Task<YHtmlString> RenderMultiStringAsync(YetaWFComponent component, MultiString model, string extraCssClass) {
+        private static async Task<string> RenderMultiStringAsync(YetaWFComponent component, MultiString model, string extraCssClass) {
 
             HtmlBuilder hb = new HtmlBuilder();
 
@@ -261,7 +261,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
             Manager.ScriptManager.AddLast($@"new YetaWF_ComponentsHTML.MultiStringEditComponent('{component.DivId}');");
 
-            return hb.ToYHtmlString();
+            return hb.ToString();
         }
     }
 }

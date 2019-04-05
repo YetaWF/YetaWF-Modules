@@ -19,7 +19,7 @@ namespace YetaWF.Modules.Messenger.Views {
         public override Package GetPackage() { return AreaRegistration.CurrentPackage; }
         public override string GetViewName() { return ViewName; }
 
-        public async Task<YHtmlString> RenderViewAsync(BrowserNotificationsModule module, BrowserNotificationsModuleController.Model model) {
+        public async Task<string> RenderViewAsync(BrowserNotificationsModule module, BrowserNotificationsModuleController.Model model) {
 
             HtmlBuilder hb = new HtmlBuilder();
 
@@ -47,14 +47,14 @@ namespace YetaWF.Modules.Messenger.Views {
 {await RenderEndFormAsync()}");
 
             }
-            return hb.ToYHtmlString();
+            return hb.ToString();
         }
 
-        public async Task<YHtmlString> RenderPartialViewAsync(BrowserNotificationsModule module, BrowserNotificationsModuleController.Model model) {
+        public async Task<string> RenderPartialViewAsync(BrowserNotificationsModule module, BrowserNotificationsModuleController.Model model) {
 
             HtmlBuilder hb = new HtmlBuilder();
             hb.Append(await HtmlHelper.ForEditContainerAsync(model, "PropertyList"));
-            return hb.ToYHtmlString();
+            return hb.ToString();
         }
     }
 }

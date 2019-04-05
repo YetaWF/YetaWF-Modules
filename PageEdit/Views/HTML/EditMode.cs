@@ -17,12 +17,12 @@ namespace YetaWF.Modules.PageEdit.Views {
         public override Package GetPackage() { return AreaRegistration.CurrentPackage; }
         public override string GetViewName() { return ViewName; }
 
-        public Task<YHtmlString> RenderViewAsync(EditModeModule module, EditModeModuleController.Model model) {
+        public Task<string> RenderViewAsync(EditModeModule module, EditModeModuleController.Model model) {
 
             // this view is used to include js/css only
             HtmlBuilder hb = new HtmlBuilder();
             hb.Append("<!-- A comment so we generate something, otherwise js/css is not included -->");
-            return Task.FromResult(hb.ToYHtmlString());
+            return Task.FromResult(hb.ToString());
         }
     }
 }

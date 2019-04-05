@@ -46,7 +46,7 @@ namespace YetaWF.Modules.Identity.Components {
 
         public override ComponentType GetComponentType() { return ComponentType.Display; }
 
-        public async Task<YHtmlString> RenderAsync(int model) {
+        public async Task<string> RenderAsync(int model) {
 
             HtmlBuilder hb = new HtmlBuilder();
 
@@ -73,13 +73,13 @@ namespace YetaWF.Modules.Identity.Components {
                 tag.SetInnerText(userName);
             }
 
-            hb.Append(tag.ToYHtmlString(YTagRenderMode.Normal));
+            hb.Append(tag.ToString(YTagRenderMode.Normal));
             if (actionDisplay != null)
                 hb.Append(await actionDisplay.RenderAsync(ModuleAction.RenderModeEnum.IconsOnly));
             if (actionLoginAs != null)
                 hb.Append(await actionLoginAs.RenderAsync(ModuleAction.RenderModeEnum.IconsOnly));
 
-            return hb.ToYHtmlString();
+            return hb.ToString();
         }
     }
     public class UserIdEditComponent : UserIdComponentBase, IYetaWFComponent<int> {
@@ -147,7 +147,7 @@ namespace YetaWF.Modules.Identity.Components {
                 },
             };
         }
-        public async Task<YHtmlString> RenderAsync(int model) {
+        public async Task<string> RenderAsync(int model) {
 
             HtmlBuilder hb = new HtmlBuilder();
 
@@ -225,7 +225,7 @@ namespace YetaWF.Modules.Identity.Components {
                 hb.Append($@"
 </div>");
             }
-            return hb.ToYHtmlString();
+            return hb.ToString();
         }
     }
 }

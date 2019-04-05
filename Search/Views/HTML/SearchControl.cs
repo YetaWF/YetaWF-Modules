@@ -17,7 +17,7 @@ namespace YetaWF.Modules.Search.Views {
         public override Package GetPackage() { return AreaRegistration.CurrentPackage; }
         public override string GetViewName() { return ViewName; }
 
-        public async Task<YHtmlString> RenderViewAsync(SearchControlModule module, SearchControlModuleController.Model model) {
+        public async Task<string> RenderViewAsync(SearchControlModule module, SearchControlModuleController.Model model) {
 
             HtmlBuilder hb = new HtmlBuilder();
 
@@ -25,7 +25,7 @@ namespace YetaWF.Modules.Search.Views {
 {await HtmlHelper.ForDisplayAsync(model, nameof(model.On))}
 {await HtmlHelper.ForDisplayAsync(model, nameof(model.Off))}");
 
-            return hb.ToYHtmlString();
+            return hb.ToString();
         }
     }
 }

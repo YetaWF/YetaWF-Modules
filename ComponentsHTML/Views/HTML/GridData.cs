@@ -34,13 +34,13 @@ namespace YetaWF.Modules.ComponentsHTML.Views {
         /// <param name="module">The module on behalf of which the grid data portion is rendered.</param>
         /// <param name="model">The model being rendered by the grid data portion.</param>
         /// <returns>The HTML representing the grid data portion.</returns>
-        public async Task<YHtmlString> RenderViewAsync(ModuleDefinition module, GridPartialData model) {
+        public async Task<string> RenderViewAsync(ModuleDefinition module, GridPartialData model) {
 
             HtmlBuilder hb = new HtmlBuilder();
 
             hb.Append(await HtmlHelper.ForDisplayContainerAsync(model, "GridPartialData"));
 
-            return hb.ToYHtmlString();
+            return hb.ToString();
         }
     }
 }

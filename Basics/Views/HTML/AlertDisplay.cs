@@ -19,7 +19,7 @@ namespace YetaWF.Modules.Basics.Views {
         public override Package GetPackage() { return AreaRegistration.CurrentPackage; }
         public override string GetViewName() { return ViewName; }
 
-        public Task<YHtmlString> RenderViewAsync(AlertDisplayModule module, AlertDisplayModuleController.DisplayModel model) {
+        public Task<string> RenderViewAsync(AlertDisplayModule module, AlertDisplayModuleController.DisplayModel model) {
 
             HtmlBuilder hb = new HtmlBuilder();
 
@@ -41,7 +41,7 @@ namespace YetaWF.Modules.Basics.Views {
     {model.Message}
 </div>");
 
-            return Task.FromResult(hb.ToYHtmlString());
+            return Task.FromResult(hb.ToString());
         }
     }
 }

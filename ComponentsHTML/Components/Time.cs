@@ -48,7 +48,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         /// </summary>
         /// <param name="model">The model being rendered by the component.</param>
         /// <returns>The component rendered as HTML.</returns>
-        public async Task<YHtmlString> RenderAsync(DateTime model) {
+        public async Task<string> RenderAsync(DateTime model) {
             return await RenderAsync((DateTime?)model);
         }
         /// <summary>
@@ -56,7 +56,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         /// </summary>
         /// <param name="model">The model being rendered by the component.</param>
         /// <returns>The component rendered as HTML.</returns>
-        public Task<YHtmlString> RenderAsync(DateTime? model) {
+        public Task<string> RenderAsync(DateTime? model) {
             HtmlBuilder hb = new HtmlBuilder();
             if (model != null && (DateTime)model > DateTime.MinValue && (DateTime)model < DateTime.MaxValue) {
                 YTagBuilder tag = new YTagBuilder("div");
@@ -66,7 +66,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                 tag.SetInnerText(YetaWF.Core.Localize.Formatting.FormatTime(model));
                 hb.Append(tag.ToString(YTagRenderMode.Normal));
             }
-            return Task.FromResult(hb.ToYHtmlString());
+            return Task.FromResult(hb.ToString());
         }
     }
 
@@ -96,7 +96,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         /// </summary>
         /// <param name="model">The model being rendered by the component.</param>
         /// <returns>The component rendered as HTML.</returns>
-        public async Task<YHtmlString> RenderAsync(DateTime model) {
+        public async Task<string> RenderAsync(DateTime model) {
             return await RenderAsync((DateTime?) model);
         }
         /// <summary>
@@ -104,7 +104,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         /// </summary>
         /// <param name="model">The model being rendered by the component.</param>
         /// <returns>The component rendered as HTML.</returns>
-        public async Task<YHtmlString> RenderAsync(DateTime? model) {
+        public async Task<string> RenderAsync(DateTime? model) {
             HtmlBuilder hb = new HtmlBuilder();
 
             hb.Append($"<div id='{ControlId}' class='yt_time t_edit'>");
@@ -123,7 +123,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
             Manager.ScriptManager.AddLast($@"(new YetaWF_ComponentsHTML.TimeComponent()).init('{ControlId}');");
 
-            return hb.ToYHtmlString();
+            return hb.ToString();
         }
     }
 }

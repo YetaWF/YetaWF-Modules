@@ -60,7 +60,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             };
         }
 
-        public async Task<YHtmlString> RenderAsync(SerializableList<Role> model) {
+        public async Task<string> RenderAsync(SerializableList<Role> model) {
 
             HtmlBuilder hb = new HtmlBuilder();
 
@@ -94,7 +94,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 <div class='yt_yetawf_identity_rolesselector t_display'>
     {await HtmlHelper.ForDisplayAsAsync(Container, PropertyName, FieldName, grid, nameof(grid.GridDef), grid.GridDef, "Grid", HtmlAttributes: HtmlAttributes)}
 </div>");
-            return hb.ToYHtmlString();
+            return hb.ToString();
         }
     }
     public class RolesSelectorEditComponent : RolesSelectorComponentBase, IYetaWFComponent<SerializableList<Role>> {
@@ -137,7 +137,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             };
         }
 
-        public async Task<YHtmlString> RenderAsync(SerializableList<Role> model) {
+        public async Task<string> RenderAsync(SerializableList<Role> model) {
 
             HtmlBuilder hb = new HtmlBuilder();
 
@@ -176,7 +176,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
     {await HtmlHelper.ForDisplayAsAsync(Container, PropertyName, FieldName, grid, nameof(grid.GridDef), grid.GridDef, "Grid", HtmlAttributes: HtmlAttributes)}
 </div>");
 
-            return hb.ToYHtmlString();
+            return hb.ToString();
         }
     }
 }

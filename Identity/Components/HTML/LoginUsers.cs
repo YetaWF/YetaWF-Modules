@@ -28,7 +28,7 @@ namespace YetaWF.Modules.Identity.Components {
 
         public override ComponentType GetComponentType() { return ComponentType.Edit; }
 
-        public async Task<YHtmlString> RenderAsync(int model) {
+        public async Task<string> RenderAsync(int model) {
 
             SerializableList<User> users = GetSiblingProperty<SerializableList<User>>($"{PropertyName}_List");
             if (users != null)

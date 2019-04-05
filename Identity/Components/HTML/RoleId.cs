@@ -27,7 +27,7 @@ namespace YetaWF.Modules.Identity.Components {
 
         public override ComponentType GetComponentType() { return ComponentType.Display; }
 
-        public Task<YHtmlString> RenderAsync(int model) {
+        public Task<string> RenderAsync(int model) {
 
             YTagBuilder tag = new YTagBuilder("span");
             FieldSetup(tag, FieldType.Anonymous);
@@ -38,14 +38,14 @@ namespace YetaWF.Modules.Identity.Components {
                 tag.Attributes.Add(Basics.CssTooltipSpan, role.Description);
             }
 
-            return Task.FromResult(tag.ToYHtmlString(YTagRenderMode.Normal));
+            return Task.FromResult(tag.ToString(YTagRenderMode.Normal));
         }
     }
     public class RoleIdEditComponent : RoleIdComponent, IYetaWFComponent<int> {
 
         public override ComponentType GetComponentType() { return ComponentType.Edit; }
 
-        public async Task<YHtmlString> RenderAsync(int model) {
+        public async Task<string> RenderAsync(int model) {
 
             List<SelectionItem<int>> list;
             list = (

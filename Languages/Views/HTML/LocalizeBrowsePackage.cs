@@ -19,7 +19,7 @@ namespace YetaWF.Modules.Languages.Views {
         public override Package GetPackage() { return AreaRegistration.CurrentPackage; }
         public override string GetViewName() { return ViewName; }
 
-        public async Task<YHtmlString> RenderViewAsync(LocalizeBrowsePackageModule module, LocalizeBrowsePackageModuleController.BrowseModel model) {
+        public async Task<string> RenderViewAsync(LocalizeBrowsePackageModule module, LocalizeBrowsePackageModuleController.BrowseModel model) {
 
             HtmlBuilder hb = new HtmlBuilder();
 
@@ -41,13 +41,13 @@ namespace YetaWF.Modules.Languages.Views {
     {await HtmlHelper.ForDisplayAsync(model, "GridDef")}
 {await RenderEndFormAsync()}");
 
-            return hb.ToYHtmlString();
+            return hb.ToString();
         }
 
-        public Task<YHtmlString> RenderPartialViewAsync(LocalizeBrowsePackageModule module, LocalizeBrowsePackageModuleController.BrowseModel model) {
+        public Task<string> RenderPartialViewAsync(LocalizeBrowsePackageModule module, LocalizeBrowsePackageModuleController.BrowseModel model) {
 
             HtmlBuilder hb = new HtmlBuilder();
-            return Task.FromResult(hb.ToYHtmlString());
+            return Task.FromResult(hb.ToString());
 
         }
     }

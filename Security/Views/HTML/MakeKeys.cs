@@ -18,7 +18,7 @@ namespace YetaWF.Modules.Security.Views {
         public override Package GetPackage() { return AreaRegistration.CurrentPackage; }
         public override string GetViewName() { return ViewName; }
 
-        public async Task<YHtmlString> RenderViewAsync(MakeKeysModule module, MakeKeysModuleController.Model model) {
+        public async Task<string> RenderViewAsync(MakeKeysModule module, MakeKeysModuleController.Model model) {
 
             HtmlBuilder hb = new HtmlBuilder();
 
@@ -29,7 +29,7 @@ namespace YetaWF.Modules.Security.Views {
         new FormButton() { ButtonType= ButtonTypeEnum.Cancel, Text=this.__ResStr("btnCancel", "Return") },
     })}
 {await RenderEndFormAsync()}");
-            return hb.ToYHtmlString();
+            return hb.ToString();
         }
     }
 }

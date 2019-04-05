@@ -18,7 +18,7 @@ namespace YetaWF.Modules.Modules.Views {
         public override Package GetPackage() { return AreaRegistration.CurrentPackage; }
         public override string GetViewName() { return ViewName; }
 
-        public async Task<YHtmlString> RenderViewAsync(SiteTemplateUndoModule module, SiteTemplateUndoModuleController.EditModel model) {
+        public async Task<string> RenderViewAsync(SiteTemplateUndoModule module, SiteTemplateUndoModuleController.EditModel model) {
 
             HtmlBuilder hb = new HtmlBuilder();
 
@@ -29,14 +29,14 @@ namespace YetaWF.Modules.Modules.Views {
         new FormButton() { ButtonType= ButtonTypeEnum.Apply, Text=this.__ResStr("btnSave", "Undo") },
     })}
 {await RenderEndFormAsync()}");
-            return hb.ToYHtmlString();
+            return hb.ToString();
         }
 
-        public async Task<YHtmlString> RenderPartialViewAsync(SiteTemplateUndoModule module, SiteTemplateUndoModuleController.EditModel model) {
+        public async Task<string> RenderPartialViewAsync(SiteTemplateUndoModule module, SiteTemplateUndoModuleController.EditModel model) {
 
             HtmlBuilder hb = new HtmlBuilder();
             hb.Append(await HtmlHelper.ForEditContainerAsync(model, "PropertyList"));
-            return hb.ToYHtmlString();
+            return hb.ToString();
 
         }
     }

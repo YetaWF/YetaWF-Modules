@@ -23,7 +23,7 @@ namespace YetaWF.Modules.SyntaxHighlighter.Components {
 
         public override ComponentType GetComponentType() { return ComponentType.Display; }
 
-        public Task<YHtmlString> RenderAsync(string model) {
+        public Task<string> RenderAsync(string model) {
 
             HtmlBuilder hb = new HtmlBuilder();
 
@@ -37,14 +37,14 @@ namespace YetaWF.Modules.SyntaxHighlighter.Components {
             }
             hb.Append($@"
 </div>");
-            return Task.FromResult(hb.ToYHtmlString());
+            return Task.FromResult(hb.ToString());
         }
     }
     public class SyntaxHighlighterEditComponent : SyntaxHighlighterComponent, IYetaWFComponent<string> {
 
         public override ComponentType GetComponentType() { return ComponentType.Edit; }
 
-        public async Task<YHtmlString> RenderAsync(string model) {
+        public async Task<string> RenderAsync(string model) {
 
             // get all available skins
             SkinAccess skinAccess = new SkinAccess();

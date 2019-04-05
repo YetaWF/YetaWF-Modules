@@ -36,7 +36,7 @@ namespace YetaWF.Modules.ComponentsHTML.Views {
         /// <param name="module">The module on behalf of which the view is rendered.</param>
         /// <param name="model">The model being rendered by the view.</param>
         /// <returns>The HTML representing the view.</returns>
-        public Task<YHtmlString> RenderViewAsync(ModuleDefinition module, object model) {
+        public Task<string> RenderViewAsync(ModuleDefinition module, object model) {
 
             HtmlBuilder hb = new HtmlBuilder();
 
@@ -48,7 +48,7 @@ namespace YetaWF.Modules.ComponentsHTML.Views {
     {YetaWFManager.HtmlEncode(message)}
 </div>");
             }
-            return Task.FromResult(hb.ToYHtmlString());
+            return Task.FromResult(hb.ToString());
         }
     }
 }

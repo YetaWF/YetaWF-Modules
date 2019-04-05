@@ -27,7 +27,7 @@ namespace YetaWF.Modules.Scheduler.Components {
 
         public override ComponentType GetComponentType() { return ComponentType.Display; }
 
-        public async Task<YHtmlString> RenderAsync(SchedulerEvent model) {
+        public async Task<string> RenderAsync(SchedulerEvent model) {
 
             HtmlBuilder hb = new HtmlBuilder();
 
@@ -56,7 +56,7 @@ namespace YetaWF.Modules.Scheduler.Components {
     </div>
 </div>");
 
-            return hb.ToYHtmlString();
+            return hb.ToString();
         }
     }
     public class EventEditComponent : EventComponentBase, IYetaWFComponent<SchedulerEvent> {
@@ -69,7 +69,7 @@ namespace YetaWF.Modules.Scheduler.Components {
             public List<SelectionItem<string>> DropDown_List { get; set; }
         }
 
-        public async Task<YHtmlString> RenderAsync(SchedulerEvent model) {
+        public async Task<string> RenderAsync(SchedulerEvent model) {
 
             HtmlBuilder hb = new HtmlBuilder();
 
@@ -139,7 +139,7 @@ namespace YetaWF.Modules.Scheduler.Components {
                 Manager.ScriptManager.AddLast($@"new YetaWF_Scheduler.EventEditComponent('{ControlId}');");
             }
 
-            return hb.ToYHtmlString();
+            return hb.ToString();
         }
     }
 }

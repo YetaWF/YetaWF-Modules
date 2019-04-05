@@ -64,7 +64,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             };
         }
 
-        public async Task<YHtmlString> RenderAsync(SerializableList<YetaWF.Core.Identity.Role> model) {
+        public async Task<string> RenderAsync(SerializableList<YetaWF.Core.Identity.Role> model) {
 
             HtmlBuilder hb = new HtmlBuilder();
 
@@ -99,7 +99,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
     {await HtmlHelper.ForDisplayAsAsync(Container, PropertyName, FieldName, grid, nameof(grid.GridDef), grid.GridDef, "Grid", HtmlAttributes: HtmlAttributes)}
 </div>");
 
-            return hb.ToYHtmlString();
+            return hb.ToString();
         }
     }
 
@@ -146,7 +146,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             };
         }
 
-        public async Task<YHtmlString> RenderAsync(SerializableList<YetaWF.Core.Identity.Role> model) {
+        public async Task<string> RenderAsync(SerializableList<YetaWF.Core.Identity.Role> model) {
 
             HtmlBuilder hb = new HtmlBuilder();
 
@@ -183,7 +183,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
             hb.Append($"<div class='yt_yetawf_identity_userroles t_edit'>");
 
-            return hb.ToYHtmlString();
+            return hb.ToString();
         }
     }
 }

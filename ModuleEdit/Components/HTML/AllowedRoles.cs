@@ -72,7 +72,7 @@ namespace YetaWF.Modules.ModuleEdit.Components {
             ObjectSupport.CopyData(superRole, superuser);
             return roles;
         }
-        public async Task<YHtmlString> RenderAsync(SerializableList<ModuleDefinition.AllowedRole> model) {
+        public async Task<string> RenderAsync(SerializableList<ModuleDefinition.AllowedRole> model) {
 
             HtmlBuilder hb = new HtmlBuilder();
 
@@ -96,7 +96,7 @@ namespace YetaWF.Modules.ModuleEdit.Components {
     {await HtmlHelper.ForDisplayAsAsync(Container, PropertyName, FieldName, grid, nameof(grid.GridDef), grid.GridDef, "Grid", HtmlAttributes: HtmlAttributes)}
 </div>");
 
-            return hb.ToYHtmlString();
+            return hb.ToString();
         }
     }
 }

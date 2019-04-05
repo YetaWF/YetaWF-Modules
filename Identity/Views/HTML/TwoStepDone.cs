@@ -17,11 +17,11 @@ namespace YetaWF.Modules.Identity.Views {
         public override Package GetPackage() { return AreaRegistration.CurrentPackage; }
         public override string GetViewName() { return ViewName; }
 
-        public Task<YHtmlString> RenderViewAsync(ModuleDefinition module, object model) {
+        public Task<string> RenderViewAsync(ModuleDefinition module, object model) {
 
             Manager.ScriptManager.AddLast($@"window.close();");
 
-            return Task.FromResult(new YHtmlString());
+            return Task.FromResult<string>(null);
         }
     }
 }

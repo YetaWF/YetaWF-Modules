@@ -125,7 +125,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         /// </summary>
         /// <param name="model">The model being rendered by the component.</param>
         /// <returns>The component rendered as HTML.</returns>
-        public async Task<YHtmlString> RenderAsync(int model) {
+        public async Task<string> RenderAsync(int model) {
             return await RenderAsync((int?)model);
         }
         /// <summary>
@@ -133,9 +133,9 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         /// </summary>
         /// <param name="model">The model being rendered by the component.</param>
         /// <returns>The component rendered as HTML.</returns>
-        public Task<YHtmlString> RenderAsync(int? model) {
-            if (model == null) return Task.FromResult(new YHtmlString(""));
-            return Task.FromResult(new YHtmlString(HE(model.ToString())));
+        public Task<string> RenderAsync(int? model) {
+            if (model == null) return Task.FromResult<string>(null);
+            return Task.FromResult(HE(model.ToString()));
         }
     }
     /// <summary>
@@ -190,7 +190,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         /// </summary>
         /// <param name="model">The model being rendered by the component.</param>
         /// <returns>The component rendered as HTML.</returns>
-        public async Task<YHtmlString> RenderAsync(int model) {
+        public async Task<string> RenderAsync(int model) {
             return await RenderAsync((int?) model);
         }
         /// <summary>
@@ -198,7 +198,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         /// </summary>
         /// <param name="model">The model being rendered by the component.</param>
         /// <returns>The component rendered as HTML.</returns>
-        public Task<YHtmlString> RenderAsync(int? model) {
+        public Task<string> RenderAsync(int? model) {
 
             HtmlBuilder hb = new HtmlBuilder();
 
@@ -229,7 +229,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
             Manager.ScriptManager.AddLast($@"new YetaWF_ComponentsHTML.IntValueEditComponent('{id}', {{ Min: {min}, Max: {max}, Step: {step}, NoEntryText: '{JE(noEntry??"")}' }});");
 
-            return Task.FromResult(hb.ToYHtmlString());
+            return Task.FromResult(hb.ToString());
         }
     }
 }

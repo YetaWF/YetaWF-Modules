@@ -34,15 +34,15 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                 hb.Append("</div>");
             }
         }
-        private async Task<YHtmlString> RenderHiddenAsync(object model) {
+        private async Task<string> RenderHiddenAsync(object model) {
             HtmlBuilder hb = new HtmlBuilder();
             List<PropertyListEntry> properties = GetHiddenProperties(model);
             foreach (var property in properties) {
                 hb.Append(await HtmlHelper.ForEditAsync(model, property.Name));// hidden fields are edit by definition otherwise they're useless
             }
-            return hb.ToYHtmlString();
+            return hb.ToString();
         }
-        private async Task<YHtmlString> RenderListAsync(object model, string category, bool showVariables, bool readOnly) {
+        private async Task<string> RenderListAsync(object model, string category, bool showVariables, bool readOnly) {
 
             bool focusSet = Manager.WantFocus ? false : true;
             List<PropertyListEntry> properties = GetPropertiesByCategory(model, category);
@@ -51,21 +51,21 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
             foreach (PropertyListEntry property in properties) {
                 bool haveValue = false;
-                YHtmlString shtml = null;
+                string shtml = null;
                 if (property.Restricted) {
-                    shtml = new YHtmlString(__ResStr("demo", "This property is not available in Demo Mode"));
+                    shtml = __ResStr("demo", "This property is not available in Demo Mode");
                     haveValue = true;
                 } else if (readOnly || !property.Editable) {
-                    shtml = new YHtmlString((await HtmlHelper.ForDisplayAsync(model, property.Name)).ToString());
-                    string s = shtml.ToString().Trim();
+                    shtml = await HtmlHelper.ForDisplayAsync(model, property.Name);
+                    string s = shtml?.ToString().Trim();
                     if (string.IsNullOrWhiteSpace(s)) {
                         if (property.SuppressEmpty)
                             continue;
-                        shtml = new YHtmlString("&nbsp;");
+                        shtml = "&nbsp;";
                     } else
                         haveValue = true;
                 } else {
-                    shtml = new YHtmlString(await HtmlHelper.ForEditAsync(model, property.Name));
+                    shtml = await HtmlHelper.ForEditAsync(model, property.Name);
                     haveValue = true;
                 }
 
@@ -73,8 +73,8 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
                 bool labelDone = false;
                 if (!string.IsNullOrWhiteSpace(property.TextAbove)) {
-                    YHtmlString hs = new YHtmlString((await HtmlHelper.ForLabelAsync(model, property.Name, ShowVariable: showVariables, SuppressIfEmpty: true)).ToString());
-                    if (!string.IsNullOrWhiteSpace(hs.ToString())) {
+                    string hs = await HtmlHelper.ForLabelAsync(model, property.Name, ShowVariable: showVariables, SuppressIfEmpty: true);
+                    if (!string.IsNullOrWhiteSpace(hs)) {
                         labelDone = true;
                         hb.Append("<div class='t_labels'>");
                         hb.Append(hs);
@@ -91,8 +91,8 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                     if (labelDone) {
                         hb.Append("<div class='t_labels t_fillerabove'>&nbsp;</div>");
                     } else {
-                        YHtmlString hs = new YHtmlString((await HtmlHelper.ForLabelAsync(model, property.Name, ShowVariable: showVariables, SuppressIfEmpty: true)).ToString());
-                        if (!string.IsNullOrWhiteSpace(hs.ToString())) {
+                        string hs = await HtmlHelper.ForLabelAsync(model, property.Name, ShowVariable: showVariables, SuppressIfEmpty: true);
+                        if (!string.IsNullOrWhiteSpace(hs)) {
                             hb.Append("<div class='t_labels'>");
                             hb.Append(hs);
                             hb.Append("</div>");
@@ -141,7 +141,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
                 hb.Append("</div>");
             }
-            return hb.ToYHtmlString();
+            return hb.ToString();
         }
     }
 }

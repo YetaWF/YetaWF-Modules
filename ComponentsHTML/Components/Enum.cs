@@ -53,7 +53,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         /// </summary>
         /// <param name="model">The model being rendered by the component.</param>
         /// <returns>The component rendered as HTML.</returns>
-        public Task<YHtmlString> RenderAsync(object model) {
+        public Task<string> RenderAsync(object model) {
 
         bool showValues = UserSettings.GetProperty<bool>("ShowEnumValue");
             showValues = showValues && PropData.GetAdditionalAttributeValue("ShowEnumValue", true);
@@ -68,9 +68,9 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                 FieldSetup(tag, FieldType.Anonymous);
                 tag.Attributes.Add(Basics.CssTooltipSpan, desc);
                 tag.SetInnerText(caption);
-                return Task.FromResult(tag.ToYHtmlString(YTagRenderMode.Normal));
+                return Task.FromResult(tag.ToString(YTagRenderMode.Normal));
             } else {
-                return Task.FromResult(new YHtmlString(caption));
+                return Task.FromResult(caption);
             }
         }
     }
@@ -91,7 +91,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         /// </summary>
         /// <param name="model">The model being rendered by the component.</param>
         /// <returns>The component rendered as HTML.</returns>
-        public async Task<YHtmlString> RenderAsync(object model) {
+        public async Task<string> RenderAsync(object model) {
             bool showSelect = PropData.GetAdditionalAttributeValue("ShowSelect", false);
             List<SelectionItem<int>> list = GetEnumSelectionList(model.GetType(), showSelect: showSelect);
             return await DropDownListIntComponent.RenderDropDownListAsync(this, (int)model, list, "yt_enum");

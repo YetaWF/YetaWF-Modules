@@ -24,7 +24,7 @@ namespace YetaWF.Modules.Panels.Components {
 
         public override ComponentType GetComponentType() { return ComponentType.Display; }
 
-        public async Task<YHtmlString> RenderAsync(PagePanelInfo model) {
+        public async Task<string> RenderAsync(PagePanelInfo model) {
             HtmlBuilder hb = new HtmlBuilder();
 
             string styleCss;
@@ -75,7 +75,7 @@ namespace YetaWF.Modules.Panels.Components {
             }
             hb.Append($@"
 </div>");
-            return hb.ToYHtmlString();
+            return hb.ToString();
         }
     }
 }

@@ -47,7 +47,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         /// </summary>
         /// <param name="model">The model being rendered by the component.</param>
         /// <returns>The component rendered as HTML.</returns>
-        public Task<YHtmlString> RenderAsync(long model) {
+        public Task<string> RenderAsync(long model) {
             HtmlBuilder hb = new HtmlBuilder();
 
             hb.Append($@"
@@ -55,7 +55,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
     {HE(Formatting.FormatFileFolderSize(model))}
 </div>
 ");
-            return Task.FromResult(hb.ToYHtmlString());
+            return Task.FromResult(hb.ToString());
         }
     }
 }
