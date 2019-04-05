@@ -66,7 +66,7 @@ namespace Softelvdm.Modules.IVR.Components {
             };
         }
 
-        public async Task<YHtmlString> RenderAsync(SerializableList<ExtensionPhoneNumber> model) {
+        public async Task<string> RenderAsync(SerializableList<ExtensionPhoneNumber> model) {
 
             HtmlBuilder hb = new HtmlBuilder();
 
@@ -97,7 +97,7 @@ namespace Softelvdm.Modules.IVR.Components {
     {await HtmlHelper.ForDisplayAsAsync(Container, PropertyName, FieldName, grid, nameof(grid.GridDef), grid.GridDef, "Grid", HtmlAttributes: HtmlAttributes)}
 </div>");
 
-            return hb.ToYHtmlString();
+            return hb.ToString();
         }
     }
 
@@ -163,7 +163,7 @@ namespace Softelvdm.Modules.IVR.Components {
             };
         }
 
-        public async Task<YHtmlString> RenderAsync(SerializableList<ExtensionPhoneNumber> model) {
+        public async Task<string> RenderAsync(SerializableList<ExtensionPhoneNumber> model) {
 
             HtmlBuilder hb = new HtmlBuilder();
 
@@ -213,7 +213,7 @@ namespace Softelvdm.Modules.IVR.Components {
     new Softelvdm_IVR.ListOfPhoneNumbersEditComponent('{DivId}', {YetaWFManager.JsonSerialize(setup)});
 </script>");
 
-            return hb.ToYHtmlString();
+            return hb.ToString();
         }
         public static async Task<GridRecordData> GridRecordAsync(string fieldPrefix, object model) {
             // handle async properties

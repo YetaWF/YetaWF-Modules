@@ -24,11 +24,11 @@ namespace Softelvdm.Modules.IVR.Components {
 
         public override ComponentType GetComponentType() { return ComponentType.Display; }
 
-        public Task<YHtmlString> RenderAsync(string model) {
+        public Task<string> RenderAsync(string model) {
             string text = "";
             if (!string.IsNullOrWhiteSpace(model))
                 text = FormatPhoneNumber(model);
-            return Task.FromResult(new YHtmlString(text));
+            return Task.FromResult(text);
         }
     }
 }
