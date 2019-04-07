@@ -15,7 +15,7 @@ using YetaWF.PackageAttributes;
 [assembly: AssemblyCulture("")]
 [assembly: ComVisible(false)]
 
-[assembly: AssemblyVersion("4.2.0.0")]
+[assembly: AssemblyVersion("4.3.0.0")]
 
 // This package was originally not part of the YetaWF Open Source Project. For that reason it uses the Softelvdm namespace, but for localization we'll use YetaWF.
 [assembly: Package(PackageTypeEnum.Module, "Softelvdm", LanguageDomain: "YetaWF")]
