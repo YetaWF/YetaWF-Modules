@@ -144,11 +144,10 @@ namespace YetaWF.Modules.Pages.DataProvider {
             unifiedSet.Created = DateTime.UtcNow;
             if (unifiedSet.UnifiedMode == PageDefinition.UnifiedModeEnum.SkinDynamicContent) {
                 unifiedSet.PageList = new List<string>();
-                unifiedSet.PageGuids = new SerializableList<Guid>();
             } else {
                 unifiedSet.PageSkin = new SkinDefinition();
-                unifiedSet.PageGuids = await UpdatePageGuidsAsync(unifiedSet.UnifiedSetGuid, unifiedSet.PageList);
             }
+            unifiedSet.PageGuids = await UpdatePageGuidsAsync(unifiedSet.UnifiedSetGuid, unifiedSet.PageList);
             if (!await DataProvider.AddAsync(unifiedSet)) return false;
             return true;
         }
@@ -156,11 +155,10 @@ namespace YetaWF.Modules.Pages.DataProvider {
             unifiedSet.Updated = DateTime.UtcNow;
             if (unifiedSet.UnifiedMode == PageDefinition.UnifiedModeEnum.SkinDynamicContent) {
                 unifiedSet.PageList = new List<string>();
-                unifiedSet.PageGuids = new SerializableList<Guid>();
             } else {
                 unifiedSet.PageSkin = new SkinDefinition();
-                unifiedSet.PageGuids = await UpdatePageGuidsAsync(unifiedSet.UnifiedSetGuid, unifiedSet.PageList);
             }
+            unifiedSet.PageGuids = await UpdatePageGuidsAsync(unifiedSet.UnifiedSetGuid, unifiedSet.PageList);
             UpdateStatusEnum status = await DataProvider.UpdateAsync(unifiedSet.UnifiedSetGuid, unifiedSet.UnifiedSetGuid, unifiedSet);
             if (status != UpdateStatusEnum.OK) return status;
             return status;
