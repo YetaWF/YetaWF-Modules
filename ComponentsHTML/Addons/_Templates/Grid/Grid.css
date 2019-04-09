@@ -176,3 +176,8 @@
   /* Not skin dependent formatting, usually module specific */ }
   .yt_grid.tg_noskin .tg_table th, .yt_grid.tg_noskin .tg_table td {
     font-size: 14px; }
+
+.yt_grid.tg_skin .yt_grid.tg_noskin {
+  /* nested grid */ }
+  .yt_grid.tg_skin .yt_grid.tg_noskin .tg_table th, .yt_grid.tg_skin .yt_grid.tg_noskin .tg_table td {
+    font-size: 11px; }

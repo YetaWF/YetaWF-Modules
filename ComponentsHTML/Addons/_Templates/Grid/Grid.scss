@@ -229,11 +229,18 @@ $smbuttonhorzmargin: 2px;
         border-top-style: none;
     }
 }
+
 .yt_grid.tg_noskin { /* Not skin dependent formatting, usually module specific */
     .tg_table {
         th, td {
             font-size:14px;
         }
     }
-
+}
+.yt_grid.tg_skin .yt_grid.tg_noskin { /* nested grid */
+    .tg_table {
+        th, td {
+            font-size:$fontsize;
+        }
+    }
 }
