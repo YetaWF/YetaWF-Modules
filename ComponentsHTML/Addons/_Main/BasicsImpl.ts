@@ -258,30 +258,30 @@ namespace YetaWF_ComponentsHTML {
             if (YVolatile.YetaWF_ComponentsHTML.jqueryUI && $YetaWF.elementHasClass(elem, "ui-button")) {
                 // jquery-ui button
                 $(elem).button(enable ? "enable" : "disable");
-            } else if (YVolatile.Skin.Bootstrap && $YetaWF.elementHasClass(elem, "btn")) {
+            }
+            if (YVolatile.Skin.Bootstrap && $YetaWF.elementHasClass(elem, "btn")) {
                 // bootstrap button
                 // no action needed, caller already sets disabled=...
-            } else {
-                if (YVolatile.YetaWF_ComponentsHTML.kendoUI) {
-                    // Kendo UI stuff
-                    if (elem.tagName === "INPUT") {
-                        if (enable)
-                            $YetaWF.elementRemoveClass(elem, "k-state-disabled");
-                        else
-                            $YetaWF.elementAddClass(elem, "k-state-disabled");
-                    } else if (elem.tagName === "SELECT") {
-                        if (enable)
-                            $YetaWF.elementRemoveClass(elem, "k-state-disabled");
-                        else
-                            $YetaWF.elementAddClass(elem, "k-state-disabled");
-                    } else if (elem.tagName === "TEXTAREA") {
-                        if (enable) {
-                            elem.removeAttribute("readonly");
-                            $YetaWF.elementRemoveClass(elem, "k-state-disabled");
-                        } else {
-                            $YetaWF.setAttribute(elem, "readonly", "readonly");
-                            $YetaWF.elementAddClass(elem, "k-state-disabled");
-                        }
+            }
+            if (YVolatile.YetaWF_ComponentsHTML.kendoUI) {
+                // Kendo UI stuff
+                if (elem.tagName === "INPUT") {
+                    if (enable)
+                        $YetaWF.elementRemoveClass(elem, "k-state-disabled");
+                    else
+                        $YetaWF.elementAddClass(elem, "k-state-disabled");
+                } else if (elem.tagName === "SELECT") {
+                    if (enable)
+                        $YetaWF.elementRemoveClass(elem, "k-state-disabled");
+                    else
+                        $YetaWF.elementAddClass(elem, "k-state-disabled");
+                } else if (elem.tagName === "TEXTAREA") {
+                    if (enable) {
+                        elem.removeAttribute("readonly");
+                        $YetaWF.elementRemoveClass(elem, "k-state-disabled");
+                    } else {
+                        $YetaWF.setAttribute(elem, "readonly", "readonly");
+                        $YetaWF.elementAddClass(elem, "k-state-disabled");
                     }
                 }
             }
