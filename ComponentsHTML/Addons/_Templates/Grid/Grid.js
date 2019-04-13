@@ -550,8 +550,8 @@ var YetaWF_ComponentsHTML;
             var _this = this;
             if (!this.reloadInProgress) {
                 this.setReloading(true);
-                if (page < 1)
-                    page = 1;
+                if (page < 0)
+                    page = 0;
                 if (this.Setup.StaticData && !sort) {
                     // show/hide selected rows
                     if (this.Setup.PageSize > 0) {

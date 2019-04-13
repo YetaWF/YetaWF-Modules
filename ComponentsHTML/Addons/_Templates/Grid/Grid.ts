@@ -606,7 +606,7 @@ namespace YetaWF_ComponentsHTML {
 
                 this.setReloading(true);
 
-                if (page < 1) page = 1;
+                if (page < 0) page = 0;
 
                 if (this.Setup.StaticData && !sort) {
                     // show/hide selected rows
