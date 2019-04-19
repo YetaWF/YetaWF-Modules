@@ -208,10 +208,9 @@ namespace Softelvdm.Modules.IVR.Components {
             };
 
             hb.Append($@"
-</div>
-<script>
-    new Softelvdm_IVR.ListOfPhoneNumbersEditComponent('{DivId}', {YetaWFManager.JsonSerialize(setup)});
-</script>");
+</div>");
+
+            Manager.ScriptManager.AddLast($@"new Softelvdm_IVR.ListOfPhoneNumbersEditComponent('{DivId}', {YetaWFManager.JsonSerialize(setup)});");
 
             return hb.ToString();
         }
