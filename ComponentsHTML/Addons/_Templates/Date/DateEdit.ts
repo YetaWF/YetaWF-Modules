@@ -38,19 +38,13 @@ namespace YetaWF_ComponentsHTML {
                     else
                         this.setHidden(val);
                     FormsSupport.validateElement(this.Hidden);
+                    var event = document.createEvent("Event");
+                    event.initEvent("datetime_change", true, true);
+                    this.Control.dispatchEvent(event);
                 }
             });
             this.kendoDatePicker = $(this.Date).data("kendoDatePicker");
             this.setHidden(this.kendoDatePicker.value());
-
-            this.Date.addEventListener("change", (event: Event): void => {
-                var val: Date = this.kendoDatePicker.value();
-                if (val == null)
-                    this.setHiddenText((event.target as HTMLInputElement).value);
-                else
-                    this.setHidden(val);
-                FormsSupport.validateElement(this.Hidden);
-            }, false);
         }
         private setHidden(dateVal: Date | null): void {
             var s: string = "";

@@ -34,18 +34,13 @@ var YetaWF_ComponentsHTML;
                     else
                         _this.setHidden(val);
                     FormsSupport.validateElement(_this.Hidden);
+                    var event = document.createEvent("Event");
+                    event.initEvent("datetime_change", true, true);
+                    _this.Control.dispatchEvent(event);
                 }
             });
             _this.kendoDatePicker = $(_this.Date).data("kendoDatePicker");
             _this.setHidden(_this.kendoDatePicker.value());
-            _this.Date.addEventListener("change", function (event) {
-                var val = _this.kendoDatePicker.value();
-                if (val == null)
-                    _this.setHiddenText(event.target.value);
-                else
-                    _this.setHidden(val);
-                FormsSupport.validateElement(_this.Hidden);
-            }, false);
             return _this;
         }
         DateEditComponent.prototype.setHidden = function (dateVal) {
