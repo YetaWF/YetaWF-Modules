@@ -152,7 +152,7 @@ namespace YetaWF.Modules.Pages.Modules {
                 ConfirmationText = this.__ResStr("sremAuthConfirm", "Are you sure you want to remove the current site map?"),
             };
         }
-        public async Task<ModuleAction> GetAction_DownloaSiteMapAsync() {
+        public async Task<ModuleAction> GetAction_DownloadSiteMapAsync() {
             if (!IsAuthorized("SiteMaps")) return null;
             SiteMaps sm = new SiteMaps();
             string filename = sm.GetSiteMapFileName();
