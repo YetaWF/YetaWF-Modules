@@ -47,10 +47,15 @@ ul.yGridActionMenu { /* ul needed for specificity */
         margin-right:1ch;
     }
 }
+
+
+/* Module title */
 .yModuleTitle {
+    h1 {
+        float:left
+    }
     .yModuleLinks {
-        margin-top:2em;
-        margin-right:1ch;
+        margin-top:1.5em;
         .yaction-link {
             i, img {
                 margin-right:0;
@@ -60,6 +65,13 @@ ul.yGridActionMenu { /* ul needed for specificity */
         }
     }
     .yModuleLinksContainer {
-        margin-right:1ch;
+        float:right;
+        clear:none;
     }
 }
+@media print {
+    .yModuleLinksContainer {
+        display: none;
+    }
+}
+

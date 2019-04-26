@@ -39,9 +39,12 @@ ul.yGridActionMenu {
       /* a bit of extra space around the image in a module action link */
       margin-right: .5ch; }
 
+/* Module title */
+.yModuleTitle h1 {
+  float: left; }
+
 .yModuleTitle .yModuleLinks {
-  margin-top: 2em;
-  margin-right: 1ch; }
+  margin-top: 1.5em; }
   .yModuleTitle .yModuleLinks .yaction-link {
     margin-right: 0; }
     .yModuleTitle .yModuleLinks .yaction-link i, .yModuleTitle .yModuleLinks .yaction-link img {
@@ -49,4 +52,9 @@ ul.yGridActionMenu {
       margin-left: .5ch; }
 
 .yModuleTitle .yModuleLinksContainer {
-  margin-right: 1ch; }
+  float: right;
+  clear: none; }
+
+@media print {
+  .yModuleLinksContainer {
+    display: none; } }
