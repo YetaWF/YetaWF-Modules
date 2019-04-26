@@ -30,7 +30,7 @@ $smbuttonhorzmargin: 2px;
         select,
         textarea,
         button { // Insures that jquery-ui doesn't override our font size for controls
-            font-size:$fontsize;
+            font-size:$fontsize !important;
         }
 
         table {
