@@ -10,11 +10,12 @@ using YetaWF.Core.Packages;
 namespace YetaWF.Modules.ComponentsHTML.Components {
 
     /// <summary>
-    /// Implementation of the CountryISO3166 edit component.
+    /// Implementation of the CountryISO3166Id edit component.
+    /// Allows selection by country name and uses the two character country code as model value.
     /// </summary>
-    public class CountryISO3166EditComponent : YetaWFComponent, IYetaWFComponent<string> {
+    public class CountryISO3166IdEditComponent : YetaWFComponent, IYetaWFComponent<string> {
 
-        internal const string TemplateName = "CountryISO3166";
+        internal const string TemplateName = "CountryISO3166Id";
 
         /// <summary>
         /// Returns the component type (edit/display).
@@ -49,13 +50,13 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
             List<SelectionItem<string>> list = (from l in countries select new SelectionItem<string>() {
                 Text = l.Name,
-                Value = l.Name,
+                Value = l.Id,
             }).ToList();
             list.Insert(0, new SelectionItem<string> {
                 Text = this.__ResStr("default", "(select)"),
                 Value = "",
             });
-            return await DropDownListComponent.RenderDropDownListAsync(this, model, list, "yt_countryiso3166");
+            return await DropDownListComponent.RenderDropDownListAsync(this, model, list, "yt_countryiso3166id");
         }
     }
 }
