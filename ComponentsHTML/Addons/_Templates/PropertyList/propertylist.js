@@ -22,6 +22,7 @@ var YetaWF_ComponentsHTML;
         ControlTypeEnum[ControlTypeEnum["Input"] = 0] = "Input";
         ControlTypeEnum[ControlTypeEnum["Select"] = 1] = "Select";
         ControlTypeEnum[ControlTypeEnum["KendoSelect"] = 2] = "KendoSelect";
+        ControlTypeEnum[ControlTypeEnum["Hidden"] = 3] = "Hidden";
     })(ControlTypeEnum || (ControlTypeEnum = {}));
     var PropertyListComponent = /** @class */ (function () {
         function PropertyListComponent(controlId, controlData) {
@@ -53,6 +54,8 @@ var YetaWF_ComponentsHTML;
                             _this.update();
                         });
                         break;
+                    case ControlTypeEnum.Hidden:
+                        break;
                 }
             }
             // Initialize initial form
@@ -71,11 +74,13 @@ var YetaWF_ComponentsHTML;
                     return { Name: control, ControlType: ControlTypeEnum.Select, Object: elemSel };
                 }
             }
-            else {
-                var elemInp = $YetaWF.getElement1BySelectorCond(".t_row.t_" + control.toLowerCase() + " input[name$='" + control + "']", [this.Control]);
-                if (elemInp) {
-                    return { Name: control, ControlType: ControlTypeEnum.Input, Object: elemInp };
-                }
+            var elemInp = $YetaWF.getElement1BySelectorCond(".t_row.t_" + control.toLowerCase() + " input[name$='" + control + "']", [this.Control]);
+            if (elemInp) {
+                return { Name: control, ControlType: ControlTypeEnum.Input, Object: elemInp };
+            }
+            var elemHid = $YetaWF.getElement1BySelectorCond("input[name$='" + control + "'][type='hidden']", [this.Control]);
+            if (elemHid) {
+                return { Name: control, ControlType: ControlTypeEnum.Hidden, Object: elemHid };
             }
             throw "No control found for " + control;
         };
@@ -153,7 +158,7 @@ var YetaWF_ComponentsHTML;
             var controlItem = this.ControllingControls[ctrlIndex];
             var controlValue;
             switch (controlItem.ControlType) {
-                case ControlTypeEnum.Input:
+                case ControlTypeEnum.Input: {
                     var inputElem = controlItem.Object;
                     var controlRow = $YetaWF.elementClosest(inputElem, ".t_row");
                     if (controlRow.style.display === "") {
@@ -166,7 +171,8 @@ var YetaWF_ComponentsHTML;
                         valid = true;
                     }
                     break;
-                case ControlTypeEnum.Select:
+                }
+                case ControlTypeEnum.Select: {
                     var selectElem = controlItem.Object;
                     var controlRow = $YetaWF.elementClosest(selectElem, ".t_row");
                     if (controlRow.style.display === "") {
@@ -174,7 +180,8 @@ var YetaWF_ComponentsHTML;
                         valid = true;
                     }
                     break;
-                case ControlTypeEnum.KendoSelect:
+                }
+                case ControlTypeEnum.KendoSelect: {
                     var dropdownList = controlItem.Object;
                     var controlRow = $YetaWF.elementClosest(dropdownList.Control, ".t_row");
                     if (controlRow.style.display === "") {
@@ -182,6 +189,24 @@ var YetaWF_ComponentsHTML;
                         valid = true;
                     }
                     break;
+                }
+                case ControlTypeEnum.Hidden: {
+                    var hidden = controlItem.Object;
+                    controlValue = hidden.value;
+                    switch (value.ValueType) {
+                        case ValueTypeEnum.EqualIntValue:
+                        case ValueTypeEnum.NotEqualIntValue:
+                            if (controlValue === "True")
+                                controlValue = true;
+                            else if (controlValue === "False")
+                                controlValue = false;
+                            break;
+                        default:
+                            break;
+                    }
+                    valid = true;
+                    break;
+                }
             }
             if (!valid)
                 return ValidityEnum.ControllingNotShown;

@@ -43,6 +43,7 @@ namespace YetaWF_ComponentsHTML {
         Input = 0,
         Select = 1,
         KendoSelect = 2,
+        Hidden = 3,
     }
 
     export class PropertyListComponent {
@@ -79,6 +80,8 @@ namespace YetaWF_ComponentsHTML {
                             this.update();
                         });
                         break;
+                    case ControlTypeEnum.Hidden:
+                        break;
                 }
             }
 
@@ -87,7 +90,7 @@ namespace YetaWF_ComponentsHTML {
         }
 
         private getControlItem(control: string): ControlItem {
-            var elemSel = $YetaWF.getElement1BySelectorCond(`.t_row.t_${control.toLowerCase()} select[name$='${control}']`, [this.Control]) as HTMLSelectElement | null;
+            let elemSel = $YetaWF.getElement1BySelectorCond(`.t_row.t_${control.toLowerCase()} select[name$='${control}']`, [this.Control]) as HTMLSelectElement | null;
             if (elemSel) {
                 var kendoSelect = YetaWF.ComponentBaseDataImpl.getControlFromTagCond<DropDownListEditComponent>(elemSel, DropDownListEditComponent.SELECTOR);
                 if (kendoSelect) {
@@ -97,11 +100,14 @@ namespace YetaWF_ComponentsHTML {
                     // Native
                     return { Name: control, ControlType: ControlTypeEnum.Select, Object: elemSel };
                 }
-            } else {
-                var elemInp = $YetaWF.getElement1BySelectorCond(`.t_row.t_${control.toLowerCase()} input[name$='${control}']`, [this.Control]) as HTMLInputElement | null;
-                if (elemInp) {
-                    return { Name: control, ControlType: ControlTypeEnum.Input, Object: elemInp };
-                }
+            }
+            let elemInp = $YetaWF.getElement1BySelectorCond(`.t_row.t_${control.toLowerCase()} input[name$='${control}']`, [this.Control]) as HTMLInputElement | null;
+            if (elemInp) {
+                return { Name: control, ControlType: ControlTypeEnum.Input, Object: elemInp };
+            }
+            let elemHid = $YetaWF.getElement1BySelectorCond(`input[name$='${control}'][type='hidden']`, [this.Control]) as HTMLInputElement | null;
+            if (elemHid) {
+                return { Name: control, ControlType: ControlTypeEnum.Hidden, Object: elemHid };
             }
             throw `No control found for ${control}`;
         }
@@ -175,9 +181,9 @@ namespace YetaWF_ComponentsHTML {
 
             var controlValue;
             switch (controlItem.ControlType) {
-                case ControlTypeEnum.Input:
-                    var inputElem = controlItem.Object as HTMLInputElement;
-                    var controlRow = $YetaWF.elementClosest(inputElem, ".t_row");
+                case ControlTypeEnum.Input: {
+                    let inputElem = controlItem.Object as HTMLInputElement;
+                    let controlRow = $YetaWF.elementClosest(inputElem, ".t_row");
                     if (controlRow.style.display === "") {
                         if (inputElem.type.toLowerCase() === "checkbox") {
                             controlValue = inputElem.checked ? "1" : "0";
@@ -187,22 +193,42 @@ namespace YetaWF_ComponentsHTML {
                         valid = true;
                     }
                     break;
-                case ControlTypeEnum.Select:
-                    var selectElem = controlItem.Object as HTMLSelectElement;
-                    var controlRow = $YetaWF.elementClosest(selectElem, ".t_row");
+                 }
+                case ControlTypeEnum.Select: {
+                    let selectElem = controlItem.Object as HTMLSelectElement;
+                    let controlRow = $YetaWF.elementClosest(selectElem, ".t_row");
                     if (controlRow.style.display === "") {
                         controlValue = selectElem.value;
                         valid = true;
                     }
                     break;
-                case ControlTypeEnum.KendoSelect:
-                    var dropdownList = controlItem.Object as DropDownListEditComponent;
-                    var controlRow = $YetaWF.elementClosest(dropdownList.Control, ".t_row");
+                 }
+                case ControlTypeEnum.KendoSelect: {
+                    let dropdownList = controlItem.Object as DropDownListEditComponent;
+                    let controlRow = $YetaWF.elementClosest(dropdownList.Control, ".t_row");
                     if (controlRow.style.display === "") {
                         controlValue = dropdownList.value;
                         valid = true;
                     }
                     break;
+                 }
+                case ControlTypeEnum.Hidden: {
+                    let hidden = controlItem.Object as DropDownListEditComponent;
+                    controlValue = hidden.value;
+                    switch (value.ValueType) {
+                        case ValueTypeEnum.EqualIntValue:
+                        case ValueTypeEnum.NotEqualIntValue:
+                            if (controlValue === "True")
+                                controlValue = true;
+                            else if (controlValue === "False")
+                                controlValue = false;
+                            break;
+                        default:
+                            break;
+                    }
+                    valid = true;
+                    break;
+                 }
             }
             if (!valid)
                 return ValidityEnum.ControllingNotShown;
