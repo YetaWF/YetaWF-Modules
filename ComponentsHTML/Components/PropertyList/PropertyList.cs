@@ -96,6 +96,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
         internal async Task<string> RenderPropertyListTabbedAsync(object model, bool readOnly) {
 
+            PropertyListStyleEnum style = GetPropertyListStyle(model);
             List<string> categories = GetCategories(model);
             if (categories.Count <= 1) // if there is only one tab, show as regular property list
                 return await RenderPropertyListAsync(model, readOnly);
@@ -107,37 +108,95 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             RenderHeader(hb, classData);
 
             string divId = Manager.UniqueId();
-            hb.Append($@"
+            switch (style) {
+                default:
+                case PropertyListStyleEnum.Tabbed:
+                    hb.Append($@"
 <div id='{divId}' class='yt_propertylisttabbed {(readOnly ? "t_display" : "t_edit")}'>");
+                    break;
+                case PropertyListStyleEnum.Boxed:
+                case PropertyListStyleEnum.BoxedWithCategories:
+                    hb.Append($@"
+<div id='{divId}' class='yt_propertylistboxed {(readOnly ? "t_display" : "t_edit")}'>");
+                    break;
+            }
 
             hb.Append(await RenderHiddenAsync(model));
 
             bool showVariables = YetaWF.Core.Localize.UserSettings.GetProperty<bool>("ShowVariables");
 
-            // tabstrip
-            hb.Append(RenderTabStripStart(divId));
+            switch (style) {
+                default:
+                case PropertyListStyleEnum.Tabbed:
+                    // tabstrip
+                    hb.Append(RenderTabStripStart(divId));
+                    break;
+                case PropertyListStyleEnum.BoxedWithCategories:
+                case PropertyListStyleEnum.Boxed:
+                    break;
+            }
             int tabEntry = 0;
             foreach (string category in categories) {
                 string cat = category;
                 if (classData.Categories.ContainsKey(cat))
                     cat = classData.Categories[cat];
-                hb.Append(RenderTabEntry(divId, cat, "", tabEntry));
+                switch (style) {
+                    default:
+                    case PropertyListStyleEnum.Tabbed:
+                        hb.Append(RenderTabEntry(divId, cat, "", tabEntry));
+                        break;
+                    case PropertyListStyleEnum.BoxedWithCategories:
+                    case PropertyListStyleEnum.Boxed:
+                        break;
+                }
                 ++tabEntry;
             }
-            hb.Append(RenderTabStripEnd(divId));
+            switch (style) {
+                default:
+                case PropertyListStyleEnum.Tabbed:
+                    hb.Append(RenderTabStripEnd(divId));
+                    break;
+                case PropertyListStyleEnum.BoxedWithCategories:
+                case PropertyListStyleEnum.Boxed:
+                    break;
+            }
 
             // panels
             int panel = 0;
             foreach (string category in categories) {
-                hb.Append(RenderTabPaneStart(divId, panel));
-                hb.Append(await RenderListAsync(model, category, showVariables, readOnly));
-                hb.Append(RenderTabPaneEnd(divId, panel));
+                switch (style) {
+                    default:
+                    case PropertyListStyleEnum.Tabbed:
+                        hb.Append(RenderTabPaneStart(divId, panel));
+                        hb.Append(await RenderListAsync(model, category, showVariables, readOnly));
+                        hb.Append(RenderTabPaneEnd(divId, panel));
+                        break;
+                    case PropertyListStyleEnum.BoxedWithCategories:
+                        hb.Append($"<div class='t_table t_cat t_boxpanel{panel}'>");
+                        hb.Append($"<div class='t_boxlabel'>{category}</div>");
+                        hb.Append(await RenderListAsync(model, category, showVariables, readOnly));
+                        hb.Append($"</div>");
+                        break;
+                    case PropertyListStyleEnum.Boxed:
+                        hb.Append($"<div class='t_table t_cat t_boxpanel{panel}'>");
+                        hb.Append(await RenderListAsync(model, category, showVariables, readOnly));
+                        hb.Append($"</div>");
+                        break;
+                }
                 ++panel;
             }
 
-            hb.Append($@"
+            switch (style) {
+                default:
+                case PropertyListStyleEnum.Tabbed:
+                    hb.Append($@"
 </div>
 {await RenderTabInitAsync(divId, model)}");
+                    break;
+                case PropertyListStyleEnum.BoxedWithCategories:
+                case PropertyListStyleEnum.Boxed:
+                    break;
+            }
 
             RenderFooter(hb, classData);
 

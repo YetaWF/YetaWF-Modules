@@ -11,6 +11,24 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
     public abstract partial class PropertyListComponentBase {
 
+        /// <summary>
+        /// Defines the appearance of a property list.
+        /// </summary>
+        public enum PropertyListStyleEnum {
+            /// <summary>
+            /// Render a tabbed property list (if there are multiple categories) or a simple list (0 or 1 category).
+            /// </summary>
+            Tabbed = 0,
+            /// <summary>
+            /// Render a boxed property list (if there are multiple categories) or a simple list (0 or 1 category), to be styled using CSS.
+            /// </summary>
+            Boxed = 1,
+            /// <summary>
+            /// Render a boxed property list with category labels (if there are multiple categories) or a simple list (0 or 1 category), to be styled using CSS.
+            /// </summary>
+            BoxedWithCategories = 2,
+        }
+
         internal class PropertyListEntry {
 
             public PropertyListEntry(string name, object value, string uiHint, bool editable, bool restricted, string textAbove, string textBelow, bool suppressEmpty,
@@ -65,11 +83,24 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             return properties;
         }
 
+        internal PropertyListStyleEnum GetPropertyListStyle(object obj) {
+
+            // get all properties that are shown
+            Type objType = obj.GetType();
+            PropertyInfo propInfo = ObjectSupport.TryGetProperty(objType, "__PropertyListStyle");
+            PropertyListStyleEnum style = PropertyListStyleEnum.Tabbed;
+            if (propInfo != null) {
+                style = (PropertyListStyleEnum)propInfo.GetValue(obj);
+            }
+            return style;
+        }
+
         // Returns all categories implemented by this object - these are decorated with the [CategoryAttribute]
         internal List<string> GetCategories(object obj) {
 
             // get all properties that are shown
-            List<PropertyData> props = GetProperties(obj.GetType()).ToList();
+            Type objType = obj.GetType();
+            List<PropertyData> props = GetProperties(objType).ToList();
 
             // get the list of categories
             List<string> categories = new List<string>();
@@ -78,7 +109,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             categories = categories.Distinct().ToList();
 
             // order (if there is a CategoryOrder property)
-            PropertyInfo piCat = ObjectSupport.TryGetProperty(obj.GetType(), "CategoryOrder");
+            PropertyInfo piCat = ObjectSupport.TryGetProperty(objType, "CategoryOrder");
             if (piCat != null) {
                 List<string> orderedCategories = (List<string>)piCat.GetValue(obj);
                 List<string> allCategories = new List<string>();
