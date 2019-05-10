@@ -63,6 +63,10 @@ namespace Softelvdm.Modules.TwilioProcessor.Controllers {
             [ExcludeDemoMode]
             public string TestSMSNumber { get; set; }
 
+            [Category("SMS"), Caption("Max. SMS Per Second"), Description("Defines the maximum number of SMS that are supported by the phone number - Set to 0 to disable pacing - Twilio phone numbers have restrictions as to how many SMS can be sent per second")]
+            [UIHint("IntValue4")]
+            public int MaxSMSPerSecond { get; set; }
+
             [Category("SMS"), Caption("Delivery Receipts"), Description("Defines whether delivery receipts from Twilio are enabled - Delivery status is logged to the YetaWF log")]
             [UIHint("Boolean")]
             public bool DeliveryReceipts { get; set; }

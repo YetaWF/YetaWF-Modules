@@ -42,6 +42,9 @@ namespace Softelvdm.Modules.TwilioProcessor.DataProvider {
         public bool DeliveryReceipts { get; set; }
         public bool UseHttps { get; set; }
 
+        [Data_NewValue]
+        public int MaxSMSPerSecond { get; set; }
+
         public bool IsSMSConfigured() {
             return SMSEnabled && IsConfigured() && (TestMode ? !string.IsNullOrWhiteSpace(TestSMSNumber) : !string.IsNullOrWhiteSpace(LiveSMSNumber));
         }
