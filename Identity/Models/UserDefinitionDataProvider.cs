@@ -26,7 +26,7 @@ using Microsoft.AspNet.Identity;
 namespace YetaWF.Modules.Identity.DataProvider {
 
     public enum UserStatusEnum {
-        [EnumDescription("Needs Validation", "A new user account that has not yet been validated or approved")]
+        [EnumDescription("Needs Verification", "A new user account that has not yet been verified or approved")]
         NeedValidation = 0,
         [EnumDescription("Needs Approval", "A user account whose email address has been validated but still needs approval")]
         NeedApproval = 1,

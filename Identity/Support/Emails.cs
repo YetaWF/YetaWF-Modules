@@ -1,11 +1,14 @@
 ﻿/* Copyright © 2019 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Identity#License */
 
+using System.Collections.Generic;
 using System.Threading.Tasks;
+using YetaWF.Core;
 using YetaWF.Core.Localize;
 using YetaWF.Core.Modules;
 using YetaWF.Core.Packages;
 using YetaWF.Core.SendEmail;
 using YetaWF.Core.Support;
+using YetaWF.Core.Support.UrlHistory;
 using YetaWF.Modules.Identity.DataProvider;
 using YetaWF.Modules.Identity.Modules;
 
@@ -32,10 +35,20 @@ namespace YetaWF.Modules.Identity.Support {
             await sendEmail.SendAsync(true);
         }
         public async Task SendVerificationAsync(UserDefinition user, string ccEmail = null) {
+
+            string retUrl = Manager.ReturnToUrl;
+            string urlOnly;
+            QueryHelper qh = QueryHelper.FromUrl(Manager.CurrentSite.LoginUrl, out urlOnly);
+            qh.Add(Globals.Link_OriginList, YetaWFManager.JsonSerialize(new List<Origin> { new Origin { Url = retUrl } }), Replace: true);
+            qh.Add("CloseOnLogin", "1", Replace: true);
+            qh.Add("Name", user.UserName, Replace: true);
+            qh.Add("V", user.VerificationCode, Replace: true);
+            string url = qh.ToUrl(urlOnly);
+
             SendEmail sendEmail = new SendEmail();
             object parms = new {
                 User = user,
-                LoginUrl = Manager.CurrentSite.MakeUrl(Manager.CurrentSite.LoginUrl),
+                Url = Manager.CurrentSite.MakeUrl(url),
             };
             string subject = this.__ResStr("verificationSubject", "Verification required for site {0}", Manager.CurrentSite.SiteDomain);
             await sendEmail.PrepareEmailMessageAsync(user.Email, subject, await sendEmail.GetEmailFileAsync(Package.GetCurrentPackage(this), "Account Verification.txt"), parameters: parms);

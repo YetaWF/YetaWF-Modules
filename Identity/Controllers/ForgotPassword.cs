@@ -36,7 +36,9 @@ namespace YetaWF.Modules.Identity.Controllers {
             [UIHint("Hidden")]
             public bool ShowCaptcha { get; set; }
 
-            public EditModel() { }
+            public EditModel() {
+                Captcha = new RecaptchaV2Data();
+            }
         }
 
         [AllowGet]
@@ -44,7 +46,6 @@ namespace YetaWF.Modules.Identity.Controllers {
             LoginConfigData config = await LoginConfigDataProvider.GetConfigAsync();
             EditModel model = new EditModel {
                 ShowCaptcha = config.CaptchaForgotPassword,
-                Captcha = new RecaptchaV2Data(),
             };
             return View(model);
         }
