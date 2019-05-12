@@ -24,43 +24,109 @@ var YetaWF_ComponentsHTML;
         ControlTypeEnum[ControlTypeEnum["KendoSelect"] = 2] = "KendoSelect";
         ControlTypeEnum[ControlTypeEnum["Hidden"] = 3] = "Hidden";
     })(ControlTypeEnum || (ControlTypeEnum = {}));
+    var PropertyListStyleEnum;
+    (function (PropertyListStyleEnum) {
+        PropertyListStyleEnum[PropertyListStyleEnum["Tabbed"] = 0] = "Tabbed";
+        PropertyListStyleEnum[PropertyListStyleEnum["Boxed"] = 1] = "Boxed";
+        PropertyListStyleEnum[PropertyListStyleEnum["BoxedWithCategories"] = 2] = "BoxedWithCategories";
+    })(PropertyListStyleEnum || (PropertyListStyleEnum = {}));
     var PropertyListComponent = /** @class */ (function () {
-        function PropertyListComponent(controlId, controlData) {
+        function PropertyListComponent(controlId, setup, controlData) {
             var _this = this;
             this.ControllingControls = [];
+            this.MasonryElem = null;
+            this.MinWidth = 0;
+            this.CurrWidth = 0;
+            this.SizeBreakIndex = -1;
             this.Control = $YetaWF.getElementById(controlId);
             this.ControlData = controlData;
+            this.Setup = setup;
+            if (this.Setup.Style === PropertyListStyleEnum.Boxed || this.Setup.Style === PropertyListStyleEnum.BoxedWithCategories) {
+                this.MasonryElem = this.createMasonry();
+                this.MinWidth = this.Setup.SizeBreaks.length > 0 ? this.Setup.SizeBreaks[0] : 0;
+                this.SizeBreakIndex = this.getSizeBreakIndex();
+                setInterval(function () {
+                    if (_this.MasonryElem)
+                        _this.MasonryElem.layout();
+                }, 1000);
+            }
             // Handle change events
-            var controlData = this.ControlData;
-            for (var _i = 0, _a = controlData.Controls; _i < _a.length; _i++) {
-                var control = _a[_i];
-                var controlItem = this.getControlItem(control);
-                this.ControllingControls.push(controlItem);
-                switch (controlItem.ControlType) {
-                    case ControlTypeEnum.Input:
-                        $YetaWF.registerMultipleEventHandlers([controlItem.Object], ["change", "input"], null, function (ev) {
-                            _this.update();
-                            return false;
-                        });
-                        break;
-                    case ControlTypeEnum.Select:
-                        $YetaWF.registerEventHandler(controlItem.Object, "change", null, function (ev) {
-                            _this.update();
-                            return false;
-                        });
-                        break;
-                    case ControlTypeEnum.KendoSelect:
-                        $YetaWF.registerCustomEventHandler(controlItem.Object, "dropdownlist_change", function (evt) {
-                            _this.update();
-                        });
-                        break;
-                    case ControlTypeEnum.Hidden:
-                        break;
+            if (this.ControlData) {
+                var controlData = this.ControlData;
+                for (var _i = 0, _a = controlData.Controls; _i < _a.length; _i++) {
+                    var control = _a[_i];
+                    var controlItem = this.getControlItem(control);
+                    this.ControllingControls.push(controlItem);
+                    switch (controlItem.ControlType) {
+                        case ControlTypeEnum.Input:
+                            $YetaWF.registerMultipleEventHandlers([controlItem.Object], ["change", "input"], null, function (ev) {
+                                _this.update();
+                                return false;
+                            });
+                            break;
+                        case ControlTypeEnum.Select:
+                            $YetaWF.registerEventHandler(controlItem.Object, "change", null, function (ev) {
+                                _this.update();
+                                return false;
+                            });
+                            break;
+                        case ControlTypeEnum.KendoSelect:
+                            $YetaWF.registerCustomEventHandler(controlItem.Object, "dropdownlist_change", function (evt) {
+                                _this.update();
+                            });
+                            break;
+                        case ControlTypeEnum.Hidden:
+                            break;
+                    }
                 }
             }
             // Initialize initial form
             this.update();
+            $YetaWF.registerEventHandlerWindow("resize", null, function (ev) {
+                if (window.innerWidth < _this.MinWidth) {
+                    if (_this.MasonryElem) {
+                        _this.MasonryElem.destroy();
+                        _this.MasonryElem = null;
+                    }
+                    _this.CurrWidth = 0;
+                    _this.SizeBreakIndex = -1;
+                }
+                else if (!_this.MasonryElem || window.innerWidth != _this.CurrWidth) {
+                    var newIndex = _this.getSizeBreakIndex();
+                    if (_this.SizeBreakIndex != newIndex) {
+                        if (_this.MasonryElem) {
+                            _this.MasonryElem.destroy();
+                            _this.MasonryElem = null;
+                        }
+                        _this.MasonryElem = _this.createMasonry();
+                    }
+                }
+                return true;
+            });
         }
+        PropertyListComponent.prototype.createMasonry = function () {
+            this.CurrWidth = window.innerWidth;
+            this.SizeBreakIndex = this.getSizeBreakIndex();
+            return new Masonry(this.Control, {
+                itemSelector: ".t_table",
+                horizontalOrder: true,
+                transitionDuration: "0.1s",
+                resize: false,
+                initLayout: true
+                //columnWidth: 200
+            });
+        };
+        PropertyListComponent.prototype.getSizeBreakIndex = function () {
+            var width = window.innerWidth;
+            var index = -1;
+            for (var _i = 0, _a = this.Setup.SizeBreaks; _i < _a.length; _i++) {
+                var w = _a[_i];
+                if (width < w)
+                    return index;
+                ++index;
+            }
+            return index;
+        };
         PropertyListComponent.prototype.getControlItem = function (control) {
             var elemSel = $YetaWF.getElement1BySelectorCond(".t_row.t_" + control.toLowerCase() + " select[name$='" + control + "']", [this.Control]);
             if (elemSel) {
@@ -88,6 +154,8 @@ var YetaWF_ComponentsHTML;
          * Update all dependent fields.
          */
         PropertyListComponent.prototype.update = function () {
+            if (!this.ControlData)
+                return;
             // for each dependent, verify that all its conditions are true
             var deps = this.ControlData.Dependents;
             for (var _i = 0, deps_1 = deps; _i < deps_1.length; _i++) {
@@ -286,6 +354,15 @@ var YetaWF_ComponentsHTML;
             if (!row)
                 return false;
             return row.style.display === "";
+        };
+        PropertyListComponent.relayout = function () {
+            var ctrls = $YetaWF.getElementsBySelector(".yt_propertylistboxedcat,.yt_propertylistboxed");
+            for (var _i = 0, ctrls_1 = ctrls; _i < ctrls_1.length; _i++) {
+                var ctrl = ctrls_1[_i];
+                var msnry = Masonry.data(ctrl);
+                if (msnry)
+                    msnry.layout();
+            }
         };
         PropertyListComponent.tabInitjQuery = function (tabCtrlId, activeTab, activeTabId) {
             ComponentsHTMLHelper.MUSTHAVE_JQUERYUI();

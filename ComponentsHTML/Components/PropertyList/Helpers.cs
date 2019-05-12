@@ -29,6 +29,27 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             BoxedWithCategories = 2,
         }
 
+        public class PropertyListSetup {
+            /// <summary>
+            /// The style of the property list.
+            /// </summary>
+            public PropertyListStyleEnum Style { get; set; }
+            /// <summary>
+            /// For Boxed and BoxedWithCategories styles, Masonry (https://masonry.desandro.com/) is used to support layout packed layout of categories.
+            /// </summary>
+            /// <remarks>This collection of column sized defines when Masonry is called to completely re-layout all category boxes.
+            /// The column widths are also defined in CSS (using @media). By providing a list of break points, Masonry can be called to recalculate the box layout, when switching between number of columns.
+            ///
+            /// The first entry defines the minimum width of the window to use Masonry. Below this size, Masonry is not used.
+            /// </remarks>
+            public List<int> SizeBreaks { get; set; }
+
+            public PropertyListSetup() {
+                Style = PropertyListStyleEnum.Tabbed;
+                SizeBreaks = new List<int>();
+            }
+        }
+
         internal class PropertyListEntry {
 
             public PropertyListEntry(string name, object value, string uiHint, bool editable, bool restricted, string textAbove, string textBelow, bool suppressEmpty,
@@ -83,16 +104,14 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             return properties;
         }
 
-        internal PropertyListStyleEnum GetPropertyListStyle(object obj) {
+        internal PropertyListSetup GetPropertyListSetup(object obj) {
 
             // get all properties that are shown
             Type objType = obj.GetType();
-            PropertyInfo propInfo = ObjectSupport.TryGetProperty(objType, "__PropertyListStyle");
-            PropertyListStyleEnum style = PropertyListStyleEnum.Tabbed;
-            if (propInfo != null) {
-                style = (PropertyListStyleEnum)propInfo.GetValue(obj);
-            }
-            return style;
+            PropertyInfo propInfo = ObjectSupport.TryGetProperty(objType, "__PropertyListSetup");
+            if (propInfo != null)
+                return (PropertyListSetup)propInfo.GetValue(obj);
+            return new PropertyListSetup();
         }
 
         // Returns all categories implemented by this object - these are decorated with the [CategoryAttribute]

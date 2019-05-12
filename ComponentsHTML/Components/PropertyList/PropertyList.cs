@@ -2,11 +2,13 @@
 
 using System;
 using System.Collections.Generic;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using YetaWF.Core.Components;
 using YetaWF.Core.Models;
 using YetaWF.Core.Packages;
 using YetaWF.Core.Support;
+using YetaWF.Modules.ComponentsHTML.Controllers;
 
 namespace YetaWF.Modules.ComponentsHTML.Components {
 
@@ -96,7 +98,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
         internal async Task<string> RenderPropertyListTabbedAsync(object model, bool readOnly) {
 
-            PropertyListStyleEnum style = GetPropertyListStyle(model);
+            PropertyListSetup setup = GetPropertyListSetup(model);
             List<string> categories = GetCategories(model);
             if (categories.Count <= 1) // if there is only one tab, show as regular property list
                 return await RenderPropertyListAsync(model, readOnly);
@@ -108,16 +110,21 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             RenderHeader(hb, classData);
 
             string divId = Manager.UniqueId();
-            switch (style) {
+            switch (setup.Style) {
                 default:
                 case PropertyListStyleEnum.Tabbed:
                     hb.Append($@"
 <div id='{divId}' class='yt_propertylisttabbed {(readOnly ? "t_display" : "t_edit")}'>");
                     break;
                 case PropertyListStyleEnum.Boxed:
-                case PropertyListStyleEnum.BoxedWithCategories:
+                    await Manager.AddOnManager.AddAddOnNamedAsync(AreaRegistration.CurrentPackage.AreaName, "masonry.desandro.com");
                     hb.Append($@"
 <div id='{divId}' class='yt_propertylistboxed {(readOnly ? "t_display" : "t_edit")}'>");
+                    break;
+                case PropertyListStyleEnum.BoxedWithCategories:
+                    await Manager.AddOnManager.AddAddOnNamedAsync(AreaRegistration.CurrentPackage.AreaName, "masonry.desandro.com");
+                    hb.Append($@"
+<div id='{divId}' class='yt_propertylistboxedcat {(readOnly ? "t_display" : "t_edit")}'>");
                     break;
             }
 
@@ -125,7 +132,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
             bool showVariables = YetaWF.Core.Localize.UserSettings.GetProperty<bool>("ShowVariables");
 
-            switch (style) {
+            switch (setup.Style) {
                 default:
                 case PropertyListStyleEnum.Tabbed:
                     // tabstrip
@@ -140,7 +147,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                 string cat = category;
                 if (classData.Categories.ContainsKey(cat))
                     cat = classData.Categories[cat];
-                switch (style) {
+                switch (setup.Style) {
                     default:
                     case PropertyListStyleEnum.Tabbed:
                         hb.Append(RenderTabEntry(divId, cat, "", tabEntry));
@@ -151,7 +158,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                 }
                 ++tabEntry;
             }
-            switch (style) {
+            switch (setup.Style) {
                 default:
                 case PropertyListStyleEnum.Tabbed:
                     hb.Append(RenderTabStripEnd(divId));
@@ -164,7 +171,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             // panels
             int panel = 0;
             foreach (string category in categories) {
-                switch (style) {
+                switch (setup.Style) {
                     default:
                     case PropertyListStyleEnum.Tabbed:
                         hb.Append(RenderTabPaneStart(divId, panel));
@@ -172,13 +179,13 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                         hb.Append(RenderTabPaneEnd(divId, panel));
                         break;
                     case PropertyListStyleEnum.BoxedWithCategories:
-                        hb.Append($"<div class='t_table t_cat t_boxpanel{panel}'>");
+                        hb.Append($"<div class='t_table t_cat t_boxpanel-{GetCategoryNormalized(category)}'>");
                         hb.Append($"<div class='t_boxlabel'>{category}</div>");
                         hb.Append(await RenderListAsync(model, category, showVariables, readOnly));
                         hb.Append($"</div>");
                         break;
                     case PropertyListStyleEnum.Boxed:
-                        hb.Append($"<div class='t_table t_cat t_boxpanel{panel}'>");
+                        hb.Append($"<div class='t_table t_cat t_boxpanel-{GetCategoryNormalized(category)}'>");
                         hb.Append(await RenderListAsync(model, category, showVariables, readOnly));
                         hb.Append($"</div>");
                         break;
@@ -186,7 +193,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                 ++panel;
             }
 
-            switch (style) {
+            switch (setup.Style) {
                 default:
                 case PropertyListStyleEnum.Tabbed:
                     hb.Append($@"
@@ -195,19 +202,26 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                     break;
                 case PropertyListStyleEnum.BoxedWithCategories:
                 case PropertyListStyleEnum.Boxed:
+                    hb.Append($@"
+</div>");
+
                     break;
             }
 
             RenderFooter(hb, classData);
 
-            if (!readOnly) {
-                ControlData cd = GetControlSets(model, divId);
-                if (cd != null) {
-                    Manager.ScriptManager.AddLast($@"new YetaWF_ComponentsHTML.PropertyListComponent('{divId}', {YetaWFManager.JsonSerialize(cd)});");
-                }
-            }
+            ControlData cd = null;
+            if (!readOnly)
+                cd = GetControlSets(model, divId);
+            Manager.ScriptManager.AddLast($@"new YetaWF_ComponentsHTML.PropertyListComponent('{divId}', {YetaWFManager.JsonSerialize(setup)}, {YetaWFManager.JsonSerialize(cd)});");
             return hb.ToString();
         }
+
+        private object GetCategoryNormalized(string category) {
+            string cat = reCategory.Replace(category, "");
+            return cat.ToLower();
+        }
+        Regex reCategory = new Regex("[^0-9A-Za-z]", RegexOptions.Compiled);
 
         internal async Task<string> RenderPropertyListAsync(object model, bool ReadOnly) {
 
@@ -241,7 +255,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             if (!ReadOnly) {
                 ControlData cd = GetControlSets(model, divId);
                 if (cd != null) {
-                    Manager.ScriptManager.AddLast($@"new YetaWF_ComponentsHTML.PropertyListComponent('{divId}', {YetaWFManager.JsonSerialize(cd)});");
+                    Manager.ScriptManager.AddLast($@"new YetaWF_ComponentsHTML.PropertyListComponent('{divId}', {YetaWFManager.JsonSerialize(new PropertyListSetup())}, {YetaWFManager.JsonSerialize(cd)});");
                 }
             }
 

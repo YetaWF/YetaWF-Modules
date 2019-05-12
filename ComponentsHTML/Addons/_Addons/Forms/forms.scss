@@ -1,0 +1,36 @@
+﻿/* Copyright © 2019 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/ComponentsHTML#License */
+
+/* Hide all validation errors, we show icons with tooltips instead */
+
+form div.yform-partial {
+    div.validation-summary-valid {
+        display:none;
+    }
+    div.validation-summary-errors,
+    span.field-validation-error { /* This has to beat everything with specificity*/
+        display:none;
+    }
+}
+
+img.yform-warningicon {
+    padding-left:.4ch;
+    padding-top:1px;
+}
+
+.yform-ajax .t_detailsbuttons {
+    clear:both;
+    padding-top: .5em;
+    input,
+    a.y_act_button {
+        margin-right: .5ch;
+    }
+    @media print {
+        display: none;
+    }
+}
+
+fieldset {
+    line-height:100%;
+    padding-bottom: .2em;
+}
+

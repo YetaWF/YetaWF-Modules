@@ -45,50 +45,121 @@ namespace YetaWF_ComponentsHTML {
         KendoSelect = 2,
         Hidden = 3,
     }
+    interface PropertyListSetup {
+        Style: PropertyListStyleEnum;
+        SizeBreaks: number[];
+    }
+    enum PropertyListStyleEnum {
+        Tabbed = 0,
+        Boxed = 1,
+        BoxedWithCategories = 2,
+    }
+
 
     export class PropertyListComponent {
 
         private Control: HTMLDivElement;
-        private ControlData: ControlData;
+        private ControlData: ControlData | null;
         private ControllingControls: ControlItem[] = [];
+        private Setup: PropertyListSetup;
+        private MasonryElem: Masonry | null = null;
+        private MinWidth: number = 0;
+        private CurrWidth: number = 0;
+        private SizeBreakIndex: number = -1;
 
-        constructor(controlId: string, controlData: ControlData) {
+        constructor(controlId: string, setup: PropertyListSetup, controlData: ControlData) {
 
             this.Control = $YetaWF.getElementById(controlId) as HTMLDivElement;
             this.ControlData = controlData;
+            this.Setup = setup;
+
+            if (this.Setup.Style === PropertyListStyleEnum.Boxed || this.Setup.Style  === PropertyListStyleEnum.BoxedWithCategories) {
+                this.MasonryElem = this.createMasonry();
+                this.MinWidth = this.Setup.SizeBreaks.length > 0 ? this.Setup.SizeBreaks[0] : 0;
+                this.SizeBreakIndex = this.getSizeBreakIndex();
+                setInterval(() => {
+                    if (this.MasonryElem)
+                        this.MasonryElem.layout!();
+                }, 1000);
+            }
 
             // Handle change events
+            if (this.ControlData) {
             var controlData = this.ControlData;
-            for (let control of controlData.Controls) {
-                var controlItem = this.getControlItem(control);
-                this.ControllingControls.push(controlItem);
-                switch (controlItem.ControlType) {
-                    case ControlTypeEnum.Input:
-                        $YetaWF.registerMultipleEventHandlers([(controlItem.Object as HTMLInputElement)], ["change", "input"], null, (ev: Event): boolean => {
-                            this.update();
-                            return false;
-                        });
-                        break;
-                    case ControlTypeEnum.Select:
-                        $YetaWF.registerEventHandler((controlItem.Object as HTMLSelectElement), "change", null, (ev: Event): boolean => {
-                            this.update();
-                            return false;
-                        });
-                        break;
-                    case ControlTypeEnum.KendoSelect:
-                        $YetaWF.registerCustomEventHandler(controlItem.Object as DropDownListEditComponent, "dropdownlist_change", (evt: Event): void => {
-                            this.update();
-                        });
-                        break;
-                    case ControlTypeEnum.Hidden:
-                        break;
+                for (let control of controlData.Controls) {
+                    var controlItem = this.getControlItem(control);
+                    this.ControllingControls.push(controlItem);
+                    switch (controlItem.ControlType) {
+                        case ControlTypeEnum.Input:
+                            $YetaWF.registerMultipleEventHandlers([(controlItem.Object as HTMLInputElement)], ["change", "input"], null, (ev: Event): boolean => {
+                                this.update();
+                                return false;
+                            });
+                            break;
+                        case ControlTypeEnum.Select:
+                            $YetaWF.registerEventHandler((controlItem.Object as HTMLSelectElement), "change", null, (ev: Event): boolean => {
+                                this.update();
+                                return false;
+                            });
+                            break;
+                        case ControlTypeEnum.KendoSelect:
+                            $YetaWF.registerCustomEventHandler(controlItem.Object as DropDownListEditComponent, "dropdownlist_change", (evt: Event): void => {
+                                this.update();
+                            });
+                            break;
+                        case ControlTypeEnum.Hidden:
+                            break;
+                    }
                 }
             }
 
             // Initialize initial form
             this.update();
+
+            $YetaWF.registerEventHandlerWindow("resize", null, (ev: UIEvent) => {
+                if (window.innerWidth < this.MinWidth) {
+                    if (this.MasonryElem) {
+                        this.MasonryElem.destroy!();
+                        this.MasonryElem = null;
+                    }
+                    this.CurrWidth = 0;
+                    this.SizeBreakIndex = -1;
+                } else if (!this.MasonryElem || window.innerWidth != this.CurrWidth) {
+                    let newIndex = this.getSizeBreakIndex();
+                    if (this.SizeBreakIndex != newIndex) {
+                        if (this.MasonryElem) {
+                            this.MasonryElem.destroy!();
+                            this.MasonryElem = null;
+                        }
+                        this.MasonryElem = this.createMasonry();
+                    }
+                }
+                return true;
+            });
         }
 
+        private createMasonry(): Masonry {
+            this.CurrWidth = window.innerWidth;
+            this.SizeBreakIndex = this.getSizeBreakIndex();
+            return new Masonry(this.Control, {
+                itemSelector: ".t_table",
+                horizontalOrder: true,
+                transitionDuration: "0.1s",
+                resize: false,
+                initLayout: true
+                //columnWidth: 200
+            });
+        }
+        private getSizeBreakIndex(): number {
+            let width = window.innerWidth;
+            let index = -1;
+             for (let w of this.Setup.SizeBreaks) {
+                 if (width < w)
+                     return index;
+                 ++index;
+            }
+            return index;
+        }
         private getControlItem(control: string): ControlItem {
             let elemSel = $YetaWF.getElement1BySelectorCond(`.t_row.t_${control.toLowerCase()} select[name$='${control}']`, [this.Control]) as HTMLSelectElement | null;
             if (elemSel) {
@@ -116,6 +187,8 @@ namespace YetaWF_ComponentsHTML {
          * Update all dependent fields.
          */
         private update(): void {
+
+            if (!this.ControlData) return;
 
             // for each dependent, verify that all its conditions are true
             var deps = this.ControlData.Dependents;
@@ -174,7 +247,7 @@ namespace YetaWF_ComponentsHTML {
         private getValidity(dep: Dependent, value: ValueEntry): ValidityEnum {
             var valid = false; // we assume not valid unless we find a matching entry
             // get the controlling control's value
-            var ctrlIndex = this.ControlData.Controls.indexOf(value.ControlProp);
+            var ctrlIndex = this.ControlData!.Controls.indexOf(value.ControlProp);
             if (ctrlIndex < 0)
                 throw `Dependent ${dep.Prop} references controlling control ${value.ControlProp} which doesn't exist`;
             var controlItem = this.ControllingControls[ctrlIndex];
@@ -305,6 +378,15 @@ namespace YetaWF_ComponentsHTML {
             var row = $YetaWF.elementClosestCond(tag, ".t_row");
             if (!row) return false;
             return row.style.display === "";
+        }
+
+        public static relayout(): void {
+            let ctrls = $YetaWF.getElementsBySelector(".yt_propertylistboxedcat,.yt_propertylistboxed");
+            for (let ctrl of ctrls) {
+                let msnry = (Masonry as any).data(ctrl);
+                if (msnry)
+                    msnry.layout();
+            }
         }
 
         public static tabInitjQuery(tabCtrlId: string, activeTab: number, activeTabId: string):void {

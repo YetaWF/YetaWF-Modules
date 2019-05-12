@@ -2,7 +2,8 @@
 
 .yt_propertylist,
 .yt_propertylisttabbed,
-.yt_propertylistboxed {
+.yt_propertylistboxed,
+.yt_propertylistboxedcat {
     .t_table {
         padding-top: 10px;
         width: auto;
@@ -60,7 +61,8 @@
     // definitions for small screen
     .yt_propertylist,
     .yt_propertylisttabbed,
-    .yt_propertylistboxed {
+    .yt_propertylistboxed,
+    .yt_propertylistboxedcat {
         .t_labels {
             float: none;
             width:auto;
@@ -108,24 +110,28 @@
     }
 }
 
-.yt_propertylistboxed {
+.yt_propertylistboxedcat {
+    margin-top:2ch;
     .t_table {
         position:relative;
-        border: 1px solid lightgray;
-        border-radius:5px;
-        padding:2ch;
-        margin-bottom:2ch;
-        margin-right:2ch;
-        width:48%;//$$$
-        float:left;//$$$
         .t_boxlabel {
             position: absolute;
             top:-15px;
             left:20px;
             background-color:lightgray;
             color: black;
-            border-radius:5px;
-            padding:3px;
+            border-radius:3px;
+            padding:0 3px;
         }
+    }
+}
+.yt_propertylistboxed,
+.yt_propertylistboxedcat {
+    .t_table {
+        border: 1px solid lightgray;
+        border-radius:5px;
+        padding:2ch;
+        margin-bottom:2ch;
+        margin-right:2ch;
     }
 }

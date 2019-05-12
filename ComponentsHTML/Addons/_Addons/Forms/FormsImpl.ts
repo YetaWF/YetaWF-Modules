@@ -228,7 +228,6 @@ namespace YetaWF_ComponentsHTML {
                 });
             });
         }
-
     }
 }
 

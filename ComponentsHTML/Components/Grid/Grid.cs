@@ -136,6 +136,8 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         /// <returns>The component rendered as HTML.</returns>
         public async Task<string> RenderAsync(GridDefinition model) {
 
+            if (model == null) return null;
+
             HtmlBuilder hb = new HtmlBuilder();
 
             if (model.ShowFilter == null)
