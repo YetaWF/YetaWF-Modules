@@ -29,26 +29,43 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             BoxedWithCategories = 2,
         }
 
+        /// <summary>
+        /// An instance of this class defines the property list appearance.
+        /// </summary>
         public class PropertyListSetup {
             /// <summary>
             /// The style of the property list.
             /// </summary>
             public PropertyListStyleEnum Style { get; set; }
             /// <summary>
-            /// For Boxed and BoxedWithCategories styles, Masonry (https://masonry.desandro.com/) is used to support layout packed layout of categories.
+            /// For Boxed and BoxedWithCategories styles, Masonry (https://masonry.desandro.com/) is used to support a packed layout of categories.
             /// </summary>
-            /// <remarks>This collection of column sized defines when Masonry is called to completely re-layout all category boxes.
-            /// The column widths are also defined in CSS (using @media). By providing a list of break points, Masonry can be called to recalculate the box layout, when switching between number of columns.
+            /// <remarks>This collection defines the number of columns depending on windows size.
+            /// By providing a list of break points, Masonry can be called to recalculate the box layout, when switching between window widths which affects the number of columns.
             ///
             /// The first entry defines the minimum width of the window to use Masonry. Below this size, Masonry is not used.
             /// </remarks>
-            public List<int> SizeBreaks { get; set; }
+            public List<PropertyListColumnDef> ColumnStyles { get; set; }
 
             public PropertyListSetup() {
                 Style = PropertyListStyleEnum.Tabbed;
-                SizeBreaks = new List<int>();
+                ColumnStyles = new List<PropertyListColumnDef>();
             }
         }
+        /// <summary>
+        /// An instance of this class defines the number of columns to display based on the defined minimum window width.
+        /// </summary>
+        public class PropertyListColumnDef {
+            /// <summary>
+            /// The minimum window size where the specified number of columns is displayed.
+            /// </summary>
+            public int MinWindowSize { get; set; }
+            /// <summary>
+            /// The number of columns to display. Valid values are 1 through 5.
+            /// </summary>
+            public int Columns { get; set; }
+        }
+
 
         internal class PropertyListEntry {
 

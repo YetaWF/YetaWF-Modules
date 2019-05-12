@@ -47,14 +47,17 @@ namespace YetaWF_ComponentsHTML {
     }
     interface PropertyListSetup {
         Style: PropertyListStyleEnum;
-        SizeBreaks: number[];
+        ColumnStyles: PropertyListColumnDef[];
     }
     enum PropertyListStyleEnum {
         Tabbed = 0,
         Boxed = 1,
         BoxedWithCategories = 2,
     }
-
+    interface PropertyListColumnDef {
+        MinWindowSize: number;
+        Columns: number;
+    }
 
     export class PropertyListComponent {
 
@@ -65,7 +68,7 @@ namespace YetaWF_ComponentsHTML {
         private MasonryElem: Masonry | null = null;
         private MinWidth: number = 0;
         private CurrWidth: number = 0;
-        private SizeBreakIndex: number = -1;
+        private ColumnDefIndex: number = -1;
 
         constructor(controlId: string, setup: PropertyListSetup, controlData: ControlData) {
 
@@ -74,9 +77,10 @@ namespace YetaWF_ComponentsHTML {
             this.Setup = setup;
 
             if (this.Setup.Style === PropertyListStyleEnum.Boxed || this.Setup.Style  === PropertyListStyleEnum.BoxedWithCategories) {
-                this.MasonryElem = this.createMasonry();
-                this.MinWidth = this.Setup.SizeBreaks.length > 0 ? this.Setup.SizeBreaks[0] : 0;
-                this.SizeBreakIndex = this.getSizeBreakIndex();
+                this.MinWidth = this.Setup.ColumnStyles.length > 0 ? this.Setup.ColumnStyles[0].MinWindowSize : 0;
+                this.ColumnDefIndex = this.getColumnDefIndex();
+                if (this.ColumnDefIndex >= 0)
+                    this.MasonryElem = this.createMasonry();
                 setInterval(() => {
                     if (this.MasonryElem)
                         this.MasonryElem.layout!();
@@ -118,19 +122,13 @@ namespace YetaWF_ComponentsHTML {
 
             $YetaWF.registerEventHandlerWindow("resize", null, (ev: UIEvent) => {
                 if (window.innerWidth < this.MinWidth) {
-                    if (this.MasonryElem) {
-                        this.MasonryElem.destroy!();
-                        this.MasonryElem = null;
-                    }
+                    this.destroyMasonry();
                     this.CurrWidth = 0;
-                    this.SizeBreakIndex = -1;
+                    this.ColumnDefIndex = -1;
                 } else if (!this.MasonryElem || window.innerWidth != this.CurrWidth) {
-                    let newIndex = this.getSizeBreakIndex();
-                    if (this.SizeBreakIndex != newIndex) {
-                        if (this.MasonryElem) {
-                            this.MasonryElem.destroy!();
-                            this.MasonryElem = null;
-                        }
+                    let newIndex = this.getColumnDefIndex();
+                    if (this.ColumnDefIndex != newIndex) {
+                        this.destroyMasonry();
                         this.MasonryElem = this.createMasonry();
                     }
                 }
@@ -140,7 +138,9 @@ namespace YetaWF_ComponentsHTML {
 
         private createMasonry(): Masonry {
             this.CurrWidth = window.innerWidth;
-            this.SizeBreakIndex = this.getSizeBreakIndex();
+            this.ColumnDefIndex = this.getColumnDefIndex();
+            let cols = this.Setup.ColumnStyles[this.ColumnDefIndex].Columns;
+            $YetaWF.elementAddClass(this.Control, `t_col${cols}`);
             return new Masonry(this.Control, {
                 itemSelector: ".t_table",
                 horizontalOrder: true,
@@ -150,11 +150,22 @@ namespace YetaWF_ComponentsHTML {
                 //columnWidth: 200
             });
         }
-        private getSizeBreakIndex(): number {
+        private destroyMasonry(): void {
+            if (this.MasonryElem) {
+                this.MasonryElem.destroy!();
+                this.MasonryElem = null;
+                $YetaWF.elementRemoveClass(this.Control, "t_col1");
+                $YetaWF.elementRemoveClass(this.Control, "t_col2");
+                $YetaWF.elementRemoveClass(this.Control, "t_col3");
+                $YetaWF.elementRemoveClass(this.Control, "t_col4");
+                $YetaWF.elementRemoveClass(this.Control, "t_col5");
+            }
+        }
+        private getColumnDefIndex(): number {
             let width = window.innerWidth;
             let index = -1;
-             for (let w of this.Setup.SizeBreaks) {
-                 if (width < w)
+            for (let style of this.Setup.ColumnStyles) {
+                if (width < style.MinWindowSize)
                      return index;
                  ++index;
             }

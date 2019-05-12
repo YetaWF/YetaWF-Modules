@@ -127,6 +127,25 @@
 }
 .yt_propertylistboxed,
 .yt_propertylistboxedcat {
+    &.t_col1 .t_table {
+        width:100%;
+    }
+    &.t_col2 .t_table {
+        float:left;
+        width:48%;
+    }
+    &.t_col3 .t_table {
+        float:left;
+        width:31%;
+    }
+    &.t_col4 .t_table {
+        float:left;
+        width:23%;
+    }
+    &.t_col5 .t_table {
+        float:left;
+        width:18%;
+    }
     .t_table {
         border: 1px solid lightgray;
         border-radius:5px;

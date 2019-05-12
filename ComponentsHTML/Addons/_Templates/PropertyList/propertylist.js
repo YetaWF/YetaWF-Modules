@@ -37,14 +37,15 @@ var YetaWF_ComponentsHTML;
             this.MasonryElem = null;
             this.MinWidth = 0;
             this.CurrWidth = 0;
-            this.SizeBreakIndex = -1;
+            this.ColumnDefIndex = -1;
             this.Control = $YetaWF.getElementById(controlId);
             this.ControlData = controlData;
             this.Setup = setup;
             if (this.Setup.Style === PropertyListStyleEnum.Boxed || this.Setup.Style === PropertyListStyleEnum.BoxedWithCategories) {
-                this.MasonryElem = this.createMasonry();
-                this.MinWidth = this.Setup.SizeBreaks.length > 0 ? this.Setup.SizeBreaks[0] : 0;
-                this.SizeBreakIndex = this.getSizeBreakIndex();
+                this.MinWidth = this.Setup.ColumnStyles.length > 0 ? this.Setup.ColumnStyles[0].MinWindowSize : 0;
+                this.ColumnDefIndex = this.getColumnDefIndex();
+                if (this.ColumnDefIndex >= 0)
+                    this.MasonryElem = this.createMasonry();
                 setInterval(function () {
                     if (_this.MasonryElem)
                         _this.MasonryElem.layout();
@@ -84,20 +85,14 @@ var YetaWF_ComponentsHTML;
             this.update();
             $YetaWF.registerEventHandlerWindow("resize", null, function (ev) {
                 if (window.innerWidth < _this.MinWidth) {
-                    if (_this.MasonryElem) {
-                        _this.MasonryElem.destroy();
-                        _this.MasonryElem = null;
-                    }
+                    _this.destroyMasonry();
                     _this.CurrWidth = 0;
-                    _this.SizeBreakIndex = -1;
+                    _this.ColumnDefIndex = -1;
                 }
                 else if (!_this.MasonryElem || window.innerWidth != _this.CurrWidth) {
-                    var newIndex = _this.getSizeBreakIndex();
-                    if (_this.SizeBreakIndex != newIndex) {
-                        if (_this.MasonryElem) {
-                            _this.MasonryElem.destroy();
-                            _this.MasonryElem = null;
-                        }
+                    var newIndex = _this.getColumnDefIndex();
+                    if (_this.ColumnDefIndex != newIndex) {
+                        _this.destroyMasonry();
                         _this.MasonryElem = _this.createMasonry();
                     }
                 }
@@ -106,7 +101,9 @@ var YetaWF_ComponentsHTML;
         }
         PropertyListComponent.prototype.createMasonry = function () {
             this.CurrWidth = window.innerWidth;
-            this.SizeBreakIndex = this.getSizeBreakIndex();
+            this.ColumnDefIndex = this.getColumnDefIndex();
+            var cols = this.Setup.ColumnStyles[this.ColumnDefIndex].Columns;
+            $YetaWF.elementAddClass(this.Control, "t_col" + cols);
             return new Masonry(this.Control, {
                 itemSelector: ".t_table",
                 horizontalOrder: true,
@@ -116,12 +113,23 @@ var YetaWF_ComponentsHTML;
                 //columnWidth: 200
             });
         };
-        PropertyListComponent.prototype.getSizeBreakIndex = function () {
+        PropertyListComponent.prototype.destroyMasonry = function () {
+            if (this.MasonryElem) {
+                this.MasonryElem.destroy();
+                this.MasonryElem = null;
+                $YetaWF.elementRemoveClass(this.Control, "t_col1");
+                $YetaWF.elementRemoveClass(this.Control, "t_col2");
+                $YetaWF.elementRemoveClass(this.Control, "t_col3");
+                $YetaWF.elementRemoveClass(this.Control, "t_col4");
+                $YetaWF.elementRemoveClass(this.Control, "t_col5");
+            }
+        };
+        PropertyListComponent.prototype.getColumnDefIndex = function () {
             var width = window.innerWidth;
             var index = -1;
-            for (var _i = 0, _a = this.Setup.SizeBreaks; _i < _a.length; _i++) {
-                var w = _a[_i];
-                if (width < w)
+            for (var _i = 0, _a = this.Setup.ColumnStyles; _i < _a.length; _i++) {
+                var style = _a[_i];
+                if (width < style.MinWindowSize)
                     return index;
                 ++index;
             }

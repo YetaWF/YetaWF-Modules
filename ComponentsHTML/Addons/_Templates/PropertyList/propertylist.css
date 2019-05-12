@@ -165,6 +165,30 @@
       border-radius: 3px;
       padding: 0 3px; }
 
+.yt_propertylistboxed.t_col1 .t_table,
+.yt_propertylistboxedcat.t_col1 .t_table {
+  width: 100%; }
+
+.yt_propertylistboxed.t_col2 .t_table,
+.yt_propertylistboxedcat.t_col2 .t_table {
+  float: left;
+  width: 48%; }
+
+.yt_propertylistboxed.t_col3 .t_table,
+.yt_propertylistboxedcat.t_col3 .t_table {
+  float: left;
+  width: 31%; }
+
+.yt_propertylistboxed.t_col4 .t_table,
+.yt_propertylistboxedcat.t_col4 .t_table {
+  float: left;
+  width: 23%; }
+
+.yt_propertylistboxed.t_col5 .t_table,
+.yt_propertylistboxedcat.t_col5 .t_table {
+  float: left;
+  width: 18%; }
+
 .yt_propertylistboxed .t_table,
 .yt_propertylistboxedcat .t_table {
   border: 1px solid lightgray;
