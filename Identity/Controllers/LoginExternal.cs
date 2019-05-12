@@ -135,7 +135,7 @@ namespace YetaWF.Modules.Identity.Controllers {
                 await LoginModuleController.UserLogoffAsync();
                 Logging.AddErrorLog("User {0} - not yet validated", user.UserName);
                 if (string.IsNullOrWhiteSpace(config.VerificationPendingUrl))
-                    return Redirect(MessageUrl(this.__ResStr("notValidated", "Your account has not yet been validated. You will receive an email with validation information. Once received, please use the information in the email to complete the registration.")));
+                    return Redirect(MessageUrl(this.__ResStr("notValidated", "Your account has not yet been verified. You will receive an email with verification information. Once received, please use the information in the email to complete the registration.")));
                 return Redirect(Helper.GetSafeReturnUrl(config.VerificationPendingUrl));
             } else if (user.UserStatus == UserStatusEnum.NeedApproval) {
                 await LoginModuleController.UserLogoffAsync();

@@ -83,7 +83,7 @@ namespace YetaWF.Modules.Identity.Controllers {
                         ModelState.AddModelError("Email", this.__ResStr("needApproval", "This account has not yet been approved and is awaiting approval by the site administrator"));
                         break;
                     case UserStatusEnum.NeedValidation:
-                        ModelState.AddModelError("Email", this.__ResStr("needValidation", "This account has not yet been validated - Please check your emails for our validation email"));
+                        ModelState.AddModelError("Email", this.__ResStr("needValidation", "This account has not yet been verified - Please check your emails for our verification email"));
                         break;
                     case UserStatusEnum.Rejected:
                         ModelState.AddModelError("Email", this.__ResStr("rejected", "This account has been rejected and is not accessible"));

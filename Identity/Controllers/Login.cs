@@ -276,7 +276,7 @@ namespace YetaWF.Modules.Identity.Controllers {
                     Managers.GetUserManager().Update(user);
 #endif
                 } else
-                    ModelState.AddModelError("VerificationCode", this.__ResStr("notValidated", "Your account has not yet been validated. You will receive an email with validation information. Please copy and enter the verification code here."));
+                    ModelState.AddModelError("VerificationCode", this.__ResStr("notValidated", "Your account has not yet been verified. You will receive an email with verification information. Please copy and enter the verification code here."));
                 model.ShowVerification = true;
                 model.ShowCaptcha = false;
                 return PartialView(model);
