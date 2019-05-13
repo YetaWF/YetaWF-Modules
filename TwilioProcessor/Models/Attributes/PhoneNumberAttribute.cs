@@ -8,6 +8,7 @@ using YetaWF.Core.Support;
 
 namespace Softelvdm.Modules.TwilioProcessor.Models.Attributes {
 
+    //$$$$$ should remove this, dup of PhoneNumberUSAttribute
     [AttributeUsage(AttributeTargets.Property, AllowMultiple = true)]
     public class PhoneNumberAttribute : ValidationAttribute {
 

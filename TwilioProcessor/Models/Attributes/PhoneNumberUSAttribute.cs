@@ -27,10 +27,10 @@ namespace Softelvdm.Modules.TwilioProcessor.Models.Attributes {
         public static bool Valid(string phoneNumber) {
             PhoneNumberUtil phoneNumberUtil = PhoneNumberUtil.GetInstance();
             try {
-                PhoneNumber p = phoneNumberUtil.Parse(phoneNumber, "US");
-                if (p.CountryCode != 1)
+                PhoneNumber p = phoneNumberUtil.Parse(phoneNumber, "US");//$$$$$
+                if (phoneNumberUtil.IsValidNumberForRegion(p, "US") || phoneNumberUtil.IsValidNumberForRegion(p, "CA"))
                     throw new Error(__ResStr("invUSCan", "{0} is not a US or Canadian phone number. International phone numbers are not supported.", phoneNumber));
-                return phoneNumberUtil.IsValidNumber(p);
+                return true;
             } catch (Exception) {
                 return false;
             }
