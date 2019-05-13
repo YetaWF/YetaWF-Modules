@@ -9,6 +9,7 @@ using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Support;
 using YetaWF.Modules.Identity.DataProvider;
 using YetaWF.Modules.Identity.Support;
+using YetaWF.Core;
 #if MVC6
 using Microsoft.AspNetCore.Mvc;
 #else
@@ -31,6 +32,10 @@ namespace YetaWF.Modules.Identity.Controllers {
             [Caption("Description"), Description("The intended use of the role")]
             [UIHint("Text80"), StringLength(RoleDefinition.MaxDescription)]
             public string Description { get; set; }
+
+            [Caption("Post Login URL"), Description("The URL where a user with this role is redirected after logging on")]
+            [UIHint("Url"), AdditionalMetadata("UrlType", UrlTypeEnum.Local), UrlValidation(UrlValidationAttribute.SchemaEnum.Any, UrlTypeEnum.Local)]
+            public string PostLoginUrl { get; set; }
 
             [UIHint("Hidden")]
             public string OriginalName { get; set; }

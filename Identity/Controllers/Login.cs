@@ -312,10 +312,17 @@ namespace YetaWF.Modules.Identity.Controllers {
                 await LoginModuleController.UserLoginAsync(user, model.RememberMe);
                 model.Success = true;
                 Logging.AddLog("User {0} - logged on", model.UserName);
-                if (model.CloseOnLogin)
+
+                if (model.CloseOnLogin) {
                     return FormProcessed(model, OnClose: OnCloseEnum.CloseWindow, OnPopupClose: OnPopupCloseEnum.GotoNewPage, NextPage: Manager.ReturnToUrl, ForceRedirect: true);
-                else
+                } else {
+                    string nextUrl = await Resource.ResourceAccess.GetUserPostLoginUrlAsync(Manager.UserRoles);
+                    if (string.IsNullOrWhiteSpace(nextUrl))
+                        nextUrl = Manager.CurrentSite.PostLoginUrl;
+                    if (!string.IsNullOrWhiteSpace(nextUrl))
+                        return FormProcessed(model, OnClose: OnCloseEnum.GotoNewPage, OnPopupClose: OnPopupCloseEnum.GotoNewPage, NextPage: nextUrl, ForceRedirect: true);
                     return FormProcessed(model, ForceRedirect: true);
+                }
             } else
                 throw new InternalError("badUserStatus", "Unexpected account status {0}", user.UserStatus);
         }

@@ -187,9 +187,9 @@ namespace YetaWF.Modules.Identity.DataProvider {
                 if (Exclude2FA) {
                     roles = (from r in allRoles
                              where r.RoleId != roleDP.GetUser2FARoleId()
-                             select new RoleInfo { RoleId = r.RoleId, Name = r.Name, Description = r.Description }).ToList();
+                             select new RoleInfo { RoleId = r.RoleId, Name = r.Name, Description = r.Description, PostLoginUrl = r.PostLoginUrl }).ToList();
                 } else {
-                    roles = (from r in allRoles select new RoleInfo { RoleId = r.RoleId, Name = r.Name, Description = r.Description }).ToList();
+                    roles = (from r in allRoles select new RoleInfo { RoleId = r.RoleId, Name = r.Name, Description = r.Description, PostLoginUrl = r.PostLoginUrl }).ToList();
                 }
                 return roles;
             }
@@ -262,9 +262,12 @@ namespace YetaWF.Modules.Identity.DataProvider {
             return SuperuserDefinitionDataProvider.SuperUserId;
         }
 
-        public async Task AddRoleAsync(string roleName, string description) {
+        public Task AddRoleAsync(string roleName, string description) {
+            return AddRoleWithUrlAsync(roleName, description, null);
+        }
+        public async Task AddRoleWithUrlAsync(string roleName, string description, string postLoginUrl) {
             using (RoleDefinitionDataProvider roleDP = new RoleDefinitionDataProvider()) {
-                await roleDP.AddItemAsync(new RoleDefinition { Name = roleName, Description = description });
+                await roleDP.AddItemAsync(new RoleDefinition { Name = roleName, Description = description, PostLoginUrl = postLoginUrl });
             }
         }
         public async Task RemoveRoleAsync(string roleName) {
@@ -272,7 +275,6 @@ namespace YetaWF.Modules.Identity.DataProvider {
                 await roleDP.RemoveItemAsync(roleName);
             }
         }
-
         public async Task AddRoleToUserAsync(int userId, string roleName) {
             int roleId;
             // get the role id for roleName
@@ -333,6 +335,20 @@ namespace YetaWF.Modules.Identity.DataProvider {
                 }
                 return list;
             }
+        }
+        public Task<string> GetUserPostLoginUrlAsync(List<int> userRoles) {
+            if (userRoles != null) {
+                foreach (int roleId in userRoles) {
+                    using (RoleDefinitionDataProvider roleDP = new RoleDefinitionDataProvider()) {
+                        RoleDefinition role = roleDP.GetRoleById(roleId);
+                        if (role != null) {
+                            if (!string.IsNullOrWhiteSpace(role.PostLoginUrl))
+                                return Task.FromResult(role.PostLoginUrl);
+                        }
+                    }
+                }
+            }
+            return Task.FromResult<string>(null);
         }
 
         public async Task<AddUserInfo> AddUserAsync(string name, string email, string password) {

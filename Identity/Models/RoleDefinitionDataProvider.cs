@@ -41,6 +41,8 @@ namespace YetaWF.Modules.Identity.DataProvider {
 
         [StringLength(MaxDescription)]
         public string Description { get; set; }
+        [StringLength(Globals.MaxUrl)]
+        public string PostLoginUrl { get; set; }
 
         public RoleDefinition() { }
     }
@@ -97,7 +99,7 @@ namespace YetaWF.Modules.Identity.DataProvider {
         public async Task<bool> AddItemAsync(RoleDefinition data) {
             if (YetaWF.Core.Support.Startup.MultiInstance) throw new InternalError("Adding new models is not possible when distributed caching is enabled");
             if (data.RoleId == RoleDefinitionDataProvider.SuperUserId || data.Name == Globals.Role_Superuser)
-                throw new InternalError("Can't add built-in superuser role");
+                throw new Error(this.__ResStr("cantAddSuper", "Can't add built-in superuser role"));
             if (!await DataProvider.AddAsync(data))
                 return false;
             GetAllUserRoles(true);
@@ -114,7 +116,7 @@ namespace YetaWF.Modules.Identity.DataProvider {
         }
         public async Task<UpdateStatusEnum> UpdateItemAsync(string originalRole, RoleDefinition data) {
             if (data.RoleId == RoleDefinitionDataProvider.SuperUserId || data.Name == Globals.Role_Superuser)
-                throw new InternalError("Can't update built-in superuser role");
+                throw new Error(this.__ResStr("cantUpdateSuper", "Can't update built-in superuser role"));
             if (originalRole != data.Name && IsPredefinedRole(originalRole))
                 throw new Error(this.__ResStr("cantUpdateUser", "The {0} role can't be updated", originalRole));
             if (YetaWF.Core.Support.Startup.MultiInstance) throw new InternalError("Changing roles is not possible when distributed caching is enabled");
@@ -132,7 +134,7 @@ namespace YetaWF.Modules.Identity.DataProvider {
         }
         public async Task<bool> RemoveItemAsync(string role) {
             if (role == Globals.Role_Superuser)
-                throw new InternalError("Can't remove built-in superuser role");
+                throw new Error(this.__ResStr("cantRemoveSuper", "Can't remove built-in superuser role"));
             if (IsPredefinedRole(role))
                 throw new Error(this.__ResStr("cantRemoveUser", "The {0} role can't be removed", role));
             if (YetaWF.Core.Support.Startup.MultiInstance) throw new InternalError("Removing roles is not possible when distributed caching is enabled");

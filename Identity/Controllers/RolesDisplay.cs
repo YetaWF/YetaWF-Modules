@@ -34,6 +34,10 @@ namespace YetaWF.Modules.Identity.Controllers {
             [UIHint("IntValue"), ReadOnly]
             public int RoleId { get; set; }
 
+            [Caption("Post Login URL"), Description("The URL where a user with this role is redirected after logging on")]
+            [UIHint("Url"), ReadOnly]
+            public string PostLoginUrl { get; set; }
+
             public void SetData(RoleDefinition data) {
                 ObjectSupport.CopyData(data, this);
             }

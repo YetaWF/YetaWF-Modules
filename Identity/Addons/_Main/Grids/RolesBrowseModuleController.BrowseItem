@@ -1,4 +1,5 @@
 ﻿Commands            icons 3
 Name                sort filter 20 defaultSort asc
-Description         filter 100
+Description         filter 40
+PostLoginUrl        sort filter [Globals.ChUrl]
 RoleId              right filter sort 10
