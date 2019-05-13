@@ -1,5 +1,8 @@
 @charset "UTF-8";
 /* Copyright � 2019 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/ComponentsHTML#License */
+.field-validation-valid {
+  display: none; }
+
 /* Icon/sprite */
 i.yic.yic_componentshtml_modprev {
   background: url(IconCollection.png) 0px 0px no-repeat; }

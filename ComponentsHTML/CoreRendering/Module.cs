@@ -193,6 +193,7 @@ namespace YetaWF.Modules.ComponentsHTML {
                 default:
                 case RenderModeEnum.Button: extraClass = "y_act_button"; break;
                 case RenderModeEnum.ButtonIcon: extraClass = "y_act_buttonicon"; break;
+                case RenderModeEnum.ButtonOnly: extraClass = "y_act_buttononly"; break;
                 case RenderModeEnum.IconsOnly: extraClass = "y_act_icon"; break;
                 case RenderModeEnum.LinksOnly: extraClass = "y_act_link"; break;
                 case RenderModeEnum.NormalLinks: extraClass = "y_act_normlink"; break;
@@ -258,12 +259,12 @@ namespace YetaWF.Modules.ComponentsHTML {
                 if (popupEdit)
                     tag.Attributes.Add(Basics.CssAttrDataSpecialEdit, "");
             }
-            if (mode == RenderModeEnum.Button || mode == RenderModeEnum.ButtonIcon)
+            if (mode == RenderModeEnum.Button || mode == RenderModeEnum.ButtonIcon || mode == RenderModeEnum.ButtonOnly)
                 tag.Attributes.Add(Basics.CssAttrActionButton, "");
 
             bool hasText = false, hasImg = false;
             string innerHtml = "";
-            if (mode != RenderModeEnum.LinksOnly && !string.IsNullOrWhiteSpace(action.ImageUrlFinal)) {
+            if (mode != RenderModeEnum.LinksOnly && mode != RenderModeEnum.ButtonOnly && !string.IsNullOrWhiteSpace(action.ImageUrlFinal)) {
                 string text = mode == RenderModeEnum.NormalMenu ? action.MenuText : action.LinkText;
                 if (RenderEngine == RenderEngineEnum.KendoMenu) {
                     innerHtml += ImageHTML.BuildKnownIcon(action.ImageUrlFinal, alt: text, cssClass: Basics.CssNoTooltip + " k-image"); // k-image is needed to align <i> and <img> correctly

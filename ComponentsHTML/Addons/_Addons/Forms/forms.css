@@ -17,7 +17,9 @@ img.yform-warningicon {
   clear: both;
   padding-top: .5em; }
   .yform-ajax .t_detailsbuttons input,
-  .yform-ajax .t_detailsbuttons a.y_act_button {
+  .yform-ajax .t_detailsbuttons a.y_act_button,
+  .yform-ajax .t_detailsbuttons a.y_act_buttononly,
+  .yform-ajax .t_detailsbuttons a.y_act_buttonicon {
     margin-right: .5ch; }
   @media print {
     .yform-ajax .t_detailsbuttons {

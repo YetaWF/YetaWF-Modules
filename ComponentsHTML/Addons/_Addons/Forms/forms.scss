@@ -21,7 +21,9 @@ img.yform-warningicon {
     clear:both;
     padding-top: .5em;
     input,
-    a.y_act_button {
+    a.y_act_button,
+    a.y_act_buttononly,
+    a.y_act_buttonicon {
         margin-right: .5ch;
     }
     @media print {
