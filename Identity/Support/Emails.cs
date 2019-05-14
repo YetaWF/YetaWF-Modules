@@ -49,6 +49,7 @@ namespace YetaWF.Modules.Identity.Support {
             object parms = new {
                 User = user,
                 Url = Manager.CurrentSite.MakeUrl(url),
+                Code = user.VerificationCode,
             };
             string subject = this.__ResStr("verificationSubject", "Verification required for site {0}", Manager.CurrentSite.SiteDomain);
             await sendEmail.PrepareEmailMessageAsync(user.Email, subject, await sendEmail.GetEmailFileAsync(Package.GetCurrentPackage(this), "Account Verification.txt"), parameters: parms);

@@ -62,6 +62,10 @@ namespace YetaWF.Modules.Identity.Controllers {
             [UIHint("Text40"), StringLength(UserDefinition.MaxVerificationCode), Trim, SuppressIfEqual("ShowVerification", false)]
             public string VerificationCode{ get; set; }
 
+            [Caption(""), Description("")]
+            [UIHint("ModuleAction"), ReadOnly, SuppressEmpty]
+            public ModuleAction ResendVerificationCode { get; set; }
+
             [Caption("Captcha"), Description("Please verify that you're a human and not a spam bot")]
             [UIHint("RecaptchaV2"), RecaptchaV2("Please verify that you're a human and not a spam bot"), SuppressIfEqual("ShowCaptcha", false)]
             public RecaptchaV2Data Captcha { get; set; }
@@ -278,6 +282,7 @@ namespace YetaWF.Modules.Identity.Controllers {
                 } else
                     ModelState.AddModelError("VerificationCode", this.__ResStr("notValidated", "Your account has not yet been verified. You will receive an email with verification information. Please copy and enter the verification code here."));
                 model.ShowVerification = true;
+                model.ResendVerificationCode = await Module.GetAction_ResendVerificationEmailAsync(user.UserName);
                 model.ShowCaptcha = false;
                 return PartialView(model);
             } else if (user.UserStatus == UserStatusEnum.NeedApproval) {
@@ -397,6 +402,22 @@ namespace YetaWF.Modules.Identity.Controllers {
 #else
             Managers.GetUserManager().Update(user);
 #endif
+        }
+        [AllowPost]
+        [ExcludeDemoMode]
+        public async Task<ActionResult> ResendVerificationEmail(string userName) {
+            using (UserDefinitionDataProvider dataProvider = new UserDefinitionDataProvider()) {
+                if (string.IsNullOrWhiteSpace(userName))
+                    throw new Error(this.__ResStr("noItem", "Unable to send verification email (Reason Code 1)"));
+                UserDefinition user = await dataProvider.GetItemAsync(userName);
+                if (user == null)
+                    throw new Error(this.__ResStr("notFoundUser", "Unable to send verification email (Reason Code 2)"));
+                if (user.UserStatus != UserStatusEnum.NeedValidation)
+                    throw new Error(this.__ResStr("notFoundUser", "Unable to send verification email (Reason Code 3)"));
+                Emails emails = new Emails();
+                await emails.SendVerificationAsync(user);
+                return Reload(null, Reload: ReloadEnum.ModuleParts, PopupText: this.__ResStr("verificationSent", "Verification email sent."));
+            }
         }
     }
 }

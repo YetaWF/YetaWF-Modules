@@ -88,5 +88,21 @@ namespace YetaWF.Modules.Identity.Modules {
                 DontFollow = true,
             };
         }
+        public async Task<ModuleAction> GetAction_ResendVerificationEmailAsync(string userName) {
+            return new ModuleAction(this) {
+                Url = YetaWFManager.UrlFor(typeof(LoginModuleController), nameof(LoginModuleController.ResendVerificationEmail)),
+                NeedsModuleContext = true,
+                QueryArgs = new { UserName = userName },
+                Image = await CustomIconAsync("VerificationEmail.png"),
+                Style = ModuleAction.ActionStyleEnum.Post,
+                LinkText = this.__ResStr("sendVerificationLink", "Resend Verification Email"),
+                MenuText = this.__ResStr("sendVerificationMenu", "Resend Verification Email"),
+                Tooltip = this.__ResStr("sendVerificationTT", "Sends a verification email to you"),
+                Legend = this.__ResStr("sendVerificationLegend", "Sends a verification email to the user"),
+                Category = ModuleAction.ActionCategoryEnum.Update,
+                Mode = ModuleAction.ActionModeEnum.Any,
+                Location = ModuleAction.ActionLocationEnum.NoAuto
+            };
+        }
     }
 }

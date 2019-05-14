@@ -42,6 +42,7 @@ namespace YetaWF.Modules.Identity.DataProvider {
         [StringLength(MaxDescription)]
         public string Description { get; set; }
         [StringLength(Globals.MaxUrl)]
+        [Data_NewValue]
         public string PostLoginUrl { get; set; }
 
         public RoleDefinition() { }
