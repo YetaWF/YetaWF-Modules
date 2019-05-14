@@ -89,9 +89,9 @@ var YetaWF_ComponentsHTML;
                     _this.CurrWidth = 0;
                     _this.ColumnDefIndex = -1;
                 }
-                else if (!_this.MasonryElem || window.innerWidth != _this.CurrWidth) {
+                else if (!_this.MasonryElem || window.innerWidth !== _this.CurrWidth) {
                     var newIndex = _this.getColumnDefIndex();
-                    if (_this.ColumnDefIndex != newIndex) {
+                    if (_this.ColumnDefIndex !== newIndex) {
                         _this.destroyMasonry();
                         _this.MasonryElem = _this.createMasonry();
                     }

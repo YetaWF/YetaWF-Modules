@@ -125,9 +125,9 @@ namespace YetaWF_ComponentsHTML {
                     this.destroyMasonry();
                     this.CurrWidth = 0;
                     this.ColumnDefIndex = -1;
-                } else if (!this.MasonryElem || window.innerWidth != this.CurrWidth) {
+                } else if (!this.MasonryElem || window.innerWidth !== this.CurrWidth) {
                     let newIndex = this.getColumnDefIndex();
-                    if (this.ColumnDefIndex != newIndex) {
+                    if (this.ColumnDefIndex !== newIndex) {
                         this.destroyMasonry();
                         this.MasonryElem = this.createMasonry();
                     }
