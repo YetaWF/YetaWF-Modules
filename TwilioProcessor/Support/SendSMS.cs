@@ -51,10 +51,10 @@ namespace Softelvdm.Modules.TwilioProcessor.Support {
             string fromNumber = config.TestMode ? config.TestSMSNumber : config.LiveSMSNumber;
             if (!string.IsNullOrWhiteSpace(FromNumber))
                 fromNumber = FromNumber;
-            fromNumber = PhoneNumberUSAttribute.GetE164(fromNumber);
+            fromNumber = PhoneNumberNationalAttribute.GetE164(fromNumber);
             if (fromNumber == null)
                 throw new InternalError($"Invalid fromNumber {fromNumber} - {nameof(SendSMSAsync)}");
-            toNumber = PhoneNumberUSAttribute.GetE164(toNumber);
+            toNumber = PhoneNumberNationalAttribute.GetE164(toNumber);
             if (toNumber == null)
                 throw new InternalError($"Invalid toNumber {toNumber} - {nameof(SendSMSAsync)}");
             string callbackUrl = null;

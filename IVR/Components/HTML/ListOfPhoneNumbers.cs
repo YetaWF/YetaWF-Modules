@@ -112,7 +112,7 @@ namespace Softelvdm.Modules.IVR.Components {
         public class NewModel {
 
             [Caption("Phone Number"), Description("Please enter a new phone number and click Add")]
-            [UIHint("Text20"), StringLength(Globals.MaxPhoneNumber), PhoneNumberUS]
+            [UIHint("Text20"), StringLength(Globals.MaxPhoneNumber), PhoneNumberNational]
             public string NewPhoneNumber { get; set; }
 
             [Caption("SMS"), Description("Shows whether a text message is sent to the phone number when a voice mail is received")]

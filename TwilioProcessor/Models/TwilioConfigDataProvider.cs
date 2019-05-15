@@ -55,7 +55,7 @@ namespace Softelvdm.Modules.TwilioProcessor.DataProvider {
 
         public string SMSNumberE164 {
             get {
-                return PhoneNumberUSAttribute.GetE164(SMSNumber);
+                return PhoneNumberNationalAttribute.GetE164(SMSNumber);
             }
         }
         public string SMSNumber {

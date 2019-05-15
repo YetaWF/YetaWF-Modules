@@ -54,12 +54,12 @@ namespace Softelvdm.Modules.TwilioProcessor.Controllers {
             public string TestAuthToken { get; set; }
 
             [Category("SMS"), Caption("Live SMS Number"), Description("The default live phone number for SMS associated with your Twilio account - Only purchased Twilio provided phone numbers can be used (see Twilio for details)")]
-            [UIHint("Text20"), StringLength(Globals.MaxPhoneNumber), PhoneNumberUS, Trim]
+            [UIHint("Text20"), StringLength(Globals.MaxPhoneNumber), PhoneNumberNational, Trim]
             [ExcludeDemoMode]
             public string LiveSMSNumber { get; set; }
 
             [Category("SMS"), Caption("Test SMS Number"), Description("The default test phone number for SMS associated with your Twilio account - Only Twilio provided test phone numbers can be used (see Twilio for details)")]
-            [UIHint("Text20"), StringLength(Globals.MaxPhoneNumber), PhoneNumberUS, Trim]
+            [UIHint("Text20"), StringLength(Globals.MaxPhoneNumber), PhoneNumberNational, Trim]
             [ExcludeDemoMode]
             public string TestSMSNumber { get; set; }
 

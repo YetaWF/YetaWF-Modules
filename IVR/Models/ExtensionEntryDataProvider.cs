@@ -80,7 +80,7 @@ namespace Softelvdm.Modules.IVR.DataProvider {
         public async Task<bool> AddItemAsync(ExtensionEntry data) {
             data.Created = DateTime.UtcNow;
             foreach (ExtensionPhoneNumber ext in data.PhoneNumbers)
-                ext.PhoneNumber = PhoneNumberUSAttribute.GetE164(ext.PhoneNumber);// standardize
+                ext.PhoneNumber = PhoneNumberNationalAttribute.GetE164(ext.PhoneNumber);// standardize
             if (!await DataProvider.AddAsync(data))
                 return false;
             await Auditing.AddAuditAsync($"{nameof(ExtensionEntryDataProvider)}.{nameof(AddItemAsync)}", Dataset, Guid.Empty,
@@ -96,7 +96,7 @@ namespace Softelvdm.Modules.IVR.DataProvider {
 
             data.Updated = DateTime.UtcNow;
             foreach (ExtensionPhoneNumber ext in data.PhoneNumbers)
-                ext.PhoneNumber = PhoneNumberUSAttribute.GetE164(ext.PhoneNumber);// standardize
+                ext.PhoneNumber = PhoneNumberNationalAttribute.GetE164(ext.PhoneNumber);// standardize
             UpdateStatusEnum status = await DataProvider.UpdateByIdentityAsync(data.Id, data);
             if (status != UpdateStatusEnum.OK)
                 return status;

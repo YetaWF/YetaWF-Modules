@@ -9,35 +9,30 @@ using YetaWF.Core.Localize;
 namespace Softelvdm.Modules.TwilioProcessor.Models.Attributes {
 
     /// <summary>
-    /// Validates any phone number, national or international.
+    /// Validates any national phone number. Only phone numbers of the site's defined country are considered valid.
     /// </summary>
     /// <remarks>
     /// It uses the country defined in site settings (Site Settings, Site, Country property) as the current (national) country
-    /// and allows entry of national numbers without country code. For all other international numbers the complete number as dialed is required or a "+" and the country code followed by the number.
+    /// and allows entry of national numbers without country code.
+    /// International numbers are not handled.
     ///
     /// Examples of valid numbers (assuming US is the current country):
     /// (407) 555-1212
     /// 4075551212
     /// +14075551212 (includes country code)
-    /// 011 41 44 833 nn nn  (as dialed)
-    /// +41 44 833 nn nn   (country code)
-    /// +4144833nnnn  (country code)
     /// </remarks>
     [AttributeUsage(AttributeTargets.Property, AllowMultiple = true)]
-    public class PhoneNumberAttribute : ValidationAttribute {
+    public class PhoneNumberNationalAttribute : ValidationAttribute {
 
-        private static string __ResStr(string name, string defaultValue, params object[] parms) { return ResourceAccess.GetResourceString(typeof(PhoneNumberAttribute), name, defaultValue, parms); }
+        private static string __ResStr(string name, string defaultValue, params object[] parms) { return ResourceAccess.GetResourceString(typeof(PhoneNumberNationalAttribute), name, defaultValue, parms); }
 
-        /// <summary>
-        /// Constructor.
-        /// </summary>
-        public PhoneNumberAttribute() { }
+        public PhoneNumberNationalAttribute() { }
 
         protected override ValidationResult IsValid(object value, ValidationContext context) {
             if (value != null) {
                 string number = (string)value;
-                if (!PhoneNumberAttribute.Valid(number))
-                    return new ValidationResult(__ResStr("inv", "{0} is an invalid phone number", number));
+                if (!PhoneNumberNationalAttribute.Valid(number))
+                    return new ValidationResult(__ResStr("inv", "{0} is an invalid phone number. International phone numbers are not supported.", number));
             }
             return ValidationResult.Success;
         }
@@ -51,7 +46,7 @@ namespace Softelvdm.Modules.TwilioProcessor.Models.Attributes {
             PhoneNumberUtil phoneNumberUtil = PhoneNumberUtil.GetInstance();
             try {
                 PhoneNumber p = phoneNumberUtil.Parse(phoneNumber, CountryCode);
-                if (phoneNumberUtil.IsValidNumber(p))
+                if (phoneNumberUtil.IsValidNumberForRegion(p, CountryCode))
                     return true;
             } catch (Exception) { }
             return false;
@@ -80,7 +75,7 @@ namespace Softelvdm.Modules.TwilioProcessor.Models.Attributes {
         /// </summary>
         /// <param name="phoneNumber">The phone number to format.</param>
         /// <returns>Returns a formatted user-displayable phone number.</returns>
-        /// <remarks>National numbers are formatted without country codes. International numbers include their country code.</remarks>
+        /// <remarks>National numbers are formatted without country codes.</remarks>
         public static string GetDisplay(string phoneNumber) {
             if (string.IsNullOrWhiteSpace(phoneNumber))
                 return null;

@@ -35,7 +35,7 @@ namespace Softelvdm.Modules.IVR.Controllers {
         [ExcludeDemoMode]
         public async Task<ActionResult> AddPhoneNumber(string data, string fieldPrefix, string newPhoneNumber, bool sms) {
             List<ListOfPhoneNumbersEditComponent.Entry> list = YetaWFManager.JsonDeserialize<List<ListOfPhoneNumbersEditComponent.Entry>>(data);
-            string phoneNumber = PhoneNumberUSAttribute.GetE164(newPhoneNumber);
+            string phoneNumber = PhoneNumberNationalAttribute.GetE164(newPhoneNumber);
             if (string.IsNullOrWhiteSpace(phoneNumber))
                 throw new Error(this.__ResStr("invPhone", "Phone number {0} is not a valid phone number", newPhoneNumber));
             if ((from l in list where l.PhoneNumber == phoneNumber select l).FirstOrDefault() != null)
