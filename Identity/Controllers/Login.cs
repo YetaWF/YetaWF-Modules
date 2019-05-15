@@ -413,7 +413,7 @@ namespace YetaWF.Modules.Identity.Controllers {
                 if (user == null)
                     throw new Error(this.__ResStr("notFoundUser", "Unable to send verification email (Reason Code 2)"));
                 if (user.UserStatus != UserStatusEnum.NeedValidation)
-                    throw new Error(this.__ResStr("notFoundUser", "Unable to send verification email (Reason Code 3)"));
+                    throw new Error(this.__ResStr("noNeed", "Unable to send verification email (Reason Code 3)"));
                 Emails emails = new Emails();
                 await emails.SendVerificationAsync(user);
                 return Reload(null, Reload: ReloadEnum.ModuleParts, PopupText: this.__ResStr("verificationSent", "Verification email sent."));
