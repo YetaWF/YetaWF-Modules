@@ -56,7 +56,7 @@ namespace YetaWF.Modules.Menus.Controllers {
 
             MenuEditModel model = new MenuEditModel {
                 Menu = origMenu,
-                NewEntry = new ModuleAction(Module) { Url = this.__ResStr("newUrl", "(new)") },
+                NewEntry = new ModuleAction(Module) { Url = "" },
 
                 MenuGuid = menuGuid,
                 ModAction = new ModuleAction(Module),
