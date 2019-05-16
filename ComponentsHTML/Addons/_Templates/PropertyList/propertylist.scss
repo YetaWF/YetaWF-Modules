@@ -4,7 +4,7 @@
 .yt_propertylisttabbed,
 .yt_propertylistboxed,
 .yt_propertylistboxedcat {
-    .t_table {
+    .t_proptable {
         padding-top: 10px;
         width: auto;
     }
@@ -112,7 +112,7 @@
 
 .yt_propertylistboxedcat {
     margin-top:2ch;
-    .t_table {
+    .t_proptable {
         position:relative;
         .t_boxlabel {
             position: absolute;
@@ -127,30 +127,50 @@
 }
 .yt_propertylistboxed,
 .yt_propertylistboxedcat {
-    &.t_col1 .t_table {
+    .t_proptable {
+        border: 1px solid lightgray;
+        border-radius:5px;
+        padding:3ch 2ch 2ch 2ch;
+        margin-bottom:2ch;
+        margin-right:2ch;
+        .t_boxexpcoll {
+            position: absolute;
+            top:5px;
+            right:5px;
+            width:16px;
+            height:16px;
+        }
+        &.t_propexpanded {
+            .t_boxexpcoll {
+                background-image:url(images/Collapse16.png);
+            }
+        }
+        &.t_propcollapsed {
+            .t_boxexpcoll {
+                background-image:url(images/Expand16.png);
+            }
+        }
+        &.t_prophide {
+            display: none;
+        }
+    }
+    &.t_col1 .t_proptable {
         width:100%;
     }
-    &.t_col2 .t_table {
+    &.t_col2 .t_proptable {
         float:left;
         width:48%;
     }
-    &.t_col3 .t_table {
+    &.t_col3 .t_proptable {
         float:left;
         width:31%;
     }
-    &.t_col4 .t_table {
+    &.t_col4 .t_proptable {
         float:left;
         width:23%;
     }
-    &.t_col5 .t_table {
+    &.t_col5 .t_proptable {
         float:left;
         width:18%;
-    }
-    .t_table {
-        border: 1px solid lightgray;
-        border-radius:5px;
-        padding:2ch;
-        margin-bottom:2ch;
-        margin-right:2ch;
     }
 }

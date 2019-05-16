@@ -34,7 +34,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         /// <returns>Returns the starting portion of a tab pane as HTML.</returns>
         public static string RenderTabPaneStart(string controlId, int panel, string cssClass = "") {
             if (!string.IsNullOrWhiteSpace(cssClass)) cssClass = " " + cssClass;
-            return $"<div class='t_table t_cat t_tabpanel{cssClass}' data-tab='{panel}' id='{controlId}_tab{panel}'>";
+            return $"<div class='t_proptable t_cat t_tabpanel{cssClass}' data-tab='{panel}' id='{controlId}_tab{panel}'>";
         }
         /// <summary>
         /// Renders the ending portion of a tab pane used by the PropertyList component.

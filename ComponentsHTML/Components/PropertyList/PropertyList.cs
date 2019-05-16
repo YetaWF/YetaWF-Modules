@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using YetaWF.Core.Components;
@@ -178,16 +179,28 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                         hb.Append(await RenderListAsync(model, category, showVariables, readOnly));
                         hb.Append(RenderTabPaneEnd(divId, panel));
                         break;
-                    case PropertyListStyleEnum.BoxedWithCategories:
-                        hb.Append($"<div class='t_table t_cat t_boxpanel-{GetCategoryNormalized(category)}'>");
-                        hb.Append($"<div class='t_boxlabel'>{category}</div>");
-                        hb.Append(await RenderListAsync(model, category, showVariables, readOnly));
-                        hb.Append($"</div>");
-                        break;
-                    case PropertyListStyleEnum.Boxed:
-                        hb.Append($"<div class='t_table t_cat t_boxpanel-{GetCategoryNormalized(category)}'>");
-                        hb.Append(await RenderListAsync(model, category, showVariables, readOnly));
-                        hb.Append($"</div>");
+                    case PropertyListStyleEnum.BoxedWithCategories: {
+                            string stat = "";
+                            if (setup.ExpandableList.Contains(category))
+                                stat = (setup.InitialExpanded == category) ? " t_propexpandable t_propexpanded" : " t_propexpandable t_propcollapsed";
+                            hb.Append($"<div class='t_proptable{stat} t_cat t_boxpanel-{GetCategoryNormalized(category)}'>");
+                            hb.Append($"<div class='t_boxlabel'>{category}</div>");
+                            if (setup != null && setup.ExpandableList.Contains(category))
+                                hb.Append($"<div class='t_boxexpcoll'></div>");
+                            hb.Append(await RenderListAsync(model, category, showVariables, readOnly));
+                            hb.Append($"</div>");
+                            break;
+                        }
+                    case PropertyListStyleEnum.Boxed: {
+                            string stat = "";
+                            if (setup.ExpandableList.Contains(category))
+                                stat = (setup.InitialExpanded == category) ? " t_propexpandable t_propexpanded" : " t_propexpandable t_propcollapsed";
+                            hb.Append($"<div class='t_proptable {stat} t_cat t_boxpanel-{GetCategoryNormalized(category)}'>");
+                            if (setup != null && setup.ExpandableList.Contains(category))
+                                hb.Append($"<div class='t_boxexpcoll'></div>");
+                            hb.Append(await RenderListAsync(model, category, showVariables, readOnly));
+                            hb.Append($"</div>");
+                        }
                         break;
                 }
                 ++panel;
@@ -213,11 +226,17 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             ControlData cd = null;
             if (!readOnly)
                 cd = GetControlSets(model, divId);
+            if (setup.ExpandableList != null) {
+                // normalize category names for javascript
+                setup.ExpandableList = (from l in setup.ExpandableList select GetCategoryNormalized(l)).ToList();
+            }
+            if (setup.InitialExpanded != null)
+                setup.InitialExpanded = GetCategoryNormalized(setup.InitialExpanded);
             Manager.ScriptManager.AddLast($@"new YetaWF_ComponentsHTML.PropertyListComponent('{divId}', {YetaWFManager.JsonSerialize(setup)}, {YetaWFManager.JsonSerialize(cd)});");
             return hb.ToString();
         }
 
-        private object GetCategoryNormalized(string category) {
+        private string GetCategoryNormalized(string category) {
             string cat = reCategory.Replace(category, "");
             return cat.ToLower();
         }
@@ -236,7 +255,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             HtmlBuilder hbProps = new HtmlBuilder();
             string divId = Manager.UniqueId();
             hbProps.Append($@"
-<div id='{divId}' class='yt_propertylist t_table {(ReadOnly ? "t_display" : "t_edit")}'>
+<div id='{divId}' class='yt_propertylist t_proptable {(ReadOnly ? "t_display" : "t_edit")}'>
    {await RenderHiddenAsync(model)}
    {await RenderListAsync(model, null, showVariables, ReadOnly)}
 </div>");

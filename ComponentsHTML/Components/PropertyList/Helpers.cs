@@ -46,10 +46,20 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             /// The first entry defines the minimum width of the window to use Masonry. Below this size, Masonry is not used.
             /// </remarks>
             public List<PropertyListColumnDef> ColumnStyles { get; set; }
+            /// <summary>
+            /// Categories (boxes) that are expandable/collapsible. May be null or an empty collection, which means no categories are expandable.
+            /// </summary>
+            public List<string> ExpandableList { get; set; }
+            /// <summary>
+            /// Category that is initially expanded. May be null which means no category is initially expanded.
+            /// </summary>
+            public string InitialExpanded { get; set; }
 
             public PropertyListSetup() {
                 Style = PropertyListStyleEnum.Tabbed;
                 ColumnStyles = new List<PropertyListColumnDef>();
+                ExpandableList = new List<string>();
+                InitialExpanded = null;
             }
         }
         /// <summary>
