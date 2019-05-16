@@ -109,7 +109,7 @@ namespace YetaWF.Modules.Identity.DataProvider {
         public UserDefinition() {
             RolesList = new SerializableList<Role>();
             Created = DateTime.UtcNow;
-            UserStatus = UserStatusEnum.NeedValidation;
+            UserStatus = UserStatusEnum.Approved;
             VerificationCode = Guid.NewGuid().ToString();
             EnabledTwoStepAuthentications = new SerializableList<TwoStepDefinition>();
         }
