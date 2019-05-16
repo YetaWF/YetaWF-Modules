@@ -207,7 +207,7 @@ namespace YetaWF_ComponentsHTML {
             let boxes = $YetaWF.getElementsBySelector(".t_proptable", [this.Control]);
             for (let b of boxes) {
                 $YetaWF.elementRemoveClasses(b, "t_propexpanded t_propcollapsed");
-                if (b != box)
+                if (b !== box)
                     $YetaWF.elementAddClass(b, "t_prophide");
             }
             $YetaWF.elementAddClass(box, "t_propexpanded");

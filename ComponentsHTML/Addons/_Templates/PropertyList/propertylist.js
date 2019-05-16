@@ -180,7 +180,7 @@ var YetaWF_ComponentsHTML;
             for (var _i = 0, boxes_2 = boxes; _i < boxes_2.length; _i++) {
                 var b = boxes_2[_i];
                 $YetaWF.elementRemoveClasses(b, "t_propexpanded t_propcollapsed");
-                if (b != box)
+                if (b !== box)
                     $YetaWF.elementAddClass(b, "t_prophide");
             }
             $YetaWF.elementAddClass(box, "t_propexpanded");
