@@ -119,7 +119,7 @@ namespace YetaWF.Modules.Panels.Controllers {
         private async Task<List<PagePanelInfo.PanelEntry>> GetPanelsAsync() {
             SavedCacheInfo info = GetCache(Module.ModuleGuid);
             if (info == null || info.UserId != Manager.UserId || info.Language != Manager.UserLanguage) {
-                // We only reload the pages when the user is new logon/logoff, otherwise we would build this too often
+                // We only reload the pages when the user is new (logon/logoff), otherwise we would build this too often
                 List<PagePanelInfo.PanelEntry> list = new SerializableList<PagePanelInfo.PanelEntry>();
                 foreach (LocalPage page in Module.PageList) {
                     AddPage(list, await YetaWF.Core.Pages.PageDefinition.LoadPageDefinitionByUrlAsync(page.Url), page.Popup);
@@ -148,6 +148,9 @@ namespace YetaWF.Modules.Panels.Controllers {
         }
         private void AddPage(List<PagePanelInfo.PanelEntry> list, PageDefinition pageDef, bool popup) {
             if (pageDef != null && pageDef.IsAuthorized_View()) {
+                // If we're the superuser and the page is not authorized for users, suppress this page
+                if (Manager.HasSuperUserRole && pageDef.IsAuthorized_View_Anonymous() && !pageDef.IsAuthorized_View_AnyUser())
+                    return;
                 list.Add(new PagePanelInfo.PanelEntry {
                     Url = pageDef.EvaluatedCanonicalUrl,
                     Caption = pageDef.Title,
