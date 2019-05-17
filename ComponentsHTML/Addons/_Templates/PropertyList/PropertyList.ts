@@ -1,5 +1,58 @@
 /* Copyright © 2019 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/ComponentsHTML#License */
 
+// copied from @types/masonry-layout (original has exports= which doesn't work, check future updates)
+declare class Masonry {
+    constructor(options?: Masonry.Options);
+    constructor(selector: string | Element, options?: Masonry.Options);
+
+    masonry?(): void;
+    masonry?(eventName: string, listener: any): void;
+
+    // layout
+    layout?(): void;
+    layoutItems?(items: any[], isStill?: boolean): void;
+    stamp?(elements: any[]): void;
+    unstamp?(elements: any[]): void;
+
+    // add and remove items
+    appended?(elements: any[]): void;
+    prepended?(elements: any[]): void;
+    addItems?(elements: any[]): void;
+    remove?(elements: any[]): void;
+
+    // events
+    on?(eventName: string, listener: any): void;
+    off?(eventName: string, listener: any): void;
+    once?(eventName: string, listener: any): void;
+
+    // utilities
+    reloadItems?(): void;
+    destroy?(): void;
+    getItemElements?(): any[];
+    data?(element: Element): Masonry;
+}
+
+declare namespace Masonry {
+    interface Options {
+        // layout
+        itemSelector?: string;
+        columnWidth?: any;
+        percentPosition?: boolean;
+        gutter?: any;
+        stamp?: string;
+        fitWidth?: boolean;
+        originLeft?: boolean;
+        originTop?: boolean;
+        horizontalOrder?: boolean;
+
+        // setup
+        containerStyle?: {};
+        transitionDuration?: any;
+        resize?: boolean;
+        initLayout?: boolean;
+    }
+}
+
 namespace YetaWF_ComponentsHTML {
 
     interface ControlData {
