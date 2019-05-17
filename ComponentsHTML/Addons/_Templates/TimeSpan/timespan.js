@@ -9,20 +9,26 @@ var YetaWF_ComponentsHTML;
             var _this = this;
             this.Control = $YetaWF.getElementById(controlId);
             this.Hidden = $YetaWF.getElement1BySelector("input[type='hidden']", [this.Control]);
-            this.InputDays = YetaWF.ComponentBaseDataImpl.getControlFromSelector("input[name$='Days']", YetaWF_ComponentsHTML.IntValueEditComponent.SELECTOR, [this.Control]);
-            this.InputHours = YetaWF.ComponentBaseDataImpl.getControlFromSelector("input[name$='Hours']", YetaWF_ComponentsHTML.IntValueEditComponent.SELECTOR, [this.Control]);
-            this.InputMins = YetaWF.ComponentBaseDataImpl.getControlFromSelector("input[name$='Minutes']", YetaWF_ComponentsHTML.IntValueEditComponent.SELECTOR, [this.Control]);
+            this.InputDays = YetaWF.ComponentBaseDataImpl.getControlFromSelectorCond("input[name$='Days']", YetaWF_ComponentsHTML.IntValueEditComponent.SELECTOR, [this.Control]);
+            this.InputHours = YetaWF.ComponentBaseDataImpl.getControlFromSelectorCond("input[name$='Hours']", YetaWF_ComponentsHTML.IntValueEditComponent.SELECTOR, [this.Control]);
+            this.InputMins = YetaWF.ComponentBaseDataImpl.getControlFromSelectorCond("input[name$='Minutes']", YetaWF_ComponentsHTML.IntValueEditComponent.SELECTOR, [this.Control]);
             this.InputSecs = YetaWF.ComponentBaseDataImpl.getControlFromSelectorCond("input[name$='Seconds']", YetaWF_ComponentsHTML.IntValueEditComponent.SELECTOR, [this.Control]);
             // capture changes in all edit controls
-            this.InputDays.Control.addEventListener("intvalue_change", function (evt) {
-                _this.updateValue();
-            });
-            this.InputHours.Control.addEventListener("intvalue_change", function (evt) {
-                _this.updateValue();
-            });
-            this.InputMins.Control.addEventListener("intvalue_change", function (evt) {
-                _this.updateValue();
-            });
+            if (this.InputDays) {
+                this.InputDays.Control.addEventListener("intvalue_change", function (evt) {
+                    _this.updateValue();
+                });
+            }
+            if (this.InputHours) {
+                this.InputHours.Control.addEventListener("intvalue_change", function (evt) {
+                    _this.updateValue();
+                });
+            }
+            if (this.InputMins) {
+                this.InputMins.Control.addEventListener("intvalue_change", function (evt) {
+                    _this.updateValue();
+                });
+            }
             if (this.InputSecs) {
                 this.InputSecs.Control.addEventListener("intvalue_change", function (evt) {
                     _this.updateValue();
@@ -30,11 +36,17 @@ var YetaWF_ComponentsHTML;
             }
         }
         TimeSpanEditComponent.prototype.updateValue = function () {
-            if (this.InputSecs) {
+            if (this.InputDays && this.InputHours && this.InputMins && this.InputSecs) {
                 this.Hidden.value = this.InputDays.value + "." + this.InputHours.value + ":" + this.InputMins.value + ":" + this.InputSecs.value;
             }
-            else {
+            else if (this.InputDays && this.InputHours && this.InputMins) {
                 this.Hidden.value = this.InputDays.value + "." + this.InputHours.value + ":" + this.InputMins.value;
+            }
+            if (this.InputHours && this.InputMins && this.InputSecs) {
+                this.Hidden.value = this.InputHours.value + ":" + this.InputMins.value + ":" + this.InputSecs.value;
+            }
+            else if (this.InputHours && this.InputMins) {
+                this.Hidden.value = this.InputHours.value + ":" + this.InputMins.value;
             }
         };
         return TimeSpanEditComponent;
