@@ -270,11 +270,12 @@ namespace YetaWF_ComponentsHTML {
                         $YetaWF.elementRemoveClass(elem, "k-state-disabled");
                     else
                         $YetaWF.elementAddClass(elem, "k-state-disabled");
+                    let numT = $(elem).data("kendoNumericTextBox");
+                    if (numT)
+                        numT.enable(enable);
                 } else if (elem.tagName === "SELECT") {
-                    if (enable)
-                        $YetaWF.elementRemoveClass(elem, "k-state-disabled");
-                    else
-                        $YetaWF.elementAddClass(elem, "k-state-disabled");
+                    let dd = $(elem).data("kendoDropDownList");
+                    dd.enable(enable);
                 } else if (elem.tagName === "TEXTAREA") {
                     if (enable) {
                         elem.removeAttribute("readonly");

@@ -77,6 +77,11 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         /// <returns>Returns the component type.</returns>
         public override ComponentType GetComponentType() { return ComponentType.Edit; }
 
+        internal class CurrencySetup {
+            public double Min { get; set; }
+            public double Max { get; set; }
+        }
+
         /// <summary>
         /// Called by the framework when the component is used so the component can add component specific addons.
         /// </summary>
@@ -101,22 +106,30 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         public Task<string> RenderAsync(Decimal? model) {
             HtmlBuilder hb = new HtmlBuilder();
 
-            YTagBuilder tag = new YTagBuilder("input");
-            tag.AddCssClass("yt_currency");
-            tag.AddCssClass("t_edit");
+            hb.Append($"<div id='{ControlId}' class='yt_currency t_edit'>");
 
+            YTagBuilder tag = new YTagBuilder("input");
             FieldSetup(tag, Validation ? FieldType.Validated : FieldType.Normal);
 
+            CurrencySetup setup = new CurrencySetup {
+                Min = 0,
+                Max = 99999999.99,
+            };
             // handle min/max
             RangeAttribute rangeAttr = PropData.TryGetAttribute<RangeAttribute>();
             if (rangeAttr != null) {
-                tag.MergeAttribute("data-min", ((double)rangeAttr.Minimum).ToString("F3"));
-                tag.MergeAttribute("data-max", ((double)rangeAttr.Maximum).ToString("F3"));
+                setup.Min = (double)rangeAttr.Minimum;
+                setup.Max = (double)rangeAttr.Maximum;
             }
             if (model != null)
                 tag.MergeAttribute("value", Formatting.FormatAmount((decimal)model));
 
-            return Task.FromResult(tag.ToString(YTagRenderMode.StartTag));
+            hb.Append(tag.ToString(YTagRenderMode.StartTag));
+
+            hb.Append($"</div>");
+            Manager.ScriptManager.AddLast($@"new YetaWF_ComponentsHTML.CurrencyEditComponent('{ControlId}', {YetaWFManager.JsonSerialize(setup)});");
+
+            return Task.FromResult(hb.ToString());
         }
     }
 }

@@ -1,45 +1,42 @@
 "use strict";
 /* Copyright © 2019 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/ComponentsHTML#License */
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = function (d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+        return extendStatics(d, b);
+    };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
 var YetaWF_ComponentsHTML;
 (function (YetaWF_ComponentsHTML) {
-    var CurrencyComponent = /** @class */ (function () {
-        function CurrencyComponent() {
+    var CurrencyEditComponent = /** @class */ (function (_super) {
+        __extends(CurrencyEditComponent, _super);
+        function CurrencyEditComponent(controlId, setup) {
+            var _this = _super.call(this, controlId) || this;
+            _this.Currency = $YetaWF.getElement1BySelector("input", [_this.Control]);
+            $(_this.Currency).kendoNumericTextBox({
+                format: YVolatile.YetaWF_ComponentsHTML.CurrencyFormat,
+                min: setup.Min, max: setup.Max,
+                culture: YVolatile.Basics.Language
+            });
+            _this.kendoNumericTextBox = $(_this.Control).data("kendoNumericTextBox");
+            return _this;
         }
-        /**
-         * Initializes all currency fields in the specified tag.
-         * @param tag - an element containing Currency template controls.
-         */
-        CurrencyComponent.prototype.initSection = function (tag) {
-            var list = $YetaWF.getElementsBySelector("input.yt_currency.t_edit", [tag]);
-            for (var _i = 0, list_1 = list; _i < list_1.length; _i++) {
-                var el = list_1[_i];
-                var d = el.getAttribute("data-min");
-                var sd = d ? Number(d) : 0;
-                d = el.getAttribute("data-max");
-                var ed = d ? Number(d) : 99999999.99;
-                $(el).kendoNumericTextBox({
-                    format: YVolatile.YetaWF_ComponentsHTML.CurrencyFormat,
-                    min: sd, max: ed,
-                    culture: YVolatile.Basics.Language
-                });
-            }
-        };
-        return CurrencyComponent;
-    }());
-    YetaWF_ComponentsHTML.CurrencyComponent = CurrencyComponent;
-    // initializes new currency elements on demand
-    $YetaWF.addWhenReady(function (section) {
-        new CurrencyComponent().initSection(section);
-    });
-    // A <div> is being emptied. Destroy all kendoNumericTextBox the <div> may contain.
+        CurrencyEditComponent.SELECTOR = ".yt_currency.t_edit";
+        return CurrencyEditComponent;
+    }(YetaWF.ComponentBaseDataImpl));
+    YetaWF_ComponentsHTML.CurrencyEditComponent = CurrencyEditComponent;
+    // A <div> is being emptied. Destroy all controls the <div> may contain.
     $YetaWF.registerClearDiv(function (tag) {
-        var list = $YetaWF.getElementsBySelector("input.yt_currency.t_edit", [tag]);
-        for (var _i = 0, list_2 = list; _i < list_2.length; _i++) {
-            var el = list_2[_i];
-            var numTextBox = $(el).data("kendoNumericTextBox");
-            if (numTextBox)
-                numTextBox.destroy();
-        }
+        YetaWF.ComponentBaseDataImpl.clearDiv(tag, CurrencyEditComponent.SELECTOR, function (control) {
+            control.kendoNumericTextBox.destroy();
+        });
     });
 })(YetaWF_ComponentsHTML || (YetaWF_ComponentsHTML = {}));
 

@@ -254,12 +254,13 @@ var YetaWF_ComponentsHTML;
                         $YetaWF.elementRemoveClass(elem, "k-state-disabled");
                     else
                         $YetaWF.elementAddClass(elem, "k-state-disabled");
+                    var numT = $(elem).data("kendoNumericTextBox");
+                    if (numT)
+                        numT.enable(enable);
                 }
                 else if (elem.tagName === "SELECT") {
-                    if (enable)
-                        $YetaWF.elementRemoveClass(elem, "k-state-disabled");
-                    else
-                        $YetaWF.elementAddClass(elem, "k-state-disabled");
+                    var dd = $(elem).data("kendoDropDownList");
+                    dd.enable(enable);
                 }
                 else if (elem.tagName === "TEXTAREA") {
                     if (enable) {
