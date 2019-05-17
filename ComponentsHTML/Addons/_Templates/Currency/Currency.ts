@@ -28,7 +28,7 @@ namespace YetaWF_ComponentsHTML {
                 min: setup.Min, max: setup.Max,
                 culture: YVolatile.Basics.Language
             });
-            this.kendoNumericTextBox = $(this.Control).data("kendoNumericTextBox");
+            this.kendoNumericTextBox = $(this.Currency).data("kendoNumericTextBox");
         }
     }
 

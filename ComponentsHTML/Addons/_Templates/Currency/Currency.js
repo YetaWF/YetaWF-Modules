@@ -25,7 +25,7 @@ var YetaWF_ComponentsHTML;
                 min: setup.Min, max: setup.Max,
                 culture: YVolatile.Basics.Language
             });
-            _this.kendoNumericTextBox = $(_this.Control).data("kendoNumericTextBox");
+            _this.kendoNumericTextBox = $(_this.Currency).data("kendoNumericTextBox");
             return _this;
         }
         CurrencyEditComponent.SELECTOR = ".yt_currency.t_edit";
