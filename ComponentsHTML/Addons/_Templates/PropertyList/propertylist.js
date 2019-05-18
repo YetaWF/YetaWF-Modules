@@ -303,6 +303,7 @@ var YetaWF_ComponentsHTML;
             }
         };
         PropertyListComponent.prototype.toggle = function (dep, depRow, valid) {
+            $YetaWF.Forms.clearValidation(depRow);
             if (dep.Disable) {
                 $YetaWF.elementAndChildrenEnableToggle(depRow, valid);
             }
@@ -574,5 +575,3 @@ var YetaWF_ComponentsHTML;
         }
     });
 })(YetaWF_ComponentsHTML || (YetaWF_ComponentsHTML = {}));
-
-//# sourceMappingURL=PropertyList.js.map

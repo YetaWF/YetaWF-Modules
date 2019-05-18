@@ -59,5 +59,3 @@ var YetaWF_ComponentsHTML;
     }(YetaWF.ComponentBaseImpl));
     YetaWF_ComponentsHTML.ImageEditComponent = ImageEditComponent;
 })(YetaWF_ComponentsHTML || (YetaWF_ComponentsHTML = {}));
-
-//# sourceMappingURL=ImageEdit.js.map

@@ -153,5 +153,3 @@ var YetaWF_ComponentsHTML;
         YetaWF.ComponentBaseDataImpl.clearDiv(tag, FileUpload1Component.SELECTOR);
     });
 })(YetaWF_ComponentsHTML || (YetaWF_ComponentsHTML = {}));
-
-//# sourceMappingURL=FileUpload1.js.map

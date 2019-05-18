@@ -66,5 +66,3 @@ var YetaWF_ComponentsHTML;
         });
     });
 })(YetaWF_ComponentsHTML || (YetaWF_ComponentsHTML = {}));
-
-//# sourceMappingURL=DecimalEdit.js.map

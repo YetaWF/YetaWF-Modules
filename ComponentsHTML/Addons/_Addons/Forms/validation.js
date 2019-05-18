@@ -46,41 +46,18 @@ $.validator.unobtrusive.adapters.add("selectionrequiredif", [YConfigs.Forms.Cond
     };
     options.messages["selectionrequiredif"] = options.message;
 });
-// REQUIREDIF
-// REQUIREDIF
-// REQUIREDIF
-$.validator.addMethod("requiredif", function (value, element, parameters) {
-    if (YetaWF_ComponentsHTML.ValidatorHelper.isCondAndDependentValue(value, element, parameters)) {
-        // if the condition is true, reuse the existing
-        // required field validator functionality
-        return $.validator.methods.required.call(this, value, element, parameters);
-    }
-    return true;
+// REQUIREDEXPR
+// REQUIREDEXPR
+// REQUIREDEXPR
+$.validator.addMethod("requiredexpr", function (value, element, parameters) {
+    return YetaWF_ComponentsHTML.ValidatorHelper.evaluateExpressionList(value, element, parameters);
 });
-$.validator.unobtrusive.adapters.add("requiredif", [YConfigs.Forms.ConditionPropertyName, YConfigs.Forms.ConditionPropertyValue], function (options) {
-    options.rules["requiredif"] = {
-        dependentproperty: options.params[YConfigs.Forms.ConditionPropertyName],
-        targetvalue: options.params[YConfigs.Forms.ConditionPropertyValue]
+$.validator.unobtrusive.adapters.add("requiredexpr", ["op", "json"], function (options) {
+    options.rules["requiredexpr"] = {
+        op: Number(options.params["op"]),
+        exprList: JSON.parse(options.params["json"])
     };
-    options.messages["requiredif"] = options.message;
-});
-// REQUIREDIFNOT
-// REQUIREDIFNOT
-// REQUIREDIFNOT
-$.validator.addMethod("requiredifnot", function (value, element, parameters) {
-    if (!YetaWF_ComponentsHTML.ValidatorHelper.isCondAndDependentValue(value, element, parameters)) {
-        // if the condition is false, reuse the existing
-        // required field validator functionality
-        return $.validator.methods.required.call(this, value, element, parameters);
-    }
-    return true;
-});
-$.validator.unobtrusive.adapters.add("requiredifnot", [YConfigs.Forms.ConditionPropertyName, YConfigs.Forms.ConditionPropertyValue], function (options) {
-    options.rules["requiredifnot"] = {
-        dependentproperty: options.params[YConfigs.Forms.ConditionPropertyName],
-        targetvalue: options.params[YConfigs.Forms.ConditionPropertyValue]
-    };
-    options.messages["requiredifnot"] = options.message;
+    options.messages["requiredexpr"] = options.message;
 });
 // REQUIREDIFINRANGE
 // REQUIREDIFINRANGE
@@ -145,9 +122,113 @@ $.validator.unobtrusive.adapters.add("listnoduplicates", [YConfigs.Forms.Conditi
 });
 var YetaWF_ComponentsHTML;
 (function (YetaWF_ComponentsHTML) {
+    var OpEnum;
+    (function (OpEnum) {
+        OpEnum[OpEnum["RequiredIf"] = 0] = "RequiredIf";
+        OpEnum[OpEnum["RequiredIfNot"] = 1] = "RequiredIfNot";
+        OpEnum[OpEnum["RequiredIfSupplied"] = 2] = "RequiredIfSupplied";
+        OpEnum[OpEnum["RequiredIfNotSupplied"] = 3] = "RequiredIfNotSupplied";
+        OpEnum[OpEnum["ProcessIf"] = 4] = "ProcessIf";
+        OpEnum[OpEnum["ProcessIfNot"] = 5] = "ProcessIfNot";
+        OpEnum[OpEnum["ProcessIfSupplied"] = 6] = "ProcessIfSupplied";
+        OpEnum[OpEnum["ProcessIfNotSupplied"] = 7] = "ProcessIfNotSupplied";
+        OpEnum[OpEnum["SuppressIf"] = 8] = "SuppressIf";
+        OpEnum[OpEnum["SuppressIfNot"] = 9] = "SuppressIfNot";
+        OpEnum[OpEnum["SuppressIfSupplied"] = 10] = "SuppressIfSupplied";
+        OpEnum[OpEnum["SuppressIfNotSupplied"] = 11] = "SuppressIfNotSupplied";
+        OpEnum[OpEnum["HideIfNotSupplied"] = 12] = "HideIfNotSupplied";
+    })(OpEnum || (OpEnum = {}));
+    var OpCond;
+    (function (OpCond) {
+        OpCond[OpCond["Eq"] = 0] = "Eq";
+        OpCond[OpCond["NotEq"] = 1] = "NotEq";
+    })(OpCond || (OpCond = {}));
     var ValidatorHelper = /** @class */ (function () {
         function ValidatorHelper() {
         }
+        ValidatorHelper.evaluateExpressionList = function (value, element, parameters) {
+            var form = $YetaWF.Forms.getForm(element);
+            var exprList = parameters.exprList;
+            for (var _i = 0, exprList_1 = exprList; _i < exprList_1.length; _i++) {
+                var expr = exprList_1[_i];
+                switch (parameters.op) {
+                    case OpEnum.RequiredIf:
+                        if (!ValidatorHelper.isExprValid(expr, form))
+                            return true;
+                        break;
+                    case OpEnum.RequiredIfNot:
+                        if (ValidatorHelper.isExprValid(expr, form))
+                            return true;
+                        break;
+                    default:
+                        throw "Invalid Op " + parameters.op + " in evaluateExpressionList";
+                }
+            }
+            switch (parameters.op) {
+                case OpEnum.RequiredIf:
+                case OpEnum.RequiredIfNot:
+                    if (value === undefined || value === null || value.trim().length === 0)
+                        return false;
+                    break;
+                default:
+                    throw "Invalid Op " + parameters.op + " in evaluateExpressionList";
+            }
+            return true;
+        };
+        ValidatorHelper.isExprValid = function (expr, form) {
+            var leftVal = ValidatorHelper.getPropertyVal(form, expr._Left);
+            var rightVal;
+            if (expr._Right)
+                rightVal = ValidatorHelper.getPropertyVal(form, expr._Right);
+            else
+                rightVal = expr._RightVal == null ? null : expr._RightVal.toString();
+            switch (expr.Cond) {
+                case OpCond.Eq:
+                    if (!leftVal && !rightVal)
+                        return true;
+                    return leftVal === rightVal;
+                case OpCond.NotEq:
+                    if (!leftVal && !rightVal)
+                        return false;
+                    return leftVal === rightVal;
+                default:
+                    throw "Invalid Cond " + expr.Cond + " in isExprValid";
+            }
+        };
+        ValidatorHelper.getPropertyVal = function (form, name) {
+            var ctrls = $YetaWF.getElementsBySelector("input[name=\"" + name + "\"],select[name=\"" + name + "\"]", [form]);
+            if (ctrls.length < 1)
+                throw "No control found for name " + name; /*DEBUG*/
+            var ctrl = ctrls[0];
+            var tag = ctrl.tagName;
+            var controltype = ctrl.getAttribute("type");
+            if (ctrls.length >= 2) {
+                // for checkboxes there can be two controls by the same name (the second is a hidden control)
+                if (tag !== "INPUT" || controltype !== "checkbox")
+                    throw "Multiple controls found for name " + name; /*DEBUG*/
+            }
+            // handle all control types, e.g. radios, checkbox, input, etc.
+            var actualValue;
+            if (tag === "INPUT") {
+                // regular input control
+                if (controltype === "checkbox") {
+                    // checkbox
+                    actualValue = ctrl.checked ? "true" : "false";
+                }
+                else {
+                    // other
+                    actualValue = ctrl.value.toLowerCase();
+                }
+            }
+            else if (tag === "SELECT") {
+                actualValue = ctrl.value;
+            }
+            else {
+                throw "Unsupported tag " + tag; /*DEBUG*/
+            }
+            return actualValue;
+        };
+        //$$$$$$$$$$$$$$$
         ValidatorHelper.isCondAndDependentValue = function (value, element, parameters) {
             if ($YetaWF.elementHasClass(element, YConfigs.Forms.CssFormNoValidate))
                 return true;
@@ -294,5 +375,3 @@ var YetaWF_ComponentsHTML;
     }());
     YetaWF_ComponentsHTML.ValidatorHelper = ValidatorHelper;
 })(YetaWF_ComponentsHTML || (YetaWF_ComponentsHTML = {}));
-
-//# sourceMappingURL=validation.js.map

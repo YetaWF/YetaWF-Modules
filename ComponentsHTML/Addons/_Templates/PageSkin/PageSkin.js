@@ -37,5 +37,3 @@ var YetaWF_ComponentsHTML;
         PageSkinEditComponent.clearDiv(tag, PageSkinEditComponent.SELECTOR);
     });
 })(YetaWF_ComponentsHTML || (YetaWF_ComponentsHTML = {}));
-
-//# sourceMappingURL=PageSkin.js.map

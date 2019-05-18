@@ -39,6 +39,13 @@ namespace YetaWF_ComponentsHTML {
             $("input,select,textarea", $div).has("[data-val=true]").trigger("focusout");
         }
         /**
+         * Clear any validation errors within the div
+         */
+        public clearValidation(div: HTMLElement): void {
+            var $err = $(`img.${YConfigs.Forms.CssWarningIcon}`, div);
+            $err.remove();
+        }
+        /**
          * Validates one elements.
          */
         public validateElement(ctrl: HTMLElement): void {

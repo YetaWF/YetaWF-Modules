@@ -53,47 +53,20 @@ $.validator.unobtrusive.adapters.add("selectionrequiredif", [YConfigs.Forms.Cond
     options.messages["selectionrequiredif"] = options.message;
 });
 
-// REQUIREDIF
-// REQUIREDIF
-// REQUIREDIF
+// REQUIREDEXPR
+// REQUIREDEXPR
+// REQUIREDEXPR
 
-$.validator.addMethod("requiredif", function (this: Function, value: any, element: HTMLElement, parameters: any): boolean {
-
-    if (YetaWF_ComponentsHTML.ValidatorHelper.isCondAndDependentValue(value, element, parameters)) {
-        // if the condition is true, reuse the existing
-        // required field validator functionality
-        return $.validator.methods.required.call(this, value, element, parameters);
-    }
-    return true;
+$.validator.addMethod("requiredexpr", function (this: Function, value: any, element: HTMLElement, parameters: any): boolean {
+    return YetaWF_ComponentsHTML.ValidatorHelper.evaluateExpressionList(value, element, parameters);
 });
 
-$.validator.unobtrusive.adapters.add("requiredif", [YConfigs.Forms.ConditionPropertyName, YConfigs.Forms.ConditionPropertyValue], (options:any):void => {
-    options.rules["requiredif"] = {
-        dependentproperty: options.params[YConfigs.Forms.ConditionPropertyName],
-        targetvalue: options.params[YConfigs.Forms.ConditionPropertyValue]
+$.validator.unobtrusive.adapters.add("requiredexpr", ["op", "json"], (options: any): void => {
+    options.rules["requiredexpr"] = {
+        op: Number(options.params["op"]),
+        exprList: JSON.parse(options.params["json"])
     };
-    options.messages["requiredif"] = options.message;
-});
-
-// REQUIREDIFNOT
-// REQUIREDIFNOT
-// REQUIREDIFNOT
-
-$.validator.addMethod("requiredifnot", function (this: Function, value: any, element: HTMLElement, parameters: any): boolean {
-    if (!YetaWF_ComponentsHTML.ValidatorHelper.isCondAndDependentValue(value, element, parameters)) {
-        // if the condition is false, reuse the existing
-        // required field validator functionality
-        return $.validator.methods.required.call((this as unknown) as Function, value, element, parameters);
-    }
-    return true;
-});
-
-$.validator.unobtrusive.adapters.add("requiredifnot", [YConfigs.Forms.ConditionPropertyName, YConfigs.Forms.ConditionPropertyValue], (options:any):void => {
-    options.rules["requiredifnot"] = {
-        dependentproperty: options.params[YConfigs.Forms.ConditionPropertyName],
-        targetvalue: options.params[YConfigs.Forms.ConditionPropertyValue]
-    };
-    options.messages["requiredifnot"] = options.message;
+    options.messages["requiredexpr"] = options.message;
 });
 
 // REQUIREDIFINRANGE
@@ -174,8 +147,116 @@ $.validator.unobtrusive.adapters.add("listnoduplicates", [YConfigs.Forms.Conditi
 
 namespace YetaWF_ComponentsHTML {
 
+    enum OpEnum {
+        RequiredIf,
+        RequiredIfNot,
+        RequiredIfSupplied,
+        RequiredIfNotSupplied,
+        ProcessIf,
+        ProcessIfNot,
+        ProcessIfSupplied,
+        ProcessIfNotSupplied,
+        SuppressIf,
+        SuppressIfNot,
+        SuppressIfSupplied,
+        SuppressIfNotSupplied,
+        HideIfNotSupplied
+    }
+    enum OpCond {
+        Eq,
+        NotEq
+    }
+
+    interface Expr {
+        Cond: OpCond;
+        _Left: string;
+        _Right: string;
+        _RightVal: any;
+    }
+
     export class ValidatorHelper {
 
+        public static evaluateExpressionList(value: any, element: HTMLElement, parameters: any): boolean {
+
+            let form = $YetaWF.Forms.getForm(element);
+
+            let exprList : Expr[] = parameters.exprList;
+            for (let expr of exprList) {
+                switch (parameters.op) {
+                    case OpEnum.RequiredIf:
+                        if (!ValidatorHelper.isExprValid(expr, form))
+                            return true;
+                        break;
+                    case OpEnum.RequiredIfNot:
+                        if (ValidatorHelper.isExprValid(expr, form))
+                            return true;
+                        break;
+                    default:
+                        throw `Invalid Op ${parameters.op} in evaluateExpressionList`;
+                }
+            }
+
+            switch (parameters.op) {
+                case OpEnum.RequiredIf:
+                case OpEnum.RequiredIfNot:
+                    if (value === undefined || value === null || value.trim().length === 0)
+                        return false;
+                    break;
+                default:
+                    throw `Invalid Op ${parameters.op} in evaluateExpressionList`;
+            }
+            return true;
+        }
+        private static isExprValid(expr: Expr, form: HTMLFormElement): boolean {
+            let leftVal = ValidatorHelper.getPropertyVal(form, expr._Left);
+            let rightVal : string;
+            if (expr._Right)
+                rightVal = ValidatorHelper.getPropertyVal(form, expr._Right);
+            else
+                rightVal = expr._RightVal == null ? null : expr._RightVal.toString();
+            switch (expr.Cond) {
+                case OpCond.Eq:
+                    if (!leftVal && !rightVal) return true;
+                    return leftVal === rightVal;
+                case OpCond.NotEq:
+                    if (!leftVal && !rightVal) return false;
+                    return leftVal === rightVal;
+                default:
+                    throw `Invalid Cond ${expr.Cond} in isExprValid`;
+            }
+        }
+        private static getPropertyVal(form: HTMLFormElement, name: string): string {
+            let ctrls = $YetaWF.getElementsBySelector(`input[name="${name}"],select[name="${name}"]`, [form]);
+            if (ctrls.length < 1) throw `No control found for name ${name}`;/*DEBUG*/
+            let ctrl = ctrls[0];
+            let tag = ctrl.tagName;
+            let controltype = ctrl.getAttribute("type");
+
+            if (ctrls.length >= 2) {
+                // for checkboxes there can be two controls by the same name (the second is a hidden control)
+                if (tag !== "INPUT" || controltype !== "checkbox") throw `Multiple controls found for name ${name}`;/*DEBUG*/
+            }
+
+            // handle all control types, e.g. radios, checkbox, input, etc.
+            let actualValue: string;
+            if (tag === "INPUT") {
+                // regular input control
+                if (controltype === "checkbox") {
+                    // checkbox
+                    actualValue = (ctrl as HTMLInputElement).checked ? "true" : "false";
+                } else {
+                    // other
+                    actualValue = (ctrl as HTMLInputElement).value.toLowerCase();
+                }
+            } else if (tag === "SELECT") {
+                actualValue = (ctrl as HTMLSelectElement).value;
+            } else {
+                throw `Unsupported tag ${tag}`;/*DEBUG*/
+            }
+            return actualValue;
+        }
+
+        //$$$$$$$$$$$$$$$
         public static isCondAndDependentValue(value: any, element: HTMLElement, parameters: any): boolean {
             if ($YetaWF.elementHasClass(element, YConfigs.Forms.CssFormNoValidate)) return true;
 

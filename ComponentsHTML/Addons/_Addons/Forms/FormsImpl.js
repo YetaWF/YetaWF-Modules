@@ -35,6 +35,13 @@ var YetaWF_ComponentsHTML;
             $("input,select,textarea", $div).has("[data-val=true]").trigger("focusout");
         };
         /**
+         * Clear any validation errors within the div
+         */
+        FormsImpl.prototype.clearValidation = function (div) {
+            var $err = $("img." + YConfigs.Forms.CssWarningIcon, div);
+            $err.remove();
+        };
+        /**
          * Validates one elements.
          */
         FormsImpl.prototype.validateElement = function (ctrl) {
@@ -227,5 +234,3 @@ var YetaWF_FormsImpl = new YetaWF_ComponentsHTML.FormsImpl();
 $YetaWF.addWhenReady(YetaWF_FormsImpl.initForm);
 /* Initialize validation system */
 YetaWF_FormsImpl.initValidation();
-
-//# sourceMappingURL=FormsImpl.js.map

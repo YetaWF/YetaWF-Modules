@@ -384,6 +384,7 @@ namespace YetaWF_ComponentsHTML {
             }
         }
         private toggle(dep: Dependent, depRow: HTMLElement, valid: boolean): void {
+            $YetaWF.Forms.clearValidation(depRow);
             if (dep.Disable) {
                 $YetaWF.elementAndChildrenEnableToggle(depRow, valid);
             } else {
