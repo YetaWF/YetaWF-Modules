@@ -59,7 +59,7 @@ namespace YetaWF.Modules.Identity.Controllers {
             public bool RememberMe { get; set; }
 
             [Caption("Verification Code"), Description("Please enter the verification code you received via email to validate your account")]
-            [UIHint("Text40"), StringLength(UserDefinition.MaxVerificationCode), Trim, SuppressIfEqual("ShowVerification", false)]
+            [UIHint("Text40"), StringLength(UserDefinition.MaxVerificationCode), Trim, SuppressIf("ShowVerification", false)]
             public string VerificationCode{ get; set; }
 
             [Caption(""), Description("")]
@@ -67,7 +67,7 @@ namespace YetaWF.Modules.Identity.Controllers {
             public ModuleAction ResendVerificationCode { get; set; }
 
             [Caption("Captcha"), Description("Please verify that you're a human and not a spam bot")]
-            [UIHint("RecaptchaV2"), RecaptchaV2("Please verify that you're a human and not a spam bot"), SuppressIfEqual("ShowCaptcha", false)]
+            [UIHint("RecaptchaV2"), RecaptchaV2("Please verify that you're a human and not a spam bot"), SuppressIf("ShowCaptcha", false)]
             public RecaptchaV2Data Captcha { get; set; }
 
             [UIHint("Hidden")]

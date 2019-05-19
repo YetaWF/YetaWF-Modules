@@ -81,7 +81,7 @@ namespace YetaWF.Modules.Identity.Controllers {
 
             [Category("External")]
             [Caption("Settings"), Description("External Login Provider Settings have not been defined")]
-            [UIHint("String"), SuppressIfEqual("HaveSettings", true), ReadOnly]
+            [UIHint("String"), SuppressIf("HaveSettings", true), ReadOnly]
             public string NoExternalSettings { get; set; }
             public bool HaveSettings {
                 get {
@@ -91,25 +91,25 @@ namespace YetaWF.Modules.Identity.Controllers {
 
             [Category("External")]
             [Caption("Facebook"), Description("Allow login using a user's Facebook account")]
-            [UIHint("Boolean"), SuppressIfEqual("FacebookDefined", false)]
+            [UIHint("Boolean"), SuppressIf("FacebookDefined", false)]
             public bool UseFacebook { get; set; }
             public bool FacebookDefined { get { return ConfigData.DefinedFacebook; } }
 
             [Category("External")]
             [Caption("Google"), Description("Allow login using a user's Google account")]
-            [UIHint("Boolean"), SuppressIfEqual("GoogleDefined", false)]
+            [UIHint("Boolean"), SuppressIf("GoogleDefined", false)]
             public bool UseGoogle { get; set; }
             public bool GoogleDefined { get { return ConfigData.DefinedGoogle; } }
 
             [Category("External")]
             [Caption("Microsoft"), Description("Allow login using a user's Microsoft account")]
-            [UIHint("Boolean"), SuppressIfEqual("MicrosoftDefined", false)]
+            [UIHint("Boolean"), SuppressIf("MicrosoftDefined", false)]
             public bool UseMicrosoft { get; set; }
             public bool MicrosoftDefined { get { return ConfigData.DefinedMicrosoft; } }
 
             [Category("External")]
             [Caption("Twitter"), Description("Allow login using a user's Twitter account")]
-            [UIHint("Boolean"), SuppressIfEqual("TwitterDefined", false)]
+            [UIHint("Boolean"), SuppressIf("TwitterDefined", false)]
             public bool UseTwitter { get; set; }
             public bool TwitterDefined { get { return ConfigData.DefinedTwitter; } }
 

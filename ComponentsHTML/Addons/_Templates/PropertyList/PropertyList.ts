@@ -62,29 +62,20 @@ namespace YetaWF_ComponentsHTML {
     }
     interface Dependent {
         Prop: string; // Name of property
-        Disable: boolean; // defines whether the control is disabled instead of hidden
 
-        ProcessValues: ValueEntry[];
-        HideValues: ValueEntry[];
+        ProcessValues: ExprEntry[];
+        HideValues: ExprEntry[];
     }
-    interface ValueEntry {
-        ControlProp: string; // name of controlling property (ProcIf)
-        ValueType: ValueTypeEnum;
-        ValueObject: any;
+    interface ExprEntry {
+        Op:YetaWF_ComponentsHTML.OpEnum;
+        Disable: boolean;
+        ExprList: YetaWF_ComponentsHTML.Expr[];
     }
-    enum ValueTypeEnum {
-        EqualIntValue = 0,
-        EqualStringValue = 1,
-        NotEqualIntValue = 10,
-        NotEqualStringValue = 11,
-        EqualNull = 100,
-        EqualNonNull = 101,
-    }
-
     enum ValidityEnum {
-        ControllingNotShown = 0,
-        Valid = 1,
+        Valid = 0,
+        ValidDisabled = 1,
         Invalid = 2,
+        InvalidDisabled = 3,
     }
 
     interface ControlItem {
@@ -118,6 +109,7 @@ namespace YetaWF_ComponentsHTML {
 
         private ControlData: ControlData | null;
         private ControllingControls: ControlItem[] = [];
+
         private Setup: PropertyListSetup;
         private MasonryElem: Masonry | null = null;
         private MinWidth: number = 0;
@@ -250,7 +242,7 @@ namespace YetaWF_ComponentsHTML {
         private collapseBox(box: HTMLElement): void {
             let boxes = $YetaWF.getElementsBySelector(".t_proptable", [this.Control]);
             for (let b of boxes) {
-                $YetaWF.elementRemoveClasses(b, "t_propexpanded t_propcollapsed t_prophide");
+                $YetaWF.elementRemoveClasses(b, ["t_propexpanded", "t_propcollapsed", "t_prophide"]);
                 $YetaWF.elementAddClass(b, "t_propcollapsed");
             }
             // show apply/save/cancel buttons again
@@ -259,7 +251,7 @@ namespace YetaWF_ComponentsHTML {
         private expandBox(box: HTMLElement): void {
             let boxes = $YetaWF.getElementsBySelector(".t_proptable", [this.Control]);
             for (let b of boxes) {
-                $YetaWF.elementRemoveClasses(b, "t_propexpanded t_propcollapsed");
+                $YetaWF.elementRemoveClasses(b, ["t_propexpanded", "t_propcollapsed"]);
                 if (b !== box)
                     $YetaWF.elementAddClass(b, "t_prophide");
             }
@@ -349,6 +341,8 @@ namespace YetaWF_ComponentsHTML {
 
             if (!this.ControlData) return;
 
+            let form = $YetaWF.Forms.getForm(this.Control);
+
             // for each dependent, verify that all its conditions are true
             var deps = this.ControlData.Dependents;
             for (let dep of deps) {
@@ -358,12 +352,15 @@ namespace YetaWF_ComponentsHTML {
                     continue;
 
                 var hidden = false;
-                for (let value of dep.HideValues) {// hidden hides only, it never makes it visible (use process for that instead)
-                    var validity = this.getValidity(dep, value);
+                for (let expr of dep.HideValues) {// hidden hides only, it never makes it visible (use process for that instead)
+                    let validity = this.getValidity(form, dep, expr);
                     switch (validity) {
-                        case ValidityEnum.ControllingNotShown:
+                        case ValidityEnum.ValidDisabled:
+                            this.toggle(dep, depRow, false, true);
+                            hidden = true;
+                            break;
                         case ValidityEnum.Valid:
-                            this.toggle(dep, depRow, false);
+                            this.toggle(dep, depRow, false, false);
                             hidden = true;
                             break;
                         default:
@@ -371,173 +368,102 @@ namespace YetaWF_ComponentsHTML {
                     }
                 }
                 if (!hidden) {
-                    var valid: boolean = false;
-                    for (let value of dep.ProcessValues) {
-                        var validity = this.getValidity(dep, value);
-                        if (validity === ValidityEnum.Valid) {
-                            valid = true;
+                    let validity: ValidityEnum = ValidityEnum.Valid;
+                    if (dep.ProcessValues.length > 0) {
+                        validity = ValidityEnum.Invalid;
+                        for (let expr of dep.ProcessValues) {
+                            let v = this.getValidity(form, dep, expr);
+                            switch (v) {
+                                case ValidityEnum.ValidDisabled:
+                                case ValidityEnum.Valid:
+                                    validity = ValidityEnum.Valid;
+                                    break;
+                                case ValidityEnum.InvalidDisabled:
+                                    if (validity === ValidityEnum.Invalid)
+                                        validity = ValidityEnum.InvalidDisabled;
+                                    break;
+                                case ValidityEnum.Invalid:
+                                    break;
+                                default:
+                                    break;
+                            }
+                            if (validity === ValidityEnum.Valid)
+                                break;
+                        }
+                    }
+                    switch (validity) {
+                        //case ValidityEnum.ValidDisabled:
+                        case ValidityEnum.Valid:
+                            this.toggle(dep, depRow, true, false);
                             break;
-                        }
-                    }
-                    this.toggle(dep, depRow, valid);
-                }
-            }
-        }
-        private toggle(dep: Dependent, depRow: HTMLElement, valid: boolean): void {
-            $YetaWF.Forms.clearValidation(depRow);
-            if (dep.Disable) {
-                $YetaWF.elementAndChildrenEnableToggle(depRow, valid);
-            } else {
-                if (valid) {
-                    depRow.style.display = "";
-                    $YetaWF.processActivateDivs([depRow]);// init any controls that just became visible
-                } else
-                    depRow.style.display = "none";
-            }
-            var affected = $YetaWF.getElementsBySelector("input,select,textarea", [depRow]);
-            if (valid) {
-                for (let e of affected)
-                    $YetaWF.elementRemoveClass(e, YConfigs.Forms.CssFormNoValidate);
-            } else {
-                for (let e of affected)
-                    $YetaWF.elementAddClass(e, YConfigs.Forms.CssFormNoValidate);
-            }
-        }
-
-        private getValidity(dep: Dependent, value: ValueEntry): ValidityEnum {
-            var valid = false; // we assume not valid unless we find a matching entry
-            // get the controlling control's value
-            var ctrlIndex = this.ControlData!.Controls.indexOf(value.ControlProp);
-            if (ctrlIndex < 0)
-                throw `Dependent ${dep.Prop} references controlling control ${value.ControlProp} which doesn't exist`;
-            var controlItem = this.ControllingControls[ctrlIndex];
-
-            var controlValue;
-            switch (controlItem.ControlType) {
-                case ControlTypeEnum.Input: {
-                    let inputElem = controlItem.Object as HTMLInputElement;
-                    let controlRow = $YetaWF.elementClosest(inputElem, ".t_row");
-                    if (controlRow.style.display === "") {
-                        if (inputElem.type.toLowerCase() === "checkbox") {
-                            controlValue = inputElem.checked ? "1" : "0";
-                        } else {
-                            controlValue = inputElem.value;
-                        }
-                        valid = true;
-                    }
-                    break;
-                 }
-                case ControlTypeEnum.Select: {
-                    let selectElem = controlItem.Object as HTMLSelectElement;
-                    let controlRow = $YetaWF.elementClosest(selectElem, ".t_row");
-                    if (controlRow.style.display === "") {
-                        controlValue = selectElem.value;
-                        valid = true;
-                    }
-                    break;
-                 }
-                case ControlTypeEnum.KendoSelect: {
-                    let dropdownList = controlItem.Object as DropDownListEditComponent;
-                    let controlRow = $YetaWF.elementClosest(dropdownList.Control, ".t_row");
-                    if (controlRow.style.display === "") {
-                        controlValue = dropdownList.value;
-                        valid = true;
-                    }
-                    break;
-                 }
-                case ControlTypeEnum.Hidden: {
-                    let hidden = controlItem.Object as DropDownListEditComponent;
-                    controlValue = hidden.value;
-                    switch (value.ValueType) {
-                        case ValueTypeEnum.EqualIntValue:
-                        case ValueTypeEnum.NotEqualIntValue:
-                            if (controlValue === "True")
-                                controlValue = true;
-                            else if (controlValue === "False")
-                                controlValue = false;
+                        case ValidityEnum.InvalidDisabled:
+                            this.toggle(dep, depRow, true, true);
+                            break;
+                        case ValidityEnum.Invalid:
+                            this.toggle(dep, depRow, false, false);
                             break;
                         default:
                             break;
                     }
-                    valid = true;
-                    break;
-                 }
-            }
-            if (!valid)
-                return ValidityEnum.ControllingNotShown;
-
-            if (valid) {
-                // test condition
-                switch (value.ValueType) {
-                    case ValueTypeEnum.EqualIntValue:
-                        // need one matching value
-                        var intValues = value.ValueObject as number[];
-                        var found = false;
-                        for (let intValue of intValues) {
-                            if (intValue === Number(controlValue)) {
-                                found = true;
-                                break;
-                            }
-                        }
-                        if (!found)
-                            valid = false;
-                        break;
-                    case ValueTypeEnum.EqualStringValue:
-                        // need one matching value
-                        var strValues = value.ValueObject as string[];
-                        var found = false;
-                        for (let strValue of strValues) {
-                            if (strValue === controlValue) {
-                                found = true;
-                                break;
-                            }
-                        }
-                        if (!found)
-                            valid = false;
-                        break;
-                    case ValueTypeEnum.NotEqualIntValue:
-                        // need one matching value
-                        var intValues = value.ValueObject as number[];
-                        var found = false;
-                        for (let intValue of intValues) {
-                            if (intValue !== Number(controlValue)) {
-                                found = true;
-                                break;
-                            }
-                        }
-                        if (!found)
-                            valid = false;
-                        break;
-                    case ValueTypeEnum.NotEqualStringValue:
-                        // need one matching value
-                        var strValues = value.ValueObject as string[];
-                        var found = false;
-                        for (let strValue of strValues) {
-                            if (strValue !== controlValue) {
-                                found = true;
-                                break;
-                            }
-                        }
-                        if (!found)
-                            valid = false;
-                        break;
-                    case ValueTypeEnum.EqualNonNull:
-                        if (!controlValue || controlValue.length === 0)
-                            valid = false;
-                        break;
-                    case ValueTypeEnum.EqualNull:
-                        if (controlValue)
-                            valid = false;
-                        break;
                 }
             }
-            return valid ? ValidityEnum.Valid : ValidityEnum.Invalid;
+        }
+        private toggle(dep: Dependent, depRow: HTMLElement, show: boolean, disable: boolean): void {
+            $YetaWF.Forms.clearValidation(depRow);
+            if (show) {
+                depRow.style.display = "";
+                $YetaWF.processActivateDivs([depRow]);// init any controls that just became visible
+            } else {
+                depRow.style.display = "none";
+            }
+            //var affected = $YetaWF.getElementsBySelector(`input[name='${dep.Prop}'], select[name='${dep.Prop}'], textarea[name='${dep.Prop}']`, [depRow]);
+            var affected = $YetaWF.getElementsBySelector("input,select,textarea", [depRow]);
+            if (show) {
+                if (disable) {
+                    for (let e of affected) {
+                        $YetaWF.elementEnableToggle(e, false);
+                        $YetaWF.elementAddClasses(e, [YConfigs.Forms.CssFormNoValidate, YConfigs.Forms.CssFormNoSubmit]);
+                    }
+                } else {
+                    for (let e of affected) {
+                        $YetaWF.elementEnableToggle(e, true);
+                        $YetaWF.elementRemoveClasses(e, [YConfigs.Forms.CssFormNoValidate, YConfigs.Forms.CssFormNoSubmit]);
+                    }
+                }
+            } else {
+                for (let e of affected) {
+                    $YetaWF.elementEnableToggle(e, false);
+                    $YetaWF.elementAddClasses(e, [YConfigs.Forms.CssFormNoValidate, YConfigs.Forms.CssFormNoSubmit]);
+                }
+            }
         }
 
-        public static isRowVisible(tag: HTMLElement): boolean {
-            var row = $YetaWF.elementClosestCond(tag, ".t_row");
-            if (!row) return false;
-            return row.style.display === "";
+        private getValidity(form: HTMLFormElement, dep: Dependent, exprEntry: ExprEntry): ValidityEnum {
+
+            for (let expr of exprEntry.ExprList) {
+                switch (exprEntry.Op) {
+                    case OpEnum.HideIf:
+                    case OpEnum.ProcessIf:
+                        if (ValidatorHelper.isExprValid(expr, form))
+                            return exprEntry.Disable ? ValidityEnum.ValidDisabled : ValidityEnum.Valid;
+                        break;
+                    case OpEnum.ProcessIfNot:
+                        if (!ValidatorHelper.isExprValid(expr, form))
+                            return exprEntry.Disable ? ValidityEnum.ValidDisabled : ValidityEnum.Valid;
+                    case OpEnum.ProcessIfSupplied:
+                        if (!ValidatorHelper.isExprSupplied(expr, form))
+                            return exprEntry.Disable ? ValidityEnum.ValidDisabled : ValidityEnum.Valid;
+                    case OpEnum.ProcessIfNotSupplied:
+                        if (ValidatorHelper.isExprSupplied(expr, form))
+                            return exprEntry.Disable ? ValidityEnum.ValidDisabled : ValidityEnum.Valid;
+                        if (ValidatorHelper.isExprValid(expr, form))
+                            return exprEntry.Disable ? ValidityEnum.ValidDisabled : ValidityEnum.Valid;
+                        break;
+                    default:
+                        throw `Invalid Op ${exprEntry.Op} in getValidity`;
+                }
+            }
+            return exprEntry.Disable ? ValidityEnum.InvalidDisabled : ValidityEnum.Invalid;
         }
 
         public static relayout(container:HTMLElement): void {

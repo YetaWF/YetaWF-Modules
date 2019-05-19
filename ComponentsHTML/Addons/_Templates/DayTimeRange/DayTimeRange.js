@@ -36,29 +36,29 @@ var YetaWF_ComponentsHTML;
                 this.Start2Div.style.display = "none";
                 this.End2Div.style.display = "none";
                 this.AddDiv.style.display = "none";
-                $YetaWF.elementAddClasses(this.Start, this.NoSubmit);
-                $YetaWF.elementAddClasses(this.End, this.NoSubmit);
-                $YetaWF.elementAddClasses(this.Start2, this.NoSubmit);
-                $YetaWF.elementAddClasses(this.End2, this.NoSubmit);
+                $YetaWF.elementAddClassList(this.Start, this.NoSubmit);
+                $YetaWF.elementAddClassList(this.End, this.NoSubmit);
+                $YetaWF.elementAddClassList(this.Start2, this.NoSubmit);
+                $YetaWF.elementAddClassList(this.End2, this.NoSubmit);
             }
             else {
                 this.StartDiv.style.display = "";
                 this.EndDiv.style.display = "";
                 this.AddDiv.style.display = "";
-                $YetaWF.elementRemoveClasses(this.Start, this.NoSubmit);
-                $YetaWF.elementRemoveClasses(this.End, this.NoSubmit);
+                $YetaWF.elementRemoveClassList(this.Start, this.NoSubmit);
+                $YetaWF.elementRemoveClassList(this.End, this.NoSubmit);
                 if (this.Additional.checked) {
                     this.Start2Div.style.display = "";
                     this.End2Div.style.display = "";
-                    $YetaWF.elementRemoveClasses(this.Start2, this.NoSubmit);
-                    $YetaWF.elementRemoveClasses(this.End2, this.NoSubmit);
+                    $YetaWF.elementRemoveClassList(this.Start2, this.NoSubmit);
+                    $YetaWF.elementRemoveClassList(this.End2, this.NoSubmit);
                     this.ClosedDiv.style.display = "none";
                 }
                 else {
                     this.Start2Div.style.display = "none";
                     this.End2Div.style.display = "none";
-                    $YetaWF.elementAddClasses(this.Start2, this.NoSubmit);
-                    $YetaWF.elementAddClasses(this.End2, this.NoSubmit);
+                    $YetaWF.elementAddClassList(this.Start2, this.NoSubmit);
+                    $YetaWF.elementAddClassList(this.End2, this.NoSubmit);
                     this.ClosedDiv.style.display = "";
                 }
             }
@@ -114,3 +114,5 @@ $.validator.addMethod("daytimerangefrom2", function (value, element, parameters)
     finally { }
     return false;
 });
+
+//# sourceMappingURL=DayTimeRange.js.map

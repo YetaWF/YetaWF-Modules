@@ -31,11 +31,11 @@ namespace YetaWF.Modules.Identity.Controllers {
         [Trim]
         public class AddModel {
             [Caption("Name"), Description("The name of the user")]
-            [UIHint("Text40"), SuppressIfEqual("RegistrationType", RegistrationTypeEnum.EmailOnly), StringLength(Globals.MaxUser), UserNameValidation, Required, Trim]
+            [UIHint("Text40"), SuppressIf("RegistrationType", RegistrationTypeEnum.EmailOnly), StringLength(Globals.MaxUser), UserNameValidation, Required, Trim]
             public string UserName { get; set; }
 
             [Caption("Email Address"), Description("The email address of this user")]
-            [UIHint("Email"), SuppressIfEqual("RegistrationType", RegistrationTypeEnum.NameOnly), StringLength(Globals.MaxEmail), EmailValidation, Required, Trim]
+            [UIHint("Email"), SuppressIf("RegistrationType", RegistrationTypeEnum.NameOnly), StringLength(Globals.MaxEmail), EmailValidation, Required, Trim]
             public string Email { get; set; }
 
             [Caption("Password"), Description("The password for this user")]

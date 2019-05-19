@@ -275,7 +275,8 @@ namespace YetaWF_ComponentsHTML {
                         numT.enable(enable);
                 } else if (elem.tagName === "SELECT") {
                     let dd = $(elem).data("kendoDropDownList");
-                    dd.enable(enable);
+                    if (dd)
+                        dd.enable(enable);
                 } else if (elem.tagName === "TEXTAREA") {
                     if (enable) {
                         elem.removeAttribute("readonly");

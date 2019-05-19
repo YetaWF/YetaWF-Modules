@@ -51,23 +51,23 @@ namespace YetaWF.Modules.UserSettings.Controllers {
             public bool ShowGridSearchToolbar { get; set; }
 
             [Caption("Show Page Ownership"), Description("Defines whether pages that can't be seen by anonymous users or regular users are shown with special background colors - Requires a skin that supports ownership display")]
-            [UIHint("Boolean"), SuppressIfEqual("ShowDevInfo", false)]
+            [UIHint("Boolean"), SuppressIf("ShowDevInfo", false)]
             public bool ShowPageOwnership { get; set; }
 
             [Caption("Show Module Ownership"), Description("Defines whether modules that can't be seen by anonymous users or regular users are shown with special background colors - Requires a skin that supports ownership display")]
-            [UIHint("Boolean"), SuppressIfEqual("ShowDevInfo", false)]
+            [UIHint("Boolean"), SuppressIf("ShowDevInfo", false)]
             public bool ShowModuleOwnership { get; set; }
 
             [Caption("Show Enum Values"), Description("Defines whether enumerated values (in dropdown lists) show their numeric value. Numeric values are typically only useful for programming purposes")]
-            [UIHint("Boolean"), SuppressIfEqual("ShowDevInfo", false)]
+            [UIHint("Boolean"), SuppressIf("ShowDevInfo", false)]
             public bool ShowEnumValue { get; set; }
 
             [Caption("Show Variables"), Description("Defines whether variable names are shown for properties and all available variables are listed on property pages. Variables are used for variable substitution in modules and pages and of course for programming purposes")]
-            [UIHint("Boolean"), SuppressIfEqual("ShowDevInfo", false)]
+            [UIHint("Boolean"), SuppressIf("ShowDevInfo", false)]
             public bool ShowVariables { get; set; }
 
             [Caption("Show Internal Data"), Description("Defines whether internal information is shown (e.g., ids)")]
-            [UIHint("Boolean"), SuppressIfEqual("ShowDevInfo", false)]
+            [UIHint("Boolean"), SuppressIf("ShowDevInfo", false)]
             public bool ShowInternals { get; set; }
 
             [Caption("Confirm Delete"), Description("Defines whether delete actions must be confirmed before items are deleted")]

@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using YetaWF.Core.Audit;
 using YetaWF.Core.DataProvider;
 using YetaWF.Core.DataProvider.Attributes;
 using YetaWF.Core.IO;
@@ -49,6 +50,12 @@ namespace YetaWF.Modules.Pages.DataProvider {
         /// Defines the skin that combines all pages into this Unified Page Set (used with SkinDynamicContent only).
         /// </summary>
         public SkinDefinition PageSkin { get; set; }
+
+        /// <summary>
+        /// Defines whether this Unified Page Set is currently disabled.
+        /// </summary>
+        [Data_NewValue]
+        public bool Disabled { get; set; }
 
         /// <summary>
         /// Defines how combined content is rendered.
@@ -149,9 +156,18 @@ namespace YetaWF.Modules.Pages.DataProvider {
             }
             unifiedSet.PageGuids = await UpdatePageGuidsAsync(unifiedSet.UnifiedSetGuid, unifiedSet.PageList);
             if (!await DataProvider.AddAsync(unifiedSet)) return false;
+
+            await Auditing.AddAuditAsync($"{nameof(UnifiedSetDataProvider)}.{nameof(AddItemAsync)}", Dataset, Guid.Empty,
+                $"Add UPS {unifiedSet.Name}",
+                DataBefore: null,
+                DataAfter: unifiedSet
+            );
             return true;
         }
         public async Task<UpdateStatusEnum> UpdateItemAsync(UnifiedSetData unifiedSet) {
+
+            UnifiedSetData origData = Auditing.Active ? await GetItemAsync(unifiedSet.UnifiedSetGuid) : null;
+
             unifiedSet.Updated = DateTime.UtcNow;
             if (unifiedSet.UnifiedMode == PageDefinition.UnifiedModeEnum.SkinDynamicContent) {
                 unifiedSet.PageList = new List<string>();
@@ -161,11 +177,26 @@ namespace YetaWF.Modules.Pages.DataProvider {
             unifiedSet.PageGuids = await UpdatePageGuidsAsync(unifiedSet.UnifiedSetGuid, unifiedSet.PageList);
             UpdateStatusEnum status = await DataProvider.UpdateAsync(unifiedSet.UnifiedSetGuid, unifiedSet.UnifiedSetGuid, unifiedSet);
             if (status != UpdateStatusEnum.OK) return status;
+
+            await Auditing.AddAuditAsync($"{nameof(UnifiedSetDataProvider)}.{nameof(UpdateItemAsync)}", Dataset, Guid.Empty,
+                $"Update UPS {unifiedSet.Name}",
+                DataBefore: origData,
+                DataAfter: unifiedSet
+            );
             return status;
         }
         public async Task<bool> RemoveItemAsync(Guid unifiedSetGuid) {
+
+            UnifiedSetData origData = Auditing.Active ? await GetItemAsync(unifiedSetGuid) : null;
+
             if (!await DataProvider.RemoveAsync(unifiedSetGuid)) return false;
             await RemoveGuidAsync(unifiedSetGuid);
+
+            await Auditing.AddAuditAsync($"{nameof(UnifiedSetDataProvider)}.{nameof(RemoveItemAsync)}", Dataset, Guid.Empty,
+                $"Remove UPS {unifiedSetGuid}",
+                DataBefore: origData,
+                DataAfter: null
+            );
             return true;
         }
         public async Task<DataProviderGetRecords<UnifiedSetData>> GetItemsAsync(int skip, int take, List<DataProviderSortInfo> sort, List<DataProviderFilterInfo> filters) {
@@ -184,6 +215,7 @@ namespace YetaWF.Modules.Pages.DataProvider {
                     if (unifiedSet != null) {
                         return new PageDefinition.UnifiedInfo {
                             UnifiedSetGuid = (Guid)unifiedSetGuid,
+                            Disabled = unifiedSet.Disabled,
                             MasterPageGuid = unifiedSet.MasterPageGuid,
                             PageGuids = unifiedSet.PageGuids,
                             Popups = unifiedSet.Popups,
@@ -214,6 +246,7 @@ namespace YetaWF.Modules.Pages.DataProvider {
                         UnifiedSetGuid = unifiedSet.UnifiedSetGuid,
                         MasterPageGuid = unifiedSet.MasterPageGuid,
                         PageGuids = new List<Guid>(),
+                        Disabled = unifiedSet.Disabled,
                         Popups = unifiedSet.Popups,
                         Animation = 0,
                         Mode = unifiedSet.UnifiedMode,

@@ -162,3 +162,5 @@ var YetaWF_ComponentsHTML;
         UrlEditComponent.clearDiv(tag, UrlEditComponent.SELECTOR);
     });
 })(YetaWF_ComponentsHTML || (YetaWF_ComponentsHTML = {}));
+
+//# sourceMappingURL=UrlEdit.js.map

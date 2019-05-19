@@ -260,7 +260,8 @@ var YetaWF_ComponentsHTML;
                 }
                 else if (elem.tagName === "SELECT") {
                     var dd = $(elem).data("kendoDropDownList");
-                    dd.enable(enable);
+                    if (dd)
+                        dd.enable(enable);
                 }
                 else if (elem.tagName === "TEXTAREA") {
                     if (enable) {
@@ -280,3 +281,5 @@ var YetaWF_ComponentsHTML;
 })(YetaWF_ComponentsHTML || (YetaWF_ComponentsHTML = {}));
 // tslint:disable-next-line:variable-name
 var YetaWF_BasicsImpl = new YetaWF_ComponentsHTML.BasicsImpl();
+
+//# sourceMappingURL=BasicsImpl.js.map

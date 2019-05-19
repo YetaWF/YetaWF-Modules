@@ -80,18 +80,13 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         internal class PropertyListEntry {
 
             public PropertyListEntry(string name, object value, string uiHint, bool editable, bool restricted, string textAbove, string textBelow, bool suppressEmpty,
-                    List<ProcessIfAttribute> procIfAttrs, List<ProcessIfNotAttribute> procIfNotAttrs, List<ProcessIfSuppliedAttribute> procIfSuppliedAttrs, List<ProcessIfNotSuppliedAttribute> procIfNotSuppliedAttrs,
-                    List<HideIfNotSuppliedAttribute> hideIfNotSuppliedAttrs,
+                    List<ExprAttribute> exprAttrs,
                     SubmitFormOnChangeAttribute.SubmitTypeEnum submit) {
                 Name = name; Value = value; Editable = editable;
                 Restricted = restricted;
                 TextAbove = textAbove; TextBelow = textBelow;
                 UIHint = uiHint;
-                ProcIfAttrs = procIfAttrs;
-                ProcIfNotAttrs = procIfNotAttrs;
-                ProcIfSuppliedAttrs = procIfSuppliedAttrs;
-                ProcIfNotSuppliedAttrs = procIfNotSuppliedAttrs;
-                HideIfNotSuppliedAttrs = hideIfNotSuppliedAttrs;
+                ExprAttrs = exprAttrs;
                 SuppressEmpty = suppressEmpty;
                 SubmitType = submit;
             }
@@ -104,11 +99,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             public string UIHint { get; private set; }
             public bool SuppressEmpty { get; private set; }
             public SubmitFormOnChangeAttribute.SubmitTypeEnum SubmitType { get; private set; }
-            public List<ProcessIfAttribute> ProcIfAttrs { get; set; }
-            public List<ProcessIfNotAttribute> ProcIfNotAttrs { get; set; }
-            public List<ProcessIfSuppliedAttribute> ProcIfSuppliedAttrs { get; set; }
-            public List<ProcessIfNotSuppliedAttribute> ProcIfNotSuppliedAttrs { get; set; }
-            public List<HideIfNotSuppliedAttribute> HideIfNotSuppliedAttrs { get; set; }
+            public List<ExprAttribute> ExprAttrs { get; set; }
         };
 
         // returns all properties for an object that have a description, in sorted order
@@ -126,7 +117,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                 if (!prop.PropInfo.CanRead) continue;
                 if (prop.UIHint != "Hidden")
                     continue;
-                properties.Add(new PropertyListEntry(prop.Name, prop.GetPropertyValue<object>(obj), "Hidden", false, false, null, null, false, null, null, null, null, null, SubmitFormOnChangeAttribute.SubmitTypeEnum.None));
+                properties.Add(new PropertyListEntry(prop.Name, prop.GetPropertyValue<object>(obj), "Hidden", false, false, null, null, false, null, SubmitFormOnChangeAttribute.SubmitTypeEnum.None));
             }
             return properties;
         }
@@ -183,16 +174,10 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             foreach (var prop in props) {
                 if (!string.IsNullOrWhiteSpace(category) && !prop.Categories.Contains(category))
                     continue;
-                SuppressIfEqualAttribute supp = prop.TryGetAttribute<SuppressIfEqualAttribute>();
-                if (supp != null) { // possibly suppress this property
-                    if (supp.IsEqual(obj))
-                        continue;// suppress this as requested
-                }
-                SuppressIfNotEqualAttribute suppn = prop.TryGetAttribute<SuppressIfNotEqualAttribute>();
-                if (suppn != null) { // possibly suppress this property
-                    if (suppn.IsNotEqual(obj))
-                        continue;// suppress this as requested
-                }
+
+                if (ExprAttribute.IsSuppressed(prop.ExprValidationAttributes, obj))
+                    continue;// suppress this as requested
+
                 bool editable = prop.PropInfo.CanWrite;
                 if (editable) {
                     if (prop.ReadOnly)
@@ -204,17 +189,6 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                 SubmitFormOnChangeAttribute submitFormOnChangeAttr = null;
                 submitFormOnChangeAttr = prop.TryGetAttribute<SubmitFormOnChangeAttribute>();
 
-                List<ProcessIfAttribute> procIfAttrs = new List<ProcessIfAttribute>();
-                procIfAttrs = prop.TryGetAttributes<ProcessIfAttribute>();
-                List<ProcessIfNotAttribute> procIfNotAttrs = new List<ProcessIfNotAttribute>();
-                procIfNotAttrs = prop.TryGetAttributes<ProcessIfNotAttribute>();
-                List<ProcessIfSuppliedAttribute> procIfSuppliedAttrs = new List<ProcessIfSuppliedAttribute>();
-                procIfSuppliedAttrs = prop.TryGetAttributes<ProcessIfSuppliedAttribute>();
-                List<ProcessIfNotSuppliedAttribute> procIfNotSuppliedAttrs = new List<ProcessIfNotSuppliedAttribute>();
-                procIfNotSuppliedAttrs = prop.TryGetAttributes<ProcessIfNotSuppliedAttribute>();
-                List<HideIfNotSuppliedAttribute> hideIfNotSuppliedAttrs = new List<HideIfNotSuppliedAttribute>();
-                hideIfNotSuppliedAttrs = prop.TryGetAttributes<HideIfNotSuppliedAttribute>();
-
                 bool restricted = false;
                 if (Manager.IsDemo) {
                     ExcludeDemoModeAttribute exclDemoAttr = prop.TryGetAttribute<ExcludeDemoModeAttribute>();
@@ -223,8 +197,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                 }
                 properties.Add(
                     new PropertyListEntry(prop.Name, prop.GetPropertyValue<object>(obj), prop.UIHint, editable, restricted, prop.TextAbove, prop.TextBelow,
-                        suppressEmptyAttr != null, procIfAttrs, procIfNotAttrs, procIfSuppliedAttrs, procIfNotSuppliedAttrs,
-                        hideIfNotSuppliedAttrs,
+                        suppressEmptyAttr != null, prop.ExprValidationAttributes,
                         submitFormOnChangeAttr != null ? submitFormOnChangeAttr.Value : SubmitFormOnChangeAttribute.SubmitTypeEnum.None)
                 );
             }

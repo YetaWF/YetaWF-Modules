@@ -33,17 +33,17 @@ namespace YetaWF.Modules.Messenger.Controllers {
             public string Message { get; set; }
 
             [Caption("Test Mode"), Description("Select to test sending a message to yourself (no other users will receive this message)")]
-            [UIHint("Boolean"), SuppressIfEqual("IsDemoMode", false), ReadOnly]
+            [UIHint("Boolean"), SuppressIf("IsDemoMode", false), ReadOnly]
             public bool TestModeDemo { get { return TestMode; } set { TestMode = value; } }
 
             [Caption("Test Mode"), Description("Select to test sending a message to yourself (no other users will receive this message)")]
-            [UIHint("Boolean"), SuppressIfEqual("IsDemoMode", true)]
+            [UIHint("Boolean"), SuppressIf("IsDemoMode", true)]
             public bool TestModeProd { get { return TestMode; } set { TestMode = value; } }
 
             public bool TestMode { get; set; }
 
             [Caption(" "), Description(" ")]
-            [UIHint("String"), SuppressIfEqual("IsDemoMode", false), ReadOnly]
+            [UIHint("String"), SuppressIf("IsDemoMode", false), ReadOnly]
             public string Description { get; set; }
 
             public bool IsDemoMode { get { return Manager.IsDemo; } }

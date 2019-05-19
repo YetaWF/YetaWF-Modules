@@ -14,38 +14,6 @@ $.validator.setDefaults({
 $.validator.unobtrusive.options = {
     errorElement: "label"
 };
-// SELECTIONREQUIRED
-// SELECTIONREQUIRED
-// SELECTIONREQUIRED
-$.validator.addMethod("selectionrequired", function (value, element, parameters) {
-    if ($YetaWF.elementHasClass(element, YConfigs.Forms.CssFormNoValidate))
-        return true;
-    if (value === undefined || value === null || value.trim().length === 0 || value.trim() === "0")
-        return false;
-    return true;
-});
-$.validator.unobtrusive.adapters.add("selectionrequired", [YConfigs.Forms.ConditionPropertyName, YConfigs.Forms.ConditionPropertyValue], function (options) {
-    options.rules["selectionrequired"] = {};
-    options.messages["selectionrequired"] = options.message;
-});
-// SELECTIONREQUIREDIF
-// SELECTIONREQUIREDIF
-$.validator.addMethod("selectionrequiredif", function (value, element, parameters) {
-    if (YetaWF_ComponentsHTML.ValidatorHelper.isCondAndDependentValue(value, element, parameters)) {
-        // if the condition is true, reuse the existing
-        // required field validator functionality
-        if (value === undefined || value === null || value.trim().length === 0 || value.trim() === "0")
-            return false;
-    }
-    return true;
-});
-$.validator.unobtrusive.adapters.add("selectionrequiredif", [YConfigs.Forms.ConditionPropertyName, YConfigs.Forms.ConditionPropertyValue], function (options) {
-    options.rules["selectionrequiredif"] = {
-        dependentproperty: options.params[YConfigs.Forms.ConditionPropertyName],
-        targetvalue: options.params[YConfigs.Forms.ConditionPropertyValue]
-    };
-    options.messages["selectionrequiredif"] = options.message;
-});
 // REQUIREDEXPR
 // REQUIREDEXPR
 // REQUIREDEXPR
@@ -58,40 +26,6 @@ $.validator.unobtrusive.adapters.add("requiredexpr", ["op", "json"], function (o
         exprList: JSON.parse(options.params["json"])
     };
     options.messages["requiredexpr"] = options.message;
-});
-// REQUIREDIFINRANGE
-// REQUIREDIFINRANGE
-// REQUIREDIFINRANGE
-$.validator.addMethod("requiredifinrange", function (value, element, parameters) {
-    if (YetaWF_ComponentsHTML.ValidatorHelper.isRangeValue(value, element, parameters)) {
-        // if the condition is true, reuse the existing
-        // required field validator functionality
-        return $.validator.methods.required.call(this, value, element, parameters);
-    }
-    return true;
-});
-$.validator.unobtrusive.adapters.add("requiredifinrange", [YConfigs.Forms.ConditionPropertyName, YConfigs.Forms.ConditionPropertyValueLow, YConfigs.Forms.ConditionPropertyValueHigh], function (options) {
-    options.rules["requiredifinrange"] = {
-        dependentproperty: options.params[YConfigs.Forms.ConditionPropertyName],
-        targetvaluelow: options.params[YConfigs.Forms.ConditionPropertyValueLow],
-        targetvaluehigh: options.params[YConfigs.Forms.ConditionPropertyValueHigh]
-    };
-    options.messages["requiredifinrange"] = options.message;
-});
-// REQUIREDIFSUPPLIED
-// REQUIREDIFSUPPLIED
-// REQUIREDIFSUPPLIED
-$.validator.addMethod("requiredifsupplied", function (value, element, parameters) {
-    if (YetaWF_ComponentsHTML.ValidatorHelper.isSuppliedValue(value, element, parameters)) {
-        return $.validator.methods.required.call(this, value, element, parameters);
-    }
-    return false;
-});
-$.validator.unobtrusive.adapters.add("requiredifsupplied", [YConfigs.Forms.ConditionPropertyName], function (options) {
-    options.rules["requiredifsupplied"] = {
-        dependentproperty: options.params[YConfigs.Forms.ConditionPropertyName]
-    };
-    options.messages["requiredifsupplied"] = options.message;
 });
 // SAMEAS
 // SAMEAS
@@ -124,25 +58,35 @@ var YetaWF_ComponentsHTML;
 (function (YetaWF_ComponentsHTML) {
     var OpEnum;
     (function (OpEnum) {
-        OpEnum[OpEnum["RequiredIf"] = 0] = "RequiredIf";
-        OpEnum[OpEnum["RequiredIfNot"] = 1] = "RequiredIfNot";
-        OpEnum[OpEnum["RequiredIfSupplied"] = 2] = "RequiredIfSupplied";
-        OpEnum[OpEnum["RequiredIfNotSupplied"] = 3] = "RequiredIfNotSupplied";
-        OpEnum[OpEnum["ProcessIf"] = 4] = "ProcessIf";
-        OpEnum[OpEnum["ProcessIfNot"] = 5] = "ProcessIfNot";
-        OpEnum[OpEnum["ProcessIfSupplied"] = 6] = "ProcessIfSupplied";
-        OpEnum[OpEnum["ProcessIfNotSupplied"] = 7] = "ProcessIfNotSupplied";
-        OpEnum[OpEnum["SuppressIf"] = 8] = "SuppressIf";
-        OpEnum[OpEnum["SuppressIfNot"] = 9] = "SuppressIfNot";
-        OpEnum[OpEnum["SuppressIfSupplied"] = 10] = "SuppressIfSupplied";
-        OpEnum[OpEnum["SuppressIfNotSupplied"] = 11] = "SuppressIfNotSupplied";
-        OpEnum[OpEnum["HideIfNotSupplied"] = 12] = "HideIfNotSupplied";
-    })(OpEnum || (OpEnum = {}));
+        OpEnum[OpEnum["Required"] = 0] = "Required";
+        OpEnum[OpEnum["RequiredIf"] = 1] = "RequiredIf";
+        OpEnum[OpEnum["RequiredIfNot"] = 2] = "RequiredIfNot";
+        OpEnum[OpEnum["RequiredIfSupplied"] = 3] = "RequiredIfSupplied";
+        OpEnum[OpEnum["RequiredIfNotSupplied"] = 4] = "RequiredIfNotSupplied";
+        OpEnum[OpEnum["SelectionRequired"] = 5] = "SelectionRequired";
+        OpEnum[OpEnum["SelectionRequiredIf"] = 6] = "SelectionRequiredIf";
+        OpEnum[OpEnum["SelectionRequiredIfNot"] = 7] = "SelectionRequiredIfNot";
+        OpEnum[OpEnum["SelectionRequiredIfSupplied"] = 8] = "SelectionRequiredIfSupplied";
+        OpEnum[OpEnum["SelectionRequiredIfNotSupplied"] = 9] = "SelectionRequiredIfNotSupplied";
+        OpEnum[OpEnum["SuppressIf"] = 10] = "SuppressIf";
+        OpEnum[OpEnum["SuppressIfNot"] = 11] = "SuppressIfNot";
+        OpEnum[OpEnum["SuppressIfSupplied"] = 12] = "SuppressIfSupplied";
+        OpEnum[OpEnum["SuppressIfNotSupplied"] = 13] = "SuppressIfNotSupplied";
+        OpEnum[OpEnum["ProcessIf"] = 14] = "ProcessIf";
+        OpEnum[OpEnum["ProcessIfNot"] = 15] = "ProcessIfNot";
+        OpEnum[OpEnum["ProcessIfSupplied"] = 16] = "ProcessIfSupplied";
+        OpEnum[OpEnum["ProcessIfNotSupplied"] = 17] = "ProcessIfNotSupplied";
+        OpEnum[OpEnum["HideIf"] = 18] = "HideIf";
+        OpEnum[OpEnum["HideIfNot"] = 19] = "HideIfNot";
+        OpEnum[OpEnum["HideIfSupplied"] = 20] = "HideIfSupplied";
+        OpEnum[OpEnum["HideIfNotSupplied"] = 21] = "HideIfNotSupplied";
+    })(OpEnum = YetaWF_ComponentsHTML.OpEnum || (YetaWF_ComponentsHTML.OpEnum = {}));
     var OpCond;
     (function (OpCond) {
-        OpCond[OpCond["Eq"] = 0] = "Eq";
-        OpCond[OpCond["NotEq"] = 1] = "NotEq";
-    })(OpCond || (OpCond = {}));
+        OpCond[OpCond["None"] = 0] = "None";
+        OpCond[OpCond["Eq"] = 1] = "Eq";
+        OpCond[OpCond["NotEq"] = 2] = "NotEq";
+    })(OpCond = YetaWF_ComponentsHTML.OpCond || (YetaWF_ComponentsHTML.OpCond = {}));
     var ValidatorHelper = /** @class */ (function () {
         function ValidatorHelper() {
         }
@@ -153,11 +97,23 @@ var YetaWF_ComponentsHTML;
                 var expr = exprList_1[_i];
                 switch (parameters.op) {
                     case OpEnum.RequiredIf:
+                    case OpEnum.SelectionRequiredIf:
                         if (!ValidatorHelper.isExprValid(expr, form))
                             return true;
                         break;
                     case OpEnum.RequiredIfNot:
+                    case OpEnum.SelectionRequiredIfNot:
                         if (ValidatorHelper.isExprValid(expr, form))
+                            return true;
+                        break;
+                    case OpEnum.RequiredIfSupplied:
+                    case OpEnum.SelectionRequiredIfSupplied:
+                        if (!ValidatorHelper.isExprSupplied(expr, form))
+                            return true;
+                        break;
+                    case OpEnum.RequiredIfNotSupplied:
+                    case OpEnum.SelectionRequiredIfNotSupplied:
+                        if (ValidatorHelper.isExprSupplied(expr, form))
                             return true;
                         break;
                     default:
@@ -165,9 +121,22 @@ var YetaWF_ComponentsHTML;
                 }
             }
             switch (parameters.op) {
+                case OpEnum.Required:
                 case OpEnum.RequiredIf:
                 case OpEnum.RequiredIfNot:
+                case OpEnum.RequiredIfSupplied:
+                case OpEnum.RequiredIfNotSupplied:
                     if (value === undefined || value === null || value.trim().length === 0)
+                        return false;
+                    break;
+                case OpEnum.SelectionRequired:
+                case OpEnum.SelectionRequiredIf:
+                case OpEnum.SelectionRequiredIfNot:
+                case OpEnum.SelectionRequiredIfSupplied:
+                case OpEnum.SelectionRequiredIfNotSupplied:
+                    if (value === undefined || value === null || value.trim().length === 0)
+                        return false;
+                    if (value.toString() === "0")
                         return false;
                     break;
                 default:
@@ -194,6 +163,12 @@ var YetaWF_ComponentsHTML;
                 default:
                     throw "Invalid Cond " + expr.Cond + " in isExprValid";
             }
+        };
+        ValidatorHelper.isExprSupplied = function (expr, form) {
+            var leftVal = ValidatorHelper.getPropertyVal(form, expr._Left);
+            if (!leftVal)
+                return false;
+            return true;
         };
         ValidatorHelper.getPropertyVal = function (form, name) {
             var ctrls = $YetaWF.getElementsBySelector("input[name=\"" + name + "\"],select[name=\"" + name + "\"]", [form]);
@@ -227,119 +202,6 @@ var YetaWF_ComponentsHTML;
                 throw "Unsupported tag " + tag; /*DEBUG*/
             }
             return actualValue;
-        };
-        //$$$$$$$$$$$$$$$
-        ValidatorHelper.isCondAndDependentValue = function (value, element, parameters) {
-            if ($YetaWF.elementHasClass(element, YConfigs.Forms.CssFormNoValidate))
-                return true;
-            // get the target value (as a string)
-            var condValue = parameters["targetvalue"];
-            var conditionvalue = (condValue === null ? "" : condValue).toString();
-            // Get value of the target control - we can"t use its Id because it could be non-unique, not predictable
-            // use the name attribute instead
-            // first, find the enclosing form
-            var form = $YetaWF.Forms.getForm(element);
-            var name = parameters["dependentproperty"];
-            var ctrls = $YetaWF.getElementsBySelector("input[name=\"" + name + "\"],select[name=\"" + name + "\"]", [form]);
-            if (ctrls.length < 1)
-                throw "No control found for name " + name; /*DEBUG*/
-            var ctrl = ctrls[0];
-            var tag = ctrl.tagName;
-            var controltype = ctrl.getAttribute("type");
-            if (ctrls.length >= 2) {
-                // for checkboxes there can be two controls by the same name (the second is a hidden control)
-                if (tag !== "INPUT" || controltype !== "checkbox")
-                    throw "Multiple controls found for name " + name; /*DEBUG*/
-            }
-            // handle all control types, e.g. radios, checkbox, input, etc.
-            var actualValue;
-            if (tag === "INPUT") {
-                // regular input control
-                if (controltype === "checkbox") {
-                    // checkbox
-                    actualValue = ctrl.checked ? "true" : "false";
-                    conditionvalue = conditionvalue.toLowerCase();
-                }
-                else {
-                    // other
-                    actualValue = ctrl.value.toLowerCase();
-                }
-            }
-            else if (tag === "SELECT") {
-                actualValue = ctrl.value;
-            }
-            else {
-                throw "Unsupported tag " + tag; /*DEBUG*/
-            }
-            if (conditionvalue.toLowerCase() === actualValue.toLowerCase())
-                return true;
-            return false;
-        };
-        ValidatorHelper.isRangeValue = function (value, element, parameters) {
-            if ($YetaWF.elementHasClass(element, YConfigs.Forms.CssFormNoValidate))
-                return true;
-            // get the target value (as a int as that's what the actual value will be)
-            var conditionvaluelow = parseInt(parameters["targetvaluelow"], 10);
-            var conditionvaluehigh = parseInt(parameters["targetvaluehigh"], 10);
-            // Get value of the target control - we can't use its Id because it could be non-unique, not predictable
-            // use the name attribute instead
-            // first, find the enclosing form
-            var form = $YetaWF.Forms.getForm(element);
-            var name = parameters["dependentproperty"];
-            var ctrls = $YetaWF.getElementsBySelector("input[name=\"" + name + "\"],select[name=\"" + name + "\"]", [form]);
-            if (ctrls.length < 1)
-                throw "No control found for name " + name; /*DEBUG*/
-            if (ctrls.length > 1)
-                throw "Multiple controls found for name " + name; /*DEBUG*/
-            var ctrl = ctrls[0];
-            var tag = ctrl.tagName;
-            // handle all control types, e.g. radios, checkbox, input, etc.
-            var actualValue;
-            if (tag === "INPUT") {
-                // regular input control
-                actualValue = Number(ctrl.value);
-            }
-            else if (tag === "SELECT") {
-                actualValue = Number(ctrl.value);
-            }
-            else {
-                throw "Unsupported tag " + tag; /*DEBUG*/
-            }
-            if (actualValue >= conditionvaluelow && actualValue <= conditionvaluehigh)
-                return true;
-            return false;
-        };
-        ValidatorHelper.isSuppliedValue = function (value, element, parameters) {
-            if ($YetaWF.elementHasClass(element, YConfigs.Forms.CssFormNoValidate))
-                return true;
-            // Get value of the target control - we can't use its Id because it could be non-unique, not predictable
-            // use the name attribute instead
-            // first, find the enclosing form
-            var form = $YetaWF.Forms.getForm(element);
-            var name = parameters["dependentproperty"];
-            var ctrls = $YetaWF.getElementsBySelector("input[name=\"" + name + "\"],select[name=\"" + name + "\"]", [form]);
-            if (ctrls.length < 1)
-                throw "No control found for name " + name; /*DEBUG*/
-            if (ctrls.length > 1)
-                throw "Multiple controls found for name " + name; /*DEBUG*/
-            var ctrl = ctrls[0];
-            var tag = ctrl.tagName;
-            // handle all control types, e.g. radios, checkbox, input, etc.
-            var actualValue;
-            if (tag === "INPUT") {
-                actualValue = ctrl.value.trim();
-            }
-            else if (tag === "SELECT") {
-                actualValue = ctrl.value;
-                if (actualValue === "0")
-                    actualValue = "";
-            }
-            else {
-                throw "Unsupported tag " + tag; /*DEBUG*/
-            }
-            if (actualValue !== undefined && actualValue !== "")
-                return true;
-            return false;
         };
         ValidatorHelper.isSameValue = function (value, element, parameters) {
             if ($YetaWF.elementHasClass(element, YConfigs.Forms.CssFormNoValidate))
@@ -375,3 +237,5 @@ var YetaWF_ComponentsHTML;
     }());
     YetaWF_ComponentsHTML.ValidatorHelper = ValidatorHelper;
 })(YetaWF_ComponentsHTML || (YetaWF_ComponentsHTML = {}));
+
+//# sourceMappingURL=validation.js.map

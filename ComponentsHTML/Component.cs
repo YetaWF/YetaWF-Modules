@@ -130,7 +130,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             return null;
         }
         private void AddValidation(YTagBuilder tagBuilder) {
-            foreach (YIClientValidation val in PropData.ValidationAttributes) {
+            foreach (YIClientValidation val in PropData.ClientValidationAttributes) {
                 val.AddValidation(Container, PropData, tagBuilder);
             }
             // add some default validations

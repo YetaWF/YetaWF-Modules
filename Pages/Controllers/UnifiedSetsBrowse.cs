@@ -45,6 +45,10 @@ namespace YetaWF.Modules.Pages.Controllers {
             [UIHint("String"), ReadOnly]
             public string Name { get; set; }
 
+            [Caption("Disabled"), Description("Defines whether the Unified Page Set is disabled")]
+            [UIHint("Boolean"), ReadOnly]
+            public bool Disabled { get; set; }
+
             [Caption("Mode"), Description("Defines how page content is combined")]
             [UIHint("Enum"), ReadOnly]
             public PageDefinition.UnifiedModeEnum UnifiedMode { get; set; }

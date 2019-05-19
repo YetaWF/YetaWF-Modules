@@ -26,11 +26,11 @@ namespace YetaWF.Modules.Identity.Controllers {
             public int UserId { get; set; }
 
             [Caption("Superuser"), Description("If a superuser was signed on previously in this session, the superuser status remains even if logged in as another user - Uncheck to turn off superuser mode for this session")]
-            [UIHint("Boolean"), SuppressIfNotEqual("SuperuserStillActive", true), SubmitFormOnChange]
+            [UIHint("Boolean"), SuppressIfNot("SuperuserStillActive", true), SubmitFormOnChange]
             public bool? SuperuserStillActive { get; set; }
 
             [Caption("Superuser"), Description("The currently logged on user is a superuser")]
-            [UIHint("Boolean"), SuppressIfEqual("SuperuserCurrent", false), ReadOnly]
+            [UIHint("Boolean"), SuppressIf("SuperuserCurrent", false), ReadOnly]
             public bool SuperuserCurrent { get; set; }
 
             public SerializableList<User> UserId_List { get; set; }

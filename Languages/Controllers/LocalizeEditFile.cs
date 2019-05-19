@@ -32,21 +32,21 @@ namespace YetaWF.Modules.Languages.Controllers {
             public string Comment { get; set; }
 
             [Caption("Classes"), Description("Shows all the localizable string fragments found in class properties and the class's Header, Footer and Legend attributes")]
-            [UIHint("YetaWF_Languages_LocalizeClasses"), SuppressIfEqual("ClassCount", 0)]
+            [UIHint("YetaWF_Languages_LocalizeClasses"), SuppressIf("ClassCount", 0)]
             public SerializableList<LocalizationData.ClassData> Classes { get; set; }
             [Caption("Enums"), Description("Shows all the localizable string fragments found in EnumDescription attributes")]
-            [UIHint("YetaWF_Languages_LocalizeEnums"), SuppressIfEqual("EnumCount", 0)]
+            [UIHint("YetaWF_Languages_LocalizeEnums"), SuppressIf("EnumCount", 0)]
             public SerializableList<LocalizationData.EnumData> Enums { get; set; }
             [Caption("Strings"), Description("Shows all the localizable string fragments found in __ResStr() calls")]
-            [UIHint("YetaWF_Languages_LocalizeStrings"), SuppressIfEqual("StringCount", 0)]
+            [UIHint("YetaWF_Languages_LocalizeStrings"), SuppressIf("StringCount", 0)]
             public SerializableList<LocalizationData.StringData> Strings { get; set; }
 
             [Caption("Custom"), Description("Defines whether localization strings are saved as customizations (in ./LocalizationCustom) or as package installed resources (./Localization) - Only non US-English resources can be saved as package installed resources")]
-            [UIHint("Boolean"), SuppressIfEqual("ForceCustom", true)]
+            [UIHint("Boolean"), SuppressIf("ForceCustom", true)]
             public bool Custom { get; set; }
 
             [Caption("Custom"), Description("Defines whether localization strings are saved as customizations (in ./LocalizationCustom) or as package installed resources (./Localization) - Only non US-English resources can be saved as package installed resources")]
-            [UIHint("Boolean"), SuppressIfEqual("ForceCustom", false), ReadOnly]
+            [UIHint("Boolean"), SuppressIf("ForceCustom", false), ReadOnly]
             public bool CustomRO { get; set; }
 
             public int ClassCount { get { return Classes.Count; } }

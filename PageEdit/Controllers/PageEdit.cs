@@ -59,7 +59,7 @@ namespace YetaWF.Modules.PageEdit.Controllers {
             public bool WantSearch { get; set; }
 
             [Category("Variables"), Caption("Temporary"), Description("Defines whether the current page is a temporary (generated) page")]
-            [UIHint("Boolean"), ReadOnly, SuppressIfEqual("Debug", false)]
+            [UIHint("Boolean"), ReadOnly, SuppressIf("Debug", false)]
             public bool Temporary { get; set; }
 
             public bool Debug {

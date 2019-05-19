@@ -103,12 +103,12 @@ namespace YetaWF.Modules.Dashboard.Controllers {
 
             [Caption("Auditing Active"), Description("Defines whether auditing is active (enabled using appsettings.json)")]
             [UIHint("Boolean"), ReadOnly]
-            [SuppressIfEqual("AuditingActive", true)]
+            [SuppressIf("AuditingActive", true)]
             public bool AuditingActive { get { return YetaWF.Core.Audit.Auditing.Active; } }
 
             [Caption(""), Description("")] // empty entries required so property is shown in property list (but with a suppressed label)
             [UIHint("Grid"), ReadOnly]
-            [SuppressIfEqual("AuditingActive", false)]
+            [SuppressIf("AuditingActive", false)]
             public GridDefinition GridDef { get; set; }
         }
         private GridDefinition GetGridModel() {

@@ -158,3 +158,5 @@ var YetaWF_ComponentsHTML;
         MultiStringEditComponent.clearDiv(tag, MultiStringEditComponent.SELECTOR);
     });
 })(YetaWF_ComponentsHTML || (YetaWF_ComponentsHTML = {}));
+
+//# sourceMappingURL=MultiStringEdit.js.map

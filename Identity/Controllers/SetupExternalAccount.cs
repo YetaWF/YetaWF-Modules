@@ -38,7 +38,7 @@ namespace YetaWF.Modules.Identity.Controllers {
             public string UserName { get; set; }
 
             [Caption("Email Address"), Description("Enter your email address to register - this is the email address used by this site to communicate with you")]
-            [UIHint("Email"), SuppressIfEqual("RegistrationType", RegistrationTypeEnum.NameOnly), StringLength(Globals.MaxEmail), EmailValidation, Required, Trim]
+            [UIHint("Email"), SuppressIf("RegistrationType", RegistrationTypeEnum.NameOnly), StringLength(Globals.MaxEmail), EmailValidation, Required, Trim]
             public string Email { get; set; }
 
             [UIHint("Hidden")]

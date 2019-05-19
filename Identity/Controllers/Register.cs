@@ -38,11 +38,11 @@ namespace YetaWF.Modules.Identity.Controllers {
             }
 
             [Caption("User Name"), Description("Enter your user name to register")]
-            [UIHint("Text40"), SuppressIfEqual("RegistrationType", RegistrationTypeEnum.EmailOnly), StringLength(Globals.MaxUser), UserNameValidation, Required, Trim]
+            [UIHint("Text40"), SuppressIf("RegistrationType", RegistrationTypeEnum.EmailOnly), StringLength(Globals.MaxUser), UserNameValidation, Required, Trim]
             public string UserName { get; set; }
 
             [Caption("Email Address"), Description("Enter your email address to register - this is the email address used by this site to communicate with you")]
-            [UIHint("Email"), SuppressIfEqual("RegistrationType", RegistrationTypeEnum.NameOnly), StringLength(Globals.MaxEmail), EmailValidation, Required, Trim]
+            [UIHint("Email"), SuppressIf("RegistrationType", RegistrationTypeEnum.NameOnly), StringLength(Globals.MaxEmail), EmailValidation, Required, Trim]
             public string Email { get; set; }
 
             [Caption("Password"), Description("Enter your desired password")]
@@ -54,7 +54,7 @@ namespace YetaWF.Modules.Identity.Controllers {
             public string ConfirmPassword { get; set; }
 
             [Caption("Captcha"), Description("Please verify that you're a human and not a spam bot")]
-            [UIHint("RecaptchaV2"), RecaptchaV2("Please verify that you're a human and not a spam bot"), SuppressIfEqual("ShowCaptcha", false)]
+            [UIHint("RecaptchaV2"), RecaptchaV2("Please verify that you're a human and not a spam bot"), SuppressIf("ShowCaptcha", false)]
             public RecaptchaV2Data Captcha { get; set; }
 
             [UIHint("Hidden")]

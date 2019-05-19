@@ -31,7 +31,7 @@ namespace YetaWF.Modules.Identity.Controllers {
             public string Email { get; set; }
 
             [Caption("Captcha"), Description("Please verify that you're a human and not a spam bot")]
-            [UIHint("RecaptchaV2"), RecaptchaV2("Please verify that you're a human and not a spam bot"), SuppressIfEqual("ShowCaptcha", false)]
+            [UIHint("RecaptchaV2"), RecaptchaV2("Please verify that you're a human and not a spam bot"), SuppressIf("ShowCaptcha", false)]
             public RecaptchaV2Data Captcha { get; set; }
             [UIHint("Hidden")]
             public bool ShowCaptcha { get; set; }

@@ -50,38 +50,38 @@ namespace YetaWF.Modules.UserProfile.Controllers {
 
             // US - United States
             [Caption("City"), Description("The city portion of your mailing address")]
-            [UIHint("Text40"), StringLength(UserInfo.MaxCity), Trim, Required, SuppressIfNotEqual("AddressType", CountryISO3166.Country.US)]
+            [UIHint("Text40"), StringLength(UserInfo.MaxCity), Trim, Required, SuppressIfNot("AddressType", CountryISO3166.Country.US)]
             public string CityUS { get; set; }
             [Caption("State"), Description("The state of your mailing address")]
-            [UIHint("USState"), StringLength(UserInfo.MaxState), Trim, Required, SuppressIfNotEqual("AddressType", CountryISO3166.Country.US)]
+            [UIHint("USState"), StringLength(UserInfo.MaxState), Trim, Required, SuppressIfNot("AddressType", CountryISO3166.Country.US)]
             public string StateUS { get; set; }
             [Caption("ZIP Code"), Description("The ZIP code of your mailing address - Use format 00000 or 00000-0000")]
-            [UIHint("Text10"), StringLength(UserInfo.MaxZip), Trim, Required, SuppressIfNotEqual("AddressType", CountryISO3166.Country.US)]
+            [UIHint("Text10"), StringLength(UserInfo.MaxZip), Trim, Required, SuppressIfNot("AddressType", CountryISO3166.Country.US)]
             [ZipCodeValidation]
             public string ZipUS { get; set; }
 
             // Zip1 - Postal code first
             [Caption("Postal Code"), Description("The postal code for your mailing address")]
-            [UIHint("Text20"), StringLength(UserInfo.MaxZip), Trim, Required, SuppressIfNotEqual("AddressType", CountryISO3166.Country.Zip1)]
+            [UIHint("Text20"), StringLength(UserInfo.MaxZip), Trim, Required, SuppressIfNot("AddressType", CountryISO3166.Country.Zip1)]
             public string ZipZip1 { get; set; }
             [Caption("City"), Description("The city portion of your mailing address")]
-            [UIHint("Text40"), StringLength(UserInfo.MaxCity), Trim, Required, SuppressIfNotEqual("AddressType", CountryISO3166.Country.Zip1)]
+            [UIHint("Text40"), StringLength(UserInfo.MaxCity), Trim, Required, SuppressIfNot("AddressType", CountryISO3166.Country.Zip1)]
             public string CityZip1 { get; set; }
 
             // ZipLast - Postal code last
             [Caption("City"), Description("The city portion of your mailing address")]
-            [UIHint("Text40"), StringLength(UserInfo.MaxCity), Trim, Required, SuppressIfNotEqual("AddressType", CountryISO3166.Country.ZipLast)]
+            [UIHint("Text40"), StringLength(UserInfo.MaxCity), Trim, Required, SuppressIfNot("AddressType", CountryISO3166.Country.ZipLast)]
             public string CityZipLast { get; set; }
             [Caption("Postal Code"), Description("The postal code of your mailing address")]
-            [UIHint("Text20"), StringLength(UserInfo.MaxZip), Trim, Required, SuppressIfNotEqual("AddressType", CountryISO3166.Country.ZipLast)]
+            [UIHint("Text20"), StringLength(UserInfo.MaxZip), Trim, Required, SuppressIfNot("AddressType", CountryISO3166.Country.ZipLast)]
             public string ZipZipLast { get; set; }
 
             // Generic
             [Caption("City"), Description("The city portion of your mailing address")]
-            [UIHint("Text40"), StringLength(UserInfo.MaxCity), Trim, Required, SuppressIfNotEqual("AddressType", CountryISO3166.Country.Generic)]
+            [UIHint("Text40"), StringLength(UserInfo.MaxCity), Trim, Required, SuppressIfNot("AddressType", CountryISO3166.Country.Generic)]
             public string CityGeneric { get; set; }
             [Caption("Postal Code"), Description("The postal code of your mailing address")]
-            [UIHint("Text20"), StringLength(UserInfo.MaxZip), Trim, Required, SuppressIfNotEqual("AddressType", CountryISO3166.Country.Generic)]
+            [UIHint("Text20"), StringLength(UserInfo.MaxZip), Trim, Required, SuppressIfNot("AddressType", CountryISO3166.Country.Generic)]
             public string ZIPGeneric { get; set; }
 
 #if EXAMPLE
@@ -91,10 +91,10 @@ namespace YetaWF.Modules.UserProfile.Controllers {
             // doesn't have to match the country id.
             // Germany+DE+DEU+276+DE  instead of  Germany+DE+DEU+276+Zip1
             [Caption("PLZ"), Description("The Postleitzahl for your mailing address")]
-            [UIHint("Text10"), StringLength(5), Trim, Required, SuppressIfNotEqual("AddressType", "DE")]
+            [UIHint("Text10"), StringLength(5), Trim, Required, SuppressIfNot("AddressType", "DE")]
             public string ZipDE { get; set; }
             [Caption("City"), Description("The city for your mailing address")]
-            [UIHint("Text20"), StringLength(UserInfo.MaxCity), Trim, Required, SuppressIfNotEqual("AddressType", "DE")]
+            [UIHint("Text20"), StringLength(UserInfo.MaxCity), Trim, Required, SuppressIfNot("AddressType", "DE")]
             public string CityDE { get; set; }
 #endif
             [Caption("Telephone Number"), Description("Your telephone number - please include country code and extension if necessary")]

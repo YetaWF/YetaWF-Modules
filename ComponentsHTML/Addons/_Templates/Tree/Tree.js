@@ -593,3 +593,5 @@ var YetaWF_ComponentsHTML;
         YetaWF.ComponentBaseDataImpl.clearDiv(tag, TreeComponent.SELECTOR);
     });
 })(YetaWF_ComponentsHTML || (YetaWF_ComponentsHTML = {}));
+
+//# sourceMappingURL=Tree.js.map

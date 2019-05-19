@@ -15,20 +15,12 @@ var __extends = (this && this.__extends) || (function () {
 })();
 var YetaWF_ComponentsHTML;
 (function (YetaWF_ComponentsHTML) {
-    var ValueTypeEnum;
-    (function (ValueTypeEnum) {
-        ValueTypeEnum[ValueTypeEnum["EqualIntValue"] = 0] = "EqualIntValue";
-        ValueTypeEnum[ValueTypeEnum["EqualStringValue"] = 1] = "EqualStringValue";
-        ValueTypeEnum[ValueTypeEnum["NotEqualIntValue"] = 10] = "NotEqualIntValue";
-        ValueTypeEnum[ValueTypeEnum["NotEqualStringValue"] = 11] = "NotEqualStringValue";
-        ValueTypeEnum[ValueTypeEnum["EqualNull"] = 100] = "EqualNull";
-        ValueTypeEnum[ValueTypeEnum["EqualNonNull"] = 101] = "EqualNonNull";
-    })(ValueTypeEnum || (ValueTypeEnum = {}));
     var ValidityEnum;
     (function (ValidityEnum) {
-        ValidityEnum[ValidityEnum["ControllingNotShown"] = 0] = "ControllingNotShown";
-        ValidityEnum[ValidityEnum["Valid"] = 1] = "Valid";
+        ValidityEnum[ValidityEnum["Valid"] = 0] = "Valid";
+        ValidityEnum[ValidityEnum["ValidDisabled"] = 1] = "ValidDisabled";
         ValidityEnum[ValidityEnum["Invalid"] = 2] = "Invalid";
+        ValidityEnum[ValidityEnum["InvalidDisabled"] = 3] = "InvalidDisabled";
     })(ValidityEnum || (ValidityEnum = {}));
     var ControlTypeEnum;
     (function (ControlTypeEnum) {
@@ -169,7 +161,7 @@ var YetaWF_ComponentsHTML;
             var boxes = $YetaWF.getElementsBySelector(".t_proptable", [this.Control]);
             for (var _i = 0, boxes_1 = boxes; _i < boxes_1.length; _i++) {
                 var b = boxes_1[_i];
-                $YetaWF.elementRemoveClasses(b, "t_propexpanded t_propcollapsed t_prophide");
+                $YetaWF.elementRemoveClasses(b, ["t_propexpanded", "t_propcollapsed", "t_prophide"]);
                 $YetaWF.elementAddClass(b, "t_propcollapsed");
             }
             // show apply/save/cancel buttons again
@@ -179,7 +171,7 @@ var YetaWF_ComponentsHTML;
             var boxes = $YetaWF.getElementsBySelector(".t_proptable", [this.Control]);
             for (var _i = 0, boxes_2 = boxes; _i < boxes_2.length; _i++) {
                 var b = boxes_2[_i];
-                $YetaWF.elementRemoveClasses(b, "t_propexpanded t_propcollapsed");
+                $YetaWF.elementRemoveClasses(b, ["t_propexpanded", "t_propcollapsed"]);
                 if (b !== box)
                     $YetaWF.elementAddClass(b, "t_prophide");
             }
@@ -267,6 +259,7 @@ var YetaWF_ComponentsHTML;
         PropertyListComponent.prototype.update = function () {
             if (!this.ControlData)
                 return;
+            var form = $YetaWF.Forms.getForm(this.Control);
             // for each dependent, verify that all its conditions are true
             var deps = this.ControlData.Dependents;
             for (var _i = 0, deps_1 = deps; _i < deps_1.length; _i++) {
@@ -276,12 +269,15 @@ var YetaWF_ComponentsHTML;
                     continue;
                 var hidden = false;
                 for (var _a = 0, _b = dep.HideValues; _a < _b.length; _a++) { // hidden hides only, it never makes it visible (use process for that instead)
-                    var value = _b[_a];
-                    var validity = this.getValidity(dep, value);
+                    var expr = _b[_a];
+                    var validity = this.getValidity(form, dep, expr);
                     switch (validity) {
-                        case ValidityEnum.ControllingNotShown:
+                        case ValidityEnum.ValidDisabled:
+                            this.toggle(dep, depRow, false, true);
+                            hidden = true;
+                            break;
                         case ValidityEnum.Valid:
-                            this.toggle(dep, depRow, false);
+                            this.toggle(dep, depRow, false, false);
                             hidden = true;
                             break;
                         default:
@@ -289,183 +285,108 @@ var YetaWF_ComponentsHTML;
                     }
                 }
                 if (!hidden) {
-                    var valid = false;
-                    for (var _c = 0, _d = dep.ProcessValues; _c < _d.length; _c++) {
-                        var value = _d[_c];
-                        var validity = this.getValidity(dep, value);
-                        if (validity === ValidityEnum.Valid) {
-                            valid = true;
+                    var validity = ValidityEnum.Valid;
+                    if (dep.ProcessValues.length > 0) {
+                        validity = ValidityEnum.Invalid;
+                        for (var _c = 0, _d = dep.ProcessValues; _c < _d.length; _c++) {
+                            var expr = _d[_c];
+                            var v = this.getValidity(form, dep, expr);
+                            switch (v) {
+                                case ValidityEnum.ValidDisabled:
+                                case ValidityEnum.Valid:
+                                    validity = ValidityEnum.Valid;
+                                    break;
+                                case ValidityEnum.InvalidDisabled:
+                                    if (validity === ValidityEnum.Invalid)
+                                        validity = ValidityEnum.InvalidDisabled;
+                                    break;
+                                case ValidityEnum.Invalid:
+                                    break;
+                                default:
+                                    break;
+                            }
+                            if (validity === ValidityEnum.Valid)
+                                break;
+                        }
+                    }
+                    switch (validity) {
+                        //case ValidityEnum.ValidDisabled:
+                        case ValidityEnum.Valid:
+                            this.toggle(dep, depRow, true, false);
                             break;
-                        }
-                    }
-                    this.toggle(dep, depRow, valid);
-                }
-            }
-        };
-        PropertyListComponent.prototype.toggle = function (dep, depRow, valid) {
-            $YetaWF.Forms.clearValidation(depRow);
-            if (dep.Disable) {
-                $YetaWF.elementAndChildrenEnableToggle(depRow, valid);
-            }
-            else {
-                if (valid) {
-                    depRow.style.display = "";
-                    $YetaWF.processActivateDivs([depRow]); // init any controls that just became visible
-                }
-                else
-                    depRow.style.display = "none";
-            }
-            var affected = $YetaWF.getElementsBySelector("input,select,textarea", [depRow]);
-            if (valid) {
-                for (var _i = 0, affected_1 = affected; _i < affected_1.length; _i++) {
-                    var e = affected_1[_i];
-                    $YetaWF.elementRemoveClass(e, YConfigs.Forms.CssFormNoValidate);
-                }
-            }
-            else {
-                for (var _a = 0, affected_2 = affected; _a < affected_2.length; _a++) {
-                    var e = affected_2[_a];
-                    $YetaWF.elementAddClass(e, YConfigs.Forms.CssFormNoValidate);
-                }
-            }
-        };
-        PropertyListComponent.prototype.getValidity = function (dep, value) {
-            var valid = false; // we assume not valid unless we find a matching entry
-            // get the controlling control's value
-            var ctrlIndex = this.ControlData.Controls.indexOf(value.ControlProp);
-            if (ctrlIndex < 0)
-                throw "Dependent " + dep.Prop + " references controlling control " + value.ControlProp + " which doesn't exist";
-            var controlItem = this.ControllingControls[ctrlIndex];
-            var controlValue;
-            switch (controlItem.ControlType) {
-                case ControlTypeEnum.Input: {
-                    var inputElem = controlItem.Object;
-                    var controlRow = $YetaWF.elementClosest(inputElem, ".t_row");
-                    if (controlRow.style.display === "") {
-                        if (inputElem.type.toLowerCase() === "checkbox") {
-                            controlValue = inputElem.checked ? "1" : "0";
-                        }
-                        else {
-                            controlValue = inputElem.value;
-                        }
-                        valid = true;
-                    }
-                    break;
-                }
-                case ControlTypeEnum.Select: {
-                    var selectElem = controlItem.Object;
-                    var controlRow = $YetaWF.elementClosest(selectElem, ".t_row");
-                    if (controlRow.style.display === "") {
-                        controlValue = selectElem.value;
-                        valid = true;
-                    }
-                    break;
-                }
-                case ControlTypeEnum.KendoSelect: {
-                    var dropdownList = controlItem.Object;
-                    var controlRow = $YetaWF.elementClosest(dropdownList.Control, ".t_row");
-                    if (controlRow.style.display === "") {
-                        controlValue = dropdownList.value;
-                        valid = true;
-                    }
-                    break;
-                }
-                case ControlTypeEnum.Hidden: {
-                    var hidden = controlItem.Object;
-                    controlValue = hidden.value;
-                    switch (value.ValueType) {
-                        case ValueTypeEnum.EqualIntValue:
-                        case ValueTypeEnum.NotEqualIntValue:
-                            if (controlValue === "True")
-                                controlValue = true;
-                            else if (controlValue === "False")
-                                controlValue = false;
+                        case ValidityEnum.InvalidDisabled:
+                            this.toggle(dep, depRow, true, true);
+                            break;
+                        case ValidityEnum.Invalid:
+                            this.toggle(dep, depRow, false, false);
                             break;
                         default:
                             break;
                     }
-                    valid = true;
-                    break;
                 }
             }
-            if (!valid)
-                return ValidityEnum.ControllingNotShown;
-            if (valid) {
-                // test condition
-                switch (value.ValueType) {
-                    case ValueTypeEnum.EqualIntValue:
-                        // need one matching value
-                        var intValues = value.ValueObject;
-                        var found = false;
-                        for (var _i = 0, intValues_1 = intValues; _i < intValues_1.length; _i++) {
-                            var intValue = intValues_1[_i];
-                            if (intValue === Number(controlValue)) {
-                                found = true;
-                                break;
-                            }
-                        }
-                        if (!found)
-                            valid = false;
-                        break;
-                    case ValueTypeEnum.EqualStringValue:
-                        // need one matching value
-                        var strValues = value.ValueObject;
-                        var found = false;
-                        for (var _a = 0, strValues_1 = strValues; _a < strValues_1.length; _a++) {
-                            var strValue = strValues_1[_a];
-                            if (strValue === controlValue) {
-                                found = true;
-                                break;
-                            }
-                        }
-                        if (!found)
-                            valid = false;
-                        break;
-                    case ValueTypeEnum.NotEqualIntValue:
-                        // need one matching value
-                        var intValues = value.ValueObject;
-                        var found = false;
-                        for (var _b = 0, intValues_2 = intValues; _b < intValues_2.length; _b++) {
-                            var intValue = intValues_2[_b];
-                            if (intValue !== Number(controlValue)) {
-                                found = true;
-                                break;
-                            }
-                        }
-                        if (!found)
-                            valid = false;
-                        break;
-                    case ValueTypeEnum.NotEqualStringValue:
-                        // need one matching value
-                        var strValues = value.ValueObject;
-                        var found = false;
-                        for (var _c = 0, strValues_2 = strValues; _c < strValues_2.length; _c++) {
-                            var strValue = strValues_2[_c];
-                            if (strValue !== controlValue) {
-                                found = true;
-                                break;
-                            }
-                        }
-                        if (!found)
-                            valid = false;
-                        break;
-                    case ValueTypeEnum.EqualNonNull:
-                        if (!controlValue || controlValue.length === 0)
-                            valid = false;
-                        break;
-                    case ValueTypeEnum.EqualNull:
-                        if (controlValue)
-                            valid = false;
-                        break;
-                }
-            }
-            return valid ? ValidityEnum.Valid : ValidityEnum.Invalid;
         };
-        PropertyListComponent.isRowVisible = function (tag) {
-            var row = $YetaWF.elementClosestCond(tag, ".t_row");
-            if (!row)
-                return false;
-            return row.style.display === "";
+        PropertyListComponent.prototype.toggle = function (dep, depRow, show, disable) {
+            $YetaWF.Forms.clearValidation(depRow);
+            if (show) {
+                depRow.style.display = "";
+                $YetaWF.processActivateDivs([depRow]); // init any controls that just became visible
+            }
+            else {
+                depRow.style.display = "none";
+            }
+            //var affected = $YetaWF.getElementsBySelector(`input[name='${dep.Prop}'], select[name='${dep.Prop}'], textarea[name='${dep.Prop}']`, [depRow]);
+            var affected = $YetaWF.getElementsBySelector("input,select,textarea", [depRow]);
+            if (show) {
+                if (disable) {
+                    for (var _i = 0, affected_1 = affected; _i < affected_1.length; _i++) {
+                        var e = affected_1[_i];
+                        $YetaWF.elementEnableToggle(e, false);
+                        $YetaWF.elementAddClasses(e, [YConfigs.Forms.CssFormNoValidate, YConfigs.Forms.CssFormNoSubmit]);
+                    }
+                }
+                else {
+                    for (var _a = 0, affected_2 = affected; _a < affected_2.length; _a++) {
+                        var e = affected_2[_a];
+                        $YetaWF.elementEnableToggle(e, true);
+                        $YetaWF.elementRemoveClasses(e, [YConfigs.Forms.CssFormNoValidate, YConfigs.Forms.CssFormNoSubmit]);
+                    }
+                }
+            }
+            else {
+                for (var _b = 0, affected_3 = affected; _b < affected_3.length; _b++) {
+                    var e = affected_3[_b];
+                    $YetaWF.elementEnableToggle(e, false);
+                    $YetaWF.elementAddClasses(e, [YConfigs.Forms.CssFormNoValidate, YConfigs.Forms.CssFormNoSubmit]);
+                }
+            }
+        };
+        PropertyListComponent.prototype.getValidity = function (form, dep, exprEntry) {
+            for (var _i = 0, _a = exprEntry.ExprList; _i < _a.length; _i++) {
+                var expr = _a[_i];
+                switch (exprEntry.Op) {
+                    case YetaWF_ComponentsHTML.OpEnum.HideIf:
+                    case YetaWF_ComponentsHTML.OpEnum.ProcessIf:
+                        if (YetaWF_ComponentsHTML.ValidatorHelper.isExprValid(expr, form))
+                            return exprEntry.Disable ? ValidityEnum.ValidDisabled : ValidityEnum.Valid;
+                        break;
+                    case YetaWF_ComponentsHTML.OpEnum.ProcessIfNot:
+                        if (!YetaWF_ComponentsHTML.ValidatorHelper.isExprValid(expr, form))
+                            return exprEntry.Disable ? ValidityEnum.ValidDisabled : ValidityEnum.Valid;
+                    case YetaWF_ComponentsHTML.OpEnum.ProcessIfSupplied:
+                        if (!YetaWF_ComponentsHTML.ValidatorHelper.isExprSupplied(expr, form))
+                            return exprEntry.Disable ? ValidityEnum.ValidDisabled : ValidityEnum.Valid;
+                    case YetaWF_ComponentsHTML.OpEnum.ProcessIfNotSupplied:
+                        if (YetaWF_ComponentsHTML.ValidatorHelper.isExprSupplied(expr, form))
+                            return exprEntry.Disable ? ValidityEnum.ValidDisabled : ValidityEnum.Valid;
+                        if (YetaWF_ComponentsHTML.ValidatorHelper.isExprValid(expr, form))
+                            return exprEntry.Disable ? ValidityEnum.ValidDisabled : ValidityEnum.Valid;
+                        break;
+                    default:
+                        throw "Invalid Op " + exprEntry.Op + " in getValidity";
+                }
+            }
+            return exprEntry.Disable ? ValidityEnum.InvalidDisabled : ValidityEnum.Invalid;
         };
         PropertyListComponent.relayout = function (container) {
             var ctrls = $YetaWF.getElementsBySelector(".yt_propertylistboxedcat,.yt_propertylistboxed", [container]);
@@ -575,3 +496,5 @@ var YetaWF_ComponentsHTML;
         }
     });
 })(YetaWF_ComponentsHTML || (YetaWF_ComponentsHTML = {}));
+
+//# sourceMappingURL=PropertyList.js.map
