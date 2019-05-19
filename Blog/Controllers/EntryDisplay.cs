@@ -26,7 +26,7 @@ namespace YetaWF.Modules.Blog.Controllers
             public int CategoryIdentity { get; set; }
 
             [Caption("Author"), Description("The name of the blog author")]
-            [UIHint("String"), ReadOnly, SuppressIfNotEqual("AuthorUrl", null)]
+            [UIHint("String"), ReadOnly, SuppressIfNot("AuthorUrl", null)]
             public string Author { get; set; }
 
             [Caption("Author"), Description("The optional Url linking to the author's information")]
@@ -37,7 +37,7 @@ namespace YetaWF.Modules.Blog.Controllers
             public bool Published { get; set; }
 
             [Caption("Date Published"), Description("The date this entry has been published")]
-            [UIHint("Date"), SuppressIfEqual("Published", false), ReadOnly]
+            [UIHint("Date"), SuppressIf("Published", false), ReadOnly]
             public DateTime DatePublished { get; set; }
 
             //[Caption("Date Created"), Description("The date this entry was created")]

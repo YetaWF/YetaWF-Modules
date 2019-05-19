@@ -32,7 +32,7 @@ namespace YetaWF.Modules.Blog.Controllers {
             public MultiString Title { get; set; }
 
             [Caption("Author"), Description("The name of the blog author")]
-            [UIHint("String"), ReadOnly, SuppressIfNotEqual("AuthorUrl", null)]
+            [UIHint("String"), ReadOnly, SuppressIfNot("AuthorUrl", null)]
             public string Author { get; set; }
 
             [Caption("Author"), Description("The optional Url linking to the author's information")]

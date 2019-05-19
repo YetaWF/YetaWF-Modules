@@ -43,7 +43,7 @@ namespace YetaWF.Modules.Blog.Controllers {
 
             [Caption("Show Gravatar"), Description("Defines whether your optional Gravatar is shown, which is a publicly viewable image, that you can define using the free service at http://gravatar.com so all your comments will appear with your image")]
             [HelpLink("http://www.gravatar.com")]
-            [UIHint("Boolean"), SuppressIfEqual("GravatarsEnabled", false)]
+            [UIHint("Boolean"), SuppressIf("GravatarsEnabled", false)]
             public bool ShowGravatar { get; set; }
 
             [Caption("Your Website"), Description("Enter your optional website, so readers of your comment may visit your website. Your website is completely optional - Once your comment is published, your website address will appear as part of your comment")]
@@ -60,7 +60,7 @@ namespace YetaWF.Modules.Blog.Controllers {
             public string Comment { get; set; }
 
             [Caption("Captcha"), Description("Please verify that you're a human and not a spam bot")]
-            [UIHint("RecaptchaV2"), RecaptchaV2("Please verify that you're a human and not a spam bot"), SuppressIfEqual("ShowCaptcha", false)]
+            [UIHint("RecaptchaV2"), RecaptchaV2("Please verify that you're a human and not a spam bot"), SuppressIf("ShowCaptcha", false)]
             public RecaptchaV2Data Captcha { get; set; }
 
             [UIHint("Hidden")]

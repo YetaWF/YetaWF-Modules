@@ -63,11 +63,15 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                         if (exprAttr.IsProcessAttribute || exprAttr.IsHideAttribute) {
                             if (exprAttr.ExprList != null && exprAttr.ExprList.Count > 0) {
                                 Dependent dep = FindDependent(cd, property.Name);
-                                dep.ProcessValues.Add(new ExprEntry {
+                                ExprEntry exprEntry = new ExprEntry {
                                     Op = exprAttr.Op,
                                     Disable = exprAttr.Disable,
                                     ExprList = exprAttr.ExprList
-                                });
+                                };
+                                if (exprAttr.IsProcessAttribute)
+                                    dep.ProcessValues.Add(exprEntry);
+                                else
+                                    dep.HideValues.Add(exprEntry);
                                 foreach (ExprAttribute.Expr expr in exprAttr.ExprList) {
                                     if (!selectionControls.Contains(expr.LeftProperty))
                                         selectionControls.Add(expr.LeftProperty);

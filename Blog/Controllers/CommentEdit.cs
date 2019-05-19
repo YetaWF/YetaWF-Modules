@@ -46,7 +46,7 @@ namespace YetaWF.Modules.Blog.Controllers {
 
             [Caption("Show Gravatar"), Description("Defines whether the optional Gravatar is shown")]
             [HelpLink("http://www.gravatar.com")]
-            [UIHint("Boolean"), SuppressIfEqual("GravatarsEnabled", false)]
+            [UIHint("Boolean"), SuppressIf("GravatarsEnabled", false)]
             public bool ShowGravatar { get; set; }
 
             [Caption("Website"), Description("The author's optional website")]

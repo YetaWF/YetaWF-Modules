@@ -31,7 +31,7 @@ namespace YetaWF.Modules.Feedback.Controllers {
             public string Subject { get; set; }
 
             [Caption("Email Address"), Description("Please enter your email address - your email address will not be publicly visible")]
-            [UIHint("Email"), SuppressIfEqual("RequireEmail", false), StringLength(Globals.MaxEmail), EmailValidation, Required, Trim]
+            [UIHint("Email"), SuppressIf("RequireEmail", false), StringLength(Globals.MaxEmail), EmailValidation, Required, Trim]
             public string Email { get; set; }
 
             [Caption("Message"), Description("Please enter the message")]
@@ -39,7 +39,7 @@ namespace YetaWF.Modules.Feedback.Controllers {
             public string Message { get; set; }
 
             [Caption("Captcha"), Description("Please verify that you're a human and not a spam bot")]
-            [UIHint("RecaptchaV2"), RecaptchaV2("Please verify that you're a human and not a spam bot"), SuppressIfEqual("ShowCaptcha", false)]
+            [UIHint("RecaptchaV2"), RecaptchaV2("Please verify that you're a human and not a spam bot"), SuppressIf("ShowCaptcha", false)]
             public RecaptchaV2Data Captcha { get; set; }
 
             [UIHint("Hidden")]

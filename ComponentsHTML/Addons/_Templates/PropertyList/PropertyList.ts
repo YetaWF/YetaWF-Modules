@@ -71,13 +71,6 @@ namespace YetaWF_ComponentsHTML {
         Disable: boolean;
         ExprList: YetaWF_ComponentsHTML.Expr[];
     }
-    enum ValidityEnum {
-        Valid = 0,
-        ValidDisabled = 1,
-        Invalid = 2,
-        InvalidDisabled = 3,
-    }
-
     interface ControlItem {
         Name: string;
         ControlType: ControlTypeEnum;
@@ -89,6 +82,7 @@ namespace YetaWF_ComponentsHTML {
         KendoSelect = 2,
         Hidden = 3,
     }
+
     interface PropertyListSetup {
         Style: PropertyListStyleEnum;
         ColumnStyles: PropertyListColumnDef[];
@@ -353,61 +347,69 @@ namespace YetaWF_ComponentsHTML {
 
                 var hidden = false;
                 for (let expr of dep.HideValues) {// hidden hides only, it never makes it visible (use process for that instead)
-                    let validity = this.getValidity(form, dep, expr);
-                    switch (validity) {
-                        case ValidityEnum.ValidDisabled:
-                            this.toggle(dep, depRow, false, true);
-                            hidden = true;
+                    let valid = ValidatorHelper.evaluateExpressionList(null, form, expr.Op, expr.ExprList);
+                    switch (expr.Op) {
+                        case OpEnum.HideIf:
+                        case OpEnum.HideIfSupplied:
+                            if (valid) {
+                                this.toggle(dep, depRow, false, false);
+                                hidden = true;
+                                break;
+                            }
                             break;
-                        case ValidityEnum.Valid:
-                            this.toggle(dep, depRow, false, false);
-                            hidden = true;
+                        case OpEnum.HideIfNot:
+                        case OpEnum.HideIfNotSupplied:
+                            if (!valid) {
+                                this.toggle(dep, depRow, false, false);
+                                hidden = true;
+                                break;
+                            }
                             break;
                         default:
-                            break;
+                            throw `Unexpected Op ${expr.Op} in update(HideValues)`;
                     }
                 }
                 if (!hidden) {
-                    let validity: ValidityEnum = ValidityEnum.Valid;
+                    let process = true;
+                    let disable = false;
                     if (dep.ProcessValues.length > 0) {
-                        validity = ValidityEnum.Invalid;
+                        process = false;
                         for (let expr of dep.ProcessValues) {
-                            let v = this.getValidity(form, dep, expr);
-                            switch (v) {
-                                case ValidityEnum.ValidDisabled:
-                                case ValidityEnum.Valid:
-                                    validity = ValidityEnum.Valid;
+                            let v = ValidatorHelper.evaluateExpressionList(null, form, expr.Op, expr.ExprList);
+                            switch (expr.Op) {
+                                case OpEnum.ProcessIf:
+                                case OpEnum.ProcessIfSupplied:
+                                    if (v) {
+                                        process = true;
+                                        disable = expr.Disable;
+                                    }
                                     break;
-                                case ValidityEnum.InvalidDisabled:
-                                    if (validity === ValidityEnum.Invalid)
-                                        validity = ValidityEnum.InvalidDisabled;
-                                    break;
-                                case ValidityEnum.Invalid:
+                                case OpEnum.ProcessIfNot:
+                                case OpEnum.ProcessIfNotSupplied:
+                                    if (!v) {
+                                        process = true;
+                                        disable = expr.Disable;
+                                    }
                                     break;
                                 default:
-                                    break;
+                                    throw `Unexpected Op ${expr.Op} in update(ProcessValues)`;
                             }
-                            if (validity === ValidityEnum.Valid)
+                            if (process)
                                 break;
                         }
                     }
-                    switch (validity) {
-                        //case ValidityEnum.ValidDisabled:
-                        case ValidityEnum.Valid:
-                            this.toggle(dep, depRow, true, false);
-                            break;
-                        case ValidityEnum.InvalidDisabled:
+                    if (process) {
+                        this.toggle(dep, depRow, true, false);
+                    } else {
+                        if (disable)
                             this.toggle(dep, depRow, true, true);
-                            break;
-                        case ValidityEnum.Invalid:
+                        else
                             this.toggle(dep, depRow, false, false);
-                            break;
-                        default:
-                            break;
                     }
                 }
             }
         }
+
         private toggle(dep: Dependent, depRow: HTMLElement, show: boolean, disable: boolean): void {
             $YetaWF.Forms.clearValidation(depRow);
             if (show) {
@@ -438,32 +440,10 @@ namespace YetaWF_ComponentsHTML {
             }
         }
 
-        private getValidity(form: HTMLFormElement, dep: Dependent, exprEntry: ExprEntry): ValidityEnum {
-
-            for (let expr of exprEntry.ExprList) {
-                switch (exprEntry.Op) {
-                    case OpEnum.HideIf:
-                    case OpEnum.ProcessIf:
-                        if (ValidatorHelper.isExprValid(expr, form))
-                            return exprEntry.Disable ? ValidityEnum.ValidDisabled : ValidityEnum.Valid;
-                        break;
-                    case OpEnum.ProcessIfNot:
-                        if (!ValidatorHelper.isExprValid(expr, form))
-                            return exprEntry.Disable ? ValidityEnum.ValidDisabled : ValidityEnum.Valid;
-                    case OpEnum.ProcessIfSupplied:
-                        if (!ValidatorHelper.isExprSupplied(expr, form))
-                            return exprEntry.Disable ? ValidityEnum.ValidDisabled : ValidityEnum.Valid;
-                    case OpEnum.ProcessIfNotSupplied:
-                        if (ValidatorHelper.isExprSupplied(expr, form))
-                            return exprEntry.Disable ? ValidityEnum.ValidDisabled : ValidityEnum.Valid;
-                        if (ValidatorHelper.isExprValid(expr, form))
-                            return exprEntry.Disable ? ValidityEnum.ValidDisabled : ValidityEnum.Valid;
-                        break;
-                    default:
-                        throw `Invalid Op ${exprEntry.Op} in getValidity`;
-                }
-            }
-            return exprEntry.Disable ? ValidityEnum.InvalidDisabled : ValidityEnum.Invalid;
+        public static isRowVisible(tag: HTMLElement): boolean {
+            var row = $YetaWF.elementClosestCond(tag, ".t_row");
+            if (!row) return false;
+            return row.style.display === "";
         }
 
         public static relayout(container:HTMLElement): void {

@@ -15,13 +15,6 @@ var __extends = (this && this.__extends) || (function () {
 })();
 var YetaWF_ComponentsHTML;
 (function (YetaWF_ComponentsHTML) {
-    var ValidityEnum;
-    (function (ValidityEnum) {
-        ValidityEnum[ValidityEnum["Valid"] = 0] = "Valid";
-        ValidityEnum[ValidityEnum["ValidDisabled"] = 1] = "ValidDisabled";
-        ValidityEnum[ValidityEnum["Invalid"] = 2] = "Invalid";
-        ValidityEnum[ValidityEnum["InvalidDisabled"] = 3] = "InvalidDisabled";
-    })(ValidityEnum || (ValidityEnum = {}));
     var ControlTypeEnum;
     (function (ControlTypeEnum) {
         ControlTypeEnum[ControlTypeEnum["Input"] = 0] = "Input";
@@ -270,58 +263,66 @@ var YetaWF_ComponentsHTML;
                 var hidden = false;
                 for (var _a = 0, _b = dep.HideValues; _a < _b.length; _a++) { // hidden hides only, it never makes it visible (use process for that instead)
                     var expr = _b[_a];
-                    var validity = this.getValidity(form, dep, expr);
-                    switch (validity) {
-                        case ValidityEnum.ValidDisabled:
-                            this.toggle(dep, depRow, false, true);
-                            hidden = true;
+                    var valid = YetaWF_ComponentsHTML.ValidatorHelper.evaluateExpressionList(null, form, expr.Op, expr.ExprList);
+                    switch (expr.Op) {
+                        case YetaWF_ComponentsHTML.OpEnum.HideIf:
+                        case YetaWF_ComponentsHTML.OpEnum.HideIfSupplied:
+                            if (valid) {
+                                this.toggle(dep, depRow, false, false);
+                                hidden = true;
+                                break;
+                            }
                             break;
-                        case ValidityEnum.Valid:
-                            this.toggle(dep, depRow, false, false);
-                            hidden = true;
+                        case YetaWF_ComponentsHTML.OpEnum.HideIfNot:
+                        case YetaWF_ComponentsHTML.OpEnum.HideIfNotSupplied:
+                            if (!valid) {
+                                this.toggle(dep, depRow, false, false);
+                                hidden = true;
+                                break;
+                            }
                             break;
                         default:
-                            break;
+                            throw "Unexpected Op " + expr.Op + " in update(HideValues)";
                     }
                 }
                 if (!hidden) {
-                    var validity = ValidityEnum.Valid;
+                    var process = true;
+                    var disable = false;
                     if (dep.ProcessValues.length > 0) {
-                        validity = ValidityEnum.Invalid;
+                        process = false;
                         for (var _c = 0, _d = dep.ProcessValues; _c < _d.length; _c++) {
                             var expr = _d[_c];
-                            var v = this.getValidity(form, dep, expr);
-                            switch (v) {
-                                case ValidityEnum.ValidDisabled:
-                                case ValidityEnum.Valid:
-                                    validity = ValidityEnum.Valid;
+                            var v = YetaWF_ComponentsHTML.ValidatorHelper.evaluateExpressionList(null, form, expr.Op, expr.ExprList);
+                            switch (expr.Op) {
+                                case YetaWF_ComponentsHTML.OpEnum.ProcessIf:
+                                case YetaWF_ComponentsHTML.OpEnum.ProcessIfSupplied:
+                                    if (v) {
+                                        process = true;
+                                        disable = expr.Disable;
+                                    }
                                     break;
-                                case ValidityEnum.InvalidDisabled:
-                                    if (validity === ValidityEnum.Invalid)
-                                        validity = ValidityEnum.InvalidDisabled;
-                                    break;
-                                case ValidityEnum.Invalid:
+                                case YetaWF_ComponentsHTML.OpEnum.ProcessIfNot:
+                                case YetaWF_ComponentsHTML.OpEnum.ProcessIfNotSupplied:
+                                    if (!v) {
+                                        process = true;
+                                        disable = expr.Disable;
+                                    }
                                     break;
                                 default:
-                                    break;
+                                    throw "Unexpected Op " + expr.Op + " in update(ProcessValues)";
                             }
-                            if (validity === ValidityEnum.Valid)
+                            if (process)
                                 break;
                         }
                     }
-                    switch (validity) {
-                        //case ValidityEnum.ValidDisabled:
-                        case ValidityEnum.Valid:
-                            this.toggle(dep, depRow, true, false);
-                            break;
-                        case ValidityEnum.InvalidDisabled:
+                    if (process) {
+                        this.toggle(dep, depRow, true, false);
+                    }
+                    else {
+                        if (disable)
                             this.toggle(dep, depRow, true, true);
-                            break;
-                        case ValidityEnum.Invalid:
+                        else
                             this.toggle(dep, depRow, false, false);
-                            break;
-                        default:
-                            break;
                     }
                 }
             }
@@ -361,32 +362,11 @@ var YetaWF_ComponentsHTML;
                 }
             }
         };
-        PropertyListComponent.prototype.getValidity = function (form, dep, exprEntry) {
-            for (var _i = 0, _a = exprEntry.ExprList; _i < _a.length; _i++) {
-                var expr = _a[_i];
-                switch (exprEntry.Op) {
-                    case YetaWF_ComponentsHTML.OpEnum.HideIf:
-                    case YetaWF_ComponentsHTML.OpEnum.ProcessIf:
-                        if (YetaWF_ComponentsHTML.ValidatorHelper.isExprValid(expr, form))
-                            return exprEntry.Disable ? ValidityEnum.ValidDisabled : ValidityEnum.Valid;
-                        break;
-                    case YetaWF_ComponentsHTML.OpEnum.ProcessIfNot:
-                        if (!YetaWF_ComponentsHTML.ValidatorHelper.isExprValid(expr, form))
-                            return exprEntry.Disable ? ValidityEnum.ValidDisabled : ValidityEnum.Valid;
-                    case YetaWF_ComponentsHTML.OpEnum.ProcessIfSupplied:
-                        if (!YetaWF_ComponentsHTML.ValidatorHelper.isExprSupplied(expr, form))
-                            return exprEntry.Disable ? ValidityEnum.ValidDisabled : ValidityEnum.Valid;
-                    case YetaWF_ComponentsHTML.OpEnum.ProcessIfNotSupplied:
-                        if (YetaWF_ComponentsHTML.ValidatorHelper.isExprSupplied(expr, form))
-                            return exprEntry.Disable ? ValidityEnum.ValidDisabled : ValidityEnum.Valid;
-                        if (YetaWF_ComponentsHTML.ValidatorHelper.isExprValid(expr, form))
-                            return exprEntry.Disable ? ValidityEnum.ValidDisabled : ValidityEnum.Valid;
-                        break;
-                    default:
-                        throw "Invalid Op " + exprEntry.Op + " in getValidity";
-                }
-            }
-            return exprEntry.Disable ? ValidityEnum.InvalidDisabled : ValidityEnum.Invalid;
+        PropertyListComponent.isRowVisible = function (tag) {
+            var row = $YetaWF.elementClosestCond(tag, ".t_row");
+            if (!row)
+                return false;
+            return row.style.display === "";
         };
         PropertyListComponent.relayout = function (container) {
             var ctrls = $YetaWF.getElementsBySelector(".yt_propertylistboxedcat,.yt_propertylistboxed", [container]);

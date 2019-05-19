@@ -22,7 +22,42 @@ $.validator.setDefaults({
 // REQUIREDEXPR
 
 $.validator.addMethod("requiredexpr", function (this: Function, value: any, element: HTMLElement, parameters: any): boolean {
-    return YetaWF_ComponentsHTML.ValidatorHelper.evaluateExpressionList(value, element, parameters);
+    let form = $YetaWF.Forms.getForm(element);
+    let valid = YetaWF_ComponentsHTML.ValidatorHelper.evaluateExpressionList(value, form, parameters.op, parameters.exprList);
+    switch (parameters.op) {
+        case YetaWF_ComponentsHTML.OpEnum.Required:
+        case YetaWF_ComponentsHTML.OpEnum.RequiredIf:
+        case YetaWF_ComponentsHTML.OpEnum.RequiredIfSupplied:
+            if (!valid)
+                return true;
+            if (value === undefined || value === null || value.trim().length === 0)
+                return false;
+            return true;
+        case YetaWF_ComponentsHTML.OpEnum.SelectionRequired:
+        case YetaWF_ComponentsHTML.OpEnum.SelectionRequiredIf:
+        case YetaWF_ComponentsHTML.OpEnum.SelectionRequiredIfSupplied:
+            if (!valid)
+                return true;
+            if (value === undefined || value === null || value.trim().length === 0 || value.toString() === "0")
+                return false;
+            return true;
+        case YetaWF_ComponentsHTML.OpEnum.RequiredIfNot:
+        case YetaWF_ComponentsHTML.OpEnum.RequiredIfNotSupplied:
+            if (valid)
+                return true;
+            if (value === undefined || value === null || value.trim().length === 0)
+                return false;
+            return true;
+        case YetaWF_ComponentsHTML.OpEnum.SelectionRequiredIfNot:
+        case YetaWF_ComponentsHTML.OpEnum.SelectionRequiredIfNotSupplied:
+            if (valid)
+                return true;
+            if (value === undefined || value === null || value.trim().length === 0 || value.toString() === "0")
+                return false;
+            return true;
+        default:
+            throw `Invalid Op ${parameters.op} in evaluateExpressionList`;
+    }
 });
 
 $.validator.unobtrusive.adapters.add("requiredexpr", ["op", "json"], (options: any): void => {
@@ -110,59 +145,25 @@ namespace YetaWF_ComponentsHTML {
 
     export class ValidatorHelper {
 
-        public static evaluateExpressionList(value: any, element: HTMLElement, parameters: any): boolean {
+        public static evaluateExpressionList(value: any, form: HTMLFormElement, op: OpEnum, exprList: Expr[]): boolean {
 
-            let form = $YetaWF.Forms.getForm(element);
-
-            let exprList : Expr[] = parameters.exprList;
-            for (let expr of exprList) {
-                switch (parameters.op) {
-                    case OpEnum.RequiredIf:
-                    case OpEnum.SelectionRequiredIf:
-                        if (!ValidatorHelper.isExprValid(expr, form))
-                            return true;
-                        break;
-                    case OpEnum.RequiredIfNot:
-                    case OpEnum.SelectionRequiredIfNot:
-                        if (ValidatorHelper.isExprValid(expr, form))
-                            return true;
-                        break;
-                    case OpEnum.RequiredIfSupplied:
-                    case OpEnum.SelectionRequiredIfSupplied:
-                        if (!ValidatorHelper.isExprSupplied(expr, form))
-                            return true;
-                        break;
-                    case OpEnum.RequiredIfNotSupplied:
-                    case OpEnum.SelectionRequiredIfNotSupplied:
-                        if (ValidatorHelper.isExprSupplied(expr, form))
-                            return true;
-                        break;
-                    default:
-                        throw `Invalid Op ${parameters.op} in evaluateExpressionList`;
-                }
-            }
-
-            switch (parameters.op) {
-                case OpEnum.Required:
-                case OpEnum.RequiredIf:
-                case OpEnum.RequiredIfNot:
+            let func: (expr: Expr, form: HTMLFormElement) => boolean = ValidatorHelper.isExprValid;
+            switch (op) {
                 case OpEnum.RequiredIfSupplied:
                 case OpEnum.RequiredIfNotSupplied:
-                    if (value === undefined || value === null || value.trim().length === 0)
-                        return false;
-                    break;
-                case OpEnum.SelectionRequired:
-                case OpEnum.SelectionRequiredIf:
-                case OpEnum.SelectionRequiredIfNot:
                 case OpEnum.SelectionRequiredIfSupplied:
                 case OpEnum.SelectionRequiredIfNotSupplied:
-                    if (value === undefined || value === null || value.trim().length === 0)
-                        return false;
-                    if (value.toString() === "0")
-                        return false;
-                    break;
-                default:
-                    throw `Invalid Op ${parameters.op} in evaluateExpressionList`;
+                case OpEnum.SuppressIfSupplied:
+                case OpEnum.SuppressIfNotSupplied:
+                case OpEnum.ProcessIfSupplied:
+                case OpEnum.ProcessIfNotSupplied:
+                case OpEnum.HideIfSupplied:
+                case OpEnum.HideIfNotSupplied:
+                    func = ValidatorHelper.isExprSupplied;
+            }
+            for (let expr of exprList) {
+                if (!func(expr, form))
+                    return false;
             }
             return true;
         }
@@ -179,7 +180,7 @@ namespace YetaWF_ComponentsHTML {
                     return leftVal === rightVal;
                 case OpCond.NotEq:
                     if (!leftVal && !rightVal) return false;
-                    return leftVal === rightVal;
+                    return leftVal !== rightVal;
                 default:
                     throw `Invalid Cond ${expr.Cond} in isExprValid`;
             }
