@@ -148,8 +148,9 @@ namespace YetaWF.Modules.Panels.Controllers {
         }
         private void AddPage(List<PagePanelInfo.PanelEntry> list, PageDefinition pageDef, bool popup) {
             if (pageDef != null && pageDef.IsAuthorized_View()) {
-                // If we're the superuser and the page is not authorized for users, suppress this page
-                if (Manager.HasSuperUserRole && pageDef.IsAuthorized_View_Anonymous() && !pageDef.IsAuthorized_View_AnyUser())
+                // If a page is authorized for anonymous but not users, we suppress it if we're Editor, Admin, Superuser, etc. to avoid cases where we
+                // have 2 of the same pages, one for anonymous users, the other for logged on users.
+                if (Manager.HaveUser && pageDef.IsAuthorized_View_Anonymous() && !pageDef.IsAuthorized_View_AnyUser())
                     return;
                 list.Add(new PagePanelInfo.PanelEntry {
                     Url = pageDef.EvaluatedCanonicalUrl,
