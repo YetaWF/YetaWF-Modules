@@ -296,17 +296,17 @@ var YetaWF_ComponentsHTML;
                             switch (expr.Op) {
                                 case YetaWF_ComponentsHTML.OpEnum.ProcessIf:
                                 case YetaWF_ComponentsHTML.OpEnum.ProcessIfSupplied:
-                                    if (v) {
+                                    if (v)
                                         process = true;
+                                    else
                                         disable = expr.Disable;
-                                    }
                                     break;
                                 case YetaWF_ComponentsHTML.OpEnum.ProcessIfNot:
                                 case YetaWF_ComponentsHTML.OpEnum.ProcessIfNotSupplied:
-                                    if (!v) {
+                                    if (!v)
                                         process = true;
+                                    else
                                         disable = expr.Disable;
-                                    }
                                     break;
                                 default:
                                     throw "Unexpected Op " + expr.Op + " in update(ProcessValues)";

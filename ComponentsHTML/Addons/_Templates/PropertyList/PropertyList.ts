@@ -379,17 +379,17 @@ namespace YetaWF_ComponentsHTML {
                             switch (expr.Op) {
                                 case OpEnum.ProcessIf:
                                 case OpEnum.ProcessIfSupplied:
-                                    if (v) {
+                                    if (v)
                                         process = true;
+                                    else
                                         disable = expr.Disable;
-                                    }
                                     break;
                                 case OpEnum.ProcessIfNot:
                                 case OpEnum.ProcessIfNotSupplied:
-                                    if (!v) {
+                                    if (!v)
                                         process = true;
+                                    else
                                         disable = expr.Disable;
-                                    }
                                     break;
                                 default:
                                     throw `Unexpected Op ${expr.Op} in update(ProcessValues)`;
