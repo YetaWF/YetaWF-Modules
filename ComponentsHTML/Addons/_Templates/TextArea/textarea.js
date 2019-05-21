@@ -1,12 +1,45 @@
 "use strict";
 /* Copyright © 2019 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/ComponentsHTML#License */
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = function (d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+        return extendStatics(d, b);
+    };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
 var YetaWF_ComponentsHTML;
 (function (YetaWF_ComponentsHTML) {
-    var TextAreaEditComponent = /** @class */ (function () {
-        function TextAreaEditComponent() {
+    var TextAreaEditComponent = /** @class */ (function (_super) {
+        __extends(TextAreaEditComponent, _super);
+        function TextAreaEditComponent(controlId /*, setup: BooleanEditSetup*/) {
+            return _super.call(this, controlId, TextAreaEditComponent.TEMPLATE, TextAreaEditComponent.SELECTOR, {
+                ControlType: YetaWF_ComponentsHTML.ControlTypeEnum.TextArea,
+                ChangeEvent: null,
+                GetValue: function (control) {
+                    return control.value;
+                },
+                Enable: function (control, enable) {
+                    if (enable) {
+                        control.setAttribute("readonly", "readonly");
+                        $YetaWF.elementRemoveClass(control, "k-state-disabled");
+                    }
+                    else {
+                        control.removeAttribute("readonly");
+                        $YetaWF.elementAddClass(control, "k-state-disabled");
+                    }
+                },
+            }) || this;
         }
+        TextAreaEditComponent.TEMPLATE = "yt_textarea";
+        TextAreaEditComponent.SELECTOR = ".yt_textarea.t_edit";
         return TextAreaEditComponent;
-    }());
+    }(YetaWF.ComponentBaseDataImpl));
     YetaWF_ComponentsHTML.TextAreaEditComponent = TextAreaEditComponent;
     // Override the built-in Save button to use our Form submit
     // Need to wait for the ckeditor instance to finish initialization

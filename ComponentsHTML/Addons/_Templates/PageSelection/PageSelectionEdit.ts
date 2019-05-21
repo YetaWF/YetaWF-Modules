@@ -7,6 +7,7 @@ namespace YetaWF_ComponentsHTML {
 
     export class PageSelectionEditComponent extends YetaWF.ComponentBaseDataImpl {
 
+        public static readonly TEMPLATE: string = "yt_pageselection";
         public static readonly SELECTOR: string = "div.yt_pageselection.t_edit";
 
         private SelectPage: YetaWF_ComponentsHTML.DropDownListEditComponent;
@@ -14,7 +15,17 @@ namespace YetaWF_ComponentsHTML {
         private DivLink: HTMLDivElement;
 
         constructor(controlId: string/*, setup: Setup*/) {
-            super(controlId);
+            super(controlId, PageSelectionEditComponent.TEMPLATE, PageSelectionEditComponent.SELECTOR, {
+                ControlType: ControlTypeEnum.Template,
+                ChangeEvent: "dropdownlist_change",
+                GetValue: (control: PageSelectionEditComponent): string | null => {
+                    return null;//$$$control.SelectPage.value;
+                },
+                Enable: (control: PageSelectionEditComponent, enable: boolean): void => {
+                    //$$$control.enable(enable)
+                },
+            });
+
             //this.Setup = setup;
 
             this.SelectPage = YetaWF.ComponentBaseDataImpl.getControlFromSelector("select", DropDownListEditComponent.SELECTOR, [this.Control]);
@@ -39,8 +50,4 @@ namespace YetaWF_ComponentsHTML {
             //$desc.text(desc);
         }
     }
-    // A <div> is being emptied. Destroy all controls the <div> may contain.
-    $YetaWF.registerClearDiv((tag: HTMLElement): void => {
-        PageSelectionEditComponent.clearDiv(tag, PageSelectionEditComponent.SELECTOR);
-    });
 }

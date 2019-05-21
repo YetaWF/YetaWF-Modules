@@ -14,6 +14,7 @@ namespace YetaWF_ComponentsHTML {
 
     export class MultiStringEditComponent extends YetaWF.ComponentBaseDataImpl {
 
+        public static readonly TEMPLATE: string = "yt_multistring";
         public static readonly SELECTOR: string = ".yt_multistring.t_edit";
 
         //private Setup: Setup;
@@ -21,11 +22,21 @@ namespace YetaWF_ComponentsHTML {
         private InputText: HTMLInputElement;
 
         constructor(controlId: string/*, setup: Setup*/) {
-            super(controlId);
+            super(controlId, MultiStringEditComponent.TEMPLATE, MultiStringEditComponent.SELECTOR, {
+                ControlType: ControlTypeEnum.Template,
+                ChangeEvent: "",//$$$
+                GetValue: (control: MultiStringEditComponent): string | null => {
+                    return null;//$$$$control.valueText;
+                },
+                Enable: (control: MultiStringEditComponent, enable: boolean): void => {
+                    control.enable(enable);
+                },
+            });
+
             //this.Setup = setup;
 
             this.SelectLang = YetaWF.ComponentBaseDataImpl.getControlFromSelector("select", DropDownListEditComponent.SELECTOR, [this.Control]);
-            this.InputText = $YetaWF.getElement1BySelector("input.yt_multistring_text", [this.Control]) as HTMLInputElement;
+            this.InputText = $YetaWF.getElement1BySelector("input.t_multistring_text", [this.Control]) as HTMLInputElement;
 
             // selection change (put language specific text into text box)
             this.SelectLang.Control.addEventListener("dropdownlist_change", (evt: Event): void => {
@@ -145,11 +156,6 @@ namespace YetaWF_ComponentsHTML {
         }
     }
     if (YLocs.YetaWF_ComponentsHTML.Languages === undefined) throw "YLocs.YetaWF_ComponentsHTML.Languages missing";/*DEBUG*/
-
-    // A <div> is being emptied. Destroy all controls the <div> may contain.
-    $YetaWF.registerClearDiv((tag: HTMLElement): void => {
-        MultiStringEditComponent.clearDiv(tag, MultiStringEditComponent.SELECTOR);
-    });
 }
 
 

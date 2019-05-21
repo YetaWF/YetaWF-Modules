@@ -18,13 +18,31 @@ var YetaWF_ComponentsHTML;
     var DecimalEditComponent = /** @class */ (function (_super) {
         __extends(DecimalEditComponent, _super);
         function DecimalEditComponent(controlId, setup) {
-            var _this = _super.call(this, controlId) || this;
+            var _this = _super.call(this, controlId, DecimalEditComponent.TEMPLATE, DecimalEditComponent.SELECTOR, {
+                ControlType: YetaWF_ComponentsHTML.ControlTypeEnum.Template,
+                ChangeEvent: "decimal_change",
+                GetValue: function (control) {
+                    return control.valueText;
+                },
+                Enable: function (control, enable) {
+                    control.enable(enable);
+                },
+            }, false, function (tag, control) {
+                control.kendoNumericTextBox.destroy();
+            }) || this;
             $(_this.Control).kendoNumericTextBox({
                 format: "0.00",
                 min: setup.Min, max: setup.Max,
                 culture: YVolatile.Basics.Language,
                 downArrowText: "",
-                upArrowText: ""
+                upArrowText: "",
+                change: function (e) {
+                    $(_this.Control).trigger("change");
+                    var event = document.createEvent("Event");
+                    event.initEvent("decimal_change", true, true);
+                    _this.Control.dispatchEvent(event);
+                    FormsSupport.validateElement(_this.Control);
+                }
             });
             _this.kendoNumericTextBox = $(_this.Control).data("kendoNumericTextBox");
             return _this;
@@ -55,16 +73,11 @@ var YetaWF_ComponentsHTML;
         DecimalEditComponent.prototype.enable = function (enabled) {
             this.kendoNumericTextBox.enable(enabled);
         };
+        DecimalEditComponent.TEMPLATE = "yt_decimal";
         DecimalEditComponent.SELECTOR = "input.yt_decimal.t_edit.k-input[name]";
         return DecimalEditComponent;
     }(YetaWF.ComponentBaseDataImpl));
     YetaWF_ComponentsHTML.DecimalEditComponent = DecimalEditComponent;
-    // A <div> is being emptied. Destroy all controls the <div> may contain.
-    $YetaWF.registerClearDiv(function (tag) {
-        YetaWF.ComponentBaseDataImpl.clearDiv(tag, DecimalEditComponent.SELECTOR, function (control) {
-            control.kendoNumericTextBox.destroy();
-        });
-    });
 })(YetaWF_ComponentsHTML || (YetaWF_ComponentsHTML = {}));
 
 //# sourceMappingURL=DecimalEdit.js.map

@@ -15,13 +15,6 @@ var __extends = (this && this.__extends) || (function () {
 })();
 var YetaWF_ComponentsHTML;
 (function (YetaWF_ComponentsHTML) {
-    var ControlTypeEnum;
-    (function (ControlTypeEnum) {
-        ControlTypeEnum[ControlTypeEnum["Input"] = 0] = "Input";
-        ControlTypeEnum[ControlTypeEnum["Select"] = 1] = "Select";
-        ControlTypeEnum[ControlTypeEnum["KendoSelect"] = 2] = "KendoSelect";
-        ControlTypeEnum[ControlTypeEnum["Hidden"] = 3] = "Hidden";
-    })(ControlTypeEnum || (ControlTypeEnum = {}));
     var PropertyListStyleEnum;
     (function (PropertyListStyleEnum) {
         PropertyListStyleEnum[PropertyListStyleEnum["Tabbed"] = 0] = "Tabbed";
@@ -31,12 +24,34 @@ var YetaWF_ComponentsHTML;
     var PropertyListComponent = /** @class */ (function (_super) {
         __extends(PropertyListComponent, _super);
         function PropertyListComponent(controlId, setup, controlData) {
-            var _this = _super.call(this, controlId) || this;
-            _this.ControllingControls = [];
+            var _this = _super.call(this, controlId, PropertyListComponent.TEMPLATE, PropertyListComponent.SELECTOR, {
+                ControlType: YetaWF_ComponentsHTML.ControlTypeEnum.Div,
+                ChangeEvent: "",
+                GetValue: function (control) { return null; },
+                Enable: function (control, enable) { }
+            }) || this;
             _this.MasonryElem = null;
             _this.MinWidth = 0;
             _this.CurrWidth = 0;
             _this.ColumnDefIndex = -1;
+            _this.registerTemplate("yt_propertylisttabbed", ".yt_propertylisttabbed", {
+                ControlType: YetaWF_ComponentsHTML.ControlTypeEnum.Div,
+                ChangeEvent: "",
+                GetValue: function (control) { return null; },
+                Enable: function (control, enable) { }
+            });
+            _this.registerTemplate("yt_propertylistboxed", ".yt_propertylistboxed", {
+                ControlType: YetaWF_ComponentsHTML.ControlTypeEnum.Div,
+                ChangeEvent: "",
+                GetValue: function (control) { return null; },
+                Enable: function (control, enable) { }
+            });
+            _this.registerTemplate("yt_propertylistboxedcat", ".yt_propertylistboxedcat", {
+                ControlType: YetaWF_ComponentsHTML.ControlTypeEnum.Div,
+                ChangeEvent: "",
+                GetValue: function (control) { return null; },
+                Enable: function (control, enable) { }
+            });
             _this.ControlData = controlData;
             _this.Setup = setup;
             // column handling
@@ -68,27 +83,36 @@ var YetaWF_ComponentsHTML;
                 var controlData = _this.ControlData;
                 for (var _i = 0, _a = controlData.Controls; _i < _a.length; _i++) {
                     var control = _a[_i];
-                    var controlItem = _this.getControlItem(control);
-                    _this.ControllingControls.push(controlItem);
-                    switch (controlItem.ControlType) {
-                        case ControlTypeEnum.Input:
-                            $YetaWF.registerMultipleEventHandlers([controlItem.Object], ["change", "input"], null, function (ev) {
+                    var item = ControlsHelper.getControlItemByName(control, _this.Control);
+                    switch (item.ControlType) {
+                        case YetaWF_ComponentsHTML.ControlTypeEnum.Input:
+                            $YetaWF.registerMultipleEventHandlers([item.Template], ["change", "input"], null, function (ev) {
                                 _this.update();
                                 return false;
                             });
                             break;
-                        case ControlTypeEnum.Select:
-                            $YetaWF.registerEventHandler(controlItem.Object, "change", null, function (ev) {
+                        case YetaWF_ComponentsHTML.ControlTypeEnum.Select:
+                            $YetaWF.registerEventHandler(item.Template, "change", null, function (ev) {
                                 _this.update();
                                 return false;
                             });
                             break;
-                        case ControlTypeEnum.KendoSelect:
-                            $YetaWF.registerCustomEventHandler(controlItem.Object, "dropdownlist_change", function (evt) {
+                        case YetaWF_ComponentsHTML.ControlTypeEnum.TextArea:
+                            $YetaWF.registerMultipleEventHandlers([item.Template], ["change", "input"], null, function (ev) {
                                 _this.update();
+                                return false;
                             });
                             break;
-                        case ControlTypeEnum.Hidden:
+                        case YetaWF_ComponentsHTML.ControlTypeEnum.Div:
+                        case YetaWF_ComponentsHTML.ControlTypeEnum.Hidden:
+                            break;
+                        default:
+                            if (!item.ChangeEvent)
+                                throw "No ChangeEvent for control type " + item.ControlType;
+                            var control_1 = $YetaWF.getObjectData(item.Template);
+                            $YetaWF.registerCustomEventHandler(control_1, item.ChangeEvent, function (evt) {
+                                _this.update();
+                            });
                             break;
                     }
                 }
@@ -223,29 +247,6 @@ var YetaWF_ComponentsHTML;
             }
             return index;
         };
-        PropertyListComponent.prototype.getControlItem = function (control) {
-            var elemSel = $YetaWF.getElement1BySelectorCond(".t_row.t_" + control.toLowerCase() + " select[name$='" + control + "']", [this.Control]);
-            if (elemSel) {
-                var kendoSelect = YetaWF.ComponentBaseDataImpl.getControlFromTagCond(elemSel, YetaWF_ComponentsHTML.DropDownListEditComponent.SELECTOR);
-                if (kendoSelect) {
-                    // Kendo
-                    return { Name: control, ControlType: ControlTypeEnum.KendoSelect, Object: kendoSelect };
-                }
-                else {
-                    // Native
-                    return { Name: control, ControlType: ControlTypeEnum.Select, Object: elemSel };
-                }
-            }
-            var elemInp = $YetaWF.getElement1BySelectorCond(".t_row.t_" + control.toLowerCase() + " input[name$='" + control + "']", [this.Control]);
-            if (elemInp) {
-                return { Name: control, ControlType: ControlTypeEnum.Input, Object: elemInp };
-            }
-            var elemHid = $YetaWF.getElement1BySelectorCond("input[name$='" + control + "'][type='hidden']", [this.Control]);
-            if (elemHid) {
-                return { Name: control, ControlType: ControlTypeEnum.Hidden, Object: elemHid };
-            }
-            throw "No control found for " + control;
-        };
         /**
          * Update all dependent fields.
          */
@@ -257,30 +258,33 @@ var YetaWF_ComponentsHTML;
             var deps = this.ControlData.Dependents;
             for (var _i = 0, deps_1 = deps; _i < deps_1.length; _i++) {
                 var dep = deps_1[_i];
-                var depRow = $YetaWF.getElement1BySelectorCond(".t_row.t_" + dep.Prop.toLowerCase(), [this.Control]); // the propertylist row affected
+                var depRow = $YetaWF.getElement1BySelectorCond(".t_row.t_" + dep.PropShort.toLowerCase(), [this.Control]); // the propertylist row affected
                 if (!depRow)
                     continue;
                 var hidden = false;
                 for (var _a = 0, _b = dep.HideValues; _a < _b.length; _a++) { // hidden hides only, it never makes it visible (use process for that instead)
                     var expr = _b[_a];
-                    var valid = YetaWF_ComponentsHTML.ValidatorHelper.evaluateExpressionList(null, form, expr.Op, expr.ExprList);
                     switch (expr.Op) {
                         case YetaWF_ComponentsHTML.OpEnum.HideIf:
-                        case YetaWF_ComponentsHTML.OpEnum.HideIfSupplied:
+                        case YetaWF_ComponentsHTML.OpEnum.HideIfSupplied: {
+                            var valid = YetaWF_ComponentsHTML.ValidatorHelper.evaluateExpressionList(null, form, expr.Op, expr.ExprList);
                             if (valid) {
                                 this.toggle(dep, depRow, false, false);
                                 hidden = true;
                                 break;
                             }
                             break;
+                        }
                         case YetaWF_ComponentsHTML.OpEnum.HideIfNot:
-                        case YetaWF_ComponentsHTML.OpEnum.HideIfNotSupplied:
+                        case YetaWF_ComponentsHTML.OpEnum.HideIfNotSupplied: {
+                            var valid = YetaWF_ComponentsHTML.ValidatorHelper.evaluateExpressionList(null, form, expr.Op, expr.ExprList);
                             if (!valid) {
                                 this.toggle(dep, depRow, false, false);
                                 hidden = true;
                                 break;
                             }
                             break;
+                        }
                         default:
                             throw "Unexpected Op " + expr.Op + " in update(HideValues)";
                     }
@@ -292,22 +296,25 @@ var YetaWF_ComponentsHTML;
                         process = false;
                         for (var _c = 0, _d = dep.ProcessValues; _c < _d.length; _c++) {
                             var expr = _d[_c];
-                            var v = YetaWF_ComponentsHTML.ValidatorHelper.evaluateExpressionList(null, form, expr.Op, expr.ExprList);
                             switch (expr.Op) {
                                 case YetaWF_ComponentsHTML.OpEnum.ProcessIf:
-                                case YetaWF_ComponentsHTML.OpEnum.ProcessIfSupplied:
+                                case YetaWF_ComponentsHTML.OpEnum.ProcessIfSupplied: {
+                                    var v = YetaWF_ComponentsHTML.ValidatorHelper.evaluateExpressionList(null, form, expr.Op, expr.ExprList);
                                     if (v)
                                         process = true;
                                     else
                                         disable = expr.Disable;
                                     break;
+                                }
                                 case YetaWF_ComponentsHTML.OpEnum.ProcessIfNot:
-                                case YetaWF_ComponentsHTML.OpEnum.ProcessIfNotSupplied:
+                                case YetaWF_ComponentsHTML.OpEnum.ProcessIfNotSupplied: {
+                                    var v = YetaWF_ComponentsHTML.ValidatorHelper.evaluateExpressionList(null, form, expr.Op, expr.ExprList);
                                     if (!v)
                                         process = true;
                                     else
                                         disable = expr.Disable;
                                     break;
+                                }
                                 default:
                                     throw "Unexpected Op " + expr.Op + " in update(ProcessValues)";
                             }
@@ -329,36 +336,25 @@ var YetaWF_ComponentsHTML;
         };
         PropertyListComponent.prototype.toggle = function (dep, depRow, show, disable) {
             $YetaWF.Forms.clearValidation(depRow);
+            $YetaWF.elementRemoveClass(depRow, "t_disabled");
+            $YetaWF.elementRemoveClass(depRow, "t_hidden");
             if (show) {
-                depRow.style.display = "";
+                if (disable)
+                    $YetaWF.elementAddClass(depRow, "t_disabled");
+                //$$$depRow.style.display = "";
                 $YetaWF.processActivateDivs([depRow]); // init any controls that just became visible
             }
             else {
-                depRow.style.display = "none";
+                $YetaWF.elementAddClass(depRow, "t_hidden");
+                //$$$$depRow.style.display = "none";
             }
-            //var affected = $YetaWF.getElementsBySelector(`input[name='${dep.Prop}'], select[name='${dep.Prop}'], textarea[name='${dep.Prop}']`, [depRow]);
-            var affected = $YetaWF.getElementsBySelector("input,select,textarea", [depRow]);
-            if (show) {
-                if (disable) {
-                    for (var _i = 0, affected_1 = affected; _i < affected_1.length; _i++) {
-                        var e = affected_1[_i];
-                        $YetaWF.elementEnableToggle(e, false);
-                        $YetaWF.elementAddClasses(e, [YConfigs.Forms.CssFormNoValidate, YConfigs.Forms.CssFormNoSubmit]);
-                    }
+            var controlItemDef = ControlsHelper.getControlItemByNameCond(dep.Prop, depRow); // there may not be an actual control, just a row with displayed info
+            if (controlItemDef) {
+                if (show) {
+                    ControlsHelper.enableToggle(controlItemDef, !disable);
                 }
                 else {
-                    for (var _a = 0, affected_2 = affected; _a < affected_2.length; _a++) {
-                        var e = affected_2[_a];
-                        $YetaWF.elementEnableToggle(e, true);
-                        $YetaWF.elementRemoveClasses(e, [YConfigs.Forms.CssFormNoValidate, YConfigs.Forms.CssFormNoSubmit]);
-                    }
-                }
-            }
-            else {
-                for (var _b = 0, affected_3 = affected; _b < affected_3.length; _b++) {
-                    var e = affected_3[_b];
-                    $YetaWF.elementEnableToggle(e, false);
-                    $YetaWF.elementAddClasses(e, [YConfigs.Forms.CssFormNoValidate, YConfigs.Forms.CssFormNoSubmit]);
+                    ControlsHelper.enableToggle(controlItemDef, false);
                 }
             }
         };
@@ -366,7 +362,15 @@ var YetaWF_ComponentsHTML;
             var row = $YetaWF.elementClosestCond(tag, ".t_row");
             if (!row)
                 return false;
-            return row.style.display === "";
+            return !$YetaWF.elementHasClass(row, "t_hidden");
+            //$$$return row.style.display === "";
+        };
+        PropertyListComponent.isRowEnabled = function (tag) {
+            var row = $YetaWF.elementClosestCond(tag, ".t_row");
+            if (!row)
+                return false;
+            return !$YetaWF.elementHasClass(row, "t_disabled");
+            //$$$return row.style.display === "";
         };
         PropertyListComponent.relayout = function (container) {
             var ctrls = $YetaWF.getElementsBySelector(".yt_propertylistboxedcat,.yt_propertylistboxed", [container]);
@@ -417,8 +421,10 @@ var YetaWF_ComponentsHTML;
                 }
             }).data("kendoTabStrip");
         };
+        PropertyListComponent.TEMPLATE = "yt_propertylist";
+        PropertyListComponent.SELECTOR = ".yt_propertylist";
         return PropertyListComponent;
-    }(YetaWF.ComponentBaseImpl));
+    }(YetaWF.ComponentBaseNoDataImpl));
     YetaWF_ComponentsHTML.PropertyListComponent = PropertyListComponent;
     $YetaWF.registerClearDiv(function (tag) {
         var list = $YetaWF.getElementsBySelector(".yt_propertylisttabbed.t_jquery", [tag]);

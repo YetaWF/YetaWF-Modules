@@ -61,7 +61,8 @@ namespace YetaWF_ComponentsHTML {
         Dependents: Dependent[];
     }
     interface Dependent {
-        Prop: string; // Name of property
+        Prop: string; // Full name of property
+        PropShort: string; // Name of property
 
         ProcessValues: ExprEntry[];
         HideValues: ExprEntry[];
@@ -71,18 +72,6 @@ namespace YetaWF_ComponentsHTML {
         Disable: boolean;
         ExprList: YetaWF_ComponentsHTML.Expr[];
     }
-    interface ControlItem {
-        Name: string;
-        ControlType: ControlTypeEnum;
-        Object: DropDownListEditComponent | HTMLInputElement | HTMLSelectElement;
-    }
-    enum ControlTypeEnum {
-        Input = 0,
-        Select = 1,
-        KendoSelect = 2,
-        Hidden = 3,
-    }
-
     interface PropertyListSetup {
         Style: PropertyListStyleEnum;
         ColumnStyles: PropertyListColumnDef[];
@@ -99,10 +88,12 @@ namespace YetaWF_ComponentsHTML {
         Columns: number;
     }
 
-    export class PropertyListComponent extends YetaWF.ComponentBaseImpl {
+    export class PropertyListComponent extends YetaWF.ComponentBaseNoDataImpl {
 
         private ControlData: ControlData | null;
-        private ControllingControls: ControlItem[] = [];
+
+        public static readonly TEMPLATE: string = "yt_propertylist";
+        public static readonly SELECTOR: string = ".yt_propertylist";
 
         private Setup: PropertyListSetup;
         private MasonryElem: Masonry | null = null;
@@ -111,7 +102,30 @@ namespace YetaWF_ComponentsHTML {
         private ColumnDefIndex: number = -1;
 
         constructor(controlId: string, setup: PropertyListSetup, controlData: ControlData) {
-            super(controlId);
+            super(controlId, PropertyListComponent.TEMPLATE, PropertyListComponent.SELECTOR, {
+                ControlType: YetaWF_ComponentsHTML.ControlTypeEnum.Div,
+                ChangeEvent: "",
+                GetValue: (control: HTMLDivElement): string | null => { return null; },
+                Enable: (control: HTMLDivElement, enable: boolean): void => {  }
+            });
+            this.registerTemplate("yt_propertylisttabbed", ".yt_propertylisttabbed", {
+                ControlType: YetaWF_ComponentsHTML.ControlTypeEnum.Div,
+                ChangeEvent: "",
+                GetValue: (control: HTMLDivElement): string | null => { return null; },
+                Enable: (control: HTMLDivElement, enable: boolean): void => {  }
+            });
+            this.registerTemplate("yt_propertylistboxed", ".yt_propertylistboxed", {
+                ControlType: YetaWF_ComponentsHTML.ControlTypeEnum.Div,
+                ChangeEvent: "",
+                GetValue: (control: HTMLDivElement): string | null => { return null; },
+                Enable: (control: HTMLDivElement, enable: boolean): void => {  }
+            });
+            this.registerTemplate("yt_propertylistboxedcat", ".yt_propertylistboxedcat", {
+                ControlType: YetaWF_ComponentsHTML.ControlTypeEnum.Div,
+                ChangeEvent: "",
+                GetValue: (control: HTMLDivElement): string | null => { return null; },
+                Enable: (control: HTMLDivElement, enable: boolean): void => {  }
+            });
 
             this.ControlData = controlData;
             this.Setup = setup;
@@ -145,27 +159,36 @@ namespace YetaWF_ComponentsHTML {
             if (this.ControlData) {
             var controlData = this.ControlData;
                 for (let control of controlData.Controls) {
-                    var controlItem = this.getControlItem(control);
-                    this.ControllingControls.push(controlItem);
-                    switch (controlItem.ControlType) {
+                    let item = ControlsHelper.getControlItemByName(control, this.Control);
+                    switch (item.ControlType) {
                         case ControlTypeEnum.Input:
-                            $YetaWF.registerMultipleEventHandlers([(controlItem.Object as HTMLInputElement)], ["change", "input"], null, (ev: Event): boolean => {
+                            $YetaWF.registerMultipleEventHandlers([(item.Template as HTMLInputElement)], ["change", "input"], null, (ev: Event): boolean => {
                                 this.update();
                                 return false;
                             });
                             break;
                         case ControlTypeEnum.Select:
-                            $YetaWF.registerEventHandler((controlItem.Object as HTMLSelectElement), "change", null, (ev: Event): boolean => {
+                            $YetaWF.registerEventHandler((item.Template as HTMLSelectElement), "change", null, (ev: Event): boolean => {
                                 this.update();
                                 return false;
                             });
                             break;
-                        case ControlTypeEnum.KendoSelect:
-                            $YetaWF.registerCustomEventHandler(controlItem.Object as DropDownListEditComponent, "dropdownlist_change", (evt: Event): void => {
+                        case ControlTypeEnum.TextArea:
+                            $YetaWF.registerMultipleEventHandlers([(item.Template as HTMLTextAreaElement)], ["change", "input"], null, (ev: Event): boolean => {
                                 this.update();
+                                return false;
                             });
                             break;
+                        case ControlTypeEnum.Div:
                         case ControlTypeEnum.Hidden:
+                            break;
+                        default:
+                            if (!item.ChangeEvent)
+                                throw `No ChangeEvent for control type ${item.ControlType}`;
+                            let control = $YetaWF.getObjectData(item.Template) as YetaWF.ComponentBaseDataImpl;
+                            $YetaWF.registerCustomEventHandler(control, item.ChangeEvent, (evt: Event): void => {
+                                this.update();
+                            });
                             break;
                     }
                 }
@@ -304,30 +327,6 @@ namespace YetaWF_ComponentsHTML {
             return index;
         }
 
-
-        private getControlItem(control: string): ControlItem {
-            let elemSel = $YetaWF.getElement1BySelectorCond(`.t_row.t_${control.toLowerCase()} select[name$='${control}']`, [this.Control]) as HTMLSelectElement | null;
-            if (elemSel) {
-                var kendoSelect = YetaWF.ComponentBaseDataImpl.getControlFromTagCond<DropDownListEditComponent>(elemSel, DropDownListEditComponent.SELECTOR);
-                if (kendoSelect) {
-                    // Kendo
-                    return { Name: control, ControlType: ControlTypeEnum.KendoSelect, Object: kendoSelect };
-                } else {
-                    // Native
-                    return { Name: control, ControlType: ControlTypeEnum.Select, Object: elemSel };
-                }
-            }
-            let elemInp = $YetaWF.getElement1BySelectorCond(`.t_row.t_${control.toLowerCase()} input[name$='${control}']`, [this.Control]) as HTMLInputElement | null;
-            if (elemInp) {
-                return { Name: control, ControlType: ControlTypeEnum.Input, Object: elemInp };
-            }
-            let elemHid = $YetaWF.getElement1BySelectorCond(`input[name$='${control}'][type='hidden']`, [this.Control]) as HTMLInputElement | null;
-            if (elemHid) {
-                return { Name: control, ControlType: ControlTypeEnum.Hidden, Object: elemHid };
-            }
-            throw `No control found for ${control}`;
-        }
-
         /**
          * Update all dependent fields.
          */
@@ -341,30 +340,33 @@ namespace YetaWF_ComponentsHTML {
             var deps = this.ControlData.Dependents;
             for (let dep of deps) {
 
-                var depRow = $YetaWF.getElement1BySelectorCond(`.t_row.t_${dep.Prop.toLowerCase()}`, [this.Control]);// the propertylist row affected
+                var depRow = $YetaWF.getElement1BySelectorCond(`.t_row.t_${dep.PropShort.toLowerCase()}`, [this.Control]);// the propertylist row affected
                 if (!depRow)
                     continue;
 
                 var hidden = false;
                 for (let expr of dep.HideValues) {// hidden hides only, it never makes it visible (use process for that instead)
-                    let valid = ValidatorHelper.evaluateExpressionList(null, form, expr.Op, expr.ExprList);
                     switch (expr.Op) {
                         case OpEnum.HideIf:
-                        case OpEnum.HideIfSupplied:
+                        case OpEnum.HideIfSupplied: {
+                            let valid = ValidatorHelper.evaluateExpressionList(null, form, expr.Op, expr.ExprList);
                             if (valid) {
                                 this.toggle(dep, depRow, false, false);
                                 hidden = true;
                                 break;
                             }
                             break;
+                        }
                         case OpEnum.HideIfNot:
-                        case OpEnum.HideIfNotSupplied:
+                        case OpEnum.HideIfNotSupplied: {
+                            let valid = ValidatorHelper.evaluateExpressionList(null, form, expr.Op, expr.ExprList);
                             if (!valid) {
                                 this.toggle(dep, depRow, false, false);
                                 hidden = true;
                                 break;
                             }
                             break;
+                        }
                         default:
                             throw `Unexpected Op ${expr.Op} in update(HideValues)`;
                     }
@@ -375,22 +377,25 @@ namespace YetaWF_ComponentsHTML {
                     if (dep.ProcessValues.length > 0) {
                         process = false;
                         for (let expr of dep.ProcessValues) {
-                            let v = ValidatorHelper.evaluateExpressionList(null, form, expr.Op, expr.ExprList);
                             switch (expr.Op) {
                                 case OpEnum.ProcessIf:
-                                case OpEnum.ProcessIfSupplied:
+                                case OpEnum.ProcessIfSupplied: {
+                                    let v = ValidatorHelper.evaluateExpressionList(null, form, expr.Op, expr.ExprList);
                                     if (v)
                                         process = true;
                                     else
                                         disable = expr.Disable;
                                     break;
+                                }
                                 case OpEnum.ProcessIfNot:
-                                case OpEnum.ProcessIfNotSupplied:
+                                case OpEnum.ProcessIfNotSupplied: {
+                                    let v = ValidatorHelper.evaluateExpressionList(null, form, expr.Op, expr.ExprList);
                                     if (!v)
                                         process = true;
                                     else
                                         disable = expr.Disable;
                                     break;
+                                }
                                 default:
                                     throw `Unexpected Op ${expr.Op} in update(ProcessValues)`;
                             }
@@ -412,30 +417,24 @@ namespace YetaWF_ComponentsHTML {
 
         private toggle(dep: Dependent, depRow: HTMLElement, show: boolean, disable: boolean): void {
             $YetaWF.Forms.clearValidation(depRow);
+            $YetaWF.elementRemoveClass(depRow, "t_disabled");
+            $YetaWF.elementRemoveClass(depRow, "t_hidden");
             if (show) {
-                depRow.style.display = "";
+                if (disable)
+                    $YetaWF.elementAddClass(depRow, "t_disabled");
+                //$$$depRow.style.display = "";
                 $YetaWF.processActivateDivs([depRow]);// init any controls that just became visible
             } else {
-                depRow.style.display = "none";
+                $YetaWF.elementAddClass(depRow, "t_hidden");
+                //$$$$depRow.style.display = "none";
             }
-            //var affected = $YetaWF.getElementsBySelector(`input[name='${dep.Prop}'], select[name='${dep.Prop}'], textarea[name='${dep.Prop}']`, [depRow]);
-            var affected = $YetaWF.getElementsBySelector("input,select,textarea", [depRow]);
-            if (show) {
-                if (disable) {
-                    for (let e of affected) {
-                        $YetaWF.elementEnableToggle(e, false);
-                        $YetaWF.elementAddClasses(e, [YConfigs.Forms.CssFormNoValidate, YConfigs.Forms.CssFormNoSubmit]);
-                    }
+
+            let controlItemDef = ControlsHelper.getControlItemByNameCond(dep.Prop, depRow);// there may not be an actual control, just a row with displayed info
+            if (controlItemDef) {
+                if (show) {
+                    ControlsHelper.enableToggle(controlItemDef, !disable);
                 } else {
-                    for (let e of affected) {
-                        $YetaWF.elementEnableToggle(e, true);
-                        $YetaWF.elementRemoveClasses(e, [YConfigs.Forms.CssFormNoValidate, YConfigs.Forms.CssFormNoSubmit]);
-                    }
-                }
-            } else {
-                for (let e of affected) {
-                    $YetaWF.elementEnableToggle(e, false);
-                    $YetaWF.elementAddClasses(e, [YConfigs.Forms.CssFormNoValidate, YConfigs.Forms.CssFormNoSubmit]);
+                    ControlsHelper.enableToggle(controlItemDef, false);
                 }
             }
         }
@@ -443,7 +442,14 @@ namespace YetaWF_ComponentsHTML {
         public static isRowVisible(tag: HTMLElement): boolean {
             var row = $YetaWF.elementClosestCond(tag, ".t_row");
             if (!row) return false;
-            return row.style.display === "";
+            return !$YetaWF.elementHasClass(row, "t_hidden");
+            //$$$return row.style.display === "";
+        }
+        public static isRowEnabled(tag: HTMLElement): boolean {
+            var row = $YetaWF.elementClosestCond(tag, ".t_row");
+            if (!row) return false;
+            return !$YetaWF.elementHasClass(row, "t_disabled");
+            //$$$return row.style.display === "";
         }
 
         public static relayout(container:HTMLElement): void {

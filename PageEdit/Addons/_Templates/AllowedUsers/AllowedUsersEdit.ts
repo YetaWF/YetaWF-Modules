@@ -12,7 +12,10 @@ namespace YetaWF_PageEdit {
         StaticData: string;
     }
 
-    export class AllowedUsersEditComponent extends YetaWF.ComponentBaseImpl {
+    export class AllowedUsersEditComponent extends YetaWF.ComponentBaseDataImpl {
+
+        public static readonly TEMPLATE: string = "yt_yetawf_pageedit_allowedusers";
+        public static readonly SELECTOR: string = ".yt_yetawf_pageedit_allowedusers.t_edit";
 
         private Setup: AllowedUsersSetup;
         private Grid: YetaWF_ComponentsHTML.Grid;
@@ -23,7 +26,16 @@ namespace YetaWF_PageEdit {
         private AddCounter: number = 0;
 
         constructor(controlId: string, setup: AllowedUsersSetup) {
-            super(controlId);
+            super(controlId, AllowedUsersEditComponent.TEMPLATE, AllowedUsersEditComponent.SELECTOR, {
+                ControlType: YetaWF_ComponentsHTML.ControlTypeEnum.Template,
+                ChangeEvent: "",//$$$$
+                GetValue: (control: AllowedUsersEditComponent): string | null => {
+                    return null;//$$$$control.value;
+                },
+                Enable: (control: AllowedUsersEditComponent, enable: boolean): void => {
+                    //$$$control.enable(enable)
+                },
+            });
             this.Setup = setup;
 
             this.Grid = YetaWF.ComponentBaseDataImpl.getControlById(this.Setup.GridId, YetaWF_ComponentsHTML.Grid.SELECTOR);

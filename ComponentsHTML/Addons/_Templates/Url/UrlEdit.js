@@ -23,7 +23,16 @@ var YetaWF_ComponentsHTML;
     var UrlEditComponent = /** @class */ (function (_super) {
         __extends(UrlEditComponent, _super);
         function UrlEditComponent(controlId, setup) {
-            var _this = _super.call(this, controlId) || this;
+            var _this = _super.call(this, controlId, UrlEditComponent.TEMPLATE, UrlEditComponent.SELECTOR, {
+                ControlType: YetaWF_ComponentsHTML.ControlTypeEnum.Template,
+                ChangeEvent: "",
+                GetValue: function (control) {
+                    return control.value;
+                },
+                Enable: function (control, enable) {
+                    control.enable(enable);
+                },
+            }) || this;
             _this.selectPage = null;
             _this.inputUrl = null;
             _this.divLocal = null;
@@ -153,14 +162,11 @@ var YetaWF_ComponentsHTML;
             if (this.inputUrl)
                 $YetaWF.elementEnableToggle(this.inputUrl, enabled);
         };
+        UrlEditComponent.TEMPLATE = "yt_url";
         UrlEditComponent.SELECTOR = ".yt_url.t_edit";
         return UrlEditComponent;
     }(YetaWF.ComponentBaseDataImpl));
     YetaWF_ComponentsHTML.UrlEditComponent = UrlEditComponent;
-    // A <div> is being emptied. Destroy all controls the <div> may contain.
-    $YetaWF.registerClearDiv(function (tag) {
-        UrlEditComponent.clearDiv(tag, UrlEditComponent.SELECTOR);
-    });
 })(YetaWF_ComponentsHTML || (YetaWF_ComponentsHTML = {}));
 
 //# sourceMappingURL=UrlEdit.js.map

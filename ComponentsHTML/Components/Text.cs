@@ -188,6 +188,9 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                 await Manager.AddOnManager.AddAddOnNamedAsync(Package.AreaName, "clipboardjs.com.clipboard");// add clipboard support
                 hb.Append(ImageHTML.BuildKnownIcon("#TextCopy", sprites: Info.PredefSpriteIcons, title: __ResStr("ttCopy", "Copy to Clipboard"), cssClass: "yt_text_copy"));
             }
+
+            Manager.ScriptManager.AddLast($@"new YetaWF_ComponentsHTML.TextDisplayComponent('{ControlId}');");
+
             return hb.ToString();
         }
     }
@@ -214,7 +217,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         }
 
         /// <summary>
-        /// Adds all addons for the DropDownList component to the current page.
+        /// Adds all addons for the Text component to the current page.
         /// </summary>
         public static async Task IncludeExplicitAsync() { // this component is reusable so we need to explicitly include all js/css
             //await KendoUICore.AddFileAsync("kendo.maskedtextbox.min.js");
@@ -235,6 +238,8 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
             HtmlBuilder hb = new HtmlBuilder();
 
+            component.UseSuppliedIdAsControlId();
+
             YTagBuilder tag = new YTagBuilder("input");
             if (!string.IsNullOrWhiteSpace(templateCssClass))
                 tag.AddCssClass(templateCssClass);
@@ -243,6 +248,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             tag.AddCssClass("k-textbox");
             tag.AddCssClass("t_edit");
             component.FieldSetup(tag, component.Validation ? FieldType.Validated : FieldType.Normal);
+            tag.Attributes.Add("id", component.ControlId);
             //string id = null;
             //if (!string.IsNullOrWhiteSpace(mask)) {
             //    id = component.MakeId(tag);
@@ -285,6 +291,8 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             //    sb.Append("$('#{0}').kendoMaskedTextBox({{ mask: '{1}' }});\n", id, YetaWFManager.JserEncode(mask));
             //    Manager.ScriptManager.AddLastDocumentReady(sb);
             //}
+            Manager.ScriptManager.AddLast($@"new YetaWF_ComponentsHTML.TextEditComponent('{component.ControlId}');");
+
             return hb.ToString();
         }
     }

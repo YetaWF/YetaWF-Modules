@@ -9,6 +9,7 @@ namespace YetaWF_ComponentsHTML {
 
     export class ModuleSelectionEditComponent extends YetaWF.ComponentBaseDataImpl {
 
+        public static readonly TEMPLATE: string = "yt_moduleselection";
         public static SELECTOR: string = ".yt_moduleselection.t_edit";
 
         private Setup: Setup;
@@ -19,7 +20,17 @@ namespace YetaWF_ComponentsHTML {
         private ALink: HTMLAnchorElement;
 
         constructor(controlId: string, setup: Setup) {
-            super(controlId);
+            super(controlId, ModuleSelectionEditComponent.TEMPLATE, ModuleSelectionEditComponent.SELECTOR, {
+                ControlType: ControlTypeEnum.Template,
+                ChangeEvent: null,//$$$$
+                GetValue: (control: ModuleSelectionEditComponent): string | null => {
+                    return control.value;
+                },
+                Enable: (control: ModuleSelectionEditComponent, enable: boolean): void => {
+                    control.enable(enable);
+                },
+            });
+
             this.Setup = setup;
 
             this.SelectPackage = YetaWF.ComponentBaseDataImpl.getControlFromSelector(".t_packages select", DropDownListEditComponent.SELECTOR, [this.Control]);
@@ -111,10 +122,6 @@ namespace YetaWF_ComponentsHTML {
             }
         }
     }
-    // A <div> is being emptied. Destroy all controls the <div> may contain.
-    $YetaWF.registerClearDiv((tag: HTMLElement): void => {
-        ModuleSelectionEditComponent.clearDiv<ModuleSelectionEditComponent>(tag, ModuleSelectionEditComponent.SELECTOR);
-    });
 }
 
 

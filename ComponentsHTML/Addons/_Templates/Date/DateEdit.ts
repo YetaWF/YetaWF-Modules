@@ -13,6 +13,7 @@ namespace YetaWF_ComponentsHTML {
 
     export class DateEditComponent extends YetaWF.ComponentBaseDataImpl {
 
+        public static readonly TEMPLATE: string = "yt_date";
         public static readonly SELECTOR: string = ".yt_date.t_edit";
 
         Hidden: HTMLInputElement;
@@ -20,7 +21,18 @@ namespace YetaWF_ComponentsHTML {
         kendoDatePicker: kendo.ui.DatePicker;
 
         constructor(controlId: string, setup: DateEditSetup) {
-            super(controlId);
+            super(controlId, DateEditComponent.TEMPLATE, DateEditComponent.SELECTOR, {
+                ControlType: ControlTypeEnum.Template,
+                ChangeEvent: "date_change",
+                GetValue: (control: DateEditComponent): string | null => {
+                    return control.valueText;
+                },
+                Enable: (control: DateEditComponent, enable: boolean): void => {
+                    control.enable(enable);
+                }
+            }, false, (tag: HTMLElement, control: DateEditComponent): void => {
+                control.kendoDatePicker.destroy();
+            });
 
             this.Hidden = $YetaWF.getElement1BySelector("input[type=\"hidden\"]", [this.Control]) as HTMLInputElement;
             this.Date = $YetaWF.getElement1BySelector("input[name=\"dtpicker\"]", [this.Control]) as HTMLInputElement;
@@ -73,12 +85,5 @@ namespace YetaWF_ComponentsHTML {
             this.kendoDatePicker.enable(enabled);
         }
     }
-
-    // A <div> is being emptied. Destroy all controls the <div> may contain.
-    $YetaWF.registerClearDiv((tag: HTMLElement): void => {
-        YetaWF.ComponentBaseDataImpl.clearDiv<DateEditComponent>(tag, DateEditComponent.SELECTOR, (control: DateEditComponent): void => {
-            control.kendoDatePicker.destroy();
-        });
-    });
 }
 

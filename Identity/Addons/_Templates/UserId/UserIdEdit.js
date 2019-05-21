@@ -18,7 +18,16 @@ var YetaWF_Identity;
     var UserIdEditComponent = /** @class */ (function (_super) {
         __extends(UserIdEditComponent, _super);
         function UserIdEditComponent(controlId, setup) {
-            var _this = _super.call(this, controlId) || this;
+            var _this = _super.call(this, controlId, UserIdEditComponent.TEMPLATE, UserIdEditComponent.SELECTOR, {
+                ControlType: YetaWF_ComponentsHTML.ControlTypeEnum.Template,
+                ChangeEvent: "",
+                GetValue: function (control) {
+                    return _this.inputHidden.value;
+                },
+                Enable: function (control, enable) {
+                    //$$$control.enable(enable)
+                },
+            }) || this;
             _this.Setup = setup;
             _this.GridAll = YetaWF.ComponentBaseDataImpl.getControlById(_this.Setup.GridAllId, YetaWF_ComponentsHTML.Grid.SELECTOR);
             _this.inputHidden = $YetaWF.getElementById(_this.Setup.HiddenId);
@@ -42,8 +51,10 @@ var YetaWF_Identity;
             });
             return _this;
         }
+        UserIdEditComponent.TEMPLATE = "yt_yetawf_identity_userid";
+        UserIdEditComponent.SELECTOR = ".yt_yetawf_identity_userid.t_edit";
         return UserIdEditComponent;
-    }(YetaWF.ComponentBaseImpl));
+    }(YetaWF.ComponentBaseDataImpl));
     YetaWF_Identity.UserIdEditComponent = UserIdEditComponent;
 })(YetaWF_Identity || (YetaWF_Identity = {}));
 

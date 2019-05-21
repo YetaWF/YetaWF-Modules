@@ -98,6 +98,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             tag.AddCssClass("yt_boolean");
             tag.AddCssClass("t_edit");
             FieldSetup(tag, Validation ? FieldType.Validated : FieldType.Anonymous);
+            tag.Attributes.Add("id", ControlId);
             tag.Attributes.Add("type", "checkbox");
             tag.Attributes.Add("value", "true");
             if (model != null && (bool)model)
@@ -108,6 +109,8 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             FieldSetup(tagHidden, FieldType.Normal);
             tagHidden.Attributes.Add("type", "hidden");
             tagHidden.Attributes.Add("value", "false");
+
+            Manager.ScriptManager.AddLast($@"new YetaWF_ComponentsHTML.BooleanEditComponent('{ControlId}');");
 
             return Task.FromResult(tag.ToString(YTagRenderMode.StartTag) + tagHidden.ToString(YTagRenderMode.StartTag));
         }

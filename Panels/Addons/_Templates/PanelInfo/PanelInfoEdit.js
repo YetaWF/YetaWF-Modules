@@ -18,7 +18,41 @@ var YetaWF_Panels;
     var PanelInfoEditComponent = /** @class */ (function (_super) {
         __extends(PanelInfoEditComponent, _super);
         function PanelInfoEditComponent(controlId) {
-            var _this = _super.call(this, controlId) || this;
+            var _this = _super.call(this, controlId, PanelInfoEditComponent.TEMPLATE, PanelInfoEditComponent.SELECTOR, {
+                ControlType: YetaWF_ComponentsHTML.ControlTypeEnum.Template,
+                ChangeEvent: "",
+                GetValue: function (control) {
+                    return null; //$$$$control.value;
+                },
+                Enable: function (control, enable) {
+                    //$$$control.enable(enable)
+                },
+            }, false, function (tag, control) {
+                // tabs
+                var list = $YetaWF.getElementsBySelector(".yt_panels_panelinfo .t_panels.t_acctabs", [control.Control]);
+                for (var _i = 0, list_1 = list; _i < list_1.length; _i++) {
+                    var el = list_1[_i];
+                    var tabs = $(el);
+                    if (tabs)
+                        tabs.tabs("destroy"); //jQuery-ui use
+                }
+                // jquery ui accordion
+                var list = $YetaWF.getElementsBySelector(".yt_panels_panelinfo .t_panels.t_accjquery", [control.Control]);
+                for (var _a = 0, list_2 = list; _a < list_2.length; _a++) {
+                    var el = list_2[_a];
+                    var accordion = $(el);
+                    if (accordion)
+                        accordion.accordion("destroy"); //jQuery-ui use
+                }
+                // kendo accordion
+                var list = $YetaWF.getElementsBySelector(".yt_panels_panelinfo .t_panels.t_acckendo", [control.Control]);
+                for (var _b = 0, list_3 = list; _b < list_3.length; _b++) {
+                    var el = list_3[_b];
+                    var panelBar = $(el).data("kendoPanelBar");
+                    if (panelBar)
+                        panelBar.destroy();
+                }
+            }) || this;
             _this.Up = $YetaWF.getElement1BySelector("input.t_up", [_this.Control]);
             _this.Down = $YetaWF.getElement1BySelector("input.t_down", [_this.Control]);
             _this.Delete = $YetaWF.getElement1BySelector("input.t_delete", [_this.Control]);
@@ -74,6 +108,7 @@ var YetaWF_Panels;
             $YetaWF.elementEnableToggle(this.Down, panelIndex < this.getPanelCount() - 1);
             $YetaWF.elementEnableToggle(this.Delete, this.getPanelCount() > 1);
         };
+        PanelInfoEditComponent.TEMPLATE = "yt_panels_panelinfo";
         PanelInfoEditComponent.SELECTOR = ".yt_panels_panelinfo.t_edit";
         PanelInfoEditComponent.TEMPLATENAME = "YetaWF_Panels_PanelInfo";
         return PanelInfoEditComponent;
@@ -86,34 +121,6 @@ var YetaWF_Panels;
         var tabActive = $YetaWF.getElement1BySelector("input[name$='_ActiveTab']", [panelInfo.Control]);
         tabActive.value = $YetaWF.getAttribute(panel, "data-tab");
         panelInfo.updateButtons();
-    });
-    // A <div> is being emptied. Destroy all panels the <div> may contain.
-    $YetaWF.registerClearDiv(function (tag) {
-        // tabs
-        var list = $YetaWF.getElementsBySelector(".yt_panels_panelinfo .t_panels.t_acctabs", [tag]);
-        for (var _i = 0, list_1 = list; _i < list_1.length; _i++) {
-            var el = list_1[_i];
-            var tabs = $(el);
-            if (tabs)
-                tabs.tabs("destroy"); //jQuery-ui use
-        }
-        // jquery ui accordion
-        var list = $YetaWF.getElementsBySelector(".yt_panels_panelinfo .t_panels.t_accjquery", [tag]);
-        for (var _a = 0, list_2 = list; _a < list_2.length; _a++) {
-            var el = list_2[_a];
-            var accordion = $(el);
-            if (accordion)
-                accordion.accordion("destroy"); //jQuery-ui use
-        }
-        // kendo accordion
-        var list = $YetaWF.getElementsBySelector(".yt_panels_panelinfo .t_panels.t_acckendo", [tag]);
-        for (var _b = 0, list_3 = list; _b < list_3.length; _b++) {
-            var el = list_3[_b];
-            var panelBar = $(el).data("kendoPanelBar");
-            if (panelBar)
-                panelBar.destroy();
-        }
-        PanelInfoEditComponent.clearDiv(tag, PanelInfoEditComponent.SELECTOR);
     });
 })(YetaWF_Panels || (YetaWF_Panels = {}));
 

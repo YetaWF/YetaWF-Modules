@@ -6,14 +6,29 @@ namespace YetaWF_ComponentsHTML {
         MenuId: string;
     }
 
-    export class ActionIconsComponent extends YetaWF.ComponentBaseImpl {
+    export class ActionIconsComponent extends YetaWF.ComponentBaseDataImpl {
+
+        public static readonly TEMPLATE: string = "yt_actionicons";
+        public static readonly SELECTOR: string = ".yt_actionicons";
 
         private MenuControl: HTMLDivElement;
 
         public static menusOpen: number = 0;
 
         constructor(controlId: string, setup: ActionIconsSetup) {
-            super(controlId);
+            super(controlId, ActionIconsComponent.TEMPLATE, ActionIconsComponent.SELECTOR, {
+                ControlType: ControlTypeEnum.Template,
+                ChangeEvent: null,
+                GetValue: null,
+                Enable: null
+            }, false, (tag: HTMLElement, control: ActionIconsComponent): void => {
+                var list = $YetaWF.getElementsBySelector("ul.yGridActionMenu", [control.Control]);
+                for (let el of list) {
+                    var menu = $(el).data("kendoMenu");
+                    if (!menu) throw "No kendo object found";/*DEBUG*/
+                    menu.destroy();
+                }
+            });
 
             this.MenuControl = $YetaWF.getElementById(setup.MenuId) as HTMLDivElement;
 
@@ -88,24 +103,6 @@ namespace YetaWF_ComponentsHTML {
     // last chance - handle a new page (UPS) and close open menus
     $YetaWF.registerNewPage((url:string): void => {
         ActionIconsComponent.closeMenus();
-    });
-
-    // A <div> is being emptied. Destroy all actionicons the <div> may contain.
-    $YetaWF.registerClearDiv((tag: HTMLElement): void => {
-        //var list = tag.querySelectorAll("button.yt_actionicons");
-        //var len = list.length;
-        //for (var i = 0; i < len; ++i) {
-        //    var el = list[i];
-        //    var button = $(el).data("kendoButton");
-        //    if (!button) throw "No kendo object found";/*DEBUG*/
-        //    button.destroy();
-        //}
-        var list = $YetaWF.getElementsBySelector("ul.yGridActionMenu", [tag]);
-        for (let el of list) {
-            var menu = $(el).data("kendoMenu");
-            if (!menu) throw "No kendo object found";/*DEBUG*/
-            menu.destroy();
-        }
     });
 }
 

@@ -3,6 +3,7 @@
 var YetaWF_ComponentsHTML;
 (function (YetaWF_ComponentsHTML) {
     var DayTimeRangeComponent = /** @class */ (function () {
+        //$$$$$ needs ComponentBaseNoDataImpl
         function DayTimeRangeComponent(controlId) {
             var _this = this;
             this.NoSubmit = YConfigs.Forms.CssFormNoSubmit + " " + YConfigs.Forms.CssFormNoValidate;

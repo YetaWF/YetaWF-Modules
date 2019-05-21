@@ -11,7 +11,10 @@ namespace YetaWF_DevTests {
         StaticData: string;
     }
 
-    export class ListOfEmailAddressesEditComponent extends YetaWF.ComponentBaseImpl {
+    export class ListOfEmailAddressesEditComponent extends YetaWF.ComponentBaseDataImpl {
+
+        public static readonly TEMPLATE: string = "yt_yetawf_devtests_listofemailaddresses";
+        public static readonly SELECTOR: string = ".yt_yetawf_devtests_listofemailaddresses.t_edit";
 
         private Setup: ListOfEmailAddressesSetup;
         private Grid: YetaWF_ComponentsHTML.Grid;
@@ -21,7 +24,17 @@ namespace YetaWF_DevTests {
         private AddCounter: number = 0;
 
         constructor(controlId: string, setup: ListOfEmailAddressesSetup) {
-            super(controlId);
+            super(controlId, ListOfEmailAddressesEditComponent.TEMPLATE, ListOfEmailAddressesEditComponent.SELECTOR, {
+                ControlType: YetaWF_ComponentsHTML.ControlTypeEnum.Template,
+                ChangeEvent: "",//$$$$
+                GetValue: (control: ListOfEmailAddressesEditComponent): string | null => {
+                    return null;//$$$$control.value;
+                },
+                Enable: (control: ListOfEmailAddressesEditComponent, enable: boolean): void => {
+                    //$$$control.enable(enable)
+                },
+            });
+
             this.Setup = setup;
 
             this.Grid = YetaWF.ComponentBaseDataImpl.getControlById(this.Setup.GridId, YetaWF_ComponentsHTML.Grid.SELECTOR);

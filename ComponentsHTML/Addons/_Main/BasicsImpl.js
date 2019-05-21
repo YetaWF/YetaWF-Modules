@@ -245,35 +245,14 @@ var YetaWF_ComponentsHTML;
             }
             if (YVolatile.Skin.Bootstrap && $YetaWF.elementHasClass(elem, "btn")) {
                 // bootstrap button
-                // no action needed, caller already sets disabled=...
+                elem.removeAttribute("disabled");
+                if (!enable)
+                    elem.setAttribute("disabled", "disabled");
             }
-            if (YVolatile.YetaWF_ComponentsHTML.kendoUI) {
-                // Kendo UI stuff
-                if (elem.tagName === "INPUT") {
-                    if (enable)
-                        $YetaWF.elementRemoveClass(elem, "k-state-disabled");
-                    else
-                        $YetaWF.elementAddClass(elem, "k-state-disabled");
-                    var numT = $(elem).data("kendoNumericTextBox");
-                    if (numT)
-                        numT.enable(enable);
-                }
-                else if (elem.tagName === "SELECT") {
-                    var dd = $(elem).data("kendoDropDownList");
-                    if (dd)
-                        dd.enable(enable);
-                }
-                else if (elem.tagName === "TEXTAREA") {
-                    if (enable) {
-                        elem.removeAttribute("readonly");
-                        $YetaWF.elementRemoveClass(elem, "k-state-disabled");
-                    }
-                    else {
-                        $YetaWF.setAttribute(elem, "readonly", "readonly");
-                        $YetaWF.elementAddClass(elem, "k-state-disabled");
-                    }
-                }
-            }
+            if (enable)
+                $YetaWF.elementRemoveClasses(elem, [YConfigs.Forms.CssFormNoValidate, YConfigs.Forms.CssFormNoSubmit]);
+            else
+                $YetaWF.elementAddClasses(elem, [YConfigs.Forms.CssFormNoValidate, YConfigs.Forms.CssFormNoSubmit]);
         };
         return BasicsImpl;
     }());

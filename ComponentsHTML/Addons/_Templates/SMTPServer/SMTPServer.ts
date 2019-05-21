@@ -2,6 +2,7 @@
 
 namespace YetaWF_ComponentsHTML {
 
+    //$$$$ needs ComponentBaseNoDataImpl
     export class SMTPServer {
 
         private Control: HTMLElement;

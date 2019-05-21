@@ -20,7 +20,16 @@ var YetaWF_ComponentsHTML;
     var ScrollerComponent = /** @class */ (function (_super) {
         __extends(ScrollerComponent, _super);
         function ScrollerComponent(controlId /*, setup: Setup*/) {
-            var _this = _super.call(this, controlId) || this;
+            var _this = _super.call(this, controlId, ScrollerComponent.TEMPLATE, ScrollerComponent.SELECTOR, {
+                ControlType: YetaWF_ComponentsHTML.ControlTypeEnum.Template,
+                ChangeEvent: "",
+                GetValue: function (control) {
+                    return null; //$$$control.valueText;
+                },
+                Enable: function (control, enable) {
+                    //$$$control.enable(enable)
+                },
+            }) || this;
             _this.Panel = 0;
             //this.Setup = setup;
             _this.ElemLeft = $YetaWF.getElement1BySelector(".t_left", [_this.Control]);
@@ -73,6 +82,7 @@ var YetaWF_ComponentsHTML;
             //    left: -offs,
             //}, 250, function () { });
         };
+        ScrollerComponent.TEMPLATE = "yt_scroller";
         ScrollerComponent.SELECTOR = ".yt_scroller.t_display";
         return ScrollerComponent;
     }(YetaWF.ComponentBaseDataImpl));
@@ -84,10 +94,6 @@ var YetaWF_ComponentsHTML;
             var scr = ScrollerComponent.getControlFromTag(scroller, ScrollerComponent.SELECTOR);
             scr.updateButtons();
         }
-    });
-    // A <div> is being emptied. Destroy all controls the <div> may contain.
-    $YetaWF.registerClearDiv(function (tag) {
-        ScrollerComponent.clearDiv(tag, ScrollerComponent.SELECTOR);
     });
 })(YetaWF_ComponentsHTML || (YetaWF_ComponentsHTML = {}));
 

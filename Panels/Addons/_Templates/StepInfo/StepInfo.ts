@@ -9,10 +9,20 @@ namespace YetaWF_Panels {
 
     export class StepInfoComponent extends YetaWF.ComponentBaseDataImpl {
 
+        public static readonly TEMPLATE: string = "yt_panels_stepinfo";
         public static readonly SELECTOR: string = ".yt_panels_stepinfo.t_display";
 
         constructor(controlId: string) {
-            super(controlId);
+            super(controlId, StepInfoEditComponent.TEMPLATE, StepInfoEditComponent.SELECTOR, {
+                ControlType: YetaWF_ComponentsHTML.ControlTypeEnum.Template,
+                ChangeEvent: "",//$$$$
+                GetValue: (control: StepInfoEditComponent): string | null => {
+                    return null;//$$$$control.value;
+                },
+                Enable: (control: StepInfoEditComponent, enable: boolean): void => {
+                    //$$$control.enable(enable)
+                }
+            }, true);
         }
 
         public static setActive(option: StepOptions): void {
@@ -102,9 +112,4 @@ namespace YetaWF_Panels {
             }
         }
     }
-
-    // A <div> is being emptied. Destroy all steps the <div> may contain.
-    $YetaWF.registerClearDiv((tag: HTMLElement): void => {
-        StepInfoComponent.clearDiv(tag, StepInfoComponent.SELECTOR);
-    });
 }

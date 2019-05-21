@@ -1,4 +1,5 @@
 PrettyLoader.js
+Controls.ts
 ComponentsHTML.ts
 BasicsImpl.ts
 Buttons.ts

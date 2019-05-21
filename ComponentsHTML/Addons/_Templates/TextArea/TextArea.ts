@@ -4,8 +4,29 @@ declare var CKEDITOR: any;
 
 namespace YetaWF_ComponentsHTML {
 
-    export class TextAreaEditComponent {
+    export class TextAreaEditComponent extends YetaWF.ComponentBaseDataImpl {
 
+        public static readonly TEMPLATE: string = "yt_textarea";
+        public static readonly SELECTOR: string = ".yt_textarea.t_edit";
+
+        constructor(controlId: string /*, setup: BooleanEditSetup*/) {
+            super(controlId, TextAreaEditComponent.TEMPLATE, TextAreaEditComponent.SELECTOR, {
+                ControlType: ControlTypeEnum.TextArea,
+                ChangeEvent: null,
+                GetValue: (control: HTMLTextAreaElement): string | null => {
+                    return control.value;
+                },
+                Enable: (control: HTMLInputElement, enable: boolean): void => {
+                    if (enable) {
+                        control.setAttribute("readonly", "readonly");
+                        $YetaWF.elementRemoveClass(control, "k-state-disabled");
+                    } else {
+                        control.removeAttribute("readonly");
+                        $YetaWF.elementAddClass(control, "k-state-disabled");
+                    }
+                },
+            });
+        }
     }
 
     // Override the built-in Save button to use our Form submit

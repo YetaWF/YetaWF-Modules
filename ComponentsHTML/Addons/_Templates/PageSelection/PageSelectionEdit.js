@@ -20,7 +20,16 @@ var YetaWF_ComponentsHTML;
     var PageSelectionEditComponent = /** @class */ (function (_super) {
         __extends(PageSelectionEditComponent, _super);
         function PageSelectionEditComponent(controlId /*, setup: Setup*/) {
-            var _this = _super.call(this, controlId) || this;
+            var _this = _super.call(this, controlId, PageSelectionEditComponent.TEMPLATE, PageSelectionEditComponent.SELECTOR, {
+                ControlType: YetaWF_ComponentsHTML.ControlTypeEnum.Template,
+                ChangeEvent: "dropdownlist_change",
+                GetValue: function (control) {
+                    return null; //$$$control.SelectPage.value;
+                },
+                Enable: function (control, enable) {
+                    //$$$control.enable(enable)
+                },
+            }) || this;
             //this.Setup = setup;
             _this.SelectPage = YetaWF.ComponentBaseDataImpl.getControlFromSelector("select", YetaWF_ComponentsHTML.DropDownListEditComponent.SELECTOR, [_this.Control]);
             _this.DivLink = $YetaWF.getElement1BySelector(".t_link", [_this.Control]);
@@ -44,14 +53,11 @@ var YetaWF_ComponentsHTML;
             this.APage.href = "/!Page/" + pageGuid; // Globals.PageUrl
             //$desc.text(desc);
         };
+        PageSelectionEditComponent.TEMPLATE = "yt_pageselection";
         PageSelectionEditComponent.SELECTOR = "div.yt_pageselection.t_edit";
         return PageSelectionEditComponent;
     }(YetaWF.ComponentBaseDataImpl));
     YetaWF_ComponentsHTML.PageSelectionEditComponent = PageSelectionEditComponent;
-    // A <div> is being emptied. Destroy all controls the <div> may contain.
-    $YetaWF.registerClearDiv(function (tag) {
-        PageSelectionEditComponent.clearDiv(tag, PageSelectionEditComponent.SELECTOR);
-    });
 })(YetaWF_ComponentsHTML || (YetaWF_ComponentsHTML = {}));
 
 //# sourceMappingURL=PageSelectionEdit.js.map

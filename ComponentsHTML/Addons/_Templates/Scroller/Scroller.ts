@@ -7,7 +7,9 @@ namespace YetaWF_ComponentsHTML {
 
     export class ScrollerComponent extends YetaWF.ComponentBaseDataImpl {
 
+        public static readonly TEMPLATE: string = "yt_scroller";
         public static readonly SELECTOR: string = ".yt_scroller.t_display";
+
         private Panel: number = 0;
         private Panels: number;
         private ElemLeft: HTMLElement;
@@ -15,7 +17,16 @@ namespace YetaWF_ComponentsHTML {
         private DivItems: HTMLDivElement;
 
         constructor(controlId: string/*, setup: Setup*/) {
-            super(controlId);
+            super(controlId, ScrollerComponent.TEMPLATE, ScrollerComponent.SELECTOR, {
+                ControlType: ControlTypeEnum.Template,
+                ChangeEvent: "",//$$$
+                GetValue: (control: ScrollerComponent): string | null => {
+                    return null;//$$$control.valueText;
+                },
+                Enable: (control: ScrollerComponent, enable: boolean): void => {
+                    //$$$control.enable(enable)
+                },
+            });
             //this.Setup = setup;
 
             this.ElemLeft = $YetaWF.getElement1BySelector(".t_left", [this.Control]);
@@ -86,10 +97,5 @@ namespace YetaWF_ComponentsHTML {
             var scr = ScrollerComponent.getControlFromTag<ScrollerComponent>(scroller, ScrollerComponent.SELECTOR);
             scr.updateButtons();
         }
-    });
-
-    // A <div> is being emptied. Destroy all controls the <div> may contain.
-    $YetaWF.registerClearDiv((tag: HTMLElement): void => {
-        ScrollerComponent.clearDiv(tag, ScrollerComponent.SELECTOR);
     });
 }

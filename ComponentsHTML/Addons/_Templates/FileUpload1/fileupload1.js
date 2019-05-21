@@ -18,7 +18,16 @@ var YetaWF_ComponentsHTML;
     var FileUpload1Component = /** @class */ (function (_super) {
         __extends(FileUpload1Component, _super);
         function FileUpload1Component(controlId, setup) {
-            var _this = _super.call(this, controlId) || this;
+            var _this = _super.call(this, controlId, FileUpload1Component.TEMPLATE, FileUpload1Component.SELECTOR, {
+                ControlType: YetaWF_ComponentsHTML.ControlTypeEnum.Template,
+                ChangeEvent: null,
+                GetValue: function (control) {
+                    return null; //$$
+                },
+                Enable: function (control, enable) {
+                    //$$
+                }
+            }) || this;
             _this.$divProgressbar = null;
             _this.SuccessfullUploadCallback = null;
             _this.GetFileNameCallback = null;
@@ -144,14 +153,11 @@ var YetaWF_ComponentsHTML;
         FileUpload1Component.prototype.SetGetFileName = function (callback) {
             this.GetFileNameCallback = callback;
         };
+        FileUpload1Component.TEMPLATE = "yt_fileupload1";
         FileUpload1Component.SELECTOR = ".yt_fileupload1";
         return FileUpload1Component;
     }(YetaWF.ComponentBaseDataImpl));
     YetaWF_ComponentsHTML.FileUpload1Component = FileUpload1Component;
-    // A <div> is being emptied. Destroy all controls the <div> may contain.
-    $YetaWF.registerClearDiv(function (tag) {
-        YetaWF.ComponentBaseDataImpl.clearDiv(tag, FileUpload1Component.SELECTOR);
-    });
 })(YetaWF_ComponentsHTML || (YetaWF_ComponentsHTML = {}));
 
 //# sourceMappingURL=FileUpload1.js.map

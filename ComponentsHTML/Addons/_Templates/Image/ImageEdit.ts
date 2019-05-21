@@ -6,7 +6,10 @@ namespace YetaWF_ComponentsHTML {
         UploadId: string;
     }
 
-    export class ImageEditComponent extends YetaWF.ComponentBaseImpl {
+    export class ImageEditComponent extends YetaWF.ComponentBaseDataImpl {
+
+        public static readonly TEMPLATE: string = "yt_image";
+        public static readonly SELECTOR: string = ".yt_image.t_edit";
 
         private static readonly CLEAREDFILE: string = "(CLEARED)";
 
@@ -17,7 +20,19 @@ namespace YetaWF_ComponentsHTML {
         private HaveImageDiv: HTMLDivElement;
 
         constructor(controlId: string, setup: ImageEditSetup) {
-            super(controlId);
+            super(controlId, ImageEditComponent.TEMPLATE, ImageEditComponent.SELECTOR, {
+                ControlType: ControlTypeEnum.Template,
+                ChangeEvent: null,//$$$$$
+                GetValue: (control: ImageEditComponent): string | null => {
+                    if (this.HiddenInput.value === ImageEditComponent.CLEAREDFILE)
+                        return null;
+                    return this.HiddenInput.value;
+                },
+                Enable: (control: ImageEditComponent, enable: boolean): void => {
+                    //$$$$control.enable(enable);
+                }
+            });
+
             this.Setup = setup;
 
             this.UploadControl = YetaWF.ComponentBaseDataImpl.getControlById(this.Setup.UploadId, FileUpload1Component.SELECTOR);

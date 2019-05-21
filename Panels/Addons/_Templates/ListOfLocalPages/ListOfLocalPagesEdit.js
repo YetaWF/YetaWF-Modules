@@ -18,7 +18,16 @@ var YetaWF_Panels;
     var ListOfLocalPagesEditComponent = /** @class */ (function (_super) {
         __extends(ListOfLocalPagesEditComponent, _super);
         function ListOfLocalPagesEditComponent(controlId, setup) {
-            var _this = _super.call(this, controlId) || this;
+            var _this = _super.call(this, controlId, ListOfLocalPagesEditComponent.TEMPLATE, ListOfLocalPagesEditComponent.SELECTOR, {
+                ControlType: YetaWF_ComponentsHTML.ControlTypeEnum.Template,
+                ChangeEvent: "",
+                GetValue: function (control) {
+                    return null; //$$$$control.value;
+                },
+                Enable: function (control, enable) {
+                    //$$$control.enable(enable)
+                },
+            }) || this;
             _this.ReloadInProgress = false;
             _this.AddCounter = 0;
             _this.Setup = setup;
@@ -76,8 +85,10 @@ var YetaWF_Panels;
             s = s.trim();
             $YetaWF.elementEnableToggle(this.buttonAdd, s.length > 0);
         };
+        ListOfLocalPagesEditComponent.TEMPLATE = "yt_yetawf_panels_listoflocalpages";
+        ListOfLocalPagesEditComponent.SELECTOR = ".yt_yetawf_panels_listoflocalpages.t_edit";
         return ListOfLocalPagesEditComponent;
-    }(YetaWF.ComponentBaseImpl));
+    }(YetaWF.ComponentBaseDataImpl));
     YetaWF_Panels.ListOfLocalPagesEditComponent = ListOfLocalPagesEditComponent;
 })(YetaWF_Panels || (YetaWF_Panels = {}));
 

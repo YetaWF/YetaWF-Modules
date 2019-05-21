@@ -31,6 +31,7 @@ namespace YetaWF_ComponentsHTML {
 
     export class FileUpload1Component extends YetaWF.ComponentBaseDataImpl {
 
+        public static readonly TEMPLATE: string = "yt_fileupload1";
         public static readonly SELECTOR: string = ".yt_fileupload1";
 
         private Setup: FileUpload1Setup;
@@ -43,7 +44,17 @@ namespace YetaWF_ComponentsHTML {
         private GetFileNameCallback: (() => string) | null = null;
 
         constructor(controlId: string, setup: FileUpload1Setup) {
-            super(controlId);
+            super(controlId, FileUpload1Component.TEMPLATE, FileUpload1Component.SELECTOR, {
+                ControlType: ControlTypeEnum.Template,
+                ChangeEvent: null,//$$$$$
+                GetValue: (control: FileUpload1Component): string | null => {
+                    return null;//$$
+                },
+                Enable: (control: FileUpload1Component, enable: boolean): void => {
+                    //$$
+                }
+            });
+
             this.Setup = setup;
 
             ComponentsHTMLHelper.MUSTHAVE_JQUERYUI();
@@ -173,11 +184,6 @@ namespace YetaWF_ComponentsHTML {
             this.GetFileNameCallback = callback;
         }
     }
-
-    // A <div> is being emptied. Destroy all controls the <div> may contain.
-    $YetaWF.registerClearDiv((tag: HTMLElement): void => {
-        YetaWF.ComponentBaseDataImpl.clearDiv<FileUpload1Component>(tag, FileUpload1Component.SELECTOR);
-    });
 }
 
 

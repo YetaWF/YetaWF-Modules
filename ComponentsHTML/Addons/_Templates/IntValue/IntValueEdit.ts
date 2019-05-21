@@ -11,6 +11,7 @@ namespace YetaWF_ComponentsHTML {
 
     export class IntValueEditComponent extends YetaWF.ComponentBaseDataImpl {
 
+        public static readonly TEMPLATE: string = "yt_intvalue_base";
         public static readonly SELECTOR: string = "input.yt_intvalue_base.t_edit.k-input[name]";
 
         private InputControl: HTMLInputElement;
@@ -18,7 +19,20 @@ namespace YetaWF_ComponentsHTML {
         public readonly kendoNumericTextBox: kendo.ui.NumericTextBox | null = null;
 
         constructor(controlId: string, setup: IntValueSetup) {
-            super(controlId);
+            super(controlId, IntValueEditComponent.TEMPLATE, IntValueEditComponent.SELECTOR, {
+                ControlType: ControlTypeEnum.Template,
+                ChangeEvent: "intvalue_change",
+                GetValue: (control: IntValueEditComponent): string | null => {
+                    return control.value.toString();
+                },
+                Enable: (control: IntValueEditComponent, enable: boolean): void => {
+                    control.enable(enable);
+                },
+            }, false, (tag: HTMLElement, control: IntValueEditComponent): void => {
+                if (control.kendoNumericTextBox)
+                    control.kendoNumericTextBox.destroy();
+            });
+
             this.InputControl = this.Control as HTMLInputElement;
 
             $(this.InputControl).kendoNumericTextBox({
@@ -29,6 +43,7 @@ namespace YetaWF_ComponentsHTML {
                 downArrowText: "",
                 upArrowText: "",
                 change: (e: kendo.ui.NumericTextBoxChangeEvent): void => {
+                    $(this.Control).trigger("change");
                     var event = document.createEvent("Event");
                     event.initEvent("intvalue_change", true, true);
                     this.Control.dispatchEvent(event);
@@ -63,13 +78,5 @@ namespace YetaWF_ComponentsHTML {
             }
         }
     }
-
-    // A <div> is being emptied. Destroy all IntValues the <div> may contain.
-    $YetaWF.registerClearDiv((tag: HTMLElement): void => {
-        IntValueEditComponent.clearDiv<IntValueEditComponent>(tag, IntValueEditComponent.SELECTOR, (control: IntValueEditComponent): void => {
-            if (control.kendoNumericTextBox)
-                control.kendoNumericTextBox.destroy();
-        });
-    });
 }
 

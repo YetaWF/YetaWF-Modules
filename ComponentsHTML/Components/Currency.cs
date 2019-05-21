@@ -106,7 +106,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         public Task<string> RenderAsync(Decimal? model) {
             HtmlBuilder hb = new HtmlBuilder();
 
-            hb.Append($"<div id='{ControlId}' class='yt_currency t_edit'>");
+            hb.Append($"<div id='{ControlId}' class='yt_currency t_edit y_inline'>");
 
             YTagBuilder tag = new YTagBuilder("input");
             FieldSetup(tag, Validation ? FieldType.Validated : FieldType.Normal);

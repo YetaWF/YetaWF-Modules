@@ -92,6 +92,7 @@ namespace YetaWF_ComponentsHTML {
 
     export class Grid extends YetaWF.ComponentBaseDataImpl {
 
+        public static readonly TEMPLATE: string = "yt_grid";
         public static readonly SELECTOR: string = ".yt_grid";
 
         private Setup: GridSetup;
@@ -117,7 +118,20 @@ namespace YetaWF_ComponentsHTML {
         private reorderingRowElement: HTMLTableRowElement | null = null;
 
         constructor(controlId: string, setup: GridSetup) {
-            super(controlId);
+            super(controlId, Grid.TEMPLATE, Grid.SELECTOR, {
+                ControlType: ControlTypeEnum.Template,
+                ChangeEvent: null,//$$$$$
+                GetValue: (control: Grid): string | null => {
+                    return null;//$$$
+                },
+                Enable: (control: Grid, enable: boolean): void => {
+                    //$$$control.enable(enable)
+                },
+            }, false, (tag: HTMLElement, control: Grid): void => {
+                control.internalDestroy();
+            });
+
+
             this.Setup = setup;
 
             ComponentsHTMLHelper.MUSTHAVE_JQUERYUI();
@@ -1129,12 +1143,4 @@ namespace YetaWF_ComponentsHTML {
             });
         }
     }
-
-    // A <div> is being emptied. Destroy all grids, menus the <div> may contain.
-    $YetaWF.registerClearDiv((tag: HTMLElement): void => {
-        YetaWF.ComponentBaseDataImpl.clearDiv<Grid>(tag, Grid.SELECTOR, (grid: Grid): void => {
-            // remove grid control
-            grid.internalDestroy();
-        });
-    });
 }

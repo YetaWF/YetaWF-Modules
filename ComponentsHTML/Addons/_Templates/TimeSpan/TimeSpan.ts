@@ -5,9 +5,11 @@ namespace YetaWF_ComponentsHTML {
     //interface Setup {
     //}
 
-    export class TimeSpanEditComponent {
+    export class TimeSpanEditComponent extends YetaWF.ComponentBaseDataImpl {
 
-        public Control: HTMLDivElement;
+        public static readonly TEMPLATE: string = "yt_timespan";
+        public static readonly SELECTOR: string = ".yt_timespan.t_edit";
+
         public Hidden: HTMLInputElement;
         public InputDays: IntValueEditComponent|null;
         public InputHours: IntValueEditComponent | null;
@@ -15,7 +17,20 @@ namespace YetaWF_ComponentsHTML {
         public InputSecs: IntValueEditComponent | null;
 
         constructor(controlId: string/*, setup: Setup*/) {
-            this.Control = $YetaWF.getElementById(controlId) as HTMLDivElement;
+            super(controlId, TimeSpanEditComponent.TEMPLATE, TimeSpanEditComponent.SELECTOR, {
+                ControlType: ControlTypeEnum.Template,
+                ChangeEvent: "timespan_change",
+                GetValue: (control: TimeSpanEditComponent): string | null => {
+                    return this.Hidden.value;
+                },
+                Enable: (control: TimeSpanEditComponent, enable: boolean): void => {
+                    if (this.InputDays) this.InputDays.enable(enable);
+                    if (this.InputHours) this.InputHours.enable(enable);
+                    if (this.InputMins) this.InputMins.enable(enable);
+                    if (this.InputSecs) this.InputSecs.enable(enable);
+                },
+            });
+
             this.Hidden = $YetaWF.getElement1BySelector("input[type='hidden']", [this.Control]) as HTMLInputElement;
 
             this.InputDays = YetaWF.ComponentBaseDataImpl.getControlFromSelectorCond<IntValueEditComponent>("input[name$='Days']", IntValueEditComponent.SELECTOR, [this.Control]);
@@ -45,6 +60,11 @@ namespace YetaWF_ComponentsHTML {
                 });
             }
         }
+        private sendUpdateEvent(): void {
+            var event = document.createEvent("Event");
+            event.initEvent("timespan_change", false, true);
+            this.Control.dispatchEvent(event);
+        }
         private updateValue(): void {
             if (this.InputDays && this.InputHours && this.InputMins && this.InputSecs) {
                 this.Hidden.value = `${this.InputDays.value}.${this.InputHours.value}:${this.InputMins.value}:${this.InputSecs.value}`;
@@ -55,6 +75,7 @@ namespace YetaWF_ComponentsHTML {
             } else if (this.InputHours && this.InputMins) {
                 this.Hidden.value = `${this.InputHours.value}:${this.InputMins.value}`;
             }
+            this.sendUpdateEvent();
         }
     }
 }

@@ -18,7 +18,16 @@ var YetaWF_PageEdit;
     var AllowedUsersEditComponent = /** @class */ (function (_super) {
         __extends(AllowedUsersEditComponent, _super);
         function AllowedUsersEditComponent(controlId, setup) {
-            var _this = _super.call(this, controlId) || this;
+            var _this = _super.call(this, controlId, AllowedUsersEditComponent.TEMPLATE, AllowedUsersEditComponent.SELECTOR, {
+                ControlType: YetaWF_ComponentsHTML.ControlTypeEnum.Template,
+                ChangeEvent: "",
+                GetValue: function (control) {
+                    return null; //$$$$control.value;
+                },
+                Enable: function (control, enable) {
+                    //$$$control.enable(enable)
+                },
+            }) || this;
             _this.ReloadInProgress = false;
             _this.AddCounter = 0;
             _this.Setup = setup;
@@ -75,8 +84,10 @@ var YetaWF_PageEdit;
             s = s.trim();
             $YetaWF.elementEnableToggle(this.buttonAdd, s.length > 0);
         };
+        AllowedUsersEditComponent.TEMPLATE = "yt_yetawf_pageedit_allowedusers";
+        AllowedUsersEditComponent.SELECTOR = ".yt_yetawf_pageedit_allowedusers.t_edit";
         return AllowedUsersEditComponent;
-    }(YetaWF.ComponentBaseImpl));
+    }(YetaWF.ComponentBaseDataImpl));
     YetaWF_PageEdit.AllowedUsersEditComponent = AllowedUsersEditComponent;
 })(YetaWF_PageEdit || (YetaWF_PageEdit = {}));
 

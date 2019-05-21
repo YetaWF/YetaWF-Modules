@@ -18,7 +18,21 @@ var YetaWF_ComponentsHTML;
     var ActionIconsComponent = /** @class */ (function (_super) {
         __extends(ActionIconsComponent, _super);
         function ActionIconsComponent(controlId, setup) {
-            var _this = _super.call(this, controlId) || this;
+            var _this = _super.call(this, controlId, ActionIconsComponent.TEMPLATE, ActionIconsComponent.SELECTOR, {
+                ControlType: YetaWF_ComponentsHTML.ControlTypeEnum.Template,
+                ChangeEvent: null,
+                GetValue: null,
+                Enable: null
+            }, false, function (tag, control) {
+                var list = $YetaWF.getElementsBySelector("ul.yGridActionMenu", [control.Control]);
+                for (var _i = 0, list_1 = list; _i < list_1.length; _i++) {
+                    var el = list_1[_i];
+                    var menu = $(el).data("kendoMenu");
+                    if (!menu)
+                        throw "No kendo object found"; /*DEBUG*/
+                    menu.destroy();
+                }
+            }) || this;
             _this.MenuControl = $YetaWF.getElementById(setup.MenuId);
             var $btn = $(_this.Control).kendoButton();
             $btn.on("click", function (ev) {
@@ -65,9 +79,11 @@ var YetaWF_ComponentsHTML;
                 }
             }
         };
+        ActionIconsComponent.TEMPLATE = "yt_actionicons";
+        ActionIconsComponent.SELECTOR = ".yt_actionicons";
         ActionIconsComponent.menusOpen = 0;
         return ActionIconsComponent;
-    }(YetaWF.ComponentBaseImpl));
+    }(YetaWF.ComponentBaseDataImpl));
     YetaWF_ComponentsHTML.ActionIconsComponent = ActionIconsComponent;
     // Handle clicks elsewhere so we can close the menus
     $YetaWF.registerMultipleEventHandlersBody(["click", "mousedown"], null, function (ev) {
@@ -94,25 +110,6 @@ var YetaWF_ComponentsHTML;
     // last chance - handle a new page (UPS) and close open menus
     $YetaWF.registerNewPage(function (url) {
         ActionIconsComponent.closeMenus();
-    });
-    // A <div> is being emptied. Destroy all actionicons the <div> may contain.
-    $YetaWF.registerClearDiv(function (tag) {
-        //var list = tag.querySelectorAll("button.yt_actionicons");
-        //var len = list.length;
-        //for (var i = 0; i < len; ++i) {
-        //    var el = list[i];
-        //    var button = $(el).data("kendoButton");
-        //    if (!button) throw "No kendo object found";/*DEBUG*/
-        //    button.destroy();
-        //}
-        var list = $YetaWF.getElementsBySelector("ul.yGridActionMenu", [tag]);
-        for (var _i = 0, list_1 = list; _i < list_1.length; _i++) {
-            var el = list_1[_i];
-            var menu = $(el).data("kendoMenu");
-            if (!menu)
-                throw "No kendo object found"; /*DEBUG*/
-            menu.destroy();
-        }
     });
 })(YetaWF_ComponentsHTML || (YetaWF_ComponentsHTML = {}));
 

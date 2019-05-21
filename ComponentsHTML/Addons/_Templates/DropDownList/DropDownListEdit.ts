@@ -14,13 +14,26 @@ namespace YetaWF_ComponentsHTML {
 
     export class DropDownListEditComponent extends YetaWF.ComponentBaseDataImpl {
 
+        public static readonly TEMPLATE: string = "yt_dropdownlist_base";
         public static readonly SELECTOR: string = "select.yt_dropdownlist_base.t_edit.t_kendo";
 
         private Setup: DropDownListEditSetup;
         private KendoDropDownList: kendo.ui.DropDownList | null = null;
 
         constructor(controlId: string, setup: DropDownListEditSetup) {
-            super(controlId);
+            super(controlId, DropDownListEditComponent.TEMPLATE, DropDownListEditComponent.SELECTOR, {
+                ControlType: ControlTypeEnum.Template,
+                ChangeEvent: "dropdownlist_change",
+                GetValue: (control: DropDownListEditComponent): string | null => {
+                    return control.value;
+                },
+                Enable: (control: DropDownListEditComponent, enable: boolean): void => {
+                    control.enable(enable);
+                },
+            }, false, (tag: HTMLElement, control: DropDownListEditComponent): void => {
+                control.internalDestroy();
+            });
+
             this.Setup = setup;
 
             this.updateWidth();
@@ -151,13 +164,6 @@ namespace YetaWF_ComponentsHTML {
             var control: DropDownListEditComponent = YetaWF.ComponentBaseDataImpl.getControlFromTag(ctl, DropDownListEditComponent.SELECTOR);
             control.updateWidth();
         }
-    });
-
-    // A <div> is being emptied. Destroy all dropdownlists the <div> may contain.
-    $YetaWF.registerClearDiv((tag: HTMLElement): void => {
-        YetaWF.ComponentBaseDataImpl.clearDiv<DropDownListEditComponent>(tag, DropDownListEditComponent.SELECTOR, (control: DropDownListEditComponent): void => {
-            control.internalDestroy();
-        });
     });
 
     // handle submit/apply

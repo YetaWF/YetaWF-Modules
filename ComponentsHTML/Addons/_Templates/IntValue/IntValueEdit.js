@@ -18,7 +18,19 @@ var YetaWF_ComponentsHTML;
     var IntValueEditComponent = /** @class */ (function (_super) {
         __extends(IntValueEditComponent, _super);
         function IntValueEditComponent(controlId, setup) {
-            var _this = _super.call(this, controlId) || this;
+            var _this = _super.call(this, controlId, IntValueEditComponent.TEMPLATE, IntValueEditComponent.SELECTOR, {
+                ControlType: YetaWF_ComponentsHTML.ControlTypeEnum.Template,
+                ChangeEvent: "intvalue_change",
+                GetValue: function (control) {
+                    return control.value.toString();
+                },
+                Enable: function (control, enable) {
+                    control.enable(enable);
+                },
+            }, false, function (tag, control) {
+                if (control.kendoNumericTextBox)
+                    control.kendoNumericTextBox.destroy();
+            }) || this;
             _this.kendoNumericTextBox = null;
             _this.InputControl = _this.Control;
             $(_this.InputControl).kendoNumericTextBox({
@@ -29,6 +41,7 @@ var YetaWF_ComponentsHTML;
                 downArrowText: "",
                 upArrowText: "",
                 change: function (e) {
+                    $(_this.Control).trigger("change");
                     var event = document.createEvent("Event");
                     event.initEvent("intvalue_change", true, true);
                     _this.Control.dispatchEvent(event);
@@ -69,17 +82,11 @@ var YetaWF_ComponentsHTML;
                 this.kendoNumericTextBox.enable(enabled);
             }
         };
+        IntValueEditComponent.TEMPLATE = "yt_intvalue_base";
         IntValueEditComponent.SELECTOR = "input.yt_intvalue_base.t_edit.k-input[name]";
         return IntValueEditComponent;
     }(YetaWF.ComponentBaseDataImpl));
     YetaWF_ComponentsHTML.IntValueEditComponent = IntValueEditComponent;
-    // A <div> is being emptied. Destroy all IntValues the <div> may contain.
-    $YetaWF.registerClearDiv(function (tag) {
-        IntValueEditComponent.clearDiv(tag, IntValueEditComponent.SELECTOR, function (control) {
-            if (control.kendoNumericTextBox)
-                control.kendoNumericTextBox.destroy();
-        });
-    });
 })(YetaWF_ComponentsHTML || (YetaWF_ComponentsHTML = {}));
 
 //# sourceMappingURL=IntValueEdit.js.map

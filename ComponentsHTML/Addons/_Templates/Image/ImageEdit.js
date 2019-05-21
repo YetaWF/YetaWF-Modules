@@ -18,7 +18,18 @@ var YetaWF_ComponentsHTML;
     var ImageEditComponent = /** @class */ (function (_super) {
         __extends(ImageEditComponent, _super);
         function ImageEditComponent(controlId, setup) {
-            var _this = _super.call(this, controlId) || this;
+            var _this = _super.call(this, controlId, ImageEditComponent.TEMPLATE, ImageEditComponent.SELECTOR, {
+                ControlType: YetaWF_ComponentsHTML.ControlTypeEnum.Template,
+                ChangeEvent: null,
+                GetValue: function (control) {
+                    if (_this.HiddenInput.value === ImageEditComponent.CLEAREDFILE)
+                        return null;
+                    return _this.HiddenInput.value;
+                },
+                Enable: function (control, enable) {
+                    //$$$$control.enable(enable);
+                }
+            }) || this;
             _this.Setup = setup;
             _this.UploadControl = YetaWF.ComponentBaseDataImpl.getControlById(_this.Setup.UploadId, YetaWF_ComponentsHTML.FileUpload1Component.SELECTOR);
             _this.PreviewImg = $YetaWF.getElement1BySelector(".t_preview", [_this.Control]);
@@ -54,9 +65,11 @@ var YetaWF_ComponentsHTML;
             currUri.addSearch("Name", name);
             this.PreviewImg.src = currUri.toUrl();
         };
+        ImageEditComponent.TEMPLATE = "yt_image";
+        ImageEditComponent.SELECTOR = ".yt_image.t_edit";
         ImageEditComponent.CLEAREDFILE = "(CLEARED)";
         return ImageEditComponent;
-    }(YetaWF.ComponentBaseImpl));
+    }(YetaWF.ComponentBaseDataImpl));
     YetaWF_ComponentsHTML.ImageEditComponent = ImageEditComponent;
 })(YetaWF_ComponentsHTML || (YetaWF_ComponentsHTML = {}));
 

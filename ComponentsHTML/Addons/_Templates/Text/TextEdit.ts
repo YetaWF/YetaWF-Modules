@@ -8,27 +8,34 @@ namespace YetaWF_ComponentsHTML {
         CopyToClip: string;
     }
 
-    export class TextEditComponent {
+    export class TextEditComponent extends YetaWF.ComponentBaseNoDataImpl {
 
-        public static clip: any = null;
+        public static readonly TEMPLATE: string = "yt_text_base";
+        public static readonly SELECTOR: string = ".yt_text_base.t_edit";
 
-        public static initAll(tag: HTMLElement):void {
-
-            if (TextEditComponent.clip != null) return;
-            var elems = $YetaWF.getElementsBySelector(".yt_text_copy", [tag]);
-            if (elems.length === 0) return;
-
-            TextEditComponent.clip = new ClipboardJS(".yt_text_copy", {
-                target: (trigger: HTMLElement):Element|null => {
-                    return trigger.previousElementSibling;
+        constructor(controlId: string /*, setup: TextEditSetup*/) {
+            super(controlId, TextEditComponent.TEMPLATE, TextEditComponent.SELECTOR, {
+                ControlType: ControlTypeEnum.Input,
+                ChangeEvent: null,
+                GetValue: (control: HTMLInputElement): string | null => {
+                    return control.value;
+                },
+                Enable: (control: HTMLInputElement, enable: boolean): void => {
+                    control.removeAttribute("disabled");
+                    $YetaWF.elementRemoveClass(control, "k-state-disabled");
+                    if (!enable) {
+                        control.setAttribute("disabled", "disabled");
+                        $YetaWF.elementAddClass(control, "k-state-disabled");
+                    }
                 },
             });
-            TextEditComponent.clip.on("success", (e: any): void => {
-                $YetaWF.confirm(YLocs.YetaWF_ComponentsHTML.CopyToClip);
-            });
+            // synonyms
+            let t = YetaWF.ComponentBaseDataImpl.getTemplateDefinition(TextEditComponent.TEMPLATE);
+            this.registerTemplate("yt_text", t.Selector, t.UserData, t.Display, t.DestroyControl);
+            this.registerTemplate("yt_text10", t.Selector, t.UserData, t.Display, t.DestroyControl);
+            this.registerTemplate("yt_text20", t.Selector, t.UserData, t.Display, t.DestroyControl);
+            this.registerTemplate("yt_text40", t.Selector, t.UserData, t.Display, t.DestroyControl);
+            this.registerTemplate("yt_text80", t.Selector, t.UserData, t.Display, t.DestroyControl);
         }
-
     }
-
-    $YetaWF.addWhenReady(TextEditComponent.initAll);
 }

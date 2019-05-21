@@ -18,7 +18,16 @@ var YetaWF_Identity;
     var ResourceUsersEditComponent = /** @class */ (function (_super) {
         __extends(ResourceUsersEditComponent, _super);
         function ResourceUsersEditComponent(controlId, setup) {
-            var _this = _super.call(this, controlId) || this;
+            var _this = _super.call(this, controlId, ResourceUsersEditComponent.TEMPLATE, ResourceUsersEditComponent.SELECTOR, {
+                ControlType: YetaWF_ComponentsHTML.ControlTypeEnum.Template,
+                ChangeEvent: "",
+                GetValue: function (control) {
+                    return null; //$$$$control.value;
+                },
+                Enable: function (control, enable) {
+                    //$$$control.enable(enable)
+                },
+            }) || this;
             _this.ReloadInProgress = false;
             _this.AddCounter = 0;
             _this.Setup = setup;
@@ -74,8 +83,10 @@ var YetaWF_Identity;
             s = s.trim();
             $YetaWF.elementEnableToggle(this.buttonAdd, s.length > 0);
         };
+        ResourceUsersEditComponent.TEMPLATE = "yt_yetawf_identity_resourceusers";
+        ResourceUsersEditComponent.SELECTOR = ".yt_yetawf_identity_resourceusers.t_edit";
         return ResourceUsersEditComponent;
-    }(YetaWF.ComponentBaseImpl));
+    }(YetaWF.ComponentBaseDataImpl));
     YetaWF_Identity.ResourceUsersEditComponent = ResourceUsersEditComponent;
 })(YetaWF_Identity || (YetaWF_Identity = {}));
 

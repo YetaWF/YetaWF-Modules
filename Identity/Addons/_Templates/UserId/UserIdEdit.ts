@@ -9,7 +9,10 @@ namespace YetaWF_Identity {
         NoUser: string;
     }
 
-    export class UserIdEditComponent extends YetaWF.ComponentBaseImpl {
+    export class UserIdEditComponent extends YetaWF.ComponentBaseDataImpl {
+
+        public static readonly TEMPLATE: string = "yt_yetawf_identity_userid";
+        public static readonly SELECTOR: string = ".yt_yetawf_identity_userid.t_edit";
 
         private Setup: UserIdSetup;
         private GridAll: YetaWF_ComponentsHTML.Grid;
@@ -18,7 +21,17 @@ namespace YetaWF_Identity {
         private inputName: HTMLInputElement;
 
         constructor(controlId: string, setup: UserIdSetup) {
-            super(controlId);
+            super(controlId, UserIdEditComponent.TEMPLATE, UserIdEditComponent.SELECTOR, {
+                ControlType: YetaWF_ComponentsHTML.ControlTypeEnum.Template,
+                ChangeEvent: "",//$$$$
+                GetValue: (control: UserIdEditComponent): string | null => {
+                    return this.inputHidden.value;
+                },
+                Enable: (control: UserIdEditComponent, enable: boolean): void => {
+                    //$$$control.enable(enable)
+                },
+            });
+
             this.Setup = setup;
 
             this.GridAll = YetaWF.ComponentBaseDataImpl.getControlById(this.Setup.GridAllId, YetaWF_ComponentsHTML.Grid.SELECTOR);

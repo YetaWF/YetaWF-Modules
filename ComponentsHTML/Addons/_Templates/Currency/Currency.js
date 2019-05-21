@@ -18,26 +18,49 @@ var YetaWF_ComponentsHTML;
     var CurrencyEditComponent = /** @class */ (function (_super) {
         __extends(CurrencyEditComponent, _super);
         function CurrencyEditComponent(controlId, setup) {
-            var _this = _super.call(this, controlId) || this;
+            var _this = _super.call(this, controlId, CurrencyEditComponent.TEMPLATE, CurrencyEditComponent.SELECTOR, {
+                ControlType: YetaWF_ComponentsHTML.ControlTypeEnum.Template,
+                ChangeEvent: "currency_change",
+                GetValue: function (control) {
+                    return control.value ? control.value.toString() : null;
+                },
+                Enable: function (control, enable) {
+                    control.enable(enable);
+                }
+            }, false, function (tag, control) {
+                control.kendoNumericTextBox.destroy();
+            }) || this;
             _this.Currency = $YetaWF.getElement1BySelector("input", [_this.Control]);
             $(_this.Currency).kendoNumericTextBox({
                 format: YVolatile.YetaWF_ComponentsHTML.CurrencyFormat,
                 min: setup.Min, max: setup.Max,
-                culture: YVolatile.Basics.Language
+                culture: YVolatile.Basics.Language,
+                change: function (e) {
+                    $(_this.Control).trigger("change");
+                    var event = document.createEvent("Event");
+                    event.initEvent("currency_change", true, true);
+                    _this.Control.dispatchEvent(event);
+                    FormsSupport.validateElement(_this.Control);
+                }
             });
             _this.kendoNumericTextBox = $(_this.Currency).data("kendoNumericTextBox");
             return _this;
         }
+        Object.defineProperty(CurrencyEditComponent.prototype, "value", {
+            get: function () {
+                return this.kendoNumericTextBox.value();
+            },
+            enumerable: true,
+            configurable: true
+        });
+        CurrencyEditComponent.prototype.enable = function (enable) {
+            this.kendoNumericTextBox.enable(enable);
+        };
+        CurrencyEditComponent.TEMPLATE = "yt_currency";
         CurrencyEditComponent.SELECTOR = ".yt_currency.t_edit";
         return CurrencyEditComponent;
     }(YetaWF.ComponentBaseDataImpl));
     YetaWF_ComponentsHTML.CurrencyEditComponent = CurrencyEditComponent;
-    // A <div> is being emptied. Destroy all controls the <div> may contain.
-    $YetaWF.registerClearDiv(function (tag) {
-        YetaWF.ComponentBaseDataImpl.clearDiv(tag, CurrencyEditComponent.SELECTOR, function (control) {
-            control.kendoNumericTextBox.destroy();
-        });
-    });
 })(YetaWF_ComponentsHTML || (YetaWF_ComponentsHTML = {}));
 
 //# sourceMappingURL=Currency.js.map

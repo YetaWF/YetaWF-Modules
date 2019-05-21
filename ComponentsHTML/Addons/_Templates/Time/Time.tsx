@@ -6,6 +6,7 @@ namespace YetaWF_ComponentsHTML {
         TimeFormat: string;
     }
 
+    //$$$$ needs ComponentBaseNoDataImpl
     export class TimeComponent {
 
         private getGrid(ctrlId: string): HTMLElement {

@@ -2,20 +2,28 @@
 
 namespace YetaWF_ComponentsHTML {
 
-    export class ColorPickerComponent {
+    export class ColorPickerComponent extends YetaWF.ComponentBaseDataImpl {
 
-        constructor(id: string, setup: kendo.ui.ColorPickerOptions) {
-            $(`#${id}`).kendoColorPicker(setup);
+        public static readonly TEMPLATE: string = "yt_colorpicker";
+        public static readonly SELECTOR: string = ".yt_colorpicker.t_edit";
+
+        constructor(controlId: string, setup: kendo.ui.ColorPickerOptions) {
+            super(controlId, ColorPickerComponent.TEMPLATE, ColorPickerComponent.SELECTOR, {
+                ControlType: ControlTypeEnum.Template,
+                ChangeEvent: "colorpicker_change",
+                GetValue: (control: ColorPickerComponent): string | null => {
+                    let colorPicker = $(control).data("kendoColorPicker");
+                    return colorPicker.value();
+                },
+                Enable: (control: ColorPickerComponent, enable: boolean): void => {
+                    let colorPicker = $(control.Control).data("kendoColorPicker");
+                    colorPicker.enable(enable);
+                },
+            }, false, (tag: HTMLElement, control: ColorPickerComponent): void => {
+                let colorPicker = $(control.Control).data("kendoColorPicker");
+                colorPicker.destroy();
+            });
+            $(`#${controlId}`).kendoColorPicker(setup);
         }
     }
-
-    // A <div> is being emptied. Destroy all color pickers the <div> may contain.
-    $YetaWF.registerClearDiv((tag: HTMLElement): void => {
-        var list = $YetaWF.getElementsBySelector(".yt_colorpicker.t_edit", [tag]);
-        for (let el of list) {
-            var colorpicker: kendo.ui.ColorPicker = $(el).data("kendoColorPicker");
-            if (!colorpicker) throw "No kendo colorpicker object found";/*DEBUG*/
-            colorpicker.destroy();
-        }
-    });
 }

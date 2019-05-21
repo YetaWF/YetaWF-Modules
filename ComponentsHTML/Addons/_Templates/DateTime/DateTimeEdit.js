@@ -18,7 +18,18 @@ var YetaWF_ComponentsHTML;
     var DateTimeEditComponent = /** @class */ (function (_super) {
         __extends(DateTimeEditComponent, _super);
         function DateTimeEditComponent(controlId, setup) {
-            var _this = _super.call(this, controlId) || this;
+            var _this = _super.call(this, controlId, DateTimeEditComponent.TEMPLATE, DateTimeEditComponent.SELECTOR, {
+                ControlType: YetaWF_ComponentsHTML.ControlTypeEnum.Template,
+                ChangeEvent: "datetime_change",
+                GetValue: function (control) {
+                    return control.valueText;
+                },
+                Enable: function (control, enable) {
+                    control.enable(enable);
+                },
+            }, false, function (tag, control) {
+                control.kendoDateTimePicker.destroy();
+            }) || this;
             _this.Hidden = $YetaWF.getElement1BySelector("input[type=\"hidden\"]", [_this.Control]);
             _this.Date = $YetaWF.getElement1BySelector("input[name=\"dtpicker\"]", [_this.Control]);
             $(_this.Date).kendoDateTimePicker({
@@ -77,16 +88,11 @@ var YetaWF_ComponentsHTML;
         DateTimeEditComponent.prototype.enable = function (enabled) {
             this.kendoDateTimePicker.enable(enabled);
         };
+        DateTimeEditComponent.TEMPLATE = "yt_datetime";
         DateTimeEditComponent.SELECTOR = ".yt_datetime.t_edit";
         return DateTimeEditComponent;
     }(YetaWF.ComponentBaseDataImpl));
     YetaWF_ComponentsHTML.DateTimeEditComponent = DateTimeEditComponent;
-    // A <div> is being emptied. Destroy all controls the <div> may contain.
-    $YetaWF.registerClearDiv(function (tag) {
-        YetaWF.ComponentBaseDataImpl.clearDiv(tag, DateTimeEditComponent.SELECTOR, function (control) {
-            control.kendoDateTimePicker.destroy();
-        });
-    });
 })(YetaWF_ComponentsHTML || (YetaWF_ComponentsHTML = {}));
 
 //# sourceMappingURL=DateTimeEdit.js.map

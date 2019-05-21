@@ -3,6 +3,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using YetaWF.Core.Models;
 using YetaWF.Core.Models.Attributes;
 
 namespace YetaWF.Modules.ComponentsHTML.Components {
@@ -27,7 +28,8 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         }
         internal class Dependent {
 
-            public string Prop { get; set; } // Name of property
+            public string Prop { get; set; } // Full name of property
+            public string PropShort { get; set; } // Name of property
 
             public List<ExprEntry> ProcessValues { get; set; } // If an entry matching all conditions is found the dependent property is processed
             public List<ExprEntry> HideValues { get; set; } // If an entry matching all conditions is found the dependent property is hidden
@@ -62,7 +64,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                     foreach (ExprAttribute exprAttr in property.ExprAttrs) {
                         if (exprAttr.IsProcessAttribute || exprAttr.IsHideAttribute) {
                             if (exprAttr.ExprList != null && exprAttr.ExprList.Count > 0) {
-                                Dependent dep = FindDependent(cd, property.Name);
+                                Dependent dep = FindDependent(cd, AttributeHelper.GetDependentPropertyName(property.Name), property.Name);
                                 ExprEntry exprEntry = new ExprEntry {
                                     Op = exprAttr.Op,
                                     Disable = exprAttr.Disable,
@@ -73,11 +75,13 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                                 else
                                     dep.HideValues.Add(exprEntry);
                                 foreach (ExprAttribute.Expr expr in exprAttr.ExprList) {
-                                    if (!selectionControls.Contains(expr.LeftProperty))
-                                        selectionControls.Add(expr.LeftProperty);
+                                    string prop = AttributeHelper.GetDependentPropertyName(expr.LeftProperty);
+                                    if (!selectionControls.Contains(prop))
+                                        selectionControls.Add(prop);
                                     if (expr.IsRightProperty) {
-                                        if (!selectionControls.Contains(expr.RightProperty))
-                                            selectionControls.Add(expr.RightProperty);
+                                        prop = AttributeHelper.GetDependentPropertyName(expr.RightProperty);
+                                        if (!selectionControls.Contains(prop))
+                                            selectionControls.Add(prop);
                                     }
                                 }
                             }
@@ -94,11 +98,12 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             return cd;
         }
 
-        private Dependent FindDependent(ControlData cd, string name) {
+        private Dependent FindDependent(ControlData cd, string name, string shortName) {
             Dependent dep = (from d in cd.Dependents where d.Prop == name select d).FirstOrDefault();
             if (dep == null) {
                 dep = new Dependent {
                     Prop = name,
+                    PropShort = shortName
                 };
                 cd.Dependents.Add(dep);
             }

@@ -47,7 +47,18 @@ var YetaWF_ComponentsHTML;
     var Grid = /** @class */ (function (_super) {
         __extends(Grid, _super);
         function Grid(controlId, setup) {
-            var _this = _super.call(this, controlId) || this;
+            var _this = _super.call(this, controlId, Grid.TEMPLATE, Grid.SELECTOR, {
+                ControlType: YetaWF_ComponentsHTML.ControlTypeEnum.Template,
+                ChangeEvent: null,
+                GetValue: function (control) {
+                    return null; //$$$
+                },
+                Enable: function (control, enable) {
+                    //$$$control.enable(enable)
+                },
+            }, false, function (tag, control) {
+                control.internalDestroy();
+            }) || this;
             _this.BtnReload = null;
             _this.BtnSearch = null;
             _this.BtnTop = null;
@@ -1115,18 +1126,12 @@ var YetaWF_ComponentsHTML;
                     successful();
             });
         };
+        Grid.TEMPLATE = "yt_grid";
         Grid.SELECTOR = ".yt_grid";
         Grid.CurrentControl = null; // current control during grid resize
         return Grid;
     }(YetaWF.ComponentBaseDataImpl));
     YetaWF_ComponentsHTML.Grid = Grid;
-    // A <div> is being emptied. Destroy all grids, menus the <div> may contain.
-    $YetaWF.registerClearDiv(function (tag) {
-        YetaWF.ComponentBaseDataImpl.clearDiv(tag, Grid.SELECTOR, function (grid) {
-            // remove grid control
-            grid.internalDestroy();
-        });
-    });
 })(YetaWF_ComponentsHTML || (YetaWF_ComponentsHTML = {}));
 
 //# sourceMappingURL=Grid.js.map

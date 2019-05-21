@@ -8,6 +8,8 @@ namespace YetaWF_ComponentsHTML {
 
     export class PageSkinEditComponent extends YetaWF.ComponentBaseDataImpl {
 
+        public static readonly TEMPLATE: string = "yt_pageskin";
+        public static readonly TEMPLATE2: string = "yt_pageskin";
         public static readonly SELECTOR: string = ".yt_pageskin.t_edit, .yt_popupskin.t_edit";
 
         private Setup: Setup;
@@ -15,7 +17,27 @@ namespace YetaWF_ComponentsHTML {
         private SelectFile: YetaWF_ComponentsHTML.DropDownListEditComponent;
 
         constructor(controlId: string, setup: Setup) {
-            super(controlId);
+            super(controlId, PageSkinEditComponent.TEMPLATE, PageSkinEditComponent.SELECTOR, {
+                ControlType: ControlTypeEnum.Template,
+                ChangeEvent: "dropdownlist_change",
+                GetValue: (control: PageSkinEditComponent): string | null => {
+                    return null;//$$$control.SelectPage.value;
+                },
+                Enable: (control: PageSkinEditComponent, enable: boolean): void => {
+                    //$$$control.enable(enable)
+                },
+            });
+            this.registerTemplate(PageSkinEditComponent.TEMPLATE2, PageSkinEditComponent.SELECTOR, {
+                ControlType: ControlTypeEnum.Template,
+                ChangeEvent: "dropdownlist_change",
+                GetValue: (control: PageSkinEditComponent): string | null => {
+                    return null;//$$$control.SelectPage.value;
+                },
+                Enable: (control: PageSkinEditComponent, enable: boolean): void => {
+                    //$$$control.enable(enable)
+                },
+            });
+
             this.Setup = setup;
 
             this.SelectCollection = YetaWF.ComponentBaseDataImpl.getControlFromSelector("select[name$='.Collection']", DropDownListEditComponent.SELECTOR, [this.Control]);
@@ -27,10 +49,5 @@ namespace YetaWF_ComponentsHTML {
             });
         }
     }
-
-    // A <div> is being emptied. Destroy all controls the <div> may contain.
-    $YetaWF.registerClearDiv((tag: HTMLElement): void => {
-        PageSkinEditComponent.clearDiv(tag, PageSkinEditComponent.SELECTOR);
-    });
 }
 

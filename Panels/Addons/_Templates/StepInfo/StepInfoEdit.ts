@@ -9,6 +9,7 @@ namespace YetaWF_Panels {
 
     export class StepInfoEditComponent extends YetaWF.ComponentBaseDataImpl {
 
+        public static readonly TEMPLATE: string = "yt_panels_stepinfo";
         public static readonly SELECTOR: string = ".yt_panels_stepinfo.t_edit";
         public static TEMPLATENAME: string = "YetaWF_Panels_StepInfo";
 
@@ -20,7 +21,16 @@ namespace YetaWF_Panels {
         private Add: HTMLInputElement;
 
         constructor(controlId: string) {
-            super(controlId);
+            super(controlId, StepInfoEditComponent.TEMPLATE, StepInfoEditComponent.SELECTOR, {
+                ControlType: YetaWF_ComponentsHTML.ControlTypeEnum.Template,
+                ChangeEvent: "",//$$$$
+                GetValue: (control: StepInfoEditComponent): string | null => {
+                    return null;//$$$$control.value;
+                },
+                Enable: (control: StepInfoEditComponent, enable: boolean): void => {
+                    //$$$control.enable(enable)
+                }
+            });
 
             this.Up = $YetaWF.getElement1BySelector("input.t_up", [this.Control]) as HTMLInputElement;
             this.Down = $YetaWF.getElement1BySelector("input.t_down", [this.Control]) as HTMLInputElement;
@@ -86,29 +96,5 @@ namespace YetaWF_Panels {
         var tabActive = $YetaWF.getElement1BySelector("input[name$='_ActiveTab']", [panelInfo.Control]) as HTMLInputElement;
         tabActive.value = $YetaWF.getAttribute(panel, "data-tab");
         panelInfo.updateButtons();
-    });
-
-    // A <div> is being emptied. Destroy all panels the <div> may contain.
-    $YetaWF.registerClearDiv((tag: HTMLElement): void => {
-        // tabs
-        var list = $YetaWF.getElementsBySelector(".yt_panels_stepinfo .t_panels.t_acctabs", [tag]);
-        for (let el of list) {
-            var tabs = $(el);
-            if (tabs) tabs.tabs("destroy"); //jQuery-ui use
-        }
-        // jquery ui accordion
-        var list = $YetaWF.getElementsBySelector(".yt_panels_stepinfo .t_panels.t_accjquery", [tag]);
-        for (let el of list) {
-            var accordion = $(el);
-            if (accordion) accordion.accordion("destroy"); //jQuery-ui use
-        }
-        // kendo accordion
-        var list = $YetaWF.getElementsBySelector(".yt_panels_stepinfo .t_panels.t_acckendo", [tag]);
-        for (let el of list) {
-            var panelBar = $(el).data("kendoPanelBar");
-            if (panelBar) panelBar.destroy();
-        }
-
-        StepInfoEditComponent.clearDiv(tag, StepInfoEditComponent.SELECTOR);
     });
 }

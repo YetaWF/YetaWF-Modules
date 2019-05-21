@@ -20,10 +20,19 @@ var YetaWF_ComponentsHTML;
     var MultiStringEditComponent = /** @class */ (function (_super) {
         __extends(MultiStringEditComponent, _super);
         function MultiStringEditComponent(controlId /*, setup: Setup*/) {
-            var _this = _super.call(this, controlId) || this;
+            var _this = _super.call(this, controlId, MultiStringEditComponent.TEMPLATE, MultiStringEditComponent.SELECTOR, {
+                ControlType: YetaWF_ComponentsHTML.ControlTypeEnum.Template,
+                ChangeEvent: "",
+                GetValue: function (control) {
+                    return null; //$$$$control.valueText;
+                },
+                Enable: function (control, enable) {
+                    control.enable(enable);
+                },
+            }) || this;
             //this.Setup = setup;
             _this.SelectLang = YetaWF.ComponentBaseDataImpl.getControlFromSelector("select", YetaWF_ComponentsHTML.DropDownListEditComponent.SELECTOR, [_this.Control]);
-            _this.InputText = $YetaWF.getElement1BySelector("input.yt_multistring_text", [_this.Control]);
+            _this.InputText = $YetaWF.getElement1BySelector("input.t_multistring_text", [_this.Control]);
             // selection change (put language specific text into text box)
             _this.SelectLang.Control.addEventListener("dropdownlist_change", function (evt) {
                 var sel = _this.SelectLang.selectedIndex;
@@ -147,16 +156,13 @@ var YetaWF_ComponentsHTML;
                 return null;
             return data[lang];
         };
+        MultiStringEditComponent.TEMPLATE = "yt_multistring";
         MultiStringEditComponent.SELECTOR = ".yt_multistring.t_edit";
         return MultiStringEditComponent;
     }(YetaWF.ComponentBaseDataImpl));
     YetaWF_ComponentsHTML.MultiStringEditComponent = MultiStringEditComponent;
     if (YLocs.YetaWF_ComponentsHTML.Languages === undefined)
         throw "YLocs.YetaWF_ComponentsHTML.Languages missing"; /*DEBUG*/
-    // A <div> is being emptied. Destroy all controls the <div> may contain.
-    $YetaWF.registerClearDiv(function (tag) {
-        MultiStringEditComponent.clearDiv(tag, MultiStringEditComponent.SELECTOR);
-    });
 })(YetaWF_ComponentsHTML || (YetaWF_ComponentsHTML = {}));
 
 //# sourceMappingURL=MultiStringEdit.js.map

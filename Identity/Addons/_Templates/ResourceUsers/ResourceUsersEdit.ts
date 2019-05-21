@@ -12,7 +12,10 @@ namespace YetaWF_Identity {
         StaticData: string;
     }
 
-    export class ResourceUsersEditComponent extends YetaWF.ComponentBaseImpl {
+    export class ResourceUsersEditComponent extends YetaWF.ComponentBaseDataImpl {
+
+        public static readonly TEMPLATE: string = "yt_yetawf_identity_resourceusers";
+        public static readonly SELECTOR: string = ".yt_yetawf_identity_resourceusers.t_edit";
 
         private Setup: ResourceUsersSetup;
         private Grid: YetaWF_ComponentsHTML.Grid;
@@ -23,7 +26,17 @@ namespace YetaWF_Identity {
         private AddCounter: number = 0;
 
         constructor(controlId: string, setup: ResourceUsersSetup) {
-            super(controlId);
+            super(controlId, ResourceUsersEditComponent.TEMPLATE, ResourceUsersEditComponent.SELECTOR, {
+                ControlType: YetaWF_ComponentsHTML.ControlTypeEnum.Template,
+                ChangeEvent: "",//$$$$
+                GetValue: (control: ResourceUsersEditComponent): string | null => {
+                    return null;//$$$$control.value;
+                },
+                Enable: (control: ResourceUsersEditComponent, enable: boolean): void => {
+                    //$$$control.enable(enable)
+                },
+            });
+
             this.Setup = setup;
 
             this.Grid = YetaWF.ComponentBaseDataImpl.getControlById(this.Setup.GridId, YetaWF_ComponentsHTML.Grid.SELECTOR);

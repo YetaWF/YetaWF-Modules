@@ -18,6 +18,7 @@ namespace YetaWF_ComponentsHTML {
         private Start2: HTMLInputElement;
         private End2: HTMLInputElement;
 
+        //$$$$$ needs ComponentBaseNoDataImpl
         constructor(controlId: string) {
             this.Control = $YetaWF.getElementById(controlId);
             this.Additional = $YetaWF.getElement1BySelector("input[name$='.Additional']", [this.Control]) as HTMLInputElement;

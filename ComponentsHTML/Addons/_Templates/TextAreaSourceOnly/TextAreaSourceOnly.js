@@ -2,6 +2,7 @@
 /* Copyright © 2019 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/ComponentsHTML#License */
 var YetaWF_ComponentsHTML;
 (function (YetaWF_ComponentsHTML) {
+    //$$$$ NEED ComponentBaseNoDataImpl
     var TextAreaSourceOnlyComponent = /** @class */ (function () {
         function TextAreaSourceOnlyComponent() {
         }

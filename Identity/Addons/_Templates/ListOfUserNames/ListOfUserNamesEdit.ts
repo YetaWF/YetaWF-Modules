@@ -12,7 +12,10 @@ namespace YetaWF_Identity {
         StaticData: string;
     }
 
-    export class ListOfUserNamesEditComponent extends YetaWF.ComponentBaseImpl {
+    export class ListOfUserNamesEditComponent extends YetaWF.ComponentBaseDataImpl {
+
+        public static readonly TEMPLATE: string = "yt_yetawf_identity_listofusernames";
+        public static readonly SELECTOR: string = ".yt_yetawf_identity_listofusernames.t_edit";
 
         private Setup: ListOfUserNamesSetup;
         private Grid: YetaWF_ComponentsHTML.Grid;
@@ -23,7 +26,16 @@ namespace YetaWF_Identity {
         private AddCounter: number = 0;
 
         constructor(controlId: string, setup: ListOfUserNamesSetup) {
-            super(controlId);
+            super(controlId, ListOfUserNamesEditComponent.TEMPLATE, ListOfUserNamesEditComponent.SELECTOR, {
+                ControlType: YetaWF_ComponentsHTML.ControlTypeEnum.Template,
+                ChangeEvent: "",//$$$$
+                GetValue: (control: ListOfUserNamesEditComponent): string | null => {
+                    return null;//$$$$control.value;
+                },
+                Enable: (control: ListOfUserNamesEditComponent, enable: boolean): void => {
+                    //$$$control.enable(enable)
+                },
+            });
             this.Setup = setup;
 
             this.Grid = YetaWF.ComponentBaseDataImpl.getControlById(this.Setup.GridId, YetaWF_ComponentsHTML.Grid.SELECTOR);

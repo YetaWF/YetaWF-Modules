@@ -8,6 +8,8 @@ namespace YetaWF_ComponentsHTML {
         CopyToClip: string;
     }
 
+    //$$$$ NEED ComponentBaseNoDataImpl
+
     export class TextAreaSourceOnlyComponent {
 
         public static clip: any = null;

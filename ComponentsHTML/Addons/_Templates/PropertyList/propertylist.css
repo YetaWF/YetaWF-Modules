@@ -18,6 +18,11 @@
     width: auto;
     clear: both;
     padding-bottom: 0.5em; }
+    .yt_propertylist .t_row.t_hidden,
+    .yt_propertylisttabbed .t_row.t_hidden,
+    .yt_propertylistboxed .t_row.t_hidden,
+    .yt_propertylistboxedcat .t_row.t_hidden {
+      display: none; }
   .yt_propertylist .t_labels,
   .yt_propertylisttabbed .t_labels,
   .yt_propertylistboxed .t_labels,
@@ -103,10 +108,10 @@
   .yCondense .yt_propertylistboxedcat .t_vals .yt_multistring.t_edit {
     display: block;
     width: 100%; }
-    .yCondense .yt_propertylist .t_vals .yt_multistring.t_edit .yt_multistring_text,
-    .yCondense .yt_propertylisttabbed .t_vals .yt_multistring.t_edit .yt_multistring_text,
-    .yCondense .yt_propertylistboxed .t_vals .yt_multistring.t_edit .yt_multistring_text,
-    .yCondense .yt_propertylistboxedcat .t_vals .yt_multistring.t_edit .yt_multistring_text {
+    .yCondense .yt_propertylist .t_vals .yt_multistring.t_edit .t_multistring_text,
+    .yCondense .yt_propertylisttabbed .t_vals .yt_multistring.t_edit .t_multistring_text,
+    .yCondense .yt_propertylistboxed .t_vals .yt_multistring.t_edit .t_multistring_text,
+    .yCondense .yt_propertylistboxedcat .t_vals .yt_multistring.t_edit .t_multistring_text {
       width: 100%;
       margin-right: 0; }
     .yCondense .yt_propertylist .t_vals .yt_multistring.t_edit input[type="text"].t_text80,

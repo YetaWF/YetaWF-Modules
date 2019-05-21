@@ -18,39 +18,49 @@ $.validator.unobtrusive.options = {
 // REQUIREDEXPR
 // REQUIREDEXPR
 $.validator.addMethod("requiredexpr", function (value, element, parameters) {
-    var form = $YetaWF.Forms.getForm(element);
-    var valid = YetaWF_ComponentsHTML.ValidatorHelper.evaluateExpressionList(value, form, parameters.op, parameters.exprList);
     switch (parameters.op) {
         case YetaWF_ComponentsHTML.OpEnum.Required:
         case YetaWF_ComponentsHTML.OpEnum.RequiredIf:
-        case YetaWF_ComponentsHTML.OpEnum.RequiredIfSupplied:
+        case YetaWF_ComponentsHTML.OpEnum.RequiredIfSupplied: {
+            var form = $YetaWF.Forms.getForm(element);
+            var valid = YetaWF_ComponentsHTML.ValidatorHelper.evaluateExpressionList(value, form, parameters.op, parameters.exprList);
             if (!valid)
                 return true;
             if (value === undefined || value === null || value.trim().length === 0)
                 return false;
             return true;
+        }
         case YetaWF_ComponentsHTML.OpEnum.SelectionRequired:
         case YetaWF_ComponentsHTML.OpEnum.SelectionRequiredIf:
-        case YetaWF_ComponentsHTML.OpEnum.SelectionRequiredIfSupplied:
+        case YetaWF_ComponentsHTML.OpEnum.SelectionRequiredIfSupplied: {
+            var form = $YetaWF.Forms.getForm(element);
+            var valid = YetaWF_ComponentsHTML.ValidatorHelper.evaluateExpressionList(value, form, parameters.op, parameters.exprList);
             if (!valid)
                 return true;
             if (value === undefined || value === null || value.trim().length === 0 || value.toString() === "0")
                 return false;
             return true;
+        }
         case YetaWF_ComponentsHTML.OpEnum.RequiredIfNot:
-        case YetaWF_ComponentsHTML.OpEnum.RequiredIfNotSupplied:
+        case YetaWF_ComponentsHTML.OpEnum.RequiredIfNotSupplied: {
+            var form = $YetaWF.Forms.getForm(element);
+            var valid = YetaWF_ComponentsHTML.ValidatorHelper.evaluateExpressionList(value, form, parameters.op, parameters.exprList);
             if (valid)
                 return true;
             if (value === undefined || value === null || value.trim().length === 0)
                 return false;
             return true;
+        }
         case YetaWF_ComponentsHTML.OpEnum.SelectionRequiredIfNot:
-        case YetaWF_ComponentsHTML.OpEnum.SelectionRequiredIfNotSupplied:
+        case YetaWF_ComponentsHTML.OpEnum.SelectionRequiredIfNotSupplied: {
+            var form = $YetaWF.Forms.getForm(element);
+            var valid = YetaWF_ComponentsHTML.ValidatorHelper.evaluateExpressionList(value, form, parameters.op, parameters.exprList);
             if (valid)
                 return true;
             if (value === undefined || value === null || value.trim().length === 0 || value.toString() === "0")
                 return false;
             return true;
+        }
         default:
             throw "Invalid Op " + parameters.op + " in evaluateExpressionList";
     }
@@ -174,37 +184,16 @@ var YetaWF_ComponentsHTML;
             return true;
         };
         ValidatorHelper.getPropertyVal = function (form, name) {
-            var ctrls = $YetaWF.getElementsBySelector("input[name=\"" + name + "\"],select[name=\"" + name + "\"]", [form]);
-            if (ctrls.length < 1)
-                throw "No control found for name " + name; /*DEBUG*/
-            var ctrl = ctrls[0];
-            var tag = ctrl.tagName;
-            var controltype = ctrl.getAttribute("type");
-            if (ctrls.length >= 2) {
-                // for checkboxes there can be two controls by the same name (the second is a hidden control)
-                if (tag !== "INPUT" || controltype !== "checkbox")
-                    throw "Multiple controls found for name " + name; /*DEBUG*/
+            var item = ControlsHelper.getControlItemByName(name, form);
+            var row = $YetaWF.elementClosestCond(item.Template, ".yt_propertylist .t_row");
+            if (row) {
+                if ($YetaWF.elementHasClass(row, "t_hidden"))
+                    return null;
+                if ($YetaWF.elementHasClass(row, "t_disabled"))
+                    return null;
             }
-            // handle all control types, e.g. radios, checkbox, input, etc.
-            var actualValue;
-            if (tag === "INPUT") {
-                // regular input control
-                if (controltype === "checkbox") {
-                    // checkbox
-                    actualValue = ctrl.checked ? "true" : "false";
-                }
-                else {
-                    // other
-                    actualValue = ctrl.value.toLowerCase();
-                }
-            }
-            else if (tag === "SELECT") {
-                actualValue = ctrl.value;
-            }
-            else {
-                throw "Unsupported tag " + tag; /*DEBUG*/
-            }
-            return actualValue;
+            var value = ControlsHelper.getControlValue(item);
+            return value;
         };
         ValidatorHelper.isSameValue = function (value, element, parameters) {
             if ($YetaWF.elementHasClass(element, YConfigs.Forms.CssFormNoValidate))
@@ -214,24 +203,8 @@ var YetaWF_ComponentsHTML;
             // first, find the enclosing form
             var form = $YetaWF.Forms.getForm(element);
             var name = parameters["dependentproperty"];
-            var ctrls = $YetaWF.getElementsBySelector("input[name=\"" + name + "\"],select[name=\"" + name + "\"]", [form]);
-            if (ctrls.length < 1)
-                throw "No control found for name " + name; /*DEBUG*/
-            if (ctrls.length > 1)
-                throw "Multiple controls found for name " + name; /*DEBUG*/
-            var ctrl = ctrls[0];
-            var tag = ctrl.tagName;
-            // handle all control types, e.g. radios, checkbox, input, etc.
-            var actualValue;
-            if (tag === "INPUT") {
-                actualValue = ctrl.value;
-            }
-            else if (tag === "SELECT") {
-                actualValue = ctrl.value;
-            }
-            else {
-                throw "Unsupported tag " + tag; /*DEBUG*/
-            }
+            var item = ControlsHelper.getControlItemByName(name, form);
+            var actualValue = ControlsHelper.getControlValue(item);
             if (value === actualValue)
                 return true;
             return false;

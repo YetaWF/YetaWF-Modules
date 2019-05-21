@@ -2,6 +2,7 @@
 /* Copyright © 2019 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/ComponentsHTML#License */
 var YetaWF_ComponentsHTML;
 (function (YetaWF_ComponentsHTML) {
+    //$$$$ needs ComponentBaseNoDataImpl
     var TimeComponent = /** @class */ (function () {
         function TimeComponent() {
         }

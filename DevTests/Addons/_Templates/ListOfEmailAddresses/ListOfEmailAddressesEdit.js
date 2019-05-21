@@ -18,7 +18,16 @@ var YetaWF_DevTests;
     var ListOfEmailAddressesEditComponent = /** @class */ (function (_super) {
         __extends(ListOfEmailAddressesEditComponent, _super);
         function ListOfEmailAddressesEditComponent(controlId, setup) {
-            var _this = _super.call(this, controlId) || this;
+            var _this = _super.call(this, controlId, ListOfEmailAddressesEditComponent.TEMPLATE, ListOfEmailAddressesEditComponent.SELECTOR, {
+                ControlType: YetaWF_ComponentsHTML.ControlTypeEnum.Template,
+                ChangeEvent: "",
+                GetValue: function (control) {
+                    return null; //$$$$control.value;
+                },
+                Enable: function (control, enable) {
+                    //$$$control.enable(enable)
+                },
+            }) || this;
             _this.ReloadInProgress = false;
             _this.AddCounter = 0;
             _this.Setup = setup;
@@ -66,8 +75,10 @@ var YetaWF_DevTests;
             s = s.trim();
             $YetaWF.elementEnableToggle(this.buttonAdd, s.length > 0);
         };
+        ListOfEmailAddressesEditComponent.TEMPLATE = "yt_yetawf_devtests_listofemailaddresses";
+        ListOfEmailAddressesEditComponent.SELECTOR = ".yt_yetawf_devtests_listofemailaddresses.t_edit";
         return ListOfEmailAddressesEditComponent;
-    }(YetaWF.ComponentBaseImpl));
+    }(YetaWF.ComponentBaseDataImpl));
     YetaWF_DevTests.ListOfEmailAddressesEditComponent = ListOfEmailAddressesEditComponent;
 })(YetaWF_DevTests || (YetaWF_DevTests = {}));
 

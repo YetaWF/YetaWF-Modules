@@ -30,7 +30,16 @@ var YetaWF_ComponentsHTML;
     var TreeComponent = /** @class */ (function (_super) {
         __extends(TreeComponent, _super);
         function TreeComponent(controlId, setup) {
-            var _this = _super.call(this, controlId) || this;
+            var _this = _super.call(this, controlId, TreeComponent.TEMPLATE, TreeComponent.SELECTOR, {
+                ControlType: YetaWF_ComponentsHTML.ControlTypeEnum.Template,
+                ChangeEvent: "",
+                GetValue: function (control) {
+                    return null; //$$$
+                },
+                Enable: function (control, enable) {
+                    //$$control.enable(enable)
+                },
+            }) || this;
             _this.DeletedRecords = []; // array of deleted record numbers
             _this.DDSource = null;
             _this.DDSourceAnchor = null;
@@ -583,15 +592,12 @@ var YetaWF_ComponentsHTML;
             var rectContainer = container.getBoundingClientRect();
             container.scrollTop = rectLi.top - rectContainer.height / 2;
         };
+        TreeComponent.TEMPLATE = "yt_tree";
         TreeComponent.SELECTOR = ".yt_tree";
         TreeComponent.DDTree = null;
         return TreeComponent;
     }(YetaWF.ComponentBaseDataImpl));
     YetaWF_ComponentsHTML.TreeComponent = TreeComponent;
-    // A <div> is being emptied. Destroy all trees the <div> may contain.
-    $YetaWF.registerClearDiv(function (tag) {
-        YetaWF.ComponentBaseDataImpl.clearDiv(tag, TreeComponent.SELECTOR);
-    });
 })(YetaWF_ComponentsHTML || (YetaWF_ComponentsHTML = {}));
 
 //# sourceMappingURL=Tree.js.map

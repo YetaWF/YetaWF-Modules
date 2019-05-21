@@ -18,7 +18,16 @@ var YetaWF_Panels;
     var StepInfoComponent = /** @class */ (function (_super) {
         __extends(StepInfoComponent, _super);
         function StepInfoComponent(controlId) {
-            return _super.call(this, controlId) || this;
+            return _super.call(this, controlId, YetaWF_Panels.StepInfoEditComponent.TEMPLATE, YetaWF_Panels.StepInfoEditComponent.SELECTOR, {
+                ControlType: YetaWF_ComponentsHTML.ControlTypeEnum.Template,
+                ChangeEvent: "",
+                GetValue: function (control) {
+                    return null; //$$$$control.value;
+                },
+                Enable: function (control, enable) {
+                    //$$$control.enable(enable)
+                }
+            }, true) || this;
         }
         StepInfoComponent.setActive = function (option) {
             var stepCtrls = $YetaWF.getElementsBySelector(StepInfoComponent.SELECTOR);
@@ -116,14 +125,11 @@ var YetaWF_Panels;
                 }
             }
         };
+        StepInfoComponent.TEMPLATE = "yt_panels_stepinfo";
         StepInfoComponent.SELECTOR = ".yt_panels_stepinfo.t_display";
         return StepInfoComponent;
     }(YetaWF.ComponentBaseDataImpl));
     YetaWF_Panels.StepInfoComponent = StepInfoComponent;
-    // A <div> is being emptied. Destroy all steps the <div> may contain.
-    $YetaWF.registerClearDiv(function (tag) {
-        StepInfoComponent.clearDiv(tag, StepInfoComponent.SELECTOR);
-    });
 })(YetaWF_Panels || (YetaWF_Panels = {}));
 
 //# sourceMappingURL=StepInfo.js.map

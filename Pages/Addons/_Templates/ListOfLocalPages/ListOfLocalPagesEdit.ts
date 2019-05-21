@@ -12,7 +12,10 @@ namespace YetaWF_Pages {
         StaticData: string;
     }
 
-    export class ListOfLocalPagesEditComponent extends YetaWF.ComponentBaseImpl {
+    export class ListOfLocalPagesEditComponent extends YetaWF.ComponentBaseDataImpl {
+
+        public static readonly TEMPLATE: string = "yt_yetawf_pages_listoflocalpages";
+        public static readonly SELECTOR: string = ".yt_yetawf_pages_listoflocalpages.t_edit";
 
         private Setup: ListOfLocalPagesSetup;
         private Grid: YetaWF_ComponentsHTML.Grid;
@@ -23,7 +26,17 @@ namespace YetaWF_Pages {
         private AddCounter: number = 0;
 
         constructor(controlId: string, setup: ListOfLocalPagesSetup) {
-            super(controlId);
+            super(controlId, ListOfLocalPagesEditComponent.TEMPLATE, ListOfLocalPagesEditComponent.SELECTOR, {
+                ControlType: YetaWF_ComponentsHTML.ControlTypeEnum.Template,
+                ChangeEvent: "",//$$$$
+                GetValue: (control: ListOfLocalPagesEditComponent): string | null => {
+                    return null;//$$$$control.value;
+                },
+                Enable: (control: ListOfLocalPagesEditComponent, enable: boolean): void => {
+                    //$$$control.enable(enable)
+                },
+            });
+
             this.Setup = setup;
 
             this.Grid = YetaWF.ComponentBaseDataImpl.getControlById(this.Setup.GridId, YetaWF_ComponentsHTML.Grid.SELECTOR);

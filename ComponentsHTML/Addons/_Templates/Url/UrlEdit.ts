@@ -12,6 +12,7 @@ namespace YetaWF_ComponentsHTML {
     }
     export class UrlEditComponent extends YetaWF.ComponentBaseDataImpl {
 
+        public static readonly TEMPLATE: string = "yt_url";
         public static readonly SELECTOR: string = ".yt_url.t_edit";
 
         private Setup: UrlEditSetup;
@@ -24,7 +25,16 @@ namespace YetaWF_ComponentsHTML {
         private aLink: HTMLAnchorElement;
 
         constructor(controlId: string, setup: UrlEditSetup) {
-            super(controlId);
+            super(controlId, UrlEditComponent.TEMPLATE, UrlEditComponent.SELECTOR, {
+                ControlType: ControlTypeEnum.Template,
+                ChangeEvent: "",//$$$
+                GetValue: (control: UrlEditComponent): string | null => {
+                    return control.value;
+                },
+                Enable: (control: UrlEditComponent, enable: boolean): void => {
+                    control.enable(enable);
+                },
+            });
             this.Setup = setup;
 
             this.inputHidden = $YetaWF.getElement1BySelector(".t_hidden", [this.Control]) as HTMLInputElement;
@@ -152,10 +162,5 @@ namespace YetaWF_ComponentsHTML {
                 $YetaWF.elementEnableToggle(this.inputUrl, enabled);
         }
     }
-
-    // A <div> is being emptied. Destroy all controls the <div> may contain.
-    $YetaWF.registerClearDiv((tag: HTMLElement): void => {
-        UrlEditComponent.clearDiv(tag, UrlEditComponent.SELECTOR);
-    });
 }
 

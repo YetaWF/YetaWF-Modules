@@ -30,6 +30,7 @@ namespace YetaWF_ComponentsHTML {
     }
     export class TreeComponent extends YetaWF.ComponentBaseDataImpl {
 
+        public static readonly TEMPLATE: string = "yt_tree";
         public static readonly SELECTOR: string = ".yt_tree";
 
         private Setup: TreeSetup;
@@ -43,7 +44,16 @@ namespace YetaWF_ComponentsHTML {
         private DDTargetPosition: TargetPositionEnum = TargetPositionEnum.on;
 
         constructor(controlId: string, setup: TreeSetup) {
-            super(controlId);
+            super(controlId, TreeComponent.TEMPLATE, TreeComponent.SELECTOR, {
+                ControlType: ControlTypeEnum.Template,
+                ChangeEvent: "",//$$$
+                GetValue: (control: TreeComponent): string | null => {
+                    return null;//$$$
+                },
+                Enable: (control: TreeComponent, enable: boolean): void => {
+                    //$$control.enable(enable)
+                },
+            });
             this.Setup = setup;
 
             $YetaWF.registerEventHandler(this.Control, "click", "a.t_entry", (ev: MouseEvent): boolean => {
@@ -568,9 +578,4 @@ namespace YetaWF_ComponentsHTML {
             container.scrollTop = rectLi.top - rectContainer.height / 2;
         }
     }
-
-    // A <div> is being emptied. Destroy all trees the <div> may contain.
-    $YetaWF.registerClearDiv((tag: HTMLElement): void => {
-        YetaWF.ComponentBaseDataImpl.clearDiv<TreeComponent>(tag, TreeComponent.SELECTOR);
-    });
 }

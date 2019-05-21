@@ -18,7 +18,18 @@ var YetaWF_ComponentsHTML;
     var DropDownListEditComponent = /** @class */ (function (_super) {
         __extends(DropDownListEditComponent, _super);
         function DropDownListEditComponent(controlId, setup) {
-            var _this = _super.call(this, controlId) || this;
+            var _this = _super.call(this, controlId, DropDownListEditComponent.TEMPLATE, DropDownListEditComponent.SELECTOR, {
+                ControlType: YetaWF_ComponentsHTML.ControlTypeEnum.Template,
+                ChangeEvent: "dropdownlist_change",
+                GetValue: function (control) {
+                    return control.value;
+                },
+                Enable: function (control, enable) {
+                    control.enable(enable);
+                },
+            }, false, function (tag, control) {
+                control.internalDestroy();
+            }) || this;
             _this.KendoDropDownList = null;
             _this.Setup = setup;
             _this.updateWidth();
@@ -149,6 +160,7 @@ var YetaWF_ComponentsHTML;
             };
             request.send(uri.toFormData());
         };
+        DropDownListEditComponent.TEMPLATE = "yt_dropdownlist_base";
         DropDownListEditComponent.SELECTOR = "select.yt_dropdownlist_base.t_edit.t_kendo";
         return DropDownListEditComponent;
     }(YetaWF.ComponentBaseDataImpl));
@@ -161,12 +173,6 @@ var YetaWF_ComponentsHTML;
             var control = YetaWF.ComponentBaseDataImpl.getControlFromTag(ctl, DropDownListEditComponent.SELECTOR);
             control.updateWidth();
         }
-    });
-    // A <div> is being emptied. Destroy all dropdownlists the <div> may contain.
-    $YetaWF.registerClearDiv(function (tag) {
-        YetaWF.ComponentBaseDataImpl.clearDiv(tag, DropDownListEditComponent.SELECTOR, function (control) {
-            control.internalDestroy();
-        });
     });
     // handle submit/apply
     $YetaWF.registerCustomEventHandlerDocument("dropdownlist_change", ".ysubmitonchange .k-dropdown select.yt_dropdownlist_base", function (ev) {

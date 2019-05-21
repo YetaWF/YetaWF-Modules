@@ -18,7 +18,16 @@ var YetaWF_ComponentsHTML;
     var ModuleSelectionEditComponent = /** @class */ (function (_super) {
         __extends(ModuleSelectionEditComponent, _super);
         function ModuleSelectionEditComponent(controlId, setup) {
-            var _this = _super.call(this, controlId) || this;
+            var _this = _super.call(this, controlId, ModuleSelectionEditComponent.TEMPLATE, ModuleSelectionEditComponent.SELECTOR, {
+                ControlType: YetaWF_ComponentsHTML.ControlTypeEnum.Template,
+                ChangeEvent: null,
+                GetValue: function (control) {
+                    return control.value;
+                },
+                Enable: function (control, enable) {
+                    control.enable(enable);
+                },
+            }) || this;
             _this.Setup = setup;
             _this.SelectPackage = YetaWF.ComponentBaseDataImpl.getControlFromSelector(".t_packages select", YetaWF_ComponentsHTML.DropDownListEditComponent.SELECTOR, [_this.Control]);
             _this.SelectModule = YetaWF.ComponentBaseDataImpl.getControlFromSelector(".t_select select", YetaWF_ComponentsHTML.DropDownListEditComponent.SELECTOR, [_this.Control]);
@@ -112,14 +121,11 @@ var YetaWF_ComponentsHTML;
                 this.clear();
             }
         };
+        ModuleSelectionEditComponent.TEMPLATE = "yt_moduleselection";
         ModuleSelectionEditComponent.SELECTOR = ".yt_moduleselection.t_edit";
         return ModuleSelectionEditComponent;
     }(YetaWF.ComponentBaseDataImpl));
     YetaWF_ComponentsHTML.ModuleSelectionEditComponent = ModuleSelectionEditComponent;
-    // A <div> is being emptied. Destroy all controls the <div> may contain.
-    $YetaWF.registerClearDiv(function (tag) {
-        ModuleSelectionEditComponent.clearDiv(tag, ModuleSelectionEditComponent.SELECTOR);
-    });
 })(YetaWF_ComponentsHTML || (YetaWF_ComponentsHTML = {}));
 
 //# sourceMappingURL=ModuleSelectionEdit.js.map
