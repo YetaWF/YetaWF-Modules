@@ -24,9 +24,9 @@ namespace YetaWF_ComponentsHTML {
                 ControlType: ControlTypeEnum.Template,
                 ChangeEvent: null,//$$$$$
                 GetValue: (control: ImageEditComponent): string | null => {
-                    if (this.HiddenInput.value === ImageEditComponent.CLEAREDFILE)
+                    if (control.HiddenInput.value === ImageEditComponent.CLEAREDFILE)
                         return null;
-                    return this.HiddenInput.value;
+                    return control.HiddenInput.value;
                 },
                 Enable: (control: ImageEditComponent, enable: boolean): void => {
                     //$$$$control.enable(enable);

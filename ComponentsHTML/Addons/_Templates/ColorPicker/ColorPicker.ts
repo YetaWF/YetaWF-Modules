@@ -12,7 +12,7 @@ namespace YetaWF_ComponentsHTML {
                 ControlType: ControlTypeEnum.Template,
                 ChangeEvent: "colorpicker_change",
                 GetValue: (control: ColorPickerComponent): string | null => {
-                    let colorPicker = $(control).data("kendoColorPicker");
+                    let colorPicker = $(control.Control).data("kendoColorPicker");
                     return colorPicker.value();
                 },
                 Enable: (control: ColorPickerComponent, enable: boolean): void => {

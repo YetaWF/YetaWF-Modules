@@ -186,7 +186,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                             hb.Append($"<div class='t_proptable{stat} t_cat t_boxpanel-{GetCategoryNormalized(category)}'>");
                             hb.Append($"<div class='t_boxlabel'>{category}</div>");
                             if (setup != null && setup.ExpandableList.Contains(category))
-                                hb.Append($"<div class='t_boxexpcoll'></div>");
+                                hb.Append($"<div class='t_boxexpcoll t_show'></div>");
                             hb.Append(await RenderListAsync(model, category, showVariables, readOnly));
                             hb.Append($"</div>");
                             break;
@@ -197,7 +197,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                                 stat = (setup.InitialExpanded == category) ? " t_propexpandable t_propexpanded" : " t_propexpandable t_propcollapsed";
                             hb.Append($"<div class='t_proptable {stat} t_cat t_boxpanel-{GetCategoryNormalized(category)}'>");
                             if (setup != null && setup.ExpandableList.Contains(category))
-                                hb.Append($"<div class='t_boxexpcoll'></div>");
+                                hb.Append($"<div class='t_boxexpcoll t_show'></div>");
                             hb.Append(await RenderListAsync(model, category, showVariables, readOnly));
                             hb.Append($"</div>");
                         }

@@ -24,17 +24,17 @@ var YetaWF_ComponentsHTML;
                 ControlType: YetaWF_ComponentsHTML.ControlTypeEnum.Template,
                 ChangeEvent: "timespan_change",
                 GetValue: function (control) {
-                    return _this.Hidden.value;
+                    return control.Hidden.value;
                 },
                 Enable: function (control, enable) {
-                    if (_this.InputDays)
-                        _this.InputDays.enable(enable);
-                    if (_this.InputHours)
-                        _this.InputHours.enable(enable);
-                    if (_this.InputMins)
-                        _this.InputMins.enable(enable);
-                    if (_this.InputSecs)
-                        _this.InputSecs.enable(enable);
+                    if (control.InputDays)
+                        control.InputDays.enable(enable);
+                    if (control.InputHours)
+                        control.InputHours.enable(enable);
+                    if (control.InputMins)
+                        control.InputMins.enable(enable);
+                    if (control.InputSecs)
+                        control.InputSecs.enable(enable);
                 },
             }) || this;
             _this.Hidden = $YetaWF.getElement1BySelector("input[type='hidden']", [_this.Control]);

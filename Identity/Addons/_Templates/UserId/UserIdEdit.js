@@ -22,7 +22,7 @@ var YetaWF_Identity;
                 ControlType: YetaWF_ComponentsHTML.ControlTypeEnum.Template,
                 ChangeEvent: "",
                 GetValue: function (control) {
-                    return _this.inputHidden.value;
+                    return control.inputHidden.value;
                 },
                 Enable: function (control, enable) {
                     //$$$control.enable(enable)

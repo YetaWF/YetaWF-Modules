@@ -31,7 +31,7 @@ namespace YetaWF_ComponentsHTML {
                     control.enable(enable);
                 },
             }, false, (tag: HTMLElement, control: DateTimeEditComponent): void => {
-                    control.kendoDateTimePicker.destroy();
+                control.kendoDateTimePicker.destroy();
             });
 
             this.Hidden = $YetaWF.getElement1BySelector("input[type=\"hidden\"]", [this.Control]) as HTMLInputElement;

@@ -136,21 +136,34 @@
         padding:3ch 2ch 2ch 2ch;
         margin-bottom:2ch;
         margin-right:2ch;
-        .t_boxexpcoll {
-            position: absolute;
-            top:5px;
-            right:5px;
-            width:16px;
-            height:16px;
-        }
         &.t_propexpanded {
             .t_boxexpcoll {
-                background-image:url(images/Collapse16.png);
+                &.t_show {
+                    background-image:url(images/Collapse16.png);
+                    position: absolute;
+                    top:5px;
+                    right:5px;
+                    width:16px;
+                    height:16px;
+                }
+                &.t_hide {
+                    display: none;
+                }
             }
         }
         &.t_propcollapsed {
             .t_boxexpcoll {
-                background-image:url(images/Expand16.png);
+                &.t_show {
+                    background-image:url(images/Expand16.png);
+                    position: absolute;
+                    top:5px;
+                    right:5px;
+                    width:16px;
+                    height:16px;
+                }
+                &.t_hide {
+                    display: none;
+                }
             }
         }
         &.t_prophide {

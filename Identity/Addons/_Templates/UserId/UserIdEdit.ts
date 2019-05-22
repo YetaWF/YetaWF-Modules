@@ -25,7 +25,7 @@ namespace YetaWF_Identity {
                 ControlType: YetaWF_ComponentsHTML.ControlTypeEnum.Template,
                 ChangeEvent: "",//$$$$
                 GetValue: (control: UserIdEditComponent): string | null => {
-                    return this.inputHidden.value;
+                    return control.inputHidden.value;
                 },
                 Enable: (control: UserIdEditComponent, enable: boolean): void => {
                     //$$$control.enable(enable)

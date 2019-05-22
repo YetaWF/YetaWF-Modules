@@ -28,6 +28,15 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         /// </summary>
         public DropDownListIntComponent() : base("DropDownListInt") { }
     }
+    /// <summary>
+    /// Implementation of the DropDownListIntNull edit component.
+    /// </summary>
+    public class DropDownListIntNullComponent : DropDownListEditComponentBase<int?> {
+        /// <summary>
+        /// Constructor.
+        /// </summary>
+        public DropDownListIntNullComponent() : base("DropDownListIntNull") { }
+    }
 
     /// <summary>
     /// Base class for the DropDownList component implementation.

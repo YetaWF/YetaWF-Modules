@@ -22,9 +22,9 @@ var YetaWF_ComponentsHTML;
                 ControlType: YetaWF_ComponentsHTML.ControlTypeEnum.Template,
                 ChangeEvent: null,
                 GetValue: function (control) {
-                    if (_this.HiddenInput.value === ImageEditComponent.CLEAREDFILE)
+                    if (control.HiddenInput.value === ImageEditComponent.CLEAREDFILE)
                         return null;
-                    return _this.HiddenInput.value;
+                    return control.HiddenInput.value;
                 },
                 Enable: function (control, enable) {
                     //$$$$control.enable(enable);

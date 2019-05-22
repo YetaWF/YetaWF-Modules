@@ -22,7 +22,7 @@ var YetaWF_ComponentsHTML;
                 ControlType: YetaWF_ComponentsHTML.ControlTypeEnum.Template,
                 ChangeEvent: "colorpicker_change",
                 GetValue: function (control) {
-                    var colorPicker = $(control).data("kendoColorPicker");
+                    var colorPicker = $(control.Control).data("kendoColorPicker");
                     return colorPicker.value();
                 },
                 Enable: function (control, enable) {

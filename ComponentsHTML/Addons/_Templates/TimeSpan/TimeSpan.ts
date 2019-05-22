@@ -21,13 +21,13 @@ namespace YetaWF_ComponentsHTML {
                 ControlType: ControlTypeEnum.Template,
                 ChangeEvent: "timespan_change",
                 GetValue: (control: TimeSpanEditComponent): string | null => {
-                    return this.Hidden.value;
+                    return control.Hidden.value;
                 },
                 Enable: (control: TimeSpanEditComponent, enable: boolean): void => {
-                    if (this.InputDays) this.InputDays.enable(enable);
-                    if (this.InputHours) this.InputHours.enable(enable);
-                    if (this.InputMins) this.InputMins.enable(enable);
-                    if (this.InputSecs) this.InputSecs.enable(enable);
+                    if (control.InputDays) control.InputDays.enable(enable);
+                    if (control.InputHours) control.InputHours.enable(enable);
+                    if (control.InputMins) control.InputMins.enable(enable);
+                    if (control.InputSecs) control.InputSecs.enable(enable);
                 },
             });
 

@@ -43,10 +43,10 @@ namespace YetaWF.Modules.ComponentsHTML {
                     tag.Attributes.Add("type", "button");
                     break;
                 case ButtonTypeEnum.Cancel:
-                    if (!Manager.IsInPopup && !Manager.HaveReturnToUrl) {
-                        // if we don't have anyplace to return to and we're not in a popup so we don't need a cancel button
-                        return null;
-                    }
+                    //if (!Manager.IsInPopup && !Manager.HaveReturnToUrl) {
+                    //    // if we don't have anyplace to return to and we're not in a popup so we don't need a cancel button
+                    //    return null;
+                    //}
                     if (string.IsNullOrWhiteSpace(text)) text = this.__ResStr("btnCancel", "Cancel");
                     tag.Attributes.Add("type", "button");
                     tag.AddCssClass(Manager.AddOnManager.CheckInvokedCssModule(Forms.CssFormCancel));
