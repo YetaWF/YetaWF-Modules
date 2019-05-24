@@ -11,7 +11,10 @@ namespace Softelvdm_IVR {
         StaticData: string;
     }
 
-    export class ListOfPhoneNumbersEditComponent extends YetaWF.ComponentBaseImpl {
+    export class ListOfPhoneNumbersEditComponent extends YetaWF.ComponentBaseNoDataImpl {
+
+        public static readonly TEMPLATE: string = "yt_softelvdm_ivr_listofphonenumbers";
+        public static readonly SELECTOR: string = ".yt_softelvdm_ivr_listofphonenumbers.t_edit";
 
         private Setup: ListOfPhoneNumbersSetup;
         private Grid: YetaWF_ComponentsHTML.Grid;
@@ -20,7 +23,16 @@ namespace Softelvdm_IVR {
         private AddCounter: number = 0;
 
         constructor(controlId: string, setup: ListOfPhoneNumbersSetup) {
-            super(controlId);
+            super(controlId, ListOfPhoneNumbersEditComponent.TEMPLATE, ListOfPhoneNumbersEditComponent.SELECTOR, {
+                ControlType: YetaWF_ComponentsHTML.ControlTypeEnum.Div,
+                ChangeEvent: "",//$$$$
+                GetValue: (control: HTMLDivElement): string | null => {
+                    return null;//$$$$control.value;
+                },
+                Enable: (control: HTMLDivElement, enable: boolean): void => {
+                    //$$$control.enable(enable)
+                },
+            });
             this.Setup = setup;
 
             this.Grid = YetaWF.ComponentBaseDataImpl.getControlById(this.Setup.GridId, YetaWF_ComponentsHTML.Grid.SELECTOR);

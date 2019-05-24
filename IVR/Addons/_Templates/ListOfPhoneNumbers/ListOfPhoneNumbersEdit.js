@@ -18,7 +18,16 @@ var Softelvdm_IVR;
     var ListOfPhoneNumbersEditComponent = /** @class */ (function (_super) {
         __extends(ListOfPhoneNumbersEditComponent, _super);
         function ListOfPhoneNumbersEditComponent(controlId, setup) {
-            var _this = _super.call(this, controlId) || this;
+            var _this = _super.call(this, controlId, ListOfPhoneNumbersEditComponent.TEMPLATE, ListOfPhoneNumbersEditComponent.SELECTOR, {
+                ControlType: YetaWF_ComponentsHTML.ControlTypeEnum.Div,
+                ChangeEvent: "",
+                GetValue: function (control) {
+                    return null; //$$$$control.value;
+                },
+                Enable: function (control, enable) {
+                    //$$$control.enable(enable)
+                },
+            }) || this;
             _this.AddCounter = 0;
             _this.Setup = setup;
             _this.Grid = YetaWF.ComponentBaseDataImpl.getControlById(_this.Setup.GridId, YetaWF_ComponentsHTML.Grid.SELECTOR);
@@ -60,8 +69,10 @@ var Softelvdm_IVR;
             s = s.trim();
             $YetaWF.elementEnableToggle(this.buttonAdd, s.length > 0);
         };
+        ListOfPhoneNumbersEditComponent.TEMPLATE = "yt_softelvdm_ivr_listofphonenumbers";
+        ListOfPhoneNumbersEditComponent.SELECTOR = ".yt_softelvdm_ivr_listofphonenumbers.t_edit";
         return ListOfPhoneNumbersEditComponent;
-    }(YetaWF.ComponentBaseImpl));
+    }(YetaWF.ComponentBaseNoDataImpl));
     Softelvdm_IVR.ListOfPhoneNumbersEditComponent = ListOfPhoneNumbersEditComponent;
 })(Softelvdm_IVR || (Softelvdm_IVR = {}));
 

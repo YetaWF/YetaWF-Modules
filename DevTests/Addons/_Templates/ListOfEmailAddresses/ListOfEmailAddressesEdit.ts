@@ -25,12 +25,12 @@ namespace YetaWF_DevTests {
 
         constructor(controlId: string, setup: ListOfEmailAddressesSetup) {
             super(controlId, ListOfEmailAddressesEditComponent.TEMPLATE, ListOfEmailAddressesEditComponent.SELECTOR, {
-                ControlType: YetaWF_ComponentsHTML.ControlTypeEnum.Template,
+                ControlType: YetaWF_ComponentsHTML.ControlTypeEnum.Div,
                 ChangeEvent: "",//$$$$
-                GetValue: (control: ListOfEmailAddressesEditComponent): string | null => {
+                GetValue: (control: HTMLDivElement): string | null => {
                     return null;//$$$$control.value;
                 },
-                Enable: (control: ListOfEmailAddressesEditComponent, enable: boolean): void => {
+                Enable: (control: HTMLDivElement, enable: boolean): void => {
                     //$$$control.enable(enable)
                 },
             });

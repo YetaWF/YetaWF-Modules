@@ -19,7 +19,7 @@ var YetaWF_DevTests;
         __extends(ListOfEmailAddressesEditComponent, _super);
         function ListOfEmailAddressesEditComponent(controlId, setup) {
             var _this = _super.call(this, controlId, ListOfEmailAddressesEditComponent.TEMPLATE, ListOfEmailAddressesEditComponent.SELECTOR, {
-                ControlType: YetaWF_ComponentsHTML.ControlTypeEnum.Template,
+                ControlType: YetaWF_ComponentsHTML.ControlTypeEnum.Div,
                 ChangeEvent: "",
                 GetValue: function (control) {
                     return null; //$$$$control.value;

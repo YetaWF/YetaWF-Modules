@@ -18,7 +18,16 @@ var YetaWF_BootstrapCarousel;
     var SlideShowEdit = /** @class */ (function (_super) {
         __extends(SlideShowEdit, _super);
         function SlideShowEdit(controlId) {
-            var _this = _super.call(this, controlId) || this;
+            var _this = _super.call(this, controlId, SlideShowEdit.TEMPLATE, SlideShowEdit.SELECTOR, {
+                ControlType: YetaWF_ComponentsHTML.ControlTypeEnum.Template,
+                ChangeEvent: "datetime_change",
+                GetValue: function (control) {
+                    return null;
+                },
+                Enable: function (control, enable) {
+                    //$$
+                },
+            }) || this;
             _this.buttonUp = $YetaWF.getElement1BySelector("input.t_up", [_this.Control]);
             _this.buttonDown = $YetaWF.getElement1BySelector("input.t_down", [_this.Control]);
             _this.buttonDelete = $YetaWF.getElement1BySelector("input.t_delete", [_this.Control]);
@@ -78,15 +87,12 @@ var YetaWF_BootstrapCarousel;
             // disable if there is only one panel
             $YetaWF.elementEnableToggle(this.buttonDelete, panelCount > 1);
         };
+        SlideShowEdit.TEMPLATE = "yt_bootstrapcarousel_slideshow";
         SlideShowEdit.SELECTOR = ".yt_bootstrapcarousel_slideshow.t_edit";
         SlideShowEdit.TEMPLATENAME = "YetaWF_BootstrapCarousel_SlideShow";
         return SlideShowEdit;
     }(YetaWF.ComponentBaseDataImpl));
     YetaWF_BootstrapCarousel.SlideShowEdit = SlideShowEdit;
-    // A <div> is being emptied. Destroy all controls the <div> may contain.
-    $YetaWF.registerClearDiv(function (tag) {
-        YetaWF.ComponentBaseDataImpl.clearDiv(tag, SlideShowEdit.SELECTOR);
-    });
 })(YetaWF_BootstrapCarousel || (YetaWF_BootstrapCarousel = {}));
 
 //# sourceMappingURL=SlideShowEdit.js.map

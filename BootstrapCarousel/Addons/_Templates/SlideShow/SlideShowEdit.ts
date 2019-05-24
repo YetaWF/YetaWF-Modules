@@ -26,6 +26,7 @@ namespace YetaWF_BootstrapCarousel {
 
     export class SlideShowEdit extends YetaWF.ComponentBaseDataImpl {
 
+        public static readonly TEMPLATE: string = "yt_bootstrapcarousel_slideshow";
         public static readonly SELECTOR: string = ".yt_bootstrapcarousel_slideshow.t_edit";
         private static readonly TEMPLATENAME: string = "YetaWF_BootstrapCarousel_SlideShow";
 
@@ -34,7 +35,16 @@ namespace YetaWF_BootstrapCarousel {
         private buttonDelete: HTMLElement;
 
         constructor(controlId: string) {
-            super(controlId);
+            super(controlId, SlideShowEdit.TEMPLATE, SlideShowEdit.SELECTOR, {
+                ControlType: YetaWF_ComponentsHTML.ControlTypeEnum.Template,
+                ChangeEvent: "datetime_change",
+                GetValue: (control: SlideShowEdit): string | null => {
+                    return null;
+                },
+                Enable: (control: SlideShowEdit, enable: boolean): void => {
+                    //$$
+                },
+            });
 
             this.buttonUp = $YetaWF.getElement1BySelector("input.t_up", [this.Control]);
             this.buttonDown = $YetaWF.getElement1BySelector("input.t_down", [this.Control]);
@@ -101,9 +111,4 @@ namespace YetaWF_BootstrapCarousel {
             $YetaWF.elementEnableToggle(this.buttonDelete, panelCount > 1);
         }
     }
-
-    // A <div> is being emptied. Destroy all controls the <div> may contain.
-    $YetaWF.registerClearDiv((tag: HTMLElement): void => {
-        YetaWF.ComponentBaseDataImpl.clearDiv(tag, SlideShowEdit.SELECTOR);
-    });
 }
