@@ -21,12 +21,8 @@ var YetaWF_Panels;
             var _this = _super.call(this, controlId, StepInfoEditComponent.TEMPLATE, StepInfoEditComponent.SELECTOR, {
                 ControlType: YetaWF_ComponentsHTML.ControlTypeEnum.Template,
                 ChangeEvent: "",
-                GetValue: function (control) {
-                    return null; //$$$$control.value;
-                },
-                Enable: function (control, enable) {
-                    //$$$control.enable(enable)
-                }
+                GetValue: function (control) { return null; },
+                Enable: function (control, enable) { }
             }) || this;
             _this.Up = $YetaWF.getElement1BySelector("input.t_up", [_this.Control]);
             _this.Down = $YetaWF.getElement1BySelector("input.t_down", [_this.Control]);

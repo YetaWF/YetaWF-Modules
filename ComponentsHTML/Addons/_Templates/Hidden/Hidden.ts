@@ -2,22 +2,18 @@
 
 namespace YetaWF_ComponentsHTML {
 
-    export interface IPackageLocs {
-        CopyToClip: string;
-    }
+    export class HiddenComponent extends YetaWF.ComponentBase {
 
-    export class BooleanTextEditComponent extends YetaWF.ComponentBase {
-
-        public static readonly TEMPLATE: string = "yt_booleantext";
-        public static readonly SELECTOR: string = ".yt_booleantext.t_edit";
+        public static readonly TEMPLATE: string = "yt_hidden";
+        public static readonly SELECTOR: string = ".yt_hidden";
 
     }
 
-    BooleanTextEditComponent.register(BooleanTextEditComponent.TEMPLATE, BooleanTextEditComponent.SELECTOR, false, {
+    HiddenComponent.register(HiddenComponent.TEMPLATE, HiddenComponent.SELECTOR, false, {
         ControlType: ControlTypeEnum.Input,
         ChangeEvent: null,
         GetValue: (control: HTMLInputElement): string | null => {
-            return control.checked ? "true" : "false";
+            return control.value;
         },
         Enable: (control: HTMLInputElement, enable: boolean): void => {
             control.removeAttribute("disabled");

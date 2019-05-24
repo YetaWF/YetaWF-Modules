@@ -17,30 +17,26 @@ var YetaWF_ComponentsHTML;
 (function (YetaWF_ComponentsHTML) {
     var BooleanTextEditComponent = /** @class */ (function (_super) {
         __extends(BooleanTextEditComponent, _super);
-        function BooleanTextEditComponent(controlId /*, setup: BooleanTextEditSetup*/) {
-            return _super.call(this, controlId, YetaWF_ComponentsHTML.BooleanEditComponent.TEMPLATE, YetaWF_ComponentsHTML.BooleanEditComponent.SELECTOR, {
-                ControlType: YetaWF_ComponentsHTML.ControlTypeEnum.Input,
-                ChangeEvent: null,
-                GetValue: function (control) {
-                    return control.checked ? "true" : "false";
-                },
-                Enable: function (control, enable) {
-                    if (enable) {
-                        control.setAttribute("disabled", "disabled");
-                        $YetaWF.elementRemoveClass(control, "k-state-disabled");
-                    }
-                    else {
-                        control.removeAttribute("disabled");
-                        $YetaWF.elementAddClass(control, "k-state-disabled");
-                    }
-                },
-            }) || this;
+        function BooleanTextEditComponent() {
+            return _super !== null && _super.apply(this, arguments) || this;
         }
         BooleanTextEditComponent.TEMPLATE = "yt_booleantext";
         BooleanTextEditComponent.SELECTOR = ".yt_booleantext.t_edit";
         return BooleanTextEditComponent;
-    }(YetaWF.ComponentBaseNoDataImpl));
+    }(YetaWF.ComponentBase));
     YetaWF_ComponentsHTML.BooleanTextEditComponent = BooleanTextEditComponent;
+    BooleanTextEditComponent.register(BooleanTextEditComponent.TEMPLATE, BooleanTextEditComponent.SELECTOR, false, {
+        ControlType: YetaWF_ComponentsHTML.ControlTypeEnum.Input,
+        ChangeEvent: null,
+        GetValue: function (control) {
+            return control.checked ? "true" : "false";
+        },
+        Enable: function (control, enable) {
+            control.removeAttribute("disabled");
+            if (!enable)
+                control.setAttribute("disabled", "disabled");
+        },
+    });
 })(YetaWF_ComponentsHTML || (YetaWF_ComponentsHTML = {}));
 
 //# sourceMappingURL=BooleanTextEdit.js.map

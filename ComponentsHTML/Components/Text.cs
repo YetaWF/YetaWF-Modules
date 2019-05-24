@@ -189,7 +189,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                 hb.Append(ImageHTML.BuildKnownIcon("#TextCopy", sprites: Info.PredefSpriteIcons, title: __ResStr("ttCopy", "Copy to Clipboard"), cssClass: "yt_text_copy"));
             }
 
-            Manager.ScriptManager.AddLast($@"new YetaWF_ComponentsHTML.TextDisplayComponent('{ControlId}');");
+            //Manager.ScriptManager.AddLast($@"new YetaWF_ComponentsHTML.TextDisplayComponent('{ControlId}');");
 
             return hb.ToString();
         }
@@ -291,7 +291,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             //    sb.Append("$('#{0}').kendoMaskedTextBox({{ mask: '{1}' }});\n", id, YetaWFManager.JserEncode(mask));
             //    Manager.ScriptManager.AddLastDocumentReady(sb);
             //}
-            Manager.ScriptManager.AddLast($@"new YetaWF_ComponentsHTML.TextEditComponent('{component.ControlId}');");
+            //Manager.ScriptManager.AddLast($@"new YetaWF_ComponentsHTML.TextEditComponent('{component.ControlId}');");
 
             return hb.ToString();
         }

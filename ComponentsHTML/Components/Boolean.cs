@@ -110,7 +110,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             tagHidden.Attributes.Add("type", "hidden");
             tagHidden.Attributes.Add("value", "false");
 
-            Manager.ScriptManager.AddLast($@"new YetaWF_ComponentsHTML.BooleanEditComponent('{ControlId}');");
+            //Manager.ScriptManager.AddLast($@"new YetaWF_ComponentsHTML.BooleanEditComponent('{ControlId}');");
 
             return Task.FromResult(tag.ToString(YTagRenderMode.StartTag) + tagHidden.ToString(YTagRenderMode.StartTag));
         }

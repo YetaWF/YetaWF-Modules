@@ -13,15 +13,11 @@ namespace YetaWF_Panels {
         public static readonly SELECTOR: string = ".yt_panels_stepinfo.t_display";
 
         constructor(controlId: string) {
-            super(controlId, StepInfoEditComponent.TEMPLATE, StepInfoEditComponent.SELECTOR, {
+            super(controlId, StepInfoComponent.TEMPLATE, StepInfoComponent.SELECTOR, {
                 ControlType: YetaWF_ComponentsHTML.ControlTypeEnum.Template,
                 ChangeEvent: "",//$$$$
-                GetValue: (control: StepInfoEditComponent): string | null => {
-                    return null;//$$$$control.value;
-                },
-                Enable: (control: StepInfoEditComponent, enable: boolean): void => {
-                    //$$$control.enable(enable)
-                }
+                GetValue: (control: StepInfoComponent): string | null => { return null; },
+                Enable: (control: StepInfoComponent, enable: boolean): void => { }
             }, true);
         }
 

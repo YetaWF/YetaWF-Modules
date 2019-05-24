@@ -15,21 +15,21 @@ var __extends = (this && this.__extends) || (function () {
 })();
 var YetaWF_ComponentsHTML;
 (function (YetaWF_ComponentsHTML) {
-    var BooleanEditComponent = /** @class */ (function (_super) {
-        __extends(BooleanEditComponent, _super);
-        function BooleanEditComponent() {
+    var HiddenComponent = /** @class */ (function (_super) {
+        __extends(HiddenComponent, _super);
+        function HiddenComponent() {
             return _super !== null && _super.apply(this, arguments) || this;
         }
-        BooleanEditComponent.TEMPLATE = "yt_boolean";
-        BooleanEditComponent.SELECTOR = ".yt_boolean.t_edit";
-        return BooleanEditComponent;
+        HiddenComponent.TEMPLATE = "yt_hidden";
+        HiddenComponent.SELECTOR = ".yt_hidden";
+        return HiddenComponent;
     }(YetaWF.ComponentBase));
-    YetaWF_ComponentsHTML.BooleanEditComponent = BooleanEditComponent;
-    BooleanEditComponent.register(BooleanEditComponent.TEMPLATE, BooleanEditComponent.SELECTOR, false, {
+    YetaWF_ComponentsHTML.HiddenComponent = HiddenComponent;
+    HiddenComponent.register(HiddenComponent.TEMPLATE, HiddenComponent.SELECTOR, false, {
         ControlType: YetaWF_ComponentsHTML.ControlTypeEnum.Input,
         ChangeEvent: null,
         GetValue: function (control) {
-            return control.checked ? "true" : "false";
+            return control.value;
         },
         Enable: function (control, enable) {
             control.removeAttribute("disabled");
@@ -39,4 +39,4 @@ var YetaWF_ComponentsHTML;
     });
 })(YetaWF_ComponentsHTML || (YetaWF_ComponentsHTML = {}));
 
-//# sourceMappingURL=BooleanEdit.js.map
+//# sourceMappingURL=Hidden.js.map

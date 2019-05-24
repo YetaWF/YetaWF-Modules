@@ -18,15 +18,11 @@ var YetaWF_Panels;
     var StepInfoComponent = /** @class */ (function (_super) {
         __extends(StepInfoComponent, _super);
         function StepInfoComponent(controlId) {
-            return _super.call(this, controlId, YetaWF_Panels.StepInfoEditComponent.TEMPLATE, YetaWF_Panels.StepInfoEditComponent.SELECTOR, {
+            return _super.call(this, controlId, StepInfoComponent.TEMPLATE, StepInfoComponent.SELECTOR, {
                 ControlType: YetaWF_ComponentsHTML.ControlTypeEnum.Template,
                 ChangeEvent: "",
-                GetValue: function (control) {
-                    return null; //$$$$control.value;
-                },
-                Enable: function (control, enable) {
-                    //$$$control.enable(enable)
-                }
+                GetValue: function (control) { return null; },
+                Enable: function (control, enable) { }
             }, true) || this;
         }
         StepInfoComponent.setActive = function (option) {

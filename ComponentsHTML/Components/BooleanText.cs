@@ -114,7 +114,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             tagHidden.Attributes.Add("type", "hidden");
             tagHidden.Attributes.Add("value", "false");
 
-            Manager.ScriptManager.AddLast($@"new YetaWF_ComponentsHTML.BooleanTextEditComponent('{ControlId}');");
+            //Manager.ScriptManager.AddLast($@"new YetaWF_ComponentsHTML.BooleanTextEditComponent('{ControlId}');");
 
             string text;
             if (TryGetSiblingProperty($"{PropertyName}_Text", out text))
