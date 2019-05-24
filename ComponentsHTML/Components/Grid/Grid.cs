@@ -263,7 +263,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
             // add ui-corner-top for rounded edges
             hb.Append($@"
-<div id='{model.Id}' class='yt_grid t_display{noSubmitClass} {(model.UseSkinFormatting ? "tg_skin" : "tg_noskin")}'>
+<div id='{model.Id}' name='{FieldName}' class='yt_grid t_display{noSubmitClass} {(model.UseSkinFormatting ? "tg_skin" : "tg_noskin")}'>
     <div class='tg_table{(model.UseSkinFormatting ? " ui-widget ui-widget-content" : "")}'>
         <table role='presentation'{cssTableStyle}>
             {setup.HeaderHTML}
