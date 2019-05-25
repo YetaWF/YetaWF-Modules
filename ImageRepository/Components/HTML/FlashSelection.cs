@@ -38,7 +38,7 @@ namespace YetaWF.Modules.ImageRepository.Components {
 
             hb.Append($@"
 <div id='{ControlId}' class='yt_imagerepository_flashselection'>
-    {await HtmlHelper.ForEditComponentAsync(Container, PropertyName, model, "Hidden", Validation: true)}
+    {await HtmlHelper.ForEditComponentAsync(Container, PropertyName, model, "Hidden", HtmlAttributes: new { __NoTemplate = true }, Validation: true)}
     <div class='t_imgarea'>
         <div class='t_list'>
             <select class='t_native' name='List' size='10' style='height:{info.PreviewHeight}px'>");

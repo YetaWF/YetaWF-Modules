@@ -1,6 +1,7 @@
 ﻿/* Copyright © 2019 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/ComponentsHTML#License */
 
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using YetaWF.Core.Components;
 using YetaWF.Core.Localize;
@@ -123,7 +124,10 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             hb.Append($@"
 <div id='{ControlId}' class='yt_timespan t_edit'>");
 
-            hb.Append(await HtmlHelper.ForEditComponentAsync(Container, PropertyName, model.ToString(), "Hidden", HtmlAttributes: HtmlAttributes, Validation: Validation));
+            Dictionary<string, object> hiddenAttributes = new Dictionary<string, object>(HtmlAttributes) {
+                { "__NoTemplate", true }
+            };
+            hb.Append(await HtmlHelper.ForEditComponentAsync(Container, PropertyName, model.ToString(), "Hidden", HtmlAttributes: hiddenAttributes, Validation: Validation));
 
             using (Manager.StartNestedComponent(FieldName)) {
 

@@ -1,6 +1,5 @@
 ﻿/* Copyright © 2019 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/ComponentsHTML#License */
 
-using System;
 using System.Threading.Tasks;
 using YetaWF.Core.Components;
 using YetaWF.Core.Packages;
@@ -51,10 +50,10 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             YTagBuilder tag = new YTagBuilder("input");
             FieldSetup(tag, FieldType.Normal);
             tag.MergeAttribute("type", "hidden");
-            tag.AddCssClass("yt_hidden");
-            if (model != null && model.GetType().IsEnum) {
+            if (!HtmlAttributes.ContainsKey("__NoTemplate"))
+                tag.AddCssClass("yt_hidden");
+            if (model != null && model.GetType().IsEnum)
                 model = (int)model;
-            }
             tag.MergeAttribute("value", model == null ? "" : model.ToString());
             return Task.FromResult(tag.ToString(YTagRenderMode.StartTag));
         }
@@ -80,10 +79,10 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         YTagBuilder tag = new YTagBuilder("input");
             FieldSetup(tag, Validation ? FieldType.Validated : FieldType.Normal);
             tag.MergeAttribute("type", "hidden");
-            tag.AddCssClass("yt_hidden");
-            if (model != null && model.GetType().IsEnum) {
+            if (!HtmlAttributes.ContainsKey("__NoTemplate"))
+                tag.AddCssClass("yt_hidden");
+            if (model != null && model.GetType().IsEnum)
                 model = (int)model;
-            }
             tag.MergeAttribute("value", model == null ? "" : model.ToString());
             return Task.FromResult(tag.ToString(YTagRenderMode.StartTag));
         }

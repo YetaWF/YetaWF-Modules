@@ -168,7 +168,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             HtmlBuilder hb = new HtmlBuilder();
             hb.Append($@"
 <div class='yt_image t_edit' id='{ControlId}'>
-    {await HtmlHelper.ForEditComponentAsync(Container, PropertyName, model, "Hidden", Validation: true)}
+    {await HtmlHelper.ForEditComponentAsync(Container, PropertyName, model, "Hidden", HtmlAttributes: new { __NoTemplate = true }, Validation: true)}
     <div class='t_image'>
         {await HtmlHelper.ForDisplayComponentAsync(Container, PropertyName, model, TemplateName, HtmlAttributes: new { alt = __ResStr("imgAlt", "Preview Image") })}
     </div>
