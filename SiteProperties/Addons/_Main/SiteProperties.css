@@ -1,6 +1,6 @@
 @charset "UTF-8";
 /* Copyright © 2019 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/SiteProperties#License */
-.yNoCondense .YetaWF_SiteProperties_SiteProperties .yt_propertylisttabbed .t_canusecdncomponents label,
-.yNoCondense .YetaWF_SiteProperties_SiteProperties .yt_propertylisttabbed .t_canusecdn label,
-.yNoCondense .YetaWF_SiteProperties_SiteProperties .yt_propertylisttabbed .t_canusestaticdomain label {
+.yNoCondense .YetaWF_SiteProperties_SiteProperties .yt_propertylist .t_canusecdncomponents label,
+.yNoCondense .YetaWF_SiteProperties_SiteProperties .yt_propertylist .t_canusecdn label,
+.yNoCondense .YetaWF_SiteProperties_SiteProperties .yt_propertylist .t_canusestaticdomain label {
   padding-left: 3ch; }

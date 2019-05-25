@@ -51,7 +51,7 @@ namespace YetaWF_ComponentsHTML {
                         this.setHidden(val);
                     FormsSupport.validateElement(this.Hidden);
                     var event = document.createEvent("Event");
-                    event.initEvent("datetime_change", true, true);
+                    event.initEvent("date_change", true, true);
                     this.Control.dispatchEvent(event);
                 }
             });

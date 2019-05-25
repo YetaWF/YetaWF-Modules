@@ -1,5 +1,6 @@
 ﻿/* Copyright © 2019 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/ComponentsHTML#License */
 
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using YetaWF.Core.Components;
 using YetaWF.Core.Packages;
@@ -10,9 +11,9 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
     /// <summary>
     /// Implementation of the FormButton edit component.
     /// </summary>
-    public class FormButtonComponent : YetaWFComponent, IYetaWFComponent<FormButton> {
+    public class FormButtonsComponent : YetaWFComponent, IYetaWFComponent<List<FormButton>> {
 
-        internal const string TemplateName = "FormButton";
+        internal const string TemplateName = "FormButtons";
 
         /// <summary>
         /// Returns the component type (edit/display).
@@ -40,10 +41,13 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         /// </summary>
         /// <param name="model">The model being rendered by the component.</param>
         /// <returns>The component rendered as HTML.</returns>
-        public async Task<string> RenderAsync(FormButton model) {
+        public async Task<string> RenderAsync(List<FormButton> model) {
 
-            return await model.RenderAsync();
+            HtmlBuilder hb = new HtmlBuilder();
+            foreach (FormButton button in model)
+                hb.Append(await button.RenderAsync());
 
+            return hb.ToString();
         }
     }
 }

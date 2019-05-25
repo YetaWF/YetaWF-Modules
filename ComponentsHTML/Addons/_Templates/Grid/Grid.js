@@ -51,11 +51,12 @@ var YetaWF_ComponentsHTML;
                 ControlType: YetaWF_ComponentsHTML.ControlTypeEnum.Template,
                 ChangeEvent: null,
                 GetValue: function (control) {
-                    return null; //$$$
+                    var total = control.GetTotalRecords();
+                    if (!total)
+                        return null;
+                    return total.toString();
                 },
-                Enable: function (control, enable) {
-                    //$$$control.enable(enable)
-                },
+                Enable: function (control, enable) { },
             }, false, function (tag, control) {
                 control.internalDestroy();
             }) || this;
@@ -1057,6 +1058,9 @@ var YetaWF_ComponentsHTML;
                 $YetaWF.elementToggleClass(sel, this.Setup.RowHighlightCss, false);
                 $YetaWF.elementToggleClass(sel, this.Setup.RowDragDropHighlightCss, false);
             }
+        };
+        Grid.prototype.GetTotalRecords = function () {
+            return this.Setup.Records;
         };
         Grid.prototype.GetRecord = function (index) {
             if (!this.Setup.StaticData)

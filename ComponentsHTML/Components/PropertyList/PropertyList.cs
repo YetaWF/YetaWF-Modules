@@ -115,17 +115,17 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                 default:
                 case PropertyListStyleEnum.Tabbed:
                     hb.Append($@"
-<div id='{divId}' class='yt_propertylisttabbed {(readOnly ? "t_display" : "t_edit")}'>");
+<div id='{divId}' class='yt_propertylist t_tabbed {(readOnly ? "t_display" : "t_edit")}'>");
                     break;
                 case PropertyListStyleEnum.Boxed:
                     await Manager.AddOnManager.AddAddOnNamedAsync(AreaRegistration.CurrentPackage.AreaName, "masonry.desandro.com");
                     hb.Append($@"
-<div id='{divId}' class='yt_propertylistboxed {(readOnly ? "t_display" : "t_edit")}'>");
+<div id='{divId}' class='yt_propertylist t_boxed {(readOnly ? "t_display" : "t_edit")}'>");
                     break;
                 case PropertyListStyleEnum.BoxedWithCategories:
                     await Manager.AddOnManager.AddAddOnNamedAsync(AreaRegistration.CurrentPackage.AreaName, "masonry.desandro.com");
                     hb.Append($@"
-<div id='{divId}' class='yt_propertylistboxedcat {(readOnly ? "t_display" : "t_edit")}'>");
+<div id='{divId}' class='yt_propertylist t_boxedcat {(readOnly ? "t_display" : "t_edit")}'>");
                     break;
             }
 

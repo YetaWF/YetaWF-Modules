@@ -1,228 +1,141 @@
 @charset "UTF-8";
 /* Copyright © 2019 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/ComponentsHTML#License */
-.yt_propertylist,
-.yt_propertylisttabbed,
-.yt_propertylistboxed,
-.yt_propertylistboxedcat {
+.yt_propertylist {
   /* These items should actually be in template-specific css files but because they're often-used core templates we'll put them here for convenience */ }
-  .yt_propertylist .t_proptable,
-  .yt_propertylisttabbed .t_proptable,
-  .yt_propertylistboxed .t_proptable,
-  .yt_propertylistboxedcat .t_proptable {
+  .yt_propertylist .t_proptable {
     padding-top: 10px;
     width: auto; }
-  .yt_propertylist .t_row,
-  .yt_propertylisttabbed .t_row,
-  .yt_propertylistboxed .t_row,
-  .yt_propertylistboxedcat .t_row {
+  .yt_propertylist .t_row {
     width: auto;
     clear: both;
     padding-bottom: 0.5em; }
-    .yt_propertylist .t_row.t_hidden,
-    .yt_propertylisttabbed .t_row.t_hidden,
-    .yt_propertylistboxed .t_row.t_hidden,
-    .yt_propertylistboxedcat .t_row.t_hidden {
+    .yt_propertylist .t_row.t_hidden {
       display: none; }
-  .yt_propertylist .t_labels,
-  .yt_propertylisttabbed .t_labels,
-  .yt_propertylistboxed .t_labels,
-  .yt_propertylistboxedcat .t_labels {
+  .yt_propertylist .t_labels {
     float: left;
     width: 25ch;
     margin-right: .5ch; }
-  .yt_propertylist .t_vals,
-  .yt_propertylisttabbed .t_vals,
-  .yt_propertylistboxed .t_vals,
-  .yt_propertylistboxedcat .t_vals {
+  .yt_propertylist .t_vals {
     min-height: 1em;
     overflow: hidden; }
-  .yt_propertylist .t_labels.t_fillerbelow,
-  .yt_propertylisttabbed .t_labels.t_fillerbelow,
-  .yt_propertylistboxed .t_labels.t_fillerbelow,
-  .yt_propertylistboxedcat .t_labels.t_fillerbelow {
+  .yt_propertylist .t_labels.t_fillerbelow {
     clear: both; }
-  .yt_propertylist .t_vals.t_textabove,
-  .yt_propertylisttabbed .t_vals.t_textabove,
-  .yt_propertylistboxed .t_vals.t_textabove,
-  .yt_propertylistboxedcat .t_vals.t_textabove {
+  .yt_propertylist .t_vals.t_textabove {
     padding-bottom: 0.5em; }
-  .yt_propertylist .t_vals.t_textbelow,
-  .yt_propertylisttabbed .t_vals.t_textbelow,
-  .yt_propertylistboxed .t_vals.t_textbelow,
-  .yt_propertylistboxedcat .t_vals.t_textbelow {
+  .yt_propertylist .t_vals.t_textbelow {
     padding-top: 0.5em; }
-  .yt_propertylist .yt_url.t_edit .yt_dropdownlist_base.t_select,
-  .yt_propertylisttabbed .yt_url.t_edit .yt_dropdownlist_base.t_select,
-  .yt_propertylistboxed .yt_url.t_edit .yt_dropdownlist_base.t_select,
-  .yt_propertylistboxedcat .yt_url.t_edit .yt_dropdownlist_base.t_select {
+  .yt_propertylist .yt_url.t_edit .yt_dropdownlist_base.t_select {
     max-width: 100%; }
   .yt_propertylist .yt_dropdownlist_base.yt_enum.t_edit,
   .yt_propertylist .yt_dropdownlist_base.yt_usstate.t_edit,
   .yt_propertylist .yt_dropdownlist_base.yt_caprovince.t_edit,
   .yt_propertylist .yt_moduleselection.t_edit .yt_dropdownlist_base,
-  .yt_propertylist .yt_pageselection.t_edit .yt_dropdownlist_base,
-  .yt_propertylisttabbed .yt_dropdownlist_base.yt_enum.t_edit,
-  .yt_propertylisttabbed .yt_dropdownlist_base.yt_usstate.t_edit,
-  .yt_propertylisttabbed .yt_dropdownlist_base.yt_caprovince.t_edit,
-  .yt_propertylisttabbed .yt_moduleselection.t_edit .yt_dropdownlist_base,
-  .yt_propertylisttabbed .yt_pageselection.t_edit .yt_dropdownlist_base,
-  .yt_propertylistboxed .yt_dropdownlist_base.yt_enum.t_edit,
-  .yt_propertylistboxed .yt_dropdownlist_base.yt_usstate.t_edit,
-  .yt_propertylistboxed .yt_dropdownlist_base.yt_caprovince.t_edit,
-  .yt_propertylistboxed .yt_moduleselection.t_edit .yt_dropdownlist_base,
-  .yt_propertylistboxed .yt_pageselection.t_edit .yt_dropdownlist_base,
-  .yt_propertylistboxedcat .yt_dropdownlist_base.yt_enum.t_edit,
-  .yt_propertylistboxedcat .yt_dropdownlist_base.yt_usstate.t_edit,
-  .yt_propertylistboxedcat .yt_dropdownlist_base.yt_caprovince.t_edit,
-  .yt_propertylistboxedcat .yt_moduleselection.t_edit .yt_dropdownlist_base,
-  .yt_propertylistboxedcat .yt_pageselection.t_edit .yt_dropdownlist_base {
+  .yt_propertylist .yt_pageselection.t_edit .yt_dropdownlist_base {
     max-width: 100%; }
-  .yt_propertylist .yt_email.t_edit,
-  .yt_propertylisttabbed .yt_email.t_edit,
-  .yt_propertylistboxed .yt_email.t_edit,
-  .yt_propertylistboxedcat .yt_email.t_edit {
+  .yt_propertylist .yt_email.t_edit {
     max-width: 100%; }
 
-.yCondense .yt_propertylist .t_labels,
-.yCondense .yt_propertylisttabbed .t_labels,
-.yCondense .yt_propertylistboxed .t_labels,
-.yCondense .yt_propertylistboxedcat .t_labels {
+.yCondense .yt_propertylist .t_labels {
   float: none;
   width: auto;
   padding-bottom: 0.2em; }
 
-.yCondense .yt_propertylist .t_vals,
-.yCondense .yt_propertylisttabbed .t_vals,
-.yCondense .yt_propertylistboxed .t_vals,
-.yCondense .yt_propertylistboxedcat .t_vals {
+.yCondense .yt_propertylist .t_vals {
   /*overflow: auto;*/
   /* These items should actually be in template-specific css files but because they're core templates we'll put them here for convenience */ }
-  .yCondense .yt_propertylist .t_vals input[type='text'].yt_text80,
-  .yCondense .yt_propertylisttabbed .t_vals input[type='text'].yt_text80,
-  .yCondense .yt_propertylistboxed .t_vals input[type='text'].yt_text80,
-  .yCondense .yt_propertylistboxedcat .t_vals input[type='text'].yt_text80 {
+  .yCondense .yt_propertylist .t_vals input[type='text'].yt_text80 {
     width: 100%; }
-  .yCondense .yt_propertylist .t_vals .yt_multistring.t_edit,
-  .yCondense .yt_propertylisttabbed .t_vals .yt_multistring.t_edit,
-  .yCondense .yt_propertylistboxed .t_vals .yt_multistring.t_edit,
-  .yCondense .yt_propertylistboxedcat .t_vals .yt_multistring.t_edit {
+  .yCondense .yt_propertylist .t_vals .yt_multistring.t_edit {
     display: block;
     width: 100%; }
-    .yCondense .yt_propertylist .t_vals .yt_multistring.t_edit .t_multistring_text,
-    .yCondense .yt_propertylisttabbed .t_vals .yt_multistring.t_edit .t_multistring_text,
-    .yCondense .yt_propertylistboxed .t_vals .yt_multistring.t_edit .t_multistring_text,
-    .yCondense .yt_propertylistboxedcat .t_vals .yt_multistring.t_edit .t_multistring_text {
+    .yCondense .yt_propertylist .t_vals .yt_multistring.t_edit .t_multistring_text {
       width: 100%;
       margin-right: 0; }
-    .yCondense .yt_propertylist .t_vals .yt_multistring.t_edit input[type="text"].t_text80,
-    .yCondense .yt_propertylisttabbed .t_vals .yt_multistring.t_edit input[type="text"].t_text80,
-    .yCondense .yt_propertylistboxed .t_vals .yt_multistring.t_edit input[type="text"].t_text80,
-    .yCondense .yt_propertylistboxedcat .t_vals .yt_multistring.t_edit input[type="text"].t_text80 {
+    .yCondense .yt_propertylist .t_vals .yt_multistring.t_edit input[type="text"].t_text80 {
       width: 100%; }
-  .yCondense .yt_propertylist .t_vals .yt_url.t_edit,
-  .yCondense .yt_propertylisttabbed .t_vals .yt_url.t_edit,
-  .yCondense .yt_propertylistboxed .t_vals .yt_url.t_edit,
-  .yCondense .yt_propertylistboxedcat .t_vals .yt_url.t_edit {
+  .yCondense .yt_propertylist .t_vals .yt_url.t_edit {
     display: block; }
-    .yCondense .yt_propertylist .t_vals .yt_url.t_edit .t_local,
-    .yCondense .yt_propertylisttabbed .t_vals .yt_url.t_edit .t_local,
-    .yCondense .yt_propertylistboxed .t_vals .yt_url.t_edit .t_local,
-    .yCondense .yt_propertylistboxedcat .t_vals .yt_url.t_edit .t_local {
+    .yCondense .yt_propertylist .t_vals .yt_url.t_edit .t_local {
       width: 100%; }
-      .yCondense .yt_propertylist .t_vals .yt_url.t_edit .t_local .k-widget.k-dropdown.yt_dropdownlist_base,
-      .yCondense .yt_propertylisttabbed .t_vals .yt_url.t_edit .t_local .k-widget.k-dropdown.yt_dropdownlist_base,
-      .yCondense .yt_propertylistboxed .t_vals .yt_url.t_edit .t_local .k-widget.k-dropdown.yt_dropdownlist_base,
-      .yCondense .yt_propertylistboxedcat .t_vals .yt_url.t_edit .t_local .k-widget.k-dropdown.yt_dropdownlist_base {
+      .yCondense .yt_propertylist .t_vals .yt_url.t_edit .t_local .k-widget.k-dropdown.yt_dropdownlist_base {
         width: 100% !important; }
-    .yCondense .yt_propertylist .t_vals .yt_url.t_edit .t_remote,
-    .yCondense .yt_propertylisttabbed .t_vals .yt_url.t_edit .t_remote,
-    .yCondense .yt_propertylistboxed .t_vals .yt_url.t_edit .t_remote,
-    .yCondense .yt_propertylistboxedcat .t_vals .yt_url.t_edit .t_remote {
+    .yCondense .yt_propertylist .t_vals .yt_url.t_edit .t_remote {
       width: 100%; }
-      .yCondense .yt_propertylist .t_vals .yt_url.t_edit .t_remote input[type='text'],
-      .yCondense .yt_propertylisttabbed .t_vals .yt_url.t_edit .t_remote input[type='text'],
-      .yCondense .yt_propertylistboxed .t_vals .yt_url.t_edit .t_remote input[type='text'],
-      .yCondense .yt_propertylistboxedcat .t_vals .yt_url.t_edit .t_remote input[type='text'] {
+      .yCondense .yt_propertylist .t_vals .yt_url.t_edit .t_remote input[type='text'] {
         width: 100%; }
 
-.yCondense .yt_propertylist .t_labels.t_fillerabove,
-.yCondense .yt_propertylisttabbed .t_labels.t_fillerabove,
-.yCondense .yt_propertylistboxed .t_labels.t_fillerabove,
-.yCondense .yt_propertylistboxedcat .t_labels.t_fillerabove {
+.yCondense .yt_propertylist .t_labels.t_fillerabove {
   display: none; }
 
-.yCondense .yt_propertylist .t_labels.t_fillerbelow,
-.yCondense .yt_propertylisttabbed .t_labels.t_fillerbelow,
-.yCondense .yt_propertylistboxed .t_labels.t_fillerbelow,
-.yCondense .yt_propertylistboxedcat .t_labels.t_fillerbelow {
+.yCondense .yt_propertylist .t_labels.t_fillerbelow {
   display: none; }
 
-.yt_propertylistboxedcat {
+.yt_propertylist.t_boxedcat {
   margin-top: 2ch; }
-  .yt_propertylistboxedcat .t_proptable {
+  .yt_propertylist.t_boxedcat .t_proptable {
     position: relative; }
-    .yt_propertylistboxedcat .t_proptable .t_boxlabel {
+    .yt_propertylist.t_boxedcat .t_proptable .t_boxlabel {
       position: absolute;
-      top: -15px;
+      top: -12px;
       left: 20px;
       background-color: lightgray;
       color: black;
       border-radius: 3px;
       padding: 0 3px; }
 
-.yt_propertylistboxed .t_proptable,
-.yt_propertylistboxedcat .t_proptable {
+.yt_propertylist.t_boxed .t_proptable,
+.yt_propertylist.t_boxedcat .t_proptable {
   border: 1px solid lightgray;
   border-radius: 5px;
   padding: 3ch 2ch 2ch 2ch;
   margin-bottom: 2ch;
   margin-right: 2ch; }
-  .yt_propertylistboxed .t_proptable.t_propexpanded .t_boxexpcoll.t_show,
-  .yt_propertylistboxedcat .t_proptable.t_propexpanded .t_boxexpcoll.t_show {
+  .yt_propertylist.t_boxed .t_proptable.t_propexpanded .t_boxexpcoll.t_show,
+  .yt_propertylist.t_boxedcat .t_proptable.t_propexpanded .t_boxexpcoll.t_show {
     background-image: url(images/Collapse16.png);
     position: absolute;
     top: 5px;
     right: 5px;
     width: 16px;
     height: 16px; }
-  .yt_propertylistboxed .t_proptable.t_propexpanded .t_boxexpcoll.t_hide,
-  .yt_propertylistboxedcat .t_proptable.t_propexpanded .t_boxexpcoll.t_hide {
+  .yt_propertylist.t_boxed .t_proptable.t_propexpanded .t_boxexpcoll.t_hide,
+  .yt_propertylist.t_boxedcat .t_proptable.t_propexpanded .t_boxexpcoll.t_hide {
     display: none; }
-  .yt_propertylistboxed .t_proptable.t_propcollapsed .t_boxexpcoll.t_show,
-  .yt_propertylistboxedcat .t_proptable.t_propcollapsed .t_boxexpcoll.t_show {
+  .yt_propertylist.t_boxed .t_proptable.t_propcollapsed .t_boxexpcoll.t_show,
+  .yt_propertylist.t_boxedcat .t_proptable.t_propcollapsed .t_boxexpcoll.t_show {
     background-image: url(images/Expand16.png);
     position: absolute;
     top: 5px;
     right: 5px;
     width: 16px;
     height: 16px; }
-  .yt_propertylistboxed .t_proptable.t_propcollapsed .t_boxexpcoll.t_hide,
-  .yt_propertylistboxedcat .t_proptable.t_propcollapsed .t_boxexpcoll.t_hide {
+  .yt_propertylist.t_boxed .t_proptable.t_propcollapsed .t_boxexpcoll.t_hide,
+  .yt_propertylist.t_boxedcat .t_proptable.t_propcollapsed .t_boxexpcoll.t_hide {
     display: none; }
-  .yt_propertylistboxed .t_proptable.t_prophide,
-  .yt_propertylistboxedcat .t_proptable.t_prophide {
+  .yt_propertylist.t_boxed .t_proptable.t_prophide,
+  .yt_propertylist.t_boxedcat .t_proptable.t_prophide {
     display: none; }
 
-.yt_propertylistboxed.t_col1 .t_proptable,
-.yt_propertylistboxedcat.t_col1 .t_proptable {
+.yt_propertylist.t_boxed.t_col1 .t_proptable,
+.yt_propertylist.t_boxedcat.t_col1 .t_proptable {
   width: 100%; }
 
-.yt_propertylistboxed.t_col2 .t_proptable,
-.yt_propertylistboxedcat.t_col2 .t_proptable {
+.yt_propertylist.t_boxed.t_col2 .t_proptable,
+.yt_propertylist.t_boxedcat.t_col2 .t_proptable {
   float: left;
   width: 48%; }
 
-.yt_propertylistboxed.t_col3 .t_proptable,
-.yt_propertylistboxedcat.t_col3 .t_proptable {
+.yt_propertylist.t_boxed.t_col3 .t_proptable,
+.yt_propertylist.t_boxedcat.t_col3 .t_proptable {
   float: left;
   width: 31%; }
 
-.yt_propertylistboxed.t_col4 .t_proptable,
-.yt_propertylistboxedcat.t_col4 .t_proptable {
+.yt_propertylist.t_boxed.t_col4 .t_proptable,
+.yt_propertylist.t_boxedcat.t_col4 .t_proptable {
   float: left;
   width: 23%; }
 
-.yt_propertylistboxed.t_col5 .t_proptable,
-.yt_propertylistboxedcat.t_col5 .t_proptable {
+.yt_propertylist.t_boxed.t_col5 .t_proptable,
+.yt_propertylist.t_boxedcat.t_col5 .t_proptable {
   float: left;
   width: 18%; }

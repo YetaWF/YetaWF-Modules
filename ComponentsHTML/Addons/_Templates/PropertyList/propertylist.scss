@@ -1,9 +1,6 @@
 ﻿/* Copyright © 2019 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/ComponentsHTML#License */
 
-.yt_propertylist,
-.yt_propertylisttabbed,
-.yt_propertylistboxed,
-.yt_propertylistboxedcat {
+.yt_propertylist {
     .t_proptable {
         padding-top: 10px;
         width: auto;
@@ -62,10 +59,7 @@
 
 .yCondense {
     // definitions for small screen
-    .yt_propertylist,
-    .yt_propertylisttabbed,
-    .yt_propertylistboxed,
-    .yt_propertylistboxedcat {
+    .yt_propertylist {
         .t_labels {
             float: none;
             width:auto;
@@ -113,13 +107,13 @@
     }
 }
 
-.yt_propertylistboxedcat {
+.yt_propertylist.t_boxedcat {
     margin-top:2ch;
     .t_proptable {
         position:relative;
         .t_boxlabel {
             position: absolute;
-            top:-15px;
+            top:-12px;
             left:20px;
             background-color:lightgray;
             color: black;
@@ -128,8 +122,8 @@
         }
     }
 }
-.yt_propertylistboxed,
-.yt_propertylistboxedcat {
+.yt_propertylist.t_boxed,
+.yt_propertylist.t_boxedcat {
     .t_proptable {
         border: 1px solid lightgray;
         border-radius:5px;

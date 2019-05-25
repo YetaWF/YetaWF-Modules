@@ -46,7 +46,7 @@ var YetaWF_ComponentsHTML;
                         _this.setHidden(val);
                     FormsSupport.validateElement(_this.Hidden);
                     var event = document.createEvent("Event");
-                    event.initEvent("datetime_change", true, true);
+                    event.initEvent("date_change", true, true);
                     _this.Control.dispatchEvent(event);
                 }
             });

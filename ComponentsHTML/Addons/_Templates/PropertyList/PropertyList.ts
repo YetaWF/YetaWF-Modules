@@ -88,7 +88,7 @@ namespace YetaWF_ComponentsHTML {
         Columns: number;
     }
 
-    export class PropertyListComponent extends YetaWF.ComponentBaseNoDataImpl {
+    export class PropertyListComponent extends YetaWF.ComponentBaseDataImpl {
 
         private ControlData: ControlData | null;
 
@@ -103,28 +103,10 @@ namespace YetaWF_ComponentsHTML {
 
         constructor(controlId: string, setup: PropertyListSetup, controlData: ControlData) {
             super(controlId, PropertyListComponent.TEMPLATE, PropertyListComponent.SELECTOR, {
-                ControlType: YetaWF_ComponentsHTML.ControlTypeEnum.Div,
+                ControlType: YetaWF_ComponentsHTML.ControlTypeEnum.Template,
                 ChangeEvent: "",
-                GetValue: (control: HTMLDivElement): string | null => { return null; },
-                Enable: (control: HTMLDivElement, enable: boolean): void => {  }
-            });
-            this.registerTemplate("yt_propertylisttabbed", ".yt_propertylisttabbed", {
-                ControlType: YetaWF_ComponentsHTML.ControlTypeEnum.Div,
-                ChangeEvent: "",
-                GetValue: (control: HTMLDivElement): string | null => { return null; },
-                Enable: (control: HTMLDivElement, enable: boolean): void => {  }
-            });
-            this.registerTemplate("yt_propertylistboxed", ".yt_propertylistboxed", {
-                ControlType: YetaWF_ComponentsHTML.ControlTypeEnum.Div,
-                ChangeEvent: "",
-                GetValue: (control: HTMLDivElement): string | null => { return null; },
-                Enable: (control: HTMLDivElement, enable: boolean): void => {  }
-            });
-            this.registerTemplate("yt_propertylistboxedcat", ".yt_propertylistboxedcat", {
-                ControlType: YetaWF_ComponentsHTML.ControlTypeEnum.Div,
-                ChangeEvent: "",
-                GetValue: (control: HTMLDivElement): string | null => { return null; },
-                Enable: (control: HTMLDivElement, enable: boolean): void => {  }
+                GetValue: (control: PropertyListComponent): string | null => { return null; },
+                Enable: (control: PropertyListComponent, enable: boolean): void => {  }
             });
 
             this.ControlData = controlData;
@@ -368,9 +350,9 @@ namespace YetaWF_ComponentsHTML {
         }
 
         /**
-         * Update all dependent fields.
+         * Update all dependent fields (forms).
          */
-        private update(): void {
+        public update(): void {
 
             if (!this.ControlData) return;
 
@@ -489,7 +471,7 @@ namespace YetaWF_ComponentsHTML {
         }
 
         public static relayout(container:HTMLElement): void {
-            let ctrls = $YetaWF.getElementsBySelector(".yt_propertylistboxedcat,.yt_propertylistboxed", [container]);
+            let ctrls = $YetaWF.getElementsBySelector(".yt_propertylist.t_boxedcat,.yt_propertylist.t_boxed", [container]);
             for (let ctrl of ctrls) {
                 var event = document.createEvent("Event");
                 event.initEvent("propertylist_collapse", false, true);
@@ -540,13 +522,13 @@ namespace YetaWF_ComponentsHTML {
     }
 
     $YetaWF.registerClearDiv((tag: HTMLElement): void => {
-        var list = $YetaWF.getElementsBySelector(".yt_propertylisttabbed.t_jquery", [tag]);
+        var list = $YetaWF.getElementsBySelector(".yt_propertylist.t_tabbed.t_jquery", [tag]);
         for (let el of list) {
             var tabsJq = $(el);
             if (!tabsJq) throw "No jquery ui object found";/*DEBUG*/
             tabsJq.tabs("destroy");
         }
-        list = $YetaWF.getElementsBySelector(".yt_propertylisttabbed.t_kendo", [tag]);
+        list = $YetaWF.getElementsBySelector(".yt_propertylist.t_tabbed.t_kendo", [tag]);
         for (let el of list) {
             var tabsKn = $(el).data("kendoTabStrip");
             if (!tabsKn) throw "No kendo object found";/*DEBUG*/

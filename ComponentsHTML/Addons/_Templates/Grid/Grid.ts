@@ -122,11 +122,11 @@ namespace YetaWF_ComponentsHTML {
                 ControlType: ControlTypeEnum.Template,
                 ChangeEvent: null,//$$$$$
                 GetValue: (control: Grid): string | null => {
-                    return null;//$$$
+                    let total = control.GetTotalRecords();
+                    if (!total) return null;
+                    return total.toString();
                 },
-                Enable: (control: Grid, enable: boolean): void => {
-                    //$$$control.enable(enable)
-                },
+                Enable: (control: Grid, enable: boolean): void => { /* can't enable/disable grid */ },
             }, false, (tag: HTMLElement, control: Grid): void => {
                 control.internalDestroy();
             });
@@ -1083,6 +1083,9 @@ namespace YetaWF_ComponentsHTML {
                 $YetaWF.elementToggleClass(sel, this.Setup.RowHighlightCss, false);
                 $YetaWF.elementToggleClass(sel, this.Setup.RowDragDropHighlightCss, false);
             }
+        }
+        public GetTotalRecords(): number {
+            return this.Setup.Records;
         }
         public GetRecord(index: number): any {
             if (!this.Setup.StaticData) throw "Static grids only";

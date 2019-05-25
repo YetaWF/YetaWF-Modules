@@ -25,7 +25,7 @@ var YetaWF_ComponentsHTML;
         __extends(PropertyListComponent, _super);
         function PropertyListComponent(controlId, setup, controlData) {
             var _this = _super.call(this, controlId, PropertyListComponent.TEMPLATE, PropertyListComponent.SELECTOR, {
-                ControlType: YetaWF_ComponentsHTML.ControlTypeEnum.Div,
+                ControlType: YetaWF_ComponentsHTML.ControlTypeEnum.Template,
                 ChangeEvent: "",
                 GetValue: function (control) { return null; },
                 Enable: function (control, enable) { }
@@ -34,24 +34,6 @@ var YetaWF_ComponentsHTML;
             _this.MinWidth = 0;
             _this.CurrWidth = 0;
             _this.ColumnDefIndex = -1;
-            _this.registerTemplate("yt_propertylisttabbed", ".yt_propertylisttabbed", {
-                ControlType: YetaWF_ComponentsHTML.ControlTypeEnum.Div,
-                ChangeEvent: "",
-                GetValue: function (control) { return null; },
-                Enable: function (control, enable) { }
-            });
-            _this.registerTemplate("yt_propertylistboxed", ".yt_propertylistboxed", {
-                ControlType: YetaWF_ComponentsHTML.ControlTypeEnum.Div,
-                ChangeEvent: "",
-                GetValue: function (control) { return null; },
-                Enable: function (control, enable) { }
-            });
-            _this.registerTemplate("yt_propertylistboxedcat", ".yt_propertylistboxedcat", {
-                ControlType: YetaWF_ComponentsHTML.ControlTypeEnum.Div,
-                ChangeEvent: "",
-                GetValue: function (control) { return null; },
-                Enable: function (control, enable) { }
-            });
             _this.ControlData = controlData;
             _this.Setup = setup;
             // column handling
@@ -285,7 +267,7 @@ var YetaWF_ComponentsHTML;
             return index;
         };
         /**
-         * Update all dependent fields.
+         * Update all dependent fields (forms).
          */
         PropertyListComponent.prototype.update = function () {
             if (!this.ControlData)
@@ -406,7 +388,7 @@ var YetaWF_ComponentsHTML;
             return !$YetaWF.elementHasClass(row, "t_disabled");
         };
         PropertyListComponent.relayout = function (container) {
-            var ctrls = $YetaWF.getElementsBySelector(".yt_propertylistboxedcat,.yt_propertylistboxed", [container]);
+            var ctrls = $YetaWF.getElementsBySelector(".yt_propertylist.t_boxedcat,.yt_propertylist.t_boxed", [container]);
             for (var _i = 0, ctrls_1 = ctrls; _i < ctrls_1.length; _i++) {
                 var ctrl = ctrls_1[_i];
                 var event = document.createEvent("Event");
@@ -457,10 +439,10 @@ var YetaWF_ComponentsHTML;
         PropertyListComponent.TEMPLATE = "yt_propertylist";
         PropertyListComponent.SELECTOR = ".yt_propertylist";
         return PropertyListComponent;
-    }(YetaWF.ComponentBaseNoDataImpl));
+    }(YetaWF.ComponentBaseDataImpl));
     YetaWF_ComponentsHTML.PropertyListComponent = PropertyListComponent;
     $YetaWF.registerClearDiv(function (tag) {
-        var list = $YetaWF.getElementsBySelector(".yt_propertylisttabbed.t_jquery", [tag]);
+        var list = $YetaWF.getElementsBySelector(".yt_propertylist.t_tabbed.t_jquery", [tag]);
         for (var _i = 0, list_1 = list; _i < list_1.length; _i++) {
             var el = list_1[_i];
             var tabsJq = $(el);
@@ -468,7 +450,7 @@ var YetaWF_ComponentsHTML;
                 throw "No jquery ui object found"; /*DEBUG*/
             tabsJq.tabs("destroy");
         }
-        list = $YetaWF.getElementsBySelector(".yt_propertylisttabbed.t_kendo", [tag]);
+        list = $YetaWF.getElementsBySelector(".yt_propertylist.t_tabbed.t_kendo", [tag]);
         for (var _a = 0, list_2 = list; _a < list_2.length; _a++) {
             var el = list_2[_a];
             var tabsKn = $(el).data("kendoTabStrip");
