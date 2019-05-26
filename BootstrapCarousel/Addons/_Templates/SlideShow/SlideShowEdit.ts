@@ -37,7 +37,7 @@ namespace YetaWF_BootstrapCarousel {
         constructor(controlId: string) {
             super(controlId, SlideShowEdit.TEMPLATE, SlideShowEdit.SELECTOR, {
                 ControlType: YetaWF_ComponentsHTML.ControlTypeEnum.Template,
-                ChangeEvent: "datetime_change",
+                ChangeEvent: "slideshow_change",//$$$$
                 GetValue: (control: SlideShowEdit): string | null => {
                     return null;
                 },

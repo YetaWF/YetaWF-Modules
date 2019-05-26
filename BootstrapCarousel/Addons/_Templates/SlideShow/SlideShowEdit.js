@@ -20,7 +20,7 @@ var YetaWF_BootstrapCarousel;
         function SlideShowEdit(controlId) {
             var _this = _super.call(this, controlId, SlideShowEdit.TEMPLATE, SlideShowEdit.SELECTOR, {
                 ControlType: YetaWF_ComponentsHTML.ControlTypeEnum.Template,
-                ChangeEvent: "datetime_change",
+                ChangeEvent: "slideshow_change",
                 GetValue: function (control) {
                     return null;
                 },
