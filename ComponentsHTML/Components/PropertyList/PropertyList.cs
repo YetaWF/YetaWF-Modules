@@ -271,12 +271,8 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             }
             RenderFooter(hb, classData);
 
-            if (!ReadOnly) {
-                ControlData cd = GetControlSets(model, divId);
-                if (cd != null) {
-                    Manager.ScriptManager.AddLast($@"new YetaWF_ComponentsHTML.PropertyListComponent('{divId}', {YetaWFManager.JsonSerialize(new PropertyListSetup())}, {YetaWFManager.JsonSerialize(cd)});");
-                }
-            }
+            ControlData cd = GetControlSets(model, divId);
+            Manager.ScriptManager.AddLast($@"new YetaWF_ComponentsHTML.PropertyListComponent('{divId}', {YetaWFManager.JsonSerialize(new PropertyListSetup())}, {YetaWFManager.JsonSerialize(cd)});");
 
             return hb.ToString();
         }
