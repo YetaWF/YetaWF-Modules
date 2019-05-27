@@ -142,6 +142,7 @@
     <Compile Include="Controllers\LoginTwoStep.cs" />
     <Compile Include="Controllers\NeedNewPasswordDisplay.cs" />
     <Compile Include="Controllers\Need2FADisplay.cs" />
+    <Compile Include="Controllers\RedirectLoggedOnUsers.cs" />
     <Compile Include="Controllers\SelectTwoStepSetup.cs" />
     <Compile Include="Controllers\SelectTwoStepAuth.cs" />
     <Compile Include="Controllers\Support\ListOfUserNames.cs" />
@@ -158,6 +159,7 @@
     <Compile Include="Modules\ForgotPassword.cs" />
     <Compile Include="Modules\NeedNewPasswordDisplay.cs" />
     <Compile Include="Modules\Need2FADisplay.cs" />
+    <Compile Include="Modules\RedirectLoggedOnUsers.cs" />
     <Compile Include="Modules\SelectTwoStepSetup.cs" />
     <Compile Include="Modules\SelectTwoStepAuth.cs" />
     <Compile Include="Modules\TemplateListOfUserNamesModule.cs" />
@@ -250,6 +252,7 @@
     <Compile Include="Views\HTML\ForgotPassword.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Addons\_Addons\LoginModule\LoginModule.scss" />
     <None Include="Addons\_Addons\NeedNewPasswordDisplay\NeedNewPasswordDisplay.scss" />
     <None Include="Addons\_Main\Grids\ListOfUserNamesEditComponent.Entry" />
     <None Include="Addons\_Main\Grids\ListOfUserNamesEditComponent.AllEntry" />
@@ -266,6 +269,7 @@
     <None Include="Addons\_Addons\Need2FADisplay\Need2FADisplay.scss" />
     <None Include="Addons\_Addons\NeedNewPasswordDisplay\filelistCSS.txt" />
     <None Include="Addons\_Addons\Need2FADisplay\filelistCSS.txt" />
+    <Content Include="Addons\_Addons\LoginModule\filelistCSS.txt" />
     <Content Include="Addons\_Main\Icons\LoginProviders\Facebook.png" />
     <Content Include="Addons\_Main\Icons\LoginProviders\Google.png" />
     <Content Include="Addons\_Main\Icons\LoginProviders\Microsoft.png" />

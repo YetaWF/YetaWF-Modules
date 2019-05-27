@@ -55,6 +55,9 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             /// </summary>
             public string InitialExpanded { get; set; }
 
+            /// <summary>
+            /// Constructor.
+            /// </summary>
             public PropertyListSetup() {
                 Style = PropertyListStyleEnum.Tabbed;
                 ColumnStyles = new List<PropertyListColumnDef>();

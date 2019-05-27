@@ -69,6 +69,7 @@
   <ItemGroup>
     <Compile Include="Controllers\AddonDisplay.cs" />
     <Compile Include="Controllers\AddonsBrowse.cs" />
+    <Compile Include="Controllers\AuditConfig.cs" />
     <Compile Include="Controllers\AuditDisplay.cs" />
     <Compile Include="Controllers\AuditRecords.cs" />
     <Compile Include="Controllers\BrowseDataProviders.cs" />
@@ -76,11 +77,13 @@
     <Compile Include="Controllers\HttpModulesBrowse.cs" />
     <Compile Include="Controllers\StaticPagesBrowse.cs" />
     <Compile Include="Controllers\Status.cs" />
+    <Compile Include="Models\AuditConfigDataProvider.cs" />
     <Compile Include="Models\AuditInfoDataProvider.cs" />
-    <Compile Include="Models\AuditInfoSQLDataProvider.cs" />
     <Compile Include="Models\DataProviderInfoDataProvider.cs" />
+    <Compile Include="Models\SQLDataProvider.cs" />
     <Compile Include="Modules\AddonDisplay.cs" />
     <Compile Include="Modules\AddonsBrowse.cs" />
+    <Compile Include="Modules\AuditConfig.cs" />
     <Compile Include="Modules\AuditDisplay.cs" />
     <Compile Include="Modules\AuditRecords.cs" />
     <Compile Include="Modules\BrowseDataProviders.cs" />
@@ -88,6 +91,7 @@
     <Compile Include="Modules\HttpModulesBrowse.cs" />
     <Compile Include="Modules\StaticPagesBrowse.cs" />
     <Compile Include="Modules\Status.cs" />
+    <Compile Include="Scheduler\RemoveRecords.cs" />
     <Compile Include="Startup\Info.cs" />
     <Compile Include="Startup\AreaRegistration.cs" />
     <Compile Include="Controllers\SessionInfo.cs" />

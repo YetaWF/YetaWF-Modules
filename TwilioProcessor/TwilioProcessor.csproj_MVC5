@@ -38,7 +38,7 @@
     <Compile Include="Controllers\TwilioConfig.cs" />
     <Compile Include="Models\Attributes\AreaCodeAttribute.cs" />
     <Compile Include="Models\Attributes\PhoneNumberAttribute.cs" />
-    <Compile Include="Models\Attributes\PhoneNumberUSAttribute.cs" />
+    <Compile Include="Models\Attributes\PhoneNumberNationalAttribute.cs" />
     <Compile Include="Models\FileDataProvider.cs" />
     <Compile Include="Models\SQLDataProvider.cs" />
     <Compile Include="Models\TwilioConfigDataProvider.cs" />

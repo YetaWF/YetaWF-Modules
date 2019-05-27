@@ -67,8 +67,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controllers\MinimalSettingsEdit.cs" />
     <Compile Include="Models\FileDataProvider.cs" />
     <Compile Include="Models\SQLDataProvider.cs" />
+    <Compile Include="Modules\MinimalSettingsEdit.cs" />
     <Compile Include="Startup\Info.cs" />
     <Compile Include="Startup\AreaRegistration.cs" />
     <Compile Include="Controllers\SettingsEdit.cs" />

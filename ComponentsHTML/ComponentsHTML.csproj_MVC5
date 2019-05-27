@@ -40,7 +40,11 @@
     <Compile Include="Components\BooleanText.cs" />
     <Compile Include="Components\CAProvince.cs" />
     <Compile Include="Components\ColorPicker.cs" />
+    <Compile Include="Components\CountryISO3166Id.cs" />
+    <Compile Include="Components\DateLong.cs" />
+    <Compile Include="Components\FormButtons.cs" />
     <Compile Include="Components\TimeSpanDHM.cs" />
+    <Compile Include="Components\TimeSpanHM.cs" />
     <Compile Include="Components\Tree.cs" />
     <Compile Include="Components\Grid\Grid.cs" />
     <Compile Include="Components\Grid\GridDeleteEntry.cs" />
@@ -173,20 +177,26 @@
     <Content Include="Addons\_Addons\ckeditor\__CUSTOM_FILES\sourceonly_config.js" />
     <Content Include="Addons\_Addons\ckeditor\__CUSTOM_FILES\sourceonly_ro_config.js" />
     <Content Include="Addons\_Addons\clipboardjs.com.clipboard\filelistJS.txt" />
+    <Content Include="Addons\_Addons\masonry.desandro.com\FilelistJS.txt" />
     <Content Include="Addons\_Main\IconCollection.png" />
     <Content Include="Addons\_Templates\BooleanText\filelistCSS.txt" />
+    <Content Include="Addons\_Templates\Boolean\filelistJS.txt" />
+    <Content Include="Addons\_Templates\Hidden\filelistJS.txt" />
+    <Content Include="Addons\_Templates\PropertyList\images\Collapse16.png" />
+    <Content Include="Addons\_Templates\PropertyList\images\Expand.png" />
+    <Content Include="Addons\_Templates\PropertyList\images\Expand16.png" />
+    <Content Include="Addons\_Templates\PropertyList\images\ExpandCollapse.txt" />
     <Content Include="Addons\_Templates\Tree\filelistCSS.txt" />
     <Content Include="Addons\_Templates\Tree\filelistJS.txt" />
     <Content Include="Addons\_Templates\Grid\filelistCSS.txt" />
     <Content Include="Addons\_Templates\Grid\filelistJS.txt" />
+    <TypeScriptCompile Include="Addons\_Addons\Forms\validation.ts" />
     <TypeScriptCompile Include="Addons\_Addons\Popups\PopupsImpl.ts" />
     <TypeScriptCompile Include="Addons\_Addons\Popups\PopupsSupport.ts" />
     <TypeScriptCompile Include="Addons\_Main\BasicsImpl.ts" />
     <TypeScriptCompile Include="Addons\_Addons\Forms\FormsImpl.ts" />
     <Content Include="Addons\_Addons\Forms\filelistCSS.txt" />
     <Content Include="Addons\_Addons\Forms\filelistJS.txt" />
-    <Content Include="Addons\_Addons\Forms\forms.css" />
-    <Content Include="Addons\_Addons\Forms\validation.js" />
     <Content Include="Addons\_Addons\gist.github.com_remi_957732.jquery_validate_hooks\filelistJS.txt" />
     <Content Include="Addons\_Addons\gist.github.com_remi_957732.jquery_validate_hooks\jquery.validate.hooks.js" />
     <Content Include="Addons\_Addons\github.com.danielm.uploader\filelistJS.txt" />
@@ -223,9 +233,11 @@
     <Content Include="Addons\_Addons\smartresize\SmartResize.js" />
     <Content Include="Addons\_Addons\telerik.com.Kendo_UI_Core\filelistCSS.txt" />
     <Content Include="Addons\_Addons\telerik.com.Kendo_UI_Core\filelistJS.txt" />
+    <None Include="Addons\_Addons\Forms\forms.scss" />
     <None Include="Addons\_Main\ComponentsHTML.scss" />
     <Content Include="Addons\_Main\PrettyLoader.js" />
     <TypeScriptCompile Include="Addons\_Main\ComponentsHTML.ts" />
+    <TypeScriptCompile Include="Addons\_Main\Controls.ts" />
     <TypeScriptCompile Include="Addons\_Main\Grid.ts" />
     <TypeScriptCompile Include="Addons\_Main\Tooltips.ts" />
     <None Include="Addons\_Templates\ActionIcons\ActionIcons.scss" />
@@ -242,6 +254,10 @@
     <None Include="Addons\_Templates\WeeklyHours\WeeklyHours.scss" />
     <None Include="Addons\_Templates\Time\Time.scss" />
     <None Include="Addons\_Templates\DayTimeRange\DayTimeRange.scss" />
+    <TypeScriptCompile Include="Addons\_Templates\BooleanText\BooleanTextEdit.ts" />
+    <TypeScriptCompile Include="Addons\_Templates\Boolean\BooleanEdit.ts" />
+    <TypeScriptCompile Include="Addons\_Templates\Currency\Currency.ts" />
+    <TypeScriptCompile Include="Addons\_Templates\Hidden\Hidden.ts" />
     <TypeScriptCompile Include="Addons\_Templates\Tree\Tree.ts" />
     <TypeScriptCompile Include="Addons\_Templates\ModuleSelection\ModuleSelectionEdit.ts" />
     <TypeScriptCompile Include="Addons\_Templates\MultiString\MultiStringEdit.ts" />
@@ -415,7 +431,6 @@
   <ItemGroup>
     <TypeScriptCompile Include="Addons\_Main\Buttons.ts" />
     <TypeScriptCompile Include="Addons\_Main\FormsSupport.ts" />
-    <TypeScriptCompile Include="Addons\_Templates\Currency\Currency.tsx" />
     <TypeScriptCompile Include="Addons\_Templates\DateTime\DateTimeEdit.ts" />
     <TypeScriptCompile Include="Addons\_Templates\Decimal\DecimalEdit.ts" />
   </ItemGroup>
