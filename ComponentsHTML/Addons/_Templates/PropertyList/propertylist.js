@@ -307,6 +307,8 @@ var YetaWF_ComponentsHTML;
                         default:
                             throw "Unexpected Op " + expr.Op + " in update(HideValues)";
                     }
+                    if (hidden)
+                        break;
                 }
                 if (!hidden) {
                     var process = true;

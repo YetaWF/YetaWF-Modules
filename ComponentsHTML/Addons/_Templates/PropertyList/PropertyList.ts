@@ -392,6 +392,8 @@ namespace YetaWF_ComponentsHTML {
                         default:
                             throw `Unexpected Op ${expr.Op} in update(HideValues)`;
                     }
+                    if (hidden)
+                        break;
                 }
                 if (!hidden) {
                     let process = true;
