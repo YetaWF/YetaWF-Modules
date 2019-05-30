@@ -99,10 +99,11 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
         internal async Task<string> RenderPropertyListTabbedAsync(object model, bool readOnly) {
 
-            PropertyListSetup setup = GetPropertyListSetup(model);
             List<string> categories = GetCategories(model);
             if (categories.Count <= 1) // if there is only one tab, show as regular property list
                 return await RenderPropertyListAsync(model, readOnly);
+
+            PropertyList.PropertyListSetup setup = await PropertyListComponentBase.GetPropertyListSetupAsync(model, categories);
 
             HtmlBuilder hb = new HtmlBuilder();
             Type modelType = model.GetType();
@@ -113,16 +114,16 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             string divId = Manager.UniqueId();
             switch (setup.Style) {
                 default:
-                case PropertyListStyleEnum.Tabbed:
+                case PropertyList.PropertyListStyleEnum.Tabbed:
                     hb.Append($@"
 <div id='{divId}' class='yt_propertylist t_tabbed {(readOnly ? "t_display" : "t_edit")}'>");
                     break;
-                case PropertyListStyleEnum.Boxed:
+                case PropertyList.PropertyListStyleEnum.Boxed:
                     await Manager.AddOnManager.AddAddOnNamedAsync(AreaRegistration.CurrentPackage.AreaName, "masonry.desandro.com");
                     hb.Append($@"
 <div id='{divId}' class='yt_propertylist t_boxed {(readOnly ? "t_display" : "t_edit")}'>");
                     break;
-                case PropertyListStyleEnum.BoxedWithCategories:
+                case PropertyList.PropertyListStyleEnum.BoxedWithCategories:
                     await Manager.AddOnManager.AddAddOnNamedAsync(AreaRegistration.CurrentPackage.AreaName, "masonry.desandro.com");
                     hb.Append($@"
 <div id='{divId}' class='yt_propertylist t_boxedcat {(readOnly ? "t_display" : "t_edit")}'>");
@@ -135,12 +136,12 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
             switch (setup.Style) {
                 default:
-                case PropertyListStyleEnum.Tabbed:
+                case PropertyList.PropertyListStyleEnum.Tabbed:
                     // tabstrip
                     hb.Append(RenderTabStripStart(divId));
                     break;
-                case PropertyListStyleEnum.BoxedWithCategories:
-                case PropertyListStyleEnum.Boxed:
+                case PropertyList.PropertyListStyleEnum.BoxedWithCategories:
+                case PropertyList.PropertyListStyleEnum.Boxed:
                     break;
             }
             int tabEntry = 0;
@@ -150,22 +151,22 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                     cat = classData.Categories[cat];
                 switch (setup.Style) {
                     default:
-                    case PropertyListStyleEnum.Tabbed:
+                    case PropertyList.PropertyListStyleEnum.Tabbed:
                         hb.Append(RenderTabEntry(divId, cat, "", tabEntry));
                         break;
-                    case PropertyListStyleEnum.BoxedWithCategories:
-                    case PropertyListStyleEnum.Boxed:
+                    case PropertyList.PropertyListStyleEnum.BoxedWithCategories:
+                    case PropertyList.PropertyListStyleEnum.Boxed:
                         break;
                 }
                 ++tabEntry;
             }
             switch (setup.Style) {
                 default:
-                case PropertyListStyleEnum.Tabbed:
+                case PropertyList.PropertyListStyleEnum.Tabbed:
                     hb.Append(RenderTabStripEnd(divId));
                     break;
-                case PropertyListStyleEnum.BoxedWithCategories:
-                case PropertyListStyleEnum.Boxed:
+                case PropertyList.PropertyListStyleEnum.BoxedWithCategories:
+                case PropertyList.PropertyListStyleEnum.Boxed:
                     break;
             }
 
@@ -174,12 +175,12 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             foreach (string category in categories) {
                 switch (setup.Style) {
                     default:
-                    case PropertyListStyleEnum.Tabbed:
+                    case PropertyList.PropertyListStyleEnum.Tabbed:
                         hb.Append(RenderTabPaneStart(divId, panel));
                         hb.Append(await RenderListAsync(model, category, showVariables, readOnly));
                         hb.Append(RenderTabPaneEnd(divId, panel));
                         break;
-                    case PropertyListStyleEnum.BoxedWithCategories: {
+                    case PropertyList.PropertyListStyleEnum.BoxedWithCategories: {
                             string stat = "";
                             if (setup.ExpandableList.Contains(category))
                                 stat = (setup.InitialExpanded == category) ? " t_propexpandable t_propexpanded" : " t_propexpandable t_propcollapsed";
@@ -191,7 +192,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                             hb.Append($"</div>");
                             break;
                         }
-                    case PropertyListStyleEnum.Boxed: {
+                    case PropertyList.PropertyListStyleEnum.Boxed: {
                             string stat = "";
                             if (setup.ExpandableList.Contains(category))
                                 stat = (setup.InitialExpanded == category) ? " t_propexpandable t_propexpanded" : " t_propexpandable t_propcollapsed";
@@ -208,13 +209,13 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
             switch (setup.Style) {
                 default:
-                case PropertyListStyleEnum.Tabbed:
+                case PropertyList.PropertyListStyleEnum.Tabbed:
                     hb.Append($@"
 </div>
 {await RenderTabInitAsync(divId, model)}");
                     break;
-                case PropertyListStyleEnum.BoxedWithCategories:
-                case PropertyListStyleEnum.Boxed:
+                case PropertyList.PropertyListStyleEnum.BoxedWithCategories:
+                case PropertyList.PropertyListStyleEnum.Boxed:
                     hb.Append($@"
 </div>");
 
@@ -272,7 +273,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             RenderFooter(hb, classData);
 
             ControlData cd = GetControlSets(model, divId);
-            Manager.ScriptManager.AddLast($@"new YetaWF_ComponentsHTML.PropertyListComponent('{divId}', {YetaWFManager.JsonSerialize(new PropertyListSetup())}, {YetaWFManager.JsonSerialize(cd)});");
+            Manager.ScriptManager.AddLast($@"new YetaWF_ComponentsHTML.PropertyListComponent('{divId}', {YetaWFManager.JsonSerialize(new PropertyList.PropertyListSetup())}, {YetaWFManager.JsonSerialize(cd)});");
 
             return hb.ToString();
         }

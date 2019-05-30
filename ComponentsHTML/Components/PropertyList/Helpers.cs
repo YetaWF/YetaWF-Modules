@@ -4,81 +4,15 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Threading.Tasks;
+using YetaWF.Core.Components;
 using YetaWF.Core.Models;
 using YetaWF.Core.Models.Attributes;
+using YetaWF.Core.Support;
 
 namespace YetaWF.Modules.ComponentsHTML.Components {
 
     public abstract partial class PropertyListComponentBase {
-
-        /// <summary>
-        /// Defines the appearance of a property list.
-        /// </summary>
-        public enum PropertyListStyleEnum {
-            /// <summary>
-            /// Render a tabbed property list (if there are multiple categories) or a simple list (0 or 1 category).
-            /// </summary>
-            Tabbed = 0,
-            /// <summary>
-            /// Render a boxed property list (if there are multiple categories) or a simple list (0 or 1 category), to be styled using CSS.
-            /// </summary>
-            Boxed = 1,
-            /// <summary>
-            /// Render a boxed property list with category labels (if there are multiple categories) or a simple list (0 or 1 category), to be styled using CSS.
-            /// </summary>
-            BoxedWithCategories = 2,
-        }
-
-        /// <summary>
-        /// An instance of this class defines the property list appearance.
-        /// </summary>
-        public class PropertyListSetup {
-            /// <summary>
-            /// The style of the property list.
-            /// </summary>
-            public PropertyListStyleEnum Style { get; set; }
-            /// <summary>
-            /// For Boxed and BoxedWithCategories styles, Masonry (https://masonry.desandro.com/) is used to support a packed layout of categories.
-            /// </summary>
-            /// <remarks>This collection defines the number of columns depending on windows size.
-            /// By providing a list of break points, Masonry can be called to recalculate the box layout, when switching between window widths which affects the number of columns.
-            ///
-            /// The first entry defines the minimum width of the window to use Masonry. Below this size, Masonry is not used.
-            /// </remarks>
-            public List<PropertyListColumnDef> ColumnStyles { get; set; }
-            /// <summary>
-            /// Categories (boxes) that are expandable/collapsible. May be null or an empty collection, which means no categories are expandable.
-            /// </summary>
-            public List<string> ExpandableList { get; set; }
-            /// <summary>
-            /// Category that is initially expanded. May be null which means no category is initially expanded.
-            /// </summary>
-            public string InitialExpanded { get; set; }
-
-            /// <summary>
-            /// Constructor.
-            /// </summary>
-            public PropertyListSetup() {
-                Style = PropertyListStyleEnum.Tabbed;
-                ColumnStyles = new List<PropertyListColumnDef>();
-                ExpandableList = new List<string>();
-                InitialExpanded = null;
-            }
-        }
-        /// <summary>
-        /// An instance of this class defines the number of columns to display based on the defined minimum window width.
-        /// </summary>
-        public class PropertyListColumnDef {
-            /// <summary>
-            /// The minimum window size where the specified number of columns is displayed.
-            /// </summary>
-            public int MinWindowSize { get; set; }
-            /// <summary>
-            /// The number of columns to display. Valid values are 1 through 5.
-            /// </summary>
-            public int Columns { get; set; }
-        }
-
 
         internal class PropertyListEntry {
 
@@ -125,14 +59,36 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             return properties;
         }
 
-        internal PropertyListSetup GetPropertyListSetup(object obj) {
-
-            // get all properties that are shown
+        internal static async Task<PropertyList.PropertyListSetup> GetPropertyListSetupAsync(object obj, List<string> categories) {
             Type objType = obj.GetType();
-            PropertyInfo propInfo = ObjectSupport.TryGetProperty(objType, "__PropertyListSetup");
-            if (propInfo != null)
-                return (PropertyListSetup)propInfo.GetValue(obj);
-            return new PropertyListSetup();
+            PropertyList.PropertyListSetup setup = await PropertyList.LoadPropertyListDefinitionsAsync(objType);
+            if (setup.ExplicitDefinitions) {
+                // Invoke __PropertyListSetupAsync
+                MethodInfo miAsync = objType.GetMethod("__PropertyListSetupAsync", new Type[] { typeof(PropertyList.PropertyListSetup) });
+                if (miAsync == null)
+                    throw new InternalError($"{objType.FullName} doesn't have a __PropertyListSetupAsync method for {objType.FullName}");
+                Task methRetvalTask = (Task)miAsync.Invoke(obj, new object[] { setup });
+                await methRetvalTask;
+
+                // sanity checking
+                if (YetaWFManager.DiagnosticsMode) {
+                    foreach (string cat in setup.ExpandableList) {
+                        if (!categories.Contains(cat))
+                            throw new InternalError($"Unknown category {cat} is used in {nameof(PropertyList.PropertyListSetup.ExpandableList)} for {objType.FullName}");
+                    }
+                    if (setup.InitialExpanded != null) {
+                        if (!categories.Contains(setup.InitialExpanded))
+                            throw new InternalError($"Unknown category {setup.InitialExpanded} is used in {nameof(PropertyList.PropertyListSetup.InitialExpanded)} for {objType.FullName}");
+                    }
+                    int startWidth = 0;
+                    foreach (PropertyList.PropertyListColumnDef colDef in setup.ColumnStyles) {
+                        if (colDef.MinWindowSize < startWidth)
+                            throw new InternalError($"Column styles in {nameof(PropertyList.PropertyListSetup.ColumnStyles)} are not in ascending order, entry with {nameof(PropertyList.PropertyListColumnDef.MinWindowSize)} = {colDef.MinWindowSize} is out of order");
+                        startWidth = colDef.MinWindowSize;
+                    }
+                }
+            }
+            return setup;
         }
 
         // Returns all categories implemented by this object - these are decorated with the [CategoryAttribute]
