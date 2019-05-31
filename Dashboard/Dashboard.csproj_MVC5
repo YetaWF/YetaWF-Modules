@@ -114,6 +114,7 @@
     <None Include="Addons\_Main\Grids\DisposableTrackerBrowseModuleController.BrowseItem" />
     <None Include="Addons\_Main\Grids\StaticPagesBrowseModuleController.BrowseItem" />
     <None Include="Addons\_Main\Grids\BrowseDataProvidersModuleController.BrowseItem" />
+    <None Include="Addons\_SiteTemplates\4.4.0\Page Data - _Admin_Config_Audit.zip" />
     <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>

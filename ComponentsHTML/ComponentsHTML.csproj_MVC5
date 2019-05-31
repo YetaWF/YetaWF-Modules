@@ -190,6 +190,7 @@
     <Content Include="Addons\_Templates\Tree\filelistJS.txt" />
     <Content Include="Addons\_Templates\Grid\filelistCSS.txt" />
     <Content Include="Addons\_Templates\Grid\filelistJS.txt" />
+    <TypeScriptCompile Include="Addons\_Addons\clipboardjs.com.clipboard\Clipboard.ts" />
     <TypeScriptCompile Include="Addons\_Addons\Forms\validation.ts" />
     <TypeScriptCompile Include="Addons\_Addons\Popups\PopupsImpl.ts" />
     <TypeScriptCompile Include="Addons\_Addons\Popups\PopupsSupport.ts" />
