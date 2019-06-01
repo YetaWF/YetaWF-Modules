@@ -232,7 +232,14 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         public async Task<string> RenderAsync(string model) {
             return await RenderTextAsync(this, model, TemplateClass);
         }
-        internal static async Task<string> RenderTextAsync(YetaWFComponent component, string model, string templateCssClass) {
+        /// <summary>
+        /// Renders a text input control.
+        /// </summary>
+        /// <param name="component">The current component being rendered.</param>
+        /// <param name="model">The model.</param>
+        /// <param name="templateCssClass">The CSS class to add to the template (starting with yt_).</param>
+        /// <returns>The component rendered as HTML.</returns>
+        public static async Task<string> RenderTextAsync(YetaWFComponent component, string model, string templateCssClass) {
 
             await IncludeExplicitAsync();
 
