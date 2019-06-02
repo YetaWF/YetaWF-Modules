@@ -152,6 +152,7 @@ namespace YetaWF.Modules.Scheduler.Support {
                     try {
                         YetaWFManager.Syncify(async () => { // there is no point in running the scheduler async
                             delayTime = await RunItemsAsync();
+                            delayTime = delayTime.Add(new TimeSpan(0, 0, 1));
                         });
                     } catch (Exception exc) {
                         delayTime = defaultTimeSpan;
@@ -282,7 +283,7 @@ namespace YetaWF.Modules.Scheduler.Support {
                                     Field = "Next", Operator = "!=", Value = null,
                                 },
                                 new DataProviderFilterInfo {
-                                    Field = "Next", Operator = "<", Value = DateTime.UtcNow,
+                                    Field = "Next", Operator = "<=", Value = DateTime.UtcNow,
                                 },
                              },
                         }
@@ -291,11 +292,19 @@ namespace YetaWF.Modules.Scheduler.Support {
                     foreach (var item in list.Data) {
                         await RunItemAsync(dataProvider, item);
                         // check if we have to start back up before the default timespan elapses
-                        if (item.Next != null && ((DateTime)item.Next) > DateTime.UtcNow && next > item.Next)
-                            next = (DateTime)item.Next;
+                        if (item.Next != null) {
+                            if ((DateTime)item.Next > DateTime.UtcNow) {
+                                if (next > (DateTime)item.Next)
+                                    next = (DateTime)item.Next;
+                            } else
+                                next = DateTime.UtcNow;
+                        }
                     }
                 }
-                return next.Subtract(DateTime.UtcNow);
+                TimeSpan diff = next.Subtract(DateTime.UtcNow);
+                if (diff < new TimeSpan(0, 0, 0))
+                    diff = new TimeSpan(0, 0, 1);
+                return diff;
             }
         }
 
@@ -388,6 +397,7 @@ namespace YetaWF.Modules.Scheduler.Support {
             item.IsRunning = false;
 
             item.Errors = errors.ToString();
+            item.SetNextRuntime();
 
             try {
                 await dataProvider.UpdateItemAsync(item);
