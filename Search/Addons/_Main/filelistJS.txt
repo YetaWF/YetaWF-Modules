@@ -1,2 +1,2 @@
-﻿search.ts
+﻿Search.ts
 highlight.js

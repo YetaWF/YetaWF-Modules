@@ -1,1 +1,1 @@
-﻿pagecontrol.scss
+﻿PageControl.scss
