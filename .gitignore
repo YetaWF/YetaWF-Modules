@@ -14,10 +14,8 @@ app.config
 **/*.d.ts
 **/*.js.map
 
-**/obj/
-**/bin/**/*.xml
-**/bin/**/*.config
-**/bin/**/*.manifest
+obj/
+bin/
 
 **/Addons/_Addons/**/*.min.js
 **/Addons/_Addons/**/*.min.css
