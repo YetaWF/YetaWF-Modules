@@ -256,7 +256,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             HtmlBuilder hbProps = new HtmlBuilder();
             string divId = Manager.UniqueId();
             hbProps.Append($@"
-<div id='{divId}' class='yt_propertylist t_proptable {(ReadOnly ? "t_display" : "t_edit")}'>
+<div id='{divId}' class='yt_propertylist {(ReadOnly ? "t_display" : "t_edit")}'>
    {await RenderHiddenAsync(model)}
    {await RenderListAsync(model, null, showVariables, ReadOnly)}
 </div>");

@@ -963,6 +963,8 @@ var YetaWF_ComponentsHTML;
         };
         Object.defineProperty(Grid.prototype, "FieldName", {
             // API
+            // API
+            // API
             get: function () {
                 return this.Setup.FieldName;
             },
@@ -1129,6 +1131,10 @@ var YetaWF_ComponentsHTML;
                 if (successful)
                     successful();
             });
+        };
+        Grid.ReloadFromId = function (id) {
+            var grid = YetaWF.ComponentBaseDataImpl.getControlById(id, Grid.SELECTOR);
+            grid.reload(0);
         };
         Grid.TEMPLATE = "yt_grid";
         Grid.SELECTOR = ".yt_grid";

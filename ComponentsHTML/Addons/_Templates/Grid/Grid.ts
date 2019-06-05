@@ -1009,6 +1009,9 @@ namespace YetaWF_ComponentsHTML {
         }
 
         // API
+        // API
+        // API
+
         get FieldName(): string {
             return this.Setup.FieldName;
         }
@@ -1144,6 +1147,11 @@ namespace YetaWF_ComponentsHTML {
                 if (successful)
                     successful();
             });
+        }
+
+        public static ReloadFromId(id: string) {
+            let grid = YetaWF.ComponentBaseDataImpl.getControlById<Grid>(id, Grid.SELECTOR);
+            grid.reload(0);
         }
     }
 }

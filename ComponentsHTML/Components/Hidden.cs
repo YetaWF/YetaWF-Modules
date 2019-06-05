@@ -50,7 +50,9 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             YTagBuilder tag = new YTagBuilder("input");
             FieldSetup(tag, FieldType.Normal);
             tag.MergeAttribute("type", "hidden");
-            if (!HtmlAttributes.ContainsKey("__NoTemplate"))
+            if (HtmlAttributes.ContainsKey("--NoTemplate"))
+                HtmlAttributes.Remove("--NoTemplate");
+            else
                 tag.AddCssClass("yt_hidden");
             if (model != null && model.GetType().IsEnum)
                 model = (int)model;
@@ -79,7 +81,9 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         YTagBuilder tag = new YTagBuilder("input");
             FieldSetup(tag, Validation ? FieldType.Validated : FieldType.Normal);
             tag.MergeAttribute("type", "hidden");
-            if (!HtmlAttributes.ContainsKey("__NoTemplate"))
+            if (HtmlAttributes.ContainsKey("--NoTemplate"))
+                HtmlAttributes.Remove("--NoTemplate");
+            else
                 tag.AddCssClass("yt_hidden");
             if (model != null && model.GetType().IsEnum)
                 model = (int)model;
