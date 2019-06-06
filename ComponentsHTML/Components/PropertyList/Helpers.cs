@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using YetaWF.Core.Components;
 using YetaWF.Core.Models;
 using YetaWF.Core.Models.Attributes;
+using YetaWF.Core.Modules;
 using YetaWF.Core.Support;
 
 namespace YetaWF.Modules.ComponentsHTML.Components {
@@ -60,8 +61,13 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         }
 
         internal static async Task<PropertyList.PropertyListSetup> GetPropertyListSetupAsync(object obj, List<string> categories) {
+
+            Type setupType = obj.GetType();
+            if (obj as ModuleDefinition != null)
+                setupType = typeof(ModuleDefinition);
+
             Type objType = obj.GetType();
-            PropertyList.PropertyListSetup setup = await PropertyList.LoadPropertyListDefinitionsAsync(objType);
+            PropertyList.PropertyListSetup setup = await PropertyList.LoadPropertyListDefinitionsAsync(setupType);
             if (setup.ExplicitDefinitions) {
                 // Invoke __PropertyListSetupAsync
                 MethodInfo miAsync = objType.GetMethod("__PropertyListSetupAsync", new Type[] { typeof(PropertyList.PropertyListSetup) });
@@ -72,21 +78,39 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
                 // sanity checking
                 if (YetaWFManager.DiagnosticsMode) {
+                    // verify expandable list
                     foreach (string cat in setup.ExpandableList) {
                         if (!categories.Contains(cat))
                             throw new InternalError($"Unknown category {cat} is used in {nameof(PropertyList.PropertyListSetup.ExpandableList)} for {objType.FullName}");
                     }
+                    // verify initial expanded
                     if (setup.InitialExpanded != null) {
                         if (!categories.Contains(setup.InitialExpanded))
                             throw new InternalError($"Unknown category {setup.InitialExpanded} is used in {nameof(PropertyList.PropertyListSetup.InitialExpanded)} for {objType.FullName}");
                     }
+                    // verify styles
                     int startWidth = 0;
                     foreach (PropertyList.PropertyListColumnDef colDef in setup.ColumnStyles) {
                         if (colDef.MinWindowSize < startWidth)
                             throw new InternalError($"Column styles in {nameof(PropertyList.PropertyListSetup.ColumnStyles)} are not in ascending order, entry with {nameof(PropertyList.PropertyListColumnDef.MinWindowSize)} = {colDef.MinWindowSize} is out of order");
                         startWidth = colDef.MinWindowSize;
                     }
+                    // verify order
+                    foreach (string cat in setup.CategoryOrder) {
+                        if (!categories.Contains(cat))
+                            throw new InternalError($"Unknown category {cat} is used in {nameof(PropertyList.PropertyListSetup.ExpandableList)} for {objType.FullName}");
+                    }
+                    // verify order
+                    List<string> missing = categories.ToList();
+                    foreach (string cat in setup.CategoryOrder) {
+                        if (!categories.Contains(cat))
+                            throw new InternalError($"Category {cat} listed in category order doesn't exist");
+                        missing.Remove(cat);
+                    }
+                    setup.CategoryOrder.AddRange(missing);//add remaining categories to list
                 }
+            } else {
+                setup.CategoryOrder = categories;
             }
             return setup;
         }

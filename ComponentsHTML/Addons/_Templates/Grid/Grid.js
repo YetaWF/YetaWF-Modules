@@ -115,8 +115,10 @@ var YetaWF_ComponentsHTML;
                     var filterBar = _this.FilterBar;
                     if ($YetaWF.isVisible(filterBar))
                         filterBar.style.display = "none";
-                    else
+                    else {
                         filterBar.style.display = "";
+                        $YetaWF.processActivateDivs([filterBar]);
+                    }
                     return false;
                 });
             }

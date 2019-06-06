@@ -320,9 +320,9 @@ new YetaWF_ComponentsHTML.Grid('{model.Id}', {JsonConvert.SerializeObject(setup,
             public long? Value { get; set; }
         }
         private class FilterDynEnumUI {
-            [UIHint("DropDownListInt"), AdditionalMetadata("AdjustWidth", false)]
-            public int Value { get; set; }
-            public List<SelectionItem<int>> Value_List { get; set; }
+            [UIHint("DropDownListIntNull"), AdditionalMetadata("AdjustWidth", false)]
+            public int? Value { get; set; }
+            public List<SelectionItem<int?>> Value_List { get; set; }
         }
         private class FilterDecimalUI {
             [UIHint("Decimal")]
@@ -504,7 +504,7 @@ new YetaWF_ComponentsHTML.Grid('{model.Id}', {JsonConvert.SerializeObject(setup,
 
                         } else if (prop.PropInfo.PropertyType == typeof(int) || prop.PropInfo.PropertyType == typeof(int?) || prop.PropInfo.PropertyType == typeof(long) || prop.PropInfo.PropertyType == typeof(long?)) {
 
-                            List<SelectionItem<int>> entries = await YetaWFComponentExtender.GetSelectionListIntFromUIHintAsync(prop.UIHint);
+                            List<SelectionItem<int?>> entries = await YetaWFComponentExtender.GetSelectionListIntFromUIHintAsync(prop.UIHint);
                             if (entries == null) {
                                 // regular int/long
                                 filterOpts = new List<GridColumnInfo.FilterOptionEnum> {
@@ -533,7 +533,7 @@ new YetaWF_ComponentsHTML.Grid('{model.Id}', {JsonConvert.SerializeObject(setup,
                                     GridColumnInfo.FilterOptionEnum.Equal, GridColumnInfo.FilterOptionEnum.NotEqual
                                 };
                                 filterType = "dynenum";
-                                entries.Insert(0, new SelectionItem<int> {
+                                entries.Insert(0, new SelectionItem<int?> {
                                     Value = -1,
                                     Text = __ResStr("noSel", "(no selection)")
                                 });
@@ -644,16 +644,16 @@ new YetaWF_ComponentsHTML.Grid('{model.Id}', {JsonConvert.SerializeObject(setup,
                             filterType = "enum";
                             EnumData enumData = ObjectSupport.GetEnumData(prop.PropInfo.PropertyType);
 
-                            List<SelectionItem<int>> entries = new List<SelectionItem<int>>();
+                            List<SelectionItem<int?>> entries = new List<SelectionItem<int?>>();
                             foreach (EnumDataEntry entry in enumData.Entries) {
-                                entries.Add(new SelectionItem<int> {
+                                entries.Add(new SelectionItem<int?> {
                                     Text = entry.Caption,
                                     Tooltip = entry.Description,
                                     Value = (int)entry.Value,
                                 });
                             }
                             if ((from e in entries where e.Value == -1 select e).FirstOrDefault() == null) {
-                                entries.Insert(0, new SelectionItem<int> {
+                                entries.Insert(0, new SelectionItem<int?> {
                                     Value = -1,
                                     Text = __ResStr("noSel", "(no selection)")
                                 });

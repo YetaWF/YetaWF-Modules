@@ -100,10 +100,11 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         internal async Task<string> RenderPropertyListTabbedAsync(object model, bool readOnly) {
 
             List<string> categories = GetCategories(model);
-            if (categories.Count <= 1) // if there is only one tab, show as regular property list
+            if (categories.Count <= 1) // if there is only one category, show as regular property list
                 return await RenderPropertyListAsync(model, readOnly);
 
             PropertyList.PropertyListSetup setup = await PropertyListComponentBase.GetPropertyListSetupAsync(model, categories);
+            categories = setup.CategoryOrder;
 
             HtmlBuilder hb = new HtmlBuilder();
             Type modelType = model.GetType();

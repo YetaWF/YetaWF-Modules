@@ -175,8 +175,10 @@ namespace YetaWF_ComponentsHTML {
                     var filterBar = this.FilterBar as HTMLElement;
                     if ($YetaWF.isVisible(filterBar))
                         filterBar.style.display = "none";
-                    else
+                    else {
                         filterBar.style.display = "";
+                        $YetaWF.processActivateDivs([filterBar]);
+                    }
                     return false;
                 });
             }
