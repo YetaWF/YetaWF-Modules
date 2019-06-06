@@ -1151,7 +1151,7 @@ namespace YetaWF_ComponentsHTML {
             });
         }
 
-        public static ReloadFromId(id: string) {
+        public static ReloadFromId(id: string):void {
             let grid = YetaWF.ComponentBaseDataImpl.getControlById<Grid>(id, Grid.SELECTOR);
             grid.reload(0);
         }
