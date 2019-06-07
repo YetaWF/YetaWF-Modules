@@ -52,6 +52,8 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             tag.MergeAttribute("type", "hidden");
             if (HtmlAttributes.ContainsKey("--NoTemplate"))
                 HtmlAttributes.Remove("--NoTemplate");
+            else if (HtmlAttributes.ContainsKey("__NoTemplate"))
+                HtmlAttributes.Remove("__NoTemplate");
             else
                 tag.AddCssClass("yt_hidden");
             if (model != null && model.GetType().IsEnum)
@@ -83,6 +85,8 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             tag.MergeAttribute("type", "hidden");
             if (HtmlAttributes.ContainsKey("--NoTemplate"))
                 HtmlAttributes.Remove("--NoTemplate");
+            else if (HtmlAttributes.ContainsKey("__NoTemplate"))
+                HtmlAttributes.Remove("__NoTemplate");
             else
                 tag.AddCssClass("yt_hidden");
             if (model != null && model.GetType().IsEnum)
