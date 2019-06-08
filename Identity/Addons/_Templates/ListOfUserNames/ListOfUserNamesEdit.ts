@@ -21,27 +21,23 @@ namespace YetaWF_Identity {
         private Grid: YetaWF_ComponentsHTML.Grid;
         private GridAll: YetaWF_ComponentsHTML.Grid;
         private buttonAdd: HTMLInputElement;
-        private inputUserName: HTMLInputElement;
+        private InputUserName: HTMLInputElement;
         private ReloadInProgress: boolean = false;
         private AddCounter: number = 0;
 
         constructor(controlId: string, setup: ListOfUserNamesSetup) {
             super(controlId, ListOfUserNamesEditComponent.TEMPLATE, ListOfUserNamesEditComponent.SELECTOR, {
                 ControlType: YetaWF_ComponentsHTML.ControlTypeEnum.Template,
-                ChangeEvent: "",//$$$$
-                GetValue: (control: ListOfUserNamesEditComponent): string | null => {
-                    return null;//$$$$control.value;
-                },
-                Enable: (control: ListOfUserNamesEditComponent, enable: boolean): void => {
-                    //$$$control.enable(enable)
-                },
+                ChangeEvent: null,
+                GetValue: null,
+                Enable: null,
             });
             this.Setup = setup;
 
             this.Grid = YetaWF.ComponentBaseDataImpl.getControlById(this.Setup.GridId, YetaWF_ComponentsHTML.Grid.SELECTOR);
             this.GridAll = YetaWF.ComponentBaseDataImpl.getControlById(this.Setup.GridAllId, YetaWF_ComponentsHTML.Grid.SELECTOR);
             this.buttonAdd = $YetaWF.getElement1BySelector("input[name='btnAdd']", [this.Control]) as HTMLInputElement;
-            this.inputUserName = $YetaWF.getElement1BySelector("input[name$='.NewValue']", [this.Control]) as HTMLInputElement;
+            this.InputUserName = $YetaWF.getElement1BySelector("input[name$='.NewValue']", [this.Control]) as HTMLInputElement;
 
             $YetaWF.registerEventHandler(this.buttonAdd, "click", null, (ev: MouseEvent): boolean => {
 
@@ -52,7 +48,7 @@ namespace YetaWF_Identity {
 
                 var uri = $YetaWF.parseUrl(this.Setup.AddUrl);
                 uri.addFormInfo(this.Control, ++this.AddCounter);
-                uri.addSearch("newUser", this.inputUserName.value);
+                uri.addSearch("newUser", this.InputUserName.value);
                 uri.addSearch("fieldPrefix", this.Grid.FieldName);
                 uri.addSearch("data", JSON.stringify(this.Grid.StaticData));
                 if (this.Grid.ExtraData) uri.addSearchSimpleObject(this.Grid.ExtraData);
@@ -76,20 +72,20 @@ namespace YetaWF_Identity {
 
                 return false;
             });
-            $YetaWF.handleInputReturnKeyForButton(this.inputUserName, this.buttonAdd);
-            $YetaWF.registerMultipleEventHandlers([this.inputUserName], ["input", "change", "click", "keyup", "paste"], null, (ev: Event): boolean => { this.toggleButton(); return true; });
+            $YetaWF.handleInputReturnKeyForButton(this.InputUserName, this.buttonAdd);
+            $YetaWF.registerMultipleEventHandlers([this.InputUserName], ["input", "change", "click", "keyup", "paste"], null, (ev: Event): boolean => { this.toggleButton(); return true; });
 
             this.GridAll.Control.addEventListener("grid_selectionchange", (evt: Event): void => {
                 var index = this.GridAll.SelectedIndex();
                 if (index < 0) return;
                 var td = $YetaWF.getElement1BySelector("td", [this.GridAll.GetTR(index)]);
                 var name = td.innerText.trim();
-                this.inputUserName.value = name;
+                this.InputUserName.value = name;
                 this.toggleButton();
             });
         }
         private toggleButton() : void {
-            var s = this.inputUserName.value;
+            var s = this.InputUserName.value;
             s = s.trim();
             $YetaWF.elementEnableToggle(this.buttonAdd, s.length > 0);
         }

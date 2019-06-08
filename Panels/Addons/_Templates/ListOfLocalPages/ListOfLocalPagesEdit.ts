@@ -28,13 +28,9 @@ namespace YetaWF_Panels {
         constructor(controlId: string, setup: ListOfLocalPagesSetup) {
             super(controlId, ListOfLocalPagesEditComponent.TEMPLATE, ListOfLocalPagesEditComponent.SELECTOR, {
                 ControlType: YetaWF_ComponentsHTML.ControlTypeEnum.Template,
-                ChangeEvent: "",//$$$$
-                GetValue: (control: ListOfLocalPagesEditComponent): string | null => {
-                    return null;//$$$$control.value;
-                },
-                Enable: (control: ListOfLocalPagesEditComponent, enable: boolean): void => {
-                    //$$$control.enable(enable)
-                },
+                ChangeEvent: null,
+                GetValue: null,
+                Enable: null,
             });
             this.Setup = setup;
 

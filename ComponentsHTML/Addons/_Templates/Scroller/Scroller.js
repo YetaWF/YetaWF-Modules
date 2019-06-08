@@ -22,13 +22,9 @@ var YetaWF_ComponentsHTML;
         function ScrollerComponent(controlId /*, setup: Setup*/) {
             var _this = _super.call(this, controlId, ScrollerComponent.TEMPLATE, ScrollerComponent.SELECTOR, {
                 ControlType: YetaWF_ComponentsHTML.ControlTypeEnum.Template,
-                ChangeEvent: "",
-                GetValue: function (control) {
-                    return null; //$$$control.valueText;
-                },
-                Enable: function (control, enable) {
-                    //$$$control.enable(enable)
-                },
+                ChangeEvent: null,
+                GetValue: null,
+                Enable: null,
             }) || this;
             _this.Panel = 0;
             //this.Setup = setup;

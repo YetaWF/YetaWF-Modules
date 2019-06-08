@@ -22,15 +22,13 @@ namespace YetaWF_ComponentsHTML {
         constructor(controlId: string, setup: ImageEditSetup) {
             super(controlId, ImageEditComponent.TEMPLATE, ImageEditComponent.SELECTOR, {
                 ControlType: ControlTypeEnum.Template,
-                ChangeEvent: null,//$$$$$
+                ChangeEvent: null,
                 GetValue: (control: ImageEditComponent): string | null => {
                     if (control.HiddenInput.value === ImageEditComponent.CLEAREDFILE)
                         return null;
                     return control.HiddenInput.value;
                 },
-                Enable: (control: ImageEditComponent, enable: boolean): void => {
-                    //$$$$control.enable(enable);
-                }
+                Enable: null,
             });
 
             this.Setup = setup;

@@ -21,12 +21,8 @@ var YetaWF_ComponentsHTML;
             var _this = _super.call(this, controlId, FileUpload1Component.TEMPLATE, FileUpload1Component.SELECTOR, {
                 ControlType: YetaWF_ComponentsHTML.ControlTypeEnum.Template,
                 ChangeEvent: null,
-                GetValue: function (control) {
-                    return null; //$$
-                },
-                Enable: function (control, enable) {
-                    //$$
-                }
+                GetValue: null,
+                Enable: null,
             }) || this;
             _this.$divProgressbar = null;
             _this.SuccessfullUploadCallback = null;

@@ -20,13 +20,9 @@ var YetaWF_BootstrapCarousel;
         function SlideShowEdit(controlId) {
             var _this = _super.call(this, controlId, SlideShowEdit.TEMPLATE, SlideShowEdit.SELECTOR, {
                 ControlType: YetaWF_ComponentsHTML.ControlTypeEnum.Template,
-                ChangeEvent: "slideshow_change",
-                GetValue: function (control) {
-                    return null;
-                },
-                Enable: function (control, enable) {
-                    //$$
-                },
+                ChangeEvent: null,
+                GetValue: null,
+                Enable: null,
             }) || this;
             _this.buttonUp = $YetaWF.getElement1BySelector("input.t_up", [_this.Control]);
             _this.buttonDown = $YetaWF.getElement1BySelector("input.t_down", [_this.Control]);

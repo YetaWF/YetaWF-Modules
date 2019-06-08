@@ -26,9 +26,7 @@ var YetaWF_ComponentsHTML;
                         return null;
                     return control.HiddenInput.value;
                 },
-                Enable: function (control, enable) {
-                    //$$$$control.enable(enable);
-                }
+                Enable: null,
             }) || this;
             _this.Setup = setup;
             _this.UploadControl = YetaWF.ComponentBaseDataImpl.getControlById(_this.Setup.UploadId, YetaWF_ComponentsHTML.FileUpload1Component.SELECTOR);

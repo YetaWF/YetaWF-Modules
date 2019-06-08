@@ -32,13 +32,9 @@ var YetaWF_ComponentsHTML;
         function TreeComponent(controlId, setup) {
             var _this = _super.call(this, controlId, TreeComponent.TEMPLATE, TreeComponent.SELECTOR, {
                 ControlType: YetaWF_ComponentsHTML.ControlTypeEnum.Template,
-                ChangeEvent: "",
-                GetValue: function (control) {
-                    return null; //$$$
-                },
-                Enable: function (control, enable) {
-                    //$$control.enable(enable)
-                },
+                ChangeEvent: null,
+                GetValue: null,
+                Enable: null,
             }) || this;
             _this.DeletedRecords = []; // array of deleted record numbers
             _this.DDSource = null;

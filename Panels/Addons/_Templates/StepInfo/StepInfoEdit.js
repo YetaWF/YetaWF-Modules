@@ -20,9 +20,9 @@ var YetaWF_Panels;
         function StepInfoEditComponent(controlId) {
             var _this = _super.call(this, controlId, StepInfoEditComponent.TEMPLATE, StepInfoEditComponent.SELECTOR, {
                 ControlType: YetaWF_ComponentsHTML.ControlTypeEnum.Template,
-                ChangeEvent: "",
-                GetValue: function (control) { return null; },
-                Enable: function (control, enable) { }
+                ChangeEvent: null,
+                GetValue: null,
+                Enable: null,
             }) || this;
             _this.Up = $YetaWF.getElement1BySelector("input.t_up", [_this.Control]);
             _this.Down = $YetaWF.getElement1BySelector("input.t_down", [_this.Control]);

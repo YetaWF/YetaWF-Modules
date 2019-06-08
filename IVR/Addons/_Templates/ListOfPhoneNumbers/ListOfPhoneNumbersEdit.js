@@ -20,13 +20,9 @@ var Softelvdm_IVR;
         function ListOfPhoneNumbersEditComponent(controlId, setup) {
             var _this = _super.call(this, controlId, ListOfPhoneNumbersEditComponent.TEMPLATE, ListOfPhoneNumbersEditComponent.SELECTOR, {
                 ControlType: YetaWF_ComponentsHTML.ControlTypeEnum.Div,
-                ChangeEvent: "",
-                GetValue: function (control) {
-                    return null; //$$$$control.value;
-                },
-                Enable: function (control, enable) {
-                    //$$$control.enable(enable)
-                },
+                ChangeEvent: null,
+                GetValue: null,
+                Enable: null,
             }) || this;
             _this.AddCounter = 0;
             _this.Setup = setup;

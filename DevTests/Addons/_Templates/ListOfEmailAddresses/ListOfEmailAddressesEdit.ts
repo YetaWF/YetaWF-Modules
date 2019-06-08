@@ -26,13 +26,9 @@ namespace YetaWF_DevTests {
         constructor(controlId: string, setup: ListOfEmailAddressesSetup) {
             super(controlId, ListOfEmailAddressesEditComponent.TEMPLATE, ListOfEmailAddressesEditComponent.SELECTOR, {
                 ControlType: YetaWF_ComponentsHTML.ControlTypeEnum.Div,
-                ChangeEvent: "",//$$$$
-                GetValue: (control: HTMLDivElement): string | null => {
-                    return null;//$$$$control.value;
-                },
-                Enable: (control: HTMLDivElement, enable: boolean): void => {
-                    //$$$control.enable(enable)
-                },
+                ChangeEvent: null,
+                GetValue: null,
+                Enable: null,
             });
 
             this.Setup = setup;

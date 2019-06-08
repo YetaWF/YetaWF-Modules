@@ -26,9 +26,9 @@ var YetaWF_ComponentsHTML;
         function PropertyListComponent(controlId, setup, controlData) {
             var _this = _super.call(this, controlId, PropertyListComponent.TEMPLATE, PropertyListComponent.SELECTOR, {
                 ControlType: YetaWF_ComponentsHTML.ControlTypeEnum.Template,
-                ChangeEvent: "",
-                GetValue: function (control) { return null; },
-                Enable: function (control, enable) { }
+                ChangeEvent: null,
+                GetValue: null,
+                Enable: null,
             }) || this;
             _this.MasonryElem = null;
             _this.MinWidth = 0;
@@ -89,6 +89,7 @@ var YetaWF_ComponentsHTML;
                         case YetaWF_ComponentsHTML.ControlTypeEnum.Hidden:
                             break;
                         default:
+                        case YetaWF_ComponentsHTML.ControlTypeEnum.Template:
                             if (!item.ChangeEvent)
                                 throw "No ChangeEvent for control type " + item.ControlType;
                             var control_1 = $YetaWF.getObjectData(item.Template);

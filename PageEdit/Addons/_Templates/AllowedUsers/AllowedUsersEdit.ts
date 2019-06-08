@@ -28,13 +28,9 @@ namespace YetaWF_PageEdit {
         constructor(controlId: string, setup: AllowedUsersSetup) {
             super(controlId, AllowedUsersEditComponent.TEMPLATE, AllowedUsersEditComponent.SELECTOR, {
                 ControlType: YetaWF_ComponentsHTML.ControlTypeEnum.Template,
-                ChangeEvent: "",//$$$$
-                GetValue: (control: AllowedUsersEditComponent): string | null => {
-                    return null;//$$$$control.value;
-                },
-                Enable: (control: AllowedUsersEditComponent, enable: boolean): void => {
-                    //$$$control.enable(enable)
-                },
+                ChangeEvent: null,
+                GetValue: null,
+                Enable: null,
             });
             this.Setup = setup;
 

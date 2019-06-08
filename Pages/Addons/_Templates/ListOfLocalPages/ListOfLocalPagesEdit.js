@@ -20,13 +20,9 @@ var YetaWF_Pages;
         function ListOfLocalPagesEditComponent(controlId, setup) {
             var _this = _super.call(this, controlId, ListOfLocalPagesEditComponent.TEMPLATE, ListOfLocalPagesEditComponent.SELECTOR, {
                 ControlType: YetaWF_ComponentsHTML.ControlTypeEnum.Template,
-                ChangeEvent: "",
-                GetValue: function (control) {
-                    return null; //$$$$control.value;
-                },
-                Enable: function (control, enable) {
-                    //$$$control.enable(enable)
-                },
+                ChangeEvent: null,
+                GetValue: null,
+                Enable: null,
             }) || this;
             _this.ReloadInProgress = false;
             _this.AddCounter = 0;
@@ -34,7 +30,7 @@ var YetaWF_Pages;
             _this.Grid = YetaWF.ComponentBaseDataImpl.getControlById(_this.Setup.GridId, YetaWF_ComponentsHTML.Grid.SELECTOR);
             _this.GridAll = YetaWF.ComponentBaseDataImpl.getControlById(_this.Setup.GridAllId, YetaWF_ComponentsHTML.Grid.SELECTOR);
             _this.buttonAdd = $YetaWF.getElement1BySelector("input[name='btnAdd']", [_this.Control]);
-            _this.selectUrl = YetaWF.ComponentBaseDataImpl.getControlFromSelector("[name$='.NewValue']", YetaWF_ComponentsHTML.UrlEditComponent.SELECTOR, [_this.Control]);
+            _this.SelectUrl = YetaWF.ComponentBaseDataImpl.getControlFromSelector("[name$='.NewValue']", YetaWF_ComponentsHTML.UrlEditComponent.SELECTOR, [_this.Control]);
             $YetaWF.registerEventHandler(_this.buttonAdd, "click", null, function (ev) {
                 if (_this.ReloadInProgress)
                     return true;
@@ -42,7 +38,7 @@ var YetaWF_Pages;
                 $YetaWF.setLoading(true);
                 var uri = $YetaWF.parseUrl(_this.Setup.AddUrl);
                 uri.addFormInfo(_this.Control, ++_this.AddCounter);
-                uri.addSearch("newUrl", _this.selectUrl.value.trim());
+                uri.addSearch("newUrl", _this.SelectUrl.value.trim());
                 uri.addSearch("fieldPrefix", _this.Grid.FieldName);
                 uri.addSearch("data", JSON.stringify(_this.Grid.StaticData));
                 if (_this.Grid.ExtraData)
@@ -66,7 +62,7 @@ var YetaWF_Pages;
                 request.send(uri.toFormData());
                 return false;
             });
-            _this.selectUrl.Control.addEventListener("url_change", function (evt) {
+            _this.SelectUrl.Control.addEventListener("url_change", function (evt) {
                 _this.toggleButton();
             });
             _this.GridAll.Control.addEventListener("grid_selectionchange", function (evt) {
@@ -75,13 +71,13 @@ var YetaWF_Pages;
                     return;
                 var td = $YetaWF.getElement1BySelector("td", [_this.GridAll.GetTR(index)]);
                 var url = td.innerText.trim();
-                _this.selectUrl.value = url;
+                _this.SelectUrl.value = url;
                 _this.toggleButton();
             });
             return _this;
         }
         ListOfLocalPagesEditComponent.prototype.toggleButton = function () {
-            var s = this.selectUrl.value;
+            var s = this.SelectUrl.value;
             s = s.trim();
             $YetaWF.elementEnableToggle(this.buttonAdd, s.length > 0);
         };

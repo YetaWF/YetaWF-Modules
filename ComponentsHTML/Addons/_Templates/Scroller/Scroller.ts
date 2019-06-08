@@ -19,13 +19,9 @@ namespace YetaWF_ComponentsHTML {
         constructor(controlId: string/*, setup: Setup*/) {
             super(controlId, ScrollerComponent.TEMPLATE, ScrollerComponent.SELECTOR, {
                 ControlType: ControlTypeEnum.Template,
-                ChangeEvent: "",//$$$
-                GetValue: (control: ScrollerComponent): string | null => {
-                    return null;//$$$control.valueText;
-                },
-                Enable: (control: ScrollerComponent, enable: boolean): void => {
-                    //$$$control.enable(enable)
-                },
+                ChangeEvent: null,
+                GetValue: null,
+                Enable: null,
             });
             //this.Setup = setup;
 

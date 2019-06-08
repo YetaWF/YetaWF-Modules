@@ -27,7 +27,7 @@ namespace YetaWF_ComponentsHTML {
         constructor(controlId: string, setup: UrlEditSetup) {
             super(controlId, UrlEditComponent.TEMPLATE, UrlEditComponent.SELECTOR, {
                 ControlType: ControlTypeEnum.Template,
-                ChangeEvent: "",//$$$
+                ChangeEvent: null,
                 GetValue: (control: UrlEditComponent): string | null => {
                     return control.value;
                 },

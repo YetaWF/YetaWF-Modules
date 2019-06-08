@@ -25,7 +25,7 @@ var YetaWF_ComponentsHTML;
         function UrlEditComponent(controlId, setup) {
             var _this = _super.call(this, controlId, UrlEditComponent.TEMPLATE, UrlEditComponent.SELECTOR, {
                 ControlType: YetaWF_ComponentsHTML.ControlTypeEnum.Template,
-                ChangeEvent: "",
+                ChangeEvent: null,
                 GetValue: function (control) {
                     return control.value;
                 },

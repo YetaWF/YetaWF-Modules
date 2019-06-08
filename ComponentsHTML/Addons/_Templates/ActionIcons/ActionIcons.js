@@ -22,7 +22,7 @@ var YetaWF_ComponentsHTML;
                 ControlType: YetaWF_ComponentsHTML.ControlTypeEnum.Template,
                 ChangeEvent: null,
                 GetValue: null,
-                Enable: null
+                Enable: null,
             }, false, function (tag, control) {
                 var list = $YetaWF.getElementsBySelector("ul.yGridActionMenu", [control.Control]);
                 for (var _i = 0, list_1 = list; _i < list_1.length; _i++) {

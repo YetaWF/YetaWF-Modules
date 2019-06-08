@@ -23,13 +23,9 @@ namespace YetaWF_Identity {
         constructor(controlId: string, setup: UserIdSetup) {
             super(controlId, UserIdEditComponent.TEMPLATE, UserIdEditComponent.SELECTOR, {
                 ControlType: YetaWF_ComponentsHTML.ControlTypeEnum.Template,
-                ChangeEvent: "",//$$$$
-                GetValue: (control: UserIdEditComponent): string | null => {
-                    return control.inputHidden.value;
-                },
-                Enable: (control: UserIdEditComponent, enable: boolean): void => {
-                    //$$$control.enable(enable)
-                },
+                ChangeEvent: null,
+                GetValue: null,//return control.inputHidden.value;
+                Enable: null,
             });
 
             this.Setup = setup;

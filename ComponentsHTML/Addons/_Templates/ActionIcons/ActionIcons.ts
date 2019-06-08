@@ -19,8 +19,8 @@ namespace YetaWF_ComponentsHTML {
             super(controlId, ActionIconsComponent.TEMPLATE, ActionIconsComponent.SELECTOR, {
                 ControlType: ControlTypeEnum.Template,
                 ChangeEvent: null,
-                GetValue: null,//$$$
-                Enable: null
+                GetValue: null,
+                Enable: null,
             }, false, (tag: HTMLElement, control: ActionIconsComponent): void => {
                 var list = $YetaWF.getElementsBySelector("ul.yGridActionMenu", [control.Control]);
                 for (let el of list) {

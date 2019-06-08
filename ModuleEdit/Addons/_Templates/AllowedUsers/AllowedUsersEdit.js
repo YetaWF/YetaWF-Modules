@@ -20,13 +20,9 @@ var YetaWF_ModuleEdit;
         function AllowedUsersEditComponent(controlId, setup) {
             var _this = _super.call(this, controlId, AllowedUsersEditComponent.TEMPLATE, AllowedUsersEditComponent.SELECTOR, {
                 ControlType: YetaWF_ComponentsHTML.ControlTypeEnum.Template,
-                ChangeEvent: "",
-                GetValue: function (control) {
-                    return null; //$$$$control.value;
-                },
-                Enable: function (control, enable) {
-                    //$$$control.enable(enable)
-                },
+                ChangeEvent: null,
+                GetValue: null,
+                Enable: null,
             }) || this;
             _this.ReloadInProgress = false;
             _this.AddCounter = 0;

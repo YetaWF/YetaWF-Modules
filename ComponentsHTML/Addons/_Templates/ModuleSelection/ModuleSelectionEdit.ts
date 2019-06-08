@@ -22,7 +22,7 @@ namespace YetaWF_ComponentsHTML {
         constructor(controlId: string, setup: Setup) {
             super(controlId, ModuleSelectionEditComponent.TEMPLATE, ModuleSelectionEditComponent.SELECTOR, {
                 ControlType: ControlTypeEnum.Template,
-                ChangeEvent: null,//$$$$
+                ChangeEvent: null,
                 GetValue: (control: ModuleSelectionEditComponent): string | null => {
                     return control.value;
                 },

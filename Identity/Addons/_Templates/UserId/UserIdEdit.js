@@ -20,13 +20,9 @@ var YetaWF_Identity;
         function UserIdEditComponent(controlId, setup) {
             var _this = _super.call(this, controlId, UserIdEditComponent.TEMPLATE, UserIdEditComponent.SELECTOR, {
                 ControlType: YetaWF_ComponentsHTML.ControlTypeEnum.Template,
-                ChangeEvent: "",
-                GetValue: function (control) {
-                    return control.inputHidden.value;
-                },
-                Enable: function (control, enable) {
-                    //$$$control.enable(enable)
-                },
+                ChangeEvent: null,
+                GetValue: null,
+                Enable: null,
             }) || this;
             _this.Setup = setup;
             _this.GridAll = YetaWF.ComponentBaseDataImpl.getControlById(_this.Setup.GridAllId, YetaWF_ComponentsHTML.Grid.SELECTOR);

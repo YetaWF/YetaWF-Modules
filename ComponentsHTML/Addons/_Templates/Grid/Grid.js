@@ -56,7 +56,7 @@ var YetaWF_ComponentsHTML;
                         return null;
                     return total.toString();
                 },
-                Enable: function (control, enable) { },
+                Enable: null,
             }, false, function (tag, control) {
                 control.internalDestroy();
             }) || this;

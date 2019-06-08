@@ -120,13 +120,13 @@ namespace YetaWF_ComponentsHTML {
         constructor(controlId: string, setup: GridSetup) {
             super(controlId, Grid.TEMPLATE, Grid.SELECTOR, {
                 ControlType: ControlTypeEnum.Template,
-                ChangeEvent: null,//$$$$$
+                ChangeEvent: null,
                 GetValue: (control: Grid): string | null => {
                     let total = control.GetTotalRecords();
                     if (!total) return null;
                     return total.toString();
                 },
-                Enable: (control: Grid, enable: boolean): void => { /* can't enable/disable grid */ },
+                Enable: null, /* can't enable/disable grid */
             }, false, (tag: HTMLElement, control: Grid): void => {
                 control.internalDestroy();
             });

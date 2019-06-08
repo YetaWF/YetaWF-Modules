@@ -23,13 +23,9 @@ namespace YetaWF_Panels {
         constructor(controlId: string) {
             super(controlId, PanelInfoEditComponent.TEMPLATE, PanelInfoEditComponent.SELECTOR, {
                 ControlType: YetaWF_ComponentsHTML.ControlTypeEnum.Template,
-                ChangeEvent: "",//$$$$
-                GetValue: (control: PanelInfoEditComponent): string | null => {
-                    return null;//$$$$control.value;
-                },
-                Enable: (control: PanelInfoEditComponent, enable: boolean): void => {
-                    //$$$control.enable(enable)
-                },
+                ChangeEvent: null,
+                GetValue: null,
+                Enable: null,
             }, false, (tag: HTMLElement, control: PanelInfoEditComponent): void => {
                 // tabs
                 var list = $YetaWF.getElementsBySelector(".yt_panels_panelinfo .t_panels.t_acctabs", [control.Control]);

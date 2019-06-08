@@ -46,13 +46,9 @@ namespace YetaWF_ComponentsHTML {
         constructor(controlId: string, setup: TreeSetup) {
             super(controlId, TreeComponent.TEMPLATE, TreeComponent.SELECTOR, {
                 ControlType: ControlTypeEnum.Template,
-                ChangeEvent: "",//$$$
-                GetValue: (control: TreeComponent): string | null => {
-                    return null;//$$$
-                },
-                Enable: (control: TreeComponent, enable: boolean): void => {
-                    //$$control.enable(enable)
-                },
+                ChangeEvent: null,
+                GetValue: null,
+                Enable: null,
             });
             this.Setup = setup;
 

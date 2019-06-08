@@ -20,29 +20,25 @@ var YetaWF_Identity;
         function ResourceUsersEditComponent(controlId, setup) {
             var _this = _super.call(this, controlId, ResourceUsersEditComponent.TEMPLATE, ResourceUsersEditComponent.SELECTOR, {
                 ControlType: YetaWF_ComponentsHTML.ControlTypeEnum.Template,
-                ChangeEvent: "",
-                GetValue: function (control) {
-                    return null; //$$$$control.value;
-                },
-                Enable: function (control, enable) {
-                    //$$$control.enable(enable)
-                },
+                ChangeEvent: null,
+                GetValue: null,
+                Enable: null,
             }) || this;
             _this.ReloadInProgress = false;
             _this.AddCounter = 0;
             _this.Setup = setup;
             _this.Grid = YetaWF.ComponentBaseDataImpl.getControlById(_this.Setup.GridId, YetaWF_ComponentsHTML.Grid.SELECTOR);
             _this.GridAll = YetaWF.ComponentBaseDataImpl.getControlById(_this.Setup.GridAllId, YetaWF_ComponentsHTML.Grid.SELECTOR);
-            _this.buttonAdd = $YetaWF.getElement1BySelector("input[name='btnAdd']", [_this.Control]);
-            _this.inputUserName = $YetaWF.getElement1BySelector("input[name$='.NewValue']", [_this.Control]);
-            $YetaWF.registerEventHandler(_this.buttonAdd, "click", null, function (ev) {
+            _this.ButtonAdd = $YetaWF.getElement1BySelector("input[name='btnAdd']", [_this.Control]);
+            _this.InputUserName = $YetaWF.getElement1BySelector("input[name$='.NewValue']", [_this.Control]);
+            $YetaWF.registerEventHandler(_this.ButtonAdd, "click", null, function (ev) {
                 if (_this.ReloadInProgress)
                     return true;
                 _this.ReloadInProgress = true;
                 $YetaWF.setLoading(true);
                 var uri = $YetaWF.parseUrl(_this.Setup.AddUrl);
                 uri.addFormInfo(_this.Control, ++_this.AddCounter);
-                uri.addSearch("newUser", _this.inputUserName.value);
+                uri.addSearch("newUser", _this.InputUserName.value);
                 uri.addSearch("fieldPrefix", _this.Grid.FieldName);
                 uri.addSearch("data", JSON.stringify(_this.Grid.StaticData));
                 if (_this.Grid.ExtraData)
@@ -66,22 +62,22 @@ var YetaWF_Identity;
                 request.send(uri.toFormData());
                 return false;
             });
-            $YetaWF.registerMultipleEventHandlers([_this.inputUserName], ["input", "change", "click", "keyup", "paste"], null, function (ev) { _this.toggleButton(); return true; });
+            $YetaWF.registerMultipleEventHandlers([_this.InputUserName], ["input", "change", "click", "keyup", "paste"], null, function (ev) { _this.toggleButton(); return true; });
             _this.GridAll.Control.addEventListener("grid_selectionchange", function (evt) {
                 var index = _this.GridAll.SelectedIndex();
                 if (index < 0)
                     return;
                 var td = $YetaWF.getElement1BySelector("td", [_this.GridAll.GetTR(index)]);
                 var name = td.innerText.trim();
-                _this.inputUserName.value = name;
+                _this.InputUserName.value = name;
                 _this.toggleButton();
             });
             return _this;
         }
         ResourceUsersEditComponent.prototype.toggleButton = function () {
-            var s = this.inputUserName.value;
+            var s = this.InputUserName.value;
             s = s.trim();
-            $YetaWF.elementEnableToggle(this.buttonAdd, s.length > 0);
+            $YetaWF.elementEnableToggle(this.ButtonAdd, s.length > 0);
         };
         ResourceUsersEditComponent.TEMPLATE = "yt_yetawf_identity_resourceusers";
         ResourceUsersEditComponent.SELECTOR = ".yt_yetawf_identity_resourceusers.t_edit";

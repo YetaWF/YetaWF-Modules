@@ -25,13 +25,9 @@ namespace Softelvdm_IVR {
         constructor(controlId: string, setup: ListOfPhoneNumbersSetup) {
             super(controlId, ListOfPhoneNumbersEditComponent.TEMPLATE, ListOfPhoneNumbersEditComponent.SELECTOR, {
                 ControlType: YetaWF_ComponentsHTML.ControlTypeEnum.Div,
-                ChangeEvent: "",//$$$$
-                GetValue: (control: HTMLDivElement): string | null => {
-                    return null;//$$$$control.value;
-                },
-                Enable: (control: HTMLDivElement, enable: boolean): void => {
-                    //$$$control.enable(enable)
-                },
+                ChangeEvent: null,
+                GetValue: null,
+                Enable: null,
             });
             this.Setup = setup;
 

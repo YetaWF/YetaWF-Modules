@@ -37,13 +37,9 @@ namespace YetaWF_BootstrapCarousel {
         constructor(controlId: string) {
             super(controlId, SlideShowEdit.TEMPLATE, SlideShowEdit.SELECTOR, {
                 ControlType: YetaWF_ComponentsHTML.ControlTypeEnum.Template,
-                ChangeEvent: "slideshow_change",//$$$$
-                GetValue: (control: SlideShowEdit): string | null => {
-                    return null;
-                },
-                Enable: (control: SlideShowEdit, enable: boolean): void => {
-                    //$$
-                },
+                ChangeEvent: null,
+                GetValue: null,
+                Enable: null,
             });
 
             this.buttonUp = $YetaWF.getElement1BySelector("input.t_up", [this.Control]);

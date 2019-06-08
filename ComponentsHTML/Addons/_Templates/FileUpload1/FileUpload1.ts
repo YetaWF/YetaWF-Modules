@@ -46,13 +46,9 @@ namespace YetaWF_ComponentsHTML {
         constructor(controlId: string, setup: FileUpload1Setup) {
             super(controlId, FileUpload1Component.TEMPLATE, FileUpload1Component.SELECTOR, {
                 ControlType: ControlTypeEnum.Template,
-                ChangeEvent: null,//$$$$$
-                GetValue: (control: FileUpload1Component): string | null => {
-                    return null;//$$
-                },
-                Enable: (control: FileUpload1Component, enable: boolean): void => {
-                    //$$
-                }
+                ChangeEvent: null,
+                GetValue: null,
+                Enable: null,
             });
 
             this.Setup = setup;

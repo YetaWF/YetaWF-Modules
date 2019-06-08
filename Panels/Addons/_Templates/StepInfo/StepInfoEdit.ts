@@ -23,9 +23,9 @@ namespace YetaWF_Panels {
         constructor(controlId: string) {
             super(controlId, StepInfoEditComponent.TEMPLATE, StepInfoEditComponent.SELECTOR, {
                 ControlType: YetaWF_ComponentsHTML.ControlTypeEnum.Template,
-                ChangeEvent: "",
-                GetValue: (control: StepInfoEditComponent): string | null => { return null; },
-                Enable: (control: StepInfoEditComponent, enable: boolean): void => { }
+                ChangeEvent: null,
+                GetValue: null,
+                Enable: null,
             });
 
             this.Up = $YetaWF.getElement1BySelector("input.t_up", [this.Control]) as HTMLInputElement;

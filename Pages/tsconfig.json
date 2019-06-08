@@ -2,6 +2,7 @@
   "compilerOptions": {
     "noImplicitAny": false,
     "noEmitOnError": false,
+    "lib": [ "dom", "es2015"],
     "removeComments": false,
     "sourceMap": false,
     "target": "es5",
@@ -23,9 +24,22 @@
     "strictPropertyInitialization": true,
     "strictNullChecks": true,
     "types": [
-      "jquery", "jqueryui", "kendo-ui",
-      "YetaWF/HTML/Globals", "YetaWF/HTML/Basics", "YetaWF/HTML/Forms", "YetaWF/HTML/Popups", "YetaWF/HTML/ComponentsHTML", "YetaWF/HTML/Url", "YetaWF/HTML/ComponentBase",
-      "YetaWF/HTML/DropDownList/DropDownListEdit", "YetaWF/HTML/Url/UrlEdit", "YetaWF/HTML/Grid/Grid"
+      "jquery",
+      "jqueryui",
+      "kendo-ui",
+
+      "YetaWF/HTML/Basics",
+      "YetaWF/HTML/ComponentBase",
+      "YetaWF/HTML/ComponentsHTML",
+      "YetaWF/HTML/Controls",
+      "YetaWF/HTML/Forms",
+      "YetaWF/HTML/Globals",
+      "YetaWF/HTML/Popups",
+      "YetaWF/HTML/Url",
+
+      "YetaWF/HTML/DropDownList/DropDownListEdit",
+      "YetaWF/HTML/Url/UrlEdit",
+      "YetaWF/HTML/Grid/Grid"
     ]
   },
   "compileOnSave": true,

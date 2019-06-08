@@ -15,9 +15,9 @@ namespace YetaWF_Panels {
         constructor(controlId: string) {
             super(controlId, StepInfoComponent.TEMPLATE, StepInfoComponent.SELECTOR, {
                 ControlType: YetaWF_ComponentsHTML.ControlTypeEnum.Template,
-                ChangeEvent: "",//$$$$
-                GetValue: (control: StepInfoComponent): string | null => { return null; },
-                Enable: (control: StepInfoComponent, enable: boolean): void => { }
+                ChangeEvent: null,
+                GetValue: null,
+                Enable: null,
             }, true);
         }
 

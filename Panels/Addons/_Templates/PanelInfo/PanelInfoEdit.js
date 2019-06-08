@@ -20,13 +20,9 @@ var YetaWF_Panels;
         function PanelInfoEditComponent(controlId) {
             var _this = _super.call(this, controlId, PanelInfoEditComponent.TEMPLATE, PanelInfoEditComponent.SELECTOR, {
                 ControlType: YetaWF_ComponentsHTML.ControlTypeEnum.Template,
-                ChangeEvent: "",
-                GetValue: function (control) {
-                    return null; //$$$$control.value;
-                },
-                Enable: function (control, enable) {
-                    //$$$control.enable(enable)
-                },
+                ChangeEvent: null,
+                GetValue: null,
+                Enable: null,
             }, false, function (tag, control) {
                 // tabs
                 var list = $YetaWF.getElementsBySelector(".yt_panels_panelinfo .t_panels.t_acctabs", [control.Control]);

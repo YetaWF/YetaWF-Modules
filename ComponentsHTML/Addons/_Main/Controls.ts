@@ -64,6 +64,8 @@ namespace YetaWF_ComponentsHTML {
         }
 
         public getControlValue(item: ControlItemDefinition): string | null {
+            if (!item.GetValue)
+                throw `Control template ${item.TemplateName} has no GetValue function`;
             switch (item.ControlType) {
                 default:
                     throw `Invalid control type ${item.ControlType} in getControlValue`;
@@ -80,6 +82,8 @@ namespace YetaWF_ComponentsHTML {
             }
         }
         public enableToggle(item: ControlItemDefinition, enable: boolean): void {
+            if (!item.Enable)
+                throw `Control template ${item.TemplateName} has no Enable function`;
             switch (item.ControlType) {
                 default:
                     throw `Invalid control type ${item.ControlType} in enableToggle`;

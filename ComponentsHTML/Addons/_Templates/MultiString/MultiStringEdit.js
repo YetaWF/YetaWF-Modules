@@ -22,7 +22,7 @@ var YetaWF_ComponentsHTML;
         function MultiStringEditComponent(controlId /*, setup: Setup*/) {
             var _this = _super.call(this, controlId, MultiStringEditComponent.TEMPLATE, MultiStringEditComponent.SELECTOR, {
                 ControlType: YetaWF_ComponentsHTML.ControlTypeEnum.Template,
-                ChangeEvent: "",
+                ChangeEvent: null,
                 GetValue: function (control) {
                     return null; //$$$$control.valueText;
                 },

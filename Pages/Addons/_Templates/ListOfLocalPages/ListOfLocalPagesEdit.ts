@@ -21,20 +21,16 @@ namespace YetaWF_Pages {
         private Grid: YetaWF_ComponentsHTML.Grid;
         private GridAll: YetaWF_ComponentsHTML.Grid;
         private buttonAdd: HTMLInputElement;
-        private selectUrl: YetaWF_ComponentsHTML.UrlEditComponent;
+        private SelectUrl: YetaWF_ComponentsHTML.UrlEditComponent;
         private ReloadInProgress: boolean = false;
         private AddCounter: number = 0;
 
         constructor(controlId: string, setup: ListOfLocalPagesSetup) {
             super(controlId, ListOfLocalPagesEditComponent.TEMPLATE, ListOfLocalPagesEditComponent.SELECTOR, {
                 ControlType: YetaWF_ComponentsHTML.ControlTypeEnum.Template,
-                ChangeEvent: "",//$$$$
-                GetValue: (control: ListOfLocalPagesEditComponent): string | null => {
-                    return null;//$$$$control.value;
-                },
-                Enable: (control: ListOfLocalPagesEditComponent, enable: boolean): void => {
-                    //$$$control.enable(enable)
-                },
+                ChangeEvent: null,
+                GetValue: null,
+                Enable: null,
             });
 
             this.Setup = setup;
@@ -42,7 +38,7 @@ namespace YetaWF_Pages {
             this.Grid = YetaWF.ComponentBaseDataImpl.getControlById(this.Setup.GridId, YetaWF_ComponentsHTML.Grid.SELECTOR);
             this.GridAll = YetaWF.ComponentBaseDataImpl.getControlById(this.Setup.GridAllId, YetaWF_ComponentsHTML.Grid.SELECTOR);
             this.buttonAdd = $YetaWF.getElement1BySelector("input[name='btnAdd']", [this.Control]) as HTMLInputElement;
-            this.selectUrl = YetaWF.ComponentBaseDataImpl.getControlFromSelector("[name$='.NewValue']", YetaWF_ComponentsHTML.UrlEditComponent.SELECTOR, [this.Control]);
+            this.SelectUrl = YetaWF.ComponentBaseDataImpl.getControlFromSelector("[name$='.NewValue']", YetaWF_ComponentsHTML.UrlEditComponent.SELECTOR, [this.Control]);
 
             $YetaWF.registerEventHandler(this.buttonAdd, "click", null, (ev: MouseEvent): boolean => {
 
@@ -53,7 +49,7 @@ namespace YetaWF_Pages {
 
                 var uri = $YetaWF.parseUrl(this.Setup.AddUrl);
                 uri.addFormInfo(this.Control, ++this.AddCounter);
-                uri.addSearch("newUrl", this.selectUrl.value.trim());
+                uri.addSearch("newUrl", this.SelectUrl.value.trim());
                 uri.addSearch("fieldPrefix", this.Grid.FieldName);
                 uri.addSearch("data", JSON.stringify(this.Grid.StaticData));
                 if (this.Grid.ExtraData) uri.addSearchSimpleObject(this.Grid.ExtraData);
@@ -78,7 +74,7 @@ namespace YetaWF_Pages {
                 return false;
             });
 
-            this.selectUrl.Control.addEventListener("url_change", (evt: Event): void => {
+            this.SelectUrl.Control.addEventListener("url_change", (evt: Event): void => {
                 this.toggleButton();
             });
             this.GridAll.Control.addEventListener("grid_selectionchange", (evt: Event): void => {
@@ -86,12 +82,12 @@ namespace YetaWF_Pages {
                 if (index < 0) return;
                 var td = $YetaWF.getElement1BySelector("td", [this.GridAll.GetTR(index)]);
                 var url = td.innerText.trim();
-                this.selectUrl.value = url;
+                this.SelectUrl.value = url;
                 this.toggleButton();
             });
         }
         private toggleButton() : void {
-            var s = this.selectUrl.value;
+            var s = this.SelectUrl.value;
             s = s.trim();
             $YetaWF.elementEnableToggle(this.buttonAdd, s.length > 0);
         }

@@ -20,9 +20,9 @@ var YetaWF_Panels;
         function StepInfoComponent(controlId) {
             return _super.call(this, controlId, StepInfoComponent.TEMPLATE, StepInfoComponent.SELECTOR, {
                 ControlType: YetaWF_ComponentsHTML.ControlTypeEnum.Template,
-                ChangeEvent: "",
-                GetValue: function (control) { return null; },
-                Enable: function (control, enable) { }
+                ChangeEvent: null,
+                GetValue: null,
+                Enable: null,
             }, true) || this;
         }
         StepInfoComponent.setActive = function (option) {

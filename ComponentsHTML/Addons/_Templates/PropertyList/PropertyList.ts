@@ -104,9 +104,9 @@ namespace YetaWF_ComponentsHTML {
         constructor(controlId: string, setup: PropertyListSetup, controlData: ControlData) {
             super(controlId, PropertyListComponent.TEMPLATE, PropertyListComponent.SELECTOR, {
                 ControlType: YetaWF_ComponentsHTML.ControlTypeEnum.Template,
-                ChangeEvent: "",
-                GetValue: (control: PropertyListComponent): string | null => { return null; },
-                Enable: (control: PropertyListComponent, enable: boolean): void => {  }
+                ChangeEvent: null,
+                GetValue: null,
+                Enable: null,
             });
 
             this.ControlData = controlData;
@@ -165,6 +165,7 @@ namespace YetaWF_ComponentsHTML {
                         case ControlTypeEnum.Hidden:
                             break;
                         default:
+                        case ControlTypeEnum.Template:
                             if (!item.ChangeEvent)
                                 throw `No ChangeEvent for control type ${item.ControlType}`;
                             let control = $YetaWF.getObjectData(item.Template) as YetaWF.ComponentBaseDataImpl;

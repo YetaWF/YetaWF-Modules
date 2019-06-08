@@ -37,6 +37,8 @@ var YetaWF_ComponentsHTML;
             };
         };
         Controls.prototype.getControlValue = function (item) {
+            if (!item.GetValue)
+                throw "Control template " + item.TemplateName + " has no GetValue function";
             switch (item.ControlType) {
                 default:
                     throw "Invalid control type " + item.ControlType + " in getControlValue";
@@ -53,6 +55,8 @@ var YetaWF_ComponentsHTML;
             }
         };
         Controls.prototype.enableToggle = function (item, enable) {
+            if (!item.Enable)
+                throw "Control template " + item.TemplateName + " has no Enable function";
             switch (item.ControlType) {
                 default:
                     throw "Invalid control type " + item.ControlType + " in enableToggle";

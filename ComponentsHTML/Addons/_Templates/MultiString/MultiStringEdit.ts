@@ -24,7 +24,7 @@ namespace YetaWF_ComponentsHTML {
         constructor(controlId: string/*, setup: Setup*/) {
             super(controlId, MultiStringEditComponent.TEMPLATE, MultiStringEditComponent.SELECTOR, {
                 ControlType: ControlTypeEnum.Template,
-                ChangeEvent: "",//$$$
+                ChangeEvent: null,
                 GetValue: (control: MultiStringEditComponent): string | null => {
                     return null;//$$$$control.valueText;
                 },
