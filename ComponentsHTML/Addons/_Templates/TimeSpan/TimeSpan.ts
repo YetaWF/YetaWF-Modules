@@ -33,10 +33,10 @@ namespace YetaWF_ComponentsHTML {
 
             this.Hidden = $YetaWF.getElement1BySelector("input[type='hidden']", [this.Control]) as HTMLInputElement;
 
-            this.InputDays = YetaWF.ComponentBaseDataImpl.getControlFromSelectorCond<IntValueEditComponent>("input[name$='Days']", IntValueEditComponent.SELECTOR, [this.Control]);
-            this.InputHours = YetaWF.ComponentBaseDataImpl.getControlFromSelectorCond<IntValueEditComponent>("input[name$='Hours']", IntValueEditComponent.SELECTOR, [this.Control]);
-            this.InputMins = YetaWF.ComponentBaseDataImpl.getControlFromSelectorCond<IntValueEditComponent>("input[name$='Minutes']", IntValueEditComponent.SELECTOR, [this.Control]);
-            this.InputSecs = YetaWF.ComponentBaseDataImpl.getControlFromSelectorCond<IntValueEditComponent>("input[name$='Seconds']", IntValueEditComponent.SELECTOR, [this.Control]);
+            this.InputDays = YetaWF.ComponentBaseDataImpl.getControlFromSelectorCond("input[name$='Days']", IntValueEditComponent.SELECTOR, [this.Control]);
+            this.InputHours = YetaWF.ComponentBaseDataImpl.getControlFromSelectorCond("input[name$='Hours']", IntValueEditComponent.SELECTOR, [this.Control]);
+            this.InputMins = YetaWF.ComponentBaseDataImpl.getControlFromSelectorCond("input[name$='Minutes']", IntValueEditComponent.SELECTOR, [this.Control]);
+            this.InputSecs = YetaWF.ComponentBaseDataImpl.getControlFromSelectorCond("input[name$='Seconds']", IntValueEditComponent.SELECTOR, [this.Control]);
 
             // capture changes in all edit controls
             if (this.InputDays) {
