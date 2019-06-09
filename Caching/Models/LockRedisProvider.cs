@@ -17,6 +17,7 @@ namespace YetaWF.Modules.Caching.DataProvider {
     internal class LockRedisProvider : ILockProvider, IInitializeApplicationStartupFirstNodeOnly {
 
         private static ConnectionMultiplexer Redis { get; set; }
+        private static string KeyPrefix { get; set; }
         private static Guid Id { get; set; }
 
         public void Dispose() { Dispose(true); }
@@ -40,8 +41,9 @@ namespace YetaWF.Modules.Caching.DataProvider {
         // Implementation
 
         public LockRedisProvider() { }
-        public LockRedisProvider(string configString) {
+        public LockRedisProvider(string configString, string keyPrefix) {
             Redis = ConnectionMultiplexer.Connect(configString);
+            KeyPrefix = keyPrefix;
             Id = Guid.NewGuid();
             DisposableTracker.AddObject(this);
         }
@@ -58,7 +60,7 @@ namespace YetaWF.Modules.Caching.DataProvider {
 
             public MultiLockObject(string key) {
                 Db = Redis.GetDatabase();
-                Key = key;
+                Key = KeyPrefix + key;
                 DisposableTracker.AddObject(this);
             }
             internal async Task LockAsync() {

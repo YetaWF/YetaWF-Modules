@@ -26,6 +26,7 @@ namespace YetaWF.Modules.Caching.DataProvider {
         // Implementation
 
         private static ConnectionMultiplexer Redis { get; set; }
+        private static string KeyPrefix { get; set; }
         private static Guid Id { get; set; }
 
         public StaticObjectMultiRedisDataProvider() {
@@ -38,8 +39,9 @@ namespace YetaWF.Modules.Caching.DataProvider {
             }
         }
 
-        public static Task InitAsync(string configString) {
+        public static Task InitAsync(string configString, string keyPrefix) {
             Redis = ConnectionMultiplexer.Connect(configString);
+            KeyPrefix = keyPrefix;
             Id = Guid.NewGuid();
             return Task.CompletedTask;
         }
@@ -64,6 +66,7 @@ namespace YetaWF.Modules.Caching.DataProvider {
         /// </summary>
         /// <remarks>This requires an active Lock using a lock provider.</remarks>
         public async Task AddAsync<TYPE>(string key, TYPE data) {
+            key = KeyPrefix + key;
             key = GetKey(key);
             // save new version shared and locally
             byte[] cacheData = new GeneralFormatter().Serialize(data);
@@ -93,6 +96,7 @@ namespace YetaWF.Modules.Caching.DataProvider {
             }
         }
         public async Task<GetObjectInfo<TYPE>> GetAsync<TYPE>(string key) {
+            key = KeyPrefix + key;
             key = GetKey(key);
             // get cached version
             TYPE data = default(TYPE);
@@ -166,6 +170,7 @@ namespace YetaWF.Modules.Caching.DataProvider {
             }
         }
         public async Task RemoveAsync<TYPE>(string key) {
+            key = KeyPrefix + key;
             // We're adding a new version
             await AddAsync(key, default(TYPE));
         }

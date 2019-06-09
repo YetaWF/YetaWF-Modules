@@ -23,6 +23,7 @@ namespace YetaWF.Modules.Caching.DataProvider {
         // Implementation
 
         private static ConnectionMultiplexer Redis { get; set; }
+        private static string KeyPrefix { get; set; }
         private static Guid Id { get; set; }
 
         public SharedCacheObjectRedisDataProvider() {
@@ -35,8 +36,9 @@ namespace YetaWF.Modules.Caching.DataProvider {
             }
         }
 
-        public static Task InitAsync(string configString) {
+        public static Task InitAsync(string configString, string keyPrefix) {
             Redis = ConnectionMultiplexer.Connect(configString);
+            KeyPrefix = keyPrefix;
             Id = Guid.NewGuid();
             return Task.CompletedTask;
         }
@@ -51,6 +53,7 @@ namespace YetaWF.Modules.Caching.DataProvider {
         // API
 
         public async Task AddAsync<TYPE>(string key, TYPE data) {
+            key = KeyPrefix + key;
             // save new version shared and locally
             byte[] cacheData = new GeneralFormatter().Serialize(data);
             DateTime created = DateTime.UtcNow;
@@ -79,6 +82,7 @@ namespace YetaWF.Modules.Caching.DataProvider {
         }
 
         public async Task<GetObjectInfo<TYPE>> GetAsync<TYPE>(string key) {
+            key = KeyPrefix + key;
             // get locally cached version
             GetObjectInfo<LocalSharedCacheObject> localInfo;
             using (ICacheDataProvider localCacheDP = YetaWF.Core.IO.Caching.GetLocalCacheProvider()) {
@@ -146,6 +150,7 @@ namespace YetaWF.Modules.Caching.DataProvider {
             }
         }
         public async Task RemoveAsync<TYPE>(string key) {
+            key = KeyPrefix + key;
             // We're adding a new version
             await AddAsync(key, default(TYPE));
         }

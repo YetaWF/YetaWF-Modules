@@ -24,6 +24,7 @@ namespace YetaWF.Modules.Caching.Startup {
 
         internal const string Distributed = "Distributed";
         internal const string DefaultRedisConfig = "localhost:6379";
+        internal const string DefaultRedisKeyPrefix = "";
 
         internal static string LockProvider { get; private set; }
         internal static string CacheProvider { get; private set; }
@@ -55,8 +56,9 @@ namespace YetaWF.Modules.Caching.Startup {
                 CacheProvider = WebConfigHelper.GetValue(package.AreaName, "CacheProvider", "redis").ToLower();
                 if (CacheProvider == RedisCacheProvider) {
                     string configString = WebConfigHelper.GetValue(package.AreaName, "RedisCacheConfig", DefaultRedisConfig);
-                    await SharedCacheObjectRedisDataProvider.InitAsync(configString);
-                    await StaticObjectMultiRedisDataProvider.InitAsync(configString);
+                    string keyPrefix = WebConfigHelper.GetValue(package.AreaName, "RedisKeyPrefix", DefaultRedisKeyPrefix);
+                    await SharedCacheObjectRedisDataProvider.InitAsync(configString, keyPrefix);
+                    await StaticObjectMultiRedisDataProvider.InitAsync(configString, keyPrefix);
                     YetaWF.Core.IO.Caching.GetSharedCacheProvider = SharedCacheObjectRedisDataProvider.GetProvider;
                     YetaWF.Core.IO.Caching.GetStaticCacheProvider = StaticObjectMultiRedisDataProvider.GetProvider;
                 } else if (CacheProvider == SQLCacheProvider) {
@@ -74,7 +76,8 @@ namespace YetaWF.Modules.Caching.Startup {
                     YetaWF.Core.IO.Caching.LockProvider = new LockFileProvider(rootFolder);
                 } else if (LockProvider == RedisCacheProvider) {
                     string configString = WebConfigHelper.GetValue(package.AreaName, "RedisLockConfig", DefaultRedisConfig);
-                    YetaWF.Core.IO.Caching.LockProvider = new LockRedisProvider(configString);
+                    string keyPrefix = WebConfigHelper.GetValue(package.AreaName, "RedisKeyPrefix", DefaultRedisKeyPrefix);
+                    YetaWF.Core.IO.Caching.LockProvider = new LockRedisProvider(configString, keyPrefix);
                 } else {
                     throw new InternalError($"Unsupported lock provider: {LockProvider}");
                 }
