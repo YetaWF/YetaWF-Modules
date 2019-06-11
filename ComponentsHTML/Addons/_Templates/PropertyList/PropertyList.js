@@ -409,9 +409,11 @@ var YetaWF_ComponentsHTML;
             }
         };
         PropertyListComponent.prototype.hideBoxByCategory = function (name) {
-            var box = $YetaWF.getElement1BySelector(".t_proptable.t_propexpandable.t_boxpanel-" + name.toLocaleLowerCase(), [this.Control]);
+            var box = $YetaWF.getElement1BySelectorCond(".t_proptable.t_propexpandable.t_boxpanel-" + name.toLocaleLowerCase(), [this.Control]);
+            if (!box)
+                return;
             $YetaWF.elementRemoveClass(box, "t_proptable");
-            $YetaWF.elementAddClass(box, "t_proptablehidden");
+            $YetaWF.elementAddClasses(box, ["t_proptablehidden", YConfigs.Forms.CssFormNoSubmitContents]);
         };
         PropertyListComponent.prototype.showBoxesByCategory = function (names) {
             for (var _i = 0, names_2 = names; _i < names_2.length; _i++) {
@@ -420,8 +422,10 @@ var YetaWF_ComponentsHTML;
             }
         };
         PropertyListComponent.prototype.showBoxByCategory = function (name) {
-            var box = $YetaWF.getElement1BySelector(".t_proptablehidden.t_propexpandable.t_boxpanel-" + name.toLocaleLowerCase(), [this.Control]);
-            $YetaWF.elementRemoveClass(box, "t_proptablehidden");
+            var box = $YetaWF.getElement1BySelectorCond(".t_proptablehidden.t_propexpandable.t_boxpanel-" + name.toLocaleLowerCase(), [this.Control]);
+            if (!box)
+                return;
+            $YetaWF.elementRemoveClasses(box, ["t_proptablehidden", YConfigs.Forms.CssFormNoSubmitContents]);
             $YetaWF.elementAddClass(box, "t_proptable");
         };
         PropertyListComponent.prototype.layout = function () {

@@ -106,7 +106,7 @@ namespace YetaWF_ComponentsHTML {
             var $disabledFields = $("." + YConfigs.Forms.CssFormNoSubmit, $(form)).not(":disabled");
             $disabledFields.attr("disabled", "disabled");
             // disable all input fields in containers (usually grids) - we don't want to submit them - they're collected separately
-            var $disabledGridFields = $(`.${YConfigs.Forms.CssFormNoSubmitContents} input,.${YConfigs.Forms.CssFormNoSubmitContents} select`, $(form)).not(":disabled");
+            var $disabledGridFields = $(`.${YConfigs.Forms.CssFormNoSubmitContents} input,.${YConfigs.Forms.CssFormNoSubmitContents} select,.${YConfigs.Forms.CssFormNoSubmitContents} textarea`, $(form)).not(":disabled");
             $disabledGridFields.attr("disabled", "disabled");
             // serialize the form
             var formData = $(form).serializeArray();
@@ -119,13 +119,29 @@ namespace YetaWF_ComponentsHTML {
          * Validate all fields in the current form.
          */
         public validate(form: HTMLFormElement): void {
-            ($(form) as any).validate();
+            // mark all input fields in containers (usually grids) - we don't want to validate
+            var $markedFields = $(`.${YConfigs.Forms.CssFormNoSubmitContents} input,.${YConfigs.Forms.CssFormNoSubmitContents} select,.${YConfigs.Forms.CssFormNoSubmitContents} textarea`, $(form)).not(":disabled");
+            $markedFields.addClass(YConfigs.Forms.CssFormNoValidate);
+            // validate
+            let $f = ($(form) as any);
+            let fValidator = $f.validate() as JQueryValidation.Validator;
+            fValidator.resetForm();
+            // and enable all the input fields we just disabled
+            $markedFields.removeClass(YConfigs.Forms.CssFormNoValidate);
         }
         /**
          * Returns whether all fields in the current form are valid.
          */
         public isValid(form: HTMLFormElement): boolean {
-            return ($(form) as any).valid();
+            // mark all input fields in containers (usually grids) - we don't want to validate
+            var $markedFields = $(`.${YConfigs.Forms.CssFormNoSubmitContents} input,.${YConfigs.Forms.CssFormNoSubmitContents} select,.${YConfigs.Forms.CssFormNoSubmitContents} textarea`, $(form)).not(":disabled");
+            $markedFields.addClass(YConfigs.Forms.CssFormNoValidate);
+            // validate
+            let $f = ($(form) as any);
+            let valid = $f.valid();
+            // and enable all the input fields we just disabled
+            $markedFields.removeClass(YConfigs.Forms.CssFormNoValidate);
+            return valid;
         }
         /**
          * If there is a validation in the specified tab control, the tab is activated.

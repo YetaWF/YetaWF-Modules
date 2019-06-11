@@ -10,7 +10,7 @@
 
 // Make sure all hidden fields are NOT ignored
 $.validator.setDefaults({
-    ignore: "." + YConfigs.Forms.CssFormNoValidate, // don't ignore hidden fields - ignore fields with no validate class
+    ignore: `.${YConfigs.Forms.CssFormNoValidate}`, // don't ignore hidden fields - ignore fields with no validate class
     onsubmit: false         // don't validate on submit, we want to see the submit event and validate things ourselves
 });
 ($.validator.unobtrusive as any).options = {

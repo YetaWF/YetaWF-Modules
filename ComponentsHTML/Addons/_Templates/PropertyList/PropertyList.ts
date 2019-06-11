@@ -489,17 +489,19 @@ namespace YetaWF_ComponentsHTML {
                 this.hideBoxByCategory(name);
         }
         public hideBoxByCategory(name: string): void {
-            let box = $YetaWF.getElement1BySelector(`.t_proptable.t_propexpandable.t_boxpanel-${name.toLocaleLowerCase()}`, [this.Control]);
+            let box = $YetaWF.getElement1BySelectorCond(`.t_proptable.t_propexpandable.t_boxpanel-${name.toLocaleLowerCase()}`, [this.Control]);
+            if (!box) return;
             $YetaWF.elementRemoveClass(box, "t_proptable");
-            $YetaWF.elementAddClass(box, "t_proptablehidden");
+            $YetaWF.elementAddClasses(box, ["t_proptablehidden", YConfigs.Forms.CssFormNoSubmitContents]);
         }
         public showBoxesByCategory(names: string[]): void {
             for (let name of names)
                 this.showBoxByCategory(name);
         }
         public showBoxByCategory(name: string): void {
-            let box = $YetaWF.getElement1BySelector(`.t_proptablehidden.t_propexpandable.t_boxpanel-${name.toLocaleLowerCase()}`, [this.Control]);
-            $YetaWF.elementRemoveClass(box, "t_proptablehidden");
+            let box = $YetaWF.getElement1BySelectorCond(`.t_proptablehidden.t_propexpandable.t_boxpanel-${name.toLocaleLowerCase()}`, [this.Control]);
+            if (!box) return;
+            $YetaWF.elementRemoveClasses(box, ["t_proptablehidden", YConfigs.Forms.CssFormNoSubmitContents]);
             $YetaWF.elementAddClass(box, "t_proptable");
         }
         public layout(): void {
