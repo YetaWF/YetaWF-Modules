@@ -56,7 +56,9 @@ var YetaWF_ComponentsHTML;
                         return null;
                     return total.toString();
                 },
-                Enable: null,
+                Enable: function (control, enable) {
+                    /* can't enable/disable but this is handled to support show/hide */
+                },
             }, false, function (tag, control) {
                 control.internalDestroy();
             }) || this;

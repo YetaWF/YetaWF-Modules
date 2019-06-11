@@ -126,7 +126,9 @@ namespace YetaWF_ComponentsHTML {
                     if (!total) return null;
                     return total.toString();
                 },
-                Enable: null, /* can't enable/disable grid */
+                Enable: (control: Grid, enable: boolean): void => {
+                    /* can't enable/disable but this is handled to support show/hide */
+                },
             }, false, (tag: HTMLElement, control: Grid): void => {
                 control.internalDestroy();
             });

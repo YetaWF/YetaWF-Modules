@@ -133,6 +133,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                     disabled = true;
             }
             if (disabled) {
+                //$$$$$$ THIS DOESN'T WORK WITH TEMPLATES
                 component.FieldSetup(tag, FieldType.Anonymous);
                 tag.Attributes.Remove("disabled");
                 tag.Attributes.Add("disabled", "disabled");

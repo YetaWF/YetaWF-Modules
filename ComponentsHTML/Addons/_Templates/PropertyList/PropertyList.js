@@ -28,7 +28,9 @@ var YetaWF_ComponentsHTML;
                 ControlType: YetaWF_ComponentsHTML.ControlTypeEnum.Template,
                 ChangeEvent: null,
                 GetValue: null,
-                Enable: null,
+                Enable: function (control, enable) {
+                    /* can't enable/disable but this is handled to support show/hide */
+                },
             }) || this;
             _this.MasonryElem = null;
             _this.MinWidth = 0;
@@ -104,9 +106,7 @@ var YetaWF_ComponentsHTML;
             _this.update();
             $YetaWF.registerEventHandlerWindow("resize", null, function (ev) {
                 if (_this.MasonryElem) {
-                    _this.setLayout();
-                    if (_this.MasonryElem)
-                        _this.MasonryElem.layout();
+                    _this.layout();
                 }
                 else {
                     _this.setLayout();
@@ -114,9 +114,7 @@ var YetaWF_ComponentsHTML;
                 return true;
             });
             $YetaWF.registerCustomEventHandler(_this, "propertylist_relayout", function (ev) {
-                _this.setLayout();
-                if (_this.MasonryElem)
-                    _this.MasonryElem.layout();
+                _this.layout();
                 return false;
             });
             /**
@@ -398,6 +396,38 @@ var YetaWF_ComponentsHTML;
                 event.initEvent("propertylist_collapse", false, true);
                 ctrl.dispatchEvent(event);
             }
+        };
+        PropertyListComponent.prototype.expandBoxByCategory = function (name) {
+            var box = $YetaWF.getElement1BySelector(".t_proptable.t_propexpandable.t_boxpanel-" + name.toLocaleLowerCase(), [this.Control]);
+            this.expandCollapseBox(box);
+            this.update();
+        };
+        PropertyListComponent.prototype.hideBoxesByCategory = function (names) {
+            for (var _i = 0, names_1 = names; _i < names_1.length; _i++) {
+                var name_1 = names_1[_i];
+                this.hideBoxByCategory(name_1);
+            }
+        };
+        PropertyListComponent.prototype.hideBoxByCategory = function (name) {
+            var box = $YetaWF.getElement1BySelector(".t_proptable.t_propexpandable.t_boxpanel-" + name.toLocaleLowerCase(), [this.Control]);
+            $YetaWF.elementRemoveClass(box, "t_proptable");
+            $YetaWF.elementAddClass(box, "t_proptablehidden");
+        };
+        PropertyListComponent.prototype.showBoxesByCategory = function (names) {
+            for (var _i = 0, names_2 = names; _i < names_2.length; _i++) {
+                var name_2 = names_2[_i];
+                this.showBoxByCategory(name_2);
+            }
+        };
+        PropertyListComponent.prototype.showBoxByCategory = function (name) {
+            var box = $YetaWF.getElement1BySelector(".t_proptablehidden.t_propexpandable.t_boxpanel-" + name.toLocaleLowerCase(), [this.Control]);
+            $YetaWF.elementRemoveClass(box, "t_proptablehidden");
+            $YetaWF.elementAddClass(box, "t_proptable");
+        };
+        PropertyListComponent.prototype.layout = function () {
+            this.setLayout();
+            if (this.MasonryElem)
+                this.MasonryElem.layout();
         };
         PropertyListComponent.tabInitjQuery = function (tabCtrlId, activeTab, activeTabId) {
             ComponentsHTMLHelper.MUSTHAVE_JQUERYUI();

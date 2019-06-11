@@ -106,7 +106,9 @@ namespace YetaWF_ComponentsHTML {
                 ControlType: YetaWF_ComponentsHTML.ControlTypeEnum.Template,
                 ChangeEvent: null,
                 GetValue: null,
-                Enable: null,
+                Enable: (control: PropertyListComponent, enable: boolean): void => {
+                    /* can't enable/disable but this is handled to support show/hide */
+                },
             });
 
             this.ControlData = controlData;
@@ -139,7 +141,7 @@ namespace YetaWF_ComponentsHTML {
 
             // Handle change events
             if (this.ControlData) {
-            var controlData = this.ControlData;
+                var controlData = this.ControlData;
                 for (let control of controlData.Controls) {
                     let item = ControlsHelper.getControlItemByName(control, this.Control);
                     switch (item.ControlType) {
@@ -182,9 +184,7 @@ namespace YetaWF_ComponentsHTML {
 
             $YetaWF.registerEventHandlerWindow("resize", null, (ev: UIEvent) => {
                 if (this.MasonryElem) {
-                    this.setLayout();
-                    if (this.MasonryElem)
-                        this.MasonryElem.layout!();
+                    this.layout();
                 } else {
                     this.setLayout();
                 }
@@ -192,9 +192,7 @@ namespace YetaWF_ComponentsHTML {
             });
 
             $YetaWF.registerCustomEventHandler(this, "propertylist_relayout", (ev: Event): boolean => {
-                this.setLayout();
-                if (this.MasonryElem)
-                    this.MasonryElem.layout!();
+                this.layout()
                 return false;
             });
             /**
@@ -344,8 +342,8 @@ namespace YetaWF_ComponentsHTML {
             let index = -1;
             for (let style of this.Setup.ColumnStyles) {
                 if (width < style.MinWindowSize)
-                     return index;
-                 ++index;
+                    return index;
+                ++index;
             }
             return index;
         }
@@ -473,13 +471,41 @@ namespace YetaWF_ComponentsHTML {
             return !$YetaWF.elementHasClass(row, "t_disabled");
         }
 
-        public static relayout(container:HTMLElement): void {
+        public static relayout(container: HTMLElement): void {
             let ctrls = $YetaWF.getElementsBySelector(".yt_propertylist.t_boxedcat,.yt_propertylist.t_boxed", [container]);
             for (let ctrl of ctrls) {
                 var event = document.createEvent("Event");
                 event.initEvent("propertylist_collapse", false, true);
                 ctrl.dispatchEvent(event);
             }
+        }
+        public expandBoxByCategory(name: string): void {
+            let box = $YetaWF.getElement1BySelector(`.t_proptable.t_propexpandable.t_boxpanel-${name.toLocaleLowerCase()}`, [this.Control]);
+            this.expandCollapseBox(box);
+            this.update();
+        }
+        public hideBoxesByCategory(names: string[]): void {
+            for (let name of names)
+                this.hideBoxByCategory(name);
+        }
+        public hideBoxByCategory(name: string): void {
+            let box = $YetaWF.getElement1BySelector(`.t_proptable.t_propexpandable.t_boxpanel-${name.toLocaleLowerCase()}`, [this.Control]);
+            $YetaWF.elementRemoveClass(box, "t_proptable");
+            $YetaWF.elementAddClass(box, "t_proptablehidden");
+        }
+        public showBoxesByCategory(names: string[]): void {
+            for (let name of names)
+                this.showBoxByCategory(name);
+        }
+        public showBoxByCategory(name: string): void {
+            let box = $YetaWF.getElement1BySelector(`.t_proptablehidden.t_propexpandable.t_boxpanel-${name.toLocaleLowerCase()}`, [this.Control]);
+            $YetaWF.elementRemoveClass(box, "t_proptablehidden");
+            $YetaWF.elementAddClass(box, "t_proptable");
+        }
+        public layout(): void {
+            this.setLayout();
+            if (this.MasonryElem)
+                this.MasonryElem.layout!();
         }
 
         public static tabInitjQuery(tabCtrlId: string, activeTab: number, activeTabId: string):void {

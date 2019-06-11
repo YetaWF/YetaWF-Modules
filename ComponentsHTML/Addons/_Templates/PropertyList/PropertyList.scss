@@ -124,6 +124,9 @@
 }
 .yt_propertylist.t_boxed,
 .yt_propertylist.t_boxedcat {
+    .t_proptablehidden {
+        display:none;
+    }
     .t_proptable {
         border: 1px solid lightgray;
         border-radius:5px;
