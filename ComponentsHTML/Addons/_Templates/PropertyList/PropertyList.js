@@ -222,7 +222,7 @@ var YetaWF_ComponentsHTML;
             }
             return new Masonry(this.Control, {
                 itemSelector: ".t_proptable",
-                horizontalOrder: true,
+                horizontalOrder: false,
                 transitionDuration: "0.1s",
                 resize: false,
                 initLayout: true
