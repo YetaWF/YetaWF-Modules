@@ -163,7 +163,8 @@
                 }
             }
         }
-        &.t_prophide {
+        &.t_prophide,
+        &.t_propsuppress {
             display: none;
         }
     }

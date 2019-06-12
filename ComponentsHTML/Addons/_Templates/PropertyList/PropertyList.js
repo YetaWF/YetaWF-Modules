@@ -211,7 +211,7 @@ var YetaWF_ComponentsHTML;
             var boxes = $YetaWF.getElementsBySelector(".t_proptable", [this.Control]);
             for (var _i = 0, boxes_3 = boxes; _i < boxes_3.length; _i++) {
                 var b = boxes_3[_i];
-                $YetaWF.elementRemoveClasses(b, ["t_propexpanded", "t_propcollapsed", "t_prophide"]);
+                $YetaWF.elementRemoveClasses(b, ["t_propexpanded", "t_propcollapsed"]);
                 $YetaWF.elementAddClass(b, "t_propcollapsed");
             }
             var expcolls = $YetaWF.getElementsBySelector(".t_proptable .t_boxexpcoll", [this.Control]);
@@ -412,8 +412,8 @@ var YetaWF_ComponentsHTML;
             var box = $YetaWF.getElement1BySelectorCond(".t_proptable.t_propexpandable.t_boxpanel-" + name.toLocaleLowerCase(), [this.Control]);
             if (!box)
                 return;
-            $YetaWF.elementRemoveClass(box, "t_proptable");
-            $YetaWF.elementAddClasses(box, ["t_proptablehidden", YConfigs.Forms.CssFormNoSubmitContents]);
+            $YetaWF.elementRemoveClasses(box, ["t_propsuppress"]);
+            $YetaWF.elementAddClasses(box, ["t_propsuppress", YConfigs.Forms.CssFormNoSubmitContents]);
         };
         PropertyListComponent.prototype.showBoxesByCategory = function (names) {
             for (var _i = 0, names_2 = names; _i < names_2.length; _i++) {
@@ -422,11 +422,10 @@ var YetaWF_ComponentsHTML;
             }
         };
         PropertyListComponent.prototype.showBoxByCategory = function (name) {
-            var box = $YetaWF.getElement1BySelectorCond(".t_proptablehidden.t_propexpandable.t_boxpanel-" + name.toLocaleLowerCase(), [this.Control]);
+            var box = $YetaWF.getElement1BySelectorCond(".t_proptable.t_propexpandable.t_boxpanel-" + name.toLocaleLowerCase(), [this.Control]);
             if (!box)
                 return;
-            $YetaWF.elementRemoveClasses(box, ["t_proptablehidden", YConfigs.Forms.CssFormNoSubmitContents]);
-            $YetaWF.elementAddClass(box, "t_proptable");
+            $YetaWF.elementRemoveClasses(box, ["t_propsuppress", YConfigs.Forms.CssFormNoSubmitContents]);
         };
         PropertyListComponent.prototype.layout = function () {
             this.setLayout();

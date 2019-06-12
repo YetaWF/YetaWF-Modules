@@ -116,8 +116,9 @@
   .yt_propertylist.t_boxed .t_proptable.t_propcollapsed .t_boxexpcoll.t_hide,
   .yt_propertylist.t_boxedcat .t_proptable.t_propcollapsed .t_boxexpcoll.t_hide {
     display: none; }
-  .yt_propertylist.t_boxed .t_proptable.t_prophide,
-  .yt_propertylist.t_boxedcat .t_proptable.t_prophide {
+  .yt_propertylist.t_boxed .t_proptable.t_prophide, .yt_propertylist.t_boxed .t_proptable.t_propsuppress,
+  .yt_propertylist.t_boxedcat .t_proptable.t_prophide,
+  .yt_propertylist.t_boxedcat .t_proptable.t_propsuppress {
     display: none; }
 
 .yt_propertylist.t_boxed.t_col1 .t_proptable,
