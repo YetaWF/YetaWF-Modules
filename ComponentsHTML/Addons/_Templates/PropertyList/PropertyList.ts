@@ -192,7 +192,7 @@ namespace YetaWF_ComponentsHTML {
             });
 
             $YetaWF.registerCustomEventHandler(this, "propertylist_relayout", (ev: Event): boolean => {
-                this.layout()
+                this.layout();
                 return false;
             });
             /**
