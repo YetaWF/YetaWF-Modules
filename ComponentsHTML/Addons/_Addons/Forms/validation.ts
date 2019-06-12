@@ -27,8 +27,16 @@ $.validator.addMethod("requiredexpr", function (this: Function, value: any, elem
         case YetaWF_ComponentsHTML.OpEnum.RequiredIf:
         case YetaWF_ComponentsHTML.OpEnum.RequiredIfSupplied: {
             let form = $YetaWF.Forms.getForm(element);
-            let valid = YetaWF_ComponentsHTML.ValidatorHelper.evaluateExpressionList(value, form, parameters.op, parameters.exprList);
-            if (!valid)
+            let exprs: YetaWF_ComponentsHTML.Expr[][] = parameters.exprList;
+            let match = false;
+            for (let expr of exprs) {
+                let valid = YetaWF_ComponentsHTML.ValidatorHelper.evaluateExpressionList(value, form, parameters.op, expr);
+                if (valid) {
+                    match = true;
+                    break;
+                }
+            }
+            if (!match)
                 return true;
             if (value === undefined || value === null || value.trim().length === 0)
                 return false;
@@ -38,8 +46,16 @@ $.validator.addMethod("requiredexpr", function (this: Function, value: any, elem
         case YetaWF_ComponentsHTML.OpEnum.SelectionRequiredIf:
         case YetaWF_ComponentsHTML.OpEnum.SelectionRequiredIfSupplied: {
             let form = $YetaWF.Forms.getForm(element);
-            let valid = YetaWF_ComponentsHTML.ValidatorHelper.evaluateExpressionList(value, form, parameters.op, parameters.exprList);
-            if (!valid)
+            let exprs: YetaWF_ComponentsHTML.Expr[][] = parameters.exprList;
+            let match = false;
+            for (let expr of exprs) {
+                let valid = YetaWF_ComponentsHTML.ValidatorHelper.evaluateExpressionList(value, form, parameters.op, expr);
+                if (valid) {
+                    match = true;
+                    break;
+                }
+            }
+            if (!match)
                 return true;
             if (value === undefined || value === null || value.trim().length === 0 || value.toString() === "0")
                 return false;
@@ -48,8 +64,16 @@ $.validator.addMethod("requiredexpr", function (this: Function, value: any, elem
         case YetaWF_ComponentsHTML.OpEnum.RequiredIfNot:
         case YetaWF_ComponentsHTML.OpEnum.RequiredIfNotSupplied: {
             let form = $YetaWF.Forms.getForm(element);
-            let valid = YetaWF_ComponentsHTML.ValidatorHelper.evaluateExpressionList(value, form, parameters.op, parameters.exprList);
-            if (valid)
+            let exprs: YetaWF_ComponentsHTML.Expr[][] = parameters.exprList;
+            let match = false;
+            for (let expr of exprs) {
+                let valid = YetaWF_ComponentsHTML.ValidatorHelper.evaluateExpressionList(value, form, parameters.op, expr);
+                if (valid) {
+                    match = true;
+                    break;
+                }
+            }
+            if (match)
                 return true;
             if (value === undefined || value === null || value.trim().length === 0)
                 return false;
@@ -58,8 +82,16 @@ $.validator.addMethod("requiredexpr", function (this: Function, value: any, elem
         case YetaWF_ComponentsHTML.OpEnum.SelectionRequiredIfNot:
         case YetaWF_ComponentsHTML.OpEnum.SelectionRequiredIfNotSupplied: {
             let form = $YetaWF.Forms.getForm(element);
-            let valid = YetaWF_ComponentsHTML.ValidatorHelper.evaluateExpressionList(value, form, parameters.op, parameters.exprList);
-            if (valid)
+            let exprs: YetaWF_ComponentsHTML.Expr[][] = parameters.exprList;
+            let match = false;
+            for (let expr of exprs) {
+                let valid = YetaWF_ComponentsHTML.ValidatorHelper.evaluateExpressionList(value, form, parameters.op, expr);
+                if (valid) {
+                    match = true;
+                    break;
+                }
+            }
+            if (match)
                 return true;
             if (value === undefined || value === null || value.trim().length === 0 || value.toString() === "0")
                 return false;

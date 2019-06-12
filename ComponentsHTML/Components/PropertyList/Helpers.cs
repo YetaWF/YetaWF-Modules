@@ -71,10 +71,10 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             if (setup.ExplicitDefinitions) {
                 // Invoke __PropertyListSetupAsync
                 MethodInfo miAsync = objType.GetMethod("__PropertyListSetupAsync", new Type[] { typeof(PropertyList.PropertyListSetup) });
-                if (miAsync == null)
-                    throw new InternalError($"{objType.FullName} doesn't have a __PropertyListSetupAsync method for {objType.FullName}");
-                Task methRetvalTask = (Task)miAsync.Invoke(obj, new object[] { setup });
-                await methRetvalTask;
+                if (miAsync != null) {
+                    Task methRetvalTask = (Task)miAsync.Invoke(obj, new object[] { setup });
+                    await methRetvalTask;
+                }
 
                 // sanity checking
                 if (YetaWFManager.DiagnosticsMode) {

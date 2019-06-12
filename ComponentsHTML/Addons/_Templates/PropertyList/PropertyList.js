@@ -392,6 +392,8 @@ var YetaWF_ComponentsHTML;
             var ctrls = $YetaWF.getElementsBySelector(".yt_propertylist.t_boxedcat,.yt_propertylist.t_boxed", [container]);
             for (var _i = 0, ctrls_1 = ctrls; _i < ctrls_1.length; _i++) {
                 var ctrl = ctrls_1[_i];
+                var propertyList = YetaWF.ComponentBaseDataImpl.getControlFromTag(ctrl, PropertyListComponent.SELECTOR);
+                propertyList.update();
                 var event = document.createEvent("Event");
                 event.initEvent("propertylist_collapse", false, true);
                 ctrl.dispatchEvent(event);

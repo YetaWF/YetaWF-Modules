@@ -23,8 +23,17 @@ $.validator.addMethod("requiredexpr", function (value, element, parameters) {
         case YetaWF_ComponentsHTML.OpEnum.RequiredIf:
         case YetaWF_ComponentsHTML.OpEnum.RequiredIfSupplied: {
             var form = $YetaWF.Forms.getForm(element);
-            var valid = YetaWF_ComponentsHTML.ValidatorHelper.evaluateExpressionList(value, form, parameters.op, parameters.exprList);
-            if (!valid)
+            var exprs = parameters.exprList;
+            var match = false;
+            for (var _i = 0, exprs_1 = exprs; _i < exprs_1.length; _i++) {
+                var expr = exprs_1[_i];
+                var valid = YetaWF_ComponentsHTML.ValidatorHelper.evaluateExpressionList(value, form, parameters.op, expr);
+                if (valid) {
+                    match = true;
+                    break;
+                }
+            }
+            if (!match)
                 return true;
             if (value === undefined || value === null || value.trim().length === 0)
                 return false;
@@ -34,8 +43,17 @@ $.validator.addMethod("requiredexpr", function (value, element, parameters) {
         case YetaWF_ComponentsHTML.OpEnum.SelectionRequiredIf:
         case YetaWF_ComponentsHTML.OpEnum.SelectionRequiredIfSupplied: {
             var form = $YetaWF.Forms.getForm(element);
-            var valid = YetaWF_ComponentsHTML.ValidatorHelper.evaluateExpressionList(value, form, parameters.op, parameters.exprList);
-            if (!valid)
+            var exprs = parameters.exprList;
+            var match = false;
+            for (var _a = 0, exprs_2 = exprs; _a < exprs_2.length; _a++) {
+                var expr = exprs_2[_a];
+                var valid = YetaWF_ComponentsHTML.ValidatorHelper.evaluateExpressionList(value, form, parameters.op, expr);
+                if (valid) {
+                    match = true;
+                    break;
+                }
+            }
+            if (!match)
                 return true;
             if (value === undefined || value === null || value.trim().length === 0 || value.toString() === "0")
                 return false;
@@ -44,8 +62,17 @@ $.validator.addMethod("requiredexpr", function (value, element, parameters) {
         case YetaWF_ComponentsHTML.OpEnum.RequiredIfNot:
         case YetaWF_ComponentsHTML.OpEnum.RequiredIfNotSupplied: {
             var form = $YetaWF.Forms.getForm(element);
-            var valid = YetaWF_ComponentsHTML.ValidatorHelper.evaluateExpressionList(value, form, parameters.op, parameters.exprList);
-            if (valid)
+            var exprs = parameters.exprList;
+            var match = false;
+            for (var _b = 0, exprs_3 = exprs; _b < exprs_3.length; _b++) {
+                var expr = exprs_3[_b];
+                var valid = YetaWF_ComponentsHTML.ValidatorHelper.evaluateExpressionList(value, form, parameters.op, expr);
+                if (valid) {
+                    match = true;
+                    break;
+                }
+            }
+            if (match)
                 return true;
             if (value === undefined || value === null || value.trim().length === 0)
                 return false;
@@ -54,8 +81,17 @@ $.validator.addMethod("requiredexpr", function (value, element, parameters) {
         case YetaWF_ComponentsHTML.OpEnum.SelectionRequiredIfNot:
         case YetaWF_ComponentsHTML.OpEnum.SelectionRequiredIfNotSupplied: {
             var form = $YetaWF.Forms.getForm(element);
-            var valid = YetaWF_ComponentsHTML.ValidatorHelper.evaluateExpressionList(value, form, parameters.op, parameters.exprList);
-            if (valid)
+            var exprs = parameters.exprList;
+            var match = false;
+            for (var _c = 0, exprs_4 = exprs; _c < exprs_4.length; _c++) {
+                var expr = exprs_4[_c];
+                var valid = YetaWF_ComponentsHTML.ValidatorHelper.evaluateExpressionList(value, form, parameters.op, expr);
+                if (valid) {
+                    match = true;
+                    break;
+                }
+            }
+            if (match)
                 return true;
             if (value === undefined || value === null || value.trim().length === 0 || value.toString() === "0")
                 return false;

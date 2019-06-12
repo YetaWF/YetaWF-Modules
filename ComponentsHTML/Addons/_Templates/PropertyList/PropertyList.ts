@@ -474,6 +474,8 @@ namespace YetaWF_ComponentsHTML {
         public static relayout(container: HTMLElement): void {
             let ctrls = $YetaWF.getElementsBySelector(".yt_propertylist.t_boxedcat,.yt_propertylist.t_boxed", [container]);
             for (let ctrl of ctrls) {
+                let propertyList = YetaWF.ComponentBaseDataImpl.getControlFromTag<PropertyListComponent>(ctrl, PropertyListComponent.SELECTOR);
+                propertyList.update();
                 var event = document.createEvent("Event");
                 event.initEvent("propertylist_collapse", false, true);
                 ctrl.dispatchEvent(event);
