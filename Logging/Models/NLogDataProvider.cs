@@ -23,7 +23,7 @@ namespace YetaWF.Modules.Logging.DataProvider.NLogProvider {
 
         public static NLog.Logger Logger;
 
-        private const string NLogSettingsFile = "nlog.config";
+        public const string NLogSettingsFile = "NLog.config";
         private const string NLogMessageFormat = "NLogMessageFormat";
         private const string NLogMessageEvent = "NLogMessageEvent";
 
@@ -193,7 +193,7 @@ namespace YetaWF.Modules.Logging.DataProvider.NLogProvider {
             return Task.CompletedTask;
         }
 
-        public override string LoggerName { get { return "NLog (synchronous and asynchronous I/O configurable using NLog.config)"; } }
+        public override string LoggerName { get { return $"NLog (synchronous and asynchronous I/O configurable using {NLogDataProvider.NLogSettingsFile})"; } }
         public override bool CanBrowse { get { return true; } }
         public override bool CanImportOrExport { get { return false; } }
         public override bool CanRemove { get { return true; } }
