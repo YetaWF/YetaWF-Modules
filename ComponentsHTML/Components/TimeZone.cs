@@ -107,8 +107,8 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             DateTime dt = DateTime.Now;// Need local time
 
             bool showDefault = PropData.GetAdditionalAttributeValue("ShowDefault", true);
-            List<SelectionItem<string>> list;
 
+            List<SelectionItem<string>> list;
             if (System.Runtime.InteropServices.RuntimeInformation.IsOSPlatform(System.Runtime.InteropServices.OSPlatform.Windows)) {
                 list = (
                     from tzi in tzis orderby tzi.DisplayName
@@ -120,15 +120,25 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                             Tooltip = tzi.IsDaylightSavingTime(dt) ? tzi.DaylightName : tzi.StandardName,
                         }).ToList<SelectionItem<string>>();
             } else {
-                list = (
-                    from tzi in tzis orderby tzi.Id
-                    orderby tzi.Id
-                    select
-                        new SelectionItem<string> {
-                            Text = tzi.Id,
-                            Value = tzi.Id,
-                            Tooltip = tzi.IsDaylightSavingTime(dt) ? tzi.DaylightName : tzi.StandardName,
-                        }).ToList<SelectionItem<string>>();
+
+                try {
+                    model = TZConvert.WindowsToIana(model);
+                } catch (Exception) { 
+                    model = null;
+                }
+                tzis = (from tzi in tzis orderby tzi.BaseUtcOffset, tzi.Id select tzi).ToList();
+
+                list = new List<SelectionItem<string>>();
+                foreach (TimeZoneInfo tzi in tzis) {
+                    TimeSpan ts = tzi.BaseUtcOffset;
+                    int h = ts.Hours;
+                    string disp = $"(UTC{(h > 0 ? "+" : "-")}{Math.Abs(h):00}:{ts.Minutes:00}) {tzi.Id}";
+                    list.Add(new SelectionItem<string> {
+                        Text = disp,
+                        Value = tzi.Id,
+                        Tooltip = tzi.IsDaylightSavingTime(dt) ? tzi.DaylightName : tzi.StandardName,
+                    });
+                }
             }
 
             if (showDefault) {
