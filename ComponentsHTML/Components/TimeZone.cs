@@ -123,7 +123,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
                 try {
                     model = TZConvert.WindowsToIana(model);
-                } catch (Exception) { 
+                } catch (Exception) {
                     model = null;
                 }
                 tzis = (from tzi in tzis orderby tzi.BaseUtcOffset, tzi.Id select tzi).ToList();
