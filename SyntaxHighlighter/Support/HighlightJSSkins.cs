@@ -14,8 +14,8 @@ namespace YetaWF.Modules.SyntaxHighlighter.Support {
 
     public partial class SkinAccess : IInitializeApplicationStartup {
 
-        private const string HighlightJSThemeFile = "Themelist.txt";
-        private const string HighlightJSThemeFileMVC6 = "ThemelistMVC6.txt";
+        private const string HighlightJSThemeFile = "themelist.txt";
+        private const string HighlightJSThemeFileMVC6 = "themelistMVC6.txt";
 
         public async Task InitializeApplicationStartupAsync() {
             await LoadSyntaxHighlighterThemesAsync();

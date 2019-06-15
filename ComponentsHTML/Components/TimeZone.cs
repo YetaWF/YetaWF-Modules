@@ -4,10 +4,15 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using TimeZoneConverter;
 using YetaWF.Core.Components;
 using YetaWF.Core.Localize;
 using YetaWF.Core.Packages;
 using YetaWF.Core.Support;
+#if MVC6
+using Microsoft.AspNetCore.Mvc.ModelBinding;
+#else
+#endif
 
 namespace YetaWF.Modules.ComponentsHTML.Components {
 
@@ -58,11 +63,22 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             tag.AddCssClass("yt_timezone");
             tag.AddCssClass("t_display");
 
-            TimeZoneInfo tzi = TimeZoneInfo.FindSystemTimeZoneById(model);
+            if (!System.Runtime.InteropServices.RuntimeInformation.IsOSPlatform(System.Runtime.InteropServices.OSPlatform.Windows)) {
+                try {
+                    model = TZConvert.WindowsToIana(model);
+                } catch (Exception) { }
+            }
+            TimeZoneInfo tzi = null;
+            try {
+                tzi = TimeZoneInfo.FindSystemTimeZoneById(model);
+            } catch (Exception) { }
             if (tzi == null) {
                 tag.SetInnerText(__ResStr("unknown", "(unknown)"));
             } else {
-                tag.SetInnerText(tzi.DisplayName);
+                if (System.Runtime.InteropServices.RuntimeInformation.IsOSPlatform(System.Runtime.InteropServices.OSPlatform.Windows))
+                    tag.SetInnerText(tzi.DisplayName);
+                else
+                    tag.SetInnerText(tzi.Id);
                 tag.Attributes.Add("title", tzi.IsDaylightSavingTime(DateTime.Now/*need local time*/) ? tzi.DaylightName : tzi.StandardName);
             }
             return Task.FromResult(tag.ToString(YTagRenderMode.Normal));
@@ -91,16 +107,40 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             DateTime dt = DateTime.Now;// Need local time
 
             bool showDefault = PropData.GetAdditionalAttributeValue("ShowDefault", true);
+
             List<SelectionItem<string>> list;
-            list = (
-                from tzi in tzis orderby tzi.DisplayName
-                orderby tzi.DisplayName
-                select
-                    new SelectionItem<string> {
-                        Text = tzi.DisplayName,
+            if (System.Runtime.InteropServices.RuntimeInformation.IsOSPlatform(System.Runtime.InteropServices.OSPlatform.Windows)) {
+                list = (
+                    from tzi in tzis orderby tzi.DisplayName
+                    orderby tzi.DisplayName
+                    select
+                        new SelectionItem<string> {
+                            Text = tzi.DisplayName,
+                            Value = tzi.Id,
+                            Tooltip = tzi.IsDaylightSavingTime(dt) ? tzi.DaylightName : tzi.StandardName,
+                        }).ToList<SelectionItem<string>>();
+            } else {
+
+                try {
+                    model = TZConvert.WindowsToIana(model);
+                } catch (Exception) { 
+                    model = null;
+                }
+                tzis = (from tzi in tzis orderby tzi.BaseUtcOffset, tzi.Id select tzi).ToList();
+
+                list = new List<SelectionItem<string>>();
+                foreach (TimeZoneInfo tzi in tzis) {
+                    TimeSpan ts = tzi.BaseUtcOffset;
+                    int h = ts.Hours;
+                    string disp = $"(UTC{(h > 0 ? "+" : "-")}{Math.Abs(h):00}:{ts.Minutes:00}) {tzi.Id}";
+                    list.Add(new SelectionItem<string> {
+                        Text = disp,
                         Value = tzi.Id,
                         Tooltip = tzi.IsDaylightSavingTime(dt) ? tzi.DaylightName : tzi.StandardName,
-                    }).ToList<SelectionItem<string>>();
+                    });
+                }
+            }
+
             if (showDefault) {
                 if (string.IsNullOrWhiteSpace(model))
                     model = TimeZoneInfo.Local.Id;
@@ -108,6 +148,24 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                 list.Insert(0, new SelectionItem<string> { Text = __ResStr("select", "(select)"), Value = "" });
 
             return await DropDownListComponent.RenderDropDownListAsync(this, model, list, "yt_timezone");
+        }
+
+        /// <summary>
+        /// Called before action runs.
+        /// </summary>
+        /// <remarks>Used to normalize all phone numbers to R164 format.</remarks>
+        public static Task<string> ControllerPreprocessActionAsync(string propName, string model, ModelStateDictionary modelState) {
+            if (!System.Runtime.InteropServices.RuntimeInformation.IsOSPlatform(System.Runtime.InteropServices.OSPlatform.Windows)) {
+                // On linux we need to translate the timezone id to a "windows" timezone id
+                if (!string.IsNullOrWhiteSpace(model)) {
+                    try {
+                        model = TZConvert.IanaToWindows(model);
+                    } catch (Exception) {
+                        model = null;
+                    }
+                }
+            }
+            return Task.FromResult(model);
         }
     }
 }

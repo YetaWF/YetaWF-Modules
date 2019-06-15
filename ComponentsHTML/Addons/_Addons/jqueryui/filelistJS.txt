@@ -1,5 +1,5 @@
 ﻿https://code.jquery.com/ui/1.12.1/jquery-ui.min.js,CDN
-\node_modules\jquery-ui-dist\jquery-ui.min.js,noCDN
+/node_modules/jquery-ui-dist/jquery-ui.min.js,noCDN
 
 # prefixup must run after jquery-ui but before any other libs (like bootstrap) so we can't really bundle this
 # we'll need to look for a better solution

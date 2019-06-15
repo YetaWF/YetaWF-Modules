@@ -14,8 +14,8 @@ namespace YetaWF.Modules.SyntaxHighlighter.Support {
 
     public partial class SkinAccess : IInitializeApplicationStartup {
 
-        private const string SyntaxHighlighterThemeFileMVC5 = "ThemelistMVC5.txt";
-        private const string SyntaxHighlighterThemeFileMVC6 = "ThemelistMVC6.txt";
+        private const string SyntaxHighlighterThemeFileMVC5 = "themelistMVC5.txt";
+        private const string SyntaxHighlighterThemeFileMVC6 = "themelistMVC6.txt";
 
         public class SyntaxHighlighterTheme {
             public string Name { get; set; }
@@ -58,7 +58,9 @@ namespace YetaWF.Modules.SyntaxHighlighter.Support {
                     throw new InternalError("Invalid SyntaxHighlighter theme entry: {0}", line);
                 string file = s[1].Trim();
 #if DEBUG // only validate files in debug builds
-                if (file.StartsWith("\\")) {
+                if (System.Runtime.InteropServices.RuntimeInformation.IsOSPlatform(System.Runtime.InteropServices.OSPlatform.Windows))
+                    url = url.Replace('/', '\\');
+                if (file.StartsWith("\\") || file.StartsWith("/")) {
                     string f = Path.Combine(YetaWFManager.RootFolder, file.Substring(1));
                     if (!await FileSystem.FileSystemProvider.FileExistsAsync(f))
                         throw new InternalError("SyntaxHighlighter theme file not found: {0} - {1}", line, f);

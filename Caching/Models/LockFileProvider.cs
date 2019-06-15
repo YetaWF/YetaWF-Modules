@@ -1,4 +1,4 @@
-/* Copyright © 2019 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Caching#License */
+/* Copyright ï¿½ 2019 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Caching#License */
 
 using System;
 using System.IO;
@@ -107,6 +107,7 @@ namespace YetaWF.Modules.Caching.DataProvider {
         /// </summary>
         public async Task<ILockObject> LockResourceAsync(string key) {
             key = key.Replace("\\", "++"); // turn it into a valid file name
+            key = key.Replace("/", "++"); // turn it into a valid file name
             key = key.Replace(":", "++"); // turn it into a valid file name
 
             // If we're running in a single instance, a simple lock by name is sufficient.
