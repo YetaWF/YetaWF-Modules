@@ -186,7 +186,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                 RowDragDropHighlightCss = model.UseSkinFormatting ? "ui-state-active" : "tg_dragdrophighlight",
                 SortActiveCss = "tg_active",
                 SettingsModuleGuid = model.SettingsModuleGuid,
-                SaveSettingsColumnWidthsUrl = YetaWFManager.UrlFor(typeof(YetaWF.Core.Controllers.GridSaveSettingsController), nameof(YetaWF.Core.Controllers.GridSaveSettingsController.GridSaveColumnWidths)),
+                SaveSettingsColumnWidthsUrl = Utility.UrlFor(typeof(YetaWF.Core.Controllers.GridSaveSettingsController), nameof(YetaWF.Core.Controllers.GridSaveSettingsController.GridSaveColumnWidths)),
                 DeletedMessage = model.DeletedMessage,
                 DeleteConfirmationMessage = model.DeleteConfirmationMessage != null && UserSettings.GetProperty<bool>("ConfirmDelete") ? model.DeleteConfirmationMessage : null,
                 DeletedColumnDisplay = model.DeletedColumnDisplay,

@@ -157,7 +157,7 @@ namespace YetaWF.Modules.Logging.DataProvider.NLogProvider {
 
             string message;
             if (NLogDataProvider.MessageFormat == "json") {
-                message = YetaWFManager.JsonSerialize(record);
+                message = Utility.JsonSerialize(record);
             } else {
                 message = $"{Enc(record.Info)};{Enc(record.Category)};{Enc(record.RequestedUrl)};{record.ReferrerUrl};{record.IPAddress};{Enc(record.UserName)};{record.UserId};{record.SessionId}" +
                                     $";{record.ModuleName};{record.Class};{record.Method}" +

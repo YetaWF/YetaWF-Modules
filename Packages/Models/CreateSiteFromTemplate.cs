@@ -853,7 +853,7 @@ namespace YetaWF.Modules.Packages.DataProvider {
             if (parts.Length != 2)
                 throw TemplateError("::INC statement invalid");
             string file = parts[1].Trim();
-            file = YetaWFManager.FileToPhysical(TrimQuotes(file));
+            file = Utility.FileToPhysical(TrimQuotes(file));
             await BuildSiteAsync(file, build);
         }
     }

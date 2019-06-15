@@ -47,7 +47,7 @@ namespace YetaWF.Modules.Identity.Controllers {
                 UserDefinition user = await userDP.GetItemAsync(newUser);
                 if (user == null)
                     throw new Error(this.__ResStr("noUser", "User {0} not found", newUser));
-                List<ListOfUserNamesEditComponent.Entry> list = YetaWFManager.JsonDeserialize<List<ListOfUserNamesEditComponent.Entry>>(data);
+                List<ListOfUserNamesEditComponent.Entry> list = Utility.JsonDeserialize<List<ListOfUserNamesEditComponent.Entry>>(data);
                 if ((from l in list where l.UserId == user.UserId select l).FirstOrDefault() != null)
                     throw new Error(this.__ResStr("dupUser", "User {0} has already been added", newUser));
                 ListOfUserNamesEditComponent.Entry entry = new ListOfUserNamesEditComponent.Entry {

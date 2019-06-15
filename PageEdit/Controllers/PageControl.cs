@@ -119,8 +119,8 @@ namespace YetaWF.Modules.PageEdit.Controllers {
             public void AddData(PageDefinition page, PageControlModule mod) {
                 UploadFile = new FileUpload1 {
                     SelectButtonText = this.__ResStr("btnImportPage", "Import Page Data..."),
-                    SaveURL = YetaWFManager.UrlFor(typeof(PageControlModuleController), nameof(PageControlModuleController.ImportPage), new { __ModuleGuid = mod.ModuleGuid }),
-                    RemoveURL = YetaWFManager.UrlFor(typeof(PageControlModuleController), nameof(PageControlModuleController.RemovePage), new { __ModuleGuid = mod.ModuleGuid }),
+                    SaveURL = Utility.UrlFor(typeof(PageControlModuleController), nameof(PageControlModuleController.ImportPage), new { __ModuleGuid = mod.ModuleGuid }),
+                    RemoveURL = Utility.UrlFor(typeof(PageControlModuleController), nameof(PageControlModuleController.RemovePage), new { __ModuleGuid = mod.ModuleGuid }),
                     SerializeForm = true,
                 };
             }
@@ -148,8 +148,8 @@ namespace YetaWF.Modules.PageEdit.Controllers {
             public void AddData(PageDefinition page, PageControlModule mod) {
                 UploadFile = new FileUpload1 {
                     SelectButtonText = this.__ResStr("btnImport", "Import Module Data..."),
-                    SaveURL = YetaWFManager.UrlFor(typeof(PageControlModuleController), nameof(PageControlModuleController.ImportModule), new { __ModuleGuid = mod.ModuleGuid }),
-                    RemoveURL = YetaWFManager.UrlFor(typeof(PageControlModuleController), nameof(PageControlModuleController.RemoveModule), new { __ModuleGuid = mod.ModuleGuid }),
+                    SaveURL = Utility.UrlFor(typeof(PageControlModuleController), nameof(PageControlModuleController.ImportModule), new { __ModuleGuid = mod.ModuleGuid }),
+                    RemoveURL = Utility.UrlFor(typeof(PageControlModuleController), nameof(PageControlModuleController.RemoveModule), new { __ModuleGuid = mod.ModuleGuid }),
                     SerializeForm = true,
                 };
                 if (page != null) {
@@ -437,7 +437,7 @@ namespace YetaWF.Modules.PageEdit.Controllers {
             if (success) {
                 string msg = this.__ResStr("imported", "\"{0}\" successfully imported(+nl)", __filename.FileName) + errs;
                 UploadResponse resp = new UploadResponse {
-                    Result = $"$YetaWF.confirm('{YetaWFManager.JserEncode(msg)}', null, function() {{ $YetaWF.reloadPage(true); }} );",
+                    Result = $"$YetaWF.confirm('{Utility.JserEncode(msg)}', null, function() {{ $YetaWF.reloadPage(true); }} );",
                 };
                 return new YJsonResult { Data = resp };
             } else {
@@ -477,7 +477,7 @@ namespace YetaWF.Modules.PageEdit.Controllers {
             if (info.Success) {
                 string msg = this.__ResStr("imported", "\"{0}\" successfully imported(+nl)", __filename.FileName) + errs;
                 UploadResponse resp = new UploadResponse {
-                    Result = $"$YetaWF.confirm('{YetaWFManager.JserEncode(msg)}', null, function() {{ window.location.assign('{YetaWFManager.JserEncode(info.Url)}'); }} );",
+                    Result = $"$YetaWF.confirm('{Utility.JserEncode(msg)}', null, function() {{ window.location.assign('{Utility.JserEncode(info.Url)}'); }} );",
                 };
                 return new YJsonResult { Data = resp };
             } else {

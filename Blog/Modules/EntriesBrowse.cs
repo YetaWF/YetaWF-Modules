@@ -78,7 +78,7 @@ namespace YetaWF.Modules.Blog.Modules {
         public ModuleAction GetAction_Remove(int blogEntry) {
             if (!IsAuthorized("RemoveItems")) return null;
             return new ModuleAction(this) {
-                Url = YetaWFManager.UrlFor(typeof(EntriesBrowseModuleController), "Remove"),
+                Url = Utility.UrlFor(typeof(EntriesBrowseModuleController), "Remove"),
                 NeedsModuleContext = true,
                 QueryArgs = new { BlogEntry = blogEntry },
                 Image = "#Remove",

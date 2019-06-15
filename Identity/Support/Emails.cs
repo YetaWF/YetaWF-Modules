@@ -39,7 +39,7 @@ namespace YetaWF.Modules.Identity.Support {
             string retUrl = Manager.ReturnToUrl;
             string urlOnly;
             QueryHelper qh = QueryHelper.FromUrl(Manager.CurrentSite.LoginUrl, out urlOnly);
-            qh.Add(Globals.Link_OriginList, YetaWFManager.JsonSerialize(new List<Origin> { new Origin { Url = retUrl } }), Replace: true);
+            qh.Add(Globals.Link_OriginList, Utility.JsonSerialize(new List<Origin> { new Origin { Url = retUrl } }), Replace: true);
             qh.Add("CloseOnLogin", "1", Replace: true);
             qh.Add("Name", user.UserName, Replace: true);
             qh.Add("V", user.VerificationCode, Replace: true);

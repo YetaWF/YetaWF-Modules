@@ -51,7 +51,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         public Task<string> RenderAsync(string model) {
             HtmlBuilder hb = new HtmlBuilder();
             if (!string.IsNullOrWhiteSpace(model))
-                hb.Append($@"<div class='yt_email t_display'><a href='mailto: {YetaWFManager.HtmlAttributeEncode(model)}'>{YetaWFManager.HtmlEncode(model)}</a></div>");
+                hb.Append($@"<div class='yt_email t_display'><a href='mailto: {Utility.HtmlAttributeEncode(model)}'>{Utility.HtmlEncode(model)}</a></div>");
             return Task.FromResult(hb.ToString());
         }
     }

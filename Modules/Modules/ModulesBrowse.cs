@@ -75,7 +75,7 @@ namespace YetaWF.Modules.Modules.Modules {
         public ModuleAction GetAction_Remove(Guid moduleGuid) {
             if (!IsAuthorized("RemoveItems")) return null;
             return new ModuleAction(this) {
-                Url = YetaWFManager.UrlFor(typeof(ModulesBrowseModuleController), "Remove"),
+                Url = Utility.UrlFor(typeof(ModulesBrowseModuleController), "Remove"),
                 NeedsModuleContext = true,
                 QueryArgs = new { ModuleGuid = moduleGuid },
                 Image = "#Remove",
@@ -93,7 +93,7 @@ namespace YetaWF.Modules.Modules.Modules {
         public ModuleAction GetAction_RestoreAllDefaultAuthorization() {
             if (!IsAuthorized("RestoreAuthorization")) return null;
             return new ModuleAction(this) {
-                Url = YetaWFManager.UrlFor(typeof(ModulesBrowseModuleController), "RestoreAuthorization"),
+                Url = Utility.UrlFor(typeof(ModulesBrowseModuleController), "RestoreAuthorization"),
                 NeedsModuleContext = true,
                 QueryArgs = new { },
                 Image = "",

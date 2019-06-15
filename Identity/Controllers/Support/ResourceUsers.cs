@@ -45,7 +45,7 @@ namespace YetaWF.Modules.Identity.Controllers {
                 throw new Error(this.__ResStr("noUser", "User {0} doesn't exist.", newUser));
             string userName = await Resource.ResourceAccess.GetUserNameAsync(userId);
             // check duplicate
-            List<ResourceUsersEditComponent.Entry> list = YetaWFManager.JsonDeserialize<List<ResourceUsersEditComponent.Entry>>(data);
+            List<ResourceUsersEditComponent.Entry> list = Utility.JsonDeserialize<List<ResourceUsersEditComponent.Entry>>(data);
             if ((from l in list where l.UserId == userId select l).FirstOrDefault() != null)
                 throw new Error(this.__ResStr("dupUser", "User {0} has already been added", newUser));
             // render

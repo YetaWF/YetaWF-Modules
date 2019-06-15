@@ -22,7 +22,7 @@ namespace YetaWF.Modules.Messenger.Controllers {
 
             await SignalR.UseAsync();
             await Manager.AddOnManager.AddAddOnNamedAsync(AreaRegistration.CurrentPackage.AreaName, nameof(SkinBrowserNotificationsModule));
-            Manager.ScriptManager.AddLast($"{AreaRegistration.CurrentPackage.AreaName}_{Module.ClassName}", $"new YetaWF_Messenger.SkinBrowserNotificationsModule('{YetaWFManager.JserEncode(Module.ModuleHtmlId)}');");
+            Manager.ScriptManager.AddLast($"{AreaRegistration.CurrentPackage.AreaName}_{Module.ClassName}", $"new YetaWF_Messenger.SkinBrowserNotificationsModule('{Utility.JserEncode(Module.ModuleHtmlId)}');");
 
             return new EmptyResult();
         }

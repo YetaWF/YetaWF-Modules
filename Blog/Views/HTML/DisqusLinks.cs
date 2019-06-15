@@ -23,7 +23,7 @@ namespace YetaWF.Modules.Blog.Views {
 
             //$$$ This currently breaks jquery $ - disabled for now
 //            hb.Append($@"
-//<script id='dsq-count-scr' src='//{YetaWFManager.JserEncode(model.ShortName.ToLower())}.disqus.com/count.js' async></script>");
+//<script id='dsq-count-scr' src='//{Utility.JserEncode(model.ShortName.ToLower())}.disqus.com/count.js' async></script>");
 
             return Task.FromResult(hb.ToString());
         }

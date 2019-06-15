@@ -102,7 +102,7 @@ namespace YetaWF.Modules.PageEdit.Components {
                 RecordType = typeof(GridAllowedUser),
                 PageSizes = new List<int>() { 5, 10, 20 },
                 ShowHeader = header,
-                AjaxUrl = YetaWFManager.UrlFor(typeof(AllowedUsersController), nameof(AllowedUsersController.AllowedUsersEdit_SortFilter)),
+                AjaxUrl = Utility.UrlFor(typeof(AllowedUsersController), nameof(AllowedUsersController.AllowedUsersEdit_SortFilter)),
                 SortFilterStaticData = (List<object> data, int skip, int take, List<DataProviderSortInfo> sorts, List<DataProviderFilterInfo> filters) => {
                     DataProviderGetRecords<GridAllowedUser> recs = DataProviderImpl<GridAllowedUser>.GetRecords(data, skip, take, sorts, filters);
                     return new DataSourceResult {
@@ -119,7 +119,7 @@ namespace YetaWF.Modules.PageEdit.Components {
             return new GridDefinition() {
                 RecordType = typeof(AllEntry),
                 InitialPageSize = 10,
-                AjaxUrl = YetaWFManager.UrlFor(typeof(AllowedUsersController), nameof(AllowedUsersController.AllowedUsersBrowse_GridData)),
+                AjaxUrl = Utility.UrlFor(typeof(AllowedUsersController), nameof(AllowedUsersController.AllowedUsersBrowse_GridData)),
                 DirectDataAsync = async (int skip, int take, List<DataProviderSortInfo> sort, List<DataProviderFilterInfo> filters) => {
                     using (UserDefinitionDataProvider userDP = new UserDefinitionDataProvider()) {
                         DataProviderGetRecords<UserDefinition> browseItems = await userDP.GetItemsAsync(skip, take, sort, filters);
@@ -178,7 +178,7 @@ namespace YetaWF.Modules.PageEdit.Components {
                 GridDef = GetGridAllUsersModel()
             };
             AllowedUsersSetup setup = new AllowedUsersSetup {
-                AddUrl = YetaWFManager.UrlFor(typeof(AllowedUsersController), nameof(AllowedUsersController.AddUserToPage)),
+                AddUrl = Utility.UrlFor(typeof(AllowedUsersController), nameof(AllowedUsersController.AddUserToPage)),
                 GridId = grid.GridDef.Id,
                 GridAllId = gridAll.GridDef.Id
             };
@@ -195,7 +195,7 @@ namespace YetaWF.Modules.PageEdit.Components {
 
             Manager.ScriptManager.AddLast($@"
 $YetaWF.expandCollapseHandling('{DivId}', '{DivId}_coll', '{DivId}_exp');
-new YetaWF_PageEdit.AllowedUsersEditComponent('{DivId}', {YetaWFManager.JsonSerialize(setup)});");
+new YetaWF_PageEdit.AllowedUsersEditComponent('{DivId}', {Utility.JsonSerialize(setup)});");
 
             return hb.ToString();
         }

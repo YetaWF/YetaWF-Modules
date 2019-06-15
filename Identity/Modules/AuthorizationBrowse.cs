@@ -71,7 +71,7 @@ namespace YetaWF.Modules.Identity.Modules {
         public ModuleAction GetAction_Remove(string resourceName) {
             if (!IsAuthorized("RemoveResources")) return null;
             return new ModuleAction(this) {
-                Url = YetaWFManager.UrlFor(typeof(AuthorizationBrowseModuleController), "Remove"),
+                Url = Utility.UrlFor(typeof(AuthorizationBrowseModuleController), "Remove"),
                 QueryArgs = new { ResourceName = resourceName },
                 Image = "#Remove",
                 NeedsModuleContext = true,

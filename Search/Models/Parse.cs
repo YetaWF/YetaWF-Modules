@@ -21,7 +21,7 @@ namespace YetaWF.Modules.Search.DataProvider {
             kwds.RemoveAll(m => { return m == searchKwdAnd; });
             //}
             kwds = (from k in kwds select k.Trim(new char[] { '(', ')', '*' })).ToList();
-            return string.Format("{0}={1}", Info.UrlArg, YetaWFManager.HtmlAttributeEncode(string.Join(",", kwds)));
+            return string.Format("{0}={1}", Info.UrlArg, Utility.HtmlAttributeEncode(string.Join(",", kwds)));
         }
 
         internal async Task<SearchResultsInfo> ParseAsync(string searchTerms, int maxResults, string languageId, bool haveUser, List<DataProviderFilterInfo> extraFilters = null) {

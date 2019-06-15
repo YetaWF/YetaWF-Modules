@@ -128,7 +128,7 @@ namespace YetaWF.Modules.Text.Modules {
             TextModule mod = (TextModule)await ModuleDefinition.LoadAsync(moduleGuid, AllowNone: true);
             if (mod == null) return null;
             return new ModuleAction(this) {
-                Url = YetaWFManager.UrlFor(typeof(RssController), "RssFeed"),
+                Url = Utility.UrlFor(typeof(RssController), "RssFeed"),
                 QueryArgs = new { ModuleGuid = moduleGuid, },
                 QueryArgsHR = new { Title = mod.Title.ToString() },
                 Image = await CustomIconAsync("RssFeed.png"),

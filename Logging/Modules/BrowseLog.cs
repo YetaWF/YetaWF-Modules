@@ -86,7 +86,7 @@ namespace YetaWF.Modules.Logging.Modules {
                 if (!dataProvider.CanRemove) return null;
             };
             return new ModuleAction(this) {
-                Url = YetaWFManager.UrlFor(typeof(BrowseLogModuleController), nameof(BrowseLogModuleController.RemoveAll)),
+                Url = Utility.UrlFor(typeof(BrowseLogModuleController), nameof(BrowseLogModuleController.RemoveAll)),
                 NeedsModuleContext = true,
                 Image = await CustomIconAsync("RemoveAll.png"),
                 Style = ModuleAction.ActionStyleEnum.Post,
@@ -107,7 +107,7 @@ namespace YetaWF.Modules.Logging.Modules {
                 if (!dataProvider.CanDownload) return null;
             };
             return new ModuleAction(this) {
-                Url = YetaWFManager.UrlFor(typeof(BrowseLogModuleController), nameof(BrowseLogModuleController.DownloadLog)),
+                Url = Utility.UrlFor(typeof(BrowseLogModuleController), nameof(BrowseLogModuleController.DownloadLog)),
                 NeedsModuleContext = true,
                 CookieAsDoneSignal = true,
                 Image = await CustomIconAsync("Download.png"),
@@ -128,7 +128,7 @@ namespace YetaWF.Modules.Logging.Modules {
                 if (!dataProvider.CanDownload) return null;
             };
             return new ModuleAction(this) {
-                Url = YetaWFManager.UrlFor(typeof(BrowseLogModuleController), nameof(BrowseLogModuleController.DownloadZippedLog)),
+                Url = Utility.UrlFor(typeof(BrowseLogModuleController), nameof(BrowseLogModuleController.DownloadZippedLog)),
                 NeedsModuleContext = true,
                 CookieAsDoneSignal = true,
                 Image = await CustomIconAsync("Download.png"),

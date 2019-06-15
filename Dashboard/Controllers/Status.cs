@@ -70,9 +70,9 @@ namespace YetaWF.Modules.Dashboard.Controllers {
 #else
             model.Build = "Release";
 #endif
-            model.AspNetMvc = YetaWFManager.GetAspNetMvcName(YetaWFManager.AspNetMvc);
+            model.AspNetMvc = Utility.GetAspNetMvcName(Utility.AspNetMvc);
 
-            string healthCheckFile = YetaWFManager.UrlToPhysical("/_hc.html");
+            string healthCheckFile = Utility.UrlToPhysical("/_hc.html");
             string blueGreen = "";
             if (await FileSystem.FileSystemProvider.FileExistsAsync(healthCheckFile)) {
                 string contents = await FileSystem.FileSystemProvider.ReadAllTextAsync(healthCheckFile);

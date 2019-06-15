@@ -23,7 +23,7 @@ namespace YetaWF.Modules.Dashboard.Views {
 
             HtmlBuilder hb = new HtmlBuilder();
 
-            if (YetaWFManager.AspNetMvc == YetaWFManager.AspNetMvcVersion.MVC5) {
+            if (Utility.AspNetMvc == Utility.AspNetMvcVersion.MVC5) {
 
                 hb.Append($@"
 {await RenderBeginFormAsync()}
@@ -37,7 +37,7 @@ namespace YetaWF.Modules.Dashboard.Views {
 
                 hb.Append($@"
     <div class='{Globals.CssDivWarning}'>
-        {YetaWFManager.HtmlEncode(this.__ResStr("notAvail", "Information not available on ASP.NET Core MVC"))}
+        {Utility.HtmlEncode(this.__ResStr("notAvail", "Information not available on ASP.NET Core MVC"))}
     </div>");
             }
             return hb.ToString();

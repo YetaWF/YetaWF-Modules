@@ -164,7 +164,7 @@ namespace YetaWF.Modules.SiteProperties.Models {
                 // Save a json representation of the site (can be used for batch mode initialization to avoid having to need a SiteProperties reference and access to DB)
                 await FileSystem.FileSystemProvider.CreateDirectoryAsync(Path.Combine(YetaWFManager.RootFolderWebProject, Globals.DataFolder, "Sites"));
                 string file = Path.Combine(YetaWFManager.RootFolderWebProject, Globals.DataFolder, "Sites", site.SiteDomain + ".json".ToLower());
-                string json = YetaWFManager.JsonSerialize(site, true);
+                string json = Utility.JsonSerialize(site, true);
                 await FileSystem.FileSystemProvider.WriteAllTextAsync(file, json);
             }
             await Auditing.AddAuditAsync($"{nameof(SiteDefinitionDataProvider)}.{nameof(SaveSiteDefinitionAsync)}", site.OriginalSiteDomain, Guid.Empty,

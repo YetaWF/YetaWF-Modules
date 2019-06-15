@@ -105,7 +105,7 @@ namespace YetaWF.Modules.Panels.Components {
                 RecordType = typeof(Entry),
                 InitialPageSize = 0,
                 ShowHeader = header,
-                AjaxUrl = YetaWFManager.UrlFor(typeof(ListOfLocalPagesController), nameof(ListOfLocalPagesController.ListOfLocalPagesEdit_SortFilter)),
+                AjaxUrl = Utility.UrlFor(typeof(ListOfLocalPagesController), nameof(ListOfLocalPagesController.ListOfLocalPagesEdit_SortFilter)),
                 SortFilterStaticData = (List<object> data, int skip, int take, List<DataProviderSortInfo> sorts, List<DataProviderFilterInfo> filters) => {
                     DataProviderGetRecords<Entry> recs = DataProviderImpl<Entry>.GetRecords(data, skip, take, sorts, filters);
                     return new DataSourceResult {
@@ -122,7 +122,7 @@ namespace YetaWF.Modules.Panels.Components {
             return new GridDefinition() {
                 RecordType = typeof(AllEntry),
                 InitialPageSize = 10,
-                AjaxUrl = YetaWFManager.UrlFor(typeof(ListOfLocalPagesController), nameof(ListOfLocalPagesController.ListOfLocalPagesBrowse_GridData)),
+                AjaxUrl = Utility.UrlFor(typeof(ListOfLocalPagesController), nameof(ListOfLocalPagesController.ListOfLocalPagesBrowse_GridData)),
                 DirectDataAsync = async (int skip, int take, List<DataProviderSortInfo> sort, List<DataProviderFilterInfo> filters) => {
                     using (PageDefinitionDataProvider pagesDP = new PageDefinitionDataProvider()) {
                         DataProviderGetRecords<PageDefinition> browseItems = await pagesDP.GetItemsAsync(skip, take, sort, filters);
@@ -190,7 +190,7 @@ namespace YetaWF.Modules.Panels.Components {
 
             Manager.ScriptManager.AddLast($@"
 $YetaWF.expandCollapseHandling('{DivId}', '{DivId}_coll', '{DivId}_exp');
-new YetaWF_Panels.ListOfLocalPagesEditComponent('{DivId}', {YetaWFManager.JsonSerialize(setup)});");
+new YetaWF_Panels.ListOfLocalPagesEditComponent('{DivId}', {Utility.JsonSerialize(setup)});");
 
             return hb.ToString();
         }

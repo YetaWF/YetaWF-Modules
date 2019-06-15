@@ -39,7 +39,7 @@ namespace YetaWF.Modules.Panels.Controllers {
             [Caption("Pages"), Description("Defines the pages and their order as they are displayed in the Page Panel using their FavIcons and page description")]
             [UIHint("YetaWF_Panels_ListOfLocalPages")]
             public SerializableList<LocalPage> PageList { get; set; }
-            public string PageList_AjaxUrl { get { return YetaWFManager.UrlFor(typeof(PagePanelModuleController), nameof(PagePanelModuleController.AddPage)); } }
+            public string PageList_AjaxUrl { get { return Utility.UrlFor(typeof(PagePanelModuleController), nameof(PagePanelModuleController.AddPage)); } }
 
             [Caption("Page Pattern"), Description("Defines a Regex pattern - all pages matching this pattern will be included in the Page Panel - for example, ^/Admin/Config/[^/]*$ would include all pages starting with /Admin/Config/, but would not include their child pages")]
             [UIHint("Text40"), Trim]
@@ -233,7 +233,7 @@ namespace YetaWF.Modules.Panels.Controllers {
             UrlValidationAttribute attr = new UrlValidationAttribute(UrlValidationAttribute.SchemaEnum.Any, UrlTypeEnum.Local);
             if (!attr.IsValid(newUrl))
                 throw new Error(attr.ErrorMessage);
-            List<ListOfLocalPagesEditComponent.Entry> list = YetaWFManager.JsonDeserialize<List<ListOfLocalPagesEditComponent.Entry>>(data);
+            List<ListOfLocalPagesEditComponent.Entry> list = Utility.JsonDeserialize<List<ListOfLocalPagesEditComponent.Entry>>(data);
             if ((from l in list where l.Url.ToLower() == newUrl.ToLower() select l).FirstOrDefault() != null)
                 throw new Error(this.__ResStr("dupUrl", "Page {0} has already been added", newUrl));
             // add new grid record

@@ -28,7 +28,7 @@ namespace YetaWF.Modules.DevTests.Views {
 
                     hb.Append($@"
 <div class='{Globals.CssDivAlert}'>
-    {YetaWFManager.HtmlEncode(this.__ResStr("multiMode", "There are multiple active SMS processors - there should only be one."))}
+    {Utility.HtmlEncode(this.__ResStr("multiMode", "There are multiple active SMS processors - there should only be one."))}
 </div>");
 
                 }
@@ -36,7 +36,7 @@ namespace YetaWF.Modules.DevTests.Views {
 
                     hb.Append($@"
 <div class='{Globals.CssDivAlert}'>
-    {YetaWFManager.HtmlEncode(this.__ResStr("testMode", "The {0} SMS processor is in TEST/Sandbox mode.", model.ProcessorName))}
+    {Utility.HtmlEncode(this.__ResStr("testMode", "The {0} SMS processor is in TEST/Sandbox mode.", model.ProcessorName))}
 </div>");
 
                 }
@@ -44,7 +44,7 @@ namespace YetaWF.Modules.DevTests.Views {
 
                 hb.Append($@"
 <div class='{Globals.CssDivAlert}'>
-    {YetaWFManager.HtmlEncode(this.__ResStr("noMode", "There is no active SMS processor - It is still possible to send a message to an email address, instead of a phone number."))}
+    {Utility.HtmlEncode(this.__ResStr("noMode", "There is no active SMS processor - It is still possible to send a message to an email address, instead of a phone number."))}
 </div>");
             }
 

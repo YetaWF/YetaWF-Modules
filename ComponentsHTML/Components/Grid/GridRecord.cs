@@ -60,7 +60,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                 TR = tr,
                 StaticData = model.Data,
             };
-            sb.Append(YetaWFManager.JsonSerialize(result));
+            sb.Append(Utility.JsonSerialize(result));
 
             return sb.ToString();
         }

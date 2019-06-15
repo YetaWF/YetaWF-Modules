@@ -80,7 +80,7 @@ namespace YetaWF.Modules.Pages.Modules {
         public ModuleAction GetAction_Remove(Guid unifiedSetGuid, string name) {
             if (!IsAuthorized("RemoveItems")) return null;
             return new ModuleAction(this) {
-                Url = YetaWFManager.UrlFor(typeof(UnifiedSetsBrowseModuleController), "Remove"),
+                Url = Utility.UrlFor(typeof(UnifiedSetsBrowseModuleController), "Remove"),
                 NeedsModuleContext = true,
                 QueryArgs = new { UnifiedSetGuid = unifiedSetGuid },
                 Image = "#Remove",

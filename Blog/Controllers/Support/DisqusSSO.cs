@@ -61,7 +61,7 @@ namespace YetaWF.Modules.Blog.Controllers.Support {
                 url = website_url
             };
 
-            string serializedUserData = YetaWFManager.JsonSerialize(userdata);
+            string serializedUserData = Utility.JsonSerialize(userdata);
             return GeneratePayload(serializedUserData);
         }
 
@@ -71,7 +71,7 @@ namespace YetaWF.Modules.Blog.Controllers.Support {
         /// <returns>A signed, empty payload string</returns>
         public string LogoutUser() {
             var userdata = new { };
-            string serializedUserData = YetaWFManager.JsonSerialize(userdata);
+            string serializedUserData = Utility.JsonSerialize(userdata);
             return GeneratePayload(serializedUserData);
         }
 

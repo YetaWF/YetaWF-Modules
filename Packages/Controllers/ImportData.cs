@@ -64,7 +64,7 @@ namespace YetaWF.Modules.Packages.Controllers {
             if (success) {
                 string msg = this.__ResStr("importedData", "\"{0}\" successfully imported - These settings won't take effect until the site is restarted(+nl)", __filename.FileName) + errs;
                 UploadResponse resp = new UploadResponse {
-                    Result = $"$YetaWF.confirm('{YetaWFManager.JserEncode(msg)}', null, function() {{ $YetaWF.reloadPage(true); }} );",
+                    Result = $"$YetaWF.confirm('{Utility.JserEncode(msg)}', null, function() {{ $YetaWF.reloadPage(true); }} );",
                 };
                 return new YJsonResult { Data = resp };
             } else {

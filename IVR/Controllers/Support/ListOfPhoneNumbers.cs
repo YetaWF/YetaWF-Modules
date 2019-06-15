@@ -34,7 +34,7 @@ namespace Softelvdm.Modules.IVR.Controllers {
         [ConditionalAntiForgeryToken]
         [ExcludeDemoMode]
         public async Task<ActionResult> AddPhoneNumber(string data, string fieldPrefix, string newPhoneNumber, bool sms) {
-            List<ListOfPhoneNumbersEditComponent.Entry> list = YetaWFManager.JsonDeserialize<List<ListOfPhoneNumbersEditComponent.Entry>>(data);
+            List<ListOfPhoneNumbersEditComponent.Entry> list = Utility.JsonDeserialize<List<ListOfPhoneNumbersEditComponent.Entry>>(data);
             string phoneNumber = PhoneNumberNationalAttribute.GetE164(newPhoneNumber);
             if (string.IsNullOrWhiteSpace(phoneNumber))
                 throw new Error(this.__ResStr("invPhone", "Phone number {0} is not a valid phone number", newPhoneNumber));

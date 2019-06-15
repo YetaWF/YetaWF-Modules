@@ -120,7 +120,7 @@ namespace YetaWF.Modules.Blog.DataProvider {
                 if (blogCategory != 0) {
                     BlogCategory cat = await categoryDP.GetItemAsync(blogCategory);
                     if (cat != null)
-                        canon = string.Format("{0}/Title/{1}/?BlogCategory={2}", config.BlogUrl, YetaWFManager.UrlEncodeSegment(cat.Category.ToString().Truncate(80)), blogCategory);
+                        canon = string.Format("{0}/Title/{1}/?BlogCategory={2}", config.BlogUrl, Utility.UrlEncodeSegment(cat.Category.ToString().Truncate(80)), blogCategory);
                 } else {
                     canon = config.BlogUrl;
                 }
@@ -133,7 +133,7 @@ namespace YetaWF.Modules.Blog.DataProvider {
             using (BlogEntryDataProvider entryDP = new BlogEntryDataProvider()) {
                 BlogEntry data = await entryDP.GetItemAsync(blogEntry);
                 if (data != null)
-                    canon = string.Format("{0}/Title/{1}/?BlogEntry={2}", config.BlogEntryUrl, YetaWFManager.UrlEncodeSegment(data.Title.ToString().Truncate(80)), blogEntry);
+                    canon = string.Format("{0}/Title/{1}/?BlogEntry={2}", config.BlogEntryUrl, Utility.UrlEncodeSegment(data.Title.ToString().Truncate(80)), blogEntry);
                 return canon;
             }
         }

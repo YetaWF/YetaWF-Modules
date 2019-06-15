@@ -74,7 +74,7 @@ namespace YetaWF.Modules.Identity.Modules {
             if (!await Resource.ResourceAccess.IsResourceAuthorizedAsync(Info.Resource_AllowUserLogon))
                 return null;
             return new ModuleAction(this) {
-                Url = YetaWFManager.UrlFor(typeof(LoginDirectController), nameof(LoginDirectController.LoginAs)),
+                Url = Utility.UrlFor(typeof(LoginDirectController), nameof(LoginDirectController.LoginAs)),
                 QueryArgs = new { UserId = userId },
                 Image = await CustomIconAsync("LoginAs.png"),
                 LinkText = this.__ResStr("loginAsLink", "Login a user {0}", userName),
@@ -90,7 +90,7 @@ namespace YetaWF.Modules.Identity.Modules {
         }
         public async Task<ModuleAction> GetAction_ResendVerificationEmailAsync(string userName) {
             return new ModuleAction(this) {
-                Url = YetaWFManager.UrlFor(typeof(LoginModuleController), nameof(LoginModuleController.ResendVerificationEmail)),
+                Url = Utility.UrlFor(typeof(LoginModuleController), nameof(LoginModuleController.ResendVerificationEmail)),
                 NeedsModuleContext = true,
                 QueryArgs = new { UserName = userName },
                 Image = await CustomIconAsync("VerificationEmail.png"),

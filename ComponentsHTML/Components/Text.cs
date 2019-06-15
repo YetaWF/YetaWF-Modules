@@ -295,7 +295,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             //    // if there is a Mask we need to use the KendoMaskedTextBox
             //    await KendoUICore.AddFileAsync("kendo.maskedtextbox.min.js");
             //    ScriptBuilder sb = new ScriptBuilder();
-            //    sb.Append("$('#{0}').kendoMaskedTextBox({{ mask: '{1}' }});\n", id, YetaWFManager.JserEncode(mask));
+            //    sb.Append("$('#{0}').kendoMaskedTextBox({{ mask: '{1}' }});\n", id, Utility.JserEncode(mask));
             //    Manager.ScriptManager.AddLastDocumentReady(sb);
             //}
             //Manager.ScriptManager.AddLast($@"new YetaWF_ComponentsHTML.TextEditComponent('{component.ControlId}');");

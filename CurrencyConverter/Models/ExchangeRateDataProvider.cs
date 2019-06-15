@@ -97,9 +97,9 @@ namespace YetaWF.Modules.CurrencyConverter.DataProvider {
             CheckForErrors(jsonCurrencies);
 
             // get all currencies
-            Dictionary<string, object> currencies = YetaWFManager.JsonDeserialize<Dictionary<string, object>>(jsonCurrencies);
+            Dictionary<string, object> currencies = Utility.JsonDeserialize<Dictionary<string, object>>(jsonCurrencies);
             // add all rates
-            dynamic jsonObject = YetaWFManager.JsonDeserialize(json);
+            dynamic jsonObject = Utility.JsonDeserialize(json);
             var rates = jsonObject.rates;
             foreach (var rate in rates) {
                 string code = rate.Name;
@@ -127,19 +127,19 @@ namespace YetaWF.Modules.CurrencyConverter.DataProvider {
             ScriptBuilder sb = new ScriptBuilder();
             sb.Append("// Generated file (see ExchangeRateDataProvider) - Do not modify\n");
             sb.Append("YetaWF_CurrencyConverter_Rates = \n");
-            sb.Append(YetaWFManager.JsonSerialize(data.Rates));
+            sb.Append(Utility.JsonSerialize(data.Rates));
             sb.Append(";\n");
             await FileSystem.FileSystemProvider.WriteAllTextAsync(file, sb.ToString());
         }
 
         private static string GetJSFileName() {
             string url = VersionManager.GetAddOnPackageUrl(AreaRegistration.CurrentPackage.AreaName);
-            string path = YetaWFManager.UrlToPhysical(url);
+            string path = Utility.UrlToPhysical(url);
             return Path.Combine(path, JSFile);
         }
 
         private void CheckForErrors(string json) {
-            dynamic jsonObject = YetaWFManager.JsonDeserialize(json);
+            dynamic jsonObject = Utility.JsonDeserialize(json);
             if (!string.IsNullOrWhiteSpace(jsonObject.error))
                 throw new InternalError("An error occurred retrieving exchange rates from openexchangerates.org - {0}: {1}", jsonObject["message"], jsonObject["description"]);
         }

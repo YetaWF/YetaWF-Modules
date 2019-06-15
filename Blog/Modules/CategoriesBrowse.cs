@@ -87,7 +87,7 @@ namespace YetaWF.Modules.Blog.Modules {
         public ModuleAction GetAction_Remove(int blogCategory) {
             if (!IsAuthorized("RemoveItems")) return null;
             return new ModuleAction(this) {
-                Url = YetaWFManager.UrlFor(typeof(CategoriesBrowseModuleController), "Remove"),
+                Url = Utility.UrlFor(typeof(CategoriesBrowseModuleController), "Remove"),
                 NeedsModuleContext = true,
                 QueryArgs = new { BlogCategory = blogCategory },
                 Image = "#Remove",
@@ -105,7 +105,7 @@ namespace YetaWF.Modules.Blog.Modules {
         public ModuleAction GetAction_CreateNewsSiteMap() {
             if (!IsAuthorized("NewsSiteMap")) return null;
             return new ModuleAction(this) {
-                Url = YetaWFManager.UrlFor(typeof(CategoriesBrowseModuleController), "CreateNewsSiteMap"),
+                Url = Utility.UrlFor(typeof(CategoriesBrowseModuleController), "CreateNewsSiteMap"),
                 NeedsModuleContext = true,
                 QueryArgs = new { },
                 Image = "#Add",
@@ -124,7 +124,7 @@ namespace YetaWF.Modules.Blog.Modules {
         public ModuleAction GetAction_RemoveNewsSiteMap() {
             if (!IsAuthorized("NewsSiteMap")) return null;
             return new ModuleAction(this) {
-                Url = YetaWFManager.UrlFor(typeof(CategoriesBrowseModuleController), "RemoveNewsSiteMap"),
+                Url = Utility.UrlFor(typeof(CategoriesBrowseModuleController), "RemoveNewsSiteMap"),
                 NeedsModuleContext = true,
                 QueryArgs = new { },
                 Image = "#Remove",
@@ -146,7 +146,7 @@ namespace YetaWF.Modules.Blog.Modules {
             if (!await FileSystem.FileSystemProvider.FileExistsAsync(filename))
                 return null;
             return new ModuleAction(this) {
-                Url = YetaWFManager.UrlFor(typeof(CategoriesBrowseModuleController), nameof(CategoriesBrowseModuleController.DownloadNewsSiteMap)),
+                Url = Utility.UrlFor(typeof(CategoriesBrowseModuleController), nameof(CategoriesBrowseModuleController.DownloadNewsSiteMap)),
                 NeedsModuleContext = true,
                 CookieAsDoneSignal = true,
                 Image = await CustomIconAsync("Download.png"),

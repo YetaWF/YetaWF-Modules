@@ -70,7 +70,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                 RecordType = typeof(Entry),
                 InitialPageSize = 10,
                 ShowHeader = header,
-                AjaxUrl = YetaWFManager.UrlFor(typeof(ReferencedModulesController), nameof(ReferencedModulesController.ReferencedModulesDisplay_SortFilter)),
+                AjaxUrl = Utility.UrlFor(typeof(ReferencedModulesController), nameof(ReferencedModulesController.ReferencedModulesDisplay_SortFilter)),
                 SortFilterStaticData = (List<object> data, int skip, int take, List<DataProviderSortInfo> sorts, List<DataProviderFilterInfo> filters) => {
                     DataProviderGetRecords<Entry> recs = DataProviderImpl<Entry>.GetRecords(data, skip, take, sorts, filters);
                     return new DataSourceResult {
@@ -167,7 +167,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                 RecordType = typeof(Entry),
                 InitialPageSize = 10,
                 ShowHeader = header,
-                AjaxUrl = YetaWFManager.UrlFor(typeof(ReferencedModulesController), nameof(ReferencedModulesController.ReferencedModulesEdit_SortFilter)),
+                AjaxUrl = Utility.UrlFor(typeof(ReferencedModulesController), nameof(ReferencedModulesController.ReferencedModulesEdit_SortFilter)),
                 SortFilterStaticData = (List<object> data, int skip, int take, List<DataProviderSortInfo> sorts, List<DataProviderFilterInfo> filters) => {
                     DataProviderGetRecords<Entry> recs = DataProviderImpl<Entry>.GetRecords(data, skip, take, sorts, filters);
                     return new DataSourceResult {

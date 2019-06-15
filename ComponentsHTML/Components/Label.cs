@@ -55,7 +55,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             string helpLink;
             if (TryGetSiblingProperty<string>($"{PropertyName}_HelpLink", out helpLink) && !string.IsNullOrWhiteSpace(helpLink)) {
                 YTagBuilder tagA = new YTagBuilder("a");
-                tagA.Attributes.Add("href", YetaWFManager.UrlEncodePath(helpLink));
+                tagA.Attributes.Add("href", Utility.UrlEncodePath(helpLink));
                 tagA.Attributes.Add("target", "_blank");
                 tagA.MergeAttribute("rel", "noopener noreferrer");
                 tagA.AddCssClass(Manager.AddOnManager.CheckInvokedCssModule("yt_extlabel_img"));

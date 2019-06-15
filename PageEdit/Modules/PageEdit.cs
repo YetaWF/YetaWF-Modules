@@ -80,7 +80,7 @@ namespace YetaWF.Modules.PageEdit.Modules {
             if (page == null) return null;
             if (!page.IsAuthorized_Remove()) return null;
             return new ModuleAction(this) {
-                Url = YetaWFManager.UrlFor(typeof(PageEditModuleController), "RemovePage"),
+                Url = Utility.UrlFor(typeof(PageEditModuleController), "RemovePage"),
                 QueryArgs = new { PageGuid = guid },
                 Image = "#Remove",
                 Name = "RemovePage",

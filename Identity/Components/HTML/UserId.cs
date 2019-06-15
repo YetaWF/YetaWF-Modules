@@ -135,7 +135,7 @@ namespace YetaWF.Modules.Identity.Components {
                 RecordType = typeof(AllEntry),
                 InitialPageSize = 10,
                 ShowHeader = header,
-                AjaxUrl = YetaWFManager.UrlFor(typeof(UserIdController), nameof(UserIdController.UsersBrowse_GridData)),
+                AjaxUrl = Utility.UrlFor(typeof(UserIdController), nameof(UserIdController.UsersBrowse_GridData)),
                 DirectDataAsync = async (int skip, int take, List<DataProviderSortInfo> sorts, List<DataProviderFilterInfo> filters) => {
                     using (UserDefinitionDataProvider dataProvider = new UserDefinitionDataProvider()) {
                         DataProviderGetRecords<UserDefinition> browseItems = await dataProvider.GetItemsAsync(skip, take, sorts, filters);
@@ -200,7 +200,7 @@ namespace YetaWF.Modules.Identity.Components {
                     NoUser = noUser,
                 };
 
-                Manager.ScriptManager.AddLast($@"new YetaWF_Identity.UserIdEditComponent('{DivId}', {YetaWFManager.JsonSerialize(setup)});");
+                Manager.ScriptManager.AddLast($@"new YetaWF_Identity.UserIdEditComponent('{DivId}', {Utility.JsonSerialize(setup)});");
 
             } else {
 

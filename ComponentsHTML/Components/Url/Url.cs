@@ -185,7 +185,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
             // link
             tag = new YTagBuilder("a");
-            tag.MergeAttribute("href", YetaWFManager.UrlEncodePath(model));
+            tag.MergeAttribute("href", Utility.UrlEncodePath(model));
             tag.MergeAttribute("target", "_blank");
             tag.MergeAttribute("rel", "nofollow noopener noreferrer");
 
@@ -203,7 +203,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
     </div>
 </div>");
 
-            Manager.ScriptManager.AddLast($"new YetaWF_ComponentsHTML.UrlEditComponent('{ControlId}', {YetaWFManager.JsonSerialize(setup)});");
+            Manager.ScriptManager.AddLast($"new YetaWF_ComponentsHTML.UrlEditComponent('{ControlId}', {Utility.JsonSerialize(setup)});");
 
             return hb.ToString();
         }

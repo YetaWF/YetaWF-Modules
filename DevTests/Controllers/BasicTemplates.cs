@@ -192,8 +192,8 @@ namespace YetaWF.Modules.DevTests.Controllers {
                 // FileUpload1
                 FileUpload1 = new FileUpload1 {
                     SelectButtonText = this.__ResStr("btnSelect", "Upload a file..."),
-                    SaveURL = YetaWFManager.UrlFor(typeof(BasicTemplatesModuleController), "UploadSomething", new { __ModuleGuid = module.ModuleGuid }),
-                    RemoveURL = YetaWFManager.UrlFor(typeof(BasicTemplatesModuleController), "RemoveSomething", new { __ModuleGuid = module.ModuleGuid }),
+                    SaveURL = Utility.UrlFor(typeof(BasicTemplatesModuleController), "UploadSomething", new { __ModuleGuid = module.ModuleGuid }),
+                    RemoveURL = Utility.UrlFor(typeof(BasicTemplatesModuleController), "RemoveSomething", new { __ModuleGuid = module.ModuleGuid }),
                 };
                 // PaneSelection
                 PaneSelection_List = new List<string> { "Pane 1", "Pane 2", "Pane 3" };
@@ -248,7 +248,7 @@ namespace YetaWF.Modules.DevTests.Controllers {
 
             if (success) {
                 UploadResponse resp = new UploadResponse {
-                    Result = $"$YetaWF.confirm('{YetaWFManager.JserEncode(msg)}', null, function() {{ /*add some javascript like  $YetaWF.reloadPage(true); */ }} );",
+                    Result = $"$YetaWF.confirm('{Utility.JserEncode(msg)}', null, function() {{ /*add some javascript like  $YetaWF.reloadPage(true); */ }} );",
                 };
                 return new YJsonResult { Data = resp };
             } else {

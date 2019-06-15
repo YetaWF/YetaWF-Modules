@@ -79,7 +79,7 @@ namespace Softelvdm.Modules.IVR.Modules {
         public ModuleAction GetAction_Remove(int id) {
             if (!IsAuthorized("RemoveItems")) return null;
             return new ModuleAction(this) {
-                Url = YetaWFManager.UrlFor(typeof(BrowseExtensionsModuleController), nameof(BrowseExtensionsModuleController.Remove)),
+                Url = Utility.UrlFor(typeof(BrowseExtensionsModuleController), nameof(BrowseExtensionsModuleController.Remove)),
                 NeedsModuleContext = true,
                 QueryArgs = new { Id = id},
                 Image = "#Remove",

@@ -203,7 +203,7 @@ namespace YetaWF.Modules.ComponentsHTML {
 
             string url = action.GetCompleteUrl(OnPage: true);
             if (!string.IsNullOrWhiteSpace(url)) {
-                tag.MergeAttribute("href", YetaWFManager.UrlEncodePath(url));
+                tag.MergeAttribute("href", Utility.UrlEncodePath(url));
                 if (Manager.CurrentPage != null) {
                     string currUrl = Manager.CurrentPage.EvaluatedCanonicalUrl;
                     if (!string.IsNullOrWhiteSpace(currUrl) && currUrl != "/") {// this doesn't work on home page because everything matches
@@ -276,7 +276,7 @@ namespace YetaWF.Modules.ComponentsHTML {
             if (mode != RenderModeEnum.IconsOnly && mode != RenderModeEnum.ButtonIcon) {
                 string text = mode == RenderModeEnum.NormalMenu ? action.MenuText : action.LinkText;
                 if (!string.IsNullOrWhiteSpace(text)) {
-                    innerHtml += YetaWFManager.HtmlEncode(text);
+                    innerHtml += Utility.HtmlEncode(text);
                     hasText = true;
                 }
             }

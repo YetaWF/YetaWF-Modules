@@ -127,7 +127,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             hb.Append(tag.ToString(YTagRenderMode.StartTag));
 
             hb.Append($"</div>");
-            Manager.ScriptManager.AddLast($@"new YetaWF_ComponentsHTML.CurrencyEditComponent('{ControlId}', {YetaWFManager.JsonSerialize(setup)});");
+            Manager.ScriptManager.AddLast($@"new YetaWF_ComponentsHTML.CurrencyEditComponent('{ControlId}', {Utility.JsonSerialize(setup)});");
 
             return Task.FromResult(hb.ToString());
         }

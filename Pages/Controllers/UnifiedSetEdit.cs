@@ -82,7 +82,7 @@ namespace YetaWF.Modules.Pages.Controllers {
             [ProcessIf(nameof(UnifiedMode), PageDefinition.UnifiedModeEnum.HideDivs)]
             [ProcessIf(nameof(UnifiedMode), PageDefinition.UnifiedModeEnum.ShowDivs)]
             public List<string> PageList { get; set; }
-            public string PageList_AjaxUrl { get { return YetaWFManager.UrlFor(typeof(UnifiedSetEditModuleController), nameof(AddPage)); } }
+            public string PageList_AjaxUrl { get { return Utility.UrlFor(typeof(UnifiedSetEditModuleController), nameof(AddPage)); } }
 
             [UIHint("Hidden")]
             public Guid UnifiedSetGuid { get; set; }
@@ -151,7 +151,7 @@ namespace YetaWF.Modules.Pages.Controllers {
             if (!attr.IsValid(newUrl))
                 throw new Error(attr.ErrorMessage);
             // check duplicates
-            List<ListOfLocalPagesEditComponent.Entry> list = YetaWFManager.JsonDeserialize<List<ListOfLocalPagesEditComponent.Entry>>(data);
+            List<ListOfLocalPagesEditComponent.Entry> list = Utility.JsonDeserialize<List<ListOfLocalPagesEditComponent.Entry>>(data);
             if ((from l in list where l.Url.ToLower() == newUrl.ToLower() select l).FirstOrDefault() != null)
                 throw new Error(this.__ResStr("dupUrl", "Url {0} has already been added", newUrl));
             // add new grid record

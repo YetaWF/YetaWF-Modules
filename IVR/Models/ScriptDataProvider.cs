@@ -95,10 +95,10 @@ namespace Softelvdm.Modules.IVR.DataProvider {
 
             // find the file
             string addonUrl = VersionManager.GetAddOnPackageUrl(Softelvdm.Modules.IVR.Controllers.AreaRegistration.CurrentPackage.AreaName);
-            string scriptPath = Path.Combine(YetaWFManager.UrlToPhysical(VersionManager.GetCustomUrlFromUrl(addonUrl)), "Scripts", $"TWIML{phoneNumber}.txt");
+            string scriptPath = Path.Combine(Utility.UrlToPhysical(VersionManager.GetCustomUrlFromUrl(addonUrl)), "Scripts", $"TWIML{phoneNumber}.txt");
             if (!await FileSystem.FileSystemProvider.FileExistsAsync(scriptPath)) {
                 addonUrl = VersionManager.GetAddOnPackageUrl(Softelvdm.Modules.IVR.Controllers.AreaRegistration.CurrentPackage.AreaName);
-                scriptPath = Path.Combine(YetaWFManager.UrlToPhysical(addonUrl), "Scripts", $"TWIML{phoneNumber}.txt");
+                scriptPath = Path.Combine(Utility.UrlToPhysical(addonUrl), "Scripts", $"TWIML{phoneNumber}.txt");
                 if (!await FileSystem.FileSystemProvider.FileExistsAsync(scriptPath)) {
                     return null;
                 }

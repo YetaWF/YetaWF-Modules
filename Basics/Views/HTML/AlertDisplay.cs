@@ -28,11 +28,11 @@ namespace YetaWF.Modules.Basics.Views {
 
             if (model.MessageHandling == DataProvider.AlertConfig.MessageHandlingEnum.DisplayUntilOff) {
 
-                string ajaxUrl = YetaWFManager.UrlFor(typeof(AlertDisplayModuleController), nameof(AlertDisplayModuleController.Off), new { __ModuleGuid = module.ModuleGuid });
+                string ajaxUrl = Utility.UrlFor(typeof(AlertDisplayModuleController), nameof(AlertDisplayModuleController.Off), new { __ModuleGuid = module.ModuleGuid });
 
                 hb.Append($@"
-    <div class='t_close' data-ajaxurl='{YetaWFManager.HtmlAttributeEncode(ajaxUrl)}'>
-        <img src='{YetaWFManager.HtmlAttributeEncode(closeUrl)}' alt='{HAE(this.__ResStr("clsButtonAlt", "Close Button"))}' title='{HAE(this.__ResStr("clsButtonTT", "Click to close alert"))}' />
+    <div class='t_close' data-ajaxurl='{Utility.HtmlAttributeEncode(ajaxUrl)}'>
+        <img src='{Utility.HtmlAttributeEncode(closeUrl)}' alt='{HAE(this.__ResStr("clsButtonAlt", "Close Button"))}' title='{HAE(this.__ResStr("clsButtonTT", "Click to close alert"))}' />
     </div>");
 
             }

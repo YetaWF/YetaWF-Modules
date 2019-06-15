@@ -28,12 +28,12 @@ namespace YetaWF.Modules.DevTests.Controllers {
             [Caption("Email Addresses (Required)"), Description("List of email addresses (Required)")]
             [UIHint("YetaWF_DevTests_ListOfEmailAddresses"), ListNoDuplicates, EmailValidation, StringLength(Globals.MaxEmail), Required, Trim]
             public List<string> Prop1Req { get; set; }
-            public string Prop1Req_AjaxUrl { get { return YetaWFManager.UrlFor(typeof(TemplateListOfEmailAddressesModuleController), nameof(AddEmailAddressHTML)); } }
+            public string Prop1Req_AjaxUrl { get { return Utility.UrlFor(typeof(TemplateListOfEmailAddressesModuleController), nameof(AddEmailAddressHTML)); } }
 
             [Caption("Email Addresses"), Description("List of email addresses")]
             [UIHint("YetaWF_DevTests_ListOfEmailAddresses"), ListNoDuplicates, EmailValidation, StringLength(Globals.MaxEmail), Trim]
             public List<string> Prop1 { get; set; }
-            public string Prop1_AjaxUrl { get { return YetaWFManager.UrlFor(typeof(TemplateListOfEmailAddressesModuleController), nameof(AddEmailAddressHTML)); } }
+            public string Prop1_AjaxUrl { get { return Utility.UrlFor(typeof(TemplateListOfEmailAddressesModuleController), nameof(AddEmailAddressHTML)); } }
 
             [Caption("Email Addresses (Read/Only)"), Description("List of email addresses (read/only)")]
             [UIHint("YetaWF_DevTests_ListOfEmailAddresses"), ReadOnly]
@@ -68,7 +68,7 @@ namespace YetaWF.Modules.DevTests.Controllers {
             EmailValidationAttribute attr = new EmailValidationAttribute();
             if (!attr.IsValid(newEmailAddress))
                 throw new Error(attr.ErrorMessage);
-            List<ListOfEmailAddressesEditComponent.Entry> list = YetaWFManager.JsonDeserialize<List<ListOfEmailAddressesEditComponent.Entry>>(data);
+            List<ListOfEmailAddressesEditComponent.Entry> list = Utility.JsonDeserialize<List<ListOfEmailAddressesEditComponent.Entry>>(data);
             if ((from l in list where l.EmailAddress.ToLower() == newEmailAddress.ToLower() select l).FirstOrDefault() != null)
                 throw new Error(this.__ResStr("dupEmail", "Email address {0} has already been added", newEmailAddress));
             // add new grid record

@@ -63,7 +63,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                         first = false;
                     else
                         hb.Append(delim);
-                    hb.Append(YetaWFManager.HtmlEncode(s));
+                    hb.Append(Utility.HtmlEncode(s));
                 }
             }
             hb.Append(@"

@@ -29,7 +29,7 @@ namespace YetaWF.Modules.Blog.Components {
             HtmlBuilder hb = new HtmlBuilder();
 
             if (!string.IsNullOrEmpty(model))
-                hb.Append(YetaWFManager.HtmlEncode(model));
+                hb.Append(Utility.HtmlEncode(model));
 
             return Task.FromResult(hb.ToString());
         }

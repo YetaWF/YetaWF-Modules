@@ -51,7 +51,7 @@ namespace YetaWF.Modules.Dashboard.Modules {
         }
         public ModuleAction GetAction_Remove(string localUrl) {
             return new ModuleAction(this) {
-                Url = YetaWFManager.UrlFor(typeof(StaticPagesBrowseModuleController), "Remove"),
+                Url = Utility.UrlFor(typeof(StaticPagesBrowseModuleController), "Remove"),
                 NeedsModuleContext = true,
                 QueryArgs = new { LocalUrl = localUrl },
                 Image = "#Remove",
@@ -68,7 +68,7 @@ namespace YetaWF.Modules.Dashboard.Modules {
         }
         public ModuleAction GetAction_RemoveAll() {
             return new ModuleAction(this) {
-                Url = YetaWFManager.UrlFor(typeof(StaticPagesBrowseModuleController), "RemoveAll"),
+                Url = Utility.UrlFor(typeof(StaticPagesBrowseModuleController), "RemoveAll"),
                 NeedsModuleContext = true,
                 Image = "#Remove",
                 Style = ModuleAction.ActionStyleEnum.Post,

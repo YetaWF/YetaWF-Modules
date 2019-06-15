@@ -81,7 +81,7 @@ namespace YetaWF.Modules.Identity.Modules {
         public ModuleAction GetAction_RemoveLink(string name) {
             if (!IsAuthorized("RemoveRoles")) return null;
             return new ModuleAction(this) {
-                Url = YetaWFManager.UrlFor(typeof(RolesBrowseModuleController), "Remove"),
+                Url = Utility.UrlFor(typeof(RolesBrowseModuleController), "Remove"),
                 QueryArgs = new { Name = name },
                 Image = "#Remove",
                 NeedsModuleContext = true,

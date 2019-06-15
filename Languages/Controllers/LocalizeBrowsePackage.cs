@@ -259,7 +259,7 @@ namespace YetaWF.Modules.Languages.Controllers {
                 });
                 TranslationsListResponse resp = await service.Translations.List(strings.Skip(skip).Take(40).ToList(), to).ExecuteAsync();
                 List<string> returnedStrings = (from r in resp.Translations select r.TranslatedText).ToList();
-                returnedStrings = (from r in returnedStrings select YetaWFManager.HtmlDecode(r)).ToList();
+                returnedStrings = (from r in returnedStrings select Utility.HtmlDecode(r)).ToList();
                 newStrings.AddRange(returnedStrings);
                 skip += returnedStrings.Count();
                 total -= returnedStrings.Count();

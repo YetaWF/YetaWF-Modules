@@ -88,7 +88,7 @@ namespace YetaWF.Modules.Scheduler.Modules {
         }
         public ModuleAction GetAction_RemoveItem(string name) {
             return new ModuleAction(this) {
-                Url = YetaWFManager.UrlFor(typeof(SchedulerBrowseModuleController), "RemoveItem"),
+                Url = Utility.UrlFor(typeof(SchedulerBrowseModuleController), "RemoveItem"),
                 QueryArgs = new { Name = name },
                 NeedsModuleContext = true,
                 Image = "#Remove",
@@ -105,7 +105,7 @@ namespace YetaWF.Modules.Scheduler.Modules {
         }
         public async Task<ModuleAction> GetAction_RunItemAsync(string name) {
             return new ModuleAction(this) {
-                Url = YetaWFManager.UrlFor(typeof(SchedulerBrowseModuleController), nameof(SchedulerBrowseModuleController.RunItem)),
+                Url = Utility.UrlFor(typeof(SchedulerBrowseModuleController), nameof(SchedulerBrowseModuleController.RunItem)),
                 QueryArgs = new { Name = name },
                 NeedsModuleContext = true,
                 Image = await CustomIconAsync("RunItem.png"),
@@ -126,7 +126,7 @@ namespace YetaWF.Modules.Scheduler.Modules {
                 running = dataProvider.GetRunning();
             }
             return new ModuleAction(this) {
-                Url = YetaWFManager.UrlFor(typeof(SchedulerBrowseModuleController), nameof(SchedulerBrowseModuleController.SchedulerToggle)),
+                Url = Utility.UrlFor(typeof(SchedulerBrowseModuleController), nameof(SchedulerBrowseModuleController.SchedulerToggle)),
                 QueryArgs = new { Start = !running },
                 NeedsModuleContext = true,
                 Image = await CustomIconAsync("SchedulerToggle.png"),

@@ -90,7 +90,7 @@ namespace YetaWF.Modules.Blog.Modules {
                 }
             }
             return new ModuleAction(this) {
-                Url = YetaWFManager.UrlFor(typeof(RssController), nameof(RssController.RssFeed)),
+                Url = Utility.UrlFor(typeof(RssController), nameof(RssController.RssFeed)),
                 QueryArgs = qargs,
                 QueryArgsHR = qargsHR,
                 Image = await CustomIconAsync("RssFeed.png"),

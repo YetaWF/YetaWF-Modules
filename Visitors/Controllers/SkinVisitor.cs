@@ -25,7 +25,7 @@ namespace YetaWF.Modules.Visitors.Controllers {
             Module.ShowTitle = Manager.EditMode;// always show title in edit mode and never show in display mode
             // We render a form so we get antiforgery fields used for TrackClick
             DisplayModel model = new DisplayModel {
-                TrackClickUrl = YetaWFManager.UrlFor(GetType(), nameof(TrackClick))
+                TrackClickUrl = Utility.UrlFor(GetType(), nameof(TrackClick))
             };
             return View(model);
         }

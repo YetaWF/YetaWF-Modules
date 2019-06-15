@@ -129,7 +129,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             };
 
             Setup setup = new Setup {
-                AjaxUrl = YetaWFManager.UrlFor(typeof(SkinController), nameof(SkinController.GetPageSkins)),
+                AjaxUrl = Utility.UrlFor(typeof(SkinController), nameof(SkinController.GetPageSkins)),
             };
 
             using (Manager.StartNestedComponent(FieldName)) {
@@ -146,7 +146,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
     </div>
 </div>");
 
-                Manager.ScriptManager.AddLast($@"new YetaWF_ComponentsHTML.PageSkinEditComponent('{ControlId}', {YetaWFManager.JsonSerialize(setup)});");
+                Manager.ScriptManager.AddLast($@"new YetaWF_ComponentsHTML.PageSkinEditComponent('{ControlId}', {Utility.JsonSerialize(setup)});");
 
             }
             return hb.ToString();

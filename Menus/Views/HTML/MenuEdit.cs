@@ -36,7 +36,7 @@ namespace YetaWF.Modules.Menus.Views {
             Setup setup = new Setup {
                 TreeId = treeId,
                 DetailsId = detailsId,
-                AjaxUrl = YetaWFManager.UrlFor(typeof(MenuEditModuleController), nameof(MenuEditModuleController.EntireMenu)),
+                AjaxUrl = Utility.UrlFor(typeof(MenuEditModuleController), nameof(MenuEditModuleController.EntireMenu)),
                 NewEntry = model.NewEntry,
             };
 
@@ -65,7 +65,7 @@ namespace YetaWF.Modules.Menus.Views {
     </div>
 {await RenderEndFormAsync()}");
 
-            Manager.ScriptManager.AddLast($@"new YetaWF_Menus.MenuEditView({YetaWFManager.JsonSerialize(setup)});");
+            Manager.ScriptManager.AddLast($@"new YetaWF_Menus.MenuEditView({Utility.JsonSerialize(setup)});");
 
             return hb.ToString();
         }

@@ -34,7 +34,7 @@ namespace YetaWF.Modules.PageEdit.Controllers {
                 throw new Error(this.__ResStr("noUser", "User {0} doesn't exist", newUser));
 
             // check duplicate
-            List<AllowedUsersEditComponent.GridAllowedUser> list = YetaWFManager.JsonDeserialize<List<AllowedUsersEditComponent.GridAllowedUser>>(data);
+            List<AllowedUsersEditComponent.GridAllowedUser> list = Utility.JsonDeserialize<List<AllowedUsersEditComponent.GridAllowedUser>>(data);
             if ((from l in list where l.UserId == userId select l).FirstOrDefault() != null)
                 throw new Error(this.__ResStr("dupUser", "User {0} has already been added", newUser));
 

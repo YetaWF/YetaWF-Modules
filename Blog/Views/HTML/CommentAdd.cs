@@ -37,7 +37,7 @@ namespace YetaWF.Modules.Blog.Views {
 
                 hb.Append($@"
 <div class='t_closedforcomments'>
-    {YetaWFManager.HtmlEncode(this.__ResStr("closed", "Closed for comments"))}
+    {Utility.HtmlEncode(this.__ResStr("closed", "Closed for comments"))}
 </div>");
             }
 

@@ -28,24 +28,24 @@ namespace YetaWF.Modules.Blog.Views {
             ScriptBuilder sb = new ScriptBuilder();
             sb.Append($@"
     var disqus_config = function () {{
-        this.page.url = '{YetaWFManager.JserEncode(Manager.CurrentPage.EvaluatedCanonicalUrl)}';
-        this.page.identifier = '{YetaWFManager.JserEncode(Manager.CurrentPage.PageGuid.ToString())}';
-        this.page.title = '{YetaWFManager.JserEncode(Manager.CurrentPage.Title)}';
+        this.page.url = '{Utility.JserEncode(Manager.CurrentPage.EvaluatedCanonicalUrl)}';
+        this.page.identifier = '{Utility.JserEncode(Manager.CurrentPage.PageGuid.ToString())}';
+        this.page.title = '{Utility.JserEncode(Manager.CurrentPage.Title)}';
         this.page.language = '{MultiString.ActiveLanguage.Substring(0, 2)}';");
 
             if (model.UseSSO && !string.IsNullOrWhiteSpace(model.AuthPayload)) {
                 sb.Append($@"
-        this.page.remote_auth_s3 = '{YetaWFManager.JserEncode(model.AuthPayload)}';
-        this.page.api_key = '{YetaWFManager.JserEncode(model.PublicKey)}';");
+        this.page.remote_auth_s3 = '{Utility.JserEncode(model.AuthPayload)}';
+        this.page.api_key = '{Utility.JserEncode(model.PublicKey)}';");
             }
             if (model.UseSSO) {
                 sb.Append($@"
         this.sso = {{
-            name: '{YetaWFManager.JserEncode(Manager.CurrentSite.SiteDomain)}',
+            name: '{Utility.JserEncode(Manager.CurrentSite.SiteDomain)}',
             //button: 'https://yetawf.com/images/samplenews.gif',
             //icon: 'https://yetawf.com/favicon.png',
-            url: '{YetaWFManager.JserEncode(model.LoginUrl)}',
-            logout: '{YetaWFManager.JserEncode(model.LogoffUrl)}',
+            url: '{Utility.JserEncode(model.LoginUrl)}',
+            logout: '{Utility.JserEncode(model.LogoffUrl)}',
             width: {model.Width},
             height: {model.Height}
         }};");
@@ -55,7 +55,7 @@ namespace YetaWF.Modules.Blog.Views {
     }};
     (function () {{
         var d = document, s = d.createElement('script');
-        s.src = '//{YetaWFManager.JserEncode(model.ShortName)}.disqus.com/embed.js';
+        s.src = '//{Utility.JserEncode(model.ShortName)}.disqus.com/embed.js';
         s.setAttribute('data-timestamp', +new Date());
         (d.head || d.body).appendChild(s);
     }})();

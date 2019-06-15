@@ -55,7 +55,7 @@ namespace YetaWF.Modules.Blog.Components {
                 case Core.Support.Gravatar.GravatarEnum.blank:
                     defaultImage = "blank"; break;
             }
-            return string.Format("//www.gravatar.com/avatar/{0}?s={1}&r={2}&d={3}", YetaWFManager.UrlEncodeSegment(email), gravatarSize, rating, defaultImage);
+            return string.Format("//www.gravatar.com/avatar/{0}?s={1}&r={2}&d={3}", Utility.UrlEncodeSegment(email), gravatarSize, rating, defaultImage);
         }
     }
 

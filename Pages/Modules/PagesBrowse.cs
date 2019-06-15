@@ -80,7 +80,7 @@ namespace YetaWF.Modules.Pages.Modules {
         public ModuleAction GetAction_RemoveLink(string pageName) {
             if (!IsAuthorized("RemovePages")) return null;
             return new ModuleAction(this) {
-                Url = YetaWFManager.UrlFor(typeof(PagesBrowseModuleController), nameof(PagesBrowseModuleController.Remove)),
+                Url = Utility.UrlFor(typeof(PagesBrowseModuleController), nameof(PagesBrowseModuleController.Remove)),
                 QueryArgs = new { PageName = pageName },
                 NeedsModuleContext = true,
                 Image = "#Remove",
@@ -99,7 +99,7 @@ namespace YetaWF.Modules.Pages.Modules {
         public ModuleAction GetAction_UpdateAdminAndEditorAuthorization() {
             if (!IsAuthorized("SetAuthorization")) return null;
             return new ModuleAction(this) {
-                Url = YetaWFManager.UrlFor(typeof(PagesBrowseModuleController), nameof(PagesBrowseModuleController.UpdateAdminAndEditorAuthorization)),
+                Url = Utility.UrlFor(typeof(PagesBrowseModuleController), nameof(PagesBrowseModuleController.UpdateAdminAndEditorAuthorization)),
                 NeedsModuleContext = true,
                 QueryArgs = new { },
                 Image = "",
@@ -118,7 +118,7 @@ namespace YetaWF.Modules.Pages.Modules {
         public ModuleAction GetAction_CreateSiteMap() {
             if (!IsAuthorized("SiteMaps")) return null;
             return new ModuleAction(this) {
-                Url = YetaWFManager.UrlFor(typeof(PagesBrowseModuleController), nameof(PagesBrowseModuleController.CreateSiteMap)),
+                Url = Utility.UrlFor(typeof(PagesBrowseModuleController), nameof(PagesBrowseModuleController.CreateSiteMap)),
                 NeedsModuleContext = true,
                 QueryArgs = new { },
                 Image = "#Add",
@@ -137,7 +137,7 @@ namespace YetaWF.Modules.Pages.Modules {
         public ModuleAction GetAction_RemoveSiteMap() {
             if (!IsAuthorized("SiteMaps")) return null;
             return new ModuleAction(this) {
-                Url = YetaWFManager.UrlFor(typeof(PagesBrowseModuleController), nameof(PagesBrowseModuleController.RemoveSiteMap)),
+                Url = Utility.UrlFor(typeof(PagesBrowseModuleController), nameof(PagesBrowseModuleController.RemoveSiteMap)),
                 NeedsModuleContext = true,
                 QueryArgs = new { },
                 Image = "#Remove",
@@ -159,7 +159,7 @@ namespace YetaWF.Modules.Pages.Modules {
             if (!await FileSystem.FileSystemProvider.FileExistsAsync(filename))
                 return null;
             return new ModuleAction(this) {
-                Url = YetaWFManager.UrlFor(typeof(PagesBrowseModuleController), nameof(PagesBrowseModuleController.DownloadSiteMap)),
+                Url = Utility.UrlFor(typeof(PagesBrowseModuleController), nameof(PagesBrowseModuleController.DownloadSiteMap)),
                 NeedsModuleContext = true,
                 CookieAsDoneSignal = true,
                 Image = await CustomIconAsync("Download.png"),
@@ -176,7 +176,7 @@ namespace YetaWF.Modules.Pages.Modules {
         public async Task<ModuleAction> GetAction_CreatePageList() {
             if (!IsAuthorized("SiteMaps")) return null;
             return new ModuleAction(this) {
-                Url = YetaWFManager.UrlFor(typeof(PagesBrowseModuleController), nameof(PagesBrowseModuleController.CreatePageList)),
+                Url = Utility.UrlFor(typeof(PagesBrowseModuleController), nameof(PagesBrowseModuleController.CreatePageList)),
                 NeedsModuleContext = true,
                 CookieAsDoneSignal = true,
                 Image = await CustomIconAsync("Download.png"),

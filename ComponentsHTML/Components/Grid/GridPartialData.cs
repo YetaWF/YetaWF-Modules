@@ -82,7 +82,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                 PageSize = pageSize,
             };
 
-            sb.Append(YetaWFManager.JsonSerialize(result));
+            sb.Append(Utility.JsonSerialize(result));
 
             return sb.ToString();
         }

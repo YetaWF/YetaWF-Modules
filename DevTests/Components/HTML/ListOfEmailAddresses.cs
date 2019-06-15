@@ -45,7 +45,7 @@ namespace YetaWF.Modules.DevTests.Components {
                 InitialPageSize = 5,
                 PageSizes = new List<int> { 5, 10, 20 },
                 ShowHeader = header,
-                AjaxUrl = YetaWFManager.UrlFor(typeof(ListOfEmailAddressesController), nameof(ListOfEmailAddressesController.ListOfEmailAddressesDisplay_SortFilter)),
+                AjaxUrl = Utility.UrlFor(typeof(ListOfEmailAddressesController), nameof(ListOfEmailAddressesController.ListOfEmailAddressesDisplay_SortFilter)),
                 SortFilterStaticData = (List<object> data, int skip, int take, List<DataProviderSortInfo> sorts, List<DataProviderFilterInfo> filters) => {
                     DataProviderGetRecords<Entry> recs = DataProviderImpl<Entry>.GetRecords(data, skip, take, sorts, filters);
                     return new DataSourceResult {
@@ -121,7 +121,7 @@ namespace YetaWF.Modules.DevTests.Components {
                 InitialPageSize = 5,
                 PageSizes = new List<int> { 5, 10, 20 },
                 ShowHeader = header,
-                AjaxUrl = YetaWFManager.UrlFor(typeof(ListOfEmailAddressesController), nameof(ListOfEmailAddressesController.ListOfEmailAddressesEdit_SortFilter)),
+                AjaxUrl = Utility.UrlFor(typeof(ListOfEmailAddressesController), nameof(ListOfEmailAddressesController.ListOfEmailAddressesEdit_SortFilter)),
                 SortFilterStaticData = (List<object> data, int skip, int take, List<DataProviderSortInfo> sorts, List<DataProviderFilterInfo> filters) => {
                     DataProviderGetRecords<Entry> recs = DataProviderImpl<Entry>.GetRecords(data, skip, take, sorts, filters);
                     return new DataSourceResult {
@@ -178,7 +178,7 @@ namespace YetaWF.Modules.DevTests.Components {
             hb.Append($@"
 </div>");
 
-            Manager.ScriptManager.AddLast($@"new YetaWF_DevTests.ListOfEmailAddressesEditComponent('{DivId}', {YetaWFManager.JsonSerialize(setup)});");
+            Manager.ScriptManager.AddLast($@"new YetaWF_DevTests.ListOfEmailAddressesEditComponent('{DivId}', {Utility.JsonSerialize(setup)});");
 
             return hb.ToString();
         }

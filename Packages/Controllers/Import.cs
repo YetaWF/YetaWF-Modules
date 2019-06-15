@@ -125,7 +125,7 @@ namespace YetaWF.Modules.Packages.Controllers {
 
             if (success) {
                 UploadResponse resp = new UploadResponse {
-                    Result = $"$YetaWF.confirm('{YetaWFManager.JserEncode(msg)}', null, function() {{ $YetaWF.reloadPage(true); }} );",
+                    Result = $"$YetaWF.confirm('{Utility.JserEncode(msg)}', null, function() {{ $YetaWF.reloadPage(true); }} );",
                 };
                 //System.Web.HttpRuntime.UnloadAppDomain();
                 //System.Web.HttpContext.Current.Response.Redirect("/");

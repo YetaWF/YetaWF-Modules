@@ -45,7 +45,7 @@ namespace YetaWF.Modules.Blog.Modules {
         public async Task<ModuleAction> GetAction_ApproveAsync(int blogEntry, int comment) {
             if (!await Resource.ResourceAccess.IsResourceAuthorizedAsync(Info.Resource_AllowManageComments)) return null;
             return new ModuleAction(this) {
-                Url = YetaWFManager.UrlFor(typeof(CommentsDisplayModuleController), nameof(CommentsDisplayModuleController.Approve)),
+                Url = Utility.UrlFor(typeof(CommentsDisplayModuleController), nameof(CommentsDisplayModuleController.Approve)),
                 NeedsModuleContext = true,
                 QueryArgs = new { BlogEntry = blogEntry, Comment = comment },
                 Image = await CustomIconAsync("CommentEntryApprove.png"),
@@ -63,7 +63,7 @@ namespace YetaWF.Modules.Blog.Modules {
         public async Task<ModuleAction> GetAction_RemoveAsync(int blogEntry, int comment) {
             if (!await Resource.ResourceAccess.IsResourceAuthorizedAsync(Info.Resource_AllowManageComments)) return null;
             return new ModuleAction(this) {
-                Url = YetaWFManager.UrlFor(typeof(CommentsDisplayModuleController), "Remove"),
+                Url = Utility.UrlFor(typeof(CommentsDisplayModuleController), "Remove"),
                 NeedsModuleContext = true,
                 QueryArgs = new { BlogEntry = blogEntry, Comment = comment },
                 Image = "#Remove",

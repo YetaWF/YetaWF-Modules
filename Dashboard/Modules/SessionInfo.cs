@@ -45,7 +45,7 @@ namespace YetaWF.Modules.Dashboard.Modules {
         }
         public ModuleAction GetAction_ClearAll() {
             return new ModuleAction(this) {
-                Url = YetaWFManager.UrlFor(typeof(YetaWF.Modules.Dashboard.Controllers.SessionInfoModuleController), "ClearAll"),
+                Url = Utility.UrlFor(typeof(YetaWF.Modules.Dashboard.Controllers.SessionInfoModuleController), "ClearAll"),
                 QueryArgs = new { __ModuleGuid = ModuleGuid },
                 Image = "#Remove",
                 LinkText = this.__ResStr("removeLink", "Remove Session Settings"),

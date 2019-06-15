@@ -48,7 +48,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             string t = model.ToString();
             if (string.IsNullOrWhiteSpace(t))
                 return Task.FromResult<string>(null);
-            t = YetaWFManager.HtmlEncode(t);
+            t = Utility.HtmlEncode(t);
 
             return Task.FromResult(t);
         }

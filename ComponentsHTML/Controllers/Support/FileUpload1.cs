@@ -47,7 +47,7 @@ namespace YetaWF.Modules.ComponentsHTML.Controllers {
             Size size = await ImageSupport.GetImageSizeAsync(tempName);
 
             UploadResponse resp = new UploadResponse {
-                Result = $"$YetaWF.confirm('{YetaWFManager.JserEncode(this.__ResStr("saveImageOK", "Image \"{0}\" successfully uploaded", __filename.FileName))}');",
+                Result = $"$YetaWF.confirm('{Utility.JserEncode(this.__ResStr("saveImageOK", "Image \"{0}\" successfully uploaded", __filename.FileName))}');",
                 FileName = tempName,
                 FileNamePlain = tempName,
                 RealFileName = __filename.FileName,

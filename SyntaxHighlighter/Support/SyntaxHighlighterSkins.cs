@@ -33,12 +33,12 @@ namespace YetaWF.Modules.SyntaxHighlighter.Support {
             Package package = AreaRegistration.CurrentPackage;
             string url = VersionManager.GetAddOnNamedUrl(package.AreaName, "SkinSyntaxHighlighter");
             string customUrl = VersionManager.GetCustomUrlFromUrl(url);
-            string path = YetaWFManager.UrlToPhysical(url);
-            string customPath = YetaWFManager.UrlToPhysical(customUrl);
+            string path = Utility.UrlToPhysical(url);
+            string customPath = Utility.UrlToPhysical(customUrl);
 
             // use custom or default theme list
             string themeFile;
-            if (YetaWFManager.AspNetMvc == YetaWFManager.AspNetMvcVersion.MVC5)
+            if (Utility.AspNetMvc == Utility.AspNetMvcVersion.MVC5)
                 themeFile = SyntaxHighlighterThemeFileMVC5;
             else
                 themeFile = SyntaxHighlighterThemeFileMVC6;

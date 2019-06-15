@@ -155,8 +155,8 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
             // the upload control
             Core.Components.FileUpload1 setupUpload = new Core.Components.FileUpload1() {
-                SaveURL = YetaWFManager.UrlFor(typeof(FileUpload1Controller), nameof(FileUpload1Controller.SaveImage), new { __ModuleGuid = Manager.CurrentModule.ModuleGuid }),
-                RemoveURL = YetaWFManager.UrlFor(typeof(FileUpload1Controller), nameof(FileUpload1Controller.RemoveImage), new { __ModuleGuid = Manager.CurrentModule.ModuleGuid }),
+                SaveURL = Utility.UrlFor(typeof(FileUpload1Controller), nameof(FileUpload1Controller.SaveImage), new { __ModuleGuid = Manager.CurrentModule.ModuleGuid }),
+                RemoveURL = Utility.UrlFor(typeof(FileUpload1Controller), nameof(FileUpload1Controller.RemoveImage), new { __ModuleGuid = Manager.CurrentModule.ModuleGuid }),
             };
 
             string uploadId = ControlId + "_ul1";
@@ -181,7 +181,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
     {await HtmlHelper.ForEditContainerAsync(setupUpload, "FileUpload1", HtmlAttributes: new { id = uploadId })}
 </div>");
 
-            Manager.ScriptManager.AddLast($@"new YetaWF_ComponentsHTML.ImageEditComponent('{ControlId}', {YetaWFManager.JsonSerialize(setup)});");
+            Manager.ScriptManager.AddLast($@"new YetaWF_ComponentsHTML.ImageEditComponent('{ControlId}', {Utility.JsonSerialize(setup)});");
 
             return hb.ToString();
         }

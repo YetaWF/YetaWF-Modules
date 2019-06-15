@@ -28,12 +28,12 @@ namespace YetaWF.Modules.Pages.Controllers {
             [Caption("ListOfLocalPages (Required)"), Description("ListOfLocalPages (Required)")]
             [UIHint("YetaWF_Pages_ListOfLocalPages"), Required]
             public List<string> Prop1Req { get; set; }
-            public string Prop1Req_AjaxUrl { get { return YetaWFManager.UrlFor(typeof(TemplateListOfLocalPagesModuleController), nameof(AddPage)); } }
+            public string Prop1Req_AjaxUrl { get { return Utility.UrlFor(typeof(TemplateListOfLocalPagesModuleController), nameof(AddPage)); } }
 
             [Caption("ListOfLocalPages"), Description("ListOfLocalPages")]
             [UIHint("YetaWF_Pages_ListOfLocalPages")]
             public List<string> Prop1 { get; set; }
-            public string Prop1_AjaxUrl { get { return YetaWFManager.UrlFor(typeof(TemplateListOfLocalPagesModuleController), nameof(AddPage)); } }
+            public string Prop1_AjaxUrl { get { return Utility.UrlFor(typeof(TemplateListOfLocalPagesModuleController), nameof(AddPage)); } }
 
             [Caption("ListOfLocalPages (Read/Only)"), Description("ListOfLocalPages (read/only)")]
             [UIHint("YetaWF_Pages_ListOfLocalPages"), ReadOnly]
@@ -68,7 +68,7 @@ namespace YetaWF.Modules.Pages.Controllers {
             UrlValidationAttribute attr = new UrlValidationAttribute(UrlValidationAttribute.SchemaEnum.Any, UrlTypeEnum.Local);
             if (!attr.IsValid(newUrl))
                 throw new Error(attr.ErrorMessage);
-            List<ListOfLocalPagesEditComponent.Entry> list = YetaWFManager.JsonDeserialize<List<ListOfLocalPagesEditComponent.Entry>>(data);
+            List<ListOfLocalPagesEditComponent.Entry> list = Utility.JsonDeserialize<List<ListOfLocalPagesEditComponent.Entry>>(data);
             if ((from l in list where l.Url.ToLower() == newUrl.ToLower() select l).FirstOrDefault() != null)
                 throw new Error(this.__ResStr("dupUrl", "Page {0} has already been added", newUrl));
             // add new grid record

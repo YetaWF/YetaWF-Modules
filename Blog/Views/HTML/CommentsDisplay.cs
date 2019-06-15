@@ -28,7 +28,7 @@ namespace YetaWF.Modules.Blog.Views {
             if (model.Comments.Count == 0) {
                 hb.Append($@"
     <div class='t_nocomments'>
-        {YetaWFManager.HtmlEncode(this.__ResStr("nocommentsAdd", "Be the first to add a comment!"))}
+        {Utility.HtmlEncode(this.__ResStr("nocommentsAdd", "Be the first to add a comment!"))}
     </div>");
             }
 
@@ -58,12 +58,12 @@ namespace YetaWF.Modules.Blog.Views {
                     if (comment.Deleted) {
                         hb.Append($@"
             <div class='t_boxdeleted'>
-                {YetaWFManager.HtmlEncode(this.__ResStr("deleted", "This comment has been deleted"))}
+                {Utility.HtmlEncode(this.__ResStr("deleted", "This comment has been deleted"))}
             </div>");
                     } else if (!comment.Approved) {
                         hb.Append($@"
             <div class='t_boxnotapproved'>
-                {YetaWFManager.HtmlEncode(this.__ResStr("notApproved", "This comment has not yet been approved"))}
+                {Utility.HtmlEncode(this.__ResStr("notApproved", "This comment has not yet been approved"))}
             </div>");
                     }
                 }
@@ -76,22 +76,22 @@ namespace YetaWF.Modules.Blog.Views {
                 }
 
                 hb.Append($@"
-            <div class='t_title'>{YetaWFManager.HtmlEncode(comment.Title)}</div>
+            <div class='t_title'>{Utility.HtmlEncode(comment.Title)}</div>
             <div class='t_comment'>{comment.Comment}</div>
             <div class='t_boxinfo'>
-                <div class='t_cmtby'>{YetaWFManager.HtmlEncode(this.__ResStr("by", "By:"))}</div>
+                <div class='t_cmtby'>{Utility.HtmlEncode(this.__ResStr("by", "By:"))}</div>
                 <div class='t_cmtauthor'>");
 
                 if (string.IsNullOrEmpty(comment.Website)) {
-                    hb.Append(YetaWFManager.HtmlEncode(comment.Name));
+                    hb.Append(Utility.HtmlEncode(comment.Name));
                 } else {
-                    hb.Append($"<a href='{YetaWFManager.HtmlAttributeEncode(comment.Website)}' class='linkpreview-show' target='_blank' rel='nofollow noopener noreferrer'>{YetaWFManager.HtmlEncode(comment.Name)}</a>");
+                    hb.Append($"<a href='{Utility.HtmlAttributeEncode(comment.Website)}' class='linkpreview-show' target='_blank' rel='nofollow noopener noreferrer'>{Utility.HtmlEncode(comment.Name)}</a>");
                 }
 
                 hb.Append($@"
                 </div>
-                <div class='t_cmton'>{YetaWFManager.HtmlEncode(this.__ResStr("on", "On:"))}</div>
-                <div class='t_cmtdate'>{YetaWFManager.HtmlEncode(Formatting.FormatDate(comment.DateCreated))}</div>
+                <div class='t_cmton'>{Utility.HtmlEncode(this.__ResStr("on", "On:"))}</div>
+                <div class='t_cmtdate'>{Utility.HtmlEncode(Formatting.FormatDate(comment.DateCreated))}</div>
             </div>
             <div class='t_boxactions'>
                 {await HtmlHelper.ForDisplayAsync(comment, nameof(comment.Actions))}

@@ -146,7 +146,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
             hb.Append($"</div>");
 
-            Manager.ScriptManager.AddLast($@"new YetaWF_ComponentsHTML.DateEditComponent('{ControlId}', {YetaWFManager.JsonSerialize(setup)});");
+            Manager.ScriptManager.AddLast($@"new YetaWF_ComponentsHTML.DateEditComponent('{ControlId}', {Utility.JsonSerialize(setup)});");
 
             return hb.ToString();
         }

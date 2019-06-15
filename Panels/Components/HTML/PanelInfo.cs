@@ -85,7 +85,7 @@ namespace YetaWF.Modules.Panels.Components {
                     if (await model.Panels[panelIndex].IsAuthorizedAsync()) {
                         string caption = model.Panels[panelIndex].Caption;
                         if (string.IsNullOrWhiteSpace(caption)) { caption = this.__ResStr("noCaption", "(no caption)"); }
-                        hb.Append($@"<h3>{YetaWFManager.HtmlEncode(caption)}</h3>");
+                        hb.Append($@"<h3>{Utility.HtmlEncode(caption)}</h3>");
                         ModuleDefinition mod = model.Panels[panelIndex].GetModuleAsync().Result;
                         if (mod != null) {
                             mod.ShowTitle = false;
@@ -124,7 +124,7 @@ $('#{DivId}').accordion({{
 
                         hb.Append($@"
         <li class='{(model._ActiveTab == tabIndex ? "k-state-active" : "")}'>
-            <span class='{(model._ActiveTab == tabIndex ? "k-link k-state-selected" : "")}'>{YetaWFManager.HtmlEncode(caption)}</span>
+            <span class='{(model._ActiveTab == tabIndex ? "k-link k-state-selected" : "")}'>{Utility.HtmlEncode(caption)}</span>
             <div class='t_panel-kendo' style='display:none'>");
 
                         ModuleDefinition mod = await model.Panels[panelIndex].GetModuleAsync();

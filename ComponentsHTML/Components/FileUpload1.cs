@@ -88,7 +88,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
     <input type='file' name='__filename' class='t_filename' style='display:none' />
 </div>");
 
-            Manager.ScriptManager.AddLast($@"new YetaWF_ComponentsHTML.FileUpload1Component('{ControlId}', {YetaWFManager.JsonSerialize(setup)});");
+            Manager.ScriptManager.AddLast($@"new YetaWF_ComponentsHTML.FileUpload1Component('{ControlId}', {Utility.JsonSerialize(setup)});");
 
             return Task.FromResult(hb.ToString());
         }

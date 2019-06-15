@@ -26,7 +26,7 @@ namespace YetaWF.Modules.Dashboard.Views {
             if (!Manager.CurrentSite.StaticPages) {
                 hb.Append($@"
 <div class='{Globals.CssDivWarning}'>
-    {YetaWFManager.HtmlEncode(this.__ResStr("disabled", "Static pages are disabled for this site."))}
+    {Utility.HtmlEncode(this.__ResStr("disabled", "Static pages are disabled for this site."))}
 </div>");
             }
 

@@ -31,9 +31,9 @@ namespace YetaWF.Modules.SyntaxHighlighter.Components {
 <div class='yt_yetawf_syntaxhighlighter_highlightjs t_display'>");
 
             if (string.IsNullOrEmpty(model)) {
-                hb.Append(YetaWFManager.HtmlEncode(this.__ResStr("noHighlightJSSkin", "(default)")));
+                hb.Append(Utility.HtmlEncode(this.__ResStr("noHighlightJSSkin", "(default)")));
             } else {
-                hb.Append(YetaWFManager.HtmlEncode(model));
+                hb.Append(Utility.HtmlEncode(model));
             }
             hb.Append($@"
 </div>");

@@ -188,7 +188,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                             sb.Append("\"\",");
                         empty = 0;
                         haveDesc = true;
-                        sb.Append("{0},", YetaWFManager.JsonSerialize(desc));
+                        sb.Append("{0},", Utility.JsonSerialize(desc));
                     }
                 }
                 tagHtml.Append(tagOpt.ToString(YTagRenderMode.Normal));
@@ -229,21 +229,21 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             sb.Append(Basics.AjaxJSONReturn);
             sb.Append(@"{""data"":[");
             foreach (SelectionItem<TYPE> item in list) {
-                sb.Append(@"{{""t"":{0},""v"":{1}}},", YetaWFManager.JsonSerialize(item.Text.ToString()), YetaWFManager.JsonSerialize(item.Value != null ? item.Value.ToString() : ""));
+                sb.Append(@"{{""t"":{0},""v"":{1}}},", Utility.JsonSerialize(item.Text.ToString()), Utility.JsonSerialize(item.Value != null ? item.Value.ToString() : ""));
             }
             if (list.Count > 0)
                 sb.RemoveLast();
             sb.Append(@"],""tooltips"":[");
             if ((from i in list where i.Tooltip != null && !string.IsNullOrWhiteSpace(i.Tooltip.ToString()) select i).FirstOrDefault() != null) {
                 foreach (SelectionItem<TYPE> item in list) {
-                    sb.Append("{0},", YetaWFManager.JsonSerialize(item.Tooltip == null ? "" : item.Tooltip.ToString()));
+                    sb.Append("{0},", Utility.JsonSerialize(item.Tooltip == null ? "" : item.Tooltip.ToString()));
                 }
                 if (list.Count > 0)
                     sb.RemoveLast();
             }
             if (!string.IsNullOrWhiteSpace(extraData)) {
                 sb.Append(@"],""extra"":[");
-                sb.Append("{0}", YetaWFManager.JsonSerialize(extraData));
+                sb.Append("{0}", Utility.JsonSerialize(extraData));
             }
             sb.Append("]}");
             return sb.ToString();

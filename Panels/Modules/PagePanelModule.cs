@@ -42,7 +42,7 @@ namespace YetaWF.Modules.Panels.Modules {
         [UIHint("YetaWF_Panels_ListOfLocalPages")]
         [Data_Binary]
         public SerializableList<LocalPage> PageList { get; set; }
-        public string PageList_AjaxUrl { get { return YetaWFManager.UrlFor(typeof(PagePanelModuleController), nameof(PagePanelModuleController.AddPage)); } }
+        public string PageList_AjaxUrl { get { return Utility.UrlFor(typeof(PagePanelModuleController), nameof(PagePanelModuleController.AddPage)); } }
 
         [Category("General"), Caption("Page Pattern"), Description("Defines a Regex pattern - All pages matching this pattern will be included in the Page Panel - for example, ^/Admin/Config/[^/]*$ would include all pages starting with /Admin/Config/, but would not include their child pages - Pages added to the Page List are shown ahead of pages discovered using the Page Pattern")]
         [UIHint("Text40"), Trim]

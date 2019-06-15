@@ -58,16 +58,16 @@ namespace YetaWF.Modules.Panels.Components {
                 hb.Append($@"
     <div class='t_entry'>
         <div class='t_image'>
-            <a class='{actionLinkClass}' {Basics.CssSaveReturnUrl}='' href='{YetaWFManager.HtmlAttributeEncode(entry.Url)}' data-tooltip='{YetaWFManager.HtmlAttributeEncode(entry.ToolTip.ToString())}'>
-                <img src='{YetaWFManager.HtmlAttributeEncode(entry.ImageUrl)}' alt='{YetaWFManager.HtmlAttributeEncode(caption)}' title='{YetaWFManager.HtmlAttributeEncode(entry.ToolTip.ToString())}' />
+            <a class='{actionLinkClass}' {Basics.CssSaveReturnUrl}='' href='{Utility.HtmlAttributeEncode(entry.Url)}' data-tooltip='{Utility.HtmlAttributeEncode(entry.ToolTip.ToString())}'>
+                <img src='{Utility.HtmlAttributeEncode(entry.ImageUrl)}' alt='{Utility.HtmlAttributeEncode(caption)}' title='{Utility.HtmlAttributeEncode(entry.ToolTip.ToString())}' />
             </a>
         </div>
         <div class='t_link'>
-            <a class='{actionLinkClass}' {Basics.CssSaveReturnUrl}='' href='{YetaWFManager.HtmlAttributeEncode(entry.Url)}' data-tooltip='{YetaWFManager.HtmlAttributeEncode(entry.ToolTip.ToString())}'>{YetaWFManager.HtmlEncode(caption)}</a>
+            <a class='{actionLinkClass}' {Basics.CssSaveReturnUrl}='' href='{Utility.HtmlAttributeEncode(entry.Url)}' data-tooltip='{Utility.HtmlAttributeEncode(entry.ToolTip.ToString())}'>{Utility.HtmlEncode(caption)}</a>
         </div>");
 
                 if (model.Style == PagePanelModule.PanelStyleEnum.SmallTable) {
-                    hb.Append($@"<div class='t_desc'>{YetaWFManager.HtmlEncode(entry.ToolTip.ToString())}</div>");
+                    hb.Append($@"<div class='t_desc'>{Utility.HtmlEncode(entry.ToolTip.ToString())}</div>");
                 }
                 hb.Append($@"
     </div>");

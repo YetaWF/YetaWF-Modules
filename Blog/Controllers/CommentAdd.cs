@@ -154,7 +154,7 @@ namespace YetaWF.Modules.Blog.Controllers {
                             Category = (await blogEntry.GetCategoryAsync()).ToString(),
                             Title = blogEntry.Title.ToString(),
                             Url = Manager.CurrentSite.MakeUrl(await BlogConfigData.GetEntryCanonicalNameAsync(blogEntry.Identity)),
-                            Comment = YetaWFManager.HtmlDecode(model.Comment),
+                            Comment = Utility.HtmlDecode(model.Comment),
                             UserName = model.Name,
                             UserEmail = model.Email,
                             UserWebsite = model.Website,

@@ -76,7 +76,7 @@ namespace YetaWF.Modules.Languages.Modules {
             if (!package.IsCorePackage && !package.IsCoreAssemblyPackage && !package.IsModulePackage && !package.IsSkinPackage) return null;
             if (MultiString.ActiveLanguage == MultiString.DefaultLanguage) return null;
             return new ModuleAction(this) {
-                Url = YetaWFManager.UrlFor(typeof(LocalizeBrowsePackageModuleController), nameof(LocalizeBrowsePackageModuleController.CreateCustomLocalization)),
+                Url = Utility.UrlFor(typeof(LocalizeBrowsePackageModuleController), nameof(LocalizeBrowsePackageModuleController.CreateCustomLocalization)),
                 QueryArgs = new { PackageName = packageName, Language = MultiString.ActiveLanguage },
                 Image = await CustomIconAsync("LocalizePackage.png"),
                 LinkText = this.__ResStr("creCustLink", "Create Localization Resources (Custom - {0})", MultiString.ActiveLanguage),
@@ -100,7 +100,7 @@ namespace YetaWF.Modules.Languages.Modules {
             if (!package.IsCorePackage && !package.IsCoreAssemblyPackage && !package.IsModulePackage && !package.IsSkinPackage) return null;
             if (MultiString.ActiveLanguage == MultiString.DefaultLanguage) return null;
             return new ModuleAction(this) {
-                Url = YetaWFManager.UrlFor(typeof(LocalizeBrowsePackageModuleController), nameof(LocalizeBrowsePackageModuleController.CreateInstalledLocalization)),
+                Url = Utility.UrlFor(typeof(LocalizeBrowsePackageModuleController), nameof(LocalizeBrowsePackageModuleController.CreateInstalledLocalization)),
                 QueryArgs = new { PackageName = packageName, Language = MultiString.ActiveLanguage },
                 Image = await CustomIconAsync("LocalizePackage.png"),
                 LinkText = this.__ResStr("creInstLink", "Create Localization Resources (Installed - {0})", MultiString.ActiveLanguage),
@@ -120,7 +120,7 @@ namespace YetaWF.Modules.Languages.Modules {
             if (!IsAuthorized("Localize")) return null;
             if (MultiString.ActiveLanguage == MultiString.DefaultLanguage) return null;
             return new ModuleAction(this) {
-                Url = YetaWFManager.UrlFor(typeof(LocalizeBrowsePackageModuleController), nameof(LocalizeBrowsePackageModuleController.CreateAllInstalledLocalizations)),
+                Url = Utility.UrlFor(typeof(LocalizeBrowsePackageModuleController), nameof(LocalizeBrowsePackageModuleController.CreateAllInstalledLocalizations)),
                 QueryArgs = new { Language = MultiString.ActiveLanguage },
                 Image = await CustomIconAsync("LocalizePackage.png"),
                 LinkText = this.__ResStr("creAllInstLink", "Create All Localization Resources (Installed - {0})", MultiString.ActiveLanguage),
@@ -142,7 +142,7 @@ namespace YetaWF.Modules.Languages.Modules {
             if (!package.IsCorePackage && !package.IsCoreAssemblyPackage && !package.IsModulePackage && !package.IsSkinPackage) return null;
             if (MultiString.ActiveLanguage == MultiString.DefaultLanguage) return null;
             return new ModuleAction(this) {
-                Url = YetaWFManager.UrlFor(typeof(LocalizeBrowsePackageModuleController), nameof(LocalizeBrowsePackageModuleController.LocalizePackageData)),
+                Url = Utility.UrlFor(typeof(LocalizeBrowsePackageModuleController), nameof(LocalizeBrowsePackageModuleController.LocalizePackageData)),
                 QueryArgs = new { PackageName = package.Name, Language = MultiString.ActiveLanguage },
                 Image = await CustomIconAsync("LocalizePackage.png"),
                 LinkText = this.__ResStr("locDataLink", "Localize Package Data ({0})", MultiString.ActiveLanguage),
@@ -162,7 +162,7 @@ namespace YetaWF.Modules.Languages.Modules {
             if (!IsAuthorized("Localize")) return null;
             if (MultiString.ActiveLanguage == MultiString.DefaultLanguage) return null;
             return new ModuleAction(this) {
-                Url = YetaWFManager.UrlFor(typeof(LocalizeBrowsePackageModuleController), nameof(LocalizeBrowsePackageModuleController.LocalizeAllPackagesData)),
+                Url = Utility.UrlFor(typeof(LocalizeBrowsePackageModuleController), nameof(LocalizeBrowsePackageModuleController.LocalizeAllPackagesData)),
                 QueryArgs = new { Language = MultiString.ActiveLanguage },
                 Image = await CustomIconAsync("LocalizePackage.png"),
                 LinkText = this.__ResStr("locAllDataLink", "Localize Data For All Packages ({0})", MultiString.ActiveLanguage),

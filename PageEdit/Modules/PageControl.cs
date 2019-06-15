@@ -67,7 +67,7 @@ namespace YetaWF.Modules.PageEdit.Modules {
         public ModuleAction GetAction_SwitchToEdit() {
             if (!Manager.CurrentPage.IsAuthorized_Edit()) return null;
             return new ModuleAction(this) {
-                Url = YetaWFManager.UrlFor(typeof(PageControlModuleController), nameof(PageControlModuleController.SwitchToEdit)),
+                Url = Utility.UrlFor(typeof(PageControlModuleController), nameof(PageControlModuleController.SwitchToEdit)),
                 QueryArgs = new { },
                 NeedsModuleContext = true,
                 Image = "#Edit",
@@ -86,7 +86,7 @@ namespace YetaWF.Modules.PageEdit.Modules {
         }
         public ModuleAction GetAction_SwitchToView() {
             return new ModuleAction(this) {
-                Url = YetaWFManager.UrlFor(typeof(PageControlModuleController), nameof(PageControlModuleController.SwitchToView)),
+                Url = Utility.UrlFor(typeof(PageControlModuleController), nameof(PageControlModuleController.SwitchToView)),
                 NeedsModuleContext = true,
                 QueryArgs = new { },
                 Image = "#Display",
@@ -116,7 +116,7 @@ namespace YetaWF.Modules.PageEdit.Modules {
             if (page == null) return null;
             if (!await Resource.ResourceAccess.IsResourceAuthorizedAsync(CoreInfo.Resource_PageExport)) return null;
             return new ModuleAction(this) {
-                Url = YetaWFManager.UrlFor(typeof(PageControlModuleController), nameof(PageControlModuleController.ExportPage)),
+                Url = Utility.UrlFor(typeof(PageControlModuleController), nameof(PageControlModuleController.ExportPage)),
                 QueryArgs = new { PageGuid = guid },
                 QueryArgsDict = new QueryHelper(new QueryDictionary {
                     { Basics.ModuleGuid, this.ModuleGuid }, // the module authorizing this

@@ -103,7 +103,7 @@ namespace YetaWF.Modules.Identity.Modules {
         }
         public async Task<ModuleAction> GetAction_ApproveAsync(string userName) {
             return new ModuleAction(this) {
-                Url = YetaWFManager.UrlFor(typeof(RegisterModuleController), nameof(RegisterModuleController.Approve)),
+                Url = Utility.UrlFor(typeof(RegisterModuleController), nameof(RegisterModuleController.Approve)),
                 Image = await CustomIconAsync("Approve.png"),
                 NeedsModuleContext = true,
                 QueryArgs = new { UserName = userName },
@@ -119,7 +119,7 @@ namespace YetaWF.Modules.Identity.Modules {
         }
         public async Task<ModuleAction> GetAction_RejectAsync(string userName) {
             return new ModuleAction(this) {
-                Url = YetaWFManager.UrlFor(typeof(RegisterModuleController), nameof(RegisterModuleController.Reject)),
+                Url = Utility.UrlFor(typeof(RegisterModuleController), nameof(RegisterModuleController.Reject)),
                 Image = await CustomIconAsync("Reject.png"),
                 NeedsModuleContext = true,
                 QueryArgs = new { UserName = userName },

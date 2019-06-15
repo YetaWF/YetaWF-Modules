@@ -76,7 +76,7 @@ namespace YetaWF.Modules.Search.Modules {
         public ModuleAction GetAction_Remove(int searchDataId) {
             if (!IsAuthorized("RemoveItems")) return null;
             return new ModuleAction(this) {
-                Url = YetaWFManager.UrlFor(typeof(SearchBrowseModuleController), "Remove"),
+                Url = Utility.UrlFor(typeof(SearchBrowseModuleController), "Remove"),
                 NeedsModuleContext = true,
                 QueryArgs = new { SearchDataId = searchDataId },
                 Image = "#Remove",
@@ -95,7 +95,7 @@ namespace YetaWF.Modules.Search.Modules {
             if (!IsAuthorized("RemoveItems")) return null;
             if (!SearchDataProvider.IsUsable) return null;
             return new ModuleAction(this) {
-                Url = YetaWFManager.UrlFor(typeof(SearchBrowseModuleController), "RemoveAll"),
+                Url = Utility.UrlFor(typeof(SearchBrowseModuleController), "RemoveAll"),
                 NeedsModuleContext = true,
                 Image = "#Remove",
                 Style = ModuleAction.ActionStyleEnum.Post,
@@ -114,7 +114,7 @@ namespace YetaWF.Modules.Search.Modules {
             if (!IsAuthorized("CollectKeywords")) return null;
             if (!SearchDataProvider.IsUsable) return null;
             return new ModuleAction(this) {
-                Url = YetaWFManager.UrlFor(typeof(SearchBrowseModuleController), nameof(SearchBrowseModuleController.CollectKeywords)),
+                Url = Utility.UrlFor(typeof(SearchBrowseModuleController), nameof(SearchBrowseModuleController.CollectKeywords)),
                 NeedsModuleContext = true,
                 Image = await CustomIconAsync("CollectKeywords.png"),
                 Style = ModuleAction.ActionStyleEnum.Post,

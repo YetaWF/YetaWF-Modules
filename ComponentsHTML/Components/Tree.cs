@@ -321,7 +321,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                         break;
                     case LinkTypeEnum.External:
                         string url = urlProp.GetPropertyValue<string>(record);
-                        output = $"<a href='{YetaWFManager.UrlEncodePath(url)}' target='_blank' class=''>{await htmlHelper.ForDisplayComponentAsync(record, DisplayProperty, value, prop.UIHint)}</a>";
+                        output = $"<a href='{Utility.UrlEncodePath(url)}' target='_blank' class=''>{await htmlHelper.ForDisplayComponentAsync(record, DisplayProperty, value, prop.UIHint)}</a>";
                         break;
                 }
 

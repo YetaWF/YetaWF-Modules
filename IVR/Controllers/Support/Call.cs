@@ -181,7 +181,7 @@ namespace Softelvdm.Modules.IVR.Controllers {
             string digits;
             TryGetForm("Digits", out digits);
 
-            string actionUrl = YetaWFManager.UrlFor(typeof(CallController), nameof(Process));
+            string actionUrl = Utility.UrlFor(typeof(CallController), nameof(Process));
 #if DEBUG
             actionUrl = Manager.CurrentSite.MakeFullUrl(actionUrl, SecurityType: YetaWF.Core.Pages.PageDefinition.PageSecurityType.Any);
 #else

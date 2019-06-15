@@ -81,7 +81,7 @@ namespace YetaWF.Modules.Feed.Views {
 
             hb.Append($@"
 </div>");
-            Manager.ScriptManager.AddLast($@"new YetaWF_Feed.Feed('{DivId}', {YetaWFManager.JsonSerialize(setup)});");
+            Manager.ScriptManager.AddLast($@"new YetaWF_Feed.Feed('{DivId}', {Utility.JsonSerialize(setup)});");
 
             return Task.FromResult(hb.ToString());
         }

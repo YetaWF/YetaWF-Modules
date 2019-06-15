@@ -127,7 +127,7 @@ namespace YetaWF.Modules.Blog.DataProvider {
                 // remove all <tags> as they may not be properly ended because we truncated the summary
                 // This may result in formatting loss, in which case an explicit summary should be provided
                 summary = RemoveHtml(summary);
-                summary = YetaWFManager.HtmlDecode(summary);
+                summary = Utility.HtmlDecode(summary);
                 return summary;
             }
         }

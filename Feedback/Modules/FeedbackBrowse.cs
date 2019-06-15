@@ -68,7 +68,7 @@ namespace YetaWF.Modules.Feedback.Modules {
         public ModuleAction GetAction_RemoveFeedback(int key) {
             if (!IsAuthorized("RemoveFeedback")) return null;
             return new ModuleAction(this) {
-                Url = YetaWFManager.UrlFor(typeof(FeedbackBrowseModuleController), "RemoveFeedback"),
+                Url = Utility.UrlFor(typeof(FeedbackBrowseModuleController), "RemoveFeedback"),
                 NeedsModuleContext = true,
                 QueryArgs = new { Key = key},
                 Image = "#Remove",

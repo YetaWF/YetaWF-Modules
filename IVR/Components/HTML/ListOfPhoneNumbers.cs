@@ -55,7 +55,7 @@ namespace Softelvdm.Modules.IVR.Components {
                 ShowHeader = header,
                 ShowPager = pager,
                 UseSkinFormatting = useSkin,
-                AjaxUrl = YetaWFManager.UrlFor(typeof(ListOfPhoneNumbersController), nameof(ListOfPhoneNumbersController.ListOfPhoneNumbersDisplay_SortFilter)),
+                AjaxUrl = Utility.UrlFor(typeof(ListOfPhoneNumbersController), nameof(ListOfPhoneNumbersController.ListOfPhoneNumbersDisplay_SortFilter)),
                 SortFilterStaticData = (List<object> data, int skip, int take, List<DataProviderSortInfo> sorts, List<DataProviderFilterInfo> filters) => {
                     DataProviderGetRecords<Entry> recs = DataProviderImpl<Entry>.GetRecords(data, skip, take, sorts, filters);
                     return new DataSourceResult {
@@ -149,7 +149,7 @@ namespace Softelvdm.Modules.IVR.Components {
                 RecordType = typeof(Entry),
                 InitialPageSize = 10,
                 ShowHeader = header,
-                AjaxUrl = YetaWFManager.UrlFor(typeof(ListOfPhoneNumbersController), nameof(ListOfPhoneNumbersController.ListOfPhoneNumbersEdit_SortFilter)),
+                AjaxUrl = Utility.UrlFor(typeof(ListOfPhoneNumbersController), nameof(ListOfPhoneNumbersController.ListOfPhoneNumbersEdit_SortFilter)),
                 SortFilterStaticData = (List<object> data, int skip, int take, List<DataProviderSortInfo> sorts, List<DataProviderFilterInfo> filters) => {
                     DataProviderGetRecords<Entry> recs = DataProviderImpl<Entry>.GetRecords(data, skip, take, sorts, filters);
                     return new DataSourceResult {
@@ -203,14 +203,14 @@ namespace Softelvdm.Modules.IVR.Components {
             }
 
             ListOfPhoneNumbersSetup setup = new ListOfPhoneNumbersSetup {
-                AddUrl = YetaWFManager.UrlFor(typeof(ListOfPhoneNumbersController), nameof(ListOfPhoneNumbersController.AddPhoneNumber)),
+                AddUrl = Utility.UrlFor(typeof(ListOfPhoneNumbersController), nameof(ListOfPhoneNumbersController.AddPhoneNumber)),
                 GridId = grid.GridDef.Id,
             };
 
             hb.Append($@"
 </div>");
 
-            Manager.ScriptManager.AddLast($@"new Softelvdm_IVR.ListOfPhoneNumbersEditComponent('{DivId}', {YetaWFManager.JsonSerialize(setup)});");
+            Manager.ScriptManager.AddLast($@"new Softelvdm_IVR.ListOfPhoneNumbersEditComponent('{DivId}', {Utility.JsonSerialize(setup)});");
 
             return hb.ToString();
         }

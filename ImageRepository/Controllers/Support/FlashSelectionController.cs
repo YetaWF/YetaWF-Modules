@@ -45,12 +45,12 @@ namespace YetaWF.Modules.ImageRepository.Controllers {
                     sel = " selected";
                     name = f;
                 }
-                hb.Append(string.Format("<option title='{0}' value='{1}'{2}>{3}</option>", YetaWFManager.HtmlAttributeEncode(fPlain), YetaWFManager.HtmlAttributeEncode(f), sel, YetaWFManager.HtmlEncode(fPlain)));
+                hb.Append(string.Format("<option title='{0}' value='{1}'{2}>{3}</option>", Utility.HtmlAttributeEncode(fPlain), Utility.HtmlAttributeEncode(f), sel, Utility.HtmlEncode(fPlain)));
             }
 
             // Upload control considers Json result a success. result has a function to execute, newName has the file name
             UploadResponse response = new UploadResponse {
-                Result = $@"$YetaWF.confirm('{YetaWFManager.JserEncode(this.__ResStr("saveImageOK", "Image \"{0}\" successfully uploaded", namePlain))}');",
+                Result = $@"$YetaWF.confirm('{Utility.JserEncode(this.__ResStr("saveImageOK", "Image \"{0}\" successfully uploaded", namePlain))}');",
                 FileName = name,
                 FileNamePlain = namePlain,
                 RealFileName = __filename.FileName,
@@ -73,10 +73,10 @@ namespace YetaWF.Modules.ImageRepository.Controllers {
             HtmlBuilder hb = new HtmlBuilder();
             foreach (var f in await ImageSelectionInfo.ReadFilesAsync(new Guid(folderGuid), subFolder, fileType)) {
                 string fPlain = f.RemoveStartingAt(ImageSupport.ImageSeparator);
-                hb.Append(string.Format("<option title='{0}' value='{1}'>{2}</option>", YetaWFManager.HtmlAttributeEncode(fPlain), YetaWFManager.HtmlAttributeEncode(f), YetaWFManager.HtmlEncode(fPlain)));
+                hb.Append(string.Format("<option title='{0}' value='{1}'>{2}</option>", Utility.HtmlAttributeEncode(fPlain), Utility.HtmlAttributeEncode(f), Utility.HtmlEncode(fPlain)));
             }
             UploadRemoveResponse response = new UploadRemoveResponse {
-                Result = $@"$YetaWF.confirm('{YetaWFManager.JserEncode(this.__ResStr("removeImageOK", "Image \"{0}\" successfully removed", namePlain))}');",
+                Result = $@"$YetaWF.confirm('{Utility.JserEncode(this.__ResStr("removeImageOK", "Image \"{0}\" successfully removed", namePlain))}');",
                 List = hb.ToString(),
             };
 

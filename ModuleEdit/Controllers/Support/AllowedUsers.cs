@@ -38,7 +38,7 @@ namespace YetaWF.Modules.ModuleEdit.Controllers {
             string userName = await Resource.ResourceAccess.GetUserNameAsync(userId);
 
             // check duplicate
-            List<ModuleDefinition.GridAllowedUser> list = YetaWFManager.JsonDeserialize<List<ModuleDefinition.GridAllowedUser>>(data);
+            List<ModuleDefinition.GridAllowedUser> list = Utility.JsonDeserialize<List<ModuleDefinition.GridAllowedUser>>(data);
             if ((from l in list where l.UserId == userId select l).FirstOrDefault() != null)
                 throw new Error(this.__ResStr("dupUser", "User {0} has already been added", newUser));
 

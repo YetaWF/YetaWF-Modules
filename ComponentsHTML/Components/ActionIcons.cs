@@ -87,7 +87,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
     {await CoreRendering.RenderMenuAsync(model, setup.MenuId, Globals.CssGridActionMenu, HtmlHelper: HtmlHelper, Hidden: true)}
 </button>");
 
-                        Manager.ScriptManager.AddLast($@"new YetaWF_ComponentsHTML.ActionIconsComponent('{buttonId}', {YetaWFManager.JsonSerialize(setup)});");
+                        Manager.ScriptManager.AddLast($@"new YetaWF_ComponentsHTML.ActionIconsComponent('{buttonId}', {Utility.JsonSerialize(setup)});");
                     break;
                 }
             }

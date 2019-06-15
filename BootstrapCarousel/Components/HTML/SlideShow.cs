@@ -66,7 +66,7 @@ namespace YetaWF.Modules.BootstrapCarousel.Components {
                 if (!string.IsNullOrWhiteSpace(slide.CompleteCaption.ToString())) {
                     hb.Append($@"
             <div class='carousel-caption'>
-                {YetaWFManager.HtmlEncode(slide.CompleteCaption.ToString())}
+                {Utility.HtmlEncode(slide.CompleteCaption.ToString())}
             </div>");
                 }
                 hb.Append(@"

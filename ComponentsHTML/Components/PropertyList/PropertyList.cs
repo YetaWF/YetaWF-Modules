@@ -234,7 +234,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             }
             if (setup.InitialExpanded != null)
                 setup.InitialExpanded = GetCategoryNormalized(setup.InitialExpanded);
-            Manager.ScriptManager.AddLast($@"new YetaWF_ComponentsHTML.PropertyListComponent('{divId}', {YetaWFManager.JsonSerialize(setup)}, {YetaWFManager.JsonSerialize(cd)});");
+            Manager.ScriptManager.AddLast($@"new YetaWF_ComponentsHTML.PropertyListComponent('{divId}', {Utility.JsonSerialize(setup)}, {Utility.JsonSerialize(cd)});");
             return hb.ToString();
         }
 
@@ -274,7 +274,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             RenderFooter(hb, classData);
 
             ControlData cd = GetControlSets(model, divId);
-            Manager.ScriptManager.AddLast($@"new YetaWF_ComponentsHTML.PropertyListComponent('{divId}', {YetaWFManager.JsonSerialize(new PropertyList.PropertyListSetup())}, {YetaWFManager.JsonSerialize(cd)});");
+            Manager.ScriptManager.AddLast($@"new YetaWF_ComponentsHTML.PropertyListComponent('{divId}', {Utility.JsonSerialize(new PropertyList.PropertyListSetup())}, {Utility.JsonSerialize(cd)});");
 
             return hb.ToString();
         }

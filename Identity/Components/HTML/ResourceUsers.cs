@@ -50,7 +50,7 @@ namespace YetaWF.Modules.Identity.Components {
                 RecordType = typeof(Entry),
                 InitialPageSize = 5,
                 ShowHeader = header,
-                AjaxUrl = YetaWFManager.UrlFor(typeof(ResourceUsersController), nameof(ResourceUsersController.ResourceUsersDisplay_SortFilter)),
+                AjaxUrl = Utility.UrlFor(typeof(ResourceUsersController), nameof(ResourceUsersController.ResourceUsersDisplay_SortFilter)),
                 SortFilterStaticData = (List<object> data, int skip, int take, List<DataProviderSortInfo> sorts, List<DataProviderFilterInfo> filters) => {
                     DataProviderGetRecords<Entry> recs = DataProviderImpl<Entry>.GetRecords(data, skip, take, sorts, filters);
                     return new DataSourceResult {
@@ -145,7 +145,7 @@ namespace YetaWF.Modules.Identity.Components {
                 RecordType = typeof(Entry),
                 InitialPageSize = 10,
                 ShowHeader = header,
-                AjaxUrl = YetaWFManager.UrlFor(typeof(ResourceUsersController), nameof(ResourceUsersController.ResourceUsersEdit_SortFilter)),
+                AjaxUrl = Utility.UrlFor(typeof(ResourceUsersController), nameof(ResourceUsersController.ResourceUsersEdit_SortFilter)),
                 SortFilterStaticData = (List<object> data, int skip, int take, List<DataProviderSortInfo> sorts, List<DataProviderFilterInfo> filters) => {
                     DataProviderGetRecords<Entry> recs = DataProviderImpl<Entry>.GetRecords(data, skip, take, sorts, filters);
                     return new DataSourceResult {
@@ -163,7 +163,7 @@ namespace YetaWF.Modules.Identity.Components {
                 SizeStyle = GridDefinition.SizeStyleEnum.SizeToFit,
                 RecordType = typeof(AllEntry),
                 InitialPageSize = 10,
-                AjaxUrl = YetaWFManager.UrlFor(typeof(ResourceUsersController), nameof(ResourceUsersController.ResourceUsersBrowse_GridData)),
+                AjaxUrl = Utility.UrlFor(typeof(ResourceUsersController), nameof(ResourceUsersController.ResourceUsersBrowse_GridData)),
                 DirectDataAsync = async (int skip, int take, List<DataProviderSortInfo> sort, List<DataProviderFilterInfo> filters) => {
                     using (UserDefinitionDataProvider userDP = new UserDefinitionDataProvider()) {
                         DataProviderGetRecords<UserDefinition> browseItems = await userDP.GetItemsAsync(skip, take, sort, filters);
@@ -221,7 +221,7 @@ namespace YetaWF.Modules.Identity.Components {
                 GridDef = GetGridAllUsersModel()
             };
             ResourceUsersSetup setup = new ResourceUsersSetup {
-                AddUrl = YetaWFManager.UrlFor(typeof(ResourceUsersController), nameof(ResourceUsersController.AddUserToResource)),
+                AddUrl = Utility.UrlFor(typeof(ResourceUsersController), nameof(ResourceUsersController.AddUserToResource)),
                 GridId = grid.GridDef.Id,
                 GridAllId = gridAll.GridDef.Id
             };
@@ -238,7 +238,7 @@ namespace YetaWF.Modules.Identity.Components {
 
             Manager.ScriptManager.AddLast($@"
 $YetaWF.expandCollapseHandling('{DivId}', '{DivId}_coll', '{DivId}_exp');
-new YetaWF_Identity.ResourceUsersEditComponent('{DivId}', {YetaWFManager.JsonSerialize(setup)});");
+new YetaWF_Identity.ResourceUsersEditComponent('{DivId}', {Utility.JsonSerialize(setup)});");
 
             return hb.ToString();
         }

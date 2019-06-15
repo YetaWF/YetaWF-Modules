@@ -36,8 +36,8 @@ namespace YetaWF.Modules.SyntaxHighlighter.Support {
             Package package = AreaRegistration.CurrentPackage;
             string url = VersionManager.GetAddOnNamedUrl(package.AreaName, "SkinHighlightJS");
             string customUrl = VersionManager.GetCustomUrlFromUrl(url);
-            string path = YetaWFManager.UrlToPhysical(url);
-            string customPath = YetaWFManager.UrlToPhysical(customUrl);
+            string path = Utility.UrlToPhysical(url);
+            string customPath = Utility.UrlToPhysical(customUrl);
 
             // use custom or default theme list
             string themeFile = HighlightJSThemeFile;

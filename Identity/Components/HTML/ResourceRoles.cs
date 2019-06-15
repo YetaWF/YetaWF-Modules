@@ -54,7 +54,7 @@ namespace YetaWF.Modules.Identity.Components {
                 RecordType = typeof(Entry),
                 InitialPageSize = 10,
                 ShowHeader = header,
-                AjaxUrl = YetaWFManager.UrlFor(typeof(ResourceRolesController), nameof(ResourceRolesController.ResourceRolesDisplay_SortFilter)),
+                AjaxUrl = Utility.UrlFor(typeof(ResourceRolesController), nameof(ResourceRolesController.ResourceRolesDisplay_SortFilter)),
                 SortFilterStaticData = (List<object> data, int skip, int take, List<DataProviderSortInfo> sorts, List<DataProviderFilterInfo> filters) => {
                     DataProviderGetRecords<Entry> recs = DataProviderImpl<Entry>.GetRecords(data, skip, take, sorts, filters);
                     return new DataSourceResult {
@@ -135,7 +135,7 @@ namespace YetaWF.Modules.Identity.Components {
                 RecordType = typeof(Entry),
                 InitialPageSize = 10,
                 ShowHeader = header,
-                AjaxUrl = YetaWFManager.UrlFor(typeof(ResourceRolesController), nameof(ResourceRolesController.ResourceRolesEdit_SortFilter)),
+                AjaxUrl = Utility.UrlFor(typeof(ResourceRolesController), nameof(ResourceRolesController.ResourceRolesEdit_SortFilter)),
                 SortFilterStaticData = (List<object> data, int skip, int take, List<DataProviderSortInfo> sorts, List<DataProviderFilterInfo> filters) => {
                     DataProviderGetRecords<Entry> recs = DataProviderImpl<Entry>.GetRecords(data, skip, take, sorts, filters);
                     return new DataSourceResult {

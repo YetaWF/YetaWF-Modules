@@ -178,8 +178,8 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                 };
             }
             Setup setup = new Setup {
-                AjaxUrl = YetaWFManager.UrlFor(typeof(ModuleSelectionController), newMods ? nameof(ModuleSelectionController.GetPackageModulesNew) : nameof(ModuleSelectionController.GetPackageModulesDesigned)),
-                AjaxUrlComplete = YetaWFManager.UrlFor(typeof(ModuleSelectionController), nameof(ModuleSelectionController.GetPackageModulesDesignedFromGuid)),
+                AjaxUrl = Utility.UrlFor(typeof(ModuleSelectionController), newMods ? nameof(ModuleSelectionController.GetPackageModulesNew) : nameof(ModuleSelectionController.GetPackageModulesDesigned)),
+                AjaxUrlComplete = Utility.UrlFor(typeof(ModuleSelectionController), nameof(ModuleSelectionController.GetPackageModulesDesignedFromGuid)),
             };
 
             hb.Append($@"
@@ -233,7 +233,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
     </div>
 </div>");
 
-            Manager.ScriptManager.AddLast($@"new YetaWF_ComponentsHTML.ModuleSelectionEditComponent('{DivId}', {YetaWFManager.JsonSerialize(setup)});");
+            Manager.ScriptManager.AddLast($@"new YetaWF_ComponentsHTML.ModuleSelectionEditComponent('{DivId}', {Utility.JsonSerialize(setup)});");
 
             return hb.ToString();
         }

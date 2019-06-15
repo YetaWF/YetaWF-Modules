@@ -65,8 +65,8 @@ namespace YetaWF.Modules.Dashboard.Controllers {
 
             public void SetData(VersionManager.AddOnProduct data) {
                 ObjectSupport.CopyData(data, this);
-                JsPathUrl = YetaWFManager.PhysicalToUrl(data.JsPath);
-                CssPathUrl = YetaWFManager.PhysicalToUrl(data.CssPath);
+                JsPathUrl = Utility.PhysicalToUrl(data.JsPath);
+                CssPathUrl = Utility.PhysicalToUrl(data.CssPath);
                 SupportTypesStrings = new List<string>();
                 foreach (Type t in data.SupportTypes) {
                     SupportTypesStrings.Add(t.FullName);

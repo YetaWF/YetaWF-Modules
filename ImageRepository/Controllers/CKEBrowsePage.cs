@@ -57,7 +57,7 @@ namespace YetaWF.Modules.ImageRepository.Controllers {
                 return PartialView(model);
 
             // build javascript to return selected Page image to CKEditor
-            string js = string.Format("window.opener.CKEDITOR.tools.callFunction({0}, '{1}');", model.CKEditorFuncNum, YetaWFManager.JserEncode(model.PageUrl));
+            string js = string.Format("window.opener.CKEDITOR.tools.callFunction({0}, '{1}');", model.CKEditorFuncNum, Utility.JserEncode(model.PageUrl));
             return FormProcessed(model, OnClose: OnCloseEnum.CloseWindow, OnPopupClose: OnPopupCloseEnum.ReloadNothing, ExtraJavaScript: js);
         }
     }

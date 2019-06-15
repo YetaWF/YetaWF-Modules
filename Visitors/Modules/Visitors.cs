@@ -69,7 +69,7 @@ namespace YetaWF.Modules.Visitors.Modules {
                 if (!visitorDP.Usable) return null;
             }
             return new ModuleAction(this) {
-                Url = YetaWFManager.UrlFor(typeof(VisitorsModuleController), nameof(VisitorsModuleController.UpdateGeoLocation)),
+                Url = Utility.UrlFor(typeof(VisitorsModuleController), nameof(VisitorsModuleController.UpdateGeoLocation)),
                 NeedsModuleContext = true,
                 QueryArgs = new { },
                 Image = "#Add",

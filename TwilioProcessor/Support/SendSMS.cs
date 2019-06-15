@@ -60,7 +60,7 @@ namespace Softelvdm.Modules.TwilioProcessor.Support {
             string callbackUrl = null;
             if (config.DeliveryReceipts) {
                 callbackUrl = YetaWFManager.Manager.CurrentSite.MakeUrl(
-                    YetaWFManager.UrlFor(typeof(TwilioResponseController), nameof(TwilioResponseController.Response), new { ValidateToNumber = toNumber }),
+                    Utility.UrlFor(typeof(TwilioResponseController), nameof(TwilioResponseController.Response), new { ValidateToNumber = toNumber }),
                     PagePageSecurity: config.UseHttps ? YetaWF.Core.Pages.PageDefinition.PageSecurityType.httpsOnly : YetaWF.Core.Pages.PageDefinition.PageSecurityType.httpOnly
                 );
             }

@@ -89,7 +89,7 @@ namespace YetaWF.Modules.Scheduler.Modules {
                 if (!await logDP.IsInstalledAsync()) return null;
             };
             return new ModuleAction(this) {
-                Url = YetaWFManager.UrlFor(typeof(LogBrowseModuleController), "RemoveAll"),
+                Url = Utility.UrlFor(typeof(LogBrowseModuleController), "RemoveAll"),
                 NeedsModuleContext = true,
                 Image = await CustomIconAsync("RemoveAll.png"),
                 Style = ModuleAction.ActionStyleEnum.Post,
@@ -109,7 +109,7 @@ namespace YetaWF.Modules.Scheduler.Modules {
                 if (!await logDP.IsInstalledAsync()) return null;
             };
             return new ModuleAction(this) {
-                Url = YetaWFManager.UrlFor(typeof(LogBrowseModuleController), "DownloadLog"),
+                Url = Utility.UrlFor(typeof(LogBrowseModuleController), "DownloadLog"),
                 NeedsModuleContext = true,
                 CookieAsDoneSignal = true,
                 Image = await CustomIconAsync("Download.png"),
@@ -129,7 +129,7 @@ namespace YetaWF.Modules.Scheduler.Modules {
                 if (!await logDP.IsInstalledAsync()) return null;
             };
             return new ModuleAction(this) {
-                Url = YetaWFManager.UrlFor(typeof(LogBrowseModuleController), "DownloadZippedLog"),
+                Url = Utility.UrlFor(typeof(LogBrowseModuleController), "DownloadZippedLog"),
                 NeedsModuleContext = true,
                 CookieAsDoneSignal = true,
                 Image = await CustomIconAsync("Download.png"),

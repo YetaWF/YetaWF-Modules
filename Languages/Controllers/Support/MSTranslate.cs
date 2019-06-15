@@ -28,7 +28,7 @@ namespace YetaWF.Modules.Languages.Controllers.Support {
             }
             public async Task<string> GetAccessTokenAsync() {
                 if (_token == null) {
-                    string request = string.Format("Subscription-Key={0}", YetaWFManager.UrlEncodeArgs(_clientKey));
+                    string request = string.Format("Subscription-Key={0}", Utility.UrlEncodeArgs(_clientKey));
                     _token = await HttpPostAsync(DataMarketAccessUri, request);
                 }
                 return _token;

@@ -20,7 +20,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                 if (classData.Header.StartsWith("-"))
                     hb.Append(classData.Header.Substring(1));
                 else
-                    hb.Append(YetaWFManager.HtmlEncode(classData.Header));
+                    hb.Append(Utility.HtmlEncode(classData.Header));
                 hb.Append("</div>");
             }
         }
@@ -30,7 +30,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                 if (classData.Footer.StartsWith("-"))
                     hb.Append(classData.Footer.Substring(1));
                 else
-                    hb.Append(YetaWFManager.HtmlEncode(classData.Footer));
+                    hb.Append(Utility.HtmlEncode(classData.Footer));
                 hb.Append("</div>");
             }
         }
@@ -84,7 +84,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                     if (property.TextAbove.StartsWith("-"))
                         hb.Append(property.TextAbove.Substring(1));
                     else
-                        hb.Append(YetaWFManager.HtmlEncode(property.TextAbove));
+                        hb.Append(Utility.HtmlEncode(property.TextAbove));
                     hb.Append("</div>");
                 }
                 if (haveValue || string.IsNullOrWhiteSpace(property.TextAbove)) {
@@ -135,7 +135,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                     if (property.TextBelow.StartsWith("-"))
                         hb.Append(property.TextBelow.Substring(1));
                     else
-                        hb.Append(YetaWFManager.HtmlEncode(property.TextBelow));
+                        hb.Append(Utility.HtmlEncode(property.TextBelow));
                     hb.Append("</div>");
                 }
 
