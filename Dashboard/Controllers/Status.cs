@@ -32,6 +32,19 @@ namespace YetaWF.Modules.Dashboard.Controllers {
             [UIHint("String"), ReadOnly]
             public string AspNetMvc { get; set; }
 
+            [Caption("Operating System"), Description("")]
+            [UIHint("String"), ReadOnly]
+            public string OSDescription { get; set; }
+            [Caption("Operating System"), Description("")]
+            [UIHint("String"), ReadOnly]
+            public string FrameworkDescription { get; set; }
+            [Caption("Operating System Architecture"), Description("")]
+            [UIHint("String"), ReadOnly]
+            public string OSArchitecture { get; set; }
+            [Caption("Processor Architecture"), Description("")]
+            [UIHint("String"), ReadOnly]
+            public string ProcessArchitecture { get; set; }
+
             [Caption("Blue-Green Deploy"), Description("The currently deployed site (Blue/Green)")]
             [UIHint("String"), ReadOnly]
             public string BlueGreenDeploy { get; set; }
@@ -59,7 +72,12 @@ namespace YetaWF.Modules.Dashboard.Controllers {
             DisplayModel model = new DisplayModel {
                 LastRestart = YetaWF.Core.Support.Startup.MultiInstanceStartTime,
                 MultiInstance = YetaWF.Core.Support.Startup.MultiInstance,
+                OSArchitecture = System.Runtime.InteropServices.RuntimeInformation.OSArchitecture.ToString(),
+                FrameworkDescription = System.Runtime.InteropServices.RuntimeInformation.FrameworkDescription,
+                OSDescription = System.Runtime.InteropServices.RuntimeInformation.OSDescription,
+                ProcessArchitecture = System.Runtime.InteropServices.RuntimeInformation.ProcessArchitecture.ToString(),
             };
+
             Package corePackage = Package.GetPackageFromPackageName("YetaWF.Core");
             if (corePackage != null)
                 model.CoreVersion = corePackage.Version;
