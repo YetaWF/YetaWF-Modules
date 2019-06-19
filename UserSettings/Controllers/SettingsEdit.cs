@@ -1,4 +1,4 @@
-/* Copyright © 2019 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/UserSettings#License */
+/* Copyright ï¿½ 2019 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/UserSettings#License */
 
 using System.Threading.Tasks;
 using YetaWF.Core.Controllers;
@@ -107,6 +107,7 @@ namespace YetaWF.Modules.UserSettings.Controllers {
         public async Task<ActionResult> SettingsEdit_Partial(EditModel model) {
             using (UserDataProvider dataProvider = new UserDataProvider()) {
                 UserData data = await dataProvider.GetItemAsync();
+                model.ShowDevInfo = Module.IsAuthorized("Development Info");
                 if (!ModelState.IsValid)
                     return PartialView(model);
                 data = model.GetData(data); // merge new data into original
