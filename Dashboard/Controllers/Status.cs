@@ -1,4 +1,4 @@
-/* Copyright © 2019 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Dashboard#License */
+/* Copyright ï¿½ 2019 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Dashboard#License */
 
 using System;
 using System.IO;
@@ -45,11 +45,11 @@ namespace YetaWF.Modules.Dashboard.Controllers {
             [UIHint("String"), ReadOnly]
             public string ProcessArchitecture { get; set; }
 
-            [Caption("Blue-Green Deploy"), Description("The currently deployed site (Blue/Green)")]
+            [Caption("Deployment Type"), Description("The deployment type used for the current site")]
             [UIHint("String"), ReadOnly]
             public string BlueGreenDeploy { get; set; }
 
-            [Caption("WebFarm/WebGarden Enabled"), Description("Defines whether webfarm/webgarden support is enabled using shared caching")]
+            [Caption("Multi-Instance Enabled"), Description("Defines whether multiple running instances (container/webfarm/webgarden) support is enabled using shared caching")]
             [UIHint("Boolean"), ReadOnly]
             public bool MultiInstance { get; set; }
 
@@ -98,8 +98,12 @@ namespace YetaWF.Modules.Dashboard.Controllers {
                     blueGreen = "Blue";
                 else if (contents.Contains("Green"))
                     blueGreen = "Green";
-                else
-                    blueGreen = "(???)";
+                else {
+                    if (Startup.RunningInContainer)
+                        blueGreen = "(Container)";
+                    else
+                        blueGreen = "(No)";
+                }
             }
             if (!string.IsNullOrWhiteSpace(blueGreen)) {
 #if MVC6
