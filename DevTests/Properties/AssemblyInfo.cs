@@ -1,4 +1,4 @@
-﻿/* Copyright © 2019 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/DevTests#License */
+/* Copyright © 2019 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/DevTests#License */
 
 using System.Reflection;
 using System.Runtime.InteropServices;
@@ -15,7 +15,7 @@ using YetaWF.PackageAttributes;
 [assembly: AssemblyCulture("")]
 [assembly: ComVisible(false)]
 
-[assembly: AssemblyVersion("4.3.0.0")]
+[assembly: AssemblyVersion("5.0.0.0")]
 
 [assembly: Package(PackageTypeEnum.Module, "YetaWF")]
 [assembly: PackageInfo("https://YetaWF.com/UpdateServer",

@@ -1,1 +1,1 @@
-﻿ScrollerItem.scss
+ScrollerItem.scss
