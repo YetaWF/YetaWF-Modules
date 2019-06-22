@@ -28,11 +28,18 @@ namespace YetaWF.Modules.DevTests.Controllers {
         }
 
         [AllowGet]
-        public ActionResult DisplayHeaders(int iD) {
+        public ActionResult DisplayHeaders() {
             DisplayModel model = new DisplayModel();
-            foreach (var x in Request.Headers) {
-                model.Headers.Add(x.ToString());
+#if MVC6
+            foreach (var hdr in Request.Headers) {
+                model.Headers.Add(hdr.ToString());
             }
+#else
+            foreach (var hdr in Request.Headers.Keys) {
+                string key = (string)hdr;
+                model.Headers.Add($"[{key}, {Request.Headers[key]}]");
+            }
+#endif
             return View(model);
         }
     }

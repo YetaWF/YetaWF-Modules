@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
@@ -69,6 +69,7 @@
   <ItemGroup>
     <Compile Include="Components\HTML\ListOfEmailAddresses.cs" />
     <Compile Include="Components\HTML\ScrollerItem.cs" />
+    <Compile Include="Controllers\DisplayHeaders.cs" />
     <Compile Include="Controllers\Support\ListOfEmailAddresses.cs" />
     <Compile Include="Controllers\TemplateColorPicker.cs" />
     <Compile Include="Controllers\TestExprAttributes.cs" />
@@ -88,6 +89,7 @@
     <Compile Include="Controllers\TemplateTimeZone.cs" />
     <Compile Include="Controllers\SMSTest.cs" />
     <Compile Include="Controllers\TestEscapes.cs" />
+    <Compile Include="Modules\DisplayHeaders.cs" />
     <Compile Include="Modules\TemplateColorPickerModule.cs" />
     <Compile Include="Modules\TemplateGridAjaxModule.cs" />
     <Compile Include="Modules\TestExprAttributes.cs" />

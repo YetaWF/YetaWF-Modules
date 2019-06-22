@@ -12,6 +12,7 @@ using YetaWF.Core.Support;
 #if MVC6
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 #else
+using System.Web.ModelBinding;
 #endif
 
 namespace YetaWF.Modules.ComponentsHTML.Components {
