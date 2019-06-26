@@ -24,6 +24,9 @@ namespace YetaWF.Modules.SiteProperties.Models {
         // STARTUP
         // STARTUP
 
+        /// <summary>
+        /// Called when any node of a (single- or multi-instance) site is starting up.
+        /// </summary>
         public async Task InitializeApplicationStartupAsync() {
             // The SiteDefinitionDataProvider has two permanent disposable objects
             SiteDefinition.LoadSiteDefinitionAsync = LoadSiteDefinitionAsync;

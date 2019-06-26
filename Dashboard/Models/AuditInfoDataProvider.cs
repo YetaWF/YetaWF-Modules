@@ -58,6 +58,9 @@ namespace YetaWF.Modules.Dashboard.DataProvider {
         // Startup
         // Startup
 
+        /// <summary>
+        /// Called when any node of a (single- or multi-instance) site is starting up.
+        /// </summary>
         public async Task InitializeApplicationStartupAsync() {
             Package package = AreaRegistration.CurrentPackage;
             bool active = WebConfigHelper.GetValue<bool>(package.AreaName, "Auditing", false);

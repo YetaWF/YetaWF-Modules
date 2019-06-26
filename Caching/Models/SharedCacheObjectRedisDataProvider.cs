@@ -44,10 +44,10 @@ namespace YetaWF.Modules.Caching.DataProvider {
         }
 
         private RedisKey GetVersionKey(string key) {
-            return "__Version__" + key;
+            return $"{key}__Version__";
         }
         private RedisKey GetDataKey(string key) {
-            return "__Data__" + key;
+            return $"{key}__Data__";
         }
 
         // API

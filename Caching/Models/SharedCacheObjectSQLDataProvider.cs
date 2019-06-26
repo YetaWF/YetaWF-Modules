@@ -14,27 +14,54 @@ using YetaWF.Core.Support.Serializers;
 
 namespace YetaWF.Modules.Caching.DataProvider {
 
-    internal class SharedCacheVersion {
+    /// <summary>
+    /// Represents the object stored in cache containing just the version information.
+    /// </summary>
+    public class SharedCacheVersion {
 
+        /// <summary>
+        /// The maximum key length.
+        /// </summary>
         public const int MaxKey = 200;
 
+        /// <summary>
+        /// The key.
+        /// </summary>
         [Data_PrimaryKey, Data_Index, StringLength(MaxKey)]
         public string Key { get; set; }
+        /// <summary>
+        /// The timestamp when the version information was created.
+        /// </summary>
         public DateTime Created { get; set; }
 
+        /// <summary>
+        /// Constructor.
+        /// </summary>
         public SharedCacheVersion() { }
     }
 
-    internal class SharedCacheVersionSQLDataProvider : DataProviderImpl, IInitializeApplicationStartup, IInitializeApplicationStartupFirstNodeOnly {
+    /// <summary>
+    /// Implements shared caching using SQL tables.
+    /// </summary>
+    public class SharedCacheVersionSQLDataProvider : DataProviderImpl, IInitializeApplicationStartup, IInitializeApplicationStartupFirstNodeOnly {
 
+        /// <summary>
+        /// Hold an instance of the shared cache data provider used to maintain version information.
+        /// </summary>
         public static SharedCacheVersionSQLDataProvider SharedCacheVersionDP { get; private set; }
 
         // Startup
 
+        /// <summary>
+        /// Called when any node of a (single- or multi-instance) site is starting up.
+        /// </summary>
         public Task InitializeApplicationStartupAsync() {
             SharedCacheVersionDP = this;
             return Task.CompletedTask;
         }
+        /// <summary>
+        /// Called when the first node of a multi-instance site is starting up.
+        /// </summary>
         public async Task InitializeFirstNodeStartupAsync() {
             if (YetaWF.Modules.Caching.Startup.Application.CacheProvider == YetaWF.Modules.Caching.Startup.Application.SQLCacheProvider)
                 await DataProvider.RemoveRecordsAsync(null);// remove all records
@@ -42,6 +69,9 @@ namespace YetaWF.Modules.Caching.DataProvider {
 
         // Implementation
 
+        /// <summary>
+        /// Constructor.
+        /// </summary>
         public SharedCacheVersionSQLDataProvider() : base(0) { SetDataProvider(CreateDataProvider()); }
 
         private IDataProvider<string, SharedCacheVersion> DataProvider { get { return GetDataProvider(); } }
@@ -53,6 +83,11 @@ namespace YetaWF.Modules.Caching.DataProvider {
 
         // API
 
+        /// <summary>
+        /// Given a key, returns the version information.
+        /// </summary>
+        /// <param name="key">The key.</param>
+        /// <returns>Returns version information.</returns>
         public Task<SharedCacheVersion> GetVersionAsync(string key) {
             return DataProvider.GetAsync(key);
         }

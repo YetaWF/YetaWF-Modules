@@ -47,13 +47,13 @@ namespace YetaWF.Modules.Caching.DataProvider {
         }
 
         private RedisKey GetVersionKey(string key) {
-            return "__Version__" + key;
+            return $"{key}__Version__";
         }
         private RedisKey GetDataKey(string key) {
-            return "__Data__" + key;
+            return $"{key}__Data__";
         }
         private string GetKey(string key) {
-            return $"__static__{key}";
+            return $"{key}__static__";
         }
 
         private static Dictionary<string, StaticCacheObject> StaticObjects = new Dictionary<string, StaticCacheObject>();

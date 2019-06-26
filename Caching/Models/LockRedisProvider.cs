@@ -2,10 +2,13 @@
 
 using StackExchange.Redis;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using YetaWF.Core.IO;
 using YetaWF.Core.Support;
+using YetaWF.Modules.Caching.Startup;
 
 namespace YetaWF.Modules.Caching.DataProvider {
 
@@ -14,33 +17,60 @@ namespace YetaWF.Modules.Caching.DataProvider {
     /// </summary>
     /// <remarks>
     /// Uses a Redis server for locking.</remarks>
-    internal class LockRedisProvider : ILockProvider, IInitializeApplicationStartupFirstNodeOnly {
+    public class LockRedisProvider : ILockProvider, IInitializeApplicationStartupFirstNodeOnly {
 
         private static ConnectionMultiplexer Redis { get; set; }
         private static string KeyPrefix { get; set; }
         private static Guid Id { get; set; }
 
+        /// <summary>
+        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+        /// </summary>
         public void Dispose() { Dispose(true); }
+        /// <summary>
+        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+        /// </summary>
+        /// <param name="disposing">true to release the DisposableTracker reference count, false otherwise.</param>
         protected virtual void Dispose(bool disposing) {
             if (disposing) {
                 DisposableTracker.RemoveObject(this);
             }
         }
 
+        /// <summary>
+        /// Called when the first node of a multi-instance site is starting up.
+        /// </summary>
         public async Task InitializeFirstNodeStartupAsync() {
             if (YetaWF.Modules.Caching.Startup.Application.LockProvider != YetaWF.Modules.Caching.Startup.Application.RedisCacheProvider) return;
             // this is the first node, so clear all data
             IDatabase db = Redis.GetDatabase();
-            if (YetaWFManager.IsSync()) {
-                db.Execute("FLUSHALL");
-            } else {
-                await db.ExecuteAsync("FLUSHALL");
+
+            string keyPrefix = WebConfigHelper.GetValue(YetaWF.Modules.Caching.Controllers.AreaRegistration.CurrentPackage.AreaName, "RedisKeyPrefix", Application.DefaultRedisKeyPrefix);
+            System.Net.EndPoint endPoint = Redis.GetEndPoints().First();
+            RedisKey[] keys = Redis.GetServer(endPoint).Keys(pattern: $"{keyPrefix}*").ToArray();
+            //await db.ExecuteAsync("FLUSHALL");
+            foreach (RedisKey key in keys) {
+                if (!key.ToString().EndsWith(YetaWF.Core.Support.Startup.FirstNodeIndicator)) {// don't remove the current first-time startup lock
+                    if (YetaWFManager.IsSync()) {
+                        db.KeyDelete(key);
+                    } else {
+                        await db.KeyDeleteAsync(key);
+                    }
+                }
             }
         }
 
         // Implementation
 
+        /// <summary>
+        /// Constructor.
+        /// </summary>
         public LockRedisProvider() { }
+        /// <summary>
+        /// Constructor.
+        /// </summary>
+        /// <param name="configString">The Redis configuration string used to connect to the Redis server.</param>
+        /// <param name="keyPrefix">The string used to prefix all keys used.</param>
         public LockRedisProvider(string configString, string keyPrefix) {
             Redis = ConnectionMultiplexer.Connect(configString);
             KeyPrefix = keyPrefix;

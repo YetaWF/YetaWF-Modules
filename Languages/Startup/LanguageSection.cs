@@ -16,6 +16,9 @@ namespace YetaWF.Modules.Languages.Startup {
         // IInitializeApplicationStartup
         // IInitializeApplicationStartup
 
+        /// <summary>
+        /// Called when any node of a (single- or multi-instance) site is starting up.
+        /// </summary>
         public async Task InitializeApplicationStartupAsync() {
             string rootFolder;
 #if MVC6

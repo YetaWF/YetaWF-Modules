@@ -17,6 +17,9 @@ namespace YetaWF.Modules.SyntaxHighlighter.Support {
         private const string HighlightJSThemeFile = "themelist.txt";
         private const string HighlightJSThemeFileMVC6 = "themelistMVC6.txt";
 
+        /// <summary>
+        /// Called when any node of a (single- or multi-instance) site is starting up.
+        /// </summary>
         public async Task InitializeApplicationStartupAsync() {
             await LoadSyntaxHighlighterThemesAsync();
             await LoadHighlightJSThemesAsync();
