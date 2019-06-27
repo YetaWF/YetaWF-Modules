@@ -29,7 +29,9 @@ namespace YetaWF.Modules.Caching.Startup {
         internal static string LockProvider { get; private set; }
         internal static string CacheProvider { get; private set; }
         internal const string SQLCacheProvider = "sql";
+        internal const string FileCacheProvider = "file";
         internal const string RedisCacheProvider = "redis";
+        internal const string LocalLockProvider = "local";
 
         // Using a Redis server:
         // Start a Redis server using "docker run --name redis -d -p 6379:6379 redis".
@@ -53,7 +55,7 @@ namespace YetaWF.Modules.Caching.Startup {
                 // distributed caching uses local and shared cache
                 YetaWF.Core.IO.Caching.GetLocalCacheProvider = LocalCacheObjectDataProvider.GetProvider;
 
-                CacheProvider = WebConfigHelper.GetValue(package.AreaName, "CacheProvider", "redis").ToLower();
+                CacheProvider = WebConfigHelper.GetValue(package.AreaName, "CacheProvider", RedisCacheProvider).ToLower();
                 if (CacheProvider == RedisCacheProvider) {
                     string configString = WebConfigHelper.GetValue(package.AreaName, "RedisCacheConfig", DefaultRedisConfig);
                     string keyPrefix = WebConfigHelper.GetValue(package.AreaName, "RedisKeyPrefix", DefaultRedisKeyPrefix);
@@ -65,21 +67,7 @@ namespace YetaWF.Modules.Caching.Startup {
                     YetaWF.Core.IO.Caching.GetSharedCacheProvider = SharedCacheObjectSQLDataProvider.GetProvider;
                     YetaWF.Core.IO.Caching.GetStaticCacheProvider = StaticObjectMultiSQLDataProvider.GetProvider;
                 } else {
-                    throw new InternalError($"Unsupported cache provider: {LockProvider}");
-                }
-                // Lock provider
-                LockProvider = WebConfigHelper.GetValue(package.AreaName, "LockProvider", "file").ToLower();
-                if (LockProvider == "file") {
-                    // create the lock folder if it doesn't exists yet
-                    string rootFolder = GetRootFolder();
-                    await YetaWF.Core.IO.FileSystem.FileSystemProvider.CreateDirectoryAsync(rootFolder);
-                    YetaWF.Core.IO.Caching.LockProvider = new LockFileProvider(rootFolder);
-                } else if (LockProvider == RedisCacheProvider) {
-                    string configString = WebConfigHelper.GetValue(package.AreaName, "RedisLockConfig", DefaultRedisConfig);
-                    string keyPrefix = WebConfigHelper.GetValue(package.AreaName, "RedisKeyPrefix", DefaultRedisKeyPrefix);
-                    YetaWF.Core.IO.Caching.LockProvider = new LockRedisProvider(configString, keyPrefix);
-                } else {
-                    throw new InternalError($"Unsupported lock provider: {LockProvider}");
+                    throw new InternalError($"Unsupported cache provider: {CacheProvider}");
                 }
             } else {
                 YetaWF.Core.Support.Startup.MultiInstance = false;
@@ -87,14 +75,30 @@ namespace YetaWF.Modules.Caching.Startup {
                 YetaWF.Core.IO.Caching.GetLocalCacheProvider = LocalCacheObjectDataProvider.GetProvider;
                 YetaWF.Core.IO.Caching.GetSharedCacheProvider = LocalCacheObjectDataProvider.GetProvider;
                 YetaWF.Core.IO.Caching.GetStaticCacheProvider = StaticObjectSingleDataProvider.GetProvider;
+            }
+
+            // Lock provider
+            LockProvider = WebConfigHelper.GetValue(package.AreaName, "LockProvider", distributed ? FileCacheProvider : LocalLockProvider).ToLower();
+            if (LockProvider == FileCacheProvider) {
+                // create the lock folder if it doesn't exist
+                string rootFolder = GetRootFolder();
+                await YetaWF.Core.IO.FileSystem.FileSystemProvider.CreateDirectoryAsync(rootFolder);
+                YetaWF.Core.IO.Caching.LockProvider = new LockFileProvider(rootFolder);
+            } else if (LockProvider == RedisCacheProvider) {
+                string configString = WebConfigHelper.GetValue(package.AreaName, "RedisLockConfig", DefaultRedisConfig);
+                string keyPrefix = WebConfigHelper.GetValue(package.AreaName, "RedisKeyPrefix", DefaultRedisKeyPrefix);
+                YetaWF.Core.IO.Caching.LockProvider = new LockRedisProvider(configString, keyPrefix);
+            } else if (LockProvider == LocalLockProvider) {
                 YetaWF.Core.IO.Caching.LockProvider = new LockSingleProvider();
+            } else {
+                throw new InternalError($"Unsupported lock provider: {LockProvider}");
             }
         }
         /// <summary>
         /// Called when the first node of a multi-instance site is starting up.
         /// </summary>
         public async Task InitializeFirstNodeStartupAsync() {
-            if (LockProvider == "file") {
+            if (LockProvider == FileCacheProvider) {// TODO: This should be in a file data provider
                 foreach (string file in await YetaWF.Core.IO.FileSystem.FileSystemProvider.GetFilesAsync(GetRootFolder())) {
                     if (!file.EndsWith("++" + YetaWF.Core.Support.Startup.FirstNodeIndicator))
                         await YetaWF.Core.IO.FileSystem.FileSystemProvider.DeleteFileAsync(file);
