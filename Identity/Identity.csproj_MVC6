@@ -41,8 +41,4 @@
     <EmbeddedResource Remove="node_modules\**" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Addons\_Templates\UserRoles\" />
-  </ItemGroup>
-
 </Project>

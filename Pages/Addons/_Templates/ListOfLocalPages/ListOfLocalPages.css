@@ -1,8 +1,8 @@
 @charset "UTF-8";
 /* Copyright © 2019 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Pages#License */
-.yt_listoflocalpages.t_edit > .t_newvalue {
+.yt_yetawf_pages_listoflocalpages.t_edit > .t_newvalue {
   padding-top: .5em; }
 
-.yt_listoflocalpages.t_edit .y_act_normlink[data-name="Collapse"] {
+.yt_yetawf_pages_listoflocalpages.t_edit .y_act_normlink[data-name="Collapse"] {
   margin-bottom: .5em;
   display: inline-block; }

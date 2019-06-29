@@ -84,7 +84,7 @@ namespace YetaWF.Modules.Pages.Components {
             };
 
             hb.Append($@"
-<div class='yt_listoflocalpages t_display'>
+<div class='yt_yetawf_pages_listoflocalpages t_display'>
     {await HtmlHelper.ForDisplayAsAsync(Container, PropertyName, FieldName, grid, nameof(grid.GridDef), grid.GridDef, "Grid", HtmlAttributes: HtmlAttributes)}
 </div>");
 
@@ -202,7 +202,7 @@ namespace YetaWF.Modules.Pages.Components {
             };
 
             hb.Append($@"
-<div class='yt_listoflocalpages t_edit' id='{DivId}'>
+<div class='yt_yetawf_pages_listoflocalpages t_edit' id='{DivId}'>
     {await HtmlHelper.ForDisplayAsAsync(Container, PropertyName, FieldName, grid, nameof(grid.GridDef), grid.GridDef, "Grid", HtmlAttributes: HtmlAttributes)}");
 
             using (Manager.StartNestedComponent(FieldName)) {

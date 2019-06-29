@@ -109,6 +109,8 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             bool preview = PropData.GetAdditionalAttributeValue("Preview", true);
 
             YTagBuilder tag = new YTagBuilder("input");
+            tag.AddCssClass("yt_colorpicker");
+            tag.AddCssClass("t_edit");
             FieldSetup(tag, Validation ? FieldType.Validated : FieldType.Normal);
             tag.MergeAttribute("id", ControlId);
             if (model != null)

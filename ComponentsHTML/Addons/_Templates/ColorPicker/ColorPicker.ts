@@ -23,6 +23,7 @@ namespace YetaWF_ComponentsHTML {
                 let colorPicker = $(control.Control).data("kendoColorPicker");
                 colorPicker.destroy();
             });
+
             $(`#${controlId}`).kendoColorPicker(setup);
         }
     }

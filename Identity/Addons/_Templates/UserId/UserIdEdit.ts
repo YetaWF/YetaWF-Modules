@@ -12,7 +12,7 @@ namespace YetaWF_Identity {
     export class UserIdEditComponent extends YetaWF.ComponentBaseDataImpl {
 
         public static readonly TEMPLATE: string = "yt_yetawf_identity_userid";
-        public static readonly SELECTOR: string = ".yt_yetawf_identity_userid.t_edit";
+        public static readonly SELECTOR: string = ".yt_yetawf_identity_userid.t_large.t_edit";
 
         private Setup: UserIdSetup;
         private GridAll: YetaWF_ComponentsHTML.Grid;

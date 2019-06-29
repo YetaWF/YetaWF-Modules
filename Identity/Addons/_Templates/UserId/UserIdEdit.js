@@ -48,7 +48,7 @@ var YetaWF_Identity;
             return _this;
         }
         UserIdEditComponent.TEMPLATE = "yt_yetawf_identity_userid";
-        UserIdEditComponent.SELECTOR = ".yt_yetawf_identity_userid.t_edit";
+        UserIdEditComponent.SELECTOR = ".yt_yetawf_identity_userid.t_large.t_edit";
         return UserIdEditComponent;
     }(YetaWF.ComponentBaseDataImpl));
     YetaWF_Identity.UserIdEditComponent = UserIdEditComponent;
