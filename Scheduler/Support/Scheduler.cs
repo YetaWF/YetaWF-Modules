@@ -119,7 +119,7 @@ namespace YetaWF.Modules.Scheduler.Support {
         private void Execute() {
 
             // get a manager for the scheduler
-            YetaWFManager.MakeInitialThreadInstance(null);
+            YetaWFManager.MakeInitialThreadInstance(null, null);
 
             SchedulerLog = new SchedulerLogging();
             SchedulerLog.Init();
@@ -343,7 +343,7 @@ namespace YetaWF.Modules.Scheduler.Support {
                     if (item.SiteSpecific) {
                         DataProviderGetRecords<SiteDefinition> info = await SiteDefinition.GetSitesAsync(0, 0, null, null);
                         foreach (SiteDefinition site in info.Data) {
-                            YetaWFManager.MakeThreadInstance(site);// set up a manager for the site
+                            YetaWFManager.MakeThreadInstance(site, null);// set up a manager for the site
                             YetaWFManager.Syncify(async () => { // there is no point in running the scheduler async
                                 SchedulerLog.LimitTo(YetaWFManager.Manager);
                                 SchedulerLog.SetCurrent(logId, site.Identity, item.Name);
@@ -361,7 +361,7 @@ namespace YetaWF.Modules.Scheduler.Support {
                                     errors.AppendLine(Logging.AddLog("{0}: {1}", site.Identity, s));
 
                             });
-                            YetaWFManager.MakeThreadInstance(null);// restore scheduler's manager
+                            YetaWFManager.MakeThreadInstance(null, null);// restore scheduler's manager
                             SchedulerLog.LimitTo(YetaWFManager.Manager);
                             SchedulerLog.SetCurrent(logId, 0, item.Name);
                         }
