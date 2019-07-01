@@ -21,7 +21,8 @@ namespace YetaWF.Modules.ComponentsHTML {
         /// <remarks>Installs the component and view rendering support in the framework class YetaWF.Core.Components.YetaWFCoreRendering.</remarks>
         public Task InitializeApplicationStartupAsync() {
             // install our core rendering support
-            YetaWF.Core.Components.YetaWFCoreRendering.Render = this;
+            if (YetaWFManager.Manager.HostUsed != YetaWFManager.BATCHMODE)
+                YetaWF.Core.Components.YetaWFCoreRendering.Render = this;
             return Task.CompletedTask;
         }
     }
