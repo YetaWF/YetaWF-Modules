@@ -35,7 +35,7 @@ namespace YetaWF.Modules.Dashboard.Controllers {
             [Caption("Operating System"), Description("")]
             [UIHint("String"), ReadOnly]
             public string OSDescription { get; set; }
-            [Caption("Operating System"), Description("")]
+            [Caption("Framework"), Description("")]
             [UIHint("String"), ReadOnly]
             public string FrameworkDescription { get; set; }
             [Caption("Operating System Architecture"), Description("")]
