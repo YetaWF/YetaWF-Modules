@@ -351,7 +351,7 @@ namespace YetaWF.Modules.Identity.DataProvider {
             return Task.FromResult<string>(null);
         }
 
-        public async Task<AddUserInfo> AddUserAsync(string name, string email, string password) {
+        public async Task<AddUserInfo> AddUserAsync(string name, string email, string password, bool needsNewPassword) {
 
             AddUserInfo info = new AddUserInfo();
             LoginConfigData config = await LoginConfigDataProvider.GetConfigAsync();
@@ -391,6 +391,13 @@ namespace YetaWF.Modules.Identity.DataProvider {
                     info.Errors.Add(error);
 #endif
                     return info;
+                }
+            }
+            if (needsNewPassword) {
+                using (UserDefinitionDataProvider userDP = new UserDefinitionDataProvider()) {
+                    user.NeedsNewPassword = true;
+                    if (await userDP.UpdateItemAsync(user) != UpdateStatusEnum.OK)
+                        throw new InternalError($"Failed to update new user to set {nameof(user.NeedsNewPassword)}");
                 }
             }
 
