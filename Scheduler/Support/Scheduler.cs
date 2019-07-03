@@ -119,7 +119,7 @@ namespace YetaWF.Modules.Scheduler.Support {
         private void Execute() {
 
             // get a manager for the scheduler
-            YetaWFManager.MakeInitialThreadInstance(null, null);
+            YetaWFManager.MakeInitialThreadInstance(null);
 
             SchedulerLog = new SchedulerLogging();
             SchedulerLog.Init();
