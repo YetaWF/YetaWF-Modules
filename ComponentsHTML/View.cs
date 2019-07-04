@@ -91,6 +91,14 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
             YTagBuilder tagBuilder = new YTagBuilder("form");
             tagBuilder.MergeAttributes(rvd, true);
+
+            string id = null;
+            if (tagBuilder.Attributes.ContainsKey("id")) {
+                id = (string)tagBuilder.Attributes["id"];
+            } else {
+                id = Manager.UniqueId();
+                tagBuilder.Attributes.Add("id", id);
+            }
             string formAction;
 #if MVC6
             System.IServiceProvider services = HtmlHelper.ActionContext.HttpContext.RequestServices;
@@ -101,6 +109,15 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 #endif
             tagBuilder.MergeAttribute("action", formAction, true);
             tagBuilder.MergeAttribute("method", Method, true);
+
+            // show errors if already present
+            if (!HtmlHelper.ModelState.IsValid) {
+                Manager.ScriptManager.AddLast($@"
+var f = $YetaWF.getElementById('{id}');
+if ($YetaWF.Forms.hasErrors(f))
+    $YetaWF.Forms.showErrors(f);
+");
+            }
 
             return tagBuilder.ToString(YTagRenderMode.StartTag);
         }

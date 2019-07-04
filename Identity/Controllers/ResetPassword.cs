@@ -58,11 +58,15 @@ namespace YetaWF.Modules.Identity.Controllers {
                 if (await logInfoDP.IsExternalUserAsync(user.UserId))
                     return View("ShowMessage", this.__ResStr("extUser", "This account uses an external login provider - The password (if available) must be set up using the external login provider."), UseAreaViewName: false);
             }
-
             EditModel model = new EditModel {
                 ResetKey = resetKey,
                 UserId = userId,
             };
+            if (resetKey != null) {
+                if (user.ResetKey == null || user.ResetValidUntil == null || user.ResetValidUntil < DateTime.UtcNow) {
+                    ModelState.AddModelError(nameof(model.ResetKey), this.__ResStr("expired", "The reset key has expired and is no longer valid"));
+                }
+            }
             return View(model);
         }
 
@@ -90,7 +94,7 @@ namespace YetaWF.Modules.Identity.Controllers {
 
             Guid? resetKey = null;
             if (user.ResetKey == null || user.ResetValidUntil == null || user.ResetValidUntil < DateTime.UtcNow) {
-                ModelState.AddModelError(nameof(model.ResetKey), this.__ResStr("expired", "The reset key has expired and is not longer valid"));
+                ModelState.AddModelError(nameof(model.ResetKey), this.__ResStr("expired", "The reset key has expired and is no longer valid"));
             } else {
                 try {
                     resetKey = new Guid(model.ResetKey);
@@ -126,8 +130,8 @@ namespace YetaWF.Modules.Identity.Controllers {
             await userManager.RemovePasswordAsync(user);
             result = await userManager.AddPasswordAsync(user, model.NewPassword);
 #else
-            //$$$$$$
-            result = userManager.ChangePassword(user.Id, model.OldPassword ?? "", model.NewPassword);
+            await userManager.RemovePasswordAsync(user.Id);
+            result = await userManager.AddPasswordAsync(user.Id, model.NewPassword);
 #endif
             if (!result.Succeeded) {
                 foreach (var err in result.Errors) {
