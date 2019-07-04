@@ -119,8 +119,7 @@ namespace YetaWF.Modules.Identity.Controllers {
                 UserManager<UserDefinition> userManager = Managers.GetUserManager();
                 hashedNewPassword = userManager.PasswordHasher.HashPassword(model.Password);
 #endif
-                if (config.SavePlainTextPassword)
-                    user.PasswordPlainText = model.Password;
+                user.PasswordPlainText = config.SavePlainTextPassword ? model.Password : null;
                 user.PasswordHash = hashedNewPassword;
 
                 if (!await dataProvider.AddItemAsync(user))

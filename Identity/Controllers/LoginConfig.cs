@@ -11,6 +11,7 @@ using YetaWF.Core.Serializers;
 using YetaWF.Core.Support;
 using YetaWF.Modules.Identity.DataProvider;
 using YetaWF.Modules.Identity.Modules;
+using System;
 #if MVC6
 using Microsoft.AspNetCore.Mvc;
 #else
@@ -34,9 +35,14 @@ namespace YetaWF.Modules.Identity.Controllers {
             [UIHint("Enum")]
             public RegistrationTypeEnum RegistrationType { get; set; }
 
-            [Category("Accounts"), Caption("Save Password"), Description("Defines whether the user's password is saved so it can be recovered (and emailed to the user if necessary) - Not used for external login providers")]
+            [Category("Accounts"), Caption("Save Password"), Description("Defines whether the user's password is saved so it can be recovered (and emailed to the user if necessary) - If passwords are not saved password, a reset email is sent to the user instead which requires a provided key to be entered to reset the password - Not used for external login providers")]
             [UIHint("Boolean")]
             public bool SavePlainTextPassword { get; set; }
+
+            [Category("Accounts"), Caption("Password Reset"), Description("Defines how long a password reset email is valid - Password reset emails are only sent if passwords are not saved by this site (Save Password) - Not used for external login providers")]
+            [UIHint("TimeSpanDHM")]
+            [ProcessIf(nameof(SavePlainTextPassword), false, Disable = true)]
+            public TimeSpan ResetTimeSpan { get; set; }
 
             [Category("Accounts"), Caption("Verification Required"), Description("Defines whether new users need to be verified before they have access to the site - Verification is performed by sending an email to the new user with a verification code, which must be entered when logging in the first time")]
             [UIHint("Boolean")]

@@ -359,8 +359,7 @@ namespace YetaWF.Modules.Identity.DataProvider {
             UserDefinition user = new UserDefinition();
             user.UserName = name;
             user.Email = email;
-            if (config.SavePlainTextPassword)
-                user.PasswordPlainText = password;
+            user.PasswordPlainText = config.SavePlainTextPassword ? password : null;
 
             if (config.RegistrationType == RegistrationTypeEnum.NameAndEmail) {
                 using (UserDefinitionDataProvider dataProvider = new UserDefinitionDataProvider()) {

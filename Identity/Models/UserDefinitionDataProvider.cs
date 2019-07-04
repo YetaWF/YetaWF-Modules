@@ -89,6 +89,11 @@ namespace YetaWF.Modules.Identity.DataProvider {
         public bool NeedsNewPassword { get; set; }
 
         [Data_NewValue]
+        public Guid? ResetKey { get; set; }
+        [Data_NewValue]
+        public DateTime? ResetValidUntil { get; set; }
+
+        [Data_NewValue]
         public int LoginFailures { get; set; }
 
         [StringLength(60)] // max length is really a guid, leave some extra

@@ -255,8 +255,7 @@ namespace YetaWF.Modules.Identity.Modules {
 #endif
                 //ModuleDefinition.GetPermanentGuid(typeof(RegisterModule))
                 LoginConfigData config = await LoginConfigDataProvider.GetConfigAsync();
-                if (config.SavePlainTextPassword)
-                    user.PasswordPlainText = newPassword;
+                user.PasswordPlainText = config.SavePlainTextPassword ? newPassword : null;
                 user.PasswordHash = hashedNewPassword;
                 UpdateStatusEnum status = await dataProvider.UpdateItemAsync(user);
                 switch (status) {

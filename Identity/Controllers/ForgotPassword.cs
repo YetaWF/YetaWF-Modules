@@ -10,6 +10,7 @@ using YetaWF.Core.Support;
 using YetaWF.Modules.Identity.DataProvider;
 using YetaWF.Modules.Identity.Support;
 using YetaWF.Core.Components;
+using System;
 #if MVC6
 using Microsoft.AspNetCore.Mvc;
 #else
@@ -25,7 +26,7 @@ namespace YetaWF.Modules.Identity.Controllers {
         [Trim]
         public class EditModel {
 
-            [TextAbove("You can request your password by providing your email address. The password will be sent to your email address and should arrive in your inbox within a few minutes. Please make sure to update your spam filters to avoid rejecting this email.")]
+            [TextAbove("You can request help recovering your password with your email address. Information will be sent to your email address and should arrive in your inbox within a few minutes. Please make sure to update your spam filters to avoid rejecting this email.")]
             [Caption("Email Address"), Description("Enter the email address associated with your account")]
             [UIHint("Email"), StringLength(Globals.MaxEmail), Required]
             public string Email { get; set; }
@@ -77,8 +78,21 @@ namespace YetaWF.Modules.Identity.Controllers {
                 switch (userDef.UserStatus) {
                     case UserStatusEnum.Approved:
                         Emails emails = new Emails();
-                        await emails.SendForgottenEmailAsync(userDef, config.BccForgottenPassword ? Manager.CurrentSite.AdminEmail : null);
-                        return FormProcessed(model, this.__ResStr("okSaved", "We just sent an email to your email address with your password information - Please allow a few minutes for delivery and make sure your spam filters allow emails from {0}", Manager.CurrentSite.SMTP.Server), OnClose: OnCloseEnum.Nothing, OnPopupClose: OnPopupCloseEnum.ReloadModule);
+                        if (config.SavePlainTextPassword) {
+                            await emails.SendForgottenEmailAsync(userDef, config.BccForgottenPassword ? Manager.CurrentSite.AdminEmail : null);
+                            return FormProcessed(model, this.__ResStr("okForgot", "We just sent an email to your email address with your password information - Please allow a few minutes for delivery and make sure your spam filters allow emails from {0}", Manager.CurrentSite.SMTP.Server), OnClose: OnCloseEnum.Nothing, OnPopupClose: OnPopupCloseEnum.ReloadModule);
+                        } else {
+                            if (userDef.ResetKey != null && userDef.ResetValidUntil != null && userDef.ResetValidUntil > DateTime.UtcNow) {
+                                // preserve existing key in case user resends
+                            } else {
+                                userDef.ResetKey = Guid.NewGuid();
+                                userDef.ResetValidUntil = DateTime.UtcNow.Add(config.ResetTimeSpan);
+                                if (await userDP.UpdateItemAsync(userDef) != Core.DataProvider.UpdateStatusEnum.OK)// update reset key info
+                                    throw new Error(this.__ResStr("resetUpdate", "User information could not be updated"));
+                            }
+                            await emails.SendPasswordResetEmailAsync(userDef, config.BccForgottenPassword ? Manager.CurrentSite.AdminEmail : null);
+                            return FormProcessed(model, this.__ResStr("okReset", "We just sent an email to your email address to reset your password - Please allow a few minutes for delivery and make sure your spam filters allow emails from {0}", Manager.CurrentSite.SMTP.Server), OnClose: OnCloseEnum.Nothing, OnPopupClose: OnPopupCloseEnum.ReloadModule);
+                        }
                     case UserStatusEnum.NeedApproval:
                         ModelState.AddModelError("Email", this.__ResStr("needApproval", "This account has not yet been approved and is awaiting approval by the site administrator"));
                         break;

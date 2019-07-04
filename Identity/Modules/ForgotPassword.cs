@@ -50,22 +50,39 @@ namespace YetaWF.Modules.Identity.Modules {
 
         public async Task<ModuleAction> GetAction_ForgotPasswordAsync(string url, bool CloseOnLogin = false) {
             LoginConfigData config = await LoginConfigDataProvider.GetConfigAsync();
-            if (!config.SavePlainTextPassword) return null;
-            return new ModuleAction(this) {
-                Url = string.IsNullOrWhiteSpace(url) ? ModulePermanentUrl : url,
-                QueryArgs = CloseOnLogin ? new { CloseOnLogin = CloseOnLogin } : null,
-                Image = "#Help",
-                LinkText = this.__ResStr("regLink", "Forgot your password?"),
-                MenuText = this.__ResStr("regText", "Forgot your password?"),
-                Tooltip = this.__ResStr("regTooltip", "If you have an account and forgot your password, click to have an email sent to you with your password"),
-                Legend = this.__ResStr("regLegend", "Used to send an email to you with your password if you have an account and forgot your password"),
-                Style = Manager.IsInPopup ? ModuleAction.ActionStyleEnum.ForcePopup : ModuleAction.ActionStyleEnum.Normal,
-                Location = ModuleAction.ActionLocationEnum.NoAuto | ModuleAction.ActionLocationEnum.InPopup | ModuleAction.ActionLocationEnum.ModuleLinks,
-                Category = ModuleAction.ActionCategoryEnum.Update,
-                Mode = ModuleAction.ActionModeEnum.Any,
-                SaveReturnUrl = true,
-                AddToOriginList = false,
-            };
+            if (config.SavePlainTextPassword) {
+                return new ModuleAction(this) {
+                    Url = string.IsNullOrWhiteSpace(url) ? ModulePermanentUrl : url,
+                    QueryArgs = CloseOnLogin ? new { CloseOnLogin = CloseOnLogin } : null,
+                    Image = "#Help",
+                    LinkText = this.__ResStr("forgotLink", "Forgot your password?"),
+                    MenuText = this.__ResStr("forgotText", "Forgot your password?"),
+                    Tooltip = this.__ResStr("forgotTooltip", "If you have an account and forgot your password, click to have an email sent to you with your password"),
+                    Legend = this.__ResStr("forgotLegend", "Used to send an email to you with your password if you have an account and forgot your password"),
+                    Style = Manager.IsInPopup ? ModuleAction.ActionStyleEnum.ForcePopup : ModuleAction.ActionStyleEnum.Normal,
+                    Location = ModuleAction.ActionLocationEnum.NoAuto | ModuleAction.ActionLocationEnum.InPopup | ModuleAction.ActionLocationEnum.ModuleLinks,
+                    Category = ModuleAction.ActionCategoryEnum.Update,
+                    Mode = ModuleAction.ActionModeEnum.Any,
+                    SaveReturnUrl = true,
+                    AddToOriginList = false,
+                };
+            } else {
+                return new ModuleAction(this) {
+                    Url = string.IsNullOrWhiteSpace(url) ? ModulePermanentUrl : url,
+                    QueryArgs = CloseOnLogin ? new { CloseOnLogin = CloseOnLogin } : null,
+                    Image = "#Help",
+                    LinkText = this.__ResStr("resetLink", "Forgot your password?"),
+                    MenuText = this.__ResStr("resetText", "Forgot your password?"),
+                    Tooltip = this.__ResStr("resetTooltip", "If you have an account and forgot your password, click to have an email sent to you to reset your password"),
+                    Legend = this.__ResStr("resetLegend", "Used to send an email to you to reset your password if you have an account and forgot your password"),
+                    Style = Manager.IsInPopup ? ModuleAction.ActionStyleEnum.ForcePopup : ModuleAction.ActionStyleEnum.Normal,
+                    Location = ModuleAction.ActionLocationEnum.NoAuto | ModuleAction.ActionLocationEnum.InPopup | ModuleAction.ActionLocationEnum.ModuleLinks,
+                    Category = ModuleAction.ActionCategoryEnum.Update,
+                    Mode = ModuleAction.ActionModeEnum.Any,
+                    SaveReturnUrl = true,
+                    AddToOriginList = false,
+                };
+            }
         }
     }
 }

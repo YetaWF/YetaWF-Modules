@@ -140,8 +140,7 @@ namespace YetaWF.Modules.Identity.Controllers {
                     break;
             }
 
-            if (config.SavePlainTextPassword)
-                user.PasswordPlainText = model.Password;
+            user.PasswordPlainText = config.SavePlainTextPassword ? model.Password : null;
 
             if (config.RegistrationType == RegistrationTypeEnum.NameAndEmail) {
                 using (UserDefinitionDataProvider dataProvider = new UserDefinitionDataProvider()) {

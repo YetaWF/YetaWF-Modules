@@ -19,16 +19,16 @@ using System.Web.Mvc;
 
 namespace YetaWF.Modules.Identity.Controllers {
 
-    public class UserPasswordModuleController : ControllerImpl<YetaWF.Modules.Identity.Modules.UserPasswordModule> {
+    public class ResetPasswordModuleController : ControllerImpl<YetaWF.Modules.Identity.Modules.ResetPasswordModule> {
 
-        public UserPasswordModuleController() { }
+        public ResetPasswordModuleController() { }
 
         [Trim]
         public class EditModel {
 
-            [Caption("Current Password"), Description("Enter your current password for verification")]
-            [UIHint("Password20"), StringLength(Globals.MaxPswd)]
-            public string OldPassword { get; set; }
+            [Caption("Reset Key"), Description("Enter your reset key you received in the email we sent to you in order to reset your password")]
+            [UIHint("Text40"), StringLength(80)]
+            public string ResetKey { get; set; }
 
             [Caption("New Password"), Description("Enter your desired new password")]
             [UIHint("Password20"), StringLength(Globals.MaxPswd), Required]
@@ -38,78 +38,72 @@ namespace YetaWF.Modules.Identity.Controllers {
             [UIHint("Password20"), StringLength(Globals.MaxPswd), Required, SameAs("NewPassword", "The password confirmation doesn't match the password entered")]
             public string ConfirmPassword { get; set; }
 
-            public string UserName { get; set; }
-
-            public void SetData(UserDefinition user) {
-                UserName = user.UserName;
-            }
+            [UIHint("Hidden"), ReadOnly]
+            public int UserId { get; set; }
         }
 
         [AllowGet]
-        public async Task<ActionResult> UserPassword() {
-#if MVC6
-            if (!Manager.CurrentContext.User.Identity.IsAuthenticated)
-#else
-            if (!Manager.CurrentRequest.IsAuthenticated)
-#endif
-            {
-                throw new Error(this.__ResStr("noUser", "There is no logged on user"));
-            }
-            string userName = User.Identity.Name;
+        public async Task<ActionResult> ResetPassword(int userId = 0, string resetKey = null) {
 
-            using (UserLoginInfoDataProvider logInfoDP = new UserLoginInfoDataProvider()) {
-                if (await logInfoDP.IsExternalUserAsync(Manager.UserId))
-                    return View("ShowMessage", this.__ResStr("extUser", "This account uses an external login provider - The password (if available) must be set up using the external login provider."), UseAreaViewName: false);
-            }
             UserManager<UserDefinition> userManager = Managers.GetUserManager();
             UserDefinition user;
 #if MVC6
-            user = await userManager.FindByNameAsync(userName);
+            user = await userManager.FindByIdAsync(userId.ToString());
 #else
-            user = userManager.FindByName(userName);
+            user = userManager.FindById(userId.ToString());
 #endif
             if (user == null)
-                throw new Error(this.__ResStr("notFound", "User \"{0}\" not found."), userName);
+                throw new Error(this.__ResStr("notFound", "User account not found."));
+            using (UserLoginInfoDataProvider logInfoDP = new UserLoginInfoDataProvider()) {
+                if (await logInfoDP.IsExternalUserAsync(user.UserId))
+                    return View("ShowMessage", this.__ResStr("extUser", "This account uses an external login provider - The password (if available) must be set up using the external login provider."), UseAreaViewName: false);
+            }
 
-            EditModel model = new EditModel { };
-            model.SetData(user);
-
+            EditModel model = new EditModel {
+                ResetKey = resetKey,
+                UserId = userId,
+            };
             return View(model);
         }
 
         [AllowPost]
         [ConditionalAntiForgeryToken]
         [ExcludeDemoMode]
-        public async Task<ActionResult> UserPassword_Partial(EditModel model) {
-            // get current user we're changing
-#if MVC6
-            if (!Manager.CurrentContext.User.Identity.IsAuthenticated)
-#else
-            if (!Manager.CurrentRequest.IsAuthenticated)
-#endif
-            {
-                throw new Error(this.__ResStr("noUser", "There is no logged on user"));
-            }
-            string userName = User.Identity.Name;
-
-            using (UserLoginInfoDataProvider logInfoDP = new UserLoginInfoDataProvider()) {
-                if (await logInfoDP.IsExternalUserAsync(Manager.UserId))
-                    throw new Error(this.__ResStr("extUserPswd", "This account can only be accessed using an external login provider"));
-            }
+        public async Task<ActionResult> ResetPassword_Partial(EditModel model) {
 
             UserManager<UserDefinition> userManager = Managers.GetUserManager();
             UserDefinition user;
 #if MVC6
-            user = await userManager.FindByNameAsync(userName);
+            user = await userManager.FindByIdAsync(model.UserId.ToString());
 #else
-            user = userManager.FindByName(userName);
+            user = userManager.FindById(model.UserId.ToString());
 #endif
             if (user == null)
-                throw new Error(this.__ResStr("notFound", "User \"{0}\" not found."), userName);
+                throw new Error(this.__ResStr("notFound", "User account not found."));
+            using (UserLoginInfoDataProvider logInfoDP = new UserLoginInfoDataProvider()) {
+                if (await logInfoDP.IsExternalUserAsync(model.UserId))
+                    throw new Error(this.__ResStr("extUser", "This account uses an external login provider - The password (if available) must be set up using the external login provider."));
+            }
 
-            model.SetData(user);
             if (!ModelState.IsValid)
                 return PartialView(model);
+
+            Guid? resetKey = null;
+            if (user.ResetKey == null || user.ResetValidUntil == null || user.ResetValidUntil < DateTime.UtcNow) {
+                ModelState.AddModelError(nameof(model.ResetKey), this.__ResStr("expired", "The reset key has expired and is not longer valid"));
+            } else {
+                try {
+                    resetKey = new Guid(model.ResetKey);
+                } catch (Exception) {
+                    ModelState.AddModelError(nameof(model.ResetKey), this.__ResStr("invReset", "The reset key is invalid - Please make sure to copy/paste the key in its entirety"));
+                }
+            }
+            if (resetKey != null && user.ResetKey != (Guid)resetKey) {
+                ModelState.AddModelError(nameof(model.ResetKey), this.__ResStr("invReset", "The reset key is invalid - Please make sure to copy/paste the key in its entirety"));
+            }
+            if (!ModelState.IsValid)
+                return PartialView(model);
+
             // change the password
             IdentityResult result;
 #if MVC6
@@ -129,16 +123,18 @@ namespace YetaWF.Modules.Identity.Controllers {
                 return PartialView(model);
             }
 #if MVC6
-            result = await userManager.ChangePasswordAsync(user, model.OldPassword ?? "", model.NewPassword);
+            await userManager.RemovePasswordAsync(user);
+            result = await userManager.AddPasswordAsync(user, model.NewPassword);
 #else
+            //$$$$$$
             result = userManager.ChangePassword(user.Id, model.OldPassword ?? "", model.NewPassword);
 #endif
             if (!result.Succeeded) {
                 foreach (var err in result.Errors) {
 #if MVC6
-                    ModelState.AddModelError("OldPassword", err.Description);
+                    ModelState.AddModelError(nameof(model.NewPassword), err.Description);
 #else
-                    ModelState.AddModelError("OldPassword", err);
+                    ModelState.AddModelError(nameof(model.NewPassword), err);
 #endif
                 }
                 return PartialView(model);
@@ -171,9 +167,9 @@ namespace YetaWF.Modules.Identity.Controllers {
             if (!result.Succeeded) {
                 foreach (var err in result.Errors) {
 #if MVC6
-                    ModelState.AddModelError("", err.Description);
+                    ModelState.AddModelError(nameof(model.NewPassword), err.Description);
 #else
-                    ModelState.AddModelError("", err);
+                    ModelState.AddModelError(nameof(model.NewPassword), err);
 #endif
                 }
                 return PartialView(model);

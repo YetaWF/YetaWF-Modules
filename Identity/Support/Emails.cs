@@ -34,6 +34,23 @@ namespace YetaWF.Modules.Identity.Support {
                 sendEmail.AddBcc(ccEmail);
             await sendEmail.SendAsync(true);
         }
+        public async Task SendPasswordResetEmailAsync(UserDefinition user, string ccEmail = null) {
+            ResetPasswordModule resetMod = (ResetPasswordModule)await ModuleDefinition.CreateUniqueModuleAsync(typeof(ResetPasswordModule));
+            ModuleAction reset = resetMod.GetAction_ResetPassword(null, user.UserId, user.ResetKey.ToString());
+
+            SendEmail sendEmail = new SendEmail();
+            object parms = new {
+                User = user,
+                ResetUrl = reset.GetCompleteUrl(),
+                ResetKey = user.ResetKey.ToString(),
+                ValidUntil = Formatting.FormatDateTime(user.ResetValidUntil),
+            };
+            string subject = this.__ResStr("resetSubject", "Password Reset for {0}", Manager.CurrentSite.SiteDomain);
+            await sendEmail.PrepareEmailMessageAsync(user.Email, subject, await sendEmail.GetEmailFileAsync(Package.GetCurrentPackage(this), "Password Reset.txt"), parameters: parms);
+            if (!string.IsNullOrWhiteSpace(ccEmail))
+                sendEmail.AddBcc(ccEmail);
+            await sendEmail.SendAsync(true);
+        }
         public async Task SendVerificationAsync(UserDefinition user, string ccEmail = null) {
 
             string retUrl = Manager.ReturnToUrl;

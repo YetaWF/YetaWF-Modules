@@ -70,7 +70,7 @@ namespace YetaWF_ComponentsHTML {
                 this.Hidden.value = `${this.InputDays.value}.${this.InputHours.value}:${this.InputMins.value}:${this.InputSecs.value}`;
             } else if (this.InputDays && this.InputHours && this.InputMins) {
                 this.Hidden.value = `${this.InputDays.value}.${this.InputHours.value}:${this.InputMins.value}`;
-            } if (this.InputHours && this.InputMins && this.InputSecs) {
+            } else if (this.InputHours && this.InputMins && this.InputSecs) {
                 this.Hidden.value = `${this.InputHours.value}:${this.InputMins.value}:${this.InputSecs.value}`;
             } else if (this.InputHours && this.InputMins) {
                 this.Hidden.value = `${this.InputHours.value}:${this.InputMins.value}`;

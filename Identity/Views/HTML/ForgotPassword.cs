@@ -26,7 +26,7 @@ namespace YetaWF.Modules.Identity.Views {
 {await RenderBeginFormAsync()}
     {await PartialForm(async () => await RenderPartialViewAsync(module, model))}
     {await FormButtonsAsync(new FormButton[] {
-        new FormButton() { Text= this.__ResStr("bntSend", "Send Password Reminder"), ButtonType= ButtonTypeEnum.Submit, },
+        new FormButton() { Text= this.__ResStr("bntSend", "Send Recovery Email"), ButtonType= ButtonTypeEnum.Submit, },
         new FormButton() { ButtonType= ButtonTypeEnum.Cancel, },
     })}
 {await RenderEndFormAsync()}");

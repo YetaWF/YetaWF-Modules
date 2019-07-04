@@ -34,6 +34,8 @@ namespace YetaWF.Modules.Identity.DataProvider {
         public bool AllowUserRegistration { get; set; }
         public RegistrationTypeEnum RegistrationType { get; set; }
         public bool SavePlainTextPassword { get; set; }
+        [Data_NewValue]
+        public TimeSpan ResetTimeSpan { get; set; }
         public bool Captcha { get; set; }
         public bool CaptchaForgotPassword { get; set; }
         public bool VerifyNewUsers { get; set; }
@@ -100,7 +102,9 @@ namespace YetaWF.Modules.Identity.DataProvider {
             }
         }
 
-        public LoginConfigData() { }
+        public LoginConfigData() {
+            ResetTimeSpan = new TimeSpan(1, 0, 0, 0);
+        }
     }
 
     public class LoginConfigDataProvider : DataProviderImpl, IInstallableModel {
@@ -137,7 +141,7 @@ namespace YetaWF.Modules.Identity.DataProvider {
                     Id = KEY,
                     AllowUserRegistration = true,
                     RegistrationType = RegistrationTypeEnum.EmailOnly,
-                    SavePlainTextPassword = true,
+                    SavePlainTextPassword = false,
                     Captcha = false,
                     VerifyNewUsers = false,
                     ApproveNewUsers = false,
