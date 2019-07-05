@@ -266,9 +266,9 @@ namespace YetaWF_ComponentsHTML {
                     elem.setAttribute("disabled", "disabled");
             }
             if (enable)
-                $YetaWF.elementRemoveClasses(elem, [YConfigs.Forms.CssFormNoValidate, YConfigs.Forms.CssFormNoSubmit]);
+                $YetaWF.elementRemoveClasses(elem, ["yform-novalidate", "yform-nosubmit-temp"]);
             else
-                $YetaWF.elementAddClasses(elem, [YConfigs.Forms.CssFormNoValidate, YConfigs.Forms.CssFormNoSubmit]);
+                $YetaWF.elementAddClasses(elem, ["yform-novalidate", "yform-nosubmit-temp"]);
         }
     }
 }

@@ -8,7 +8,7 @@
 // http://bradwilson.typepad.com/blog/2010/10/mvc3-unobtrusive-validation.html
 // Make sure all hidden fields are NOT ignored
 $.validator.setDefaults({
-    ignore: "." + YConfigs.Forms.CssFormNoValidate,
+    ignore: ".yform-novalidate,.yform-nosubmit-temp",
     onsubmit: false // don't validate on submit, we want to see the submit event and validate things ourselves
 });
 $.validator.unobtrusive.options = {
@@ -232,7 +232,7 @@ var YetaWF_ComponentsHTML;
             return value;
         };
         ValidatorHelper.isSameValue = function (value, element, parameters) {
-            if ($YetaWF.elementHasClass(element, YConfigs.Forms.CssFormNoValidate))
+            if ($YetaWF.elementHasClass(element, "yform-novalidate"))
                 return true;
             // Get value of the target control - we can't use its Id because it could be non-unique, not predictable
             // use the name attribute instead

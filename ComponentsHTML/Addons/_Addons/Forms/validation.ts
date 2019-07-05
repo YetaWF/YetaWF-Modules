@@ -10,7 +10,7 @@
 
 // Make sure all hidden fields are NOT ignored
 $.validator.setDefaults({
-    ignore: `.${YConfigs.Forms.CssFormNoValidate}`, // don't ignore hidden fields - ignore fields with no validate class
+    ignore: `.yform-novalidate,.yform-nosubmit-temp`, // don't ignore hidden fields - ignore fields with no validate class
     onsubmit: false         // don't validate on submit, we want to see the submit event and validate things ourselves
 });
 ($.validator.unobtrusive as any).options = {
@@ -244,7 +244,7 @@ namespace YetaWF_ComponentsHTML {
         }
 
         public static isSameValue(value: any, element: HTMLElement, parameters: any): boolean {
-            if ($YetaWF.elementHasClass(element, YConfigs.Forms.CssFormNoValidate)) return true;
+            if ($YetaWF.elementHasClass(element, "yform-novalidate")) return true;
 
             // Get value of the target control - we can't use its Id because it could be non-unique, not predictable
             // use the name attribute instead

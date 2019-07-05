@@ -6,7 +6,7 @@ var YetaWF_ComponentsHTML;
         //$$$$$ needs ComponentBaseNoDataImpl
         function DayTimeRangeComponent(controlId) {
             var _this = this;
-            this.NoSubmit = YConfigs.Forms.CssFormNoSubmit + " " + YConfigs.Forms.CssFormNoValidate;
+            this.NoSubmit = "yform-nosubmit-temp yform-novalidate";
             this.Control = $YetaWF.getElementById(controlId);
             this.Additional = $YetaWF.getElement1BySelector("input[name$='.Additional']", [this.Control]);
             this.AddDiv = $YetaWF.getElement1BySelector(".t_add", [this.Control]);
@@ -73,7 +73,7 @@ $.validator.unobtrusive.adapters.add("daytimerangeto", function (options) {
     options.messages["daytimerangeto"] = options.message;
 });
 $.validator.addMethod("daytimerangeto", function (value, element, parameters) {
-    if ($YetaWF.elementHasClass(element, YConfigs.Forms.CssFormNoValidate))
+    if ($YetaWF.elementHasClass(element, "yform-novalidate"))
         return true;
     var elem = element;
     var isRange1 = $YetaWF.elementClosestCond(elem, ".t_to") != null;
@@ -99,7 +99,7 @@ $.validator.unobtrusive.adapters.add("daytimerangefrom2", function (options) {
     options.messages["daytimerangefrom2"] = options.message;
 });
 $.validator.addMethod("daytimerangefrom2", function (value, element, parameters) {
-    if ($YetaWF.elementHasClass(element, YConfigs.Forms.CssFormNoValidate))
+    if ($YetaWF.elementHasClass(element, "yform-novalidate"))
         return true;
     var elem = element;
     var control = $YetaWF.elementClosestCond(elem, ".yt_daytimerange");

@@ -47,7 +47,7 @@ namespace YetaWF_ComponentsHTML {
             });
         }
 
-        private NoSubmit: string = `${YConfigs.Forms.CssFormNoSubmit} ${YConfigs.Forms.CssFormNoValidate}`;
+        private NoSubmit: string = `yform-nosubmit-temp yform-novalidate`;
 
         private toggleRanges(): void {
             if (this.Closed.checked) {
@@ -91,7 +91,7 @@ $.validator.unobtrusive.adapters.add("daytimerangeto", (options: any): void => {
 
 $.validator.addMethod("daytimerangeto", (value: any, element: HTMLElement, parameters: any): boolean => {
 
-    if ($YetaWF.elementHasClass(element, YConfigs.Forms.CssFormNoValidate)) return true;
+    if ($YetaWF.elementHasClass(element, "yform-novalidate")) return true;
 
     const elem = element as HTMLInputElement;
     const isRange1 = $YetaWF.elementClosestCond(elem, ".t_to") != null;
@@ -119,7 +119,7 @@ $.validator.unobtrusive.adapters.add("daytimerangefrom2", (options: any): void =
 
 $.validator.addMethod("daytimerangefrom2", (value: any, element: HTMLElement, parameters: any): boolean => {
 
-    if ($YetaWF.elementHasClass(element, YConfigs.Forms.CssFormNoValidate)) return true;
+    if ($YetaWF.elementHasClass(element, "yform-novalidate")) return true;
 
     const elem = element as HTMLInputElement;
     const control = $YetaWF.elementClosestCond(elem, ".yt_daytimerange");

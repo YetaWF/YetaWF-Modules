@@ -43,6 +43,7 @@ namespace YetaWF.Modules.Menus.Controllers {
                     DragDrop = true,
                     UseSkinFormatting = true,
                 };
+                ModAction = new ModuleAction();
             }
         }
 
