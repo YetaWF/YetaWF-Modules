@@ -112,7 +112,7 @@ namespace YetaWF.Modules.Scheduler.Support {
         private TimeSpan defaultStartupTimeSpan = new TimeSpan(0, 0, 30); // 30 seconds
 #else
         private TimeSpan defaultTimeSpan = new TimeSpan(0, 2, 0); // 2 minutes
-        private TimeSpan defaultStartupTimeSpan = new TimeSpan(0, 0, 30); // 30 seconds
+        private TimeSpan defaultStartupTimeSpan = new TimeSpan(0, 2, 0); // 2 minutes
 #endif
         private SchedulerLogging SchedulerLog;
 
@@ -121,13 +121,7 @@ namespace YetaWF.Modules.Scheduler.Support {
             // get a manager for the scheduler
             YetaWFManager.MakeInitialThreadInstance(null);
 
-            SchedulerLog = new SchedulerLogging();
-            SchedulerLog.Init();
-            SchedulerLog.LimitTo(YetaWFManager.Manager);
-            YetaWFManager.Syncify(async () => { // there is no point in running the scheduler async
-                await Logging.RegisterLoggingAsync(SchedulerLog);
-            });
-            Logging.AddTraceLog("Scheduler task started");
+            // TODO: Scheduler logging should not start during startup processing. This timer postpones it (but is not a good solution)
 
             // Because initialization is called during application startup, we'll wait before we
             // check for any scheduler items that may be due (just so app start isn't all too slow).
@@ -136,6 +130,15 @@ namespace YetaWF.Modules.Scheduler.Support {
             } catch (ThreadInterruptedException) {
                 // thread was interrupted because there is work to be done
             }
+
+            SchedulerLog = new SchedulerLogging();
+            SchedulerLog.Init();
+            SchedulerLog.LimitTo(YetaWFManager.Manager);
+            YetaWFManager.Syncify(async () => { // there is no point in running the scheduler async
+                await Logging.RegisterLoggingAsync(SchedulerLog);
+            });
+
+            Logging.AddTraceLog("Scheduler task started");
 
             // run all scheduled items that are supposed to be run at application startup
             try {
