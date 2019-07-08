@@ -193,9 +193,9 @@ var YetaWF_ComponentsHTML;
         PropertyListComponent.prototype.toggleFormButtons = function (show) {
             var form = $YetaWF.Forms.getForm(this.Control);
             // make the form submit/nosubmit
-            $YetaWF.elementRemoveClass(form, "yform-nosubmit-temp");
+            $YetaWF.elementRemoveClass(form, "yform-nosubmit");
             if (!show)
-                $YetaWF.elementAddClass(form, "yform-nosubmit-temp");
+                $YetaWF.elementAddClass(form, "yform-nosubmit");
             // show/hide buttons
             var buttonList = $YetaWF.getElementsBySelector(".t_detailsbuttons", [form]);
             for (var _i = 0, buttonList_1 = buttonList; _i < buttonList_1.length; _i++) {

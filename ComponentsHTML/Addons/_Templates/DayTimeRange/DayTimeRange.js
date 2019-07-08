@@ -6,7 +6,7 @@ var YetaWF_ComponentsHTML;
         //$$$$$ needs ComponentBaseNoDataImpl
         function DayTimeRangeComponent(controlId) {
             var _this = this;
-            this.NoSubmit = "yform-nosubmit-temp yform-novalidate";
+            this.NoSubmit = "yform-nosubmit yform-novalidate";
             this.Control = $YetaWF.getElementById(controlId);
             this.Additional = $YetaWF.getElement1BySelector("input[name$='.Additional']", [this.Control]);
             this.AddDiv = $YetaWF.getElement1BySelector(".t_add", [this.Control]);

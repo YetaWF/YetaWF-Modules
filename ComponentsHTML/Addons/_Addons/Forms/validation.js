@@ -8,7 +8,7 @@
 // http://bradwilson.typepad.com/blog/2010/10/mvc3-unobtrusive-validation.html
 // Make sure all hidden fields are NOT ignored
 $.validator.setDefaults({
-    ignore: ".yform-novalidate,.yform-nosubmit-temp",
+    ignore: ".yform-novalidate",
     onsubmit: false // don't validate on submit, we want to see the submit event and validate things ourselves
 });
 $.validator.unobtrusive.options = {

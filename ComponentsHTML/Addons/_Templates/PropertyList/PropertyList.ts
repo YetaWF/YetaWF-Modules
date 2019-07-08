@@ -275,9 +275,9 @@ namespace YetaWF_ComponentsHTML {
         private toggleFormButtons(show: boolean): void {
             let form = $YetaWF.Forms.getForm(this.Control);
             // make the form submit/nosubmit
-            $YetaWF.elementRemoveClass(form, "yform-nosubmit-temp");
+            $YetaWF.elementRemoveClass(form, "yform-nosubmit");
             if (!show)
-                $YetaWF.elementAddClass(form, "yform-nosubmit-temp");
+                $YetaWF.elementAddClass(form, "yform-nosubmit");
             // show/hide buttons
             let buttonList = $YetaWF.getElementsBySelector(".t_detailsbuttons", [form]);
             for (let buttons of buttonList)

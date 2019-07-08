@@ -249,10 +249,14 @@ var YetaWF_ComponentsHTML;
                 if (!enable)
                     elem.setAttribute("disabled", "disabled");
             }
-            if (enable)
-                $YetaWF.elementRemoveClasses(elem, ["yform-novalidate", "yform-nosubmit-temp"]);
-            else
-                $YetaWF.elementAddClasses(elem, ["yform-novalidate", "yform-nosubmit-temp"]);
+            if (enable) {
+                if ($YetaWF.elementHasClass(elem, "yform-nosubmit-temp"))
+                    $YetaWF.elementRemoveClasses(elem, ["yform-novalidate", "yform-nosubmit-temp", "yform-nosubmit"]);
+            }
+            else {
+                if (!$YetaWF.elementHasClass(elem, "yform-nosubmit"))
+                    $YetaWF.elementAddClasses(elem, ["yform-novalidate", "yform-nosubmit-temp", "yform-nosubmit"]);
+            }
         };
         return BasicsImpl;
     }());

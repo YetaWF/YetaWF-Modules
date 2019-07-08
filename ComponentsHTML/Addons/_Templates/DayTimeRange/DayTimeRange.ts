@@ -47,7 +47,7 @@ namespace YetaWF_ComponentsHTML {
             });
         }
 
-        private NoSubmit: string = `yform-nosubmit-temp yform-novalidate`;
+        private NoSubmit: string = `yform-nosubmit yform-novalidate`;
 
         private toggleRanges(): void {
             if (this.Closed.checked) {

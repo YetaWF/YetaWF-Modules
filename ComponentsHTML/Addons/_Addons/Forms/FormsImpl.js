@@ -97,7 +97,7 @@ var YetaWF_ComponentsHTML;
          */
         FormsImpl.prototype.serializeFormArray = function (form) {
             // disable all fields that we don't want to submit (marked with YConfigs.Forms.CssFormNoSubmit)
-            var $disabledFields = $("." + YConfigs.Forms.CssFormNoSubmit + ",.yform-nosubmit-temp", $(form)).not(":disabled");
+            var $disabledFields = $("." + YConfigs.Forms.CssFormNoSubmit, $(form)).not(":disabled");
             $disabledFields.attr("disabled", "disabled");
             // disable all input fields in containers (usually grids) - we don't want to submit them - they're collected separately
             var $disabledGridFields = $("." + YConfigs.Forms.CssFormNoSubmitContents + " input,." + YConfigs.Forms.CssFormNoSubmitContents + " select,." + YConfigs.Forms.CssFormNoSubmitContents + " textarea", $(form)).not(":disabled");
