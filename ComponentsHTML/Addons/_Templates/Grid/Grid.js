@@ -648,6 +648,7 @@ var YetaWF_ComponentsHTML;
                                 _this.Setup.Pages = partial.Pages;
                                 _this.Setup.Page = partial.Page;
                                 _this.Setup.PageSize = partial.PageSize;
+                                YVolatile.Basics.UniqueIdCounters = partial.UniqueIdCounters;
                                 if (_this.InputPage)
                                     _this.InputPage.value = _this.Setup.Page + 1;
                                 if (_this.Setup.NoSubmitContents) {

@@ -25,7 +25,6 @@ var YetaWF_Pages;
                 Enable: null,
             }) || this;
             _this.ReloadInProgress = false;
-            _this.AddCounter = 0;
             _this.Setup = setup;
             _this.Grid = YetaWF.ComponentBaseDataImpl.getControlById(_this.Setup.GridId, YetaWF_ComponentsHTML.Grid.SELECTOR);
             _this.GridAll = YetaWF.ComponentBaseDataImpl.getControlById(_this.Setup.GridAllId, YetaWF_ComponentsHTML.Grid.SELECTOR);
@@ -37,7 +36,7 @@ var YetaWF_Pages;
                 _this.ReloadInProgress = true;
                 $YetaWF.setLoading(true);
                 var uri = $YetaWF.parseUrl(_this.Setup.AddUrl);
-                uri.addFormInfo(_this.Control, ++_this.AddCounter);
+                uri.addFormInfo(_this.Control);
                 uri.addSearch("newUrl", _this.SelectUrl.value.trim());
                 uri.addSearch("fieldPrefix", _this.Grid.FieldName);
                 uri.addSearch("data", JSON.stringify(_this.Grid.StaticData));

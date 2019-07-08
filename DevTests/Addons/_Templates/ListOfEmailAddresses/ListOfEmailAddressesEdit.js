@@ -25,7 +25,6 @@ var YetaWF_DevTests;
                 Enable: null,
             }) || this;
             _this.ReloadInProgress = false;
-            _this.AddCounter = 0;
             _this.Setup = setup;
             _this.Grid = YetaWF.ComponentBaseDataImpl.getControlById(_this.Setup.GridId, YetaWF_ComponentsHTML.Grid.SELECTOR);
             _this.buttonAdd = $YetaWF.getElement1BySelector("input[name='btnAdd']", [_this.Control]);
@@ -36,7 +35,7 @@ var YetaWF_DevTests;
                 _this.ReloadInProgress = true;
                 $YetaWF.setLoading(true);
                 var uri = $YetaWF.parseUrl(_this.Setup.AddUrl);
-                uri.addFormInfo(_this.Control, ++_this.AddCounter);
+                uri.addFormInfo(_this.Control);
                 uri.addSearch("newEmailAddress", _this.inputEmail.value.trim());
                 uri.addSearch("fieldPrefix", _this.Grid.FieldName);
                 uri.addSearch("data", JSON.stringify(_this.Grid.StaticData));

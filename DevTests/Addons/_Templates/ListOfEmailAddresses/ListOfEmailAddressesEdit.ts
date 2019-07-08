@@ -21,7 +21,6 @@ namespace YetaWF_DevTests {
         private buttonAdd: HTMLInputElement;
         private inputEmail: HTMLInputElement;
         private ReloadInProgress: boolean = false;
-        private AddCounter: number = 0;
 
         constructor(controlId: string, setup: ListOfEmailAddressesSetup) {
             super(controlId, ListOfEmailAddressesEditComponent.TEMPLATE, ListOfEmailAddressesEditComponent.SELECTOR, {
@@ -45,7 +44,7 @@ namespace YetaWF_DevTests {
                 $YetaWF.setLoading(true);
 
                 var uri = $YetaWF.parseUrl(this.Setup.AddUrl);
-                uri.addFormInfo(this.Control, ++this.AddCounter);
+                uri.addFormInfo(this.Control);
                 uri.addSearch("newEmailAddress", this.inputEmail.value.trim());
                 uri.addSearch("fieldPrefix", this.Grid.FieldName);
                 uri.addSearch("data", JSON.stringify(this.Grid.StaticData));

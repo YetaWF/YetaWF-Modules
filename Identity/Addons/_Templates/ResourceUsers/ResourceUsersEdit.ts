@@ -23,7 +23,6 @@ namespace YetaWF_Identity {
         private ButtonAdd: HTMLInputElement;
         private InputUserName: HTMLInputElement;
         private ReloadInProgress: boolean = false;
-        private AddCounter: number = 0;
 
         constructor(controlId: string, setup: ResourceUsersSetup) {
             super(controlId, ResourceUsersEditComponent.TEMPLATE, ResourceUsersEditComponent.SELECTOR, {
@@ -48,7 +47,7 @@ namespace YetaWF_Identity {
                 $YetaWF.setLoading(true);
 
                 var uri = $YetaWF.parseUrl(this.Setup.AddUrl);
-                uri.addFormInfo(this.Control, ++this.AddCounter);
+                uri.addFormInfo(this.Control);
                 uri.addSearch("newUser", this.InputUserName.value);
                 uri.addSearch("fieldPrefix", this.Grid.FieldName);
                 uri.addSearch("data", JSON.stringify(this.Grid.StaticData));

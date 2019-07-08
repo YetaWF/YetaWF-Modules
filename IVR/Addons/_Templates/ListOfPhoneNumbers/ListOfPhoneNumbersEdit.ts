@@ -20,7 +20,6 @@ namespace Softelvdm_IVR {
         private Grid: YetaWF_ComponentsHTML.Grid;
         private buttonAdd: HTMLInputElement;
         private inputPhoneNumber: HTMLInputElement;
-        private AddCounter: number = 0;
 
         constructor(controlId: string, setup: ListOfPhoneNumbersSetup) {
             super(controlId, ListOfPhoneNumbersEditComponent.TEMPLATE, ListOfPhoneNumbersEditComponent.SELECTOR, {
@@ -41,7 +40,7 @@ namespace Softelvdm_IVR {
                 $YetaWF.setLoading(true);
 
                 var uri = $YetaWF.parseUrl(this.Setup.AddUrl);
-                uri.addFormInfo(this.Control, ++this.AddCounter);
+                uri.addFormInfo(this.Control);
                 uri.addSearch("newPhoneNumber", this.inputPhoneNumber.value);
                 uri.addSearch("fieldPrefix", this.Grid.FieldName);
                 uri.addSearch("data", JSON.stringify(this.Grid.StaticData));

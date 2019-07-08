@@ -23,7 +23,6 @@ namespace YetaWF_Pages {
         private buttonAdd: HTMLInputElement;
         private SelectUrl: YetaWF_ComponentsHTML.UrlEditComponent;
         private ReloadInProgress: boolean = false;
-        private AddCounter: number = 0;
 
         constructor(controlId: string, setup: ListOfLocalPagesSetup) {
             super(controlId, ListOfLocalPagesEditComponent.TEMPLATE, ListOfLocalPagesEditComponent.SELECTOR, {
@@ -48,7 +47,7 @@ namespace YetaWF_Pages {
                 $YetaWF.setLoading(true);
 
                 var uri = $YetaWF.parseUrl(this.Setup.AddUrl);
-                uri.addFormInfo(this.Control, ++this.AddCounter);
+                uri.addFormInfo(this.Control);
                 uri.addSearch("newUrl", this.SelectUrl.value.trim());
                 uri.addSearch("fieldPrefix", this.Grid.FieldName);
                 uri.addSearch("data", JSON.stringify(this.Grid.StaticData));
