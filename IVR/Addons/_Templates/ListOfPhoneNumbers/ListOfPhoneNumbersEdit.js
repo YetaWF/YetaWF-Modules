@@ -24,6 +24,7 @@ var Softelvdm_IVR;
                 GetValue: null,
                 Enable: null,
             }) || this;
+            _this.AddCounter = 0;
             _this.Setup = setup;
             _this.Grid = YetaWF.ComponentBaseDataImpl.getControlById(_this.Setup.GridId, YetaWF_ComponentsHTML.Grid.SELECTOR);
             _this.buttonAdd = $YetaWF.getElement1BySelector("input[name='btnAdd']", [_this.Control]);
@@ -34,6 +35,8 @@ var Softelvdm_IVR;
                 $YetaWF.setLoading(true);
                 var uri = $YetaWF.parseUrl(_this.Setup.AddUrl);
                 uri.addFormInfo(_this.Control);
+                var uniqueIdCounters = { UniqueIdPrefix: _this.ControlId + "ls", UniqueIdPrefixCounter: 0, UniqueIdCounter: ++_this.AddCounter };
+                uri.addSearch(YConfigs.Forms.UniqueIdCounters, JSON.stringify(uniqueIdCounters));
                 uri.addSearch("newPhoneNumber", _this.inputPhoneNumber.value);
                 uri.addSearch("fieldPrefix", _this.Grid.FieldName);
                 uri.addSearch("data", JSON.stringify(_this.Grid.StaticData));
