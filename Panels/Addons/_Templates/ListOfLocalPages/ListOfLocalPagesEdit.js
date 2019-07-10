@@ -25,6 +25,7 @@ var YetaWF_Panels;
                 Enable: null,
             }) || this;
             _this.ReloadInProgress = false;
+            _this.AddCounter = 0;
             _this.Setup = setup;
             _this.Grid = YetaWF.ComponentBaseDataImpl.getControlById(_this.Setup.GridId, YetaWF_ComponentsHTML.Grid.SELECTOR);
             _this.GridAll = YetaWF.ComponentBaseDataImpl.getControlById(_this.Setup.GridAllId, YetaWF_ComponentsHTML.Grid.SELECTOR);
@@ -37,6 +38,8 @@ var YetaWF_Panels;
                 $YetaWF.setLoading(true);
                 var uri = $YetaWF.parseUrl(_this.Setup.AddUrl);
                 uri.addFormInfo(_this.Control);
+                var uniqueIdCounters = { UniqueIdPrefix: _this.ControlId + "ls", UniqueIdPrefixCounter: 0, UniqueIdCounter: ++_this.AddCounter };
+                uri.addSearch(YConfigs.Forms.UniqueIdCounters, JSON.stringify(uniqueIdCounters));
                 uri.addSearch("newUrl", _this.selectUrl.value.trim());
                 uri.addSearch("fieldPrefix", _this.Grid.FieldName);
                 uri.addSearch("data", JSON.stringify(_this.Grid.StaticData));

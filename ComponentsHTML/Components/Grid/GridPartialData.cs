@@ -44,7 +44,6 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             public int Pages { get; set; }
             public int Page { get; set; }
             public int PageSize { get; set; }
-            public YetaWFManager.UniqueIdInfo UniqueIdCounters { get; set; }
         }
 
         /// <summary>
@@ -81,7 +80,6 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                 Pages = pages,
                 Page = page,
                 PageSize = pageSize,
-                UniqueIdCounters = Manager.UniqueIdCounters,
             };
 
             sb.Append(Utility.JsonSerialize(result));

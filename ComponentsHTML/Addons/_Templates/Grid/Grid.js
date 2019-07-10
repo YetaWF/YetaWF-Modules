@@ -630,6 +630,8 @@ var YetaWF_ComponentsHTML;
                         ++colIndex;
                     }
                     uri.addFormInfo(this.Control);
+                    var uniqueIdCounters = { UniqueIdPrefix: this.ControlId + "gr", UniqueIdPrefixCounter: 0, UniqueIdCounter: 0 };
+                    uri.addSearch(YConfigs.Forms.UniqueIdCounters, JSON.stringify(uniqueIdCounters));
                     if (this.Setup.StaticData)
                         uri.addSearch("data", JSON.stringify(this.Setup.StaticData));
                     var request = new XMLHttpRequest();
@@ -648,7 +650,6 @@ var YetaWF_ComponentsHTML;
                                 _this.Setup.Pages = partial.Pages;
                                 _this.Setup.Page = partial.Page;
                                 _this.Setup.PageSize = partial.PageSize;
-                                YVolatile.Basics.UniqueIdCounters = partial.UniqueIdCounters;
                                 if (_this.InputPage)
                                     _this.InputPage.value = _this.Setup.Page + 1;
                                 if (_this.Setup.NoSubmitContents) {

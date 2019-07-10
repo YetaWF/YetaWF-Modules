@@ -83,7 +83,6 @@ namespace YetaWF_ComponentsHTML {
         Pages: number;
         Page: number;
         PageSize: number;
-        UniqueIdCounters: YetaWF.UniqueIdInfo;
     }
     enum FilterBoolEnum {
         All = 0,
@@ -686,6 +685,8 @@ namespace YetaWF_ComponentsHTML {
                         ++colIndex;
                     }
                     uri.addFormInfo(this.Control);
+                    let uniqueIdCounters: YetaWF.UniqueIdInfo = { UniqueIdPrefix: `${this.ControlId}gr`, UniqueIdPrefixCounter: 0, UniqueIdCounter: 0 };
+                    uri.addSearch(YConfigs.Forms.UniqueIdCounters, JSON.stringify(uniqueIdCounters));
 
                     if (this.Setup.StaticData)
                         uri.addSearch("data", JSON.stringify(this.Setup.StaticData));
@@ -706,7 +707,6 @@ namespace YetaWF_ComponentsHTML {
                                 this.Setup.Pages = partial.Pages;
                                 this.Setup.Page = partial.Page;
                                 this.Setup.PageSize = partial.PageSize;
-                                YVolatile.Basics.UniqueIdCounters = partial.UniqueIdCounters;
                                 if (this.InputPage)
                                     this.InputPage.value = this.Setup.Page + 1;
                                 if (this.Setup.NoSubmitContents) {

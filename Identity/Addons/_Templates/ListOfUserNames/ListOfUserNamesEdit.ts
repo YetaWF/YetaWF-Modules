@@ -23,6 +23,7 @@ namespace YetaWF_Identity {
         private buttonAdd: HTMLInputElement;
         private InputUserName: HTMLInputElement;
         private ReloadInProgress: boolean = false;
+        private AddCounter: number = 0;
 
         constructor(controlId: string, setup: ListOfUserNamesSetup) {
             super(controlId, ListOfUserNamesEditComponent.TEMPLATE, ListOfUserNamesEditComponent.SELECTOR, {
@@ -47,6 +48,8 @@ namespace YetaWF_Identity {
 
                 var uri = $YetaWF.parseUrl(this.Setup.AddUrl);
                 uri.addFormInfo(this.Control);
+                let uniqueIdCounters: YetaWF.UniqueIdInfo = { UniqueIdPrefix: `${this.ControlId}ls`, UniqueIdPrefixCounter: 0, UniqueIdCounter: ++this.AddCounter };
+                uri.addSearch(YConfigs.Forms.UniqueIdCounters, JSON.stringify(uniqueIdCounters));
                 uri.addSearch("newUser", this.InputUserName.value);
                 uri.addSearch("fieldPrefix", this.Grid.FieldName);
                 uri.addSearch("data", JSON.stringify(this.Grid.StaticData));
