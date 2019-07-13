@@ -1,10 +1,8 @@
 /* Copyright © 2019 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/ComponentsHTML#License */
 
-.yt_textareasourceonly {
-    width:100%;
-    resize:none;
-}
 textarea.k-textbox.yt_textareasourceonly {// need specificity
     padding-left:.5ch;
     padding-right:.5ch;
+    width:100%;
+    resize:none;
 }
