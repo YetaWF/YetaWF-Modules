@@ -55,6 +55,11 @@ namespace YetaWF.Modules.Caching.DataProvider {
 
         // API
 
+        /// <summary>
+        /// Subscribe to a channel.
+        /// </summary>
+        /// <param name="channel">The channel name.</param>
+        /// <param name="callback">The callback invoked when a message is published to the channel.</param>
         public async Task SubscribeAsync(string channel, Action<string, object> callback) {
             ISubscriber subscriber = Redis.GetSubscriber();
             if (YetaWFManager.IsSync()) {
@@ -68,6 +73,10 @@ namespace YetaWF.Modules.Caching.DataProvider {
             }
         }
 
+        /// <summary>
+        /// Unsubscribe from a channel.
+        /// </summary>
+        /// <param name="channel">The channel name.</param>
         public async Task UnsubscribeAsync(string channel) {
             ISubscriber subscriber = Redis.GetSubscriber();
             if (YetaWFManager.IsSync()) {
@@ -77,6 +86,11 @@ namespace YetaWF.Modules.Caching.DataProvider {
             }
         }
 
+        /// <summary>
+        /// Publish a message to a channel.
+        /// </summary>
+        /// <param name="channel">The channel name.</param>
+        /// <param name="message">The message object.</param>
         public async Task PublishAsync(string channel, object message) {
             ISubscriber subscriber = Redis.GetSubscriber();
             if (YetaWFManager.IsSync()) {
