@@ -42,6 +42,7 @@
     <Compile Include="Models\LockFileProvider.cs" />
     <Compile Include="Models\FileSystemDataProvider.cs" />
     <Compile Include="Models\LocalCacheObjectDataProvider.cs" />
+    <Compile Include="Models\PubSubRedisProvider.cs" />
     <Compile Include="Models\SharedCacheObjectRedisDataProvider.cs" />
     <Compile Include="Models\StaticObjectMultiRedisDataProvider.cs" />
     <Compile Include="Models\StaticObjectSingleDataProvider.cs" />
