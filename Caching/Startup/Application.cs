@@ -131,7 +131,7 @@ namespace YetaWF.Modules.Caching.Startup {
             public Task PublishAsync(string channel, object message) {
                 throw new InternalError("No PubSubProvider available");
             }
-            public Task SubscribeAsync(string channel, Action<string, object> callback) {
+            public Task SubscribeAsync(string channel, Func<string, object, Task> callback) {
                 throw new InternalError("No PubSubProvider available");
             }
             public Task UnsubscribeAsync(string channel) {

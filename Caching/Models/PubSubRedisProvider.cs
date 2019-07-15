@@ -2,12 +2,9 @@
 
 using StackExchange.Redis;
 using System;
-using System.Linq;
-using System.Threading;
 using System.Threading.Tasks;
 using YetaWF.Core.IO;
 using YetaWF.Core.Support;
-using YetaWF.Modules.Caching.Startup;
 
 namespace YetaWF.Modules.Caching.DataProvider {
 
@@ -60,15 +57,15 @@ namespace YetaWF.Modules.Caching.DataProvider {
         /// </summary>
         /// <param name="channel">The channel name.</param>
         /// <param name="callback">The callback invoked when a message is published to the channel.</param>
-        public async Task SubscribeAsync(string channel, Action<string, object> callback) {
+        public async Task SubscribeAsync(string channel, Func<string, object, Task> callback) {
             ISubscriber subscriber = Redis.GetSubscriber();
             if (YetaWFManager.IsSync()) {
                 subscriber.Subscribe($"{KeyPrefix}{channel}", (ch, msg) => {
-                    callback(channel, Utility.JsonDeserialize(msg.ToString()));
+                    callback(channel, Utility.JsonDeserialize(msg.ToString())).Wait();
                 });
             } else {
-                await subscriber.SubscribeAsync($"{KeyPrefix}{channel}", (ch, msg) => {
-                    callback(channel, Utility.JsonDeserialize(msg.ToString()));
+                await subscriber.SubscribeAsync($"{KeyPrefix}{channel}", async (ch, msg) => {
+                    await callback(channel, Utility.JsonDeserialize(msg.ToString()));
                 });
             }
         }
