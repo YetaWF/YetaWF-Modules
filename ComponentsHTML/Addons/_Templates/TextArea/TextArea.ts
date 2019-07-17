@@ -16,7 +16,7 @@ namespace YetaWF_ComponentsHTML {
                 GetValue: (control: HTMLTextAreaElement): string | null => {
                     return control.value;
                 },
-                Enable: (control: HTMLInputElement, enable: boolean): void => {
+                Enable: (control: HTMLInputElement, enable: boolean, clearOnDisable: boolean): void => {
                     if (enable) {
                         control.setAttribute("readonly", "readonly");
                         $YetaWF.elementRemoveClass(control, "k-state-disabled");

@@ -28,7 +28,7 @@ namespace YetaWF_ComponentsHTML {
                 GetValue: (control: MultiStringEditComponent): string | null => {
                     return null;//$$$$control.valueText;
                 },
-                Enable: (control: MultiStringEditComponent, enable: boolean): void => {
+                Enable: (control: MultiStringEditComponent, enable: boolean, clearOnDisable: boolean): void => {
                     control.enable(enable);
                 },
             });

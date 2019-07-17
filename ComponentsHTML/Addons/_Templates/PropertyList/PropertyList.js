@@ -28,7 +28,7 @@ var YetaWF_ComponentsHTML;
                 ControlType: YetaWF_ComponentsHTML.ControlTypeEnum.Template,
                 ChangeEvent: null,
                 GetValue: null,
-                Enable: function (control, enable) {
+                Enable: function (control, enable, clearOnDisable) {
                     /* can't enable/disable but this is handled to support show/hide */
                 },
             }) || this;
@@ -287,7 +287,7 @@ var YetaWF_ComponentsHTML;
                         case YetaWF_ComponentsHTML.OpEnum.HideIfSupplied: {
                             var valid = YetaWF_ComponentsHTML.ValidatorHelper.evaluateExpressionList(null, form, expr.Op, expr.ExprList);
                             if (valid) {
-                                this.toggle(dep, depRow, false, false);
+                                this.toggle(dep, depRow, false, false, false);
                                 hidden = true;
                                 break;
                             }
@@ -297,7 +297,7 @@ var YetaWF_ComponentsHTML;
                         case YetaWF_ComponentsHTML.OpEnum.HideIfNotSupplied: {
                             var valid = YetaWF_ComponentsHTML.ValidatorHelper.evaluateExpressionList(null, form, expr.Op, expr.ExprList);
                             if (!valid) {
-                                this.toggle(dep, depRow, false, false);
+                                this.toggle(dep, depRow, false, false, false);
                                 hidden = true;
                                 break;
                             }
@@ -312,6 +312,7 @@ var YetaWF_ComponentsHTML;
                 if (!hidden) {
                     var process = true;
                     var disable = false;
+                    var clearOnDisable = false;
                     if (dep.ProcessValues.length > 0) {
                         process = false;
                         for (var _c = 0, _d = dep.ProcessValues; _c < _d.length; _c++) {
@@ -322,8 +323,10 @@ var YetaWF_ComponentsHTML;
                                     var v = YetaWF_ComponentsHTML.ValidatorHelper.evaluateExpressionList(null, form, expr.Op, expr.ExprList);
                                     if (v)
                                         process = true;
-                                    else
+                                    else {
                                         disable = expr.Disable;
+                                        clearOnDisable = expr.ClearOnDisable;
+                                    }
                                     break;
                                 }
                                 case YetaWF_ComponentsHTML.OpEnum.ProcessIfNot:
@@ -331,8 +334,10 @@ var YetaWF_ComponentsHTML;
                                     var v = YetaWF_ComponentsHTML.ValidatorHelper.evaluateExpressionList(null, form, expr.Op, expr.ExprList);
                                     if (!v)
                                         process = true;
-                                    else
+                                    else {
                                         disable = expr.Disable;
+                                        clearOnDisable = expr.ClearOnDisable;
+                                    }
                                     break;
                                 }
                                 default:
@@ -343,18 +348,18 @@ var YetaWF_ComponentsHTML;
                         }
                     }
                     if (process) {
-                        this.toggle(dep, depRow, true, false);
+                        this.toggle(dep, depRow, true, false, false);
                     }
                     else {
                         if (disable)
-                            this.toggle(dep, depRow, true, true);
+                            this.toggle(dep, depRow, true, true, clearOnDisable);
                         else
-                            this.toggle(dep, depRow, false, false);
+                            this.toggle(dep, depRow, false, false, false);
                     }
                 }
             }
         };
-        PropertyListComponent.prototype.toggle = function (dep, depRow, show, disable) {
+        PropertyListComponent.prototype.toggle = function (dep, depRow, show, disable, clearOnDisable) {
             $YetaWF.Forms.clearValidation(depRow);
             $YetaWF.elementRemoveClass(depRow, "t_disabled");
             $YetaWF.elementRemoveClass(depRow, "t_hidden");
@@ -369,10 +374,10 @@ var YetaWF_ComponentsHTML;
             var controlItemDef = ControlsHelper.getControlItemByNameCond(dep.Prop, depRow); // there may not be an actual control, just a row with displayed info
             if (controlItemDef) {
                 if (show) {
-                    ControlsHelper.enableToggle(controlItemDef, !disable);
+                    ControlsHelper.enableToggle(controlItemDef, !disable, clearOnDisable);
                 }
                 else {
-                    ControlsHelper.enableToggle(controlItemDef, false);
+                    ControlsHelper.enableToggle(controlItemDef, false, clearOnDisable);
                 }
             }
         };

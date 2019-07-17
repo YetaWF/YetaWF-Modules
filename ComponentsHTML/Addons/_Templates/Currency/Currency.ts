@@ -26,11 +26,13 @@ namespace YetaWF_ComponentsHTML {
                 GetValue: (control: CurrencyEditComponent): string | null => {
                     return control.value ? control.value.toString() : null;
                 },
-                Enable: (control: CurrencyEditComponent, enable: boolean): void => {
+                Enable: (control: CurrencyEditComponent, enable: boolean, clearOnDisable: boolean): void => {
                     control.enable(enable);
+                    if (!enable && clearOnDisable)
+                        control.kendoNumericTextBox.value("");
                 }
             }, false, (tag: HTMLElement, control: CurrencyEditComponent): void => {
-                    control.kendoNumericTextBox.destroy();
+               control.kendoNumericTextBox.destroy();
             });
 
             this.Currency = $YetaWF.getElement1BySelector("input", [this.Control]) as HTMLInputElement;

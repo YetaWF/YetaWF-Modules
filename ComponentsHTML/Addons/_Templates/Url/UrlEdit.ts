@@ -31,7 +31,7 @@ namespace YetaWF_ComponentsHTML {
                 GetValue: (control: UrlEditComponent): string | null => {
                     return control.value;
                 },
-                Enable: (control: UrlEditComponent, enable: boolean): void => {
+                Enable: (control: UrlEditComponent, enable: boolean, clearOnDisable: boolean): void => {
                     control.enable(enable);
                 },
             });

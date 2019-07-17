@@ -26,7 +26,7 @@ var YetaWF_ComponentsHTML;
                 GetValue: function (control) {
                     return null; //$$$$control.valueText;
                 },
-                Enable: function (control, enable) {
+                Enable: function (control, enable, clearOnDisable) {
                     control.enable(enable);
                 },
             }) || this;

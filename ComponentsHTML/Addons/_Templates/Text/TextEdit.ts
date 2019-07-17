@@ -20,7 +20,7 @@ namespace YetaWF_ComponentsHTML {
         GetValue: (control: HTMLInputElement): string | null => {
             return control.value;
         },
-        Enable: (control: HTMLInputElement, enable: boolean): void => {
+        Enable: (control: HTMLInputElement, enable: boolean, clearOnDisable: boolean): void => {
             control.removeAttribute("disabled");
             $YetaWF.elementRemoveClass(control, "k-state-disabled");
             if (!enable) {

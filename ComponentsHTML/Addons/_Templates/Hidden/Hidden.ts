@@ -15,7 +15,7 @@ namespace YetaWF_ComponentsHTML {
         GetValue: (control: HTMLInputElement): string | null => {
             return control.value;
         },
-        Enable: (control: HTMLInputElement, enable: boolean): void => {
+        Enable: (control: HTMLInputElement, enable: boolean, clearOnDisable: boolean): void => {
             control.removeAttribute("disabled");
             if (!enable)
                 control.setAttribute("disabled", "disabled");

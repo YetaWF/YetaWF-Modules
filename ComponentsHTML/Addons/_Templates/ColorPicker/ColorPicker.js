@@ -25,7 +25,7 @@ var YetaWF_ComponentsHTML;
                     var colorPicker = $(control.Control).data("kendoColorPicker");
                     return colorPicker.value();
                 },
-                Enable: function (control, enable) {
+                Enable: function (control, enable, clearOnDisable) {
                     var colorPicker = $(control.Control).data("kendoColorPicker");
                     colorPicker.enable(enable);
                 },

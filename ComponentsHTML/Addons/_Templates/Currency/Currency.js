@@ -24,8 +24,10 @@ var YetaWF_ComponentsHTML;
                 GetValue: function (control) {
                     return control.value ? control.value.toString() : null;
                 },
-                Enable: function (control, enable) {
+                Enable: function (control, enable, clearOnDisable) {
                     control.enable(enable);
+                    if (!enable && clearOnDisable)
+                        control.kendoNumericTextBox.value("");
                 }
             }, false, function (tag, control) {
                 control.kendoNumericTextBox.destroy();

@@ -54,7 +54,7 @@ var YetaWF_ComponentsHTML;
                 }
             }
         };
-        Controls.prototype.enableToggle = function (item, enable) {
+        Controls.prototype.enableToggle = function (item, enable, clearOnDisable) {
             if (!item.Enable)
                 throw "Control template " + item.TemplateName + " has no Enable function";
             switch (item.ControlType) {
@@ -65,11 +65,11 @@ var YetaWF_ComponentsHTML;
                 case ControlTypeEnum.TextArea:
                 case ControlTypeEnum.Div:
                 case ControlTypeEnum.Hidden:
-                    item.Enable(item.Template, enable);
+                    item.Enable(item.Template, enable, clearOnDisable);
                     break;
                 case ControlTypeEnum.Template: {
                     var obj = $YetaWF.getObjectData(item.Template);
-                    item.Enable(obj, enable);
+                    item.Enable(obj, enable, clearOnDisable);
                 }
             }
         };

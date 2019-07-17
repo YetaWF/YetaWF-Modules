@@ -27,8 +27,10 @@ namespace YetaWF_ComponentsHTML {
                 GetValue: (control: DateTimeEditComponent): string | null => {
                     return control.valueText;
                 },
-                Enable: (control: DateTimeEditComponent, enable: boolean): void => {
+                Enable: (control: DateTimeEditComponent, enable: boolean, clearOnDisable: boolean): void => {
                     control.enable(enable);
+                    if (!enable && clearOnDisable)
+                        control.clear();
                 },
             }, false, (tag: HTMLElement, control: DateTimeEditComponent): void => {
                 control.kendoDateTimePicker.destroy();

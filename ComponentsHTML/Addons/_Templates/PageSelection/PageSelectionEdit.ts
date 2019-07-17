@@ -21,7 +21,7 @@ namespace YetaWF_ComponentsHTML {
                 GetValue: (control: PageSelectionEditComponent): string | null => {
                     return null;//$$$control.SelectPage.value;
                 },
-                Enable: (control: PageSelectionEditComponent, enable: boolean): void => {
+                Enable: (control: PageSelectionEditComponent, enable: boolean, clearOnDisable: boolean): void => {
                     //$$$control.enable(enable)
                 },
             });

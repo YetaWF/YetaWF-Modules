@@ -25,7 +25,7 @@ namespace YetaWF_ComponentsHTML {
                 GetValue: (control: IntValueEditComponent): string | null => {
                     return control.value.toString();
                 },
-                Enable: (control: IntValueEditComponent, enable: boolean): void => {
+                Enable: (control: IntValueEditComponent, enable: boolean, clearOnDisable: boolean): void => {
                     control.enable(enable);
                 },
             }, false, (tag: HTMLElement, control: IntValueEditComponent): void => {

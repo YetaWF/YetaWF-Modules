@@ -24,8 +24,10 @@ var YetaWF_ComponentsHTML;
                 GetValue: function (control) {
                     return control.valueText;
                 },
-                Enable: function (control, enable) {
+                Enable: function (control, enable, clearOnDisable) {
                     control.enable(enable);
+                    if (!enable && clearOnDisable)
+                        control.clear();
                 }
             }, false, function (tag, control) {
                 control.kendoDatePicker.destroy();

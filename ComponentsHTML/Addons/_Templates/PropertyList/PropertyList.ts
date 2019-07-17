@@ -70,6 +70,7 @@ namespace YetaWF_ComponentsHTML {
     interface ExprEntry {
         Op:YetaWF_ComponentsHTML.OpEnum;
         Disable: boolean;
+        ClearOnDisable: boolean;
         ExprList: YetaWF_ComponentsHTML.Expr[];
     }
     interface PropertyListSetup {
@@ -106,7 +107,7 @@ namespace YetaWF_ComponentsHTML {
                 ControlType: YetaWF_ComponentsHTML.ControlTypeEnum.Template,
                 ChangeEvent: null,
                 GetValue: null,
-                Enable: (control: PropertyListComponent, enable: boolean): void => {
+                Enable: (control: PropertyListComponent, enable: boolean, clearOnDisable: boolean): void => {
                     /* can't enable/disable but this is handled to support show/hide */
                 },
             });
@@ -372,7 +373,7 @@ namespace YetaWF_ComponentsHTML {
                         case OpEnum.HideIfSupplied: {
                             let valid = ValidatorHelper.evaluateExpressionList(null, form, expr.Op, expr.ExprList);
                             if (valid) {
-                                this.toggle(dep, depRow, false, false);
+                                this.toggle(dep, depRow, false, false, false);
                                 hidden = true;
                                 break;
                             }
@@ -382,7 +383,7 @@ namespace YetaWF_ComponentsHTML {
                         case OpEnum.HideIfNotSupplied: {
                             let valid = ValidatorHelper.evaluateExpressionList(null, form, expr.Op, expr.ExprList);
                             if (!valid) {
-                                this.toggle(dep, depRow, false, false);
+                                this.toggle(dep, depRow, false, false, false);
                                 hidden = true;
                                 break;
                             }
@@ -397,6 +398,7 @@ namespace YetaWF_ComponentsHTML {
                 if (!hidden) {
                     let process = true;
                     let disable = false;
+                    let clearOnDisable = false;
                     if (dep.ProcessValues.length > 0) {
                         process = false;
                         for (let expr of dep.ProcessValues) {
@@ -406,8 +408,10 @@ namespace YetaWF_ComponentsHTML {
                                     let v = ValidatorHelper.evaluateExpressionList(null, form, expr.Op, expr.ExprList);
                                     if (v)
                                         process = true;
-                                    else
+                                    else {
                                         disable = expr.Disable;
+                                        clearOnDisable = expr.ClearOnDisable;
+                                    }
                                     break;
                                 }
                                 case OpEnum.ProcessIfNot:
@@ -415,8 +419,10 @@ namespace YetaWF_ComponentsHTML {
                                     let v = ValidatorHelper.evaluateExpressionList(null, form, expr.Op, expr.ExprList);
                                     if (!v)
                                         process = true;
-                                    else
+                                    else {
                                         disable = expr.Disable;
+                                        clearOnDisable = expr.ClearOnDisable;
+                                    }
                                     break;
                                 }
                                 default:
@@ -427,18 +433,18 @@ namespace YetaWF_ComponentsHTML {
                         }
                     }
                     if (process) {
-                        this.toggle(dep, depRow, true, false);
+                        this.toggle(dep, depRow, true, false, false);
                     } else {
                         if (disable)
-                            this.toggle(dep, depRow, true, true);
+                            this.toggle(dep, depRow, true, true, clearOnDisable);
                         else
-                            this.toggle(dep, depRow, false, false);
+                            this.toggle(dep, depRow, false, false, false);
                     }
                 }
             }
         }
 
-        private toggle(dep: Dependent, depRow: HTMLElement, show: boolean, disable: boolean): void {
+        private toggle(dep: Dependent, depRow: HTMLElement, show: boolean, disable: boolean, clearOnDisable: boolean): void {
             $YetaWF.Forms.clearValidation(depRow);
             $YetaWF.elementRemoveClass(depRow, "t_disabled");
             $YetaWF.elementRemoveClass(depRow, "t_hidden");
@@ -453,9 +459,9 @@ namespace YetaWF_ComponentsHTML {
             let controlItemDef = ControlsHelper.getControlItemByNameCond(dep.Prop, depRow);// there may not be an actual control, just a row with displayed info
             if (controlItemDef) {
                 if (show) {
-                    ControlsHelper.enableToggle(controlItemDef, !disable);
+                    ControlsHelper.enableToggle(controlItemDef, !disable, clearOnDisable);
                 } else {
-                    ControlsHelper.enableToggle(controlItemDef, false);
+                    ControlsHelper.enableToggle(controlItemDef, false, clearOnDisable);
                 }
             }
         }

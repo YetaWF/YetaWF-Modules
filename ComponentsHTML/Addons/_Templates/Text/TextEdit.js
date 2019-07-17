@@ -31,7 +31,7 @@ var YetaWF_ComponentsHTML;
         GetValue: function (control) {
             return control.value;
         },
-        Enable: function (control, enable) {
+        Enable: function (control, enable, clearOnDisable) {
             control.removeAttribute("disabled");
             $YetaWF.elementRemoveClass(control, "k-state-disabled");
             if (!enable) {

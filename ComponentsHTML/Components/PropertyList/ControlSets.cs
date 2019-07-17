@@ -42,6 +42,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         internal class ExprEntry {
             public ExprAttribute.OpEnum Op { get; set; }
             public bool Disable { get; set; }
+            public bool ClearOnDisable{ get; set; }
             public List<ExprAttribute.Expr> ExprList { get; set; }
         }
 
@@ -68,6 +69,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                                 ExprEntry exprEntry = new ExprEntry {
                                     Op = exprAttr.Op,
                                     Disable = exprAttr.Disable,
+                                    ClearOnDisable = exprAttr.ClearOnDisable,
                                     ExprList = exprAttr.ExprList
                                 };
                                 if (exprAttr.IsProcessAttribute)

@@ -22,7 +22,7 @@ namespace YetaWF_ComponentsHTML {
                 GetValue: (control: DecimalEditComponent): string | null => {
                     return control.valueText;
                 },
-                Enable: (control: DecimalEditComponent, enable: boolean): void => {
+                Enable: (control: DecimalEditComponent, enable: boolean, clearOnDisable: boolean): void => {
                     control.enable(enable);
                 },
             }, false, (tag: HTMLElement, control: DecimalEditComponent): void => {

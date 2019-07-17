@@ -21,7 +21,7 @@ namespace YetaWF_ComponentsHTML {
         ControlType: ControlTypeEnum;
         ChangeEvent: string | null;
         GetValue: (template: HTMLElement | YetaWF.ComponentBaseDataImpl) => string | null;
-        Enable: (template: HTMLElement | YetaWF.ComponentBaseDataImpl, enable: boolean) => void;
+        Enable: (template: HTMLElement | YetaWF.ComponentBaseDataImpl, enable: boolean, clearOnDisable: boolean) => void;
     }
     export interface ControlItemDefinition extends ControlDefinition {
         TemplateName: string;
@@ -81,7 +81,7 @@ namespace YetaWF_ComponentsHTML {
                 }
             }
         }
-        public enableToggle(item: ControlItemDefinition, enable: boolean): void {
+        public enableToggle(item: ControlItemDefinition, enable: boolean, clearOnDisable: boolean): void {
             if (!item.Enable)
                 throw `Control template ${item.TemplateName} has no Enable function`;
             switch (item.ControlType) {
@@ -92,11 +92,11 @@ namespace YetaWF_ComponentsHTML {
                 case ControlTypeEnum.TextArea:
                 case ControlTypeEnum.Div:
                 case ControlTypeEnum.Hidden:
-                    item.Enable(item.Template, enable);
+                    item.Enable(item.Template, enable, clearOnDisable);
                     break;
                 case ControlTypeEnum.Template: {
                     var obj = $YetaWF.getObjectData(item.Template) as YetaWF.ComponentBaseDataImpl;
-                    item.Enable(obj, enable);
+                    item.Enable(obj, enable, clearOnDisable);
                 }
             }
         }

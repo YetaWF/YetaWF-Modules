@@ -23,7 +23,7 @@ namespace YetaWF_ComponentsHTML {
                 GetValue: (control: PageSkinEditComponent): string | null => {
                     return null;//$$$control.SelectPage.value;
                 },
-                Enable: (control: PageSkinEditComponent, enable: boolean): void => {
+                Enable: (control: PageSkinEditComponent, enable: boolean, clearOnDisable: boolean): void => {
                     //$$$control.enable(enable)
                 },
             });
@@ -33,7 +33,7 @@ namespace YetaWF_ComponentsHTML {
                 GetValue: (control: PageSkinEditComponent): string | null => {
                     return null;//$$$control.SelectPage.value;
                 },
-                Enable: (control: PageSkinEditComponent, enable: boolean): void => {
+                Enable: (control: PageSkinEditComponent, enable: boolean, clearOnDisable: boolean): void => {
                     //$$$control.enable(enable)
                 },
             });

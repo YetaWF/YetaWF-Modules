@@ -15,7 +15,7 @@ namespace YetaWF_ComponentsHTML {
                     let colorPicker = $(control.Control).data("kendoColorPicker");
                     return colorPicker.value();
                 },
-                Enable: (control: ColorPickerComponent, enable: boolean): void => {
+                Enable: (control: ColorPickerComponent, enable: boolean, clearOnDisable: boolean): void => {
                     let colorPicker = $(control.Control).data("kendoColorPicker");
                     colorPicker.enable(enable);
                 },

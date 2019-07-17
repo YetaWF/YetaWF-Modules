@@ -23,7 +23,7 @@ namespace YetaWF_ComponentsHTML {
                 GetValue: (control: TimeSpanEditComponent): string | null => {
                     return control.Hidden.value;
                 },
-                Enable: (control: TimeSpanEditComponent, enable: boolean): void => {
+                Enable: (control: TimeSpanEditComponent, enable: boolean, clearOnDisable: boolean): void => {
                     if (control.InputDays) control.InputDays.enable(enable);
                     if (control.InputHours) control.InputHours.enable(enable);
                     if (control.InputMins) control.InputMins.enable(enable);

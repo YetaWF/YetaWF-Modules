@@ -27,8 +27,10 @@ namespace YetaWF_ComponentsHTML {
                 GetValue: (control: DropDownListEditComponent): string | null => {
                     return control.value;
                 },
-                Enable: (control: DropDownListEditComponent, enable: boolean): void => {
+                Enable: (control: DropDownListEditComponent, enable: boolean, clearOnDisable: boolean): void => {
                     control.enable(enable);
+                    if (!enable && clearOnDisable)
+                        control.clear();
                 },
             }, false, (tag: HTMLElement, control: DropDownListEditComponent): void => {
                 control.internalDestroy();

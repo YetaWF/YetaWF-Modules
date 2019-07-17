@@ -26,7 +26,7 @@ var YetaWF_ComponentsHTML;
                 GetValue: function (control) {
                     return control.Hidden.value;
                 },
-                Enable: function (control, enable) {
+                Enable: function (control, enable, clearOnDisable) {
                     if (control.InputDays)
                         control.InputDays.enable(enable);
                     if (control.InputHours)

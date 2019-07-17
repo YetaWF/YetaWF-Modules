@@ -26,7 +26,7 @@ namespace YetaWF_ComponentsHTML {
                 GetValue: (control: ModuleSelectionEditComponent): string | null => {
                     return control.value;
                 },
-                Enable: (control: ModuleSelectionEditComponent, enable: boolean): void => {
+                Enable: (control: ModuleSelectionEditComponent, enable: boolean, clearOnDisable: boolean): void => {
                     control.enable(enable);
                 },
             });
