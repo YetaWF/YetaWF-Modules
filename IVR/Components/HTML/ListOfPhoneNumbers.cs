@@ -93,7 +93,7 @@ namespace Softelvdm.Modules.IVR.Components {
             };
 
             hb.Append($@"
-<div class='yt_listofphonenumbers t_display'>
+<div class='yt_softelvdm_ivr_listofphonenumbers t_display'>
     {await HtmlHelper.ForDisplayAsAsync(Container, PropertyName, FieldName, grid, nameof(grid.GridDef), grid.GridDef, "Grid", HtmlAttributes: HtmlAttributes)}
 </div>");
 
@@ -187,7 +187,7 @@ namespace Softelvdm.Modules.IVR.Components {
             };
 
             hb.Append($@"
-<div class='yt_listofphonenumbers t_edit' id='{DivId}'>
+<div class='yt_softelvdm_ivr_listofphonenumbers t_edit' id='{DivId}'>
     {await HtmlHelper.ForDisplayAsAsync(Container, PropertyName, FieldName, grid, nameof(grid.GridDef), grid.GridDef, "Grid", HtmlAttributes: HtmlAttributes)}");
 
             using (Manager.StartNestedComponent(FieldName)) {

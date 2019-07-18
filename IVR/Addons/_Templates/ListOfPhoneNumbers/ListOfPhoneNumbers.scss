@@ -1,7 +1,10 @@
 ﻿/* Copyright © 2019 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/IVR#License */
 
-.yt_listofphonenumbers.t_edit {
+.yt_softelvdm_ivr_listofphonenumbers.t_edit {
     > .t_newvalue {
-        padding-top:.5em
+        padding-top:.5em;
+        label, input {
+            margin-right:1ch;
+        }
     }
 }

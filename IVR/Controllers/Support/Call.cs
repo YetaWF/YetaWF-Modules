@@ -48,11 +48,11 @@ namespace Softelvdm.Modules.IVR.Controllers {
 
             TwilioData twilioConfig = await TwilioConfigDataProvider.GetConfigCondAsync();
             if (twilioConfig == null || !twilioConfig.IsConfigured())
-                return RejectResult();// Twilio is not configured
+                return RejectResult("Twilio is not configured");
             string authToken = twilioConfig.TestMode ? twilioConfig.TestAuthToken : twilioConfig.LiveAuthToken;
             IVRConfig ivrConfig = await IVRConfigDataProvider.GetConfigCondAsync();
             if (ivrConfig == null || string.IsNullOrWhiteSpace(ivrConfig.PublicKey) || string.IsNullOrWhiteSpace(ivrConfig.PrivateKey))
-                return RejectResult();
+                return RejectResult("Config settings not available");
 
 #if !DEBUG
             // There is something very peculiar about twilio verification. The initial request will validate correctly, but anything after that will not.
@@ -60,14 +60,14 @@ namespace Softelvdm.Modules.IVR.Controllers {
             // and add my own token validation (as argument)
             if (string.IsNullOrWhiteSpace(token)) {
                 if (!Verify.VerifyTwilio(authToken, twilioConfig.TestMode ? ivrConfig.TestVerificationProcessCallUrl : ivrConfig.LiveVerificationProcessCallUrl))
-                    return RejectResult();
+                    return RejectResult("Twilio verification failed");
             } else {
                 // verify token. If it wasn't generated within the last 5 minutes, reject it.
                 string decryptedToken;
                 RSACrypto.Decrypt(ivrConfig.PrivateKey, token, out decryptedToken);
                 DateTime tokenTime = new DateTime(Convert.ToInt64(decryptedToken));
                 if (tokenTime < DateTime.UtcNow.AddMinutes(-5))
-                    return RejectResult();
+                    return RejectResult("Token verification failed");
             }
 #endif
             if (string.IsNullOrWhiteSpace(request)) {
@@ -89,7 +89,7 @@ namespace Softelvdm.Modules.IVR.Controllers {
                 using (BlockedNumberDataProvider blockedDP = new BlockedNumberDataProvider()) {
                     BlockedNumberEntry blockedEntry = await blockedDP.GetItemAsync(GetForm("From"));
                     if (blockedEntry != null)
-                        return RejectResult();
+                        return RejectResult($"Blocked number {GetForm("From")}");
                 }
 
                 // notify (new call)
@@ -128,7 +128,7 @@ namespace Softelvdm.Modules.IVR.Controllers {
             using (ScriptDataProvider scriptDP = new ScriptDataProvider()) {
                 ScriptData script = await scriptDP.GetScriptAsync(called);
                 if (script == null)
-                    return RejectResult();
+                    return RejectResult($"Script not found for {called}");
 
                 // See if a valid extension was entered
                 if (request == SECTION_GATHEREXTENSION.ToLower()) {
@@ -162,9 +162,9 @@ namespace Softelvdm.Modules.IVR.Controllers {
                 throw new InternalError($"Nothing to execute - tag \"{request}\" for {called}");
             }
         }
-        private ContentResult RejectResult() {
+        private ContentResult RejectResult(string reason) {
             string xmlString = @"<Response><Reject /></Response>";
-            Logging.AddLog($"{nameof(RejectResult)}: {xmlString}");
+            Logging.AddErrorLog($"{nameof(RejectResult)}: {reason} {xmlString}");
             return this.Content(xmlString, "text/xml");
         }
 

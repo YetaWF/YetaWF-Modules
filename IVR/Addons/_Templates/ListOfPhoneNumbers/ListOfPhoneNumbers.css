@@ -1,4 +1,6 @@
 @charset "UTF-8";
 /* Copyright © 2019 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/IVR#License */
-.yt_listofphonenumbers.t_edit > .t_newvalue {
+.yt_softelvdm_ivr_listofphonenumbers.t_edit > .t_newvalue {
   padding-top: .5em; }
+  .yt_softelvdm_ivr_listofphonenumbers.t_edit > .t_newvalue label, .yt_softelvdm_ivr_listofphonenumbers.t_edit > .t_newvalue input {
+    margin-right: 1ch; }
