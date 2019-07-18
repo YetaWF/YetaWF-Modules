@@ -33,6 +33,8 @@ var YetaWF_ComponentsHTML;
                         control.removeAttribute("readonly");
                         $YetaWF.elementAddClass(control, "k-state-disabled");
                     }
+                    //$$if (!enable && clearOnDisable)
+                    //$$ ;
                 },
             }) || this;
         }

@@ -24,6 +24,8 @@ namespace YetaWF_ComponentsHTML {
                 },
                 Enable: (control: DecimalEditComponent, enable: boolean, clearOnDisable: boolean): void => {
                     control.enable(enable);
+                    if (!enable && clearOnDisable)
+                        control.clear();
                 },
             }, false, (tag: HTMLElement, control: DecimalEditComponent): void => {
                 control.kendoNumericTextBox.destroy();

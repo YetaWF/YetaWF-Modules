@@ -30,6 +30,8 @@ namespace YetaWF_ComponentsHTML {
                 },
                 Enable: (control: MultiStringEditComponent, enable: boolean, clearOnDisable: boolean): void => {
                     control.enable(enable);
+                    if (!enable && clearOnDisable)
+                        control.clear();
                 },
             });
 

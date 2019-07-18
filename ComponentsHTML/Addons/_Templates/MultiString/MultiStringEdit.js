@@ -28,6 +28,8 @@ var YetaWF_ComponentsHTML;
                 },
                 Enable: function (control, enable, clearOnDisable) {
                     control.enable(enable);
+                    if (!enable && clearOnDisable)
+                        control.clear();
                 },
             }) || this;
             //this.Setup = setup;

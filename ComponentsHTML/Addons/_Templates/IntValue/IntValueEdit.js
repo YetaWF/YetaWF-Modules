@@ -26,6 +26,8 @@ var YetaWF_ComponentsHTML;
                 },
                 Enable: function (control, enable, clearOnDisable) {
                     control.enable(enable);
+                    if (!enable && clearOnDisable)
+                        control.clear();
                 },
             }, false, function (tag, control) {
                 if (control.kendoNumericTextBox)

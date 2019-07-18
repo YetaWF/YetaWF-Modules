@@ -27,6 +27,8 @@ namespace YetaWF_ComponentsHTML {
                 },
                 Enable: (control: IntValueEditComponent, enable: boolean, clearOnDisable: boolean): void => {
                     control.enable(enable);
+                    if (!enable && clearOnDisable)
+                        control.clear();
                 },
             }, false, (tag: HTMLElement, control: IntValueEditComponent): void => {
                 if (control.kendoNumericTextBox)

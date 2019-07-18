@@ -35,6 +35,16 @@ var YetaWF_ComponentsHTML;
                         control.InputMins.enable(enable);
                     if (control.InputSecs)
                         control.InputSecs.enable(enable);
+                    if (!enable && clearOnDisable) {
+                        if (control.InputDays)
+                            control.InputDays.clear();
+                        if (control.InputHours)
+                            control.InputHours.clear();
+                        if (control.InputMins)
+                            control.InputMins.clear();
+                        if (control.InputSecs)
+                            control.InputSecs.clear();
+                    }
                 },
             }) || this;
             _this.Hidden = $YetaWF.getElement1BySelector("input[type='hidden']", [_this.Control]);
