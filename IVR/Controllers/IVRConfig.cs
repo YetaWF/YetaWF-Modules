@@ -49,7 +49,7 @@ namespace Softelvdm.Modules.IVR.Controllers {
             [Category("Notifications"), Caption("SMS Numbers"), Description("Defines the phone numbers that receive a text message whenever a call is received")]
             [TextAbove("Phone numbers added here receive a text message when a call is received (before the caller can select an extension or leave a voice mail). This is may become annoying fast if you receive many calls on the main number. " +
                 "Make sure to enable the SMS checkbox for each phone number where you want to receive text messages.")]
-            [UIHint("Softelvdm_IVR_ListOfPhoneNumbers"), Required]
+            [UIHint("Softelvdm_IVR_ListOfPhoneNumbers")]
             public SerializableList<ExtensionPhoneNumber> NotificationNumbers { get; set; }
 
             [Category("IVR"), Caption("Voice"), Description("Defines the Voice variable, which can be used to override the default voice - This voice is used for all messages to external users - If not specified, the default voice is used")]
