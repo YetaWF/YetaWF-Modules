@@ -93,11 +93,8 @@ namespace Softelvdm.Modules.TwilioProcessor.Models.Attributes {
         }
         private static string CountryCode {
             get {
-                if (_countryCode == null)
-                    _countryCode = CountryISO3166.CountryToId(null, AllowMismatch: true);
-                return _countryCode;
+                return CountryISO3166.CountryToId(null, AllowMismatch: true);
             }
         }
-        private static string _countryCode = null;
     }
 }
