@@ -2,7 +2,10 @@
 
 .yt_yetawf_identity_listofusernames.t_edit {
     > .t_newvalue {
-        padding-top:.5em
+        padding-top:.5em;
+        label, input {
+            margin-right:1ch;
+        }
     }
     .y_act_normlink[data-name="Collapse"] {
         margin-bottom:.5em;

@@ -42,6 +42,8 @@ namespace YetaWF.Modules.DevTests.Controllers {
             public Model() {
                 Prop1Req = new List<string>() { "aa1@somedomain.com", "aa2@somedomain.com", "aa3@somedomain.com", "aa4@somedomain.com", "aa5@somedomain.com", "aa6@somedomain.com", "aa7@somedomain.com", "aa8@somedomain.com", "aa9@somedomain.com", "aa10@somedomain.com" };
                 Prop1 = new List<string>() { "aa1@somedomain.com", "aa2@somedomain.com", "aa3@somedomain.com", "aa4@somedomain.com", "aa5@somedomain.com", "aa6@somedomain.com", "aa7@somedomain.com", "aa8@somedomain.com", "aa9@somedomain.com", "aa10@somedomain.com" };
+            }
+            public void Update() {
                 Prop1RO = new List<string>() { "aa1@somedomain.com", "aa2@somedomain.com", "aa3@somedomain.com", "aa4@somedomain.com", "aa5@somedomain.com", "aa6@somedomain.com", "aa7@somedomain.com", "aa8@somedomain.com", "aa9@somedomain.com", "aa10@somedomain.com" };
             }
         }
@@ -49,12 +51,14 @@ namespace YetaWF.Modules.DevTests.Controllers {
         [AllowGet]
         public ActionResult TemplateListOfEmailAddresses() {
             Model model = new Model { };
+            model.Update();
             return View(model);
         }
 
         [AllowPost]
         [ConditionalAntiForgeryToken]
         public ActionResult TemplateListOfEmailAddresses_Partial(Model model) {
+            model.Update();
             if (!ModelState.IsValid)
                 return PartialView(model);
             return FormProcessed(model, this.__ResStr("ok", "OK"));

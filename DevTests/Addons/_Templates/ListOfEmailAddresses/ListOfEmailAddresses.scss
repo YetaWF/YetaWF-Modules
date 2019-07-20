@@ -2,6 +2,9 @@
 
 .yt_yetawf_devtests_listofemailaddresses.t_edit {
     > .t_newvalue {
-        padding-top:.5em
+        padding-top:.5em;
+        label, input {
+            margin-right:1ch;
+        }
     }
 }
