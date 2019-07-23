@@ -46,7 +46,7 @@ $('body').peelback({{
 }});
 
 // Listen for events that the page is changing
-$YetaWF.registerPageChange(function () {{
+$YetaWF.registerPageChange(true, function () {{
     // when the page is removed, we need to clean up
     $('#peelback').remove();
 }});");

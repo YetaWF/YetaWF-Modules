@@ -18,7 +18,7 @@ var YetaWF_TawkTo;
                     SkinTawkToModule.on = on;
                 }
             });
-            $YetaWF.registerNewPage(function (url) {
+            $YetaWF.registerNewPage(false, function (url) {
                 tawkto.showInvite(SkinTawkToModule.on);
                 if (SkinTawkToModule.on) {
                     // Functionality not available in Tawk.to to record a new page

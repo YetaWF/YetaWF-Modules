@@ -21,7 +21,7 @@ var YetaWF_Feed;
                 $YetaWF.setAttribute(elem, "rel", "noopener noreferrer");
             }
             // Listen for events that the page is changing
-            $YetaWF.registerPageChange(function () {
+            $YetaWF.registerPageChange(true, function () {
                 // when the page is removed, we need to clean up
                 if (_this.EntryTimer) {
                     clearInterval(_this.EntryTimer);

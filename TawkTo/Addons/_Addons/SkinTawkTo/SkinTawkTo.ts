@@ -31,7 +31,7 @@ namespace YetaWF_TawkTo {
                 }
             });
 
-            $YetaWF.registerNewPage((url: string): void => {
+            $YetaWF.registerNewPage(false, (url: string): void => {
                 tawkto.showInvite(SkinTawkToModule.on);
                 if (SkinTawkToModule.on) {
                     // Functionality not available in Tawk.to to record a new page

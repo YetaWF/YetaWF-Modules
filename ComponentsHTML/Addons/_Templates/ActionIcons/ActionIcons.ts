@@ -101,7 +101,7 @@ namespace YetaWF_ComponentsHTML {
     });
 
     // last chance - handle a new page (UPS) and close open menus
-    $YetaWF.registerNewPage((url:string): void => {
+    $YetaWF.registerNewPage(false, (url:string): void => {
         ActionIconsComponent.closeMenus();
     });
 }

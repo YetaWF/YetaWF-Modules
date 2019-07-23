@@ -33,7 +33,7 @@ namespace YetaWF_Feed {
             }
 
             // Listen for events that the page is changing
-            $YetaWF.registerPageChange((): void => {
+            $YetaWF.registerPageChange(true, (): void => {
                 // when the page is removed, we need to clean up
                 if (this.EntryTimer) {
                     clearInterval(this.EntryTimer);
