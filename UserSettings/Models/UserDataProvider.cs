@@ -46,10 +46,13 @@ namespace YetaWF.Modules.UserSettings.DataProvider {
         public bool ConfirmActions { get; set; }
 
         public UserData() {
+            string timeZone = TimeZoneInfo.Local.Id;
+            if (YetaWFManager.HaveManager && YetaWFManager.Manager.CurrentSite != null && !string.IsNullOrWhiteSpace(YetaWFManager.Manager.CurrentSite.TimeZone))
+                timeZone = YetaWFManager.Manager.CurrentSite.TimeZone;
             DateFormat = Formatting.DateFormatEnum.MMDDYYYY;
             TimeFormat = Formatting.TimeFormatEnum.HHMMAM;
             LanguageId = MultiString.DefaultLanguage;
-            TimeZone = TimeZoneInfo.Local.Id;
+            TimeZone = timeZone;
             GridActions = Grid.GridActionsEnum.DropdownMenu;
             ShowGridSearchToolbar = false;
             ShowModuleOwnership = false;
