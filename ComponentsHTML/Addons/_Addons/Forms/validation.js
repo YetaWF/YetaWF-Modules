@@ -204,14 +204,23 @@ var YetaWF_ComponentsHTML;
                 case OpCond.Eq:
                     if (!leftVal && !rightVal)
                         return true;
-                    return leftVal === rightVal;
+                    return ValidatorHelper.EqualStrings(leftVal, rightVal);
                 case OpCond.NotEq:
                     if (!leftVal && !rightVal)
                         return false;
-                    return leftVal !== rightVal;
+                    return !ValidatorHelper.EqualStrings(leftVal, rightVal);
                 default:
                     throw "Invalid Cond " + expr.Cond + " in isExprValid";
             }
+        };
+        ValidatorHelper.EqualStrings = function (s1, s2) {
+            // special case bool handling, ignore case
+            var s1L = (s1) ? s1.toLowerCase() : "";
+            var s2L = (s2) ? s2.toLowerCase() : "";
+            if ((s1L === "true" || s1L === "false") && (s2L === "true" || s2L === "false"))
+                return s1L === s2L;
+            else
+                return s1 == s2;
         };
         ValidatorHelper.isExprSupplied = function (expr, form) {
             var leftVal = ValidatorHelper.getPropertyVal(form, expr._Left);

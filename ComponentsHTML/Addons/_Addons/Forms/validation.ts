@@ -219,13 +219,22 @@ namespace YetaWF_ComponentsHTML {
             switch (expr.Cond) {
                 case OpCond.Eq:
                     if (!leftVal && !rightVal) return true;
-                    return leftVal === rightVal;
+                    return ValidatorHelper.EqualStrings(leftVal, rightVal);
                 case OpCond.NotEq:
                     if (!leftVal && !rightVal) return false;
-                    return leftVal !== rightVal;
+                    return !ValidatorHelper.EqualStrings(leftVal, rightVal);
                 default:
                     throw `Invalid Cond ${expr.Cond} in isExprValid`;
             }
+        }
+        private static EqualStrings(s1: string | null, s2: string | null): boolean {
+            // special case bool handling, ignore case
+            let s1L = (s1) ? s1.toLowerCase() : "";
+            let s2L = (s2) ? s2.toLowerCase() : "";
+            if ((s1L === "true" || s1L === "false") && (s2L === "true" || s2L === "false"))
+                return s1L === s2L;
+            else
+                return s1 == s2;
         }
         public static isExprSupplied(expr: Expr, form: HTMLFormElement): boolean {
             let leftVal = ValidatorHelper.getPropertyVal(form, expr._Left);
