@@ -220,7 +220,7 @@ var YetaWF_ComponentsHTML;
             if ((s1L === "true" || s1L === "false") && (s2L === "true" || s2L === "false"))
                 return s1L === s2L;
             else
-                return s1 == s2;
+                return s1 === s2;
         };
         ValidatorHelper.isExprSupplied = function (expr, form) {
             var leftVal = ValidatorHelper.getPropertyVal(form, expr._Left);
@@ -258,5 +258,3 @@ var YetaWF_ComponentsHTML;
     }());
     YetaWF_ComponentsHTML.ValidatorHelper = ValidatorHelper;
 })(YetaWF_ComponentsHTML || (YetaWF_ComponentsHTML = {}));
-
-//# sourceMappingURL=validation.js.map

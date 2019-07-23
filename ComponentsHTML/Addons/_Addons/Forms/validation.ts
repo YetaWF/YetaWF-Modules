@@ -234,7 +234,7 @@ namespace YetaWF_ComponentsHTML {
             if ((s1L === "true" || s1L === "false") && (s2L === "true" || s2L === "false"))
                 return s1L === s2L;
             else
-                return s1 == s2;
+                return s1 === s2;
         }
         public static isExprSupplied(expr: Expr, form: HTMLFormElement): boolean {
             let leftVal = ValidatorHelper.getPropertyVal(form, expr._Left);
