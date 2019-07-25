@@ -54,7 +54,7 @@ namespace YetaWF.Modules.UserSettings.DataProvider {
             LanguageId = MultiString.DefaultLanguage;
             TimeZone = timeZone;
             GridActions = Grid.GridActionsEnum.DropdownMenu;
-            ShowGridSearchToolbar = false;
+            ShowGridSearchToolbar = true;
             ShowModuleOwnership = false;
             ShowPageOwnership = false;
             ShowEnumValue = false;

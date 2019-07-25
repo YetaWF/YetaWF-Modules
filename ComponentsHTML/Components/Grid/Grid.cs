@@ -169,6 +169,8 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                     CurrentPage = 1,
                     PageSize = pageSize,
                 };
+                if (model.InitialFilters != null)
+                    gridSavedSettings.Columns = model.InitialFilters;
             }
 
             GridSetup setup = new GridSetup() {
@@ -541,6 +543,11 @@ new YetaWF_ComponentsHTML.Grid('{model.Id}', {JsonConvert.SerializeObject(setup,
                                     Value = 0,
                                     Value_List = entries,
                                 };
+                                if (filterOp != null) {
+                                    try {
+                                        filterUI.Value = Convert.ToInt32(filterValue);
+                                    } catch (Exception) { }
+                                }
                                 filterOp = filterOp ?? GridColumnInfo.FilterOptionEnum.Equal;
 
                                 filterhb.Append($@"
