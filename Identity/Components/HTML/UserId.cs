@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using YetaWF.Core;
 using YetaWF.Core.Components;
 using YetaWF.Core.DataProvider;
+using YetaWF.Core.Identity;
 using YetaWF.Core.Localize;
 using YetaWF.Core.Models;
 using YetaWF.Core.Models.Attributes;
@@ -42,10 +43,13 @@ namespace YetaWF.Modules.Identity.Components {
         }
     }
 
-    public class UserIdDisplayComponent : UserIdComponentBase, IYetaWFComponent<int> {
+    public class UserIdDisplayComponent : UserIdComponentBase, IYetaWFComponent<int?> {
 
         public override ComponentType GetComponentType() { return ComponentType.Display; }
 
+        public Task<string> RenderAsync(int? model) {
+            return RenderAsync(model??0);
+        }
         public async Task<string> RenderAsync(int model) {
 
             HtmlBuilder hb = new HtmlBuilder();

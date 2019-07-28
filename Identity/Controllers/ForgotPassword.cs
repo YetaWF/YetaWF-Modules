@@ -11,6 +11,7 @@ using YetaWF.Modules.Identity.DataProvider;
 using YetaWF.Modules.Identity.Support;
 using YetaWF.Core.Components;
 using System;
+using YetaWF.Core.Identity;
 #if MVC6
 using Microsoft.AspNetCore.Mvc;
 #else

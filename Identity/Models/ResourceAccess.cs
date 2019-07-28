@@ -258,6 +258,28 @@ namespace YetaWF.Modules.Identity.DataProvider {
                 return user.Email;
             }
         }
+        public async Task<UserStatusEnum> GetUserStatusAsync(int userId) {
+            using (UserDefinitionDataProvider userDP = new UserDefinitionDataProvider()) {
+                UserDefinition user = await userDP.GetItemByUserIdAsync(userId);
+                if (user == null)
+                    throw new InternalError($"Unknown user (user id {userId})");
+                return user.UserStatus;
+            }
+        }
+        public async Task SetUserStatusAsync(int userId, UserStatusEnum userStatus) {
+            using (UserDefinitionDataProvider userDP = new UserDefinitionDataProvider()) {
+                UserDefinition user = await userDP.GetItemByUserIdAsync(userId);
+                if (user == null)
+                    throw new InternalError($"Unknown user (user id {userId})");
+                if (user.UserStatus != userStatus) {
+                    user.UserStatus = userStatus;
+                    UpdateStatusEnum status = await userDP.UpdateItemAsync(user);
+                    if (status != UpdateStatusEnum.OK)
+                        throw new InternalError($"Unexpected status {status} updating user account in nameof(SetUserStatusAsync)");
+                }
+            }
+        }
+
         public int GetSuperuserId() {
             return SuperuserDefinitionDataProvider.SuperUserId;
         }

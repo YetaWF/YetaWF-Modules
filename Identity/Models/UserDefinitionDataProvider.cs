@@ -25,19 +25,6 @@ using Microsoft.AspNet.Identity;
 
 namespace YetaWF.Modules.Identity.DataProvider {
 
-    public enum UserStatusEnum {
-        [EnumDescription("Needs Verification", "A new user account that has not yet been verified or approved")]
-        NeedValidation = 0,
-        [EnumDescription("Needs Approval", "A user account whose email address has been validated but still needs approval")]
-        NeedApproval = 1,
-        [EnumDescription("Approved User", "A user account that has been approved")]
-        Approved = 2,
-        [EnumDescription("Rejected User", "A user account that has been rejected")]
-        Rejected = 20,
-        [EnumDescription("Suspended User", "A user account that has been suspended")]
-        Suspended = 21,
-    }
-
 #if MVC6
     public class UserDefinition
 #else

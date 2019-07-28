@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using YetaWF.Core.DataProvider;
+using YetaWF.Core.Identity;
 using YetaWF.Core.Localize;
 using YetaWF.Core.Log;
 using YetaWF.Core.Scheduler;
@@ -55,8 +56,8 @@ namespace YetaWF.Modules.Identity.Scheduler {
                 for (;;) {
 
                     List<DataProviderFilterInfo> filters = null;
-                    filters = DataProviderFilterInfo.Join(filters, new DataProviderFilterInfo { Field = "UserStatus", Operator = "==", Value = UserStatusEnum.Approved });
-                    filters = DataProviderFilterInfo.Join(filters, new DataProviderFilterInfo { Field = "NeedsNewPassword", Operator = "==", Value = false });
+                    filters = DataProviderFilterInfo.Join(filters, new DataProviderFilterInfo { Field = nameof(UserDefinition.UserStatus), Operator = "==", Value = UserStatusEnum.Approved });
+                    filters = DataProviderFilterInfo.Join(filters, new DataProviderFilterInfo { Field = nameof(UserDefinition.NeedsNewPassword), Operator = "==", Value = false });
                     DataProviderGetRecords<UserDefinition> usersInfo = await userDP.GetItemsAsync(offset, CHUNK, null, filters);
                     if (usersInfo.Data.Count == 0) return;
 
