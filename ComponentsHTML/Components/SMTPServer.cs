@@ -51,7 +51,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
     {await HtmlHelper.ForEditContainerAsync(model, "PropertyList")}
 </div>");
 
-                Manager.ScriptManager.AddLast($@"new YetaWF_ComponentsHTML.SMTPServer('{DivId}');");
+                Manager.ScriptManager.AddLast($@"new YetaWF_ComponentsHTML.SMTPServerEdit('{DivId}');");
 
                 return hb.ToString();
             }

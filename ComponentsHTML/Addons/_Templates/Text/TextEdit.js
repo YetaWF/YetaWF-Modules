@@ -32,14 +32,9 @@ var YetaWF_ComponentsHTML;
             return control.value;
         },
         Enable: function (control, enable, clearOnDisable) {
-            control.removeAttribute("disabled");
-            $YetaWF.elementRemoveClass(control, "k-state-disabled");
-            if (!enable) {
-                control.setAttribute("disabled", "disabled");
-                $YetaWF.elementAddClass(control, "k-state-disabled");
-                if (clearOnDisable)
-                    control.value = "";
-            }
+            YetaWF_BasicsImpl.elementEnableToggle(control, enable);
+            if (clearOnDisable)
+                control.value = "";
         },
     });
     var t = TextEditComponent.getTemplateDefinition(TextEditComponent.TEMPLATE);

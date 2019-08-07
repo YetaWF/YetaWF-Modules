@@ -21,14 +21,19 @@ var YetaWF_ComponentsHTML;
             var _this = _super.call(this, controlId, FileUpload1Component.TEMPLATE, FileUpload1Component.SELECTOR, {
                 ControlType: YetaWF_ComponentsHTML.ControlTypeEnum.Template,
                 ChangeEvent: null,
-                GetValue: null,
-                Enable: null,
+                GetValue: function (control) {
+                    return null;
+                },
+                Enable: function (control, enable, clearOnDisable) {
+                    control.enable(enable);
+                }
             }) || this;
             _this.$divProgressbar = null;
             _this.SuccessfullUploadCallback = null;
             _this.GetFileNameCallback = null;
             _this.Setup = setup;
             ComponentsHTMLHelper.MUSTHAVE_JQUERYUI();
+            _this.uploadButton = $YetaWF.getElement1BySelector(".t_upload", [_this.Control]);
             _this.inputFileName = $YetaWF.getElement1BySelector("input.t_filename", [_this.Control]);
             _this.divProgressbar = $YetaWF.getElement1BySelectorCond(".t_progressbar", [_this.Control]);
             if (_this.divProgressbar) {
@@ -41,7 +46,7 @@ var YetaWF_ComponentsHTML;
             }
             _this.$Control = $(_this.Control);
             // trigger upload button
-            $YetaWF.registerEventHandler(_this.Control, "click", ".t_upload", function (ev) {
+            $YetaWF.registerEventHandler(_this.uploadButton, "click", null, function (ev) {
                 $(_this.inputFileName).trigger("click");
                 return false;
             });
@@ -148,6 +153,10 @@ var YetaWF_ComponentsHTML;
         };
         FileUpload1Component.prototype.SetGetFileName = function (callback) {
             this.GetFileNameCallback = callback;
+        };
+        FileUpload1Component.prototype.enable = function (enabled) {
+            $YetaWF.elementEnableToggle(this.Control, enabled);
+            $YetaWF.elementEnableToggle(this.uploadButton, enabled);
         };
         FileUpload1Component.TEMPLATE = "yt_fileupload1";
         FileUpload1Component.SELECTOR = ".yt_fileupload1";

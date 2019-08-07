@@ -32,12 +32,9 @@ var YetaWF_ComponentsHTML;
             return control.checked ? "true" : "false";
         },
         Enable: function (control, enable, clearOnDisable) {
-            control.removeAttribute("disabled");
-            if (!enable) {
-                control.setAttribute("disabled", "disabled");
-                if (clearOnDisable)
-                    control.checked = false;
-            }
+            YetaWF_BasicsImpl.elementEnableToggle(control, enable);
+            if (clearOnDisable)
+                control.checked = false;
         },
     });
 })(YetaWF_ComponentsHTML || (YetaWF_ComponentsHTML = {}));

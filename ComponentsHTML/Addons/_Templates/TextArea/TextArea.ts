@@ -29,15 +29,19 @@ namespace YetaWF_ComponentsHTML {
                     return control.value;
                 },
                 Enable: (control: HTMLInputElement, enable: boolean, clearOnDisable: boolean): void => {
-                    var editor = CKEDITOR.instances[controlId];
+                    var editor = CKEDITOR.instances[control.id];
                     if (enable) {
                         control.removeAttribute("readonly");
                         $YetaWF.elementRemoveClass(control, "k-state-disabled");
-                        editor.setReadOnly(false);
+                        try {
+                            editor.setReadOnly(false);
+                        } catch (e) {}
                     } else {
                         control.setAttribute("readonly", "readonly");
                         $YetaWF.elementAddClass(control, "k-state-disabled");
-                        editor.setReadOnly(true);
+                        try {
+                            editor.setReadOnly(true);
+                        } catch (e) { }
                         if (clearOnDisable)
                             editor.setData("");
                     }
@@ -61,19 +65,20 @@ namespace YetaWF_ComponentsHTML {
                 config.filebrowserBrowseUrl = setup.FilebrowserPageBrowseUrl;
             }
 
-            CKEDITOR.replace(controlId, config);
+            let ckEd = CKEDITOR.replace(controlId, config);
+            ckEd.on("blur", (): void => {
+                (this.Control as HTMLTextAreaElement).value = ckEd.getData();
+                FormsSupport.validateElement(this.Control);
+            });
 
             // save data in the textarea field when the form is submitted
             $YetaWF.Forms.addPreSubmitHandler(setup.InPartialView, {
                 form: $YetaWF.Forms.getForm($YetaWF.getElementById(controlId)),
-                callback: (entry: YetaWF.SubmitHandlerEntry):void => {
-                    let $ctl = $(`#${controlId}`);
-                    let ckEd = CKEDITOR.instances[controlId];
-                    let data = ckEd.getData();
-                    $ctl.val(data);
-                    //return $ctl[0].name + '&' + encodeURI(data);
+                callback: (entry: YetaWF.SubmitHandlerEntry): void => {
+                    let ckEd = entry.userdata;
+                    (this.Control as HTMLTextAreaElement).value = ckEd.getData();
                 },
-                userdata: this,
+                userdata: ckEd,
             });
         }
     }

@@ -108,7 +108,20 @@ namespace YetaWF_ComponentsHTML {
                 ChangeEvent: null,
                 GetValue: null,
                 Enable: (control: PropertyListComponent, enable: boolean, clearOnDisable: boolean): void => {
-                    /* can't enable/disable but this is handled to support show/hide */
+                    // if this propertylist is within a template, delegate enable/disable to that template
+                    let parentElem = control.Control.parentElement;
+                    if (!parentElem)
+                        return;
+                    let template = YetaWF.ComponentBase.getTemplateFromTagCond(parentElem);
+                    if (!template)
+                        return;
+                    let controlItem = ControlsHelper.getControlItemFromTemplate(template);
+                    ControlsHelper.enableToggle(controlItem, enable, clearOnDisable);
+                    control.update();// update all dependent fields
+                    // don't submit contents if disabled
+                    $YetaWF.elementRemoveClass(control.Control, YConfigs.Forms.CssFormNoSubmitContents);
+                    if (!enable)
+                        $YetaWF.elementAddClass(control.Control, YConfigs.Forms.CssFormNoSubmitContents);
                 },
             });
 
@@ -517,7 +530,8 @@ namespace YetaWF_ComponentsHTML {
                 this.MasonryElem.layout!();
         }
 
-        public static tabInitjQuery(tabCtrlId: string, activeTab: number, activeTabId: string):void {
+
+        public static tabInitjQuery(tabCtrlId: string, activeTab: number, activeTabId: string): void {
             ComponentsHTMLHelper.MUSTHAVE_JQUERYUI();
             var tabCtrl = $YetaWF.getElementById(tabCtrlId);
             $YetaWF.elementAddClass(tabCtrl, "t_jquery");

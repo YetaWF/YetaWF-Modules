@@ -109,6 +109,12 @@
     // -- Drag and drop event
     widget.element.on('drop', function (evt){
       evt.preventDefault();
+
+      //&&&&&&&&&& Customization to support disabled control
+      if (widget.element[0].getAttribute("disabled"))
+        return;
+      //&&&&&&&&&& END Customization to support disabled control
+
       var files = evt.originalEvent.dataTransfer.files;
 
       widget.queueFiles(files);

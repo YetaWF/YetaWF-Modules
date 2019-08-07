@@ -36,6 +36,7 @@ namespace YetaWF_ComponentsHTML {
 
         private Setup: FileUpload1Setup;
         private $Control: JQuery<HTMLElement>;
+        private uploadButton: HTMLElement;
         private inputFileName: HTMLInputElement;
         private divProgressbar: HTMLDivElement;
         private $divProgressbar: JQuery<HTMLElement> | null = null;
@@ -47,14 +48,19 @@ namespace YetaWF_ComponentsHTML {
             super(controlId, FileUpload1Component.TEMPLATE, FileUpload1Component.SELECTOR, {
                 ControlType: ControlTypeEnum.Template,
                 ChangeEvent: null,
-                GetValue: null,
-                Enable: null,
+                GetValue: (control: FileUpload1Component): string | null => {
+                    return null;
+                },
+                Enable: (control: FileUpload1Component, enable: boolean, clearOnDisable: boolean): void => {
+                    control.enable(enable);
+                }
             });
 
             this.Setup = setup;
 
             ComponentsHTMLHelper.MUSTHAVE_JQUERYUI();
 
+            this.uploadButton = $YetaWF.getElement1BySelector(".t_upload", [this.Control]);
             this.inputFileName = $YetaWF.getElement1BySelector("input.t_filename", [this.Control]) as HTMLInputElement;
             this.divProgressbar = $YetaWF.getElement1BySelectorCond(".t_progressbar", [this.Control]) as HTMLDivElement;
             if (this.divProgressbar) {
@@ -69,7 +75,7 @@ namespace YetaWF_ComponentsHTML {
             this.$Control = $(this.Control);
 
             // trigger upload button
-            $YetaWF.registerEventHandler(this.Control, "click", ".t_upload", (ev: MouseEvent): boolean => {
+            $YetaWF.registerEventHandler(this.uploadButton, "click", null, (ev: MouseEvent): boolean => {
                 $(this.inputFileName).trigger("click");
                 return false;
             });
@@ -178,6 +184,10 @@ namespace YetaWF_ComponentsHTML {
         }
         public SetGetFileName(callback: () => string): void {
             this.GetFileNameCallback = callback;
+        }
+        public enable(enabled: boolean): void {
+            $YetaWF.elementEnableToggle(this.Control, enabled);
+            $YetaWF.elementEnableToggle(this.uploadButton, enabled);
         }
     }
 }

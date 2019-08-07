@@ -32,9 +32,9 @@ var YetaWF_ComponentsHTML;
             return control.value;
         },
         Enable: function (control, enable, clearOnDisable) {
-            control.removeAttribute("disabled");
-            if (!enable)
-                control.setAttribute("disabled", "disabled");
+            YetaWF_BasicsImpl.elementEnableToggle(control, enable);
+            if (clearOnDisable)
+                control.value = "";
         },
     });
 })(YetaWF_ComponentsHTML || (YetaWF_ComponentsHTML = {}));

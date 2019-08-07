@@ -21,7 +21,7 @@ namespace YetaWF_ComponentsHTML {
         ControlType: ControlTypeEnum;
         ChangeEvent: string | null;
         GetValue: (template: HTMLElement | YetaWF.ComponentBaseDataImpl) => string | null;
-        Enable: (template: HTMLElement | YetaWF.ComponentBaseDataImpl, enable: boolean, clearOnDisable: boolean) => void;
+        Enable: (template: HTMLElement | YetaWF.ComponentBaseDataImpl, enable: boolean, clearOnDisable: boolean) => void | null;
     }
     export interface ControlItemDefinition extends ControlDefinition {
         TemplateName: string;

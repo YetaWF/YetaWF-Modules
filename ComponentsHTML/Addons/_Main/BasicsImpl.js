@@ -239,16 +239,21 @@ var YetaWF_ComponentsHTML;
          * Also used to update visual styles to reflect the status.
          */
         BasicsImpl.prototype.elementEnableToggle = function (elem, enable) {
+            elem.removeAttribute("disabled");
+            if (!enable)
+                elem.setAttribute("disabled", "disabled");
+            // Handle buttons
             if (YVolatile.YetaWF_ComponentsHTML.jqueryUI && $YetaWF.elementHasClass(elem, "ui-button")) {
                 // jquery-ui button
                 $(elem).button(enable ? "enable" : "disable");
             }
-            if (YVolatile.Skin.Bootstrap && $YetaWF.elementHasClass(elem, "btn")) {
-                // bootstrap button
-                elem.removeAttribute("disabled");
+            // Handle text/input
+            if ($YetaWF.elementHasClass(elem, YetaWF_ComponentsHTML.TextEditComponent.TEMPLATE)) { // using template name as class name
+                $YetaWF.elementRemoveClass(elem, "k-state-disabled");
                 if (!enable)
-                    elem.setAttribute("disabled", "disabled");
+                    $YetaWF.elementAddClass(elem, "k-state-disabled");
             }
+            // mark submit/nosubmit
             if (enable) {
                 if ($YetaWF.elementHasClass(elem, "yform-nosubmit-temp"))
                     $YetaWF.elementRemoveClasses(elem, ["yform-novalidate", "yform-nosubmit-temp", "yform-nosubmit"]);

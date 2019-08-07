@@ -85,6 +85,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
     <input type='button' class='t_upload' value='{HAE(model.SelectButtonText)}' title='{HAE(model.SelectButtonTooltip)}' />
     <div class='t_drop'>{HAE(model.DropFilesText)}</div>
     <div class='t_progressbar'></div>
+    <input type='hidden' name='{FieldName}' style='display:none' />
     <input type='file' name='__filename' class='t_filename' style='display:none' />
 </div>");
 

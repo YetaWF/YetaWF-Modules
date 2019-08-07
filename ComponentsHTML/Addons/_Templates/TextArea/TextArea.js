@@ -25,16 +25,22 @@ var YetaWF_ComponentsHTML;
                     return control.value;
                 },
                 Enable: function (control, enable, clearOnDisable) {
-                    var editor = CKEDITOR.instances[controlId];
+                    var editor = CKEDITOR.instances[control.id];
                     if (enable) {
                         control.removeAttribute("readonly");
                         $YetaWF.elementRemoveClass(control, "k-state-disabled");
-                        editor.setReadOnly(false);
+                        try {
+                            editor.setReadOnly(false);
+                        }
+                        catch (e) { }
                     }
                     else {
                         control.setAttribute("readonly", "readonly");
                         $YetaWF.elementAddClass(control, "k-state-disabled");
-                        editor.setReadOnly(true);
+                        try {
+                            editor.setReadOnly(true);
+                        }
+                        catch (e) { }
                         if (clearOnDisable)
                             editor.setData("");
                     }
@@ -56,18 +62,19 @@ var YetaWF_ComponentsHTML;
             if (setup.FilebrowserPageBrowseUrl) {
                 config.filebrowserBrowseUrl = setup.FilebrowserPageBrowseUrl;
             }
-            CKEDITOR.replace(controlId, config);
+            var ckEd = CKEDITOR.replace(controlId, config);
+            ckEd.on("blur", function () {
+                _this.Control.value = ckEd.getData();
+                FormsSupport.validateElement(_this.Control);
+            });
             // save data in the textarea field when the form is submitted
             $YetaWF.Forms.addPreSubmitHandler(setup.InPartialView, {
                 form: $YetaWF.Forms.getForm($YetaWF.getElementById(controlId)),
                 callback: function (entry) {
-                    var $ctl = $("#" + controlId);
-                    var ckEd = CKEDITOR.instances[controlId];
-                    var data = ckEd.getData();
-                    $ctl.val(data);
-                    //return $ctl[0].name + '&' + encodeURI(data);
+                    var ckEd = entry.userdata;
+                    _this.Control.value = ckEd.getData();
                 },
-                userdata: _this,
+                userdata: ckEd,
             });
             return _this;
         }

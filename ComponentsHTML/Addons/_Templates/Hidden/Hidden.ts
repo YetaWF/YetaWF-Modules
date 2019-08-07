@@ -16,9 +16,9 @@ namespace YetaWF_ComponentsHTML {
             return control.value;
         },
         Enable: (control: HTMLInputElement, enable: boolean, clearOnDisable: boolean): void => {
-            control.removeAttribute("disabled");
-            if (!enable)
-                control.setAttribute("disabled", "disabled");
+            YetaWF_BasicsImpl.elementEnableToggle(control, enable);
+            if (clearOnDisable)
+                control.value = "";
         },
     });
 }

@@ -218,10 +218,12 @@ var YetaWF_ComponentsHTML;
                     $err.remove();
                     // find the validation message
                     var $val = $("span.field-validation-error[data-valmsg-for=\"" + name + "\"]", $form); // get the validation message (which follows the input field but is hidden via CSS)
-                    // some templates incorrectly add  @Html.ValidationMessageFor(m => Model) to the rendered template - THIS IS WRONG
-                    // rather than going back and testing each template, we'll just use the first validation error for the field we find.
+                    // If the validation message can't be found that usually means that a field is validated even though it should not be validated (maybe disabled) and can
+                    // be corrected by adding a Required, RequiredIf, SelectionRequired... etc. attribute to the property.
                     if ($val.length < 1)
                         throw "Validation message not found"; /*DEBUG*/
+                    // some templates incorrectly add  @Html.ValidationMessageFor(m => Model) to the rendered template - THIS IS WRONG
+                    // rather than going back and testing each template, we'll just use the first validation error for the field we find.
                     // insert a new error icon
                     $val.eq(0).before("<img src=\"" + $YetaWF.htmlAttrEscape(YConfigs.Forms.CssWarningIconUrl) + "\" name=\"" + name + "\" class=\"" + YConfigs.Forms.CssWarningIcon + "\" " + YConfigs.Basics.CssTooltip + "=\"" + $YetaWF.htmlAttrEscape($val.text()) + "\"/>");
                 });

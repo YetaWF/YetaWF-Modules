@@ -29,7 +29,20 @@ var YetaWF_ComponentsHTML;
                 ChangeEvent: null,
                 GetValue: null,
                 Enable: function (control, enable, clearOnDisable) {
-                    /* can't enable/disable but this is handled to support show/hide */
+                    // if this propertylist is within a template, delegate enable/disable to that template
+                    var parentElem = control.Control.parentElement;
+                    if (!parentElem)
+                        return;
+                    var template = YetaWF.ComponentBase.getTemplateFromTagCond(parentElem);
+                    if (!template)
+                        return;
+                    var controlItem = ControlsHelper.getControlItemFromTemplate(template);
+                    ControlsHelper.enableToggle(controlItem, enable, clearOnDisable);
+                    control.update(); // update all dependent fields
+                    // don't submit contents if disabled
+                    $YetaWF.elementRemoveClass(control.Control, YConfigs.Forms.CssFormNoSubmitContents);
+                    if (!enable)
+                        $YetaWF.elementAddClass(control.Control, YConfigs.Forms.CssFormNoSubmitContents);
                 },
             }) || this;
             _this.MasonryElem = null;

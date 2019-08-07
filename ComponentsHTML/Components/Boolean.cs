@@ -109,6 +109,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             FieldSetup(tagHidden, FieldType.Normal);
             tagHidden.Attributes.Add("type", "hidden");
             tagHidden.Attributes.Add("value", "false");
+            tagHidden.AddCssClass("yform-novalidate");
 
             //Manager.ScriptManager.AddLast($@"new YetaWF_ComponentsHTML.BooleanEditComponent('{ControlId}');");
 

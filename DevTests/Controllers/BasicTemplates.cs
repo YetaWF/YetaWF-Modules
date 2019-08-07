@@ -27,51 +27,71 @@ namespace YetaWF.Modules.DevTests.Controllers {
 
         public BasicTemplatesModuleController() { }
 
+        public enum ControlStatusEnum { Normal, Disabled, }
+
         [Trim]
         [Header("YetaWF components test - All fields are required, but some have default values which are acceptable so no warning will be shown. Some components have their own test page (see Tests > Components) so they are not included on this page.")]
         public class EditModel {
 
             [Category("Core"), Caption("Boolean"), Description("Boolean (Required)")]
-            [UIHint("Boolean"), Required]
+            [UIHint("Boolean")]
+            [ProcessIf(nameof(ControlStatus), ControlStatusEnum.Normal, Disable = true)]
             public bool Boolean { get; set; }
 
             [Category("Core"), Caption("BooleanText"), Description("BooleanText (Required)")]
-            [UIHint("BooleanText"), Required]
+            [UIHint("BooleanText")]
+            [ProcessIf(nameof(ControlStatus), ControlStatusEnum.Normal, Disable = true)]
             public bool BooleanText { get; set; }
             public string BooleanText_Text { get; set; }
 
             [Category("Core"), Caption("CAProvince"), Description("CAProvince (Required)")]
-            [UIHint("CAProvince"), Required]
+            [UIHint("CAProvince")]
+            [RequiredIf(nameof(ControlStatus), ControlStatusEnum.Normal)]
+            [ProcessIf(nameof(ControlStatus), ControlStatusEnum.Normal, Disable = true)]
             public string CAProvince { get; set; }
 
             [Category("Core"), Caption("CountryISO3166"), Description("CountryISO3166 (Required)")]
-            [UIHint("CountryISO3166"), StringLength(80), Trim, Required]
+            [UIHint("CountryISO3166"), StringLength(80), Trim]
+            [RequiredIf(nameof(ControlStatus), ControlStatusEnum.Normal)]
+            [ProcessIf(nameof(ControlStatus), ControlStatusEnum.Normal, Disable = true)]
             public string Country { get; set; }
 
             [Category("Core"), Caption("Currency"), Description("Currency (Required) - Uses formatting defined using Site Settings, General tab")]
-            [UIHint("Currency"), Required]
+            [UIHint("Currency")]
+            [RequiredIf(nameof(ControlStatus), ControlStatusEnum.Normal)]
+            [ProcessIf(nameof(ControlStatus), ControlStatusEnum.Normal, Disable = true)]
             public decimal? Currency { get; set; }
 
             [Category("Core"), Caption("CurrencyISO4217"), Description("CurrencyISO4217 (Required)")]
-            [UIHint("CurrencyISO4217"), StringLength(YetaWF.Core.Components.CurrencyISO4217.Currency.MaxId), Trim, Required]
+            [UIHint("CurrencyISO4217"), StringLength(YetaWF.Core.Components.CurrencyISO4217.Currency.MaxId), Trim]
+            [RequiredIf(nameof(ControlStatus), ControlStatusEnum.Normal)]
+            [ProcessIf(nameof(ControlStatus), ControlStatusEnum.Normal, Disable = true)]
             public string CurrencyISO4217 { get; set; }
 
             [Category("Core"), Caption("Decimal"), Description("Decimal (Required)")]
-            [UIHint("Decimal"), Required]
+            [UIHint("Decimal")]
+            [RequiredIf(nameof(ControlStatus), ControlStatusEnum.Normal)]
+            [ProcessIf(nameof(ControlStatus), ControlStatusEnum.Normal, Disable = true)]
             public decimal? Decimal { get; set; }
 
             [Category("Core"), Caption("DropDownList"), Description("DropDownList (SelectionRequired)")]
-            [UIHint("DropDownList"), StringLength(20), SelectionRequired]
+            [UIHint("DropDownList"), StringLength(20)]
+            [SelectionRequiredIf(nameof(ControlStatus), ControlStatusEnum.Normal)]
+            [ProcessIf(nameof(ControlStatus), ControlStatusEnum.Normal, Disable = true)]
             public string DropDownList { get; set; }
             public List<SelectionItem<string>> DropDownList_List { get; set; }
 
             [Category("Core"), Caption("DropDownListInt"), Description("DropDownListInt (SelectionRequired)")]
-            [UIHint("DropDownListInt"), SelectionRequired]
+            [UIHint("DropDownListInt")]
+            [SelectionRequiredIf(nameof(ControlStatus), ControlStatusEnum.Normal)]
+            [ProcessIf(nameof(ControlStatus), ControlStatusEnum.Normal, Disable = true)]
             public int DropDownListInt { get; set; }
             public List<SelectionItem<int>> DropDownListInt_List { get; set; }
 
             [Category("Core"), Caption("Enum"), Description("Enum (Required)")]
-            [UIHint("Enum"), Required]
+            [UIHint("Enum")]
+            [RequiredIf(nameof(ControlStatus), ControlStatusEnum.Normal)]
+            [ProcessIf(nameof(ControlStatus), ControlStatusEnum.Normal, Disable = true)]
             public SampleEnum Enum { get; set; }
 
             // ENUM
@@ -85,89 +105,135 @@ namespace YetaWF.Modules.DevTests.Controllers {
             }
 
             [Category("Core"), Caption("FileUpload1"), Description("FileUpload1")]
-            [UIHint("FileUpload1"), Required]
+            [UIHint("FileUpload1")]
+            [ProcessIf(nameof(ControlStatus), ControlStatusEnum.Normal, Disable = true)]
             public FileUpload1 FileUpload1 { get; set; }
 
             [Category("Core"), Caption("Guid"), Description("Guid (Required)")]
-            [UIHint("Guid"), GuidValidation, Required]
+            [UIHint("Guid"), GuidValidation]
+            [RequiredIf(nameof(ControlStatus), ControlStatusEnum.Normal)]
+            [ProcessIf(nameof(ControlStatus), ControlStatusEnum.Normal, Disable = true)]
             public Guid? Guid { get; set; }
 
             [Category("Core"), Caption("IntValue"), Description("IntValue (Required)")]
-            [UIHint("IntValue"), Required]
+            [UIHint("IntValue")]
+            [RequiredIf(nameof(ControlStatus), ControlStatusEnum.Normal)]
+            [ProcessIf(nameof(ControlStatus), ControlStatusEnum.Normal, Disable = true)]
             public int? IntValue { get; set; }
 
             [Category("Core"), Caption("IntValue2"), Description("IntValue2 (Required)")]
-            [UIHint("IntValue2"), Required]
+            [UIHint("IntValue2")]
+            [RequiredIf(nameof(ControlStatus), ControlStatusEnum.Normal)]
+            [ProcessIf(nameof(ControlStatus), ControlStatusEnum.Normal, Disable = true)]
             public int IntValue2 { get; set; }
 
             [Category("Core"), Caption("IntValue4"), Description("IntValue4 (Required)")]
-            [UIHint("IntValue4"), Required]
+            [UIHint("IntValue4")]
+            [RequiredIf(nameof(ControlStatus), ControlStatusEnum.Normal)]
+            [ProcessIf(nameof(ControlStatus), ControlStatusEnum.Normal, Disable = true)]
             public int IntValue4 { get; set; }
 
             [Category("Core"), Caption("IntValue6"), Description("IntValue6 (Required)")]
-            [UIHint("IntValue6"), Required]
+            [UIHint("IntValue6")]
+            [RequiredIf(nameof(ControlStatus), ControlStatusEnum.Normal)]
+            [ProcessIf(nameof(ControlStatus), ControlStatusEnum.Normal, Disable = true)]
             public int IntValue6 { get; set; }
 
             [Category("Core"), Caption("jQueryUISkin"), Description("JQueryUISkin (Required)")]
-            [UIHint("jQueryUISkin"), AdditionalMetadata("NoDefault", false), Required]
+            [UIHint("jQueryUISkin"), AdditionalMetadata("NoDefault", false)]
+            [RequiredIf(nameof(ControlStatus), ControlStatusEnum.Normal)]
+            [ProcessIf(nameof(ControlStatus), ControlStatusEnum.Normal, Disable = true)]
             public string JQueryUISkin { get; set; }
 
             [Category("Core"), Caption("KendoUISkin"), Description("KendoUISkin (Required)")]
-            [UIHint("KendoUISkin"), AdditionalMetadata("NoDefault", false), Required]
+            [UIHint("KendoUISkin"), AdditionalMetadata("NoDefault", false)]
+            [RequiredIf(nameof(ControlStatus), ControlStatusEnum.Normal)]
+            [ProcessIf(nameof(ControlStatus), ControlStatusEnum.Normal, Disable = true)]
             public string KendoUISkin { get; set; }
 
             [Category("Core"), Caption("LanguageId"), Description("LanguageId (Required)")]
-            [UIHint("LanguageId"), AdditionalMetadata("NoDefault", false), AdditionalMetadata("AllLanguages", true), Required]
+            [UIHint("LanguageId"), AdditionalMetadata("NoDefault", false), AdditionalMetadata("AllLanguages", true)]
+            [RequiredIf(nameof(ControlStatus), ControlStatusEnum.Normal)]
+            [ProcessIf(nameof(ControlStatus), ControlStatusEnum.Normal, Disable = true)]
             public string LanguageId { get; set; }
 
             [Category("Core"), Caption("LongValue"), Description("LongValue (Required)")]
-            [UIHint("LongValue"), Required]
+            [UIHint("LongValue")]
+            [RequiredIf(nameof(ControlStatus), ControlStatusEnum.Normal)]
+            [ProcessIf(nameof(ControlStatus), ControlStatusEnum.Normal, Disable = true)]
             public long LongValue { get; set; }
 
             [Category("Core"), Caption("PageSelection"), Description("PageSelection (Required)")]
-            [UIHint("PageSelection"), AdditionalMetadata("New", true), Required]
+            [UIHint("PageSelection"), AdditionalMetadata("New", true)]
+            [RequiredIf(nameof(ControlStatus), ControlStatusEnum.Normal)]
+            [ProcessIf(nameof(ControlStatus), ControlStatusEnum.Normal, Disable = true)]
             public Guid PageSelection { get; set; }
 
             [Category("Core"), Caption("PaneSelection"), Description("PaneSelection (Required)")]
-            [UIHint("PaneSelection"), Required]
+            [UIHint("PaneSelection")]
+            [RequiredIf(nameof(ControlStatus), ControlStatusEnum.Normal)]
+            [ProcessIf(nameof(ControlStatus), ControlStatusEnum.Normal, Disable = true)]
             public string PaneSelection { get; set; }
             public List<string> PaneSelection_List { get; set; }
 
             [Category("Core"), Caption("Password20"), Description("Password20 (Required)")]
-            [UIHint("Password20"), StringLength(20), Required]
+            [UIHint("Password20"), StringLength(20)]
+            [RequiredIf(nameof(ControlStatus), ControlStatusEnum.Normal)]
+            [ProcessIf(nameof(ControlStatus), ControlStatusEnum.Normal, Disable = true)]
             public string Password20 { get; set; }
 
             [Category("Core"), Caption("SMTPServer"), Description("SMTPServer (Required)")]
-            [UIHint("SMTPServer"), Required]
+            [UIHint("SMTPServer")]
+            [RequiredIf(nameof(ControlStatus), ControlStatusEnum.Normal)]
+            [ProcessIf(nameof(ControlStatus), ControlStatusEnum.Normal, Disable = true)]
             public SMTPServer SMTPServer { get; set; }
 
             [Category("Core"), Caption("Text"), Description("Text (Required)")]
-            [UIHint("Text"), StringLength(200), Required]
+            [UIHint("Text"), StringLength(200)]
+            [RequiredIf(nameof(ControlStatus), ControlStatusEnum.Normal)]
+            [ProcessIf(nameof(ControlStatus), ControlStatusEnum.Normal, Disable = true)]
             public string Text { get; set; }
 
             [Category("Core"), Caption("Text10"), Description("Text10 (Required)")]
-            [UIHint("Text10"), StringLength(10), Required]
+            [UIHint("Text10"), StringLength(10)]
+            [RequiredIf(nameof(ControlStatus), ControlStatusEnum.Normal)]
+            [ProcessIf(nameof(ControlStatus), ControlStatusEnum.Normal, Disable = true)]
             public string Text10 { get; set; }
 
             [Category("Core"), Caption("Text20"), Description("Text20 (Required)")]
-            [UIHint("Text20"), StringLength(20), Required]
+            [UIHint("Text20"), StringLength(20)]
+            [RequiredIf(nameof(ControlStatus), ControlStatusEnum.Normal)]
+            [ProcessIf(nameof(ControlStatus), ControlStatusEnum.Normal, Disable = true)]
             public string Text20 { get; set; }
 
             [Category("Core"), Caption("Text40"), Description("Text40 (Required)")]
-            [UIHint("Text40"), StringLength(40), Required]
+            [UIHint("Text40"), StringLength(40)]
+            [RequiredIf(nameof(ControlStatus), ControlStatusEnum.Normal)]
+            [ProcessIf(nameof(ControlStatus), ControlStatusEnum.Normal, Disable = true)]
             public string Text40 { get; set; }
 
             [Category("Core"), Caption("Text80"), Description("Text80 (Required)")]
-            [UIHint("Text80"), StringLength(80), AdditionalMetadata("Copy", true), Required]
+            [UIHint("Text80"), StringLength(80), AdditionalMetadata("Copy", true)]
+            [RequiredIf(nameof(ControlStatus), ControlStatusEnum.Normal)]
+            [ProcessIf(nameof(ControlStatus), ControlStatusEnum.Normal, Disable = true)]
             public string Text80 { get; set; }
 
             [Category("Core"), Caption("TextArea"), Description("TextArea (Required)")]
-            [UIHint("TextArea"), StringLength(1000), Required]
+            [UIHint("TextArea"), AdditionalMetadata("ImageBrowse", true), AdditionalMetadata("FlashBrowse", true), AdditionalMetadata("PageBrowse", true)]
+            [StringLength(1000)]
+            [RequiredIf(nameof(ControlStatus), ControlStatusEnum.Normal)]
+            [ProcessIf(nameof(ControlStatus), ControlStatusEnum.Normal, Disable = true)]
             public string TextArea { get; set; }
 
             [Category("Core"), Caption("USState"), Description("USState (Required)")]
-            [UIHint("USState"), Required]
+            [UIHint("USState")]
+            [RequiredIf(nameof(ControlStatus), ControlStatusEnum.Normal)]
+            [ProcessIf(nameof(ControlStatus), ControlStatusEnum.Normal, Disable = true )]
             public string USState { get; set; }
+
+            [Category("Core"), Caption("Control Status"), Description("Defines the processing status of the controls")]
+            [UIHint("Enum")]
+            public ControlStatusEnum ControlStatus { get; set; }
 
             public EditModel() {
                 SMTPServer = new SMTPServer();
