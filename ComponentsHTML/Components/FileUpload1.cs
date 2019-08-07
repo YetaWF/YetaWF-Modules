@@ -84,8 +84,14 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 <div class='yt_fileupload1' id='{ControlId}' data-saveurl='{HAE(model.SaveURL)}' data-removeurl='{HAE(model.RemoveURL)}'>
     <input type='button' class='t_upload' value='{HAE(model.SelectButtonText)}' title='{HAE(model.SelectButtonTooltip)}' />
     <div class='t_drop'>{HAE(model.DropFilesText)}</div>
-    <div class='t_progressbar'></div>
-    <input type='hidden' name='{FieldName}' style='display:none' />
+    <div class='t_progressbar'></div>");
+
+            if (!IsContainerComponent) {
+                hb.Append($@"
+    <input type='hidden' name='{FieldName}' style='display:none' />");
+            }
+
+            hb.Append($@"
     <input type='file' name='__filename' class='t_filename' style='display:none' />
 </div>");
 

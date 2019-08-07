@@ -19,29 +19,44 @@ namespace YetaWF.Modules.DevTests.Controllers {
         [Trim]
         public class Model {
 
+            public enum ControlStatusEnum { Normal, Disabled, }
+
             [Caption("ColorPicker (Required)"), Description("ColorPicker (Required)")]
-            [UIHint("ColorPicker"), AdditionalMetadata("Palette", "basic"), Required, Trim]
+            [UIHint("ColorPicker"), AdditionalMetadata("Palette", "basic"), Trim]
+            [RequiredIf(nameof(ControlStatus), ControlStatusEnum.Normal)]
+            [ProcessIf(nameof(ControlStatus), ControlStatusEnum.Normal, Disable = true)]
             public string Prop1Req { get; set; }
 
             [Caption("ColorPicker (Required)"), Description("ColorPicker (Required)")]
-            [UIHint("ColorPicker"), AdditionalMetadata("TileSize", 32), AdditionalMetadata("Palette", "websafe"), Required, Trim]
+            [UIHint("ColorPicker"), AdditionalMetadata("TileSize", 32), AdditionalMetadata("Palette", "websafe"), Trim]
+            [RequiredIf(nameof(ControlStatus), ControlStatusEnum.Normal)]
+            [ProcessIf(nameof(ControlStatus), ControlStatusEnum.Normal, Disable = true)]
             public string Prop2Req { get; set; }
 
             [Caption("ColorPicker (Required)"), Description("ColorPicker (Required)")]
-            [UIHint("ColorPicker"), AdditionalMetadata("TileSize", 32), AdditionalMetadata("Palette", ""), AdditionalMetadata("Preview", true), Required, Trim]
+            [UIHint("ColorPicker"), AdditionalMetadata("TileSize", 32), AdditionalMetadata("Palette", ""), AdditionalMetadata("Preview", true), Trim]
+            [RequiredIf(nameof(ControlStatus), ControlStatusEnum.Normal)]
+            [ProcessIf(nameof(ControlStatus), ControlStatusEnum.Normal, Disable = true)]
             public string Prop3Req { get; set; }
 
             [Caption("ColorPicker (Required)"), Description("ColorPicker (Required)")]
-            [UIHint("ColorPicker"), AdditionalMetadata("TileSize", 24), AdditionalMetadata("Palette", "#000,#333,#666,#999,#ccc,#fff"), AdditionalMetadata("Columns", 2), Required, Trim]
+            [UIHint("ColorPicker"), AdditionalMetadata("TileSize", 24), AdditionalMetadata("Palette", "#000,#333,#666,#999,#ccc,#fff"), AdditionalMetadata("Columns", 2), Trim]
+            [RequiredIf(nameof(ControlStatus), ControlStatusEnum.Normal)]
+            [ProcessIf(nameof(ControlStatus), ControlStatusEnum.Normal, Disable = true)]
             public string Prop4Req { get; set; }
 
             [Caption("ColorPicker"), Description("ColorPicker")]
             [UIHint("ColorPicker"), Trim]
+            [ProcessIf(nameof(ControlStatus), ControlStatusEnum.Normal, Disable = true)]
             public string Prop1 { get; set; }
 
             [Caption("ColorPicker (Read/Only)"), Description("ColorPicker (read/only)")]
             [UIHint("ColorPicker"), ReadOnly]
             public string Prop1RO { get; set; }
+
+            [Caption("Control Status"), Description("Defines the processing status of the controls")]
+            [UIHint("Enum")]
+            public ControlStatusEnum ControlStatus { get; set; }
 
             public Model() { }
         }

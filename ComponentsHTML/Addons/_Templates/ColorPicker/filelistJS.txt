@@ -1,1 +1,1 @@
-﻿ColorPicker.ts
+﻿ColorPickerEdit.ts

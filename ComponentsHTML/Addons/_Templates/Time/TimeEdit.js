@@ -15,12 +15,12 @@ var __extends = (this && this.__extends) || (function () {
 })();
 var YetaWF_ComponentsHTML;
 (function (YetaWF_ComponentsHTML) {
-    var DateTimeEditComponent = /** @class */ (function (_super) {
-        __extends(DateTimeEditComponent, _super);
-        function DateTimeEditComponent(controlId, setup) {
-            var _this = _super.call(this, controlId, DateTimeEditComponent.TEMPLATE, DateTimeEditComponent.SELECTOR, {
+    var TimeEditComponent = /** @class */ (function (_super) {
+        __extends(TimeEditComponent, _super);
+        function TimeEditComponent(controlId /*, setup: TimeEditSetup*/) {
+            var _this = _super.call(this, controlId, TimeEditComponent.TEMPLATE, TimeEditComponent.SELECTOR, {
                 ControlType: YetaWF_ComponentsHTML.ControlTypeEnum.Template,
-                ChangeEvent: "datetime_change",
+                ChangeEvent: "time_change",
                 GetValue: function (control) {
                     return control.valueText;
                 },
@@ -31,14 +31,13 @@ var YetaWF_ComponentsHTML;
                         control.clear();
                 },
             }, false, function (tag, control) {
-                control.kendoDateTimePicker.destroy();
+                control.kendoTimePicker.destroy();
             }) || this;
             _this.Hidden = $YetaWF.getElement1BySelector("input[type=\"hidden\"]", [_this.Control]);
-            _this.Date = $YetaWF.getElement1BySelector("input[name=\"dtpicker\"]", [_this.Control]);
-            $(_this.Date).kendoDateTimePicker({
+            _this.Time = $YetaWF.getElement1BySelector("input[name=\"dtpicker\"]", [_this.Control]);
+            $(_this.Time).kendoTimePicker({
                 animation: false,
-                format: YVolatile.YetaWF_ComponentsHTML.DateTimeFormat,
-                min: setup.Min, max: setup.Max,
+                format: YVolatile.YetaWF_ComponentsHTML.TimeFormat,
                 culture: YVolatile.Basics.Language,
                 change: function (ev) {
                     var kdPicker = ev.sender;
@@ -49,53 +48,53 @@ var YetaWF_ComponentsHTML;
                         _this.setHidden(val);
                     FormsSupport.validateElement(_this.Hidden);
                     var event = document.createEvent("Event");
-                    event.initEvent("datetime_change", true, true);
+                    event.initEvent("time_change", true, true);
                     _this.Control.dispatchEvent(event);
                 }
             });
-            _this.kendoDateTimePicker = $(_this.Date).data("kendoDateTimePicker");
-            _this.setHidden(_this.kendoDateTimePicker.value());
+            _this.kendoTimePicker = $(_this.Time).data("kendoTimePicker");
+            _this.setHidden(_this.kendoTimePicker.value());
             return _this;
         }
-        DateTimeEditComponent.prototype.setHidden = function (dateVal) {
+        TimeEditComponent.prototype.setHidden = function (dateVal) {
             var s = "";
             if (dateVal != null)
                 s = dateVal.toISOString();
             this.Hidden.setAttribute("value", s);
         };
-        DateTimeEditComponent.prototype.setHiddenText = function (dateVal) {
+        TimeEditComponent.prototype.setHiddenText = function (dateVal) {
             this.Hidden.setAttribute("value", dateVal ? dateVal : "");
         };
-        Object.defineProperty(DateTimeEditComponent.prototype, "value", {
+        Object.defineProperty(TimeEditComponent.prototype, "value", {
             get: function () {
                 return new Date(this.Hidden.value);
             },
             set: function (val) {
                 this.setHidden(val);
-                this.kendoDateTimePicker.value(val);
+                this.kendoTimePicker.value(val);
             },
             enumerable: true,
             configurable: true
         });
-        Object.defineProperty(DateTimeEditComponent.prototype, "valueText", {
+        Object.defineProperty(TimeEditComponent.prototype, "valueText", {
             get: function () {
                 return this.Hidden.value;
             },
             enumerable: true,
             configurable: true
         });
-        DateTimeEditComponent.prototype.clear = function () {
+        TimeEditComponent.prototype.clear = function () {
             this.setHiddenText("");
-            this.kendoDateTimePicker.value("");
+            this.kendoTimePicker.value("");
         };
-        DateTimeEditComponent.prototype.enable = function (enabled) {
-            this.kendoDateTimePicker.enable(enabled);
+        TimeEditComponent.prototype.enable = function (enabled) {
+            this.kendoTimePicker.enable(enabled);
         };
-        DateTimeEditComponent.TEMPLATE = "yt_datetime";
-        DateTimeEditComponent.SELECTOR = ".yt_datetime.t_edit";
-        return DateTimeEditComponent;
+        TimeEditComponent.TEMPLATE = "yt_time";
+        TimeEditComponent.SELECTOR = ".yt_time.t_edit";
+        return TimeEditComponent;
     }(YetaWF.ComponentBaseDataImpl));
-    YetaWF_ComponentsHTML.DateTimeEditComponent = DateTimeEditComponent;
+    YetaWF_ComponentsHTML.TimeEditComponent = TimeEditComponent;
 })(YetaWF_ComponentsHTML || (YetaWF_ComponentsHTML = {}));
 
-//# sourceMappingURL=DateTimeEdit.js.map
+//# sourceMappingURL=TimeEdit.js.map

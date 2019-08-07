@@ -186,7 +186,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             }
             hb.Append($"</div>");
 
-            Manager.ScriptManager.AddLast($@"(new YetaWF_ComponentsHTML.DayTimeRangeComponent('{ControlId}'));");
+            Manager.ScriptManager.AddLast($@"(new YetaWF_ComponentsHTML.DayTimeRangeEditComponent('{ControlId}'));");
 
             return hb.ToString();
         }

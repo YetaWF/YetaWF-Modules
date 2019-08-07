@@ -25,6 +25,7 @@ var YetaWF_ComponentsHTML;
                     return control.valueText;
                 },
                 Enable: function (control, enable, clearOnDisable) {
+                    YetaWF_BasicsImpl.elementEnableToggle(control.Hidden, enable);
                     control.enable(enable);
                     if (!enable && clearOnDisable)
                         control.clear();

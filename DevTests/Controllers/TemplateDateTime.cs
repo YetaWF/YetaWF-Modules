@@ -21,12 +21,17 @@ namespace YetaWF.Modules.DevTests.Controllers {
         [Trim]
         public class Model {
 
+            public enum ControlStatusEnum { Normal, Disabled, }
+
             [Category("Date/Time"), Caption("Date/Time (Required)"), Description("Date/Time (Required)")]
-            [UIHint("DateTime"), Required]
+            [UIHint("DateTime")]
+            [RequiredIf(nameof(ControlStatus), ControlStatusEnum.Normal)]
+            [ProcessIf(nameof(ControlStatus), ControlStatusEnum.Normal, Disable = true)]
             public DateTime DateTimeReq { get; set; }
 
             [Category("Date/Time"), Caption("Date/Time"), Description("Date/Time")]
             [UIHint("DateTime")]
+            [ProcessIf(nameof(ControlStatus), ControlStatusEnum.Normal, Disable = true)]
             public DateTime? DateTimeOpt { get; set; }
 
             [Category("Date/Time"), Caption("Date/Time (Read/Only)"), Description("Date/Time (Read/only)")]
@@ -34,11 +39,14 @@ namespace YetaWF.Modules.DevTests.Controllers {
             public DateTime DateTimeRO { get; set; }
 
             [Category("Date/Time"), Caption("Date (Required)"), Description("Date (Required)")]
-            [UIHint("Date"), Required]
+            [UIHint("Date")]
+            [RequiredIf(nameof(ControlStatus), ControlStatusEnum.Normal)]
+            [ProcessIf(nameof(ControlStatus), ControlStatusEnum.Normal, Disable = true)]
             public DateTime DateReq { get; set; }
 
             [Category("Date/Time"), Caption("Date"), Description("Date/Time")]
             [UIHint("Date")]
+            [ProcessIf(nameof(ControlStatus), ControlStatusEnum.Normal, Disable = true)]
             public DateTime? DateOpt { get; set; }
 
             [Category("Date/Time"), Caption("Date (Read/Only)"), Description("Date/Time (Read/only)")]
@@ -46,11 +54,14 @@ namespace YetaWF.Modules.DevTests.Controllers {
             public DateTime DateRO { get; set; }
 
             [Category("Date/Time"), Caption("Time (Required)"), Description("Time (Required)")]
-            [UIHint("Time"), Required]
+            [UIHint("Time")]
+            [RequiredIf(nameof(ControlStatus), ControlStatusEnum.Normal)]
+            [ProcessIf(nameof(ControlStatus), ControlStatusEnum.Normal, Disable = true)]
             public DateTime TimeReq { get; set; }
 
             [Category("Date/Time"), Caption("Time"), Description("Time")]
             [UIHint("Time")]
+            [ProcessIf(nameof(ControlStatus), ControlStatusEnum.Normal, Disable = true)]
             public DateTime? TimeOpt { get; set; }
 
             [Category("Date/Time"), Caption("Time (Read/Only)"), Description("Time (Read/only)")]
@@ -58,23 +69,34 @@ namespace YetaWF.Modules.DevTests.Controllers {
             public DateTime TimeRO { get; set; }
 
             [Category("Date/Time"), Caption("Time Of Day (Required)"), Description("Time Of Day (Required)")]
-            [UIHint("TimeOfDay"), Required]
+            [UIHint("TimeOfDay")]
+            [RequiredIf(nameof(ControlStatus), ControlStatusEnum.Normal)]
+            [ProcessIf(nameof(ControlStatus), ControlStatusEnum.Normal, Disable = true)]
             public TimeOfDay TimeOfDayReq { get; set; }
 
             [Category("Date/Time"), Caption("Time Of Day (Required)"), Description("Time Of Day")]
             [UIHint("TimeOfDay")]
+            [ProcessIf(nameof(ControlStatus), ControlStatusEnum.Normal, Disable = true)]
             public TimeOfDay TimeOfDay { get; set; }
 
             [Category("Date/Time"), Caption("Time Of Day (Read/Only)"), Description("Time Of Day (Read/Only)")]
             [UIHint("TimeOfDay"), ReadOnly]
             public TimeOfDay TimeOfDayRO { get; set; }
 
+            [Category("Date/Time"), Caption("Control Status"), Description("Defines the processing status of the controls")]
+            [UIHint("Enum")]
+            public ControlStatusEnum ControlStatus { get; set; }
+
+
             [Category("TimeSpan"), Caption("Timespan (Required)"), Description("Timespan (Required)")]
-            [UIHint("TimeSpan"), Required]
+            [UIHint("TimeSpan")]
+            [RequiredIf(nameof(ControlStatus), ControlStatusEnum.Normal)]
+            [ProcessIf(nameof(ControlStatus), ControlStatusEnum.Normal, Disable = true)]
             public TimeSpan TimeSpanReq { get; set; }
 
             [Category("TimeSpan"), Caption("Timespan"), Description("Timespan")]
             [UIHint("TimeSpan")]
+            [ProcessIf(nameof(ControlStatus), ControlStatusEnum.Normal, Disable = true)]
             public TimeSpan TimeSpanOpt { get; set; }
 
             [Category("TimeSpan"), Caption("Timespan (Read/Only)"), Description("Timespan (Read/only)")]

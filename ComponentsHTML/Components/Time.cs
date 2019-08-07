@@ -106,6 +106,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         /// <param name="model">The model being rendered by the component.</param>
         /// <returns>The component rendered as HTML.</returns>
         public async Task<string> RenderAsync(DateTime? model) {
+
             HtmlBuilder hb = new HtmlBuilder();
 
             hb.Append($"<div id='{ControlId}' class='yt_time t_edit'>");
@@ -125,7 +126,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
             hb.Append($"</div>");
 
-            Manager.ScriptManager.AddLast($@"(new YetaWF_ComponentsHTML.TimeComponent()).init('{ControlId}');");
+            Manager.ScriptManager.AddLast($@"new YetaWF_ComponentsHTML.TimeEditComponent('{ControlId}');");
 
             return hb.ToString();
         }

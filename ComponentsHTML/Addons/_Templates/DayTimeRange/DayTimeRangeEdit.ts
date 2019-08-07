@@ -2,9 +2,11 @@
 
 namespace YetaWF_ComponentsHTML {
 
-    export class DayTimeRangeComponent {
+    export class DayTimeRangeEditComponent extends YetaWF.ComponentBaseNoDataImpl {
 
-        private Control: HTMLElement;
+        public static readonly TEMPLATE: string = "yt_daytimerange";
+        public static readonly SELECTOR: string = ".yt_daytimerange.t_edit";
+
         private Additional: HTMLInputElement;
         private AddDiv: HTMLDivElement;
         private Closed: HTMLInputElement;
@@ -18,9 +20,19 @@ namespace YetaWF_ComponentsHTML {
         private Start2: HTMLInputElement;
         private End2: HTMLInputElement;
 
-        //$$$$$ needs ComponentBaseNoDataImpl
-        constructor(controlId: string) {
-            this.Control = $YetaWF.getElementById(controlId);
+        constructor(controlId: string/*, setup: DayTimeRangeEditSetup*/) {
+            super(controlId, DayTimeRangeEditComponent.TEMPLATE, DayTimeRangeEditComponent.SELECTOR, {
+                ControlType: YetaWF_ComponentsHTML.ControlTypeEnum.Div,
+                ChangeEvent: null,
+                GetValue: null,
+                Enable: (control: DateTimeEditComponent, enable: boolean, clearOnDisable: boolean): void => {
+                    alert("HI");
+                    //control.enable(enable);
+                    //if (!enable && clearOnDisable)
+                    //    control.clear();
+                },
+            });
+
             this.Additional = $YetaWF.getElement1BySelector("input[name$='.Additional']", [this.Control]) as HTMLInputElement;
             this.AddDiv = $YetaWF.getElement1BySelector(".t_add", [this.Control]) as HTMLDivElement;
             this.Closed = $YetaWF.getElement1BySelector("input[name$='.Closed']", [this.Control]) as HTMLInputElement;

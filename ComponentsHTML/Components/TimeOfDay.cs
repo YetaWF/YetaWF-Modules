@@ -93,9 +93,12 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         /// <returns>The component rendered as HTML.</returns>
         public async Task<string> RenderAsync(TimeOfDay model) {
 
+            // we're reusing Time component
+            await Manager.AddOnManager.AddTemplateFromUIHintAsync("Time");
+
             HtmlBuilder hb = new HtmlBuilder();
 
-            hb.Append($"<div id='{ControlId}' class='yt_timeofday t_edit'>");
+            hb.Append($"<div id='{ControlId}' class='yt_time t_edit'>");
 
             Dictionary<string, object> hiddenAttributes = new Dictionary<string, object>(HtmlAttributes) {
                 { "__NoTemplate", true }
@@ -114,7 +117,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
             hb.Append($"</div>");
 
-            Manager.ScriptManager.AddLast($@"(new YetaWF_ComponentsHTML.TimeComponent()).init('{ControlId}');");
+            Manager.ScriptManager.AddLast($@"new YetaWF_ComponentsHTML.TimeEditComponent('{ControlId}');");
 
             return hb.ToString();
         }

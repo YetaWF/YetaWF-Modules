@@ -28,6 +28,7 @@ namespace YetaWF_ComponentsHTML {
                     return control.valueText;
                 },
                 Enable: (control: DateTimeEditComponent, enable: boolean, clearOnDisable: boolean): void => {
+                    YetaWF_BasicsImpl.elementEnableToggle(control.Hidden, enable);
                     control.enable(enable);
                     if (!enable && clearOnDisable)
                         control.clear();

@@ -3,50 +3,44 @@
 namespace YetaWF_ComponentsHTML {
 
     export interface IPackageVolatiles {
-        DateFormat: string;
+        TimeFormat: string;
     }
 
-    interface DateEditSetup {
-        Min: Date;
-        Max: Date;
-    }
+    export class TimeEditComponent extends YetaWF.ComponentBaseDataImpl {
 
-    export class DateEditComponent extends YetaWF.ComponentBaseDataImpl {
-
-        public static readonly TEMPLATE: string = "yt_date";
-        public static readonly SELECTOR: string = ".yt_date.t_edit";
+        public static readonly TEMPLATE: string = "yt_time";
+        public static readonly SELECTOR: string = ".yt_time.t_edit";
 
         Hidden: HTMLInputElement;
-        Date: HTMLInputElement;
-        kendoDatePicker: kendo.ui.DatePicker;
+        Time: HTMLInputElement;
+        kendoTimePicker: kendo.ui.TimePicker;
 
-        constructor(controlId: string, setup: DateEditSetup) {
-            super(controlId, DateEditComponent.TEMPLATE, DateEditComponent.SELECTOR, {
+        constructor(controlId: string /*, setup: TimeEditSetup*/) {
+            super(controlId, TimeEditComponent.TEMPLATE, TimeEditComponent.SELECTOR, {
                 ControlType: ControlTypeEnum.Template,
-                ChangeEvent: "date_change",
-                GetValue: (control: DateEditComponent): string | null => {
+                ChangeEvent: "time_change",
+                GetValue: (control: TimeEditComponent): string | null => {
                     return control.valueText;
                 },
-                Enable: (control: DateEditComponent, enable: boolean, clearOnDisable: boolean): void => {
+                Enable: (control: TimeEditComponent, enable: boolean, clearOnDisable: boolean): void => {
                     YetaWF_BasicsImpl.elementEnableToggle(control.Hidden, enable);
                     control.enable(enable);
                     if (!enable && clearOnDisable)
                         control.clear();
-                }
-            }, false, (tag: HTMLElement, control: DateEditComponent): void => {
-                control.kendoDatePicker.destroy();
+                },
+            }, false, (tag: HTMLElement, control: TimeEditComponent): void => {
+                control.kendoTimePicker.destroy();
             });
 
             this.Hidden = $YetaWF.getElement1BySelector("input[type=\"hidden\"]", [this.Control]) as HTMLInputElement;
-            this.Date = $YetaWF.getElement1BySelector("input[name=\"dtpicker\"]", [this.Control]) as HTMLInputElement;
+            this.Time = $YetaWF.getElement1BySelector("input[name=\"dtpicker\"]", [this.Control]) as HTMLInputElement;
 
-            $(this.Date).kendoDatePicker({
+            $(this.Time).kendoTimePicker({
                 animation: false,
-                format: YVolatile.YetaWF_ComponentsHTML.DateFormat,
-                min: setup.Min, max: setup.Max,
+                format: YVolatile.YetaWF_ComponentsHTML.TimeFormat,
                 culture: YVolatile.Basics.Language,
-                change: (ev: kendo.ui.DatePickerEvent): void => {
-                    var kdPicker: kendo.ui.DatePicker = ev.sender;
+                change: (ev: kendo.ui.TimePickerEvent): void => {
+                    var kdPicker: kendo.ui.TimePicker = ev.sender;
                     var val: Date = kdPicker.value();
                     if (val == null)
                         this.setHiddenText(kdPicker.element.val() as string);
@@ -54,12 +48,12 @@ namespace YetaWF_ComponentsHTML {
                         this.setHidden(val);
                     FormsSupport.validateElement(this.Hidden);
                     var event = document.createEvent("Event");
-                    event.initEvent("date_change", true, true);
+                    event.initEvent("time_change", true, true);
                     this.Control.dispatchEvent(event);
                 }
             });
-            this.kendoDatePicker = $(this.Date).data("kendoDatePicker");
-            this.setHidden(this.kendoDatePicker.value());
+            this.kendoTimePicker = $(this.Time).data("kendoTimePicker");
+            this.setHidden(this.kendoTimePicker.value());
         }
         private setHidden(dateVal: Date | null): void {
             var s: string = "";
@@ -78,14 +72,14 @@ namespace YetaWF_ComponentsHTML {
         }
         set value(val: Date) {
             this.setHidden(val);
-            this.kendoDatePicker.value(val);
+            this.kendoTimePicker.value(val);
         }
         public clear(): void {
             this.setHiddenText("");
-            this.kendoDatePicker.value("");
+            this.kendoTimePicker.value("");
         }
         public enable(enabled: boolean): void {
-            this.kendoDatePicker.enable(enabled);
+            this.kendoTimePicker.enable(enabled);
         }
     }
 }

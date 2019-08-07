@@ -24,6 +24,7 @@ namespace YetaWF_ComponentsHTML {
                     return control.Hidden.value;
                 },
                 Enable: (control: TimeSpanEditComponent, enable: boolean, clearOnDisable: boolean): void => {
+                    YetaWF_BasicsImpl.elementEnableToggle(control.Hidden, enable);
                     if (control.InputDays) control.InputDays.enable(enable);
                     if (control.InputHours) control.InputHours.enable(enable);
                     if (control.InputMins) control.InputMins.enable(enable);

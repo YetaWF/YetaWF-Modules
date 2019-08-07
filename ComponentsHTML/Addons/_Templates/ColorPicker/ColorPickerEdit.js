@@ -15,10 +15,10 @@ var __extends = (this && this.__extends) || (function () {
 })();
 var YetaWF_ComponentsHTML;
 (function (YetaWF_ComponentsHTML) {
-    var ColorPickerComponent = /** @class */ (function (_super) {
-        __extends(ColorPickerComponent, _super);
-        function ColorPickerComponent(controlId, setup) {
-            var _this = _super.call(this, controlId, ColorPickerComponent.TEMPLATE, ColorPickerComponent.SELECTOR, {
+    var ColorPickerEditComponent = /** @class */ (function (_super) {
+        __extends(ColorPickerEditComponent, _super);
+        function ColorPickerEditComponent(controlId, setup) {
+            var _this = _super.call(this, controlId, ColorPickerEditComponent.TEMPLATE, ColorPickerEditComponent.SELECTOR, {
                 ControlType: YetaWF_ComponentsHTML.ControlTypeEnum.Template,
                 ChangeEvent: "colorpicker_change",
                 GetValue: function (control) {
@@ -28,19 +28,29 @@ var YetaWF_ComponentsHTML;
                 Enable: function (control, enable, clearOnDisable) {
                     var colorPicker = $(control.Control).data("kendoColorPicker");
                     colorPicker.enable(enable);
+                    //if (clearOnDisable) { // resetting color doesn't work (8/7/2019 with 2019.2.619)
+                    //    colorPicker.value(null as any); // "as any" because ts.d defines as string|undefined, only null resets color
+                    //    colorPicker.color(null as any); // "as any" because ts.d defines as string|undefined, only null resets color
+                    //}
                 },
             }, false, function (tag, control) {
                 var colorPicker = $(control.Control).data("kendoColorPicker");
                 colorPicker.destroy();
             }) || this;
+            setup.change = function (ev) {
+                FormsSupport.validateElement(_this.Control);
+                var event = document.createEvent("Event");
+                event.initEvent("colorpicker_change", true, true);
+                _this.Control.dispatchEvent(event);
+            };
             $("#" + controlId).kendoColorPicker(setup);
             return _this;
         }
-        ColorPickerComponent.TEMPLATE = "yt_colorpicker";
-        ColorPickerComponent.SELECTOR = ".yt_colorpicker.t_edit";
-        return ColorPickerComponent;
+        ColorPickerEditComponent.TEMPLATE = "yt_colorpicker";
+        ColorPickerEditComponent.SELECTOR = ".yt_colorpicker.t_edit";
+        return ColorPickerEditComponent;
     }(YetaWF.ComponentBaseDataImpl));
-    YetaWF_ComponentsHTML.ColorPickerComponent = ColorPickerComponent;
+    YetaWF_ComponentsHTML.ColorPickerEditComponent = ColorPickerEditComponent;
 })(YetaWF_ComponentsHTML || (YetaWF_ComponentsHTML = {}));
 
-//# sourceMappingURL=ColorPicker.js.map
+//# sourceMappingURL=ColorPickerEdit.js.map

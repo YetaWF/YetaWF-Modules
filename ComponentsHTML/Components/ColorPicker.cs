@@ -118,7 +118,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             hb.Append(tag.ToString(YTagRenderMode.StartTag));
 
             ScriptBuilder sb = new ScriptBuilder();
-            sb.Append($@"(new YetaWF_ComponentsHTML.ColorPickerComponent('{ControlId}', {{
+            sb.Append($@"(new YetaWF_ComponentsHTML.ColorPickerEditComponent('{ControlId}', {{
                 palette: '{JE(palette)}',
                 tileSize: {tileSize},
                 preview: {JE(preview)},

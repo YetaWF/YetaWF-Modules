@@ -27,6 +27,7 @@ var YetaWF_ComponentsHTML;
                     return control.Hidden.value;
                 },
                 Enable: function (control, enable, clearOnDisable) {
+                    YetaWF_BasicsImpl.elementEnableToggle(control.Hidden, enable);
                     if (control.InputDays)
                         control.InputDays.enable(enable);
                     if (control.InputHours)
@@ -102,4 +103,4 @@ var YetaWF_ComponentsHTML;
     YetaWF_ComponentsHTML.TimeSpanEditComponent = TimeSpanEditComponent;
 })(YetaWF_ComponentsHTML || (YetaWF_ComponentsHTML = {}));
 
-//# sourceMappingURL=TimeSpan.js.map
+//# sourceMappingURL=TimeSpanEdit.js.map
