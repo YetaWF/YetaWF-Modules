@@ -24,10 +24,12 @@ var YetaWF_ComponentsHTML;
                 ControlType: YetaWF_ComponentsHTML.ControlTypeEnum.Template,
                 ChangeEvent: "dropdownlist_change",
                 GetValue: function (control) {
-                    return null; //$$$control.SelectPage.value;
+                    return control.SelectPage.value;
                 },
                 Enable: function (control, enable, clearOnDisable) {
-                    //$$$control.enable(enable)
+                    control.SelectPage.enable(enable);
+                    if (!enable && clearOnDisable)
+                        control.SelectPage.clear();
                 },
             }) || this;
             //this.Setup = setup;

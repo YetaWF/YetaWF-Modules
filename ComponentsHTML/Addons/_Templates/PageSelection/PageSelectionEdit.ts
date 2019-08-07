@@ -19,10 +19,12 @@ namespace YetaWF_ComponentsHTML {
                 ControlType: ControlTypeEnum.Template,
                 ChangeEvent: "dropdownlist_change",
                 GetValue: (control: PageSelectionEditComponent): string | null => {
-                    return null;//$$$control.SelectPage.value;
+                    return control.SelectPage.value;
                 },
                 Enable: (control: PageSelectionEditComponent, enable: boolean, clearOnDisable: boolean): void => {
-                    //$$$control.enable(enable)
+                    control.SelectPage.enable(enable);
+                    if (!enable && clearOnDisable)
+                        control.SelectPage.clear();
                 },
             });
 
