@@ -16,8 +16,11 @@ namespace YetaWF_ComponentsHTML {
         },
         Enable: (control: HTMLInputElement, enable: boolean, clearOnDisable: boolean): void => {
             control.removeAttribute("disabled");
-            if (!enable)
+            if (!enable) {
                 control.setAttribute("disabled", "disabled");
+                if (clearOnDisable)
+                    control.checked = false;
+            }
         },
     });
 }

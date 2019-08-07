@@ -33,8 +33,11 @@ var YetaWF_ComponentsHTML;
         },
         Enable: function (control, enable, clearOnDisable) {
             control.removeAttribute("disabled");
-            if (!enable)
+            if (!enable) {
                 control.setAttribute("disabled", "disabled");
+                if (clearOnDisable)
+                    control.checked = false;
+            }
         },
     });
 })(YetaWF_ComponentsHTML || (YetaWF_ComponentsHTML = {}));

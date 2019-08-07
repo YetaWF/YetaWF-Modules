@@ -37,6 +37,8 @@ var YetaWF_ComponentsHTML;
             if (!enable) {
                 control.setAttribute("disabled", "disabled");
                 $YetaWF.elementAddClass(control, "k-state-disabled");
+                if (clearOnDisable)
+                    control.value = "";
             }
         },
     });
