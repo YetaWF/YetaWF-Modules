@@ -130,6 +130,18 @@ CKEDITOR.replace('{ControlId}', {{
         /// <returns>Returns the component type.</returns>
         public override ComponentType GetComponentType() { return ComponentType.Edit; }
 
+        internal class TextAreaSetup {
+            public bool InPartialView { get; set; }
+            public string CDNUrl { get; set; }
+            public int PixHeight { get; set; }
+            public bool RestrictedHtml { get; set; }
+            public string FilebrowserImageBrowseUrl { get; set; }
+            public string FilebrowserImageBrowseLinkUrl { get; set; }
+            public string FilebrowserFlashBrowseUrl { get; set; }
+            public string FilebrowserPageBrowseUrl { get; set; }
+            public string FilebrowserWindowFeatures { get; set; }
+        }
+
         /// <summary>
         /// Called by the framework when the component needs to be rendered as HTML.
         /// </summary>
@@ -200,42 +212,19 @@ CKEDITOR.replace('{ControlId}', {{
             tag.SetInnerText(text);
             hb.Append(tag.ToString(YTagRenderMode.Normal));
 
-            ScriptBuilder sb = new ScriptBuilder();
-            sb.Append($@"
-CKEDITOR.replace('{ControlId}', {{
-customConfig: '{Manager.GetCDNUrl(url)}',
-    height: '{pixHeight}px',
-    allowedContent: {(restrictedHtml ? "false" : "true")},");
+            TextAreaSetup setup = new TextAreaSetup {
+                InPartialView = Manager.InPartialView,
+                CDNUrl = Manager.GetCDNUrl(url),
+                PixHeight = pixHeight,
+                RestrictedHtml = restrictedHtml,
+                FilebrowserImageBrowseUrl = filebrowserImageBrowseUrl,
+                FilebrowserImageBrowseLinkUrl = filebrowserImageBrowseUrl,
+                FilebrowserFlashBrowseUrl = filebrowserFlashBrowseUrl,
+                FilebrowserPageBrowseUrl = filebrowserPageBrowseUrl,
+                FilebrowserWindowFeatures = "modal=yes,location=no,menubar=no,toolbar=no,dependent=yes,minimizable=no,alwaysRaised=yes,resizable=yes,scrollbars=yes",
+            };
 
-            if (!string.IsNullOrWhiteSpace(filebrowserImageBrowseUrl)) {
-                sb.Append($@"
-    filebrowserImageBrowseUrl: '{Utility.JserEncode(filebrowserImageBrowseUrl)}',
-    filebrowserImageBrowseLinkUrl: '{Utility.JserEncode(filebrowserImageBrowseUrl)}',");
-            }
-            if (!string.IsNullOrWhiteSpace(filebrowserFlashBrowseUrl)) {
-                sb.Append($@"
-    filebrowserFlashBrowseUrl: '{Utility.JserEncode(filebrowserFlashBrowseUrl)}',");
-            }
-            if (!string.IsNullOrWhiteSpace(filebrowserFlashBrowseUrl)) {
-                sb.Append($@"
-    filebrowserBrowseUrl: '{Utility.JserEncode(filebrowserPageBrowseUrl)}',");
-            }
-            sb.Append($@"
-    filebrowserWindowFeatures: 'modal=yes,location=no,menubar=no,toolbar=no,dependent=yes,minimizable=no,alwaysRaised=yes,resizable=yes,scrollbars=yes'
-}});
-// save data in the textarea field when the form is submitted
-$YetaWF.Forms.addPreSubmitHandler({(Manager.InPartialView ? 1 : 0)}, {{
-    form: $YetaWF.Forms.getForm($YetaWF.getElementById('{ControlId}')),
-    callback: function(entry) {{
-        var $ctl = $('#{ControlId}');
-        var ckEd = CKEDITOR.instances['{ControlId}'];
-        var data = ckEd.getData();
-        $ctl.val(data);
-        //return $ctl[0].name + '&' + encodeURI(data);
-    }}
-}});");
-
-            Manager.ScriptManager.AddLast(sb.ToString());
+            Manager.ScriptManager.AddLast($@"new YetaWF_ComponentsHTML.TextAreaEditComponent('{ControlId}', {Utility.JsonSerialize(setup)});");
 
             return hb.ToString();
         }

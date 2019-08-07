@@ -17,26 +17,59 @@ var YetaWF_ComponentsHTML;
 (function (YetaWF_ComponentsHTML) {
     var TextAreaEditComponent = /** @class */ (function (_super) {
         __extends(TextAreaEditComponent, _super);
-        function TextAreaEditComponent(controlId /*, setup: BooleanEditSetup*/) {
-            return _super.call(this, controlId, TextAreaEditComponent.TEMPLATE, TextAreaEditComponent.SELECTOR, {
+        function TextAreaEditComponent(controlId, setup) {
+            var _this = _super.call(this, controlId, TextAreaEditComponent.TEMPLATE, TextAreaEditComponent.SELECTOR, {
                 ControlType: YetaWF_ComponentsHTML.ControlTypeEnum.TextArea,
                 ChangeEvent: null,
                 GetValue: function (control) {
                     return control.value;
                 },
                 Enable: function (control, enable, clearOnDisable) {
+                    var editor = CKEDITOR.instances[controlId];
                     if (enable) {
-                        control.setAttribute("readonly", "readonly");
+                        control.removeAttribute("readonly");
                         $YetaWF.elementRemoveClass(control, "k-state-disabled");
+                        editor.setReadOnly(false);
                     }
                     else {
-                        control.removeAttribute("readonly");
+                        control.setAttribute("readonly", "readonly");
                         $YetaWF.elementAddClass(control, "k-state-disabled");
+                        editor.setReadOnly(true);
+                        if (clearOnDisable)
+                            editor.setData("");
                     }
-                    //$$if (!enable && clearOnDisable)
-                    //$$ ;
                 },
             }) || this;
+            var config = {
+                customConfig: setup.CDNUrl,
+                height: setup.PixHeight + "px",
+                allowedContent: setup.RestrictedHtml ? false : true,
+                filebrowserWindowFeatures: setup.FilebrowserWindowFeatures
+            };
+            if (setup.FilebrowserImageBrowseUrl) {
+                config.filebrowserImageBrowseUrl = setup.FilebrowserImageBrowseUrl;
+                config.filebrowserImageBrowseLinkUrl = setup.FilebrowserImageBrowseUrl;
+            }
+            if (setup.FilebrowserFlashBrowseUrl) {
+                config.filebrowserFlashBrowseUrl = setup.FilebrowserFlashBrowseUrl;
+            }
+            if (setup.FilebrowserPageBrowseUrl) {
+                config.filebrowserBrowseUrl = setup.FilebrowserPageBrowseUrl;
+            }
+            CKEDITOR.replace(controlId, config);
+            // save data in the textarea field when the form is submitted
+            $YetaWF.Forms.addPreSubmitHandler(setup.InPartialView, {
+                form: $YetaWF.Forms.getForm($YetaWF.getElementById(controlId)),
+                callback: function (entry) {
+                    var $ctl = $("#" + controlId);
+                    var ckEd = CKEDITOR.instances[controlId];
+                    var data = ckEd.getData();
+                    $ctl.val(data);
+                    //return $ctl[0].name + '&' + encodeURI(data);
+                },
+                userdata: _this,
+            });
+            return _this;
         }
         TextAreaEditComponent.TEMPLATE = "yt_textarea";
         TextAreaEditComponent.SELECTOR = ".yt_textarea.t_edit";
@@ -73,7 +106,10 @@ var YetaWF_ComponentsHTML;
         for (var _i = 0, ckeds_1 = ckeds; _i < ckeds_1.length; _i++) {
             var cked = ckeds_1[_i];
             var ck = CKEDITOR.instances[cked.id];
-            ck.resize("100%", $YetaWF.getAttribute(cked, "data-height"), true);
+            try {
+                ck.resize("100%", $YetaWF.getAttribute(cked, "data-height"), true);
+            }
+            catch (e) { }
         }
     });
     // A <div> is being emptied. Destroy all ckeditors the <div> may contain.

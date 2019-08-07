@@ -4,12 +4,24 @@ declare var CKEDITOR: any;
 
 namespace YetaWF_ComponentsHTML {
 
+    interface TextAreaEditSetup {
+        InPartialView: boolean;
+        CDNUrl: string;
+        PixHeight: Number;
+        RestrictedHtml: boolean;
+        FilebrowserImageBrowseUrl: string;
+        FilebrowserImageBrowseLinkUrl: string;
+        FilebrowserFlashBrowseUrl: string;
+        FilebrowserPageBrowseUrl: string;
+        FilebrowserWindowFeatures: string;
+    }
+
     export class TextAreaEditComponent extends YetaWF.ComponentBaseDataImpl {
 
         public static readonly TEMPLATE: string = "yt_textarea";
         public static readonly SELECTOR: string = ".yt_textarea.t_edit";
 
-        constructor(controlId: string /*, setup: BooleanEditSetup*/) {
+        constructor(controlId: string, setup: TextAreaEditSetup) {
             super(controlId, TextAreaEditComponent.TEMPLATE, TextAreaEditComponent.SELECTOR, {
                 ControlType: ControlTypeEnum.TextArea,
                 ChangeEvent: null,
@@ -17,16 +29,51 @@ namespace YetaWF_ComponentsHTML {
                     return control.value;
                 },
                 Enable: (control: HTMLInputElement, enable: boolean, clearOnDisable: boolean): void => {
+                    var editor = CKEDITOR.instances[controlId];
                     if (enable) {
-                        control.setAttribute("readonly", "readonly");
-                        $YetaWF.elementRemoveClass(control, "k-state-disabled");
-                    } else {
                         control.removeAttribute("readonly");
+                        $YetaWF.elementRemoveClass(control, "k-state-disabled");
+                        editor.setReadOnly(false);
+                    } else {
+                        control.setAttribute("readonly", "readonly");
                         $YetaWF.elementAddClass(control, "k-state-disabled");
+                        editor.setReadOnly(true);
+                        if (clearOnDisable)
+                            editor.setData("");
                     }
-                    //$$if (!enable && clearOnDisable)
-                    //$$ ;
                 },
+            });
+
+            let config: any = {
+                customConfig: setup.CDNUrl,
+                height: `${setup.PixHeight}px`,
+                allowedContent: setup.RestrictedHtml ? false : true,
+                filebrowserWindowFeatures: setup.FilebrowserWindowFeatures
+            };
+            if (setup.FilebrowserImageBrowseUrl) {
+                config.filebrowserImageBrowseUrl = setup.FilebrowserImageBrowseUrl;
+                config.filebrowserImageBrowseLinkUrl = setup.FilebrowserImageBrowseUrl;
+            }
+            if (setup.FilebrowserFlashBrowseUrl) {
+                config.filebrowserFlashBrowseUrl = setup.FilebrowserFlashBrowseUrl;
+            }
+            if (setup.FilebrowserPageBrowseUrl) {
+                config.filebrowserBrowseUrl = setup.FilebrowserPageBrowseUrl;
+            }
+
+            CKEDITOR.replace(controlId, config);
+
+            // save data in the textarea field when the form is submitted
+            $YetaWF.Forms.addPreSubmitHandler(setup.InPartialView, {
+                form: $YetaWF.Forms.getForm($YetaWF.getElementById(controlId)),
+                callback: (entry: YetaWF.SubmitHandlerEntry):void => {
+                    let $ctl = $(`#${controlId}`);
+                    let ckEd = CKEDITOR.instances[controlId];
+                    let data = ckEd.getData();
+                    $ctl.val(data);
+                    //return $ctl[0].name + '&' + encodeURI(data);
+                },
+                userdata: this,
             });
         }
     }
@@ -65,7 +112,9 @@ namespace YetaWF_ComponentsHTML {
         var ckeds = $YetaWF.getElementsBySelector(".yt_textarea.t_edit", [div]);
         for (let cked of ckeds) {
             var ck = CKEDITOR.instances[cked.id];
-            ck.resize("100%", $YetaWF.getAttribute(cked, "data-height"), true);
+            try {
+                ck.resize("100%", $YetaWF.getAttribute(cked, "data-height"), true);
+            } catch (e) {}
         }
     });
 
