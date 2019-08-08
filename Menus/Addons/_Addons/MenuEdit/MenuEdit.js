@@ -150,7 +150,7 @@ var YetaWF_Menus;
         MenuEditView.prototype.getFormControls = function () {
             this.EntryType = YetaWF.ComponentBaseDataImpl.getControlFromSelector("select[name='ModAction.EntryType']", YetaWF_ComponentsHTML.DropDownListEditComponent.SELECTOR, [this.Details]);
             this.Url = YetaWF.ComponentBaseDataImpl.getControlFromSelector("input[name='ModAction.Url']", YetaWF_ComponentsHTML.UrlEditComponent.SELECTOR, [this.Details]);
-            this.SubModule = YetaWF.ComponentBaseDataImpl.getControlFromSelector("select[name='ModAction.SubModule']", YetaWF_ComponentsHTML.ModuleSelectionEditComponent.SELECTOR, [this.Details]);
+            this.SubModule = YetaWF.ComponentBaseDataImpl.getControlFromSelector("[name='ModAction.SubModule']", YetaWF_ComponentsHTML.ModuleSelectionEditComponent.SELECTOR, [this.Details]);
             this.MenuText = YetaWF.ComponentBaseDataImpl.getControlFromSelector("input[name='ModAction.MenuText']", YetaWF_ComponentsHTML.MultiStringEditComponent.SELECTOR, [this.Details]);
             this.LinkText = YetaWF.ComponentBaseDataImpl.getControlFromSelector("input[name='ModAction.LinkText']", YetaWF_ComponentsHTML.MultiStringEditComponent.SELECTOR, [this.Details]);
             this.ImageUrlFinal = $YetaWF.getElement1BySelector("input[name='ModAction.ImageUrlFinal']", [this.Details]);
