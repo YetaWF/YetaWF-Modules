@@ -239,19 +239,35 @@ var YetaWF_ComponentsHTML;
          * Also used to update visual styles to reflect the status.
          */
         BasicsImpl.prototype.elementEnableToggle = function (elem, enable) {
-            elem.removeAttribute("disabled");
-            if (!enable)
-                elem.setAttribute("disabled", "disabled");
-            // Handle buttons
             if (YVolatile.YetaWF_ComponentsHTML.jqueryUI && $YetaWF.elementHasClass(elem, "ui-button")) {
+                // Handle buttons
                 // jquery-ui button
+                elem.removeAttribute("disabled");
+                if (!enable)
+                    elem.setAttribute("disabled", "disabled");
                 $(elem).button(enable ? "enable" : "disable");
             }
-            // Handle text/input
-            if ($YetaWF.elementHasClass(elem, YetaWF_ComponentsHTML.TextEditComponent.TEMPLATE)) { // using template name as class name
+            else if ($YetaWF.elementHasClass(elem, YetaWF_ComponentsHTML.TextEditComponent.TEMPLATE)) { // using template name as class name
+                // Handle text/input
+                elem.removeAttribute("disabled");
+                if (!enable)
+                    elem.setAttribute("disabled", "disabled");
                 $YetaWF.elementRemoveClass(elem, "k-state-disabled");
                 if (!enable)
                     $YetaWF.elementAddClass(elem, "k-state-disabled");
+            }
+            else if ($YetaWF.elementHasClass(elem, YetaWF_ComponentsHTML.TextAreaSourceOnlyEditComponent.TEMPLATE)) { // using template name as class name
+                elem.removeAttribute("readonly");
+                $YetaWF.elementRemoveClass(elem, "k-state-disabled");
+                if (!enable) {
+                    elem.setAttribute("readonly", "readonly");
+                    $YetaWF.elementAddClass(elem, "k-state-disabled");
+                }
+            }
+            else {
+                elem.removeAttribute("disabled");
+                if (!enable)
+                    elem.setAttribute("disabled", "disabled");
             }
             // mark submit/nosubmit
             if (enable) {

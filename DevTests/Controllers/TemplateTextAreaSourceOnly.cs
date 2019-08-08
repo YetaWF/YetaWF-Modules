@@ -18,17 +18,26 @@ namespace YetaWF.Modules.DevTests.Controllers {
         [Trim]
         public class Model {
 
+            public enum ControlStatusEnum { Normal, Disabled, }
+
             [Caption("TextAreaSourceOnly (Required)"), Description("TextAreaSourceOnly (Required)")]
-            [UIHint("TextAreaSourceOnly"), StringLength(0), Required, Trim]
+            [UIHint("TextAreaSourceOnly"), StringLength(0), Trim]
+            [RequiredIf(nameof(ControlStatus), ControlStatusEnum.Normal)]
+            [ProcessIf(nameof(ControlStatus), ControlStatusEnum.Normal, Disable = true)]
             public string Prop1Req { get; set; }
 
             [Caption("TextAreaSourceOnly"), Description("TextAreaSourceOnly")]
             [UIHint("TextAreaSourceOnly"), StringLength(0), Trim]
+            [ProcessIf(nameof(ControlStatus), ControlStatusEnum.Normal, Disable = true)]
             public string Prop1 { get; set; }
 
             [Caption("TextAreaSourceOnly (Read/Only)"), Description("TextAreaSourceOnly (read/only)")]
             [UIHint("TextAreaSourceOnly"), ReadOnly]
             public string Prop1RO { get; set; }
+
+            [Caption("Control Status"), Description("Defines the processing status of the controls")]
+            [UIHint("Enum")]
+            public ControlStatusEnum ControlStatus { get; set; }
 
             public Model() { }
         }

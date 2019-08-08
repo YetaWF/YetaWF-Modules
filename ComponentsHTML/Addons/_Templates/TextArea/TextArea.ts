@@ -28,7 +28,7 @@ namespace YetaWF_ComponentsHTML {
                 GetValue: (control: HTMLTextAreaElement): string | null => {
                     return control.value;
                 },
-                Enable: (control: HTMLInputElement, enable: boolean, clearOnDisable: boolean): void => {
+                Enable: (control: HTMLTextAreaElement, enable: boolean, clearOnDisable: boolean): void => {
                     var editor = CKEDITOR.instances[control.id];
                     if (enable) {
                         control.removeAttribute("readonly");
