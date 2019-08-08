@@ -33,8 +33,8 @@ namespace YetaWF_ComponentsHTML {
                 },
                 Enable: (control: UrlEditComponent, enable: boolean, clearOnDisable: boolean): void => {
                     control.enable(enable);
-                    //$$if (!enable && clearOnDisable)
-                    //$$    ;
+                    if (!enable && clearOnDisable)
+                        control.clear();
                 },
             });
             this.Setup = setup;

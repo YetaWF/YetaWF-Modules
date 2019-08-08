@@ -31,8 +31,8 @@ var YetaWF_ComponentsHTML;
                 },
                 Enable: function (control, enable, clearOnDisable) {
                     control.enable(enable);
-                    //$$if (!enable && clearOnDisable)
-                    //$$    ;
+                    if (!enable && clearOnDisable)
+                        control.clear();
                 },
             }) || this;
             _this.selectPage = null;
