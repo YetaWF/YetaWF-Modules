@@ -29,7 +29,7 @@ namespace YetaWF_ComponentsHTML {
                 Enable: (control: CurrencyEditComponent, enable: boolean, clearOnDisable: boolean): void => {
                     control.enable(enable);
                     if (!enable && clearOnDisable)
-                        control.kendoNumericTextBox.value("");
+                        control.clear();
                 }
             }, false, (tag: HTMLElement, control: CurrencyEditComponent): void => {
                control.kendoNumericTextBox.destroy();
@@ -57,6 +57,9 @@ namespace YetaWF_ComponentsHTML {
         }
         public enable(enable: boolean): void {
             this.kendoNumericTextBox.enable(enable);
+        }
+        public clear(): void {
+            this.kendoNumericTextBox.value("");
         }
     }
 }

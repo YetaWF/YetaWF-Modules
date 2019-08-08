@@ -27,7 +27,7 @@ var YetaWF_ComponentsHTML;
                 Enable: function (control, enable, clearOnDisable) {
                     control.enable(enable);
                     if (!enable && clearOnDisable)
-                        control.kendoNumericTextBox.value("");
+                        control.clear();
                 }
             }, false, function (tag, control) {
                 control.kendoNumericTextBox.destroy();
@@ -57,6 +57,9 @@ var YetaWF_ComponentsHTML;
         });
         CurrencyEditComponent.prototype.enable = function (enable) {
             this.kendoNumericTextBox.enable(enable);
+        };
+        CurrencyEditComponent.prototype.clear = function () {
+            this.kendoNumericTextBox.value("");
         };
         CurrencyEditComponent.TEMPLATE = "yt_currency";
         CurrencyEditComponent.SELECTOR = ".yt_currency.t_edit";
