@@ -181,7 +181,7 @@ namespace YetaWF.Modules.Identity.Components {
 
                 hb.Append($@"
 <div class='yt_yetawf_identity_userid t_large t_edit' id='{DivId}'>
-    {await HtmlHelper.ForEditAsAsync(Container, PropertyName, FieldName, ui, nameof(ui.UserId), model, "Hidden", HtmlAttributes: new { id = hiddenId, __NoTemplate = true })}");
+    {await HtmlHelper.ForEditComponentAsync(Container, PropertyName, model, "Hidden", HtmlAttributes: new { id = hiddenId, __NoTemplate = true })}");
 
                 using (Manager.StartNestedComponent(FieldName)) {
 

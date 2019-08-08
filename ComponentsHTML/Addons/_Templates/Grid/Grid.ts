@@ -127,7 +127,8 @@ namespace YetaWF_ComponentsHTML {
                     return total.toString();
                 },
                 Enable: (control: Grid, enable: boolean, clearOnDisable: boolean): void => {
-                    /* can't enable/disable but this is handled to support show/hide */
+                    control.enable(enable);
+                    // clearOnDisable not supported
                 },
             }, false, (tag: HTMLElement, control: Grid): void => {
                 control.internalDestroy();
@@ -1017,6 +1018,13 @@ namespace YetaWF_ComponentsHTML {
         // API
         // API
         // API
+
+        public enable(enable: boolean) {
+            // TODO: This currently only works with jqueryui class
+            $YetaWF.elementRemoveClass(this.Control, this.Setup.DisabledCss);
+            if (!enable)
+                $YetaWF.elementAddClass(this.Control, this.Setup.DisabledCss);
+        }
 
         get FieldName(): string {
             return this.Setup.FieldName;

@@ -24,8 +24,14 @@ namespace YetaWF_Identity {
             super(controlId, UserIdEditComponent.TEMPLATE, UserIdEditComponent.SELECTOR, {
                 ControlType: YetaWF_ComponentsHTML.ControlTypeEnum.Template,
                 ChangeEvent: null,
-                GetValue: null,//return control.inputHidden.value;
-                Enable: null,
+                GetValue: (control: UserIdEditComponent): string | null => {
+                    return control.inputHidden.value;
+                },
+                Enable: (control: UserIdEditComponent, enable: boolean, clearOnDisable: boolean): void => {
+                    control.enable(enable);
+                    if (clearOnDisable)
+                        control.clear();
+                },
             });
 
             this.Setup = setup;
@@ -50,6 +56,17 @@ namespace YetaWF_Identity {
                 this.inputName.value = name;
                 this.inputHidden.value = inputUserId.value;
             });
+        }
+
+        public enable(enabled: boolean): void {
+            $YetaWF.elementEnableToggle(this.inputHidden, enabled);
+            this.GridAll.enable(enabled);
+        }
+        public clear(): void {
+            this.inputName.value = "";
+            this.inputHidden.value = "0";
+            this.GridAll.ClearSelection();
+            //$$$this.GridAll.enable();
         }
     }
 }

@@ -247,7 +247,7 @@ var YetaWF_ComponentsHTML;
                     elem.setAttribute("disabled", "disabled");
                 $(elem).button(enable ? "enable" : "disable");
             }
-            else if ($YetaWF.elementHasClass(elem, YetaWF_ComponentsHTML.TextEditComponent.TEMPLATE)) { // using template name as class name
+            else if (YetaWF_ComponentsHTML.TextEditComponent && $YetaWF.elementHasClass(elem, YetaWF_ComponentsHTML.TextEditComponent.TEMPLATE)) { // using template name as class name
                 // Handle text/input
                 elem.removeAttribute("disabled");
                 if (!enable)
@@ -256,7 +256,7 @@ var YetaWF_ComponentsHTML;
                 if (!enable)
                     $YetaWF.elementAddClass(elem, "k-state-disabled");
             }
-            else if ($YetaWF.elementHasClass(elem, YetaWF_ComponentsHTML.TextAreaSourceOnlyEditComponent.TEMPLATE)) { // using template name as class name
+            else if (YetaWF_ComponentsHTML.TextAreaSourceOnlyEditComponent && $YetaWF.elementHasClass(elem, YetaWF_ComponentsHTML.TextAreaSourceOnlyEditComponent.TEMPLATE)) { // using template name as class name
                 elem.removeAttribute("readonly");
                 $YetaWF.elementRemoveClass(elem, "k-state-disabled");
                 if (!enable) {

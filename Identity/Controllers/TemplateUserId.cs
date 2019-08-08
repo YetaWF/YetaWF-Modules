@@ -23,25 +23,37 @@ namespace YetaWF.Modules.Identity.Controllers {
             "Some of these fields explicitly force a grid display even with fewer than 50 users.")]
         public class Model {
 
+            public enum ControlStatusEnum { Normal, Disabled, }
+
             [Caption("UserId (Required)"), Description("UserId (Required)")]
-            [UIHint("YetaWF_Identity_UserId"), AdditionalMetadata("Force", "DropDown"), SelectionRequired, Trim]
+            [UIHint("YetaWF_Identity_UserId"), AdditionalMetadata("Force", "DropDown"), Trim]
+            [SelectionRequiredIf(nameof(ControlStatus), ControlStatusEnum.Normal)]
+            [ProcessIf(nameof(ControlStatus), ControlStatusEnum.Normal, Disable = true)]
             public int Prop1Req { get; set; }
 
             [Caption("UserId (Grid, Required)"), Description("UserId (Required)")]
-            [UIHint("YetaWF_Identity_UserId"), AdditionalMetadata("Force", "Grid"), SelectionRequired, Trim]
+            [UIHint("YetaWF_Identity_UserId"), AdditionalMetadata("Force", "Grid"), Trim]
+            [SelectionRequiredIf(nameof(ControlStatus), ControlStatusEnum.Normal)]
+            [ProcessIf(nameof(ControlStatus), ControlStatusEnum.Normal, Disable = true)]
             public int Prop1GridReq { get; set; }
 
             [Caption("UserId"), Description("UserId")]
             [UIHint("YetaWF_Identity_UserId"), AdditionalMetadata("Force", "DropDown"), Trim]
+            [ProcessIf(nameof(ControlStatus), ControlStatusEnum.Normal, Disable = true)]
             public int Prop1 { get; set; }
 
             [Caption("UserId (Grid)"), Description("UserId")]
             [UIHint("YetaWF_Identity_UserId"), AdditionalMetadata("Force", "Grid"), Trim]
+            [ProcessIf(nameof(ControlStatus), ControlStatusEnum.Normal, Disable = true)]
             public int Prop1Grid { get; set; }
 
             [Caption("UserId (Read/Only)"), Description("UserId (read/only)")]
             [UIHint("YetaWF_Identity_UserId"), ReadOnly]
             public int Prop1RO { get; set; }
+
+            [Caption("Control Status"), Description("Defines the processing status of the controls")]
+            [UIHint("Enum")]
+            public ControlStatusEnum ControlStatus { get; set; }
 
             public Model() { }
         }

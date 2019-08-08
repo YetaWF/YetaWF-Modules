@@ -263,7 +263,7 @@ namespace YetaWF_ComponentsHTML {
                 if (!enable)
                     elem.setAttribute("disabled", "disabled");
                 $(elem).button(enable ? "enable" : "disable");
-            } else if ($YetaWF.elementHasClass(elem, TextEditComponent.TEMPLATE)) { // using template name as class name
+            } else if (TextEditComponent && $YetaWF.elementHasClass(elem, TextEditComponent.TEMPLATE)) { // using template name as class name
                 // Handle text/input
                 elem.removeAttribute("disabled");
                 if (!enable)
@@ -271,7 +271,7 @@ namespace YetaWF_ComponentsHTML {
                 $YetaWF.elementRemoveClass(elem, "k-state-disabled");
                 if (!enable)
                     $YetaWF.elementAddClass(elem, "k-state-disabled");
-            } else if ($YetaWF.elementHasClass(elem, TextAreaSourceOnlyEditComponent.TEMPLATE)) { // using template name as class name
+            } else if (TextAreaSourceOnlyEditComponent && $YetaWF.elementHasClass(elem, TextAreaSourceOnlyEditComponent.TEMPLATE)) { // using template name as class name
                 elem.removeAttribute("readonly");
                 $YetaWF.elementRemoveClass(elem, "k-state-disabled");
                 if (!enable) {

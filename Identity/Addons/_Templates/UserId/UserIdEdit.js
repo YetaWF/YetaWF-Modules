@@ -21,8 +21,14 @@ var YetaWF_Identity;
             var _this = _super.call(this, controlId, UserIdEditComponent.TEMPLATE, UserIdEditComponent.SELECTOR, {
                 ControlType: YetaWF_ComponentsHTML.ControlTypeEnum.Template,
                 ChangeEvent: null,
-                GetValue: null,
-                Enable: null,
+                GetValue: function (control) {
+                    return control.inputHidden.value;
+                },
+                Enable: function (control, enable, clearOnDisable) {
+                    control.enable(enable);
+                    if (clearOnDisable)
+                        control.clear();
+                },
             }) || this;
             _this.Setup = setup;
             _this.GridAll = YetaWF.ComponentBaseDataImpl.getControlById(_this.Setup.GridAllId, YetaWF_ComponentsHTML.Grid.SELECTOR);
@@ -47,6 +53,16 @@ var YetaWF_Identity;
             });
             return _this;
         }
+        UserIdEditComponent.prototype.enable = function (enabled) {
+            $YetaWF.elementEnableToggle(this.inputHidden, enabled);
+            this.GridAll.enable(enabled);
+        };
+        UserIdEditComponent.prototype.clear = function () {
+            this.inputName.value = "";
+            this.inputHidden.value = "0";
+            this.GridAll.ClearSelection();
+            //$$$this.GridAll.enable();
+        };
         UserIdEditComponent.TEMPLATE = "yt_yetawf_identity_userid";
         UserIdEditComponent.SELECTOR = ".yt_yetawf_identity_userid.t_large.t_edit";
         return UserIdEditComponent;
