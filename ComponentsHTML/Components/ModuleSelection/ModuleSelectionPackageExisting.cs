@@ -61,7 +61,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             list = (from l in list orderby l.Text select l).ToList();
             list.Insert(0, new SelectionItem<string> { Text = __ResStr("selectPackage", "(select)"), Value = null });
 
-            return await DropDownListComponent.RenderDropDownListAsync(this, areaName, list, "yt_moduleselectionpackageexisting");
+            return await DropDownListComponent.RenderDropDownListAsync(this, areaName, list, null);
         }
         internal static async Task<string> RenderReplacementPackageModulesDesignedAsync(string areaName) {
             List<SelectionItem<string>> list = (

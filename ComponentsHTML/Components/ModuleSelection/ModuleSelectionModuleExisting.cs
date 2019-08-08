@@ -60,7 +60,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                         Tooltip = module.Description,
                     }).ToList<SelectionItem<string>>();
             list.Insert(0, new SelectionItem<string> { Text = this.__ResStr("none", "(none)"), Value = null });
-            return await DropDownListComponent.RenderDropDownListAsync(this, model.ToString(), list, "yt_moduleselectionmoduleexisting");
+            return await DropDownListComponent.RenderDropDownListAsync(this, model.ToString(), list, null);
         }
     }
 }

@@ -59,7 +59,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             list = (from l in list orderby l.Text select l).ToList();
             list.Insert(0, new SelectionItem<string> { Text = this.__ResStr("selectPackage", "(select)"), Value = null });
 
-            return await DropDownListComponent.RenderDropDownListAsync(this, areaName, list, "yt_moduleselectionpackagenew");
+            return await DropDownListComponent.RenderDropDownListAsync(this, areaName, list, null);
         }
     }
 }

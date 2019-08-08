@@ -19,17 +19,26 @@ namespace YetaWF.Modules.DevTests.Controllers {
         [Trim]
         public class Model {
 
+            public enum ControlStatusEnum { Normal, Disabled, }
+
             [Caption("Email (Required)"), Description("Email (Required)")]
-            [UIHint("Email"), StringLength(Globals.MaxEmail), Required, EmailValidation, Trim]
+            [UIHint("Email"), StringLength(Globals.MaxEmail), EmailValidation, Trim]
+            [RequiredIf(nameof(ControlStatus), ControlStatusEnum.Normal)]
+            [ProcessIf(nameof(ControlStatus), ControlStatusEnum.Normal, Disable = true)]
             public string EmailReq { get; set; }
 
             [Caption("Email"), Description("Email")]
             [UIHint("Email"), StringLength(Globals.MaxEmail), EmailValidation, Trim]
+            [ProcessIf(nameof(ControlStatus), ControlStatusEnum.Normal, Disable = true)]
             public string Email { get; set; }
 
             [Caption("Email (Read/Only)"), Description("Email (read/only)")]
             [UIHint("Email"), ReadOnly]
             public string EmailRO { get; set; }
+
+            [Caption("Control Status"), Description("Defines the processing status of the controls")]
+            [UIHint("Enum")]
+            public ControlStatusEnum ControlStatus { get; set; }
 
             public Model() {
                 EmailRO = "mikevdm@mikevdm.com";

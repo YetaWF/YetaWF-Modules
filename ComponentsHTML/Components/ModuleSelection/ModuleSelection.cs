@@ -136,14 +136,18 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         public override ComponentType GetComponentType() { return ComponentType.Edit; }
 
         internal class ModuleSelectionUINew {
-            [UIHint("ModuleSelectionPackageNew"), Caption("Packages"), Description("Select one of the installed packages to list all available modules for the package")]
+            [Caption("Packages"), Description("Select one of the installed packages to list all available modules for the package")]
+            [UIHint("ModuleSelectionPackageNew")]
             public Guid? Package { get; set; }
+            [UIHint("ModuleSelectionModuleNew")]
             [Caption("Module"), Description("Select one of the available modules"), AdditionalMetadata("Disable1OrLess", false)]
             public Guid? Module { get; set; }
         }
         internal class ModuleSelectionUIExisting {
-            [UIHint("ModuleSelectionPackageExisting"), Caption("Packages"), Description("Select one of the installed packages to list all available modules for the package")]
+            [Caption("Packages"), Description("Select one of the installed packages to list all available modules for the package")]
+            [UIHint("ModuleSelectionPackageExisting")]
             public Guid? Package { get; set; }
+            [UIHint("ModuleSelectionModuleExisting")]
             [Caption("Module"), Description("Select one of the available modules"), AdditionalMetadata("Disable1OrLess", false)]
             public Guid? Module { get; set; }
         }
@@ -183,7 +187,8 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             };
 
             hb.Append($@"
-<div id='{DivId}' class='yt_moduleselection t_edit'>");
+<div id='{DivId}' class='yt_moduleselection t_edit'>
+    {await HtmlHelper.ForEditComponentAsync(Container, PropertyName, model, "Hidden", HtmlAttributes: new { __NoTemplate = true })}");
 
             using (Manager.StartNestedComponent(FieldName)) {
 
@@ -205,25 +210,23 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
     </div>");
                 }
 
-            }
-
-            hb.Append($@"
+                hb.Append($@"
     <div class='t_select'>");
 
-            if (newMods) {
+                if (newMods) {
 
-                hb.Append($@"
+                    hb.Append($@"
         {await HtmlHelper.ForLabelAsync(uiNew, nameof(uiNew.Module))}
-        {await HtmlHelper.ForEditAsAsync(uiNew, nameof(uiNew.Module), FieldName, uiNew, nameof(uiNew.Module), model, "ModuleSelectionModuleNew", HtmlAttributes: HtmlAttributes)}");
+        {await HtmlHelper.ForEditAsync(uiNew, nameof(uiNew.Module))}");
 
-            } else {
+                } else {
 
-                hb.Append($@"
+                    hb.Append($@"
         {await HtmlHelper.ForLabelAsync(uiExisting, nameof(uiExisting.Module))}
-        {await HtmlHelper.ForEditAsAsync(uiExisting, nameof(uiExisting.Module), FieldName, uiExisting, nameof(uiExisting.Module), model, "ModuleSelectionModuleExisting", HtmlAttributes: HtmlAttributes)}");
+        {await HtmlHelper.ForEditAsync(uiExisting, nameof(uiExisting.Module))}");
 
+                }
             }
-
             hb.Append($@"
     </div>
     <div class='t_link'>

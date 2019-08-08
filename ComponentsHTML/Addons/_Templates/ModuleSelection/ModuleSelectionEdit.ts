@@ -13,6 +13,7 @@ namespace YetaWF_ComponentsHTML {
         public static SELECTOR: string = ".yt_moduleselection.t_edit";
 
         private Setup: Setup;
+        private Hidden: HTMLInputElement;
         private SelectPackage: YetaWF_ComponentsHTML.DropDownListEditComponent;
         private SelectModule: YetaWF_ComponentsHTML.DropDownListEditComponent;
         private DivDescription: HTMLDivElement;
@@ -35,6 +36,7 @@ namespace YetaWF_ComponentsHTML {
 
             this.Setup = setup;
 
+            this.Hidden = $YetaWF.getElement1BySelector("input[type='hidden']", [this.Control]) as HTMLInputElement;
             this.SelectPackage = YetaWF.ComponentBaseDataImpl.getControlFromSelector(".t_packages select", DropDownListEditComponent.SELECTOR, [this.Control]);
             this.SelectModule = YetaWF.ComponentBaseDataImpl.getControlFromSelector(".t_select select", DropDownListEditComponent.SELECTOR, [this.Control]);
             this.DivDescription = $YetaWF.getElement1BySelector(".t_description", [this.Control]) as HTMLDivElement;
@@ -44,16 +46,19 @@ namespace YetaWF_ComponentsHTML {
             this.showDescription();
 
             this.SelectPackage.Control.addEventListener("dropdownlist_change", (evt: Event): void => {
-                var data = { AreaName: this.SelectPackage.value };
+                let data = { AreaName: this.SelectPackage.value };
                 this.SelectModule.ajaxUpdate(data, this.Setup.AjaxUrl);
             });
             this.SelectModule.Control.addEventListener("dropdownlist_change", (evt: Event): void => {
+                let modGuid = this.SelectModule.value;
+                this.Hidden.value = modGuid;
                 this.showDescription();
+                FormsSupport.validateElement(this.Hidden);
             });
         }
 
         private showDescription(): void {
-            var modGuid = this.SelectModule.value;
+            let modGuid = this.Hidden.value;
             if (this.hasValue) {
                 this.ALink.href = "/!Mod/" + modGuid; // Globals.ModuleUrl
                 this.ALink.style.display = "inline-block";
@@ -72,13 +77,14 @@ namespace YetaWF_ComponentsHTML {
         // API
 
         get hasValue(): boolean {
-            var modGuid = this.SelectModule.value;
+            var modGuid = this.Hidden.value;
             return (modGuid !== undefined && modGuid !== null && modGuid.length > 0 && modGuid !== "00000000-0000-0000-0000-000000000000");
         }
         get value(): string {
-            return this.SelectModule.value;
+            return this.Hidden.value;
         }
         public enable(enabled: boolean): void {
+            $YetaWF.elementEnableToggle(this.Hidden, enabled);
             this.SelectPackage.enable(enabled);
             this.SelectModule.enable(enabled);
             if (enabled && this.hasValue) {
@@ -90,13 +96,14 @@ namespace YetaWF_ComponentsHTML {
             }
         }
         public clear(): void {
+            this.Hidden.value = "";
             this.SelectPackage.value = "";
             this.SelectModule.value = "";
             this.showDescription();
         }
         public hasChanged(data: string): boolean {
             if (!this.hasValue) return false;
-            var modGuid = this.SelectModule.value;
+            var modGuid = this.Hidden.value;
             return modGuid !== data;
         }
         /**
@@ -109,14 +116,15 @@ namespace YetaWF_ComponentsHTML {
                 var data = { "modGuid": modGuid };
                 this.SelectModule.ajaxUpdate(data, this.Setup.AjaxUrlComplete,
                     (data: any): void => {
+                        this.Hidden.value = modGuid;
                         this.SelectPackage.value = data.extra;
                         this.SelectModule.value = modGuid;
                         this.showDescription();
-                        FormsSupport.validateElement(this.SelectModule.Control);
+                        FormsSupport.validateElement(this.Hidden);
                     },
                     (result: string): void => {
                         this.clear();
-                        FormsSupport.validateElement(this.SelectModule.Control);
+                        FormsSupport.validateElement(this.Hidden);
                     }
                 );
             } else {

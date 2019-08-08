@@ -20,12 +20,18 @@ namespace YetaWF.Modules.DevTests.Controllers {
         [Trim]
         public class EditModel {
 
+            public enum ControlStatusEnum { Normal, Disabled, }
+
             [Caption("Module Selection"), Description("Existing module")]
-            [UIHint("ModuleSelection"), Required, Trim]
+            [UIHint("ModuleSelection"), Trim]
+            [RequiredIf(nameof(ControlStatus), ControlStatusEnum.Normal)]
+            [ProcessIf(nameof(ControlStatus), ControlStatusEnum.Normal, Disable = true)]
             public Guid Module { get; set; }
 
             [Caption("Module Selection (New)"), Description("New module")]
-            [UIHint("ModuleSelection"), AdditionalMetadata("New", true), Required, Trim]
+            [UIHint("ModuleSelection"), AdditionalMetadata("New", true), Trim]
+            [RequiredIf(nameof(ControlStatus), ControlStatusEnum.Normal)]
+            [ProcessIf(nameof(ControlStatus), ControlStatusEnum.Normal, Disable = true)]
             public Guid ModuleNew { get; set; }
 
             [Caption("Module Selection (R/O)"), Description("Existing module, read/only")]
@@ -37,6 +43,10 @@ namespace YetaWF.Modules.DevTests.Controllers {
             [UIHint("ModuleSelection"), AdditionalMetadata("New", true)]
             [ReadOnly]
             public Guid ROModuleNew { get; set; }
+
+            [Caption("Control Status"), Description("Defines the processing status of the controls")]
+            [UIHint("Enum")]
+            public ControlStatusEnum ControlStatus { get; set; }
 
             public EditModel() { }
         }
