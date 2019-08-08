@@ -1,5 +1,6 @@
 ﻿/* Copyright © 2019 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/ComponentsHTML#License */
 
+using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 using YetaWF.Core.Components;
 using YetaWF.Core.Packages;
@@ -59,6 +60,15 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             if (model != null && model.GetType().IsEnum)
                 model = (int)model;
             tag.MergeAttribute("value", model == null ? "" : model.ToString());
+
+            StringLengthAttribute lenAttr = PropData.TryGetAttribute<StringLengthAttribute>();
+#if NOTYET
+            if (lenAttr == null)
+                throw new InternalError($"No max string length given using StringLengthAttribute - {FieldName}");
+#endif
+            if (lenAttr != null && lenAttr.MaximumLength > 0 && lenAttr.MaximumLength <= 8000)
+                tag.MergeAttribute("maxlength", lenAttr.MaximumLength.ToString());
+
             return Task.FromResult(tag.ToString(YTagRenderMode.StartTag));
         }
     }
@@ -92,6 +102,15 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             if (model != null && model.GetType().IsEnum)
                 model = (int)model;
             tag.MergeAttribute("value", model == null ? "" : model.ToString());
+
+            StringLengthAttribute lenAttr = PropData.TryGetAttribute<StringLengthAttribute>();
+#if NOTYET
+            if (lenAttr == null)
+                throw new InternalError($"No max string length given using StringLengthAttribute - {FieldName}");
+#endif
+            if (lenAttr != null && lenAttr.MaximumLength > 0 && lenAttr.MaximumLength <= 8000)
+                tag.MergeAttribute("maxlength", lenAttr.MaximumLength.ToString());
+
             return Task.FromResult(tag.ToString(YTagRenderMode.StartTag));
         }
     }

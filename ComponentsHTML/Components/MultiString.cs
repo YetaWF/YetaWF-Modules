@@ -170,6 +170,8 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
     public abstract class MultiStringEditComponentBase : MultiStringComponentBase, IYetaWFComponent<MultiString> {
 
         internal class MultiStringUI {
+            [UIHint("Text")]
+            public string Input { get; set; }
             [UIHint("DropDownList")]
             public string Language { get; set; }
             public List<SelectionItem<string>> Language_List { get; set; }
@@ -200,22 +202,24 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         /// <param name="model">The model being rendered by the component.</param>
         /// <returns>The component rendered as HTML.</returns>
         public async Task<string> RenderAsync(MultiString model) {
-            return await RenderMultiStringAsync(this, model, ExtraClass);
-        }
-        private static async Task<string> RenderMultiStringAsync(YetaWFComponent component, MultiString model, string extraCssClass) {
 
             HtmlBuilder hb = new HtmlBuilder();
 
+            // handle StringLengthAttribute as maxlength
+            StringLengthAttribute lenAttr = PropData.TryGetAttribute<StringLengthAttribute>();
+            if (lenAttr == null)
+                throw new InternalError("No max string length given using StringLengthAttribute - {0}", FieldName);
+
             hb.Append($@"
-<div class='yt_multistring t_edit y_inline' id='{component.DivId}'>");
+<div class='yt_multistring t_edit y_inline' id='{DivId}'>");
 
             // use hidden input fields for each language available
             int counter = 0;
             foreach (var lang in MultiString.Languages) {
 
                 hb.Append($@"
-    <input type='hidden' name='{component.FieldName}[{counter}].key' value='{lang.Id}'>
-    <input type='hidden' name='{component.FieldName}[{counter}].value' value='{model[lang.Id]}'>");
+    <input type='hidden' name='{FieldName}[{counter}].key' value='{lang.Id}'>
+    <input type='hidden' name='{FieldName}[{counter}].value' value='{model[lang.Id]}'>");
 
                 ++counter;
             }
@@ -226,40 +230,48 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             if (string.IsNullOrWhiteSpace(model[MultiString.DefaultLanguage]))
                 selectLang = MultiString.DefaultLanguage;
 
-            // generate a textbox for the currently selected language
-            component.HtmlAttributes.Add("class", $"t_multistring_text yt_text_base {Forms.CssFormNoSubmit} " + extraCssClass);
-            hb.Append(await TextEditComponent.RenderTextAsync(component, model[selectLang], null));
+            // generate a hidden input field for validation (the value in this field is always the default language which is used for validation)
+            hb.Append(await HtmlHelper.ForEditComponentAsync(Container, PropertyName, model.DefaultText, "Hidden",
+                HtmlAttributes: new { __NoTemplate = true, @class = $"t_multistring_hidden {Forms.CssFormNoSubmit}" }));
 
             // generate a dropdownlist for the available languages
-            List<SelectionItem<string>> selectLangList = new List<SelectionItem<string>>();
+                    List <SelectionItem<string>> selectLangList = new List<SelectionItem<string>>();
             foreach (var lang in MultiString.Languages) {
                 selectLangList.Add(new SelectionItem<string> { Text = lang.ShortName, Value = lang.Id, Tooltip = lang.Description });
             }
-            string idDD = Manager.UniqueId("lng");
+            MultiStringUI msUI = new MultiStringUI {
+                Input = model[selectLang],
+                Language = selectLang,
+                Language_List = selectLangList
+            };
 
-            using (Manager.StartNestedComponent(component.FieldName)) {
+            using (Manager.StartNestedComponent(FieldName)) {
 
-                MultiStringUI msUI = new MultiStringUI {
-                    Language = selectLang,
-                    Language_List = selectLangList
-                };
+                Dictionary<string, object> htmlAttr;
 
-                Dictionary<string, object> htmlAttr = new Dictionary<string, object>();
-                htmlAttr.Add("id", idDD);
+                // generate a textbox for the currently selected language
+                htmlAttr = new Dictionary<string, object>();
+                htmlAttr.Add("class", $"t_multistring_text {Forms.CssFormNoSubmit} " + ExtraClass);
+                if (lenAttr.MaximumLength > 0 && lenAttr.MaximumLength <= 8000)
+                    htmlAttr.Add("maxlength", lenAttr.MaximumLength);
+                hb.Append(await HtmlHelper.ForEditAsync(msUI, nameof(MultiStringUI.Input), HtmlAttributes: htmlAttr, Validation: false));
+
+                // Language dropdown
+                htmlAttr = new Dictionary<string, object>();
                 htmlAttr.Add("class", Forms.CssFormNoSubmit);
                 if (!Manager.CurrentSite.Localization || string.IsNullOrEmpty(model.DefaultText))
                     htmlAttr.Add("disabled", "disabled");
-                hb.Append(await component.HtmlHelper.ForEditAsync(msUI, nameof(MultiStringUI.Language), HtmlAttributes: htmlAttr, Validation: false));
+                hb.Append(await HtmlHelper.ForEditAsync(msUI, nameof(MultiStringUI.Language), HtmlAttributes: htmlAttr, Validation: false));
             }
 
             //Setup setup = new Setup {
-            //    Name = component.FieldName,
+            //    Name = FieldName,
             //};
 
             hb.Append($@"
 </div>");
 
-            Manager.ScriptManager.AddLast($@"new YetaWF_ComponentsHTML.MultiStringEditComponent('{component.DivId}');");
+            Manager.ScriptManager.AddLast($@"new YetaWF_ComponentsHTML.MultiStringEditComponent('{DivId}');");
 
             return hb.ToString();
         }

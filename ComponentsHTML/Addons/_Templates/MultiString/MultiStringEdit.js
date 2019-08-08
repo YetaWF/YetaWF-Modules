@@ -24,7 +24,7 @@ var YetaWF_ComponentsHTML;
                 ControlType: YetaWF_ComponentsHTML.ControlTypeEnum.Template,
                 ChangeEvent: null,
                 GetValue: function (control) {
-                    return null; //$$$$control.valueText;
+                    return _this.Hidden.value;
                 },
                 Enable: function (control, enable, clearOnDisable) {
                     control.enable(enable);
@@ -33,6 +33,7 @@ var YetaWF_ComponentsHTML;
                 },
             }) || this;
             //this.Setup = setup;
+            _this.Hidden = $YetaWF.getElement1BySelector("input.t_multistring_hidden", [_this.Control]);
             _this.SelectLang = YetaWF.ComponentBaseDataImpl.getControlFromSelector("select", YetaWF_ComponentsHTML.DropDownListEditComponent.SELECTOR, [_this.Control]);
             _this.InputText = $YetaWF.getElement1BySelector("input.t_multistring_text", [_this.Control]);
             // selection change (put language specific text into text box)
@@ -49,12 +50,13 @@ var YetaWF_ComponentsHTML;
             });
             // textbox change (save text in language specific hidden fields)
             $YetaWF.registerEventHandler(_this.InputText, "input", null, function (ev) {
-                var sel = _this.SelectLang.selectedIndex;
                 var newText = _this.InputText.value;
+                var sel = _this.SelectLang.selectedIndex;
                 var hid = $YetaWF.getElement1BySelector("input[name$='[" + sel + "].value']", [_this.Control]);
                 hid.value = newText;
                 if (sel === 0)
-                    _this.SelectLang.enable(newText.length > 0);
+                    _this.Hidden.value = newText;
+                _this.updateSelectLang();
                 return false;
             });
             $YetaWF.registerEventHandler(_this.InputText, "blur", null, function (ev) {
@@ -69,30 +71,37 @@ var YetaWF_ComponentsHTML;
                             var hid = $YetaWF.getElement1BySelector("input[name$='[" + index + "].value']", [_this.Control]);
                             hid.value = "";
                         }
+                        _this.Hidden.value = "";
                     }
+                    _this.updateSelectLang();
                 }
                 return false;
             });
             return _this;
         }
+        MultiStringEditComponent.prototype.updateSelectLang = function () {
+            if (this.SelectLang.selectedIndex === 0)
+                this.SelectLang.enable(YConfigs.YetaWF_ComponentsHTML.Localization && this.InputText.value.length > 0);
+        };
         // API
         MultiStringEditComponent.prototype.enable = function (enabled) {
             $YetaWF.elementEnableToggle(this.InputText, enabled);
-            this.SelectLang.enable(enabled && YConfigs.YetaWF_ComponentsHTML.Localization);
+            this.updateSelectLang();
         };
         MultiStringEditComponent.prototype.clear = function () {
-            this.SelectLang.clear();
             var hids = $YetaWF.getElementsBySelector("input[name$='.value']", [this.Control]);
             for (var _i = 0, hids_1 = hids; _i < hids_1.length; _i++) {
                 var hid = hids_1[_i];
                 hid.value = "";
             }
+            this.Hidden.value = "";
             this.InputText.value = "";
+            this.SelectLang.clear();
+            this.updateSelectLang();
         };
         Object.defineProperty(MultiStringEditComponent.prototype, "defaultValue", {
             get: function () {
-                var hid0 = $YetaWF.getElement1BySelector("input[name$='[0].value']", [this.Control]);
-                return hid0.value;
+                return this.InputText.value;
             },
             enumerable: true,
             configurable: true
@@ -128,10 +137,13 @@ var YetaWF_ComponentsHTML;
                         s = textDefault; // use default for languages w/o data
                     var hid = $YetaWF.getElement1BySelector("input[name$='[" + index + "].value']", [this.Control]);
                     hid.value = s;
-                    if (index === 0) //$$$$ ???
+                    if (index === 0) {
+                        this.Hidden.value = s;
                         this.InputText.value = s;
+                    }
                 }
                 this.SelectLang.clear();
+                this.updateSelectLang();
             },
             enumerable: true,
             configurable: true
@@ -166,5 +178,3 @@ var YetaWF_ComponentsHTML;
     if (YLocs.YetaWF_ComponentsHTML.Languages === undefined)
         throw "YLocs.YetaWF_ComponentsHTML.Languages missing"; /*DEBUG*/
 })(YetaWF_ComponentsHTML || (YetaWF_ComponentsHTML = {}));
-
-//# sourceMappingURL=MultiStringEdit.js.map

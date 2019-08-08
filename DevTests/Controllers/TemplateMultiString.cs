@@ -1,20 +1,11 @@
 /* Copyright � 2019 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/DevTests#License */
 
-using System;
-using System.Collections.Generic;
 using YetaWF.Core.Controllers;
 using YetaWF.Core.Localize;
 using YetaWF.Core.Models.Attributes;
-using YetaWF.Core.Support;
-using YetaWF.Core.Upload;
 using YetaWF.Modules.DevTests.Modules;
 using YetaWF.Core.Models;
-using YetaWF.Core.SendEmail;
-using System.Threading.Tasks;
-using YetaWF.Core.IO;
-using YetaWF.Core.Components;
 #if MVC6
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 #else
 using System.Web;
@@ -30,44 +21,61 @@ namespace YetaWF.Modules.DevTests.Controllers {
         [Trim]
         public class EditModel {
 
+            public enum ControlStatusEnum { Normal, Disabled, }
+
             [Category("Core"), Caption("MultiString"), Description("MultiString (Required)")]
-            [UIHint("MultiString"), StringLength(200), Required]
+            [UIHint("MultiString"), StringLength(200)]
+            [RequiredIf(nameof(ControlStatus), ControlStatusEnum.Normal)]
+            [ProcessIf(nameof(ControlStatus), ControlStatusEnum.Normal, Disable = true)]
             public MultiString MultiString { get; set; }
 
             [Category("Core"), Caption("MultiString10"), Description("MultiString10 (Required)")]
-            [UIHint("MultiString10"), StringLength(10), Required]
+            [UIHint("MultiString10"), StringLength(10)]
+            [RequiredIf(nameof(ControlStatus), ControlStatusEnum.Normal)]
+            [ProcessIf(nameof(ControlStatus), ControlStatusEnum.Normal, Disable = true)]
             public MultiString MultiString10 { get; set; }
 
             [Category("Core"), Caption("MultiString20"), Description("MultiString20 (Required)")]
-            [UIHint("MultiString20"), StringLength(20), Required]
+            [UIHint("MultiString20"), StringLength(20)]
+            [RequiredIf(nameof(ControlStatus), ControlStatusEnum.Normal)]
+            [ProcessIf(nameof(ControlStatus), ControlStatusEnum.Normal, Disable = true)]
             public MultiString MultiString20 { get; set; }
 
             [Category("Core"), Caption("MultiString40"), Description("MultiString40 (Required)")]
-            [UIHint("MultiString40"), StringLength(40), Required]
+            [UIHint("MultiString40"), StringLength(40)]
+            [RequiredIf(nameof(ControlStatus), ControlStatusEnum.Normal)]
+            [ProcessIf(nameof(ControlStatus), ControlStatusEnum.Normal, Disable = true)]
             public MultiString MultiString40 { get; set; }
 
             [Category("Core"), Caption("MultiString80"), Description("MultiString80 (Required)")]
-            [UIHint("MultiString80"), StringLength(80), Required]
+            [UIHint("MultiString80"), StringLength(80)]
+            [RequiredIf(nameof(ControlStatus), ControlStatusEnum.Normal)]
+            [ProcessIf(nameof(ControlStatus), ControlStatusEnum.Normal, Disable = true)]
             public MultiString MultiString80 { get; set; }
 
             [Category("Core"), Caption("MultiString"), Description("MultiString")]
             [UIHint("MultiString"), StringLength(200)]
+            [ProcessIf(nameof(ControlStatus), ControlStatusEnum.Normal, Disable = true)]
             public MultiString MultiStringOpt { get; set; }
 
             [Category("Core"), Caption("MultiString10"), Description("MultiString10")]
             [UIHint("MultiString10"), StringLength(10)]
+            [ProcessIf(nameof(ControlStatus), ControlStatusEnum.Normal, Disable = true)]
             public MultiString MultiString10Opt { get; set; }
 
             [Category("Core"), Caption("MultiString20"), Description("MultiString20")]
             [UIHint("MultiString20"), StringLength(20)]
+            [ProcessIf(nameof(ControlStatus), ControlStatusEnum.Normal, Disable = true)]
             public MultiString MultiString20Opt { get; set; }
 
             [Category("Core"), Caption("MultiString40"), Description("MultiString40")]
             [UIHint("MultiString40"), StringLength(40)]
+            [ProcessIf(nameof(ControlStatus), ControlStatusEnum.Normal, Disable = true)]
             public MultiString MultiString40Opt { get; set; }
 
             [Category("Core"), Caption("MultiString80"), Description("MultiString80")]
             [UIHint("MultiString80"), StringLength(80)]
+            [ProcessIf(nameof(ControlStatus), ControlStatusEnum.Normal, Disable = true)]
             public MultiString MultiString80Opt { get; set; }
 
             [Category("Core"), Caption("MultiString"), Description("MultiString")]
@@ -89,6 +97,10 @@ namespace YetaWF.Modules.DevTests.Controllers {
             [Category("Core"), Caption("MultiString80"), Description("MultiString80")]
             [UIHint("MultiString80"), ReadOnly]
             public MultiString MultiString80RO { get; set; }
+
+            [Caption("Control Status"), Description("Defines the processing status of the controls")]
+            [UIHint("Enum")]
+            public ControlStatusEnum ControlStatus { get; set; }
 
             public EditModel() {
                 MultiString = new MultiString();
