@@ -10,20 +10,27 @@ namespace YetaWF_ComponentsHTML {
 
     export class ClipboardSupport {
 
-        public static clip: any = null;
+        public static clipText: any = null;
+        public static clipTextArea: any = null;
 
         public static initAll(tag: HTMLElement):void {
 
-            if (ClipboardSupport.clip != null) return;
-            var elems = $YetaWF.getElementsBySelector(".yt_text_copy", [tag]);
-            if (elems.length === 0) return;
+            if (ClipboardSupport.clipText != null && ClipboardSupport.clipTextArea) return;
 
-            ClipboardSupport.clip = new ClipboardJS(".yt_text_copy", {
+            ClipboardSupport.clipText = new ClipboardJS(".yt_text_copy", {
                 target: (trigger: HTMLElement):Element|null => {
                     return trigger.previousElementSibling;
                 },
             });
-            ClipboardSupport.clip.on("success", (e: any): void => {
+            ClipboardSupport.clipTextArea = new ClipboardJS(".yt_textareasourceonly_copy", {
+                target: (trigger: HTMLElement): Element | null => {
+                    return trigger.previousElementSibling;
+                },
+            });
+            ClipboardSupport.clipText.on("success", (e: any): void => {
+                $YetaWF.confirm(YLocs.YetaWF_ComponentsHTML.CopyToClip);
+            });
+            ClipboardSupport.clipTextArea.on("success", (e: any): void => {
                 $YetaWF.confirm(YLocs.YetaWF_ComponentsHTML.CopyToClip);
             });
         }

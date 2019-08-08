@@ -6,21 +6,27 @@ var YetaWF_ComponentsHTML;
         function ClipboardSupport() {
         }
         ClipboardSupport.initAll = function (tag) {
-            if (ClipboardSupport.clip != null)
+            if (ClipboardSupport.clipText != null && ClipboardSupport.clipTextArea)
                 return;
-            var elems = $YetaWF.getElementsBySelector(".yt_text_copy", [tag]);
-            if (elems.length === 0)
-                return;
-            ClipboardSupport.clip = new ClipboardJS(".yt_text_copy", {
+            ClipboardSupport.clipText = new ClipboardJS(".yt_text_copy", {
                 target: function (trigger) {
                     return trigger.previousElementSibling;
                 },
             });
-            ClipboardSupport.clip.on("success", function (e) {
+            ClipboardSupport.clipTextArea = new ClipboardJS(".yt_textareasourceonly_copy", {
+                target: function (trigger) {
+                    return trigger.previousElementSibling;
+                },
+            });
+            ClipboardSupport.clipText.on("success", function (e) {
+                $YetaWF.confirm(YLocs.YetaWF_ComponentsHTML.CopyToClip);
+            });
+            ClipboardSupport.clipTextArea.on("success", function (e) {
                 $YetaWF.confirm(YLocs.YetaWF_ComponentsHTML.CopyToClip);
             });
         };
-        ClipboardSupport.clip = null;
+        ClipboardSupport.clipText = null;
+        ClipboardSupport.clipTextArea = null;
         return ClipboardSupport;
     }());
     YetaWF_ComponentsHTML.ClipboardSupport = ClipboardSupport;

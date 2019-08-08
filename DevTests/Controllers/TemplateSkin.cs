@@ -21,28 +21,30 @@ namespace YetaWF.Modules.DevTests.Controllers {
         [Trim]
         public class Model {
 
+            public enum ControlStatusEnum { Normal, Disabled, }
+
             [Caption("Page Skin (Required)"), Description("Page Skin (Required)")]
-            [UIHint("PageSkin"), Required, Trim]
+            [UIHint("PageSkin"), Trim]
+            [ProcessIf(nameof(ControlStatus), ControlStatusEnum.Normal, Disable = true)]
             public SkinDefinition PageSkinReq { get; set; }
 
             [Caption("Popup Skin (Required)"), Description("Popup Skin (Required)")]
-            [UIHint("PopupSkin"), Required, Trim]
+            [UIHint("PopupSkin"), Trim]
+            [ProcessIf(nameof(ControlStatus), ControlStatusEnum.Normal, Disable = true)]
             public SkinDefinition PopupSkinReq { get; set; }
 
-            [Caption("Module Skins (Required)"), Description("Module Skins (Required)")]
-            [UIHint("ModuleSkins"), Required, Trim]
-            public SerializableList<SkinDefinition> ModuleSkinsReq { get; set; }
-
             [Caption("Page Skin"), Description("Page Skin (Required)")]
-            [UIHint("PageSkin"), Required, Trim]
+            [UIHint("PageSkin"), Trim]
+            [ProcessIf(nameof(ControlStatus), ControlStatusEnum.Normal, Disable = true)]
             public SkinDefinition PageSkin { get; set; }
 
             [Caption("Popup Skin"), Description("Popup Skin (Required)")]
-            [UIHint("PopupSkin"), Required, Trim]
+            [UIHint("PopupSkin"), Trim]
+            [ProcessIf(nameof(ControlStatus), ControlStatusEnum.Normal, Disable = true)]
             public SkinDefinition PopupSkin { get; set; }
 
-            [Caption("Module Skins (Required)"), Description("Module Skins (Required)")]
-            [UIHint("ModuleSkins"), Required, Trim]
+            [Caption("Module Skins"), Description("Module Skins (Required)")]
+            [UIHint("ModuleSkins"), Trim]
             public SerializableList<SkinDefinition> ModuleSkins { get; set; }
 
             [Caption("Page Skin (Read/Only)"), Description("Page Skin (Read/Only)")]
@@ -57,6 +59,10 @@ namespace YetaWF.Modules.DevTests.Controllers {
             [UIHint("ModuleSkins"), ReadOnly]
             public SerializableList<SkinDefinition> ModuleSkinsRO { get; set; }
 
+            [Caption("Control Status"), Description("Defines the processing status of the controls")]
+            [UIHint("Enum")]
+            public ControlStatusEnum ControlStatus { get; set; }
+
             public Model() {
                 PageSkinReq = new SkinDefinition();
                 PageSkin = new SkinDefinition();
@@ -64,7 +70,6 @@ namespace YetaWF.Modules.DevTests.Controllers {
                 PopupSkinReq = new SkinDefinition();
                 PopupSkin = new SkinDefinition();
                 PopupSkinRO = new SkinDefinition();
-                ModuleSkinsReq = new SerializableList<SkinDefinition>();
                 ModuleSkins = new SerializableList<SkinDefinition>();
                 ModuleSkinsRO = new SerializableList<SkinDefinition>();
             }

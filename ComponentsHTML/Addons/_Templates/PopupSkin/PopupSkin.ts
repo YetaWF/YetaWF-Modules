@@ -6,23 +6,23 @@ namespace YetaWF_ComponentsHTML {
         AjaxUrl: string;
     }
 
-    export class PageSkinEditComponent extends YetaWF.ComponentBaseDataImpl {
+    export class PopupSkinEditComponent extends YetaWF.ComponentBaseDataImpl {
 
-        public static readonly TEMPLATE: string = "yt_pageskin";
-        public static readonly SELECTOR: string = ".yt_pageskin.t_edit";
+        public static readonly TEMPLATE: string = "yt_popupskin";
+        public static readonly SELECTOR: string = ".yt_popupskin.t_edit";
 
         private Setup: Setup;
         private SelectCollection: YetaWF_ComponentsHTML.DropDownListEditComponent;
         private SelectFile: YetaWF_ComponentsHTML.DropDownListEditComponent;
 
         constructor(controlId: string, setup: Setup) {
-            super(controlId, PageSkinEditComponent.TEMPLATE, PageSkinEditComponent.SELECTOR, {
+            super(controlId, PopupSkinEditComponent.TEMPLATE, PopupSkinEditComponent.SELECTOR, {
                 ControlType: ControlTypeEnum.Template,
                 ChangeEvent: null,
-                GetValue: (control: PageSkinEditComponent): string | null => {
+                GetValue: (control: PopupSkinEditComponent): string | null => {
                     return control.SelectFile.value;
                 },
-                Enable: (control: PageSkinEditComponent, enable: boolean, clearOnDisable: boolean): void => {
+                Enable: (control: PopupSkinEditComponent, enable: boolean, clearOnDisable: boolean): void => {
                     control.enable(enable);
                 },
             });

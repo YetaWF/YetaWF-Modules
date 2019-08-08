@@ -1,6 +1,7 @@
 ﻿/* Copyright © 2019 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/ComponentsHTML#License */
 
 using System.Threading.Tasks;
+using YetaWF.Core.Addons;
 using YetaWF.Core.Components;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Packages;
@@ -132,10 +133,14 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                 AjaxUrl = Utility.UrlFor(typeof(SkinController), nameof(SkinController.GetPageSkins)),
             };
 
+            // add dummy input field so we can find the property name in this template
+            hb.Append($@"
+<div id='{ControlId}' class='yt_pageskin t_edit'>
+     {await HtmlHelper.ForEditComponentAsync(Container, PropertyName, "-", "Hidden", HtmlAttributes: new { __NoTemplate = true, @class = Forms.CssFormNoSubmit })}");
+
             using (Manager.StartNestedComponent(FieldName)) {
 
                 hb.Append($@"
-<div id='{ControlId}' class='yt_pageskin t_edit'>
     <div class='t_collection'>
         {await HtmlHelper.ForLabelAsync(ps, nameof(ps.Collection))}
         {await HtmlHelper.ForEditAsync(ps, nameof(ps.Collection))}

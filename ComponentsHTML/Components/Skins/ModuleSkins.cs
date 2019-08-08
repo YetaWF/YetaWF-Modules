@@ -2,6 +2,7 @@
 
 using System.Linq;
 using System.Threading.Tasks;
+using YetaWF.Core.Addons;
 using YetaWF.Core.Components;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Packages;
@@ -132,7 +133,8 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             SkinAccess skinAccess = new SkinAccess();
 
             hb.Append($@"
-<div id='{DivId}' class='yt_moduleskins t_edit'>");
+<div id='{ControlId}' class='yt_moduleskins t_edit'>
+    {await HtmlHelper.ForEditComponentAsync(Container, PropertyName, null, "Hidden", HtmlAttributes: new { __NoTemplate = true, @class = Forms.CssFormNoSubmit })}");
 
             foreach (SkinCollectionInfo skinDef in (from s in skinAccess.GetAllSkinCollections() orderby s.CollectionDescription select s).ToList()) {
                 hb.Append($@"
@@ -162,6 +164,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
             hb.Append($@"
 </div>");
+            //Manager.ScriptManager.AddLast($@"new YetaWF_ComponentsHTML.ModuleSkinsEditComponent('{ControlId}');");
 
             return hb.ToString();
         }

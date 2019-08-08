@@ -1,6 +1,7 @@
 ﻿/* Copyright © 2019 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/ComponentsHTML#License */
 
 using System.Threading.Tasks;
+using YetaWF.Core.Addons;
 using YetaWF.Core.Components;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Packages;
@@ -115,14 +116,6 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         }
 
         /// <summary>
-        /// Called by the framework when the component is used so the component can add component specific addons.
-        /// </summary>
-        public override async Task IncludeAsync() {
-            await Manager.AddOnManager.AddTemplateFromUIHintAsync("PageSkin");
-            await base.IncludeAsync();
-        }
-
-        /// <summary>
         /// Called by the framework when the component needs to be rendered as HTML.
         /// </summary>
         /// <param name="model">The model being rendered by the component.</param>
@@ -140,10 +133,14 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                 AjaxUrl = Utility.UrlFor(typeof(SkinController), nameof(SkinController.GetPopupPageSkins)),
             };
 
+            // add dummy input field so we can find the property name in this template
+            hb.Append($@"
+<div id='{ControlId}' class='yt_popupskin t_edit'>
+     {await HtmlHelper.ForEditComponentAsync(Container, PropertyName, "-", "Hidden", HtmlAttributes: new { __NoTemplate = true, @class = Forms.CssFormNoSubmit })}");
+
             using (Manager.StartNestedComponent(FieldName)) {
 
                 hb.Append($@"
-<div id='{ControlId}' class='yt_popupskin t_edit'>
     <div class='t_collection'>
         {await HtmlHelper.ForLabelAsync(ps, nameof(ps.Collection))}
         {await HtmlHelper.ForEditAsync(ps, nameof(ps.Collection))}
@@ -154,7 +151,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
     </div>
 </div>");
 
-                Manager.ScriptManager.AddLast($@"new YetaWF_ComponentsHTML.PageSkinEditComponent('{ControlId}', {Utility.JsonSerialize(setup)});");
+                Manager.ScriptManager.AddLast($@"new YetaWF_ComponentsHTML.PopupSkinEditComponent('{ControlId}', {Utility.JsonSerialize(setup)});");
 
             }
             return hb.ToString();

@@ -15,10 +15,10 @@ var __extends = (this && this.__extends) || (function () {
 })();
 var YetaWF_ComponentsHTML;
 (function (YetaWF_ComponentsHTML) {
-    var PageSkinEditComponent = /** @class */ (function (_super) {
-        __extends(PageSkinEditComponent, _super);
-        function PageSkinEditComponent(controlId, setup) {
-            var _this = _super.call(this, controlId, PageSkinEditComponent.TEMPLATE, PageSkinEditComponent.SELECTOR, {
+    var PopupSkinEditComponent = /** @class */ (function (_super) {
+        __extends(PopupSkinEditComponent, _super);
+        function PopupSkinEditComponent(controlId, setup) {
+            var _this = _super.call(this, controlId, PopupSkinEditComponent.TEMPLATE, PopupSkinEditComponent.SELECTOR, {
                 ControlType: YetaWF_ComponentsHTML.ControlTypeEnum.Template,
                 ChangeEvent: null,
                 GetValue: function (control) {
@@ -37,15 +37,15 @@ var YetaWF_ComponentsHTML;
             });
             return _this;
         }
-        PageSkinEditComponent.prototype.enable = function (enabled) {
+        PopupSkinEditComponent.prototype.enable = function (enabled) {
             this.SelectCollection.enable(enabled);
             this.SelectFile.enable(enabled);
         };
-        PageSkinEditComponent.TEMPLATE = "yt_pageskin";
-        PageSkinEditComponent.SELECTOR = ".yt_pageskin.t_edit";
-        return PageSkinEditComponent;
+        PopupSkinEditComponent.TEMPLATE = "yt_popupskin";
+        PopupSkinEditComponent.SELECTOR = ".yt_popupskin.t_edit";
+        return PopupSkinEditComponent;
     }(YetaWF.ComponentBaseDataImpl));
-    YetaWF_ComponentsHTML.PageSkinEditComponent = PageSkinEditComponent;
+    YetaWF_ComponentsHTML.PopupSkinEditComponent = PopupSkinEditComponent;
 })(YetaWF_ComponentsHTML || (YetaWF_ComponentsHTML = {}));
 
-//# sourceMappingURL=PageSkin.js.map
+//# sourceMappingURL=PopupSkin.js.map

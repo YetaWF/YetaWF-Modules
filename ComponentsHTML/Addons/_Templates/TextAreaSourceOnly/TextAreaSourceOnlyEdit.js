@@ -32,27 +32,12 @@ var YetaWF_ComponentsHTML;
             }) || this;
             //this.Setup = setup;
         }
-        TextAreaSourceOnlyEditComponent.initAll = function (tag) {
-            if (TextAreaSourceOnlyEditComponent.clip != null)
-                return;
-            //var elems = $YetaWF.getElementsBySelector(".yt_textareasourceonly_copy", [tag]);
-            //if (elems.length === 0) return;
-            TextAreaSourceOnlyEditComponent.clip = new ClipboardJS(".yt_textareasourceonly_copy", {
-                target: function (trigger) {
-                    return trigger.previousElementSibling;
-                },
-            });
-            TextAreaSourceOnlyEditComponent.clip.on("success", function (e) {
-                $YetaWF.confirm(YLocs.YetaWF_ComponentsHTML.CopyToClip);
-            });
-        };
         TextAreaSourceOnlyEditComponent.TEMPLATE = "yt_textareasourceonly";
         TextAreaSourceOnlyEditComponent.SELECTOR = ".yt_textareasourceonly.t_edit";
         TextAreaSourceOnlyEditComponent.clip = null;
         return TextAreaSourceOnlyEditComponent;
     }(YetaWF.ComponentBaseNoDataImpl));
     YetaWF_ComponentsHTML.TextAreaSourceOnlyEditComponent = TextAreaSourceOnlyEditComponent;
-    $YetaWF.addWhenReady(TextAreaSourceOnlyEditComponent.initAll);
 })(YetaWF_ComponentsHTML || (YetaWF_ComponentsHTML = {}));
 
 //# sourceMappingURL=TextAreaSourceOnlyEdit.js.map
