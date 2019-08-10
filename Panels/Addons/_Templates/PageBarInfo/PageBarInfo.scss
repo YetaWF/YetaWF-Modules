@@ -6,8 +6,11 @@ $bar-background: silver;
 $bar-color: white;
 $bar-active: darken($bar-background, 20%);
 
+$small-screen: 1000px;
+
 .yt_panels_pagebarinfo {
-    &.t_styleshorz {
+    &.t_styleshorz,
+    &.t_stylesvert {
         .t_list {
             flex:none;
             overflow-x:auto;
@@ -27,6 +30,32 @@ $bar-active: darken($bar-background, 20%);
             width:100%;
         }
     }
+}
+
+.yt_panels_pagebarinfo {
+    .t_list {
+        background: $bar-background;
+        .t_entry {
+            &.t_active {
+                background: $bar-active;
+            }
+            a {
+                color: $bar-color;
+            }
+        }
+        .t_link {
+            font-size:10px;
+            line-height:1.2;
+        }
+        .yaction-link {
+            white-space:normal;
+        }
+    }
+}
+
+@media (min-width: $small-screen) {
+
+.yt_panels_pagebarinfo {
     &.t_stylesvert {
         display: flex;
         .t_list {
@@ -53,23 +82,7 @@ $bar-active: darken($bar-background, 20%);
             overflow-y:auto;
         }
     }
-    .t_list {
-        background: $bar-background;
-        .t_entry {
-            &.t_active {
-                background: $bar-active;
-            }
-            a {
-                color: $bar-color;
-            }
-        }
-        .t_link {
-            font-size:10px;
-            line-height:1.2;
-        }
-        .yaction-link {
-            white-space:normal;
-        }
-    }
+}
+
 }
 
