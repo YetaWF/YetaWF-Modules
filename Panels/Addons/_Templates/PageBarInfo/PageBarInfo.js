@@ -17,14 +17,16 @@ var YetaWF_Panels;
 (function (YetaWF_Panels) {
     var PageBarInfoComponent = /** @class */ (function (_super) {
         __extends(PageBarInfoComponent, _super);
-        function PageBarInfoComponent(controlId) {
+        function PageBarInfoComponent(controlId, setup) {
             var _this = _super.call(this, controlId, PageBarInfoComponent.TEMPLATE, PageBarInfoComponent.SELECTOR, {
                 ControlType: YetaWF_ComponentsHTML.ControlTypeEnum.Template,
                 ChangeEvent: null,
                 GetValue: null,
                 Enable: null,
             }) || this;
-            _this.resize();
+            _this.Setup = setup;
+            if (_this.Setup.Resize)
+                _this.resize();
             // Link click, activate entry
             $YetaWF.registerEventHandler(_this.Control, "click", ".t_list a", function (ev) {
                 var entries = $YetaWF.getElementsBySelector(".t_entry", [_this.Control]);
@@ -36,9 +38,11 @@ var YetaWF_Panels;
                 $YetaWF.elementAddClass(entry, "t_active");
                 return true;
             });
-            $(window).smartresize(function () {
-                _this.resize();
-            });
+            if (_this.Setup.Resize) {
+                $(window).smartresize(function () {
+                    _this.resize();
+                });
+            }
             return _this;
         }
         PageBarInfoComponent.prototype.resize = function () {

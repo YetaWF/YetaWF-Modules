@@ -2,19 +2,27 @@
 
 namespace YetaWF_Panels {
 
+    interface Setup {
+        Resize: boolean;
+    }
+
     export class PageBarInfoComponent extends YetaWF.ComponentBaseNoDataImpl {
 
         public static readonly TEMPLATE: string = "yt_panels_pagebarinfo";
         public static readonly SELECTOR: string = ".yt_panels_pagebarinfo.t_display";
 
-        constructor(controlId: string) {
+        private Setup: Setup;
+
+        constructor(controlId: string, setup: Setup) {
             super(controlId, PageBarInfoComponent.TEMPLATE, PageBarInfoComponent.SELECTOR, {
                 ControlType: YetaWF_ComponentsHTML.ControlTypeEnum.Template,
                 ChangeEvent: null,
                 GetValue: null,
                 Enable: null,
             });
-            this.resize();
+            this.Setup = setup;
+            if (this.Setup.Resize)
+                this.resize();
 
             // Link click, activate entry
             $YetaWF.registerEventHandler(this.Control, "click", ".t_list a", (ev: MouseEvent): boolean => {
@@ -25,10 +33,11 @@ namespace YetaWF_Panels {
                 $YetaWF.elementAddClass(entry, "t_active");
                 return true;
             });
-
-            ($(window) as any).smartresize((): void => {
-                this.resize();
-            });
+            if (this.Setup.Resize) {
+                ($(window) as any).smartresize((): void => {
+                    this.resize();
+                });
+            }
         }
         private resize(): void {
             // Resize the page bar in height so we fill the remaining page height

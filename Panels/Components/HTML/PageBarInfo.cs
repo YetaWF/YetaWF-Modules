@@ -27,6 +27,10 @@ namespace YetaWF.Modules.Panels.Components {
 
         public override ComponentType GetComponentType() { return ComponentType.Display; }
 
+        public class Setup {
+            public bool Resize { get; set; }
+        }
+
         public async Task<string> RenderAsync(PageBarInfo model) {
             HtmlBuilder hb = new HtmlBuilder();
 
@@ -109,7 +113,11 @@ namespace YetaWF.Modules.Panels.Components {
     </div>
 </div>");
 
-            Manager.ScriptManager.AddLast($@"new YetaWF_Panels.PageBarInfoComponent('{ControlId}');");
+            Setup setup = new Setup {
+                Resize = model.Style == PageBarModule.PanelStyleEnum.Vertical
+            };
+
+            Manager.ScriptManager.AddLast($@"new YetaWF_Panels.PageBarInfoComponent('{ControlId}', {Utility.JsonSerialize(setup)});");
 
             return hb.ToString();
         }
