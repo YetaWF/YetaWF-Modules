@@ -31,7 +31,6 @@
     white-space: normal; }
 
 @media (min-width: 1000px) {
-  /*@screen-md-min:*/
   .yt_panels_pagebarinfo.t_stylesvert {
     display: -webkit-box;
     display: flex; }
