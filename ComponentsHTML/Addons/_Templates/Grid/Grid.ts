@@ -1019,7 +1019,7 @@ namespace YetaWF_ComponentsHTML {
         // API
         // API
 
-        public enable(enable: boolean) {
+        public enable(enable: boolean): void {
             // TODO: This currently only works with jqueryui class
             $YetaWF.elementRemoveClass(this.Control, this.Setup.DisabledCss);
             if (!enable)
