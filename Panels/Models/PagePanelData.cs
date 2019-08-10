@@ -10,7 +10,7 @@ namespace YetaWF.Modules.Panels.Models {
         public bool Popup { get; set; }
     }
 
-    public class PagePanelInfo {
+    public class PanelInfoBase {
 
         public class PanelEntry {
 
@@ -26,13 +26,20 @@ namespace YetaWF.Modules.Panels.Models {
             }
         }
 
-        public PagePanelInfo() {
+        public PanelInfoBase() {
             Panels = new List<Models.PagePanelInfo.PanelEntry>();
         }
 
         public List<PanelEntry> Panels { get; set; }
 
         public bool UsePopups { get; internal set; }
+    }
+
+    public class PagePanelInfo : PanelInfoBase {
         public Modules.PagePanelModule.PanelStyleEnum Style { get; set; }
+    }
+    public class PageBarInfo : PanelInfoBase {
+        public Modules.PageBarModule.PanelStyleEnum Style { get; set; }
+        public string ContentPane { get; set; }
     }
 }

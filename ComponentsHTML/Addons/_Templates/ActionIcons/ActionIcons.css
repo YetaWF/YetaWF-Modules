@@ -44,7 +44,7 @@ ul.yGridActionMenu {
   float: left; }
 
 .yModuleTitle .yModuleLinks {
-  margin-top: 1.5em; }
+  margin-top: 0; }
   .yModuleTitle .yModuleLinks .yaction-link {
     margin-right: 0; }
     .yModuleTitle .yModuleLinks .yaction-link i, .yModuleTitle .yModuleLinks .yaction-link img {

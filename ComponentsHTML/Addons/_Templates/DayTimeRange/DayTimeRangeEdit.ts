@@ -26,7 +26,6 @@ namespace YetaWF_ComponentsHTML {
                 ChangeEvent: null,
                 GetValue: null,
                 Enable: (control: DateTimeEditComponent, enable: boolean, clearOnDisable: boolean): void => {
-                    alert("HI");
                     //control.enable(enable);
                     //if (!enable && clearOnDisable)
                     //    control.clear();

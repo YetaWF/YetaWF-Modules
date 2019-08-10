@@ -23,7 +23,6 @@ var YetaWF_ComponentsHTML;
                 ChangeEvent: null,
                 GetValue: null,
                 Enable: function (control, enable, clearOnDisable) {
-                    alert("HI");
                     //control.enable(enable);
                     //if (!enable && clearOnDisable)
                     //    control.clear();

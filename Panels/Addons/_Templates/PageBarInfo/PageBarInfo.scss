@@ -1,0 +1,70 @@
+/* Copyright © 2019 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Panels#License */
+
+$entry-width: 100px;
+$entry-height: 100px;
+$bar-background: silver;
+$bar-color: white;
+$bar-active: darken($bar-background, 20%);
+
+.yt_panels_pagebarinfo {
+    &.t_stylesvert {
+        display: flex;
+        .t_list {
+            flex: 0 0  $entry-width;
+            overflow-y:auto;
+            text-align:center;
+            .t_entry {
+                padding:7px 2px 0px 2px;
+                .t_link {
+                    padding-bottom:10px;
+                }
+            }
+        }
+        .t_area {
+            flex:1;
+            padding: 10px 20px 10px 20px;
+            overflow:hidden;
+            overflow-y:auto;
+        }
+    }
+    &.t_styleshorz {
+        .t_list {
+            overflow-x:auto;
+            overflow-y: hidden;
+            white-space: nowrap;
+            /*width:100%;*/
+            .t_entry {
+                height:$entry-height;
+                padding:20px 2px 0px 2px;
+                /*float:left;*/
+                display:inline-block;
+                width:$entry-width;
+                vertical-align:top;
+                text-align:center;
+            }
+        }
+        .t_area {
+            padding: 10px 20px 10px 20px;
+            width:100%;
+        }
+    }
+    .t_list {
+        background: $bar-background;
+        .t_entry {
+            &.t_active {
+                background: $bar-active;
+            }
+            a {
+                color: $bar-color;
+            }
+        }
+        .t_link {
+            font-size:10px;
+            line-height:1.2;
+        }
+        .yaction-link {
+            white-space:normal;
+        }
+    }
+}
+
