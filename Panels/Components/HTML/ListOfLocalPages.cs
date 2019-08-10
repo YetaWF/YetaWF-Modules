@@ -61,7 +61,7 @@ namespace YetaWF.Modules.Panels.Components {
             [UIHint("Url"), ReadOnly]
             public string UrlDisplay { get { return Url; } set { Url = value; } }
 
-            [Caption("Popup"), Description("Defines whether the page is shown in a popup window")]
+            [Caption("Popup"), Description("Defines whether the page is shown in a popup window (ignored when used in a Page Bar module)")]
             [UIHint("Boolean")]
             public bool Popup { get; set; }
 
@@ -87,7 +87,7 @@ namespace YetaWF.Modules.Panels.Components {
             [UIHint("MultiString"), ReadOnly]
             public MultiString Title { get; set; }
 
-            [Caption("Popup"), Description("Defines whether the page is shown in a popup window")]
+            [Caption("Popup"), Description("Defines whether the page is shown in a popup window (ignored when used in a Page Bar module)")]
             [UIHint("Boolean"), ReadOnly]
             public bool Popup { get; set; }
 
