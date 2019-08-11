@@ -75,19 +75,19 @@ namespace YetaWF.Modules.Modules.Modules {
         public ModuleAction GetAction_Remove(Guid moduleGuid) {
             if (!IsAuthorized("RemoveItems")) return null;
             return new ModuleAction(this) {
-                Url = Utility.UrlFor(typeof(ModulesBrowseModuleController), "Remove"),
+                Url = Utility.UrlFor(typeof(ModulesBrowseModuleController), nameof(ModulesBrowseModuleController.Remove)),
                 NeedsModuleContext = true,
                 QueryArgs = new { ModuleGuid = moduleGuid },
                 Image = "#Remove",
                 Style = ModuleAction.ActionStyleEnum.Post,
                 LinkText = this.__ResStr("removeLink", "Remove Module"),
                 MenuText = this.__ResStr("removeMenu", "Remove Module"),
-                Tooltip = this.__ResStr("removeTT", "Remove the module"),
-                Legend = this.__ResStr("removeLegend", "Removes the module"),
+                Tooltip = this.__ResStr("removeTT", "Remove the module permanently - The module and its data are PERMANENTLY deleted and can no longer be used on any pages"),
+                Legend = this.__ResStr("removeLegend", "Removes the module permanently - The module and its data are PERMANENTLY deleted and can no longer be used on any pages"),
                 Category = ModuleAction.ActionCategoryEnum.Delete,
                 Mode = ModuleAction.ActionModeEnum.Any,
                 Location = ModuleAction.ActionLocationEnum.NoAuto,
-                ConfirmationText = this.__ResStr("removeConfirm", "Are you sure you want to remove this module?"),
+                ConfirmationText = this.__ResStr("removeConfirm", "Are you sure you want to remove this module PERMANENTLY?"),
             };
         }
         public ModuleAction GetAction_RestoreAllDefaultAuthorization() {

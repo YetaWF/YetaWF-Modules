@@ -223,14 +223,42 @@ namespace YetaWF.Modules.ModuleEdit.Modules {
                 }),
                 Image = "#Remove",
                 Style = ModuleAction.ActionStyleEnum.Post,
-                LinkText = this.__ResStr("modRemoveLink", "Remove Module"),
+                LinkText = this.__ResStr("modRemoveLink", "Remove"),
                 MenuText = this.__ResStr("modRemoveText", "Remove"),
-                Tooltip = this.__ResStr("modRemoveTooltip", "Remove the module from the page"),
-                Legend = this.__ResStr("modRemoveLegend", "Removes the module from the page"),
+                Tooltip = this.__ResStr("modRemoveTooltip", "Remove the module from this page (the module and its data are NOT deleted and can still be used on other pages or added again)"),
+                Legend = this.__ResStr("modRemoveLegend", "Removes the module from this page (the module itself and its data are NOT deleted and can still be used on other pages or added again)"),
                 Category = ModuleAction.ActionCategoryEnum.Update,
                 Mode = ModuleAction.ActionModeEnum.Edit,
                 Location = ModuleAction.ActionLocationEnum.ModuleMenu | ModuleAction.ActionLocationEnum.ModuleLinks,
                 ConfirmationText = this.__ResStr("confirmRemove", "Are you sure you want to remove this module?"),
+            };
+        }
+        public ModuleAction GetAction_RemovePermanent(PageDefinition page, ModuleDefinition mod, Guid moduleGuid, string pane) {
+            if (mod != null && moduleGuid != Guid.Empty) throw new InternalError("Can't use module definition and module guid at the same time to remove the module");
+            if (page == null) return null;
+            if (pane == null) return null;
+            if (mod != null) {
+                if (!mod.IsAuthorized(RoleDefinition.Remove)) return null;
+                moduleGuid = mod.ModuleGuid;
+            }
+            PageDefinition.ModuleList modList = page.ModuleDefinitions.GetModulesForPane(pane);
+            int modIndex = modList.IndexInPane(moduleGuid, pane);
+            return new ModuleAction(this) {
+                Url = Utility.UrlFor(typeof(ModuleControlModuleController), nameof(ModuleControlModuleController.RemovePermanent)),
+                QueryArgs = new { PageGuid = page.PageGuid, ModuleGuid = moduleGuid, Pane = pane, ModuleIndex = modIndex },
+                QueryArgsDict = new QueryHelper(new QueryDictionary {
+                    { Basics.ModuleGuid, this.ModuleGuid }, // the module authorizing this
+                }),
+                Image = "#Remove",
+                Style = ModuleAction.ActionStyleEnum.Post,
+                LinkText = this.__ResStr("modRemovePermLink", "Remove PERMANENTLY"),
+                MenuText = this.__ResStr("modRemovePermText", "Remove PERMANENTLY"),
+                Tooltip = this.__ResStr("modRemovePermTooltip", "Remove the module permanently - The module and its data are PERMANENTLY deleted and can no longer be used on any pages"),
+                Legend = this.__ResStr("modRemovePermLegend", "Removes the module permanently - The module and its data are PERMANENTLY deleted and can no longer be used on any pages"),
+                Category = ModuleAction.ActionCategoryEnum.Update,
+                Mode = ModuleAction.ActionModeEnum.Edit,
+                Location = ModuleAction.ActionLocationEnum.ModuleMenu | ModuleAction.ActionLocationEnum.ModuleLinks,
+                ConfirmationText = this.__ResStr("confirmRemove", "Are you sure you want to PERMANENTLY remove this module?"),
             };
         }
     }
