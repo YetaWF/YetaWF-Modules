@@ -81,13 +81,17 @@
   .yt_tree .t_entry {
     padding: 0 2px 0 2px;
     display: inline-block; }
-    .yt_tree .t_entry.t_select {
-      background-color: #beebff;
-      border-radius: 2px;
-      box-shadow: inset 0 0 1px #999; }
 
 .yt_tree.tg_skin {
   /* Skin dependent formatting */ }
 
 .yt_tree.tg_noskin {
   /* Not skin dependent formatting, usually module specific */ }
+  .yt_tree.tg_noskin .t_entry {
+    color: gray; }
+    .yt_tree.tg_noskin .t_entry.t_select {
+      background-color: #beebff;
+      border-radius: 2px;
+      box-shadow: inset 0 0 1px #999; }
+  .yt_tree.tg_noskin li a, .yt_tree.tg_noskin li a:link, .yt_tree.tg_noskin li a:visited, .yt_tree.tg_noskin li a:hover, .yt_tree.tg_noskin li a:active, .yt_tree.tg_noskin li a:focus {
+    color: gray; }

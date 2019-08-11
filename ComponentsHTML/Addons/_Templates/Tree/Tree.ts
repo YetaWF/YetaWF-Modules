@@ -21,6 +21,7 @@ namespace YetaWF_ComponentsHTML {
         DisabledCss: string;
         RowHighlightCss: string;
         RowDragDropHighlightCss: string;
+        SelectedCss: string;
     }
 
     enum TargetPositionEnum {
@@ -356,7 +357,7 @@ namespace YetaWF_ComponentsHTML {
             return this.Setup.StaticData[rec];
         }
         public getSelect(): HTMLLIElement | null {
-            var entry = $YetaWF.getElement1BySelectorCond(".t_entry.t_select", [this.Control]) as HTMLElement;
+            var entry = $YetaWF.getElement1BySelectorCond(`.t_entry.${this.Setup.SelectedCss}`, [this.Control]) as HTMLElement;
             if (!entry) return null;
             var liElem = $YetaWF.elementClosest(entry, "li") as HTMLLIElement | null;
             return liElem;
@@ -364,7 +365,7 @@ namespace YetaWF_ComponentsHTML {
         public setSelect(liElem: HTMLLIElement, focus?:boolean): void {
             this.clearSelect();
             var entry = $YetaWF.getElement1BySelector(".t_entry", [liElem]);
-            $YetaWF.elementAddClass(entry, "t_select");
+            $YetaWF.elementAddClass(entry, this.Setup.SelectedCss);
             if (focus === true)
                 entry.focus();
         }
@@ -377,17 +378,17 @@ namespace YetaWF_ComponentsHTML {
             return this.Setup.StaticData[rec];
         }
         public getSelectText(): string {
-            var entry = $YetaWF.getElement1BySelector(".t_entry.t_select", [this.Control]) as HTMLElement;
+            var entry = $YetaWF.getElement1BySelector(`.t_entry.${this.Setup.SelectedCss}`, [this.Control]) as HTMLElement;
             return entry.innerText;
         }
         public setSelectText(text: string): void {
-            var entry = $YetaWF.getElement1BySelector(".t_entry.t_select", [this.Control]) as HTMLElement;
+            var entry = $YetaWF.getElement1BySelector(`.t_entry.${this.Setup.SelectedCss}`, [this.Control]) as HTMLElement;
             entry.innerText = text;
         }
         public clearSelect(): void {
-            var entries = $YetaWF.getElementsBySelector(".t_entry.t_select", [this.Control]);
+            var entries = $YetaWF.getElementsBySelector(`.t_entry.${this.Setup.SelectedCss}`, [this.Control]);
             for (let entry of entries)
-                $YetaWF.elementRemoveClass(entry, "t_select");
+                $YetaWF.elementRemoveClass(entry, this.Setup.SelectedCss);
         }
         public removeEntry(liElem: HTMLLIElement): void {
             if (!this.Setup.StaticData) throw "no static data";

@@ -363,7 +363,7 @@ var YetaWF_ComponentsHTML;
             return this.Setup.StaticData[rec];
         };
         TreeComponent.prototype.getSelect = function () {
-            var entry = $YetaWF.getElement1BySelectorCond(".t_entry.t_select", [this.Control]);
+            var entry = $YetaWF.getElement1BySelectorCond(".t_entry." + this.Setup.SelectedCss, [this.Control]);
             if (!entry)
                 return null;
             var liElem = $YetaWF.elementClosest(entry, "li");
@@ -372,7 +372,7 @@ var YetaWF_ComponentsHTML;
         TreeComponent.prototype.setSelect = function (liElem, focus) {
             this.clearSelect();
             var entry = $YetaWF.getElement1BySelector(".t_entry", [liElem]);
-            $YetaWF.elementAddClass(entry, "t_select");
+            $YetaWF.elementAddClass(entry, this.Setup.SelectedCss);
             if (focus === true)
                 entry.focus();
         };
@@ -388,18 +388,18 @@ var YetaWF_ComponentsHTML;
             return this.Setup.StaticData[rec];
         };
         TreeComponent.prototype.getSelectText = function () {
-            var entry = $YetaWF.getElement1BySelector(".t_entry.t_select", [this.Control]);
+            var entry = $YetaWF.getElement1BySelector(".t_entry." + this.Setup.SelectedCss, [this.Control]);
             return entry.innerText;
         };
         TreeComponent.prototype.setSelectText = function (text) {
-            var entry = $YetaWF.getElement1BySelector(".t_entry.t_select", [this.Control]);
+            var entry = $YetaWF.getElement1BySelector(".t_entry." + this.Setup.SelectedCss, [this.Control]);
             entry.innerText = text;
         };
         TreeComponent.prototype.clearSelect = function () {
-            var entries = $YetaWF.getElementsBySelector(".t_entry.t_select", [this.Control]);
+            var entries = $YetaWF.getElementsBySelector(".t_entry." + this.Setup.SelectedCss, [this.Control]);
             for (var _i = 0, entries_1 = entries; _i < entries_1.length; _i++) {
                 var entry = entries_1[_i];
-                $YetaWF.elementRemoveClass(entry, "t_select");
+                $YetaWF.elementRemoveClass(entry, this.Setup.SelectedCss);
             }
         };
         TreeComponent.prototype.removeEntry = function (liElem) {
