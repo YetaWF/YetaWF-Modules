@@ -37,10 +37,12 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Components\HTML\ListOfLocalPages.cs" />
+    <Compile Include="Components\HTML\PageBarInfo.cs" />
     <Compile Include="Components\HTML\StepInfo.cs" />
     <Compile Include="Components\HTML\PanelInfo.cs" />
     <Compile Include="Components\HTML\PagePanelInfo.cs" />
     <Compile Include="Controllers\DisplaySteps.cs" />
+    <Compile Include="Controllers\PageBar.cs" />
     <Compile Include="Controllers\PagePanel.cs" />
     <Compile Include="Controllers\ModulePanel.cs" />
     <Compile Include="Controllers\Support\ListOfLocalPages.cs" />
@@ -48,11 +50,13 @@
     <Compile Include="Models\StepsData.cs" />
     <Compile Include="Models\ModulePanelData.cs" />
     <Compile Include="Modules\DisplaySteps.cs" />
+    <Compile Include="Modules\PageBarModule.cs" />
     <Compile Include="Modules\PagePanelModule.cs" />
     <Compile Include="Modules\ModulePanelModule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup\AreaRegistration.cs" />
     <Compile Include="Startup\Info.cs" />
+    <Compile Include="Views\HTML\PageBar.cs" />
     <Compile Include="Views\HTML\StepPanel.cs" />
     <Compile Include="Views\HTML\PagePanel.cs" />
     <Compile Include="Views\HTML\ModulePanel.cs" />
@@ -62,10 +66,13 @@
     <Content Include="Addons\_Main\filelistJS.txt" />
     <Content Include="Addons\_Templates\ListOfLocalPages\filelistCSS.txt" />
     <Content Include="Addons\_Templates\ListOfLocalPages\filelistJS.txt" />
+    <Content Include="Addons\_Templates\PageBarInfo\filelistCSS.txt" />
+    <Content Include="Addons\_Templates\PageBarInfo\filelistJS.txt" />
     <Content Include="Addons\_Templates\PagePanelInfo\filelistCSS.txt" />
     <None Include="Addons\_Main\Grids\ListOfLocalPagesEditComponent.AllEntry" />
     <None Include="Addons\_Main\Grids\ListOfLocalPagesEditComponent.Entry" />
     <None Include="Addons\_Templates\ListOfLocalPages\ListOfLocalPages.scss" />
+    <None Include="Addons\_Templates\PageBarInfo\PageBarInfo.scss" />
     <None Include="Addons\_Templates\PagePanelInfo\PagePanelInfo.scss" />
     <Content Include="Addons\_Templates\StepInfo\filelistCSS.txt" />
     <Content Include="Addons\_Templates\StepInfo\filelistJS.txt" />
@@ -73,6 +80,7 @@
     <Content Include="Addons\_Templates\PanelInfo\filelistJS.txt" />
     <None Include="Addons\_Templates\StepInfo\StepInfo.scss" />
     <None Include="Addons\_Templates\PanelInfo\PanelInfo.scss" />
+    <TypeScriptCompile Include="Addons\_Templates\PageBarInfo\PageBarInfo.ts" />
     <TypeScriptCompile Include="Addons\_Templates\StepInfo\StepInfo.ts" />
     <TypeScriptCompile Include="Addons\_Templates\StepInfo\StepInfoEdit.ts" />
     <TypeScriptCompile Include="Addons\_Templates\PanelInfo\PanelInfoEdit.ts" />
