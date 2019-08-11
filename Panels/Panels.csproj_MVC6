@@ -37,4 +37,8 @@
     <Compile Remove="Views\HTML\PagePanelOLD.cs" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Addons\_SiteTemplates\5.0.0\" />
+  </ItemGroup>
+
 </Project>
