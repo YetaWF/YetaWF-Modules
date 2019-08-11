@@ -34,6 +34,18 @@ $small-screen: 1000px;
 
 .yt_panels_pagebarinfo {
     .t_list {
+        .t_link {
+            font-size:10px;
+            line-height:1.2;
+        }
+        .yaction-link {
+            white-space:normal;
+        }
+    }
+}
+
+.yt_panels_pagebarinfo.t_noskin {
+    .t_list {
         background: $bar-background;
         .t_entry {
             &.t_active {
@@ -42,13 +54,6 @@ $small-screen: 1000px;
             a {
                 color: $bar-color;
             }
-        }
-        .t_link {
-            font-size:10px;
-            line-height:1.2;
-        }
-        .yaction-link {
-            white-space:normal;
         }
     }
 }

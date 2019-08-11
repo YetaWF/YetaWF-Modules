@@ -29,6 +29,7 @@ namespace YetaWF.Modules.Panels.Components {
 
         public class Setup {
             public bool Resize { get; set; }
+            public string ActiveCss { get; set; }
         }
 
         public async Task<string> RenderAsync(PageBarInfo model) {
@@ -46,6 +47,20 @@ namespace YetaWF.Modules.Panels.Components {
                     styleCss = "t_styleshorz";
                     break;
             }
+            if (model.UseSkinFormatting)
+                styleCss += " t_skin";
+            else
+                styleCss += " t_noskin";
+
+            string styleListCss = "";
+            if (model.UseSkinFormatting)
+                styleListCss = " ui-widget-content";
+
+            string activeCss;
+            if (model.UseSkinFormatting)
+                activeCss = " t_active ui-state-active";
+            else
+                activeCss = " t_active";
 
             // Current page contents
             string paneContents = "";
@@ -72,7 +87,7 @@ namespace YetaWF.Modules.Panels.Components {
 
             hb.Append($@"
 <div class='yt_panels_pagebarinfo t_display {styleCss}' id='{ControlId}'>
-    <div class='t_list'>");
+    <div class='t_list{styleListCss}'>");
 
             foreach (PageBarInfo.PanelEntry entry in model.Panels) {
 
@@ -84,8 +99,9 @@ namespace YetaWF.Modules.Panels.Components {
                 string active = "";
                 if (contentUri != null) {
                     Uri uriLink = new Uri(entry.Url);
-                    if (uriLink.AbsolutePath == contentUri.AbsolutePath)
-                        active = " t_active";
+                    if (uriLink.AbsolutePath == contentUri.AbsolutePath) {
+                        active = activeCss;
+                    }
                 }
 
                 qh.Add("!ContentUrl", entry.Url, Replace: true);
@@ -114,7 +130,8 @@ namespace YetaWF.Modules.Panels.Components {
 </div>");
 
             Setup setup = new Setup {
-                Resize = model.Style == PageBarModule.PanelStyleEnum.Vertical
+                Resize = model.Style == PageBarModule.PanelStyleEnum.Vertical,
+                ActiveCss = activeCss,
             };
 
             Manager.ScriptManager.AddLast($@"new YetaWF_Panels.PageBarInfoComponent('{ControlId}', {Utility.JsonSerialize(setup)});");
