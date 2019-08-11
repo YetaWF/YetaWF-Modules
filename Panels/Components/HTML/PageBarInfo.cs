@@ -38,6 +38,8 @@ namespace YetaWF.Modules.Panels.Components {
             string pane = model.ContentPane;
 
             string styleCss;
+            string styleListCss = "";
+            string activeCss;
             switch (model.Style) {
                 default:
                 case PageBarModule.PanelStyleEnum.Vertical:
@@ -47,20 +49,15 @@ namespace YetaWF.Modules.Panels.Components {
                     styleCss = "t_styleshorz";
                     break;
             }
-            if (model.UseSkinFormatting)
+            if (model.UseSkinFormatting) {
+                await JqueryUICore.UseAsync();// needed for css
                 styleCss += " t_skin";
-            else
-                styleCss += " t_noskin";
-
-            string styleListCss = "";
-            if (model.UseSkinFormatting)
                 styleListCss = " ui-widget-content";
-
-            string activeCss;
-            if (model.UseSkinFormatting)
                 activeCss = " t_active ui-state-active";
-            else
+            } else {
+                styleCss += " t_noskin";
                 activeCss = " t_active";
+            }
 
             // Current page contents
             string paneContents = "";
