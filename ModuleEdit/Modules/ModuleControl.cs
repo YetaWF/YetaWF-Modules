@@ -258,7 +258,7 @@ namespace YetaWF.Modules.ModuleEdit.Modules {
                 Category = ModuleAction.ActionCategoryEnum.Update,
                 Mode = ModuleAction.ActionModeEnum.Edit,
                 Location = ModuleAction.ActionLocationEnum.ModuleMenu | ModuleAction.ActionLocationEnum.ModuleLinks,
-                ConfirmationText = this.__ResStr("confirmRemove", "Are you sure you want to PERMANENTLY remove this module?"),
+                ConfirmationText = this.__ResStr("confirmPermRemove", "Are you sure you want to PERMANENTLY remove this module?"),
             };
         }
     }
