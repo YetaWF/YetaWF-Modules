@@ -216,6 +216,9 @@ var YetaWF_ComponentsHTML;
                     // remove the error icon
                     var $err = $("img." + YConfigs.Forms.CssWarningIcon + "[name=\"" + name + "\"]", $form);
                     $err.remove();
+                    // if this element doesn't have validation, don't show the image icon (jquery_validate_hooks doesn't ignore ignored fields)
+                    if ($YetaWF.elementHasClass(input, "yform-novalidate"))
+                        return;
                     // find the validation message
                     var $val = $("span.field-validation-error[data-valmsg-for=\"" + name + "\"]", $form); // get the validation message (which follows the input field but is hidden via CSS)
                     // If the validation message can't be found that usually means that a field is validated even though it should not be validated (maybe disabled) and can

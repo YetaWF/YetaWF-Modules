@@ -157,7 +157,8 @@ namespace YetaWF_ComponentsHTML {
             this.value = "";
         }
         public enable(enabled: boolean): void {
-            this.selectType.enable(enabled);
+            if (this.inputUrl && this.selectPage)
+                this.selectType.enable(enabled);
             if (this.selectPage)
                 this.selectPage.enable(enabled);
             if (this.inputUrl)

@@ -22,7 +22,10 @@ var YetaWF_ComponentsHTML;
                 ControlType: YetaWF_ComponentsHTML.ControlTypeEnum.Template,
                 ChangeEvent: "intvalue_change",
                 GetValue: function (control) {
-                    return control.value.toString();
+                    var v = control.value;
+                    if (!v)
+                        return "";
+                    return v.toString();
                 },
                 Enable: function (control, enable, clearOnDisable) {
                     control.enable(enable);
@@ -55,7 +58,12 @@ var YetaWF_ComponentsHTML;
         }
         Object.defineProperty(IntValueEditComponent.prototype, "value", {
             get: function () {
-                return parseInt(this.InputControl.value, 10);
+                if (this.kendoNumericTextBox == null) {
+                    return parseInt(this.InputControl.value, 10);
+                }
+                else {
+                    return this.kendoNumericTextBox.value();
+                }
             },
             set: function (val) {
                 if (this.kendoNumericTextBox == null) {

@@ -158,7 +158,8 @@ var YetaWF_ComponentsHTML;
             this.value = "";
         };
         UrlEditComponent.prototype.enable = function (enabled) {
-            this.selectType.enable(enabled);
+            if (this.inputUrl && this.selectPage)
+                this.selectType.enable(enabled);
             if (this.selectPage)
                 this.selectPage.enable(enabled);
             if (this.inputUrl)
