@@ -51,7 +51,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         /// <returns>The component rendered as HTML.</returns>
         public Task<string> RenderAsync(string model) {
 
-            ModuleSkinList modSkins = GetSiblingProperty($"{PropertyName}_ModuleSkinList", new ModuleSkinList());
+            ModuleSkinList modSkins = GetSiblingProperty<ModuleSkinList>($"{PropertyName}_ModuleSkinList");
             string name = (from l in modSkins where l.Name == model select l.Name).FirstOrDefault();
             if (name == null)
                 name = modSkins.First().Name;
@@ -77,7 +77,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         /// <returns>The component rendered as HTML.</returns>
         public async Task<string> RenderAsync(string model) {
 
-            ModuleSkinList modSkins = GetSiblingProperty($"{PropertyName}_ModuleSkinList", new ModuleSkinList());
+            ModuleSkinList modSkins = GetSiblingProperty<ModuleSkinList>($"{PropertyName}_ModuleSkinList");
             List<SelectionItem<string>> list = (from l in modSkins select new SelectionItem<string>() {
                 Text = l.Name,
                 Tooltip = l.Description,

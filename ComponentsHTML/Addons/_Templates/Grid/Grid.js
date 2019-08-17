@@ -459,7 +459,7 @@ var YetaWF_ComponentsHTML;
             // retrieve all rows and add input/select fields to data div, resequence to make mvc serialization of lists work
             var trs = $YetaWF.getElementsBySelector("tr:not(.tg_emptytr)", [this.TBody]);
             var row = 0;
-            var re1 = new RegExp("\\[[0-9]+\\]\\.", "gim");
+            var re1 = new RegExp("\\[[0-9]+\\]", "gim");
             for (var _i = 0, trs_2 = trs; _i < trs_2.length; _i++) {
                 var tr = trs_2[_i];
                 var recNum = Number($YetaWF.getAttribute(tr, "data-origin"));
@@ -473,7 +473,7 @@ var YetaWF_ComponentsHTML;
                         if (name) {
                             var copy = input.cloneNode();
                             // replace name with serialized name[row] so mvc serialization works
-                            name = name.replace(re1, "[" + row.toString() + "].");
+                            name = name.replace(re1, "[" + row.toString() + "]");
                             $YetaWF.setAttribute(copy, "name", name);
                             div += copy.outerHTML;
                             copied = true;

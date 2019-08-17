@@ -517,7 +517,7 @@ namespace YetaWF_ComponentsHTML {
             // retrieve all rows and add input/select fields to data div, resequence to make mvc serialization of lists work
             var trs = $YetaWF.getElementsBySelector("tr:not(.tg_emptytr)", [this.TBody]);
             var row = 0;
-            var re1 = new RegExp("\\[[0-9]+\\]\\.", "gim");
+            var re1 = new RegExp("\\[[0-9]+\\]", "gim");
             for (let tr of trs) {
                 var recNum = Number($YetaWF.getAttribute(tr, "data-origin"));
                 var val = this.Setup.StaticData[recNum][this.Setup.Columns[this.SubmitCheckCol].Name];
@@ -529,7 +529,7 @@ namespace YetaWF_ComponentsHTML {
                         if (name) {
                             var copy = input.cloneNode() as HTMLElement;
                             // replace name with serialized name[row] so mvc serialization works
-                            name = name.replace(re1, `[${row.toString()}].`);
+                            name = name.replace(re1, `[${row.toString()}]`);
                             $YetaWF.setAttribute(copy, "name", name);
                             div += copy.outerHTML;
                             copied = true;
