@@ -1,4 +1,4 @@
-﻿/* Copyright © 2019 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Logging#License */
+﻿/* Copyright © 2019 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/LoggingDataProvider#License */
 
 using NLog;
 using NLog.Config;
@@ -15,9 +15,9 @@ using YetaWF.Core.Packages;
 using YetaWF.Core.Serializers;
 using YetaWF.Core.Support;
 using YetaWF.DataProvider.SQL;
-using YetaWF.Modules.Logging.Controllers;
+using YetaWF.Modules.LoggingDataProvider.Controllers;
 
-namespace YetaWF.Modules.Logging.DataProvider.NLogProvider {
+namespace YetaWF.Modules.LoggingDataProvider.DataProvider.NLogProvider {
 
     public class NLogDataProvider : IExternalDataProvider {
 
@@ -95,7 +95,7 @@ namespace YetaWF.Modules.Logging.DataProvider.NLogProvider {
         }
     }
 
-    public class LogRecordDataProvider : YetaWF.Modules.Logging.DataProvider.LogRecordDataProvider, IInstallableModel, ILogging {
+    public class LogRecordDataProvider : YetaWF.Modules.LoggingDataProvider.DataProvider.LogRecordDataProvider, IInstallableModel, ILogging {
 
         // IMPLEMENTATION
         // IMPLEMENTATION
@@ -127,7 +127,7 @@ namespace YetaWF.Modules.Logging.DataProvider.NLogProvider {
 
             Dictionary<string, object> options = new Dictionary<string, object>() {
                 { "Package", package },
-                { "Dataset", package.AreaName },
+                { "Dataset", "YetaWF_Logging" },
                 { "Logging", false },
                 { "NoLanguages", true },
             };

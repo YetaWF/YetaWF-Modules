@@ -13,11 +13,11 @@ using YetaWF.Core.Models;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Modules;
 using YetaWF.Core.Support;
-using YetaWF.Modules.Logging.DataProvider;
 using YetaWF.Modules.Logging.Modules;
 using YetaWF.Core.IO;
 using YetaWF.Core.Support.Zip;
 using YetaWF.Core.Components;
+using YetaWF.Modules.LoggingDataProvider.DataProvider;
 #if MVC6
 using Microsoft.AspNetCore.Mvc;
 #else

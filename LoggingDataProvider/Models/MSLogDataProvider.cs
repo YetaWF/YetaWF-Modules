@@ -1,4 +1,4 @@
-﻿/* Copyright © 2019 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Logging#License */
+﻿/* Copyright © 2019 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/LoggingDataProvider#License */
 
 #if MVC6
 
@@ -13,9 +13,9 @@ using YetaWF.Core.Packages;
 using YetaWF.Core.Serializers;
 using YetaWF.Core.Support;
 
-namespace YetaWF.Modules.Logging.DataProvider.MSLog {
+namespace YetaWF.Modules.LoggingDataProvider.DataProvider.MSLog {
 
-    public class LogRecordDataProvider : YetaWF.Modules.Logging.DataProvider.LogRecordDataProvider, IInstallableModel, ILogging {
+    public class LogRecordDataProvider : YetaWF.Modules.LoggingDataProvider.DataProvider.LogRecordDataProvider, IInstallableModel, ILogging {
 
         // IMPLEMENTATION
         // IMPLEMENTATION

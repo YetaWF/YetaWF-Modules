@@ -1,4 +1,4 @@
-﻿/* Copyright © 2019 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Logging#License */
+﻿/* Copyright © 2019 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/LoggingDataProvider#License */
 
 using System;
 using System.Collections.Generic;
@@ -12,7 +12,7 @@ using YetaWF.Core.Serializers;
 using YetaWF.Core.Support;
 using YetaWF.DataProvider;
 
-namespace YetaWF.Modules.Logging.DataProvider.File {
+namespace YetaWF.Modules.LoggingDataProvider.DataProvider.File {
 
     public class FileDataProvider : IExternalDataProvider {
         public void Register() {
@@ -20,7 +20,7 @@ namespace YetaWF.Modules.Logging.DataProvider.File {
         }
     }
 
-    public class LogRecordDataProvider : YetaWF.Modules.Logging.DataProvider.LogRecordDataProvider, IInstallableModel, ILogging {
+    public class LogRecordDataProvider : YetaWF.Modules.LoggingDataProvider.DataProvider.LogRecordDataProvider, IInstallableModel, ILogging {
 
         private readonly string LogfileName = "Logfile.txt";
         string LogFile;

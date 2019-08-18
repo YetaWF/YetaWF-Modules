@@ -5,8 +5,8 @@
     <TargetFramework>netcoreapp2.2</TargetFramework>
 
     <DefineConstants>$(DefineConstants);MVC6;NETCOREAPP</DefineConstants>
-    <AssemblyName>YetaWF.Logging</AssemblyName>
-    <PackageId>Logging</PackageId>
+    <AssemblyName>YetaWF.LoggingDataProvider</AssemblyName>
+    <PackageId>LoggingDataProvider</PackageId>
     <GenerateAssemblyTitleAttribute>false</GenerateAssemblyTitleAttribute>
     <GenerateAssemblyDescriptionAttribute>false</GenerateAssemblyDescriptionAttribute>
     <GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
@@ -14,14 +14,12 @@
     <GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
     <GenerateAssemblyCopyrightAttribute>false</GenerateAssemblyCopyrightAttribute>
     <GenerateAssemblyVersionAttribute>false</GenerateAssemblyVersionAttribute>
-    <RootNamespace>YetaWF.Modules.Logging</RootNamespace>
+    <RootNamespace>YetaWF.Modules.LoggingDataProvider</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\..\..\CoreComponents\Core\Core.csproj" />
     <ProjectReference Include="..\..\..\DataProvider\ModuleDefinition\ModuleDefinition.csproj" />
-    <ProjectReference Include="..\ComponentsHTML\ComponentsHTML.csproj" />
-    <ProjectReference Include="..\LoggingDataProvider\LoggingDataProvider.csproj" />
   </ItemGroup>
 
   <ItemGroup>
@@ -30,11 +28,12 @@
     <!-- TODO: Review for final release - this is a workaround for slow solution load -->
     <Compile Remove="node_modules\**" />
     <Content Remove="node_modules\**" />
-    <None Remove="node_modules\**" /><EmbeddedResource Remove="node_modules\**" />
+    <None Remove="node_modules\**" />
+    <EmbeddedResource Remove="node_modules\**" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Models\" />
+    <PackageReference Include="NLog.Web.AspNetCore" Version="4.8.4" />
   </ItemGroup>
 
 </Project>

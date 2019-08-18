@@ -7,7 +7,7 @@ using YetaWF.Core.DataProvider;
 using YetaWF.Core.Localize;
 using YetaWF.Core.Scheduler;
 using YetaWF.Core.Support;
-using YetaWF.Modules.Logging.DataProvider;
+using YetaWF.Modules.LoggingDataProvider.DataProvider;
 
 namespace YetaWF.Modules.Logging.Scheduler {
 

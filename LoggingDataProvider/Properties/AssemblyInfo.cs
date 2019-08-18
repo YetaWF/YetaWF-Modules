@@ -1,15 +1,15 @@
-﻿/* Copyright © 2019 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Logging#License */
+﻿/* Copyright © 2019 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/LoggingDataProvider#License */
 
 using System.Reflection;
 using System.Runtime.InteropServices;
 using YetaWF.PackageAttributes;
 using YetaWF.Core.Packages;
 
-[assembly: AssemblyTitle("Logging")]
-[assembly: AssemblyDescription("Logging for YetaWF websites")]
+[assembly: AssemblyTitle("LoggingDataProvider")]
+[assembly: AssemblyDescription("Logging data provider for YetaWF websites")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Softel vdm, Inc.")]
-[assembly: AssemblyProduct("Logging")]
+[assembly: AssemblyProduct("LoggingDataProvider")]
 [assembly: AssemblyCopyright("Copyright © 2019 - Softel vdm, Inc.")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -19,9 +19,9 @@ using YetaWF.Core.Packages;
 
 [assembly: Package(PackageTypeEnum.Module, "YetaWF")]
 [assembly: PackageInfo("https://YetaWF.com/UpdateServer",
-    "https://yetawf.com/Documentation/YetaWF/Logging",
+    "https://yetawf.com/Documentation/YetaWF/LoggingDataProvider",
     "https://YetaWF.com/Documentation/YetaWF/Support",
-    "https://yetawf.com/Documentation/YetaWF/Logging#Release%20Notice",
-    "https://yetawf.com/Documentation/YetaWF/Logging#License")]
+    "https://yetawf.com/Documentation/YetaWF/LoggingDataProvider#Release%20Notice",
+    "https://yetawf.com/Documentation/YetaWF/LoggingDataProvider#License")]
 
-[assembly: RequiresPackage("YetaWF.ComponentsHTML")]
+[assembly: ServiceLevel(ServiceLevelEnum.ServiceProvider)]

@@ -12,7 +12,7 @@ using YetaWF.Core.Serializers;
 using YetaWF.Core.Support;
 using YetaWF.DataProvider;
 using YetaWF.Modules.Logging.Controllers;
-using YetaWF.Modules.Logging.DataProvider;
+using YetaWF.Modules.LoggingDataProvider.DataProvider;
 using YetaWF.Core.Components;
 #if MVC6
 #else
