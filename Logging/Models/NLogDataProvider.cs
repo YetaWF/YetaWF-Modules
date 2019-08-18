@@ -32,9 +32,6 @@ namespace YetaWF.Modules.Logging.DataProvider.NLogProvider {
 
         public void Register() {
 
-            // register custom target (write to Sql table)
-            Target.Register<YetaWFDBTarget>("YetaWFDB");
-
             // Get config file
             string rootFolder;
 #if MVC6
@@ -43,10 +40,15 @@ namespace YetaWF.Modules.Logging.DataProvider.NLogProvider {
             rootFolder = YetaWFManager.RootFolder;
 #endif
             string configFile = Path.Combine(rootFolder, Globals.DataFolder, NLogSettingsFile);
-            YetaWFManager.Syncify(async () => { // registration is sync by definition (this runs once during startup only)
-                if (!await FileSystem.FileSystemProvider.FileExistsAsync(configFile))
-                    throw new InternalError($"NLog config file missing - Not found at {configFile}");
+            bool useNlog = YetaWFManager.Syncify<bool>(async () => { // registration is sync by definition (this runs once during startup only)
+                return await FileSystem.FileSystemProvider.FileExistsAsync(configFile);
             });
+            if (!useNlog)
+                return;
+
+            // register custom target (write to Sql table)
+            Target.Register<YetaWFDBTarget>("YetaWFDB");
+
             LogManager.Configuration = new XmlLoggingConfiguration(configFile);
 
             MessageFormat = WebConfigHelper.GetValue<string>(AreaRegistration.CurrentPackage.AreaName, NLogMessageFormat);
