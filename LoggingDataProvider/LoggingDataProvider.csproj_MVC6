@@ -19,7 +19,8 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\..\CoreComponents\Core\Core.csproj" />
-    <ProjectReference Include="..\..\..\DataProvider\ModuleDefinition\ModuleDefinition.csproj" />
+    <ProjectReference Include="..\..\..\DataProvider\File\File.csproj" />
+    <ProjectReference Include="..\..\..\DataProvider\SQL\SQL.csproj" />
   </ItemGroup>
 
   <ItemGroup>

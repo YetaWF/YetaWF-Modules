@@ -1,6 +1,6 @@
 /* Copyright © 2019 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/TwilioProcessor#License */
 
-using Softelvdm.Modules.TwilioProcessor.DataProvider;
+using Softelvdm.Modules.TwilioProcessorDataProvider.DataProvider;
 using System.Threading.Tasks;
 using YetaWF.Core;
 using YetaWF.Core.Controllers;
@@ -8,7 +8,7 @@ using YetaWF.Core.Localize;
 using YetaWF.Core.Models;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Support;
-using Softelvdm.Modules.TwilioProcessor.Models.Attributes;
+using Softelvdm.Modules.TwilioProcessorDataProvider.Models.Attributes;
 #if MVC6
 using Microsoft.AspNetCore.Mvc;
 #else

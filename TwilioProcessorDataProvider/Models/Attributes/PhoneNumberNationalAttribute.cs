@@ -1,4 +1,4 @@
-﻿/* Copyright © 2019 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/TwilioProcessor#License */
+﻿/* Copyright © 2019 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/TwilioProcessorDataProvider#License */
 
 using PhoneNumbers;
 using System;
@@ -6,7 +6,7 @@ using System.ComponentModel.DataAnnotations;
 using YetaWF.Core.Components;
 using YetaWF.Core.Localize;
 
-namespace Softelvdm.Modules.TwilioProcessor.Models.Attributes {
+namespace Softelvdm.Modules.TwilioProcessorDataProvider.Models.Attributes {
 
     /// <summary>
     /// Validates any national phone number. Only phone numbers of the site's defined country are considered valid.

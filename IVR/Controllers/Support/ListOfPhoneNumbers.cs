@@ -1,7 +1,7 @@
 ﻿/* Copyright © 2019 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/IVR#License */
 
 using Softelvdm.Modules.IVR.Components;
-using Softelvdm.Modules.TwilioProcessor.Models.Attributes;
+using Softelvdm.Modules.TwilioProcessorDataProvider.Models.Attributes;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;

@@ -5,8 +5,8 @@
     <TargetFramework>netcoreapp2.2</TargetFramework>
 
     <DefineConstants>$(DefineConstants);MVC6;NETCOREAPP</DefineConstants>
-    <AssemblyName>Softelvdm.TwilioProcessor</AssemblyName>
-    <PackageId>TwilioProcessor</PackageId>
+    <AssemblyName>Softelvdm.TwilioProcessorDataProvider</AssemblyName>
+    <PackageId>TwilioProcessorDataProvider</PackageId>
     <GenerateAssemblyTitleAttribute>false</GenerateAssemblyTitleAttribute>
     <GenerateAssemblyDescriptionAttribute>false</GenerateAssemblyDescriptionAttribute>
     <GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
@@ -14,14 +14,13 @@
     <GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
     <GenerateAssemblyCopyrightAttribute>false</GenerateAssemblyCopyrightAttribute>
     <GenerateAssemblyVersionAttribute>false</GenerateAssemblyVersionAttribute>
-    <RootNamespace>Softelvdm.Modules.TwilioProcessor</RootNamespace>
+    <RootNamespace>Softelvdm.Modules.TwilioProcessorDataProvider</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\..\..\CoreComponents\Core\Core.csproj" />
-    <ProjectReference Include="..\..\..\DataProvider\ModuleDefinition\ModuleDefinition.csproj" />
-    <ProjectReference Include="..\ComponentsHTML\ComponentsHTML.csproj" />
-    <ProjectReference Include="..\TwilioProcessorDataProvider\TwilioProcessorDataProvider.csproj" />
+    <ProjectReference Include="..\..\..\DataProvider\File\File.csproj" />
+    <ProjectReference Include="..\..\..\DataProvider\SQL\SQL.csproj" />
   </ItemGroup>
 
   <ItemGroup>
@@ -36,10 +35,6 @@
     <Compile Remove="node_modules\**" />
     <Content Remove="node_modules\**" />
     <None Remove="node_modules\**" /><EmbeddedResource Remove="node_modules\**" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Models\" />
   </ItemGroup>
 
 </Project>

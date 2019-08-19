@@ -1,11 +1,11 @@
-﻿/* Copyright © 2019 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/TwilioProcessor#License */
+﻿/* Copyright © 2019 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/TwilioProcessorDataProvider#License */
 
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.Text.RegularExpressions;
 using YetaWF.Core.Localize;
 
-namespace Softelvdm.Modules.TwilioProcessor.Models.Attributes {
+namespace Softelvdm.Modules.TwilioProcessorDataProvider.Models.Attributes {
 
     [AttributeUsage(AttributeTargets.Property, AllowMultiple = true)]
     public class AreaCodeUSAttribute : ValidationAttribute {

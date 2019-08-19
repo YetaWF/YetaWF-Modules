@@ -1,7 +1,7 @@
 ﻿/* Copyright © 2019 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/TwilioProcessor#License */
 
 using Microsoft.AspNetCore.Mvc.ModelBinding;
-using Softelvdm.Modules.TwilioProcessor.Models.Attributes;
+using Softelvdm.Modules.TwilioProcessorDataProvider.Models.Attributes;
 using System.Threading.Tasks;
 using YetaWF.Core.Components;
 using YetaWF.Core.Localize;

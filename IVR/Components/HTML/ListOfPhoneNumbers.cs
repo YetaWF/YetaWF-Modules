@@ -2,7 +2,7 @@
 
 using Softelvdm.Modules.IVR.Controllers;
 using Softelvdm.Modules.IVR.DataProvider;
-using Softelvdm.Modules.TwilioProcessor.Models.Attributes;
+using Softelvdm.Modules.TwilioProcessorDataProvider.Models.Attributes;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
