@@ -87,7 +87,7 @@ namespace YetaWF.Modules.LoggingDataProvider.DataProvider.NLogProvider {
             Package package = Package.GetPackageFromAssembly(GetType().Assembly);
             Dictionary<string, object> options = new Dictionary<string, object>() {
                 { "Package", package },
-                { "Dataset", package.AreaName },
+                { "Dataset", "YetaWF_Logging" },
                 { "Logging", false },
                 { "NoLanguages", true },
             };
