@@ -25,11 +25,11 @@ namespace Softelvdm.Modules.TwilioProcessorDataProvider.DataProvider {
 
         public bool TestMode { get { return !LiveMode; } }
 
-        public bool LiveMode { get { return WebConfigHelper.GetValue<bool>(AreaRegistration.CurrentPackage.AreaName, "Live"); } }
-        public string LiveAccountSid { get { return WebConfigHelper.GetValue<string>(AreaRegistration.CurrentPackage.AreaName, "LiveAccountSid"); } }
-        public string LiveAuthToken { get { return WebConfigHelper.GetValue<string>(AreaRegistration.CurrentPackage.AreaName, "LiveAuthToken"); } }
-        public string TestAccountSid { get { return WebConfigHelper.GetValue<string>(AreaRegistration.CurrentPackage.AreaName, "TestAccountSid"); } }
-        public string TestAuthToken { get { return WebConfigHelper.GetValue<string>(AreaRegistration.CurrentPackage.AreaName, "TestAuthToken"); } }
+        public bool LiveMode { get { return WebConfigHelper.GetValue<bool>(Softelvdm.Modules.TwilioProcessorDataProvider.Controllers.AreaRegistration.CurrentPackage.AreaName, "Live"); } }
+        public string LiveAccountSid { get { return WebConfigHelper.GetValue<string>(Softelvdm.Modules.TwilioProcessorDataProvider.Controllers.AreaRegistration.CurrentPackage.AreaName, "LiveAccountSid"); } }
+        public string LiveAuthToken { get { return WebConfigHelper.GetValue<string>(Softelvdm.Modules.TwilioProcessorDataProvider.Controllers.AreaRegistration.CurrentPackage.AreaName, "LiveAuthToken"); } }
+        public string TestAccountSid { get { return WebConfigHelper.GetValue<string>(Softelvdm.Modules.TwilioProcessorDataProvider.Controllers.AreaRegistration.CurrentPackage.AreaName, "TestAccountSid"); } }
+        public string TestAuthToken { get { return WebConfigHelper.GetValue<string>(Softelvdm.Modules.TwilioProcessorDataProvider.Controllers.AreaRegistration.CurrentPackage.AreaName, "TestAuthToken"); } }
 
         public bool SMSEnabled { get; set; }
 
