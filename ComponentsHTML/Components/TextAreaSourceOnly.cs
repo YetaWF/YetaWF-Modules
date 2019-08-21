@@ -81,7 +81,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                 tag.AddCssClass("yt_textareasourceonly");
                 tag.AddCssClass("t_display");
                 tag.AddCssClass("k-textbox"); // USE KENDO style
-                tag.AddCssClass("k-state-disabled"); // USE KENDO style
+                //tag.AddCssClass("k-state-disabled"); // USE KENDO style
                 FieldSetup(tag, FieldType.Anonymous);
                 tag.Attributes.Add("id", ControlId);
                 tag.Attributes.Add("rows", emHeight.ToString());
