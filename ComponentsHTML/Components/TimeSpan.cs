@@ -127,26 +127,27 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             Dictionary<string, object> hiddenAttributes = new Dictionary<string, object>(HtmlAttributes) {
                 { "__NoTemplate", true }
             };
+
             hb.Append(await HtmlHelper.ForEditComponentAsync(Container, PropertyName, model.ToString(), "Hidden", HtmlAttributes: hiddenAttributes, Validation: Validation));
 
             using (Manager.StartNestedComponent(FieldName)) {
 
                 hb.Append($@"
     <div class='t_days'>
-        {await HtmlHelper.ForLabelAsync(ts, nameof(TimeSpanUI.Days))}
         {await HtmlHelper.ForEditAsync(ts, nameof(TimeSpanUI.Days))}{ValidationMessage(nameof(TimeSpanUI.Days))}
+        {await HtmlHelper.ForLabelAsync(ts, nameof(TimeSpanUI.Days))}
     </div>
     <div class='t_hours'>
-        {await HtmlHelper.ForLabelAsync(ts, nameof(TimeSpanUI.Hours))}
         {await HtmlHelper.ForEditAsync(ts, nameof(TimeSpanUI.Hours))}{ValidationMessage(nameof(TimeSpanUI.Hours))}
+        {await HtmlHelper.ForLabelAsync(ts, nameof(TimeSpanUI.Hours))}
     </div>
     <div class='t_minutes'>
-        {await HtmlHelper.ForLabelAsync(ts, nameof(TimeSpanUI.Minutes))}
         {await HtmlHelper.ForEditAsync(ts, nameof(TimeSpanUI.Minutes))}{ValidationMessage(nameof(TimeSpanUI.Minutes))}
+        {await HtmlHelper.ForLabelAsync(ts, nameof(TimeSpanUI.Minutes))}
     </div>
     <div class='t_seconds'>
-        {await HtmlHelper.ForLabelAsync(ts, nameof(TimeSpanUI.Seconds))}
         {await HtmlHelper.ForEditAsync(ts, nameof(TimeSpanUI.Seconds))}{ValidationMessage(nameof(TimeSpanUI.Seconds))}
+        {await HtmlHelper.ForLabelAsync(ts, nameof(TimeSpanUI.Seconds))}
     </div>");
 
             }
