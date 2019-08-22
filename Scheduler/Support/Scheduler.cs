@@ -149,6 +149,8 @@ namespace YetaWF.Modules.Scheduler.Support {
                 Logging.AddErrorLog("An error occurred running startup items", exc);
             }
 
+            // TODO: This can be improved by finding the next time something needs to run and waiting until then,
+            // rather than polling as is done now. I think I wrote this original scheduler code over 10 years ago. Time flies.
             for (;;) {
                 TimeSpan delayTime = new TimeSpan(1, 0, 0);// 1 minute
                 if (SchedulerSupport.Enabled) {
@@ -327,6 +329,7 @@ namespace YetaWF.Modules.Scheduler.Support {
             }
 
             StringBuilder errors = new StringBuilder();
+            DateTime? nextRun = null;// called event handlers can return a next run time
 
             try {
                 item.Errors = null;
@@ -363,6 +366,9 @@ namespace YetaWF.Modules.Scheduler.Support {
                                 foreach (var s in itemBase.Log)
                                     errors.AppendLine(Logging.AddLog("{0}: {1}", site.Identity, s));
 
+                                if (itemBase.NextRun != null && (nextRun == null || (DateTime)itemBase.NextRun < nextRun))
+                                    nextRun = itemBase.NextRun;
+
                             });
                             YetaWFManager.MakeThreadInstance(null, null, true);// restore scheduler's manager
                             SchedulerLog.LimitTo(YetaWFManager.Manager);
@@ -381,6 +387,9 @@ namespace YetaWF.Modules.Scheduler.Support {
                         await schedEvt.RunItemAsync(itemBase);
                         foreach (var s in itemBase.Log)
                             errors.AppendLine(Logging.AddLog(s));
+
+                        if (itemBase.NextRun != null && (nextRun == null || (DateTime)itemBase.NextRun < nextRun))
+                            nextRun = itemBase.NextRun;
                     }
                 } catch (Exception exc) {
                     throw new InternalError("An error occurred in scheduler item '{0}' - {1}", item.Name, ErrorHandling.FormatExceptionMessage(exc));
@@ -401,6 +410,8 @@ namespace YetaWF.Modules.Scheduler.Support {
 
             item.Errors = errors.ToString();
             item.SetNextRuntime();
+            if (nextRun != null)
+                item.Next = nextRun;
 
             try {
                 await dataProvider.UpdateItemAsync(item);
