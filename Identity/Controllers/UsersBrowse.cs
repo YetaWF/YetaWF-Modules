@@ -130,7 +130,7 @@ namespace YetaWF.Modules.Identity.Controllers {
                 AjaxUrl = GetActionUrl(nameof(UsersBrowse_GridData)),
                 DirectDataAsync = async (int skip, int take, List<DataProviderSortInfo> sort, List<DataProviderFilterInfo> filters) => {
                     using (UserDefinitionDataProvider dataProvider = new UserDefinitionDataProvider()) {
-                        DataProviderGetRecords<UserDefinition> browseItems = await dataProvider.GetItemsAsync(skip, take, sort, filters);
+                        DataProviderGetRecords<UserDefinition> browseItems = await dataProvider.GetItemsAsync(skip, take, sort, filters, IncludeSuperuser: false);
                         return new DataSourceResult {
                             Data = (from s in browseItems.Data select new BrowseItem(Module, s)).ToList<object>(),
                             Total = browseItems.Total

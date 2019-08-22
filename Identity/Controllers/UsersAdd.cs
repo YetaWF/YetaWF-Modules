@@ -15,6 +15,7 @@ using YetaWF.Modules.Identity.DataProvider;
 using YetaWF.Modules.Identity.Models;
 using YetaWF.Modules.Identity.Modules;
 using YetaWF.Modules.Identity.Support;
+using System.Linq;
 #if MVC6
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -84,6 +85,7 @@ namespace YetaWF.Modules.Identity.Controllers {
         [ConditionalAntiForgeryToken]
         [ExcludeDemoMode]
         public async Task<ActionResult> UsersAdd_Partial(AddModel model) {
+
             if (!ModelState.IsValid)
                 return PartialView(model);
 

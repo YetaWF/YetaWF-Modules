@@ -178,6 +178,12 @@ namespace YetaWF.Modules.Identity.DataProvider {
 
         public async Task<bool> AddItemAsync(UserDefinition data) {
             CleanupRoles(data);
+
+            if (!Manager.HasSuperUserRole) {
+                int superuserRole = Resource.ResourceAccess.GetSuperuserRoleId();
+                if (data.RolesList.Contains(new Role { RoleId = superuserRole }, new RoleComparer()))
+                    throw new Error(this.__ResStr("noSup", "Only a superuser can assign superuser status to another user"));
+            }
             if (data.UserId == SuperuserDefinitionDataProvider.SuperUserId || string.Compare(data.UserName, SuperuserDefinitionDataProvider.SuperUserName, true) == 0) {
                 using (SuperuserDefinitionDataProvider superDP = new SuperuserDefinitionDataProvider()) {
                     return await superDP.AddItemAsync(data);
@@ -193,6 +199,7 @@ namespace YetaWF.Modules.Identity.DataProvider {
         }
         public async Task<UpdateStatusEnum> UpdateItemAsync(UserDefinition data) {
             CleanupRoles(data);
+
             if (data.UserId == SuperuserDefinitionDataProvider.SuperUserId || string.Compare(data.UserName, SuperuserDefinitionDataProvider.SuperUserName, true) == 0) {
                 using (SuperuserDefinitionDataProvider superDP = new SuperuserDefinitionDataProvider()) {
                     return await superDP.UpdateItemAsync(data);
@@ -201,7 +208,15 @@ namespace YetaWF.Modules.Identity.DataProvider {
             return await UpdateItemAsync(data.UserName, data);
         }
         public async Task<UpdateStatusEnum> UpdateItemAsync(string originalName, UserDefinition data) {
+
             CleanupRoles(data);
+
+            if (!Manager.HasSuperUserRole) {
+                int superuserRole = Resource.ResourceAccess.GetSuperuserRoleId();
+                if (data.RolesList.Contains(new Role { RoleId = superuserRole }, new RoleComparer()))
+                    throw new Error(this.__ResStr("noSup", "Only a superuser can assign superuser status to another user"));
+            }
+
             if (string.Compare(data.UserName, SuperuserDefinitionDataProvider.SuperUserName, true) == 0 &&
                     string.Compare(originalName, SuperuserDefinitionDataProvider.SuperUserName, true) != 0)
                 return UpdateStatusEnum.NewKeyExists;
@@ -246,45 +261,50 @@ namespace YetaWF.Modules.Identity.DataProvider {
             );
             return true;
         }
-        public async Task<DataProviderGetRecords<UserDefinition>> GetItemsAsync(int skip, int take, List<DataProviderSortInfo> sort, List<DataProviderFilterInfo> filters) {
-            UserDefinition superuser = null;
-            int origSkip = skip, origTake = take;
+        public async Task<DataProviderGetRecords<UserDefinition>> GetItemsAsync(int skip, int take, List<DataProviderSortInfo> sort, List<DataProviderFilterInfo> filters, bool IncludeSuperuser = true) {
 
-            using (SuperuserDefinitionDataProvider superDP = new SuperuserDefinitionDataProvider()) {
-                superuser = await superDP.GetItemAsync(filters);
-            }
+            if (IncludeSuperuser) {
+                UserDefinition superuser = null;
+                int origSkip = skip, origTake = take;
 
-            DataProviderGetRecords<UserDefinition> recs = new DataProviderGetRecords<UserDefinition>();
-
-            recs.Total = 0;
-            if (superuser != null) {
-                recs.Total = 1;
-                if (skip > 0) {
-                    superuser = null;
-                    --skip;
-                } else {
-                    if (take > 0)
-                        take--;
+                using (SuperuserDefinitionDataProvider superDP = new SuperuserDefinitionDataProvider()) {
+                    superuser = await superDP.GetItemAsync(filters);
                 }
-            }
 
-            int userTotal = 0;
-            if (take == 0 && origTake > 0) {
-                // we just need the total
-                List<DataProviderFilterInfo> newfilters = null;
-                newfilters = DataProviderFilterInfo.Join(newfilters, new DataProviderFilterInfo { Field = "UserName", Operator = "==", Value = null });
-                DataProviderGetRecords<UserDefinition> trecs = await DataProvider.GetRecordsAsync(0, 1, sort, newfilters);
-                userTotal = trecs.Total;
-                recs.Data = new List<UserDefinition>();
+                DataProviderGetRecords<UserDefinition> recs = new DataProviderGetRecords<UserDefinition>();
+
+                recs.Total = 0;
+                if (superuser != null) {
+                    recs.Total = 1;
+                    if (skip > 0) {
+                        superuser = null;
+                        --skip;
+                    } else {
+                        if (take > 0)
+                            take--;
+                    }
+                }
+
+                int userTotal = 0;
+                if (take == 0 && origTake > 0) {
+                    // we just need the total
+                    List<DataProviderFilterInfo> newfilters = null;
+                    newfilters = DataProviderFilterInfo.Join(newfilters, new DataProviderFilterInfo { Field = "UserName", Operator = "==", Value = null });
+                    DataProviderGetRecords<UserDefinition> trecs = await DataProvider.GetRecordsAsync(0, 1, sort, newfilters);
+                    userTotal = trecs.Total;
+                    recs.Data = new List<UserDefinition>();
+                } else {
+                    DataProviderGetRecords<UserDefinition> trecs = await DataProvider.GetRecordsAsync(skip, take, sort, filters);
+                    userTotal = trecs.Total;
+                    recs.Data = trecs.Data;
+                }
+                if (superuser != null)
+                    recs.Data.Insert(0, superuser);
+                recs.Total += userTotal;
+                return recs;
             } else {
-                DataProviderGetRecords<UserDefinition> trecs = await DataProvider.GetRecordsAsync(skip, take, sort, filters);
-                userTotal = trecs.Total;
-                recs.Data = trecs.Data;
+                return await DataProvider.GetRecordsAsync(skip, take, sort, filters);
             }
-            if (superuser != null)
-                recs.Data.Insert(0, superuser);
-            recs.Total += userTotal;
-            return recs;
         }
         public async Task RehashAllPasswordsAsync() {
             LoginConfigData config = await LoginConfigDataProvider.GetConfigAsync();

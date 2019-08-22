@@ -80,6 +80,14 @@ namespace YetaWF.Modules.Pages.Controllers {
             [UIHint("Boolean"), ReadOnly]
             public bool Users { get; set; }
 
+            [Caption("Editors"), Description("Editors can view this page")]
+            [UIHint("Boolean"), ReadOnly]
+            public bool Editors { get; set; }
+
+            [Caption("Administrators"), Description("Administrators can view this page")]
+            [UIHint("Boolean"), ReadOnly]
+            public bool Administrators { get; set; }
+
             [Caption("SiteMap Priority"), Description("Defines the page priority used for the site map")]
             [UIHint("Enum"), ReadOnly]
             public PageDefinition.SiteMapPriorityEnum SiteMapPriority { get; set; }
@@ -133,6 +141,8 @@ namespace YetaWF.Modules.Pages.Controllers {
                 ObjectSupport.CopyData(page, this);
                 Anonymous = page.IsAuthorized_View_Anonymous();
                 Users = page.IsAuthorized_View_AnyUser();
+                Editors = page.IsAuthorized_View_Editor();
+                Administrators = page.IsAuthorized_View_Administrator();
             }
         }
 
