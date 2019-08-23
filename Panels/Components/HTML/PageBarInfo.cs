@@ -65,6 +65,8 @@ namespace YetaWF.Modules.Panels.Components {
             Uri contentUri = null;
             Manager.TryGetUrlArg<string>("!ContentUrl", out contentUrl);
             if (!string.IsNullOrWhiteSpace(contentUrl)) {
+                if (contentUrl.StartsWith("/"))
+                    contentUrl = Manager.CurrentSite.MakeUrl(contentUrl);
                 contentUri = new Uri(contentUrl);
             } else {
                 if (model.Panels.Count > 0) {
