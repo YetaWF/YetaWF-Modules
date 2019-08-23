@@ -81,7 +81,8 @@ namespace YetaWF.Modules.Identity.Controllers {
                         Emails emails = new Emails();
                         if (config.SavePlainTextPassword) {
                             await emails.SendForgottenEmailAsync(userDef, config.BccForgottenPassword ? Manager.CurrentSite.AdminEmail : null);
-                            return FormProcessed(model, this.__ResStr("okForgot", "We just sent an email to your email address with your password information - Please allow a few minutes for delivery and make sure your spam filters allow emails from {0}", Manager.CurrentSite.SMTP.Server), OnClose: OnCloseEnum.Nothing, OnPopupClose: OnPopupCloseEnum.ReloadModule);
+                            string from = emails.GetSendingEmailAddress();
+                            return FormProcessed(model, this.__ResStr("okForgot", "We just sent an email to your email address with your password information - Please allow a few minutes for delivery and make sure your spam filters allow emails from {0}", from), OnClose: OnCloseEnum.Nothing, OnPopupClose: OnPopupCloseEnum.ReloadModule);
                         } else {
                             if (userDef.ResetKey != null && userDef.ResetValidUntil != null && userDef.ResetValidUntil > DateTime.UtcNow) {
                                 // preserve existing key in case user resends
@@ -92,7 +93,8 @@ namespace YetaWF.Modules.Identity.Controllers {
                                     throw new Error(this.__ResStr("resetUpdate", "User information could not be updated"));
                             }
                             await emails.SendPasswordResetEmailAsync(userDef, config.BccForgottenPassword ? Manager.CurrentSite.AdminEmail : null);
-                            return FormProcessed(model, this.__ResStr("okReset", "We just sent an email to your email address to reset your password - Please allow a few minutes for delivery and make sure your spam filters allow emails from {0}", Manager.CurrentSite.SMTP.Server), OnClose: OnCloseEnum.Nothing, OnPopupClose: OnPopupCloseEnum.ReloadModule);
+                            string from = emails.GetSendingEmailAddress();
+                            return FormProcessed(model, this.__ResStr("okReset", "We just sent an email to your email address to reset your password - Please allow a few minutes for delivery and make sure your spam filters allow emails from {0}", from), OnClose: OnCloseEnum.Nothing, OnPopupClose: OnPopupCloseEnum.ReloadModule);
                         }
                     case UserStatusEnum.NeedApproval:
                         ModelState.AddModelError("Email", this.__ResStr("needApproval", "This account has not yet been approved and is awaiting approval by the site administrator"));
