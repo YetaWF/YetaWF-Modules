@@ -260,6 +260,10 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             //if (!string.IsNullOrWhiteSpace(mask)) {
             //    id = component.MakeId(tag);
             //}
+            if (Manager.CurrentModule != null && Manager.CurrentModule.FormAutoComplete)
+                tag.MergeAttribute("autocomplete", "on", replaceExisting:false);
+            else
+                tag.MergeAttribute("autocomplete", "new-password", replaceExisting: false);
 
             bool copy = component.PropData.GetAdditionalAttributeValue<bool>("Copy", false);
             //string mask = component.PropData.GetAdditionalAttributeValue<string>("Mask", null);
