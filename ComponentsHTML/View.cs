@@ -91,6 +91,10 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
             YTagBuilder tagBuilder = new YTagBuilder("form");
             tagBuilder.MergeAttributes(rvd, true);
+            if (ModuleBase.FormAutoComplete)
+                tagBuilder.Attributes.Add("autocomplete", "on");
+            else
+                tagBuilder.Attributes.Add("autocomplete", "new-password");
 
             string id = null;
             if (tagBuilder.Attributes.ContainsKey("id")) {
