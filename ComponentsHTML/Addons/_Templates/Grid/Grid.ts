@@ -1162,10 +1162,42 @@ namespace YetaWF_ComponentsHTML {
                     successful();
             });
         }
-
         public static ReloadFromId(id: string):void {
             let grid = YetaWF.ComponentBaseDataImpl.getControlById<Grid>(id, Grid.SELECTOR);
             grid.reload(0);
+        }
+        /* Set all check boxes in a static grid control */
+        public SetCheckBoxes(set: boolean): void {
+            if (this.Setup.StaticData && this.Setup.NoSubmitContents) {
+                this.SubmitCheckCol = this.getSubmitCheckCol();
+                if (this.SubmitCheckCol >= 0) {
+                    let checks = $YetaWF.getElementsBySelector(`td:nth-child(${this.SubmitCheckCol + 1}) input[type='checkbox']`, [this.Control]) as HTMLInputElement[];
+                    for (let check of checks) {
+                        var tr = $YetaWF.elementClosest(check, "tr");
+                        var recNum = Number($YetaWF.getAttribute(tr, "data-origin"));
+                        this.Setup.StaticData[recNum][this.Setup.Columns[this.SubmitCheckCol].Name] = set;
+                        check.checked = set;
+                    }
+                }
+            }
+        }
+        /* returns whether all checkboxes are selected  in a static grid control */
+        public GetAllCheckBoxesSelected(): boolean {
+            if (this.Setup.StaticData && this.Setup.NoSubmitContents) {
+                this.SubmitCheckCol = this.getSubmitCheckCol();
+                if (this.SubmitCheckCol >= 0) {
+                    let checks = $YetaWF.getElementsBySelector(`td:nth-child(${this.SubmitCheckCol + 1}) input[type='checkbox']`, [this.Control]) as HTMLInputElement[];
+                    for (let check of checks) {
+                        var tr = $YetaWF.elementClosest(check, "tr");
+                        var recNum = Number($YetaWF.getAttribute(tr, "data-origin"));
+                        let set = this.Setup.StaticData[recNum][this.Setup.Columns[this.SubmitCheckCol].Name];
+                        if (!set)
+                            return false;
+                    }
+                    return true;
+                }
+            }
+            throw "GetAllCheckBoxesSelected not available";
         }
     }
 }
