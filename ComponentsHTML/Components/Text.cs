@@ -282,7 +282,9 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             // text
             tag.MergeAttribute("type", "text");
             tag.MergeAttribute("value", model ?? "");
-            tag.MergeAttribute("autocomplete", "on");
+            // hacky solution  https://stackoverflow.com/questions/12374442/chrome-ignores-autocomplete-off
+            // but somewhat sanctioned https://developer.mozilla.org/en-US/docs/Web/Security/Securing_your_site/Turning_off_form_autocompletion
+            tag.MergeAttribute("autocomplete", "new-password");
 
             hb.Append($@"{tag.ToString(YTagRenderMode.StartTag)}");
 

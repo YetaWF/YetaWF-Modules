@@ -91,6 +91,9 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
             YTagBuilder tagBuilder = new YTagBuilder("form");
             tagBuilder.MergeAttributes(rvd, true);
+            // hacky solution  https://stackoverflow.com/questions/12374442/chrome-ignores-autocomplete-off
+            // but somewhat sanctioned https://developer.mozilla.org/en-US/docs/Web/Security/Securing_your_site/Turning_off_form_autocompletion
+            tagBuilder.Attributes.Add("autocomplete", "new-password");
 
             string id = null;
             if (tagBuilder.Attributes.ContainsKey("id")) {
