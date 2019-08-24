@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Reflection;
 using System.Threading.Tasks;
 using YetaWF.Core.Components;
+using YetaWF.Core.Controllers;
 using YetaWF.Core.DataProvider;
 using YetaWF.Core.DataProvider.Attributes;
 using YetaWF.Core.Identity;
@@ -45,6 +46,15 @@ namespace YetaWF.Modules.UserSettings.DataProvider {
         public bool ConfirmDelete { get; set; }
         public bool ConfirmActions { get; set; }
 
+        public Grid.GridActionsEnum DefaultGridActions {
+            get {
+                if (_DefaultGridActions == null)
+                    _DefaultGridActions = WebConfigHelper.GetValue(AreaRegistration.CurrentPackage.AreaName, "DefaultGridActions", Grid.GridActionsEnum.DropdownMenu);
+                return (Grid.GridActionsEnum)_DefaultGridActions;
+            }
+        }
+        public static Grid.GridActionsEnum? _DefaultGridActions;
+
         public UserData() {
             string timeZone = TimeZoneInfo.Local.Id;
             if (YetaWFManager.HaveManager && YetaWFManager.Manager.CurrentSite != null && !string.IsNullOrWhiteSpace(YetaWFManager.Manager.CurrentSite.TimeZone))
@@ -53,7 +63,7 @@ namespace YetaWF.Modules.UserSettings.DataProvider {
             TimeFormat = Formatting.TimeFormatEnum.HHMMAM;
             LanguageId = MultiString.DefaultLanguage;
             TimeZone = timeZone;
-            GridActions = Grid.GridActionsEnum.DropdownMenu;
+            GridActions = DefaultGridActions;
             ShowGridSearchToolbar = true;
             ShowModuleOwnership = false;
             ShowPageOwnership = false;
