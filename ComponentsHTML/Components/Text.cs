@@ -282,7 +282,6 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             // text
             tag.MergeAttribute("type", "text");
             tag.MergeAttribute("value", model ?? "");
-            tag.MergeAttribute("autocomplete", "on");
 
             hb.Append($@"{tag.ToString(YTagRenderMode.StartTag)}");
 
