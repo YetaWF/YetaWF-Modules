@@ -166,6 +166,8 @@ namespace YetaWF.Modules.Scheduler.Support {
                     }
                     if (delayTime < new TimeSpan(0, 0, 5))// at a few seconds
                         delayTime = new TimeSpan(0, 0, 5);
+                    else if (delayTime > new TimeSpan(1, 0, 0, 0)) // max. 1 day
+                        delayTime = new TimeSpan(1, 0, 0, 0);
                 }
                 try {
                     schedulingThreadRunning = false;
