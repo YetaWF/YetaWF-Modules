@@ -40,6 +40,7 @@ namespace YetaWF.Modules.Caching.Startup {
         // Using a Redis server:
         // Start a Redis server using "docker run --name redis -d -p 6379:6379 redis".
         // Run Redis CLI: docker run -it --link redis:redis --rm redis redis-cli -h redis -p 6379
+        //                docker run -it --network ..networlk..  --rm redis redis-cli -h redis -p 6379
         // Show all keys: KEYS *
         // Clear DB: FLUSHALL
 
