@@ -505,7 +505,7 @@ namespace YetaWF.Modules.Identity.Controllers {
         }
 
         // User login
-        internal static async Task UserLoginAsync(UserDefinition user, bool? rememberme = null) {
+        public static async Task UserLoginAsync(UserDefinition user, bool? rememberme = null) {
 
             await LoginModuleController.UserLogoffAsync();
 

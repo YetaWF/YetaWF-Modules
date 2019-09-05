@@ -43,11 +43,11 @@ namespace YetaWF.Modules.Identity.Components {
                     if (user == null) {
                         userName = model;
                     } else {
-                        userName = user.UserName;
+                        userName = user.Email;
                         UsersDisplayModule modDisp = new UsersDisplayModule();
-                        actionDisplay = modDisp.GetAction_Display(null, userName);
+                        actionDisplay = modDisp.GetAction_Display(null, user.UserName);
                         LoginModule modLogin = (LoginModule)await ModuleDefinition.CreateUniqueModuleAsync(typeof(LoginModule));
-                        actionLoginAs = await modLogin.GetAction_LoginAsAsync(user.UserId, userName);
+                        actionLoginAs = await modLogin.GetAction_LoginAsAsync(user.UserId, user.UserName);
                     }
                 } else
                     userName = __ResStr("noEmail", "(not specified)");
