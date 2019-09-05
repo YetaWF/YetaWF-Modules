@@ -42,7 +42,7 @@ namespace YetaWF.Modules.Identity.Controllers {
             [UIHint("Text40"), SuppressIf("RegistrationType", RegistrationTypeEnum.EmailOnly), StringLength(Globals.MaxUser), UserNameValidation, Required, Trim]
             public string UserName { get; set; }
 
-            [Caption("Email Address"), Description("Enter your email address to register - this is the email address used by this site to communicate with you")]
+            [Caption("Email Address"), Description("Enter your email address to register - This is the email address used by this site to communicate with you")]
             [UIHint("Email"), SuppressIf("RegistrationType", RegistrationTypeEnum.NameOnly), StringLength(Globals.MaxEmail), EmailValidation, Required, Trim]
             public string Email { get; set; }
 
