@@ -25,6 +25,9 @@
 .yt_panels_pagebarinfo .t_list .yaction-link {
   white-space: normal; }
 
+.yt_panels_pagebarinfo.t_skin .t_list {
+  background: transparent; }
+
 .yt_panels_pagebarinfo.t_noskin .t_list {
   background: silver; }
   .yt_panels_pagebarinfo.t_noskin .t_list .t_entry.t_active {

@@ -38,7 +38,8 @@
         .yt_grid .tg_table table tr.tg_highlight.tg_lowlight td {
           background-color: silver; }
         .yt_grid .tg_table table tr.tg_lowlight td {
-          background-color: ghostwhite; }
+          background-color: ghostwhite;
+          color: darkslategray; }
       .yt_grid .tg_table table th {
         overflow: hidden;
         white-space: nowrap;

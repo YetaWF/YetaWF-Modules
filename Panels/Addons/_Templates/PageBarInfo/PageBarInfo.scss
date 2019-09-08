@@ -44,6 +44,12 @@ $small-screen: 1000px;
     }
 }
 
+.yt_panels_pagebarinfo.t_skin {
+    .t_list {
+        background: transparent;// don't use jquery-ui ui-widget-content background
+    }
+}
+
 .yt_panels_pagebarinfo.t_noskin {
     .t_list {
         background: $bar-background;
