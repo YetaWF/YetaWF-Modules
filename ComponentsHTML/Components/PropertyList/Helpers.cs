@@ -22,7 +22,8 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                     SubmitFormOnChangeAttribute.SubmitTypeEnum submit) {
                 Name = name; Value = value; Editable = editable;
                 Restricted = restricted;
-                TextAbove = textAbove; TextBelow = textBelow;
+                TextAbove = textAbove;
+                TextBelow = textBelow;
                 UIHint = uiHint;
                 ExprAttrs = exprAttrs;
                 SuppressEmpty = suppressEmpty;

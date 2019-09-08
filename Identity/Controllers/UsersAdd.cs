@@ -64,6 +64,10 @@ namespace YetaWF.Modules.Identity.Controllers {
 
             public AddModel() { }
 
+            public UserDefinition SetData(UserDefinition data) {
+                ObjectSupport.CopyData(data, this);
+                return data;
+            }
             public UserDefinition GetData() {
                 UserDefinition data = new UserDefinition();
                 ObjectSupport.CopyData(this, data);
@@ -74,9 +78,9 @@ namespace YetaWF.Modules.Identity.Controllers {
         [AllowGet]
         public async Task<ActionResult> UsersAdd() {
             LoginConfigData config = await LoginConfigDataProvider.GetConfigAsync();
-            AddModel model = new AddModel {
-                RegistrationType = config.RegistrationType,
-            };
+            AddModel model = new AddModel();
+            model.SetData(new UserDefinition());
+            model.RegistrationType = config.RegistrationType;
             return View(model);
         }
 
