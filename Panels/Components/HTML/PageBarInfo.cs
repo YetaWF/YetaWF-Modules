@@ -86,7 +86,7 @@ namespace YetaWF.Modules.Panels.Components {
 
             hb.Append($@"
 <div class='yt_panels_pagebarinfo t_display {styleCss}' id='{ControlId}'>
-    <div class='t_list{styleListCss}'>");
+    <div class='t_list yNoPrint{styleListCss}'>");
 
             foreach (PageBarInfo.PanelEntry entry in model.Panels) {
 
