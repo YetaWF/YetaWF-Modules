@@ -46,14 +46,8 @@ namespace YetaWF.Modules.Identity.Controllers {
             public virtual string Password { get; set; }
             public virtual bool RememberMe { get; set; }
             public virtual string VerificationCode { get; set; }
-
-            [Caption(""), Description("")]
-            [UIHint("ModuleAction"), ReadOnly, SuppressEmpty]
-            public ModuleAction ResendVerificationCode { get; set; }
-
-            [Caption("Captcha"), Description("Please verify that you're a human and not a spam bot")]
-            [UIHint("RecaptchaV2"), RecaptchaV2("Please verify that you're a human and not a spam bot"), SuppressIf("ShowCaptcha", false)]
-            public RecaptchaV2Data Captcha { get; set; }
+            public virtual ModuleAction ResendVerificationCode { get; set; }
+            public virtual RecaptchaV2Data Captcha { get; set; }
 
             [UIHint("Hidden")]
             public bool ShowVerification { get; set; }
@@ -75,11 +69,7 @@ namespace YetaWF.Modules.Identity.Controllers {
         [Legend("Account Information")]
         public class LoginModelNameAllowNew : LoginModel {
 
-            public LoginModelNameAllowNew() {
-                Captcha = new RecaptchaV2Data();
-                ExternalProviders = new List<FormButton>();
-                Images = new List<string>();
-            }
+            public LoginModelNameAllowNew() { }
 
             [Caption("Name"), Description("Enter your user name - This is the name you used when you registered on this site")]
             [UIHint("Text40"), StringLength(Globals.MaxUser), UserNameValidation, Required, Trim]
@@ -96,6 +86,14 @@ namespace YetaWF.Modules.Identity.Controllers {
             [Caption("Verification Code"), Description("Please enter the verification code you received via email to validate your account")]
             [UIHint("Text40"), StringLength(UserDefinition.MaxVerificationCode), Trim, SuppressIf("ShowVerification", false)]
             public override string VerificationCode { get { return base.VerificationCode; } set { base.VerificationCode = value; } }
+
+            [Caption(""), Description("")]
+            [UIHint("ModuleAction"), ReadOnly, SuppressEmpty]
+            public override ModuleAction ResendVerificationCode { get; set; }
+
+            [Caption("Captcha"), Description("Please verify that you're a human and not a spam bot")]
+            [UIHint("RecaptchaV2"), RecaptchaV2("Please verify that you're a human and not a spam bot"), SuppressIf("ShowCaptcha", false)]
+            public override RecaptchaV2Data Captcha { get; set; }
         }
 
         [Trim]
@@ -104,11 +102,7 @@ namespace YetaWF.Modules.Identity.Controllers {
         [Legend("Account Information")]
         public class LoginModelEmailAllowNew : LoginModel {
 
-            public LoginModelEmailAllowNew() {
-                Captcha = new RecaptchaV2Data();
-                ExternalProviders = new List<FormButton>();
-                Images = new List<string>();
-            }
+            public LoginModelEmailAllowNew() { }
 
             [Caption("Email Address"), Description("Enter your email address - This is the email address you used when you registered on this site")]
             [UIHint("Text40"), StringLength(Globals.MaxUser), UserNameValidation, Required, Trim]
@@ -125,6 +119,14 @@ namespace YetaWF.Modules.Identity.Controllers {
             [Caption("Verification Code"), Description("Please enter the verification code you received via email to validate your account")]
             [UIHint("Text40"), StringLength(UserDefinition.MaxVerificationCode), Trim, SuppressIf("ShowVerification", false)]
             public override string VerificationCode { get { return base.VerificationCode; } set { base.VerificationCode = value; } }
+
+            [Caption(""), Description("")]
+            [UIHint("ModuleAction"), ReadOnly, SuppressEmpty]
+            public override ModuleAction ResendVerificationCode { get; set; }
+
+            [Caption("Captcha"), Description("Please verify that you're a human and not a spam bot")]
+            [UIHint("RecaptchaV2"), RecaptchaV2("Please verify that you're a human and not a spam bot"), SuppressIf("ShowCaptcha", false)]
+            public override RecaptchaV2Data Captcha { get; set; }
         }
 
         [Trim]
@@ -132,11 +134,7 @@ namespace YetaWF.Modules.Identity.Controllers {
         [Legend("Account Information")]
         public class LoginModelNameNoNew : LoginModel {
 
-            public LoginModelNameNoNew() {
-                Captcha = new RecaptchaV2Data();
-                ExternalProviders = new List<FormButton>();
-                Images = new List<string>();
-            }
+            public LoginModelNameNoNew() { }
 
             [Caption("Name"), Description("Enter your user name - This is the name you used when you registered on this site")]
             [UIHint("Text40"), StringLength(Globals.MaxUser), UserNameValidation, Required, Trim]
@@ -153,6 +151,14 @@ namespace YetaWF.Modules.Identity.Controllers {
             [Caption("Verification Code"), Description("Please enter the verification code you received via email to validate your account")]
             [UIHint("Text40"), StringLength(UserDefinition.MaxVerificationCode), Trim, SuppressIf("ShowVerification", false)]
             public override string VerificationCode { get { return base.VerificationCode; } set { base.VerificationCode = value; } }
+
+            [Caption(""), Description("")]
+            [UIHint("ModuleAction"), ReadOnly, SuppressEmpty]
+            public override ModuleAction ResendVerificationCode { get; set; }
+
+            [Caption("Captcha"), Description("Please verify that you're a human and not a spam bot")]
+            [UIHint("RecaptchaV2"), RecaptchaV2("Please verify that you're a human and not a spam bot"), SuppressIf("ShowCaptcha", false)]
+            public override RecaptchaV2Data Captcha { get; set; }
         }
 
         [Trim]
@@ -160,11 +166,7 @@ namespace YetaWF.Modules.Identity.Controllers {
         [Legend("Account Information")]
         public class LoginModelEmailNoNew : LoginModel {
 
-            public LoginModelEmailNoNew() {
-                Captcha = new RecaptchaV2Data();
-                ExternalProviders = new List<FormButton>();
-                Images = new List<string>();
-            }
+            public LoginModelEmailNoNew() { }
 
             [Caption("Email Address"), Description("Enter your email address - This is the email address you used when you registered on this site")]
             [UIHint("Text40"), StringLength(Globals.MaxUser), UserNameValidation, Required, Trim]
@@ -181,6 +183,14 @@ namespace YetaWF.Modules.Identity.Controllers {
             [Caption("Verification Code"), Description("Please enter the verification code you received via email to validate your account")]
             [UIHint("Text40"), StringLength(UserDefinition.MaxVerificationCode), Trim, SuppressIf("ShowVerification", false)]
             public override string VerificationCode { get { return base.VerificationCode; } set { base.VerificationCode = value; } }
+
+            [Caption(""), Description("")]
+            [UIHint("ModuleAction"), ReadOnly, SuppressEmpty]
+            public override ModuleAction ResendVerificationCode { get; set; }
+
+            [Caption("Captcha"), Description("Please verify that you're a human and not a spam bot")]
+            [UIHint("RecaptchaV2"), RecaptchaV2("Please verify that you're a human and not a spam bot"), SuppressIf("ShowCaptcha", false)]
+            public override RecaptchaV2Data Captcha { get; set; }
         }
 
         private LoginModel GetLoginModel(LoginConfigData config, LoginModel origModel = null) {
