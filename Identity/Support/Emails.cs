@@ -65,16 +65,18 @@ namespace YetaWF.Modules.Identity.Support {
             string retUrl = Manager.ReturnToUrl;
             string urlOnly;
             QueryHelper qh = QueryHelper.FromUrl(Manager.CurrentSite.LoginUrl, out urlOnly);
-            qh.Add(Globals.Link_OriginList, Utility.JsonSerialize(new List<Origin> { new Origin { Url = retUrl } }), Replace: true);
-            qh.Add("CloseOnLogin", "true", Replace: true);
             qh.Add("Name", user.UserName, Replace: true);
             qh.Add("V", user.VerificationCode, Replace: true);
+            string urlNoOrigin = qh.ToUrl(urlOnly);
+            qh.Add("CloseOnLogin", "true", Replace: true);
+            qh.Add(Globals.Link_OriginList, Utility.JsonSerialize(new List<Origin> { new Origin { Url = retUrl } }), Replace: true);
             string url = qh.ToUrl(urlOnly);
 
             SendEmail sendEmail = new SendEmail();
             object parms = new {
                 User = user,
                 Url = Manager.CurrentSite.MakeUrl(url),
+                UrlNoOrigin = Manager.CurrentSite.MakeUrl(urlNoOrigin),
                 Code = user.VerificationCode,
             };
             string subject = this.__ResStr("verificationSubject", "Verification required for site {0}", Manager.CurrentSite.SiteDomain);
