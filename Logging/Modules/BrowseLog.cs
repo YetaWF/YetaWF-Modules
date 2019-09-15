@@ -31,6 +31,7 @@ namespace YetaWF.Modules.Logging.Modules {
             Title = this.__ResStr("modTitle", "Log");
             Name = this.__ResStr("modName", "Log");
             Description = this.__ResStr("modSummary", "Displays and manages log records");
+            UsePartialFormCss = false;
         }
 
         public override IModuleDefinitionIO GetDataProvider() { return new BrowseLogModuleDataProvider(); }
