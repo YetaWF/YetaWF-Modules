@@ -15,7 +15,7 @@ namespace YetaWF.Modules.Feedback.Support {
 
         protected static YetaWFManager Manager { get; private set; }
 
-        public async Task SendFeedbackAsync(string toEmail, string fromEmail, string subject, string message, string ccEmail = null) {
+        public async Task SendFeedbackAsync(string toEmail, string fromEmail, string subject, string message, string name, string ccEmail = null) {
 
             if (string.IsNullOrWhiteSpace(toEmail) && string.IsNullOrWhiteSpace(ccEmail))
                 return;
@@ -28,6 +28,7 @@ namespace YetaWF.Modules.Feedback.Support {
                 FromEmail = fromEmail,
                 Subject = subject,
                 Message = message,
+                Name = name,
                 IPAddress = Manager.UserHostAddress,
                 DateTime = Formatting.FormatDateTime(DateTime.UtcNow),
             };

@@ -1,5 +1,6 @@
 ﻿Commands            icons 2
 Created             sort filter 20 defaultSort desc
+Name                sort filter 25
 Email               sort filter 25
 Subject             sort filter 20
 IPAddress           sort filter 15
