@@ -51,9 +51,9 @@ namespace YetaWF.Modules.LoggingDataProvider.DataProvider.NLogProvider {
 
             LogManager.Configuration = new XmlLoggingConfiguration(configFile);
 
-            MessageFormat = WebConfigHelper.GetValue<string>(AreaRegistration.CurrentPackage.AreaName, NLogMessageFormat);
+            MessageFormat = WebConfigHelper.GetValue<string>("YetaWF_Logging", NLogMessageFormat);
             MessageFormat = MessageFormat?.ToLower();
-            MessageEvent = WebConfigHelper.GetValue<bool>(AreaRegistration.CurrentPackage.AreaName, NLogMessageEvent);
+            MessageEvent = WebConfigHelper.GetValue<bool>("YetaWF_Logging", NLogMessageEvent);
 
             // get logger
             Logger = NLog.LogManager.GetLogger("YetaWF");
