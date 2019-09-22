@@ -20,6 +20,7 @@ using YetaWF.Modules.Identity.Support;
 using YetaWF.Core.Packages;
 using YetaWF.Core.Components;
 using YetaWF.Core.Models;
+using YetaWF.Modules.Identity.Modules;
 #if MVC6
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -34,6 +35,7 @@ namespace YetaWF.Modules.Identity.Controllers {
 
     public class LoginModuleController : ControllerImpl<YetaWF.Modules.Identity.Modules.LoginModule> {
 
+        [Legend("Account Information")]
         public class LoginModel {
 
             public LoginModel() {
@@ -42,12 +44,67 @@ namespace YetaWF.Modules.Identity.Controllers {
                 Images = new List<string>();
             }
 
-            public virtual string UserName { get; set; }
-            public virtual string Password { get; set; }
-            public virtual bool RememberMe { get; set; }
-            public virtual string VerificationCode { get; set; }
-            public virtual ModuleAction ResendVerificationCode { get; set; }
-            public virtual RecaptchaV2Data Captcha { get; set; }
+            [Caption(""), Description("")]
+            [UIHint("Raw"), ReadOnly]
+            [SuppressIfNot(nameof(RegistrationType), RegistrationTypeEnum.NameAndEmail)]
+            [SuppressIfNot(nameof(AllowNewUser), true)]
+            public string HeaderNameAndEmailNewUser { get { return this.__ResStr("", "<p>You are entering an area of our web site, for which you need to register using your name and password. If you are a new user, please register a new account now. If you already established an account earlier, please enter the account information here and click \"Log In\".</p>"); } }
+
+            [Caption(""), Description("")]
+            [UIHint("Raw"), ReadOnly]
+            [SuppressIfNot(nameof(RegistrationType), RegistrationTypeEnum.EmailOnly)]
+            [SuppressIfNot(nameof(AllowNewUser), true)]
+            public string HeaderEmailNewUser { get { return this.__ResStr("", "<p>You are entering an area of our web site, for which you need to register using your email address and password. If you are a new user, please register a new account now. If you already established an account earlier, please enter the account information here and click \"Log In\".</p>"); } }
+
+            [Caption(""), Description("")]
+            [UIHint("Raw"), ReadOnly]
+            [SuppressIfNot(nameof(RegistrationType), RegistrationTypeEnum.NameAndEmail)]
+            [SuppressIfNot(nameof(AllowNewUser), false)]
+            public string HeaderNameAndEmail { get { return this.__ResStr("", "<p>If you have an account, please enter the account information here and click \"Log In\". This site does not accept new user registrations.</p>"); } }
+
+            [Caption(""), Description("")]
+            [UIHint("Raw"), ReadOnly]
+            [SuppressIfNot(nameof(RegistrationType), RegistrationTypeEnum.EmailOnly)]
+            [SuppressIfNot(nameof(AllowNewUser), false)]
+            public string HeaderEmail { get { return this.__ResStr("", "<p>If you have an account, please enter the account information here and click \"Log In\". This site does not accept new user registrations.</p>"); } }
+
+            [Caption("Name"), Description("Enter your user name - This is the name you used when you registered on this site")]
+            [UIHint("Text40"), StringLength(Globals.MaxUser), UserNameValidation, Trim]
+            [ProcessIf(nameof(RegistrationType), RegistrationTypeEnum.NameAndEmail)]
+            [ProcessIf(nameof(RegistrationType), RegistrationTypeEnum.NameOnly)]
+            [RequiredIf(nameof(RegistrationType), RegistrationTypeEnum.NameAndEmail)]
+            [RequiredIf(nameof(RegistrationType), RegistrationTypeEnum.NameOnly)]
+            public string UserName { get; set; }
+
+            [Caption("Email Address"), Description("Enter your email address to register - This is the email address used by this site to communicate with you")]
+            [UIHint("Email"), EmailValidation, Trim]
+            [ProcessIf(nameof(RegistrationType), RegistrationTypeEnum.NameAndEmail)]
+            [ProcessIf(nameof(RegistrationType), RegistrationTypeEnum.EmailOnly)]
+            [RequiredIf(nameof(RegistrationType), RegistrationTypeEnum.NameAndEmail)]
+            [RequiredIf(nameof(RegistrationType), RegistrationTypeEnum.EmailOnly)]
+            public string Email { get; set; }
+
+            [Caption("Password"), Description("Enter your password")]
+            [UIHint("Password20"), StringLength(Globals.MaxPswd), Trim]
+            public string Password { get; set; }
+
+            [UIHint("Boolean")]
+            [Caption("Remember Me"), Description("Select this option so your information is saved and you don't need to login again when you return to this site (when using the same browser)")]
+            public bool RememberMe { get; set; }
+
+            [Caption("Verification Code"), Description("Please enter the verification code you received via email to validate your account")]
+            [UIHint("Text40"), StringLength(UserDefinition.MaxVerificationCode), Trim]
+            [SuppressIf("ShowVerification", false)]
+            public string VerificationCode { get; set; }
+
+            [Caption(""), Description("")]
+            [UIHint("ModuleAction"), ReadOnly, SuppressEmpty]
+            public ModuleAction ResendVerificationCode { get; set; }
+
+            [Caption("Captcha"), Description("Please verify that you're a human and not a spam bot")]
+            [UIHint("RecaptchaV2"), RecaptchaV2("Please verify that you're a human and not a spam bot")]
+            [SuppressIf(nameof(ShowCaptcha), false)]
+            public RecaptchaV2Data Captcha { get; set; }
 
             [UIHint("Hidden")]
             public bool ShowVerification { get; set; }
@@ -60,173 +117,12 @@ namespace YetaWF.Modules.Identity.Controllers {
             public List<FormButton> ExternalProviders { get; set; }
 
             public bool Success { get; set; }
+
+            [UIHint("Hidden")]
+            public RegistrationTypeEnum RegistrationType { get; set; }
+            [UIHint("Hidden")]
+            public bool AllowNewUser { get; set; }
         }
-
-
-        [Trim]
-        [Header("-<p>You are entering an area of our web site, for which you need to register using your name and password. " +
-                "If you are a new user, please register a new account now. If you already established an account earlier, please enter the account information here and click \"Log In\".</p>")]
-        [Legend("Account Information")]
-        public class LoginModelNameAllowNew : LoginModel {
-
-            public LoginModelNameAllowNew() { }
-
-            [Caption("Name"), Description("Enter your user name - This is the name you used when you registered on this site")]
-            [UIHint("Text40"), StringLength(Globals.MaxUser), UserNameValidation, Required, Trim]
-            public override string UserName { get { return base.UserName; } set { base.UserName = value; } }
-
-            [Caption("Password"), Description("Enter your password")]
-            [UIHint("Password20"), StringLength(Globals.MaxPswd), Trim]
-            public override string Password { get { return base.Password; } set { base.Password = value; } }
-
-            [UIHint("Boolean")]
-            [Caption("Remember Me"), Description("Select this option so your information is saved and you don't need to login again when you return to this site (when using the same browser)")]
-            public override bool RememberMe { get { return base.RememberMe; } set { base.RememberMe = value; } }
-
-            [Caption("Verification Code"), Description("Please enter the verification code you received via email to validate your account")]
-            [UIHint("Text40"), StringLength(UserDefinition.MaxVerificationCode), Trim, SuppressIf("ShowVerification", false)]
-            public override string VerificationCode { get { return base.VerificationCode; } set { base.VerificationCode = value; } }
-
-            [Caption(""), Description("")]
-            [UIHint("ModuleAction"), ReadOnly, SuppressEmpty]
-            public override ModuleAction ResendVerificationCode { get; set; }
-
-            [Caption("Captcha"), Description("Please verify that you're a human and not a spam bot")]
-            [UIHint("RecaptchaV2"), RecaptchaV2("Please verify that you're a human and not a spam bot"), SuppressIf("ShowCaptcha", false)]
-            public override RecaptchaV2Data Captcha { get; set; }
-        }
-
-        [Trim]
-        [Header("-<p>You are entering an area of our web site, for which you need to register using your email address and password. " +
-                "If you are a new user, please register a new account now. If you already established an account earlier, please enter the account information here and click \"Log In\".</p>")]
-        [Legend("Account Information")]
-        public class LoginModelEmailAllowNew : LoginModel {
-
-            public LoginModelEmailAllowNew() { }
-
-            [Caption("Email Address"), Description("Enter your email address - This is the email address you used when you registered on this site")]
-            [UIHint("Text40"), StringLength(Globals.MaxUser), UserNameValidation, Required, Trim]
-            public override string UserName { get { return base.UserName; } set { base.UserName = value; } }
-
-            [Caption("Password"), Description("Enter your password")]
-            [UIHint("Password20"), StringLength(Globals.MaxPswd), Trim]
-            public override string Password { get { return base.Password; } set { base.Password = value; } }
-
-            [UIHint("Boolean")]
-            [Caption("Remember Me"), Description("Select this option so your information is saved and you don't need to login again when you return to this site (when using the same browser)")]
-            public override bool RememberMe { get { return base.RememberMe; } set { base.RememberMe = value; } }
-
-            [Caption("Verification Code"), Description("Please enter the verification code you received via email to validate your account")]
-            [UIHint("Text40"), StringLength(UserDefinition.MaxVerificationCode), Trim, SuppressIf("ShowVerification", false)]
-            public override string VerificationCode { get { return base.VerificationCode; } set { base.VerificationCode = value; } }
-
-            [Caption(""), Description("")]
-            [UIHint("ModuleAction"), ReadOnly, SuppressEmpty]
-            public override ModuleAction ResendVerificationCode { get; set; }
-
-            [Caption("Captcha"), Description("Please verify that you're a human and not a spam bot")]
-            [UIHint("RecaptchaV2"), RecaptchaV2("Please verify that you're a human and not a spam bot"), SuppressIf("ShowCaptcha", false)]
-            public override RecaptchaV2Data Captcha { get; set; }
-        }
-
-        [Trim]
-        [Header("-<p>If you have an account, please enter the account information here and click \"Log In\". This site does not accept new user registrations.</p>")]
-        [Legend("Account Information")]
-        public class LoginModelNameNoNew : LoginModel {
-
-            public LoginModelNameNoNew() { }
-
-            [Caption("Name"), Description("Enter your user name - This is the name you used when you registered on this site")]
-            [UIHint("Text40"), StringLength(Globals.MaxUser), UserNameValidation, Required, Trim]
-            public override string UserName { get { return base.UserName; } set { base.UserName = value; } }
-
-            [Caption("Password"), Description("Enter your password")]
-            [UIHint("Password20"), StringLength(Globals.MaxPswd), Trim]
-            public override string Password { get { return base.Password; } set { base.Password = value; } }
-
-            [UIHint("Boolean")]
-            [Caption("Remember Me"), Description("Select this option so your information is saved and you don't need to login again when you return to this site (when using the same browser)")]
-            public override bool RememberMe { get { return base.RememberMe; } set { base.RememberMe = value; } }
-
-            [Caption("Verification Code"), Description("Please enter the verification code you received via email to validate your account")]
-            [UIHint("Text40"), StringLength(UserDefinition.MaxVerificationCode), Trim, SuppressIf("ShowVerification", false)]
-            public override string VerificationCode { get { return base.VerificationCode; } set { base.VerificationCode = value; } }
-
-            [Caption(""), Description("")]
-            [UIHint("ModuleAction"), ReadOnly, SuppressEmpty]
-            public override ModuleAction ResendVerificationCode { get; set; }
-
-            [Caption("Captcha"), Description("Please verify that you're a human and not a spam bot")]
-            [UIHint("RecaptchaV2"), RecaptchaV2("Please verify that you're a human and not a spam bot"), SuppressIf("ShowCaptcha", false)]
-            public override RecaptchaV2Data Captcha { get; set; }
-        }
-
-        [Trim]
-        [Header("-<p>If you have an account, please enter the account information here and click \"Log In\". This site does not accept new user registrations.</p>")]
-        [Legend("Account Information")]
-        public class LoginModelEmailNoNew : LoginModel {
-
-            public LoginModelEmailNoNew() { }
-
-            [Caption("Email Address"), Description("Enter your email address - This is the email address you used when you registered on this site")]
-            [UIHint("Text40"), StringLength(Globals.MaxUser), UserNameValidation, Required, Trim]
-            public override string UserName { get { return base.UserName; } set { base.UserName = value; } }
-
-            [Caption("Password"), Description("Enter your password")]
-            [UIHint("Password20"), StringLength(Globals.MaxPswd), Trim]
-            public override string Password { get { return base.Password; } set { base.Password = value; } }
-
-            [UIHint("Boolean")]
-            [Caption("Remember Me"), Description("Select this option so your information is saved and you don't need to login again when you return to this site (when using the same browser)")]
-            public override bool RememberMe { get { return base.RememberMe; } set { base.RememberMe = value; } }
-
-            [Caption("Verification Code"), Description("Please enter the verification code you received via email to validate your account")]
-            [UIHint("Text40"), StringLength(UserDefinition.MaxVerificationCode), Trim, SuppressIf("ShowVerification", false)]
-            public override string VerificationCode { get { return base.VerificationCode; } set { base.VerificationCode = value; } }
-
-            [Caption(""), Description("")]
-            [UIHint("ModuleAction"), ReadOnly, SuppressEmpty]
-            public override ModuleAction ResendVerificationCode { get; set; }
-
-            [Caption("Captcha"), Description("Please verify that you're a human and not a spam bot")]
-            [UIHint("RecaptchaV2"), RecaptchaV2("Please verify that you're a human and not a spam bot"), SuppressIf("ShowCaptcha", false)]
-            public override RecaptchaV2Data Captcha { get; set; }
-        }
-
-        private LoginModel GetLoginModel(LoginConfigData config, LoginModel origModel = null) {
-            LoginModel model;
-            if (config.AllowUserRegistration) {
-                switch (config.RegistrationType) {
-                    default:
-                    case Modules.RegistrationTypeEnum.EmailOnly:
-                        model = new LoginModelEmailAllowNew();
-                        break;
-                    case Modules.RegistrationTypeEnum.NameOnly:
-                        model = new LoginModelNameAllowNew();
-                        break;
-                    case Modules.RegistrationTypeEnum.NameAndEmail:
-                        model = new LoginModelNameAllowNew();
-                        break;
-                }
-            } else {
-                switch (config.RegistrationType) {
-                    default:
-                    case Modules.RegistrationTypeEnum.EmailOnly:
-                        model = new LoginModelEmailNoNew();
-                        break;
-                    case Modules.RegistrationTypeEnum.NameOnly:
-                        model = new LoginModelNameNoNew();
-                        break;
-                    case Modules.RegistrationTypeEnum.NameAndEmail:
-                        model = new LoginModelNameNoNew();
-                        break;
-                }
-            }
-            if (origModel != null)
-                ObjectSupport.CopyData(origModel, model);
-            return model;
-        }
-
 
         [AllowGet]
         public async Task<ActionResult> Login(string name, string pswd, string v, bool closeOnLogin = false, bool __f = false) {
@@ -234,16 +130,18 @@ namespace YetaWF.Modules.Identity.Controllers {
             LoginConfigData config = await LoginConfigDataProvider.GetConfigAsync();
             bool isPersistent = config.PersistentLogin;
 
-            LoginModel model = GetLoginModel(config);
-            model.UserName = name;
-            model.Password = pswd;
-            model.VerificationCode = v;
-            model.Captcha = new RecaptchaV2Data();
-            model.RememberMe = isPersistent;
-            model.CloseOnLogin = closeOnLogin;
-            model.ShowVerification = !string.IsNullOrWhiteSpace(model.VerificationCode);
-            model.ShowCaptcha = config.Captcha && !model.ShowVerification && !Manager.IsLocalHost;
-
+            LoginModel model = new LoginModel {
+                AllowNewUser = config.AllowUserRegistration,
+                RegistrationType = config.RegistrationType,
+                UserName = name,
+                Password = pswd,
+                VerificationCode = v,
+                Captcha = new RecaptchaV2Data(),
+                RememberMe = isPersistent,
+                CloseOnLogin = closeOnLogin,
+                ShowVerification = !string.IsNullOrWhiteSpace(v),
+                ShowCaptcha = config.Captcha && string.IsNullOrWhiteSpace(v) && !Manager.IsLocalHost,
+            };
             using (LoginConfigDataProvider logConfigDP = new LoginConfigDataProvider()) {
                 List<LoginConfigDataProvider.LoginProviderDescription> loginProviders = await logConfigDP.GetActiveExternalLoginProvidersAsync();
                 if (loginProviders.Count > 0 && Manager.IsInPopup)
@@ -273,16 +171,19 @@ namespace YetaWF.Modules.Identity.Controllers {
         public async Task<ActionResult> Login_Partial(LoginModel model) {
 
             LoginConfigData config = await LoginConfigDataProvider.GetConfigAsync();
+            model.AllowNewUser = config.AllowUserRegistration;
+            model.RegistrationType = config.RegistrationType;
 
-            LoginModel realModel = GetLoginModel(config, model);
-
-            if (realModel.ShowCaptcha != (config.Captcha && !realModel.ShowVerification && !Manager.IsLocalHost))
+            if (model.ShowCaptcha != (config.Captcha && !model.ShowVerification && !Manager.IsLocalHost))
                 throw new InternalError("Hidden field tampering detected");
 
             if (!ModelState.IsValid)
-                return PartialView(realModel);
+                return PartialView(model);
 
-            return await CompleteLoginAsync(realModel, config, useTwoStep: true);
+            if (config.RegistrationType == RegistrationTypeEnum.EmailOnly)
+                model.UserName = model.Email;
+
+            return await CompleteLoginAsync(model, config, useTwoStep: true);
         }
 
         [AllowPost]
@@ -295,10 +196,13 @@ namespace YetaWF.Modules.Identity.Controllers {
                 return NotAuthorized();
 
             LoginConfigData config = await LoginConfigDataProvider.GetConfigAsync();
-            LoginModel model = GetLoginModel(config);
-            model.RememberMe = true;
-            model.UserName = name;
-            model.Password = password;
+            LoginModel model = new LoginModel {
+                AllowNewUser = config.AllowUserRegistration,
+                RegistrationType = config.RegistrationType,
+                RememberMe = true,
+                UserName = name,
+                Password = password,
+            };
 
             ActionResult result = await CompleteLoginAsync(model, await LoginConfigDataProvider.GetConfigAsync(), useTwoStep: false);
             if (!model.Success)
@@ -315,10 +219,13 @@ namespace YetaWF.Modules.Identity.Controllers {
                 return NotAuthorized();
 
             LoginConfigData config = await LoginConfigDataProvider.GetConfigAsync();
-            LoginModel model = GetLoginModel(config);
-            model.RememberMe = true;
-            model.UserName = name;
-            model.Password = password;
+            LoginModel model = new LoginModel {
+                AllowNewUser = config.AllowUserRegistration,
+                RegistrationType = config.RegistrationType,
+                RememberMe = true,
+                UserName = name,
+                Password = password
+            };
 
             ActionResult result = await CompleteLoginAsync(model, await LoginConfigDataProvider.GetConfigAsync(), useTwoStep: false);
             if (!model.Success)

@@ -26,5 +26,7 @@ img.yform-warningicon {
       display: none; } }
 
 fieldset {
-  line-height: 100%;
+  line-height: 140%;
   padding-bottom: .2em; }
+  fieldset p {
+    margin-bottom: .2em; }
