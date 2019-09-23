@@ -78,9 +78,7 @@ namespace YetaWF.Modules.Identity.Controllers {
 
             [Caption("Email Address"), Description("Enter your email address to register - This is the email address used by this site to communicate with you")]
             [UIHint("Email"), EmailValidation, Trim]
-            [ProcessIf(nameof(RegistrationType), RegistrationTypeEnum.NameAndEmail)]
             [ProcessIf(nameof(RegistrationType), RegistrationTypeEnum.EmailOnly)]
-            [RequiredIf(nameof(RegistrationType), RegistrationTypeEnum.NameAndEmail)]
             [RequiredIf(nameof(RegistrationType), RegistrationTypeEnum.EmailOnly)]
             public string Email { get; set; }
 
