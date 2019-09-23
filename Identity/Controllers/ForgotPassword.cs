@@ -38,11 +38,16 @@ namespace YetaWF.Modules.Identity.Controllers {
             [TextAbove("You can request help recovering your password with your account name. Information will be sent to the registered email address and should arrive in your inbox within a few minutes. Please make sure to update your spam filters to avoid rejecting this email.")]
             [Caption("Name"), Description("Enter the name associated with your account")]
             [UIHint("Text40"), StringLength(Globals.MaxUser), UserNameValidation, Trim]
-            [ProcessIf(nameof(RegistrationType), RegistrationTypeEnum.NameAndEmail)]
             [ProcessIf(nameof(RegistrationType), RegistrationTypeEnum.NameOnly)]
-            [RequiredIf(nameof(RegistrationType), RegistrationTypeEnum.NameAndEmail)]
             [RequiredIf(nameof(RegistrationType), RegistrationTypeEnum.NameOnly)]
             public string UserName { get; set; }
+
+            [TextAbove("You can request help recovering your password with your name or your email address. Information will be sent to your email address and should arrive in your inbox within a few minutes. Please make sure to update your spam filters to avoid rejecting this email.")]
+            [Caption("Name or Email Address"), Description("Enter the name or email address associated with your account")]
+            [UIHint("Text40"), StringLength(Globals.MaxEmail), Trim]
+            [ProcessIf(nameof(RegistrationType), RegistrationTypeEnum.NameAndEmail)]
+            [RequiredIf(nameof(RegistrationType), RegistrationTypeEnum.NameAndEmail)]
+            public string UserNameOrEmail { get; set; }
 
             [Caption("Captcha"), Description("Please verify that you're a human and not a spam bot")]
             [UIHint("RecaptchaV2"), RecaptchaV2("Please verify that you're a human and not a spam bot"), SuppressIf("ShowCaptcha", false)]
@@ -87,11 +92,20 @@ namespace YetaWF.Modules.Identity.Controllers {
                 UserDefinition userDef;
                 switch (model.RegistrationType) {
                     case RegistrationTypeEnum.NameOnly:
-                    case RegistrationTypeEnum.NameAndEmail:
                         userDef = await userDP.GetItemAsync(model.UserName);
                         if (userDef == null) {
                             ModelState.AddModelError(nameof(model.UserName), this.__ResStr("badName", "According to our records there is no account associated with this name"));
                             return PartialView(model);
+                        }
+                        break;
+                    case RegistrationTypeEnum.NameAndEmail:
+                        userDef = await userDP.GetItemAsync(model.UserNameOrEmail);
+                        if (userDef == null) {
+                            userDef = await userDP.GetItemByEmailAsync(model.UserNameOrEmail);
+                            if (userDef == null) {
+                                ModelState.AddModelError(nameof(model.UserNameOrEmail), this.__ResStr("badNameEmail", "According to our records there is no account associated with this name or email address"));
+                                return PartialView(model);
+                            }
                         }
                         break;
                     default:
@@ -108,6 +122,7 @@ namespace YetaWF.Modules.Identity.Controllers {
                     if (await logInfoDP.IsExternalUserAsync(Manager.UserId)) {
                         ModelState.AddModelError(nameof(model.Email), this.__ResStr("extUser", "This account can only be accessed using an external login provider"));
                         ModelState.AddModelError(nameof(model.UserName), this.__ResStr("extUser", "This account can only be accessed using an external login provider"));
+                        ModelState.AddModelError(nameof(model.UserNameOrEmail), this.__ResStr("extUser", "This account can only be accessed using an external login provider"));
                         return PartialView(model);
                     }
                 }
