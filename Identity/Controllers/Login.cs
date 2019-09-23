@@ -48,25 +48,25 @@ namespace YetaWF.Modules.Identity.Controllers {
             [UIHint("Raw"), ReadOnly]
             [SuppressIfNot(nameof(RegistrationType), RegistrationTypeEnum.NameAndEmail)]
             [SuppressIfNot(nameof(AllowNewUser), true)]
-            public string HeaderNameAndEmailNewUser { get { return this.__ResStr("", "<p>You are entering an area of our web site, for which you need to register using your name and password. If you are a new user, please register a new account now. If you already established an account earlier, please enter the account information here and click \"Log In\".</p>"); } }
+            public string HeaderNameAndEmailNewUser { get { return this.__ResStr("headerNameEmailNew", "<p>You are entering an area of our web site, for which you need to register using your name and password. If you are a new user, please register a new account now. If you already established an account earlier, please enter the account information here and click \"Log In\".</p>"); } }
 
             [Caption(""), Description("")]
             [UIHint("Raw"), ReadOnly]
             [SuppressIfNot(nameof(RegistrationType), RegistrationTypeEnum.EmailOnly)]
             [SuppressIfNot(nameof(AllowNewUser), true)]
-            public string HeaderEmailNewUser { get { return this.__ResStr("", "<p>You are entering an area of our web site, for which you need to register using your email address and password. If you are a new user, please register a new account now. If you already established an account earlier, please enter the account information here and click \"Log In\".</p>"); } }
+            public string HeaderEmailNewUser { get { return this.__ResStr("headerEmailNew", "<p>You are entering an area of our web site, for which you need to register using your email address and password. If you are a new user, please register a new account now. If you already established an account earlier, please enter the account information here and click \"Log In\".</p>"); } }
 
             [Caption(""), Description("")]
             [UIHint("Raw"), ReadOnly]
             [SuppressIfNot(nameof(RegistrationType), RegistrationTypeEnum.NameAndEmail)]
             [SuppressIfNot(nameof(AllowNewUser), false)]
-            public string HeaderNameAndEmail { get { return this.__ResStr("", "<p>If you have an account, please enter the account information here and click \"Log In\". This site does not accept new user registrations.</p>"); } }
+            public string HeaderNameAndEmail { get { return this.__ResStr("headerNameEmail", "<p>If you have an account, please enter the account information here and click \"Log In\". This site does not accept new user registrations.</p>"); } }
 
             [Caption(""), Description("")]
             [UIHint("Raw"), ReadOnly]
             [SuppressIfNot(nameof(RegistrationType), RegistrationTypeEnum.EmailOnly)]
             [SuppressIfNot(nameof(AllowNewUser), false)]
-            public string HeaderEmail { get { return this.__ResStr("", "<p>If you have an account, please enter the account information here and click \"Log In\". This site does not accept new user registrations.</p>"); } }
+            public string HeaderEmail { get { return this.__ResStr("headerName", "<p>If you have an account, please enter the account information here and click \"Log In\". This site does not accept new user registrations.</p>"); } }
 
             [Caption("Name"), Description("Enter your user name - This is the name you used when you registered on this site")]
             [UIHint("Text40"), StringLength(Globals.MaxUser), UserNameValidation, Trim]
