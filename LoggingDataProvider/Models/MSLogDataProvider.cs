@@ -12,6 +12,7 @@ using YetaWF.Core.Log;
 using YetaWF.Core.Packages;
 using YetaWF.Core.Serializers;
 using YetaWF.Core.Support;
+using YetaWF2.Logger;
 
 namespace YetaWF.Modules.LoggingDataProvider.DataProvider.MSLog {
 
@@ -25,6 +26,7 @@ namespace YetaWF.Modules.LoggingDataProvider.DataProvider.MSLog {
 
         public LogRecordDataProvider() : base() {
             Logger = (ILogger)YetaWFManager.ServiceProvider.GetService(typeof(ILogger<LogRecordDataProvider>));
+            YetaWFLoggerProvider.IgnoredCategory = typeof(LogRecordDataProvider).FullName;
         }
 
         // API
