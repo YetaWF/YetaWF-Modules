@@ -68,9 +68,14 @@ namespace YetaWF.Modules.ModuleEdit.Modules {
         }
 
         public ModuleAction GetAction_Help(ModuleDefinition mod) {
-            Package package = Package.GetCurrentPackage(mod);
+            string url = mod.HelpURL;
+            if (string.IsNullOrWhiteSpace(url)) {
+                Package package = Package.GetCurrentPackage(mod);
+                url = package.InfoLink;
+            }
+            if (string.IsNullOrWhiteSpace(url)) return null;
             return new ModuleAction(this) {
-                Url = package.InfoLink,
+                Url = url,
                 QueryArgsDict = new QueryHelper(new QueryDictionary { { Globals.Link_NoEditMode, "y" }, { Globals.Link_NoPageControl, "y" } }),
                 Image = "#Help",
                 LinkText = this.__ResStr("modHelpLink", "Help"),
