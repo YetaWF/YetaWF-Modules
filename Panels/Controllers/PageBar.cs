@@ -18,6 +18,7 @@ using YetaWF.Modules.Panels.Modules;
 using YetaWF.Core.Components;
 using YetaWF.Modules.Panels.Components;
 using YetaWF.Core.Localize;
+using YetaWF.Core.Support.UrlHistory;
 #if MVC6
 using Microsoft.AspNetCore.Mvc;
 #else
@@ -86,6 +87,7 @@ namespace YetaWF.Modules.Panels.Controllers {
                     DefaultImage_Data = Module.DefaultImage_Data
                 };
             } else {
+
                 model = new Model {
                     PanelInfo = new Models.PageBarInfo() {
                         Style = Module.Style,
@@ -94,6 +96,32 @@ namespace YetaWF.Modules.Panels.Controllers {
                         Panels = await GetPanelsAsync()
                     }
                 };
+
+                // Check whether current page contents are accessible and get pane contents
+                Uri contentUri = null;
+                string contentUrl;
+                Manager.TryGetUrlArg<string>("!ContentUrl", out contentUrl);
+                if (!string.IsNullOrWhiteSpace(contentUrl)) {
+                    if (contentUrl.StartsWith("/"))
+                        contentUrl = Manager.CurrentSite.MakeUrl(contentUrl);
+                    contentUri = new Uri(contentUrl);
+                } else {
+                    if (model.PanelInfo.Panels.Count > 0)
+                        contentUri = new Uri(model.PanelInfo.Panels[0].Url);
+                }
+                if (contentUri != null) {
+                    PageDefinition page = await PageDefinition.LoadFromUrlAsync(contentUri.AbsolutePath);
+                    if (page != null) {
+                        if (page.IsAuthorized_View()) {
+                            model.PanelInfo.ContentUri = contentUri;
+                            model.PanelInfo.ContentPage = page;
+                        } else {
+                            if (!Manager.HaveUser)
+                                return RedirectToUrl(Manager.CurrentSite.LoginUrl);
+                        }
+                    }
+                }
+
             }
             return View(model);
         }

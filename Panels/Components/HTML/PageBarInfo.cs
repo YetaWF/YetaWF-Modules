@@ -59,26 +59,9 @@ namespace YetaWF.Modules.Panels.Components {
                 activeCss = " t_active";
             }
 
-            // Current page contents
             string paneContents = "";
-            string contentUrl;
-            Uri contentUri = null;
-            Manager.TryGetUrlArg<string>("!ContentUrl", out contentUrl);
-            if (!string.IsNullOrWhiteSpace(contentUrl)) {
-                if (contentUrl.StartsWith("/"))
-                    contentUrl = Manager.CurrentSite.MakeUrl(contentUrl);
-                contentUri = new Uri(contentUrl);
-            } else {
-                if (model.Panels.Count > 0) {
-                    contentUri = new Uri(model.Panels[0].Url);
-                }
-            }
-            if (contentUri != null) {
-                PageDefinition page = await PageDefinition.LoadFromUrlAsync(contentUri.AbsolutePath);
-                if (page != null && page.IsAuthorized_View()) {
-                    paneContents = await page.RenderPaneAsync(HtmlHelper, pane == "" ? Globals.MainPane : pane);
-                }
-            }
+            if (model.ContentPage != null)
+                paneContents = await model.ContentPage.RenderPaneAsync(HtmlHelper, pane == "" ? Globals.MainPane : pane);
 
             string pageUrl = Manager.CurrentPage.EvaluatedCanonicalUrl;
             string pageUrlOnly;
@@ -96,9 +79,9 @@ namespace YetaWF.Modules.Panels.Components {
                 string actionLinkClass = "yaction-link";
 
                 string active = "";
-                if (contentUri != null) {
+                if (model.ContentUri != null) {
                     Uri uriLink = new Uri(entry.Url);
-                    if (uriLink.AbsolutePath == contentUri.AbsolutePath) {
+                    if (uriLink.AbsolutePath.ToLower() == model.ContentUri.AbsolutePath.ToLower()) {
                         active = activeCss;
                     }
                 }
