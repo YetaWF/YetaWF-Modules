@@ -249,7 +249,6 @@ namespace YetaWF.Modules.PageEdit.Controllers {
                 UserId_List = config.Users;
                 UserId = Manager.UserId;
 
-                List<int> list = Manager.UserRoles;
                 int superuserRole = Resource.ResourceAccess.GetSuperuserRoleId();
                 if (Manager.UserRoles != null && Manager.UserRoles.Contains(superuserRole))
                     SuperuserCurrent = true;// the current user is a superuser
