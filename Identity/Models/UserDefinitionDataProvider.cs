@@ -155,7 +155,7 @@ namespace YetaWF.Modules.Identity.DataProvider {
             return await GetItemAsync(filters);
         }
         public async Task<UserDefinition> GetItemAsync(string userName) {
-            if (string.Compare(userName, SuperuserDefinitionDataProvider.SuperUserName, true) == 0) {
+            if (SuperuserDefinitionDataProvider.SuperuserAvailable && string.Compare(userName, SuperuserDefinitionDataProvider.SuperUserName, true) == 0) {
                 using (SuperuserDefinitionDataProvider superDP = new SuperuserDefinitionDataProvider()) {
                     return await superDP.GetSuperuserAsync();
                 }
@@ -166,9 +166,12 @@ namespace YetaWF.Modules.Identity.DataProvider {
             UserDefinition user = await DataProvider.GetOneRecordAsync(filters);
             if (user != null)
                 return user;
-            using (SuperuserDefinitionDataProvider superDP = new SuperuserDefinitionDataProvider()) {
-                return await superDP.GetItemAsync(filters);
+            if (SuperuserDefinitionDataProvider.SuperuserAvailable) {
+                using (SuperuserDefinitionDataProvider superDP = new SuperuserDefinitionDataProvider()) {
+                    return await superDP.GetItemAsync(filters);
+                }
             }
+            return null;
         }
         public async Task<UserDefinition> GetItemByUserIdAsync(int id) { return await GetItemAsync(id); }
         public async Task<UserDefinition> GetItemByEmailAsync(string email) {
@@ -263,7 +266,7 @@ namespace YetaWF.Modules.Identity.DataProvider {
         }
         public async Task<DataProviderGetRecords<UserDefinition>> GetItemsAsync(int skip, int take, List<DataProviderSortInfo> sort, List<DataProviderFilterInfo> filters, bool IncludeSuperuser = true) {
 
-            if (IncludeSuperuser) {
+            if (IncludeSuperuser && SuperuserDefinitionDataProvider.SuperuserAvailable) {
                 UserDefinition superuser = null;
                 int origSkip = skip, origTake = take;
 
