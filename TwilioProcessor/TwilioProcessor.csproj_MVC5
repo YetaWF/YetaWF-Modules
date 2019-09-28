@@ -36,12 +36,6 @@
     <Compile Include="Controllers\Support\Verify.cs" />
     <Compile Include="Controllers\TwilioResponse.cs" />
     <Compile Include="Controllers\TwilioConfig.cs" />
-    <Compile Include="Models\Attributes\AreaCodeAttribute.cs" />
-    <Compile Include="Models\Attributes\PhoneNumberAttribute.cs" />
-    <Compile Include="Models\Attributes\PhoneNumberNationalAttribute.cs" />
-    <Compile Include="Models\FileDataProvider.cs" />
-    <Compile Include="Models\SQLDataProvider.cs" />
-    <Compile Include="Models\TwilioConfigDataProvider.cs" />
     <Compile Include="Modules\TwilioConfig.cs" />
     <Compile Include="Startup\Info.cs" />
     <Compile Include="Startup\AreaRegistration.cs" />
@@ -74,6 +68,10 @@
     <ProjectReference Include="..\..\..\DataProvider\SQL\SQL.csproj">
       <Project>{6a90eab3-a9e4-4a2c-90d9-145859790c46}</Project>
       <Name>SQL</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\TwilioProcessorDataProvider\TwilioProcessorDataProvider.csproj">
+      <Project>{48ea4dda-3b1e-46b0-af4d-13aa46e921d0}</Project>
+      <Name>TwilioProcessorDataProvider</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
@@ -151,7 +149,9 @@
       <Private>True</Private>
     </Reference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Models\" />
+  </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>

@@ -5,7 +5,7 @@
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{BE293A6C-8F06-4B4C-8B88-65787F57F098}</ProjectGuid>
+    <ProjectGuid>{48EA4DDA-3B1E-46B0-AF4D-13AA46E921D0}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Softelvdm.Modules.TwilioProcessorDataProvider</RootNamespace>
@@ -39,7 +39,6 @@
     <Compile Include="Models\FileDataProvider.cs" />
     <Compile Include="Models\SQLDataProvider.cs" />
     <Compile Include="Models\TwilioConfigDataProvider.cs" />
-    <Compile Include="Modules\TwilioConfig.cs" />
     <Compile Include="Startup\Info.cs" />
     <Compile Include="Startup\AreaRegistration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -48,6 +47,7 @@
     <None Include="app.config" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Addons\placeholder.txt" />
     <Content Include="packages.config" />
   </ItemGroup>
   <ItemGroup>

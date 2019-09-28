@@ -5,7 +5,7 @@
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{EAE0AE43-F32E-436D-8F4E-302AACB99C16}</ProjectGuid>
+    <ProjectGuid>{267C19BF-1B4A-48D2-A803-781AB2952736}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>YetaWF.Modules.LoggingDataProvider</RootNamespace>
