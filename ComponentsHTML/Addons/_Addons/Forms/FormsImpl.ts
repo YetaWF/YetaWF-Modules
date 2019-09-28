@@ -23,6 +23,13 @@ namespace YetaWF_ComponentsHTML {
                 $err.remove();
                 $val.before(`<img src="${$YetaWF.htmlAttrEscape(YConfigs.Forms.CssWarningIconUrl)}" name=${name} class="${YConfigs.Forms.CssWarningIcon}" ${YConfigs.Basics.CssTooltip}="${$YetaWF.htmlAttrEscape($val.text())}"/>`);
             });
+
+            // find the first field in each tab control that has an input validation error and activate that tab
+            // This will not work for nested tabs. Only the lowermost tab will be activated.
+            var elems = $YetaWF.getElementsBySelector("div.yt_propertylist.t_tabbed", [partialForm]);
+            elems.forEach((tabctrl: HTMLElement, index: number) => {
+                YetaWF_FormsImpl.setErrorInTab(tabctrl);
+            });
         }
 
         // Validation
