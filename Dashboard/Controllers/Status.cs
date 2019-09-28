@@ -26,6 +26,7 @@ namespace YetaWF.Modules.Dashboard.Controllers {
 
             [Caption("YetaWF Version"), Description("The YetaWF version installed (Core Package)")]
             [UIHint("String"), ReadOnly]
+            [HelpLink("https://YetaWF.com")]
             public string CoreVersion{ get; set; }
 
             [Caption("ASP.NET/MVC Version"), Description("The ASP.NET/MVC version used")]
