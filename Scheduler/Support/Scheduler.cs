@@ -171,6 +171,7 @@ namespace YetaWF.Modules.Scheduler.Support {
                 }
                 try {
                     schedulingThreadRunning = false;
+                    Logging.AddLog($"Waiting {delayTime}");
                     Thread.Sleep(delayTime);
                 } catch (ThreadInterruptedException) {
                     // thread was interrupted because there is work to be done
@@ -399,8 +400,10 @@ namespace YetaWF.Modules.Scheduler.Support {
 
             item.Errors = errors.ToString();
             item.SetNextRuntime();
-            if (nextRun != null)
+            if (nextRun != null) {
+                Logging.AddLog($"Next run at {nextRun}");
                 item.Next = nextRun;
+            }
 
             try {
                 await schedDP.UpdateItemAsync(item);
