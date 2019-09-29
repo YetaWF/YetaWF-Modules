@@ -92,7 +92,7 @@ namespace YetaWF.Modules.Identity.Controllers {
 
             [Caption("Verification Code"), Description("Please enter the verification code you received via email to validate your account")]
             [UIHint("Text40"), StringLength(UserDefinition.MaxVerificationCode), Trim]
-            [SuppressIf("ShowVerification", false)]
+            [SuppressIf(nameof(ShowVerification), false)]
             public string VerificationCode { get; set; }
 
             [Caption(""), Description("")]
@@ -132,6 +132,7 @@ namespace YetaWF.Modules.Identity.Controllers {
                 AllowNewUser = config.AllowUserRegistration,
                 RegistrationType = config.RegistrationType,
                 UserName = name,
+                Email = name,
                 Password = pswd,
                 VerificationCode = v,
                 Captcha = new RecaptchaV2Data(),
