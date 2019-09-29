@@ -1,7 +1,7 @@
 *************************************************************************************
 Account Suspension Notice
 *************************************************************************************
- 
+
 Unfortunately we have suspended your account at [Site,SiteDomain].
 
 If you believe your account has been suspended in error, please let us know
