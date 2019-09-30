@@ -293,7 +293,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                         caret = "<i class='t_icright'></i>";
                     else
                         caret = "<i class='t_icdown'></i>";
-                    if (urlProp.GetPropertyValue<string>(record) != null)
+                    if (urlProp != null && urlProp.GetPropertyValue<string>(record) != null)
                         icon = "<i class='t_icfile'></i>";
                     else
                         icon = "<i class='t_icfolder'></i>";
