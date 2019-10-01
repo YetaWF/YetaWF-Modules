@@ -12,8 +12,6 @@ using YetaWF.Core.Support;
 #if MVC6
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.AspNetCore.Mvc.ViewFeatures;
-using Microsoft.AspNetCore.Mvc.ViewFeatures.Internal;
 #else
 using System.Web.Mvc;
 using System.Web.Mvc.Html;
