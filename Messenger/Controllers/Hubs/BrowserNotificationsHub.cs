@@ -4,8 +4,9 @@ using System.Threading.Tasks;
 using YetaWF.Core;
 using YetaWF.Core.Support;
 using YetaWF.Core.Log;
+using Microsoft.AspNetCore.Routing;
+using Microsoft.AspNetCore.Builder;
 #if MVC6
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.DependencyInjection;
 #else
@@ -17,12 +18,11 @@ namespace YetaWF.Modules.Messenger.Controllers {
     public class YetaWF_Messenger_BrowserNotificationsHub : Hub, ISignalRHub {
 
 #if MVC6
-        public void AddToRouteMap(HubRouteBuilder routes) {
+        public void MapHub(IEndpointRouteBuilder bldr) {
             string url = SignalR.MakeUrl(nameof(YetaWF_Messenger_BrowserNotificationsHub));
             Logging.AddLog($"{nameof(YetaWF_Messenger_BrowserNotificationsHub)} adding route {url}");
-            routes.MapHub<YetaWF_Messenger_BrowserNotificationsHub>(url);
+            bldr.MapHub<YetaWF_Messenger_BrowserNotificationsHub>(url);
         }
-
         public override Task OnConnectedAsync() {
             return base.OnConnectedAsync();
         }
@@ -43,5 +43,4 @@ namespace YetaWF.Modules.Messenger.Controllers {
 #endif
         }
     }
-
 }

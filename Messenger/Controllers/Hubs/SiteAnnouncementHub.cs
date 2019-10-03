@@ -3,6 +3,8 @@
 using System.Threading.Tasks;
 using YetaWF.Core;
 using YetaWF.Core.Support;
+using Microsoft.AspNetCore.Routing;
+using Microsoft.AspNetCore.Builder;
 #if MVC6
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.DependencyInjection;
@@ -16,14 +18,13 @@ namespace YetaWF.Modules.Messenger.Controllers {
     public class YetaWF_Messenger_SiteAnnouncementsHub : Hub, ISignalRHub {
 
 #if MVC6
-        public void AddToRouteMap(HubRouteBuilder routes) {
+        public void MapHub(IEndpointRouteBuilder bldr) {
             string url = SignalR.MakeUrl(nameof(YetaWF_Messenger_SiteAnnouncementsHub));
             Logging.AddLog($"{nameof(YetaWF_Messenger_SiteAnnouncementsHub)} adding route {url}");
-            routes.MapHub<YetaWF_Messenger_SiteAnnouncementsHub>(url);
+            bldr.MapHub<YetaWF_Messenger_SiteAnnouncementsHub>(url);
         }
 #else
 #endif
-
 
         public static Task SendMessageAsync(string text, string title) {
 #if MVC6
