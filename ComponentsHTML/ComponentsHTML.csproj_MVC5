@@ -42,6 +42,8 @@
     <Compile Include="Components\ColorPicker.cs" />
     <Compile Include="Components\CountryISO3166Id.cs" />
     <Compile Include="Components\DateLong.cs" />
+    <Compile Include="Components\DayOfMonth.cs" />
+    <Compile Include="Components\DayOfWeek.cs" />
     <Compile Include="Components\FormButtons.cs" />
     <Compile Include="Components\TimeSpanDHM.cs" />
     <Compile Include="Components\TimeSpanHM.cs" />
@@ -182,6 +184,8 @@
     <Content Include="Addons\_Templates\BooleanText\filelistCSS.txt" />
     <Content Include="Addons\_Templates\Boolean\filelistJS.txt" />
     <Content Include="Addons\_Templates\Hidden\filelistJS.txt" />
+    <Content Include="Addons\_Templates\PopupSkin\filelistCSS.txt" />
+    <Content Include="Addons\_Templates\PopupSkin\filelistJS.txt" />
     <Content Include="Addons\_Templates\PropertyList\images\Collapse16.png" />
     <Content Include="Addons\_Templates\PropertyList\images\Expand.png" />
     <Content Include="Addons\_Templates\PropertyList\images\Expand16.png" />
@@ -251,6 +255,7 @@
     <None Include="Addons\_Templates\Currency\Currency.scss" />
     <Content Include="Addons\_Templates\Currency\filelistCSS.txt" />
     <Content Include="Addons\_Templates\Currency\filelistJS.txt" />
+    <None Include="Addons\_Templates\PopupSkin\PopupSkin.scss" />
     <None Include="Addons\_Templates\Tree\Tree.scss" />
     <None Include="Addons\_Templates\WeeklyHours\WeeklyHours.scss" />
     <None Include="Addons\_Templates\Time\Time.scss" />
@@ -259,6 +264,7 @@
     <TypeScriptCompile Include="Addons\_Templates\Boolean\BooleanEdit.ts" />
     <TypeScriptCompile Include="Addons\_Templates\Currency\Currency.ts" />
     <TypeScriptCompile Include="Addons\_Templates\Hidden\Hidden.ts" />
+    <TypeScriptCompile Include="Addons\_Templates\PopupSkin\PopupSkin.ts" />
     <TypeScriptCompile Include="Addons\_Templates\Tree\Tree.ts" />
     <TypeScriptCompile Include="Addons\_Templates\ModuleSelection\ModuleSelectionEdit.ts" />
     <TypeScriptCompile Include="Addons\_Templates\MultiString\MultiStringEdit.ts" />
