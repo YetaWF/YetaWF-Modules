@@ -169,7 +169,6 @@
     <Compile Include="Modules\TemplateUserIdModule.cs" />
     <Compile Include="Scheduler\PasswordExpiration.cs" />
     <Compile Include="Startup\AreaRegistration.cs" />
-    <Compile Include="Startup\AttributeAuthorizationHandler.cs" />
     <Compile Include="Startup\Info.cs" />
     <Compile Include="Controllers\AuthorizationBrowse.cs">
       <SubType>Code</SubType>

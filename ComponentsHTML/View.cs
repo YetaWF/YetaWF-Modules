@@ -107,7 +107,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 #if MVC6
             System.IServiceProvider services = HtmlHelper.ActionContext.HttpContext.RequestServices;
             IUrlHelper urlHelper = services.GetRequiredService<IUrlHelperFactory>().GetUrlHelper(HtmlHelper.ActionContext);
-            formAction = urlHelper.Action(action: ActionName, controller: ControllerName);
+            formAction = urlHelper.Action(action: ActionName, controller: ControllerName, new { area = HtmlHelper.RouteData.Values["area"] });
 #else
             formAction = UrlHelper.GenerateUrl(null /* routeName */, ActionName, ControllerName, null, RouteTable.Routes, HtmlHelper.RequestContext, true /* includeImplicitMvcValues */);
 #endif

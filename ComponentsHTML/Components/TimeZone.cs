@@ -12,7 +12,7 @@ using YetaWF.Core.Support;
 #if MVC6
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 #else
-using System.Web.ModelBinding;
+using System.Web.Mvc;
 #endif
 
 namespace YetaWF.Modules.ComponentsHTML.Components {
@@ -154,7 +154,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         /// <summary>
         /// Called before action runs.
         /// </summary>
-        /// <remarks>Used to normalize all phone numbers to R164 format.</remarks>
+        /// <remarks>Used to normalize timezones.</remarks>
         public static Task<string> ControllerPreprocessActionAsync(string propName, string model, ModelStateDictionary modelState) {
             if (!System.Runtime.InteropServices.RuntimeInformation.IsOSPlatform(System.Runtime.InteropServices.OSPlatform.Windows)) {
                 // On linux we need to translate the timezone id to a "windows" timezone id

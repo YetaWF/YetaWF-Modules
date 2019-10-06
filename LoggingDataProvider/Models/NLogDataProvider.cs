@@ -33,13 +33,14 @@ namespace YetaWF.Modules.LoggingDataProvider.DataProvider.NLogProvider {
         public void Register() {
 
             // Get config file
-            string rootFolder;
 #if MVC6
-            rootFolder = YetaWFManager.RootFolderWebProject;
+            string configFile = Startup.GetEnvironmentFile(Path.Combine(YetaWFManager.RootFolderWebProject, Globals.DataFolder), "NLog", "config", Optional: true);
 #else
-            rootFolder = YetaWFManager.RootFolder;
+            string configFile = Path.Combine(YetaWFManager.RootFolder, Globals.DataFolder, NLogSettingsFile);
 #endif
-            string configFile = Path.Combine(rootFolder, Globals.DataFolder, NLogSettingsFile);
+            if (configFile == null)
+                return;
+
             bool useNlog = YetaWFManager.Syncify<bool>(async () => { // registration is sync by definition (this runs once during startup only)
                 return await FileSystem.FileSystemProvider.FileExistsAsync(configFile);
             });
