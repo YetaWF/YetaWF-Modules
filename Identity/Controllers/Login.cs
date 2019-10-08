@@ -10,7 +10,6 @@ using YetaWF.Core.Controllers;
 using YetaWF.Core.Identity;
 using YetaWF.Core.Localize;
 using YetaWF.Core.Log;
-using YetaWF.Core.Models;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Modules;
 using YetaWF.Core.Support;
@@ -20,6 +19,8 @@ using YetaWF.Modules.Identity.Models;
 using YetaWF.Modules.Identity.Support;
 using YetaWF.Core.Packages;
 using YetaWF.Core.Components;
+using YetaWF.Core.Models;
+using YetaWF.Modules.Identity.Modules;
 #if MVC6
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -34,9 +35,6 @@ namespace YetaWF.Modules.Identity.Controllers {
 
     public class LoginModuleController : ControllerImpl<YetaWF.Modules.Identity.Modules.LoginModule> {
 
-        [Trim]
-        [Header("-<p>You are entering an area of our web site, for which you need to register using your name/email address and password. " +
-                "If you are a new user, please register a new account now. If you already established an account earlier, please enter this information here and click \"Log In\".</p>")]
         [Legend("Account Information")]
         public class LoginModel {
 
@@ -46,9 +44,43 @@ namespace YetaWF.Modules.Identity.Controllers {
                 Images = new List<string>();
             }
 
-            [Caption("Name"), Description("Enter your user name - this is the name you used when you registered on this site")]
-            [UIHint("Text40"), StringLength(Globals.MaxUser), UserNameValidation, Required, Trim]
+            [Caption(""), Description("")]
+            [UIHint("Raw"), ReadOnly]
+            [SuppressIfNot(nameof(RegistrationType), RegistrationTypeEnum.NameAndEmail)]
+            [SuppressIfNot(nameof(AllowNewUser), true)]
+            public string HeaderNameAndEmailNewUser { get { return this.__ResStr("headerNameEmailNew", "<p>You are entering an area of our web site, for which you need to register using your name and password. If you are a new user, please register a new account now. If you already established an account earlier, please enter the account information here and click \"Log In\".</p>"); } }
+
+            [Caption(""), Description("")]
+            [UIHint("Raw"), ReadOnly]
+            [SuppressIfNot(nameof(RegistrationType), RegistrationTypeEnum.EmailOnly)]
+            [SuppressIfNot(nameof(AllowNewUser), true)]
+            public string HeaderEmailNewUser { get { return this.__ResStr("headerEmailNew", "<p>You are entering an area of our web site, for which you need to register using your email address and password. If you are a new user, please register a new account now. If you already established an account earlier, please enter the account information here and click \"Log In\".</p>"); } }
+
+            [Caption(""), Description("")]
+            [UIHint("Raw"), ReadOnly]
+            [SuppressIfNot(nameof(RegistrationType), RegistrationTypeEnum.NameAndEmail)]
+            [SuppressIfNot(nameof(AllowNewUser), false)]
+            public string HeaderNameAndEmail { get { return this.__ResStr("headerNameEmail", "<p>If you have an account, please enter the account information here and click \"Log In\". This site does not accept new user registrations.</p>"); } }
+
+            [Caption(""), Description("")]
+            [UIHint("Raw"), ReadOnly]
+            [SuppressIfNot(nameof(RegistrationType), RegistrationTypeEnum.EmailOnly)]
+            [SuppressIfNot(nameof(AllowNewUser), false)]
+            public string HeaderEmail { get { return this.__ResStr("headerName", "<p>If you have an account, please enter the account information here and click \"Log In\". This site does not accept new user registrations.</p>"); } }
+
+            [Caption("Name"), Description("Enter your user name - This is the name you used when you registered on this site")]
+            [UIHint("Text40"), StringLength(Globals.MaxUser), UserNameValidation, Trim]
+            [ProcessIf(nameof(RegistrationType), RegistrationTypeEnum.NameAndEmail)]
+            [ProcessIf(nameof(RegistrationType), RegistrationTypeEnum.NameOnly)]
+            [RequiredIf(nameof(RegistrationType), RegistrationTypeEnum.NameAndEmail)]
+            [RequiredIf(nameof(RegistrationType), RegistrationTypeEnum.NameOnly)]
             public string UserName { get; set; }
+
+            [Caption("Email Address"), Description("Enter your email address to register - This is the email address used by this site to communicate with you")]
+            [UIHint("Email"), EmailValidation, Trim]
+            [ProcessIf(nameof(RegistrationType), RegistrationTypeEnum.EmailOnly)]
+            [RequiredIf(nameof(RegistrationType), RegistrationTypeEnum.EmailOnly)]
+            public string Email { get; set; }
 
             [Caption("Password"), Description("Enter your password")]
             [UIHint("Password20"), StringLength(Globals.MaxPswd), Trim]
@@ -59,22 +91,23 @@ namespace YetaWF.Modules.Identity.Controllers {
             public bool RememberMe { get; set; }
 
             [Caption("Verification Code"), Description("Please enter the verification code you received via email to validate your account")]
-            [UIHint("Text40"), StringLength(UserDefinition.MaxVerificationCode), Trim, SuppressIf("ShowVerification", false)]
-            public string VerificationCode{ get; set; }
+            [UIHint("Text40"), StringLength(UserDefinition.MaxVerificationCode), Trim]
+            [SuppressIf(nameof(ShowVerification), false)]
+            public string VerificationCode { get; set; }
 
             [Caption(""), Description("")]
             [UIHint("ModuleAction"), ReadOnly, SuppressEmpty]
             public ModuleAction ResendVerificationCode { get; set; }
 
             [Caption("Captcha"), Description("Please verify that you're a human and not a spam bot")]
-            [UIHint("RecaptchaV2"), RecaptchaV2("Please verify that you're a human and not a spam bot"), SuppressIf("ShowCaptcha", false)]
+            [UIHint("RecaptchaV2"), RecaptchaV2("Please verify that you're a human and not a spam bot")]
+            [SuppressIf(nameof(ShowCaptcha), false)]
             public RecaptchaV2Data Captcha { get; set; }
 
             [UIHint("Hidden")]
             public bool ShowVerification { get; set; }
             [UIHint("Hidden")]
             public bool ShowCaptcha { get; set; }
-
             [UIHint("Hidden")]
             public bool CloseOnLogin { get; set; }
 
@@ -82,6 +115,11 @@ namespace YetaWF.Modules.Identity.Controllers {
             public List<FormButton> ExternalProviders { get; set; }
 
             public bool Success { get; set; }
+
+            [UIHint("Hidden")]
+            public RegistrationTypeEnum RegistrationType { get; set; }
+            [UIHint("Hidden")]
+            public bool AllowNewUser { get; set; }
         }
 
         [AllowGet]
@@ -91,16 +129,18 @@ namespace YetaWF.Modules.Identity.Controllers {
             bool isPersistent = config.PersistentLogin;
 
             LoginModel model = new LoginModel {
+                AllowNewUser = config.AllowUserRegistration,
+                RegistrationType = config.RegistrationType,
                 UserName = name,
+                Email = name,
                 Password = pswd,
                 VerificationCode = v,
                 Captcha = new RecaptchaV2Data(),
                 RememberMe = isPersistent,
                 CloseOnLogin = closeOnLogin,
+                ShowVerification = !string.IsNullOrWhiteSpace(v),
+                ShowCaptcha = config.Captcha && string.IsNullOrWhiteSpace(v) && !Manager.IsLocalHost,
             };
-            model.ShowVerification = !string.IsNullOrWhiteSpace(model.VerificationCode);
-            model.ShowCaptcha = config.Captcha && !model.ShowVerification && !Manager.IsLocalHost;
-
             using (LoginConfigDataProvider logConfigDP = new LoginConfigDataProvider()) {
                 List<LoginConfigDataProvider.LoginProviderDescription> loginProviders = await logConfigDP.GetActiveExternalLoginProvidersAsync();
                 if (loginProviders.Count > 0 && Manager.IsInPopup)
@@ -130,12 +170,17 @@ namespace YetaWF.Modules.Identity.Controllers {
         public async Task<ActionResult> Login_Partial(LoginModel model) {
 
             LoginConfigData config = await LoginConfigDataProvider.GetConfigAsync();
+            model.AllowNewUser = config.AllowUserRegistration;
+            model.RegistrationType = config.RegistrationType;
 
             if (model.ShowCaptcha != (config.Captcha && !model.ShowVerification && !Manager.IsLocalHost))
                 throw new InternalError("Hidden field tampering detected");
 
             if (!ModelState.IsValid)
                 return PartialView(model);
+
+            if (config.RegistrationType == RegistrationTypeEnum.EmailOnly)
+                model.UserName = model.Email;
 
             return await CompleteLoginAsync(model, config, useTwoStep: true);
         }
@@ -149,11 +194,15 @@ namespace YetaWF.Modules.Identity.Controllers {
             if (batchKey != security)
                 return NotAuthorized();
 
+            LoginConfigData config = await LoginConfigDataProvider.GetConfigAsync();
             LoginModel model = new LoginModel {
+                AllowNewUser = config.AllowUserRegistration,
+                RegistrationType = config.RegistrationType,
                 RememberMe = true,
                 UserName = name,
                 Password = password,
             };
+
             ActionResult result = await CompleteLoginAsync(model, await LoginConfigDataProvider.GetConfigAsync(), useTwoStep: false);
             if (!model.Success)
                 Manager.CurrentResponse.StatusCode = 401;
@@ -168,11 +217,15 @@ namespace YetaWF.Modules.Identity.Controllers {
             if (batchKey != security)
                 return NotAuthorized();
 
+            LoginConfigData config = await LoginConfigDataProvider.GetConfigAsync();
             LoginModel model = new LoginModel {
+                AllowNewUser = config.AllowUserRegistration,
+                RegistrationType = config.RegistrationType,
                 RememberMe = true,
                 UserName = name,
-                Password = password,
+                Password = password
             };
+
             ActionResult result = await CompleteLoginAsync(model, await LoginConfigDataProvider.GetConfigAsync(), useTwoStep: false);
             if (!model.Success)
                 Manager.CurrentResponse.StatusCode = 401;
@@ -192,7 +245,8 @@ namespace YetaWF.Modules.Identity.Controllers {
             user = await Managers.GetUserManager().FindByNameAsync(model.UserName);
             if (user == null) {
                 Logging.AddErrorLog("User login failed: {0} - no such user", model.UserName);
-                ModelState.AddModelError("", this.__ResStr("invLogin", "Invalid user name or password"));
+                ModelState.AddModelError(nameof(LoginModel.UserName), this.__ResStr("invLogin", "Invalid user name or password"));
+                ModelState.AddModelError(nameof(LoginModel.Password), this.__ResStr("invLogin", "Invalid user name or password"));
                 return PartialView(model);
             }
             using (UserLoginInfoDataProvider logInfoDP = new UserLoginInfoDataProvider()) {
@@ -204,7 +258,7 @@ namespace YetaWF.Modules.Identity.Controllers {
             await twoStep.ClearTwoStepAutheticationAsync(user.UserId);
 
             if (config.MaxLoginFailures != 0 && user.LoginFailures >= config.MaxLoginFailures) {
-                ModelState.AddModelError("", this.__ResStr("maxAttemps", "The maximum number of login attempts has been exceeded - Your account has been suspended"));
+                ModelState.AddModelError(nameof(LoginModel.UserName), this.__ResStr("maxAttemps", "The maximum number of login attempts has been exceeded - Your account has been suspended"));
                 if (user.UserStatus != UserStatusEnum.Suspended) {
                     user.UserStatus = UserStatusEnum.Suspended;
 #if MVC6
@@ -238,7 +292,8 @@ namespace YetaWF.Modules.Identity.Controllers {
             }
             if (user == null) {
                 Logging.AddErrorLog("User login failed: {0}, {1}, {2}", model.UserName, model.Password, model.VerificationCode);
-                ModelState.AddModelError("", this.__ResStr("invLogin", "Invalid user name or password"));
+                ModelState.AddModelError(nameof(LoginModel.UserName), this.__ResStr("invLogin", "Invalid user name or password"));
+                ModelState.AddModelError(nameof(LoginModel.Password), this.__ResStr("invLogin", "Invalid user name or password"));
                 return PartialView(model);
             }
 
@@ -272,7 +327,7 @@ namespace YetaWF.Modules.Identity.Controllers {
             if (user.UserStatus == UserStatusEnum.NeedValidation) {
                 if (model.ShowVerification) {
                     Logging.AddErrorLog("User {0} - invalid verification code({1})", model.UserName, model.VerificationCode);
-                    ModelState.AddModelError("VerificationCode", this.__ResStr("invVerification", "The verification code is invalid. Please make sure to copy/paste it from the email to avoid any typos."));
+                    ModelState.AddModelError(nameof(LoginModel.VerificationCode), this.__ResStr("invVerification", "The verification code is invalid. Please make sure to copy/paste it from the email to avoid any typos."));
                     user.LoginFailures = user.LoginFailures + 1;
 #if MVC6
                     await Managers.GetUserManager().UpdateAsync(user);
@@ -280,7 +335,7 @@ namespace YetaWF.Modules.Identity.Controllers {
                     Managers.GetUserManager().Update(user);
 #endif
                 } else
-                    ModelState.AddModelError("VerificationCode", this.__ResStr("notValidated", "Your account has not yet been verified. You will receive an email with verification information. Please copy and enter the verification code here."));
+                    ModelState.AddModelError(nameof(LoginModel.VerificationCode), this.__ResStr("notValidated", "Your account has not yet been verified. You will receive an email with verification information. Please copy and enter the verification code here."));
                 model.ShowVerification = true;
                 model.ResendVerificationCode = await Module.GetAction_ResendVerificationEmailAsync(user.UserName);
                 model.ShowCaptcha = false;
@@ -366,7 +421,7 @@ namespace YetaWF.Modules.Identity.Controllers {
         }
 
         // User login
-        internal static async Task UserLoginAsync(UserDefinition user, bool? rememberme = null) {
+        public static async Task UserLoginAsync(UserDefinition user, bool? rememberme = null) {
 
             await LoginModuleController.UserLogoffAsync();
 

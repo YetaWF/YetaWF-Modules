@@ -22,6 +22,8 @@ namespace YetaWF.Modules.Feedback.DataProvider {
         public int Id { get; set; }
 
         public bool Captcha { get; set; }
+        [Data_NewValue]
+        public bool RequireName { get; set; }
         public bool RequireEmail { get; set; }
         public bool BccEmails { get; set; }
         [StringLength(Globals.MaxEmail)]

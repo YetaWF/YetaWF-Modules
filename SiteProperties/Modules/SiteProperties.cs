@@ -22,6 +22,7 @@ namespace YetaWF.Modules.SiteProperties.Modules {
             Title = this.__ResStr("modTitle", "Site Settings");
             Name = this.__ResStr("modName", "Site Settings");
             Description = this.__ResStr("modSummary", "Changes site settings");
+            UsePartialFormCss = false;
         }
         public override IModuleDefinitionIO GetDataProvider() { return new SitePropertiesModuleDataProvider(); }
 

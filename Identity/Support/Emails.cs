@@ -1,5 +1,6 @@
 ﻿/* Copyright © 2019 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Identity#License */
 
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using YetaWF.Core;
@@ -20,7 +21,13 @@ namespace YetaWF.Modules.Identity.Support {
 
         public const string EmailsFolder = "Emails";
 
+        private string SendingEmailAddress = null;
+
         public Emails() { }
+
+        public string GetSendingEmailAddress() {
+            return SendingEmailAddress;
+        }
 
         public async Task SendForgottenEmailAsync(UserDefinition user, string ccEmail = null) {
             SendEmail sendEmail = new SendEmail();
@@ -33,6 +40,7 @@ namespace YetaWF.Modules.Identity.Support {
             if (!string.IsNullOrWhiteSpace(ccEmail))
                 sendEmail.AddBcc(ccEmail);
             await sendEmail.SendAsync(true);
+            SendingEmailAddress = await sendEmail.GetSendingEmailAddressAsync();
         }
         public async Task SendPasswordResetEmailAsync(UserDefinition user, string ccEmail = null) {
             ResetPasswordModule resetMod = (ResetPasswordModule)await ModuleDefinition.CreateUniqueModuleAsync(typeof(ResetPasswordModule));
@@ -50,22 +58,25 @@ namespace YetaWF.Modules.Identity.Support {
             if (!string.IsNullOrWhiteSpace(ccEmail))
                 sendEmail.AddBcc(ccEmail);
             await sendEmail.SendAsync(true);
+            SendingEmailAddress = await sendEmail.GetSendingEmailAddressAsync();
         }
         public async Task SendVerificationAsync(UserDefinition user, string ccEmail = null) {
 
             string retUrl = Manager.ReturnToUrl;
             string urlOnly;
             QueryHelper qh = QueryHelper.FromUrl(Manager.CurrentSite.LoginUrl, out urlOnly);
-            qh.Add(Globals.Link_OriginList, Utility.JsonSerialize(new List<Origin> { new Origin { Url = retUrl } }), Replace: true);
-            qh.Add("CloseOnLogin", "1", Replace: true);
             qh.Add("Name", user.UserName, Replace: true);
             qh.Add("V", user.VerificationCode, Replace: true);
+            string urlNoOrigin = qh.ToUrl(urlOnly);
+            qh.Add("CloseOnLogin", "true", Replace: true);
+            qh.Add(Globals.Link_OriginList, Utility.JsonSerialize(new List<Origin> { new Origin { Url = retUrl } }), Replace: true);
             string url = qh.ToUrl(urlOnly);
 
             SendEmail sendEmail = new SendEmail();
             object parms = new {
                 User = user,
                 Url = Manager.CurrentSite.MakeUrl(url),
+                UrlNoOrigin = Manager.CurrentSite.MakeUrl(urlNoOrigin),
                 Code = user.VerificationCode,
             };
             string subject = this.__ResStr("verificationSubject", "Verification required for site {0}", Manager.CurrentSite.SiteDomain);
@@ -73,6 +84,7 @@ namespace YetaWF.Modules.Identity.Support {
             if (!string.IsNullOrWhiteSpace(ccEmail))
                 sendEmail.AddBcc(ccEmail);
             await sendEmail.SendAsync(true);
+            SendingEmailAddress = await sendEmail.GetSendingEmailAddressAsync();
         }
 
         public async Task SendApprovalAsync(UserDefinition user, string ccEmail = null) {
@@ -86,6 +98,7 @@ namespace YetaWF.Modules.Identity.Support {
             if (!string.IsNullOrWhiteSpace(ccEmail))
                 sendEmail.AddBcc(ccEmail);
             await sendEmail.SendAsync(true);
+            SendingEmailAddress = await sendEmail.GetSendingEmailAddressAsync();
         }
 
         public async Task SendApprovalNeededAsync(UserDefinition user) {
@@ -103,6 +116,7 @@ namespace YetaWF.Modules.Identity.Support {
             string subject = this.__ResStr("approvalNeededSubject", "Approval required for user {0} - site {1}", user.UserName, Manager.CurrentSite.SiteDomain);
             await sendEmail.PrepareEmailMessageAsync(null, subject, await sendEmail.GetEmailFileAsync(Package.GetCurrentPackage(this), "Account Approval.txt"), parameters: parms);
             await sendEmail.SendAsync(false);
+            SendingEmailAddress = await sendEmail.GetSendingEmailAddressAsync();
         }
 
         public async Task SendRejectedAsync(UserDefinition user, string ccEmail = null) {
@@ -115,6 +129,7 @@ namespace YetaWF.Modules.Identity.Support {
             if (!string.IsNullOrWhiteSpace(ccEmail))
                 sendEmail.AddBcc(ccEmail);
             await sendEmail.SendAsync(true);
+            SendingEmailAddress = await sendEmail.GetSendingEmailAddressAsync();
         }
 
         public async Task SendSuspendedAsync(UserDefinition user, string ccEmail = null) {
@@ -127,6 +142,7 @@ namespace YetaWF.Modules.Identity.Support {
             if (!string.IsNullOrWhiteSpace(ccEmail))
                 sendEmail.AddBcc(ccEmail);
             await sendEmail.SendAsync(true);
+            SendingEmailAddress = await sendEmail.GetSendingEmailAddressAsync();
         }
 
         public async Task SendNewUserCreatedAsync(UserDefinition user) {
@@ -142,6 +158,7 @@ namespace YetaWF.Modules.Identity.Support {
             string subject = this.__ResStr("notifyNewUserSubject", "New account for user {0} - site  {1}", user.UserName, Manager.CurrentSite.SiteDomain);
             await sendEmail.PrepareEmailMessageAsync(null, subject, await sendEmail.GetEmailFileAsync(Package.GetCurrentPackage(this), "New Account Created.txt"), parameters: parms);
             await sendEmail.SendAsync(false);
+            SendingEmailAddress = await sendEmail.GetSendingEmailAddressAsync();
         }
     }
 }

@@ -1,4 +1,4 @@
-﻿/* Copyright © 2019 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Logging#License */
+﻿/* Copyright © 2019 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/LoggingDataProvider#License */
 
 using System;
 using System.Collections.Generic;
@@ -11,7 +11,7 @@ using YetaWF.Core.Serializers;
 using YetaWF.Core.Support;
 using YetaWF.DataProvider.SQL;
 
-namespace YetaWF.Modules.Logging.DataProvider.SQL {
+namespace YetaWF.Modules.LoggingDataProvider.DataProvider.SQL {
 
     public class SQLDataProvider : IExternalDataProvider {
         public void Register() {
@@ -19,7 +19,7 @@ namespace YetaWF.Modules.Logging.DataProvider.SQL {
         }
     }
 
-    public class LogRecordDataProvider : YetaWF.Modules.Logging.DataProvider.LogRecordDataProvider, IInstallableModel, ILogging {
+    public class LogRecordDataProvider : YetaWF.Modules.LoggingDataProvider.DataProvider.LogRecordDataProvider, IInstallableModel, ILogging {
 
         // IMPLEMENTATION
         // IMPLEMENTATION
@@ -51,7 +51,7 @@ namespace YetaWF.Modules.Logging.DataProvider.SQL {
 
             Dictionary<string, object> options = new Dictionary<string, object>() {
                 { "Package", package },
-                { "Dataset", package.AreaName },
+                { "Dataset", "YetaWF_Logging" },
                 { "Logging", false },
                 { "NoLanguages", true },
             };

@@ -1,4 +1,4 @@
-﻿/* Copyright © 2019 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Logging#License */
+﻿/* Copyright © 2019 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/LoggingDataProvider#License */
 
 using NLog;
 using NLog.Config;
@@ -15,9 +15,9 @@ using YetaWF.Core.Packages;
 using YetaWF.Core.Serializers;
 using YetaWF.Core.Support;
 using YetaWF.DataProvider.SQL;
-using YetaWF.Modules.Logging.Controllers;
+using YetaWF.Modules.LoggingDataProvider.Controllers;
 
-namespace YetaWF.Modules.Logging.DataProvider.NLogProvider {
+namespace YetaWF.Modules.LoggingDataProvider.DataProvider.NLogProvider {
 
     public class NLogDataProvider : IExternalDataProvider {
 
@@ -32,26 +32,29 @@ namespace YetaWF.Modules.Logging.DataProvider.NLogProvider {
 
         public void Register() {
 
+            // Get config file
+#if MVC6
+            string configFile = Startup.GetEnvironmentFile(Path.Combine(YetaWFManager.RootFolderWebProject, Globals.DataFolder), "NLog", "config", Optional: true);
+#else
+            string configFile = Path.Combine(YetaWFManager.RootFolder, Globals.DataFolder, NLogSettingsFile);
+#endif
+            if (configFile == null)
+                return;
+
+            bool useNlog = YetaWFManager.Syncify<bool>(async () => { // registration is sync by definition (this runs once during startup only)
+                return await FileSystem.FileSystemProvider.FileExistsAsync(configFile);
+            });
+            if (!useNlog)
+                return;
+
             // register custom target (write to Sql table)
             Target.Register<YetaWFDBTarget>("YetaWFDB");
 
-            // Get config file
-            string rootFolder;
-#if MVC6
-            rootFolder = YetaWFManager.RootFolderWebProject;
-#else
-            rootFolder = YetaWFManager.RootFolder;
-#endif
-            string configFile = Path.Combine(rootFolder, Globals.DataFolder, NLogSettingsFile);
-            YetaWFManager.Syncify(async () => { // registration is sync by definition (this runs once during startup only)
-                if (!await FileSystem.FileSystemProvider.FileExistsAsync(configFile))
-                    throw new InternalError($"NLog config file missing - Not found at {configFile}");
-            });
             LogManager.Configuration = new XmlLoggingConfiguration(configFile);
 
-            MessageFormat = WebConfigHelper.GetValue<string>(AreaRegistration.CurrentPackage.AreaName, NLogMessageFormat);
+            MessageFormat = WebConfigHelper.GetValue<string>("YetaWF_Logging", NLogMessageFormat);
             MessageFormat = MessageFormat?.ToLower();
-            MessageEvent = WebConfigHelper.GetValue<bool>(AreaRegistration.CurrentPackage.AreaName, NLogMessageEvent);
+            MessageEvent = WebConfigHelper.GetValue<bool>("YetaWF_Logging", NLogMessageEvent);
 
             // get logger
             Logger = NLog.LogManager.GetLogger("YetaWF");
@@ -85,7 +88,7 @@ namespace YetaWF.Modules.Logging.DataProvider.NLogProvider {
             Package package = Package.GetPackageFromAssembly(GetType().Assembly);
             Dictionary<string, object> options = new Dictionary<string, object>() {
                 { "Package", package },
-                { "Dataset", package.AreaName },
+                { "Dataset", "YetaWF_Logging" },
                 { "Logging", false },
                 { "NoLanguages", true },
             };
@@ -93,7 +96,7 @@ namespace YetaWF.Modules.Logging.DataProvider.NLogProvider {
         }
     }
 
-    public class LogRecordDataProvider : YetaWF.Modules.Logging.DataProvider.LogRecordDataProvider, IInstallableModel, ILogging {
+    public class LogRecordDataProvider : YetaWF.Modules.LoggingDataProvider.DataProvider.LogRecordDataProvider, IInstallableModel, ILogging {
 
         // IMPLEMENTATION
         // IMPLEMENTATION
@@ -125,7 +128,7 @@ namespace YetaWF.Modules.Logging.DataProvider.NLogProvider {
 
             Dictionary<string, object> options = new Dictionary<string, object>() {
                 { "Package", package },
-                { "Dataset", package.AreaName },
+                { "Dataset", "YetaWF_Logging" },
                 { "Logging", false },
                 { "NoLanguages", true },
             };

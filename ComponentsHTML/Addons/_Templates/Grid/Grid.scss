@@ -69,6 +69,7 @@ $smbuttonhorzmargin: 2px;
                 /* lowlighted row (with bool __lowlight property) */
                 &.tg_lowlight td {
                     background-color: ghostwhite;
+                    color: darkslategray;
                 }
             }
             th {

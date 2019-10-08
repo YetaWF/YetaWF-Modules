@@ -118,13 +118,17 @@ var YetaWF_ComponentsHTML;
             // Initialize initial form
             _this.update();
             $YetaWF.registerEventHandlerWindow("resize", null, function (ev) {
-                if (_this.MasonryElem) {
-                    _this.layout();
+                if (_this.Setup.Style === PropertyListStyleEnum.Boxed || _this.Setup.Style === PropertyListStyleEnum.BoxedWithCategories) {
+                    if (_this.MasonryElem) {
+                        _this.layout();
+                    }
+                    else {
+                        _this.setLayout();
+                    }
+                    return true;
                 }
-                else {
-                    _this.setLayout();
-                }
-                return true;
+                else
+                    return false;
             });
             $YetaWF.registerCustomEventHandler(_this, "propertylist_relayout", function (ev) {
                 _this.layout();

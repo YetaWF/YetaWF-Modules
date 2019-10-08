@@ -22,7 +22,7 @@ var YetaWF_ComponentsHTML;
                 ControlType: YetaWF_ComponentsHTML.ControlTypeEnum.Template,
                 ChangeEvent: null,
                 GetValue: function (control) {
-                    return null;
+                    return control.Server.value;
                 },
                 Enable: function (control, enable, clearOnDisable) {
                     control.enable(enable);

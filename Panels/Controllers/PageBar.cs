@@ -18,6 +18,7 @@ using YetaWF.Modules.Panels.Modules;
 using YetaWF.Core.Components;
 using YetaWF.Modules.Panels.Components;
 using YetaWF.Core.Localize;
+using YetaWF.Core.Support.UrlHistory;
 #if MVC6
 using Microsoft.AspNetCore.Mvc;
 #else
@@ -54,6 +55,10 @@ namespace YetaWF.Modules.Panels.Controllers {
             [UIHint("Text20"), StringLength(20)]
             public string ContentPane { get; set; }
 
+            [Category("General"), Caption("Skin Theme"), Description("Defines whether the page bar is rendered using the skin's theme or using custom CSS")]
+            [UIHint("Boolean")]
+            public bool UseSkinFormatting { get; set; } // use skin theme (jquery-ui)
+
             [Category("General"), Caption("Default Image"), Description("The default image used when a page doesn't define its own FavIcon")]
             [UIHint("Image"), AdditionalMetadata("ImageType", ModuleImageSupport.ImageType)]
             [AdditionalMetadata("Width", 100), AdditionalMetadata("Height", 100)]
@@ -76,17 +81,47 @@ namespace YetaWF.Modules.Panels.Controllers {
                     PagePattern = Module.PagePattern,
                     PageList = Module.PageList,
                     Style = Module.Style,
+                    ContentPane = Module.ContentPane,
+                    UseSkinFormatting = Module.UseSkinFormatting,
                     DefaultImage = Module.DefaultImage,
                     DefaultImage_Data = Module.DefaultImage_Data
                 };
             } else {
+
                 model = new Model {
                     PanelInfo = new Models.PageBarInfo() {
                         Style = Module.Style,
                         ContentPane = Module.ContentPane,
+                        UseSkinFormatting = Module.UseSkinFormatting,
                         Panels = await GetPanelsAsync()
                     }
                 };
+
+                // Check whether current page contents are accessible and get pane contents
+                Uri contentUri = null;
+                string contentUrl;
+                Manager.TryGetUrlArg<string>("!ContentUrl", out contentUrl);
+                if (!string.IsNullOrWhiteSpace(contentUrl)) {
+                    if (contentUrl.StartsWith("/"))
+                        contentUrl = Manager.CurrentSite.MakeUrl(contentUrl);
+                    contentUri = new Uri(contentUrl);
+                } else {
+                    if (model.PanelInfo.Panels.Count > 0)
+                        contentUri = new Uri(model.PanelInfo.Panels[0].Url);
+                }
+                if (contentUri != null) {
+                    PageDefinition page = await PageDefinition.LoadFromUrlAsync(contentUri.AbsolutePath);
+                    if (page != null) {
+                        if (page.IsAuthorized_View()) {
+                            model.PanelInfo.ContentUri = contentUri;
+                            model.PanelInfo.ContentPage = page;
+                        } else {
+                            if (!Manager.HaveUser)
+                                return RedirectToUrl(Manager.CurrentSite.LoginUrl);
+                        }
+                    }
+                }
+
             }
             return View(model);
         }
@@ -102,6 +137,7 @@ namespace YetaWF.Modules.Panels.Controllers {
             Module.PagePattern = model.PagePattern;
             Module.Style = model.Style;
             Module.ContentPane = model.ContentPane;
+            Module.UseSkinFormatting = model.UseSkinFormatting;
             Module.DefaultImage = model.DefaultImage;
             Module.DefaultImage_Data = Module.DefaultImage_Data;
             await Module.SaveAsync();

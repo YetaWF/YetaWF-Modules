@@ -1,4 +1,4 @@
-﻿/* Copyright © 2019 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Logging#License */
+﻿/* Copyright © 2019 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/LoggingDataProvider#License */
 
 using System;
 using System.Collections.Generic;
@@ -21,7 +21,7 @@ using Microsoft.AspNetCore.Http.Features;
 using System.Web;
 #endif
 
-namespace YetaWF.Modules.Logging.DataProvider {
+namespace YetaWF.Modules.LoggingDataProvider.DataProvider {
 
     public class LogRecord {
 

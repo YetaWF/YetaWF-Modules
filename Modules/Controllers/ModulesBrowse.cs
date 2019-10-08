@@ -72,6 +72,14 @@ namespace YetaWF.Modules.Modules.Controllers {
             [UIHint("Boolean"), ReadOnly]
             public bool Users { get; set; }
 
+            [Caption("Editors"), Description("Editors can view this module")]
+            [UIHint("Boolean"), ReadOnly]
+            public bool Editors { get; set; }
+
+            [Caption("Administrators"), Description("Administrators can view this module")]
+            [UIHint("Boolean"), ReadOnly]
+            public bool Administrators { get; set; }
+
             [Caption("CSS Class"), Description("The optional CSS classes to be added to the module's <div> tag for further customization through stylesheets")]
             [UIHint("String"), ReadOnly]
             public string CssClass { get; set; }
@@ -100,6 +108,8 @@ namespace YetaWF.Modules.Modules.Controllers {
                 UseCount = useCount;
                 Anonymous = mod.IsAuthorized_View_Anonymous();
                 Users = mod.IsAuthorized_View_AnyUser();
+                Editors = mod.IsAuthorized_View_Editor();
+                Administrators = mod.IsAuthorized_View_Administrator();
             }
         }
 

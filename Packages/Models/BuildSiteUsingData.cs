@@ -24,7 +24,8 @@ namespace YetaWF.Modules.Packages.DataProvider {
                 List<string> errorList = new List<string>();
                 Logging.AddLog("Restoring {0}", file);
                 if (!await Package.ImportDataAsync(file, errorList)) {
-                    throw new Error(errorList.First());
+                    Logging.AddErrorLog($"Error restoring {file} - {errorList.First()}");
+                    //throw new Error(errorList.First());
                 }
             }
             Manager.ImportChunksNonSiteSpecifics = false;

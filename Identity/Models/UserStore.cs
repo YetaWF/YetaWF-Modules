@@ -13,8 +13,8 @@ using YetaWF.Modules.Identity.DataProvider;
 #if MVC6
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 #else
 using Microsoft.AspNet.Identity;
@@ -28,7 +28,7 @@ namespace YetaWF.Modules.Identity.Models {
 
 #if MVC6
     public class YetaWFSecurityStampValidator : SecurityStampValidator<UserDefinition> {
-        public YetaWFSecurityStampValidator(IOptions<SecurityStampValidatorOptions> options, SignInManager<UserDefinition> signInManager, ISystemClock clock) : base(options, signInManager, clock) { }
+        public YetaWFSecurityStampValidator(IOptions<SecurityStampValidatorOptions> options, SignInManager<UserDefinition> signInManager, ISystemClock clock, ILoggerFactory logger) : base(options, signInManager, clock, logger) { }
     }
 #endif
 
@@ -155,15 +155,13 @@ namespace YetaWF.Modules.Identity.Models {
         }
         public Task SetUserNameAsync(UserDefinition user, string userName, CancellationToken cancellationToken) {
             user.UserName = userName;
-            return Task.FromResult(0);
+            return Task.CompletedTask;
         }
         public Task<string> GetNormalizedUserNameAsync(UserDefinition user, CancellationToken cancellationToken) {
             return Task.FromResult<string>(user.UserName);
         }
         public Task SetNormalizedUserNameAsync(UserDefinition user, string normalizedName, CancellationToken cancellationToken) {
-            if (string.Compare(user.UserName, normalizedName, true) != 0)
-                user.UserName = normalizedName;
-            return Task.FromResult(0);
+            return Task.CompletedTask;
         }
 #else
 #endif
@@ -354,9 +352,7 @@ namespace YetaWF.Modules.Identity.Models {
         }
 
         public Task SetNormalizedEmailAsync(UserDefinition user, string normalizedEmail, CancellationToken cancellationToken) {
-            if (string.Compare(user.Email, normalizedEmail, true) != 0)
-                user.Email = normalizedEmail;
-            return Task.FromResult(0);
+            return Task.CompletedTask;
         }
 
         // ISecurityStampValidator

@@ -32,10 +32,10 @@ var YetaWF_Panels;
                 var entries = $YetaWF.getElementsBySelector(".t_entry", [_this.Control]);
                 for (var _i = 0, entries_1 = entries; _i < entries_1.length; _i++) {
                     var entry_1 = entries_1[_i];
-                    $YetaWF.elementRemoveClass(entry_1, "t_active");
+                    $YetaWF.elementRemoveClassList(entry_1, _this.Setup.ActiveCss);
                 }
                 var entry = $YetaWF.elementClosest(ev.__YetaWFElem, ".t_entry");
-                $YetaWF.elementAddClass(entry, "t_active");
+                $YetaWF.elementAddClassList(entry, _this.Setup.ActiveCss);
                 return true;
             });
             if (_this.Setup.Resize) {

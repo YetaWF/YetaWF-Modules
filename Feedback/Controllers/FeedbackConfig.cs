@@ -27,6 +27,10 @@ namespace YetaWF.Modules.Feedback.Controllers {
             [UIHint("Boolean")]
             public bool Captcha { get; set; }
 
+            [Caption("Name Required"), Description("Defines whether the user must enter his/her name to be able to send feedback")]
+            [UIHint("Boolean")]
+            public bool RequireName { get; set; }
+
             [Caption("Email Address Required"), Description("Defines whether the user must enter his/her email address to be able to send feedback")]
             [UIHint("Boolean")]
             public bool RequireEmail { get; set; }

@@ -42,7 +42,7 @@ namespace YetaWF.Modules.Identity.Controllers {
             [UIHint("Text40"), SuppressIf("RegistrationType", RegistrationTypeEnum.EmailOnly), StringLength(Globals.MaxUser), UserNameValidation, Required, Trim]
             public string UserName { get; set; }
 
-            [Caption("Email Address"), Description("Enter your email address to register - this is the email address used by this site to communicate with you")]
+            [Caption("Email Address"), Description("Enter your email address to register - This is the email address used by this site to communicate with you")]
             [UIHint("Email"), SuppressIf("RegistrationType", RegistrationTypeEnum.NameOnly), StringLength(Globals.MaxEmail), EmailValidation, Required, Trim]
             public string Email { get; set; }
 
@@ -55,7 +55,7 @@ namespace YetaWF.Modules.Identity.Controllers {
             public string ConfirmPassword { get; set; }
 
             [Caption("Captcha"), Description("Please verify that you're a human and not a spam bot")]
-            [UIHint("RecaptchaV2"), RecaptchaV2("Please verify that you're a human and not a spam bot"), SuppressIf("ShowCaptcha", false)]
+            [UIHint("RecaptchaV2"), RecaptchaV2("Please verify that you're a human and not a spam bot"), SuppressIf(nameof(ShowCaptcha), false)]
             public RecaptchaV2Data Captcha { get; set; }
 
             [UIHint("Hidden")]
@@ -82,7 +82,7 @@ namespace YetaWF.Modules.Identity.Controllers {
 
             RegisterModel model = new RegisterModel {
                 RegistrationType = config.RegistrationType,
-                ShowCaptcha = config.Captcha,
+                ShowCaptcha = config.Captcha && !Manager.IsLocalHost,
                 Captcha = new RecaptchaV2Data(),
                 CloseOnLogin = closeOnLogin,
                 QueryString = Manager.RequestQueryString.ToQueryString(),
@@ -117,7 +117,7 @@ namespace YetaWF.Modules.Identity.Controllers {
             if (!config.AllowUserRegistration)
                 throw new Error(this.__ResStr("cantRegister", "This site does not allow new user registration"));
 
-            if (model.ShowCaptcha != config.Captcha)
+            if (model.ShowCaptcha != config.Captcha && !Manager.IsLocalHost)
                 throw new InternalError("Hidden field tampering detected");
 
             model.RegistrationType = config.RegistrationType;// don't trust what we get from user

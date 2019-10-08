@@ -6,7 +6,7 @@ using YetaWF.PackageAttributes;
 using YetaWF.Core.Packages;
 
 [assembly: AssemblyTitle("Logging")]
-[assembly: AssemblyDescription("Logging for YetaWF websites (simple, synchronous logging)")]
+[assembly: AssemblyDescription("Logging for YetaWF websites")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Softel vdm, Inc.")]
 [assembly: AssemblyProduct("Logging")]
@@ -25,5 +25,3 @@ using YetaWF.Core.Packages;
     "https://yetawf.com/Documentation/YetaWF/Logging#License")]
 
 [assembly: RequiresPackage("YetaWF.ComponentsHTML")]
-
-[assembly: ServiceLevel(ServiceLevelEnum.ServiceProvider)]

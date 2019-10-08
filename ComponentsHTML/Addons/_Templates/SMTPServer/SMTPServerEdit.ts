@@ -17,7 +17,7 @@ namespace YetaWF_ComponentsHTML {
                 ControlType: ControlTypeEnum.Template,
                 ChangeEvent: null,
                 GetValue: (control: SMTPServerEdit): string | null => {
-                    return null;
+                    return control.Server.value;
                 },
                 Enable: (control: SMTPServerEdit, enable: boolean, clearOnDisable: boolean): void => {
                     control.enable(enable);

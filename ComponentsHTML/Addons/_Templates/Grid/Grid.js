@@ -459,7 +459,7 @@ var YetaWF_ComponentsHTML;
             // retrieve all rows and add input/select fields to data div, resequence to make mvc serialization of lists work
             var trs = $YetaWF.getElementsBySelector("tr:not(.tg_emptytr)", [this.TBody]);
             var row = 0;
-            var re1 = new RegExp("\\[[0-9]+\\]\\.", "gim");
+            var re1 = new RegExp("\\[[0-9]+\\]", "gim");
             for (var _i = 0, trs_2 = trs; _i < trs_2.length; _i++) {
                 var tr = trs_2[_i];
                 var recNum = Number($YetaWF.getAttribute(tr, "data-origin"));
@@ -473,7 +473,7 @@ var YetaWF_ComponentsHTML;
                         if (name) {
                             var copy = input.cloneNode();
                             // replace name with serialized name[row] so mvc serialization works
-                            name = name.replace(re1, "[" + row.toString() + "].");
+                            name = name.replace(re1, "[" + row.toString() + "]");
                             $YetaWF.setAttribute(copy, "name", name);
                             div += copy.outerHTML;
                             copied = true;
@@ -1148,6 +1148,41 @@ var YetaWF_ComponentsHTML;
         Grid.ReloadFromId = function (id) {
             var grid = YetaWF.ComponentBaseDataImpl.getControlById(id, Grid.SELECTOR);
             grid.reload(0);
+        };
+        /* Set all check boxes in a static grid control */
+        Grid.prototype.SetCheckBoxes = function (set) {
+            if (this.Setup.StaticData && this.Setup.NoSubmitContents) {
+                this.SubmitCheckCol = this.getSubmitCheckCol();
+                if (this.SubmitCheckCol >= 0) {
+                    var checks = $YetaWF.getElementsBySelector("td:nth-child(" + (this.SubmitCheckCol + 1) + ") input[type='checkbox']", [this.Control]);
+                    for (var _i = 0, checks_1 = checks; _i < checks_1.length; _i++) {
+                        var check = checks_1[_i];
+                        var tr = $YetaWF.elementClosest(check, "tr");
+                        var recNum = Number($YetaWF.getAttribute(tr, "data-origin"));
+                        this.Setup.StaticData[recNum][this.Setup.Columns[this.SubmitCheckCol].Name] = set;
+                        check.checked = set;
+                    }
+                }
+            }
+        };
+        /* returns whether all checkboxes are selected  in a static grid control */
+        Grid.prototype.GetAllCheckBoxesSelected = function () {
+            if (this.Setup.StaticData && this.Setup.NoSubmitContents) {
+                this.SubmitCheckCol = this.getSubmitCheckCol();
+                if (this.SubmitCheckCol >= 0) {
+                    var checks = $YetaWF.getElementsBySelector("td:nth-child(" + (this.SubmitCheckCol + 1) + ") input[type='checkbox']", [this.Control]);
+                    for (var _i = 0, checks_2 = checks; _i < checks_2.length; _i++) {
+                        var check = checks_2[_i];
+                        var tr = $YetaWF.elementClosest(check, "tr");
+                        var recNum = Number($YetaWF.getAttribute(tr, "data-origin"));
+                        var set = this.Setup.StaticData[recNum][this.Setup.Columns[this.SubmitCheckCol].Name];
+                        if (!set)
+                            return false;
+                    }
+                    return true;
+                }
+            }
+            throw "GetAllCheckBoxesSelected not available";
         };
         Grid.TEMPLATE = "yt_grid";
         Grid.SELECTOR = ".yt_grid";

@@ -197,12 +197,15 @@ namespace YetaWF_ComponentsHTML {
             this.update();
 
             $YetaWF.registerEventHandlerWindow("resize", null, (ev: UIEvent) => {
-                if (this.MasonryElem) {
-                    this.layout();
-                } else {
-                    this.setLayout();
-                }
-                return true;
+                if (this.Setup.Style === PropertyListStyleEnum.Boxed || this.Setup.Style === PropertyListStyleEnum.BoxedWithCategories) {
+                    if (this.MasonryElem) {
+                        this.layout();
+                    } else {
+                        this.setLayout();
+                    }
+                    return true;
+                } else
+                    return false;
             });
 
             $YetaWF.registerCustomEventHandler(this, "propertylist_relayout", (ev: Event): boolean => {

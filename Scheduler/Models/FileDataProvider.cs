@@ -27,7 +27,7 @@ namespace YetaWF.Modules.Scheduler.DataProvider.File {
             public string LogFile { get; private set; }// File IO
 
             public LogDataProvider(Dictionary<string, object> options) : base(options) {
-                LogFile = Path.Combine(YetaWFManager.DataFolder, Dataset, LogfileName);
+                LogFile = Path.Combine(BaseFolder, LogfileName);
                 YetaWFManager.Syncify(async () => // Log is sync by definition
                     await FileSystem.FileSystemProvider.CreateDirectoryAsync(Path.GetDirectoryName(LogFile))
                 );

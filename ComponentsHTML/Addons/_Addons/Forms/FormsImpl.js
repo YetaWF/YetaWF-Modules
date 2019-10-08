@@ -25,6 +25,12 @@ var YetaWF_ComponentsHTML;
                 $err.remove();
                 $val.before("<img src=\"" + $YetaWF.htmlAttrEscape(YConfigs.Forms.CssWarningIconUrl) + "\" name=" + name + " class=\"" + YConfigs.Forms.CssWarningIcon + "\" " + YConfigs.Basics.CssTooltip + "=\"" + $YetaWF.htmlAttrEscape($val.text()) + "\"/>");
             });
+            // find the first field in each tab control that has an input validation error and activate that tab
+            // This will not work for nested tabs. Only the lowermost tab will be activated.
+            var elems = $YetaWF.getElementsBySelector("div.yt_propertylist.t_tabbed", [partialForm]);
+            elems.forEach(function (tabctrl, index) {
+                YetaWF_FormsImpl.setErrorInTab(tabctrl);
+            });
         };
         /**
          * Re-validate all fields within the div, typically used after paging in a grid to let jquery.validate update all fields
@@ -216,6 +222,9 @@ var YetaWF_ComponentsHTML;
                     // remove the error icon
                     var $err = $("img." + YConfigs.Forms.CssWarningIcon + "[name=\"" + name + "\"]", $form);
                     $err.remove();
+                    // if this element doesn't have validation, don't show the image icon (jquery_validate_hooks doesn't ignore ignored fields)
+                    if ($YetaWF.elementHasClass(input, "yform-novalidate"))
+                        return;
                     // find the validation message
                     var $val = $("span.field-validation-error[data-valmsg-for=\"" + name + "\"]", $form); // get the validation message (which follows the input field but is hidden via CSS)
                     // If the validation message can't be found that usually means that a field is validated even though it should not be validated (maybe disabled) and can

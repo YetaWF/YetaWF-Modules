@@ -29,6 +29,7 @@ namespace YetaWF.Modules.Panels.Components {
 
         public class Setup {
             public bool Resize { get; set; }
+            public string ActiveCss { get; set; }
         }
 
         public async Task<string> RenderAsync(PageBarInfo model) {
@@ -37,6 +38,8 @@ namespace YetaWF.Modules.Panels.Components {
             string pane = model.ContentPane;
 
             string styleCss;
+            string styleListCss = "";
+            string activeCss;
             switch (model.Style) {
                 default:
                 case PageBarModule.PanelStyleEnum.Vertical:
@@ -46,25 +49,19 @@ namespace YetaWF.Modules.Panels.Components {
                     styleCss = "t_styleshorz";
                     break;
             }
-
-            // Current page contents
-            string paneContents = "";
-            string contentUrl;
-            Uri contentUri = null;
-            Manager.TryGetUrlArg<string>("!ContentUrl", out contentUrl);
-            if (!string.IsNullOrWhiteSpace(contentUrl)) {
-                contentUri = new Uri(contentUrl);
+            if (model.UseSkinFormatting) {
+                await JqueryUICore.UseAsync();// needed for css
+                styleCss += " t_skin";
+                styleListCss = " ui-widget-content";
+                activeCss = " t_active ui-state-active";
             } else {
-                if (model.Panels.Count > 0) {
-                    contentUri = new Uri(model.Panels[0].Url);
-                }
+                styleCss += " t_noskin";
+                activeCss = " t_active";
             }
-            if (contentUri != null) {
-                PageDefinition page = await PageDefinition.LoadFromUrlAsync(contentUri.AbsolutePath);
-                if (page != null && page.IsAuthorized_View()) {
-                    paneContents = await page.RenderPaneAsync(HtmlHelper, pane == "" ? Globals.MainPane : pane);
-                }
-            }
+
+            string paneContents = "";
+            if (model.ContentPage != null)
+                paneContents = await model.ContentPage.RenderPaneAsync(HtmlHelper, pane == "" ? Globals.MainPane : pane);
 
             string pageUrl = Manager.CurrentPage.EvaluatedCanonicalUrl;
             string pageUrlOnly;
@@ -72,7 +69,7 @@ namespace YetaWF.Modules.Panels.Components {
 
             hb.Append($@"
 <div class='yt_panels_pagebarinfo t_display {styleCss}' id='{ControlId}'>
-    <div class='t_list'>");
+    <div class='t_list yNoPrint{styleListCss}'>");
 
             foreach (PageBarInfo.PanelEntry entry in model.Panels) {
 
@@ -82,10 +79,11 @@ namespace YetaWF.Modules.Panels.Components {
                 string actionLinkClass = "yaction-link";
 
                 string active = "";
-                if (contentUri != null) {
+                if (model.ContentUri != null) {
                     Uri uriLink = new Uri(entry.Url);
-                    if (uriLink.AbsolutePath == contentUri.AbsolutePath)
-                        active = " t_active";
+                    if (uriLink.AbsolutePath.ToLower() == model.ContentUri.AbsolutePath.ToLower()) {
+                        active = activeCss;
+                    }
                 }
 
                 qh.Add("!ContentUrl", entry.Url, Replace: true);
@@ -114,7 +112,8 @@ namespace YetaWF.Modules.Panels.Components {
 </div>");
 
             Setup setup = new Setup {
-                Resize = model.Style == PageBarModule.PanelStyleEnum.Vertical
+                Resize = model.Style == PageBarModule.PanelStyleEnum.Vertical,
+                ActiveCss = activeCss,
             };
 
             Manager.ScriptManager.AddLast($@"new YetaWF_Panels.PageBarInfoComponent('{ControlId}', {Utility.JsonSerialize(setup)});");

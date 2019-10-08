@@ -15,6 +15,7 @@ namespace YetaWF.Modules.Feedback.DataProvider {
     public class FeedbackData {
 
         public const int MaxSubject = 100;
+        public const int MaxName = 80;
         public const int MaxMessage = 5000;
 
         [Data_Identity, Data_PrimaryKey]
@@ -22,6 +23,9 @@ namespace YetaWF.Modules.Feedback.DataProvider {
 
         [StringLength(MaxSubject)]
         public string Subject { get; set; }
+        [StringLength(MaxName)]
+        [Data_NewValue]
+        public string Name { get; set; }
         [StringLength(Globals.MaxEmail)]
         public string Email { get; set; }
 

@@ -30,8 +30,12 @@ namespace YetaWF.Modules.Feedback.Controllers {
             [UIHint("Text80"), StringLength(FeedbackData.MaxSubject), Required, Trim]
             public string Subject { get; set; }
 
-            [Caption("Email Address"), Description("Please enter your email address - your email address will not be publicly visible")]
-            [UIHint("Email"), SuppressIf("RequireEmail", false), StringLength(Globals.MaxEmail), EmailValidation, Required, Trim]
+            [Caption("Your Name"), Description("Please enter your name - Your name will not be publicly visible")]
+            [UIHint("Text40"), SuppressIf(nameof(RequireName), false), StringLength(FeedbackData.MaxName), Required, Trim]
+            public string Name { get; set; }
+
+            [Caption("Your Email Address"), Description("Please enter your email address - Your email address will not be publicly visible")]
+            [UIHint("Email"), SuppressIf(nameof(RequireEmail), false), StringLength(Globals.MaxEmail), EmailValidation, Required, Trim]
             public string Email { get; set; }
 
             [Caption("Message"), Description("Please enter the message")]
@@ -42,6 +46,8 @@ namespace YetaWF.Modules.Feedback.Controllers {
             [UIHint("RecaptchaV2"), RecaptchaV2("Please verify that you're a human and not a spam bot"), SuppressIf("ShowCaptcha", false)]
             public RecaptchaV2Data Captcha { get; set; }
 
+            [UIHint("Hidden")]
+            public bool RequireName { get; set; }
             [UIHint("Hidden")]
             public bool RequireEmail { get; set; }
             [UIHint("Hidden")]
@@ -66,6 +72,7 @@ namespace YetaWF.Modules.Feedback.Controllers {
                 Message = Module.DefaultMessage,
             };
             FeedbackConfigData config = await FeedbackConfigDataProvider.GetConfigAsync();
+            model.RequireName = config.RequireName;
             model.RequireEmail = config.RequireEmail;
             model.ShowCaptcha = config.Captcha;
             return View(model);
@@ -78,6 +85,7 @@ namespace YetaWF.Modules.Feedback.Controllers {
         public async Task<ActionResult> FeedbackAdd_Partial(AddModel model) {
 
             FeedbackConfigData config = await FeedbackConfigDataProvider.GetConfigAsync();
+            model.RequireName = config.RequireName;
             model.RequireEmail = config.RequireEmail;
             model.ShowCaptcha = config.Captcha;
 
@@ -89,9 +97,9 @@ namespace YetaWF.Modules.Feedback.Controllers {
                     throw new InternalError("Feedback couldn't be sent");
 
                 Emails emails = new Emails(Manager);
-                await emails.SendFeedbackAsync(config.Email, model.Email, model.Subject, model.Message, config.BccEmails ? Manager.CurrentSite.AdminEmail : null);
+                await emails.SendFeedbackAsync(config.Email, model.Email, model.Subject, model.Message, model.Name, config.BccEmails ? Manager.CurrentSite.AdminEmail : null);
 
-                return FormProcessed(model, this.__ResStr("okSaved", "Feedback sent!"), NextPage: Manager.ReturnToUrl);
+                return FormProcessed(model, this.__ResStr("okSaved", "Your message has been sent!"), NextPage: Manager.ReturnToUrl);
             }
         }
     }

@@ -28,6 +28,11 @@ namespace YetaWF.Modules.Dashboard.Views {
 <div class='{Globals.CssDivWarning}'>
     {Utility.HtmlEncode(this.__ResStr("disabled", "Static pages are disabled for this site."))}
 </div>");
+            } else if (Manager.HostUsed.ToLower() != Manager.CurrentSite.SiteDomain.ToLower()) {
+                hb.Append($@"
+<div class='{Globals.CssDivWarning}'>
+    {Utility.HtmlEncode(this.__ResStr("enabledBut", "Static pages are enabled, but not used for this site because the host name used doesn't match the defined host name."))}
+</div>");
             }
 
                 hb.Append($@"

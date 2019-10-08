@@ -15,6 +15,7 @@ using YetaWF.Modules.Identity.DataProvider;
 using YetaWF.Modules.Identity.Models;
 using YetaWF.Modules.Identity.Modules;
 using YetaWF.Modules.Identity.Support;
+using System.Linq;
 #if MVC6
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -63,6 +64,10 @@ namespace YetaWF.Modules.Identity.Controllers {
 
             public AddModel() { }
 
+            public UserDefinition SetData(UserDefinition data) {
+                ObjectSupport.CopyData(data, this);
+                return data;
+            }
             public UserDefinition GetData() {
                 UserDefinition data = new UserDefinition();
                 ObjectSupport.CopyData(this, data);
@@ -73,9 +78,9 @@ namespace YetaWF.Modules.Identity.Controllers {
         [AllowGet]
         public async Task<ActionResult> UsersAdd() {
             LoginConfigData config = await LoginConfigDataProvider.GetConfigAsync();
-            AddModel model = new AddModel {
-                RegistrationType = config.RegistrationType,
-            };
+            AddModel model = new AddModel();
+            model.SetData(new UserDefinition());
+            model.RegistrationType = config.RegistrationType;
             return View(model);
         }
 
@@ -84,6 +89,7 @@ namespace YetaWF.Modules.Identity.Controllers {
         [ConditionalAntiForgeryToken]
         [ExcludeDemoMode]
         public async Task<ActionResult> UsersAdd_Partial(AddModel model) {
+
             if (!ModelState.IsValid)
                 return PartialView(model);
 

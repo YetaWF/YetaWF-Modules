@@ -4,6 +4,7 @@ namespace YetaWF_Panels {
 
     interface Setup {
         Resize: boolean;
+        ActiveCss: string;
     }
 
     export class PageBarInfoComponent extends YetaWF.ComponentBaseNoDataImpl {
@@ -28,9 +29,9 @@ namespace YetaWF_Panels {
             $YetaWF.registerEventHandler(this.Control, "click", ".t_list a", (ev: MouseEvent): boolean => {
                 let entries = $YetaWF.getElementsBySelector(".t_entry", [this.Control]);
                 for (let entry of entries)
-                    $YetaWF.elementRemoveClass(entry, "t_active");
+                    $YetaWF.elementRemoveClassList(entry, this.Setup.ActiveCss);
                 let entry = $YetaWF.elementClosest(ev.__YetaWFElem, ".t_entry");
-                $YetaWF.elementAddClass(entry, "t_active");
+                $YetaWF.elementAddClassList(entry, this.Setup.ActiveCss);
                 return true;
             });
             if (this.Setup.Resize) {

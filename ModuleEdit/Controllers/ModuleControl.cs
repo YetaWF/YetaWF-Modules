@@ -104,6 +104,20 @@ namespace YetaWF.Modules.ModuleEdit.Controllers {
             await page.SaveAsync();
             return Reload();
         }
+        // Remove a module from page and permanently
+        [AllowPost]
+        [ExcludeDemoMode]
+        public async Task<ActionResult> RemovePermanent(Guid pageGuid, Guid moduleGuid, string pane, int moduleIndex = -1) {
+            if (pageGuid == Guid.Empty || pane == null || moduleIndex == -1)
+                throw new ArgumentException();
+            PageDefinition page = await LoadPageAsync(pageGuid);
+            if (!page.IsAuthorized_Edit())
+                return NotAuthorized();
+            page.ModuleDefinitions.Remove(pane, moduleGuid, moduleIndex);
+            await page.SaveAsync();
+            await YetaWF.Core.IO.Module.RemoveModuleDefinitionAsync(moduleGuid);
+            return Reload();
+        }
 
         private async Task<PageDefinition> LoadPageAsync(Guid pageGuid) {
             PageDefinition page = await PageDefinition.LoadAsync(pageGuid);

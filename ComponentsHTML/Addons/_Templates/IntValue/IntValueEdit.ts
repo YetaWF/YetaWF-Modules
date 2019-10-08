@@ -23,7 +23,10 @@ namespace YetaWF_ComponentsHTML {
                 ControlType: ControlTypeEnum.Template,
                 ChangeEvent: "intvalue_change",
                 GetValue: (control: IntValueEditComponent): string | null => {
-                    return control.value.toString();
+                    let v = control.value;
+                    if (!v)
+                        return "";
+                    return v.toString();
                 },
                 Enable: (control: IntValueEditComponent, enable: boolean, clearOnDisable: boolean): void => {
                     control.enable(enable);
@@ -56,7 +59,11 @@ namespace YetaWF_ComponentsHTML {
         }
 
         get value(): number {
-            return parseInt(this.InputControl.value, 10);
+            if (this.kendoNumericTextBox == null) {
+                return parseInt(this.InputControl.value, 10);
+            } else {
+                return this.kendoNumericTextBox.value();
+            }
         }
         set value(val: number) {
             if (this.kendoNumericTextBox == null) {

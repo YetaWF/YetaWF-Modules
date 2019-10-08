@@ -1,0 +1,40 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <Version>5.0.0.0</Version>
+    <TargetFramework>netcoreapp3.0</TargetFramework>
+
+    <DefineConstants>$(DefineConstants);MVC6;NETCOREAPP</DefineConstants>
+    <AssemblyName>Softelvdm.TwilioProcessorDataProvider</AssemblyName>
+    <PackageId>TwilioProcessorDataProvider</PackageId>
+    <GenerateAssemblyTitleAttribute>false</GenerateAssemblyTitleAttribute>
+    <GenerateAssemblyDescriptionAttribute>false</GenerateAssemblyDescriptionAttribute>
+    <GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
+    <GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
+    <GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
+    <GenerateAssemblyCopyrightAttribute>false</GenerateAssemblyCopyrightAttribute>
+    <GenerateAssemblyVersionAttribute>false</GenerateAssemblyVersionAttribute>
+    <RootNamespace>Softelvdm.Modules.TwilioProcessorDataProvider</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\CoreComponents\Core\Core.csproj" />
+    <ProjectReference Include="..\..\..\DataProvider\File\File.csproj" />
+    <ProjectReference Include="..\..\..\DataProvider\SQL\SQL.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="libphonenumber-csharp" Version="8.10.19" />
+    <PackageReference Include="Twilio.AspNet.Core" Version="5.20.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="**\*.cshtml_MVC5" />
+    <None Remove="**\*.cshtml_MVC6" />
+    <!-- TODO: Review for final release - this is a workaround for slow solution load -->
+    <Compile Remove="node_modules\**" />
+    <Content Remove="node_modules\**" />
+    <None Remove="node_modules\**" /><EmbeddedResource Remove="node_modules\**" />
+  </ItemGroup>
+
+</Project>

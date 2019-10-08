@@ -42,6 +42,10 @@ namespace YetaWF.Modules.Feedback.Controllers {
             [UIHint("DateTime"), ReadOnly]
             public DateTime Created { get; set; }
 
+            [Caption("Name"), Description("The user's name")]
+            [UIHint("String"), ReadOnly]
+            public string Name { get; set; }
+
             [Caption("Email Address"), Description("The user's email address")]
             [UIHint("String"), ReadOnly]
             public string Email { get; set; }

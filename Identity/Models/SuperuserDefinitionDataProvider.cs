@@ -30,14 +30,20 @@ namespace YetaWF.Modules.Identity.DataProvider {
 
         internal static string SuperUserName {
             get {
-                if (string.IsNullOrWhiteSpace(_super))
-                    _super = WebConfigHelper.GetValue<string>(AreaRegistration.CurrentPackage.AreaName, SUPERUSERNAME);
-                if (!string.IsNullOrWhiteSpace(_super))
+                if (SuperuserAvailable)
                     return _super;
                 return SUPERUSERNAME;
             }
         }
-        private static string _super;
+        private static string _super = null;
+
+        public static bool SuperuserAvailable {
+            get {
+                if (_super == null)
+                    _super = WebConfigHelper.GetValue<string>(AreaRegistration.CurrentPackage.AreaName, SUPERUSERNAME, null);
+                return !string.IsNullOrWhiteSpace(_super);
+            }
+        }
 
         // IMPLEMENTATION
         // IMPLEMENTATION
@@ -57,6 +63,8 @@ namespace YetaWF.Modules.Identity.DataProvider {
         // API
 
         public async Task<UserDefinition> GetSuperuserAsync() {
+            if (!SuperuserAvailable)
+                return null;
             List<DataProviderFilterInfo> filters = DataProviderFilterInfo.Join(null, new DataProviderFilterInfo { Field = "UserId", Operator = "==", Value = SuperuserDefinitionDataProvider.SuperUserId });
             return await GetItemAsync(filters);
         }

@@ -25,4 +25,5 @@ using YetaWF.PackageAttributes;
     "https://yetawf.com/Documentation/YetaWF/TwilioProcessor#Release%20Notice",
     "https://yetawf.com/Documentation/YetaWF/TwilioProcessor#License")]
 
+[assembly: RequiresPackage("YetaWF.ComponentsHTML")]
 [assembly: RequiresPackage("YetaWF.Identity")]

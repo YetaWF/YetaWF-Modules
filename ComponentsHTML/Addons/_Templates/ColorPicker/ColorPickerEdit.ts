@@ -33,7 +33,7 @@ namespace YetaWF_ComponentsHTML {
                 var event = document.createEvent("Event");
                 event.initEvent("colorpicker_change", true, true);
                 this.Control.dispatchEvent(event);
-            }
+            };
 
             $(`#${controlId}`).kendoColorPicker(setup);
         }

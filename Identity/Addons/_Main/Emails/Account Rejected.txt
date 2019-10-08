@@ -1,7 +1,7 @@
 *************************************************************************************
 Account Not Approved
 *************************************************************************************
- 
+
 Unfortunately we cannot approve your new account at [Site,SiteDomain].
 
 If you believe your account has been rejected in error, please let us know

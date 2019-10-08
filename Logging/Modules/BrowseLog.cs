@@ -12,7 +12,7 @@ using YetaWF.Core.Serializers;
 using YetaWF.Core.Support;
 using YetaWF.DataProvider;
 using YetaWF.Modules.Logging.Controllers;
-using YetaWF.Modules.Logging.DataProvider;
+using YetaWF.Modules.LoggingDataProvider.DataProvider;
 using YetaWF.Core.Components;
 #if MVC6
 #else
@@ -31,6 +31,7 @@ namespace YetaWF.Modules.Logging.Modules {
             Title = this.__ResStr("modTitle", "Log");
             Name = this.__ResStr("modName", "Log");
             Description = this.__ResStr("modSummary", "Displays and manages log records");
+            UsePartialFormCss = false;
         }
 
         public override IModuleDefinitionIO GetDataProvider() { return new BrowseLogModuleDataProvider(); }

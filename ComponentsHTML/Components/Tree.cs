@@ -59,6 +59,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         public string DisabledCss { get; set; }
         public string RowHighlightCss { get; set; }
         public string RowDragDropHighlightCss { get; set; }
+        public string SelectedCss { get; set; }
 
         public TreeSetup() {
             StaticData = new List<object>();
@@ -154,6 +155,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                 DisabledCss = treeModel.UseSkinFormatting ? "ui-state-disabled" : "tg_disabled",
                 RowHighlightCss = treeModel.UseSkinFormatting ? "ui-state-highlight" : "tg_highlight",
                 RowDragDropHighlightCss = treeModel.UseSkinFormatting ? "ui-state-active" : "tg_dragdrophighlight",
+                SelectedCss = treeModel.UseSkinFormatting ? "ui-state-active" : "t_select",
             };
 
             PropertyData linkTypeProp = ObjectSupport.TryGetPropertyData(treeModel.RecordType, LinkTypeProperty);
@@ -281,7 +283,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                 bool selected = selectedProp != null ? selectedProp.GetPropertyValue<bool>(record) : false;
                 string selectedCss = "";
                 if (selected)
-                    selectedCss = " t_select";
+                    selectedCss = $" {setup.SelectedCss}";
 
                 string caret;
                 string icon;
@@ -291,10 +293,11 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                         caret = "<i class='t_icright'></i>";
                     else
                         caret = "<i class='t_icdown'></i>";
-                    icon = "<i class='t_icfolder'></i>";
-                }
-                else
-                {
+                    if (urlProp != null && urlProp.GetPropertyValue<string>(record) != null)
+                        icon = "<i class='t_icfile'></i>";
+                    else
+                        icon = "<i class='t_icfolder'></i>";
+                } else {
                     caret = "<i class='t_icempty'></i>";
                     icon = "<i class='t_icfile'></i>";
                 }
