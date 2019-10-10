@@ -544,5 +544,13 @@ namespace YetaWF.Modules.PageEdit.Controllers {
             Manager.EditMode = false;
             return Redirect(Manager.ReturnToUrl, SetCurrentEditMode: true, SetCurrentControlPanelMode: true);
         }
+
+        [ExcludeDemoMode]
+        public async Task<ActionResult> ClearJsCss() {
+            if (!Manager.HasSuperUserRole)
+                return NotAuthorized();
+            await FileBundles.ResetCacheAsync();
+            return FormProcessed(null, popupText: this.__ResStr("clearJsCssAll", "JavaScript and CSS bundles have been cleared"), OnClose: OnCloseEnum.Nothing);
+        }
     }
 }

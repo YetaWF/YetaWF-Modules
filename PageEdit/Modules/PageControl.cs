@@ -59,6 +59,7 @@ namespace YetaWF.Modules.PageEdit.Modules {
 
             menuList.New(await GetAction_W3CValidationAsync(), location);
             menuList.New(await GetAction_RestartSite(), location);
+            menuList.New(GetAction_ClearJsCssCache(), location);
 
             menuList.AddRange(baseMenuList);
             return menuList;
@@ -171,6 +172,25 @@ namespace YetaWF.Modules.PageEdit.Modules {
                 Location = ModuleAction.ActionLocationEnum.NoAuto |
                             ModuleAction.ActionLocationEnum.MainMenu | ModuleAction.ActionLocationEnum.ModuleLinks | ModuleAction.ActionLocationEnum.ModuleMenu,
                 Style = ModuleAction.ActionStyleEnum.NewWindow,
+                DontFollow = true,
+            };
+        }
+        public ModuleAction GetAction_ClearJsCssCache() {
+            if (!Manager.HasSuperUserRole) return null;
+            return new ModuleAction(this) {
+                Style = ModuleAction.ActionStyleEnum.Post,
+                NeedsModuleContext = true,
+                Url = Utility.UrlFor(typeof(PageControlModuleController), nameof(PageControlModuleController.ClearJsCss)),
+                Image = "#Remove",
+                LinkText = this.__ResStr("clrCacheLink", "Clear JS/CSS Cache"),
+                MenuText = this.__ResStr("clrCacheText", "Clear JS/CSS Cache"),
+                Tooltip = this.__ResStr("clrCacheTooltip", "Clear the cached JavaScript/CSS bundles"),
+                Legend = this.__ResStr("clrCacheLegend", "Clears the cached JavaScript/CSS bundles"),
+                Category = ModuleAction.ActionCategoryEnum.Significant,
+                Mode = ModuleAction.ActionModeEnum.Any,
+                ConfirmationText = this.__ResStr("clrCacheConfirm", "Are you sure you want to clear the JavaScript/CSS cache and bundle files?"),
+                Location = ModuleAction.ActionLocationEnum.NoAuto |
+                            ModuleAction.ActionLocationEnum.MainMenu | ModuleAction.ActionLocationEnum.ModuleLinks | ModuleAction.ActionLocationEnum.ModuleMenu,
                 DontFollow = true,
             };
         }
