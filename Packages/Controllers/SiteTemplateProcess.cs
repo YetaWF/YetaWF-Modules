@@ -44,6 +44,9 @@ namespace YetaWF.Modules.Packages.Controllers {
 
         [AllowGet]
         public async Task<ActionResult> SiteTemplateProcess(string fileName) {
+            PackagesDataProvider packagesDP = new PackagesDataProvider();
+            if (!await FileSystem.FileSystemProvider.DirectoryExistsAsync(packagesDP.TemplateFolder))
+                return new EmptyResult();
             EditModel model = new EditModel { };
             await model.UpdateDataAsync();
             return View(model);
