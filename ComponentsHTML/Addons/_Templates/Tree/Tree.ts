@@ -5,14 +5,10 @@
 namespace YetaWF_ComponentsHTML {
 
     //export interface IPackageLocs {
-    //    GridTotals: string;
-    //    GridTotal0: string;
-    //    GridTotalNone: string;
+    //    TreeTotals: string;
     //}
 
     interface TreeSetup {
-
-        StaticData: any[] | null;
 
         DragDrop: boolean;
 
@@ -22,6 +18,14 @@ namespace YetaWF_ComponentsHTML {
         RowHighlightCss: string;
         RowDragDropHighlightCss: string;
         SelectedCss: string;
+
+        ContentTargetId: string;
+        ContentTargetPane: string;
+        AjaxUrl: string;
+    }
+    interface TreePartialResult {
+        Records: Number;
+        HTML: string;
     }
 
     enum TargetPositionEnum {
@@ -35,7 +39,6 @@ namespace YetaWF_ComponentsHTML {
         public static readonly SELECTOR: string = ".yt_tree";
 
         private Setup: TreeSetup;
-        private DeletedRecords: number[] = [];// array of deleted record numbers
 
         private static DDTree: TreeComponent | null = null;
         private DDSource: HTMLLIElement | null = null;
@@ -56,8 +59,8 @@ namespace YetaWF_ComponentsHTML {
             $YetaWF.registerEventHandler(this.Control, "click", "a.t_entry", (ev: MouseEvent): boolean => {
                 var liElem = $YetaWF.elementClosest(ev.__YetaWFElem, "li") as HTMLLIElement; // get row we're on
                 this.setSelect(liElem);
-                this.sendClickEvent();
-                return false;
+                this.sendClickEvent(liElem);
+                return true;
             });
             $YetaWF.registerEventHandler(this.Control, "click", "i.t_icdown", (ev: MouseEvent): boolean => {
                 var li = $YetaWF.elementClosest(ev.__YetaWFElem, "li") as HTMLLIElement; // get row we're on
@@ -130,19 +133,22 @@ namespace YetaWF_ComponentsHTML {
                 } else if (key === "Enter") {
                     var liElem = this.getSelect();
                     if (!liElem) return false;
-                    this.sendClickEvent();
+                    this.sendClickEvent(liElem);
                     return false;
                 }
                 return true;
             });
         }
 
-        private sendClickEvent(): void {
-            setTimeout((): void => {
-                var event = document.createEvent("Event");
-                event.initEvent("tree_click", true, true);
-                this.Control.dispatchEvent(event);
-            }, 1);
+        private sendClickEvent(liElem: HTMLLIElement): void {
+            let data = this.getElementDataCond(liElem);
+            if (!data || (!data.UrlNew && !data.UrlContent)) {
+                setTimeout((): void => {
+                    var event = document.createEvent("Event");
+                    event.initEvent("tree_click", true, true);
+                    this.Control.dispatchEvent(event);
+                }, 1);
+            }
         }
 
         private sendSelectEvent(): void {
@@ -307,6 +313,54 @@ namespace YetaWF_ComponentsHTML {
             TreeComponent.DDTree = null;
         }
 
+        // expand/collapse
+
+        private expandItem(liElem: HTMLLIElement, data: any): void {
+
+            if (!this.Setup.AjaxUrl)
+                throw `Tree control doesn't have an AJAX URL - ${this.Control.outerHTML}`;
+
+            if (!$YetaWF.isLoading) {
+                $YetaWF.setLoading(true);
+
+                // fetch data from servers
+                var uri = $YetaWF.parseUrl(this.Setup.AjaxUrl);
+                let recData = $YetaWF.getAttribute(liElem, "data-record");
+                if (recData)
+                    uri.addSearch("Data", recData);
+                uri.addFormInfo(this.Control);
+                let uniqueIdCounters: YetaWF.UniqueIdInfo = { UniqueIdPrefix: `${this.ControlId}tr`, UniqueIdPrefixCounter: 0, UniqueIdCounter: 0 };
+                uri.addSearch(YConfigs.Forms.UniqueIdCounters, JSON.stringify(uniqueIdCounters));
+
+                var request: XMLHttpRequest = new XMLHttpRequest();
+                request.open("POST", this.Setup.AjaxUrl);
+                request.setRequestHeader("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
+                request.setRequestHeader("X-Requested-With", "XMLHttpRequest");
+                request.onreadystatechange = (ev: Event): any => {
+                    if (request.readyState === 4 /*DONE*/) {
+                        $YetaWF.setLoading(false);
+                        $YetaWF.processAjaxReturn(request.responseText, request.statusText, request, undefined, undefined, (result: string) => {
+                            let partial: TreePartialResult = JSON.parse(request.responseText);
+
+                            let iElem = $YetaWF.getElement1BySelector("i.t_icright", [liElem]);
+                            $YetaWF.elementRemoveClasses(iElem, ["t_icright", "t_icdown", "t_icempty"]);
+                            if (partial.Records > 0) {
+                                // add new items
+                                $YetaWF.appendMixedHTML(liElem, partial.HTML);
+                                // mark expanded
+                                $YetaWF.elementAddClass(iElem, "t_icdown");
+                            } else {
+                                // mark not expandable
+                                $YetaWF.elementAddClass(iElem, "t_icempty");
+                            }
+                        });
+                    }
+                };
+                let data = uri.toFormData();
+                request.send(data);
+            }
+        }
+
         // API
 
         public canCollapse(liElem: HTMLLIElement): boolean {
@@ -316,22 +370,41 @@ namespace YetaWF_ComponentsHTML {
         }
         public collapse(liElem: HTMLLIElement): void {
             var ul = $YetaWF.getElement1BySelector("ul", [liElem]); // get the subitems
-            ul.style.display = "none";
+            if (ul) {
+                let data = this.getElementDataCond(liElem);
+                if (data && data.DynamicSubEntries) {
+                    ul.remove();
+                } else {
+                    ul.style.display = "none";
+                }
+            }
             var iElem = $YetaWF.getElement1BySelector("i.t_icdown", [liElem]);
             $YetaWF.elementRemoveClass(iElem, "t_icdown");
             $YetaWF.elementAddClass(iElem, "t_icright");
         }
         public canExpand(liElem: HTMLLIElement): boolean {
             var ul = $YetaWF.getElement1BySelectorCond("ul", [liElem]); // get the subitems
-            if (!ul || ul.style.display === "") return false;
-            return true;
+            if (ul) {
+                if (ul.style.display === "") return false;
+                return true;
+            } else {
+                let data = this.getElementDataCond(liElem);
+                return data && data.DynamicSubEntries;
+            }
         }
         public expand(liElem: HTMLLIElement): void {
-            var ul = $YetaWF.getElement1BySelector("ul", [liElem]); // get the subitems
-            ul.style.display = "";
-            var iElem = $YetaWF.getElement1BySelector("i.t_icright", [liElem]);
-            $YetaWF.elementRemoveClass(iElem, "t_icright");
-            $YetaWF.elementAddClass(iElem, "t_icdown");
+            var ul = $YetaWF.getElement1BySelectorCond("ul", [liElem]); // get the subitems
+            if (ul == null) {
+                let data = this.getElementData(liElem);
+                if (data.DynamicSubEntries) {
+                    this.expandItem(liElem, data);
+                }
+            } else {
+                ul.style.display = "";
+                var iElem = $YetaWF.getElement1BySelector("i.t_icright", [liElem]);
+                $YetaWF.elementRemoveClass(iElem, "t_icright");
+                $YetaWF.elementAddClass(iElem, "t_icdown");
+            }
         }
         public expandAll(): void {
             var li = this.getFirstVisibleItem();
@@ -349,12 +422,17 @@ namespace YetaWF_ComponentsHTML {
                 li = this.getNextEntry(li);
             }
         }
+        public getElementDataCond(liElem: HTMLLIElement): any | null {
+            let recData = $YetaWF.getAttribute(liElem, "data-record");
+            if (!recData)
+                return null;
+            return JSON.parse(recData);
+        }
         public getElementData(liElem: HTMLLIElement): any {
-            if (!this.Setup.StaticData) throw "no static data";
-            var rec = Number($YetaWF.getAttribute(liElem, "data-record"));
-            if (rec < 0 || rec >= this.Setup.StaticData.length)
-                throw `Unexpected record # ${rec} in ${liElem.outerHTML}`;
-            return this.Setup.StaticData[rec];
+            let data = this.getElementDataCond(liElem);
+            if (!data)
+                throw `No record data for ${liElem.outerHTML}`;
+            return data;
         }
         public getSelect(): HTMLLIElement | null {
             var entry = $YetaWF.getElement1BySelectorCond(`.t_entry.${this.Setup.SelectedCss}`, [this.Control]) as HTMLElement;
@@ -370,12 +448,9 @@ namespace YetaWF_ComponentsHTML {
                 entry.focus();
         }
         public getSelectData(): any | null {
-            if (!this.Setup.StaticData) throw "no static data";
             var liElem = this.getSelect();
             if (!liElem) return null;
-            var rec = Number($YetaWF.getAttribute(liElem, "data-record"));
-            if (rec < 0 || rec >= this.Setup.StaticData.length) return null;
-            return this.Setup.StaticData[rec];
+            return this.getElementDataCond(liElem);
         }
         public getSelectText(): string {
             var entry = $YetaWF.getElement1BySelector(`.t_entry.${this.Setup.SelectedCss}`, [this.Control]) as HTMLElement;
@@ -391,21 +466,6 @@ namespace YetaWF_ComponentsHTML {
                 $YetaWF.elementRemoveClass(entry, this.Setup.SelectedCss);
         }
         public removeEntry(liElem: HTMLLIElement): void {
-            if (!this.Setup.StaticData) throw "no static data";
-            var rec = Number($YetaWF.getAttribute(liElem, "data-record"));
-            if (rec < 0 || rec >= this.Setup.StaticData.length) return;
-
-            // remove the record(s) from static data (including child items)
-            this.DeletedRecords.push(rec);
-            this.Setup.StaticData[rec] = null;
-            var childLis = $YetaWF.getElementsBySelector("li", [liElem]) as HTMLLIElement[];
-            for (let childLi of childLis) {
-                rec = Number($YetaWF.getAttribute(childLi, "data-record"));
-                if (rec < 0 || rec >= this.Setup.StaticData.length)
-                    throw `Unexpected record # ${rec} in ${childLi.outerHTML}`;
-                this.DeletedRecords.push(rec);
-            }
-
             // remove li element (and possibly parent(s))
             var ul = $YetaWF.elementClosest(liElem, "ul") as HTMLUListElement | null;
             liElem.remove();
@@ -519,7 +579,6 @@ namespace YetaWF_ComponentsHTML {
             return liElem;
         }
         public getLastVisibleItem(): HTMLLIElement | null {
-
             var ul: HTMLUListElement | null = $YetaWF.getElement1BySelector("ul.tg_root", [this.Control]) as HTMLUListElement;
             var liElem: HTMLLIElement | null = null;
             for (; ;) {
@@ -545,25 +604,11 @@ namespace YetaWF_ComponentsHTML {
             return this.getPrevSibling(liElem)!;
         }
         private getNewEntry(text: string, data: any): string {
-            var rec = this.getAvailableRecord(data);
-            var dd = "";
+            let dd = "";
             if (this.Setup.DragDrop)
                 dd = " draggable='true' ondrop='YetaWF_ComponentsHTML.TreeComponent.onDrop(event)' ondragover='YetaWF_ComponentsHTML.TreeComponent.onDragOver(event)' ondragstart='YetaWF_ComponentsHTML.TreeComponent.onDragStart(event)'";
-            var entry = `<li data-record="${rec}"><i class="t_icempty"></i> <i class="t_icfile"></i><a class="t_entry" href="#"${dd}>${text}</a></li>`;
+            var entry = `<li><i class="t_icempty"></i> <i class="t_icfile"></i><a class="t_entry" href="#"${dd}>${text}</a></li>`;
             return entry;
-        }
-        private getAvailableRecord(data: any): number {
-            if (!this.Setup.StaticData) throw "no static data";
-            var rec: number;
-            if (this.DeletedRecords.length > 0) {
-                rec = this.DeletedRecords[0];
-                this.DeletedRecords.splice(0, 1);
-                this.Setup.StaticData[rec] = data;
-            } else {
-                rec = this.Setup.StaticData.length;
-                this.Setup.StaticData.push(data);
-            }
-            return rec;
         }
 
         /** Scroll the selected item into the viewable area */

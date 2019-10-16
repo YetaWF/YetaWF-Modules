@@ -61,7 +61,7 @@ namespace YetaWF.Modules.Panels.Components {
 
             string paneContents = "";
             if (model.ContentPage != null)
-                paneContents = await model.ContentPage.RenderPaneAsync(HtmlHelper, pane == "" ? Globals.MainPane : pane);
+                paneContents = await model.ContentPage.RenderPaneAsync(HtmlHelper, pane == "" ? Globals.MainPane : pane, PaneDiv: false);
 
             string pageUrl = Manager.CurrentPage.EvaluatedCanonicalUrl;
             string pageUrlOnly;

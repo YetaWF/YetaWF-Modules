@@ -17,9 +17,7 @@ var __extends = (this && this.__extends) || (function () {
 var YetaWF_ComponentsHTML;
 (function (YetaWF_ComponentsHTML) {
     //export interface IPackageLocs {
-    //    GridTotals: string;
-    //    GridTotal0: string;
-    //    GridTotalNone: string;
+    //    TreeTotals: string;
     //}
     var TargetPositionEnum;
     (function (TargetPositionEnum) {
@@ -36,7 +34,6 @@ var YetaWF_ComponentsHTML;
                 GetValue: null,
                 Enable: null,
             }) || this;
-            _this.DeletedRecords = []; // array of deleted record numbers
             _this.DDSource = null;
             _this.DDSourceAnchor = null;
             _this.DDLastTarget = null;
@@ -46,8 +43,8 @@ var YetaWF_ComponentsHTML;
             $YetaWF.registerEventHandler(_this.Control, "click", "a.t_entry", function (ev) {
                 var liElem = $YetaWF.elementClosest(ev.__YetaWFElem, "li"); // get row we're on
                 _this.setSelect(liElem);
-                _this.sendClickEvent();
-                return false;
+                _this.sendClickEvent(liElem);
+                return true;
             });
             $YetaWF.registerEventHandler(_this.Control, "click", "i.t_icdown", function (ev) {
                 var li = $YetaWF.elementClosest(ev.__YetaWFElem, "li"); // get row we're on
@@ -137,20 +134,23 @@ var YetaWF_ComponentsHTML;
                     var liElem = _this.getSelect();
                     if (!liElem)
                         return false;
-                    _this.sendClickEvent();
+                    _this.sendClickEvent(liElem);
                     return false;
                 }
                 return true;
             });
             return _this;
         }
-        TreeComponent.prototype.sendClickEvent = function () {
+        TreeComponent.prototype.sendClickEvent = function (liElem) {
             var _this = this;
-            setTimeout(function () {
-                var event = document.createEvent("Event");
-                event.initEvent("tree_click", true, true);
-                _this.Control.dispatchEvent(event);
-            }, 1);
+            var data = this.getElementDataCond(liElem);
+            if (!data || (!data.UrlNew && !data.UrlContent)) {
+                setTimeout(function () {
+                    var event = document.createEvent("Event");
+                    event.initEvent("tree_click", true, true);
+                    _this.Control.dispatchEvent(event);
+                }, 1);
+            }
         };
         TreeComponent.prototype.sendSelectEvent = function () {
             var _this = this;
@@ -311,6 +311,48 @@ var YetaWF_ComponentsHTML;
                 TreeComponent.DDTree.dragEnd(ev);
             TreeComponent.DDTree = null;
         };
+        // expand/collapse
+        TreeComponent.prototype.expandItem = function (liElem, data) {
+            if (!this.Setup.AjaxUrl)
+                throw "Tree control doesn't have an AJAX URL - " + this.Control.outerHTML;
+            if (!$YetaWF.isLoading) {
+                $YetaWF.setLoading(true);
+                // fetch data from servers
+                var uri = $YetaWF.parseUrl(this.Setup.AjaxUrl);
+                var recData = $YetaWF.getAttribute(liElem, "data-record");
+                if (recData)
+                    uri.addSearch("Data", recData);
+                uri.addFormInfo(this.Control);
+                var uniqueIdCounters = { UniqueIdPrefix: this.ControlId + "tr", UniqueIdPrefixCounter: 0, UniqueIdCounter: 0 };
+                uri.addSearch(YConfigs.Forms.UniqueIdCounters, JSON.stringify(uniqueIdCounters));
+                var request = new XMLHttpRequest();
+                request.open("POST", this.Setup.AjaxUrl);
+                request.setRequestHeader("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
+                request.setRequestHeader("X-Requested-With", "XMLHttpRequest");
+                request.onreadystatechange = function (ev) {
+                    if (request.readyState === 4 /*DONE*/) {
+                        $YetaWF.setLoading(false);
+                        $YetaWF.processAjaxReturn(request.responseText, request.statusText, request, undefined, undefined, function (result) {
+                            var partial = JSON.parse(request.responseText);
+                            var iElem = $YetaWF.getElement1BySelector("i.t_icright", [liElem]);
+                            $YetaWF.elementRemoveClasses(iElem, ["t_icright", "t_icdown", "t_icempty"]);
+                            if (partial.Records > 0) {
+                                // add new items
+                                $YetaWF.appendMixedHTML(liElem, partial.HTML);
+                                // mark expanded
+                                $YetaWF.elementAddClass(iElem, "t_icdown");
+                            }
+                            else {
+                                // mark not expandable
+                                $YetaWF.elementAddClass(iElem, "t_icempty");
+                            }
+                        });
+                    }
+                };
+                var data_1 = uri.toFormData();
+                request.send(data_1);
+            }
+        };
         // API
         TreeComponent.prototype.canCollapse = function (liElem) {
             var ul = $YetaWF.getElement1BySelectorCond("ul", [liElem]); // get the subitems
@@ -320,23 +362,45 @@ var YetaWF_ComponentsHTML;
         };
         TreeComponent.prototype.collapse = function (liElem) {
             var ul = $YetaWF.getElement1BySelector("ul", [liElem]); // get the subitems
-            ul.style.display = "none";
+            if (ul) {
+                var data = this.getElementDataCond(liElem);
+                if (data && data.DynamicSubEntries) {
+                    ul.remove();
+                }
+                else {
+                    ul.style.display = "none";
+                }
+            }
             var iElem = $YetaWF.getElement1BySelector("i.t_icdown", [liElem]);
             $YetaWF.elementRemoveClass(iElem, "t_icdown");
             $YetaWF.elementAddClass(iElem, "t_icright");
         };
         TreeComponent.prototype.canExpand = function (liElem) {
             var ul = $YetaWF.getElement1BySelectorCond("ul", [liElem]); // get the subitems
-            if (!ul || ul.style.display === "")
-                return false;
-            return true;
+            if (ul) {
+                if (ul.style.display === "")
+                    return false;
+                return true;
+            }
+            else {
+                var data = this.getElementDataCond(liElem);
+                return data && data.DynamicSubEntries;
+            }
         };
         TreeComponent.prototype.expand = function (liElem) {
-            var ul = $YetaWF.getElement1BySelector("ul", [liElem]); // get the subitems
-            ul.style.display = "";
-            var iElem = $YetaWF.getElement1BySelector("i.t_icright", [liElem]);
-            $YetaWF.elementRemoveClass(iElem, "t_icright");
-            $YetaWF.elementAddClass(iElem, "t_icdown");
+            var ul = $YetaWF.getElement1BySelectorCond("ul", [liElem]); // get the subitems
+            if (ul == null) {
+                var data = this.getElementData(liElem);
+                if (data.DynamicSubEntries) {
+                    this.expandItem(liElem, data);
+                }
+            }
+            else {
+                ul.style.display = "";
+                var iElem = $YetaWF.getElement1BySelector("i.t_icright", [liElem]);
+                $YetaWF.elementRemoveClass(iElem, "t_icright");
+                $YetaWF.elementAddClass(iElem, "t_icdown");
+            }
         };
         TreeComponent.prototype.expandAll = function () {
             var li = this.getFirstVisibleItem();
@@ -354,13 +418,17 @@ var YetaWF_ComponentsHTML;
                 li = this.getNextEntry(li);
             }
         };
+        TreeComponent.prototype.getElementDataCond = function (liElem) {
+            var recData = $YetaWF.getAttribute(liElem, "data-record");
+            if (!recData)
+                return null;
+            return JSON.parse(recData);
+        };
         TreeComponent.prototype.getElementData = function (liElem) {
-            if (!this.Setup.StaticData)
-                throw "no static data";
-            var rec = Number($YetaWF.getAttribute(liElem, "data-record"));
-            if (rec < 0 || rec >= this.Setup.StaticData.length)
-                throw "Unexpected record # " + rec + " in " + liElem.outerHTML;
-            return this.Setup.StaticData[rec];
+            var data = this.getElementDataCond(liElem);
+            if (!data)
+                throw "No record data for " + liElem.outerHTML;
+            return data;
         };
         TreeComponent.prototype.getSelect = function () {
             var entry = $YetaWF.getElement1BySelectorCond(".t_entry." + this.Setup.SelectedCss, [this.Control]);
@@ -377,15 +445,10 @@ var YetaWF_ComponentsHTML;
                 entry.focus();
         };
         TreeComponent.prototype.getSelectData = function () {
-            if (!this.Setup.StaticData)
-                throw "no static data";
             var liElem = this.getSelect();
             if (!liElem)
                 return null;
-            var rec = Number($YetaWF.getAttribute(liElem, "data-record"));
-            if (rec < 0 || rec >= this.Setup.StaticData.length)
-                return null;
-            return this.Setup.StaticData[rec];
+            return this.getElementDataCond(liElem);
         };
         TreeComponent.prototype.getSelectText = function () {
             var entry = $YetaWF.getElement1BySelector(".t_entry." + this.Setup.SelectedCss, [this.Control]);
@@ -403,22 +466,6 @@ var YetaWF_ComponentsHTML;
             }
         };
         TreeComponent.prototype.removeEntry = function (liElem) {
-            if (!this.Setup.StaticData)
-                throw "no static data";
-            var rec = Number($YetaWF.getAttribute(liElem, "data-record"));
-            if (rec < 0 || rec >= this.Setup.StaticData.length)
-                return;
-            // remove the record(s) from static data (including child items)
-            this.DeletedRecords.push(rec);
-            this.Setup.StaticData[rec] = null;
-            var childLis = $YetaWF.getElementsBySelector("li", [liElem]);
-            for (var _i = 0, childLis_1 = childLis; _i < childLis_1.length; _i++) {
-                var childLi = childLis_1[_i];
-                rec = Number($YetaWF.getAttribute(childLi, "data-record"));
-                if (rec < 0 || rec >= this.Setup.StaticData.length)
-                    throw "Unexpected record # " + rec + " in " + childLi.outerHTML;
-                this.DeletedRecords.push(rec);
-            }
             // remove li element (and possibly parent(s))
             var ul = $YetaWF.elementClosest(liElem, "ul");
             liElem.remove();
@@ -557,27 +604,11 @@ var YetaWF_ComponentsHTML;
             return this.getPrevSibling(liElem);
         };
         TreeComponent.prototype.getNewEntry = function (text, data) {
-            var rec = this.getAvailableRecord(data);
             var dd = "";
             if (this.Setup.DragDrop)
                 dd = " draggable='true' ondrop='YetaWF_ComponentsHTML.TreeComponent.onDrop(event)' ondragover='YetaWF_ComponentsHTML.TreeComponent.onDragOver(event)' ondragstart='YetaWF_ComponentsHTML.TreeComponent.onDragStart(event)'";
-            var entry = "<li data-record=\"" + rec + "\"><i class=\"t_icempty\"></i> <i class=\"t_icfile\"></i><a class=\"t_entry\" href=\"#\"" + dd + ">" + text + "</a></li>";
+            var entry = "<li><i class=\"t_icempty\"></i> <i class=\"t_icfile\"></i><a class=\"t_entry\" href=\"#\"" + dd + ">" + text + "</a></li>";
             return entry;
-        };
-        TreeComponent.prototype.getAvailableRecord = function (data) {
-            if (!this.Setup.StaticData)
-                throw "no static data";
-            var rec;
-            if (this.DeletedRecords.length > 0) {
-                rec = this.DeletedRecords[0];
-                this.DeletedRecords.splice(0, 1);
-                this.Setup.StaticData[rec] = data;
-            }
-            else {
-                rec = this.Setup.StaticData.length;
-                this.Setup.StaticData.push(data);
-            }
-            return rec;
         };
         /** Scroll the selected item into the viewable area */
         TreeComponent.prototype.scrollIntoView = function (container) {
