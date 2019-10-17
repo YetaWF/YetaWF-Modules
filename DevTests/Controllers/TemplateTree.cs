@@ -58,7 +58,7 @@ namespace YetaWF.Modules.DevTests.Controllers {
                 UseSkinFormatting = true,
                 ContentTargetId = null,//$$$
                 ContentTargetPane = null,//$$$
-                AjaxUrl = GetActionUrl(nameof(TemplateTree_GetRecords)),                
+                AjaxUrl = GetActionUrl(nameof(TemplateTree_GetRecords)),
             };
         }
 
@@ -116,7 +116,7 @@ namespace YetaWF.Modules.DevTests.Controllers {
         }
         [AllowPost]
         [ConditionalAntiForgeryToken]
-        public async Task<ActionResult> TemplateTree_GetRecords(EntryElement data) {
+        public ActionResult TemplateTree_GetRecords(EntryElement data) {
             List<EntryElement> list = GetDynamicSubEntries();
             List<object> d = (from l in list select (object)l).ToList<object>();
             DataSourceResult ds = new DataSourceResult() {
