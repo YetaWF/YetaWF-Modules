@@ -140,15 +140,10 @@ namespace YetaWF.Modules.Menus.Controllers {
             [UIHint("Boolean")]
             public bool DontFollow { get; set; }
 
-            [JsonIgnore]
-            //$$$ public SerializableList<ModuleAction> SubMenu { get; set; } // submenu
-
             // Menu Editing
 
             [UIHint("String"), ReadOnly]
             public override string Text { get { return MenuText.ToString(); } }
-
-            public List<MenuEntry> SubMenuEntries { get { return (from s in SubEntries select(MenuEntry)s).ToList(); } }
 
             public MenuEntry() {
                 MenuText = new MultiString();
