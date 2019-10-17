@@ -47,7 +47,7 @@ Tawk_API.visitor = {{
     s0.parentNode.insertBefore(s1,s0);
 }})();");
 
-
+            //$$$$ fix to use printing events in Basics.ts
             sb.Append(@"
 /* Hide widget when printing */
 window.onbeforeprint = function () {
