@@ -1,5 +1,7 @@
 ﻿/* Copyright © 2019 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/ComponentsHTML#License */
 
+using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,8 +12,6 @@ using YetaWF.Core.Localize;
 using YetaWF.Core.Models;
 using YetaWF.Core.Packages;
 using YetaWF.Core.Support;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Serialization;
 #if MVC6
 #else
 using System.Web.Mvc;
@@ -65,42 +65,82 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
     }
 
     /// <summary>
+    /// The type of link used by a menu entry.
+    /// </summary>
+    public enum LinkTypeEnum {
+        /// <summary>
+        /// UrlContent property has a local link.
+        /// </summary>
+        Local = 0,
+        /// <summary>
+        /// UrlNew has an external link.
+        /// </summary>
+        External = 1,
+    }
+
+    /// <summary>
+    /// Base class for all tree entries.
+    /// </summary>
+    public abstract class TreeEntry {
+
+        /// <summary>
+        /// Constructor.
+        /// </summary>
+        public TreeEntry() {
+            SubEntries = new List<TreeEntry>();
+        }
+
+        /// <summary>
+        /// The type of link used by the entry.
+        /// </summary>
+        [JsonIgnore]
+        public LinkTypeEnum LinkType { get; set; }
+
+        /// <summary>
+        /// The item's collection of subitems or null if the item has no subitems.
+        /// </summary>
+        [JsonIgnore]
+        public List<TreeEntry> SubEntries { get; set; }
+
+        /// <summary>
+        /// Determines whether an item's subsitems are dynamically added/removed.
+        /// </summary>
+        public bool DynamicSubEntries { get; set; }
+
+        /// <summary>
+        /// Determines whether the item should be rendered collapsed (true) or expanded (false).
+        /// </summary>
+        [JsonIgnore]
+        public virtual bool Collapsed { get; set; }
+
+        /// <summary>
+        /// Determines whether the item should be rendered as initially selected.
+        /// </summary>
+        [JsonIgnore]
+        public virtual bool Selected { get; set; }
+
+        /// <summary>
+        /// The item's displayed text.
+        /// </summary>
+        [JsonIgnore]
+        public virtual string Text { get; set; }
+
+        /// <summary>
+        /// Used as the item's target URL, opened in a new window.
+        /// </summary>
+        [JsonIgnore]
+        public virtual string UrlNew { get; set; }
+        /// <summary>
+        /// Used as the item's target URL, used to replace a content pane or the entire page if no content information is available.
+        /// </summary>
+        [JsonIgnore]
+        public virtual string UrlContent { get; set; }
+    }
+
+    /// <summary>
     /// Implementation of the Tree display component.
     /// </summary>
     public partial class TreeDisplayComponent : TreeComponentBase, IYetaWFComponent<object> {
-
-        /// <summary>
-        /// The name of the property in the tree component's data model that is used as the item ID.
-        /// </summary>
-        public const string IdProperty = "Id";
-        /// <summary>
-        /// The name of the property in the tree component's data model that is used as the item's target URL, opened in a new window.
-        /// </summary>
-        public const string UrlNewProperty = "UrlNew";
-        /// <summary>
-        /// The name of the property in the tree component's data model that is used as the item's target URL, used to replace a content pane or the entire page if no content information is available.
-        /// </summary>
-        public const string UrlContentProperty = "UrlContent";
-        /// <summary>
-        /// The name of the property in the tree component's data model that is used as the item's text.
-        /// </summary>
-        public const string DisplayProperty = "Text";
-        /// <summary>
-        /// The name of the property in the tree component's data model that is used as an item's collection of subitems.
-        /// </summary>
-        public const string SubEntriesProperty = "SubEntries";
-        /// <summary>
-        /// The name of the property in the tree component's data model that is used to determine whether an item's subsitems are dynamically added/removed.
-        /// </summary>
-        public const string DynamicSubEntriesProperty = "DynamicSubEntries";
-        /// <summary>
-        /// The name of the property in the tree component's data model that is used to determine whether the item should be rendered collapsed (true) or expanded (false).
-        /// </summary>
-        public const string CollapsedProperty = "Collapsed";
-        /// <summary>
-        /// The name of the property in the tree component's data model that is used to determine whether the item should be rendered as initially selected.
-        /// </summary>
-        public const string SelectedProperty = "Selected";
 
         /// <summary>
         /// Returns the component type (edit/display).
@@ -127,11 +167,11 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
             TreeDefinition treeModel = GetSiblingProperty<TreeDefinition>($"{FieldName}_TreeDefinition");
 
-            List<object> data = new List<object>();
             IEnumerable<object> ienum = model as IEnumerable<object>;
-            IEnumerator<object> ienumerator = ienum.GetEnumerator();
-            while (ienumerator.MoveNext())
-                data.Add(ienumerator.Current);
+            List<TreeEntry> data = (from t in ienum select (TreeEntry)(object)t).ToList();
+
+
+            //IEnumerator<object> ienumerator = ienum.GetEnumerator();
 
             string idEmpty = UniqueId();
 
@@ -156,14 +196,13 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             return hb.ToString();
         }
 
-        private Task<string> GetHeaderAsync(TreeDefinition treeModel, List<object> data, TreeSetup setup) {
+        private Task<string> GetHeaderAsync(TreeDefinition treeModel, List<TreeEntry> data, TreeSetup setup) {
 
             HtmlBuilder hb = new HtmlBuilder();
 
-            PropertyData prop = ObjectSupport.GetPropertyData(treeModel.RecordType, DisplayProperty);
-
             if (treeModel.ShowHeader) {
 
+                PropertyData prop = ObjectSupport.GetPropertyData(treeModel.RecordType, nameof(TreeEntry.Text));
                 // Caption
                 string caption = prop.GetCaption(null);
                 // Description
@@ -182,17 +221,9 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         }
 
         internal static async Task<string> RenderHTML(YHtmlHelper htmlHelper,
-                TreeDefinition treeModel, List<object> data, TreeSetup setup) {
+                TreeDefinition treeModel, List<TreeEntry> data, TreeSetup setup) {
 
             HtmlBuilder hb = new HtmlBuilder();
-
-            PropertyData prop = ObjectSupport.GetPropertyData(treeModel.RecordType, DisplayProperty);
-            PropertyData urlNewProp = ObjectSupport.TryGetPropertyData(treeModel.RecordType, UrlNewProperty);
-            PropertyData urlContentProp = ObjectSupport.TryGetPropertyData(treeModel.RecordType, UrlContentProperty);
-            PropertyData subEntriesProp = ObjectSupport.GetPropertyData(treeModel.RecordType, SubEntriesProperty);
-            PropertyData dynamicSubEntriesProp = ObjectSupport.TryGetPropertyData(treeModel.RecordType, DynamicSubEntriesProperty);
-            PropertyData collapsedProp = ObjectSupport.TryGetPropertyData(treeModel.RecordType, CollapsedProperty);
-            PropertyData selectedProp = ObjectSupport.TryGetPropertyData(treeModel.RecordType, SelectedProperty);
 
             string styleCss = "";
             if (data != null && data.Count > 0)
@@ -210,8 +241,8 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                 hb.Append($@"
 <ul class='tg_root'>");
 
-                foreach (object record in data) {
-                    hb.Append(await RenderRecordHTMLAsync(htmlHelper, treeModel, setup, prop, urlNewProp, urlContentProp, subEntriesProp, dynamicSubEntriesProp, collapsedProp, selectedProp, record));
+                foreach (TreeEntry record in data) {
+                    hb.Append(await RenderRecordHTMLAsync(htmlHelper, treeModel, setup, record));
                 }
 
                 hb.Append($@"
@@ -231,25 +262,16 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
                 TreeSetup setup = GetTreeSetup(treeModel);
 
-                PropertyData prop = ObjectSupport.GetPropertyData(treeModel.RecordType, DisplayProperty);
-                PropertyData urlNewProp = ObjectSupport.TryGetPropertyData(treeModel.RecordType, UrlNewProperty);
-                PropertyData urlContentProp = ObjectSupport.TryGetPropertyData(treeModel.RecordType, UrlContentProperty);
-                PropertyData subEntriesProp = ObjectSupport.GetPropertyData(treeModel.RecordType, SubEntriesProperty);
-                PropertyData dynamicSubEntriesProp = ObjectSupport.TryGetPropertyData(treeModel.RecordType, DynamicSubEntriesProperty);
-                PropertyData collapsedProp = ObjectSupport.TryGetPropertyData(treeModel.RecordType, CollapsedProperty);
-                PropertyData selectedProp = ObjectSupport.TryGetPropertyData(treeModel.RecordType, SelectedProperty);
-
                 hb.Append("<ul>");
-                foreach (object record in records) {
-                    hb.Append(await RenderRecordHTMLAsync(htmlHelper, treeModel, setup, prop, urlNewProp, urlContentProp, subEntriesProp, dynamicSubEntriesProp, collapsedProp, selectedProp, record));
+                foreach (TreeEntry record in records) {
+                    hb.Append(await RenderRecordHTMLAsync(htmlHelper, treeModel, setup, record));
                 }
                 hb.Append("</ul>");
             }
             return hb.ToString();
         }
 
-        internal static async Task<string> RenderRecordHTMLAsync(YHtmlHelper htmlHelper,
-                TreeDefinition treeModel, TreeSetup setup, PropertyData prop, PropertyData urlNewProp, PropertyData urlContentProp, PropertyData subEntriesProp, PropertyData dynamicSubEntriesProp, PropertyData collapsedProp, PropertyData selectedProp, object record) {
+        internal static async Task<string> RenderRecordHTMLAsync(YHtmlHelper htmlHelper, TreeDefinition treeModel, TreeSetup setup, TreeEntry record) {
 
             HtmlBuilder hb = new HtmlBuilder();
 
@@ -265,32 +287,26 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             //    lightCss = "tg_lowlight";
 
             // check for SubEntriesProperty
-            bool collapsed = collapsedProp != null ? collapsedProp.GetPropertyValue<bool>(record) : false;
-            object o = subEntriesProp.GetPropertyValue<object>(record);
-            IEnumerable<object> ienum = o as IEnumerable<object>;
-            if (ienum != null) {
-                IEnumerator<object> ienumerator = ienum.GetEnumerator();
-                if (!ienumerator.MoveNext()) {
-                    collapsed = false;
-                    ienum = null;
-                }
-            }
+            bool collapsed = record.Collapsed;
             bool dynSubs = false;
-            if (ienum == null)
-                dynSubs = collapsedProp != null && dynamicSubEntriesProp != null ? dynamicSubEntriesProp.GetPropertyValue<bool>(record) : false;
+            List<TreeEntry> items = record.SubEntries;
+            if (items != null && items.Count > 0)
+                collapsed = false;
+            else
+                dynSubs = record.DynamicSubEntries;
 
-            string urlNew = urlNewProp?.GetPropertyValue<string>(record);
-            string urlContent = urlContentProp?.GetPropertyValue<string>(record);
+            string urlNew = record.UrlNew;
+            string urlContent = record.UrlContent;
 
             // selected
-            bool selected = selectedProp != null ? selectedProp.GetPropertyValue<bool>(record) : false;
+            bool selected = record.Selected;
             string selectedCss = "";
             if (selected)
                 selectedCss = $" {setup.SelectedCss}";
 
             string caret;
             string icon;
-            if (dynSubs || ienum != null) {
+            if (dynSubs || (items != null && items.Count > 0)) {
                 if (collapsed)
                     caret = "<i class='t_icright'></i>";
                 else
@@ -311,8 +327,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
             // entry
 
-            object value = prop.GetPropertyValue<object>(record);
-            string text = await htmlHelper.ForDisplayComponentAsync(record, DisplayProperty, value, prop.UIHint);
+            string text = await htmlHelper.ForDisplayAsync(record, nameof(TreeEntry.Text));
 
             if (!string.IsNullOrWhiteSpace(text))
                 text = text.Trim(new char[] { '\r', '\n' }); // templates can generate a lot of extra \r\n which breaks filtering
@@ -327,29 +342,32 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             else
                 output = $"<a class='t_entry{selectedCss}' data-nohref='true' href='#'{dd}>{text}</a>";
 
-            string recData = JsonConvert.SerializeObject(record, new JsonSerializerSettings {
-                ContractResolver  = new TreeEntryContractResolver(),
-                Formatting = Newtonsoft.Json.Formatting.None,
-            });
+            string recData = "";
+            if (treeModel.JSONData) {
+                string json = JsonConvert.SerializeObject(record, new JsonSerializerSettings {
+                    ContractResolver = new TreeEntryContractResolver(),
+                    Formatting = Newtonsoft.Json.Formatting.None,
+                });
+                recData = $" data-record='{HAE(json)}'";
+            }
 
             hb.Append($@"
- <li class='{lightCss}' data-record='{HAE(recData)}'>
+ <li class='{lightCss}'{recData}>
   {caret}
   {icon}{output}");
 
             // sub entries
-            if (ienum != null) {
+            if (items != null && items.Count > 0) {
 
                 string collapsedStyle = "";
                 if (collapsed)
                     collapsedStyle = " style='display:none'";
 
-                IEnumerator<object> ienumerator = ienum.GetEnumerator();
                 hb.Append($@"
  <ul{collapsedStyle}>");
 
-                for (int i = 0; ienumerator.MoveNext(); i++) {
-                    hb.Append(await RenderRecordHTMLAsync(htmlHelper, treeModel, setup, prop, urlNewProp, urlContentProp, subEntriesProp, dynamicSubEntriesProp, collapsedProp, selectedProp, ienumerator.Current));
+                foreach (TreeEntry item in items) {
+                    hb.Append(await RenderRecordHTMLAsync(htmlHelper, treeModel, setup, item));
                 }
 
                 hb.Append($@"
@@ -390,7 +408,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                     List<string> propList = new List<string>();
                     List<PropertyData> props = ObjectSupport.GetPropertyData(type);
                     foreach (PropertyData prop in props) {
-                        if (prop.Name.StartsWith("__") || (prop.PropInfo.CanRead && prop.PropInfo.CanWrite && prop.Name != SubEntriesProperty && prop.Name != IdProperty && prop.Name != CollapsedProperty)) {
+                        if (prop.Name.StartsWith("__") || (prop.PropInfo.CanRead && prop.PropInfo.CanWrite)) {
                             propList.Add(prop.Name);
                         }
                     }

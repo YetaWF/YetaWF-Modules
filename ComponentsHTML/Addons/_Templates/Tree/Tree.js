@@ -312,7 +312,7 @@ var YetaWF_ComponentsHTML;
             TreeComponent.DDTree = null;
         };
         // expand/collapse
-        TreeComponent.prototype.expandItem = function (liElem, data) {
+        TreeComponent.prototype.expandItem = function (liElem) {
             if (!this.Setup.AjaxUrl)
                 throw "Tree control doesn't have an AJAX URL - " + this.Control.outerHTML;
             if (!$YetaWF.isLoading) {
@@ -349,8 +349,8 @@ var YetaWF_ComponentsHTML;
                         });
                     }
                 };
-                var data_1 = uri.toFormData();
-                request.send(data_1);
+                var data = uri.toFormData();
+                request.send(data);
             }
         };
         // API
@@ -384,7 +384,7 @@ var YetaWF_ComponentsHTML;
             }
             else {
                 var data = this.getElementDataCond(liElem);
-                return data && data.DynamicSubEntries;
+                return data != null && data.DynamicSubEntries;
             }
         };
         TreeComponent.prototype.expand = function (liElem) {
@@ -392,7 +392,7 @@ var YetaWF_ComponentsHTML;
             if (ul == null) {
                 var data = this.getElementData(liElem);
                 if (data.DynamicSubEntries) {
-                    this.expandItem(liElem, data);
+                    this.expandItem(liElem);
                 }
             }
             else {
@@ -419,7 +419,7 @@ var YetaWF_ComponentsHTML;
             }
         };
         TreeComponent.prototype.getElementDataCond = function (liElem) {
-            var recData = $YetaWF.getAttribute(liElem, "data-record");
+            var recData = $YetaWF.getAttributeCond(liElem, "data-record");
             if (!recData)
                 return null;
             return JSON.parse(recData);
@@ -593,17 +593,23 @@ var YetaWF_ComponentsHTML;
         };
         TreeComponent.prototype.addEntry = function (liElem, text, data) {
             var text = $YetaWF.htmlEscape(text);
-            var entry = this.getNewEntry(text, data);
+            var entry = this.getNewEntry(text);
             liElem.insertAdjacentHTML("afterend", entry);
-            return this.getNextSibling(liElem);
+            var newElem = this.getNextSibling(liElem);
+            if (data)
+                $YetaWF.setAttribute(newElem, "data-record", JSON.stringify(data));
+            return newElem;
         };
         TreeComponent.prototype.insertEntry = function (liElem, text, data) {
             var text = $YetaWF.htmlEscape(text);
-            var entry = this.getNewEntry(text, data);
+            var entry = this.getNewEntry(text);
             liElem.insertAdjacentHTML("beforebegin", entry);
-            return this.getPrevSibling(liElem);
+            var newElem = this.getPrevSibling(liElem);
+            if (data)
+                $YetaWF.setAttribute(newElem, "data-record", JSON.stringify(data));
+            return newElem;
         };
-        TreeComponent.prototype.getNewEntry = function (text, data) {
+        TreeComponent.prototype.getNewEntry = function (text) {
             var dd = "";
             if (this.Setup.DragDrop)
                 dd = " draggable='true' ondrop='YetaWF_ComponentsHTML.TreeComponent.onDrop(event)' ondragover='YetaWF_ComponentsHTML.TreeComponent.onDragOver(event)' ondragstart='YetaWF_ComponentsHTML.TreeComponent.onDragStart(event)'";

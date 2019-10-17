@@ -28,6 +28,12 @@ namespace YetaWF_ComponentsHTML {
         HTML: string;
     }
 
+    export interface TreeEntry {
+        DynamicSubEntries: boolean;
+        UrlNew?: string;
+        UrlContent?: string;
+    }
+
     enum TargetPositionEnum {
         on = 0,
         before = 1,
@@ -315,7 +321,7 @@ namespace YetaWF_ComponentsHTML {
 
         // expand/collapse
 
-        private expandItem(liElem: HTMLLIElement, data: any): void {
+        private expandItem(liElem: HTMLLIElement): void {
 
             if (!this.Setup.AjaxUrl)
                 throw `Tree control doesn't have an AJAX URL - ${this.Control.outerHTML}`;
@@ -389,7 +395,7 @@ namespace YetaWF_ComponentsHTML {
                 return true;
             } else {
                 let data = this.getElementDataCond(liElem);
-                return data && data.DynamicSubEntries;
+                return data != null && data.DynamicSubEntries;
             }
         }
         public expand(liElem: HTMLLIElement): void {
@@ -397,7 +403,7 @@ namespace YetaWF_ComponentsHTML {
             if (ul == null) {
                 let data = this.getElementData(liElem);
                 if (data.DynamicSubEntries) {
-                    this.expandItem(liElem, data);
+                    this.expandItem(liElem);
                 }
             } else {
                 ul.style.display = "";
@@ -422,13 +428,13 @@ namespace YetaWF_ComponentsHTML {
                 li = this.getNextEntry(li);
             }
         }
-        public getElementDataCond(liElem: HTMLLIElement): any | null {
-            let recData = $YetaWF.getAttribute(liElem, "data-record");
+        public getElementDataCond(liElem: HTMLLIElement): TreeEntry | null {
+            let recData = $YetaWF.getAttributeCond(liElem, "data-record");
             if (!recData)
                 return null;
             return JSON.parse(recData);
         }
-        public getElementData(liElem: HTMLLIElement): any {
+        public getElementData(liElem: HTMLLIElement): TreeEntry {
             let data = this.getElementDataCond(liElem);
             if (!data)
                 throw `No record data for ${liElem.outerHTML}`;
@@ -447,7 +453,7 @@ namespace YetaWF_ComponentsHTML {
             if (focus === true)
                 entry.focus();
         }
-        public getSelectData(): any | null {
+        public getSelectData(): TreeEntry | null {
             var liElem = this.getSelect();
             if (!liElem) return null;
             return this.getElementDataCond(liElem);
@@ -591,19 +597,25 @@ namespace YetaWF_ComponentsHTML {
             }
             return liElem;
         }
-        public addEntry(liElem: HTMLLIElement, text:string, data: any): HTMLLIElement {
+        public addEntry(liElem: HTMLLIElement, text: string, data?: TreeEntry): HTMLLIElement {
             var text = $YetaWF.htmlEscape(text);
-            var entry = this.getNewEntry(text, data);
+            var entry = this.getNewEntry(text);
             liElem.insertAdjacentHTML("afterend", entry);
-            return this.getNextSibling(liElem)!;
+            let newElem = this.getNextSibling(liElem)!;
+            if (data)
+                $YetaWF.setAttribute(newElem, "data-record", JSON.stringify(data));
+            return newElem;
         }
-        public insertEntry(liElem: HTMLLIElement, text: string, data: any): HTMLLIElement {
+        public insertEntry(liElem: HTMLLIElement, text: string, data?: TreeEntry): HTMLLIElement {
             var text = $YetaWF.htmlEscape(text);
-            var entry = this.getNewEntry(text, data);
+            var entry = this.getNewEntry(text);
             liElem.insertAdjacentHTML("beforebegin", entry);
-            return this.getPrevSibling(liElem)!;
+            let newElem = this.getPrevSibling(liElem)!;
+            if (data)
+                $YetaWF.setAttribute(newElem, "data-record", JSON.stringify(data));
+            return newElem;
         }
-        private getNewEntry(text: string, data: any): string {
+        private getNewEntry(text: string): string {
             let dd = "";
             if (this.Setup.DragDrop)
                 dd = " draggable='true' ondrop='YetaWF_ComponentsHTML.TreeComponent.onDrop(event)' ondragover='YetaWF_ComponentsHTML.TreeComponent.onDragOver(event)' ondragstart='YetaWF_ComponentsHTML.TreeComponent.onDragStart(event)'";

@@ -5,7 +5,6 @@ using YetaWF.Core.Models.Attributes;
 using System.Collections.Generic;
 using YetaWF.Core.Models;
 using System.Linq;
-using System.Threading.Tasks;
 using YetaWF.Core.Components;
 using YetaWF.Modules.ComponentsHTML.Components;
 #if MVC6
@@ -20,21 +19,13 @@ namespace YetaWF.Modules.DevTests.Controllers {
 
         public TemplateTreeModuleController() { }
 
-        public class EntryElement {
+        public class EntryElement : TreeEntry {
 
             [Caption("Text"), Description("Entries")]
             [UIHint("String"), ReadOnly]
-            public string Text { get; set; }
-
-            public string UrlNew { get; set; }
-            public string UrlContent { get; set; }
+            public override string Text { get; set; }
 
             public string OtherData { get; set; }
-
-            public int Id { get; set; }
-            public bool Collapsed { get; set; }
-            public List<EntryElement> SubEntries { get; set; }
-            public bool DynamicSubEntries { get; set; }
 
             public EntryElement() { }
         }
@@ -56,8 +47,7 @@ namespace YetaWF.Modules.DevTests.Controllers {
                 RecordType = typeof(EntryElement),
                 ShowHeader = true,
                 UseSkinFormatting = true,
-                ContentTargetId = null,//$$$
-                ContentTargetPane = null,//$$$
+                JSONData = true,
                 AjaxUrl = GetActionUrl(nameof(TemplateTree_GetRecords)),
             };
         }
@@ -77,7 +67,7 @@ namespace YetaWF.Modules.DevTests.Controllers {
                 list.Add(new EntryElement {
                     Text = $"Entry {i}",
                     OtherData = $"Otherdata {i}",
-                    SubEntries = GetSubEntries(2),
+                    SubEntries = (from s in GetSubEntries(2) select (TreeEntry)s).ToList(),
                 });
             }
             return list;
@@ -89,10 +79,11 @@ namespace YetaWF.Modules.DevTests.Controllers {
 
             List<EntryElement> list = new List<EntryElement>();
             for (int i = 0; i < 1 + level ; ++i) {
+                List<EntryElement> subs = GetSubEntries(level);
                 list.Add(new EntryElement {
                     Text = $"Entry {i}",
                     OtherData = $"Otherdata {i}",
-                    SubEntries = GetSubEntries(level),
+                    SubEntries = (subs != null) ? (from s in subs select (TreeEntry)s).ToList() : null,
                     Collapsed = true,
                     UrlNew = level == 1 ? "https://ubackup.io" : null,
                     UrlContent = level == 0 ? "https://yetawf.com/Admin/Bar/Dashboard" : null,

@@ -148,27 +148,27 @@ var YetaWF_Menus;
             }
         };
         MenuEditView.prototype.getFormControls = function () {
-            this.EntryType = YetaWF.ComponentBaseDataImpl.getControlFromSelector("select[name='ModAction.EntryType']", YetaWF_ComponentsHTML.DropDownListEditComponent.SELECTOR, [this.Details]);
-            this.Url = YetaWF.ComponentBaseDataImpl.getControlFromSelector("input[name='ModAction.Url']", YetaWF_ComponentsHTML.UrlEditComponent.SELECTOR, [this.Details]);
-            this.SubModule = YetaWF.ComponentBaseDataImpl.getControlFromSelector("[name='ModAction.SubModule']", YetaWF_ComponentsHTML.ModuleSelectionEditComponent.SELECTOR, [this.Details]);
-            this.MenuText = YetaWF.ComponentBaseDataImpl.getControlFromSelector("input[name='ModAction.MenuText']", YetaWF_ComponentsHTML.MultiStringEditComponent.SELECTOR, [this.Details]);
-            this.LinkText = YetaWF.ComponentBaseDataImpl.getControlFromSelector("input[name='ModAction.LinkText']", YetaWF_ComponentsHTML.MultiStringEditComponent.SELECTOR, [this.Details]);
-            this.ImageUrlFinal = $YetaWF.getElement1BySelector("input[name='ModAction.ImageUrlFinal']", [this.Details]);
-            this.Tooltip = YetaWF.ComponentBaseDataImpl.getControlFromSelector("input[name='ModAction.Tooltip']", YetaWF_ComponentsHTML.MultiStringEditComponent.SELECTOR, [this.Details]);
-            this.Legend = YetaWF.ComponentBaseDataImpl.getControlFromSelector("input[name='ModAction.Legend']", YetaWF_ComponentsHTML.MultiStringEditComponent.SELECTOR, [this.Details]);
-            this.Enabled = $YetaWF.getElement1BySelector("input[name='ModAction.Enabled']", [this.Details]);
-            this.CssClass = $YetaWF.getElement1BySelector("input[name='ModAction.CssClass']", [this.Details]);
-            this.Style = YetaWF.ComponentBaseDataImpl.getControlFromSelector("select[name='ModAction.Style']", YetaWF_ComponentsHTML.DropDownListEditComponent.SELECTOR, [this.Details]);
-            this.Mode = YetaWF.ComponentBaseDataImpl.getControlFromSelector("select[name='ModAction.Mode']", YetaWF_ComponentsHTML.DropDownListEditComponent.SELECTOR, [this.Details]);
-            this.Category = YetaWF.ComponentBaseDataImpl.getControlFromSelector("select[name='ModAction.Category']", YetaWF_ComponentsHTML.DropDownListEditComponent.SELECTOR, [this.Details]);
-            this.LimitToRole = YetaWF.ComponentBaseDataImpl.getControlFromSelector("select[name='ModAction.LimitToRole']", YetaWF_ComponentsHTML.DropDownListEditComponent.SELECTOR, [this.Details]);
-            this.AuthorizationIgnore = $YetaWF.getElement1BySelector("input[name='ModAction.AuthorizationIgnore']", [this.Details]);
-            this.ConfirmationText = YetaWF.ComponentBaseDataImpl.getControlFromSelector("input[name='ModAction.ConfirmationText']", YetaWF_ComponentsHTML.MultiStringEditComponent.SELECTOR, [this.Details]);
-            this.PleaseWaitText = YetaWF.ComponentBaseDataImpl.getControlFromSelector("input[name='ModAction.PleaseWaitText']", YetaWF_ComponentsHTML.MultiStringEditComponent.SELECTOR, [this.Details]);
-            this.SaveReturnUrl = $YetaWF.getElement1BySelector("input[name='ModAction.SaveReturnUrl']", [this.Details]);
-            this.AddToOriginList = $YetaWF.getElement1BySelector("input[name='ModAction.AddToOriginList']", [this.Details]);
-            this.NeedsModuleContext = $YetaWF.getElement1BySelector("input[name='ModAction.NeedsModuleContext']", [this.Details]);
-            this.DontFollow = $YetaWF.getElement1BySelector("input[name='ModAction.DontFollow']", [this.Details]);
+            this.EntryType = YetaWF.ComponentBaseDataImpl.getControlFromSelector("select[name='ModEntry.EntryType']", YetaWF_ComponentsHTML.DropDownListEditComponent.SELECTOR, [this.Details]);
+            this.Url = YetaWF.ComponentBaseDataImpl.getControlFromSelector("input[name='ModEntry.Url']", YetaWF_ComponentsHTML.UrlEditComponent.SELECTOR, [this.Details]);
+            this.SubModule = YetaWF.ComponentBaseDataImpl.getControlFromSelector("[name='ModEntry.SubModule']", YetaWF_ComponentsHTML.ModuleSelectionEditComponent.SELECTOR, [this.Details]);
+            this.MenuText = YetaWF.ComponentBaseDataImpl.getControlFromSelector("input[name='ModEntry.MenuText']", YetaWF_ComponentsHTML.MultiStringEditComponent.SELECTOR, [this.Details]);
+            this.LinkText = YetaWF.ComponentBaseDataImpl.getControlFromSelector("input[name='ModEntry.LinkText']", YetaWF_ComponentsHTML.MultiStringEditComponent.SELECTOR, [this.Details]);
+            this.ImageUrlFinal = $YetaWF.getElement1BySelector("input[name='ModEntry.ImageUrlFinal']", [this.Details]);
+            this.Tooltip = YetaWF.ComponentBaseDataImpl.getControlFromSelector("input[name='ModEntry.Tooltip']", YetaWF_ComponentsHTML.MultiStringEditComponent.SELECTOR, [this.Details]);
+            this.Legend = YetaWF.ComponentBaseDataImpl.getControlFromSelector("input[name='ModEntry.Legend']", YetaWF_ComponentsHTML.MultiStringEditComponent.SELECTOR, [this.Details]);
+            this.Enabled = $YetaWF.getElement1BySelector("input[name='ModEntry.Enabled']", [this.Details]);
+            this.CssClass = $YetaWF.getElement1BySelector("input[name='ModEntry.CssClass']", [this.Details]);
+            this.Style = YetaWF.ComponentBaseDataImpl.getControlFromSelector("select[name='ModEntry.Style']", YetaWF_ComponentsHTML.DropDownListEditComponent.SELECTOR, [this.Details]);
+            this.Mode = YetaWF.ComponentBaseDataImpl.getControlFromSelector("select[name='ModEntry.Mode']", YetaWF_ComponentsHTML.DropDownListEditComponent.SELECTOR, [this.Details]);
+            this.Category = YetaWF.ComponentBaseDataImpl.getControlFromSelector("select[name='ModEntry.Category']", YetaWF_ComponentsHTML.DropDownListEditComponent.SELECTOR, [this.Details]);
+            this.LimitToRole = YetaWF.ComponentBaseDataImpl.getControlFromSelector("select[name='ModEntry.LimitToRole']", YetaWF_ComponentsHTML.DropDownListEditComponent.SELECTOR, [this.Details]);
+            this.AuthorizationIgnore = $YetaWF.getElement1BySelector("input[name='ModEntry.AuthorizationIgnore']", [this.Details]);
+            this.ConfirmationText = YetaWF.ComponentBaseDataImpl.getControlFromSelector("input[name='ModEntry.ConfirmationText']", YetaWF_ComponentsHTML.MultiStringEditComponent.SELECTOR, [this.Details]);
+            this.PleaseWaitText = YetaWF.ComponentBaseDataImpl.getControlFromSelector("input[name='ModEntry.PleaseWaitText']", YetaWF_ComponentsHTML.MultiStringEditComponent.SELECTOR, [this.Details]);
+            this.SaveReturnUrl = $YetaWF.getElement1BySelector("input[name='ModEntry.SaveReturnUrl']", [this.Details]);
+            this.AddToOriginList = $YetaWF.getElement1BySelector("input[name='ModEntry.AddToOriginList']", [this.Details]);
+            this.NeedsModuleContext = $YetaWF.getElement1BySelector("input[name='ModEntry.NeedsModuleContext']", [this.Details]);
+            this.DontFollow = $YetaWF.getElement1BySelector("input[name='ModEntry.DontFollow']", [this.Details]);
         };
         MenuEditView.prototype.changeSelection = function () {
             if (this.ActiveNew) {
