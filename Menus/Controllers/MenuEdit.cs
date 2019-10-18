@@ -12,9 +12,7 @@ using YetaWF.Core.Components;
 using YetaWF.Core.Models;
 using YetaWF.Modules.ComponentsHTML.Components;
 using YetaWF.Core;
-using System.Text.Json.Serialization;
 using System.Collections.Generic;
-using YetaWF.Core.Serializers;
 using System.Linq;
 #if MVC6
 using Microsoft.AspNetCore.Mvc;
@@ -275,19 +273,7 @@ namespace YetaWF.Modules.Menus.Controllers {
                     action.SubModule = null;
                 action.Location = ModuleAction.ActionLocationEnum.AnyMenu;
                 action.NeedsModuleContext = false;
-                if (string.IsNullOrWhiteSpace(action.Url) && action.SubModule == null) {
-                    // parent item without real action
-                    action.SubModule = null;
-                    action.Separator = false;
-                    action.Style = ModuleAction.ActionStyleEnum.Normal;
-                    action.Mode = ModuleAction.ActionModeEnum.Any;
-                    action.Category = ModuleAction.ActionCategoryEnum.Read;
-                    action.ConfirmationText = new MultiString();
-                    action.PleaseWaitText = new MultiString();
-                    action.SaveReturnUrl = false;
-                    action.AddToOriginList = false;
-                    action.DontFollow = false;
-                } else if (action.Separator) {
+                if (action.Separator) {
                     // separator without real action
                     action.Url = null;
                     action.SubModule = null;
@@ -301,6 +287,18 @@ namespace YetaWF.Modules.Menus.Controllers {
                     action.Category = ModuleAction.ActionCategoryEnum.Read;
                     action.LimitToRole = 0;
                     action.AuthorizationIgnore = false;
+                    action.ConfirmationText = new MultiString();
+                    action.PleaseWaitText = new MultiString();
+                    action.SaveReturnUrl = false;
+                    action.AddToOriginList = false;
+                    action.DontFollow = false;
+                } else if (string.IsNullOrWhiteSpace(action.Url) && action.SubModule == null) {
+                    // parent item without real action
+                    action.SubModule = null;
+                    action.Separator = false;
+                    action.Style = ModuleAction.ActionStyleEnum.Normal;
+                    action.Mode = ModuleAction.ActionModeEnum.Any;
+                    action.Category = ModuleAction.ActionCategoryEnum.Read;
                     action.ConfirmationText = new MultiString();
                     action.PleaseWaitText = new MultiString();
                     action.SaveReturnUrl = false;

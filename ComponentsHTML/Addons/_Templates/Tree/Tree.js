@@ -430,6 +430,9 @@ var YetaWF_ComponentsHTML;
                 throw "No record data for " + liElem.outerHTML;
             return data;
         };
+        TreeComponent.prototype.setElementData = function (liElem, data) {
+            $YetaWF.setAttribute(liElem, "data-record", JSON.stringify(data));
+        };
         TreeComponent.prototype.getSelect = function () {
             var entry = $YetaWF.getElement1BySelectorCond(".t_entry." + this.Setup.SelectedCss, [this.Control]);
             if (!entry)
@@ -449,6 +452,12 @@ var YetaWF_ComponentsHTML;
             if (!liElem)
                 return null;
             return this.getElementDataCond(liElem);
+        };
+        TreeComponent.prototype.setSelectData = function (data) {
+            var liElem = this.getSelect();
+            if (!liElem)
+                return;
+            this.setElementData(liElem, data);
         };
         TreeComponent.prototype.getSelectText = function () {
             var entry = $YetaWF.getElement1BySelector(".t_entry." + this.Setup.SelectedCss, [this.Control]);
@@ -597,7 +606,7 @@ var YetaWF_ComponentsHTML;
             liElem.insertAdjacentHTML("afterend", entry);
             var newElem = this.getNextSibling(liElem);
             if (data)
-                $YetaWF.setAttribute(newElem, "data-record", JSON.stringify(data));
+                this.setElementData(newElem, data);
             return newElem;
         };
         TreeComponent.prototype.insertEntry = function (liElem, text, data) {
@@ -606,7 +615,7 @@ var YetaWF_ComponentsHTML;
             liElem.insertAdjacentHTML("beforebegin", entry);
             var newElem = this.getPrevSibling(liElem);
             if (data)
-                $YetaWF.setAttribute(newElem, "data-record", JSON.stringify(data));
+                this.setElementData(newElem, data);
             return newElem;
         };
         TreeComponent.prototype.getNewEntry = function (text) {

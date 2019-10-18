@@ -440,6 +440,9 @@ namespace YetaWF_ComponentsHTML {
                 throw `No record data for ${liElem.outerHTML}`;
             return data;
         }
+        public setElementData(liElem: HTMLLIElement, data: TreeEntry): void {
+            $YetaWF.setAttribute(liElem, "data-record", JSON.stringify(data));
+        }
         public getSelect(): HTMLLIElement | null {
             var entry = $YetaWF.getElement1BySelectorCond(`.t_entry.${this.Setup.SelectedCss}`, [this.Control]) as HTMLElement;
             if (!entry) return null;
@@ -457,6 +460,12 @@ namespace YetaWF_ComponentsHTML {
             var liElem = this.getSelect();
             if (!liElem) return null;
             return this.getElementDataCond(liElem);
+        }
+        public setSelectData(data: TreeEntry): void {
+            var liElem = this.getSelect();
+            if (!liElem)
+                return;
+            this.setElementData(liElem, data);
         }
         public getSelectText(): string {
             var entry = $YetaWF.getElement1BySelector(`.t_entry.${this.Setup.SelectedCss}`, [this.Control]) as HTMLElement;
@@ -603,7 +612,7 @@ namespace YetaWF_ComponentsHTML {
             liElem.insertAdjacentHTML("afterend", entry);
             let newElem = this.getNextSibling(liElem)!;
             if (data)
-                $YetaWF.setAttribute(newElem, "data-record", JSON.stringify(data));
+                this.setElementData(newElem, data);
             return newElem;
         }
         public insertEntry(liElem: HTMLLIElement, text: string, data?: TreeEntry): HTMLLIElement {
@@ -612,7 +621,7 @@ namespace YetaWF_ComponentsHTML {
             liElem.insertAdjacentHTML("beforebegin", entry);
             let newElem = this.getPrevSibling(liElem)!;
             if (data)
-                $YetaWF.setAttribute(newElem, "data-record", JSON.stringify(data));
+                this.setElementData(newElem, data);
             return newElem;
         }
         private getNewEntry(text: string): string {
