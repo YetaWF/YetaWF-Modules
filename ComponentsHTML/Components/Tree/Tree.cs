@@ -290,7 +290,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             bool collapsed = record.Collapsed;
             bool dynSubs = false;
             List<TreeEntry> items = record.SubEntries;
-            if (items != null && items.Count > 0)
+            if (items == null || items.Count == 0)
                 collapsed = false;
             else
                 dynSubs = record.DynamicSubEntries;
