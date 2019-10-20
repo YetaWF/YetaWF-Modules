@@ -36,7 +36,7 @@ namespace YetaWF.Modules.Identity
                 options.Password.RequireLowercase = WebConfigHelper.GetValue<bool>(AREA, "Password:RequireLowercase");
 
                 // long secIntvl = WebConfigHelper.GetValue<long>(AREA, "OWin:SecurityStampValidationInterval", new TimeSpan(0, 30, 0).Ticks); // 30 minutes
-                
+
                 // We handle lockouts
                 options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(0);
                 options.Lockout.MaxFailedAccessAttempts = 0;
@@ -50,14 +50,16 @@ namespace YetaWF.Modules.Identity
             services.ConfigureApplicationCookie(c => {
                 long ticks = WebConfigHelper.GetValue<long>(AREA, "OWin:ExpireTimeSpan", new TimeSpan(10, 0, 0, 0).Ticks);
                 c.Cookie.Name = string.Format(".YetaWF.Cookies.{0}", YetaWFManager.DefaultSiteName);
-                c.Cookie.SecurePolicy = Microsoft.AspNetCore.Http.CookieSecurePolicy.None;
+                c.Cookie.SecurePolicy = Microsoft.AspNetCore.Http.CookieSecurePolicy.SameAsRequest;
+                c.Cookie.SameSite = Microsoft.AspNetCore.Http.SameSiteMode.Strict;
                 c.ExpireTimeSpan = new TimeSpan(ticks);
                 c.SlidingExpiration = WebConfigHelper.GetValue<bool>(AREA, "OWin:SlidingExpiration", true);
             });
             services.ConfigureExternalCookie(c => {
                 long ticks = WebConfigHelper.GetValue<long>(AREA, "OWin:ExpireTimeSpan", new TimeSpan(10, 0, 0, 0).Ticks);
                 c.Cookie.Name = string.Format(".YetaWF.Cookies.Ext.{0}", YetaWFManager.DefaultSiteName);
-                c.Cookie.SecurePolicy = Microsoft.AspNetCore.Http.CookieSecurePolicy.None;
+                c.Cookie.SecurePolicy = Microsoft.AspNetCore.Http.CookieSecurePolicy.SameAsRequest;
+                c.Cookie.SameSite = Microsoft.AspNetCore.Http.SameSiteMode.Strict;
                 c.ExpireTimeSpan = new TimeSpan(ticks);
                 c.SlidingExpiration = WebConfigHelper.GetValue<bool>(AREA, "OWin:SlidingExpiration", true);
             });
@@ -77,7 +79,7 @@ namespace YetaWF.Modules.Identity
                     });
                 }
             }
-            { 
+            {
                 string pub = WebConfigHelper.GetValue<string>(AREA, "GoogleAccount:Public");
                 string priv = WebConfigHelper.GetValue<string>(AREA, "GoogleAccount:Private");
                 if (!string.IsNullOrWhiteSpace(pub) && !string.IsNullOrWhiteSpace(priv)) {
