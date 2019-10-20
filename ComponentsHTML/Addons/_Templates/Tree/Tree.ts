@@ -407,9 +407,11 @@ namespace YetaWF_ComponentsHTML {
                 }
             } else {
                 ul.style.display = "";
-                var iElem = $YetaWF.getElement1BySelector("i.t_icright", [liElem]);
-                $YetaWF.elementRemoveClass(iElem, "t_icright");
-                $YetaWF.elementAddClass(iElem, "t_icdown");
+                let iElem = liElem.firstElementChild as HTMLElement;
+                if (iElem) {
+                    $YetaWF.elementRemoveClass(iElem, "t_icright");
+                    $YetaWF.elementAddClass(iElem, "t_icdown");
+                }
             }
         }
         public expandAll(): void {
@@ -427,6 +429,21 @@ namespace YetaWF_ComponentsHTML {
                     this.collapse(li);
                 li = this.getNextEntry(li);
             }
+        }
+        public makeVisible(liElem: HTMLLIElement): void {
+            let li: HTMLLIElement | null = liElem;
+            for ( ; li ; ) {
+                li = this.getParent(li);
+                if (!li)
+                    return;
+                this.expand(li);
+            }
+        }
+        public getParent(liElem: HTMLLIElement): HTMLLIElement | null {
+            let ul = liElem.parentElement as HTMLUListElement;
+            if ($YetaWF.elementHasClass(ul, "tg_root"))
+                return null;
+            return $YetaWF.elementClosest(ul, "li") as HTMLLIElement | null;
         }
         public getElementDataCond(liElem: HTMLLIElement): TreeEntry | null {
             let recData = $YetaWF.getAttributeCond(liElem, "data-record");
@@ -638,7 +655,9 @@ namespace YetaWF_ComponentsHTML {
             if (!liElem) return;
             var rectLi = liElem.getBoundingClientRect();
             var rectContainer = container.getBoundingClientRect();
-            container.scrollTop = rectLi.top - rectContainer.height / 2;
+            let t = container.scrollTop + (rectLi.top - rectContainer.height / 2);
+            if (t < 0) t = 0;
+            container.scrollTop = t;
         }
     }
 }

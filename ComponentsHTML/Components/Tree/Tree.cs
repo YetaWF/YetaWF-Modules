@@ -44,6 +44,33 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         ///
         /// The GetTemplateName method returns the component name without area name prefix in all cases.</remarks>
         public override string GetTemplateName() { return TemplateName; }
+
+        internal static JsonSerializerSettings JsonSettings = new JsonSerializerSettings {
+            ContractResolver = new TreeEntryContractResolver(),
+            Formatting = Newtonsoft.Json.Formatting.None,
+        };
+
+        // Custom serializer to minimize static data being transferred
+
+        internal class TreeEntryContractResolver : DefaultContractResolver {
+
+            public TreeEntryContractResolver() { }
+
+            protected override IList<JsonProperty> CreateProperties(Type type, MemberSerialization memberSerialization) {
+                IList<JsonProperty> properties = base.CreateProperties(type, memberSerialization);
+                if (type != typeof(object)) {
+                    List<string> propList = new List<string>();
+                    List<PropertyData> props = ObjectSupport.GetPropertyData(type);
+                    foreach (PropertyData prop in props) {
+                        if (prop.Name.StartsWith("__") || (prop.PropInfo.CanRead && prop.PropInfo.CanWrite)) {
+                            propList.Add(prop.Name);
+                        }
+                    }
+                    properties = (from p in properties where propList.Contains(p.PropertyName) select p).ToList();
+                }
+                return properties;
+            }
+        }
     }
 
     internal class TreeSetup {
@@ -220,7 +247,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             return Task.FromResult(hb.ToString());
         }
 
-        internal static async Task<string> RenderHTML(YHtmlHelper htmlHelper,
+        internal async Task<string> RenderHTML(YHtmlHelper htmlHelper,
                 TreeDefinition treeModel, List<TreeEntry> data, TreeSetup setup) {
 
             HtmlBuilder hb = new HtmlBuilder();
@@ -290,9 +317,10 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             bool collapsed = record.Collapsed;
             bool dynSubs = false;
             List<TreeEntry> items = record.SubEntries;
-            if (items == null || items.Count == 0)
+            if (items == null || items.Count == 0) {
                 collapsed = false;
-            else
+                items = null;
+            } else
                 dynSubs = record.DynamicSubEntries;
 
             string urlNew = record.UrlNew;
@@ -306,7 +334,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
             string caret;
             string icon;
-            if (dynSubs || (items != null && items.Count > 0)) {
+            if (dynSubs || items != null) {
                 if (collapsed)
                     caret = "<i class='t_icright'></i>";
                 else
@@ -344,20 +372,17 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
             string recData = "";
             if (treeModel.JSONData) {
-                string json = JsonConvert.SerializeObject(record, new JsonSerializerSettings {
-                    ContractResolver = new TreeEntryContractResolver(),
-                    Formatting = Newtonsoft.Json.Formatting.None,
-                });
+                string json = JsonConvert.SerializeObject(record, JsonSettings);
                 recData = $" data-record='{HAE(json)}'";
             }
 
             hb.Append($@"
- <li class='{lightCss}'{recData}>
+ <li {recData}>
   {caret}
   {icon}{output}");
 
             // sub entries
-            if (items != null && items.Count > 0) {
+            if (items != null) {
 
                 string collapsedStyle = "";
                 if (collapsed)
@@ -393,29 +418,6 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                 AjaxUrl = treeModel.AjaxUrl,
             };
             return setup;
-        }
-
-
-        // Custom serializer to minimize static data being transferred
-
-        internal class TreeEntryContractResolver : DefaultContractResolver {
-
-            public TreeEntryContractResolver() { }
-
-            protected override IList<JsonProperty> CreateProperties(Type type, MemberSerialization memberSerialization) {
-                IList<JsonProperty> properties = base.CreateProperties(type, memberSerialization);
-                if (type != typeof(object)) {
-                    List<string> propList = new List<string>();
-                    List<PropertyData> props = ObjectSupport.GetPropertyData(type);
-                    foreach (PropertyData prop in props) {
-                        if (prop.Name.StartsWith("__") || (prop.PropInfo.CanRead && prop.PropInfo.CanWrite)) {
-                            propList.Add(prop.Name);
-                        }
-                    }
-                    properties = (from p in properties where propList.Contains(p.PropertyName) select p).ToList();
-                }
-                return properties;
-            }
         }
     }
 }
