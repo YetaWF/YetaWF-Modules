@@ -307,7 +307,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             //bool lowlight;
             //ObjectSupport.TryGetPropertyValue<bool>(record, "__lowlight", out lowlight, false);
 
-            string lightCss = "";
+            //string lightCss = "";
             //if (highlight)
             //    lightCss = "tg_highlight";
             //else if (lowlight)
