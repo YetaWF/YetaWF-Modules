@@ -318,10 +318,13 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             bool dynSubs = false;
             List<TreeEntry> items = record.SubEntries;
             if (items == null || items.Count == 0) {
-                collapsed = false;
                 items = null;
-            } else
-                dynSubs = record.DynamicSubEntries;
+                if (record.DynamicSubEntries) {
+                    dynSubs = record.DynamicSubEntries;
+                } else {
+                    collapsed = false;
+                }
+            }
 
             string urlNew = record.UrlNew;
             string urlContent = record.UrlContent;
