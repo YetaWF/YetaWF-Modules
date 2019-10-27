@@ -69,7 +69,7 @@ namespace YetaWF_PageEdit {
 
                 const ps = $YetaWF.getElement1BySelectorCond(".YetaWF_PageEdit_PageControl a[data-name='PageSettings']") as HTMLAnchorElement | null;
                 if (ps) {
-                    var uri = $YetaWF.parseUrl(ps.href);
+                    let uri = $YetaWF.parseUrl(ps.href);
                     uri.removeSearch("PageGuid");
                     uri.addSearch("PageGuid", YVolatile.Basics.PageGuid);
                     ps.href = uri.toUrl();
@@ -77,7 +77,7 @@ namespace YetaWF_PageEdit {
                 // Export Page
                 const ep = $YetaWF.getElement1BySelectorCond(".YetaWF_PageEdit_PageControl a[data-name='ExportPage']") as HTMLAnchorElement | null;
                 if (ep) {
-                    var uri = $YetaWF.parseUrl(ep.href);
+                    let uri = $YetaWF.parseUrl(ep.href);
                     uri.removeSearch("PageGuid");
                     uri.addSearch("PageGuid", YVolatile.Basics.PageGuid);
                     ep.href = uri.toUrl();
@@ -85,7 +85,7 @@ namespace YetaWF_PageEdit {
                 // Remove Page
                 const rp = $YetaWF.getElement1BySelectorCond(".YetaWF_PageEdit_PageControl a[data-name='RemovePage']") as HTMLAnchorElement | null;
                 if (rp) {
-                    var uri = $YetaWF.parseUrl(rp.href);
+                    let uri = $YetaWF.parseUrl(rp.href);
                     uri.removeSearch("PageGuid");
                     uri.addSearch("PageGuid", YVolatile.Basics.PageGuid);
                     rp.href = uri.toUrl();
@@ -96,7 +96,7 @@ namespace YetaWF_PageEdit {
                     w3c.href = YConfigs.YetaWF_PageEdit.W3CUrl.format(window.location);
 
                 const hidden = $YetaWF.getElementsBySelector(".YetaWF_PageEdit_PageControl input[name='CurrentPageGuid'][type='hidden']") as HTMLInputElement[];
-                for (var h of hidden) {
+                for (let h of hidden) {
                     h.value = YVolatile.Basics.PageGuid;
                 }
             });
@@ -109,6 +109,7 @@ namespace YetaWF_PageEdit {
             } else {
                 YVolatile.Basics.PageControlVisible = true;
                 ComponentsHTMLHelper.fadeIn(this.PageControlMod, this.FadeTime);
+                ComponentsHTMLHelper.processPropertyListVisible(this.Module);
             }
         }
     }

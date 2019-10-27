@@ -101,6 +101,7 @@ var YetaWF_PageEdit;
             else {
                 YVolatile.Basics.PageControlVisible = true;
                 ComponentsHTMLHelper.fadeIn(this.PageControlMod, this.FadeTime);
+                ComponentsHTMLHelper.processPropertyListVisible(this.Module);
             }
         };
         PageControlModule.SELECTOR = ".YetaWF_PageEdit_PageControl";
