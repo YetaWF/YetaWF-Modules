@@ -9,8 +9,10 @@ using YetaWF.Core.IO;
 using YetaWF.Core.Localize;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Modules;
+using YetaWF.Core.Packages;
 using YetaWF.Core.Pages;
 using YetaWF.Core.Serializers;
+using YetaWF.Core.Skins;
 using YetaWF.Core.Support;
 using YetaWF.DataProvider;
 using YetaWF.Modules.PageEdit.Controllers;
@@ -25,20 +27,18 @@ namespace YetaWF.Modules.PageEdit.Modules {
     public class PageControlModule : ModuleDefinition {
 
         public PageControlModule() {
-            Name = this.__ResStr("modName", "Control Panel");
+            Name = this.__ResStr("modName", "Control Panel (Skin)");
             Title = this.__ResStr("modTitle", "Control Panel");
             Description = this.__ResStr("modSummary", "Control Panel with support for adding modules, new pages, importing modules and editing page settings");
             ShowTitleActions = false;
+            ShowTitle = false;
             WantFocus = false;
             WantSearch = false;
+            Print = false;
+            Invokable = true;
         }
 
         public override IModuleDefinitionIO GetDataProvider() { return new PageControlModuleDataProvider(); }
-
-        [Category("Variables")]
-        [Description("The HTML id used by this module - this id doesn't change for this module and can be used for skinning purposes")]
-        [Caption("ModuleHtmlId")]
-        public override string ModuleHtmlId { get { return Addons.Info.PageControlMod; } }
 
         public override bool ShowModuleMenu { get { return false; } }
         public override bool ModuleHasSettings { get { return false; } }
@@ -63,6 +63,24 @@ namespace YetaWF.Modules.PageEdit.Modules {
 
             menuList.AddRange(baseMenuList);
             return menuList;
+        }
+
+        public async Task<ModuleAction> GetAction_PageControlAsync() {
+            string css = null;
+            if (Manager.SkinInfo.UsingBootstrap && Manager.SkinInfo.UsingBootstrapButtons)
+                css = "btn btn-outline-primary";
+            return new ModuleAction(this) {
+                Category = ModuleAction.ActionCategoryEnum.Significant,
+                CssClass = css,
+                Image = await new SkinImages().FindIcon_PackageAsync("PageEdit.png", Package.GetCurrentPackage(this)),
+                Location = ModuleAction.ActionLocationEnum.Any,
+                Mode = ModuleAction.ActionModeEnum.Any,
+                Style = ModuleAction.ActionStyleEnum.Nothing,
+                LinkText = this.__ResStr("pageControlLink", "Control Panel"),
+                MenuText = this.__ResStr("pageControlMenu", "Control Panel"),
+                Tooltip = this.__ResStr("pageControlTT", "Control Panel - Add new or existing modules, add new pages, switch to edit mode, access page settings and other site management tasks"),
+                Legend = this.__ResStr("pageControlLeg", "Control Panel - Adds new or existing modules, adds new pages, switches to edit mode, accesses page settings and other site management tasks"),
+            };
         }
 
         public ModuleAction GetAction_SwitchToEdit() {

@@ -2,7 +2,9 @@
 
 using System.Threading.Tasks;
 using YetaWF.Core.Components;
+using YetaWF.Core.Modules;
 using YetaWF.Core.Packages;
+using YetaWF.Core.Pages;
 using YetaWF.Core.Support;
 using YetaWF.Modules.ComponentsHTML.Components;
 using YetaWF.Modules.PageEdit.Controllers;
@@ -17,12 +19,20 @@ namespace YetaWF.Modules.PageEdit.Views {
         public override Package GetPackage() { return AreaRegistration.CurrentPackage; }
         public override string GetViewName() { return ViewName; }
 
-        public Task<string> RenderViewAsync(EditModeModule module, EditModeModuleController.Model model) {
+        public async Task<string> RenderViewAsync(EditModeModule module, EditModeModuleController.Model model) {
 
-            // this view is used to include js/css only
-            HtmlBuilder hb = new HtmlBuilder();
-            hb.Append("<!-- A comment so we generate something, otherwise js/css is not included -->");
-            return Task.FromResult(hb.ToString());
+            // <div id='yEditControlDiv'>
+            //  action button (with id yEditControlButton)
+            // </div>
+            YTagBuilder tag = new YTagBuilder("div");
+            tag.Attributes.Add("id", "yEditControlDiv");
+
+            ModuleAction action = Manager.EditMode ? module.GetAction_SwitchToView() : module.GetAction_SwitchToEdit();
+            if (Manager.SkinInfo.UsingBootstrap && Manager.SkinInfo.UsingBootstrapButtons)
+                action.CssClass = CssManager.CombineCss(action.CssClass, "btn btn-outline-primary");
+            tag.InnerHtml = await action.RenderAsButtonIconAsync("yEditControlButton");
+
+            return tag.ToString(YTagRenderMode.Normal);
         }
     }
 }

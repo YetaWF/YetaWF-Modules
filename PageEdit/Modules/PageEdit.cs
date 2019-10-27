@@ -14,7 +14,6 @@ using YetaWF.Modules.PageEdit.Controllers;
 using YetaWF.Core.Identity;
 using YetaWF.Core.Addons;
 #if MVC6
-using Microsoft.AspNetCore.Routing;
 #else
 using System.Web.Routing;
 #endif

@@ -268,10 +268,22 @@ namespace YetaWF.Modules.PageEdit.Controllers {
             public AddNewPageModel AddNewPageModel { get; set; }
             public SkinSelectionModel SkinSelectionModel { get; set; }
             public LoginSiteSelectionModel LoginSiteSelectionModel { get; set; }
+            [UIHint("ModuleActions"), AdditionalMetadata("RenderAs", ModuleAction.RenderModeEnum.NormalLinks), ReadOnly]
+            public List<ModuleAction> Actions { get; set; }
         }
 
         [AllowGet]
         public async Task<ActionResult> PageControl() {
+
+            if (Manager.IsInPopup) return new EmptyResult();
+            if (Manager.CurrentPage == null || Manager.CurrentPage.Temporary) return new EmptyResult();
+#if DEBUG
+            // allow in debug mode without checking unless marked deployed
+            if (Manager.Deployed && !Manager.CurrentPage.IsAuthorized_Edit()) return new EmptyResult();
+#else
+            if (!Manager.CurrentPage.IsAuthorized_Edit()) return new EmptyResult();
+#endif
+
             Guid pageGuid = Guid.Empty;
             if (pageGuid == Guid.Empty) {
                 if (Manager.CurrentPage == null)
@@ -310,6 +322,17 @@ namespace YetaWF.Modules.PageEdit.Controllers {
                 },
                 LoginSiteSelectionModel = new LoginSiteSelectionModel(),
             };
+
+            PageEditModule modEdit = new PageEditModule();
+            model.Actions = new List<ModuleAction>();
+            model.Actions.New(await modEdit.GetAction_EditAsync(null));
+            model.Actions.New(await Module.GetAction_ExportPageAsync(null));
+            model.Actions.New(await modEdit.GetAction_RemoveAsync(null));
+            model.Actions.New(Module.GetAction_SwitchToView());
+            model.Actions.New(Module.GetAction_SwitchToEdit());
+            model.Actions.New(await Module.GetAction_W3CValidationAsync());
+            model.Actions.New(await Module.GetAction_RestartSite());
+            model.Actions.New(Module.GetAction_ClearJsCssCache());
 
             model.AddNewModel.AddData(page);
             model.AddExistingModel.AddData(page);

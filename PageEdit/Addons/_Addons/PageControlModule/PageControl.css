@@ -11,39 +11,31 @@
   font-size: 9px;
   z-index: 1; }
 
-#yPageControlDiv {
+.YetaWF_PageEdit_PageControl {
   position: absolute;
   z-index: 1510;
-  left: 90px;
-  top: 20px; }
+  left: 30px;
+  top: 5px; }
+  .YetaWF_PageEdit_PageControl #yPageControlDiv > a {
+    padding: 1px 4px; }
 
 #yPageControlMod {
   display: none;
   position: absolute;
-  left: 40px;
-  color: #555;
-  background-color: #e4e3e3;
-  padding: 5px 5px 5px 5px;
-  border-radius: 6px;
+  left: 30px;
   width: 800px;
   z-index: 1500; }
-  #yPageControlMod h1 {
-    font-size: 19px;
-    margin-top: .5em;
-    margin-bottom: .2em;
-    padding: 0px 6px 6px 6px;
-    line-height: 12px; }
-  #yPageControlMod h1,
-  #yPageControlMod a.yaction-link,
-  #yPageControlMod a.yaction-link:hover,
-  #yPageControlMod a.yaction-link:focus {
-    color: #555; }
+  #yPageControlMod .yt_moduleactions {
+    background-color: #e4e3e3;
+    padding: 2px; }
 
-#yEditControlDiv {
+.YetaWF_PageEdit_EditMode {
   position: absolute;
   z-index: 1510;
-  left: 20px;
-  top: 20px; }
+  left: 2px;
+  top: 5px; }
+  .YetaWF_PageEdit_EditMode #yEditControlDiv > a {
+    padding: 1px 4px; }
 
 .yModule-current {
   background-color: silver; }
@@ -55,8 +47,3 @@
   z-index: 1500;
   text-align: left;
   /* in case module has a different default */ }
-
-@media print {
-  #yEditControlDiv,
-  #yPageControlDiv {
-    display: none; } }
