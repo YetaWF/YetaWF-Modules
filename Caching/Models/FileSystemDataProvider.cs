@@ -1,5 +1,7 @@
 /* Copyright © 2019 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Caching#License */
 
+#if MVC6
+
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -55,14 +57,14 @@ namespace YetaWF.Modules.Caching.DataProvider {
         }
     }
 
-    internal class FileSystemDataProvider : IFileSystem {
+    internal class FileSystemDataProviderBase {
 
         public string RootFolder { get; private set; }
         public bool Permanent { get; private set; }
 
         // Implementation
 
-        public FileSystemDataProvider(string rootFolder, bool Permanent) {
+        public FileSystemDataProviderBase(string rootFolder, bool Permanent) {
             RootFolder = rootFolder;
             this.Permanent = Permanent;
         }
@@ -72,13 +74,13 @@ namespace YetaWF.Modules.Caching.DataProvider {
         /// <summary>
         /// Lock a file/folder by name until disposed.
         /// </summary>
-        public async Task<ILockObject> LockResourceAsync(string fileOrFolder) {
+        public virtual async Task<ILockObject> LockResourceAsync(string fileOrFolder) {
             return await YetaWF.Core.IO.Caching.LockProvider.LockResourceAsync(fileOrFolder);
         }
 
         // Folders
 
-        public async Task DeleteDirectoryAsync(string targetFolder) {
+        public virtual async Task DeleteDirectoryAsync(string targetFolder) {
             if (!Directory.Exists(targetFolder)) return;// avoid exception spam
 
             int retry = 10; // folder occasionally are in use so we'll just wait a bit
@@ -100,7 +102,7 @@ namespace YetaWF.Modules.Caching.DataProvider {
             }
         }
 
-        public async Task CreateDirectoryAsync(string targetFolder) {
+        public virtual async Task CreateDirectoryAsync(string targetFolder) {
             if (Directory.Exists(targetFolder)) return;// avoid exception spam
 
             int retry = 10; // folder occasionally are in use so we'll just wait a bit
@@ -120,13 +122,13 @@ namespace YetaWF.Modules.Caching.DataProvider {
             }
         }
 
-        public Task<bool> DirectoryExistsAsync(string targetFolder) {
+        public virtual Task<bool> DirectoryExistsAsync(string targetFolder) {
             if (Directory.Exists(targetFolder))
                 return Task.FromResult(true);
             return Task.FromResult(false);
         }
 
-        public Task<List<string>> GetDirectoriesAsync(string targetFolder, string pattern = null) {
+        public virtual Task<List<string>> GetDirectoriesAsync(string targetFolder, string pattern = null) {
             List<string> files;
             if (pattern == null)
                 files = Directory.GetDirectories(targetFolder).ToList();
@@ -135,7 +137,7 @@ namespace YetaWF.Modules.Caching.DataProvider {
             return Task.FromResult(files);
         }
 
-        public Task<List<string>> GetFilesAsync(string targetFolder, string pattern = null) {
+        public virtual Task<List<string>> GetFilesAsync(string targetFolder, string pattern = null) {
             List<string> files;
             if (pattern == null)
                 files = Directory.GetFiles(targetFolder).ToList();
@@ -144,87 +146,87 @@ namespace YetaWF.Modules.Caching.DataProvider {
             return Task.FromResult(files);
         }
 
-        public Task<DateTime> GetDirectoryCreationTimeUtcAsync(string targetFolder) {
+        public virtual Task<DateTime> GetDirectoryCreationTimeUtcAsync(string targetFolder) {
             return Task.FromResult(Directory.GetCreationTimeUtc(targetFolder));
         }
 
         // Files
 
-        public Task<bool> FileExistsAsync(string filePath) {
+        public virtual Task<bool> FileExistsAsync(string filePath) {
             if (File.Exists(filePath))
                 return Task.FromResult(true);
             return Task.FromResult(false);
         }
 
-        public Task<DateTime> GetCreationTimeUtcAsync(string filePath) {
+        public virtual Task<DateTime> GetCreationTimeUtcAsync(string filePath) {
             return Task.FromResult(File.GetCreationTimeUtc(filePath));
         }
 
-        public Task<DateTime> GetLastWriteTimeUtcAsync(string filePath) {
+        public virtual Task<DateTime> GetLastWriteTimeUtcAsync(string filePath) {
             return Task.FromResult(File.GetLastWriteTimeUtc(filePath));
         }
 
-        public Task SetLastWriteTimeUtcAsync(string filePath, DateTime timeUtc) {
+        public virtual Task SetLastWriteTimeUtcAsync(string filePath, DateTime timeUtc) {
             File.SetLastWriteTimeUtc(filePath, timeUtc);
             return Task.CompletedTask;
         }
 
-        public Task SetLastWriteTimeLocalAsync(string filePath, DateTime timeLocal) {
+        public virtual Task SetLastWriteTimeLocalAsync(string filePath, DateTime timeLocal) {
             File.SetLastWriteTime(filePath, timeLocal);
             return Task.CompletedTask;
         }
 
-        public Task<List<string>> ReadAllLinesAsync(string filePath) {
+        public virtual Task<List<string>> ReadAllLinesAsync(string filePath) {
             List<string> lines = File.ReadLines(filePath).ToList();
             return Task.FromResult(lines);
         }
 
-        public Task WriteAllLinesAsync(string filePath, List<string> lines) {
+        public virtual Task WriteAllLinesAsync(string filePath, List<string> lines) {
             File.WriteAllLines(filePath, lines);
             return Task.CompletedTask;
         }
 
-        public Task<string> ReadAllTextAsync(string filePath) {
+        public virtual Task<string> ReadAllTextAsync(string filePath) {
             string text = File.ReadAllText(filePath);
             return Task.FromResult(text);
         }
 
-        public Task WriteAllTextAsync(string filePath, string text) {
+        public virtual Task WriteAllTextAsync(string filePath, string text) {
             File.WriteAllText(filePath, text);
             return Task.CompletedTask;
         }
 
-        public Task AppendAllTextAsync(string filePath, string text) {
+        public virtual Task AppendAllTextAsync(string filePath, string text) {
             File.AppendAllText(filePath, text);
             return Task.CompletedTask;
         }
 
-        public Task AppendAllLinesAsync(string filePath, List<string> lines) {
+        public virtual Task AppendAllLinesAsync(string filePath, List<string> lines) {
             File.AppendAllLines(filePath, lines);
             return Task.CompletedTask;
         }
 
-        public Task<byte[]> ReadAllBytesAsync(string filePath) {
+        public virtual Task<byte[]> ReadAllBytesAsync(string filePath) {
             byte[] data = File.ReadAllBytes(filePath);
             return Task.FromResult(data);
         }
 
-        public Task WriteAllBytesAsync(string filePath, byte[] data) {
+        public virtual Task WriteAllBytesAsync(string filePath, byte[] data) {
             File.WriteAllBytes(filePath, data);
             return Task.CompletedTask;
         }
 
-        public Task MoveFileAsync(string fromPath, string toPath) {
+        public virtual Task MoveFileAsync(string fromPath, string toPath) {
             File.Move(fromPath, toPath);
             return Task.CompletedTask;
         }
 
-        public Task CopyFileAsync(string fromPath, string toPath) {
+        public virtual Task CopyFileAsync(string fromPath, string toPath) {
             File.Copy(fromPath, toPath, true);
             return Task.CompletedTask;
         }
 
-        public Task DeleteFileAsync(string filePath) {
+        public virtual Task DeleteFileAsync(string filePath) {
             File.Delete(filePath);
             return Task.CompletedTask;
         }
@@ -234,11 +236,11 @@ namespace YetaWF.Modules.Caching.DataProvider {
         private static string ValidChars = " abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789~`!@#$^&()_-+={}[],.";
         private const string FileExtension = ".dat";
 
-        public string GetDataFileExtension() {
+        public virtual string GetDataFileExtension() {
             return FileExtension;
         }
 
-        public string MakeValidDataFileName(string name) {
+        public virtual string MakeValidDataFileName(string name) {
             StringBuilder sb = new StringBuilder();
             foreach (var c in name) {
                 if (ValidChars.Contains(c))
@@ -252,7 +254,7 @@ namespace YetaWF.Modules.Caching.DataProvider {
             return sb.ToString();
         }
 
-        public string ExtractNameFromDataFileName(string name) {
+        public virtual string ExtractNameFromDataFileName(string name) {
             StringBuilder sb = new StringBuilder();
             int total = name.Length;
             if (name.EndsWith(FileExtension)) total -= FileExtension.Length;
@@ -353,3 +355,5 @@ namespace YetaWF.Modules.Caching.DataProvider {
         }
     }
 }
+
+#endif
