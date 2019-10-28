@@ -1,7 +1,5 @@
 /* Copyright © 2019 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Caching#License */
 
-#if MVC6
-
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -355,5 +353,3 @@ namespace YetaWF.Modules.Caching.DataProvider {
         }
     }
 }
-
-#endif

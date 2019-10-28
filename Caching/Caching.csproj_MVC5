@@ -37,10 +37,12 @@
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Models\FileSystemDataProvider_MVC5.cs" />
+    <Compile Include="Models\FileSystemDataProvider_MVC6.cs" />
     <Compile Include="Models\LockSingleProvider.cs" />
     <Compile Include="Models\LockRedisProvider.cs" />
     <Compile Include="Models\LockFileProvider.cs" />
-    <Compile Include="Models\FileSystemDataProvider.cs" />
+    <Compile Include="Models\FileSystemDataProviderBase.cs" />
     <Compile Include="Models\LocalCacheObjectDataProvider.cs" />
     <Compile Include="Models\PubSubRedisProvider.cs" />
     <Compile Include="Models\SharedCacheObjectRedisDataProvider.cs" />
