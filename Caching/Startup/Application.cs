@@ -110,6 +110,10 @@ namespace YetaWF.Modules.Caching.Startup {
             } else {
                 throw new InternalError($"Unsupported pub/sub provider: {PubSubProvider}");
             }
+
+            // Small Object Local cache provider
+            YetaWF.Core.IO.Caching.GetStaticSmallObjectCacheProvider = StaticSmallObjectLocalDataProvider.GetProvider;
+
         }
         /// <summary>
         /// Called when the first node of a multi-instance site is starting up.

@@ -573,7 +573,12 @@ namespace YetaWF.Modules.PageEdit.Controllers {
             if (!Manager.HasSuperUserRole)
                 return NotAuthorized();
             await FileBundles.ResetCacheAsync();
-            return FormProcessed(null, popupText: this.__ResStr("clearJsCssAll", "JavaScript and CSS bundles have been cleared"), OnClose: OnCloseEnum.Nothing);
+            using (ICacheDataProvider cacheDP = YetaWF.Core.IO.Caching.GetStaticSmallObjectCacheProvider()) {
+                ICacheClearable clearableDP = cacheDP as ICacheClearable;
+                if (clearableDP != null)
+                    await clearableDP.ClearAllAsync();
+            }
+            return FormProcessed(null, popupText: this.__ResStr("clearJsCssAll", "JavaScript/CSS bundles and cached static small objects have been cleared"), OnClose: OnCloseEnum.Nothing);
         }
     }
 }
