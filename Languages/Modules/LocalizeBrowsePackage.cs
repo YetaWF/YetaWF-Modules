@@ -68,7 +68,7 @@ namespace YetaWF.Modules.Languages.Modules {
             };
         }
         public async Task<ModuleAction> GetAction_CreateCustomLocalizationAsync() {
-            if (Manager.Deployed) return null; // can't do this on a deployed site
+            if (YetaWFManager.Deployed) return null; // can't do this on a deployed site
             if (!IsAuthorized("Localize")) return null;
             string packageName = Manager.GetUrlArg<string>("PackageName");
             if (string.IsNullOrWhiteSpace(packageName)) return null;
@@ -92,7 +92,7 @@ namespace YetaWF.Modules.Languages.Modules {
             };
         }
         public async Task<ModuleAction> GetAction_CreateInstalledLocalizationAsync() {
-            if (Manager.Deployed) return null; // can't do this on a deployed site
+            if (YetaWFManager.Deployed) return null; // can't do this on a deployed site
             if (!IsAuthorized("Localize")) return null;
             string packageName = Manager.GetUrlArg<string>("PackageName");
             if (string.IsNullOrWhiteSpace(packageName)) return null;
@@ -116,7 +116,7 @@ namespace YetaWF.Modules.Languages.Modules {
             };
         }
         public async Task<ModuleAction> GetAction_CreateAllInstalledLocalizationsAsync() {
-            if (Manager.Deployed) return null; // can't do this on a deployed site
+            if (YetaWFManager.Deployed) return null; // can't do this on a deployed site
             if (!IsAuthorized("Localize")) return null;
             if (MultiString.ActiveLanguage == MultiString.DefaultLanguage) return null;
             return new ModuleAction(this) {
@@ -136,7 +136,7 @@ namespace YetaWF.Modules.Languages.Modules {
             };
         }
         public async Task<ModuleAction> GetAction_LocalizePackageDataAsync(Package package) {
-            if (Manager.Deployed) return null; // can't do this on a deployed site
+            if (YetaWFManager.Deployed) return null; // can't do this on a deployed site
             if (!IsAuthorized("Localize")) return null;
             if (package == null) return null;
             if (!package.IsCorePackage && !package.IsCoreAssemblyPackage && !package.IsModulePackage && !package.IsSkinPackage) return null;
@@ -158,7 +158,7 @@ namespace YetaWF.Modules.Languages.Modules {
             };
         }
         public async Task<ModuleAction> GetAction_LocalizeAllPackagesDataAsync() {
-            if (Manager.Deployed) return null; // can't do this on a deployed site
+            if (YetaWFManager.Deployed) return null; // can't do this on a deployed site
             if (!IsAuthorized("Localize")) return null;
             if (MultiString.ActiveLanguage == MultiString.DefaultLanguage) return null;
             return new ModuleAction(this) {

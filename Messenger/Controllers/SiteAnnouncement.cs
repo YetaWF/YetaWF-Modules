@@ -46,7 +46,7 @@ namespace YetaWF.Modules.Messenger.Controllers {
             [UIHint("String"), SuppressIf(nameof(IsDemoMode), false), ReadOnly]
             public string Description { get; set; }
 
-            public bool IsDemoMode { get { return Manager.IsDemo; } }
+            public bool IsDemoMode { get { return YetaWFManager.IsDemo; } }
 
             public AddModel() {
                 TestMode = IsDemoMode;

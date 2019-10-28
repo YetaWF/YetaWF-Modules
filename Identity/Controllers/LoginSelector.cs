@@ -43,7 +43,7 @@ namespace YetaWF.Modules.Identity.Controllers {
         [AllowGet]
         public ActionResult LoginSelector() {
 #if !DEBUG
-            if (Manager.Deployed && !Manager.HasSuperUserRole) return new EmptyResult();
+            if (YetaWFManager.Deployed && !Manager.HasSuperUserRole) return new EmptyResult();
 #endif
             if (Manager.RenderStaticPage) return new EmptyResult();
 

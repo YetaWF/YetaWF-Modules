@@ -52,7 +52,7 @@ namespace YetaWF.Modules.PageEdit.Views {
                 canModuleNewAdd = await Resource.ResourceAccess.IsResourceAuthorizedAsync(CoreInfo.Resource_ModuleNewAdd);
                 canChangeSiteSkins = await Resource.ResourceAccess.IsResourceAuthorizedAsync(CoreInfo.Resource_SiteSkins);
             }
-            bool canOtherUserLogin = !Manager.Deployed || await Resource.ResourceAccess.IsResourceAuthorizedAsync(CoreInfo.Resource_OtherUserLogin);
+            bool canOtherUserLogin = !YetaWFManager.Deployed || await Resource.ResourceAccess.IsResourceAuthorizedAsync(CoreInfo.Resource_OtherUserLogin);
 
             string id = Info.PageControlMod;
 

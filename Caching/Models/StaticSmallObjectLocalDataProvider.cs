@@ -22,7 +22,7 @@ namespace YetaWF.Modules.Caching.DataProvider {
     internal class StaticSmallObjectLocalDataProvider : ICacheDataProvider, ICacheClearable {
 
         static StaticSmallObjectLocalDataProvider() {
-            DurationMinutes = WebConfigHelper.GetValue<int>(AreaRegistration.CurrentPackage.AreaName, "SmallObjectCacheDuration", YetaWFManager.GetDeployed() ? 0 : -1);
+            DurationMinutes = WebConfigHelper.GetValue<int>(AreaRegistration.CurrentPackage.AreaName, "SmallObjectCacheDuration", YetaWFManager.Deployed ? 0 : -1);
         }
 
         public static ICacheDataProvider GetProvider() {

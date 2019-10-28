@@ -976,7 +976,7 @@ new YetaWF_ComponentsHTML.Grid('{model.Id}', {JsonConvert.SerializeObject(setup,
                         }
 
                         string output;
-                        if (Manager.IsDemo && prop.HasAttribute(nameof(ExcludeDemoModeAttribute))) {
+                        if (YetaWFManager.IsDemo && prop.HasAttribute(nameof(ExcludeDemoModeAttribute))) {
                             output = __ResStr("demo", "(Demo - N/A)");
                         } else if (recordEnabled && !prop.ReadOnly) {
                             output = await htmlHelper.ForEditComponentAsync(record, colName, value, prop.UIHint);

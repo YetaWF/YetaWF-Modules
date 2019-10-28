@@ -113,7 +113,7 @@ namespace YetaWF.Modules.Languages.Controllers {
         [Permission("Localize")]
         [ExcludeDemoMode]
         public async Task<ActionResult> CreateCustomLocalization(string packageName, string language) {
-            if (Manager.Deployed)
+            if (YetaWFManager.Deployed)
                 throw new InternalError("Can't localize packages on a deployed site");
             await TranslatePackageAsync(packageName, language, Localization.Location.CustomResources);
             return FormProcessed(null, popupText: this.__ResStr("custGenerated", "Custom localization resources successfully generated"), OnClose: OnCloseEnum.Nothing);
@@ -123,7 +123,7 @@ namespace YetaWF.Modules.Languages.Controllers {
         [Permission("Localize")]
         [ExcludeDemoMode]
         public async Task<ActionResult> CreateInstalledLocalization(string packageName, string language) {
-            if (Manager.Deployed)
+            if (YetaWFManager.Deployed)
                 throw new InternalError("Can't localize packages on a deployed site");
             await TranslatePackageAsync(packageName, language, Localization.Location.InstalledResources);
             return FormProcessed(null, popupText: this.__ResStr("instGenerated", "Installed localization resources successfully generated"), OnClose: OnCloseEnum.Nothing);
@@ -133,7 +133,7 @@ namespace YetaWF.Modules.Languages.Controllers {
         [Permission("Localize")]
         [ExcludeDemoMode]
         public async Task<ActionResult> CreateAllInstalledLocalizations(string language) {
-            if (Manager.Deployed)
+            if (YetaWFManager.Deployed)
                 throw new InternalError("Can't localize packages on a deployed site");
             foreach (Package package in Package.GetAvailablePackages()) {
                 if (package.IsCorePackage || package.IsModulePackage || package.IsSkinPackage)
@@ -374,7 +374,7 @@ namespace YetaWF.Modules.Languages.Controllers {
         [Permission("Localize")]
         [ExcludeDemoMode]
         public async Task<ActionResult> LocalizePackageData(string packageName, string language) {
-            if (Manager.Deployed)
+            if (YetaWFManager.Deployed)
                 throw new InternalError("Can't localize packages on a deployed site");
             Package package = Package.GetPackageFromPackageName(packageName);
             List<Type> models = package.InstallableModels;
@@ -394,7 +394,7 @@ namespace YetaWF.Modules.Languages.Controllers {
         [Permission("Localize")]
         [ExcludeDemoMode]
         public async Task<ActionResult> LocalizeAllPackagesData(string language) {
-            if (Manager.Deployed)
+            if (YetaWFManager.Deployed)
                 throw new InternalError("Can't localize packages on a deployed site");
             foreach (Package package in Package.GetAvailablePackages()) {
                 if (package.IsCorePackage || package.IsModulePackage || package.IsSkinPackage) {

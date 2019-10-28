@@ -279,7 +279,7 @@ namespace YetaWF.Modules.PageEdit.Controllers {
             if (Manager.CurrentPage == null || Manager.CurrentPage.Temporary) return new EmptyResult();
 #if DEBUG
             // allow in debug mode without checking unless marked deployed
-            if (Manager.Deployed && !Manager.CurrentPage.IsAuthorized_Edit()) return new EmptyResult();
+            if (YetaWFManager.Deployed && !Manager.CurrentPage.IsAuthorized_Edit()) return new EmptyResult();
 #else
             if (!Manager.CurrentPage.IsAuthorized_Edit()) return new EmptyResult();
 #endif
@@ -520,7 +520,7 @@ namespace YetaWF.Modules.PageEdit.Controllers {
         [ExcludeDemoMode]
         public async Task<ActionResult> LoginSiteSelection_Partial(LoginSiteSelectionModel model) {
 
-            if (Manager.Deployed) {
+            if (YetaWFManager.Deployed) {
                 if (!await Resource.ResourceAccess.IsResourceAuthorizedAsync(CoreInfo.Resource_OtherUserLogin))
                     return NotAuthorized();
             }
