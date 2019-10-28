@@ -540,21 +540,18 @@ var YetaWF_ComponentsHTML;
                 window.removeEventListener("mouseup", this.resizeColumnDone, false);
                 // save column widths after user resizes
                 if (currentControl.Setup.SettingsModuleGuid) {
-                    var colIndex = Array.prototype.indexOf.call(currentControl.ColumnResizeHeader.parentElement.children, currentControl.ColumnResizeHeader);
-                    var options = {
-                        SettingsModuleGuid: currentControl.Setup.SettingsModuleGuid,
-                        Columns: [{
-                                Key: currentControl.Setup.Columns[colIndex].Name,
-                                Value: parseInt(currentControl.ColumnResizeHeader.style.width.replace("px", ""), 0)
-                            }]
-                    };
                     // send save request, we don't care about the response
+                    var uri = $YetaWF.parseUrl(currentControl.Setup.SaveSettingsColumnWidthsUrl);
+                    uri.addSearch("SettingsModuleGuid", currentControl.Setup.SettingsModuleGuid);
+                    var colIndex = Array.prototype.indexOf.call(currentControl.ColumnResizeHeader.parentElement.children, currentControl.ColumnResizeHeader);
+                    uri.addSearch("Columns[0].Key", currentControl.Setup.Columns[colIndex].Name);
+                    uri.addSearch("Columns[0].Value", parseInt(currentControl.ColumnResizeHeader.style.width.replace("px", ""), 0));
                     var request = new XMLHttpRequest();
                     request.open("POST", currentControl.Setup.SaveSettingsColumnWidthsUrl, true);
-                    request.setRequestHeader("Content-Type", "application/json");
+                    request.setRequestHeader("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
                     request.setRequestHeader("X-Requested-With", "XMLHttpRequest");
                     //request.overrideMimeType("application/text");// would help firefox understand this isn't xml, but it's not standard, oh well
-                    request.send(JSON.stringify(options));
+                    request.send(uri.toFormData());
                 }
                 currentControl.ColumnResizeBar = null;
                 currentControl.ColumnResizeHeader = null;

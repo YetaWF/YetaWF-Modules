@@ -15,6 +15,7 @@ using Newtonsoft.Json;
 using YetaWF.Core.Controllers;
 using YetaWF.Core.DataProvider;
 using Newtonsoft.Json.Serialization;
+using YetaWF.Modules.ComponentsHTML.Controllers;
 #if MVC6
 using Microsoft.AspNetCore.Mvc.Rendering;
 #else
@@ -188,7 +189,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                 RowDragDropHighlightCss = model.UseSkinFormatting ? "ui-state-active" : "tg_dragdrophighlight",
                 SortActiveCss = "tg_active",
                 SettingsModuleGuid = model.SettingsModuleGuid,
-                SaveSettingsColumnWidthsUrl = Utility.UrlFor(typeof(YetaWF.Core.Controllers.GridSaveSettingsController), nameof(YetaWF.Core.Controllers.GridSaveSettingsController.GridSaveColumnWidths)),
+                SaveSettingsColumnWidthsUrl = Utility.UrlFor(typeof(GridSaveSettingsController), nameof(GridSaveSettingsController.GridSaveColumnWidths)),
                 DeletedMessage = model.DeletedMessage,
                 DeleteConfirmationMessage = model.DeleteConfirmationMessage != null && UserSettings.GetProperty<bool>("ConfirmDelete") ? model.DeleteConfirmationMessage : null,
                 DeletedColumnDisplay = model.DeletedColumnDisplay,
