@@ -1,4 +1,4 @@
-/* Copyright © 2019 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/ComponentsHTML#License */
+/* Copyright ï¿½ 2019 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/ComponentsHTML#License */
 
 // Kendo UI menu use
 
@@ -587,7 +587,7 @@ namespace YetaWF_ComponentsHTML {
         }
         private static resizeColumnDone(ev: MouseEvent): boolean {
             var currentControl = Grid.CurrentControl;
-            if (currentControl && currentControl.ColumnResizeBar && currentControl.ColumnResizeHeader) {
+            if (currentControl && currentControl.ColumnResizeBar && currentControl.ColumnResizeHeader && currentControl.Setup.SaveSettingsColumnWidthsUrl) {
                 document.body.style.cursor = "default";
                 window.removeEventListener("mousemove", this.resizeColumn, false);
                 window.removeEventListener("mouseup", this.resizeColumnDone, false);
@@ -608,8 +608,10 @@ namespace YetaWF_ComponentsHTML {
                     //request.overrideMimeType("application/text");// would help firefox understand this isn't xml, but it's not standard, oh well
                     request.send(uri.toFormData());
                 }
-                currentControl.ColumnResizeBar = null;
-                currentControl.ColumnResizeHeader = null;
+            }
+            if (Grid.CurrentControl) {
+                Grid.CurrentControl.ColumnResizeBar = null;
+                Grid.CurrentControl.ColumnResizeHeader = null;
             }
             Grid.CurrentControl = null;
             return false;

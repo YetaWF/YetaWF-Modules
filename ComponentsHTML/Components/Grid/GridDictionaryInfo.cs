@@ -10,7 +10,6 @@ using YetaWF.Core.Addons;
 using YetaWF.Core.IO;
 using YetaWF.Core.Localize;
 using YetaWF.Core.Models;
-using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Packages;
 using YetaWF.Core.Support;
 
@@ -33,7 +32,50 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             }
         }
 
-        public static async Task<ReadGridDictionaryInfo> ReadGridDictionaryAsync(Package package, Type recordType, string file) {
+        /// <summary>
+        /// Loads the grid column definitions for a grid.
+        /// </summary>
+        /// <param name="gridDef">The GridDefinition object describing the grid.</param>
+        /// <returns>A GridDictionaryInfo.ReadGridDictionaryInfo object describing the grid.</returns>
+        /// <remarks>This method is not used by applications. It is reserved for component implementation.</remarks>
+        public static async Task<GridDictionaryInfo.ReadGridDictionaryInfo> LoadGridColumnDefinitionsAsync(GridDefinition gridDef) {
+            if (gridDef.CachedData == null)
+                gridDef.CachedData = await LoadGridColumnDefinitionsAsync(gridDef.RecordType);
+            return (GridDictionaryInfo.ReadGridDictionaryInfo)gridDef.CachedData;
+        }
+
+        /// <summary>
+        /// Loads the grid column definitions for a grid based on its record type.
+        /// </summary>
+        /// <param name="recordType">The record type for which grid column definitions are to be loaded.</param>
+        /// <returns>A GridDictionaryInfo.ReadGridDictionaryInfo object describing the grid.</returns>
+        /// <remarks>This method is not used by applications. It is reserved for component implementation.</remarks>
+        private static async Task<GridDictionaryInfo.ReadGridDictionaryInfo> LoadGridColumnDefinitionsAsync(Type recordType) {
+            Dictionary<string, GridColumnInfo> dict = new Dictionary<string, GridColumnInfo>();
+            string className = recordType.FullName.Split(new char[] { '.' }).Last();
+            string[] s = className.Split(new char[] { '+' });
+            int len = s.Length;
+            if (len != 2) throw new InternalError("Unexpected class {0} in record type {1}", className, recordType.FullName);
+            string controller = s[0];
+            string model = s[1];
+            string file = controller + "." + model;
+            Package package = Package.GetPackageFromType(recordType);
+            string predefUrl = VersionManager.GetAddOnPackageUrl(package.AreaName) + "Grids/" + file;
+            string customUrl = VersionManager.GetCustomUrlFromUrl(predefUrl);
+            GridDictionaryInfo.ReadGridDictionaryInfo info;
+            GridDictionaryInfo.ReadGridDictionaryInfo predefInfo = await GridDictionaryInfo.ReadGridDictionaryAsync(package, recordType, Utility.UrlToPhysical(predefUrl));
+            if (!predefInfo.Success)
+                throw new InternalError("No grid definition exists for {0}", file);
+            info = predefInfo;
+            GridDictionaryInfo.ReadGridDictionaryInfo customInfo = await GridDictionaryInfo.ReadGridDictionaryAsync(package, recordType, Utility.UrlToPhysical(customUrl));
+            if (customInfo.Success)
+                info = customInfo;
+            if (info.ColumnInfo.Count == 0)
+                throw new InternalError("No grid definition exists for {0}", file);
+            return info;
+        }
+
+        private static async Task<ReadGridDictionaryInfo> ReadGridDictionaryAsync(Package package, Type recordType, string file) {
 
             using (ICacheDataProvider cacheDP = YetaWF.Core.IO.Caching.GetStaticSmallObjectCacheProvider()) {
 
@@ -92,10 +134,10 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                                 saveColumnWidths = true;
                                 continue;
                             } else if (name == "DontSaveColumnFilters") {
-                                saveColumnFilters = true;
+                                saveColumnFilters = false;
                                 continue;
                             } else if (name == "DontSaveColumnWidths") {
-                                saveColumnWidths = true;
+                                saveColumnWidths = false;
                                 continue;
                             }
                         }

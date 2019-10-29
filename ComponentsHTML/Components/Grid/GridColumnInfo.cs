@@ -1,7 +1,6 @@
 ﻿/* Copyright © 2019 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/ComponentsHTML#License */
 
 using System.Collections.Generic;
-using YetaWF.Core.Models.Attributes;
 
 namespace YetaWF.Modules.ComponentsHTML.Components {
 

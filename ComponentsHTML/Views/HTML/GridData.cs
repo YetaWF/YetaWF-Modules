@@ -39,7 +39,7 @@ namespace YetaWF.Modules.ComponentsHTML.Views {
         public async Task<string> RenderViewAsync(ModuleDefinition module, GridPartialData model) {
 
             // save settings
-            GridLoadSave.SaveSettings(model.Skip, model.Take, model.Sorts, model.Filters, model.GridDef.SettingsModuleGuid);
+            await GridLoadSave.SaveSettingsAsync(model);
 
             // handle async properties
             await HandlePropertiesAsync(model.Data.Data);

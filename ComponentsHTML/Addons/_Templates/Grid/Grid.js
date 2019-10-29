@@ -534,7 +534,7 @@ var YetaWF_ComponentsHTML;
         };
         Grid.resizeColumnDone = function (ev) {
             var currentControl = Grid.CurrentControl;
-            if (currentControl && currentControl.ColumnResizeBar && currentControl.ColumnResizeHeader) {
+            if (currentControl && currentControl.ColumnResizeBar && currentControl.ColumnResizeHeader && currentControl.Setup.SaveSettingsColumnWidthsUrl) {
                 document.body.style.cursor = "default";
                 window.removeEventListener("mousemove", this.resizeColumn, false);
                 window.removeEventListener("mouseup", this.resizeColumnDone, false);
@@ -553,8 +553,10 @@ var YetaWF_ComponentsHTML;
                     //request.overrideMimeType("application/text");// would help firefox understand this isn't xml, but it's not standard, oh well
                     request.send(uri.toFormData());
                 }
-                currentControl.ColumnResizeBar = null;
-                currentControl.ColumnResizeHeader = null;
+            }
+            if (Grid.CurrentControl) {
+                Grid.CurrentControl.ColumnResizeBar = null;
+                Grid.CurrentControl.ColumnResizeHeader = null;
             }
             Grid.CurrentControl = null;
             return false;

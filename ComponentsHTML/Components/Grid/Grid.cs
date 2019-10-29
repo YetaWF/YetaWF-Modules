@@ -12,7 +12,6 @@ using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Packages;
 using YetaWF.Core.Support;
 using Newtonsoft.Json;
-using YetaWF.Core.Controllers;
 using YetaWF.Core.DataProvider;
 using Newtonsoft.Json.Serialization;
 using YetaWF.Modules.ComponentsHTML.Controllers;
@@ -150,7 +149,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
             string idEmpty = UniqueId();
 
-            GridDictionaryInfo.ReadGridDictionaryInfo dictInfo = await GridLoadSave.LoadGridColumnDefinitionsAsync(model);
+            GridDictionaryInfo.ReadGridDictionaryInfo dictInfo = await GridDictionaryInfo.LoadGridColumnDefinitionsAsync(model);
 
             if (model.Reorderable) {
                 if (model.InitialPageSize != 0 || !model.IsStatic)
