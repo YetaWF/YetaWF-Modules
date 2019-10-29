@@ -51,6 +51,7 @@
     <Compile Include="Models\StaticObjectMultiSQLDataProvider.cs" />
     <Compile Include="Models\SharedCacheObjectSQLDataProvider.cs" />
     <Compile Include="Models\CachingSQLDataProvider.cs" />
+    <Compile Include="Models\StaticSmallObjectLocalDataProvider.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup\Application.cs" />
     <Compile Include="Startup\AreaRegistration.cs" />

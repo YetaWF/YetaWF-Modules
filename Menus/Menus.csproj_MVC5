@@ -71,14 +71,14 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controllers\HTML\Menu.cs" />
     <Compile Include="Models\FileDataProvider.cs" />
     <Compile Include="Models\MenuInfoDataProvider.cs" />
     <Compile Include="Models\SQLDataProvider.cs" />
+    <Compile Include="Modules\HTML\Menu.cs" />
     <Compile Include="Startup\Info.cs" />
     <Compile Include="Startup\AreaRegistration.cs" />
-    <Compile Include="Controllers\Menu.cs" />
     <Compile Include="Controllers\MenuEdit.cs" />
-    <Compile Include="Modules\Menu.cs" />
     <Compile Include="Modules\MainMenu.cs" />
     <Compile Include="Modules\MenuEdit.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
