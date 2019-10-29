@@ -7,7 +7,6 @@ using YetaWF.Core.Localize;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Support;
 using YetaWF.Modules.Identity.Addons;
-using YetaWF.Core.DataProvider;
 using System.Collections.Generic;
 using System.Linq;
 using YetaWF.Modules.Identity.Components;
@@ -25,13 +24,13 @@ namespace YetaWF.Modules.Identity.Controllers {
 
         [AllowPost]
         [ConditionalAntiForgeryToken]
-        public async Task<ActionResult> ResourceUsersDisplay_SortFilter(string data, string fieldPrefix, int skip, int take, List<DataProviderSortInfo> sorts, List<DataProviderFilterInfo> filters) {
-            return await GridPartialViewAsync<ResourceUsersDisplayComponent.Entry>(ResourceUsersDisplayComponent.GetGridModel(false), data, fieldPrefix, skip, take, sorts, filters);
+        public async Task<ActionResult> ResourceUsersDisplay_SortFilter(GridPartialViewData gridPVData) {
+            return await GridPartialViewAsync<ResourceUsersDisplayComponent.Entry>(ResourceUsersDisplayComponent.GetGridModel(false), gridPVData);
         }
         [AllowPost]
         [ConditionalAntiForgeryToken]
-        public async Task<ActionResult> ResourceUsersEdit_SortFilter(string data, string fieldPrefix, int skip, int take, List<DataProviderSortInfo> sorts, List<DataProviderFilterInfo> filters) {
-            return await GridPartialViewAsync<ResourceUsersEditComponent.Entry>(ResourceUsersEditComponent.GetGridModel(false), data, fieldPrefix, skip, take, sorts, filters);
+        public async Task<ActionResult> ResourceUsersEdit_SortFilter(GridPartialViewData gridPVData) {
+            return await GridPartialViewAsync<ResourceUsersEditComponent.Entry>(ResourceUsersEditComponent.GetGridModel(false), gridPVData);
         }
         [AllowPost]
         [ConditionalAntiForgeryToken]
@@ -56,8 +55,8 @@ namespace YetaWF.Modules.Identity.Controllers {
         [AllowPost]
         [ConditionalAntiForgeryToken]
         [ResourceAuthorize(Info.Resource_AllowListOfUserNamesAjax)]
-        public async Task<ActionResult> ResourceUsersBrowse_GridData(string fieldPrefix, int skip, int take, List<DataProviderSortInfo> sorts, List<DataProviderFilterInfo> filters) {
-            return await GridPartialViewAsync(ResourceUsersEditComponent.GetGridAllUsersModel(), fieldPrefix, skip, take, sorts, filters);
+        public async Task<ActionResult> ResourceUsersBrowse_GridData(GridPartialViewData gridPVData) {
+            return await GridPartialViewAsync(ResourceUsersEditComponent.GetGridAllUsersModel(), gridPVData);
         }
     }
 }

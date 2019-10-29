@@ -22,13 +22,13 @@ namespace Softelvdm.Modules.IVR.Controllers {
 
         [AllowPost]
         [ConditionalAntiForgeryToken]
-        public async Task<ActionResult> ListOfPhoneNumbersDisplay_SortFilter(string data, string fieldPrefix, int skip, int take, List<DataProviderSortInfo> sorts, List<DataProviderFilterInfo> filters) {
-            return await GridPartialViewAsync<ListOfPhoneNumbersDisplayComponent.Entry>(ListOfPhoneNumbersDisplayComponent.GetGridModel(false, false, false), data, fieldPrefix, skip, take, sorts, filters);
+        public async Task<ActionResult> ListOfPhoneNumbersDisplay_SortFilter(GridPartialViewData gridPVData) {
+            return await GridPartialViewAsync<ListOfPhoneNumbersDisplayComponent.Entry>(ListOfPhoneNumbersDisplayComponent.GetGridModel(false, false, false), gridPVData);
         }
         [AllowPost]
         [ConditionalAntiForgeryToken]
-        public async Task<ActionResult> ListOfPhoneNumbersEdit_SortFilter(string data, string fieldPrefix, int skip, int take, List<DataProviderSortInfo> sorts, List<DataProviderFilterInfo> filters) {
-            return await GridPartialViewAsync<ListOfPhoneNumbersEditComponent.Entry>(ListOfPhoneNumbersEditComponent.GetGridModel(false), data, fieldPrefix, skip, take, sorts, filters);
+        public async Task<ActionResult> ListOfPhoneNumbersEdit_SortFilter(GridPartialViewData gridPVData) {
+            return await GridPartialViewAsync<ListOfPhoneNumbersEditComponent.Entry>(ListOfPhoneNumbersEditComponent.GetGridModel(false), gridPVData);
         }
         [AllowPost]
         [ConditionalAntiForgeryToken]

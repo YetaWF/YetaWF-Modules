@@ -2,6 +2,7 @@
 
 using System.Threading.Tasks;
 using YetaWF.Core.Components;
+using YetaWF.Core.Models;
 using YetaWF.Core.Modules;
 using YetaWF.Core.Packages;
 using YetaWF.Core.Support;
@@ -15,7 +16,7 @@ namespace YetaWF.Modules.ComponentsHTML.Views {
     /// </summary>
     public class TreePartialDataView : YetaWFView, IYetaWFView<ModuleDefinition, TreePartialData> {
 
-        internal const string ViewName = "TreePartialData";
+        internal const string ViewName = "TreePartialDataView";
 
         /// <summary>
         /// Returns the package implementing the view.

@@ -9,7 +9,6 @@ using YetaWF.Core.Pages;
 #if MVC6
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Routing;
-using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.DependencyInjection;
 #else
 using System.Web.Routing;

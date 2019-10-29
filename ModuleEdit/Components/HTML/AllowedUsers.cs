@@ -167,8 +167,6 @@ new YetaWF_ModuleEdit.AllowedUsersEditComponent('{DivId}', {Utility.JsonSerializ
             return hb.ToString();
         }
         public static async Task<GridRecordData> GridRecordAsync(string fieldPrefix, object model, Guid editGuid) {
-            // handle async properties
-            await YetaWFController.HandlePropertiesAsync(model);
             GridRecordData record = new GridRecordData() {
                 GridDef = GetGridModel(false),
                 Data = model,

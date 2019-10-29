@@ -106,8 +106,8 @@ namespace YetaWF.Modules.Dashboard.Controllers {
 #else
         [AllowPost]
         [ConditionalAntiForgeryToken]
-        public async Task<ActionResult> CacheInfo_GridData(string data, string fieldPrefix, int skip, int take, List<DataProviderSortInfo> sorts, List<DataProviderFilterInfo> filters) {
-            return await GridPartialViewAsync<BrowseItem>(GetGridModel(), data, fieldPrefix, skip, take, sorts, filters);
+        public async Task<ActionResult> CacheInfo_GridData(GridPartialViewData gridPVData) {
+            return await GridPartialViewAsync<BrowseItem>(GetGridModel(), gridPVData);
         }
 
         private List<BrowseItem> GetAllItems() {

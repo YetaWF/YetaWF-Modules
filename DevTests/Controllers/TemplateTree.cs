@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using YetaWF.Core.Models;
 using System.Linq;
 using YetaWF.Core.Components;
-using YetaWF.Modules.ComponentsHTML.Components;
+using System.Threading.Tasks;
 #if MVC6
 using Microsoft.AspNetCore.Mvc;
 #else
@@ -107,19 +107,8 @@ namespace YetaWF.Modules.DevTests.Controllers {
         }
         [AllowPost]
         [ConditionalAntiForgeryToken]
-        public ActionResult TemplateTree_GetRecords(EntryElement data) {
-            List<EntryElement> list = GetDynamicSubEntries();
-            List<object> d = (from l in list select (object)l).ToList<object>();
-            DataSourceResult ds = new DataSourceResult() {
-                Data = d,
-                Total = d.Count,
-            };
-            TreePartialData treePartial = new TreePartialData {
-                TreeDef = GetTreeModel(),
-                Data = ds,
-            };
-            return PartialView("TreePartialData", treePartial, ContentType: "application/json", PureContent: true, AreaViewName:false,  Gzip: true);
+        public async Task<ActionResult> TemplateTree_GetRecords(EntryElement data) {
+            return await TreePartialViewAsync(GetTreeModel(), GetDynamicSubEntries());
         }
     }
 }
-;

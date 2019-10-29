@@ -1,7 +1,9 @@
 ﻿/* Copyright © 2019 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/ComponentsHTML#License */
 
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using YetaWF.Core.Components;
+using YetaWF.Core.Models;
 using YetaWF.Core.Modules;
 using YetaWF.Core.Packages;
 using YetaWF.Core.Support;
@@ -15,7 +17,7 @@ namespace YetaWF.Modules.ComponentsHTML.Views {
     /// </summary>
     public class GridPartialDataView : YetaWFView, IYetaWFView<ModuleDefinition, GridPartialData> {
 
-        internal const string ViewName = "GridPartialData";
+        internal const string ViewName = "GridPartialDataView";
 
         /// <summary>
         /// Returns the package implementing the view.
@@ -36,11 +38,24 @@ namespace YetaWF.Modules.ComponentsHTML.Views {
         /// <returns>The HTML representing the grid data portion.</returns>
         public async Task<string> RenderViewAsync(ModuleDefinition module, GridPartialData model) {
 
+            // save settings
+            GridLoadSave.SaveSettings(model.Skip, model.Take, model.Sorts, model.Filters, model.GridDef.SettingsModuleGuid);
+
+            // handle async properties
+            await HandlePropertiesAsync(model.Data.Data);
+
             HtmlBuilder hb = new HtmlBuilder();
 
             hb.Append(await HtmlHelper.ForDisplayContainerAsync(model, "GridPartialData"));
 
             return hb.ToString();
+        }
+        internal static async Task HandlePropertiesAsync(List<object> data) {
+            foreach (object item in data)
+                await HandlePropertiesAsync(item);
+        }
+        internal static Task HandlePropertiesAsync(object data) {
+            return ObjectSupport.HandlePropertyAsync<MenuList>("Commands", "__GetCommandsAsync", data);
         }
     }
 }

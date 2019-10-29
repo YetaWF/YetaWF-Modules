@@ -3,8 +3,8 @@
 using System;
 using System.Collections.Generic;
 using YetaWF.Core.Models;
-using YetaWF.Core.Components;
 using YetaWF.Core.Controllers;
+using YetaWF.Modules.ComponentsHTML.Components;
 #if MVC6
 using Microsoft.AspNetCore.Mvc;
 #else
@@ -26,14 +26,14 @@ namespace YetaWF.Modules.ComponentsHTML.Controllers {
         /// Used in conjunction with client-side code.</remarks>
         [AllowPost]
         public ActionResult GridSaveColumnWidths(Guid settingsModuleGuid, Dictionary<string, int> columns) {
-            Grid.GridSavedSettings gridSavedSettings = Grid.LoadModuleSettings(settingsModuleGuid);
+            GridLoadSave.GridSavedSettings gridSavedSettings = GridLoadSave.LoadModuleSettings(settingsModuleGuid);
             foreach (var col in columns) {
                 if (gridSavedSettings.Columns.ContainsKey(col.Key))
                     gridSavedSettings.Columns[col.Key].Width = col.Value;
                 else
                     gridSavedSettings.Columns.Add(col.Key, new GridDefinition.ColumnInfo() { Width = col.Value });
             }
-            Grid.SaveModuleSettings(settingsModuleGuid, gridSavedSettings);
+            GridLoadSave.SaveModuleSettings(settingsModuleGuid, gridSavedSettings);
             return new EmptyResult();
         }
     }

@@ -99,8 +99,8 @@ namespace YetaWF.Modules.Backups.Controllers {
         }
 
         [AllowPost]
-        public async Task<ActionResult> Backups_GridData(string fieldPrefix, int skip, int take, List<DataProviderSortInfo> sorts, List<DataProviderFilterInfo> filters) {
-            return await GridPartialViewAsync(GetGridModel(), fieldPrefix, skip, take, sorts, filters);
+        public async Task<ActionResult> Backups_GridData(GridPartialViewData gridPVData) {
+            return await GridPartialViewAsync(GetGridModel(), gridPVData);
         }
 
         [AllowPost]

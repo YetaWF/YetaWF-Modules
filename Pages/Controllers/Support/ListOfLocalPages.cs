@@ -21,18 +21,18 @@ namespace YetaWF.Modules.Pages.Controllers {
         [AllowPost]
         [ConditionalAntiForgeryToken]
         [ResourceAuthorize(Info.Resource_AllowListOfLocalPagesAjax)]
-        public async Task<ActionResult> ListOfLocalPagesBrowse_GridData(string fieldPrefix, int skip, int take, List<DataProviderSortInfo> sorts, List<DataProviderFilterInfo> filters /*, Guid settingsModuleGuid - not available in templates */) {
-            return await GridPartialViewAsync(ListOfLocalPagesEditComponent.GetGridAllUsersModel(), fieldPrefix, skip, take, sorts, filters);
+        public async Task<ActionResult> ListOfLocalPagesBrowse_GridData(GridPartialViewData gridPVData /* settingsModuleGuid - not available in templates */) {
+            return await GridPartialViewAsync(ListOfLocalPagesEditComponent.GetGridAllUsersModel(), gridPVData);
         }
         [AllowPost]
         [ConditionalAntiForgeryToken]
-        public async Task<ActionResult> ListOfLocalPagesDisplay_SortFilter(string data, string fieldPrefix, int skip, int take, List<DataProviderSortInfo> sorts, List<DataProviderFilterInfo> filters) {
-            return await GridPartialViewAsync<ListOfLocalPagesDisplayComponent.Entry>(ListOfLocalPagesDisplayComponent.GetGridModel(false), data, fieldPrefix, skip, take, sorts, filters);
+        public async Task<ActionResult> ListOfLocalPagesDisplay_SortFilter(GridPartialViewData gridPVData) {
+            return await GridPartialViewAsync<ListOfLocalPagesDisplayComponent.Entry>(ListOfLocalPagesDisplayComponent.GetGridModel(false), gridPVData);
         }
         [AllowPost]
         [ConditionalAntiForgeryToken]
-        public async Task<ActionResult> ListOfLocalPagesEdit_SortFilter(string data, string fieldPrefix, int skip, int take, List<DataProviderSortInfo> sorts, List<DataProviderFilterInfo> filters) {
-            return await GridPartialViewAsync<ListOfLocalPagesEditComponent.Entry>(ListOfLocalPagesEditComponent.GetGridModel(false), data, fieldPrefix, skip, take, sorts, filters);
+        public async Task<ActionResult> ListOfLocalPagesEdit_SortFilter(GridPartialViewData gridPVData) {
+            return await GridPartialViewAsync<ListOfLocalPagesEditComponent.Entry>(ListOfLocalPagesEditComponent.GetGridModel(false), gridPVData);
         }
     }
 }

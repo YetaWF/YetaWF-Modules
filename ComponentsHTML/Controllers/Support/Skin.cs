@@ -2,7 +2,6 @@
 
 using YetaWF.Core.Addons;
 using YetaWF.Core.Identity;
-using YetaWF.Core.Skins;
 using YetaWF.Core.Support;
 using YetaWF.Core.Controllers;
 using YetaWF.Modules.ComponentsHTML.Components;

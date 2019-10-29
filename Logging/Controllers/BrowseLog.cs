@@ -122,7 +122,7 @@ namespace YetaWF.Modules.Logging.Controllers {
                 AjaxUrl = GetActionUrl(nameof(BrowseLog_GridData)),
                 DirectDataAsync = async (int skip, int take, List<DataProviderSortInfo> sort, List<DataProviderFilterInfo> filters) => {
                     FlushLog();
-                    Grid.UpdateAlternateSortColumn(sort, filters, "UserId", "UserName");
+                    DataProviderSortInfo.UpdateAlternateSortColumn(sort, filters, "UserId", "UserName");
                     using (LogRecordDataProvider dataProvider = LogRecordDataProvider.GetLogRecordDataProvider()) {
                         DataProviderGetRecords<LogRecord> browseItems = await dataProvider.GetItemsAsync(skip, take, sort, filters);
                         return new DataSourceResult {
@@ -156,8 +156,8 @@ namespace YetaWF.Modules.Logging.Controllers {
 
         [AllowPost]
         [ConditionalAntiForgeryToken]
-        public async Task<ActionResult> BrowseLog_GridData(string fieldPrefix, int skip, int take, List<DataProviderSortInfo> sorts, List<DataProviderFilterInfo> filters) {
-            return await GridPartialViewAsync(GetGridModel(), fieldPrefix, skip, take, sorts, filters);
+        public async Task<ActionResult> BrowseLog_GridData(GridPartialViewData gridPVData) {
+            return await GridPartialViewAsync(GetGridModel(), gridPVData);
         }
 
         [AllowPost]

@@ -1,6 +1,5 @@
 ﻿/* Copyright © 2019 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/ComponentsHTML#License */
 
-using System;
 using System.Threading.Tasks;
 using YetaWF.Core.Components;
 using YetaWF.Core.Models;
@@ -9,23 +8,6 @@ using YetaWF.Core.Support;
 using YetaWF.Modules.ComponentsHTML.Controllers;
 
 namespace YetaWF.Modules.ComponentsHTML.Components {
-
-
-    /// <summary>
-    /// Describes the records to be rendered for a tree control.
-    ///
-    /// This class is not used by applications. It is reserved for component implementation.
-    /// </summary>
-    public class TreePartialData {
-        /// <summary>
-        /// The GridDefinition object describing the current grid.
-        /// </summary>
-        public TreeDefinition TreeDef { get; set; }
-        /// <summary>
-        /// The collection of data to be rendered.
-        /// </summary>
-        public DataSourceResult Data { get; set; }
-    }
 
     /// <summary>
     /// Implementation of the TreeData display component.

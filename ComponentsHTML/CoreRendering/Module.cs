@@ -10,7 +10,6 @@ using YetaWF.Core.Packages;
 using YetaWF.Core.Support;
 using YetaWF.Modules.ComponentsHTML.Addons;
 using YetaWF.Modules.ComponentsHTML.Components;
-using static YetaWF.Core.Modules.ModuleAction;
 
 namespace YetaWF.Modules.ComponentsHTML {
 
@@ -104,35 +103,35 @@ namespace YetaWF.Modules.ComponentsHTML {
         /// <param name="mode">The module action's rendering mode.</param>
         /// <param name="id">The ID to generate.</param>
         /// <returns>Returns the module action as HTML.</returns>
-        public async Task<string> RenderModuleActionAsync(ModuleAction action, RenderModeEnum mode, string id) {
+        public async Task<string> RenderModuleActionAsync(ModuleAction action, ModuleAction.RenderModeEnum mode, string id) {
             return await RenderActionAsync(action, mode, id);
         }
 
-        internal static async Task<string> RenderActionAsync(ModuleAction action, RenderModeEnum mode, string id,
-                RenderEngineEnum RenderEngine = RenderEngineEnum.KendoMenu, int BootstrapSmartMenuLevel = 0, bool HasSubmenu = false) {
+        internal static async Task<string> RenderActionAsync(ModuleAction action, ModuleAction.RenderModeEnum mode, string id,
+                ModuleAction.RenderEngineEnum RenderEngine = ModuleAction.RenderEngineEnum.KendoMenu, int BootstrapSmartMenuLevel = 0, bool HasSubmenu = false) {
 
             // check if we're in the right mode
             if (!await action.RendersSomethingAsync()) return null;
 
             await Manager.AddOnManager.AddTemplateFromUIHintAsync("ActionIcons");// this is needed because we're not used by templates
 
-            if (!string.IsNullOrWhiteSpace(action.ConfirmationText) && (action.Style != ActionStyleEnum.Post && action.Style != ActionStyleEnum.Nothing))
+            if (!string.IsNullOrWhiteSpace(action.ConfirmationText) && (action.Style != ModuleAction.ActionStyleEnum.Post && action.Style != ModuleAction.ActionStyleEnum.Nothing))
                 throw new InternalError("When using ConfirmationText, the Style property must be set to Post");
-            if (!string.IsNullOrWhiteSpace(action.PleaseWaitText) && (action.Style != ActionStyleEnum.Normal && action.Style != ActionStyleEnum.Post))
+            if (!string.IsNullOrWhiteSpace(action.PleaseWaitText) && (action.Style != ModuleAction.ActionStyleEnum.Normal && action.Style != ModuleAction.ActionStyleEnum.Post))
                 throw new InternalError("When using PleaseWaitText, the Style property must be set to Normal or Post");
-            if (action.CookieAsDoneSignal && action.Style != ActionStyleEnum.Normal)
+            if (action.CookieAsDoneSignal && action.Style != ModuleAction.ActionStyleEnum.Normal)
                 throw new InternalError("When using CookieAsDoneSignal, the Style property must be set to Normal");
 
-            ActionStyleEnum style = action.Style;
-            if (style == ActionStyleEnum.OuterWindow)
+            ModuleAction.ActionStyleEnum style = action.Style;
+            if (style == ModuleAction.ActionStyleEnum.OuterWindow)
                 if (!Manager.IsInPopup)
-                    style = ActionStyleEnum.Normal;
+                    style = ModuleAction.ActionStyleEnum.Normal;
 
-            if (style == ActionStyleEnum.Popup || style == ActionStyleEnum.PopupEdit)
+            if (style == ModuleAction.ActionStyleEnum.Popup || style == ModuleAction.ActionStyleEnum.PopupEdit)
                 if (Manager.IsInPopup)
-                    style = ActionStyleEnum.NewWindow;
+                    style = ModuleAction.ActionStyleEnum.NewWindow;
 
-            if (style == ActionStyleEnum.Popup || style == ActionStyleEnum.PopupEdit || style == ActionStyleEnum.ForcePopup)
+            if (style == ModuleAction.ActionStyleEnum.Popup || style == ModuleAction.ActionStyleEnum.PopupEdit || style == ModuleAction.ActionStyleEnum.ForcePopup)
                 await YetaWFCoreRendering.Render.AddPopupsAddOnsAsync();
 
             bool newWindow = false, outerWindow = false;
@@ -141,26 +140,26 @@ namespace YetaWF.Modules.ComponentsHTML {
 
             switch (style) {
                 default:
-                case ActionStyleEnum.Normal:
+                case ModuleAction.ActionStyleEnum.Normal:
                     break;
-                case ActionStyleEnum.NewWindow:
+                case ModuleAction.ActionStyleEnum.NewWindow:
                     newWindow = true;
                     break;
-                case ActionStyleEnum.Popup:
-                case ActionStyleEnum.ForcePopup:
+                case ModuleAction.ActionStyleEnum.Popup:
+                case ModuleAction.ActionStyleEnum.ForcePopup:
                     popup = Manager.CurrentSite.AllowPopups;
                     break;
-                case ActionStyleEnum.PopupEdit:
+                case ModuleAction.ActionStyleEnum.PopupEdit:
                     popup = Manager.CurrentSite.AllowPopups;
                     popupEdit = Manager.CurrentSite.AllowPopups;
                     break;
-                case ActionStyleEnum.OuterWindow:
+                case ModuleAction.ActionStyleEnum.OuterWindow:
                     outerWindow = true;
                     break;
-                case ActionStyleEnum.Nothing:
+                case ModuleAction.ActionStyleEnum.Nothing:
                     nothing = true;
                     break;
-                case ActionStyleEnum.Post:
+                case ModuleAction.ActionStyleEnum.Post:
                     post = true;
                     break;
             }
@@ -173,7 +172,7 @@ namespace YetaWF.Modules.ComponentsHTML {
             if (!action.Displayed)
                 tag.MergeAttribute("style", "display:none");
             if (HasSubmenu) {
-                if (RenderEngine == RenderEngineEnum.BootstrapSmartMenu) {
+                if (RenderEngine == ModuleAction.RenderEngineEnum.BootstrapSmartMenu) {
                     tag.AddCssClass("dropdown-toggle");
                     tag.Attributes.Add("data-toggle", "dropdown-toggle");
                 }
@@ -191,13 +190,13 @@ namespace YetaWF.Modules.ComponentsHTML {
             string extraClass;
             switch (mode) {
                 default:
-                case RenderModeEnum.Button: extraClass = "y_act_button"; break;
-                case RenderModeEnum.ButtonIcon: extraClass = "y_act_buttonicon"; break;
-                case RenderModeEnum.ButtonOnly: extraClass = "y_act_buttononly"; break;
-                case RenderModeEnum.IconsOnly: extraClass = "y_act_icon"; break;
-                case RenderModeEnum.LinksOnly: extraClass = "y_act_link"; break;
-                case RenderModeEnum.NormalLinks: extraClass = "y_act_normlink"; break;
-                case RenderModeEnum.NormalMenu: extraClass = "y_act_normmenu"; break;
+                case ModuleAction.RenderModeEnum.Button: extraClass = "y_act_button"; break;
+                case ModuleAction.RenderModeEnum.ButtonIcon: extraClass = "y_act_buttonicon"; break;
+                case ModuleAction.RenderModeEnum.ButtonOnly: extraClass = "y_act_buttononly"; break;
+                case ModuleAction.RenderModeEnum.IconsOnly: extraClass = "y_act_icon"; break;
+                case ModuleAction.RenderModeEnum.LinksOnly: extraClass = "y_act_link"; break;
+                case ModuleAction.RenderModeEnum.NormalLinks: extraClass = "y_act_normlink"; break;
+                case ModuleAction.RenderModeEnum.NormalMenu: extraClass = "y_act_normmenu"; break;
             }
             tag.AddCssClass(Manager.AddOnManager.CheckInvokedCssModule(extraClass));
 
@@ -217,7 +216,7 @@ namespace YetaWF.Modules.ComponentsHTML {
                 tag.MergeAttribute("href", "javascript:void(0);");
 
             if (!string.IsNullOrWhiteSpace(action.ConfirmationText)) {
-                if (action.Category == ActionCategoryEnum.Delete) {
+                if (action.Category == ModuleAction.ActionCategoryEnum.Delete) {
                     // confirm deletions?
                     if (UserSettings.GetProperty<bool>("ConfirmDelete"))
                         tag.MergeAttribute(Basics.CssConfirm, action.ConfirmationText);
@@ -259,22 +258,22 @@ namespace YetaWF.Modules.ComponentsHTML {
                 if (popupEdit)
                     tag.Attributes.Add(Basics.CssAttrDataSpecialEdit, "");
             }
-            if (mode == RenderModeEnum.Button || mode == RenderModeEnum.ButtonIcon || mode == RenderModeEnum.ButtonOnly)
+            if (mode == ModuleAction.RenderModeEnum.Button || mode == ModuleAction.RenderModeEnum.ButtonIcon || mode == ModuleAction.RenderModeEnum.ButtonOnly)
                 tag.Attributes.Add(Basics.CssAttrActionButton, "");
 
             bool hasText = false, hasImg = false;
             string innerHtml = "";
-            if (mode != RenderModeEnum.LinksOnly && mode != RenderModeEnum.ButtonOnly && !string.IsNullOrWhiteSpace(action.ImageUrlFinal)) {
-                string text = mode == RenderModeEnum.NormalMenu ? action.MenuText : action.LinkText;
-                if (RenderEngine == RenderEngineEnum.KendoMenu) {
+            if (mode != ModuleAction.RenderModeEnum.LinksOnly && mode != ModuleAction.RenderModeEnum.ButtonOnly && !string.IsNullOrWhiteSpace(action.ImageUrlFinal)) {
+                string text = mode == ModuleAction.RenderModeEnum.NormalMenu ? action.MenuText : action.LinkText;
+                if (RenderEngine == ModuleAction.RenderEngineEnum.KendoMenu) {
                     innerHtml += ImageHTML.BuildKnownIcon(action.ImageUrlFinal, alt: text, cssClass: Basics.CssNoTooltip + " k-image"); // k-image is needed to align <i> and <img> correctly
                 } else {
                     innerHtml += ImageHTML.BuildKnownIcon(action.ImageUrlFinal, alt: text, cssClass: Basics.CssNoTooltip);
                 }
                 hasImg = true;
             }
-            if (mode != RenderModeEnum.IconsOnly && mode != RenderModeEnum.ButtonIcon) {
-                string text = mode == RenderModeEnum.NormalMenu ? action.MenuText : action.LinkText;
+            if (mode != ModuleAction.RenderModeEnum.IconsOnly && mode != ModuleAction.RenderModeEnum.ButtonIcon) {
+                string text = mode == ModuleAction.RenderModeEnum.NormalMenu ? action.MenuText : action.LinkText;
                 if (!string.IsNullOrWhiteSpace(text)) {
                     innerHtml += Utility.HtmlEncode(text);
                     hasText = true;
@@ -291,7 +290,7 @@ namespace YetaWF.Modules.ComponentsHTML {
                     tag.AddCssClass("y_act_img");
                 }
             }
-            if (HasSubmenu && RenderEngine == RenderEngineEnum.BootstrapSmartMenu)
+            if (HasSubmenu && RenderEngine == ModuleAction.RenderEngineEnum.BootstrapSmartMenu)
                 innerHtml += " <span class='caret'></span>";
 
             tag.AddCssClass(Globals.CssModuleNoPrint);

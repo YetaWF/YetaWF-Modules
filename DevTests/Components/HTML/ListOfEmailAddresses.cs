@@ -182,15 +182,13 @@ namespace YetaWF.Modules.DevTests.Components {
 
             return hb.ToString();
         }
-        public static async Task<GridRecordData> GridRecordAsync(string fieldPrefix, object model) {
-            // handle async properties
-            await YetaWFController.HandlePropertiesAsync(model);
+        public static Task<GridRecordData> GridRecordAsync(string fieldPrefix, object model) {
             GridRecordData record = new GridRecordData() {
                 GridDef = GetGridModel(false),
                 Data = model,
                 FieldPrefix = fieldPrefix,
             };
-            return record;
+            return Task.FromResult(record);
         }
     }
 }

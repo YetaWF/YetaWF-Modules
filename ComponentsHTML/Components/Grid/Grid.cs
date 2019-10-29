@@ -1,4 +1,4 @@
-﻿/* Copyright © 2019 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/ComponentsHTML#License */
+/* Copyright © 2019 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/ComponentsHTML#License */
 
 using System;
 using System.Collections.Generic;
@@ -16,6 +16,7 @@ using YetaWF.Core.Controllers;
 using YetaWF.Core.DataProvider;
 using Newtonsoft.Json.Serialization;
 using YetaWF.Modules.ComponentsHTML.Controllers;
+using YetaWF.Modules.ComponentsHTML.Views;
 #if MVC6
 using Microsoft.AspNetCore.Mvc.Rendering;
 #else
@@ -149,24 +150,24 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
             string idEmpty = UniqueId();
 
-            ObjectSupport.ReadGridDictionaryInfo dictInfo = await YetaWF.Core.Components.Grid.LoadGridColumnDefinitionsAsync(model);
+            GridDictionaryInfo.ReadGridDictionaryInfo dictInfo = await GridLoadSave.LoadGridColumnDefinitionsAsync(model);
 
             if (model.Reorderable) {
                 if (model.InitialPageSize != 0 || !model.IsStatic)
                     throw new InternalError("Unsupported options used for reorderable grid");
             }
 
-            YetaWF.Core.Components.Grid.GridSavedSettings gridSavedSettings;
+            GridLoadSave.GridSavedSettings gridSavedSettings;
             int pageSize = model.InitialPageSize;
             int initialPage = 0;
             int page = 0;
             if (model.SettingsModuleGuid != null && model.SettingsModuleGuid != Guid.Empty) {
-                gridSavedSettings = YetaWF.Core.Components.Grid.LoadModuleSettings((Guid)model.SettingsModuleGuid, initialPage + 1, pageSize);
+                gridSavedSettings = GridLoadSave.LoadModuleSettings((Guid)model.SettingsModuleGuid, initialPage + 1, pageSize);
                 pageSize = gridSavedSettings.PageSize;
                 initialPage = gridSavedSettings.CurrentPage - 1;
                 page = gridSavedSettings.CurrentPage - 1;
             } else {
-                gridSavedSettings = new YetaWF.Core.Components.Grid.GridSavedSettings {
+                gridSavedSettings = new GridLoadSave.GridSavedSettings {
                     CurrentPage = 1,
                     PageSize = pageSize,
                 };
@@ -189,7 +190,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                 RowDragDropHighlightCss = model.UseSkinFormatting ? "ui-state-active" : "tg_dragdrophighlight",
                 SortActiveCss = "tg_active",
                 SettingsModuleGuid = model.SettingsModuleGuid,
-                SaveSettingsColumnWidthsUrl = Utility.UrlFor(typeof(GridSaveSettingsController), nameof(GridSaveSettingsController.GridSaveColumnWidths)),
+                SaveSettingsColumnWidthsUrl = dictInfo.SaveColumnWidths != false ? Utility.UrlFor(typeof(GridSaveSettingsController), nameof(GridSaveSettingsController.GridSaveColumnWidths)) : null,
                 DeletedMessage = model.DeletedMessage,
                 DeleteConfirmationMessage = model.DeleteConfirmationMessage != null && UserSettings.GetProperty<bool>("ConfirmDelete") ? model.DeleteConfirmationMessage : null,
                 DeletedColumnDisplay = model.DeletedColumnDisplay,
@@ -235,7 +236,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                 data = await model.DirectDataAsync(page * pageSize, pageSize, sorts, filters);
             }
             // handle async properties
-            await YetaWFController.HandlePropertiesAsync(data.Data);
+            await GridPartialDataView.HandlePropertiesAsync(data.Data);
             setup.Records = data.Total;
 
             if (pageSize > 0)
@@ -348,7 +349,7 @@ new YetaWF_ComponentsHTML.Grid('{model.Id}', {JsonConvert.SerializeObject(setup,
             public string Value { get; set; }
         }
 
-        private async Task GetHeadersAsync(GridDefinition gridDef, ObjectSupport.ReadGridDictionaryInfo dictInfo, GridSetup setup, YetaWF.Core.Components.Grid.GridSavedSettings gridSavedSettings) {
+        private async Task GetHeadersAsync(GridDefinition gridDef, GridDictionaryInfo.ReadGridDictionaryInfo dictInfo, GridSetup setup, GridLoadSave.GridSavedSettings gridSavedSettings) {
 
             HtmlBuilder hb = new HtmlBuilder();
             HtmlBuilder filterhb = new HtmlBuilder();
@@ -388,12 +389,12 @@ new YetaWF_ComponentsHTML.Grid('{model.Id}', {JsonConvert.SerializeObject(setup,
                 int width = 0;
                 if (gridCol.Icons != 0) {
                     gridCol.Sortable = false;
-                    YetaWF.Core.Components.Grid.GridActionsEnum actionStyle = YetaWF.Core.Components.Grid.GridActionsEnum.Icons;
+                    Grid.GridActionsEnum actionStyle = Grid.GridActionsEnum.Icons;
                     if (gridCol.Icons > 1)
-                        actionStyle = UserSettings.GetProperty<YetaWF.Core.Components.Grid.GridActionsEnum>("GridActions");
+                        actionStyle = UserSettings.GetProperty<Grid.GridActionsEnum>("GridActions");
                     gridCol.ChWidth = gridCol.PixWidth = 0;
                     gridCol.Alignment = GridHAlignmentEnum.Center;
-                    if (actionStyle == YetaWF.Core.Components.Grid.GridActionsEnum.DropdownMenu) {
+                    if (actionStyle == Grid.GridActionsEnum.DropdownMenu) {
                         width = (gridDef.DropdownActionWidth ?? 12) * Manager.CharWidthAvg;
                     } else {
                         width = 10 + (Math.Abs(gridCol.Icons) * (16 + 4) + 10);
@@ -834,7 +835,7 @@ new YetaWF_ComponentsHTML.Grid('{model.Id}', {JsonConvert.SerializeObject(setup,
         }
 
         internal static async Task<string> RenderTableHTML(YHtmlHelper htmlHelper,
-                GridDefinition model, DataSourceResult data, List<object> staticData, ObjectSupport.ReadGridDictionaryInfo dictInfo, string fieldPrefix, bool readOnly, int skip, int take) {
+                GridDefinition model, DataSourceResult data, List<object> staticData, GridDictionaryInfo.ReadGridDictionaryInfo dictInfo, string fieldPrefix, bool readOnly, int skip, int take) {
 
             HtmlBuilder hb = new HtmlBuilder();
 
@@ -885,7 +886,7 @@ new YetaWF_ComponentsHTML.Grid('{model.Id}', {JsonConvert.SerializeObject(setup,
         }
 
         internal static async Task<string> RenderRecordHTMLAsync(YHtmlHelper htmlHelper,
-                GridDefinition gridModel, ObjectSupport.ReadGridDictionaryInfo dictInfo, string fieldPrefix, object record, int recordCount, int origin, bool hide) {
+                GridDefinition gridModel, GridDictionaryInfo.ReadGridDictionaryInfo dictInfo, string fieldPrefix, object record, int recordCount, int origin, bool hide) {
 
             HtmlBuilder hbHidden = new HtmlBuilder();
 
@@ -1012,7 +1013,7 @@ new YetaWF_ComponentsHTML.Grid('{model.Id}', {JsonConvert.SerializeObject(setup,
             public List<SelectionItem<int>> __PageSelection_List { get; set; }
         }
 
-        private async Task<string> RenderPagerAsync(GridDefinition gridModel, DataSourceResult data, YetaWF.Core.Components.Grid.GridSavedSettings gridSavedSettings, ObjectSupport.ReadGridDictionaryInfo dictInfo, GridSetup setup) {
+        private async Task<string> RenderPagerAsync(GridDefinition gridModel, DataSourceResult data, GridLoadSave.GridSavedSettings gridSavedSettings, GridDictionaryInfo.ReadGridDictionaryInfo dictInfo, GridSetup setup) {
 
             HtmlBuilder hb = new HtmlBuilder();
 
