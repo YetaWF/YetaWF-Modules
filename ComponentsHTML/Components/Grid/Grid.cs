@@ -151,6 +151,20 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
             GridDictionaryInfo.ReadGridDictionaryInfo dictInfo = await GridDictionaryInfo.LoadGridColumnDefinitionsAsync(model);
 
+            // set dictionary overrides
+            if (dictInfo.InitialPageSize != null && dictInfo.PageSizes != null) {
+                model.InitialPageSize = (int)dictInfo.InitialPageSize;
+                model.PageSizes = dictInfo.PageSizes;
+            }
+            if (dictInfo.ShowHeader != null && model.ShowHeader)
+                model.ShowHeader = (bool)dictInfo.ShowHeader;
+            if (dictInfo.ShowFilter != null)
+                model.ShowFilter = (bool)dictInfo.ShowFilter;
+            if (dictInfo.ShowPager != null && model.ShowPager)
+                model.ShowPager = (bool)dictInfo.ShowPager;
+            if (dictInfo.SizeStyle != null)
+                model.SizeStyle = (GridDefinition.SizeStyleEnum)dictInfo.SizeStyle;
+
             if (model.Reorderable) {
                 if (model.InitialPageSize != 0 || !model.IsStatic)
                     throw new InternalError("Unsupported options used for reorderable grid");

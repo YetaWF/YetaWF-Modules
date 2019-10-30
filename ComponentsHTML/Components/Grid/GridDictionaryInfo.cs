@@ -21,14 +21,25 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             public Dictionary<string, GridColumnInfo> ColumnInfo { get; set; }
             public string SortColumn { get; set; }
             public GridDefinition.SortBy SortBy { get; set; }
+
             public bool? SaveColumnWidths { get; internal set; }
             public bool? SaveColumnFilters { get; internal set; }
+            public int? InitialPageSize { get; internal set; }
+            public List<int> PageSizes { get; set; }
+            public bool? ShowHeader { get; set; }
+            public bool? ShowFilter { get; set; }
+            public bool? ShowPager { get; set; }
+            public GridDefinition.SizeStyleEnum? SizeStyle { get; set; }
+
             public bool Success { get; set; }
 
             public int VisibleColumns {
                 get {
                     return (from c in ColumnInfo.Values where !c.Hidden select c).Count();
                 }
+            }
+            public ReadGridDictionaryInfo() {
+                PageSizes = new List<int>();
             }
         }
 
@@ -75,6 +86,17 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             return info;
         }
 
+        public class Config {
+            public bool? SaveFilters { get; set; }
+            public bool? SaveWidths { get; set; }
+            public int? InitialPageSize { get; set; }
+            public List<int> PageSizes { get; set; }
+            public bool? ShowHeader { get; set; }
+            public bool? ShowFilter { get; set; }
+            public bool? ShowPager { get; set; }
+            public GridDefinition.SizeStyleEnum? SizeStyle { get; set; }
+        }
+
         private static async Task<ReadGridDictionaryInfo> ReadGridDictionaryAsync(Package package, Type recordType, string file) {
 
             using (ICacheDataProvider cacheDP = YetaWF.Core.IO.Caching.GetStaticSmallObjectCacheProvider()) {
@@ -117,7 +139,8 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                 // Parse the file
                 string sortCol = null;
                 GridDefinition.SortBy sortDir = GridDefinition.SortBy.NotSpecified;
-                bool? saveColumnFilters = null, saveColumnWidths = null;
+
+                Config config = null;
 
                 foreach (string line in lines) {
                     string[] parts = line.Split(new char[] { ' ', '\t' }, StringSplitOptions.RemoveEmptyEntries);
@@ -126,20 +149,12 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                     if (len > 0) {
                         bool add = true;
                         string name = parts[0];
-                        if (len == 1) {
-                            if (name == "SaveColumnFilters") {
-                                saveColumnFilters = true;
-                                continue;
-                            } else if (name == "SaveColumnWidths") {
-                                saveColumnWidths = true;
-                                continue;
-                            } else if (name == "DontSaveColumnFilters") {
-                                saveColumnFilters = false;
-                                continue;
-                            } else if (name == "DontSaveColumnWidths") {
-                                saveColumnWidths = false;
-                                continue;
-                            }
+                        if (name == "Config") {
+                            if (config != null)
+                                throw new InternalError($"Only one Config statement can be used in {file}");
+                            string rest = string.Join(" ", parts.Skip(1));
+                            config = Utility.JsonDeserialize<Config>(rest);
+                            continue;
                         }
                         for (int i = 1; i < len; ++i) {
                             string part = GetPart(parts[i], package, recordType, file, name);
@@ -200,8 +215,14 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                         SortBy = sortDir,
                         SortColumn = sortCol,
                         Success = true,
-                        SaveColumnWidths = saveColumnWidths,
-                        SaveColumnFilters = saveColumnFilters,
+                        SaveColumnWidths = config != null ? config.SaveWidths : null,
+                        SaveColumnFilters = config != null ? config.SaveFilters : null,
+                        InitialPageSize = config != null ? config?.InitialPageSize : null,
+                        PageSizes = config?.PageSizes,
+                        ShowHeader = config?.ShowHeader,
+                        ShowFilter = config?.ShowFilter,
+                        ShowPager = config?.ShowPager,
+                        SizeStyle = config?.SizeStyle,
                     };
 
                     // save in cache
