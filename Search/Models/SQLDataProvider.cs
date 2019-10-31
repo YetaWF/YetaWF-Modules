@@ -28,7 +28,7 @@ DELETE {UrlTableName}
 FROM {UrlTableName}
 LEFT JOIN {TableName} ON {UrlTableName}.[SearchDataUrlId] = {TableName}.[SearchDataUrlId]
 WHERE {TableName}.[SearchDataUrlId] IS NULL";
-                    ISQLTableInfo info = (ISQLTableInfo)searchUrlDP.GetDataProvider();
+                    ISQLTableInfo info = await searchUrlDP.GetDataProvider().GetISQLTableInfoAsync();
                     sql = sql.Replace("{UrlTableName}", SQLBuilder.WrapBrackets(info.GetTableName()));
                     await Direct_QueryAsync(sql);
                 }
