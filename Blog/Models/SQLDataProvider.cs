@@ -22,25 +22,25 @@ namespace YetaWF.Modules.Blog.DataProvider.SQL {
         }
         class BlogEntryDataProvider : SQLSimpleObject<int, BlogEntry> {
             public BlogEntryDataProvider(Dictionary<string, object> options) : base(options) { CalculatedPropertyCallbackAsync = GetCalculatedPropertyAsync; }
-            private Task<string> GetCalculatedPropertyAsync(string name) {
+            private async Task<string> GetCalculatedPropertyAsync(string name) {
                 string sql = null;
                 if (name == "CommentsUnapproved") {
                     using (DataProvider.BlogCommentDataProvider commentDP = new DataProvider.BlogCommentDataProvider(-1)) {// we don't know the entry, but it's not needed
                         sql = "SELECT COUNT(*) FROM $BlogComments$ WHERE ($BlogComments$.EntryIdentity = $ThisTable$.[Identity]) AND ($ThisTable$.Published = 1) AND ($BlogComments$.Deleted = 0) AND ($BlogComments$.Approved = 0)";
-                        ISQLTableInfo info = (ISQLTableInfo)commentDP.GetDataProvider();
+                        ISQLTableInfo info = await commentDP.GetDataProvider().GetISQLTableInfoAsync();
                         sql = info.ReplaceWithTableName(sql, "$BlogComments$");
                         sql = ReplaceWithTableName(sql, "$ThisTable$");
                     }
                 } else if (name == "Comments") {
                     using (DataProvider.BlogCommentDataProvider commentDP = new DataProvider.BlogCommentDataProvider(-1)) {// we don't know the entry, but it's not needed
                         sql = "SELECT COUNT(*) FROM $BlogComments$ WHERE ($BlogComments$.EntryIdentity = $ThisTable$.[Identity]) AND ($ThisTable$.Published = 1)";
-                        ISQLTableInfo info = (ISQLTableInfo)commentDP.GetDataProvider();
+                        ISQLTableInfo info = await commentDP.GetDataProvider().GetISQLTableInfoAsync();
                         sql = info.ReplaceWithTableName(sql, "$BlogComments$");
                         sql = ReplaceWithTableName(sql, "$ThisTable$");
                     }
                 } else
                     throw new InternalError("Unexpected property {0}", name);
-                return Task.FromResult(sql);
+                return sql;
             }
         }
         class BlogCommentDataProvider : SQLSimpleObject<int, BlogComment> {
