@@ -10,7 +10,7 @@ namespace YetaWF.Modules.Dashboard.DataProvider.PostgreSQL {
 
         public void Register() {
             DataProviderImpl.RegisterExternalDataProvider(PostgreSQLBase.ExternalName, typeof(DataProvider.AuditInfoDataProvider), typeof(AuditInfoDataProvider));
-            //$$$ DataProviderImpl.RegisterExternalDataProvider(PostgreSQLBase.ExternalName, typeof(DataProvider.AuditConfigDataProvider), typeof(AuditConfigDataProvider));
+            DataProviderImpl.RegisterExternalDataProvider(PostgreSQLBase.ExternalName, typeof(DataProvider.AuditConfigDataProvider), typeof(AuditConfigDataProvider));
         }
         class AuditInfoDataProvider : PostgreSQLSimpleIdentityObject<int, AuditInfo> {
             public AuditInfoDataProvider(Dictionary<string, object> options) : base(options) { }
