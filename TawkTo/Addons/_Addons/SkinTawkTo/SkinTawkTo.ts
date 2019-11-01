@@ -12,18 +12,15 @@ namespace YetaWF_TawkTo {
         ExcludedPagesCss: string;
     }
 
-    class SkinTawkToModule {
+    export class SkinTawkToModule extends YetaWF.ModuleBaseNoDataImpl {
 
-        static readonly MODULEGUID: string = "c063e089-aff3-44e4-ac44-063911853579";
+        public static readonly SELECTOR: string = ".Softelvdm_Documentation_FileDocumentShow";
+        public static readonly MODULEGUID: string = "c063e089-aff3-44e4-ac44-063911853579";
 
-        static on: boolean = true;
+        private static on: boolean = true;
 
-        /**
-         * Initializes the module instance.
-         */
-        init(): void {
-
-            var tawkto: SkinTawkToModule = this;
+        constructor(id: string) {
+            super(id, SkinTawkToModule.SELECTOR, null);
 
             $YetaWF.registerContentChange((addonGuid: string, on: boolean): void => {
                 if (addonGuid === SkinTawkToModule.MODULEGUID) {
@@ -32,7 +29,7 @@ namespace YetaWF_TawkTo {
             });
 
             $YetaWF.registerNewPage(false, (url: string): void => {
-                tawkto.showInvite(SkinTawkToModule.on);
+                this.showInvite(SkinTawkToModule.on);
                 if (SkinTawkToModule.on) {
                     // Functionality not available in Tawk.to to record a new page
                     //if (typeof ActivEngage !== "undefined" && ActivEngage !== undefined) {
@@ -46,23 +43,23 @@ namespace YetaWF_TawkTo {
          * Show/hide chat invite
          * @param True to show, false to hide.
          */
-        showInvite(show: boolean): void {
+        private showInvite(show: boolean): void {
 
             if (!Tawk_API || !Tawk_API.showWidget) return; // not yet initialized
 
-            var body: HTMLElement = document.querySelector("body") as HTMLElement;
+            let body: HTMLElement = document.querySelector("body") as HTMLElement;
             if (!body) return;
 
-            var invite: boolean = show;
+            let invite: boolean = show;
             if (invite) {
-                var inclCss = YConfigs.YetaWF_TawkTo.IncludedPagesCss;
-                var exclCss = YConfigs.YetaWF_TawkTo.ExcludedPagesCss;
+                let inclCss = YConfigs.YetaWF_TawkTo.IncludedPagesCss;
+                let exclCss = YConfigs.YetaWF_TawkTo.ExcludedPagesCss;
                 if (inclCss && inclCss.length > 0) {
                     // only included css pages show the chat invite
                     invite = false;
                     if (inclCss) {
-                        var csses: string[] = inclCss.split(" ");
-                        for (var css of csses) {
+                        let csses: string[] = inclCss.split(" ");
+                        for (let css of csses) {
                             if ($YetaWF.elementHasClass(body, css)) {
                                 invite = true;
                                 break;
@@ -72,8 +69,8 @@ namespace YetaWF_TawkTo {
                 }
                 // now check if page is explicitly excluded
                 if (exclCss && invite) {
-                    csses = exclCss.split(" ");
-                    for (css of csses) {
+                    let csses = exclCss.split(" ");
+                    for (let css of csses) {
                         if ($YetaWF.elementHasClass(body, css)) {
                             invite = false;
                             break;
@@ -92,7 +89,16 @@ namespace YetaWF_TawkTo {
             }
         }
     }
-
-    var tawkto: SkinTawkToModule = new SkinTawkToModule();
-    tawkto.init();
+    $YetaWF.registerCustomEventHandlerDocument("print_before", null, (ev: Event): boolean => {
+        if (Tawk_API) {
+            Tawk_API.hideWidget();
+        }
+        return false;
+    });
+    $YetaWF.registerCustomEventHandlerDocument("print_after", null, (ev: Event): boolean => {
+        if (Tawk_API) {
+            Tawk_API.showWidget();
+        }
+        return false;
+    });
 }
