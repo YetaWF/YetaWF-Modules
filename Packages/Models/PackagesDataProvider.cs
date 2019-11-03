@@ -89,9 +89,9 @@ namespace YetaWF.Modules.Packages.DataProvider {
             Logging.AddLog("Site initialization starting");
 
             //ClearAll();
-            await InstallPackagesAsync(WantedPackages);
+            List<Package> installedPackages = await InstallPackagesAsync(WantedPackages);
             if (qs["From"] == "Data") {
-                await BuildSiteUsingDataAsync(false);
+                await BuildSiteUsingDataAsync(false, installedPackages);
                 await BuildSiteUsingTemplateAsync(Path.Combine(DataFolderName, "Add Site.txt"));
             } else { //if (qs["From"] == "Template") {
                 await BuildSiteUsingTemplateAsync("InitialSite.txt");
@@ -199,43 +199,47 @@ namespace YetaWF.Modules.Packages.DataProvider {
             // Cache is now invalid so we need to restart
         }
 
-        private async Task InstallPackagesAsync(List<string> wantedPackages) {
+        private async Task<List<Package>> InstallPackagesAsync(List<string> wantedPackages) {
 
             Logging.AddLog("Installing packages");
 
             // get all packages that are available
-            List<Package> neededPackages = Package.GetAvailablePackages();
+            List<Package> allPackages = Package.GetAvailablePackages();
+            // get packages to install, limit to wanted packages
+            List<Package> remPackages = allPackages.ToList();
+            if (wantedPackages != null)
+                remPackages = (from p in remPackages where wantedPackages.Contains(p.Name) select p).ToList();
+            // add all required dependencies from packages even if they were not initially wanted
+            foreach (Package remPackage in remPackages.ToList())
+                AddDependencies(remPackages, remPackage);
+
             // order all available packages by service level
-            neededPackages = (from p in neededPackages orderby (int)p.ServiceLevel select p).ToList();
+            remPackages = (from p in remPackages orderby (int)p.ServiceLevel select p).ToList();
 
             // keep track of installed packages
             List<Package> installedPackages = new List<Package>();
-            List<Package> remainingPackages = (from p in neededPackages select p).ToList();
+            List<Package> remainingPackages = (from p in remPackages select p).ToList();
 
             // check each package and install it if all dependencies are available
-            for (; neededPackages.Count() > installedPackages.Count();) {
+            for ( ; remPackages.Count() > installedPackages.Count();) {
 
                 int count = 0;
 
-                foreach (Package package in neededPackages) {
+                foreach (Package package in remPackages) {
                     List<string> errorList = new List<string>();
 
                     if (!installedPackages.Contains(package)) {
-                        if (wantedPackages == null || wantedPackages.Contains(package.Name)) {
-                            Logging.AddLog("Installing package {0}", package.Name);
-                            if (ArePackageDependenciesInstalled(package, installedPackages)) {
-                                if (!await package.InstallModelsAsync(errorList)) {
-                                    ScriptBuilder sb = new ScriptBuilder();
-                                    sb.Append(this.__ResStr("cantInstallPackage", "Can't install package {0}:(+nl)"), package.Name);
-                                    sb.Append(errorList, LeadingNL: true);
-                                    throw new Error(sb.ToString());
-                                }
-                                ++count;
-                                installedPackages.Add(package);
-                                remainingPackages.Remove(package);
+                        Logging.AddLog("Installing package {0}", package.Name);
+                        if (ArePackageDependenciesInstalled(package, installedPackages)) {
+                            if (!await package.InstallModelsAsync(errorList)) {
+                                ScriptBuilder sb = new ScriptBuilder();
+                                sb.Append(this.__ResStr("cantInstallPackage", "Can't install package {0}:(+nl)"), package.Name);
+                                sb.Append(errorList, LeadingNL: true);
+                                throw new Error(sb.ToString());
                             }
-                        } else {
-                            Logging.AddLog($"Package {package.Name} skipped");
+                            ++count;
+                            installedPackages.Add(package);
+                            remainingPackages.Remove(package);
                         }
                     }
                 }
@@ -250,6 +254,20 @@ namespace YetaWF.Modules.Packages.DataProvider {
                         }
                     }
                     throw new InternalError("Not all packages could be installed");
+                }
+            }
+            return installedPackages;
+        }
+
+        private void AddDependencies(List<Package> remPackages, Package remPackage) {
+            List<string> reqPackages = remPackage.GetRequiredPackages();
+            foreach (string reqPackage in reqPackages) {
+                Package depPackage = Package.GetPackageFromPackageName(reqPackage);
+                if (depPackage == null)
+                    throw new InternalError($"Package {remPackage.Name} lists a dependency package named {reqPackage} which doesn't exist");
+                if (!remPackages.Contains(depPackage)) {// add dependent package
+                    remPackages.Add(depPackage);
+                    AddDependencies(remPackages, depPackage);// add recursive dependencies
                 }
             }
         }
