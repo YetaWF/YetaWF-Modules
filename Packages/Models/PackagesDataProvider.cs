@@ -69,7 +69,17 @@ namespace YetaWF.Modules.Packages.DataProvider {
         /// <remarks>
         /// This removes all data for all sites
         /// </remarks>
-        public async Task InitAllAsync(QueryHelper qs) {
+        public Task InitAllAsync(QueryHelper qs) {
+            return InitAllAsync(qs);
+        }
+
+        /// <summary>
+        /// Installs all packages and builds the initial site from the import data (zip files) or from templates
+        /// </summary>
+        /// <remarks>
+        /// This removes all data for all sites
+        /// </remarks>
+        public async Task InitAllAsync(QueryHelper qs, List<string> WantedPackages) {
 
             if (YetaWF.Core.Support.Startup.MultiInstance) throw new InternalError("Installing packages is not possible when distributed caching is enabled");
 
@@ -79,7 +89,7 @@ namespace YetaWF.Modules.Packages.DataProvider {
             Logging.AddLog("Site initialization starting");
 
             //ClearAll();
-            await InstallPackagesAsync();
+            await InstallPackagesAsync(WantedPackages);
             if (qs["From"] == "Data") {
                 await BuildSiteUsingDataAsync(false);
                 await BuildSiteUsingTemplateAsync(Path.Combine(DataFolderName, "Add Site.txt"));
@@ -189,7 +199,7 @@ namespace YetaWF.Modules.Packages.DataProvider {
             // Cache is now invalid so we need to restart
         }
 
-        private async Task InstallPackagesAsync() {
+        private async Task InstallPackagesAsync(List<string> wantedPackages) {
 
             Logging.AddLog("Installing packages");
 
@@ -204,25 +214,43 @@ namespace YetaWF.Modules.Packages.DataProvider {
 
             // check each package and install it if all dependencies are available
             for (; neededPackages.Count() > installedPackages.Count();) {
+
                 int count = 0;
 
                 foreach (Package package in neededPackages) {
                     List<string> errorList = new List<string>();
-                    Logging.AddLog("Installing package {0}", package.Name);
-                    if (!installedPackages.Contains(package) && ArePackageDependenciesInstalled(package, installedPackages)) {
-                        if (!await package.InstallModelsAsync(errorList)) {
-                            ScriptBuilder sb = new ScriptBuilder();
-                            sb.Append(this.__ResStr("cantInstallPackage", "Can't install package {0}:(+nl)"), package.Name);
-                            sb.Append(errorList, LeadingNL: true);
-                            throw new Error(sb.ToString());
+
+                    if (!installedPackages.Contains(package)) {
+                        if (wantedPackages == null || wantedPackages.Contains(package.Name)) {
+                            Logging.AddLog("Installing package {0}", package.Name);
+                            if (ArePackageDependenciesInstalled(package, installedPackages)) {
+                                if (!await package.InstallModelsAsync(errorList)) {
+                                    ScriptBuilder sb = new ScriptBuilder();
+                                    sb.Append(this.__ResStr("cantInstallPackage", "Can't install package {0}:(+nl)"), package.Name);
+                                    sb.Append(errorList, LeadingNL: true);
+                                    throw new Error(sb.ToString());
+                                }
+                                ++count;
+                                installedPackages.Add(package);
+                                remainingPackages.Remove(package);
+                            }
+                        } else {
+                            Logging.AddLog($"Package {package.Name} skipped");
                         }
-                        ++count;
-                        installedPackages.Add(package);
-                        remainingPackages.Remove(package);
                     }
                 }
-                if (count == 0) // we didn't install any additional packages
+                if (count == 0) { // we didn't install any additional packages
+                    Logging.AddErrorLog("Not all packages could be installed");
+                    foreach (Package package in remainingPackages) {
+                        List<string> reqPackages = package.GetRequiredPackages();
+                        Logging.AddErrorLog($"Package {package.Name} not installed - Requires {string.Join(", ", reqPackages)}");
+                        foreach (string dep in reqPackages) {
+                            if (!(from p in installedPackages where p.Name == dep select p).Any())
+                                Logging.AddErrorLog($"  Package dependency {dep} not installed and is required by {package.Name}");
+                        }
+                    }
                     throw new InternalError("Not all packages could be installed");
+                }
             }
         }
 
