@@ -3,6 +3,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 using YetaWF.Core.Components;
 using YetaWF.Core.IO;
@@ -151,6 +152,7 @@ namespace YetaWF.Modules.ImageRepository.Components {
             string storagePath = ImageSelectionInfo.StoragePath(folderGuid, subFolder, fileType);
             if (await FileSystem.FileSystemProvider.DirectoryExistsAsync(storagePath))
                 files = await FileSystem.FileSystemProvider.GetFilesAsync(storagePath);
+            files = (from f in files where !f.EndsWith(".webp-gen") select f).ToList();
             return files;
         }
     }

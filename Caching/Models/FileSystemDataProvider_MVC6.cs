@@ -13,11 +13,12 @@ namespace YetaWF.Modules.Caching.DataProvider {
 
     internal class FileSystemDataProvider : FileSystemDataProviderBase, IFileSystem {
 
-        public FileSystemDataProvider(string rootFolder, bool Permanent) : base(rootFolder, Permanent) { }
+        public FileSystemDataProvider(string rootFolder) : base(rootFolder) { }
 
         // Files
 
         public override async Task<List<string>> ReadAllLinesAsync(string filePath) {
+            VerifyAccess(filePath);
             if (YetaWFManager.IsSync())
                 return File.ReadLines(filePath).ToList();
             else
@@ -25,6 +26,7 @@ namespace YetaWF.Modules.Caching.DataProvider {
         }
 
         public override Task WriteAllLinesAsync(string filePath, List<string> lines) {
+            VerifyAccess(filePath);
             if (YetaWFManager.IsSync()) {
                 File.WriteAllLines(filePath, lines);
                 return Task.CompletedTask;
@@ -33,6 +35,7 @@ namespace YetaWF.Modules.Caching.DataProvider {
         }
 
         public override Task<string> ReadAllTextAsync(string filePath) {
+            VerifyAccess(filePath);
             if (YetaWFManager.IsSync()) {
                 string text = File.ReadAllText(filePath);
                 return Task.FromResult(text);
@@ -41,6 +44,7 @@ namespace YetaWF.Modules.Caching.DataProvider {
         }
 
         public override Task WriteAllTextAsync(string filePath, string text) {
+            VerifyAccess(filePath);
             if (YetaWFManager.IsSync()) {
                 File.WriteAllText(filePath, text);
                 return Task.CompletedTask;
@@ -49,6 +53,7 @@ namespace YetaWF.Modules.Caching.DataProvider {
         }
 
         public override Task AppendAllTextAsync(string filePath, string text) {
+            VerifyAccess(filePath);
             if (YetaWFManager.IsSync()) {
                 File.AppendAllText(filePath, text);
                 return Task.CompletedTask;
@@ -57,6 +62,7 @@ namespace YetaWF.Modules.Caching.DataProvider {
         }
 
         public override Task AppendAllLinesAsync(string filePath, List<string> lines) {
+            VerifyAccess(filePath);
             if (YetaWFManager.IsSync()) {
                 File.AppendAllLines(filePath, lines);
                 return Task.CompletedTask;
@@ -65,6 +71,7 @@ namespace YetaWF.Modules.Caching.DataProvider {
         }
 
         public override Task<byte[]> ReadAllBytesAsync(string filePath) {
+            VerifyAccess(filePath);
             if (YetaWFManager.IsSync()) {
                 byte[] data = File.ReadAllBytes(filePath);
                 return Task.FromResult(data);
@@ -73,6 +80,7 @@ namespace YetaWF.Modules.Caching.DataProvider {
         }
 
         public override Task WriteAllBytesAsync(string filePath, byte[] data) {
+            VerifyAccess(filePath);
             if (YetaWFManager.IsSync()) {
                 File.WriteAllBytes(filePath, data);
                 return Task.CompletedTask;
