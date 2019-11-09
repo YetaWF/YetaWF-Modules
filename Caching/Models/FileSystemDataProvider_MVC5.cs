@@ -9,7 +9,7 @@ namespace YetaWF.Modules.Caching.DataProvider {
 
     internal class FileSystemDataProvider : FileSystemDataProviderBase, IFileSystem {
 
-        public FileSystemDataProvider(string rootFolder, bool Permanent) : base(rootFolder, Permanent) { }
+        public FileSystemDataProvider(string rootFolder) : base(rootFolder) { }
 
     }
 }
