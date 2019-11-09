@@ -13,7 +13,7 @@ namespace YetaWF.Modules.Caching.DataProvider {
     /// A local static cache implementation (in-memory ONLY) for a single instance (really not shared) for SMALL objects.
     /// This is typically used for small objects such as grid/propertylist definition files.
     ///
-    /// The cache can be cleared explicitly and there is a configurable cache expiration time after which the entry is removed
+    /// The cache can be cleared explicitly using the Control Panel and there is a configurable cache expiration time after which the entry is removed
     /// (see AppSettings.json YetaWF_Caching:SmallObjectCacheDuration defined in minutes. 0 no expiration, -1 don't cache, any
     /// other value is the cache duration in minutes.
     ///

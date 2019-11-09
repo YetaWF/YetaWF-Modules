@@ -24,8 +24,9 @@ namespace YetaWF.Modules.Caching.DataProvider {
     /// Files stored in the temporary file system are lost when the application restarts.
     /// The permanent file system preserves files when the application restarts.
     ///
-    /// The temporary and a permanent file systems support single- and multi-instance sites.
-    /// All nodes in a multi-instance site must use the same physical file system, shared between sites.
+    /// The temporary and permanent file systems support single- and multi-instance sites.
+    /// All nodes in a multi-instance site must use the same physical file system, shared between sites, for the permanent file system.
+    /// The temporary file system is unique to each node. It can be outside the YetaWF solution folder.
     ///
     /// Applications do not access these low-level data providers directly.
     /// File system services provided by YetaWF.Core.IO.FileSystem, YetaWF.Core.IO.DataFilesProvider and YetaWF.Core.IO.FileIO&lt;TObj&gt; should be used instead.
@@ -40,12 +41,13 @@ namespace YetaWF.Modules.Caching.DataProvider {
         internal static int TempFileCount = 0;
         internal static string TempFolder;
 
+        /// <summary>
+        /// Called when any node of a (single- or multi-instance) site is starting up.
+        /// </summary>
         public async Task InitializeApplicationStartupAsync() {
             await YetaWF.Core.IO.FileSystem.FileSystemProvider.DeleteDirectoryAsync(TempFolder);
             await YetaWF.Core.IO.FileSystem.FileSystemProvider.CreateDirectoryAsync(TempFolder);
         }
-
-        // Registration
 
         /// <summary>
         /// Called by the framework to register external data providers that expose the YetaWF.Core.DataProvider.IExternalDataProvider interface.
@@ -66,7 +68,11 @@ namespace YetaWF.Modules.Caching.DataProvider {
         public string RootFolder { get; private set; }
         public bool Permanent { get { return RootFolder == null; } }
 
-        private static object lockObject = new object();
+        private static readonly object lockObject = new object();
+
+        public FileSystemDataProviderBase(string rootFolder) {
+            RootFolder = rootFolder;
+        }
 
         protected void VerifyAccess(string path) {
 #if DEBUG
@@ -80,12 +86,6 @@ namespace YetaWF.Modules.Caching.DataProvider {
             if (!Permanent) return;
             throw new InternalError($"Requesting temp. file/folder with FileSystemProvider, should use TempFileSystemProvider");
 #endif
-        }
-
-        // Implementation
-
-        public FileSystemDataProviderBase(string rootFolder) {
-            RootFolder = rootFolder;
         }
 
         // API
