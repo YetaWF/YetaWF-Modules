@@ -46,6 +46,15 @@ var YetaWF_ComponentsHTML;
                 _this.sendClickEvent(liElem);
                 return true;
             });
+            $YetaWF.registerEventHandler(_this.Control, "dblclick", "a.t_entry", function (ev) {
+                var liElem = $YetaWF.elementClosest(ev.__YetaWFElem, "li"); // get row we're on
+                _this.setSelect(liElem);
+                if (_this.canExpand(liElem))
+                    _this.expand(liElem);
+                else if (_this.canCollapse(liElem))
+                    _this.collapse(liElem);
+                return true;
+            });
             $YetaWF.registerEventHandler(_this.Control, "click", "i.t_icdown", function (ev) {
                 var li = $YetaWF.elementClosest(ev.__YetaWFElem, "li"); // get row we're on
                 setTimeout(function () {

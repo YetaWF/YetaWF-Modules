@@ -68,6 +68,15 @@ namespace YetaWF_ComponentsHTML {
                 this.sendClickEvent(liElem);
                 return true;
             });
+            $YetaWF.registerEventHandler(this.Control, "dblclick", "a.t_entry", (ev: MouseEvent): boolean => {
+                var liElem = $YetaWF.elementClosest(ev.__YetaWFElem, "li") as HTMLLIElement; // get row we're on
+                this.setSelect(liElem);
+                if (this.canExpand(liElem))
+                    this.expand(liElem);
+                else if (this.canCollapse(liElem))
+                    this.collapse(liElem);
+                return true;
+            });
             $YetaWF.registerEventHandler(this.Control, "click", "i.t_icdown", (ev: MouseEvent): boolean => {
                 var li = $YetaWF.elementClosest(ev.__YetaWFElem, "li") as HTMLLIElement; // get row we're on
                 setTimeout((): void => {
