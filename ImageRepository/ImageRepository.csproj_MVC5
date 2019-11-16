@@ -75,7 +75,7 @@
     <Compile Include="Components\HTML\ImageSelection.cs" />
     <Compile Include="Components\HTML\ImageSelectionInfo.cs" />
     <Compile Include="Controllers\CKEBrowseFlash.cs" />
-    <Compile Include="Controllers\Support\FlashSelectionController.cs" />
+    <Compile Include="Controllers\Support\FlashSelection.cs" />
     <Compile Include="Startup\Info.cs" />
     <Compile Include="Startup\AreaRegistration.cs" />
     <Compile Include="Controllers\CKEBrowsePage.cs" />

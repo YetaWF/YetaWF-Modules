@@ -24,20 +24,30 @@ namespace YetaWF.Modules.Caching.DataProvider {
     /// Files stored in the temporary file system are lost when the application restarts.
     /// The permanent file system preserves files when the application restarts.
     ///
-    /// The temporary and a permanent file systems support single- and multi-instance sites.
-    /// All nodes in a multi-instance site must use the same physical file system, shared between sites.
+    /// The temporary and permanent file systems support single- and multi-instance sites.
+    /// All nodes in a multi-instance site must use the same physical file system, shared between sites, for the permanent file system.
+    /// The temporary file system is unique to each node. It can be outside the YetaWF solution folder.
     ///
     /// Applications do not access these low-level data providers directly.
     /// File system services provided by YetaWF.Core.IO.FileSystem, YetaWF.Core.IO.DataFilesProvider and YetaWF.Core.IO.FileIO&lt;TObj&gt; should be used instead.
     /// </remarks>
-    public class FileSystemDataProviderStartup : IExternalDataProvider {
+    public class FileSystemDataProviderStartup : IExternalDataProvider, IInitializeApplicationStartup {
 
         /// <summary>
         /// Constructor.
         /// </summary>
         public FileSystemDataProviderStartup() { }
 
-        // Registration
+        internal static int TempFileCount = 0;
+        internal static string TempFolder;
+
+        /// <summary>
+        /// Called when any node of a (single- or multi-instance) site is starting up.
+        /// </summary>
+        public async Task InitializeApplicationStartupAsync() {
+            await YetaWF.Core.IO.FileSystem.FileSystemProvider.DeleteDirectoryAsync(TempFolder);
+            await YetaWF.Core.IO.FileSystem.FileSystemProvider.CreateDirectoryAsync(TempFolder);
+        }
 
         /// <summary>
         /// Called by the framework to register external data providers that expose the YetaWF.Core.DataProvider.IExternalDataProvider interface.
@@ -47,24 +57,35 @@ namespace YetaWF.Modules.Caching.DataProvider {
             // used so this is installed immediately
             // permanently created data providers (never disposed)
             Package package = YetaWF.Modules.Caching.Controllers.AreaRegistration.CurrentPackage;
-            string permRootFolder = WebConfigHelper.GetValue(package.AreaName, "PermRootFolder", YetaWFManager.RootFolderWebProject);
-            string tempRootFolder = WebConfigHelper.GetValue(package.AreaName, "TempRootFolder", YetaWFManager.RootFolderWebProject);
-
-            YetaWF.Core.IO.FileSystem.FileSystemProvider = new FileSystemDataProvider(permRootFolder, Permanent: true);
-            YetaWF.Core.IO.FileSystem.TempFileSystemProvider = new FileSystemDataProvider(tempRootFolder, Permanent: false);
+            TempFolder = WebConfigHelper.GetValue(package.AreaName, "TempRootFolder", Path.Combine(YetaWFManager.DataFolder, package.AreaName, "TempFiles"));
+            YetaWF.Core.IO.FileSystem.FileSystemProvider = new FileSystemDataProvider(null);
+            YetaWF.Core.IO.FileSystem.TempFileSystemProvider = new FileSystemDataProvider(TempFolder);
         }
     }
 
-    internal class FileSystemDataProvider : IFileSystem {
+    internal class FileSystemDataProviderBase {
 
         public string RootFolder { get; private set; }
-        public bool Permanent { get; private set; }
+        public bool Permanent { get { return RootFolder == null; } }
 
-        // Implementation
+        private static readonly object lockObject = new object();
 
-        public FileSystemDataProvider(string rootFolder, bool Permanent) {
+        public FileSystemDataProviderBase(string rootFolder) {
             RootFolder = rootFolder;
-            this.Permanent = Permanent;
+        }
+
+        protected void VerifyAccess(string path) {
+#if DEBUG
+            if (Permanent) return;
+            if (!path.StartsWith(RootFolder))
+                throw new InternalError($"Accessing {path} with TempFileSystemProvider");
+#endif
+        }
+        protected void VerifyTemporary() {
+#if DEBUG
+            if (!Permanent) return;
+            throw new InternalError($"Requesting temp. file/folder with FileSystemProvider, should use TempFileSystemProvider");
+#endif
         }
 
         // API
@@ -72,13 +93,15 @@ namespace YetaWF.Modules.Caching.DataProvider {
         /// <summary>
         /// Lock a file/folder by name until disposed.
         /// </summary>
-        public async Task<ILockObject> LockResourceAsync(string fileOrFolder) {
+        public virtual async Task<ILockObject> LockResourceAsync(string fileOrFolder) {
+            VerifyAccess(fileOrFolder);
             return await YetaWF.Core.IO.Caching.LockProvider.LockResourceAsync(fileOrFolder);
         }
 
         // Folders
 
-        public async Task DeleteDirectoryAsync(string targetFolder) {
+        public virtual async Task DeleteDirectoryAsync(string targetFolder) {
+            VerifyAccess(targetFolder);
             if (!Directory.Exists(targetFolder)) return;// avoid exception spam
 
             int retry = 10; // folder occasionally are in use so we'll just wait a bit
@@ -100,7 +123,8 @@ namespace YetaWF.Modules.Caching.DataProvider {
             }
         }
 
-        public async Task CreateDirectoryAsync(string targetFolder) {
+        public virtual async Task CreateDirectoryAsync(string targetFolder) {
+            VerifyAccess(targetFolder);
             if (Directory.Exists(targetFolder)) return;// avoid exception spam
 
             int retry = 10; // folder occasionally are in use so we'll just wait a bit
@@ -120,13 +144,15 @@ namespace YetaWF.Modules.Caching.DataProvider {
             }
         }
 
-        public Task<bool> DirectoryExistsAsync(string targetFolder) {
+        public virtual Task<bool> DirectoryExistsAsync(string targetFolder) {
+            VerifyAccess(targetFolder);
             if (Directory.Exists(targetFolder))
                 return Task.FromResult(true);
             return Task.FromResult(false);
         }
 
-        public Task<List<string>> GetDirectoriesAsync(string targetFolder, string pattern = null) {
+        public virtual Task<List<string>> GetDirectoriesAsync(string targetFolder, string pattern = null) {
+            VerifyAccess(targetFolder);
             List<string> files;
             if (pattern == null)
                 files = Directory.GetDirectories(targetFolder).ToList();
@@ -135,7 +161,8 @@ namespace YetaWF.Modules.Caching.DataProvider {
             return Task.FromResult(files);
         }
 
-        public Task<List<string>> GetFilesAsync(string targetFolder, string pattern = null) {
+        public virtual Task<List<string>> GetFilesAsync(string targetFolder, string pattern = null) {
+            VerifyAccess(targetFolder);
             List<string> files;
             if (pattern == null)
                 files = Directory.GetFiles(targetFolder).ToList();
@@ -144,89 +171,122 @@ namespace YetaWF.Modules.Caching.DataProvider {
             return Task.FromResult(files);
         }
 
-        public Task<DateTime> GetDirectoryCreationTimeUtcAsync(string targetFolder) {
+        public virtual Task<DateTime> GetDirectoryCreationTimeUtcAsync(string targetFolder) {
+            VerifyAccess(targetFolder);
             return Task.FromResult(Directory.GetCreationTimeUtc(targetFolder));
         }
 
         // Files
 
-        public Task<bool> FileExistsAsync(string filePath) {
+        public virtual Task<bool> FileExistsAsync(string filePath) {
+            VerifyAccess(filePath);
             if (File.Exists(filePath))
                 return Task.FromResult(true);
             return Task.FromResult(false);
         }
 
-        public Task<DateTime> GetCreationTimeUtcAsync(string filePath) {
+        public virtual Task<DateTime> GetCreationTimeUtcAsync(string filePath) {
+            VerifyAccess(filePath);
             return Task.FromResult(File.GetCreationTimeUtc(filePath));
         }
 
-        public Task<DateTime> GetLastWriteTimeUtcAsync(string filePath) {
+        public virtual Task<DateTime> GetLastWriteTimeUtcAsync(string filePath) {
+            VerifyAccess(filePath);
             return Task.FromResult(File.GetLastWriteTimeUtc(filePath));
         }
 
-        public Task SetLastWriteTimeUtcAsync(string filePath, DateTime timeUtc) {
+        public virtual Task SetLastWriteTimeUtcAsync(string filePath, DateTime timeUtc) {
+            VerifyAccess(filePath);
             File.SetLastWriteTimeUtc(filePath, timeUtc);
             return Task.CompletedTask;
         }
 
-        public Task SetLastWriteTimeLocalAsync(string filePath, DateTime timeLocal) {
+        public virtual Task SetLastWriteTimeLocalAsync(string filePath, DateTime timeLocal) {
+            VerifyAccess(filePath);
             File.SetLastWriteTime(filePath, timeLocal);
             return Task.CompletedTask;
         }
 
-        public Task<List<string>> ReadAllLinesAsync(string filePath) {
+        public virtual Task<List<string>> ReadAllLinesAsync(string filePath) {
+            VerifyAccess(filePath);
             List<string> lines = File.ReadLines(filePath).ToList();
             return Task.FromResult(lines);
         }
 
-        public Task WriteAllLinesAsync(string filePath, List<string> lines) {
+        public virtual Task WriteAllLinesAsync(string filePath, List<string> lines) {
+            VerifyAccess(filePath);
             File.WriteAllLines(filePath, lines);
             return Task.CompletedTask;
         }
 
-        public Task<string> ReadAllTextAsync(string filePath) {
+        public virtual Task<string> ReadAllTextAsync(string filePath) {
+            VerifyAccess(filePath);
             string text = File.ReadAllText(filePath);
             return Task.FromResult(text);
         }
 
-        public Task WriteAllTextAsync(string filePath, string text) {
+        public virtual Task WriteAllTextAsync(string filePath, string text) {
+            VerifyAccess(filePath);
             File.WriteAllText(filePath, text);
             return Task.CompletedTask;
         }
 
-        public Task AppendAllTextAsync(string filePath, string text) {
+        public virtual Task AppendAllTextAsync(string filePath, string text) {
+            VerifyAccess(filePath);
             File.AppendAllText(filePath, text);
             return Task.CompletedTask;
         }
 
-        public Task AppendAllLinesAsync(string filePath, List<string> lines) {
+        public virtual Task AppendAllLinesAsync(string filePath, List<string> lines) {
+            VerifyAccess(filePath);
             File.AppendAllLines(filePath, lines);
             return Task.CompletedTask;
         }
 
-        public Task<byte[]> ReadAllBytesAsync(string filePath) {
+        public virtual Task<byte[]> ReadAllBytesAsync(string filePath) {
+            VerifyAccess(filePath);
             byte[] data = File.ReadAllBytes(filePath);
             return Task.FromResult(data);
         }
 
-        public Task WriteAllBytesAsync(string filePath, byte[] data) {
+        public virtual Task WriteAllBytesAsync(string filePath, byte[] data) {
+            VerifyAccess(filePath);
             File.WriteAllBytes(filePath, data);
             return Task.CompletedTask;
         }
 
-        public Task MoveFileAsync(string fromPath, string toPath) {
+        public virtual Task MoveFileAsync(string fromPath, string toPath) {
+            VerifyAccess(fromPath);
+            VerifyAccess(toPath);
             File.Move(fromPath, toPath);
             return Task.CompletedTask;
         }
 
-        public Task CopyFileAsync(string fromPath, string toPath) {
+        public virtual Task CopyFileAsync(string fromPath, string toPath) {
+            VerifyAccess(fromPath);
+            VerifyAccess(toPath);
             File.Copy(fromPath, toPath, true);
             return Task.CompletedTask;
         }
 
-        public Task DeleteFileAsync(string filePath) {
+        public virtual Task DeleteFileAsync(string filePath) {
+            VerifyAccess(filePath);
             File.Delete(filePath);
             return Task.CompletedTask;
+        }
+
+        public string GetTempFile() {
+            VerifyTemporary();
+            lock (lockObject) {
+                return Path.Combine(FileSystemDataProviderStartup.TempFolder, $"Temp{FileSystemDataProviderStartup.TempFileCount++}");
+            }
+        }
+
+        public string GetTempFolder() {
+            VerifyTemporary();
+            lock (lockObject) {
+                return Path.Combine(FileSystemDataProviderStartup.TempFolder, $"Temp{FileSystemDataProviderStartup.TempFileCount++}");
+            }
         }
 
         // Data Files
@@ -234,11 +294,11 @@ namespace YetaWF.Modules.Caching.DataProvider {
         private static string ValidChars = " abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789~`!@#$^&()_-+={}[],.";
         private const string FileExtension = ".dat";
 
-        public string GetDataFileExtension() {
+        public virtual string GetDataFileExtension() {
             return FileExtension;
         }
 
-        public string MakeValidDataFileName(string name) {
+        public virtual string MakeValidDataFileName(string name) {
             StringBuilder sb = new StringBuilder();
             foreach (var c in name) {
                 if (ValidChars.Contains(c))
@@ -252,7 +312,7 @@ namespace YetaWF.Modules.Caching.DataProvider {
             return sb.ToString();
         }
 
-        public string ExtractNameFromDataFileName(string name) {
+        public virtual string ExtractNameFromDataFileName(string name) {
             StringBuilder sb = new StringBuilder();
             int total = name.Length;
             if (name.EndsWith(FileExtension)) total -= FileExtension.Length;
@@ -279,18 +339,18 @@ namespace YetaWF.Modules.Caching.DataProvider {
 
         // FileStream
 
-        public class FileStream : IDisposable, IFileStream {
+        internal class FileStream : IDisposable, IFileStream {
 
             private string FilePath;
             private FileMode Mode;
             private bool Closed;
             private System.IO.FileStream Stream;
 
-            public FileStream(string filePath, FileMode mode) {
+            public FileStream(string filePath, FileMode mode, FileAccess Access = FileAccess.ReadWrite) {
                 FilePath = filePath;
                 Closed = false;
                 Mode = mode;
-                Stream = new System.IO.FileStream(filePath, Mode);
+                Stream = new System.IO.FileStream(filePath, Mode, Access);
                 DisposableTracker.AddObject(this);
             }
             public System.IO.FileStream GetFileStream() {
@@ -346,10 +406,12 @@ namespace YetaWF.Modules.Caching.DataProvider {
 
         // FileNotFoundException, DirectoryNotFoundException
         public Task<IFileStream> OpenFileStreamAsync(string filePath) {
-            return Task.FromResult((IFileStream) new FileStream(filePath, FileMode.Open));
+            VerifyAccess(filePath);
+            return Task.FromResult((IFileStream) new FileStream(filePath, FileMode.Open, FileAccess.Read));
         }
         public Task<IFileStream> CreateFileStreamAsync(string filePath) {
-            return Task.FromResult((IFileStream)new FileStream(filePath, FileMode.Create));
+            VerifyAccess(filePath);
+            return Task.FromResult((IFileStream)new FileStream(filePath, FileMode.Create, FileAccess.ReadWrite));
         }
     }
 }

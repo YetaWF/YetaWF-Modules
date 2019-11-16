@@ -19,6 +19,13 @@ namespace YetaWF.Modules.PageEdit.Controllers {
 
         [AllowGet]
         public ActionResult EditMode() {
+
+            if (Manager.IsInPopup) return new EmptyResult();
+            //if (Manager.CurrentPage == null || Manager.CurrentPage.Temporary) return new EmptyResult();
+
+            if (!Manager.CurrentPage.IsAuthorized_Edit())
+                new EmptyResult();
+
             return View(new Model());
         }
     }

@@ -62,7 +62,7 @@ namespace YetaWF.Modules.Identity.DataProvider {
 
             if (IsBackDoorWideOpen())
                 return true;
-            if (Manager.IsDemo)
+            if (YetaWFManager.IsDemo)
                 return true;
 
             // check if this is the superuser

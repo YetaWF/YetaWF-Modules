@@ -16,32 +16,29 @@ namespace YetaWF_PageEdit {
 
 namespace YetaWF_PageEdit {
 
-    class PageControlModule {
+    export class PageControlModule extends YetaWF.ModuleBaseNoDataImpl {
 
-        private Module: HTMLElement|null = null;
+        public static readonly SELECTOR: string = ".YetaWF_PageEdit_PageControl";
+
+        private readonly PageControlMod: HTMLDivElement;
         private readonly FadeTime: number = 250;
 
-        public init(): void {
+        constructor(id: string) {
+            super(id, PageControlModule.SELECTOR, null);
 
-            $YetaWF.addWhenReadyOnce((): void => {
+            this.PageControlMod = $YetaWF.getElementById(YConfigs.YetaWF_PageEdit.PageControlMod) as HTMLDivElement;
 
-                this.Module = $YetaWF.getElementByIdCond(YConfigs.YetaWF_PageEdit.PageControlMod);
-                if (this.Module) {
-
-                    // Page icon
-                    const pagebutton = $YetaWF.getElementById("yPageControlButton");
-
-                    $YetaWF.registerEventHandler(pagebutton, "click", null, (ev: MouseEvent): boolean => {
-                        this.toggleControlPanel();
-                        return false;
-                    });
-                    // on page load, show control panel if wanted
-                    if (YVolatile.Basics.PageControlVisible) {
-                        this.Module.style.display = "block";
-                        ComponentsHTMLHelper.processPropertyListVisible(this.Module);
-                    }
-                }
+            const pagebutton = $YetaWF.getElementById("tid_pagecontrolbutton");
+            $YetaWF.registerEventHandler(pagebutton, "click", null, (ev: MouseEvent): boolean => {
+                this.toggleControlPanel();
+                return false;
             });
+
+            // on page load, show control panel if wanted
+            if (YVolatile.Basics.PageControlVisible) {
+                this.PageControlMod.style.display = "block";
+                ComponentsHTMLHelper.processPropertyListVisible(this.PageControlMod);
+            }
 
             // handle Page Settings, Remove Current Page, W3C Validation - this is needed in case we're in a unified page set
             // in which case the original pageguid and url in the module actions have changed
@@ -57,7 +54,7 @@ namespace YetaWF_PageEdit {
                     return;
                 }
 
-                const pagebutton = $YetaWF.getElementByIdCond("yPageControlButton");
+                const pagebutton = $YetaWF.getElementByIdCond("tid_pagecontrolbutton");
                 if (pagebutton) {
                     if (YVolatile.Basics.TemporaryPage) {
                         if (YVolatile.Basics.PageControlVisible) {
@@ -72,7 +69,7 @@ namespace YetaWF_PageEdit {
 
                 const ps = $YetaWF.getElement1BySelectorCond(".YetaWF_PageEdit_PageControl a[data-name='PageSettings']") as HTMLAnchorElement | null;
                 if (ps) {
-                    var uri = $YetaWF.parseUrl(ps.href);
+                    let uri = $YetaWF.parseUrl(ps.href);
                     uri.removeSearch("PageGuid");
                     uri.addSearch("PageGuid", YVolatile.Basics.PageGuid);
                     ps.href = uri.toUrl();
@@ -80,7 +77,7 @@ namespace YetaWF_PageEdit {
                 // Export Page
                 const ep = $YetaWF.getElement1BySelectorCond(".YetaWF_PageEdit_PageControl a[data-name='ExportPage']") as HTMLAnchorElement | null;
                 if (ep) {
-                    var uri = $YetaWF.parseUrl(ep.href);
+                    let uri = $YetaWF.parseUrl(ep.href);
                     uri.removeSearch("PageGuid");
                     uri.addSearch("PageGuid", YVolatile.Basics.PageGuid);
                     ep.href = uri.toUrl();
@@ -88,7 +85,7 @@ namespace YetaWF_PageEdit {
                 // Remove Page
                 const rp = $YetaWF.getElement1BySelectorCond(".YetaWF_PageEdit_PageControl a[data-name='RemovePage']") as HTMLAnchorElement | null;
                 if (rp) {
-                    var uri = $YetaWF.parseUrl(rp.href);
+                    let uri = $YetaWF.parseUrl(rp.href);
                     uri.removeSearch("PageGuid");
                     uri.addSearch("PageGuid", YVolatile.Basics.PageGuid);
                     rp.href = uri.toUrl();
@@ -99,24 +96,21 @@ namespace YetaWF_PageEdit {
                     w3c.href = YConfigs.YetaWF_PageEdit.W3CUrl.format(window.location);
 
                 const hidden = $YetaWF.getElementsBySelector(".YetaWF_PageEdit_PageControl input[name='CurrentPageGuid'][type='hidden']") as HTMLInputElement[];
-                for (var h of hidden) {
+                for (let h of hidden) {
                     h.value = YVolatile.Basics.PageGuid;
                 }
             });
         }
         private toggleControlPanel() :void {
-            if (!this.Module) return;
-            if ($YetaWF.isVisible(this.Module)) {
+            if (!this.PageControlMod) return;
+            if ($YetaWF.isVisible(this.PageControlMod)) {
                 YVolatile.Basics.PageControlVisible = false;
-                ComponentsHTMLHelper.fadeOut(this.Module, this.FadeTime);
+                ComponentsHTMLHelper.fadeOut(this.PageControlMod, this.FadeTime);
             } else {
                 YVolatile.Basics.PageControlVisible = true;
-                ComponentsHTMLHelper.fadeIn(this.Module, this.FadeTime);
+                ComponentsHTMLHelper.fadeIn(this.PageControlMod, this.FadeTime);
+                ComponentsHTMLHelper.processPropertyListVisible(this.Module);
             }
         }
     }
-
-    var pageEdit: PageControlModule = new PageControlModule();
-    pageEdit.init();
-
 }

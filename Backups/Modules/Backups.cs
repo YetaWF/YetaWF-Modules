@@ -78,7 +78,7 @@ namespace YetaWF.Modules.Backups.Modules {
 
         // This action is only useful if you're the YetaWF Publisher
         public async Task<ModuleAction> GetAction_MakeSiteTemplateDataAsync() {
-            if (Manager.Deployed) return null; //Can't make site template data on a deployed site
+            if (YetaWFManager.Deployed) return null; //Can't make site template data on a deployed site
             if (!IsAuthorized("Backups")) return null;
             return new ModuleAction(this) {
                 Url = Utility.UrlFor(typeof(BackupsModuleController), nameof(BackupsModuleController.MakeSiteTemplateData)),

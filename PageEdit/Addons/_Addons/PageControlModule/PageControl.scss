@@ -1,0 +1,22 @@
+/* Copyright © 2019 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/PageEdit#License */
+
+.YetaWF_PageEdit_PageControl {
+    position:absolute;
+    z-index:1510;
+    left:30px;
+    top:5px;
+    #yPageControlDiv > a {
+        padding:1px 4px;
+    }
+}
+#yPageControlMod {
+    display:none;
+    position:absolute;
+    left:30px;
+    width:800px;
+    z-index:1500;
+    .yt_moduleactions {
+        background-color: #e4e3e3;
+        padding: 2px;
+    }
+}

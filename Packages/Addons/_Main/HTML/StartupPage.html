@@ -1,0 +1,154 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv='Content-Type' content='text/html; charset=UTF-8' />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="robots" content="noindex" />
+    <script src='/node_modules/jquery/dist/jquery.min.js'></script>
+    <style type="text/css">
+        body {
+            background-color: #fff;
+            margin: 20px;
+            color: #222;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        h1 {
+            font-size: 34px;
+            font-weight: bold;
+            color: #222;
+        }
+
+        #running {
+            padding-top: 20px;
+            display: none;
+        }
+
+        select#LogList {
+            width: 100%;
+        }
+        #btnStart {
+            width: 200px;
+            padding: 20px;
+        }
+    </style>
+    <title>Site Startup In Progress</title>
+</head>
+<body>
+    <img alt="Logo" src="/logo.jpg" title="YetaWF.com" />
+    <div id="startup">
+        <h1>Site Startup</h1>
+        <p>
+            The very first time the site starts, all data must be initialized and all packages must be installed. Of course we only need to do this once. Ever.
+        </p>
+        <p>
+            For first time use, it is recommended to leave all selections as-is. If you are familiar with YetaWF, you can select/deselect packages and limit packages you want to install. Some packages are required and cannot be deselected.
+        </p>
+        <p>
+            Finally, click the Start button at the bottom of the page.
+        </p>
+        <form id="startform" action="/YetaWF_Packages/StartupPage/Run" method="post">
+            <table id="plist" cellspacing="5">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>Package</th>
+                        <th>Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+            <p>
+                Press Start to begin setting up your site.
+            </p>
+            <input type="button" id="btnStart" value="Start" />
+        </form>
+    </div>
+    <div id="running">
+        <h1>Site Startup In Progress</h1>
+        <p>
+            Please be patient while your YetaWF site is created and initialized. This will only take place once. Once created, your site restarts much faster.
+        </p>
+        <p>
+            This process may take several minutes.
+        </p>
+        <select size="30" id="LogList"></select>
+    </div>
+
+    <script>
+
+        // Load package list
+        $.ajax({
+            url: '/YetaWF_Packages/StartupPage/GetPackageList',
+            type: 'post',
+            success: function (result, textStatus, jqXHR) {
+                $("#plist tbody").append(result);
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                alert('Uh oh! Something went wrong communicating with your new site - Obviously this shouldn\'t have happened.\r\n\r\n' +
+                    'We couldn\'t retrieve the list of available packages ready to be installed.\r\n\r\n' +
+                    'This is the message we got from the site: ' + textStatus);
+            }
+        });
+
+
+        $(document).ready(function () {
+            var $log = $('#LogList');
+            var savedInterval = 0;
+
+            function addLogItems(items) {
+                if (savedInterval == 0) return;// ignore stacked ajax calls which can result in multiple ending requests
+                var total = items.length;
+                for (var i = 0; i < total ; i++) {
+                    if (items[i] != "+++DONE") {
+                        var opt = document.createElement("option");
+                        opt.text = items[i];
+                        $log[0].options.add(opt);
+                    } else {
+                        if (savedInterval != 0) clearInterval(savedInterval);
+                        savedInterval = 0;
+                        // by the time we get here, the site is restarting
+                        window.location.assign("/");
+                    }
+                }
+                $log[0].selectedIndex = $('option', $log).length - 1;
+            }
+            function updateLog() {
+                $.ajax({
+                    url: '/YetaWF_Packages/InitialLogFile/GetInitialInstallLogRecords',
+                    type: 'post',
+                    data: { offset: $('option', $log).length },
+                    success: function (result, textStatus, jqXHR) {
+                        if (result.indexOf('JSERROR:') == 0)
+                            result = [ result ];
+                        addLogItems(result);
+                    },
+                    error: function (jqXHR, textStatus, errorThrown) {
+                        //alert(textStatus);
+                        var result = [
+                            'Uh oh! Something went wrong communicating with your new site - Obviously this shouldn\'t have happened',
+                            'This is the message we got from the site: ' + textStatus + ' (probably not very helpful)'
+                        ];
+                        addLogItems(result);
+                        if (savedInterval != 0) clearInterval(savedInterval);
+                        savedInterval = 0;
+                    }
+                });
+            }
+            function run() {
+                $('#startup').hide();
+                $('#running').show();
+                // display initial records
+                updateLog();
+                // update regularly
+                savedInterval = setInterval(updateLog, 2000);
+            }
+            $('#btnStart').on('click', function () {
+                $.post('/YetaWF_Packages/StartupPage/Run', $('#startform').serialize());
+                run();
+            });
+        });
+    </script>
+</body>
+</html>

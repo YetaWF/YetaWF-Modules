@@ -14,7 +14,7 @@ namespace YetaWF.Modules.Caching.DataProvider {
     /// <remarks>
     /// Uses a Redis server for pub/sub messages.
     /// </remarks>
-    public class PubSubRedisProvider : IPubSubProvider {
+    internal class PubSubRedisProvider : IPubSubProvider {
 
         private static ConnectionMultiplexer Redis { get; set; }
         private static string KeyPrefix { get; set; }

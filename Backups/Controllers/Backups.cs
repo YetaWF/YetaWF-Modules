@@ -99,8 +99,8 @@ namespace YetaWF.Modules.Backups.Controllers {
         }
 
         [AllowPost]
-        public async Task<ActionResult> Backups_GridData(string fieldPrefix, int skip, int take, List<DataProviderSortInfo> sorts, List<DataProviderFilterInfo> filters) {
-            return await GridPartialViewAsync(GetGridModel(), fieldPrefix, skip, take, sorts, filters);
+        public async Task<ActionResult> Backups_GridData(GridPartialViewData gridPVData) {
+            return await GridPartialViewAsync(GetGridModel(), gridPVData);
         }
 
         [AllowPost]
@@ -122,7 +122,7 @@ namespace YetaWF.Modules.Backups.Controllers {
         [Permission("Backups")]
         [ExcludeDemoMode]
         public async Task<ActionResult> MakeSiteTemplateData() {
-            if (Manager.Deployed)
+            if (YetaWFManager.Deployed)
                 throw new InternalError("Can't make site template data on a deployed site");
             SiteTemplateData siteTemplateData = new SiteTemplateData();
             await siteTemplateData.MakeSiteTemplateDataAsync();

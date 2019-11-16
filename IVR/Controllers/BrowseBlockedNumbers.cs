@@ -15,6 +15,7 @@ using Softelvdm.Modules.IVR.DataProvider;
 using Softelvdm.Modules.IVR.Modules;
 using YetaWF.Core;
 using YetaWF.Core.Extensions;
+using System;
 #if MVC6
 using Microsoft.AspNetCore.Mvc;
 #else
@@ -47,6 +48,13 @@ namespace Softelvdm.Modules.IVR.Controllers {
             [Caption("Description"), Description("The description of the blocked number")]
             [UIHint("String"), StringLength(BlockedNumberEntry.MaxDescription), ReadOnly]
             public string Description { get; set; }
+
+            [Caption("Added"), Description("The date/time the entry was added")]
+            [UIHint("DateTime"), ReadOnly]
+            public DateTime Created { get; set; }
+            [Caption("Updated"), Description("The date/time the entry was last updated")]
+            [UIHint("DateTime"), ReadOnly]
+            public DateTime? Updated { get; set; }
 
             public int Id { get; set; }
 
@@ -92,15 +100,14 @@ namespace Softelvdm.Modules.IVR.Controllers {
 
         [AllowPost]
         [ConditionalAntiForgeryToken]
-        public async Task<ActionResult> BrowseBlockedNumbers_GridData(string fieldPrefix, int skip, int take, List<DataProviderSortInfo> sorts, List<DataProviderFilterInfo> filters) {
-            return await GridPartialViewAsync(GetGridModel(), fieldPrefix, skip, take, sorts, filters);
+        public async Task<ActionResult> BrowseBlockedNumbers_GridData(GridPartialViewData gridPVData) {
+            return await GridPartialViewAsync(GetGridModel(), gridPVData);
         }
 
         [AllowPost]
         [Permission("RemoveItems")]
         [ExcludeDemoMode]
         public async Task<ActionResult> Remove(int id) {
-            // TODO: Validate number
             using (BlockedNumberDataProvider dataProvider = new BlockedNumberDataProvider()) {
                 if (!await dataProvider.RemoveItemByIdentityAsync(id))
                     throw new Error(this.__ResStr("cantRemove", "Couldn't remove entry with id {0}", id));

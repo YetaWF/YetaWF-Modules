@@ -201,7 +201,7 @@ namespace YetaWF.Modules.Packages.Modules {
             };
         }
         public async Task<ModuleAction> GetAction_LocalizePackageAsync(Package package) {
-            if (Manager.Deployed) return null; // can't do this on a deployed site
+            if (YetaWFManager.Deployed) return null; // can't do this on a deployed site
             if (!package.IsModulePackage && !package.IsCorePackage && !package.IsSkinPackage) return null;
             if (!IsAuthorized("Localize")) return null;
             return new ModuleAction(this) {
@@ -218,7 +218,7 @@ namespace YetaWF.Modules.Packages.Modules {
             };
         }
         public async Task<ModuleAction> GetAction_LocalizeAllPackagesAsync() {
-            if (Manager.Deployed) return null; // can't do this on a deployed site
+            if (YetaWFManager.Deployed) return null; // can't do this on a deployed site
             if (!IsAuthorized("Localize")) return null;
             return new ModuleAction(this) {
                 Style = ModuleAction.ActionStyleEnum.Post,
@@ -261,7 +261,7 @@ namespace YetaWF.Modules.Packages.Modules {
             };
         }
         public async Task<ModuleAction> GetAction_CreateAllInstalledLocalizationsAsync() {
-            if (Manager.Deployed) return null; // can't do this on a deployed site
+            if (YetaWFManager.Deployed) return null; // can't do this on a deployed site
             ModuleDefinition modLocalize = await ModuleDefinition.LoadAsync(Manager.CurrentSite.PackageLocalizationServices, AllowNone: true);
             if (modLocalize == null)
                 throw new InternalError("No localization services available - no module has been defined");

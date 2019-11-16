@@ -51,7 +51,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
         ScriptBuilder sb = new ScriptBuilder();
 
-            ObjectSupport.ReadGridDictionaryInfo dictInfo = await YetaWF.Core.Components.Grid.LoadGridColumnDefinitionsAsync(model.GridDef.RecordType);
+            GridDictionaryInfo.ReadGridDictionaryInfo dictInfo = await GridDictionaryInfo.LoadGridColumnDefinitionsAsync(model.GridDef);
 
             // render record
             string tr = await GridDisplayComponent.RenderRecordHTMLAsync(HtmlHelper, model.GridDef, dictInfo, model.FieldPrefix, model.Data, 0, 0, false);

@@ -23,6 +23,8 @@ namespace YetaWF.Modules.PageEdit.Modules {
             WantFocus = false;
             WantSearch = false;
             ShowTitle = false;
+            Print = false;
+            Invokable = true;
         }
 
         public override IModuleDefinitionIO GetDataProvider() { return new EditModeModuleDataProvider(); }

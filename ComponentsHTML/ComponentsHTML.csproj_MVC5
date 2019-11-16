@@ -45,19 +45,25 @@
     <Compile Include="Components\DayOfMonth.cs" />
     <Compile Include="Components\DayOfWeek.cs" />
     <Compile Include="Components\FormButtons.cs" />
+    <Compile Include="Components\Grid\GridColumnInfo.cs" />
+    <Compile Include="Components\Grid\GridDictionaryInfo.cs" />
+    <Compile Include="Components\Grid\GridLoadSave.cs" />
+    <Compile Include="Components\PropertyList\PropertyListComponent.cs" />
     <Compile Include="Components\TimeSpanDHM.cs" />
     <Compile Include="Components\TimeSpanHM.cs" />
-    <Compile Include="Components\Tree.cs" />
     <Compile Include="Components\Grid\Grid.cs" />
     <Compile Include="Components\Grid\GridDeleteEntry.cs" />
     <Compile Include="Components\Grid\GridPartialData.cs" />
     <Compile Include="Components\Grid\GridRecord.cs" />
     <Compile Include="Components\Grid\GridValue.cs" />
     <Compile Include="Components\TextAreaSourceOnly.cs" />
+    <Compile Include="Components\Tree\Tree.cs" />
+    <Compile Include="Components\Tree\TreePartialData.cs" />
     <Compile Include="Components\WeeklyHours.cs" />
     <Compile Include="Components\TimeOfDay.cs" />
     <Compile Include="Components\Time.cs" />
     <Compile Include="Components\DayTimeRange.cs" />
+    <Compile Include="Controllers\Support\GridSaveSettings.cs" />
     <Compile Include="Controllers\Support\ReferencedModules.cs" />
     <Compile Include="Controllers\Support\PageDefinitions.cs" />
     <Compile Include="CoreRendering\View.cs" />
@@ -166,6 +172,7 @@
     <Compile Include="Views\HTML\PropertyListDisplay.cs" />
     <Compile Include="Views\HTML\PropertyListEdit.cs" />
     <Compile Include="Views\HTML\ShowMessage.cs" />
+    <Compile Include="Views\HTML\TreePartialData.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Addons\_Addons\bassistance.de.jquery-validation\FilelistJS.txt" />

@@ -17,7 +17,6 @@ using YetaWF.Core.Skins;
 using YetaWF.Core.Pages;
 using YetaWF.Core.DataProvider;
 using YetaWF.Modules.Pages.DataProvider;
-using YetaWF.Core.Controllers;
 #if MVC6
 #else
 using System.Web.Mvc;
@@ -242,15 +241,13 @@ new YetaWF_Pages.ListOfLocalPagesEditComponent('{DivId}', {Utility.JsonSerialize
 
             return hb.ToString();
         }
-        public static async Task<GridRecordData> GridRecordAsync(string fieldPrefix, object model) {
-            // handle async properties
-            await YetaWFController.HandlePropertiesAsync(model);
+        public static Task<GridRecordData> GridRecordAsync(string fieldPrefix, object model) {
             GridRecordData record = new GridRecordData() {
                 GridDef = GetGridModel(false),
                 Data = model,
                 FieldPrefix = fieldPrefix,
             };
-            return record;
+            return Task.FromResult(record);
         }
     }
 }

@@ -1,4 +1,4 @@
-/* Copyright © 2019 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/ComponentsHTML#License */
+/* Copyright ï¿½ 2019 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/ComponentsHTML#License */
 
 // Kendo UI menu use
 
@@ -587,32 +587,31 @@ namespace YetaWF_ComponentsHTML {
         }
         private static resizeColumnDone(ev: MouseEvent): boolean {
             var currentControl = Grid.CurrentControl;
-            if (currentControl && currentControl.ColumnResizeBar && currentControl.ColumnResizeHeader) {
+            if (currentControl && currentControl.ColumnResizeBar && currentControl.ColumnResizeHeader && currentControl.Setup.SaveSettingsColumnWidthsUrl) {
                 document.body.style.cursor = "default";
                 window.removeEventListener("mousemove", this.resizeColumn, false);
                 window.removeEventListener("mouseup", this.resizeColumnDone, false);
 
                 // save column widths after user resizes
                 if (currentControl.Setup.SettingsModuleGuid) {
-                    var colIndex = Array.prototype.indexOf.call((currentControl.ColumnResizeHeader.parentElement as HTMLElement).children, currentControl.ColumnResizeHeader);
-                    var options = {
-                        SettingsModuleGuid: currentControl.Setup.SettingsModuleGuid,
-                        Columns: [{
-                            Key: currentControl.Setup.Columns[colIndex].Name,
-                            Value: parseInt((currentControl.ColumnResizeHeader.style.width as string).replace("px", ""), 0)
-                        }]
-                    };
-
                     // send save request, we don't care about the response
-                    var request: XMLHttpRequest = new XMLHttpRequest();
+                    let uri = $YetaWF.parseUrl(currentControl.Setup.SaveSettingsColumnWidthsUrl);
+                    uri.addSearch("SettingsModuleGuid", currentControl.Setup.SettingsModuleGuid);
+                    var colIndex = Array.prototype.indexOf.call((currentControl.ColumnResizeHeader.parentElement as HTMLElement).children, currentControl.ColumnResizeHeader);
+                    uri.addSearch("Columns[0].Key", currentControl.Setup.Columns[colIndex].Name);
+                    uri.addSearch("Columns[0].Value", parseInt((currentControl.ColumnResizeHeader.style.width as string).replace("px", ""), 0));
+
+                    let request: XMLHttpRequest = new XMLHttpRequest();
                     request.open("POST", currentControl.Setup.SaveSettingsColumnWidthsUrl, true);
-                    request.setRequestHeader("Content-Type", "application/json");
+                    request.setRequestHeader("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
                     request.setRequestHeader("X-Requested-With", "XMLHttpRequest");
                     //request.overrideMimeType("application/text");// would help firefox understand this isn't xml, but it's not standard, oh well
-                    request.send(JSON.stringify(options));
+                    request.send(uri.toFormData());
                 }
-                currentControl.ColumnResizeBar = null;
-                currentControl.ColumnResizeHeader = null;
+            }
+            if (Grid.CurrentControl) {
+                Grid.CurrentControl.ColumnResizeBar = null;
+                Grid.CurrentControl.ColumnResizeHeader = null;
             }
             Grid.CurrentControl = null;
             return false;

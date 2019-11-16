@@ -8,7 +8,6 @@ using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Support;
 using YetaWF.Core.Upload;
 using YetaWF.Modules.DevTests.Modules;
-using YetaWF.Core.Models;
 using YetaWF.Core.SendEmail;
 using System.Threading.Tasks;
 using YetaWF.Core.IO;

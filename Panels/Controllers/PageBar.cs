@@ -18,7 +18,6 @@ using YetaWF.Modules.Panels.Modules;
 using YetaWF.Core.Components;
 using YetaWF.Modules.Panels.Components;
 using YetaWF.Core.Localize;
-using YetaWF.Core.Support.UrlHistory;
 #if MVC6
 using Microsoft.AspNetCore.Mvc;
 #else

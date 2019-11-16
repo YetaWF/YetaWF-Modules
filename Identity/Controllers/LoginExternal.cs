@@ -41,7 +41,7 @@ namespace YetaWF.Modules.Identity.Controllers {
         public ActionResult ExternalLogin_Partial(string provider, string returnUrl) {
             AllowJavascriptResult = false;
             // Request a redirect to the external login provider
-            if (Manager.IsDemo)
+            if (YetaWFManager.IsDemo)
                 throw new Error("This action is not available in Demo mode.");
             if (provider == null)
                 throw new InternalError("No provider");

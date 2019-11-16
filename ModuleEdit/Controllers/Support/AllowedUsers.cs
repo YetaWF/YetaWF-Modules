@@ -55,16 +55,16 @@ namespace YetaWF.Modules.ModuleEdit.Controllers {
         [AllowPost]
         [ConditionalAntiForgeryToken]
         [ResourceAuthorize(YetaWF.Modules.Identity.Addons.Info.Resource_AllowListOfUserNamesAjax)]
-        public async Task<ActionResult> AllowedUsersBrowse_GridData(string fieldPrefix, int skip, int take, List<DataProviderSortInfo> sorts, List<DataProviderFilterInfo> filters) {
-            return await GridPartialViewAsync(AllowedUsersEditComponent.GetGridAllUsersModel(), fieldPrefix, skip, take, sorts, filters);
+        public async Task<ActionResult> AllowedUsersBrowse_GridData(GridPartialViewData gridPVData) {
+            return await GridPartialViewAsync(AllowedUsersEditComponent.GetGridAllUsersModel(), gridPVData);
         }
         [AllowPost]
         [ConditionalAntiForgeryToken]
-        public async Task<ActionResult> AllowedUsersEdit_SortFilter(string data, string fieldPrefix, int skip, int take, List<DataProviderSortInfo> sorts, List<DataProviderFilterInfo> filters, Guid editGuid) {
+        public async Task<ActionResult> AllowedUsersEdit_SortFilter(GridPartialViewData gridPVData, Guid editGuid) {
             GridDefinition gridModel = AllowedUsersEditComponent.GetGridModel(false);
             ModuleDefinition module = await ModuleDefinition.LoadAsync(editGuid);
             gridModel.ResourceRedirect = module;
-            return await GridPartialViewAsync<ModuleDefinition.GridAllowedUser>(gridModel, data, fieldPrefix, skip, take, sorts, filters);
+            return await GridPartialViewAsync<ModuleDefinition.GridAllowedUser>(gridModel, gridPVData);
         }
     }
 }

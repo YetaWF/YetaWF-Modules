@@ -18,7 +18,7 @@ namespace YetaWF.Modules.DevTests.Modules {
 
         public TemplateTreeModule() {
             Title = this.__ResStr("modTitle", "Tree (Static) Test Component");
-            Name = this.__ResStr("modName", "Component Test - Tree (Static)");
+            Name = this.__ResStr("modName", "Component Test - Tree");
             Description = this.__ResStr("modSummary", "Tree (Static) test component");
             DefaultViewName = StandardViews.Display;
             UsePartialFormCss = false;
@@ -32,8 +32,8 @@ namespace YetaWF.Modules.DevTests.Modules {
             return new ModuleAction(this) {
                 Url = string.IsNullOrWhiteSpace(url) ? ModulePermanentUrl : url,
                 Image = "#Display",
-                LinkText = this.__ResStr("displayLink", "Tree (Static Data)"),
-                MenuText = this.__ResStr("displayText", "Tree (Static Data)"),
+                LinkText = this.__ResStr("displayLink", "Tree"),
+                MenuText = this.__ResStr("displayText", "Tree"),
                 Tooltip = this.__ResStr("displayTooltip", "Display a sample tree"),
                 Legend = this.__ResStr("displayLegend", "Displays a sample tree"),
                 Style = ModuleAction.ActionStyleEnum.Normal,

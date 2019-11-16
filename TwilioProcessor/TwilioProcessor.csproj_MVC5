@@ -92,8 +92,8 @@
       <HintPath>..\..\..\packages\Newtonsoft.Json.12.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="PhoneNumbers, Version=8.10.19.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\..\packages\libphonenumber-csharp.8.10.19\lib\net46\PhoneNumbers.dll</HintPath>
+    <Reference Include="PhoneNumbers, Version=8.10.20.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\..\packages\libphonenumber-csharp.8.10.20\lib\net46\PhoneNumbers.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="RestSharp, Version=106.6.10.0, Culture=neutral, PublicKeyToken=598062e77f915f75, processorArchitecture=MSIL">

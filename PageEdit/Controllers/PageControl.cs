@@ -268,10 +268,22 @@ namespace YetaWF.Modules.PageEdit.Controllers {
             public AddNewPageModel AddNewPageModel { get; set; }
             public SkinSelectionModel SkinSelectionModel { get; set; }
             public LoginSiteSelectionModel LoginSiteSelectionModel { get; set; }
+            [UIHint("ModuleActions"), AdditionalMetadata("RenderAs", ModuleAction.RenderModeEnum.NormalLinks), ReadOnly]
+            public List<ModuleAction> Actions { get; set; }
         }
 
         [AllowGet]
         public async Task<ActionResult> PageControl() {
+
+            if (Manager.IsInPopup) return new EmptyResult();
+            if (Manager.CurrentPage == null || Manager.CurrentPage.Temporary) return new EmptyResult();
+#if DEBUG
+            // allow in debug mode without checking unless marked deployed
+            if (YetaWFManager.Deployed && !Manager.CurrentPage.IsAuthorized_Edit()) return new EmptyResult();
+#else
+            if (!Manager.CurrentPage.IsAuthorized_Edit()) return new EmptyResult();
+#endif
+
             Guid pageGuid = Guid.Empty;
             if (pageGuid == Guid.Empty) {
                 if (Manager.CurrentPage == null)
@@ -310,6 +322,17 @@ namespace YetaWF.Modules.PageEdit.Controllers {
                 },
                 LoginSiteSelectionModel = new LoginSiteSelectionModel(),
             };
+
+            PageEditModule modEdit = new PageEditModule();
+            model.Actions = new List<ModuleAction>();
+            model.Actions.New(await modEdit.GetAction_EditAsync(null));
+            model.Actions.New(await Module.GetAction_ExportPageAsync(null));
+            model.Actions.New(await modEdit.GetAction_RemoveAsync(null));
+            model.Actions.New(Module.GetAction_SwitchToView());
+            model.Actions.New(Module.GetAction_SwitchToEdit());
+            model.Actions.New(await Module.GetAction_W3CValidationAsync());
+            model.Actions.New(await Module.GetAction_RestartSite());
+            model.Actions.New(Module.GetAction_ClearJsCssCache());
 
             model.AddNewModel.AddData(page);
             model.AddExistingModel.AddData(page);
@@ -497,7 +520,7 @@ namespace YetaWF.Modules.PageEdit.Controllers {
         [ExcludeDemoMode]
         public async Task<ActionResult> LoginSiteSelection_Partial(LoginSiteSelectionModel model) {
 
-            if (Manager.Deployed) {
+            if (YetaWFManager.Deployed) {
                 if (!await Resource.ResourceAccess.IsResourceAuthorizedAsync(CoreInfo.Resource_OtherUserLogin))
                     return NotAuthorized();
             }
@@ -543,6 +566,19 @@ namespace YetaWF.Modules.PageEdit.Controllers {
             Manager.PageControlShown = false;
             Manager.EditMode = false;
             return Redirect(Manager.ReturnToUrl, SetCurrentEditMode: true, SetCurrentControlPanelMode: true);
+        }
+
+        [ExcludeDemoMode]
+        public async Task<ActionResult> ClearJsCss() {
+            if (!Manager.HasSuperUserRole)
+                return NotAuthorized();
+            await FileBundles.ResetCacheAsync();
+            using (ICacheDataProvider cacheDP = YetaWF.Core.IO.Caching.GetStaticSmallObjectCacheProvider()) {
+                ICacheClearable clearableDP = cacheDP as ICacheClearable;
+                if (clearableDP != null)
+                    await clearableDP.ClearAllAsync();
+            }
+            return FormProcessed(null, popupText: this.__ResStr("clearJsCssAll", "JavaScript/CSS bundles and cached static small objects have been cleared"), OnClose: OnCloseEnum.Nothing);
         }
     }
 }

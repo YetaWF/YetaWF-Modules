@@ -30,7 +30,7 @@ namespace YetaWF.Modules.ComponentsHTML {
 
             HtmlBuilder hb = new HtmlBuilder();
 
-            TagBuilder tag = new TagBuilder("div");
+            YTagBuilder tag = new YTagBuilder("div");
             tag.AddCssClass(Manager.AddOnManager.CheckInvokedCssModule(Forms.CssFormPartial));
             string divId = null;
             if (Manager.IsPostRequest) {
@@ -41,7 +41,7 @@ namespace YetaWF.Modules.ComponentsHTML {
                         !string.IsNullOrWhiteSpace(Manager.SkinInfo.PartialFormCss) && module.UsePartialFormCss)
                     tag.AddCssClass(Manager.SkinInfo.PartialFormCss);
             }
-            hb.Append(tag.ToString(TagRenderMode.StartTag));
+            hb.Append(tag.ToString(YTagRenderMode.StartTag));
             hb.Append(htmlHelper.AntiForgeryToken());
             hb.Append($@"<input name='{Basics.ModuleGuid}' type='hidden' value='{module.ModuleGuid}' />");
 
@@ -49,7 +49,7 @@ namespace YetaWF.Modules.ComponentsHTML {
 
             hb.Append(viewHtml);
 
-            hb.Append(tag.ToString(TagRenderMode.EndTag));
+            hb.Append(tag.ToString(YTagRenderMode.EndTag));
 
             if (divId != null)
                 Manager.ScriptManager.AddLast($"$YetaWF.Forms.initPartialForm('{divId}');");

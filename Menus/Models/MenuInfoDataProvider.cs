@@ -52,11 +52,19 @@ namespace YetaWF.Modules.Menus.DataProvider {
             return await DataProvider.GetAsync(moduleGuid);
         }
         public async Task ReplaceItemAsync(MenuInfo data) {
+            MenuInfo origMenu = Auditing.Active ? await GetItemAsync(data.ModuleGuid) : null;
             using (ILockObject lockObject = await YetaWF.Core.IO.Module.LockModuleAsync(data.ModuleGuid)) {
                 await RemoveItemAsync(data.ModuleGuid);
                 await AddItemAsync(data);
                 await lockObject.UnlockAsync();
             }
+            // audit code doesn't really work with this nested structure so skip for now
+            //await Auditing.AddAuditAsync($"{nameof(MenuInfoDataProvider)}.{nameof(ReplaceItemAsync)}", "Menu", data.ModuleGuid,
+            //    "Replace Menu",
+            //    DataBefore: origMenu,
+            //    DataAfter: data,
+            //    ExpensiveMultiInstance: true
+            //);
         }
         protected async Task<bool> AddItemAsync(MenuInfo data) {
             bool result = await DataProvider.AddAsync(data);

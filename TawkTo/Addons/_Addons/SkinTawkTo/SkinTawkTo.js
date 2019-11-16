@@ -1,25 +1,34 @@
 "use strict";
 /* Copyright © 2019 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/TawkTo#License */
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = function (d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+        return extendStatics(d, b);
+    };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
 // If this javascript snippet is included, that means we're displaying the chat.
 // tslint:disable-next-line:variable-name
 var Tawk_API;
 var YetaWF_TawkTo;
 (function (YetaWF_TawkTo) {
-    var SkinTawkToModule = /** @class */ (function () {
-        function SkinTawkToModule() {
-        }
-        /**
-         * Initializes the module instance.
-         */
-        SkinTawkToModule.prototype.init = function () {
-            var tawkto = this;
+    var SkinTawkToModule = /** @class */ (function (_super) {
+        __extends(SkinTawkToModule, _super);
+        function SkinTawkToModule(id) {
+            var _this = _super.call(this, id, SkinTawkToModule.SELECTOR, null) || this;
             $YetaWF.registerContentChange(function (addonGuid, on) {
                 if (addonGuid === SkinTawkToModule.MODULEGUID) {
                     SkinTawkToModule.on = on;
                 }
             });
             $YetaWF.registerNewPage(false, function (url) {
-                tawkto.showInvite(SkinTawkToModule.on);
+                _this.showInvite(SkinTawkToModule.on);
                 if (SkinTawkToModule.on) {
                     // Functionality not available in Tawk.to to record a new page
                     //if (typeof ActivEngage !== "undefined" && ActivEngage !== undefined) {
@@ -28,7 +37,8 @@ var YetaWF_TawkTo;
                     //}
                 }
             });
-        };
+            return _this;
+        }
         /**
          * Show/hide chat invite
          * @param True to show, false to hide.
@@ -59,9 +69,9 @@ var YetaWF_TawkTo;
                 }
                 // now check if page is explicitly excluded
                 if (exclCss && invite) {
-                    csses = exclCss.split(" ");
+                    var csses = exclCss.split(" ");
                     for (var _a = 0, csses_2 = csses; _a < csses_2.length; _a++) {
-                        css = csses_2[_a];
+                        var css = csses_2[_a];
                         if ($YetaWF.elementHasClass(body, css)) {
                             invite = false;
                             break;
@@ -80,12 +90,24 @@ var YetaWF_TawkTo;
                 Tawk_API.hideWidget();
             }
         };
+        SkinTawkToModule.SELECTOR = ".Softelvdm_Documentation_FileDocumentShow";
         SkinTawkToModule.MODULEGUID = "c063e089-aff3-44e4-ac44-063911853579";
         SkinTawkToModule.on = true;
         return SkinTawkToModule;
-    }());
-    var tawkto = new SkinTawkToModule();
-    tawkto.init();
+    }(YetaWF.ModuleBaseNoDataImpl));
+    YetaWF_TawkTo.SkinTawkToModule = SkinTawkToModule;
+    $YetaWF.registerCustomEventHandlerDocument("print_before", null, function (ev) {
+        if (Tawk_API) {
+            Tawk_API.hideWidget();
+        }
+        return false;
+    });
+    $YetaWF.registerCustomEventHandlerDocument("print_after", null, function (ev) {
+        if (Tawk_API) {
+            Tawk_API.showWidget();
+        }
+        return false;
+    });
 })(YetaWF_TawkTo || (YetaWF_TawkTo = {}));
 
 //# sourceMappingURL=SkinTawkTo.js.map

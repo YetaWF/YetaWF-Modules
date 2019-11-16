@@ -1,9 +1,7 @@
 ﻿/* Copyright © 2019 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Identity#License */
 
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using YetaWF.Core.Controllers;
-using YetaWF.Core.DataProvider;
 using YetaWF.Core.Identity;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Modules.Identity.Addons;
@@ -21,8 +19,8 @@ namespace YetaWF.Modules.Identity.Controllers {
         [AllowPost]
         [ConditionalAntiForgeryToken]
         [ResourceAuthorize(Info.Resource_AllowUserIdAjax)]
-        public async Task<ActionResult> UsersBrowse_GridData(string fieldPrefix, int skip, int take, List<DataProviderSortInfo> sorts, List<DataProviderFilterInfo> filters) {
-            return await GridPartialViewAsync(UserIdEditComponent.GetGridAllUsersModel(false), fieldPrefix, skip, take, sorts, filters);
+        public async Task<ActionResult> UsersBrowse_GridData(GridPartialViewData gridPVData) {
+            return await GridPartialViewAsync(UserIdEditComponent.GetGridAllUsersModel(false), gridPVData);
         }
     }
 }

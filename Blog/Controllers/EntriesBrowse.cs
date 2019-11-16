@@ -137,8 +137,8 @@ namespace YetaWF.Modules.Blog.Controllers {
 
         [AllowPost]
         [ConditionalAntiForgeryToken]
-        public async Task<ActionResult> EntriesBrowse_GridData(string fieldPrefix, int skip, int take, List<DataProviderSortInfo> sorts, List<DataProviderFilterInfo> filters, int blogCategory) {
-            return await GridPartialViewAsync(GetGridModel(blogCategory), fieldPrefix, skip, take, sorts, filters);
+        public async Task<ActionResult> EntriesBrowse_GridData(GridPartialViewData gridPVData, int blogCategory) {
+            return await GridPartialViewAsync(GetGridModel(blogCategory), gridPVData);
         }
 
         [AllowPost]

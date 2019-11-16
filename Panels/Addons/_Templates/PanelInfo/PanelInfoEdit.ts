@@ -58,34 +58,34 @@ namespace YetaWF_Panels {
 
             // Apply button click
             $YetaWF.registerEventHandler(this.Apply, "click", null, (ev: MouseEvent): boolean => {
-                $YetaWF.Forms.submitTemplate(this.Control, true, PanelInfoEditComponent.TEMPLATENAME, YConfigs.YetaWF_Panels.Action_Apply, this.getPanelIndex().toString());
+                $YetaWF.Forms.submitTemplate(this.Control, true, PanelInfoEditComponent.TEMPLATENAME, YetaWF.PanelAction.Apply, this.getPanelIndex().toString());
                 return false;
             });
             // << button click
             $YetaWF.registerEventHandler(this.Up, "click", null, (ev: MouseEvent): boolean => {
-                $YetaWF.Forms.submitTemplate(this.Control, true, PanelInfoEditComponent.TEMPLATENAME, YConfigs.YetaWF_Panels.Action_MoveLeft, this.getPanelIndex().toString());
+                $YetaWF.Forms.submitTemplate(this.Control, true, PanelInfoEditComponent.TEMPLATENAME, YetaWF.PanelAction.MoveLeft, this.getPanelIndex().toString());
                 return false;
             });
             // >> button click
             $YetaWF.registerEventHandler(this.Down, "click", null, (ev: MouseEvent): boolean => {
-                $YetaWF.Forms.submitTemplate(this.Control, true, PanelInfoEditComponent.TEMPLATENAME, YConfigs.YetaWF_Panels.Action_MoveRight, this.getPanelIndex().toString());
+                $YetaWF.Forms.submitTemplate(this.Control, true, PanelInfoEditComponent.TEMPLATENAME, YetaWF.PanelAction.MoveRight, this.getPanelIndex().toString());
                 return false;
             });
             // delete button click
             $YetaWF.registerEventHandler(this.Delete, "click", null, (ev: MouseEvent): boolean => {
                 $YetaWF.alertYesNo(YLocs.YetaWF_Panels.RemovePanelConfirm, YLocs.YetaWF_Panels.RemovePanelTitle, (): void => {
-                    $YetaWF.Forms.submitTemplate(this.Control, false, PanelInfoEditComponent.TEMPLATENAME, YConfigs.YetaWF_Panels.Action_Remove, this.getPanelIndex().toString());
+                    $YetaWF.Forms.submitTemplate(this.Control, false, PanelInfoEditComponent.TEMPLATENAME, YetaWF.PanelAction.Remove, this.getPanelIndex().toString());
                 });
                 return false;
             });
             // Insert button click
             $YetaWF.registerEventHandler(this.Insert, "click", null, (ev: MouseEvent): boolean => {
-                $YetaWF.Forms.submitTemplate(this.Control, true, PanelInfoEditComponent.TEMPLATENAME, YConfigs.YetaWF_Panels.Action_Insert, this.getPanelIndex().toString());
+                $YetaWF.Forms.submitTemplate(this.Control, true, PanelInfoEditComponent.TEMPLATENAME, YetaWF.PanelAction.Insert, this.getPanelIndex().toString());
                 return false;
             });
             // Add button click
             $YetaWF.registerEventHandler(this.Add, "click", null, (ev: MouseEvent): boolean => {
-                $YetaWF.Forms.submitTemplate(this.Control, true, PanelInfoEditComponent.TEMPLATENAME, YConfigs.YetaWF_Panels.Action_Add, this.getPanelIndex().toString());
+                $YetaWF.Forms.submitTemplate(this.Control, true, PanelInfoEditComponent.TEMPLATENAME, YetaWF.PanelAction.Add, this.getPanelIndex().toString());
                 return false;
             });
         }

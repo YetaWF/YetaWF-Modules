@@ -73,7 +73,7 @@ namespace YetaWF.Modules.ComponentsHTML {
             if (string.IsNullOrWhiteSpace(menuContents)) return null;
 
             // <ul>
-            TagBuilder ulTag = new TagBuilder("ul");
+            YTagBuilder ulTag = new YTagBuilder("ul");
             ulTag.AddCssClass(string.Format("t_lvl{0}", level));
             if (renderEngine == ModuleAction.RenderEngineEnum.BootstrapSmartMenu)
                 ulTag.AddCssClass("dropdown-menu");
@@ -83,13 +83,13 @@ namespace YetaWF.Modules.ComponentsHTML {
             }
             if (!string.IsNullOrWhiteSpace(cssClass))
                 ulTag.AddCssClass(cssClass);
-            hb.Append(ulTag.ToString(TagRenderMode.StartTag));
+            hb.Append(ulTag.ToString(YTagRenderMode.StartTag));
 
             // <li>....</li>
             hb.Append(menuContents);
 
             // </ul>
-            hb.Append(ulTag.ToString(TagRenderMode.EndTag));
+            hb.Append(ulTag.ToString(YTagRenderMode.EndTag));
 
             return hb.ToString();
         }
@@ -102,12 +102,12 @@ namespace YetaWF.Modules.ComponentsHTML {
             if (subGuid != null) {
                 // megamenu content
                 // <li>
-                TagBuilder tag = new TagBuilder("li");
+                YTagBuilder tag = new YTagBuilder("li");
                 tag.AddCssClass("t_megamenu_content");
                 if (!string.IsNullOrWhiteSpace(liCss)) tag.AddCssClass(liCss);
                 if (renderEngine == ModuleAction.RenderEngineEnum.BootstrapSmartMenu)
                     tag.AddCssClass("nav-item");
-                hb.Append(tag.ToString(TagRenderMode.StartTag));
+                hb.Append(tag.ToString(YTagRenderMode.StartTag));
 
                 ModuleDefinition subMod = await ModuleDefinition.LoadAsync((Guid)subGuid, AllowNone: true);
                 if (subMod != null) {
@@ -138,7 +138,7 @@ namespace YetaWF.Modules.ComponentsHTML {
                             subMenuContents = await RenderMenuAsync(htmlHelper, menuEntry.SubMenu, subModGuid, menuEntry.CssClass, renderMode, renderEngine, level);
                             if (!string.IsNullOrWhiteSpace(subMenuContents)) {
                                 // <li>
-                                TagBuilder tag = new TagBuilder("li");
+                                YTagBuilder tag = new YTagBuilder("li");
                                 if (renderEngine == ModuleAction.RenderEngineEnum.BootstrapSmartMenu) {
                                     tag.AddCssClass("dropdown");
                                     tag.AddCssClass("nav-item");
@@ -146,7 +146,7 @@ namespace YetaWF.Modules.ComponentsHTML {
                                 if (subModGuid != null)
                                     tag.AddCssClass("t_megamenu_hassub");
                                 if (!string.IsNullOrWhiteSpace(liCss)) tag.AddCssClass(liCss);
-                                hb.Append(tag.ToString(TagRenderMode.StartTag));
+                                hb.Append(tag.ToString(YTagRenderMode.StartTag));
 
                                 string menuContents = await CoreRendering.RenderActionAsync(menuEntry, renderMode, null, RenderEngine: renderEngine, HasSubmenu: true, BootstrapSmartMenuLevel: level);
                                 hb.Append(menuContents);
@@ -161,14 +161,14 @@ namespace YetaWF.Modules.ComponentsHTML {
 
                         if (!rendered) {
                             // <li>
-                            TagBuilder tag = new TagBuilder("li");
+                            YTagBuilder tag = new YTagBuilder("li");
                             //if (!menuEntry.Enabled)
                             //    tag.MergeAttribute("disabled", "disabled");
                             if (!string.IsNullOrWhiteSpace(liCss)) tag.AddCssClass(liCss);
                             if (renderEngine == ModuleAction.RenderEngineEnum.BootstrapSmartMenu) {
                                 tag.AddCssClass("nav-item");
                             }
-                            hb.Append(tag.ToString(TagRenderMode.StartTag));
+                            hb.Append(tag.ToString(YTagRenderMode.StartTag));
 
                             string menuContents = await CoreRendering.RenderActionAsync(menuEntry, renderMode, null, RenderEngine: renderEngine, BootstrapSmartMenuLevel: level);
                             hb.Append(menuContents);

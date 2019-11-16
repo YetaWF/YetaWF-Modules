@@ -11,6 +11,7 @@ namespace YetaWF_Menus {
     export interface IPackageLocs {
         ChangedEntry: string;
         NewEntry: string;
+        NewEntryText: string;
     }
 
     enum MenuEntryType {
@@ -20,6 +21,7 @@ namespace YetaWF_Menus {
     }
     interface Data {
         EntryType: MenuEntryType;
+        Separator: boolean;
         Text: string;
         Url: string;
         SubModule: string;
@@ -126,10 +128,10 @@ namespace YetaWF_Menus {
 
             $YetaWF.registerEventHandler(this.AddButton, "click", null, (ev: MouseEvent): boolean => {
                 if (this.ActiveEntry && this.changeSelection()) {
-                    var li = this.Tree.addEntry(this.ActiveEntry, this.Setup.NewEntry.Text, this.Setup.NewEntry);
+                    var li = this.Tree.addEntry(this.ActiveEntry, YLocs.YetaWF_Menus.NewEntryText, this.Setup.NewEntry as any as YetaWF_ComponentsHTML.TreeEntry);
                     this.Tree.setSelect(li);
                     this.ActiveEntry = this.Tree.getSelect();
-                    this.ActiveData = this.Tree.getSelectData();
+                    this.ActiveData = this.Tree.getSelectData() as Data|null;
                     this.ActiveNew = true;
                     this.update();
                 }
@@ -137,10 +139,10 @@ namespace YetaWF_Menus {
             });
             $YetaWF.registerEventHandler(this.InsertButton, "click", null, (ev: MouseEvent): boolean => {
                 if (this.ActiveEntry && this.changeSelection()) {
-                    var li = this.Tree.insertEntry(this.ActiveEntry, this.Setup.NewEntry.Text, this.Setup.NewEntry);
+                    var li = this.Tree.insertEntry(this.ActiveEntry, YLocs.YetaWF_Menus.NewEntryText, this.Setup.NewEntry as any as YetaWF_ComponentsHTML.TreeEntry);
                     this.Tree.setSelect(li);
                     this.ActiveEntry = this.Tree.getSelect();
-                    this.ActiveData = this.Tree.getSelectData();
+                    this.ActiveData = this.Tree.getSelectData() as Data | null;
                     this.ActiveNew = true;
                     this.update();
                 }
@@ -175,7 +177,7 @@ namespace YetaWF_Menus {
                         this.Tree.clearSelect();
                     }
                     this.ActiveEntry = this.Tree.getSelect();
-                    this.ActiveData = this.Tree.getSelectData();
+                    this.ActiveData = this.Tree.getSelectData() as Data | null;
                     this.ActiveNew = false;
 
                     this.sendEntireMenu();
@@ -196,7 +198,7 @@ namespace YetaWF_Menus {
                         // this.Tree.expand(li);
                         this.Tree.setSelect(li);
                         this.ActiveEntry = this.Tree.getSelect();
-                        this.ActiveData = this.Tree.getSelectData();
+                        this.ActiveData = this.Tree.getSelectData() as Data | null;
                         this.ActiveNew = false;
                     }
                     this.update();
@@ -208,15 +210,8 @@ namespace YetaWF_Menus {
                 return false;
             });
 
-            this.EntryType.Control.addEventListener("dropdownlist_change", (ev: Event): void => {
-                var data = this.Tree.getSelectData() as Data | null;
-                if (data)
-                    data.EntryType = Number(this.EntryType.value);
-                this.update();
-            });
-
             this.ActiveEntry = this.Tree.getSelect();
-            this.ActiveData = this.Tree.getSelectData();
+            this.ActiveData = this.Tree.getSelectData() as Data | null;
             this.ActiveNew = false;
             this.update();
         }
@@ -233,7 +228,7 @@ namespace YetaWF_Menus {
         private addHierarchyEntry(hierarchy: DataHierarchy[], liElem: HTMLLIElement): void {
 
             for (; ;) {
-                var data = this.Tree.getElementData(liElem);
+                var data = this.Tree.getElementData(liElem) as any as Data;
                 var h = data as DataHierarchy;
                 h.SubMenu = [];
                 hierarchy.push(h);
@@ -251,27 +246,51 @@ namespace YetaWF_Menus {
         }
 
         private getFormControls(): void {
-            this.EntryType = YetaWF.ComponentBaseDataImpl.getControlFromSelector("select[name='ModAction.EntryType']", YetaWF_ComponentsHTML.DropDownListEditComponent.SELECTOR, [this.Details]);
-            this.Url = YetaWF.ComponentBaseDataImpl.getControlFromSelector("input[name='ModAction.Url']", YetaWF_ComponentsHTML.UrlEditComponent.SELECTOR, [this.Details]);
-            this.SubModule = YetaWF.ComponentBaseDataImpl.getControlFromSelector("[name='ModAction.SubModule']", YetaWF_ComponentsHTML.ModuleSelectionEditComponent.SELECTOR, [this.Details]);
-            this.MenuText = YetaWF.ComponentBaseDataImpl.getControlFromSelector("input[name='ModAction.MenuText']", YetaWF_ComponentsHTML.MultiStringEditComponent.SELECTOR, [this.Details]);
-            this.LinkText = YetaWF.ComponentBaseDataImpl.getControlFromSelector("input[name='ModAction.LinkText']", YetaWF_ComponentsHTML.MultiStringEditComponent.SELECTOR, [this.Details]);
-            this.ImageUrlFinal = $YetaWF.getElement1BySelector("input[name='ModAction.ImageUrlFinal']", [this.Details]) as HTMLInputElement;
-            this.Tooltip = YetaWF.ComponentBaseDataImpl.getControlFromSelector("input[name='ModAction.Tooltip']", YetaWF_ComponentsHTML.MultiStringEditComponent.SELECTOR, [this.Details]);
-            this.Legend = YetaWF.ComponentBaseDataImpl.getControlFromSelector("input[name='ModAction.Legend']", YetaWF_ComponentsHTML.MultiStringEditComponent.SELECTOR, [this.Details]);
-            this.Enabled = $YetaWF.getElement1BySelector("input[name='ModAction.Enabled']", [this.Details]) as HTMLInputElement;
-            this.CssClass = $YetaWF.getElement1BySelector("input[name='ModAction.CssClass']", [this.Details]) as HTMLInputElement;
-            this.Style = YetaWF.ComponentBaseDataImpl.getControlFromSelector("select[name='ModAction.Style']", YetaWF_ComponentsHTML.DropDownListEditComponent.SELECTOR, [this.Details]);
-            this.Mode = YetaWF.ComponentBaseDataImpl.getControlFromSelector("select[name='ModAction.Mode']", YetaWF_ComponentsHTML.DropDownListEditComponent.SELECTOR, [this.Details]);
-            this.Category = YetaWF.ComponentBaseDataImpl.getControlFromSelector("select[name='ModAction.Category']", YetaWF_ComponentsHTML.DropDownListEditComponent.SELECTOR, [this.Details]);
-            this.LimitToRole = YetaWF.ComponentBaseDataImpl.getControlFromSelector("select[name='ModAction.LimitToRole']", YetaWF_ComponentsHTML.DropDownListEditComponent.SELECTOR, [this.Details]);
-            this.AuthorizationIgnore = $YetaWF.getElement1BySelector("input[name='ModAction.AuthorizationIgnore']", [this.Details]) as HTMLInputElement;
-            this.ConfirmationText = YetaWF.ComponentBaseDataImpl.getControlFromSelector("input[name='ModAction.ConfirmationText']", YetaWF_ComponentsHTML.MultiStringEditComponent.SELECTOR, [this.Details]);
-            this.PleaseWaitText = YetaWF.ComponentBaseDataImpl.getControlFromSelector("input[name='ModAction.PleaseWaitText']", YetaWF_ComponentsHTML.MultiStringEditComponent.SELECTOR, [this.Details]);
-            this.SaveReturnUrl = $YetaWF.getElement1BySelector("input[name='ModAction.SaveReturnUrl']", [this.Details]) as HTMLInputElement;
-            this.AddToOriginList = $YetaWF.getElement1BySelector("input[name='ModAction.AddToOriginList']", [this.Details]) as HTMLInputElement;
-            this.NeedsModuleContext = $YetaWF.getElement1BySelector("input[name='ModAction.NeedsModuleContext']", [this.Details]) as HTMLInputElement;
-            this.DontFollow = $YetaWF.getElement1BySelector("input[name='ModAction.DontFollow']", [this.Details]) as HTMLInputElement;
+            this.EntryType = YetaWF.ComponentBaseDataImpl.getControlFromSelector("select[name='ModEntry.EntryType']", YetaWF_ComponentsHTML.DropDownListEditComponent.SELECTOR, [this.Details]);
+            this.Url = YetaWF.ComponentBaseDataImpl.getControlFromSelector("input[name='ModEntry.Url']", YetaWF_ComponentsHTML.UrlEditComponent.SELECTOR, [this.Details]);
+            this.SubModule = YetaWF.ComponentBaseDataImpl.getControlFromSelector("[name='ModEntry.SubModule']", YetaWF_ComponentsHTML.ModuleSelectionEditComponent.SELECTOR, [this.Details]);
+            this.MenuText = YetaWF.ComponentBaseDataImpl.getControlFromSelector("input[name='ModEntry.MenuText']", YetaWF_ComponentsHTML.MultiStringEditComponent.SELECTOR, [this.Details]);
+            this.LinkText = YetaWF.ComponentBaseDataImpl.getControlFromSelector("input[name='ModEntry.LinkText']", YetaWF_ComponentsHTML.MultiStringEditComponent.SELECTOR, [this.Details]);
+            this.ImageUrlFinal = $YetaWF.getElement1BySelector("input[name='ModEntry.ImageUrlFinal']", [this.Details]) as HTMLInputElement;
+            this.Tooltip = YetaWF.ComponentBaseDataImpl.getControlFromSelector("input[name='ModEntry.Tooltip']", YetaWF_ComponentsHTML.MultiStringEditComponent.SELECTOR, [this.Details]);
+            this.Legend = YetaWF.ComponentBaseDataImpl.getControlFromSelector("input[name='ModEntry.Legend']", YetaWF_ComponentsHTML.MultiStringEditComponent.SELECTOR, [this.Details]);
+            this.Enabled = $YetaWF.getElement1BySelector("input[name='ModEntry.Enabled']", [this.Details]) as HTMLInputElement;
+            this.CssClass = $YetaWF.getElement1BySelector("input[name='ModEntry.CssClass']", [this.Details]) as HTMLInputElement;
+            this.Style = YetaWF.ComponentBaseDataImpl.getControlFromSelector("select[name='ModEntry.Style']", YetaWF_ComponentsHTML.DropDownListEditComponent.SELECTOR, [this.Details]);
+            this.Mode = YetaWF.ComponentBaseDataImpl.getControlFromSelector("select[name='ModEntry.Mode']", YetaWF_ComponentsHTML.DropDownListEditComponent.SELECTOR, [this.Details]);
+            this.Category = YetaWF.ComponentBaseDataImpl.getControlFromSelector("select[name='ModEntry.Category']", YetaWF_ComponentsHTML.DropDownListEditComponent.SELECTOR, [this.Details]);
+            this.LimitToRole = YetaWF.ComponentBaseDataImpl.getControlFromSelector("select[name='ModEntry.LimitToRole']", YetaWF_ComponentsHTML.DropDownListEditComponent.SELECTOR, [this.Details]);
+            this.AuthorizationIgnore = $YetaWF.getElement1BySelector("input[name='ModEntry.AuthorizationIgnore']", [this.Details]) as HTMLInputElement;
+            this.ConfirmationText = YetaWF.ComponentBaseDataImpl.getControlFromSelector("input[name='ModEntry.ConfirmationText']", YetaWF_ComponentsHTML.MultiStringEditComponent.SELECTOR, [this.Details]);
+            this.PleaseWaitText = YetaWF.ComponentBaseDataImpl.getControlFromSelector("input[name='ModEntry.PleaseWaitText']", YetaWF_ComponentsHTML.MultiStringEditComponent.SELECTOR, [this.Details]);
+            this.SaveReturnUrl = $YetaWF.getElement1BySelector("input[name='ModEntry.SaveReturnUrl']", [this.Details]) as HTMLInputElement;
+            this.AddToOriginList = $YetaWF.getElement1BySelector("input[name='ModEntry.AddToOriginList']", [this.Details]) as HTMLInputElement;
+            this.NeedsModuleContext = $YetaWF.getElement1BySelector("input[name='ModEntry.NeedsModuleContext']", [this.Details]) as HTMLInputElement;
+            this.DontFollow = $YetaWF.getElement1BySelector("input[name='ModEntry.DontFollow']", [this.Details]) as HTMLInputElement;
+
+            $YetaWF.registerCustomEventHandler(this.EntryType, "dropdownlist_change", (ev: Event): void => {
+                if (this.ActiveData) {
+                    let data = this.ActiveData;
+                    data.EntryType = Number(this.EntryType.value);
+                    switch (data.EntryType) {
+                        case MenuEntryType.Entry:
+                            data.Separator = false;
+                            break;
+                        case MenuEntryType.Separator:
+                            data.Url = "";
+                            data.SubModule = "";
+                            data.Separator = true;
+                            break;
+                        case MenuEntryType.Parent:
+                            data.Url = "";
+                            data.SubModule = "";
+                            data.Separator = false;
+                            break;
+                    }
+                    this.ActiveData = data;
+                    this.update();
+                }
+            });
         }
 
         private changeSelection(): boolean {
@@ -290,7 +309,7 @@ namespace YetaWF_Menus {
             // set new selection
             if (this.ActiveEntry !== this.Tree.getSelect()) {
                 this.ActiveEntry = this.Tree.getSelect();
-                this.ActiveData = this.Tree.getSelectData();
+                this.ActiveData = this.Tree.getSelectData() as any as Data;
                 this.ActiveNew = false;
                 this.update();
             }
@@ -299,7 +318,7 @@ namespace YetaWF_Menus {
 
         private hasChanged(): boolean {
             if (this.ActiveEntry && this.ActiveData) {
-                var data = this.ActiveData;
+                let data = this.ActiveData;
                 if (Number(this.EntryType.value) !== data.EntryType) return true;
                 if (!$YetaWF.stringCompare(this.Url.value, data.Url)) return true;
                 if (!$YetaWF.stringCompare(this.SubModule.value, data.SubModule)) return true;
@@ -348,10 +367,11 @@ namespace YetaWF_Menus {
             data.AddToOriginList = this.AddToOriginList.checked;
             data.NeedsModuleContext = this.NeedsModuleContext.checked;
             data.DontFollow = this.DontFollow.checked;
+            this.Tree.setSelectData(data as any as YetaWF_ComponentsHTML.TreeEntry);
         }
 
         private update(): void {
-            var data = this.Tree.getSelectData() as Data | null;
+            var data = this.ActiveData;
             if (data) {
                 this.EntryType.value = data.EntryType.toString();
                 this.Url.value = data.Url;

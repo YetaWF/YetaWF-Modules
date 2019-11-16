@@ -13,6 +13,7 @@ namespace YetaWF.Modules.Caching.DataProvider {
 
     /// <summary>
     /// Redis locking provider.
+    /// An instance of this class is instantiated during application startup and registers low-level data providers implementing locking using Redis.
     /// </summary>
     /// <remarks>
     /// Uses a Redis server for locking.</remarks>

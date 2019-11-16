@@ -5,6 +5,8 @@ using YetaWF.Core.Models.Attributes;
 using System.Collections.Generic;
 using YetaWF.Core.Models;
 using System.Linq;
+using YetaWF.Core.Components;
+using System.Threading.Tasks;
 #if MVC6
 using Microsoft.AspNetCore.Mvc;
 #else
@@ -17,17 +19,13 @@ namespace YetaWF.Modules.DevTests.Controllers {
 
         public TemplateTreeModuleController() { }
 
-        public class EntryElement {
+        public class EntryElement : TreeEntry {
 
             [Caption("Text"), Description("Entries")]
             [UIHint("String"), ReadOnly]
-            public string Text { get; set; }
+            public override string Text { get; set; }
 
             public string OtherData { get; set; }
-
-            public int Id { get; set; }
-            public bool Collapsed { get; set; }
-            public List<EntryElement> SubEntries { get; set; }
 
             public EntryElement() { }
         }
@@ -40,20 +38,25 @@ namespace YetaWF.Modules.DevTests.Controllers {
 
             public TreeDefinition Entries_TreeDefinition { get; set; }
 
-            public Model() {
-                Entries_TreeDefinition = new TreeDefinition {
-                    DragDrop = true,
-                    RecordType = typeof(EntryElement),
-                    ShowHeader = true,
-                    UseSkinFormatting = true,
-                };
-            }
+            public Model() { }
+        }
+
+        private TreeDefinition GetTreeModel() {
+            return new TreeDefinition {
+                DragDrop = true,
+                RecordType = typeof(EntryElement),
+                ShowHeader = true,
+                UseSkinFormatting = true,
+                JSONData = true,
+                AjaxUrl = GetActionUrl(nameof(TemplateTree_GetRecords)),
+            };
         }
 
         [AllowGet]
         public ActionResult TemplateTree() {
             Model model = new Model {
                 Entries = GetGeneratedData(),
+                Entries_TreeDefinition = GetTreeModel(),
             };
             return View(model);
         }
@@ -64,7 +67,7 @@ namespace YetaWF.Modules.DevTests.Controllers {
                 list.Add(new EntryElement {
                     Text = $"Entry {i}",
                     OtherData = $"Otherdata {i}",
-                    SubEntries = GetSubEntries(2),
+                    SubEntries = (from s in GetSubEntries(2) select (TreeEntry)s).ToList(),
                 });
             }
             return list;
@@ -76,14 +79,36 @@ namespace YetaWF.Modules.DevTests.Controllers {
 
             List<EntryElement> list = new List<EntryElement>();
             for (int i = 0; i < 1 + level ; ++i) {
+                List<EntryElement> subs = GetSubEntries(level);
                 list.Add(new EntryElement {
                     Text = $"Entry {i}",
                     OtherData = $"Otherdata {i}",
-                    SubEntries = GetSubEntries(level),
-                    Collapsed = level > 0,
+                    SubEntries = (subs != null) ? (from s in subs select (TreeEntry)s).ToList() : null,
+                    Collapsed = true,
+                    UrlNew = level == 1 ? "https://ubackup.io" : null,
+                    UrlContent = level == 0 ? "https://yetawf.com/Admin/Bar/Dashboard" : null,
+                    DynamicSubEntries = level == 0,
                 });
             }
             return list;
+        }
+        private List<EntryElement> GetDynamicSubEntries() {
+            List<EntryElement> list = new List<EntryElement>();
+            for (int i = 0; i < 10; ++i) {
+                list.Add(new EntryElement {
+                    Text = $"Entry {i}",
+                    OtherData = $"Otherdata {i}",
+                    Collapsed = true,
+                    UrlContent = "https://yetawf.com/Admin/Bar/Dashboard",
+                    DynamicSubEntries = (i % 2) == 0,
+                });
+            }
+            return list;
+        }
+        [AllowPost]
+        [ConditionalAntiForgeryToken]
+        public async Task<ActionResult> TemplateTree_GetRecords(EntryElement data) {
+            return await TreePartialViewAsync(GetTreeModel(), GetDynamicSubEntries());
         }
     }
 }

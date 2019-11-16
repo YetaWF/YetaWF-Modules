@@ -20,13 +20,6 @@ namespace YetaWF.Modules.BootstrapCarousel.Addons.Templates {
             ScriptManager scripts = manager.ScriptManager;
             string areaName = AreaRegistration.CurrentPackage.AreaName;
 
-            scripts.AddConfigOption(areaName, "Action_Apply", CarouselInfo.CarouselAction.Apply);
-            scripts.AddConfigOption(areaName, "Action_MoveLeft", CarouselInfo.CarouselAction.MoveLeft);
-            scripts.AddConfigOption(areaName, "Action_MoveRight", CarouselInfo.CarouselAction.MoveRight);
-            scripts.AddConfigOption(areaName, "Action_Add", CarouselInfo.CarouselAction.Add);
-            scripts.AddConfigOption(areaName, "Action_Insert", CarouselInfo.CarouselAction.Insert);
-            scripts.AddConfigOption(areaName, "Action_Remove", CarouselInfo.CarouselAction.Remove);
-
             scripts.AddLocalization(areaName, "RemoveConfirm", this.__ResStr("removeConfirm", "Are you sure you want to remove this image?"));
             scripts.AddLocalization(areaName, "RemoveTitle", this.__ResStr("removeTitle", "Remove Image"));
 

@@ -146,10 +146,10 @@
     <Compile Include="Controllers\ResetPassword.cs" />
     <Compile Include="Controllers\SelectTwoStepSetup.cs" />
     <Compile Include="Controllers\SelectTwoStepAuth.cs" />
+    <Compile Include="Controllers\Support\HTML\RolesSelector.cs" />
+    <Compile Include="Controllers\Support\HTML\UserRoles.cs" />
     <Compile Include="Controllers\Support\ListOfUserNames.cs" />
-    <Compile Include="Controllers\Support\UserRoles.cs" />
     <Compile Include="Controllers\Support\ResourceRoles.cs" />
-    <Compile Include="Controllers\Support\RolesSelector.cs" />
     <Compile Include="Controllers\Support\UserId.cs" />
     <Compile Include="Controllers\TemplateListOfUserNames.cs" />
     <Compile Include="Controllers\TemplateRolesSelector.cs" />

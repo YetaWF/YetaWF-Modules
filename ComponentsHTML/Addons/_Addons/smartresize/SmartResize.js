@@ -28,7 +28,8 @@
             else if (execAsap)
                 func.apply(obj, args);
 
-            timeout = setTimeout(delayed, threshold || 100);
+            if (!$YetaWF.isPrinting)
+                timeout = setTimeout(delayed, threshold || 100);
         };
     }
     // smartresize

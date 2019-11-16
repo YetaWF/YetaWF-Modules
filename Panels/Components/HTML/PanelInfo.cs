@@ -56,7 +56,6 @@ namespace YetaWF.Modules.Panels.Components {
                 foreach (PanelInfo.PanelEntry panel in model.Panels) {
                     if (model.Panels[panelIndex].IsAuthorizedAsync().Result) {
                         hb.Append(PropertyListComponentBase.RenderTabPaneStart(DivId, tabIndex, "t_panel"));
-                        //TODO: is this needed? hb.Append(PropertyListComponentBase.RenderHidden("Index", tabIndex));
                         ModuleDefinition mod = await model.Panels[panelIndex].GetModuleAsync();
                         if (mod != null) {
                             mod.ShowTitle = false;

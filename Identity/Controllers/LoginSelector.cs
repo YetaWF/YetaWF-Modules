@@ -4,10 +4,10 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using YetaWF.Core.Controllers;
 using YetaWF.Core.Identity;
-using YetaWF.Core.Models;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Serializers;
 using YetaWF.Modules.Identity.Modules;
+using YetaWF.Core.Support;
 #if MVC6
 using Microsoft.AspNetCore.Mvc;
 #else
@@ -43,7 +43,7 @@ namespace YetaWF.Modules.Identity.Controllers {
         [AllowGet]
         public ActionResult LoginSelector() {
 #if !DEBUG
-            if (Manager.Deployed && !Manager.HasSuperUserRole) return new EmptyResult();
+            if (YetaWFManager.Deployed && !Manager.HasSuperUserRole) return new EmptyResult();
 #endif
             if (Manager.RenderStaticPage) return new EmptyResult();
 

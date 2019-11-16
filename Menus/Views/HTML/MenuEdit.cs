@@ -3,7 +3,6 @@
 using System.Threading.Tasks;
 using YetaWF.Core.Components;
 using YetaWF.Core.Localize;
-using YetaWF.Core.Modules;
 using YetaWF.Core.Packages;
 using YetaWF.Core.Support;
 using YetaWF.Modules.ComponentsHTML.Components;
@@ -23,7 +22,7 @@ namespace YetaWF.Modules.Menus.Views {
             public string TreeId { get; set; }
             public string DetailsId { get; set; }
             public string AjaxUrl { get; set; }
-            public ModuleAction NewEntry { get; set; }
+            public MenuEditModuleController.MenuEntry NewEntry { get; set; }
         }
 
         public async Task<string> RenderViewAsync(MenuEditModule module, MenuEditModuleController.MenuEditModel model) {
@@ -76,7 +75,7 @@ namespace YetaWF.Modules.Menus.Views {
             hb.Append($@"
 {await HtmlHelper.ForEditAsync(model, nameof(model.MenuGuid))}
 {await HtmlHelper.ForEditAsync(model, nameof(model.MenuVersion))}
-{await HtmlHelper.ForEditAsync(model, nameof(model.ModAction))}");
+{await HtmlHelper.ForEditAsync(model, nameof(model.ModEntry))}");
             return hb.ToString();
 
         }

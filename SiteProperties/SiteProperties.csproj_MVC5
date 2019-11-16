@@ -73,13 +73,10 @@
     <Compile Include="Models\SQLDataProvider.cs" />
     <Compile Include="Startup\Info.cs" />
     <Compile Include="Startup\AreaRegistration.cs" />
-    <Compile Include="Controllers\LockedStatus.cs" />
     <Compile Include="Controllers\SiteProperties.cs" />
     <Compile Include="Models\SiteDefinitionDataProvider.cs" />
-    <Compile Include="Modules\LockedStatus.cs" />
     <Compile Include="Modules\SiteProperties.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Views\HTML\LockedStatus.cs" />
     <Compile Include="Views\HTML\SiteProperties.cs" />
   </ItemGroup>
   <ItemGroup>

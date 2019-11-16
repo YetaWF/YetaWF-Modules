@@ -1,30 +1,36 @@
 "use strict";
 /* Copyright � 2019 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/PageEdit#License */
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = function (d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+        return extendStatics(d, b);
+    };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
 var YetaWF_PageEdit;
 (function (YetaWF_PageEdit) {
-    var PageControlModule = /** @class */ (function () {
-        function PageControlModule() {
-            this.Module = null;
-            this.FadeTime = 250;
-        }
-        PageControlModule.prototype.init = function () {
-            var _this = this;
-            $YetaWF.addWhenReadyOnce(function () {
-                _this.Module = $YetaWF.getElementByIdCond(YConfigs.YetaWF_PageEdit.PageControlMod);
-                if (_this.Module) {
-                    // Page icon
-                    var pagebutton = $YetaWF.getElementById("yPageControlButton");
-                    $YetaWF.registerEventHandler(pagebutton, "click", null, function (ev) {
-                        _this.toggleControlPanel();
-                        return false;
-                    });
-                    // on page load, show control panel if wanted
-                    if (YVolatile.Basics.PageControlVisible) {
-                        _this.Module.style.display = "block";
-                        ComponentsHTMLHelper.processPropertyListVisible(_this.Module);
-                    }
-                }
+    var PageControlModule = /** @class */ (function (_super) {
+        __extends(PageControlModule, _super);
+        function PageControlModule(id) {
+            var _this = _super.call(this, id, PageControlModule.SELECTOR, null) || this;
+            _this.FadeTime = 250;
+            _this.PageControlMod = $YetaWF.getElementById(YConfigs.YetaWF_PageEdit.PageControlMod);
+            var pagebutton = $YetaWF.getElementById("tid_pagecontrolbutton");
+            $YetaWF.registerEventHandler(pagebutton, "click", null, function (ev) {
+                _this.toggleControlPanel();
+                return false;
             });
+            // on page load, show control panel if wanted
+            if (YVolatile.Basics.PageControlVisible) {
+                _this.PageControlMod.style.display = "block";
+                ComponentsHTMLHelper.processPropertyListVisible(_this.PageControlMod);
+            }
             // handle Page Settings, Remove Current Page, W3C Validation - this is needed in case we're in a unified page set
             // in which case the original pageguid and url in the module actions have changed
             // when a new page becomes active, update the module actions reflecting the new page/url
@@ -37,7 +43,7 @@ var YetaWF_PageEdit;
                     }
                     return;
                 }
-                var pagebutton = $YetaWF.getElementByIdCond("yPageControlButton");
+                var pagebutton = $YetaWF.getElementByIdCond("tid_pagecontrolbutton");
                 if (pagebutton) {
                     if (YVolatile.Basics.TemporaryPage) {
                         if (YVolatile.Basics.PageControlVisible) {
@@ -83,23 +89,25 @@ var YetaWF_PageEdit;
                     h.value = YVolatile.Basics.PageGuid;
                 }
             });
-        };
+            return _this;
+        }
         PageControlModule.prototype.toggleControlPanel = function () {
-            if (!this.Module)
+            if (!this.PageControlMod)
                 return;
-            if ($YetaWF.isVisible(this.Module)) {
+            if ($YetaWF.isVisible(this.PageControlMod)) {
                 YVolatile.Basics.PageControlVisible = false;
-                ComponentsHTMLHelper.fadeOut(this.Module, this.FadeTime);
+                ComponentsHTMLHelper.fadeOut(this.PageControlMod, this.FadeTime);
             }
             else {
                 YVolatile.Basics.PageControlVisible = true;
-                ComponentsHTMLHelper.fadeIn(this.Module, this.FadeTime);
+                ComponentsHTMLHelper.fadeIn(this.PageControlMod, this.FadeTime);
+                ComponentsHTMLHelper.processPropertyListVisible(this.Module);
             }
         };
+        PageControlModule.SELECTOR = ".YetaWF_PageEdit_PageControl";
         return PageControlModule;
-    }());
-    var pageEdit = new PageControlModule();
-    pageEdit.init();
+    }(YetaWF.ModuleBaseNoDataImpl));
+    YetaWF_PageEdit.PageControlModule = PageControlModule;
 })(YetaWF_PageEdit || (YetaWF_PageEdit = {}));
 
 //# sourceMappingURL=PageControl.js.map

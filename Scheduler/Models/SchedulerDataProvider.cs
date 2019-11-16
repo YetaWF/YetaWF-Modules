@@ -136,7 +136,7 @@ namespace YetaWF.Modules.Scheduler.DataProvider {
         private List<DataProviderFilterInfo> FixFilters(List<DataProviderFilterInfo> filters) {
             if (filters == null) return filters;
             List<DataProviderFilterInfo> newFilters = new List<DataProviderFilterInfo>();
-            Grid.NormalizeFilters(typeof(SchedulerItemData), filters);
+            DataProviderFilterInfo.NormalizeFilters(typeof(SchedulerItemData), filters);
             foreach (DataProviderFilterInfo f in filters) {
                 if (f.Field == "IsRunning") {
                     bool val;

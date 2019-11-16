@@ -35,22 +35,20 @@ namespace YetaWF.Modules.ImageRepository.Controllers {
         {
             FileUpload upload = new FileUpload();
             string storagePath = ImageSelectionInfo.StoragePath(new Guid(folderGuid), subFolder, fileType);
-            string namePlain = await upload.StoreFileAsync(__filename, storagePath, MimeSection.ImageUse, uf => {
-                return Path.GetFileName(uf.FileName);
-            });
+            string namePlain = await upload.StoreFileAsync(__filename, storagePath, MimeSection.ImageUse);
             string name = namePlain;
 
             System.Drawing.Size size = ImageSupport.GetImageSize(namePlain, storagePath);
 
             HtmlBuilder hb = new HtmlBuilder();
             foreach (var f in await ImageSelectionInfo.ReadFilesAsync(new Guid(folderGuid), subFolder, fileType)) {
-                string fPlain = f.RemoveStartingAt(ImageSupport.ImageSeparator);
+                string plain = f.RemoveStartingAt(ImageSupport.ImageSeparator);
                 string sel = "";
-                if (fPlain == namePlain) {
+                if (plain == namePlain) {
                     sel = " selected";
                     name = f;
                 }
-                hb.Append(string.Format("<option title='{0}' value='{1}'{2}>{3}</option>", Utility.HtmlAttributeEncode(fPlain), Utility.HtmlAttributeEncode(f), sel, Utility.HtmlEncode(fPlain)));
+                hb.Append(string.Format("<option title='{0}' value='{1}'{2}>{0}</option>", Utility.HtmlAttributeEncode(plain), Utility.HtmlAttributeEncode(f), sel));
             }
 
             // Upload control considers Json result a success. result has a function to execute, newName has the file name

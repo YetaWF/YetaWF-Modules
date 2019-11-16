@@ -124,8 +124,8 @@ namespace YetaWF.Modules.Packages.Controllers {
 
         [AllowPost]
         [ConditionalAntiForgeryToken]
-        public async Task<ActionResult> Packages_GridData(string fieldPrefix, int skip, int take, List<DataProviderSortInfo> sorts, List<DataProviderFilterInfo> filters) {
-            return await GridPartialViewAsync(GetGridModel(), fieldPrefix, skip, take, sorts, filters);
+        public async Task<ActionResult> Packages_GridData(GridPartialViewData gridPVData) {
+            return await GridPartialViewAsync(GetGridModel(), gridPVData);
         }
 
         [Permission("Imports")]
@@ -182,7 +182,7 @@ namespace YetaWF.Modules.Packages.Controllers {
         [Permission("Localize")]
         [ExcludeDemoMode]
         public async Task<ActionResult> LocalizePackage(string packageName) {
-            if (Manager.Deployed)
+            if (YetaWFManager.Deployed)
                 throw new InternalError("Can't localize packages on a deployed site");
             Package package = Package.GetPackageFromPackageName(packageName);
             List<string> errorList = new List<string>();
@@ -197,7 +197,7 @@ namespace YetaWF.Modules.Packages.Controllers {
         [Permission("Localize")]
         [ExcludeDemoMode]
         public async Task<ActionResult> LocalizeAllPackages() {
-            if (Manager.Deployed)
+            if (YetaWFManager.Deployed)
                 throw new InternalError("Can't localize packages on a deployed site");
             List<string> errorList = new List<string>();
             foreach (Package package in Package.GetAvailablePackages()) {
