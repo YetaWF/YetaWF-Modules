@@ -24,35 +24,35 @@ namespace YetaWF.Modules.Blog.Components {
             string rating;
             switch (gravatarRating) {
                 default:
-                case Core.Support.Gravatar.GravatarRatingEnum.G:
+                case Gravatar.GravatarRatingEnum.G:
                     rating = "g";
                     break;
-                case Core.Support.Gravatar.GravatarRatingEnum.PG:
+                case Gravatar.GravatarRatingEnum.PG:
                     rating = "pg";
                     break;
-                case Core.Support.Gravatar.GravatarRatingEnum.R:
+                case Gravatar.GravatarRatingEnum.R:
                     rating = "r";
                     break;
-                case Core.Support.Gravatar.GravatarRatingEnum.X:
+                case Gravatar.GravatarRatingEnum.X:
                     rating = "x";
                     break;
             }
             string defaultImage;
             switch (gravatarDefault) {
-                case Core.Support.Gravatar.GravatarEnum.None:
+                case Gravatar.GravatarEnum.None:
                     defaultImage = "404"; break;
-                case Core.Support.Gravatar.GravatarEnum.mm:
+                case Gravatar.GravatarEnum.mm:
                     defaultImage = "mm"; break;
-                case Core.Support.Gravatar.GravatarEnum.identicon:
+                case Gravatar.GravatarEnum.identicon:
                     defaultImage = "identicon"; break;
-                case Core.Support.Gravatar.GravatarEnum.monsterid:
+                case Gravatar.GravatarEnum.monsterid:
                     defaultImage = "monsterid"; break;
                 default:
-                case Core.Support.Gravatar.GravatarEnum.wavatar:
+                case Gravatar.GravatarEnum.wavatar:
                     defaultImage = "wavatar"; break;
-                case Core.Support.Gravatar.GravatarEnum.retro:
+                case Gravatar.GravatarEnum.retro:
                     defaultImage = "retro"; break;
-                case Core.Support.Gravatar.GravatarEnum.blank:
+                case Gravatar.GravatarEnum.blank:
                     defaultImage = "blank"; break;
             }
             return string.Format("//www.gravatar.com/avatar/{0}?s={1}&r={2}&d={3}", Utility.UrlEncodeSegment(email), gravatarSize, rating, defaultImage);
