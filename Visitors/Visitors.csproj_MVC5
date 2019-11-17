@@ -107,6 +107,10 @@
       <Project>{71acc7ac-2622-4127-b925-d058c01a39e5}</Project>
       <Name>Core</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\..\CoreComponents\GeoLocation\GeoLocation.csproj">
+      <Project>{f89ea0ee-beb2-468b-acde-59efb5694c11}</Project>
+      <Name>GeoLocation</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\..\DataProvider\File\File.csproj">
       <Project>{F0DF6C3B-2B71-4526-8FD0-AC2B731B2C3B}</Project>
       <Name>File</Name>
