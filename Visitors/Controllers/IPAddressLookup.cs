@@ -7,6 +7,7 @@ using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Support;
 using System.Threading.Tasks;
 using YetaWF.Core.Localize;
+using YetaWF.Core.GeoLocation;
 #if MVC6
 using Microsoft.AspNetCore.Mvc;
 #else

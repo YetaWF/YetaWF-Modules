@@ -24,4 +24,5 @@ using YetaWF.Core.Packages;
     "https://yetawf.com/Documentation/YetaWF/Visitors#Release%20Notice",
     "https://yetawf.com/Documentation/YetaWF/Visitors#License")]
 
+[assembly: RequiresPackage("YetaWF.Core.GeoLocation")]
 [assembly: RequiresPackage("YetaWF.ComponentsHTML")]

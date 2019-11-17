@@ -19,6 +19,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\..\CoreComponents\Core\Core.csproj" />
+    <ProjectReference Include="..\..\..\CoreComponents\GeoLocation\GeoLocation.csproj" />
     <ProjectReference Include="..\..\..\DataProvider\ModuleDefinition\ModuleDefinition.csproj" />
     <ProjectReference Include="..\ComponentsHTML\ComponentsHTML.csproj" />
   </ItemGroup>
