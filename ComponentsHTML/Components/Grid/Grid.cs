@@ -600,7 +600,7 @@ new YetaWF_ComponentsHTML.Grid('{model.Id}', {JsonConvert.SerializeObject(setup,
                                 GridColumnInfo.FilterOptionEnum.GreaterEqual, GridColumnInfo.FilterOptionEnum.LessEqual,
                             };
 
-                            if (prop.UIHint == "DateTime") {
+                            if (prop.UIHint == "DateTime" || prop.UIHint.EndsWith("_DateTime")) {
                                 filterType = "datetime";
                                 FilterDateTimeUI filterUI = new FilterDateTimeUI();
                                 if (filterOp != null) {
@@ -618,7 +618,7 @@ new YetaWF_ComponentsHTML.Grid('{model.Id}', {JsonConvert.SerializeObject(setup,
                 </div>
                 <div class='tg_fclear{buttonCss}'><span class='fas fa-times'></span></div>");
 
-                            } else if (prop.UIHint == "Date") {
+                            } else if (prop.UIHint == "Date" || prop.UIHint.EndsWith("_Date")) {
                                 filterType = "date";
                                 FilterDateUI filterUI = new FilterDateUI();
                                 if (filterOp != null) {
