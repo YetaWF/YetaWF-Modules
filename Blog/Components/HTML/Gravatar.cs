@@ -69,7 +69,6 @@ namespace YetaWF.Modules.Blog.Components {
 
             hb.Append($@"<div class='yt_yetawf_blog_gravatar t_display'>");
 
-            YTagBuilder tagLink = new YTagBuilder("a");
             YTagBuilder tagImg = new YTagBuilder("img");
             BlogConfigData config = await BlogConfigDataProvider.GetConfigAsync();
             string url = GravatarUrl(model, config.GravatarSize, config.GravatarRating, config.GravatarDefault);
