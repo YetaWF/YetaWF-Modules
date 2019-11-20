@@ -107,6 +107,9 @@ namespace YetaWF.Modules.Pages.Scheduler {
             string finalFile = GetFile();
             await FileSystem.FileSystemProvider.DeleteFileAsync(finalFile);
             await FileSystem.FileSystemProvider.MoveFileAsync(file, finalFile);
+
+            if (Manager.CurrentSite.DefaultSiteMap)
+                await FileSystem.FileSystemProvider.CopyFileAsync(finalFile, Path.Combine(YetaWFManager.RootFolder, "sitemap.xml"));
         }
 
         private async Task AddSiteMapPageAsync(PageDefinition page, string url, DateTime? dateUpdated, PageDefinition.SiteMapPriorityEnum priority, PageDefinition.ChangeFrequencyEnum changeFrequency, object obj) {
