@@ -1,5 +1,5 @@
-//kendo.cdn.telerik.com/2019.2.619/styles/kendo.common.min.css,CDN
-//kendo.cdn.telerik.com/2019.2.619/styles/{0},CDN
+//kendo.cdn.telerik.com/2019.3.1023/styles/kendo.common.min.css,CDN
+//kendo.cdn.telerik.com/2019.3.1023/styles/{0},CDN
 
 Folder /bower_components/kendo-ui/styles
 kendo.common.min.css,noCDN
