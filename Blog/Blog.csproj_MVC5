@@ -80,6 +80,7 @@
     <Compile Include="Controllers\Support\DisqusSSO.cs" />
     <Compile Include="Models\DisqusConfigDataProvider.cs" />
     <Compile Include="Models\FileDataProvider.cs" />
+    <Compile Include="Models\Gravatar.cs" />
     <Compile Include="Models\SQLDataProvider.cs" />
     <Compile Include="Modules\Disqus.cs" />
     <Compile Include="Modules\DisqusConfig.cs" />
