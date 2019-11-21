@@ -18,7 +18,7 @@ namespace YetaWF.Modules.PageEdit.Modules {
 
         public EditModeModule() {
             Title = this.__ResStr("modTitle", "Page Edit Mode Selector");
-            Name = this.__ResStr("modName", "Page Edit Mode Selector");
+            Name = this.__ResStr("modName", "Page Edit Mode Selector (Skin)");
             Description = this.__ResStr("modSummary", "Switches between site edit mode and site display mode");
             WantFocus = false;
             WantSearch = false;

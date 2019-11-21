@@ -19,7 +19,6 @@ using YetaWF.Modules.Identity.Models;
 using YetaWF.Modules.Identity.Support;
 using YetaWF.Core.Packages;
 using YetaWF.Core.Components;
-using YetaWF.Core.Models;
 using YetaWF.Modules.Identity.Modules;
 #if MVC6
 using Microsoft.AspNetCore.Identity;
@@ -176,6 +175,20 @@ namespace YetaWF.Modules.Identity.Controllers {
             if (model.ShowCaptcha != (config.Captcha && !model.ShowVerification && !Manager.IsLocalHost))
                 throw new InternalError("Hidden field tampering detected");
 
+            if (!ModelState.IsValid && config.RegistrationType == RegistrationTypeEnum.EmailOnly) {
+                if (ModelState[nameof(model.Email)] != null &&
+#if MVC6
+                    ModelState[nameof(model.Email)].ValidationState == Microsoft.AspNetCore.Mvc.ModelBinding.ModelValidationState.Invalid)
+#else
+                    ModelState[nameof(model.Email)].Errors.Count > 0)
+#endif
+                {
+                    // we allow the superuser name as login in case we use email registration and the superuser name is not a valid email address
+                    if (string.Compare(model.Email, SuperuserDefinitionDataProvider.SuperUserName, true) == 0)
+                        ModelState.Remove(nameof(model.Email));
+                }
+            }
+
             if (!ModelState.IsValid)
                 return PartialView(model);
 
@@ -245,6 +258,7 @@ namespace YetaWF.Modules.Identity.Controllers {
             user = await Managers.GetUserManager().FindByNameAsync(model.UserName);
             if (user == null) {
                 Logging.AddErrorLog("User login failed: {0} - no such user", model.UserName);
+                ModelState.AddModelError(nameof(LoginModel.Email), this.__ResStr("invLogin", "Invalid user name or password"));
                 ModelState.AddModelError(nameof(LoginModel.UserName), this.__ResStr("invLogin", "Invalid user name or password"));
                 ModelState.AddModelError(nameof(LoginModel.Password), this.__ResStr("invLogin", "Invalid user name or password"));
                 return PartialView(model);
@@ -258,6 +272,7 @@ namespace YetaWF.Modules.Identity.Controllers {
             await twoStep.ClearTwoStepAutheticationAsync(user.UserId);
 
             if (config.MaxLoginFailures != 0 && user.LoginFailures >= config.MaxLoginFailures) {
+                ModelState.AddModelError(nameof(LoginModel.Email), this.__ResStr("maxAttemps", "The maximum number of login attempts has been exceeded - Your account has been suspended"));
                 ModelState.AddModelError(nameof(LoginModel.UserName), this.__ResStr("maxAttemps", "The maximum number of login attempts has been exceeded - Your account has been suspended"));
                 if (user.UserStatus != UserStatusEnum.Suspended) {
                     user.UserStatus = UserStatusEnum.Suspended;
@@ -292,6 +307,7 @@ namespace YetaWF.Modules.Identity.Controllers {
             }
             if (user == null) {
                 Logging.AddErrorLog("User login failed: {0}, {1}, {2}", model.UserName, model.Password, model.VerificationCode);
+                ModelState.AddModelError(nameof(LoginModel.Email), this.__ResStr("invLogin", "Invalid user name or password"));
                 ModelState.AddModelError(nameof(LoginModel.UserName), this.__ResStr("invLogin", "Invalid user name or password"));
                 ModelState.AddModelError(nameof(LoginModel.Password), this.__ResStr("invLogin", "Invalid user name or password"));
                 return PartialView(model);

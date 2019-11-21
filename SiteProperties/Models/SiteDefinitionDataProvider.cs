@@ -14,11 +14,12 @@ using YetaWF.Core.Packages;
 using YetaWF.Core.Security;
 using YetaWF.Core.Site;
 using YetaWF.Core.Support;
+using YetaWF.Modules.SiteProperties.Controllers;
 using YetaWF.Modules.SiteProperties.Modules;
 
 namespace YetaWF.Modules.SiteProperties.Models {
 
-    public class SiteDefinitionDataProvider : DataProviderImpl, IInstallableModel, IInitializeApplicationStartup {
+    public class SiteDefinitionDataProvider : DataProviderImpl, IInstallableModel, IInstallableModel2, IInitializeApplicationStartup {
 
         // STARTUP
         // STARTUP
@@ -261,6 +262,27 @@ namespace YetaWF.Modules.SiteProperties.Models {
                 errorList.Add(string.Format("{0}: {1}", typeof(SiteDefinition).FullName, ErrorHandling.FormatExceptionMessage(exc)));
                 return false;
             }
+        }
+
+        // IINSTALLABLEMODEL2
+        // IINSTALLABLEMODEL2
+        // IINSTALLABLEMODEL2
+
+        public async Task<bool> UpgradeModelAsync(List<string> errorList, string lastSeenVersion) {
+
+            // Convert older than 5.1.0 and add site reference for Control Panel (Skin) and Page Edit Mode Selector (Skin)
+            if (Package.CompareVersion(lastSeenVersion, AreaRegistration.CurrentPackage.Version) < 0 && Package.CompareVersion(lastSeenVersion, "5.1.0") < 0) {
+                using (SiteDefinitionDataProvider sitesDP = new SiteDefinitionDataProvider()) {
+                    DataProviderGetRecords<SiteDefinition> list = await sitesDP.GetItemsAsync(0, 0, null, null);
+                    foreach (SiteDefinition s in list.Data) {
+                        SiteDefinition site = await LoadSiteDefinitionAsync(s.SiteDomain);
+                        ModuleDefinition.ReferencedModule.AddReferencedModule(site.ReferencedModules, new Guid("{466C0CCA-3E63-43f3-8754-F4267767EED1}")); // Control Panel (Skin)
+                        ModuleDefinition.ReferencedModule.AddReferencedModule(site.ReferencedModules, new Guid("{267f00cc-c619-4854-baed-9e4b812d7e95}")); // Page Edit Mode Selector (Skin)
+                        await sitesDP.SaveSiteDefinitionAsync(site);
+                    }
+                }
+            }
+            return true;
         }
     }
 }
