@@ -1,3 +1,3 @@
-﻿//cdn.ckeditor.com/4.12.1/full-all/ckeditor.js,CDN
+﻿//cdn.ckeditor.com/4.13.0/full-all/ckeditor.js,CDN
 /node_modules/ckeditor4/ckeditor.js,nominify,noCDN,nobundle
 
