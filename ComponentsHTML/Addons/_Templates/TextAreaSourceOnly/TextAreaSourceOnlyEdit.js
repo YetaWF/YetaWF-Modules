@@ -39,5 +39,3 @@ var YetaWF_ComponentsHTML;
     }(YetaWF.ComponentBaseNoDataImpl));
     YetaWF_ComponentsHTML.TextAreaSourceOnlyEditComponent = TextAreaSourceOnlyEditComponent;
 })(YetaWF_ComponentsHTML || (YetaWF_ComponentsHTML = {}));
-
-//# sourceMappingURL=TextAreaSourceOnlyEdit.js.map

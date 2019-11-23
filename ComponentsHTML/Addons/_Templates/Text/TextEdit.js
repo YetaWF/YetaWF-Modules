@@ -44,5 +44,3 @@ var YetaWF_ComponentsHTML;
     TextEditComponent.register("yt_text40", ".yt_text40.t_edit", t.HasData, t.UserData, t.Display, t.DestroyControl);
     TextEditComponent.register("yt_text80", ".yt_text80.t_edit", t.HasData, t.UserData, t.Display, t.DestroyControl);
 })(YetaWF_ComponentsHTML || (YetaWF_ComponentsHTML = {}));
-
-//# sourceMappingURL=TextEdit.js.map

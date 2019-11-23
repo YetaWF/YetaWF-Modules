@@ -47,5 +47,3 @@ var YetaWF_ComponentsHTML;
     }(YetaWF.ComponentBaseDataImpl));
     YetaWF_ComponentsHTML.PopupSkinEditComponent = PopupSkinEditComponent;
 })(YetaWF_ComponentsHTML || (YetaWF_ComponentsHTML = {}));
-
-//# sourceMappingURL=PopupSkin.js.map

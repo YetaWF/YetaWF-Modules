@@ -93,6 +93,9 @@ var YetaWF_ComponentsHTML;
     YetaWF_ComponentsHTML.DayTimeRangeEditComponent = DayTimeRangeEditComponent;
 })(YetaWF_ComponentsHTML || (YetaWF_ComponentsHTML = {}));
 YetaWF_ComponentsHTML_Validation.registerValidator("daytimerangeto", function (form, elem, val) {
+    var value = elem.value;
+    if (!value)
+        return true;
     var isRange1 = $YetaWF.elementClosestCond(elem, ".t_to") != null;
     var control = $YetaWF.elementClosestCond(elem, ".yt_daytimerange");
     if (!control)
@@ -103,7 +106,7 @@ YetaWF_ComponentsHTML_Validation.registerValidator("daytimerangeto", function (f
     else
         fromRange = $YetaWF.getElement1BySelector("input[name$='.Start2']", [control]);
     try {
-        var dtTo = new Date(elem.value);
+        var dtTo = new Date(value);
         var dtFrom = new Date(fromRange.value);
         if (dtTo >= dtFrom)
             return true;
@@ -112,12 +115,15 @@ YetaWF_ComponentsHTML_Validation.registerValidator("daytimerangeto", function (f
     return false;
 });
 YetaWF_ComponentsHTML_Validation.registerValidator("daytimerangefrom2", function (form, elem, val) {
+    var value = elem.value;
+    if (!value)
+        return true;
     var control = $YetaWF.elementClosestCond(elem, ".yt_daytimerange");
     if (!control)
         return false;
     var endRange1 = $YetaWF.getElement1BySelector("input[name$='.End']", [control]);
     try {
-        var dtFrom2 = new Date(elem.value);
+        var dtFrom2 = new Date(value);
         var dtTo1 = new Date(endRange1.value);
         if (dtFrom2 >= dtTo1)
             return true;
@@ -125,5 +131,3 @@ YetaWF_ComponentsHTML_Validation.registerValidator("daytimerangefrom2", function
     finally { }
     return false;
 });
-
-//# sourceMappingURL=DayTimeRangeEdit.js.map

@@ -99,20 +99,20 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
             [Caption("From"), Description("Starting time")]
             [UIHint("Time")]
-            [Required]
+            [RequiredIf(nameof(Closed), false)]
             public DateTime Start { get; set; }
             [Caption("To"), Description("Ending time")]
             [UIHint("Time")]
-            [DayTimeRangeToValidation, Required]
+            [DayTimeRangeToValidation, RequiredIf(nameof(Closed), false)]
             public DateTime End { get; set; }
 
             [Caption("From"), Description("Starting time")]
             [UIHint("Time")]
-            [DayTimeRangeFrom2Validation, RequiredIf("Additional", true)]
+            [DayTimeRangeFrom2Validation, RequiredIf(nameof(Additional), true)]
             public DateTime Start2 { get; set; }
             [Caption("To"), Description("Ending time")]
             [UIHint("Time")]
-            [DayTimeRangeToValidation, RequiredIf("Additional", true)]
+            [DayTimeRangeToValidation, RequiredIf(nameof(Additional), true)]
             public DateTime End2 { get; set; }
 
             [ResourceRedirect(nameof(AdditionalFieldCaption), nameof(AdditionalFieldDescription))]

@@ -102,5 +102,3 @@ var YetaWF_ComponentsHTML;
     }(YetaWF.ComponentBaseDataImpl));
     YetaWF_ComponentsHTML.TimeSpanEditComponent = TimeSpanEditComponent;
 })(YetaWF_ComponentsHTML || (YetaWF_ComponentsHTML = {}));
-
-//# sourceMappingURL=TimeSpanEdit.js.map

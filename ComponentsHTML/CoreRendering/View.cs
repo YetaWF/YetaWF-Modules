@@ -45,8 +45,6 @@ namespace YetaWF.Modules.ComponentsHTML {
             hb.Append(htmlHelper.AntiForgeryToken());
             hb.Append($@"<input name='{Basics.ModuleGuid}' type='hidden' value='{module.ModuleGuid}' />");
 
-            hb.Append(htmlHelper.ValidationSummary());
-
             hb.Append(viewHtml);
 
             hb.Append(tag.ToString(YTagRenderMode.EndTag));

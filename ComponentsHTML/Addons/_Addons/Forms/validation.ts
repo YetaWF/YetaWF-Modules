@@ -44,6 +44,9 @@ namespace YetaWF_ComponentsHTML {
     export class Validation {
 
         constructor() {
+
+            // Validators
+
             this.registerValidator("expr", (form: HTMLFormElement, elem: HTMLElement, val: ValidationBase): boolean => {
                 return this.requiredExprValidator(form, elem, val as ValidationRequiredExpr);
             });
@@ -62,13 +65,21 @@ namespace YetaWF_ComponentsHTML {
             this.registerValidator("regexvalidationbase", (form: HTMLFormElement, elem: HTMLElement, val: ValidationBase): boolean => {
                 return this.regexValidationBaseValidator(form, elem, val as ValidationRegexValidationBase);
             });
+
+            // focus handler
+            $YetaWF.registerEventHandlerBody("focusout", "input[data-v],select[data-v],textarea[data-v]", (ev: FocusEvent): boolean => {
+                let elem = ev.__YetaWFElem;
+                let form = $YetaWF.elementClosest(elem, "form") as HTMLFormElement;
+                this.validateField(form, elem, true);
+                return true;
+            });
         }
 
         private static readonly DATAATTR = "data-v";
 
         public validateForm(form: HTMLFormElement, setMessage?: boolean): boolean {
             let valid = true;
-            //$$$ remove error indicators?
+            this.clearValidation(form);
             let ctrls = $YetaWF.getElementsBySelector(`[${Validation.DATAATTR}]`, [form]);
             for (let ctrl of ctrls) {
                 if (!this.validateField(form, ctrl, setMessage)) {
@@ -107,6 +118,8 @@ namespace YetaWF_ComponentsHTML {
                         $YetaWF.elementAddClass(msgElem, "v-valid");
                     }
                 }
+                if (!valid)
+                    break;
             }
             return valid;
         }
@@ -128,8 +141,11 @@ namespace YetaWF_ComponentsHTML {
         }
 
         public getFieldValue(elem: HTMLElement): any {
-            if (elem.tagName == "INPUT")
+            if (elem.tagName == "INPUT") {
+                if (elem.getAttribute("type") === "checkbox")
+                    return (elem as HTMLInputElement).checked;
                 return (elem as HTMLInputElement).value;
+            }
             if (elem.tagName == "TEXTAREA")
                 return (elem as HTMLTextAreaElement).value;
             if (elem.tagName == "SELECT")
@@ -170,20 +186,13 @@ namespace YetaWF_ComponentsHTML {
 
         private requiredExprValidator(form: HTMLFormElement, elem: HTMLElement, val: ValidationRequiredExpr): boolean  {
             let value = this.getFieldValue(elem);
-            let exprs: YetaWF_ComponentsHTML.Expr[][] = JSON.parse(val.Expr);
+            let exprs: YetaWF_ComponentsHTML.Expr[] = JSON.parse(val.Expr);
             switch (val.Op) {
                 case YetaWF_ComponentsHTML.OpEnum.Required:
                 case YetaWF_ComponentsHTML.OpEnum.RequiredIf:
                 case YetaWF_ComponentsHTML.OpEnum.RequiredIfSupplied: {
-                    let match = false;
-                    for (let expr of exprs) {
-                        let valid = YetaWF_ComponentsHTML.ValidatorHelper.evaluateExpressionList(value, form, val.Op, expr);
-                        if (valid) {
-                            match = true;
-                            break;
-                        }
-                    }
-                    if (!match)
+                    let valid = YetaWF_ComponentsHTML.ValidatorHelper.evaluateExpressionList(value, form, val.Op, exprs);
+                    if (!valid)
                         return true;
                     if (value === undefined || value === null || value.trim().length === 0)
                         return false;
@@ -192,15 +201,8 @@ namespace YetaWF_ComponentsHTML {
                 case YetaWF_ComponentsHTML.OpEnum.SelectionRequired:
                 case YetaWF_ComponentsHTML.OpEnum.SelectionRequiredIf:
                 case YetaWF_ComponentsHTML.OpEnum.SelectionRequiredIfSupplied: {
-                    let match = false;
-                    for (let expr of exprs) {
-                        let valid = YetaWF_ComponentsHTML.ValidatorHelper.evaluateExpressionList(value, form, val.Op, expr);
-                        if (valid) {
-                            match = true;
-                            break;
-                        }
-                    }
-                    if (!match)
+                    let valid = YetaWF_ComponentsHTML.ValidatorHelper.evaluateExpressionList(value, form, val.Op, exprs);
+                    if (!valid)
                         return true;
                     if (value === undefined || value === null || value.trim().length === 0 || value.toString() === "0")
                         return false;
@@ -208,15 +210,8 @@ namespace YetaWF_ComponentsHTML {
                 }
                 case YetaWF_ComponentsHTML.OpEnum.RequiredIfNot:
                 case YetaWF_ComponentsHTML.OpEnum.RequiredIfNotSupplied: {
-                    let match = false;
-                    for (let expr of exprs) {
-                        let valid = YetaWF_ComponentsHTML.ValidatorHelper.evaluateExpressionList(value, form, val.Op, expr);
-                        if (valid) {
-                            match = true;
-                            break;
-                        }
-                    }
-                    if (match)
+                    let valid = YetaWF_ComponentsHTML.ValidatorHelper.evaluateExpressionList(value, form, val.Op, exprs);
+                    if (valid)
                         return true;
                     if (value === undefined || value === null || value.trim().length === 0)
                         return false;
@@ -224,15 +219,8 @@ namespace YetaWF_ComponentsHTML {
                 }
                 case YetaWF_ComponentsHTML.OpEnum.SelectionRequiredIfNot:
                 case YetaWF_ComponentsHTML.OpEnum.SelectionRequiredIfNotSupplied: {
-                    let match = false;
-                    for (let expr of exprs) {
-                        let valid = YetaWF_ComponentsHTML.ValidatorHelper.evaluateExpressionList(value, form, val.Op, expr);
-                        if (valid) {
-                            match = true;
-                            break;
-                        }
-                    }
-                    if (match)
+                    let valid = YetaWF_ComponentsHTML.ValidatorHelper.evaluateExpressionList(value, form, val.Op, exprs);
+                    if (valid)
                         return true;
                     if (value === undefined || value === null || value.trim().length === 0 || value.toString() === "0")
                         return false;

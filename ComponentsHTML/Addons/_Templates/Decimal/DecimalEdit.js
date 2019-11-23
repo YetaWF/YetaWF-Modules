@@ -81,5 +81,3 @@ var YetaWF_ComponentsHTML;
     }(YetaWF.ComponentBaseDataImpl));
     YetaWF_ComponentsHTML.DecimalEditComponent = DecimalEditComponent;
 })(YetaWF_ComponentsHTML || (YetaWF_ComponentsHTML = {}));
-
-//# sourceMappingURL=DecimalEdit.js.map

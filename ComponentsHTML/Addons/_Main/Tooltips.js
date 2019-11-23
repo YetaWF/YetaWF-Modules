@@ -210,5 +210,3 @@ var ToolTipsHTMLHelper = new YetaWF_ComponentsHTML.Tooltips();
 $YetaWF.registerDocumentReady(function () {
     ToolTipsHTMLHelper.init();
 });
-
-//# sourceMappingURL=Tooltips.js.map

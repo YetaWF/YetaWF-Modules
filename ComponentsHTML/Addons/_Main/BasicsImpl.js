@@ -285,5 +285,3 @@ var YetaWF_ComponentsHTML;
 })(YetaWF_ComponentsHTML || (YetaWF_ComponentsHTML = {}));
 // tslint:disable-next-line:variable-name
 var YetaWF_BasicsImpl = new YetaWF_ComponentsHTML.BasicsImpl();
-
-//# sourceMappingURL=BasicsImpl.js.map

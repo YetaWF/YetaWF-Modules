@@ -112,5 +112,3 @@ var YetaWF_ComponentsHTML;
         ActionIconsComponent.closeMenus();
     });
 })(YetaWF_ComponentsHTML || (YetaWF_ComponentsHTML = {}));
-
-//# sourceMappingURL=ActionIcons.js.map

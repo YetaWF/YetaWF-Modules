@@ -670,5 +670,3 @@ var YetaWF_ComponentsHTML;
     }(YetaWF.ComponentBaseDataImpl));
     YetaWF_ComponentsHTML.TreeComponent = TreeComponent;
 })(YetaWF_ComponentsHTML || (YetaWF_ComponentsHTML = {}));
-
-//# sourceMappingURL=Tree.js.map

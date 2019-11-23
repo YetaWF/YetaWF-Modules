@@ -38,5 +38,3 @@ var YetaWF_ComponentsHTML;
         },
     });
 })(YetaWF_ComponentsHTML || (YetaWF_ComponentsHTML = {}));
-
-//# sourceMappingURL=BooleanTextEdit.js.map

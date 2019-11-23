@@ -5,6 +5,7 @@ var YetaWF_ComponentsHTML;
     ;
     var Validation = /** @class */ (function () {
         function Validation() {
+            // Validators
             var _this = this;
             this.Validators = [];
             this.registerValidator("expr", function (form, elem, val) {
@@ -25,10 +26,17 @@ var YetaWF_ComponentsHTML;
             this.registerValidator("regexvalidationbase", function (form, elem, val) {
                 return _this.regexValidationBaseValidator(form, elem, val);
             });
+            // focus handler
+            $YetaWF.registerEventHandlerBody("focusout", "input[data-v],select[data-v],textarea[data-v]", function (ev) {
+                var elem = ev.__YetaWFElem;
+                var form = $YetaWF.elementClosest(elem, "form");
+                _this.validateField(form, elem, true);
+                return true;
+            });
         }
         Validation.prototype.validateForm = function (form, setMessage) {
             var valid = true;
-            //$$$ remove error indicators?
+            this.clearValidation(form);
             var ctrls = $YetaWF.getElementsBySelector("[" + Validation.DATAATTR + "]", [form]);
             for (var _i = 0, ctrls_1 = ctrls; _i < ctrls_1.length; _i++) {
                 var ctrl = ctrls_1[_i];
@@ -70,6 +78,8 @@ var YetaWF_ComponentsHTML;
                         $YetaWF.elementAddClass(msgElem, "v-valid");
                     }
                 }
+                if (!valid)
+                    break;
             }
             return valid;
         };
@@ -88,8 +98,11 @@ var YetaWF_ComponentsHTML;
             return validators[0].Func(form, elem, val);
         };
         Validation.prototype.getFieldValue = function (elem) {
-            if (elem.tagName == "INPUT")
+            if (elem.tagName == "INPUT") {
+                if (elem.getAttribute("type") === "checkbox")
+                    return elem.checked;
                 return elem.value;
+            }
             if (elem.tagName == "TEXTAREA")
                 return elem.value;
             if (elem.tagName == "SELECT")
@@ -129,16 +142,8 @@ var YetaWF_ComponentsHTML;
                 case YetaWF_ComponentsHTML.OpEnum.Required:
                 case YetaWF_ComponentsHTML.OpEnum.RequiredIf:
                 case YetaWF_ComponentsHTML.OpEnum.RequiredIfSupplied: {
-                    var match = false;
-                    for (var _i = 0, exprs_1 = exprs; _i < exprs_1.length; _i++) {
-                        var expr = exprs_1[_i];
-                        var valid = YetaWF_ComponentsHTML.ValidatorHelper.evaluateExpressionList(value, form, val.Op, expr);
-                        if (valid) {
-                            match = true;
-                            break;
-                        }
-                    }
-                    if (!match)
+                    var valid = YetaWF_ComponentsHTML.ValidatorHelper.evaluateExpressionList(value, form, val.Op, exprs);
+                    if (!valid)
                         return true;
                     if (value === undefined || value === null || value.trim().length === 0)
                         return false;
@@ -147,16 +152,8 @@ var YetaWF_ComponentsHTML;
                 case YetaWF_ComponentsHTML.OpEnum.SelectionRequired:
                 case YetaWF_ComponentsHTML.OpEnum.SelectionRequiredIf:
                 case YetaWF_ComponentsHTML.OpEnum.SelectionRequiredIfSupplied: {
-                    var match = false;
-                    for (var _a = 0, exprs_2 = exprs; _a < exprs_2.length; _a++) {
-                        var expr = exprs_2[_a];
-                        var valid = YetaWF_ComponentsHTML.ValidatorHelper.evaluateExpressionList(value, form, val.Op, expr);
-                        if (valid) {
-                            match = true;
-                            break;
-                        }
-                    }
-                    if (!match)
+                    var valid = YetaWF_ComponentsHTML.ValidatorHelper.evaluateExpressionList(value, form, val.Op, exprs);
+                    if (!valid)
                         return true;
                     if (value === undefined || value === null || value.trim().length === 0 || value.toString() === "0")
                         return false;
@@ -164,16 +161,8 @@ var YetaWF_ComponentsHTML;
                 }
                 case YetaWF_ComponentsHTML.OpEnum.RequiredIfNot:
                 case YetaWF_ComponentsHTML.OpEnum.RequiredIfNotSupplied: {
-                    var match = false;
-                    for (var _b = 0, exprs_3 = exprs; _b < exprs_3.length; _b++) {
-                        var expr = exprs_3[_b];
-                        var valid = YetaWF_ComponentsHTML.ValidatorHelper.evaluateExpressionList(value, form, val.Op, expr);
-                        if (valid) {
-                            match = true;
-                            break;
-                        }
-                    }
-                    if (match)
+                    var valid = YetaWF_ComponentsHTML.ValidatorHelper.evaluateExpressionList(value, form, val.Op, exprs);
+                    if (valid)
                         return true;
                     if (value === undefined || value === null || value.trim().length === 0)
                         return false;
@@ -181,16 +170,8 @@ var YetaWF_ComponentsHTML;
                 }
                 case YetaWF_ComponentsHTML.OpEnum.SelectionRequiredIfNot:
                 case YetaWF_ComponentsHTML.OpEnum.SelectionRequiredIfNotSupplied: {
-                    var match = false;
-                    for (var _c = 0, exprs_4 = exprs; _c < exprs_4.length; _c++) {
-                        var expr = exprs_4[_c];
-                        var valid = YetaWF_ComponentsHTML.ValidatorHelper.evaluateExpressionList(value, form, val.Op, expr);
-                        if (valid) {
-                            match = true;
-                            break;
-                        }
-                    }
-                    if (match)
+                    var valid = YetaWF_ComponentsHTML.ValidatorHelper.evaluateExpressionList(value, form, val.Op, exprs);
+                    if (valid)
                         return true;
                     if (value === undefined || value === null || value.trim().length === 0 || value.toString() === "0")
                         return false;
@@ -232,5 +213,3 @@ var YetaWF_ComponentsHTML;
 })(YetaWF_ComponentsHTML || (YetaWF_ComponentsHTML = {}));
 // tslint:disable-next-line:variable-name
 var YetaWF_ComponentsHTML_Validation = new YetaWF_ComponentsHTML.Validation();
-
-//# sourceMappingURL=Validation.js.map
