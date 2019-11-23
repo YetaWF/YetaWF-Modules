@@ -5,7 +5,7 @@ namespace YetaWF_ComponentsHTML {
     export interface ValidationBase {
         M: string;
         Method: string;
-    };
+    }
     export interface Validator {
         Name: string;
         Func: (form: HTMLFormElement, elem: HTMLElement, val: ValidationBase) => boolean;
@@ -75,7 +75,7 @@ namespace YetaWF_ComponentsHTML {
             });
         }
 
-        private static readonly DATAATTR = "data-v";
+        private static readonly DATAATTR:string = "data-v";
 
         public validateForm(form: HTMLFormElement, setMessage?: boolean): boolean {
             let valid = true;
@@ -133,22 +133,22 @@ namespace YetaWF_ComponentsHTML {
 
         private evaluate(form: HTMLFormElement, elem: HTMLElement, val: ValidationBase): boolean {
             let validators = this.Validators.filter((entry: Validator): boolean => entry.Name === val.Method);
-            if (validators.length == 0)
+            if (validators.length === 0)
                 throw `No validator found for ${val.Method}`;
             else if (validators.length > 1)
                 throw `Too many validators found for ${val.Method}`;
-            return validators[0].Func(form, elem, val)
+            return validators[0].Func(form, elem, val);
         }
 
         public getFieldValue(elem: HTMLElement): any {
-            if (elem.tagName == "INPUT") {
+            if (elem.tagName === "INPUT") {
                 if (elem.getAttribute("type") === "checkbox")
                     return (elem as HTMLInputElement).checked;
                 return (elem as HTMLInputElement).value;
             }
-            if (elem.tagName == "TEXTAREA")
+            if (elem.tagName === "TEXTAREA")
                 return (elem as HTMLTextAreaElement).value;
-            if (elem.tagName == "SELECT")
+            if (elem.tagName === "SELECT")
                 return (elem as HTMLSelectElement).value;
             throw `Add support for ${elem.tagName}`;
         }
@@ -172,7 +172,7 @@ namespace YetaWF_ComponentsHTML {
         // Registration
         // Registration
 
-        public registerValidator(name: string, validator: (form: HTMLFormElement, elem: HTMLElement, val: ValidationBase) => boolean) {
+        public registerValidator(name: string, validator: (form: HTMLFormElement, elem: HTMLElement, val: ValidationBase) => boolean): void {
             let v = this.Validators.filter((entry: Validator): boolean => entry.Name === name);
             if (!v.length)
                 this.Validators.push({ Name: name, Func: validator});
@@ -232,6 +232,7 @@ namespace YetaWF_ComponentsHTML {
         }
         private sameAsValidator(form: HTMLFormElement, elem: HTMLElement, val: ValidationSameAs): boolean {
             let value = this.getFieldValue(elem);
+            if (!value) return true;
 
             let item = ControlsHelper.getControlItemByName(val.CondProp, form);
             let actualValue = ControlsHelper.getControlValue(item);
@@ -245,16 +246,19 @@ namespace YetaWF_ComponentsHTML {
         }
         private stringLengthValidator(form: HTMLFormElement, elem: HTMLElement, val: ValidationStringLength): boolean {
             let value = this.getFieldValue(elem) as string;
+            if (!value) return true;
             let len = value.length;
             return len <= val.Max && len >= val.Min;
         }
         private regexValidationBaseValidator(form: HTMLFormElement, elem: HTMLElement, val: ValidationRegexValidationBase): boolean {
             let value = this.getFieldValue(elem) as string;
+            if (!value) return true;
             var re = new RegExp(val.Pattern);
             return re.test(value);
         }
         private rangeValidator(form: HTMLFormElement, elem: HTMLElement, val: ValidationRange): boolean {
             let value = this.getFieldValue(elem);
+            if (!value) return true;
             return value <= val.Max && value >= val.Min;
         }
     }

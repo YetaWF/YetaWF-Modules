@@ -2,7 +2,6 @@
 /* Copyright © 2019 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Licensing */
 var YetaWF_ComponentsHTML;
 (function (YetaWF_ComponentsHTML) {
-    ;
     var Validation = /** @class */ (function () {
         function Validation() {
             // Validators
@@ -91,21 +90,21 @@ var YetaWF_ComponentsHTML;
         };
         Validation.prototype.evaluate = function (form, elem, val) {
             var validators = this.Validators.filter(function (entry) { return entry.Name === val.Method; });
-            if (validators.length == 0)
+            if (validators.length === 0)
                 throw "No validator found for " + val.Method;
             else if (validators.length > 1)
                 throw "Too many validators found for " + val.Method;
             return validators[0].Func(form, elem, val);
         };
         Validation.prototype.getFieldValue = function (elem) {
-            if (elem.tagName == "INPUT") {
+            if (elem.tagName === "INPUT") {
                 if (elem.getAttribute("type") === "checkbox")
                     return elem.checked;
                 return elem.value;
             }
-            if (elem.tagName == "TEXTAREA")
+            if (elem.tagName === "TEXTAREA")
                 return elem.value;
-            if (elem.tagName == "SELECT")
+            if (elem.tagName === "SELECT")
                 return elem.value;
             throw "Add support for " + elem.tagName;
         };
@@ -183,6 +182,8 @@ var YetaWF_ComponentsHTML;
         };
         Validation.prototype.sameAsValidator = function (form, elem, val) {
             var value = this.getFieldValue(elem);
+            if (!value)
+                return true;
             var item = ControlsHelper.getControlItemByName(val.CondProp, form);
             var actualValue = ControlsHelper.getControlValue(item);
             return value === actualValue;
@@ -194,16 +195,22 @@ var YetaWF_ComponentsHTML;
         };
         Validation.prototype.stringLengthValidator = function (form, elem, val) {
             var value = this.getFieldValue(elem);
+            if (!value)
+                return true;
             var len = value.length;
             return len <= val.Max && len >= val.Min;
         };
         Validation.prototype.regexValidationBaseValidator = function (form, elem, val) {
             var value = this.getFieldValue(elem);
+            if (!value)
+                return true;
             var re = new RegExp(val.Pattern);
             return re.test(value);
         };
         Validation.prototype.rangeValidator = function (form, elem, val) {
             var value = this.getFieldValue(elem);
+            if (!value)
+                return true;
             return value <= val.Max && value >= val.Min;
         };
         Validation.DATAATTR = "data-v";
@@ -213,3 +220,5 @@ var YetaWF_ComponentsHTML;
 })(YetaWF_ComponentsHTML || (YetaWF_ComponentsHTML = {}));
 // tslint:disable-next-line:variable-name
 var YetaWF_ComponentsHTML_Validation = new YetaWF_ComponentsHTML.Validation();
+
+//# sourceMappingURL=Validation.js.map

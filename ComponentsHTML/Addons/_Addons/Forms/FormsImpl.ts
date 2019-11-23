@@ -68,19 +68,27 @@ namespace YetaWF_ComponentsHTML {
          * Serializes the form and returns a name/value pairs array
          */
         public serializeFormArray(form: HTMLFormElement): YetaWF.NameValuePair[] {
-            // disable all fields that we don't want to submit (marked with YConfigs.Forms.CssFormNoSubmit)
-            var $disabledFields = $(`.${YConfigs.Forms.CssFormNoSubmit}`, $(form)).not(":disabled");
-            $disabledFields.attr("disabled", "disabled");
-            // disable all input fields in containers (usually grids) - we don't want to submit them - they're collected separately
-            var $disabledGridFields = $(`.${YConfigs.Forms.CssFormNoSubmitContents} input,.${YConfigs.Forms.CssFormNoSubmitContents} select,.${YConfigs.Forms.CssFormNoSubmitContents} textarea`, $(form)).not(":disabled");
-            $disabledGridFields.attr("disabled", "disabled");
-            // serialize the form
-            var formData = $(form).serializeArray();
-            // and enable all the input fields we just disabled
-            $disabledFields.removeAttr("disabled");
-            $disabledGridFields.removeAttr("disabled");
-            return formData;
+            let array: YetaWF.NameValuePair[] = [];
+
+            let elems = $YetaWF.getElementsBySelector("input,select,textarea", [form]);
+            for (let elem of elems) {
+                let name = $YetaWF.getAttributeCond(elem, "name");
+                if (!name ||
+                    $YetaWF.getAttributeCond(elem, "disabled") || // don't submit disabled fields
+                    $YetaWF.getAttributeCond(elem, "readonly") || // don't submit readonly fields
+                    $YetaWF.elementHasClass(elem, YConfigs.Forms.CssFormNoSubmit) || // don't submit nosubmit fields
+                    $YetaWF.elementClosestCond(elem, YConfigs.Forms.CssFormNoSubmitContents)) // don't submit input fields in containers (usually grids)
+                    continue;
+
+                array.push({
+                    name: name,
+                    value: YetaWF_ComponentsHTML_Validation.getFieldValue(elem)
+                });
+            }
+            return array;
         }
+
+
         /**
          * Validate all fields in the current form.
          */

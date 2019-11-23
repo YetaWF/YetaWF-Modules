@@ -64,18 +64,23 @@ var YetaWF_ComponentsHTML;
          * Serializes the form and returns a name/value pairs array
          */
         FormsImpl.prototype.serializeFormArray = function (form) {
-            // disable all fields that we don't want to submit (marked with YConfigs.Forms.CssFormNoSubmit)
-            var $disabledFields = $("." + YConfigs.Forms.CssFormNoSubmit, $(form)).not(":disabled");
-            $disabledFields.attr("disabled", "disabled");
-            // disable all input fields in containers (usually grids) - we don't want to submit them - they're collected separately
-            var $disabledGridFields = $("." + YConfigs.Forms.CssFormNoSubmitContents + " input,." + YConfigs.Forms.CssFormNoSubmitContents + " select,." + YConfigs.Forms.CssFormNoSubmitContents + " textarea", $(form)).not(":disabled");
-            $disabledGridFields.attr("disabled", "disabled");
-            // serialize the form
-            var formData = $(form).serializeArray();
-            // and enable all the input fields we just disabled
-            $disabledFields.removeAttr("disabled");
-            $disabledGridFields.removeAttr("disabled");
-            return formData;
+            var array = [];
+            var elems = $YetaWF.getElementsBySelector("input,select,textarea", [form]);
+            for (var _i = 0, elems_1 = elems; _i < elems_1.length; _i++) {
+                var elem = elems_1[_i];
+                var name_1 = $YetaWF.getAttributeCond(elem, "name");
+                if (!name_1 ||
+                    $YetaWF.getAttributeCond(elem, "disabled") || // don't submit disabled fields
+                    $YetaWF.getAttributeCond(elem, "readonly") || // don't submit readonly fields
+                    $YetaWF.elementHasClass(elem, YConfigs.Forms.CssFormNoSubmit) || // don't submit nosubmit fields
+                    $YetaWF.elementClosestCond(elem, YConfigs.Forms.CssFormNoSubmitContents)) // don't submit input fields in containers (usually grids)
+                    continue;
+                array.push({
+                    name: name_1,
+                    value: YetaWF_ComponentsHTML_Validation.getFieldValue(elem)
+                });
+            }
+            return array;
         };
         /**
          * Validate all fields in the current form.
@@ -137,3 +142,5 @@ var YetaWF_ComponentsHTML;
 var YetaWF_FormsImpl = new YetaWF_ComponentsHTML.FormsImpl();
 /* Page load */
 $YetaWF.addWhenReady(YetaWF_FormsImpl.initForm);
+
+//# sourceMappingURL=FormsImpl.js.map

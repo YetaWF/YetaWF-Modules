@@ -33,3 +33,5 @@ var YetaWF_ComponentsHTML;
     /* handle copy icon */
     $YetaWF.addWhenReady(ClipboardSupport.initAll);
 })(YetaWF_ComponentsHTML || (YetaWF_ComponentsHTML = {}));
+
+//# sourceMappingURL=Clipboard.js.map
