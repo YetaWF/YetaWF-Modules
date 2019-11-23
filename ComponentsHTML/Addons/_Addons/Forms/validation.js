@@ -221,4 +221,4 @@ var YetaWF_ComponentsHTML;
 // tslint:disable-next-line:variable-name
 var YetaWF_ComponentsHTML_Validation = new YetaWF_ComponentsHTML.Validation();
 
-//# sourceMappingURL=Validation.js.map
+//# sourceMappingURL=validation.js.map

@@ -131,19 +131,5 @@ if ($YetaWF.Forms.hasErrors(f))
         protected Task<string> RenderEndFormAsync() {
             return Task.FromResult("</form>");
         }
-
-        /// <summary>
-        /// Returns the client-side validation message for a component with the specified field name.
-        /// </summary>
-        /// <param name="containerFieldPrefix">The prefix used to build the final field name (for nested fields).</param>
-        /// <param name="fieldName">The HTML field name.</param>
-        /// <returns>Returns the client-side validation message for the component with the specified field name.</returns>
-        protected string ValidationMessage(string containerFieldPrefix, string fieldName) {
-            // ValidationMessage is always called for a child component within the context of the PARENT
-            // component, so we need to prefix the child component field name with the parent field name
-            if (!string.IsNullOrEmpty(containerFieldPrefix))
-                fieldName = containerFieldPrefix + "." + fieldName;
-            return HtmlHelper.BuildValidationMessage(fieldName);
-        }
     }
 }
