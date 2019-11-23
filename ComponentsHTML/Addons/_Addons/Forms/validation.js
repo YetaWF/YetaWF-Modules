@@ -1,262 +1,236 @@
 "use strict";
-/* Copyright © 2019 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/ComponentsHTML#License */
-// validation for all forms
-// does not implement any required externally callable functions
-// http://jqueryvalidation.org/reference/
-// Form submit handling for all forms
-// http://jqueryvalidation.org/documentation/
-// http://bradwilson.typepad.com/blog/2010/10/mvc3-unobtrusive-validation.html
-// Make sure all hidden fields are NOT ignored
-$.validator.setDefaults({
-    ignore: ".yform-novalidate",
-    onsubmit: false // don't validate on submit, we want to see the submit event and validate things ourselves
-});
-$.validator.unobtrusive.options = {
-    errorElement: "label"
-};
-// REQUIREDEXPR
-// REQUIREDEXPR
-// REQUIREDEXPR
-$.validator.addMethod("requiredexpr", function (value, element, parameters) {
-    switch (parameters.op) {
-        case YetaWF_ComponentsHTML.OpEnum.Required:
-        case YetaWF_ComponentsHTML.OpEnum.RequiredIf:
-        case YetaWF_ComponentsHTML.OpEnum.RequiredIfSupplied: {
-            var form = $YetaWF.Forms.getForm(element);
-            var exprs = parameters.exprList;
-            var match = false;
-            for (var _i = 0, exprs_1 = exprs; _i < exprs_1.length; _i++) {
-                var expr = exprs_1[_i];
-                var valid = YetaWF_ComponentsHTML.ValidatorHelper.evaluateExpressionList(value, form, parameters.op, expr);
-                if (valid) {
-                    match = true;
-                    break;
-                }
-            }
-            if (!match)
-                return true;
-            if (value === undefined || value === null || value.trim().length === 0)
-                return false;
-            return true;
-        }
-        case YetaWF_ComponentsHTML.OpEnum.SelectionRequired:
-        case YetaWF_ComponentsHTML.OpEnum.SelectionRequiredIf:
-        case YetaWF_ComponentsHTML.OpEnum.SelectionRequiredIfSupplied: {
-            var form = $YetaWF.Forms.getForm(element);
-            var exprs = parameters.exprList;
-            var match = false;
-            for (var _a = 0, exprs_2 = exprs; _a < exprs_2.length; _a++) {
-                var expr = exprs_2[_a];
-                var valid = YetaWF_ComponentsHTML.ValidatorHelper.evaluateExpressionList(value, form, parameters.op, expr);
-                if (valid) {
-                    match = true;
-                    break;
-                }
-            }
-            if (!match)
-                return true;
-            if (value === undefined || value === null || value.trim().length === 0 || value.toString() === "0")
-                return false;
-            return true;
-        }
-        case YetaWF_ComponentsHTML.OpEnum.RequiredIfNot:
-        case YetaWF_ComponentsHTML.OpEnum.RequiredIfNotSupplied: {
-            var form = $YetaWF.Forms.getForm(element);
-            var exprs = parameters.exprList;
-            var match = false;
-            for (var _b = 0, exprs_3 = exprs; _b < exprs_3.length; _b++) {
-                var expr = exprs_3[_b];
-                var valid = YetaWF_ComponentsHTML.ValidatorHelper.evaluateExpressionList(value, form, parameters.op, expr);
-                if (valid) {
-                    match = true;
-                    break;
-                }
-            }
-            if (match)
-                return true;
-            if (value === undefined || value === null || value.trim().length === 0)
-                return false;
-            return true;
-        }
-        case YetaWF_ComponentsHTML.OpEnum.SelectionRequiredIfNot:
-        case YetaWF_ComponentsHTML.OpEnum.SelectionRequiredIfNotSupplied: {
-            var form = $YetaWF.Forms.getForm(element);
-            var exprs = parameters.exprList;
-            var match = false;
-            for (var _c = 0, exprs_4 = exprs; _c < exprs_4.length; _c++) {
-                var expr = exprs_4[_c];
-                var valid = YetaWF_ComponentsHTML.ValidatorHelper.evaluateExpressionList(value, form, parameters.op, expr);
-                if (valid) {
-                    match = true;
-                    break;
-                }
-            }
-            if (match)
-                return true;
-            if (value === undefined || value === null || value.trim().length === 0 || value.toString() === "0")
-                return false;
-            return true;
-        }
-        default:
-            throw "Invalid Op " + parameters.op + " in evaluateExpressionList";
-    }
-});
-$.validator.unobtrusive.adapters.add("requiredexpr", ["op", "json"], function (options) {
-    options.rules["requiredexpr"] = {
-        op: Number(options.params["op"]),
-        exprList: JSON.parse(options.params["json"])
-    };
-    options.messages["requiredexpr"] = options.message;
-});
-// SAMEAS
-// SAMEAS
-// SAMEAS
-$.validator.addMethod("sameas", function (value, element, parameters) {
-    if (YetaWF_ComponentsHTML.ValidatorHelper.isSameValue(value, element, parameters)) {
-        return $.validator.methods.required.call(this, value, element, parameters);
-    }
-    return true;
-});
-$.validator.unobtrusive.adapters.add("sameas", [YConfigs.Forms.ConditionPropertyName], function (options) {
-    options.rules["sameas"] = {
-        dependentproperty: options.params[YConfigs.Forms.ConditionPropertyName],
-    };
-    options.messages["sameas"] = options.message;
-});
-// LISTNODUPLICATES
-// LISTNODUPLICATES
-// LISTNODUPLICATES
-$.validator.addMethod("listnoduplicates", function (value, element, parameters) {
-    // this is not currently needed - server-side validation verifies during add of new records
-    //return false;// duplicate found
-    return true;
-});
-$.validator.unobtrusive.adapters.add("listnoduplicates", [YConfigs.Forms.ConditionPropertyName, YConfigs.Forms.ConditionPropertyValue], function (options) {
-    options.rules["listnoduplicates"] = {};
-    options.messages["listnoduplicates"] = options.message;
-});
+/* Copyright © 2019 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Licensing */
 var YetaWF_ComponentsHTML;
 (function (YetaWF_ComponentsHTML) {
-    var OpEnum;
-    (function (OpEnum) {
-        OpEnum[OpEnum["Required"] = 0] = "Required";
-        OpEnum[OpEnum["RequiredIf"] = 1] = "RequiredIf";
-        OpEnum[OpEnum["RequiredIfNot"] = 2] = "RequiredIfNot";
-        OpEnum[OpEnum["RequiredIfSupplied"] = 3] = "RequiredIfSupplied";
-        OpEnum[OpEnum["RequiredIfNotSupplied"] = 4] = "RequiredIfNotSupplied";
-        OpEnum[OpEnum["SelectionRequired"] = 5] = "SelectionRequired";
-        OpEnum[OpEnum["SelectionRequiredIf"] = 6] = "SelectionRequiredIf";
-        OpEnum[OpEnum["SelectionRequiredIfNot"] = 7] = "SelectionRequiredIfNot";
-        OpEnum[OpEnum["SelectionRequiredIfSupplied"] = 8] = "SelectionRequiredIfSupplied";
-        OpEnum[OpEnum["SelectionRequiredIfNotSupplied"] = 9] = "SelectionRequiredIfNotSupplied";
-        OpEnum[OpEnum["SuppressIf"] = 10] = "SuppressIf";
-        OpEnum[OpEnum["SuppressIfNot"] = 11] = "SuppressIfNot";
-        OpEnum[OpEnum["SuppressIfSupplied"] = 12] = "SuppressIfSupplied";
-        OpEnum[OpEnum["SuppressIfNotSupplied"] = 13] = "SuppressIfNotSupplied";
-        OpEnum[OpEnum["ProcessIf"] = 14] = "ProcessIf";
-        OpEnum[OpEnum["ProcessIfNot"] = 15] = "ProcessIfNot";
-        OpEnum[OpEnum["ProcessIfSupplied"] = 16] = "ProcessIfSupplied";
-        OpEnum[OpEnum["ProcessIfNotSupplied"] = 17] = "ProcessIfNotSupplied";
-        OpEnum[OpEnum["HideIf"] = 18] = "HideIf";
-        OpEnum[OpEnum["HideIfNot"] = 19] = "HideIfNot";
-        OpEnum[OpEnum["HideIfSupplied"] = 20] = "HideIfSupplied";
-        OpEnum[OpEnum["HideIfNotSupplied"] = 21] = "HideIfNotSupplied";
-    })(OpEnum = YetaWF_ComponentsHTML.OpEnum || (YetaWF_ComponentsHTML.OpEnum = {}));
-    var OpCond;
-    (function (OpCond) {
-        OpCond[OpCond["None"] = 0] = "None";
-        OpCond[OpCond["Eq"] = 1] = "Eq";
-        OpCond[OpCond["NotEq"] = 2] = "NotEq";
-    })(OpCond = YetaWF_ComponentsHTML.OpCond || (YetaWF_ComponentsHTML.OpCond = {}));
-    var ValidatorHelper = /** @class */ (function () {
-        function ValidatorHelper() {
+    ;
+    var Validation = /** @class */ (function () {
+        function Validation() {
+            var _this = this;
+            this.Validators = [];
+            this.registerValidator("expr", function (form, elem, val) {
+                return _this.requiredExprValidator(form, elem, val);
+            });
+            this.registerValidator("sameas", function (form, elem, val) {
+                return _this.sameAsValidator(form, elem, val);
+            });
+            this.registerValidator("listnoduplicates", function (form, elem, val) {
+                return _this.listNoDuplicatesValidator(form, elem, val);
+            });
+            this.registerValidator("stringlength", function (form, elem, val) {
+                return _this.stringLengthValidator(form, elem, val);
+            });
+            this.registerValidator("range", function (form, elem, val) {
+                return _this.rangeValidator(form, elem, val);
+            });
+            this.registerValidator("regexvalidationbase", function (form, elem, val) {
+                return _this.regexValidationBaseValidator(form, elem, val);
+            });
         }
-        ValidatorHelper.evaluateExpressionList = function (value, form, op, exprList) {
-            var func = ValidatorHelper.isExprValid;
-            switch (op) {
-                case OpEnum.RequiredIfSupplied:
-                case OpEnum.RequiredIfNotSupplied:
-                case OpEnum.SelectionRequiredIfSupplied:
-                case OpEnum.SelectionRequiredIfNotSupplied:
-                case OpEnum.SuppressIfSupplied:
-                case OpEnum.SuppressIfNotSupplied:
-                case OpEnum.ProcessIfSupplied:
-                case OpEnum.ProcessIfNotSupplied:
-                case OpEnum.HideIfSupplied:
-                case OpEnum.HideIfNotSupplied:
-                    func = ValidatorHelper.isExprSupplied;
+        Validation.prototype.validateForm = function (form, setMessage) {
+            var valid = true;
+            //$$$ remove error indicators?
+            var ctrls = $YetaWF.getElementsBySelector("[" + Validation.DATAATTR + "]", [form]);
+            for (var _i = 0, ctrls_1 = ctrls; _i < ctrls_1.length; _i++) {
+                var ctrl = ctrls_1[_i];
+                if (!this.validateField(form, ctrl, setMessage)) {
+                    valid = false;
+                    if (!setMessage)
+                        break;
+                }
             }
-            for (var _i = 0, exprList_1 = exprList; _i < exprList_1.length; _i++) {
-                var expr = exprList_1[_i];
-                if (!func(expr, form))
-                    return false;
-            }
-            return true;
+            return valid;
         };
-        ValidatorHelper.isExprValid = function (expr, form) {
-            var leftVal = ValidatorHelper.getPropertyVal(form, expr._Left);
-            var rightVal;
-            if (expr._Right)
-                rightVal = ValidatorHelper.getPropertyVal(form, expr._Right);
-            else
-                rightVal = expr._RightVal == null ? null : expr._RightVal.toString();
-            switch (expr.Cond) {
-                case OpCond.Eq:
-                    if (!leftVal && !rightVal)
+        Validation.prototype.validateField = function (form, elem, setMessage) {
+            if ($YetaWF.getAttributeCond(elem, "disabled") || // don't validate disabled fields
+                $YetaWF.getAttributeCond(elem, "readonly") || // don't validate readonly fields
+                $YetaWF.elementHasClass(elem, ".yform-novalidate") || // don't validate novalidate fields
+                $YetaWF.elementClosestCond(elem, YConfigs.Forms.CssFormNoSubmitContents)) { // don't validate input fields in containers (usually grids)
+                return true;
+            }
+            var data = $YetaWF.getAttributeCond(elem, Validation.DATAATTR);
+            if (!data)
+                return true;
+            var vals = JSON.parse(data);
+            var valid = true;
+            for (var _i = 0, vals_1 = vals; _i < vals_1.length; _i++) {
+                var val = vals_1[_i];
+                valid = this.evaluate(form, elem, val);
+                if (setMessage) {
+                    var name_1 = $YetaWF.getAttribute(elem, "name");
+                    var msgElem = $YetaWF.getElement1BySelector("span[data-v-for=\"" + name_1 + "\"]", [form]);
+                    $YetaWF.elementRemoveClasses(elem, ["v-valerror"]);
+                    $YetaWF.elementRemoveClasses(msgElem, ["v-error", "v-valid"]);
+                    if (!valid) {
+                        $YetaWF.elementAddClass(elem, "v-valerror");
+                        msgElem.innerHTML = "<img src=\"" + $YetaWF.htmlAttrEscape(YConfigs.Forms.CssWarningIconUrl) + "\" name=" + name_1 + " class=\"" + YConfigs.Forms.CssWarningIcon + "\" " + YConfigs.Basics.CssTooltip + "=\"" + $YetaWF.htmlAttrEscape(val.M) + "\"/>";
+                        $YetaWF.elementAddClass(msgElem, "v-error");
+                    }
+                    else {
+                        msgElem.innerText = "";
+                        $YetaWF.elementAddClass(msgElem, "v-valid");
+                    }
+                }
+            }
+            return valid;
+        };
+        Validation.prototype.isFormValid = function (form) {
+            return this.validateForm(form);
+        };
+        Validation.prototype.isFieldValid = function (form, elem) {
+            return this.validateField(form, elem);
+        };
+        Validation.prototype.evaluate = function (form, elem, val) {
+            var validators = this.Validators.filter(function (entry) { return entry.Name === val.Method; });
+            if (validators.length == 0)
+                throw "No validator found for " + val.Method;
+            else if (validators.length > 1)
+                throw "Too many validators found for " + val.Method;
+            return validators[0].Func(form, elem, val);
+        };
+        Validation.prototype.getFieldValue = function (elem) {
+            if (elem.tagName == "INPUT")
+                return elem.value;
+            if (elem.tagName == "TEXTAREA")
+                return elem.value;
+            if (elem.tagName == "SELECT")
+                return elem.value;
+            throw "Add support for " + elem.tagName;
+        };
+        /**
+         * Clear any validation errors within the div
+         */
+        Validation.prototype.clearValidation = function (div) {
+            var elems = $YetaWF.getElementsBySelector("[" + Validation.DATAATTR + "]", [div]);
+            for (var _i = 0, elems_1 = elems; _i < elems_1.length; _i++) {
+                var elem = elems_1[_i];
+                var name_2 = $YetaWF.getAttribute(elem, "name");
+                var msgElem = $YetaWF.getElement1BySelector("span[data-v-for=\"" + name_2 + "\"]", [div]);
+                $YetaWF.elementRemoveClasses(elem, ["v-valerror"]);
+                $YetaWF.elementRemoveClasses(msgElem, ["v-error", "v-valid"]);
+                $YetaWF.elementAddClass(msgElem, "v-valid");
+                msgElem.innerText = "";
+            }
+        };
+        // Registration
+        // Registration
+        // Registration
+        Validation.prototype.registerValidator = function (name, validator) {
+            var v = this.Validators.filter(function (entry) { return entry.Name === name; });
+            if (!v.length)
+                this.Validators.push({ Name: name, Func: validator });
+        };
+        // Default Validators
+        // Default Validators
+        // Default Validators
+        Validation.prototype.requiredExprValidator = function (form, elem, val) {
+            var value = this.getFieldValue(elem);
+            var exprs = JSON.parse(val.Expr);
+            switch (val.Op) {
+                case YetaWF_ComponentsHTML.OpEnum.Required:
+                case YetaWF_ComponentsHTML.OpEnum.RequiredIf:
+                case YetaWF_ComponentsHTML.OpEnum.RequiredIfSupplied: {
+                    var match = false;
+                    for (var _i = 0, exprs_1 = exprs; _i < exprs_1.length; _i++) {
+                        var expr = exprs_1[_i];
+                        var valid = YetaWF_ComponentsHTML.ValidatorHelper.evaluateExpressionList(value, form, val.Op, expr);
+                        if (valid) {
+                            match = true;
+                            break;
+                        }
+                    }
+                    if (!match)
                         return true;
-                    return ValidatorHelper.EqualStrings(leftVal, rightVal);
-                case OpCond.NotEq:
-                    if (!leftVal && !rightVal)
+                    if (value === undefined || value === null || value.trim().length === 0)
                         return false;
-                    return !ValidatorHelper.EqualStrings(leftVal, rightVal);
+                    return true;
+                }
+                case YetaWF_ComponentsHTML.OpEnum.SelectionRequired:
+                case YetaWF_ComponentsHTML.OpEnum.SelectionRequiredIf:
+                case YetaWF_ComponentsHTML.OpEnum.SelectionRequiredIfSupplied: {
+                    var match = false;
+                    for (var _a = 0, exprs_2 = exprs; _a < exprs_2.length; _a++) {
+                        var expr = exprs_2[_a];
+                        var valid = YetaWF_ComponentsHTML.ValidatorHelper.evaluateExpressionList(value, form, val.Op, expr);
+                        if (valid) {
+                            match = true;
+                            break;
+                        }
+                    }
+                    if (!match)
+                        return true;
+                    if (value === undefined || value === null || value.trim().length === 0 || value.toString() === "0")
+                        return false;
+                    return true;
+                }
+                case YetaWF_ComponentsHTML.OpEnum.RequiredIfNot:
+                case YetaWF_ComponentsHTML.OpEnum.RequiredIfNotSupplied: {
+                    var match = false;
+                    for (var _b = 0, exprs_3 = exprs; _b < exprs_3.length; _b++) {
+                        var expr = exprs_3[_b];
+                        var valid = YetaWF_ComponentsHTML.ValidatorHelper.evaluateExpressionList(value, form, val.Op, expr);
+                        if (valid) {
+                            match = true;
+                            break;
+                        }
+                    }
+                    if (match)
+                        return true;
+                    if (value === undefined || value === null || value.trim().length === 0)
+                        return false;
+                    return true;
+                }
+                case YetaWF_ComponentsHTML.OpEnum.SelectionRequiredIfNot:
+                case YetaWF_ComponentsHTML.OpEnum.SelectionRequiredIfNotSupplied: {
+                    var match = false;
+                    for (var _c = 0, exprs_4 = exprs; _c < exprs_4.length; _c++) {
+                        var expr = exprs_4[_c];
+                        var valid = YetaWF_ComponentsHTML.ValidatorHelper.evaluateExpressionList(value, form, val.Op, expr);
+                        if (valid) {
+                            match = true;
+                            break;
+                        }
+                    }
+                    if (match)
+                        return true;
+                    if (value === undefined || value === null || value.trim().length === 0 || value.toString() === "0")
+                        return false;
+                    return true;
+                }
                 default:
-                    throw "Invalid Cond " + expr.Cond + " in isExprValid";
+                    throw "Invalid Op " + val.Op + " in evaluateExpressionList";
             }
         };
-        ValidatorHelper.EqualStrings = function (s1, s2) {
-            // special case bool handling, ignore case
-            var s1L = (s1) ? s1.toLowerCase() : "";
-            var s2L = (s2) ? s2.toLowerCase() : "";
-            if ((s1L === "true" || s1L === "false") && (s2L === "true" || s2L === "false"))
-                return s1L === s2L;
-            else
-                return s1 === s2;
+        Validation.prototype.sameAsValidator = function (form, elem, val) {
+            var value = this.getFieldValue(elem);
+            var item = ControlsHelper.getControlItemByName(val.CondProp, form);
+            var actualValue = ControlsHelper.getControlValue(item);
+            return value === actualValue;
         };
-        ValidatorHelper.isExprSupplied = function (expr, form) {
-            var leftVal = ValidatorHelper.getPropertyVal(form, expr._Left);
-            if (!leftVal)
-                return false;
+        Validation.prototype.listNoDuplicatesValidator = function (form, elem, val) {
+            // this is not currently needed - server-side validation verifies during add of new records
+            //return false;// duplicate found
             return true;
         };
-        ValidatorHelper.getPropertyVal = function (form, name) {
-            var item = ControlsHelper.getControlItemByName(name, form);
-            var row = $YetaWF.elementClosestCond(item.Template, ".yt_propertylist .t_row");
-            if (row) {
-                if ($YetaWF.elementHasClass(row, "t_hidden"))
-                    return null;
-                if ($YetaWF.elementHasClass(row, "t_disabled"))
-                    return null;
-            }
-            var value = ControlsHelper.getControlValue(item);
-            return value;
+        Validation.prototype.stringLengthValidator = function (form, elem, val) {
+            var value = this.getFieldValue(elem);
+            var len = value.length;
+            return len <= val.Max && len >= val.Min;
         };
-        ValidatorHelper.isSameValue = function (value, element, parameters) {
-            if ($YetaWF.elementHasClass(element, "yform-novalidate"))
-                return true;
-            // Get value of the target control - we can't use its Id because it could be non-unique, not predictable
-            // use the name attribute instead
-            // first, find the enclosing form
-            var form = $YetaWF.Forms.getForm(element);
-            var name = parameters["dependentproperty"];
-            var item = ControlsHelper.getControlItemByName(name, form);
-            var actualValue = ControlsHelper.getControlValue(item);
-            if (value === actualValue)
-                return true;
-            return false;
+        Validation.prototype.regexValidationBaseValidator = function (form, elem, val) {
+            var value = this.getFieldValue(elem);
+            var re = new RegExp(val.Pattern);
+            return re.test(value);
         };
-        return ValidatorHelper;
+        Validation.prototype.rangeValidator = function (form, elem, val) {
+            var value = this.getFieldValue(elem);
+            return value <= val.Max && value >= val.Min;
+        };
+        Validation.DATAATTR = "data-v";
+        return Validation;
     }());
-    YetaWF_ComponentsHTML.ValidatorHelper = ValidatorHelper;
+    YetaWF_ComponentsHTML.Validation = Validation;
 })(YetaWF_ComponentsHTML || (YetaWF_ComponentsHTML = {}));
+// tslint:disable-next-line:variable-name
+var YetaWF_ComponentsHTML_Validation = new YetaWF_ComponentsHTML.Validation();
 
-//# sourceMappingURL=validation.js.map
+//# sourceMappingURL=Validation.js.map

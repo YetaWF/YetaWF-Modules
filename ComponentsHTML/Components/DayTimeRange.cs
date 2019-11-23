@@ -196,10 +196,11 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             internal static string __ResStr(string name, string defaultValue, params object[] parms) { return ResourceAccess.GetResourceString(typeof(DayTimeRangeComponent), name, defaultValue, parms); }
 
             public DayTimeRangeToValidation() { }
-            public void AddValidation(object container, PropertyData propData, YTagBuilder tag) {
-                string msg = __ResStr("dtrTo", "The end time in the field labeled '{0}' must be later than the start time", propData.GetCaption(container));
-                tag.MergeAttribute("data-val-daytimerangeto", msg);
-                tag.MergeAttribute("data-val", "true");
+            public ValidationBase AddValidation(object container, PropertyData propData, string caption, YTagBuilder tag) {
+                return new ValidationBase {
+                    Method = nameof(DayTimeRangeToValidation),
+                    Message = __ResStr("dtrTo", "The end time in the field labeled '{0}' must be later than the start time", caption),
+                };
             }
         }
 
@@ -209,10 +210,11 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             internal static string __ResStr(string name, string defaultValue, params object[] parms) { return ResourceAccess.GetResourceString(typeof(DayTimeRangeComponent), name, defaultValue, parms); }
 
             public DayTimeRangeFrom2Validation() { }
-            public void AddValidation(object container, PropertyData propData, YTagBuilder tag) {
-                string msg = __ResStr("dtrFrom2", "The starting time in the field labeled '{0}' must be later than the start and end time of the first time range", propData.GetCaption(container));
-                tag.MergeAttribute("data-val-daytimerangefrom2", msg);
-                tag.MergeAttribute("data-val", "true");
+            public ValidationBase AddValidation(object container, PropertyData propData, string caption, YTagBuilder tag) {
+                return new ValidationBase {
+                    Method = nameof(DayTimeRangeFrom2Validation),
+                    Message = __ResStr("dtrFrom2", "The starting time in the field labeled '{0}' must be later than the start and end time of the first time range", caption),
+                };
             }
         }
     }

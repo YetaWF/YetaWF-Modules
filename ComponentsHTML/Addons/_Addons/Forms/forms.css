@@ -1,14 +1,6 @@
 @charset "UTF-8";
 /* Copyright © 2019 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/ComponentsHTML#License */
 /* Hide all validation errors, we show icons with tooltips instead */
-form div.yform-partial div.validation-summary-valid {
-  display: none; }
-
-form div.yform-partial div.validation-summary-errors,
-form div.yform-partial span.field-validation-error {
-  /* This has to beat everything with specificity*/
-  display: none; }
-
 img.yform-warningicon {
   padding-left: .4ch;
   padding-top: 1px; }

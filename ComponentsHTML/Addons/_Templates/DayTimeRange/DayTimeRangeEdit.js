@@ -92,17 +92,10 @@ var YetaWF_ComponentsHTML;
     }(YetaWF.ComponentBaseNoDataImpl));
     YetaWF_ComponentsHTML.DayTimeRangeEditComponent = DayTimeRangeEditComponent;
 })(YetaWF_ComponentsHTML || (YetaWF_ComponentsHTML = {}));
-$.validator.unobtrusive.adapters.add("daytimerangeto", function (options) {
-    options.rules["daytimerangeto"] = {};
-    options.messages["daytimerangeto"] = options.message;
-});
-$.validator.addMethod("daytimerangeto", function (value, element, parameters) {
-    if ($YetaWF.elementHasClass(element, "yform-novalidate"))
-        return true;
-    var elem = element;
+YetaWF_ComponentsHTML_Validation.registerValidator("daytimerangeto", function (form, elem, val) {
     var isRange1 = $YetaWF.elementClosestCond(elem, ".t_to") != null;
     var control = $YetaWF.elementClosestCond(elem, ".yt_daytimerange");
-    if (control == null)
+    if (!control)
         return false;
     var fromRange;
     if (isRange1)
@@ -118,16 +111,9 @@ $.validator.addMethod("daytimerangeto", function (value, element, parameters) {
     finally { }
     return false;
 });
-$.validator.unobtrusive.adapters.add("daytimerangefrom2", function (options) {
-    options.rules["daytimerangefrom2"] = {};
-    options.messages["daytimerangefrom2"] = options.message;
-});
-$.validator.addMethod("daytimerangefrom2", function (value, element, parameters) {
-    if ($YetaWF.elementHasClass(element, "yform-novalidate"))
-        return true;
-    var elem = element;
+YetaWF_ComponentsHTML_Validation.registerValidator("daytimerangefrom2", function (form, elem, val) {
     var control = $YetaWF.elementClosestCond(elem, ".yt_daytimerange");
-    if (control == null)
+    if (!control)
         return false;
     var endRange1 = $YetaWF.getElement1BySelector("input[name$='.End']", [control]);
     try {

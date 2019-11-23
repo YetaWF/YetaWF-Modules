@@ -78,9 +78,6 @@ namespace YetaWF.Modules.ComponentsHTML {
         /// </summary>
         /// <remarks>This is only called if a page contains a form.</remarks>
         public async Task AddFormsAddOnsAsync() {
-            await Manager.AddOnManager.AddAddOnNamedAsync(Package.AreaName, "bassistance.de.jquery-validation");
-            await Manager.AddOnManager.AddAddOnNamedAsync(Package.AreaName, "microsoft.com.jquery_unobtrusive_validation");
-            await Manager.AddOnManager.AddAddOnNamedAsync(Package.AreaName, "gist.github.com_remi_957732.jquery_validate_hooks");
             SkinAccess skinAccess = new SkinAccess();
             if (!Manager.SkinInfo.UsingBootstrap || !Manager.SkinInfo.UsingBootstrapButtons)
                 await JqueryUICore.UseAsync(); // using jquery UI buttons

@@ -2,16 +2,6 @@
 
 /* Hide all validation errors, we show icons with tooltips instead */
 
-form div.yform-partial {
-    div.validation-summary-valid {
-        display:none;
-    }
-    div.validation-summary-errors,
-    span.field-validation-error { /* This has to beat everything with specificity*/
-        display:none;
-    }
-}
-
 img.yform-warningicon {
     padding-left:.4ch;
     padding-top:1px;

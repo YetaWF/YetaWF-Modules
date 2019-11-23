@@ -9,6 +9,8 @@ using YetaWF.Core.Models;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Packages;
 using YetaWF.Core.Support;
+using System.Collections.Generic;
+using YetaWF.Core.Extensions;
 #if MVC6
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -123,25 +125,43 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 #endif
             if (HtmlHelper.ModelState.TryGetValue(FieldName, out modelState)) {
                 if (modelState.Errors.Count > 0)
-                    return "input-validation-error";
+                    return "v-valerror";
             }
             return null;
         }
         private void AddValidation(YTagBuilder tagBuilder) {
+            //$$$ // add some default validations
+            //if (!PropData.ReadOnly) {
+            //    if (PropData.PropInfo.PropertyType == typeof(DateTime) || PropData.PropInfo.PropertyType == typeof(DateTime?)) {
+            //        tagBuilder.Attributes["data-val-date"] = __ResStr("valDate", "Please enter a valid value for field '{0}'", PropData.GetCaption(Container));
+            //        tagBuilder.MergeAttribute("data-val", "true");
+            //    } else if (PropData.PropInfo.PropertyType == typeof(int) || PropData.PropInfo.PropertyType == typeof(int?) ||
+            //            PropData.PropInfo.PropertyType == typeof(long) || PropData.PropInfo.PropertyType == typeof(long?)) {
+            //        tagBuilder.Attributes["data-val-number"] = __ResStr("valNumber", "Please enter a valid number for field '{0}'", PropData.GetCaption(Container));
+            //        tagBuilder.MergeAttribute("data-val", "true");
+            //    }
+            //}
+            // Build validation attribute
+            string caption = PropData.GetCaption(Container);
+            List<object> objs = new List<object>();
             foreach (YIClientValidation val in PropData.ClientValidationAttributes) {
-                val.AddValidation(Container, PropData, tagBuilder);
-            }
-            // add some default validations
-            if (!PropData.ReadOnly) {
-                if (PropData.PropInfo.PropertyType == typeof(DateTime) || PropData.PropInfo.PropertyType == typeof(DateTime?)) {
-                    tagBuilder.Attributes["data-val-date"] = __ResStr("valDate", "Please enter a valid value for field '{0}'", PropData.GetCaption(Container));
-                    tagBuilder.MergeAttribute("data-val", "true");
-                } else if (PropData.PropInfo.PropertyType == typeof(int) || PropData.PropInfo.PropertyType == typeof(int?) ||
-                        PropData.PropInfo.PropertyType == typeof(long) || PropData.PropInfo.PropertyType == typeof(long?)) {
-                    tagBuilder.Attributes["data-val-number"] = __ResStr("valNumber", "Please enter a valid number for field '{0}'", PropData.GetCaption(Container));
-                    tagBuilder.MergeAttribute("data-val", "true");
+                ValidationBase valBase = val.AddValidation(Container, PropData, caption, tagBuilder);
+                if (valBase != null) {
+                    string method = valBase.Method;
+                    if (string.IsNullOrWhiteSpace(method))
+                        throw new InternalError($"No method given ({nameof(ValidationBase)}.{nameof(ValidationBase.Method)})");
+                    if (string.IsNullOrWhiteSpace(valBase.Message))
+                        throw new InternalError($"No message given ({nameof(ValidationBase)}.{nameof(ValidationBase.Message)})");
+                    objs.Add(valBase);
+                    method = method.TrimEnd("Attribute");// remove ending ..Attribute
+                    method = method.TrimEnd("Validation");// remove ending ..Validation
+                    valBase.Method = method.ToLower();
+                    if (string.IsNullOrWhiteSpace(method))
+                        throw new InternalError($"No method name found after removing Attribute and Validation suffixes");
                 }
             }
+            if (objs.Count > 0)
+                tagBuilder.Attributes.Add("data-v", Utility.JsonSerialize(objs));
         }
         /// <summary>
         /// Returns the client-side validation message for a component with the specified field name.
