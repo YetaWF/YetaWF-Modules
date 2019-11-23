@@ -173,6 +173,7 @@
     <Compile Include="Views\HTML\PropertyListEdit.cs" />
     <Compile Include="Views\HTML\ShowMessage.cs" />
     <Compile Include="Views\HTML\TreePartialData.cs" />
+    <Compile Include="YHtmlHelperExtender.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Addons\_Addons\bassistance.de.jquery-validation\FilelistJS.txt" />
