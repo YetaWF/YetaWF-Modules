@@ -44,6 +44,9 @@ namespace YetaWF_Identity {
             $YetaWF.registerEventHandler(this.buttonClear, "click", null, (ev: MouseEvent): boolean => {
                 this.inputHidden.value = "0";
                 this.inputName.value = "";
+                FormsSupport.validateElement(this.inputHidden, (value): boolean => {
+                    return (value && value !== "0")
+                });
                 return false;
             });
             this.GridAll.Control.addEventListener("grid_selectionchange", (evt: Event): void => {
@@ -55,6 +58,9 @@ namespace YetaWF_Identity {
                 var name = tdName.innerText.trim();
                 this.inputName.value = name;
                 this.inputHidden.value = inputUserId.value;
+                FormsSupport.validateElement(this.inputHidden, (value): boolean => {
+                    return (value && value !== "0")
+                });
             });
         }
 

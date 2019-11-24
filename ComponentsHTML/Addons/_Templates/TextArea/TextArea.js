@@ -65,7 +65,7 @@ var YetaWF_ComponentsHTML;
             var ckEd = CKEDITOR.replace(controlId, config);
             ckEd.on("blur", function () {
                 _this.Control.value = ckEd.getData();
-                FormsSupport.validateElement(_this.Control);
+                FormsSupport.validateElementFully(_this.Control);
             });
             // save data in the textarea field when the form is submitted
             $YetaWF.Forms.addPreSubmitHandler(setup.InPartialView, {

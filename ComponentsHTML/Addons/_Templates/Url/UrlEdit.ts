@@ -14,6 +14,7 @@ namespace YetaWF_ComponentsHTML {
 
         public static readonly TEMPLATE: string = "yt_url";
         public static readonly SELECTOR: string = ".yt_url.t_edit";
+        public static readonly EVENT: string = "url_change";
 
         private Setup: UrlEditSetup;
         private inputHidden: HTMLInputElement;
@@ -27,7 +28,7 @@ namespace YetaWF_ComponentsHTML {
         constructor(controlId: string, setup: UrlEditSetup) {
             super(controlId, UrlEditComponent.TEMPLATE, UrlEditComponent.SELECTOR, {
                 ControlType: ControlTypeEnum.Template,
-                ChangeEvent: null,
+                ChangeEvent: UrlEditComponent.EVENT,
                 GetValue: (control: UrlEditComponent): string | null => {
                     return control.value;
                 },
@@ -61,20 +62,25 @@ namespace YetaWF_ComponentsHTML {
 
             this.selectType.Control.addEventListener("dropdownlist_change", (evt: Event): void => {
                 this.updateStatus();
+                this.sendEvent();
             });
             if (this.selectPage) {
                 this.selectPage.Control.addEventListener("dropdownlist_change", (evt: Event): void => {
                     this.updateStatus();
+                    this.sendEvent();
                 });
             }
             if (this.inputUrl) {
-                $YetaWF.registerMultipleEventHandlers([this.inputUrl], ["input", "change", "click", "keyup", "paste"], null, (ev: Event): boolean => { this.updateStatus(); return true; });
+                $YetaWF.registerMultipleEventHandlers([this.inputUrl], ["input", "change", "click", "keyup", "paste"], null, (ev: Event): boolean => {
+                    this.updateStatus();
+                    this.sendEvent();
+                    return true;
+                });
             }
         }
 
         private updateStatus(): void {
             var tp = Number(this.selectType.value) as UrlTypeEnum;
-            var oldValue = this.inputHidden.value;
             switch (tp) {
                 case UrlTypeEnum.Local:
                     if (this.divLocal)
@@ -109,12 +115,12 @@ namespace YetaWF_ComponentsHTML {
                 this.aLink.href = "";
                 this.aLink.style.display = "none";
             }
-
-            if (oldValue !== url) {
-                var event = document.createEvent("Event");
-                event.initEvent("url_change", true, true);
-                this.Control.dispatchEvent(event);
-            }
+        }
+        private sendEvent(): void {
+            FormsSupport.validateElement(this.inputHidden);
+            var event = document.createEvent("Event");
+            event.initEvent(UrlEditComponent.EVENT, true, true);
+            this.Control.dispatchEvent(event);
         }
 
         // API

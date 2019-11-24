@@ -20,7 +20,7 @@ var YetaWF_ComponentsHTML;
         function DropDownListEditComponent(controlId, setup) {
             var _this = _super.call(this, controlId, DropDownListEditComponent.TEMPLATE, DropDownListEditComponent.SELECTOR, {
                 ControlType: YetaWF_ComponentsHTML.ControlTypeEnum.Template,
-                ChangeEvent: "dropdownlist_change",
+                ChangeEvent: DropDownListEditComponent.EVENT,
                 GetValue: function (control) {
                     return control.value;
                 },
@@ -106,9 +106,8 @@ var YetaWF_ComponentsHTML;
             }
         };
         DropDownListEditComponent.prototype.sendChangeEvent = function () {
-            $(this.Control).trigger("change");
             var event = document.createEvent("Event");
-            event.initEvent("dropdownlist_change", true, true);
+            event.initEvent(DropDownListEditComponent.EVENT, true, true);
             this.Control.dispatchEvent(event);
             FormsSupport.validateElement(this.Control);
         };
@@ -164,6 +163,7 @@ var YetaWF_ComponentsHTML;
         };
         DropDownListEditComponent.TEMPLATE = "yt_dropdownlist_base";
         DropDownListEditComponent.SELECTOR = "select.yt_dropdownlist_base.t_edit.t_kendo";
+        DropDownListEditComponent.EVENT = "dropdownlist_change";
         return DropDownListEditComponent;
     }(YetaWF.ComponentBaseDataImpl));
     YetaWF_ComponentsHTML.DropDownListEditComponent = DropDownListEditComponent;

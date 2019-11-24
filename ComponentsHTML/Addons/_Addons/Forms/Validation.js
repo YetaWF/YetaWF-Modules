@@ -28,7 +28,13 @@ var YetaWF_ComponentsHTML;
             // focus handler
             $YetaWF.registerEventHandlerBody("focusout", "input[data-v],select[data-v],textarea[data-v]", function (ev) {
                 var elem = ev.__YetaWFElem;
-                var form = $YetaWF.elementClosest(elem, "form");
+                var form = $YetaWF.Forms.getForm(elem);
+                _this.validateFieldFully(form, elem, true);
+                return true;
+            });
+            $YetaWF.registerMultipleEventHandlers([document.body], ["input", "change", "paste"], "input[data-v],select[data-v],textarea[data-v]", function (ev) {
+                var elem = ev.__YetaWFElem;
+                var form = $YetaWF.Forms.getForm(elem);
                 _this.validateField(form, elem, true);
                 return true;
             });
@@ -39,7 +45,7 @@ var YetaWF_ComponentsHTML;
             var ctrls = $YetaWF.getElementsBySelector("[" + Validation.DATAATTR + "]", [form]);
             for (var _i = 0, ctrls_1 = ctrls; _i < ctrls_1.length; _i++) {
                 var ctrl = ctrls_1[_i];
-                if (!this.validateField(form, ctrl, setMessage)) {
+                if (!this.validateFieldFully(form, ctrl, setMessage)) {
                     valid = false;
                     if (!setMessage)
                         break;
@@ -47,11 +53,37 @@ var YetaWF_ComponentsHTML;
             }
             return valid;
         };
-        Validation.prototype.validateField = function (form, elem, setMessage) {
+        /**
+         * Validate one element.
+         * If the contents are empty the field will be fully validated. If contents are present, the error indicator is reset.
+         * Full validation takes place on blur (or using validateElementFully).
+         */
+        Validation.prototype.validateField = function (form, elem, setMessage, hasValue) {
+            var value = this.getFieldValueSimple(elem);
+            var testFully;
+            if (hasValue) {
+                testFully = !hasValue(value); // only fully test if there is no value (for required, mostly)
+            }
+            else {
+                testFully = !value;
+            }
+            if (testFully) {
+                return this.validateFieldFully(form, elem, setMessage);
+            }
+            else {
+                this.clearValidation1(elem, form);
+                return true;
+            }
+        };
+        /**
+         * Validate one element.
+         * Full validation takes place.
+         */
+        Validation.prototype.validateFieldFully = function (form, elem, setMessage) {
             if ($YetaWF.getAttributeCond(elem, "disabled") || // don't validate disabled fields
                 $YetaWF.getAttributeCond(elem, "readonly") || // don't validate readonly fields
-                $YetaWF.elementHasClass(elem, ".yform-novalidate") || // don't validate novalidate fields
-                $YetaWF.elementClosestCond(elem, "." + YConfigs.Forms.CssFormNoSubmitContents)) { // don't validate input fields in containers (usually grids)
+                $YetaWF.elementHasClass(elem, ".yform-novalidate") /* || // don't validate novalidate fields
+            $YetaWF.elementClosestCond(elem, `.${YConfigs.Forms.CssFormNoSubmitContents}`) */) { // don't validate input fields in containers (usually grids)
                 return true;
             }
             var data = $YetaWF.getAttributeCond(elem, Validation.DATAATTR);
@@ -89,7 +121,7 @@ var YetaWF_ComponentsHTML;
             return this.validateForm(form);
         };
         Validation.prototype.isFieldValid = function (form, elem) {
-            return this.validateField(form, elem);
+            return this.validateFieldFully(form, elem);
         };
         Validation.prototype.evaluate = function (form, elem, val) {
             var validators = this.Validators.filter(function (entry) { return entry.Name === val.Method; });
@@ -105,10 +137,29 @@ var YetaWF_ComponentsHTML;
                     return elem.checked;
                 return elem.value;
             }
-            if (elem.tagName === "TEXTAREA")
+            else if (elem.tagName === "TEXTAREA") {
                 return elem.value;
-            if (elem.tagName === "SELECT")
+            }
+            else if (elem.tagName === "SELECT") {
                 return elem.value;
+            }
+            throw "Add support for " + elem.tagName;
+        };
+        Validation.prototype.getFieldValueSimple = function (elem) {
+            if (elem.tagName === "INPUT") {
+                if (elem.getAttribute("type") === "checkbox")
+                    return elem.checked;
+                return elem.value;
+            }
+            else if (elem.tagName === "TEXTAREA") {
+                return elem.value;
+            }
+            else if (elem.tagName === "SELECT") {
+                var value = elem.value;
+                if (value && value === "0") // special case for select==0 which means no selection
+                    return null;
+                return value;
+            }
             throw "Add support for " + elem.tagName;
         };
         /**
@@ -118,14 +169,20 @@ var YetaWF_ComponentsHTML;
             var elems = $YetaWF.getElementsBySelector("[" + Validation.DATAATTR + "]", [div]);
             for (var _i = 0, elems_1 = elems; _i < elems_1.length; _i++) {
                 var elem = elems_1[_i];
-                var name_2 = $YetaWF.getAttribute(elem, "name");
-                $YetaWF.elementRemoveClasses(elem, ["v-valerror"]);
-                var msgElem = $YetaWF.getElement1BySelectorCond("span[data-v-for=\"" + name_2 + "\"]", [div]);
-                if (msgElem) {
-                    $YetaWF.elementRemoveClasses(msgElem, ["v-error", "v-valid"]);
-                    $YetaWF.elementAddClass(msgElem, "v-valid");
-                    msgElem.innerText = "";
-                }
+                this.clearValidation1(elem, div);
+            }
+        };
+        /**
+         * Clear validation error for one element
+         */
+        Validation.prototype.clearValidation1 = function (elem, div) {
+            var name = $YetaWF.getAttribute(elem, "name");
+            $YetaWF.elementRemoveClasses(elem, ["v-valerror"]);
+            var msgElem = $YetaWF.getElement1BySelectorCond("span[data-v-for=\"" + name + "\"]", [div]);
+            if (msgElem) {
+                $YetaWF.elementRemoveClasses(msgElem, ["v-error", "v-valid"]);
+                $YetaWF.elementAddClass(msgElem, "v-valid");
+                msgElem.innerText = "";
             }
         };
         // Registration

@@ -33,13 +33,32 @@ var YetaWF_ComponentsHTML;
             return YetaWF_ComponentsHTML_Validation.clearValidation(div);
         };
         /**
-         * Validates one elements.
+         * Clear any validation errors for one element.
          */
-        FormsImpl.prototype.validateElement = function (ctrl) {
+        FormsImpl.prototype.clearValidation1 = function (elem) {
+            var form = $YetaWF.Forms.getForm(elem);
+            return YetaWF_ComponentsHTML_Validation.clearValidation1(elem, form);
+        };
+        /**
+         * Validate one element.
+         * If the contents are empty the field will be fully validated. If contents are present, the error indicator is reset.
+         * Full validation takes place on blur (or using validateElementFully).
+         */
+        FormsImpl.prototype.validateElement = function (ctrl, hasValue) {
             var form = $YetaWF.Forms.getFormCond(ctrl);
             if (!form)
                 return;
-            YetaWF_ComponentsHTML_Validation.validateField(form, ctrl, true);
+            YetaWF_ComponentsHTML_Validation.validateField(form, ctrl, true, hasValue);
+        };
+        /**
+         * Validate one element.
+         * Full validation takes place.
+         */
+        FormsImpl.prototype.validateElementFully = function (ctrl) {
+            var form = $YetaWF.Forms.getFormCond(ctrl);
+            if (!form)
+                return;
+            YetaWF_ComponentsHTML_Validation.validateFieldFully(form, ctrl, true);
         };
         /**
          * Returns whether a div has form errors.
@@ -53,10 +72,23 @@ var YetaWF_ComponentsHTML;
          */
         FormsImpl.prototype.showErrors = function (div) {
             var errImgs = $YetaWF.getElementsBySelector("span[data-v-for] img", [div]);
-            var s = "";
+            // eliminate duplicate error messages
+            var errs = [];
+            var _loop_1 = function (errImg) {
+                var err = $YetaWF.getAttribute(errImg, "data-tooltip");
+                var e = errs.filter(function (entry) { return entry === err; });
+                if (!e.length)
+                    errs.push(err);
+            };
             for (var _i = 0, errImgs_1 = errImgs; _i < errImgs_1.length; _i++) {
                 var errImg = errImgs_1[_i];
-                s += $YetaWF.getAttribute(errImg, "data-tooltip") + "(+nl)";
+                _loop_1(errImg);
+            }
+            // format message
+            var s = "";
+            for (var _a = 0, errs_1 = errs; _a < errs_1.length; _a++) {
+                var err = errs_1[_a];
+                s += err + "(+nl)";
             }
             $YetaWF.error(YLocs.Forms.FormErrors + s);
         };

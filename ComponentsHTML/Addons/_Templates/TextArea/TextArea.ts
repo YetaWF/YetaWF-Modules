@@ -68,7 +68,7 @@ namespace YetaWF_ComponentsHTML {
             let ckEd = CKEDITOR.replace(controlId, config);
             ckEd.on("blur", (): void => {
                 (this.Control as HTMLTextAreaElement).value = ckEd.getData();
-                FormsSupport.validateElement(this.Control);
+                FormsSupport.validateElementFully(this.Control);
             });
 
             // save data in the textarea field when the form is submitted

@@ -38,6 +38,9 @@ var YetaWF_Identity;
             $YetaWF.registerEventHandler(_this.buttonClear, "click", null, function (ev) {
                 _this.inputHidden.value = "0";
                 _this.inputName.value = "";
+                FormsSupport.validateElement(_this.inputHidden, function (value) {
+                    return (value && value !== "0");
+                });
                 return false;
             });
             _this.GridAll.Control.addEventListener("grid_selectionchange", function (evt) {
@@ -50,6 +53,9 @@ var YetaWF_Identity;
                 var name = tdName.innerText.trim();
                 _this.inputName.value = name;
                 _this.inputHidden.value = inputUserId.value;
+                FormsSupport.validateElement(_this.inputHidden, function (value) {
+                    return (value && value !== "0");
+                });
             });
             return _this;
         }

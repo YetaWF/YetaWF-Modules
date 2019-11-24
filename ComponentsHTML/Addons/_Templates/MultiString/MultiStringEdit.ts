@@ -16,6 +16,7 @@ namespace YetaWF_ComponentsHTML {
 
         public static readonly TEMPLATE: string = "yt_multistring";
         public static readonly SELECTOR: string = ".yt_multistring.t_edit";
+        public static readonly EVENT: string = "multistring_change";
 
         //private Setup: Setup;
         private Hidden: HTMLInputElement;
@@ -25,7 +26,7 @@ namespace YetaWF_ComponentsHTML {
         constructor(controlId: string/*, setup: Setup*/) {
             super(controlId, MultiStringEditComponent.TEMPLATE, MultiStringEditComponent.SELECTOR, {
                 ControlType: ControlTypeEnum.Template,
-                ChangeEvent: null,
+                ChangeEvent: MultiStringEditComponent.EVENT,
                 GetValue: (control: MultiStringEditComponent): string | null => {
                     return this.Hidden.value;
                 },
@@ -64,6 +65,7 @@ namespace YetaWF_ComponentsHTML {
                 if (sel === 0)
                     this.Hidden.value = newText;
                 this.updateSelectLang();
+                FormsSupport.validateElement(this.Hidden);
                 return false;
             });
             $YetaWF.registerEventHandler(this.InputText, "blur", null, (ev: Event): boolean => {
@@ -82,13 +84,21 @@ namespace YetaWF_ComponentsHTML {
                     }
                     this.updateSelectLang();
                 }
-                return false;
+                this.sendChangedEvent();
+                return true;
             });
         }
 
         private updateSelectLang(): void {
             if (this.SelectLang.selectedIndex === 0)
                 this.SelectLang.enable(YConfigs.YetaWF_ComponentsHTML.Localization && this.InputText.value.length > 0);
+        }
+
+        private sendChangedEvent(): void {
+            FormsSupport.validateElement(this.Hidden);
+            var event = document.createEvent("Event");
+            event.initEvent(MultiStringEditComponent.EVENT, true, true);
+            this.Control.dispatchEvent(event);
         }
 
         // API

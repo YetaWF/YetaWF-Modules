@@ -377,17 +377,37 @@ var YetaWF_ComponentsHTML;
             }
         };
         PropertyListComponent.prototype.toggle = function (dep, depRow, show, disable, clearOnDisable) {
-            $YetaWF.Forms.clearValidation(depRow);
-            $YetaWF.elementRemoveClass(depRow, "t_disabled");
-            $YetaWF.elementRemoveClass(depRow, "t_hidden");
+            // hides/shows rows (doesn't change the status or clear validation if the status is already correct)
+            var clearVal = false;
             if (show) {
-                if (disable)
-                    $YetaWF.elementAddClass(depRow, "t_disabled");
-                $YetaWF.processActivateDivs([depRow]); // init any controls that just became visible
+                if ($YetaWF.elementHasClass(depRow, "t_hidden")) {
+                    $YetaWF.elementRemoveClass(depRow, "t_hidden");
+                    clearVal = true;
+                }
+                if (disable) {
+                    if (!$YetaWF.elementHasClass(depRow, "t_disabled")) {
+                        $YetaWF.elementAddClass(depRow, "t_disabled");
+                        clearVal = true;
+                    }
+                }
+                else {
+                    if ($YetaWF.elementHasClass(depRow, "t_disabled")) {
+                        $YetaWF.elementRemoveClass(depRow, "t_disabled");
+                        clearVal = true;
+                    }
+                }
+                if (clearVal)
+                    $YetaWF.processActivateDivs([depRow]); // init any controls that just became visible
             }
             else {
-                $YetaWF.elementAddClass(depRow, "t_hidden");
+                if (!$YetaWF.elementHasClass(depRow, "t_hidden")) {
+                    $YetaWF.elementRemoveClass(depRow, "t_disabled");
+                    $YetaWF.elementAddClass(depRow, "t_hidden");
+                    clearVal = true;
+                }
             }
+            if (clearVal)
+                $YetaWF.Forms.clearValidation(depRow);
             var controlItemDef = ControlsHelper.getControlItemByNameCond(dep.Prop, depRow); // there may not be an actual control, just a row with displayed info
             if (controlItemDef) {
                 if (show) {

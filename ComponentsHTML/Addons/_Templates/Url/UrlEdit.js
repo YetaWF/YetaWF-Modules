@@ -25,7 +25,7 @@ var YetaWF_ComponentsHTML;
         function UrlEditComponent(controlId, setup) {
             var _this = _super.call(this, controlId, UrlEditComponent.TEMPLATE, UrlEditComponent.SELECTOR, {
                 ControlType: YetaWF_ComponentsHTML.ControlTypeEnum.Template,
-                ChangeEvent: null,
+                ChangeEvent: UrlEditComponent.EVENT,
                 GetValue: function (control) {
                     return control.value;
                 },
@@ -58,20 +58,25 @@ var YetaWF_ComponentsHTML;
                 _this.selectType.enable(false);
             _this.selectType.Control.addEventListener("dropdownlist_change", function (evt) {
                 _this.updateStatus();
+                _this.sendEvent();
             });
             if (_this.selectPage) {
                 _this.selectPage.Control.addEventListener("dropdownlist_change", function (evt) {
                     _this.updateStatus();
+                    _this.sendEvent();
                 });
             }
             if (_this.inputUrl) {
-                $YetaWF.registerMultipleEventHandlers([_this.inputUrl], ["input", "change", "click", "keyup", "paste"], null, function (ev) { _this.updateStatus(); return true; });
+                $YetaWF.registerMultipleEventHandlers([_this.inputUrl], ["input", "change", "click", "keyup", "paste"], null, function (ev) {
+                    _this.updateStatus();
+                    _this.sendEvent();
+                    return true;
+                });
             }
             return _this;
         }
         UrlEditComponent.prototype.updateStatus = function () {
             var tp = Number(this.selectType.value);
-            var oldValue = this.inputHidden.value;
             switch (tp) {
                 case UrlTypeEnum.Local:
                     if (this.divLocal)
@@ -107,11 +112,12 @@ var YetaWF_ComponentsHTML;
                 this.aLink.href = "";
                 this.aLink.style.display = "none";
             }
-            if (oldValue !== url) {
-                var event = document.createEvent("Event");
-                event.initEvent("url_change", true, true);
-                this.Control.dispatchEvent(event);
-            }
+        };
+        UrlEditComponent.prototype.sendEvent = function () {
+            FormsSupport.validateElement(this.inputHidden);
+            var event = document.createEvent("Event");
+            event.initEvent(UrlEditComponent.EVENT, true, true);
+            this.Control.dispatchEvent(event);
         };
         Object.defineProperty(UrlEditComponent.prototype, "value", {
             // API
@@ -167,6 +173,7 @@ var YetaWF_ComponentsHTML;
         };
         UrlEditComponent.TEMPLATE = "yt_url";
         UrlEditComponent.SELECTOR = ".yt_url.t_edit";
+        UrlEditComponent.EVENT = "url_change";
         return UrlEditComponent;
     }(YetaWF.ComponentBaseDataImpl));
     YetaWF_ComponentsHTML.UrlEditComponent = UrlEditComponent;

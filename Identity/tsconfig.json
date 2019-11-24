@@ -32,6 +32,7 @@
       "YetaWF/HTML/ComponentsHTML",
       "YetaWF/HTML/Controls",
       "YetaWF/HTML/Forms",
+      "YetaWF/HTML/FormsSupport",
       "YetaWF/HTML/Globals",
       "YetaWF/HTML/Popups",
       "YetaWF/HTML/Url",

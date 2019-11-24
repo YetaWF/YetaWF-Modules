@@ -16,6 +16,7 @@ namespace YetaWF_ComponentsHTML {
 
         public static readonly TEMPLATE: string = "yt_dropdownlist_base";
         public static readonly SELECTOR: string = "select.yt_dropdownlist_base.t_edit.t_kendo";
+        public static readonly EVENT: string = "dropdownlist_change";
 
         private Setup: DropDownListEditSetup;
         private KendoDropDownList: kendo.ui.DropDownList | null = null;
@@ -23,7 +24,7 @@ namespace YetaWF_ComponentsHTML {
         constructor(controlId: string, setup: DropDownListEditSetup) {
             super(controlId, DropDownListEditComponent.TEMPLATE, DropDownListEditComponent.SELECTOR, {
                 ControlType: ControlTypeEnum.Template,
-                ChangeEvent: "dropdownlist_change",
+                ChangeEvent: DropDownListEditComponent.EVENT,
                 GetValue: (control: DropDownListEditComponent): string | null => {
                     return control.value;
                 },
@@ -98,9 +99,8 @@ namespace YetaWF_ComponentsHTML {
             }
         }
         public sendChangeEvent(): void {
-            $(this.Control).trigger("change");
             var event = document.createEvent("Event");
-            event.initEvent("dropdownlist_change", true, true);
+            event.initEvent(DropDownListEditComponent.EVENT, true, true);
             this.Control.dispatchEvent(event);
             FormsSupport.validateElement(this.Control);
         }

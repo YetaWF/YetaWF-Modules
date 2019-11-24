@@ -22,7 +22,7 @@ var YetaWF_ComponentsHTML;
         function MultiStringEditComponent(controlId /*, setup: Setup*/) {
             var _this = _super.call(this, controlId, MultiStringEditComponent.TEMPLATE, MultiStringEditComponent.SELECTOR, {
                 ControlType: YetaWF_ComponentsHTML.ControlTypeEnum.Template,
-                ChangeEvent: null,
+                ChangeEvent: MultiStringEditComponent.EVENT,
                 GetValue: function (control) {
                     return _this.Hidden.value;
                 },
@@ -57,6 +57,7 @@ var YetaWF_ComponentsHTML;
                 if (sel === 0)
                     _this.Hidden.value = newText;
                 _this.updateSelectLang();
+                FormsSupport.validateElement(_this.Hidden);
                 return false;
             });
             $YetaWF.registerEventHandler(_this.InputText, "blur", null, function (ev) {
@@ -75,13 +76,20 @@ var YetaWF_ComponentsHTML;
                     }
                     _this.updateSelectLang();
                 }
-                return false;
+                _this.sendChangedEvent();
+                return true;
             });
             return _this;
         }
         MultiStringEditComponent.prototype.updateSelectLang = function () {
             if (this.SelectLang.selectedIndex === 0)
                 this.SelectLang.enable(YConfigs.YetaWF_ComponentsHTML.Localization && this.InputText.value.length > 0);
+        };
+        MultiStringEditComponent.prototype.sendChangedEvent = function () {
+            FormsSupport.validateElement(this.Hidden);
+            var event = document.createEvent("Event");
+            event.initEvent(MultiStringEditComponent.EVENT, true, true);
+            this.Control.dispatchEvent(event);
         };
         // API
         MultiStringEditComponent.prototype.enable = function (enabled) {
@@ -172,6 +180,7 @@ var YetaWF_ComponentsHTML;
         };
         MultiStringEditComponent.TEMPLATE = "yt_multistring";
         MultiStringEditComponent.SELECTOR = ".yt_multistring.t_edit";
+        MultiStringEditComponent.EVENT = "multistring_change";
         return MultiStringEditComponent;
     }(YetaWF.ComponentBaseDataImpl));
     YetaWF_ComponentsHTML.MultiStringEditComponent = MultiStringEditComponent;
