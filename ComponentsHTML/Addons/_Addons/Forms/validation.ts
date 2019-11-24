@@ -94,7 +94,7 @@ namespace YetaWF_ComponentsHTML {
             if ($YetaWF.getAttributeCond(elem, "disabled") || // don't validate disabled fields
                 $YetaWF.getAttributeCond(elem, "readonly") || // don't validate readonly fields
                 $YetaWF.elementHasClass(elem, ".yform-novalidate") || // don't validate novalidate fields
-                $YetaWF.elementClosestCond(elem, YConfigs.Forms.CssFormNoSubmitContents)) {// don't validate input fields in containers (usually grids)
+                $YetaWF.elementClosestCond(elem, `.${YConfigs.Forms.CssFormNoSubmitContents}`)) {// don't validate input fields in containers (usually grids)
                 return true;
             }
             let data = $YetaWF.getAttributeCond(elem, Validation.DATAATTR);
@@ -106,16 +106,19 @@ namespace YetaWF_ComponentsHTML {
                 valid = this.evaluate(form, elem, val);
                 if (setMessage) {
                     let name = $YetaWF.getAttribute(elem, "name");
-                    let msgElem = $YetaWF.getElement1BySelector(`span[data-v-for="${name}"]`, [form]);
+                    let msgElem = $YetaWF.getElement1BySelectorCond(`span[data-v-for="${name}"]`, [form]);
                     $YetaWF.elementRemoveClasses(elem, ["v-valerror"]);
-                    $YetaWF.elementRemoveClasses(msgElem, ["v-error", "v-valid"]);
-                    if (!valid) {
+                    if (!valid)
                         $YetaWF.elementAddClass(elem, "v-valerror");
-                        msgElem.innerHTML = `<img src="${$YetaWF.htmlAttrEscape(YConfigs.Forms.CssWarningIconUrl)}" name=${name} class="${YConfigs.Forms.CssWarningIcon}" ${YConfigs.Basics.CssTooltip}="${$YetaWF.htmlAttrEscape(val.M)}"/>`;
-                        $YetaWF.elementAddClass(msgElem, "v-error");
-                    } else {
-                        msgElem.innerText = "";
-                        $YetaWF.elementAddClass(msgElem, "v-valid");
+                    if (msgElem) {
+                        $YetaWF.elementRemoveClasses(msgElem, ["v-error", "v-valid"]);
+                        if (!valid) {
+                            msgElem.innerHTML = `<img src="${$YetaWF.htmlAttrEscape(YConfigs.Forms.CssWarningIconUrl)}" name=${name} class="${YConfigs.Forms.CssWarningIcon}" ${YConfigs.Basics.CssTooltip}="${$YetaWF.htmlAttrEscape(val.M)}"/>`;
+                            $YetaWF.elementAddClass(msgElem, "v-error");
+                        } else {
+                            msgElem.innerText = "";
+                            $YetaWF.elementAddClass(msgElem, "v-valid");
+                        }
                     }
                 }
                 if (!valid)
@@ -160,11 +163,13 @@ namespace YetaWF_ComponentsHTML {
             let elems = $YetaWF.getElementsBySelector(`[${Validation.DATAATTR}]`, [div]);
             for (let elem of elems) {
                 let name = $YetaWF.getAttribute(elem, "name");
-                let msgElem = $YetaWF.getElement1BySelector(`span[data-v-for="${name}"]`, [div]);
                 $YetaWF.elementRemoveClasses(elem, ["v-valerror"]);
-                $YetaWF.elementRemoveClasses(msgElem, ["v-error", "v-valid"]);
-                $YetaWF.elementAddClass(msgElem, "v-valid");
-                msgElem.innerText = "";
+                let msgElem = $YetaWF.getElement1BySelectorCond(`span[data-v-for="${name}"]`, [div]);
+                if (msgElem) {
+                    $YetaWF.elementRemoveClasses(msgElem, ["v-error", "v-valid"]);
+                    $YetaWF.elementAddClass(msgElem, "v-valid");
+                    msgElem.innerText = "";
+                }
             }
         }
 

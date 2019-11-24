@@ -51,7 +51,7 @@ var YetaWF_ComponentsHTML;
             if ($YetaWF.getAttributeCond(elem, "disabled") || // don't validate disabled fields
                 $YetaWF.getAttributeCond(elem, "readonly") || // don't validate readonly fields
                 $YetaWF.elementHasClass(elem, ".yform-novalidate") || // don't validate novalidate fields
-                $YetaWF.elementClosestCond(elem, YConfigs.Forms.CssFormNoSubmitContents)) { // don't validate input fields in containers (usually grids)
+                $YetaWF.elementClosestCond(elem, "." + YConfigs.Forms.CssFormNoSubmitContents)) { // don't validate input fields in containers (usually grids)
                 return true;
             }
             var data = $YetaWF.getAttributeCond(elem, Validation.DATAATTR);
@@ -64,17 +64,20 @@ var YetaWF_ComponentsHTML;
                 valid = this.evaluate(form, elem, val);
                 if (setMessage) {
                     var name_1 = $YetaWF.getAttribute(elem, "name");
-                    var msgElem = $YetaWF.getElement1BySelector("span[data-v-for=\"" + name_1 + "\"]", [form]);
+                    var msgElem = $YetaWF.getElement1BySelectorCond("span[data-v-for=\"" + name_1 + "\"]", [form]);
                     $YetaWF.elementRemoveClasses(elem, ["v-valerror"]);
-                    $YetaWF.elementRemoveClasses(msgElem, ["v-error", "v-valid"]);
-                    if (!valid) {
+                    if (!valid)
                         $YetaWF.elementAddClass(elem, "v-valerror");
-                        msgElem.innerHTML = "<img src=\"" + $YetaWF.htmlAttrEscape(YConfigs.Forms.CssWarningIconUrl) + "\" name=" + name_1 + " class=\"" + YConfigs.Forms.CssWarningIcon + "\" " + YConfigs.Basics.CssTooltip + "=\"" + $YetaWF.htmlAttrEscape(val.M) + "\"/>";
-                        $YetaWF.elementAddClass(msgElem, "v-error");
-                    }
-                    else {
-                        msgElem.innerText = "";
-                        $YetaWF.elementAddClass(msgElem, "v-valid");
+                    if (msgElem) {
+                        $YetaWF.elementRemoveClasses(msgElem, ["v-error", "v-valid"]);
+                        if (!valid) {
+                            msgElem.innerHTML = "<img src=\"" + $YetaWF.htmlAttrEscape(YConfigs.Forms.CssWarningIconUrl) + "\" name=" + name_1 + " class=\"" + YConfigs.Forms.CssWarningIcon + "\" " + YConfigs.Basics.CssTooltip + "=\"" + $YetaWF.htmlAttrEscape(val.M) + "\"/>";
+                            $YetaWF.elementAddClass(msgElem, "v-error");
+                        }
+                        else {
+                            msgElem.innerText = "";
+                            $YetaWF.elementAddClass(msgElem, "v-valid");
+                        }
                     }
                 }
                 if (!valid)
@@ -116,11 +119,13 @@ var YetaWF_ComponentsHTML;
             for (var _i = 0, elems_1 = elems; _i < elems_1.length; _i++) {
                 var elem = elems_1[_i];
                 var name_2 = $YetaWF.getAttribute(elem, "name");
-                var msgElem = $YetaWF.getElement1BySelector("span[data-v-for=\"" + name_2 + "\"]", [div]);
                 $YetaWF.elementRemoveClasses(elem, ["v-valerror"]);
-                $YetaWF.elementRemoveClasses(msgElem, ["v-error", "v-valid"]);
-                $YetaWF.elementAddClass(msgElem, "v-valid");
-                msgElem.innerText = "";
+                var msgElem = $YetaWF.getElement1BySelectorCond("span[data-v-for=\"" + name_2 + "\"]", [div]);
+                if (msgElem) {
+                    $YetaWF.elementRemoveClasses(msgElem, ["v-error", "v-valid"]);
+                    $YetaWF.elementAddClass(msgElem, "v-valid");
+                    msgElem.innerText = "";
+                }
             }
         };
         // Registration
@@ -221,4 +226,4 @@ var YetaWF_ComponentsHTML;
 // tslint:disable-next-line:variable-name
 var YetaWF_ComponentsHTML_Validation = new YetaWF_ComponentsHTML.Validation();
 
-//# sourceMappingURL=validation.js.map
+//# sourceMappingURL=Validation.js.map
