@@ -26,7 +26,7 @@ namespace YetaWF.Modules.LoggingDataProvider.DataProvider.MSLog {
 
         public LogRecordDataProvider() : base() {
             Logger = (ILogger)YetaWFManager.ServiceProvider.GetService(typeof(ILogger<LogRecordDataProvider>));
-            YetaWFLoggerProvider.IgnoredCategory = typeof(LogRecordDataProvider).FullName;
+            //$$$YetaWFLoggerProvider.IgnoredCategory = typeof(LogRecordDataProvider).FullName;
         }
 
         // API
