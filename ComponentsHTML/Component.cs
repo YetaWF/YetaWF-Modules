@@ -13,7 +13,6 @@ using System.Collections.Generic;
 using YetaWF.Core.Extensions;
 #if MVC6
 using Microsoft.AspNetCore.Mvc.ModelBinding;
-using Microsoft.AspNetCore.Mvc.Rendering;
 #else
 using System.Web.Mvc;
 using System.Web.Mvc.Html;
