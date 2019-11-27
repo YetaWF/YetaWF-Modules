@@ -43,6 +43,8 @@ namespace YetaWF_ComponentsHTML {
 
     export class Validation {
 
+        private static readonly DATAATTR: string = "data-v";
+
         constructor() {
 
             // Validators
@@ -80,8 +82,6 @@ namespace YetaWF_ComponentsHTML {
                 return true;
             });
         }
-
-        private static readonly DATAATTR:string = "data-v";
 
         public validateForm(form: HTMLFormElement, setMessage?: boolean): boolean {
             let valid = true;

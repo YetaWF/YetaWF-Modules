@@ -142,9 +142,13 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             //    }
             //}
             // Build validation attribute
-            string caption = PropData.GetCaption(Container);
             List<object> objs = new List<object>();
             foreach (YIClientValidation val in PropData.ClientValidationAttributes) {
+                // TODO: GetCaption can fail for redirects (ModuleDefinition) so we can't call it when there are no validation attributes
+                // GridAllowedRole and GridAllowedUser use a ResourceRedirectList with a property OUTSIDE of the model. This only works in grids (where it is used)
+                // but breaks when used elsewhere (like here) so we only call GetCaption if there is a validation attribute (FOR NOW).
+                // That whole resource  redirect business needs to be fixed (old and ugly, and fragile).
+                string caption = PropData.GetCaption(Container);
                 ValidationBase valBase = val.AddValidation(Container, PropData, caption, tagBuilder);
                 if (valBase != null) {
                     string method = valBase.Method;
