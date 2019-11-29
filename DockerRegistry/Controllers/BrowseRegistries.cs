@@ -85,7 +85,7 @@ namespace YetaWF.Modules.DockerRegistry.Controllers {
 
         public class BrowseModel {
 
-            [Caption("Registry Server"), Description("Defines the registry server for which entries are shown")]
+            [Caption("Registry"), Description("Defines the registry server for which repositories are shown")]
             [UIHint("YetaWF_DockerRegistry_RegistryId")]
             public int RegistryId { get; set; }
 

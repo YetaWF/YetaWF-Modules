@@ -1,0 +1,4 @@
+@charset "UTF-8";
+/* Copyright © 2019 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/DockerRegistry#License */
+YetaWF_DockerRegistry_BrowseRegistries .t_row.t_registryid t_labels {
+  width: 15ch; }
