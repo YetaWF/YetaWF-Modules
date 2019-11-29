@@ -27,7 +27,7 @@ namespace YetaWF.Modules.DockerRegistry.Controllers {
             [UIHint("Url"), AdditionalMetadata("UrlType", UrlTypeEnum.Remote), UrlValidation(UrlValidationAttribute.SchemaEnum.Any, UrlTypeEnum.Remote)]
             [StringLength(Globals.MaxUrl), Required, Trim]
             public string RegistryURL { get; set; }
-            [Caption("Registry (Description)"), Description("The descripitive name of the registry")]
+            [Caption("Registry (Description)"), Description("The descriptive name of the registry")]
             [UIHint("Text40"), StringLength(RegistryEntry.MaxRegistryName), Required, Trim]
             public string RegistryName { get; set; }
             [Caption("User Name"), Description("The user name used to log into the registry server - Omit for anonymous access (if available)")]
