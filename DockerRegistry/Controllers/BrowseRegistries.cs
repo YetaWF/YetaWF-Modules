@@ -34,14 +34,14 @@ namespace YetaWF.Modules.DockerRegistry.Controllers {
             public MenuList Commands {
                 get {
                     MenuList actions = new MenuList() { RenderMode = ModuleAction.RenderModeEnum.IconsOnly };
-                    actions.New(DisplayModule.GetAction_Display(BrowseModule.DisplayUrl, RegistryId, RegistryName));
+                    actions.New(DisplayModule.GetAction_Display(BrowseModule.DisplayUrl, RegistryId, RepositoryName));
                     return actions;
                 }
             }
 
-            [Caption("Registry"), Description("Shows the name of the registry")]
+            [Caption("Repository"), Description("Shows the name of the repository")]
             [UIHint("String"), ReadOnly]
-            public string RegistryName { get; set; }
+            public string RepositoryName { get; set; }
 
             public int RegistryId { get; set; }
             public BrowseRegistriesModule BrowseModule { get; set; }
@@ -118,7 +118,7 @@ namespace YetaWF.Modules.DockerRegistry.Controllers {
                             DisplayTagsModule dispMod = new DisplayTagsModule();
                             DataProviderGetRecords<DockerRegistryEntry> browseItems = null;
                             try {
-                                browseItems = await dockerRegDP.GetRegistriesAsync(reg.RegistryURL, reg.UserName, reg.Password, null, null);
+                                browseItems = await dockerRegDP.GetRepositoriesAsync(reg.RegistryURL, reg.UserName, reg.Password, null, null);
                                 ds = new DataSourceResult {
                                     Data = (from s in browseItems.Data select new BrowseItem(s, regId, Module, dispMod)).ToList<object>(),
                                     Total = browseItems.Total

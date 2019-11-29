@@ -38,15 +38,15 @@ namespace YetaWF.Modules.DockerRegistry.Modules {
                 };
             }
         }
-        public ModuleAction GetAction_Display(string url, int registryId, string registry) {
+        public ModuleAction GetAction_Display(string url, int registryId, string repository) {
             return new ModuleAction(this) {
                 Url = string.IsNullOrWhiteSpace(url) ? ModulePermanentUrl : url,
-                QueryArgs = new { RegistryId = registryId, Registry = registry },
+                QueryArgs = new { RegistryId = registryId, Repository = repository },
                 Image = "#Display",
                 LinkText = this.__ResStr("displayLink", "Display Tags"),
                 MenuText = this.__ResStr("displayText", "Display Tags"),
                 Tooltip = this.__ResStr("displayTooltip", "Display tags"),
-                Legend = this.__ResStr("displayLegend", "Displays tags of a Docker registry"),
+                Legend = this.__ResStr("displayLegend", "Displays tags of a Docker repository"),
                 Style = ModuleAction.ActionStyleEnum.Popup,
                 Category = ModuleAction.ActionCategoryEnum.Read,
                 Mode = ModuleAction.ActionModeEnum.Any,
@@ -54,12 +54,12 @@ namespace YetaWF.Modules.DockerRegistry.Modules {
                 SaveReturnUrl = true,
             };
         }
-        public ModuleAction GetAction_RemoveTag(int registryId, string registry, string reference) {
+        public ModuleAction GetAction_RemoveTag(int registryId, string repository, string reference) {
             if (!IsAuthorized("RemoveTags")) return null;
             return new ModuleAction(this) {
                 Url = Utility.UrlFor(typeof(DisplayTagsModuleController), nameof(DisplayTagsModuleController.Remove)),
                 NeedsModuleContext = true,
-                QueryArgs = new { RegistryId = registryId, Registry = registry, Reference = reference },
+                QueryArgs = new { RegistryId = registryId, Repository = repository, Reference = reference },
                 Image = "#Remove",
                 Style = ModuleAction.ActionStyleEnum.Post,
                 LinkText = this.__ResStr("removeLink", "Remove Tag"),

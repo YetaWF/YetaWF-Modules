@@ -14,7 +14,7 @@ namespace YetaWF.Modules.DockerRegistry.DataProvider {
 
     public class DockerRegistryEntry {
 
-        public string RegistryName { get; set; }
+        public string RepositoryName { get; set; }
 
         public DockerRegistryEntry() { }
     }
@@ -48,7 +48,7 @@ namespace YetaWF.Modules.DockerRegistry.DataProvider {
         // API
         // API
 
-        public async Task<DataProviderGetRecords<DockerRegistryEntry>> GetRegistriesAsync(string registryURL, string userName, string userPassword, List<DataProviderSortInfo> sort, List<DataProviderFilterInfo> filters) {
+        public async Task<DataProviderGetRecords<DockerRegistryEntry>> GetRepositoriesAsync(string registryURL, string userName, string userPassword, List<DataProviderSortInfo> sort, List<DataProviderFilterInfo> filters) {
             string data;
             using (HttpClient client = new HttpClient()) {
                 AddAuthentication(client, userName, userPassword);
@@ -73,16 +73,16 @@ namespace YetaWF.Modules.DockerRegistry.DataProvider {
             } catch (Exception exc) {
                 throw new Error(this.__ResStr("errRegsData", "The registry data retrieved from {0} is invalid - {1}", registryURL, ErrorHandling.FormatExceptionMessage(exc)));
             }
-            return DataProviderImpl<DockerRegistryEntry>.GetRecords((from r in recs.Repositories select (object)new DockerRegistryEntry { RegistryName = r }).ToList(), 0, 0, sort, filters);
+            return DataProviderImpl<DockerRegistryEntry>.GetRecords((from r in recs.Repositories select (object)new DockerRegistryEntry { RepositoryName = r }).ToList(), 0, 0, sort, filters);
         }
 
-        public async Task<DataProviderGetRecords<DockerTagEntry>> GetTagsAsync(string registryURL, string registry, string userName, string userPassword, List<DataProviderSortInfo> sort, List<DataProviderFilterInfo> filters) {
+        public async Task<DataProviderGetRecords<DockerTagEntry>> GetTagsAsync(string registryURL, string repository, string userName, string userPassword, List<DataProviderSortInfo> sort, List<DataProviderFilterInfo> filters) {
             string data;
             using (HttpClient client = new HttpClient()) {
 
                 // retrieve all tags
                 AddAuthentication(client, userName, userPassword);
-                string url = $"{registryURL}/v2/{registry}/tags/list";
+                string url = $"{registryURL}/v2/{repository}/tags/list";
                 if (YetaWFManager.IsSync()) {
                     using (HttpResponseMessage resp = client.GetAsync(url).Result) {
                         if (!resp.IsSuccessStatusCode)
@@ -109,7 +109,7 @@ namespace YetaWF.Modules.DockerRegistry.DataProvider {
                 // retrieve details for each tag
                 client.DefaultRequestHeaders.Add("Accept", "application/vnd.docker.distribution.manifest.v2+json");// to get digest - https://github.com/docker/distribution/issues/1565
                 foreach (DockerTagEntry tag in tags) {
-                    url = $"{registryURL}/v2/{registry}/manifests/{tag.TagName}";
+                    url = $"{registryURL}/v2/{repository}/manifests/{tag.TagName}";
                     string digest = this.__ResStr("unknown", "(unknown)");
                     HttpResponseMessage resp = null;
                     try {
@@ -120,10 +120,10 @@ namespace YetaWF.Modules.DockerRegistry.DataProvider {
                                 resp = await client.GetAsync(url);
                             }
                         } catch (Exception exc) {
-                            throw new Error(this.__ResStr("errManifest", "An error occurred retrieving tag data from {0} for {1}:{2} - {3}", registryURL, registry, tag.TagName, ErrorHandling.FormatExceptionMessage(exc)));
+                            throw new Error(this.__ResStr("errManifest", "An error occurred retrieving tag data from {0} for {1}:{2} - {3}", registryURL, repository, tag.TagName, ErrorHandling.FormatExceptionMessage(exc)));
                         }
                         if (!resp.IsSuccessStatusCode)
-                            throw new Error(this.__ResStr("errManifestStatus", "An error occured accessing {0} for {1}:{2} - Error {1}", registryURL, registry, tag.TagName, resp.StatusCode));
+                            throw new Error(this.__ResStr("errManifestStatus", "An error occured accessing {0} for {1}:{2} - Error {1}", registryURL, repository, tag.TagName, resp.StatusCode));
 
                         try {
                             if (YetaWFManager.IsSync()) {
@@ -132,7 +132,7 @@ namespace YetaWF.Modules.DockerRegistry.DataProvider {
                                 data = await resp.Content.ReadAsStringAsync();
                             }
                         } catch (Exception exc) {
-                            throw new Error(this.__ResStr("errManifest", "An error occurred retrieving tag data from {0} for {1}:{2} - {3}", registryURL, registry, tag.TagName, ErrorHandling.FormatExceptionMessage(exc)));
+                            throw new Error(this.__ResStr("errManifest", "An error occurred retrieving tag data from {0} for {1}:{2} - {3}", registryURL, repository, tag.TagName, ErrorHandling.FormatExceptionMessage(exc)));
                         }
                         List<string> vals = resp.Headers.GetValues("Docker-Content-Digest").ToList();
                         if (vals.Count == 1)
@@ -148,7 +148,7 @@ namespace YetaWF.Modules.DockerRegistry.DataProvider {
                     try {
                         recTag = Utility.JsonDeserialize<RegistryTag>(data);
                     } catch (Exception exc) {
-                        throw new Error(this.__ResStr("errTagsDetails", "The detailed tag data retrieved from {0} for {1}:{2} is invalid - {3}", registryURL, registry, tag.TagName, ErrorHandling.FormatExceptionMessage(exc)));
+                        throw new Error(this.__ResStr("errTagsDetails", "The detailed tag data retrieved from {0} for {1}:{2} is invalid - {3}", registryURL, repository, tag.TagName, ErrorHandling.FormatExceptionMessage(exc)));
                     }
                     tag.Digest = digest;
                     tag.Size = recTag.Config.Size + recTag.Layers.Sum((r) => r.Size);
