@@ -1,0 +1,34 @@
+{
+  "compilerOptions": {
+    "noImplicitAny": false,
+    "noEmitOnError": false,
+    "lib": [ "dom", "es2015"],
+    "removeComments": false,
+    "sourceMap": false,
+    "target": "es5",
+    "module": "none",
+    "declaration": false,
+    "importHelpers": true,
+    "skipLibCheck": true,
+    "noEmitHelpers": false,
+    "jsx": "react",
+    "jsxFactory": "$YetaWF.createElement",
+    "strict": true,
+    "alwaysStrict": true,
+    "allowUnreachableCode": false,
+    "allowUnusedLabels": false,
+    "noImplicitReturns": true,
+    "noUnusedLocals": true,
+    "preserveSymlinks": true,
+    "strictFunctionTypes": true,
+    "strictPropertyInitialization": true,
+    "strictNullChecks": true,
+    "types": [
+      "jquery", "jqueryui", "kendo-ui",
+      "YetaWF/HTML/Globals", "YetaWF/HTML/Basics", "YetaWF/HTML/Forms", "YetaWF/HTML/Popups", "YetaWF/HTML/ComponentsHTML", "YetaWF/HTML/Url",
+      "YetaWF/HTML/ComponentBase", "YetaWF/HTML/DropDownList/DropDownListEdit", "YetaWF/HTML/PropertyList/PropertyList"
+    ]
+  },
+  "compileOnSave": true,
+  "typeAcquisition": { "enable": false }
+}
