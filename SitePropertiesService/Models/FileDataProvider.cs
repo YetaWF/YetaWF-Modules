@@ -6,6 +6,7 @@ using YetaWF.Core.DataProvider;
 using YetaWF.Core.Site;
 using YetaWF.Core.Support;
 using YetaWF.DataProvider;
+using YetaWF.Modules.SitePropertiesService.Controllers;
 
 namespace YetaWF.Modules.SitePropertiesService.DataProvider.File {
 
@@ -16,7 +17,10 @@ namespace YetaWF.Modules.SitePropertiesService.DataProvider.File {
         }
         class SiteDefinitionDataProvider : FileDataProvider<string, SiteDefinition> {
             public SiteDefinitionDataProvider(Dictionary<string, object> options) : base(options) { }
-            public override string GetBaseFolder() { return Path.Combine(YetaWFManager.DataFolder, Dataset); }
+            public override string GetBaseFolder() {
+                string dataPath = WebConfigHelper.GetValue(AreaRegistration.CurrentPackage.AreaName, "DataPath", YetaWFManager.DataFolder);
+                return Path.Combine(dataPath, Dataset);
+            }
         }
     }
 }
