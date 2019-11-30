@@ -173,7 +173,7 @@ namespace YetaWF_ComponentsHTML {
             return validators[0].Func(form, elem, val);
         }
 
-        public getFieldValue(elem: HTMLElement): any {
+        public getFieldValue(elem: HTMLElement): boolean | string {
             if (elem.tagName === "INPUT") {
                 if (elem.getAttribute("type") === "checkbox")
                     return (elem as HTMLInputElement).checked;
@@ -185,7 +185,7 @@ namespace YetaWF_ComponentsHTML {
             }
             throw `Add support for ${elem.tagName}`;
         }
-        public getFieldValueSimple(elem: HTMLElement): any {
+        public getFieldValueSimple(elem: HTMLElement): boolean | string {
             if (elem.tagName === "INPUT") {
                 if (elem.getAttribute("type") === "checkbox")
                     return (elem as HTMLInputElement).checked;
@@ -195,7 +195,7 @@ namespace YetaWF_ComponentsHTML {
             } else if (elem.tagName === "SELECT") {
                 let value = (elem as HTMLSelectElement).value;
                 if (value && value === "0") // special case for select==0 which means no selection
-                    return null;
+                    return "";
                 return value;
             }
             throw `Add support for ${elem.tagName}`;
@@ -250,6 +250,8 @@ namespace YetaWF_ComponentsHTML {
                     let valid = YetaWF_ComponentsHTML.ValidatorHelper.evaluateExpressionList(value, form, val.Op, exprs);
                     if (!valid)
                         return true;
+                    if (typeof value === "boolean")
+                        return value;
                     if (value === undefined || value === null || value.trim().length === 0)
                         return false;
                     return true;
@@ -260,6 +262,8 @@ namespace YetaWF_ComponentsHTML {
                     let valid = YetaWF_ComponentsHTML.ValidatorHelper.evaluateExpressionList(value, form, val.Op, exprs);
                     if (!valid)
                         return true;
+                    if (typeof value === "boolean")
+                        return value;
                     if (value === undefined || value === null || value.trim().length === 0 || value.toString() === "0")
                         return false;
                     return true;
@@ -269,6 +273,8 @@ namespace YetaWF_ComponentsHTML {
                     let valid = YetaWF_ComponentsHTML.ValidatorHelper.evaluateExpressionList(value, form, val.Op, exprs);
                     if (valid)
                         return true;
+                    if (typeof value === "boolean")
+                        return value;
                     if (value === undefined || value === null || value.trim().length === 0)
                         return false;
                     return true;
@@ -278,6 +284,8 @@ namespace YetaWF_ComponentsHTML {
                     let valid = YetaWF_ComponentsHTML.ValidatorHelper.evaluateExpressionList(value, form, val.Op, exprs);
                     if (valid)
                         return true;
+                    if (typeof value === "boolean")
+                        return value;
                     if (value === undefined || value === null || value.trim().length === 0 || value.toString() === "0")
                         return false;
                     return true;
@@ -293,7 +301,14 @@ namespace YetaWF_ComponentsHTML {
             let item = ControlsHelper.getControlItemByName(val.CondProp, form);
             let actualValue = ControlsHelper.getControlValue(item);
 
-            return value === actualValue;
+            if (typeof value === "boolean") {
+                if (actualValue == null) {
+                    return !value;
+                } else {
+                    return value === (actualValue.toLowerCase() === "true");
+                }
+            } else
+                return value === actualValue;
         }
         private listNoDuplicatesValidator(form: HTMLFormElement, elem: HTMLElement, val: ValidationSameAs): boolean {
             // this is not currently needed - server-side validation verifies during add of new records
@@ -301,21 +316,27 @@ namespace YetaWF_ComponentsHTML {
             return true;
         }
         private stringLengthValidator(form: HTMLFormElement, elem: HTMLElement, val: ValidationStringLength): boolean {
-            let value = this.getFieldValue(elem) as string;
+            let value = this.getFieldValue(elem);
+            if (typeof value === "boolean")
+                throw `StringLength attribute used with boolean type - ${elem.outerHTML}`;
             if (!value) return true;
             let len = value.length;
             return len <= val.Max && len >= val.Min;
         }
         private regexValidationBaseValidator(form: HTMLFormElement, elem: HTMLElement, val: ValidationRegexValidationBase): boolean {
             let value = this.getFieldValue(elem) as string;
+            if (typeof value === "boolean")
+                throw `Regex attribute used with boolean type - ${elem.outerHTML}`;
             if (!value) return true;
             var re = new RegExp(val.Pattern);
             return re.test(value);
         }
         private rangeValidator(form: HTMLFormElement, elem: HTMLElement, val: ValidationRange): boolean {
             let value = this.getFieldValue(elem);
+            if (typeof value === "boolean")
+                throw `Range attribute used with boolean type - ${elem.outerHTML}`;
             if (!value) return true;
-            return value <= val.Max && value >= val.Min;
+            return value >= val.Min && value <= val.Max;
         }
     }
 }

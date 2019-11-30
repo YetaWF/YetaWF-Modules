@@ -157,7 +157,7 @@ var YetaWF_ComponentsHTML;
             else if (elem.tagName === "SELECT") {
                 var value = elem.value;
                 if (value && value === "0") // special case for select==0 which means no selection
-                    return null;
+                    return "";
                 return value;
             }
             throw "Add support for " + elem.tagName;
@@ -206,6 +206,8 @@ var YetaWF_ComponentsHTML;
                     var valid = YetaWF_ComponentsHTML.ValidatorHelper.evaluateExpressionList(value, form, val.Op, exprs);
                     if (!valid)
                         return true;
+                    if (typeof value === "boolean")
+                        return value;
                     if (value === undefined || value === null || value.trim().length === 0)
                         return false;
                     return true;
@@ -216,6 +218,8 @@ var YetaWF_ComponentsHTML;
                     var valid = YetaWF_ComponentsHTML.ValidatorHelper.evaluateExpressionList(value, form, val.Op, exprs);
                     if (!valid)
                         return true;
+                    if (typeof value === "boolean")
+                        return value;
                     if (value === undefined || value === null || value.trim().length === 0 || value.toString() === "0")
                         return false;
                     return true;
@@ -225,6 +229,8 @@ var YetaWF_ComponentsHTML;
                     var valid = YetaWF_ComponentsHTML.ValidatorHelper.evaluateExpressionList(value, form, val.Op, exprs);
                     if (valid)
                         return true;
+                    if (typeof value === "boolean")
+                        return value;
                     if (value === undefined || value === null || value.trim().length === 0)
                         return false;
                     return true;
@@ -234,6 +240,8 @@ var YetaWF_ComponentsHTML;
                     var valid = YetaWF_ComponentsHTML.ValidatorHelper.evaluateExpressionList(value, form, val.Op, exprs);
                     if (valid)
                         return true;
+                    if (typeof value === "boolean")
+                        return value;
                     if (value === undefined || value === null || value.trim().length === 0 || value.toString() === "0")
                         return false;
                     return true;
@@ -248,7 +256,16 @@ var YetaWF_ComponentsHTML;
                 return true;
             var item = ControlsHelper.getControlItemByName(val.CondProp, form);
             var actualValue = ControlsHelper.getControlValue(item);
-            return value === actualValue;
+            if (typeof value === "boolean") {
+                if (actualValue == null) {
+                    return !value;
+                }
+                else {
+                    return value === (actualValue.toLowerCase() === "true");
+                }
+            }
+            else
+                return value === actualValue;
         };
         Validation.prototype.listNoDuplicatesValidator = function (form, elem, val) {
             // this is not currently needed - server-side validation verifies during add of new records
@@ -257,6 +274,8 @@ var YetaWF_ComponentsHTML;
         };
         Validation.prototype.stringLengthValidator = function (form, elem, val) {
             var value = this.getFieldValue(elem);
+            if (typeof value === "boolean")
+                throw "StringLength attribute used with boolean type - " + elem.outerHTML;
             if (!value)
                 return true;
             var len = value.length;
@@ -264,6 +283,8 @@ var YetaWF_ComponentsHTML;
         };
         Validation.prototype.regexValidationBaseValidator = function (form, elem, val) {
             var value = this.getFieldValue(elem);
+            if (typeof value === "boolean")
+                throw "Regex attribute used with boolean type - " + elem.outerHTML;
             if (!value)
                 return true;
             var re = new RegExp(val.Pattern);
@@ -271,9 +292,11 @@ var YetaWF_ComponentsHTML;
         };
         Validation.prototype.rangeValidator = function (form, elem, val) {
             var value = this.getFieldValue(elem);
+            if (typeof value === "boolean")
+                throw "Range attribute used with boolean type - " + elem.outerHTML;
             if (!value)
                 return true;
-            return value <= val.Max && value >= val.Min;
+            return value >= val.Min && value <= val.Max;
         };
         Validation.DATAATTR = "data-v";
         return Validation;

@@ -108,7 +108,7 @@ namespace YetaWF_ComponentsHTML {
 
                 array.push({
                     name: name,
-                    value: YetaWF_ComponentsHTML_Validation.getFieldValue(elem)
+                    value: YetaWF_ComponentsHTML_Validation.getFieldValue(elem).toString()
                 });
             }
             return array;

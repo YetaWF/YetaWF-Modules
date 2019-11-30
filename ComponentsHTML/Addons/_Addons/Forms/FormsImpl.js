@@ -109,7 +109,7 @@ var YetaWF_ComponentsHTML;
                     continue;
                 array.push({
                     name: name_1,
-                    value: YetaWF_ComponentsHTML_Validation.getFieldValue(elem)
+                    value: YetaWF_ComponentsHTML_Validation.getFieldValue(elem).toString()
                 });
             }
             return array;
