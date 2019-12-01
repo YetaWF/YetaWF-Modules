@@ -118,7 +118,7 @@ namespace YetaWF.Modules.LoggingDataProvider.DataProvider {
 
             if (level == Core.Log.Logging.LevelEnum.Error)
                 message += "\n" + GetCallStack(relStack + 1);
-            message = message.Truncate(2000); // limit max text
+            message = message.Truncate(10000); // limit max text
 
             string moduleName;
             int siteIdentity = 0;
