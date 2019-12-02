@@ -468,6 +468,7 @@ var YetaWF_ComponentsHTML;
         };
         TreeComponent.prototype.setSelect = function (liElem, focus) {
             this.clearSelect();
+            $YetaWF.elementAddClass(liElem, 't_select');
             var entry = $YetaWF.getElement1BySelector(".t_entry", [liElem]);
             $YetaWF.elementAddClass(entry, this.Setup.SelectedCss);
             if (focus === true)
@@ -494,9 +495,14 @@ var YetaWF_ComponentsHTML;
             entry.innerText = text;
         };
         TreeComponent.prototype.clearSelect = function () {
-            var entries = $YetaWF.getElementsBySelector(".t_entry." + this.Setup.SelectedCss, [this.Control]);
+            var entries = $YetaWF.getElementsBySelector("li.t_select", [this.Control]);
             for (var _i = 0, entries_1 = entries; _i < entries_1.length; _i++) {
                 var entry = entries_1[_i];
+                $YetaWF.elementRemoveClass(entry, 't_select');
+            }
+            entries = $YetaWF.getElementsBySelector(".t_entry." + this.Setup.SelectedCss, [this.Control]);
+            for (var _a = 0, entries_2 = entries; _a < entries_2.length; _a++) {
+                var entry = entries_2[_a];
                 $YetaWF.elementRemoveClass(entry, this.Setup.SelectedCss);
             }
         };

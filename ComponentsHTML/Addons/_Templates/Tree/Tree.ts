@@ -1,4 +1,4 @@
-/* Copyright © 2019 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/ComponentsHTML#License */
+/* Copyright ï¿½ 2019 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/ComponentsHTML#License */
 
 // Kendo UI menu use
 
@@ -470,14 +470,15 @@ namespace YetaWF_ComponentsHTML {
             $YetaWF.setAttribute(liElem, "data-record", JSON.stringify(data));
         }
         public getSelect(): HTMLLIElement | null {
-            var entry = $YetaWF.getElement1BySelectorCond(`.t_entry.${this.Setup.SelectedCss}`, [this.Control]) as HTMLElement;
+            let entry = $YetaWF.getElement1BySelectorCond(`.t_entry.${this.Setup.SelectedCss}`, [this.Control]) as HTMLElement;
             if (!entry) return null;
-            var liElem = $YetaWF.elementClosest(entry, "li") as HTMLLIElement | null;
+            let liElem = $YetaWF.elementClosest(entry, "li") as HTMLLIElement | null;
             return liElem;
         }
         public setSelect(liElem: HTMLLIElement, focus?:boolean): void {
             this.clearSelect();
-            var entry = $YetaWF.getElement1BySelector(".t_entry", [liElem]);
+            $YetaWF.elementAddClass(liElem, 't_select');
+            let entry = $YetaWF.getElement1BySelector(".t_entry", [liElem]);
             $YetaWF.elementAddClass(entry, this.Setup.SelectedCss);
             if (focus === true)
                 entry.focus();
@@ -502,7 +503,10 @@ namespace YetaWF_ComponentsHTML {
             entry.innerText = text;
         }
         public clearSelect(): void {
-            var entries = $YetaWF.getElementsBySelector(`.t_entry.${this.Setup.SelectedCss}`, [this.Control]);
+            let entries = $YetaWF.getElementsBySelector(`li.t_select`, [this.Control]);
+            for (let entry of entries)
+                $YetaWF.elementRemoveClass(entry, 't_select');
+            entries = $YetaWF.getElementsBySelector(`.t_entry.${this.Setup.SelectedCss}`, [this.Control]);
             for (let entry of entries)
                 $YetaWF.elementRemoveClass(entry, this.Setup.SelectedCss);
         }

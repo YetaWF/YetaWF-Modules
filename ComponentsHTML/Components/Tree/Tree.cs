@@ -1,4 +1,4 @@
-﻿/* Copyright © 2019 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/ComponentsHTML#License */
+/* Copyright © 2019 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/ComponentsHTML#License */
 
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
@@ -256,9 +256,11 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
             // selected
             bool selected = record.Selected;
-            string selectedCss = "";
-            if (selected)
+            string selectedCss = "", selectedLICss = "";
+            if (selected) {
                 selectedCss = $" {setup.SelectedCss}";
+                selectedLICss = " t_select";
+            }
 
             string caret;
             string icon;
@@ -284,6 +286,12 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             // entry
 
             string text = await htmlHelper.ForDisplayAsync(record, nameof(TreeEntry.Text));
+            string beforeText = null;
+            if (record.BeforeText != null)
+                beforeText = await htmlHelper.ForDisplayAsync(record, nameof(TreeEntry.BeforeText));
+            string afterText = null;
+            if (record.AfterText != null)
+                afterText = await htmlHelper.ForDisplayAsync(record, nameof(TreeEntry.AfterText));
 
             if (!string.IsNullOrWhiteSpace(text))
                 text = text.Trim(new char[] { '\r', '\n' }); // templates can generate a lot of extra \r\n which breaks filtering
@@ -305,9 +313,9 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             }
 
             hb.Append($@"
- <li {recData}>
+ <li {recData}{selectedLICss}>
   {caret}
-  {icon}{output}");
+  {icon}{beforeText}{output}{afterText}");
 
             // sub entries
             if (items != null) {

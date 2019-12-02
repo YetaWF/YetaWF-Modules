@@ -1,6 +1,7 @@
 ﻿/* Copyright © 2019 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/ComponentsHTML#License */
 
 using System.Threading.Tasks;
+using YetaWF.Core.Addons;
 using YetaWF.Core.Components;
 using YetaWF.Core.Localize;
 using YetaWF.Core.Packages;
@@ -51,7 +52,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             HtmlBuilder hb = new HtmlBuilder();
 
             hb.Append($@"
-<div class='yt_filefoldersize t_display'>
+<div class='yt_filefoldersize t_display' {Basics.CssTooltip}='{Formatting.LongKBDisplay(model, detailed:true)}'>
     {HE(Formatting.FormatFileFolderSize(model))}
 </div>
 ");
