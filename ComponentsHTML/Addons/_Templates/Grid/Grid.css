@@ -5,11 +5,6 @@
   font-weight: normal; }
   .yt_grid .tg_table {
     overflow-x: auto; }
-    .yt_grid .tg_table input,
-    .yt_grid .tg_table select,
-    .yt_grid .tg_table textarea,
-    .yt_grid .tg_table button {
-      font-size: 11px !important; }
     .yt_grid .tg_table table {
       border-collapse: separate;
       box-sizing: border-box;
@@ -43,7 +38,6 @@
       .yt_grid .tg_table table th {
         overflow: hidden;
         white-space: nowrap;
-        font-size: 11px;
         padding: 2px 4px 2px 4px; }
       .yt_grid .tg_table table .tg_header th {
         position: relative;
@@ -81,7 +75,6 @@
             top: -3px; }
       .yt_grid .tg_table table td {
         overflow: hidden;
-        font-size: 11px;
         padding: 2px 2px 2px 2px; }
         .yt_grid .tg_table table td .tg_emptydiv {
           padding: 2em 0 2em 2ch; }
@@ -104,11 +97,9 @@
       display: inline-block;
       margin: 3px 3px 3px 3px; }
       .yt_grid .tg_pager .tg_reload .fas, .yt_grid .tg_pager .tg_search .fas, .yt_grid .tg_pager .tg_pgtop .fas, .yt_grid .tg_pager .tg_pgnext .fas, .yt_grid .tg_pager .tg_pgprev .fas, .yt_grid .tg_pager .tg_pgbottom .fas {
-        font-size: 8px;
         padding: 2px 4px 2px 4px; }
     .yt_grid .tg_pager .tg_pgbtns, .yt_grid .tg_pager .tg_pgctl, .yt_grid .tg_pager .tg_pgnum, .yt_grid .tg_pager .tg_pgsel, .yt_grid .tg_pager .tg_totals {
       display: inline-block;
-      font-size: 11px;
       margin: 3px 3px 3px 3px; }
     .yt_grid .tg_pager .tg_pgbtns, .yt_grid .tg_pager .tg_pgctl, .yt_grid .tg_pager .tg_pgsel {
       margin-right: 4ch; }
@@ -175,10 +166,32 @@
 
 .yt_grid.tg_noskin {
   /* Not skin dependent formatting, usually module specific */ }
+  .yt_grid.tg_noskin .tg_table input,
+  .yt_grid.tg_noskin .tg_table select,
+  .yt_grid.tg_noskin .tg_table textarea,
+  .yt_grid.tg_noskin .tg_table button {
+    font-size: 14px !important; }
   .yt_grid.tg_noskin .tg_table th, .yt_grid.tg_noskin .tg_table td {
     font-size: 14px; }
+  .yt_grid.tg_noskin .tg_pager {
+    font-size: 11px; }
+    .yt_grid.tg_noskin .tg_pager .tg_reload .fas, .yt_grid.tg_noskin .tg_pager .tg_search .fas, .yt_grid.tg_noskin .tg_pager .tg_pgtop .fas, .yt_grid.tg_noskin .tg_pager .tg_pgnext .fas, .yt_grid.tg_noskin .tg_pager .tg_pgprev .fas, .yt_grid.tg_noskin .tg_pager .tg_pgbottom .fas {
+      font-size: 12px; }
+    .yt_grid.tg_noskin .tg_pager .tg_pgbtns, .yt_grid.tg_noskin .tg_pager .tg_pgctl, .yt_grid.tg_noskin .tg_pager .tg_pgnum, .yt_grid.tg_noskin .tg_pager .tg_pgsel, .yt_grid.tg_noskin .tg_pager .tg_totals {
+      font-size: 14px; }
 
 .yt_grid.tg_skin .yt_grid.tg_noskin {
   /* nested grid */ }
+  .yt_grid.tg_skin .yt_grid.tg_noskin .tg_table input,
+  .yt_grid.tg_skin .yt_grid.tg_noskin .tg_table select,
+  .yt_grid.tg_skin .yt_grid.tg_noskin .tg_table textarea,
+  .yt_grid.tg_skin .yt_grid.tg_noskin .tg_table button {
+    font-size: 11px !important; }
   .yt_grid.tg_skin .yt_grid.tg_noskin .tg_table th, .yt_grid.tg_skin .yt_grid.tg_noskin .tg_table td {
     font-size: 11px; }
+  .yt_grid.tg_skin .yt_grid.tg_noskin .tg_pager {
+    font-size: 11px; }
+    .yt_grid.tg_skin .yt_grid.tg_noskin .tg_pager .tg_reload .fas, .yt_grid.tg_skin .yt_grid.tg_noskin .tg_pager .tg_search .fas, .yt_grid.tg_skin .yt_grid.tg_noskin .tg_pager .tg_pgtop .fas, .yt_grid.tg_skin .yt_grid.tg_noskin .tg_pager .tg_pgnext .fas, .yt_grid.tg_skin .yt_grid.tg_noskin .tg_pager .tg_pgprev .fas, .yt_grid.tg_skin .yt_grid.tg_noskin .tg_pager .tg_pgbottom .fas {
+      font-size: 8px; }
+    .yt_grid.tg_skin .yt_grid.tg_noskin .tg_pager .tg_pgbtns, .yt_grid.tg_skin .yt_grid.tg_noskin .tg_pager .tg_pgctl, .yt_grid.tg_skin .yt_grid.tg_noskin .tg_pager .tg_pgnum, .yt_grid.tg_skin .yt_grid.tg_noskin .tg_pager .tg_pgsel, .yt_grid.tg_skin .yt_grid.tg_noskin .tg_pager .tg_totals {
+      font-size: 11px; }

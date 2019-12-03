@@ -207,6 +207,11 @@ namespace YetaWF.Modules.Caching.DataProvider {
             return Task.CompletedTask;
         }
 
+        public virtual Task<long> GetFileSizeAsync(string filePath) {
+            VerifyAccess(filePath);
+            return Task.FromResult(new FileInfo(filePath).Length);
+        }
+
         public virtual Task<List<string>> ReadAllLinesAsync(string filePath) {
             VerifyAccess(filePath);
             List<string> lines = File.ReadLines(filePath).ToList();

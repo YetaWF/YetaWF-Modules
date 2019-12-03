@@ -1050,7 +1050,7 @@ new YetaWF_ComponentsHTML.Grid('{model.Id}', {JsonConvert.SerializeObject(setup,
             if (!gridModel.IsStatic && gridModel.SupportReload)
                 reloadHTML = $@"<div class='tg_reload{buttonCss}' {Basics.CssTooltip}='{HAE(__ResStr("btnTop", "Reload the current page"))}'><span class='fas fa-sync-alt'></span></div>";
             if (setup.CanFilter)
-                searchHTML = $@"<div class='tg_search{buttonCss}' {Basics.CssTooltip}='{HAE(__ResStr("btnFilter", "Turn the search bar on or off"))}'><span class='fas fa-search'></span></div>";
+                searchHTML = $@"<div class='tg_search{buttonCss}' {Basics.CssTooltip}='{HAE(__ResStr("btnFilter", "Turn the filter bar on or off"))}'><span class='fas fa-search'></span></div>";
 
             if (!string.IsNullOrEmpty(reloadHTML) || !string.IsNullOrEmpty(searchHTML)) {
                 hb.Append($@"
