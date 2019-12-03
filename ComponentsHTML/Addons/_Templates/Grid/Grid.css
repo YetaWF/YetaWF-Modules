@@ -180,18 +180,23 @@
     .yt_grid.tg_noskin .tg_pager .tg_pgbtns, .yt_grid.tg_noskin .tg_pager .tg_pgctl, .yt_grid.tg_noskin .tg_pager .tg_pgnum, .yt_grid.tg_noskin .tg_pager .tg_pgsel, .yt_grid.tg_noskin .tg_pager .tg_totals {
       font-size: 14px; }
 
-.yt_grid.tg_skin .yt_grid.tg_noskin {
-  /* nested grid */ }
-  .yt_grid.tg_skin .yt_grid.tg_noskin .tg_table input,
-  .yt_grid.tg_skin .yt_grid.tg_noskin .tg_table select,
-  .yt_grid.tg_skin .yt_grid.tg_noskin .tg_table textarea,
-  .yt_grid.tg_skin .yt_grid.tg_noskin .tg_table button {
+.yt_grid.tg_skin {
+  /* Not skin dependent formatting, usually module specific */ }
+  .yt_grid.tg_skin .tg_table input,
+  .yt_grid.tg_skin .tg_table select,
+  .yt_grid.tg_skin .tg_table textarea,
+  .yt_grid.tg_skin .tg_table button {
     font-size: 11px !important; }
+  .yt_grid.tg_skin .tg_table th, .yt_grid.tg_skin .tg_table td {
+    font-size: 11px; }
+  .yt_grid.tg_skin .tg_pager {
+    font-size: 11px; }
+    .yt_grid.tg_skin .tg_pager .tg_reload .fas, .yt_grid.tg_skin .tg_pager .tg_search .fas, .yt_grid.tg_skin .tg_pager .tg_pgtop .fas, .yt_grid.tg_skin .tg_pager .tg_pgnext .fas, .yt_grid.tg_skin .tg_pager .tg_pgprev .fas, .yt_grid.tg_skin .tg_pager .tg_pgbottom .fas {
+      font-size: 8px; }
+    .yt_grid.tg_skin .tg_pager .tg_pgbtns, .yt_grid.tg_skin .tg_pager .tg_pgctl, .yt_grid.tg_skin .tg_pager .tg_pgnum, .yt_grid.tg_skin .tg_pager .tg_pgsel, .yt_grid.tg_skin .tg_pager .tg_totals {
+      font-size: 11px; }
+
+.yt_grid.tg_skin .yt_grid.tg_noskin {
+  /* NESTED GRID */ }
   .yt_grid.tg_skin .yt_grid.tg_noskin .tg_table th, .yt_grid.tg_skin .yt_grid.tg_noskin .tg_table td {
     font-size: 11px; }
-  .yt_grid.tg_skin .yt_grid.tg_noskin .tg_pager {
-    font-size: 11px; }
-    .yt_grid.tg_skin .yt_grid.tg_noskin .tg_pager .tg_reload .fas, .yt_grid.tg_skin .yt_grid.tg_noskin .tg_pager .tg_search .fas, .yt_grid.tg_skin .yt_grid.tg_noskin .tg_pager .tg_pgtop .fas, .yt_grid.tg_skin .yt_grid.tg_noskin .tg_pager .tg_pgnext .fas, .yt_grid.tg_skin .yt_grid.tg_noskin .tg_pager .tg_pgprev .fas, .yt_grid.tg_skin .yt_grid.tg_noskin .tg_pager .tg_pgbottom .fas {
-      font-size: 8px; }
-    .yt_grid.tg_skin .yt_grid.tg_noskin .tg_pager .tg_pgbtns, .yt_grid.tg_skin .yt_grid.tg_noskin .tg_pager .tg_pgctl, .yt_grid.tg_skin .yt_grid.tg_noskin .tg_pager .tg_pgnum, .yt_grid.tg_skin .yt_grid.tg_noskin .tg_pager .tg_pgsel, .yt_grid.tg_skin .yt_grid.tg_noskin .tg_pager .tg_totals {
-      font-size: 11px; }

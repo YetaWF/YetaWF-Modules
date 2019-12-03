@@ -246,7 +246,7 @@ $smbuttonhorzmargin: 2px;
         }
     }
 }
-.yt_grid.tg_skin .yt_grid.tg_noskin { /* nested grid */
+.yt_grid.tg_skin { /* Not skin dependent formatting, usually module specific */
     .tg_table {
         input,
         select,
@@ -266,6 +266,14 @@ $smbuttonhorzmargin: 2px;
             }
         }
         .tg_pgbtns, .tg_pgctl, .tg_pgnum, .tg_pgsel, .tg_totals {
+            font-size:$fontsize;
+        }
+    }
+}
+
+.yt_grid.tg_skin .yt_grid.tg_noskin { /* NESTED GRID */
+    .tg_table {
+        th, td {
             font-size:$fontsize;
         }
     }
