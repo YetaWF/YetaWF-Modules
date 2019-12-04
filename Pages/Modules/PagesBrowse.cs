@@ -115,6 +115,76 @@ namespace YetaWF.Modules.Pages.Modules {
                 PleaseWaitText = this.__ResStr("restAuthPlsWait", "Updating all pages so the Administrator has full control and the Editor can View & Edit..."),
             };
         }
+#if DEBUG
+        public async Task<ModuleAction> GetAction_SetSuperuserAsync(Guid guid) {
+            if (!IsAuthorized("SetAuthorization")) return null;
+            return new ModuleAction(this) {
+                Url = Utility.UrlFor(typeof(PagesBrowseModuleController), nameof(PagesBrowseModuleController.SetSuperuser)),
+                NeedsModuleContext = true,
+                QueryArgs = new { Guid = guid },
+                Image = await CustomIconAsync("go.png"),
+                Style = ModuleAction.ActionStyleEnum.Post,
+                LinkText = "Superuser Authorization",
+                MenuText = "Superuser Authorization",
+                Tooltip = "Change page and its module to superuser only access",
+                Legend = "Changes a page and its module to superuser only access",
+                Category = ModuleAction.ActionCategoryEnum.Significant,
+                Mode = ModuleAction.ActionModeEnum.Any,
+                Location = ModuleAction.ActionLocationEnum.ModuleLinks,
+            };
+        }
+        public async Task<ModuleAction> GetAction_SetAdminAsync(Guid guid) {
+            if (!IsAuthorized("SetAuthorization")) return null;
+            return new ModuleAction(this) {
+                Url = Utility.UrlFor(typeof(PagesBrowseModuleController), nameof(PagesBrowseModuleController.SetAdmin)),
+                NeedsModuleContext = true,
+                QueryArgs = new { Guid = guid },
+                Image = await CustomIconAsync("go.png"),
+                Style = ModuleAction.ActionStyleEnum.Post,
+                LinkText = "Admin Authorization",
+                MenuText = "Admin Authorization",
+                Tooltip = "Change page and its module to admin only access",
+                Legend = "Changes a page and its module to admin only access",
+                Category = ModuleAction.ActionCategoryEnum.Significant,
+                Mode = ModuleAction.ActionModeEnum.Any,
+                Location = ModuleAction.ActionLocationEnum.ModuleLinks,
+            };
+        }
+        public async Task<ModuleAction> GetAction_SetUserAsync(Guid guid) {
+            if (!IsAuthorized("SetAuthorization")) return null;
+            return new ModuleAction(this) {
+                Url = Utility.UrlFor(typeof(PagesBrowseModuleController), nameof(PagesBrowseModuleController.SetUser)),
+                NeedsModuleContext = true,
+                QueryArgs = new { Guid = guid },
+                Image = await CustomIconAsync("go.png"),
+                Style = ModuleAction.ActionStyleEnum.Post,
+                LinkText = "User Authorization",
+                MenuText = "User Authorization",
+                Tooltip = "Change page and its module to user only access",
+                Legend = "Changes a page and its module to user only access",
+                Category = ModuleAction.ActionCategoryEnum.Significant,
+                Mode = ModuleAction.ActionModeEnum.Any,
+                Location = ModuleAction.ActionLocationEnum.ModuleLinks,
+            };
+        }
+        public async Task<ModuleAction> GetAction_SetAnonymousAsync(Guid guid) {
+            if (!IsAuthorized("SetAuthorization")) return null;
+            return new ModuleAction(this) {
+                Url = Utility.UrlFor(typeof(PagesBrowseModuleController), nameof(PagesBrowseModuleController.SetAnonymous)),
+                NeedsModuleContext = true,
+                QueryArgs = new { Guid = guid },
+                Image = await CustomIconAsync("go.png"),
+                Style = ModuleAction.ActionStyleEnum.Post,
+                LinkText = "Anonymous Authorization",
+                MenuText = "Anonymous Authorization",
+                Tooltip = "Change page and its module to anonymous only access",
+                Legend = "Changes a page and its module to anonymous only access",
+                Category = ModuleAction.ActionCategoryEnum.Significant,
+                Mode = ModuleAction.ActionModeEnum.Any,
+                Location = ModuleAction.ActionLocationEnum.ModuleLinks,
+            };
+        }
+#endif
         public ModuleAction GetAction_CreateSiteMap() {
             if (!IsAuthorized("SiteMaps")) return null;
             return new ModuleAction(this) {

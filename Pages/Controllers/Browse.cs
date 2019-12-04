@@ -22,6 +22,7 @@ using YetaWF.Modules.Pages.Scheduler;
 using YetaWF.Core.IO;
 using System.Text;
 using YetaWF.Core.Components;
+using YetaWF.Core.Serializers;
 #if MVC6
 using Microsoft.AspNetCore.Mvc;
 #else
@@ -46,6 +47,10 @@ namespace YetaWF.Modules.Pages.Controllers {
 
                 if (PageEditModule != null)
                     actions.New(await PageEditModule.GetModuleActionAsync("Edit", null, PageGuid), ModuleAction.ActionLocationEnum.GridLinks);
+                actions.New(await Module.GetAction_SetSuperuserAsync(PageGuid), ModuleAction.ActionLocationEnum.GridLinks);
+                actions.New(await Module.GetAction_SetAdminAsync(PageGuid), ModuleAction.ActionLocationEnum.GridLinks);
+                actions.New(await Module.GetAction_SetUserAsync(PageGuid), ModuleAction.ActionLocationEnum.GridLinks);
+                actions.New(await Module.GetAction_SetAnonymousAsync(PageGuid), ModuleAction.ActionLocationEnum.GridLinks);
 
                 actions.New(Module.GetAction_RemoveLink(Url), ModuleAction.ActionLocationEnum.GridLinks);
 
@@ -154,6 +159,7 @@ namespace YetaWF.Modules.Pages.Controllers {
             return new GridDefinition {
                 ModuleGuid = Module.ModuleGuid,
                 SettingsModuleGuid = Module.PermanentGuid,
+                InitialPageSize = 20,
                 RecordType = typeof(PageItem),
                 AjaxUrl = GetActionUrl(nameof(PagesBrowse_GridData)),
                 DirectDataAsync = async (int skip, int take, List<DataProviderSortInfo> sort, List<DataProviderFilterInfo> filters) => {
@@ -225,6 +231,107 @@ namespace YetaWF.Modules.Pages.Controllers {
             }
             return Reload(null, Reload: ReloadEnum.ModuleParts);
         }
+
+#if DEBUG
+        [AllowPost]
+        [Permission("SetAuthorization")]
+        [ExcludeDemoMode]
+        public async Task<ActionResult> SetSuperuser(Guid guid) {
+            using (PageDefinitionDataProvider pageDP = new PageDefinitionDataProvider()) {
+                int adminRole = Resource.ResourceAccess.GetAdministratorRoleId();
+                PageDefinition page = await PageDefinition.LoadAsync(guid);
+                if (page == null)
+                    throw new InternalError($"Page with Guid {0} not found", guid);
+                page.AllowedRoles = new SerializableList<PageDefinition.AllowedRole>();
+                page.AllowedUsers = new SerializableList<PageDefinition.AllowedUser>();
+                foreach (PageDefinition.ModuleEntry modEntry in page.ModuleDefinitions) {
+                    ModuleDefinition module = await modEntry.GetModuleAsync();
+                    module.AllowedRoles = new SerializableList<ModuleDefinition.AllowedRole>();
+                    module.AllowedUsers = new SerializableList<ModuleDefinition.AllowedUser>();
+                }
+                await page.SaveAsync();
+            }
+            return Reload(null, Reload: ReloadEnum.ModuleParts);
+        }
+        [AllowPost]
+        [Permission("SetAuthorization")]
+        [ExcludeDemoMode]
+        public async Task<ActionResult> SetAdmin(Guid guid) {
+            using (PageDefinitionDataProvider pageDP = new PageDefinitionDataProvider()) {
+                int adminRole = Resource.ResourceAccess.GetAdministratorRoleId();
+                PageDefinition page = await PageDefinition.LoadAsync(guid);
+                if (page == null)
+                    throw new InternalError($"Page with Guid {0} not found", guid);
+                page.AllowedRoles = new SerializableList<PageDefinition.AllowedRole>();
+                page.AllowedUsers = new SerializableList<PageDefinition.AllowedUser>();
+                page.AllowedRoles.Add(new PageDefinition.AllowedRole { RoleId = adminRole, View = PageDefinition.AllowedEnum.Yes });
+
+                foreach (PageDefinition.ModuleEntry modEntry in page.ModuleDefinitions) {
+                    ModuleDefinition module = await modEntry.GetModuleAsync();
+                    module.AllowedRoles = new SerializableList<ModuleDefinition.AllowedRole>();
+                    module.AllowedUsers = new SerializableList<ModuleDefinition.AllowedUser>();
+                    module.AllowedRoles.Add(new ModuleDefinition.AllowedRole { RoleId = adminRole, View = ModuleDefinition.AllowedEnum.Yes });
+                }
+                await page.SaveAsync();
+            }
+            return Reload(null, Reload: ReloadEnum.ModuleParts);
+        }
+        [AllowPost]
+        [Permission("SetAuthorization")]
+        [ExcludeDemoMode]
+        public async Task<ActionResult> SetUser(Guid guid) {
+            using (PageDefinitionDataProvider pageDP = new PageDefinitionDataProvider()) {
+                int adminRole = Resource.ResourceAccess.GetAdministratorRoleId();
+                int userRole = Resource.ResourceAccess.GetUserRoleId();
+                PageDefinition page = await PageDefinition.LoadAsync(guid);
+                if (page == null)
+                    throw new InternalError($"Page with Guid {0} not found", guid);
+                page.AllowedRoles = new SerializableList<PageDefinition.AllowedRole>();
+                page.AllowedUsers = new SerializableList<PageDefinition.AllowedUser>();
+                page.AllowedRoles.Add(new PageDefinition.AllowedRole { RoleId = adminRole, View = PageDefinition.AllowedEnum.Yes });
+                page.AllowedRoles.Add(new PageDefinition.AllowedRole { RoleId = userRole, View = PageDefinition.AllowedEnum.Yes });
+
+                foreach (PageDefinition.ModuleEntry modEntry in page.ModuleDefinitions) {
+                    ModuleDefinition module = await modEntry.GetModuleAsync();
+                    module.AllowedRoles = new SerializableList<ModuleDefinition.AllowedRole>();
+                    module.AllowedUsers = new SerializableList<ModuleDefinition.AllowedUser>();
+                    module.AllowedRoles.Add(new ModuleDefinition.AllowedRole { RoleId = adminRole, View = ModuleDefinition.AllowedEnum.Yes });
+                    module.AllowedRoles.Add(new ModuleDefinition.AllowedRole { RoleId = userRole, View = ModuleDefinition.AllowedEnum.Yes });
+                }
+                await page.SaveAsync();
+            }
+            return Reload(null, Reload: ReloadEnum.ModuleParts);
+        }
+        [AllowPost]
+        [Permission("SetAuthorization")]
+        [ExcludeDemoMode]
+        public async Task<ActionResult> SetAnonymous(Guid guid) {
+            using (PageDefinitionDataProvider pageDP = new PageDefinitionDataProvider()) {
+                int adminRole = Resource.ResourceAccess.GetAdministratorRoleId();
+                int userRole = Resource.ResourceAccess.GetUserRoleId();
+                int anonRole = Resource.ResourceAccess.GetAnonymousRoleId();
+                PageDefinition page = await PageDefinition.LoadAsync(guid);
+                if (page == null)
+                    throw new InternalError($"Page with Guid {0} not found", guid);
+                page.AllowedRoles = new SerializableList<PageDefinition.AllowedRole>();
+                page.AllowedUsers = new SerializableList<PageDefinition.AllowedUser>();
+                page.AllowedRoles.Add(new PageDefinition.AllowedRole { RoleId = adminRole, View = PageDefinition.AllowedEnum.Yes });
+                page.AllowedRoles.Add(new PageDefinition.AllowedRole { RoleId = userRole, View = PageDefinition.AllowedEnum.Yes });
+                page.AllowedRoles.Add(new PageDefinition.AllowedRole { RoleId = anonRole, View = PageDefinition.AllowedEnum.Yes });
+
+                foreach (PageDefinition.ModuleEntry modEntry in page.ModuleDefinitions) {
+                    ModuleDefinition module = await modEntry.GetModuleAsync();
+                    module.AllowedRoles = new SerializableList<ModuleDefinition.AllowedRole>();
+                    module.AllowedUsers = new SerializableList<ModuleDefinition.AllowedUser>();
+                    module.AllowedRoles.Add(new ModuleDefinition.AllowedRole { RoleId = adminRole, View = ModuleDefinition.AllowedEnum.Yes });
+                    module.AllowedRoles.Add(new ModuleDefinition.AllowedRole { RoleId = userRole, View = ModuleDefinition.AllowedEnum.Yes });
+                    module.AllowedRoles.Add(new ModuleDefinition.AllowedRole { RoleId = anonRole, View = ModuleDefinition.AllowedEnum.Yes });
+                }
+                await page.SaveAsync();
+            }
+            return Reload(null, Reload: ReloadEnum.ModuleParts);
+        }
+#endif
 
         [AllowPost]
         [Permission("SiteMaps")]

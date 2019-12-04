@@ -24,15 +24,17 @@ namespace YetaWF.Modules.PageEdit.Views {
             // <div id='yEditControlDiv'>
             //  action button (with id yEditControlButton)
             // </div>
-            YTagBuilder tag = new YTagBuilder("div");
-            tag.Attributes.Add("id", "yEditControlDiv");
 
             ModuleAction action = Manager.EditMode ? module.GetAction_SwitchToView() : module.GetAction_SwitchToEdit();
-            if (Manager.SkinInfo.UsingBootstrap && Manager.SkinInfo.UsingBootstrapButtons)
-                action.CssClass = CssManager.CombineCss(action.CssClass, "btn btn-outline-primary");
-            tag.InnerHtml = await action.RenderAsButtonIconAsync("yEditControlButton");
-
-            return tag.ToString(YTagRenderMode.Normal);
+            if (action != null) {
+                YTagBuilder tag = new YTagBuilder("div");
+                tag.Attributes.Add("id", "yEditControlDiv");
+                if (Manager.SkinInfo.UsingBootstrap && Manager.SkinInfo.UsingBootstrapButtons)
+                    action.CssClass = CssManager.CombineCss(action.CssClass, "btn btn-outline-primary");
+                tag.InnerHtml = await action.RenderAsButtonIconAsync("yEditControlButton");
+                return tag.ToString(YTagRenderMode.Normal);
+            }
+            return null;
         }
     }
 }

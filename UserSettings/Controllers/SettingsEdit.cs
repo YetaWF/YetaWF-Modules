@@ -46,7 +46,7 @@ namespace YetaWF.Modules.UserSettings.Controllers {
             [UIHint("LanguageId"), StringLength(LanguageData.MaxId)]
             public string LanguageId { get; set; }
 
-            [Caption("Show Search Toolbar"), Description("Defines whether the search toolbar is always shown on grids - If not shown, it can still be accessed using the search button in each grid, at the bottom of the grid, next to the refresh button")]
+            [Caption("Show Filter Toolbar"), Description("Defines whether the filter toolbar is always shown on grids - If not shown, it can still be accessed using the search button in each grid, at the bottom of the grid, next to the refresh button")]
             [UIHint("Boolean")]
             public bool ShowGridSearchToolbar { get; set; }
 
