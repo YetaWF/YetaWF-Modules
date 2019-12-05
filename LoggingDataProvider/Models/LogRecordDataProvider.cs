@@ -152,7 +152,7 @@ namespace YetaWF.Modules.LoggingDataProvider.DataProvider {
                     if (req != null) {
 #if MVC6
                         requestedUrl = req.GetDisplayUrl();
-                        ipAddress = req.Headers["X-Forwarded-For"];
+                        ipAddress = (string)req.Headers["X-Forwarded-For"] ?? (string)req.Headers["X-Original-For"];
                         if (string.IsNullOrWhiteSpace(ipAddress)) {
                             IHttpConnectionFeature connectionFeature = httpContext.Features.Get<IHttpConnectionFeature>();
                             if (connectionFeature != null)
@@ -161,7 +161,7 @@ namespace YetaWF.Modules.LoggingDataProvider.DataProvider {
                         referrer = req.Headers["Referer"].ToString();
 #else
                         requestedUrl = req.Url != null ? req.Url.ToString() : null;
-                        ipAddress = req.Headers["X-Forwarded-For"];
+                        ipAddress = req.Headers["X-Forwarded-For"] ?? req.Headers["X-Original-For"];
                         if (string.IsNullOrWhiteSpace(ipAddress))
                             ipAddress = req.UserHostAddress;
                         referrer = req.UrlReferrer != null ? req.UrlReferrer.ToString() : null;
