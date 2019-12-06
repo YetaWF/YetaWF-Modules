@@ -22,7 +22,7 @@ namespace YetaWF.Modules.Dashboard.Controllers {
         [Trim]
         public class Model {
 
-            [Caption("Days"), Description("Defines the number of days audit information is saved - Audit information that is older than the specified number of days is deleted")]
+            [Caption("Retention (Days)"), Description("Defines the number of days audit information is saved - Audit information that is older than the specified number of days is deleted")]
             [UIHint("IntValue"), Range(1, 99999999), Required]
             public int Days { get; set; }
 
