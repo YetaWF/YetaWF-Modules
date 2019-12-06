@@ -225,7 +225,7 @@ namespace YetaWF.Modules.Identity.DataProvider {
                 return UpdateStatusEnum.NewKeyExists;
             if (string.Compare(originalName, SuperuserDefinitionDataProvider.SuperUserName, true) == 0) {
                 if (data.UserName != originalName)
-                    throw new Error(this.__ResStr("cantRenameSuper", "The user \"{0}\" can't be renamed. It is defined in the site's Appsettings.json", originalName));
+                    throw new Error(this.__ResStr("cantRenameSuper", "The user \"{0}\" can't be renamed.", originalName));
                 using (SuperuserDefinitionDataProvider superDP = new SuperuserDefinitionDataProvider()) {
                     return await superDP.UpdateItemAsync(data);
                 }

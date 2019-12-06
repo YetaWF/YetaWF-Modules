@@ -11,7 +11,7 @@ $small-screen: 1000px;
 .yt_panels_pagebarinfo {
     &.t_styleshorz,
     &.t_stylesvert {
-        .t_list {
+        > .t_list {
             flex:none;
             overflow-x:auto;
             overflow-y: hidden;
@@ -69,7 +69,7 @@ $small-screen: 1000px;
 .yt_panels_pagebarinfo {
     &.t_stylesvert {
         display: flex;
-        .t_list {
+        > .t_list {
             flex: 0 0  $entry-width;
             overflow-x:hidden;
             overflow-y:auto;

@@ -31,23 +31,6 @@ namespace YetaWF.Modules.Search.Controllers {
             [UIHint("IntValue2"), Range(2, 10), Required]
             public int SmallestUpperCaseToken { get; set; }
 
-            [Caption("Results Url"), Description("The Url where the search results are displayed")]
-            [UIHint("Url"), AdditionalMetadata("UrlType", UrlTypeEnum.Local), UrlValidation(UrlValidationAttribute.SchemaEnum.Any, UrlTypeEnum.Local)]
-            [StringLength(Globals.MaxUrl), Required, Trim]
-            public string ResultsUrl { get; set; }
-
-            [Caption("Max. Results"), Description("The maximum number of search results to display")]
-            [UIHint("IntValue4"), Range(10, 1000)]
-            public int MaxResults { get; set; }
-
-            [Caption("Show Url"), Description("Defines whether the Url is shown in search results")]
-            [UIHint("Boolean")]
-            public bool ShowUrl { get; set; }
-
-            [Caption("Show Summary"), Description("Defines whether a page summary is shown in search results")]
-            [UIHint("Boolean")]
-            public bool ShowSummary { get; set; }
-
             public SearchConfigData GetData(SearchConfigData data) {
                 ObjectSupport.CopyData(this, data);
                 return data;

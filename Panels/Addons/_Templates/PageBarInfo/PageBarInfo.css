@@ -1,12 +1,12 @@
 @charset "UTF-8";
 /* Copyright © 2019 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Panels#License */
-.yt_panels_pagebarinfo.t_styleshorz .t_list, .yt_panels_pagebarinfo.t_stylesvert .t_list {
+.yt_panels_pagebarinfo.t_styleshorz > .t_list, .yt_panels_pagebarinfo.t_stylesvert > .t_list {
   -webkit-box-flex: 0;
           flex: none;
   overflow-x: auto;
   overflow-y: hidden;
   white-space: nowrap; }
-  .yt_panels_pagebarinfo.t_styleshorz .t_list .t_entry, .yt_panels_pagebarinfo.t_stylesvert .t_list .t_entry {
+  .yt_panels_pagebarinfo.t_styleshorz > .t_list .t_entry, .yt_panels_pagebarinfo.t_stylesvert > .t_list .t_entry {
     height: 80px;
     width: 100px;
     padding: 20px 2px 0px 2px;
@@ -39,20 +39,20 @@
   .yt_panels_pagebarinfo.t_stylesvert {
     display: -webkit-box;
     display: flex; }
-    .yt_panels_pagebarinfo.t_stylesvert .t_list {
+    .yt_panels_pagebarinfo.t_stylesvert > .t_list {
       -webkit-box-flex: 0;
               flex: 0 0 100px;
       overflow-x: hidden;
       overflow-y: auto;
       text-align: center;
       white-space: normal; }
-      .yt_panels_pagebarinfo.t_stylesvert .t_list .t_entry {
+      .yt_panels_pagebarinfo.t_stylesvert > .t_list .t_entry {
         height: initial;
         width: initial;
         padding: 7px 2px 0px 2px;
         display: block;
         vertical-align: initial; }
-        .yt_panels_pagebarinfo.t_stylesvert .t_list .t_entry .t_link {
+        .yt_panels_pagebarinfo.t_stylesvert > .t_list .t_entry .t_link {
           padding-bottom: 10px; }
     .yt_panels_pagebarinfo.t_stylesvert .t_area {
       -webkit-box-flex: 1;

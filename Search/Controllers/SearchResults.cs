@@ -27,6 +27,7 @@ namespace YetaWF.Modules.Search.Controllers {
             public List<SearchResult> SearchResults { get; set; }
             public bool ShowUrl { get; set; }
             public bool ShowSummary { get; set; }
+            public bool NewWindow { get; set; }
             public string QSArgs { get; set; }
         }
 
@@ -39,14 +40,15 @@ namespace YetaWF.Modules.Search.Controllers {
 
             SearchConfigData config = await SearchConfigDataProvider.GetConfigAsync();
             using (SearchResultDataProvider searchResDP = new SearchResultDataProvider()) {
-                SearchResultDataProvider.SearchResultsInfo list = await searchResDP.GetSearchResultsAsync(searchTerms, config.MaxResults, MultiString.ActiveLanguage, Manager.HaveUser);
+                SearchResultDataProvider.SearchResultsInfo list = await searchResDP.GetSearchResultsAsync(searchTerms, Module.MaxResults, MultiString.ActiveLanguage, Manager.HaveUser);
                 Model model = new Model() {
                     SearchTerms = searchTerms,
                     SearchResults = list.Data,
                     MoreResults = list.HaveMore,
-                    MaxResults = config.MaxResults,
-                    ShowUrl = config.ShowUrl,
-                    ShowSummary = config.ShowSummary,
+                    NewWindow = Module.NewWindow,
+                    MaxResults = Module.MaxResults,
+                    ShowUrl = Module.ShowUrl,
+                    ShowSummary = Module.ShowSummary,
                     QSArgs = searchResDP.GetQueryArgsFromKeywords(searchTerms),
                 };
                 return View(model);

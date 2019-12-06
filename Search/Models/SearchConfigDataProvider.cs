@@ -24,21 +24,10 @@ namespace YetaWF.Modules.Search.DataProvider {
         public int SmallestMixedToken { get; set; }
         [Range(2, 10)]
         public int SmallestUpperCaseToken { get; set; }
-        [StringLength(Globals.MaxUrl)]
-        public string ResultsUrl { get; set; }
-        [Range(1, 1000)]
-        public int MaxResults { get; set; }
-        [Data_NewValue]
-        public bool ShowUrl { get; set; }
-        [Data_NewValue]
-        public bool ShowSummary { get; set; }
 
         public SearchConfigData() {
             SmallestMixedToken = 3;
             SmallestUpperCaseToken = 2;
-            MaxResults = 20;
-            ShowUrl = true;
-            ShowSummary = true;
         }
     }
 

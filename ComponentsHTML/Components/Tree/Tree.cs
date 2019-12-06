@@ -259,7 +259,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             string selectedCss = "", selectedLICss = "";
             if (selected) {
                 selectedCss = $" {setup.SelectedCss}";
-                selectedLICss = " t_select";
+                selectedLICss = " class='t_select'";
             }
 
             string caret;

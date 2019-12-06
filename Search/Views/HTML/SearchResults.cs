@@ -82,13 +82,13 @@ namespace YetaWF.Modules.Search.Views {
                     if (!string.IsNullOrWhiteSpace(data.Description)) {
 
                         hb.Append($@"
-            <a href='{HAE(urlKwds)}' target='_blank' rel='noopener noreferrer'>
+            <a href='{HAE(urlKwds)}' target='{(model.NewWindow ? "_blank": "_self")}' class='yaction-link' rel='noopener noreferrer'>
                 {HE(data.Description)}
             </a>");
 
                     } else {
                         hb.Append($@"
-            <a href='{HAE(urlKwds)}' target='_blank' rel='noopener noreferrer'>
+            <a href='{HAE(urlKwds)}' target='{(model.NewWindow ? "_blank" : "_self")}' class='yaction-link' rel='noopener noreferrer'>
                 {HE(this.__ResStr("noDesc", "(No Description)"))}
             </a>");
                     }

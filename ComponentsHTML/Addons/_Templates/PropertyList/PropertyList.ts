@@ -553,7 +553,7 @@ namespace YetaWF_ComponentsHTML {
                 this.MasonryElem.layout!();
         }
 
-
+        // TODO: make tab control a proper control
         public static tabInitjQuery(tabCtrlId: string, activeTab: number, activeTabId: string): void {
             ComponentsHTMLHelper.MUSTHAVE_JQUERYUI();
             var tabCtrl = $YetaWF.getElementById(tabCtrlId);
@@ -571,6 +571,8 @@ namespace YetaWF_ComponentsHTML {
                 }
             });
         }
+
+        // TODO: make tab control a proper control
         public static tabInitKendo(tabCtrlId: string, activeTab: number, activeTabId: string):void {
             // mark the active tab with .k-state-active before initializing the tabstrip
             var tabs = $YetaWF.getElementsBySelector(`#${tabCtrlId}>ul>li`);

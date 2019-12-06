@@ -2,12 +2,15 @@
 
 using System;
 using System.Threading.Tasks;
+using YetaWF.Core;
+using YetaWF.Core.DataProvider.Attributes;
 using YetaWF.Core.IO;
 using YetaWF.Core.Localize;
 using YetaWF.Core.Models;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Modules;
 using YetaWF.Core.Serializers;
+using YetaWF.Core.Support;
 using YetaWF.DataProvider;
 
 namespace YetaWF.Modules.Search.Modules {
@@ -38,6 +41,12 @@ namespace YetaWF.Modules.Search.Modules {
         [Category("General"), Caption("Search Button Tooltip"), Description("The tooltip shown for the search button")]
         [UIHint("MultiString80"), StringLength(500)]
         public MultiString SearchButtonTT { get; set; }
+
+        [Category("General"), Caption("Results Url"), Description("The URL where the search results are displayed")]
+        [UIHint("Url"), AdditionalMetadata("UrlType", UrlTypeEnum.Local | UrlTypeEnum.Remote), UrlValidation(UrlValidationAttribute.SchemaEnum.Any, UrlTypeEnum.Local)]
+        [StringLength(Globals.MaxUrl), Required, Trim]
+        [Data_NewValue]
+        public string ResultsUrl { get; set; }
 
         public override SerializableList<AllowedRole> DefaultAllowedRoles { get { return AdministratorLevel_DefaultAllowedRoles; } }
 

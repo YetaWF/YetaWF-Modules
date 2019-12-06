@@ -36,8 +36,8 @@ namespace YetaWF.Modules.Search.Controllers {
             if (!SearchDataProvider.IsUsable)
                 return View("SearchUnavailable_Input");
             SearchConfigData config = await SearchConfigDataProvider.GetConfigAsync();
-            if (!Manager.EditMode && string.IsNullOrWhiteSpace(config.ResultsUrl)) // if no search result url is available, don't show the module
-                return new EmptyResult();
+            if (!Manager.EditMode && string.IsNullOrWhiteSpace(Module.ResultsUrl)) // if no search result url is available, don't show the module
+                throw new InternalError($"No URL defined for search results");
             Model model = new Model { SearchTerms = searchTerms };
             return View(model);
         }
@@ -50,7 +50,7 @@ namespace YetaWF.Modules.Search.Controllers {
             SearchConfigData config = await SearchConfigDataProvider.GetConfigAsync();
             QueryHelper query = new QueryHelper();
             query["SearchTerms"] = model.SearchTerms;
-            string url = query.ToUrl(config.ResultsUrl);
+            string url = query.ToUrl(Module.ResultsUrl);
             return FormProcessed(model, NextPage: url);
         }
     }

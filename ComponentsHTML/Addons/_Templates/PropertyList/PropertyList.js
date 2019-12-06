@@ -476,6 +476,7 @@ var YetaWF_ComponentsHTML;
             if (this.MasonryElem)
                 this.MasonryElem.layout();
         };
+        // TODO: make tab control a proper control
         PropertyListComponent.tabInitjQuery = function (tabCtrlId, activeTab, activeTabId) {
             ComponentsHTMLHelper.MUSTHAVE_JQUERYUI();
             var tabCtrl = $YetaWF.getElementById(tabCtrlId);
@@ -493,6 +494,7 @@ var YetaWF_ComponentsHTML;
                 }
             });
         };
+        // TODO: make tab control a proper control
         PropertyListComponent.tabInitKendo = function (tabCtrlId, activeTab, activeTabId) {
             // mark the active tab with .k-state-active before initializing the tabstrip
             var tabs = $YetaWF.getElementsBySelector("#" + tabCtrlId + ">ul>li");
