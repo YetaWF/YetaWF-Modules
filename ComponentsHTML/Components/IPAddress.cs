@@ -50,10 +50,10 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         /// <returns>The component rendered as HTML.</returns>
         public async Task<string> RenderAsync(string model) {
             HtmlBuilder hb = new HtmlBuilder();
-            hb.Append(@"<div class='yt_ipaddress t_display'>");
 
             if (!string.IsNullOrWhiteSpace(model)) {
 
+                hb.Append(@"<div class='yt_ipaddress t_display'>");
                 hb.Append(HE(model));
 
                 bool lookup = PropData.GetAdditionalAttributeValue("Lookup", true);
@@ -68,8 +68,8 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                             hb.Append(await actionDisplay.RenderAsync(ModuleAction.RenderModeEnum.IconsOnly));
                     }
                 }
+                hb.Append(@"</div>");
             }
-            hb.Append(@"</div>");
             return hb.ToString();
         }
     }
