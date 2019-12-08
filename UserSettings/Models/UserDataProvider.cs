@@ -49,7 +49,7 @@ namespace YetaWF.Modules.UserSettings.DataProvider {
         public Grid.GridActionsEnum DefaultGridActions {
             get {
                 if (_DefaultGridActions == null)
-                    _DefaultGridActions = WebConfigHelper.GetValue(AreaRegistration.CurrentPackage.AreaName, "DefaultGridActions", Grid.GridActionsEnum.DropdownMenu);
+                    _DefaultGridActions = WebConfigHelper.GetValue(YetaWF.Modules.UserSettings.Controllers.AreaRegistration.CurrentPackage.AreaName, "DefaultGridActions", Grid.GridActionsEnum.DropdownMenu);
                 return (Grid.GridActionsEnum)_DefaultGridActions;
             }
         }

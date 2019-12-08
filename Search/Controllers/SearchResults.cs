@@ -38,7 +38,6 @@ namespace YetaWF.Modules.Search.Controllers {
             if (!SearchDataProvider.IsUsable)
                 return View("SearchUnavailable_Results");
 
-            SearchConfigData config = await SearchConfigDataProvider.GetConfigAsync();
             using (SearchResultDataProvider searchResDP = new SearchResultDataProvider()) {
                 SearchResultDataProvider.SearchResultsInfo list = await searchResDP.GetSearchResultsAsync(searchTerms, Module.MaxResults, MultiString.ActiveLanguage, Manager.HaveUser);
                 Model model = new Model() {

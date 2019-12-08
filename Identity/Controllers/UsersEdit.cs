@@ -74,20 +74,24 @@ namespace YetaWF.Modules.Identity.Controllers {
             [UIHint("DateTime"), ReadOnly]
             public DateTime? LastLoginDate { get; set; }
             [Caption("Last Login IP"), Description("The IP address from which the user last logged on this site")]
-            [UIHint("IPAddress"), StringLength(Globals.MaxIP), ReadOnly]
+            [UIHint("IPAddress"), ReadOnly]
             public string LastLoginIP { get; set; }
             [Caption("Last Password Change"), Description("The last time the user changed his/her password")]
             [UIHint("DateTime"), ReadOnly]
             public DateTime? LastPasswordChangedDate { get; set; }
             [Caption("Password Change IP"), Description("The IP address from which the user last changed the password on this site")]
-            [UIHint("IPAddress"), StringLength(Globals.MaxIP), ReadOnly]
+            [UIHint("IPAddress"), ReadOnly]
             public string PasswordChangeIP { get; set; }
             [Caption("Last Activity"), Description("The last time the user did anything on this site")]
             [UIHint("DateTime"), ReadOnly]
             public DateTime? LastActivityDate { get; set; }
             [Caption("Last Activity IP"), Description("The IP address from which the user did anything on this site")]
-            [UIHint("IPAddress"), StringLength(Globals.MaxIP), ReadOnly]
+            [UIHint("IPAddress"), ReadOnly]
             public string LastActivityIP { get; set; }
+
+            [Caption("Login Failures"), Description("Shows the number of failed login attempts since the last successful login")]
+            [UIHint("IntValue"), ReadOnly]
+            public int LoginFailures { get; set; }
 
             [UIHint("Hidden")]
             public string OriginalUserName { get; set; }

@@ -7,8 +7,6 @@ using YetaWF.Modules.Search.DataProvider;
 using YetaWF.Core.Support;
 #if MVC6
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.WebUtilities;
-using System.Collections.Generic;
 #else
 using System.Collections.Specialized;
 using System.Web.Mvc;
@@ -32,10 +30,9 @@ namespace YetaWF.Modules.Search.Controllers {
         }
 
         [AllowGet]
-        public async Task<ActionResult> SearchInput(string searchTerms) {
+        public ActionResult SearchInput(string searchTerms) {
             if (!SearchDataProvider.IsUsable)
                 return View("SearchUnavailable_Input");
-            SearchConfigData config = await SearchConfigDataProvider.GetConfigAsync();
             if (!Manager.EditMode && string.IsNullOrWhiteSpace(Module.ResultsUrl)) // if no search result url is available, don't show the module
                 throw new InternalError($"No URL defined for search results");
             Model model = new Model { SearchTerms = searchTerms };
@@ -44,10 +41,9 @@ namespace YetaWF.Modules.Search.Controllers {
 
         [AllowPost]
         [ConditionalAntiForgeryToken]
-        public async Task<ActionResult> SearchInput_Partial(Model model) {
+        public ActionResult SearchInput_Partial(Model model) {
             if (!ModelState.IsValid)
                 return PartialView(model);
-            SearchConfigData config = await SearchConfigDataProvider.GetConfigAsync();
             QueryHelper query = new QueryHelper();
             query["SearchTerms"] = model.SearchTerms;
             string url = query.ToUrl(Module.ResultsUrl);

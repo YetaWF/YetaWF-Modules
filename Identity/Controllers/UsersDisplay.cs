@@ -87,6 +87,10 @@ namespace YetaWF.Modules.Identity.Controllers {
             [UIHint("IPAddress"), StringLength(Globals.MaxIP), ReadOnly]
             public string LastActivityIP { get; set; }
 
+            [Caption("Login Failures"), Description("Shows the number of failed login attempts since the last successful login")]
+            [UIHint("IntValue"), ReadOnly]
+            public int LoginFailures { get; set; }
+
             public void SetData(UserDefinition user) {
                 ObjectSupport.CopyData(user, this);
             }

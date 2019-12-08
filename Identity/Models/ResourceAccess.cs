@@ -373,15 +373,17 @@ namespace YetaWF.Modules.Identity.DataProvider {
             return Task.FromResult<string>(null);
         }
 
-        public async Task<AddUserInfo> AddUserAsync(string name, string email, string password, bool needsNewPassword) {
+        public async Task<AddUserInfo> AddUserAsync(string name, string email, string password, bool needsNewPassword, string comment) {
 
             AddUserInfo info = new AddUserInfo();
             LoginConfigData config = await LoginConfigDataProvider.GetConfigAsync();
 
-            UserDefinition user = new UserDefinition();
-            user.UserName = name;
-            user.Email = email;
-            user.PasswordPlainText = config.SavePlainTextPassword ? password : null;
+            UserDefinition user = new UserDefinition {
+                UserName = name,
+                Email = email,
+                PasswordPlainText = config.SavePlainTextPassword ? password : null,
+                Comment = comment,
+            };
 
             if (config.RegistrationType == RegistrationTypeEnum.NameAndEmail) {
                 using (UserDefinitionDataProvider dataProvider = new UserDefinitionDataProvider()) {

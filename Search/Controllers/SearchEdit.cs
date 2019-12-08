@@ -86,6 +86,7 @@ namespace YetaWF.Modules.Search.Controllers {
         [ConditionalAntiForgeryToken]
         [ExcludeDemoMode]
         public async Task<ActionResult> SearchEdit_Partial(EditModel model) {
+
             using (SearchDataProvider dataProvider = new SearchDataProvider()) {
                 SearchData data = await dataProvider.GetItemWithUrlAsync(model.SearchDataId);
                 if (data == null)
