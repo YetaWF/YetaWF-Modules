@@ -214,7 +214,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
                 TreeSetup setup = GetTreeSetup(treeModel);
 
-                hb.Append("<ul>");
+                hb.Append("<ul class='t_sub'>");
                 foreach (TreeEntry record in records) {
                     hb.Append(await RenderRecordHTMLAsync(htmlHelper, treeModel, setup, record));
                 }
@@ -325,7 +325,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                     collapsedStyle = " style='display:none'";
 
                 hb.Append($@"
- <ul{collapsedStyle}>");
+ <ul{collapsedStyle} class='t_sub'>");
 
                 foreach (TreeEntry item in items) {
                     hb.Append(await RenderRecordHTMLAsync(htmlHelper, treeModel, setup, item));

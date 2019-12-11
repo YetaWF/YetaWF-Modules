@@ -39,6 +39,7 @@ var YetaWF_ComponentsHTML;
             _this.DDLastTarget = null;
             _this.DDLastTargetAnchor = null;
             _this.DDTargetPosition = TargetPositionEnum.on;
+            _this.AddCounter = 0;
             _this.Setup = setup;
             $YetaWF.registerEventHandler(_this.Control, "click", "a.t_entry", function (ev) {
                 var liElem = $YetaWF.elementClosest(ev.__YetaWFElem, "li"); // get row we're on
@@ -242,13 +243,14 @@ var YetaWF_ComponentsHTML;
         TreeComponent.prototype.drop = function (ev) {
             if (this.DDSource && this.DDLastTarget && this.DDLastTargetAnchor) {
                 // find the source item's parent ul in case it's the only item so we can update expand/collapse and file/folder icons
-                var parentUl = $YetaWF.elementClosest(this.DDSource, "ul");
+                var parentUl = $YetaWF.elementClosest(this.DDSource, "ul.t_sub");
                 switch (this.DDTargetPosition) {
                     default:
                     case TargetPositionEnum.on:
                         // we're droppiong on an item, that means it has no child items yet
                         // add ul
                         var ul = document.createElement("ul");
+                        $YetaWF.elementAddClass(ul, "t_sub");
                         // source items to up
                         ul.appendChild(this.DDSource);
                         // all ul & child items to target
@@ -274,6 +276,7 @@ var YetaWF_ComponentsHTML;
                         if (!$YetaWF.elementHasClass(parentUl, "tg_root")) {
                             var liElem = parentUl.parentElement;
                             // remove the empty ul element
+                            $YetaWF.processClearDiv(parentUl);
                             parentUl.remove();
                             // update target's file/folder icon (now a file)
                             var iElem = $YetaWF.getElement1BySelector("i.t_icfolder", [liElem]);
@@ -332,7 +335,7 @@ var YetaWF_ComponentsHTML;
                 if (recData)
                     uri.addSearch("Data", recData);
                 uri.addFormInfo(this.Control);
-                var uniqueIdCounters = { UniqueIdPrefix: this.ControlId + "tr", UniqueIdPrefixCounter: 0, UniqueIdCounter: 0 };
+                var uniqueIdCounters = { UniqueIdPrefix: this.ControlId + "ls", UniqueIdPrefixCounter: ++this.AddCounter, UniqueIdCounter: 0 };
                 uri.addSearch(YConfigs.Forms.UniqueIdCounters, JSON.stringify(uniqueIdCounters));
                 var request = new XMLHttpRequest();
                 request.open("POST", this.Setup.AjaxUrl);
@@ -364,16 +367,17 @@ var YetaWF_ComponentsHTML;
         };
         // API
         TreeComponent.prototype.canCollapse = function (liElem) {
-            var ul = $YetaWF.getElement1BySelectorCond("ul", [liElem]); // get the subitems
+            var ul = $YetaWF.getElement1BySelectorCond("ul.t_sub", [liElem]); // get the subitems
             if (!ul || ul.style.display !== "")
                 return false;
             return true;
         };
         TreeComponent.prototype.collapse = function (liElem) {
-            var ul = $YetaWF.getElement1BySelector("ul", [liElem]); // get the subitems
+            var ul = $YetaWF.getElement1BySelector("ul.t_sub", [liElem]); // get the subitems
             if (ul) {
                 var data = this.getElementDataCond(liElem);
                 if (data && data.DynamicSubEntries) {
+                    $YetaWF.processClearDiv(ul);
                     ul.remove();
                 }
                 else {
@@ -385,7 +389,7 @@ var YetaWF_ComponentsHTML;
             $YetaWF.elementAddClass(iElem, "t_icright");
         };
         TreeComponent.prototype.canExpand = function (liElem) {
-            var ul = $YetaWF.getElement1BySelectorCond("ul", [liElem]); // get the subitems
+            var ul = $YetaWF.getElement1BySelectorCond("ul.t_sub", [liElem]); // get the subitems
             if (ul) {
                 if (ul.style.display === "")
                     return false;
@@ -397,7 +401,7 @@ var YetaWF_ComponentsHTML;
             }
         };
         TreeComponent.prototype.expand = function (liElem) {
-            var ul = $YetaWF.getElement1BySelectorCond("ul", [liElem]); // get the subitems
+            var ul = $YetaWF.getElement1BySelectorCond("ul.t_sub", [liElem]); // get the subitems
             if (ul == null) {
                 var data = this.getElementData(liElem);
                 if (data.DynamicSubEntries) {
@@ -508,7 +512,8 @@ var YetaWF_ComponentsHTML;
         };
         TreeComponent.prototype.removeEntry = function (liElem) {
             // remove li element (and possibly parent(s))
-            var ul = $YetaWF.elementClosest(liElem, "ul");
+            var ul = $YetaWF.elementClosest(liElem, "ul.t_sub");
+            $YetaWF.processClearDiv(liElem);
             liElem.remove();
             for (;;) {
                 if (!ul)
@@ -517,7 +522,8 @@ var YetaWF_ComponentsHTML;
                     break;
                 if ($YetaWF.elementHasClass(ul, "tg_root"))
                     break;
-                var parentUl = $YetaWF.elementClosest(ul.parentElement, "ul");
+                var parentUl = $YetaWF.elementClosest(ul.parentElement, "ul.t_sub");
+                $YetaWF.processClearDiv(ul);
                 ul.remove();
                 ul = parentUl;
             }
@@ -531,19 +537,19 @@ var YetaWF_ComponentsHTML;
             return li;
         };
         TreeComponent.prototype.getFirstDirectChild = function (liElem) {
-            var ul = $YetaWF.getElement1BySelectorCond("ul", [liElem]);
+            var ul = $YetaWF.getElement1BySelectorCond("ul.t_sub", [liElem]);
             if (ul)
                 return ul.children[0];
             return null;
         };
         TreeComponent.prototype.getLastDirectChild = function (liElem) {
-            var ul = $YetaWF.getElement1BySelectorCond("ul", [liElem]);
+            var ul = $YetaWF.getElement1BySelectorCond("ul.t_sub", [liElem]);
             if (ul)
                 return ul.children[ul.children.length - 1];
             return null;
         };
         TreeComponent.prototype.getNextEntry = function (liElem) {
-            var ul = $YetaWF.getElement1BySelectorCond("ul", [liElem]);
+            var ul = $YetaWF.getElement1BySelectorCond("ul.t_sub", [liElem]);
             // get item in subentries
             if (ul)
                 return ul.children[0];
@@ -563,7 +569,7 @@ var YetaWF_ComponentsHTML;
             }
         };
         TreeComponent.prototype.getNextVisibleEntry = function (liElem) {
-            var ul = $YetaWF.getElement1BySelectorCond("ul", [liElem]);
+            var ul = $YetaWF.getElement1BySelectorCond("ul.t_sub", [liElem]);
             // get item in subentries
             if (ul && ul.style.display === "")
                 return ul.children[0];
@@ -585,7 +591,7 @@ var YetaWF_ComponentsHTML;
         TreeComponent.prototype.getPrevEntry = function (liElem) {
             var li = liElem.previousElementSibling;
             if (li) {
-                var ul = $YetaWF.getElement1BySelectorCond("ul", [li]);
+                var ul = $YetaWF.getElement1BySelectorCond("ul.t_sub", [li]);
                 if (ul)
                     return ul.children[ul.children.length - 1];
                 return li;
@@ -602,7 +608,7 @@ var YetaWF_ComponentsHTML;
             var li = liElem.previousElementSibling;
             if (li) {
                 for (;;) {
-                    var ul = $YetaWF.getElement1BySelectorCond("ul", [li]);
+                    var ul = $YetaWF.getElement1BySelectorCond("ul.t_sub", [li]);
                     if (!ul || ul.style.display !== "")
                         return li;
                     li = ul.children[ul.children.length - 1];
@@ -617,7 +623,7 @@ var YetaWF_ComponentsHTML;
             return li;
         };
         TreeComponent.prototype.getFirstVisibleItem = function () {
-            var liElem = $YetaWF.getElement1BySelectorCond("ul li", [this.Control]);
+            var liElem = $YetaWF.getElement1BySelectorCond("ul.t_sub li", [this.Control]);
             return liElem;
         };
         TreeComponent.prototype.getLastVisibleItem = function () {
@@ -628,7 +634,7 @@ var YetaWF_ComponentsHTML;
                     break;
                 // get last item in subentries
                 liElem = ul.children[ul.children.length - 1];
-                ul = $YetaWF.getElement1BySelectorCond("ul", [liElem]);
+                ul = $YetaWF.getElement1BySelectorCond("ul.t_sub", [liElem]);
             }
             return liElem;
         };

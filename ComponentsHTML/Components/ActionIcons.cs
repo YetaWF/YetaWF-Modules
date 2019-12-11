@@ -71,26 +71,41 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                 actionStyle = gridActionStyle;
             }
             switch (actionStyle) {
+
                 default:
                 case Grid.GridActionsEnum.Icons:
                     hb.Append($@"
 {await CoreRendering.RenderMenuAsync(model, null, Addons.Templates.ActionIcons.CssActionIcons, HtmlHelper: HtmlHelper)}");
                     break;
+
                 case Grid.GridActionsEnum.DropdownMenu: {
-                    model.RenderMode = ModuleAction.RenderModeEnum.NormalMenu;
-                    string buttonId = ControlId + "_btn";
-                    ActionIconsSetup setup = new ActionIconsSetup {
-                        MenuId = ControlId + "_menu",
-                    };
+                        model.RenderMode = ModuleAction.RenderModeEnum.NormalMenu;
+                        string buttonId = ControlId + "_btn";
+                        ActionIconsSetup setup = new ActionIconsSetup {
+                            MenuId = ControlId + "_menu",
+                        };
                         hb.Append($@"
 <button id='{buttonId}' type='button' class='yt_actionicons'>
     {HE(__ResStr("dropdownText", "Manage"))}<span class='k-icon k-i-arrow-60-down'></span>
     {await CoreRendering.RenderMenuAsync(model, setup.MenuId, Globals.CssGridActionMenu, HtmlHelper: HtmlHelper, Hidden: true)}
 </button>");
+                        Manager.ScriptManager.AddLast($@"new YetaWF_ComponentsHTML.ActionIconsComponent('{buttonId}', {Utility.JsonSerialize(setup)});");
+                        break;
+                    }
+                case Grid.GridActionsEnum.Mini: {
+                        model.RenderMode = ModuleAction.RenderModeEnum.NormalMenu;
+                        string buttonId = ControlId + "_btn";
+                        ActionIconsSetup setup = new ActionIconsSetup {
+                            MenuId = ControlId + "_menu",
+                        };
+                        hb.Append($@"
+<button id='{buttonId}' href='#' class='yt_actionicons t_mini'><span class='k-icon k-i-arrow-60-down'></span>
+    {await CoreRendering.RenderMenuAsync(model, setup.MenuId, Globals.CssGridActionMenu, HtmlHelper: HtmlHelper, Hidden: true)}
+</button>");
 
                         Manager.ScriptManager.AddLast($@"new YetaWF_ComponentsHTML.ActionIconsComponent('{buttonId}', {Utility.JsonSerialize(setup)});");
-                    break;
-                }
+                        break;
+                    }
             }
             return hb.ToString();
         }

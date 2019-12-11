@@ -52,6 +52,7 @@ namespace YetaWF_ComponentsHTML {
         private DDLastTarget: HTMLLIElement | null = null;
         private DDLastTargetAnchor: HTMLAnchorElement | null = null;
         private DDTargetPosition: TargetPositionEnum = TargetPositionEnum.on;
+        private AddCounter: number = 0;
 
         constructor(controlId: string, setup: TreeSetup) {
             super(controlId, TreeComponent.TEMPLATE, TreeComponent.SELECTOR, {
@@ -244,7 +245,7 @@ namespace YetaWF_ComponentsHTML {
             if (this.DDSource && this.DDLastTarget && this.DDLastTargetAnchor) {
 
                 // find the source item's parent ul in case it's the only item so we can update expand/collapse and file/folder icons
-                var parentUl = $YetaWF.elementClosest(this.DDSource, "ul");
+                var parentUl = $YetaWF.elementClosest(this.DDSource, "ul.t_sub");
 
                 switch (this.DDTargetPosition) {
                     default:
@@ -252,6 +253,7 @@ namespace YetaWF_ComponentsHTML {
                         // we're droppiong on an item, that means it has no child items yet
                         // add ul
                         var ul = document.createElement("ul");
+                        $YetaWF.elementAddClass(ul, "t_sub");
                         // source items to up
                         ul.appendChild(this.DDSource);
                         // all ul & child items to target
@@ -279,6 +281,7 @@ namespace YetaWF_ComponentsHTML {
                         if (!$YetaWF.elementHasClass(parentUl, "tg_root")) {
                             var liElem = parentUl.parentElement as HTMLLIElement;
                             // remove the empty ul element
+                            $YetaWF.processClearDiv(parentUl);
                             parentUl.remove();
                             // update target's file/folder icon (now a file)
                             var iElem = $YetaWF.getElement1BySelector("i.t_icfolder", [liElem]);
@@ -344,7 +347,7 @@ namespace YetaWF_ComponentsHTML {
                 if (recData)
                     uri.addSearch("Data", recData);
                 uri.addFormInfo(this.Control);
-                let uniqueIdCounters: YetaWF.UniqueIdInfo = { UniqueIdPrefix: `${this.ControlId}tr`, UniqueIdPrefixCounter: 0, UniqueIdCounter: 0 };
+                let uniqueIdCounters: YetaWF.UniqueIdInfo = { UniqueIdPrefix: `${this.ControlId}ls`, UniqueIdPrefixCounter: ++this.AddCounter, UniqueIdCounter: 0 };
                 uri.addSearch(YConfigs.Forms.UniqueIdCounters, JSON.stringify(uniqueIdCounters));
 
                 var request: XMLHttpRequest = new XMLHttpRequest();
@@ -379,15 +382,16 @@ namespace YetaWF_ComponentsHTML {
         // API
 
         public canCollapse(liElem: HTMLLIElement): boolean {
-            var ul = $YetaWF.getElement1BySelectorCond("ul", [liElem]); // get the subitems
+            var ul = $YetaWF.getElement1BySelectorCond("ul.t_sub", [liElem]); // get the subitems
             if (!ul || ul.style.display !== "") return false;
             return true;
         }
         public collapse(liElem: HTMLLIElement): void {
-            var ul = $YetaWF.getElement1BySelector("ul", [liElem]); // get the subitems
+            var ul = $YetaWF.getElement1BySelector("ul.t_sub", [liElem]); // get the subitems
             if (ul) {
                 let data = this.getElementDataCond(liElem);
                 if (data && data.DynamicSubEntries) {
+                    $YetaWF.processClearDiv(ul);
                     ul.remove();
                 } else {
                     ul.style.display = "none";
@@ -398,7 +402,7 @@ namespace YetaWF_ComponentsHTML {
             $YetaWF.elementAddClass(iElem, "t_icright");
         }
         public canExpand(liElem: HTMLLIElement): boolean {
-            var ul = $YetaWF.getElement1BySelectorCond("ul", [liElem]); // get the subitems
+            var ul = $YetaWF.getElement1BySelectorCond("ul.t_sub", [liElem]); // get the subitems
             if (ul) {
                 if (ul.style.display === "") return false;
                 return true;
@@ -408,7 +412,7 @@ namespace YetaWF_ComponentsHTML {
             }
         }
         public expand(liElem: HTMLLIElement): void {
-            var ul = $YetaWF.getElement1BySelectorCond("ul", [liElem]); // get the subitems
+            var ul = $YetaWF.getElement1BySelectorCond("ul.t_sub", [liElem]); // get the subitems
             if (ul == null) {
                 let data = this.getElementData(liElem);
                 if (data.DynamicSubEntries) {
@@ -512,7 +516,8 @@ namespace YetaWF_ComponentsHTML {
         }
         public removeEntry(liElem: HTMLLIElement): void {
             // remove li element (and possibly parent(s))
-            var ul = $YetaWF.elementClosest(liElem, "ul") as HTMLUListElement | null;
+            var ul = $YetaWF.elementClosest(liElem, "ul.t_sub") as HTMLUListElement | null;
+            $YetaWF.processClearDiv(liElem);
             liElem.remove();
             for (; ;) {
                 if (!ul) break;
@@ -520,7 +525,8 @@ namespace YetaWF_ComponentsHTML {
                     break;
                 if ($YetaWF.elementHasClass(ul, "tg_root"))
                     break;
-                var parentUl = $YetaWF.elementClosest(ul.parentElement!, "ul") as HTMLUListElement | null;
+                var parentUl = $YetaWF.elementClosest(ul.parentElement!, "ul.t_sub") as HTMLUListElement | null;
+                $YetaWF.processClearDiv(ul);
                 ul.remove();
                 ul = parentUl;
             }
@@ -534,19 +540,19 @@ namespace YetaWF_ComponentsHTML {
             return li;
         }
         public getFirstDirectChild(liElem: HTMLLIElement): HTMLLIElement | null {
-            var ul = $YetaWF.getElement1BySelectorCond("ul", [liElem]) as HTMLUListElement | null;
+            var ul = $YetaWF.getElement1BySelectorCond("ul.t_sub", [liElem]) as HTMLUListElement | null;
             if (ul)
                 return ul.children[0] as HTMLLIElement;
             return null;
         }
         public getLastDirectChild(liElem: HTMLLIElement): HTMLLIElement | null {
-            var ul = $YetaWF.getElement1BySelectorCond("ul", [liElem]) as HTMLUListElement | null;
+            var ul = $YetaWF.getElement1BySelectorCond("ul.t_sub", [liElem]) as HTMLUListElement | null;
             if (ul)
                 return ul.children[ul.children.length - 1] as HTMLLIElement;
             return null;
         }
         public getNextEntry(liElem: HTMLLIElement): HTMLLIElement | null {
-            var ul = $YetaWF.getElement1BySelectorCond("ul", [liElem]) as HTMLUListElement | null;
+            var ul = $YetaWF.getElement1BySelectorCond("ul.t_sub", [liElem]) as HTMLUListElement | null;
             // get item in subentries
             if (ul)
                 return ul.children[0] as HTMLLIElement;
@@ -566,7 +572,7 @@ namespace YetaWF_ComponentsHTML {
             }
         }
         public getNextVisibleEntry(liElem: HTMLLIElement): HTMLLIElement | null {
-            var ul = $YetaWF.getElement1BySelectorCond("ul", [liElem]) as HTMLUListElement | null;
+            var ul = $YetaWF.getElement1BySelectorCond("ul.t_sub", [liElem]) as HTMLUListElement | null;
             // get item in subentries
             if (ul && ul.style.display === "")
                 return ul.children[0] as HTMLLIElement;
@@ -588,7 +594,7 @@ namespace YetaWF_ComponentsHTML {
         public getPrevEntry(liElem: HTMLLIElement): HTMLLIElement | null {
             var li: HTMLLIElement | null = liElem.previousElementSibling as HTMLLIElement | null;
             if (li) {
-                var ul = $YetaWF.getElement1BySelectorCond("ul", [li]) as HTMLUListElement | null;
+                var ul = $YetaWF.getElement1BySelectorCond("ul.t_sub", [li]) as HTMLUListElement | null;
                 if (ul)
                     return ul.children[ul.children.length - 1] as HTMLLIElement | null;
                 return li;
@@ -605,7 +611,7 @@ namespace YetaWF_ComponentsHTML {
             var li: HTMLLIElement | null = liElem.previousElementSibling as HTMLLIElement | null;
             if (li) {
                 for (; ;) {
-                    var ul = $YetaWF.getElement1BySelectorCond("ul", [li]) as HTMLUListElement | null;
+                    var ul = $YetaWF.getElement1BySelectorCond("ul.t_sub", [li]) as HTMLUListElement | null;
                     if (!ul || ul.style.display !== "")
                         return li;
                     li = ul.children[ul.children.length - 1] as HTMLLIElement;
@@ -620,7 +626,7 @@ namespace YetaWF_ComponentsHTML {
             return li;
         }
         public getFirstVisibleItem(): HTMLLIElement | null {
-            var liElem = $YetaWF.getElement1BySelectorCond("ul li", [this.Control]) as HTMLLIElement | null;
+            var liElem = $YetaWF.getElement1BySelectorCond("ul.t_sub li", [this.Control]) as HTMLLIElement | null;
             return liElem;
         }
         public getLastVisibleItem(): HTMLLIElement | null {
@@ -632,7 +638,7 @@ namespace YetaWF_ComponentsHTML {
                 // get last item in subentries
                 liElem = ul.children[ul.children.length - 1] as HTMLLIElement;
 
-                ul = $YetaWF.getElement1BySelectorCond("ul", [liElem]) as HTMLUListElement | null;
+                ul = $YetaWF.getElement1BySelectorCond("ul.t_sub", [liElem]) as HTMLUListElement | null;
             }
             return liElem;
         }

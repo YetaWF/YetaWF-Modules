@@ -24,14 +24,17 @@ var YetaWF_ComponentsHTML;
                 GetValue: null,
                 Enable: null,
             }, false, function (tag, control) {
-                var list = $YetaWF.getElementsBySelector("ul.yGridActionMenu", [control.Control]);
-                for (var _i = 0, list_1 = list; _i < list_1.length; _i++) {
-                    var el = list_1[_i];
-                    var menu = $(el).data("kendoMenu");
-                    if (!menu)
-                        throw "No kendo object found"; /*DEBUG*/
-                    menu.destroy();
-                }
+                ActionIconsComponent.closeMenusGiven([control.MenuControl]);
+                var menu = $(control.MenuControl).data("kendoMenu");
+                menu.destroy();
+                var btn = $(control.Control).data("kendoButton");
+                btn.destroy();
+                //var list = $YetaWF.getElementsBySelector("ul.yGridActionMenu", [control.Control]);
+                //for (let el of list) {
+                //    var menu = $(el).data("kendoMenu");
+                //    if (!menu) throw "No kendo object found";/*DEBUG*/
+                //    menu.destroy();
+                //}
             }) || this;
             _this.MenuControl = $YetaWF.getElementById(setup.MenuId);
             var $btn = $(_this.Control).kendoButton();

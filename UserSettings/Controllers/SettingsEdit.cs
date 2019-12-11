@@ -8,6 +8,7 @@ using YetaWF.Core.Models;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Modules.UserSettings.DataProvider;
 using YetaWF.Core.Components;
+using System;
 #if MVC6
 using Microsoft.AspNetCore.Mvc;
 #else
@@ -40,7 +41,21 @@ namespace YetaWF.Modules.UserSettings.Controllers {
 
             [Caption("Grid Actions"), Description("The desired display method for available actions in grids")]
             [UIHint("Enum")]
-            public Grid.GridActionsEnum GridActions { get; set; }
+            public Grid.GridActionsUserEnum GridActionsUser { get; set; }
+
+            public Grid.GridActionsEnum GridActions {
+                // we're only showing a subset to the user
+                get {
+                    return (Grid.GridActionsEnum)GridActionsUser;
+                }
+                set {
+                    try {
+                        GridActionsUser = (Grid.GridActionsUserEnum)value;
+                    } catch (Exception) {
+                        GridActionsUser = Grid.GridActionsUserEnum.DropdownMenu;
+                    }
+                }
+            }
 
             [Caption("Language"), Description("The default language used for the entire site (only used when localization is enabled)")]
             [UIHint("LanguageId"), StringLength(LanguageData.MaxId)]
