@@ -266,17 +266,17 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             string icon;
             if (dynSubs || items != null) {
                 if (collapsed)
-                    caret = "<i class='t_icright'></i>";
+                    caret = "<i class='t_icright'>&nbsp;</i>";
                 else
-                    caret = "<i class='t_icdown'></i>";
+                    caret = "<i class='t_icdown'>&nbsp;</i>";
 
                 if (string.IsNullOrWhiteSpace(urlNew) && string.IsNullOrWhiteSpace(urlContent))
-                    icon = "<i class='t_icfolder'></i>";
+                    icon = "<i class='t_icfolder'>&nbsp;</i>";
                 else
-                    icon = "<i class='t_icfile'></i>";
+                    icon = "<i class='t_icfile'>&nbsp;</i>";
             } else {
-                caret = "<i class='t_icempty'></i>";
-                icon = "<i class='t_icfile'></i>";
+                caret = "<i class='t_icempty'>&nbsp;</i>";
+                icon = "<i class='t_icfile'>&nbsp;</i>";
             }
 
             string dd = "";
