@@ -1172,10 +1172,12 @@ namespace YetaWF_ComponentsHTML {
                 if (this.SubmitCheckCol >= 0) {
                     let checks = $YetaWF.getElementsBySelector(`td:nth-child(${this.SubmitCheckCol + 1}) input[type='checkbox']`, [this.Control]) as HTMLInputElement[];
                     for (let check of checks) {
-                        var tr = $YetaWF.elementClosest(check, "tr");
-                        var recNum = Number($YetaWF.getAttribute(tr, "data-origin"));
-                        this.Setup.StaticData[recNum][this.Setup.Columns[this.SubmitCheckCol].Name] = set;
-                        check.checked = set;
+                        if (!check.disabled) {
+                            var tr = $YetaWF.elementClosest(check, "tr");
+                            var recNum = Number($YetaWF.getAttribute(tr, "data-origin"));
+                            this.Setup.StaticData[recNum][this.Setup.Columns[this.SubmitCheckCol].Name] = set;
+                            check.checked = set;
+                        }
                     }
                 }
             }
@@ -1187,11 +1189,13 @@ namespace YetaWF_ComponentsHTML {
                 if (this.SubmitCheckCol >= 0) {
                     let checks = $YetaWF.getElementsBySelector(`td:nth-child(${this.SubmitCheckCol + 1}) input[type='checkbox']`, [this.Control]) as HTMLInputElement[];
                     for (let check of checks) {
-                        var tr = $YetaWF.elementClosest(check, "tr");
-                        var recNum = Number($YetaWF.getAttribute(tr, "data-origin"));
-                        let set = this.Setup.StaticData[recNum][this.Setup.Columns[this.SubmitCheckCol].Name];
-                        if (!set)
-                            return false;
+                        if (!check.disabled) {
+                            var tr = $YetaWF.elementClosest(check, "tr");
+                            var recNum = Number($YetaWF.getAttribute(tr, "data-origin"));
+                            let set = this.Setup.StaticData[recNum][this.Setup.Columns[this.SubmitCheckCol].Name];
+                            if (!set)
+                                return false;
+                        }
                     }
                     return true;
                 }

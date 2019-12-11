@@ -19,37 +19,58 @@ namespace YetaWF.Modules.Caching.DataProvider {
     ///
     /// In development/debug objects are not cached, for release mode the default is caching that doesn't expire.
     /// </summary>
-    internal class StaticSmallObjectLocalDataProvider : ICacheDataProvider, ICacheClearable {
+    public class StaticSmallObjectLocalDataProvider : ICacheDataProvider, ICacheClearable {
 
-        static StaticSmallObjectLocalDataProvider() {
-            DurationMinutes = WebConfigHelper.GetValue<int>(AreaRegistration.CurrentPackage.AreaName, "SmallObjectCacheDuration", YetaWFManager.Deployed ? 0 : -1);
+        /// <summary>
+        /// Constructor.
+        /// </summary>
+        public StaticSmallObjectLocalDataProvider() {
+            DisposableTracker.AddObject(this);
+            DurationSeconds = WebConfigHelper.GetValue<int>(AreaRegistration.CurrentPackage.AreaName, "SmallObjectCacheDuration", YetaWFManager.Deployed ? 0 : -1);
+        }
+        /// <summary>
+        /// Constructor.
+        /// </summary>
+        /// <param name="durationSeconds">The number of minutes a cached object is retained. 0 means forver, -1 means don't cache at all.</param>
+        public StaticSmallObjectLocalDataProvider(int durationSeconds) {
+            DisposableTracker.AddObject(this);
+            DurationSeconds = durationSeconds;
         }
 
+        /// <summary>
+        /// StaticSmallObjectLocalDataProvider factory.
+        /// </summary>
+        /// <returns>An instance of an ICacheDataProvider interface.</returns>
+        /// <remarks>The returned ICacheDataProvider interface must be Dispose'd once it is no longer needed.</remarks>
         public static ICacheDataProvider GetProvider() {
             return new StaticSmallObjectLocalDataProvider();
         }
 
-        public YetaWFManager Manager { get { return YetaWFManager.Manager; } }
-        public bool HaveManager { get { return YetaWFManager.HaveManager; } }
+        private YetaWFManager Manager { get { return YetaWFManager.Manager; } }
+        private bool HaveManager { get { return YetaWFManager.HaveManager; } }
 
-        public class CachedObject {
+        private class CachedObject {
             public DateTime Created { get; set; }
             public object Data { get; set; }
         }
 
-        private static Dictionary<string, CachedObject> StaticObjects = new Dictionary<string, CachedObject>();
-        private static object _lockObject = new object();
+        private Dictionary<string, CachedObject> StaticObjects = new Dictionary<string, CachedObject>();
+        private object _lockObject = new object();
 
-        private static int DurationMinutes { get; set; }
-        private bool DontCache { get { return DurationMinutes < 0; } }
-        private bool NoExpiration { get { return DurationMinutes == 0; } }
+        private int DurationSeconds { get; set; }
+        private bool DontCache { get { return DurationSeconds < 0; } }
+        private bool NoExpiration { get { return DurationSeconds == 0; } }
 
-        public StaticSmallObjectLocalDataProvider() {
-            DisposableTracker.AddObject(this);
-        }
+        /// <summary>
+        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+        /// </summary>
         public void Dispose() {
             Dispose(true);
         }
+        /// <summary>
+        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+        /// </summary>
+        /// <param name="disposing">true to release the DisposableTracker reference count, false otherwise.</param>
         protected virtual void Dispose(bool disposing) {
             if (disposing) {
                 DisposableTracker.RemoveObject(this);
@@ -59,15 +80,21 @@ namespace YetaWF.Modules.Caching.DataProvider {
         private bool HasExpired(CachedObject cache) {
             if (NoExpiration) return false;
             if (DontCache) return true;
-            return DateTime.Now > cache.Created.AddMinutes(DurationMinutes);
+            return DateTime.Now > cache.Created.AddMinutes(DurationSeconds);
         }
-        //~StaticSmallObjectLocalDataProvider() { Dispose(false); }
 
         // API
 
         private string GetKey(string key) {
             return $"__staticSM__{key}";
         }
+
+        /// <summary>
+        /// Adds an object to the cache.
+        /// </summary>
+        /// <typeparam name="TYPE">The type of the object.</typeparam>
+        /// <param name="key">The resource name.</param>
+        /// <param name="data">The data to cache.</param>
         public Task AddAsync<TYPE>(string key, TYPE data) {
             if (DontCache) return Task.CompletedTask;
             key = GetKey(key);
@@ -81,6 +108,12 @@ namespace YetaWF.Modules.Caching.DataProvider {
             }
             return Task.CompletedTask;
         }
+        /// <summary>
+        /// Retrieves a cached object.
+        /// </summary>
+        /// <typeparam name="TYPE">The type of the object.</typeparam>
+        /// <param name="key">The resource name.</param>
+        /// <returns>Returns an object containing success indicators and the data, if available.</returns>
         public Task<GetObjectInfo<TYPE>> GetAsync<TYPE>(string key) {
             if (!DontCache) {
                 // get cached version
@@ -101,6 +134,14 @@ namespace YetaWF.Modules.Caching.DataProvider {
                 Success = false,
             });
         }
+        /// <summary>
+        /// Removes the cached object.
+        /// </summary>
+        /// <typeparam name="TYPE"></typeparam>
+        /// <param name="key">The resource name.</param>
+        /// <remarks>
+        /// It is permissible to remove non-existent objects.
+        /// </remarks>
         public Task RemoveAsync<TYPE>(string key) {
             if (DontCache) return Task.CompletedTask;
             key = GetKey(key);
@@ -110,6 +151,9 @@ namespace YetaWF.Modules.Caching.DataProvider {
             return Task.CompletedTask;
         }
 
+        /// <summary>
+        /// Clears the cache completely.
+        /// </summary>
         public Task ClearAllAsync() {
             lock (_lockObject) { // used to protect StaticObjects - local only
                 StaticObjects = new Dictionary<string, CachedObject>();
