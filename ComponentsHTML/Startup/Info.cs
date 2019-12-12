@@ -16,8 +16,10 @@ namespace YetaWF.Modules.ComponentsHTML.Addons {
     /// </summary>
     public class Info : IAddOnSupport {
 
-        //Sprites
-        internal static Dictionary<string, string> PredefSpriteIcons = new Dictionary<string, string> {
+        /// <summary>
+        /// Sprites used by the package.
+        /// </summary>
+        public static Dictionary<string, string> PredefSpriteIcons = new Dictionary<string, string> {
            { "#ModulePreview", "yic yic_componentshtml_modprev" },
            { "#PagePreview", "yic yic_componentshtml_pageprev" },
            { "#TextCopy", "yic yic_componentshtml_textcopy" },
