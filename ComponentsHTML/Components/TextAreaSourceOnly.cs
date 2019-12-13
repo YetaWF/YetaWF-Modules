@@ -75,7 +75,6 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             if (!string.IsNullOrWhiteSpace(text)) {
 
                 int emHeight = PropData.GetAdditionalAttributeValue("EmHeight", 10);
-                int pixHeight = Manager.CharHeight * emHeight;
 
                 YTagBuilder tag = new YTagBuilder("textarea");
                 tag.AddCssClass("yt_textareasourceonly");
@@ -129,7 +128,6 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                 text = (string)model;
 
             int emHeight = PropData.GetAdditionalAttributeValue("EmHeight", 10);
-            int pixHeight = Manager.CharHeight * emHeight;
 
             HtmlBuilder hb = new HtmlBuilder();
 

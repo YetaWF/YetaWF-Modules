@@ -1,0 +1,3 @@
+//cdn.jsdelivr.net/npm/showdown@1.9.1/dist/showdown.min.js,cdn
+/node_modules/showdown/dist/showdown.min.js,nominify,nocdn
+Options.ts
