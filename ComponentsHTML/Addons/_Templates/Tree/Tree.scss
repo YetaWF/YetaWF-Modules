@@ -39,6 +39,10 @@ $cellhorzpadding: 2px;
         }
         user-select: none; /* Standard syntax */
     }
+    .tg_emptytr {
+        font-size:$fontsize;
+        padding:2em 0 2em 2ch;
+    }
     .tg_root {
         margin:0;
     }

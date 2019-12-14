@@ -63,6 +63,9 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
             HtmlBuilder hb = new HtmlBuilder();
 
+            if (model.Count == 0)
+                return null;
+
             Grid.GridActionsEnum actionStyle = Grid.GridActionsEnum.Icons;
             if (model.Count > 1) {
                 Grid.GridActionsEnum gridActionStyle;
@@ -84,12 +87,16 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                         ActionIconsSetup setup = new ActionIconsSetup {
                             MenuId = ControlId + "_menu",
                         };
-                        hb.Append($@"
+                        string menuHTML = await CoreRendering.RenderMenuAsync(model, setup.MenuId, Globals.CssGridActionMenu, HtmlHelper: HtmlHelper, Hidden: true);
+
+                        if (!string.IsNullOrWhiteSpace(menuHTML)) {
+                            hb.Append($@"
 <button id='{buttonId}' type='button' class='yt_actionicons'>
     {HE(__ResStr("dropdownText", "Manage"))}<span class='k-icon k-i-arrow-60-down'></span>
-    {await CoreRendering.RenderMenuAsync(model, setup.MenuId, Globals.CssGridActionMenu, HtmlHelper: HtmlHelper, Hidden: true)}
+    {menuHTML}
 </button>");
-                        Manager.ScriptManager.AddLast($@"new YetaWF_ComponentsHTML.ActionIconsComponent('{buttonId}', {Utility.JsonSerialize(setup)});");
+                            Manager.ScriptManager.AddLast($@"new YetaWF_ComponentsHTML.ActionIconsComponent('{buttonId}', {Utility.JsonSerialize(setup)});");
+                        }
                         break;
                     }
                 case Grid.GridActionsEnum.Mini: {
@@ -98,12 +105,15 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                         ActionIconsSetup setup = new ActionIconsSetup {
                             MenuId = ControlId + "_menu",
                         };
-                        hb.Append($@"
-<button id='{buttonId}' href='#' class='yt_actionicons t_mini'><span class='k-icon k-i-arrow-60-down'></span>
-    {await CoreRendering.RenderMenuAsync(model, setup.MenuId, Globals.CssGridActionMenu, HtmlHelper: HtmlHelper, Hidden: true)}
-</button>");
+                        string menuHTML = await CoreRendering.RenderMenuAsync(model, setup.MenuId, Globals.CssGridActionMenu, HtmlHelper: HtmlHelper, Hidden: true);
 
-                        Manager.ScriptManager.AddLast($@"new YetaWF_ComponentsHTML.ActionIconsComponent('{buttonId}', {Utility.JsonSerialize(setup)});");
+                        if (!string.IsNullOrWhiteSpace(menuHTML)) {
+                            hb.Append($@"
+<button id='{buttonId}' href='#' class='yt_actionicons t_mini'><span class='k-icon k-i-arrow-60-down'></span>
+    {menuHTML}
+</button>");
+                            Manager.ScriptManager.AddLast($@"new YetaWF_ComponentsHTML.ActionIconsComponent('{buttonId}', {Utility.JsonSerialize(setup)});");
+                        }
                         break;
                     }
             }

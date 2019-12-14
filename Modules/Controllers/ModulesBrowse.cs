@@ -14,6 +14,8 @@ using YetaWF.Modules.Modules.Modules;
 using System.Threading.Tasks;
 using YetaWF.Core.Components;
 using YetaWF.Core.IO;
+using YetaWF.Core.Serializers;
+using YetaWF.Core.Identity;
 #if MVC6
 using Microsoft.AspNetCore.Mvc;
 #else
@@ -42,6 +44,12 @@ namespace YetaWF.Modules.Modules.Controllers {
                         actions.New(await ModSettings.GetModuleActionAsync("Settings", guid), ModuleAction.ActionLocationEnum.GridLinks);
                     } catch (Exception) { }
                 }
+
+                actions.New(await Module.GetAction_SetSuperuserAsync(guid), ModuleAction.ActionLocationEnum.GridLinks);
+                actions.New(await Module.GetAction_SetAdminAsync(guid), ModuleAction.ActionLocationEnum.GridLinks);
+                actions.New(await Module.GetAction_SetUserAsync(guid), ModuleAction.ActionLocationEnum.GridLinks);
+                actions.New(await Module.GetAction_SetAnonymousAsync(guid), ModuleAction.ActionLocationEnum.GridLinks);
+
                 try {
                     actions.New(Module.GetAction_Remove(guid), ModuleAction.ActionLocationEnum.GridLinks);
                 } catch (Exception) { }
@@ -172,6 +180,68 @@ namespace YetaWF.Modules.Modules.Controllers {
                 throw new Error(this.__ResStr("errRemove", "The module could not be removed - It may already have been deleted"));
             return Reload(null, Reload: ReloadEnum.ModuleParts);
         }
+#if DEBUG
+        [AllowPost]
+        [Permission("SetAuthorization")]
+        [ExcludeDemoMode]
+        public async Task<ActionResult> SetSuperuser(Guid guid) {
+            ModuleDefinition module = await ModuleDefinition.LoadAsync(guid, AllowNone: true);
+            if (module == null)
+                throw new InternalError($"Couldn't load module {guid}");
+            int adminRole = Resource.ResourceAccess.GetAdministratorRoleId();
+            int userRole = Resource.ResourceAccess.GetUserRoleId();
+            int anonRole = Resource.ResourceAccess.GetAnonymousRoleId();
+            module.AllowedRoles = new SerializableList<ModuleDefinition.AllowedRole>();
+            await module.SaveAsync();
+            return Reload(null, Reload: ReloadEnum.ModuleParts);
+        }
+        [AllowPost]
+        [Permission("SetAuthorization")]
+        [ExcludeDemoMode]
+        public async Task<ActionResult> SetAdmin(Guid guid) {
+            ModuleDefinition module = await ModuleDefinition.LoadAsync(guid, AllowNone: true);
+            if (module == null)
+                throw new InternalError($"Couldn't load module {guid}");
+            int adminRole = Resource.ResourceAccess.GetAdministratorRoleId();
+            int userRole = Resource.ResourceAccess.GetUserRoleId();
+            int anonRole = Resource.ResourceAccess.GetAnonymousRoleId();
+            module.AllowedRoles = new SerializableList<ModuleDefinition.AllowedRole>();
+            module.AllowedRoles.Add(new ModuleDefinition.AllowedRole { RoleId = adminRole, View = ModuleDefinition.AllowedEnum.Yes });
+            await module.SaveAsync();
+            return Reload(null, Reload: ReloadEnum.ModuleParts);
+        }
+        [AllowPost]
+        [Permission("SetAuthorization")]
+        [ExcludeDemoMode]
+        public async Task<ActionResult> SetUser(Guid guid) {
+            ModuleDefinition module = await ModuleDefinition.LoadAsync(guid, AllowNone: true);
+            if (module == null)
+                throw new InternalError($"Couldn't load module {guid}");
+            int adminRole = Resource.ResourceAccess.GetAdministratorRoleId();
+            int userRole = Resource.ResourceAccess.GetUserRoleId();
+            int anonRole = Resource.ResourceAccess.GetAnonymousRoleId();
+            module.AllowedRoles = new SerializableList<ModuleDefinition.AllowedRole>();
+            module.AllowedRoles.Add(new ModuleDefinition.AllowedRole { RoleId = userRole, View = ModuleDefinition.AllowedEnum.Yes });
+            await module.SaveAsync();
+            return Reload(null, Reload: ReloadEnum.ModuleParts);
+        }
+        [AllowPost]
+        [Permission("SetAuthorization")]
+        [ExcludeDemoMode]
+        public async Task<ActionResult> SetAnonymous(Guid guid) {
+            ModuleDefinition module = await ModuleDefinition.LoadAsync(guid, AllowNone: true);
+            if (module == null)
+                throw new InternalError($"Couldn't load module {guid}");
+            int adminRole = Resource.ResourceAccess.GetAdministratorRoleId();
+            int userRole = Resource.ResourceAccess.GetUserRoleId();
+            int anonRole = Resource.ResourceAccess.GetAnonymousRoleId();
+            module.AllowedRoles = new SerializableList<ModuleDefinition.AllowedRole>();
+            module.AllowedRoles.Add(new ModuleDefinition.AllowedRole { RoleId = userRole, View = ModuleDefinition.AllowedEnum.Yes });
+            module.AllowedRoles.Add(new ModuleDefinition.AllowedRole { RoleId = anonRole, View = ModuleDefinition.AllowedEnum.Yes });
+            await module.SaveAsync();
+            return Reload(null, Reload: ReloadEnum.ModuleParts);
+        }
+#endif
         [AllowPost]
         [Permission("RestoreAuthorization")]
         [ExcludeDemoMode]

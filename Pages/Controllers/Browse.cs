@@ -288,14 +288,12 @@ namespace YetaWF.Modules.Pages.Controllers {
                     throw new InternalError($"Page with Guid {0} not found", guid);
                 page.AllowedRoles = new SerializableList<PageDefinition.AllowedRole>();
                 page.AllowedUsers = new SerializableList<PageDefinition.AllowedUser>();
-                page.AllowedRoles.Add(new PageDefinition.AllowedRole { RoleId = adminRole, View = PageDefinition.AllowedEnum.Yes });
                 page.AllowedRoles.Add(new PageDefinition.AllowedRole { RoleId = userRole, View = PageDefinition.AllowedEnum.Yes });
 
                 foreach (PageDefinition.ModuleEntry modEntry in page.ModuleDefinitions) {
                     ModuleDefinition module = await modEntry.GetModuleAsync();
                     module.AllowedRoles = new SerializableList<ModuleDefinition.AllowedRole>();
                     module.AllowedUsers = new SerializableList<ModuleDefinition.AllowedUser>();
-                    module.AllowedRoles.Add(new ModuleDefinition.AllowedRole { RoleId = adminRole, View = ModuleDefinition.AllowedEnum.Yes });
                     module.AllowedRoles.Add(new ModuleDefinition.AllowedRole { RoleId = userRole, View = ModuleDefinition.AllowedEnum.Yes });
                 }
                 await page.SaveAsync();
@@ -315,7 +313,6 @@ namespace YetaWF.Modules.Pages.Controllers {
                     throw new InternalError($"Page with Guid {0} not found", guid);
                 page.AllowedRoles = new SerializableList<PageDefinition.AllowedRole>();
                 page.AllowedUsers = new SerializableList<PageDefinition.AllowedUser>();
-                page.AllowedRoles.Add(new PageDefinition.AllowedRole { RoleId = adminRole, View = PageDefinition.AllowedEnum.Yes });
                 page.AllowedRoles.Add(new PageDefinition.AllowedRole { RoleId = userRole, View = PageDefinition.AllowedEnum.Yes });
                 page.AllowedRoles.Add(new PageDefinition.AllowedRole { RoleId = anonRole, View = PageDefinition.AllowedEnum.Yes });
 
@@ -323,7 +320,6 @@ namespace YetaWF.Modules.Pages.Controllers {
                     ModuleDefinition module = await modEntry.GetModuleAsync();
                     module.AllowedRoles = new SerializableList<ModuleDefinition.AllowedRole>();
                     module.AllowedUsers = new SerializableList<ModuleDefinition.AllowedUser>();
-                    module.AllowedRoles.Add(new ModuleDefinition.AllowedRole { RoleId = adminRole, View = ModuleDefinition.AllowedEnum.Yes });
                     module.AllowedRoles.Add(new ModuleDefinition.AllowedRole { RoleId = userRole, View = ModuleDefinition.AllowedEnum.Yes });
                     module.AllowedRoles.Add(new ModuleDefinition.AllowedRole { RoleId = anonRole, View = ModuleDefinition.AllowedEnum.Yes });
                 }

@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using YetaWF.Core.IO;
 using YetaWF.Core.Localize;
 using YetaWF.Core.Models.Attributes;
@@ -35,6 +36,9 @@ namespace YetaWF.Modules.Modules.Modules {
                     new RoleDefinition("RemoveItems",
                         this.__ResStr("roleRemItemsC", "Remove Modules"), this.__ResStr("roleRemItems", "The role has permission to remove individual modules"),
                         this.__ResStr("userRemItemsC", "Remove Modules"), this.__ResStr("userRemItems", "The user has permission to remove individual modules")),
+                    new RoleDefinition("SetAuthorization",
+                        this.__ResStr("roleSetAuthC", "Set Global Authorization"), this.__ResStr("roleSetAuth", "The role has permission to set global authorization for all modules"),
+                        this.__ResStr("userSetAuthC", "Set Global Authorization"), this.__ResStr("userSetAuth", "The user has permission to set global authorization for all modules")),
                     new RoleDefinition("RestoreAuthorization",
                         this.__ResStr("roleRestAuthC", "Restore Default Authorization"), this.__ResStr("roleRestAuth", "The role has permission to restore the default authorizations for ALL modules"),
                         this.__ResStr("userRestAuthC", "Restore Default Authorization"), this.__ResStr("userRestAuth", "The user has permission to restore the default authorizations for ALL modules")),
@@ -109,5 +113,75 @@ namespace YetaWF.Modules.Modules.Modules {
                 PleaseWaitText = this.__ResStr("restAuthPlsWait", "Restoring default authorization for all modules..."),
             };
         }
+#if DEBUG
+        public async Task<ModuleAction> GetAction_SetSuperuserAsync(Guid guid) {
+            if (!IsAuthorized("SetAuthorization")) return null;
+            return new ModuleAction(this) {
+                Url = Utility.UrlFor(typeof(ModulesBrowseModuleController), nameof(ModulesBrowseModuleController.SetSuperuser)),
+                NeedsModuleContext = true,
+                QueryArgs = new { Guid = guid },
+                Image = await CustomIconAsync("go.png"),
+                Style = ModuleAction.ActionStyleEnum.Post,
+                LinkText = "Superuser Authorization",
+                MenuText = "Superuser Authorization",
+                Tooltip = "Change module to superuser only access",
+                Legend = "Changes a module to superuser only access",
+                Category = ModuleAction.ActionCategoryEnum.Significant,
+                Mode = ModuleAction.ActionModeEnum.Any,
+                Location = ModuleAction.ActionLocationEnum.ModuleLinks,
+            };
+        }
+        public async Task<ModuleAction> GetAction_SetAdminAsync(Guid guid) {
+            if (!IsAuthorized("SetAuthorization")) return null;
+            return new ModuleAction(this) {
+                Url = Utility.UrlFor(typeof(ModulesBrowseModuleController), nameof(ModulesBrowseModuleController.SetAdmin)),
+                NeedsModuleContext = true,
+                QueryArgs = new { Guid = guid },
+                Image = await CustomIconAsync("go.png"),
+                Style = ModuleAction.ActionStyleEnum.Post,
+                LinkText = "Admin Authorization",
+                MenuText = "Admin Authorization",
+                Tooltip = "Change module to admin only access",
+                Legend = "Changes a module to admin only access",
+                Category = ModuleAction.ActionCategoryEnum.Significant,
+                Mode = ModuleAction.ActionModeEnum.Any,
+                Location = ModuleAction.ActionLocationEnum.ModuleLinks,
+            };
+        }
+        public async Task<ModuleAction> GetAction_SetUserAsync(Guid guid) {
+            if (!IsAuthorized("SetAuthorization")) return null;
+            return new ModuleAction(this) {
+                Url = Utility.UrlFor(typeof(ModulesBrowseModuleController), nameof(ModulesBrowseModuleController.SetUser)),
+                NeedsModuleContext = true,
+                QueryArgs = new { Guid = guid },
+                Image = await CustomIconAsync("go.png"),
+                Style = ModuleAction.ActionStyleEnum.Post,
+                LinkText = "User Authorization",
+                MenuText = "User Authorization",
+                Tooltip = "Change module to user only access",
+                Legend = "Changes a module to user only access",
+                Category = ModuleAction.ActionCategoryEnum.Significant,
+                Mode = ModuleAction.ActionModeEnum.Any,
+                Location = ModuleAction.ActionLocationEnum.ModuleLinks,
+            };
+        }
+        public async Task<ModuleAction> GetAction_SetAnonymousAsync(Guid guid) {
+            if (!IsAuthorized("SetAuthorization")) return null;
+            return new ModuleAction(this) {
+                Url = Utility.UrlFor(typeof(ModulesBrowseModuleController), nameof(ModulesBrowseModuleController.SetAnonymous)),
+                NeedsModuleContext = true,
+                QueryArgs = new { Guid = guid },
+                Image = await CustomIconAsync("go.png"),
+                Style = ModuleAction.ActionStyleEnum.Post,
+                LinkText = "Anonymous Authorization",
+                MenuText = "Anonymous Authorization",
+                Tooltip = "Change module to anonymous only access",
+                Legend = "Changes a module to anonymous only access",
+                Category = ModuleAction.ActionCategoryEnum.Significant,
+                Mode = ModuleAction.ActionModeEnum.Any,
+                Location = ModuleAction.ActionLocationEnum.ModuleLinks,
+            };
+        }
+#endif
     }
 }

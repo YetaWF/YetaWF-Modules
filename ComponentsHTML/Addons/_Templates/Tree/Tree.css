@@ -20,6 +20,9 @@
     /* Standard syntax */ }
     .yt_tree .tg_header span {
       cursor: default; }
+  .yt_tree .tg_emptytr {
+    font-size: 11px;
+    padding: 2em 0 2em 2ch; }
   .yt_tree .tg_root {
     margin: 0; }
   .yt_tree ul {
