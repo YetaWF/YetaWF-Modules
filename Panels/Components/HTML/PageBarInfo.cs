@@ -7,7 +7,6 @@ using YetaWF.Core.Addons;
 using YetaWF.Core.Components;
 using YetaWF.Core.Localize;
 using YetaWF.Core.Packages;
-using YetaWF.Core.Pages;
 using YetaWF.Core.Support;
 using YetaWF.Modules.ComponentsHTML.Components;
 using YetaWF.Modules.Panels.Models;
@@ -69,7 +68,7 @@ namespace YetaWF.Modules.Panels.Components {
 
             hb.Append($@"
 <div class='yt_panels_pagebarinfo t_display {styleCss}' id='{ControlId}'>
-    <div class='t_list yNoPrint{styleListCss}'>");
+    <div class='yt_panels_pagebarinfo_list yNoPrint{styleListCss}'>");
 
             foreach (PageBarInfo.PanelEntry entry in model.Panels) {
 

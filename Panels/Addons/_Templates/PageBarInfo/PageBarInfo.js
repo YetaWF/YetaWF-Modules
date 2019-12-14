@@ -28,13 +28,15 @@ var YetaWF_Panels;
             if (_this.Setup.Resize)
                 _this.resize();
             // Link click, activate entry
-            $YetaWF.registerEventHandler(_this.Control, "click", ".t_list a", function (ev) {
-                var entries = $YetaWF.getElementsBySelector(".t_entry", [_this.Control]);
+            $YetaWF.registerEventHandler(_this.Control, "click", ".yt_panels_pagebarinfo_list a", function (ev) {
+                var entry = $YetaWF.elementClosestCond(ev.__YetaWFElem, ".yt_panels_pagebarinfo_list .t_entry");
+                if (!entry)
+                    return true;
+                var entries = $YetaWF.getElementsBySelector(".yt_panels_pagebarinfo_list .t_entry", [_this.Control]);
                 for (var _i = 0, entries_1 = entries; _i < entries_1.length; _i++) {
-                    var entry_1 = entries_1[_i];
-                    $YetaWF.elementRemoveClassList(entry_1, _this.Setup.ActiveCss);
+                    var e = entries_1[_i];
+                    $YetaWF.elementRemoveClassList(e, _this.Setup.ActiveCss);
                 }
-                var entry = $YetaWF.elementClosest(ev.__YetaWFElem, ".t_entry");
                 $YetaWF.elementAddClassList(entry, _this.Setup.ActiveCss);
                 return true;
             });

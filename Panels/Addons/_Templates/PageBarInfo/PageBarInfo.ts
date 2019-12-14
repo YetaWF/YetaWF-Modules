@@ -26,11 +26,13 @@ namespace YetaWF_Panels {
                 this.resize();
 
             // Link click, activate entry
-            $YetaWF.registerEventHandler(this.Control, "click", ".t_list a", (ev: MouseEvent): boolean => {
-                let entries = $YetaWF.getElementsBySelector(".t_entry", [this.Control]);
-                for (let entry of entries)
-                    $YetaWF.elementRemoveClassList(entry, this.Setup.ActiveCss);
-                let entry = $YetaWF.elementClosest(ev.__YetaWFElem, ".t_entry");
+            $YetaWF.registerEventHandler(this.Control, "click", ".yt_panels_pagebarinfo_list a", (ev: MouseEvent): boolean => {
+                let entry = $YetaWF.elementClosestCond(ev.__YetaWFElem, ".yt_panels_pagebarinfo_list .t_entry");
+                if (!entry)
+                    return true;
+                let entries = $YetaWF.getElementsBySelector(".yt_panels_pagebarinfo_list .t_entry", [this.Control]);
+                for (let e of entries)
+                    $YetaWF.elementRemoveClassList(e, this.Setup.ActiveCss);
                 $YetaWF.elementAddClassList(entry, this.Setup.ActiveCss);
                 return true;
             });

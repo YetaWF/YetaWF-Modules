@@ -11,7 +11,7 @@ $small-screen: 1000px;
 .yt_panels_pagebarinfo {
     &.t_styleshorz,
     &.t_stylesvert {
-        > .t_list {
+        .yt_panels_pagebarinfo_list {
             flex:none;
             overflow-x:auto;
             overflow-y: hidden;
@@ -33,7 +33,7 @@ $small-screen: 1000px;
 }
 
 .yt_panels_pagebarinfo {
-    > .t_list {
+    .yt_panels_pagebarinfo_list {
         .t_link {
             font-size:10px;
             line-height:1.2;
@@ -45,13 +45,13 @@ $small-screen: 1000px;
 }
 
 .yt_panels_pagebarinfo.t_skin {
-    > .t_list {
+    .yt_panels_pagebarinfo_list {
         background: transparent;// don't use jquery-ui ui-widget-content background
     }
 }
 
 .yt_panels_pagebarinfo.t_noskin {
-    > .t_list {
+    .yt_panels_pagebarinfo_list {
         background: $bar-background;
         .t_entry {
             &.t_active {
@@ -69,7 +69,7 @@ $small-screen: 1000px;
     .yt_panels_pagebarinfo {
         &.t_stylesvert {
             display: flex;
-            > .t_list {
+            .yt_panels_pagebarinfo_list {
                 flex: 0 0  $entry-width;
                 overflow-x:hidden;
                 overflow-y:auto;

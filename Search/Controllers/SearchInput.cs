@@ -21,8 +21,8 @@ namespace YetaWF.Modules.Search.Controllers {
         [Trim]
         public class Model {
 
-            [TextAbove("Enter the search term(s) - Use AND or OR to create search queries. When multiple terms (without AND or OR) are used, all terms must be present in a page to be listed in the search results. Use * at the end of a search term to search for all occurrences that start with the specified term (wildcard searching).")]
-            [Caption("Search Terms"), Description("Enter the search term(s) - Use AND or OR to create search queries - When multiple terms (without AND or OR) are used, all terms must be present in a page to be listed in the search results - Use * at the end of a search term to search for all occurrences that start with the specified term (wildcard searching)")]
+            [TextAbove("Enter the search term(s) - Use AND or OR to create search queries. When multiple terms (without AND or OR) are used, all terms must be found in a page to be listed in the search results. Use * at the end of a search term to search for all occurrences that start with the specified term (wildcard searching).")]
+            [Caption("Search Terms"), Description("Enter the search term(s) - Use AND or OR to create search queries - When multiple terms (without AND or OR) are used, all terms must be found in a page to be listed in the search results - Use * at the end of a search term to search for all occurrences that start with the specified term (wildcard searching)")]
             [UIHint("Text40"), Trim, StringLength(SearchData.MaxSearchTerm), Required]
             public string SearchTerms { get; set; }
 
