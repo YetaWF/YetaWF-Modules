@@ -66,13 +66,12 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             if (model.Count == 0)
                 return null;
 
-            Grid.GridActionsEnum actionStyle = Grid.GridActionsEnum.Icons;
-            if (model.Count > 1) {
-                Grid.GridActionsEnum gridActionStyle;
-                if (!PropData.TryGetAdditionalAttributeValue<Grid.GridActionsEnum>("GridActionsEnum", out gridActionStyle))
-                    gridActionStyle = UserSettings.GetProperty<Grid.GridActionsEnum>("GridActions");
-                actionStyle = gridActionStyle;
+            Grid.GridActionsEnum actionStyle = PropData.GetAdditionalAttributeValue<Grid.GridActionsEnum>("GridActionsEnum", UserSettings.GetProperty<Grid.GridActionsEnum>("GridActions"));
+            if (model.Count == 1) {
+                actionStyle = Grid.GridActionsEnum.Icons;
+                model.RenderMode = ModuleAction.RenderModeEnum.IconsOnly;
             }
+
             switch (actionStyle) {
 
                 default:

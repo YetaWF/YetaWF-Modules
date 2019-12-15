@@ -246,8 +246,10 @@ namespace YetaWF.Modules.Pages.Controllers {
                 page.AllowedUsers = new SerializableList<PageDefinition.AllowedUser>();
                 foreach (PageDefinition.ModuleEntry modEntry in page.ModuleDefinitions) {
                     ModuleDefinition module = await modEntry.GetModuleAsync();
-                    module.AllowedRoles = new SerializableList<ModuleDefinition.AllowedRole>();
-                    module.AllowedUsers = new SerializableList<ModuleDefinition.AllowedUser>();
+                    if (module != null) {
+                        module.AllowedRoles = new SerializableList<ModuleDefinition.AllowedRole>();
+                        module.AllowedUsers = new SerializableList<ModuleDefinition.AllowedUser>();
+                    }
                 }
                 await page.SaveAsync();
             }
@@ -268,9 +270,11 @@ namespace YetaWF.Modules.Pages.Controllers {
 
                 foreach (PageDefinition.ModuleEntry modEntry in page.ModuleDefinitions) {
                     ModuleDefinition module = await modEntry.GetModuleAsync();
-                    module.AllowedRoles = new SerializableList<ModuleDefinition.AllowedRole>();
-                    module.AllowedUsers = new SerializableList<ModuleDefinition.AllowedUser>();
-                    module.AllowedRoles.Add(new ModuleDefinition.AllowedRole { RoleId = adminRole, View = ModuleDefinition.AllowedEnum.Yes });
+                    if (module != null) {
+                        module.AllowedRoles = new SerializableList<ModuleDefinition.AllowedRole>();
+                        module.AllowedUsers = new SerializableList<ModuleDefinition.AllowedUser>();
+                        module.AllowedRoles.Add(new ModuleDefinition.AllowedRole { RoleId = adminRole, View = ModuleDefinition.AllowedEnum.Yes });
+                    }
                 }
                 await page.SaveAsync();
             }
@@ -292,9 +296,11 @@ namespace YetaWF.Modules.Pages.Controllers {
 
                 foreach (PageDefinition.ModuleEntry modEntry in page.ModuleDefinitions) {
                     ModuleDefinition module = await modEntry.GetModuleAsync();
-                    module.AllowedRoles = new SerializableList<ModuleDefinition.AllowedRole>();
-                    module.AllowedUsers = new SerializableList<ModuleDefinition.AllowedUser>();
-                    module.AllowedRoles.Add(new ModuleDefinition.AllowedRole { RoleId = userRole, View = ModuleDefinition.AllowedEnum.Yes });
+                    if (module != null) {
+                        module.AllowedRoles = new SerializableList<ModuleDefinition.AllowedRole>();
+                        module.AllowedUsers = new SerializableList<ModuleDefinition.AllowedUser>();
+                        module.AllowedRoles.Add(new ModuleDefinition.AllowedRole { RoleId = userRole, View = ModuleDefinition.AllowedEnum.Yes });
+                    }
                 }
                 await page.SaveAsync();
             }
@@ -318,10 +324,12 @@ namespace YetaWF.Modules.Pages.Controllers {
 
                 foreach (PageDefinition.ModuleEntry modEntry in page.ModuleDefinitions) {
                     ModuleDefinition module = await modEntry.GetModuleAsync();
-                    module.AllowedRoles = new SerializableList<ModuleDefinition.AllowedRole>();
-                    module.AllowedUsers = new SerializableList<ModuleDefinition.AllowedUser>();
-                    module.AllowedRoles.Add(new ModuleDefinition.AllowedRole { RoleId = userRole, View = ModuleDefinition.AllowedEnum.Yes });
-                    module.AllowedRoles.Add(new ModuleDefinition.AllowedRole { RoleId = anonRole, View = ModuleDefinition.AllowedEnum.Yes });
+                    if (module != null) {
+                        module.AllowedRoles = new SerializableList<ModuleDefinition.AllowedRole>();
+                        module.AllowedUsers = new SerializableList<ModuleDefinition.AllowedUser>();
+                        module.AllowedRoles.Add(new ModuleDefinition.AllowedRole { RoleId = userRole, View = ModuleDefinition.AllowedEnum.Yes });
+                        module.AllowedRoles.Add(new ModuleDefinition.AllowedRole { RoleId = anonRole, View = ModuleDefinition.AllowedEnum.Yes });
+                    }
                 }
                 await page.SaveAsync();
             }

@@ -49,6 +49,10 @@ $cellhorzpadding: 2px;
     ul {
         padding:0;
         margin:0;
+        ul.yActionIcons {
+            margin-left: .5ch;
+            display:inline-block;
+        }
     }
     ul ul  {
         margin:0 0 0 $indent;

@@ -28,6 +28,9 @@
   .yt_tree ul {
     padding: 0;
     margin: 0; }
+    .yt_tree ul ul.yActionIcons {
+      margin-left: .5ch;
+      display: inline-block; }
   .yt_tree ul ul {
     margin: 0 0 0 24px; }
   .yt_tree li {
