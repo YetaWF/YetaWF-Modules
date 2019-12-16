@@ -4,8 +4,6 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Threading.Tasks;
-using YetaWF.Core.Components;
-using YetaWF.Core.Controllers;
 using YetaWF.Core.DataProvider;
 using YetaWF.Core.DataProvider.Attributes;
 using YetaWF.Core.Identity;
@@ -55,6 +53,14 @@ namespace YetaWF.Modules.UserSettings.DataProvider {
         }
         public static Grid.GridActionsEnum? _DefaultGridActions;
 
+        public bool DefaultShowGridSearchToolbar {
+            get {
+                _ShowGridSearchToolbar ??= WebConfigHelper.GetValue(YetaWF.Modules.UserSettings.Controllers.AreaRegistration.CurrentPackage.AreaName, "DefaultGridFilter", true);
+                return (bool)_ShowGridSearchToolbar;
+            }
+        }
+        public static bool? _ShowGridSearchToolbar;
+
         public UserData() {
             string timeZone = TimeZoneInfo.Local.Id;
             if (YetaWFManager.HaveManager && YetaWFManager.Manager.CurrentSite != null && !string.IsNullOrWhiteSpace(YetaWFManager.Manager.CurrentSite.TimeZone))
@@ -64,7 +70,7 @@ namespace YetaWF.Modules.UserSettings.DataProvider {
             LanguageId = MultiString.DefaultLanguage;
             TimeZone = timeZone;
             GridActions = DefaultGridActions;
-            ShowGridSearchToolbar = true;
+            ShowGridSearchToolbar = DefaultShowGridSearchToolbar;
             ShowModuleOwnership = false;
             ShowPageOwnership = false;
             ShowEnumValue = false;
