@@ -481,7 +481,7 @@ namespace YetaWF_ComponentsHTML {
         }
         public setSelect(liElem: HTMLLIElement, focus?:boolean): void {
             this.clearSelect();
-            $YetaWF.elementAddClass(liElem, 't_select');
+            $YetaWF.elementAddClass(liElem, "t_select");
             let entry = $YetaWF.getElement1BySelector(".t_entry", [liElem]);
             $YetaWF.elementAddClass(entry, this.Setup.SelectedCss);
             if (focus === true)
@@ -509,7 +509,7 @@ namespace YetaWF_ComponentsHTML {
         public clearSelect(): void {
             let entries = $YetaWF.getElementsBySelector(`li.t_select`, [this.Control]);
             for (let entry of entries)
-                $YetaWF.elementRemoveClass(entry, 't_select');
+                $YetaWF.elementRemoveClass(entry, "t_select");
             entries = $YetaWF.getElementsBySelector(`.t_entry.${this.Setup.SelectedCss}`, [this.Control]);
             for (let entry of entries)
                 $YetaWF.elementRemoveClass(entry, this.Setup.SelectedCss);

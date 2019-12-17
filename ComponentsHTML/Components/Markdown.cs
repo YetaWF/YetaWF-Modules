@@ -138,14 +138,14 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 <div id='{ControlId}' class='yt_markdown t_edit'>
     <div class='t_markdown' id='{DivId}'>
         {PropertyListComponentBase.RenderTabStripStart(DivId)}
-            {PropertyListComponentBase.RenderTabEntry(DivId, this.__ResStr("edit", "Edit"), null, 0)}
-            {PropertyListComponentBase.RenderTabEntry(DivId, this.__ResStr("preview", "Preview"), null, 1)}
+            {PropertyListComponentBase.RenderTabEntry(DivId, __ResStr("edit", "Edit"), null, 0)}
+            {PropertyListComponentBase.RenderTabEntry(DivId, __ResStr("preview", "Preview"), null, 1)}
         {PropertyListComponentBase.RenderTabStripEnd(DivId)}
         {PropertyListComponentBase.RenderTabPaneStart(DivId, 0, "t_edit")}
             {tagTextArea.ToString(YTagRenderMode.Normal)}
         {PropertyListComponentBase.RenderTabPaneEnd(DivId, 0)}
         {PropertyListComponentBase.RenderTabPaneStart(DivId, 1, "t_preview")}
-            <input type='hidden' name='{FieldName}.HTML' class='t_html' value='{model.HTML}'>
+            <input type='hidden' name='{FieldName}.HTML' class='t_html' value='{HAE(model.HTML)}'>
             <div class='t_previewpane' style='min-height:{pixHeight}px'>{model.HTML}</div>
         {PropertyListComponentBase.RenderTabPaneEnd(DivId, 1)}
     </div>

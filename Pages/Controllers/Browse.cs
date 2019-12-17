@@ -47,11 +47,12 @@ namespace YetaWF.Modules.Pages.Controllers {
 
                 if (PageEditModule != null)
                     actions.New(await PageEditModule.GetModuleActionAsync("Edit", null, PageGuid), ModuleAction.ActionLocationEnum.GridLinks);
+#if DEBUG
                 actions.New(await Module.GetAction_SetSuperuserAsync(PageGuid), ModuleAction.ActionLocationEnum.GridLinks);
                 actions.New(await Module.GetAction_SetAdminAsync(PageGuid), ModuleAction.ActionLocationEnum.GridLinks);
                 actions.New(await Module.GetAction_SetUserAsync(PageGuid), ModuleAction.ActionLocationEnum.GridLinks);
                 actions.New(await Module.GetAction_SetAnonymousAsync(PageGuid), ModuleAction.ActionLocationEnum.GridLinks);
-
+#endif
                 actions.New(Module.GetAction_RemoveLink(Url), ModuleAction.ActionLocationEnum.GridLinks);
 
                 return actions;

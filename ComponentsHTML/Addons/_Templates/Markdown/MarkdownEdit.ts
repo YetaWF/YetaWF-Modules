@@ -28,7 +28,7 @@ namespace YetaWF_ComponentsHTML {
             // inner tab control switched
             $YetaWF.registerActivateDiv((div: HTMLElement): void => {
                 let md = $YetaWF.elementClosestCond(div, MarkdownEditComponent.SELECTOR);
-                if (md == this.Control) {
+                if (md === this.Control) {
                     if ($YetaWF.isVisible(this.Preview)) {
                         this.toHTML();
                     }
@@ -40,11 +40,6 @@ namespace YetaWF_ComponentsHTML {
                 form: $YetaWF.Forms.getForm(this.Control),
                 callback: (entry: YetaWF.SubmitHandlerEntry): void => {
                     this.toHTML();
-                    //let md = entry.userdata as MarkdownEditComponent;
-                    //let converter = new showdown.Converter();
-                    //let html = converter.makeHtml(md.TextArea.value);
-                    //md.Preview.innerHTML = html;
-                    //md.InputHTML.value = html;
                 },
                 userdata: this
             });

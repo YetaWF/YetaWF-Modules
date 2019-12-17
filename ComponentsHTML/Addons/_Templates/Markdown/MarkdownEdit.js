@@ -32,7 +32,7 @@ var YetaWF_ComponentsHTML;
             // inner tab control switched
             $YetaWF.registerActivateDiv(function (div) {
                 var md = $YetaWF.elementClosestCond(div, MarkdownEditComponent.SELECTOR);
-                if (md == _this.Control) {
+                if (md === _this.Control) {
                     if ($YetaWF.isVisible(_this.Preview)) {
                         _this.toHTML();
                     }
@@ -43,11 +43,6 @@ var YetaWF_ComponentsHTML;
                 form: $YetaWF.Forms.getForm(_this.Control),
                 callback: function (entry) {
                     _this.toHTML();
-                    //let md = entry.userdata as MarkdownEditComponent;
-                    //let converter = new showdown.Converter();
-                    //let html = converter.makeHtml(md.TextArea.value);
-                    //md.Preview.innerHTML = html;
-                    //md.InputHTML.value = html;
                 },
                 userdata: _this
             });
