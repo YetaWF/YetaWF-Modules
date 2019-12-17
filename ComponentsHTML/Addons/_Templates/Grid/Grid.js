@@ -527,8 +527,12 @@ var YetaWF_ComponentsHTML;
             var currentControl = Grid.CurrentControl;
             if (currentControl && currentControl.ColumnResizeHeader) {
                 var rect = currentControl.ColumnResizeHeader.getBoundingClientRect();
-                var w = ev.clientX - rect.left;
-                currentControl.ColumnResizeHeader.style.width = w + "px";
+                var actualWidth = rect.width;
+                var newActualWidth = ev.clientX - rect.left;
+                var givenWidth = Number(currentControl.ColumnResizeHeader.style.width.replace("px", ""));
+                var diff = newActualWidth - actualWidth; // <0 shring, >0 expand
+                var newGivenWidth = givenWidth + diff;
+                currentControl.ColumnResizeHeader.style.width = newGivenWidth + "px";
             }
             return false;
         };

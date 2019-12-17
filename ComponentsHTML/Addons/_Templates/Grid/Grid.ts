@@ -580,8 +580,12 @@ namespace YetaWF_ComponentsHTML {
             var currentControl = Grid.CurrentControl;
             if (currentControl && currentControl.ColumnResizeHeader) {
                 var rect = currentControl.ColumnResizeHeader.getBoundingClientRect();
-                var w = ev.clientX - rect.left;
-                currentControl.ColumnResizeHeader.style.width = `${w}px`;
+                let actualWidth = rect.width;
+                var newActualWidth = ev.clientX - rect.left;
+                let givenWidth = Number(currentControl.ColumnResizeHeader.style.width.replace("px",""));
+                let diff = newActualWidth - actualWidth; // <0 shring, >0 expand
+                let newGivenWidth = givenWidth + diff;
+                currentControl.ColumnResizeHeader.style.width = `${newGivenWidth}px`;
             }
             return false;
         }
