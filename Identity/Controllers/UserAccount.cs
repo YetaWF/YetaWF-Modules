@@ -190,7 +190,7 @@ namespace YetaWF.Modules.Identity.Controllers {
                     return PartialView(model);
                 }
             }
-            return FormProcessed(model, this.__ResStr("okSaved", "Your account information has been saved"), OnClose: OnCloseEnum.ReloadPage, OnPopupClose: OnPopupCloseEnum.ReloadParentPage);// reload for tiny login module to refresh
+            return FormProcessed(model, this.__ResStr("okSaved", "Your account information has been saved"), OnClose: OnCloseEnum.ReloadPage, OnPopupClose: OnPopupCloseEnum.ReloadParentPage, ForceRedirect:true);// reload for tiny login module to refresh
         }
     }
 }

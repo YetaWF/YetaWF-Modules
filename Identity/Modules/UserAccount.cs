@@ -21,7 +21,7 @@ namespace YetaWF.Modules.Identity.Modules {
             Title = this.__ResStr("modTitle", "User Account");
             Name = this.__ResStr("modName", "User Account");
             Description = this.__ResStr("modSummary", "Edits a user's account information");
-            DefaultViewName = StandardViews.Edit;
+            DefaultViewName = StandardViews.EditApply;
         }
 
         public override IModuleDefinitionIO GetDataProvider() { return new UserAccountModuleDataProvider(); }

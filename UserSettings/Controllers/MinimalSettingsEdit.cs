@@ -2,12 +2,10 @@
 
 using System.Threading.Tasks;
 using YetaWF.Core.Controllers;
-using YetaWF.Core.Language;
 using YetaWF.Core.Localize;
 using YetaWF.Core.Models;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Modules.UserSettings.DataProvider;
-using YetaWF.Core.Components;
 #if MVC6
 using Microsoft.AspNetCore.Mvc;
 #else

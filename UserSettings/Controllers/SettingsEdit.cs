@@ -7,7 +7,6 @@ using YetaWF.Core.Localize;
 using YetaWF.Core.Models;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Modules.UserSettings.DataProvider;
-using YetaWF.Core.Components;
 using System;
 #if MVC6
 using Microsoft.AspNetCore.Mvc;

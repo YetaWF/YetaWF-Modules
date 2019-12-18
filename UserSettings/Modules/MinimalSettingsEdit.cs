@@ -20,7 +20,7 @@ namespace YetaWF.Modules.UserSettings.Modules {
             Title = this.__ResStr("modTitle", "User Settings");
             Name = this.__ResStr("modName", "User Settings (Minimal)");
             Description = this.__ResStr("modSummary", "Edit a user's settings, minimal fields");
-            DefaultViewName = StandardViews.Edit;
+            DefaultViewName = StandardViews.EditApply;
         }
 
         public override IModuleDefinitionIO GetDataProvider() { return new MinimalSettingsEditModuleDataProvider(); }
