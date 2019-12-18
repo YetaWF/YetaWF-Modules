@@ -191,7 +191,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             if (data != null && data.Count > 0) {
 
                 hb.Append($@"
-<ul class='tg_root'>");
+<ul class='tg_root t_sub'>");
 
                 foreach (TreeEntry record in data) {
                     hb.Append(await RenderRecordHTMLAsync(htmlHelper, treeModel, setup, record));
