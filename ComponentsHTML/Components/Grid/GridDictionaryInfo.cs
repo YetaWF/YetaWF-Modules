@@ -169,6 +169,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                                 int n = GetNextNumber(parts, i, part, file, name);
                                 if (n < 1) throw new InternalError("Icons must be >= 1 for column {0} in {1}", name, file);
                                 gridCol.Icons = n;
+                                gridCol.Alignment = GridHAlignmentEnum.Center;// default is centered
                                 ++i;
                             } else if (string.Compare(part, "defaultSort", true) == 0) {
                                 sortCol = name;

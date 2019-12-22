@@ -406,7 +406,6 @@ new YetaWF_ComponentsHTML.Grid('{model.Id}', {JsonConvert.SerializeObject(setup,
                     if (gridCol.Icons > 1)
                         actionStyle = UserSettings.GetProperty<Grid.GridActionsEnum>("GridActions");
                     gridCol.ChWidth = gridCol.PixWidth = 0;
-                    gridCol.Alignment = GridHAlignmentEnum.Center;
                     if (actionStyle == Grid.GridActionsEnum.DropdownMenu) {
                         width = (gridDef.DropdownActionWidth ?? 12) * Manager.CharWidthAvg;
                     } else {
@@ -965,9 +964,6 @@ new YetaWF_ComponentsHTML.Grid('{model.Id}', {JsonConvert.SerializeObject(setup,
                             continue;// we need a caption if we're using resource redirects
 
                         // Alignment
-                        if (gridCol.Icons != 0)
-                            gridCol.Alignment = GridHAlignmentEnum.Center;
-
                         string alignCss = null;
                         switch (gridCol.Alignment) {
                             case GridHAlignmentEnum.Unspecified:
