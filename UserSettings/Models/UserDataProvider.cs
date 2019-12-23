@@ -55,7 +55,9 @@ namespace YetaWF.Modules.UserSettings.DataProvider {
 
         public bool DefaultShowGridSearchToolbar {
             get {
-                _ShowGridSearchToolbar ??= WebConfigHelper.GetValue(YetaWF.Modules.UserSettings.Controllers.AreaRegistration.CurrentPackage.AreaName, "DefaultGridFilter", true);
+                //_ShowGridSearchToolbar ??= WebConfigHelper.GetValue(YetaWF.Modules.UserSettings.Controllers.AreaRegistration.CurrentPackage.AreaName, "DefaultGridFilter", true);
+                if (_ShowGridSearchToolbar == null)
+                    _ShowGridSearchToolbar = WebConfigHelper.GetValue(YetaWF.Modules.UserSettings.Controllers.AreaRegistration.CurrentPackage.AreaName, "DefaultGridFilter", true);
                 return (bool)_ShowGridSearchToolbar;
             }
         }
