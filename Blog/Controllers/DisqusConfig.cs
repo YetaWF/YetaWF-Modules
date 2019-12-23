@@ -1,4 +1,4 @@
-/* Copyright © 2019 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Blog#License */
+/* Copyright ï¿½2020 Softel vdm, Inc.. - https://yetawf.com/Documentation/YetaWF/Blog#License */
 
 using YetaWF.Core;
 using YetaWF.Core.Controllers;

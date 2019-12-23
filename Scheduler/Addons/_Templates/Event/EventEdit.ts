@@ -1,4 +1,4 @@
-/* Copyright © 2019 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Scheduler#License */
+/* Copyright ï¿½2020 Softel vdm, Inc.. - https://yetawf.com/Documentation/YetaWF/Scheduler#License */
 
 namespace YetaWF_Scheduler {
 

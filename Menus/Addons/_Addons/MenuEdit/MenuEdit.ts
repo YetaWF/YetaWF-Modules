@@ -1,4 +1,4 @@
-/* Copyright © 2019 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Menus#License */
+/* Copyright ï¿½2020 Softel vdm, Inc.. - https://yetawf.com/Documentation/YetaWF/Menus#License */
 
 namespace YetaWF {
     export interface ILocs {

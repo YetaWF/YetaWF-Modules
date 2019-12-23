@@ -1,4 +1,4 @@
-/* Copyright © 2019 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Dashboard#License */
+/* Copyright ï¿½2020 Softel vdm, Inc.. - https://yetawf.com/Documentation/YetaWF/Dashboard#License */
 
 using System;
 using System.Collections.Generic;

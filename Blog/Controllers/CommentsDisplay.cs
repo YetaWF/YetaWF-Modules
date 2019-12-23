@@ -1,4 +1,4 @@
-/* Copyright © 2019 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Blog#License */
+/* Copyright ï¿½2020 Softel vdm, Inc.. - https://yetawf.com/Documentation/YetaWF/Blog#License */
 
 using System;
 using System.Collections.Generic;
@@ -95,7 +95,7 @@ namespace YetaWF.Modules.Blog.Controllers {
                 model.ShowGravatars = config.ShowGravatar;
                 model.CanApprove = await Resource.ResourceAccess.IsResourceAuthorizedAsync(Info.Resource_AllowManageComments);
                 model.CanRemove = await Resource.ResourceAccess.IsResourceAuthorizedAsync(Info.Resource_AllowManageComments);
-                
+
                 List<CommentData> list = new List<CommentData>();
                 foreach (BlogComment d in comments.Data) {
                     ModuleAction editAction = await editMod.GetAction_EditAsync(Module.EditUrl, d.EntryIdentity, d.Identity);

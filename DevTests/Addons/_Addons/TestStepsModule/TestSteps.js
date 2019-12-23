@@ -1,5 +1,5 @@
 "use strict";
-/* Copyright © 2019 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/DevTests#License */
+/* Copyright © 2020 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/DevTests#License */
 var YetaWF_DevTests;
 (function (YetaWF_DevTests) {
     var TestStepsModule = /** @class */ (function () {

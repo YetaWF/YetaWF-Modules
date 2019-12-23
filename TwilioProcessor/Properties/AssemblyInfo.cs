@@ -1,4 +1,4 @@
-﻿/* Copyright © 2019 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/TwilioProcessor#License */
+﻿/* Copyright © 2020 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/TwilioProcessor#License */
 
 using System.Reflection;
 using System.Runtime.InteropServices;
@@ -10,12 +10,12 @@ using YetaWF.PackageAttributes;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Softel vdm, Inc.")]
 [assembly: AssemblyProduct("TwilioProcessor")]
-[assembly: AssemblyCopyright("Copyright © 2019 - Softel vdm, Inc.")]
+[assembly: AssemblyCopyright("Copyright © 2020 - Softel vdm, Inc.")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 [assembly: ComVisible(false)]
 
-[assembly: AssemblyVersion("5.0.0.0")]
+[assembly: AssemblyVersion("5.1.0.0")]
 
 // This package was originally not part of the YetaWF Open Source Project. For that reason it uses the Softelvdm namespace, but for localization we'll use YetaWF.
 [assembly: Package(PackageTypeEnum.Module, "Softelvdm", LanguageDomain: "YetaWF")]

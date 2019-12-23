@@ -1,4 +1,4 @@
-﻿/* Copyright © 2019 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Packages#License */
+﻿/* Copyright © 2020 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Packages#License */
 
 using System;
 using System.Collections.Generic;
@@ -29,9 +29,9 @@ namespace YetaWF.Modules.Packages.Modules {
         public override SerializableList<AllowedRole> DefaultAllowedRoles { get { return AdministratorLevel_DefaultAllowedRoles; } }
         public override List<RoleDefinition> ExtraRoles {
             get {
-                return new List<RoleDefinition>() { 
-                    new RoleDefinition("Imports", 
-                        this.__ResStr("roleImportsC", "Import Package Data"), this.__ResStr("roleImports", "The role has permission to import package data"), 
+                return new List<RoleDefinition>() {
+                    new RoleDefinition("Imports",
+                        this.__ResStr("roleImportsC", "Import Package Data"), this.__ResStr("roleImports", "The role has permission to import package data"),
                         this.__ResStr("userImportsC", "Import Package Data"), this.__ResStr("userImports", "The user has permission to import package data")),
                 };
             }

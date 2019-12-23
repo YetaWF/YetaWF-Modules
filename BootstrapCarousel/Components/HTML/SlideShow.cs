@@ -1,4 +1,4 @@
-﻿/* Copyright © 2019 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/BootstrapCarousel#License */
+﻿/* Copyright © 2020 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/BootstrapCarousel#License */
 
 using System.Threading.Tasks;
 using YetaWF.Core.Components;
@@ -27,7 +27,7 @@ namespace YetaWF.Modules.BootstrapCarousel.Components {
             HtmlBuilder hb = new HtmlBuilder();
 
             hb.Append($@"
-<div id='{ControlId}' class='yt_bootstrapcarousel_slideshow t_display carousel slide' data-interval='{model.Interval}' 
+<div id='{ControlId}' class='yt_bootstrapcarousel_slideshow t_display carousel slide' data-interval='{model.Interval}'
             data-wrap='{(model.Wrap ? "true" : "false")}' data-pause='{(model.Pause ? "hover" : "false")}' data-keyboard='{(model.Keyboard ? "true" : "false")}'>
     <!-- Indicators -->
     <ol class='carousel-indicators'>");

@@ -1,4 +1,4 @@
-﻿/* Copyright © 2019 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Lightbox#License */
+﻿/* Copyright © 2020 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Lightbox#License */
 
 using System.Reflection;
 using System.Runtime.InteropServices;
@@ -10,12 +10,12 @@ using YetaWF.Core.Packages;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Softel vdm, Inc.")]
 [assembly: AssemblyProduct("Lightbox")]
-[assembly: AssemblyCopyright("Copyright © 2019 - Softel vdm, Inc.")]
+[assembly: AssemblyCopyright("Copyright © 2020 - Softel vdm, Inc.")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 [assembly: ComVisible(false)]
 
-[assembly: AssemblyVersion("5.0.0.0")]
+[assembly: AssemblyVersion("5.1.0.0")]
 
 [assembly: Package(PackageTypeEnum.Module, "YetaWF")]
 [assembly: PackageInfo("https://YetaWF.com/UpdateServer",

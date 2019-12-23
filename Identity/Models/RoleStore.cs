@@ -1,4 +1,4 @@
-﻿/* Copyright © 2019 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Identity#License */
+﻿/* Copyright © 2020 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Identity#License */
 
 using YetaWF.Core.DataProvider;
 using YetaWF.Core.Localize;
@@ -40,7 +40,7 @@ namespace YetaWF.Modules.Identity.Models {
 
 #if MVC6
         public async Task<IdentityResult> CreateAsync(RoleDefinition role, CancellationToken cancellationToken) {
-            using (RoleDefinitionDataProvider dataProvider = new RoleDefinitionDataProvider(this.CurrentSiteIdentity)) { 
+            using (RoleDefinitionDataProvider dataProvider = new RoleDefinitionDataProvider(this.CurrentSiteIdentity)) {
                 await dataProvider.AddItemAsync(role);
             }
             return IdentityResult.Success;
@@ -54,7 +54,7 @@ namespace YetaWF.Modules.Identity.Models {
 #endif
 #if MVC6
         public async Task<IdentityResult> DeleteAsync(RoleDefinition role) {
-            using (RoleDefinitionDataProvider dataProvider = new RoleDefinitionDataProvider(this.CurrentSiteIdentity)) { 
+            using (RoleDefinitionDataProvider dataProvider = new RoleDefinitionDataProvider(this.CurrentSiteIdentity)) {
                 await dataProvider.RemoveItemAsync(role.Name);
             }
             return IdentityResult.Success;

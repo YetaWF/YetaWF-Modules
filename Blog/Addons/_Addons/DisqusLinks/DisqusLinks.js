@@ -1,5 +1,5 @@
 "use strict";
-/* Copyright © 2019 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Blog#License */
+/* Copyright © 2020 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Blog#License */
 // If this javascript snippet is included, that means we're displaying disquslinks.
 var DISQUSWIDGETS;
 var YetaWF_Blog;

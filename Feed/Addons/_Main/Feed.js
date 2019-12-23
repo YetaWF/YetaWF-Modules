@@ -1,5 +1,5 @@
 "use strict";
-/* Copyright � 2019 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Feed#License */
+/* Copyright �2020 Softel vdm, Inc.. - https://yetawf.com/Documentation/YetaWF/Feed#License */
 var YetaWF_Feed;
 (function (YetaWF_Feed) {
     var Feed = /** @class */ (function () {

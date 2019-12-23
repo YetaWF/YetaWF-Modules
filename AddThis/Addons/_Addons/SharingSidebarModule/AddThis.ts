@@ -1,4 +1,4 @@
-/* Copyright © 2019 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/AddThis#License */
+/* Copyright © 2020 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/AddThis#License */
 
 // Handles events turning the addon on/off (used for dynamic content)
 $YetaWF.registerContentChange((addonGuid: string, on: boolean) : void => {

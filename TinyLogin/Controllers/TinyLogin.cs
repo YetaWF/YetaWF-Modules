@@ -1,4 +1,4 @@
-/* Copyright © 2019 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/TinyLogin#License */
+/* Copyright ï¿½2020 Softel vdm, Inc.. - https://yetawf.com/Documentation/YetaWF/TinyLogin#License */
 
 using YetaWF.Core.Controllers;
 using YetaWF.Core.Models.Attributes;
