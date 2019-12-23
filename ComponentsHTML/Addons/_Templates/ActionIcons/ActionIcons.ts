@@ -22,12 +22,17 @@ namespace YetaWF_ComponentsHTML {
                 GetValue: null,
                 Enable: null,
             }, false, (tag: HTMLElement, control: ActionIconsComponent): void => {
-                var list = $YetaWF.getElementsBySelector("ul.yGridActionMenu", [control.Control]);
-                for (let el of list) {
-                    var menu = $(el).data("kendoMenu");
-                    if (!menu) throw "No kendo object found";/*DEBUG*/
-                    menu.destroy();
-                }
+                ActionIconsComponent.closeMenusGiven([control.MenuControl]);
+                let menu = $(control.MenuControl).data("kendoMenu");
+                menu.destroy();
+                let btn = $(control.Control).data("kendoButton");
+                btn.destroy();
+                //var list = $YetaWF.getElementsBySelector("ul.yGridActionMenu", [control.Control]);
+                //for (let el of list) {
+                //    var menu = $(el).data("kendoMenu");
+                //    if (!menu) throw "No kendo object found";/*DEBUG*/
+                //    menu.destroy();
+                //}
             });
 
             this.MenuControl = $YetaWF.getElementById(setup.MenuId) as HTMLDivElement;
