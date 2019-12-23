@@ -22,7 +22,7 @@ namespace YetaWF.Modules.DockerRegistry.Modules {
         public DisplayTagsModule() {
             Title = this.__ResStr("modTitle", "Tags");
             Name = this.__ResStr("modName", "Tags");
-            Description = this.__ResStr("modSummary", "Displays tags of a Docker registry");
+            Description = this.__ResStr("modSummary", "Displays tags of a Docker repository");
             DefaultViewName = StandardViews.Display;
         }
 
