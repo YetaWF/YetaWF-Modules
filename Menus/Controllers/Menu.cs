@@ -1,6 +1,7 @@
 ﻿/* Copyright © 2020 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Menus#License */
 
 using System.Threading.Tasks;
+using System.Collections.Generic;
 using YetaWF.Core.Components;
 using YetaWF.Core.Controllers;
 using YetaWF.Core.Models.Attributes;
@@ -8,6 +9,9 @@ using YetaWF.Core.Support;
 using YetaWF.Modules.Menus.Modules;
 using YetaWF.Modules.ComponentsHTML.Components;
 using YetaWF.Core.Pages;
+using System.Linq;
+using YetaWF.Core.Modules;
+using YetaWF.Core.IO;
 #if MVC6
 using Microsoft.AspNetCore.Mvc;
 #else
@@ -25,7 +29,7 @@ namespace YetaWF.Modules.Menus.Controllers {
                 Module.CssClass = CssManager.CombineCss(Module.CssClass, "navbar-collapse collapse");
             MenuModel model = new MenuModel {
                 Menu = new MenuComponentBase.MenuData {
-                    MenuList = await GetEditMenu(Module),
+                    MenuList = await GetMenu(Module, External: true),
                     Direction = Module.Direction,
                     Orientation = Module.Orientation,
                     HoverDelay = Module.HoverDelay,
@@ -49,7 +53,7 @@ namespace YetaWF.Modules.Menus.Controllers {
         public async Task<ActionResult> Menu() {
             MenuModel model = new MenuModel {
                 Menu = new MenuComponentBase.MenuData {
-                    MenuList = await GetEditMenu(Module),
+                    MenuList = await GetMenu(Module),
                     Direction = Module.Direction,
                     Orientation = Module.Orientation,
                     HoverDelay = Module.HoverDelay,
@@ -77,7 +81,7 @@ namespace YetaWF.Modules.Menus.Controllers {
         /// The menu is cached in session settings because it is a costly operation to determine permissions for all entries.
         /// The full menu is only evaluated when switching between edit/view mode, when the user logs on/off or when the menu contents have changed.
         /// </remarks>
-        protected async Task<MenuList> GetEditMenu(MenuModule module) {
+        protected async Task<MenuList> GetMenu(MenuModule module, bool External = false) {
             MenuList.SavedCacheInfo info = MenuList.GetCache(module.ModuleGuid);
             if (info == null || info.EditMode != Manager.EditMode || info.UserId != Manager.UserId || info.MenuVersion != Module.MenuVersion) {
                 info = new MenuList.SavedCacheInfo {
@@ -86,9 +90,42 @@ namespace YetaWF.Modules.Menus.Controllers {
                     Menu = await (await Module.GetMenuAsync()).GetUserMenuAsync(),
                     MenuVersion = Module.MenuVersion,
                 };
+
+                // Add optional external links (this is a custom hack, not an official feature)
+                if (External)
+                    await AddExternalLinksAsync(info.Menu);
+
                 MenuList.SetCache(module.ModuleGuid, info);
             }
             return info.Menu;
         }
+        private async Task AddExternalLinksAsync(List<ModuleAction> origList) {
+            if (ExternalList == null) {
+                List<ModuleAction> list = new List<ModuleAction>();
+                string listFile = WebConfigHelper.GetValue<string>(Controllers.AreaRegistration.CurrentPackage.AreaName, "ExternalList");
+                if (!string.IsNullOrWhiteSpace(listFile)) {
+                    List<string> lines = await FileSystem.FileSystemProvider.ReadAllLinesAsync(listFile);
+                    foreach (string line in lines) {
+                        if (!string.IsNullOrWhiteSpace(line) && !line.Trim().StartsWith("#")) {
+                            string[] parts = line.Trim().Split(new char[] { ',' }, 2);
+                            if (parts.Length != 2)
+                                throw new InternalError($"File {listFile} has an invalid menu entry - {line}");
+                            string menu = parts[0].Trim();
+                            string url = parts[1].Trim();
+                            list.Add(new ModuleAction {
+                                LinkText = menu,
+                                MenuText = menu,
+                                Mode = ModuleAction.ActionModeEnum.Any,
+                                Url = url,
+                                Style = ModuleAction.ActionStyleEnum.NewWindow,
+                            });
+                        }
+                    }
+                }
+                ExternalList = list;
+            }
+            origList.AddRange(ExternalList);
+        }
+        private static List<ModuleAction>? ExternalList { get; set; }
     }
 }
