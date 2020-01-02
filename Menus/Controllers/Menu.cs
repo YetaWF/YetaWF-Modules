@@ -126,6 +126,6 @@ namespace YetaWF.Modules.Menus.Controllers {
             }
             origList.AddRange(ExternalList);
         }
-        private static List<ModuleAction>? ExternalList { get; set; }
+        private static List<ModuleAction> ExternalList { get; set; }
     }
 }
