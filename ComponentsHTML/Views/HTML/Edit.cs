@@ -1,7 +1,9 @@
 ﻿/* Copyright © 2020 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/ComponentsHTML#License */
 
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using YetaWF.Core.Components;
+using YetaWF.Core.Models;
 using YetaWF.Core.Modules;
 using YetaWF.Core.Packages;
 using YetaWF.Core.Support;
@@ -9,6 +11,21 @@ using YetaWF.Modules.ComponentsHTML.Components;
 using YetaWF.Modules.ComponentsHTML.Controllers;
 
 namespace YetaWF.Modules.ComponentsHTML.Views {
+
+    /// <summary>
+    /// Implements a standard EditApply view.
+    /// </summary>
+    /// <remarks>The model is rendered using the PropertyList edit component, wrapped in a form with Apply/Submit/Cancel form buttons.</remarks>
+    public class EditApplyView : EditView {
+
+        internal new const string ViewName = ModuleDefinition.StandardViews.EditApply;
+
+        /// <summary>
+        /// Returns the name of the view.
+        /// </summary>
+        /// <returns>Returns the name of the view.</returns>
+        public override string GetViewName() { return ViewName; }
+    }
 
     /// <summary>
     /// Implements a standard Edit view.
@@ -39,16 +56,38 @@ namespace YetaWF.Modules.ComponentsHTML.Views {
 
             HtmlBuilder hb = new HtmlBuilder();
 
+            string apply = null, applyTT = null; bool applyShown;
+            if (ObjectSupport.TryGetPropertyValue<bool>(model, "__applyShown", out applyShown, GetViewName() == EditApplyView.ViewName) && applyShown) {
+                ObjectSupport.TryGetPropertyValue<string>(model, "__applyTT", out applyTT);
+                ObjectSupport.TryGetPropertyValue<string>(model, "__apply", out apply);
+            }
+            string submit = null, submitTT = null; bool submitShown;
+            if (ObjectSupport.TryGetPropertyValue<bool>(model, "__submitShown", out submitShown, true) && submitShown) {
+                ObjectSupport.TryGetPropertyValue<string>(model, "__submitTT", out submitTT);
+                ObjectSupport.TryGetPropertyValue<string>(model, "__submit", out submit);
+            }
+            string cancel = null, cancelTT = null; bool cancelShown;
+            if (ObjectSupport.TryGetPropertyValue<bool>(model, "__cancelShown", out cancelShown, true) && cancelShown) {
+                ObjectSupport.TryGetPropertyValue<string>(model, "__cancelTT", out cancelTT);
+                ObjectSupport.TryGetPropertyValue<string>(model, "__cancel", out cancel);
+            }
+
             string actionName = (string)HtmlHelper.RouteData.Values["action"];
+
+            List<FormButton> buttons = new List<FormButton>();
+            if (applyShown)
+                buttons.Add(new FormButton() { ButtonType = ButtonTypeEnum.Apply, Text = apply, Title = applyTT,  });
+            if (submitShown)
+                buttons.Add(new FormButton() { ButtonType = ButtonTypeEnum.Submit, Text = submit, Title = submitTT });
+            if (cancelShown)
+                buttons.Add(new FormButton() { ButtonType = ButtonTypeEnum.Cancel, Text = cancel, Title = cancelTT });
 
             hb.Append($@"
 {await RenderBeginFormAsync(ActionName: actionName)}
     {await PartialForm(async () => await RenderPartialViewAsync(module, model))}
-    {await FormButtonsAsync(new FormButton[] {
-        new FormButton() { ButtonType= ButtonTypeEnum.Submit, },
-        new FormButton() { ButtonType= ButtonTypeEnum.Cancel, },
-    })}
+    {await FormButtonsAsync(buttons)}
 {await RenderEndFormAsync()}");
+
             return hb.ToString();
         }
 
