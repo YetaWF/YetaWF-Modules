@@ -19,30 +19,26 @@ namespace YetaWF_ComponentsHTML {
                 if (forced)
                     $YetaWF.reloadPage(true, window.parent);
                 // with unified page sets there may actually not be a parent, but window.parent returns itself in this case anyway
-                var popup: kendo.ui.Window | null = window.parent.document.YPopupWindowActive;
-                PopupsImpl.internalClosePopup(popup);
+                PopupsImpl.internalClosePopup();
             }
-            document.YPopupWindowActive = null;
-            YVolatile.Basics.IsInPopup = false; // we're no longer in a popup
         }
 
         /**
          * Close the popup - this can only be used by code that is running on the main page (not within the popup)
          */
         public closeInnerPopup(): void {
-            if (YVolatile.Basics.IsInPopup) {
-                var popup: kendo.ui.Window | null = document.YPopupWindowActive;
-                PopupsImpl.internalClosePopup(popup);
+            PopupsImpl.internalClosePopup();
+        }
+
+        private static internalClosePopup(close?: boolean): void {
+            var popup: kendo.ui.Window | null = document.YPopupWindowActive;
+            if (popup) {
+                if (close)
+                    popup.close();
+                popup.destroy();
             }
             document.YPopupWindowActive = null;
             YVolatile.Basics.IsInPopup = false; // we're no longer in a popup
-        }
-
-        private static internalClosePopup(popup: kendo.ui.Window | null) : void {
-            if (popup) {
-                popup.close();
-                popup.destroy();
-            }
         }
 
         /**
@@ -53,8 +49,7 @@ namespace YetaWF_ComponentsHTML {
             ComponentsHTMLHelper.REQUIRES_KENDOUI((): void => {
 
                 // we're already in a popup
-                if ($YetaWF.isInPopup())
-                    PopupsImpl.closeDynamicPopup();
+                PopupsImpl.closeDynamicPopup();
 
                 YVolatile.Basics.IsInPopup = true; // we're in a popup
 
@@ -119,17 +114,18 @@ namespace YetaWF_ComponentsHTML {
             });
         }
 
-        private static closeDynamicPopup() : void {
-            var $popup = $("#ypopup");
-            if ($popup.length > 0) {
-                $YetaWF.processClearDiv($popup[0]);
-                var popup: kendo.ui.Window = $popup.data("kendoWindow") as kendo.ui.Window;
+        private static closeDynamicPopup(): void {
+            let popupElem = $YetaWF.getElement1BySelectorCond("#ypopup");
+            if (popupElem) {
+                $YetaWF.processClearDiv(popupElem);
+                var popup: kendo.ui.Window = $(popupElem).data("kendoWindow") as kendo.ui.Window;
                 // don't call internalClosePopup, otherwise we get close event
                 popup.destroy(); // don't close, just destroy
             }
             document.YPopupWindowActive = null;
             YVolatile.Basics.IsInPopup = false; // we're no longer in a popup
         }
+
 
         /**
          * Open a static popup, usually a popup based on iframe.
@@ -142,11 +138,17 @@ namespace YetaWF_ComponentsHTML {
                 if ($YetaWF.isInPopup()) {
                     // we handle links within a popup by replacing the current popup page with the new page
                     $YetaWF.setLoading(true);
-                    var $popupwin = $("#ypopup", $(window.parent.document));
+                    let $popupwin = $("#ypopup", $(window.parent.document));
                     if ($popupwin.length === 0) throw "Couldn't find popup window";/*DEBUG*/
-                    var iframeDomElement = $popupwin.children("iframe")[0] as HTMLIFrameElement;
-                    iframeDomElement.src = url;
-                    return;
+                    let iframeDomElement = $popupwin.children("iframe")[0] as HTMLIFrameElement;
+                    if (iframeDomElement) {
+                        // we aleady have a static popup
+                        iframeDomElement.src = url;
+                        return;
+                    } else {
+                        // we had a dynamic popup, close it and build static popup
+                        PopupsImpl.closeDynamicPopup();
+                    }
                 }
 
                 YVolatile.Basics.IsInPopup = true; // we're in a popup
@@ -203,7 +205,6 @@ namespace YetaWF_ComponentsHTML {
                 // mark that a popup is active
                 (document as any).expando = true;
                 document.YPopupWindowActive = popup;
-
             });
         }
     }

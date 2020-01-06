@@ -14,28 +14,24 @@ var YetaWF_ComponentsHTML;
                 if (forced)
                     $YetaWF.reloadPage(true, window.parent);
                 // with unified page sets there may actually not be a parent, but window.parent returns itself in this case anyway
-                var popup = window.parent.document.YPopupWindowActive;
-                PopupsImpl.internalClosePopup(popup);
+                PopupsImpl.internalClosePopup();
             }
-            document.YPopupWindowActive = null;
-            YVolatile.Basics.IsInPopup = false; // we're no longer in a popup
         };
         /**
          * Close the popup - this can only be used by code that is running on the main page (not within the popup)
          */
         PopupsImpl.prototype.closeInnerPopup = function () {
-            if (YVolatile.Basics.IsInPopup) {
-                var popup = document.YPopupWindowActive;
-                PopupsImpl.internalClosePopup(popup);
+            PopupsImpl.internalClosePopup();
+        };
+        PopupsImpl.internalClosePopup = function (close) {
+            var popup = document.YPopupWindowActive;
+            if (popup) {
+                if (close)
+                    popup.close();
+                popup.destroy();
             }
             document.YPopupWindowActive = null;
             YVolatile.Basics.IsInPopup = false; // we're no longer in a popup
-        };
-        PopupsImpl.internalClosePopup = function (popup) {
-            if (popup) {
-                popup.close();
-                popup.destroy();
-            }
         };
         /**
          * Opens a dynamic popup, usually a div added to the current document.
@@ -43,8 +39,7 @@ var YetaWF_ComponentsHTML;
         PopupsImpl.prototype.openDynamicPopup = function (result, done) {
             ComponentsHTMLHelper.REQUIRES_KENDOUI(function () {
                 // we're already in a popup
-                if ($YetaWF.isInPopup())
-                    PopupsImpl.closeDynamicPopup();
+                PopupsImpl.closeDynamicPopup();
                 YVolatile.Basics.IsInPopup = true; // we're in a popup
                 // insert <div id="ypopup" class='yPopupDyn'></div> at top of page for the popup window
                 // this is automatically removed when destroy() is called
@@ -99,10 +94,10 @@ var YetaWF_ComponentsHTML;
             });
         };
         PopupsImpl.closeDynamicPopup = function () {
-            var $popup = $("#ypopup");
-            if ($popup.length > 0) {
-                $YetaWF.processClearDiv($popup[0]);
-                var popup = $popup.data("kendoWindow");
+            var popupElem = $YetaWF.getElement1BySelectorCond("#ypopup");
+            if (popupElem) {
+                $YetaWF.processClearDiv(popupElem);
+                var popup = $(popupElem).data("kendoWindow");
                 // don't call internalClosePopup, otherwise we get close event
                 popup.destroy(); // don't close, just destroy
             }
@@ -118,12 +113,19 @@ var YetaWF_ComponentsHTML;
                 if ($YetaWF.isInPopup()) {
                     // we handle links within a popup by replacing the current popup page with the new page
                     $YetaWF.setLoading(true);
-                    var $popupwin = $("#ypopup", $(window.parent.document));
-                    if ($popupwin.length === 0)
+                    var $popupwin_1 = $("#ypopup", $(window.parent.document));
+                    if ($popupwin_1.length === 0)
                         throw "Couldn't find popup window"; /*DEBUG*/
-                    var iframeDomElement = $popupwin.children("iframe")[0];
-                    iframeDomElement.src = url;
-                    return;
+                    var iframeDomElement = $popupwin_1.children("iframe")[0];
+                    if (iframeDomElement) {
+                        // we aleady have a static popup
+                        iframeDomElement.src = url;
+                        return;
+                    }
+                    else {
+                        // we had a dynamic popup, close it and build static popup
+                        PopupsImpl.closeDynamicPopup();
+                    }
                 }
                 YVolatile.Basics.IsInPopup = true; // we're in a popup
                 // insert <div id="ypopup"></div> at top of page for the popup window
