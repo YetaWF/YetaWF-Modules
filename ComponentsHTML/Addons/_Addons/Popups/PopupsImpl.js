@@ -14,17 +14,20 @@ var YetaWF_ComponentsHTML;
                 if (forced)
                     $YetaWF.reloadPage(true, window.parent);
                 // with unified page sets there may actually not be a parent, but window.parent returns itself in this case anyway
-                PopupsImpl.internalClosePopup();
+                var popup = window.parent.document.YPopupWindowActive;
+                window.parent.YVolatile.Basics.IsInPopup = false;
+                window.parent.document.YPopupWindowActive = null;
+                PopupsImpl.internalClosePopup(popup);
             }
         };
         /**
          * Close the popup - this can only be used by code that is running on the main page (not within the popup)
          */
         PopupsImpl.prototype.closeInnerPopup = function () {
-            PopupsImpl.internalClosePopup();
-        };
-        PopupsImpl.internalClosePopup = function (close) {
             var popup = document.YPopupWindowActive;
+            PopupsImpl.internalClosePopup(popup);
+        };
+        PopupsImpl.internalClosePopup = function (popup, close) {
             if (popup) {
                 if (close)
                     popup.close();
@@ -94,15 +97,14 @@ var YetaWF_ComponentsHTML;
             });
         };
         PopupsImpl.closeDynamicPopup = function () {
+            var popup = null;
             var popupElem = $YetaWF.getElement1BySelectorCond("#ypopup");
             if (popupElem) {
                 $YetaWF.processClearDiv(popupElem);
-                var popup = $(popupElem).data("kendoWindow");
-                // don't call internalClosePopup, otherwise we get close event
-                popup.destroy(); // don't close, just destroy
+                popup = $(popupElem).data("kendoWindow");
             }
-            document.YPopupWindowActive = null;
-            YVolatile.Basics.IsInPopup = false; // we're no longer in a popup
+            // don't call internalClosePopup, otherwise we get close event
+            PopupsImpl.internalClosePopup(popup, false);
         };
         /**
          * Open a static popup, usually a popup based on iframe.
@@ -150,10 +152,8 @@ var YetaWF_ComponentsHTML;
                     content: url,
                     close: function (e) {
                         var popup = $popupwin.data("kendoWindow");
-                        popup.destroy();
-                        popup = null;
-                        document.YPopupWindowActive = null;
-                        YVolatile.Basics.IsInPopup = false;
+                        // don't call internalClosePopup, otherwise we get close event
+                        PopupsImpl.internalClosePopup(popup, false);
                     },
                     animation: false,
                     refresh: function (e) {

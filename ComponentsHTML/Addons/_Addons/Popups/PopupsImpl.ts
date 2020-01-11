@@ -19,7 +19,10 @@ namespace YetaWF_ComponentsHTML {
                 if (forced)
                     $YetaWF.reloadPage(true, window.parent);
                 // with unified page sets there may actually not be a parent, but window.parent returns itself in this case anyway
-                PopupsImpl.internalClosePopup();
+                var popup: kendo.ui.Window | null = window.parent.document.YPopupWindowActive;
+                (window.parent as any).YVolatile.Basics.IsInPopup = false;
+                window.parent.document.YPopupWindowActive = null;
+                PopupsImpl.internalClosePopup(popup);
             }
         }
 
@@ -27,11 +30,12 @@ namespace YetaWF_ComponentsHTML {
          * Close the popup - this can only be used by code that is running on the main page (not within the popup)
          */
         public closeInnerPopup(): void {
-            PopupsImpl.internalClosePopup();
+            var popup: kendo.ui.Window | null = document.YPopupWindowActive;
+            PopupsImpl.internalClosePopup(popup);
+
         }
 
-        private static internalClosePopup(close?: boolean): void {
-            var popup: kendo.ui.Window | null = document.YPopupWindowActive;
+        private static internalClosePopup(popup: kendo.ui.Window | null, close?: boolean): void {
             if (popup) {
                 if (close)
                     popup.close();
@@ -115,15 +119,14 @@ namespace YetaWF_ComponentsHTML {
         }
 
         private static closeDynamicPopup(): void {
+            let popup: kendo.ui.Window | null = null;
             let popupElem = $YetaWF.getElement1BySelectorCond("#ypopup");
             if (popupElem) {
                 $YetaWF.processClearDiv(popupElem);
-                var popup: kendo.ui.Window = $(popupElem).data("kendoWindow") as kendo.ui.Window;
-                // don't call internalClosePopup, otherwise we get close event
-                popup.destroy(); // don't close, just destroy
+                popup = $(popupElem).data("kendoWindow") as kendo.ui.Window;
             }
-            document.YPopupWindowActive = null;
-            YVolatile.Basics.IsInPopup = false; // we're no longer in a popup
+            // don't call internalClosePopup, otherwise we get close event
+            PopupsImpl.internalClosePopup(popup, false);
         }
 
 
@@ -177,10 +180,8 @@ namespace YetaWF_ComponentsHTML {
                     content: url as kendo.ui.WindowContent, //Hello, this is not really WindowContent, but d.ts needs WindowContent
                     close: (e: kendo.ui.WindowCloseEvent): void => {
                         var popup: kendo.ui.Window | null = $popupwin.data("kendoWindow");
-                        popup.destroy();
-                        popup = null;
-                        document.YPopupWindowActive = null;
-                        YVolatile.Basics.IsInPopup = false;
+                        // don't call internalClosePopup, otherwise we get close event
+                        PopupsImpl.internalClosePopup(popup, false);
                     },
                     animation: false,
                     refresh: (e: kendo.ui.WindowEvent): void => { // page complete
