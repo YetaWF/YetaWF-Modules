@@ -115,6 +115,9 @@ namespace YetaWF.Modules.Identity.Controllers {
                     ModelProgress = progress,
                 };
                 model.UpdateData(user);
+
+                await Manager.AddOnManager.AddAddOnNamedAsync("YetaWF_ComponentsHTML", "clipboardjs.com.clipboard");// add clipboard support which is needed later (after partial form update)
+
                 return View(model);
             }
         }
