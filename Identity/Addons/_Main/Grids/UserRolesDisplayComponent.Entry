@@ -1,4 +1,4 @@
-﻿InRole              [Globals.ChBoolean] center sort
+InRole              [Globals.ChBoolean] center sort
 Name                25 sort defaultsort asc
 Description         40
 RoleId              [Globals.ChIntValue] right sort internal

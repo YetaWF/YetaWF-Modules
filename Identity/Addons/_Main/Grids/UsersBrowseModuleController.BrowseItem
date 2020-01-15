@@ -1,4 +1,4 @@
-﻿Commands            icons 4
+Commands            icons 4
 UserName            sort filter [Globals.ChUserName] defaultSort asc
 Email               sort filter [Globals.ChEmail]
 UserId              right filter sort 10

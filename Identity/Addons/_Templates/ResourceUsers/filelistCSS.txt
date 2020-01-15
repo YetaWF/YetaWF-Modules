@@ -1,1 +1,1 @@
-﻿ResourceUsers.scss
+ResourceUsers.scss

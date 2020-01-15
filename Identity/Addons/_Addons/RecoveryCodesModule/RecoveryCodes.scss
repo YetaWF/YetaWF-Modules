@@ -1,0 +1,11 @@
+/* Copyright © 2020 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Identity#License */
+
+.YetaWF_Identity_RecoveryCodes {
+    .yt_propertylist {
+        .t_row.t_password { // Hide all labels
+            .t_labels {
+                display:none;
+            }
+        }
+    }
+}

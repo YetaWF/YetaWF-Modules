@@ -1,4 +1,4 @@
-﻿/* Copyright © 2020 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Identity#License */
+/* Copyright © 2020 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Identity#License */
 
 using System;
 using System.Collections.Generic;
@@ -34,6 +34,7 @@ namespace YetaWF.Modules.Identity.DataProvider {
 
         public const int MaxVerificationCode = 100;
         public const int MaxComment = 1000;
+        public const int MaxRecoveryCode = 60;
 
         [Data_PrimaryKey, StringLength(Globals.MaxUser)]
         public string UserName { get; set; }
@@ -82,6 +83,10 @@ namespace YetaWF.Modules.Identity.DataProvider {
 
         [Data_NewValue]
         public int LoginFailures { get; set; }
+
+        [StringLength(MaxRecoveryCode)]
+        [Data_NewValue]
+        public string RecoveryCode { get; set; }
 
         [StringLength(60)] // max length is really a guid, leave some extra
         public string SecurityStamp { get; set; }

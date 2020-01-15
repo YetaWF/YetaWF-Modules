@@ -1,1 +1,1 @@
-﻿NeedNewPasswordDisplay.scss
+NeedNewPasswordDisplay.scss

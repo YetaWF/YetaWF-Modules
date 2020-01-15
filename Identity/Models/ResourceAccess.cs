@@ -1,4 +1,4 @@
-﻿/* Copyright © 2020 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Identity#License */
+/* Copyright © 2020 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Identity#License */
 
 using System;
 using System.Collections.Generic;
@@ -516,6 +516,14 @@ namespace YetaWF.Modules.Identity.DataProvider {
                 if (user == null) throw new InternalError("Unexpected error in GetTwoStepLoginFailures - no user found");
                 LoginConfigData config = await LoginConfigDataProvider.GetConfigAsync();
                 return config.MaxLoginFailures != 0 && user.LoginFailures >= config.MaxLoginFailures;
+            }
+        }
+
+        public async Task<bool> VerifyTwoStepAuthenticationRecoveryCodeAsync(int userId, string code) {
+            using (UserDefinitionDataProvider userDP = new UserDefinitionDataProvider()) {
+                UserDefinition user = await userDP.GetItemByUserIdAsync(userId);
+                if (user == null) throw new InternalError($"Unexpected error in {nameof(VerifyTwoStepAuthenticationRecoveryCodeAsync)} - no user found");
+                return user.RecoveryCode == code;
             }
         }
 

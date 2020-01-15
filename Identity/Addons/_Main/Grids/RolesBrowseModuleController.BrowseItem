@@ -1,4 +1,4 @@
-﻿Commands            icons 3
+Commands            icons 3
 Name                sort filter 20 defaultSort asc
 Description         filter 40
 PostLoginUrl        sort filter [Globals.ChUrl]
