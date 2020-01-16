@@ -9,6 +9,9 @@ using YetaWF.Core.Components;
 using System;
 using YetaWF.Core.DataProvider;
 using YetaWF.Modules.Identity.Models;
+using YetaWF.Core.Support.TwoStepAuthorization;
+using System.Collections.Generic;
+using System.Linq;
 #if MVC6
 using Microsoft.AspNetCore.Mvc;
 #else
@@ -101,11 +104,18 @@ namespace YetaWF.Modules.Identity.Controllers {
                 UserDefinition user = await userDP.GetItemByUserIdAsync(Manager.UserId);
                 if (user == null)
                     throw new InternalError("User with id {0} not found", Manager.UserId);
+                // Make sure this user is not using an external account
                 using (UserLoginInfoDataProvider logInfoDP = new UserLoginInfoDataProvider()) {
                     if (await logInfoDP.IsExternalUserAsync(Manager.UserId))
                         return new EmptyResult();
                 }
+                // Make sure there are any 2fa processors
+                TwoStepAuth twoStep = new TwoStepAuth();
+                List<ITwoStepAuth> list = await twoStep.GetTwoStepAuthProcessorsAsync();
+                if (list.Count == 0)
+                    return new EmptyResult();
 
+                // If there is no recovery code, generate one (upgraded system)
                 if (user.RecoveryCode == null)
                     await GenerateRecoveryCodeAsync(userDP, user);
 
