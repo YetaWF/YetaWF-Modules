@@ -166,7 +166,6 @@
     <Compile Include="Views\HTML\Browse.cs" />
     <Compile Include="Views\HTML\Display.cs" />
     <Compile Include="Views\HTML\Edit.cs" />
-    <Compile Include="Views\HTML\EditApply.cs" />
     <Compile Include="Views\HTML\GridData.cs" />
     <Compile Include="Views\HTML\GridRecord.cs" />
     <Compile Include="Views\HTML\PropertyListDisplay.cs" />
