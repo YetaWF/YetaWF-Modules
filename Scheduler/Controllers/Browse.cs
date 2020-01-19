@@ -114,6 +114,7 @@ namespace YetaWF.Modules.Scheduler.Controllers {
         }
         private GridDefinition GetGridModel() {
             return new GridDefinition {
+                SizeStyle = GridDefinition.SizeStyleEnum.SizeToFit,
                 ModuleGuid = Module.ModuleGuid,
                 SettingsModuleGuid = Module.PermanentGuid,
                 RecordType = typeof(SchedulerItem),

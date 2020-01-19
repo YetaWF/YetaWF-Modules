@@ -28,6 +28,7 @@ namespace YetaWF.Modules.Scheduler.Support {
             SchedulerSupport.InstallAsync = InstallItemsAsync;
             SchedulerSupport.UninstallAsync = UninstallItemsAsync;
             SchedulerSupport.RunItemAsync = RunItemAsync;
+            SchedulerSupport.SetItemNextRunAsync = SetItemNextRunAsync;
 
             using (SchedulerDataProvider schedDP = new SchedulerDataProvider()) {
                 SchedulerSupport.Enabled = schedDP.GetRunning();
@@ -94,6 +95,37 @@ namespace YetaWF.Modules.Scheduler.Support {
                         throw new Error(this.__ResStr("errItemUpdFail", "Scheduler item '{0}' couldn't be updated."), evnt.Name);
 
                     Dispatch();// run the scheduler now
+                }
+            }
+        }
+
+        /// <summary>
+        /// Update next run time for a scheduler item.
+        /// </summary>
+        /// <param name="name"></param>
+        public async Task SetItemNextRunAsync(string name, DateTime? nextRun) {
+
+            using (SchedulerDataProvider schedDP = new SchedulerDataProvider()) {
+
+                using (ILockObject lockObject = await YetaWF.Core.IO.Caching.LockProvider.LockResourceAsync($"{AreaRegistration.CurrentPackage.AreaName}_RunItem_{name}")) {
+
+                    SchedulerItemData evnt = await schedDP.GetItemAsync(name);
+                    if (evnt == null)
+                        throw new Error(this.__ResStr("errItemNotFound", "Scheduler item '{0}' does not exist."), name);
+
+                    evnt.Next = nextRun;
+                    evnt.Enabled = nextRun != null;
+                    if (nextRun != null)
+                        evnt.RunOnce = true;
+                    evnt.Errors = null;
+                    UpdateStatusEnum status = await schedDP.UpdateItemAsync(evnt);
+
+                    await lockObject.UnlockAsync();
+
+                    if (status != UpdateStatusEnum.OK)
+                        throw new Error(this.__ResStr("errItemUpdFail", "Scheduler item '{0}' couldn't be updated."), evnt.Name);
+
+                    Dispatch();// run the scheduler now to update next runtime
                 }
             }
         }
@@ -251,7 +283,7 @@ namespace YetaWF.Modules.Scheduler.Support {
                             Logic = "&&",
                             Filters = new List<DataProviderFilterInfo> {
                                 new DataProviderFilterInfo { Field = nameof(SchedulerItemData.Enabled), Operator = "==", Value = true, },
-                                new DataProviderFilterInfo {Field = nameof(SchedulerItemData.Next), Operator = "!=", Value = null, },
+                                new DataProviderFilterInfo { Field = nameof(SchedulerItemData.Next), Operator = "!=", Value = null, },
                                 new DataProviderFilterInfo { Field = nameof(SchedulerItemData.Next), Operator = "<=", Value = DateTime.UtcNow, },
                              },
                         }
@@ -403,6 +435,7 @@ namespace YetaWF.Modules.Scheduler.Support {
             if (nextRun != null) {
                 Logging.AddLog($"Next run at {nextRun}");
                 item.Next = nextRun;
+                item.Enabled = true;
             }
 
             try {
