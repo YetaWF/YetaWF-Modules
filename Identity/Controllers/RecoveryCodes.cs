@@ -11,7 +11,6 @@ using YetaWF.Core.DataProvider;
 using YetaWF.Modules.Identity.Models;
 using YetaWF.Core.Support.TwoStepAuthorization;
 using System.Collections.Generic;
-using System.Linq;
 #if MVC6
 using Microsoft.AspNetCore.Mvc;
 #else

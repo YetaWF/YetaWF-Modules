@@ -20,7 +20,6 @@ namespace YetaWF.Modules.Identity.Controllers {
         public OwinEditModuleController() { }
 
         [Trim]
-        [Header("Login provider settings apply to all sites within this YetaWF instance.")]
         public class EditModel {
 
             public const int MaxKey = 200;

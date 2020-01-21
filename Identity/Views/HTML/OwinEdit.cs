@@ -30,6 +30,7 @@ namespace YetaWF.Modules.Identity.Views {
         {HE(this.__ResStr("restartOnSubmit", "When saving these settings, the site (and all instances) must be restarted for the new settings to take effect."))}
     </div>
     {await FormButtonsAsync(new FormButton[] {
+        new FormButton() { ButtonType= ButtonTypeEnum.Apply, },
         new FormButton() { ButtonType= ButtonTypeEnum.Submit, },
         new FormButton() { ButtonType= ButtonTypeEnum.Cancel, },
     })}

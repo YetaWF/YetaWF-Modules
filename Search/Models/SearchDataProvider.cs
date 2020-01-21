@@ -215,7 +215,7 @@ namespace YetaWF.Modules.Search.DataProvider {
                 if (searchUrl.DatePageUpdated != null && (DateTime)searchUrl.DatePageUpdated < dataAge)
                     dataAge = (DateTime)searchUrl.DatePageUpdated;
                 DateTime newAge = dateCreated;
-                if (dateUpdated != null && (DateTime)dateUpdated < newAge)
+                if (dateUpdated != null && (DateTime)dateUpdated > newAge)
                     newAge = (DateTime)dateUpdated;
                 if (dataAge.AddSeconds(1) < newAge) // allow for slight difference in timestamps
                     return true;
