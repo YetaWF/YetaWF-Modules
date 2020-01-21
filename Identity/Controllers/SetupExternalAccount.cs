@@ -35,15 +35,35 @@ namespace YetaWF.Modules.Identity.Controllers {
         [Trim]
         public class SetupExternalAccountModel {
             [Caption("Name"), Description("Enter your user name - This is the name used to register on this site")]
-            [UIHint("Text40"), StringLength(Globals.MaxUser), UserNameValidation, Required, Trim]
+            [UIHint("Text40"), StringLength(Globals.MaxUser), UserNameValidation, Trim]
+            [SuppressIf(nameof(AllowNewUser), false)]
+            [RequiredIf(nameof(AllowNewUser), true)]
             public string UserName { get; set; }
 
             [Caption("Email Address"), Description("Enter your email address to register - This is the email address used by this site to communicate with you")]
-            [UIHint("Email"), SuppressIf("RegistrationType", RegistrationTypeEnum.NameOnly), StringLength(Globals.MaxEmail), EmailValidation, Required, Trim]
+            [UIHint("Email")]
+            [SuppressIf(nameof(RegistrationType), RegistrationTypeEnum.NameOnly), StringLength(Globals.MaxEmail), EmailValidation, Trim]
+            [RequiredIf(nameof(AllowNewUser), true)]
+            [ProcessIf(nameof(AllowNewUser), true)]
             public string Email { get; set; }
 
-            [UIHint("Hidden")]
+            [Caption("Email Address"), Description("Shows your email address - You can change your email address once registration is complete")]
+            [UIHint("String"), ReadOnly]
+            [SuppressIf(nameof(AllowNewUser), true)]
+            public string EmailDisplay { get { return EmailHidden; } }
+
+            [Caption("Invitation Code"), Description("Enter the invitation code you received to sign up to this site - If you have not received an invitation code, please contact your site administrator")]
+            [UIHint("Text40"), StringLength(80), Trim]
+            [SuppressIf(nameof(AllowNewUser), true)]
+            [RequiredIf(nameof(AllowNewUser), false)]
+            public string InvitationCode { get; set; }
+
+            [UIHint("Hidden"), ReadOnly]
             public string LoginProvider { get; set; }
+            [UIHint("Hidden"), ReadOnly]
+            public bool AllowNewUser { get; set; }
+            [UIHint("Hidden"), ReadOnly]
+            public string EmailHidden { get; set; }
 
             [UIHint("Hidden")]
             public RegistrationTypeEnum RegistrationType { get; set; }
@@ -51,6 +71,11 @@ namespace YetaWF.Modules.Identity.Controllers {
 
         [AllowGet]
         public async Task<ActionResult> SetupExternalAccount() {
+
+            // get the registration module for some defaults
+            LoginConfigData config = await LoginConfigDataProvider.GetConfigAsync();
+            bool allowNewUser = config.AllowUserRegistration;
+
             ExternalLoginInfo loginInfo;
 #if MVC6
             SignInManager<UserDefinition> _signinManager = (SignInManager<UserDefinition>)YetaWFManager.ServiceProvider.GetService(typeof(SignInManager<UserDefinition>));
@@ -79,16 +104,16 @@ namespace YetaWF.Modules.Identity.Controllers {
             email = externalIdentity.FindFirstValue(ClaimTypes.Email);
             loginProvider = loginInfo.Login.LoginProvider;
 #endif
-            // get the registration module for some defaults
-            LoginConfigData config = await LoginConfigDataProvider.GetConfigAsync();
 
             SetupExternalAccountModel model;
 
             model = new SetupExternalAccountModel {
+                AllowNewUser = allowNewUser,
                 UserName = name,
                 LoginProvider = loginProvider,
                 RegistrationType = config.RegistrationType,
                 Email = email,
+                EmailHidden = email,
             };
             return View(model);
         }
@@ -97,6 +122,11 @@ namespace YetaWF.Modules.Identity.Controllers {
         [ConditionalAntiForgeryToken]
         [ExcludeDemoMode]
         public async Task<ActionResult> SetupExternalAccount_Partial(SetupExternalAccountModel model) {
+
+            LoginConfigData config = await LoginConfigDataProvider.GetConfigAsync();
+            bool allowNewUser = config.AllowUserRegistration;
+
+            model.AllowNewUser = allowNewUser;
             if (!ModelState.IsValid)
                 return PartialView(model);
 
@@ -113,65 +143,85 @@ namespace YetaWF.Modules.Identity.Controllers {
                 return Redirect(Manager.CurrentSite.LoginUrl);
             }
 
-            // get the registration module for some defaults
-            LoginConfigData config = await LoginConfigDataProvider.GetConfigAsync();
+            UserDefinition user;
+            if (allowNewUser) {
 
-            // set new user info
-            UserDefinition user = new UserDefinition();
-            switch (config.RegistrationType) {
-                default:
-                case RegistrationTypeEnum.NameAndEmail:
-                    user.UserName = model.UserName;
-                    user.Email = model.Email;
-                    break;
-                case RegistrationTypeEnum.EmailOnly:
-                    user.UserName = user.Email = model.Email;
-                    break;
-                case RegistrationTypeEnum.NameOnly:
-                    user.UserName = user.Email = model.UserName;
-                    break;
-            }
-            if (config.VerifyNewUsers)
-                user.UserStatus = UserStatusEnum.NeedValidation;
-            else if (config.ApproveNewUsers)
-                user.UserStatus = UserStatusEnum.NeedApproval;
-            else
-                user.UserStatus = UserStatusEnum.Approved;
-            user.RegistrationIP = Manager.UserHostAddress;
+                // set new user info
 
-            if (config.RegistrationType == RegistrationTypeEnum.NameAndEmail) {
-                using (UserDefinitionDataProvider dataProvider = new UserDefinitionDataProvider()) {
-                    // Email == user.Email
-                    List<DataProviderFilterInfo> filters = new List<DataProviderFilterInfo> {
-                        new DataProviderFilterInfo {
-                            Field = "Email", Operator = "==", Value = user.Email,
-                        },
-                    };
-                    UserDefinition userExists = await dataProvider.GetItemAsync(filters);
-                    if (userExists != null && user.UserName != userExists.Email) {
-                        ModelState.AddModelError("Email", this.__ResStr("emailUsed", "An account with email address {0} already exists.", user.Email));
-                        return PartialView(model);
+                user = new UserDefinition();
+                switch (config.RegistrationType) {
+                    default:
+                    case RegistrationTypeEnum.NameAndEmail:
+                        user.UserName = model.UserName;
+                        user.Email = model.Email;
+                        break;
+                    case RegistrationTypeEnum.EmailOnly:
+                        user.UserName = user.Email = model.Email;
+                        break;
+                    case RegistrationTypeEnum.NameOnly:
+                        user.UserName = user.Email = model.UserName;
+                        break;
+                }
+                if (config.VerifyNewUsers)
+                    user.UserStatus = UserStatusEnum.NeedValidation;
+                else if (config.ApproveNewUsers)
+                    user.UserStatus = UserStatusEnum.NeedApproval;
+                else
+                    user.UserStatus = UserStatusEnum.Approved;
+                user.RegistrationIP = Manager.UserHostAddress;
+
+                if (config.RegistrationType == RegistrationTypeEnum.NameAndEmail) {
+                    using (UserDefinitionDataProvider dataProvider = new UserDefinitionDataProvider()) {
+                        // Email == user.Email
+                        List<DataProviderFilterInfo> filters = new List<DataProviderFilterInfo> {
+                            new DataProviderFilterInfo {
+                                Field = nameof(UserDefinition.Email), Operator = "==", Value = user.Email,
+                            },
+                        };
+                        UserDefinition userExists = await dataProvider.GetItemAsync(filters);
+                        if (userExists != null && user.UserName != userExists.Email) {
+                            ModelState.AddModelError("Email", this.__ResStr("emailUsed", "An account with email address {0} already exists.", user.Email));
+                            return PartialView(model);
+                        }
                     }
                 }
+
+                // create account
+                var createResult = await Managers.GetUserManager().CreateAsync(user);
+                if (!createResult.Succeeded) {
+                    foreach (var error in createResult.Errors) {
+#if MVC6
+                        ModelState.AddModelError("", error.Description);
+#else
+                        ModelState.AddModelError("", error);
+#endif
+                    }
+                    return PartialView(model);
+                }
+
+            } else {
+
+                // invited user
+
+                // verify invitation
+                using (UserDefinitionDataProvider userDP = new UserDefinitionDataProvider()) {
+                    List<DataProviderFilterInfo> filters = null;
+                    filters = DataProviderFilterInfo.Join(filters, new DataProviderFilterInfo { Field = nameof(UserDefinition.VerificationCode), Operator = "==", Value = model.InvitationCode, });
+                    UserDefinition userExists = await userDP.GetItemAsync(filters);
+                    if (userExists == null) {
+                        ModelState.AddModelError(nameof(model.InvitationCode), this.__ResStr("badInvite", "The invitation code is invalid"));
+                        return PartialView(model);
+                    }
+                    user = userExists;
+                    user.UserStatus = UserStatusEnum.Approved;
+                }
             }
 
-            // create account
-            var result = await Managers.GetUserManager().CreateAsync(user);
-            if (!result.Succeeded) {
-                foreach (var error in result.Errors) {
-#if MVC6
-                    ModelState.AddModelError("", error.Description);
-#else
-                    ModelState.AddModelError("", error);
-#endif
-                }
-                return PartialView(model);
-            }
             // add login provider info
 #if MVC6
-            result = await Managers.GetUserManager().AddLoginAsync(user, loginInfo);
+            var result = await Managers.GetUserManager().AddLoginAsync(user, loginInfo);
 #else
-            result = await Managers.GetUserManager().AddLoginAsync(user.Id, loginInfo.Login);
+            var result = await Managers.GetUserManager().AddLoginAsync(user.Id, loginInfo.Login);
 #endif
             if (!result.Succeeded) {
                 foreach (var error in result.Errors) {

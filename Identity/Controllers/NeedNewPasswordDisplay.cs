@@ -5,6 +5,7 @@ using YetaWF.Core.Controllers;
 using YetaWF.Core.Modules;
 using YetaWF.Core.Support;
 using YetaWF.Modules.Identity.Modules;
+using YetaWF.Modules.Identity.DataProvider;
 #if MVC6
 using Microsoft.AspNetCore.Mvc;
 #else
@@ -26,10 +27,14 @@ namespace YetaWF.Modules.Identity.Controllers {
             if (!Manager.NeedNewPassword) return new EmptyResult();
             if (Manager.EditMode) return new EmptyResult();
             if (Manager.IsInPopup) return new EmptyResult();
+            using (UserLoginInfoDataProvider logInfoDP = new UserLoginInfoDataProvider()) {
+                if (await logInfoDP.IsExternalUserAsync(Manager.UserId))
+                    return new EmptyResult();
+            }
 
             UserPasswordModule modNewPassword = (UserPasswordModule) await ModuleDefinition.LoadAsync(ModuleDefinition.GetPermanentGuid(typeof(UserPasswordModule)));
             if (modNewPassword == null)
-                throw new InternalError("UserPasswordModule module not found");
+                throw new InternalError($"nameof(UserPasswordModule) module not found");
 
             ModuleAction actionNewPassword = modNewPassword.GetAction_UserPassword(null);
             if (actionNewPassword == null)

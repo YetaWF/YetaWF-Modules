@@ -47,7 +47,7 @@ namespace YetaWF.Modules.Identity.Controllers {
                 throw new InternalError("No provider");
 #if MVC6
             SignInManager<UserDefinition> _signinManager = (SignInManager<UserDefinition>)YetaWFManager.ServiceProvider.GetService(typeof(SignInManager<UserDefinition>));
-            var redirectUrl = Url.Action("ExternalLoginCallback", "LoginExternal", new { ReturnUrl = returnUrl }, "https");
+            var redirectUrl = Manager.CurrentSite.MakeFullUrl(Utility.UrlFor(typeof(LoginExternalController), nameof(ExternalLoginCallback)));
             var properties = _signinManager.ConfigureExternalAuthenticationProperties(provider, redirectUrl);
             return Challenge(properties, provider);
 #else

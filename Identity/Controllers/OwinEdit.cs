@@ -26,7 +26,7 @@ namespace YetaWF.Modules.Identity.Controllers {
 
             public EditModel() {
                 MicrosoftUrl = "https://account.live.com/developers/applications/";
-                GoogleUrl = "https://console.developers.google.com/";
+                GoogleUrl = "https://developers.google.com/identity/sign-in/web";
                 FacebookUrl = "https://developers.facebook.com/apps";
                 TwitterUrl = "https://dev.twitter.com/apps";
             }

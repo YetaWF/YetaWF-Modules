@@ -26,7 +26,7 @@ namespace YetaWF.Modules.Identity.Views {
 {await RenderBeginFormAsync()}
     {await PartialForm(async () => await RenderPartialViewAsync(module, model))}
     {await FormButtonsAsync(new FormButton[] {
-        new FormButton() { ButtonType= ButtonTypeEnum.Submit, Text=this.__ResStr("btnSave", "SetupExternalAccount") },
+        new FormButton() { ButtonType= ButtonTypeEnum.Submit, Text=this.__ResStr("btnSave", "Setup External Account") },
         new FormButton() { ButtonType= ButtonTypeEnum.Cancel, },
     })}
 {await RenderEndFormAsync()}");
@@ -37,10 +37,24 @@ namespace YetaWF.Modules.Identity.Views {
         public async Task<string> RenderPartialViewAsync(SetupExternalAccountModule module, SetupExternalAccountModuleController.SetupExternalAccountModel model) {
 
             HtmlBuilder hb = new HtmlBuilder();
-            hb.Append($@"
+
+            if (model.AllowNewUser) {
+
+                hb.Append($@"
 <p class='t_header'>
-    {this.__ResStr("extAcct", "You have successfully authenticated with <strong>{0}</strong>.<br/>Please enter a user name for this site below and click the SetupExternalAccount button to finish logging in.", HE(model.LoginProvider))}
-</p>
+    {this.__ResStr("extAcct", "You have successfully authenticated with <strong>{0}</strong>.<br/>Please enter a user name for this site below and click the Setup External Account button to finish logging in.", HE(model.LoginProvider))}
+</p>");
+
+            } else {
+
+                hb.Append($@"
+<p class='t_header'>
+    {this.__ResStr("extAcct", "You have successfully authenticated with <strong>{0}</strong>.<br/>Please enter the invitation code below and click the Setup External Account button to finish logging in.", HE(model.LoginProvider))}
+</p>");
+
+            }
+
+            hb.Append($@"
 {await HtmlHelper.ForEditContainerAsync(model, "PropertyList")}");
 
             return hb.ToString();
