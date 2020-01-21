@@ -40,7 +40,7 @@ namespace YetaWF.Modules.Messenger.Views {
 {await RenderBeginFormAsync()}
     {await PartialForm(async () => await RenderPartialViewAsync(module, model))}
     {await FormButtonsAsync(new FormButton[] {
-        new FormButton() { Text=this.__ResStr("btnSend", "Send"), ButtonType= ButtonTypeEnum.Submit, },
+        new FormButton() { Text=this.__ResStr("btnSend", "Send"), ButtonType= ButtonTypeEnum.Apply, },
         new FormButton() { ButtonType= ButtonTypeEnum.Cancel, },
     })}
 {await RenderEndFormAsync()}");
