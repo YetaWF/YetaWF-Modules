@@ -23,11 +23,11 @@ namespace YetaWF.Modules.Identity {
             // string area = "YetaWF_Identity";
             string area = "YetaWF_Identity";
 
-            string authType = WebConfigHelper.GetValue<string>(area, "OWin:AuthenticationType"); // "ApplicationCookie"
+            string authType = OwinConfigHelper.GetValue<string>(area, "OWin:AuthenticationType"); // "ApplicationCookie"
             if (!string.IsNullOrWhiteSpace(authType)) {
-                long ticks = WebConfigHelper.GetValue<long>(area, "OWin:ExpireTimeSpan");
+                long ticks = OwinConfigHelper.GetValue<long>(area, "OWin:ExpireTimeSpan", new TimeSpan(10, 0, 0, 0).Ticks);
                 System.TimeSpan expireTimeSpan = new System.TimeSpan(ticks);
-                bool slidingExpiration = WebConfigHelper.GetValue<bool>(area, "OWin:SlidingExpiration"); // true
+                bool slidingExpiration = OwinConfigHelper.GetValue<bool>(area, "OWin:SlidingExpiration", true);
 
                 // Enable the application to use a cookie to store information for the signed in user
                 // the cookie name is YetaWF instance specific (this allows domains with different subdomains to be used in different IIS sites)
@@ -47,16 +47,16 @@ namespace YetaWF.Modules.Identity {
                 // site sets up an account at https://apps.dev.microsoft.com/
                 // a user can remove a site's permission here https://account.live.com/consent/Manage
                 // redirect url is http://..yourdomain.com../signin-microsoft
-                publicKey = WebConfigHelper.GetValue<string>(area, "MicrosoftAccount:Public");
-                privateKey = WebConfigHelper.GetValue<string>(area, "MicrosoftAccount:Private");
+                publicKey = OwinConfigHelper.GetValue<string>(area, "MicrosoftAccount:Public");
+                privateKey = OwinConfigHelper.GetValue<string>(area, "MicrosoftAccount:Private");
                 if (!string.IsNullOrWhiteSpace(publicKey) && !string.IsNullOrWhiteSpace(privateKey))
                     app.UseMicrosoftAccountAuthentication(publicKey, privateKey);
 
                 // FACEBOOK
                 // site sets up an account at https://developers.facebook.com/apps
                 // redirect url is http://..yourdomain.com../signin-facebook   (this does not appear to be used by Facebook)
-                publicKey = WebConfigHelper.GetValue<string>(area, "FacebookAccount:Public");
-                privateKey = WebConfigHelper.GetValue<string>(area, "FacebookAccount:Private");
+                publicKey = OwinConfigHelper.GetValue<string>(area, "FacebookAccount:Public");
+                privateKey = OwinConfigHelper.GetValue<string>(area, "FacebookAccount:Private");
                 if (!string.IsNullOrWhiteSpace(publicKey) && !string.IsNullOrWhiteSpace(privateKey))
                     app.UseFacebookAuthentication(publicKey, privateKey);
 
@@ -64,15 +64,15 @@ namespace YetaWF.Modules.Identity {
                 // site sets up an account at https://console.developers.google.com/
                 // a user can remove a site's permission here https://security.google.com/settings/security/permissions
                 // redirect url is http://..yourdomain.com../signin-google
-                publicKey = WebConfigHelper.GetValue<string>(area, "GoogleAccount:Public");
-                privateKey = WebConfigHelper.GetValue<string>(area, "GoogleAccount:Private");
+                publicKey = OwinConfigHelper.GetValue<string>(area, "GoogleAccount:Public");
+                privateKey = OwinConfigHelper.GetValue<string>(area, "GoogleAccount:Private");
                 if (!string.IsNullOrWhiteSpace(publicKey) && !string.IsNullOrWhiteSpace(privateKey))
                     app.UseGoogleAuthentication(publicKey, privateKey);
 
                 // TWITTER
                 // site sets up an account at https://apps.twitter.com/
-                publicKey = WebConfigHelper.GetValue<string>(area, "TwitterAccount:Public");
-                privateKey = WebConfigHelper.GetValue<string>(area, "TwitterAccount:Private");
+                publicKey = OwinConfigHelper.GetValue<string>(area, "TwitterAccount:Public");
+                privateKey = OwinConfigHelper.GetValue<string>(area, "TwitterAccount:Private");
                 if (!string.IsNullOrWhiteSpace(publicKey) && !string.IsNullOrWhiteSpace(privateKey)) {
                     // http://stackoverflow.com/questions/25011890/owin-twitter-login-the-remote-certificate-is-invalid-according-to-the-validati
                     // see http://stackoverflow.com/questions/21651211/asp-net-mvc-5-owin-twitter-auth-throwing-401-exception

@@ -1,0 +1,4 @@
+@charset "UTF-8";
+/* Copyright © 2020 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Identity#License */
+.YetaWF_Identity_OwinEdit .yt_propertylist .t_row.t_nothing .t_vals {
+  display: none; }

@@ -34,11 +34,11 @@ namespace YetaWF.Modules.Identity.Controllers {
 
         [Trim]
         public class SetupExternalAccountModel {
-            [Caption("Name"), Description("Enter your user name - this is the name used to register on this site")]
+            [Caption("Name"), Description("Enter your user name - This is the name used to register on this site")]
             [UIHint("Text40"), StringLength(Globals.MaxUser), UserNameValidation, Required, Trim]
             public string UserName { get; set; }
 
-            [Caption("Email Address"), Description("Enter your email address to register - this is the email address used by this site to communicate with you")]
+            [Caption("Email Address"), Description("Enter your email address to register - This is the email address used by this site to communicate with you")]
             [UIHint("Email"), SuppressIf("RegistrationType", RegistrationTypeEnum.NameOnly), StringLength(Globals.MaxEmail), EmailValidation, Required, Trim]
             public string Email { get; set; }
 

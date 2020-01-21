@@ -68,37 +68,33 @@ namespace YetaWF.Modules.Identity.DataProvider {
         [Data_Binary]
         public SerializableList<Role> TwoStepAuth { get; set; }
 
-        [Data_NewValue]
-        public bool UseFacebook { get; set; }
-        [Data_NewValue]
-        public bool UseGoogle { get; set; }
-        [Data_NewValue]
-        public bool UseMicrosoft { get; set; }
-        [Data_NewValue]
-        public bool UseTwitter { get; set; }
+        public bool UseFacebook { get { return OwinConfigHelper.GetValue<bool>(AreaRegistration.CurrentPackage.AreaName, "FacebookAccount:Enabled") && DefinedFacebook; } }
+        public bool UseGoogle { get { return OwinConfigHelper.GetValue<bool>(AreaRegistration.CurrentPackage.AreaName, "GoogleAccount:Enabled") && DefinedGoogle; } }
+        public bool UseMicrosoft { get { return OwinConfigHelper.GetValue<bool>(AreaRegistration.CurrentPackage.AreaName, "MicrosoftAccount:Enabled") && DefinedMicrosoft; } }
+        public bool UseTwitter { get { return OwinConfigHelper.GetValue<bool>(AreaRegistration.CurrentPackage.AreaName, "TwitterAccount:Enabled") && DefinedTwitter; } }
 
         public bool DefinedFacebook {
             get {
-                return !string.IsNullOrWhiteSpace(WebConfigHelper.GetValue<string>(AreaRegistration.CurrentPackage.AreaName, "FacebookAccount:Public")) &&
-                        !string.IsNullOrWhiteSpace(WebConfigHelper.GetValue<string>(AreaRegistration.CurrentPackage.AreaName, "FacebookAccount:Private"));
+                return !string.IsNullOrWhiteSpace(OwinConfigHelper.GetValue<string>(AreaRegistration.CurrentPackage.AreaName, "FacebookAccount:Public")) &&
+                        !string.IsNullOrWhiteSpace(OwinConfigHelper.GetValue<string>(AreaRegistration.CurrentPackage.AreaName, "FacebookAccount:Private"));
             }
         }
         public bool DefinedGoogle {
             get {
-                return !string.IsNullOrWhiteSpace(WebConfigHelper.GetValue<string>(AreaRegistration.CurrentPackage.AreaName, "GoogleAccount:Public")) &&
-                        !string.IsNullOrWhiteSpace(WebConfigHelper.GetValue<string>(AreaRegistration.CurrentPackage.AreaName, "GoogleAccount:Private"));
+                return !string.IsNullOrWhiteSpace(OwinConfigHelper.GetValue<string>(AreaRegistration.CurrentPackage.AreaName, "GoogleAccount:Public")) &&
+                        !string.IsNullOrWhiteSpace(OwinConfigHelper.GetValue<string>(AreaRegistration.CurrentPackage.AreaName, "GoogleAccount:Private"));
             }
         }
         public bool DefinedMicrosoft {
             get {
-                return !string.IsNullOrWhiteSpace(WebConfigHelper.GetValue<string>(AreaRegistration.CurrentPackage.AreaName, "MicrosoftAccount:Public")) &&
-                        !string.IsNullOrWhiteSpace(WebConfigHelper.GetValue<string>(AreaRegistration.CurrentPackage.AreaName, "MicrosoftAccount:Private"));
+                return !string.IsNullOrWhiteSpace(OwinConfigHelper.GetValue<string>(AreaRegistration.CurrentPackage.AreaName, "MicrosoftAccount:Public")) &&
+                        !string.IsNullOrWhiteSpace(OwinConfigHelper.GetValue<string>(AreaRegistration.CurrentPackage.AreaName, "MicrosoftAccount:Private"));
             }
         }
         public bool DefinedTwitter {
             get {
-                return !string.IsNullOrWhiteSpace(WebConfigHelper.GetValue<string>(AreaRegistration.CurrentPackage.AreaName, "TwitterAccount:Public")) &&
-                        !string.IsNullOrWhiteSpace(WebConfigHelper.GetValue<string>(AreaRegistration.CurrentPackage.AreaName, "TwitterAccount:Private"));
+                return !string.IsNullOrWhiteSpace(OwinConfigHelper.GetValue<string>(AreaRegistration.CurrentPackage.AreaName, "TwitterAccount:Public")) &&
+                        !string.IsNullOrWhiteSpace(OwinConfigHelper.GetValue<string>(AreaRegistration.CurrentPackage.AreaName, "TwitterAccount:Private"));
             }
         }
 

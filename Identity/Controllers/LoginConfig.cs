@@ -85,39 +85,6 @@ namespace YetaWF.Modules.Identity.Controllers {
             [UIHint("Boolean")]
             public bool CaptchaForgotPassword { get; set; }
 
-            [Category("External")]
-            [Caption("Settings"), Description("External Login Provider Settings have not been defined")]
-            [UIHint("String"), SuppressIf("HaveSettings", true), ReadOnly]
-            public string NoExternalSettings { get; set; }
-            public bool HaveSettings {
-                get {
-                    return FacebookDefined || GoogleDefined || MicrosoftDefined || TwitterDefined;
-                }
-            }
-
-            [Category("External")]
-            [Caption("Facebook"), Description("Allow login using a user's Facebook account")]
-            [UIHint("Boolean"), SuppressIf("FacebookDefined", false)]
-            public bool UseFacebook { get; set; }
-            public bool FacebookDefined { get { return ConfigData.DefinedFacebook; } }
-
-            [Category("External")]
-            [Caption("Google"), Description("Allow login using a user's Google account")]
-            [UIHint("Boolean"), SuppressIf("GoogleDefined", false)]
-            public bool UseGoogle { get; set; }
-            public bool GoogleDefined { get { return ConfigData.DefinedGoogle; } }
-
-            [Category("External")]
-            [Caption("Microsoft"), Description("Allow login using a user's Microsoft account")]
-            [UIHint("Boolean"), SuppressIf("MicrosoftDefined", false)]
-            public bool UseMicrosoft { get; set; }
-            public bool MicrosoftDefined { get { return ConfigData.DefinedMicrosoft; } }
-
-            [Category("External")]
-            [Caption("Twitter"), Description("Allow login using a user's Twitter account")]
-            [UIHint("Boolean"), SuppressIf("TwitterDefined", false)]
-            public bool UseTwitter { get; set; }
-            public bool TwitterDefined { get { return ConfigData.DefinedTwitter; } }
 
             [Category("Urls")]
             [Caption("Login Url"), Description("The Url where the user can login using an existing account")]
@@ -186,7 +153,6 @@ namespace YetaWF.Modules.Identity.Controllers {
                 YetaWFManager.Syncify(async () => { // this is needed during model validation
                     ConfigData = await LoginConfigDataProvider.GetConfigAsync();
                 });
-                NoExternalSettings = this.__ResStr("noExt", "No External Login Providers available");
                 TwoStepAuth = new SerializableList<Role>();
             }
         }

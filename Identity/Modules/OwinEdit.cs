@@ -21,6 +21,7 @@ namespace YetaWF.Modules.Identity.Modules {
             Title = this.__ResStr("modTitle", "Login Provider Settings");
             Name = this.__ResStr("modName", "Login Provider Settings");
             Description = this.__ResStr("modSummary", "Edits local and external login providers like Google, Facebook, etc.");
+            UsePartialFormCss = false;
         }
 
         public override IModuleDefinitionIO GetDataProvider() { return new OwinEditModuleDataProvider(); }

@@ -88,6 +88,9 @@ var YetaWF_ComponentsHTML;
             else if (this.InputDays && this.InputHours && this.InputMins) {
                 this.Hidden.value = this.InputDays.value + "." + this.InputHours.value + ":" + this.InputMins.value;
             }
+            else if (this.InputDays && this.InputHours) {
+                this.Hidden.value = this.InputDays.value + "." + this.InputHours.value + ":0";
+            }
             else if (this.InputHours && this.InputMins && this.InputSecs) {
                 this.Hidden.value = this.InputHours.value + ":" + this.InputMins.value + ":" + this.InputSecs.value;
             }
