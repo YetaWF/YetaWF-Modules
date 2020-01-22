@@ -25,8 +25,8 @@ namespace YetaWF.Modules.Identity.Controllers {
             public const int MaxKey = 200;
 
             public EditModel() {
-                MicrosoftUrl = "https://account.live.com/developers/applications/";
-                GoogleUrl = "https://developers.google.com/identity/sign-in/web";
+                MicrosoftUrl = "https://portal.azure.com/#blade/Microsoft_AAD_RegisteredApps/ApplicationsListBlade"; // was "https://account.live.com/developers/applications/";
+                GoogleUrl = "https://console.developers.google.com/apis/credentials"; // general "https://developers.google.com/identity/sign-in/web";
                 FacebookUrl = "https://developers.facebook.com/apps";
                 TwitterUrl = "https://dev.twitter.com/apps";
             }
