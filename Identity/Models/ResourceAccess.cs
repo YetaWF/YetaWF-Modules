@@ -273,9 +273,11 @@ namespace YetaWF.Modules.Identity.DataProvider {
                     throw new InternalError($"Unknown user (user id {userId})");
                 if (user.UserStatus != userStatus) {
                     user.UserStatus = userStatus;
+                    if (userStatus == UserStatusEnum.Approved)
+                        user.LoginFailures = 0;
                     UpdateStatusEnum status = await userDP.UpdateItemAsync(user);
                     if (status != UpdateStatusEnum.OK)
-                        throw new InternalError($"Unexpected status {status} updating user account in nameof(SetUserStatusAsync)");
+                        throw new InternalError($"Unexpected status {status} updating user account in {nameof(SetUserStatusAsync)}");
                 }
             }
         }
