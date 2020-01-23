@@ -90,7 +90,7 @@ namespace YetaWF.Modules.Identity.Controllers {
             public bool RememberMe { get; set; }
 
             [Caption("Verification Code"), Description("Please enter the verification code you received via email to validate your account")]
-            [UIHint("Text40"), StringLength(UserDefinition.MaxVerificationCode), Trim]
+            [UIHint("Text60"), StringLength(UserDefinition.MaxVerificationCode), Trim]
             [SuppressIf(nameof(ShowVerification), false)]
             public string VerificationCode { get; set; }
 

@@ -53,7 +53,7 @@ namespace YetaWF.Modules.Identity.Controllers {
             public string EmailDisplay { get { return EmailHidden; } }
 
             [Caption("Invitation Code"), Description("Enter the invitation code you received to sign up to this site - If you have not received an invitation code, please contact your site administrator")]
-            [UIHint("Text40"), StringLength(80), Trim]
+            [UIHint("Text60"), StringLength(80), Trim]
             [SuppressIf(nameof(AllowNewUser), true)]
             [RequiredIf(nameof(AllowNewUser), false)]
             public string InvitationCode { get; set; }
