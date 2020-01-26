@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
 using System;
+using System.IO;
 using YetaWF.Core.Identity;
 using YetaWF.Core.Support;
 using YetaWF.Modules.Identity.DataProvider;
@@ -22,7 +23,9 @@ namespace YetaWF.Modules.Identity
 
         public void Setup(IServiceCollection services) {
 
-            OwinConfigHelper.InitAsync(WebConfigHelper.GetValue<string>(AREA, "LoginProviderSettings")).Wait();// wait ok, startup only, load login provider settings
+            string login = WebConfigHelper.GetValue<string>(AREA, "LoginProviderSettings");
+            if (!string.IsNullOrWhiteSpace(login))
+                OwinConfigHelper.InitAsync(Path.Combine(YetaWFManager.RootFolderWebProject, login)).Wait();// wait ok, startup only, load login provider settings
 
             services.AddIdentity<UserDefinition, RoleDefinition>()
                 .AddUserStore<UserStore>()
