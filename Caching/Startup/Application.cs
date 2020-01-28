@@ -128,7 +128,7 @@ namespace YetaWF.Modules.Caching.Startup {
         }
         private static string GetRootFolder() {
             Package package = YetaWF.Modules.Caching.Controllers.AreaRegistration.CurrentPackage;
-            return WebConfigHelper.GetValue(package.AreaName, "LockFolder", Path.Combine(YetaWFManager.DataFolder, package.AreaName, "__LOCKS"));
+            return WebConfigHelper.GetValue(package.AreaName, "FileLockFolder", Path.Combine(YetaWFManager.DataFolder, package.AreaName, "__LOCKS"));
         }
 
         private class DefaultPubSubProvider : IPubSubProvider {
