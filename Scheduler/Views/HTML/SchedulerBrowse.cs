@@ -25,10 +25,10 @@ namespace YetaWF.Modules.Scheduler.Views {
 
             if (YetaWF.Core.Scheduler.SchedulerSupport.Enabled) {
 
-                hb.Append($@"
-<div class='{Globals.CssDivWarning}'>
-    {HE(this.__ResStr("enabled", "The Scheduler is enabled."))}
-</div>");
+//                hb.Append($@"
+//<div class='{Globals.CssDivWarning}'>
+//    {HE(this.__ResStr("enabled", "The Scheduler is enabled."))}
+//</div>");
 
             } else {
 

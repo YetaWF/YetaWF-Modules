@@ -72,7 +72,7 @@ namespace YetaWF.Modules.Scheduler.Support {
         /// Run a scheduler item.
         /// </summary>
         /// <param name="name"></param>
-        public async Task RunItemAsync(string name) {
+        private async Task RunItemAsync(string name) {
 
             using (SchedulerDataProvider schedDP = new SchedulerDataProvider()) {
 
@@ -103,7 +103,7 @@ namespace YetaWF.Modules.Scheduler.Support {
         /// Update next run time for a scheduler item.
         /// </summary>
         /// <param name="name"></param>
-        public async Task SetItemNextRunAsync(string name, DateTime? nextRun) {
+        private async Task SetItemNextRunAsync(string name, DateTime? nextRun) {
 
             using (SchedulerDataProvider schedDP = new SchedulerDataProvider()) {
 
@@ -134,7 +134,7 @@ namespace YetaWF.Modules.Scheduler.Support {
         /// Run the scheduler (wake it from waiting).
         /// </summary>
         /// <remarks>If the scheduler is already running a scheduler item, this call has no adverse effect.</remarks>
-        public void Dispatch() {
+        private void Dispatch() {
             if (schedulingThread != null && !schedulingThreadRunning)
                 schedulingThread.Interrupt();
         }
@@ -356,59 +356,64 @@ namespace YetaWF.Modules.Scheduler.Support {
                     throw new InternalError("Scheduler item '{0}' could not be loaded (Type={1}, Assembly={2}) - {3}", item.Name, item.Event.ImplementingType, item.Event.ImplementingAssembly, ErrorHandling.FormatExceptionMessage(exc));
                 }
 
-                try {
-                    if (item.SiteSpecific) {
-                        DataProviderGetRecords<SiteDefinition> info = await SiteDefinition.GetSitesAsync(0, 0, null, null);
-                        foreach (SiteDefinition site in info.Data) {
-                            YetaWFManager.MakeThreadInstance(site, null, true);// set up a manager for the site
-                            YetaWFManager.Syncify(async () => { // there is no point in running the scheduler async
-                                SchedulerLog.LimitTo(YetaWFManager.Manager);
-                                SchedulerLog.SetCurrent(logId, site.Identity, item.Name);
+                if (item.SiteSpecific) {
+                    DataProviderGetRecords<SiteDefinition> info = await SiteDefinition.GetSitesAsync(0, 0, null, null);
+                    foreach (SiteDefinition site in info.Data) {
 
-                                IScheduling schedEvt = null;
-                                try {
-                                    schedEvt = (IScheduling)Activator.CreateInstance(tp);
-                                } catch (Exception exc) {
-                                    throw new InternalError("Scheduler item '{0}' could not be instantiated (Type={1}, Assembly={2}) - {3}", item.Name, item.Event.ImplementingType, item.Event.ImplementingAssembly, ErrorHandling.FormatExceptionMessage(exc));
-                                }
-
-                                SchedulerItemBase itemBase = new SchedulerItemBase { Name = item.Name, Description = item.Description, EventName = item.Event.Name, Enabled = true, Frequency = item.Frequency, Startup = item.Startup, SiteSpecific = true };
-                                await schedEvt.RunItemAsync(itemBase);
-                                foreach (var s in itemBase.Log) {
-                                    string m = $"{site.Identity}: {s}";
-                                    Logging.AddLog(m);
-                                    errors.AppendLine(m);
-                                }
-
-                                if (itemBase.NextRun != null && (nextRun == null || (DateTime)itemBase.NextRun < nextRun))
-                                    nextRun = itemBase.NextRun;
-
-                            });
-                            YetaWFManager.MakeThreadInstance(null, null, true);// restore scheduler's manager
+                        YetaWFManager.MakeThreadInstance(site, null, true);// set up a manager for the site
+                        YetaWFManager.Syncify(async () => { // there is no point in running the scheduler async
                             SchedulerLog.LimitTo(YetaWFManager.Manager);
-                            SchedulerLog.SetCurrent(logId, 0, item.Name);
-                        }
-                    } else {
+                            SchedulerLog.SetCurrent(logId, site.Identity, item.Name);
 
-                        IScheduling schedEvt = null;
-                        try {
-                            schedEvt = (IScheduling)Activator.CreateInstance(tp);
-                        } catch (Exception exc) {
-                            throw new InternalError("Scheduler item '{0}' could not be instantiated (Type={1}, Assembly={2}) - {3}", item.Name, item.Event.ImplementingType, item.Event.ImplementingAssembly, ErrorHandling.FormatExceptionMessage(exc));
-                        }
+                            IScheduling schedEvt = null;
+                            try {
+                                schedEvt = (IScheduling)Activator.CreateInstance(tp);
+                            } catch (Exception exc) {
+                                throw new InternalError("Scheduler item '{0}' could not be instantiated (Type={1}, Assembly={2}) - {3}", item.Name, item.Event.ImplementingType, item.Event.ImplementingAssembly, ErrorHandling.FormatExceptionMessage(exc));
+                            }
 
-                        SchedulerItemBase itemBase = new SchedulerItemBase { Name = item.Name, Description = item.Description, EventName = item.Event.Name, Enabled = true, Frequency = item.Frequency, Startup = item.Startup, SiteSpecific = false };
-                        await schedEvt.RunItemAsync(itemBase);
-                        foreach (var s in itemBase.Log) {
-                            Logging.AddLog(s);
-                            errors.AppendLine(s);
-                        }
+                            SchedulerItemBase itemBase = new SchedulerItemBase { Name = item.Name, Description = item.Description, EventName = item.Event.Name, Enabled = true, Frequency = item.Frequency, Startup = item.Startup, SiteSpecific = true };
+                            try {
+                                await schedEvt.RunItemAsync(itemBase);
+                            } catch (Exception exc) {
+                                errors.AppendLine($"An error occurred in scheduler item '{site.Identity}: {item.Name}' - {ErrorHandling.FormatExceptionMessage(exc)}");
+                            }
 
-                        if (itemBase.NextRun != null && (nextRun == null || (DateTime)itemBase.NextRun < nextRun))
-                            nextRun = itemBase.NextRun;
+                            foreach (var s in itemBase.Log) {
+                                string m = $"{site.Identity}: {s}";
+                                Logging.AddLog(m);
+                                errors.AppendLine(m);
+                            }
+                            if (itemBase.NextRun != null && (nextRun == null || (DateTime)itemBase.NextRun < nextRun))
+                                nextRun = itemBase.NextRun;
+
+                        });
+                        YetaWFManager.MakeThreadInstance(null, null, true);// restore scheduler's manager
+                        SchedulerLog.LimitTo(YetaWFManager.Manager);
+                        SchedulerLog.SetCurrent(logId, 0, item.Name);
                     }
-                } catch (Exception exc) {
-                    throw new InternalError("An error occurred in scheduler item '{0}' - {1}", item.Name, ErrorHandling.FormatExceptionMessage(exc));
+                } else {
+
+                    IScheduling schedEvt = null;
+                    try {
+                        schedEvt = (IScheduling)Activator.CreateInstance(tp);
+                    } catch (Exception exc) {
+                        throw new InternalError("Scheduler item '{0}' could not be instantiated (Type={1}, Assembly={2}) - {3}", item.Name, item.Event.ImplementingType, item.Event.ImplementingAssembly, ErrorHandling.FormatExceptionMessage(exc));
+                    }
+
+                    SchedulerItemBase itemBase = new SchedulerItemBase { Name = item.Name, Description = item.Description, EventName = item.Event.Name, Enabled = true, Frequency = item.Frequency, Startup = item.Startup, SiteSpecific = false };
+                    try {
+                        await schedEvt.RunItemAsync(itemBase);
+                    } catch (Exception exc) {
+                        errors.AppendLine($"An error occurred in scheduler item '{item.Name}' - {ErrorHandling.FormatExceptionMessage(exc)}");
+                    }
+                    foreach (var s in itemBase.Log) {
+                        Logging.AddLog(s);
+                        errors.AppendLine(s);
+                    }
+
+                    if (itemBase.NextRun != null && (nextRun == null || (DateTime)itemBase.NextRun < nextRun))
+                        nextRun = itemBase.NextRun;
                 }
 
                 TimeSpan diff = DateTime.UtcNow - now;
