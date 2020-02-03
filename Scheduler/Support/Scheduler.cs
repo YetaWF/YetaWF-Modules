@@ -365,7 +365,9 @@ namespace YetaWF.Modules.Scheduler.Support {
                         try {
                             schedEvt = (IScheduling)Activator.CreateInstance(tp);
                         } catch (Exception exc) {
-                            errors.AppendLine($"Scheduler item '{item.Name}' could not be instantiated (Type={item.Event.ImplementingType}, Assembly={item.Event.ImplementingAssembly}) - {ErrorHandling.FormatExceptionMessage(exc)}");
+                            string m = $"Scheduler item '{item.Name}' could not be instantiated (Type={item.Event.ImplementingType}, Assembly={item.Event.ImplementingAssembly}) - {ErrorHandling.FormatExceptionMessage(exc)}";
+                            Logging.AddLog(m);
+                            errors.AppendLine(m);
                         }
 
                         if (schedEvt != null) {
@@ -379,7 +381,9 @@ namespace YetaWF.Modules.Scheduler.Support {
                             try {
                                 await schedEvt.RunItemAsync(itemBase);
                             } catch (Exception exc) {
-                                errors.AppendLine($"An error occurred in scheduler item '{site.Identity}: {item.Name}' - {ErrorHandling.FormatExceptionMessage(exc)}");
+                                string m = $"An error occurred in scheduler item '{site.Identity}: {item.Name}' - {ErrorHandling.FormatExceptionMessage(exc)}";
+                                Logging.AddLog(m);
+                                errors.AppendLine(m);
                             }
 
                             foreach (var s in itemBase.Log) {
@@ -403,7 +407,9 @@ namespace YetaWF.Modules.Scheduler.Support {
                     try {
                         schedEvt = (IScheduling)Activator.CreateInstance(tp);
                     } catch (Exception exc) {
-                        errors.AppendLine($"Scheduler item '{item.Name}' could not be instantiated (Type={item.Event.ImplementingType}, Assembly={item.Event.ImplementingAssembly}) - {ErrorHandling.FormatExceptionMessage(exc)}");
+                        string m = $"Scheduler item '{item.Name}' could not be instantiated (Type={item.Event.ImplementingType}, Assembly={item.Event.ImplementingAssembly}) - {ErrorHandling.FormatExceptionMessage(exc)}";
+                        Logging.AddLog(m);
+                        errors.AppendLine(m);
                     }
 
                     if (schedEvt != null) {
@@ -411,7 +417,9 @@ namespace YetaWF.Modules.Scheduler.Support {
                         try {
                             await schedEvt.RunItemAsync(itemBase);
                         } catch (Exception exc) {
-                            errors.AppendLine($"An error occurred in scheduler item '{item.Name}' - {ErrorHandling.FormatExceptionMessage(exc)}");
+                            string m = $"An error occurred in scheduler item '{item.Name}' - {ErrorHandling.FormatExceptionMessage(exc)}";
+                            Logging.AddLog(m);
+                            errors.AppendLine(m);
                         }
                         foreach (var s in itemBase.Log) {
                             Logging.AddLog(s);
@@ -442,13 +450,13 @@ namespace YetaWF.Modules.Scheduler.Support {
 
             item.IsRunning = false;
 
-            item.Errors = errors.ToString();
             item.SetNextRuntime();
             if (nextRun != null) {
                 Logging.AddLog($"Next run at {nextRun} (UTC)");
                 item.Next = nextRun;
                 item.Enabled = true;
             }
+            item.Errors = errors.ToString();
 
             try {
                 await schedDP.UpdateItemAsync(item);
