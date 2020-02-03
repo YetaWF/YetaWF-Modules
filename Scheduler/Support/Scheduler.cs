@@ -445,7 +445,7 @@ namespace YetaWF.Modules.Scheduler.Support {
             item.Errors = errors.ToString();
             item.SetNextRuntime();
             if (nextRun != null) {
-                Logging.AddLog($"Next run at {nextRun}");
+                Logging.AddLog($"Next run at {nextRun} (UTC)");
                 item.Next = nextRun;
                 item.Enabled = true;
             }
