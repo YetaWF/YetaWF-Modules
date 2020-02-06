@@ -48,6 +48,8 @@ namespace YetaWF.Modules.Search.DataProvider {
         public DateTime DatePageUpdated { get; set; }
         [Data_DontSave]
         public string PageSummary { get; set; }
+        [Data_DontSave]
+        public string CustomData { get; set; }
 
         public SearchData() { }
     }
@@ -115,7 +117,7 @@ namespace YetaWF.Modules.Search.DataProvider {
             if (!IsUsable) return false;
             return await DataProvider.AddAsync(data);
         }
-        public async Task<bool> AddItemsAsync(List<SearchData> list, string pageUrl, PageDefinition.PageSecurityType pageSecurity, string pageDescription, string pageSummary, DateTime pageCreated, DateTime? pageUpdated, DateTime searchStarted) {
+        public async Task<bool> AddItemsAsync(List<SearchData> list, string pageUrl, PageDefinition.PageSecurityType pageSecurity, string pageDescription, string pageSummary, DateTime pageCreated, DateTime? pageUpdated, DateTime searchStarted, string customData) {
             if (!IsUsable) return false;
             bool status = false;
             using (ILockObject lockObject = await YetaWF.Core.IO.Caching.LockProvider.LockResourceAsync($"{AreaRegistration.CurrentPackage.AreaName}_{nameof(SearchDataProvider)}")) {
@@ -131,6 +133,7 @@ namespace YetaWF.Modules.Search.DataProvider {
                             PageUrl = pageUrl,
                             PageSecurity = pageSecurity,
                             PageSummary = pageSummary.Truncate(SearchDataUrl.MaxSummary),
+                            CustomData = customData,
                         };
                         if (!await searchUrlDP.AddItemAsync(searchUrl))
                             throw new InternalError("Unexpected error adding SearchDataUrl for url {0}", pageUrl);
@@ -140,6 +143,7 @@ namespace YetaWF.Modules.Search.DataProvider {
                         searchUrl.DatePageCreated = pageCreated;
                         searchUrl.DatePageUpdated = pageUpdated ?? pageCreated;
                         searchUrl.PageSecurity = pageSecurity;
+                        searchUrl.CustomData = customData;
                         UpdateStatusEnum updStatus = await searchUrlDP.UpdateItemAsync(searchUrl);
                         if (updStatus != UpdateStatusEnum.OK)
                             throw new InternalError("Unexpected error updating SearchDataUrl for url {0} - {1}", pageUrl, updStatus);

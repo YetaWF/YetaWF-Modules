@@ -19,6 +19,7 @@ namespace YetaWF.Modules.Search.DataProvider {
 
         public const int MaxTitle = 100;
         public const int MaxSummary = 500;
+        public const int MaxCustomData = 300;
 
         [Data_Identity]
         public int SearchDataUrlId { get; set; }
@@ -32,6 +33,10 @@ namespace YetaWF.Modules.Search.DataProvider {
         public string PageTitle { get; set; }
         [StringLength(MaxSummary)]
         public string PageSummary { get; set; }
+
+        [StringLength(MaxCustomData)]
+        [Data_NewValue]
+        public string CustomData { get; set; }
 
         public DateTime DatePageCreated { get; set; }
         public DateTime? DatePageUpdated { get; set; }

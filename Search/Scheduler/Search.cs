@@ -1,4 +1,4 @@
-﻿/* Copyright © 2020 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Search#License */
+/* Copyright © 2020 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Search#License */
 
 using System;
 using System.Collections.Generic;
@@ -163,6 +163,7 @@ namespace YetaWF.Modules.Search.Scheduler {
             MultiString CurrentSummary;
             DateTime CurrentDateCreated;
             DateTime? CurrentDateUpdated;
+            string CurrentCustomData;
             List<SearchData> CurrentSearchData;
 
             public SearchWords(SearchConfigData searchConfig, SearchDataProvider searchDP, DateTime searchStarted) {
@@ -191,9 +192,12 @@ namespace YetaWF.Modules.Search.Scheduler {
                 }
                 return true;
             }
-            public async Task<bool> SetUrlAsync(string url, PageDefinition.PageSecurityType pageSecurity, MultiString title, MultiString summary, DateTime dateCreated, DateTime? dateUpdated, bool allowAnonymous, bool allowUser) {
+            public Task<bool> SetUrlAsync(string url, PageDefinition.PageSecurityType pageSecurity, MultiString title, MultiString summary, DateTime dateCreated, DateTime? dateUpdated, bool allowAnonymous, bool allowUser) {
+                return SetUrlAsync(url, pageSecurity, title, summary, dateCreated, dateUpdated, allowAnonymous, allowUser, null);
+            }
+            public async Task<bool> SetUrlAsync(string url, PageDefinition.PageSecurityType pageSecurity, MultiString title, MultiString summary, DateTime dateCreated, DateTime? dateUpdated, bool allowAnonymous, bool allowUser, string customData) {
                 YetaWFManager manager = YetaWFManager.Manager;
-                if (CurrentUrl != null) throw new InternalError("Already have an active Url - {0} {1} called", nameof(SetUrlAsync), url);
+                if (CurrentUrl != null) throw new InternalError("Already have an active Url - {nameof(SetUrlAsync)} {url} called");
                 if (!url.StartsWith("/"))
                     throw new InternalError("Urls for search terms must be local and start with \"/\"");
                 CurrentPageSecurity = pageSecurity;
@@ -204,6 +208,7 @@ namespace YetaWF.Modules.Search.Scheduler {
                 CurrentDateCreated = dateCreated;
                 CurrentDateUpdated = dateUpdated;
                 CurrentSearchData = new List<SearchData>();
+                CurrentCustomData = customData;
                 if (!CurrentAllowAnonymous && !CurrentAllowAnyUser) {
                     Logging.AddLog("No search keywords for Url {0} - neither Anonymous nor User role has access to the page", url);
                     return false;
@@ -237,7 +242,7 @@ namespace YetaWF.Modules.Search.Scheduler {
             }
             public async Task SaveAsync() {
                 VerifyPage();
-                await CurrentSearchDP.AddItemsAsync(CurrentSearchData, CurrentUrl, CurrentPageSecurity, CurrentTitle, CurrentSummary, CurrentDateCreated, CurrentDateUpdated, CurrentSearchStarted);
+                await CurrentSearchDP.AddItemsAsync(CurrentSearchData, CurrentUrl, CurrentPageSecurity, CurrentTitle, CurrentSummary, CurrentDateCreated, CurrentDateUpdated, CurrentSearchStarted, CurrentCustomData);
                 Reset(CurrentSearchDP, CurrentSearchStarted);
             }
             internal bool SetModule(bool allowAnonymous, bool allowUser) {
@@ -264,6 +269,7 @@ namespace YetaWF.Modules.Search.Scheduler {
                 CurrentDateCreated = DateTime.MinValue;
                 CurrentDateUpdated = null;
                 CurrentSearchData = new List<SearchData>();
+                CurrentCustomData = null;
             }
             private void AddItems(MultiString content, int weight) {
                 VerifyPage();

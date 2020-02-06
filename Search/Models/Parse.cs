@@ -45,6 +45,7 @@ namespace YetaWF.Modules.Search.DataProvider {
                     Description = g.Select(m => m.PageTitle).FirstOrDefault(),
                     PageSummary = g.Select(m => m.PageSummary).FirstOrDefault(),
                     PageSecurity = g.Select(m => m.PageSecurity).FirstOrDefault(),
+                    CustomData = g.Select(m => m.CustomData).FirstOrDefault(),
                 }).OrderByDescending(m => m.Count).Take(maxResults + 1).ToList();
 
                 haveMore = (results.Count >= maxResults);

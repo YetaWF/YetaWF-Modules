@@ -26,6 +26,7 @@ namespace YetaWF.Modules.Search.DataProvider {
         [UIHint("String")]
         public string PageSummary { get; set; }
         public PageDefinition.PageSecurityType PageSecurity { get; set; }
+        public string CustomData { get; set; }
 
         public SearchResult() { }
     }
