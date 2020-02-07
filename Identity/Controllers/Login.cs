@@ -288,14 +288,23 @@ namespace YetaWF.Modules.Identity.Controllers {
             if (user.PasswordHash != null || !string.IsNullOrWhiteSpace(user.PasswordPlainText) || !string.IsNullOrWhiteSpace(model.Password)) {
                 UserDefinition foundUser = user;
                 user = null;
+
+                // Handle random super user password (only supported on Core)
+                if (foundUser.UserId == SuperuserDefinitionDataProvider.SuperUserId && SuperuserDefinitionDataProvider.SuperuserAvailable && SuperuserDefinitionDataProvider.SuperUserPasswordRandom &&
+                        model.UserName == SuperuserDefinitionDataProvider.SuperUserName && model.Password == SuperuserDefinitionDataProvider.SuperUserPassword) {
+                    user = foundUser;
+                }
+
+                if (user == null) {
 #if MVC6
-                user = await Managers.GetUserManager().FindByNameAsync(model.UserName);
-                if (string.IsNullOrWhiteSpace(model.Password) || !await Managers.GetUserManager().CheckPasswordAsync(user, model.Password))
-                    user = null;
+                    user = await Managers.GetUserManager().FindByNameAsync(model.UserName);
+                    if (string.IsNullOrWhiteSpace(model.Password) || !await Managers.GetUserManager().CheckPasswordAsync(user, model.Password))
+                        user = null;
 #else
-                if (!string.IsNullOrWhiteSpace(model.Password))
-                    user = await Managers.GetUserManager().FindAsync(model.UserName, model.Password);
+                    if (!string.IsNullOrWhiteSpace(model.Password))
+                        user = await Managers.GetUserManager().FindAsync(model.UserName, model.Password);
 #endif
+                }
                 if (user == null) {
                     foundUser.LoginFailures = foundUser.LoginFailures + 1;
 #if MVC6

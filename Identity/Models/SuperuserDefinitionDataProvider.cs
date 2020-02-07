@@ -9,6 +9,7 @@ using YetaWF.Core.DataProvider;
 using YetaWF.Core.Identity;
 using YetaWF.Core.IO;
 using YetaWF.Core.Localize;
+using YetaWF.Core.Log;
 using YetaWF.Core.Packages;
 using YetaWF.Core.Serializers;
 using YetaWF.Core.Support;
@@ -20,11 +21,18 @@ namespace YetaWF.Modules.Identity.DataProvider {
     /// SuperuserDefinitionDataProvider
     /// The superuser is common to all sites - only ONE is supported (how many security holes do you really need?)
     /// </summary>
-    public class SuperuserDefinitionDataProvider : DataProviderImpl, IInstallableModel {
+    public class SuperuserDefinitionDataProvider : DataProviderImpl, IInstallableModel, IInitializeApplicationStartup {
 
         public static readonly int SuperUserId = 1;
 
         private static readonly string SUPERUSERNAME = "SuperUserName";
+        private static readonly string SUPERUSERPASSWORDRANDOM = "SuperUserPasswordRandom";
+
+        public Task InitializeApplicationStartupAsync() {
+            if (SuperUserPasswordRandom)
+                Logging.AddWarningLog($"Emergency login \"{_superPswd.ToString()}\" (informational message)");
+            return Task.CompletedTask;
+        }
 
         static SuperuserDefinitionDataProvider() { }
 
@@ -44,6 +52,26 @@ namespace YetaWF.Modules.Identity.DataProvider {
                 return !string.IsNullOrWhiteSpace(_super);
             }
         }
+
+        internal static bool SuperUserPasswordRandom {
+            get {
+                if (_superPswdRandom == null) {
+                    _superPswdRandom = WebConfigHelper.GetValue<bool>(AreaRegistration.CurrentPackage.AreaName, SUPERUSERPASSWORDRANDOM, false);
+                }
+                return (bool)_superPswdRandom;
+            }
+        }
+        private static bool? _superPswdRandom = null;
+
+        internal static string SuperUserPassword {
+            get {
+                if (SuperUserPasswordRandom) {
+                    return _superPswd.ToString();
+                }
+                return null;
+            }
+        }
+        private static Guid _superPswd = Guid.NewGuid();
 
         // IMPLEMENTATION
         // IMPLEMENTATION
