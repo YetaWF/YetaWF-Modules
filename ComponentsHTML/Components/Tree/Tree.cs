@@ -261,6 +261,9 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                 selectedCss = $" {setup.SelectedCss}";
                 selectedLICss = " class='t_select'";
             }
+            string extraCss = "";
+            if (record.ExtraCss != null)
+                extraCss = $" {record.ExtraCss}";
 
             string caret;
             string icon;
@@ -300,11 +303,11 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
             string output;
             if (!string.IsNullOrWhiteSpace(urlNew))
-                output = $"<a class='t_entry{selectedCss} yaction-link' target='_blank' href='{HAE(urlNew)}'{dd}>{text}</a>";
+                output = $"<a class='t_entry{selectedCss}{extraCss} yaction-link' target='_blank' href='{HAE(urlNew)}'{dd}>{text}</a>";
             else if (!string.IsNullOrWhiteSpace(urlContent))
-                output = $"<a class='t_entry{selectedCss} yaction-link' data-contenttarget='{treeModel.ContentTargetId}' data-contentpane='{treeModel.ContentTargetPane}' href='{HAE(urlContent)}'{dd}>{text}</a>";
+                output = $"<a class='t_entry{selectedCss}{extraCss} yaction-link' data-contenttarget='{treeModel.ContentTargetId}' data-contentpane='{treeModel.ContentTargetPane}' href='{HAE(urlContent)}'{dd}>{text}</a>";
             else
-                output = $"<a class='t_entry{selectedCss}' data-nohref='true' href='#'{dd}>{text}</a>";
+                output = $"<a class='t_entry{selectedCss}{extraCss}' data-nohref='true' href='#'{dd}>{text}</a>";
 
             string recData = "";
             if (treeModel.JSONData) {
