@@ -68,10 +68,10 @@ namespace YetaWF.Modules.Identity.DataProvider {
         [Data_Binary]
         public SerializableList<Role> TwoStepAuth { get; set; }
 
-        public bool UseFacebook { get { return OwinConfigHelper.GetValue<bool>(AreaRegistration.CurrentPackage.AreaName, "FacebookAccount:Enabled") && DefinedFacebook; } }
-        public bool UseGoogle { get { return OwinConfigHelper.GetValue<bool>(AreaRegistration.CurrentPackage.AreaName, "GoogleAccount:Enabled") && DefinedGoogle; } }
-        public bool UseMicrosoft { get { return OwinConfigHelper.GetValue<bool>(AreaRegistration.CurrentPackage.AreaName, "MicrosoftAccount:Enabled") && DefinedMicrosoft; } }
-        public bool UseTwitter { get { return OwinConfigHelper.GetValue<bool>(AreaRegistration.CurrentPackage.AreaName, "TwitterAccount:Enabled") && DefinedTwitter; } }
+        public bool UseFacebook { get { return OwinConfigHelper.GetValue<bool>(AreaRegistration.CurrentPackage.AreaName, "FacebookAccount:Enabled") && DefinedFacebook; } [Obsolete] set { } }
+        public bool UseGoogle { get { return OwinConfigHelper.GetValue<bool>(AreaRegistration.CurrentPackage.AreaName, "GoogleAccount:Enabled") && DefinedGoogle; } [Obsolete] set { } }
+        public bool UseMicrosoft { get { return OwinConfigHelper.GetValue<bool>(AreaRegistration.CurrentPackage.AreaName, "MicrosoftAccount:Enabled") && DefinedMicrosoft; } [Obsolete] set { } }
+        public bool UseTwitter { get { return OwinConfigHelper.GetValue<bool>(AreaRegistration.CurrentPackage.AreaName, "TwitterAccount:Enabled") && DefinedTwitter; } [Obsolete] set { } }
 
         public bool DefinedFacebook {
             get {
