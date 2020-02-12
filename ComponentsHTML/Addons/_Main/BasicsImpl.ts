@@ -11,7 +11,7 @@ namespace YetaWF_ComponentsHTML {
     }
 
     interface ToastEntry {
-        Severity: Severity,
+        Severity: Severity;
         Title: string;
         Text: string;
         Timeout: number;
@@ -20,11 +20,9 @@ namespace YetaWF_ComponentsHTML {
 
     export class BasicsImpl implements YetaWF.IBasicsImpl {
 
-        public static readonly DefaultTimeout = 7000;
+        public static readonly DefaultTimeout:number = 7000;
 
         ToastDiv: HTMLDivElement|null = null;
-
-        BasicsImpl() { }
 
         // LOADING
         // LOADING
@@ -54,7 +52,7 @@ namespace YetaWF_ComponentsHTML {
          * Displays an informational message, usually in a popup.
          */
         public message(message: string, title?: string, onOK?: () => void, options?: YetaWF.MessageOptions): void {
-            if (YConfigs.Basics.MessageType == YetaWF.MessageTypeEnum.Popups)
+            if (YConfigs.Basics.MessageType === YetaWF.MessageTypeEnum.Popups)
                 this.alert(message, title || YLocs.Basics.DefaultSuccessTitle, onOK, options);
             else {
                 if (!options)
@@ -69,7 +67,7 @@ namespace YetaWF_ComponentsHTML {
          * Displays an error message, usually in a popup.
          */
         public error(message: string, title?: string, onOK?: () => void, options?: YetaWF.MessageOptions): void {
-            if (YConfigs.Basics.MessageType == YetaWF.MessageTypeEnum.Popups)
+            if (YConfigs.Basics.MessageType === YetaWF.MessageTypeEnum.Popups)
                 this.alert(message, title || YLocs.Basics.DefaultErrorTitle, onOK);
             else {
                 if (!options)
@@ -84,7 +82,7 @@ namespace YetaWF_ComponentsHTML {
          * Displays a confirmation message, usually in a popup.
          */
         public confirm(message: string, title?: string, onOK?: () => void, options?: YetaWF.MessageOptions): void {
-            if (YConfigs.Basics.MessageType == YetaWF.MessageTypeEnum.Popups)
+            if (YConfigs.Basics.MessageType === YetaWF.MessageTypeEnum.Popups)
                 this.alert(message, title || YLocs.Basics.DefaultSuccessTitle, onOK);
             else {
                 if (!options)
@@ -100,7 +98,7 @@ namespace YetaWF_ComponentsHTML {
          */
         public alert(message: string, title?: string, onOK?: () => void, options?: YetaWF.MessageOptions): void {
 
-            if (YConfigs.Basics.MessageType == YetaWF.MessageTypeEnum.Popups) {
+            if (YConfigs.Basics.MessageType === YetaWF.MessageTypeEnum.Popups) {
 
                 ComponentsHTMLHelper.REQUIRES_JQUERYUI((): void => {
 
@@ -363,11 +361,11 @@ namespace YetaWF_ComponentsHTML {
                 Severity: severity,
                 Title: title,
                 Text: message,
-                CanClose: options.canClose == true,
+                CanClose: options.canClose === true,
                 Timeout: options.autoClose ? options.autoClose : 0
             };
             this.Toasts.push(entry);
-            let entryDiv = document.createElement('div');
+            let entryDiv = document.createElement("div");
             let html = "";
             if (title)
                 html += `<div class='t_title'>${$YetaWF.htmlEscape(title)}</div>`;
@@ -403,7 +401,7 @@ namespace YetaWF_ComponentsHTML {
             if (options.canClose) {
                 $YetaWF.registerEventHandler(entryDiv, "click", ".t_close", (ev: MouseEvent): boolean => {
                     entryDiv.remove();
-                    this.Toasts = this.Toasts.filter((e:ToastEntry):boolean => { return e != entry; });
+                    this.Toasts = this.Toasts.filter((e:ToastEntry):boolean => { return e !== entry; });
                     return false;
                 });
             }
@@ -411,7 +409,7 @@ namespace YetaWF_ComponentsHTML {
             if (options.autoClose) {
                 setTimeout(() => {
                     entryDiv.remove();
-                    this.Toasts = this.Toasts.filter((e:ToastEntry):boolean => { return e != entry; });
+                    this.Toasts = this.Toasts.filter((e:ToastEntry):boolean => { return e !== entry; });
                 }, options.autoClose);
             }
         }
@@ -419,7 +417,7 @@ namespace YetaWF_ComponentsHTML {
             let toastDiv = $YetaWF.getElement1BySelectorCond("#ytoast") as HTMLDivElement|null;
             if (!toastDiv) {
                 toastDiv = document.createElement("div");
-                if (YConfigs.Basics.MessageType == YetaWF.MessageTypeEnum.ToastRight)
+                if (YConfigs.Basics.MessageType === YetaWF.MessageTypeEnum.ToastRight)
                     $YetaWF.elementAddClass(toastDiv, "t_right");
                 else
                     $YetaWF.elementAddClass(toastDiv, "t_left");

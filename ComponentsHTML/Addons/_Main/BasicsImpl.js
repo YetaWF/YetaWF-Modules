@@ -19,7 +19,6 @@ var YetaWF_ComponentsHTML;
             // TOAST
             this.Toasts = [];
         }
-        BasicsImpl.prototype.BasicsImpl = function () { };
         Object.defineProperty(BasicsImpl.prototype, "isLoading", {
             get: function () {
                 return this.loading;
@@ -44,7 +43,7 @@ var YetaWF_ComponentsHTML;
          * Displays an informational message, usually in a popup.
          */
         BasicsImpl.prototype.message = function (message, title, onOK, options) {
-            if (YConfigs.Basics.MessageType == YetaWF.MessageTypeEnum.Popups)
+            if (YConfigs.Basics.MessageType === YetaWF.MessageTypeEnum.Popups)
                 this.alert(message, title || YLocs.Basics.DefaultSuccessTitle, onOK, options);
             else {
                 if (!options)
@@ -62,7 +61,7 @@ var YetaWF_ComponentsHTML;
          * Displays an error message, usually in a popup.
          */
         BasicsImpl.prototype.error = function (message, title, onOK, options) {
-            if (YConfigs.Basics.MessageType == YetaWF.MessageTypeEnum.Popups)
+            if (YConfigs.Basics.MessageType === YetaWF.MessageTypeEnum.Popups)
                 this.alert(message, title || YLocs.Basics.DefaultErrorTitle, onOK);
             else {
                 if (!options)
@@ -80,7 +79,7 @@ var YetaWF_ComponentsHTML;
          * Displays a confirmation message, usually in a popup.
          */
         BasicsImpl.prototype.confirm = function (message, title, onOK, options) {
-            if (YConfigs.Basics.MessageType == YetaWF.MessageTypeEnum.Popups)
+            if (YConfigs.Basics.MessageType === YetaWF.MessageTypeEnum.Popups)
                 this.alert(message, title || YLocs.Basics.DefaultSuccessTitle, onOK);
             else {
                 if (!options)
@@ -99,7 +98,7 @@ var YetaWF_ComponentsHTML;
          */
         BasicsImpl.prototype.alert = function (message, title, onOK, options) {
             var _this = this;
-            if (YConfigs.Basics.MessageType == YetaWF.MessageTypeEnum.Popups) {
+            if (YConfigs.Basics.MessageType === YetaWF.MessageTypeEnum.Popups) {
                 ComponentsHTMLHelper.REQUIRES_JQUERYUI(function () {
                     // check if we already have a popup (and close it)
                     _this.closeAlert(onOK);
@@ -345,11 +344,11 @@ var YetaWF_ComponentsHTML;
                 Severity: severity,
                 Title: title,
                 Text: message,
-                CanClose: options.canClose == true,
+                CanClose: options.canClose === true,
                 Timeout: options.autoClose ? options.autoClose : 0
             };
             this.Toasts.push(entry);
-            var entryDiv = document.createElement('div');
+            var entryDiv = document.createElement("div");
             var html = "";
             if (title)
                 html += "<div class='t_title'>" + $YetaWF.htmlEscape(title) + "</div>";
@@ -384,14 +383,14 @@ var YetaWF_ComponentsHTML;
             if (options.canClose) {
                 $YetaWF.registerEventHandler(entryDiv, "click", ".t_close", function (ev) {
                     entryDiv.remove();
-                    _this.Toasts = _this.Toasts.filter(function (e) { return e != entry; });
+                    _this.Toasts = _this.Toasts.filter(function (e) { return e !== entry; });
                     return false;
                 });
             }
             if (options.autoClose) {
                 setTimeout(function () {
                     entryDiv.remove();
-                    _this.Toasts = _this.Toasts.filter(function (e) { return e != entry; });
+                    _this.Toasts = _this.Toasts.filter(function (e) { return e !== entry; });
                 }, options.autoClose);
             }
         };
@@ -399,7 +398,7 @@ var YetaWF_ComponentsHTML;
             var toastDiv = $YetaWF.getElement1BySelectorCond("#ytoast");
             if (!toastDiv) {
                 toastDiv = document.createElement("div");
-                if (YConfigs.Basics.MessageType == YetaWF.MessageTypeEnum.ToastRight)
+                if (YConfigs.Basics.MessageType === YetaWF.MessageTypeEnum.ToastRight)
                     $YetaWF.elementAddClass(toastDiv, "t_right");
                 else
                     $YetaWF.elementAddClass(toastDiv, "t_left");
