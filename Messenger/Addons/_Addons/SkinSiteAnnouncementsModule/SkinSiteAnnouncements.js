@@ -32,7 +32,7 @@ var YetaWF_Messenger;
         }
         SkinSiteAnnouncementsModule.prototype.handleMessage = function (content, title) {
             if (SkinSiteAnnouncementsModule.on)
-                $YetaWF.alert(content, title, undefined, { encoded: true });
+                $YetaWF.alert(content, title, undefined, { encoded: true, canClose: true, autoClose: 0 });
         };
         SkinSiteAnnouncementsModule.MODULEGUID = "54F6B691-B835-4568-90AA-AA9B308D4272";
         SkinSiteAnnouncementsModule.PROXY = "YetaWF_Messenger_SiteAnnouncementsHub";

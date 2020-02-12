@@ -4,7 +4,27 @@
 
 namespace YetaWF_ComponentsHTML {
 
+    enum Severity {
+        Info,
+        Warning,
+        Error,
+    }
+
+    interface ToastEntry {
+        Severity: Severity,
+        Title: string;
+        Text: string;
+        Timeout: number;
+        CanClose: boolean;
+    }
+
     export class BasicsImpl implements YetaWF.IBasicsImpl {
+
+        public static readonly DefaultTimeout = 7000;
+
+        ToastDiv: HTMLDivElement|null = null;
+
+        BasicsImpl() { }
 
         // LOADING
         // LOADING
@@ -34,67 +54,105 @@ namespace YetaWF_ComponentsHTML {
          * Displays an informational message, usually in a popup.
          */
         public message(message: string, title?: string, onOK?: () => void, options?: YetaWF.MessageOptions): void {
-            this.alert(message, title|| YLocs.Basics.DefaultSuccessTitle, onOK, options);
+            if (YConfigs.Basics.MessageType == YetaWF.MessageTypeEnum.Popups)
+                this.alert(message, title || YLocs.Basics.DefaultSuccessTitle, onOK, options);
+            else {
+                if (!options)
+                    options = { encoded: false };
+                if (options.canClose === undefined) options.canClose = true;
+                if (options.autoClose === undefined) options.autoClose = BasicsImpl.DefaultTimeout;
+                this.addToast(Severity.Info, title ?? YLocs.Basics.DefaultSuccessTitle, message, options);
+                if (onOK) onOK();
+            }
         }
         /**
          * Displays an error message, usually in a popup.
          */
         public error(message: string, title?: string, onOK?: () => void, options?: YetaWF.MessageOptions): void {
-            this.alert(message, title || YLocs.Basics.DefaultErrorTitle, onOK);
+            if (YConfigs.Basics.MessageType == YetaWF.MessageTypeEnum.Popups)
+                this.alert(message, title || YLocs.Basics.DefaultErrorTitle, onOK);
+            else {
+                if (!options)
+                    options = { encoded: false };
+                if (options.canClose === undefined) options.canClose = true;
+                if (options.autoClose === undefined) options.autoClose = BasicsImpl.DefaultTimeout;
+                this.addToast(Severity.Error, title ?? YLocs.Basics.DefaultErrorTitle, message, options);
+                if (onOK) onOK();
+            }
         }
         /**
          * Displays a confirmation message, usually in a popup.
          */
         public confirm(message: string, title?: string, onOK?: () => void, options?: YetaWF.MessageOptions): void {
-            this.alert(message, title || YLocs.Basics.DefaultSuccessTitle, onOK);
+            if (YConfigs.Basics.MessageType == YetaWF.MessageTypeEnum.Popups)
+                this.alert(message, title || YLocs.Basics.DefaultSuccessTitle, onOK);
+            else {
+                if (!options)
+                    options = { encoded: false };
+                if (options.canClose === undefined) options.canClose = true;
+                if (options.autoClose === undefined) options.autoClose = BasicsImpl.DefaultTimeout;
+                this.addToast(Severity.Info, title ?? YLocs.Basics.DefaultSuccessTitle, message, options);
+                if (onOK) onOK();
+            }
         }
         /**
          * Displays an alert message, usually in a popup.
          */
         public alert(message: string, title?: string, onOK?: () => void, options?: YetaWF.MessageOptions): void {
 
-            ComponentsHTMLHelper.REQUIRES_JQUERYUI((): void => {
+            if (YConfigs.Basics.MessageType == YetaWF.MessageTypeEnum.Popups) {
 
-                // check if we already have a popup (and close it)
-                this.closeAlert(onOK);
+                ComponentsHTMLHelper.REQUIRES_JQUERYUI((): void => {
 
-                $("body").prepend("<div id='yalert'></div>");
-                const $dialog = $("#yalert");
+                    // check if we already have a popup (and close it)
+                    this.closeAlert(onOK);
 
-                options = options || { encoded: false };
+                    $("body").prepend("<div id='yalert'></div>");
+                    const $dialog = $("#yalert");
 
-                if (!options.encoded) {
-                    // change \n to <br/>
-                    $dialog.text(message);
-                    var s = $dialog.html();
-                    s = s.replace(/\(\+nl\)/g, "<br/>");
-                    $dialog.html(s);
-                } else {
-                    $dialog.html(message);
-                }
+                    options = options || { encoded: false };
 
-                if (title === undefined)
-                    title = YLocs.Basics.DefaultAlertTitle;
+                    if (!options.encoded) {
+                        // change \n to <br/>
+                        $dialog.text(message);
+                        var s = $dialog.html();
+                        s = s.replace(/\(\+nl\)/g, "<br/>");
+                        $dialog.html(s);
+                    } else {
+                        $dialog.html(message);
+                    }
 
-                $dialog.dialog({ //jQuery-ui use
-                    autoOpen: true,
-                    modal: true,
-                    width: YConfigs.Basics.DefaultAlertWaitWidth,
-                    height: YConfigs.Basics.DefaultAlertWaitHeight === 0 ? "auto" : YConfigs.Basics.DefaultAlertWaitHeight,
-                    closeOnEscape: true,
-                    closeText: YLocs.Basics.CloseButtonText,
-                    close: (event: Event, ui: JQueryUI.DialogUIParams): void => this.closeAlert(onOK),
-                    draggable: true,
-                    resizable: false,
-                    title: title,
-                    buttons: [{
-                        text: YLocs.Basics.OKButtonText,
-                        click: (eventObject: JQueryEventObject): any => {
-                            $dialog.dialog("close");
-                        }
-                    }]
+                    if (title === undefined)
+                        title = YLocs.Basics.DefaultAlertTitle;
+
+                    $dialog.dialog({ //jQuery-ui use
+                        autoOpen: true,
+                        modal: true,
+                        width: YConfigs.Basics.DefaultAlertWaitWidth,
+                        height: YConfigs.Basics.DefaultAlertWaitHeight === 0 ? "auto" : YConfigs.Basics.DefaultAlertWaitHeight,
+                        closeOnEscape: true,
+                        closeText: YLocs.Basics.CloseButtonText,
+                        close: (event: Event, ui: JQueryUI.DialogUIParams): void => this.closeAlert(onOK),
+                        draggable: true,
+                        resizable: false,
+                        title: title,
+                        buttons: [{
+                            text: YLocs.Basics.OKButtonText,
+                            click: (eventObject: JQueryEventObject): any => {
+                                $dialog.dialog("close");
+                            }
+                        }]
+                    });
                 });
-            });
+
+            } else {
+                if (!options)
+                    options = { encoded: false };
+                if (options.canClose === undefined) options.canClose = true;
+                if (options.autoClose === undefined) options.autoClose = BasicsImpl.DefaultTimeout;
+                this.addToast(Severity.Info, title ?? "Success", message, options);
+                if (onOK) onOK();
+            }
         }
 
         private closeAlert(onOK?: () => void): void {
@@ -292,6 +350,83 @@ namespace YetaWF_ComponentsHTML {
                 if (!$YetaWF.elementHasClass(elem, "yform-nosubmit"))
                     $YetaWF.elementAddClasses(elem, ["yform-novalidate", "yform-nosubmit-temp", "yform-nosubmit"]);
             }
+        }
+
+        // TOAST
+
+        private Toasts: ToastEntry[] = [];
+
+        private addToast(severity: Severity, title: string, message: string, options: YetaWF.MessageOptions) : void {
+            let toastDiv = this.getToastDiv();
+
+            let entry = {
+                Severity: severity,
+                Title: title,
+                Text: message,
+                CanClose: options.canClose == true,
+                Timeout: options.autoClose ? options.autoClose : 0
+            };
+            this.Toasts.push(entry);
+            let entryDiv = document.createElement('div');
+            let html = "";
+            if (title)
+                html += `<div class='t_title'>${$YetaWF.htmlEscape(title)}</div>`;
+            if (options.canClose)
+                html += `<div class='t_close'></div>`;
+            if (message) {
+                if (!options.encoded) {
+                    // change \n to <br/>
+                    let s = $YetaWF.htmlEscape(message);
+                    s = s.replace(/\(\+nl\)/g, "<br/>");
+                    html += `<div class='t_message'>${s}</div>`;
+                } else {
+                    html += `<div class='t_message'>${message}</div>`;
+                }
+            }
+            entryDiv.innerHTML = html;
+            toastDiv.appendChild(entryDiv);
+
+            $YetaWF.elementAddClass(entryDiv, "t_entry");
+            switch (severity) {
+                default:
+                case Severity.Info:
+                    $YetaWF.elementAddClass(entryDiv, "t_info");
+                    break;
+                case Severity.Warning:
+                    $YetaWF.elementAddClass(entryDiv, "t_warning");
+                    break;
+                case Severity.Error:
+                    $YetaWF.elementAddClass(entryDiv, "t_error");
+                    break;
+            }
+
+            if (options.canClose) {
+                $YetaWF.registerEventHandler(entryDiv, "click", ".t_close", (ev: MouseEvent): boolean => {
+                    entryDiv.remove();
+                    this.Toasts = this.Toasts.filter((e:ToastEntry):boolean => { return e != entry; });
+                    return false;
+                });
+            }
+
+            if (options.autoClose) {
+                setTimeout(() => {
+                    entryDiv.remove();
+                    this.Toasts = this.Toasts.filter((e:ToastEntry):boolean => { return e != entry; });
+                }, options.autoClose);
+            }
+        }
+        private getToastDiv(): HTMLDivElement {
+            let toastDiv = $YetaWF.getElement1BySelectorCond("#ytoast") as HTMLDivElement|null;
+            if (!toastDiv) {
+                toastDiv = document.createElement("div");
+                if (YConfigs.Basics.MessageType == YetaWF.MessageTypeEnum.ToastRight)
+                    $YetaWF.elementAddClass(toastDiv, "t_right");
+                else
+                    $YetaWF.elementAddClass(toastDiv, "t_left");
+                toastDiv.id = "ytoast";
+                document.body.appendChild(toastDiv);
+            }
+            return toastDiv;
         }
     }
 }

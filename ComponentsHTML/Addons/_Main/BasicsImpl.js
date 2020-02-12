@@ -3,13 +3,23 @@
 /* Basics implementation required by YetaWF */
 var YetaWF_ComponentsHTML;
 (function (YetaWF_ComponentsHTML) {
+    var Severity;
+    (function (Severity) {
+        Severity[Severity["Info"] = 0] = "Info";
+        Severity[Severity["Warning"] = 1] = "Warning";
+        Severity[Severity["Error"] = 2] = "Error";
+    })(Severity || (Severity = {}));
     var BasicsImpl = /** @class */ (function () {
         function BasicsImpl() {
+            this.ToastDiv = null;
             // LOADING
             // LOADING
             // LOADING
             this.loading = false;
+            // TOAST
+            this.Toasts = [];
         }
+        BasicsImpl.prototype.BasicsImpl = function () { };
         Object.defineProperty(BasicsImpl.prototype, "isLoading", {
             get: function () {
                 return this.loading;
@@ -34,62 +44,111 @@ var YetaWF_ComponentsHTML;
          * Displays an informational message, usually in a popup.
          */
         BasicsImpl.prototype.message = function (message, title, onOK, options) {
-            this.alert(message, title || YLocs.Basics.DefaultSuccessTitle, onOK, options);
+            if (YConfigs.Basics.MessageType == YetaWF.MessageTypeEnum.Popups)
+                this.alert(message, title || YLocs.Basics.DefaultSuccessTitle, onOK, options);
+            else {
+                if (!options)
+                    options = { encoded: false };
+                if (options.canClose === undefined)
+                    options.canClose = true;
+                if (options.autoClose === undefined)
+                    options.autoClose = BasicsImpl.DefaultTimeout;
+                this.addToast(Severity.Info, (title !== null && title !== void 0 ? title : YLocs.Basics.DefaultSuccessTitle), message, options);
+                if (onOK)
+                    onOK();
+            }
         };
         /**
          * Displays an error message, usually in a popup.
          */
         BasicsImpl.prototype.error = function (message, title, onOK, options) {
-            this.alert(message, title || YLocs.Basics.DefaultErrorTitle, onOK);
+            if (YConfigs.Basics.MessageType == YetaWF.MessageTypeEnum.Popups)
+                this.alert(message, title || YLocs.Basics.DefaultErrorTitle, onOK);
+            else {
+                if (!options)
+                    options = { encoded: false };
+                if (options.canClose === undefined)
+                    options.canClose = true;
+                if (options.autoClose === undefined)
+                    options.autoClose = BasicsImpl.DefaultTimeout;
+                this.addToast(Severity.Error, (title !== null && title !== void 0 ? title : YLocs.Basics.DefaultErrorTitle), message, options);
+                if (onOK)
+                    onOK();
+            }
         };
         /**
          * Displays a confirmation message, usually in a popup.
          */
         BasicsImpl.prototype.confirm = function (message, title, onOK, options) {
-            this.alert(message, title || YLocs.Basics.DefaultSuccessTitle, onOK);
+            if (YConfigs.Basics.MessageType == YetaWF.MessageTypeEnum.Popups)
+                this.alert(message, title || YLocs.Basics.DefaultSuccessTitle, onOK);
+            else {
+                if (!options)
+                    options = { encoded: false };
+                if (options.canClose === undefined)
+                    options.canClose = true;
+                if (options.autoClose === undefined)
+                    options.autoClose = BasicsImpl.DefaultTimeout;
+                this.addToast(Severity.Info, (title !== null && title !== void 0 ? title : YLocs.Basics.DefaultSuccessTitle), message, options);
+                if (onOK)
+                    onOK();
+            }
         };
         /**
          * Displays an alert message, usually in a popup.
          */
         BasicsImpl.prototype.alert = function (message, title, onOK, options) {
             var _this = this;
-            ComponentsHTMLHelper.REQUIRES_JQUERYUI(function () {
-                // check if we already have a popup (and close it)
-                _this.closeAlert(onOK);
-                $("body").prepend("<div id='yalert'></div>");
-                var $dialog = $("#yalert");
-                options = options || { encoded: false };
-                if (!options.encoded) {
-                    // change \n to <br/>
-                    $dialog.text(message);
-                    var s = $dialog.html();
-                    s = s.replace(/\(\+nl\)/g, "<br/>");
-                    $dialog.html(s);
-                }
-                else {
-                    $dialog.html(message);
-                }
-                if (title === undefined)
-                    title = YLocs.Basics.DefaultAlertTitle;
-                $dialog.dialog({
-                    autoOpen: true,
-                    modal: true,
-                    width: YConfigs.Basics.DefaultAlertWaitWidth,
-                    height: YConfigs.Basics.DefaultAlertWaitHeight === 0 ? "auto" : YConfigs.Basics.DefaultAlertWaitHeight,
-                    closeOnEscape: true,
-                    closeText: YLocs.Basics.CloseButtonText,
-                    close: function (event, ui) { return _this.closeAlert(onOK); },
-                    draggable: true,
-                    resizable: false,
-                    title: title,
-                    buttons: [{
-                            text: YLocs.Basics.OKButtonText,
-                            click: function (eventObject) {
-                                $dialog.dialog("close");
-                            }
-                        }]
+            if (YConfigs.Basics.MessageType == YetaWF.MessageTypeEnum.Popups) {
+                ComponentsHTMLHelper.REQUIRES_JQUERYUI(function () {
+                    // check if we already have a popup (and close it)
+                    _this.closeAlert(onOK);
+                    $("body").prepend("<div id='yalert'></div>");
+                    var $dialog = $("#yalert");
+                    options = options || { encoded: false };
+                    if (!options.encoded) {
+                        // change \n to <br/>
+                        $dialog.text(message);
+                        var s = $dialog.html();
+                        s = s.replace(/\(\+nl\)/g, "<br/>");
+                        $dialog.html(s);
+                    }
+                    else {
+                        $dialog.html(message);
+                    }
+                    if (title === undefined)
+                        title = YLocs.Basics.DefaultAlertTitle;
+                    $dialog.dialog({
+                        autoOpen: true,
+                        modal: true,
+                        width: YConfigs.Basics.DefaultAlertWaitWidth,
+                        height: YConfigs.Basics.DefaultAlertWaitHeight === 0 ? "auto" : YConfigs.Basics.DefaultAlertWaitHeight,
+                        closeOnEscape: true,
+                        closeText: YLocs.Basics.CloseButtonText,
+                        close: function (event, ui) { return _this.closeAlert(onOK); },
+                        draggable: true,
+                        resizable: false,
+                        title: title,
+                        buttons: [{
+                                text: YLocs.Basics.OKButtonText,
+                                click: function (eventObject) {
+                                    $dialog.dialog("close");
+                                }
+                            }]
+                    });
                 });
-            });
+            }
+            else {
+                if (!options)
+                    options = { encoded: false };
+                if (options.canClose === undefined)
+                    options.canClose = true;
+                if (options.autoClose === undefined)
+                    options.autoClose = BasicsImpl.DefaultTimeout;
+                this.addToast(Severity.Info, (title !== null && title !== void 0 ? title : "Success"), message, options);
+                if (onOK)
+                    onOK();
+            }
         };
         BasicsImpl.prototype.closeAlert = function (onOK) {
             var $dialog = $("#yalert");
@@ -279,6 +338,77 @@ var YetaWF_ComponentsHTML;
                     $YetaWF.elementAddClasses(elem, ["yform-novalidate", "yform-nosubmit-temp", "yform-nosubmit"]);
             }
         };
+        BasicsImpl.prototype.addToast = function (severity, title, message, options) {
+            var _this = this;
+            var toastDiv = this.getToastDiv();
+            var entry = {
+                Severity: severity,
+                Title: title,
+                Text: message,
+                CanClose: options.canClose == true,
+                Timeout: options.autoClose ? options.autoClose : 0
+            };
+            this.Toasts.push(entry);
+            var entryDiv = document.createElement('div');
+            var html = "";
+            if (title)
+                html += "<div class='t_title'>" + $YetaWF.htmlEscape(title) + "</div>";
+            if (options.canClose)
+                html += "<div class='t_close'></div>";
+            if (message) {
+                if (!options.encoded) {
+                    // change \n to <br/>
+                    var s = $YetaWF.htmlEscape(message);
+                    s = s.replace(/\(\+nl\)/g, "<br/>");
+                    html += "<div class='t_message'>" + s + "</div>";
+                }
+                else {
+                    html += "<div class='t_message'>" + message + "</div>";
+                }
+            }
+            entryDiv.innerHTML = html;
+            toastDiv.appendChild(entryDiv);
+            $YetaWF.elementAddClass(entryDiv, "t_entry");
+            switch (severity) {
+                default:
+                case Severity.Info:
+                    $YetaWF.elementAddClass(entryDiv, "t_info");
+                    break;
+                case Severity.Warning:
+                    $YetaWF.elementAddClass(entryDiv, "t_warning");
+                    break;
+                case Severity.Error:
+                    $YetaWF.elementAddClass(entryDiv, "t_error");
+                    break;
+            }
+            if (options.canClose) {
+                $YetaWF.registerEventHandler(entryDiv, "click", ".t_close", function (ev) {
+                    entryDiv.remove();
+                    _this.Toasts = _this.Toasts.filter(function (e) { return e != entry; });
+                    return false;
+                });
+            }
+            if (options.autoClose) {
+                setTimeout(function () {
+                    entryDiv.remove();
+                    _this.Toasts = _this.Toasts.filter(function (e) { return e != entry; });
+                }, options.autoClose);
+            }
+        };
+        BasicsImpl.prototype.getToastDiv = function () {
+            var toastDiv = $YetaWF.getElement1BySelectorCond("#ytoast");
+            if (!toastDiv) {
+                toastDiv = document.createElement("div");
+                if (YConfigs.Basics.MessageType == YetaWF.MessageTypeEnum.ToastRight)
+                    $YetaWF.elementAddClass(toastDiv, "t_right");
+                else
+                    $YetaWF.elementAddClass(toastDiv, "t_left");
+                toastDiv.id = "ytoast";
+                document.body.appendChild(toastDiv);
+            }
+            return toastDiv;
+        };
+        BasicsImpl.DefaultTimeout = 7000;
         return BasicsImpl;
     }());
     YetaWF_ComponentsHTML.BasicsImpl = BasicsImpl;

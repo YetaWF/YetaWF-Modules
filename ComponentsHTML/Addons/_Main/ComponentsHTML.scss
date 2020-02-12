@@ -94,6 +94,97 @@ i.yic {
     z-index: 3000;
 }
 
+/* Toast */
+
+$infocolor: #555;
+$infobgcolor: antiquewhite;
+$infoshadow: #aaa;
+$infoline: #ddd;
+
+$warncolor: #555;
+$warnbgcolor: lightgreen;
+$warnshadow: #aaa;
+$warnline: #ddd;
+
+$errorcolor: white;
+$errorbgcolor: red;
+$errorshadow: #aaa;
+$errorline: #ddd;
+
+#ytoast {
+    position:fixed;
+    bottom:0;
+    width:300px;
+    margin-bottom:0;
+    @media (min-width: 500px) {
+        width:400px;
+        margin-bottom:2em;
+    }
+    margin-top:2em;
+    overflow: hidden;
+    .t_entry {
+        position:relative;
+        border: 1px solid rgba(0,0,0,.1);
+        margin:1ch;
+        padding:1ch;
+        border-radius:5px;
+        &.t_info .t_title {
+            border-bottom: 1px solid $infoline;
+        }
+        &.t_error .t_title {
+            border-bottom: 1px solid $errorline;
+        }
+        &.t_warning .t_title {
+            border-bottom: 1px solid $warnline;
+        }
+        .t_title {
+            margin-bottom: .5em;
+            font-weight:bold;
+        }
+        &.t_info {
+            color: $infocolor;
+            background-color: $infobgcolor;
+            box-shadow: 0px 0px 5px 0px $infoshadow;
+        }
+        &.t_error {
+            color: $errorcolor;
+            background-color: $errorbgcolor;
+            box-shadow: 0px 0px 5px 0px $errorshadow;
+        }
+        &.t_warning {
+            color: $warncolor;
+            background-color: $warnbgcolor;
+            box-shadow: 0px 0px 5px 0px $warnshadow;
+        }
+        .t_message {
+            font-weight:500;
+        }
+        .t_close {
+            width: 16px;
+            height: 16px;
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            background-image:url(images/Close.png)
+        }
+    }
+    &.t_center {
+
+    }
+    &.t_right {
+        right: 0;
+        @media (min-width: 500px) {
+            right: 5ch;
+        }
+    }
+    &.t_left {
+        left: 0;
+        @media (min-width: 500px) {
+            left: 5ch;
+        }
+    }
+}
+
 /* Print */
 
 @media print {

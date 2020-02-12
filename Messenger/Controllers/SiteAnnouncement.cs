@@ -80,7 +80,7 @@ namespace YetaWF.Modules.Messenger.Controllers {
                 return PartialView(model);
 
             if (model.TestMode) {
-                return FormProcessed(model, model.Message, model.Title, OnClose: OnCloseEnum.UpdateInPlace, OnPopupClose: OnPopupCloseEnum.UpdateInPlace, PopupOptions: "{encoded:true}");
+                return FormProcessed(model, model.Message, model.Title, OnClose: OnCloseEnum.UpdateInPlace, OnPopupClose: OnPopupCloseEnum.UpdateInPlace, PopupOptions: "{encoded:true, canClose: true, autoClose: 0}");
             } else {
                 using (SiteAnnouncementDataProvider siteAnnounceDP = new SiteAnnouncementDataProvider()) {
 

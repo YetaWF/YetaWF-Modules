@@ -22,7 +22,7 @@ namespace YetaWF_ComponentsHTML {
                 var popup: kendo.ui.Window | null = window.parent.document.YPopupWindowActive;
                 (window.parent as any).YVolatile.Basics.IsInPopup = false;
                 window.parent.document.YPopupWindowActive = null;
-                PopupsImpl.internalClosePopup(popup);
+                PopupsImpl.internalClosePopup(popup, true);
             }
         }
 
@@ -31,11 +31,11 @@ namespace YetaWF_ComponentsHTML {
          */
         public closeInnerPopup(): void {
             var popup: kendo.ui.Window | null = document.YPopupWindowActive;
-            PopupsImpl.internalClosePopup(popup);
+            PopupsImpl.internalClosePopup(popup, true);
 
         }
 
-        private static internalClosePopup(popup: kendo.ui.Window | null, close?: boolean): void {
+        private static internalClosePopup(popup: kendo.ui.Window | null, close: boolean): void {
             if (popup) {
                 if (close)
                     popup.close();

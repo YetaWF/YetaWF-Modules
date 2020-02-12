@@ -43,7 +43,7 @@ namespace YetaWF_Messenger {
         }
         private handleMessage(content: string, title: string): void {
             if (SkinSiteAnnouncementsModule.on)
-                $YetaWF.alert(content, title, undefined, { encoded: true });
+                $YetaWF.alert(content, title, undefined, { encoded: true, canClose: true, autoClose: 0 });
         }
     }
 }

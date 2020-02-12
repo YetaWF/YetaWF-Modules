@@ -17,7 +17,7 @@ var YetaWF_ComponentsHTML;
                 var popup = window.parent.document.YPopupWindowActive;
                 window.parent.YVolatile.Basics.IsInPopup = false;
                 window.parent.document.YPopupWindowActive = null;
-                PopupsImpl.internalClosePopup(popup);
+                PopupsImpl.internalClosePopup(popup, true);
             }
         };
         /**
@@ -25,7 +25,7 @@ var YetaWF_ComponentsHTML;
          */
         PopupsImpl.prototype.closeInnerPopup = function () {
             var popup = document.YPopupWindowActive;
-            PopupsImpl.internalClosePopup(popup);
+            PopupsImpl.internalClosePopup(popup, true);
         };
         PopupsImpl.internalClosePopup = function (popup, close) {
             if (popup) {

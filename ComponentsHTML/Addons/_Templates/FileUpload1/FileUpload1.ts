@@ -174,7 +174,7 @@ namespace YetaWF_ComponentsHTML {
                 data: "__internalName=" + encodeURIComponent(name) + "&__filename=" + encodeURIComponent(name),
                 success: (result: any, textStatus: string, jqXHR: JQueryXHR): void => { },
                 error: (jqXHR: JQueryXHR, textStatus: string, errorThrown: any): void => {
-                    $YetaWF.alert(YLocs.Forms.AjaxError.format(jqXHR.status, jqXHR.statusText), YLocs.Forms.AjaxErrorTitle);
+                    $YetaWF.error(YLocs.Forms.AjaxError.format(jqXHR.status, jqXHR.statusText), YLocs.Forms.AjaxErrorTitle);
                 }
             });
         }
