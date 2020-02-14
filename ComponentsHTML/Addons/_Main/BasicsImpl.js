@@ -402,7 +402,7 @@ var YetaWF_ComponentsHTML;
         BasicsImpl.prototype.removeToast = function (entryDiv, entry) {
             entryDiv.remove();
             this.Toasts = this.Toasts.filter(function (e) { return e !== entry; });
-            if (this.Toasts.length == 0) {
+            if (this.Toasts.length === 0) {
                 var toastDiv = $YetaWF.getElement1BySelectorCond(BasicsImpl.ToastDivSelector);
                 if (toastDiv)
                     toastDiv.remove();
@@ -431,5 +431,3 @@ var YetaWF_ComponentsHTML;
 })(YetaWF_ComponentsHTML || (YetaWF_ComponentsHTML = {}));
 // tslint:disable-next-line:variable-name
 var YetaWF_BasicsImpl = new YetaWF_ComponentsHTML.BasicsImpl();
-
-//# sourceMappingURL=BasicsImpl.js.map

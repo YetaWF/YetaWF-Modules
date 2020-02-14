@@ -422,7 +422,7 @@ namespace YetaWF_ComponentsHTML {
         private removeToast(entryDiv: HTMLElement, entry: ToastEntry): void {
             entryDiv.remove();
             this.Toasts = this.Toasts.filter((e: ToastEntry): boolean => { return e !== entry; });
-            if (this.Toasts.length == 0) {
+            if (this.Toasts.length === 0) {
                 let toastDiv = $YetaWF.getElement1BySelectorCond(BasicsImpl.ToastDivSelector) as HTMLDivElement | null;
                 if (toastDiv)
                     toastDiv.remove();
