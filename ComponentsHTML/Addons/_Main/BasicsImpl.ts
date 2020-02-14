@@ -429,7 +429,11 @@ namespace YetaWF_ComponentsHTML {
             }
         }
         private getToastDiv(): HTMLDivElement {
-            let toastDiv = $YetaWF.getElement1BySelectorCond(BasicsImpl.ToastDivSelector) as HTMLDivElement|null;
+            // if we're in an iframe popup, find outer window to add toast div
+            // if we're not in an iframe, window.parent simply returns window, so we're all good
+            let doc = window.parent.document;
+
+            let toastDiv = $YetaWF.getElement1BySelectorCond(BasicsImpl.ToastDivSelector, [doc.body]) as HTMLDivElement | null;
             if (!toastDiv) {
                 toastDiv = document.createElement("div");
                 if (YConfigs.Basics.MessageType === YetaWF.MessageTypeEnum.ToastRight)
@@ -439,7 +443,7 @@ namespace YetaWF_ComponentsHTML {
                 toastDiv.id = "ytoast";
                 $YetaWF.setAttribute(toastDiv, "aria-live", "polite");
                 $YetaWF.setAttribute(toastDiv, "aria-atomic", "true");
-                document.body.appendChild(toastDiv);
+                doc.body.appendChild(toastDiv);
             }
             return toastDiv;
         }

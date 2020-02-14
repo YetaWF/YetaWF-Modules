@@ -112,6 +112,7 @@ $errorshadow: #aaa;
 $errorline: #ddd;
 
 #ytoast {
+    z-index:4001; // keep above overlay and all popups
     position:fixed;
     bottom:0;
     width:300px;

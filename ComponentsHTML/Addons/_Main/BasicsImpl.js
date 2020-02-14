@@ -409,7 +409,10 @@ var YetaWF_ComponentsHTML;
             }
         };
         BasicsImpl.prototype.getToastDiv = function () {
-            var toastDiv = $YetaWF.getElement1BySelectorCond(BasicsImpl.ToastDivSelector);
+            // if we're in an iframe popup, find outer window to add toast div
+            // if we're not in an iframe, window.parent simply returns window, so we're all good
+            var doc = window.parent.document;
+            var toastDiv = $YetaWF.getElement1BySelectorCond(BasicsImpl.ToastDivSelector, [doc.body]);
             if (!toastDiv) {
                 toastDiv = document.createElement("div");
                 if (YConfigs.Basics.MessageType === YetaWF.MessageTypeEnum.ToastRight)
@@ -419,7 +422,7 @@ var YetaWF_ComponentsHTML;
                 toastDiv.id = "ytoast";
                 $YetaWF.setAttribute(toastDiv, "aria-live", "polite");
                 $YetaWF.setAttribute(toastDiv, "aria-atomic", "true");
-                document.body.appendChild(toastDiv);
+                doc.body.appendChild(toastDiv);
             }
             return toastDiv;
         };

@@ -76,6 +76,7 @@ i.yic.yic_componentshtml_modmenuedit {
 
 /* Toast */
 #ytoast {
+  z-index: 4001;
   position: fixed;
   bottom: 0;
   width: 300px;
