@@ -473,6 +473,10 @@ namespace YetaWF_ComponentsHTML {
         public setElementData(liElem: HTMLLIElement, data: TreeEntry): void {
             $YetaWF.setAttribute(liElem, "data-record", JSON.stringify(data));
         }
+        public getEntryFromTagCond(tag: HTMLElement): HTMLLIElement | null {
+            return $YetaWF.elementClosest(tag, "li") as HTMLLIElement | null;
+        }
+
         public getSelect(): HTMLLIElement | null {
             let entry = $YetaWF.getElement1BySelectorCond(`.t_entry.${this.Setup.SelectedCss}`, [this.Control]) as HTMLElement;
             if (!entry) return null;

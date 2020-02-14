@@ -349,11 +349,12 @@ var YetaWF_ComponentsHTML;
             };
             this.Toasts.push(entry);
             var entryDiv = document.createElement("div");
+            $YetaWF.setAttribute(entryDiv, "aria-atomic", "true");
             var html = "";
             if (title)
                 html += "<div class='t_title'>" + $YetaWF.htmlEscape(title) + "</div>";
             if (options.canClose)
-                html += "<div class='t_close'></div>";
+                html += "<div class='t_close' aria-label='Close'></div>";
             if (message) {
                 if (!options.encoded) {
                     // change \n to <br/>
@@ -371,31 +372,44 @@ var YetaWF_ComponentsHTML;
             switch (severity) {
                 default:
                 case Severity.Info:
+                    $YetaWF.setAttribute(entryDiv, "role", "status");
+                    $YetaWF.setAttribute(entryDiv, "aria-live", "polite");
                     $YetaWF.elementAddClass(entryDiv, "t_info");
                     break;
                 case Severity.Warning:
+                    $YetaWF.setAttribute(entryDiv, "role", "alert");
+                    $YetaWF.setAttribute(entryDiv, "aria-live", "assertive");
                     $YetaWF.elementAddClass(entryDiv, "t_warning");
                     break;
                 case Severity.Error:
+                    $YetaWF.setAttribute(entryDiv, "role", "alert");
+                    $YetaWF.setAttribute(entryDiv, "aria-live", "assertive");
                     $YetaWF.elementAddClass(entryDiv, "t_error");
                     break;
             }
             if (options.canClose) {
                 $YetaWF.registerEventHandler(entryDiv, "click", ".t_close", function (ev) {
-                    entryDiv.remove();
-                    _this.Toasts = _this.Toasts.filter(function (e) { return e !== entry; });
+                    _this.removeToast(entryDiv, entry);
                     return false;
                 });
             }
             if (options.autoClose) {
                 setTimeout(function () {
-                    entryDiv.remove();
-                    _this.Toasts = _this.Toasts.filter(function (e) { return e !== entry; });
+                    _this.removeToast(entryDiv, entry);
                 }, options.autoClose);
             }
         };
+        BasicsImpl.prototype.removeToast = function (entryDiv, entry) {
+            entryDiv.remove();
+            this.Toasts = this.Toasts.filter(function (e) { return e !== entry; });
+            if (this.Toasts.length == 0) {
+                var toastDiv = $YetaWF.getElement1BySelectorCond(BasicsImpl.ToastDivSelector);
+                if (toastDiv)
+                    toastDiv.remove();
+            }
+        };
         BasicsImpl.prototype.getToastDiv = function () {
-            var toastDiv = $YetaWF.getElement1BySelectorCond("#ytoast");
+            var toastDiv = $YetaWF.getElement1BySelectorCond(BasicsImpl.ToastDivSelector);
             if (!toastDiv) {
                 toastDiv = document.createElement("div");
                 if (YConfigs.Basics.MessageType === YetaWF.MessageTypeEnum.ToastRight)
@@ -403,10 +417,13 @@ var YetaWF_ComponentsHTML;
                 else
                     $YetaWF.elementAddClass(toastDiv, "t_left");
                 toastDiv.id = "ytoast";
+                $YetaWF.setAttribute(toastDiv, "aria-live", "polite");
+                $YetaWF.setAttribute(toastDiv, "aria-atomic", "true");
                 document.body.appendChild(toastDiv);
             }
             return toastDiv;
         };
+        BasicsImpl.ToastDivSelector = "#ytoast";
         BasicsImpl.DefaultTimeout = 7000;
         return BasicsImpl;
     }());

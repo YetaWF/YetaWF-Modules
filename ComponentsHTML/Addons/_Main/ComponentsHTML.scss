@@ -116,11 +116,11 @@ $errorline: #ddd;
     bottom:0;
     width:300px;
     margin-bottom:0;
+    padding-bottom:0;
     @media (min-width: 500px) {
         width:400px;
-        margin-bottom:2em;
+        padding-bottom:2em;
     }
-    margin-top:2em;
     overflow: hidden;
     .t_entry {
         position:relative;

@@ -463,6 +463,9 @@ var YetaWF_ComponentsHTML;
         TreeComponent.prototype.setElementData = function (liElem, data) {
             $YetaWF.setAttribute(liElem, "data-record", JSON.stringify(data));
         };
+        TreeComponent.prototype.getEntryFromTagCond = function (tag) {
+            return $YetaWF.elementClosest(tag, "li");
+        };
         TreeComponent.prototype.getSelect = function () {
             var entry = $YetaWF.getElement1BySelectorCond(".t_entry." + this.Setup.SelectedCss, [this.Control]);
             if (!entry)
