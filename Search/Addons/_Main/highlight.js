@@ -87,12 +87,13 @@ Johann Burkard
 	}
 
 	$.fn.removeHighlight = function() {
-		return this.find("span.highlight").each(function() {
-			this.parentNode.firstChild.nodeName;
-			with(this.parentNode) {
-				replaceChild(this.firstChild, this);
-				normalize();
-			}
+		return this.find("span.highlight").each(function () {
+			//&&&&&&&&&&&&&&&&&&& CUSTOMIZATION:
+			let parent = this.parentNode;
+			var content = document.createTextNode(this.innerText);
+			parent.replaceChild(content, this);
+			parent.normalize();
+			//&&&&&&&&&&&&&&&&&&& END OF CUSTOMIZATION
 		}).end();
 	};
 }(window.jQuery);
