@@ -90,7 +90,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             int width = PropData.GetAdditionalAttributeValue("Width", 0);
             int height = PropData.GetAdditionalAttributeValue("Height", 0);
 
-            if (string.IsNullOrWhiteSpace(imageType) && model != null && (model.IsAbsoluteUrl() || model.StartsWith("/"))) {
+            if (string.IsNullOrWhiteSpace(imageType) && model != null && (model.IsAbsoluteUrl() || model.StartsWith("/") || model.StartsWith("data:"))) {
 
                 if (width != 0 || height != 0) throw new InternalError("Can't use Width or Height with external Urls");
 
