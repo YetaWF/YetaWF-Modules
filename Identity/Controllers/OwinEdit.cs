@@ -28,7 +28,7 @@ namespace YetaWF.Modules.Identity.Controllers {
                 MicrosoftUrl = "https://portal.azure.com/#blade/Microsoft_AAD_RegisteredApps/ApplicationsListBlade"; // was "https://account.live.com/developers/applications/";
                 GoogleUrl = "https://console.developers.google.com/apis/credentials"; // general "https://developers.google.com/identity/sign-in/web";
                 FacebookUrl = "https://developers.facebook.com/apps";
-                TwitterUrl = "https://dev.twitter.com/apps";
+                TwitterUrl = "https://developer.twitter.com/apps";
             }
 
             [Category("Built-In Login"), Caption("Password Renewal"), Description("The time after which a user must change the password - Set to 0 to allow passwords to remain valid indefinitely")]
@@ -99,12 +99,12 @@ namespace YetaWF.Modules.Identity.Controllers {
             [Category("External Login"), Caption("Microsoft"), Description("Provides a link to Microsoft to set up authentication for your sites")]
             [UIHint("Url"), ReadOnly]
             public string MicrosoftUrl { get; set; }
-            [Category("External Login"), Caption("Microsoft Public Key"), Description("The public key for authentication using Microsoft")]
+            [Category("External Login"), Caption("Microsoft Application ID"), Description("The Application (client) ID for authentication using Microsoft")]
             [UIHint("Text80"), StringLength(MaxKey), Trim]
             [RequiredIf(nameof(UseMicrosoft), true)]
             [ExcludeDemoMode]
             public string MicrosoftPublic { get; set; }
-            [Category("External Login"), Caption("Microsoft Private Key"), Description("The private key for authentication using Microsoft")]
+            [Category("External Login"), Caption("Microsoft Client Secret"), Description("The Client Secret for authentication using Microsoft")]
             [UIHint("Text80"), RequiredIfSuppliedAttribute("MicrosoftPublic"), StringLength(MaxKey), Trim]
             [RequiredIf(nameof(UseMicrosoft), true)]
             [ExcludeDemoMode]
@@ -116,12 +116,12 @@ namespace YetaWF.Modules.Identity.Controllers {
             [Category("External Login"), Caption("Twitter"), Description("Provides a link to Twitter to set up authentication for your sites")]
             [UIHint("Url"), ReadOnly]
             public string TwitterUrl { get; set; }
-            [Category("External Login"), Caption("Twitter Consumer Key"), Description("The Consumer Key (API Key) for authentication using Twitter (defined using Twitter)")]
+            [Category("External Login"), Caption("Twitter API Key"), Description("The API Key for authentication using Twitter (defined using Twitter)")]
             [UIHint("Text80"), StringLength(MaxKey), Trim]
             [RequiredIf(nameof(UseTwitter), true)]
             [ExcludeDemoMode]
             public string TwitterPublic { get; set; }
-            [Category("External Login"), Caption("Twitter Consumer Secret"), Description("The Consumer Secret (API Secret) for authentication using Twitter (defined using Twitter)")]
+            [Category("External Login"), Caption("Twitter API Secret Key"), Description("The API Secret Key for authentication using Twitter (defined using Twitter)")]
             [UIHint("Text80"), RequiredIfSuppliedAttribute("TwitterPublic"), StringLength(MaxKey), Trim]
             [RequiredIf(nameof(UseTwitter), true)]
             [ExcludeDemoMode]

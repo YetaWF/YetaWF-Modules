@@ -84,7 +84,7 @@ namespace YetaWF.Modules.Search.DataProvider {
                     if (parenLevel <= 0)
                         throw new Error(this.__ResStr("invQueryCloseParen", "Invalid query - too many ')'"));
                     parenLevel--;
-                    search = search.Remove(0, 1);
+                    list.Search = search.Remove(0, 1);
                     return list;
                 } else {
                     string token;
@@ -136,6 +136,7 @@ namespace YetaWF.Modules.Search.DataProvider {
             }
             if (parenLevel > 0)
                 throw new Error(this.__ResStr("invQueryOpenParen", "Invalid query - unmatched '('"));
+            list.Search = search;
             return list;
         }
     }
