@@ -52,7 +52,7 @@ var YetaWF_ComponentsHTML;
                     options.canClose = true;
                 if (options.autoClose === undefined)
                     options.autoClose = BasicsImpl.DefaultTimeout;
-                this.addToast(Severity.Info, (title !== null && title !== void 0 ? title : YLocs.Basics.DefaultSuccessTitle), message, options);
+                this.addToast(Severity.Info, title !== null && title !== void 0 ? title : YLocs.Basics.DefaultSuccessTitle, message, options);
                 if (onOK)
                     onOK();
             }
@@ -70,7 +70,7 @@ var YetaWF_ComponentsHTML;
                     options.canClose = true;
                 if (options.autoClose === undefined)
                     options.autoClose = BasicsImpl.DefaultTimeout;
-                this.addToast(Severity.Error, (title !== null && title !== void 0 ? title : YLocs.Basics.DefaultErrorTitle), message, options);
+                this.addToast(Severity.Error, title !== null && title !== void 0 ? title : YLocs.Basics.DefaultErrorTitle, message, options);
                 if (onOK)
                     onOK();
             }
@@ -88,7 +88,7 @@ var YetaWF_ComponentsHTML;
                     options.canClose = true;
                 if (options.autoClose === undefined)
                     options.autoClose = BasicsImpl.DefaultTimeout;
-                this.addToast(Severity.Info, (title !== null && title !== void 0 ? title : YLocs.Basics.DefaultSuccessTitle), message, options);
+                this.addToast(Severity.Info, title !== null && title !== void 0 ? title : YLocs.Basics.DefaultSuccessTitle, message, options);
                 if (onOK)
                     onOK();
             }
@@ -144,7 +144,7 @@ var YetaWF_ComponentsHTML;
                     options.canClose = true;
                 if (options.autoClose === undefined)
                     options.autoClose = BasicsImpl.DefaultTimeout;
-                this.addToast(Severity.Info, (title !== null && title !== void 0 ? title : "Success"), message, options);
+                this.addToast(Severity.Info, title !== null && title !== void 0 ? title : "Success", message, options);
                 if (onOK)
                     onOK();
             }

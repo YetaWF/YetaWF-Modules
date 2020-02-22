@@ -221,8 +221,13 @@ namespace YetaWF.Modules.Identity.DataProvider {
 
             if (!Manager.HasSuperUserRole) {
                 int superuserRole = Resource.ResourceAccess.GetSuperuserRoleId();
-                if (data.RolesList.Contains(new Role { RoleId = superuserRole }, new RoleComparer()))
-                    throw new Error(this.__ResStr("noSup", "Only a superuser can assign superuser status to another user"));
+                if (data.RolesList.Contains(new Role { RoleId = superuserRole }, new RoleComparer())) {
+                    // new data has super user role
+                    // get original to make sure superuser role isn't new
+                    UserDefinition origData = await GetItemByUserIdAsync(data.UserId);
+                    if (!origData.RolesList.Contains(new Role { RoleId = superuserRole }, new RoleComparer()))
+                        throw new Error(this.__ResStr("noSup", "Only a superuser can assign superuser status to another user"));
+                }
             }
 
             if (string.Compare(data.UserName, SuperuserDefinitionDataProvider.SuperUserName, true) == 0 &&

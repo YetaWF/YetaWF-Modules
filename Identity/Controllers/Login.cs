@@ -124,6 +124,9 @@ namespace YetaWF.Modules.Identity.Controllers {
         [AllowGet]
         public async Task<ActionResult> Login(string name, string pswd, string v, bool closeOnLogin = false, bool __f = false) {
 
+            // add popup support for possible 2fa
+            await YetaWFCoreRendering.Render.AddPopupsAddOnsAsync();
+
             LoginConfigData config = await LoginConfigDataProvider.GetConfigAsync();
             bool isPersistent = config.PersistentLogin;
 
