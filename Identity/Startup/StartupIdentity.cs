@@ -7,6 +7,7 @@ using Microsoft.AspNet.Identity;
 using Microsoft.Owin.Security;
 using Microsoft.Owin.Security.Cookies;
 using Owin;
+using System;
 using YetaWF.Core.Support;
 
 namespace YetaWF.Modules.Identity {

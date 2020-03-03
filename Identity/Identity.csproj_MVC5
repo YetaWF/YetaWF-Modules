@@ -232,6 +232,7 @@
     <Compile Include="Modules\UsersDisplay.cs" />
     <Compile Include="Modules\OwinEdit.cs" />
     <Compile Include="Modules\UsersEdit.cs" />
+    <Compile Include="Startup\OwinConfig.cs" />
     <Compile Include="Startup\Startup.cs" />
     <Compile Include="Startup\StartupIdentity.cs" />
     <Compile Include="Support\Emails.cs" />
