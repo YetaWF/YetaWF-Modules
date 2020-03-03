@@ -25,6 +25,7 @@ namespace YetaWF.Modules.SiteProperties.Views {
 {await RenderBeginFormAsync()}
     {await PartialForm(async () => await RenderPartialViewAsync(module, model))}
     {await FormButtonsAsync(new FormButton[] {
+        new FormButton() { ButtonType= ButtonTypeEnum.Apply, },
         new FormButton() { ButtonType= ButtonTypeEnum.Submit, },
         new FormButton() { ButtonType= ButtonTypeEnum.Cancel, },
     })}
