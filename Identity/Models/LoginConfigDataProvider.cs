@@ -69,13 +69,37 @@ namespace YetaWF.Modules.Identity.DataProvider {
         public SerializableList<Role> TwoStepAuth { get; set; }
 
         [Data_DontSave]
-        public bool UseFacebook { get { return OwinConfigHelper.GetValue<bool>(AreaRegistration.CurrentPackage.AreaName, "FacebookAccount:Enabled") && DefinedFacebook; } }
+        public bool UseFacebook { 
+            get { return OwinConfigHelper.GetValue<bool>(AreaRegistration.CurrentPackage.AreaName, "FacebookAccount:Enabled") && DefinedFacebook; } 
+#if MVC6
+            [Obsolete] // needed load existing saved settings
+#endif
+            set { }
+        }
         [Data_DontSave]
-        public bool UseGoogle { get { return OwinConfigHelper.GetValue<bool>(AreaRegistration.CurrentPackage.AreaName, "GoogleAccount:Enabled") && DefinedGoogle; } }
+        public bool UseGoogle { 
+            get { return OwinConfigHelper.GetValue<bool>(AreaRegistration.CurrentPackage.AreaName, "GoogleAccount:Enabled") && DefinedGoogle; }
+#if MVC6
+            [Obsolete]
+#endif
+            set { }
+        }
         [Data_DontSave]
-        public bool UseMicrosoft { get { return OwinConfigHelper.GetValue<bool>(AreaRegistration.CurrentPackage.AreaName, "MicrosoftAccount:Enabled") && DefinedMicrosoft; } }
+        public bool UseMicrosoft { 
+            get { return OwinConfigHelper.GetValue<bool>(AreaRegistration.CurrentPackage.AreaName, "MicrosoftAccount:Enabled") && DefinedMicrosoft; }
+#if MVC6
+            [Obsolete]
+#endif
+            set { }
+        }
         [Data_DontSave]
-        public bool UseTwitter { get { return OwinConfigHelper.GetValue<bool>(AreaRegistration.CurrentPackage.AreaName, "TwitterAccount:Enabled") && DefinedTwitter; } }
+        public bool UseTwitter { 
+            get { return OwinConfigHelper.GetValue<bool>(AreaRegistration.CurrentPackage.AreaName, "TwitterAccount:Enabled") && DefinedTwitter; }
+#if MVC6
+            [Obsolete]
+#endif
+            set { }
+        }
 
         public bool DefinedFacebook {
             get {
