@@ -19,8 +19,8 @@ var YetaWF_ComponentsHTML;
         __extends(MarkdownEditComponent, _super);
         function MarkdownEditComponent(controlId /*, setup: MarkdownEditSetup*/) {
             var _this = _super.call(this, controlId, MarkdownEditComponent.TEMPLATE, MarkdownEditComponent.SELECTOR, {
-                ControlType: YetaWF_ComponentsHTML.ControlTypeEnum.Div,
-                ChangeEvent: null,
+                ControlType: YetaWF_ComponentsHTML.ControlTypeEnum.TextArea,
+                ChangeEvent: MarkdownEditComponent.EVENT,
                 GetValue: function (control) {
                     return control.TextArea.value;
                 },
@@ -46,6 +46,13 @@ var YetaWF_ComponentsHTML;
                 },
                 userdata: _this
             });
+            $YetaWF.registerEventHandler(_this.TextArea, "blur", null, function (ev) {
+                FormsSupport.validateElement(_this.TextArea);
+                var event = document.createEvent("Event");
+                event.initEvent(MarkdownEditComponent.EVENT, true, true);
+                _this.Control.dispatchEvent(event);
+                return true;
+            });
             return _this;
         }
         MarkdownEditComponent.prototype.toHTML = function () {
@@ -56,9 +63,8 @@ var YetaWF_ComponentsHTML;
         };
         MarkdownEditComponent.TEMPLATE = "yt_markdown";
         MarkdownEditComponent.SELECTOR = ".yt_markdown.t_edit";
+        MarkdownEditComponent.EVENT = "markdown_change";
         return MarkdownEditComponent;
     }(YetaWF.ComponentBaseNoDataImpl));
     YetaWF_ComponentsHTML.MarkdownEditComponent = MarkdownEditComponent;
 })(YetaWF_ComponentsHTML || (YetaWF_ComponentsHTML = {}));
-
-//# sourceMappingURL=MarkdownEdit.js.map

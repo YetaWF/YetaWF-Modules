@@ -6,6 +6,7 @@ namespace YetaWF_ComponentsHTML {
 
         public static readonly TEMPLATE: string = "yt_markdown";
         public static readonly SELECTOR: string = ".yt_markdown.t_edit";
+        public static readonly EVENT: string = "markdown_change";
 
         private TextArea: HTMLTextAreaElement;
         private Preview: HTMLElement;
@@ -13,8 +14,8 @@ namespace YetaWF_ComponentsHTML {
 
         constructor(controlId: string /*, setup: MarkdownEditSetup*/) {
             super(controlId, MarkdownEditComponent.TEMPLATE, MarkdownEditComponent.SELECTOR, {
-                ControlType: YetaWF_ComponentsHTML.ControlTypeEnum.Div,
-                ChangeEvent: null,
+                ControlType: YetaWF_ComponentsHTML.ControlTypeEnum.TextArea,
+                ChangeEvent: MarkdownEditComponent.EVENT,
                 GetValue: (control: MarkdownEditComponent): string | null => {
                     return control.TextArea.value;
                 },
@@ -42,6 +43,14 @@ namespace YetaWF_ComponentsHTML {
                     this.toHTML();
                 },
                 userdata: this
+            });
+
+            $YetaWF.registerEventHandler(this.TextArea, "blur", null, (ev: Event): boolean => {
+                FormsSupport.validateElement(this.TextArea);
+                var event = document.createEvent("Event");
+                event.initEvent(MarkdownEditComponent.EVENT, true, true);
+                this.Control.dispatchEvent(event);
+                return true;
             });
         }
 

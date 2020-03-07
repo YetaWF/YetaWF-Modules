@@ -1,3 +1,5 @@
+/* Copyright © 2020 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Identity#License */
+
 using System;
 using YetaWF.Core.IO;
 using YetaWF.Core.Localize;

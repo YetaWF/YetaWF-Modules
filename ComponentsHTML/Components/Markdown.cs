@@ -1,8 +1,13 @@
 ﻿/* Copyright © 2020 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/ComponentsHTML#License */
 
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Globalization;
 using System.Threading.Tasks;
 using YetaWF.Core.Components;
 using YetaWF.Core.Localize;
+using YetaWF.Core.Models;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Packages;
 using YetaWF.Core.Support;
@@ -12,15 +17,56 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
     /// <summary>
     /// An instance of this class contains markdown text and HTML used with the Markdown component.
     /// </summary>
+    [TypeConverter(typeof(MarkdownStringBaseConv))]
     public class MarkdownStringBase {
         /// <summary>
         /// The markdown text.
         /// </summary>
+        [Caption("Markdown Text"), HelpLink("https://github.com/showdownjs/showdown/wiki/Showdown%27s-Markdown-syntax")]
+        [UIHint("TextAreaSourceOnly")]
         public virtual string Text { get; set; }
         /// <summary>
         /// The HTML rendering of the markdown text.
         /// </summary>
         public virtual string HTML { get; set; }
+        /// <summary>
+        /// Implicit conversion to string.
+        /// </summary>
+        /// <param name="md">The MarkdownStringBase object to convert.</param>
+        public static implicit operator string(MarkdownStringBase md) {
+            return md.Text;
+        }
+    }
+    /// <summary>
+    /// Type converted implementation for MarkdownStringBase mainly to support conversion to type System.String for validation.
+    /// </summary>
+    public class MarkdownStringBaseConv : TypeConverter {
+        /// <summary>
+        /// Returns whether this converter can convert the object to the specified type, using the specified context.
+        /// </summary>
+        /// <param name="context">An System.ComponentModel.ITypeDescriptorContext that provides a format context.</param>
+        /// <param name="destinationType">A System.Type that represents the type you want to convert to.</param>
+        /// <returns></returns>
+        public override bool CanConvertTo(ITypeDescriptorContext context, Type destinationType) {
+            if (destinationType == typeof(string))
+                return true;
+            //else if (destinationType == typeof(EditorDefinition))
+            //    return true;
+            return base.CanConvertTo(context, destinationType);
+        }
+        /// <summary>
+        /// Converts the given value object to the specified type, using the arguments.
+        /// </summary>
+        /// <param name="context">An System.ComponentModel.ITypeDescriptorContext that provides a format context.</param>
+        /// <param name="culture">A System.Globalization.CultureInfo. If null is passed, the current culture is assumed.</param>
+        /// <param name="value">The System.Object to convert.</param>
+        /// <param name="destinationType">The System.Type to convert the value parameter to.</param>
+        /// <returns> An System.Object that represents the converted value.</returns>
+        public override Object ConvertTo(ITypeDescriptorContext context, CultureInfo culture, Object value, Type destinationType) {
+            if (destinationType == typeof(string))
+                return (string)(MarkdownStringBase)value;
+            return base.ConvertTo(context, culture, value, destinationType);
+        }
     }
 
     /// <summary>
@@ -68,11 +114,12 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
             HtmlBuilder hb = new HtmlBuilder();
 
-            hb.Append($@"
+            if (model != null && !string.IsNullOrWhiteSpace(model.HTML)) {
+                hb.Append($@"
 <div id='{ControlId}' class='yt_markdown t_display'>
     {model.HTML}
 </div>");
-
+            }
             return Task.FromResult(hb.ToString());
         }
     }
@@ -95,6 +142,11 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             await base.IncludeAsync();
         }
 
+        internal class UI {
+            [UIHint("Tabs")]
+            public TabsDefinition TabsDef { get; set; }
+        }
+
         /// <summary>
         /// Called by the framework when the component needs to be rendered as HTML.
         /// </summary>
@@ -107,49 +159,54 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             int emHeight = PropData.GetAdditionalAttributeValue("EmHeight", 10);
             int pixHeight = Manager.CharHeight * emHeight;
 
+            UI ui = new UI {
+                TabsDef = new TabsDefinition {
+                    ActiveTabIndex = 0,
+                    TrackActiveTab = false,
+                    Tabs = new List<TabEntry> {
+                        new TabEntry {
+                            Caption = __ResStr("edit", "Edit"),
+                            ToolTip = null,
+                            PaneCssClasses = "t_edit",
+                            RenderPaneAsync = async (int tabIndex) => {
+                                HtmlBuilder hb = new HtmlBuilder();
+                                using (Manager.StartNestedComponent(FieldName)) {
+                                    hb.Append($@"
+        {await HtmlHelper.ForLabelAsync(model, nameof(model.Text))}
+        {await HtmlHelper.ForEditAsync(model, nameof(model.Text))}");
+                                }
+                                return hb.ToString();
+                            }
+                        },
+                        new TabEntry {
+                            Caption = __ResStr("preview", "Preview"),
+                            ToolTip = null,
+                            PaneCssClasses = "t_preview",
+                            RenderPaneAsync = async (int tabIndex) => {
+                                HtmlBuilder hb = new HtmlBuilder();
+                                using (Manager.StartNestedComponent(FieldName)) {
+                                    hb.Append($@"
+        {await HtmlHelper.ForDisplayComponentAsync(model, nameof(model.HTML), model.HTML, "Hidden", HtmlAttributes: new { __NoTemplate = true, @class = "t_html" })}
+        <div class='t_previewpane' style='min-height:{pixHeight}px'>{model.HTML}</div>");
+                                }
+                                return hb.ToString();
+                            }
+                        }
+                    }
+                }
+            };
+       
             HtmlBuilder hb = new HtmlBuilder();
-
-            YTagBuilder tagTextArea = new YTagBuilder("textarea");
-            //TODO: Needs fieldsetup for validation
-            tagTextArea.Attributes.Add("name", $"{FieldName}.Text");
-            tagTextArea.AddCssClass("t_edit");
-            tagTextArea.AddCssClass("k-textbox"); // USE KENDO style
-            tagTextArea.Attributes.Add("rows", emHeight.ToString());
-
-            // handle StringLengthAttribute as maxlength
-            StringLengthAttribute lenAttr = PropData.TryGetAttribute<StringLengthAttribute>();
-            if (lenAttr != null) {
-#if DEBUG
-                if (tagTextArea.Attributes.ContainsKey("maxlength"))
-                    throw new InternalError($"Both StringLengthAttribute and maxlength specified - {FieldName}");
-#endif
-                int maxLength = lenAttr.MaximumLength;
-                if (maxLength > 0 && maxLength <= 8000)
-                    tagTextArea.MergeAttribute("maxlength", maxLength.ToString());
-            }
-#if DEBUG
-            if (lenAttr == null && !tagTextArea.Attributes.ContainsKey("maxlength"))
-                throw new InternalError($"No max string length given using StringLengthAttribute or maxlength - {FieldName}");
-#endif
-            tagTextArea.SetInnerText(model.Text);
 
             hb.Append($@"
 <div id='{ControlId}' class='yt_markdown t_edit'>
-    <div class='t_markdown' id='{DivId}'>
-        {PropertyListComponentBase.RenderTabStripStart(DivId)}
-            {PropertyListComponentBase.RenderTabEntry(DivId, __ResStr("edit", "Edit"), null, 0)}
-            {PropertyListComponentBase.RenderTabEntry(DivId, __ResStr("preview", "Preview"), null, 1)}
-        {PropertyListComponentBase.RenderTabStripEnd(DivId)}
-        {PropertyListComponentBase.RenderTabPaneStart(DivId, 0, "t_edit")}
-            {tagTextArea.ToString(YTagRenderMode.Normal)}
-        {PropertyListComponentBase.RenderTabPaneEnd(DivId, 0)}
-        {PropertyListComponentBase.RenderTabPaneStart(DivId, 1, "t_preview")}
-            <input type='hidden' name='{FieldName}.HTML' class='t_html' value='{HAE(model.HTML)}'>
-            <div class='t_previewpane' style='min-height:{pixHeight}px'>{model.HTML}</div>
-        {PropertyListComponentBase.RenderTabPaneEnd(DivId, 1)}
-    </div>
-    {await PropertyListComponentBase.RenderTabInitAsync(DivId, null)}
+    {await HtmlHelper.ForDisplayAsync(ui, nameof(ui.TabsDef), HtmlAttributes: new { __NoTemplate = true })}
 </div>");
+
+            using (Manager.StartNestedComponent(FieldName)) {
+                hb.Append($@"
+{ValidationMessage(nameof(model.Text))}");// Validatation is on field.Text not main div
+            }
 
             Manager.ScriptManager.AddLast($@"new YetaWF_ComponentsHTML.MarkdownEditComponent('{ControlId}');");
 
