@@ -86,7 +86,7 @@ namespace YetaWF_ComponentsHTML {
         private PropertyListVisibleHandlers: PropertyListVisibleEntry[] = [];
 
         /**
-         * Register a callback to be called when a propertylist become visible.
+         * Register a callback to be called when a propertylist becomes visible.
          */
         public registerPropertyListVisible(callback: (tag: HTMLElement) => void): void {
             this.PropertyListVisibleHandlers.push({ callback: callback });

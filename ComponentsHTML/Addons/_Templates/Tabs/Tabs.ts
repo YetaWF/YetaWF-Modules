@@ -28,6 +28,8 @@ namespace YetaWF_ComponentsHTML {
                 ChangeEvent: null,
                 GetValue: null,
                 Enable: null,
+            }, false, (tag: HTMLElement, control: TabsComponent): void => {
+                control.internalDestroy();
             });
             this.Setup = setup;
 
@@ -75,7 +77,16 @@ namespace YetaWF_ComponentsHTML {
 
             } else
                 throw `Invalid tab style ${this.Setup.TabStyle}`;
-
+        }
+        public internalDestroy(): void {
+            if (this.Setup.TabStyle === TabStyleEnum.JQuery) {
+                $(this.Control).tabs("destroy");
+            } else if (this.Setup.TabStyle === TabStyleEnum.Kendo) {
+                let tab = $(this.Control).data("kendoTabStrip");
+                if (!tab) throw "No kendo object found";
+                tab.destroy();
+            } else
+                throw `Invalid tab style ${this.Setup.TabStyle}`;
         }
 
         // API
@@ -103,8 +114,37 @@ namespace YetaWF_ComponentsHTML {
                 $(this.Control).tabs("option", "active", index);
             else if (YVolatile.Forms.TabStyle === YetaWF.TabStyleEnum.Kendo) {
                 $(this.Control).data("kendoTabStrip").activateTab($(panels[index]));
-            }
-            else throw `Unknown tab style ${YVolatile.Forms.TabStyle}`;/*DEBUG*/
+            } else
+                throw `Unknown tab style ${YVolatile.Forms.TabStyle}`;/*DEBUG*/
+        }
+        get activePane(): number {
+            if (YVolatile.Forms.TabStyle === YetaWF.TabStyleEnum.JQuery)
+                return Number($(this.Control).tabs("option", "active"));
+            else if (YVolatile.Forms.TabStyle === YetaWF.TabStyleEnum.Kendo) {
+                var ts = $(this.Control).data("kendoTabStrip");
+                return Number(ts.select().attr("data-tab"));
+            } else
+                throw `Unknown tab style ${YVolatile.Forms.TabStyle}`;/*DEBUG*/
         }
     }
+
+    // The property list needs a bit of special love when it's made visible. Because panels have no width/height
+    // while the propertylist is not visible (jquery implementation), when a propertylist is made visible using show(),
+    // the default panel is not sized correctly. If you explicitly show() a propertylist that has never been visible,
+    // call the following to cause the propertylist to be resized correctly:
+    // ComponentsHTML.processPropertyListVisible(div);
+    // div is any HTML element - all items (including child items) are checked for propertylists.
+
+    ComponentsHTMLHelper.registerPropertyListVisible((tag: HTMLElement): void => {
+        var tabsTags = $YetaWF.getElementsBySelector(TabsComponent.SELECTOR, [tag]);
+        for (let tabTag of tabsTags) {
+            let tab = YetaWF.ComponentBaseDataImpl.getControlFromTag<TabsComponent>(tabTag, TabsComponent.SELECTOR);
+            let index = tab.activePane;
+            if (index >= 0) {
+                let panel = $YetaWF.getElement1BySelector(`#${tab.ControlId}_tab${index}`, [tab.Control]);
+                $YetaWF.processActivateDivs([panel]);
+                $YetaWF.processPanelSwitched(panel);
+            }
+        }
+    });
 }

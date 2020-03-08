@@ -481,61 +481,6 @@ var YetaWF_ComponentsHTML;
         return PropertyListComponent;
     }(YetaWF.ComponentBaseDataImpl));
     YetaWF_ComponentsHTML.PropertyListComponent = PropertyListComponent;
-    $YetaWF.registerClearDiv(function (tag) {
-        var list = $YetaWF.getElementsBySelector(".yt_propertylist.t_tabbed.t_jquery", [tag]);
-        for (var _i = 0, list_1 = list; _i < list_1.length; _i++) {
-            var el = list_1[_i];
-            var tabsJq = $(el);
-            if (!tabsJq)
-                throw "No jquery ui object found"; /*DEBUG*/
-            tabsJq.tabs("destroy");
-        }
-        list = $YetaWF.getElementsBySelector(".yt_propertylist.t_tabbed.t_kendo", [tag]);
-        for (var _a = 0, list_2 = list; _a < list_2.length; _a++) {
-            var el = list_2[_a];
-            var tabsKn = $(el).data("kendoTabStrip");
-            if (!tabsKn)
-                throw "No kendo object found"; /*DEBUG*/
-            tabsKn.destroy();
-        }
-    });
-    // The property list needs a bit of special love when it's made visible. Because panels have no width/height
-    // while the propertylist is not visible (jquery implementation), when a propertylist is made visible using show(),
-    // the default panel is not sized correctly. If you explicitly show() a propertylist that has never been visible,
-    // call the following to cause the propertylist to be resized correctly:
-    // ComponentsHTML.processPropertyListVisible(div);
-    // div is any HTML element - all items (including child items) are checked for propertylists.
-    ComponentsHTMLHelper.registerPropertyListVisible(function (tag) {
-        // jquery tabs
-        var tabsJq = $YetaWF.getElementsBySelector(".ui-tabs", [tag]);
-        for (var _i = 0, tabsJq_1 = tabsJq; _i < tabsJq_1.length; _i++) {
-            var tabJq = tabsJq_1[_i];
-            var id = tabJq.id;
-            if (id === undefined)
-                throw "No id on tab control"; /*DEBUG*/
-            var tabidJq = Number($(tabJq).tabs("option", "active"));
-            if (tabidJq >= 0) {
-                var panel = $YetaWF.getElement1BySelector("#" + id + "_tab" + tabidJq, [tabJq]);
-                $YetaWF.processActivateDivs([panel]);
-                $YetaWF.processPanelSwitched(panel);
-            }
-        }
-        // kendo tabs
-        var tabsKn = $YetaWF.getElementsBySelector(".k-widget.k-tabstrip", [tag]);
-        for (var _a = 0, tabsKn_1 = tabsKn; _a < tabsKn_1.length; _a++) {
-            var tabKn = tabsKn_1[_a];
-            var id = tabKn.id;
-            if (id === undefined)
-                throw "No id on tab control"; /*DEBUG*/
-            var ts = $(tabKn).data("kendoTabStrip");
-            var tabidKn = Number(ts.select().attr("data-tab"));
-            if (tabidKn >= 0) {
-                var panel = $YetaWF.getElement1BySelector("#" + id + "_tab" + (+tabidKn + 1), [tabKn]);
-                $YetaWF.processActivateDivs([panel]);
-                $YetaWF.processPanelSwitched(panel);
-            }
-        }
-    });
 })(YetaWF_ComponentsHTML || (YetaWF_ComponentsHTML = {}));
 
 //# sourceMappingURL=PropertyList.js.map

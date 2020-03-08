@@ -27,12 +27,7 @@ namespace YetaWF_Panels {
                 GetValue: null,
                 Enable: null,
             }, false, (tag: HTMLElement, control: PanelInfoEditComponent): void => {
-                // tabs
-                var list = $YetaWF.getElementsBySelector(".yt_panels_panelinfo .t_panels.t_acctabs", [control.Control]);
-                for (let el of list) {
-                    var tabs = $(el);
-                    if (tabs) tabs.tabs("destroy"); //jQuery-ui use
-                }
+                // tabs (jquery, kendo) are automatically destroyed, as they are components
                 // jquery ui accordion
                 var list = $YetaWF.getElementsBySelector(".yt_panels_panelinfo .t_panels.t_accjquery", [control.Control]);
                 for (let el of list) {

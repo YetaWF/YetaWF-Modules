@@ -48,7 +48,7 @@ var YetaWF_ComponentsHTML;
             }
         };
         /**
-         * Register a callback to be called when a propertylist become visible.
+         * Register a callback to be called when a propertylist becomes visible.
          */
         ComponentsHTML.prototype.registerPropertyListVisible = function (callback) {
             this.PropertyListVisibleHandlers.push({ callback: callback });
