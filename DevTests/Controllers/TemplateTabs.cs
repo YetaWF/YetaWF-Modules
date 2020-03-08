@@ -28,10 +28,7 @@ namespace YetaWF.Modules.DevTests.Controllers {
 
             public Model() {
 
-                Prop1 = new TabsDefinition {
-                    ActiveTabIndex = 0,
-                    TrackActiveTab = true,
-                };
+                Prop1 = new TabsDefinition();
                 for (int i = 0; i < 10; ++i) {
                     Prop1.Tabs.Add(new TabEntry {
                         Caption = $"Tab {i}",

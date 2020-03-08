@@ -128,11 +128,9 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                 ++count;
             }
 
-            if (model.TrackActiveTab) {
-                setup.ActiveTabHiddenId = Manager.UniqueId();
-                hb.Append($@"
+            setup.ActiveTabHiddenId = Manager.UniqueId();
+            hb.Append($@"
     <input name='_ActiveTab' type='hidden' value='{model.ActiveTabIndex}' id='{setup.ActiveTabHiddenId}'>");
-            }
 
 
             hb.Append($@"

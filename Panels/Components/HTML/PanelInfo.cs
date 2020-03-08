@@ -1,8 +1,11 @@
 ﻿/* Copyright © 2020 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Panels#License */
 
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using YetaWF.Core.Components;
 using YetaWF.Core.Localize;
+using YetaWF.Core.Models;
+using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Modules;
 using YetaWF.Core.Packages;
 using YetaWF.Core.Support;
@@ -22,6 +25,11 @@ namespace YetaWF.Modules.Panels.Components {
 
         public override ComponentType GetComponentType() { return ComponentType.Display; }
 
+        internal class UI {
+            [UIHint("Tabs")]
+            public TabsDefinition TabsDef { get; set; }
+        }
+
         public async Task<string> RenderAsync(PanelInfo model) {
 
             HtmlBuilder hb = new HtmlBuilder();
@@ -31,47 +39,43 @@ namespace YetaWF.Modules.Panels.Components {
 
             if (model.Style == PanelInfo.PanelStyleEnum.Tabs) {
 
-                hb.Append($@"
-    <div class='t_panels t_acctabs' id='{DivId}'>");
+                UI ui = new UI {
+                    TabsDef = new TabsDefinition {
+                        ActiveTabIndex = model._ActiveTab,
+                    }
+                };
 
-                int panelIndex = 0;
-                int tabIndex = 0;
-
-                hb.Append(PropertyListComponentBase.RenderTabStripStart(DivId));
-                for (panelIndex = 0; panelIndex < model.Panels.Count; ++panelIndex) {
+                for (int panelIndex = 0; panelIndex < model.Panels.Count; ++panelIndex) {
                     if (model.Panels[panelIndex].IsAuthorizedAsync().Result) {
                         string caption = model.Panels[panelIndex].Caption;
                         if (string.IsNullOrWhiteSpace(caption)) { caption = this.__ResStr("noCaption", "(no caption)"); }
                         string toolTip = model.Panels[panelIndex].ToolTip;
                         if (string.IsNullOrWhiteSpace(toolTip)) { toolTip = null; }
-                        hb.Append(PropertyListComponentBase.RenderTabEntry(DivId, caption, toolTip, tabIndex));
-                        ++tabIndex;
+                        ui.TabsDef.Tabs.Add(new TabEntry {
+                            Caption = caption,
+                            ToolTip = toolTip,
+                            PaneCssClasses = "t_panel",
+                            RenderPaneAsync = async (int tabIndex) => {
+                                HtmlBuilder hb = new HtmlBuilder();
+                                if (await model.Panels[tabIndex].IsAuthorizedAsync()) {
+                                    ModuleDefinition mod = await model.Panels[tabIndex].GetModuleAsync();
+                                    if (mod != null) {
+                                        mod.ShowTitle = false;
+                                        mod.UsePartialFormCss = false;
+                                        hb.Append(await mod.RenderModuleAsync(HtmlHelper));
+                                    } else {
+                                        hb.Append($@"<div>{this.__ResStr("noModule", "(no module defined)")}</div>");
+                                    }
+                                }
+                                return hb.ToString();
+                            },
+                        });
                     }
-                }
-                hb.Append(PropertyListComponentBase.RenderTabStripEnd(DivId));
-
-                panelIndex = 0;
-                tabIndex = 0;
-
-                foreach (PanelInfo.PanelEntry panel in model.Panels) {
-                    if (model.Panels[panelIndex].IsAuthorizedAsync().Result) {
-                        hb.Append(PropertyListComponentBase.RenderTabPaneStart(DivId, tabIndex, "t_panel"));
-                        ModuleDefinition mod = await model.Panels[panelIndex].GetModuleAsync();
-                        if (mod != null) {
-                            mod.ShowTitle = false;
-                            mod.UsePartialFormCss = false;
-                            hb.Append(await mod.RenderModuleAsync(HtmlHelper));
-                        } else {
-                            hb.Append($@"<div>{this.__ResStr("noModule", "(no module defined)")}</div>");
-                        }
-                        hb.Append(PropertyListComponentBase.RenderTabPaneEnd(DivId, tabIndex));
-                        tabIndex++;
-                    }
-                    panelIndex++;
                 }
                 hb.Append($@"
+    <div class='t_panels t_acctabs' id='{DivId}'>
+        {await HtmlHelper.ForDisplayAsync(ui, nameof(ui.TabsDef), HtmlAttributes: new { __NoTemplate = true })}
     </div>");
-                hb.Append(await PropertyListComponentBase.RenderTabInitAsync(DivId, model));
 
             } else if (model.Style == PanelInfo.PanelStyleEnum.AccordionjQuery) {
 
@@ -173,36 +177,44 @@ $panelBar.select();");
 
         public override ComponentType GetComponentType() { return ComponentType.Edit; }
 
+        internal class UI {
+            [UIHint("Tabs")]
+            public TabsDefinition TabsDef { get; set; }
+        }
+
         public async Task<string> RenderAsync(PanelInfo model) {
 
-            HtmlBuilder hb = new HtmlBuilder();
+            UI ui = new UI {
+                TabsDef = new TabsDefinition {
+                    ActiveTabIndex = model._ActiveTab,
+                }
+            };
 
-            int tabEntry = 0;
+            for (int panelIndex = 0; panelIndex < model.Panels.Count; ++panelIndex) {
+                string caption = model.Panels[panelIndex].Caption;
+                if (string.IsNullOrWhiteSpace(caption)) { caption = this.__ResStr("noCaption", "(no caption)"); }
+                ui.TabsDef.Tabs.Add(new TabEntry {
+                    Caption = caption,
+                    PaneCssClasses = "t_panel",
+                    RenderPaneAsync = async (int tabIndex) => {
+                        HtmlBuilder hb = new HtmlBuilder();
+                        using (Manager.StartNestedComponent($"{FieldNamePrefix}.Panels[{tabIndex}]")) {
+                            hb.Append(await HtmlHelper.ForEditContainerAsync(model.Panels[tabIndex], "PropertyList"));
+                        }
+                        return hb.ToString();
+                    },
+                });
+            }
+
+
+            HtmlBuilder hb = new HtmlBuilder();
 
             hb.Append($@"
 <div id='{ControlId}' class='yt_panels_panelinfo t_edit'>
     {await HtmlHelper.ForEditContainerAsync(model, "PropertyList")}
     <div class='t_panels' id='{DivId}'>
-        {PropertyListComponentBase.RenderTabStripStart(DivId)}");
-
-            for (int i = 0; i < model.Panels.Count; ++i) {
-                string caption = model.Panels[i].Caption.ToString();
-                if (string.IsNullOrWhiteSpace(caption)) { caption = this.__ResStr("noCaption", "(no caption)"); }
-                hb.Append(PropertyListComponentBase.RenderTabEntry(DivId, caption, null, i));
-            }
-            hb.Append(PropertyListComponentBase.RenderTabStripEnd(DivId));
-
-            foreach (var panel in model.Panels) {
-                hb.Append(PropertyListComponentBase.RenderTabPaneStart(DivId, tabEntry, "t_panel"));
-                using (Manager.StartNestedComponent($"{FieldNamePrefix}.Panels[{tabEntry}]")) {
-                    hb.Append(await HtmlHelper.ForEditContainerAsync(panel, "PropertyList"));
-                }
-                hb.Append(PropertyListComponentBase.RenderTabPaneEnd(DivId, tabEntry));
-                ++tabEntry;
-            }
-            hb.Append($@"
+        {await HtmlHelper.ForDisplayAsync(ui, nameof(ui.TabsDef), HtmlAttributes: new { __NoTemplate = true })}
     </div>
-    {await PropertyListComponentBase.RenderTabInitAsync(DivId, model)}
     <div class='t_buttons'>
         <input type='button' class='t_apply' value='{this.__ResStr("btnApply", "Apply")}' title='{this.__ResStr("txtApply", "Click to apply the current changes")}' />
         <input type='button' class='t_up' value='{this.__ResStr("btnUp", "<<")}' title='{this.__ResStr("txtUp", "Click to move the current panel")}' />

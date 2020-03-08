@@ -161,8 +161,6 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
             UI ui = new UI {
                 TabsDef = new TabsDefinition {
-                    ActiveTabIndex = 0,
-                    TrackActiveTab = false,
                     Tabs = new List<TabEntry> {
                         new TabEntry {
                             Caption = __ResStr("edit", "Edit"),

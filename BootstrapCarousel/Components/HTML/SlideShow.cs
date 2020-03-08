@@ -110,7 +110,6 @@ namespace YetaWF.Modules.BootstrapCarousel.Components {
             UI ui = new UI {
                 TabsDef = new TabsDefinition {
                     ActiveTabIndex = model._ActiveTab,
-                    TrackActiveTab = true,
                 }
             };
             for (int i = 0; i <= model.Slides.Count - 1; ++i) {
