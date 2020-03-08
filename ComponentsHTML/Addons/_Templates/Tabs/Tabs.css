@@ -1,0 +1,5 @@
+@charset "UTF-8";
+/* Copyright � 2020 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/ComponentsHTML#License */
+/* jquery tab height adjustment */
+.yt_tabs.ui-tabs li {
+  line-height: 1.1; }
