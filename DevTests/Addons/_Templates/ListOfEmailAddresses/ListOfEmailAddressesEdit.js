@@ -79,5 +79,3 @@ var YetaWF_DevTests;
     }(YetaWF.ComponentBaseDataImpl));
     YetaWF_DevTests.ListOfEmailAddressesEditComponent = ListOfEmailAddressesEditComponent;
 })(YetaWF_DevTests || (YetaWF_DevTests = {}));
-
-//# sourceMappingURL=ListOfEmailAddressesEdit.js.map

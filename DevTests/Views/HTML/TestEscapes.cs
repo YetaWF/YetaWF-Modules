@@ -38,27 +38,6 @@ namespace YetaWF.Modules.DevTests.Views {
         new FormButton() { ButtonType= ButtonTypeEnum.Cancel, },
     })}
 {await RenderEndFormAsync()}");
-
-            Manager.ScriptManager.AddLast($@"
-    $('#{DivId}').on('click', 'input[name=""message""]', function () {{
-        $YetaWF.message('TEST <A> &amp; & @ {0} TEST');
-    }});
-    $('#{DivId}').on('click', 'input[name=""error""]', function () {{
-        $YetaWF.error('TEST <A> &amp; & @ {{0}} TEST');
-    }});
-    $('#{DivId}').on('click', 'input[name=""alert""]', function () {{
-        $YetaWF.alert('TEST <A> &amp; & @ {{0}} TEST', 'TITLE <A> &amp; & @ {{0}} TEST');
-    }});
-    $('#{DivId}').on('click', 'input[name=""confirm""]', function () {{
-        $YetaWF.confirm('TEST <A> &amp; & @ {{0}} TEST');
-    }});
-    $('#{DivId}').on('click', 'input[name=""alertYesNo""]', function () {{
-        $YetaWF.alertYesNo('TEST <A> &amp; & @ {{0}} TEST', 'TITLE <A> &amp; & @ {{0}} TEST');
-    }});
-    $('#{DivId}').on('click', 'input[name=""pleaseWait""]', function () {{
-        $YetaWF.pleaseWait('Reload page to continue\n\nTEST <A> &amp; & @ {{0}} TEST', 'TITLE <A> &amp; & @ {{0}} TEST');
-    }});");
-
             return hb.ToString();
         }
 
