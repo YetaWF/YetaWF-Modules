@@ -1,0 +1,7 @@
+{
+    Style: "Tabbed",
+    ColumnStyles: [  { MinWindowSize: 1000, Columns: 2 }, { MinWindowSize: 1600, Columns: 3 } ],
+    ExpandableList: [ "Site", "Pages", "CDN", "Email", "URLs", "References", "Encryption", "Skin", "Addons", "Meta", "Variables" ],
+    InitialExpanded: null,
+    CategoryOrder: [ "Site", "Pages", "CDN", "Email", "URLs", "References", "Encryption", "Skin", "Addons", "Meta", "Variables" ]
+}
