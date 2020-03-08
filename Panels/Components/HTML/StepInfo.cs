@@ -3,6 +3,8 @@
 using System.Threading.Tasks;
 using YetaWF.Core.Components;
 using YetaWF.Core.Localize;
+using YetaWF.Core.Models;
+using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Packages;
 using YetaWF.Core.Support;
 using YetaWF.Modules.ComponentsHTML.Components;
@@ -61,36 +63,42 @@ namespace YetaWF.Modules.Panels.Components {
 
         public override ComponentType GetComponentType() { return ComponentType.Edit; }
 
+        internal class UI {
+            [UIHint("Tabs")]
+            public TabsDefinition TabsDef { get; set; }
+        }
+
         public async Task<string> RenderAsync(StepInfo model) {
 
-            HtmlBuilder hb = new HtmlBuilder();
+            UI ui = new UI {
+                TabsDef = new TabsDefinition {
+                    ActiveTabIndex = model._ActiveTab,
+                }
+            };
+            for (int i = 0; i < model.Steps.Count; ++i) {
+                string caption = model.Steps[i].Caption.ToString();
+                if (string.IsNullOrWhiteSpace(caption)) { caption = this.__ResStr("noCaption", "(no caption)"); }
+                ui.TabsDef.Tabs.Add(new TabEntry { 
+                    Caption = caption,
+                    PaneCssClasses = "t_steps",
+                    RenderPaneAsync = async (int tabIndex) => {
+                        HtmlBuilder hb = new HtmlBuilder();
+                        using (Manager.StartNestedComponent($"{FieldNamePrefix}.Steps[{tabIndex}]")) {
+                            hb.Append(await HtmlHelper.ForEditContainerAsync(model.Steps[tabIndex], "PropertyList"));
+                        }
+                        return hb.ToString();
+                    },
+                });
+            }
 
-            int tabEntry = 0;
+            HtmlBuilder hb = new HtmlBuilder();
 
             hb.Append($@"
 <div id='{ControlId}' class='yt_panels_stepinfo t_edit'>
     {await HtmlHelper.ForEditContainerAsync(model, "PropertyList")}
     <div class='t_steps' id='{DivId}'>
-        {PropertyListComponentBase.RenderTabStripStart(DivId)}");
-
-            for (int i = 0; i < model.Steps.Count; ++i) {
-                string caption = model.Steps[i].Caption.ToString();
-                if (string.IsNullOrWhiteSpace(caption)) { caption = this.__ResStr("noCaption", "(no caption)"); }
-                hb.Append(PropertyListComponentBase.RenderTabEntry(DivId, caption, null, i));
-            }
-            hb.Append(PropertyListComponentBase.RenderTabStripEnd(DivId));
-
-            foreach (var step in model.Steps) {
-                hb.Append(PropertyListComponentBase.RenderTabPaneStart(DivId, tabEntry, "t_steps"));
-                using (Manager.StartNestedComponent($"{FieldNamePrefix}.Steps[{tabEntry}]")) {
-                    hb.Append(await HtmlHelper.ForEditContainerAsync(step, "PropertyList"));
-                }
-                hb.Append(PropertyListComponentBase.RenderTabPaneEnd(DivId, tabEntry));
-                ++tabEntry;
-            }
-            hb.Append($@"
+        {await HtmlHelper.ForDisplayAsync(ui, nameof(ui.TabsDef), HtmlAttributes: new { __NoTemplate = true })}
     </div>
-    {await PropertyListComponentBase.RenderTabInitAsync(DivId, model)}
     <div class='t_buttons'>
         <input type='button' class='t_apply' value='{this.__ResStr("btnApply", "Apply")}' title='{this.__ResStr("txtApply", "Click to apply the current changes")}' />
         <input type='button' class='t_up' value='{this.__ResStr("btnUp", "<<")}' title='{this.__ResStr("txtUp", "Click to move the current step")}' />
