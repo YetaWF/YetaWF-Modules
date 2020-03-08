@@ -476,48 +476,6 @@ var YetaWF_ComponentsHTML;
             if (this.MasonryElem)
                 this.MasonryElem.layout();
         };
-        // TODO: make tab control a proper control
-        PropertyListComponent.tabInitjQuery = function (tabCtrlId, activeTab, activeTabId) {
-            ComponentsHTMLHelper.MUSTHAVE_JQUERYUI();
-            var tabCtrl = $YetaWF.getElementById(tabCtrlId);
-            $YetaWF.elementAddClass(tabCtrl, "t_jquery");
-            $(tabCtrl).tabs({
-                active: activeTab,
-                activate: function (ev, ui) {
-                    if (ui.newPanel !== undefined) {
-                        $YetaWF.processActivateDivs([ui.newPanel[0]]);
-                        $YetaWF.processPanelSwitched(ui.newPanel[0]);
-                        if (activeTabId) {
-                            $("#" + activeTabId).val((ui.newTab.length > 0) ? Number(ui.newTab.attr("data-tab")) : -1);
-                        }
-                    }
-                }
-            });
-        };
-        // TODO: make tab control a proper control
-        PropertyListComponent.tabInitKendo = function (tabCtrlId, activeTab, activeTabId) {
-            // mark the active tab with .k-state-active before initializing the tabstrip
-            var tabs = $YetaWF.getElementsBySelector("#" + tabCtrlId + ">ul>li");
-            for (var _i = 0, tabs_1 = tabs; _i < tabs_1.length; _i++) {
-                var tab = tabs_1[_i];
-                $YetaWF.elementRemoveClass(tab, "k-state-active");
-            }
-            $YetaWF.elementAddClass(tabs[activeTab], "k-state-active");
-            // init tab control
-            var tabCtrl = $YetaWF.getElementById(tabCtrlId);
-            $YetaWF.elementAddClass(tabCtrl, "t_kendo");
-            $(tabCtrl).kendoTabStrip({
-                animation: false,
-                activate: function (ev) {
-                    if (ev.contentElement !== undefined) {
-                        $YetaWF.processActivateDivs([ev.contentElement]);
-                        $YetaWF.processPanelSwitched(ev.contentElement);
-                        if (activeTabId)
-                            $("#" + activeTabId).val($(ev.item).attr("data-tab"));
-                    }
-                }
-            }).data("kendoTabStrip");
-        };
         PropertyListComponent.TEMPLATE = "yt_propertylist";
         PropertyListComponent.SELECTOR = ".yt_propertylist";
         return PropertyListComponent;
@@ -572,7 +530,7 @@ var YetaWF_ComponentsHTML;
             var ts = $(tabKn).data("kendoTabStrip");
             var tabidKn = Number(ts.select().attr("data-tab"));
             if (tabidKn >= 0) {
-                var panel = $YetaWF.getElement1BySelector("#" + id + "-tab" + (+tabidKn + 1), [tabKn]);
+                var panel = $YetaWF.getElement1BySelector("#" + id + "_tab" + (+tabidKn + 1), [tabKn]);
                 $YetaWF.processActivateDivs([panel]);
                 $YetaWF.processPanelSwitched(panel);
             }

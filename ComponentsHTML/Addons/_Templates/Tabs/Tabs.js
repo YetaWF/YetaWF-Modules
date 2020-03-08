@@ -74,6 +74,34 @@ var YetaWF_ComponentsHTML;
                 throw "Invalid tab style " + _this.Setup.TabStyle;
             return _this;
         }
+        // API
+        /* Activate the pane that contains the specified element. The element does not need to be present. */
+        TabsComponent.prototype.activatePaneByTag = function (tag) {
+            if (!$YetaWF.elementHas(this.Control, tag))
+                return;
+            var ttabpanel = $YetaWF.elementClosestCond(tag, "div.t_tabpanel");
+            if (!ttabpanel)
+                return;
+            var index = ttabpanel.getAttribute("data-tab");
+            if (index == null)
+                throw "We found a panel in a tab control without panel number (data-tab attribute).";
+            this.activatePane(index);
+        };
+        /* Activate the pane by 0-based index. */
+        TabsComponent.prototype.activatePane = function (index) {
+            var panels = $YetaWF.getElementsBySelector("ul.t_tabstrip > li", [this.Control]);
+            if (panels.length === 0)
+                throw "No panes found";
+            if (index < 0 || index >= panels.length)
+                throw "tab pane " + index + " requested - " + panels.length + " tabs present";
+            if (YVolatile.Forms.TabStyle === YetaWF.TabStyleEnum.JQuery)
+                $(this.Control).tabs("option", "active", index);
+            else if (YVolatile.Forms.TabStyle === YetaWF.TabStyleEnum.Kendo) {
+                $(this.Control).data("kendoTabStrip").activateTab($(panels[index]));
+            }
+            else
+                throw "Unknown tab style " + YVolatile.Forms.TabStyle; /*DEBUG*/
+        };
         TabsComponent.TEMPLATE = "yt_tabs";
         TabsComponent.SELECTOR = ".yt_tabs";
         return TabsComponent;

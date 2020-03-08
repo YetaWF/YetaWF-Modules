@@ -1,6 +1,5 @@
 ﻿/* Copyright © 2020 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/BootstrapCarousel#License */
 
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using YetaWF.Core.Components;
 using YetaWF.Core.Localize;
@@ -133,7 +132,6 @@ namespace YetaWF.Modules.BootstrapCarousel.Components {
     <div class='t_slides' id='{DivId}'>
         {await HtmlHelper.ForDisplayAsync(ui, nameof(ui.TabsDef), HtmlAttributes: new { __NoTemplate = true })}
     </div>
-    {await PropertyListComponentBase.RenderTabInitAsync(DivId, model)}
     <div class='t_buttons'>
         <input type='button' class='t_apply' value='{HAE(this.__ResStr("btnApply", "Apply"))}' title='{HAE(this.__ResStr("txtApply", "Click to apply the current changes"))}' />
         <input type='button' class='t_up' value='{HAE(this.__ResStr("btnUp", "<<"))}' title='{HAE(this.__ResStr("txtUp", "Click to move the current image"))}' />

@@ -14,10 +14,7 @@ namespace YetaWF_ComponentsHTML {
         public initPartialForm(partialForm: HTMLElement): void {
             // find the first field in each tab control that has an input validation error and activate that tab
             // This will not work for nested tabs. Only the lowermost tab will be activated.
-            var elems = $YetaWF.getElementsBySelector("div.yt_propertylist.t_tabbed", [partialForm]);
-            elems.forEach((tabctrl: HTMLElement, index: number) => {
-                YetaWF_FormsImpl.setErrorInTab(tabctrl);
-            });
+            YetaWF_FormsImpl.setErrorInNestedControls(partialForm);
         }
 
         // Validation
@@ -128,27 +125,16 @@ namespace YetaWF_ComponentsHTML {
             return YetaWF_ComponentsHTML_Validation.isFormValid(form);
         }
         /**
-         * If there is a validation in the specified tab control, the tab is activated.
+         * If there is a validation error in the specified tag, components can alter their state. For example, a tab control can activate the pane with the error.
          */
-        public setErrorInTab(tabctrl: HTMLElement): void {
-            // get the first field in error (if any)
-            var errField = $YetaWF.getElement1BySelectorCond(".v-valerror", [tabctrl]);
-            if (errField) {
-                // find out which tab panel we're on
-                var ttabpanel = $YetaWF.elementClosest(errField, "div.t_tabpanel");
-                var panel = ttabpanel.getAttribute("data-tab") as number | null;
-                if (!panel) throw "We found a panel in a tab control without panel number (data-tab attribute).";/*DEBUG*/
-                // get the tab entry
+        public setErrorInNestedControls(tag: HTMLElement): void {
 
-                // TODO: MOVE TO TAB CONTROL
-                let $tabctrl = $(tabctrl);
-                var $te = $("ul.t_tabstrip > li", $tabctrl).eq(panel);
-                if ($te.length === 0) throw "We couldn't find the tab entry for panel " + panel;/*DEBUG*/
-                if (YVolatile.Forms.TabStyle === YetaWF.TabStyleEnum.JQuery)
-                    $tabctrl.tabs("option", "active", panel);
-                else if (YVolatile.Forms.TabStyle === YetaWF.TabStyleEnum.Kendo)
-                    $tabctrl.data("kendoTabStrip").activateTab($te);
-                else throw "Unknown tab style";/*DEBUG*/
+            // get the first field in error (if any)
+            let errField = $YetaWF.getElement1BySelectorCond(".v-valerror", [tag]);
+            if (errField) {
+                let tabs = YetaWF.ComponentBaseDataImpl.getControlFromTagCond<YetaWF_ComponentsHTML.TabsComponent>(errField, TabsComponent.SELECTOR);
+                if (tabs)
+                    tabs.activatePaneByTag(errField);
             }
         }
 

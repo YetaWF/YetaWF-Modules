@@ -552,50 +552,6 @@ namespace YetaWF_ComponentsHTML {
             if (this.MasonryElem)
                 this.MasonryElem.layout!();
         }
-
-        // TODO: make tab control a proper control
-        public static tabInitjQuery(tabCtrlId: string, activeTab: number, activeTabId: string): void {
-            ComponentsHTMLHelper.MUSTHAVE_JQUERYUI();
-            var tabCtrl = $YetaWF.getElementById(tabCtrlId);
-            $YetaWF.elementAddClass(tabCtrl, "t_jquery");
-            $(tabCtrl).tabs({ //jQuery-ui use
-                active: activeTab,
-                activate: (ev: Event, ui: JQueryUI.TabsActivationUIParams): void => {
-                    if (ui.newPanel !== undefined) {
-                        $YetaWF.processActivateDivs([ui.newPanel[0]]);
-                        $YetaWF.processPanelSwitched(ui.newPanel[0]);
-                        if (activeTabId) {
-                            $(`#${activeTabId}`).val( (ui.newTab.length > 0) ?  Number(ui.newTab.attr("data-tab")) : -1);
-                        }
-                    }
-                }
-            });
-        }
-
-        // TODO: make tab control a proper control
-        public static tabInitKendo(tabCtrlId: string, activeTab: number, activeTabId: string):void {
-            // mark the active tab with .k-state-active before initializing the tabstrip
-            var tabs = $YetaWF.getElementsBySelector(`#${tabCtrlId}>ul>li`);
-            for (let tab of tabs) {
-                $YetaWF.elementRemoveClass(tab, "k-state-active");
-            }
-            $YetaWF.elementAddClass(tabs[activeTab], "k-state-active");
-
-            // init tab control
-            var tabCtrl = $YetaWF.getElementById(tabCtrlId);
-            $YetaWF.elementAddClass(tabCtrl, "t_kendo");
-            $(tabCtrl).kendoTabStrip({
-                animation: false,
-                activate: (ev: kendo.ui.TabStripActivateEvent): void  => {
-                    if (ev.contentElement !== undefined) {
-                        $YetaWF.processActivateDivs([ev.contentElement as HTMLElement]);
-                        $YetaWF.processPanelSwitched(ev.contentElement as HTMLElement);
-                        if (activeTabId)
-                            $(`#${activeTabId}`).val( $(ev.item as HTMLElement).attr("data-tab") as string );
-                    }
-                }
-            }).data("kendoTabStrip");
-        }
     }
 
     $YetaWF.registerClearDiv((tag: HTMLElement): void => {
@@ -641,7 +597,7 @@ namespace YetaWF_ComponentsHTML {
             var ts = $(tabKn).data("kendoTabStrip");
             var tabidKn = Number(ts.select().attr("data-tab"));
             if (tabidKn >= 0) {
-                var panel = $YetaWF.getElement1BySelector(`#${id}-tab${+tabidKn + 1}`, [tabKn]);
+                var panel = $YetaWF.getElement1BySelector(`#${id}_tab${+tabidKn + 1}`, [tabKn]);
                 $YetaWF.processActivateDivs([panel]);
                 $YetaWF.processPanelSwitched(panel);
             }

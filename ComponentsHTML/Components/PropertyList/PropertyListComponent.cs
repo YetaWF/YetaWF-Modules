@@ -7,6 +7,7 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using YetaWF.Core.Components;
 using YetaWF.Core.Models;
+using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Packages;
 using YetaWF.Core.Support;
 using YetaWF.Modules.ComponentsHTML.Controllers;
@@ -82,6 +83,11 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
         internal const string TemplateName = "PropertyList";
 
+        internal class UI {
+            [UIHint("Tabs")]
+            public TabsDefinition TabsDef { get; set; }
+        }
+
         /// <summary>
         /// Returns the package implementing the component.
         /// </summary>
@@ -113,115 +119,85 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             RenderHeader(hb, classData);
 
             string divId = Manager.UniqueId();
-            switch (setup.Style) {
-                default:
-                case PropertyList.PropertyListStyleEnum.Tabbed:
-                    hb.Append($@"
-<div id='{divId}' class='yt_propertylist t_tabbed {(readOnly ? "t_display" : "t_edit")}'>");
-                    break;
-                case PropertyList.PropertyListStyleEnum.Boxed:
-                    await Manager.AddOnManager.AddAddOnNamedAsync(AreaRegistration.CurrentPackage.AreaName, "masonry.desandro.com");
-                    hb.Append($@"
-<div id='{divId}' class='yt_propertylist t_boxed {(readOnly ? "t_display" : "t_edit")}'>");
-                    break;
-                case PropertyList.PropertyListStyleEnum.BoxedWithCategories:
-                    await Manager.AddOnManager.AddAddOnNamedAsync(AreaRegistration.CurrentPackage.AreaName, "masonry.desandro.com");
-                    hb.Append($@"
-<div id='{divId}' class='yt_propertylist t_boxedcat {(readOnly ? "t_display" : "t_edit")}'>");
-                    break;
-            }
-
-            hb.Append(await RenderHiddenAsync(model));
 
             bool showVariables = YetaWF.Core.Localize.UserSettings.GetProperty<bool>("ShowVariables");
 
             switch (setup.Style) {
                 default:
                 case PropertyList.PropertyListStyleEnum.Tabbed:
-                    // tabstrip
-                    hb.Append(RenderTabStripStart(divId));
-                    break;
-                case PropertyList.PropertyListStyleEnum.BoxedWithCategories:
-                case PropertyList.PropertyListStyleEnum.Boxed:
-                    break;
-            }
-            int tabEntry = 0;
-            foreach (string category in categories) {
-                string cat = category;
-                if (classData.Categories.ContainsKey(cat))
-                    cat = classData.Categories[cat];
-                switch (setup.Style) {
-                    default:
-                    case PropertyList.PropertyListStyleEnum.Tabbed:
-                        hb.Append(RenderTabEntry(divId, cat, "", tabEntry));
-                        break;
-                    case PropertyList.PropertyListStyleEnum.BoxedWithCategories:
-                    case PropertyList.PropertyListStyleEnum.Boxed:
-                        break;
-                }
-                ++tabEntry;
-            }
-            switch (setup.Style) {
-                default:
-                case PropertyList.PropertyListStyleEnum.Tabbed:
-                    hb.Append(RenderTabStripEnd(divId));
-                    break;
-                case PropertyList.PropertyListStyleEnum.BoxedWithCategories:
-                case PropertyList.PropertyListStyleEnum.Boxed:
-                    break;
-            }
 
-            // panels
-            int panel = 0;
-            foreach (string category in categories) {
-                switch (setup.Style) {
-                    default:
-                    case PropertyList.PropertyListStyleEnum.Tabbed:
-                        hb.Append(RenderTabPaneStart(divId, panel));
-                        hb.Append(await RenderListAsync(model, category, showVariables, readOnly));
-                        hb.Append(RenderTabPaneEnd(divId, panel));
-                        break;
-                    case PropertyList.PropertyListStyleEnum.BoxedWithCategories: {
-                            string stat = "";
-                            if (setup.ExpandableList.Contains(category))
-                                stat = (setup.InitialExpanded == category) ? " t_propexpandable t_propexpanded" : " t_propexpandable t_propcollapsed";
-                            hb.Append($"<div class='t_proptable{stat} t_cat t_boxpanel-{GetCategoryNormalized(category)}'>");
-                            hb.Append($"<div class='t_boxlabel'>{category}</div>");
-                            if (setup != null && setup.ExpandableList.Contains(category))
-                                hb.Append($"<div class='t_boxexpcoll t_show'></div>");
-                            hb.Append(await RenderListAsync(model, category, showVariables, readOnly));
-                            hb.Append($"</div>");
-                            break;
-                        }
-                    case PropertyList.PropertyListStyleEnum.Boxed: {
-                            string stat = "";
-                            if (setup.ExpandableList.Contains(category))
-                                stat = (setup.InitialExpanded == category) ? " t_propexpandable t_propexpanded" : " t_propexpandable t_propcollapsed";
-                            hb.Append($"<div class='t_proptable {stat} t_cat t_boxpanel-{GetCategoryNormalized(category)}'>");
-                            if (setup != null && setup.ExpandableList.Contains(category))
-                                hb.Append($"<div class='t_boxexpcoll t_show'></div>");
-                            hb.Append(await RenderListAsync(model, category, showVariables, readOnly));
-                            hb.Append($"</div>");
-                        }
-                        break;
-                }
-                ++panel;
-            }
+                    UI ui = new UI {
+                        TabsDef = new TabsDefinition()
+                    };
 
-            switch (setup.Style) {
-                default:
-                case PropertyList.PropertyListStyleEnum.Tabbed:
+                    foreach (string category in categories) {
+                        string cat = category;
+                        if (classData.Categories.ContainsKey(cat))
+                            cat = classData.Categories[cat];
+                        ui.TabsDef.Tabs.Add(new TabEntry {
+                            Caption = cat,
+                            RenderPaneAsync = async (int tabIndex) => {
+                                return (await RenderListAsync(model, category, showVariables, readOnly)).ToString();
+                            },
+                        });
+                    }
+
                     hb.Append($@"
-</div>
-{await RenderTabInitAsync(divId, model)}");
+<div id='{divId}' class='yt_propertylist t_tabbed {(readOnly ? "t_display" : "t_edit")}'>
+    {await RenderHiddenAsync(model)}
+    {await HtmlHelper.ForDisplayAsync(ui, nameof(ui.TabsDef), HtmlAttributes: new { __NoTemplate = true })}
+</div>");
                     break;
+
                 case PropertyList.PropertyListStyleEnum.BoxedWithCategories:
-                case PropertyList.PropertyListStyleEnum.Boxed:
+
+                    await Manager.AddOnManager.AddAddOnNamedAsync(AreaRegistration.CurrentPackage.AreaName, "masonry.desandro.com");
+
+                    hb.Append($@"
+<div id='{divId}' class='yt_propertylist t_boxedcat {(readOnly ? "t_display" : "t_edit")}'>
+    {await RenderHiddenAsync(model)}");
+
+                    foreach (string category in categories) {
+                        string stat = "";
+                        if (setup.ExpandableList.Contains(category))
+                            stat = (setup.InitialExpanded == category) ? " t_propexpandable t_propexpanded" : " t_propexpandable t_propcollapsed";
+                        hb.Append($"<div class='t_proptable{stat} t_cat t_boxpanel-{GetCategoryNormalized(category)}'>");
+                        hb.Append($"<div class='t_boxlabel'>{category}</div>");
+                        if (setup != null && setup.ExpandableList.Contains(category))
+                            hb.Append($"<div class='t_boxexpcoll t_show'></div>");
+                        hb.Append(await RenderListAsync(model, category, showVariables, readOnly));
+                        hb.Append($@"
+    </div>");
+                    }
                     hb.Append($@"
 </div>");
+                    break;
 
+                case PropertyList.PropertyListStyleEnum.Boxed:
+
+                    await Manager.AddOnManager.AddAddOnNamedAsync(AreaRegistration.CurrentPackage.AreaName, "masonry.desandro.com");
+
+                    hb.Append($@"
+<div id='{divId}' class='yt_propertylist t_boxed {(readOnly ? "t_display" : "t_edit")}'>
+    {await RenderHiddenAsync(model)}");
+
+                    foreach (string category in categories) {
+                        string stat = "";
+                        if (setup.ExpandableList.Contains(category))
+                            stat = (setup.InitialExpanded == category) ? " t_propexpandable t_propexpanded" : " t_propexpandable t_propcollapsed";
+                        hb.Append($@"
+    <div class='t_proptable {stat} t_cat t_boxpanel-{GetCategoryNormalized(category)}'>");
+                        if (setup != null && setup.ExpandableList.Contains(category))
+                            hb.Append($"<div class='t_boxexpcoll t_show'></div>");
+                        hb.Append(await RenderListAsync(model, category, showVariables, readOnly));
+                        hb.Append($@"
+    </div>");
+                    }
+                    hb.Append($@"
+</div>");
                     break;
             }
+
 
             RenderFooter(hb, classData);
 
