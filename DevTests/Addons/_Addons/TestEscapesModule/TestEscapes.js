@@ -20,27 +20,27 @@ var YetaWF_DevTests;
         function TestEscapesModule(id) {
             var _this = _super.call(this, id, TestEscapesModule.SELECTOR, null) || this;
             $YetaWF.registerEventHandler(_this.Module, "click", "input[name='message']", function (ev) {
-                $YetaWF.message('TEST <A> &amp; & @ {0} TEST');
+                $YetaWF.message("TEST <A> &amp; & @ {0} TEST");
                 return true;
             });
             $YetaWF.registerEventHandler(_this.Module, "click", "input[name='error']", function (ev) {
-                $YetaWF.error('TEST <A> &amp; & @ {{0}} TEST');
+                $YetaWF.error("TEST <A> &amp; & @ {{0}} TEST");
                 return true;
             });
             $YetaWF.registerEventHandler(_this.Module, "click", "input[name='alert']", function (ev) {
-                $YetaWF.alert('TEST <A> &amp; & @ {{0}} TEST', 'TITLE <A> &amp; & @ {{0}} TEST');
+                $YetaWF.alert("TEST <A> &amp; & @ {{0}} TEST", "TITLE <A> &amp; & @ {{0}} TEST");
                 return true;
             });
             $YetaWF.registerEventHandler(_this.Module, "click", "input[name='confirm']", function (ev) {
-                $YetaWF.confirm('TEST <A> &amp; & @ {{0}} TEST');
+                $YetaWF.confirm("TEST <A> &amp; & @ {{0}} TEST");
                 return true;
             });
             $YetaWF.registerEventHandler(_this.Module, "click", "input[name='alertYesNo']", function (ev) {
-                $YetaWF.alertYesNo('TEST <A> &amp; & @ {{0}} TEST', 'TITLE <A> &amp; & @ {{0}} TEST');
+                $YetaWF.alertYesNo("TEST <A> &amp; & @ {{0}} TEST", "TITLE <A> &amp; & @ {{0}} TEST");
                 return true;
             });
             $YetaWF.registerEventHandler(_this.Module, "click", "input[name='pleaseWait']", function (ev) {
-                $YetaWF.pleaseWait('Reload page to continue\n\nTEST <A> &amp; & @ {{0}} TEST', 'TITLE <A> &amp; & @ {{0}} TEST');
+                $YetaWF.pleaseWait("Reload page to continue\n\nTEST <A> &amp; & @ {{0}} TEST", "TITLE <A> &amp; & @ {{0}} TEST");
                 return true;
             });
             return _this;
@@ -50,3 +50,5 @@ var YetaWF_DevTests;
     }(YetaWF.ModuleBaseNoDataImpl));
     YetaWF_DevTests.TestEscapesModule = TestEscapesModule;
 })(YetaWF_DevTests || (YetaWF_DevTests = {}));
+
+//# sourceMappingURL=TestEscapes.js.map
