@@ -1,8 +1,11 @@
 ﻿/* Copyright © 2020 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/BootstrapCarousel#License */
 
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using YetaWF.Core.Components;
 using YetaWF.Core.Localize;
+using YetaWF.Core.Models;
+using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Packages;
 using YetaWF.Core.Support;
 using YetaWF.Modules.BootstrapCarousel.Controllers;
@@ -97,32 +100,39 @@ namespace YetaWF.Modules.BootstrapCarousel.Components {
 
         public override ComponentType GetComponentType() { return ComponentType.Edit; }
 
+        internal class UI {
+            [UIHint("Tabs")]
+            public TabsDefinition TabsDef { get; set; }
+        }
+        
         public async Task<string> RenderAsync(CarouselInfo model) {
 
-            HtmlBuilder hb = new HtmlBuilder();
+            UI ui = new UI {
+                TabsDef = new TabsDefinition {
+                    ActiveTabIndex = model._ActiveTab,
+                    TrackActiveTab = true,
+                }
+            };
+            for (int i = 0; i <= model.Slides.Count - 1; ++i) {
+                ui.TabsDef.Tabs.Add(new TabEntry {
+                    Caption = this.__ResStr("tab", "Image {0}", i + 1),
+                    PaneCssClasses = "t_slide",
+                    RenderPaneAsync = async (int tabIndex) => {
+                        HtmlBuilder hb = new HtmlBuilder();
+                        using (Manager.StartNestedComponent($"{FieldNamePrefix}.{nameof(model.Slides)}[{tabIndex}]")) {
+                            hb.Append(await HtmlHelper.ForEditContainerAsync(model.Slides[tabIndex], "PropertyList"));
+                        }
+                        return hb.ToString();
+                    },
+                });
+            }
 
+            HtmlBuilder hb = new HtmlBuilder();
             hb.Append($@"
 <div id='{ControlId}' class='yt_bootstrapcarousel_slideshow t_edit'>
     {await HtmlHelper.ForEditContainerAsync(model, "PropertyList")}
     <div class='t_slides' id='{DivId}'>
-        {PropertyListComponentBase.RenderTabStripStart(DivId)}");
-
-            for (int i = 0 ; i <= model.Slides.Count-1 ; ++i ) {
-                hb.Append(PropertyListComponentBase.RenderTabEntry(DivId, this.__ResStr("tab", "Image {0}", i+1), null, i));
-            }
-            hb.Append(PropertyListComponentBase.RenderTabStripEnd(DivId));
-
-            int tabEntry = 0;
-            foreach (CarouselInfo.CarouselItem slide in model.Slides) {
-                hb.Append(PropertyListComponentBase.RenderTabPaneStart(DivId, tabEntry, "t_slide"));
-                using (Manager.StartNestedComponent($"{FieldNamePrefix}.{nameof(model.Slides)}[{tabEntry}]")) {
-                    hb.Append(await HtmlHelper.ForEditContainerAsync(slide, "PropertyList"));
-                }
-                hb.Append(PropertyListComponentBase.RenderTabPaneEnd(DivId, tabEntry));
-                ++tabEntry;
-            }
-
-            hb.Append($@"
+        {await HtmlHelper.ForDisplayAsync(ui, nameof(ui.TabsDef), HtmlAttributes: new { __NoTemplate = true })}
     </div>
     {await PropertyListComponentBase.RenderTabInitAsync(DivId, model)}
     <div class='t_buttons'>
