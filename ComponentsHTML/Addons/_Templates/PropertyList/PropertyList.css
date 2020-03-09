@@ -72,16 +72,14 @@
 
 .yt_propertylist.t_boxedcat {
   margin-top: 2ch; }
-  .yt_propertylist.t_boxedcat .t_proptable {
-    position: relative; }
-    .yt_propertylist.t_boxedcat .t_proptable .t_boxlabel {
-      position: absolute;
-      top: -12px;
-      left: 20px;
-      background-color: lightgray;
-      color: black;
-      border-radius: 3px;
-      padding: 0 3px; }
+  .yt_propertylist.t_boxedcat .t_proptable .t_boxlabel {
+    position: absolute;
+    top: -12px;
+    left: 20px;
+    background-color: lightgray;
+    color: black;
+    border-radius: 3px;
+    padding: 0 3px; }
 
 .yt_propertylist.t_boxed .t_proptablehidden,
 .yt_propertylist.t_boxedcat .t_proptablehidden {
@@ -89,6 +87,7 @@
 
 .yt_propertylist.t_boxed .t_proptable,
 .yt_propertylist.t_boxedcat .t_proptable {
+  position: relative;
   border: 1px solid lightgray;
   border-radius: 5px;
   padding: 3ch 2ch 2ch 2ch;

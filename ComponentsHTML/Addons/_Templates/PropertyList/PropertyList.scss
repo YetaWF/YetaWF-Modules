@@ -110,7 +110,6 @@
 .yt_propertylist.t_boxedcat {
     margin-top:2ch;
     .t_proptable {
-        position:relative;
         .t_boxlabel {
             position: absolute;
             top:-12px;
@@ -128,6 +127,7 @@
         display:none;
     }
     .t_proptable {
+        position:relative;
         border: 1px solid lightgray;
         border-radius:5px;
         padding:3ch 2ch 2ch 2ch;
