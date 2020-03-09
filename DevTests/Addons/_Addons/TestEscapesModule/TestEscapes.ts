@@ -2,8 +2,6 @@
 
 namespace YetaWF_DevTests {
 
-    declare var YetaWF_Panels: any; // don't want to reference package for this
-
     export class TestEscapesModule extends YetaWF.ModuleBaseNoDataImpl {
 
         public static readonly SELECTOR: string = ".YetaWF_DevTests_TestEscapes";
