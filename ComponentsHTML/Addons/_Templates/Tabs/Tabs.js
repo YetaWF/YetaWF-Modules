@@ -44,8 +44,10 @@ var YetaWF_ComponentsHTML;
                         if (ui.newPanel !== undefined) {
                             $YetaWF.processActivateDivs([ui.newPanel[0]]);
                             $YetaWF.processPanelSwitched(ui.newPanel[0]);
+                            var index = Number((ui.newTab.length > 0) ? (ui.newTab.attr("data-tab") || "-1") : "-1");
                             if (_this.ActiveTabHidden)
-                                _this.ActiveTabHidden.value = (ui.newTab.length > 0) ? (ui.newTab.attr("data-tab") || "-1") : "-1";
+                                _this.ActiveTabHidden.value = index.toString();
+                            _this.sendEvent();
                         }
                     }
                 });
@@ -68,6 +70,7 @@ var YetaWF_ComponentsHTML;
                             $YetaWF.processPanelSwitched(ev.contentElement);
                             if (_this.ActiveTabHidden)
                                 _this.ActiveTabHidden.value = $(ev.item).attr("data-tab");
+                            _this.sendEvent();
                         }
                     }
                 }).data("kendoTabStrip");
@@ -76,6 +79,11 @@ var YetaWF_ComponentsHTML;
                 throw "Invalid tab style " + _this.Setup.TabStyle;
             return _this;
         }
+        TabsComponent.prototype.sendEvent = function () {
+            var event = document.createEvent("Event");
+            event.initEvent(TabsComponent.EVENT, true, true);
+            this.Control.dispatchEvent(event);
+        };
         TabsComponent.prototype.internalDestroy = function () {
             if (this.Setup.TabStyle === TabStyleEnum.JQuery) {
                 $(this.Control).tabs("destroy");
@@ -133,6 +141,7 @@ var YetaWF_ComponentsHTML;
         });
         TabsComponent.TEMPLATE = "yt_tabs";
         TabsComponent.SELECTOR = ".yt_tabs";
+        TabsComponent.EVENT = "tabs_change";
         return TabsComponent;
     }(YetaWF.ComponentBaseDataImpl));
     YetaWF_ComponentsHTML.TabsComponent = TabsComponent;

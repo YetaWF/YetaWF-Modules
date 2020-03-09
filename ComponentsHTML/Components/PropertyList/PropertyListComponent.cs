@@ -129,6 +129,9 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                     UI ui = new UI {
                         TabsDef = new TabsDefinition()
                     };
+                    int activeTab = 0;
+                    if (ObjectSupport.TryGetPropertyValue<int>(model, "_ActiveTab", out activeTab))
+                        ui.TabsDef.ActiveTabIndex = activeTab;
 
                     foreach (string category in categories) {
                         string cat = category;

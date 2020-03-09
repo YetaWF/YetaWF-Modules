@@ -157,7 +157,7 @@ var YetaWF_ComponentsHTML;
             if (!data || (!data.UrlNew && !data.UrlContent)) {
                 setTimeout(function () {
                     var event = document.createEvent("Event");
-                    event.initEvent("tree_click", true, true);
+                    event.initEvent(TreeComponent.EVENT, true, true);
                     _this.Control.dispatchEvent(event);
                 }, 1);
             }
@@ -680,6 +680,7 @@ var YetaWF_ComponentsHTML;
         };
         TreeComponent.TEMPLATE = "yt_tree";
         TreeComponent.SELECTOR = ".yt_tree";
+        TreeComponent.EVENT = "tree_click";
         TreeComponent.DDTree = null;
         return TreeComponent;
     }(YetaWF.ComponentBaseDataImpl));

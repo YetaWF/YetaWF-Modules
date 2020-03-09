@@ -43,6 +43,7 @@ namespace YetaWF_ComponentsHTML {
 
         public static readonly TEMPLATE: string = "yt_tree";
         public static readonly SELECTOR: string = ".yt_tree";
+        public static readonly EVENT: string = "tree_click";
 
         private Setup: TreeSetup;
 
@@ -161,7 +162,7 @@ namespace YetaWF_ComponentsHTML {
             if (!data || (!data.UrlNew && !data.UrlContent)) {
                 setTimeout((): void => {
                     var event = document.createEvent("Event");
-                    event.initEvent("tree_click", true, true);
+                    event.initEvent(TreeComponent.EVENT, true, true);
                     this.Control.dispatchEvent(event);
                 }, 1);
             }

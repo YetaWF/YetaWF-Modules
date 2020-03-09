@@ -18,6 +18,7 @@ namespace YetaWF_ComponentsHTML {
 
         public static readonly TEMPLATE: string = "yt_tabs";
         public static readonly SELECTOR: string = ".yt_tabs";
+        public static readonly EVENT: string = "tabs_change";
 
         private Setup: TabsSetup;
         private ActiveTabHidden: HTMLInputElement | null = null;
@@ -45,8 +46,10 @@ namespace YetaWF_ComponentsHTML {
                         if (ui.newPanel !== undefined) {
                             $YetaWF.processActivateDivs([ui.newPanel[0]]);
                             $YetaWF.processPanelSwitched(ui.newPanel[0]);
+                            let index = Number((ui.newTab.length > 0) ? (ui.newTab.attr("data-tab") || "-1") : "-1");
                             if (this.ActiveTabHidden)
-                                this.ActiveTabHidden.value = (ui.newTab.length > 0) ? (ui.newTab.attr("data-tab")||"-1") : "-1";
+                                this.ActiveTabHidden.value = index.toString();
+                            this.sendEvent();
                         }
                     }
                 });
@@ -71,6 +74,7 @@ namespace YetaWF_ComponentsHTML {
                             $YetaWF.processPanelSwitched(ev.contentElement as HTMLElement);
                             if (this.ActiveTabHidden)
                                 this.ActiveTabHidden.value = $(ev.item as HTMLElement).attr("data-tab") as string;
+                            this.sendEvent();
                         }
                     }
                 }).data("kendoTabStrip");
@@ -78,6 +82,12 @@ namespace YetaWF_ComponentsHTML {
             } else
                 throw `Invalid tab style ${this.Setup.TabStyle}`;
         }
+        private sendEvent(): void {
+            let event = document.createEvent("Event");
+            event.initEvent(TabsComponent.EVENT, true, true);
+            this.Control.dispatchEvent(event);
+        }
+
         public internalDestroy(): void {
             if (this.Setup.TabStyle === TabStyleEnum.JQuery) {
                 $(this.Control).tabs("destroy");
