@@ -8,6 +8,7 @@ using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Modules;
 using YetaWF.Core.Search;
 using YetaWF.Core.Serializers;
+using YetaWF.Core.Support;
 using YetaWF.DataProvider;
 using YetaWF.Modules.ComponentsHTML.Components;
 #if MVC6
@@ -20,7 +21,7 @@ namespace YetaWF.Modules.Text.Modules {
     public class MarkdownModuleDataProvider : ModuleDefinitionDataProvider<Guid, MarkdownModule>, IInstallableModel { }
 
     public class MarkdownString : MarkdownStringBase {
-        [StringLength(0)]
+        [StringLength(0), AdditionalMetadata("EmHeight", 10)]
         public override string Text { get { return base.Text; } set { base.Text = value; } }
         [StringLength(0)]
         public override string HTML { get { return base.HTML; } set { base.HTML = value; } }
@@ -29,8 +30,6 @@ namespace YetaWF.Modules.Text.Modules {
     [ModuleGuid("{5EAF62EB-9B05-45a1-A530-4A721D2F1C33}")]
     [UniqueModule(UniqueModuleStyle.NonUnique)]
     public class MarkdownModule : ModuleDefinition {
-
-        public const int MaxContents = 1024 * 1024;
 
         public MarkdownModule() : base() {
             Title = this.__ResStr("modTitle", "Edit");
@@ -41,9 +40,11 @@ namespace YetaWF.Modules.Text.Modules {
 
         public override IModuleDefinitionIO GetDataProvider() { return new MarkdownModuleDataProvider(); }
 
-        public MarkdownString Contents { get; set; }
-
         public override SerializableList<AllowedRole> DefaultAllowedRoles { get { return EditorLevel_DefaultAllowedRoles; } }
+
+        [Category("General"), Caption("Contents"), Description("The text contents")]
+        [UIHint("Markdown"), AdditionalMetadata("EmHeight", 10)]
+        public MarkdownString Contents { get; set; }
 
         // SEARCH
         // SEARCH
