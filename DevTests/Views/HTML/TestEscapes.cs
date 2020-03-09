@@ -31,6 +31,7 @@ namespace YetaWF.Modules.DevTests.Views {
     <input type='button' value='alertYesNo()' name='alertYesNo' />
     <input type='button' value='confirm()' name='confirm' />
     <input type='button' value='pleaseWait()' name='pleaseWait' />
+    <input type='button' value='JavaScript Error' name='jserror' />
 
     {await FormButtonsAsync(new FormButton[] {
         new FormButton() { ButtonType= ButtonTypeEnum.Apply, Text= "Apply (Test <A> &amp; & @ {0})", Title = "Tooltip with special characters <A> &amp; & @ {0}" },

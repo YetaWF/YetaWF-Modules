@@ -35,6 +35,13 @@ namespace YetaWF_DevTests {
                 $YetaWF.pleaseWait("Reload page to continue\n\nTEST <A> &amp; & @ {{0}} TEST", "TITLE <A> &amp; & @ {{0}} TEST");
                 return true;
             });
+            $YetaWF.registerEventHandler(this.Module, "click", "input[name='jserror']", (ev: MouseEvent): boolean => {
+                // generate a javascript error (use eval to prevent build errors)
+                let s = "aaa.bbb.ccc = 10;";
+                // tslint:disable-next-line:no-eval
+                eval(s);
+                return true;
+            });
         }
     }
 }
