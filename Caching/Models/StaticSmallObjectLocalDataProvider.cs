@@ -31,7 +31,7 @@ namespace YetaWF.Modules.Caching.DataProvider {
         /// <summary>
         /// Constructor.
         /// </summary>
-        /// <param name="durationSeconds">The number of minutes a cached object is retained. 0 means forver, -1 means don't cache at all.</param>
+        /// <param name="durationSeconds">The number of minutes a cached object is retained. 0 means forever, -1 means don't cache at all.</param>
         public StaticSmallObjectLocalDataProvider(int durationSeconds) {
             DisposableTracker.AddObject(this);
             DurationSeconds = durationSeconds;
