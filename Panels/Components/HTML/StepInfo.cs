@@ -78,15 +78,15 @@ namespace YetaWF.Modules.Panels.Components {
             for (int i = 0; i < model.Steps.Count; ++i) {
                 string caption = model.Steps[i].Caption.ToString();
                 if (string.IsNullOrWhiteSpace(caption)) { caption = this.__ResStr("noCaption", "(no caption)"); }
-                ui.TabsDef.Tabs.Add(new TabEntry { 
+                ui.TabsDef.Tabs.Add(new TabEntry {
                     Caption = caption,
                     PaneCssClasses = "t_steps",
                     RenderPaneAsync = async (int tabIndex) => {
-                        HtmlBuilder hb = new HtmlBuilder();
+                        HtmlBuilder hbt = new HtmlBuilder();
                         using (Manager.StartNestedComponent($"{FieldNamePrefix}.Steps[{tabIndex}]")) {
-                            hb.Append(await HtmlHelper.ForEditContainerAsync(model.Steps[tabIndex], "PropertyList"));
+                            hbt.Append(await HtmlHelper.ForEditContainerAsync(model.Steps[tabIndex], "PropertyList"));
                         }
-                        return hb.ToString();
+                        return hbt.ToString();
                     },
                 });
             }

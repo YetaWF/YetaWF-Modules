@@ -167,13 +167,13 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                             ToolTip = null,
                             PaneCssClasses = "t_edit",
                             RenderPaneAsync = async (int tabIndex) => {
-                                HtmlBuilder hb = new HtmlBuilder();
+                                HtmlBuilder hbt = new HtmlBuilder();
                                 using (Manager.StartNestedComponent(FieldName)) {
-                                    hb.Append($@"
+                                    hbt.Append($@"
         {await HtmlHelper.ForLabelAsync(model, nameof(model.Text))}
         {await HtmlHelper.ForEditAsync(model, nameof(model.Text))}");
                                 }
-                                return hb.ToString();
+                                return hbt.ToString();
                             }
                         },
                         new TabEntry {
@@ -181,19 +181,19 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                             ToolTip = null,
                             PaneCssClasses = "t_preview",
                             RenderPaneAsync = async (int tabIndex) => {
-                                HtmlBuilder hb = new HtmlBuilder();
+                                HtmlBuilder hbt = new HtmlBuilder();
                                 using (Manager.StartNestedComponent(FieldName)) {
-                                    hb.Append($@"
+                                    hbt.Append($@"
         {await HtmlHelper.ForDisplayComponentAsync(model, nameof(model.HTML), model.HTML, "Hidden", HtmlAttributes: new { __NoTemplate = true, @class = "t_html" })}
         <div class='t_previewpane' style='min-height:{pixHeight}px'>{model.HTML}</div>");
                                 }
-                                return hb.ToString();
+                                return hbt.ToString();
                             }
                         }
                     }
                 }
             };
-       
+
             HtmlBuilder hb = new HtmlBuilder();
 
             hb.Append($@"

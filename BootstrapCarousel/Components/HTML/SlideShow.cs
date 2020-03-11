@@ -103,7 +103,7 @@ namespace YetaWF.Modules.BootstrapCarousel.Components {
             [UIHint("Tabs")]
             public TabsDefinition TabsDef { get; set; }
         }
-        
+
         public async Task<string> RenderAsync(CarouselInfo model) {
 
             UI ui = new UI {
@@ -116,11 +116,11 @@ namespace YetaWF.Modules.BootstrapCarousel.Components {
                     Caption = this.__ResStr("tab", "Image {0}", i + 1),
                     PaneCssClasses = "t_slide",
                     RenderPaneAsync = async (int tabIndex) => {
-                        HtmlBuilder hb = new HtmlBuilder();
+                        HtmlBuilder hbt = new HtmlBuilder();
                         using (Manager.StartNestedComponent($"{FieldNamePrefix}.{nameof(model.Slides)}[{tabIndex}]")) {
-                            hb.Append(await HtmlHelper.ForEditContainerAsync(model.Slides[tabIndex], "PropertyList"));
+                            hbt.Append(await HtmlHelper.ForEditContainerAsync(model.Slides[tabIndex], "PropertyList"));
                         }
-                        return hb.ToString();
+                        return hbt.ToString();
                     },
                 });
             }

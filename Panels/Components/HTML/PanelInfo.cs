@@ -56,18 +56,18 @@ namespace YetaWF.Modules.Panels.Components {
                             ToolTip = toolTip,
                             PaneCssClasses = "t_panel",
                             RenderPaneAsync = async (int tabIndex) => {
-                                HtmlBuilder hb = new HtmlBuilder();
+                                HtmlBuilder hbt = new HtmlBuilder();
                                 if (await model.Panels[tabIndex].IsAuthorizedAsync()) {
                                     ModuleDefinition mod = await model.Panels[tabIndex].GetModuleAsync();
                                     if (mod != null) {
                                         mod.ShowTitle = false;
                                         mod.UsePartialFormCss = false;
-                                        hb.Append(await mod.RenderModuleAsync(HtmlHelper));
+                                        hbt.Append(await mod.RenderModuleAsync(HtmlHelper));
                                     } else {
-                                        hb.Append($@"<div>{this.__ResStr("noModule", "(no module defined)")}</div>");
+                                        hbt.Append($@"<div>{this.__ResStr("noModule", "(no module defined)")}</div>");
                                     }
                                 }
-                                return hb.ToString();
+                                return hbt.ToString();
                             },
                         });
                     }
@@ -197,11 +197,11 @@ $panelBar.select();");
                     Caption = caption,
                     PaneCssClasses = "t_panel",
                     RenderPaneAsync = async (int tabIndex) => {
-                        HtmlBuilder hb = new HtmlBuilder();
+                        HtmlBuilder hbt = new HtmlBuilder();
                         using (Manager.StartNestedComponent($"{FieldNamePrefix}.Panels[{tabIndex}]")) {
-                            hb.Append(await HtmlHelper.ForEditContainerAsync(model.Panels[tabIndex], "PropertyList"));
+                            hbt.Append(await HtmlHelper.ForEditContainerAsync(model.Panels[tabIndex], "PropertyList"));
                         }
-                        return hb.ToString();
+                        return hbt.ToString();
                     },
                 });
             }

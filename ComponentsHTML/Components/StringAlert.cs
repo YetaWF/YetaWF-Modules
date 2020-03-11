@@ -46,7 +46,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                 return Task.FromResult<string>(null);
 
             HtmlBuilder hb = new HtmlBuilder();
-            hb.Append(@$"<div class='yDivAlert'>{HE(model)}</div>");
+            hb.Append($@"<div class='yDivAlert'>{HE(model)}</div>");
 
             return Task.FromResult(hb.ToString());
         }

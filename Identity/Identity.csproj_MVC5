@@ -258,6 +258,8 @@
   <ItemGroup>
     <None Include="Addons\_Addons\LoginModule\LoginModule.scss" />
     <None Include="Addons\_Addons\NeedNewPasswordDisplay\NeedNewPasswordDisplay.scss" />
+    <None Include="Addons\_Addons\OwinEditModule\OwinEdit.scss" />
+    <None Include="Addons\_Addons\RecoveryCodesModule\RecoveryCodes.scss" />
     <None Include="Addons\_Main\Grids\ListOfUserNamesEditComponent.Entry" />
     <None Include="Addons\_Main\Grids\ListOfUserNamesEditComponent.AllEntry" />
     <None Include="Addons\_Main\Grids\ListOfUserNamesDisplayComponent.Entry" />
@@ -274,9 +276,13 @@
     <None Include="Addons\_Addons\NeedNewPasswordDisplay\filelistCSS.txt" />
     <None Include="Addons\_Addons\Need2FADisplay\filelistCSS.txt" />
     <Content Include="Addons\_Addons\LoginModule\filelistCSS.txt" />
+    <Content Include="Addons\_Addons\OwinEditModule\filelistCSS.txt" />
+    <Content Include="Addons\_Addons\RecoveryCodesModule\filelistCSS.txt" />
     <Content Include="Addons\_Main\Emails\Password Reset.txt" />
     <Content Include="Addons\_Main\Icons\LoginProviders\Facebook.png" />
     <Content Include="Addons\_Main\Icons\LoginProviders\Google.png" />
+    <Content Include="Addons\_Main\Icons\LoginProviders\GoogleLarge.png" />
+    <Content Include="Addons\_Main\Icons\LoginProviders\GoogleOld.png" />
     <Content Include="Addons\_Main\Icons\LoginProviders\Microsoft.png" />
     <Content Include="Addons\_Main\Icons\LoginProviders\Twitter.png" />
     <Content Include="Addons\_Main\Images\Identity Large.png" />

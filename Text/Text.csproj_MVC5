@@ -68,12 +68,16 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controllers\Markdown.cs" />
+    <Compile Include="Modules\Markdown.cs" />
     <Compile Include="Startup\Info.cs" />
     <Compile Include="Startup\AreaRegistration.cs" />
     <Compile Include="Controllers\Rss.cs" />
     <Compile Include="Controllers\Text.cs" />
     <Compile Include="Modules\Text.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Views\HTML\Markdown.cs" />
+    <Compile Include="Views\HTML\MarkdownDisplay.cs" />
     <Compile Include="Views\HTML\TextDisplay.cs" />
     <Compile Include="Views\HTML\Text.cs" />
   </ItemGroup>

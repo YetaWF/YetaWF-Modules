@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
@@ -72,6 +72,9 @@
     <Compile Include="Controllers\DisplayHeaders.cs" />
     <Compile Include="Controllers\Support\ListOfEmailAddresses.cs" />
     <Compile Include="Controllers\TemplateColorPicker.cs" />
+    <Compile Include="Controllers\TemplateMarkdown.cs" />
+    <Compile Include="Controllers\TemplatePropertyList.cs" />
+    <Compile Include="Controllers\TemplateTabs.cs" />
     <Compile Include="Controllers\TestExprAttributes.cs" />
     <Compile Include="Controllers\TestSteps.cs" />
     <Compile Include="Controllers\TemplateTree.cs" />
@@ -92,6 +95,9 @@
     <Compile Include="Modules\DisplayHeaders.cs" />
     <Compile Include="Modules\TemplateColorPickerModule.cs" />
     <Compile Include="Modules\TemplateGridAjaxModule.cs" />
+    <Compile Include="Modules\TemplateMarkdownModule.cs" />
+    <Compile Include="Modules\TemplatePropertyListModule.cs" />
+    <Compile Include="Modules\TemplateTabsModule.cs" />
     <Compile Include="Modules\TestExprAttributes.cs" />
     <Compile Include="Modules\TestStepsModule.cs" />
     <Compile Include="Modules\TemplateTreeModule.cs" />
@@ -125,11 +131,18 @@
     <Compile Include="Views\HTML\SMSProcessorStatus.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Addons\_Addons\TestEscapesModule\TestEscapes.d.ts.map" />
+    <None Include="Addons\_Addons\TestEscapesModule\TestEscapes.js.map" />
     <None Include="Addons\_Main\Grids\ListOfEmailAddressesDisplayComponent.Entry" />
     <None Include="Addons\_Main\Grids\ListOfEmailAddressesEditComponent.Entry" />
     <None Include="Addons\_Addons\TestStepsModule\filelistJS.txt" />
     <None Include="Addons\_Main\Grids\TemplateGridAjaxModuleController.BrowseItem" />
     <None Include="Addons\_Main\Grids\TemplateGridModuleController.BrowseItem" />
+    <None Include="Addons\_SiteTemplates\4.2.0\Page Data - _Tests_Steps.zip" />
+    <None Include="Addons\_SiteTemplates\5.0.0\Page Data - _Tests_Headers.zip" />
+    <None Include="Addons\_SiteTemplates\5.2.0\Page Data - _Tests_Templates_Markdown.zip" />
+    <None Include="Addons\_SiteTemplates\5.2.0\Page Data - _Tests_Templates_PropertyList.zip" />
+    <None Include="Addons\_SiteTemplates\5.2.0\Page Data - _Tests_Templates_Tabs.zip" />
     <None Include="Addons\_Templates\ListOfEmailAddresses\ListOfEmailAddresses.scss" />
     <None Include="app.config" />
     <None Include="packages.config" />
@@ -166,6 +179,8 @@
     <Folder Include="Models\Attributes\" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Addons\_Addons\TestEscapesModule\filelistJS.txt" />
+    <Content Include="Addons\_Addons\TestEscapesModule\TestEscapes.js" />
     <Content Include="Addons\_Main\Images\image1.png" />
     <Content Include="Addons\_Main\Images\image10.png" />
     <Content Include="Addons\_Main\Images\image11.png" />
@@ -184,6 +199,8 @@
     <None Include="Addons\_Templates\ScrollerItem\ScrollerItem.scss" />
   </ItemGroup>
   <ItemGroup>
+    <TypeScriptCompile Include="Addons\_Addons\TestEscapesModule\TestEscapes.d.ts" />
+    <TypeScriptCompile Include="Addons\_Addons\TestEscapesModule\TestEscapes.ts" />
     <TypeScriptCompile Include="Addons\_Addons\TestStepsModule\TestSteps.ts" />
     <TypeScriptCompile Include="Addons\_Templates\ListOfEmailAddresses\ListOfEmailAddressesEdit.ts" />
   </ItemGroup>
