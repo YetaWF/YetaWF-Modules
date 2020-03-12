@@ -29,7 +29,7 @@ FROM {UrlTableName}
 LEFT JOIN {TableName} ON {UrlTableName}.[SearchDataUrlId] = {TableName}.[SearchDataUrlId]
 WHERE {TableName}.[SearchDataUrlId] IS NULL";
                     ISQLTableInfo info = await searchUrlDP.GetDataProvider().GetISQLTableInfoAsync();
-                    sql = sql.Replace("{UrlTableName}", SQLBuilder.WrapBrackets(info.GetTableName()));
+                    sql = sql.Replace("{UrlTableName}", SQLBuilder.WrapIdentifier(info.GetTableName()));
                     await Direct_QueryAsync(sql);
                 }
             }
