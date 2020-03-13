@@ -7,11 +7,11 @@ using YetaWF.Core.DataProvider;
 using YetaWF.Core.DataProvider.Attributes;
 using YetaWF.Core.Packages;
 using YetaWF.Core.Pages;
-using YetaWF.DataProvider.SQL;
+using YetaWF.DataProvider.PostgreSQL;
 
-namespace YetaWF.Modules.Pages.DataProvider.SQL {
+namespace YetaWF.Modules.Pages.DataProvider.PostgreSQL {
 
-    public class SQLDataProvider : IExternalDataProvider {
+    public class PostgreSQLDataProvider : IExternalDataProvider {
 
         public void Register() {
             DataProviderImpl.RegisterExternalDataProvider(SQLBase.ExternalName, typeof(DataProvider.PageDefinitionDataProvider), typeof(PageDefinitionDataProvider));

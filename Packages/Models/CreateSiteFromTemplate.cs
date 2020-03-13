@@ -8,7 +8,6 @@ using System.Reflection;
 using System.Threading.Tasks;
 using YetaWF.Core;
 using YetaWF.Core.Components;
-using YetaWF.Core.DataProvider;
 using YetaWF.Core.Identity;
 using YetaWF.Core.IO;
 using YetaWF.Core.Log;
@@ -17,9 +16,7 @@ using YetaWF.Core.Modules;
 using YetaWF.Core.Pages;
 using YetaWF.Core.Serializers;
 using YetaWF.Core.Support;
-using YetaWF.DataProvider.SQL;
 #if MVC6
-using Microsoft.Data.SqlClient;
 #else
 using System.Data.SqlClient;
 #endif

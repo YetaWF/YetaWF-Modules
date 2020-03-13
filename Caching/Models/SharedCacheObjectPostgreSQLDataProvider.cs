@@ -12,14 +12,14 @@ using YetaWF.Core.Support.Serializers;
 namespace YetaWF.Modules.Caching.DataProvider {
 
     /// <summary>
-    /// Implements shared caching using SQL tables.
+    /// Implements shared caching using PostgreSQL tables.
     /// </summary>
-    public class SharedCacheVersionSQLDataProvider : DataProviderImpl, IInitializeApplicationStartup, IInitializeApplicationStartupFirstNodeOnly {
+    public class SharedCacheVersionPostgreSQLDataProvider : DataProviderImpl, IInitializeApplicationStartup, IInitializeApplicationStartupFirstNodeOnly {
 
         /// <summary>
         /// Hold an instance of the shared cache data provider used to maintain version information.
         /// </summary>
-        public static SharedCacheVersionSQLDataProvider SharedCacheVersionDP { get; private set; }
+        public static SharedCacheVersionPostgreSQLDataProvider SharedCacheVersionDP { get; private set; }
 
         // Startup
 
@@ -34,7 +34,7 @@ namespace YetaWF.Modules.Caching.DataProvider {
         /// Called when the first node of a multi-instance site is starting up.
         /// </summary>
         public async Task InitializeFirstNodeStartupAsync() {
-            if (YetaWF.Modules.Caching.Startup.Application.CacheProvider == YetaWF.Modules.Caching.Startup.Application.SQLCacheProvider)
+            if (YetaWF.Modules.Caching.Startup.Application.CacheProvider == YetaWF.Modules.Caching.Startup.Application.PostgreSQLCacheProvider)
                 await DataProvider.RemoveRecordsAsync(null);// remove all records
         }
 
@@ -43,13 +43,13 @@ namespace YetaWF.Modules.Caching.DataProvider {
         /// <summary>
         /// Constructor.
         /// </summary>
-        public SharedCacheVersionSQLDataProvider() : base(0) { SetDataProvider(CreateDataProvider()); }
+        public SharedCacheVersionPostgreSQLDataProvider() : base(0) { SetDataProvider(CreateDataProvider()); }
 
         private IDataProvider<string, SharedCacheVersion> DataProvider { get { return GetDataProvider(); } }
 
         private IDataProvider<string, SharedCacheVersion> CreateDataProvider() {
             Package package = YetaWF.Modules.Caching.Controllers.AreaRegistration.CurrentPackage;
-            return MakeDataProvider(package, package.AreaName + "_SharedCache", Cacheable: false, Parms: new { NoLanguages = true }, LimitIOMode: YetaWF.DataProvider.SQL.SQLBase.ExternalName);
+            return MakeDataProvider(package, package.AreaName + "_SharedCache", Cacheable: false, Parms: new { NoLanguages = true }, LimitIOMode: YetaWF.DataProvider.PostgreSQL.SQLBase.ExternalName);
         }
 
         // API
@@ -70,15 +70,15 @@ namespace YetaWF.Modules.Caching.DataProvider {
     /// it is known that a new object is available, the data is retrieved.
     /// </summary>
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1063:ImplementIDisposableCorrectly")]
-    internal class SharedCacheObjectSQLDataProvider : DataProviderImpl, ICacheDataProvider, IInstallableModel {
+    internal class SharedCacheObjectPostgreSQLDataProvider : DataProviderImpl, ICacheDataProvider, IInstallableModel {
 
         public static ICacheDataProvider GetProvider() {
-            return new SharedCacheObjectSQLDataProvider();
+            return new SharedCacheObjectPostgreSQLDataProvider();
         }
 
         // Implementation
 
-        public SharedCacheObjectSQLDataProvider() : base(YetaWFManager.Manager.CurrentSite.Identity) { SetDataProvider(CreateDataProvider()); }
+        public SharedCacheObjectPostgreSQLDataProvider() : base(YetaWFManager.Manager.CurrentSite.Identity) { SetDataProvider(CreateDataProvider()); }
 
         private IDataProvider<string, SharedCacheObject> DataProvider { get { return GetDataProvider(); } }
 
@@ -125,7 +125,7 @@ namespace YetaWF.Modules.Caching.DataProvider {
                     };
                 }
                 // get shared cached version
-                SharedCacheVersion sharedInfo = await SharedCacheVersionSQLDataProvider.SharedCacheVersionDP.GetVersionAsync(key);
+                SharedCacheVersion sharedInfo = await SharedCacheVersionPostgreSQLDataProvider.SharedCacheVersionDP.GetVersionAsync(key);
                 if (sharedInfo != null) {
                     if (sharedInfo.Created != localInfo.Data.Created) {
                         // shared cached version is different, retrieve and save locally
