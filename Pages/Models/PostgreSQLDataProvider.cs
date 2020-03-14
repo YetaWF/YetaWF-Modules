@@ -47,7 +47,7 @@ namespace YetaWF.Modules.Pages.DataProvider.PostgreSQL {
 
             public async Task<List<PageDefinition>> GetPagesFromModuleAsync(Guid moduleGuid) {
                 List<DataProviderSortInfo> sorts = DataProviderSortInfo.Join(null, new DataProviderSortInfo { Field = nameof(PageDefinition.Url), Order = DataProviderSortInfo.SortDirection.Ascending });
-                List<DataProviderFilterInfo> filters = DataProviderFilterInfo.Join(null, new DataProviderFilterInfo { Field = nameof(PageDefinitionForModules.ModuleGuid), Operator = " ==", Value = moduleGuid });
+                List<DataProviderFilterInfo> filters = DataProviderFilterInfo.Join(null, new DataProviderFilterInfo { Field = nameof(PageDefinitionForModules.ModuleGuid), Operator = "==", Value = moduleGuid });
                 using (DataProvider.PageDefinitionDataProvider pageDefDP = new DataProvider.PageDefinitionDataProvider()) {
                     using (PageDefinitionForModulesProvider pageDefForModDP = new PageDefinitionForModulesProvider()) {
                         List<JoinData> joins = new List<JoinData> {
