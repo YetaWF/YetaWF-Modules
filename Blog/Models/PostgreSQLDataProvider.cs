@@ -26,14 +26,14 @@ namespace YetaWF.Modules.Blog.DataProvider.PostgreSQL {
                 string sql = null;
                 if (name == "CommentsUnapproved") {
                     using (DataProvider.BlogCommentDataProvider commentDP = new DataProvider.BlogCommentDataProvider(-1)) {// we don't know the entry, but it's not needed
-                        sql = "SELECT COUNT(*) FROM $BlogComments$ WHERE ($BlogComments$.EntryIdentity = $ThisTable$.[Identity]) AND ($ThisTable$.Published = 1) AND ($BlogComments$.Deleted = 0) AND ($BlogComments$.Approved = 0)";
+                        sql = "SELECT COUNT(*) FROM $BlogComments$ WHERE ($BlogComments$.\"EntryIdentity\" = $ThisTable$.\"Identity\") AND ($ThisTable$.\"Published\" = True) AND ($BlogComments$.\"Deleted\" = False) AND ($BlogComments$.\"Approved\" = False)";
                         IPostgreSQLTableInfo info = await commentDP.GetDataProvider().GetIPostgreSQLTableInfoAsync();
                         sql = info.ReplaceWithTableName(sql, "$BlogComments$");
                         sql = ReplaceWithTableName(sql, "$ThisTable$");
                     }
                 } else if (name == "Comments") {
                     using (DataProvider.BlogCommentDataProvider commentDP = new DataProvider.BlogCommentDataProvider(-1)) {// we don't know the entry, but it's not needed
-                        sql = "SELECT COUNT(*) FROM $BlogComments$ WHERE ($BlogComments$.EntryIdentity = $ThisTable$.[Identity]) AND ($ThisTable$.Published = 1)";
+                        sql = "SELECT COUNT(*) FROM $BlogComments$ WHERE ($BlogComments$.\"EntryIdentity\" = $ThisTable$.\"Identity\") AND ($ThisTable$.\"Published\" = True)";
                         IPostgreSQLTableInfo info = await commentDP.GetDataProvider().GetIPostgreSQLTableInfoAsync();
                         sql = info.ReplaceWithTableName(sql, "$BlogComments$");
                         sql = ReplaceWithTableName(sql, "$ThisTable$");
