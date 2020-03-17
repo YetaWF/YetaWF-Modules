@@ -16,6 +16,8 @@ namespace YetaWF_ComponentsHTML {
         Text: string;
         Timeout: number;
         CanClose: boolean;
+        Name: string | undefined;
+        EntryDiv: HTMLDivElement | null;
     }
 
     export class BasicsImpl implements YetaWF.IBasicsImpl {
@@ -356,17 +358,34 @@ namespace YetaWF_ComponentsHTML {
         private Toasts: ToastEntry[] = [];
 
         private addToast(severity: Severity, title: string, message: string, options: YetaWF.MessageOptions) : void {
-            let toastDiv = this.getToastDiv();
 
-            let entry = {
+            let entry: ToastEntry = {
                 Severity: severity,
                 Title: title,
                 Text: message,
                 CanClose: options.canClose === true,
-                Timeout: options.autoClose ? options.autoClose : 0
+                Timeout: options.autoClose ? options.autoClose : 0,
+                Name: options.name,
+                EntryDiv: null,
             };
+
+            let found = this.Toasts.find((toast: ToastEntry):boolean => {
+                return entry.Name === toast.Name;
+            });
+            if (found) {
+                if (entry.Text === found.Text) // same text, leave as is
+                    return;
+                else {
+                    // new text, replace
+                    this.removeToast(found.EntryDiv!, found);
+                }
+            }
+            if (!entry.Text) // empty text
+                return;
+
             this.Toasts.push(entry);
             let entryDiv = document.createElement("div");
+            entry.EntryDiv = entryDiv;
             $YetaWF.setAttribute(entryDiv, "aria-atomic", "true");
             let html = "";
             if (title)
@@ -384,6 +403,7 @@ namespace YetaWF_ComponentsHTML {
                 }
             }
             entryDiv.innerHTML = html;
+            let toastDiv = this.getToastDiv();
             toastDiv.appendChild(entryDiv);
 
             $YetaWF.elementAddClass(entryDiv, "t_entry");

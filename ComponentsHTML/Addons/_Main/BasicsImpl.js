@@ -339,16 +339,31 @@ var YetaWF_ComponentsHTML;
         };
         BasicsImpl.prototype.addToast = function (severity, title, message, options) {
             var _this = this;
-            var toastDiv = this.getToastDiv();
             var entry = {
                 Severity: severity,
                 Title: title,
                 Text: message,
                 CanClose: options.canClose === true,
-                Timeout: options.autoClose ? options.autoClose : 0
+                Timeout: options.autoClose ? options.autoClose : 0,
+                Name: options.name,
+                EntryDiv: null,
             };
+            var found = this.Toasts.find(function (toast) {
+                return entry.Name === toast.Name;
+            });
+            if (found) {
+                if (entry.Text === found.Text) // same text, leave as is
+                    return;
+                else {
+                    // new text, replace
+                    this.removeToast(found.EntryDiv, found);
+                }
+            }
+            if (!entry.Text) // empty text
+                return;
             this.Toasts.push(entry);
             var entryDiv = document.createElement("div");
+            entry.EntryDiv = entryDiv;
             $YetaWF.setAttribute(entryDiv, "aria-atomic", "true");
             var html = "";
             if (title)
@@ -367,6 +382,7 @@ var YetaWF_ComponentsHTML;
                 }
             }
             entryDiv.innerHTML = html;
+            var toastDiv = this.getToastDiv();
             toastDiv.appendChild(entryDiv);
             $YetaWF.elementAddClass(entryDiv, "t_entry");
             switch (severity) {
