@@ -77,6 +77,7 @@ namespace YetaWF.Modules.Packages.Controllers {
                 "YetaWF.DataProvider.Localization",
                 "YetaWF.DataProvider.ModuleDefinition",
                 "YetaWF.DataProvider.SQL",
+                "YetaWF.DataProvider.PostgreSQL",
                 "YetaWF.Languages",
                 "YetaWF.Logging",
                 "YetaWF.LoggingDataProvider",
@@ -101,16 +102,16 @@ namespace YetaWF.Modules.Packages.Controllers {
             foreach (Package package in packages) {
 
                 string disabled = "";
-                if (RequiredPackages.Contains(package.Name))
-                    disabled = " disabled='disabled'";
-
-                hb.Append($@"
+                if (RequiredPackages.Contains(package.Name)) {
+                    //disabled = " disabled='disabled'";
+                } else {
+                    hb.Append($@"
 <tr>
     <td><input type='checkbox' checked='checked' name='{package.Name}'{disabled}/></td>
     <td>{Utility.HtmlEncode(package.Name)}</td>
     <td>{Utility.HtmlEncode(package.Description)}</td>
 </tr>");
-
+                }
             }
             return new YJsonResult() { Data = hb.ToString() };
         }
