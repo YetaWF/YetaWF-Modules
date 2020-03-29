@@ -4,11 +4,11 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using YetaWF.Core.DataProvider;
-using YetaWF.DataProvider.SQL;
+using YetaWF.DataProvider.PostgreSQL;
 
-namespace YetaWF.Modules.Search.DataProvider.SQL {
+namespace YetaWF.Modules.Search.DataProvider.PostgreSQL {
 
-    public class SQLDataProvider : IExternalDataProvider {
+    public class PostgreSQLDataProvider : IExternalDataProvider {
 
         public void Register() {
             DataProviderImpl.RegisterExternalDataProvider(SQLBase.ExternalName, typeof(DataProvider.SearchConfigDataProvider), typeof(SearchConfigDataProvider));
@@ -21,20 +21,20 @@ namespace YetaWF.Modules.Search.DataProvider.SQL {
         }
         class SearchDataProvider : SQLSimpleObject<int, SearchData>, ISearchDataProviderIOMode {
             public SearchDataProvider(Dictionary<string, object> options) : base(options) { }
-            public async Task RemoveUnusedUrlsAsync(DataProvider.SearchDataProvider searchDP) {
+            public async Task RemoveUnusedUrlsAsync(DataProvider.SearchDataProvider searchDP) {//$$$$
                 using (DataProvider.SearchDataUrlDataProvider searchUrlDP = new DataProvider.SearchDataUrlDataProvider()) {
                     string sql = @"
 DELETE {UrlTableName}
 FROM {UrlTableName}
 LEFT JOIN {TableName} ON {UrlTableName}.[SearchDataUrlId] = {TableName}.[SearchDataUrlId]
 WHERE {TableName}.[SearchDataUrlId] IS NULL";
-                    ISQLTableInfo info = await searchUrlDP.GetDataProvider().GetISQLTableInfoAsync();
+                    IPostgreSQLTableInfo info = await searchUrlDP.GetDataProvider().GetIPostgreSQLTableInfoAsync();
                     sql = sql.Replace("{UrlTableName}", SQLBuilder.WrapIdentifier(info.GetTableName()));
                     await Direct_QueryAsync(sql);
                 }
             }
 
-            public async Task MarkUpdatedAsync(int searchDataUrlId) {
+            public async Task MarkUpdatedAsync(int searchDataUrlId) {//$$$$
                 string sql = $@"UPDATE {{TableName}} Set DateAdded = GETUTCDATE() WHERE [SearchDataUrlId] = {{UrlId}} AND {{__Site}}";
                 sql = sql.Replace("{UrlId}", searchDataUrlId.ToString());
                 await Direct_QueryAsync(sql);

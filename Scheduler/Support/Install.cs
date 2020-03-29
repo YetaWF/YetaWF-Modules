@@ -20,10 +20,11 @@ namespace YetaWF.Modules.Scheduler.Support {
         /// <summary>
         /// Install all events for the given package. This is typically used to install scheduler items while installing packages.
         /// </summary>
-        public async Task InstallItemsAsync(Package package) {
-            List<Type> types = package.GetClassesInPackage<IScheduling>();
-            foreach (var type in types)
-                await InstallItemsAsync(type);
+        public Task InstallItemsAsync(Package package) {
+            //$$$ List<Type> types = package.GetClassesInPackage<IScheduling>();
+            //$$$ foreach (var type in types)
+            //$$$     await InstallItemsAsync(type);
+            return Task.CompletedTask;
         }
 
         /// <summary>

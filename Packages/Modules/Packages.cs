@@ -169,7 +169,7 @@ namespace YetaWF.Modules.Packages.Modules {
             };
         }
         public async Task<ModuleAction> GetAction_InstallPackageModelsAsync(Package package) {
-            if (!package.IsModulePackage && !package.IsCorePackage) return null;
+            if (!package.IsModulePackage && !package.IsCorePackage && !package.IsDataProviderPackage) return null;
             if (!IsAuthorized("Installs")) return null;
             return new ModuleAction(this) {
                 Style = ModuleAction.ActionStyleEnum.Post,

@@ -33,6 +33,7 @@ namespace YetaWF.Modules.Caching.Startup {
         internal static string CacheProvider { get; private set; }
         internal static string PubSubProvider { get; private set; }
         internal const string SQLCacheProvider = "sql";
+        internal const string PostgreSQLCacheProvider = "postgresql";
         internal const string FileCacheProvider = "file";
         internal const string RedisCacheProvider = "redis";
         internal const string LocalLockProvider = "local";
@@ -71,6 +72,9 @@ namespace YetaWF.Modules.Caching.Startup {
                 } else if (CacheProvider == SQLCacheProvider) {
                     YetaWF.Core.IO.Caching.GetSharedCacheProvider = SharedCacheObjectSQLDataProvider.GetProvider;
                     YetaWF.Core.IO.Caching.GetStaticCacheProvider = StaticObjectMultiSQLDataProvider.GetProvider;
+                } else if (CacheProvider == PostgreSQLCacheProvider) {
+                    YetaWF.Core.IO.Caching.GetSharedCacheProvider = SharedCacheObjectPostgreSQLDataProvider.GetProvider;
+                    YetaWF.Core.IO.Caching.GetStaticCacheProvider = StaticObjectMultiPostgreSQLDataProvider.GetProvider;
                 } else {
                     throw new InternalError($"Unsupported cache provider: {CacheProvider}");
                 }

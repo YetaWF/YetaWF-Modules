@@ -8,7 +8,6 @@ using System.Reflection;
 using System.Threading.Tasks;
 using YetaWF.Core;
 using YetaWF.Core.Components;
-using YetaWF.Core.DataProvider;
 using YetaWF.Core.Identity;
 using YetaWF.Core.IO;
 using YetaWF.Core.Log;
@@ -17,9 +16,7 @@ using YetaWF.Core.Modules;
 using YetaWF.Core.Pages;
 using YetaWF.Core.Serializers;
 using YetaWF.Core.Support;
-using YetaWF.DataProvider.SQL;
 #if MVC6
-using Microsoft.Data.SqlClient;
 #else
 using System.Data.SqlClient;
 #endif
@@ -817,40 +814,41 @@ namespace YetaWF.Modules.Packages.DataProvider {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Security", "CA2100:Review SQL queries for security vulnerabilities")]
         private void ExtractSQLSection(List<string> lines, bool build) {
 
-            string sqlConn = WebConfigHelper.GetValue<string>(DataProviderImpl.DefaultString, SQLBase.SQLConnectString);
-            if (string.IsNullOrWhiteSpace(sqlConn)) throw TemplateError("No SQL connection string found in Appsettings.json (P:Default:SQLConnect)");
+            // TODO: REMOVE $$$$$
+            //string sqlConn = WebConfigHelper.GetValue<string>(DataProviderImpl.DefaultString, SQLBase.SQLConnectString);
+            //if (string.IsNullOrWhiteSpace(sqlConn)) throw TemplateError("No SQL connection string found in Appsettings.json (P:Default:SQLConnect)");
 
-            for ( ; lines.Count > 0;) {
+            //for ( ; lines.Count > 0;) {
 
-                // get the command line
-                string sqlLine = lines.First();
-                if (sqlLine.StartsWith("::"))
-                    break; // start of a new section
+            //    // get the command line
+            //    string sqlLine = lines.First();
+            //    if (sqlLine.StartsWith("::"))
+            //        break; // start of a new section
 
-                ++_LineCounter; lines.RemoveAt(0);
-                if (sqlLine.Trim() == "")
-                    continue;
-                if (sqlLine.Trim() != "<<SQL")
-                    throw TemplateError("Sql start (<<SQL) missing");
-                string sqlLines = "";
+            //    ++_LineCounter; lines.RemoveAt(0);
+            //    if (sqlLine.Trim() == "")
+            //        continue;
+            //    if (sqlLine.Trim() != "<<SQL")
+            //        throw TemplateError("Sql start (<<SQL) missing");
+            //    string sqlLines = "";
 
-                for (; lines.Count > 0;) {
-                    sqlLine = lines.First();
-                    ++_LineCounter; lines.RemoveAt(0);
-                    if (sqlLine.Trim() == ">>SQL") {
-                        if (build) {
-                            using (SqlConnection conn = new SqlConnection(sqlConn)) {
-                                conn.Open();
-                                SqlCommand cmd = new SqlCommand(sqlLines, conn);
-                                cmd.ExecuteNonQuery();
-                            }
-                        }
-                        continue;
-                    }
-                    if (sqlLine.Trim() != "GO")
-                        sqlLines += sqlLine + "\r\n";
-                }
-            }
+            //    for (; lines.Count > 0;) {
+            //        sqlLine = lines.First();
+            //        ++_LineCounter; lines.RemoveAt(0);
+            //        if (sqlLine.Trim() == ">>SQL") {
+            //            if (build) {
+            //                using (SqlConnection conn = new SqlConnection(sqlConn)) {
+            //                    conn.Open();
+            //                    SqlCommand cmd = new SqlCommand(sqlLines, conn);
+            //                    cmd.ExecuteNonQuery();
+            //                }
+            //            }
+            //            continue;
+            //        }
+            //        if (sqlLine.Trim() != "GO")
+            //            sqlLines += sqlLine + "\r\n";
+            //    }
+            //}
         }
         private async Task ExtractINCSectionAsync(List<string> lines, bool build, string section) {
             string[] parts = section.Split(new char[] { ' ' }, 2);
