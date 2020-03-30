@@ -35,7 +35,7 @@ namespace YetaWF.Modules.Blog.DataProvider.File {
                     using (DataProvider.BlogCommentDataProvider commentDP = new DataProvider.BlogCommentDataProvider(entry.Identity)) {
                         List<DataProviderFilterInfo> filters = new List<DataProviderFilterInfo>() {
                             new DataProviderFilterInfo {
-                                Field = "Approved", Operator = "==", Value = false,
+                                Field = nameof(BlogComment.Approved), Operator = "==", Value = false,
                             },
                         };
                         DataProviderGetRecords<BlogComment> commentsUnapproved = await commentDP.GetItemsAsync(0, 0, null, filters);

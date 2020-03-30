@@ -122,9 +122,9 @@ namespace YetaWF.Modules.Scheduler.DataProvider {
             List<DataProviderSortInfo> newSort = new List<DataProviderSortInfo>();
             foreach (DataProviderSortInfo s in sort) {
                 if (s.Field == "IsRunning") {
-                    newSort.Add(new DataProviderSortInfo { Field = "Next", Order = s.Order });
+                    newSort.Add(new DataProviderSortInfo { Field = nameof(SchedulerItemData.Next), Order = s.Order });
                 } else if (s.Field == "Frequency") {
-                    newSort.Add(new DataProviderSortInfo { Field = "TimeSpan", Order = s.Order });
+                    newSort.Add(new DataProviderSortInfo { Field = nameof(SchedulerItemData.TimeSpan), Order = s.Order });
                 } else {
                     newSort.Add(s);
                 }
@@ -149,7 +149,7 @@ namespace YetaWF.Modules.Scheduler.DataProvider {
                         val = !val;
                     else
                         throw new InternalError("Unexpected operator in filter for IsRunning");
-                    newFilters.Add(new DataProviderFilterInfo { Field = "Next", Operator = val ? ">=" : "<", Value = DateTime.MaxValue });
+                    newFilters.Add(new DataProviderFilterInfo { Field = nameof(SchedulerItemData.Next), Operator = val ? ">=" : "<", Value = DateTime.MaxValue });
                 } else if (f.Filters != null) {
                     f.Filters = FixFilters(f.Filters);
                     newFilters.Add(f);

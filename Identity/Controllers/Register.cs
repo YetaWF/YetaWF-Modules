@@ -147,7 +147,7 @@ namespace YetaWF.Modules.Identity.Controllers {
                     // Email == user.Email
                     List<DataProviderFilterInfo> filters = new List<DataProviderFilterInfo> {
                         new DataProviderFilterInfo {
-                            Field = "Email", Operator = "==", Value = user.Email,
+                            Field = nameof(UserDefinition.Email), Operator = "==", Value = user.Email,
                         },
                     };
                     UserDefinition userExists = await dataProvider.GetItemAsync(filters);

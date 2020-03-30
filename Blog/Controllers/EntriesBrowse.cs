@@ -112,7 +112,7 @@ namespace YetaWF.Modules.Blog.Controllers {
                 DirectDataAsync = async (int skip, int take, List<DataProviderSortInfo> sort, List<DataProviderFilterInfo> filters) => {
                     // filter by category
                     if (blogCategory != 0) {
-                        filters = DataProviderFilterInfo.Join(filters, new DataProviderFilterInfo { Field = "CategoryIdentity", Operator = "==", Value = blogCategory, });
+                        filters = DataProviderFilterInfo.Join(filters, new DataProviderFilterInfo { Field = nameof(BlogEntry.CategoryIdentity), Operator = "==", Value = blogCategory, });
                     }
                     using (BlogEntryDataProvider entryDP = new BlogEntryDataProvider()) {
                         using (BlogCategoryDataProvider categoryDP = new BlogCategoryDataProvider()) {

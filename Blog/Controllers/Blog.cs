@@ -77,18 +77,18 @@ namespace YetaWF.Modules.Blog.Controllers {
             BlogConfigData config = await BlogConfigDataProvider.GetConfigAsync();
             using (BlogEntryDataProvider dataProvider = new BlogEntryDataProvider()) {
                 List<DataProviderSortInfo> sort = new List<DataProviderSortInfo> {
-                    new DataProviderSortInfo { Field = "DatePublished", Order = DataProviderSortInfo.SortDirection.Descending },
+                    new DataProviderSortInfo { Field = nameof(BlogEntry.DatePublished), Order = DataProviderSortInfo.SortDirection.Descending },
                 };
                 List<DataProviderFilterInfo> filters = new List<DataProviderFilterInfo>{
-                    new DataProviderFilterInfo { Field = "Published", Operator = "==", Value = true },
+                    new DataProviderFilterInfo { Field = nameof(BlogEntry.Published), Operator = "==", Value = true },
                 };
                 if (category != 0)
-                    filters = DataProviderFilterInfo.Join(filters, new DataProviderFilterInfo { Field = "CategoryIdentity", Operator = "==", Value = category });
+                    filters = DataProviderFilterInfo.Join(filters, new DataProviderFilterInfo { Field = nameof(BlogEntry.CategoryIdentity), Operator = "==", Value = category });
                 DateTime sdShown = DateTime.MaxValue;
                 if (StartDate != null) {
                     sdShown = ((DateTime)StartDate).Date;
                     if (sdShown < DateTime.UtcNow)
-                        filters = DataProviderFilterInfo.Join(filters, new DataProviderFilterInfo { Field = "DatePublished", Operator = "<=", Value = sdShown });
+                        filters = DataProviderFilterInfo.Join(filters, new DataProviderFilterInfo { Field = nameof(BlogEntry.DatePublished), Operator = "<=", Value = sdShown });
                     else
                         sdShown = DateTime.MaxValue;
                 }

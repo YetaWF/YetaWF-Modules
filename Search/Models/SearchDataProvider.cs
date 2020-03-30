@@ -105,9 +105,9 @@ namespace YetaWF.Modules.Search.DataProvider {
             if (!IsUsable) return null;
             using (SearchDataUrlDataProvider searchUrlDP = new SearchDataUrlDataProvider()) {
                 List<DataProviderFilterInfo> filters = null;
-                filters = DataProviderFilterInfo.Join(filters, new DataProviderFilterInfo { Field = "SearchDataId", Operator = "==", Value = searchDataId });
+                filters = DataProviderFilterInfo.Join(filters, new DataProviderFilterInfo { Field = nameof(SearchData.SearchDataId), Operator = "==", Value = searchDataId });
                 List<JoinData> joins = new List<JoinData> {
-                    new JoinData {MainDP = this, JoinDP= searchUrlDP, MainColumn = "SearchDataUrlId", JoinColumn = "SearchDataUrlId" },
+                    new JoinData {MainDP = this, JoinDP= searchUrlDP, MainColumn = nameof(SearchDataUrl.SearchDataUrlId), JoinColumn = nameof(SearchData.SearchDataUrlId) },
                 };
                 return await DataProvider.GetOneRecordAsync(filters, Joins: joins);
             }
@@ -195,7 +195,7 @@ namespace YetaWF.Modules.Search.DataProvider {
             if (!IsUsable) return;
             using (ILockObject lockObject = await YetaWF.Core.IO.Caching.LockProvider.LockResourceAsync($"{AreaRegistration.CurrentPackage.AreaName}_{nameof(SearchDataProvider)}")) {
                 List<DataProviderFilterInfo> filters = null;
-                filters = DataProviderFilterInfo.Join(filters, new DataProviderFilterInfo { Field = "DateAdded", Operator = "<", Value = searchStarted });
+                filters = DataProviderFilterInfo.Join(filters, new DataProviderFilterInfo { Field = nameof(SearchData.DateAdded), Operator = "<", Value = searchStarted });
                 await RemoveItemsAsync(filters);
                 await RemoveUnusedUrlsAsync();
                 await lockObject.UnlockAsync();

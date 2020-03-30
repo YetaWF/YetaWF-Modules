@@ -106,7 +106,7 @@ namespace YetaWF.Modules.Identity.Controllers {
                 model.SetData(user);
                 using (UserLoginInfoDataProvider userLogInfoDP = new UserLoginInfoDataProvider()) {
                     List<DataProviderFilterInfo> filters = null;
-                    filters = DataProviderFilterInfo.Join(filters, new DataProviderFilterInfo { Field = "UserId", Operator = "==", Value = user.UserId });
+                    filters = DataProviderFilterInfo.Join(filters, new DataProviderFilterInfo { Field = nameof(UserDefinition.UserId), Operator = "==", Value = user.UserId });
                     DataProviderGetRecords<LoginInfo> list = await userLogInfoDP.GetItemsAsync(0, 0, null, filters);
                     model.LoginProviders = (from LoginInfo l in list.Data select l.LoginProvider).ToList();
                 }

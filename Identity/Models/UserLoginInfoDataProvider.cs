@@ -140,7 +140,7 @@ namespace YetaWF.Modules.Identity.DataProvider {
         /// <returns></returns>
         public async Task<bool> RemoveItemAsync(int userId) {
             List<DataProviderFilterInfo> filters = null;
-            filters = DataProviderFilterInfo.Join(filters, new DataProviderFilterInfo { Field = "UserId", Operator = "==", Value = userId });
+            filters = DataProviderFilterInfo.Join(filters, new DataProviderFilterInfo { Field = nameof(UserDefinition.UserId), Operator = "==", Value = userId });
             return await RemoveItemsAsync(filters) > 0;
         }
         /// <summary>
@@ -162,7 +162,7 @@ namespace YetaWF.Modules.Identity.DataProvider {
         /// <returns></returns>
         public async Task<bool> IsExternalUserAsync(int userId) {
             List<DataProviderFilterInfo> filters = null;
-            filters = DataProviderFilterInfo.Join(filters, new DataProviderFilterInfo { Field = "UserId", Operator = "==", Value = userId });
+            filters = DataProviderFilterInfo.Join(filters, new DataProviderFilterInfo { Field = nameof(UserDefinition.UserId), Operator = "==", Value = userId });
             DataProviderGetRecords<LoginInfo> logInfo = await GetItemsAsync(0, 0, null, filters);
             return logInfo.Data.Count > 0;
         }

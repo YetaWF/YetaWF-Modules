@@ -213,7 +213,7 @@ namespace YetaWF.Modules.Identity.Components {
 
                 using (UserDefinitionDataProvider userDP = new UserDefinitionDataProvider()) {
                     List<DataProviderSortInfo> sorts = null;
-                    DataProviderSortInfo.Join(sorts, new DataProviderSortInfo { Field = "UserName", Order = DataProviderSortInfo.SortDirection.Ascending });
+                    DataProviderSortInfo.Join(sorts, new DataProviderSortInfo { Field = nameof(UserDefinition.UserName), Order = DataProviderSortInfo.SortDirection.Ascending });
                     DataProviderGetRecords<UserDefinition> recs = await userDP.GetItemsAsync(0, MAXUSERS, sorts, null);
                     List<SelectionItem<int>> list = (from u in recs.Data select new SelectionItem<int> {
                         Text = u.UserName,

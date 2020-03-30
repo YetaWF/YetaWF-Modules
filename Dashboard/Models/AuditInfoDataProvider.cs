@@ -130,8 +130,8 @@ namespace YetaWF.Modules.Dashboard.DataProvider {
         }
         public async Task<bool> HasPendingRestartAsync() {
             List<DataProviderFilterInfo> filters = null;
-            filters = DataProviderFilterInfo.Join(filters, new DataProviderFilterInfo { Field = "Created", Operator = ">=", Value = YetaWF.Core.Support.Startup.MultiInstanceStartTime });
-            filters = DataProviderFilterInfo.Join(filters, new DataProviderFilterInfo { Field = "RequiresRestart", Operator = "==", Value = true });
+            filters = DataProviderFilterInfo.Join(filters, new DataProviderFilterInfo { Field = nameof(AuditInfo.Created), Operator = ">=", Value = YetaWF.Core.Support.Startup.MultiInstanceStartTime });
+            filters = DataProviderFilterInfo.Join(filters, new DataProviderFilterInfo { Field = nameof(AuditInfo.RequiresRestart), Operator = "==", Value = true });
             DataProviderGetRecords<AuditInfo> info = await DataProvider.GetRecordsAsync(0, 1, null, filters);
             return info.Total > 0;
         }

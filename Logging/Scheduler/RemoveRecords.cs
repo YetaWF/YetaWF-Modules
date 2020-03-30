@@ -42,7 +42,7 @@ namespace YetaWF.Modules.Logging.Scheduler {
         public async Task RemoveAsync(List<string> errorList) {
             DateTime oldest = DateTime.UtcNow.AddMonths(-1);
             using (LogRecordDataProvider logDP = LogRecordDataProvider.GetLogRecordDataProvider()) {
-                List<DataProviderFilterInfo> filters = DataProviderFilterInfo.Join(null, new DataProviderFilterInfo { Field = "TimeStamp", Operator = "<", Value = oldest });
+                List<DataProviderFilterInfo> filters = DataProviderFilterInfo.Join(null, new DataProviderFilterInfo { Field = nameof(LogRecord.TimeStamp), Operator = "<", Value = oldest });
                 int removed = await logDP.RemoveItemsAsync(filters);
                 errorList.Add(string.Format("{0} records removed from log data", removed));
             }

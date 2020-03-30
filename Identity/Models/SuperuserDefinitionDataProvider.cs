@@ -93,7 +93,7 @@ namespace YetaWF.Modules.Identity.DataProvider {
         public async Task<UserDefinition> GetSuperuserAsync() {
             if (!SuperuserAvailable)
                 return null;
-            List<DataProviderFilterInfo> filters = DataProviderFilterInfo.Join(null, new DataProviderFilterInfo { Field = "UserId", Operator = "==", Value = SuperuserDefinitionDataProvider.SuperUserId });
+            List<DataProviderFilterInfo> filters = DataProviderFilterInfo.Join(null, new DataProviderFilterInfo { Field = nameof(UserDefinition.UserId), Operator = "==", Value = SuperuserDefinitionDataProvider.SuperUserId });
             return await GetItemAsync(filters);
         }
         public async Task<UserDefinition> GetItemAsync(List<DataProviderFilterInfo> filters) {
@@ -136,7 +136,7 @@ namespace YetaWF.Modules.Identity.DataProvider {
 
             Package package = YetaWF.Modules.Identity.Controllers.AreaRegistration.CurrentPackage;
             using (ILockObject lockObject = await YetaWF.Core.IO.Caching.LockProvider.LockResourceAsync($"{package.AreaName}.{nameof(SuperuserDefinitionDataProvider)}_{originalName}")) {
-                List<DataProviderFilterInfo> filters = DataProviderFilterInfo.Join(null, new DataProviderFilterInfo { Field = "UserId", Operator = "==", Value = SuperuserDefinitionDataProvider.SuperUserId });
+                List<DataProviderFilterInfo> filters = DataProviderFilterInfo.Join(null, new DataProviderFilterInfo { Field = nameof(UserDefinition.UserId), Operator = "==", Value = SuperuserDefinitionDataProvider.SuperUserId });
                 origSuperuser = await DataProvider.GetOneRecordAsync(filters);
                 data.RolesList = new SerializableList<Role> { new Role { RoleId = Resource.ResourceAccess.GetSuperuserRoleId() } };
                 result = await DataProvider.UpdateAsync(origSuperuser.UserName, data.UserName, data);

@@ -104,11 +104,11 @@ namespace YetaWF.Modules.Blog.DataProvider {
             return DataProvider.RemoveAsync(comment);
         }
         public Task<DataProviderGetRecords<BlogComment>> GetItemsAsync(int skip, int take, List<DataProviderSortInfo> sort, List<DataProviderFilterInfo> filters) {
-            filters = DataProviderFilterInfo.Join(filters, new DataProviderFilterInfo { Field = "EntryIdentity", Operator = "==", Value = EntryIdentity });
+            filters = DataProviderFilterInfo.Join(filters, new DataProviderFilterInfo { Field = nameof(BlogComment.EntryIdentity), Operator = "==", Value = EntryIdentity });
             return DataProvider.GetRecordsAsync(skip, take, sort, filters);
         }
         public async Task<bool> RemoveAllCommentsAsync() {
-            List<DataProviderFilterInfo> filters = DataProviderFilterInfo.Join(null, new DataProviderFilterInfo { Field = "EntryIdentity", Operator = "==", Value = EntryIdentity });
+            List<DataProviderFilterInfo> filters = DataProviderFilterInfo.Join(null, new DataProviderFilterInfo { Field = nameof(BlogComment.EntryIdentity), Operator = "==", Value = EntryIdentity });
             await DataProvider.RemoveRecordsAsync(filters);
             return true;
         }

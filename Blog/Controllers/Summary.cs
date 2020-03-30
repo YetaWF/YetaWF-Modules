@@ -56,13 +56,13 @@ namespace YetaWF.Modules.Blog.Controllers {
             BlogConfigData config = await BlogConfigDataProvider.GetConfigAsync();
             using (BlogEntryDataProvider dataProvider = new BlogEntryDataProvider()) {
                 List<DataProviderSortInfo> sort = new List<DataProviderSortInfo> {
-                    new DataProviderSortInfo { Field = "DatePublished", Order = DataProviderSortInfo.SortDirection.Descending },
+                    new DataProviderSortInfo { Field = nameof(BlogEntry.DatePublished), Order = DataProviderSortInfo.SortDirection.Descending },
                 };
                 List<DataProviderFilterInfo> filters = new List<DataProviderFilterInfo>{
-                    new DataProviderFilterInfo { Field = "Published", Operator = "==", Value = true },
+                    new DataProviderFilterInfo { Field = nameof(BlogEntry.Published), Operator = "==", Value = true },
                 };
                 //if (category != 0)
-                //    filters = DataProviderFilterInfo.Join(filters, new DataProviderFilterInfo { Field = "CategoryIdentity", Operator = "==", Value = category });
+                //    filters = DataProviderFilterInfo.Join(filters, new DataProviderFilterInfo { Field = nameof(BlogEntry.CategoryIdentity), Operator = "==", Value = category });
                 DataProviderGetRecords<BlogEntry> data = await dataProvider.GetItemsAsync(0, Module.Entries, sort, filters);
                 if (data.Data.Count == 0)
                     return new EmptyResult();

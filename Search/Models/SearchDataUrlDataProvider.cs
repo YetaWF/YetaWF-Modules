@@ -75,7 +75,7 @@ namespace YetaWF.Modules.Search.DataProvider {
         internal async Task<SearchDataUrl> GetItemByUrlAsync(string pageUrl) {
             if (!SearchDataProvider.IsUsable) return null;
             List<DataProviderFilterInfo> filters = null;
-            filters = DataProviderFilterInfo.Join(filters, new DataProviderFilterInfo { Field = "PageUrl", Operator = "==", Value = pageUrl });
+            filters = DataProviderFilterInfo.Join(filters, new DataProviderFilterInfo { Field = nameof(SearchDataUrl.PageUrl), Operator = "==", Value = pageUrl });
             SearchDataUrl searchUrl = await DataProvider.GetOneRecordAsync(filters);
             return searchUrl;
         }

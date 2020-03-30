@@ -28,11 +28,11 @@ namespace YetaWF.Modules.Search.DataProvider {
             using (SearchDataProvider searchDP = new SearchDataProvider()) {
                 bool haveMore = false;
 
-                extraFilters = DataProviderFilterInfo.Join(extraFilters, new DataProviderFilterInfo { Field = "Language", Operator = "==", Value = languageId });
+                extraFilters = DataProviderFilterInfo.Join(extraFilters, new DataProviderFilterInfo { Field = nameof(SearchData.Language), Operator = "==", Value = languageId });
                 if (haveUser)
-                    extraFilters = DataProviderFilterInfo.Join(extraFilters, new DataProviderFilterInfo { Field = "AllowAnyUser", Operator = "==", Value = true });
+                    extraFilters = DataProviderFilterInfo.Join(extraFilters, new DataProviderFilterInfo { Field = nameof(SearchData.AllowAnyUser), Operator = "==", Value = true });
                 else
-                    extraFilters = DataProviderFilterInfo.Join(extraFilters, new DataProviderFilterInfo { Field = "AllowAnonymous", Operator = "==", Value = true });
+                    extraFilters = DataProviderFilterInfo.Join(extraFilters, new DataProviderFilterInfo { Field = nameof(SearchData.AllowAnonymous), Operator = "==", Value = true });
 
                 string s = searchTerms;
                 BuildNodesInfo urls = await BuildNodesAsync(searchDP, s, languageId, haveUser, extraFilters);
@@ -115,9 +115,9 @@ namespace YetaWF.Modules.Search.DataProvider {
                             List<DataProviderFilterInfo> filters = DataProviderFilterInfo.Copy(extraFilters);
                             if (token.EndsWith("*")) {
                                 token = token.TrimEnd(new char[] { '*' });
-                                filters = DataProviderFilterInfo.Join(filters, new DataProviderFilterInfo { Field = "SearchTerm", Operator = "StartsWith", Value = token });
+                                filters = DataProviderFilterInfo.Join(filters, new DataProviderFilterInfo { Field = nameof(SearchData.SearchTerm), Operator = "StartsWith", Value = token });
                             } else
-                                filters = DataProviderFilterInfo.Join(filters, new DataProviderFilterInfo { Field = "SearchTerm", Operator = "==", Value = token });
+                                filters = DataProviderFilterInfo.Join(filters, new DataProviderFilterInfo { Field = nameof(SearchData.SearchTerm), Operator = "==", Value = token });
                             DataProviderGetRecords<SearchData> rhsList = await searchDP.GetItemsWithUrlAsync(0, 0, null, filters);
                             list.Data = list.Data.Intersect(rhsList.Data, new SearchDataComparer()).ToList();
                         }
@@ -125,9 +125,9 @@ namespace YetaWF.Modules.Search.DataProvider {
                         List<DataProviderFilterInfo> filters = DataProviderFilterInfo.Copy(extraFilters);
                         if (token.EndsWith("*")) {
                             token = token.TrimEnd(new char[] { '*' });
-                            filters = DataProviderFilterInfo.Join(filters, new DataProviderFilterInfo { Field = "SearchTerm", Operator = "StartsWith", Value = token });
+                            filters = DataProviderFilterInfo.Join(filters, new DataProviderFilterInfo { Field = nameof(SearchData.SearchTerm), Operator = "StartsWith", Value = token });
                         } else
-                            filters = DataProviderFilterInfo.Join(filters, new DataProviderFilterInfo { Field = "SearchTerm", Operator = "==", Value = token });
+                            filters = DataProviderFilterInfo.Join(filters, new DataProviderFilterInfo { Field = nameof(SearchData.SearchTerm), Operator = "==", Value = token });
                         list = new BuildNodesInfo { Search = search };
                         list.Data = (await searchDP.GetItemsWithUrlAsync(0, 0, null, filters)).Data;
                         search = list.Search;

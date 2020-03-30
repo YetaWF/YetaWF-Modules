@@ -274,7 +274,7 @@ namespace YetaWF.Modules.Pages.DataProvider {
             using (PageDefinitionDataProvider pageDP = new PageDefinitionDataProvider()) {
                 // Get all pages that are currently part of the unified page set
                 List<DataProviderFilterInfo> filters = null;
-                filters = DataProviderFilterInfo.Join(filters, new DataProviderFilterInfo { Field = "UnifiedSetGuid", Operator = "==", Value = unifiedSetGuid });
+                filters = DataProviderFilterInfo.Join(filters, new DataProviderFilterInfo { Field = nameof(PageDefinition.UnifiedSetGuid), Operator = "==", Value = unifiedSetGuid });
                 DataProviderGetRecords<PageDefinition> pageDefs = await pageDP.GetItemsAsync(0, 0, null, filters);
                 // translate page list to guid list (preserving order)
                 foreach (string page in pageList) {
@@ -310,7 +310,7 @@ namespace YetaWF.Modules.Pages.DataProvider {
             using (PageDefinitionDataProvider pageDP = new PageDefinitionDataProvider()) {
                 // Get all pages that are part of the unified page set
                 List<DataProviderFilterInfo> filters = null;
-                filters = DataProviderFilterInfo.Join(filters, new DataProviderFilterInfo { Field = "UnifiedSetGuid", Operator = "==", Value = unifiedSetGuid });
+                filters = DataProviderFilterInfo.Join(filters, new DataProviderFilterInfo { Field = nameof(PageDefinition.UnifiedSetGuid), Operator = "==", Value = unifiedSetGuid });
                 DataProviderGetRecords<PageDefinition> pageDefs = await pageDP.GetItemsAsync(0, 0, null, filters);
                 // remove all pages from unified page set if they're not within the page list
                 foreach (PageDefinition pageDef in pageDefs.Data) {

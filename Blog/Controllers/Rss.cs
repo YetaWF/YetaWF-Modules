@@ -42,13 +42,13 @@ namespace YetaWF.Modules.Blog.Controllers {
 
             using (BlogEntryDataProvider dataProvider = new BlogEntryDataProvider()) {
                 List<DataProviderSortInfo> sort = new List<DataProviderSortInfo> {
-                    new DataProviderSortInfo { Field = "DatePublished", Order = DataProviderSortInfo.SortDirection.Descending },
+                    new DataProviderSortInfo { Field = nameof(BlogEntry.DatePublished), Order = DataProviderSortInfo.SortDirection.Descending },
                 };
                 List<DataProviderFilterInfo> filters = new List<DataProviderFilterInfo> {
-                    new DataProviderFilterInfo { Field = "Published", Operator = "==", Value = true },
+                    new DataProviderFilterInfo { Field = nameof(BlogEntry.Published), Operator = "==", Value = true },
                 };
                 if (categoryIdentity != 0)
-                    filters = DataProviderFilterInfo.Join(filters, new DataProviderFilterInfo { Field = "CategoryIdentity", Operator = "==", Value = categoryIdentity });
+                    filters = DataProviderFilterInfo.Join(filters, new DataProviderFilterInfo { Field = nameof(BlogEntry.CategoryIdentity), Operator = "==", Value = categoryIdentity });
                 DataProviderGetRecords<BlogEntry> data = await dataProvider.GetItemsAsync(0, 0, sort, filters);
 
                 string url = string.IsNullOrWhiteSpace(config.FeedMainUrl) ? Manager.CurrentSite.HomePageUrl : config.FeedMainUrl;

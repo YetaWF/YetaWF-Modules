@@ -99,10 +99,10 @@ namespace YetaWF.Modules.Identity.Controllers {
                 switch (config.RegistrationType) {
                     default:
                     case RegistrationTypeEnum.NameAndEmail: { // Email == model.Email
-                            List<DataProviderFilterInfo> filters = DataProviderFilterInfo.Join(null, new DataProviderFilterInfo { Field = "Email", Operator = "==", Value = model.Email, });
+                            List<DataProviderFilterInfo> filters = DataProviderFilterInfo.Join(null, new DataProviderFilterInfo { Field = nameof(UserDefinition.Email), Operator = "==", Value = model.Email, });
                             UserDefinition userExists = await dataProvider.GetItemAsync(filters);
                             if (userExists != null) {
-                                ModelState.AddModelError("Email", this.__ResStr("emailUsed", "An account using email address {0} already exists.", model.Email));
+                                ModelState.AddModelError(nameof(model.Email), this.__ResStr("emailUsed", "An account using email address {0} already exists.", model.Email));
                                 return PartialView(model);
                             }
                             break;

@@ -237,7 +237,7 @@ namespace YetaWF.Modules.Blog.DataProvider {
         public async Task<bool> RemoveEntriesAsync(int categoryIdentity) {
             // TODO: This could be optimized for SQL using joins %%%%%%%%%%%%%%%%%%%
             // remove all entries for this category
-            List<DataProviderFilterInfo> filters = DataProviderFilterInfo.Join(null, new DataProviderFilterInfo { Field = "CategoryIdentity", Operator = "==", Value = categoryIdentity });
+            List<DataProviderFilterInfo> filters = DataProviderFilterInfo.Join(null, new DataProviderFilterInfo { Field = nameof(BlogEntry.CategoryIdentity), Operator = "==", Value = categoryIdentity });
             DataProviderGetRecords<BlogEntry> data = await GetItemsAsync(0, 0, null, filters);
             foreach (BlogEntry entry in data.Data) {
                 // remove all comments
@@ -256,7 +256,7 @@ namespace YetaWF.Modules.Blog.DataProvider {
 
             using (this) {
                 BlogConfigData config = await BlogConfigDataProvider.GetConfigAsync();
-                List<DataProviderFilterInfo> filters = DataProviderFilterInfo.Join(null, new DataProviderFilterInfo { Field = "Published", Operator = "==", Value = true });
+                List<DataProviderFilterInfo> filters = DataProviderFilterInfo.Join(null, new DataProviderFilterInfo { Field = nameof(BlogEntry.Published), Operator = "==", Value = true });
                 DataProviderGetRecords<BlogEntry> entries = await GetItemsAsync(0, 0, null, filters);
                 foreach (BlogEntry entry in entries.Data) {
 
@@ -286,7 +286,7 @@ namespace YetaWF.Modules.Blog.DataProvider {
 
         public async Task FindDynamicUrlsAsync(AddDynamicUrlAsync addDynamicUrlAsync, Func<PageDefinition, bool> validForSiteMap) {
             using (this) {
-                List<DataProviderFilterInfo> filters = DataProviderFilterInfo.Join(null, new DataProviderFilterInfo { Field = "Published", Operator = "==", Value = true });
+                List<DataProviderFilterInfo> filters = DataProviderFilterInfo.Join(null, new DataProviderFilterInfo { Field = nameof(BlogEntry.Published), Operator = "==", Value = true });
                 DataProviderGetRecords<BlogEntry> entries = await GetItemsAsync(0, 0, null, filters);
                 foreach (BlogEntry entry in entries.Data) {
                     string url = await BlogConfigData.GetEntryCanonicalNameAsync(entry.Identity);

@@ -156,7 +156,7 @@ namespace YetaWF.Modules.Identity.DataProvider {
         // API
 
         public async Task<UserDefinition> GetItemAsync(int userId) {
-            List<DataProviderFilterInfo> filters = DataProviderFilterInfo.Join(null, new DataProviderFilterInfo { Field = "UserId", Operator = "==", Value = userId });
+            List<DataProviderFilterInfo> filters = DataProviderFilterInfo.Join(null, new DataProviderFilterInfo { Field = nameof(UserDefinition.UserId), Operator = "==", Value = userId });
             return await GetItemAsync(filters);
         }
         public async Task<UserDefinition> GetItemAsync(string userName) {
@@ -180,7 +180,7 @@ namespace YetaWF.Modules.Identity.DataProvider {
         }
         public async Task<UserDefinition> GetItemByUserIdAsync(int id) { return await GetItemAsync(id); }
         public async Task<UserDefinition> GetItemByEmailAsync(string email) {
-            List<DataProviderFilterInfo> filters = DataProviderFilterInfo.Join(null, new DataProviderFilterInfo { Field = "Email", Operator = "==", Value = email });
+            List<DataProviderFilterInfo> filters = DataProviderFilterInfo.Join(null, new DataProviderFilterInfo { Field = nameof(UserDefinition.Email), Operator = "==", Value = email });
             return await GetItemAsync(filters);
         }
 
@@ -302,7 +302,7 @@ namespace YetaWF.Modules.Identity.DataProvider {
                 if (take == 0 && origTake > 0) {
                     // we just need the total
                     List<DataProviderFilterInfo> newfilters = null;
-                    newfilters = DataProviderFilterInfo.Join(newfilters, new DataProviderFilterInfo { Field = "UserName", Operator = "==", Value = null });
+                    newfilters = DataProviderFilterInfo.Join(newfilters, new DataProviderFilterInfo { Field = nameof(UserDefinition.UserName), Operator = "==", Value = null });
                     DataProviderGetRecords<UserDefinition> trecs = await DataProvider.GetRecordsAsync(0, 1, sort, newfilters);
                     userTotal = trecs.Total;
                     recs.Data = new List<UserDefinition>();

@@ -48,8 +48,8 @@ namespace YetaWF.Modules.Visitors.Scheduler {
                 DateTime startTime = DateTime.UtcNow;
                 int overall = 0;
                 List<DataProviderFilterInfo> filters = null;
-                filters = DataProviderFilterInfo.Join(filters, new DataProviderFilterInfo { Field = "ContinentCode", Operator = "==", Value = VisitorEntry.Unknown });
-                filters = DataProviderFilterInfo.Join(filters, new DataProviderFilterInfo { Field = "AccessDateTime", Operator = "<", Value = startTime });
+                filters = DataProviderFilterInfo.Join(filters, new DataProviderFilterInfo { Field = nameof(VisitorEntry.ContinentCode), Operator = "==", Value = VisitorEntry.Unknown });
+                filters = DataProviderFilterInfo.Join(filters, new DataProviderFilterInfo { Field = nameof(VisitorEntry.AccessDateTime), Operator = "<", Value = startTime });
 
                 GeoLocation geoLocation = new GeoLocation();
                 int maxRequest = geoLocation.GetRemainingRequests();
