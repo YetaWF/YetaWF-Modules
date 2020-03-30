@@ -178,6 +178,7 @@ $smbuttonhorzmargin: 2px;
 }
 .yt_grid_menus ul.k-menu {
     position:absolute;
+    z-index: 4000;
     font-size:$menufontsize;
     .t_fmenuicon {
         display:inline-block;
