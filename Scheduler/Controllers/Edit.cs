@@ -89,7 +89,7 @@ namespace YetaWF.Modules.Scheduler.Controllers {
                 if (evnt == null)
                     throw new Error(this.__ResStr("notFound", "Scheduler item \"{0}\" not found."), eventName);
                 model.SetEvent(evnt);
-                Module.Title = this.__ResStr("modTitle", "Scheduler Item \"{0}\"", eventName);
+                Module.Title = this.__ResStr("modTitle", "Scheduler Item \"{0}\"", evnt.Name);
                 return View(model);
             }
         }
