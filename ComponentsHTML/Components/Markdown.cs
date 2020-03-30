@@ -1,5 +1,6 @@
 ﻿/* Copyright © 2020 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/ComponentsHTML#License */
 
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -10,6 +11,7 @@ using YetaWF.Core.Localize;
 using YetaWF.Core.Models;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Packages;
+using YetaWF.Core.Serializers;
 using YetaWF.Core.Support;
 
 namespace YetaWF.Modules.ComponentsHTML.Components {
@@ -18,6 +20,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
     /// An instance of this class contains markdown text and HTML used with the Markdown component.
     /// </summary>
     [TypeConverter(typeof(MarkdownStringBaseConv))]
+    [JsonConverter(typeof(NoTypeConverterJsonConverter<MarkdownStringBase>))]
     public class MarkdownStringBase {
         /// <summary>
         /// The markdown text.
