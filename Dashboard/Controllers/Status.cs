@@ -66,6 +66,10 @@ namespace YetaWF.Modules.Dashboard.Controllers {
             [UIHint("String"), ReadOnly]
             public string Build { get; set; }
 
+            [Caption("LetsEncrypt"), Description("Shows whether LetsEncrypt is enabled")]
+            [UIHint("String"), ReadOnly, SuppressEmpty]
+            public string LetsEncrypt { get; set; }
+
         }
 
         [AllowGet]
@@ -115,6 +119,7 @@ namespace YetaWF.Modules.Dashboard.Controllers {
             } else {
                 model.BlueGreenDeploy = this.__ResStr("blueGreenNone", "N/A");
             }
+            model.LetsEncrypt = YetaWF2.LetsEncrypt.LetsEncrypt.IsEnabled ? this.__ResStr("letsEncryptEnabled", "Enabled") : null;
 
             return View(model);
         }
