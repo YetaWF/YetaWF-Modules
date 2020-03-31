@@ -2,9 +2,11 @@
 
 namespace YetaWF_Scheduler {
 
-    export class EventEditComponent {
+    export class EventEditComponent extends YetaWF.ComponentBaseNoDataImpl {
 
-        private Control: HTMLElement;
+        public static readonly TEMPLATE: string = "yt_yetawf_scheduler_event";
+        public static readonly SELECTOR: string = ".yt_yetawf_scheduler_event.t_edit";
+
         private DropDown: YetaWF_ComponentsHTML.DropDownListEditComponent;
         private Name: HTMLInputElement;
         private ImplementingAssembly: HTMLInputElement;
@@ -14,7 +16,17 @@ namespace YetaWF_Scheduler {
         private ElemDescription: HTMLElement;
 
         constructor(controlId: string) {
-            this.Control = $YetaWF.getElementById(controlId) as HTMLElement;
+            super(controlId, EventEditComponent.TEMPLATE, EventEditComponent.SELECTOR, {
+                ControlType: YetaWF_ComponentsHTML.ControlTypeEnum.Template,
+                ChangeEvent: null,
+                GetValue: (control: EventEditComponent): string | null => {
+                    return control.DropDown.value;
+                },
+                Enable: (control: EventEditComponent, enable: boolean, clearOnDisable: boolean): void => {
+                    control.DropDown.enable(enable);
+                },
+            });
+
             this.DropDown = YetaWF.ComponentBaseDataImpl.getControlFromSelector("select[name$='.DropDown']", YetaWF_ComponentsHTML.DropDownListEditComponent.SELECTOR, [this.Control]);
             this.Name = $YetaWF.getElement1BySelector("input[name$='.Name']", [this.Control]) as HTMLInputElement;
             this.ImplementingAssembly = $YetaWF.getElement1BySelector("input[name$='.ImplementingAssembly']", [this.Control]) as HTMLInputElement;
@@ -23,18 +35,24 @@ namespace YetaWF_Scheduler {
             this.ElemImplementingType = $YetaWF.getElement1BySelector(".t_impltype", [this.Control]);
             this.ElemDescription = $YetaWF.getElement1BySelector(".t_description", [this.Control]);
 
+            this.update();
+
             this.DropDown.Control.addEventListener("dropdownlist_change", (evt: Event): void => {
-                var args = this.DropDown.value.split(",");
-                this.Name.value = args[0];
-                this.ImplementingAssembly.value = args[2];
-                this.ImplementingType.value = args[1];
-
-                this.ElemImplementingAssembly.innerText = args[2];
-                this.ElemImplementingType.innerText = args[1];
-
-                var tip = this.DropDown.getToolTip(this.DropDown.selectedIndex);
-                this.ElemDescription.innerText = tip || "";
+                this.update();
             });
+        }
+        private update(): void {
+            let val = this.DropDown.value;
+            let args = val.split(",");
+            this.Name.value = args[0];
+            this.ImplementingAssembly.value = args[2];
+            this.ImplementingType.value = args[1];
+
+            this.ElemImplementingAssembly.innerText = args[2];
+            this.ElemImplementingType.innerText = args[1];
+
+            let tip = this.DropDown.getToolTip(this.DropDown.selectedIndex);
+            this.ElemDescription.innerText = tip || "";
         }
     }
 }

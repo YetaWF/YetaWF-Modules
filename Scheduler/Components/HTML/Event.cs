@@ -78,7 +78,7 @@ namespace YetaWF.Modules.Scheduler.Components {
             foreach (Type type in schedulerEvents) {
                 IScheduling isched = (IScheduling)Activator.CreateInstance(type);
                 SchedulerItemBase[] items = isched.GetItems();
-                foreach (var item in items) {
+                foreach (SchedulerItemBase item in items) {
                     list.Add(new SelectionItem<string>() {
                         Text = item.EventName,
                         Tooltip = item.Description,
@@ -88,14 +88,16 @@ namespace YetaWF.Modules.Scheduler.Components {
             }
             if (list.Count == 0) throw new Error(__ResStr("noEvents", "No events are available"));
 
-            string select = null;
-            if (model != null) {
+            string select;
+            if (string.IsNullOrWhiteSpace(model.Name)) {
+                select = list.First().Value;
+            } else {
                 select = model.Name + "," + model.ImplementingType + "," + model.ImplementingAssembly;
-                model.EventBuiltinDescription = (from l in list where @select == l.Value select l.Tooltip).FirstOrDefault();
             }
+
             EventUI eventUI = new EventUI {
                 DropDown = select,
-                DropDown_List= list,
+                DropDown_List = list,
             };
 
             using (Manager.StartNestedComponent(FieldName)) {

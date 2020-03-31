@@ -28,7 +28,7 @@ namespace YetaWF.Modules.Scheduler.Controllers {
             public string Name { get; set; }
 
             [Caption("Event"), Description("The event type of the scheduler item")]
-            [UIHint("YetaWF_Scheduler_Event"), Required]
+            [UIHint("YetaWF_Scheduler_Event")]
             public SchedulerEvent Event { get; set; }
 
             [Caption("Description"), Description("The description of this scheduler item")]
