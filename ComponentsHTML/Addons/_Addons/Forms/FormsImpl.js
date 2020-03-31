@@ -130,9 +130,11 @@ var YetaWF_ComponentsHTML;
             // get the first field in error (if any)
             var errField = $YetaWF.getElement1BySelectorCond(".v-valerror", [tag]);
             if (errField) {
-                var tabs = YetaWF.ComponentBaseDataImpl.getControlFromTagCond(errField, YetaWF_ComponentsHTML.TabsComponent.SELECTOR);
-                if (tabs)
-                    tabs.activatePaneByTag(errField);
+                if (YetaWF_ComponentsHTML.TabsComponent) {
+                    var tabs = YetaWF.ComponentBaseDataImpl.getControlFromTagCond(errField, YetaWF_ComponentsHTML.TabsComponent.SELECTOR);
+                    if (tabs)
+                        tabs.activatePaneByTag(errField);
+                }
             }
         };
         // Forms initialization

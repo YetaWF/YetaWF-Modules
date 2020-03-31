@@ -132,9 +132,11 @@ namespace YetaWF_ComponentsHTML {
             // get the first field in error (if any)
             let errField = $YetaWF.getElement1BySelectorCond(".v-valerror", [tag]);
             if (errField) {
-                let tabs = YetaWF.ComponentBaseDataImpl.getControlFromTagCond<YetaWF_ComponentsHTML.TabsComponent>(errField, TabsComponent.SELECTOR);
-                if (tabs)
-                    tabs.activatePaneByTag(errField);
+                if (YetaWF_ComponentsHTML.TabsComponent) {
+                    let tabs = YetaWF.ComponentBaseDataImpl.getControlFromTagCond<YetaWF_ComponentsHTML.TabsComponent>(errField, TabsComponent.SELECTOR);
+                    if (tabs)
+                        tabs.activatePaneByTag(errField);
+                }
             }
         }
 
