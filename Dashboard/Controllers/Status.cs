@@ -119,7 +119,7 @@ namespace YetaWF.Modules.Dashboard.Controllers {
             } else {
                 model.BlueGreenDeploy = this.__ResStr("blueGreenNone", "N/A");
             }
-            model.LetsEncrypt = YetaWF2.LetsEncrypt.LetsEncrypt.IsEnabled ? this.__ResStr("letsEncryptEnabled", "Enabled") : null;
+            model.LetsEncrypt = YetaWF2.LetsEncrypt.LetsEncrypt.Enabled ? this.__ResStr("letsEncryptEnabled", "Enabled") : null;
 
             return View(model);
         }
