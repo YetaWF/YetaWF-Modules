@@ -227,6 +227,7 @@ namespace YetaWF.Modules.Search.Scheduler {
             /// Add all string properties of an object as search terms.
             /// </summary>
             public void AddObjectContents(object searchObject) {
+                if (searchObject == null) return;
                 Type tp = searchObject.GetType();
                 foreach (var propData in ObjectSupport.GetPropertyData(tp)) {
                     if (propData.PropInfo.CanRead && propData.PropInfo.CanWrite) {

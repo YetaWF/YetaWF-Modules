@@ -20,24 +20,24 @@ namespace YetaWF.Modules.Search.DataProvider.PostgreSQL {
             public SearchConfigDataProvider(Dictionary<string, object> options) : base(options) { }
         }
         class SearchDataProvider : SQLSimpleObject<int, SearchData>, ISearchDataProviderIOMode {
+
             public SearchDataProvider(Dictionary<string, object> options) : base(options) { }
+
             public async Task RemoveUnusedUrlsAsync(DataProvider.SearchDataProvider searchDP) {//$$$$
                 using (DataProvider.SearchDataUrlDataProvider searchUrlDP = new DataProvider.SearchDataUrlDataProvider()) {
                     string sql = @"
-DELETE {UrlTableName}
-FROM {UrlTableName}
-LEFT JOIN {TableName} ON {UrlTableName}.[SearchDataUrlId] = {TableName}.[SearchDataUrlId]
-WHERE {TableName}.[SearchDataUrlId] IS NULL";
+DELETE FROM {UrlTableName} USING {TableName}
+WHERE {UrlTableName}.""SearchDataUrlId"" = {TableName}.""SearchDataUrlId""
+        AND {TableName}.""SearchDataUrlId"" IS NULL";
                     IPostgreSQLTableInfo info = await searchUrlDP.GetDataProvider().GetIPostgreSQLTableInfoAsync();
                     sql = sql.Replace("{UrlTableName}", SQLBuilder.WrapIdentifier(info.GetTableName()));
                     await Direct_QueryAsync(sql);
                 }
             }
 
-            public async Task MarkUpdatedAsync(int searchDataUrlId) {//$$$$
-                string sql = $@"UPDATE {{TableName}} Set DateAdded = GETUTCDATE() WHERE [SearchDataUrlId] = {{UrlId}} AND {{__Site}}";
-                sql = sql.Replace("{UrlId}", searchDataUrlId.ToString());
-                await Direct_QueryAsync(sql);
+            public async Task MarkUpdatedAsync(int searchDataUrlId) {
+                string sql = $@"UPDATE {{TableName}} Set ""DateAdded"" = @p2 WHERE ""SearchDataUrlId"" = @p1 AND {{__Site}}";
+                await Direct_QueryAsync(sql, searchDataUrlId, DateTime.UtcNow);
             }
         }
         class SearchResultDataProvider : SQLSimpleObject<int, SearchResult> {
