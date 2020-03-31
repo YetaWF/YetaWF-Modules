@@ -26,9 +26,11 @@ namespace YetaWF_ComponentsHTML {
         constructor(controlId: string, setup: TabsSetup) {
             super(controlId, TabsComponent.TEMPLATE, TabsComponent.SELECTOR, {
                 ControlType: ControlTypeEnum.Template,
-                ChangeEvent: null,
-                GetValue: null,
-                Enable: null,
+                ChangeEvent: TabsComponent.EVENT,
+                GetValue: (control: TabsComponent): string | null => {
+                    return control.activePane.toString();
+                },
+                Enable: (control: TabsComponent, enable: boolean, clearOnDisable: boolean): void => { },
             }, false, (tag: HTMLElement, control: TabsComponent): void => {
                 control.internalDestroy();
             });

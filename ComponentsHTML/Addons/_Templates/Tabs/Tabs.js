@@ -26,9 +26,11 @@ var YetaWF_ComponentsHTML;
         function TabsComponent(controlId, setup) {
             var _this = _super.call(this, controlId, TabsComponent.TEMPLATE, TabsComponent.SELECTOR, {
                 ControlType: YetaWF_ComponentsHTML.ControlTypeEnum.Template,
-                ChangeEvent: null,
-                GetValue: null,
-                Enable: null,
+                ChangeEvent: TabsComponent.EVENT,
+                GetValue: function (control) {
+                    return control.activePane.toString();
+                },
+                Enable: function (control, enable, clearOnDisable) { },
             }, false, function (tag, control) {
                 control.internalDestroy();
             }) || this;
