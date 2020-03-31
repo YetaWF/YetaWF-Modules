@@ -74,6 +74,10 @@ namespace YetaWF.Modules.Scheduler.Support {
                 });
             });
         }
+        /// <summary>
+        /// Defines whether the logging data provider is already logging an event.
+        /// </summary>
+        bool ILogging.IsProcessing { get; set; }
     }
 }
 

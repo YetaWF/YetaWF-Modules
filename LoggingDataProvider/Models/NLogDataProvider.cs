@@ -174,6 +174,11 @@ namespace YetaWF.Modules.LoggingDataProvider.DataProvider.NLogProvider {
                 NLogDataProvider.Logger.Log(level, message);
             }
         }
+        /// <summary>
+        /// Defines whether the logging data provider is already logging an event.
+        /// </summary>
+        bool ILogging.IsProcessing { get { return base.IsProcessing; } set { base.IsProcessing = value; } }
+
         private object Enc(string s) {
             return s.Replace(";", ";;");
         }

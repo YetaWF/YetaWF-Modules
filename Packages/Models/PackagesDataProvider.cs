@@ -141,6 +141,10 @@ namespace YetaWF.Modules.Packages.DataProvider {
                     }
                 });
             }
+            /// <summary>
+            /// Defines whether the logging data provider is already logging an event.
+            /// </summary>
+            bool ILogging.IsProcessing { get; set; }
         }
 
         public class RetrieveInitialInstallLogInfo {

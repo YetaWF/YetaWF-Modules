@@ -13,6 +13,7 @@ using YetaWF.Core.Extensions;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Modules;
 using YetaWF.Core.Support;
+using YetaWF.Core.Log;
 #if MVC6
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Extensions;
@@ -109,12 +110,7 @@ namespace YetaWF.Modules.LoggingDataProvider.DataProvider {
         public virtual Task FlushAsync() { return Task.CompletedTask; }
         public abstract void SaveMessage(LogRecord record);
 
-        protected static bool WriteInProgess = false;
-
         public void WriteToLogFile(string category, Core.Log.Logging.LevelEnum level, int relStack, string message) {
-
-            if (WriteInProgess) return;
-            WriteInProgess = true;
 
             if (level == Core.Log.Logging.LevelEnum.Error)
                 message += "\n" + GetCallStack(relStack + 1);
@@ -123,42 +119,40 @@ namespace YetaWF.Modules.LoggingDataProvider.DataProvider {
             string moduleName;
             int siteIdentity = 0;
 
-            try {
-
-                int userId = 0;
-                string userName = "";
-                string ipAddress = "";
-                string referrer = "";
-                string requestedUrl = "";
-                string sessionId = "";
-                category = category.Truncate(LogRecord.MaxCategory);
-                if (YetaWFManager.HaveManager) {
-                    if (Manager.HaveCurrentSite)
-                        siteIdentity = Manager.CurrentSite.Identity;
-                    userId = Manager.UserId;
-                    userName = Manager.UserName ?? "";
-                    userName = userName.Truncate(Globals.MaxUser);
-                    sessionId = category == YetaWF.Core.Log.Logging.YetaWFEvent ? Manager.CurrentSessionId : "";
-                }
-                HttpContext httpContext;
+            int userId = 0;
+            string userName = "";
+            string ipAddress = "";
+            string referrer = "";
+            string requestedUrl = "";
+            string sessionId = "";
+            category = category.Truncate(LogRecord.MaxCategory);
+            if (YetaWFManager.HaveManager) {
+                if (Manager.HaveCurrentSite)
+                    siteIdentity = Manager.CurrentSite.Identity;
+                userId = Manager.UserId;
+                userName = Manager.UserName ?? "";
+                userName = userName.Truncate(Globals.MaxUser);
+                sessionId = category == YetaWF.Core.Log.Logging.YetaWFEvent ? Manager.CurrentSessionId : "";
+            }
+            HttpContext httpContext;
 #if MVC6
-                httpContext = YetaWFManager.HttpContextAccessor.HttpContext;
+            httpContext = YetaWFManager.HttpContextAccessor.HttpContext;
 #else
                 httpContext = HttpContext.Current;
 #endif
-                if (httpContext != null) {
-                    // We don't have a Manager for certain log records (particularly during startup)
-                    HttpRequest req = httpContext.Request;
-                    if (req != null) {
+            if (httpContext != null) {
+                // We don't have a Manager for certain log records (particularly during startup)
+                HttpRequest req = httpContext.Request;
+                if (req != null) {
 #if MVC6
-                        requestedUrl = req.GetDisplayUrl();
-                        ipAddress = (string)req.Headers["X-Forwarded-For"] ?? (string)req.Headers["X-Original-For"];
-                        if (string.IsNullOrWhiteSpace(ipAddress)) {
-                            IHttpConnectionFeature connectionFeature = httpContext.Features.Get<IHttpConnectionFeature>();
-                            if (connectionFeature != null)
-                                ipAddress = connectionFeature.RemoteIpAddress.ToString();
-                        }
-                        referrer = req.Headers["Referer"].ToString();
+                    requestedUrl = req.GetDisplayUrl();
+                    ipAddress = (string)req.Headers["X-Forwarded-For"] ?? (string)req.Headers["X-Original-For"];
+                    if (string.IsNullOrWhiteSpace(ipAddress)) {
+                        IHttpConnectionFeature connectionFeature = httpContext.Features.Get<IHttpConnectionFeature>();
+                        if (connectionFeature != null)
+                            ipAddress = connectionFeature.RemoteIpAddress.ToString();
+                    }
+                    referrer = req.Headers["Referer"].ToString();
 #else
                         requestedUrl = req.Url != null ? req.Url.ToString() : null;
                         ipAddress = req.Headers["X-Forwarded-For"] ?? req.Headers["X-Original-For"];
@@ -166,41 +160,42 @@ namespace YetaWF.Modules.LoggingDataProvider.DataProvider {
                             ipAddress = req.UserHostAddress;
                         referrer = req.UrlReferrer != null ? req.UrlReferrer.ToString() : null;
 #endif
-                        requestedUrl = requestedUrl ?? "";
-                        requestedUrl = requestedUrl.Truncate(Globals.MaxUrl);
-                        referrer = referrer ?? "";
-                        referrer = referrer.Truncate(Globals.MaxUrl);
-                        ipAddress = ipAddress ?? "";
-                        ipAddress = ipAddress.Truncate(Globals.MaxIP);
-                    }
+                    requestedUrl = requestedUrl ?? "";
+                    requestedUrl = requestedUrl.Truncate(Globals.MaxUrl);
+                    referrer = referrer ?? "";
+                    referrer = referrer.Truncate(Globals.MaxUrl);
+                    ipAddress = ipAddress ?? "";
+                    ipAddress = ipAddress.Truncate(Globals.MaxIP);
                 }
-                MethodBase methBase = null;
-                moduleName = null;
+            }
+            MethodBase methBase = null;
+            moduleName = null;
 #if DEBUG
-                GetCallInfo(relStack + 3, out moduleName);// this is really slow
+            GetCallInfo(relStack + 3, out moduleName);// this is really slow
 #endif
 
-                SaveMessage(new LogRecord {
-                    Category = category,
-                    Level = level,
-                    Info = message,
-                    TimeStamp = DateTime.UtcNow,
-                    SessionId = sessionId,
-                    ModuleName = moduleName,
-                    Class = methBase == null ? "" : (methBase.DeclaringType != null) ? methBase.DeclaringType.Name : "",
-                    Method = methBase == null ? "" : methBase.Name,
-                    Namespace = methBase == null ? "" : (methBase.DeclaringType != null) ? methBase.DeclaringType.Namespace : "",
-                    SiteIdentity = siteIdentity,
-                    UserId = userId,
-                    UserName = userName,
-                    IPAddress = ipAddress,
-                    RequestedUrl = requestedUrl,
-                    ReferrerUrl = referrer,
-                });
-            } catch (Exception) { }
-
-            WriteInProgess = false;
+            SaveMessage(new LogRecord {
+                Category = category,
+                Level = level,
+                Info = message,
+                TimeStamp = DateTime.UtcNow,
+                SessionId = sessionId,
+                ModuleName = moduleName,
+                Class = methBase == null ? "" : (methBase.DeclaringType != null) ? methBase.DeclaringType.Name : "",
+                Method = methBase == null ? "" : methBase.Name,
+                Namespace = methBase == null ? "" : (methBase.DeclaringType != null) ? methBase.DeclaringType.Namespace : "",
+                SiteIdentity = siteIdentity,
+                UserId = userId,
+                UserName = userName,
+                IPAddress = ipAddress,
+                RequestedUrl = requestedUrl,
+                ReferrerUrl = referrer,
+            });
         }
+        /// <summary>
+        /// Defines whether the logging data provider is already logging an event.
+        /// </summary>
+        protected bool IsProcessing { get; set; }
 
         public virtual Task<LogRecord> GetItemAsync(int key) {
             throw new NotImplementedException();

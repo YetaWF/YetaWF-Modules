@@ -12,7 +12,6 @@ using YetaWF.Core.Log;
 using YetaWF.Core.Packages;
 using YetaWF.Core.Serializers;
 using YetaWF.Core.Support;
-using YetaWF2.Logger;
 
 namespace YetaWF.Modules.LoggingDataProvider.DataProvider.MSLog {
 
@@ -64,6 +63,10 @@ namespace YetaWF.Modules.LoggingDataProvider.DataProvider.MSLog {
         public override bool CanImportOrExport { get { return false; } }
         public override bool CanRemove { get { return false; } }
         public override bool CanDownload { get { return false; } }
+        /// <summary>
+        /// Defines whether the logging data provider is already logging an event.
+        /// </summary>
+        bool ILogging.IsProcessing { get { return base.IsProcessing; } set { base.IsProcessing = value; } }
 
         // IINSTALLABLEMODEL
         // IINSTALLABLEMODEL

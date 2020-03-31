@@ -88,6 +88,10 @@ namespace YetaWF.Modules.LoggingDataProvider.DataProvider.File {
                 }
             });
         }
+        /// <summary>
+        /// Defines whether the logging data provider is already logging an event.
+        /// </summary>
+        bool ILogging.IsProcessing { get { return base.IsProcessing; } set { base.IsProcessing = value; } }
 
         public override Task<LogRecord> GetItemAsync(int key) {
             throw new NotImplementedException();
