@@ -2,8 +2,6 @@
 
 /* jquery tab height adjustment */
 
-.yt_tabs.ui-tabs {
-    li {
-        line-height:1.1
-    }
+.yt_tabs.ui-tabs > ul > li {
+    line-height:1.1
 }
