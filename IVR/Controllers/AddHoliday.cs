@@ -55,7 +55,7 @@ namespace Softelvdm.Modules.IVR.Controllers {
 
             using (HolidayEntryDataProvider dataProvider = new HolidayEntryDataProvider()) {
                 if (!await dataProvider.AddItemAsync(model.GetData())) {
-                    ModelState.AddModelError(nameof(AddModel.HolidayDate), this.__ResStr("dup", "An entry for {0} already exists", Formatting.FormatDateTime(model.HolidayDate)));
+                    ModelState.AddModelError(nameof(AddModel.HolidayDate), this.__ResStr("dup", "An entry for {0} already exists", Formatting.FormatDate(model.HolidayDate)));
                     return PartialView(model);
                 }
                 return FormProcessed(model, this.__ResStr("okSaved", "New holiday saved"), OnPopupClose: OnPopupCloseEnum.ReloadModule);
