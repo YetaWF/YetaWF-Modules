@@ -19,7 +19,7 @@ using YetaWF.PackageAttributes;
 
 [assembly: Package(PackageTypeEnum.Module, "YetaWF")]
 [assembly: PackageInfo("https://YetaWF.com/UpdateServer",
-    "https://YetaWF.com/Documentation/YetaWF/ComponentsHTML",
-    "https://YetaWF.com/Documentation/YetaWF/Support",
-    "https://YetaWF.com/Documentation/YetaWF/ComponentsHTML#Release%20Notice",
-    "https://YetaWF.com/Documentation/YetaWF/ComponentsHTML#License")]
+    "https://YetaWF.com/Documentation/YetaWFComponentsHTML",
+    "https://YetaWF.com/Documentation/YetaWFComponentsHTML#Support",
+    "https://YetaWF.com/Documentation/YetaWFComponentsHTML#Release%20Notice",
+    "https://YetaWF.com/Documentation/YetaWFComponentsHTML#License")]
