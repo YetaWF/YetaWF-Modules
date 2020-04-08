@@ -19,7 +19,7 @@ namespace YetaWF.Modules.AddThis.Modules {
         public SharingSidebarModule() {
             Title = this.__ResStr("modTitle", "Sharing Sidebar");
             Name = this.__ResStr("modName", "Sharing Sidebar (Skin)");
-            Description = this.__ResStr("modSummary", "Displays an AddThis Sharing Sidebar");
+            Description = this.__ResStr("modSummary", "Displays an AddThis Sharing Sidebar and is referenced by your page(s) or site. It is not added to a skin or page, instead it is referenced by a site, page or module. Referencing the Sharing Sidebar (Skin) Module causes the AddThis Sharing Sidebar to be displayed as configured by the settings defined using Admin > Settings > AddThis Sharing SideBar Settings (standard YetaWF site).");
             ShowTitle = false;
             WantSearch = false;
             WantFocus = false;

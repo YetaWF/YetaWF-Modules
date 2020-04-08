@@ -19,7 +19,7 @@ namespace YetaWF.Modules.Basics.Modules {
         public ShowMessageModule() : base() {
             Title = this.__ResStr("modTitle", "An Error Occurred");
             Name = this.__ResStr("modName", "Message (Page)");
-            Description = this.__ResStr("modSummary", "Displays an error message (used when no page/module context is available)");
+            Description = this.__ResStr("modSummary", "Displays an error message (used when no page/module context is available).");
         }
 
         public override IModuleDefinitionIO GetDataProvider() { return new ShowMessageModuleDataProvider(); }

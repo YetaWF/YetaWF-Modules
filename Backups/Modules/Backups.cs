@@ -23,7 +23,7 @@ namespace YetaWF.Modules.Backups.Modules {
         public BackupsModule() : base() {
             Title = this.__ResStr("modTitle", "Site Backups");
             Name = this.__ResStr("modName", "Backups");
-            Description = this.__ResStr("modSummary", "Manages site backups");
+            Description = this.__ResStr("modSummary", "Manages site backups.");
             DefaultViewName = StandardViews.Browse;
         }
 

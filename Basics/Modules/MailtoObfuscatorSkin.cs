@@ -19,7 +19,7 @@ namespace YetaWF.Modules.Basics.Modules {
         public MailtoObfuscatorSkinModule() {
             Title = this.__ResStr("modTitle", "Mailto Obfuscator");
             Name = this.__ResStr("modName", "Mailto Obfuscator (Skin)");
-            Description = this.__ResStr("modSummary", "Skin module implementing mailto obfuscation using javascript");
+            Description = this.__ResStr("modSummary", "Skin module implementing mailto: obfuscation using JavaScript. Can be enabled by referencing it site-wide or per page.");
             WantFocus = false;
             WantSearch = false;
             ShowTitle = false;

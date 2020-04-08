@@ -21,7 +21,7 @@ namespace YetaWF.Modules.Basics.Modules {
         public RecaptchaV2ConfigModule() : base() {
             Title = this.__ResStr("modTitle", "RecaptchaV2 Settings");
             Name = this.__ResStr("modName", "RecaptchaV2 Settings");
-            Description = this.__ResStr("modSummary", "Edits the RecaptchaV2 settings");
+            Description = this.__ResStr("modSummary", "Captcha support using Google's https://www.google.com/recaptcha. The Recaptcha configuration can be accessed using Admin > Settings > RecaptchaV2 Settings (standard YetaWF site). Recaptcha is a service provided by Google. Key information can be obtained at https://www.google.com/recaptcha/admin#createsiteRemote. You need a Google account to obtain key information. The settings defined using the RecaptchaV2 Settings Module are used by the RecaptchaV2 component.");
             ShowHelp = true;
             DefaultViewName = StandardViews.Config;
         }

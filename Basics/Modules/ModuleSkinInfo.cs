@@ -20,7 +20,7 @@ namespace YetaWF.Modules.Basics.Modules {
         public ModuleSkinInfoModule() {
             Title = this.__ResStr("modTitle", "Module Skin Info");
             Name = this.__ResStr("modName", "Module Skin Info");
-            Description = this.__ResStr("modSummary", "Displays module skin and CSS information, used for skin development");
+            Description = this.__ResStr("modSummary", "Displays a test sample with most HTML elements and tags commonly used. It can be used to verify a skin. It also displays average character height/width, which is used when creating new skins (in a skin's Skin.txt file). Module Skin Info can be accessed using Tests > Module Skin Info (standard YetaWF site).");
         }
 
         public override IModuleDefinitionIO GetDataProvider() { return new ModuleSkinInfoModuleDataProvider(); }

@@ -21,7 +21,7 @@ namespace YetaWF.Modules.AddThis.Modules {
         public SharingSidebarConfigModule() {
             Title = this.__ResStr("modTitle", "Sharing Sidebar Settings");
             Name = this.__ResStr("modName", "Sharing Sidebar Settings");
-            Description = this.__ResStr("modSummary", "Edits a site's AddThis Sharing Sidebar configuration settings");
+            Description = this.__ResStr("modSummary", "Edits a site's AddThis Sharing Sidebar configuration settings. It can be accessed using Admin > Settings > AddThis Sharing SideBar Settings.");
             ShowHelp = true;
             DefaultViewName = StandardViews.Config;
         }

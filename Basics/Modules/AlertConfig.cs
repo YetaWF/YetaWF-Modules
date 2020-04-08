@@ -21,7 +21,7 @@ namespace YetaWF.Modules.Basics.Modules {
         public AlertConfigModule() {
             Title = this.__ResStr("modTitle", "Alert Settings");
             Name = this.__ResStr("modName", "Alert Settings");
-            Description = this.__ResStr("modSummary", "Edits a site's Alert settings");
+            Description = this.__ResStr("modSummary", "The Alert Settings Module allows configuring the Alert displayed to site visitors and can be accessed using Admin > Settings > Alert Settings (standard YetaWF site).");
             ShowHelp = true;
             DefaultViewName = StandardViews.Config;
         }

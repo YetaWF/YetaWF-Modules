@@ -19,7 +19,7 @@ namespace YetaWF.Modules.Basics.Modules {
         public AlertDisplayModule() {
             Title = this.__ResStr("modTitle", "Alert Message (Skin)");
             Name = this.__ResStr("modName", "Alert Message (Skin)");
-            Description = this.__ResStr("modSummary", "Displays an Alert message");
+            Description = this.__ResStr("modSummary", "Can be referenced by sites, pages or modules. Once referenced, an Alert will be displayed (once or until dismissed, depending on Alert Settings).");
             WantFocus = false;
             WantSearch = false;
             ShowTitle = false;
