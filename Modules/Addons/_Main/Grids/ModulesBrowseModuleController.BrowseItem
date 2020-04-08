@@ -1,7 +1,7 @@
 ﻿Commands            icons 3
 Name                sort filter 25 defaultSort asc
 Title               sort filter 25
-Description         sort filter 40
+Description         40
 UseCount            10 right
 Anonymous           center [Globals.ChBoolean]
 Users               center [Globals.ChBoolean]

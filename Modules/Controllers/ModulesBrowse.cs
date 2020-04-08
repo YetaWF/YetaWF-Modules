@@ -107,12 +107,14 @@ namespace YetaWF.Modules.Modules.Controllers {
             private ModulesBrowseModule Module { get; set; }
             private ModuleDefinition ModSettings { get; set; }
 
-            public BrowseItem(ModulesBrowseModule browseMod,  ModuleDefinition modSettings, ModuleDefinition mod, int useCount) {
+            public BrowseItem(ModulesBrowseModule browseMod,  ModuleDefinition modSettings, SerializableList<DesignedModule> designedList, ModuleDefinition mod, int useCount) {
+
                 Module = browseMod;
                 ModSettings = modSettings;
                 ObjectSupport.CopyData(mod, this);
+
                 ModuleGuid = mod.ModuleGuid;
-                Description = mod.Description;
+                Description = (from d in designedList where d.ModuleGuid == mod.ModuleGuid select d.Description).FirstOrDefault();
                 UseCount = useCount;
                 Anonymous = mod.IsAuthorized_View_Anonymous();
                 Users = mod.IsAuthorized_View_AnyUser();
@@ -145,10 +147,11 @@ namespace YetaWF.Modules.Modules.Controllers {
                         Filters = filters,
                     };
                     await YetaWF.Core.IO.Module.GetModulesAsync(info);
+                    SerializableList<DesignedModule> designedList = await DesignedModules.LoadDesignedModulesAsync();
                     List<BrowseItem> list = new List<BrowseItem>();
                     foreach (ModuleDefinition s in info.Modules) {
                         int useCount = (await s.__GetPagesAsync()).Count;
-                        list.Add(new BrowseItem(Module, modSettings, s, useCount));
+                        list.Add(new BrowseItem(Module, modSettings, designedList, s, useCount));
                     }
                     return new DataSourceResult {
                         Data = list.ToList<object>(),
