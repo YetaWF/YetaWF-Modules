@@ -12,7 +12,7 @@ namespace YetaWF.Modules.Basics.Modules {
 
     public class AlertDisplayModuleDataProvider : ModuleDefinitionDataProvider<Guid, AlertDisplayModule>, IInstallableModel { }
 
-    [ModuleGuid("{24b7dc07-e96a-409d-911f-47bffd38d0fc}")] // Published Guid
+    [ModuleGuid("{24b7dc07-e96a-409d-911f-47bffd38d0fc}"), PublishedModuleGuid]
     [UniqueModule(UniqueModuleStyle.UniqueOnly)]
     public class AlertDisplayModule : ModuleDefinition {
 

@@ -13,7 +13,7 @@ namespace YetaWF.Modules.Visitors.Modules {
 
     public class IPAddressLookupModuleDataProvider : ModuleDefinitionDataProvider<Guid, IPAddressLookupModule>, IInstallableModel { }
 
-    [ModuleGuid("{ad95564e-8eb7-4bcb-be64-dc6f1cd6b55d}")] // Published Guid
+    [ModuleGuid("{ad95564e-8eb7-4bcb-be64-dc6f1cd6b55d}"), PublishedModuleGuid]
     [UniqueModule(UniqueModuleStyle.NonUnique)]
     public class IPAddressLookupModule : ModuleDefinition {
 

@@ -13,7 +13,7 @@ namespace YetaWF.Modules.CurrencyConverter.Modules {
 
     public class CurrencyConverterModuleDataProvider : ModuleDefinitionDataProvider<Guid, CurrencyConverterModule>, IInstallableModel { }
 
-    [ModuleGuid("{d1b33e01-7acd-4f0e-a128-5101dd59e085}")] // Published Guid
+    [ModuleGuid("{d1b33e01-7acd-4f0e-a128-5101dd59e085}"), PublishedModuleGuid]
     [UniqueModule(UniqueModuleStyle.NonUnique)]
     public class CurrencyConverterModule : ModuleDefinition {
 

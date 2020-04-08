@@ -12,7 +12,7 @@ namespace YetaWF.Modules.Visitors.Modules {
 
     public class SkinVisitorModuleDataProvider : ModuleDefinitionDataProvider<Guid, SkinVisitorModule>, IInstallableModel { }
 
-    [ModuleGuid("{7e432be4-1dbf-438a-9286-9c88ab225f5b}")] // Published Guid
+    [ModuleGuid("{7e432be4-1dbf-438a-9286-9c88ab225f5b}"), PublishedModuleGuid]
     [UniqueModule(UniqueModuleStyle.UniqueOnly)]
     public class SkinVisitorModule : ModuleDefinition {
 

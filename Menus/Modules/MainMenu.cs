@@ -11,7 +11,7 @@ namespace YetaWF.Modules.Menus.Modules {
 
     public class MainMenuModuleDataProvider : ModuleDefinitionDataProvider<Guid, MainMenuModule>, IInstallableModel { }
 
-    [ModuleGuid("{59909BB1-75F4-419f-B961-8569BB282131}")] // Published Guid
+    [ModuleGuid("{59909BB1-75F4-419f-B961-8569BB282131}"), PublishedModuleGuid]
     [UniqueModule(UniqueModuleStyle.UniqueOnly)] // this is unique because we need one site-wide menu for admin commands, etc. (additional regular menus can be defined using the MenuModule)
     public class MainMenuModule : MenuModule {
 

@@ -22,7 +22,7 @@ namespace YetaWF.Modules.PageEdit.Modules {
 
     public class PageControlModuleDataProvider : ModuleDefinitionDataProvider<Guid, PageControlModule>, IInstallableModel { }
 
-    [ModuleGuid("{466C0CCA-3E63-43f3-8754-F4267767EED1}")] // Published Guid
+    [ModuleGuid("{466C0CCA-3E63-43f3-8754-F4267767EED1}"), PublishedModuleGuid]
     [UniqueModule(UniqueModuleStyle.UniqueOnly)]
     public class PageControlModule : ModuleDefinition {
 

@@ -15,7 +15,7 @@ namespace YetaWF.Modules.SiteProperties.Modules {
 
     public class SitePropertiesModuleDataProvider : ModuleDefinitionDataProvider<Guid, SitePropertiesModule>, IInstallableModel { }
 
-    [ModuleGuid("522296A0-B03B-49b7-B849-AB4149466E0D")] // Published Guid
+    [ModuleGuid("522296A0-B03B-49b7-B849-AB4149466E0D"), PublishedModuleGuid]
     public class SitePropertiesModule : ModuleDefinition {
 
         public SitePropertiesModule() {

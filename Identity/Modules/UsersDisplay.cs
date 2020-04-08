@@ -13,7 +13,7 @@ namespace YetaWF.Modules.Identity.Modules {
 
     public class UsersDisplayModuleDataProvider : ModuleDefinitionDataProvider<Guid, UsersDisplayModule>, IInstallableModel { }
 
-    [ModuleGuid("{e6c98552-d1fa-48aa-a690-e5f933dd71ac}")] // Published Guid
+    [ModuleGuid("{e6c98552-d1fa-48aa-a690-e5f933dd71ac}"), PublishedModuleGuid]
     [UniqueModule(UniqueModuleStyle.NonUnique)]
     public class UsersDisplayModule : ModuleDefinition {
 

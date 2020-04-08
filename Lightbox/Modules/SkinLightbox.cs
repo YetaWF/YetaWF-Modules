@@ -12,7 +12,7 @@ namespace YetaWF.Modules.Lightbox.Modules {
 
     public class SkinLightboxModuleDataProvider : ModuleDefinitionDataProvider<Guid, SkinLightboxModule>, IInstallableModel { }
 
-    [ModuleGuid("{39244dbc-0536-4c85-88d1-b84b504510ac}")] // Published Guid
+    [ModuleGuid("{39244dbc-0536-4c85-88d1-b84b504510ac}"), PublishedModuleGuid]
     [UniqueModule(UniqueModuleStyle.UniqueOnly)]
     public class SkinLightboxModule : ModuleDefinition {
 

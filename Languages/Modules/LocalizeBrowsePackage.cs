@@ -23,7 +23,7 @@ namespace YetaWF.Modules.Languages.Modules {
 
     public class LocalizeBrowsePackageModuleDataProvider : ModuleDefinitionDataProvider<Guid, LocalizeBrowsePackageModule>, IInstallableModel { }
 
-    [ModuleGuid("{b30d6119-4769-4702-88d8-585ee4ebd4a7}")] // Published Guid
+    [ModuleGuid("{b30d6119-4769-4702-88d8-585ee4ebd4a7}"), PublishedModuleGuid]
     [UniqueModule(UniqueModuleStyle.NonUnique)]
     public class LocalizeBrowsePackageModule : ModuleDefinition {
 

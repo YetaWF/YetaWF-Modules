@@ -20,7 +20,7 @@ namespace YetaWF.Modules.ModuleEdit.Modules {
 
     public class ModuleEditModuleDataProvider : ModuleDefinitionDataProvider<Guid, ModuleEditModule>, IInstallableModel { }
 
-    [ModuleGuid("{ACDC1453-32BD-4de2-AB2B-7BF5CE217762}")] // Published Guid
+    [ModuleGuid("{ACDC1453-32BD-4de2-AB2B-7BF5CE217762}"), PublishedModuleGuid]
     [UniqueModule(UniqueModuleStyle.UniqueOnly)]
     public class ModuleEditModule : ModuleDefinition {
 

@@ -12,7 +12,7 @@ namespace YetaWF.Modules.SyntaxHighlighter.Modules {
 
     public class SkinHighlightJSModuleDataProvider : ModuleDefinitionDataProvider<Guid, SkinHighlightJSModule>, IInstallableModel { }
 
-    [ModuleGuid("{25068AC6-BA74-4644-8B46-9D7FEC291E45}")] // Published Guid
+    [ModuleGuid("{25068AC6-BA74-4644-8B46-9D7FEC291E45}"), PublishedModuleGuid]
     [UniqueModule(UniqueModuleStyle.UniqueOnly)]
     public class SkinHighlightJSModule : ModuleDefinition {
 

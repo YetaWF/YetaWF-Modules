@@ -24,7 +24,7 @@ namespace YetaWF.Modules.ModuleEdit.Modules {
 
     public class ModuleControlModuleDataProvider : ModuleDefinitionDataProvider<Guid, ModuleControlModule>, IInstallableModel { }
 
-    [ModuleGuid("{96CAEAD9-068D-4b83-8F46-5269834F3B16}")] // Published Guid
+    [ModuleGuid("{96CAEAD9-068D-4b83-8F46-5269834F3B16}"), PublishedModuleGuid]
     [UniqueModule(UniqueModuleStyle.UniqueOnly)]
     public class ModuleControlModule : ModuleDefinition {
 

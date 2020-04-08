@@ -13,7 +13,7 @@ namespace YetaWF.Modules.Search.Modules {
 
     public class SearchControlModuleDataProvider : ModuleDefinitionDataProvider<Guid, SearchControlModule>, IInstallableModel { }
 
-    [ModuleGuid("{f7202e79-30bc-43ea-8d7a-12218785207b}")] // Published Guid
+    [ModuleGuid("{f7202e79-30bc-43ea-8d7a-12218785207b}"), PublishedModuleGuid]
     [UniqueModule(UniqueModuleStyle.UniqueOnly)]
     public class SearchControlModule : ModuleDefinition {
 

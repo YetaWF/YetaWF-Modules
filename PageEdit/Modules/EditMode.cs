@@ -12,7 +12,7 @@ namespace YetaWF.Modules.PageEdit.Modules {
 
     public class EditModeModuleDataProvider : ModuleDefinitionDataProvider<Guid, EditModeModule>, IInstallableModel { }
 
-    [ModuleGuid("{267f00cc-c619-4854-baed-9e4b812d7e95}")] // Published Guid
+    [ModuleGuid("{267f00cc-c619-4854-baed-9e4b812d7e95}"), PublishedModuleGuid]
     [UniqueModule(UniqueModuleStyle.UniqueOnly)]
     public class EditModeModule : ModuleDefinition {
 

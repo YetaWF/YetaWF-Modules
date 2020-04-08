@@ -22,7 +22,7 @@ namespace YetaWF.Modules.TinyLogin.Modules {
 
     public class TinyLoginModuleDataProvider : ModuleDefinitionDataProvider<Guid, TinyLoginModule>, IInstallableModel { }
 
-    [ModuleGuid("{9e929bdc-8810-4710-ab3d-b7bced570e02}")] // Published Guid
+    [ModuleGuid("{9e929bdc-8810-4710-ab3d-b7bced570e02}"), PublishedModuleGuid]
     [UniqueModule(UniqueModuleStyle.UniqueOnly)]
     public class TinyLoginModule : ModuleDefinition {
 

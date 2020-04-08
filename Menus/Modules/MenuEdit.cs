@@ -19,7 +19,7 @@ namespace YetaWF.Modules.Menus.Modules {
 
     public class MenuEditModuleDataProvider : ModuleDefinitionDataProvider<Guid, MenuEditModule>, IInstallableModel { }
 
-    [ModuleGuid("{28CCB0EB-0B46-4e78-A80F-F98DA875EE82}")] // Published Guid
+    [ModuleGuid("{28CCB0EB-0B46-4e78-A80F-F98DA875EE82}"), PublishedModuleGuid]
     [UniqueModule(UniqueModuleStyle.NonUnique)]
     public class MenuEditModule : ModuleDefinition {
 
