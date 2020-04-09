@@ -31,8 +31,13 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
     }
 
     /// <summary>
-    /// Implementation of the Boolean display component.
+    /// Displays the model using a disabled checkbox, indicating the boolean status (checked, unchecked).
     /// </summary>
+    /// <example>
+    /// [Category("Skin"), Caption("Show Help"), Description("Defines whether the module help link is shown in Display Mode - The help link is always shown in Edit Mode", Order = -91)]
+    /// [UIHint("Boolean"), ReadOnly]
+    /// public bool ShowHelp { get; set; }
+    /// </example>
     public class BooleanDisplayComponent : BooleanComponentBase, IYetaWFComponent<bool?> {
 
         /// <summary>
@@ -69,8 +74,13 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         }
     }
     /// <summary>
-    /// Implementation of the Boolean edit component.
+    /// Allows selection of a true/false status using a checkbox.
     /// </summary>
+    /// <example>
+    /// [Category("Skin"), Caption("Show Help"), Description("Defines whether the module help link is shown in Display Mode - The help link is always shown in Edit Mode", Order = -91)]
+    /// [UIHint("Boolean")]
+    /// public bool ShowHelp { get; set; }
+    /// </example>
     public class BooleanEditComponent : BooleanComponentBase, IYetaWFComponent<bool>, IYetaWFComponent<bool?> {
 
         /// <summary>

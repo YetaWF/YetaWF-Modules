@@ -34,8 +34,16 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
     }
 
     /// <summary>
-    /// Implementation of the Currency display component.
+    /// Displays a currency amount based on the provided model, formatted using the site's defined default currency. If the model is null, nothing is rendered.
     /// </summary>
+    /// <remarks>
+    /// The currency is based on the site's defined default currency. The default currency can be found at Admin > Settings > Site Settings, Site tab, Currency, Currency Format and Currency Rounding fields.
+    /// </remarks>
+    /// <example>
+    /// [Caption("Hourly Rate"), Description("Shows the hourly rate")]
+    /// [UIHint("Currency"), ReadOnly]
+    /// public decimal DefaultHourlyRate { get; set; }
+    /// </example>
     public class CurrencyDisplayComponent : CurrencyComponentBase, IYetaWFComponent<decimal?> {
 
         /// <summary>
@@ -67,8 +75,18 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
     }
 
     /// <summary>
-    /// Implementation of the Currency edit component.
+    /// Allows entry of a currency amount based, formatted using the site's defined default currency.
     /// </summary>
+    /// <remarks>
+    /// The currency is based on the site's defined default currency. The default currency can be found at Admin > Settings > Site Settings, Site tab, Currency, Currency Format and Currency Rounding fields.
+    /// 
+    /// The RangeAttribute attribute can be used to set upper and/or lower amount limits.
+    /// </remarks>
+    /// <example>
+    /// [Caption("Hourly Rate"), Description("Enter the hourly rate")]
+    /// [UIHint("Currency"), Range(0.0, 999999.0), Required]
+    /// public decimal DefaultHourlyRate { get; set; }
+    /// </example>
     public class CurrencyEditComponent : CurrencyComponentBase, IYetaWFComponent<Decimal>, IYetaWFComponent<Decimal?> {
 
         /// <summary>

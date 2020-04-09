@@ -3,6 +3,7 @@
 using System.Threading.Tasks;
 using YetaWF.Core.Components;
 using YetaWF.Core.Localize;
+using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Packages;
 using YetaWF.Core.Support;
 
@@ -34,8 +35,14 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
     }
 
     /// <summary>
-    /// Implementation of the ColorPicker display component.
+    /// Displays a color tile using the color defined by the model. Color values are strings in the format #rrggbb, where rr, gg and bb are hex values for red, blue, green color components.
     /// </summary>
+    /// <example>
+    /// [Caption("Color Value"), Description("Color Value")]
+    /// [UIHint("ColorPicker"), AdditionalMetadata("TileSize", 24), ReadOnly]
+    /// public string ColorValue { get; set; }
+    /// </example>
+    [UsesAdditional("TileSize", "int", "24", "Defines the size of the color tile (same width and height) in pixels.")]
     public class ColorPickerDisplayComponent : ColorPickerComponentBase, IYetaWFComponent<string> {
 
         /// <summary>
@@ -54,10 +61,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             HtmlBuilder hb = new HtmlBuilder();
 
             int tileSize = PropData.GetAdditionalAttributeValue("TileSize", 24);
-            string palette = PropData.GetAdditionalAttributeValue("Palette", "basic");
-            int columns = PropData.GetAdditionalAttributeValue("Columns", 6);
-            bool preview = PropData.GetAdditionalAttributeValue("Preview", true);
-
+ 
             YTagBuilder tag = new YTagBuilder("div");
             tag.AddCssClass("yt_colorpicker");
             tag.AddCssClass("t_display");
@@ -73,8 +77,17 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
     }
 
     /// <summary>
-    /// Implementation of the ColorPicker edit component.
+    /// Allows entry/selection of a color value. The model returns a color value. Color values are strings in the format #rrggbb, where rr, gg and bb are hex values for red, blue, green color components.
     /// </summary>
+    /// <example>
+    /// [Caption("Color Value"), Description("Color Value")]
+    /// [UIHint("ColorPicker"), AdditionalMetadata("TileSize", 24), AdditionalMetadata("Palette", "#000,#333,#666,#999,#ccc,#fff"), AdditionalMetadata("Columns", 2), Trim]
+    /// public string ColorValue { get; set; }
+    /// </example>
+    [UsesAdditional("TileSize", "int", "24", "Defines the size of the color tile (same width and height) in pixels.")]
+    [UsesAdditional("Palette", "string", "basic", "\"basic\" - Displays 20 basic colors. \"websafe\" - Displays the \"web-safe\" color palette. If passed an empty string or a string with colors in HEX representation separated by commas it will display a palette instead.")]
+    [UsesAdditional("Columns", "int", "6", "Defines the number of columns to show in the color dropdown when a palette is specified. This is automatically initialized for the \"basic\" and \"websafe\" palettes. For custom palettes only.")]
+    [UsesAdditional("Preview", "bool", "true", "Only applicable for the HSV selector. Displays the color preview element, along with an input field where the end user can paste a color in a CSS-supported notation.")]
     public class ColorPickerEditComponent : ColorPickerComponentBase, IYetaWFComponent<string> {
 
         /// <summary>
@@ -123,7 +136,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                 tileSize: {tileSize},
                 preview: {JE(preview)},
                 messages: {{
-                    previewInput: '{JE(__ResStr("editColor", "Edit Color using hex values or names"))}',
+                    previewInput: '{JE(__ResStr("editColor", "Edit the color using hex values or names"))}',
                     cancel: '{JE(__ResStr("cancel", "Cancel"))}',
                     apply: '{JE(__ResStr("apply", "Apply"))}'
                 }}

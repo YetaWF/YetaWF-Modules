@@ -5,6 +5,7 @@ using YetaWF.Core;
 using YetaWF.Core.Components;
 using YetaWF.Core.Localize;
 using YetaWF.Core.Models;
+using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Modules;
 using YetaWF.Core.Packages;
 using YetaWF.Core.Support;
@@ -12,8 +13,25 @@ using YetaWF.Core.Support;
 namespace YetaWF.Modules.ComponentsHTML.Components {
 
     /// <summary>
-    /// Base class for the ActionIcons component implementation.
+    /// Displays a menu consisting of ModuleActions (YetaWF.Core.Menus.MenuList). A menu consists of zero, one or more ModuleActions. May be null, in which case nothing is rendered.
+    /// ModuleActions are used throughout YetaWF and define a specific action a user can take, typically a link or button which directs to a URL.
     /// </summary>
+    /// <remarks>
+    /// If a Bootstrap skin is used, the menu is rendered as a Bootstrap navbar.
+    /// </remarks>
+    /// <example>
+    /// [Caption("Actions"), Description("All available actions")]
+    /// [UIHint("ActionIcons"), ReadOnly]
+    /// public MenuList Commands {
+    ///     get {
+    ///         MenuList actions = new MenuList() { RenderMode = ModuleAction.RenderModeEnum.IconsOnly };
+    ///         actions.New(Module.GetAction_DownloadLink(FileName), ModuleAction.ActionLocationEnum.GridLinks);
+    ///         actions.New(Module.GetAction_RemoveLink(FileName), ModuleAction.ActionLocationEnum.GridLinks);
+    ///         return actions;
+    ///     }
+    /// }
+    /// </example>
+    [UsesAdditional("GridActionsEnum", "Grid.GridActionsEnum", "GridActionsEnum.Icons", "Defines the appearance of the module actions.")]
     public class ActionIconsComponent : YetaWFComponent, IYetaWFComponent<MenuList> {
 
         internal static string __ResStr(string name, string defaultValue, params object[] parms) { return ResourceAccess.GetResourceString(typeof(ActionIconsComponent), name, defaultValue, parms); }

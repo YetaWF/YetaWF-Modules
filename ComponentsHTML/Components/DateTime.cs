@@ -35,8 +35,12 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
     }
 
     /// <summary>
-    /// Implementation of the DateTime display component.
+    /// Displays the model formatted as a date and time localized using the user's selected timezone and time formatting (see User Settings Module).
     /// </summary>
+    /// <remarks>All date/time values in YetaWF are internally stored and processed using UTC.
+    /// 
+    /// The model value must be specified as UTC. If the model value is null or equal to DateTime.MinValue or DateTime.MaxValue, nothing is rendered.
+    /// </remarks>
     public class DateTimeDisplayComponent : DateTimeComponentBase, IYetaWFComponent<DateTime?> {
 
         /// <summary>
@@ -73,8 +77,19 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
     }
 
     /// <summary>
-    /// Implementation of the DateTime edit component.
+    /// Allows entry of a date and time using local time.
     /// </summary>
+    /// <remarks>
+    /// All date/time values in YetaWF are internally stored and processed using UTC.
+    /// 
+    /// MinimumDateAttribute and MaximumDateAttribute can be used to define the lowest and highest allowable date/time values.
+    /// 
+    /// pre
+    /// [Caption("DateTime Published"), Description("The date this entry has been published")]
+    /// [UIHint("DateTime"), ReadOnly]
+    /// public DateTime DateTimePublished { get; set; }
+    /// end
+    /// </remarks>
     public class DateTimeEditComponent : DateTimeComponentBase, IYetaWFComponent<DateTime>, IYetaWFComponent<DateTime?> {
 
         /// <summary>

@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using YetaWF.Core.Components;
 using YetaWF.Core.Localize;
+using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Packages;
 using YetaWF.Core.Skins;
 using YetaWF.Core.Support;
@@ -37,8 +38,13 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
     }
 
     /// <summary>
-    /// Implementation of the BootstrapSkin display component.
+    /// Displays a Bootswatch theme name. If the model is null, nothing is rendered.
     /// </summary>
+    /// <example>
+    /// [Category("Skin"), Caption("Default Bootstrap Skin"), Description("The default skin for overall page appearance and Bootstrap elements (only supported for skins that support Bootswatch) - individual pages can override the default skin")]
+    /// [UIHint("BootstrapSkin"), ReadOnly]
+    /// public string BootstrapSkin { get; set; }
+    /// </example>
     public class BootstrapSkinDisplayComponent : BootstrapSkinComponentBase, IYetaWFComponent<string> {
 
         /// <summary>
@@ -68,8 +74,15 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
     }
 
     /// <summary>
-    /// Implementation of the BootstrapSkin edit component.
+    /// Allows selection of an installed Bootswatch theme using a dropdown list.
     /// </summary>
+    /// <example>
+    /// [Category("Skin"), Caption("Default Bootstrap Skin"), Description("The default skin for overall page appearance and Bootstrap elements (only supported for skins that support Bootswatch) - individual pages can override the default skin")]
+    /// [HelpLink("https://www.bootstrapcdn.com/bootswatch/")]
+    /// [UIHint("BootstrapSkin"), StringLength(SkinDefinition.MaxName), AdditionalMetadata("NoDefault", true), Trim]
+    /// public string BootstrapSkin { get; set; }
+    /// </example>
+    [UsesAdditional("NoDefault", "bool", "false", "Defines whether a \"(Site Default)\" entry is automatically added as the first entry, with a value of null")]
     public class BootstrapSkinEditComponent : BootstrapSkinComponentBase, IYetaWFComponent<string> {
 
         /// <summary>

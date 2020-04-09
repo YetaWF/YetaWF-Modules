@@ -2,6 +2,7 @@
 
 using System.Threading.Tasks;
 using YetaWF.Core.Components;
+using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Packages;
 using YetaWF.Core.Support;
 
@@ -31,8 +32,15 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
     }
 
     /// <summary>
-    /// Implementation of the BooleanText display component.
+    /// Displays the model using a disabled checkbox, indicating the boolean status (checked, unchecked) and additional text.
     /// </summary>
+    /// <example>
+    /// [Category("Skin"), Caption("Show Help"), Description("Defines whether the module help link is shown in Display Mode - The help link is always shown in Edit Mode", Order = -91)]
+    /// [UIHint("BooleanText"), ReadOnly]
+    /// public bool ShowHelp { get; set; }
+    /// public bool ShowHelp_Text { get { ShowHelp ? "Yes" : "No" } }
+    /// </example>
+    [UsesSibling("_Text", "string", "Defines the additional text shown next to the checkbox.")]
     public class BooleanTextDisplayComponent : BooleanTextComponentBase, IYetaWFComponent<bool?> {
 
         /// <summary>
@@ -73,8 +81,18 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         }
     }
     /// <summary>
-    /// Implementation of the BooleanText edit component.
+    /// Allows selection of a true/false status using a checkbox and shows additional text.
     /// </summary>
+    /// <remarks>
+    /// The additional text shown does not change as the checkbox status is changed by the user.
+    /// </remarks>
+    /// <example>
+    /// [Category("Skin"), Caption("Show Help"), Description("Defines whether the module help link is shown in Display Mode - The help link is always shown in Edit Mode", Order = -91)]
+    /// [UIHint("BooleanText")]
+    /// public bool ShowHelp { get; set; }
+    /// public bool ShowHelp_Text { get { ShowHelp ? "Yes" : "No" } }
+    /// </example>
+    [UsesSibling("_Text", "string", "Defines the additional text shown next to the checkbox.")]
     public class BooleanTextEditComponent : BooleanTextComponentBase, IYetaWFComponent<bool>, IYetaWFComponent<bool?> {
 
         /// <summary>

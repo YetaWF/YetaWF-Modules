@@ -5,13 +5,29 @@ using System.Linq;
 using System.Threading.Tasks;
 using YetaWF.Core.Components;
 using YetaWF.Core.Localize;
+using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Packages;
 
 namespace YetaWF.Modules.ComponentsHTML.Components {
 
     /// <summary>
+    /// Allows selection of a country name from a dropdown list. The model value is the two character country code.
+    /// The CountryISO3166 component allows a user displayable country name as model instead.
+    /// </summary>
+    /// <remarks>
+    /// The list of countries is located at ./CoreComponents/Core/Addons/_Templates/CountryISO3166/Countries.txt.
+    /// 
+    /// For information about ISO 3166 see https://en.wikipedia.org/wiki/ISO_3166.
+    /// </remarks>
+    /// <example>
+    /// [Category("Site"), Caption("Country"), Description("The country where you/your company is located")]
+    /// [UIHint("CountryISO3166Id"), StringLength(MaxCountry), Trim, Required]
+    /// public string CountryId { get; set; }
+    /// </example>
+    [UsesAdditional("SiteCountry", "bool", "true", "Defines whether the site's defined country is shown in the list of countries. If shown, it will always be shown as the first entry.")]
+    /// <summary>
     /// Implementation of the CountryISO3166Id edit component.
-    /// Allows selection by country name and uses the two character country code as model value.
+    /// Allows selection by country name and uses as model value.
     /// </summary>
     public class CountryISO3166IdEditComponent : YetaWFComponent, IYetaWFComponent<string> {
 

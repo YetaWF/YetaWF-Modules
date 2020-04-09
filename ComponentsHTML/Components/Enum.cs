@@ -7,6 +7,7 @@ using YetaWF.Core.Addons;
 using YetaWF.Core.Components;
 using YetaWF.Core.Localize;
 using YetaWF.Core.Models;
+using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Packages;
 using YetaWF.Core.Support;
 
@@ -38,8 +39,23 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
     }
 
     /// <summary>
-    /// Implementation of the Enum display component.
+    /// Displays the model formatted using the descriptive text found in the EnumDescription attribute (if present).
     /// </summary>
+    /// <remarks>
+    /// </remarks>
+    /// <example>
+    /// public enum LevelEnum {
+    ///     [EnumDescription("Info", "Informational")]
+    ///     Info = 0,
+    ///     [EnumDescription("Error", "Error")]
+    ///     Error = 99,
+    /// }
+    /// 
+    /// [Caption("Level"), Description("The error level of this log record")]
+    /// [UIHint("Enum"), AdditionalMetadata("ShowEnumValue", false), ReadOnly]
+    /// public LevelEnum Level { get; set; }
+    /// </example>
+    [UsesAdditionalAttribute("ShowEnumValue", "bool", "true", "If true, the enum value is displayed along with the descriptive text for the enum. Otherwise, the value of the enum is not displayed. In either case, enum values are only shown if the user's User Settings (see User > Edit Settings, standard YetaWF site) has the ShowEnumValue property set to true. AdditionalMetadata(\"ShowEnumValue\", false) is normally used in grids to explicitly suppress the enum value so only the descriptive text is shown.")]
     public class EnumDisplayComponent : EnumComponentBase, IYetaWFComponent<object> {
 
         /// <summary>
@@ -76,8 +92,24 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
     }
 
     /// <summary>
-    /// Implementation of the Enum edit component.
+    /// Allows selection of an enum value using a dropdown list which is created based on the enum type and the EnumDescription attributes (if present).
     /// </summary>
+    /// <remarks>
+    /// Enum values are only shown if the user's User Settings (see User > Edit Settings, standard YetaWF site) has the ShowEnumValue property set to true.
+    /// </remarks>
+    /// <example>
+    /// public enum TabStyleEnum {
+    ///     [EnumDescription("JQuery", "JQuery-UI Tab Controls")]
+    ///     JQuery = 0,
+    ///     [EnumDescription("Kendo", "Kendo UI Core Tab Controls")]
+    ///     Kendo = 1,
+    /// }
+    /// 
+    /// [Category("Skin"), Caption("Tab Style"), Description("Defines which UI provides the tab control implementation")]
+    /// [UIHint("Enum"), Required]
+    /// public TabStyleEnum TabStyle { get; set; }
+    /// </example>
+    [UsesAdditionalAttribute("ShowSelect", "bool", "false", "If true, an entry showing \"(select)\" with a value of 0 is inserted as the first entry, in addition to all enum values. Otherwise, only the enum values are shown.")]
     public class EnumEditComponent : EnumComponentBase, IYetaWFComponent<object> {
 
         /// <summary>

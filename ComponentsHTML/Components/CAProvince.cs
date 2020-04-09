@@ -5,8 +5,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using YetaWF.Core.Components;
 using YetaWF.Core.Localize;
+using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Packages;
-using YetaWF.Core.Support;
 
 namespace YetaWF.Modules.ComponentsHTML.Components {
 
@@ -36,8 +36,18 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
     }
 
     /// <summary>
-    /// Implementation of the CAProvince display component.
+    /// Displays the full name of a Canadian province given an abbreviation. If the model is null or the abbreviation is not found, nothing is rendered.
     /// </summary>
+    /// <remarks>
+    /// All provinces and their abbreviations are defined in ./CoreComponents/Core/Addons/_Templates/CAProvince/CAProvinces.txt.
+    /// 
+    /// The variable Globals.MaxProvince defines the maximum length of an abbreviation for a Canadian province.
+    /// </remarks>
+    /// <example>
+    /// [Caption("Province"), Description("The province where your new fax number is located")]
+    /// [UIHint("CAProvince"), ReadOnly]
+    /// public string Province { get; set; }
+    /// </example>
     public class CAProvinceDisplayComponent : CAProvinceComponentBase, IYetaWFComponent<string> {
 
         /// <summary>
@@ -60,8 +70,19 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
     }
 
     /// <summary>
-    /// Implementation of the CAProvince edit component.
+    /// Allows selection of a Canadian province from a dropdown list. The model returns an abbreviation for the selected province.
     /// </summary>
+    /// <remarks>
+    /// All provinces and their abbreviations are defined in ./CoreComponents/Core/Addons/_Templates/CAProvince/CAProvinces.txt.
+    /// 
+    /// The variable Globals.MaxProvince defines the maximum length of an abbreviation for a Canadian province.
+    /// </remarks>
+    /// <example>
+    /// [Caption("Province"), Description("The province where your new fax number is located")]
+    /// [UIHint("CAProvince"), StringLength(Globals.MaxProvince), AdditionalMetadata("NoDefault", true), Trim]
+    /// public string Province { get; set; }
+    /// </example>
+    [UsesAdditional("NoDefault", "bool", "false", "Defines whether a \"(select)\" entry is automatically added as the first entry, with a value of null")]
     public class CAProvinceEditComponent : CAProvinceComponentBase, IYetaWFComponent<string> {
 
         /// <summary>
