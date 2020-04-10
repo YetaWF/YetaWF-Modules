@@ -20,7 +20,7 @@ namespace YetaWF.Modules.Dashboard.Modules {
         public SessionInfoModule() {
             Title = this.__ResStr("modTitle", "SessionState Information (HttpContext.Current.Session)");
             Name = this.__ResStr("modName", "SessionState Information (HttpContext.Current.Session)");
-            Description = this.__ResStr("modSummary", "Displays SessionState information (HttpContext.Current.Session)");
+            Description = this.__ResStr("modSummary", "Displays SessionState information (HttpContext.Current.Session). Session state information can be accessed using Admin > Dashboard > HttpContext.Current.Session (standard YetaWF site).");
             DefaultViewName = StandardViews.Display;
         }
 

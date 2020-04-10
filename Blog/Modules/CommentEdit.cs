@@ -17,12 +17,13 @@ namespace YetaWF.Modules.Blog.Modules {
 
     [ModuleGuid("{c4f62548-6c3f-4be2-a7c7-88a0f683c889}")]
     [UniqueModule(UniqueModuleStyle.NonUnique)]
+    [ModuleCategory("Comments")]
     public class CommentEditModule : ModuleDefinition {
 
         public CommentEditModule() {
             Title = this.__ResStr("modTitle", "Comment");
             Name = this.__ResStr("modName", "Edit Comment");
-            Description = this.__ResStr("modSummary", "Edits an existing comment entry");
+            Description = this.__ResStr("modSummary", "Edits an existing comment entry. This is used by the Entries Browse Module and is not site visitor accessible. It is typically used by a site administrator to edit user comments.");
             DefaultViewName = StandardViews.Edit;
         }
 

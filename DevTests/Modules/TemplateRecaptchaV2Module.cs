@@ -19,7 +19,7 @@ namespace YetaWF.Modules.DevTests.Modules {
         public TemplateRecaptchaV2Module() {
             Title = this.__ResStr("modTitle", "RecaptchaV2 Test Component");
             Name = this.__ResStr("modName", "Component Test - RecaptchaV2");
-            Description = this.__ResStr("modSummary", "RecaptchaV2 test component");
+            Description = this.__ResStr("modSummary", "Test module for the RecaptchaV2 component. A test page for this module can be found at Tests > Templates > RecaptchaV2 (standard YetaWF site).");
             DefaultViewName = StandardViews.EditApply;
         }
 

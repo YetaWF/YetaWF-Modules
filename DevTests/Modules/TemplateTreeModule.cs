@@ -19,7 +19,7 @@ namespace YetaWF.Modules.DevTests.Modules {
         public TemplateTreeModule() {
             Title = this.__ResStr("modTitle", "Tree (Static) Test Component");
             Name = this.__ResStr("modName", "Component Test - Tree");
-            Description = this.__ResStr("modSummary", "Tree (Static) test component");
+            Description = this.__ResStr("modSummary", "Test module for the Tree component. A test page for this module can be found at Tests > Templates > Tree (standard YetaWF site).");
             DefaultViewName = StandardViews.Display;
             UsePartialFormCss = false;
         }

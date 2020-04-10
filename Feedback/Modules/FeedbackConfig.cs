@@ -25,7 +25,7 @@ namespace YetaWF.Modules.Feedback.Modules {
         public FeedbackConfigModule() {
             Title = this.__ResStr("modTitle", "Feedback Settings");
             Name = this.__ResStr("modName", "Feedback Settings");
-            Description = this.__ResStr("modSummary", "Edits a site's feedback settings");
+            Description = this.__ResStr("modSummary", "The configuration module for the feedback modules and defines global settings. It is accessible using Admin > Settings > Feedback Settings (standard YetaWF site).");
             ShowHelp = true;
             DefaultViewName = StandardViews.Config;
         }

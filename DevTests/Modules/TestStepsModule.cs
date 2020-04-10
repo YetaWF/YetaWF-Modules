@@ -19,7 +19,7 @@ namespace YetaWF.Modules.DevTests.Modules {
         public TestStepsModule() {
             Title = this.__ResStr("modTitle", "Steps Test");
             Name = this.__ResStr("modName", "Test - Steps");
-            Description = this.__ResStr("modSummary", "Steps test module");
+            Description = this.__ResStr("modSummary", "Test module for the Display Steps Module (YetaWF.Panels). A test page for this module can be found at Tests > Modules > Steps (standard YetaWF site).");
         }
 
         public override IModuleDefinitionIO GetDataProvider() { return new TestStepsModuleDataProvider(); }

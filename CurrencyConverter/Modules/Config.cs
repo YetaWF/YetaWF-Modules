@@ -21,7 +21,7 @@ namespace YetaWF.Modules.CurrencyConverter.Modules {
         public ConfigModule() {
             Title = this.__ResStr("modTitle", "Currency Converter Settings");
             Name = this.__ResStr("modName", "Currency Converter Settings");
-            Description = this.__ResStr("modSummary", "Edits the currency converter settings");
+            Description = this.__ResStr("modSummary", "Used to edit the currency converter settings. It is accessible using Admin > Settings > Currency Converter Settings (standard YetaWF site).");
             ShowHelp = true;
             DefaultViewName = StandardViews.Config;
         }

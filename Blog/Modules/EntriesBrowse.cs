@@ -24,12 +24,13 @@ namespace YetaWF.Modules.Blog.Modules {
 
     [ModuleGuid("{2809e9cf-1de8-41f2-9108-bc84ae7fb2f4}")]
     [UniqueModule(UniqueModuleStyle.NonUnique)]
+    [ModuleCategory("Entries")]
     public class EntriesBrowseModule : ModuleDefinition {
 
         public EntriesBrowseModule() {
             Title = this.__ResStr("modTitle", "Blog Entries");
             Name = this.__ResStr("modName", "Blog Entries");
-            Description = this.__ResStr("modSummary", "Displays and manages blog entries");
+            Description = this.__ResStr("modSummary", "Displays and manages blog entries. It is accessible using Admin > Blog > Entries (standard YetaWF site). It is used to add, edit, view and remove blog entries.");
             DefaultViewName = StandardViews.Browse;
         }
 

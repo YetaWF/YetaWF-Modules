@@ -19,7 +19,7 @@ namespace YetaWF.Modules.DevTests.Modules {
         public TestExprAttributesModule() {
             Title = this.__ResStr("modTitle", "Test ExprAttributes");
             Name = this.__ResStr("modName", "Test ExprAttributes");
-            Description = this.__ResStr("modSummary", "Tests various property attributes");
+            Description = this.__ResStr("modSummary", "Test module for various property attributes. This is used for internal testing only.");
             DefaultViewName = StandardViews.EditApply;
         }
 

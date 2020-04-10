@@ -25,12 +25,13 @@ namespace YetaWF.Modules.Blog.Modules {
 
     [ModuleGuid("{9e372eb2-7aab-49c1-98d5-2d5c6de3d724}")]
     [UniqueModule(UniqueModuleStyle.NonUnique)]
+    [ModuleCategory("Categories")]
     public class CategoriesBrowseModule : ModuleDefinition {
 
         public CategoriesBrowseModule() {
             Title = this.__ResStr("modTitle", "Blog Categories");
             Name = this.__ResStr("modName", "Blog Categories");
-            Description = this.__ResStr("modSummary", "Displays and manages blog categories");
+            Description = this.__ResStr("modSummary", "Displays and manages blog categories. It is accessible using Admin > Blog > Categories (standard YetaWF site). It is used to add, edit and remove blog categories and view blog entries. It also offers automated Google news sitemap generation.");
             DefaultViewName = StandardViews.Browse;
         }
 

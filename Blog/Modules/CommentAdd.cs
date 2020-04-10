@@ -13,12 +13,13 @@ namespace YetaWF.Modules.Blog.Modules {
 
     [ModuleGuid("{07c08323-3153-474c-a974-8f5c168eef8f}")]
     [UniqueModule(UniqueModuleStyle.NonUnique)]
+    [ModuleCategory("Comments")]
     public class CommentAddModule : ModuleDefinition {
 
         public CommentAddModule() {
             Title = this.__ResStr("modTitle", "Add New Comment");
             Name = this.__ResStr("modName", "Add Comment");
-            Description = this.__ResStr("modSummary", "Adds a new comment");
+            Description = this.__ResStr("modSummary", "Adds a new comment. The comment is added the blog entry defined by the page URL's BlogEntry argument. This module is typically used on the same page as the Entry Display Module.");
             Print = false;
         }
 

@@ -19,7 +19,7 @@ namespace YetaWF.Modules.DevTests.Modules {
         public TestEscapesModule() {
             Title = this.__ResStr("modTitle", "Test Escapes");
             Name = this.__ResStr("modName", "Test Escapes (HTML, Attributes)");
-            Description = this.__ResStr("modSummary", "Tests various client-side & server side character translations/escapes");
+            Description = this.__ResStr("modSummary", "Tests various client-side & server side character translations/escapes. A test page for this module can be found at Tests > Modules > Escapes (standard YetaWF site).");
         }
 
         public override IModuleDefinitionIO GetDataProvider() { return new TestEscapesModuleDataProvider(); }

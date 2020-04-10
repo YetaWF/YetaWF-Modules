@@ -13,10 +13,6 @@ using YetaWF.Core.Support;
 using YetaWF.DataProvider;
 using YetaWF.Modules.Blog.Controllers;
 using YetaWF.Modules.Blog.DataProvider;
-#if MVC6
-using Microsoft.AspNetCore.Routing;
-#else
-#endif
 
 namespace YetaWF.Modules.Blog.Modules {
 
@@ -24,12 +20,13 @@ namespace YetaWF.Modules.Blog.Modules {
 
     [ModuleGuid("{e1954fdc-0ccb-40bd-b018-c40dc792e894}")]
     [UniqueModule(UniqueModuleStyle.NonUnique)]
+    [ModuleCategory("Navigation")]
     public class BlogModule : ModuleDefinition {
 
         public BlogModule() {
             Title = this.__ResStr("modTitle", "Blog");
             Name = this.__ResStr("modName", "Blog");
-            Description = this.__ResStr("modSummary", "Displays the main blog entry point with all or a single blog category");
+            Description = this.__ResStr("modSummary", "Displays the main blog entry point with all or a single blog category. Add this module to a page as the main entry point to your overall blog tor for individual blog categories. It displays blog entries in short form. The maximum number of entries shown can be limited using the Blog Settings Module (Admin > Settings > Blog Settings, standard YetaWF site).");
             ShowTitleActions = true;
         }
 

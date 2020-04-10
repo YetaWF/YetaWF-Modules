@@ -14,12 +14,13 @@ namespace YetaWF.Modules.Blog.Modules {
 
     [ModuleGuid("{2b2c61b6-8f0c-4f39-b927-e09f5e118d86}")]
     [UniqueModule(UniqueModuleStyle.NonUnique)]
+    [ModuleCategory("Navigation")]
     public class SummaryModule : ModuleDefinition {
 
         public SummaryModule() {
             Title = this.__ResStr("modTitle", "Blog Summary");
             Name = this.__ResStr("modName", "Blog Summary");
-            Description = this.__ResStr("modSummary", "Displays a summary of blog entries");
+            Description = this.__ResStr("modSummary", "Displays a summary of blog entries. The most recent blog entries for all categories are shown. This module is typically used in a sidebar on a page showing blog entries (using the Blog Entries Module).");
             Entries = 20;
         }
 

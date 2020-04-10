@@ -19,7 +19,7 @@ namespace YetaWF.Modules.Dashboard.Modules {
         public HttpModulesBrowseModule() {
             Title = this.__ResStr("modTitle", "Http Modules");
             Name = this.__ResStr("modName", "Http Modules");
-            Description = this.__ResStr("modSummary", "Displays all Http Modules (Pipeline)");
+            Description = this.__ResStr("modSummary", "Displays all Http modules that make up the pipeline in IIS. This information can be used to remove certain modules that are not needed. This can be accessed using Admin > Dashboard > Http Modules (standard YetaWF site).");
         }
 
         public override IModuleDefinitionIO GetDataProvider() { return new HttpModulesBrowseModuleDataProvider(); }

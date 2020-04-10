@@ -24,7 +24,7 @@ namespace YetaWF.Modules.Feedback.Modules {
         public FeedbackAddModule() {
             Title = this.__ResStr("modTitle", "Send Feedback");
             Name = this.__ResStr("modName", "Send Feedback");
-            Description = this.__ResStr("modSummary", "User/site feedback");
+            Description = this.__ResStr("modSummary", "Allows entry of a message to the site owner or administrator by a site visitor.");
             Print = false;
         }
 

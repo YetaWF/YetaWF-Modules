@@ -19,7 +19,7 @@ namespace YetaWF.Modules.DevTests.Modules {
         public TemplateTextAreaSourceOnlyModule() {
             Title = this.__ResStr("modTitle", "TextAreaSourceOnly Test Component");
             Name = this.__ResStr("modName", "Component Test - TextAreaSourceOnly");
-            Description = this.__ResStr("modSummary", "TextAreaSourceOnly test component");
+            Description = this.__ResStr("modSummary", "Test module for the TextAreaSourceOnly component. A test page for this module can be found at Tests > Templates > TextAreaSourceOnly (standard YetaWF site).");
             DefaultViewName = StandardViews.EditApply;
         }
 

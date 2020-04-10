@@ -14,12 +14,13 @@ namespace YetaWF.Modules.Blog.Modules {
 
     [ModuleGuid("{9c689112-e55b-4a2e-8570-8e116b2fb75f}")]
     [UniqueModule(UniqueModuleStyle.NonUnique)]
+    [ModuleCategory("Categories")]
     public class CategoryEditModule : ModuleDefinition {
 
         public CategoryEditModule() {
             Title = this.__ResStr("modTitle", "Blog Category");
             Name = this.__ResStr("modName", "Edit Blog Category");
-            Description = this.__ResStr("modSummary", "Edits an existing blog category");
+            Description = this.__ResStr("modSummary", "Edits an existing blog category. Used by the Blog Categories Module.");
             DefaultViewName = StandardViews.Edit;
         }
 

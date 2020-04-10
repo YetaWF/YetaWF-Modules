@@ -19,12 +19,13 @@ namespace YetaWF.Modules.Blog.Modules {
 
     [ModuleGuid("{9d83d810-2c2d-44eb-a177-c2c00198e9e8}")]
     [UniqueModule(UniqueModuleStyle.NonUnique)]
+    [ModuleCategory("Navigation")]
     public class CategoriesListModule : ModuleDefinition {
 
         public CategoriesListModule() {
             Title = this.__ResStr("modTitle", "Blog Categories");
             Name = this.__ResStr("modName", "Blog Categories List");
-            Description = this.__ResStr("modSummary", "Allows the site visitor to select among all available blog categories - usually used in a side bar");
+            Description = this.__ResStr("modSummary", "Allows the site visitor to select among all available blog categories. Add this module to a page for blog navigation.");
             Style = StyleEnum.Dropdown;
             ListEntries = 10;
             ShowTitle = false;

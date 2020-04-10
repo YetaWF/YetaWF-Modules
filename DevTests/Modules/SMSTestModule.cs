@@ -19,7 +19,7 @@ namespace YetaWF.Modules.DevTests.Modules {
         public SMSTestModule() {
             Title = this.__ResStr("modTitle", "SMS Test");
             Name = this.__ResStr("modName", "Test - SMS");
-            Description = this.__ResStr("modSummary", "SMS test");
+            Description = this.__ResStr("modSummary", "Test module to test sending an SMS message. A test page for this module can be found at Tests > Modules > SMS (standard YetaWF site).");
             DefaultViewName = StandardViews.EditApply;
         }
 

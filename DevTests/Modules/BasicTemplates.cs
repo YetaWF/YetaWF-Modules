@@ -19,7 +19,7 @@ namespace YetaWF.Modules.DevTests.Modules {
         public BasicTemplatesModule() {
             Title = this.__ResStr("modTitle", "Basic Components Test");
             Name = this.__ResStr("modName", "Basic Components Test");
-            Description = this.__ResStr("modSummary", "Used to test all generally available components");
+            Description = this.__ResStr("modSummary", "Test module for many basic built-in YetaWF.Core standard templates. A test page for this module can be found at Tests > Templates > Basic Templates (standard YetaWF site).");
             DefaultViewName = StandardViews.EditApply;
         }
 

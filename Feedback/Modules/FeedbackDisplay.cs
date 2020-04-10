@@ -19,7 +19,7 @@ namespace YetaWF.Modules.Feedback.Modules {
         public FeedbackDisplayModule() : base() {
             Title = this.__ResStr("modTitle", "Feedback Message");
             Name = this.__ResStr("modName", "Feedback Message");
-            Description = this.__ResStr("modSummary", "Displays a feedback message");
+            Description = this.__ResStr("modSummary", "Displays a feedback message entered by a site visitor. This is used by the Browse Feedback Module.");
             DefaultViewName = StandardViews.Display;
         }
 

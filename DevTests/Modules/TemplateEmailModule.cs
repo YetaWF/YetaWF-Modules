@@ -19,7 +19,7 @@ namespace YetaWF.Modules.DevTests.Modules {
         public TemplateEmailModule() {
             Title = this.__ResStr("modTitle", "Email Test Component");
             Name = this.__ResStr("modName", "Component Test - Email");
-            Description = this.__ResStr("modSummary", "Email test component");
+            Description = this.__ResStr("modSummary", "Test module for the Email component. A test page for this module can be found at Tests > Templates > Email (standard YetaWF site).");
             DefaultViewName = StandardViews.EditApply;
         }
 

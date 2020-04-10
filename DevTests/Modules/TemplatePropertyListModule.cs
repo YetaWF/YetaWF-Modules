@@ -19,7 +19,7 @@ namespace YetaWF.Modules.DevTests.Modules {
         public TemplatePropertyListModule() {
             Title = this.__ResStr("modTitle", "PropertyList Test Template");
             Name = this.__ResStr("modName", "Template Test - PropertyList");
-            Description = this.__ResStr("modSummary", "PropertyList test template");
+            Description = this.__ResStr("modSummary", "Test module for the PropertyList component. A test page for this module can be found at Tests > Templates > PropertyList (standard YetaWF site).");
             DefaultViewName = StandardViews.Edit;
         }
 

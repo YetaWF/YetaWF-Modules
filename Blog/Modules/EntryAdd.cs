@@ -13,12 +13,13 @@ namespace YetaWF.Modules.Blog.Modules {
 
     [ModuleGuid("{a08cc005-5da2-4cc6-91f9-b195879d4dab}")]
     [UniqueModule(UniqueModuleStyle.NonUnique)]
+    [ModuleCategory("Entries")]
     public class EntryAddModule : ModuleDefinition {
 
         public EntryAddModule() {
             Title = this.__ResStr("modTitle", "Add New Blog Entry");
             Name = this.__ResStr("modName", "Add Blog Entry");
-            Description = this.__ResStr("modSummary", "Creates a new blog entry");
+            Description = this.__ResStr("modSummary", "Creates a new blog entry.");
             DefaultViewName = StandardViews.Add;
         }
 

@@ -16,12 +16,13 @@ namespace YetaWF.Modules.Blog.Modules {
 
     [ModuleGuid("{8e6986c9-3d25-4479-bce6-a54062efdb15}")]
     [UniqueModule(UniqueModuleStyle.UniqueOnly)]
+    [ModuleCategory("Configuration")]
     public class BlogConfigModule : ModuleDefinition {
 
         public BlogConfigModule() {
             Title = this.__ResStr("modTitle", "Blog Settings");
             Name = this.__ResStr("modName", "Blog Settings");
-            Description = this.__ResStr("modSummary", "Edits a site's blog settings");
+            Description = this.__ResStr("modSummary", "Main configuration module for the blog and defines global blog settings. It is accessible using Admin > Settings > Blog Settings (standard YetaWF site).");
             ShowHelp = true;
             DefaultViewName = StandardViews.Config;
         }

@@ -25,7 +25,7 @@ namespace YetaWF.Modules.Dashboard.Modules {
         public DisposableTrackerBrowseModule() {
             Title = this.__ResStr("modTitle", "Disposable Objects");
             Name = this.__ResStr("modName", "Disposable Objects");
-            Description = this.__ResStr("modSummary", "Displays and manages disposable objects");
+            Description = this.__ResStr("modSummary", "Displays (debug) information about Disposable objects. Used to find leaks where objects aren't properly Dispose()'d. Disposable Objects information can be accessed using Admin > Dashboard > Disposable Objects (standard YetaWF site).");
         }
 
         public override IModuleDefinitionIO GetDataProvider() { return new DisposableTrackerBrowseModuleDataProvider(); }

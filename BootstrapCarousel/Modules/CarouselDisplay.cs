@@ -27,7 +27,7 @@ namespace YetaWF.Modules.BootstrapCarousel.Modules {
         public CarouselDisplayModule() {
             Title = this.__ResStr("modTitle", "Bootstrap Carousel");
             Name = this.__ResStr("modName", "Bootstrap Carousel");
-            Description = this.__ResStr("modSummary", "Displays a Bootstrap carousel (used on Bootstrap skins)");
+            Description = this.__ResStr("modSummary", "Displays a Bootstrap carousel (used with Bootstrap skins). A sample Bootstrap Carousel can be found at Tests > Bootstrap Carousel (standard YetaWF site).");
             SlideShow = new CarouselInfo();
             WantFocus = false;
             WantSearch = false;

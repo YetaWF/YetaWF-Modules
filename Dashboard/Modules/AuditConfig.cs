@@ -21,7 +21,7 @@ namespace YetaWF.Modules.Dashboard.Modules {
         public AuditConfigModule() {
             Title = this.__ResStr("modTitle", "Audit Settings");
             Name = this.__ResStr("modName", "Audit Settings");
-            Description = this.__ResStr("modSummary", "Edits a site's audit settings");
+            Description = this.__ResStr("modSummary", "Used to edit a site's audit settings. This can be accessed using Admin > Settings > Audit Settings (standard YetaWF site).");
             ShowHelp = true;
             DefaultViewName = StandardViews.Config;
         }

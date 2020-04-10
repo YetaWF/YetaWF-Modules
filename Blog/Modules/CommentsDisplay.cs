@@ -24,13 +24,14 @@ namespace YetaWF.Modules.Blog.Modules {
 
     [ModuleGuid("{2539dab0-c210-4578-a615-3e732b65bcec}")]
     [UniqueModule(UniqueModuleStyle.NonUnique)]
+    [ModuleCategory("Comments")]
     public class CommentsDisplayModule : ModuleDefinition {
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors", Justification = "Uhm yeah?")]
         public CommentsDisplayModule() {
             Title = this.__ResStr("modTitle", "Comment Entries");
             Name = this.__ResStr("modName", "Comment Entries");
-            Description = this.__ResStr("modSummary", "Displays all comment entries for a blog entry");
+            Description = this.__ResStr("modSummary", "Displays all comments for a blog entry. This module is typically used on the same page as the Entry Display Module. Authorized users can approve and remove comments.");
             AnchorId = "Comments";
         }
 

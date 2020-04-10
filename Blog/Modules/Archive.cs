@@ -14,12 +14,13 @@ namespace YetaWF.Modules.Blog.Modules {
 
     [ModuleGuid("{2b4f7842-370b-4a03-aa09-4e1341f7b87c}")]
     [UniqueModule(UniqueModuleStyle.NonUnique)]
+    [ModuleCategory("Navigation")]
     public class ArchiveModule : ModuleDefinition {
 
         public ArchiveModule() {
             Title = this.__ResStr("modTitle", "Blog Archive");
             Name = this.__ResStr("modName", "Archive");
-            Description = this.__ResStr("modSummary", "Displays a list of links to blog entries, grouped by month");
+            Description = this.__ResStr("modSummary", "Displays a list of links to blog entries, grouped by month. Add this module to a page for blog navigation.");
             Print = false;
             DefaultViewName = StandardViews.PropertyListEdit;
         }

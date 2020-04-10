@@ -19,7 +19,7 @@ namespace YetaWF.Modules.DevTests.Modules {
         public TemplateScrollerModule() {
             Title = this.__ResStr("modTitle", "Scroller Test Component");
             Name = this.__ResStr("modName", "Component Test - Scroller");
-            Description = this.__ResStr("modSummary", "Scroller test component");
+            Description = this.__ResStr("modSummary", "Test module for the Scroller component. A test page for this module can be found at Tests > Templates > Scroller (standard YetaWF site).");
         }
 
         public override IModuleDefinitionIO GetDataProvider() { return new TemplateScrollerModuleDataProvider(); }

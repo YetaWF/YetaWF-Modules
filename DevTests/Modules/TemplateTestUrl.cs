@@ -19,7 +19,7 @@ namespace YetaWF.Modules.DevTests.Modules {
         public TemplateTestUrlModule() {
             Title = this.__ResStr("modTitle", "Url Test Component");
             Name = this.__ResStr("modName", "Component Test - Url");
-            Description = this.__ResStr("modSummary", "Url test component");
+            Description = this.__ResStr("modSummary", "Test module for the Url component. A test page for this module can be found at Tests > Templates > Url (standard YetaWF site).");
             DefaultViewName = StandardViews.EditApply;
         }
 

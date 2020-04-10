@@ -23,7 +23,7 @@ namespace YetaWF.Modules.Dashboard.Modules {
         public StaticPagesBrowseModule() {
             Title = this.__ResStr("modTitle", "Static Pages");
             Name = this.__ResStr("modName", "Static Pages");
-            Description = this.__ResStr("modSummary", "Displays and manages static pages");
+            Description = this.__ResStr("modSummary", "Displays and manages information about static pages. This can be accessed using Admin > Dashboard > Static Pages (standard YetaWF site).");
         }
 
         public override IModuleDefinitionIO GetDataProvider() { return new StaticPagesBrowseModuleDataProvider(); }

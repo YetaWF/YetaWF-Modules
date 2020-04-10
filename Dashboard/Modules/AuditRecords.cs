@@ -30,7 +30,7 @@ namespace YetaWF.Modules.Dashboard.Modules {
         public AuditRecordsModule() {
             Title = this.__ResStr("modTitle", "Audit Information");
             Name = this.__ResStr("modName", "Audit Information");
-            Description = this.__ResStr("modSummary", "Displays and manages audit information");
+            Description = this.__ResStr("modSummary", "Displays and manages audit information. Audit information can be accessed using Admin > Dashboard > Audit Information (standard YetaWF site).");
             DefaultViewName = StandardViews.PropertyListEdit;
             UsePartialFormCss = false;
         }

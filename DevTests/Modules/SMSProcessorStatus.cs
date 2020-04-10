@@ -19,7 +19,7 @@ namespace YetaWF.Modules.DevTests.Modules {
         public SMSProcessorStatusModule() {
             Title = this.__ResStr("modTitle", "SMS Processor Status");
             Name = this.__ResStr("modName", "SMS Processor Status");
-            Description = this.__ResStr("modSummary", "Displays the status of the SMS processor");
+            Description = this.__ResStr("modSummary", "Displays the status of the SMS processor (if any). A test page for this module can be found at Tests > Modules > SMS (standard YetaWF site).");
         }
 
         public override IModuleDefinitionIO GetDataProvider() { return new SMSProcessorStatusModuleDataProvider(); }

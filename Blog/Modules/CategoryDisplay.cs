@@ -14,12 +14,13 @@ namespace YetaWF.Modules.Blog.Modules {
 
     [ModuleGuid("{ead14c93-8fe1-4bed-9656-74c08e277723}")]
     [UniqueModule(UniqueModuleStyle.NonUnique)]
+    [ModuleCategory("Categories")]
     public class CategoryDisplayModule : ModuleDefinition {
 
         public CategoryDisplayModule() {
             Title = this.__ResStr("modTitle", "Blog Category");
             Name = this.__ResStr("modName", "Display Blog Category");
-            Description = this.__ResStr("modSummary", "Displays an existing blog category");
+            Description = this.__ResStr("modSummary", "Displays details for an existing blog category. Used by the Blog Categories Module.");
             DefaultViewName = StandardViews.Display;
         }
 

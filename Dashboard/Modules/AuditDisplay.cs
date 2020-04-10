@@ -19,7 +19,7 @@ namespace YetaWF.Modules.Dashboard.Modules {
         public AuditDisplayModule() {
             Title = this.__ResStr("modTitle", "Audit Record");
             Name = this.__ResStr("modName", "Audit Record");
-            Description = this.__ResStr("modSummary", "Displays an existing audit record");
+            Description = this.__ResStr("modSummary", "Displays an existing audit record. Used by the Audit Information Module.");
             DefaultViewName = StandardViews.Display;
         }
 

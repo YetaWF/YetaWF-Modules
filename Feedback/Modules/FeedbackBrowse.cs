@@ -27,7 +27,7 @@ namespace YetaWF.Modules.Feedback.Modules {
         public FeedbackBrowseModule() : base() {
             Title = this.__ResStr("modTitle", "Feedback");
             Name = this.__ResStr("modName", "Browse Feedback");
-            Description = this.__ResStr("modSummary", "Displays and manages user feedback");
+            Description = this.__ResStr("modSummary", "Used by the site owner to display and manage user feedback. It is accessible using Admin > Feedback (standard YetaWF site).");
             DefaultViewName = StandardViews.Browse;
         }
 

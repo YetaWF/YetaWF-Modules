@@ -22,7 +22,7 @@ namespace YetaWF.Modules.Dashboard.Modules {
         public BrowseDataProvidersModule() {
             Title = this.__ResStr("modTitle", "Data Providers");
             Name = this.__ResStr("modName", "Data Providers");
-            Description = this.__ResStr("modSummary", "Displays installed data providers");
+            Description = this.__ResStr("modSummary", "Displays installed data providers. Installed data providers can be accessed using Admin > Dashboard > Data Providers (standard YetaWF site).");
             DefaultViewName = StandardViews.PropertyListEdit;
         }
 

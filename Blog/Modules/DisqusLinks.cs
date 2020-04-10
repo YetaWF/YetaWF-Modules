@@ -14,12 +14,13 @@ namespace YetaWF.Modules.Blog.Modules {
 
     [ModuleGuid("{776adfcd-da5f-4926-b29d-4c06353266c0}")]
     [UniqueModule(UniqueModuleStyle.UniqueOnly)]
+    [ModuleCategory("Comments")]
     public class DisqusLinksModule : ModuleDefinition {
 
         public DisqusLinksModule() {
             Title = this.__ResStr("modTitle", "Disqus Links");
             Name = this.__ResStr("modName", "Disqus Links (Skin)");
-            Description = this.__ResStr("modSummary", "Adds number of comments to links to pages with Disqus comments");
+            Description = this.__ResStr("modSummary", "Adds number of comments to links to pages with Disqus comments. This module is typically used as a module reference by pages or a site to add the number of comments available to pages with links to pages with Disqus comments.");
             WantFocus = false;
             WantSearch = false;
             ShowTitle = false;

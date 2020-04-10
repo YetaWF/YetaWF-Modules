@@ -25,7 +25,7 @@ namespace YetaWF.Modules.Dashboard.Modules {
         public AddonsBrowseModule() {
             Title = this.__ResStr("modTitle", "AddOn Info");
             Name = this.__ResStr("modName", "AddOn Info");
-            Description = this.__ResStr("modSummary", "Displays information about all Javascript AddOns, Css AddOns that are installed in the current YetaWF instance");
+            Description = this.__ResStr("modSummary", "Displays information about all Javascript AddOns, CSS AddOns that are installed in the current YetaWF instance. AddOn information can be accessed using Admin > Dashboard > AddOn Info (standard YetaWF site).");
             DefaultViewName = StandardViews.PropertyListEdit;
         }
 

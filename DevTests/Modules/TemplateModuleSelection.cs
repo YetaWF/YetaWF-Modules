@@ -19,7 +19,7 @@ namespace YetaWF.Modules.DevTests.Modules {
         public TemplateModuleSelectionModule() {
             Title = this.__ResStr("modTitle", "ModuleSelection Test Component");
             Name = this.__ResStr("modName", "Component Test - ModuleSelection");
-            Description = this.__ResStr("modSummary", "ModuleSelection test component");
+            Description = this.__ResStr("modSummary", "Test module for the ModuleSelection component. A test page for this module can be found at Tests > Templates > ModuleSelection (standard YetaWF site).");
             DefaultViewName = StandardViews.EditApply;
         }
 

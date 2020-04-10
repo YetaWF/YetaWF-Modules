@@ -19,7 +19,7 @@ namespace YetaWF.Modules.DevTests.Modules {
         public TemplateTabsModule() {
             Title = this.__ResStr("modTitle", "Tabs Test Template");
             Name = this.__ResStr("modName", "Template Test - Tabs");
-            Description = this.__ResStr("modSummary", "Tabs test template");
+            Description = this.__ResStr("modSummary", "Test module for the Tabs component. A test page for this module can be found at Tests > Templates > Tabs (standard YetaWF site).");
             DefaultViewName = StandardViews.EditApply;
         }
 

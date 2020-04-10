@@ -19,7 +19,7 @@ namespace YetaWF.Modules.DevTests.Modules {
         public TemplateListOfEmailAddressesModule() {
             Title = this.__ResStr("modTitle", "ListOfEmailAddresses Test Component");
             Name = this.__ResStr("modName", "Component Test - ListOfEmailAddresses");
-            Description = this.__ResStr("modSummary", "ListOfEmailAddresses test component");
+            Description = this.__ResStr("modSummary", "Test module for the ListOfEmailAddresses component. A test page for this module can be found at Tests > Templates > ListOfEmailAddresses (standard YetaWF site).");
             DefaultViewName = StandardViews.EditApply;
         }
 

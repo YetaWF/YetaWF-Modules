@@ -23,12 +23,13 @@ namespace YetaWF.Modules.Blog.Modules {
 
     [ModuleGuid("{dc5acba8-fdf9-4146-abf3-8321b4fe8c7a}")]
     [UniqueModule(UniqueModuleStyle.NonUnique)]
+    [ModuleCategory("Entries")]
     public class EntryDisplayModule : ModuleDefinition {
 
         public EntryDisplayModule() {
             Title = this.__ResStr("modTitle", "Blog Entry");
             Name = this.__ResStr("modName", "Display Blog Entry");
-            Description = this.__ResStr("modSummary", "Displays an existing blog entry");
+            Description = this.__ResStr("modSummary", "Displays a blog entry. Add a Category Header Module to display information for the selected category. Add a Comments Display Module to display all comments for the blog entry. Add a Comment Add Module to allow visitors to enter comments for your blog entry.");
             ShowTitleActions = true;
             DefaultViewName = StandardViews.Display;
         }

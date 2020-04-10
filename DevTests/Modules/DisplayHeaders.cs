@@ -19,7 +19,7 @@ namespace YetaWF.Modules.DevTests.Modules {
         public DisplayHeadersModule() {
             Title = this.__ResStr("modTitle", "Headers");
             Name = this.__ResStr("modName", "Headers");
-            Description = this.__ResStr("modSummary", "Displays request headers");
+            Description = this.__ResStr("modSummary", "Displays request headers. A test page for this module can be found at Tests > Modules > HTTP Request Headers (standard YetaWF site).");
             DefaultViewName = StandardViews.Display;
         }
 

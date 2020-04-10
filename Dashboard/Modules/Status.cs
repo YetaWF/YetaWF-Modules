@@ -19,7 +19,7 @@ namespace YetaWF.Modules.Dashboard.Modules {
         public StatusModule() {
             Title = this.__ResStr("modTitle", "Status Information");
             Name = this.__ResStr("modName", "Status Information");
-            Description = this.__ResStr("modSummary", "Displays status information for YetaWF");
+            Description = this.__ResStr("modSummary", "Displays information about the YetaWF instance. Status information can be accessed using Admin > Dashboard > Status Information (standard YetaWF site).");
             DefaultViewName = StandardViews.Display;
         }
 

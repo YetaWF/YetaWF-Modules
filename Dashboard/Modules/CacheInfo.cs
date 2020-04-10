@@ -19,7 +19,7 @@ namespace YetaWF.Modules.Dashboard.Modules {
         public CacheInfoModule() {
             Title = this.__ResStr("modTitle", "Cache Information (HttpContext.Current.Cache)");
             Name = this.__ResStr("modName", "Cache Information (HttpContext.Current.Cache)");
-            Description = this.__ResStr("modSummary", "Displays cache information (HttpContext.Current.Cache)");
+            Description = this.__ResStr("modSummary", "Displays cache information (HttpContext.Current.Cache). Cache information can be accessed using Admin > Dashboard > HttpContext.Current.Cache (standard YetaWF site).");
         }
 
         public override IModuleDefinitionIO GetDataProvider() { return new CacheInfoModuleDataProvider(); }

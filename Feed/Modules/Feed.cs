@@ -27,7 +27,7 @@ namespace YetaWF.Modules.Feed.Modules {
         public FeedModule() : base() {
             Title = this.__ResStr("modTitle", "News Feed");
             Name = this.__ResStr("modName", "News Feed");
-            Description = this.__ResStr("modSummary", "Displays a news feed");
+            Description = this.__ResStr("modSummary", "Displays the defined news feed. Use the module's Module Settings to define the desired news feed. Sample News Feed Modules can be accessed at Tests > News Feed (standard YetaWF site).");
             FeedUrl = "https://YetaWF.com/NewsFeed";
             Interval = 5;
             NumEntries = 10;

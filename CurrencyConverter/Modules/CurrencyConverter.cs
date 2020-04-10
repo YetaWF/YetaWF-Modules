@@ -22,7 +22,7 @@ namespace YetaWF.Modules.CurrencyConverter.Modules {
         public CurrencyConverterModule() {
             Title = this.__ResStr("modTitle", "Currency Conversion");
             Name = this.__ResStr("modName", "Currency Conversion");
-            Description = this.__ResStr("modSummary", "Currency conversion for site visitors");
+            Description = this.__ResStr("modSummary", "Currency conversion for site visitors. A test page for the Currency Converter Module can be accessed using Tests > Currency Converter (standard YetaWF site).");
             FromCountry = "USD"; // US $
             ToCountry = "CAD"; // Canadian $
             DefaultAmount = 100M;

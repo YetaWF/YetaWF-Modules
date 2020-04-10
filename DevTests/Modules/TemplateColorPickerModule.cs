@@ -19,7 +19,7 @@ namespace YetaWF.Modules.DevTests.Modules {
         public TemplateColorPickerModule() {
             Title = this.__ResStr("modTitle", "ColorPicker Test Component");
             Name = this.__ResStr("modName", "Component Test - ColorPicker");
-            Description = this.__ResStr("modSummary", "ColorPicker test component");
+            Description = this.__ResStr("modSummary", "Test module for the ColorPicker component. A test page for this module can be found at Tests > Templates > ColorPicker (standard YetaWF site).");
             DefaultViewName = StandardViews.EditApply;
         }
 

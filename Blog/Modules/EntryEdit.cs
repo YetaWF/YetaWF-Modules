@@ -15,12 +15,13 @@ namespace YetaWF.Modules.Blog.Modules {
 
     [ModuleGuid("{64aae940-f2a8-4fb5-a2ab-fb3edfc9d6ac}")]
     [UniqueModule(UniqueModuleStyle.NonUnique)]
+    [ModuleCategory("Entries")]
     public class EntryEditModule : ModuleDefinition {
 
         public EntryEditModule() {
             Title = this.__ResStr("modTitle", "Blog Entry");
             Name = this.__ResStr("modName", "Edit Blog Entry");
-            Description = this.__ResStr("modSummary", "Edits an existing blog entry");
+            Description = this.__ResStr("modSummary", "Edits an existing blog entry.");
         }
 
         public override IModuleDefinitionIO GetDataProvider() { return new EntryEditModuleDataProvider(); }

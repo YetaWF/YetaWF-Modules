@@ -16,12 +16,13 @@ namespace YetaWF.Modules.Blog.Modules {
 
     [ModuleGuid("{71583859-baa9-43fa-895b-a6ebd47561a1}")]
     [UniqueModule(UniqueModuleStyle.UniqueOnly)]
+    [ModuleCategory("Configuration")]
     public class DisqusConfigModule : ModuleDefinition {
 
         public DisqusConfigModule() {
             Title = this.__ResStr("modTitle", "Disqus Settings");
             Name = this.__ResStr("modName", "Disqus Settings");
-            Description = this.__ResStr("modSummary", "Edits a site's Disqus settings");
+            Description = this.__ResStr("modSummary", "Edits a site's Disqus settings. It is accessible using Admin > Settings > Disqus Settings (standard YetaWF site).");
             ShowHelp = true;
             DefaultViewName = StandardViews.Config;
         }
