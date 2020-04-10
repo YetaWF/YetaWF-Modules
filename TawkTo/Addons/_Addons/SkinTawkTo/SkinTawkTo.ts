@@ -14,7 +14,7 @@ namespace YetaWF_TawkTo {
 
     export class SkinTawkToModule extends YetaWF.ModuleBaseNoDataImpl {
 
-        public static readonly SELECTOR: string = ".Softelvdm_Documentation_FileDocumentShow";
+        public static readonly SELECTOR: string = ".YetaWF_TawkTo_FileDocumentShow";
         public static readonly MODULEGUID: string = "c063e089-aff3-44e4-ac44-063911853579";
 
         private static on: boolean = true;

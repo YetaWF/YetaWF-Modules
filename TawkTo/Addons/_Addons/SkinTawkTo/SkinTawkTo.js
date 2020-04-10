@@ -90,7 +90,7 @@ var YetaWF_TawkTo;
                 Tawk_API.hideWidget();
             }
         };
-        SkinTawkToModule.SELECTOR = ".Softelvdm_Documentation_FileDocumentShow";
+        SkinTawkToModule.SELECTOR = ".YetaWF_TawkTo_FileDocumentShow";
         SkinTawkToModule.MODULEGUID = "c063e089-aff3-44e4-ac44-063911853579";
         SkinTawkToModule.on = true;
         return SkinTawkToModule;
@@ -109,5 +109,3 @@ var YetaWF_TawkTo;
         return false;
     });
 })(YetaWF_TawkTo || (YetaWF_TawkTo = {}));
-
-//# sourceMappingURL=SkinTawkTo.js.map
