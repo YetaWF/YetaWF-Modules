@@ -17,12 +17,13 @@ namespace YetaWF.Modules.Identity.Modules {
 
     [ModuleGuid("{dbc60a3f-eb01-4fe0-a0aa-4059200b1092}")]
     [UniqueModule(UniqueModuleStyle.UniqueOnly)]
+    [ModuleCategory("Configuration")]
     public class LoginConfigModule : ModuleDefinition {
 
         public LoginConfigModule() {
             Title = this.__ResStr("modTitle", "User Login Settings");
             Name = this.__ResStr("modName", "User Login Settings");
-            Description = this.__ResStr("modSummary", "Manages the site's user login settings");
+            Description = this.__ResStr("modSummary", "Manages the site's user login settings and is used to define a site's settings, such as whether new users are accepted, new users, require verification, etc. The User Login Settings Module can be accessed using Admin > Settings > User Login Settings (standard YetaWF site).");
             ShowHelp = true;
             DefaultViewName = StandardViews.Config;
         }

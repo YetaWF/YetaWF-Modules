@@ -29,7 +29,7 @@ namespace YetaWF.Modules.PageEdit.Modules {
         public PageEditModule() : base() {
             Title = this.__ResStr("modTitle", "Page Edit");
             Name = this.__ResStr("modName", "Page Edit");
-            Description = this.__ResStr("modSummary", "Edit page settings");
+            Description = this.__ResStr("modSummary", "Implements page editing services.");
         }
 
         public override IModuleDefinitionIO GetDataProvider() { return new PageEditModuleDataProvider(); }

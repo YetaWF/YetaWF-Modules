@@ -6,7 +6,6 @@ using YetaWF.Core.Localize;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Modules;
 using YetaWF.Core.Serializers;
-using YetaWF.Core.Support;
 using YetaWF.DataProvider;
 
 namespace YetaWF.Modules.Identity.Modules {
@@ -15,12 +14,13 @@ namespace YetaWF.Modules.Identity.Modules {
 
     [ModuleGuid("{31e5b2ed-428c-451c-a25e-5e7e755ef53c}")]
     [UniqueModule(UniqueModuleStyle.NonUnique)]
+    [ModuleCategory("Configuration")]
     public class UsersEditModule : ModuleDefinition {
 
         public UsersEditModule() : base() {
             Title = this.__ResStr("modTitle", "Edit User");
             Name = this.__ResStr("modName", "Edit User");
-            Description = this.__ResStr("modSummary", "Edits an existing user");
+            Description = this.__ResStr("modSummary", "Used to edit an existing user. This is used by the Users Module to edit a user.");
             DefaultViewName = StandardViews.Edit;
         }
 

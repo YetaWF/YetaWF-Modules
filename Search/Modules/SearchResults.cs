@@ -21,7 +21,7 @@ namespace YetaWF.Modules.Search.Modules {
         public SearchResultsModule() {
             Title = this.__ResStr("modTitle", "Search Results");
             Name = this.__ResStr("modName", "Search Results");
-            Description = this.__ResStr("modSummary", "Displays search results");
+            Description = this.__ResStr("modSummary", "Displays search results. The Search Input Module uses the Search Results Module.");
             WantFocus = false;
             WantSearch = false;
             MaxResults = 20;

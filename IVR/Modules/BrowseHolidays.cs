@@ -30,7 +30,7 @@ namespace Softelvdm.Modules.IVR.Modules {
         public BrowseHolidaysModule() {
             Title = this.__ResStr("modTitle", "Holidays");
             Name = this.__ResStr("modName", "Holiday Entries");
-            Description = this.__ResStr("modSummary", "Displays and manages holiday entries");
+            Description = this.__ResStr("modSummary", "Displays and manages holiday entries.");
             DefaultViewName = StandardViews.PropertyListEdit;
             UsePartialFormCss = false;
         }

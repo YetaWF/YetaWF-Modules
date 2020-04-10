@@ -14,12 +14,13 @@ namespace YetaWF.Modules.SyntaxHighlighter.Modules {
 
     [ModuleGuid("{7e3c4322-5bdb-44bf-acff-f62d498705ee}"), PublishedModuleGuid]
     [UniqueModule(UniqueModuleStyle.UniqueOnly)]
+    [ModuleCategory("Alex Gorbatchev")]
     public class SkinSyntaxHighlighterModule : ModuleDefinition {
 
         public SkinSyntaxHighlighterModule() {
             Title = this.__ResStr("modTitle", "Skin Syntax Highlighter (Alex Gorbatchev)");
             Name = this.__ResStr("modName", "Syntax Highlighter Alex Gorbatchev (Skin)");
-            Description = this.__ResStr("modSummary", "Skin module supporting syntax highlighting in modules, by Alex Gorbatchev");
+            Description = this.__ResStr("modSummary", "Skin module supporting syntax highlighting in modules, by Alex Gorbatchev, referenced by sites, pages or modules, in which case <pre> .. </pre> sections are rendered using syntax highlighting.");
             WantFocus = false;
             ShowTitle = false;
             WantSearch = false;

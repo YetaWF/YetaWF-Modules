@@ -11,12 +11,6 @@ using YetaWF.Core.Support;
 using YetaWF.DataProvider;
 using YetaWF.Modules.Panels.Controllers;
 using YetaWF.Modules.Panels.Models;
-#if MVC6
-using Microsoft.AspNetCore.Mvc.ModelBinding;
-using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
-#else
-using System.Web.Mvc;
-#endif
 
 namespace YetaWF.Modules.Panels.Modules {
 
@@ -29,7 +23,7 @@ namespace YetaWF.Modules.Panels.Modules {
         public PagePanelModule() {
             Title = this.__ResStr("modTitle", "Page Panel");
             Name = this.__ResStr("modName", "Page Panel");
-            Description = this.__ResStr("modSummary", "Page Panel - used to display multiple links to pages using the pages' FavIcon");
+            Description = this.__ResStr("modSummary", "Used to display multiple links to pages using the pages' FavIcon. A sample page is available at /Admin/Tests (standard YetaWF site).");
             PageList = new SerializableList<LocalPage>();
             DefaultImage_Data = new byte[] { };
             UsePartialFormCss = false;

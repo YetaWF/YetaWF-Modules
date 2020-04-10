@@ -20,7 +20,7 @@ namespace YetaWF.Modules.Logging.Modules {
         public DisplayLogModule() : base() {
             Title = this.__ResStr("modTitle", "Log Record");
             Name = this.__ResStr("modName", "Display Log Record");
-            Description = this.__ResStr("modSummary", "A module used to display a log record.");
+            Description = this.__ResStr("modSummary", "Displays an individual log entry. This is used by the Log Module to display a log entry and is only available if the log file is PostgreSQL/SQL Server hosted.");
             DefaultViewName = StandardViews.Display;
         }
 

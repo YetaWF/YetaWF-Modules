@@ -31,7 +31,7 @@ namespace YetaWF.Modules.ModuleEdit.Modules {
         public ModuleControlModule() {
             Name = this.__ResStr("modName", "Module Control");
             Title = this.__ResStr("modTitle", "Module Control");
-            Description = this.__ResStr("modSummary", "Module editing services");
+            Description = this.__ResStr("modSummary", "Implements editing services used in Site Edit Mode to move modules within panes, change their position, remove modules from a page and to export module data.");
             Print = false;
         }
 

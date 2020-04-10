@@ -19,7 +19,7 @@ namespace YetaWF.Modules.Lightbox.Modules {
         public SkinLightboxModule() {
             Title = this.__ResStr("modTitle", "Skin Lightbox");
             Name = this.__ResStr("modName", "Lightbox (Skin)");
-            Description = this.__ResStr("modSummary", "Skin module supporting image presentation (lightbox) in modules");
+            Description = this.__ResStr("modSummary", "Implements Lightbox on any page where this module is included. It can be included explicitly by a skin or by a module's, page's or site's Skin Modules (see References tab in Page, Module or Site Settings). See Skin Modules for more information.");
             WantFocus = false;
             ShowTitle = false;
             WantSearch = false;

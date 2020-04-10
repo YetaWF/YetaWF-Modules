@@ -20,7 +20,7 @@ namespace YetaWF.Modules.Security.Modules {
         public MakeKeysModule() {
             Title = this.__ResStr("modTitle", "RSA Keys");
             Name = this.__ResStr("modName", "RSA Keys");
-            Description = this.__ResStr("modSummary", "Creates a public/private key using RSA");
+            Description = this.__ResStr("modSummary", "Creates public/private keys using RSA. These can be used by YetaWF.Core.Security.RSACrypto Encrypt and Decrypt functions to encrypt and decrypt tokens, used to implement data security. Each time the module is displayed, a new key pair is generated. A test page for the RSA Keys Module can be accessed using Tests > Modules > MakeKeys (standard YetaWF site).");
         }
 
         public override IModuleDefinitionIO GetDataProvider() { return new MakeKeysModuleDataProvider(); }

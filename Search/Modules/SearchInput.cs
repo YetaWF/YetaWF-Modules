@@ -29,7 +29,7 @@ namespace YetaWF.Modules.Search.Modules {
         public SearchInputModule() {
             Title = this.__ResStr("modTitle", "Search");
             Name = this.__ResStr("modName", "Search Input");
-            Description = this.__ResStr("modSummary", "Search terms entry");
+            Description = this.__ResStr("modSummary", "Allow search term input.");
             WantFocus = false;
             WantSearch = false;
             Print = false;

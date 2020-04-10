@@ -21,7 +21,7 @@ namespace YetaWF.Modules.UserSettings.Modules {
         public SettingsEditModule() : base() {
             Title = this.__ResStr("modTitle", "User Settings");
             Name = this.__ResStr("modName", "User Settings");
-            Description = this.__ResStr("modSummary", "Edit a user's settings");
+            Description = this.__ResStr("modSummary", "Edits the logged on user's settings, like desired date/time formats, time zone, language used and other options. The User Settings Module is accessible using User > Settings (standard YetaWF site).");
             DefaultViewName = StandardViews.EditApply;
         }
 

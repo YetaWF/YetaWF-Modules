@@ -19,7 +19,7 @@ namespace YetaWF.Modules.Pages.Modules {
         public TemplateListOfLocalPagesModule() {
             Title = this.__ResStr("modTitle", "ListOfLocalPages Test Component");
             Name = this.__ResStr("modName", "Component - ListOfLocalPages");
-            Description = this.__ResStr("modSummary", "ListOfLocalPages test component");
+            Description = this.__ResStr("modSummary", "Test module for the ListOfLocalPages component (edit and display). A test page for this module can be found at Tests > Templates > ListOfLocalPages (standard YetaWF site).");
             DefaultViewName = StandardViews.EditApply;
         }
 

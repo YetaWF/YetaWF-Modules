@@ -19,7 +19,7 @@ namespace Softelvdm.Modules.IVR.Modules {
         public AddExtensionModule() {
             Title = this.__ResStr("modTitle", "Add New Extension");
             Name = this.__ResStr("modName", "Add New Extension");
-            Description = this.__ResStr("modSummary", "Adds a new extension");
+            Description = this.__ResStr("modSummary", "Adds a new extension.");
             DefaultViewName = StandardViews.Add;
         }
 

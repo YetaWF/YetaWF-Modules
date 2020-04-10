@@ -25,7 +25,7 @@ namespace YetaWF.Modules.Visitors.Modules {
         public TinyVisitorsModule() {
             Title = this.__ResStr("modTitle", "Visitor Stats");
             Name = this.__ResStr("modName", "Visitor Stats");
-            Description = this.__ResStr("modSummary", "Displays today's visitor stats");
+            Description = this.__ResStr("modSummary", "Displays a small icon. When an authorized user hovers over the icon, today's and yesterday's totals for anonymous and logged on visitors are shown. By clicking on the icon, the Visitors Module is displayed, showing all visitor activity (assuming that the URL for a page with the Visitors Module has been defined in the TinyVisitor Module's settings). This module is typically added to every page (as a skin module) so the Administrator has access to visitor activity.");
             WantFocus = false;
             WantSearch = false;
             ShowTitle = false;

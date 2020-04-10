@@ -30,7 +30,7 @@ namespace YetaWF.Modules.Pages.Modules {
         public UnifiedSetsBrowseModule() {
             Title = this.__ResStr("modTitle", "Unified Page Sets");
             Name = this.__ResStr("modName", "Unified Page Sets");
-            Description = this.__ResStr("modSummary", "Displays and manages Unified Page Sets");
+            Description = this.__ResStr("modSummary", "Displays and manages Unified Page Sets. It can be accessed using Admin > Panel > Unified Page Sets (standard YetaWF site).");
             DefaultViewName = StandardViews.PropertyListEdit;
             ShowHelp = true;
             WantSearch = false;

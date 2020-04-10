@@ -20,7 +20,7 @@ namespace YetaWF.Modules.Search.Modules {
         public SearchControlModule() {
             Title = this.__ResStr("modTitle", "Skin Search Results Highlighter");
             Name = this.__ResStr("modName", "Search Results Highlighter (Skin)");
-            Description = this.__ResStr("modSummary", "Highlights search results in a page");
+            Description = this.__ResStr("modSummary", "Highlights any search terms found on the current page displayed. It can be included as a skin module or referenced by a site, page or module (see References tab in Page, Module or Site Settings). See Skin Modules for more information.");
             ShowTitle = false;
             WantFocus = false;
             WantSearch = false;

@@ -14,12 +14,13 @@ namespace YetaWF.Modules.Identity.Modules {
 
     [ModuleGuid("{2ca21dad-34d0-4e2c-83c2-e3f6b31ca630}")]
     [UniqueModule(UniqueModuleStyle.NonUnique)]
+    [ModuleCategory("Login & Registration")]
     public class UserPasswordModule : ModuleDefinition {
 
         public UserPasswordModule() : base() {
             Title = this.__ResStr("modTitle", "Change Password");
             Name = this.__ResStr("modName", "Change Password");
-            Description = this.__ResStr("modSummary", "Changes a user's password");
+            Description = this.__ResStr("modSummary", "Used to edit the current user's account password. The Change Password Module can be accessed using User > Change Password (standard YetaWF site).");
             DefaultViewName = StandardViews.EditApply;
         }
 

@@ -15,12 +15,14 @@ namespace YetaWF.Modules.Identity.Modules {
 
     [ModuleGuid("{222d53c2-8c9e-41df-8366-96060a4f5b57}")]
     [UniqueModule(UniqueModuleStyle.NonUnique)]
+    [ModuleCategory("Login & Registration")]
     public class UserAccountModule : ModuleDefinition {
 
         public UserAccountModule() : base() {
             Title = this.__ResStr("modTitle", "User Account");
             Name = this.__ResStr("modName", "User Account");
-            Description = this.__ResStr("modSummary", "Edits a user's account information");
+            Description = this.__ResStr("modSummary", "Used to edit the current user's account user name or email address and displays additional information. " +
+                "The User Account Module can be accessed using User > Account (standard YetaWF site).");
             DefaultViewName = StandardViews.EditApply;
         }
 

@@ -13,12 +13,13 @@ namespace YetaWF.Modules.Identity.Modules {
 
     [ModuleGuid("{55928a06-793e-46d1-929e-e403a59de98a}")]
     [UniqueModule(UniqueModuleStyle.NonUnique)]
+    [ModuleCategory("Configuration")]
     public class UsersAddModule : ModuleDefinition {
 
         public UsersAddModule() {
             Title = this.__ResStr("modTitle", "New User");
             Name = this.__ResStr("modName", "New User");
-            Description = this.__ResStr("modSummary", "Creates a new user");
+            Description = this.__ResStr("modSummary", "Adds a new user. This is used by the Users Module to add a new user.");
             DefaultViewName = StandardViews.Add;
         }
 

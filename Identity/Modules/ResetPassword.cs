@@ -14,12 +14,13 @@ namespace YetaWF.Modules.Identity.Modules {
 
     [ModuleGuid("{9FFEAA14-1366-4462-B6F4-1035F1672DBC}")]
     [UniqueModule(UniqueModuleStyle.UniqueOnly)]
+    [ModuleCategory("Login & Registration")]
     public class ResetPasswordModule : ModuleDefinition {
 
         public ResetPasswordModule() : base() {
             Title = this.__ResStr("modTitle", "Reset Password");
             Name = this.__ResStr("modName", "Reset Password");
-            Description = this.__ResStr("modSummary", "Resets a user's password");
+            Description = this.__ResStr("modSummary", "Allows a user to reset the login password.");
             DefaultViewName = StandardViews.Edit;
         }
 

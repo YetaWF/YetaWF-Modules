@@ -19,7 +19,7 @@ namespace YetaWF.Modules.Pages.Modules {
         public UnifiedSetEditModule() {
             Title = this.__ResStr("modTitle", "Unified Page Set");
             Name = this.__ResStr("modName", "Edit Unified Page Set");
-            Description = this.__ResStr("modSummary", "Edits an existing Unified Page Set");
+            Description = this.__ResStr("modSummary", "Edits an existing Unified Page Set. This is used by the Unified Page Sets Module to edit a Unified Page Set.");
             DefaultViewName = StandardViews.Edit;
         }
 

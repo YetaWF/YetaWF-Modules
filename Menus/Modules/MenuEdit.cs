@@ -26,7 +26,7 @@ namespace YetaWF.Modules.Menus.Modules {
         public MenuEditModule() : base() {
             Title = this.__ResStr("modTitle", "Menu");
             Name = this.__ResStr("modName", "Menu Edit");
-            Description = this.__ResStr("modSummary", "Edits a menu");
+            Description = this.__ResStr("modSummary", "Implements menu editing. This is used as part of the Main Menu Module and the Menu Module to edit menu settings when in Site Edit Mode.");
         }
 
         public override IModuleDefinitionIO GetDataProvider() { return new MenuEditModuleDataProvider(); }

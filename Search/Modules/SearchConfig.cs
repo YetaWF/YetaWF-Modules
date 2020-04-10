@@ -21,7 +21,7 @@ namespace YetaWF.Modules.Search.Modules {
         public SearchConfigModule() {
             Title = this.__ResStr("modTitle", "Search Settings");
             Name = this.__ResStr("modName", "Search Settings");
-            Description = this.__ResStr("modSummary", "Edits a site's search settings");
+            Description = this.__ResStr("modSummary", "Main configuration module for search settings. It is accessible using Admin > Settings > Search Settings (standard YetaWF site).");
             ShowHelp = true;
             DefaultViewName = StandardViews.Config;
         }

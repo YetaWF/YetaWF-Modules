@@ -24,7 +24,7 @@ namespace YetaWF.Modules.Pages.Modules {
         public PagesBrowseModule() : base() {
             Title = this.__ResStr("modTitle", "Pages");
             Name = this.__ResStr("modName", "Pages");
-            Description = this.__ResStr("modSummary", "Displays and manages pages");
+            Description = this.__ResStr("modSummary", "Displays and manages pages and implements page removal. It is accessible using Admin > Panel > Pages (standard YetaWF site). It is used to display, edit settings and remove pages. The Pages Module also provides Site Map creation services.When removing pages, the modules on the page are NOT removed.");
             DefaultViewName = StandardViews.Browse;
         }
 

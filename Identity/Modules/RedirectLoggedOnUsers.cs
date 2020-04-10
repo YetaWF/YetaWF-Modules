@@ -14,12 +14,13 @@ namespace YetaWF.Modules.Identity.Modules {
 
     [ModuleGuid("{840f8753-ff43-41a4-8f27-b7d5d54ae198}")]
     [UniqueModule(UniqueModuleStyle.NonUnique)]
+    [ModuleCategory("Tools")]
     public class RedirectLoggedOnUsersModule : ModuleDefinition {
 
         public RedirectLoggedOnUsersModule() {
             Title = this.__ResStr("modTitle", "Redirect Logged On Users");
             Name = this.__ResStr("modName", "Redirect Logged On Users");
-            Description = this.__ResStr("modSummary", "Redirects logged on users to other pages");
+            Description = this.__ResStr("modSummary", "Redirects logged on users to other pages.");
             DefaultViewName = StandardViews.Display;
             ShowFormButtons = false;
             ShowHelp = false;

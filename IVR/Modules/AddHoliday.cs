@@ -19,7 +19,7 @@ namespace Softelvdm.Modules.IVR.Modules {
         public AddHolidayModule() {
             Title = this.__ResStr("modTitle", "Add New Holiday");
             Name = this.__ResStr("modName", "Add New Holiday Entry");
-            Description = this.__ResStr("modSummary", "Adds a new holiday");
+            Description = this.__ResStr("modSummary", "Adds a new holiday.");
             DefaultViewName = StandardViews.Add;
         }
 

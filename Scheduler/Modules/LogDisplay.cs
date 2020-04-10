@@ -19,7 +19,7 @@ namespace YetaWF.Modules.Scheduler.Modules {
         public LogDisplayModule() {
             Title = this.__ResStr("modTitle", "Scheduler Log Entry");
             Name = this.__ResStr("modName", "Scheduler Log Entry");
-            Description = this.__ResStr("modSummary", "Displays an existing scheduler log entry");
+            Description = this.__ResStr("modSummary", "Displays an existing scheduler log entry. Used by the Scheduler Log Module.");
             DefaultViewName = StandardViews.Display;
         }
 

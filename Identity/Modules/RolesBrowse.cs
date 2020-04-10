@@ -25,12 +25,13 @@ namespace YetaWF.Modules.Identity.Modules {
 
     [ModuleGuid("{cc4761a9-977c-438b-880a-3381ab78b4a3}")]
     [UniqueModule(UniqueModuleStyle.NonUnique)]
+    [ModuleCategory("Configuration")]
     public class RolesBrowseModule : ModuleDefinition {
 
         public RolesBrowseModule() : base() {
             Title = this.__ResStr("modTitle", "Roles");
             Name = this.__ResStr("modName", "Roles");
-            Description = this.__ResStr("modSummary", "Displays and manages roles");
+            Description = this.__ResStr("modSummary", "Used to display and manage roles. Roles can be managed using Admin > Panel > Identity, Roles tab (standard YetaWF site).");
             DefaultViewName = StandardViews.Browse;
         }
 

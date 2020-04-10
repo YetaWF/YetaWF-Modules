@@ -19,7 +19,7 @@ namespace YetaWF.Modules.Languages.Modules {
         public LocalizeEditFileModule() {
             Title = this.__ResStr("modTitle", "Localization Resource");
             Name = this.__ResStr("modName", "Edit Localization Resource");
-            Description = this.__ResStr("modSummary", "Edits an existing localization resource");
+            Description = this.__ResStr("modSummary", "Used to edit an existing localization resource. This is used by the Languages Module.");
         }
 
         public override IModuleDefinitionIO GetDataProvider() { return new LocalizeEditFileModuleDataProvider(); }

@@ -30,7 +30,7 @@ namespace Softelvdm.Modules.IVR.Modules {
         public BrowseExtensionsModule() {
             Title = this.__ResStr("modTitle", "Extensions");
             Name = this.__ResStr("modName", "Extensions");
-            Description = this.__ResStr("modSummary", "Displays and manages extensions");
+            Description = this.__ResStr("modSummary", "Displays and manages extensions.");
             DefaultViewName = StandardViews.PropertyListEdit;
             UsePartialFormCss = false;
         }

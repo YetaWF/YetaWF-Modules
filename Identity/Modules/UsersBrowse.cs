@@ -29,12 +29,13 @@ namespace YetaWF.Modules.Identity.Modules {
 
     [ModuleGuid("{040eb38f-069a-4bf0-894d-bcb3ff8816e7}")]
     [UniqueModule(UniqueModuleStyle.NonUnique)]
+    [ModuleCategory("Configuration")]
     public class UsersBrowseModule : ModuleDefinition {
 
         public UsersBrowseModule() : base() {
             Title = this.__ResStr("modTitle", "Users");
             Name = this.__ResStr("modName", "Users");
-            Description = this.__ResStr("modSummary", "Displays and manages users");
+            Description = this.__ResStr("modSummary", "Used to display and manage users. This can be accessed using Admin > Panel > Identity, Users tab (standard YetaWF site).");
             DefaultViewName = StandardViews.Browse;
             UsePartialFormCss = false;
         }

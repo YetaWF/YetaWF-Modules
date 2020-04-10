@@ -19,7 +19,7 @@ namespace YetaWF.Modules.TawkTo.Modules {
         public SkinTawkToModule() {
             Title = this.__ResStr("modTitle", "Skin Tawk.to");
             Name = this.__ResStr("modName", "Tawk.to (Skin)");
-            Description = this.__ResStr("modSummary", "Skin module implementing the Tawk.to chat app");
+            Description = this.__ResStr("modSummary", "Implements the TawkTo chat window, referenced by your page(s) or site. It is not added to a skin or page, instead it is referenced by a site, page or module. Referencing the TawkTo (Skin) Module causes the TawkTo chat window to be displayed as configured in your https://www.tawk.to account.");
             WantFocus = false;
             ShowTitle = false;
             WantSearch = false;

@@ -21,7 +21,7 @@ namespace YetaWF.Modules.TawkTo.Modules {
         public ConfigModule() {
             Title = this.__ResStr("modTitle", "TawkTo Settings");
             Name = this.__ResStr("modName", "TawkTo Settings");
-            Description = this.__ResStr("modSummary", "Edits a site's tawkto settings");
+            Description = this.__ResStr("modSummary", "Implements the TawkTo configuration. It can be accessed using Admin > Settings > TawkTo Settings (standard YetaWF site).");
             ShowHelp = true;
             DefaultViewName = StandardViews.Config;
         }

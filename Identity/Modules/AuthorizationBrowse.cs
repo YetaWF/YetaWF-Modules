@@ -22,12 +22,13 @@ namespace YetaWF.Modules.Identity.Modules {
 
     [ModuleGuid("{d75f9b25-bede-407c-8737-4506982d8e09}")]
     [UniqueModule(UniqueModuleStyle.NonUnique)]
+    [ModuleCategory("Configuration")]
     public class AuthorizationBrowseModule : ModuleDefinition {
 
         public AuthorizationBrowseModule() : base() {
             Title = this.__ResStr("modTitle", "Resources");
             Name = this.__ResStr("modName", "Resources");
-            Description = this.__ResStr("modSummary", "Displays and manages resources (used for authorizations)");
+            Description = this.__ResStr("modSummary", "Used to display and manage resources used for authorizations. It is accessible using Admin > Identity Settings > Resources (standard YetaWF site).");
         }
 
         public override IModuleDefinitionIO GetDataProvider() { return new AuthorizationBrowseModuleDataProvider(); }

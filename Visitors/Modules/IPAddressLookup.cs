@@ -20,7 +20,7 @@ namespace YetaWF.Modules.Visitors.Modules {
         public IPAddressLookupModule() {
             Title = this.__ResStr("modTitle", "IP Address Lookup");
             Name = this.__ResStr("modName", "IP Address Lookup");
-            Description = this.__ResStr("modSummary", "Displays information for an IP address");
+            Description = this.__ResStr("modSummary", "Displays information for an IP address. This module is used by the Visitor Activity Module to display host name and geolocation information for a visitor.");
             DefaultViewName = StandardViews.Display;
         }
 

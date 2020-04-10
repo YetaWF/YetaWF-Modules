@@ -21,7 +21,7 @@ namespace YetaWF.Modules.Languages.Modules {
         public LocalizeConfigModule() {
             Title = this.__ResStr("modTitle", "Localization Settings");
             Name = this.__ResStr("modName", "Localization Settings");
-            Description = this.__ResStr("modSummary", "Edits site and system wide localization settings");
+            Description = this.__ResStr("modSummary", "Used to edit site and system wide localization settings. It is accessible using Admin > Settings > Localization Settings (standard YetaWF site).");
             ShowHelp = true;
             DefaultViewName = StandardViews.Config;
         }

@@ -30,7 +30,7 @@ namespace YetaWF.Modules.Languages.Modules {
         public LocalizeBrowsePackageModule() {
             Title = this.__ResStr("modTitle", "Localization Resources");
             Name = this.__ResStr("modName", "Localization Resources");
-            Description = this.__ResStr("modSummary", "Displays and manages localization resources for a package");
+            Description = this.__ResStr("modSummary", "Displays and manages localization resources for a package. It is used by the YetaWF.Packages package to offer access to localization services. This module allows access to all localizable resource of a package, such as strings used in views and in code. See National Language Support for information about localization.");
             UsePartialFormCss = false;
         }
 

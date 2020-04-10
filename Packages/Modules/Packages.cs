@@ -25,7 +25,7 @@ namespace YetaWF.Modules.Packages.Modules {
         public PackagesModule() : base() {
             Title = this.__ResStr("modTitle", "Packages");
             Name = this.__ResStr("modName", "Packages");
-            Description = this.__ResStr("modSummary", "Displays and manages installed packages");
+            Description = this.__ResStr("modSummary", "Displays and manages installed packages. It is accessible using Admin > Panel > Packages (standard YetaWF site).");
             DefaultViewName = StandardViews.Browse;
         }
 

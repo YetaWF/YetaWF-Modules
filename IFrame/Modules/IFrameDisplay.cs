@@ -27,7 +27,7 @@ namespace YetaWF.Modules.IFrame.Modules {
         public IFrameDisplayModule() {
             Title = this.__ResStr("modTitle", "IFrame");
             Name = this.__ResStr("modName", "IFrame (Display Url)");
-            Description = this.__ResStr("modSummary", "Includes another page (Url) and displays the page");
+            Description = this.__ResStr("modSummary", "Displays the defined URL in an HTML iframe tag. Use the module's Module Settings to define the desired URL. A sample IFrame Module can be accessed at Tests > Modules > IFrame (standard YetaWF site).");
             Url = "https://LinksWithPics.com";
             Width = "100%";
             Height = "800px";

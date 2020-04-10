@@ -21,7 +21,7 @@ namespace YetaWF.Modules.Packages.Modules {
         public SiteTemplateProcessModule() {
             Title = this.__ResStr("modTitle", "Process Site Template");
             Name = this.__ResStr("modName", "Process Site Template");
-            Description = this.__ResStr("modSummary", "Processes a site template and adds all defined pages to the current site");
+            Description = this.__ResStr("modSummary", "Processes a Site Template and adds all defined pages to the current site. The Process Site Template Module is accessible using Admin > Panel > Packages (standard YetaWF site).");
             Print = false;
         }
 

@@ -30,7 +30,7 @@ namespace YetaWF.Modules.Logging.Modules {
         public BrowseLogModule() : base() {
             Title = this.__ResStr("modTitle", "Log");
             Name = this.__ResStr("modName", "Log");
-            Description = this.__ResStr("modSummary", "Displays and manages log records");
+            Description = this.__ResStr("modSummary", "Displays and manages log records. The Log module can be accessed using Admin > Dashboard > Logging (standard YetaWF site).");
             UsePartialFormCss = false;
         }
 

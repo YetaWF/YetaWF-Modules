@@ -7,7 +7,6 @@ using YetaWF.Core.Localize;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Modules;
 using YetaWF.Core.Serializers;
-using YetaWF.Core.Support;
 using YetaWF.DataProvider;
 
 namespace YetaWF.Modules.Packages.Modules {
@@ -21,7 +20,7 @@ namespace YetaWF.Modules.Packages.Modules {
         public SiteTemplateUndoModule() {
             Title = this.__ResStr("modTitle", "Undo Site Template");
             Name = this.__ResStr("modName", "Undo Site Template");
-            Description = this.__ResStr("modSummary", "Undoes a site template by removing all defined pages and menu entries from the current site");
+            Description = this.__ResStr("modSummary", "Undoes a site template by removing all defined pages and menu entries from the current site. For information about site templates, please see Site Templates. The Undo Site Template Module is accessible using Admin > Panel > Packages.");
             Print = false;
         }
 

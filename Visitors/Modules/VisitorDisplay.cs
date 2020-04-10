@@ -21,7 +21,7 @@ namespace YetaWF.Modules.Visitors.Modules {
         public VisitorDisplayModule() {
             Title = this.__ResStr("modTitle", "Visitor Entry Details");
             Name = this.__ResStr("modName", "Visitor Entry Details");
-            Description = this.__ResStr("modSummary", "Displays details of a visitor entry");
+            Description = this.__ResStr("modSummary", "Displays detailed information about a visitor. This is used by the Visitor Activity Module to display a record's detail information.");
             DefaultViewName = StandardViews.Display;
         }
 

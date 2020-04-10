@@ -19,7 +19,7 @@ namespace YetaWF.Modules.PageEdit.Modules {
         public EditModeModule() {
             Title = this.__ResStr("modTitle", "Page Edit Mode Selector");
             Name = this.__ResStr("modName", "Page Edit Mode Selector (Skin)");
-            Description = this.__ResStr("modSummary", "Switches between site edit mode and site display mode");
+            Description = this.__ResStr("modSummary", "Displays an icon which allows switching between Site Edit Mode and Site View Mode. This module is typically added to every page (as a skin module) so authorized users can switch to Site Edit Mode and back to Site View Mode.");
             WantFocus = false;
             WantSearch = false;
             ShowTitle = false;

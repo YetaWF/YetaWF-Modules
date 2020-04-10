@@ -30,7 +30,7 @@ namespace Softelvdm.Modules.IVR.Modules {
         public BrowseBlockedNumbersModule() {
             Title = this.__ResStr("modTitle", "Blocked Numbers");
             Name = this.__ResStr("modName", "Blocked Numbers");
-            Description = this.__ResStr("modSummary", "Displays and manages blocked numbers");
+            Description = this.__ResStr("modSummary", "Displays and manages blocked numbers.");
             DefaultViewName = StandardViews.PropertyListEdit;
             UsePartialFormCss = false;
         }

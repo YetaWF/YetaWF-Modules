@@ -28,7 +28,7 @@ namespace YetaWF.Modules.Visitors.Modules {
         public VisitorsModule() {
             Title = this.__ResStr("modTitle", "Visitor Activity");
             Name = this.__ResStr("modName", "Visitor Activity");
-            Description = this.__ResStr("modSummary", "Displays visitor activity");
+            Description = this.__ResStr("modSummary", "Displays visitor activity. It is accessible using Admin > Dashboard > Visitor Activity (standard YetaWF site). Displaying a record's detailed information is available in the Visitor Activity grid shown by the Visitors Module. Records cannot be removed.");
             DefaultViewName = StandardViews.Browse;
         }
 

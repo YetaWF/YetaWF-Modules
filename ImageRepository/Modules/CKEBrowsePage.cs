@@ -19,7 +19,7 @@ namespace YetaWF.Modules.ImageRepository.Modules {
         public CKEBrowsePageModule() {
             Title = this.__ResStr("modTitle", "Select Page");
             Name = this.__ResStr("modName", "Select Page (CKEditor)");
-            Description = this.__ResStr("modSummary", "CKEditor interface to select a Url for an existing page");
+            Description = this.__ResStr("modSummary", "Displays a form to select a local page URL.");
             WantSearch = false;
             DefaultViewName = StandardViews.Edit;
         }

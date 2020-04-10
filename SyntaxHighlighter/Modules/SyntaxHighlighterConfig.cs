@@ -16,12 +16,13 @@ namespace YetaWF.Modules.SyntaxHighlighter.Modules {
 
     [ModuleGuid("{75e0578c-336a-4bd0-9966-b89edf1d3388}")]
     [UniqueModule(UniqueModuleStyle.UniqueOnly)]
+    [ModuleCategory("Configuration")]
     public class SyntaxHighlighterConfigModule : ModuleDefinition {
 
         public SyntaxHighlighterConfigModule() {
             Title = this.__ResStr("modTitle", "Syntax Highlighter Settings");
             Name = this.__ResStr("modName", "Syntax Highlighter Settings");
-            Description = this.__ResStr("modSummary", "Edits a site's syntax highlighter settings");
+            Description = this.__ResStr("modSummary", "Configuration module for syntax highlighting. Define the appearance of sections using syntax highlighting. It is accessible using Admin > Settings > Syntax Highlighter Settings (standard YetaWF site).");
             ShowHelp = true;
             DefaultViewName = StandardViews.Config;
         }

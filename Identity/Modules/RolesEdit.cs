@@ -15,12 +15,13 @@ namespace YetaWF.Modules.Identity.Modules {
 
     [ModuleGuid("{e35d6a55-b682-4b4c-9453-04951cc9b9b1}")]
     [UniqueModule(UniqueModuleStyle.NonUnique)]
+    [ModuleCategory("Configuration")]
     public class RolesEditModule : ModuleDefinition {
 
         public RolesEditModule() : base() {
             Title = this.__ResStr("modTitle", "Edit a Role");
             Name = this.__ResStr("modName", "Edit Role");
-            Description = this.__ResStr("modSummary", "Edits an existing role");
+            Description = this.__ResStr("modSummary", "Edits an existing role. This is used by the Roles Module to edit a role.");
             DefaultViewName = StandardViews.Edit;
         }
 

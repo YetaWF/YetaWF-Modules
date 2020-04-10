@@ -19,7 +19,7 @@ namespace Softelvdm.Modules.IVR.Modules {
         public AddBlockedNumberModule() {
             Title = this.__ResStr("modTitle", "Add New Blocked Number");
             Name = this.__ResStr("modName", "Add New Blocked Number");
-            Description = this.__ResStr("modSummary", "Adds a new blocked number");
+            Description = this.__ResStr("modSummary", "Adds a new blocked number.");
             DefaultViewName = StandardViews.Add;
         }
 

@@ -34,7 +34,7 @@ namespace YetaWF.Modules.Text.Modules {
         public MarkdownModule() : base() {
             Title = this.__ResStr("modTitle", "Edit");
             Name = this.__ResStr("modName", "Text (Markdown)");
-            Description = this.__ResStr("modSummary", "Displays user editable text contents (using Markdown)");
+            Description = this.__ResStr("modSummary", "Displays user editable text contents (using Markdown). A sample page is accessible using Tests > Modules > Markdown (standard YetaWF site).");
             Contents = new MarkdownString();
         }
 

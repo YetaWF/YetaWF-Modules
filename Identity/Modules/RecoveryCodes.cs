@@ -14,12 +14,13 @@ namespace YetaWF.Modules.Identity.Modules {
 
     [ModuleGuid("{e26230b2-a603-4a54-97ca-1e1b0b400d19}")]
     [UniqueModule(UniqueModuleStyle.NonUnique)]
+    [ModuleCategory("Login & Registration")]
     public class RecoveryCodesModule : ModuleDefinition {
 
         public RecoveryCodesModule() {
             Title = this.__ResStr("modTitle", "Recovery Codes");
             Name = this.__ResStr("modName", "Recovery Codes");
-            Description = this.__ResStr("modSummary", "Manages Two Step Authentication Recovery Codes");
+            Description = this.__ResStr("modSummary", "Allows users to review and generate two step authentication recovery codes.");
             DefaultViewName = StandardViews.Edit;
         }
 

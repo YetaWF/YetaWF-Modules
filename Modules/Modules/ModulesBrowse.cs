@@ -23,7 +23,7 @@ namespace YetaWF.Modules.Modules.Modules {
         public ModulesBrowseModule() {
             Title = this.__ResStr("modTitle", "Modules");
             Name = this.__ResStr("modName", "Modules");
-            Description = this.__ResStr("modSummary", "Displays and manages modules");
+            Description = this.__ResStr("modSummary", "Displays and manages modules and implements module removal. It is also used to display, edit and remove modules. It is accessible using Admin > Panel > Modules (standard YetaWF site).");
             DefaultViewName = StandardViews.Browse;
         }
 

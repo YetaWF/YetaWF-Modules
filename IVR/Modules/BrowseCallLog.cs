@@ -30,7 +30,7 @@ namespace Softelvdm.Modules.IVR.Modules {
         public BrowseCallLogModule() {
             Title = this.__ResStr("modTitle", "Call Log Entries");
             Name = this.__ResStr("modName", "Call Log Entries");
-            Description = this.__ResStr("modSummary", "Displays and manages call log entries");
+            Description = this.__ResStr("modSummary", "Displays and manages call log entries.");
             DefaultViewName = StandardViews.PropertyListEdit;
             UsePartialFormCss = false;
         }

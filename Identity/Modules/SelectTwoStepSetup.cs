@@ -16,12 +16,14 @@ namespace YetaWF.Modules.Identity.Modules {
 
     [ModuleGuid("{E70CB5F5-1FAE-4D69-9254-698E8C7C3CC6}")]
     [UniqueModule(UniqueModuleStyle.UniqueOnly)]
+    [ModuleCategory("Two Step Authentication")]
     public class SelectTwoStepSetupModule : ModuleDefinition {
 
         public SelectTwoStepSetupModule() {
             Title = this.__ResStr("modTitle", "Setup Desired Two-Step Authentication");
             Name = this.__ResStr("modName", "Setup Two-Step Authentication - Selection");
-            Description = this.__ResStr("modSummary", "Setup selection of desired Two-Step Authentication");
+            Description = "Displays a list of available two-step authentication providers that the user can define to use for two-step authentication. " +
+                "This can be accessed using User > Two-Step Authentication (standard YetaWF site).";
             WantSearch = false;
         }
 

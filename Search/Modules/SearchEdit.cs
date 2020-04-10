@@ -19,7 +19,7 @@ namespace YetaWF.Modules.Search.Modules {
         public SearchEditModule() {
             Title = this.__ResStr("modTitle", "Search Item");
             Name = this.__ResStr("modName", "Edit Search Item");
-            Description = this.__ResStr("modSummary", "Edits an existing search item");
+            Description = this.__ResStr("modSummary", "Used to edit an existing search term. This is used by the Search Keywords Module to edit a search term.");
             DefaultViewName = StandardViews.Edit;
         }
 

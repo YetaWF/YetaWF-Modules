@@ -29,7 +29,7 @@ namespace YetaWF.Modules.PageEdit.Modules {
         public PageControlModule() {
             Name = this.__ResStr("modName", "Control Panel (Skin)");
             Title = this.__ResStr("modTitle", "Control Panel");
-            Description = this.__ResStr("modSummary", "Control Panel with support for adding modules, new pages, importing modules and editing page settings");
+            Description = this.__ResStr("modSummary", "Displays an icon opening/closing the Control Panel which supports adding new and existing modules to a page, supports importing a module and is used to create new pages, change page settings and remove the current page.");
             ShowTitleActions = false;
             ShowTitle = false;
             WantFocus = false;

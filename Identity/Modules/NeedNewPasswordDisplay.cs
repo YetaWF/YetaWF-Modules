@@ -14,12 +14,13 @@ namespace YetaWF.Modules.Identity.Modules {
 
     [ModuleGuid("{E6B2C413-EBD6-439c-B69A-586C49BF17E7}")]
     [UniqueModule(UniqueModuleStyle.UniqueOnly)]
+    [ModuleCategory("Login & Registration")]
     public class NeedNewPasswordDisplayModule : ModuleDefinition {
 
         public NeedNewPasswordDisplayModule() {
             Title = this.__ResStr("modTitle", "New Password Required");
             Name = this.__ResStr("modName", "New Password Required");
-            Description = this.__ResStr("modSummary", "Displays a warning that the user must change the login password");
+            Description = this.__ResStr("modSummary", "Displays a warning that the user must change the login password.");
 
             Invokable = true;
             ShowTitle = false;

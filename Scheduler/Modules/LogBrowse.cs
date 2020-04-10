@@ -31,7 +31,7 @@ namespace YetaWF.Modules.Scheduler.Modules {
         public LogBrowseModule() {
             Title = this.__ResStr("modTitle", "Scheduler Log");
             Name = this.__ResStr("modName", "Scheduler Log");
-            Description = this.__ResStr("modSummary", "Displays and manages the scheduler log");
+            Description = this.__ResStr("modSummary", "Displays and manages the scheduler log.");
             UsePartialFormCss = false;
         }
 

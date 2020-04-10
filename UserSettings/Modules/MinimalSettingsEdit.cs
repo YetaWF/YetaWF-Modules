@@ -19,7 +19,7 @@ namespace YetaWF.Modules.UserSettings.Modules {
         public MinimalSettingsEditModule() : base() {
             Title = this.__ResStr("modTitle", "User Settings");
             Name = this.__ResStr("modName", "User Settings (Minimal)");
-            Description = this.__ResStr("modSummary", "Edit a user's settings, minimal fields");
+            Description = this.__ResStr("modSummary", "Edits the logged on user's settings, like desired date/time formats, time zone.");
             DefaultViewName = StandardViews.EditApply;
         }
 

@@ -25,7 +25,7 @@ namespace YetaWF.Modules.Panels.Modules {
         public ModulePanelModule() {
             Title = this.__ResStr("modTitle", "Module Panel");
             Name = this.__ResStr("modName", "Module Panel");
-            Description = this.__ResStr("modSummary", "Module Panel - used to display multiple modules using tabs or an accordion widget");
+            Description = this.__ResStr("modSummary", "Used to display multiple modules using tabs or an accordion widget. A sample page is available at Tests > Modules > Module Panel (standard YetaWF site).");
             PanelInfo = new Models.PanelInfo();
         }
 

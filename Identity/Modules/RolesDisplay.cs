@@ -15,12 +15,13 @@ namespace YetaWF.Modules.Identity.Modules {
 
     [ModuleGuid("{6584a819-f957-454d-8d58-aa57f2104e46}")]
     [UniqueModule(UniqueModuleStyle.NonUnique)]
+    [ModuleCategory("Configuration")]
     public class RolesDisplayModule : ModuleDefinition {
 
         public RolesDisplayModule() : base() {
             Title = this.__ResStr("modTitle", "Role");
             Name = this.__ResStr("modName", "Display Role");
-            Description = this.__ResStr("modSummary", "Displays an existing role");
+            Description = this.__ResStr("modSummary", "Displays an existing role. This is used by the Roles Module to display a role.");
             DefaultViewName = StandardViews.Display;
         }
 

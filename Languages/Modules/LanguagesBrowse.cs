@@ -25,7 +25,7 @@ namespace YetaWF.Modules.Languages.Modules {
         public LanguagesBrowseModule() : base() {
             Title = this.__ResStr("modTitle", "Languages");
             Name = this.__ResStr("modName", "Languages");
-            Description = this.__ResStr("modSummary", "Displays and manages languages");
+            Description = this.__ResStr("modSummary", "Displays available languages. It is accessible using Admin > Panel > Languages (standard YetaWF site).");
             DefaultViewName = StandardViews.PropertyListEdit;
         }
 

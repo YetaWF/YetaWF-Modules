@@ -17,12 +17,13 @@ namespace YetaWF.Modules.Identity.Modules {
 
     [ModuleGuid("{3437ee4d-747f-4bf1-aa3c-d0417751b24b}")]
     [UniqueModule(UniqueModuleStyle.UniqueOnly)]
+    [ModuleCategory("Login & Registration")]
     public class ForgotPasswordModule : ModuleDefinition {
 
         public ForgotPasswordModule() {
             Title = this.__ResStr("modTitle", "Forgot Password?");
             Name = this.__ResStr("modName", "Forgot Password?");
-            Description = this.__ResStr("modSummary", "Sends an email for a forgotten password");
+            Description = this.__ResStr("modSummary", "Allows a user to retrieve/reset a forgotten password for an existing account. This is used by the Login Module.");
         }
 
         public override IModuleDefinitionIO GetDataProvider() { return new ForgotPasswordModuleDataProvider(); }

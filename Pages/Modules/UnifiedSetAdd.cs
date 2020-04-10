@@ -19,7 +19,7 @@ namespace YetaWF.Modules.Pages.Modules {
         public UnifiedSetAddModule() {
             Title = this.__ResStr("modTitle", "Add New Unified Page Set");
             Name = this.__ResStr("modName", "Add New Unified Page Set");
-            Description = this.__ResStr("modSummary", "Creates a new Unified Page Set");
+            Description = this.__ResStr("modSummary", "Adds a new Unified Page Set. This is used by the Unified Page Sets Module to add a new Unified Page Set.");
             DefaultViewName = StandardViews.Add;
         }
 

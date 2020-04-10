@@ -18,6 +18,7 @@ namespace YetaWF.Modules.Identity.Modules {
 
     [ModuleGuid("{9cdb39c8-4f37-4d30-9eee-68f4bc7420a0}")]
     [UniqueModule(UniqueModuleStyle.UniqueOnly)]
+    [ModuleCategory("Tools")]
     public class LoginSelectorModule : ModuleDefinition {
 
         public LoginSelectorModule() : base() {
@@ -28,7 +29,7 @@ namespace YetaWF.Modules.Identity.Modules {
             WantSearch = false;
             Print = false;
             Users = new SerializableList<User>();
-            Description = this.__ResStr("modSummary", "User login selector (used during development)");
+            Description = this.__ResStr("modSummary", "Used during site development to quickly switch between predefined user accounts. It is normally added to a skin as a skin module. Use the module's Module Settings to add predefined user accounts to the list of accounts offered by this module. In debug builds this module is always shown for easy switching between users during development. In Release builds, this module is only shown to a logged on Superuser.");
             UsePartialFormCss = false;
         }
 

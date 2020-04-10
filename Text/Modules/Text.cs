@@ -35,7 +35,7 @@ namespace YetaWF.Modules.Text.Modules {
         public TextModule() : base() {
             Title = this.__ResStr("modTitle", "Edit");
             Name = this.__ResStr("modName", "Text (Full Editor, HTML)");
-            Description = this.__ResStr("modSummary", "Displays user editable text contents (full wysiwyg editor, using CKEditor)");
+            Description = this.__ResStr("modSummary", "Displays user editable text contents (full wysiwyg editor, using CKEditor). A sample page is accessible using Tests > Modules > Text (standard YetaWF site).");
             CompleteContents = this.__ResStr("newContents", "(new)");
             EditOnPage = true;
             ShowTitleActions = true;

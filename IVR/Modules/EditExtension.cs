@@ -19,7 +19,7 @@ namespace Softelvdm.Modules.IVR.Modules {
         public EditExtensionModule() {
             Title = this.__ResStr("modTitle", "Extension");
             Name = this.__ResStr("modName", "Edit Extension");
-            Description = this.__ResStr("modSummary", "Edits an existing extension");
+            Description = this.__ResStr("modSummary", "Edits an existing extension.");
             DefaultViewName = StandardViews.Edit;
         }
 

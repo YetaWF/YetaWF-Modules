@@ -36,12 +36,13 @@ namespace YetaWF.Modules.Identity.Modules {
 
     [ModuleGuid("{60E09334-3ECA-466f-BDF9-9933971B0991}")]
     [UniqueModule(UniqueModuleStyle.UniqueOnly)]
+    [ModuleCategory("Login & Registration")]
     public class RegisterModule : ModuleDefinition {
 
         public RegisterModule() {
             Title = this.__ResStr("title", "New User Registration");
             Name = this.__ResStr("title", "New User Registration");
-            Description = this.__ResStr("modSummary", "User registration");
+            Description = this.__ResStr("modSummary", "Used by new users to register a new account on the current site. The User Login Settings Module can be used to disable new user registration. The New User Registration can be accessed using User > Register(standard YetaWF site).");
             ShowHelp = true;
         }
 

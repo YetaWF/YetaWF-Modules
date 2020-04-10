@@ -32,7 +32,7 @@ namespace YetaWF.Modules.TinyLogin.Modules {
             : base() {
             Title = this.__ResStr("modTitle", "Tiny Login");
             Name = this.__ResStr("modName", "Tiny Login");
-            Description = this.__ResStr("modSummary", "Provides Login/Register links and displays a logged on user's account name");
+            Description = this.__ResStr("modSummary", "Provides Login/Register links and displays a logged on user's account name. This module is typically added to every page (as a skin module) so anonymous users can log in or register a new account. For logged on users their account name is shown with a link to the user settings.");
             AllowUserRegistration = true;
             UserTooltip = new MultiString();
             ShowTitle = false;

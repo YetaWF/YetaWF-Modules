@@ -19,7 +19,7 @@ namespace Softelvdm.Modules.IVR.Modules {
         public DisplayCallLogModule() {
             Title = this.__ResStr("modTitle", "Call Log Entry");
             Name = this.__ResStr("modName", "Call Log Entry");
-            Description = this.__ResStr("modSummary", "Displays an existing call log entry");
+            Description = this.__ResStr("modSummary", "Displays an existing call log entry.");
             DefaultViewName = StandardViews.Display;
         }
 

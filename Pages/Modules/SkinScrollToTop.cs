@@ -19,7 +19,7 @@ namespace YetaWF.Modules.Pages.Modules {
         public SkinScrollToTopModule() {
             Title = this.__ResStr("modTitle", "Skin ScrollToTop");
             Name = this.__ResStr("modName", "ScrollToTop (Skin)");
-            Description = this.__ResStr("modSummary", "Skin module implementing a scroll to top button to return to the top of the current page");
+            Description = this.__ResStr("modSummary", "Skin module implementing a scroll to top button to return to the top of the current page. This module can be referenced by sites, pages or modules, in which case an image is shown in the bottom right of a page once scrolled down, so the user can click on the image to return to the top of the page.");
             WantFocus = false;
             ShowTitle = false;
             WantSearch = false;

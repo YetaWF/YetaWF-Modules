@@ -21,7 +21,7 @@ namespace YetaWF.Modules.PageEdit.Modules {
         public ControlPanelConfigModule() {
             Title = this.__ResStr("modTitle", "Control Panel Settings");
             Name = this.__ResStr("modName", "Control Panel Settings");
-            Description = this.__ResStr("modSummary", "Edits a site's Control Panel settings");
+            Description = this.__ResStr("modSummary", "Used to edit Control Panel settings. It is accessible using Admin > Settings > Control Panel Settings (standard YetaWF site).");
             ShowHelp = true;
             DefaultViewName = StandardViews.EditApply;
         }

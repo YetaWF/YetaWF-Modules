@@ -18,7 +18,7 @@ namespace YetaWF.Modules.Menus.Modules {
         public MainMenuModule() {
             Name = this.__ResStr("modName", "Main Menu");
             Title = this.__ResStr("modTitle", "Main Menu");
-            Description = this.__ResStr("modSummary", "Main page menu");
+            Description = this.__ResStr("modSummary", "Implements a menu. This is can be added to a site's skin or can be added to pages as needed.");
             CssClass = "yPageMenu";
         }
 

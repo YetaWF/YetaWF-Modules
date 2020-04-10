@@ -21,7 +21,7 @@ namespace Softelvdm.Modules.TwilioProcessor.Modules {
         public TwilioConfigModule() {
             Title = this.__ResStr("modTitle", "TwilioProcessor Settings");
             Name = this.__ResStr("modName", "TwilioProcessor Settings");
-            Description = this.__ResStr("modSummary", "Edits a site's TwilioProcessor settings");
+            Description = this.__ResStr("modSummary", "Edits a site's TwilioProcessor settings. This can be accessed at Admin > Settings > TwilioProcessor Settings.");
             ShowHelp = true;
             DefaultViewName = StandardViews.Config;
         }

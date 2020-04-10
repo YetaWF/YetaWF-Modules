@@ -14,12 +14,13 @@ namespace YetaWF.Modules.Identity.Modules {
 
     [ModuleGuid("{0fd20e73-a4c3-44cb-8b71-0bab64343007}")]
     [UniqueModule(UniqueModuleStyle.NonUnique)]
+    [ModuleCategory("Configuration")]
     public class AuthorizationEditModule : ModuleDefinition {
 
         public AuthorizationEditModule() : base() {
             Title = this.__ResStr("modTitle", "Edit Resource");
             Name = this.__ResStr("modName", "Edit Resource");
-            Description = this.__ResStr("modSummary", "Edits an existing resource");
+            Description = this.__ResStr("modSummary", "Used to edit a resource. This module is used by the Resources Module");
             DefaultViewName = StandardViews.Edit;
         }
 

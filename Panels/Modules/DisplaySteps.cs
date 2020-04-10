@@ -26,7 +26,7 @@ namespace YetaWF.Modules.Panels.Modules {
         public DisplayStepsModule() {
             Title = this.__ResStr("modTitle", "Steps");
             Name = this.__ResStr("modName", "Display Steps");
-            Description = this.__ResStr("modSummary", "Displays steps to complete an action, usually a sequence of forms or pages");
+            Description = this.__ResStr("modSummary", "Displays steps to complete an action, usually a sequence of forms or pages. A sample page is available at Tests > Modules > Steps (standard YetaWF site).");
             StepInfo = new Models.StepInfo();
             UsePartialFormCss = false;
             ShowTitle = false;

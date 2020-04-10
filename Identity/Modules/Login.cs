@@ -21,12 +21,13 @@ namespace YetaWF.Modules.Identity.Modules {
 
     [ModuleGuid("{47C80477-1F25-4f9d-902C-E3D8B3A62686}")]
     [UniqueModule(UniqueModuleStyle.UniqueOnly)]
+    [ModuleCategory("Login & Registration")]
     public class LoginModule : ModuleDefinition {
 
         public LoginModule() {
             Title = this.__ResStr("title", "Login");
             Name = this.__ResStr("title", "Login");
-            Description = this.__ResStr("modSummary", "User login");
+            Description = this.__ResStr("modSummary", "Allows a user to enter account information to log into the site. The Login Module can be accessed using User > Login (standard YetaWF site).");
         }
 
         public override IModuleDefinitionIO GetDataProvider() { return new LoginModuleDataProvider(); }

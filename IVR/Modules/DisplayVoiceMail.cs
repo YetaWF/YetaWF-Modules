@@ -21,7 +21,7 @@ namespace Softelvdm.Modules.IVR.Modules {
         public DisplayVoiceMailModule() {
             Title = this.__ResStr("modTitle", "Voice Mail Entry");
             Name = this.__ResStr("modName", "Voice Mail Entry");
-            Description = this.__ResStr("modSummary", "Displays an existing voice mail entry");
+            Description = this.__ResStr("modSummary", "Displays an existing voice mail entry.");
             DefaultViewName = StandardViews.Display;
         }
 

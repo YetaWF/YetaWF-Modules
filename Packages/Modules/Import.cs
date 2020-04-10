@@ -20,7 +20,7 @@ namespace YetaWF.Modules.Packages.Modules {
         public ImportModule() {
             Name = this.__ResStr("modName", "Import Package (Binary or Source Code Package)");
             Title = this.__ResStr("modTitle", "Import Package (Binary or Source Code Package)");
-            Description = this.__ResStr("modSummary", "Imports binary or source code packages");
+            Description = this.__ResStr("modSummary", "Used to import a package into your YetaWF site. The package can be a complete package including source code or a binary only package. Source code packages can only be imported on development systems in a Debug build.");
             Print = false;
             DefaultViewName = StandardViews.PropertyListEdit;
         }

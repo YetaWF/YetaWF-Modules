@@ -15,12 +15,13 @@ namespace YetaWF.Modules.Identity.Modules {
 
     [ModuleGuid("{e6c98552-d1fa-48aa-a690-e5f933dd71ac}"), PublishedModuleGuid]
     [UniqueModule(UniqueModuleStyle.NonUnique)]
+    [ModuleCategory("Configuration")]
     public class UsersDisplayModule : ModuleDefinition {
 
         public UsersDisplayModule() : base() {
             Title = this.__ResStr("modTitle", "User");
             Name = this.__ResStr("modName", "Display a User");
-            Description = this.__ResStr("modSummary", "Displays an existing user");
+            Description = this.__ResStr("modSummary", "Used to display an existing user. This is used by the Users Module to display a user.");
             DefaultViewName = StandardViews.Display;
         }
 

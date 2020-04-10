@@ -19,7 +19,7 @@ namespace YetaWF.Modules.Visitors.Modules {
         public VisitorSummaryModule() {
             Title = this.__ResStr("modTitle", "Visitor Activity Summary");
             Name = this.__ResStr("modName", "Visitor Activity Summary");
-            Description = this.__ResStr("modSummary", "Displays a visitor summary");
+            Description = this.__ResStr("modSummary", "Displays a summary of yesterday's and today's visitor activity. It is accessible using Admin > Dashboard > Visitor Activity (standard YetaWF site).");
             DefaultViewName = StandardViews.Display;
         }
 

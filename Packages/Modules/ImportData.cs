@@ -20,7 +20,7 @@ namespace YetaWF.Modules.Packages.Modules {
         public ImportDataModule() {
             Name = this.__ResStr("modName", "Import Package Data");
             Title = this.__ResStr("modTitle", "Import Package Data");
-            Description = this.__ResStr("modSummary", "Imports data supported by installed packages");
+            Description = this.__ResStr("modSummary", "Used to import all the data for one package. Only data for the current site is imported. A site backup contains multiple zip files, each containing data a backup for a particular package. These zip files can be restored, or imported, using the Import Package Data Module. The Import Package Data Module is accessible using Admin > Panel > Packages.");
             Print = false;
         }
 

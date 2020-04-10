@@ -30,7 +30,7 @@ namespace YetaWF.Modules.Scheduler.Modules {
         public SchedulerBrowseModule() : base() {
             Title = this.__ResStr("modTitle", "Scheduler");
             Name = this.__ResStr("modName", "Scheduler");
-            Description = this.__ResStr("modSummary", "Displays and manages scheduler items");
+            Description = this.__ResStr("modSummary", "Displays all defined scheduler items and supports displaying, editing and removing scheduler items. The scheduler can also be started and stopped. It can be accessed at Admin > Panel > Scheduler (standard YetaWF site).");
         }
 
         public override IModuleDefinitionIO GetDataProvider() { return new SchedulerBrowseModuleDataProvider(); }

@@ -14,12 +14,13 @@ namespace YetaWF.Modules.Identity.Modules {
 
     [ModuleGuid("{190287E8-EC79-404C-9FCA-6D43607825BC}")]
     [UniqueModule(UniqueModuleStyle.NonUnique)]
+    [ModuleCategory("Tools")]
     public class TemplateListOfUserNamesModule : ModuleDefinition {
 
         public TemplateListOfUserNamesModule() {
             Title = this.__ResStr("modTitle", "ListOfUserNames Test Component");
             Name = this.__ResStr("modName", "Component Test - ListOfUserNames");
-            Description = this.__ResStr("modSummary", "ListOfUserNames test component");
+            Description = this.__ResStr("modSummary", "Test module for the ListOfUserNames component (edit and display). A test page for this module can be found at Tests > Templates > ListOfUserNames (standard YetaWF site).");
             DefaultViewName = StandardViews.EditApply;
         }
 

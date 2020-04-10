@@ -14,12 +14,13 @@ namespace YetaWF.Modules.Identity.Modules {
 
     [ModuleGuid("{985c4c49-8103-4b5c-a9ae-2bb108ef58a6}")]
     [UniqueModule(UniqueModuleStyle.NonUnique)]
+    [ModuleCategory("Tools")]
     public class TemplateUserIdModule : ModuleDefinition {
 
         public TemplateUserIdModule() {
             Title = this.__ResStr("modTitle", "UserId Test Component");
             Name = this.__ResStr("modName", "Component Test - UserId");
-            Description = this.__ResStr("modSummary", "UserId test component");
+            Description = this.__ResStr("modSummary", "Test module for the UserId component (edit and display). A test page for this module can be found at Tests > Templates > UserId (standard YetaWF site).");
             DefaultViewName = StandardViews.EditApply;
         }
 

@@ -29,7 +29,7 @@ namespace YetaWF.Modules.Search.Modules {
         public SearchBrowseModule() {
             Title = this.__ResStr("modTitle", "Search Keywords");
             Name = this.__ResStr("modName", "Search Keywords");
-            Description = this.__ResStr("modSummary", "Displays and manages search keywords");
+            Description = this.__ResStr("modSummary", "Displays and manages search keywords that were found in the site's pages. It is accessible using Admin > Panel > Search Keywords (standard YetaWF site). This module offers a Collect Keywords action, which can be used to extract all page keywords immediately (instead of by the Scheduler at regular intervals). This task may run for a long time. Editing and removing a search keyword is available in the Search Keywords grid shown by the Search Keywords Module.");
             DefaultViewName = StandardViews.Browse;
         }
 

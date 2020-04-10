@@ -21,7 +21,7 @@ namespace Softelvdm.Modules.IVR.Modules {
         public IVRConfigModule() {
             Title = this.__ResStr("modTitle", "IVR Settings");
             Name = this.__ResStr("modName", "IVR Settings");
-            Description = this.__ResStr("modSummary", "Edits a site's IVR settings");
+            Description = this.__ResStr("modSummary", "Edits a site's IVR settings.");
             ShowHelp = true;
             DefaultViewName = StandardViews.Config;
             UsePartialFormCss = false;

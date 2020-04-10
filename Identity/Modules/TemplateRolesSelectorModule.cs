@@ -14,12 +14,13 @@ namespace YetaWF.Modules.Identity.Modules {
 
     [ModuleGuid("{3dc50ef9-ca0f-4a57-9f56-7bbec59f303b}")]
     [UniqueModule(UniqueModuleStyle.NonUnique)]
+    [ModuleCategory("Tools")]
     public class TemplateRolesSelectorModule : ModuleDefinition {
 
         public TemplateRolesSelectorModule() {
             Title = this.__ResStr("modTitle", "RolesSelector Test Component");
             Name = this.__ResStr("modName", "Component Test - RolesSelector");
-            Description = this.__ResStr("modSummary", "RolesSelector test component");
+            Description = this.__ResStr("modSummary", "Test module for the RolesSelector component (edit and display). A test page for this module can be found at Tests > Templates > RolesSelector (standard YetaWF site).");
             DefaultViewName = StandardViews.EditApply;
         }
 

@@ -30,7 +30,7 @@ namespace Softelvdm.Modules.IVR.Modules {
         public BrowseVoiceMailsModule() {
             Title = this.__ResStr("modTitle", "Voice Mail Entries");
             Name = this.__ResStr("modName", "Voice Mail Entries");
-            Description = this.__ResStr("modSummary", "Displays and manages voice mail entries");
+            Description = this.__ResStr("modSummary", "Displays and manages voice mail entries.");
             DefaultViewName = StandardViews.PropertyListEdit;
             UsePartialFormCss = false;
         }

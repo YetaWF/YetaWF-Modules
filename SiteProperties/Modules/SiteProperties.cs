@@ -21,7 +21,7 @@ namespace YetaWF.Modules.SiteProperties.Modules {
         public SitePropertiesModule() {
             Title = this.__ResStr("modTitle", "Site Settings");
             Name = this.__ResStr("modName", "Site Settings");
-            Description = this.__ResStr("modSummary", "Changes site settings");
+            Description = this.__ResStr("modSummary", "Used to edit a site's properties. This module is used by the Sites Module to edit site properties. It is accessible using Admin > Settings > Site Settings (standard YetaWF site).");
             UsePartialFormCss = false;
         }
         public override IModuleDefinitionIO GetDataProvider() { return new SitePropertiesModuleDataProvider(); }

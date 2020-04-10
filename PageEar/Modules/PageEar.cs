@@ -27,7 +27,7 @@ namespace YetaWF.Modules.PageEar.Modules {
 
         public PageEarModule() {
             Name = this.__ResStr("modName", "Page Ear");
-            Description = this.__ResStr("modSummary", "Page ear support (page peel, page corner) for site advertisement");
+            Description = this.__ResStr("modSummary", "Adds a configurable page ear to each page where this module is located. The module can be added anywhere on the page (in a pane) and is only visible in Site Edit Mode. The page ear itself (in the upper right corner) is only shown in Site View Mode once all required module settings have been defined (like the images and URL).");
             WantFocus = WantSearch = false;
             ShowTitle = false;
             AdImage_Data = new byte[] { };

@@ -27,7 +27,7 @@ namespace YetaWF.Modules.ModuleEdit.Modules {
         public ModuleEditModule() {
             Name = this.__ResStr("modName", "Module Edit");
             Title = this.__ResStr("modTitle", "Module Editing Features");
-            Description = this.__ResStr("modSummary", "Editing features for modules");
+            Description = this.__ResStr("modSummary", "Implements editing features used in Site Edit Mode to edit module settings.");
             UsePartialFormCss = false;
         }
 

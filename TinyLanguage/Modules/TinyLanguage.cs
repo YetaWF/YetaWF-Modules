@@ -19,7 +19,7 @@ namespace YetaWF.Modules.TinyLanguage.Modules {
         public TinyLanguageModule() : base() {
             Title = this.__ResStr("modTitle", "Tiny Language Selection");
             Name = this.__ResStr("modName", "Tiny Language Selection");
-            Description = this.__ResStr("modSummary", "Allow user selection of the site's default language");
+            Description = this.__ResStr("modSummary", "Allows user selection of the site's default language. This module is typically added to every page (as a skin module) so the user can switch the site's default language.");
             ShowTitle = false;
             WantFocus = false;
             WantSearch = false;
