@@ -7,8 +7,13 @@ using YetaWF.Core.Packages;
 namespace YetaWF.Modules.ComponentsHTML.Components {
 
     /// <summary>
-    /// Implementation of the FormButton edit component.
+    /// Displays a form button. If the model is null, nothing is rendered. The model defines various attributes of the form button.
     /// </summary>
+    /// <example>
+    /// [Category("Remote ZIP File"), Caption("Submit"), Description("Click to download and install the package")]
+    /// [UIHint("FormButton"), ReadOnly]
+    /// public FormButton RemoteGo { get; set; }
+    /// </example>
     public class FormButtonComponent : YetaWFComponent, IYetaWFComponent<FormButton> {
 
         internal const string TemplateName = "FormButton";

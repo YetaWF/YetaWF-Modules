@@ -33,8 +33,13 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
     }
 
     /// <summary>
-    /// Implementation of the FileFolderSize display component.
+    /// Displays the model as a size in KB or MB. A tooltip displays the exact size in bytes.
     /// </summary>
+    /// <example>
+    /// [Caption("Size"), Description("Displays the size of the file")]
+    /// [UIHint("FileFolderSize"), ReadOnly]
+    /// public long Size { get; set; }
+    /// </example>
     public class FileFolderSizeDisplayComponent : FileFolderSizeComponentBase, IYetaWFComponent<long> {
 
         /// <summary>

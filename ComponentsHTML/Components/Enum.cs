@@ -39,7 +39,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
     }
 
     /// <summary>
-    /// Displays the model formatted using the descriptive text found in the EnumDescription attribute (if present).
+    /// Displays the model formatted using the descriptive text found in the EnumDescription attribute (if present). The model is an enumeration (enum).
     /// </summary>
     /// <remarks>
     /// </remarks>

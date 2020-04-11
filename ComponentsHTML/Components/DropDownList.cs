@@ -5,14 +5,23 @@ using System.Linq;
 using System.Threading.Tasks;
 using YetaWF.Core.Addons;
 using YetaWF.Core.Components;
+using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Packages;
 using YetaWF.Core.Support;
 
 namespace YetaWF.Modules.ComponentsHTML.Components {
 
     /// <summary>
-    /// Implementation of the DropDownList edit component.
+    /// Allows selection of a value from a list of string values using a dropdown list. The dropdown list supports optional tooltips.
     /// </summary>
+    /// <example>
+    /// [Caption("Country"), Description("Defines the country where your new fax number is located")]
+    /// [UIHint("DropDownList"), Required]
+    /// public string Country { get; set; }
+    /// public List&lt;SelectionItem&lt;string&gt;&gt; Country_List { get; set; }
+    /// </example>
+    [UsesSibling("_List", "List<YetaWF.Core.Components.SelectionItem<string>>", "Defines the list of values, displayed text and tooltips shown in the dropdown list.")]
+    [UsesAdditional("Disable1OrLess", "bool", "true", "Defines whether the dropdown list is disabled when only 1 item or less is available in the list of values.")]
     public class DropDownListComponent : DropDownListEditComponentBase<string> {
         /// <summary>
         /// Constructor.
@@ -20,8 +29,16 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         public DropDownListComponent() : base("DropDownList") { }
     }
     /// <summary>
-    /// Implementation of the DropDownListInt edit component.
+    /// Allows selection of a value from a list of int values using a dropdown list. The dropdown list supports optional tooltips.
     /// </summary>
+    /// <example>
+    /// [Caption("Entries"), Description("Select the number of entries per page")]
+    /// [UIHint("DropDownListInt")]
+    /// public int PageSelection { get; set; }
+    /// public List&lt;SelectionItem&lt;int&gt;&gt; PageSelection_List { get; set; }
+    /// </example>
+    [UsesSibling("_List", "List<YetaWF.Core.Components.SelectionItem<int>>", "Defines the list of values, displayed text and tooltips shown in the dropdown list.")]
+    [UsesAdditional("Disable1OrLess", "bool", "true", "Defines whether the dropdown list is disabled when only 1 item or less is available in the list of values.")]
     public class DropDownListIntComponent : DropDownListEditComponentBase<int> {
         /// <summary>
         /// Constructor.
@@ -29,8 +46,16 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         public DropDownListIntComponent() : base("DropDownListInt") { }
     }
     /// <summary>
-    /// Implementation of the DropDownListIntNull edit component.
+    /// Allows selection of a value from a list of nullable int values using a dropdown list. The dropdown list supports optional tooltips.
     /// </summary>
+    /// <example>
+    /// [Caption("Entries"), Description("Select the number of entries per page")]
+    /// [UIHint("DropDownListIntNull")]
+    /// public int? PageSelection { get; set; }
+    /// public List&lt;SelectionItem&lt;int?&gt;&gt; PageSelection_List { get; set; }
+    /// </example>
+    [UsesSibling("_List", "List<YetaWF.Core.Components.SelectionItem<int?>>", "Defines the list of values, displayed text and tooltips shown in the dropdown list.")]
+    [UsesAdditional("Disable1OrLess", "bool", "true", "Defines whether the dropdown list is disabled when only 1 item or less is available in the list of values.")]
     public class DropDownListIntNullComponent : DropDownListEditComponentBase<int?> {
         /// <summary>
         /// Constructor.

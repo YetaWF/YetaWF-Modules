@@ -2,6 +2,7 @@
 
 using System;
 using System.Threading.Tasks;
+using YetaWF.Core;
 using YetaWF.Core.Components;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Packages;
@@ -33,8 +34,13 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
     }
 
     /// <summary>
-    /// Implementation of the Email display component.
+    /// Displays the model as an email address with a clickable &lt;a&gt; mailto: link. If the model value is null, nothing is rendered.
     /// </summary>
+    /// <example>
+    /// [Caption("Site Admin Email"), Description("The email address of the site's administrator")]
+    /// [UIHint("Email"), ReadOnly]
+    /// public string AdminEmail { get; set; }
+    /// </example>
     public class EmailDisplayComponent : EmailComponent, IYetaWFComponent<string> {
 
         /// <summary>
@@ -57,8 +63,13 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
     }
 
     /// <summary>
-    /// Implementation of the Email edit component.
+    /// Allows entry of an email address.
     /// </summary>
+    /// <example>
+    /// [Caption("Site Admin Email"), Description("The email address of the site's administrator")]
+    /// [UIHint("Email"), StringLength(Globals.MaxEmail), EmailValidation, Required, Trim]
+    /// public string AdminEmail { get; set; }
+    /// </example>
     public class EmailEditComponent : EmailComponent, IYetaWFComponent<string> {
 
         /// <summary>
@@ -76,8 +87,8 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             HtmlAttributes.Add("class", "yt_text40");
             StringLengthAttribute lenAttr = PropData.TryGetAttribute<StringLengthAttribute>();
             if (lenAttr == null)
-                HtmlAttributes.Add("maxlength", "40");
-            return await TextEditComponent.RenderTextAsync(this, model != null ? model.ToString() : "", "yt_email");
+                HtmlAttributes.Add("maxlength", Globals.MaxEmail.ToString());
+            return await TextEditComponent.RenderTextAsync(this, model?.ToString() ?? "", "yt_email");
         }
     }
 }

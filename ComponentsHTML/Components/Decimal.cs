@@ -33,8 +33,13 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
     }
 
     /// <summary>
-    /// Implementation of the Decimal display component.
+    /// Displays the model formatted as a decimal number with 2 fractional digits. If the model is null, nothing is rendered.
     /// </summary>
+    /// <example>
+    /// [Category("General"), Caption("Sales Tax - Rate"), Description("The sales tax rate (in percent) collected on purchases")]
+    /// [UIHint("Decimal"), ReadOnly]
+    /// public decimal SalesTaxRate { get; set; }
+    /// </example>
     public class DecimalDisplayComponent : DecimalComponentBase, IYetaWFComponent<Decimal?> {
 
         /// <summary>
@@ -73,8 +78,16 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
     }
 
     /// <summary>
-    /// Implementation of the Decimal edit component.
+    /// Allows entry of a decimal number with 2 fractional digits. 
     /// </summary>
+    /// <remarks>
+    /// The RangeAttribute can be used to define the lowest and highest allowable values.
+    /// </remarks>
+    /// <example>
+    /// [Category("General"), Caption("Sales Tax - Rate"), Description("The sales tax rate (in percent) collected on purchases")]
+    /// [UIHint("Decimal"), Range(0.0, 100.0), Required]
+    /// public decimal SalesTaxRate { get; set; }
+    /// </example>
     public class DecimalEditComponent : DecimalComponentBase, IYetaWFComponent<Decimal>, IYetaWFComponent<Decimal?> {
 
         /// <summary>

@@ -35,8 +35,17 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
     }
 
     /// <summary>
-    /// Implementation of the Date display component.
+    /// Displays the model formatted as a date localized using the user's selected time zone (see User Settings Module).
     /// </summary>
+    /// <remarks>All date/time values in YetaWF are internally stored and processed using UTC.
+    /// 
+    /// The model value must be specified as UTC. If the model value is null or equal to DateTime.MinValue or DateTime.MaxValue, nothing is rendered.
+    /// </remarks>
+    /// <example>
+    /// [Category("Rss"), Caption("Feed Publish Date"), Description("The date this feed was published")]
+    /// [UIHint("Date"), ReadOnly]
+    /// public DateTime? FeedPublishDate { get; set; }
+    /// </example>
     public class DateDisplayComponent : DateComponentBase, IYetaWFComponent<DateTime?> {
 
         /// <summary>
@@ -73,8 +82,18 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
     }
 
     /// <summary>
-    /// Implementation of the Date edit component.
+    /// Allows entry of a date using local time.
     /// </summary>
+    /// <remarks>
+    /// All date/time values in YetaWF are internally stored and processed using UTC.
+    /// 
+    /// MinimumDateAttribute and MaximumDateAttribute can be used to define the lowest and highest allowable date/time values.
+    /// </remarks>
+    /// <example>
+    /// [Category("Rss"), Caption("Feed Publish Date"), Description("The date this feed was published")]
+    /// [UIHint("Date")]
+    /// public DateTime? FeedPublishDate { get; set; }
+    /// </example>
     public class DateEditComponent : DateComponentBase, IYetaWFComponent<DateTime>, IYetaWFComponent<DateTime?> {
 
         /// <summary>
@@ -141,7 +160,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                 setup.Max = maxAttr.MaxDate;
 
             if (model != null)
-                tag.MergeAttribute("value", Formatting.FormatDateTime((DateTime)model));// shows date using user's timezone
+                tag.MergeAttribute("value", Formatting.FormatDateTime((DateTime)model));// shows date using user's time zone
             hb.Append(tag.ToString(YTagRenderMode.StartTag));
 
             hb.Append($"</div>");

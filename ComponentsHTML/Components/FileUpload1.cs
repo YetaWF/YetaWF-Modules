@@ -31,8 +31,25 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
     }
 
     /// <summary>
-    /// Implementation of the FileUpload1 edit component.
+    /// Allows uploading a file. The model defines various attributes for the FileUpload1 component. SaveURL and RemoveURL define the actions taken to save and remove an uploaded file.
     /// </summary>
+    /// <remarks>
+    /// The uploaded file is a temporary file, which will be removed automatically within a specified time frame, defined by the YetaWF.ImageRepository package.
+    ///
+    /// The uploaded file is processed by the controller defined by SaveURL(YetaWF.Core.Views.Shared.FileUpload1).
+    /// </remarks>
+    /// <example>
+    /// [Caption("ZIP File"), Description("The ZIP file containing the module to be imported (creates a new module) ")]
+    /// [UIHint("FileUpload1"), Required]
+    /// public FileUpload1 UploadFile { get; set; }
+    /// 
+    /// UploadFile = new FileUpload1 {
+    ///     SelectButtonText = this.__ResStr("btnImport", "Import Module Data..."),
+    ///     SaveURL = YetaWFManager.UrlFor(typeof(PageControlModuleController), nameof(PageControlModuleController.ImportPackage), new { __ModuleGuid = mod.ModuleGuid }),
+    ///     RemoveURL = YetaWFManager.UrlFor(typeof(PageControlModuleController), nameof(PageControlModuleController.RemovePackage), new { __ModuleGuid = mod.ModuleGuid }),
+    ///     SerializeForm = true,
+    /// };
+    /// </example>
     public class FileUpload1EditComponent : FileUpload1ComponentBase, IYetaWFComponent<FileUpload1>, IYetaWFContainer<FileUpload1> {
 
         internal class Setup {

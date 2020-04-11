@@ -1,7 +1,6 @@
 ﻿/* Copyright © 2020 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/ComponentsHTML#License */
 
 using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using YetaWF.Core.Addons;
 using YetaWF.Core.Components;
@@ -36,8 +35,20 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
     }
 
     /// <summary>
-    /// Implementation of the DateTimeWords display component, used to display the approximate elapsed time in words.
+    /// Displays the model formatted in words as a timespan difference between the current date/time and the model's date/time.
+    /// Example: a few seconds ago, 2 days ago, last week, 2 months ago, 3 years ago, etc.
+    /// The complete long date is available as a tooltip when hovering over the rendered timespan.
     /// </summary>
+    /// <remarks>All date/time values in YetaWF are internally stored and processed using UTC.
+    /// 
+    /// The model value must be specified as UTC. If the model value is null or equal to DateTime.MinValue or DateTime.MaxValue, nothing is rendered.
+    /// </remarks>
+    /// <example>
+    /// [Category("Rss"), Caption("Feed Publish Date"), Description("The date this feed was published")]
+    /// [UIHint("DateTimeWords"), ReadOnly]
+    /// public DateTime? FeedPublishDate { get; set; }
+    /// </example>
+    [UsesSibling("_EmptyHTML", "string", "If the model value is null or equal to DateTime.MinValue or DateTime.MaxValue, the contents of this property are rendered instead.")]
     public class DateTimeWordsDisplayComponent : DateTimeWordsComponentBase, IYetaWFComponent<DateTime?> {
 
         /// <summary>

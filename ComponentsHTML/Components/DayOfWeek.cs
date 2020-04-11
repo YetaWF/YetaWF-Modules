@@ -35,8 +35,13 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
     }
 
     /// <summary>
-    /// Implementation of the DayOfWeek display component.
+    /// Displays the model formatted as a day of the week (Monday - Saturday, Sunday). If the model value is null, nothing is rendered.
     /// </summary>
+    /// <example>
+    /// [Caption("Day of the Week"), Description("Shows the day of the week")]
+    /// [UIHint("DayOfWeek"), ReadOnly]
+    /// public DayOfWeek? Day { get; set; }
+    /// </example>
     public class DayOfWeekDisplayComponent : DayOfWeekComponentBase, IYetaWFComponent<DayOfWeek?> {
 
         /// <summary>
@@ -65,8 +70,14 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
     }
 
     /// <summary>
-    /// Implementation of the DayOfWeek edit component.
+    /// Allows selection of a day of the week (Monday - Saturday, Sunday) using a dropdown list. The model specifies the selected day.
+    /// A "(select)" entry is added as the first entry with a value of null.
     /// </summary>
+    /// <example>
+    /// [Caption("Day of the Week"), Description("Select the day of the week")]
+    /// [UIHint("DayOfWeek")]
+    /// public DayOfWeek? Day { get; set; }
+    /// </example>
     public class DayOfWeekEditComponent : DayOfWeekComponentBase, IYetaWFComponent<DayOfWeek?> {
 
         /// <summary>

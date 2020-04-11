@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using YetaWF.Core.Components;
 using YetaWF.Core.Localize;
+using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Packages;
 using YetaWF.Core.Support;
 
@@ -36,8 +37,18 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
     }
 
     /// <summary>
-    /// Implementation of the CurrencyISO4217 display component.
+    /// Displays the currency name given a model with a 3 character currency ID. If the model is null, nothing is rendered.
     /// </summary>
+    /// <remarks>
+    /// The list of currencies is located at ./CoreComponents/Core/Addons/_Templates/CurrencyISO4217/Currencies.txt.
+    /// 
+    /// For information about ISO 4217 see https://en.wikipedia.org/wiki/ISO_4217.
+    /// </remarks>
+    /// <example>
+    /// [Category("Site"), Caption("Currency"), Description("The default currency used")]
+    /// [UIHint("CurrencyISO4217"), ReadOnly]
+    /// public string Currency { get; set; }
+    /// </example>
     public class CurrencyISO4217DisplayComponent : CurrencyISO4217ComponentBase, IYetaWFComponent<string> {
 
         /// <summary>
@@ -59,8 +70,19 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
     }
 
     /// <summary>
-    /// Implementation of the CurrencyISO4217 edit component.
+    /// Allows selection of a currency name from a dropdown list. The model value is the 3 character currency code.
     /// </summary>
+    /// <remarks>
+    /// The list of currencies is located at ./CoreComponents/Core/Addons/_Templates/CurrencyISO4217/Currencies.txt.
+    /// 
+    /// For information about ISO 4217 see https://en.wikipedia.org/wiki/ISO_4217.
+    /// </remarks>
+    /// <example>
+    /// [Category("Site"), Caption("Currency"), Description("The default currency used")]
+    /// [UIHint("CurrencyISO4217"), StringLength(CurrencyISO4217.Currency.MaxId), Trim, Required]
+    /// public string Currency { get; set; }
+    /// </example>
+    [UsesAdditional("SiteCurrency", "bool", "true", "Defines whether the site's defined currency is shown in the list of currencies. If shown, it will always be shown as the first entry.")]
     public class CurrencyISO4217EditComponent : CurrencyISO4217ComponentBase, IYetaWFComponent<string> {
 
         /// <summary>

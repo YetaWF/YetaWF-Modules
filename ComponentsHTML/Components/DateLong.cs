@@ -3,8 +3,6 @@
 using System;
 using System.Threading.Tasks;
 using YetaWF.Core.Components;
-using YetaWF.Core.Localize;
-using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Packages;
 using YetaWF.Core.Support;
 
@@ -34,8 +32,18 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
     }
 
     /// <summary>
-    /// Implementation of the DateTime display component.
+    /// Displays the model formatted as a long textual representation of the date, localized using the user's selected time zone (see User Settings Module).
+    /// Example: Friday, June 13, 2001.
     /// </summary>
+    /// <remarks>All date/time values in YetaWF are internally stored and processed using UTC.
+    /// 
+    /// The model value must be specified as UTC. If the model value is null or equal to DateTime.MinValue or DateTime.MaxValue, nothing is rendered.
+    /// </remarks>
+    /// <example>
+    /// [Category("Rss"), Caption("Feed Publish Date"), Description("The date this feed was published")]
+    /// [UIHint("LongDate"), ReadOnly]
+    /// public DateTime? FeedPublishDate { get; set; }
+    /// </example>
     public class DateLongDisplayComponent : DateLongComponentBase, IYetaWFComponent<DateTime?> {
 
         /// <summary>

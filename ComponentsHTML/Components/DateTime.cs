@@ -35,12 +35,17 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
     }
 
     /// <summary>
-    /// Displays the model formatted as a date and time localized using the user's selected timezone and time formatting (see User Settings Module).
+    /// Displays the model formatted as a date and time localized using the user's selected time zone and time formatting (see User Settings Module).
     /// </summary>
     /// <remarks>All date/time values in YetaWF are internally stored and processed using UTC.
     /// 
     /// The model value must be specified as UTC. If the model value is null or equal to DateTime.MinValue or DateTime.MaxValue, nothing is rendered.
     /// </remarks>
+    /// <example>
+    /// [Category("Rss"), Caption("Feed Publish Date"), Description("The date this feed was published")]
+    /// [UIHint("DateTime"), ReadOnly]
+    /// public DateTime? FeedPublishDate { get; set; }
+    /// </example>
     public class DateTimeDisplayComponent : DateTimeComponentBase, IYetaWFComponent<DateTime?> {
 
         /// <summary>
@@ -83,13 +88,12 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
     /// All date/time values in YetaWF are internally stored and processed using UTC.
     /// 
     /// MinimumDateAttribute and MaximumDateAttribute can be used to define the lowest and highest allowable date/time values.
-    /// 
-    /// pre
-    /// [Caption("DateTime Published"), Description("The date this entry has been published")]
-    /// [UIHint("DateTime"), ReadOnly]
-    /// public DateTime DateTimePublished { get; set; }
-    /// end
     /// </remarks>
+    /// <example>
+    /// [Category("Rss"), Caption("Feed Publish Date"), Description("The date this feed was published")]
+    /// [UIHint("DateTime")]
+    /// public DateTime? FeedPublishDate { get; set; }
+    /// </example>
     public class DateTimeEditComponent : DateTimeComponentBase, IYetaWFComponent<DateTime>, IYetaWFComponent<DateTime?> {
 
         /// <summary>

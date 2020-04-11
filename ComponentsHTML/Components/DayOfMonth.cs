@@ -1,6 +1,5 @@
 ﻿/* Copyright © 2020 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/ComponentsHTML#License */
 
-using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using YetaWF.Core.Components;
@@ -35,8 +34,13 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
     }
 
     /// <summary>
-    /// Implementation of the DayOfMonth display component.
+    /// Displays the model formatted as a day of the month (1-31). If the model value is null, nothing is rendered.
     /// </summary>
+    /// <example>
+    /// [Caption("Day of the Month"), Description("Shows the day of the month")]
+    /// [UIHint("DayOfMonth"), ReadOnly]
+    /// public int? Day { get; set; }
+    /// </example>
     public class DayOfMonthDisplayComponent : DayOfMonthComponentBase, IYetaWFComponent<int?> {
 
         /// <summary>
@@ -65,8 +69,14 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
     }
 
     /// <summary>
-    /// Implementation of the DayOfMonth edit component.
+    /// Allows selection of a day of the month (1-31) using a dropdown list. The model specifies the selected day.
+    /// A "(select)" entry is added as the first entry with a value of null.
     /// </summary>
+    /// <example>
+    /// [Caption("Day of the Month"), Description("Select the day of the month")]
+    /// [UIHint("DayOfMonth")]
+    /// public int? Day { get; set; }
+    /// </example>
     public class DayOfMonthEditComponent : DayOfMonthComponentBase, IYetaWFComponent<int?> {
 
         /// <summary>

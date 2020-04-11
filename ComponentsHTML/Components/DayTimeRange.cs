@@ -37,8 +37,13 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
     }
 
     /// <summary>
-    /// Implementation of the TimeRange display component.
+    /// Displays up to two time ranges within a day (typically AM and PM), such as office opening hours, optionally "Closed". The model specifies the selected daytime range.
+    /// If the model is null, nothing is rendered.
     /// </summary>
+    /// <example>
+    /// [Category("Hours"), Caption("Mondays"), Description("Shows the default working hours")]
+    /// [UIHint("DayTimeRange"), ReadOnly]
+    /// </example>
     public class DayTimeRangeDisplayComponent : DayTimeRangeComponent, IYetaWFComponent<DayTimeRange> {
 
         /// <summary>
@@ -77,8 +82,12 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
     }
 
     /// <summary>
-    /// Implementation of the TimeRange edit component.
+    /// Allows entry of up to two time ranges within a day (typically AM and PM), such as office opening hours, and optional "Closed" check box. The model specifies the selected daytime range.
     /// </summary>
+    /// <example>
+    /// [Category("Hours"), Caption("Mondays"), Description("Please select the default working hours")]
+    /// [UIHint("DayTimeRange"), Required]
+    /// </example>
     public class DayTimeRangeEditComponent : DayTimeRangeComponent, IYetaWFComponent<DayTimeRange> {
 
         internal class DayTimeRangeUI {

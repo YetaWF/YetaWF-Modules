@@ -3,6 +3,7 @@
 using System;
 using System.Threading.Tasks;
 using YetaWF.Core.Components;
+using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Packages;
 using YetaWF.Core.Support;
 
@@ -32,8 +33,14 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
     }
 
     /// <summary>
-    /// Implementation of the FloatValue display component.
+    /// Displays the model formatted as a floating point value. If the model is null, nothing is rendered.
     /// </summary>
+    /// <example>
+    /// [Caption("Latitude"), Description("The latitude where the IP address is located")]
+    /// [UIHint("FloatValue"), AdditionalMetadata("EmptyIf0", true), SuppressEmpty, ReadOnly]
+    /// public float Latitude { get; set; }
+    /// </example>
+    [UsesAdditional("EmptyIf0", "bool", "false", "If true, the floating point value is not displayed if it is equal to 0. Otherwise it is always displayed.")]
     public class FloatValueDisplayComponent : FloatValueComponentBase, IYetaWFComponent<Single?> {
 
         /// <summary>
