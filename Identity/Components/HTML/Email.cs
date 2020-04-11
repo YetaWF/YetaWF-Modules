@@ -22,6 +22,14 @@ namespace YetaWF.Modules.Identity.Components {
         public override string GetTemplateName() { return TemplateName; }
     }
 
+    /// <summary>
+    /// Displays the model as an email address. For authorized users, icons are rendered to login as the user shown and to display user information.
+    /// </summary>
+    /// <example>
+    /// [Caption("Email Address"), Description("The user's email address")]
+    /// [UIHint("YetaWF_Identity_Email"), ReadOnly]
+    /// public string Email { get; set; }
+    /// </example>
     public class EmailDisplayComponent : EmailComponentBase, IYetaWFComponent<string> {
 
         public override ComponentType GetComponentType() { return ComponentType.Display; }

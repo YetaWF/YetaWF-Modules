@@ -20,6 +20,9 @@ namespace YetaWF.Modules.BootstrapCarousel.Components {
         public override Package GetPackage() { return AreaRegistration.CurrentPackage; }
         public override string GetTemplateName() { return TemplateName; }
     }
+    /// <summary>
+    /// This component is used by the YetaWF.BootstrapCarousel package and is not intended for use by an application.
+    /// </summary>
     public class SlideShowDisplayComponent : SlideShowComponent, IYetaWFComponent<CarouselInfo> {
 
         public override ComponentType GetComponentType() { return ComponentType.Display; }
@@ -95,6 +98,9 @@ namespace YetaWF.Modules.BootstrapCarousel.Components {
         }
     }
 
+    /// <summary>
+    /// This component is used by the YetaWF.BootstrapCarousel package and is not intended for use by an application.
+    /// </summary>
     public class SlideShowEditComponent : SlideShowComponent, IYetaWFComponent<CarouselInfo> {
 
         public override ComponentType GetComponentType() { return ComponentType.Edit; }

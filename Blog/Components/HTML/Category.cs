@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using YetaWF.Core.Components;
 using YetaWF.Core.DataProvider;
 using YetaWF.Core.Localize;
+using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Packages;
 using YetaWF.Core.Support;
 using YetaWF.Modules.Blog.DataProvider;
@@ -20,20 +21,17 @@ namespace YetaWF.Modules.Blog.Components {
         public override Package GetPackage() { return Controllers.AreaRegistration.CurrentPackage; }
         public override string GetTemplateName() { return TemplateName; }
     }
-    public class CategoryDisplayComponent : CategoryComponentBase, IYetaWFComponent<string> {
-
-        public override ComponentType GetComponentType() { return ComponentType.Display; }
-
-        public Task<string> RenderAsync(string model) {
-
-            HtmlBuilder hb = new HtmlBuilder();
-
-            if (!string.IsNullOrEmpty(model))
-                hb.Append(Utility.HtmlEncode(model));
-
-            return Task.FromResult(hb.ToString());
-        }
-    }
+    /// <summary>
+    /// Allows selection of a blog category by displaying a dropdown list of all available blog categories. The model is the category ID.
+    /// </summary>
+    /// <example>
+    /// [Category("Blog"), Caption("Default Blog Category"), Description("The default blog category displayed when no blog category is selected")]
+    /// [UIHint("YetaWF_Blog_Category"), AdditionalMetadata("ShowAll", true), Required]
+    /// public int DefaultCategory { get; set; }
+    /// </example>
+    [UsesAdditional("ShowAll", "bool", "false", "Defines whether an additional entry \"(All)\" is added as the first entry with a value of 0. Only one of ShowAll, ShowSelectIfNone, ShowSelect should be specified.")]
+    [UsesAdditional("ShowSelectIfNone", "bool", "false", "Defines whether an additional entry \"(select)\" is added as the first entry with a value of 0 if model's category ID is 0. Only one of ShowAll, ShowSelectIfNone, ShowSelect should be specified.")]
+    [UsesAdditional("ShowSelect", "bool", "false", "Defines whether an additional entry \"(select)\" is added as the first entry with a value of 0. Only one of ShowAll, ShowSelectIfNone, ShowSelect should be specified.")]
     public class CategoryEditComponent : CategoryComponentBase, IYetaWFComponent<int> {
 
         public override ComponentType GetComponentType() { return ComponentType.Edit; }

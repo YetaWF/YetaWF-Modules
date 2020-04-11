@@ -59,6 +59,13 @@ namespace YetaWF.Modules.Blog.Components {
         }
     }
 
+    /// <summary>
+    /// Displays a user's Gravatar, a small customizable icon, based on the email address described by the model. Gravatars are defined by users at https://www.gravatar.com/ and are tied to their email address.
+    /// </summary>
+    /// <example>
+    /// [UIHint("YetaWF_Blog_Gravatar"), ReadOnly]
+    /// public string Email { get; set; }
+    /// </example>
     public class GravatarDisplayComponent : GravatarComponentBase, IYetaWFComponent<string> {
 
         public override ComponentType GetComponentType() { return ComponentType.Display; }

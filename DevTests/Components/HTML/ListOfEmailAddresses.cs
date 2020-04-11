@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using YetaWF.Core.Components;
-using YetaWF.Core.Controllers;
 using YetaWF.Core.DataProvider;
 using YetaWF.Core.Localize;
 using YetaWF.Core.Models;
@@ -26,6 +25,17 @@ namespace YetaWF.Modules.DevTests.Components {
         public override string GetTemplateName() { return TemplateName; }
     }
 
+    /// <summary>
+    /// A sample implementation of a component that displays a list of email addresses in a grid. The model contains the list of email addresses.
+    /// </summary>
+    /// <remarks>
+    /// The test sample page is available at Tests > Components > ListOfEmailAddresses (standard YetaWF site).
+    /// </remarks>
+    /// <example>
+    /// [Caption("Email Addresses"), Description("List of email addresses")]
+    /// [UIHint("YetaWF_DevTests_ListOfEmailAddresses"), ReadOnly]
+    /// public List&lt;string&gt; EmailAddresses { get; set; }
+    /// </example>
     public class ListOfEmailAddressesDisplayComponent : ListOfEmailAddressesComponentBase, IYetaWFComponent<List<string>> {
 
         public override ComponentType GetComponentType() { return ComponentType.Display; }
@@ -82,6 +92,17 @@ namespace YetaWF.Modules.DevTests.Components {
             return hb.ToString();
         }
     }
+    /// <summary>
+    /// A sample implementation of a component that allows selecting/entering a list of email addresses in a grid. The model contains the list of email addresses.
+    /// </summary>
+    /// <remarks>
+    /// The test sample page is available at Tests > Components > ListOfEmailAddresses (standard YetaWF site).
+    /// </remarks>
+    /// <example>
+    /// [Caption("Email Addresses"), Description("List of email addresses")]
+    /// [UIHint("YetaWF_DevTests_ListOfEmailAddresses")]
+    /// public List&lt;string&gt; EmailAddresses { get; set; }
+    /// </example>
     public class ListOfEmailAddressesEditComponent : ListOfEmailAddressesComponentBase, IYetaWFComponent<List<string>> {
 
         public override ComponentType GetComponentType() { return ComponentType.Edit; }

@@ -17,6 +17,17 @@ namespace YetaWF.Modules.DevTests.Components {
         public override string GetTemplateName() { return TemplateName; }
     }
 
+    /// <summary>
+    /// A sample implementation of a component used with the Scroller component. 
+    /// The component is used as an item in the Scroller component and the model contains the image and text displayed.
+    /// </summary>
+    /// <remarks>
+    /// The test sample page is available at Tests > Components > Scroller (standard YetaWF site).
+    /// </remarks>
+    /// <example>
+    /// [UIHint("Scroller"), ReadOnly, AdditionalMetadata("Template", "YetaWF_DevTests_ScrollerItem")]
+    /// public List&lt;ScrollerItem&gt; Items { get; set; }
+    /// </example>
     public class ScrollerItemDisplayComponent : ScrollerItemComponent, IYetaWFContainer<TemplateScrollerModuleController.ScrollerItem> {
 
         public override ComponentType GetComponentType() { return ComponentType.Display; }

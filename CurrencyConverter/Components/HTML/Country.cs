@@ -5,7 +5,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using YetaWF.Core.Components;
 using YetaWF.Core.Packages;
-using YetaWF.Core.Support;
 using YetaWF.Modules.ComponentsHTML.Components;
 using YetaWF.Modules.CurrencyConverter.DataProvider;
 
@@ -18,6 +17,9 @@ namespace YetaWF.Modules.CurrencyConverter.Components {
         public override Package GetPackage() { return Controllers.AreaRegistration.CurrentPackage; }
         public override string GetTemplateName() { return TemplateName; }
     }
+    /// <summary>
+    /// This component is used by the YetaWF.CurrencyConverter package and is not intended for use by an application.
+    /// </summary>
     public class CountryDisplayComponent : CountryComponent, IYetaWFComponent<string> {
 
         public override ComponentType GetComponentType() { return ComponentType.Display; }
@@ -33,6 +35,9 @@ namespace YetaWF.Modules.CurrencyConverter.Components {
             }
         }
     }
+    /// <summary>
+    /// This component is used by the YetaWF.CurrencyConverter package and is not intended for use by an application.
+    /// </summary>
     public class CountryEditComponent : CountryComponent, IYetaWFComponent<string> {
 
         public override ComponentType GetComponentType() { return ComponentType.Edit; }
