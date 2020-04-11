@@ -173,8 +173,12 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
     }
 
     /// <summary>
-    /// Implementation of the Menu display component.
+    /// Displays a menu.
     /// </summary>
+    /// <remarks>
+    /// This is primarily used by the Menu Module and Main Menu Module (YetaWF.Menus package) and is not directly used by applications.
+    /// </remarks>
+    [UsesAdditional("Style", "MenuComponentBase.MenuStyleEnum", "Automatic", "Defines the menu rendering engine.")]
     public class MenuDisplayComponent : MenuComponentBase, IYetaWFComponent<MenuComponentBase.MenuData> {
 
         /// <summary>

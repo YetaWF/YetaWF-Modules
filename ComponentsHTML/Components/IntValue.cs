@@ -9,7 +9,7 @@ using YetaWF.Core.Support;
 namespace YetaWF.Modules.ComponentsHTML.Components {
 
     /// <summary>
-    /// Displays the specified value formatted as an integer value, up to 2 digits. If the specified value is null, nothing is rendered.
+    /// Displays the specified value formatted as an integer value. Should be used for up to 2 digits. If the specified value is null, nothing is rendered.
     /// </summary>
     /// <example>
     /// [Caption("Average Char. Width"), Description("The average character width, calculated using the current skin")]
@@ -23,7 +23,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         public IntValue2DisplayComponent() : base("IntValue2", "yt_intvalue2") { }
     }
     /// <summary>
-    /// Allows entry of an integer value, up to 2 digits.
+    /// Allows entry of an integer value. Should be used for up to 2 digits.
     /// </summary>
     /// <remarks>
     /// The RangeAttribute can be used to define the lowest and highest allowable values.
@@ -41,7 +41,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         public IntValue2EditComponent() : base("IntValue2", "yt_intvalue2") { }
     }
     /// <summary>
-    /// Displays the specified value formatted as an integer value, up to 4 digits. If the specified value is null, nothing is rendered.
+    /// Displays the specified value formatted as an integer value. Should be used for up to 4 digits. If the specified value is null, nothing is rendered.
     /// </summary>
     /// <example>
     /// [Caption("Average Char. Width"), Description("The average character width, calculated using the current skin")]
@@ -55,7 +55,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         public IntValue4DisplayComponent() : base("IntValue4", "yt_intvalue4") { }
     }
     /// <summary>
-    /// Allows entry of an integer value, up to 4 digits.
+    /// Allows entry of an integer value. Should be used for up to 4 digits.
     /// </summary>
     /// <remarks>
     /// The RangeAttribute can be used to define the lowest and highest allowable values.
@@ -73,7 +73,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         public IntValue4EditComponent() : base("IntValue4", "yt_intvalue4") { }
     }
     /// <summary>
-    /// Displays the specified value formatted as an integer value, up to 6 digits. If the specified value is null, nothing is rendered.
+    /// Displays the specified value formatted as an integer value. Should be used for up to 6 digits. If the specified value is null, nothing is rendered.
     /// </summary>
     /// <example>
     /// [Caption("Average Char. Width"), Description("The average character width, calculated using the current skin")]
@@ -87,7 +87,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         public IntValue6DisplayComponent() : base("IntValue6", "yt_intvalue6") { }
     }
     /// <summary>
-    /// Allows entry of an integer value, up to 6 digits.
+    /// Allows entry of an integer value. Should be used for up to 6 digits.
     /// </summary>
     /// <remarks>
     /// The RangeAttribute can be used to define the lowest and highest allowable values.

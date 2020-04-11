@@ -31,8 +31,13 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
     }
 
     /// <summary>
-    /// Implementation of the LongValue display component.
+    /// Displays the specified value formatted as a long value.
     /// </summary>
+    /// <example>
+    /// [Caption("Memory Limit"), Description("The percentage of physical memory available to the application")]
+    /// [UIHint("LongValue"), ReadOnly]
+    /// public long EffectivePercentagePhysicalMemoryLimit { get; set; }
+    /// </example>    
     public class LongValueDisplayComponent : LongValueComponentBase, IYetaWFComponent<long>, IYetaWFComponent<long?> {
 
         /// <summary>
@@ -63,8 +68,16 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
     }
 
     /// <summary>
-    /// Implementation of the LongValue edit component.
+    /// Allows entry of a long value. 
     /// </summary>
+    /// <remarks>
+    /// The RangeAttribute can be used to define the lowest and highest allowable values.
+    /// </remarks>
+    /// <example>
+    /// [Caption("Days"), Description("The number of days a backup is saved - once a backup has been saved for the specified number of days, it is deleted")]
+    /// [UIHint("LongValue"), Range(1, 99999999), Required]
+    /// public long Days { get; set; }
+    /// </example>
     public class LongValueEditComponent : LongValueComponentBase, IYetaWFComponent<long>, IYetaWFComponent<long?> {
 
         /// <summary>

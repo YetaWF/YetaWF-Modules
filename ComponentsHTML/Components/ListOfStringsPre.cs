@@ -32,8 +32,13 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
     }
 
     /// <summary>
-    /// Implementation of the ListOfStringsPre display component.
+    /// Renders a list of strings within &lt;pre&gt; ... &lt;/pre&gt; tags. Each string is on its own line within the tags.
     /// </summary>
+    /// <example>
+    /// [Category("Variables"), Caption("Panes"), Description("The panes defined by the page skin")]
+    /// [UIHint("ListOfStringsPre"), ReadOnly]
+    /// public List&lt;string&gt; Panes { get; set; }
+    /// </example>
     public class ListOfStringsPreDisplayComponent : ListOfStringsPreComponentBase, IYetaWFComponent<List<string>> {
 
         /// <summary>

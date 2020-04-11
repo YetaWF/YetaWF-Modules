@@ -3,6 +3,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using YetaWF.Core.Components;
+using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Modules;
 using YetaWF.Core.Packages;
 using YetaWF.Core.Support;
@@ -10,8 +11,14 @@ using YetaWF.Core.Support;
 namespace YetaWF.Modules.ComponentsHTML.Components {
 
     /// <summary>
-    /// Implementation of the ModuleActions display component.
+    /// Renders the model as module actions (buttons, icons or links). If the model is null, nothing is rendered.
     /// </summary>
+    /// <example>
+    /// [Caption("Archive"), Description("Monthly blog entries")]
+    /// [UIHint("ModuleActions"), AdditionalMetadata("RenderAs", ModuleAction.RenderModeEnum.NormalLinks), ReadOnly]
+    /// public List&lt;ModuleAction&gt; Actions { get; set; }
+    /// </example>
+    [UsesAdditional("RenderAs", "YetaWF.Core.Modules.ModuleAction.RenderModeEnum", "ModuleAction.RenderModeEnum.Button", "Defines how the module actions are rendered.")]
     public class ModuleActionsComponent : YetaWFComponent, IYetaWFComponent<List<ModuleAction>> {
 
         internal const string TemplateName = "ModuleActions";

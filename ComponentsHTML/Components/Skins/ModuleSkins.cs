@@ -36,8 +36,13 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
     }
 
     /// <summary>
-    /// Implementation of the ModuleSkins display component.
+    /// Displays the selected module skin for each installed skin collection. The model defines a list of skin definitions and cannot be null.
     /// </summary>
+    /// <example>
+    /// [Caption("Module Skins"), Description("The skins used for this module")]
+    /// [UIHint("ModuleSkins"), ReadOnly]
+    /// public SerializableList&lt;SkinDefinition&gt; SkinDefinitions;
+    /// </example>
     public class ModuleSkinsDisplayComponent : ModuleSkinsComponentBase, IYetaWFComponent<SerializableList<SkinDefinition>> {
 
         /// <summary>
@@ -99,8 +104,13 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
     }
 
     /// <summary>
-    /// Implementation of the ModuleSkins edit component.
+    /// Allows selection of a module skin for each installed skin collection. A selection is rendered for each installed skin collection. The model defines a list of skin definitions and cannot be null.
     /// </summary>
+    /// <example>
+    /// [Caption("Module Skins"), Description("The skin used for this module - for each installed skin, a skin can be selected which will be used for the module, if the containing page uses that skin. This way the same module can be used on multiple pages, even if different page skins are used", Order = -100)]
+    /// [UIHint("ModuleSkins")]
+    /// public SerializableList&lt;SkinDefinition&gt; SkinDefinitions;
+    /// </example>
     public class ModuleSkinsEditComponent : ModuleSkinsComponentBase, IYetaWFComponent<SerializableList<SkinDefinition>> {
 
         /// <summary>

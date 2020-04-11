@@ -8,14 +8,9 @@ using YetaWF.Core.Localize;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Modules;
 using YetaWF.Core.Packages;
-using YetaWF.Core.Skins;
 using YetaWF.Core.Support;
 using YetaWF.Modules.ComponentsHTML.Addons;
 using YetaWF.Modules.ComponentsHTML.Controllers;
-#if MVC6
-#else
-using System.Web.Mvc;
-#endif
 
 namespace YetaWF.Modules.ComponentsHTML.Components {
 
@@ -61,8 +56,13 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
     }
 
     /// <summary>
-    /// Implementation of the ModuleSelection display component.
+    /// Displays module information based on the model. The model defines the module Guid for which information is displayed. 
     /// </summary>
+    /// <example>
+    /// [Caption("Selected Module"), Description("The current module")]
+    /// [UIHint("ModuleSelection"), ReadOnly]
+    /// public Guid Module { get; set; }
+    /// </example>
     public class ModuleSelectionDisplayComponent : ModuleSelectionComponentBase, IYetaWFComponent<Guid?> {
 
         /// <summary>
@@ -125,8 +125,15 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
     }
 
     /// <summary>
-    /// Implementation of the ModuleSelection edit component.
+    /// Allows selection of a new or existing module using a dropdown list. The model defines the new or existing module Guid. 
+    /// An entry "(select)" with value Guid.Empty is always inserted as the first item in the dropdown list.
     /// </summary>
+    /// <example>
+    /// [Caption("New Module"), Description("The new module to be added")]
+    /// [UIHint("ModuleSelection"), AdditionalMetadata("New", true), Required]
+    /// public Guid SelectedModule { get; set; }
+    /// </example>
+    [UsesAdditional("New", "bool", "false", "Defines whether selection of new modules (to be created) is possible in which case all available modules are shown in the dropdown list. Otherwise only existing, designed modules are listed.")]
     public class ModuleSelectionEditComponent : ModuleSelectionComponentBase, IYetaWFComponent<Guid?> {
 
         /// <summary>

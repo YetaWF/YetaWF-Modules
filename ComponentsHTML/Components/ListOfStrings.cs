@@ -3,7 +3,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using YetaWF.Core.Components;
-using YetaWF.Core.Localize;
+using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Packages;
 using YetaWF.Core.Support;
 
@@ -33,8 +33,14 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
     }
 
     /// <summary>
-    /// Implementation of the ListOfStrings display component.
+    /// Renders a list of strings, joined using the specified delimiter.
     /// </summary>
+    /// <example>
+    /// [Category("Variables"), Caption("Panes"), Description("The panes defined by the page skin")]
+    /// [UIHint("ListOfStrings"), ReadOnly]
+    /// public List&lt;string&gt; Panes { get; set; }
+    /// </example>
+    [UsesAdditional("Delimiter", "string", ", ", "Defines the delimiter used between the strings as they are rendered. The default is \", \". The delimiter can consist of HTML tags.")]
     public class ListOfStringsDisplayComponent : ListOfStringsComponentBase, IYetaWFComponent<List<string>> {
 
         /// <summary>

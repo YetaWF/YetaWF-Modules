@@ -13,8 +13,14 @@ using YetaWF.Core.Support;
 namespace YetaWF.Modules.ComponentsHTML.Components {
 
     /// <summary>
-    /// Implementation of the MultiString10 display component.
+    /// Displays the model using the user's defined language (see User > Settings, standard YetaWF site). Strings for other languages contained with the model are not displayed.
+    /// Should be used for text up to 10 characters in width.
     /// </summary>
+    /// <example>
+    /// [Caption("Title"), Description("The title for this blog entry")]
+    /// [UIHint("MultiString10"), StringLength(BlogEntry.MaxTitle), Required, Trim]
+    /// public MultiString Title { get; set; }
+    /// </example>
     public class MultiString10DisplayComponent : MultiStringDisplayComponentBase {
         /// <summary>
         /// Constructor.
@@ -22,8 +28,17 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         public MultiString10DisplayComponent() : base("MultiString10", "t_text10") { }
     }
     /// <summary>
-    /// Implementation of the MultiString10 edit component.
+    /// Allows entry of strings in all site defined languages (see National Language Support). Renders a text box with an adjacent dropdown list showing each available language so the user can enter text for each available language.
+    /// Should be used for text up to 10 characters in width.
     /// </summary>
+    /// <remarks>
+    /// If the StringLengthAttribute is specified for the model, the Text box is limited to the specified number of characters.
+    /// </remarks>
+    /// <example>
+    /// [Caption("Category"), Description("The name of this blog category")]
+    /// [UIHint("MultiString10"), ReadOnly]
+    /// public MultiString Category { get; set; }
+    /// </example>
     public class MultiString10EditComponent : MultiStringEditComponentBase {
         /// <summary>
         /// Constructor.
@@ -31,8 +46,14 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         public MultiString10EditComponent() : base("MultiString10", "t_text10") { }
     }
     /// <summary>
-    /// Implementation of the MultiString20 display component.
+    /// Displays the model using the user's defined language (see User > Settings, standard YetaWF site). Strings for other languages contained with the model are not displayed.
+    /// Should be used for text up to 20 characters in width.
     /// </summary>
+    /// <example>
+    /// [Caption("Title"), Description("The title for this blog entry")]
+    /// [UIHint("MultiString20"), StringLength(BlogEntry.MaxTitle), Required, Trim]
+    /// public MultiString Title { get; set; }
+    /// </example>
     public class MultiString20DisplayComponent : MultiStringDisplayComponentBase {
         /// <summary>
         /// Constructor.
@@ -40,8 +61,17 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         public MultiString20DisplayComponent() : base("MultiString20", "t_text20") { }
     }
     /// <summary>
-    /// Implementation of the MultiString20 edit component.
+    /// Allows entry of strings in all site defined languages (see National Language Support). Renders a text box with an adjacent dropdown list showing each available language so the user can enter text for each available language.
+    /// Should be used for text up to 20 characters in width.
     /// </summary>
+    /// <remarks>
+    /// If the StringLengthAttribute is specified for the model, the Text box is limited to the specified number of characters.
+    /// </remarks>
+    /// <example>
+    /// [Caption("Category"), Description("The name of this blog category")]
+    /// [UIHint("MultiString20"), ReadOnly]
+    /// public MultiString Category { get; set; }
+    /// </example>
     public class MultiString20EditComponent : MultiStringEditComponentBase {
         /// <summary>
         /// Constructor.
@@ -49,8 +79,14 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         public MultiString20EditComponent() : base("MultiString20", "t_text20") { }
     }
     /// <summary>
-    /// Implementation of the MultiString40 display component.
+    /// Displays the model using the user's defined language (see User > Settings, standard YetaWF site). Strings for other languages contained with the model are not displayed.
+    /// Should be used for text up to 40 characters in width.
     /// </summary>
+    /// <example>
+    /// [Caption("Title"), Description("The title for this blog entry")]
+    /// [UIHint("MultiString40"), StringLength(BlogEntry.MaxTitle), Required, Trim]
+    /// public MultiString Title { get; set; }
+    /// </example>
     public class MultiString40DisplayComponent : MultiStringDisplayComponentBase {
         /// <summary>
         /// Constructor.
@@ -58,8 +94,17 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         public MultiString40DisplayComponent() : base("MultiString40", "t_text40") { }
     }
     /// <summary>
-    /// Implementation of the MultiString40 edit component.
+    /// Allows entry of strings in all site defined languages (see National Language Support). Renders a text box with an adjacent dropdown list showing each available language so the user can enter text for each available language.
+    /// Should be used for text up to 40 characters in width.
     /// </summary>
+    /// <remarks>
+    /// If the StringLengthAttribute is specified for the model, the Text box is limited to the specified number of characters.
+    /// </remarks>
+    /// <example>
+    /// [Caption("Category"), Description("The name of this blog category")]
+    /// [UIHint("MultiString40"), ReadOnly]
+    /// public MultiString Category { get; set; }
+    /// </example>
     public class MultiString40EditComponent : MultiStringEditComponentBase {
         /// <summary>
         /// Constructor.
@@ -67,8 +112,14 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         public MultiString40EditComponent() : base("MultiString40", "t_text40") { }
     }
     /// <summary>
-    /// Implementation of the MultiString80 display component.
+    /// Displays the model using the user's defined language (see User > Settings, standard YetaWF site). Strings for other languages contained with the model are not displayed.
+    /// Should be used for text up to 80 characters in width.
     /// </summary>
+    /// <example>
+    /// [Caption("Title"), Description("The title for this blog entry")]
+    /// [UIHint("MultiString80"), StringLength(BlogEntry.MaxTitle), Required, Trim]
+    /// public MultiString Title { get; set; }
+    /// </example>
     public class MultiString80DisplayComponent : MultiStringDisplayComponentBase {
         /// <summary>
         /// Constructor.
@@ -76,8 +127,17 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         public MultiString80DisplayComponent() : base("MultiString80", "t_text80") { }
     }
     /// <summary>
-    /// Implementation of the MultiString80 edit component.
+    /// Allows entry of strings in all site defined languages (see National Language Support). Renders a text box with an adjacent dropdown list showing each available language so the user can enter text for each available language.
+    /// Should be used for text up to 80 characters in width.
     /// </summary>
+    /// <remarks>
+    /// If the StringLengthAttribute is specified for the model, the Text box is limited to the specified number of characters.
+    /// </remarks>
+    /// <example>
+    /// [Caption("Category"), Description("The name of this blog category")]
+    /// [UIHint("MultiString80"), ReadOnly]
+    /// public MultiString Category { get; set; }
+    /// </example>
     public class MultiString80EditComponent : MultiStringEditComponentBase {
         /// <summary>
         /// Constructor.
@@ -85,8 +145,13 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         public MultiString80EditComponent() : base("MultiString80", "t_text80") { }
     }
     /// <summary>
-    /// Implementation of the MultiString display component.
+    /// Displays the model using the user's defined language (see User > Settings, standard YetaWF site). Strings for other languages contained with the model are not displayed.
     /// </summary>
+    /// <example>
+    /// [Caption("Title"), Description("The title for this blog entry")]
+    /// [UIHint("MultiString"), StringLength(BlogEntry.MaxTitle), Required, Trim]
+    /// public MultiString Title { get; set; }
+    /// </example>
     public class MultiStringDisplayComponent : MultiStringDisplayComponentBase {
         /// <summary>
         /// Constructor.
@@ -94,8 +159,16 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         public MultiStringDisplayComponent() : base("MultiString", "t_text") { }
     }
     /// <summary>
-    /// Implementation of the MultiString edit component.
+    /// Allows entry of strings in all site defined languages (see National Language Support). Renders a text box with an adjacent dropdown list showing each available language so the user can enter text for each available language.
     /// </summary>
+    /// <remarks>
+    /// If the StringLengthAttribute is specified for the model, the Text box is limited to the specified number of characters.
+    /// </remarks>
+    /// <example>
+    /// [Caption("Category"), Description("The name of this blog category")]
+    /// [UIHint("MultiString"), ReadOnly]
+    /// public MultiString Category { get; set; }
+    /// </example>
     public class MultiStringEditComponent : MultiStringEditComponentBase {
         /// <summary>
         /// Constructor.

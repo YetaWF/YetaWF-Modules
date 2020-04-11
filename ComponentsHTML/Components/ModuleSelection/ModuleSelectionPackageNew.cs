@@ -8,12 +8,11 @@ using YetaWF.Core.Components;
 using YetaWF.Core.Localize;
 using YetaWF.Core.Modules;
 using YetaWF.Core.Packages;
-using YetaWF.Core.Support;
 
 namespace YetaWF.Modules.ComponentsHTML.Components {
 
     /// <summary>
-    /// Implementation of the ModuleSelectionPackageNew edit component.
+    /// Internal component used by the ModuleSelection component. Not intended for application use.
     /// </summary>
     public class ModuleSelectionPackageNewEditComponent : YetaWFComponent, IYetaWFComponent<Guid?> {
 

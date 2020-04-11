@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 using YetaWF.Core.Components;
 using YetaWF.Core.Packages;
 using YetaWF.Core.Skins;
-using YetaWF.Core.Support;
 
 namespace YetaWF.Modules.ComponentsHTML.Components {
 
@@ -34,7 +33,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
     }
 
     /// <summary>
-    /// Implementation of the ModuleSkinName display component.
+    /// Internal component used by the ModuleSkins component. Not intended for application use.
     /// </summary>
     public class ModuleSkinNameDisplayComponent : ModuleSkinNameComponent, IYetaWFComponent<string> {
 
@@ -60,7 +59,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
     }
 
     /// <summary>
-    /// Implementation of the ModuleSkinName edit component.
+    /// Internal component used by the ModuleSkins component. Not intended for application use.
     /// </summary>
     public class ModuleSkinNameEditComponent : ModuleSkinNameComponent, IYetaWFComponent<string> {
 

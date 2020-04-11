@@ -25,7 +25,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         /// <summary>
         /// The markdown text.
         /// </summary>
-        [Caption("Markdown Text"), HelpLink("https://github.com/showdownjs/showdown/wiki/Showdown%27s-Markdown-syntax")]
+        [Caption("Markdown Text"), HelpLink("https://www.markdownguide.org/cheat-sheet/")]
         [UIHint("TextAreaSourceOnly")]
         public virtual string Text { get; set; }
         /// <summary>
@@ -98,8 +98,14 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
     }
 
     /// <summary>
-    /// Implementation of the Markdown display component.
+    /// Displays the HTML contents of the model. If the model is null, nothing is rendered.
     /// </summary>
+    /// <example>
+    /// [Caption("Contents"), Description("Shows the contents")]
+    /// [UIHint("Markdown"), ReadOnly]
+    /// public MarkdownStringBase Contents { get; set; }
+    /// </example>
+    [UsesAdditional("EmHeight", "int", "10", "Defines the height of the markdown component in lines of text.")]
     public class MarkdownDisplayComponent : MarkdownComponentBase, IYetaWFComponent<MarkdownStringBase> {
 
         /// <summary>
@@ -128,8 +134,20 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
     }
 
     /// <summary>
-    /// Implementation of the Markdown edit component.
+    /// Allows entry of markdown text with preview.  The model defines various attributes of the component.
     /// </summary>
+    /// <example>
+    /// [Category("General"), Caption("Contents"), Description("The text contents")]
+    /// [UIHint("Markdown"), AdditionalMetadata("EmHeight", 10)]
+    /// public MarkdownString Contents { get; set; }
+    /// 
+    /// public class MarkdownString : MarkdownStringBase {
+    ///     [StringLength(0), AdditionalMetadata("EmHeight", 10)]
+    ///     public override string Text { get { return base.Text; } set { base.Text = value; } }
+    ///     [StringLength(0)]
+    ///     public override string HTML { get { return base.HTML; } set { base.HTML = value; } }
+    /// }
+    /// </example>
     public class MarkdownEditComponent : MarkdownComponentBase, IYetaWFComponent<MarkdownStringBase> {
 
         /// <summary>

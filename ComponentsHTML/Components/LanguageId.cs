@@ -7,14 +7,21 @@ using System.Threading.Tasks;
 using YetaWF.Core.Components;
 using YetaWF.Core.Localize;
 using YetaWF.Core.Models;
+using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Packages;
-using YetaWF.Core.Support;
 
 namespace YetaWF.Modules.ComponentsHTML.Components {
 
     /// <summary>
-    /// Implementation of the LanguageId edit component.
+    /// Allows selection of an available language using a dropdown list. The model represents the language ID.
     /// </summary>
+    /// <example>
+    /// [Caption("Id"), Description("The language id - this is the same as the culture name used throughout .NET")]
+    /// [UIHint("LanguageId"), StringLength(LanguageData.MaxId), AdditionalMetadata("NoDefault", true), AdditionalMetadata("AllLanguages", true), Required, Trim]
+    /// public string Id { get; set; }
+    /// </example>
+    [UsesAdditional("NoDefault", "bool", "false", "Defines whether a \"(Site Default)\" entry is automatically added as the first entry, with a value of null")]
+    [UsesAdditional("AllLanguages", "bool", "false", "Defines whether all system-defined languages are displayed or whether the languages defined for this YetaWF instance are shown. For details see National Language Support.")]
     public class LanguageIdComponent : YetaWFComponent, IYetaWFComponent<string> {
 
         internal const string TemplateName = "LanguageId";
