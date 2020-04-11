@@ -32,8 +32,18 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
     }
 
     /// <summary>
-    /// Implementation of the Hidden display component.
+    /// Renders the model as a hidden input field &lt;input type="hidden"..&gt;.
     /// </summary>
+    /// <remarks>
+    /// Even though it's marked with the ReadOnly attribute, this component's value is still modifiable and will be included when a form is submitted.
+    /// It never uses validation.
+    /// 
+    /// In most cases the Display version of this component should be used, instead of the Edit component. The Edit component uses validation which is not desirable in most cases.
+    /// </remarks>
+    /// <example>
+    /// [UIHint("Hidden"), ReadOnly]
+    /// public int Identity { get; set; }
+    /// </example>
     public class HiddenDisplayComponent : HiddenComponentBase, IYetaWFComponent<object> {
 
         /// <summary>
@@ -74,8 +84,15 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
     }
 
     /// <summary>
-    /// Implementation of the Hidden edit component.
+    /// Renders the model as a hidden input field &lt;input type="hidden"..&gt;.
     /// </summary>
+    /// <remarks>
+    /// In most cases the Display version of this component should be used, instead of the Edit component. The Edit component uses validation which is not desirable in most cases.
+    /// </remarks>
+    /// <example>
+    /// [UIHint("Hidden")]
+    /// public int Identity { get; set; }
+    /// </example>
     public class HiddenEditComponent : HiddenComponentBase, IYetaWFComponent<object> {
 
         /// <summary>

@@ -107,8 +107,13 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
     }
 
     /// <summary>
-    /// Implementation of the Grid display component.
+    /// Displays a grid. If the model is null, nothing is rendered. The model defines various attributes of the grid.
     /// </summary>
+    /// <example>
+    /// [Caption("All Users"), Description("Shows all users")]
+    /// [UIHint("Grid"), ReadOnly]
+    /// public GridDefinition AllUsers { get; set; }
+    /// </example>
     public partial class GridDisplayComponent : GridComponentBase, IYetaWFComponent<GridDefinition> {
 
         /// <summary>

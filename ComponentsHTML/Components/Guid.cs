@@ -32,8 +32,13 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
     }
 
     /// <summary>
-    /// Implementation of the Guid display component.
+    /// Displays the model. If the model is null, nothing is rendered.
     /// </summary>
+    /// <example>
+    /// [Caption("Owner Guid"), Description("The guid of the Url Service subscriber account")]
+    /// [UIHint("Guid"), ReadOnly]
+    /// public Guid OwnerGuid { get; set; }
+    /// </example>
     public class GuidDisplayComponent : GuidComponentBase, IYetaWFComponent<Guid?> {
 
         /// <summary>
@@ -65,8 +70,13 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
     }
 
     /// <summary>
-    /// Implementation of the Guid edit component.
+    /// Allows entry of a Guid. 
     /// </summary>
+    /// <example>
+    /// [Caption("Owner Guid"), Description("The guid of the Url Service subscriber account")]
+    /// [UIHint("Guid"), GuidValidation, Required, Trim]
+    /// public Guid OwnerGuid { get; set; }
+    /// </example>
     public class GuidEditComponent : GuidComponentBase, IYetaWFComponent<Guid>, IYetaWFComponent<Guid?> {
 
         /// <summary>

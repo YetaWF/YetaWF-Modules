@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using YetaWF.Core.Components;
 using YetaWF.Core.Localize;
+using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Packages;
 using YetaWF.Core.Skins;
 using YetaWF.Core.Support;
@@ -37,8 +38,13 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
     }
 
     /// <summary>
-    /// Implementation of the KendoUISkin display component.
+    /// Displays the model as a Kendo UI skin name. If the model is null, nothing is rendered.
     /// </summary>
+    /// <example>
+    /// [Category("Skin"), Caption("Kendo UI Skin"), Description("The skin for Kendo UI elements (buttons, modal dialogs, etc.) used on this page")]
+    /// [UIHint("KendoUISkin"), ReadOnly]
+    /// public string KendoUISkin { get; set; }
+    /// </example>
     public class KendoUISkinDisplayComponent : KendoUISkinComponentBase, IYetaWFComponent<string> {
 
         /// <summary>
@@ -66,8 +72,14 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
     }
 
     /// <summary>
-    /// Implementation of the KendoUISkin edit component.
+    /// Allows selection of a Kendo UI skin from the list of all installed Kendo UI skins using a dropdown list.
     /// </summary>
+    /// <example>
+    /// [Category("Skin"), Caption("Kendo UI Skin"), Description("The skin for Kendo UI elements (buttons, modal dialogs, etc.) used on this page")]
+    /// [UIHint("KendoUISkin"), StringLength(PageDefinition.MaxKendoUISkin), Trim]
+    /// public string KendoUISkin { get; set; }
+    /// </example>
+    [UsesAdditional("NoDefault", "bool", "false", "Defines whether a \"(Site Default)\" entry is automatically added as the first entry, with a value of null")]
     public class KendoUISkinEditComponent : KendoUISkinComponentBase, IYetaWFComponent<string> {
 
         /// <summary>

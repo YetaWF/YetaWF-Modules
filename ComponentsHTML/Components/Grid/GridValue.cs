@@ -31,8 +31,12 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
     }
 
     /// <summary>
-    /// Implementation of the GridValue display component.
+    /// Renders a grid record's value.
     /// </summary>
+    /// <example>
+    /// [UIHint("GridValue"), ReadOnly]
+    /// public string Value { get { return Url; } }
+    /// </example>
     public class GridValueDisplayComponent : GridValueComponentBase, IYetaWFComponent<object> {
 
         /// <summary>
@@ -56,8 +60,12 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         }
     }
     /// <summary>
-    /// Implementation of the GridValue edit component.
+    /// Renders a grid record's value.
     /// </summary>
+    /// <example>
+    /// [UIHint("GridValue")]
+    /// public string Value { get; set; }
+    /// </example>
     public class GridValueEditComponent : GridValueComponentBase, IYetaWFComponent<object> {
 
         /// <summary>

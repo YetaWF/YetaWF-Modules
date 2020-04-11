@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using YetaWF.Core.Components;
 using YetaWF.Core.Localize;
+using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Packages;
 using YetaWF.Core.Skins;
 using YetaWF.Core.Support;
@@ -37,8 +38,13 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
     }
 
     /// <summary>
-    /// Implementation of the JQueryUISkin display component.
+    /// Displays the model as a jQuery-UI skin name. If the model is null, nothing is rendered.
     /// </summary>
+    /// <example>
+    /// [Category("Skin"), Caption("jQuery UI Skin"), Description("The skin for jQuery-UI elements (buttons, modal dialogs, etc.) used on this page")]
+    /// [UIHint("jQueryUISkin"), ReadOnly]
+    /// public string jQueryUISkin { get; set; }
+    /// </example>
     public class JQueryUISkinDisplayComponent : JQueryUISkinComponentBase, IYetaWFComponent<string> {
 
         /// <summary>
@@ -66,8 +72,14 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
     }
 
     /// <summary>
-    /// Implementation of the JQueryUISkin edit component.
+    /// Allows selection of a jQuery UI skin from the list of all installed jQuery UI skins using a dropdown list.
     /// </summary>
+    /// <example>
+    /// [Category("Skin"), Caption("jQuery UI Skin"), Description("The skin for jQuery-UI elements (buttons, modal dialogs, etc.) used on this page")]
+    /// [UIHint("jQueryUISkin"), StringLength(PageDefinition.MaxjQueryUISkin), Trim]
+    /// public string jQueryUISkin { get; set; }
+    /// </example>
+    [UsesAdditional("NoDefault", "bool", "false", "Defines whether a \"(Site Default)\" entry is automatically added as the first entry, with a value of null")]
     public class JQueryUISkinEditComponent : JQueryUISkinComponentBase, IYetaWFComponent<string> {
 
         /// <summary>

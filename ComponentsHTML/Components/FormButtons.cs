@@ -9,8 +9,13 @@ using YetaWF.Core.Support;
 namespace YetaWF.Modules.ComponentsHTML.Components {
 
     /// <summary>
-    /// Implementation of the FormButton edit component.
+    /// Displays form buttons. The model defines a list of form buttons.
     /// </summary>
+    /// <example>
+    /// [Caption("Actions"), Description("Click one of the buttons")]
+    /// [UIHint("FormButtons"), ReadOnly]
+    /// public List&lt;FormButton&gt; Buttons { get; set; }
+    /// </example>
     public class FormButtonsComponent : YetaWFComponent, IYetaWFComponent<List<FormButton>> {
 
         internal const string TemplateName = "FormButtons";

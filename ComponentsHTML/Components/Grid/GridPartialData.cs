@@ -11,7 +11,7 @@ using YetaWF.Modules.ComponentsHTML.Controllers;
 namespace YetaWF.Modules.ComponentsHTML.Components {
 
     /// <summary>
-    /// Implementation of the GridData display component.
+    /// Renders partial grid data. This component is used by the grid component and is not directly used by an application.
     /// </summary>
     public class GridDataContainer : YetaWFComponent, IYetaWFContainer<GridPartialData> {
 

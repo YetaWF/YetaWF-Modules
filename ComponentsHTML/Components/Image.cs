@@ -5,6 +5,7 @@ using YetaWF.Core.Components;
 using YetaWF.Core.Extensions;
 using YetaWF.Core.Image;
 using YetaWF.Core.Localize;
+using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Packages;
 using YetaWF.Core.Pages;
 using YetaWF.Core.Support;
@@ -66,8 +67,22 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
     }
 
     /// <summary>
-    /// Implementation of the Image display component.
+    /// Displays the model as an image. The string specified as image value must have been created/saved using the Image (Edit) component or can be an absolute URL.
     /// </summary>
+    /// <remarks>
+    /// This component supports all image types implemented using the Image Http Handler. This is an extensible class that supports file and data based images.
+    /// 
+    /// The model can also specify an absolute URL in which case that URL is used to render the image (without Image Http Handler).
+    /// </remarks>
+    /// <example>
+    /// [UIHint("Image"), ReadOnly, AdditionalMetadata("ImageType", VendorImageSupport.ImageType), AdditionalMetadata("Width", Vendor.LogoWidth), AdditionalMetadata("Height", Vendor.LogoHeight)]
+    /// public string VendorLogo { get; set; }
+    /// </example>
+    [UsesAdditional("ImageType", "string", "null", "The image type implementing this image. Specify null if the model defines an absolute URL.")]
+    [UsesAdditional("Width", "int", "0", "The width of the preview image. The aspect ratio of the original image is preserved. Specify 0 if the model defines an absolute URL.")]
+    [UsesAdditional("Height", "int", "0", "The height of the preview image. The aspect ratio of the original image is preserved. Specify 0 if the model defines an absolute URL.")]
+    [UsesAdditional("ShowMissing", "bool", "true", "Defines whether an image that is not defined displays a \"No Image\" placeholder (ShowMissing=true, default) or whether no image is displayed (ShowMissing=false). Ignored if the model defines an absolute URL.")]
+    [UsesAdditional("LinkToImage", "bool", "false", "Defines whether clicking on the image preview will display the image on a new page in its original size (LinkToImage=true). Otherwise, clinking on the image has no effect (LinkToImage=false, default). Ignored if the model defines an absolute URL.")]
     public class ImageDisplayComponent : ImageComponentBase, IYetaWFComponent<string> {
 
         /// <summary>
@@ -132,8 +147,20 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
     }
 
     /// <summary>
-    /// Implementation of the Image edit component.
+    /// Allows selection and uploading of an image.
     /// </summary>
+    /// <remarks>
+    /// This component supports all image types implemented using the Image Http Handler. This is an extensible class that supports file and data based images.
+    /// </remarks>
+    /// <example>
+    /// [UIHint("Image"), AdditionalMetadata("ImageType", VendorImageSupport.ImageType), AdditionalMetadata("Width", Vendor.LogoWidth), AdditionalMetadata("Height", Vendor.LogoHeight)]
+    /// public string VendorLogo { get; set; }
+    /// </example>
+    [UsesAdditional("ImageType", "string", "null", "The image type implementing this image. Specify null if the model defines an absolute URL.")]
+    [UsesAdditional("Width", "int", "0", "The width of the preview image. The aspect ratio of the original image is preserved. Specify 0 if the model defines an absolute URL.")]
+    [UsesAdditional("Height", "int", "0", "The height of the preview image. The aspect ratio of the original image is preserved. Specify 0 if the model defines an absolute URL.")]
+    [UsesAdditional("ShowMissing", "bool", "true", "Defines whether an image that is not defined displays a \"No Image\" placeholder (ShowMissing=true, default) or whether no image is displayed (ShowMissing=false). Ignored if the model defines an absolute URL.")]
+    [UsesAdditional("LinkToImage", "bool", "false", "Defines whether clicking on the image preview will display the image on a new page in its original size (LinkToImage=true). Otherwise, clinking on the image has no effect (LinkToImage=false, default). Ignored if the model defines an absolute URL.")]
     public class ImageEditComponent : ImageComponentBase, IYetaWFComponent<string> {
 
         /// <summary>

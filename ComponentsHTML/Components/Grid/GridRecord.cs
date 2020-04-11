@@ -10,7 +10,7 @@ using YetaWF.Modules.ComponentsHTML.Controllers;
 namespace YetaWF.Modules.ComponentsHTML.Components {
 
     /// <summary>
-    /// Implementation of the GridRecord display component.
+    /// Renders a grid record. This component is used by the grid component and is not directly used by an application.
     /// </summary>
     public class GridRecordContainer : YetaWFComponent, IYetaWFContainer<GridRecordData> {
 

@@ -9,8 +9,13 @@ using YetaWF.Core.Support;
 namespace YetaWF.Modules.ComponentsHTML.Components {
 
     /// <summary>
-    /// Implementation of the IntValue2 display component.
+    /// Displays the specified value formatted as an integer value, up to 2 digits. If the specified value is null, nothing is rendered.
     /// </summary>
+    /// <example>
+    /// [Caption("Average Char. Width"), Description("The average character width, calculated using the current skin")]
+    /// [UIHint("IntValue2"), ReadOnly]
+    /// public int Width { get; set; }
+    /// </example>    
     public class IntValue2DisplayComponent : IntValueDisplayComponentBase {
         /// <summary>
         /// Constructor.
@@ -18,8 +23,17 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         public IntValue2DisplayComponent() : base("IntValue2", "yt_intvalue2") { }
     }
     /// <summary>
-    /// Implementation of the IntValue2 edit component.
+    /// Allows entry of an integer value, up to 2 digits.
     /// </summary>
+    /// <remarks>
+    /// The RangeAttribute can be used to define the lowest and highest allowable values.
+    /// 
+    /// </remarks>
+    /// <example>
+    /// [Caption("Days"), Description("The number of days a backup is saved - once a backup has been saved for the specified number of days, it is deleted")]
+    /// [UIHint("IntValue2"), Range(1, 99), Required]
+    /// public int Days { get; set; }
+    /// </example>
     public class IntValue2EditComponent : IntValueEditComponentBase {
         /// <summary>
         /// Constructor.
@@ -27,8 +41,13 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         public IntValue2EditComponent() : base("IntValue2", "yt_intvalue2") { }
     }
     /// <summary>
-    /// Implementation of the IntValue4 display component.
+    /// Displays the specified value formatted as an integer value, up to 4 digits. If the specified value is null, nothing is rendered.
     /// </summary>
+    /// <example>
+    /// [Caption("Average Char. Width"), Description("The average character width, calculated using the current skin")]
+    /// [UIHint("IntValue4"), ReadOnly]
+    /// public int Width { get; set; }
+    /// </example>    
     public class IntValue4DisplayComponent : IntValueDisplayComponentBase {
         /// <summary>
         /// Constructor.
@@ -36,8 +55,17 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         public IntValue4DisplayComponent() : base("IntValue4", "yt_intvalue4") { }
     }
     /// <summary>
-    /// Implementation of the IntValue4 edit component.
+    /// Allows entry of an integer value, up to 4 digits.
     /// </summary>
+    /// <remarks>
+    /// The RangeAttribute can be used to define the lowest and highest allowable values.
+    /// 
+    /// </remarks>
+    /// <example>
+    /// [Caption("Days"), Description("The number of days a backup is saved - once a backup has been saved for the specified number of days, it is deleted")]
+    /// [UIHint("IntValue4"), Range(1, 9999), Required]
+    /// public int Days { get; set; }
+    /// </example>
     public class IntValue4EditComponent : IntValueEditComponentBase {
         /// <summary>
         /// Constructor.
@@ -45,8 +73,13 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         public IntValue4EditComponent() : base("IntValue4", "yt_intvalue4") { }
     }
     /// <summary>
-    /// Implementation of the IntValue6 display component.
+    /// Displays the specified value formatted as an integer value, up to 6 digits. If the specified value is null, nothing is rendered.
     /// </summary>
+    /// <example>
+    /// [Caption("Average Char. Width"), Description("The average character width, calculated using the current skin")]
+    /// [UIHint("IntValue4"), ReadOnly]
+    /// public int Width { get; set; }
+    /// </example>    
     public class IntValue6DisplayComponent : IntValueDisplayComponentBase {
         /// <summary>
         /// Constructor.
@@ -54,8 +87,17 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         public IntValue6DisplayComponent() : base("IntValue6", "yt_intvalue6") { }
     }
     /// <summary>
-    /// Implementation of the IntValue6 edit component.
+    /// Allows entry of an integer value, up to 6 digits.
     /// </summary>
+    /// <remarks>
+    /// The RangeAttribute can be used to define the lowest and highest allowable values.
+    /// 
+    /// </remarks>
+    /// <example>
+    /// [Caption("Days"), Description("The number of days a backup is saved - once a backup has been saved for the specified number of days, it is deleted")]
+    /// [UIHint("IntValue6"), Range(1, 999999), Required]
+    /// public int Days { get; set; }
+    /// </example>
     public class IntValue6EditComponent : IntValueEditComponentBase {
         /// <summary>
         /// Constructor.
@@ -63,8 +105,13 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         public IntValue6EditComponent() : base("IntValue6", "yt_intvalue6") { }
     }
     /// <summary>
-    /// Implementation of the IntValue display component.
+    /// Displays the specified value formatted as an integer value. There is no width limitation. If the specified value is null, nothing is rendered.
     /// </summary>
+    /// <example>
+    /// [Caption("Average Char. Width"), Description("The average character width, calculated using the current skin")]
+    /// [UIHint("IntValue"), ReadOnly]
+    /// public int Width { get; set; }
+    /// </example>    
     public class IntValueDisplayComponent : IntValueDisplayComponentBase {
         /// <summary>
         /// Constructor.
@@ -72,8 +119,17 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         public IntValueDisplayComponent() : base("IntValue", "yt_intvalue") { }
     }
     /// <summary>
-    /// Implementation of the IntValue edit component.
+    /// Allows entry of an integer value. There is no width limitation.
     /// </summary>
+    /// <remarks>
+    /// The RangeAttribute can be used to define the lowest and highest allowable values.
+    /// 
+    /// </remarks>
+    /// <example>
+    /// [Caption("Days"), Description("The number of days a backup is saved - once a backup has been saved for the specified number of days, it is deleted")]
+    /// [UIHint("IntValue"), Range(1, 99999999), Required]
+    /// public int Days { get; set; }
+    /// </example>
     public class IntValueEditComponent : IntValueEditComponentBase {
         /// <summary>
         /// Constructor.
@@ -141,6 +197,8 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
     /// <summary>
     /// Base class for the IntValue edit component implementation.
     /// </summary>
+    [UsesAdditional("Step", "int", "1", "The increment/decrement used when clicking on the up/down arrows of the edit control.")]
+    [UsesAdditional("NoEntry", "string", "null", "The specified string is displayed as long as there is no value entered.")]
     public abstract class IntValueEditComponentBase : YetaWFComponent, IYetaWFComponent<int>, IYetaWFComponent<int?> {
 
         /// <summary>

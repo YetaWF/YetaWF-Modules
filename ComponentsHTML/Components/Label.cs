@@ -2,14 +2,21 @@
 
 using System.Threading.Tasks;
 using YetaWF.Core.Components;
+using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Packages;
 using YetaWF.Core.Support;
 
 namespace YetaWF.Modules.ComponentsHTML.Components {
 
     /// <summary>
-    /// Implementation of the Label display component.
+    /// Renders the model as a &lt;label&gt; tag. If the model is null or "", an &amp;nbsp; placeholder is generated.
     /// </summary>
+    /// <example>
+    /// [UIHint("Label")]
+    /// public string LabelContents { get; set; }
+    /// public string LabelContents_HelpLink { get; set; }
+    /// </example>
+    [UsesSibling("_HelpLink", "string", "Contains a complete URL which is used as a help link for the generated label. If null, no help link is available.")]
     public class LabelDisplayComponent : YetaWFComponent, IYetaWFComponent<string> {
 
         internal const string TemplateName = "Label";

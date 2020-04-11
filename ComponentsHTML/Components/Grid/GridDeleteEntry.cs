@@ -34,8 +34,13 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
     }
 
     /// <summary>
-    /// Implementation of the GridDeleteEntry display component.
+    /// Renders a Delete icon in a grid entry. The model value is not used.
     /// </summary>
+    /// <example>
+    /// [Caption("Delete"), Description("Click to delete this URL path")]
+    /// [UIHint("GridDeleteEntry"), ReadOnly]
+    /// public int Delete { get; set; }
+    /// </example>
     public class GridDeleteEntryDisplayComponent : GridDeleteEntryComponentBase, IYetaWFComponent<object> {
 
         /// <summary>

@@ -3,6 +3,7 @@
 using System;
 using System.Threading.Tasks;
 using YetaWF.Core.Components;
+using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Modules;
 using YetaWF.Core.Packages;
 using YetaWF.Core.Support;
@@ -33,8 +34,14 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
     }
 
     /// <summary>
-    /// Implementation of the IPAddress display component.
+    /// Displays the model as an IP address. If the specified value is null, nothing is rendered.
     /// </summary>
+    /// <example>
+    /// [Caption("IP Address"), Description("The IP address of the site visitor")]
+    /// [UIHint("IPAddress"), ReadOnly]
+    /// public string IPAddress { get; set; }
+    /// </example>    
+    [UsesAdditional("", "bool", "true", "Defines whether action icons are added to display the host name and Geo location information for the IP address, otherwise no action icons are added.")]
     public class IPAddressDisplayComponent : IPAddressComponentBase, IYetaWFComponent<string> {
 
         /// <summary>
